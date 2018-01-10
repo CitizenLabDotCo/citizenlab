@@ -1,7 +1,7 @@
 class WebApi::V1::IdeasController < ApplicationController
 
   before_action :set_idea, only: [:show, :update, :destroy]
-  skip_after_action :verify_authorized, only: [:index_xlsx]
+  skip_after_action :verify_authorized, only: [:index_xlsx, :index_idea_markers]
   
 
   def index
@@ -9,19 +9,7 @@ class WebApi::V1::IdeasController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    @ideas = @ideas.with_some_topics(params[:topics]) if params[:topics].present?
-    @ideas = @ideas.with_some_areas(params[:areas]) if params[:areas].present?
-    @ideas = @ideas.in_phase(params[:phase]) if params[:phase].present?
-    @ideas = @ideas.where(project_id: params[:project]) if params[:project].present?
-    @ideas = @ideas.where(author_id: params[:author]) if params[:author].present?
-    @ideas = @ideas.where(idea_status_id: params[:idea_status]) if params[:idea_status].present?
-    @ideas = @ideas.search_by_all(params[:search]) if params[:search].present?
-    if params[:publication_status].present?
-      @ideas = @ideas.where(publication_status: params[:publication_status])
-    else
-      @ideas = @ideas.where(publication_status: 'published')
-    end
-
+    add_common_index_filters params
 
     @ideas = case params[:sort]
       when "new"
@@ -68,6 +56,19 @@ class WebApi::V1::IdeasController < ApplicationController
       render json: @ideas, include: ['author', 'idea_images']
     end
 
+  end
+
+  def index_idea_markers
+    @ideas = policy_scope(Idea)
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
+
+    add_common_index_filters params
+    @ideas = @ideas.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
+
+    @idea_ids = @ideas.map(&:id)
+
+    render json: @ideas, each_serializer: WebApi::V1::IdeaMarkerSerializer
   end
 
   def index_xlsx
@@ -142,6 +143,21 @@ class WebApi::V1::IdeasController < ApplicationController
   def set_idea
     @idea = Idea.find params[:id]
     authorize @idea
+  end
+
+  def add_common_index_filters params
+    @ideas = @ideas.with_some_topics(params[:topics]) if params[:topics].present?
+    @ideas = @ideas.with_some_areas(params[:areas]) if params[:areas].present?
+    @ideas = @ideas.in_phase(params[:phase]) if params[:phase].present?
+    @ideas = @ideas.where(project_id: params[:project]) if params[:project].present?
+    @ideas = @ideas.where(author_id: params[:author]) if params[:author].present?
+    @ideas = @ideas.where(idea_status_id: params[:idea_status]) if params[:idea_status].present?
+    @ideas = @ideas.search_by_all(params[:search]) if params[:search].present?
+    if params[:publication_status].present?
+      @ideas = @ideas.where(publication_status: params[:publication_status])
+    else
+      @ideas = @ideas.where(publication_status: 'published')
+    end
   end
 
 end

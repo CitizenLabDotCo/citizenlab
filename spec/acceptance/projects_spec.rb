@@ -126,6 +126,7 @@ resource "Projects" do
       parameter :area_ids, "Array of ids of the associated areas"
       parameter :topic_ids, "Array of ids of the associated topics"
       parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public."
+      parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}. Defaults to card."
     end
     ValidationErrorHelper.new.error_fields(self, Project)
 
@@ -137,6 +138,7 @@ resource "Projects" do
     let(:header_bg) { encode_image_as_base64("header.jpg")}
     let(:area_ids) { create_list(:area, 2).map(&:id) }
     let(:visible_to) { 'admins' }
+    let(:presentation_mode) { 'map' }
 
 
     example_request "Create a project" do
@@ -147,6 +149,7 @@ resource "Projects" do
       expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
       expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
       expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'admins'
+      expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'map'
     end
 
     describe do
@@ -178,6 +181,7 @@ resource "Projects" do
       parameter :area_ids, "Array of ids of the associated areas"
       parameter :topic_ids, "Array of ids of the associated topics"
       parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public."
+      parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}. Defaults to card."
     end
     ValidationErrorHelper.new.error_fields(self, Project)
 
@@ -190,6 +194,7 @@ resource "Projects" do
     let(:header_bg) { encode_image_as_base64("header.jpg")}
     let(:area_ids) { create_list(:area, 2).map(&:id) }
     let(:visible_to) { 'groups' }
+    let(:presentation_mode) { 'card' }
 
 
     example_request "Updating the project" do
@@ -200,6 +205,7 @@ resource "Projects" do
       expect(json_response.dig(:data,:attributes,:slug)).to eq "changed-title"
       expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
       expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'groups'
+      expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'card'
     end
 
     example "Clearing all areas", document: false do

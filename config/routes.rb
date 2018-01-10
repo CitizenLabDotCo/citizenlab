@@ -23,6 +23,7 @@ Rails.application.routes.draw do
         resources :activities, only: [:index]
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
+        get :as_markers, on: :collection, action: 'index_idea_markers'
       end
 
       resources :idea_statuses, only: [:index, :show]
