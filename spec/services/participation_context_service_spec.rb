@@ -98,23 +98,98 @@ describe ParticipationContextService do
     end
   end
 
-  # describe "posting_enabled_from" do
-  #   it "returns the start date of the next phase if an upcoming phase has posting enabled" do
+  describe "future_posting_enabled_phase" do
+    it "returns the first upcoming phase that has posting enabled" do
+        project = create(:project_with_active_phase, phases_count: 10, active_phase_attrs: {
+        posting_enabled: false
+      })
+      phase = TimelineService.new.current_phase(project)
+      project.phases.where("start_at > ?", phase.created_at).each{|p| p.update(posting_enabled: false)}
+      project.phases.last.update(posting_enabled: true)
+      expect(service.future_posting_enabled_phase(project)).to eq project.phases.last
+    end
 
-  #   end
+    it "returns nil if no next phase has posting enabled" do
+      project = create(:project_with_active_phase, active_phase_attrs: {
+        posting_enabled: false
+      })
+      phase = TimelineService.new.current_phase(project)
+      project.phases.where("start_at > ?", phase.created_at).each{|p| p.update(posting_enabled: false)}
+      expect(service.future_posting_enabled_phase(project)).to be_nil
+    end
 
-  #   it "returns nil if no next phase has posting enabled" do
-  #     project = create(:project_with_active_phase, active_phase_attrs: {
-          
-  #     })
-  #   end
+    it "returns nil for a continuous project" do
+      project = create(:continuous_project)
+      expect(service.future_posting_enabled_phase(project)).to be_nil
+    end
 
-  #   it "returns nil for a continuous project" do
-  #     project = create(:continuous_project)
-  #     expect(service.posting_enabled_from(project)).to be_nil
-  #   end
+    it "returns nil for a project without future phases" do
+      project = create(:project_with_past_phases)
+      expect(service.future_posting_enabled_phase(project)).to be_nil
+    end
+  end
 
-  # end
+  describe "future_voting_enabled_phase" do
+    it "returns the first upcoming phase that has voting enabled" do
+        project = create(:project_with_active_phase, phases_count: 10, active_phase_attrs: {
+        voting_enabled: false
+      })
+      phase = TimelineService.new.current_phase(project)
+      project.phases.where("start_at > ?", phase.created_at).each{|p| p.update(voting_enabled: false)}
+      project.phases.last.update(voting_enabled: true)
+      expect(service.future_voting_enabled_phase(project)).to eq project.phases.last
+    end
+
+    it "returns nil if no next phase has voting enabled" do
+      project = create(:project_with_active_phase, active_phase_attrs: {
+        voting_enabled: false
+      })
+      phase = TimelineService.new.current_phase(project)
+      project.phases.where("start_at > ?", phase.created_at).each{|p| p.update(voting_enabled: false)}
+      expect(service.future_voting_enabled_phase(project)).to be_nil
+    end
+
+    it "returns nil for a continuous project" do
+      project = create(:continuous_project)
+      expect(service.future_voting_enabled_phase(project)).to be_nil
+    end
+
+    it "returns nil for a project without future phases" do
+      project = create(:project_with_past_phases)
+      expect(service.future_voting_enabled_phase(project)).to be_nil
+    end
+  end
+
+  describe "future_commenting_enabled_phase" do
+    it "returns the first upcoming phase that has commenting enabled" do
+        project = create(:project_with_active_phase, phases_count: 10, active_phase_attrs: {
+        commenting_enabled: false
+      })
+      phase = TimelineService.new.current_phase(project)
+      project.phases.where("start_at > ?", phase.created_at).each{|p| p.update(commenting_enabled: false)}
+      project.phases.last.update(commenting_enabled: true)
+      expect(service.future_commenting_enabled_phase(project)).to eq project.phases.last
+    end
+
+    it "returns nil if no next phase has commenting enabled" do
+      project = create(:project_with_active_phase, active_phase_attrs: {
+        commenting_enabled: false
+      })
+      phase = TimelineService.new.current_phase(project)
+      project.phases.where("start_at > ?", phase.created_at).each{|p| p.update(commenting_enabled: false)}
+      expect(service.future_commenting_enabled_phase(project)).to be_nil
+    end
+
+    it "returns nil for a continuous project" do
+      project = create(:continuous_project)
+      expect(service.future_commenting_enabled_phase(project)).to be_nil
+    end
+
+    it "returns nil for a project without future phases" do
+      project = create(:project_with_past_phases)
+      expect(service.future_commenting_enabled_phase(project)).to be_nil
+    end
+  end
 
   # describe "posting_disabled_since" do
 
