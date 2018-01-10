@@ -39,7 +39,7 @@ class TrendingIdeaService
     if idea.idea_status.code == 'rejected'
       return -1 / score
     end
-    if (Time.now.to_i - idea.published_at.to_i) > IdeaTrendingInfo::TREND_SINCE_ACTIVITY
+    if (Time.now.to_i - idea.created_at.to_i) > IdeaTrendingInfo::TREND_SINCE_ACTIVITY
       return -1 / score
     end
     score
