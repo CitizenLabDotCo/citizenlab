@@ -1,5 +1,120 @@
 ---
 models:
+  idea_status:
+  - &14
+    title_multiloc: statuses.proposed
+    ordering: 100
+    code: proposed
+    color: "#84939E"
+    description_multiloc: statuses.proposed_description
+  - &17
+    title_multiloc: statuses.under_consideration
+    ordering: 200
+    code: under_consideration
+    color: "#29ABD0"
+    description_multiloc: statuses.under_consideration_description
+  - &13
+    title_multiloc: statuses.accepted
+    ordering: 300
+    code: accepted
+    color: "#17C37B"
+    description_multiloc: statuses.accepted_description
+  - &19
+    title_multiloc: statuses.rejected
+    ordering: 400
+    code: rejected
+    color: "#EF3E4A"
+    description_multiloc: statuses.rejected_description
+  - &15
+    title_multiloc: statuses.implemented
+    ordering: 500
+    code: implemented
+    color: "#B5DA23"
+    description_multiloc: statuses.implemented_description
+  topic:
+  - title_multiloc: topics.infrastructure
+    description_multiloc: topics.infrastructure_description
+  - title_multiloc: topics.waste
+    description_multiloc: topics.waste_description
+  - &66
+    title_multiloc: topics.mobility
+    description_multiloc: topics.mobility_description
+  - title_multiloc: topics.technology
+    description_multiloc: topics.technology_description
+  - title_multiloc: topics.economy
+    description_multiloc: topics.economy_description
+  - title_multiloc: topics.nature
+    description_multiloc: topics.nature_description
+  - title_multiloc: topics.sustainability
+    description_multiloc: topics.sustainability_description
+  - title_multiloc: topics.housing
+    description_multiloc: topics.housing_description
+  - title_multiloc: topics.culture
+    description_multiloc: topics.culture_description
+  - title_multiloc: topics.citizenship
+    description_multiloc: topics.citizenship_description
+  - title_multiloc: topics.social
+    description_multiloc: topics.social_description
+  - title_multiloc: topics.health
+    description_multiloc: topics.health_description
+  - title_multiloc: topics.sport
+    description_multiloc: topics.sport_description
+  - title_multiloc: topics.education
+    description_multiloc: topics.education_description
+  page:
+  - &1
+    title_multiloc: pages.infopage_title
+    body_multiloc: pages.infopage_body
+    slug: information
+  - &2
+    title_multiloc: pages.cookie_policy_title
+    body_multiloc: pages.cookie_policy_body
+    slug: cookie-policy
+  - &3
+    title_multiloc: pages.privacy_policy_title
+    body_multiloc: pages.privacy_policy_body
+    slug: privacy-policy
+  - &4
+    title_multiloc: pages.terms_and_conditions_title
+    body_multiloc: pages.terms_and_conditions_body
+    slug: terms-and-conditions
+  page_link:
+  - linking_page_ref: *1
+    linked_page_ref: *2
+    ordering: 1
+  - linking_page_ref: *1
+    linked_page_ref: *3
+    ordering: 2
+  - linking_page_ref: *1
+    linked_page_ref: *4
+    ordering: 3
+  - linking_page_ref: *2
+    linked_page_ref: *1
+    ordering: 1
+  - linking_page_ref: *2
+    linked_page_ref: *3
+    ordering: 2
+  - linking_page_ref: *2
+    linked_page_ref: *4
+    ordering: 3
+  - linking_page_ref: *3
+    linked_page_ref: *1
+    ordering: 1
+  - linking_page_ref: *3
+    linked_page_ref: *2
+    ordering: 2
+  - linking_page_ref: *3
+    linked_page_ref: *4
+    ordering: 3
+  - linking_page_ref: *4
+    linked_page_ref: *1
+    ordering: 1
+  - linking_page_ref: *4
+    linked_page_ref: *2
+    ordering: 2
+  - linking_page_ref: *4
+    linked_page_ref: *3
+    ordering: 3
   user:
   - &28
     email: johannes@citizenlab.co
@@ -53,7 +168,7 @@ models:
     education: 5
     password: W5wu-wYDppk
     remote_avatar_url: 
-  - &18
+  - &22
     email: joseph@citizenlab.co
     first_name: Joseph
     last_name: Von Stieg
@@ -79,7 +194,7 @@ models:
     education: 6
     password: y5iYAnMgZk8
     remote_avatar_url: 
-  - &8
+  - &12
     email: hello@citizenlab.co
     first_name: Wietse
     last_name: Van Ransbeeck
@@ -92,7 +207,7 @@ models:
     education: 5
     password: KnA3fqLcf4Y
     remote_avatar_url: 
-  - &19
+  - &23
     email: Jenni@citizenlab.co
     first_name: Jenni
     last_name: Gretsch
@@ -131,7 +246,7 @@ models:
     education: 3
     password: IcNp2aKxl-M
     remote_avatar_url: 
-  - &20
+  - &24
     email: sophie@citizenlab.co
     first_name: Sophie
     last_name: Starke
@@ -157,7 +272,7 @@ models:
     education: 
     password: R82KlSHawbE
     remote_avatar_url: 
-  - &14
+  - &18
     email: Manfred@citizenlab.co
     first_name: Manfred
     last_name: Motzemann
@@ -258,27 +373,27 @@ models:
     color: "#B5DA23"
     description_multiloc: statuses.implemented_description
   project:
-  - &1
+  - &5
     title_multiloc:
       de: Stadtteilfest am Harras
     description_multiloc:
       de: "<p>Für eine Neuausrichtung des Stadtteilfestes am Harras im Sommer 2018
         ist das Kultur- und Veranstaltungsamt auf Ihre Ideen gespannt.</p>\n"
     remote_header_bg_url: 
-  - &2
+  - &6
     title_multiloc:
       de: Umgestaltung Stadtpark
     description_multiloc:
       de: "<p>Mehr Spielplätze? Mehr Bäume? Mehr Bänke?</p>\n"
     remote_header_bg_url: 
-  - &3
+  - &7
     title_multiloc:
       de: Gestaltungskonzept für die Friedrichstraße
     description_multiloc:
       de: "<p>Wir bitten Sie um Ihre Stellungnahme und Anmerkungen. Wie kann die Friedrichstraße
         neu gestaltet werden?</p>\n"
     remote_header_bg_url: 
-  - &4
+  - &8
     title_multiloc:
       de: Umgestaltung der Hauptstraße
     description_multiloc:
@@ -286,20 +401,20 @@ models:
         werden. Über Ihre Ideen und Anmerkungen freut sich das Dezernat für Stadtplanung
         sehr.</p>\n"
     remote_header_bg_url: 
-  - &5
+  - &9
     title_multiloc:
       de: Kleiner Floß-Kanal
     description_multiloc:
       de: "<p>Wie stellen Sie den Floß-Kanal vor? Die Stadtverwaltung ist gespannt
         auf Ihre Ideen.</p>\n"
     remote_header_bg_url: 
-  - &6
+  - &10
     title_multiloc:
       de: Ampelschaltung
     description_multiloc:
       de: "<p>Welche Ampelschaltungen sind ausbaufähig?</p>\n"
     remote_header_bg_url: 
-  - &7
+  - &11
     title_multiloc:
       de: VEP 2020+
     description_multiloc:
@@ -331,10 +446,10 @@ models:
       de: "<p>Die Wasserflächen im Stadtpark sollten ausgebaut werden. Im Sommer erholen
         sich dort so viele Familien, sodass es schnell eng wird. Die Einrichtung von
         Duschen und Toiletten wäre auch sehr begrüßenswert.</p>\n"
-    author_ref: *8
-    project_ref: *2
+    author_ref: *12
+    project_ref: *6
     areas: []
-    idea_status_ref: *9
+    idea_status_ref: *13
     publication_status: published
   - &22
     title_multiloc:
@@ -344,20 +459,20 @@ models:
         keine Beleuchtung auf den Nebenwegen vorhanden ist. Ein Ausbau wäre sicherlich
         sinnvoll und würde auch mehr Leute motivieren Sport zu treiben. Auch das Thema
         Sicherheit ist hierbei nicht unbedeutend.</p>\n"
-    author_ref: *8
-    project_ref: *2
+    author_ref: *12
+    project_ref: *6
     areas: []
-    idea_status_ref: *10
+    idea_status_ref: *14
     publication_status: published
   - &23
     title_multiloc:
       de: Karibik
     body_multiloc:
       de: "<p>Mit Strandbars, Reggae-Musik und vielen karibischen Köstlichkeiten.</p>\n"
-    author_ref: *8
-    project_ref: *1
+    author_ref: *12
+    project_ref: *5
     areas: []
-    idea_status_ref: *11
+    idea_status_ref: *15
     publication_status: published
   - &27
     title_multiloc:
@@ -367,8 +482,8 @@ models:
         Jedoch müssen viele Angestellte und Shopper nach Ihrem Stadtbesuch lange auf
         ihre Straßenbahn warten. Der 10 Minuten Takt gehört bis 20.30 Uhr verlängert,
         damit auch jeder nach Hause kommen kann und nicht nur die, die ein Auto besitzen.</p>\n"
-    author_ref: *8
-    project_ref: *7
+    author_ref: *12
+    project_ref: *11
     areas: []
     idea_status_ref: *12
     publication_status: published
@@ -415,8 +530,8 @@ models:
       de: "<p>Viele Studenten, aber auch Uni-Mitarbeiter müssen täglich von der Johannstadt
         in die Südvorstadt und hierfür immer umsteigen. Eine Verlängerung der Linie
         22 wäre bis zur Mensa sinnvoll</p>\n"
-    author_ref: *14
-    project_ref: *7
+    author_ref: *18
+    project_ref: *11
     areas: []
     idea_status_ref: *11
     publication_status: published
@@ -426,12 +541,12 @@ models:
     body_multiloc:
       de: "<p>Auch das andere Flussufer sollte vom Stadtteilfest profitieren. Kostenlose
         Fährfahrten wären super!</p>\n"
-    author_ref: *14
-    project_ref: *1
+    author_ref: *18
+    project_ref: *5
     areas: []
     idea_status_ref: *12
     publication_status: published
-  - &37
+  - &41
     title_multiloc:
       de: Mehr WC-Anlagen
     body_multiloc:
@@ -442,7 +557,7 @@ models:
     areas: []
     idea_status_ref: *12
     publication_status: published
-  - &38
+  - &42
     title_multiloc:
       de: Linie 16 - Haltestelle vor dem Goethe-Gymnasium
     body_multiloc:
@@ -455,7 +570,7 @@ models:
     areas: []
     idea_status_ref: *17
     publication_status: published
-  - &39
+  - &43
     title_multiloc:
       de: Jugendliche und soziale Netzwerke
     body_multiloc:
@@ -468,7 +583,7 @@ models:
     areas: []
     idea_status_ref: *9
     publication_status: published
-  - &40
+  - &44
     title_multiloc:
       de: Ein Fest für alle Helfer
     body_multiloc:
@@ -476,54 +591,54 @@ models:
         ihre Arbeit präsentieren können. Die Kinder lieben die großen Fahrzeuge und
         es können mehr Erwachsene für diese wichtigen Aufgaben in der Stadt gewonnen
         werden.</p>\n"
-    author_ref: *18
-    project_ref: *1
+    author_ref: *22
+    project_ref: *5
     areas: []
-    idea_status_ref: *9
+    idea_status_ref: *13
     publication_status: published
-  - &41
+  - &45
     title_multiloc:
       de: Breitere Gehwege
     body_multiloc:
       de: "<p>Heutzutage sind die Gehwege viel zu eng, um aneinander ohne Probleme
         vorbei gehen zu können. Viele Fahrradfahrer nutzen außerdem den Bürgersteig
         und erhöhen damit weiter das Gefährdungspotenzial.</p>\n"
-    author_ref: *8
-    project_ref: *4
+    author_ref: *12
+    project_ref: *8
     areas: []
     idea_status_ref: *10
     publication_status: published
-  - &42
+  - &46
     title_multiloc:
       de: Cornelius-/Herzogstraße
     body_multiloc:
       de: "<p>undefined</p>\n"
-    author_ref: *8
-    project_ref: *6
+    author_ref: *12
+    project_ref: *10
     areas: []
     idea_status_ref: *17
     publication_status: published
-  - &43
+  - &47
     title_multiloc:
       de: Duisburger-/Sternstraße
     body_multiloc:
       de: "<p>undefined</p>\n"
-    author_ref: *8
-    project_ref: *6
+    author_ref: *12
+    project_ref: *10
     areas: []
-    idea_status_ref: *11
+    idea_status_ref: *13
     publication_status: published
-  - &44
+  - &48
     title_multiloc:
       de: Strom-/Lippestraße
     body_multiloc:
       de: "<p>undefined</p>\n"
-    author_ref: *8
-    project_ref: *6
+    author_ref: *12
+    project_ref: *10
     areas: []
-    idea_status_ref: *9
+    idea_status_ref: *17
     publication_status: published
-  - &45
+  - &49
     title_multiloc:
       de: Vdk
     body_multiloc:
@@ -533,30 +648,30 @@ models:
     areas: []
     idea_status_ref: *17
     publication_status: published
-  - &46
+  - &50
     title_multiloc:
       de: Steg im See
     body_multiloc:
       de: "<p>Ein Steg auf dem man sich sonnen kann oder auch nur einfach die Atmosphäre
         genießen kann, wäre eine gute Idee. Das würde mehr Menschen an die frische
         Luft und in die Natur locken.</p>\n"
-    author_ref: *8
-    project_ref: *2
+    author_ref: *12
+    project_ref: *6
     areas: []
     idea_status_ref: *9
     publication_status: published
-  - &47
+  - &51
     title_multiloc:
       de: Mehr Bänke
     body_multiloc:
       de: "<p>Im Park gibt es viel zu wenig Bänke und im Sommer sind diese meist schon
         immer belegt. Mehr Bänke oder vielleicht auch Liegen wären klasse!</p>\n"
-    author_ref: *14
-    project_ref: *2
+    author_ref: *18
+    project_ref: *6
     areas: []
     idea_status_ref: *17
     publication_status: published
-  - &48
+  - &52
     title_multiloc:
       de: Fitnesspark
     body_multiloc:
@@ -567,18 +682,18 @@ models:
     areas: []
     idea_status_ref: *11
     publication_status: published
-  - &49
+  - &53
     title_multiloc:
       de: Kiosk + Eisdiele
     body_multiloc:
       de: "<p>Ein Kiosk, der im Sommer auch Eis anbietet wäre klasse. Man könnte die
         Infrastruktur auch mit zusätzlichen Sanitäranlagen ausstatten.</p>\n"
-    author_ref: *19
-    project_ref: *2
+    author_ref: *23
+    project_ref: *6
     areas: []
     idea_status_ref: *12
     publication_status: published
-  - &50
+  - &54
     title_multiloc:
       de: Buslinie 13 sonntags auch zum Friedhof Johannstadt
     body_multiloc:
@@ -586,24 +701,24 @@ models:
         Johannstadt. Eine Verlängerung der Linie 13 dorthin würde vielen Leuten, insbesonders
         den Älteren, den schweren Anstieg ersparen. Einzelne Fahrten reichen auch
         aus, da man sich darauf einstellen kann.</p>\n"
-    author_ref: *18
-    project_ref: *7
+    author_ref: *22
+    project_ref: *11
     areas: []
     idea_status_ref: *9
     publication_status: published
-  - &51
+  - &55
     title_multiloc:
       de: Nachtnetz
     body_multiloc:
       de: "<p>Ein Nachtbusnetz, damit auch noch alle zu später Stunde nach Hause kommen
         und nicht betrunken Auto fahren. Ein 1h-Takt und ein Sammelpunkt aller Linien
         wäre prima!</p>\n"
-    author_ref: *8
-    project_ref: *7
+    author_ref: *12
+    project_ref: *11
     areas: []
     idea_status_ref: *11
     publication_status: published
-  - &52
+  - &56
     title_multiloc:
       de: Streichelzoo
     body_multiloc:
@@ -612,9 +727,9 @@ models:
     author_ref: *13
     project_ref: *2
     areas: []
-    idea_status_ref: *11
+    idea_status_ref: *13
     publication_status: published
-  - &53
+  - &57
     title_multiloc:
       de: Stadtgärten
     body_multiloc:
@@ -625,56 +740,56 @@ models:
     author_ref: *15
     project_ref: *2
     areas: []
-    idea_status_ref: *9
+    idea_status_ref: *19
     publication_status: published
-  - &54
+  - &58
     title_multiloc:
       de: Skaterpark
     body_multiloc:
       de: "<p>Für die Jugendlichen gibt es kaum Möglichkeiten diesem Sport nachzugehen.
         Und in diesem unbewohnten Streifen würde dies auch niemanden stören.</p>\n"
-    author_ref: *8
-    project_ref: *2
+    author_ref: *12
+    project_ref: *6
     areas: []
     idea_status_ref: *17
     publication_status: published
-  - &55
+  - &59
     title_multiloc:
       de: Extra Fahrradstreifen
     body_multiloc:
       de: "<p>Die wichtige Fahrradverbindung sollte nicht unterbrochen werden. Ein
         &quot;Mischverkehr&quot; sollte es aber auch nicht geben und die Mindestabstände
         eingehalten werden. Ein baulich anders markierter Radweg wäre gut!</p>\n"
-    author_ref: *8
-    project_ref: *3
+    author_ref: *12
+    project_ref: *7
     areas: []
     idea_status_ref: *9
     publication_status: published
-  - &56
+  - &60
     title_multiloc:
       de: Lieferzeiten
     body_multiloc:
       de: "<p>Viele Lieferfahrzeuge fahren um 11 Uhr noch durch die Straße. Um diese
         Uhrzeit sind aber schon viele Leute unterwegs, sodass dies max. bis 10 Uhr
         nur erlaubt sein sollte.</p>\n"
-    author_ref: *14
-    project_ref: *3
+    author_ref: *18
+    project_ref: *7
     areas: []
     idea_status_ref: *12
     publication_status: published
-  - &57
+  - &61
     title_multiloc:
       de: Wasserflächen
     body_multiloc:
       de: "<p>Wasserflächen laden zum Aufhalten und Verweilen ein. Insbesondere Kinder
         können sich &quot;austoben&quot; und so wird das Shopping optimal mit kindgerechter
         Freizeitgestaltung verbunden.</p>\n"
-    author_ref: *8
-    project_ref: *3
+    author_ref: *12
+    project_ref: *7
     areas: []
     idea_status_ref: *17
     publication_status: published
-  - &58
+  - &62
     title_multiloc:
       de: Südverlängerung Wehrhahn-Linie
     body_multiloc:
@@ -682,12 +797,12 @@ models:
         <p>Bahnhof Düsseldorf-Bilk
          Suitbertusplatz
          - dringend notwendig!</p>
-    author_ref: *20
-    project_ref: *7
+    author_ref: *24
+    project_ref: *11
     areas: []
     idea_status_ref: *11
     publication_status: published
-  - &59
+  - &63
     title_multiloc:
       de: Indirekte Beleuchtung
     body_multiloc:
@@ -698,7 +813,7 @@ models:
     areas: []
     idea_status_ref: *10
     publication_status: published
-  - &60
+  - &64
     title_multiloc:
       de: Bänke mit Lehne
     body_multiloc:
@@ -709,14 +824,14 @@ models:
     areas: []
     idea_status_ref: *11
     publication_status: published
-  - &61
+  - &65
     title_multiloc:
       de: Fahrradabstellpätze
     body_multiloc:
       de: "<p>Damit erst gar nicht so viele Fahrradfahrer durch die Schadowstraße
         fahren müssen, sind an den Enden gute Fahrradabstellplätze wichtig.</p>\n"
-    author_ref: *14
-    project_ref: *3
+    author_ref: *18
+    project_ref: *7
     areas: []
     idea_status_ref: *17
     publication_status: published
@@ -812,7 +927,7 @@ models:
     user_ref: *18
     votable_ref: *34
   - mode: up
-    user_ref: *20
+    user_ref: *16
     votable_ref: *34
   - mode: up
     user_ref: *30
@@ -1031,8 +1146,8 @@ models:
     user_ref: *29
     votable_ref: *49
   - mode: up
-    user_ref: *26
-    votable_ref: *49
+    user_ref: *24
+    votable_ref: *50
   - mode: up
     user_ref: *13
     votable_ref: *49
@@ -1064,7 +1179,7 @@ models:
     user_ref: *18
     votable_ref: *50
   - mode: up
-    user_ref: *29
+    user_ref: *24
     votable_ref: *51
   - mode: up
     user_ref: *20
@@ -1106,7 +1221,7 @@ models:
     user_ref: *30
     votable_ref: *52
   - mode: up
-    user_ref: *26
+    user_ref: *20
     votable_ref: *52
   - mode: up
     user_ref: *28
@@ -1264,14 +1379,14 @@ models:
     parent_ref: 
   - body_multiloc:
       de: "<p>Ein Futterautomat könnte evtl. die Kosten reduzieren</p>\n"
-    author_ref: *18
-    idea_ref: *52
+    author_ref: *22
+    idea_ref: *56
     parent_ref: 
   - body_multiloc:
       de: "<p>und eine Verknüpfung mit den Angeboten des Jugendhauses würde sich gut
         ergeben</p>\n"
-    author_ref: *14
-    idea_ref: *52
+    author_ref: *18
+    idea_ref: *56
     parent_ref: 
   - body_multiloc:
       de: "<p>nur bitte nicht den Haltestellenabstand verringern. Die Leute aus den
@@ -1299,8 +1414,8 @@ models:
   - body_multiloc:
       de: "<p>einige Städte erheben hierfür eine zusätzliche Gebühr! Das sollte nicht
         der Fall sein.</p>\n"
-    author_ref: *14
-    idea_ref: *51
+    author_ref: *18
+    idea_ref: *55
     parent_ref: 
   - body_multiloc:
       de: "<p>die Haltestelle Markt würde sich doch gut als Sammelpunkt anbieten.
@@ -1331,8 +1446,8 @@ models:
     parent_ref: 
   - body_multiloc:
       de: "<p>am besten nicht nur fürs Stadtteilfest!</p>\n"
-    author_ref: *18
-    idea_ref: *37
+    author_ref: *22
+    idea_ref: *41
     parent_ref: 
   - body_multiloc:
       de: "<p>eine regelmäßige Kontrolle und tägliches Reinigen sollte dazu gehören</p>\n"
@@ -1341,8 +1456,8 @@ models:
     parent_ref: 
   - body_multiloc:
       de: "<p>auch Gleichgewichtsübungen und Boxsäcke wären cool</p>\n"
-    author_ref: *19
-    idea_ref: *48
+    author_ref: *23
+    idea_ref: *52
     parent_ref: 
   - body_multiloc:
       de: "<p>die beruflichen, aber auch freiwilligen Helfer tun so viel. Sie haben
@@ -1352,8 +1467,8 @@ models:
     parent_ref: 
   - body_multiloc:
       de: "<p>aber man sollte drauf aufpassen, dass nicht der Müll im See landet.</p>\n"
-    author_ref: *19
-    idea_ref: *46
+    author_ref: *23
+    idea_ref: *50
     parent_ref: 
   - body_multiloc:
       de: "<p>aber zu viel Beton sollte nicht die Fläche versiegeln.</p>\n"
@@ -1380,8 +1495,8 @@ models:
   - body_multiloc:
       de: "<p>mit Sitzmöglichkeiten draußen am besten. Würden sich bestimmt viele
         Leute dort aufhalten.</p>\n"
-    author_ref: *8
-    idea_ref: *49
+    author_ref: *12
+    idea_ref: *53
     parent_ref: 
   - body_multiloc:
       de: "<p>eine Armlehne in der Mitte verhindert auch ein Hinlegen</p>\n"
@@ -1391,8 +1506,8 @@ models:
   - body_multiloc:
       de: "<p>die gelben Sitzflächen im Projektbild geben der Straße ein individuelles
         Erscheinungsbild!</p>\n"
-    author_ref: *14
-    idea_ref: *60
+    author_ref: *18
+    idea_ref: *64
     parent_ref: 
   - body_multiloc:
       de: "<p>gute Idee, aber es sollte auch kritisch berichtet werden. Auch auf Traditionen
@@ -1405,8 +1520,8 @@ models:
         <p>gutes Thema, man könnte auch die Schulen und SchülerInnen super einbinden.</p>
 
         <p>Aber bitte nicht diesen YouTuber...</p>
-    author_ref: *8
-    idea_ref: *39
+    author_ref: *12
+    idea_ref: *43
     parent_ref: 
   - body_multiloc:
       de: "<p>auch mehr Bänke nebeneinander wären klasse, damit man sich auch als
@@ -1416,8 +1531,8 @@ models:
     parent_ref: 
   - body_multiloc:
       de: "<p>insbesondere bei den Spielplätzen</p>\n"
-    author_ref: *18
-    idea_ref: *47
+    author_ref: *22
+    idea_ref: *51
     parent_ref: 
   event:
   - title_multiloc:

@@ -1,7 +1,125 @@
 ---
 models:
+  idea_status:
+  - &15
+    title_multiloc: statuses.proposed
+    ordering: 100
+    code: proposed
+    color: "#84939E"
+    description_multiloc: statuses.proposed_description
+  - &17
+    title_multiloc: statuses.under_consideration
+    ordering: 200
+    code: under_consideration
+    color: "#29ABD0"
+    description_multiloc: statuses.under_consideration_description
+  - &11
+    title_multiloc: statuses.accepted
+    ordering: 300
+    code: accepted
+    color: "#17C37B"
+    description_multiloc: statuses.accepted_description
+  - &18
+    title_multiloc: statuses.rejected
+    ordering: 400
+    code: rejected
+    color: "#EF3E4A"
+    description_multiloc: statuses.rejected_description
+  - &13
+    title_multiloc: statuses.implemented
+    ordering: 500
+    code: implemented
+    color: "#B5DA23"
+    description_multiloc: statuses.implemented_description
+  topic:
+  - &33
+    title_multiloc: topics.infrastructure
+    description_multiloc: topics.infrastructure_description
+  - &32
+    title_multiloc: topics.waste
+    description_multiloc: topics.waste_description
+  - &31
+    title_multiloc: topics.mobility
+    description_multiloc: topics.mobility_description
+  - title_multiloc: topics.technology
+    description_multiloc: topics.technology_description
+  - title_multiloc: topics.economy
+    description_multiloc: topics.economy_description
+  - title_multiloc: topics.nature
+    description_multiloc: topics.nature_description
+  - title_multiloc: topics.sustainability
+    description_multiloc: topics.sustainability_description
+  - title_multiloc: topics.housing
+    description_multiloc: topics.housing_description
+  - title_multiloc: topics.culture
+    description_multiloc: topics.culture_description
+  - title_multiloc: topics.citizenship
+    description_multiloc: topics.citizenship_description
+  - &34
+    title_multiloc: topics.social
+    description_multiloc: topics.social_description
+  - title_multiloc: topics.health
+    description_multiloc: topics.health_description
+  - title_multiloc: topics.sport
+    description_multiloc: topics.sport_description
+  - title_multiloc: topics.education
+    description_multiloc: topics.education_description
+  page:
+  - &1
+    title_multiloc: pages.infopage_title
+    body_multiloc: pages.infopage_body
+    slug: information
+  - &2
+    title_multiloc: pages.cookie_policy_title
+    body_multiloc: pages.cookie_policy_body
+    slug: cookie-policy
+  - &3
+    title_multiloc: pages.privacy_policy_title
+    body_multiloc: pages.privacy_policy_body
+    slug: privacy-policy
+  - &4
+    title_multiloc: pages.terms_and_conditions_title
+    body_multiloc: pages.terms_and_conditions_body
+    slug: terms-and-conditions
+  page_link:
+  - linking_page_ref: *1
+    linked_page_ref: *2
+    ordering: 1
+  - linking_page_ref: *1
+    linked_page_ref: *3
+    ordering: 2
+  - linking_page_ref: *1
+    linked_page_ref: *4
+    ordering: 3
+  - linking_page_ref: *2
+    linked_page_ref: *1
+    ordering: 1
+  - linking_page_ref: *2
+    linked_page_ref: *3
+    ordering: 2
+  - linking_page_ref: *2
+    linked_page_ref: *4
+    ordering: 3
+  - linking_page_ref: *3
+    linked_page_ref: *1
+    ordering: 1
+  - linking_page_ref: *3
+    linked_page_ref: *2
+    ordering: 2
+  - linking_page_ref: *3
+    linked_page_ref: *4
+    ordering: 3
+  - linking_page_ref: *4
+    linked_page_ref: *1
+    ordering: 1
+  - linking_page_ref: *4
+    linked_page_ref: *2
+    ordering: 2
+  - linking_page_ref: *4
+    linked_page_ref: *3
+    ordering: 3
   user:
-  - &10
+  - &14
     email: citizenlab+1@citizenlab.co
     first_name: Max
     last_name: Walker
@@ -50,7 +168,7 @@ models:
     gender: male
     birthyear: 1985
     domicile: outside
-    education: 5
+    education: 1
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515574041/man-838636_960_720_f3i6ki.jpg
   topic:
@@ -118,7 +236,7 @@ models:
     color: "#B5DA23"
     description_multiloc: statuses.implemented_description
   project:
-  - &1
+  - &5
     title_multiloc:
       en: Reducing air pollution in the city
     description_multiloc:
@@ -129,14 +247,14 @@ models:
 
         <p><em>Let&#39;s do this!</em></p>
     remote_header_bg_url: 
-  - &2
+  - &6
     title_multiloc:
       en: Make the city centre more lively
     description_multiloc:
       en: "<p>Unfortunately, less and less people visit the city centre to enjoy the
         shops and the park. You can share here your ideas to make it more lively!</p>\n"
     remote_header_bg_url: 
-  - &3
+  - &7
     title_multiloc:
       en: For a better waste management
     description_multiloc:
@@ -145,7 +263,7 @@ models:
         Reducing the amount of waste is a challenge for the environment that also
         has a financial and societal impact.</p>\n"
     remote_header_bg_url: 
-  - &4
+  - &8
     title_multiloc:
       en: Reshaping Abbey Park
     description_multiloc:
@@ -156,7 +274,7 @@ models:
         you want to see in this park?\nShare your ideas below of what the park should
         look like.</p>\n"
     remote_header_bg_url: 
-  - &5
+  - &9
     title_multiloc:
       en: Make the city more digital
     description_multiloc:
@@ -176,7 +294,7 @@ models:
   - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573833/featured_lxse5u.jpg
     project_ref: *5
   idea:
-  - &15
+  - &19
     title_multiloc:
       en: More bicycle racks
     body_multiloc:
@@ -185,12 +303,12 @@ models:
         because they can&#39;t park them because the racks are often full. It would
         be nice to install more bicycle racks at the strategic points where they are
         always busy: city centre, in front of the cinema, etc.</p>\n"
-    author_ref: *6
-    project_ref: *1
+    author_ref: *10
+    project_ref: *5
     areas: []
-    idea_status_ref: *7
+    idea_status_ref: *11
     publication_status: published
-  - &16
+  - &20
     title_multiloc:
       en: Organise one car-free day per month
     body_multiloc:
@@ -198,12 +316,12 @@ models:
         or by bike without worrying about cars or air pollution. It could be a great
         way to raise awareness around cleaner ways to move around the city. Ideally
         it would be on the weekends so that everyone can enjoy it!</p>\n"
-    author_ref: *8
-    project_ref: *1
+    author_ref: *12
+    project_ref: *5
     areas: []
-    idea_status_ref: *9
+    idea_status_ref: *13
     publication_status: published
-  - &17
+  - &21
     title_multiloc:
       en: Add more night buses
     body_multiloc:
@@ -211,12 +329,12 @@ models:
         (last bus at 11PM). There should be more buses at night to encourage people
         to go to the restaurants and bars of the city centre. It would keep the neighbourhood
         more lively.</p>\n"
-    author_ref: *10
-    project_ref: *2
+    author_ref: *14
+    project_ref: *6
     areas: []
     idea_status_ref: *9
     publication_status: published
-  - &18
+  - &22
     title_multiloc:
       en: Make the city centre more accessible thanks to free shuttles
     body_multiloc:
@@ -228,9 +346,9 @@ models:
     author_ref: *11
     project_ref: *2
     areas: []
-    idea_status_ref: *9
+    idea_status_ref: *17
     publication_status: published
-  - &19
+  - &23
     title_multiloc:
       en: Organise a crafts market in the city centre
     body_multiloc:
@@ -240,12 +358,12 @@ models:
         market there, gather all kind of stands such as food, accessories, etc. in
         order to promote local crafts and have the inhabitants discover new ways of
         doing their shopping. </p>\n"
-    author_ref: *10
-    project_ref: *2
+    author_ref: *14
+    project_ref: *6
     areas: []
     idea_status_ref: *9
     publication_status: published
-  - &20
+  - &24
     title_multiloc:
       en: Organise fun gatherings to raise awareness about waste sorting
     body_multiloc:
@@ -255,12 +373,12 @@ models:
         fun social gatherings with activities to raise awareness on how important
         this is, it could be done through games, info sessions, activities for the
         family, etc. </p>\n"
-    author_ref: *6
-    project_ref: *3
+    author_ref: *10
+    project_ref: *7
     areas: []
     idea_status_ref: *12
     publication_status: published
-  - &21
+  - &25
     title_multiloc:
       en: Start an organic and food waste recovery
     body_multiloc:
@@ -274,7 +392,7 @@ models:
     areas: []
     idea_status_ref: *9
     publication_status: published
-  - &22
+  - &26
     title_multiloc:
       en: Create a dog area within the park
     body_multiloc:
@@ -284,12 +402,12 @@ models:
         go around in this « free but controlled » area, and also it would encourage
         interactions with dog owners. In this space there could be benches, and games
         for dogs.</p>\n"
-    author_ref: *8
-    project_ref: *4
+    author_ref: *12
+    project_ref: *8
     areas: []
-    idea_status_ref: *13
+    idea_status_ref: *17
     publication_status: published
-  - &23
+  - &27
     title_multiloc:
       en: Install a little coffee corner in the park
     body_multiloc:
@@ -305,7 +423,7 @@ models:
     areas: []
     idea_status_ref: *14
     publication_status: published
-  - &24
+  - &28
     title_multiloc:
       en: Have more computers in the library
     body_multiloc:
@@ -314,12 +432,12 @@ models:
         two and the spots they are often occupied. It could be nice to have more monitors,
         or even a room at the library with computers only. It could help people who
         dn&#39;t have internet at home to look for a job for example.</p>\n"
-    author_ref: *10
-    project_ref: *5
+    author_ref: *14
+    project_ref: *9
     areas: []
     idea_status_ref: *9
     publication_status: published
-  - &25
+  - &29
     title_multiloc:
       en: Have internet trainings for elderly people
     body_multiloc:
@@ -328,12 +446,12 @@ models:
         how to send emails, read the news online, and other basic online activities.
         I think if we want our city to be more modern and digital, we should make
         sure beforehand that all the citizens can understand these tools properly.</p>\n"
-    author_ref: *6
-    project_ref: *5
+    author_ref: *10
+    project_ref: *9
     areas: []
     idea_status_ref: *12
     publication_status: published
-  - &26
+  - &30
     title_multiloc:
       en: Send a weekly agenda of the city by email
     body_multiloc:
@@ -343,8 +461,8 @@ models:
         happening in the city during the week, right into their inbox: cultural events,
         towhalls, etc. to be able to access it all in one place from the comfort of
         your own house.</p>\n"
-    author_ref: *10
-    project_ref: *5
+    author_ref: *14
+    project_ref: *9
     areas: []
     idea_status_ref: *12
     publication_status: published
@@ -413,7 +531,7 @@ models:
     user_ref: *11
     votable_ref: *20
   - mode: up
-    user_ref: *8
+    user_ref: *16
     votable_ref: *20
   - mode: up
     user_ref: *6
@@ -426,6 +544,9 @@ models:
     votable_ref: *21
   - mode: up
     user_ref: *8
+    votable_ref: *21
+  - mode: up
+    user_ref: *10
     votable_ref: *21
   - mode: down
     user_ref: *11
@@ -467,10 +588,10 @@ models:
     user_ref: *10
     votable_ref: *25
   - mode: up
-    user_ref: *8
+    user_ref: *16
     votable_ref: *25
-  - mode: up
-    user_ref: *6
+  - mode: down
+    user_ref: *12
     votable_ref: *25
   - mode: up
     user_ref: *11
@@ -482,22 +603,22 @@ models:
     user_ref: *11
     votable_ref: *26
   ideas_topic:
-  - idea_ref: *15
-    topic_ref: *27
-  - idea_ref: *16
-    topic_ref: *27
-  - idea_ref: *17
-    topic_ref: *27
-  - idea_ref: *18
-    topic_ref: *27
+  - idea_ref: *19
+    topic_ref: *31
   - idea_ref: *20
-    topic_ref: *28
+    topic_ref: *31
   - idea_ref: *21
-    topic_ref: *28
+    topic_ref: *31
   - idea_ref: *22
-    topic_ref: *29
-  - idea_ref: *23
-    topic_ref: *30
+    topic_ref: *31
+  - idea_ref: *24
+    topic_ref: *32
+  - idea_ref: *25
+    topic_ref: *32
+  - idea_ref: *26
+    topic_ref: *33
+  - idea_ref: *27
+    topic_ref: *34
   idea_image:
   - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515398/5.5.2_bike_garden_setting_4057_05152012_geoe3e.jpg
     idea_ref: *15
@@ -526,31 +647,31 @@ models:
   comment:
   - body_multiloc:
       en: "<p>Great idea, we stand behind you!</p>\n"
-    author_ref: *6
-    idea_ref: *15
+    author_ref: *10
+    idea_ref: *19
     parent_ref: 
   - body_multiloc:
       en: "<p>I&#39;ve never seen you riding a bicycle...</p>\n"
-    author_ref: *10
-    idea_ref: *15
+    author_ref: *14
+    idea_ref: *19
     parent_ref: 
   - body_multiloc:
       en: "<p>Why stop there? The city also lacks bike stables. There should at least
         be one near the river.</p>\n"
-    author_ref: *8
-    idea_ref: *15
+    author_ref: *12
+    idea_ref: *19
     parent_ref: 
   - body_multiloc:
       en: "<p>What about those who work on weekends? There should be at least public
         transportation available...</p>\n"
-    author_ref: *10
-    idea_ref: *16
+    author_ref: *14
+    idea_ref: *20
     parent_ref: 
   - body_multiloc:
       en: "<p>It would also be nice for the kids, it gives them more independance
         and us, parents, don&#39;t have to go pick them up at midnight after the cinema!</p>\n"
-    author_ref: *6
-    idea_ref: *17
+    author_ref: *10
+    idea_ref: *21
     parent_ref: 
   - body_multiloc:
       en: "<p>It would be a great way to promote local creators and make the city
@@ -569,16 +690,16 @@ models:
         But I know that not everybody has this possibility or they don&#39;t even
         know it&#39;s possible. It would be a good thing to raise awareness around
         this also.</p>\n"
-    author_ref: *6
-    idea_ref: *21
+    author_ref: *10
+    idea_ref: *25
     parent_ref: 
   - body_multiloc:
       en: "<p>I really like the idea. I am not a dog owner myself but as a parent,
         it is sometimes scary to see dogs running around kids that are playing on
         the playground. Having this space for the dogs to run freely would also be
         a peace of mind for us!</p>\n"
-    author_ref: *10
-    idea_ref: *22
+    author_ref: *14
+    idea_ref: *26
     parent_ref: 
   event:
   - title_multiloc:

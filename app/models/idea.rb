@@ -73,6 +73,12 @@ class Idea < ApplicationRecord
       .where(ideas_phases: {phase_id: phase_id})
   end)
 
+  scope :with_bounding_box, (Proc.new do |coordinates|
+    x1,y1,x2,y2 = eval(coordinates)
+    # where("ST_Contains(ST_MakeEnvelope(?, ?, ?, ?), location_point)", x1, y1, x2, y2)
+    where("ST_Intersects(ST_MakeEnvelope(?, ?, ?, ?), location_point)", x1, y1, x2, y2)
+  end)
+
   scope :order_new, -> (direction=:desc) {order(published_at: direction)}
   scope :order_popular, -> (direction=:desc) {order("(upvotes_count - downvotes_count) #{direction}")}
   # based on https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d
