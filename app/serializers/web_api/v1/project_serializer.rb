@@ -13,12 +13,27 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   has_many :areas
   has_many :topics
   
+  has_one :participation_context
+
   def header_bg
     object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
   end
 
   def is_participation_context?
     object.is_participation_context?
+  end
+
+  def participation_context
+    @participation_context_service ||= ParticipationContextService.new
+    posting_disabled_reason = @participation_context_service.posting_disabled_reason(object)
+    voting_disabled_reason = @participation_context_service.voting_disabled_reason(object, scope)
+    {
+      posting: {
+        enabled: !posting_disabled_reason,
+        reason: posting_disabled_reason,
+        future_enabled: posting_disabled_reason && @participation_context_service.future_posting_enabled_phase(object)&.start_at
+      }
+    }
   end
 
 end
