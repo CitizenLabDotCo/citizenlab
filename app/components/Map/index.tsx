@@ -15,6 +15,7 @@ const icon = require('./marker.svg');
 
 const MapWrapper = styled.div`
   height: 300px;
+  transition: width .1s, height .1s;
 
   .leaflet-container {
     height: 100%;
@@ -76,6 +77,8 @@ export default class CLMap extends React.Component<Props> {
     icon: customIcon,
   };
 
+  private leafletElement: Leaflet;
+
   constructor(props) {
     super(props);
 
@@ -112,10 +115,14 @@ export default class CLMap extends React.Component<Props> {
     if (this.props.onMarkerClick) this.props.onMarkerClick(marker.options.data);
   }
 
+  bindMapContext = (map) => {
+    if (!this.leafletElement) this.leafletElement = map.leafletElement;
+  }
+
   render() {
     return (
       <MapWrapper className={this.props.className}>
-        <Map center={this.props.center} bounds={this.markerBounds} zoom={this.props.zoom || 13} maxZoom={15}>
+        <Map center={this.props.center} bounds={this.markerBounds} zoom={this.props.zoom || 13} maxZoom={15} ref={this.bindMapContext} onScroll={console.log}>
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           {this.markers.length > 0 &&
             <MarkerClusterGroup options={this.clusterOptions} markers={this.markers} onMarkerClick={this.handleMarkerClick} />
