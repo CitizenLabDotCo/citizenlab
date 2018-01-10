@@ -5,7 +5,7 @@ class TrendingIdeaService
          .includes(:idea_trending_info)
          .where.not('idea_statuses.code' => 'rejected')
          .where.not('(ideas.upvotes_count - ideas.downvotes_count) < 0')
-         .where("idea_trending_infos.last_activity_at >= timestamp '#{Time.at(Time.now.to_i - IdeaTrendingInfo::TREND_SINCE_ACTIVITY)}'")
+         .where("ideas.created_at >= timestamp '#{Time.at(Time.now.to_i - IdeaTrendingInfo::TREND_SINCE_ACTIVITY)}'")
   end
 
   def sort_trending ideas=Idea.all
@@ -15,7 +15,7 @@ class TrendingIdeaService
                            LEFT OUTER JOIN idea_trending_infos ON idea_trending_infos.idea_id = ideas.id 
                            WHERE (idea_statuses.code != 'rejected') 
                            AND (NOT ((ideas.upvotes_count - ideas.downvotes_count) < 0)) 
-                           AND (idea_trending_infos.last_activity_at >= timestamp '#{Time.at(Time.now.to_i - IdeaTrendingInfo::TREND_SINCE_ACTIVITY)}')"
+                           AND (ideas.created_at >= timestamp '#{Time.at(Time.now.to_i - IdeaTrendingInfo::TREND_SINCE_ACTIVITY)}')"
 
     ideas.joins("LEFT OUTER JOIN (SELECT whaatevaa.id AS is_trending_b FROM (#{filter_trending_sql}) AS whaatevaa) AS whateva ON is_trending_b = ideas.id")
          .group('ideas.id, idea_trending_infos.mean_activity_at')
@@ -39,7 +39,7 @@ class TrendingIdeaService
     if idea.idea_status.code == 'rejected'
       return -1 / score
     end
-    if last_activity_at > IdeaTrendingInfo::TREND_SINCE_ACTIVITY
+    if (Time.now.to_i - idea.published_at.to_i) > IdeaTrendingInfo::TREND_SINCE_ACTIVITY
       return -1 / score
     end
     score
