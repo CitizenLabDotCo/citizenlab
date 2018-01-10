@@ -27,6 +27,7 @@
     "build:clean": "npm run test:clean && rimraf ./build",
     "build:dll": "node ./internals/scripts/dependencies.js",
     "start": "cross-env NODE_ENV=development node server",
+    "start:dashboard": "cross-env NODE_ENV=development webpack-dashboard -- node server",
     "start:tunnel": "cross-env NODE_ENV=development ENABLE_TUNNEL=true node server",
     "start:production": "npm run test && npm run build && npm run start:prod",
     "start:prod": "cross-env NODE_ENV=production node server",
@@ -383,6 +384,7 @@
     "url-loader": "0.6.2",
     "webpack": "3.10.0",
     "webpack-bundle-analyzer": "2.9.1",
+    "webpack-dashboard": "^1.0.2",
     "webpack-dev-middleware": "2.0.3",
     "webpack-hot-middleware": "2.21.0",
     "yargs": "^10.0.3"
