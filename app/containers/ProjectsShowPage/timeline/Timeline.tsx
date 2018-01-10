@@ -145,7 +145,7 @@ const CurrentPhase = styled.span`
 `;
 
 const HeaderNavigationIcon = styled(Icon)`
-  fill: ${(props) => props.theme.colors.label};
+  fill: #333;
   height: 13px;
   transition: background 60ms ease-out;
 `;
@@ -159,8 +159,8 @@ const HeaderNavigationNextIcon = HeaderNavigationIcon.extend``;
 const HeaderNavigation = styled.div`
   flex: 0 0 26px;
   width: 26px;
-  height: 30px;
-  background: #ededed;
+  height: 31px;
+  background: #e0e0e0;
   border-radius: 4px;
   margin-right: 5px;
   display: flex;
@@ -173,8 +173,18 @@ const HeaderNavigation = styled.div`
     margin-right: 0px;
   }
 
-  &:hover {
-    background: #e0e0e0;
+  &.disabled {
+    background: #f0f0f0;
+    cursor: not-allowed;
+
+    ${HeaderNavigationPrevIcon},
+    ${HeaderNavigationNextIcon} {
+      fill: #bbb;
+    }
+  }
+
+  &:not(.disabled):hover {
+    background: #ccc;
 
     ${HeaderNavigationPrevIcon},
     ${HeaderNavigationNextIcon} {
@@ -407,29 +417,33 @@ export default class Timeline extends React.PureComponent<Props, State> {
     // empty
   }
 
-  goToPrevPhase = (event: React.FormEvent<any>) => {
+  goToPrevPhase = (firstPhaseSelected: boolean) => (event: React.FormEvent<any>) => {
     event.preventDefault();
 
-    const { phases, selectedPhaseId } = this.state;
-    const phaseIds = phases ? phases.data.map(phase => phase.id) : null;
+    if (!firstPhaseSelected) {
+      const { phases, selectedPhaseId } = this.state;
+      const phaseIds = phases ? phases.data.map(phase => phase.id) : null;
 
-    if (phaseIds && phaseIds.length > 1) {
-      const index = _.indexOf(phaseIds, selectedPhaseId);
-      const newIndex = (index > 0 ? index - 1 : phaseIds.length - 1);
-      this.selectedPhaseId$.next(phaseIds[newIndex]);
+      if (phaseIds && phaseIds.length > 1) {
+        const index = _.indexOf(phaseIds, selectedPhaseId);
+        const newIndex = (index > 0 ? index - 1 : phaseIds.length - 1);
+        this.selectedPhaseId$.next(phaseIds[newIndex]);
+      }
     }
   }
 
-  goToNextPhase = (event: React.FormEvent<any>) => {
+  goToNextPhase = (lastPhaseSelected: boolean) => (event: React.FormEvent<any>) => {
     event.preventDefault();
 
-    const { phases, selectedPhaseId } = this.state;
-    const phaseIds = phases ? phases.data.map(phase => phase.id) : null;
+    if (!lastPhaseSelected) {
+      const { phases, selectedPhaseId } = this.state;
+      const phaseIds = phases ? phases.data.map(phase => phase.id) : null;
 
-    if (phaseIds && phaseIds.length > 1) {
-      const index = _.indexOf(phaseIds, selectedPhaseId);
-      const newIndex = (index < (phaseIds.length - 1) ? index + 1 : 0);
-      this.selectedPhaseId$.next(phaseIds[newIndex]);
+      if (phaseIds && phaseIds.length > 1) {
+        const index = _.indexOf(phaseIds, selectedPhaseId);
+        const newIndex = (index < (phaseIds.length - 1) ? index + 1 : 0);
+        this.selectedPhaseId$.next(phaseIds[newIndex]);
+      }
     }
   }
 
@@ -449,6 +463,8 @@ export default class Timeline extends React.PureComponent<Props, State> {
       const selectedPhaseTitle = (selectedPhase ? getLocalized(selectedPhase.attributes.title_multiloc, locale, currentTenantLocales) : null);
       const selectedPhaseNumber = (selectedPhase ? _.indexOf(phaseIds, selectedPhaseId) + 1 : null);
       const isSelected = (selectedPhaseId !== null);
+      const firstPhaseSelected = (phases && selectedPhaseId && selectedPhaseId === phases.data[0].id ? true : false);
+      const lastPhaseSelected = (phases && selectedPhaseId && selectedPhaseId === phases.data[phases.data.length - 1].id ? true : false);
 
       if (selectedPhase) {
         if (currentPhaseId && selectedPhaseId === currentPhaseId) {
@@ -506,11 +522,11 @@ export default class Timeline extends React.PureComponent<Props, State> {
               />
               */}
 
-              <HeaderNavigation onClick={this.goToPrevPhase}>
+              <HeaderNavigation className={`${firstPhaseSelected && 'disabled'}`} onClick={this.goToPrevPhase(firstPhaseSelected)}>
                 <HeaderNavigationPrevIcon name="chevron-right" />
               </HeaderNavigation>
 
-              <HeaderNavigation className="last" onClick={this.goToNextPhase}>
+              <HeaderNavigation className={`last ${lastPhaseSelected && 'disabled'}`} onClick={this.goToNextPhase(lastPhaseSelected)}>
                 <HeaderNavigationNextIcon name="chevron-right" />
               </HeaderNavigation>
             </HeaderSection>
