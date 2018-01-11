@@ -191,6 +191,18 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.votingMethodPlaceholder',
     defaultMessage: 'Select the voting method',
   },
+  votingLimit: {
+    id: 'app.containers.AdminPage.ProjectEdit.votingLimit',
+    defaultMessage: 'Voting limit',
+  },
+  unlimited: {
+    id: 'app.containers.AdminPage.ProjectEdit.unlimited',
+    defaultMessage: 'Unlimited',
+  },
+  limited: {
+    id: 'app.containers.AdminPage.ProjectEdit.limited',
+    defaultMessage: 'Limited',
+  },
   noParticipationMethodErrorMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.noParticipationMethodErrorMessage',
     defaultMessage: 'Please select a participation method',

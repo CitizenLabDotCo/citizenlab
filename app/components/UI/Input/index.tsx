@@ -14,6 +14,7 @@ const Container: any = styled.div`
 
   input {
     width: 100%;
+    height: 100%;
     color: ${color('text')};
     font-size: ${fontSize('base')};
     line-height: 24px;
@@ -46,7 +47,7 @@ const Container: any = styled.div`
 export type Props = {
   id?: string | undefined;
   value?: string | null | undefined;
-  type: 'text' | 'email' | 'password';
+  type: 'text' | 'email' | 'password' | 'number';
   placeholder?: string | null | undefined;
   error?: string | JSX.Element | null | undefined;
   onChange: (arg: string) => void;
