@@ -261,7 +261,7 @@ if Apartment::Tenant.current == 'localhost'
   })
 
   num_projects.times do
-    project = Project.create({
+    project = Project.new({
       title_multiloc: {
         "en": "Renewing Westbrook parc",
         "nl": "Westbroek park vernieuwen"
@@ -275,8 +275,23 @@ if Apartment::Tenant.current == 'localhost'
         "nl" => "Laten we het park op de grend van de stad vernieuwen."
       },
       header_bg: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
-      visible_to: %w(admins groups public public public)[rand(5)]
+      visible_to: %w(admins groups public public public)[rand(5)],
+      presentation_mode: ['card', 'card', 'card', 'map', 'map'][rand(5)],
+      process_type: ['timeline','timeline','timeline','continuous','continuous'][rand(5)]
     })
+
+    if project.continuous?
+      project.update({
+        posting_enabled: rand(4) != 0,
+        voting_enabled: rand(3) != 0,
+        commenting_enabled: rand(4) != 0,
+        voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
+        voting_limited_max: rand(15),
+      })
+    end
+    project.save
+
+    byebug unless project.persisted?
 
     [0,1,2,3,4][rand(5)].times do |i|
       project.project_images.create(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
@@ -286,9 +301,9 @@ if Apartment::Tenant.current == 'localhost'
     end
 
     start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
-    rand(5).times do
+    rand(7).times do
       start_at += 1.days
-      project.phases.create({
+      phase = project.phases.create({
         title_multiloc: {
           "en": Faker::Lorem.sentence,
           "nl": Faker::Lorem.sentence
@@ -299,22 +314,19 @@ if Apartment::Tenant.current == 'localhost'
         },
         start_at: start_at,
         end_at: (start_at += rand(120).days),
-        participation_method: (rand(2) == 0) ? 'ideation' : 'information'
+        participation_method: (rand(5) == 0) ? 'information' : 'ideation'
       })
+      if phase.ideation?
+        phase.update({
+          posting_enabled: rand(4) != 0,
+          voting_enabled: rand(3) != 0,
+          commenting_enabled: rand(4) != 0,
+          voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
+          voting_limited_max: rand(15),
+        })
+      end
     end
-    project.phases.create({
-      title_multiloc: {
-        "en": Faker::Lorem.sentence,
-        "nl": Faker::Lorem.sentence
-      },
-      description_multiloc: {
-        "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
-        "nl" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
-      },
-      start_at: Time.now-5.days,
-      end_at: Time.now+5.days,
-      participation_method: 'ideation'
-    })
+
     rand(5).times do
       start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
       project.events.create({
@@ -340,7 +352,7 @@ if Apartment::Tenant.current == 'localhost'
       topics: rand(3).times.map{rand(Topic.count)}.uniq.map{|offset| Topic.offset(offset).first },
       areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
       author: User.offset(rand(User.count)).first,
-      project: (rand(5) != 0) ? Project.offset(rand(Project.count)).first : nil,
+      project: Project.offset(rand(Project.count)).first,
       publication_status: 'published',
       published_at: Faker::Date.between(created_at, Time.now),
       created_at: created_at,
