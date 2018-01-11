@@ -40,12 +40,12 @@ class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
     {
       voting: {
         enabled: !voting_disabled_reason,
-        reason: voting_disabled_reason,
+        disabled_reason: voting_disabled_reason,
         future_enabled: voting_disabled_reason && @participation_context_service.future_voting_enabled_phase(object.project)&.start_at
       },
       commenting: {
         enabled: !commenting_disabled_reason,
-        reason: commenting_disabled_reason,
+        disabled_reason: commenting_disabled_reason,
         future_enabled: commenting_disabled_reason && @participation_context_service.future_commenting_enabled_phase(object.project)&.start_at
       }
     }
