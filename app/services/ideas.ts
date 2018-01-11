@@ -52,6 +52,20 @@ export interface IIdeaData {
     },
     user_vote: {
       data: IRelationship;
+    },
+    action_descriptor: {
+      data: {
+        voting:{
+          enabled: boolean,
+          future_enabled: string | null,
+          disabled_reason: 'no_active_context'| 'voting_disabled' | 'voting_limited_max_reached' | null
+        },
+        commenting: {
+          enabled: boolean,
+          future_enabled: string | null,
+          disabled_reason: 'no_active_context' | 'commenting_disabled' | null,
+        }
+      }
     }
   };
 }

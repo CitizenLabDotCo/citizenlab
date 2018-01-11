@@ -26,4 +26,20 @@ export default defineMessages({
     id: 'app.components.IdeaCard.register',
     defaultMessage: 'Create an account',
   },
+  votingDisabledNoActiveContext: {
+    id: 'app.components.IdeaCard.votingDisabledNoActiveContext',
+    defaultMessage: 'You can no longer vote on ideas in {projectName}',
+  },
+  votingDisabledPossibleLater: {
+    id: 'app.components.IdeaCard.votingDisabledPossibleLater',
+    defaultMessage: 'Voting on ideas in {projectName} will be possible from {enabledFromDate}',
+  },
+  votingDisabledForProject: {
+    id: 'app.components.IdeaCard.votingDisabledForProject',
+    defaultMessage: 'Voting on ideas in {projectName} is not possible',
+  },
+  votingDisabledMaxReached: {
+    id: 'app.components.IdeaCard.votingDisabledMaxReached',
+    defaultMessage: 'You\'ve reached your maximum number of votes in {projectName}',
+  },
 });
