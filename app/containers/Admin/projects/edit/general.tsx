@@ -12,6 +12,7 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Radio from 'components/UI/Radio';
 import Label from 'components/UI/Label';
+import Select from 'components/UI/Select';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
@@ -54,6 +55,10 @@ import styled from 'styled-components';
 
 // typings
 import { API, IOption, IRelationship, ImageFile } from 'typings';
+
+const TitleInput = styled(Input)`
+  width: 470px;
+`;
 
 const StyledImagesDropzone = styled(ImagesDropzone)`
   margin-top: 2px;
@@ -107,6 +112,7 @@ interface State {
   oldProjectImages: ImageFile[] | null;
   newProjectImages: ImageFile[] | null;
   noTitleError: string | null;
+  noProjectType: string | null;
   // noHeaderError: string | null;
   apiErrors: { [fieldName: string]: API.Error[] };
   saved: boolean;
@@ -136,6 +142,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       oldProjectImages: null,
       newProjectImages: null,
       noTitleError: null,
+      noProjectType: null,
       // noHeaderError: null,
       apiErrors: {},
       saved: false,
@@ -255,6 +262,17 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     }));
   }
 
+  handeProjectTypeOnChange = (selectedOption: IOption) => {
+    this.setState((state: State) => ({
+      submitState: 'enabled',
+      noProjectType: null,
+      projectAttributesDiff: {
+        ...state.projectAttributesDiff,
+        process_type: selectedOption.value
+      }
+    }));
+  }
+
   handleHeaderOnAdd = (newHeader: ImageFile) => {
     this.setState((state: State) => ({
       submitState: 'enabled',
@@ -331,10 +349,16 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     const projectAttrs = { ...(projectData ? projectData.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
     const areaIds = projectAttrs.area_ids || (projectData && projectData.relationships.areas.data.map((area) => (area.id))) || [];
     const projectTitle = getLocalized(projectAttrs.title_multiloc as any, locale as string, currentTenantLocales);
+    const projectType = (projectAttrs.process_type || null);
 
     if (!projectTitle) {
       hasErrors = true;
       this.setState({ noTitleError: formatMessage(messages.noTitleErrorMessage) });
+    }
+
+    if (!projectType) {
+      hasErrors = true;
+      this.setState({ noProjectType: formatMessage(messages.noProjectTypeErrorMessage) });
     }
 
     /*
@@ -418,7 +442,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 
   render() {
-    const { currentTenant, locale, noTitleError, /* noHeaderError, */ apiErrors, saved, projectData, headerBg, newProjectImages, loading, processing, projectAttributesDiff, areasOptions, areaType, submitState } = this.state;
+    const { currentTenant, locale, noTitleError, noProjectType, apiErrors, saved, projectData, headerBg, newProjectImages, loading, processing, projectAttributesDiff, areasOptions, areaType, submitState } = this.state;
     const { formatMessage } = this.props.intl;
 
     if (!loading && currentTenant && locale) {
@@ -427,6 +451,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       const projectAttrs = { ...(projectData ? projectData.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
       const areaIds = projectAttrs.area_ids || (projectData && projectData.relationships.areas.data.map((area) => (area.id))) || [];
       const projectTitle = getLocalized(projectAttrs.title_multiloc as any, locale, currentTenantLocales);
+      const projectType = (projectAttrs.process_type || null);
       const areasValues = areaIds.filter((id) => {
         return areasOptions.some(areaOption => areaOption.value === id);
       }).map((id) => {
@@ -440,7 +465,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               <Label htmlFor="project-title">
                 <FormattedMessage {...messages.titleLabel} />
               </Label>
-              <Input
+              <TitleInput
                 id="project-title"
                 type="text"
                 placeholder=""
@@ -451,6 +476,29 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               />
               <Error text={noTitleError} />
               <Error fieldName="title_multiloc" apiErrors={this.state.apiErrors.title_multiloc} />
+            </SectionField>
+
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.projectType} />
+              </Label>
+              <Select
+                placeholder={<FormattedMessage {...messages.projectTypePlaceholder} />}
+                value={projectType}
+                onChange={this.handeProjectTypeOnChange}
+                clearable={false}
+                options={[
+                  {
+                    value: 'continuous',
+                    label: formatMessage(messages.continuous)
+                  },
+                  {
+                    value: 'timeline',
+                    label: formatMessage(messages.timeline)
+                  },
+                ]}
+              />
+              <Error text={noProjectType} />
             </SectionField>
 
             <SectionField>
