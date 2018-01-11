@@ -367,7 +367,7 @@ export default function createRoutes(store) {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
-        import('containers/NotFoundPage')
+        import('containers/PagesShowPage')
           .then(loadModule(cb))
           .catch(errorLoading);
       },

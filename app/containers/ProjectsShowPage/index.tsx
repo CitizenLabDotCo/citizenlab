@@ -199,10 +199,7 @@ type Props = {
 };
 
 type State = {
-  locale: string | null;
-  currentTenantLocales: string[] | null;
   project: IProject | null;
-  loaded: boolean;
 };
 
 export default class ProjectsShowPage extends React.PureComponent<Props, State> {
@@ -212,45 +209,21 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      locale: null,
-      currentTenantLocales: null,
-      project: null,
-      loaded: false
+      project: null
     };
     this.subscriptions = [];
   }
 
   componentWillMount() {
-    const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
     const project$ = projectBySlugStream(this.props.params.slug).observable;
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
-        locale$,
-        currentTenantLocales$,
-        project$
-      ).switchMap(([locale, currentTenantLocales, project]) => {
+      project$.switchMap((project) => {
         const projectImages$ = projectImagesStream(project.data.id).observable;
         const phases$ = phasesStream(project.data.id).observable;
-
-        return Rx.Observable.combineLatest(
-          projectImages$,
-          phases$
-        ).map(([projectImages, phases]) => {
-          return {
-            locale,
-            currentTenantLocales,
-            project
-          };
-        });
-      }).subscribe(({ locale, currentTenantLocales, project }) => {
-        this.setState({
-          locale,
-          currentTenantLocales,
-          project,
-          loaded: true
-        });
+        return Rx.Observable.combineLatest(projectImages$, phases$).map(([projectImages, phases]) => project);
+      }).subscribe((project) => {
+        this.setState({ project });
       })
     ];
   }
@@ -261,12 +234,11 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
 
   render() {
     const { params } = this.props;
-    const { locale, currentTenantLocales, project, loaded } = this.state;
+    const { project } = this.state;
     const basePath = `/projects/${params.slug}`;
 
-    if (loaded && locale && currentTenantLocales && project) {
+    if (project) {
       const { children } = this.props;
-      const projectTitle = getLocalized(project.data.attributes.title_multiloc, locale, currentTenantLocales);
       const projectHeaderImageLarge = (project.data.attributes.header_bg.large || null);
 
       return (
@@ -285,7 +257,7 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
                     </HeaderLabel>
 
                     <HeaderTitle>
-                      {projectTitle}
+                      <T value={project.data.attributes.title_multiloc} />
                     </HeaderTitle>
                   </HeaderContentLeft>
 

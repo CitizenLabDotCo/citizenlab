@@ -28,7 +28,7 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  z-index: 1;
+  z-index: 0;
 `;
 
 const FirstLine = styled.div`

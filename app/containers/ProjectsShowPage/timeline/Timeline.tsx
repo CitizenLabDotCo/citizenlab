@@ -70,15 +70,15 @@ const HeaderSection = styled.div`
 `;
 
 const PhaseNumberWrapper = styled.div`
-  flex: 0 0 44px;
-  width: 44px;
-  height: 44px;
+  flex: 0 0 29px;
+  width: 29px;
+  height: 29px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 18px;
+  margin-right: 12px;
   border-radius: 50%;
-  border: solid 2px ${greyTransparent};
+  border: solid 1px ${greyTransparent};
 
   &.selected {
     border-color: ${greyOpaque};
@@ -91,7 +91,7 @@ const PhaseNumberWrapper = styled.div`
 
 const PhaseNumber = styled.div`
   color: ${greyTransparent};
-  font-size: 20px;
+  font-size: 16px;
   line-height: 16px;
   font-weight: 400;
   margin: 0;
@@ -114,16 +114,17 @@ const HeaderTitleWrapper = styled.div`
 
 const HeaderTitle = styled.div`
   color: ${greyTransparent};
-  font-size: 23px;
-  line-height: 27px;
+  font-size: 21px;
+  line-height: 25px;
   font-weight: 400;
+  margin-right: 20px;
 
   &.selected {
     color: ${greyOpaque};
   }
 
   &.selected.current {
-    color: ${greenOpaque};
+    color: #222;
   }
 
   ${media.smallerThanMaxTablet`
@@ -140,12 +141,21 @@ const HeaderSubtitle = styled.div`
   margin-top: 3px;
 `;
 
+const HeaderDate = styled.div`
+  color: #000;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+  white-space: nowrap;
+  margin-right: 20px;
+`;
+
 const CurrentPhase = styled.span`
   color: ${greenOpaque};
 `;
 
 const HeaderNavigationIcon = styled(Icon)`
-  fill: ${(props) => props.theme.colors.label};
+  fill: #333;
   height: 13px;
   transition: background 60ms ease-out;
 `;
@@ -159,8 +169,8 @@ const HeaderNavigationNextIcon = HeaderNavigationIcon.extend``;
 const HeaderNavigation = styled.div`
   flex: 0 0 26px;
   width: 26px;
-  height: 30px;
-  background: #ededed;
+  height: 31px;
+  background: #e0e0e0;
   border-radius: 4px;
   margin-right: 5px;
   display: flex;
@@ -173,8 +183,18 @@ const HeaderNavigation = styled.div`
     margin-right: 0px;
   }
 
-  &:hover {
-    background: #e0e0e0;
+  &.disabled {
+    background: #f0f0f0;
+    cursor: not-allowed;
+
+    ${HeaderNavigationPrevIcon},
+    ${HeaderNavigationNextIcon} {
+      fill: #bbb;
+    }
+  }
+
+  &:not(.disabled):hover {
+    background: #ccc;
 
     ${HeaderNavigationPrevIcon},
     ${HeaderNavigationNextIcon} {
@@ -407,29 +427,33 @@ export default class Timeline extends React.PureComponent<Props, State> {
     // empty
   }
 
-  goToPrevPhase = (event: React.FormEvent<any>) => {
+  goToPrevPhase = (firstPhaseSelected: boolean) => (event: React.FormEvent<any>) => {
     event.preventDefault();
 
-    const { phases, selectedPhaseId } = this.state;
-    const phaseIds = phases ? phases.data.map(phase => phase.id) : null;
+    if (!firstPhaseSelected) {
+      const { phases, selectedPhaseId } = this.state;
+      const phaseIds = phases ? phases.data.map(phase => phase.id) : null;
 
-    if (phaseIds && phaseIds.length > 1) {
-      const index = _.indexOf(phaseIds, selectedPhaseId);
-      const newIndex = (index > 0 ? index - 1 : phaseIds.length - 1);
-      this.selectedPhaseId$.next(phaseIds[newIndex]);
+      if (phaseIds && phaseIds.length > 1) {
+        const index = _.indexOf(phaseIds, selectedPhaseId);
+        const newIndex = (index > 0 ? index - 1 : phaseIds.length - 1);
+        this.selectedPhaseId$.next(phaseIds[newIndex]);
+      }
     }
   }
 
-  goToNextPhase = (event: React.FormEvent<any>) => {
+  goToNextPhase = (lastPhaseSelected: boolean) => (event: React.FormEvent<any>) => {
     event.preventDefault();
 
-    const { phases, selectedPhaseId } = this.state;
-    const phaseIds = phases ? phases.data.map(phase => phase.id) : null;
+    if (!lastPhaseSelected) {
+      const { phases, selectedPhaseId } = this.state;
+      const phaseIds = phases ? phases.data.map(phase => phase.id) : null;
 
-    if (phaseIds && phaseIds.length > 1) {
-      const index = _.indexOf(phaseIds, selectedPhaseId);
-      const newIndex = (index < (phaseIds.length - 1) ? index + 1 : 0);
-      this.selectedPhaseId$.next(phaseIds[newIndex]);
+      if (phaseIds && phaseIds.length > 1) {
+        const index = _.indexOf(phaseIds, selectedPhaseId);
+        const newIndex = (index < (phaseIds.length - 1) ? index + 1 : 0);
+        this.selectedPhaseId$.next(phaseIds[newIndex]);
+      }
     }
   }
 
@@ -449,6 +473,8 @@ export default class Timeline extends React.PureComponent<Props, State> {
       const selectedPhaseTitle = (selectedPhase ? getLocalized(selectedPhase.attributes.title_multiloc, locale, currentTenantLocales) : null);
       const selectedPhaseNumber = (selectedPhase ? _.indexOf(phaseIds, selectedPhaseId) + 1 : null);
       const isSelected = (selectedPhaseId !== null);
+      const firstPhaseSelected = (phases && selectedPhaseId && selectedPhaseId === phases.data[0].id ? true : false);
+      const lastPhaseSelected = (phases && selectedPhaseId && selectedPhaseId === phases.data[phases.data.length - 1].id ? true : false);
 
       if (selectedPhase) {
         if (currentPhaseId && selectedPhaseId === currentPhaseId) {
@@ -476,27 +502,28 @@ export default class Timeline extends React.PureComponent<Props, State> {
                 <HeaderTitle className={`${isSelected && 'selected'} ${phaseStatus === 'present' && 'current'}`}>
                   {selectedPhaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
                 </HeaderTitle>
-
-                {isSelected &&
-                  <HeaderSubtitle>
-                    {phaseStatus === 'past' && (
-                      <FormattedMessage {...messages.pastPhase} values={{ date: selectedPhaseEnd }} />
-                    )}
-
-                    {phaseStatus === 'present' && (
-                      <FormattedMessage {...messages.activePhase} values={{ date: selectedPhaseEnd }} />
-                    )}
-
-                    {phaseStatus === 'future' && (
-                      <FormattedMessage {...messages.futurePhase} values={{ date: selectedPhaseStart }} />
-                    )}
-                  </HeaderSubtitle>
-                }
               </HeaderTitleWrapper>
             </HeaderSection>
 
             <HeaderSection>
-              {/*
+              <HeaderDate>
+                {isSelected &&
+                  <HeaderSubtitle>
+                    {phaseStatus === 'past' && (
+                      <FormattedMessage {...messages.endedOn} values={{ date: selectedPhaseEnd }} />
+                    )}
+
+                    {phaseStatus === 'present' && (
+                      <FormattedMessage {...messages.endsOn} values={{ date: selectedPhaseEnd }} />
+                    )}
+
+                    {phaseStatus === 'future' && (
+                      <FormattedMessage {...messages.endsOn} values={{ date: selectedPhaseEnd }} />
+                    )}
+                  </HeaderSubtitle>
+                }
+              </HeaderDate>
+
               <Button
                 onClick={this.handleOnAddIdeaClick}
                 style="primary"
@@ -504,15 +531,16 @@ export default class Timeline extends React.PureComponent<Props, State> {
                 text={<FormattedMessage {...messages.startAnIdea} />}
                 circularCorners={false}
               />
-              */}
 
-              <HeaderNavigation onClick={this.goToPrevPhase}>
+              {/*
+              <HeaderNavigation className={`${firstPhaseSelected && 'disabled'}`} onClick={this.goToPrevPhase(firstPhaseSelected)}>
                 <HeaderNavigationPrevIcon name="chevron-right" />
               </HeaderNavigation>
 
-              <HeaderNavigation className="last" onClick={this.goToNextPhase}>
+              <HeaderNavigation className={`last ${lastPhaseSelected && 'disabled'}`} onClick={this.goToNextPhase(lastPhaseSelected)}>
                 <HeaderNavigationNextIcon name="chevron-right" />
               </HeaderNavigation>
+              */}
             </HeaderSection>
           </Header>
 

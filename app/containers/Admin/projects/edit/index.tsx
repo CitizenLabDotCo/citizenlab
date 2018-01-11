@@ -128,15 +128,15 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
     };
 
     return(
-      <div>
+      <>
         <StyledGoBackButton onClick={this.goBack} />
 
         <TabbedResource {...tabbedProps}>
           {React.cloneElement(this.props.children as React.ReactElement<any>, { project })}
         </TabbedResource>
-      </div>
+      </>
     );
   }
 }
 
-export default injectIntl(AdminProjectEdition);
+export default injectIntl<Props>(AdminProjectEdition);

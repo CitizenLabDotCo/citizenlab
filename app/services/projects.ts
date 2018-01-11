@@ -7,6 +7,7 @@ import request from 'utils/request';
 const apiEndpoint = `${API_PATH}/projects`;
 
 type Visibility = 'public' | 'groups' | 'admins';
+type ProcessType = 'continuous' | 'timeline';
 
 export interface IProjectData {
   id: string;
@@ -21,6 +22,13 @@ export interface IProjectData {
     created_at: string;
     updated_at: string;
     visible_to: Visibility;
+    process_type: ProcessType;
+    participation_method: 'ideation' | 'information';
+    posting_enabled: boolean;
+    commenting_enabled: boolean;
+    voting_enabled: boolean;
+    voting_method: 'limited' | 'unlimited';
+    voting_limited_max: number;
   };
   relationships: {
     project_images: {
@@ -39,6 +47,7 @@ export interface IUpdatedProjectProperties {
   description_preview_multiloc?: Multiloc;
   area_ids?: string[];
   visible_to?: Visibility;
+  process_type?: ProcessType;
 }
 
 export interface IProject {

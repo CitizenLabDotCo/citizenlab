@@ -712,7 +712,7 @@ class IdeasShow extends React.PureComponent<Props, State> {
           }
 
           <SharingWrapper>
-            <StyledSharing imageUrl={ideaImageMedium} />
+            <StyledSharing imageUrl={ideaImageLarge} />
 
             <GiveOpinion onClick={this.scrollToCommentForm}>
               <IconWrapper>
@@ -773,7 +773,7 @@ class IdeasShow extends React.PureComponent<Props, State> {
                   </StatusContainerMobile>
                 }
 
-                {ideaImageMedium ? <IdeaImage src={ideaImageMedium} /> : null}
+                {ideaImageLarge ? <IdeaImage src={ideaImageLarge} /> : null}
 
                 <AuthorAndAdressWrapper>
                   <AuthorContainer>
