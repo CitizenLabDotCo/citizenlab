@@ -10,7 +10,6 @@ import IdeaCard from 'components/IdeaCard';
 import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
 import Button from 'components/UI/Button';
-import IdeasMap from 'components/IdeasMap';
 
 // services
 import { ideasStream, IIdeas } from 'services/ideas';
@@ -250,7 +249,6 @@ class IdeaCards extends React.PureComponent<Props, State> {
 
     const ideasList = ((!loading && hasIdeas && ideas) ? (
       <React.Fragment>
-        <IdeasMap ideas={ideas.data} />
         <IdeasList id="e2e-ideas-list">
           {ideas.data.map((idea) => (
             <StyledIdeaCard key={idea.id} ideaId={idea.id} />

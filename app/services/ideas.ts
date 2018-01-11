@@ -108,7 +108,7 @@ export function ideasStream(streamParams: IStreamParams | null = null) {
 }
 
 export function ideasMarkersStream(streamParams: IStreamParams | null = null) {
-  return streams.get<{data: Partial<IIdea>[]}>({ apiEndpoint: `${API_PATH}/ideas`, ...streamParams });
+  return streams.get<{data: Partial<IIdeaData>[], links: IIdeaLinks}>({ apiEndpoint: `${API_PATH}/ideas/as_markers`, ...streamParams });
 }
 
 export function addIdea(
