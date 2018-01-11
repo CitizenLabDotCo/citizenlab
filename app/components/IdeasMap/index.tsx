@@ -71,7 +71,7 @@ export default class IdeasMap extends React.Component<Props, State> {
   }
 
   bindMap = (mapComponent) => {
-    if (!this.leafletElement && mapComponent.leafletElement) this.leafletElement = mapComponent.leafletElement;
+    if (!this.leafletElement && mapComponent && mapComponent.leafletElement) this.leafletElement = mapComponent.leafletElement;
   }
 
   render() {

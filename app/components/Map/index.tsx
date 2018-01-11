@@ -107,7 +107,7 @@ export default class CLMap extends React.Component<Props> {
         };
       });
 
-      this.markerBounds = new Leaflet.LatLngBounds(bounds);
+      if (bounds.length > 0) this.markerBounds = new Leaflet.LatLngBounds(bounds);
     }
   }
 
@@ -116,7 +116,7 @@ export default class CLMap extends React.Component<Props> {
   }
 
   bindMapContext = (map) => {
-    if (!this.leafletElement) this.leafletElement = map.leafletElement;
+    if (map && map.leafletElement && !this.leafletElement) this.leafletElement = map.leafletElement;
   }
 
   render() {
