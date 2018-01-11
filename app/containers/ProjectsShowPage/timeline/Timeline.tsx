@@ -70,15 +70,15 @@ const HeaderSection = styled.div`
 `;
 
 const PhaseNumberWrapper = styled.div`
-  flex: 0 0 44px;
-  width: 44px;
-  height: 44px;
+  flex: 0 0 29px;
+  width: 29px;
+  height: 29px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 18px;
+  margin-right: 12px;
   border-radius: 50%;
-  border: solid 2px ${greyTransparent};
+  border: solid 1px ${greyTransparent};
 
   &.selected {
     border-color: ${greyOpaque};
@@ -91,7 +91,7 @@ const PhaseNumberWrapper = styled.div`
 
 const PhaseNumber = styled.div`
   color: ${greyTransparent};
-  font-size: 20px;
+  font-size: 16px;
   line-height: 16px;
   font-weight: 400;
   margin: 0;
@@ -114,16 +114,17 @@ const HeaderTitleWrapper = styled.div`
 
 const HeaderTitle = styled.div`
   color: ${greyTransparent};
-  font-size: 23px;
-  line-height: 27px;
+  font-size: 21px;
+  line-height: 25px;
   font-weight: 400;
+  margin-right: 20px;
 
   &.selected {
     color: ${greyOpaque};
   }
 
   &.selected.current {
-    color: ${greenOpaque};
+    color: #222;
   }
 
   ${media.smallerThanMaxTablet`
@@ -138,6 +139,15 @@ const HeaderSubtitle = styled.div`
   line-height: 20px;
   font-weight: 300;
   margin-top: 3px;
+`;
+
+const HeaderDate = styled.div`
+  color: #000;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+  white-space: nowrap;
+  margin-right: 20px;
 `;
 
 const CurrentPhase = styled.span`
@@ -492,27 +502,28 @@ export default class Timeline extends React.PureComponent<Props, State> {
                 <HeaderTitle className={`${isSelected && 'selected'} ${phaseStatus === 'present' && 'current'}`}>
                   {selectedPhaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
                 </HeaderTitle>
-
-                {isSelected &&
-                  <HeaderSubtitle>
-                    {phaseStatus === 'past' && (
-                      <FormattedMessage {...messages.pastPhase} values={{ date: selectedPhaseEnd }} />
-                    )}
-
-                    {phaseStatus === 'present' && (
-                      <FormattedMessage {...messages.activePhase} values={{ date: selectedPhaseEnd }} />
-                    )}
-
-                    {phaseStatus === 'future' && (
-                      <FormattedMessage {...messages.futurePhase} values={{ date: selectedPhaseStart }} />
-                    )}
-                  </HeaderSubtitle>
-                }
               </HeaderTitleWrapper>
             </HeaderSection>
 
             <HeaderSection>
-              {/*
+              <HeaderDate>
+                {isSelected &&
+                  <HeaderSubtitle>
+                    {phaseStatus === 'past' && (
+                      <FormattedMessage {...messages.endedOn} values={{ date: selectedPhaseEnd }} />
+                    )}
+
+                    {phaseStatus === 'present' && (
+                      <FormattedMessage {...messages.endsOn} values={{ date: selectedPhaseEnd }} />
+                    )}
+
+                    {phaseStatus === 'future' && (
+                      <FormattedMessage {...messages.endsOn} values={{ date: selectedPhaseEnd }} />
+                    )}
+                  </HeaderSubtitle>
+                }
+              </HeaderDate>
+
               <Button
                 onClick={this.handleOnAddIdeaClick}
                 style="primary"
@@ -520,8 +531,8 @@ export default class Timeline extends React.PureComponent<Props, State> {
                 text={<FormattedMessage {...messages.startAnIdea} />}
                 circularCorners={false}
               />
-              */}
 
+              {/*
               <HeaderNavigation className={`${firstPhaseSelected && 'disabled'}`} onClick={this.goToPrevPhase(firstPhaseSelected)}>
                 <HeaderNavigationPrevIcon name="chevron-right" />
               </HeaderNavigation>
@@ -529,6 +540,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
               <HeaderNavigation className={`last ${lastPhaseSelected && 'disabled'}`} onClick={this.goToNextPhase(lastPhaseSelected)}>
                 <HeaderNavigationNextIcon name="chevron-right" />
               </HeaderNavigation>
+              */}
             </HeaderSection>
           </Header>
 
