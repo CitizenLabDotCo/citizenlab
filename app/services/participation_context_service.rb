@@ -19,13 +19,14 @@ class ParticipationContextService
 
   def initialize
     @memoized_votes_in_context = Hash.new{|hash,key| hash[key] = Hash.new}
+    @timeline_service = TimelineService.new
   end
 
   def get_participation_context project
     if project.continuous?
       project
     elsif project.timeline?
-      TimelineService.new.current_phase(project)
+      @timeline_service.current_phase(project)
     end
   end
 
@@ -68,22 +69,22 @@ class ParticipationContextService
 
   def future_posting_enabled_phase project, time=Time.now
     return nil if !project.timeline?
-    project.phases.find do |phase|
-      phase.start_at > time && phase.posting_enabled
+    @timeline_service.future_phases(project, time).find do |phase|
+      phase.posting_enabled
     end
   end
 
   def future_commenting_enabled_phase project, time=Time.now
     return nil if !project.timeline?
-    project.phases.find do |phase|
-      phase.start_at > time && phase.commenting_enabled
+    @timeline_service.future_phases(project, time).find do |phase|
+      phase.commenting_enabled
     end
   end
 
   def future_voting_enabled_phase project, time=Time.now
     return nil if !project.timeline?
-    project.phases.find do |phase|
-      phase.start_at > time && phase.voting_enabled
+    @timeline_service.future_phases(project, time).find do |phase|
+      phase.voting_enabled
     end
   end
 

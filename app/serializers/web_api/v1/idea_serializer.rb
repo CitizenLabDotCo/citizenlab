@@ -15,9 +15,7 @@ class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
     serializer.cached_user_vote
   end
 
-  has_one :participation_context do |serializer|
-    serializer.participation_context
-  end
+  has_one :action_descriptor
 
   def location_point_geojson
     RGeo::GeoJSON.encode(object.location_point)
@@ -35,8 +33,8 @@ class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
      end
   end
 
-  def participation_context
-    @participation_context_service ||= ParticipationContextService.new
+  def action_descriptor
+    @participation_context_service = @instance_options[:pcs] || ParticipationContextService.new
     commenting_disabled_reason = @participation_context_service.commenting_disabled_reason(object.project)
     voting_disabled_reason = @participation_context_service.voting_disabled_reason(object.project, scope)
     {

@@ -13,7 +13,7 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   has_many :areas
   has_many :topics
   
-  has_one :participation_context
+  has_one :actions_descriptor
 
   def header_bg
     object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
@@ -23,7 +23,7 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
     object.is_participation_context?
   end
 
-  def participation_context
+  def actions_descriptor
     @participation_context_service ||= ParticipationContextService.new
     posting_disabled_reason = @participation_context_service.posting_disabled_reason(object)
     voting_disabled_reason = @participation_context_service.voting_disabled_reason(object, scope)

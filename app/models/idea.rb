@@ -76,7 +76,6 @@ class Idea < ApplicationRecord
 
   scope :with_bounding_box, (Proc.new do |coordinates|
     x1,y1,x2,y2 = eval(coordinates)
-    # where("ST_Contains(ST_MakeEnvelope(?, ?, ?, ?), location_point)", x1, y1, x2, y2)
     where("ST_Intersects(ST_MakeEnvelope(?, ?, ?, ?), location_point)", x1, y1, x2, y2)
   end)
 
