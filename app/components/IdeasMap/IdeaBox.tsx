@@ -7,6 +7,7 @@ import T from 'components/T';
 
 // Style
 import styled from 'styled-components';
+import VoteControl from 'components/VoteControl';
 
 const Wrapper = styled.div`
   background: white;
@@ -38,7 +39,9 @@ export default class IdeaBox extends React.Component<Props> {
               <Wrapper className={this.props.className}>
                 <Title><T value={idea.attributes.title_multiloc} /></Title>
                 <Description><T value={idea.attributes.body_multiloc} /></Description>
-                <Buttons />
+                <Buttons>
+                  <VoteControl ideaId={idea.id} size="small" />
+                </Buttons>
               </Wrapper>
             );
           }
