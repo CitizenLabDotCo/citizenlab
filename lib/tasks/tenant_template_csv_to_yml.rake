@@ -68,7 +68,7 @@ namespace :tenant_template do
   						     'domicile'          => rand(10) === 0 ? nil : generate_domicile(),
   					       'education'         => rand(10) === 0 ? nil : rand(9),
   					     	 'password'          => csv_user['Password (Optional)'] || generate_password(),
-  						     'remote_avatar_url' => csv_user['Image URL (Optional)']
+  						     'remote_avatar_url' => csv_user['Image URL (Optional)']&.strip
   				       }
   		users_hash[csv_user['ID']] = yml_user
   		yml_user
@@ -80,7 +80,7 @@ namespace :tenant_template do
   		yml_project = {	'title_multiloc'       => {locale => csv_project['Title']},
   						        'description_multiloc' => {locale => md_to_html(csv_project['Description'])},
   						        # 'project_images_images_urls'  => csv_project['Image URL'] && [csv_project['Image URL']],
-  						        'remote_header_bg_url'  => csv_project['Background Image URL']
+  						        'remote_header_bg_url'  => csv_project['Background Image URL']&.strip
   					        }
       # TODO associate project topics
       add_project_images(csv_project, yml_project, yml_project_images)
