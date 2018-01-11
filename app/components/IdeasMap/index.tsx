@@ -1,11 +1,11 @@
 // Libs
 import * as React from 'react';
-import { find } from 'lodash';
 import Leaflet from 'leaflet';
 
 // Components
 import Map, { Props as MapProps } from 'components/Map';
 import IdeaBox, { Props as IdeaBoxProps } from './IdeaBox';
+import GetIdeas from 'utils/resourceLoaders/components/GetIdeas';
 
 // Styling
 import styled from 'styled-components';
@@ -27,41 +27,41 @@ const MapWrapper = styled.div`
 // Typing
 import { IIdeaData } from 'services/ideas';
 interface Props {
-  ideas?: IIdeaData[];
+  project?: string;
+  phase?: string;
+  topics?: string[];
+  areas?: string[];
 }
 
 interface State {
-  selectedIdea: IIdeaData | null;
+  selectedIdea: string | null;
 }
 
-export default class IdeasMap extends React.Component<Props, State> {
-  private ideaPoints: any[] = [];
+class IdeasMap extends React.Component<Props, State> {
   private leafletElement: Leaflet;
 
   constructor(props) {
     super(props);
 
-    this.updatePoints(props.ideas);
     this.state = {
       selectedIdea: null,
     };
   }
 
-  componentWillReceiveProps(props) {
-    this.updatePoints(props.ideas);
-  }
-
-  updatePoints = (ideas: IIdeaData[]) => {
+  getPoints = (ideas: Partial<IIdeaData>[]) => {
     if (ideas) {
-      this.ideaPoints = [];
+      const ideaPoints: any[] = [];
       ideas.forEach((idea) => {
-        if (idea.attributes.location_point_geojson) this.ideaPoints.push({ ...idea.attributes.location_point_geojson, data: idea.id });
+        if (idea.attributes && idea.attributes.location_point_geojson) ideaPoints.push({ ...idea.attributes.location_point_geojson, data: idea.id });
       });
+      return ideaPoints;
+    } else {
+      return [];
     }
   }
 
   selectIdea = (id) => {
-    this.setState({ selectedIdea: find(this.props.ideas, { id }) as IIdeaData });
+    this.setState({ selectedIdea: id });
     if (this.leafletElement) this.leafletElement.invalidateSize();
   }
 
@@ -76,12 +76,18 @@ export default class IdeasMap extends React.Component<Props, State> {
 
   render() {
     return (
-      <MapWrapper>
-        {this.state.selectedIdea &&
-          <StyledBox idea={this.state.selectedIdea} />
-        }
-        <StyledMap points={this.ideaPoints} onMarkerClick={this.selectIdea} ref={this.bindMap} />
-      </MapWrapper>
+      <GetIdeas project={this.props.project} markers>
+        {({ ideaMarkers }) => (
+          <MapWrapper>
+            {this.state.selectedIdea &&
+              <StyledBox idea={this.state.selectedIdea} />
+            }
+            <StyledMap points={this.getPoints(ideaMarkers)} onMarkerClick={this.selectIdea} ref={this.bindMap} />
+          </MapWrapper>
+        )}
+      </GetIdeas>
     );
   }
 }
+
+export default IdeasMap;

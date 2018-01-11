@@ -2,7 +2,7 @@
 import * as React from 'react';
 
 // Components
-import T from 'components/T';
+// import T from 'components/T';
 
 // Style
 import styled from 'styled-components';
@@ -15,14 +15,13 @@ const Wrapper = styled.div`
   padding: 30px;
 `;
 
-const Title = styled.h2``;
-const Description = styled.div``;
+// const Title = styled.h2``;
+// const Description = styled.div``;
 const Buttons = styled.div``;
 
 // Typings
-import { IIdeaData } from 'services/ideas';
 export interface Props {
-  idea: IIdeaData;
+  idea: string;
   className?: string;
 }
 
@@ -32,8 +31,9 @@ export default class IdeaBox extends React.Component<Props> {
 
     return (
       <Wrapper className={this.props.className}>
-        <Title><T value={idea.attributes.title_multiloc} /></Title>
-        <Description><T value={idea.attributes.body_multiloc} /></Description>
+        {idea}
+        {/* <Title><T value={idea.attributes.title_multiloc} /></Title>
+        <Description><T value={idea.attributes.body_multiloc} /></Description> */}
         <Buttons />
       </Wrapper>
     );
