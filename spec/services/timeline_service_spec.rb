@@ -9,19 +9,6 @@ describe TimelineService do
     Tenant.current.update(settings: settings)
   end
 
-  describe "active_phases" do
-
-    let(:project) {create(:project)}
-    let!(:active_phases) { Array.new(5).map{|_| create_active_phase(project)} }
-    let!(:inactive_phases) { Array.new(10).map{|_| create_inactive_phase(project)} }
-
-    it "returns those phases for which the current time is between the start and end time" do
-      expect(service.active_phases(project).map(&:id)).to match_array(active_phases.map(&:id))
-      expect(service.active_phases(create(:project)).map(&:id)).to match_array([])
-    end
-
-  end
-
   describe "current_phase" do
     let(:project) {create(:project)}
     let!(:active_phase) { create_active_phase(project) }
