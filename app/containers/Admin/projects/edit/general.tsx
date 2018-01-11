@@ -16,6 +16,7 @@ import Select from 'components/UI/Select';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import ParticipationContext from './parcticipationContext';
 
 import { Button as SemButton, Icon as SemIcon } from 'semantic-ui-react';
 
@@ -431,14 +432,16 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     }
 
     if (window.confirm(this.props.intl.formatMessage(messages.deleteProjectConfirmation))) {
-      deleteProject(this.state.projectData.id)
-      .then((response) => {
+      deleteProject(this.state.projectData.id).then(() => {
         browserHistory.push('/admin/projects');
-      })
-      .catch((error) => {
+      }).catch(() => {
         this.setState({ deleteError: this.props.intl.formatMessage(messages.deleteProjectError) });
       });
     }
+  }
+
+  handleParcticipationContextOnSubmit = () => {
+
   }
 
   render() {
@@ -477,7 +480,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               <Error text={noTitleError} />
               <Error fieldName="title_multiloc" apiErrors={this.state.apiErrors.title_multiloc} />
             </SectionField>
+          </Section>
 
+          <Section>
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.projectType} />
@@ -501,6 +506,12 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               <Error text={noProjectType} />
             </SectionField>
 
+            {projectType === 'continuous' && 
+              <ParticipationContext type="continuous" onSubmit={this.handleParcticipationContextOnSubmit} />
+            }
+          </Section>
+
+          <Section>
             <SectionField>
               <Label htmlFor="project-area">
                 <FormattedMessage {...messages.areasLabel} />

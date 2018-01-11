@@ -59,7 +59,7 @@ const Container: any = styled.div`
 
 type Props = {
   checked: boolean;
-  disabled?: boolean;
+  disabled?: boolean | undefined;
   onToggle: Function;
 };
 

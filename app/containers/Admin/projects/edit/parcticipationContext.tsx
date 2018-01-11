@@ -27,7 +27,33 @@ import messages from '../messages';
 // style
 import styled from 'styled-components';
 
-interface IParticipationContextConfig {
+const VotingMethodSectionField = styled(SectionField)`
+  display: flex;
+  flex-direction: row;
+`;
+
+const ToggleSectionField = styled(SectionField)`
+  display: flex;
+  flex-direction: row;
+`;
+
+const ToggleLabel = styled(Label)`
+  color: #333;
+  width: 100%;
+  max-width: 300px;
+`;
+
+const VotingMethodSelect = styled(Select)`
+  width: 350px !important;
+  margin-right: 20px !important;
+`;
+
+const VotingLimitInput = styled(Input)`
+  width: 100px;
+  height: 46px !important;
+`;
+
+export interface IParticipationContextConfig {
   participationMethod: 'information' | 'ideation' | null;
   postingEnabled: boolean;
   commentingEnabled: boolean;
@@ -48,7 +74,7 @@ interface State extends IParticipationContextConfig {
   noVotingLimit: JSX.Element | null;
 }
 
-class AdminProjectParticipationContext extends React.PureComponent<Props & InjectedIntlProps, State> {
+class ParticipationContext extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -80,12 +106,12 @@ class AdminProjectParticipationContext extends React.PureComponent<Props & Injec
     this.subscriptions = [
       parcticipationContext$.subscribe((response) => {
         this.setState({
-          participationMethod: (type ? (response as IProject | IPhase).data.attributes.participation_method : null),
-          postingEnabled: (type ? (response as IProject | IPhase).data.attributes.posting_enabled : false),
-          commentingEnabled: (type ? (response as IProject | IPhase).data.attributes.commenting_enabled : false),
-          votingEnabled: (type ? (response as IProject | IPhase).data.attributes.voting_enabled : false),
-          votingMethod: (type ? (response as IProject | IPhase).data.attributes.voting_method : null),
-          votingLimit: (type ? (response as IProject | IPhase).data.attributes.voting_limited_max : 5)
+          participationMethod: (projectOrPhaseId ? (response as IProject | IPhase).data.attributes.participation_method : null),
+          postingEnabled: (projectOrPhaseId ? (response as IProject | IPhase).data.attributes.posting_enabled : false),
+          commentingEnabled: (projectOrPhaseId ? (response as IProject | IPhase).data.attributes.commenting_enabled : false),
+          votingEnabled: (projectOrPhaseId ? (response as IProject | IPhase).data.attributes.voting_enabled : false),
+          votingMethod: (projectOrPhaseId ? (response as IProject | IPhase).data.attributes.voting_method : null),
+          votingLimit: (projectOrPhaseId ? (response as IProject | IPhase).data.attributes.voting_limited_max : 5)
         });
       }),
 
@@ -109,7 +135,7 @@ class AdminProjectParticipationContext extends React.PureComponent<Props & Injec
   }
 
   handleParticipationMethodOnChange = (selectedParticipationMethod: IOption) => {
-    this.setState({ participationMethod: selectedParticipationMethod.value });
+    this.setState({ participationMethod: selectedParticipationMethod.value, noParticipationMethod: null });
   }
 
   togglePostingEnabled = () => {
@@ -125,34 +151,45 @@ class AdminProjectParticipationContext extends React.PureComponent<Props & Injec
   }
 
   handeVotingMethodOnChange = (selectedVotingMethod: IOption) => {
-    this.setState({ votingMethod: selectedVotingMethod.value });
+    this.setState({ votingMethod: selectedVotingMethod.value, noVotingMethod: null });
+  }
+
+  handleVotingLimitOnChange = (votingLimit: string) => {
+    this.setState({ votingLimit: parseInt(votingLimit, 10) });
   }
 
   validate() {
     let hasError = false;
+    let noParticipationMethod: JSX.Element | null = null;
+    let noVotingMethod: JSX.Element | null = null;
+    let noVotingLimit: JSX.Element | null = null;
     const { 
       participationMethod,
-      postingEnabled,
-      commentingEnabled,
-      votingEnabled,
+      // postingEnabled,
+      // commentingEnabled,
+      // votingEnabled,
       votingMethod,
       votingLimit
     } = this.state;
 
     if (!participationMethod) {
-      const noParticipationMethod = <FormattedMessage {...messages.noParticipationMethodErrorMessage} />;
+      noParticipationMethod = <FormattedMessage {...messages.noParticipationMethodErrorMessage} />;
       hasError = true;
     }
 
     if (!votingMethod) {
-      const noVotingMethod = <FormattedMessage {...messages.noVotingMethodErrorMessage} />;
+      noVotingMethod = <FormattedMessage {...messages.noVotingMethodErrorMessage} />;
       hasError = true;
     }
 
     if (!votingLimit) {
-      const noVotingLimit = <FormattedMessage {...messages.noVotingLimitErrorMessage} />;
+      noVotingLimit = <FormattedMessage {...messages.noVotingLimitErrorMessage} />;
       hasError = true;
     }
+
+    this.setState({ noParticipationMethod, noVotingMethod, noVotingLimit });
+
+    return !hasError;
   }
 
   render() {
@@ -194,49 +231,69 @@ class AdminProjectParticipationContext extends React.PureComponent<Props & Injec
           <Error text={noParticipationMethod} />
         </SectionField>
 
-        <SectionField>
-          <Label>
+        <VotingMethodSectionField>
+          <div>
+            <Label>
+              <FormattedMessage {...messages.votingMethod} />
+            </Label>
+            <VotingMethodSelect
+              placeholder={<FormattedMessage {...messages.votingMethodPlaceholder} />}
+              value={votingMethod}
+              onChange={this.handeVotingMethodOnChange}
+              clearable={false}
+              options={[
+                {
+                  value: 'unlimited',
+                  label: formatMessage(messages.unlimited)
+                },
+                {
+                  value: 'limited',
+                  label: formatMessage(messages.limited)
+                },
+              ]}
+            />
+            <Error text={noVotingMethod} />
+          </div>
+
+          {votingMethod === 'limited' &&
+            <div>
+              <Label htmlFor="voting-title">
+                <FormattedMessage {...messages.votingLimit} />
+              </Label>
+              <VotingLimitInput
+                id="voting-limit"
+                type="number"
+                placeholder=""
+                value={(votingLimit ? votingLimit.toString() : null)}
+                error={noVotingLimit}
+                onChange={this.handleVotingLimitOnChange}
+              />
+              {/* <Error fieldName="title_multiloc" apiErrors={this.state.apiErrors.title_multiloc} /> */}
+            </div>
+          }
+        </VotingMethodSectionField>
+
+        <ToggleSectionField>
+          <ToggleLabel>
             <FormattedMessage {...messages.postingEnabled} />
-          </Label>
+          </ToggleLabel>
           <Toggle checked={postingEnabled} onToggle={this.togglePostingEnabled} />
-        </SectionField>
+        </ToggleSectionField>
 
-        <SectionField>
-          <Label>
+        <ToggleSectionField>
+          <ToggleLabel>
             <FormattedMessage {...messages.commentingEnabled} />
-          </Label>
+          </ToggleLabel>
           <Toggle checked={commentingEnabled} onToggle={this.toggleCommentingEnabled} />
-        </SectionField>
+        </ToggleSectionField>
 
-        <SectionField>
-          <Label>
+        <ToggleSectionField>
+          <ToggleLabel>
             <FormattedMessage {...messages.votingEnabled} />
-          </Label>
+          </ToggleLabel>
           <Toggle checked={votingEnabled} onToggle={this.toggleVotingEnabled} />
-        </SectionField>
+        </ToggleSectionField>
 
-        <SectionField>
-          <Label>
-            <FormattedMessage {...messages.votingMethod} />
-          </Label>
-          <Select
-            placeholder={<FormattedMessage {...messages.votingMethodPlaceholder} />}
-            value={votingMethod}
-            onChange={this.handeVotingMethodOnChange}
-            clearable={false}
-            options={[
-              {
-                value: 'continuous',
-                label: formatMessage(messages.continuous)
-              },
-              {
-                value: 'timeline',
-                label: formatMessage(messages.timeline)
-              },
-            ]}
-          />
-          <Error text={noVotingMethod} />
-        </SectionField>
       </Section>
     );
 
@@ -244,4 +301,4 @@ class AdminProjectParticipationContext extends React.PureComponent<Props & Injec
   }
 }
 
-export default injectIntl<Props>(AdminProjectParticipationContext);
+export default injectIntl<Props>(ParticipationContext);
