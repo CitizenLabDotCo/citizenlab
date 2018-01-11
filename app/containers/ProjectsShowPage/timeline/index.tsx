@@ -10,8 +10,6 @@ import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 
 // services
-import { localeStream, updateLocale } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
 import { projectBySlugStream, IProject } from 'services/projects';
 import { phasesStream, IPhases, IPhaseData } from 'services/phases';
 
@@ -56,8 +54,6 @@ type Props = {
 };
 
 type State = {
-  locale: string | null;
-  currentTenantLocales: string[] | null;
   project: IProject | null;
   selectedPhase: IPhaseData | undefined;
   loaded: boolean;
@@ -70,8 +66,6 @@ export default class timeline extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      locale: null,
-      currentTenantLocales: null,
       project: null,
       selectedPhase: undefined,
       loaded: false
@@ -81,8 +75,6 @@ export default class timeline extends React.PureComponent<Props, State> {
   }
 
   componentWillMount() {
-    const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
     const project$ = projectBySlugStream(this.props.params.slug).observable;
     const phases$ = project$.switchMap(project => phasesStream(project.data.id).observable);
     const selectedPhase$ = Rx.Observable.combineLatest(
@@ -95,12 +87,10 @@ export default class timeline extends React.PureComponent<Props, State> {
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
-        locale$,
-        currentTenantLocales$,
         project$,
         selectedPhase$
-      ).subscribe(([locale, currentTenantLocales, project, selectedPhase]) => {
-        this.setState({ locale, currentTenantLocales, project, selectedPhase, loaded: true });
+      ).subscribe(([project, selectedPhase]) => {
+        this.setState({ project, selectedPhase, loaded: true });
       })
     ];
   }
@@ -116,9 +106,9 @@ export default class timeline extends React.PureComponent<Props, State> {
   render() {
     const className = this.props['className'];
     const { slug } = this.props.params;
-    const { locale, currentTenantLocales, project, selectedPhase, loaded } = this.state;
+    const { project, selectedPhase, loaded } = this.state;
 
-    if (loaded && locale && currentTenantLocales && project) {
+    if (loaded && project) {
       return (
         <Container className={className}>
           <Timeline projectId={project.data.id} phaseClick={this.handleOnPhaseClick} />

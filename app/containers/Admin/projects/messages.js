@@ -51,6 +51,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.noTitleErrorMessage',
     defaultMessage: 'Please enter a project title',
   },
+  noProjectTypeErrorMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.noProjectTypeErrorMessage',
+    defaultMessage: 'Please select a project type',
+  },
   noHeaderErrorMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.noHeaderErrorMessage',
     defaultMessage: 'Please select a project header image',
@@ -70,6 +74,22 @@ export default defineMessages({
   titleLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.titleLabel',
     defaultMessage: 'Title',
+  },
+  projectType: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectType',
+    defaultMessage: 'Type',
+  },
+  projectTypePlaceholder: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectTypePlaceholder',
+    defaultMessage: 'Continuous or timeline?',
+  },
+  continuous: {
+    id: 'app.containers.AdminPage.ProjectEdit.continuous',
+    defaultMessage: 'Continuous',
+  },
+  timeline: {
+    id: 'app.containers.AdminPage.ProjectEdit.timeline',
+    defaultMessage: 'Timeline',
   },
   descriptionLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.descriptionLabel',
@@ -134,5 +154,65 @@ export default defineMessages({
   deleteProjectError: {
     id: 'app.containers.AdminPage.ProjectEdit.deleteProjectError',
     defaultMessage: 'There was an error deleting this project, please try again later.',
+  },
+  information: {
+    id: 'app.containers.AdminPage.ProjectEdit.information',
+    defaultMessage: 'Information',
+  },
+  ideation: {
+    id: 'app.containers.AdminPage.ProjectEdit.ideation',
+    defaultMessage: 'Ideation',
+  },
+  participationMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.participationMethod',
+    defaultMessage: 'Participation method',
+  },
+  participationMethodPlaceholder: {
+    id: 'app.containers.AdminPage.ProjectEdit.participationMethodPlaceholder',
+    defaultMessage: 'Select a participation method',
+  },
+  postingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.postingEnabled',
+    defaultMessage: 'Posting ideas',
+  },
+  commentingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.commentingEnabled',
+    defaultMessage: 'Commenting',
+  },
+  votingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.votingEnabled',
+    defaultMessage: 'Voting',
+  },
+  votingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.votingMethod',
+    defaultMessage: 'Voting method',
+  },
+  votingMethodPlaceholder: {
+    id: 'app.containers.AdminPage.ProjectEdit.votingMethodPlaceholder',
+    defaultMessage: 'Select the voting method',
+  },
+  votingLimit: {
+    id: 'app.containers.AdminPage.ProjectEdit.votingLimit',
+    defaultMessage: 'Voting limit',
+  },
+  unlimited: {
+    id: 'app.containers.AdminPage.ProjectEdit.unlimited',
+    defaultMessage: 'Unlimited',
+  },
+  limited: {
+    id: 'app.containers.AdminPage.ProjectEdit.limited',
+    defaultMessage: 'Limited',
+  },
+  noParticipationMethodErrorMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.noParticipationMethodErrorMessage',
+    defaultMessage: 'Please select a participation method',
+  },
+  noVotingMethodErrorMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.noVotingMethodErrorMessage',
+    defaultMessage: 'Please select a voting method',
+  },
+  noVotingLimitErrorMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage',
+    defaultMessage: 'Please provide the max. number of allowed votes per user',
   },
 });
