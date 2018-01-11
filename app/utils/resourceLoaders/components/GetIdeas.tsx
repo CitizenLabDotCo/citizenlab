@@ -55,6 +55,10 @@ export default class GetIdeas extends React.PureComponent<Props, State> {
     }
   }
 
+  componentWillUnmount() {
+    this.ideaMarkersSub.unsubscribe;
+  }
+
   updateSubscription(props: Props) {
     if (this.ideaMarkersSub) this.ideaMarkersSub.unsubscribe();
 
