@@ -4,19 +4,24 @@ import { find } from 'lodash';
 import Leaflet from 'leaflet';
 
 // Components
-import Map from 'components/Map';
-import IdeaBox from './IdeaBox';
+import Map, { Props as MapProps } from 'components/Map';
+import IdeaBox, { Props as IdeaBoxProps } from './IdeaBox';
 
 // Styling
 import styled from 'styled-components';
 
+const StyledMap = styled<MapProps>(Map)`
+  flex: 2;
+  height: 600px;
+`;
+
+const StyledBox = styled<IdeaBoxProps>(IdeaBox)`
+  flex: 1;
+`;
+
 const MapWrapper = styled.div`
   display: flex;
   margin-bottom: 2rem;
-
-  > div {
-    flex: 1;
-  }
 `;
 
 // Typing
@@ -73,9 +78,9 @@ export default class IdeasMap extends React.Component<Props, State> {
     return (
       <MapWrapper>
         {this.state.selectedIdea &&
-          <IdeaBox idea={this.state.selectedIdea} />
+          <StyledBox idea={this.state.selectedIdea} />
         }
-        <Map points={this.ideaPoints} onMarkerClick={this.selectIdea} ref={this.bindMap} />
+        <StyledMap points={this.ideaPoints} onMarkerClick={this.selectIdea} ref={this.bindMap} />
       </MapWrapper>
     );
   }
