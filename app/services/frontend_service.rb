@@ -26,11 +26,15 @@ class FrontendService
     subroute && slug && "#{tenant.base_frontend_uri}/#{subroute}/#{slug}"
   end
 
-  def signon_success_url tenant=Tenant.current
+  def signin_success_url tenant=Tenant.current
+    "#{tenant.base_frontend_uri}/"
+  end
+
+  def signup_success_url tenant=Tenant.current
     "#{tenant.base_frontend_uri}/complete-signup"
   end
 
-  def signon_failure_url tenant=Tenant.current
+  def signin_failure_url tenant=Tenant.current
     "#{tenant.base_frontend_uri}/authentication-error"
   end
 
