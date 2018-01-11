@@ -107,6 +107,10 @@ export function ideasStream(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeas>({ apiEndpoint: `${API_PATH}/ideas`, ...streamParams });
 }
 
+export function ideasMarkersStream(streamParams: IStreamParams | null = null) {
+  return streams.get<{data: Partial<IIdea>[]}>({ apiEndpoint: `${API_PATH}/ideas`, ...streamParams });
+}
+
 export function addIdea(
   authorId: string | null,
   publicationStatus: 'draft' | 'published',

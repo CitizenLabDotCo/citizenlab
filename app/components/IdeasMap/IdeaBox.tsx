@@ -21,8 +21,9 @@ const Buttons = styled.div``;
 
 // Typings
 import { IIdeaData } from 'services/ideas';
-interface Props {
+export interface Props {
   idea: IIdeaData;
+  className?: string;
 }
 
 export default class IdeaBox extends React.Component<Props> {
@@ -30,7 +31,7 @@ export default class IdeaBox extends React.Component<Props> {
     const { idea } = this.props;
 
     return (
-      <Wrapper>
+      <Wrapper className={this.props.className}>
         <Title><T value={idea.attributes.title_multiloc} /></Title>
         <Description><T value={idea.attributes.body_multiloc} /></Description>
         <Buttons />

@@ -44,7 +44,7 @@ interface Point extends GeoJSON.Point {
   data?: any;
 }
 
-interface Props {
+export interface Props {
   center?: GeoJSON.Position;
   points?: Point[];
   areas?: GeoJSON.Polygon[];
