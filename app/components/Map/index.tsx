@@ -77,8 +77,6 @@ export default class CLMap extends React.Component<Props> {
     icon: customIcon,
   };
 
-  private leafletElement: Leaflet;
-
   constructor(props) {
     super(props);
 
@@ -115,14 +113,10 @@ export default class CLMap extends React.Component<Props> {
     if (this.props.onMarkerClick) this.props.onMarkerClick(marker.options.data);
   }
 
-  bindMapContext = (map) => {
-    if (map && map.leafletElement && !this.leafletElement) this.leafletElement = map.leafletElement;
-  }
-
   render() {
     return (
       <MapWrapper className={this.props.className}>
-        <Map center={this.props.center} bounds={this.markerBounds} zoom={this.props.zoom || 13} maxZoom={15} ref={this.bindMapContext} onScroll={console.log}>
+        <Map center={this.props.center} bounds={this.markerBounds} zoom={this.props.zoom || 13} maxZoom={15} onScroll={console.log}>
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           {this.markers.length > 0 &&
             <MarkerClusterGroup options={this.clusterOptions} markers={this.markers} onMarkerClick={this.handleMarkerClick} />

@@ -1,6 +1,5 @@
 // Libs
 import * as React from 'react';
-import Leaflet from 'leaflet';
 
 // Components
 import Map, { Props as MapProps } from 'components/Map';
@@ -39,8 +38,6 @@ interface State {
 }
 
 class IdeasMap extends React.Component<Props, State> {
-  private leafletElement: Leaflet;
-
   constructor(props) {
     super(props);
 
@@ -63,16 +60,10 @@ class IdeasMap extends React.Component<Props, State> {
 
   selectIdea = (id) => {
     this.setState({ selectedIdea: id });
-    if (this.leafletElement) this.leafletElement.invalidateSize();
   }
 
   deselectIdea = () => {
     this.setState({ selectedIdea: null });
-    if (this.leafletElement) this.leafletElement.invalidateSize();
-  }
-
-  bindMap = (mapComponent) => {
-    if (!this.leafletElement && mapComponent && mapComponent.leafletElement) this.leafletElement = mapComponent.leafletElement;
   }
 
   render() {
@@ -83,7 +74,7 @@ class IdeasMap extends React.Component<Props, State> {
             {this.state.selectedIdea &&
               <StyledBox idea={this.state.selectedIdea} onClose={this.deselectIdea} />
             }
-            <StyledMap points={this.getPoints(ideaMarkers)} onMarkerClick={this.selectIdea} ref={this.bindMap} />
+            <StyledMap points={this.getPoints(ideaMarkers)} onMarkerClick={this.selectIdea} />
           </MapWrapper>
         )}
       </GetIdeas>
