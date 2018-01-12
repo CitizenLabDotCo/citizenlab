@@ -2,18 +2,20 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.label`
-  display: flex !important;
+  display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: .5rem;
+  margin-bottom: 12px;
+  cursor: pointer;
 `;
 
 const CustomRadio = styled.div`
   width: 20px;
   height: 20px;
-  content: '';
   cursor: pointer;
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-right: 10px;
   position: relative;
   background: #fff;
@@ -21,26 +23,16 @@ const CustomRadio = styled.div`
   border: 1px solid #a6a6a6;
   box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.15);
 
-  ::after {
-    background: #49B47D;
-    border-radius: 50%;
-    content: "";
-    opacity: 0;
-    height: 70%;
-    left: calc(50% - 70%/2);
-    position: absolute;
-    top: calc(50% - 70%/2);
-    width: 70%;
-    transition: all 0.2s;
-  }
-
-  &.checked::after{
-    opacity: 1;
-  }
-
   &:not(.checked):hover {
-    border-color: #333;
+    border-color: #000;
   }
+`;
+
+const Checked = styled.div`
+  width: 12px;
+  height: 12px;
+  background: #49B47D;
+  border-radius: 50%;
 `;
 
 const Text = styled.div`
@@ -60,12 +52,11 @@ interface Props {
   value: any;
   name: string;
   id: string;
-  label: string;
+  label: string | JSX.Element;
 }
 
 export default class Radio extends React.PureComponent<Props> {
-
-  handleChange = (event): void => {
+  handleChange = () => {
     this.props.onChange(this.props.value);
   }
 
@@ -84,7 +75,9 @@ export default class Radio extends React.PureComponent<Props> {
           checked={checked}
           onChange={this.handleChange}
         />
-        <CustomRadio className={`${checked ? 'checked' : ''}`} />
+        <CustomRadio className={`${checked ? 'checked' : ''}`}>
+          {checked && <Checked />}
+        </CustomRadio>
         <Text className="text">{this.props.label}</Text>
       </Wrapper>
     );

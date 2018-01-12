@@ -77,11 +77,11 @@ export default defineMessages({
   },
   projectType: {
     id: 'app.containers.AdminPage.ProjectEdit.projectType',
-    defaultMessage: 'Type',
+    defaultMessage: 'Project type',
   },
   projectTypePlaceholder: {
     id: 'app.containers.AdminPage.ProjectEdit.projectTypePlaceholder',
-    defaultMessage: 'Continuous or timeline?',
+    defaultMessage: 'Is this a continuous or a timeline project?',
   },
   continuous: {
     id: 'app.containers.AdminPage.ProjectEdit.continuous',
@@ -195,6 +195,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.votingLimit',
     defaultMessage: 'Voting limit',
   },
+  phasePermissions: {
+    id: 'app.containers.AdminPage.ProjectEdit.phasePermissions',
+    defaultMessage: 'Enabled actions',
+  },
   unlimited: {
     id: 'app.containers.AdminPage.ProjectEdit.unlimited',
     defaultMessage: 'Unlimited',
@@ -202,14 +206,6 @@ export default defineMessages({
   limited: {
     id: 'app.containers.AdminPage.ProjectEdit.limited',
     defaultMessage: 'Limited',
-  },
-  noParticipationMethodErrorMessage: {
-    id: 'app.containers.AdminPage.ProjectEdit.noParticipationMethodErrorMessage',
-    defaultMessage: 'Please select a participation method',
-  },
-  noVotingMethodErrorMessage: {
-    id: 'app.containers.AdminPage.ProjectEdit.noVotingMethodErrorMessage',
-    defaultMessage: 'Please select a voting method',
   },
   noVotingLimitErrorMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage',

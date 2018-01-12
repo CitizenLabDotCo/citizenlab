@@ -8,17 +8,18 @@ import { browserHistory } from 'react-router';
 // components
 import Input from 'components/UI/Input';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Radio from 'components/UI/Radio';
 import Label from 'components/UI/Label';
-import Select from 'components/UI/Select';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import { Section, SectionField } from 'components/admin/Section';
 import ParticipationContext from './parcticipationContext';
-
 import { Button as SemButton, Icon as SemIcon } from 'semantic-ui-react';
+
+// animation
+import CSSTransition from 'react-transition-group/CSSTransition';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
@@ -29,36 +30,30 @@ import messages from '../messages';
 // services
 import {
   IUpdatedProjectProperties,
-  IProject,
   IProjectData,
   projectBySlugStream,
   addProject,
   updateProject,
   deleteProject,
 } from 'services/projects';
-import {
-  IProjectImageData,
-  projectImagesStream,
-  addProjectImage,
-  deleteProjectImage
-} from 'services/projectImages';
+import { projectImagesStream, addProjectImage, deleteProjectImage } from 'services/projectImages';
 import { areasStream, IAreaData } from 'services/areas';
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 
 // utils
 import { convertUrlToFileObservable } from 'utils/imageTools';
-import getSubmitState from 'utils/getSubmitState';
-import { v4 as uuid } from 'uuid';
 
 // style
 import styled from 'styled-components';
 
 // typings
-import { API, IOption, IRelationship, ImageFile } from 'typings';
+import { API, IOption, ImageFile } from 'typings';
+
+const timeout = 350;
 
 const TitleInput = styled(Input)`
-  width: 470px;
+  width: 497px;
 `;
 
 const StyledImagesDropzone = styled(ImagesDropzone)`
@@ -66,35 +61,58 @@ const StyledImagesDropzone = styled(ImagesDropzone)`
   padding-right: 100px;
 `;
 
-const ProjectImages = styled.div`
-  display: flex;
-`;
-
-const ImageWrapper = styled.div`
-  margin: .5rem;
+const ParticipationContextWrapper = styled.div`
+  width: 497px;
   position: relative;
-
-  &:first-child{
-    margin-left: 0;
-  }
-`;
-
-const DeleteButton = styled.button`
-  background: rgba(0, 0, 0, .5);
-  border-radius: 50%;
-  color: black;
-  right: -.5rem;
-  position: absolute;
-  top: -.5rem;
-  z-index: 1;
-`;
-
-const SaveButton = styled.button`
-  background: #d60065;
+  padding: 30px;
+  padding-bottom: 15px;
+  margin-top: 8px;
+  display: inline-block;
   border-radius: 5px;
-  color: white;
-  font-size: 1.25rem;
-  padding: 1rem 2rem;
+  border: solid 1px #ddd;
+  background: #fff;
+  transition: opacity ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  will-change: opacity;
+
+  ::before,
+  ::after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+  }
+
+  ::after {
+    top: -20px;
+    left: 25px;
+    border-color: transparent transparent #fff transparent;
+    border-width: 10px;
+  }
+
+  ::before {
+    top: -22px;
+    left: 24px;
+    border-color: transparent transparent #ddd transparent;
+    border-width: 11px;
+  }
+
+  &.participationcontext-enter {
+    opacity: 0;
+
+    &.participationcontext-enter-active {
+      opacity: 1;
+    }
+  }
+
+  &.participationcontext-exit {
+    opacity: 1;
+
+    &.participationcontext-exit-active {
+      opacity: 0;
+    }
+  }
 `;
 
 type Props = {
@@ -108,13 +126,12 @@ interface State {
   loading: boolean;
   processing: boolean;
   projectData: IProjectData | null;
+  projectType: 'continuous' | 'timeline';
   projectAttributesDiff: IUpdatedProjectProperties;
   headerBg: ImageFile[] | null;
   oldProjectImages: ImageFile[] | null;
   newProjectImages: ImageFile[] | null;
   noTitleError: string | null;
-  noProjectType: string | null;
-  // noHeaderError: string | null;
   apiErrors: { [fieldName: string]: API.Error[] };
   saved: boolean;
   areas: IAreaData[];
@@ -138,13 +155,12 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       loading: true,
       processing: false,
       projectData: null,
+      projectType: 'timeline',
       projectAttributesDiff: {},
       headerBg: null,
       oldProjectImages: null,
       newProjectImages: null,
       noTitleError: null,
-      noProjectType: null,
-      // noHeaderError: null,
       apiErrors: {},
       saved: false,
       areas: [],
@@ -218,6 +234,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
           currentTenant,
           projectData,
           oldProjectImages,
+          projectType: (projectData ? projectData.attributes.process_type : state.projectType),
           newProjectImages: oldProjectImages,
           headerBg: (headerBg ? [headerBg] : null),
           areas: areas.data,
@@ -245,10 +262,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  setRef = (element) => {
-    // empty
-  }
-
   changeTitle = (newTitle: string) => {
     this.setState((state: State) => ({
       submitState: 'enabled',
@@ -263,13 +276,13 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     }));
   }
 
-  handeProjectTypeOnChange = (selectedOption: IOption) => {
+  handeProjectTypeOnChange = (projectType: 'continuous' | 'timeline') => {
     this.setState((state: State) => ({
+      projectType,
       submitState: 'enabled',
-      noProjectType: null,
       projectAttributesDiff: {
         ...state.projectAttributesDiff,
-        process_type: selectedOption.value
+        process_type: projectType
       }
     }));
   }
@@ -345,29 +358,15 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   validate = () => {
     let hasErrors = false;
     const { formatMessage } = this.props.intl;
-    const { projectAttributesDiff, projectData, headerBg, locale, currentTenant } = this.state;
+    const { projectAttributesDiff, projectData, locale, currentTenant } = this.state;
     const currentTenantLocales = (currentTenant as ITenant).data.attributes.settings.core.locales;
     const projectAttrs = { ...(projectData ? projectData.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
-    const areaIds = projectAttrs.area_ids || (projectData && projectData.relationships.areas.data.map((area) => (area.id))) || [];
     const projectTitle = getLocalized(projectAttrs.title_multiloc as any, locale as string, currentTenantLocales);
-    const projectType = (projectAttrs.process_type || null);
 
     if (!projectTitle) {
       hasErrors = true;
       this.setState({ noTitleError: formatMessage(messages.noTitleErrorMessage) });
     }
-
-    if (!projectType) {
-      hasErrors = true;
-      this.setState({ noProjectType: formatMessage(messages.noProjectTypeErrorMessage) });
-    }
-
-    /*
-    if (!headerBg) {
-      hasErrors = true;
-      this.setState({ noHeaderError: formatMessage(messages.noHeaderErrorMessage) });
-    }
-    */
 
     return !hasErrors;
   }
@@ -432,11 +431,12 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     }
 
     if (window.confirm(this.props.intl.formatMessage(messages.deleteProjectConfirmation))) {
-      deleteProject(this.state.projectData.id).then(() => {
+      try {
+        await deleteProject(this.state.projectData.id);
         browserHistory.push('/admin/projects');
-      }).catch(() => {
+      } catch {
         this.setState({ deleteError: this.props.intl.formatMessage(messages.deleteProjectError) });
-      });
+      }
     }
   }
 
@@ -445,8 +445,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 
   render() {
-    const { currentTenant, locale, noTitleError, noProjectType, apiErrors, saved, projectData, headerBg, newProjectImages, loading, processing, projectAttributesDiff, areasOptions, areaType, submitState } = this.state;
-    const { formatMessage } = this.props.intl;
+    const { currentTenant, locale, projectType, noTitleError, projectData, headerBg, newProjectImages, loading, processing, projectAttributesDiff, areasOptions, areaType, submitState } = this.state;
 
     if (!loading && currentTenant && locale) {
       const newProjectImageFiles = (newProjectImages && newProjectImages.length > 0 ? newProjectImages : null);
@@ -454,7 +453,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       const projectAttrs = { ...(projectData ? projectData.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
       const areaIds = projectAttrs.area_ids || (projectData && projectData.relationships.areas.data.map((area) => (area.id))) || [];
       const projectTitle = getLocalized(projectAttrs.title_multiloc as any, locale, currentTenantLocales);
-      const projectType = (projectAttrs.process_type || null);
       const areasValues = areaIds.filter((id) => {
         return areasOptions.some(areaOption => areaOption.value === id);
       }).map((id) => {
@@ -475,7 +473,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 value={projectTitle}
                 error=""
                 onChange={this.changeTitle}
-                setRef={this.setRef}
               />
               <Error text={noTitleError} />
               <Error fieldName="title_multiloc" apiErrors={this.state.apiErrors.title_multiloc} />
@@ -484,31 +481,41 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
 
           <Section>
             <SectionField>
-              <Label>
+              <Label htmlFor="project-area">
                 <FormattedMessage {...messages.projectType} />
               </Label>
-              <Select
-                placeholder={<FormattedMessage {...messages.projectTypePlaceholder} />}
-                value={projectType}
+              <Radio
                 onChange={this.handeProjectTypeOnChange}
-                clearable={false}
-                options={[
-                  {
-                    value: 'continuous',
-                    label: formatMessage(messages.continuous)
-                  },
-                  {
-                    value: 'timeline',
-                    label: formatMessage(messages.timeline)
-                  },
-                ]}
+                currentValue={projectType}
+                value="timeline"
+                name="projecttype"
+                id="projectype-timeline"
+                label={<FormattedMessage {...messages.timeline} />}
               />
-              <Error text={noProjectType} />
-            </SectionField>
+              <Radio
+                onChange={this.handeProjectTypeOnChange}
+                currentValue={projectType}
+                value="continuous"
+                name="projecttype"
+                id="projectype-continuous"
+                label={<FormattedMessage {...messages.continuous} />}
+              />
 
-            {projectType === 'continuous' && 
-              <ParticipationContext type="continuous" onSubmit={this.handleParcticipationContextOnSubmit} />
-            }
+              <TransitionGroup>
+                {projectType === 'continuous' && 
+                  <CSSTransition
+                    classNames="participationcontext"
+                    timeout={timeout}
+                    enter={true}
+                    exit={false}
+                  >
+                    <ParticipationContextWrapper>
+                      <ParticipationContext type="continuous" onSubmit={this.handleParcticipationContextOnSubmit} />
+                    </ParticipationContextWrapper>
+                  </CSSTransition>
+                }
+              </TransitionGroup>
+            </SectionField>
           </Section>
 
           <Section>
@@ -522,7 +529,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 value="all"
                 name="areas"
                 id="areas-all"
-                label={formatMessage(messages.areasAllLabel)}
+                label={<FormattedMessage {...messages.areasAllLabel} />}
               />
               <Radio
                 onChange={this.handleAreaTypeChange}
@@ -530,7 +537,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 value="selection"
                 name="areas"
                 id="areas-selection"
-                label={formatMessage(messages.areasSelectionLabel)}
+                label={<FormattedMessage {...messages.areasSelectionLabel} />}
               />
 
               {areaType === 'selection' &&
@@ -543,7 +550,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 />
               }
             </SectionField>
+          </Section>
 
+          <Section>
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.headerImageLabel} />
@@ -559,9 +568,10 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 onUpdate={this.handleHeaderOnUpdate}
                 onRemove={this.handleHeaderOnRemove}
               />
-              {/* <Error text={noHeaderError} /> */}
             </SectionField>
+          </Section>
 
+          <Section>
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.projectImageLabel} />
@@ -578,7 +588,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 onRemove={this.handleProjectImageOnRemove}
               />
             </SectionField>
+          </Section>
 
+          <Section>
             {this.state.projectData &&
               <SectionField>
                 <Label>
@@ -591,7 +603,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 <Error text={this.state.deleteError} />
               </SectionField>
             }
+          </Section>
 
+          <Section>
             <SubmitWrapper
               loading={processing}
               status={submitState}
