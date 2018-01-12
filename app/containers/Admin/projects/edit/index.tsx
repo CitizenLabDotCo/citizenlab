@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
 // Services
-import { projectBySlugStream, IProjectData } from 'services/projects';
+import { projectBySlugStream, IProject } from 'services/projects';
 
 // Components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -12,13 +12,16 @@ import { browserHistory } from 'react-router';
 
 // Localisation
 import { InjectedIntlProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // style
 import styled from 'styled-components';
 
-// Component typing
+const StyledGoBackButton = styled(GoBackButton)`
+  margin-bottom: 20px;
+`;
+
 type Props = {
   params: {
     slug: string | null,
@@ -29,48 +32,45 @@ type Props = {
 };
 
 type State = {
-  project: IProjectData | null,
+  project: IProject | null,
+  loaded: boolean
 };
 
-const StyledGoBackButton = styled(GoBackButton)`
-  margin-bottom: 20px;
-`;
-
 class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps, State> {
-  subscription: Rx.Subscription;
+  slug$: Rx.BehaviorSubject<string | null>;
+  subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
     super(props as any);
-
     this.state = {
       project: null,
+      loaded: false
     };
+    this.slug$ = new Rx.BehaviorSubject(this.props.params.slug || null);
+    this.subscriptions = [];
   }
 
-  updateSubscription (slug) {
-    this.subscription = projectBySlugStream(slug).observable.subscribe((project) => {
-      this.setState({ project: project ? project.data : null });
-    });
-  }
+  componentWillMount() {
+    this.slug$.next(this.props.params.slug || null);
 
-  componentDidMount() {
-    if (this.props.params.slug) {
-      this.updateSubscription(this.props.params.slug);
-    }
+    this.subscriptions = [
+      this.slug$.distinctUntilChanged().switchMap((slug) => {
+        return (slug ? projectBySlugStream(slug).observable : Rx.Observable.of(null));
+      }).subscribe((project) => {
+        this.setState({
+          project,
+          loaded: true
+        });
+      })
+    ];
   }
 
   componentWillReceiveProps(newProps) {
-    // Update subscription if the slug changes
-    // This happens when transitioning from New to Edit view after saving a new project
-    if (newProps.params.slug && newProps.params.slug !== this.props.params.slug) {
-      this.updateSubscription(newProps.params.slug);
-    }
+    this.slug$.next(newProps.params.slug);
   }
 
   componentWillUnmount() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   getTabs = () => {
@@ -113,29 +113,34 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
   }
 
   render() {
-    const { project } = this.state;
+    const { project, loaded } = this.state;
+    const { formatMessage } = this.props.intl;
 
-    const tabbedProps = {
-      resource: {
-        title: project ? project.attributes.title_multiloc : '',
-        publicLink: project ? `/projects/${project.attributes.slug}` : ''
-      },
-      messages: {
-        viewPublicResource: messages.viewPublicProject,
-      },
-      tabs: this.getTabs(),
-      location: this.props.location,
-    };
+    if (loaded) {
+      const tabbedProps = {
+        resource: {
+          title: project ? project.data.attributes.title_multiloc : formatMessage(messages.addNewProject),
+          publicLink: project ? `/projects/${project.data.attributes.slug}` : ''
+        },
+        messages: {
+          viewPublicResource: messages.viewPublicProject,
+        },
+        tabs: this.getTabs(),
+        location: this.props.location,
+      };
 
-    return(
-      <>
-        <StyledGoBackButton onClick={this.goBack} />
+      return(
+        <>
+          <StyledGoBackButton onClick={this.goBack} />
 
-        <TabbedResource {...tabbedProps}>
-          {React.cloneElement(this.props.children as React.ReactElement<any>, { project })}
-        </TabbedResource>
-      </>
-    );
+          <TabbedResource {...tabbedProps}>
+            {React.cloneElement(this.props.children as React.ReactElement<any>, { project })}
+          </TabbedResource>
+        </>
+      );
+    }
+
+    return null;
   }
 }
 

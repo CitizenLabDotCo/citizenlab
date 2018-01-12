@@ -1,8 +1,6 @@
 import * as React from 'react';
 import * as Dropzone from 'react-dropzone';
 import * as _ from 'lodash';
-import { media } from 'utils/styleUtils';
-import { darken } from 'polished';
 import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
 import Error from 'components/UI/Error';
@@ -30,11 +28,6 @@ const ContentWrapper = styled(TransitionGroup)`
 const ErrorWrapper = styled.div`
   flex: 1;
   margin-top: -12px;
-`;
-
-const DropzoneContainer = styled.div`
-  display: flex;
-  flex-direction: column;
 `;
 
 const DropzonePlaceholderText = styled.div`
