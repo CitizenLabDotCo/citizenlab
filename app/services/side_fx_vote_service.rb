@@ -10,6 +10,12 @@ class SideFxVoteService
     LogActivityJob.perform_later(vote, "#{type}_#{vote.mode}voted", current_user, vote.created_at.to_i)
   end
 
+  def before_destroy vote, current_user
+    check_participation_context(vote, vote.user)
+  rescue ClErrors::TransactionError => error
+    raise error unless vote.down? && error.error_key == VOTING_DISABLED_REASONS[:voting_limited_max_reached]
+  end
+
   def after_destroy frozen_vote, current_user
     serialized_vote = clean_time_attributes(frozen_vote.attributes)
     type = votable_type(frozen_vote)

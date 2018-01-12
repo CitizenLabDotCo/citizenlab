@@ -263,8 +263,8 @@ if Apartment::Tenant.current == 'localhost'
   num_projects.times do
     project = Project.new({
       title_multiloc: {
-        "en": "Renewing Westbrook parc",
-        "nl": "Westbroek park vernieuwen"
+        "en": Faker::Lorem.sentence,
+        "nl": Faker::Lorem.sentence
       },
       description_multiloc: {
         "en" => "<p>Let's renew the parc at the city border and make it an enjoyable place for young and old.</p>",
@@ -291,8 +291,6 @@ if Apartment::Tenant.current == 'localhost'
     end
     project.save
 
-    byebug unless project.persisted?
-
     [0,1,2,3,4][rand(5)].times do |i|
       project.project_images.create(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
     end
@@ -300,8 +298,8 @@ if Apartment::Tenant.current == 'localhost'
       project.project_files.create(file: Rails.root.join("spec/fixtures/afvalkalender.pdf").open)
     end
 
-    start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
-    rand(7).times do
+    start_at = Faker::Date.between(1.year.ago, 1.month.from_now)
+    rand(8).times do
       start_at += 1.days
       phase = project.phases.create({
         title_multiloc: {
@@ -313,7 +311,7 @@ if Apartment::Tenant.current == 'localhost'
           "nl" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
         },
         start_at: start_at,
-        end_at: (start_at += rand(120).days),
+        end_at: (start_at += rand(150).days),
         participation_method: (rand(5) == 0) ? 'information' : 'ideation'
       })
       if phase.ideation?
@@ -345,6 +343,7 @@ if Apartment::Tenant.current == 'localhost'
 
   num_ideas.times do 
     created_at = Faker::Date.between(1.year.ago, Time.now)
+    project = Project.offset(rand(Project.count)).first
     idea = Idea.create({
       title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
       body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
@@ -352,7 +351,8 @@ if Apartment::Tenant.current == 'localhost'
       topics: rand(3).times.map{rand(Topic.count)}.uniq.map{|offset| Topic.offset(offset).first },
       areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
       author: User.offset(rand(User.count)).first,
-      project: Project.offset(rand(Project.count)).first,
+      project: project,
+      phases: (project && project.timeline? && project.phases.sample(rand(project.phases.count))) || [],
       publication_status: 'published',
       published_at: Faker::Date.between(created_at, Time.now),
       created_at: created_at,
