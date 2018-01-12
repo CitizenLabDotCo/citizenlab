@@ -26,9 +26,13 @@ export default defineMessages({
     id: 'app.components.IdeaCard.register',
     defaultMessage: 'Create an account',
   },
-  votingDisabledNoActiveContext: {
-    id: 'app.components.IdeaCard.votingDisabledNoActiveContext',
+  votingDisabledProjectInactive: {
+    id: 'app.components.IdeaCard.votingDisabledProjectInactive',
     defaultMessage: 'You can no longer vote on ideas in {projectName}',
+  },
+  votingDisabledNotInActiveContext: {
+    id: 'app.components.IdeaCard.votingDisabledNotInActiveContext',
+    defaultMessage: 'This idea is no longer, or not yet in the running in {projectName}',
   },
   votingDisabledPossibleLater: {
     id: 'app.components.IdeaCard.votingDisabledPossibleLater',
