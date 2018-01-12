@@ -176,6 +176,7 @@ export default class VoteControl extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
   upvoteElement: HTMLDivElement | null;
   downvoteElement: HTMLDivElement | null;
+  id$: Rx.BehaviorSubject<string>;
 
   constructor(props: Props) {
     super(props as any);
@@ -192,16 +193,20 @@ export default class VoteControl extends React.PureComponent<Props, State> {
     this.subscriptions = [];
     this.upvoteElement = null;
     this.downvoteElement = null;
+    this.id$ = new Rx.BehaviorSubject(props.ideaId);
   }
 
   componentWillMount() {
-    const { ideaId } = this.props;
     const authUser$ = authUserStream().observable;
 
-    const idea$ = Rx.Observable.combineLatest(
-      ideaByIdStream(ideaId).observable,
-      this.voting$
-    ).filter(([_idea, voting]) => {
+    const idea$ =
+    this.id$.switchMap((ideaId) => {
+      return Rx.Observable.combineLatest(
+        ideaByIdStream(ideaId).observable,
+        this.voting$
+      );
+    })
+    .filter(([_idea, voting]) => {
       return voting === null;
     }).map(([idea, _voting]) => {
       return idea;
@@ -251,6 +256,12 @@ export default class VoteControl extends React.PureComponent<Props, State> {
         }
       })
     ];
+  }
+
+  componentWillReceiveProps(newProps: Props) {
+    if (newProps.ideaId !== this.props.ideaId) {
+      this.id$.next(newProps.ideaId);
+    }
   }
 
   componentDidMount() {
