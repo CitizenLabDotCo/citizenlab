@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
+import { isNumber } from 'lodash';
 
 // components
 import Input from 'components/UI/Input';
@@ -127,12 +128,12 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
         }
       }),
 
-      eventEmitter.observeEvent('participationContextSubmit').subscribe(() => {
+      eventEmitter.observeEventFromSource('AdminProjectEditGeneral', 'AdminProjectEditGeneralSubmitEvent').subscribe(() => {
         if (this.validate()) {
           const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = this.state;
           this.props.onSubmit({ participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit });
         }
-      }),
+      })
     ];
   }
 
@@ -167,9 +168,9 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
   validate() {
     let hasError = false;
     let noVotingLimit: JSX.Element | null = null;
-    const { votingLimit } = this.state;
+    const { votingMethod, votingLimit } = this.state;
 
-    if (!votingLimit) {
+    if (votingMethod === 'limited' && (!isNumber(votingLimit) || votingLimit < 1)) {
       noVotingLimit = <FormattedMessage {...messages.noVotingLimitErrorMessage} />;
       hasError = true;
     }
