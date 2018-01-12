@@ -39,6 +39,7 @@ class WebApi::V1::VotesController < ApplicationController
   end
 
   def destroy
+    SideFxVoteService.new.before_destroy(@vote, current_user)
     frozen_vote = @vote.destroy
     if frozen_vote
       SideFxVoteService.new.after_destroy(frozen_vote, current_user)
