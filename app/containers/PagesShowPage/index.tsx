@@ -1,23 +1,28 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isEmpty, isString } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
-import { injectTFunc } from 'components/T/utils';
+// components
 import Helmet from 'react-helmet';
-import T from 'components/T';
-import { IPage, pageBySlugStream, LEGAL_PAGES } from 'services/pages';
-import { PageLink, getPageLink } from 'services/pageLink';
-
-import { InjectedIntlProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-
 import ContentContainer from 'components/ContentContainer';
-import styled from 'styled-components';
 import Spinner from 'components/UI/Spinner';
 import Icon from 'components/UI/Icon';
 import { Link } from 'react-router';
-import { color, media } from 'utils/styleUtils';
+
+// services
+import { IPage, pageBySlugStream } from 'services/pages';
+import { PageLink, getPageLink } from 'services/pageLink';
+
+// i18n
+import { injectTFunc } from 'components/T/utils';
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import T from 'components/T';
+import messages from './messages';
+
+// styling
+import styled from 'styled-components';
+import { color } from 'utils/styleUtils';
 
 
 const Container = styled.div`
@@ -122,14 +127,13 @@ type Props = {
 
 type State = {
   page: IPage | null,
-  pageLinks: { data: PageLink}[] | null,
+  pageLinks: { data: PageLink }[] | null,
   loading: boolean;
 };
 
 class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State> {
   slug$: Rx.BehaviorSubject<string | null> = new Rx.BehaviorSubject(null);
   subscriptions: Rx.Subscription[];
-  legalPages = _.without(LEGAL_PAGES, 'information');
 
   constructor(props: Props) {
     super(props as any);
@@ -142,11 +146,13 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
   }
 
   componentWillMount() {
+    this.slug$.next(this.props.params.slug);
+
     this.subscriptions = [
       this.slug$.distinctUntilChanged().switchMap((slug: string) => {
-        return (_.isString(slug) && !_.isEmpty(slug) ? pageBySlugStream(slug).observable :  Rx.Observable.of(null));
+        return (isString(slug) && !isEmpty(slug) ? pageBySlugStream(slug).observable :  Rx.Observable.of(null));
       }).switchMap((page) => {
-        let pageLinks$: Rx.Observable<null | { data: PageLink}[]> = Rx.Observable.of(null);
+        let pageLinks$: Rx.Observable<null | { data: PageLink }[]> = Rx.Observable.of(null);
 
         if (page) {
           pageLinks$ = Rx.Observable.combineLatest(
@@ -161,10 +167,6 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
     ];
   }
 
-  componentDidMount() {
-    this.slug$.next(this.props.params.slug);
-  }
-
   componentWillReceiveProps(newProps) {
     this.slug$.next(newProps.params.slug);
   }
@@ -174,7 +176,7 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
   }
 
   render() {
-    const { page, loading, pageLinks } = this.state;
+    const { page, pageLinks, loading } = this.state;
     const { tFunc } = this.props;
     const { formatMessage } = this.props.intl;
 

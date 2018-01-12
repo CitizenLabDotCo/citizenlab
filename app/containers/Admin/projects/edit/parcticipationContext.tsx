@@ -1,51 +1,51 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import * as _ from 'lodash';
 
 // components
 import Input from 'components/UI/Input';
-import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Label from 'components/UI/Label';
-import Select from 'components/UI/Select';
+import Radio from 'components/UI/Radio';
 import Toggle from 'components/UI/Toggle';
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import { Section, SectionField } from 'components/admin/Section';
 
 // services
 import { projectByIdStream, IProject } from 'services/projects';
 import { phaseStream, IPhase } from 'services/phases';
 import eventEmitter from 'utils/eventEmitter';
 
-// typings
-import { IOption } from 'typings';
-
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // style
 import styled from 'styled-components';
 
-const VotingMethodSectionField = styled(SectionField)`
+const Container = styled.div``;
+
+const StyledSection = styled(Section)`
+  margin-bottom: 0;
+`;
+
+const StyledSectionField = styled(SectionField)`
+  margin-bottom: 0;
+`;
+
+const Row = styled.div`
   display: flex;
   flex-direction: row;
 `;
 
-const ToggleSectionField = styled(SectionField)`
-  display: flex;
-  flex-direction: row;
+const ToggleRow = Row.extend`
+  margin-bottom: 10px;
 `;
 
 const ToggleLabel = styled(Label)`
-  color: #333;
   width: 100%;
   max-width: 300px;
-`;
-
-const VotingMethodSelect = styled(Select)`
-  width: 350px !important;
-  margin-right: 20px !important;
+  color: #333;
+  font-size: 16px;
+  font-weight: 400;
 `;
 
 const VotingLimitInput = styled(Input)`
@@ -54,11 +54,11 @@ const VotingLimitInput = styled(Input)`
 `;
 
 export interface IParticipationContextConfig {
-  participationMethod: 'information' | 'ideation' | null;
+  participationMethod: 'ideation' | 'information';
   postingEnabled: boolean;
   commentingEnabled: boolean;
   votingEnabled: boolean;
-  votingMethod: 'unlimited' | 'limited' | null;
+  votingMethod: 'unlimited' | 'limited';
   votingLimit: number | null;
 }
 
@@ -69,26 +69,24 @@ type Props = {
 };
 
 interface State extends IParticipationContextConfig {
-  noParticipationMethod: JSX.Element | null;
-  noVotingMethod: JSX.Element | null;
   noVotingLimit: JSX.Element | null;
+  loaded: boolean;
 }
 
-class ParticipationContext extends React.PureComponent<Props & InjectedIntlProps, State> {
+export default class ParticipationContext extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      participationMethod: null,
-      postingEnabled: false,
-      commentingEnabled: false,
-      votingEnabled: false,
-      votingMethod: null,
+      participationMethod: 'ideation',
+      postingEnabled: true,
+      commentingEnabled: true,
+      votingEnabled: true,
+      votingMethod: 'unlimited',
       votingLimit: 5,
-      noParticipationMethod: null,
-      noVotingMethod: null,
-      noVotingLimit: null
+      noVotingLimit: null,
+      loaded: false
     };
     this.subscriptions = [];
   }
@@ -98,33 +96,41 @@ class ParticipationContext extends React.PureComponent<Props & InjectedIntlProps
     let parcticipationContext$: Rx.Observable<null | IProject | IPhase> = Rx.Observable.of(null);
 
     if (type && type === 'continuous' && projectOrPhaseId) {
-      parcticipationContext$ = projectByIdStream(projectOrPhaseId).observable;
+      parcticipationContext$ = phaseStream(projectOrPhaseId).observable;
     } else if (type && type === 'timeline' && projectOrPhaseId) {
       parcticipationContext$ = projectByIdStream(projectOrPhaseId).observable;
     }
 
     this.subscriptions = [
       parcticipationContext$.subscribe((response) => {
-        this.setState({
-          participationMethod: (projectOrPhaseId ? (response as IProject | IPhase).data.attributes.participation_method : null),
-          postingEnabled: (projectOrPhaseId ? (response as IProject | IPhase).data.attributes.posting_enabled : false),
-          commentingEnabled: (projectOrPhaseId ? (response as IProject | IPhase).data.attributes.commenting_enabled : false),
-          votingEnabled: (projectOrPhaseId ? (response as IProject | IPhase).data.attributes.voting_enabled : false),
-          votingMethod: (projectOrPhaseId ? (response as IProject | IPhase).data.attributes.voting_method : null),
-          votingLimit: (projectOrPhaseId ? (response as IProject | IPhase).data.attributes.voting_limited_max : 5)
-        });
+        if (projectOrPhaseId && response) {
+          const {
+            participation_method,
+            posting_enabled,
+            commenting_enabled,
+            voting_enabled,
+            voting_method,
+            voting_limited_max
+          } = response.data.attributes;
+
+          this.setState({
+            participationMethod: participation_method,
+            postingEnabled: posting_enabled,
+            commentingEnabled: commenting_enabled,
+            votingEnabled: voting_enabled,
+            votingMethod: voting_method,
+            votingLimit: voting_limited_max,
+            loaded: true
+          });
+        } else {
+          this.setState({ loaded: true });
+        }
       }),
 
       eventEmitter.observeEvent('participationContextSubmit').subscribe(() => {
         if (this.validate()) {
-          this.props.onSubmit({
-            participationMethod: this.state.participationMethod,
-            postingEnabled: this.state.postingEnabled,
-            commentingEnabled: this.state.commentingEnabled,
-            votingEnabled: this.state.votingEnabled,
-            votingMethod: this.state.votingMethod,
-            votingLimit: this.state.votingLimit
-          });
+          const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = this.state;
+          this.props.onSubmit({ participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit });
         }
       }),
     ];
@@ -134,8 +140,8 @@ class ParticipationContext extends React.PureComponent<Props & InjectedIntlProps
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleParticipationMethodOnChange = (selectedParticipationMethod: IOption) => {
-    this.setState({ participationMethod: selectedParticipationMethod.value, noParticipationMethod: null });
+  handleParticipationMethodOnChange = (participationMethod: 'ideation' | 'information') => {
+    this.setState({ participationMethod });
   }
 
   togglePostingEnabled = () => {
@@ -150,8 +156,8 @@ class ParticipationContext extends React.PureComponent<Props & InjectedIntlProps
     this.setState((state: State) => ({ votingEnabled: !state.votingEnabled }));
   }
 
-  handeVotingMethodOnChange = (selectedVotingMethod: IOption) => {
-    this.setState({ votingMethod: selectedVotingMethod.value, noVotingMethod: null });
+  handeVotingMethodOnChange = (votingMethod: 'unlimited' | 'limited') => {
+    this.setState({ votingMethod });
   }
 
   handleVotingLimitOnChange = (votingLimit: string) => {
@@ -160,40 +166,21 @@ class ParticipationContext extends React.PureComponent<Props & InjectedIntlProps
 
   validate() {
     let hasError = false;
-    let noParticipationMethod: JSX.Element | null = null;
-    let noVotingMethod: JSX.Element | null = null;
     let noVotingLimit: JSX.Element | null = null;
-    const { 
-      participationMethod,
-      // postingEnabled,
-      // commentingEnabled,
-      // votingEnabled,
-      votingMethod,
-      votingLimit
-    } = this.state;
-
-    if (!participationMethod) {
-      noParticipationMethod = <FormattedMessage {...messages.noParticipationMethodErrorMessage} />;
-      hasError = true;
-    }
-
-    if (!votingMethod) {
-      noVotingMethod = <FormattedMessage {...messages.noVotingMethodErrorMessage} />;
-      hasError = true;
-    }
+    const { votingLimit } = this.state;
 
     if (!votingLimit) {
       noVotingLimit = <FormattedMessage {...messages.noVotingLimitErrorMessage} />;
       hasError = true;
     }
 
-    this.setState({ noParticipationMethod, noVotingMethod, noVotingLimit });
+    this.setState({ noVotingLimit });
 
     return !hasError;
   }
 
   render() {
-    const { formatMessage } = this.props.intl;
+    const className = this.props['className'];
     const { 
       participationMethod,
       postingEnabled,
@@ -201,104 +188,106 @@ class ParticipationContext extends React.PureComponent<Props & InjectedIntlProps
       votingEnabled,
       votingMethod,
       votingLimit,
-      noParticipationMethod,
-      noVotingMethod,
-      noVotingLimit
+      noVotingLimit,
+      loaded
     } = this.state;
 
-    return (
-      <Section>
-        <SectionField>
-          <Label>
-            <FormattedMessage {...messages.participationMethod} />
-          </Label>
-          <Select
-            placeholder={<FormattedMessage {...messages.participationMethodPlaceholder} />}
-            value={participationMethod}
-            onChange={this.handleParticipationMethodOnChange}
-            clearable={false}
-            options={[
-              {
-                value: 'information',
-                label: formatMessage(messages.information)
-              },
-              {
-                value: 'ideation',
-                label: formatMessage(messages.ideation)
-              },
-            ]}
-          />
-          <Error text={noParticipationMethod} />
-        </SectionField>
-
-        <VotingMethodSectionField>
-          <div>
-            <Label>
-              <FormattedMessage {...messages.votingMethod} />
-            </Label>
-            <VotingMethodSelect
-              placeholder={<FormattedMessage {...messages.votingMethodPlaceholder} />}
-              value={votingMethod}
-              onChange={this.handeVotingMethodOnChange}
-              clearable={false}
-              options={[
-                {
-                  value: 'unlimited',
-                  label: formatMessage(messages.unlimited)
-                },
-                {
-                  value: 'limited',
-                  label: formatMessage(messages.limited)
-                },
-              ]}
-            />
-            <Error text={noVotingMethod} />
-          </div>
-
-          {votingMethod === 'limited' &&
-            <div>
-              <Label htmlFor="voting-title">
-                <FormattedMessage {...messages.votingLimit} />
+    if (loaded) {
+      return (
+        <Container className={className}>
+          <StyledSection>
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.participationMethod} />
               </Label>
-              <VotingLimitInput
-                id="voting-limit"
-                type="number"
-                placeholder=""
-                value={(votingLimit ? votingLimit.toString() : null)}
-                error={noVotingLimit}
-                onChange={this.handleVotingLimitOnChange}
+              <Radio
+                onChange={this.handleParticipationMethodOnChange}
+                currentValue={participationMethod}
+                value="ideation"
+                name="participationmethod"
+                id="participationmethod-ideation"
+                label={<FormattedMessage {...messages.ideation} />}
               />
-              {/* <Error fieldName="title_multiloc" apiErrors={this.state.apiErrors.title_multiloc} /> */}
-            </div>
-          }
-        </VotingMethodSectionField>
+              <Radio
+                onChange={this.handleParticipationMethodOnChange}
+                currentValue={participationMethod}
+                value="information"
+                name="participationmethod"
+                id="participationmethod-information"
+                label={<FormattedMessage {...messages.information} />}
+              />
+            </SectionField>
 
-        <ToggleSectionField>
-          <ToggleLabel>
-            <FormattedMessage {...messages.postingEnabled} />
-          </ToggleLabel>
-          <Toggle checked={postingEnabled} onToggle={this.togglePostingEnabled} />
-        </ToggleSectionField>
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.votingMethod} />
+              </Label>
+              <Radio
+                onChange={this.handeVotingMethodOnChange}
+                currentValue={votingMethod}
+                value="unlimited"
+                name="votingmethod"
+                id="votingmethod-unlimited"
+                label={<FormattedMessage {...messages.unlimited} />}
+              />
+              <Radio
+                onChange={this.handeVotingMethodOnChange}
+                currentValue={votingMethod}
+                value="limited"
+                name="votingmethod"
+                id="votingmethod-limited"
+                label={<FormattedMessage {...messages.limited} />}
+              />
+              {votingMethod === 'limited' &&
+                <div>
+                  <Label htmlFor="voting-title">
+                    <FormattedMessage {...messages.votingLimit} />
+                  </Label>
+                  <VotingLimitInput
+                    id="voting-limit"
+                    type="number"
+                    placeholder=""
+                    value={(votingLimit ? votingLimit.toString() : null)}
+                    onChange={this.handleVotingLimitOnChange}
+                  />
+                  {/* <Error fieldName="title_multiloc" apiErrors={this.state.apiErrors.title_multiloc} /> */}
+                </div>
+              }
+              <Error text={noVotingLimit} />
+            </SectionField>
 
-        <ToggleSectionField>
-          <ToggleLabel>
-            <FormattedMessage {...messages.commentingEnabled} />
-          </ToggleLabel>
-          <Toggle checked={commentingEnabled} onToggle={this.toggleCommentingEnabled} />
-        </ToggleSectionField>
+            <StyledSectionField>
+              <Label>
+                <FormattedMessage {...messages.phasePermissions} />
+              </Label>
 
-        <ToggleSectionField>
-          <ToggleLabel>
-            <FormattedMessage {...messages.votingEnabled} />
-          </ToggleLabel>
-          <Toggle checked={votingEnabled} onToggle={this.toggleVotingEnabled} />
-        </ToggleSectionField>
+              <ToggleRow>
+                <ToggleLabel>
+                  <FormattedMessage {...messages.postingEnabled} />
+                </ToggleLabel>
+                <Toggle checked={postingEnabled} onToggle={this.togglePostingEnabled} />
+              </ToggleRow>
 
-      </Section>
-    );
+              <ToggleRow>
+                <ToggleLabel>
+                  <FormattedMessage {...messages.commentingEnabled} />
+                </ToggleLabel>
+                <Toggle checked={commentingEnabled} onToggle={this.toggleCommentingEnabled} />
+              </ToggleRow>
 
-    // return null;
+              <ToggleRow>
+                <ToggleLabel>
+                  <FormattedMessage {...messages.votingEnabled} />
+                </ToggleLabel>
+                <Toggle checked={votingEnabled} onToggle={this.toggleVotingEnabled} />
+              </ToggleRow>
+            </StyledSectionField>
+
+          </StyledSection>
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
-
-export default injectIntl<Props>(ParticipationContext);
