@@ -81,7 +81,7 @@ class IdeasMap extends React.Component<Props, State> {
         {({ ideaMarkers }) => (
           <MapWrapper>
             {this.state.selectedIdea &&
-              <StyledBox idea={this.state.selectedIdea} />
+              <StyledBox idea={this.state.selectedIdea} onClose={this.deselectIdea} />
             }
             <StyledMap points={this.getPoints(ideaMarkers)} onMarkerClick={this.selectIdea} ref={this.bindMap} />
           </MapWrapper>
