@@ -24,8 +24,7 @@ export const SectionSubtitle = styled.p`
 
 export const SectionField = styled.div`
   margin-bottom: ${remCalc(30)};
-  overflow: visible;
-  transition: all .2s ease-in-out;
+  transition: all 200ms ease-in-out;
   max-height: auto;
 
   &.exited {

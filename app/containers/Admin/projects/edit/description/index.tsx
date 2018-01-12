@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 
-import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
+import { EditorState } from 'draft-js';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -22,15 +22,11 @@ import Label from 'components/UI/Label';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Error from 'components/UI/Error';
 import Editor from 'components/UI/Editor';
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import { Section, SectionField } from 'components/admin/Section';
 import TextArea from 'components/UI/TextArea';
-
-// Styling
-import styled from 'styled-components';
 
 // Typing
 import { API } from 'typings';
-import { getLocalized } from 'utils/i18n';
 
 interface Props {
   params: {
