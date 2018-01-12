@@ -29,12 +29,14 @@ class VotingDisabled extends React.PureComponent<Props & InjectedResourceLoaderP
 
   reasonToMessage = () => {
     const { disabled_reason, future_enabled } = this.props.votingDescriptor;
-    if (disabled_reason === 'no_active_context') {
-      return messages.votingDisabledNoActiveContext;
+    if (disabled_reason === 'project_inactive') {
+      return messages.votingDisabledProjectInactive;
     } else if (disabled_reason === 'voting_disabled' && future_enabled) {
       return messages.votingDisabledPossibleLater;
     } else if (disabled_reason === 'voting_limited_max_reached') {
       return messages.votingDisabledMaxReached;
+    } else if (disabled_reason === 'not_in_active_context') {
+      return messages.votingDisabledNotInActiveContext;
     } else {
       return messages.votingDisabledForProject;
     }

@@ -58,12 +58,12 @@ export interface IIdeaData {
         voting:{
           enabled: boolean,
           future_enabled: string | null,
-          disabled_reason: 'no_active_context'| 'voting_disabled' | 'voting_limited_max_reached' | null
+          disabled_reason: 'project_inactive' | 'voting_disabled' | 'voting_limited_max_reached' | 'not_in_active_context' | null
         },
         commenting: {
           enabled: boolean,
           future_enabled: string | null,
-          disabled_reason: 'no_active_context' | 'commenting_disabled' | null,
+          disabled_reason: 'project_inactive' | 'commenting_disabled' | null,
         }
       }
     }
