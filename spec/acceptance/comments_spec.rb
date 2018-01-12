@@ -123,7 +123,7 @@ resource "Comments" do
         example_request "[error] Create a comment on an idea in an inactive project" do
           expect(response_status).to eq 422
           json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :base)&.first&.dig(:error)).to eq ParticipationContextService::COMMENTING_DISABLED_REASONS[:no_active_context]
+          expect(json_response.dig(:errors, :base)&.first&.dig(:error)).to eq ParticipationContextService::COMMENTING_DISABLED_REASONS[:project_inactive]
         end
       end
     end

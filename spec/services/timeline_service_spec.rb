@@ -19,12 +19,30 @@ describe TimelineService do
     end
   end
 
+  describe "is_in_active_phase?" do
+    
+    it "returns truthy when the given idea is in the active phase" do
+      project = create(:project_with_current_phase)
+      idea = create(:idea, project: project, phases: [service.current_phase(project)])
+      expect(service.is_in_active_phase?(idea)).to be_truthy
+    end
+
+    it "returns falsy when the given idea is not in the active phase" do
+      project = create(:project_with_current_phase)
+      idea = create(:idea, project: project, phases: [project.phases.find{|p| p != service.current_phase(project)}])
+      expect(service.is_in_active_phase?(idea)).to be_falsy
+    end
+
+  end
+
 
   def create_active_phase project
     create(:phase, project: project,
-           start_at: Time.at(Time.now.to_i - rand(100000000)), 
-           end_at: Time.at(Time.now.to_i + rand(100000000)))
+      start_at: Time.at(Time.now.to_i - rand(100000000)), 
+      end_at: Time.at(Time.now.to_i + rand(100000000))
+    )
   end
+
 
   def create_inactive_phase project
     start_at = nil

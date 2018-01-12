@@ -277,7 +277,7 @@ if Apartment::Tenant.current == 'localhost'
       header_bg: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
       visible_to: %w(admins groups public public public)[rand(5)],
       presentation_mode: ['card', 'card', 'card', 'map', 'map'][rand(5)],
-      process_type: ['timeline','timeline','timeline','continuous','continuous'][rand(5)]
+      process_type: ['timeline','timeline','timeline','timeline','continuous'][rand(5)]
     })
 
     if project.continuous?

@@ -61,9 +61,8 @@ class SideFxIdeaService
   end
 
   def add_autovote idea
-    project = idea.project
     pcs = ParticipationContextService.new
-    if !pcs.voting_disabled_reason(project)
+    if !pcs.voting_disabled_reason(idea)
       idea.votes.create!(mode: 'up', user: idea.author)
       idea.reload
     end

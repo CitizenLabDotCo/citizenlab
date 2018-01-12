@@ -362,7 +362,7 @@ resource "Ideas" do
         example_request "[error] Creating an idea in a project with a timeline but no active ideation phases" do
           expect(response_status).to eq 422
           json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :base).first[:error]).to eq 'no_active_context'
+          expect(json_response.dig(:errors, :base).first[:error]).to eq 'project_inactive'
         end
       end
 

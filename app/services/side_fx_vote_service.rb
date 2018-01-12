@@ -36,9 +36,9 @@ class SideFxVoteService
   def check_participation_context vote, user
     pcs = ParticipationContextService.new
 
-    project = vote.votable&.project
-    if project
-      disallowed_reason = pcs.voting_disabled_reason(project, user)
+    idea = vote.votable
+    if idea
+      disallowed_reason = pcs.voting_disabled_reason(idea, user)
       if disallowed_reason
         raise ClErrors::TransactionError.new(error_key: disallowed_reason)
       end

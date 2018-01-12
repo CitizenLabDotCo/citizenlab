@@ -72,19 +72,35 @@ FactoryGirl.define do
       end
     end
 
-    factory :project_with_active_phase do
+    factory :project_with_current_phase do
       transient do
-        active_phase_attrs {{}}
-        phases_count 5
+        current_phase_attrs {{}}
+        phases_config {{sequence: "xxcxx"}}
       end
       after(:create) do |project, evaluator|
-        start_at = Faker::Date.between(2.year.ago, 1.year.ago)
-        min_phase_duration = ((365*2)/evaluator.phases_count).to_i
-        evaluator.phases_count.times do |i|
+        active_phase = create(:phase, 
+          start_at: Faker::Date.between(6.months.ago, Time.now),
+          end_at: Faker::Date.between(Time.now, 6.months.from_now),
+          project: project,
+          **(evaluator.current_phase_attrs.merge((evaluator.phases_config[:c] || {})))
+        )
+        phases_before, phases_after = evaluator.phases_config[:sequence].split('c')
+
+        end_at = active_phase.start_at
+        phases_before.chars.map(&:to_sym).reverse.each do |sequence_char|
+          project.phases << create(:phase, 
+            end_at: end_at,
+            start_at: end_at -= rand(120).days,
+            **(evaluator.phases_config[sequence_char] || {})
+          )
+        end
+
+        start_at = active_phase.end_at
+        phases_after.chars.map(&:to_sym).each do |sequence_char|
           project.phases << create(:phase, 
             start_at: start_at,
-            end_at: start_at += (min_phase_duration+rand(100)).days,
-            **evaluator.active_phase_attrs
+            end_at: start_at += rand(120).days,
+            **(evaluator.phases_config[sequence_char] || {})
           )
         end
       end
