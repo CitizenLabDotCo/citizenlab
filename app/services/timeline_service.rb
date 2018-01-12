@@ -20,4 +20,8 @@ class TimelineService
     end
   end
 
+  def is_in_active_phase? idea
+    idea.phases.include?(current_phase(idea.project))
+  end
+
 end

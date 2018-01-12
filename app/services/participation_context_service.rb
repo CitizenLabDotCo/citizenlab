@@ -1,20 +1,21 @@
 class ParticipationContextService
 
   POSTING_DISABLED_REASONS = {
-    no_active_context: 'no_active_context',
+    project_inactive: 'project_inactive',
     not_ideation: 'not_ideation',
     posting_disabled: 'posting_disabled'
   }
 
   COMMENTING_DISABLED_REASONS = {
-    no_active_context: 'no_active_context',
+    project_inactive: 'project_inactive',
     commenting_disabled: 'commenting_disabled'
   }
 
   VOTING_DISABLED_REASONS = {
-    no_active_context: 'no_active_context',
+    project_inactive: 'project_inactive',
     voting_disabled: 'voting_disabled',
-    voting_limited_max_reached: 'voting_limited_max_reached'
+    voting_limited_max_reached: 'voting_limited_max_reached',
+    not_in_active_context: 'not_in_active_context'
   }
 
   def initialize
@@ -30,10 +31,29 @@ class ParticipationContextService
     end
   end
 
+  def get_last_active_participation_context idea
+    project = idea.project
+    if project.continuous?
+      project
+    elsif project.timeline?
+      idea.phases.last
+    end
+  end
+
+  def in_current_context? idea, current_context=nil
+    project = idea.project
+    current_context ||= get_participation_context(project)
+    if project.continuous?
+      true
+    else
+      idea.ideas_phases.find{|ip| ip.phase_id == current_context.id }
+    end
+  end
+
   def posting_disabled_reason project
     context = get_participation_context(project)
     if !context
-      POSTING_DISABLED_REASONS[:no_active_context]
+      POSTING_DISABLED_REASONS[:project_inactive]
     elsif !context.ideation?
       POSTING_DISABLED_REASONS[:not_ideation]
     elsif !context.posting_enabled
@@ -43,27 +63,41 @@ class ParticipationContextService
     end
   end
 
-  def commenting_disabled_reason project
-    context = get_participation_context(project)
-    if !context
-      COMMENTING_DISABLED_REASONS[:no_active_context]
-    elsif !context.commenting_enabled
+  def commenting_disabled_reason idea
+    project = idea.project
+    current_context = get_participation_context(project)
+    last_context = get_last_active_participation_context(idea)
+    if !current_context || !last_context
+      COMMENTING_DISABLED_REASONS[:project_inactive]
+    elsif !current_context.commenting_enabled
+      COMMENTING_DISABLED_REASONS[:commenting_disabled]
+    elsif !last_context.commenting_enabled
       COMMENTING_DISABLED_REASONS[:commenting_disabled]
     else
       nil
     end
   end
 
-  def voting_disabled_reason project, user=nil
-    context = get_participation_context(project)
-    if !context
-      VOTING_DISABLED_REASONS[:no_active_context]
-    elsif !context.voting_enabled
-      VOTING_DISABLED_REASONS[:voting_disabled]
-    elsif user && context.voting_limited? && votes_in_context(context, user) >= context.voting_limited_max
-      VOTING_DISABLED_REASONS[:voting_limited_max_reached]
+  def voting_disabled_reason idea, user=nil
+    project = idea.project
+    current_context = get_participation_context(project)
+    if !current_context
+      VOTING_DISABLED_REASONS[:project_inactive]
     else
-      nil
+      in_current_context = in_current_context?(idea, current_context)
+      if !in_current_context
+        VOTING_DISABLED_REASONS[:not_in_active_context]
+      elsif !current_context.voting_enabled
+        VOTING_DISABLED_REASONS[:voting_disabled]
+      elsif (
+        user && 
+        current_context.voting_limited? && 
+        votes_in_context(current_context, user) >= current_context.voting_limited_max
+        )
+        VOTING_DISABLED_REASONS[:voting_limited_max_reached]
+      else
+        nil
+      end
     end
   end
 

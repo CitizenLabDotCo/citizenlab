@@ -42,9 +42,9 @@ class SideFxCommentService
 
   def check_participation_context comment, user
     pcs = ParticipationContextService.new
-    project = comment.idea&.project
-    if project
-      disallowed_reason = pcs.commenting_disabled_reason(project)
+    idea = comment.idea
+    if idea
+      disallowed_reason = pcs.commenting_disabled_reason(idea)
       if disallowed_reason
         raise ClErrors::TransactionError.new(error_key: disallowed_reason)
       end

@@ -26,7 +26,6 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   def actions_descriptor
     @participation_context_service ||= ParticipationContextService.new
     posting_disabled_reason = @participation_context_service.posting_disabled_reason(object)
-    voting_disabled_reason = @participation_context_service.voting_disabled_reason(object, scope)
     {
       posting: {
         enabled: !posting_disabled_reason,
