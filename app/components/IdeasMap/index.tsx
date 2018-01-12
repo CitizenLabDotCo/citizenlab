@@ -21,6 +21,7 @@ const StyledBox = styled<IdeaBoxProps>(IdeaBox)`
 
 const MapWrapper = styled.div`
   display: flex;
+  height: 600px;
   margin-bottom: 2rem;
 `;
 
