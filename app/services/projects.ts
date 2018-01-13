@@ -48,6 +48,12 @@ export interface IUpdatedProjectProperties {
   area_ids?: string[];
   visible_to?: Visibility;
   process_type?: ProcessType;
+  participation_method?: 'ideation' | 'information' | null;
+  posting_enabled?: boolean | null;
+  commenting_enabled?: boolean | null;
+  voting_enabled?: boolean | null;
+  voting_method?: 'limited' | 'unlimited' | null;
+  voting_limited_max?: number | null;
 }
 
 export interface IProject {
