@@ -158,6 +158,10 @@ const IdeaContainerInner = styled.div`
   overflow: hidden;
 `;
 
+const VotingDisabledWrapper = styled.div`
+  padding: 22px;
+`;
+
 type Props = {
   ideaId: string;
 };
@@ -306,10 +310,12 @@ class IdeaCard extends React.PureComponent<Props, State> {
               }
             {showFooter === 'votingDisabled' &&
               <BottomBounceUp icon="lock-outlined">
-                <VotingDisabled
-                  votingDescriptor={votingDescriptor}
-                  projectId={projectId}
-                />
+                <VotingDisabledWrapper>
+                  <VotingDisabled
+                    votingDescriptor={votingDescriptor}
+                    projectId={projectId}
+                  />
+                </VotingDisabledWrapper>
               </BottomBounceUp>
             }
           </IdeaContainerInner>
