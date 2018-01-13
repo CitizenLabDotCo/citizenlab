@@ -4,10 +4,9 @@ import { browserHistory } from 'react-router';
 import { darken } from 'polished';
 import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
-import BottomBounceUp from './BottomBounceUp';
 import messages from './messages';
 
-const HorizontalContainer = styled.div`
+const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -40,12 +39,10 @@ export default class Unauthenticated extends React.PureComponent {
 
   render() {
     return (
-      <BottomBounceUp icon="lock-outlined">
-        <HorizontalContainer>
-          <Button onClick={this.goToLogin}><FormattedMessage {...messages.login} /></Button>
-          <RegisterLink onClick={this.goToRegister}><FormattedMessage {...messages.register} /></RegisterLink>
-        </HorizontalContainer>
-      </BottomBounceUp>
+      <Container>
+        <Button onClick={this.goToLogin}><FormattedMessage {...messages.login} /></Button>
+        <RegisterLink onClick={this.goToRegister}><FormattedMessage {...messages.register} /></RegisterLink>
+      </Container>
     );
   }
 }

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router';
 import { FormattedDate } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import BottomBounceUp from './BottomBounceUp';
+
 import T from 'components/T';
 
 import { IIdeaData } from 'services/ideas';
@@ -13,7 +13,7 @@ import { injectResource, InjectedResourceLoaderProps } from 'utils/resourceLoade
 
 import messages from './messages';
 
-const ReasonContainer = styled.div`
+const Container = styled.div`
   color: #84939d;
   font-size: 14px;
   font-weight: 300;
@@ -52,17 +52,15 @@ class VotingDisabled extends React.PureComponent<Props & InjectedResourceLoaderP
     const projectSlug = project && project.attributes.slug;
     const message = this.reasonToMessage();
     return (
-      <BottomBounceUp icon="lock-outlined">
-        <ReasonContainer>
-          <FormattedMessage
-            {...message}
-            values={{
-              enabledFromDate: votingDescriptor.future_enabled && <FormattedDate value={votingDescriptor.future_enabled} />,
-              projectName: <Link to={`/projects/${projectSlug}`} onClick={this.handleProjectLinkClick}><T value={projectTitle} /></Link>
-            }}
-          />
-        </ReasonContainer>
-      </BottomBounceUp>
+      <Container>
+        <FormattedMessage
+          {...message}
+          values={{
+            enabledFromDate: votingDescriptor.future_enabled && <FormattedDate value={votingDescriptor.future_enabled} />,
+            projectName: <Link to={`/projects/${projectSlug}`} onClick={this.handleProjectLinkClick}><T value={projectTitle} /></Link>
+          }}
+        />
+      </Container>
     );
   }
 }
