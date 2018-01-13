@@ -14,7 +14,7 @@ import Label from 'components/UI/Label';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
-import ParticipationContext from './parcticipationContext';
+import ParticipationContext, { IParticipationContextConfig } from './parcticipationContext';
 import { Button as SemButton, Icon as SemIcon } from 'semantic-ui-react';
 
 // animation
@@ -40,6 +40,7 @@ import { projectImagesStream, addProjectImage, deleteProjectImage } from 'servic
 import { areasStream, IAreaData } from 'services/areas';
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
+import eventEmitter from 'utils/eventEmitter';
 
 // utils
 import { convertUrlToFileObservable } from 'utils/imageTools';
@@ -371,12 +372,35 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     return !hasErrors;
   }
 
-  saveProject = async (event) => {
+  onSubmit = async (event) => {
     event.preventDefault();
 
+    if (this.state.projectType === 'continuous') {
+      eventEmitter.emit('AdminProjectEditGeneral', 'AdminProjectEditGeneralSubmitEvent', null);
+    } else {
+      this.validateAndSave();
+    }
+  }
+
+  validateAndSave = async (parcticipationContextConfig: IParticipationContextConfig | null = null) => {
     if (this.validate()) {
       const { formatMessage } = this.props.intl;
-      const { projectAttributesDiff, projectData, oldProjectImages, newProjectImages } = this.state;
+      let { projectAttributesDiff } = this.state;
+      const { projectData, oldProjectImages, newProjectImages } = this.state;
+
+      if (parcticipationContextConfig) {
+        const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = parcticipationContextConfig;
+
+        projectAttributesDiff = {
+          ...projectAttributesDiff,
+          participation_method: participationMethod,
+          posting_enabled: postingEnabled,
+          commenting_enabled: commentingEnabled,
+          voting_enabled: votingEnabled,
+          voting_method: votingMethod,
+          voting_limited_max: votingLimit
+        };
+      }
 
       try {
         let redirect = false;
@@ -440,8 +464,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     }
   }
 
-  handleParcticipationContextOnSubmit = () => {
-
+  handleParcticipationContextOnSubmit = (participationContextConfig: IParticipationContextConfig) => {
+    this.validateAndSave(participationContextConfig);
   }
 
   render() {
@@ -460,7 +484,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       });
 
       return (
-        <form className="e2e-project-general-form" onSubmit={this.saveProject}>
+        <form className="e2e-project-general-form" onSubmit={this.onSubmit}>
           <Section>
             <SectionField>
               <Label htmlFor="project-title">
