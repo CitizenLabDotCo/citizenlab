@@ -298,7 +298,7 @@ if Apartment::Tenant.current == 'localhost'
       project.project_files.create(file: Rails.root.join("spec/fixtures/afvalkalender.pdf").open)
     end
 
-    start_at = Faker::Date.between(1.year.ago, 1.month.from_now)
+    start_at = Faker::Date.between(6.months.ago, 1.month.from_now)
     rand(8).times do
       start_at += 1.days
       phase = project.phases.create({
