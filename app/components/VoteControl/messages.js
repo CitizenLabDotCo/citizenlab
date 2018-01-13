@@ -12,7 +12,7 @@ export default defineMessages({
   },
   votingDisabledNotInActiveContext: {
     id: 'app.components.VoteControl.votingDisabledNotInActiveContext',
-    defaultMessage: 'This idea is no longer, or not yet in the running in {projectName}',
+    defaultMessage: 'This idea is no longer or not yet considered in {projectName}',
   },
   votingDisabledPossibleLater: {
     id: 'app.components.VoteControl.votingDisabledPossibleLater',

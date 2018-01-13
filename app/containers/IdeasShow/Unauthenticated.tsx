@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { browserHistory } from 'react-router';
 import { darken } from 'polished';
 import Button from 'components/UI/Button';
-import VotingPopContainer from './VotingPopContainer';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -55,13 +54,11 @@ export default class Unauthenticated extends React.PureComponent {
 
   render() {
     return (
-      <VotingPopContainer>
-        <VerticalContainer>
-          <StyledButton onClick={this.goToLogin}><FormattedMessage {...messages.login} /></StyledButton>
-          <Separator>or</Separator>
-          <RegisterLink onClick={this.goToRegister}><FormattedMessage {...messages.register} /></RegisterLink>
-        </VerticalContainer>
-      </VotingPopContainer>
+      <VerticalContainer>
+        <StyledButton onClick={this.goToLogin}><FormattedMessage {...messages.login} /></StyledButton>
+        <Separator>or</Separator>
+        <RegisterLink onClick={this.goToRegister}><FormattedMessage {...messages.register} /></RegisterLink>
+      </VerticalContainer>
     );
   }
 }

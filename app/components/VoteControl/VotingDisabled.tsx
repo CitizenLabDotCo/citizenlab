@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { darken } from 'polished';
 
-import { Link } from 'react-router';
 import { FormattedDate } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -12,13 +12,24 @@ import { projectByIdStream, IProjectData } from 'services/projects';
 import { injectResource, InjectedResourceLoaderProps } from 'utils/resourceLoaders/resourceLoader';
 
 import messages from './messages';
+import browserHistory from 'react-router/lib/browserHistory';
 
 const Container = styled.div`
   color: #84939d;
   font-size: 14px;
   font-weight: 300;
   line-height: 20px;
-  padding: 22px;
+`;
+
+const ProjectLink = styled.span`
+  color: ${(props) => props.theme.colors.clBlue};
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
+    text-decoration: underline;
+  }
 `;
 
 type Props = {
@@ -43,13 +54,15 @@ class VotingDisabled extends React.PureComponent<Props & InjectedResourceLoaderP
   }
 
   handleProjectLinkClick = (event) => {
+    event.preventDefault();
     event.stopPropagation();
+    const projectSlug = this.props.project && (this.props.project as IProjectData).attributes.slug;
+    browserHistory.push(`/projects/${projectSlug}`);
   }
 
   render() {
     const { votingDescriptor, project } = this.props;
     const projectTitle = project && project.attributes.title_multiloc || {};
-    const projectSlug = project && project.attributes.slug;
     const message = this.reasonToMessage();
     return (
       <Container>
@@ -57,7 +70,10 @@ class VotingDisabled extends React.PureComponent<Props & InjectedResourceLoaderP
           {...message}
           values={{
             enabledFromDate: votingDescriptor.future_enabled && <FormattedDate value={votingDescriptor.future_enabled} />,
-            projectName: <Link to={`/projects/${projectSlug}`} onClick={this.handleProjectLinkClick}><T value={projectTitle} /></Link>
+            projectName:
+              <ProjectLink onClick={this.handleProjectLinkClick} role="navigation">
+                <T value={projectTitle} />
+              </ProjectLink>
           }}
         />
       </Container>
