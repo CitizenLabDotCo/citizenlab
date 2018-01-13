@@ -8,7 +8,8 @@ import { Link, browserHistory } from 'react-router';
 // components
 import Icon from 'components/UI/Icon';
 import Unauthenticated from 'components/IdeaCard/Unauthenticated';
-import VotingDisabled from 'components/IdeaCard/VotingDisabled';
+import BottomBounceUp from './BottomBounceUp';
+import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';
 import UserName from 'components/UI/UserName';
 
@@ -298,12 +299,18 @@ class IdeaCard extends React.PureComponent<Props, State> {
                 size="normal"
               />
             }
-            {showFooter === 'unauthenticated' && <Unauthenticated />}
+            {showFooter === 'unauthenticated' &&
+              <BottomBounceUp icon="lock-outlined">
+                <Unauthenticated />
+              </BottomBounceUp>
+              }
             {showFooter === 'votingDisabled' &&
-              <VotingDisabled
-                votingDescriptor={votingDescriptor}
-                projectId={projectId}
-              />
+              <BottomBounceUp icon="lock-outlined">
+                <VotingDisabled
+                  votingDescriptor={votingDescriptor}
+                  projectId={projectId}
+                />
+              </BottomBounceUp>
             }
           </IdeaContainerInner>
         </IdeaContainer>
