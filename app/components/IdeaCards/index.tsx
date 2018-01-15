@@ -248,11 +248,13 @@ class IdeaCards extends React.PureComponent<Props, State> {
     ) : null);
 
     const ideasList = ((!loading && hasIdeas && ideas) ? (
-      <IdeasList id="e2e-ideas-list">
-        {ideas.data.map((idea) => (
-          <StyledIdeaCard key={idea.id} ideaId={idea.id} />
-        ))}
-      </IdeasList>
+      <React.Fragment>
+        <IdeasList id="e2e-ideas-list">
+          {ideas.data.map((idea) => (
+            <StyledIdeaCard key={idea.id} ideaId={idea.id} />
+          ))}
+        </IdeasList>
+      </React.Fragment>
     ) : null);
 
     return (
