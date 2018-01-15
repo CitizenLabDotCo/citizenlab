@@ -56,17 +56,15 @@ interface GlobalState {
 interface State extends GlobalState {}
 
 export default class ButtonBar extends React.PureComponent<Props, State> {
-  globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
-    this.globalState = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage');
+  constructor(props) {
+    super(props);
     this.subscriptions = [];
   }
 
   async componentWillMount() {
-    const globalState$ = this.globalState.observable;
+    const globalState$ = globalState.init('IdeasNewPage').observable;
 
     this.subscriptions = [
       globalState$.subscribe(({ submitError, processing }) => {

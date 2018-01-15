@@ -8,10 +8,12 @@ import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recha
 import { usersByBirthyearStream } from 'services/stats';
 import messages from '../messages';
 
-
-
 type State = {
-  serie: {name: string | number, value: number, code: string}[] | null;
+  serie: {
+    name: string | number, 
+    value: number, 
+    code: string
+  }[] | null;
 };
 
 type Props = {
@@ -45,7 +47,8 @@ class AgeChart extends React.PureComponent<Props, State> {
 
   convertToGraphFormat = (serie: {[key: string]: number}) => {
     const currentYear = moment().year();
-    return _.chain(serie)
+
+    return _(serie)
       .map((value, key) => ({ age: key, count: value }))
       .concat(_.map(_.range(currentYear, currentYear - 90, -10), (a) => ({ age: a.toString(), count: 0 })))
       .groupBy(({ age }) => {
@@ -73,7 +76,6 @@ class AgeChart extends React.PureComponent<Props, State> {
     });
   }
 
-
   render() {
     return (
       <ResponsiveContainer width="100%" height="100%">
@@ -82,7 +84,7 @@ class AgeChart extends React.PureComponent<Props, State> {
             dataKey="value"
             name="name"
             fill={this.props.theme.chartFill}
-            label={{ fill: this.props.theme.chartLabelColor, fontSize: 14 }}
+            label={{ fill: this.props.theme.barFill, fontSize: this.props.theme.chartLabelSize }}
           />
           <XAxis
             dataKey="name"

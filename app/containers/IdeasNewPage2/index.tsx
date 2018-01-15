@@ -136,19 +136,17 @@ interface GlobalState {}
 interface State extends LocalState, GlobalState {}
 
 export default class IdeasNewPage2 extends React.PureComponent<Props, State> {
-  initialLocalState: LocalState;
-  initialGlobalState: IIdeasNewPageGlobalState;
   localState: ILocalStateService<LocalState>;
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
-    const initialLocalState = {
+  constructor(props) {
+    super(props);
+    const initialLocalState: LocalState = {
       showIdeaForm: true,
       locale: null
     };
-    this.initialGlobalState = {
+    const initialGlobalState: IIdeasNewPageGlobalState = {
       title: null,
       description: null,
       selectedTopics: null,
@@ -161,8 +159,8 @@ export default class IdeasNewPage2 extends React.PureComponent<Props, State> {
       imageId: null,
       imageChanged: false
     };
-    this.localState = localState<LocalState>(initialLocalState);
-    this.globalState = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage', this.initialGlobalState);
+    this.localState = localState(initialLocalState);
+    this.globalState = globalState.init('IdeasNewPage', initialGlobalState);
     this.subscriptions = [];
   }
 
@@ -180,8 +178,6 @@ export default class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
-    // reset global state before unmounting
-    this.globalState.set(this.initialGlobalState);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
@@ -285,9 +281,6 @@ export default class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 
   render() {
-    console.log('index state:');
-    console.log(this.state);
-
     if (!this.state) { return null; }
 
     const { showIdeaForm } = this.state;

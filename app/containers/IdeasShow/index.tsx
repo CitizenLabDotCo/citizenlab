@@ -519,6 +519,7 @@ type Props = {
 
 type State = {
   locale: string | null;
+  authUser: IUser | null;
   idea: IIdea | null;
   ideaAuthor: IUser | null;
   ideaImage: IIdeaImage | null;
@@ -531,7 +532,7 @@ type State = {
   moreActions: IAction[];
 };
 
-class IdeasShow extends React.PureComponent<Props, State> {
+export default class IdeasShow extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -539,6 +540,7 @@ class IdeasShow extends React.PureComponent<Props, State> {
     super(props as any);
     this.state = {
       locale: null,
+      authUser: null,
       idea: null,
       ideaAuthor: null,
       ideaImage: null,
@@ -570,19 +572,20 @@ class IdeasShow extends React.PureComponent<Props, State> {
       const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : Rx.Observable.of(null));
 
       return Rx.Observable.combineLatest(
+        authUser$,
         ideaImage$,
         ideaAuthor$,
         ideaStatus$,
         project$,
-      ).map(([ideaImage, ideaAuthor, ideaStatus, project]) => ({ idea, ideaImage, ideaAuthor, project }));
+      ).map(([authUser, ideaImage, ideaAuthor, ideaStatus, project]) => ({ authUser, idea, ideaImage, ideaAuthor, project }));
     });
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
         locale$,
         ideaWithRelationships$
-      ).subscribe(([locale, { idea, ideaImage, ideaAuthor, project }]) => {
-        this.setState({ locale, idea, ideaImage, ideaAuthor, project, loading: false });
+      ).subscribe(([locale, { authUser, idea, ideaImage, ideaAuthor, project }]) => {
+        this.setState({ locale, authUser, idea, ideaImage, ideaAuthor, project, loading: false });
       }),
 
       comments$.subscribe((ideaComments) => {
@@ -671,7 +674,7 @@ class IdeasShow extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, idea, ideaImage, ideaAuthor, ideaComments, project, loading, unauthenticatedError, showMap, moreActions } = this.state;
+    const { locale, authUser, idea, ideaImage, ideaAuthor, ideaComments, project, loading, unauthenticatedError, showMap, moreActions } = this.state;
 
     if (!loading && idea !== null) {
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
@@ -714,14 +717,16 @@ class IdeasShow extends React.PureComponent<Props, State> {
           <SharingWrapper>
             <StyledSharing imageUrl={ideaImageLarge} />
 
-            <GiveOpinion onClick={this.scrollToCommentForm}>
-              <IconWrapper>
-                <Icon name="comments" />
-              </IconWrapper>
-              <GiveOpinionText>
-                <FormattedMessage {...messages.commentsTitle} />
-              </GiveOpinionText>
-            </GiveOpinion>
+            {authUser &&
+              <GiveOpinion onClick={this.scrollToCommentForm}>
+                <IconWrapper>
+                  <Icon name="comments" />
+                </IconWrapper>
+                <GiveOpinionText>
+                  <FormattedMessage {...messages.commentsTitle} />
+                </GiveOpinionText>
+              </GiveOpinion>
+            }
           </SharingWrapper>
 
           <MoreActionsMenuWrapper>
@@ -859,5 +864,3 @@ class IdeasShow extends React.PureComponent<Props, State> {
     return null;
   }
 }
-
-export default IdeasShow;

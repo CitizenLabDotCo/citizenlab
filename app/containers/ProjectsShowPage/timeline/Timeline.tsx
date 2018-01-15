@@ -468,8 +468,8 @@ export default class Timeline extends React.PureComponent<Props, State> {
       const currentTenantTimezone = currentTenant.data.attributes.settings.core.timezone;
       const currentTenantTodayMoment = moment().tz(currentTenantTimezone);
       const selectedPhase = (selectedPhaseId ? phases.data.find(phase => phase.id === selectedPhaseId) : null);
-      const selectedPhaseStart = (selectedPhase ? moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD').locale(locale).format('LL') : null);
-      const selectedPhaseEnd = (selectedPhase ? moment(selectedPhase.attributes.end_at, 'YYYY-MM-DD').locale(locale).format('LL') : null);
+      const selectedPhaseStart = (selectedPhase ? moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD').format('LL') : null);
+      const selectedPhaseEnd = (selectedPhase ? moment(selectedPhase.attributes.end_at, 'YYYY-MM-DD').format('LL') : null);
       const selectedPhaseTitle = (selectedPhase ? getLocalized(selectedPhase.attributes.title_multiloc, locale, currentTenantLocales) : null);
       const selectedPhaseNumber = (selectedPhase ? _.indexOf(phaseIds, selectedPhaseId) + 1 : null);
       const isSelected = (selectedPhaseId !== null);

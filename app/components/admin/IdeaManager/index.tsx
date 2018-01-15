@@ -87,7 +87,6 @@ const RightColumn = styled.div`
 `;
 
 class IdeaManager extends React.PureComponent<Props, State> {
-
   globalState: IGlobalStateService<IAdminFullWidth>;
 
   constructor(props) {
@@ -100,7 +99,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
       contextRef: null,
     };
 
-    this.globalState = globalState.init<IAdminFullWidth>('AdminFullWidth');
+    this.globalState = globalState.init('AdminFullWidth');
   }
 
   componentDidMount() {

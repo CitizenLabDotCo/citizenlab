@@ -1,12 +1,11 @@
 import * as Rx from 'rxjs/Rx';
-import * as _ from 'lodash';
+import { isObject, isEmpty, has } from 'lodash';
 
 // utils
 import shallowCompare from 'utils/shallowCompare';
 
 // typings
 import { IOption, ImageFile } from 'typings';
-import { EditorState } from 'draft-js';
 import { setTimeout } from 'timers';
 
 export interface IIdeasNewPageGlobalState {
@@ -72,9 +71,11 @@ class GlobalState {
         }
       };
 
+      console.log(newState);
+
       return newState;
     })
-    .filter(state => _.isObject(state) && !_.isEmpty(state))
+    .filter(state => isObject(state) && !isEmpty(state))
     .distinctUntilChanged((oldState, newState) => shallowCompare(oldState, newState))
     .publishReplay(1)
     .refCount();
@@ -86,14 +87,14 @@ class GlobalState {
   init<T>(propertyName: keyof State, initialState?: T) {
     const observable: Rx.Observable<T> = this.stream.observable
       .map(state => state[propertyName])
-      .filter(filteredState => _.isObject(filteredState) && !_.isEmpty(filteredState))
-      .distinctUntilChanged((filteredState, newFilteredState) => shallowCompare(filteredState, newFilteredState)) as any;
+      .filter(filteredState => isObject(filteredState) && !isEmpty(filteredState))
+      .distinctUntilChanged((filteredState, newFilteredState) => shallowCompare(filteredState, newFilteredState));
 
     const set = (newState: Partial<T>) => this.set(propertyName, newState);
 
     const get = () => this.get<T>(propertyName);
 
-    if (initialState && _.isObject(initialState) && !_.isEmpty(initialState)) {
+    if (initialState && isObject(initialState) && !isEmpty(initialState)) {
       if (!this.stream.observer) {
         setTimeout(() => set(initialState), 0);
       } else {
@@ -119,7 +120,7 @@ class GlobalState {
 
   get<T>(propertyName: keyof State) {
     return this.stream.observable.map((state) => {
-      return _.has(state, propertyName) ? state[propertyName] : null;
+      return has(state, propertyName) ? state[propertyName] : null;
     }).first().toPromise() as Promise<T>;
   }
 }

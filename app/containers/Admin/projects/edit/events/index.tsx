@@ -31,7 +31,6 @@ const AddButton = styled(Button)`
   align-self: flex-end;
 `;
 
-// Component typing
 type Props = {
   intl: ReactIntl.InjectedIntl,
   params: {
