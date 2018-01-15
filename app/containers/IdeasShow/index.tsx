@@ -29,6 +29,7 @@ import SpamReportForm from 'containers/SpamReport';
 import Modal from 'components/UI/Modal';
 import UserName from 'components/UI/UserName';
 import HasPermission from 'components/HasPermission';
+import VoteWrapper from './VoteWrapper';
 
 // services
 import { localeStream } from 'services/locale';
@@ -526,7 +527,6 @@ type State = {
   ideaComments: IComments | null;
   project: IProject | null;
   loading: boolean;
-  unauthenticatedError: boolean;
   showMap: boolean;
   spamModalVisible: boolean;
   moreActions: IAction[];
@@ -547,7 +547,6 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
       ideaComments: null,
       project: null,
       loading: true,
-      unauthenticatedError: false,
       showMap: false,
       spamModalVisible: false,
       moreActions: [],
@@ -641,10 +640,6 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
     }
   }
 
-  unauthenticatedVoteClick = () => {
-    this.setState({ unauthenticatedError: true });
-  }
-
   scrollToCommentForm = (event) => {
     event.preventDefault();
 
@@ -674,7 +669,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, authUser, idea, ideaImage, ideaAuthor, ideaComments, project, loading, unauthenticatedError, showMap, moreActions } = this.state;
+    const { locale, authUser, idea, ideaImage, ideaAuthor, ideaComments, project, loading, showMap, moreActions } = this.state;
 
     if (!loading && idea !== null) {
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
@@ -690,6 +685,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
       const ideaLocation = idea.data.attributes.location_point_geojson || null;
       const ideaAdress = idea.data.attributes.location_description || null;
       const projectTitleMultiloc = (project && project.data ? project.data.attributes.title_multiloc : null);
+      const projectId = idea.data.relationships.project.data.id;
 
       const ideaMetaContent = (
         <MetaContent>
@@ -697,15 +693,11 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
             <FormattedMessage {...messages.voteOnThisIdea} />
           </VoteLabel>
 
-          {!unauthenticatedError &&
-            <VoteControl
-              ideaId={idea.data.id}
-              unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-              size="normal"
-            />
-          }
-
-          {unauthenticatedError && <Unauthenticated />}
+          <VoteWrapper
+            ideaId={idea.data.id}
+            votingDescriptor={idea.data.relationships.action_descriptor.data.voting}
+            projectId={projectId}
+          />
 
           {statusId &&
             <StatusContainer>
