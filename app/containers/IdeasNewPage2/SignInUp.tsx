@@ -155,7 +155,7 @@ type State = {
   currentTenant: ITenant | null;
 };
 
-class SignInUp extends React.PureComponent<Props, State> {
+export default class SignInUp extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
@@ -252,5 +252,3 @@ class SignInUp extends React.PureComponent<Props, State> {
     );
   }
 }
-
-export default SignInUp;

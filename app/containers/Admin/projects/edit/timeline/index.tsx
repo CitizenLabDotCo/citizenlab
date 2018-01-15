@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { intlShape } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import * as _ from 'lodash';
+import { isString, reject } from 'lodash';
 
 // Services
 import { projectBySlugStream } from 'services/projects';
@@ -85,7 +85,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
   componentDidMount () {
     this.setState({ loading: true });
 
-    if (_.isString(this.props.params.slug)) {
+    if (isString(this.props.params.slug)) {
       this.subscription = projectBySlugStream(this.props.params.slug).observable.switchMap((project) => {
         return phasesStream(project.data.id).observable.map((phases) => (phases.data));
       }).subscribe((phases) => {
@@ -103,7 +103,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
       event.preventDefault();
       if (window.confirm(this.props.intl.formatMessage(messages.deletePhaseConfirmation))) {
         deletePhase(phaseId).then((response) => {
-          this.setState({ phases: _.reject(this.state.phases, { id: phaseId }) });
+          this.setState({ phases: reject(this.state.phases, { id: phaseId }) });
         });
       }
     };

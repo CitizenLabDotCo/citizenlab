@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isString, isEmpty, get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // router
@@ -100,7 +100,7 @@ interface State {
   processing: boolean;
 }
 
-class IdeaEditPage extends React.PureComponent<Props, State> {
+export default class IdeaEditPage extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -241,11 +241,11 @@ class IdeaEditPage extends React.PureComponent<Props, State> {
     const { title, description, selectedTopics, selectedProject, location, imageFile } = ideaFormOutput;
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const projectId = (selectedProject ? selectedProject.value as string : null);
-    const locationGeoJSON = (_.isString(location) && !_.isEmpty(location) ? await convertToGeoJson(location) : null);
-    const locationDescription = (_.isString(location) && !_.isEmpty(location) ? location : null);
+    const locationGeoJSON = (isString(location) && !isEmpty(location) ? await convertToGeoJson(location) : null);
+    const locationDescription = (isString(location) && !isEmpty(location) ? location : null);
     const oldImageId = imageId;
-    const oldBase64Image = _.get(this.state, 'imageFile[0].base64');
-    const newBase64Image = _.get(ideaFormOutput, 'imageFile[0].base64');
+    const oldBase64Image = get(this.state, 'imageFile[0].base64');
+    const newBase64Image = get(ideaFormOutput, 'imageFile[0].base64');
 
     this.setState({ processing: true, submitError: false });
 
@@ -324,5 +324,3 @@ class IdeaEditPage extends React.PureComponent<Props, State> {
     return null;
   }
 }
-
-export default IdeaEditPage;

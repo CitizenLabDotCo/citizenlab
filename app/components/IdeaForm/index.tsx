@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
@@ -112,18 +111,19 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentWillMount() {
+    const { title, description, selectedTopics, selectedProject, location, imageFile } = this.props;
     const locale$ = localeStream().observable;
     const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
     const topics$ = topicsStream().observable;
     const projects$ = projectsStream().observable;
 
     this.setState({
-      title: (this.props.title || ''),
-      description: getEditorStateFromHtmlString(this.props.description),
-      selectedTopics: this.props.selectedTopics,
-      selectedProject: this.props.selectedProject,
-      location: this.props.location,
-      imageFile: this.props.imageFile,
+      selectedTopics,
+      selectedProject,
+      location,
+      imageFile,
+      title: (title || ''),
+      description: getEditorStateFromHtmlString(description),
     });
 
     this.subscriptions = [
@@ -158,13 +158,15 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentWillReceiveProps(nextProps) {
+    const { title, description, selectedTopics, selectedProject, location, imageFile } = nextProps;
+
     this.setState({
-      title: nextProps.title,
-      description: getEditorStateFromHtmlString(nextProps.description),
-      selectedTopics: nextProps.selectedTopics,
-      selectedProject: nextProps.selectedProject,
-      location: nextProps.location,
-      imageFile: nextProps.imageFile,
+      title,
+      selectedTopics,
+      selectedProject,
+      location,
+      imageFile,
+      description: getEditorStateFromHtmlString(description)
     });
   }
 

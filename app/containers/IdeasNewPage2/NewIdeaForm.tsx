@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
@@ -87,7 +86,7 @@ interface GlobalState {
 
 interface State extends GlobalState {}
 
-class NewIdeaForm extends React.PureComponent<Props, State> {
+export default class NewIdeaForm extends React.PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Rx.Subscription[];
 
@@ -146,6 +145,9 @@ class NewIdeaForm extends React.PureComponent<Props, State> {
   }
 
   render() {
+    console.log('NewIdeaForm state:');
+    console.log(this.state);
+
     if (!this.state) { return null; }
 
     const { title, description, selectedTopics, selectedProject, location, imageFile, submitError, processing } = this.state;
@@ -181,5 +183,3 @@ class NewIdeaForm extends React.PureComponent<Props, State> {
     );
   }
 }
-
-export default NewIdeaForm;

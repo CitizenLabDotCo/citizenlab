@@ -331,7 +331,7 @@ class LandingPage extends React.PureComponent<Props, State> {
 
       // if 'idea_to_publish' parameter is present in landingpage url,
       // find the draft idea previously created (before login/signup)
-      // and update it status and author name
+      // and update its status and author name
       Rx.Observable.combineLatest(
         authUser$,
         ideaToPublish$
