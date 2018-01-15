@@ -131,13 +131,12 @@ export default class CLMap extends React.Component<Props, State> {
 
   addClusters = () => {
     if (this.map && this.markers) {
-      console.log(this.markers);
       if (this.clusterLayer) this.map.removeLayer(this.clusterLayer);
       this.clusterLayer = Leaflet.markerClusterGroup(this.clusterOptions);
       this.clusterLayer.addLayers(this.markers);
       this.map.addLayer(this.clusterLayer);
+      this.clusterLayer.on('click', console.log);
 
-      console.log(this.markerBounds);
       if (this.markerBounds) this.map.fitBounds(this.markerBounds);
     }
   }
