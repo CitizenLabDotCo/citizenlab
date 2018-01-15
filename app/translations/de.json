@@ -404,6 +404,8 @@
   "app.containers.Projects.LoadingError": "Uups... etwas ging schief",
   "app.containers.Projects.LoadingMessage": "Wird geladen",
   "app.containers.Projects.allEvents": "Alle Veranstaltungen",
+  "app.containers.Projects.displayCards": "",
+  "app.containers.Projects.displayMap": "",
   "app.containers.Projects.header": "Projekte",
   "app.containers.Projects.helmetDescription": "Projekte",
   "app.containers.Projects.info.addIdea": "Fügen Sie eine Idee zu diesem Projekt hinzu",

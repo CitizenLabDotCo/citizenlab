@@ -404,6 +404,8 @@
   "app.containers.Projects.LoadingError": "Oups... Une erreur est survenue",
   "app.containers.Projects.LoadingMessage": "Chargement",
   "app.containers.Projects.allEvents": "Tous les événements",
+  "app.containers.Projects.displayCards": "",
+  "app.containers.Projects.displayMap": "",
   "app.containers.Projects.header": "Projets",
   "app.containers.Projects.helmetDescription": "Projets",
   "app.containers.Projects.info.addIdea": "Ajouter une idée à ce projet",
