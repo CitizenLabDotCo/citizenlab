@@ -404,6 +404,8 @@
   "app.containers.Projects.LoadingError": "Oeps... er ging iets mis",
   "app.containers.Projects.LoadingMessage": "Laden",
   "app.containers.Projects.allEvents": "Alle activiteiten",
+  "app.containers.Projects.displayCards": "",
+  "app.containers.Projects.displayMap": "",
   "app.containers.Projects.header": "Projecten",
   "app.containers.Projects.helmetDescription": "Projecten",
   "app.containers.Projects.info.addIdea": "Voeg uw idee toe aan dit project",
