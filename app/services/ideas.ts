@@ -45,13 +45,27 @@ export interface IIdeaData {
       data: IRelationship[];
     }
     project: {
-      data: IRelationship | null;
+      data: IRelationship;
     };
     idea_status?: {
       data: IRelationship;
     },
     user_vote: {
       data: IRelationship;
+    },
+    action_descriptor: {
+      data: {
+        voting:{
+          enabled: boolean,
+          future_enabled: string | null,
+          disabled_reason: 'project_inactive' | 'voting_disabled' | 'voting_limited_max_reached' | 'not_in_active_context' | null
+        },
+        commenting: {
+          enabled: boolean,
+          future_enabled: string | null,
+          disabled_reason: 'project_inactive' | 'commenting_disabled' | null,
+        }
+      }
     }
   };
 }

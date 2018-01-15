@@ -63,6 +63,7 @@ const VoteIcon: any = styled(Icon) `
   height: 19px;
   fill: #84939d;
   transition: all 100ms ease-out;
+  ${(props: any) => props.enabled ? '' : 'opacity: 0.5;'}
 
   ${(props: any) => props.size === 'small' ? css`
     height: 16px;
@@ -85,6 +86,12 @@ const Vote: any = styled.div`
   &.voteClick ${VoteIconContainer} {
     animation: ${vote} 250ms;
   }
+
+  &:not(.enabled) ${VoteIconContainer} {
+    border: none;
+    background: none;
+  }
+
 `;
 
 const Upvote = Vote.extend`
@@ -104,14 +111,14 @@ const Upvote = Vote.extend`
 
   ${VoteIcon} {
     margin-bottom: 4px;
-    ${props => props.active && `fill: #fff;`}
+    ${props => props.active && (props.enabled ? `fill: #fff;` : `fill: ${green}`)}
   }
 
   ${VoteCount} {
     ${props => props.active && `color: ${green};`}
   }
 
-  &:hover {
+  &:hover.enabled {
     ${VoteIconContainer} {
       ${props => !props.active && `border-color: ${green};`}
     }
@@ -133,14 +140,14 @@ const Downvote = Vote.extend`
 
   ${VoteIcon} {
     margin-top: 5px;
-    ${props => props.active && `fill: #fff;`}
+    ${props => props.active && (props.enabled ? `fill: #fff;` : `fill: ${red}`)}
   }
 
   ${VoteCount} {
     ${props => props.active && `color: ${red};`}
   }
 
-  &:hover {
+  &:hover.enabled {
     ${VoteIconContainer} {
       ${props => !props.active && `border-color: ${red};`}
     }
@@ -158,6 +165,7 @@ const Downvote = Vote.extend`
 type Props = {
   ideaId: string;
   unauthenticatedVoteClick?: () => void;
+  disabledVoteClick?: () => void;
   size: 'small' | 'normal';
 };
 
@@ -169,6 +177,9 @@ type State = {
   votingAnimation: 'up' | 'down' | null;
   myVoteId: string | null;
   myVoteMode: 'up' | 'down' | null;
+  votingEnabled: boolean | null;
+  votingFutureEnabled: string | null;
+  votingDisabledReason: string | null;
 };
 
 export default class VoteControl extends React.PureComponent<Props, State> {
@@ -187,7 +198,10 @@ export default class VoteControl extends React.PureComponent<Props, State> {
       voting: null,
       votingAnimation: null,
       myVoteId: null,
-      myVoteMode: null
+      myVoteMode: null,
+      votingEnabled: null,
+      votingFutureEnabled: null,
+      votingDisabledReason: null,
     };
     this.voting$ = new Rx.BehaviorSubject(null);
     this.subscriptions = [];
@@ -239,7 +253,10 @@ export default class VoteControl extends React.PureComponent<Props, State> {
       idea$.subscribe((idea) => {
         const upvotesCount = idea.data.attributes.upvotes_count;
         const downvotesCount = idea.data.attributes.downvotes_count;
-        this.setState({ upvotesCount, downvotesCount });
+        const votingEnabled = idea.data.relationships.action_descriptor.data.voting.enabled;
+        const votingDisabledReason = idea.data.relationships.action_descriptor.data.voting.disabled_reason;
+        const votingFutureEnabled = idea.data.relationships.action_descriptor.data.voting.future_enabled;
+        this.setState({ upvotesCount, downvotesCount, votingEnabled, votingDisabledReason, votingFutureEnabled });
       }),
 
       authUser$.subscribe(authUser => this.setState({ authUser })),
@@ -293,10 +310,14 @@ export default class VoteControl extends React.PureComponent<Props, State> {
   }
 
   onClickVote = async (voteMode: 'up' | 'down') => {
-    const { authUser, myVoteId, myVoteMode } = this.state;
+    const { authUser, myVoteId, myVoteMode, votingEnabled } = this.state;
     const { ideaId } = this.props;
 
-    if (authUser && this.state.voting === null) {
+    if (!votingEnabled) {
+      this.props.disabledVoteClick && this.props.disabledVoteClick();
+    } else if (!authUser) {
+      this.props.unauthenticatedVoteClick && this.props.unauthenticatedVoteClick();
+    } else if (authUser && this.state.voting === null) {
       try {
         this.voting$.next(voteMode);
 
@@ -335,12 +356,6 @@ export default class VoteControl extends React.PureComponent<Props, State> {
         await ideaByIdStream(ideaId).fetch();
       }
     }
-
-    if (!authUser) {
-      if (_.has(this.props, 'unauthenticatedVoteClick') && _.isFunction(this.props.unauthenticatedVoteClick)) {
-        this.props.unauthenticatedVoteClick();
-      }
-    }
   }
 
   setUpvoteRef = (element: HTMLDivElement) => {
@@ -351,22 +366,34 @@ export default class VoteControl extends React.PureComponent<Props, State> {
     this.downvoteElement = element;
   }
 
+  hideVotes = () => {
+    return !(
+      this.state.votingEnabled ||
+      this.state.votingFutureEnabled ||
+      this.state.upvotesCount ||
+      this.state.downvotesCount
+    );
+  }
+
   render() {
     const className = this.props['className'];
     const { size } = this.props;
-    const { upvotesCount, downvotesCount, myVoteMode, voting, votingAnimation } = this.state;
+    const { upvotesCount, downvotesCount, myVoteMode, voting, votingAnimation, votingEnabled, votingFutureEnabled, votingDisabledReason } = this.state;
+
+    if (this.hideVotes()) return null;
 
     return (
-      <Container className={`${className} e2e-vote-controls ${myVoteMode === null ? 'neutral' : myVoteMode}`}>
+      <Container className={`${className} e2e-vote-controls ${myVoteMode === null ? 'neutral' : myVoteMode} ${votingEnabled && 'enabled'}`}>
         <Upvote
           active={myVoteMode === 'up'}
           onClick={this.onClickUpvote}
           innerRef={this.setUpvoteRef}
-          className={`${votingAnimation === 'up' ? 'voteClick' : 'upvote'}`}
+          className={`${votingAnimation === 'up' ? 'voteClick' : 'upvote'} ${votingEnabled && 'enabled'}`}
           size={size}
+          enabled={votingEnabled}
         >
           <VoteIconContainer size={size}>
-            <VoteIcon name="upvote-2" size={size} />
+            <VoteIcon name="upvote-2" size={size} enabled={votingEnabled} />
           </VoteIconContainer>
           <VoteCount>{upvotesCount}</VoteCount>
         </Upvote>
@@ -374,11 +401,12 @@ export default class VoteControl extends React.PureComponent<Props, State> {
           active={myVoteMode === 'down'}
           onClick={this.onClickDownvote}
           innerRef={this.setDownvoteRef}
-          className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'}`}
+          className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'} ${votingEnabled && 'enabled'}`}
           size={size}
+          enabled={votingEnabled}
         >
           <VoteIconContainer size={size}>
-            <VoteIcon name="downvote-2" size={size} />
+            <VoteIcon name="downvote-2" size={size} enabled={votingEnabled} />
           </VoteIconContainer>
           <VoteCount>{downvotesCount}</VoteCount>
         </Downvote>
