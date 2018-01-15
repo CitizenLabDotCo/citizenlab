@@ -199,4 +199,12 @@ export default defineMessages({
       changed_body {{userName} updated the description of this idea}
     }`,
   },
+  commentingDisabledProjectInactive: {
+    id: 'app.components.IdeasShow.commentingDisabledProjectInactive',
+    defaultMessage: 'Commenting on this idea is not possible, since \'{projectName}\' is not yet or no longer active.',
+  },
+  commentingDisabledInContext: {
+    id: 'app.components.IdeasShow.commentingDisabledInContext',
+    defaultMessage: 'Commenting on ideas in \'{projectName}\' is currently disabled.',
+  },
 });
