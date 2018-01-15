@@ -160,10 +160,10 @@ export default function createRoutes(store) {
     },
     {
       path: '/ideas/new',
-      name: 'IdeasNewPage2',
+      name: 'IdeasProjectSelectPage',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          import('containers/IdeasNewPage2'),
+          import('containers/IdeasProjectSelectPage'),
         ]);
 
         const renderRoute = loadModule(cb);
@@ -282,6 +282,23 @@ export default function createRoutes(store) {
           getComponent(nextState, cb) {
             const importModules = Promise.all([
               import('containers/ProjectsShowPage/info'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
+          path: '/projects/:slug/ideas/new',
+          name: 'IdeasNewPage2',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/IdeasNewPage2'),
             ]);
 
             const renderRoute = loadModule(cb);
