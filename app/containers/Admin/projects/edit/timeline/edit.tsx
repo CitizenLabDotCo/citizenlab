@@ -211,8 +211,8 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
     const { errors, saved, phase, attributeDiff, saving, descState } = this.state;
     const phaseAttrs = (phase ? { ...phase.data.attributes, ...attributeDiff } : { ...attributeDiff });
     const submitState = getSubmitState({ errors, saved, diff: attributeDiff });
-    const startDate = (phaseAttrs.start_at ? moment(phaseAttrs.start_at).locale(locale) : null);
-    const endDate = (phaseAttrs.end_at ? moment(phaseAttrs.end_at).locale(locale) : null);
+    const startDate = (phaseAttrs.start_at ? moment(phaseAttrs.start_at) : null);
+    const endDate = (phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null);
 
     return (
       <>

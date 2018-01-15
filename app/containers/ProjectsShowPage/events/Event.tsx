@@ -188,10 +188,10 @@ export default class Event extends React.PureComponent<Props, State> {
       const eventTitle = getLocalized(event.data.attributes.title_multiloc, locale, currentTenantLocales);
       const eventDescription = getLocalized(event.data.attributes.description_multiloc, locale, currentTenantLocales);
       const eventLocation = getLocalized(event.data.attributes.location_multiloc, locale, currentTenantLocales);
-      const startAtMoment = moment(event.data.attributes.start_at).locale(locale);
-      const endAtMoment = moment(event.data.attributes.end_at).locale(locale);
-      const startAtTime = startAtMoment.format('h.MM A');
-      const endAtTime = endAtMoment.format('h.MM A');
+      const startAtMoment = moment(event.data.attributes.start_at);
+      const endAtMoment = moment(event.data.attributes.end_at);
+      const startAtTime = startAtMoment.format('HH:mm');
+      const endAtTime = endAtMoment.format('HH:mm');
       const startAtDay = startAtMoment.format('DD');
       const endAtDay = endAtMoment.format('DD');
       const startAtMonth = startAtMoment.format('MM');
@@ -212,7 +212,7 @@ export default class Event extends React.PureComponent<Props, State> {
           <EventInformationColumn>
             <EventInformation>
               <EventHeader>
-                <TimeLabel>{startAtTime}</TimeLabel>&nbsp; -<TimeLabel>{endAtTime}</TimeLabel>
+                <TimeLabel>{startAtTime} - {endAtTime}</TimeLabel>
               </EventHeader>
 
               <EventTitle>
