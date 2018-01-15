@@ -8,6 +8,8 @@ import { Link, browserHistory } from 'react-router';
 // components
 import Icon from 'components/UI/Icon';
 import Unauthenticated from 'components/IdeaCard/Unauthenticated';
+import BottomBounceUp from './BottomBounceUp';
+import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';
 import UserName from 'components/UI/UserName';
 
@@ -156,6 +158,10 @@ const IdeaContainerInner = styled.div`
   overflow: hidden;
 `;
 
+const VotingDisabledWrapper = styled.div`
+  padding: 22px;
+`;
+
 type Props = {
   ideaId: string;
 };
@@ -165,7 +171,7 @@ type State = {
   ideaImage: IIdeaImage | null;
   ideaAuthor: IUser | null;
   locale: string | null;
-  showUnauthenticated: boolean;
+  showFooter: 'unauthenticated' | 'votingDisabled' | null;
   loading: boolean;
 };
 
@@ -182,7 +188,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
       ideaImage: null,
       ideaAuthor: null,
       locale: null,
-      showUnauthenticated: false,
+      showFooter: null,
       loading: true
     };
     this.subscriptions = [];
@@ -249,16 +255,22 @@ class IdeaCard extends React.PureComponent<Props, State> {
   }
 
   unauthenticatedVoteClick = () => {
-    this.setState({ showUnauthenticated: true });
+    this.setState({ showFooter: 'unauthenticated' });
+  }
+
+  disabledVoteClick = () => {
+    this.setState({ showFooter: 'votingDisabled' });
   }
 
   render() {
-    const { idea, ideaImage, ideaAuthor, locale, showUnauthenticated, loading } = this.state;
+    const { idea, ideaImage, ideaAuthor, locale, showFooter, loading } = this.state;
 
     if (!loading && idea && locale) {
       const ideaImageUrl = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
       const ideaImageLargeUrl = (ideaImage ? ideaImage.data.attributes.versions.large : null);
       const createdAt = <FormattedRelative value={idea.data.attributes.created_at} />;
+      const votingDescriptor = idea.data.relationships.action_descriptor.data.voting;
+      const projectId = idea.data.relationships.project.data && idea.data.relationships.project.data.id;
       const className = `${this.props['className']} e2e-idea-card ${idea.data.relationships.user_vote && idea.data.relationships.user_vote.data ? 'voted' : 'not-voted' }`;
 
       return (
@@ -283,15 +295,29 @@ class IdeaCard extends React.PureComponent<Props, State> {
               </IdeaAuthor>
             </IdeaContent>
 
-            {!showUnauthenticated &&
+            {!showFooter &&
               <StyledVoteControl
                 ideaId={idea.data.id}
                 unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+                disabledVoteClick={this.disabledVoteClick}
                 size="normal"
               />
             }
-
-            {showUnauthenticated && <Unauthenticated />}
+            {showFooter === 'unauthenticated' &&
+              <BottomBounceUp icon="lock-outlined">
+                <Unauthenticated />
+              </BottomBounceUp>
+              }
+            {showFooter === 'votingDisabled' &&
+              <BottomBounceUp icon="lock-outlined">
+                <VotingDisabledWrapper>
+                  <VotingDisabled
+                    votingDescriptor={votingDescriptor}
+                    projectId={projectId}
+                  />
+                </VotingDisabledWrapper>
+              </BottomBounceUp>
+            }
           </IdeaContainerInner>
         </IdeaContainer>
       );
