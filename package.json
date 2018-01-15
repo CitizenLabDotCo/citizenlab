@@ -237,6 +237,7 @@
     "jquery": "^3.2.1",
     "json-api-normalizer": "^0.4.7",
     "leaflet": "^1.2.0",
+    "leaflet.markercluster": "^1.2.0",
     "linkifyjs": "^2.1.5",
     "lodash": "4.17.4",
     "minimist": "1.2.0",
@@ -261,6 +262,7 @@
     "react-infinite-scroller": "^1.1.2",
     "react-intl": "2.4.0",
     "react-leaflet": "^1.7.8",
+    "react-leaflet-markercluster": "^1.1.7",
     "react-mentions": "^1.2.1",
     "react-places-autocomplete": "^5.4.3",
     "react-redux": "4.4.8",
@@ -293,6 +295,7 @@
   "devDependencies": {
     "@types/bowser": "1.1.1",
     "@types/draft-js": "0.10.19",
+    "@types/geojson": "^7946.0.0",
     "@types/lodash": "4.14.91",
     "@types/node-uuid": "0.0.28",
     "@types/react": "16.x",

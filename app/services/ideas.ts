@@ -91,10 +91,7 @@ export interface IIdeaUpdate {
   topic_ids?: string[] | undefined | null;
   area_ids?: string[] | undefined | null;
   phase_ids?: string[] | undefined | null;
-  location_point_geojson?: {
-    type: string;
-    coordinates: number[];
-  } | undefined | null;
+  location_point_geojson?: GeoJSON.Point | null;
   location_description?: string | undefined | null;
 }
 
@@ -108,6 +105,10 @@ export function ideaBySlugStream(ideaSlug: string) {
 
 export function ideasStream(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeas>({ apiEndpoint: `${API_PATH}/ideas`, ...streamParams });
+}
+
+export function ideasMarkersStream(streamParams: IStreamParams | null = null) {
+  return streams.get<{data: Partial<IIdeaData>[], links: IIdeaLinks}>({ apiEndpoint: `${API_PATH}/ideas/as_markers`, ...streamParams, cacheStream: false });
 }
 
 export function addIdea(
