@@ -5,7 +5,8 @@ import * as React from 'react';
 import GetIdea from 'utils/resourceLoaders/components/GetIdea';
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import { Button as SemanticButton } from 'semantic-ui-react';
+import { Button as SemanticButton, Icon } from 'semantic-ui-react';
+import VoteControl from 'components/VoteControl';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -13,7 +14,7 @@ import messages from './messages';
 
 // Style
 import styled from 'styled-components';
-import VoteControl from 'components/VoteControl';
+import { color, fontSize } from 'utils/styleUtils';
 
 const Wrapper = styled.div`
   align-items: strech;
@@ -34,11 +35,19 @@ const Description = styled.div`
 `;
 
 const VoteComments = styled.div`
+  align-items: center;
+  display: flex;
   flex: 1 0 auto;
+  justify-content: space-between;
   margin-bottom: 1rem;
 `;
 const StyledButton = styled(Button)`
   justify-self: flex-end;
+`;
+
+const CommentsCound = styled.span`
+  color: ${color('label')};
+  font-size: ${fontSize('base')};
 `;
 
 const CloseButton = styled(SemanticButton)`
@@ -69,6 +78,10 @@ export default class IdeaBox extends React.Component<Props> {
                 <Description><T value={idea.attributes.body_multiloc} /></Description>
                 <VoteComments>
                   <VoteControl ideaId={idea.id} size="small" />
+                  <CommentsCound>
+                    <Icon name="comments" />
+                    {idea.attributes.comments_count}
+                  </CommentsCound>
                 </VoteComments>
                 <StyledButton circularCorners={false} width="100%" linkTo={`/ideas/${idea.attributes.slug}`}>
                   <FormattedMessage {...messages.seeIdea} />
