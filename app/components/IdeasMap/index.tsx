@@ -8,20 +8,35 @@ import GetIdeas from 'utils/resourceLoaders/components/GetIdeas';
 
 // Styling
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const StyledMap = styled<MapProps>(Map)`
-  flex: 2;
-  height: 600px;
+  flex: 1;
+  height: 400px;
+
+  ${media.biggerThanPhone`
+    flex-basis: 60%;
+    height: 600px;
+  `}
 `;
 
 const StyledBox = styled<IdeaBoxProps>(IdeaBox)`
   flex: 1;
+  flex-basis: 100%;
+
+  ${media.biggerThanPhone`
+    flex-basis: 40%;
+  `}
 `;
 
 const MapWrapper = styled.div`
   display: flex;
-  height: 600px;
+  height: 400px;
   margin-bottom: 2rem;
+
+  ${media.biggerThanPhone`
+    height: 600px;
+  `}
 `;
 
 // Typing
