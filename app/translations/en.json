@@ -438,8 +438,6 @@
   "app.containers.ProjectsIndexPage.areasTitle": "Areas",
   "app.containers.ProjectsIndexPage.loading": "Loading...",
   "app.containers.ProjectsIndexPage.pageTitle": "Projects",
-  "app.containers.SearchWidget.noResultsMessage": "No results",
-  "app.containers.SearchWidget.waitingForInput": "Results will be displayed after typing ends...",
   "app.containers.SignIn.createAnAccount": "Create an account",
   "app.containers.SignIn.emailLabel": "Email",
   "app.containers.SignIn.emailPlaceholder": "Email",

@@ -1,14 +1,12 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+import { isString, isEmpty, isError } from 'lodash';
 
 // libraries
 import CSSTransition from 'react-transition-group/CSSTransition';
 import Transition from 'react-transition-group/Transition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import { browserHistory } from 'react-router';
-import { EditorState, convertToRaw } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
 
 // components
 import ButtonBar from './ButtonBar';
@@ -23,15 +21,8 @@ import { getAuthUserAsync } from 'services/auth';
 import { localState, ILocalStateService } from 'services/localState';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 // utils
 import { convertToGeoJson } from 'utils/locationTools';
-
-// typings
-import { IOption, ImageFile } from 'typings';
 
 // style
 import { media } from 'utils/styleUtils';
@@ -144,7 +135,7 @@ interface GlobalState {}
 
 interface State extends LocalState, GlobalState {}
 
-class IdeasNewPage2 extends React.PureComponent<Props, State> {
+export default class IdeasNewPage2 extends React.PureComponent<Props, State> {
   initialLocalState: LocalState;
   initialGlobalState: IIdeasNewPageGlobalState;
   localState: ILocalStateService<LocalState>;
@@ -201,8 +192,8 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
     const ideaDescription = { [locale as string]: (description || '') };
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const projectId = (selectedProject ? selectedProject.value as string : null);
-    const locationGeoJSON = (_.isString(location) && !_.isEmpty(location) ? await convertToGeoJson(location) : null);
-    const locationDescription = (_.isString(location) && !_.isEmpty(location) ? location : null);
+    const locationGeoJSON = (isString(location) && !isEmpty(location) ? await convertToGeoJson(location) : null);
+    const locationDescription = (isString(location) && !isEmpty(location) ? location : null);
 
     if (ideaId) {
       return await updateIdea(ideaId, {
@@ -241,7 +232,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       }
 
       // upload the newly dropped image to the server
-      if (imageChanged && imageFile && imageFile[0] && imageFile[0].base64 && _.isString(imageFile[0].base64)) {
+      if (imageChanged && imageFile && imageFile[0] && imageFile[0].base64 && isString(imageFile[0].base64)) {
         ideaImage = await addIdeaImage(idea.data.id, imageFile[0].base64 as string, 0);
       }
 
@@ -265,7 +256,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       const idea = await this.postIdeaAndIdeaImage('published', authUser.data.id);
       browserHistory.push('/ideas');
     } catch (error) {
-      if (_.isError(error) && error.message === 'not_authenticated') {
+      if (isError(error) && error.message === 'not_authenticated') {
         try {
           const idea = await this.postIdeaAndIdeaImage('draft');
           this.globalState.set({ processing: false });
@@ -294,12 +285,15 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 
   render() {
+    console.log('index state:');
+    console.log(this.state);
+
     if (!this.state) { return null; }
 
-    const { showIdeaForm, locale } = this.state;
+    const { showIdeaForm } = this.state;
     const timeout = 600;
 
-    const buttonBar = (showIdeaForm && locale) ? (
+    const buttonBar = (showIdeaForm) ? (
       <CSSTransition classNames="buttonbar" timeout={timeout}>
         <ButtonBarContainer>
           <ButtonBar onSubmit={this.handleOnIdeaSubmit} />
@@ -307,7 +301,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       </CSSTransition>
     ) : null;
 
-    const newIdeasForm = (showIdeaForm && locale) ? (
+    const newIdeasForm = (showIdeaForm) ? (
       <CSSTransition classNames="page" timeout={timeout}>
         <PageContainer className="ideaForm">
           <NewIdeaForm onSubmit={this.handleOnIdeaSubmit} />
@@ -315,7 +309,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       </CSSTransition>
     ) : null;
 
-    const signInUp = (!showIdeaForm && locale) ? (
+    const signInUp = (!showIdeaForm) ? (
       <CSSTransition classNames="page" timeout={timeout}>
         <PageContainer>
           <SignInUp
@@ -337,5 +331,3 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
     );
   }
 }
-
-export default IdeasNewPage2;

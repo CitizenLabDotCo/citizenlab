@@ -585,7 +585,7 @@ class IdeasShow extends React.PureComponent<Props, State> {
         this.setState({ locale, idea, ideaImage, ideaAuthor, project, loading: false });
       }),
 
-      comments$.subscribe(ideaComments => {
+      comments$.subscribe((ideaComments) => {
         this.setState({ ideaComments });
       }),
 

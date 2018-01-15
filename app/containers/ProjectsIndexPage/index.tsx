@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+import { has, isString, isEmpty, isEqual, isArray, cloneDeep } from 'lodash';
 
 // libraries
 import queryString from 'query-string';
@@ -114,14 +114,14 @@ class IdeasIndex extends React.PureComponent<Props, State> {
     const query = browserHistory.getCurrentLocation().query;
     let filter = {};
 
-    if (_.has(query, 'areas') && _.isString(query.areas)) {
+    if (has(query, 'areas') && isString(query.areas)) {
       filter = {
         areas: [query.areas]
       };
     }
 
     this.state = { filter };
-
+    this.subscriptions = [];
     this.areas$ = new Rx.Subject();
   }
 
@@ -139,7 +139,7 @@ class IdeasIndex extends React.PureComponent<Props, State> {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (!_.isEqual(this.state.filter, nextState.filter)) {
+    if (!isEqual(this.state.filter, nextState.filter)) {
       browserHistory.push({
         pathname: '/projects',
         query: nextState.filter
@@ -150,8 +150,8 @@ class IdeasIndex extends React.PureComponent<Props, State> {
   componentDidMount() {
     this.unlisten = browserHistory.listen((location) => {
       if (location.pathname === '/projects') {
-        const filter = _.cloneDeep(location.query);
-        this.setState(state => ({ filter: !_.isEqual(filter, state.filter) ? filter : state.filter }));
+        const filter = cloneDeep(location.query);
+        this.setState(state => ({ filter: !isEqual(filter, state.filter) ? filter : state.filter }));
       }
     });
   }
@@ -172,9 +172,9 @@ class IdeasIndex extends React.PureComponent<Props, State> {
     const { filter } = this.state;
     let selectedAreas: string[] = [];
 
-    if (_.has(filter, 'areas') && _.isString(filter.areas) && !_.isEmpty(filter.areas)) {
+    if (has(filter, 'areas') && isString(filter.areas) && !isEmpty(filter.areas)) {
       selectedAreas = [filter.areas];
-    } else if (_.has(filter, 'areas') && _.isArray(filter.areas) && !_.isEmpty(filter.areas)) {
+    } else if (has(filter, 'areas') && isArray(filter.areas) && !isEmpty(filter.areas)) {
       selectedAreas = filter.areas;
     }
 

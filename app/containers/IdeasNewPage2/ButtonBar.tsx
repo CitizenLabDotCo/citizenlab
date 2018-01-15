@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
@@ -56,7 +55,7 @@ interface GlobalState {
 
 interface State extends GlobalState {}
 
-class ButtonBar extends React.PureComponent<Props, State> {
+export default class ButtonBar extends React.PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Rx.Subscription[];
 
@@ -71,8 +70,7 @@ class ButtonBar extends React.PureComponent<Props, State> {
 
     this.subscriptions = [
       globalState$.subscribe(({ submitError, processing }) => {
-        const newState: State = { submitError, processing };
-        this.setState(newState);
+        this.setState({ submitError, processing });
       })
     ];
   }
@@ -107,5 +105,3 @@ class ButtonBar extends React.PureComponent<Props, State> {
     );
   }
 }
-
-export default ButtonBar;
