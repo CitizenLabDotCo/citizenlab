@@ -404,6 +404,8 @@
   "app.containers.Projects.LoadingError": "Oops... something went wrong",
   "app.containers.Projects.LoadingMessage": "Loading",
   "app.containers.Projects.allEvents": "All events",
+  "app.containers.Projects.displayCards": "Cards",
+  "app.containers.Projects.displayMap": "Map",
   "app.containers.Projects.header": "Projects",
   "app.containers.Projects.helmetDescription": "Projects",
   "app.containers.Projects.info.addIdea": "Add an idea to this project",
