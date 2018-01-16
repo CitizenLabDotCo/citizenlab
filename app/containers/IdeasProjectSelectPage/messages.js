@@ -8,7 +8,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   pageTitle: {
     id: 'app.containers.IdeasProjectSelect.pageTitle',
-    defaultMessage: 'Select your project',
+    defaultMessage: 'What\'s your idea about?',
   },
   cityProjects: {
     id: 'app.containers.IdeasProjectSelect.cityProjects',
@@ -16,14 +16,18 @@ export default defineMessages({
   },
   cityProjectsExplanation: {
     id: 'app.containers.IdeasProjectSelect.cityProjectsExplanation',
-    defaultMessage: 'These are some projects {orgName} is currently working on',
+    defaultMessage: 'These are the projects {orgName} is currently working on. Contribute by giving your input.',
   },
   openProject: {
     id: 'app.containers.IdeasProjectSelect.openProject',
-    defaultMessage: 'Open ideas',
+    defaultMessage: 'Something else',
   },
   openProjectExplanation: {
     id: 'app.containers.IdeasProjectSelect.openProjectExplanation',
-    defaultMessage: 'Have an idea that doesn\'t fit in? Try your luck and get enough votes to put it on the agenda!',
+    defaultMessage: 'Have an idea about something else? See whether fellow citizens agree and make {orgName} notice!',
+  },
+  continueButton: {
+    id: 'app.containers.IdeasProjectSelect.continueButton',
+    defaultMessage: 'Continue',
   },
 });
