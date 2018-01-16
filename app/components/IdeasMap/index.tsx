@@ -1,13 +1,25 @@
 // Libs
 import * as React from 'react';
+import { flow } from 'lodash';
+import { renderToStaticMarkup } from 'react-dom/server';
+import Leaflet from 'leaflet';
 
 // Components
 import Map, { Props as MapProps } from 'components/Map';
 import IdeaBox, { Props as IdeaBoxProps } from './IdeaBox';
+
+// Injectors
 import GetIdeas from 'utils/resourceLoaders/components/GetIdeas';
+import { injectTenant, InjectedTenant } from 'utils/resourceLoaders/tenantLoader';
+import { injectLocale, InjectedLocale } from 'utils/resourceLoaders/localeLoader';
+
+// i18n
+import { IntlProvider } from 'react-intl';
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import messages from './messages';
 
 // Styling
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const StyledMap = styled<MapProps>(Map)`
@@ -41,6 +53,8 @@ const MapWrapper = styled.div`
 
 // Typing
 import { IIdeaData } from 'services/ideas';
+import Button from 'components/UI/Button';
+import { browserHistory } from 'react-router';
 interface Props {
   project?: string;
   phase?: string;
@@ -52,7 +66,7 @@ interface State {
   selectedIdea: string | null;
 }
 
-class IdeasMap extends React.Component<Props, State> {
+class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, State> {
   constructor(props) {
     super(props);
 
@@ -81,6 +95,27 @@ class IdeasMap extends React.Component<Props, State> {
     this.setState({ selectedIdea: null });
   }
 
+  onMapClick = ({ map, position }: {map: Leaflet.Map, position: Leaflet.LatLng}): void => {
+    function openIdeaCreation() {
+      browserHistory.push(`/ideas/new/?latlng=${position.lat}.${position.lng}`);
+    }
+
+    Leaflet.popup()
+    .setLatLng(position)
+    .setContent(renderToStaticMarkup(
+      <IntlProvider locale={this.props.locale}>
+        <ThemeProvider theme={{ colorMain: this.props.tenant ? this.props.tenant.attributes.settings.core.color_main : '#ef0071' }}>
+          <Button onClick={openIdeaCreation} icon="plus-circle">
+            <FormattedMessage {...messages.postIdeaHere} />
+          </Button>
+        </ThemeProvider>
+      </IntlProvider>
+    ))
+    .openOn(map);
+
+    return;
+  }
+
   render() {
     return (
       <GetIdeas project={this.props.project} markers>
@@ -89,7 +124,7 @@ class IdeasMap extends React.Component<Props, State> {
             {this.state.selectedIdea &&
               <StyledBox idea={this.state.selectedIdea} onClose={this.deselectIdea} />
             }
-            <StyledMap center={[0, 0]} points={this.getPoints(ideaMarkers)} onMarkerClick={this.selectIdea} />
+            <StyledMap center={[0, 0]} points={this.getPoints(ideaMarkers)} onMarkerClick={this.selectIdea} onMapClick={this.onMapClick} />
           </MapWrapper>
         )}
       </GetIdeas>
@@ -97,4 +132,7 @@ class IdeasMap extends React.Component<Props, State> {
   }
 }
 
-export default IdeasMap;
+export default flow([
+  injectTenant(),
+  injectLocale(),
+])(IdeasMap);
