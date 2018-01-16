@@ -2,7 +2,6 @@ import { IProject } from './projects';
 import { IRelationship, Multiloc, API } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import request from 'utils/request';
 
 const apiEndpoint = `${API_PATH}/projects`;
 
@@ -41,7 +40,7 @@ export interface IProjectData {
 }
 
 export interface IUpdatedProjectProperties {
-  header_bg?: string | { small: string, medium: string, large: string};
+  header_bg?: string | { small: string, medium: string, large: string} | null;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   description_preview_multiloc?: Multiloc;
@@ -64,15 +63,15 @@ export interface IProjects {
   data: IProjectData[];
 }
 
-export function projectsStream(streamParams: IStreamParams<IProjects> | null = null) {
+export function projectsStream(streamParams: IStreamParams | null = null) {
   return streams.get<IProjects>({ apiEndpoint, ...streamParams });
 }
 
-export function projectBySlugStream(projectSlug: string, streamParams: IStreamParams<IProject> | null = null) {
+export function projectBySlugStream(projectSlug: string, streamParams: IStreamParams | null = null) {
   return streams.get<IProject>({ apiEndpoint: `${apiEndpoint}/by_slug/${projectSlug}`, ...streamParams });
 }
 
-export function projectByIdStream(projectId: string, streamParams: IStreamParams<IProject> | null = null) {
+export function projectByIdStream(projectId: string, streamParams: IStreamParams | null = null) {
   return streams.get<IProject>({ apiEndpoint: `${apiEndpoint}/${projectId}`, ...streamParams });
 }
 

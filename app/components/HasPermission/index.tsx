@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as Rx from 'rxjs';
-import { groupBy } from 'lodash';
 import { IUser } from 'services/users';
 import { TPermissionItem, hasPermission } from 'services/permissions';
 

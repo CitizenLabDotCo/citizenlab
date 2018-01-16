@@ -67,7 +67,7 @@ class ColorPickerInput extends React.Component<Props, State> {
   }
 
   change = (colorDescriptor) => {
-    this.props.onChange(colorDescriptor.hex);
+    if (this.props.onChange) this.props.onChange(colorDescriptor.hex);
   }
 
   render() {

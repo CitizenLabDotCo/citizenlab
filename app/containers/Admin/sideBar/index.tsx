@@ -1,6 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
-import * as Rx from 'rxjs/Rx';
 
 // router
 import { browserHistory, Link } from 'react-router';
@@ -25,19 +23,19 @@ const Menu = styled.div`
   z-index: 1;
   margin-top: 0px;
   background: #3b3b3b;
-  padding-top: 40px;
+  padding-top: 38px;
 `;
 
 const IconWrapper = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 49px;
+  height: 49px;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
 const StyledIcon = styled(Icon)`
-  height: 19px;
+  height: 18px;
   fill: #fff;
   opacity: 0.5;
 `;
@@ -48,7 +46,7 @@ const Text = styled.div`
   font-weight: 400;
   line-height: 21px;
   margin-left: 20px;
-  opacity: 0.5;
+  opacity: 0.4;
 `;
 
 const MenuLink = styled(Link)`
@@ -69,7 +67,7 @@ const MenuItem: any = styled.div`
   padding: 0;
   padding-bottom: 1px;
   margin: 0;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
   cursor: pointer;
 
   &:hover {

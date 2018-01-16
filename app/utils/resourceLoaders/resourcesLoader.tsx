@@ -24,7 +24,7 @@ export interface InjectedResourcesLoaderProps<IResourceData> {
 }
 
 interface TStreamFn<IResources> {
-  (streamParams: IStreamParams<IResources> | null): IStream<IResources>;
+  (streamParams: IStreamParams | null): IStream<IResources>;
 }
 
 interface IIResources<IResourceData> {

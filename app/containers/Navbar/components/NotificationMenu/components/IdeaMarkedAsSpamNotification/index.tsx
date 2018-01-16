@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
+import { Multiloc } from 'typings';
 
 import { IIdeaMarkedAsSpamNotificationData } from 'services/notifications';
 import { ideaByIdStream } from 'services/ideas';
@@ -18,7 +19,7 @@ type Props = {
 
 type State = {
   ideaSlug?: string,
-  ideaTitle?: { [key: string]: string },
+  ideaTitle?: Multiloc,
 };
 
 export default class IdeaMarkedAsSpamNotification extends React.PureComponent<Props, State> {

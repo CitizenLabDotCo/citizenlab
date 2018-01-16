@@ -1,4 +1,3 @@
-import { find } from 'lodash';
 import { IUser } from 'services/users';
 
 const hasRole = (user: IUser, role) => {

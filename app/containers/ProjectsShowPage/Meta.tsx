@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+import { isFunction } from 'lodash';
 
 // router
 import { browserHistory } from 'react-router';
@@ -11,7 +11,7 @@ import Helmet from 'react-helmet';
 
 // services
 import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
+import { currentTenantStream } from 'services/tenant';
 import { projectBySlugStream, IProject } from 'services/projects';
 import { projectImagesStream, IProjectImages } from 'services/projectImages';
 
@@ -19,17 +19,18 @@ import { projectImagesStream, IProjectImages } from 'services/projectImages';
 import { stripHtml } from 'utils/textUtils';
 
 // i18n
-import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
+
+// typings
+import { Locale } from 'typings';
 
 type Props = {
   projectSlug: string;
 };
 
 type State = {
-  locale: string | null;
-  currentTenantLocales: string[] | null;
+  locale: Locale | null;
+  currentTenantLocales: Locale[] | null;
   project: IProject | null;
   projectImages: IProjectImages | null;
   location: Location | null;
@@ -69,7 +70,7 @@ export default class Meta extends React.PureComponent<Props, State> {
       ).switchMap(([locale, currentTenantLocales, project]) => {
         const projectImages$ = projectImagesStream(project.data.id).observable;
         return projectImages$.map((projectImages) => ({ locale, currentTenantLocales, project, projectImages }));
-      }).subscribe(({ locale, currentTenantLocales, project, projectImages }) => {
+      }).subscribe(({ locale, currentTenantLocales, project }) => {
         this.setState({ locale, currentTenantLocales, project, loaded: true });
       })
     ];
@@ -82,7 +83,7 @@ export default class Meta extends React.PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
-    if (_.isFunction(this.unlisten)) {
+    if (isFunction(this.unlisten)) {
       this.unlisten();
     }
 
@@ -90,7 +91,7 @@ export default class Meta extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, currentTenantLocales, project, projectImages, loaded, location } = this.state;
+    const { locale, currentTenantLocales, project, projectImages, loaded } = this.state;
 
     if (loaded && locale && currentTenantLocales && project) {
       const title = getLocalized(project.data.attributes.title_multiloc, locale, currentTenantLocales);

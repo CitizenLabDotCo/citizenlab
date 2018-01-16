@@ -2,7 +2,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import styled from 'styled-components';
-import { intlShape } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { isString, reject } from 'lodash';
@@ -12,10 +11,8 @@ import { projectBySlugStream } from 'services/projects';
 import { phasesStream, IPhaseData, deletePhase } from 'services/phases';
 
 // Components
-import { Link } from 'react-router';
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import Icon from 'components/UI/Icon';
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
 
 // Utils
@@ -102,7 +99,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
     return (event) => {
       event.preventDefault();
       if (window.confirm(this.props.intl.formatMessage(messages.deletePhaseConfirmation))) {
-        deletePhase(phaseId).then((response) => {
+        deletePhase(phaseId).then(() => {
           this.setState({ phases: reject(this.state.phases, { id: phaseId }) });
         });
       }

@@ -2,13 +2,9 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
-// libraries
-import classNames from 'classnames';
-
 // components
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Error from 'components/UI/Error';
 import Author from './Author';
 import CommentingDisabled from './CommentingDisabled';
 
@@ -17,20 +13,20 @@ import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { InjectedIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
 import { authUserStream } from 'services/auth';
 import { localeStream } from 'services/locale';
-import { IUser } from 'services/users';
-import { addCommentToIdea, addCommentToComment } from 'services/comments';
 import { ideaByIdStream, IIdeaData } from 'services/ideas';
+import { IUser } from 'services/users';
+import { addCommentToIdea } from 'services/comments';
 
 // style
 import styled from 'styled-components';
-import { darken } from 'polished';
+import { Locale } from 'typings';
 
 const Container = styled.div`
   padding: 0;
@@ -38,12 +34,6 @@ const Container = styled.div`
 `;
 
 const CommentContainer = styled.div``;
-
-const SignInMessage = styled.div`
-  color: #333;
-  font-size: 18px;
-  font-weight: 300;
-`;
 
 const StyledAuthor = styled(Author)`
   margin-bottom: 10px;
@@ -66,7 +56,7 @@ type Tracks = {
 };
 
 type State = {
-  locale: string | null;
+  locale: Locale | null;
   authUser: IUser | null;
   inputValue: string;
   processing: boolean;

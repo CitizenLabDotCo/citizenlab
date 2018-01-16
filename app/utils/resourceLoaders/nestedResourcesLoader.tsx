@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-import { IStreamParams, IStream } from 'utils/streams';
+import { IStreamParams } from 'utils/streams';
 
 
 interface State<IResourceData> {
@@ -21,24 +21,16 @@ export interface InjectedNestedResourceLoaderProps<IResourceData> {
   };
 }
 
-interface IStreamFn<IResources> {
-  (parentId: string, streamParams: IStreamParams<IResources> | null): IStream<IResources>;
+interface IStreamFn {
+  (parentId: string, streamParams: IStreamParams);
 }
 
 interface IParentIdFn {
   (props: any): string;
 }
 
-interface IIResources<IResourceData> {
-  data: IResourceData[];
-  links?: {
-    self?: number;
-    last?: number;
-  };
-}
-
-export const injectNestedResources = <IResourceData, IResources extends IIResources<IResourceData>>(propName: string, streamFn: IStreamFn<IResources>, parentIdFn: IParentIdFn) =>
-  <TOriginalProps extends {}>(WrappedComponent: React.ComponentClass<TOriginalProps & InjectedNestedResourceLoaderProps<IResourceData>>) => {
+export const injectNestedResources = function <IResourceData>(propName: string, streamFn: IStreamFn, parentIdFn: IParentIdFn) {
+  return <TOriginalProps extends {}>(WrappedComponent: React.ComponentClass<TOriginalProps & InjectedNestedResourceLoaderProps<IResourceData>>) => {
     return class ResourceManager extends React.Component<TOriginalProps, State<IResourceData>> {
 
       subscriptions: Rx.Subscription[] = [];
@@ -116,4 +108,4 @@ export const injectNestedResources = <IResourceData, IResources extends IIResour
       }
     };
   };
-
+};

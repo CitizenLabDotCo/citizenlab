@@ -1,11 +1,10 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import { darken, rgba } from 'polished';
-import { ITheme } from 'typings';
 import Spinner from 'components/UI/Spinner';
 import Icon, { IconNames } from 'components/UI/Icon';
 import { Link } from 'react-router';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 const StyledButton = styled.button``;
 

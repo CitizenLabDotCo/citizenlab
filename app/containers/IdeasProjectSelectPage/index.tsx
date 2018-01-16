@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { size, isEmpty } from 'lodash';
+import { size } from 'lodash';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import { browserHistory } from 'react-router';
@@ -13,7 +13,6 @@ import OpenProjectCard from './OpenProjectCard';
 import Radio from 'components/UI/Radio';
 import Button from 'components/UI/Button';
 import ButtonBar from 'components/ButtonBar';
-import Spinner from 'components/UI/Spinner';
 
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -153,7 +152,6 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
   render() {
     const { selectedProjectId } = this.state;
     const { all: projects, loadMore, hasMore, loading } = this.props.projects;
-    const projectsLoading = this.props.projects.loading;
     const openProject = this.props.projects.all && this.props.projects.all[0];
 
     if (loading && !projects) return null;

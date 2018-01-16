@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { darken } from 'polished';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -15,7 +14,7 @@ const IntervalButton: any = styled.button`
   font-size: 16px;
   padding: 1rem 1.5rem;
   color: #000000;
-  background: #E1E1E1;
+  background: #e0e0e0;
   opacity: ${(props: any) => props.active ? 1 : 0.27};
   margin-right: 2px;
   cursor: pointer;

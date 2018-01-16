@@ -3,7 +3,6 @@ import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
-import HelmetIntl from 'components/HelmetIntl';
 import IdeaCards from 'components/IdeaCards';
 import ContentContainer from 'components/ContentContainer';
 import Avatar from 'components/Avatar';

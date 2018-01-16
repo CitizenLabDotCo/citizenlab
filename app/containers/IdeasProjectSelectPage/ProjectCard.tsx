@@ -1,17 +1,14 @@
 import * as React from 'react';
-import { flow } from 'lodash';
 import styled from 'styled-components';
 
 import { IProjectData } from 'services/projects';
 import { projectImagesStream, IProjectImageData } from 'services/projectImages';
 import { injectNestedResources, InjectedNestedResourceLoaderProps } from 'utils/resourceLoaders/nestedResourcesLoader';
 
-import { media, color } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
 
 import Icon from 'components/UI/Icon';
 import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 
 const Container = styled<any,'div'>('div')`

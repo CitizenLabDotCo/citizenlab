@@ -16,7 +16,6 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { color } from 'utils/styleUtils';
 
 const LinkButton = styled.button`
   background: none;

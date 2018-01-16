@@ -14,7 +14,6 @@ export function* getIdeasXlsx() {
     yield put(ideasXlsxLoaded());
   } catch (err) {
     // err is string
-    console.log(err);
     yield put(ideasXlsxLoadError(err));
   }
 }
