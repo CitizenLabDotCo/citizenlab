@@ -9,7 +9,7 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import { browserHistory } from 'react-router';
 
 // components
-import ButtonBar from './ButtonBar';
+import IdeasNewButtonBar from './IdeasNewButtonBar';
 import NewIdeaForm from './NewIdeaForm';
 import SignInUp from './SignInUp';
 
@@ -85,41 +85,6 @@ const PageContainer = styled.div`
           transform: translateX(-800px);
         `}
       }
-    }
-  }
-`;
-
-const ButtonBarContainer = styled.div`
-  width: 100%;
-  height: 68px;
-  position: fixed;
-  z-index: 99999;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #fff;
-  border-top: solid 1px #ddd;
-  will-change: transform;
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
-
-  &.buttonbar-enter {
-    transform: translateY(64px);
-
-    &.buttonbar-enter-active {
-      transform: translateY(0);
-      transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
-    }
-  }
-
-  &.buttonbar-exit {
-    transform: translateY(0);
-
-    &.buttonbar-exit-active {
-      transform: translateY(64px);
-      transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
     }
   }
 `;
@@ -294,11 +259,7 @@ export default class IdeasNewPage2 extends React.PureComponent<Props, State> {
     const timeout = 600;
 
     const buttonBar = (showIdeaForm) ? (
-      <CSSTransition classNames="buttonbar" timeout={timeout}>
-        <ButtonBarContainer>
-          <ButtonBar onSubmit={this.handleOnIdeaSubmit} />
-        </ButtonBarContainer>
-      </CSSTransition>
+      <IdeasNewButtonBar onSubmit={this.handleOnIdeaSubmit} />
     ) : null;
 
     const newIdeasForm = (showIdeaForm) ? (
