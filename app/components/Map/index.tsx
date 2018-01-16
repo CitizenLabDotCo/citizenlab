@@ -1,6 +1,7 @@
 // Libraries
 import * as React from 'react';
 import { compact, differenceBy } from 'lodash';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 // Map
 import Leaflet, { Marker } from 'leaflet';
@@ -65,10 +66,14 @@ interface State {
 
 export default class CLMap extends React.Component<Props, State> {
   private map: Leaflet.Map;
+  private mapContainer: HTMLElement;
   private clusterLayer: Leaflet.MarkerClusterGroup;
   private markerBounds: Leaflet.LatLngBoundsExpression;
   private markers: Leaflet.Marker[];
   private interval: number;
+  private subs: Subscription[] = [];
+  private dimensionW$: BehaviorSubject<number> = new BehaviorSubject(0);
+  private dimensionH$: BehaviorSubject<number> = new BehaviorSubject(0);
 
   private clusterOptions = {
     showCoverageOnHover: false,
@@ -88,6 +93,8 @@ export default class CLMap extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
+
+    window.setInterval(this.resizeDetector, 200);
   }
 
   componentDidCatch(error, info) {
@@ -98,6 +105,11 @@ export default class CLMap extends React.Component<Props, State> {
     if (this.props.points) {
       this.convertPoints(this.props.points);
     }
+
+    this.subs.push(
+      this.dimensionH$.distinctUntilChanged().subscribe(() => this.map.invalidateSize()),
+      this.dimensionW$.distinctUntilChanged().subscribe(() => this.map.invalidateSize()),
+    );
   }
 
   componentWillReceiveProps(newProps: Props) {
@@ -112,6 +124,8 @@ export default class CLMap extends React.Component<Props, State> {
 
   bindMapContainer = (element) => {
     if (!this.map) {
+      // Bind the mapElement
+      this.mapContainer = element;
 
       // Init the map
       this.map = Leaflet.map(element, {
@@ -158,6 +172,13 @@ export default class CLMap extends React.Component<Props, State> {
   handleMarkerClick = (event) => {
     if (this.props.onMarkerClick) {
       this.props.onMarkerClick(event.layer.options.id, event.layer.options.data);
+    }
+  }
+
+  resizeDetector = () => {
+    if (this.mapContainer) {
+      this.dimensionH$.next(this.mapContainer.clientHeight);
+      this.dimensionW$.next(this.mapContainer.clientWidth);
     }
   }
 
