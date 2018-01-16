@@ -6,8 +6,9 @@ import { IProjectData } from 'services/projects';
 import { projectImagesStream, IProjectImageData } from 'services/projectImages';
 import { injectNestedResources, InjectedNestedResourceLoaderProps } from 'utils/resourceLoaders/nestedResourcesLoader';
 
-import { media } from 'utils/styleUtils';
+import { media, color } from 'utils/styleUtils';
 
+import Icon from 'components/UI/Icon';
 import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -67,6 +68,22 @@ const ImageWrapper = styled.div`
   }
 `;
 
+const ProjectImagePlaceholder = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${props => props.theme.colors.placeholderBg};
+  overflow: hidden;
+  width: 110px;
+  height: 110px;
+`;
+
+const ProjectImagePlaceholderIcon = styled(Icon) `
+  width: 50%;
+  height: 50%;
+  fill: #fff;
+`;
+
 const ProjectContent = styled.div`
   flex: 1;
   height: 100%;
@@ -110,7 +127,14 @@ class ProjectCard extends React.Component<Props & InjectedNestedResourceLoaderPr
         selected={this.props.selected}
       >
         <ImageWrapper>
-          <img src={smallImage} alt="project image" />
+          {smallImage ?
+            <img src={smallImage} alt="project image" />
+          :
+            <ProjectImagePlaceholder>
+              <ProjectImagePlaceholderIcon name="project" />
+            </ProjectImagePlaceholder>
+          }
+
         </ImageWrapper>
         <ProjectContent>
           <ProjectTitle>
