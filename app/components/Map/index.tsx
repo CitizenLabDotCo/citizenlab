@@ -59,6 +59,7 @@ export interface Props {
   className?: string;
   zoom?: number;
   onMarkerClick?: {(id: string, data: any): void};
+  onMapClick?: {({ map, position }: {map: Leaflet.Map, position: Leaflet.LatLng}): void};
 }
 
 interface State {
@@ -135,6 +136,8 @@ export default class CLMap extends React.Component<Props, State> {
         maxZoom: 17,
       });
 
+      if (this.props.onMapClick) this.map.on('click', this.handleMapClick);
+
       // mapboxGL style
       (Leaflet as any).mapboxGL({
         accessToken: 'not-needed',
@@ -164,10 +167,15 @@ export default class CLMap extends React.Component<Props, State> {
       this.clusterLayer = Leaflet.markerClusterGroup(this.clusterOptions);
       this.clusterLayer.addLayers(this.markers);
       this.map.addLayer(this.clusterLayer);
-      this.clusterLayer.on('click', this.handleMarkerClick);
 
-      if (this.markerBounds) this.map.fitBounds(this.markerBounds);
+      if (this.props.onMarkerClick) this.clusterLayer.on('click', this.handleMarkerClick);
+
+      if (this.markerBounds) this.map.fitBounds(this.markerBounds, { maxZoom: 12 });
     }
+  }
+
+  handleMapClick = (event: Leaflet.LeafletMouseEvent) => {
+    if (this.props.onMapClick) this.props.onMapClick({ map: this.map, position: event.latlng });
   }
 
   handleMarkerClick = (event) => {
