@@ -37,7 +37,12 @@ class ImportIdeasService
   			  .include? topic_title
   		end.first
   	end.select{ |topic| topic }
-  	# d[:project] = idea_data[:project_title]
+  	project_title = idea_data[:project_title].downcase
+  	d[:project] = Project.all.select do |project|
+  		project.title_multiloc.values
+  		  .map{ |v| v.downcase }
+  		  .include? project_title
+  	end&.first
   	if idea_data[:user_email]
   	  d[:author] = User.find_by(email: idea_data[:user_email])
   	  if !d[:author]
