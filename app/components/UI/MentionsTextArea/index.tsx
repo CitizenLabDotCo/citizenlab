@@ -1,20 +1,19 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import * as Rx from 'rxjs/Rx';
 
 // libraries
 import { MentionsInput, Mention } from 'react-mentions';
 
 // services
-import { mentionsStream, IMention, IMentions } from 'services/mentions';
+import { mentionsStream } from 'services/mentions';
 
 // components
 import Error from 'components/UI/Error';
 
 // style
-import styled, { css } from 'styled-components';
-import { media, color, fontSize as getFontSize } from 'utils/styleUtils';
-import { transparentize, darken } from 'polished';
+import styled from 'styled-components';
+import { color } from 'utils/styleUtils';
+import { transparentize } from 'polished';
 
 const Container: any = styled.div`
   position: relative;
@@ -121,7 +120,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
     this.textareaElement = element;
   }
 
-  mentionDisplayTransform = (id, display, type) => {
+  mentionDisplayTransform = (_id, display) => {
     return '@' + display;
   }
 
@@ -157,7 +156,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
       const response = await mentionsStream({ queryParameters }).observable.first().toPromise();
 
       if (response && response.data && response.data.length > 0) {
-        users = response.data.map((user, index) => ({
+        users = response.data.map((user) => ({
           display: `${user.attributes.first_name} ${user.attributes.last_name}`,
           id: user.attributes.slug
         }));

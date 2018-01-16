@@ -5,7 +5,6 @@ import Icon from 'components/UI/Icon';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import messages from '../messages';
 
 // styling
 import styled from 'styled-components';

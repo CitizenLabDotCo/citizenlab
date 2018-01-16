@@ -36,7 +36,7 @@ const StyledRadio = styled(Radio)`
 `;
 
 // Typings
-import { API, Forms } from 'typings';
+import { Forms } from 'typings';
 
 interface Props extends Forms.crudParams {
   reasonCodes: Report['reason_code'][];

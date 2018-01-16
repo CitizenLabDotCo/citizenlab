@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const compression = require('compression');
 const pkg = require(path.resolve(process.cwd(), 'package.json'));
+const DashboardPlugin = require('webpack-dashboard/plugin');
 
 // Dev middleware
 const addDevMiddlewares = (app, webpackConfig) => {
@@ -16,6 +17,7 @@ const addDevMiddlewares = (app, webpackConfig) => {
     silent: true,
     stats: 'errors-only',
   });
+  compiler.apply(new DashboardPlugin());
 
   app.use(middleware);
   app.use(webpackHotMiddleware(compiler));

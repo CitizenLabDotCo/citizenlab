@@ -10,7 +10,11 @@ import messages from '../messages';
 
 // Styling
 import styled from 'styled-components';
-import { color, media } from 'utils/styleUtils';
+import { color } from 'utils/styleUtils';
+
+// Typings
+import { IPhaseData } from 'services/phases';
+import T from 'components/T';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -37,10 +41,6 @@ const PhaseIndex = styled.span`
   padding: 0;
 `;
 
-// Typings
-import { IPhaseData } from 'services/phases';
-import T from 'components/T';
-
 interface Props {
   phases: IPhaseData[];
   currentPhase: IPhaseData['id'] | null;
@@ -51,10 +51,9 @@ interface Props {
 
 interface State {}
 
-export default class MobileTimeline extends React.Component<Props, State> {
+export default class MobileTimeline extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
-
     this.state = {};
   }
 

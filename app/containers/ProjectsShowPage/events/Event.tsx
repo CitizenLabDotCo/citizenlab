@@ -1,30 +1,23 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 import * as moment from 'moment';
 import 'moment-timezone';
 
-// components
-import ContentContainer from 'components/ContentContainer';
-
 // services
-import { localeStream, updateLocale } from 'services/locale';
+import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { eventStream, IEvent } from 'services/events';
 
 // i18n
-import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 
 // style
-import styled, { css } from 'styled-components';
-import { transparentize, lighten, darken } from 'polished';
+import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import { Grid } from 'semantic-ui-react';
 
-// utils
-import { stripHtml } from 'utils/textUtils';
+// typings
+import { Locale } from 'typings';
 
 const Container = styled.div`
   /* opacity: ${(props: any) => props.event === 'past' ? '0.7' : 'inherit'}; */
@@ -139,7 +132,7 @@ type Props = {
 };
 
 type State = {
-  locale: string | null;
+  locale: Locale | null;
   currentTenant: ITenant | null;
   event: IEvent | null;
 };
@@ -197,7 +190,7 @@ export default class Event extends React.PureComponent<Props, State> {
       const startAtMonth = startAtMoment.format('MM');
       const endAtMonth = endAtMoment.format('MM');
       const startAtYear = startAtMoment.format('YYYY');
-      const endAtYear = endAtMoment.format('YYYY');
+      // const endAtYear = endAtMoment.format('YYYY');
 
       return (
         <Container className={className}>

@@ -1,26 +1,22 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
+import * as moment from 'moment';
 import { get, isEmpty } from 'lodash';
-import { Multiloc, API } from 'typings';
 
 // libraries
-import * as moment from 'moment';
 import { browserHistory } from 'react-router';
-import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
+import { EditorState } from 'draft-js';
 
 // components
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
-import TextArea from 'components/UI/TextArea';
 import Editor from 'components/UI/Editor';
-import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 
 // utils
-import { IStream } from 'utils/streams';
 import unsubscribe from 'utils/unsubscribe';
 import getSubmitState from 'utils/getSubmitState';
 import { getHtmlStringFromEditorState, getEditorStateFromHtmlString } from 'utils/editorTools';
@@ -35,11 +31,14 @@ import messages from './messages';
 // services
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
-import { projectBySlugStream, IProject, IProjectData } from 'services/projects';
-import { eventStream, updateEvent, addEvent, IEvent, IEventData, IEvents, IUpdatedEventProperties } from 'services/events';
+import { IProjectData } from 'services/projects';
+import { eventStream, updateEvent, addEvent, IEvent, IUpdatedEventProperties } from 'services/events';
 
 // styling
 import styled from 'styled-components';
+
+// typings
+import { Multiloc, API, Locale } from 'typings';
 
 const Container = styled.div`
   .SingleDatePickerInput {
@@ -56,7 +55,7 @@ type Props = {
 };
 
 interface State {
-  locale: string | null;
+  locale: Locale | null;
   currentTenant: ITenant | null;
   event: IEvent | null;
   attributeDiff: IUpdatedEventProperties;
@@ -160,7 +159,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
     this.setState({ focusedInput });
   }
 
-  isOutsideRange = (day) => {
+  isOutsideRange = () => {
     return false;
   }
 

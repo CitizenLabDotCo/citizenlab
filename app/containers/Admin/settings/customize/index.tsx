@@ -30,7 +30,7 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream, updateTenant, IUpdatedTenantProperties, ITenant, ITenantSettings } from 'services/tenant';
 
 // typings
-import { API, ImageFile } from 'typings';
+import { API, ImageFile, Locale } from 'typings';
 
 const StyledLabel = styled(Label)`
   display: flex;
@@ -87,7 +87,7 @@ type Props  = {
 };
 
 type State  = {
-  locale: string | null;
+  locale: Locale | null;
   attributesDiff: IAttributesDiff;
   currentTenant: ITenant | null;
   logo: ImageFile[] | null;
@@ -103,11 +103,10 @@ type State  = {
 };
 
 class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps, State> {
-  state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       locale: null,
       attributesDiff: {},
@@ -131,46 +130,37 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
     const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
-      locale$.subscribe(locale => this.setState({ locale })),
-
-      currentTenant$.switchMap((currentTenant) => {
+      Rx.Observable.combineLatest(
+        locale$,
+        currentTenant$
+      ).switchMap(([locale, currentTenant]) => {
         return Rx.Observable.combineLatest(
           convertUrlToFileObservable(currentTenant.data.attributes.logo.large),
           convertUrlToFileObservable(currentTenant.data.attributes.header_bg.large),
         ).map(([currentTenantLogo, currentTenantHeaderBg]) => ({
+          locale,
           currentTenant,
           currentTenantLogo,
           currentTenantHeaderBg
         }));
-      }).subscribe(({ currentTenant, currentTenantLogo, currentTenantHeaderBg }) => {
-        this.setState((state) => {
-          const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-          const titleCharCount = {};
-          const subtitleCharCount = {};
-          let logo: ImageFile[] | null = null;
-          let header_bg: ImageFile[] | null = null;
+      }).subscribe(({ locale, currentTenant, currentTenantLogo, currentTenantHeaderBg }) => {
+        const { attributesDiff } = this.state;
+        let logo: ImageFile[] | null = null;
+        let header_bg: ImageFile[] | null = null;
 
-          if (currentTenantLogo !== null && !has(state.attributesDiff, 'logo')) {
-            logo = [currentTenantLogo];
-          } else if (has(state.attributesDiff, 'logo')) {
-            logo = (state.attributesDiff.logo && state.attributesDiff.logo !== null ? [state.attributesDiff.logo] : null);
-          }
+        if (currentTenantLogo !== null && !has(attributesDiff, 'logo')) {
+          logo = [currentTenantLogo];
+        } else if (has(attributesDiff, 'logo')) {
+          logo = (attributesDiff.logo && attributesDiff.logo !== null ? [attributesDiff.logo] : null);
+        }
 
-          if (currentTenantHeaderBg !== null && !has(state.attributesDiff, 'header_bg')) {
-            header_bg = [currentTenantHeaderBg];
-          } else if (has(state.attributesDiff, 'header_bg')) {
-            header_bg = (state.attributesDiff.header_bg && state.attributesDiff.header_bg !== null ? [state.attributesDiff.header_bg] : null);
-          }
+        if (currentTenantHeaderBg !== null && !has(attributesDiff, 'header_bg')) {
+          header_bg = [currentTenantHeaderBg];
+        } else if (has(attributesDiff, 'header_bg')) {
+          header_bg = (attributesDiff.header_bg && attributesDiff.header_bg !== null ? [attributesDiff.header_bg] : null);
+        }
 
-          if (currentTenant && currentTenantLocales && currentTenantLocales.length > 0) {
-            currentTenantLocales.forEach((currentTenantLocale) => {
-              titleCharCount[currentTenantLocale] = size(get(currentTenant, `data.attributes.settings.core.header_title.${currentTenantLocale}`));
-              subtitleCharCount[currentTenantLocale] = size(get(currentTenant, `data.attributes.settings.core.header_slogan.${currentTenantLocale}`));
-            });
-          }
-
-          return { currentTenant, logo, header_bg, titleCharCount, subtitleCharCount };
-        });
+        this.setState({ locale, currentTenant, logo, header_bg });
       })
     ];
   }
@@ -180,60 +170,66 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
   }
 
   handleUploadOnAdd = (name: 'logo' | 'header_bg') => (newImage: ImageFile) => {
-    this.setState((state: State) => ({
+    this.setState((state) => ({
+      ...state,
       attributesDiff: {
-        ...state.attributesDiff,
-        [name]: newImage.base64
+        ...(state.attributesDiff || {}),
+        [name]: (newImage.base64 as string)
       },
       [name]: [newImage]
     }));
   }
 
   handleUploadOnUpdate = (name: 'logo' | 'header_bg') => (updatedImages: ImageFile[]) => {
-    this.setState((state: State) => ({
+    this.setState((state) => ({
+      ...state,
       [name]: updatedImages
     }));
   }
 
-  handleUploadOnRemove = (name: 'logo' | 'header_bg') => (image: ImageFile) => {
-    this.setState((state: State) => ({
+  handleUploadOnRemove = (name: 'logo' | 'header_bg') => () => {
+    this.setState((state) => ({
+      ...state,
       attributesDiff: {
-        ...state.attributesDiff,
+        ...(state.attributesDiff || {}),
         [name]: null
       },
       [name]: null
     }));
   }
 
-  handleTitleOnChange = (locale: string) => (title: string) => {
-    const { formatMessage } = this.props.intl;
-    const { attributesDiff } = this.state;
-    const titleError = { ...this.state.titleError, [locale]: null };
-    let newAttributesDiff = cloneDeep(attributesDiff);
-    newAttributesDiff = set(newAttributesDiff, `settings.core.header_title.${locale}`, title);
+  handleTitleOnChange = (locale: Locale) => (title: string) => {
+    this.setState((state) => {
+      const { formatMessage } = this.props.intl;
+      let newAttributesDiff = cloneDeep(state.attributesDiff);
+      newAttributesDiff = set(newAttributesDiff, `settings.core.header_title.${locale}`, title);
 
-    this.setState((state) => ({
-      attributesDiff: newAttributesDiff,
-      titleError: {
-        ...state.titleError,
-        [locale]: size(trim(title)) > 45 ? formatMessage(messages.titleMaxCharError) : null
-      }
-    }));
+      return {
+        attributesDiff: newAttributesDiff,
+        titleError: {
+          ...state.titleError,
+          [locale]: size(trim(title)) > 45 ? formatMessage(messages.titleMaxCharError) : null
+        },
+        ...state.errors
+      };
+    });
   }
 
-  handleSubtitleOnChange = (locale: string) => (subtitle: string) => {
-    const { formatMessage } = this.props.intl;
-    const { attributesDiff } = this.state;
-    let newAttributesDiff = cloneDeep(attributesDiff);
-    newAttributesDiff = set(newAttributesDiff, `settings.core.header_slogan.${locale}`, subtitle);
+  handleSubtitleOnChange = (locale: Locale) => (subtitle: string) => {
+    this.setState((state) => {
+      const { formatMessage } = this.props.intl;
+      let newAttributesDiff = cloneDeep(state.attributesDiff);
+      newAttributesDiff = set(newAttributesDiff, `settings.core.header_slogan.${locale}`, subtitle);
 
-    this.setState((state) => ({
-      attributesDiff: newAttributesDiff,
-      subtitleError: {
-        ...state.subtitleError,
-        [locale]: size(trim(subtitle)) > 90 ? formatMessage(messages.subtitleMaxCharError) : null
-      }
-    }));
+      return {
+        ...state,
+        attributesDiff: newAttributesDiff,
+        subtitleError: {
+          ...state.subtitleError,
+          [locale]: size(trim(subtitle)) > 90 ? formatMessage(messages.subtitleMaxCharError) : null
+        }
+      };
+    });
   }
 
   handleColorPickerOnChange = (color: string) => {

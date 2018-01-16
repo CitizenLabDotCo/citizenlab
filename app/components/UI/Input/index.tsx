@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import * as Rx from 'rxjs/Rx';
+import PropTypes from 'prop-types';
 
 // components
 import Error from 'components/UI/Error';
@@ -50,17 +50,35 @@ export type Props = {
   type: 'text' | 'email' | 'password' | 'number';
   placeholder?: string | null | undefined;
   error?: string | JSX.Element | null | undefined;
-  onChange: (arg: string) => void;
+  onChange?: (arg: string) => void;
   onFocus?: (arg: React.FormEvent<HTMLInputElement>) => void;
+  onBlur?: (arg: React.FormEvent<HTMLInputElement>) => void;
   setRef?: (arg: HTMLInputElement) => void | undefined;
   autoFocus?: boolean;
+  name?: string;
 };
 
 type State = {};
 
-export default class Input extends React.PureComponent<Props, State> {
+export default class Input extends React.Component<Props, State> {
+  static contextTypes = {
+    formik: PropTypes.object,
+  };
+
   handleOnChange = (event: React.FormEvent<HTMLInputElement>) => {
-    this.props.onChange(event.currentTarget.value);
+    if (this.props.onChange) this.props.onChange(event.currentTarget.value);
+
+    if (this.context.formik && this.props.name) {
+      this.context.formik.handleChange(event);
+    }
+  }
+
+  handleOnBlur = (event: React.FormEvent<HTMLInputElement>) => {
+    if (this.props.onBlur) this.props.onBlur(event);
+
+    if (this.context.formik && this.props.name) {
+      this.context.formik.handleBlur(event);
+    }
   }
 
   handleRef = (element: HTMLInputElement) => {
@@ -75,6 +93,10 @@ export default class Input extends React.PureComponent<Props, State> {
     const { id, type } = this.props;
     const hasError = (!_.isNull(error) && !_.isUndefined(error) && !_.isEmpty(error));
 
+    if (this.props.name && this.context.formik && this.context.formik.values[this.props.name]) {
+      value = value || this.context.formik.values[this.props.name];
+    }
+
     value = (value || '');
     placeholder = (placeholder || '');
     error = (error || null);
@@ -83,11 +105,13 @@ export default class Input extends React.PureComponent<Props, State> {
       <Container error={hasError} className={className}>
         <input
           id={id}
+          name={name}
           type={type}
           placeholder={placeholder}
           value={value}
           onChange={this.handleOnChange}
           onFocus={this.props.onFocus}
+          onBlur={this.handleOnBlur}
           ref={this.handleRef}
           autoFocus={this.props.autoFocus}
         />

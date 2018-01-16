@@ -8,7 +8,7 @@ import { IModalInfo } from 'containers/App';
 
 
 import T from 'components/T';
-import { Segment, Header, Divider, Icon, Button, Menu } from 'semantic-ui-react';
+import { Segment, Header, Icon, Button } from 'semantic-ui-react';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 

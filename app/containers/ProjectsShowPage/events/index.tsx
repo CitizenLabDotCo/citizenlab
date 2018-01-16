@@ -1,7 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
-import * as moment from 'moment';
 import 'moment-timezone';
 
 // components
@@ -9,21 +7,13 @@ import Event from './Event';
 import ContentContainer from 'components/ContentContainer';
 
 // services
-import { localeStream, updateLocale } from 'services/locale';
+import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { projectBySlugStream, IProject } from 'services/projects';
 import { eventsStream, IEvents } from 'services/events';
-import { phasesStream, IPhases, IPhaseData } from 'services/phases';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import { getLocalized } from 'utils/i18n';
-
-// style
-import styled, { css } from 'styled-components';
-import { transparentize, lighten, darken } from 'polished';
-import { media } from 'utils/styleUtils';
+// typings
+import { Locale } from 'typings';
 
 type Props = {
   params: {
@@ -32,7 +22,7 @@ type Props = {
 };
 
 type State = {
-  locale: string | null;
+  locale: Locale | null;
   currentTenant: ITenant | null;
   project: IProject | null;
   events: IEvents | null;

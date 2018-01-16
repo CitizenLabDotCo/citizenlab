@@ -1,7 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
-import * as moment from 'moment';
 import 'moment-timezone';
 
 // components
@@ -11,18 +9,10 @@ import IdeaCards from 'components/IdeaCards';
 
 // services
 import { projectBySlugStream, IProject } from 'services/projects';
-import { phasesStream, IPhases, IPhaseData } from 'services/phases';
-
-// i18n
-import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import { getLocalized } from 'utils/i18n';
+import { phasesStream, IPhaseData } from 'services/phases';
 
 // style
-import styled, { css } from 'styled-components';
-import { transparentize, lighten, darken } from 'polished';
-import { media } from 'utils/styleUtils';
+import styled from 'styled-components';
 
 const Container = styled.div`
   width: 100%;
@@ -37,14 +27,6 @@ const Content = styled.div`
   min-height: 200px;
   margin-top: 60px;
   margin-bottom: 60px;
-`;
-
-const SelectedPhase = styled.div`
-  color: #333;
-  font-size: 34px;
-  line-height: 40px;
-  font-weight: 400;
-  margin-bottom: 40px;
 `;
 
 type Props = {
@@ -105,7 +87,6 @@ export default class timeline extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    const { slug } = this.props.params;
     const { project, selectedPhase, loaded } = this.state;
 
     if (loaded && project) {

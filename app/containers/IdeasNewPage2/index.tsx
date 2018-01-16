@@ -4,7 +4,6 @@ import { isString, isEmpty, isError } from 'lodash';
 
 // libraries
 import CSSTransition from 'react-transition-group/CSSTransition';
-import Transition from 'react-transition-group/Transition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import { browserHistory } from 'react-router';
 
@@ -23,6 +22,9 @@ import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'serv
 
 // utils
 import { convertToGeoJson } from 'utils/locationTools';
+
+// typings
+import { Locale } from 'typings';
 
 // style
 import { media } from 'utils/styleUtils';
@@ -128,7 +130,7 @@ interface Props {}
 
 interface LocalState {
   showIdeaForm: boolean;
-  locale: string | null;
+  locale: Locale | null;
 }
 
 interface GlobalState {}
@@ -249,12 +251,12 @@ export default class IdeasNewPage2 extends React.PureComponent<Props, State> {
 
     try {
       const authUser = await getAuthUserAsync();
-      const idea = await this.postIdeaAndIdeaImage('published', authUser.data.id);
+      await this.postIdeaAndIdeaImage('published', authUser.data.id);
       browserHistory.push('/ideas');
     } catch (error) {
       if (isError(error) && error.message === 'not_authenticated') {
         try {
-          const idea = await this.postIdeaAndIdeaImage('draft');
+          await this.postIdeaAndIdeaImage('draft');
           this.globalState.set({ processing: false });
           this.localState.set({ showIdeaForm: false });
           window.scrollTo(0, 0);

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { cloneDeep, indexOf } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 import * as moment from 'moment';
 import 'moment-timezone';
@@ -7,25 +7,25 @@ import 'moment-timezone';
 // components
 import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
-import ContentContainer from 'components/ContentContainer';
 import MobileTimeline from './MobileTimeline';
 import { Responsive } from 'semantic-ui-react';
 
 // services
-import { localeStream, updateLocale } from 'services/locale';
+import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
-import { phasesStream, IPhases, IPhaseData, IPhase } from 'services/phases';
+import { phasesStream, IPhases } from 'services/phases';
 
 // i18n
-import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { getLocalized } from 'utils/i18n';
 
 // style
 import styled, { css } from 'styled-components';
-import { transparentize, lighten, darken } from 'polished';
 import { media } from 'utils/styleUtils';
+
+// typings
+import { Locale } from 'typings';
 
 const greyTransparent = css`rgba(121, 137, 147, 1)`;
 const greyOpaque = css`rgba(121, 137, 147, 1)`;
@@ -150,59 +150,6 @@ const HeaderDate = styled.div`
   margin-right: 20px;
 `;
 
-const CurrentPhase = styled.span`
-  color: ${greenOpaque};
-`;
-
-const HeaderNavigationIcon = styled(Icon)`
-  fill: #333;
-  height: 13px;
-  transition: background 60ms ease-out;
-`;
-
-const HeaderNavigationPrevIcon = HeaderNavigationIcon.extend`
-  transform: rotate(180deg);
-`;
-
-const HeaderNavigationNextIcon = HeaderNavigationIcon.extend``;
-
-const HeaderNavigation = styled.div`
-  flex: 0 0 26px;
-  width: 26px;
-  height: 31px;
-  background: #e0e0e0;
-  border-radius: 4px;
-  margin-right: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 60ms ease-out;
-
-  &.last {
-    margin-right: 0px;
-  }
-
-  &.disabled {
-    background: #f0f0f0;
-    cursor: not-allowed;
-
-    ${HeaderNavigationPrevIcon},
-    ${HeaderNavigationNextIcon} {
-      fill: #bbb;
-    }
-  }
-
-  &:not(.disabled):hover {
-    background: #ccc;
-
-    ${HeaderNavigationPrevIcon},
-    ${HeaderNavigationNextIcon} {
-      fill: #000;
-    }
-  }
-`;
-
 const Phases = styled.div`
   width: 100%;
   padding: 0px 30px;
@@ -325,7 +272,7 @@ type Props = {
 };
 
 type State = {
-  locale: string | null;
+  locale: Locale | null;
   currentTenant: ITenant | null;
   phases: IPhases | null;
   currentPhaseId: string | null;
@@ -363,13 +310,13 @@ export default class Timeline extends React.PureComponent<Props, State> {
         this.selectedPhaseId$.distinctUntilChanged()
       ).subscribe(([locale, currentTenant, phases, selectedPhaseId]) => {
         this.setState((state: State) => {
-          let currentPhaseId = _.cloneDeep(state.currentPhaseId);
+          let currentPhaseId = cloneDeep(state.currentPhaseId);
 
           if (phases && phases.data.length > 0) {
             const currentTenantTimezone = currentTenant.data.attributes.settings.core.timezone;
             const currentTenantTodayMoment = moment().tz(currentTenantTimezone);
 
-            _(phases.data).forEach((phase) => {
+            phases.data.forEach((phase) => {
               const startMoment = moment(phase.attributes.start_at, 'YYYY-MM-DD');
               const endMoment = moment(phase.attributes.end_at, 'YYYY-MM-DD');
               const isCurrentPhase = currentTenantTodayMoment.isBetween(startMoment, endMoment, 'days', '[]');
@@ -408,7 +355,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
     }
   }
 
-  componentWillUpdate(nextProps: Props, nextState: State) {
+  componentWillUpdate(_nextProps: Props, nextState: State) {
     if (nextState.currentPhaseId && !nextState.selectedPhaseId) {
       this.selectedPhaseId$.next(nextState.currentPhaseId);
     }
@@ -435,7 +382,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
       const phaseIds = phases ? phases.data.map(phase => phase.id) : null;
 
       if (phaseIds && phaseIds.length > 1) {
-        const index = _.indexOf(phaseIds, selectedPhaseId);
+        const index = indexOf(phaseIds, selectedPhaseId);
         const newIndex = (index > 0 ? index - 1 : phaseIds.length - 1);
         this.selectedPhaseId$.next(phaseIds[newIndex]);
       }
@@ -450,7 +397,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
       const phaseIds = phases ? phases.data.map(phase => phase.id) : null;
 
       if (phaseIds && phaseIds.length > 1) {
-        const index = _.indexOf(phaseIds, selectedPhaseId);
+        const index = indexOf(phaseIds, selectedPhaseId);
         const newIndex = (index < (phaseIds.length - 1) ? index + 1 : 0);
         this.selectedPhaseId$.next(phaseIds[newIndex]);
       }
@@ -465,16 +412,16 @@ export default class Timeline extends React.PureComponent<Props, State> {
       let phaseStatus: 'past' | 'present' | 'future' | null = null;
       const phaseIds = (phases ? phases.data.map(phase => phase.id) : null);
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-      const currentTenantTimezone = currentTenant.data.attributes.settings.core.timezone;
-      const currentTenantTodayMoment = moment().tz(currentTenantTimezone);
+      // const currentTenantTimezone = currentTenant.data.attributes.settings.core.timezone;
+      // const currentTenantTodayMoment = moment().tz(currentTenantTimezone);
       const selectedPhase = (selectedPhaseId ? phases.data.find(phase => phase.id === selectedPhaseId) : null);
-      const selectedPhaseStart = (selectedPhase ? moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD').format('LL') : null);
+      // const selectedPhaseStart = (selectedPhase ? moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD').format('LL') : null);
       const selectedPhaseEnd = (selectedPhase ? moment(selectedPhase.attributes.end_at, 'YYYY-MM-DD').format('LL') : null);
       const selectedPhaseTitle = (selectedPhase ? getLocalized(selectedPhase.attributes.title_multiloc, locale, currentTenantLocales) : null);
-      const selectedPhaseNumber = (selectedPhase ? _.indexOf(phaseIds, selectedPhaseId) + 1 : null);
+      const selectedPhaseNumber = (selectedPhase ? indexOf(phaseIds, selectedPhaseId) + 1 : null);
       const isSelected = (selectedPhaseId !== null);
-      const firstPhaseSelected = (phases && selectedPhaseId && selectedPhaseId === phases.data[0].id ? true : false);
-      const lastPhaseSelected = (phases && selectedPhaseId && selectedPhaseId === phases.data[phases.data.length - 1].id ? true : false);
+      // const firstPhaseSelected = (phases && selectedPhaseId && selectedPhaseId === phases.data[0].id ? true : false);
+      // const lastPhaseSelected = (phases && selectedPhaseId && selectedPhaseId === phases.data[phases.data.length - 1].id ? true : false);
 
       if (selectedPhase) {
         if (currentPhaseId && selectedPhaseId === currentPhaseId) {
@@ -531,16 +478,6 @@ export default class Timeline extends React.PureComponent<Props, State> {
                 text={<FormattedMessage {...messages.startAnIdea} />}
                 circularCorners={false}
               />
-
-              {/*
-              <HeaderNavigation className={`${firstPhaseSelected && 'disabled'}`} onClick={this.goToPrevPhase(firstPhaseSelected)}>
-                <HeaderNavigationPrevIcon name="chevron-right" />
-              </HeaderNavigation>
-
-              <HeaderNavigation className={`last ${lastPhaseSelected && 'disabled'}`} onClick={this.goToNextPhase(lastPhaseSelected)}>
-                <HeaderNavigationNextIcon name="chevron-right" />
-              </HeaderNavigation>
-              */}
             </HeaderSection>
           </Header>
 

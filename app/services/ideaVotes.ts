@@ -1,6 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { ideaByIdStream } from 'services/ideas';
 
 export interface IIdeaVoteData {
   id: string;
@@ -37,11 +36,11 @@ export interface INewVoteProperties {
   mode: 'up' | 'down';
 }
 
-export function voteStream(voteId: string, streamParams: IStreamParams<IIdeaVote> | null = null) {
+export function voteStream(voteId: string, streamParams: IStreamParams | null = null) {
   return streams.get<IIdeaVote>({ apiEndpoint: `${API_PATH}/votes/${voteId}`, ...streamParams });
 }
 
-export function votesStream(ideaId: string, streamParams: IStreamParams<IIdeaVotes> | null = null) {
+export function votesStream(ideaId: string, streamParams: IStreamParams | null = null) {
   return streams.get<IIdeaVotes>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/votes`, ...streamParams });
 }
 
@@ -49,6 +48,6 @@ export function addVote(ideaId: string, object: INewVoteProperties) {
   return streams.add<IIdeaVote>(`${API_PATH}/ideas/${ideaId}/votes`, { vote: object });
 }
 
-export function deleteVote(ideaId, voteId: string) {
+export function deleteVote(_ideaId, voteId: string) {
   return streams.delete(`${API_PATH}/votes/${voteId}`, voteId);
 }
