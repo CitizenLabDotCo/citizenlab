@@ -28,6 +28,7 @@
   "app.components.IdeaForm.topicsLabel": "crwdns18289:0crwdne18289:0",
   "app.components.IdeaForm.topicsPlaceholder": "crwdns18290:0crwdne18290:0",
   "app.components.IdeaTag.header": "crwdns15562:0crwdne15562:0",
+  "app.components.IdeasMap.postIdeaHere": "",
   "app.components.IdeasMap.seeIdea": "",
   "app.components.IdeasShow.changeLogEntry": "crwdns18272:0{userName}crwdnd18272:0{userName}crwdnd18272:0{userName}crwdnd18272:0{userName}crwdne18272:0",
   "app.components.IdeasShow.editIdea": "crwdns18291:0crwdne18291:0",
