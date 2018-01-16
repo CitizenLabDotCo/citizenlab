@@ -65,7 +65,7 @@ class IdeasMap extends React.Component<Props, State> {
     if (ideas) {
       const ideaPoints: any[] = [];
       ideas.forEach((idea) => {
-        if (idea.attributes && idea.attributes.location_point_geojson) ideaPoints.push({ ...idea.attributes.location_point_geojson, data: idea.id });
+        if (idea.attributes && idea.attributes.location_point_geojson) ideaPoints.push({ ...idea.attributes.location_point_geojson, id: idea.id });
       });
       return ideaPoints;
     } else {

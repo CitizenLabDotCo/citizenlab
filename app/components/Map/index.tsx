@@ -1,10 +1,12 @@
 // Libraries
 import * as React from 'react';
+import { compact, differenceBy } from 'lodash';
+
+// Map
 import Leaflet, { Marker } from 'leaflet';
 import 'Leaflet.markercluster';
 import 'mapbox-gl';
 import 'mapbox-gl-leaflet';
-import { compact } from 'lodash';
 
 // Styling
 import 'leaflet/dist/leaflet.css';
@@ -41,6 +43,12 @@ const customIcon = Leaflet.icon({
 // Typing
 interface Point extends GeoJSON.Point {
   data?: any;
+  id: string;
+}
+
+interface DataMarkerOptions extends Leaflet.MarkerOptions {
+  data?: any;
+  id: string;
 }
 
 export interface Props {
@@ -49,7 +57,7 @@ export interface Props {
   areas?: GeoJSON.Polygon[];
   className?: string;
   zoom?: number;
-  onMarkerClick?: {(id: string): void};
+  onMarkerClick?: {(id: string, data: any): void};
 }
 
 interface State {
@@ -60,6 +68,7 @@ export default class CLMap extends React.Component<Props, State> {
   private clusterLayer: Leaflet.MarkerClusterGroup;
   private markerBounds: Leaflet.LatLngBoundsExpression;
   private markers: Leaflet.Marker[];
+  private interval: number;
 
   private clusterOptions = {
     showCoverageOnHover: false,
@@ -91,14 +100,19 @@ export default class CLMap extends React.Component<Props, State> {
     }
   }
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.points) {
+  componentWillReceiveProps(newProps: Props) {
+    if (newProps.points && differenceBy(newProps.points, this.props.points || [], 'id').length > 0) {
       this.convertPoints(newProps.points);
     }
   }
 
+  componentWillMount() {
+    window.clearInterval(this.interval);
+  }
+
   bindMapContainer = (element) => {
     if (!this.map) {
+
       // Init the map
       this.map = Leaflet.map(element, {
         center: this.props.center as [number, number],
@@ -120,7 +134,7 @@ export default class CLMap extends React.Component<Props, State> {
 
       this.markers = compact(points).map((point) => {
         bounds.push([point.coordinates[0], point.coordinates[1]]);
-        return new Marker(point.coordinates as [number, number], { ...this.markerOptions });
+        return new Marker(point.coordinates as [number, number], ({ ...this.markerOptions, data: point.data, id: point.id } as DataMarkerOptions));
       });
 
       if (bounds.length > 0) this.markerBounds = new Leaflet.LatLngBounds(bounds);
@@ -135,20 +149,22 @@ export default class CLMap extends React.Component<Props, State> {
       this.clusterLayer = Leaflet.markerClusterGroup(this.clusterOptions);
       this.clusterLayer.addLayers(this.markers);
       this.map.addLayer(this.clusterLayer);
-      this.clusterLayer.on('click', console.log);
+      this.clusterLayer.on('click', this.handleMarkerClick);
 
       if (this.markerBounds) this.map.fitBounds(this.markerBounds);
     }
   }
 
-  handleMarkerClick = (marker) => {
-    if (this.props.onMarkerClick) this.props.onMarkerClick(marker.options.data);
+  handleMarkerClick = (event) => {
+    if (this.props.onMarkerClick) {
+      this.props.onMarkerClick(event.layer.options.id, event.layer.options.data);
+    }
   }
 
   render() {
     return (
       <MapWrapper className={this.props.className}>
-        <div id="map-container" ref={this.bindMapContainer} />
+        <div id="map-container" ref={this.bindMapContainer} onScroll={console.log} />
       </MapWrapper>
     );
   }
