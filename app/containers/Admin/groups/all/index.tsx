@@ -1,10 +1,8 @@
 // Libraries
 import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
 import messages from './messages';
 
 // Components

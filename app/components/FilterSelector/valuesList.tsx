@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as _ from 'lodash';
 
 // components
-import Icon from 'components/UI/Icon';
 import Checkbox from 'components/UI/Checkbox';
 
 // animation
@@ -11,7 +10,6 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { darken } from 'polished';
 
 const timeout = 200;
 const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
@@ -228,7 +226,7 @@ export default class ValuesList extends React.PureComponent<Props, State> {
     }
   }
 
-  handleOnClick = (entry, index) => (event) => {
+  handleOnClick = (entry, index) => () => {
     this.setState({ currentFocus: index });
     this.props.onChange(entry.value);
   }
@@ -258,7 +256,6 @@ export default class ValuesList extends React.PureComponent<Props, State> {
             aria-activedescendant={`${baseID}-${currentFocus}`}
           >
             {values && values.map((entry, index) => {
-              const clickHandler = this.handleOnClick(entry, index);
               const checked = this.isSelected(entry.value);
               const focussed = currentFocus === index ? 'focused' : '';
 

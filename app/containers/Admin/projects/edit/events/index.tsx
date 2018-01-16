@@ -2,7 +2,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import styled from 'styled-components';
-import { intlShape } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import * as _ from 'lodash';
@@ -12,10 +11,8 @@ import { projectBySlugStream } from 'services/projects';
 import { eventsStream, IEventData, deleteEvent } from 'services/events';
 
 // Components
-import { Link } from 'react-router';
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import Icon from 'components/UI/Icon';
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
 
 // Utils
@@ -31,7 +28,6 @@ const AddButton = styled(Button)`
   align-self: flex-end;
 `;
 
-// Component typing
 type Props = {
   intl: ReactIntl.InjectedIntl,
   params: {
@@ -75,7 +71,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
     return (event) => {
       event.preventDefault();
       if (window.confirm(this.props.intl.formatMessage(messages.deleteConfirmationModal))) {
-        deleteEvent(eventId).then((response) => {
+        deleteEvent(eventId).then(() => {
           this.setState({ events: _.reject(this.state.events, { id: eventId }) });
         });
       }
@@ -111,7 +107,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
             <HeadRow>
               <div className="expand"><FormattedMessage {...messages.titleColumnHeader} /></div>
             </HeadRow>
-            {events.map((event, index) => (
+            {events.map((event) => (
               <Row key={event.id}>
                 <div className="expand">
                   <h1><T value={event.attributes.title_multiloc} /></h1>

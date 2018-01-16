@@ -3,7 +3,7 @@ import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 
-export function getEditorStateFromHtmlString(html: string | null) {
+export function getEditorStateFromHtmlString(html: string | null | undefined) {
   let editorState: EditorState;
 
   if (_.isString(html) && !_.isEmpty(html)) {

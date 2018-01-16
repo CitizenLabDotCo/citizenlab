@@ -7,12 +7,11 @@ import Icon from 'components/UI/Icon';
 
 // services
 import { authUserStream } from 'services/auth';
-import { ideaByIdStream, IIdea } from 'services/ideas';
-import { userByIdStream, IUser } from 'services/users';
-import { voteStream, votesStream, addVote, deleteVote, IIdeaVote, IIdeaVoteData } from 'services/ideaVotes';
+import { ideaByIdStream } from 'services/ideas';
+import { IUser } from 'services/users';
+import { voteStream, addVote, deleteVote } from 'services/ideaVotes';
 
 // style
-import { darken } from 'polished';
 import styled, { css, keyframes } from 'styled-components';
 import { media } from 'utils/styleUtils';
 
@@ -188,6 +187,7 @@ export default class VoteControl extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
   upvoteElement: HTMLDivElement | null;
   downvoteElement: HTMLDivElement | null;
+  id$: Rx.BehaviorSubject<string>;
 
   constructor(props: Props) {
     super(props as any);
@@ -207,18 +207,22 @@ export default class VoteControl extends React.PureComponent<Props, State> {
     this.subscriptions = [];
     this.upvoteElement = null;
     this.downvoteElement = null;
+    this.id$ = new Rx.BehaviorSubject(props.ideaId);
   }
 
   componentWillMount() {
-    const { ideaId } = this.props;
     const authUser$ = authUserStream().observable;
 
-    const idea$ = Rx.Observable.combineLatest(
-      ideaByIdStream(ideaId).observable,
-      this.voting$
-    ).filter(([idea, voting]) => {
+    const idea$ =
+    this.id$.switchMap((ideaId) => {
+      return Rx.Observable.combineLatest(
+        ideaByIdStream(ideaId).observable,
+        this.voting$
+      );
+    })
+    .filter(([_idea, voting]) => {
       return voting === null;
-    }).map(([idea, voting]) => {
+    }).map(([idea, _voting]) => {
       return idea;
     });
 
@@ -232,9 +236,9 @@ export default class VoteControl extends React.PureComponent<Props, State> {
         return Rx.Observable.combineLatest(
           voteStream(voteId).observable,
           this.voting$
-        ).filter(([vote, voting]) => {
+        ).filter(([_vote, voting]) => {
           return voting === null;
-        }).map(([vote, voting]) => {
+        }).map(([vote, _voting]) => {
           return vote;
         });
       }
@@ -269,6 +273,12 @@ export default class VoteControl extends React.PureComponent<Props, State> {
         }
       })
     ];
+  }
+
+  componentWillReceiveProps(newProps: Props) {
+    if (newProps.ideaId !== this.props.ideaId) {
+      this.id$.next(newProps.ideaId);
+    }
   }
 
   componentDidMount() {
@@ -378,7 +388,7 @@ export default class VoteControl extends React.PureComponent<Props, State> {
   render() {
     const className = this.props['className'];
     const { size } = this.props;
-    const { upvotesCount, downvotesCount, myVoteMode, voting, votingAnimation, votingEnabled, votingFutureEnabled, votingDisabledReason } = this.state;
+    const { upvotesCount, downvotesCount, myVoteMode, votingAnimation, votingEnabled } = this.state;
 
     if (this.hideVotes()) return null;
 

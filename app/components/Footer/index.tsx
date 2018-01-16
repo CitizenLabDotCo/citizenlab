@@ -22,6 +22,7 @@ import { LEGAL_PAGES } from 'services/pages';
 // style
 import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
+import { Locale } from 'typings';
 
 const Container = styled.div`
   width: 100%;
@@ -190,12 +191,12 @@ type Props = {
 };
 
 type State = {
-  locale: string | null;
+  locale: Locale | null;
   currentTenant: ITenant | null;
   showCityLogoSection: boolean;
   languageOptions: {
     key: string;
-    value: string;
+    value: Locale;
     text: string;
   }[]
 };
@@ -244,7 +245,7 @@ class Footer extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleLanguageChange (event, { value }) {
+  handleLanguageChange (_event, { value }) {
     updateLocale(value);
   }
 

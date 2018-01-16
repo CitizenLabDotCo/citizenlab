@@ -11,7 +11,7 @@ import TopicsMenu from './FilterSidebarTopics';
 import ProjectsMenu from './FilterSidebarProjects';
 import StatusesMenu from './FilterSidebarStatuses';
 import { InjectedIntlProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
 
@@ -36,7 +36,7 @@ interface Props {
 
 class FilterSidebar extends React.Component<Props & InjectedIntlProps> {
 
-  handleTabChange = (event, data) => {
+  handleTabChange = (_event, data) => {
     const newActiveFilterMenu = data.panes[data.activeIndex].id;
     this.props.onChangeActiveFilterMenu(newActiveFilterMenu);
   }

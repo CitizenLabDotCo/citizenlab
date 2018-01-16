@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 import linkifyHtml from 'linkifyjs/html';
@@ -7,25 +6,23 @@ import linkifyHtml from 'linkifyjs/html';
 // components
 import ChildComment from './ChildComment';
 import Author from './Author';
-import Button from 'components/UI/Button';
 import ChildCommentForm from './ChildCommentForm';
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import Modal from 'components/UI/Modal';
 import SpamReportForm from 'containers/SpamReport';
-import MoreActionsMenu, { IAction, Props as MoreActionsMenuProps } from 'components/UI/MoreActionsMenu';
+import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 
 // services
 import { authUserStream } from 'services/auth';
-import { commentsForIdeaStream, commentStream, IComments, IComment } from 'services/comments';
+import { commentsForIdeaStream, commentStream, IComment } from 'services/comments';
 import { ideaByIdStream } from 'services/ideas';
 import { IUser } from 'services/users';
 import { getLocalized } from 'utils/i18n';
 import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
+import { currentTenantStream } from 'services/tenant';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
 import messages from './messages';
 
 // analytics
@@ -39,7 +36,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // style
 import styled, { css } from 'styled-components';
 import { transparentize, darken } from 'polished';
-import { color } from 'utils/styleUtils';
+import { Locale } from 'typings';
 
 const timeout = 550;
 
@@ -127,8 +124,8 @@ type Props = {
 };
 
 type State = {
-  locale: string | null;
-  currentTenantLocales: string[] | null;
+  locale: Locale | null;
+  currentTenantLocales: Locale[] | null;
   authUser: IUser | null;
   comment: IComment | null;
   childCommentIds: string[] | null;
@@ -197,7 +194,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
         if (authUser) {
           moreActions = [
             ...this.state.moreActions,
-            // { label: 'Report as spam', handler: this.openSpamModal }
+            { label: <FormattedMessage {...messages.reportAsSpam} />, handler: this.openSpamModal }
           ];
         }
 
@@ -242,14 +239,13 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
   render() {
     let returnValue: JSX.Element | null = null;
     const { commentId, animate } = this.props;
-    const { locale, currentTenantLocales, authUser, comment, childCommentIds, showForm, commentingEnabled } = this.state;
+    const { locale, currentTenantLocales, authUser, comment, childCommentIds, commentingEnabled } = this.state;
 
     if (locale && currentTenantLocales && comment) {
       const ideaId = comment.data.relationships.idea.data.id;
       const authorId = comment.data.relationships.author.data ? comment.data.relationships.author.data.id : null;
       const createdAt = comment.data.attributes.created_at;
       const commentBodyMultiloc = comment.data.attributes.body_multiloc;
-      const isLoggedIn = !_.isNull(authUser);
       const commentText = getLocalized(commentBodyMultiloc, locale, currentTenantLocales);
       const processedCommentText = linkifyHtml(commentText.replace(
         /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,

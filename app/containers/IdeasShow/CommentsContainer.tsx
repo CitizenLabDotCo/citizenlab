@@ -5,10 +5,9 @@ import * as Rx from 'rxjs/Rx';
 // components
 import ParentComment from './ParentComment';
 import ParentCommentForm from './ParentCommentForm';
-import Icon from 'components/UI/Icon';
 
 // services
-import { commentsForIdeaStream, commentStream, IComments, IComment } from 'services/comments';
+import { commentsForIdeaStream, commentStream, IComments } from 'services/comments';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -16,9 +15,6 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-
-const animationDuration = 500;
-const animationEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
 const Container = styled.div`
   padding: 0;

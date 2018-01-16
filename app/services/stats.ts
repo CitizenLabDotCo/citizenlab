@@ -1,5 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
+import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/stats`;
 
@@ -25,29 +26,27 @@ export interface IIdeasByTopic{
   };
   topics: {
     [key: string]: {
-      title_multiloc: {
-        [key: string]: string,
-      }
+      title_multiloc: Multiloc
     }
   };
 }
 
-export function usersByGenderStream(streamParams: IStreamParams<IUsersByGender> | null = null) {
+export function usersByGenderStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsersByGender>({ apiEndpoint: `${apiEndpoint}/users_by_gender`, ...streamParams });
 }
 
-export function usersByBirthyearStream(streamParams: IStreamParams<IUsersByBirthyear> | null = null) {
+export function usersByBirthyearStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsersByBirthyear>({ apiEndpoint: `${apiEndpoint}/users_by_birthyear`, ...streamParams });
 }
 
-export function ideasByTimeStream(streamParams: IStreamParams<IIdeasByTime> | null = null) {
+export function ideasByTimeStream(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeasByTime>({ apiEndpoint: `${apiEndpoint}/ideas_by_time`, ...streamParams });
 }
 
-export function usersByTimeStream(streamParams: IStreamParams<IUsersByTime> | null = null) {
+export function usersByTimeStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsersByTime>({ apiEndpoint: `${apiEndpoint}/users_by_time`, ...streamParams });
 }
 
-export function ideasByTopicStream(streamParams: IStreamParams<IIdeasByTopic> | null = null) {
+export function ideasByTopicStream(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeasByTopic>({ apiEndpoint: `${apiEndpoint}/ideas_by_topic`, ...streamParams });
 }

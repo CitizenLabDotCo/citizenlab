@@ -2,41 +2,39 @@ import { Observable } from 'rxjs/Observable';
 import 'whatwg-fetch';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
-import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
-import { v4 as uuid } from 'uuid';
 import { store } from 'app';
 import { authApiEndpoint } from 'services/auth';
 import { mergeJsonApiResources } from 'utils/resources/actions';
 
 export type pureFn<T> = (arg: T) => T;
-type fetchFn<T> = () => Promise<{}>;
+type fetchFn = () => Promise<{}>;
 interface IObject{ [key: string]: any; }
 export type IObserver<T> = Rx.Observer<T | pureFn<T> | null>;
 export type IObservable<T> = Rx.Observable<T>;
-export interface IStreamParams<T> {
+export interface IStreamParams {
   bodyData?: IObject | null;
   queryParameters?: IObject | null;
   cacheStream?: boolean;
 }
-interface IInputStreamParams<T> extends IStreamParams<T> {
+interface IInputStreamParams extends IStreamParams {
   apiEndpoint: string;
 }
-interface IExtendedStreamParams<T> {
+interface IExtendedStreamParams {
   apiEndpoint: string;
   cacheStream?: boolean;
   bodyData: IObject | null;
   queryParameters: IObject | null;
 }
 export interface IStream<T> {
-  params: IExtendedStreamParams<T>;
+  params: IExtendedStreamParams;
   streamId: string;
   isQueryStream: boolean;
   isSearchQuery: boolean;
   isSingleItemStream: boolean;
   cacheStream?: boolean;
   type: 'singleObject' | 'arrayOfObjects' | 'unknown';
-  fetch: fetchFn<T>;
+  fetch: fetchFn;
   observer: IObserver<T>;
   observable: IObservable<T>;
   dataIds: { [key: string]: true };
@@ -221,8 +219,8 @@ class Streams {
     }
   }
 
-  get<T>(inputParams: IInputStreamParams<T>) {
-    const params: IExtendedStreamParams<T> = { bodyData: null, queryParameters: null, ...inputParams };
+  get<T>(inputParams: IInputStreamParams) {
+    const params: IExtendedStreamParams = { bodyData: null, queryParameters: null, ...inputParams };
     const apiEndpoint = this.removeTrailingSlash(params.apiEndpoint);
     const queryParameters = params.queryParameters;
     const isQueryStream = this.isQuery(queryParameters);
@@ -252,7 +250,7 @@ class Streams {
 
               resolve(response);
             },
-            (error) => {
+            () => {
               console.log(`promise for stream ${streamId} did not resolve`);
 
               if (this.streams[streamId]) {
@@ -293,35 +291,36 @@ class Streams {
 
         if (data !== 'inital') {
           data = (_.isFunction(current) ? current(data) : current);
+          if (cacheStream) {
+            if (_.isObject(data) && !_.isEmpty(data)) {
+              const innerData = data.data;
 
-          if (_.isObject(data) && !_.isEmpty(data)) {
-            const innerData = data.data;
-
-            if (_.isArray(innerData)) {
-              this.streams[streamId].type = 'arrayOfObjects';
-              innerData.filter(item => _.has(item, 'id')).forEach((item) => {
-                const dataId = item.id;
+              if (_.isArray(innerData)) {
+                this.streams[streamId].type = 'arrayOfObjects';
+                innerData.filter(item => _.has(item, 'id')).forEach((item) => {
+                  const dataId = item.id;
+                  dataIds[dataId] = true;
+                  this.resourcesByDataId[dataId] = this.deepFreeze({ data: item });
+                  this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
+                });
+              } else if (_.isObject(innerData) && _.has(innerData, 'id')) {
+                const dataId = innerData.id;
+                this.streams[streamId].type = 'singleObject';
                 dataIds[dataId] = true;
-                this.resourcesByDataId[dataId] = this.deepFreeze({ data: item });
+                this.resourcesByDataId[dataId] = this.deepFreeze({ data: innerData });
                 this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
-              });
-            } else if (_.isObject(innerData) && _.has(innerData, 'id')) {
-              const dataId = innerData.id;
-              this.streams[streamId].type = 'singleObject';
-              dataIds[dataId] = true;
-              this.resourcesByDataId[dataId] = this.deepFreeze({ data: innerData });
-              this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
+              }
+
+              if (_.has(data, 'included')) {
+                data.included.filter(item => item.id).forEach(item => this.resourcesByDataId[item.id] = { data: item });
+                data = _.omit(data, 'included');
+              }
             }
 
-            if (_.has(data, 'included')) {
-              data.included.filter(item => item.id).forEach(item => this.resourcesByDataId[item.id] = { data: item });
-              data = _.omit(data, 'included');
+            if (!isSingleItemStream) {
+              data = this.deepFreeze(data);
+              this.resourcesByStreamId[streamId] = data;
             }
-          }
-
-          if (!isSingleItemStream) {
-            data = this.deepFreeze(data);
-            this.resourcesByStreamId[streamId] = data;
           }
         }
 

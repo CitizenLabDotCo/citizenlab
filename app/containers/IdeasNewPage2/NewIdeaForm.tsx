@@ -10,7 +10,6 @@ import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // utils
-import { IStream } from 'utils/streams';
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
@@ -90,9 +89,9 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
-    this.globalState = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage');
+  constructor(props) {
+    super(props);
+    this.globalState = globalState.init('IdeasNewPage');
     this.subscriptions = [];
   }
 
@@ -145,9 +144,6 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
   }
 
   render() {
-    console.log('NewIdeaForm state:');
-    console.log(this.state);
-
     if (!this.state) { return null; }
 
     const { title, description, selectedTopics, selectedProject, location, imageFile, submitError, processing } = this.state;
@@ -159,7 +155,7 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
           <FormattedMessage {...messages.formTitle} />
         </Title>
 
-        <IdeaForm 
+        <IdeaForm
           title={title}
           description={description}
           selectedTopics={selectedTopics}

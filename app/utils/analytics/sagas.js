@@ -2,7 +2,6 @@ import { call } from 'redux-saga/effects';
 import { takeLatest } from 'redux-saga';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { LOAD_CURRENT_USER_SUCCESS } from 'utils/auth/constants';
-import { UPDATE_CURRENT_USER_SUCCESS } from 'containers/UsersEditPage/constants';
 import { trackIdentification, trackPage, trackEvent } from './';
 
 
@@ -53,5 +52,5 @@ export function* watchPageChanges() {
 }
 
 export function* watchIdentification() {
-  yield takeLatest([LOAD_CURRENT_USER_SUCCESS, UPDATE_CURRENT_USER_SUCCESS], trackIdentifications);
+  yield takeLatest([LOAD_CURRENT_USER_SUCCESS], trackIdentifications);
 }

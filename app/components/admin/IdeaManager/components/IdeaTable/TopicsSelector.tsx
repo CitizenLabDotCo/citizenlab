@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { flow, find, pull } from 'lodash';
+import { pull } from 'lodash';
 
 import { InjectedResourcesByIdsProps, injectResourcesByIds } from 'utils/resourceLoaders/idsResourcesLoader';
 import { topicByIdStream, ITopicData } from 'services/topics';
@@ -21,12 +21,11 @@ class TopicsSelector extends React.PureComponent<Props & InjectedResourcesByIdsP
   }
 
   render() {
-    const { selectedTopics } = this.props;
     const topics = this.props.topics;
 
     return (
       <div>
-        {topics.map((topic, index) => (
+        {topics.map((topic) => (
           <Label
             key={topic.id}
             color="teal"

@@ -1,13 +1,10 @@
 import * as React from 'react';
-import * as _ from 'lodash';
-import * as Rx from 'rxjs/Rx';
 
 // typings
 import { Multiloc } from 'typings';
 
 // router
 import { withRouter, RouterState } from 'react-router';
-import { Location } from 'history';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';

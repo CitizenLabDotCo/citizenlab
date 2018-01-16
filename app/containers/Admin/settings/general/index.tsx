@@ -14,7 +14,6 @@ import messages from '../messages';
 // components
 import Input from 'components/UI/Input';
 import Label from 'components/UI/Label';
-import Button from 'components/UI/Button';
 import TextArea from 'components/UI/TextArea';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';

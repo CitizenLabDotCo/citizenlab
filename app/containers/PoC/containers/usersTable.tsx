@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
-import { getPageItemCountFromUrl, getPageNumberFromUrl } from 'utils/paginationUtils';
-import { usersStream, updateUser, IUsers, IUserData, IUserUpdate } from 'services/users';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
+import { usersStream, updateUser, IUsers } from 'services/users';
 import styled from 'styled-components';
 
 const Container = styled.div`

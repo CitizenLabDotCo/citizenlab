@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
 // Services
-import { projectBySlugStream, IProject } from 'services/projects';
+import { projectBySlugStream, IProjectData } from 'services/projects';
 
 // Components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -32,12 +32,12 @@ type Props = {
 };
 
 type State = {
-  project: IProject | null,
+  project: IProjectData | null,
   loaded: boolean
 };
 
 class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps, State> {
-  slug$: Rx.BehaviorSubject<string | null>;
+  props$: Rx.BehaviorSubject<Props>;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -46,27 +46,27 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
       project: null,
       loaded: false
     };
-    this.slug$ = new Rx.BehaviorSubject(this.props.params.slug || null);
+    this.props$ = new Rx.BehaviorSubject(null as any);
     this.subscriptions = [];
   }
 
   componentWillMount() {
-    this.slug$.next(this.props.params.slug || null);
+    this.props$.next(this.props);
 
     this.subscriptions = [
-      this.slug$.distinctUntilChanged().switchMap((slug) => {
-        return (slug ? projectBySlugStream(slug).observable : Rx.Observable.of(null));
+      this.props$.distinctUntilChanged().switchMap((props) => {
+        return (props.params && props.params.slug ? projectBySlugStream(props.params.slug).observable : Rx.Observable.of(null));
       }).subscribe((project) => {
         this.setState({
-          project,
+          project: (project ? project.data : null),
           loaded: true
         });
       })
     ];
   }
 
-  componentWillReceiveProps(newProps) {
-    this.slug$.next(newProps.params.slug);
+  componentWillReceiveProps(nextProps) {
+    this.props$.next(nextProps);
   }
 
   componentWillUnmount() {
@@ -119,8 +119,8 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
     if (loaded) {
       const tabbedProps = {
         resource: {
-          title: project ? project.data.attributes.title_multiloc : formatMessage(messages.addNewProject),
-          publicLink: project ? `/projects/${project.data.attributes.slug}` : ''
+          title: project ? project.attributes.title_multiloc : formatMessage(messages.addNewProject),
+          publicLink: project ? `/projects/${project.attributes.slug}` : ''
         },
         messages: {
           viewPublicResource: messages.viewPublicProject,

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
 
 // style
 import CSSTransition from 'react-transition-group/CSSTransition';

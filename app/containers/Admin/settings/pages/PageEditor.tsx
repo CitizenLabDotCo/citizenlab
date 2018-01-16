@@ -22,7 +22,7 @@ import { EditorState } from 'draft-js';
 import { getHtmlStringFromEditorState, getEditorStateFromHtmlString } from 'utils/editorTools';
 
 // Typings
-import { API } from 'typings';
+import { API, Locale } from 'typings';
 
 // i18n
 import messages from './messages';
@@ -94,7 +94,7 @@ interface State {
     [key: string]: API.Error[];
   } | null;
   diff: PageUpdate;
-  locale: string;
+  locale: Locale;
   editorState: EditorState;
   deployed: boolean;
 }
@@ -112,7 +112,7 @@ export default class PageEditor extends React.PureComponent<Props, State> {
       saved: false,
       diff: {},
       errors: null,
-      locale: '',
+      locale: 'en',
       editorState: EditorState.createEmpty(),
       deployed: false,
     };
@@ -120,8 +120,9 @@ export default class PageEditor extends React.PureComponent<Props, State> {
   }
 
   componentWillMount() {
+    const { slug } = this.props;
     const locale$ = localeStream().observable;
-    const page$ = pageBySlugStream(this.props.slug).observable;
+    const page$ = pageBySlugStream(slug).observable;
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
@@ -130,7 +131,7 @@ export default class PageEditor extends React.PureComponent<Props, State> {
       ).subscribe(([locale, page]) => {
         this.setState({
           locale,
-          editorState: getEditorStateFromHtmlString(get(page, `data.attributes.body_multiloc.${locale}`, '')),
+          editorState: getEditorStateFromHtmlString(get(page, `data.attributes.body_multiloc.${locale}`, EditorState.createEmpty())),
           page: (page ? page.data : null),
           loading: false
         });
@@ -139,7 +140,7 @@ export default class PageEditor extends React.PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   handleTextChange = (editorState: EditorState) => {
@@ -243,6 +244,20 @@ export default class PageEditor extends React.PureComponent<Props, State> {
             <Editor
               onChange={this.handleTextChange}
               value={editorState}
+              toolbarConfig={{
+                options: ['inline', 'list', 'link', 'image'],
+                inline: {
+                  options: ['bold', 'italic'],
+                },
+                list: {
+                  options: ['unordered', 'ordered'],
+                },
+                image: {
+                  urlEnabled: true,
+                  uploadEnabled: false,
+                  alignmentEnabled: false,
+                },
+              }}
             />
             <Error apiErrors={errors && errors.body_multiloc} />
           </SectionField>

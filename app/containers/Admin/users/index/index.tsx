@@ -1,6 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import { push } from 'react-router-redux';
 import styled from 'styled-components';
 
@@ -10,7 +8,6 @@ import { Table, Input } from 'semantic-ui-react';
 import { FormattedMessage } from 'utils/cl-intl';
 import Pagination from 'components/admin/Pagination';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
-import ExportLabel from 'components/admin/ExportLabel';
 import PageWrapper from 'components/admin/PageWrapper';
 import Button from 'components/UI/Button';
 
@@ -94,7 +91,7 @@ class AllUsers extends React.Component<Props, State> {
     this.props.sortColumnChanged(attribute);
   }
 
-  createSortClickHandler = (attribute) => (event) => {
+  createSortClickHandler = (attribute) => () => {
     this.handleSortClick(attribute);
   }
 

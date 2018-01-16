@@ -4,7 +4,6 @@ import { isString, isEmpty, isError } from 'lodash';
 
 // libraries
 import CSSTransition from 'react-transition-group/CSSTransition';
-import Transition from 'react-transition-group/Transition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import { browserHistory } from 'react-router';
 
@@ -23,6 +22,9 @@ import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'serv
 
 // utils
 import { convertToGeoJson } from 'utils/locationTools';
+
+// typings
+import { Locale } from 'typings';
 
 // style
 import { media } from 'utils/styleUtils';
@@ -93,7 +95,7 @@ interface Props {}
 
 interface LocalState {
   showIdeaForm: boolean;
-  locale: string | null;
+  locale: Locale | null;
 }
 
 interface GlobalState {}
@@ -101,19 +103,17 @@ interface GlobalState {}
 interface State extends LocalState, GlobalState {}
 
 export default class IdeasNewPage2 extends React.PureComponent<Props, State> {
-  initialLocalState: LocalState;
-  initialGlobalState: IIdeasNewPageGlobalState;
   localState: ILocalStateService<LocalState>;
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
-    const initialLocalState = {
+  constructor(props) {
+    super(props);
+    const initialLocalState: LocalState = {
       showIdeaForm: true,
       locale: null
     };
-    this.initialGlobalState = {
+    const initialGlobalState: IIdeasNewPageGlobalState = {
       title: null,
       description: null,
       selectedTopics: null,
@@ -126,8 +126,8 @@ export default class IdeasNewPage2 extends React.PureComponent<Props, State> {
       imageId: null,
       imageChanged: false
     };
-    this.localState = localState<LocalState>(initialLocalState);
-    this.globalState = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage', this.initialGlobalState);
+    this.localState = localState(initialLocalState);
+    this.globalState = globalState.init('IdeasNewPage', initialGlobalState);
     this.subscriptions = [];
   }
 
@@ -145,8 +145,6 @@ export default class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
-    // reset global state before unmounting
-    this.globalState.set(this.initialGlobalState);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
@@ -218,12 +216,12 @@ export default class IdeasNewPage2 extends React.PureComponent<Props, State> {
 
     try {
       const authUser = await getAuthUserAsync();
-      const idea = await this.postIdeaAndIdeaImage('published', authUser.data.id);
+      await this.postIdeaAndIdeaImage('published', authUser.data.id);
       browserHistory.push('/ideas');
     } catch (error) {
       if (isError(error) && error.message === 'not_authenticated') {
         try {
-          const idea = await this.postIdeaAndIdeaImage('draft');
+          await this.postIdeaAndIdeaImage('draft');
           this.globalState.set({ processing: false });
           this.localState.set({ showIdeaForm: false });
           window.scrollTo(0, 0);
@@ -250,9 +248,6 @@ export default class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 
   render() {
-    console.log('index state:');
-    console.log(this.state);
-
     if (!this.state) { return null; }
 
     const { showIdeaForm } = this.state;

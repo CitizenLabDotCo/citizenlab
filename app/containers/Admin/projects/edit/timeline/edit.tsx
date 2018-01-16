@@ -6,13 +6,13 @@ import 'react-dates/lib/css/_datepicker.css';
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import moment from 'moment';
-import { get, isEmpty, isString } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import { EditorState } from 'draft-js';
 import { browserHistory } from 'react-router';
 
 // Services
-import { projectBySlugStream, IProject, IProjectData } from 'services/projects';
-import { phaseStream, updatePhase, addPhase, IPhase, IUpdatedPhaseProperties, IPhases } from 'services/phases';
+import { projectBySlugStream, IProject } from 'services/projects';
+import { phaseStream, updatePhase, addPhase, IPhase, IUpdatedPhaseProperties } from 'services/phases';
 
 // Utils
 import getSubmitState from 'utils/getSubmitState';
@@ -21,9 +21,7 @@ import { getEditorStateFromHtmlString, getHtmlStringFromEditorState } from 'util
 // Components
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
-import TextArea from 'components/UI/TextArea';
 import Editor from 'components/UI/Editor';
-import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { DateRangePicker } from 'react-dates';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -146,7 +144,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
   }
 
   handleDescChange = (editorState: EditorState) => {
-    const { attributeDiff, descState } = this.state;
+    const { attributeDiff } = this.state;
     const { locale } = this.props;
 
     if (attributeDiff) {
@@ -176,7 +174,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
     this.setState({ focusedInput });
   }
 
-  isOutsideRange = (day) => {
+  isOutsideRange = () => {
     return false;
   }
 
@@ -192,7 +190,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
           const savedPhase = await updatePhase(phase.data.id, attributeDiff);
           this.setState({ saving: false, saved: true, attributeDiff: {}, phase: savedPhase, errors: null });
         } else if (project) {
-          const savedPhase = await addPhase(project.data.id, attributeDiff);
+          await addPhase(project.data.id, attributeDiff);
           browserHistory.push(`/admin/projects/${slug}/timeline/`);
         }
       } catch (errors) {
@@ -206,13 +204,13 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
   }
 
   render() {
-    const { locale, tFunc } = this.props;
+    const { tFunc } = this.props;
     const { formatMessage } = this.props.intl;
     const { errors, saved, phase, attributeDiff, saving, descState } = this.state;
     const phaseAttrs = (phase ? { ...phase.data.attributes, ...attributeDiff } : { ...attributeDiff });
     const submitState = getSubmitState({ errors, saved, diff: attributeDiff });
-    const startDate = (phaseAttrs.start_at ? moment(phaseAttrs.start_at).locale(locale) : null);
-    const endDate = (phaseAttrs.end_at ? moment(phaseAttrs.end_at).locale(locale) : null);
+    const startDate = (phaseAttrs.start_at ? moment(phaseAttrs.start_at) : null);
+    const endDate = (phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null);
 
     return (
       <>
