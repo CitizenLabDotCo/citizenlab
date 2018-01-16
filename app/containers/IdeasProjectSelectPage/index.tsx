@@ -26,6 +26,10 @@ const ColumnsContainer = styled.div`
   display: flex;
   flex-direction: row;
   margin: 0 -2rem;
+
+  ${media.smallerThanMaxTablet`
+    flex-direction: column;
+  `}
 `;
 
 const PageTitle = styled.h1`
@@ -73,7 +77,9 @@ const ProjectsList = styled.div`
 const ProjectWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  margin-left: -30px;
+  ${media.biggerThanDesktop`
+    margin-left: -30px;
+  `}
 `;
 
 const ButtonBarInner = styled.div`
@@ -85,6 +91,17 @@ const ButtonBarInner = styled.div`
   .Button {
     margin-right: 10px;
   }
+
+  ${media.smallerThanDesktop`
+    margin-left: 35px;
+  `}
+`;
+
+const WithoutButtonBar = styled.div`
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
+  padding-bottom: 20px;
 `;
 
 type Props = {
@@ -195,6 +212,15 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
             />
           </ButtonBarInner>
         </ButtonBar>
+        <WithoutButtonBar>
+          <Button
+            className="e2e-submit-project-select-form"
+            size="2"
+            text={<FormattedMessage {...messages.continueButton} />}
+            onClick={this.handleOnSubmitClick}
+            disabled={!selectedProjectId}
+          />
+        </WithoutButtonBar>
       </StyledContentContainer>
     );
   }

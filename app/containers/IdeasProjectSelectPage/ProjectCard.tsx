@@ -15,7 +15,7 @@ import messages from './messages';
 
 
 const Container = styled<any,'div'>('div')`
-  max-height: 112px;
+  height: 112px;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -26,12 +26,6 @@ const Container = styled<any,'div'>('div')`
   background: #fff;
   border: solid 1px #e6e6e6;
   cursor: pointer;
-
-  ${media.smallerThanMaxTablet`
-    flex-direction: column;
-    align-items: left;
-    padding: 20px;
-  `}
 
   position: relative;
   background: transparent;
@@ -67,6 +61,10 @@ const ImageWrapper = styled.div`
     height: 110px;
     object-fit: cover;
   }
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const ProjectImagePlaceholder = styled.div`
