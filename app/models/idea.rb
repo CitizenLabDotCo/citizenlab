@@ -26,6 +26,7 @@ class Idea < ApplicationRecord
   has_many :downvotes, -> { where(mode: "down") }, as: :votable, class_name: 'Vote'
   has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
   belongs_to :idea_status
+  has_many :notifications, foreign_key: :idea_id, dependent: :nullify
   has_many :activities, as: :item
 
   has_many :idea_images, -> { order(:ordering) }, dependent: :destroy
