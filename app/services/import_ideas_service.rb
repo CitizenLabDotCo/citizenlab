@@ -9,7 +9,7 @@ class ImportIdeasService
 			  raise "The maximal amount of #{MAX_IDEAS} ideas has been exceeded"
 		  end
 		  idea_models_data.each do |idea_data|
-		  	added_idea_ids.push Idea.create(convert_idea(idea_data)).id
+		  	added_idea_ids.push convert_idea(idea_data).id
 		  	puts "Created #{added_idea_ids.first}"
 		  end
 		  # raise "Aborting anyways" ### debugging purposes
@@ -37,21 +37,45 @@ class ImportIdeasService
   			  .include? topic_title
   		end.first
   	end.select{ |topic| topic }
-  	project_title = idea_data[:project_title].downcase
-  	d[:project] = Project.all.select do |project|
-  		project.title_multiloc.values
-  		  .map{ |v| v.downcase }
-  		  .include? project_title
-  	end&.first
+  	if idea_data[:project_title]
+  	  project_title = idea_data[:project_title].downcase
+  	  d[:project] = Project.all.select do |project|
+  		  project.title_multiloc.values
+  		    .map{ |v| v.downcase }
+  		    .include? project_title
+  	  end&.first
+  	  if !d[:project]
+  	  	raise "No project with title #{idea_data[:project_title]} exists"
+  	  end
+  	end
   	if idea_data[:user_email]
   	  d[:author] = User.find_by(email: idea_data[:user_email])
   	  if !d[:author]
-  		  raise "No user with email #{sv_idea[:user_email]} exists"
+  		  raise "No user with email #{idea_data[:user_email]} exists"
   	  end
   	end
   	d[:publication_status] = 'published'
-  	# puts d ### debugging purposes
-  	d
+  	idea = Idea.create d
+  	if idea_data[:image_url]
+  		begin
+  		  IdeaImage.create!(remote_image_url: idea_data[:image_url], idea: idea)
+  		rescue Exception => e
+  			raise "No image could be downloaded from #{idea_data[:image_url]}, make sure the URL is valid and ends with a file extension such as .png or .jpg"
+  		end
+  	end
+  	if idea_data[:phase_rank]
+  		idea_data[:phase_rank] = idea_data[:phase_rank].to_i
+  		project_phases = Phase.where(project_id: d[:project].id)
+  		if idea_data[:phase_rank] > project_phases.size
+  			raise "Only #{idea_data[:phase_rank]} phases exist within project #{idea_data[:project_title]}"
+  		end
+  		phase = project_phases.order(:start_at).all[idea_data[:phase_rank]-1]
+  		if !phase
+  			raise "No phase with title #{idea_data[:phase_title]} exists within project #{idea_data[:project_title]}"
+  		end
+  		IdeasPhase.create!(phase: phase, idea: idea)
+  	end
+  	idea
   end
 
   def multiloculate value

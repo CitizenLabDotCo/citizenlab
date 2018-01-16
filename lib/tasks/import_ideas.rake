@@ -1,7 +1,7 @@
 require 'csv'
 require 'open-uri'
 
-### rake cl2_back:import_ideas['http://res.cloudinary.com/citizenlabco/raw/upload/v1516106226/more_st_niklaas_ideas_ydqqfk.csv','sint-niklaas.citizenlab.co'] ###
+### rake cl2_back:import_ideas['http://res.cloudinary.com/citizenlabco/raw/upload/v1516117361/CitizenLab_import_template_Sint-Niklaas_1_.xlsx_-_Overmolen_nligii.csv','sint-niklaas.citizenlab.co'] ###
 
 
 namespace :cl2_back do
@@ -20,11 +20,13 @@ namespace :cl2_back do
 
   def ii_convert_idea csv_idea
   	d = {}
-  	d[:title] = csv_idea['Title']
-  	d[:body] = csv_idea['Body']
-  	d[:topic_titles] = (csv_idea['Topics'] || '').split(';').select{ |topic| topic }
+  	d[:title]         = csv_idea['Title']
+  	d[:body]          = csv_idea['Body']
+  	d[:topic_titles]  = (csv_idea['Topics'] || '').split(';').select{ |topic| topic }
   	d[:project_title] = csv_idea['Project']
-  	d[:user_email] = csv_idea['Email']
+  	d[:user_email]    = csv_idea['Email']
+    d[:image_url]     = csv_idea['Image URL']
+    d[:phase_rank]   = csv_idea['Phase']
   	d
   end
 
