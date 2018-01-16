@@ -17,6 +17,7 @@ class Project < ApplicationRecord
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :groups_projects, dependent: :destroy
   has_many :groups, through: :groups_projects
+  has_many :notifications, foreign_key: :project_id, dependent: :nullify
 
   VISIBLE_TOS = %w(public groups admins)
   PRESENTATION_MODES = %w(card map)

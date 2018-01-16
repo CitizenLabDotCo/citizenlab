@@ -12,6 +12,7 @@ class User < ApplicationRecord
   has_many :comments, foreign_key: :author_id, dependent: :nullify
   has_many :votes, dependent: :nullify
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
+  has_many :notifications, foreign_key: :initiating_user_id, dependent: :nullify
   has_many :memberships, dependent: :destroy
   has_many :groups, through: :memberships
   has_many :identities, dependent: :destroy
