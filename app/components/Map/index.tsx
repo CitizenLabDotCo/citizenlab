@@ -94,7 +94,7 @@ export default class CLMap extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
-    window.setInterval(this.resizeDetector, 200);
+    this.interval = window.setInterval(this.resizeDetector, 200);
   }
 
   componentDidCatch(error, info) {
@@ -118,8 +118,9 @@ export default class CLMap extends React.Component<Props, State> {
     }
   }
 
-  componentWillMount() {
+  componentWillUnmount() {
     window.clearInterval(this.interval);
+    this.subs.forEach(sub => sub.unsubscribe());
   }
 
   bindMapContainer = (element) => {
