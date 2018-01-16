@@ -15,6 +15,7 @@ import messages from './messages';
 
 
 const Container = styled<any,'div'>('div')`
+  max-height: 112px;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -55,7 +56,7 @@ const Container = styled<any,'div'>('div')`
   }
 
   ${props => props.selected && `
-    border-color: black;
+    border-color: #4BB27C;
   `}
 `;
 
@@ -89,8 +90,7 @@ const ProjectContent = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 8px;
-  padding-left: 1rem;
+  padding: 0.5rem 1rem 0 1rem;
 `;
 
 const ProjectTitle = styled.h3`
@@ -105,6 +105,7 @@ const ProjectDescription = styled.div`
   line-height: 20px;
   font-weight: 300;
   margin-top: 10px;
+  overflow: hidden;
 `;
 
 type Props = {

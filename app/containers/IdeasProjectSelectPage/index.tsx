@@ -25,6 +25,7 @@ const StyledContentContainer = styled(ContentContainer)`
 const ColumnsContainer = styled.div`
   display: flex;
   flex-direction: row;
+  margin: 0 -2rem;
 `;
 
 const PageTitle = styled.h1`
@@ -54,7 +55,7 @@ const RightColumn = Column.extend`
 `;
 
 const ColumnTitle = styled.h2`
-
+  font-weight: 400;
 `;
 
 const ColumnExplanation = styled.div`
