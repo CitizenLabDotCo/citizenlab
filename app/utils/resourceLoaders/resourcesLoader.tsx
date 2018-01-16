@@ -18,7 +18,7 @@ export interface InjectedResourcesLoaderProps<IResourceData> {
     currentPage: number,
     lastPage: number,
     loadMore: () => void,
-    hasMore: () => boolean,
+    hasMore: boolean,
     loading: boolean,
   };
 }
@@ -37,7 +37,7 @@ interface IIResources<IResourceData> {
 
 export const injectResources = <IResourceData, IResources extends IIResources<IResourceData>>(propName: string, streamFn: TStreamFn<IResources>) =>
   <TOriginalProps extends {}>(WrappedComponent: React.ComponentClass<TOriginalProps & InjectedResourcesLoaderProps<IResourceData>>) => {
-    return class ResourceManager extends React.Component<TOriginalProps, State<IResourceData>> {
+    return class ResourceManager extends React.PureComponent<TOriginalProps, State<IResourceData>> {
 
       subscriptions: Rx.Subscription[] = [];
 
@@ -82,14 +82,18 @@ export const injectResources = <IResourceData, IResources extends IIResources<IR
         return this.state.lastPage > this.state.currentPage;
       }
 
+      handleLoadMore = () => {
+        this.loadMore();
+      }
+
       render() {
         const injectedProps = {
           [propName]: {
             all: this.state.resources,
             currentPage: this.state.currentPage,
             lastPage: this.state.lastPage,
-            loadMore: this.loadMore,
-            hasMore: this.hasMore,
+            loadMore: this.handleLoadMore,
+            hasMore: this.hasMore(),
             loading: this.state.loading,
           },
         };

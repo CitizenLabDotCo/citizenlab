@@ -30,4 +30,8 @@ export default defineMessages({
     id: 'app.containers.IdeasProjectSelect.continueButton',
     defaultMessage: 'Continue',
   },
+  loadMore: {
+    id: 'app.containers.IdeasProjectSelect.loadMore',
+    defaultMessage: 'Load more',
+  },
 });
