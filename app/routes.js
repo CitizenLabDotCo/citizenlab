@@ -225,6 +225,23 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     },
+    {
+      path: '/projects/:slug/ideas/new',
+      name: 'IdeasNewPage2',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/IdeasNewPage2'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
     admin(injectReducer),
     {
       path: '/projects',
@@ -282,23 +299,6 @@ export default function createRoutes(store) {
           getComponent(nextState, cb) {
             const importModules = Promise.all([
               import('containers/ProjectsShowPage/info'),
-            ]);
-
-            const renderRoute = loadModule(cb);
-
-            importModules.then(([component]) => {
-              renderRoute(component);
-            });
-
-            importModules.catch(errorLoading);
-          },
-        },
-        {
-          path: '/projects/:slug/ideas/new',
-          name: 'IdeasNewPage2',
-          getComponent(nextState, cb) {
-            const importModules = Promise.all([
-              import('containers/IdeasNewPage2'),
             ]);
 
             const renderRoute = loadModule(cb);
