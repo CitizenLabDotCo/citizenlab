@@ -1,28 +1,23 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // router
-import { Link, browserHistory } from 'react-router';
+import { Link } from 'react-router';
 
 // components
 import Meta from './Meta';
 import Icon from 'components/UI/Icon';
-import EventsPreview from './EventsPreview';
 import ContentContainer from 'components/ContentContainer';
 
 // services
-import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
 import { projectBySlugStream, IProject } from 'services/projects';
-import { projectImagesStream, IProjectImages } from 'services/projectImages';
+import { projectImagesStream } from 'services/projectImages';
 import { phasesStream } from 'services/phases';
 
 // i18n
 import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { getLocalized } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
@@ -221,7 +216,7 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
       project$.switchMap((project) => {
         const projectImages$ = projectImagesStream(project.data.id).observable;
         const phases$ = phasesStream(project.data.id).observable;
-        return Rx.Observable.combineLatest(projectImages$, phases$).map(([projectImages, phases]) => project);
+        return Rx.Observable.combineLatest(projectImages$, phases$).map(() => project);
       }).subscribe((project) => {
         this.setState({ project });
       })
@@ -235,7 +230,6 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
   render() {
     const { params } = this.props;
     const { project } = this.state;
-    const basePath = `/projects/${params.slug}`;
 
     if (project) {
       const { children } = this.props;
@@ -289,12 +283,6 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
             <Content>
               {children}
             </Content>
-
-            {/*
-            {(this.props.location.pathname !== `${basePath}/events`) &&
-              <EventsPreview eventsPageUrl={`${basePath}/events`} projectId={project && project.get('id')} />
-            }
-            */}
           </Container>
 
         </div>

@@ -7,7 +7,7 @@ const isAuthor = (idea: IIdeaData, user?: IUser) => {
   return user && idea.relationships.author.data && idea.relationships.author.data.id === user.data.id;
 };
 
-definePermissionRule('ideas', 'create', (idea: IIdeaData, user: IUser) => {
+definePermissionRule('ideas', 'create', (_idea: IIdeaData, user: IUser) => {
   return !!user;
 });
 
@@ -15,6 +15,6 @@ definePermissionRule('ideas', 'edit', (idea: IIdeaData, user: IUser) => {
   return !!(isAuthor(idea, user) || isAdmin(user));
 });
 
-definePermissionRule('ideas', 'markAsSpam', (idea: IIdeaData, user: IUser) => {
+definePermissionRule('ideas', 'markAsSpam', () => {
   return true;
 });

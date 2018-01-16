@@ -4,8 +4,8 @@ import * as Rx from 'rxjs';
 import * as _ from 'lodash';
 
 // Services
-import { listMembership, Membership } from 'services/groups';
-import { userByIdStream, IUserData, IUser } from 'services/users';
+import { listMembership } from 'services/groups';
+import { userByIdStream, IUser } from 'services/users';
 
 // Components
 import Avatar from 'components/Avatar';

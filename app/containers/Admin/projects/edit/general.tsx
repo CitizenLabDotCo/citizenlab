@@ -49,7 +49,7 @@ import { convertUrlToFileObservable } from 'utils/imageTools';
 import styled from 'styled-components';
 
 // typings
-import { API, IOption, ImageFile } from 'typings';
+import { API, IOption, ImageFile, Locale } from 'typings';
 
 const timeout = 350;
 
@@ -137,7 +137,7 @@ interface State {
   saved: boolean;
   areas: IAreaData[];
   areaType: 'all' | 'selection';
-  locale: string | null;
+  locale: Locale;
   currentTenant: ITenant | null;
   areasOptions: IOption[];
   submitState: 'disabled' | 'enabled' | 'error' | 'success';
@@ -166,7 +166,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       saved: false,
       areas: [],
       areaType: 'all',
-      locale: null,
+      locale: 'en',
       currentTenant: null,
       areasOptions: [],
       submitState: 'disabled',
@@ -214,9 +214,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
 
                 return Rx.Observable.of(null);
               }),
-            ).filter(([processing, headerBg, projectImages]) => {
+            ).filter(([processing]) => {
               return !processing;
-            }).map(([processing, headerBg, projectImages]) => ({
+            }).map(([_processing, headerBg, projectImages]) => ({
               headerBg,
               oldProjectImages: projectImages,
               projectData: (project ? project.data : null)
@@ -230,23 +230,27 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
           });
         })
       ).subscribe(([locale, currentTenant, areas, { headerBg, oldProjectImages, projectData }]) => {
-        this.setState((state: State) => ({
+        const projectType = (projectData ? projectData.attributes.process_type : this.state.projectType);
+        const areaType =  ((projectData && projectData.relationships.areas.data.length > 0) ? 'selection' : 'all');
+        const areasOptions = areas.data.map((area) => ({
+          value: area.id,
+          label: getLocalized(area.attributes.title_multiloc, locale, currentTenant.data.attributes.settings.core.locales)
+        }));
+
+        this.setState({
           locale,
           currentTenant,
           projectData,
-          oldProjectImages,
-          projectType: (projectData ? projectData.attributes.process_type : state.projectType),
-          newProjectImages: oldProjectImages,
+          projectType,
+          areaType,
+          areasOptions,
+          oldProjectImages: (oldProjectImages as ImageFile[] | null),
+          newProjectImages: (oldProjectImages as ImageFile[] | null),
           headerBg: (headerBg ? [headerBg] : null),
           areas: areas.data,
-          areasOptions: areas.data.map((area) => ({
-            value: area.id,
-            label: getLocalized(area.attributes.title_multiloc, locale, currentTenant.data.attributes.settings.core.locales)
-          })),
-          loading: false,
           projectAttributesDiff: {},
-          areaType: (projectData && projectData.relationships.areas.data.length > 0) ? 'selection' : 'all',
-        }));
+          loading: false,
+        });
       }),
 
       this.processing$.subscribe(processing => this.setState({ processing }))
@@ -264,13 +268,13 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 
   changeTitle = (newTitle: string) => {
-    this.setState((state: State) => ({
+    this.setState((state) => ({
       submitState: 'enabled',
       noTitleError: null,
       projectAttributesDiff: {
-        ...state.projectAttributesDiff,
+        ...(state.projectAttributesDiff || {}),
         title_multiloc: {
-          ...state.projectAttributesDiff.title_multiloc,
+          ..._.get(state, 'projectAttributesDiff.title_multiloc', {}),
           [state.locale as string]: newTitle
         }
       }
@@ -278,25 +282,24 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 
   handeProjectTypeOnChange = (projectType: 'continuous' | 'timeline') => {
-    this.setState((state: State) => ({
+    this.setState((state) => ({
       projectType,
       submitState: 'enabled',
       projectAttributesDiff: {
-        ...state.projectAttributesDiff,
+        ...(state.projectAttributesDiff || {}),
         process_type: projectType
       }
     }));
   }
 
   handleHeaderOnAdd = (newHeader: ImageFile) => {
-    this.setState((state: State) => ({
+    this.setState((state) => ({
       submitState: 'enabled',
       projectAttributesDiff: {
-        ...state.projectAttributesDiff,
+        ...(state.projectAttributesDiff || {}),
         header_bg: newHeader.base64
       },
-      headerBg: [newHeader],
-      // noHeaderError: null
+      headerBg: [newHeader]
     }));
   }
 
@@ -305,11 +308,11 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     this.setState({ headerBg });
   }
 
-  handleHeaderOnRemove = async (removedHeader: ImageFile) => {
-    this.setState((state: State) => ({
+  handleHeaderOnRemove = async () => {
+    this.setState((state) => ({
       submitState: 'enabled',
       projectAttributesDiff: {
-        ...state.projectAttributesDiff,
+        ...(state.projectAttributesDiff || {}),
         header_bg: null
       },
       headerBg: null
@@ -317,7 +320,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 
   handleProjectImageOnAdd = (newProjectImage: ImageFile) => {
-    this.setState((state: State) => ({
+    this.setState((state) => ({
       submitState: 'enabled',
       newProjectImages: [
         ...(state.newProjectImages || []),
@@ -331,9 +334,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 
   handleProjectImageOnRemove = async (removedImageFile: ImageFile) => {
-    this.setState((state: State) => ({
+    this.setState((state) => ({
       submitState: 'enabled',
-      newProjectImages: _(state.newProjectImages).filter(projectImage => projectImage.objectUrl !== removedImageFile.objectUrl).value()
+      newProjectImages: (state.newProjectImages ? state.newProjectImages.filter(projectImage => projectImage.objectUrl !== removedImageFile.objectUrl) : null)
     }));
   }
 
@@ -362,7 +365,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     const { projectAttributesDiff, projectData, locale, currentTenant } = this.state;
     const currentTenantLocales = (currentTenant as ITenant).data.attributes.settings.core.locales;
     const projectAttrs = { ...(projectData ? projectData.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
-    const projectTitle = getLocalized(projectAttrs.title_multiloc as any, locale as string, currentTenantLocales);
+    const projectTitle = getLocalized(projectAttrs.title_multiloc as any, locale, currentTenantLocales);
 
     if (!projectTitle) {
       hasErrors = true;
@@ -405,8 +408,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       try {
         let redirect = false;
         let projectId: string | null = null;
-        const imagesToAdd = _(newProjectImages).filter(newProjectImage => !_(oldProjectImages).some(oldProjectImage => oldProjectImage.base64 === newProjectImage.base64)).value();
-        const imagesToRemove = _(oldProjectImages).filter(oldProjectImage => !_(newProjectImages).some(newProjectImage => newProjectImage.base64 === oldProjectImage.base64)).value();
+        const imagesToAdd = _.chain(newProjectImages).filter(newProjectImage => !_(oldProjectImages).some(oldProjectImage => oldProjectImage.base64 === newProjectImage.base64)).value();
+        const imagesToRemove = _.chain(oldProjectImages).filter(oldProjectImage => !_(newProjectImages).some(newProjectImage => newProjectImage.base64 === oldProjectImage.base64)).value();
 
         this.setState({ saved: false });
         this.processing$.next(true);

@@ -6,7 +6,7 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 
 // services
-import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
+import { globalState } from 'services/globalState';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

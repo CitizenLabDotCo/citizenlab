@@ -10,7 +10,6 @@ import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // utils
-import { IStream } from 'utils/streams';
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
@@ -156,7 +155,7 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
           <FormattedMessage {...messages.formTitle} />
         </Title>
 
-        <IdeaForm 
+        <IdeaForm
           title={title}
           description={description}
           selectedTopics={selectedTopics}

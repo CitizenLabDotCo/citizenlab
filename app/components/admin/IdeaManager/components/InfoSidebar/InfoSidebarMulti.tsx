@@ -6,7 +6,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { deleteIdea } from 'services/ideas';
 
 
-import { Segment, List, Button, Icon, Message } from 'semantic-ui-react';
+import { Segment, List, Button, Icon } from 'semantic-ui-react';
 
 import messages from '../../messages';
 

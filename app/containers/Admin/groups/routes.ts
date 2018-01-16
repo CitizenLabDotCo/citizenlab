@@ -2,11 +2,6 @@ import GroupContainer from './';
 import GroupList from './all';
 import GroupEdit from './edit';
 
-async function loadComponent(componentPath: string, cb) {
-  const component = await import(componentPath).catch(console.error);
-  cb(null, component);
-}
-
 export default () => ({
   path: '/admin/groups',
   name: 'admin groups',

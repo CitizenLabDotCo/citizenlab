@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 import * as moment from 'moment';
 import 'moment-timezone';
@@ -9,15 +8,11 @@ import { RouterState, browserHistory } from 'react-router';
 
 // components
 import Meta from './Meta';
-import Navbar, { namespace as navbarComponentNamespace } from 'containers/Navbar';
-import messages from './messages';
-import Loader from 'components/loaders';
+import Navbar from 'containers/Navbar';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import IdeasShow from 'containers/IdeasShow';
-import IdeasNewPage2 from 'containers/IdeasNewPage2';
 import VoteControl from 'components/VoteControl';
-import { namespace as IdeaCardComponentNamespace } from 'components/IdeaCard';
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -32,8 +27,6 @@ import tenantSaga from 'utils/tenant/sagas';
 import { localeStream } from 'services/locale';
 import { authUserStream, signOut } from 'services/auth';
 import { currentTenantStream, ITenant } from 'services/tenant';
-import { topicsStream, ITopics, ITopicData } from 'services/topics';
-import { projectsStream, IProjects, IProjectData } from 'services/projects';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -111,7 +104,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
           moment.tz.setDefault(currentTenant.data.attributes.settings.core.timezone);
           store.dispatch({ type: LOAD_CURRENT_TENANT_SUCCESS, payload: currentTenant });
         })
-      ).subscribe(([authUser, locale, currentTenant]) => {
+      ).subscribe(([_authUser, _locale, currentTenant]) => {
         this.setState({ currentTenant });
       }),
 

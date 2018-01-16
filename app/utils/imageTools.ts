@@ -1,5 +1,4 @@
 import * as Rx from 'rxjs/Rx';
-import * as _ from 'lodash';
 import 'whatwg-fetch';
 import { ImageFile } from 'typings';
 
@@ -7,7 +6,7 @@ export async function getBase64FromFile(file: File | ImageFile) {
   return new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (event: any) => resolve(event.target.result);
-    reader.onerror = (error) => reject(new Error(`error for getBase64()`));
+    reader.onerror = () => reject(new Error(`error for getBase64()`));
     reader.readAsDataURL(file);
   });
 }
@@ -17,7 +16,7 @@ export async function getBase64FromObjectUrl(objectUrl: string) {
     const blob = new Blob([objectUrl], { type: 'file' });
     const reader = new FileReader();
     reader.onload = (event: any) => resolve(event.target.result);
-    reader.onerror = (error) => reject(new Error(`error for getBase64FromObjectUrl()`));
+    reader.onerror = () => reject(new Error(`error for getBase64FromObjectUrl()`));
     reader.readAsDataURL(blob);
   });
 }

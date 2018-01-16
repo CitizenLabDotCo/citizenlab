@@ -1,9 +1,8 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // router
-import { Link, browserHistory } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -24,6 +23,7 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
+import { Locale } from 'typings';
 
 const Container = styled(Link)`
   width: 100%;
@@ -193,7 +193,7 @@ type Props = {
 };
 
 type State = {
-  locale: string | null,
+  locale: Locale | null,
   currentTenant: ITenant | null;
   project: IProject | null;
   projectImage: IProjectImage | null;
@@ -256,12 +256,8 @@ class ProjectCard extends React.PureComponent<Props, State> {
 
     if (locale && currentTenant && project) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-      const tenantLogo = currentTenant.data.attributes.logo.medium;
-      const slug = project.data.attributes.slug;
       const titleMultiloc = project.data.attributes.title_multiloc;
-      const description = getLocalized(project.data.attributes.description_multiloc, locale, currentTenantLocales).replace(/<[^\/>][^>]*><\/[^>]+>/gim,'');
       const preview = getLocalized(project.data.attributes.description_preview_multiloc, locale, currentTenantLocales);
-      const ideasCount = project.data.attributes.ideas_count;
       const imageUrl = (projectImage ? projectImage.data.attributes.versions.medium : null);
 
       return (

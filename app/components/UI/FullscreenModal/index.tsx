@@ -22,7 +22,7 @@ import { injectTracks, trackPage } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const foregroundTimeout = 350;
@@ -262,7 +262,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     this.cleanup();
   }
 
-  componentWillUpdate(nextProps: Props, nextState: State) {
+  componentWillUpdate(nextProps: Props) {
     const { opened } = this.props;
 
     if (!opened && nextProps.opened) {

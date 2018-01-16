@@ -1,13 +1,9 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import * as Rx from 'rxjs/Rx';
-
-// libraries
-import queryString from 'query-string';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // components

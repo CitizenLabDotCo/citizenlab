@@ -8,18 +8,17 @@ import FeatureFlag from 'components/FeatureFlag';
 
 // services
 import { currentTenantStream, ITenant } from 'services/tenant';
-import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
+import { globalState, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
 import { AUTH_PATH } from 'containers/App/constants';
 
 // style
-import { darken } from 'polished';
 import styled from 'styled-components';
 
 const Container = styled.div`
