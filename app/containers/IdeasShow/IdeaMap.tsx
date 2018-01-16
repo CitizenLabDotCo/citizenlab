@@ -17,6 +17,7 @@ interface Props {
     type: 'Point';
     coordinates: [number, number];
   };
+  id: string;
 }
 
 interface State {
@@ -33,7 +34,7 @@ export default class IdeaMap extends React.PureComponent<Props, State> {
 
     return (
       <MapWrapper>
-        <Map center={coordinates} points={[this.props.location]} />
+        <Map center={coordinates} points={[{ ...this.props.location, id: this.props.id }]} />
       </MapWrapper>
     );
   }
