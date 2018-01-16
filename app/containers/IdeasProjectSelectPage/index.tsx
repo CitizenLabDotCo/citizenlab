@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { flow } from 'lodash';
+import { size, isEmpty } from 'lodash';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import { browserHistory } from 'react-router';
@@ -13,6 +13,7 @@ import OpenProjectCard from './OpenProjectCard';
 import Radio from 'components/UI/Radio';
 import Button from 'components/UI/Button';
 import ButtonBar from 'components/ButtonBar';
+import Spinner from 'components/UI/Spinner';
 
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -126,21 +127,36 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
     this.setState({ selectedProjectId: project.id });
   }
 
+  redirectTo = (projectSlug) => {
+    const queryParams = (this.props.location && this.props.location.search) || '';
+    browserHistory.push(`/projects/${projectSlug}/ideas/new${queryParams}`);
+  }
+
   handleOnSubmitClick = () => {
     if (this.props.projects && this.props.projects.all) {
       const project = this.props.projects.all.find((project) => project.id === this.state.selectedProjectId);
       if (project) {
-        const slug = project.attributes.slug;
-        const queryParams = (this.props.location && this.props.location.search) || '';
-        browserHistory.push(`/projects/${slug}/ideas/new${queryParams}`);
+        this.redirectTo(project.attributes.slug);
       }
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { loading, hasMore, all } = nextProps.projects;
+    if (!loading && !hasMore && size(all) === 1) {
+      this.redirectTo(nextProps.projects.all[0].attributes.slug);
+      return false;
+    }
+    return true;
+  }
+
   render() {
     const { selectedProjectId } = this.state;
-    const projects = this.props.projects.all;
+    const { all: projects, loadMore, hasMore, loading } = this.props.projects;
+    const projectsLoading = this.props.projects.loading;
     const openProject = this.props.projects.all && this.props.projects.all[0];
+
+    if (loading && !projects) return null;
 
     return (
       <StyledContentContainer>
@@ -174,6 +190,7 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
                 </ProjectWrapper>
               ))}
             </ProjectsList>
+            {hasMore && <a onClick={loadMore} role="button"><FormattedMessage {...messages.loadMore} /></a>}
           </LeftColumn>
           {projects && openProject &&
             <RightColumn>
