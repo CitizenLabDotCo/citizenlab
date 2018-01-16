@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { flow } from 'lodash';
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
+import { browserHistory } from 'react-router';
 
 import { injectResources, InjectedResourcesLoaderProps } from 'utils/resourceLoaders/resourcesLoader';
 import { projectsStream, IProjectData } from 'services/projects';
@@ -12,7 +14,6 @@ import Radio from 'components/UI/Radio';
 import Button from 'components/UI/Button';
 import ButtonBar from 'components/ButtonBar';
 
-import { media } from 'utils/styleUtils';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -87,6 +88,7 @@ const ButtonBarInner = styled.div`
 
 type Props = {
   theme: any;
+  location: any;
 };
 
 type State = {
@@ -102,16 +104,19 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
     };
   }
 
-  isSelected = (project) => {
-    project.id === this.state.selectedProjectId;
-  }
-
   handleProjectClick = (project) => () => {
     this.setState({ selectedProjectId: project.id });
   }
 
   handleOnSubmitClick = () => {
-
+    if (this.props.projects && this.props.projects.all) {
+      const project = this.props.projects.all.find((project) => project.id === this.state.selectedProjectId);
+      if (project) {
+        const slug = project.attributes.slug;
+        const queryParams = (this.props.location && this.props.location.search) || '';
+        browserHistory.push(`/projects/${slug}/ideas/new${queryParams}`);
+      }
+    }
   }
 
   render() {

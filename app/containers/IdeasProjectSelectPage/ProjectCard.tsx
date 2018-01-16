@@ -134,7 +134,6 @@ class ProjectCard extends React.Component<Props & InjectedNestedResourceLoaderPr
               <ProjectImagePlaceholderIcon name="project" />
             </ProjectImagePlaceholder>
           }
-
         </ImageWrapper>
         <ProjectContent>
           <ProjectTitle>
