@@ -34,17 +34,8 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 import { IProjectData } from 'services/projects';
 import { eventStream, updateEvent, addEvent, IEvent, IUpdatedEventProperties } from 'services/events';
 
-// styling
-import styled from 'styled-components';
-
 // typings
 import { Multiloc, API, Locale } from 'typings';
-
-const Container = styled.div`
-  .SingleDatePickerInput {
-    border-radius: 5px 0px 0px 5px;
-  }
-`;
 
 type Props = {
   params: {
@@ -151,7 +142,8 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
       attributeDiff: {
         ...attributeDiff,
         [name]: moment.toISOString()
-      }
+      },
+      errors: {}
     });
   }
 
@@ -195,15 +187,13 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
     const eventAttrs = event ?  { ...event.data.attributes, ...attributeDiff } : { ...attributeDiff };
     const submitState = getSubmitState({ errors, saved, diff: attributeDiff });
 
-    console.log(eventAttrs);
-
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
       const title = getLocalized(eventAttrs.title_multiloc, locale, currentTenantLocales);
       const location = getLocalized(eventAttrs.location_multiloc as Multiloc, locale, currentTenantLocales);
 
       return (
-        <Container>
+        <>
           <SectionTitle>
             {event && <FormattedMessage {...messages.editEventTitle} />}
             {!event && <FormattedMessage {...messages.createEventTitle} />}
@@ -270,7 +260,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
               }}
             />
           </form>
-        </Container>
+        </>
       );
     }
 

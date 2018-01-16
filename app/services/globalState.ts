@@ -71,12 +71,10 @@ class GlobalState {
         }
       };
 
-      console.log(newState);
-
       return newState;
     })
     .filter(state => isObject(state) && !isEmpty(state))
-    .distinctUntilChanged((oldState, newState) => shallowCompare(oldState, newState))
+    // .distinctUntilChanged((oldState, newState) => shallowCompare(oldState, newState))
     .publishReplay(1)
     .refCount();
 
