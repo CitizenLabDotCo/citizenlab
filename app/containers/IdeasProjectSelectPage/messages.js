@@ -12,7 +12,7 @@ export default defineMessages({
   },
   cityProjects: {
     id: 'app.containers.IdeasProjectSelect.cityProjects',
-    defaultMessage: 'City projects',
+    defaultMessage: '{orgType, select, generic {Projects} other {City projects}}',
   },
   cityProjectsExplanation: {
     id: 'app.containers.IdeasProjectSelect.cityProjectsExplanation',
@@ -24,7 +24,7 @@ export default defineMessages({
   },
   openProjectExplanation: {
     id: 'app.containers.IdeasProjectSelect.openProjectExplanation',
-    defaultMessage: 'Have an idea about something else? See whether fellow citizens agree and make {orgName} notice!',
+    defaultMessage: 'Have an idea about something else? See whether {orgType, select, generic {others} other {fellow citizens}} agree and make {orgName} notice!',
   },
   continueButton: {
     id: 'app.containers.IdeasProjectSelect.continueButton',
