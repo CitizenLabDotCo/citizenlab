@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { size } from 'lodash';
+import { size, groupBy, isEmpty } from 'lodash';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import { browserHistory } from 'react-router';
@@ -9,7 +9,6 @@ import { projectsStream, IProjectData } from 'services/projects';
 
 import ContentContainer from 'components/ContentContainer';
 import ProjectCard from './ProjectCard';
-import OpenProjectCard from './OpenProjectCard';
 import Radio from 'components/UI/Radio';
 import Button from 'components/UI/Button';
 import ButtonBar from 'components/ButtonBar';
@@ -122,6 +121,20 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { loading, hasMore, all } = nextProps.projects;
+    if (!loading && !hasMore && size(all) === 1) {
+      this.redirectTo(nextProps.projects.all[0].attributes.slug);
+      return false;
+    }
+    return true;
+  }
+
+  projectsByRole = () => {
+    const projects = this.props.projects && this.props.projects.all;
+    return groupBy(projects, (project) => project.attributes.internal_role);
+  }
+
   handleProjectClick = (project) => () => {
     this.setState({ selectedProjectId: project.id });
   }
@@ -140,21 +153,15 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { loading, hasMore, all } = nextProps.projects;
-    if (!loading && !hasMore && size(all) === 1) {
-      this.redirectTo(nextProps.projects.all[0].attributes.slug);
-      return false;
-    }
-    return true;
-  }
 
   render() {
     const { selectedProjectId } = this.state;
-    const { all: projects, loadMore, hasMore, loading } = this.props.projects;
-    const openProject = this.props.projects.all && this.props.projects.all[0];
+    const { all: projects, loadMore, hasMore } = this.props.projects;
 
-    if (loading && !projects) return null;
+    if (!projects) return null;
+
+    const { open_idea_box: openProjects, null: cityProjects } = this.projectsByRole();
+    const openProject = openProjects && !isEmpty(openProjects) && openProjects[0];
 
     return (
       <StyledContentContainer>
@@ -170,7 +177,7 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
               <FormattedMessage {...messages.cityProjectsExplanation} />
             </ColumnExplanation>
             <ProjectsList>
-              {projects && projects.map((project) => (
+              {cityProjects && cityProjects.map((project) => (
                 <ProjectWrapper key={project.id}>
                   <Radio
                     onChange={this.handleProjectClick(project)}
@@ -190,7 +197,7 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
             </ProjectsList>
             {hasMore && <a onClick={loadMore} role="button"><FormattedMessage {...messages.loadMore} /></a>}
           </LeftColumn>
-          {projects && openProject &&
+          {openProject &&
             <RightColumn>
               <ColumnTitle>
                 <FormattedMessage {...messages.openProject} />
@@ -208,8 +215,10 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
                     id={openProject.id}
                     label=""
                   />
-                  <OpenProjectCard
-                    project={projects[0]}
+                  <ProjectCard
+                    onClick={this.handleProjectClick(openProject) as any}
+                    project={openProject as any}
+                    selected={(selectedProjectId === openProject.id) as any}
                   />
                 </ProjectWrapper>
               </ProjectsList>
