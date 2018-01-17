@@ -41,7 +41,7 @@
     "lint:eslint": "eslint --ignore-path .gitignore --ignore-pattern internals/scripts --ignore-pattern app/components/Foundation --ignore-pattern local_tests",
     "lint:js": "npm run lint:eslint -- . ",
     "lint:staged": "lint-staged",
-    "lint:ts": "tslint -p ./tslint.json -t stylish",
+    "lint:ts": "tslint -p ./app/tsconfig.json -t stylish",
     "pretest": "npm run test:clean && npm run lint",
     "test:clean": "rimraf ./coverage",
     "test": "cross-env NODE_ENV=test jest --coverage",
