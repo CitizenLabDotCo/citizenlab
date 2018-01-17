@@ -7,6 +7,7 @@ const apiEndpoint = `${API_PATH}/projects`;
 
 type Visibility = 'public' | 'groups' | 'admins';
 type ProcessType = 'continuous' | 'timeline';
+type PresentationMode = 'map' | 'card';
 
 export interface IProjectData {
   id: string;
@@ -28,6 +29,7 @@ export interface IProjectData {
     voting_enabled: boolean;
     voting_method: 'limited' | 'unlimited';
     voting_limited_max: number;
+    presentation_mode: PresentationMode;
   };
   relationships: {
     project_images: {
@@ -53,6 +55,7 @@ export interface IUpdatedProjectProperties {
   voting_enabled?: boolean | null;
   voting_method?: 'limited' | 'unlimited' | null;
   voting_limited_max?: number | null;
+  presentation_mode?: PresentationMode | null;
 }
 
 export interface IProject {
