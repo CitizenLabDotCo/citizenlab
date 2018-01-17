@@ -50,6 +50,15 @@ export interface ITenantSettings {
   projects_info?: TenantFeature;
   excel_export?: TenantFeature;
   private_projects?: TenantFeature;
+  maps?: TenantMapSettings;
+}
+interface TenantMapSettings extends TenantFeature {
+  map_center: {
+    lat: string;
+    lng: string;
+  };
+  tile_provider: string;
+  zoom_level: number;
 }
 
 export interface ITenantData {
