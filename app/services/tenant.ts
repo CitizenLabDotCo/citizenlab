@@ -55,7 +55,7 @@ export interface ITenantSettings {
 interface TenantMapSettings extends TenantFeature {
   map_center: {
     lat: string;
-    lng: string;
+    long: string;
   };
   tile_provider: string;
   zoom_level: number;

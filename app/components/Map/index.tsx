@@ -8,7 +8,7 @@ import { injectTenant, InjectedTenant } from 'utils/resourceLoaders/tenantLoader
 
 // Map
 import Leaflet, { Marker } from 'leaflet';
-import 'Leaflet.markercluster';
+import 'leaflet.markercluster';
 import 'mapbox-gl';
 import 'mapbox-gl-leaflet';
 
@@ -135,7 +135,7 @@ class CLMap extends React.Component<Props & InjectedTenant, State> {
       } else if (this.props.tenant && this.props.tenant.attributes.settings.maps) {
         center = [
           parseFloat(this.props.tenant.attributes.settings.maps.map_center.lat),
-          parseFloat(this.props.tenant.attributes.settings.maps.map_center.lng),
+          parseFloat(this.props.tenant.attributes.settings.maps.map_center.long),
         ];
       }
 
