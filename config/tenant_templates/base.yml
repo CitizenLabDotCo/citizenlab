@@ -127,4 +127,15 @@ models:
     - linking_page_ref: *4
       linked_page_ref: *3
       ordering: 3
+  project:
+    - title_multiloc: projects.open_idea_project_title
+      description_multiloc: projects.open_idea_project_description
+      internal_role: open_idea_box
+      presentation_mode: card
+      process_type: continuous
+      participation_method: ideation
+      posting_enabled: true
+      commenting_enabled: true
+      voting_enabled: true
+      voting_method: unlimited
 

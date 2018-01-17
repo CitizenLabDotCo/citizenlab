@@ -22,6 +22,7 @@ class Project < ApplicationRecord
   VISIBLE_TOS = %w(public groups admins)
   PROCESS_TYPES = %w(timeline continuous)
   PRESENTATION_MODES = %w(card map)
+  INTERNAL_ROLES = %w(open_idea_box)
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :description_multiloc, multiloc: {presence: false}
@@ -37,6 +38,7 @@ class Project < ApplicationRecord
   }
   validates :process_type, presence: true, inclusion: {in: PROCESS_TYPES}
   validates :presentation_mode, presence: true, inclusion: {in: PRESENTATION_MODES}
+  validates :internal_role, inclusion: {in: INTERNAL_ROLES, allow_nil: true}
 
   before_validation :set_process_type, on: :create
   before_validation :generate_slug, on: :create
