@@ -33,7 +33,7 @@ describe ImportIdeasService do
       { title: "Idea #{rand(100000)}",
         body: Faker::Lorem.sentence,
         topic_titles: Array.new(rand(5).times.map{rand(Topic.count)}.uniq.map{|offset| Topic.offset(offset).first.title_multiloc.values.first }),
-        project_title: [nil, project_with_phases, project_without_phases][rand(3)]&.title_multiloc&.values&.first,
+        project_title: [project_with_phases, project_without_phases][rand(2)]&.title_multiloc&.values&.first,
         user_email: User.offset(rand(User.count)).first.email,
         image_url: [nil, Faker::Avatar.image("my-own-slug", "50x50")][rand(2)]
       }
