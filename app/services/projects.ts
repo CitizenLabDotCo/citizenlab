@@ -30,6 +30,7 @@ export interface IProjectData {
     voting_method: 'limited' | 'unlimited';
     voting_limited_max: number;
     presentation_mode: PresentationMode;
+    internal_role: 'open_idea_box' | null;
   };
   relationships: {
     project_images: {
