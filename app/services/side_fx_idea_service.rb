@@ -2,6 +2,11 @@ class SideFxIdeaService
 
   include SideFxHelper
 
+  def before_create idea, user
+    check_participation_context(idea, user)
+    set_phase(idea)
+  end
+
   def after_create idea, user
     if idea.published?
       add_autovote idea
@@ -36,9 +41,31 @@ class SideFxIdeaService
   end
 
 
+  private
+
+  def check_participation_context idea, user
+    pcs = ParticipationContextService.new
+    project = idea.project
+    if project
+      disallowed_reason = pcs.posting_disabled_reason(project)
+      if disallowed_reason
+        raise ClErrors::TransactionError.new(error_key: disallowed_reason)
+      end
+    end
+  end
+
+  def set_phase idea
+    if idea.project && idea.phases.empty?
+      idea.phase_ids = [TimelineService.new.current_phase(idea.project)]
+    end
+  end
+
   def add_autovote idea
-    idea.votes.create!(mode: 'up', user: idea.author)
-    idea.reload
+    pcs = ParticipationContextService.new
+    if !pcs.voting_disabled_reason(idea)
+      idea.votes.create!(mode: 'up', user: idea.author)
+      idea.reload
+    end
   end
 
   def first_user_idea? idea, user

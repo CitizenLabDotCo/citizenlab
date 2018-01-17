@@ -1,4 +1,5 @@
 class Project < ApplicationRecord
+  include ParticipationContext
 
   DESCRIPTION_PREVIEW_JSON_SCHEMA = ERB.new(File.read(Rails.root.join('config', 'schemas', 'project_description_preview.json_schema.erb'))).result(binding)
 
@@ -10,8 +11,8 @@ class Project < ApplicationRecord
   has_many :ideas, dependent: :destroy
   has_and_belongs_to_many :topics
   has_and_belongs_to_many :areas
-  has_many :phases, dependent: :destroy
-  has_many :events, dependent: :destroy
+  has_many :phases, -> { order(:start_at) }, dependent: :destroy
+  has_many :events, -> { order(:start_at) }, dependent: :destroy
   has_many :pages, dependent: :destroy
   has_many :project_images, -> { order(:ordering) }, dependent: :destroy
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
@@ -19,6 +20,7 @@ class Project < ApplicationRecord
   has_many :groups, through: :groups_projects
 
   VISIBLE_TOS = %w(public groups admins)
+  PROCESS_TYPES = %w(timeline continuous)
   PRESENTATION_MODES = %w(card map)
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
@@ -33,8 +35,10 @@ class Project < ApplicationRecord
       errors_as_objects: true
     }
   }
+  validates :process_type, presence: true, inclusion: {in: PROCESS_TYPES}
   validates :presentation_mode, presence: true, inclusion: {in: PRESENTATION_MODES}
 
+  before_validation :set_process_type, on: :create
   before_validation :generate_slug, on: :create
   before_validation :set_visible_to, on: :create
   before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
@@ -56,6 +60,14 @@ class Project < ApplicationRecord
     .group(:id).having("COUNT(*) = ?", uniq_topic_ids.size)
   end)
 
+  def continuous?
+    self.process_type == 'continuous'
+  end
+
+  def timeline?
+    self.process_type == 'timeline'
+  end
+  
   private
 
   def generate_slug
@@ -79,7 +91,12 @@ class Project < ApplicationRecord
     self.visible_to ||= 'public'
   end
 
+  def set_process_type
+    self.process_type ||= 'timeline'
+  end
+
   def set_presentation_mode
     self.presentation_mode ||= 'card'
   end
+
 end
