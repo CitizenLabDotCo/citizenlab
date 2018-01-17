@@ -19,6 +19,9 @@ class ProjectPolicy < ApplicationPolicy
         scope
           .where(visible_to: 'public')
       end
+      if !(user && (user.admin? || user.project_moderator?(record.id)))
+        scope.where(publication_status: 'published')
+      end
     end
   end
 
@@ -64,6 +67,7 @@ class ProjectPolicy < ApplicationPolicy
       :voting_method,
       :voting_limited_max,
       :presentation_mode,
+      :publication_status,
       title_multiloc: I18n.available_locales, 
       description_multiloc: I18n.available_locales,
       description_preview_multiloc: I18n.available_locales,
