@@ -8,6 +8,9 @@ class ProjectPolicy < ApplicationPolicy
     end
 
     def resolve
+      if !(user && user.admin?)
+        scope = scope.where(publication_status: 'published')
+      end
       if user&.admin?
         scope.all
       elsif user
@@ -18,9 +21,6 @@ class ProjectPolicy < ApplicationPolicy
       else
         scope
           .where(visible_to: 'public')
-      end
-      if !(user && user.admin?)
-        scope.where(publication_status: 'published')
       end
     end
   end
