@@ -66,7 +66,7 @@ class IdeaActivities extends React.Component<Props, State> {
     this.setState({ modalOpen: true });
   }
 
-  closeModal= () => {
+  closeModal = () => {
     this.setState({ modalOpen: false });
   }
 
