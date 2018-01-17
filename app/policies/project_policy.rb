@@ -19,7 +19,7 @@ class ProjectPolicy < ApplicationPolicy
         scope
           .where(visible_to: 'public')
       end
-      if !(user && (user.admin? || user.project_moderator?(record.id)))
+      if !(user && user.admin?)
         scope.where(publication_status: 'published')
       end
     end
