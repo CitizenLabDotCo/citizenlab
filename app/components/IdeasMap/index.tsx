@@ -1,12 +1,13 @@
 // Libs
 import * as React from 'react';
 import { flow } from 'lodash';
-import { renderToStaticMarkup } from 'react-dom/server';
 import Leaflet from 'leaflet';
+import { browserHistory, withRouter } from 'react-router';
 
 // Components
 import Map, { Props as MapProps } from 'components/Map';
 import IdeaBox, { Props as IdeaBoxProps } from './IdeaBox';
+import Button from 'components/UI/Button';
 
 // Injectors
 import GetIdeas from 'utils/resourceLoaders/components/GetIdeas';
@@ -14,12 +15,11 @@ import { injectTenant, InjectedTenant } from 'utils/resourceLoaders/tenantLoader
 import { injectLocale, InjectedLocale } from 'utils/resourceLoaders/localeLoader';
 
 // i18n
-import { IntlProvider } from 'react-intl';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
 
 // Styling
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const StyledMap = styled<MapProps>(Map)`
@@ -49,17 +49,22 @@ const MapWrapper = styled.div`
   ${media.biggerThanPhone`
     height: 600px;
   `}
+
+  > .create-idea-wrapper {
+    display: none;
+  }
 `;
 
 // Typing
 import { IIdeaData } from 'services/ideas';
-import Button from 'components/UI/Button';
-import { browserHistory } from 'react-router';
 interface Props {
   project?: string;
   phase?: string;
   topics?: string[];
   areas?: string[];
+  params?: {
+    [key: string]: string | number;
+  };
 }
 
 interface State {
@@ -67,6 +72,9 @@ interface State {
 }
 
 class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, State> {
+  private createIdeaButton: HTMLElement;
+  private savedPosition: Leaflet.LatLng | null = null;
+
   constructor(props) {
     super(props);
 
@@ -96,24 +104,24 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
   }
 
   onMapClick = ({ map, position }: {map: Leaflet.Map, position: Leaflet.LatLng}): void => {
-    function openIdeaCreation() {
-      browserHistory.push(`/ideas/new/?latlng=${position.lat}.${position.lng}`);
-    }
+    this.savedPosition = position;
 
     Leaflet.popup()
     .setLatLng(position)
-    .setContent(renderToStaticMarkup(
-      <IntlProvider locale={this.props.locale}>
-        <ThemeProvider theme={{ colorMain: this.props.tenant ? this.props.tenant.attributes.settings.core.color_main : '#ef0071' }}>
-          <Button onClick={openIdeaCreation} icon="plus-circle">
-            <FormattedMessage {...messages.postIdeaHere} />
-          </Button>
-        </ThemeProvider>
-      </IntlProvider>
-    ))
+    .setContent(this.createIdeaButton)
     .openOn(map);
 
     return;
+  }
+
+  redirectToIdeaCreation = () => {
+    if (this.savedPosition && this.props.params && this.props.params.slug) {
+      browserHistory.push(`/projects/${this.props.params.slug}/ideas/new?location=[${this.savedPosition.lat},${this.savedPosition.lng}]`);
+    }
+  }
+
+  bindIdeaCreationButton = (element) => {
+    if (!this.createIdeaButton) this.createIdeaButton = element;
   }
 
   render() {
@@ -125,6 +133,11 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
               <StyledBox idea={this.state.selectedIdea} onClose={this.deselectIdea} />
             }
             <StyledMap center={[0, 0]} points={this.getPoints(ideaMarkers)} onMarkerClick={this.selectIdea} onMapClick={this.onMapClick} />
+            <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
+              <Button onClick={this.redirectToIdeaCreation} icon="plus-circle">
+                <FormattedMessage {...messages.postIdeaHere} />
+              </Button>
+            </div>
           </MapWrapper>
         )}
       </GetIdeas>
@@ -133,6 +146,7 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
 }
 
 export default flow([
+  withRouter,
   injectTenant(),
   injectLocale(),
 ])(IdeasMap);
