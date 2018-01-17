@@ -211,4 +211,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage',
     defaultMessage: 'Please provide the max. number of allowed votes per user',
   },
+  defaultDisplay: {
+    id: 'app.containers.AdminPage.ProjectEdit.defaultDisplay',
+    defaultMessage: 'Ideas displayed by default as:',
+  },
+  cardDisplay: {
+    id: 'app.containers.AdminPage.ProjectEdit.cardDisplay',
+    defaultMessage: 'Cards',
+  },
+  mapDisplay: {
+    id: 'app.containers.AdminPage.ProjectEdit.mapDisplay',
+    defaultMessage: 'Map',
+  },
 });
