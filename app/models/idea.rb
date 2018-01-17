@@ -7,7 +7,7 @@ class Idea < ApplicationRecord
     :against => [:title_multiloc, :body_multiloc, :author_name],
     :using => { :tsearch => {:prefix => true} }
 
-  belongs_to :project, optional: true
+  belongs_to :project
   counter_culture :project
   belongs_to :author, class_name: 'User', optional: true
   has_many :ideas_topics#, dependent: :destroy
@@ -33,6 +33,7 @@ class Idea < ApplicationRecord
   has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
 
   PUBLICATION_STATUSES = %w(draft published closed spam)
+  validates :project, presence: true, unless: :draft?
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :body_multiloc, presence: true, multiloc: {presence: true}, unless: :draft?
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
@@ -78,7 +79,6 @@ class Idea < ApplicationRecord
 
   scope :with_bounding_box, (Proc.new do |coordinates|
     x1,y1,x2,y2 = eval(coordinates)
-    # where("ST_Contains(ST_MakeEnvelope(?, ?, ?, ?), location_point)", x1, y1, x2, y2)
     where("ST_Intersects(ST_MakeEnvelope(?, ?, ?, ?), location_point)", x1, y1, x2, y2)
   end)
 

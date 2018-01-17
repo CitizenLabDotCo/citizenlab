@@ -118,6 +118,7 @@ resource "Projects" do
 
   post "web_api/v1/projects" do
     with_options scope: :project do
+      parameter :process_type, "The type of process used in this project. Can't be changed after. One of #{Project::PROCESS_TYPES.join(",")}. Defaults to timeline"
       parameter :title_multiloc, "The title of the project, as a multiloc string", required: true
       parameter :description_multiloc, "The description of the project, as a multiloc HTML string", required: true
       parameter :description_preview_multiloc, "The description preview of the project, as a multiloc string"
@@ -126,31 +127,75 @@ resource "Projects" do
       parameter :area_ids, "Array of ids of the associated areas"
       parameter :topic_ids, "Array of ids of the associated topics"
       parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public."
+      parameter :participation_method, "Only for continuous project. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}. Defaults to ideation.", required: false
+      parameter :posting_enabled, "Only for continuous project. Can citizens post ideas in this project? Defaults to true", required: false
+      parameter :commenting_enabled, "Only for continuous project. Can citizens post comment in this project? Defaults to true", required: false
+      parameter :voting_enabled, "Only for continuous project. Can citizens vote in this project? Defaults to true", required: false
+      parameter :voting_method, "Only for continuous project with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
+      parameter :voting_limited_max, "Only for continuous project with limited voting. Number of votes a citizen can perform in this project. Defaults to 10", required: false
       parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}. Defaults to card."
     end
     ValidationErrorHelper.new.error_fields(self, Project)
 
+    describe do
+      let(:project) { build(:project) }
+      let(:title_multiloc) { project.title_multiloc }
+      let(:description_multiloc) { project.description_multiloc }
+      let(:description_preview_multiloc) { project.description_preview_multiloc }
+      let(:header_bg) { encode_image_as_base64("header.jpg")}
+      let(:area_ids) { create_list(:area, 2).map(&:id) }
+      let(:visible_to) { 'admins' }
+      let(:presentation_mode) { 'map' }
 
-    let(:project) { build(:project) }
-    let(:title_multiloc) { project.title_multiloc }
-    let(:description_multiloc) { project.description_multiloc }
-    let(:description_preview_multiloc) { project.description_preview_multiloc }
-    let(:header_bg) { encode_image_as_base64("header.jpg")}
-    let(:area_ids) { create_list(:area, 2).map(&:id) }
-    let(:visible_to) { 'admins' }
-    let(:presentation_mode) { 'map' }
 
-
-    example_request "Create a project" do
-      expect(response_status).to eq 201
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-      expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-      expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-      expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
-      expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'admins'
-      expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'map'
+      example_request "Create a timeline project" do
+        expect(response_status).to eq 201
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:attributes,:process_type)).to eq 'timeline'
+        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
+        expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
+        expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'admins'
+        expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'map'
+      end
     end
+
+    describe do
+      let(:project) { build(:continuous_project) }
+      let(:title_multiloc) { project.title_multiloc }
+      let(:description_multiloc) { project.description_multiloc }
+      let(:description_preview_multiloc) { project.description_preview_multiloc }
+      let(:header_bg) { encode_image_as_base64("header.jpg")}
+      let(:area_ids) { create_list(:area, 2).map(&:id) }
+      let(:visible_to) { 'admins' }
+      let(:process_type) { project.process_type }
+      let(:participation_method) { project.participation_method }
+      let(:posting_enabled) { project.posting_enabled }
+      let(:commenting_enabled) { project.commenting_enabled }
+      let(:voting_enabled) { project.voting_enabled }
+      let(:voting_method) { project.voting_method }
+      let(:voting_limited_max) { project.voting_limited_max }
+
+
+      example_request "Create a continuous project" do
+        expect(response_status).to eq 201
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:attributes,:process_type)).to eq process_type
+        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
+        expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
+        expect(json_response.dig(:data,:attributes,:visible_to)).to eq visible_to
+        expect(json_response.dig(:data,:attributes,:participation_method)).to eq participation_method 
+        expect(json_response.dig(:data,:attributes,:posting_enabled)).to eq posting_enabled 
+        expect(json_response.dig(:data,:attributes,:commenting_enabled)).to eq commenting_enabled 
+        expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq voting_enabled 
+        expect(json_response.dig(:data,:attributes,:voting_method)).to eq voting_method 
+        expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max 
+      end
+    end
+
 
     describe do
 
@@ -164,6 +209,8 @@ resource "Projects" do
         expect(json_response.dig(:errors,:slug)).to eq [{:error=>"taken", :value=>"this-is-taken"}]
       end
     end
+
+
 
   end
 
@@ -180,7 +227,13 @@ resource "Projects" do
       parameter :header_bg, "Base64 encoded header image"
       parameter :area_ids, "Array of ids of the associated areas"
       parameter :topic_ids, "Array of ids of the associated topics"
-      parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public."
+      parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}."
+      parameter :participation_method, "Only for continuous project. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}.", required: false
+      parameter :posting_enabled, "Only for continuous project. Can citizens post ideas in this project?", required: false
+      parameter :commenting_enabled, "Only for continuous project. Can citizens post comment in this project?", required: false
+      parameter :voting_enabled, "Only for continuous project. Can citizens vote in this project?", required: false
+      parameter :voting_method, "Only for continuous project with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}.", required: false
+      parameter :voting_limited_max, "Only for continuous project with limited voting. Number of votes a citizen can perform in this project.", required: false
       parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}. Defaults to card."
     end
     ValidationErrorHelper.new.error_fields(self, Project)

@@ -13,6 +13,8 @@ class ApplicationController < ActionController::API
       status: :bad_request
   end
 
+  rescue_from ClErrors::TransactionError, :with => :transaction_error
+
   # all controllers are secured by default
   def secure_controller?
     true
@@ -36,5 +38,9 @@ class ApplicationController < ActionController::API
 
   def send_no_content(status=204)
     head status
+  end
+
+  def transaction_error(exception)
+    render json: { errors: { base: [{ error: exception.error_key, message: exception.message }] } }, status: exception.code
   end
 end
