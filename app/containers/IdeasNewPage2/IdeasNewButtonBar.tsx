@@ -3,7 +3,7 @@ import * as Rx from 'rxjs/Rx';
 
 // components
 import Button from 'components/UI/Button';
-import Error from 'components/UI/Error'
+import Error from 'components/UI/Error';
 import ButtonBar from 'components/ButtonBar';
 
 // services
