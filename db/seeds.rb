@@ -260,6 +260,18 @@ if Apartment::Tenant.current == 'localhost'
     }
   })
 
+  Project.create({
+    title_multiloc: {
+      'en' => I18n.with_locale('en') { I18n.t!('projects.open_idea_project_title') },
+      'nl' => I18n.with_locale('nl') { I18n.t!('projects.open_idea_project_title') }
+      },
+    description_multiloc: {
+      'en' => I18n.with_locale('en') { I18n.t!('projects.open_idea_project_description') },
+      'nl' => I18n.with_locale('nl') { I18n.t!('projects.open_idea_project_description') }
+      },
+    internal_ref: 'open_idea_box'
+  })
+
   num_projects.times do
     project = Project.new({
       title_multiloc: {

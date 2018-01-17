@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180108153406) do
+ActiveRecord::Schema.define(version: 20180117103530) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -292,6 +292,7 @@ ActiveRecord::Schema.define(version: 20180108153406) do
     t.string "voting_method", default: "unlimited"
     t.integer "voting_limited_max", default: 10
     t.string "process_type", default: "timeline", null: false
+    t.string "internal_ref"
     t.index ["created_at"], name: "index_projects_on_created_at"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
