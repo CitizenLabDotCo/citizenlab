@@ -1,7 +1,10 @@
 // Libraries
 import * as React from 'react';
-import { compact, differenceBy } from 'lodash';
+import { compact, differenceBy, flow } from 'lodash';
 import { BehaviorSubject, Subscription } from 'rxjs';
+
+// Injectors
+import { injectTenant, InjectedTenant } from 'utils/resourceLoaders/tenantLoader';
 
 // Map
 import Leaflet, { Marker } from 'leaflet';
@@ -53,7 +56,7 @@ interface DataMarkerOptions extends Leaflet.MarkerOptions {
 }
 
 export interface Props {
-  center: GeoJSON.Position;
+  center?: GeoJSON.Position;
   points?: Point[];
   areas?: GeoJSON.Polygon[];
   className?: string;
@@ -65,7 +68,7 @@ export interface Props {
 interface State {
 }
 
-export default class CLMap extends React.Component<Props, State> {
+class CLMap extends React.Component<Props & InjectedTenant, State> {
   private map: Leaflet.Map;
   private mapContainer: HTMLElement;
   private clusterLayer: Leaflet.MarkerClusterGroup;
@@ -126,13 +129,29 @@ export default class CLMap extends React.Component<Props, State> {
 
   bindMapContainer = (element) => {
     if (!this.map) {
+      let center: [number, number] = [0, 0];
+      if (this.props.center) {
+        center = this.props.center as [number, number];
+      } else if (this.props.tenant && this.props.tenant.attributes.settings.maps) {
+        center = [
+          parseFloat(this.props.tenant.attributes.settings.maps.map_center.lat),
+          parseFloat(this.props.tenant.attributes.settings.maps.map_center.lng),
+        ];
+      }
+
+      let zoom = 10;
+      if (this.props.tenant && this.props.tenant.attributes.settings.maps) {
+        zoom = this.props.tenant.attributes.settings.maps.zoom_level;
+      }
+
+
       // Bind the mapElement
       this.mapContainer = element;
 
       // Init the map
       this.map = Leaflet.map(element, {
-        center: this.props.center as [number, number],
-        zoom: 11,
+        center,
+        zoom,
         maxZoom: 17,
       });
 
@@ -199,3 +218,7 @@ export default class CLMap extends React.Component<Props, State> {
     );
   }
 }
+
+export default flow([
+  injectTenant(),
+])(CLMap);
