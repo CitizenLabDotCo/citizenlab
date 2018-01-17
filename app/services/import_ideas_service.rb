@@ -27,7 +27,13 @@ class ImportIdeasService
 
 	def convert_idea idea_data
   	d = {}
+    if !idea_data[:title]
+      raise "A title for the idea is mandatory!"
+    end
   	d[:title_multiloc] = multiloculate idea_data[:title]
+    if !idea_data[:body]
+      raise "A body for the idea is mandatory!"
+    end
   	d[:body_multiloc] = multiloculate idea_data[:body]
   	d[:topics] = idea_data[:topic_titles].map do |topic_title|
   		topic_title = topic_title.downcase
@@ -37,16 +43,17 @@ class ImportIdeasService
   			  .include? topic_title
   		end.first
   	end.select{ |topic| topic }
-  	if idea_data[:project_title]
-  	  project_title = idea_data[:project_title].downcase
-  	  d[:project] = Project.all.select do |project|
-  		  project.title_multiloc.values
-  		    .map{ |v| v.downcase }
-  		    .include? project_title
-  	  end&.first
-  	  if !d[:project]
-  	  	raise "No project with title #{idea_data[:project_title]} exists"
-  	  end
+  	if !idea_data[:project_title]
+      raise "A project title is mandatory!"
+    end
+  	project_title = idea_data[:project_title].downcase
+  	d[:project] = Project.all.select do |project|
+  	  project.title_multiloc.values
+  		  .map{ |v| v.downcase }
+  		  .include? project_title
+  	end&.first
+  	if !d[:project]
+  	  raise "No project with title #{idea_data[:project_title]} exists"
   	end
   	if idea_data[:user_email]
   	  d[:author] = User.find_by(email: idea_data[:user_email])
@@ -55,7 +62,7 @@ class ImportIdeasService
   	  end
   	end
   	d[:publication_status] = 'published'
-  	idea = Idea.create d
+  	idea = Idea.create! d
   	if idea_data[:image_url]
   		begin
   		  IdeaImage.create!(remote_image_url: idea_data[:image_url], idea: idea)
