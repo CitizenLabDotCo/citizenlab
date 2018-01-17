@@ -8,7 +8,7 @@ import { injectTenant, InjectedTenant } from 'utils/resourceLoaders/tenantLoader
 
 // Map
 import Leaflet, { Marker } from 'leaflet';
-import 'Leaflet.markercluster';
+import 'leaflet.markercluster';
 import 'mapbox-gl';
 import 'mapbox-gl-leaflet';
 
