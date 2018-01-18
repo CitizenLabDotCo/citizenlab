@@ -1,4 +1,4 @@
-class ChangeNotifications < ActiveRecord::Migration[5.1]
+class ChangeNotificationsForeignKeys < ActiveRecord::Migration[5.1]
   def change
   	change_column :notifications, :idea_id, :uuid, null: true, using: 'idea_id::uuid'
   	change_column :notifications, :comment_id, :uuid, null: true, using: 'comment_id::uuid'
