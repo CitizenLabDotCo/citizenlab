@@ -360,6 +360,11 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     this.setState(newState);
   }
 
+  handleIdeasDisplayChange = (value) => {
+    const newState = { projectAttributesDiff: { ...this.state.projectAttributesDiff, presentation_mode: value } } as State;
+    this.setState(newState);
+  }
+
   handleAreaSelectionChange = (values: IOption[]) => {
     const newDiff = _.cloneDeep(this.state.projectAttributesDiff);
     newDiff.area_ids = values.map((value) => (value.value));
@@ -528,9 +533,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               <Error text={noTitleError} />
               <Error fieldName="title_multiloc" apiErrors={this.state.apiErrors.title_multiloc} />
             </SectionField>
-          </Section>
 
-          <Section>
             <SectionField>
               <Label htmlFor="project-area">
                 <FormattedMessage {...messages.projectType} />
@@ -580,9 +583,24 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 </TransitionGroup>
               }
             </SectionField>
-          </Section>
 
-          <Section>
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.defaultDisplay} />
+              </Label>
+              {['map', 'card'].map((key) => (
+                <Radio
+                  key={key}
+                  onChange={this.handleIdeasDisplayChange}
+                  currentValue={projectAttrs.presentation_mode}
+                  value={key}
+                  name="presentation_mode"
+                  id={`presentation_mode-${key}`}
+                  label={<FormattedMessage {...messages[`${key}Display`]} />}
+                />
+              ))}
+            </SectionField>
+
             <SectionField>
               <Label htmlFor="project-area">
                 <FormattedMessage {...messages.areasLabel} />
@@ -614,9 +632,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 />
               }
             </SectionField>
-          </Section>
 
-          <Section>
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.headerImageLabel} />
@@ -633,9 +649,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 onRemove={this.handleHeaderOnRemove}
               />
             </SectionField>
-          </Section>
 
-          <Section>
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.projectImageLabel} />
@@ -652,9 +666,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 onRemove={this.handleProjectImageOnRemove}
               />
             </SectionField>
-          </Section>
 
-          <Section>
             {projectData &&
               <SectionField>
                 <Label>
@@ -667,9 +679,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 <Error text={this.state.deleteError} />
               </SectionField>
             }
-          </Section>
 
-          <Section>
             <SubmitWrapper
               loading={processing}
               status={submitState}
