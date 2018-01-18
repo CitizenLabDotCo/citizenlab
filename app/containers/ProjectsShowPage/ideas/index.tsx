@@ -2,6 +2,9 @@
 import React from 'react';
 import { Map } from 'immutable';
 
+// Utils
+import { trackEvent } from 'utils/analytics';
+
 // Components
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
@@ -44,7 +47,10 @@ class AllIdeas extends React.Component<Props, State> {
   }
 
   toggleDisplay = () => {
-    this.setState({ display: this.state.display === 'map' ? 'cards' : 'map' });
+    const display = this.state.display === 'map' ? 'cards' : 'map';
+
+    trackEvent('changeProjectIdeaDisplayMode', { selectedDisplayMode: display });
+    this.setState({ display });
   }
 
   render() {
