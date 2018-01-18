@@ -3,11 +3,10 @@ import { keys, isEmpty, flow, size } from 'lodash';
 import styled from 'styled-components';
 import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
 
-
 import { FormattedMessage } from 'utils/cl-intl';
 import { topicsStream, ITopicData } from 'services/topics';
 import { ideaStatusesStream, IIdeaStatusData } from 'services/ideaStatuses';
-import { projectsStream, IProject, IProjectData } from 'services/projects';
+import { projectsStream, IProjectData } from 'services/projects';
 import { phasesStream, IPhaseData } from 'services/phases';
 import { injectTFunc } from 'components/T/utils';
 import { injectIdeasLoader, InjectedIdeaLoaderProps } from 'utils/resourceLoaders/ideasLoader';
@@ -28,7 +27,7 @@ import messages from './messages';
 
 type Props = InjectedIdeaLoaderProps & InjectedResourcesLoaderProps<IProjectData> & InjectedResourcesLoaderProps<ITopicData> & InjectedResourcesLoaderProps<IIdeaStatusData> & InjectedNestedResourceLoaderProps<IPhaseData> & {
   tFunc: ({}) => string;
-  project?: IProject| null;
+  project?: IProjectData | null;
 };
 
 type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
@@ -101,9 +100,11 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     this.globalState.set({ enabled: true });
+
     if (this.props.project) {
-      this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(this.props.project.data.id);
+      this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(this.props.project.id);
     }
+
     this.setVisibleFilterMenus(!!this.props.project);
   }
 
@@ -112,8 +113,8 @@ class IdeaManager extends React.PureComponent<Props, State> {
   }
 
   componentWillReceiveProps(nextProps) {
-    if ((this.props.project && this.props.project.data.id) !== (nextProps.project && nextProps.project.data.id)) {
-      this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(nextProps.project && nextProps.project.data.id);
+    if ((this.props.project && this.props.project.id) !== (nextProps.project && nextProps.project.id)) {
+      this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(nextProps.project && nextProps.project.id);
       this.setVisibleFilterMenus(!!nextProps.project);
     }
   }
@@ -170,7 +171,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
                 activeFilterMenu={activeFilterMenu}
                 visibleFilterMenus={visibleFilterMenus}
                 onChangeActiveFilterMenu={this.handleChangeActiveFilterMenu}
-                project={(this.props.project && this.props.project.data) || null}
+                project={(this.props.project && this.props.project) || null}
                 phases={this.props.phases.all}
                 topics={this.props.topics.all}
                 projects={this.props.projects.all}
@@ -231,7 +232,7 @@ export default flow(
   injectResources('projects', projectsStream),
   injectResources('topics', topicsStream),
   injectResources('ideaStatuses', ideaStatusesStream),
-  injectNestedResources('phases', phasesStream, (props) => props.project && props.project.data.id),
+  injectNestedResources('phases', phasesStream, (props) => props.project && props.project.id),
   injectIdeasLoader,
   DragDropContext(HTML5Backend),
   injectTFunc

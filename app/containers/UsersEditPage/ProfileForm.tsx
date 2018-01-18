@@ -38,6 +38,7 @@ import { color } from 'utils/styleUtils';
 const StyledContentContainer = styled(ContentContainer)`
   background: ${color('background')};
   padding-top: 25px;
+  padding-bottom: 40px;
 `;
 
 // Types

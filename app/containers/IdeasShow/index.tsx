@@ -441,6 +441,7 @@ const StyledSharingMobile = styled(StyledSharing)`
   `}
 `;
 
+/*
 const IconWrapper = styled.div`
   width: 30px;
   margin: 0;
@@ -486,6 +487,7 @@ const GiveOpinion = styled.div`
     display: none;
   `}
 `;
+*/
 
 const MoreActionsMenuWrapper = styled.div`
   margin-top: 40px;
@@ -643,7 +645,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { authUser, idea, ideaImage, ideaAuthor, ideaComments, project, loading, showMap, moreActions } = this.state;
+    const { /* authUser, */ idea, ideaImage, ideaAuthor, ideaComments, project, loading, showMap, moreActions } = this.state;
 
     if (!loading && idea !== null) {
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
@@ -681,7 +683,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
           <SharingWrapper>
             <StyledSharing imageUrl={ideaImageLarge} />
 
-            {authUser &&
+            {/* authUser &&
               <GiveOpinion onClick={this.scrollToCommentForm}>
                 <IconWrapper>
                   <Icon name="comments" />
@@ -690,7 +692,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                   <FormattedMessage {...messages.commentsTitle} />
                 </GiveOpinionText>
               </GiveOpinion>
-            }
+            */}
           </SharingWrapper>
 
           <MoreActionsMenuWrapper>

@@ -13,6 +13,7 @@ import { browserHistory } from 'react-router';
 // Services
 import { projectBySlugStream, IProject } from 'services/projects';
 import { phaseStream, updatePhase, addPhase, IPhase, IUpdatedPhaseProperties } from 'services/phases';
+import eventEmitter from 'utils/eventEmitter';
 
 // Utils
 import getSubmitState from 'utils/getSubmitState';
@@ -26,6 +27,7 @@ import Error from 'components/UI/Error';
 import { DateRangePicker } from 'react-dates';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import ParticipationContext, { IParticipationContextConfig } from '../parcticipationContext';
 
 // i18n
 import localize, { injectedLocalized } from 'utils/localize';
@@ -180,16 +182,54 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
 
   handleOnSubmit = async (event: React.FormEvent<any>) => {
     event.preventDefault();
+    eventEmitter.emit('AdminProjectTimelineEdit', 'getParticipationContext', null);
+  }
 
-    const { attributeDiff, phase, project } = this.state;
+  handleParticipationContextOnChange = (participationContextConfig: IParticipationContextConfig) => {
+    const { attributeDiff } = this.state;
+    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = participationContextConfig;
+
+    this.setState({
+      attributeDiff: {
+        ...attributeDiff,
+        participation_method: participationMethod,
+        posting_enabled: postingEnabled,
+        commenting_enabled: commentingEnabled,
+        voting_enabled: votingEnabled,
+        voting_method: votingMethod,
+        voting_limited_max: votingLimit
+      }
+    });
+  }
+
+  handleParcticipationContextOnSubmit = (participationContextConfig: IParticipationContextConfig) => {
+    let { attributeDiff } = this.state;
+    const { phase, project } = this.state;
     const { slug } = this.props.params;
+    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = participationContextConfig;
 
+    attributeDiff = {
+      ...attributeDiff,
+      participation_method: participationMethod,
+      posting_enabled: postingEnabled,
+      commenting_enabled: commentingEnabled,
+      voting_enabled: votingEnabled,
+      voting_method: votingMethod,
+      voting_limited_max: votingLimit
+    };
+
+    this.save(slug, project, phase, attributeDiff);
+  }
+
+  save = async (slug: string | null, project: IProject | null, phase: IPhase | null, attributeDiff: IUpdatedPhaseProperties) => {
     if (!isEmpty(attributeDiff)) {
+      console.log(attributeDiff);
+
       try {
         if (phase) {
           const savedPhase = await updatePhase(phase.data.id, attributeDiff);
           this.setState({ saving: false, saved: true, attributeDiff: {}, phase: savedPhase, errors: null });
-        } else if (project) {
+        } else if (project && slug) {
           await addPhase(project.data.id, attributeDiff);
           browserHistory.push(`/admin/projects/${slug}/timeline/`);
         }
@@ -230,6 +270,14 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
                 onChange={this.createMultilocUpdater('title_multiloc')}
               />
               <Error apiErrors={errors && errors.title_multiloc} />
+            </SectionField>
+
+            <SectionField>
+              <ParticipationContext 
+                phaseId={(phase ? phase.data.id : null)}
+                onSubmit={this.handleParcticipationContextOnSubmit}
+                onChange={this.handleParticipationContextOnChange}
+              />
             </SectionField>
 
             <SectionField>

@@ -209,6 +209,6 @@ export default defineMessages({
   },
   noVotingLimitErrorMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage',
-    defaultMessage: 'Please provide the max. number of allowed votes per user',
+    defaultMessage: 'Not a valid number',
   },
 });

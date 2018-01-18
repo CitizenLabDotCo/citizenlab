@@ -45,6 +45,12 @@ export interface IUpdatedPhaseProperties {
   description_multiloc?: { [key: string]: string };
   start_at?: string;
   end_at?: string;
+  participation_method?: 'ideation' | 'information';
+  posting_enabled?: boolean | null;
+  commenting_enabled?: boolean | null;
+  voting_enabled?: boolean | null;
+  voting_method?: 'limited' | 'unlimited' | null;
+  voting_limited_max?: number | null;
 }
 
 export function phasesStream(projectId: string, streamParams: IStreamParams | null = null) {

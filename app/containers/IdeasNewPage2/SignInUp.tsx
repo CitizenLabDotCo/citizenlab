@@ -140,11 +140,10 @@ type State = {
 };
 
 export default class SignInUp extends React.PureComponent<Props, State> {
-  state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       show: 'signIn',
       currentTenant: null

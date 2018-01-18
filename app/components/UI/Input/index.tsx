@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isFunction, isUndefined, isNull, isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 
 // components
@@ -54,8 +54,9 @@ export type Props = {
   onFocus?: (arg: React.FormEvent<HTMLInputElement>) => void;
   onBlur?: (arg: React.FormEvent<HTMLInputElement>) => void;
   setRef?: (arg: HTMLInputElement) => void | undefined;
-  autoFocus?: boolean;
-  name?: string;
+  autoFocus?: boolean | undefined;
+  min?: string | undefined;
+  name?: string | undefined;
 };
 
 type State = {};
@@ -82,7 +83,7 @@ export default class Input extends React.Component<Props, State> {
   }
 
   handleRef = (element: HTMLInputElement) => {
-    if (_.isFunction(this.props.setRef)) {
+    if (isFunction(this.props.setRef)) {
       this.props.setRef(element);
     }
   }
@@ -91,7 +92,7 @@ export default class Input extends React.Component<Props, State> {
     let { value, placeholder, error } = this.props;
     const className = this.props['className'];
     const { id, type } = this.props;
-    const hasError = (!_.isNull(error) && !_.isUndefined(error) && !_.isEmpty(error));
+    const hasError = (!isNull(error) && !isUndefined(error) && !isEmpty(error));
 
     if (this.props.name && this.context.formik && this.context.formik.values[this.props.name]) {
       value = value || this.context.formik.values[this.props.name];
@@ -105,6 +106,7 @@ export default class Input extends React.Component<Props, State> {
       <Container error={hasError} className={className}>
         <input
           id={id}
+          className={'CLInputComponent'}
           name={name}
           type={type}
           placeholder={placeholder}
@@ -113,6 +115,7 @@ export default class Input extends React.Component<Props, State> {
           onFocus={this.props.onFocus}
           onBlur={this.handleOnBlur}
           ref={this.handleRef}
+          min={this.props.min}
           autoFocus={this.props.autoFocus}
         />
         <div>

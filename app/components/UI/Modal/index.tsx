@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isFunction } from 'lodash';
 import { browserHistory } from 'react-router';
 
 // components
@@ -27,15 +27,16 @@ const ModalContent = styled(clickOutside)`
   flex: 1 1 100vw;
   height: auto;
   max-height: 75vh;
-  max-width: 850px;
+  max-width: 650px;
   outline: none;
   overflow-y: auto;
-  padding: 40px 60px;
+  padding: 40px;
   will-change: opacity, transform;
   z-index: 1000;
 
   ${media.biggerThanPhone`
-    flex-basis: 80%;
+    flex-grow: 0;
+    flex-basis: 600px;
   `}
 `;
 
@@ -193,7 +194,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     document.body.classList.remove('modal-active');
     window.removeEventListener('popstate', this.handlePopstateEvent);
 
-    if (_.isFunction(this.unlisten)) {
+    if (isFunction(this.unlisten)) {
       this.unlisten();
     }
   }
