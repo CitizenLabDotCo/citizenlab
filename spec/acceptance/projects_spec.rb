@@ -17,6 +17,7 @@ resource "Projects" do
     end
     parameter :topics, 'Filter by topics (AND)', required: false
     parameter :areas, 'Filter by areas (AND)', required: false
+    parameter :publication_statuses, "Return only ideas with the specified publication statuses (i.e. given an array of publication statuses); returns all pusblished ideas by default", required: false
 
     example_request "List all projects" do
       explanation "Sorted by descending created_at"
