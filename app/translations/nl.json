@@ -28,6 +28,7 @@
   "app.components.IdeaForm.topicsLabel": "Thema's (optioneel, max. 2)",
   "app.components.IdeaForm.topicsPlaceholder": "Selecteer eventueel 1 of 2 thema's bij uw idee",
   "app.components.IdeaTag.header": "Dit is de IdeaTag component!",
+  "app.components.IdeasMap.noIdeasWithLocation": "",
   "app.components.IdeasMap.postIdeaHere": "",
   "app.components.IdeasMap.seeIdea": "",
   "app.components.IdeasShow.changeLogEntry": "{changeType, select, changed_status {{userName} heeft de status van dit idee bewerkt} published {{userName} publiceerde dit idee} changed_title {{userName} heeft de titel van dit idee bewerkt} changed_body {{userName} heeft de beschrijving van dit idee bewerkt}}",

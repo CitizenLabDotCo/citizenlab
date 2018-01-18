@@ -28,6 +28,7 @@
   "app.components.IdeaForm.topicsLabel": "Topics (optional, max. 2)",
   "app.components.IdeaForm.topicsPlaceholder": "Select one or two topics for your idea",
   "app.components.IdeaTag.header": "This is the IdeaTag component !",
+  "app.components.IdeasMap.noIdeasWithLocation": "The ideas in this project don't have any location information.",
   "app.components.IdeasMap.postIdeaHere": "Post an idea here",
   "app.components.IdeasMap.seeIdea": "See the full idea",
   "app.components.IdeasShow.changeLogEntry": "{changeType, select, changed_status {{userName} has updated the status of this idea} published {{userName} created this idea} changed_title {{userName} updated the title of this idea} changed_body {{userName} updated the description of this idea}}",
