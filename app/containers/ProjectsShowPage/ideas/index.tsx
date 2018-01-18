@@ -4,6 +4,7 @@ import { Map } from 'immutable';
 
 // Utils
 import { trackEvent } from 'utils/analytics';
+import tracks from './tracks';
 
 // Components
 import ContentContainer from 'components/ContentContainer';
@@ -49,7 +50,7 @@ class AllIdeas extends React.Component<Props, State> {
   toggleDisplay = () => {
     const display = this.state.display === 'map' ? 'cards' : 'map';
 
-    trackEvent('changeProjectIdeaDisplayMode', { selectedDisplayMode: display });
+    trackEvent(tracks.toggleDisplay, { selectedDisplayMode: display });
     this.setState({ display });
   }
 

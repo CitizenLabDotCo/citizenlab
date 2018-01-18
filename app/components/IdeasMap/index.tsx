@@ -6,6 +6,7 @@ import { browserHistory, withRouter } from 'react-router';
 
 // Services & utils
 import { trackEvent } from 'utils/analytics';
+import tracks from './tracks';
 
 // Components
 import Map, { Props as MapProps } from 'components/Map';
@@ -101,7 +102,7 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
   }
 
   selectIdea = (id) => {
-    trackEvent('clickOnIdeaMapMarker', { ideaId: id });
+    trackEvent(tracks.clickOnIdeaMapMarker, { ideaId: id });
     this.setState({ selectedIdea: id });
   }
 
@@ -122,7 +123,7 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
 
   redirectToIdeaCreation = () => {
     if (this.savedPosition && this.props.params && this.props.params.slug) {
-      trackEvent('createIdeaFromMap', { position: this.savedPosition, projectSlug: this.props.params.slug });
+      trackEvent(tracks.createIdeaFromMap, { position: this.savedPosition, projectSlug: this.props.params.slug });
       browserHistory.push(`/projects/${this.props.params.slug}/ideas/new?location=[${this.savedPosition.lat},${this.savedPosition.lng}]`);
     }
   }
