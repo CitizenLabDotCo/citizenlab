@@ -204,7 +204,7 @@ const ModalContent: any = styled.div`
   overflow: hidden;
   outline: none;
   background: transparent;
-  z-index: 10000;
+  z-index: 10001;
   will-change: auto;
 
   &.content-enter {

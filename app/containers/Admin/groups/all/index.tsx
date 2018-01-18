@@ -27,9 +27,7 @@ const ButtonWrapper = styled.div`
   padding-bottom: 2rem;
 `;
 
-// Typing
-interface Props {
-}
+interface Props {}
 
 interface State {
   creationModalVisible: boolean;
@@ -67,7 +65,12 @@ export default class GroupsList extends React.PureComponent<Props, State> {
 
           <GroupListTable />
 
-          <Modal opened={creationModalVisible} close={this.closeCreationModal}>
+          <Modal
+            opened={creationModalVisible}
+            close={this.closeCreationModal}
+            fixedHeight={false}
+            width="550px"
+          >
             <GroupAdditionForm onSaveSuccess={this.closeCreationModal} />
           </Modal>
         </PageWrapper>

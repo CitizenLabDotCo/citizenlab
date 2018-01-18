@@ -13,13 +13,10 @@ type State = {};
 export default class ProjectDashboard extends React.PureComponent<Props, State> {
   render() {
     return (
-      <div>
-        <HelmetIntl
-          title={messages.helmetTitle}
-          description={messages.helmetDescription}
-        />
+      <>
+        <HelmetIntl title={messages.helmetTitle} description={messages.helmetDescription} />
         {this.props.children}
-      </div>
+      </>
     );
   }
 }
