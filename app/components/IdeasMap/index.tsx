@@ -131,8 +131,8 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
       <GetIdeas project={this.props.project} markers>
         {({ ideaMarkers }) => (
           <React.Fragment>
-            {this.getPoints(ideaMarkers).length === 0 &&
-              <Message warning>
+            {ideaMarkers.length > 0 && this.getPoints(ideaMarkers).length === 0 &&
+              <Message info>
                 <FormattedMessage {...messages.noIdeasWithLocation} />
               </Message>
             }

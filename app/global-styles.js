@@ -190,7 +190,8 @@ injectGlobal`
 
   /* Semantic UI Overrides */
   .ui.message,
-  .ui.message.warning {
+  .ui.message.warning,
+  .ui.message.info {
     box-shadow: none;
   }
 `;
