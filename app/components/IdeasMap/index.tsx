@@ -133,7 +133,7 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
             {this.state.selectedIdea &&
               <StyledBox idea={this.state.selectedIdea} onClose={this.deselectIdea} />
             }
-            <StyledMap center={[0, 0]} points={this.getPoints(ideaMarkers)} onMarkerClick={this.selectIdea} onMapClick={this.onMapClick} />
+            <StyledMap points={this.getPoints(ideaMarkers)} onMarkerClick={this.selectIdea} onMapClick={this.onMapClick} />
             <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
               <Button onClick={this.redirectToIdeaCreation} icon="plus-circle">
                 <FormattedMessage {...messages.postIdeaHere} />

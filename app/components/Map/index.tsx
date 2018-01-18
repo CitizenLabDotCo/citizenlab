@@ -130,7 +130,7 @@ class CLMap extends React.Component<Props & InjectedTenant, State> {
   bindMapContainer = (element) => {
     if (!this.map) {
       let center: [number, number] = [0, 0];
-      if (this.props.center) {
+      if (this.props.center && this.props.center !== [0, 0]) {
         center = this.props.center as [number, number];
       } else if (this.props.tenant && this.props.tenant.attributes.settings.maps) {
         center = [
