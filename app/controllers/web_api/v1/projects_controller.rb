@@ -4,7 +4,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
   def index
     @projects = policy_scope(Project)
-      .includes(:project_images)
+      .includes(:project_images, :phases)
       .order(created_at: :desc)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
@@ -26,7 +26,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   end
 
   def create
-    @project = Project.new(project_params)
+    @project = Project.new(permitted_attributes(Project))
     authorize @project
     if @project.save
       render json: @project, status: :created
@@ -38,7 +38,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   def update
     params[:project][:area_ids] ||= [] if params[:project].has_key?(:area_ids)
     params[:project][:topic_ids] ||= [] if params[:project].has_key?(:topic_ids)
-    if @project.update(project_params)
+    if @project.update(permitted_attributes(Project))
       render json: @project, status: :ok
     else
       render json: {errors: @project.errors.details}, status: :unprocessable_entity, include: ['project_images']
@@ -54,20 +54,6 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
   def secure_controller?
     false
-  end
-
-  def project_params
-    params.require(:project).permit(
-      :slug, 
-      :header_bg,
-      :visible_to,
-      :presentation_mode,
-      title_multiloc: I18n.available_locales, 
-      description_multiloc: I18n.available_locales,
-      description_preview_multiloc: I18n.available_locales,
-      area_ids: [],
-      topic_ids: []
-    )
   end
 
   def set_project

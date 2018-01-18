@@ -19,7 +19,7 @@ RSpec.describe Phase, type: :model do
   end
 
   describe "timing validation" do
-    it "uscceeds when start_at and end_at are equal" do
+    it "succeeds when start_at and end_at are equal" do
       phase = build(:phase)
       phase.end_at = phase.start_at
       expect(phase).to be_valid
@@ -27,6 +27,18 @@ RSpec.describe Phase, type: :model do
     it "fails when end_at is before start_at" do
       phase = build(:phase)
       phase.end_at = phase.start_at - 1.day
+      expect(phase).to be_invalid
+    end
+  end
+
+  describe "project validation" do
+    it "succeeds when the associated project is a timeline project" do
+      phase = build(:phase, project: build(:project, process_type: 'timeline'))
+      expect(phase).to be_valid
+    end
+
+    it "fails when the associated project is not a timeline project" do
+      phase = build(:phase, project: build(:continuous_project))
       expect(phase).to be_invalid
     end
   end

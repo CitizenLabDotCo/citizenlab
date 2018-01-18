@@ -286,10 +286,11 @@ resource "Ideas" do
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
+    response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
 
     let(:idea) { build(:idea) }
-    let(:project) { create(:project) }
+    let(:project) { create(:continuous_project) }
     let(:project_id) { project.id }
     let(:publication_status) { 'published' }
     let(:title_multiloc) { idea.title_multiloc }
@@ -345,8 +346,9 @@ resource "Ideas" do
       end
 
       describe do
-        let (:project) { create(:project_with_phases )}
-        let(:phase_ids) { project.phases.take(2).map(&:id) }
+        let (:active_phases) { create_list(:active_phase, 2, participation_method: 'ideation') }
+        let (:project) { create(:project, phases: active_phases) }
+        let (:phase_ids) { active_phases.map(&:id) }
         example_request "Creating an idea in specific phases" do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
@@ -355,8 +357,18 @@ resource "Ideas" do
       end
 
       describe do
-        let (:project) { create(:project_with_phases) }
-        let (:other_project) { create(:project_with_phases) }
+        let (:phases) { create_list(:phase, 5, participation_method: 'information') }
+        let (:project) { create(:project, phases: phases) }
+        example_request "[error] Creating an idea in a project with a timeline but no active ideation phases" do
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:errors, :base).first[:error]).to eq 'project_inactive'
+        end
+      end
+
+      describe do
+        let (:project) { create(:project_with_active_ideation_phase) }
+        let (:other_project) { create(:project_with_active_ideation_phase) }
         let (:phase_ids) { [other_project.phases.first.id] }
         example_request "[error] Creating an idea linked to a phase from a different project" do
           expect(response_status).to eq 422
@@ -389,6 +401,7 @@ resource "Ideas" do
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
+    response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
 
     let(:id) { @idea.id }

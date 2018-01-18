@@ -94,6 +94,7 @@ describe TenantTemplateService do
       expect(IdeaStatus.count).to be > 0
       expect(Topic.count).to be > 0
       expect(Page.count).to be > 0
+      expect(Project.count).to be > 0
     end
   end
 
