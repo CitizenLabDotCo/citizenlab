@@ -6,13 +6,11 @@ const Wrapper = styled.label`
   flex-direction: row;
   align-items: center;
   margin-bottom: 12px;
-  cursor: pointer;
 `;
 
-const CustomRadio = styled.div`
+const CustomRadio = styled<any, 'div'>('div')`
   width: 20px;
   height: 20px;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,8 +21,15 @@ const CustomRadio = styled.div`
   border: 1px solid #a6a6a6;
   box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.15);
 
-  &:not(.checked):hover {
-    border-color: #000;
+
+  ${props => props.disabled ? `
+    opacity: 0.5;
+    ` : `
+    cursor: pointer;
+    &:not(.checked):hover {
+      border-color: #000;
+    }
+  `
   }
 `;
 
@@ -53,11 +58,14 @@ interface Props {
   name: string;
   id: string;
   label: string | JSX.Element;
+  disabled?: boolean;
 }
 
 export default class Radio extends React.PureComponent<Props> {
   handleChange = () => {
-    this.props.onChange(this.props.value);
+    if (!this.props.disabled) {
+      this.props.onChange(this.props.value);
+    }
   }
 
   render() {
@@ -75,7 +83,10 @@ export default class Radio extends React.PureComponent<Props> {
           checked={checked}
           onChange={this.handleChange}
         />
-        <CustomRadio className={`${checked ? 'checked' : ''}`}>
+        <CustomRadio
+          className={`${checked ? 'checked' : ''}`}
+          disabled={this.props.disabled}
+        >
           {checked && <Checked />}
         </CustomRadio>
         <Text className="text">{this.props.label}</Text>
