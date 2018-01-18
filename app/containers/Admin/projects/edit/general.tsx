@@ -57,6 +57,13 @@ const TitleInput = styled(Input)`
   width: 497px;
 `;
 
+const ProjectType = styled.div`
+  color: #333;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 400;
+`;
+
 const StyledImagesDropzone = styled(ImagesDropzone)`
   margin-top: 2px;
   padding-right: 100px;
@@ -375,24 +382,24 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     return !hasErrors;
   }
 
-  onSubmit = async (event) => {
+  onSubmit = (event: React.FormEvent<any>) => {
     event.preventDefault();
 
     if (this.state.projectType === 'continuous') {
-      eventEmitter.emit('AdminProjectEditGeneral', 'AdminProjectEditGeneralSubmitEvent', null);
+      eventEmitter.emit('AdminProjectEditGeneral', 'getParticipationContext', null);
     } else {
       this.validateAndSave();
     }
   }
 
-  validateAndSave = async (parcticipationContextConfig: IParticipationContextConfig | null = null) => {
+  validateAndSave = async (participationContextConfig: IParticipationContextConfig | null = null) => {
     if (this.validate()) {
       const { formatMessage } = this.props.intl;
       let { projectAttributesDiff } = this.state;
       const { projectData, oldProjectImages, newProjectImages } = this.state;
 
-      if (parcticipationContextConfig) {
-        const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = parcticipationContextConfig;
+      if (participationContextConfig) {
+        const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = participationContextConfig;
 
         projectAttributesDiff = {
           ...projectAttributesDiff,
@@ -467,6 +474,23 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     }
   }
 
+  handleParticipationContextOnChange = (participationContextConfig: IParticipationContextConfig) => {
+    const { projectAttributesDiff } = this.state;
+    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = participationContextConfig;
+
+    this.setState({
+      projectAttributesDiff: {
+        ...projectAttributesDiff,
+        participation_method: participationMethod,
+        posting_enabled: postingEnabled,
+        commenting_enabled: commentingEnabled,
+        voting_enabled: votingEnabled,
+        voting_method: votingMethod,
+        voting_limited_max: votingLimit
+      }
+    });
+  }
+
   handleParcticipationContextOnSubmit = (participationContextConfig: IParticipationContextConfig) => {
     this.validateAndSave(participationContextConfig);
   }
@@ -511,37 +535,50 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               <Label htmlFor="project-area">
                 <FormattedMessage {...messages.projectType} />
               </Label>
-              <Radio
-                onChange={this.handeProjectTypeOnChange}
-                currentValue={projectType}
-                value="timeline"
-                name="projecttype"
-                id="projectype-timeline"
-                label={<FormattedMessage {...messages.timeline} />}
-              />
-              <Radio
-                onChange={this.handeProjectTypeOnChange}
-                currentValue={projectType}
-                value="continuous"
-                name="projecttype"
-                id="projectype-continuous"
-                label={<FormattedMessage {...messages.continuous} />}
-              />
+              {!projectData ? (
+                <>
+                  <Radio
+                    onChange={this.handeProjectTypeOnChange}
+                    currentValue={projectType}
+                    value="timeline"
+                    name="projecttype"
+                    id="projectype-timeline"
+                    label={<FormattedMessage {...messages.timeline} />}
+                  />
+                  <Radio
+                    onChange={this.handeProjectTypeOnChange}
+                    currentValue={projectType}
+                    value="continuous"
+                    name="projecttype"
+                    id="projectype-continuous"
+                    label={<FormattedMessage {...messages.continuous} />}
+                  />
+                </>
+              ) : (
+                <>
+                  <ProjectType>{projectType}</ProjectType>
+                </>
+              )}
 
-              <TransitionGroup>
-                {projectType === 'continuous' && 
-                  <CSSTransition
-                    classNames="participationcontext"
-                    timeout={timeout}
-                    enter={true}
-                    exit={false}
-                  >
-                    <ParticipationContextWrapper>
-                      <ParticipationContext type="continuous" onSubmit={this.handleParcticipationContextOnSubmit} />
-                    </ParticipationContextWrapper>
-                  </CSSTransition>
-                }
-              </TransitionGroup>
+              {!projectData &&
+                <TransitionGroup>
+                  {projectType === 'continuous' && 
+                    <CSSTransition
+                      classNames="participationcontext"
+                      timeout={timeout}
+                      enter={true}
+                      exit={false}
+                    >
+                      <ParticipationContextWrapper>
+                        <ParticipationContext 
+                          onSubmit={this.handleParcticipationContextOnSubmit}
+                          onChange={this.handleParticipationContextOnChange}
+                        />
+                      </ParticipationContextWrapper>
+                    </CSSTransition>
+                  }
+                </TransitionGroup>
+              }
             </SectionField>
           </Section>
 
@@ -618,7 +655,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
           </Section>
 
           <Section>
-            {this.state.projectData &&
+            {projectData &&
               <SectionField>
                 <Label>
                   <FormattedMessage {...messages.deleteProjectLabel} />
@@ -636,6 +673,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
             <SubmitWrapper
               loading={processing}
               status={submitState}
+              onClick={this.onSubmit}
               messages={{
                 buttonSave: messages.saveProject,
                 buttonError: messages.saveError,

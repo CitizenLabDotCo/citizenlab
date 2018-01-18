@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { sortBy, get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // style
@@ -163,8 +163,8 @@ type State = {
 export default class AdminProjectsList extends React.PureComponent<Props, State> {
   subscription: Rx.Subscription;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       projects: null,
     };
@@ -173,7 +173,7 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
   componentDidMount() {
     const projects$ = projectsStream().observable;
     this.subscription = projects$.subscribe((unsortedProjects) => {
-      const projects = _.sortBy(unsortedProjects.data, (project) => project.attributes.created_at).reverse();
+      const projects = sortBy(unsortedProjects.data, (project) => project.attributes.created_at).reverse();
       this.setState({ projects: { data: projects } });
     });
   }
@@ -186,7 +186,7 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
     const { projects } = this.state;
 
     return (
-      <div>
+      <>
         <Title>
           <FormattedMessage {...messages.overviewPageTitle} />
         </Title>
@@ -203,7 +203,7 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
           </AddProjectCard>
 
           {projects && projects.data && projects.data.map((project) => {
-            const projectImage = (_.has(project, 'attributes.header_bg.medium') ? project.attributes.header_bg.medium : null);
+            const projectImage = get(project, 'attributes.header_bg.small', null);
 
             return (
               <ProjectCard key={project.id} className="e2e-project-card">
@@ -235,7 +235,7 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
           })}
 
         </ProjectsList>
-      </div>
+      </>
     );
   }
 }

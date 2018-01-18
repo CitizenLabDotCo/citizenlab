@@ -35,10 +35,9 @@ interface State {
   creationModalVisible: boolean;
 }
 
-class GroupsList extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props as any);
-
+export default class GroupsList extends React.PureComponent<Props, State> {
+  constructor(props) {
+    super(props);
     this.state = {
       creationModalVisible: false,
     };
@@ -76,5 +75,3 @@ class GroupsList extends React.Component<Props, State> {
     );
   }
 }
-
-export default GroupsList;
