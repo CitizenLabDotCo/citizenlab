@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.components.IdeasMap.postIdeaHere',
     defaultMessage: 'Post an idea here',
   },
+  noIdeasWithLocation: {
+    id: 'app.components.IdeasMap.noIdeasWithLocation',
+    defaultMessage: `The ideas in this project don't have any location information.`,
+  },
 });
