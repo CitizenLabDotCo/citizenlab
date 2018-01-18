@@ -25,6 +25,7 @@ import { media } from 'utils/styleUtils';
 const StyledMap = styled<MapProps>(Map)`
   flex: 1;
   height: 400px;
+  width: 100%;
 
   ${media.biggerThanPhone`
     flex-basis: 60%;

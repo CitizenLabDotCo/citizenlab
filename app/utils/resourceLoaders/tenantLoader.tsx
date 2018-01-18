@@ -42,7 +42,7 @@ export const injectTenant = () => {
 
       render(): JSX.Element {
         return (
-          <Component {...this.state} />
+          <Component {...this.state} {...this.props} />
         );
       }
     };
