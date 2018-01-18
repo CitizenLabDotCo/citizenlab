@@ -3,7 +3,7 @@ require 'rspec_api_documentation/dsl'
 
 resource "Projects" do
   before do
-    @projects = create_list(:project, 5)
+    @projects = ['published','published','draft','published','archived','published','archived'].map { |ps|  create(:project, publication_status: ps)}
     @user = create(:user, roles: [{type: 'admin'}])
     token = Knock::AuthToken.new(payload: { sub: @user.id }).token
     header 'Authorization', "Bearer #{token}"
@@ -19,11 +19,18 @@ resource "Projects" do
     parameter :areas, 'Filter by areas (AND)', required: false
     parameter :publication_statuses, "Return only ideas with the specified publication statuses (i.e. given an array of publication statuses); returns all pusblished ideas by default", required: false
 
-    example_request "List all projects" do
-      explanation "Sorted by descending created_at"
+    example_request "List only all published projects by default" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 5
+      expect(json_response[:data].size).to eq 4
+      expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }).to all(eq 'published')
+    end
+
+    example "List all projects which have draft or archived set as publication status" do
+      do_request(publication_statuses: ['draft','archived'])
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 3
+      expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }).not_to include('published')
     end
 
     example "Get all projects on the second page with fixed page size" do
