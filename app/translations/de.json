@@ -28,6 +28,7 @@
   "app.components.IdeaForm.topicsLabel": "Themen (optional, max. 2)",
   "app.components.IdeaForm.topicsPlaceholder": "Wählen Sie ein oder zwei Themen für Ihre Idee",
   "app.components.IdeaTag.header": "Dies ist die IdeenTag-Komponente!",
+  "app.components.IdeasMap.noIdeasWithLocation": "",
   "app.components.IdeasMap.postIdeaHere": "",
   "app.components.IdeasMap.seeIdea": "",
   "app.components.IdeasShow.changeLogEntry": "{changeType, select, changed_status {{userName} hat den Status dieser Idee aktualisiert} veröffentlichte {{userName} erstellte diese Idee} changed_title {{userName} aktualisierte den Titel dieser Idee} changed_body {{userName} aktualisierte die Beschreibung dieser Idee}}",
