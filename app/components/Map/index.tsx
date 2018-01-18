@@ -144,6 +144,10 @@ class CLMap extends React.Component<Props & InjectedTenant, State> {
         zoom = this.props.tenant.attributes.settings.maps.zoom_level;
       }
 
+      let tileProvider = 'https://free.tilehosting.com/styles/positron/style.json?key=DIZiuhfkZEQ5EgsaTk6D';
+      if (this.props.tenant && this.props.tenant.attributes.settings.maps) {
+        tileProvider = this.props.tenant.attributes.settings.maps.tile_provider;
+      }
 
       // Bind the mapElement
       this.mapContainer = element;
@@ -160,7 +164,7 @@ class CLMap extends React.Component<Props & InjectedTenant, State> {
       // mapboxGL style
       (Leaflet as any).mapboxGL({
         accessToken: 'not-needed',
-        style: 'https://free.tilehosting.com/styles/positron/style.json?key=DIZiuhfkZEQ5EgsaTk6D'
+        style: tileProvider,
       }).addTo(this.map);
     }
   }
