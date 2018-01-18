@@ -8,6 +8,7 @@ import { browserHistory, withRouter } from 'react-router';
 import Map, { Props as MapProps } from 'components/Map';
 import IdeaBox, { Props as IdeaBoxProps } from './IdeaBox';
 import Button from 'components/UI/Button';
+import { Message } from 'semantic-ui-react';
 
 // Injectors
 import GetIdeas from 'utils/resourceLoaders/components/GetIdeas';
@@ -129,17 +130,24 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
     return (
       <GetIdeas project={this.props.project} markers>
         {({ ideaMarkers }) => (
-          <MapWrapper>
-            {this.state.selectedIdea &&
-              <StyledBox idea={this.state.selectedIdea} onClose={this.deselectIdea} />
+          <React.Fragment>
+            {this.getPoints(ideaMarkers).length === 0 &&
+              <Message warning>
+                <FormattedMessage {...messages.noIdeasWithLocation} />
+              </Message>
             }
-            <StyledMap points={this.getPoints(ideaMarkers)} onMarkerClick={this.selectIdea} onMapClick={this.onMapClick} />
-            <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
-              <Button onClick={this.redirectToIdeaCreation} icon="plus-circle">
-                <FormattedMessage {...messages.postIdeaHere} />
-              </Button>
-            </div>
-          </MapWrapper>
+            <MapWrapper>
+              {this.state.selectedIdea &&
+                <StyledBox idea={this.state.selectedIdea} onClose={this.deselectIdea} />
+              }
+              <StyledMap points={this.getPoints(ideaMarkers)} onMarkerClick={this.selectIdea} onMapClick={this.onMapClick} />
+              <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
+                <Button onClick={this.redirectToIdeaCreation} icon="plus-circle">
+                  <FormattedMessage {...messages.postIdeaHere} />
+                </Button>
+              </div>
+            </MapWrapper>
+          </React.Fragment>
         )}
       </GetIdeas>
     );
