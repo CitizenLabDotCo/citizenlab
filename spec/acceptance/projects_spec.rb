@@ -126,14 +126,15 @@ resource "Projects" do
       parameter :header_bg, "Base64 encoded header image"
       parameter :area_ids, "Array of ids of the associated areas"
       parameter :topic_ids, "Array of ids of the associated topics"
-      parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public."
+      parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public.", required: false
       parameter :participation_method, "Only for continuous project. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}. Defaults to ideation.", required: false
       parameter :posting_enabled, "Only for continuous project. Can citizens post ideas in this project? Defaults to true", required: false
       parameter :commenting_enabled, "Only for continuous project. Can citizens post comment in this project? Defaults to true", required: false
       parameter :voting_enabled, "Only for continuous project. Can citizens vote in this project? Defaults to true", required: false
       parameter :voting_method, "Only for continuous project with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
       parameter :voting_limited_max, "Only for continuous project with limited voting. Number of votes a citizen can perform in this project. Defaults to 10", required: false
-      parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}. Defaults to card."
+      parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
+      parameter :publication_status, "Describes the publication status of the project, either #{Project::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
     end
     ValidationErrorHelper.new.error_fields(self, Project)
 
@@ -146,6 +147,7 @@ resource "Projects" do
       let(:area_ids) { create_list(:area, 2).map(&:id) }
       let(:visible_to) { 'admins' }
       let(:presentation_mode) { 'map' }
+      let(:publication_status) { 'draft' }
 
 
       example_request "Create a timeline project" do
@@ -158,6 +160,7 @@ resource "Projects" do
         expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
         expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'admins'
         expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'map'
+        expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'draft'
       end
     end
 
@@ -227,14 +230,15 @@ resource "Projects" do
       parameter :header_bg, "Base64 encoded header image"
       parameter :area_ids, "Array of ids of the associated areas"
       parameter :topic_ids, "Array of ids of the associated topics"
-      parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}."
+      parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}.", required: false
       parameter :participation_method, "Only for continuous project. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}.", required: false
       parameter :posting_enabled, "Only for continuous project. Can citizens post ideas in this project?", required: false
       parameter :commenting_enabled, "Only for continuous project. Can citizens post comment in this project?", required: false
       parameter :voting_enabled, "Only for continuous project. Can citizens vote in this project?", required: false
       parameter :voting_method, "Only for continuous project with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}.", required: false
       parameter :voting_limited_max, "Only for continuous project with limited voting. Number of votes a citizen can perform in this project.", required: false
-      parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}. Defaults to card."
+      parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}.", required: false
+      parameter :publication_status, "Describes the publication status of the project, either #{Project::PUBLICATION_STATUSES.join(",")}.", required: false
     end
     ValidationErrorHelper.new.error_fields(self, Project)
 
@@ -248,6 +252,7 @@ resource "Projects" do
     let(:area_ids) { create_list(:area, 2).map(&:id) }
     let(:visible_to) { 'groups' }
     let(:presentation_mode) { 'card' }
+    let(:publication_status) { 'archived' }
 
 
     example_request "Updating the project" do
@@ -259,6 +264,7 @@ resource "Projects" do
       expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
       expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'groups'
       expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'card'
+      expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'archived'
     end
 
     example "Clearing all areas", document: false do
