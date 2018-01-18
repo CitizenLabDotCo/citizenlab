@@ -8,18 +8,19 @@ class ProjectPolicy < ApplicationPolicy
     end
 
     def resolve
+      resolving_scope = scope
       if !(user && user.admin?)
-        scope = scope.where(publication_status: 'published')
+        resolving_scope = scope.where(publication_status: 'published')
       end
       if user&.admin?
-        scope.all
+        resolving_scope.all
       elsif user
-        scope
+        resolving_scope
           .left_outer_joins(groups: :memberships)
           .where("projects.visible_to = 'public' OR \
             (projects.visible_to = 'groups' AND memberships.user_id = ?)", user&.id)
       else
-        scope
+        resolving_scope
           .where(visible_to: 'public')
       end
     end
