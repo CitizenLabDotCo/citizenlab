@@ -143,4 +143,46 @@ describe ProjectPolicy do
     end
 
   end
+
+  context "on a non-published project" do 
+    let!(:project) { create(:project, publication_status: 'archived') }
+    context "for a visitor" do
+      let(:user) { nil }
+
+      it { should_not permit(:show)    }
+      it { should_not permit(:create)  }
+      it { should_not permit(:update)  }
+      it { should_not permit(:destroy) }
+
+      it "should not index the project"  do
+        expect(scope.resolve.size).to eq 0
+      end
+    end
+
+    context "for a user" do
+      let(:user) { create(:user) }
+
+      it { should_not permit(:show)    }
+      it { should_not permit(:create)  }
+      it { should_not permit(:update)  }
+      it { should_not permit(:destroy) }
+
+      it "should not index the project"  do
+        expect(scope.resolve.size).to eq 0
+      end
+    end
+
+    context "for an admin" do
+      let(:user) { create(:admin) }
+
+      it { should permit(:show)    }
+      it { should permit(:create)  }
+      it { should permit(:update)  }
+      it { should permit(:destroy) }
+
+      it "should index the project"  do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+  end
 end

@@ -40,8 +40,9 @@ class ProjectPolicy < ApplicationPolicy
 
   def show?
     user&.admin? ||
-    record.visible_to == 'public' || 
-    record.visible_to == 'groups' && record.groups.includes(:memberships).flat_map(&:memberships).any?{|m| m.user_id == user.id}
+    (record.publication_status == 'published' &&
+     (record.visible_to == 'public' || 
+      record.visible_to == 'groups' && record.groups.includes(:memberships).flat_map(&:memberships).any?{|m| m.user_id == user.id}))
   end
 
   def by_slug?
