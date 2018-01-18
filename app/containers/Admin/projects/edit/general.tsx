@@ -137,6 +137,7 @@ interface State {
   projectType: 'continuous' | 'timeline';
   projectAttributesDiff: IUpdatedProjectProperties;
   headerBg: ImageFile[] | null;
+  presentationMode: 'map' | 'card';
   oldProjectImages: ImageFile[] | null;
   newProjectImages: ImageFile[] | null;
   noTitleError: string | null;
@@ -152,7 +153,6 @@ interface State {
 }
 
 class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlProps, State> {
-  state;
   slug$: Rx.BehaviorSubject<string | null> | null;
   processing$: Rx.BehaviorSubject<boolean>;
   subscriptions: Rx.Subscription[] = [];
@@ -166,6 +166,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       projectType: 'timeline',
       projectAttributesDiff: {},
       headerBg: null,
+      presentationMode: 'map',
       oldProjectImages: null,
       newProjectImages: null,
       noTitleError: null,
@@ -237,26 +238,29 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
           });
         })
       ).subscribe(([locale, currentTenant, areas, { headerBg, oldProjectImages, projectData }]) => {
-        const projectType = (projectData ? projectData.attributes.process_type : this.state.projectType);
-        const areaType =  ((projectData && projectData.relationships.areas.data.length > 0) ? 'selection' : 'all');
-        const areasOptions = areas.data.map((area) => ({
-          value: area.id,
-          label: getLocalized(area.attributes.title_multiloc, locale, currentTenant.data.attributes.settings.core.locales)
-        }));
+        this.setState((state) => {
+          const projectType = (projectData ? projectData.attributes.process_type : state.projectType);
+          const areaType =  ((projectData && projectData.relationships.areas.data.length > 0) ? 'selection' : 'all');
+          const areasOptions = areas.data.map((area) => ({
+            value: area.id,
+            label: getLocalized(area.attributes.title_multiloc, locale, currentTenant.data.attributes.settings.core.locales)
+          }));
 
-        this.setState({
-          locale,
-          currentTenant,
-          projectData,
-          projectType,
-          areaType,
-          areasOptions,
-          oldProjectImages: (oldProjectImages as ImageFile[] | null),
-          newProjectImages: (oldProjectImages as ImageFile[] | null),
-          headerBg: (headerBg ? [headerBg] : null),
-          areas: areas.data,
-          projectAttributesDiff: {},
-          loading: false,
+          return {
+            locale,
+            currentTenant,
+            projectData,
+            projectType,
+            areaType,
+            areasOptions,
+            oldProjectImages: (oldProjectImages as ImageFile[] | null),
+            newProjectImages: (oldProjectImages as ImageFile[] | null),
+            headerBg: (headerBg ? [headerBg] : null),
+            presentationMode: (projectData && projectData.attributes.presentation_mode || state.presentationMode),
+            areas: areas.data,
+            projectAttributesDiff: {},
+            loading: false,
+          };
         });
       }),
 
@@ -382,6 +386,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   handleIdeasDisplayChange = (value: 'map' | 'card') => {
     this.setState((state) => ({
       submitState: 'enabled',
+      presentationMode: value,
       projectAttributesDiff: {
         ...(state.projectAttributesDiff || {}),
         presentation_mode: value
@@ -516,7 +521,22 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 
   render() {
-    const { currentTenant, locale, projectType, noTitleError, projectData, headerBg, newProjectImages, loading, processing, projectAttributesDiff, areasOptions, areaType, submitState } = this.state;
+    const {
+      currentTenant,
+      locale,
+      projectType,
+      noTitleError,
+      projectData,
+      headerBg,
+      presentationMode,
+      newProjectImages,
+      loading,
+      processing,
+      projectAttributesDiff,
+      areasOptions,
+      areaType,
+      submitState
+    } = this.state;
 
     if (!loading && currentTenant && locale) {
       const newProjectImageFiles = (newProjectImages && newProjectImages.length > 0 ? newProjectImages : null);
@@ -607,7 +627,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 <Radio
                   key={key}
                   onChange={this.handleIdeasDisplayChange}
-                  currentValue={projectAttrs.presentation_mode}
+                  currentValue={presentationMode}
                   value={key}
                   name="presentation_mode"
                   id={`presentation_mode-${key}`}
