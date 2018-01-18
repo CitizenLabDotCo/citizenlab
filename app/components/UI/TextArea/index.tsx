@@ -74,6 +74,7 @@ type Props = {
   onChange?: (arg: string) => void | undefined;
   onFocus?: () => void | undefined;
   onBlur?: () => void | undefined;
+  autofocus?: boolean | undefined;
   maxLength?: number;
 };
 
@@ -98,7 +99,13 @@ export default class TextArea extends React.PureComponent<Props, State> {
   }
 
   setRef = (element) => {
-    this.textareaElement = element;
+    if (element) {
+      this.textareaElement = element;
+
+      if (this.props.autofocus) {
+        element.focus();
+      }
+    }
   }
 
   handleOnChange = (event: React.FormEvent<HTMLTextAreaElement>) => {

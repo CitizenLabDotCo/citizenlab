@@ -32,11 +32,14 @@ const ModalContent = styled(clickOutside)`
   overflow-y: auto;
   padding: 40px;
   will-change: opacity, transform;
-  z-index: 1000;
 
   ${media.biggerThanPhone`
     flex-grow: 0;
     flex-basis: 600px;
+
+    &.fixedHeight {
+      height: 75vh;
+      max-height: auto;
   `}
 `;
 
@@ -49,16 +52,15 @@ const CloseIcon = styled(Icon)`
 `;
 
 const CloseButton = styled.div`
-  height: 30px;
-  width: 30px;
+  height: 32px;
+  width: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
   cursor: pointer;
-  top: 15px;
-  right: 15px;
-  z-index: 2000;
+  top: 20px;
+  right: 20px;
 
   &:hover {
     ${CloseIcon} {
@@ -83,7 +85,7 @@ const ModalContainer = styled.div`
   top: 0;
   width: 100vw;
   will-change: opacity;
-  z-index: 1001;
+  z-index: 10001;
 
   ${media.phone`
     padding: 0px;
@@ -121,6 +123,7 @@ interface ITracks {
 type Props = {
   opened: boolean;
   url?: string;
+  fixedHeight?: boolean;
   close: () => void;
 };
 
@@ -212,16 +215,19 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   }
 
   render() {
+    let { fixedHeight } = this.props;
     const { children, opened } = this.props;
+
+    fixedHeight = (fixedHeight || true);
 
     const element = (opened ? (
       <CSSTransition classNames="modal" timeout={350} exit={false}>
         <ModalContainer id="e2e-modal-container">
-          <ModalContent onClickOutside={this.clickOutsideModal}>
+          <ModalContent onClickOutside={this.clickOutsideModal} className={`${fixedHeight && 'fixedHeight'}`}>
             {children}
           </ModalContent>
           <CloseButton onClick={this.clickCloseButton}>
-            <CloseIcon name="close2" />
+            <CloseIcon name="close3" />
           </CloseButton>
         </ModalContainer>
       </CSSTransition>

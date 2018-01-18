@@ -26,21 +26,6 @@ export const SectionSubtitle = styled.p`
 export const SectionField = styled.div`
   margin-bottom: ${remCalc(30)};
   transition: all 200ms ease-in-out;
-  max-height: auto;
-
-  &.exited {
-    max-height: 0;
-    margin-bottom: 0;
-
-    > * {
-      opacity: 0;
-    }
-  }
-
-  &.entering,
-  &.exiting {
-    max-height: 200px;
-  }
 
   .CLTextareaComponent {
     max-width: 500px;
