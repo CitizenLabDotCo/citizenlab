@@ -43,7 +43,7 @@ export const injectLocale = () => {
 
       render(): JSX.Element {
         return (
-          <Component {...this.state} />
+          <Component {...this.state} {...this.props} />
         );
       }
     };
