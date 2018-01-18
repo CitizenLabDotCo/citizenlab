@@ -4,9 +4,10 @@ import * as Rx from 'rxjs/Rx';
 // components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
+import ButtonBar from 'components/ButtonBar';
 
 // services
-import { globalState } from 'services/globalState';
+import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -17,15 +18,6 @@ import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled from 'styled-components';
-
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-`;
 
 const ButtonBarInner = styled.div`
   width: 100%;
@@ -55,16 +47,18 @@ interface GlobalState {
 
 interface State extends GlobalState {}
 
-export default class ButtonBar extends React.PureComponent<Props, State> {
+export default class IdeasNewButtonBar extends React.PureComponent<Props, State> {
+  globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Rx.Subscription[];
 
-  constructor(props) {
-    super(props);
+  constructor(props: Props) {
+    super(props as any);
+    this.globalState = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage');
     this.subscriptions = [];
   }
 
   async componentWillMount() {
-    const globalState$ = globalState.init('IdeasNewPage').observable;
+    const globalState$ = this.globalState.observable;
 
     this.subscriptions = [
       globalState$.subscribe(({ submitError, processing }) => {
@@ -88,7 +82,7 @@ export default class ButtonBar extends React.PureComponent<Props, State> {
     const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
 
     return (
-      <Container>
+      <ButtonBar>
         <ButtonBarInner>
           <Button
             className="e2e-submit-idea-form"
@@ -99,7 +93,7 @@ export default class ButtonBar extends React.PureComponent<Props, State> {
           />
           <Error text={submitErrorMessage} marginTop="0px" showBackground={false} showIcon={true} />
         </ButtonBarInner>
-      </Container>
+      </ButtonBar>
     );
   }
 }
