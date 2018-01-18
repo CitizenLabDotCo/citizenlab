@@ -152,7 +152,7 @@ interface State {
 }
 
 class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlProps, State> {
-  state: State;
+  state;
   slug$: Rx.BehaviorSubject<string | null> | null;
   processing$: Rx.BehaviorSubject<boolean>;
   subscriptions: Rx.Subscription[] = [];
@@ -264,7 +264,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     ];
   }
 
-  componentWillReceiveProps(newProps) {
+  componentWillReceiveProps(newProps: Props) {
     if (newProps.params.slug !== this.props.params.slug && this.slug$ !== null) {
       this.slug$.next(newProps.params.slug);
     }
@@ -274,7 +274,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  changeTitle = (newTitle: string) => {
+  handleTitleOnChange = (newTitle: string) => {
     this.setState((state) => ({
       submitState: 'enabled',
       noTitleError: null,
@@ -286,6 +286,27 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         }
       }
     }));
+  }
+
+  handleParticipationContextOnChange = (participationContextConfig: IParticipationContextConfig) => {
+    this.setState((state) => {
+      const { projectAttributesDiff } = state;
+      const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = participationContextConfig;
+      const newprojectAttributesDiff: IUpdatedProjectProperties = {
+        ...projectAttributesDiff,
+        participation_method: participationMethod,
+        posting_enabled: postingEnabled,
+        commenting_enabled: commentingEnabled,
+        voting_enabled: votingEnabled,
+        voting_method: votingMethod,
+        voting_limited_max: votingLimit
+      };
+
+      return {
+        submitState: 'enabled',
+        projectAttributesDiff: newprojectAttributesDiff
+      };
+    });
   }
 
   handeProjectTypeOnChange = (projectType: 'continuous' | 'timeline') => {
@@ -347,28 +368,52 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     }));
   }
 
-  handleAreaTypeChange = (value) => {
-    const newState = { areaType: value, submitState: 'enabled' } as State;
-
-    // Clear the array of areas ids if you select "all areas"
-    if (value === 'all') {
-      const newDiff = _.cloneDeep(this.state.projectAttributesDiff);
-      newDiff.area_ids = [];
-      newState.projectAttributesDiff = newDiff;
-    }
-
-    this.setState(newState);
+  handleAreaTypeChange = (value: 'all' | 'selection') => {
+    this.setState((state) => ({
+      submitState: 'enabled',
+      areaType: value,
+      projectAttributesDiff: {
+        ...(state.projectAttributesDiff || {}),
+        area_ids: (value === 'all' ? [] : state.projectAttributesDiff.area_ids)
+      }
+    }));
   }
 
-  handleIdeasDisplayChange = (value) => {
-    const newState = { projectAttributesDiff: { ...this.state.projectAttributesDiff, presentation_mode: value } } as State;
-    this.setState(newState);
+  handleIdeasDisplayChange = (value: 'map' | 'card') => {
+    this.setState((state) => ({
+      submitState: 'enabled',
+      projectAttributesDiff: {
+        ...(state.projectAttributesDiff || {}),
+        presentation_mode: value
+      }
+    }));
   }
 
   handleAreaSelectionChange = (values: IOption[]) => {
-    const newDiff = _.cloneDeep(this.state.projectAttributesDiff);
-    newDiff.area_ids = values.map((value) => (value.value));
-    this.setState({ submitState: 'enabled', projectAttributesDiff: newDiff });
+    this.setState((state) => ({
+      submitState: 'enabled',
+      projectAttributesDiff: {
+        ...(state.projectAttributesDiff || {}),
+        area_ids: values.map((value) => (value.value))
+      }
+    }));
+  }
+
+  onSubmit = (event: React.FormEvent<any>) => {
+    event.preventDefault();
+
+    const { projectType, projectData } = this.state;
+
+    // if it's a new project of type continuous
+    if (!projectData && projectType === 'continuous') {
+      eventEmitter.emit('AdminProjectEditGeneral', 'getParticipationContext', null);
+    } else {
+      this.save();
+    }
+  }
+
+  handleParcticipationContextOnSubmit = (participationContextConfig: IParticipationContextConfig) => {
+    this.save(participationContextConfig);
   }
 
   validate = () => {
@@ -387,17 +432,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     return !hasErrors;
   }
 
-  onSubmit = (event: React.FormEvent<any>) => {
-    event.preventDefault();
-
-    if (this.state.projectType === 'continuous') {
-      eventEmitter.emit('AdminProjectEditGeneral', 'getParticipationContext', null);
-    } else {
-      this.validateAndSave();
-    }
-  }
-
-  validateAndSave = async (participationContextConfig: IParticipationContextConfig | null = null) => {
+  save = async (participationContextConfig: IParticipationContextConfig | null = null) => {
     if (this.validate()) {
       const { formatMessage } = this.props.intl;
       let { projectAttributesDiff } = this.state;
@@ -417,47 +452,48 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         };
       }
 
-      try {
-        let redirect = false;
-        let projectId: string | null = null;
-        const imagesToAdd = _.chain(newProjectImages).filter(newProjectImage => !_(oldProjectImages).some(oldProjectImage => oldProjectImage.base64 === newProjectImage.base64)).value();
-        const imagesToRemove = _.chain(oldProjectImages).filter(oldProjectImage => !_(newProjectImages).some(newProjectImage => newProjectImage.base64 === oldProjectImage.base64)).value();
+      if (!_.isEmpty(projectAttributesDiff)) {
+        try {
+          let redirect = false;
+          let projectId: string | null = null;
+          const imagesToAdd = _.chain(newProjectImages).filter(newProjectImage => !_(oldProjectImages).some(oldProjectImage => oldProjectImage.base64 === newProjectImage.base64)).value();
+          const imagesToRemove = _.chain(oldProjectImages).filter(oldProjectImage => !_(newProjectImages).some(newProjectImage => newProjectImage.base64 === oldProjectImage.base64)).value();
 
-        this.setState({ saved: false });
-        this.processing$.next(true);
+          this.setState({ saved: false });
+          this.processing$.next(true);
 
-        if (projectData) {
-          projectId = projectData.id;
-
-          if (!_.isEmpty(projectAttributesDiff)) {
+          if (projectData) {
+            projectId = projectData.id;
             await updateProject(projectData.id, projectAttributesDiff);
+          } else {
+            const project = await addProject(projectAttributesDiff);
+            projectId = project.data.id;
+            redirect = true;
+          } 
+
+          const imagesToAddPromises: Promise<any>[] = _(imagesToAdd).map(imageToAdd => addProjectImage(projectId, imageToAdd.base64)).value();
+          const imagesToRemovePromises: Promise<any>[] = _(imagesToRemove).map(imageToRemove => deleteProjectImage(projectId, imageToRemove['projectImageId'])).value();
+
+          await Promise.all([...imagesToAddPromises, ...imagesToRemovePromises]);
+
+          if (redirect) {
+            browserHistory.push(`/admin/projects`);
+          } else {
+            this.setState({
+              saved: true,
+              submitState: 'success'
+            });
+
+            this.processing$.next(false);
           }
-        } else {
-          const project = await addProject(projectAttributesDiff);
-          projectId = project.data.id;
-          redirect = true;
-        }
-
-        const imagesToAddPromises: Promise<any>[] = _(imagesToAdd).map(imageToAdd => addProjectImage(projectId, imageToAdd.base64)).value();
-        const imagesToRemovePromises: Promise<any>[] = _(imagesToRemove).map(imageToRemove => deleteProjectImage(projectId, imageToRemove['projectImageId'])).value();
-
-        await Promise.all([...imagesToAddPromises, ...imagesToRemovePromises]);
-
-        if (redirect) {
-          browserHistory.push(`/admin/projects`);
-        } else {
+        } catch (errors) {
           this.setState({
-            saved: true,
-            submitState: 'success'
+            apiErrors: _.has(errors, 'json.errors') ? errors.json.errors : formatMessage(messages.saveErrorMessage),
+            submitState: 'error'
           });
+
           this.processing$.next(false);
         }
-      } catch (errors) {
-        this.setState({
-          apiErrors: _.has(errors, 'json.errors') ? errors.json.errors : formatMessage(messages.saveErrorMessage),
-          submitState: 'error'
-        });
-        this.processing$.next(false);
       }
     }
   }
@@ -477,27 +513,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         this.setState({ deleteError: this.props.intl.formatMessage(messages.deleteProjectError) });
       }
     }
-  }
-
-  handleParticipationContextOnChange = (participationContextConfig: IParticipationContextConfig) => {
-    const { projectAttributesDiff } = this.state;
-    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = participationContextConfig;
-
-    this.setState({
-      projectAttributesDiff: {
-        ...projectAttributesDiff,
-        participation_method: participationMethod,
-        posting_enabled: postingEnabled,
-        commenting_enabled: commentingEnabled,
-        voting_enabled: votingEnabled,
-        voting_method: votingMethod,
-        voting_limited_max: votingLimit
-      }
-    });
-  }
-
-  handleParcticipationContextOnSubmit = (participationContextConfig: IParticipationContextConfig) => {
-    this.validateAndSave(participationContextConfig);
   }
 
   render() {
@@ -528,7 +543,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 placeholder=""
                 value={projectTitle}
                 error=""
-                onChange={this.changeTitle}
+                onChange={this.handleTitleOnChange}
               />
               <Error text={noTitleError} />
               <Error fieldName="title_multiloc" apiErrors={this.state.apiErrors.title_multiloc} />
