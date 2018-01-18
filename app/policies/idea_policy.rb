@@ -19,11 +19,11 @@ class IdeaPolicy < ApplicationPolicy
         #     projects.visible_to = 'public' OR \
         #     (projects.visible_to = 'groups' AND memberships.user_id = ?)", user&.id)
         project_ids =  Pundit.policy_scope(user, Project).select(:id).map(&:id)
-          scope.where(project_id: nil).or(scope.where(project_id: project_ids))
+        scope.where(project_id: nil).or(scope.where(project_id: project_ids))
       else
         scope
           .left_outer_joins(:project)
-          .where("projects.id IS NULL OR projects.visible_to = 'public'")
+          .where("projects.id IS NULL OR (projects.visible_to = 'public' AND projects.publication_status = 'published')")
       end
     end
   end
