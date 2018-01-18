@@ -97,7 +97,7 @@ export default class timeline extends React.PureComponent<Props, State> {
           <ContentContainer>
             <Content>
               {selectedPhase &&
-                <IdeaCards filter={{ phase: selectedPhase.id }} />
+                <IdeaCards filter={{ phase: selectedPhase.id, project: project.data.id }} />
               }
             </Content>
           </ContentContainer>
