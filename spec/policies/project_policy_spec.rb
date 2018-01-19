@@ -144,8 +144,8 @@ describe ProjectPolicy do
 
   end
 
-  context "on a non-published project" do 
-    let!(:project) { create(:project, publication_status: 'archived') }
+  context "on a draft project" do 
+    let!(:project) { create(:project, publication_status: 'draft') }
     context "for a visitor" do
       let(:user) { nil }
 

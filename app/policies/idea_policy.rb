@@ -19,16 +19,13 @@ class IdeaPolicy < ApplicationPolicy
         #     projects.visible_to = 'public' OR \
         #     (projects.visible_to = 'groups' AND memberships.user_id = ?)", user&.id)
         project_ids =  Pundit.policy_scope(user, Project).select(:id).map(&:id)
-        resolving_scope = scope.where(project_id: nil).or(scope.where(project_id: project_ids))
-        if user
-          resolving_scope.or(scope.where(author_id: user.id))
-        else
-          resolving_scope
-        end
+        scope.where(project_id: project_ids, publication_status: ['published', 'closed'])
       else
         scope
           .left_outer_joins(:project)
-          .where("projects.id IS NULL OR (ideas.author_id IS NOT NULL AND (ideas.author_id = ?)) OR (projects.visible_to = 'public' AND projects.publication_status = 'published')", user&.id)
+          .where(publication_status: ['published', 'closed'])
+          .where(projects: {visible_to: 'public', publication_status: ['published', 'archived']})
+          # .where("publication_status <> 'spam' AND projects.visible_to = 'public' AND projects.publication_status = 'published'")
       end
     end
   end
@@ -42,14 +39,19 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def create?
-    record.draft? || (user && (((record.author_id == user.id) && (record.project.publication_status == 'published')) || user.admin?))
+    user&.admin? || (
+      ProjectPolicy.new(user, record.project).show? && (
+        record.draft? ||
+        (user && record.author_id == user.id)
+      )
+    )
+    # record.draft? || (user && (((record.author_id == user.id) && (record.project.publication_status == 'published')) || user.admin?))
   end
 
   def show?
-    user&.admin? ||
-    (user && (record.author_id == user.id)) ||
-    record.project_id.blank? ||
-    ProjectPolicy.new(user, record.project).show?
+    user&.admin? || record.draft? || (
+      ProjectPolicy.new(user, record.project).show? &&       %w(draft published closed).include?(record.publication_status)
+    )
   end
 
   def by_slug?
@@ -69,7 +71,8 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    shared = [:publication_status,
+    shared = [
+      :publication_status,
       :project_id,
       :author_id,
       :location_description,
