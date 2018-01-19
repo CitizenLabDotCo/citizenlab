@@ -14,7 +14,7 @@ RSpec.describe Notification, type: :model do
     
 
     it "deleting recipient of notification" do
-      recipient.destroy!
+      recipient.destroy
     end
 
     it "deleting initiator of notification" do
