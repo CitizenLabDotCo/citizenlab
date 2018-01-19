@@ -25,7 +25,6 @@ class IdeaPolicy < ApplicationPolicy
           .left_outer_joins(:project)
           .where(publication_status: ['published', 'closed'])
           .where(projects: {visible_to: 'public', publication_status: ['published', 'archived']})
-          # .where("publication_status <> 'spam' AND projects.visible_to = 'public' AND projects.publication_status = 'published'")
       end
     end
   end
@@ -45,7 +44,6 @@ class IdeaPolicy < ApplicationPolicy
         (user && record.author_id == user.id)
       )
     )
-    # record.draft? || (user && (((record.author_id == user.id) && (record.project.publication_status == 'published')) || user.admin?))
   end
 
   def show?
