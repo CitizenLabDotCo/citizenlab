@@ -4,12 +4,16 @@ import { isString } from 'lodash';
 import 'moment-timezone';
 
 // components
-import Event from './Event';
-import ContentContainer from 'components/ContentContainer';
+import ProjectPhasesPage from '../phases';
+import ProjectInfoPage from '../info';
 
 // services
-import { projectBySlugStream } from 'services/projects';
-import { eventsStream, IEvents } from 'services/events';
+import { projectBySlugStream, IProject } from 'services/projects';
+
+// style
+import styled from 'styled-components';
+
+const Container = styled.div``;
 
 type Props = {
   params: {
@@ -18,17 +22,17 @@ type Props = {
 };
 
 type State = {
-  events: IEvents | null;
+  project: IProject | null;
 };
 
-export default class ProjectEventsPage extends React.PureComponent<Props, State> {
+export default class timeline extends React.PureComponent<Props, State> {
   slug$: Rx.BehaviorSubject<string>;
   subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
-      events: null
+      project: null
     };
     this.slug$ = new Rx.BehaviorSubject(null as any);
     this.subscriptions = [];
@@ -41,11 +45,8 @@ export default class ProjectEventsPage extends React.PureComponent<Props, State>
       this.slug$.distinctUntilChanged().filter(slug => isString(slug)).switchMap((slug) => {
         const project$ = projectBySlugStream(slug).observable;
         return project$;
-      }).switchMap((project) => {
-        const events$ = eventsStream(project.data.id).observable;
-        return events$;
-      }).subscribe((events) => {
-        this.setState({ events });
+      }).subscribe((project) => {
+        this.setState({ project });
       })
     ];
   }
@@ -60,13 +61,17 @@ export default class ProjectEventsPage extends React.PureComponent<Props, State>
 
   render() {
     const className = this.props['className'];
-    const { events } = this.state;
+    const { project } = this.state;
 
-    if (events && events.data && events.data.length > 0) {
+    if (project) {
       return (
-        <ContentContainer className={className}>
-          {events.data.map(event => <Event key={event.id} eventId={event.id} />)}
-        </ContentContainer>
+        <Container className={className}>
+          {project.data.attributes.process_type === 'timeline' ? (
+            <ProjectPhasesPage projectId={project.data.id} />
+          ) : (
+            <ProjectInfoPage projectId={project.data.id} />
+          )}
+        </Container>
       );
     }
 

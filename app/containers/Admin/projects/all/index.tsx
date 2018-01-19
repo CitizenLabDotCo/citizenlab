@@ -99,7 +99,7 @@ const ProjectCard = styled.li`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin: 10px;
+  margin: 8px;
   padding: 15px;
   overflow: hidden;
   border-radius: 5px;

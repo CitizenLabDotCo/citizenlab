@@ -32,11 +32,9 @@ interface State {
   display: 'map' | 'cards';
 }
 
-class AllIdeas extends React.Component<Props, State> {
-
-  constructor(props: Props) {
+export default class Ideas extends React.PureComponent<Props, State> {
+  constructor(props) {
     super(props);
-
     this.state = {
       display: 'cards',
     };
@@ -68,6 +66,3 @@ class AllIdeas extends React.Component<Props, State> {
     );
   }
 }
-
-export default AllIdeas;
-

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { isFunction } from 'lodash';
+import { isFunction, isString } from 'lodash';
 
 // router
 import { browserHistory } from 'react-router';
@@ -38,12 +38,12 @@ type State = {
 };
 
 export default class Meta extends React.PureComponent<Props, State> {
-  state: State;
+  slug$: Rx.BehaviorSubject<string>;
   subscriptions: Rx.Subscription[];
   unlisten: Function | null;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       locale: null,
       currentTenantLocales: null,
@@ -52,28 +52,36 @@ export default class Meta extends React.PureComponent<Props, State> {
       location: null,
       loaded: false
     };
+    this.slug$ = new Rx.BehaviorSubject(null as any);
     this.subscriptions = [];
     this.unlisten = null;
   }
 
   componentWillMount() {
-    const { projectSlug } = this.props;
-    const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
-    const project$ = projectBySlugStream(projectSlug).observable;
+    this.slug$.next(this.props.projectSlug);
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
-        locale$,
-        currentTenantLocales$,
-        project$
-      ).switchMap(([locale, currentTenantLocales, project]) => {
+      this.slug$.distinctUntilChanged().filter(slug => isString(slug)).switchMap((slug) => {
+        const locale$ = localeStream().observable;
+        const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
+        const project$ = projectBySlugStream(slug).observable;
+
+        return Rx.Observable.combineLatest(
+          locale$,
+          currentTenantLocales$,
+          project$
+        );
+      }).switchMap(([locale, currentTenantLocales, project]) => {
         const projectImages$ = projectImagesStream(project.data.id).observable;
         return projectImages$.map((projectImages) => ({ locale, currentTenantLocales, project, projectImages }));
       }).subscribe(({ locale, currentTenantLocales, project }) => {
         this.setState({ locale, currentTenantLocales, project, loaded: true });
       })
     ];
+  }
+
+  componentWillReceiveProps(newProps: Props) {
+    this.slug$.next(newProps.projectSlug);
   }
 
   componentDidMount() {

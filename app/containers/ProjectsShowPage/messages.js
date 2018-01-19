@@ -73,4 +73,12 @@ export default defineMessages({
     id: 'app.containers.Projects.endedOn',
     defaultMessage: 'Ended on {date}',
   },
+  displayMap: {
+    id: 'app.containers.Projects.displayMap',
+    defaultMessage: 'Map',
+  },
+  displayCards: {
+    id: 'app.containers.Projects.displayCards',
+    defaultMessage: 'Cards',
+  },
 });

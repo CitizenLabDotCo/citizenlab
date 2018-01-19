@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cloneDeep, indexOf } from 'lodash';
+import { cloneDeep, indexOf, isString } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 import * as moment from 'moment';
 import 'moment-timezone';
@@ -268,7 +268,7 @@ const PhaseContainer: any = styled.div`
 
 type Props = {
   projectId: string
-  phaseClick: (phaseId: string | null) => void;
+  onPhaseClick: (phaseId: string | null) => void;
 };
 
 type State = {
@@ -280,6 +280,7 @@ type State = {
 };
 
 export default class Timeline extends React.PureComponent<Props, State> {
+  projectId$: Rx.BehaviorSubject<string>;
   selectedPhaseId$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 
@@ -293,22 +294,26 @@ export default class Timeline extends React.PureComponent<Props, State> {
       selectedPhaseId: null
     };
     this.subscriptions = [];
+    this.projectId$ = new Rx.BehaviorSubject(null as any);
     this.selectedPhaseId$ = new Rx.BehaviorSubject(null);
   }
 
   componentWillMount() {
-    const { projectId } = this.props;
-    const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
-    const phases$ = phasesStream(projectId).observable;
+    this.projectId$.next(this.props.projectId);
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
-        locale$,
-        currentTenant$,
-        phases$,
-        this.selectedPhaseId$.distinctUntilChanged()
-      ).subscribe(([locale, currentTenant, phases, selectedPhaseId]) => {
+      this.projectId$.distinctUntilChanged().filter(projectId => isString(projectId)).switchMap((projectId) => {
+        const locale$ = localeStream().observable;
+        const currentTenant$ = currentTenantStream().observable;
+        const phases$ = phasesStream(projectId).observable;
+
+        return Rx.Observable.combineLatest(
+          locale$,
+          currentTenant$,
+          phases$,
+          this.selectedPhaseId$.distinctUntilChanged()
+        );
+      }).subscribe(([locale, currentTenant, phases, selectedPhaseId]) => {
         this.setState((state: State) => {
           let currentPhaseId = cloneDeep(state.currentPhaseId);
 
@@ -334,7 +339,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
           }
 
           if (selectedPhaseId !== state.selectedPhaseId) {
-            this.props.phaseClick(selectedPhaseId);
+            this.props.onPhaseClick(selectedPhaseId);
           }
 
           return {
@@ -353,6 +358,10 @@ export default class Timeline extends React.PureComponent<Props, State> {
     if (this.state.currentPhaseId && !this.state.selectedPhaseId) {
       this.selectedPhaseId$.next(this.state.currentPhaseId);
     }
+  }
+
+  componentWillReceiveProps(newProps: Props) {
+    this.projectId$.next(newProps.projectId);
   }
 
   componentWillUpdate(_nextProps: Props, nextState: State) {
