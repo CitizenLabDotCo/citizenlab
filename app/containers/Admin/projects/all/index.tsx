@@ -4,7 +4,7 @@ import * as Rx from 'rxjs/Rx';
 
 // style
 import styled from 'styled-components';
-import { color } from 'utils/styleUtils';
+import { color, fontSize } from 'utils/styleUtils';
 
 // services
 import { projectsStream, IProjects } from 'services/projects';
@@ -94,17 +94,31 @@ const ProjectTitle = styled.h1`
 `;
 
 const ProjectCard = styled.li`
-  width: 260px;
-  height: 250px;
+  background: white;
+  border-radius: 5px;
+  border: solid 1px #e4e4e4;
   display: flex;
   flex-direction: column;
+  height: 250px;
   justify-content: space-between;
   margin: 10px;
   padding: 15px;
-  overflow: hidden;
+  position: relative;
+  width: 260px;
+`;
+
+const CustomLabel = styled.span`
+  background: rgba(0, 0, 0, .6);
   border-radius: 5px;
-  border: solid 1px #e4e4e4;
-  background: white;
+  color: white;
+  display: inline-block;
+  font-size: ${fontSize('xs')};
+  line-height: 1;
+  padding: .4em;
+  position: absolute;
+  right: 2rem;
+  text-transform: uppercase;
+  top: 2rem;
 `;
 
 const AddProjectLink = styled(Link)`
@@ -171,7 +185,7 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
   }
 
   componentDidMount() {
-    const projects$ = projectsStream().observable;
+    const projects$ = projectsStream({ queryParameters: { publication_statuses: ['draft', 'published', 'archived'] } }).observable;
     this.subscription = projects$.subscribe((unsortedProjects) => {
       const projects = sortBy(unsortedProjects.data, (project) => project.attributes.created_at).reverse();
       this.setState({ projects: { data: projects } });
@@ -186,7 +200,7 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
     const { projects } = this.state;
 
     return (
-      <>
+      <React.Fragment>
         <Title>
           <FormattedMessage {...messages.overviewPageTitle} />
         </Title>
@@ -207,7 +221,11 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
 
             return (
               <ProjectCard key={project.id} className="e2e-project-card">
-
+                {project.attributes.publication_status !== 'published' &&
+                  <CustomLabel>
+                    <FormattedMessage {...messages[`${project.attributes.publication_status}Status`]} />
+                  </CustomLabel>
+                }
                 {projectImage && <ProjectImage src={projectImage} alt="" role="presentation" />}
 
                 {!projectImage &&
@@ -235,7 +253,7 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
           })}
 
         </ProjectsList>
-      </>
+      </React.Fragment>
     );
   }
 }
