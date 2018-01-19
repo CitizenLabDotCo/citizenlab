@@ -435,6 +435,7 @@
   "app.containers.PasswordReset.successMessage": "Uw paswoord is succesvol geüpdatet",
   "app.containers.PasswordReset.title": "Uw wachtwoord opnieuw instellen",
   "app.containers.PasswordReset.updatePassword": "Bevestig wachtwoord",
+  "app.containers.Projects.aboutThisPhase": "",
   "app.containers.Projects.allEvents": "Alle activiteiten",
   "app.containers.Projects.displayCards": "",
   "app.containers.Projects.displayMap": "",
