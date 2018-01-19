@@ -24,7 +24,6 @@ import messages from './messages';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-
 const Container = styled.div`
   width: 100%;
   display: flex;

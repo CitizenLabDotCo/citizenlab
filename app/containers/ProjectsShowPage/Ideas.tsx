@@ -1,6 +1,5 @@
 // Libs
 import React from 'react';
-import { Map } from 'immutable';
 
 // Components
 import ContentContainer from 'components/ContentContainer';
@@ -25,7 +24,8 @@ const ToggleWrapper = styled.div`
 
 // Typings
 interface Props {
-  project: Map<string, any>;
+  type: 'project' | 'phase';
+  id: string;
 }
 
 interface State {
@@ -45,7 +45,7 @@ export default class Ideas extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { project } = this.props;
+    const { type, id } = this.props;
     const { display } = this.state;
 
     return (
@@ -56,11 +56,21 @@ export default class Ideas extends React.PureComponent<Props, State> {
             <Button active={display === 'cards'}><FormattedMessage {...messages.displayCards} /></Button>
           </Button.Group>
         </ToggleWrapper>
-        {display === 'map' &&
-          <IdeasMap project={project && project.get('id')} />
+
+        {display === 'map' && type === 'project' && 
+          <IdeasMap project={id} />
         }
-        {display === 'cards' &&
-          <IdeaCards filter={{ project: project && project.get('id') }} />
+
+        {display === 'map' && type === 'phase' && 
+          <IdeasMap phase={id} />
+        }
+
+        {display === 'cards' && type === 'project' && 
+          <IdeaCards filter={{ project: id }} />
+        }
+
+        {display === 'cards' && type === 'phase' && 
+          <IdeaCards filter={{ phase: id }} />
         }
       </StyledContentContainer>
     );
