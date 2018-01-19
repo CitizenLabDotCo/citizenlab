@@ -29,9 +29,21 @@ const Wrapper = styled.div`
 const Title = styled.h2``;
 
 const Description = styled.div`
-  flex: 0 1 auto;
-  overflow: hidden;
+  flex: 1 1 100%;
   margin-bottom: 1rem;
+  overflow: hidden;
+  position: relative;
+
+  &::after {
+    background: linear-gradient(0deg, white, rgba(255, 255, 255, 0));
+    bottom: 0;
+    content: "";
+    display: block;
+    height: 3rem;
+    left: 0;
+    right: 0;
+    position: absolute;
+  }
 `;
 
 const VoteComments = styled.div`
@@ -75,7 +87,9 @@ export default class IdeaBox extends React.Component<Props> {
               <Wrapper className={this.props.className}>
                 {this.props.onClose && <CloseButton onClick={this.props.onClose} icon="close" circular basic />}
                 <Title><T value={idea.attributes.title_multiloc} /></Title>
-                <Description><T value={idea.attributes.body_multiloc} /></Description>
+                <Description>
+                  <T as="div" value={idea.attributes.body_multiloc} />
+                </Description>
                 <VoteComments>
                   <VoteControl ideaId={idea.id} size="small" />
                   <CommentsCound>
