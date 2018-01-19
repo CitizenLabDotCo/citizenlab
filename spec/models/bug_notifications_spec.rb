@@ -41,5 +41,20 @@ RSpec.describe Notification, type: :model do
       parent.destroy!
     end
 
+    it "deleting parent of comment of comment on your comment notification" do
+      coyc = create(:comment_on_your_comment, project: project, idea: idea, comment: child, initiating_user: initiator, recipient: recipient, spam_report: spam_report)
+      parent.destroy!
+    end
+
+    it "deleting idea of comment on your comment notification" do
+      coyc = create(:comment_on_your_comment, project: project, idea: idea, comment: child, initiating_user: initiator, recipient: recipient, spam_report: spam_report)
+      idea.destroy!
+    end
+
+    it "deleting project of comment on your comment notification" do
+      coyc = create(:comment_on_your_comment, project: project, idea: idea, comment: child, initiating_user: initiator, recipient: recipient, spam_report: spam_report)
+      project.destroy!
+    end
+
   end
 end

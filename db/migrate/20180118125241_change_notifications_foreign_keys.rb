@@ -10,8 +10,8 @@ class ChangeNotificationsForeignKeys < ActiveRecord::Migration[5.1]
   	add_foreign_key :notifications, :users, column: :initiating_user_id, on_delete: :nullify
     add_foreign_key :notifications, :users, column: :recipient_id, on_delete: :cascade
 
-    add_foreign_key :notifications, :ideas, column: :idea_id, on_delete: :nullify
+    add_foreign_key :notifications, :ideas, column: :idea_id
     add_foreign_key :notifications, :comments, column: :comment_id, on_delete: :nullify
-    add_foreign_key :notifications, :projects, column: :project_id, on_delete: :nullify
+    add_foreign_key :notifications, :projects, column: :project_id
   end
 end
