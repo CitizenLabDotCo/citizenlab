@@ -1,14 +1,14 @@
 module Notifications
   class CommentOnYourIdea < Notification
     
-    belongs_to :initiating_user, class_name: 'User'
-    belongs_to :comment
-    belongs_to :idea
-    belongs_to :project, optional: true
+    # belongs_to :initiating_user, class_name: 'User'
+    # belongs_to :comment
+    # belongs_to :idea
+    # belongs_to :project, optional: true
 
-    validates :comment_id, presence: true
-    validates :initiating_user, presence: true
-    validates :idea_id, presence: true
+    # validates :comment_id, presence: true
+    # validates :initiating_user, presence: true
+    # validates :idea_id, presence: true
 
 
     ACTIVITY_TRIGGERS = {'Comment' => {'created' => true}}
