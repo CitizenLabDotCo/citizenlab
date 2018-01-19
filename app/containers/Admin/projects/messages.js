@@ -223,4 +223,20 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.mapDisplay',
     defaultMessage: 'Map',
   },
+  statusLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.statusLabel',
+    defaultMessage: 'Publication status',
+  },
+  draftStatus: {
+    id: 'app.containers.AdminPage.ProjectEdit.draftStatus',
+    defaultMessage: 'Draft',
+  },
+  publishedStatus: {
+    id: 'app.containers.AdminPage.ProjectEdit.publishedStatus',
+    defaultMessage: 'Published',
+  },
+  archivedStatus: {
+    id: 'app.containers.AdminPage.ProjectEdit.archivedStatus',
+    defaultMessage: 'Archived',
+  },
 });
