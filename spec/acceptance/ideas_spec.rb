@@ -34,11 +34,10 @@ resource "Ideas" do
       expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }).to all(eq 'published')
     end
 
-    example "List all ideas which have draft set as publication status" do
+    example "Doesn\'t list idea which have draft set as publication status", document: false do
       do_request(publication_status: 'draft')
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 1
-      expect(json_response.dig(:data,0,:attributes,:publication_status)).to eq 'draft'
+      expect(json_response[:data].size).to eq 0
     end
 
     example "List all ideas with a topic" do
