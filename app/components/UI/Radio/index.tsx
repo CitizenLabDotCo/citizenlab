@@ -8,7 +8,7 @@ const Wrapper = styled.label`
   margin-bottom: 12px;
 `;
 
-const CustomRadio = styled.div`
+const CustomRadio = styled<any, 'div'>('div')`
   flex: 0 0 20px;
   width: 20px;
   height: 20px;
