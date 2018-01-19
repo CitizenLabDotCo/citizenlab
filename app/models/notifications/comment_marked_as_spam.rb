@@ -1,10 +1,10 @@
 module Notifications
   class CommentMarkedAsSpam < MarkedAsSpam
     
-    # belongs_to :comment
-    # belongs_to :idea
+    belongs_to :comment
+    belongs_to :idea
 
-    # validates :comment_id, presence: true
+    validates :comment_id, presence: true
 
 
     EVENT_NAME = 'Comment marked as spam'
