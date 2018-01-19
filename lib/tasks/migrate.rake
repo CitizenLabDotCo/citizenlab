@@ -586,6 +586,11 @@ namespace :migrate do
     if p['postedAt']
       d[:published_at] = p['postedAt']
     end
+    # location
+    if p['location']
+      latitude, longitude = p['location'].split(',')
+      d[:location_point] = "Point(#{latitude} #{longitude})"
+    end
     begin
       record = Idea.new d
       # slug
