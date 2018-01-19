@@ -30,7 +30,7 @@ RSpec.describe Notification, type: :model do
     end
 
     it "deleting comment of notification" do
-      child.destroy!
+      child.destroy
     end
 
     it "deleting spam report of notification" do
@@ -48,7 +48,7 @@ RSpec.describe Notification, type: :model do
 
     it "deleting idea of comment on your comment notification" do
       coyc = create(:comment_on_your_comment, project: project, idea: idea, comment: child, initiating_user: initiator, recipient: recipient, spam_report: spam_report)
-      idea.destroy!
+      idea.destroy
     end
 
     it "deleting project of comment on your comment notification" do
