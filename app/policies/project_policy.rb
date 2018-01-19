@@ -11,7 +11,7 @@ class ProjectPolicy < ApplicationPolicy
       if user&.admin?
         scope.all
       else
-        result = scope.where(publication_status: ['published', 'arhived'])
+        result = scope.where(publication_status: ['published', 'archived'])
         if user
           result
             .left_outer_joins(groups: :memberships)
