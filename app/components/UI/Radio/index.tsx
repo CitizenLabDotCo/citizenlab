@@ -8,7 +8,8 @@ const Wrapper = styled.label`
   margin-bottom: 12px;
 `;
 
-const CustomRadio = styled<any, 'div'>('div')`
+const CustomRadio = styled.div`
+  flex: 0 0 20px;
   width: 20px;
   height: 20px;
   display: flex;
@@ -34,6 +35,7 @@ const CustomRadio = styled<any, 'div'>('div')`
 `;
 
 const Checked = styled.div`
+  flex: 0 0 12px;
   width: 12px;
   height: 12px;
   background: #49B47D;

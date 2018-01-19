@@ -73,39 +73,41 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getTabs = () => {
-    if (this.props.params.slug) {
-      const baseTabsUrl = `/admin/projects/${this.props.params.slug}`;
-      return [
-        {
-          label: this.props.intl.formatMessage(messages.generalTab),
-          url: `${baseTabsUrl}/edit`,
-        },
-        {
-          label: this.props.intl.formatMessage(messages.descriptionTab),
-          url: `${baseTabsUrl}/description`,
-        },
-        {
-          label: this.props.intl.formatMessage(messages.ideasTab),
-          url: `${baseTabsUrl}/ideas`,
-        },
-        {
-          label: this.props.intl.formatMessage(messages.phasesTab),
-          url: `${baseTabsUrl}/timeline`,
-        },
-        {
-          label: this.props.intl.formatMessage(messages.eventsTab),
-          url: `${baseTabsUrl}/events`,
-        },
-        {
-          label: this.props.intl.formatMessage(messages.permissionsTab),
-          url: `${baseTabsUrl}/permissions`,
-          feature: 'private_projects',
-        },
-      ];
+  getTabs = (slug: string, project: IProjectData) => {
+    const baseTabsUrl = `/admin/projects/${slug}`;
+
+    const tabs = [
+      {
+        label: this.props.intl.formatMessage(messages.generalTab),
+        url: `${baseTabsUrl}/edit`,
+      },
+      {
+        label: this.props.intl.formatMessage(messages.descriptionTab),
+        url: `${baseTabsUrl}/description`,
+      },
+      {
+        label: this.props.intl.formatMessage(messages.ideasTab),
+        url: `${baseTabsUrl}/ideas`,
+      },
+      {
+        label: this.props.intl.formatMessage(messages.eventsTab),
+        url: `${baseTabsUrl}/events`,
+      },
+      {
+        label: this.props.intl.formatMessage(messages.permissionsTab),
+        url: `${baseTabsUrl}/permissions`,
+        feature: 'private_projects',
+      },
+    ];
+
+    if (project.attributes.process_type === 'timeline') {
+      tabs.splice(3, 0, {
+        label: this.props.intl.formatMessage(messages.phasesTab),
+        url: `${baseTabsUrl}/timeline`,
+      });
     }
 
-    return [];
+    return tabs;
   }
 
   goBack = () => {
@@ -113,11 +115,16 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
   }
 
   render() {
+    const { location } = this.props;
+    const { slug } = this.props.params;
     const { project, loaded } = this.state;
     const { formatMessage } = this.props.intl;
 
     if (loaded) {
+      const { children } = this.props;
+      const childrenWithExtraProps = React.cloneElement(children as React.ReactElement<any>, { project });
       const tabbedProps = {
+        location,
         resource: {
           title: project ? project.attributes.title_multiloc : formatMessage(messages.addNewProject),
           publicLink: project ? `/projects/${project.attributes.slug}` : ''
@@ -125,16 +132,14 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
         messages: {
           viewPublicResource: messages.viewPublicProject,
         },
-        tabs: this.getTabs(),
-        location: this.props.location,
+        tabs: ((slug && project) ? this.getTabs(slug, project) : [])
       };
 
       return(
         <>
           <StyledGoBackButton onClick={this.goBack} />
-
           <TabbedResource {...tabbedProps}>
-            {React.cloneElement(this.props.children as React.ReactElement<any>, { project })}
+            {childrenWithExtraProps}
           </TabbedResource>
         </>
       );
