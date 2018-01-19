@@ -141,8 +141,8 @@ export default class Event extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       locale: null,
       currentTenant: null,

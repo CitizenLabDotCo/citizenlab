@@ -27,7 +27,7 @@ export const SectionField = styled.div`
   margin-bottom: ${remCalc(30)};
   transition: all 200ms ease-in-out;
 
-  .CLTextareaComponent {
+  .CLTextareaComponentContainer {
     max-width: 500px;
   }
 
