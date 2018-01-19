@@ -113,9 +113,8 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
                   <h1><T value={event.attributes.title_multiloc} /></h1>
                   <p><T value={event.attributes.location_multiloc} /></p>
                   <p>
-                    {`${formatDate(event.attributes.start_at)} ${formatTime(event.attributes.start_at)}`}
-                    &nbsp;-&nbsp;
-                    {`${formatDate(event.attributes.end_at)} ${formatTime(event.attributes.end_at)}`}</p>
+                    {`${formatDate(event.attributes.start_at)} ${formatTime(event.attributes.start_at)}`} → {`${formatDate(event.attributes.end_at)} ${formatTime(event.attributes.end_at)}`}
+                  </p>
                 </div>
                 <Button style="text" icon="delete" onClick={this.createDeleteClickHandler(event.id)}>
                   <FormattedMessage {...messages.deleteButtonLabel} />

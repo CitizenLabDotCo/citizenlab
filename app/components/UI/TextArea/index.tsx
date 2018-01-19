@@ -62,6 +62,7 @@ const CharacterCount = styled.p`
 `;
 
 const TextAreaContainer: any = styled.div`
+  width: 100%;
   position: relative;
 `;
 
@@ -138,7 +139,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
 
     return (
       <Container className={className}>
-        <TextAreaContainer className="TextArea">
+        <TextAreaContainer className="TextArea CLTextareaComponentContainer">
           <TextareaAutosize
             className={`textarea CLTextareaComponent ${hasError ? 'error' : ''}`}
             name={name || ''}

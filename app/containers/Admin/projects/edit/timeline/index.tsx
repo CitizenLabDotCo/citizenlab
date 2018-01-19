@@ -143,7 +143,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
                 </OrderLabel>
                 <div className="expand">
                   <h1 className="e2e-phase-title"><T value={phase.attributes.title_multiloc} /></h1>
-                  <p>{formatDate(phase.attributes.start_at)} - {formatDate(phase.attributes.end_at)}</p>
+                  <p>{formatDate(phase.attributes.start_at)}  →  {formatDate(phase.attributes.end_at)}</p>
                 </div>
                 <Button className="e2e-delete-phase" icon="delete" style="text" onClick={this.createDeleteClickHandler(phase.id)}>
                   <FormattedMessage {...messages.deletePhaseButton} />

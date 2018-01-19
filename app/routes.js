@@ -278,7 +278,7 @@ export default function createRoutes(store) {
         name: 'Project page',
         getComponent(nextState, cb) {
           const importModules = Promise.all([
-            import('containers/ProjectsShowPage/timeline'),
+            import('containers/ProjectsShowPage/main'),
           ]);
 
           const renderRoute = loadModule(cb);

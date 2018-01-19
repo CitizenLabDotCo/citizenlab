@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
+import { isString } from 'lodash';
 
 // router
 import { Link } from 'react-router';
@@ -198,29 +199,40 @@ type State = {
 };
 
 export default class ProjectsShowPage extends React.PureComponent<Props, State> {
-  state: State;
+  slug$: Rx.BehaviorSubject<string>;
   subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       project: null
     };
+    this.slug$ = new Rx.BehaviorSubject(null as any);
     this.subscriptions = [];
   }
 
   componentWillMount() {
-    const project$ = projectBySlugStream(this.props.params.slug).observable;
+    this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
-      project$.switchMap((project) => {
+      this.slug$.distinctUntilChanged().filter(slug => isString(slug)).switchMap((slug) => {
+        const project$ = projectBySlugStream(slug).observable;
+        return project$;
+      }).switchMap((project) => {
         const projectImages$ = projectImagesStream(project.data.id).observable;
         const phases$ = phasesStream(project.data.id).observable;
-        return Rx.Observable.combineLatest(projectImages$, phases$).map(() => project);
+        return Rx.Observable.combineLatest(
+          projectImages$,
+          phases$
+        ).map(() => project);
       }).subscribe((project) => {
         this.setState({ project });
       })
     ];
+  }
+
+  componentWillReceiveProps(newProps: Props) {
+    this.slug$.next(newProps.params.slug);
   }
 
   componentWillUnmount() {
@@ -228,16 +240,16 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
   }
 
   render() {
-    const { params } = this.props;
     const { project } = this.state;
 
     if (project) {
       const { children } = this.props;
+      const projectSlug = project.data.attributes.slug;
       const projectHeaderImageLarge = (project.data.attributes.header_bg.large || null);
 
       return (
-        <div>
-          <Meta projectSlug={params.slug} />
+        <>
+          <Meta projectSlug={projectSlug} />
 
           <Container>
             <Header>
@@ -257,7 +269,7 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
 
                   <HeaderContentRight>
                     <HeaderButtons>
-                      <HeaderButton to={`/projects/${params.slug}/info`}>
+                      <HeaderButton to={`/projects/${projectSlug}/info`}>
                         <HeaderButtonIconWrapper>
                           <HeaderButtonIcon name="info2" />
                         </HeaderButtonIconWrapper>
@@ -266,7 +278,7 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
                         </HeaderButtonText>
                       </HeaderButton>
 
-                      <HeaderButton to={`/projects/${params.slug}/events`}>
+                      <HeaderButton to={`/projects/${projectSlug}/events`}>
                         <HeaderButtonIconWrapper>
                           <HeaderButtonIcon name="calendar" />
                         </HeaderButtonIconWrapper>
@@ -285,7 +297,7 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
             </Content>
           </Container>
 
-        </div>
+        </>
       );
     }
 
