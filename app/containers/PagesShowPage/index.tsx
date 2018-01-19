@@ -45,10 +45,10 @@ const PageContent = styled.div`
 
 const PageTitle = styled.h1`
   color: #222;
-  font-size: 30px;
+  font-size: 34px;
   font-weight: 600;
-  line-height: 36px;
-  margin-bottom: 25px;
+  line-height: 40px;
+  margin-bottom: 35px;
 `;
 
 const TextContainer = styled.div`
