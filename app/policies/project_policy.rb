@@ -8,20 +8,18 @@ class ProjectPolicy < ApplicationPolicy
     end
 
     def resolve
-      resolving_scope = scope
-      if !(user && user.admin?)
-        resolving_scope = scope.where(publication_status: 'published')
-      end
       if user&.admin?
-        resolving_scope.all
-      elsif user
-        resolving_scope
-          .left_outer_joins(groups: :memberships)
-          .where("projects.visible_to = 'public' OR \
-            (projects.visible_to = 'groups' AND memberships.user_id = ?)", user&.id)
+        scope.all
       else
-        resolving_scope
-          .where(visible_to: 'public')
+        result = scope.where(publication_status: ['published', 'arhived'])
+        if user
+          result
+            .left_outer_joins(groups: :memberships)
+            .where("projects.visible_to = 'public' OR \
+              (projects.visible_to = 'groups' AND memberships.user_id = ?)", user&.id)
+        else
+          result.where(visible_to: 'public')
+        end
       end
     end
   end
@@ -39,10 +37,14 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def show?
-    user&.admin? ||
-    (record.publication_status == 'published' &&
-     (record.visible_to == 'public' || 
-      record.visible_to == 'groups' && record.groups.includes(:memberships).flat_map(&:memberships).any?{|m| m.user_id == user.id}))
+    user&.admin? || (
+      %w(published archived).include?(record.publication_status) && (
+        record.visible_to == 'public' || (
+          record.visible_to == 'groups' && 
+          record.groups.includes(:memberships).flat_map(&:memberships).any?{|m| m.user_id == user.id}
+        )
+      )
+    )
   end
 
   def by_slug?
