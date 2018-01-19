@@ -435,6 +435,7 @@
   "app.containers.PasswordReset.successMessage": "Your password has been successfully updated",
   "app.containers.PasswordReset.title": "Reset your password",
   "app.containers.PasswordReset.updatePassword": "Confirm new password",
+  "app.containers.Projects.aboutThisPhase": "About this phase",
   "app.containers.Projects.allEvents": "All events",
   "app.containers.Projects.displayCards": "Cards",
   "app.containers.Projects.displayMap": "Map",

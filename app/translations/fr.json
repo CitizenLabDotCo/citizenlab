@@ -435,6 +435,7 @@
   "app.containers.PasswordReset.successMessage": "Votre mot de passe a été mis à jour",
   "app.containers.PasswordReset.title": "Réinitialisez votre mot de passe",
   "app.containers.PasswordReset.updatePassword": "Confirmer le nouveau mot de passe",
+  "app.containers.Projects.aboutThisPhase": "",
   "app.containers.Projects.allEvents": "Tous les événements",
   "app.containers.Projects.displayCards": "",
   "app.containers.Projects.displayMap": "",
