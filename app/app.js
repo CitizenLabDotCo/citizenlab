@@ -66,9 +66,9 @@ import { translationMessages } from './i18n';
 /* eslint-disable import/first */
 // Import CSS reset and Global Styles
 // import '../vendor/foundation/main.scss';
-import './global-styles';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'semantic-ui-css/semantic.css';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import './global-styles';
 
 /* eslint-enable import/first */
 

@@ -33,30 +33,6 @@ module.exports = (options) => ({
       test: /\.(eot|svg|ttf|woff|woff2|jpg|png|gif)$/,
       loader: 'file-loader',
     },
-    // {
-    //   test: /\.(jpg|png|gif)$/,
-    //   loaders: [
-    //     'file-loader',
-    //     {
-    //       loader: 'image-webpack-loader',
-    //       query: {
-    //         mozjpeg: {
-    //           progressive: true,
-    //         },
-    //         gifsicle: {
-    //           interlaced: false,
-    //         },
-    //         optipng: {
-    //           optimizationLevel: 7,
-    //         },
-    //         pngquant: {
-    //           quality: '65-90',
-    //           speed: 4,
-    //         },
-    //       },
-    //     },
-    //   ],
-    // },
     {
       test: /\.html$/,
       loader: 'html-loader',
@@ -69,6 +45,10 @@ module.exports = (options) => ({
       query: {
         limit: 10000,
       },
+    },
+    {
+      test: require.resolve('mapbox-gl-leaflet'),
+      use: 'imports-loader?mapboxgl=mapbox-gl',
     }],
   },
   plugins: options.plugins.concat([

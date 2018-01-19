@@ -1,6 +1,10 @@
 // Libs
 import * as React from 'react';
 
+// Utils
+import eventEmitter from 'utils/eventEmitter';
+import { IModalInfo } from 'containers/App';
+
 // Components
 import GetIdea from 'utils/resourceLoaders/components/GetIdea';
 import T from 'components/T';
@@ -29,9 +33,21 @@ const Wrapper = styled.div`
 const Title = styled.h2``;
 
 const Description = styled.div`
-  flex: 0 1 auto;
-  overflow: hidden;
+  flex: 1 1 100%;
   margin-bottom: 1rem;
+  overflow: hidden;
+  position: relative;
+
+  &::after {
+    background: linear-gradient(0deg, white, rgba(255, 255, 255, 0));
+    bottom: 0;
+    content: "";
+    display: block;
+    height: 3rem;
+    left: 0;
+    right: 0;
+    position: absolute;
+  }
 `;
 
 const VoteComments = styled.div`
@@ -55,7 +71,6 @@ const CloseButton = styled(SemanticButton)`
   top: 0;
   right: 0;
 `;
-
 // Typings
 export interface Props {
   idea: string;
@@ -64,6 +79,17 @@ export interface Props {
 }
 
 export default class IdeaBox extends React.Component<Props> {
+  createIdeaClickHandler = (idea) => (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    eventEmitter.emit<IModalInfo>('projectIdeasMap', 'cardClick', {
+      type: 'idea',
+      id: idea.id,
+      url: `/ideas/${idea.attributes.slug}`
+    });
+  }
+
   render() {
     return (
       <GetIdea id={this.props.idea}>
@@ -75,7 +101,9 @@ export default class IdeaBox extends React.Component<Props> {
               <Wrapper className={this.props.className}>
                 {this.props.onClose && <CloseButton onClick={this.props.onClose} icon="close" circular basic />}
                 <Title><T value={idea.attributes.title_multiloc} /></Title>
-                <Description><T value={idea.attributes.body_multiloc} /></Description>
+                <Description>
+                  <T as="div" value={idea.attributes.body_multiloc} />
+                </Description>
                 <VoteComments>
                   <VoteControl ideaId={idea.id} size="small" />
                   <CommentsCound>
@@ -83,7 +111,7 @@ export default class IdeaBox extends React.Component<Props> {
                     {idea.attributes.comments_count}
                   </CommentsCound>
                 </VoteComments>
-                <StyledButton circularCorners={false} width="100%" linkTo={`/ideas/${idea.attributes.slug}`}>
+                <StyledButton circularCorners={false} width="100%" onClick={this.createIdeaClickHandler(idea)}>
                   <FormattedMessage {...messages.seeIdea} />
                 </StyledButton>
               </Wrapper>
