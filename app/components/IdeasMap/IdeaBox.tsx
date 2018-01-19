@@ -1,6 +1,10 @@
 // Libs
 import * as React from 'react';
 
+// Utils
+import eventEmitter from 'utils/eventEmitter';
+import { IModalInfo } from 'containers/App';
+
 // Components
 import GetIdea from 'utils/resourceLoaders/components/GetIdea';
 import T from 'components/T';
@@ -67,7 +71,6 @@ const CloseButton = styled(SemanticButton)`
   top: 0;
   right: 0;
 `;
-
 // Typings
 export interface Props {
   idea: string;
@@ -76,6 +79,17 @@ export interface Props {
 }
 
 export default class IdeaBox extends React.Component<Props> {
+  createIdeaClickHandler = (idea) => (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    eventEmitter.emit<IModalInfo>('projectIdeasMap', 'cardClick', {
+      type: 'idea',
+      id: idea.id,
+      url: `/ideas/${idea.attributes.slug}`
+    });
+  }
+
   render() {
     return (
       <GetIdea id={this.props.idea}>
@@ -97,7 +111,7 @@ export default class IdeaBox extends React.Component<Props> {
                     {idea.attributes.comments_count}
                   </CommentsCound>
                 </VoteComments>
-                <StyledButton circularCorners={false} width="100%" linkTo={`/ideas/${idea.attributes.slug}`}>
+                <StyledButton circularCorners={false} width="100%" onClick={this.createIdeaClickHandler(idea)}>
                   <FormattedMessage {...messages.seeIdea} />
                 </StyledButton>
               </Wrapper>
