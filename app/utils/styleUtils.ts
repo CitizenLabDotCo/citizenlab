@@ -83,6 +83,7 @@ export function color(name: keyof typeof colors) {
 }
 
 export const fontSizes = {
+  xs: 12,
   small: 14,
   base: 16,
   large: 18,

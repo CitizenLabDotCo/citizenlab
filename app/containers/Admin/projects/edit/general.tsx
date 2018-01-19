@@ -50,6 +50,7 @@ import styled from 'styled-components';
 
 // typings
 import { API, IOption, ImageFile, Locale } from 'typings';
+import Select from 'semantic-ui-react/dist/commonjs/addons/Select/Select';
 
 const timeout = 350;
 
@@ -421,6 +422,11 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     this.save(participationContextConfig);
   }
 
+  handleStatusChange = (_event, data): void => {
+    const { value } = data;
+    this.setState({ projectAttributesDiff: { ...this.state.projectAttributesDiff, publication_status: value } });
+  }
+
   validate = () => {
     let hasErrors = false;
     const { formatMessage } = this.props.intl;
@@ -474,7 +480,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
             const project = await addProject(projectAttributesDiff);
             projectId = project.data.id;
             redirect = true;
-          } 
+          }
 
           const imagesToAddPromises: Promise<any>[] = _(imagesToAdd).map(imageToAdd => addProjectImage(projectId, imageToAdd.base64)).value();
           const imagesToRemovePromises: Promise<any>[] = _(imagesToRemove).map(imageToRemove => deleteProjectImage(projectId, imageToRemove['projectImageId'])).value();
@@ -554,6 +560,20 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         <form className="e2e-project-general-form" onSubmit={this.onSubmit}>
           <Section>
             <SectionField>
+              <Label>
+                <FormattedMessage {...messages.statusLabel} />
+              </Label>
+              <Select
+                value={projectAttrs.publication_status}
+                onChange={this.handleStatusChange}
+                options={
+                  ['draft', 'published', 'archived'].map((status) => ({
+                    value: status,
+                    text: <FormattedMessage {...messages[`${status}Status`]} />,
+                  }))}
+              />
+            </SectionField>
+            <SectionField>
               <Label htmlFor="project-title">
                 <FormattedMessage {...messages.titleLabel} />
               </Label>
@@ -600,7 +620,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
 
               {!projectData &&
                 <TransitionGroup>
-                  {projectType === 'continuous' && 
+                  {projectType === 'continuous' &&
                     <CSSTransition
                       classNames="participationcontext"
                       timeout={timeout}
@@ -608,7 +628,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                       exit={false}
                     >
                       <ParticipationContextWrapper>
-                        <ParticipationContext 
+                        <ParticipationContext
                           onSubmit={this.handleParcticipationContextOnSubmit}
                           onChange={this.handleParticipationContextOnChange}
                         />
