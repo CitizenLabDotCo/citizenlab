@@ -56,5 +56,20 @@ RSpec.describe Notification, type: :model do
       project.destroy!
     end
 
+    it "deleting spam report of comment on your comment notification" do
+      coyc = create(:comment_on_your_comment, project: project, idea: idea, comment: child, initiating_user: initiator, recipient: recipient, spam_report: spam_report)
+      spam_report.destroy!
+    end
+
+    it "deleting initiator of comment on your comment notification" do
+      coyc = create(:comment_on_your_comment, project: project, idea: idea, comment: child, initiating_user: initiator, recipient: recipient, spam_report: spam_report)
+      initiator.destroy!
+    end
+
+    it "deleting recipient of comment on your comment notification" do
+      coyc = create(:comment_on_your_comment, project: project, idea: idea, comment: child, initiating_user: initiator, recipient: recipient, spam_report: spam_report)
+      recipient.destroy!
+    end
+
   end
 end
