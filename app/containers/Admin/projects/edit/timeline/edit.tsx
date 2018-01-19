@@ -8,9 +8,10 @@ import * as Rx from 'rxjs/Rx';
 import moment from 'moment';
 import { get, isEmpty } from 'lodash';
 import { EditorState } from 'draft-js';
-import { browserHistory } from 'react-router';
+// import { browserHistory } from 'react-router';
 
 // Services
+import { localeStream } from 'services/locale';
 import { projectBySlugStream, IProject } from 'services/projects';
 import { phaseStream, updatePhase, addPhase, IPhase, IUpdatedPhaseProperties } from 'services/phases';
 import eventEmitter from 'utils/eventEmitter';
@@ -30,7 +31,6 @@ import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from '../parcticipationContext';
 
 // i18n
-import localize, { injectedLocalized } from 'utils/localize';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { injectTFunc } from 'components/T/utils';
 import messages from './messages';
@@ -39,7 +39,7 @@ import messages from './messages';
 import styled from 'styled-components';
 
 // Typings
-import { API } from 'typings';
+import { API, Locale } from 'typings';
 
 const PhaseForm = styled.form`
   .DateRangePickerInput {
@@ -51,6 +51,10 @@ const PhaseForm = styled.form`
 
     .DateInput,
     .DateInput_input {
+      color: #333;
+      font-family: 'visuelt', sans-serif !important;
+      font-size: 16px;
+      font-weight: 400;
       background: transparent;
     }
   }
@@ -72,6 +76,7 @@ type Props = {
 };
 
 interface State {
+  locale: Locale;
   phase: IPhase | null;
   project: IProject | null;
   attributeDiff: IUpdatedPhaseProperties;
@@ -82,13 +87,14 @@ interface State {
   saved: boolean;
 }
 
-class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized, State> {
+class AdminProjectTimelineEdit extends React.Component<Props, State> {
   params$: Rx.BehaviorSubject<IParams>;
   subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
+      locale: null as any,
       phase: null,
       project: null,
       attributeDiff: {},
@@ -103,18 +109,23 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
   }
 
   componentWillMount() {
+    // const { locale } = this.props;
     const { slug, id } = this.props.params;
     this.params$ = new Rx.BehaviorSubject({ slug, id });
 
     this.subscriptions = [
       this.params$.distinctUntilChanged().switchMap((params) => {
         const { slug, id } = params;
+        const locale$ = localeStream().observable;
         const project$ = (slug ? projectBySlugStream(slug).observable : Rx.Observable.of(null));
         const phase$ = (id ? phaseStream(id).observable : Rx.Observable.of(null));
-        return Rx.Observable.combineLatest(project$, phase$);
-      }).subscribe(([project, phase]) => {
-        const descState = getEditorStateFromHtmlString(get(phase, `data.attributes.description_multiloc.${this.props.locale}`, ''));
-        this.setState({ project, phase, descState });
+        return Rx.Observable.combineLatest(locale$, project$, phase$);
+      }).subscribe(([locale, project, phase]) => {
+        console.log(locale);
+        console.log(phase);
+        const descState = getEditorStateFromHtmlString(get(phase, `data.attributes.description_multiloc.${locale}`, ''));
+        console.log(descState);
+        this.setState({ locale, project, phase, descState });
       })
     ];
   }
@@ -129,8 +140,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
   }
 
   createMultilocUpdater = (name: string) => (value: string) => {
-    const { attributeDiff } = this.state;
-    const { locale } = this.props;
+    const { locale, attributeDiff } = this.state;
 
     if (attributeDiff) {
       const newValue = attributeDiff && attributeDiff[name] || {};
@@ -146,8 +156,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
   }
 
   handleDescChange = (editorState: EditorState) => {
-    const { attributeDiff } = this.state;
-    const { locale } = this.props;
+    const { locale, attributeDiff } = this.state;
 
     if (attributeDiff) {
       const newHtmlValue = getHtmlStringFromEditorState(editorState);
@@ -223,15 +232,14 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
 
   save = async (slug: string | null, project: IProject | null, phase: IPhase | null, attributeDiff: IUpdatedPhaseProperties) => {
     if (!isEmpty(attributeDiff)) {
-      console.log(attributeDiff);
-
       try {
         if (phase) {
           const savedPhase = await updatePhase(phase.data.id, attributeDiff);
           this.setState({ saving: false, saved: true, attributeDiff: {}, phase: savedPhase, errors: null });
         } else if (project && slug) {
-          await addPhase(project.data.id, attributeDiff);
-          browserHistory.push(`/admin/projects/${slug}/timeline/`);
+          const savedPhase = await addPhase(project.data.id, attributeDiff);
+          // browserHistory.push(`/admin/projects/${slug}/timeline/`);
+          this.setState({ saving: false, saved: true, attributeDiff: {}, phase: savedPhase, errors: null });
         }
       } catch (errors) {
         this.setState({
@@ -330,4 +338,4 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
   }
 }
 
-export default injectTFunc(injectIntl(localize(AdminProjectTimelineEdit)));
+export default injectTFunc(injectIntl(AdminProjectTimelineEdit));

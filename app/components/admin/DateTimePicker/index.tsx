@@ -66,10 +66,17 @@ const TimeWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-left: 10px;
+  padding-right: 10px;
 
   input {
-    width: 60px;
+    width: 40px;
   }
+`;
+
+const TimeSeparator = styled.div`
+  padding-left: 5px;
+  padding-right: 5px;
 `;
 
 interface Props {
@@ -162,7 +169,7 @@ class DateTimePicker extends React.PureComponent<Props & injectedLocalized, Stat
             value={hours}
             onChange={this.createTimeChangeHandler('hour')}
           />
-          <div>:</div>
+          <TimeSeparator>:</TimeSeparator>
           <input
             type="number"
             min="0"
