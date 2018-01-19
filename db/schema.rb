@@ -399,12 +399,11 @@ ActiveRecord::Schema.define(version: 20180118125241) do
   add_foreign_key "identities", "users"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
-  add_foreign_key "notifications", "comments", on_delete: :nullify
+  add_foreign_key "notifications", "comments"
   add_foreign_key "notifications", "ideas"
   add_foreign_key "notifications", "projects"
   add_foreign_key "notifications", "spam_reports"
   add_foreign_key "notifications", "users", column: "initiating_user_id"
-  add_foreign_key "notifications", "users", column: "recipient_id", on_delete: :cascade
   add_foreign_key "page_links", "pages", column: "linked_page_id"
   add_foreign_key "page_links", "pages", column: "linking_page_id"
   add_foreign_key "pages", "projects"
