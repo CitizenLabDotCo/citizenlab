@@ -126,7 +126,7 @@ if Apartment::Tenant.current == 'public' || 'example_org'
       maps: {
         enabled: true,
         allowed: true,
-        tile_provider: "https://a.tile.openstreetmap.org/${z}/${x}/${y}.png",
+        tile_provider: "https://free.tilehosting.com/styles/positron/style.json?key=DIZiuhfkZEQ5EgsaTk6D",
         map_center: {
           lat: "50.8503",
           long: "4.3517"
