@@ -284,10 +284,11 @@ if Apartment::Tenant.current == 'localhost'
         "en" => "Let's renew the parc at the city border.",
         "nl" => "Laten we het park op de grend van de stad vernieuwen."
       },
-      header_bg: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
+      header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
       visible_to: %w(admins groups public public public)[rand(5)],
       presentation_mode: ['card', 'card', 'card', 'map', 'map'][rand(5)],
-      process_type: ['timeline','timeline','timeline','timeline','continuous'][rand(5)]
+      process_type: ['timeline','timeline','timeline','timeline','continuous'][rand(5)],
+      publication_status: ['published','published','published','published','published','draft','archived'][rand(7)]
     })
 
     if project.continuous?
