@@ -1,9 +1,9 @@
 module Notifications
   class IdeaMarkedAsSpam < MarkedAsSpam
     
-    # belongs_to :idea
+    belongs_to :idea
 
-    # validates :idea_id, presence: true
+    validates :idea_id, presence: true
 
 
     EVENT_NAME = 'Idea marked as spam'
