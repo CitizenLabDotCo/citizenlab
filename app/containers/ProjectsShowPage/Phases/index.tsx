@@ -10,7 +10,7 @@ import styled from 'styled-components';
 const Container = styled.div``;
 
 const StyledTimeline = styled(Timeline)`
-  display: none;
+  margin-top: -68px;
 `;
 
 type Props = {

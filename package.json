@@ -380,7 +380,7 @@
     "tslint-eslint-rules": "^4.1.1",
     "tslint-microsoft-contrib": "^5.0.2",
     "tslint-react": "^3.4.0",
-    "tsutils": "^2.19.1",
+    "tsutils": "^2.18.0",
     "typescript": "^2.6.2",
     "typescript-styled-plugin": "^0.4.0",
     "url-loader": "0.6.2",

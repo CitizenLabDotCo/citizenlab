@@ -366,7 +366,7 @@ class LandingPage extends React.PureComponent<Props, State> {
       const hasHeaderImage = (currentTenantHeader !== null);
 
       return (
-        <div>
+        <>
           <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
             <Header>
               <HeaderImage>
@@ -452,7 +452,7 @@ class LandingPage extends React.PureComponent<Props, State> {
               <Footer />
             </Content>
           </Container>
-        </div>
+        </>
       );
     }
 
@@ -461,3 +461,4 @@ class LandingPage extends React.PureComponent<Props, State> {
 }
 
 export default LandingPage;
+
