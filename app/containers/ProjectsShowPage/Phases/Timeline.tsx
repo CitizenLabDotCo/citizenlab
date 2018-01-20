@@ -70,9 +70,9 @@ const HeaderSection = styled.div`
 `;
 
 const PhaseNumberWrapper = styled.div`
-  flex: 0 0 29px;
-  width: 29px;
-  height: 29px;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -86,6 +86,7 @@ const PhaseNumberWrapper = styled.div`
 
   &.selected.current {
     border-color: ${greenOpaque};
+    background: ${greenOpaque};
   }
 `;
 
@@ -102,7 +103,7 @@ const PhaseNumber = styled.div`
   }
 
   &.selected.current {
-    color: ${greenOpaque};
+    color: #fff;
   }
 `;
 
@@ -435,7 +436,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
       if (selectedPhase) {
         if (currentPhaseId && selectedPhaseId === currentPhaseId) {
           phaseStatus = 'present';
-        } else if (moment().diff(moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD'), 'days') < 0) {
+        } else if (moment().diff(moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD'), 'days') <= 0) {
           phaseStatus = 'future';
         } else if (moment().diff(moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD'), 'days') > 0) {
           phaseStatus = 'past';
@@ -545,3 +546,4 @@ export default class Timeline extends React.PureComponent<Props, State> {
     return null;
   }
 }
+
