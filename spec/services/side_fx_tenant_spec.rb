@@ -7,7 +7,7 @@ describe SideFxTenantService do
 
 
   describe "after_create" do
-    it "logs a 'created' action when a tenant is created" do
+    it "logs a 'created' action" do
       expect {service.after_create(tenant, current_user)}.
         to have_enqueued_job(LogActivityJob).with(tenant, 'created', current_user, tenant.updated_at.to_i)
     end

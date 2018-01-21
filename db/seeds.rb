@@ -350,7 +350,7 @@ if Apartment::Tenant.current == 'localhost'
 
 
   MAP_CENTER = [50.8503, 4.3517]
-  MAP_OFFSET = 0.5
+  MAP_OFFSET = 0.1
 
   num_ideas.times do 
     created_at = Faker::Date.between(1.year.ago, Time.now)
