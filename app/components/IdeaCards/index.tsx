@@ -7,6 +7,7 @@ import { browserHistory } from 'react-router';
 
 // components
 import IdeaCard, { Props as IdeaCardProps } from 'components/IdeaCard';
+import IdeaButton from './IdeaButton';
 import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
 import Button from 'components/UI/Button';
@@ -161,7 +162,6 @@ class IdeaCards extends React.PureComponent<Props, State> {
 
         return ideasStream({
           queryParameters: {
-            sort: 'trending',
             'page[size]': 15,
             ...filter,
             'page[number]': pageNumber
@@ -173,13 +173,13 @@ class IdeaCards extends React.PureComponent<Props, State> {
           hasMore: has(ideas, 'links.next')
         }));
       }, {
-        ideas: {} as IIdeas,
-        filter: {},
-        pageNumber: 1,
-        hasMore: false
-      }).subscribe(({ ideas, hasMore }) => {
-        this.setState({ ideas, hasMore, loading: false, loadingMore: false });
-      })
+          ideas: {} as IIdeas,
+          filter: {},
+          pageNumber: 1,
+          hasMore: false
+        }).subscribe(({ ideas, hasMore }) => {
+          this.setState({ ideas, hasMore, loading: false, loadingMore: false });
+        })
     ];
   }
 
@@ -202,6 +202,10 @@ class IdeaCards extends React.PureComponent<Props, State> {
 
   goToAddIdeaPage = () => {
     browserHistory.push('/ideas/new');
+  }
+
+  filteredByProjectId = () => {
+    return this.props.filter.project;
   }
 
   render() {
@@ -237,13 +241,9 @@ class IdeaCards extends React.PureComponent<Props, State> {
             <FormattedMessage {...messages.noIdea} />
           </EmptyMessageLine>
         </EmptyMessage>
-        <Button
-          text={<FormattedMessage {...messages.addIdea} />}
-          style="primary"
-          size="2"
-          icon="plus-circle"
-          onClick={this.goToAddIdeaPage}
-          circularCorners={true}
+        <IdeaButton
+          projectId={this.props.filter.project}
+          phaseId={this.props.filter.phase}
         />
       </EmptyContainer>
     ) : null);
