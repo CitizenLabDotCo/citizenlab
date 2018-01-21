@@ -30,8 +30,16 @@ class IdentifyToSegmentJob < ApplicationJob
 
     Analytics && Analytics.identify(
       user_id: user.id,
-      group_id: tenant_id,
       traits: traits
+    )
+    Analytics && Analytics.group(
+      user_id: user.id,
+      group_id: tenant_id,
+      traits: {
+        name: traits[:tenantName],
+        host: traits[:tenantHost],
+        type: traits[:tenantOrganizationType]
+      }
     )
   end
 

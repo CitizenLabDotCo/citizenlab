@@ -12,11 +12,6 @@ describe SideFxTenantService do
         to have_enqueued_job(LogActivityJob).with(tenant, 'created', current_user, tenant.updated_at.to_i)
     end
 
-    it "starts a GroupToSegmentJob" do
-      expect {service.after_create(tenant, current_user)}.
-        to have_enqueued_job(GroupToSegmentJob).with(tenant)
-    end
-
   end
 
   describe "after_update" do
@@ -26,11 +21,6 @@ describe SideFxTenantService do
       tenant.update(settings: settings)
       expect {service.after_update(tenant, current_user)}.
         to have_enqueued_job(LogActivityJob).with(tenant, 'changed', current_user, tenant.updated_at.to_i)
-    end
-
-    it "starts a GroupToSegmentJob" do
-      expect{service.after_update(tenant, current_user)}.
-        to have_enqueued_job(GroupToSegmentJob).with(tenant)
     end
 
   end
