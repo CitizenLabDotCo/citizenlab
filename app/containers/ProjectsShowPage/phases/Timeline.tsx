@@ -6,7 +6,7 @@ import 'moment-timezone';
 
 // components
 import Icon from 'components/UI/Icon';
-import Button from 'components/UI/Button';
+import IdeaButton from './IdeaButton';
 import MobileTimeline from './MobileTimeline';
 import { Responsive } from 'semantic-ui-react';
 
@@ -61,6 +61,7 @@ const Header = styled.div`
   padding: 14px 30px;
   display: flex;
   justify-content: space-between;
+  min-height: 68px;
 `;
 
 const HeaderSection = styled.div`
@@ -380,10 +381,6 @@ export default class Timeline extends React.PureComponent<Props, State> {
     this.selectedPhaseId$.next(phaseId);
   }
 
-  handleOnAddIdeaClick = () => {
-    // empty
-  }
-
   goToPrevPhase = (firstPhaseSelected: boolean) => (event: React.FormEvent<any>) => {
     event.preventDefault();
 
@@ -480,13 +477,9 @@ export default class Timeline extends React.PureComponent<Props, State> {
                   </HeaderSubtitle>
                 }
               </HeaderDate>
-
-              <Button
-                onClick={this.handleOnAddIdeaClick}
-                style="primary"
-                size="2"
-                text={<FormattedMessage {...messages.startAnIdea} />}
-                circularCorners={false}
+              <IdeaButton
+                projectId={this.props.projectId}
+                phaseId={selectedPhaseId}
               />
             </HeaderSection>
           </Header>

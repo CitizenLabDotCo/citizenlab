@@ -57,19 +57,19 @@ export default class Ideas extends React.PureComponent<Props, State> {
           </Button.Group>
         </ToggleWrapper>
 
-        {display === 'map' && type === 'project' && 
+        {display === 'map' && type === 'project' &&
           <IdeasMap project={id} />
         }
 
-        {display === 'map' && type === 'phase' && 
+        {display === 'map' && type === 'phase' &&
           <IdeasMap phase={id} />
         }
 
-        {display === 'cards' && type === 'project' && 
+        {display === 'cards' && type === 'project' &&
           <IdeaCards filter={{ project: id }} />
         }
 
-        {display === 'cards' && type === 'phase' && 
+        {display === 'cards' && type === 'phase' &&
           <IdeaCards filter={{ phase: id }} />
         }
       </StyledContentContainer>
