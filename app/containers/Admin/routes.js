@@ -38,7 +38,7 @@ export default (injectReducer) => ({
   indexRoute: dashboardRoutes(injectReducer),
   childRoutes: [
     ideasRoutes(injectReducer),
-    usersRoutes(injectReducer),
+    usersRoutes(),
     projectsRoutes(injectReducer),
     areasRoutes(injectReducer),
     settingsRoutes(),
