@@ -78,15 +78,16 @@ class GenderChart extends React.PureComponent<Props, State> {
             isAnimationActive={true}
             animationDuration={200}
             data={this.state.serie}
+            dataKey="value"
             innerRadius={60}
             fill={this.props.theme.colorMain}
+            label={{ fill: '#333', fontSize: '14px' }}
           >
             {this.state.serie && this.state.serie.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={colors[entry.code]} />
             ))}
           </Pie>
           <Tooltip isAnimationActive={false} />
-
         </PieChart>
       </ResponsiveContainer>
     );

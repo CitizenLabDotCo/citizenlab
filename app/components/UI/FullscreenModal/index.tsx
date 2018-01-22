@@ -50,7 +50,7 @@ const ModalForeground: any = styled.div`
   overflow: hidden;
   border-radius: 0px;
   background: #fff;
-  z-index: 3000;
+  z-index: 10000;
   will-change: opacity;
 
   &.foreground-enter {
@@ -69,7 +69,6 @@ const ModalContentInner = styled.div`
   overflow: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
-  z-index: 5000;
 
   ${media.smallerThanMaxTablet`
     height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
@@ -83,7 +82,6 @@ const TopBar: any = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  z-index: 20000;
   background: #fff;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
 
@@ -123,7 +121,6 @@ const GoBackButton = styled.div`
   border-radius: 50%;
   border: solid 1px #e0e0e0;
   background: #fff;
-  z-index: 15000;
   transition: all 100ms ease-out;
 
   &:hover {
@@ -139,7 +136,6 @@ const GoBackLabel = styled.div`
   color: #666;
   font-size: 15px;
   font-weight: 400;
-  z-index: 15000;
   transition: fill 100ms ease-out;
 
   ${media.smallPhone`
@@ -182,7 +178,6 @@ const CloseButton = styled.div`
   right: 33px;
   border-radius: 50%;
   border: solid 1px #ccc;
-  z-index: 15000;
   transition: border-color 100ms ease-out;
 
   &:hover {
@@ -209,7 +204,7 @@ const ModalContent: any = styled.div`
   overflow: hidden;
   outline: none;
   background: transparent;
-  z-index: 4000;
+  z-index: 10001;
   will-change: auto;
 
   &.content-enter {
@@ -293,19 +288,6 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
       trackPage(url, { modal: true });
     }
   }
-
-  /*
-  setRef = (modalContentInnerElement: HTMLDivElement) => {
-    if (modalContentInnerElement && !this.subscription) {
-      this.subscription = Rx.Observable.fromEvent(modalContentInnerElement, 'scroll', { passive: true }).sampleTime(10).subscribe((bleh) => {
-        this.setState((state) => {
-          const scrolled = (modalContentInnerElement.scrollTop > 0);
-          return (state.scrolled !== scrolled ? { scrolled } : state);
-        });
-      });
-    }
-  }
-  */
 
   onEscKeyPressed = (event) => {
     if (event.defaultPrevented) {

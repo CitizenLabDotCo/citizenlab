@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+import { isString, isEmpty, isArray } from 'lodash';
 
 // components
 import SelectTopics from './SelectTopics';
@@ -113,8 +113,7 @@ type State = {
   filter: object;
 };
 
-class IdeasIndex extends React.PureComponent<Props, State> {
-  state: State;
+export default class IdeasIndex extends React.PureComponent<Props, State> {
   search$: Rx.BehaviorSubject<string>;
   sort$: Rx.BehaviorSubject<string>;
   topics$: Rx.BehaviorSubject<string[]>;
@@ -142,15 +141,15 @@ class IdeasIndex extends React.PureComponent<Props, State> {
       ).subscribe(([search, sort, topics]) => {
         const filter = {};
 
-        if (_.isString(sort) && !_.isEmpty(sort)) {
+        if (isString(sort) && !isEmpty(sort)) {
           filter['sort'] = sort;
         }
 
-        if (_.isString(search) && !_.isEmpty(search)) {
+        if (isString(search) && !isEmpty(search)) {
           filter['search'] = search;
         }
 
-        if (_.isArray(topics) && !_.isEmpty(topics)) {
+        if (isArray(topics) && !isEmpty(topics)) {
           filter['topics'] = topics;
         }
 
@@ -208,5 +207,3 @@ class IdeasIndex extends React.PureComponent<Props, State> {
     );
   }
 }
-
-export default IdeasIndex;

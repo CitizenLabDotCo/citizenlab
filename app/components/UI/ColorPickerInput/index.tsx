@@ -27,6 +27,14 @@ const Color: any = styled.div`
   cursor: pointer;
 `;
 
+const StyledInput = styled(Input)`
+  input {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-left: none !important;
+  }
+`;
+
 const Popover = styled.div`
   position: absolute;
   top: 50px;
@@ -91,7 +99,7 @@ class ColorPickerInput extends React.Component<Props, State> {
             onClick={this.open}
             color={this.props.value}
           />
-          <Input
+          <StyledInput
             {...this.props}
             onFocus={this.open}
           />

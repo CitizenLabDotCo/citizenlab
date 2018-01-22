@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
 // router
-import { browserHistory } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -25,7 +25,7 @@ import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 import { Locale } from 'typings';
 
-const Container = styled.div`
+const Container = styled(Link)`
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -158,7 +158,7 @@ const ReadMoreWrapper = styled.div`
 `;
 
 const ReadMore = styled.div`
-  color: #84939E;
+  color: ${(props) => props.theme.colors.label};
   font-size: 15px;
   font-weight: 400;
   text-decoration: underline;
@@ -261,7 +261,7 @@ class ProjectCard extends React.PureComponent<Props, State> {
       const imageUrl = (projectImage ? projectImage.data.attributes.versions.medium : null);
 
       return (
-        <Container onClick={this.goToProject}>
+        <Container to={`/projects/${project.data.attributes.slug}`}>
           {imageUrl && <ProjectImage imageSrc={imageUrl} />}
 
           {!imageUrl &&

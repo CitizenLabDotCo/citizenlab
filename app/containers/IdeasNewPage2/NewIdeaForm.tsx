@@ -85,13 +85,13 @@ interface GlobalState {
 
 interface State extends GlobalState {}
 
-class NewIdeaForm extends React.PureComponent<Props, State> {
+export default class NewIdeaForm extends React.PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
-    this.globalState = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage');
+  constructor(props) {
+    super(props);
+    this.globalState = globalState.init('IdeasNewPage');
     this.subscriptions = [];
   }
 
@@ -179,5 +179,3 @@ class NewIdeaForm extends React.PureComponent<Props, State> {
     );
   }
 }
-
-export default NewIdeaForm;

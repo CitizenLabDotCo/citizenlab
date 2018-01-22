@@ -9,19 +9,22 @@ import { IIdeaData, ideasMarkersStream, ideasStream } from 'services/ideas';
 
 
 // Typing
-interface Props {
-  markers?: boolean;
-  children: {(state: State): any};
-  pageSize?: number;
+export interface SearchQueryProps {
+  areas?: string[];
   currentPageNumber?: number;
+  pageSize?: number;
+  phase?: string;
+  project?: string;
+  searchTerm?: string;
   sortAttribute?: 'new' | 'trending' | 'popular' | 'author_name' | 'upvotes_count' | 'downvotes_count' | 'status';
   sortDirection?: 'asc' | 'desc';
-  project?: string;
-  phase?: string;
-  topics?: string[];
-  areas?: string[];
-  searchTerm?: string;
   status?: string;
+  topics?: string[];
+}
+
+interface Props extends SearchQueryProps {
+  markers?: boolean;
+  children: {(state: State): any};
 }
 
 interface State {

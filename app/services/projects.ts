@@ -6,6 +6,9 @@ import streams, { IStreamParams } from 'utils/streams';
 const apiEndpoint = `${API_PATH}/projects`;
 
 type Visibility = 'public' | 'groups' | 'admins';
+type ProcessType = 'continuous' | 'timeline';
+type PresentationMode = 'map' | 'card';
+type PublicationStatus = 'draft' | 'published' | 'archived';
 
 export interface IProjectData {
   id: string;
@@ -20,6 +23,16 @@ export interface IProjectData {
     created_at: string;
     updated_at: string;
     visible_to: Visibility;
+    process_type: ProcessType;
+    participation_method: 'ideation' | 'information';
+    posting_enabled: boolean;
+    commenting_enabled: boolean;
+    voting_enabled: boolean;
+    voting_method: 'limited' | 'unlimited';
+    voting_limited_max: number;
+    presentation_mode: PresentationMode;
+    internal_role: 'open_idea_box' | null;
+    publication_status: PublicationStatus;
   };
   relationships: {
     project_images: {
@@ -28,16 +41,34 @@ export interface IProjectData {
     areas: {
       data: IRelationship[]
     }
+    action_descriptor: {
+      data: {
+        posting: {
+          enabled: boolean,
+          future_enabled: string | null,
+          disabled_reason: 'project_inactive' | 'not_ideation' | 'posting_disabled',
+        }
+      }
+    }
   };
 }
 
 export interface IUpdatedProjectProperties {
-  header_bg?: string | { small: string, medium: string, large: string};
+  header_bg?: string | { small: string, medium: string, large: string} | null;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   description_preview_multiloc?: Multiloc;
   area_ids?: string[];
   visible_to?: Visibility;
+  process_type?: ProcessType;
+  participation_method?: 'ideation' | 'information' | null;
+  posting_enabled?: boolean | null;
+  commenting_enabled?: boolean | null;
+  voting_enabled?: boolean | null;
+  voting_method?: 'limited' | 'unlimited' | null;
+  voting_limited_max?: number | null;
+  presentation_mode?: PresentationMode | null;
+  publication_status?: PublicationStatus;
 }
 
 export interface IProject {

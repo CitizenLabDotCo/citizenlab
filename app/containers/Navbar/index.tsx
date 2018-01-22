@@ -8,7 +8,7 @@ import { withRouter, RouterState, Link } from 'react-router';
 import NotificationMenu from './components/NotificationMenu';
 import UserMenu from './components/UserMenu';
 import MobileNavigation from './components/MobileNavigation';
-import Button from 'components/UI/Button';
+import IdeaButton from './components/IdeaButton';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -303,15 +303,7 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
 
           <Right>
             <RightItem className="addIdea" loggedIn={authUser !== null}>
-              <Button
-                className="e2e-add-idea-button"
-                text={<FormattedMessage {...messages.startIdea} />}
-                style="primary"
-                size="1"
-                icon="plus-circle"
-                linkTo="/ideas/new"
-                circularCorners={true}
-              />
+              <IdeaButton />
             </RightItem>
 
             {authUser &&

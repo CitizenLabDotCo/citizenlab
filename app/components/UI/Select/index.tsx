@@ -200,6 +200,7 @@ export default class Select extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const className = this.props['className'];
     let { value, placeholder, options, autoBlur, clearable, searchable, multi } = this.props;
 
     value = (value || undefined);
@@ -212,6 +213,7 @@ export default class Select extends React.PureComponent<Props, State> {
 
     return (
       <StyledSelect
+        className={className}
         openOnFocus={false}
         clearable={clearable}
         searchable={searchable}

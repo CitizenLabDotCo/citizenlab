@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import * as _ from 'lodash';
+import { merge, cloneDeep, get, set, size, has, trim, isEmpty, omitBy } from 'lodash';
 
 // components
 import Label from 'components/UI/Label';
@@ -49,12 +49,11 @@ const CharCount = styled.div`
 
 const ToggleWrapper = styled.div`
   width: 100%;
-  max-width: 400px;
+  max-width: 250px;
   display: flex;
   justify-content: space-between;
   padding-top: 15px;
   padding-bottom: 15px;
-  border-bottom: solid 1px #e4e4e4;
 
   &.first {
     border-top: none;
@@ -65,8 +64,10 @@ const ToggleWrapper = styled.div`
   }
 `;
 
-const ToggleLabel = styled(Label)`
-  /* margin-left: 15px; */
+const ToggleLabel = styled.div`
+  color: #333;
+  font-size: 16px;
+  font-weight: 400;
 `;
 
 const TitleInput = styled(SectionField)`
@@ -102,11 +103,10 @@ type State  = {
 };
 
 class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps, State> {
-  state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       locale: null,
       attributesDiff: {},
@@ -130,46 +130,37 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
     const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
-      locale$.subscribe(locale => this.setState({ locale })),
-
-      currentTenant$.switchMap((currentTenant) => {
+      Rx.Observable.combineLatest(
+        locale$,
+        currentTenant$
+      ).switchMap(([locale, currentTenant]) => {
         return Rx.Observable.combineLatest(
           convertUrlToFileObservable(currentTenant.data.attributes.logo.large),
           convertUrlToFileObservable(currentTenant.data.attributes.header_bg.large),
         ).map(([currentTenantLogo, currentTenantHeaderBg]) => ({
+          locale,
           currentTenant,
           currentTenantLogo,
           currentTenantHeaderBg
         }));
-      }).subscribe(({ currentTenant, currentTenantLogo, currentTenantHeaderBg }) => {
-        this.setState((state) => {
-          const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-          const titleCharCount = {};
-          const subtitleCharCount = {};
-          let logo: ImageFile[] | null = null;
-          let header_bg: ImageFile[] | null = null;
+      }).subscribe(({ locale, currentTenant, currentTenantLogo, currentTenantHeaderBg }) => {
+        const { attributesDiff } = this.state;
+        let logo: ImageFile[] | null = null;
+        let header_bg: ImageFile[] | null = null;
 
-          if (currentTenantLogo !== null && !_.has(state.attributesDiff, 'logo')) {
-            logo = [currentTenantLogo];
-          } else if (_.has(state.attributesDiff, 'logo')) {
-            logo = (state.attributesDiff.logo && state.attributesDiff.logo !== null ? [state.attributesDiff.logo] : null);
-          }
+        if (currentTenantLogo !== null && !has(attributesDiff, 'logo')) {
+          logo = [currentTenantLogo];
+        } else if (has(attributesDiff, 'logo')) {
+          logo = (attributesDiff.logo && attributesDiff.logo !== null ? [attributesDiff.logo] : null);
+        }
 
-          if (currentTenantHeaderBg !== null && !_.has(state.attributesDiff, 'header_bg')) {
-            header_bg = [currentTenantHeaderBg];
-          } else if (_.has(state.attributesDiff, 'header_bg')) {
-            header_bg = (state.attributesDiff.header_bg && state.attributesDiff.header_bg !== null ? [state.attributesDiff.header_bg] : null);
-          }
+        if (currentTenantHeaderBg !== null && !has(attributesDiff, 'header_bg')) {
+          header_bg = [currentTenantHeaderBg];
+        } else if (has(attributesDiff, 'header_bg')) {
+          header_bg = (attributesDiff.header_bg && attributesDiff.header_bg !== null ? [attributesDiff.header_bg] : null);
+        }
 
-          if (currentTenant && currentTenantLocales && currentTenantLocales.length > 0) {
-            currentTenantLocales.forEach((currentTenantLocale) => {
-              titleCharCount[currentTenantLocale] = _.size(_.get(currentTenant, `data.attributes.settings.core.header_title.${currentTenantLocale}`));
-              subtitleCharCount[currentTenantLocale] = _.size(_.get(currentTenant, `data.attributes.settings.core.header_slogan.${currentTenantLocale}`));
-            });
-          }
-
-          return { currentTenant, logo, header_bg, titleCharCount, subtitleCharCount };
-        });
+        this.setState({ locale, currentTenant, logo, header_bg });
       })
     ];
   }
@@ -179,25 +170,28 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
   }
 
   handleUploadOnAdd = (name: 'logo' | 'header_bg') => (newImage: ImageFile) => {
-    this.setState((state: State) => ({
+    this.setState((state) => ({
+      ...state,
       attributesDiff: {
-        ...state.attributesDiff,
-        [name]: newImage.base64
+        ...(state.attributesDiff || {}),
+        [name]: (newImage.base64 as string)
       },
       [name]: [newImage]
     }));
   }
 
   handleUploadOnUpdate = (name: 'logo' | 'header_bg') => (updatedImages: ImageFile[]) => {
-    this.setState(() => ({
+    this.setState((state) => ({
+      ...state,
       [name]: updatedImages
     }));
   }
 
   handleUploadOnRemove = (name: 'logo' | 'header_bg') => () => {
-    this.setState((state: State) => ({
+    this.setState((state) => ({
+      ...state,
       attributesDiff: {
-        ...state.attributesDiff,
+        ...(state.attributesDiff || {}),
         [name]: null
       },
       [name]: null
@@ -205,62 +199,66 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
   }
 
   handleTitleOnChange = (locale: Locale) => (title: string) => {
-    const { formatMessage } = this.props.intl;
-    const { attributesDiff } = this.state;
-    let newAttributesDiff = _.cloneDeep(attributesDiff);
-    newAttributesDiff = _.set(newAttributesDiff, `settings.core.header_title.${locale}`, title);
+    this.setState((state) => {
+      const { formatMessage } = this.props.intl;
+      let newAttributesDiff = cloneDeep(state.attributesDiff);
+      newAttributesDiff = set(newAttributesDiff, `settings.core.header_title.${locale}`, title);
 
-    this.setState((state) => ({
-      attributesDiff: newAttributesDiff,
-      titleError: {
-        ...state.titleError,
-        [locale]: _.size(_.trim(title)) > 45 ? formatMessage(messages.titleMaxCharError) : null
-      }
-    }));
+      return {
+        attributesDiff: newAttributesDiff,
+        titleError: {
+          ...state.titleError,
+          [locale]: size(trim(title)) > 45 ? formatMessage(messages.titleMaxCharError) : null
+        },
+        ...state.errors
+      };
+    });
   }
 
   handleSubtitleOnChange = (locale: Locale) => (subtitle: string) => {
-    const { formatMessage } = this.props.intl;
-    const { attributesDiff } = this.state;
-    let newAttributesDiff = _.cloneDeep(attributesDiff);
-    newAttributesDiff = _.set(newAttributesDiff, `settings.core.header_slogan.${locale}`, subtitle);
+    this.setState((state) => {
+      const { formatMessage } = this.props.intl;
+      let newAttributesDiff = cloneDeep(state.attributesDiff);
+      newAttributesDiff = set(newAttributesDiff, `settings.core.header_slogan.${locale}`, subtitle);
 
-    this.setState((state) => ({
-      attributesDiff: newAttributesDiff,
-      subtitleError: {
-        ...state.subtitleError,
-        [locale]: _.size(_.trim(subtitle)) > 90 ? formatMessage(messages.subtitleMaxCharError) : null
-      }
-    }));
+      return {
+        ...state,
+        attributesDiff: newAttributesDiff,
+        subtitleError: {
+          ...state.subtitleError,
+          [locale]: size(trim(subtitle)) > 90 ? formatMessage(messages.subtitleMaxCharError) : null
+        }
+      };
+    });
   }
 
   handleColorPickerOnChange = (color: string) => {
-    let newDiff = _.cloneDeep(this.state.attributesDiff);
-    newDiff = _.set(newDiff, 'settings.core.color_main', color);
+    let newDiff = cloneDeep(this.state.attributesDiff);
+    newDiff = set(newDiff, 'settings.core.color_main', color);
     this.setState({ attributesDiff: newDiff });
   }
 
   handleOnToggle = (fieldPath: string, checked: boolean) => () => {
-    let newDiff = _.cloneDeep(this.state.attributesDiff);
-    newDiff = _.set(newDiff, fieldPath, !checked);
+    let newDiff = cloneDeep(this.state.attributesDiff);
+    newDiff = set(newDiff, fieldPath, !checked);
     this.setState({ attributesDiff: newDiff });
   }
 
   validate = (currentTenant: ITenant, attributesDiff: IAttributesDiff) => {
     const { formatMessage } = this.props.intl;
 
-    const hasRemoteLogo = _.has(currentTenant, 'data.attributes.logo.large');
-    const localLogoIsNotSet = !_.has(attributesDiff, 'logo');
+    const hasRemoteLogo = has(currentTenant, 'data.attributes.logo.large');
+    const localLogoIsNotSet = !has(attributesDiff, 'logo');
     const localLogoIsNull = !localLogoIsNotSet && attributesDiff.logo === null;
     const logoError = (!localLogoIsNull || (hasRemoteLogo && localLogoIsNotSet) ? null : formatMessage(messages.noLogo));
 
-    const hasRemoteHeader = _.has(currentTenant, 'data.attributes.header_bg.large');
-    const localHeaderIsNotSet = !_.has(attributesDiff, 'header_bg');
+    const hasRemoteHeader = has(currentTenant, 'data.attributes.header_bg.large');
+    const localHeaderIsNotSet = !has(attributesDiff, 'header_bg');
     const localHeaderIsNull = !localHeaderIsNotSet && attributesDiff.header_bg === null;
     const headerError = (!localHeaderIsNull || (hasRemoteHeader && localHeaderIsNotSet) ? null : formatMessage(messages.noHeader));
 
-    const hasTitleError = !_.isEmpty(_.omitBy(this.state.titleError, _.isEmpty));
-    const hasSubtitleError = !_.isEmpty(_.omitBy(this.state.subtitleError, _.isEmpty));
+    const hasTitleError = !isEmpty(omitBy(this.state.titleError, isEmpty));
+    const hasSubtitleError = !isEmpty(omitBy(this.state.subtitleError, isEmpty));
 
     this.setState({ logoError, headerError });
 
@@ -311,7 +309,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
       const hasMultipleTenantLocales = (currentTenant.data.attributes.settings.core.locales.length > 1);
       const { formatMessage } = this.props.intl;
       const { logo, header_bg, attributesDiff, logoError, headerError } = this.state;
-      const tenantAttrs = _.merge(_.cloneDeep(currentTenant.data.attributes), attributesDiff);
+      const tenantAttrs = merge(cloneDeep(currentTenant.data.attributes), attributesDiff);
 
       return (
         <form onSubmit={this.save}>
@@ -327,7 +325,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
               </Label>
               <ColorPickerInput
                 type="text"
-                value={_.get(tenantAttrs, 'settings.core.color_main')}
+                value={get(tenantAttrs, 'settings.core.color_main')}
                 onChange={this.handleColorPickerOnChange}
               />
             </SectionField>
@@ -377,7 +375,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
 
             {currentTenantLocales.map((currentTenantLocale, index) => {
               const capitalizedTenantLocale = (hasMultipleTenantLocales ? currentTenantLocale.toUpperCase() : '');
-              const titleSize = _.size(_.get(tenantAttrs, `settings.core.header_title.${currentTenantLocale}`));
+              const titleSize = size(get(tenantAttrs, `settings.core.header_title.${currentTenantLocale}`));
 
               return (
                 <TitleInput key={index}>
@@ -392,7 +390,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
                   </StyledLabel>
                   <Input
                     type="text"
-                    value={_.get(tenantAttrs, `settings.core.header_title.${currentTenantLocale}`)}
+                    value={get(tenantAttrs, `settings.core.header_title.${currentTenantLocale}`)}
                     onChange={this.handleTitleOnChange(currentTenantLocale)}
                     error={titleError[currentTenantLocale]}
                   />
@@ -402,7 +400,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
 
             {currentTenantLocales.map((currentTenantLocale, index) => {
               const capitalizedTenantLocale = (hasMultipleTenantLocales ? currentTenantLocale.toUpperCase() : '');
-              const subtitleSize = _.size(_.get(tenantAttrs, `settings.core.header_slogan.${currentTenantLocale}`));
+              const subtitleSize = size(get(tenantAttrs, `settings.core.header_slogan.${currentTenantLocale}`));
 
               return (
                 <TitleInput key={index}>
@@ -417,7 +415,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
                   </StyledLabel>
                   <Input
                     type="text"
-                    value={_.get(tenantAttrs, `settings.core.header_slogan.${currentTenantLocale}`)}
+                    value={get(tenantAttrs, `settings.core.header_slogan.${currentTenantLocale}`)}
                     onChange={this.handleSubtitleOnChange(currentTenantLocale)}
                     error={subtitleError[currentTenantLocale]}
                   />
@@ -435,7 +433,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
               <SectionField>
                 {['gender', 'domicile', 'birthyear'].map((fieldName, index) => {
                   const fieldPath = `settings.demographic_fields.${fieldName}`;
-                  const checked = _.get(tenantAttrs, fieldPath) as boolean;
+                  const checked = get(tenantAttrs, fieldPath) as boolean;
                   const first = (index === 0 && 'first');
                   const last = (index === 2 && 'last');
 

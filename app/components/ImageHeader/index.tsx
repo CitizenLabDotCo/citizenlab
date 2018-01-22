@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const HeaderContainer = styled.div`
+const Container = styled.div`
   width: 100%;
   height: 360px;
   display: flex;
@@ -109,21 +109,21 @@ export const HeaderSubtitle = styled.h2`
 `;
 
 type Props = {
-  className?: string,
-  image?: string,
-  children?: any,
+  image: string | null;
+  children: JSX.Element | JSX.Element[];
 };
 
 export default class ImageHeader extends React.PureComponent<Props, {}> {
   render() {
+    const className = this.props['className'];
     const { image, children } = this.props;
 
     return (
-      <HeaderContainer>
-        <HeaderBackground src={image} />
+      <Container className={className}>
+        {image && <HeaderBackground src={image} />}
         <HeaderOverlay />
         {children}
-      </HeaderContainer>
+      </Container>
     );
   }
 }

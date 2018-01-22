@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 import linkifyHtml from 'linkifyjs/html';
@@ -16,6 +15,7 @@ import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 // services
 import { authUserStream } from 'services/auth';
 import { commentsForIdeaStream, commentStream, IComment } from 'services/comments';
+import { ideaByIdStream } from 'services/ideas';
 import { IUser } from 'services/users';
 import { getLocalized } from 'utils/i18n';
 import { localeStream } from 'services/locale';
@@ -83,7 +83,7 @@ const CommentBody = styled.div`
   color: #333;
   font-size: 18px;
   line-height: 26px;
-  font-weight: 400;
+  font-weight: 300;
   margin-bottom: 5px;
 
   span, p {
@@ -132,6 +132,7 @@ type State = {
   showForm: boolean;
   spamModalVisible: boolean;
   moreActions: IAction[];
+  commentingEnabled: boolean | null;
 };
 
 type Tracks = {
@@ -153,6 +154,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       showForm: false,
       spamModalVisible: false,
       moreActions: [],
+      commentingEnabled: null,
     };
     this.subscriptions = [];
   }
@@ -174,6 +176,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
 
       return Rx.Observable.of(null);
     });
+    const idea$ = ideaByIdStream(ideaId).observable;
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
@@ -181,10 +184,11 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
         currentTenantLocales$,
         authUser$,
         comment$,
-        childCommentIds$
+        childCommentIds$,
+        idea$,
       ).delayWhen(() => {
         return (animate === true ? Rx.Observable.timer(100) : Rx.Observable.of(null));
-      }).subscribe(([locale, currentTenantLocales, authUser, comment, childCommentIds]) => {
+      }).subscribe(([locale, currentTenantLocales, authUser, comment, childCommentIds, idea]) => {
         let moreActions = this.state.moreActions;
 
         if (authUser) {
@@ -201,6 +205,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
           comment,
           childCommentIds,
           moreActions,
+          commentingEnabled: idea.data.relationships.action_descriptor.data.commenting.enabled,
         });
       })
     ];
@@ -234,24 +239,24 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
   render() {
     let returnValue: JSX.Element | null = null;
     const { commentId, animate } = this.props;
-    const { locale, currentTenantLocales, authUser, comment, childCommentIds } = this.state;
+    const { locale, currentTenantLocales, authUser, comment, childCommentIds, commentingEnabled } = this.state;
 
     if (locale && currentTenantLocales && comment) {
       const ideaId = comment.data.relationships.idea.data.id;
       const authorId = comment.data.relationships.author.data ? comment.data.relationships.author.data.id : null;
       const createdAt = comment.data.attributes.created_at;
       const commentBodyMultiloc = comment.data.attributes.body_multiloc;
-      const isLoggedIn = !_.isNull(authUser);
       const commentText = getLocalized(commentBodyMultiloc, locale, currentTenantLocales);
       const processedCommentText = linkifyHtml(commentText.replace(
         /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
         '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
       ));
+      const showCommentForm = authUser && commentingEnabled;
 
       const parentComment = (
         <Container className="e2e-comment-thread">
 
-          <CommentContainer withReplyBox={isLoggedIn}>
+          <CommentContainer withReplyBox={showCommentForm}>
             <StyledMoreActionsMenu
               height="5px"
               actions={this.state.moreActions}
@@ -272,7 +277,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
             </ChildCommentsContainer>
           </CommentContainer>
 
-          {authUser &&
+          {showCommentForm &&
             <ChildCommentForm ideaId={ideaId} parentId={commentId} />
           }
 

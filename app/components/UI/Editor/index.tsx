@@ -84,6 +84,10 @@ const DraftEditorContainer = styled.div`
     }
   }
 
+  .DraftEditor-editorContainer {
+    z-index: auto !important;
+  }
+
   .rdw-editor-main {
     min-height: 250px;
     font-size: 17px;
@@ -95,6 +99,7 @@ const DraftEditorContainer = styled.div`
     margin-top: 0px;
     background: transparent;
     overflow: visible;
+    z-index: 0;
 
     .public-DraftEditorPlaceholder-root {
       color: #aaa;
@@ -215,26 +220,6 @@ export default class Editor extends React.PureComponent<Props, State> {
             onFocus={this.handleOnFocus}
             onBlur={this.handleOnBlur}
             ref={this.handleRef}
-            /*
-            mention={{
-              separator: ' ',
-              trigger: '@',
-              caseSensitive: false,
-              mentionClassName: 'mention-className',
-              dropdownClassName: 'dropdown-className',
-              optionClassName: 'option-className',
-              suggestions: [
-                { text: 'apple', value: 'apple', url: 'apple' },
-                { text: 'banana', value: 'banana', url: 'banana' },
-                { text: 'cherry', value: 'cherry', url: 'cherry' },
-                { text: 'durian', value: 'durian', url: 'durian' },
-                { text: 'eggfruit', value: 'eggfruit', url: 'eggfruit' },
-                { text: 'fig', value: 'fig', url: 'fig' },
-                { text: 'grapefruit', value: 'grapefruit', url: 'grapefruit' },
-                { text: 'honeydew', value: 'honeydew', url: 'honeydew' },
-              ],
-            }}
-            */
           />
         </DraftEditorContainer>
         <Error text={error}/>

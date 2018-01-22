@@ -4,6 +4,11 @@ import { API, Multiloc, Locale } from 'typings';
 
 const apiEndpoint = `${API_PATH}/users`;
 
+export interface IRole {
+  type: string;
+  [key: string]: string;
+}
+
 export interface IUserData {
   id: string;
   type: string;
@@ -13,7 +18,7 @@ export interface IUserData {
     slug: string;
     locale: Locale;
     avatar: API.ImageSizes,
-    roles?: any[],
+    roles?: IRole[],
     bio_multiloc: Multiloc,
     created_at: string;
     updated_at: string;
