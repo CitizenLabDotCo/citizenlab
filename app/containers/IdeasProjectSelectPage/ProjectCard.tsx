@@ -7,9 +7,12 @@ import { injectNestedResources, InjectedNestedResourceLoaderProps } from 'utils/
 
 import { media } from 'utils/styleUtils';
 
+import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedDate } from 'react-intl';
 import Icon from 'components/UI/Icon';
 import T from 'components/T';
 
+import messages from './messages';
 
 const Container = styled<any,'div'>('div')`
   height: 112px;
@@ -22,7 +25,6 @@ const Container = styled<any,'div'>('div')`
   margin-bottom: 20px;
   background: #fff;
   border: solid 1px #e6e6e6;
-  cursor: pointer;
 
   position: relative;
   background: transparent;
@@ -42,12 +44,19 @@ const Container = styled<any,'div'>('div')`
     will-change: opacity;
   }
 
-  &:hover::after {
-    opacity: 1;
-  }
 
   ${props => props.selected && `
-    border-color: #4BB27C;
+  border-color: #4BB27C;
+  `}
+
+  ${props => props.enabled ? `
+    cursor: pointer;
+    &:hover::after {
+      opacity: 1;
+    }
+  ` : `
+    opacity: 0.5;
+    background-color: #f8f8f8;
   `}
 `;
 
@@ -99,7 +108,14 @@ const ProjectDescription = styled.div`
   font-size: 14px;
   line-height: 20px;
   font-weight: 300;
-  margin-top: 10px;
+  overflow: hidden;
+`;
+
+const PostingDisabledReason = styled.div`
+  color: black;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 300;
   overflow: hidden;
 `;
 
@@ -111,16 +127,39 @@ type Props = {
 
 class ProjectCard extends React.Component<Props & InjectedNestedResourceLoaderProps<IProjectImageData>> {
 
+  disabledMessage = () => {
+    const project = this.props.project;
+    const { enabled, future_enabled: futureEnabled } = project.relationships.action_descriptor.data.posting;
+    if (enabled) {
+      return null;
+    } else if (futureEnabled) {
+      return messages.postingPossibleFuture;
+    } else {
+      return messages.postingNotPossible;
+    }
+  }
+
+  handleOnClick = () => {
+    if (!this.disabledMessage()) {
+      this.props.onClick();
+    }
+  }
+
   render() {
     const {
       title_multiloc: titleMultiloc,
       description_preview_multiloc: descriptionPreviewMultiloc
     } = this.props.project.attributes;
     const smallImage = this.props.images.all[0] && this.props.images.all[0].attributes.versions.small;
+    const disabledMessage = this.disabledMessage();
+    const enabled = !disabledMessage;
+    const futureEnabledDate = this.props.project.relationships.action_descriptor.data.posting.future_enabled;
+
     return (
       <Container
-        onClick={this.props.onClick}
+        onClick={this.handleOnClick}
         selected={this.props.selected}
+        enabled={enabled}
       >
         <ImageWrapper>
           {smallImage ?
@@ -135,9 +174,21 @@ class ProjectCard extends React.Component<Props & InjectedNestedResourceLoaderPr
           <ProjectTitle>
             <T value={titleMultiloc} />
           </ProjectTitle>
-          <ProjectDescription>
-            <T value={descriptionPreviewMultiloc} />
-          </ProjectDescription>
+          {enabled &&
+            <ProjectDescription>
+              <T value={descriptionPreviewMultiloc} />
+            </ProjectDescription>
+          }
+          {disabledMessage &&
+            <PostingDisabledReason>
+              <FormattedMessage
+                {...disabledMessage}
+                values={{
+                  date: futureEnabledDate && <FormattedDate value={futureEnabledDate} />
+                }}
+              />
+            </PostingDisabledReason>
+          }
         </ProjectContent>
       </Container>
     );
