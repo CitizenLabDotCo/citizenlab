@@ -1,10 +1,11 @@
 // Libs
 import * as React from 'react';
+import { pick } from 'lodash';
 
 // Components
 import Map, { Props as MapProps } from 'components/Map';
 import IdeaBox, { Props as IdeaBoxProps } from './IdeaBox';
-import GetIdeas from 'utils/resourceLoaders/components/GetIdeas';
+import GetIdeas, { SearchQueryProps } from 'utils/resourceLoaders/components/GetIdeas';
 
 // Styling
 import styled from 'styled-components';
@@ -41,7 +42,7 @@ const MapWrapper = styled.div`
 
 // Typing
 import { IIdeaData } from 'services/ideas';
-interface Props {
+interface Props extends SearchQueryProps {
   project?: string;
   phase?: string;
   topics?: string[];
@@ -82,8 +83,10 @@ class IdeasMap extends React.Component<Props, State> {
   }
 
   render() {
+    const searchProps = pick(this.props, 'areas', 'currentPageNumber', 'pageSize', 'phase', 'project', 'searchTerm', 'sortAttribute', 'sortDirection', 'status', 'topics');
+
     return (
-      <GetIdeas project={this.props.project} markers>
+      <GetIdeas {...searchProps} markers>
         {({ ideaMarkers }) => (
           <MapWrapper>
             {this.state.selectedIdea &&
