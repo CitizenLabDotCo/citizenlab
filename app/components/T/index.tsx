@@ -9,7 +9,8 @@ import { currentTenantStream } from 'services/tenant';
 import { Map } from 'immutable';
 
 type Props = {
-  value: Multiloc | Map<string,string>
+  value: Multiloc | Map<string,string>;
+  as?: string;
 };
 
 type State = {
@@ -54,6 +55,10 @@ export default class T extends React.PureComponent<Props, State> {
     if (locale && currentTenantLocales) {
       const { value } = this.props;
       const localizedText = getLocalized(value, locale, currentTenantLocales);
+
+      if (this.props.as) {
+        return React.createElement(this.props.as, { dangerouslySetInnerHTML: { __html: localizedText } });
+      }
 
       return (
         <span dangerouslySetInnerHTML={{ __html: localizedText }} />

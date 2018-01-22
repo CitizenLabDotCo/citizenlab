@@ -1,15 +1,20 @@
 // Libraries
 import * as React from 'react';
-import Leaflet from 'leaflet';
-import { compact } from 'lodash';
+import { compact, differenceBy, flow } from 'lodash';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
-// Components
-import { Map, TileLayer } from 'react-leaflet';
-import MarkerClusterGroup from 'react-leaflet-markercluster';
+// Injectors
+import { injectTenant, InjectedTenant } from 'utils/resourceLoaders/tenantLoader';
+
+// Map
+import Leaflet, { Marker } from 'leaflet';
+import 'leaflet.markercluster';
+import 'mapbox-gl';
+import 'mapbox-gl-leaflet';
 
 // Styling
 import 'leaflet/dist/leaflet.css';
-import 'react-leaflet-markercluster/dist/styles.min.css';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import styled from 'styled-components';
 const icon = require('./marker.svg');
 
@@ -42,6 +47,12 @@ const customIcon = Leaflet.icon({
 // Typing
 interface Point extends GeoJSON.Point {
   data?: any;
+  id: string;
+}
+
+interface DataMarkerOptions extends Leaflet.MarkerOptions {
+  data?: any;
+  id: string;
 }
 
 export interface Props {
@@ -50,16 +61,23 @@ export interface Props {
   areas?: GeoJSON.Polygon[];
   className?: string;
   zoom?: number;
-  onMarkerClick?: {(id: string): void};
+  onMarkerClick?: {(id: string, data: any): void};
+  onMapClick?: {({ map, position }: {map: Leaflet.Map, position: Leaflet.LatLng}): void};
 }
 
-export default class CLMap extends React.Component<Props> {
-  private markerBounds: Leaflet.LatLngBounds;
+interface State {
+}
 
-  private markers: {
-    position: GeoJSON.Position;
-    options?: any;
-  }[] = [];
+class CLMap extends React.Component<Props & InjectedTenant, State> {
+  private map: Leaflet.Map;
+  private mapContainer: HTMLElement;
+  private clusterLayer: Leaflet.MarkerClusterGroup;
+  private markerBounds: Leaflet.LatLngBoundsExpression;
+  private markers: Leaflet.Marker[];
+  private interval: number;
+  private subs: Subscription[] = [];
+  private dimensionW$: BehaviorSubject<number> = new BehaviorSubject(0);
+  private dimensionH$: BehaviorSubject<number> = new BehaviorSubject(0);
 
   private clusterOptions = {
     showCoverageOnHover: false,
@@ -80,50 +98,131 @@ export default class CLMap extends React.Component<Props> {
   constructor(props) {
     super(props);
 
-    this.convertPoints(props.points);
+    this.interval = window.setInterval(this.resizeDetector, 200);
   }
 
   componentDidCatch(error, info) {
     console.error(error, info);
   }
 
-  componentWillReceiveProps(props) {
-    this.convertPoints(props.points);
+  componentDidMount() {
+    if (this.props.points) {
+      this.convertPoints(this.props.points);
+    }
+
+    this.subs.push(
+      this.dimensionH$.distinctUntilChanged().subscribe(() => this.map.invalidateSize()),
+      this.dimensionW$.distinctUntilChanged().subscribe(() => this.map.invalidateSize()),
+    );
+  }
+
+  componentWillReceiveProps(newProps: Props) {
+    if (newProps.points && differenceBy(newProps.points, this.props.points || [], 'id').length > 0) {
+      this.convertPoints(newProps.points);
+    }
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.interval);
+    this.subs.forEach(sub => sub.unsubscribe());
+  }
+
+  bindMapContainer = (element) => {
+    if (!this.map) {
+      let center: [number, number] = [0, 0];
+      if (this.props.center && this.props.center !== [0, 0]) {
+        center = this.props.center as [number, number];
+      } else if (this.props.tenant && this.props.tenant.attributes.settings.maps) {
+        center = [
+          parseFloat(this.props.tenant.attributes.settings.maps.map_center.lat),
+          parseFloat(this.props.tenant.attributes.settings.maps.map_center.long),
+        ];
+      }
+
+      let zoom = 10;
+      if (this.props.tenant && this.props.tenant.attributes.settings.maps) {
+        zoom = this.props.tenant.attributes.settings.maps.zoom_level;
+      }
+
+      let tileProvider = 'https://free.tilehosting.com/styles/positron/style.json?key=DIZiuhfkZEQ5EgsaTk6D';
+      if (this.props.tenant && this.props.tenant.attributes.settings.maps) {
+        tileProvider = this.props.tenant.attributes.settings.maps.tile_provider;
+      }
+
+      // Bind the mapElement
+      this.mapContainer = element;
+
+      // Init the map
+      this.map = Leaflet.map(element, {
+        center,
+        zoom,
+        maxZoom: 17,
+      });
+
+      if (this.props.onMapClick) this.map.on('click', this.handleMapClick);
+
+      // mapboxGL style
+      (Leaflet as any).mapboxGL({
+        accessToken: 'not-needed',
+        style: tileProvider,
+      }).addTo(this.map);
+    }
   }
 
   convertPoints = (points: Point[]) => {
     if (points) {
-      const bounds: GeoJSON.Position[] = [];
+      const bounds: [number, number][] = [];
+
       this.markers = compact(points).map((point) => {
-        bounds.push(point.coordinates);
-        return {
-          position: point.coordinates,
-          options: {
-            ...this.markerOptions,
-            data: point.data
-          }
-        };
+        bounds.push([point.coordinates[0], point.coordinates[1]]);
+        return new Marker(point.coordinates as [number, number], ({ ...this.markerOptions, data: point.data, id: point.id } as DataMarkerOptions));
       });
 
       if (bounds.length > 0) this.markerBounds = new Leaflet.LatLngBounds(bounds);
+
+      this.addClusters();
     }
   }
 
-  handleMarkerClick = (marker) => {
-    if (this.props.onMarkerClick) this.props.onMarkerClick(marker.options.data);
+  addClusters = () => {
+    if (this.map && this.markers) {
+      if (this.clusterLayer) this.map.removeLayer(this.clusterLayer);
+      this.clusterLayer = Leaflet.markerClusterGroup(this.clusterOptions);
+      this.clusterLayer.addLayers(this.markers);
+      this.map.addLayer(this.clusterLayer);
+
+      if (this.props.onMarkerClick) this.clusterLayer.on('click', this.handleMarkerClick);
+
+      if (this.markerBounds) this.map.fitBounds(this.markerBounds, { maxZoom: 12 });
+    }
+  }
+
+  handleMapClick = (event: Leaflet.LeafletMouseEvent) => {
+    if (this.props.onMapClick) this.props.onMapClick({ map: this.map, position: event.latlng });
+  }
+
+  handleMarkerClick = (event) => {
+    if (this.props.onMarkerClick) {
+      this.props.onMarkerClick(event.layer.options.id, event.layer.options.data);
+    }
+  }
+
+  resizeDetector = () => {
+    if (this.mapContainer) {
+      this.dimensionH$.next(this.mapContainer.clientHeight);
+      this.dimensionW$.next(this.mapContainer.clientWidth);
+    }
   }
 
   render() {
     return (
       <MapWrapper className={this.props.className}>
-        <Map center={this.props.center} bounds={this.markerBounds} zoom={this.props.zoom || 13} maxZoom={15} onScroll={console.log}>
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          {this.markers.length > 0 &&
-            <MarkerClusterGroup options={this.clusterOptions} markers={this.markers} onMarkerClick={this.handleMarkerClick} />
-          }
-        </Map>
+        <div id="map-container" ref={this.bindMapContainer} onScroll={console.log} />
       </MapWrapper>
     );
   }
-
 }
+
+export default flow([
+  injectTenant(),
+])(CLMap);
