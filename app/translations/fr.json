@@ -28,6 +28,8 @@
   "app.components.IdeaForm.topicsLabel": "Thèmes (2 maximum)",
   "app.components.IdeaForm.topicsPlaceholder": "Choisissez un thème pour votre idée (2 maximum)",
   "app.components.IdeaTag.header": "Ceci est le component IdeaTag !",
+  "app.components.IdeasMap.noIdeasWithLocation": "",
+  "app.components.IdeasMap.postIdeaHere": "",
   "app.components.IdeasMap.seeIdea": "",
   "app.components.IdeasShow.changeLogEntry": "{changeType, select, changed_status {{userName} a mis le statut de cette idée à jour} published {{userName} a créé cette idée} changed_title {{userName} a modifié le titre de cette idée} changed_body {{userName} a modifié la description de cette idée}}",
   "app.components.IdeasShow.commentingDisabledInContext": "",

@@ -1,11 +1,27 @@
 // Libs
 import * as React from 'react';
-import { pick } from 'lodash';
+import { flow, pick } from 'lodash';
+import Leaflet from 'leaflet';
+import { browserHistory, withRouter } from 'react-router';
+
+// Services & utils
+import { trackEvent } from 'utils/analytics';
+import tracks from './tracks';
 
 // Components
 import Map, { Props as MapProps } from 'components/Map';
 import IdeaBox, { Props as IdeaBoxProps } from './IdeaBox';
+import Button from 'components/UI/Button';
+import { Message } from 'semantic-ui-react';
+
+// Injectors
 import GetIdeas, { SearchQueryProps } from 'utils/resourceLoaders/components/GetIdeas';
+import { injectTenant, InjectedTenant } from 'utils/resourceLoaders/tenantLoader';
+import { injectLocale, InjectedLocale } from 'utils/resourceLoaders/localeLoader';
+
+// i18n
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
@@ -14,6 +30,7 @@ import { media } from 'utils/styleUtils';
 const StyledMap = styled<MapProps>(Map)`
   flex: 1;
   height: 400px;
+  width: 100%;
 
   ${media.biggerThanPhone`
     flex-basis: 60%;
@@ -38,6 +55,10 @@ const MapWrapper = styled.div`
   ${media.biggerThanPhone`
     height: 600px;
   `}
+
+  > .create-idea-wrapper {
+    display: none;
+  }
 `;
 
 // Typing
@@ -47,13 +68,19 @@ interface Props extends SearchQueryProps {
   phase?: string;
   topics?: string[];
   areas?: string[];
+  params?: {
+    [key: string]: string | number;
+  };
 }
 
 interface State {
   selectedIdea: string | null;
 }
 
-class IdeasMap extends React.Component<Props, State> {
+class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, State> {
+  private createIdeaButton: HTMLElement;
+  private savedPosition: Leaflet.LatLng | null = null;
+
   constructor(props) {
     super(props);
 
@@ -66,7 +93,7 @@ class IdeasMap extends React.Component<Props, State> {
     if (ideas) {
       const ideaPoints: any[] = [];
       ideas.forEach((idea) => {
-        if (idea.attributes && idea.attributes.location_point_geojson) ideaPoints.push({ ...idea.attributes.location_point_geojson, data: idea.id });
+        if (idea.attributes && idea.attributes.location_point_geojson) ideaPoints.push({ ...idea.attributes.location_point_geojson, id: idea.id });
       });
       return ideaPoints;
     } else {
@@ -75,11 +102,34 @@ class IdeasMap extends React.Component<Props, State> {
   }
 
   selectIdea = (id) => {
+    trackEvent(tracks.clickOnIdeaMapMarker, { ideaId: id });
     this.setState({ selectedIdea: id });
   }
 
   deselectIdea = () => {
     this.setState({ selectedIdea: null });
+  }
+
+  onMapClick = ({ map, position }: {map: Leaflet.Map, position: Leaflet.LatLng}): void => {
+    this.savedPosition = position;
+
+    Leaflet.popup()
+    .setLatLng(position)
+    .setContent(this.createIdeaButton)
+    .openOn(map);
+
+    return;
+  }
+
+  redirectToIdeaCreation = () => {
+    if (this.savedPosition && this.props.params && this.props.params.slug) {
+      trackEvent(tracks.createIdeaFromMap, { position: this.savedPosition, projectSlug: this.props.params.slug });
+      browserHistory.push(`/projects/${this.props.params.slug}/ideas/new?location=[${this.savedPosition.lat},${this.savedPosition.lng}]`);
+    }
+  }
+
+  bindIdeaCreationButton = (element) => {
+    if (!this.createIdeaButton) this.createIdeaButton = element;
   }
 
   render() {
@@ -88,16 +138,32 @@ class IdeasMap extends React.Component<Props, State> {
     return (
       <GetIdeas {...searchProps} markers>
         {({ ideaMarkers }) => (
-          <MapWrapper>
-            {this.state.selectedIdea &&
-              <StyledBox idea={this.state.selectedIdea} onClose={this.deselectIdea} />
+          <React.Fragment>
+            {ideaMarkers.length > 0 && this.getPoints(ideaMarkers).length === 0 &&
+              <Message info>
+                <FormattedMessage {...messages.noIdeasWithLocation} />
+              </Message>
             }
-            <StyledMap points={this.getPoints(ideaMarkers)} onMarkerClick={this.selectIdea} />
-          </MapWrapper>
+            <MapWrapper>
+              {this.state.selectedIdea &&
+                <StyledBox idea={this.state.selectedIdea} onClose={this.deselectIdea} />
+              }
+              <StyledMap points={this.getPoints(ideaMarkers)} onMarkerClick={this.selectIdea} onMapClick={this.onMapClick} />
+              <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
+                <Button onClick={this.redirectToIdeaCreation} icon="plus-circle">
+                  <FormattedMessage {...messages.postIdeaHere} />
+                </Button>
+              </div>
+            </MapWrapper>
+          </React.Fragment>
         )}
       </GetIdeas>
     );
   }
 }
 
-export default IdeasMap;
+export default flow([
+  withRouter,
+  injectTenant(),
+  injectLocale(),
+])(IdeasMap);
