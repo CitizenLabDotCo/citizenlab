@@ -4,7 +4,7 @@ import { isString } from 'lodash';
 import 'moment-timezone';
 
 // components
-import ProjectPhasesPage from '../Phases';
+import ProjectPhasesPage from '../phases';
 import ProjectInfoPage from '../info';
 
 // services
