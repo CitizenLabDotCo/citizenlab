@@ -11,7 +11,7 @@ import tracks from './tracks';
 // Components
 import Map, { Props as MapProps } from 'components/Map';
 import IdeaBox, { Props as IdeaBoxProps } from './IdeaBox';
-import Button from 'components/UI/Button';
+import IdeaButton from './IdeaButton';
 import { Message } from 'semantic-ui-react';
 
 // Injectors
@@ -150,9 +150,11 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
               }
               <StyledMap points={this.getPoints(ideaMarkers)} onMarkerClick={this.selectIdea} onMapClick={this.onMapClick} />
               <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
-                <Button onClick={this.redirectToIdeaCreation} icon="plus-circle">
-                  <FormattedMessage {...messages.postIdeaHere} />
-                </Button>
+                <IdeaButton
+                  phaseId={this.props.phase}
+                  projectId={this.props.project}
+                  onClick={this.redirectToIdeaCreation}
+                />
               </div>
             </MapWrapper>
           </React.Fragment>
