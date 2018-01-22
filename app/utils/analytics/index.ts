@@ -56,6 +56,14 @@ Rx.Observable.combineLatest(tenant$, identifications$).subscribe(([tenant, ident
       identification.userId,
       addTenantInfo(identification.properties, tenant.data),
     );
+    window['analytics'].group(
+      tenant && tenant.data.id,
+      tenant && {
+        name: tenant.data.attributes.name,
+        host: tenant.data.attributes.host,
+        type: tenant.data.attributes.settings.core.organization_type
+      }
+    );
   }
 });
 
