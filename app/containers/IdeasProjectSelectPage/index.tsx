@@ -103,6 +103,12 @@ const WithoutButtonBar = styled.div`
   padding-bottom: 20px;
 `;
 
+const EmptyStateContainer = styled.div`
+  color: #474747;
+  font-size: 18px;
+  padding: 3rem 0;
+`;
+
 type Props = {
   theme: any;
   location: any;
@@ -125,9 +131,7 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
     const { loading, hasMore, all } = nextProps.projects;
     if (!loading && !hasMore && size(all) === 1) {
       this.redirectTo(nextProps.projects.all[0].attributes.slug);
-      return false;
     }
-    return true;
   }
 
   projectsByRole = () => {
@@ -153,80 +157,98 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
     }
   }
 
-
   render() {
     const { selectedProjectId } = this.state;
-    const { all: projects, loadMore, hasMore } = this.props.projects;
+    const { all: projects, loadMore, hasMore, loading } = this.props.projects;
 
     if (!projects) return null;
 
     const { open_idea_box: openProjects, null: cityProjects } = this.projectsByRole();
     const openProject = openProjects && !isEmpty(openProjects) && openProjects[0];
+    const inEmptyState = !loading && !hasMore && size(projects) === 0;
 
     return (
       <StyledContentContainer>
         <PageTitle>
           <FormattedMessage {...messages.pageTitle} />
         </PageTitle>
-        <ColumnsContainer>
-          <LeftColumn>
-            <ColumnTitle>
-              <FormattedMessage {...messages.cityProjects} />
-            </ColumnTitle>
-            <ColumnExplanation>
-              <FormattedMessage {...messages.cityProjectsExplanation} />
-            </ColumnExplanation>
-            <ProjectsList>
-              {cityProjects && cityProjects.map((project) => (
-                <ProjectWrapper key={project.id}>
-                  <Radio
-                    onChange={this.handleProjectClick(project)}
-                    currentValue={selectedProjectId}
-                    value={project.id}
-                    name="project"
-                    id={project.id}
-                    label=""
-                  />
-                  <ProjectCard
-                    onClick={this.handleProjectClick(project) as any}
-                    project={project as any}
-                    selected={(selectedProjectId === project.id) as any}
-                  />
-                </ProjectWrapper>
-              ))}
-            </ProjectsList>
-            {hasMore && <a onClick={loadMore} role="button"><FormattedMessage {...messages.loadMore} /></a>}
-          </LeftColumn>
-          {openProject &&
-            <RightColumn>
+        {inEmptyState &&
+          <EmptyStateContainer>
+            <FormattedMessage {...messages.noProjects} />
+          </EmptyStateContainer>
+        }
+        {!inEmptyState && <React.Fragment>
+          <ColumnsContainer>
+            <LeftColumn>
               <ColumnTitle>
-                <FormattedMessage {...messages.openProject} />
+                <FormattedMessage {...messages.cityProjects} />
               </ColumnTitle>
               <ColumnExplanation>
-                <FormattedMessage {...messages.openProjectExplanation} />
+                <FormattedMessage {...messages.cityProjectsExplanation} />
               </ColumnExplanation>
               <ProjectsList>
-                <ProjectWrapper key={openProject.id}>
-                  <Radio
-                    onChange={this.handleProjectClick(openProject)}
-                    currentValue={selectedProjectId}
-                    value={openProject.id}
-                    name="project"
-                    id={openProject.id}
-                    label=""
-                  />
-                  <ProjectCard
-                    onClick={this.handleProjectClick(openProject) as any}
-                    project={openProject as any}
-                    selected={(selectedProjectId === openProject.id) as any}
-                  />
-                </ProjectWrapper>
+                {cityProjects && cityProjects.map((project) => (
+                  <ProjectWrapper key={project.id}>
+                    <Radio
+                      onChange={this.handleProjectClick(project)}
+                      currentValue={selectedProjectId}
+                      value={project.id}
+                      name="project"
+                      id={project.id}
+                      label=""
+                      disabled={!project.relationships.action_descriptor.data.posting.enabled}
+                    />
+                    <ProjectCard
+                      onClick={this.handleProjectClick(project) as any}
+                      project={project as any}
+                      selected={(selectedProjectId === project.id) as any}
+                    />
+                  </ProjectWrapper>
+                ))}
               </ProjectsList>
-            </RightColumn>
-          }
-        </ColumnsContainer>
-        <ButtonBar>
-          <ButtonBarInner>
+              {hasMore && <a onClick={loadMore} role="button"><FormattedMessage {...messages.loadMore} /></a>}
+            </LeftColumn>
+            {openProject &&
+              <RightColumn>
+                <ColumnTitle>
+                  <FormattedMessage {...messages.openProject} />
+                </ColumnTitle>
+                <ColumnExplanation>
+                  <FormattedMessage {...messages.openProjectExplanation} />
+                </ColumnExplanation>
+                <ProjectsList>
+                  <ProjectWrapper key={openProject.id}>
+                    <Radio
+                      onChange={this.handleProjectClick(openProject)}
+                      currentValue={selectedProjectId}
+                      value={openProject.id}
+                      name="project"
+                      id={openProject.id}
+                      label=""
+                      disabled={!openProject.relationships.action_descriptor.data.posting.enabled}
+                    />
+                    <ProjectCard
+                      onClick={this.handleProjectClick(openProject) as any}
+                      project={openProject as any}
+                      selected={(selectedProjectId === openProject.id) as any}
+                    />
+                  </ProjectWrapper>
+                </ProjectsList>
+              </RightColumn>
+            }
+          </ColumnsContainer>
+          <ButtonBar>
+            <ButtonBarInner>
+              <Button
+                className="e2e-submit-project-select-form"
+                size="2"
+                text={<FormattedMessage {...messages.continueButton} />}
+                onClick={this.handleOnSubmitClick}
+                disabled={!selectedProjectId}
+              />
+            </ButtonBarInner>
+          </ButtonBar>
+          <WithoutButtonBar>
             <Button
               className="e2e-submit-project-select-form"
               size="2"
@@ -234,17 +256,8 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
               onClick={this.handleOnSubmitClick}
               disabled={!selectedProjectId}
             />
-          </ButtonBarInner>
-        </ButtonBar>
-        <WithoutButtonBar>
-          <Button
-            className="e2e-submit-project-select-form"
-            size="2"
-            text={<FormattedMessage {...messages.continueButton} />}
-            onClick={this.handleOnSubmitClick}
-            disabled={!selectedProjectId}
-          />
-        </WithoutButtonBar>
+          </WithoutButtonBar>
+        </React.Fragment>}
       </StyledContentContainer>
     );
   }

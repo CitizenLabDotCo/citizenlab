@@ -1,11 +1,16 @@
 // Libs
 import React from 'react';
 
+// Utils
+import { trackEvent } from 'utils/analytics';
+import tracks from './tracks';
+
 // Components
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import IdeasMap from 'components/IdeasMap';
 import { Button } from 'semantic-ui-react';
+import FeatureFlag from 'components/FeatureFlag';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -37,12 +42,15 @@ export default class Ideas extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      display: 'cards',
+      display: 'map',
     };
   }
 
   toggleDisplay = () => {
-    this.setState({ display: this.state.display === 'map' ? 'cards' : 'map' });
+    const display = this.state.display === 'map' ? 'cards' : 'map';
+
+    trackEvent(tracks.toggleDisplay, { selectedDisplayMode: display });
+    this.setState({ display });
   }
 
   render() {
@@ -51,28 +59,31 @@ export default class Ideas extends React.PureComponent<Props, State> {
 
     return (
       <StyledContentContainer>
-        <ToggleWrapper>
-          <Button.Group size="mini" toggle onClick={this.toggleDisplay}>
-            <Button active={display === 'map'}><FormattedMessage {...messages.displayMap} /></Button>
-            <Button active={display === 'cards'}><FormattedMessage {...messages.displayCards} /></Button>
-          </Button.Group>
-        </ToggleWrapper>
+        <FeatureFlag name="maps">
+          <ToggleWrapper>
+            <Button.Group size="mini" toggle onClick={this.toggleDisplay}>
+              <Button active={display === 'map'}><FormattedMessage {...messages.displayMap} /></Button>
+              <Button active={display === 'cards'}><FormattedMessage {...messages.displayCards} /></Button>
+            </Button.Group>
+          </ToggleWrapper>
 
-        {display === 'map' && type === 'project' && 
-          <IdeasMap project={id} />
-        }
+          {display === 'map' && type === 'project' &&
+            <IdeasMap project={id} />
+          }
 
-        {display === 'map' && type === 'phase' && 
-          <IdeasMap phase={id} />
-        }
+          {display === 'map' && type === 'phase' &&
+            <IdeasMap phase={id} />
+          }
 
-        {display === 'cards' && type === 'project' && 
-          <IdeaCards filter={{ project: id }} />
-        }
+          {display === 'cards' && type === 'project' &&
+            <IdeaCards filter={{ project: id }} />
+          }
 
-        {display === 'cards' && type === 'phase' && 
-          <IdeaCards filter={{ phase: id }} />
-        }
+          {display === 'cards' && type === 'phase' &&
+            <IdeaCards filter={{ phase: id }} />
+          }
+        </FeatureFlag>
+
       </StyledContentContainer>
     );
   }

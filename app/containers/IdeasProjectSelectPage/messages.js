@@ -34,4 +34,17 @@ export default defineMessages({
     id: 'app.containers.IdeasProjectSelect.loadMore',
     defaultMessage: 'Load more',
   },
+  postingPossibleFuture: {
+    id: 'app.containers.IdeasProjectSelect.postingPossibleFuture',
+    defaultMessage: 'Adding ideas to this project will be possible from {date}.',
+  },
+  postingNotPossible: {
+    id: 'app.containers.IdeasProjectSelect.postingNotPossible',
+    defaultMessage: 'This project does currently not accept new ideas.',
+  },
+  noProjects: {
+    id: 'app.containers.IdeasProjectSelect.noProjects',
+    defaultMessage: 'Sorry, there currently are no projects to add ideas to.',
+  },
+
 });

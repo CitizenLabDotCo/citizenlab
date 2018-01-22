@@ -41,6 +41,15 @@ export interface IProjectData {
     areas: {
       data: IRelationship[]
     }
+    action_descriptor: {
+      data: {
+        posting: {
+          enabled: boolean,
+          future_enabled: string | null,
+          disabled_reason: 'project_inactive' | 'not_ideation' | 'posting_disabled',
+        }
+      }
+    }
   };
 }
 

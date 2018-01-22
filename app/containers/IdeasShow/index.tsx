@@ -791,7 +791,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                       >
                         <MapWrapper>
                           {ideaAdress && <AddressWrapper>{ideaAdress}</AddressWrapper>}
-                          <IdeaMap location={ideaLocation} />
+                          <IdeaMap location={ideaLocation} id={idea.data.id} />
                         </MapWrapper>
                       </CSSTransition>
                     }
