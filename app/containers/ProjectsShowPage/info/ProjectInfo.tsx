@@ -20,9 +20,6 @@ import { getLocalized } from 'utils/i18n';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-// utils
-import { stripHtml } from 'utils/textUtils';
-
 // typings
 import { Locale } from 'typings';
 
@@ -147,7 +144,7 @@ export default class ProjectInfo extends React.PureComponent<Props, State> {
 
     if (locale && currentTenant && project) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-      const description = stripHtml(getLocalized(project.data.attributes.description_multiloc, locale, currentTenantLocales));
+      const description = getLocalized(project.data.attributes.description_multiloc, locale, currentTenantLocales);
       const images = (projectImages && projectImages.data && projectImages.data.length > 0 ? projectImages.data : null);
 
       return (
@@ -155,7 +152,7 @@ export default class ProjectInfo extends React.PureComponent<Props, State> {
           <Container>
             <Left>
               <IdeaBodyStyled>
-                {description}
+                <span dangerouslySetInnerHTML={{ __html: description }} />
               </IdeaBodyStyled>
             </Left>
 

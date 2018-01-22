@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { color, fontSize } from 'utils/styleUtils';
 
 // services
-import { projectsStream, IProjects } from 'services/projects';
+import { projectsStream, IProjectData } from 'services/projects';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
@@ -171,89 +171,104 @@ const AddProjectCard = ProjectCard.extend`
 type Props = {};
 
 type State = {
-  projects: IProjects | null
+  projects: IProjectData[] | null;
+  loaded: boolean;
 };
 
 export default class AdminProjectsList extends React.PureComponent<Props, State> {
-  subscription: Rx.Subscription;
+  subscriptions: Rx.Subscription[];
 
   constructor(props) {
     super(props);
     this.state = {
       projects: null,
+      loaded: false
     };
   }
 
   componentDidMount() {
-    const projects$ = projectsStream({ queryParameters: { publication_statuses: ['draft', 'published', 'archived'] } }).observable;
-    this.subscription = projects$.subscribe((unsortedProjects) => {
-      const projects = sortBy(unsortedProjects.data, (project) => project.attributes.created_at).reverse();
-      this.setState({ projects: { data: projects } });
-    });
+    const projects$ = projectsStream({
+      queryParameters: {
+        publication_statuses: ['draft', 'published', 'archived']
+      }
+    }).observable;
+
+    this.subscriptions = [
+      projects$.subscribe((unsortedProjects) => {
+        const projects = sortBy(unsortedProjects.data, (project) => project.attributes.created_at).reverse();
+        this.setState({ projects, loaded: true });
+      })
+    ];
   }
 
   componentWillUnmount() {
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   render () {
-    const { projects } = this.state;
+    const { loaded, projects } = this.state;
 
-    return (
-      <React.Fragment>
-        <Title>
-          <FormattedMessage {...messages.overviewPageTitle} />
-        </Title>
+    if (loaded) {
+      return (
+        <>
+          <Title>
+            <FormattedMessage {...messages.overviewPageTitle} />
+          </Title>
 
-        <ProjectsList className="e2e-projects-list">
+          <ProjectsList className="e2e-projects-list">
 
-          <AddProjectCard className="new-project e2e-new-project">
-            <AddProjectLink to="/admin/projects/new">
-              <AddProjectIcon name="plus-circle" />
-              <AddProjectText>
-                <FormattedMessage {...messages.addNewProject} />
-              </AddProjectText>
-            </AddProjectLink>
-          </AddProjectCard>
+            <AddProjectCard className="new-project e2e-new-project">
+              <AddProjectLink to="/admin/projects/new">
+                <AddProjectIcon name="plus-circle" />
+                <AddProjectText>
+                  <FormattedMessage {...messages.addNewProject} />
+                </AddProjectText>
+              </AddProjectLink>
+            </AddProjectCard>
 
-          {projects && projects.data && projects.data.map((project) => {
-            const projectImage = get(project, 'attributes.header_bg.small', null);
+            {projects && projects && projects.map((project) => {
+              const projectImage = get(project, 'attributes.header_bg.small', null);
 
-            return (
-              <ProjectCard key={project.id} className="e2e-project-card">
-                {project.attributes.publication_status !== 'published' &&
-                  <CustomLabel>
-                    <FormattedMessage {...messages[`${project.attributes.publication_status}Status`]} />
-                  </CustomLabel>
-                }
-                {projectImage && <ProjectImage src={projectImage} alt="" role="presentation" />}
+              return (
+                <ProjectCard key={project.id} className="e2e-project-card">
 
-                {!projectImage &&
-                  <ProjectImagePlaceholder>
-                    <ProjectImagePlaceholderIcon name="project" />
-                  </ProjectImagePlaceholder>
-                }
+                  {project.attributes.publication_status !== 'published' &&
+                    <CustomLabel>
+                      {/* <FormattedMessage {...messages[`${project.attributes.publication_status}Status`]} /> */}
+                    </CustomLabel>
+                  }
 
-                <ProjectTitle>
-                  <T value={project.attributes.title_multiloc} />
-                </ProjectTitle>
+                  {projectImage && <ProjectImage src={projectImage} alt="" role="presentation" />}
 
-                <ButtonWrapper>
-                  <GoToProjectButton
-                    style="primary-outlined"
-                    linkTo={`/admin/projects/${project.attributes.slug}/edit`}
-                    circularCorners={false}
-                  >
-                    <FormattedMessage {...messages.editProject} />
-                  </GoToProjectButton>
-                </ButtonWrapper>
+                  {!projectImage &&
+                    <ProjectImagePlaceholder>
+                      <ProjectImagePlaceholderIcon name="project" />
+                    </ProjectImagePlaceholder>
+                  }
 
-              </ProjectCard>
-            );
-          })}
+                  <ProjectTitle>
+                    <T value={project.attributes.title_multiloc} />
+                  </ProjectTitle>
 
-        </ProjectsList>
-      </React.Fragment>
-    );
+                  <ButtonWrapper>
+                    <GoToProjectButton
+                      style="primary-outlined"
+                      linkTo={`/admin/projects/${project.attributes.slug}/edit`}
+                      circularCorners={false}
+                    >
+                      <FormattedMessage {...messages.editProject} />
+                    </GoToProjectButton>
+                  </ButtonWrapper>
+
+                </ProjectCard>
+              );
+            })}
+
+          </ProjectsList>
+        </>
+      );
+    }
+
+    return null;
   }
 }

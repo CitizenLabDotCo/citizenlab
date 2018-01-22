@@ -35,7 +35,7 @@ type State = {
   events: IEventData[];
 };
 
-class EventsPreview extends React.Component<Props, State> {
+export default class EventsPreview extends React.Component<Props, State> {
   projectId$: Rx.BehaviorSubject<string>;
   subscriptions: Rx.Subscription[];
 
@@ -119,5 +119,3 @@ class EventsPreview extends React.Component<Props, State> {
     return null;
   }
 }
-
-export default EventsPreview;

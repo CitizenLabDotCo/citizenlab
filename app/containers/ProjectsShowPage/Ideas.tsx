@@ -13,6 +13,7 @@ import messages from './messages';
 
 // Styles
 import styled from 'styled-components';
+
 const StyledContentContainer = styled(ContentContainer)`
   margin-top: 30px;
 `;
