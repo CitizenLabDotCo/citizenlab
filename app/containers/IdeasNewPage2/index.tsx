@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+import { isString, isEmpty, isError } from 'lodash';
 
 // libraries
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -8,7 +8,7 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import { browserHistory } from 'react-router';
 
 // components
-import ButtonBar from './ButtonBar';
+import IdeasNewButtonBar from './IdeasNewButtonBar';
 import NewIdeaForm from './NewIdeaForm';
 import SignInUp from './SignInUp';
 
@@ -91,41 +91,6 @@ const PageContainer = styled.div`
   }
 `;
 
-const ButtonBarContainer = styled.div`
-  width: 100%;
-  height: 68px;
-  position: fixed;
-  z-index: 99999;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #fff;
-  border-top: solid 1px #ddd;
-  will-change: transform;
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
-
-  &.buttonbar-enter {
-    transform: translateY(64px);
-
-    &.buttonbar-enter-active {
-      transform: translateY(0);
-      transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
-    }
-  }
-
-  &.buttonbar-exit {
-    transform: translateY(0);
-
-    &.buttonbar-exit-active {
-      transform: translateY(64px);
-      transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
-    }
-  }
-`;
-
 interface Props {}
 
 interface LocalState {
@@ -137,20 +102,18 @@ interface GlobalState {}
 
 interface State extends LocalState, GlobalState {}
 
-class IdeasNewPage2 extends React.PureComponent<Props, State> {
-  initialLocalState: LocalState;
-  initialGlobalState: IIdeasNewPageGlobalState;
+export default class IdeasNewPage2 extends React.PureComponent<Props, State> {
   localState: ILocalStateService<LocalState>;
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
-    const initialLocalState = {
+  constructor(props) {
+    super(props);
+    const initialLocalState: LocalState = {
       showIdeaForm: true,
       locale: null
     };
-    this.initialGlobalState = {
+    const initialGlobalState: IIdeasNewPageGlobalState = {
       title: null,
       description: null,
       selectedTopics: null,
@@ -163,8 +126,8 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       imageId: null,
       imageChanged: false
     };
-    this.localState = localState<LocalState>(initialLocalState);
-    this.globalState = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage', this.initialGlobalState);
+    this.localState = localState(initialLocalState);
+    this.globalState = globalState.init('IdeasNewPage', initialGlobalState);
     this.subscriptions = [];
   }
 
@@ -182,8 +145,6 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
-    // reset global state before unmounting
-    this.globalState.set(this.initialGlobalState);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
@@ -194,8 +155,8 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
     const ideaDescription = { [locale as string]: (description || '') };
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const projectId = (selectedProject ? selectedProject.value as string : null);
-    const locationGeoJSON = (_.isString(location) && !_.isEmpty(location) ? await convertToGeoJson(location) : null);
-    const locationDescription = (_.isString(location) && !_.isEmpty(location) ? location : null);
+    const locationGeoJSON = (isString(location) && !isEmpty(location) ? await convertToGeoJson(location) : null);
+    const locationDescription = (isString(location) && !isEmpty(location) ? location : null);
 
     if (ideaId) {
       return await updateIdea(ideaId, {
@@ -234,7 +195,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       }
 
       // upload the newly dropped image to the server
-      if (imageChanged && imageFile && imageFile[0] && imageFile[0].base64 && _.isString(imageFile[0].base64)) {
+      if (imageChanged && imageFile && imageFile[0] && imageFile[0].base64 && isString(imageFile[0].base64)) {
         ideaImage = await addIdeaImage(idea.data.id, imageFile[0].base64 as string, 0);
       }
 
@@ -258,7 +219,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       await this.postIdeaAndIdeaImage('published', authUser.data.id);
       browserHistory.push('/ideas');
     } catch (error) {
-      if (_.isError(error) && error.message === 'not_authenticated') {
+      if (isError(error) && error.message === 'not_authenticated') {
         try {
           await this.postIdeaAndIdeaImage('draft');
           this.globalState.set({ processing: false });
@@ -289,18 +250,14 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   render() {
     if (!this.state) { return null; }
 
-    const { showIdeaForm, locale } = this.state;
+    const { showIdeaForm } = this.state;
     const timeout = 600;
 
-    const buttonBar = (showIdeaForm && locale) ? (
-      <CSSTransition classNames="buttonbar" timeout={timeout}>
-        <ButtonBarContainer>
-          <ButtonBar onSubmit={this.handleOnIdeaSubmit} />
-        </ButtonBarContainer>
-      </CSSTransition>
+    const buttonBar = (showIdeaForm) ? (
+      <IdeasNewButtonBar onSubmit={this.handleOnIdeaSubmit} />
     ) : null;
 
-    const newIdeasForm = (showIdeaForm && locale) ? (
+    const newIdeasForm = (showIdeaForm) ? (
       <CSSTransition classNames="page" timeout={timeout}>
         <PageContainer className="ideaForm">
           <NewIdeaForm onSubmit={this.handleOnIdeaSubmit} />
@@ -308,7 +265,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       </CSSTransition>
     ) : null;
 
-    const signInUp = (!showIdeaForm && locale) ? (
+    const signInUp = (!showIdeaForm) ? (
       <CSSTransition classNames="page" timeout={timeout}>
         <PageContainer>
           <SignInUp
@@ -330,5 +287,3 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
     );
   }
 }
-
-export default IdeasNewPage2;

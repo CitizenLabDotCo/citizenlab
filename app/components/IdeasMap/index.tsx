@@ -1,6 +1,6 @@
 // Libs
 import * as React from 'react';
-import { flow } from 'lodash';
+import { flow, pick } from 'lodash';
 import Leaflet from 'leaflet';
 import { browserHistory, withRouter } from 'react-router';
 
@@ -15,7 +15,7 @@ import Button from 'components/UI/Button';
 import { Message } from 'semantic-ui-react';
 
 // Injectors
-import GetIdeas from 'utils/resourceLoaders/components/GetIdeas';
+import GetIdeas, { SearchQueryProps } from 'utils/resourceLoaders/components/GetIdeas';
 import { injectTenant, InjectedTenant } from 'utils/resourceLoaders/tenantLoader';
 import { injectLocale, InjectedLocale } from 'utils/resourceLoaders/localeLoader';
 
@@ -63,7 +63,7 @@ const MapWrapper = styled.div`
 
 // Typing
 import { IIdeaData } from 'services/ideas';
-interface Props {
+interface Props extends SearchQueryProps {
   project?: string;
   phase?: string;
   topics?: string[];
@@ -133,8 +133,10 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
   }
 
   render() {
+    const searchProps = pick(this.props, 'areas', 'currentPageNumber', 'pageSize', 'phase', 'project', 'searchTerm', 'sortAttribute', 'sortDirection', 'status', 'topics');
+
     return (
-      <GetIdeas project={this.props.project} markers>
+      <GetIdeas {...searchProps} markers>
         {({ ideaMarkers }) => (
           <React.Fragment>
             {ideaMarkers.length > 0 && this.getPoints(ideaMarkers).length === 0 &&

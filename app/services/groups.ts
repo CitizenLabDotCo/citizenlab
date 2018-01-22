@@ -78,9 +78,13 @@ export function findMembership(groupId: string, streamParams: IStreamParams | nu
 }
 
 export async function deleteMembership(membershipId: string) {
-  return streams.delete(`${API_PATH}/memberships/${membershipId}`, membershipId);
+  const response = await streams.delete(`${API_PATH}/memberships/${membershipId}`, membershipId);
+  await listGroups().fetch();
+  return response;
 }
 
 export async function addMembership(groupId: string, user_id: string) {
-  return streams.add(`${API_PATH}/groups/${groupId}/memberships`, { membership: { user_id } });
+  const response = await streams.add(`${API_PATH}/groups/${groupId}/memberships`, { membership: { user_id } });
+  await listGroups().fetch();
+  return response;
 }

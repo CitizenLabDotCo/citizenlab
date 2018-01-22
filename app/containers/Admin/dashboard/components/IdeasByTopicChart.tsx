@@ -6,10 +6,12 @@ import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recha
 import { injectTFunc } from 'components/T/utils';
 import { ideasByTopicStream } from 'services/stats';
 
-
-
 type State = {
-  serie: {name: string | number, value: number, code: string}[] | null;
+  serie: {
+    name: any,
+    value: any,
+    code: any
+  }[] | null;
 };
 
 type Props = {
@@ -20,70 +22,69 @@ type Props = {
 };
 
 class IdeasByTimeChart extends React.PureComponent<Props, State> {
+  subscriptions: Rx.Subscription[];
+  props$: Rx.BehaviorSubject<Props>;
 
-  serieObservable: Rx.Subscription;
-
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       serie: null,
     };
+    this.subscriptions = [];
+    this.props$ = new Rx.BehaviorSubject(null as any);
   }
 
-  componentDidMount() {
-    this.resubscribe();
+  componentWillMount() {
+    this.props$.next(this.props);
+
+    this.subscriptions = [
+      this.props$.filter(props => !_.isNil(props)).switchMap(({ startAt, endAt }) => {
+        return ideasByTopicStream({
+          queryParameters: {
+            start_at: startAt,
+            end_at: endAt,
+          },
+        }).observable;
+      }).subscribe((serie) => {
+        const convertedSerie = this.convertToGraphFormat(serie);
+        this.setState({ serie: convertedSerie });
+      })
+    ];
   }
 
-  componentWillUpdate(nextProps) {
-    if (nextProps.startAt !== this.props.startAt ||
-      nextProps.endAt !== this.props.endAt) {
-      this.resubscribe(nextProps.startAt, nextProps.endAt);
-    }
+  componentWillReceiveProps(nextProps) {
+    this.props$.next(nextProps);
   }
 
   convertToGraphFormat = (serie) => {
     const { data, topics } = serie;
-    return _.chain(data)
-      .map((count, topicId) => ({
-        name: this.props.tFunc(topics[topicId].title_multiloc),
-        value: count,
-        code: topicId,
-      }))
-      .sortBy('name')
-      .value();
+    const { tFunc } = this.props;
+
+    return _(data).map((count, topicId) => ({
+      name: tFunc(topics[topicId].title_multiloc),
+      value: count,
+      code: topicId,
+    }))
+    .sortBy('name')
+    .value();
   }
-
-  resubscribe(startAt= this.props.startAt, endAt= this.props.endAt) {
-    if (this.serieObservable) this.serieObservable.unsubscribe();
-
-    this.serieObservable = ideasByTopicStream({
-      queryParameters: {
-        start_at: startAt,
-        end_at: endAt,
-      },
-    }).observable.subscribe((serie) => {
-      const convertedSerie = this.convertToGraphFormat(serie) as any;
-      this.setState({ serie: convertedSerie });
-    });
-  }
-
 
   render() {
     return (
-      <ResponsiveContainer width="100%" height={this.state.serie && (this.state.serie.length * 30)}>
+      <ResponsiveContainer width="100%" height={this.state.serie && (this.state.serie.length * 50)}>
         <BarChart data={this.state.serie} layout="vertical">
           <Bar
             dataKey="value"
             name="name"
             fill={this.props.theme.chartFill}
-            label={{ fill: this.props.theme.chartLabelColor, fontSize: 12 }}
+            label={{ fill: this.props.theme.barFill, fontSize: this.props.theme.chartLabelSize }}
           />
           <YAxis
             dataKey="name"
             type="category"
-            width={100}
+            width={150}
             stroke={this.props.theme.chartLabelColor}
-            fontSize={this.props.theme.chartLabelColor}
+            fontSize={this.props.theme.chartLabelSize}
             tickLine={false}
           />
           <XAxis
@@ -93,7 +94,6 @@ class IdeasByTimeChart extends React.PureComponent<Props, State> {
             tick={{ transform: 'translate(0, 7)' }}
           />
           <Tooltip isAnimationActive={false} />
-
         </BarChart>
       </ResponsiveContainer>
     );

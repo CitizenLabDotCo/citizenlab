@@ -77,7 +77,7 @@ type State = {
 };
 
 class Author extends React.PureComponent<Props, State> {
-  state: State;
+  authorId$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -85,18 +85,27 @@ class Author extends React.PureComponent<Props, State> {
     this.state = {
       author: null
     };
+    this.authorId$ = new Rx.BehaviorSubject(null);
     this.subscriptions = [];
   }
 
   componentWillMount() {
     const { authorId } = this.props;
-    if (authorId) {
-      const author$ = userByIdStream(authorId).observable;
 
-      this.subscriptions = [
-        author$.subscribe(author => this.setState({ author }))
-      ];
-    }
+    this.authorId$.next(authorId);
+
+    this.subscriptions = [
+      this.authorId$.distinctUntilChanged().filter(authorId => authorId !== null).switchMap((authorId: string) => {
+        const author$ = userByIdStream(authorId).observable;
+        return author$;
+      }).subscribe((author) => {
+        this.setState({ author });
+      })
+    ];
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.authorId$.next(nextProps.authorId);
   }
 
   componentWillUnmount() {

@@ -25,39 +25,19 @@ export const SectionSubtitle = styled.p`
 
 export const SectionField = styled.div`
   margin-bottom: ${remCalc(30)};
-  overflow: visible;
-  transition: all .15s ease-in-out;
-  max-height: none;
+  transition: all 200ms ease-in-out;
 
-  > * {
-    transition: all .15s ease-in-out;
-  }
-
-  &.exited {
-    max-height: 0;
-    margin-bottom: 0;
-
-    > * {
-      opacity: 0;
-    }
-  }
-
-  &.entering,
-  &.exiting {
-    max-height: 200px;
-  }
-
-  .TextArea {
+  .CLTextareaComponentContainer {
     max-width: 500px;
   }
 
-  input,
-  textarea {
+  .CLInputComponent,
+  .CLTextareaComponent {
     -webkit-appearance: none;
     background: #fff;
     border-radius: 5px;
     border: solid 1px ${(props: any) => props.error ? props.theme.colors.error : '#ccc'};
-    box-shadow: inset 0px 2px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     color: ${color('text')};
     font-size: ${fontSize('base')};
     font-weight: 400;

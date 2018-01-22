@@ -1,15 +1,30 @@
 import * as React from 'react';
-import styled from 'styled-components';
+
+// components
+import Icon from 'components/UI/Icon';
+
+// i18n
 import { injectIntl } from 'utils/cl-intl';
 
-const previousIcon = require('../previousIcon.svg');
-const nextIcon = require('../nextIcon.svg');
+// styling
+import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;
-  background: #FCFCFC;
-  box-shadow: 0px -1px 2px rgba(0, 0, 0, 0.1);
+  background: #fff;
   border-radius: 5px;
+  /* box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1); */
+`;
+
+const StyledIcon = styled(Icon)`
+  height: 15px;
+  fill: #999;
+`;
+
+const PrevIcon = StyledIcon.extend``;
+
+const NextIcon = StyledIcon.extend`
+  transform: rotate(180deg);
 `;
 
 const TimeButton = styled.button`
@@ -20,9 +35,11 @@ const TimeButton = styled.button`
   outline: none;
   padding: 1rem 1.5rem;
 
-  opacity: 0.7;
   &:hover {
-    opacity: 1;
+    ${PrevIcon},
+    ${NextIcon} {
+      fill: #000;
+    }
   }
 `;
 
@@ -32,8 +49,10 @@ const Separator = styled.div`
 `;
 
 const CurrentTime = styled.div`
-  color: #6E6E6E;
+  min-width: 160px;
+  color: #000;
   font-size: 16px;
+  text-transform: capitalize;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -95,7 +114,7 @@ class TimeControl extends React.PureComponent<Props> {
     return (
       <Container>
         <TimeButton onClick={this.handlePrevious}>
-          <img src={previousIcon} alt="" role="presentation" />
+          <NextIcon name="chevron-right" />
         </TimeButton>
         <Separator />
         <CurrentTime>
@@ -103,11 +122,11 @@ class TimeControl extends React.PureComponent<Props> {
         </CurrentTime>
         <Separator />
         <TimeButton onClick={this.handleNext}>
-          <img src={nextIcon} alt="" role="presentation" />
+          <PrevIcon name="chevron-right" />
         </TimeButton>
       </Container>
     );
   }
 }
 
-export default injectIntl(TimeControl);
+export default injectIntl<Props>(TimeControl);

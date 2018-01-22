@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isString, isEmpty, get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // router
@@ -100,7 +100,7 @@ interface State {
   processing: boolean;
 }
 
-class IdeaEditPage extends React.PureComponent<Props, State> {
+export default class IdeaEditPage extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -171,27 +171,51 @@ class IdeaEditPage extends React.PureComponent<Props, State> {
         );
       }
 
+      const selectedProject$ = project$.map((project) => {
+        if (project) {
+          return {
+            value: project.data.id,
+            label: getLocalized(project.data.attributes.title_multiloc, locale, currentTenantLocales)
+          };
+        }
+
+        return null;
+      });
+
+      const selectedTopics$ = topics$.map((topics) => {
+        if (topics && topics.length > 0) {
+          return topics.map((topic) => {
+            return {
+              value: topic.data.id,
+              label: getLocalized(topic.data.attributes.title_multiloc, locale, currentTenantLocales)
+            };
+          });
+        }
+
+        return null;
+      });
+
       return Rx.Observable.combineLatest(
         locale$,
         idea$,
         ideaImage$,
-        project$.map(project => project ? { value: project.data.id, label: getLocalized(project.data.attributes.title_multiloc, locale, currentTenantLocales) } : null),
-        topics$.map(topics => topics ? topics.map((topic) => ({ value: topic.data.id, label: getLocalized(topic.data.attributes.title_multiloc, locale, currentTenantLocales) })) : null),
+        selectedProject$,
+        selectedTopics$,
         granted$
       );
     });
 
     this.subscriptions = [
-      ideaWithRelationships$.subscribe(([locale, idea, ideaImage, project, topics, granted]) => {
+      ideaWithRelationships$.subscribe(([locale, idea, ideaImage, selectedProject, selectedTopics, granted]) => {
         if (granted) {
           this.setState({
             locale,
+            selectedTopics,
+            selectedProject,
             loaded: true,
             ideaSlug: idea.data.attributes.slug,
             titleMultiloc: idea.data.attributes.title_multiloc,
             descriptionMultiloc: idea.data.attributes.body_multiloc,
-            selectedTopics: topics,
-            selectedProject: project,
             location: idea.data.attributes.location_description,
             imageFile: (ideaImage && ideaImage.file ? [ideaImage.file] : null),
             imageId: (ideaImage && ideaImage.id ? ideaImage.id : null)
@@ -217,11 +241,11 @@ class IdeaEditPage extends React.PureComponent<Props, State> {
     const { title, description, selectedTopics, selectedProject, location } = ideaFormOutput;
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const projectId = (selectedProject ? selectedProject.value as string : null);
-    const locationGeoJSON = (_.isString(location) && !_.isEmpty(location) ? await convertToGeoJson(location) : null);
-    const locationDescription = (_.isString(location) && !_.isEmpty(location) ? location : null);
+    const locationGeoJSON = (isString(location) && !isEmpty(location) ? await convertToGeoJson(location) : null);
+    const locationDescription = (isString(location) && !isEmpty(location) ? location : null);
     const oldImageId = imageId;
-    const oldBase64Image = _.get(this.state, 'imageFile[0].base64');
-    const newBase64Image = _.get(ideaFormOutput, 'imageFile[0].base64');
+    const oldBase64Image = get(this.state, 'imageFile[0].base64');
+    const newBase64Image = get(ideaFormOutput, 'imageFile[0].base64');
 
     this.setState({ processing: true, submitError: false });
 
@@ -300,5 +324,3 @@ class IdeaEditPage extends React.PureComponent<Props, State> {
     return null;
   }
 }
-
-export default IdeaEditPage;

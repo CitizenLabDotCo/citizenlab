@@ -3,7 +3,6 @@ import { keys, isEmpty, flow, size } from 'lodash';
 import styled from 'styled-components';
 import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
 
-
 import { FormattedMessage } from 'utils/cl-intl';
 import { topicsStream, ITopicData } from 'services/topics';
 import { ideaStatusesStream, IIdeaStatusData } from 'services/ideaStatuses';
@@ -84,7 +83,6 @@ const RightColumn = styled.div`
 `;
 
 class IdeaManager extends React.PureComponent<Props, State> {
-
   globalState: IGlobalStateService<IAdminFullWidth>;
 
   constructor(props) {
@@ -97,14 +95,16 @@ class IdeaManager extends React.PureComponent<Props, State> {
       contextRef: null,
     };
 
-    this.globalState = globalState.init<IAdminFullWidth>('AdminFullWidth');
+    this.globalState = globalState.init('AdminFullWidth');
   }
 
   componentDidMount() {
     this.globalState.set({ enabled: true });
+
     if (this.props.project) {
       this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(this.props.project.id);
     }
+
     this.setVisibleFilterMenus(!!this.props.project);
   }
 
@@ -171,7 +171,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
                 activeFilterMenu={activeFilterMenu}
                 visibleFilterMenus={visibleFilterMenus}
                 onChangeActiveFilterMenu={this.handleChangeActiveFilterMenu}
-                project={this.props.project || null}
+                project={(this.props.project && this.props.project) || null}
                 phases={this.props.phases.all}
                 topics={this.props.topics.all}
                 projects={this.props.projects.all}

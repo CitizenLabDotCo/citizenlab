@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isFunction, isBoolean, isString } from 'lodash';
 import { browserHistory } from 'react-router';
 
 // components
@@ -16,26 +16,31 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media, color } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
 
-const ModalContent = styled(clickOutside)`
-  backface-visibility: hidden;
-  background: #fff;
-  border-radius: 5px;
+const ModalContent: any = styled(clickOutside)`
+  width: 100%;
+  max-width: ${(props: any) => props.width};
   display: flex;
   flex-direction: column;
-  flex: 1 1 100vw;
-  height: auto;
-  max-height: 75vh;
-  max-width: 850px;
   outline: none;
   overflow-y: auto;
-  padding: 40px 60px;
+  padding: 40px;
+  border-radius: 5px;
+  backface-visibility: hidden;
+  background: #fff;
   will-change: opacity, transform;
-  z-index: 1000;
 
-  ${media.biggerThanPhone`
-    flex-basis: 80%;
+  &.fixedHeight {
+    height: 78vh;
+  }
+
+  ${media.smallerThanMaxTablet`
+    padding: 25px;
+
+    &.fixedHeight {
+      height: 75vh;
+    }
   `}
 `;
 
@@ -48,16 +53,20 @@ const CloseIcon = styled(Icon)`
 `;
 
 const CloseButton = styled.div`
-  height: 30px;
-  width: 30px;
+  height: 32px;
+  width: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
   cursor: pointer;
-  top: 15px;
-  right: 15px;
-  z-index: 2000;
+  top: 20px;
+  right: 20px;
+
+  ${media.smallerThanMaxTablet`
+    top: 10px;
+    right: 10px;
+  `}
 
   &:hover {
     ${CloseIcon} {
@@ -67,48 +76,43 @@ const CloseButton = styled.div`
 `;
 
 const ModalContainer = styled.div`
-  align-items: center;
-  background: rgba(0, 0, 0, .7);
-  bottom: 0;
-  color: ${color('text')};
-  display: flex;
-  height: 100vh;
-  justify-content: center;
-  left: 0;
-  max-height: 100%;
-  padding: 30px;
-  position: fixed;
-  right: 0;
-  top: 0;
   width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 30px;
+  overflow: hidden;
   will-change: opacity;
-  z-index: 1001;
+  z-index: 10002;
 
-  ${media.phone`
-    padding: 0px;
-  `}
+  &.modal-enter {
+    opacity: 0.01;
+    will-change: opacity;
 
-    &.modal-enter {
+    ${ModalContent} {
       opacity: 0.01;
-      will-change: opacity;
+      transform: translateY(-40px);
+    }
+
+    &.modal-enter-active {
+      opacity: 1;
+      transition: opacity 350ms cubic-bezier(0.165, 0.84, 0.44, 1);
 
       ${ModalContent} {
-        opacity: 0.01;
-        transform: translateY(-40px);
-      }
-
-      &.modal-enter-active {
         opacity: 1;
-        transition: opacity 350ms cubic-bezier(0.165, 0.84, 0.44, 1);
-
-        ${ModalContent} {
-          opacity: 1;
-          transform: translateY(0px);
-          transition: opacity 350ms cubic-bezier(0.165, 0.84, 0.44, 1),
-                      transform 350ms cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
+        transform: translateY(0px);
+        transition: opacity 350ms cubic-bezier(0.165, 0.84, 0.44, 1),
+                    transform 350ms cubic-bezier(0.165, 0.84, 0.44, 1);
       }
     }
+  }
 `;
 
 interface ITracks {
@@ -119,7 +123,9 @@ interface ITracks {
 
 type Props = {
   opened: boolean;
-  url?: string;
+  url?: string | undefined;
+  fixedHeight?: boolean | undefined;
+  width?: string | undefined;
   close: () => void;
 };
 
@@ -193,7 +199,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     document.body.classList.remove('modal-active');
     window.removeEventListener('popstate', this.handlePopstateEvent);
 
-    if (_.isFunction(this.unlisten)) {
+    if (isFunction(this.unlisten)) {
       this.unlisten();
     }
   }
@@ -211,16 +217,24 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   }
 
   render() {
+    let { fixedHeight, width } = this.props;
     const { children, opened } = this.props;
+
+    fixedHeight = (isBoolean(fixedHeight) ? fixedHeight : true);
+    width = (isString(width) ? width : '650px');
 
     const element = (opened ? (
       <CSSTransition classNames="modal" timeout={350} exit={false}>
         <ModalContainer id="e2e-modal-container">
-          <ModalContent onClickOutside={this.clickOutsideModal}>
+          <ModalContent
+            className={`${fixedHeight && 'fixedHeight'}`}
+            width={width}
+            onClickOutside={this.clickOutsideModal}
+          >
             {children}
           </ModalContent>
           <CloseButton onClick={this.clickCloseButton}>
-            <CloseIcon name="close2" />
+            <CloseIcon name="close3" />
           </CloseButton>
         </ModalContainer>
       </CSSTransition>

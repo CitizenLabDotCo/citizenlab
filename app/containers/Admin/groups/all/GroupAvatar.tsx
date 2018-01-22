@@ -1,7 +1,7 @@
 // Libraries
 import * as React from 'react';
 import * as Rx from 'rxjs';
-import * as _ from 'lodash';
+import { take } from 'lodash';
 
 // Services
 import { listMembership } from 'services/groups';
@@ -13,7 +13,7 @@ import Avatar from 'components/Avatar';
 // Style
 import styled, { css } from 'styled-components';
 
-const avatarSize = 70;
+const avatarSize = 74;
 
 const StyledAvatar = styled(Avatar)`
   width: calc(${avatarSize}%);
@@ -21,7 +21,7 @@ const StyledAvatar = styled(Avatar)`
   border-radius: 50%;
   box-sizing: border-box;
   border-style: solid;
-  border-width: 3px;
+  border-width: 2px;
   border-color: #fff;
   background: #fff;
 `;
@@ -41,20 +41,20 @@ const GroupAvatarWrapper: any = styled.div`
 
       &:nth-child(1) {
         z-index: 3;
-        top: 0;
+        top: -4px;
         left: calc(50% - (${avatarSize}%/2));
       }
 
       &:nth-child(2) {
         z-index: 2;
         bottom: 0;
-        right: 0;
+        right: -4px;
       }
 
       &:nth-child(3) {
         z-index: 1;
         bottom: 0;
-        left: 0;
+        left: -4px;
       }
     }
   ` : css``};
@@ -88,7 +88,7 @@ export default class GroupAvatar extends React.PureComponent<Props, State> {
       memberships$.switchMap((memberships) => {
         if (memberships && memberships.data.length > 0) {
           return Rx.Observable.combineLatest(
-            _.take(memberships.data, 3).map(membership => userByIdStream(membership.relationships.user.data.id).observable)
+            take(memberships.data, 3).map(membership => userByIdStream(membership.relationships.user.data.id).observable)
           );
         }
 

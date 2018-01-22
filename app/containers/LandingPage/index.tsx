@@ -318,7 +318,7 @@ class LandingPage extends React.PureComponent<Props, State> {
 
       // if 'idea_to_publish' parameter is present in landingpage url,
       // find the draft idea previously created (before login/signup)
-      // and update it status and author name
+      // and update its status and author name
       Rx.Observable.combineLatest(
         authUser$,
         ideaToPublish$
@@ -366,7 +366,7 @@ class LandingPage extends React.PureComponent<Props, State> {
       const hasHeaderImage = (currentTenantHeader !== null);
 
       return (
-        <div>
+        <>
           <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
             <Header>
               <HeaderImage>
@@ -452,7 +452,7 @@ class LandingPage extends React.PureComponent<Props, State> {
               <Footer />
             </Content>
           </Container>
-        </div>
+        </>
       );
     }
 
@@ -461,3 +461,4 @@ class LandingPage extends React.PureComponent<Props, State> {
 }
 
 export default LandingPage;
+

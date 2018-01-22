@@ -308,7 +308,6 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
         <Container>
           <Form id="signin" onSubmit={this.handleOnSubmit} noValidate={true}>
             <FormElement>
-              {/* <Label value={formatMessage(messages.emailLabel)} htmlFor="email" /> */}
               <Input
                 type="email"
                 id="email"
@@ -321,7 +320,6 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
             </FormElement>
 
             <FormElement>
-              {/* <Label value={formatMessage(messages.passwordLabel)} htmlFor="password" /> */}
               <PasswordInput
                 type="password"
                 id="password"

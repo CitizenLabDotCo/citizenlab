@@ -9,20 +9,19 @@ import * as bowser from 'bowser';
 import { Link, browserHistory } from 'react-router';
 
 // components
-import VoteControl from 'components/VoteControl';
 import Avatar from 'components/Avatar';
 import StatusBadge from 'components/StatusBadge';
 import Icon from 'components/UI/Icon';
 import Comments from './CommentsContainer';
 import Sharing from './Sharing';
 import IdeaMeta from './IdeaMeta';
-import Unauthenticated from './Unauthenticated';
 import IdeaMap from './IdeaMap';
 import Activities from './Activities';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import SpamReportForm from 'containers/SpamReport';
 import Modal from 'components/UI/Modal';
 import UserName from 'components/UI/UserName';
+import VoteWrapper from './VoteWrapper';
 
 // services
 import { ideaByIdStream, IIdea } from 'services/ideas';
@@ -53,7 +52,7 @@ const Container = styled.div``;
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: 820px;
+  max-width: 840px;
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -314,11 +313,15 @@ const IdeaBody = styled.div`
   color: #474747;
   font-size: 18px;
   line-height: 30px;
-  font-weight: 400;
+  font-weight: 300;
 
   p {
     margin-bottom: 25px;
   }
+
+   strong {
+     font-weight: 500;
+   }
 `;
 
 const SeparatorColumn = styled.div`
@@ -438,6 +441,7 @@ const StyledSharingMobile = styled(StyledSharing)`
   `}
 `;
 
+/*
 const IconWrapper = styled.div`
   width: 30px;
   margin: 0;
@@ -483,6 +487,7 @@ const GiveOpinion = styled.div`
     display: none;
   `}
 `;
+*/
 
 const MoreActionsMenuWrapper = styled.div`
   margin-top: 40px;
@@ -498,32 +503,32 @@ type Props = {
 };
 
 type State = {
+  authUser: IUser | null;
   idea: IIdea | null;
   ideaAuthor: IUser | null;
   ideaImage: IIdeaImage | null;
   ideaComments: IComments | null;
   project: IProject | null;
   loading: boolean;
-  unauthenticatedError: boolean;
   showMap: boolean;
   spamModalVisible: boolean;
   moreActions: IAction[];
 };
 
-class IdeasShow extends React.PureComponent<Props, State> {
+export default class IdeasShow extends React.PureComponent<Props, State> {
   state: State;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
+      authUser: null,
       idea: null,
       ideaAuthor: null,
       ideaImage: null,
       ideaComments: null,
       project: null,
       loading: true,
-      unauthenticatedError: false,
       showMap: false,
       spamModalVisible: false,
       moreActions: [],
@@ -547,21 +552,20 @@ class IdeasShow extends React.PureComponent<Props, State> {
       const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : Rx.Observable.of(null));
 
       return Rx.Observable.combineLatest(
+        authUser$,
         ideaImage$,
         ideaAuthor$,
         ideaStatus$,
         project$,
-      ).map(([ideaImage, ideaAuthor, _ideaStatus, project]) => ({ idea, ideaImage, ideaAuthor, project }));
+      ).map(([authUser, ideaImage, ideaAuthor, _ideaStatus, project]) => ({ authUser, idea, ideaImage, ideaAuthor, project }));
     });
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
-        ideaWithRelationships$
-      ).subscribe(([{ idea, ideaImage, ideaAuthor, project }]) => {
-        this.setState({ idea, ideaImage, ideaAuthor, project, loading: false });
+      ideaWithRelationships$.subscribe(({ authUser, idea, ideaImage, ideaAuthor, project }) => {
+        this.setState({ authUser, idea, ideaImage, ideaAuthor, project, loading: false });
       }),
 
-      comments$.subscribe(ideaComments => {
+      comments$.subscribe((ideaComments) => {
         this.setState({ ideaComments });
       }),
 
@@ -612,10 +616,6 @@ class IdeasShow extends React.PureComponent<Props, State> {
     }
   }
 
-  unauthenticatedVoteClick = () => {
-    this.setState({ unauthenticatedError: true });
-  }
-
   scrollToCommentForm = (event) => {
     event.preventDefault();
 
@@ -645,7 +645,7 @@ class IdeasShow extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { idea, ideaImage, ideaAuthor, ideaComments, project, loading, unauthenticatedError, showMap, moreActions } = this.state;
+    const { /* authUser, */ idea, ideaImage, ideaAuthor, ideaComments, project, loading, showMap, moreActions } = this.state;
 
     if (!loading && idea !== null) {
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
@@ -654,10 +654,12 @@ class IdeasShow extends React.PureComponent<Props, State> {
       const bodyMultiloc = idea.data.attributes.body_multiloc;
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
       const ideaImageMedium = (ideaImage && _.has(ideaImage, 'data.attributes.versions.medium') ? ideaImage.data.attributes.versions.medium : null);
+      const ideaImageLarge = (ideaImage && _.has(ideaImage, 'data.attributes.versions.large') ? ideaImage.data.attributes.versions.large : null);
       const isSafari = bowser.safari;
       const ideaLocation = idea.data.attributes.location_point_geojson || null;
       const ideaAdress = idea.data.attributes.location_description || null;
       const projectTitleMultiloc = (project && project.data ? project.data.attributes.title_multiloc : null);
+      const projectId = idea.data.relationships.project.data.id;
 
       const ideaMetaContent = (
         <MetaContent>
@@ -665,15 +667,11 @@ class IdeasShow extends React.PureComponent<Props, State> {
             <FormattedMessage {...messages.voteOnThisIdea} />
           </VoteLabel>
 
-          {!unauthenticatedError &&
-            <VoteControl
-              ideaId={idea.data.id}
-              unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-              size="normal"
-            />
-          }
-
-          {unauthenticatedError && <Unauthenticated />}
+          <VoteWrapper
+            ideaId={idea.data.id}
+            votingDescriptor={idea.data.relationships.action_descriptor.data.voting}
+            projectId={projectId}
+          />
 
           {statusId &&
             <StatusContainer>
@@ -683,16 +681,18 @@ class IdeasShow extends React.PureComponent<Props, State> {
           }
 
           <SharingWrapper>
-            <StyledSharing imageUrl={ideaImageMedium} />
+            <StyledSharing imageUrl={ideaImageLarge} />
 
-            <GiveOpinion onClick={this.scrollToCommentForm}>
-              <IconWrapper>
-                <Icon name="comments" />
-              </IconWrapper>
-              <GiveOpinionText>
-                <FormattedMessage {...messages.commentsTitle} />
-              </GiveOpinionText>
-            </GiveOpinion>
+            {/* authUser &&
+              <GiveOpinion onClick={this.scrollToCommentForm}>
+                <IconWrapper>
+                  <Icon name="comments" />
+                </IconWrapper>
+                <GiveOpinionText>
+                  <FormattedMessage {...messages.commentsTitle} />
+                </GiveOpinionText>
+              </GiveOpinion>
+            */}
           </SharingWrapper>
 
           <MoreActionsMenuWrapper>
@@ -744,7 +744,7 @@ class IdeasShow extends React.PureComponent<Props, State> {
                   </StatusContainerMobile>
                 }
 
-                {ideaImageMedium ? <IdeaImage src={ideaImageMedium} /> : null}
+                {ideaImageLarge ? <IdeaImage src={ideaImageLarge} /> : null}
 
                 <AuthorAndAdressWrapper>
                   <AuthorContainer>
@@ -830,5 +830,3 @@ class IdeasShow extends React.PureComponent<Props, State> {
     return null;
   }
 }
-
-export default IdeasShow;

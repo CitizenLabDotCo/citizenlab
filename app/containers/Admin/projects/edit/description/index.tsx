@@ -1,7 +1,7 @@
 // Libraries
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import * as _ from 'lodash';
+import { get, set, isEmpty } from 'lodash';
 
 import { EditorState } from 'draft-js';
 
@@ -110,7 +110,7 @@ class ProjectDescription extends React.Component<Props, State> {
     const { diff, locale } = this.state;
     const htmlDescription = getHtmlStringFromEditorState(editorState);
 
-    _.set(diff, `description_multiloc.${locale}`, htmlDescription);
+    set(diff, `description_multiloc.${locale}`, htmlDescription);
 
     this.setState({
       editorState,
@@ -126,7 +126,7 @@ class ProjectDescription extends React.Component<Props, State> {
     event.preventDefault();
     const { diff, data } = this.state;
 
-    if (!_.isEmpty(diff) && data.id) {
+    if (!isEmpty(diff) && data.id) {
       this.setState({ loading: true, saved: true });
       updateProject(data.id, diff)
       .catch(this.handleSaveErrors)
@@ -140,7 +140,7 @@ class ProjectDescription extends React.Component<Props, State> {
     const { data, diff, editorState, loading, saved, errors, locale } = this.state;
     const projectAttrs = { ...data.attributes, ...diff } as IUpdatedProjectProperties;
     const submitState = getSubmitState({ errors, saved, diff });
-    const previewValue = _.get(projectAttrs, `description_preview_multiloc.${locale}`, '');
+    const previewValue = get(projectAttrs, `description_preview_multiloc.${locale}`, '');
 
     return (
       <form className="e2e-project-description-form" onSubmit={this.saveProject}>

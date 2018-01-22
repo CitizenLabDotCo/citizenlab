@@ -4,7 +4,7 @@ import * as Rx from 'rxjs/Rx';
 import styled from 'styled-components';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import * as _ from 'lodash';
+import { isString, reject } from 'lodash';
 
 // Services
 import { projectBySlugStream } from 'services/projects';
@@ -82,7 +82,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
   componentDidMount () {
     this.setState({ loading: true });
 
-    if (_.isString(this.props.params.slug)) {
+    if (isString(this.props.params.slug)) {
       this.subscription = projectBySlugStream(this.props.params.slug).observable.switchMap((project) => {
         return phasesStream(project.data.id).observable.map((phases) => (phases.data));
       }).subscribe((phases) => {
@@ -100,7 +100,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
       event.preventDefault();
       if (window.confirm(this.props.intl.formatMessage(messages.deletePhaseConfirmation))) {
         deletePhase(phaseId).then(() => {
-          this.setState({ phases: _.reject(this.state.phases, { id: phaseId }) });
+          this.setState({ phases: reject(this.state.phases, { id: phaseId }) });
         });
       }
     };
@@ -143,7 +143,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
                 </OrderLabel>
                 <div className="expand">
                   <h1 className="e2e-phase-title"><T value={phase.attributes.title_multiloc} /></h1>
-                  <p>{formatDate(phase.attributes.start_at)} - {formatDate(phase.attributes.end_at)}</p>
+                  <p>{formatDate(phase.attributes.start_at)}  →  {formatDate(phase.attributes.end_at)}</p>
                 </div>
                 <Button className="e2e-delete-phase" icon="delete" style="text" onClick={this.createDeleteClickHandler(phase.id)}>
                   <FormattedMessage {...messages.deletePhaseButton} />

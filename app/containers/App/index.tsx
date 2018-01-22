@@ -1,5 +1,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
+import * as moment from 'moment';
+import 'moment-timezone';
 
 // libraries
 import { RouterState, browserHistory } from 'react-router';
@@ -66,11 +68,10 @@ type State = {
 };
 
 export default class App extends React.PureComponent<Props & RouterState, State> {
-  state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       currentTenant: null,
       modalOpened: false,
@@ -83,35 +84,36 @@ export default class App extends React.PureComponent<Props & RouterState, State>
 
   componentWillMount() {
     const authUser$ = authUserStream().observable;
+    const locale$ = localeStream().observable;
+    const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
+      Rx.Observable.combineLatest(
+        authUser$.do((authUser) => {
+          if (!authUser) {
+            signOut();
+            store.dispatch({ type: DELETE_CURRENT_USER_LOCAL });
+          } else {
+            store.dispatch({ type: LOAD_CURRENT_USER_SUCCESS, payload: authUser });
+          }
+        }),
+        locale$.do((locale) => {
+          moment.locale(locale);
+        }),
+        currentTenant$.do((currentTenant) => {
+          moment.tz.setDefault(currentTenant.data.attributes.settings.core.timezone);
+          store.dispatch({ type: LOAD_CURRENT_TENANT_SUCCESS, payload: currentTenant });
+        })
+      ).subscribe(([_authUser, _locale, currentTenant]) => {
+        this.setState({ currentTenant });
+      }),
+
       eventEmitter.observeEvent<IModalInfo>('cardClick').subscribe(({ eventValue }) => {
         const { type, id, url } = eventValue;
         this.openModal(type, id, url);
       }),
-
-      authUser$.switchMap((authUser) => {
-        const locale$ = localeStream().observable;
-        const currentTenant$ = currentTenantStream().observable.do((currentTenant) => {
-          this.setState({ currentTenant });
-          store.dispatch({ type: LOAD_CURRENT_TENANT_SUCCESS, payload: currentTenant });
-        });
-
-        if (!authUser) {
-          signOut();
-          store.dispatch({ type: DELETE_CURRENT_USER_LOCAL });
-        } else {
-          store.dispatch({ type: LOAD_CURRENT_USER_SUCCESS, payload: authUser });
-        }
-
-        return Rx.Observable.combineLatest(
-          locale$,
-          currentTenant$
-        );
-      }).subscribe()
     ];
   }
-
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
@@ -151,7 +153,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     ) : undefined);
 
     return (
-      <div>
+      <>
         <WatchSagas sagas={authSagas} />
         <WatchSagas sagas={areasSagas} />
         <WatchSagas sagas={{ tenantSaga }} />
@@ -183,7 +185,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
             </Container>
           </ThemeProvider>
         )}
-      </div>
+      </>
     );
   }
 }
