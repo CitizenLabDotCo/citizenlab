@@ -118,7 +118,7 @@ export default class IdeasNewPage2 extends React.PureComponent<Props, State> {
       description: null,
       selectedTopics: null,
       selectedProject: null,
-      location: '',
+      position: '',
       submitError: false,
       processing: false,
       ideaId: null,
@@ -150,13 +150,13 @@ export default class IdeasNewPage2 extends React.PureComponent<Props, State> {
 
   async postIdea(publicationStatus: 'draft' | 'published', authorId: string | null = null) {
     const { locale } = await this.localState.get();
-    const { title, description, selectedTopics, selectedProject, location, ideaId } = await this.globalState.get();
+    const { title, description, selectedTopics, selectedProject, position, ideaId } = await this.globalState.get();
     const ideaTitle = { [locale as string]: title as string };
     const ideaDescription = { [locale as string]: (description || '') };
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const projectId = (selectedProject ? selectedProject.value as string : null);
-    const locationGeoJSON = (isString(location) && !isEmpty(location) ? await convertToGeoJson(location) : null);
-    const locationDescription = (isString(location) && !isEmpty(location) ? location : null);
+    const locationGeoJSON = (isString(position) && !isEmpty(position) ? await convertToGeoJson(position) : null);
+    const locationDescription = (isString(position) && !isEmpty(position) ? position : null);
 
     if (ideaId) {
       return await updateIdea(ideaId, {
