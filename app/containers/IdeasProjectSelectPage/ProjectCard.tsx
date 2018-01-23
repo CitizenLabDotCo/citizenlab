@@ -133,12 +133,16 @@ const PostingEnabledReason = styled.div`
   overflow: hidden;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 `;
 
-const StyledAdminIcon = styled(Icon)`
-  width: 1.5rem;
-  margin: 1rem;
+const AdminIconWrapper = styled.div`
+  width: 1.2rem;
+  height: 1.4rem;
+  margin: 0 0.5rem 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 type Props = {
@@ -252,8 +256,10 @@ class ProjectCard extends React.Component<Props & InjectedNestedResourceLoaderPr
             }
             {cardState === 'enabledBecauseAdmin' &&
               <PostingEnabledReason>
+                <AdminIconWrapper>
+                  <Icon name="admin" />
+                </AdminIconWrapper>
                 <FormattedMessage {...messages.postingPossibleBecauseAdmin} />
-                <StyledAdminIcon name="admin" />
               </PostingEnabledReason>
             }
           </ProjectContent>

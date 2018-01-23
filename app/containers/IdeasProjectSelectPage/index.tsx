@@ -72,7 +72,7 @@ const ProjectsList = styled.div`
   padding: 2rem 0;
 `;
 
-const StyledProjectCard = styled(ProjectCard)`
+const ProjectCardWrapper = styled.div`
   ${media.biggerThanDesktop`
     margin-left: -30px;
   `}
@@ -185,12 +185,14 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
               </ColumnExplanation>
               <ProjectsList>
                 {cityProjects && cityProjects.map((project) => (
-                  <StyledProjectCard
-                    key={project.id as any}
-                    onClick={this.handleProjectClick(project) as any}
-                    project={project as any}
-                    selected={(selectedProjectId === project.id) as any}
-                  />
+                  <ProjectCardWrapper>
+                    <ProjectCard
+                      key={project.id as any}
+                      onClick={this.handleProjectClick(project) as any}
+                      project={project as any}
+                      selected={(selectedProjectId === project.id) as any}
+                    />
+                  </ProjectCardWrapper>
                 ))}
               </ProjectsList>
               {hasMore && <a onClick={loadMore} role="button"><FormattedMessage {...messages.loadMore} /></a>}
@@ -204,11 +206,13 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
                   <FormattedMessage {...messages.openProjectExplanation} />
                 </ColumnExplanation>
                 <ProjectsList>
-                  <StyledProjectCard
-                    onClick={this.handleProjectClick(openProject) as any}
-                    project={openProject as any}
-                    selected={(selectedProjectId === openProject.id) as any}
-                  />
+                  <ProjectCardWrapper>
+                    <ProjectCard
+                      onClick={this.handleProjectClick(openProject) as any}
+                      project={openProject as any}
+                      selected={(selectedProjectId === openProject.id) as any}
+                    />
+                  </ProjectCardWrapper>
                 </ProjectsList>
               </RightColumn>
             }
