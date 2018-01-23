@@ -9,7 +9,6 @@ import * as bowser from 'bowser';
 import { EditorState } from 'draft-js';
 
 // components
-import Select from 'components/UI/Select';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
@@ -266,7 +265,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     const className = this.props['className'];
     const { formatMessage } = this.props.intl;
-    const { topics, projects, title, description, selectedTopics, selectedProject, location, imageFile, titleError, descriptionError } = this.state;
+    const { topics, title, description, selectedTopics, location, imageFile, titleError, descriptionError } = this.state;
 
     return (
       <Form className={className}>
@@ -304,18 +303,6 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
               options={topics}
               max={2}
               onChange={this.handleTopicsOnChange}
-            />
-          </FormElement>
-        }
-
-        {projects && projects.length > 0 &&
-          <FormElement>
-            <Label value={<FormattedMessage {...messages.projectsLabel} />} htmlFor="projects" />
-            <Select
-              value={selectedProject}
-              placeholder={<FormattedMessage {...messages.projectsPlaceholder} />}
-              options={projects}
-              onChange={this.handleProjectOnChange}
             />
           </FormElement>
         }
