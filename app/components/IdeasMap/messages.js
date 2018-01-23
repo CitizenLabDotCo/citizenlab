@@ -13,4 +13,12 @@ export default defineMessages({
     id: 'app.components.IdeasMap.noIdeasWithLocation',
     defaultMessage: `The ideas in this project don't have any location information.`,
   },
+  login: {
+    id: 'app.components.IdeasMap.login',
+    defaultMessage: 'Login',
+  },
+  register: {
+    id: 'app.components.IdeasMap.register',
+    defaultMessage: 'Create an account',
+  },
 });
