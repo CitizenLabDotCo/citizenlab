@@ -1,25 +1,12 @@
-/*
- * PagesShowPage Messages
- *
- * This contains all the text for the PagesShowPage component.
- */
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  header: {
-    id: 'app.containers.PagesShowPage.header',
-    defaultMessage: 'This is PagesShowPage container !',
+  notFoundTitle: {
+    id: 'app.components.PagesShowPage.notFoundTitle',
+    defaultMessage: 'Page not found',
   },
-  loading: {
-    id: 'app.containers.PagesShowPage.loading',
-    defaultMessage: 'Loading page...',
-  },
-  helmetTitle: {
-    id: 'app.containers.PagesShowPage.helmetTitle',
-    defaultMessage: 'Page show page',
-  },
-  helmetDescription: {
-    id: 'app.containers.PagesShowPage.helmetDescription',
-    defaultMessage: 'Displays page created by admin',
+  notFoundDescription: {
+    id: 'app.components.PagesShowPage.notFoundDescription',
+    defaultMessage: 'The requested page could not be found',
   },
 });
