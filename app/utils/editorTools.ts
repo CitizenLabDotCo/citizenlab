@@ -1,23 +1,24 @@
-import * as _ from 'lodash';
-import { EditorState, convertToRaw, ContentState } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
-import htmlToDraft from 'html-to-draftjs';
+import { EditorState, ContentState, convertFromHTML } from 'draft-js';
+import { stateToHTML } from 'draft-js-export-html';
 
 export function getEditorStateFromHtmlString(html: string | null | undefined) {
-  let editorState: EditorState;
+  let editorState = EditorState.createEmpty();
 
-  if (_.isString(html) && !_.isEmpty(html)) {
-    const blocksFromHtml = htmlToDraft(html);
-    const { contentBlocks, entityMap } = blocksFromHtml;
-    const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+  if (html) {
+    const blocksFromHTML = convertFromHTML(html);
+    const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
     editorState = EditorState.createWithContent(contentState);
-  } else {
-    editorState = EditorState.createEmpty();
   }
 
   return editorState;
 }
 
-export function getHtmlStringFromEditorState(editorState: EditorState): string {
-  return (!editorState || !editorState.getCurrentContent().hasText() ? '' : draftToHtml(convertToRaw(editorState.getCurrentContent())));
+export function getHtmlStringFromEditorState(editorState: EditorState | null | undefined) {
+  let html = '';
+
+  if (editorState) {
+    html = stateToHTML(editorState.getCurrentContent());
+  }
+
+  return html;
 }
