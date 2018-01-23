@@ -247,7 +247,7 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
       const projectHeaderImageLarge = (project.data.attributes.header_bg.large || null);
 
       return (
-        <>
+        <React.Fragment>
           <Meta projectSlug={projectSlug} />
 
           <Container>
@@ -296,7 +296,7 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
             </Content>
           </Container>
 
-        </>
+        </React.Fragment>
       );
     }
 

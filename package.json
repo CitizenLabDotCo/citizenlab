@@ -266,6 +266,7 @@
     "react-intl": "2.4.0",
     "react-leaflet": "^1.7.8",
     "react-leaflet-markercluster": "^1.1.7",
+    "react-medium-image-zoom": "^3.0.10",
     "react-mentions": "^1.2.2",
     "react-places-autocomplete": "^5.4.3",
     "react-redux": "4.4.8",
