@@ -7,7 +7,6 @@ import { findMembership, addMembership, FoundUser } from 'services/groups';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
 import messages from './messages';
 import localize, { injectedLocalized } from 'utils/localize';
 

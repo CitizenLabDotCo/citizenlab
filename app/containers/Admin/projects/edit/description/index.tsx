@@ -1,9 +1,9 @@
 // Libraries
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import * as _ from 'lodash';
+import { get, set, isEmpty } from 'lodash';
 
-import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
+import { EditorState } from 'draft-js';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -22,15 +22,11 @@ import Label from 'components/UI/Label';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Error from 'components/UI/Error';
 import Editor from 'components/UI/Editor';
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import { Section, SectionField } from 'components/admin/Section';
 import TextArea from 'components/UI/TextArea';
 
-// Styling
-import styled from 'styled-components';
-
 // Typing
-import { API } from 'typings';
-import { getLocalized } from 'utils/i18n';
+import { API, Locale } from 'typings';
 
 interface Props {
   params: {
@@ -46,7 +42,7 @@ interface State {
     [fieldName: string]: API.Error[]
   };
   saved: boolean;
-  locale: string;
+  locale: Locale;
   editorState: EditorState;
 }
 
@@ -63,7 +59,7 @@ class ProjectDescription extends React.Component<Props, State> {
       data: { id: null, attributes: {}, relationships: { areas: { data: [] } } },
       diff: {},
       errors: {},
-      locale: '',
+      locale: 'en',
       editorState: EditorState.createEmpty(),
     };
 
@@ -83,9 +79,16 @@ class ProjectDescription extends React.Component<Props, State> {
           project$
         )
         .subscribe(([locale, project]) => {
+          const { description_multiloc } = project.data.attributes;
+          let editorState;
+
+          if (description_multiloc && description_multiloc[locale] !== undefined) {
+            editorState = getEditorStateFromHtmlString(description_multiloc[locale] || null);
+          }
+
           this.setState((state) => ({
             locale,
-            editorState: (project.data.attributes.description_multiloc ? getEditorStateFromHtmlString(project.data.attributes.description_multiloc[locale]) : state.editorState),
+            editorState: (editorState ? editorState : state.editorState),
             data: project.data,
             loading: false,
             diff: {},
@@ -107,7 +110,7 @@ class ProjectDescription extends React.Component<Props, State> {
     const { diff, locale } = this.state;
     const htmlDescription = getHtmlStringFromEditorState(editorState);
 
-    _.set(diff, `description_multiloc.${locale}`, htmlDescription);
+    set(diff, `description_multiloc.${locale}`, htmlDescription);
 
     this.setState({
       editorState,
@@ -123,7 +126,7 @@ class ProjectDescription extends React.Component<Props, State> {
     event.preventDefault();
     const { diff, data } = this.state;
 
-    if (!_.isEmpty(diff) && data.id) {
+    if (!isEmpty(diff) && data.id) {
       this.setState({ loading: true, saved: true });
       updateProject(data.id, diff)
       .catch(this.handleSaveErrors)
@@ -137,6 +140,7 @@ class ProjectDescription extends React.Component<Props, State> {
     const { data, diff, editorState, loading, saved, errors, locale } = this.state;
     const projectAttrs = { ...data.attributes, ...diff } as IUpdatedProjectProperties;
     const submitState = getSubmitState({ errors, saved, diff });
+    const previewValue = get(projectAttrs, `description_preview_multiloc.${locale}`, '');
 
     return (
       <form className="e2e-project-description-form" onSubmit={this.saveProject}>
@@ -148,7 +152,7 @@ class ProjectDescription extends React.Component<Props, State> {
             <TextArea
               name="meta_description"
               rows={5}
-              value={projectAttrs && projectAttrs.description_preview_multiloc ? projectAttrs.description_preview_multiloc[locale] : ''}
+              value={previewValue}
               onChange={this.updatePreview}
               maxLength={280}
             />

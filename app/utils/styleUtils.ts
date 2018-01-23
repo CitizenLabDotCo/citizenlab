@@ -45,7 +45,12 @@ export const media = {
     @media (max-width: 1024px) {
       ${css(style, ...args)}
   }
-`,
+  `,
+  biggerThanDesktop: (style: any, ...args) => css`
+    @media(min-width: 1024px) {
+      ${ css(style, ...args) }
+    }
+  `,
 };
 
 export function remCalc(desiredSize: number) {
@@ -78,6 +83,7 @@ export function color(name: keyof typeof colors) {
 }
 
 export const fontSizes = {
+  xs: 12,
   small: 14,
   base: 16,
   large: 18,

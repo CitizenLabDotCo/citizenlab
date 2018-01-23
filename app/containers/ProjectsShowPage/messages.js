@@ -1,8 +1,3 @@
-/*
- * ProjectsIndexPage Messages
- *
- * This contains all the text for the ProjectsIndexPage component.
- */
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
@@ -13,6 +8,18 @@ export default defineMessages({
   project: {
     id: 'app.containers.Projects.project',
     defaultMessage: 'Project',
+  },
+  projectInformation: {
+    id: 'app.containers.Projects.projectInformation',
+    defaultMessage: 'Project information',
+  },
+  events: {
+    id: 'app.containers.Projects.events',
+    defaultMessage: 'Events',
+  },
+  startAnIdea: {
+    id: 'app.containers.Projects.startAnIdea',
+    defaultMessage: 'Start an idea',
   },
   helmetDescription: {
     id: 'app.containers.Projects.helmetDescription',
@@ -38,14 +45,6 @@ export default defineMessages({
     id: 'app.containers.Projects.navEvents',
     defaultMessage: 'Events',
   },
-  LoadingMessage: {
-    id: 'app.containers.Projects.LoadingMessage',
-    defaultMessage: 'Loading',
-  },
-  LoadingError: {
-    id: 'app.containers.Projects.LoadingError',
-    defaultMessage: 'Upps... something went wrong',
-  },
   upcomingEvents: {
     id: 'app.containers.Projects.upcomingEvents',
     defaultMessage: 'Upcoming events',
@@ -53,5 +52,37 @@ export default defineMessages({
   allEvents: {
     id: 'app.containers.Projects.allEvents',
     defaultMessage: 'All events',
+  },
+  noPhaseSelected: {
+    id: 'app.containers.Projects.noPhaseSelected',
+    defaultMessage: 'No phase selected',
+  },
+  phaseNumber: {
+    id: 'app.containers.Projects.phaseNumber',
+    defaultMessage: 'Phase {phaseNumber}',
+  },
+  endsOn: {
+    id: 'app.containers.Projects.endsOn',
+    defaultMessage: 'Ends on {date}',
+  },
+  startsOn: {
+    id: 'app.containers.Projects.startsOn',
+    defaultMessage: 'Starts on {date}',
+  },
+  endedOn: {
+    id: 'app.containers.Projects.endedOn',
+    defaultMessage: 'Ended on {date}',
+  },
+  displayMap: {
+    id: 'app.containers.Projects.displayMap',
+    defaultMessage: 'Map',
+  },
+  displayCards: {
+    id: 'app.containers.Projects.displayCards',
+    defaultMessage: 'Cards',
+  },
+  aboutThisPhase: {
+    id: 'app.containers.Projects.aboutThisPhase',
+    defaultMessage: 'About this phase',
   },
 });

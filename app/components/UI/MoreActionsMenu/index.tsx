@@ -6,13 +6,8 @@ import Tooltip from '../Tooltip';
 import Button from '../Button';
 import Icon, { IconNames } from '../Icon';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 // Styling
-import styled, { css } from 'styled-components';
-import { darken } from 'polished';
+import styled from 'styled-components';
 
 const MoreOptionsIcon = styled(Icon)`
   fill: ${(props) => props.theme.colors.label};
@@ -95,7 +90,7 @@ export default class MoreActionsMenu extends React.PureComponent<Props, State> {
     this.setState({ visible: false });
   }
 
-  toggleMenu = (event) => {
+  toggleMenu = () => {
     this.setState(state => ({ visible: !state.visible }));
   }
 

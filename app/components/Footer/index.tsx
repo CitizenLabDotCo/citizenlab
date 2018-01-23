@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
@@ -23,12 +22,13 @@ import { LEGAL_PAGES } from 'services/pages';
 // style
 import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
+import { Locale } from 'typings';
 
 const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  z-index: 1;
+  z-index: 0;
 `;
 
 const FirstLine = styled.div`
@@ -158,6 +158,10 @@ const PoweredBy = styled.a`
     margin-top: 10px;
     color: #333;
 
+    &:hover {
+      color: #333;
+    }
+
     ${CitizenLabLogo} {
       fill: #333;
     }
@@ -168,12 +172,18 @@ const LanguageSelectionWrapper = styled.div`
   padding-left: 1rem;
   margin-left: 1rem;
   border-left: 1px solid ${color('separation')};
-
   text-align: right;
 
   .ui.selection.dropdown {
     color: ${color('label')};
   }
+
+  ${media.smallerThanMaxTablet`
+    border-left: 0;
+    margin-left: 0;
+    margin-bottom: 15px;
+    padding-left: 0;
+  `}
 `;
 
 type Props = {
@@ -181,18 +191,17 @@ type Props = {
 };
 
 type State = {
-  locale: string | null;
+  locale: Locale | null;
   currentTenant: ITenant | null;
   showCityLogoSection: boolean;
   languageOptions: {
     key: string;
-    value: string;
+    value: Locale;
     text: string;
   }[]
 };
 
 class Footer extends React.PureComponent<Props, State> {
-  state: State;
   subscriptions: Rx.Subscription[];
 
   public static defaultProps: Partial<Props> = {
@@ -220,8 +229,7 @@ class Footer extends React.PureComponent<Props, State> {
       Rx.Observable.combineLatest(
         locale$,
         currentTenant$
-      )
-      .subscribe(([locale, currentTenant]) => {
+      ).subscribe(([locale, currentTenant]) => {
         const languageOptions = currentTenant.data.attributes.settings.core.locales.map((locale) => ({
           key: locale,
           value: locale,
@@ -237,7 +245,7 @@ class Footer extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleLanguageChange (event, { value }) {
+  handleLanguageChange (_event, { value }) {
     updateLocale(value);
   }
 

@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { flow, find } from 'lodash';
 import styled from 'styled-components';
 import { IIdeaStatusData } from 'services/ideaStatuses';
-import { Label, Popup } from 'semantic-ui-react';
+import { Popup } from 'semantic-ui-react';
 import T from 'components/T';
 
 const Container = styled.div`
@@ -38,10 +37,10 @@ class StatusSelector extends React.PureComponent<Props> {
   }
 
   render() {
-    const { statuses, selectedStatus } = this.props;
+    const { statuses } = this.props;
     return (
       <Container>
-        {statuses.map((status, index) => (
+        {statuses.map((status) => (
           <Popup
             key={status.id}
             trigger={

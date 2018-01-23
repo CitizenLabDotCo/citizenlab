@@ -1,6 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
-import { IRelationship, Multiloc } from 'typings';
+import streams from 'utils/streams';
 
 export interface IGroupsProjectsData {
   id: string;

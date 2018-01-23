@@ -2,20 +2,17 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import styled from 'styled-components';
-import { intlShape } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import * as _ from 'lodash';
+import { isString, reject } from 'lodash';
 
 // Services
 import { projectBySlugStream } from 'services/projects';
 import { phasesStream, IPhaseData, deletePhase } from 'services/phases';
 
 // Components
-import { Link } from 'react-router';
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import Icon from 'components/UI/Icon';
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
 
 // Utils
@@ -85,7 +82,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
   componentDidMount () {
     this.setState({ loading: true });
 
-    if (_.isString(this.props.params.slug)) {
+    if (isString(this.props.params.slug)) {
       this.subscription = projectBySlugStream(this.props.params.slug).observable.switchMap((project) => {
         return phasesStream(project.data.id).observable.map((phases) => (phases.data));
       }).subscribe((phases) => {
@@ -102,8 +99,8 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
     return (event) => {
       event.preventDefault();
       if (window.confirm(this.props.intl.formatMessage(messages.deletePhaseConfirmation))) {
-        deletePhase(phaseId).then((response) => {
-          this.setState({ phases: _.reject(this.state.phases, { id: phaseId }) });
+        deletePhase(phaseId).then(() => {
+          this.setState({ phases: reject(this.state.phases, { id: phaseId }) });
         });
       }
     };
@@ -146,7 +143,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
                 </OrderLabel>
                 <div className="expand">
                   <h1 className="e2e-phase-title"><T value={phase.attributes.title_multiloc} /></h1>
-                  <p>{formatDate(phase.attributes.start_at)} - {formatDate(phase.attributes.end_at)}</p>
+                  <p>{formatDate(phase.attributes.start_at)}  →  {formatDate(phase.attributes.end_at)}</p>
                 </div>
                 <Button className="e2e-delete-phase" icon="delete" style="text" onClick={this.createDeleteClickHandler(phase.id)}>
                   <FormattedMessage {...messages.deletePhaseButton} />

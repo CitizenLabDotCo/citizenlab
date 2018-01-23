@@ -2,35 +2,31 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
-// libraries
-import { Link } from 'react-router';
-import classNames from 'classnames';
-
 // components
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Error from 'components/UI/Error';
-import Warning from 'components/UI/Warning';
 import Author from './Author';
+import CommentingDisabled from './CommentingDisabled';
 
 // tracking
 import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { InjectedIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
 import { authUserStream } from 'services/auth';
 import { localeStream } from 'services/locale';
+import { ideaByIdStream, IIdeaData } from 'services/ideas';
 import { IUser } from 'services/users';
-import { addCommentToIdea, addCommentToComment } from 'services/comments';
+import { addCommentToIdea } from 'services/comments';
 
 // style
 import styled from 'styled-components';
-import { darken } from 'polished';
+import { Locale } from 'typings';
 
 const Container = styled.div`
   padding: 0;
@@ -38,22 +34,6 @@ const Container = styled.div`
 `;
 
 const CommentContainer = styled.div``;
-
-const SignInMessage = styled.div`
-  color: #333;
-  font-size: 18px;
-  font-weight: 300;
-`;
-
-const StyledLink = styled(Link)`
-  color: #1391A1;
-  text-decoration: underline;
-  transition: all 100ms ease-out;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
 
 const StyledAuthor = styled(Author)`
   margin-bottom: 10px;
@@ -76,11 +56,14 @@ type Tracks = {
 };
 
 type State = {
-  locale: string | null;
+  locale: Locale | null;
   authUser: IUser | null;
   inputValue: string;
   processing: boolean;
   errorMessage: string | null;
+  commentingEnabled: boolean | null;
+  commentingDisabledReason: IIdeaData['relationships']['action_descriptor']['data']['commenting']['disabled_reason'] | null;
+  projectId: string | null;
 };
 
 class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & Tracks, State> {
@@ -94,22 +77,30 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
       authUser: null,
       inputValue: '',
       processing: false,
-      errorMessage: null
+      errorMessage: null,
+      commentingEnabled: null,
+      commentingDisabledReason: null,
+      projectId: null,
     };
   }
 
   componentWillMount () {
     const locale$ = localeStream().observable;
     const authUser$ = authUserStream().observable;
-
+    const idea$ = ideaByIdStream(this.props.ideaId).observable;
     this.subscriptions = [
       Rx.Observable.combineLatest(
         locale$,
-        authUser$
-      ).subscribe(([locale, authUser]) => {
+        authUser$,
+        idea$,
+      ).subscribe(([locale, authUser, idea]) => {
+
         this.setState({
           locale,
-          authUser
+          authUser,
+          commentingEnabled: idea.data.relationships.action_descriptor.data.commenting.enabled,
+          commentingDisabledReason: idea.data.relationships.action_descriptor.data.commenting.disabled_reason,
+          projectId: idea.data.relationships.project.data.id,
         });
       })
     ];
@@ -178,24 +169,11 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
   render() {
     const { ideaId } = this.props;
     const { formatMessage } = this.props.intl;
-    const { authUser, inputValue, processing, errorMessage } = this.state;
+    const { authUser, inputValue, processing, errorMessage, commentingEnabled, commentingDisabledReason, projectId } = this.state;
     const placeholder = formatMessage(messages.commentBodyPlaceholder);
     const commentButtonDisabled = (!inputValue || inputValue === '');
 
-    const signInLinkText = (
-      <FormattedMessage
-        {...messages.signInToComment}
-        values={{
-          signInLink: <StyledLink to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></StyledLink>,
-        }}
-      />
-    );
-
-    const signUp = (!authUser ? (
-      <Warning text={signInLinkText} />
-    ) : null);
-
-    const commentForm = (authUser ? (
+    const commentForm = (authUser && (
       <CommentContainer className="e2e-comment-form ideaCommentForm">
         <StyledAuthor authorId={authUser.data.id} />
 
@@ -220,12 +198,17 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
           </SubmitButton>
         </MentionsTextArea>
       </CommentContainer>
-    ) : null);
+    ));
 
     return (
       <Container>
-        {signUp}
-        {commentForm}
+        <CommentingDisabled
+          isLoggedIn={!!authUser}
+          commentingEnabled={commentingEnabled}
+          commentingDisabledReason={commentingDisabledReason}
+          projectId={projectId}
+        />
+        {authUser && commentingEnabled === true && commentForm}
       </Container>
     );
   }

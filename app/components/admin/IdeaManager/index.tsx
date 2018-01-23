@@ -1,12 +1,9 @@
 import * as React from 'react';
-import * as Rx from 'rxjs';
-import { keys, isEmpty, filter, flow, size } from 'lodash';
+import { keys, isEmpty, flow, size } from 'lodash';
 import styled from 'styled-components';
 import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
 
-
 import { FormattedMessage } from 'utils/cl-intl';
-import { updateIdea, deleteIdea } from 'services/ideas';
 import { topicsStream, ITopicData } from 'services/topics';
 import { ideaStatusesStream, IIdeaStatusData } from 'services/ideaStatuses';
 import { projectsStream, IProjectData } from 'services/projects';
@@ -21,11 +18,10 @@ import { DragDropContext } from 'react-dnd';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // Components
-import Button from 'components/UI/Button';
 import FilterSidebar from './components/FilterSidebar';
 import InfoSidebar from './components/InfoSidebar';
 import IdeaTable from './components/IdeaTable';
-import { Input, Menu, Dropdown, Grid, Search, Sticky, Checkbox, Message } from 'semantic-ui-react';
+import { Input, Sticky, Message } from 'semantic-ui-react';
 
 import messages from './messages';
 
@@ -87,7 +83,6 @@ const RightColumn = styled.div`
 `;
 
 class IdeaManager extends React.PureComponent<Props, State> {
-
   globalState: IGlobalStateService<IAdminFullWidth>;
 
   constructor(props) {
@@ -100,14 +95,16 @@ class IdeaManager extends React.PureComponent<Props, State> {
       contextRef: null,
     };
 
-    this.globalState = globalState.init<IAdminFullWidth>('AdminFullWidth');
+    this.globalState = globalState.init('AdminFullWidth');
   }
 
   componentDidMount() {
     this.globalState.set({ enabled: true });
+
     if (this.props.project) {
       this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(this.props.project.id);
     }
+
     this.setVisibleFilterMenus(!!this.props.project);
   }
 
@@ -174,7 +171,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
                 activeFilterMenu={activeFilterMenu}
                 visibleFilterMenus={visibleFilterMenus}
                 onChangeActiveFilterMenu={this.handleChangeActiveFilterMenu}
-                project={this.props.project || null}
+                project={(this.props.project && this.props.project) || null}
                 phases={this.props.phases.all}
                 topics={this.props.topics.all}
                 projects={this.props.projects.all}

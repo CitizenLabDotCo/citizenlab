@@ -81,6 +81,7 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
 
   componentWillMount() {
     const authUser$ = authUserStream().observable;
+
     this.subscriptions = [
       authUser$.subscribe((response) => {
         this.setState({ unreadCount: response && response.data.attributes.unread_notifications || undefined });

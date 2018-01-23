@@ -7,7 +7,7 @@ import Map from 'components/Map';
 // styling
 import styled from 'styled-components';
 
-const StyledMap = styled(Map)`
+const MapWrapper = styled.div`
   height: 265px;
 `;
 
@@ -17,6 +17,7 @@ interface Props {
     type: 'Point';
     coordinates: [number, number];
   };
+  id: string;
 }
 
 interface State {
@@ -29,10 +30,10 @@ export default class IdeaMap extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { coordinates } = this.props.location;
-
     return (
-      <StyledMap center={coordinates} points={[coordinates]} />
+      <MapWrapper>
+        <Map points={[{ ...this.props.location }]} />
+      </MapWrapper>
     );
   }
 }

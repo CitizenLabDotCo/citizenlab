@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import { IIdeaData, ideaByIdStream } from 'services/ideas';
 import InfoSidebarSingle from './InfoSidebarSingle';
 import InfoSidebarMulti from './InfoSidebarMulti';
 

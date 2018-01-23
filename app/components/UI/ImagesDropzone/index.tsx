@@ -1,8 +1,6 @@
 import * as React from 'react';
 import * as Dropzone from 'react-dropzone';
 import * as _ from 'lodash';
-import { media } from 'utils/styleUtils';
-import { darken } from 'polished';
 import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
 import Error from 'components/UI/Error';
@@ -30,11 +28,6 @@ const ContentWrapper = styled(TransitionGroup)`
 const ErrorWrapper = styled.div`
   flex: 1;
   margin-top: -12px;
-`;
-
-const DropzoneContainer = styled.div`
-  display: flex;
-  flex-direction: column;
 `;
 
 const DropzonePlaceholderText = styled.div`
@@ -149,7 +142,7 @@ const Image: any = styled.div`
   background-image: url(${(props: any) => props.src});
   position: relative;
   box-sizing: border-box;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.imageRadius ? props.imageRadius : '5px'};
   border: solid 1px #ccc;
 `;
 
@@ -260,6 +253,7 @@ type Props = {
   onAdd: (arg: ImageFile) => void;
   onUpdate: (arg: ImageFile[] | null) => void;
   onRemove: (arg: ImageFile) => void;
+  imageRadius?: string;
 };
 
 type State = {
@@ -405,7 +399,7 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     let { acceptedFileTypes, placeholder, objectFit } = this.props;
     let { images } = this.state;
     const className = this.props['className'];
-    const { maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio } = this.props;
+    const { maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio, imageRadius } = this.props;
     const { formatMessage } = this.props.intl;
     const { errorMessage, processing, canAnimate } = this.state;
     const remainingImages = (maxNumberOfImages && maxNumberOfImages !== 1 ? `(${maxNumberOfImages - _.size(images)} ${formatMessage(messages.remaining)})` : null);
@@ -431,7 +425,7 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
               ratio={imagePreviewRatio}
               className={`${hasSpacing} ${animate}`}
             >
-              <Image src={image.objectUrl} objectFit={objectFit}>
+              <Image imageRadius={imageRadius} src={image.objectUrl} objectFit={objectFit}>
                 <RemoveButton onClick={this.removeImage(image)}>
                   <RemoveIcon name="close2" />
                 </RemoveButton>

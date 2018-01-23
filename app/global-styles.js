@@ -187,4 +187,11 @@ injectGlobal`
   label {
     line-height: 1.5em;
   }
+
+  /* Semantic UI Overrides */
+  .ui.message,
+  .ui.message.warning,
+  .ui.message.info {
+    box-shadow: none;
+  }
 `;

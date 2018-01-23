@@ -10,9 +10,9 @@ const loadModule = (cb) => (componentModule) => {
   cb(null, componentModule.default);
 };
 
-export default (injectReducer) => ({
+export default () => ({
   path: '/admin/users',
-  name: 'ideasUser',
+  name: 'admin users',
   getComponent(nextState, cb) {
     const importModules = Promise.all([
       import('containers/Admin/users'),
@@ -26,22 +26,24 @@ export default (injectReducer) => ({
 
     importModules.catch(errorLoading);
   },
-  indexRoute: {
-    name: 'admin users index',
-    getComponent(nextState, cb) {
-      const importModules = Promise.all([
-        import('containers/Admin/users/index/reducer'),
-        import('containers/Admin/users/index/index'),
-      ]);
-
-      const renderRoute = loadModule(cb);
-
-      importModules.then(([reducer, component]) => {
-        injectReducer('adminUsersIndex', reducer.default);
-        renderRoute(component);
-      });
-
-      importModules.catch(errorLoading);
-    },
-  },
 });
+
+/*
+    {
+      path: '/',
+      name: 'home',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/LandingPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+*/

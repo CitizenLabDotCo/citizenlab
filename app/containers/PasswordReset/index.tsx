@@ -1,15 +1,12 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import * as Rx from 'rxjs/Rx';
 
 // router
 import { browserHistory } from 'react-router';
 
 // components
-import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
 import Success from 'components/UI/Success';
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';

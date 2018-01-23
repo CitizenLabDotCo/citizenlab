@@ -83,7 +83,6 @@ interface State {
 export default class EventBlock extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-
     this.state = {
       separateDates: !moment(props.event.attributes.start_at).isSame(props.event.attributes.end_at, 'day'),
     };

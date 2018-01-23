@@ -7,7 +7,6 @@ import { browserHistory } from 'react-router';
 
 // components
 import Label from 'components/UI/Label';
-import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Select from 'components/UI/Select';
@@ -30,7 +29,7 @@ import messages from './messages';
 import styled from 'styled-components';
 
 // typings
-import { API, IOption } from 'typings';
+import { API, IOption, Locale } from 'typings';
 
 const Form = styled.form`
   width: 100%;
@@ -66,7 +65,7 @@ type Props = {
 
 type State = {
   authUser: IUser | null;
-  locale: string | null;
+  locale: Locale | null;
   currentTenant: ITenant | null;
   areas: IOption[] | null;
   years: IOption[];
@@ -144,7 +143,7 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getOptions(list: IAreas, locale: string, currentTenant: ITenant) {
+  getOptions(list: IAreas, locale: Locale, currentTenant: ITenant) {
     if (list && locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
 
