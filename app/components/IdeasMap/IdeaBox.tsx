@@ -11,6 +11,8 @@ import T from 'components/T';
 import Button from 'components/UI/Button';
 import { Button as SemanticButton, Icon } from 'semantic-ui-react';
 import VoteControl from 'components/VoteControl';
+import Unauthenticated from './Unauthenticated';
+import VotingDisabled from 'components/VoteControl/VotingDisabled';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -61,7 +63,7 @@ const StyledButton = styled(Button)`
   justify-self: flex-end;
 `;
 
-const CommentsCound = styled.span`
+const CommentsCount = styled.span`
   color: ${color('label')};
   font-size: ${fontSize('base')};
 `;
@@ -78,7 +80,27 @@ export interface Props {
   onClose?: {(event): void};
 }
 
-export default class IdeaBox extends React.Component<Props> {
+type State = {
+  showFooter: 'unauthenticated' | 'votingDisabled' | null;
+};
+
+export default class IdeaBox extends React.Component<Props, State> {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      showFooter: null,
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.idea !== this.props.idea) {
+      this.setState({
+        showFooter: null,
+      });
+    }
+  }
+
   createIdeaClickHandler = (idea) => (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -90,7 +112,16 @@ export default class IdeaBox extends React.Component<Props> {
     });
   }
 
+  handleUnauthenticatedVoteClick = () => {
+    this.setState({ showFooter: 'unauthenticated' });
+  }
+
+  handleDisabledVoteClick = () => {
+    this.setState({ showFooter: 'votingDisabled' });
+  }
+
   render() {
+    const { showFooter } = this.state;
     return (
       <GetIdea id={this.props.idea}>
         {({ idea }) => {
@@ -105,11 +136,29 @@ export default class IdeaBox extends React.Component<Props> {
                   <T as="div" value={idea.attributes.body_multiloc} />
                 </Description>
                 <VoteComments>
-                  <VoteControl ideaId={idea.id} size="small" />
-                  <CommentsCound>
-                    <Icon name="comments" />
-                    {idea.attributes.comments_count}
-                  </CommentsCound>
+                  {!showFooter &&
+                    <>
+                      <VoteControl
+                        ideaId={idea.id}
+                        size="small"
+                        unauthenticatedVoteClick={this.handleUnauthenticatedVoteClick}
+                        disabledVoteClick={this.handleDisabledVoteClick}
+                      />
+                      <CommentsCount>
+                        <Icon name="comments" />
+                        {idea.attributes.comments_count}
+                      </CommentsCount>
+                    </>
+                  }
+                  {showFooter === 'unauthenticated' &&
+                    <Unauthenticated />
+                  }
+                  {showFooter === 'votingDisabled' &&
+                    <VotingDisabled
+                      votingDescriptor={idea.relationships.action_descriptor.data.voting}
+                      projectId={idea.relationships.project.data.id}
+                    />
+                  }
                 </VoteComments>
                 <StyledButton circularCorners={false} width="100%" onClick={this.createIdeaClickHandler(idea)}>
                   <FormattedMessage {...messages.seeIdea} />
