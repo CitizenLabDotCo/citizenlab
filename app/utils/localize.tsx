@@ -10,35 +10,33 @@ import { currentTenantStream } from 'services/tenant';
 import { getLocalized } from 'utils/i18n';
 
 // Typing
-import { Multiloc } from 'typings';
+import { Multiloc, Locale } from 'typings';
 
 export interface injectedLocalized {
   localize: {
     (multiloc: Multiloc): string;
   };
-  locale: string;
-  tenantLocales: string[];
+  locale: Locale;
+  tenantLocales: Locale[];
 }
 
 interface Props {}
 
 interface State {
-  locale: string;
-  tenantLocales: string[];
+  locale: Locale;
+  tenantLocales: Locale[];
 }
 
 function localize<PassedProps>(ComposedComponent) {
   return class Localized extends React.PureComponent<Props & PassedProps, State>{
     subscriptions: Rx.Subscription[];
 
-    constructor(props: Props) {
-      super(props as any);
-
+    constructor(props) {
+      super(props);
       this.state = {
-        locale: '',
+        locale: 'en',
         tenantLocales: [],
       };
-
       this.subscriptions = [];
     }
 
@@ -56,6 +54,9 @@ function localize<PassedProps>(ComposedComponent) {
         currentTenantStream().observable
       )
       .subscribe(([locale, currentTenant]) => {
+
+        console.log('locale: ' + locale);
+
         this.setState({
           locale,
           tenantLocales: currentTenant.data.attributes.settings.core.locales,

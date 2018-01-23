@@ -1,10 +1,13 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStream, IStreamParams } from 'utils/streams';
-import request from 'utils/request';
-import * as Rx from 'rxjs/Rx';
-import * as _ from 'lodash';
+import streams, { IStreamParams } from 'utils/streams';
+import { API, Multiloc, Locale } from 'typings';
 
 const apiEndpoint = `${API_PATH}/users`;
+
+export interface IRole {
+  type: string;
+  [key: string]: string;
+}
 
 export interface IUserData {
   id: string;
@@ -13,14 +16,10 @@ export interface IUserData {
     first_name: string;
     last_name: string | null;
     slug: string;
-    locale: string;
-    avatar: {
-      small: string;
-      medium: string;
-      large: string;
-    },
-    roles?: any[],
-    bio_multiloc: {},
+    locale: Locale;
+    avatar: API.ImageSizes,
+    roles?: IRole[],
+    bio_multiloc: Multiloc,
     created_at: string;
     updated_at: string;
     email?: string;
@@ -60,11 +59,11 @@ export interface IUserUpdate {
   birthyear?: number;
   gender?: string;
   domicile?: string;
-  education?: number;
-  bio_multiloc?: {};
+  education?: string;
+  bio_multiloc?: Multiloc;
 }
 
-export function usersStream(streamParams: IStreamParams<IUsers> | null = null) {
+export function usersStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsers>({ apiEndpoint, ...streamParams });
 }
 
@@ -82,4 +81,18 @@ export async function updateUser(userId: string, object: IUserUpdate) {
 
 export async function deleteUser(userId: string) {
   return streams.delete(`${apiEndpoint}/${userId}`, userId);
+}
+
+export function mapUserToDiff(user: IUserData): IUserUpdate {
+  return {
+    first_name: user.attributes.first_name || undefined,
+    last_name: user.attributes.last_name || undefined,
+    email: user.attributes.email || undefined,
+    locale: user.attributes.locale || undefined,
+    birthyear: user.attributes.birthyear || undefined,
+    gender: user.attributes.gender || undefined,
+    domicile: user.attributes.domicile || undefined,
+    education: user.attributes.education || undefined,
+    bio_multiloc: user.attributes.bio_multiloc || undefined,
+  };
 }

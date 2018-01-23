@@ -59,22 +59,21 @@ const Container: any = styled.div`
 
 type Props = {
   checked: boolean;
-  disabled: boolean;
+  disabled?: boolean | undefined;
   onToggle: Function;
 };
 
 type State = {};
 
 export default class Label extends React.PureComponent<Props, State> {
-  handleOnClick = (event) => {
+  handleOnClick = () => {
     if (!this.props.disabled) {
       this.props.onToggle();
     }
   }
 
   render() {
-    const { checked, disabled, children } = this.props;
-    const className = this.props['className'];
+    const { checked, disabled } = this.props;
 
     return (
       <Container onClick={this.handleOnClick} checked={checked} disabled={disabled}>

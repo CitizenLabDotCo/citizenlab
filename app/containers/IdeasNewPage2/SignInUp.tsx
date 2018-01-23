@@ -1,12 +1,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
-// libraries
-import TransitionGroup from 'react-transition-group/TransitionGroup';
-import CSSTransition from 'react-transition-group/CSSTransition';
-
 // components
-import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 import SignIn from 'components/SignIn';
 import SignUp from 'components/SignUp';
@@ -14,9 +9,6 @@ import SignInUpBanner from 'components/SignInUpBanner';
 
 // services
 import { currentTenantStream, ITenant } from 'services/tenant';
-
-// utils
-import { IStream } from 'utils/streams';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -90,14 +82,6 @@ const RightInner = styled.div`
   `}
 `;
 
-const Forms = styled.div`
-  flex: 1;
-`;
-
-const StyledTransitionGroup = styled(TransitionGroup) `
-  position: relative;
-`;
-
 const FormContainer = styled.div``;
 
 const GoBackContainer = styled.div`
@@ -155,12 +139,11 @@ type State = {
   currentTenant: ITenant | null;
 };
 
-class SignInUp extends React.PureComponent<Props, State> {
-  state: State;
+export default class SignInUp extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       show: 'signIn',
       currentTenant: null
@@ -201,10 +184,8 @@ class SignInUp extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { show, currentTenant } = this.state;
-    const logo = (currentTenant ? currentTenant.data.attributes.logo.large : null);
+    const { show } = this.state;
     const { onGoBack } = this.props;
-    const timeout = 10;
 
     const signIn = (show === 'signIn' ? (
       <FormContainer>
@@ -252,5 +233,3 @@ class SignInUp extends React.PureComponent<Props, State> {
     );
   }
 }
-
-export default SignInUp;

@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import request from 'utils/request';
+import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/phases`;
 
@@ -8,16 +8,18 @@ export interface IPhaseData {
   id: string;
   type: string;
   attributes: {
-    title_multiloc: {
-      [key: string]: string;
-    };
-    description_multiloc: {
-      [key: string]: string;
-    };
+    title_multiloc: Multiloc;
+    description_multiloc: Multiloc;
     start_at: string;
     end_at: string;
     created_at: string;
     updated_at: string;
+    participation_method: 'ideation' | 'information';
+    posting_enabled: boolean;
+    commenting_enabled: boolean;
+    voting_enabled: boolean;
+    voting_method: 'limited' | 'unlimited';
+    voting_limited_max: number;
   };
   relationships: {
     project: {
@@ -43,13 +45,19 @@ export interface IUpdatedPhaseProperties {
   description_multiloc?: { [key: string]: string };
   start_at?: string;
   end_at?: string;
+  participation_method?: 'ideation' | 'information';
+  posting_enabled?: boolean | null;
+  commenting_enabled?: boolean | null;
+  voting_enabled?: boolean | null;
+  voting_method?: 'limited' | 'unlimited' | null;
+  voting_limited_max?: number | null;
 }
 
-export function phasesStream(projectId: string, streamParams: IStreamParams<IPhases> | null = null) {
+export function phasesStream(projectId: string, streamParams: IStreamParams | null = null) {
   return streams.get<IPhases>({ apiEndpoint: `${API_PATH}/projects/${projectId}/phases`, ...streamParams });
 }
 
-export function phaseStream(phaseID: string, streamParams: IStreamParams<IPhase> | null = null) {
+export function phaseStream(phaseID: string, streamParams: IStreamParams | null = null) {
   return streams.get<IPhase>({ apiEndpoint: `${apiEndpoint}/${phaseID}`, ...streamParams });
 }
 
@@ -61,6 +69,6 @@ export function addPhase(projectId: string, object: IUpdatedPhaseProperties) {
   return streams.add<IPhase>(`${API_PATH}/projects/${projectId}/phases`, { phase: object });
 }
 
-export function deletePhase(phaseId: string) {  
+export function deletePhase(phaseId: string) {
   return streams.delete(`${apiEndpoint}/${phaseId}`, phaseId);
 }

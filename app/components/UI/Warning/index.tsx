@@ -39,19 +39,20 @@ const Text = styled.div`
 `;
 
 interface Props {
-  text: string | JSX.Element;
+  text?: string | JSX.Element;
+  children?: string | JSX.Element;
 }
 
 export default class Warning extends React.PureComponent<Props> {
   render() {
     const className = this.props['className'];
-    const { text } = this.props;
+    const { text, children } = this.props;
 
     return (
       <Container className={className}>
         <StyledIcon name="info" />
         <Text>
-          {text}
+          {text || children}
         </Text>
       </Container>
     );

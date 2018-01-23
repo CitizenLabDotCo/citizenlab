@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import * as Rx from 'rxjs/Rx';
 
 // style
 import styled from 'styled-components';
@@ -135,10 +134,10 @@ function showLabel(label: string | Multiloc | Message) {
 
 export default class TabbedResource extends React.PureComponent<Props, State> {
   render() {
-    const { resource, messages, tabs, location } = this.props;
+    const { children, resource, messages, tabs, location } = this.props;
 
     return (
-      <div>
+      <>
         <ResourceHeader className="e2e-resource-header">
           <Title>{showLabel(resource.title)}</Title>
 
@@ -148,7 +147,8 @@ export default class TabbedResource extends React.PureComponent<Props, State> {
             </PublicResourceLink>
           }
         </ResourceHeader>
-        {tabs &&
+
+        {(tabs && tabs.length > 0) &&
           <TabbedNav className="e2e-resource-tabs">
             {tabs.map((tab) => (
               <FeatureFlag key={tab.url} name={tab.feature}>
@@ -159,8 +159,11 @@ export default class TabbedResource extends React.PureComponent<Props, State> {
             ))}
           </TabbedNav>
         }
-        <ChildWrapper>{this.props.children}</ChildWrapper>
-      </div>
+
+        <ChildWrapper>
+          {children}
+        </ChildWrapper>
+      </>
     );
   }
 }

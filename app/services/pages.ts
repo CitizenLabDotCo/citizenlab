@@ -1,7 +1,6 @@
 import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import request from 'utils/request';
 
 const apiEndpoint = `${API_PATH}/pages`;
 
@@ -52,11 +51,11 @@ export interface IPage {
   data: IPageData;
 }
 
-export function listPages(streamParams: IStreamParams<{data: IPageData[]}> | null = null) {
+export function listPages(streamParams: IStreamParams | null = null) {
   return streams.get<{data: IPageData[]}>({ apiEndpoint: `${apiEndpoint}`, ...streamParams });
 }
 
-export function pageBySlugStream(pageSlug: string, streamParams: IStreamParams<IPage> | null = null) {
+export function pageBySlugStream(pageSlug: string, streamParams: IStreamParams | null = null) {
   return streams.get<IPage>({ apiEndpoint: `${apiEndpoint}/by_slug/${pageSlug}`, ...streamParams });
 }
 
@@ -68,6 +67,6 @@ export function updatePage(pageId: string, pageData: PageUpdate) {
   return streams.update<IPage>(`${apiEndpoint}/${pageId}`, pageId, pageData);
 }
 
-export function pageByIdStream(pageId: string, streamParams: IStreamParams<IPage> | null = null) {
+export function pageByIdStream(pageId: string, streamParams: IStreamParams | null = null) {
   return streams.get<IPage>({ apiEndpoint: `${apiEndpoint}/${pageId}`, ...streamParams });
 }

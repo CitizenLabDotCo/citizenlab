@@ -16,7 +16,6 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { color } from 'utils/styleUtils';
 
 const LinkButton = styled.button`
   background: none;
@@ -67,7 +66,7 @@ class IdeaActivities extends React.Component<Props, State> {
     this.setState({ modalOpen: true });
   }
 
-  closeModal= () => {
+  closeModal = () => {
     this.setState({ modalOpen: false });
   }
 

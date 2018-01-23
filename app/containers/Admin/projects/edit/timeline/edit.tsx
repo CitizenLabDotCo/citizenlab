@@ -5,40 +5,41 @@ import 'react-dates/lib/css/_datepicker.css';
 // Libraries
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import * as _ from 'lodash';
-import { IStream } from 'utils/streams';
-import * as moment from 'moment';
-import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
-import { browserHistory } from 'react-router';
-import { API } from 'typings';
+import moment from 'moment';
+import { get, isEmpty } from 'lodash';
+import { EditorState } from 'draft-js';
+// import { browserHistory } from 'react-router';
 
 // Services
-import { projectBySlugStream, IProject, IProjectData } from 'services/projects';
-import { phaseStream, updatePhase, addPhase, IPhase, IPhaseData, IUpdatedPhaseProperties } from 'services/phases';
+import { localeStream } from 'services/locale';
+import { projectBySlugStream, IProject } from 'services/projects';
+import { phaseStream, updatePhase, addPhase, IPhase, IUpdatedPhaseProperties } from 'services/phases';
+import eventEmitter from 'utils/eventEmitter';
 
 // Utils
 import getSubmitState from 'utils/getSubmitState';
-import { getHtmlStringFromEditorState } from 'utils/editorTools';
+import { getEditorStateFromHtmlString, getHtmlStringFromEditorState } from 'utils/editorTools';
 
 // Components
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
-import TextArea from 'components/UI/TextArea';
 import Editor from 'components/UI/Editor';
-import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { DateRangePicker } from 'react-dates';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import ParticipationContext, { IParticipationContextConfig } from '../parcticipationContext';
 
 // i18n
-import localize, { injectedLocalized } from 'utils/localize';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { injectTFunc } from 'components/T/utils';
 import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
+
+// Typings
+import { API, Locale } from 'typings';
 
 const PhaseForm = styled.form`
   .DateRangePickerInput {
@@ -50,6 +51,10 @@ const PhaseForm = styled.form`
 
     .DateInput,
     .DateInput_input {
+      color: #333;
+      font-family: 'visuelt', sans-serif !important;
+      font-size: 16px;
+      font-weight: 400;
       background: transparent;
     }
   }
@@ -59,41 +64,39 @@ const PhaseForm = styled.form`
   }
 `;
 
+interface IParams {
+  slug: string | null;
+  id: string | null;
+}
 
-// Component typing
 type Props = {
-  params: {
-    id: string | null,
-    slug: string | null,
-  },
+  params: IParams,
   tFunc: Function,
-  project: IProjectData | null;
   intl: ReactIntl.InjectedIntl;
 };
 
-
 interface State {
-  phase: IPhaseData | null;
+  locale: Locale;
+  phase: IPhase | null;
+  project: IProject | null;
   attributeDiff: IUpdatedPhaseProperties;
-  errors: {
-    [fieldName: string]: API.Error[]
-  } | null;
+  errors: { [fieldName: string]: API.Error[] } | null;
   saving: boolean;
   focusedInput: 'startDate' | 'endDate' | null;
   descState: EditorState;
   saved: boolean;
 }
 
-class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized, State> {
-  phase$: IStream<IPhase>;
+class AdminProjectTimelineEdit extends React.Component<Props, State> {
+  params$: Rx.BehaviorSubject<IParams>;
   subscriptions: Rx.Subscription[];
-  startDatePlaceholder: string;
-  endDatePlaceholder: string;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
+      locale: null as any,
       phase: null,
+      project: null,
       attributeDiff: {},
       errors: null,
       saving: false,
@@ -102,34 +105,34 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
       saved: false,
     };
     this.subscriptions = [];
+    this.params$ = new Rx.BehaviorSubject({ slug: null, id: null });
   }
 
   componentWillMount() {
-    this.startDatePlaceholder = this.props.intl.formatMessage(messages.startDatePlaceholder);
-    this.endDatePlaceholder = this.props.intl.formatMessage(messages.endDatePlaceholder);
+    // const { locale } = this.props;
+    const { slug, id } = this.props.params;
+    this.params$ = new Rx.BehaviorSubject({ slug, id });
+
+    this.subscriptions = [
+      this.params$.distinctUntilChanged().switchMap((params) => {
+        const { slug, id } = params;
+        const locale$ = localeStream().observable;
+        const project$ = (slug ? projectBySlugStream(slug).observable : Rx.Observable.of(null));
+        const phase$ = (id ? phaseStream(id).observable : Rx.Observable.of(null));
+        return Rx.Observable.combineLatest(locale$, project$, phase$);
+      }).subscribe(([locale, project, phase]) => {
+        console.log(locale);
+        console.log(phase);
+        const descState = getEditorStateFromHtmlString(get(phase, `data.attributes.description_multiloc.${locale}`, ''));
+        console.log(descState);
+        this.setState({ locale, project, phase, descState });
+      })
+    ];
   }
 
-  componentDidMount() {
-    if (this.props.params.id) {
-      this.subscriptions = [
-        phaseStream(this.props.params.id)
-        .observable
-        .subscribe((phase) => {
-          let descState = EditorState.createEmpty();
-
-          if (phase) {
-            const blocksFromHtml = convertFromHTML(_.get(phase, `data.attributes.description_multiloc.${this.props.locale}`, ''));
-            const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
-            descState = EditorState.createWithContent(editorContent);
-          }
-
-          this.setState({
-            descState,
-            phase: phase ? phase.data : null,
-          });
-        })
-      ];
-    }
+  componentWillReceiveProps(nextProps: Props) {
+    const { slug, id } = nextProps.params;
+    this.params$ = new Rx.BehaviorSubject({ slug, id });
   }
 
   componentWillUnmount() {
@@ -137,30 +140,42 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
   }
 
   createMultilocUpdater = (name: string) => (value: string) => {
-    if (this.state.attributeDiff) {
-      const newValue = this.state.attributeDiff && this.state.attributeDiff[name] || {};
-      newValue[this.props.locale] = value;
+    const { locale, attributeDiff } = this.state;
+
+    if (attributeDiff) {
+      const newValue = attributeDiff && attributeDiff[name] || {};
+      newValue[locale] = value;
+
       this.setState({
-        attributeDiff: { ...this.state.attributeDiff, [name]: newValue },
+        attributeDiff: {
+          ...attributeDiff,
+          [name]: newValue
+        }
       });
     }
   }
 
   handleDescChange = (editorState: EditorState) => {
-    const htmlValue = getHtmlStringFromEditorState(editorState);
+    const { locale, attributeDiff } = this.state;
 
-    if (this.state.attributeDiff) {
-      const newValue = this.state.attributeDiff && this.state.attributeDiff.description_multiloc || {};
-      newValue[this.props.locale] = htmlValue;
+    if (attributeDiff) {
+      const newHtmlValue = getHtmlStringFromEditorState(editorState);
+      const newValue = attributeDiff && attributeDiff.description_multiloc || {};
+      newValue[locale] = newHtmlValue;
+
       this.setState({
-        attributeDiff: { ...this.state.attributeDiff, description_multiloc: newValue },
-        descState: editorState,
+        attributeDiff: {
+          ...attributeDiff,
+          description_multiloc: newValue
+        },
+        descState: editorState
       });
     }
   }
 
   handleDateUpdate = ({ startDate, endDate }) => {
-    const newAttributesDiff = this.state.attributeDiff;
+    const { attributeDiff } = this.state;
+    const newAttributesDiff = attributeDiff;
     newAttributesDiff.start_at = startDate ? startDate.format('YYYY-MM-DD') : '';
     newAttributesDiff.end_at = endDate ? endDate.format('YYYY-MM-DD') : '';
     this.setState({ attributeDiff: newAttributesDiff });
@@ -170,65 +185,86 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
     this.setState({ focusedInput });
   }
 
-  isOutsideRange = (day) => {
+  isOutsideRange = () => {
     return false;
   }
 
-  handleOnSubmit = (event): void => {
+  handleOnSubmit = async (event: React.FormEvent<any>) => {
     event.preventDefault();
-    if (_.isEmpty(this.state.attributeDiff)) {
-      return;
-    }
+    eventEmitter.emit('AdminProjectTimelineEdit', 'getParticipationContext', null);
+  }
 
-    let savingPromise;
+  handleParticipationContextOnChange = (participationContextConfig: IParticipationContextConfig) => {
+    const { attributeDiff } = this.state;
+    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = participationContextConfig;
 
-    if (this.state.phase) {
-      savingPromise = updatePhase(this.state.phase.id, this.state.attributeDiff);
-    } else if (this.props.project) {
-      savingPromise = addPhase(this.props.project.id, this.state.attributeDiff).then((response) => {
-        browserHistory.push(`/admin/projects/${this.props.params.slug}/timeline/${response.data.id}`);
-        return response;
-      });
-    }
-
-    this.setState({ saving: true, saved: false });
-
-    savingPromise
-    .then((response) => {
-      this.setState({ saving: false, saved: true, attributeDiff: {}, phase: response.data, errors: null });
-    })
-    .catch((e) => {
-      try {
-        let errors = null;
-        if (e && e.json && e.json.errors) {
-          errors = e.json.errors;
-        }
-
-        this.setState({ errors, saving: false, saved: false });
-      } catch (e) {
-        this.setState({ saving: false, saved: false });
+    this.setState({
+      attributeDiff: {
+        ...attributeDiff,
+        participation_method: participationMethod,
+        posting_enabled: postingEnabled,
+        commenting_enabled: commentingEnabled,
+        voting_enabled: votingEnabled,
+        voting_method: votingMethod,
+        voting_limited_max: votingLimit
       }
     });
   }
 
+  handleParcticipationContextOnSubmit = (participationContextConfig: IParticipationContextConfig) => {
+    let { attributeDiff } = this.state;
+    const { phase, project } = this.state;
+    const { slug } = this.props.params;
+    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = participationContextConfig;
+
+    attributeDiff = {
+      ...attributeDiff,
+      participation_method: participationMethod,
+      posting_enabled: postingEnabled,
+      commenting_enabled: commentingEnabled,
+      voting_enabled: votingEnabled,
+      voting_method: votingMethod,
+      voting_limited_max: votingLimit
+    };
+
+    this.save(slug, project, phase, attributeDiff);
+  }
+
+  save = async (slug: string | null, project: IProject | null, phase: IPhase | null, attributeDiff: IUpdatedPhaseProperties) => {
+    if (!isEmpty(attributeDiff)) {
+      try {
+        if (phase) {
+          const savedPhase = await updatePhase(phase.data.id, attributeDiff);
+          this.setState({ saving: false, saved: true, attributeDiff: {}, phase: savedPhase, errors: null });
+        } else if (project && slug) {
+          const savedPhase = await addPhase(project.data.id, attributeDiff);
+          // browserHistory.push(`/admin/projects/${slug}/timeline/`);
+          this.setState({ saving: false, saved: true, attributeDiff: {}, phase: savedPhase, errors: null });
+        }
+      } catch (errors) {
+        this.setState({
+          errors: get(errors, 'json.errors', null), 
+          saving: false, 
+          saved: false
+        });
+      }
+    }
+  }
+
   render() {
-    const phaseAttrs = this.state.phase
-    ? { ...this.state.phase.attributes, ...this.state.attributeDiff }
-    : { ...this.state.attributeDiff };
-
-    const { errors, saved } = this.state;
-    const submitState = getSubmitState({ errors, saved, diff: this.state.attributeDiff });
-    moment.locale(this.props.locale);
-
-    const startDate = phaseAttrs.start_at ? moment(phaseAttrs.start_at) : null;
-    const endDate = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
+    const { tFunc } = this.props;
+    const { formatMessage } = this.props.intl;
+    const { errors, saved, phase, attributeDiff, saving, descState } = this.state;
+    const phaseAttrs = (phase ? { ...phase.data.attributes, ...attributeDiff } : { ...attributeDiff });
+    const submitState = getSubmitState({ errors, saved, diff: attributeDiff });
+    const startDate = (phaseAttrs.start_at ? moment(phaseAttrs.start_at) : null);
+    const endDate = (phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null);
 
     return (
-      <div>
+      <>
         <SectionTitle>
-          {this.state.phase && <FormattedMessage {...messages.editPhaseTitle} />}
-          {!this.state.phase && <FormattedMessage {...messages.newPhaseTitle} />}
-
+          {phase && <FormattedMessage {...messages.editPhaseTitle} />}
+          {!phase && <FormattedMessage {...messages.newPhaseTitle} />}
         </SectionTitle>
 
         <PhaseForm onSubmit={this.handleOnSubmit}>
@@ -238,10 +274,18 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
               <Input
                 id="title"
                 type="text"
-                value={this.props.tFunc(phaseAttrs.title_multiloc)}
+                value={tFunc(phaseAttrs.title_multiloc)}
                 onChange={this.createMultilocUpdater('title_multiloc')}
               />
-              <Error apiErrors={this.state.errors && this.state.errors.title_multiloc} />
+              <Error apiErrors={errors && errors.title_multiloc} />
+            </SectionField>
+
+            <SectionField>
+              <ParticipationContext 
+                phaseId={(phase ? phase.data.id : null)}
+                onSubmit={this.handleParcticipationContextOnSubmit}
+                onChange={this.handleParticipationContextOnChange}
+              />
             </SectionField>
 
             <SectionField>
@@ -249,19 +293,19 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
               <DateRangePicker
                 startDateId={'startDate'}
                 endDateId={'endDate'}
-                startDate={startDate} // momentPropTypes.momentObj or null,
-                endDate={endDate} // momentPropTypes.momentObj or null,
-                onDatesChange={this.handleDateUpdate} // PropTypes.func.isRequired,
-                focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                onFocusChange={this.handleDateFocusChange} // PropTypes.func.isRequired,
+                startDate={startDate}
+                endDate={endDate}
+                onDatesChange={this.handleDateUpdate}
+                focusedInput={this.state.focusedInput}
+                onFocusChange={this.handleDateFocusChange}
                 isOutsideRange={this.isOutsideRange}
                 firstDayOfWeek={1}
                 displayFormat="DD/MM/YYYY"
-                startDatePlaceholderText={this.startDatePlaceholder}
-                endDatePlaceholderText={this.endDatePlaceholder}
+                startDatePlaceholderText={formatMessage(messages.startDatePlaceholder)}
+                endDatePlaceholderText={formatMessage(messages.endDatePlaceholder)}
               />
-              <Error apiErrors={this.state.errors && this.state.errors.start_at} />
-              <Error apiErrors={this.state.errors && this.state.errors.end_at} />
+              <Error apiErrors={errors && errors.start_at} />
+              <Error apiErrors={errors && errors.end_at} />
             </SectionField>
 
             <SectionField>
@@ -269,16 +313,16 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
               <Editor
                 id="description"
                 placeholder=""
-                value={this.state.descState}
+                value={descState}
                 error=""
                 onChange={this.handleDescChange}
               />
-              <Error apiErrors={this.state.errors && this.state.errors.description_multiloc} />
+              <Error apiErrors={errors && errors.description_multiloc} />
             </SectionField>
           </Section>
 
           <SubmitWrapper
-            loading={this.state.saving}
+            loading={saving}
             status={submitState}
             messages={{
               buttonSave: messages.saveLabel,
@@ -289,9 +333,9 @@ class AdminProjectTimelineEdit extends React.Component<Props & injectedLocalized
             }}
           />
         </PhaseForm>
-      </div>
+      </>
     );
   }
 }
 
-export default injectTFunc(injectIntl(localize(AdminProjectTimelineEdit)));
+export default injectTFunc(injectIntl(AdminProjectTimelineEdit));

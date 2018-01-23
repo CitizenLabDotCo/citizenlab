@@ -182,6 +182,7 @@ type Props = {
   searchable?: boolean | undefined;
   multi?: boolean | undefined;
   onChange: (arg: IOption) => void;
+  onBlur?: () => void;
 };
 
 type State = {};
@@ -199,6 +200,7 @@ export default class Select extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const className = this.props['className'];
     let { value, placeholder, options, autoBlur, clearable, searchable, multi } = this.props;
 
     value = (value || undefined);
@@ -211,6 +213,7 @@ export default class Select extends React.PureComponent<Props, State> {
 
     return (
       <StyledSelect
+        className={className}
         openOnFocus={false}
         clearable={clearable}
         searchable={searchable}
@@ -220,6 +223,7 @@ export default class Select extends React.PureComponent<Props, State> {
         placeholder={placeholder}
         options={options}
         onChange={this.handleOnChange}
+        onBlur={this.props.onBlur}
         multi={multi}
       />
     );

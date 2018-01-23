@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
@@ -7,8 +6,7 @@ import scrollToComponent from 'react-scroll-to-component';
 import * as bowser from 'bowser';
 
 // draft-js
-import { EditorState, convertToRaw, ContentState } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
+import { EditorState } from 'draft-js';
 
 // components
 import Select from 'components/UI/Select';
@@ -18,16 +16,14 @@ import Input from 'components/UI/Input';
 import LocationInput from 'components/UI/LocationInput';
 import Editor from 'components/UI/Editor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import Error from 'components/UI/Error';
 
 // services
 import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
+import { currentTenantStream } from 'services/tenant';
 import { topicsStream, ITopics, ITopicData } from 'services/topics';
 import { projectsStream, IProjects, IProjectData } from 'services/projects';
 
 // utils
-import { IStream } from 'utils/streams';
 import eventEmitter from 'utils/eventEmitter';
 import { getLocalized } from 'utils/i18n';
 import { getEditorStateFromHtmlString, getHtmlStringFromEditorState } from 'utils/editorTools';
@@ -38,7 +34,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
-import { IOption, ImageFile } from 'typings';
+import { IOption, ImageFile, Locale } from 'typings';
 
 // style
 import styled from 'styled-components';
@@ -112,18 +108,19 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentWillMount() {
+    const { title, description, selectedTopics, selectedProject, location, imageFile } = this.props;
     const locale$ = localeStream().observable;
     const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
     const topics$ = topicsStream().observable;
     const projects$ = projectsStream().observable;
 
     this.setState({
-      title: (this.props.title || ''),
-      description: getEditorStateFromHtmlString(this.props.description),
-      selectedTopics: this.props.selectedTopics,
-      selectedProject: this.props.selectedProject,
-      location: this.props.location,
-      imageFile: this.props.imageFile,
+      selectedTopics,
+      selectedProject,
+      location,
+      imageFile,
+      title: (title || ''),
+      description: getEditorStateFromHtmlString(description),
     });
 
     this.subscriptions = [
@@ -158,13 +155,15 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentWillReceiveProps(nextProps) {
+    const { title, description, selectedTopics, selectedProject, location, imageFile } = nextProps;
+
     this.setState({
-      title: nextProps.title,
-      description: getEditorStateFromHtmlString(nextProps.description),
-      selectedTopics: nextProps.selectedTopics,
-      selectedProject: nextProps.selectedProject,
-      location: nextProps.location,
-      imageFile: nextProps.imageFile,
+      title,
+      selectedTopics,
+      selectedProject,
+      location,
+      imageFile,
+      description: getEditorStateFromHtmlString(description)
     });
   }
 
@@ -172,7 +171,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getOptions = (list: ITopics | IProjects | null, locale: string | null, currentTenantLocales: string[]) => {
+  getOptions = (list: ITopics | IProjects | null, locale: Locale | null, currentTenantLocales: Locale[]) => {
     if (list && locale) {
       return (list.data as (ITopicData | IProjectData)[]).map(item => ({
         value: item.id,
@@ -215,7 +214,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ imageFile });
   }
 
-  handleUploadOnRemove = (removedImage: ImageFile) => {
+  handleUploadOnRemove = () => {
     this.setState({ imageFile: null });
   }
 

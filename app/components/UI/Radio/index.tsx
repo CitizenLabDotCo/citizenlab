@@ -2,18 +2,19 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.label`
-  display: flex !important;
+  display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: .5rem;
+  margin-bottom: 12px;
 `;
 
-const CustomRadio = styled.div`
+const CustomRadio = styled<any, 'div'>('div')`
+  flex: 0 0 20px;
   width: 20px;
   height: 20px;
-  content: '';
-  cursor: pointer;
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-right: 10px;
   position: relative;
   background: #fff;
@@ -21,26 +22,24 @@ const CustomRadio = styled.div`
   border: 1px solid #a6a6a6;
   box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.15);
 
-  ::after {
-    background: #49B47D;
-    border-radius: 50%;
-    content: "";
-    opacity: 0;
-    height: 70%;
-    left: calc(50% - 70%/2);
-    position: absolute;
-    top: calc(50% - 70%/2);
-    width: 70%;
-    transition: all 0.2s;
-  }
 
-  &.checked::after{
-    opacity: 1;
+  ${props => props.disabled ? `
+    opacity: 0.5;
+    ` : `
+    cursor: pointer;
+    &:not(.checked):hover {
+      border-color: #000;
+    }
+  `
   }
+`;
 
-  &:not(.checked):hover {
-    border-color: #333;
-  }
+const Checked = styled.div`
+  flex: 0 0 12px;
+  width: 12px;
+  height: 12px;
+  background: #49B47D;
+  border-radius: 50%;
 `;
 
 const Text = styled.div`
@@ -60,13 +59,15 @@ interface Props {
   value: any;
   name: string;
   id: string;
-  label: string;
+  label: string | JSX.Element;
+  disabled?: boolean;
 }
 
 export default class Radio extends React.PureComponent<Props> {
-
-  handleChange = (event): void => {
-    this.props.onChange(this.props.value);
+  handleChange = () => {
+    if (!this.props.disabled) {
+      this.props.onChange(this.props.value);
+    }
   }
 
   render() {
@@ -84,7 +85,12 @@ export default class Radio extends React.PureComponent<Props> {
           checked={checked}
           onChange={this.handleChange}
         />
-        <CustomRadio className={`${checked ? 'checked' : ''}`} />
+        <CustomRadio
+          className={`${checked ? 'checked' : ''}`}
+          disabled={this.props.disabled}
+        >
+          {checked && <Checked />}
+        </CustomRadio>
         <Text className="text">{this.props.label}</Text>
       </Wrapper>
     );

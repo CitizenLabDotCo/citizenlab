@@ -1,9 +1,6 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import Icon from 'components/UI/Icon';
-import CSSTransition from 'react-transition-group/CSSTransition';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 const Container: any = styled.div`
   width: ${(props: any) => props.size};
@@ -51,7 +48,7 @@ export default class Checkbox extends React.PureComponent<Props, State> {
 
     return (
       <Container className={className} checked={checked} size={size} onClick={this.handleOnClick}>
-        {checked && 
+        {checked &&
           <CheckmarkIcon name="checkmark" />
         }
       </Container>

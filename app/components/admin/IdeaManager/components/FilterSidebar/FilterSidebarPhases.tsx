@@ -15,7 +15,7 @@ interface Props {
 
 class FilterSidebarPhases extends React.Component<Props> {
 
-  handleItemClick = (id) => (event) => {
+  handleItemClick = (id) => () => {
     this.props.onChangePhaseFilter && this.props.onChangePhaseFilter(id);
   }
 
