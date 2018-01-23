@@ -1,5 +1,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
+import { withRouter, WithRouterProps } from 'react-router';
+import { find } from 'lodash';
 
 // libraries
 import scrollToComponent from 'react-scroll-to-component';
@@ -9,6 +11,7 @@ import * as bowser from 'bowser';
 import { EditorState } from 'draft-js';
 
 // components
+import Select from 'components/UI/Select';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
@@ -55,7 +58,7 @@ export interface IIdeaFormOutput {
   description: string;
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
-  location: string;
+  position: string;
   imageFile: ImageFile[] | null;
 }
 
@@ -64,7 +67,7 @@ interface Props {
   description: string | null;
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
-  location: string;
+  position: string;
   imageFile: ImageFile[] | null;
   onSubmit: (arg: IIdeaFormOutput) => void;
 }
@@ -76,13 +79,13 @@ interface State {
   description: EditorState;
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
-  location: string;
+  position: string;
   imageFile: ImageFile[] | null;
   titleError: string | JSX.Element | null;
   descriptionError: string | JSX.Element | null;
 }
 
-class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
+class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   subscriptions: Rx.Subscription[];
   titleInputElement: HTMLInputElement | null;
   descriptionElement: any | null;
@@ -96,7 +99,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
       description: EditorState.createEmpty(),
       selectedTopics: null,
       selectedProject: null,
-      location: '',
+      position: '',
       imageFile: null,
       titleError: null,
       descriptionError: null
@@ -107,7 +110,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentWillMount() {
-    const { title, description, selectedTopics, selectedProject, location, imageFile } = this.props;
+    const { title, description, selectedTopics, selectedProject, position, imageFile } = this.props;
     const locale$ = localeStream().observable;
     const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
     const topics$ = topicsStream().observable;
@@ -116,7 +119,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.setState({
       selectedTopics,
       selectedProject,
-      location,
+      position,
       imageFile,
       title: (title || ''),
       description: getEditorStateFromHtmlString(description),
@@ -138,7 +141,16 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
         currentTenantLocales$,
         projects$,
       ).subscribe(([locale, currentTenantLocales, projects]) => {
+        let selectedProject;
+
+        if (this.props.params.slug) {
+          const currentProject = find(projects.data, (project) => project.attributes.slug === this.props.params.slug);
+          selectedProject = this.getOptions({ data: [currentProject] } as IProjects, locale, currentTenantLocales);
+          selectedProject = selectedProject[0];
+        }
+
         this.setState({
+          selectedProject,
           projects: this.getOptions(projects, locale, currentTenantLocales)
         });
       }),
@@ -154,13 +166,13 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { title, description, selectedTopics, selectedProject, location, imageFile } = nextProps;
+    const { title, description, selectedTopics, selectedProject, position, imageFile } = nextProps;
 
     this.setState({
       title,
       selectedTopics,
       selectedProject,
-      location,
+      position,
       imageFile,
       description: getEditorStateFromHtmlString(description)
     });
@@ -201,8 +213,8 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ selectedProject });
   }
 
-  handleLocationOnChange = (location: string) => {
-    this.setState({ location });
+  handleLocationOnChange = (position: string) => {
+    this.setState({ position });
   }
 
   handleUploadOnAdd = (imageFile: ImageFile) => {
@@ -244,14 +256,14 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleOnSubmit = () => {
-    const { title, description, selectedTopics, selectedProject, location, imageFile } = this.state;
+    const { title, description, selectedTopics, selectedProject, position, imageFile } = this.state;
 
     if (this.validate(title, description)) {
       const output: IIdeaFormOutput = {
         title,
         selectedTopics,
         selectedProject,
-        location,
+        position,
         imageFile,
         description: getHtmlStringFromEditorState(description)
       };
@@ -265,7 +277,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     const className = this.props['className'];
     const { formatMessage } = this.props.intl;
-    const { topics, title, description, selectedTopics, location, imageFile, titleError, descriptionError } = this.state;
+    const { topics, projects, title, description, selectedTopics, selectedProject, position, imageFile, titleError, descriptionError } = this.state;
 
     return (
       <Form className={className}>
@@ -307,11 +319,23 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
           </FormElement>
         }
 
+        {!this.props.params.slug && projects && projects.length > 0 &&
+          <FormElement>
+            <Label value={<FormattedMessage {...messages.projectsLabel} />} htmlFor="projects" />
+            <Select
+              value={selectedProject}
+              placeholder={<FormattedMessage {...messages.projectsPlaceholder} />}
+              options={projects}
+              onChange={this.handleProjectOnChange}
+            />
+          </FormElement>
+        }
+
         <FormElement>
           <Label value={<FormattedMessage {...messages.locationLabel} />} htmlFor="location" />
           <LocationInput
             id="location"
-            value={location}
+            value={position}
             placeholder={formatMessage(messages.locationPlaceholder)}
             onChange={this.handleLocationOnChange}
           />
@@ -336,4 +360,4 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(IdeaForm);
+export default withRouter<Props>(injectIntl(IdeaForm));

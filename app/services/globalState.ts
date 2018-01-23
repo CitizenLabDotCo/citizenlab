@@ -13,7 +13,7 @@ export interface IIdeasNewPageGlobalState {
   description: string | null;
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
-  location: string;
+  position: string;
   submitError: boolean;
   processing: boolean;
   ideaId: string | null;
