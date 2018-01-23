@@ -1,27 +1,21 @@
 import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-import { isString } from 'lodash';
 import 'moment-timezone';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import ContentContainer from 'components/ContentContainer';
 import EventsPreview from '../EventsPreview';
+import ImageZoom from 'react-medium-image-zoom';
 
 // services
-import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
-import { projectByIdStream, IProject } from 'services/projects';
-import { projectImagesStream, IProjectImages } from 'services/projectImages';
-
-// i18n
-import { getLocalized } from 'utils/i18n';
+import GetProject from 'utils/resourceLoaders/components/GetProject';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
-
-// typings
-import { Locale } from 'typings';
+import { media, color, fontSize } from 'utils/styleUtils';
+import { IProjectData } from 'services/projects';
+import T from 'components/T';
+import { IProjectImageData } from 'services/projectImages';
 
 const Container = styled.div`
   margin-top: 75px;
@@ -47,9 +41,8 @@ const Left = styled.section`
 `;
 
 const IdeaBodyStyled = styled.div`
-  margin-top: 45px;
-  font-size: 18px;
-  color: #777777;
+  font-size: ${fontSize('base')};
+  color: ${color('text')};
 `;
 
 const Right = styled.aside`
@@ -61,115 +54,81 @@ const Right = styled.aside`
 `;
 
 const ProjectImages = styled.div`
+  align-items: flex-start;
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
-`;
+  margin-left: -5px;
+  margin-top: -5px;
+  width: calc(100% + 10px);
 
-const ProjectImage = styled.img`
-  margin: 5px;
-  border-radius: 5px;
+  img {
+    margin: 5px;
+    border-radius: 5px;
 
-  &:first-child {
-    width: 100%;
-  }
+    &:first-child {
+      width: calc(100% - 10px);
+    }
 
-  &:not(:first-child) {
-    width: calc(33% - 9px);
+    &:not(:first-child) {
+      width: calc(33% - 9px);
+    }
   }
 `;
 
 type Props = {
   projectId: string;
+  className?: string;
 };
 
 type State = {
-  locale: Locale | null;
-  currentTenant: ITenant | null;
-  project: IProject | null;
-  projectImages: IProjectImages | null;
 };
 
-export default class ProjectInfo extends React.PureComponent<Props, State> {
-  projectId$: Rx.BehaviorSubject<string>;
-  subscriptions: Rx.Subscription[];
-
+class ProjectInfo extends React.PureComponent<Props & WithRouterProps, State> {
   constructor(props) {
     super(props);
+
     this.state = {
-      locale: null,
-      currentTenant: null,
-      project: null,
-      projectImages: null
     };
-    this.projectId$ = new Rx.BehaviorSubject(null as any);
-    this.subscriptions = [];
-  }
-
-  componentWillMount() {
-    this.projectId$.next(this.props.projectId);
-
-    this.subscriptions = [
-      this.projectId$.distinctUntilChanged().filter(projectId => isString(projectId)).switchMap((projectId) => {
-        const locale$ = localeStream().observable;
-        const currentTenant$ = currentTenantStream().observable;
-        const project$ = projectByIdStream(projectId).observable;
-
-        return Rx.Observable.combineLatest(
-          locale$,
-          currentTenant$,
-          project$
-        );
-      }).switchMap(([locale, currentTenant, project]) => {
-        const projectImages$ = projectImagesStream(project.data.id).observable;
-        return projectImages$.map(projectImages => ({ locale, currentTenant, project, projectImages }));
-      })
-      .subscribe(({ locale, currentTenant, project, projectImages }) => {
-        this.setState({ locale, currentTenant, project, projectImages });
-      })
-    ];
-  }
-
-  componentWillReceiveProps(newProps: Props) {
-    this.projectId$.next(newProps.projectId);
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   render() {
-    const className = this.props['className'];
-    const { locale, currentTenant, project, projectImages } = this.state;
+    return (
+      <GetProject slug={this.props.params.slug} withImages>
+        {({ project, images }: {project: IProjectData, images: IProjectImageData[]}) => {
+          if (project) {
+            return (
+              <React.Fragment>
+                <ContentContainer className={this.props.className}>
+                  <Container>
+                    <Left>
+                      <IdeaBodyStyled>
+                        <T value={project.attributes.description_multiloc} />
+                      </IdeaBodyStyled>
+                    </Left>
 
-    if (locale && currentTenant && project) {
-      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-      const description = getLocalized(project.data.attributes.description_multiloc, locale, currentTenantLocales);
-      const images = (projectImages && projectImages.data && projectImages.data.length > 0 ? projectImages.data : null);
-
-      return (
-        <ContentContainer className={className}>
-          <Container>
-            <Left>
-              <IdeaBodyStyled>
-                <span dangerouslySetInnerHTML={{ __html: description }} />
-              </IdeaBodyStyled>
-            </Left>
-
-            <Right>
-              <ProjectImages>
-                {images && images.filter((image) => image).map((image) => (
-                  <ProjectImage key={image.id} src={image.attributes.versions.medium as string} />
-                ))}
-              </ProjectImages>
-            </Right>
-          </Container>
-
-          <EventsPreview projectId={project.data.id} />
-        </ContentContainer>
-      );
-    }
-
-    return null;
+                    <Right>
+                      <ProjectImages>
+                        {images.length > 0 && images.filter((image) => image).map((image) => (
+                          <ImageZoom
+                            key={image.id}
+                            image={{ src: image.attributes.versions.large }}
+                            zoomImage={{ src: image.attributes.versions.large }}
+                          />
+                        ))}
+                      </ProjectImages>
+                    </Right>
+                  </Container>
+                </ContentContainer>
+                <EventsPreview projectId={project.id} />
+              </React.Fragment>
+            );
+          } else {
+            return null;
+          }
+        }}
+      </GetProject>
+    );
   }
 }
+
+export default withRouter(ProjectInfo);
