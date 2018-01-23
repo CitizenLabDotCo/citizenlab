@@ -6,7 +6,6 @@
 import dashboardRoutes from './dashboard/routes';
 import ideasRoutes from './ideas/routes';
 import usersRoutes from './users/routes';
-import areasRoutes from './areas/routes';
 import projectsRoutes from './projects/routes';
 import groupsRoutes from './groups/routes';
 import settingsRoutes from './settings/routes';
@@ -40,7 +39,6 @@ export default (injectReducer) => ({
     ideasRoutes(injectReducer),
     usersRoutes(),
     projectsRoutes(injectReducer),
-    areasRoutes(injectReducer),
     settingsRoutes(),
     groupsRoutes(injectReducer),
   ],

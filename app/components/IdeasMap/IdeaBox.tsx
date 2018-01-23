@@ -68,7 +68,7 @@ const CommentsCount = styled.span`
   font-size: ${fontSize('base')};
 `;
 
-const CloseButton = styled(SemanticButton)`
+const CloseButton: any = styled(SemanticButton)`
   position: absolute;
   top: 0;
   right: 0;
