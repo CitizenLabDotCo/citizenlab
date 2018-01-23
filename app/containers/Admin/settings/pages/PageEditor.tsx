@@ -10,16 +10,17 @@ import { localeStream } from 'services/locale';
 // Components
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Editor from 'components/UI/Editor';
+import Button from 'components/UI/Button';
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Error from 'components/UI/Error';
 import Icon from 'components/UI/Icon';
-import { SectionField } from 'components/admin/Section';
+import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 
 // Utils
 import getSubmitState from 'utils/getSubmitState';
-import { EditorState } from 'draft-js';
-import { getHtmlStringFromEditorState, getEditorStateFromHtmlString } from 'utils/editorTools';
+import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
+import { getHtmlStringFromEditorState } from 'utils/editorTools';
 
 // Typings
 import { API } from 'typings';
@@ -35,46 +36,23 @@ const EditorWrapper = styled.div`
   margin-bottom: 2rem;
 `;
 
-const DeployIcon = styled(Icon)`
-  height: 12px;
-  fill: #999;
-  margin-right: 12px;
-  transition: transform 200ms ease-out;
-  transform: rotate(0deg);
-  will-change: transform;
+const Toggle = styled(Button)`
+  justify-content: flex-start;
+  padding: 1rem 0;
+  width: 100%;
 `;
 
-const Toggle = styled.div`
-  color: #999;
-  font-size: 16px;
-  font-weight: 400;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  user-select: none;
-
-  &:hover,
-  &.deployed {
-    color: #000;
-
-    ${DeployIcon} {
-      fill: #000;
-    }
-  }
-
-  &.deployed {
-    ${DeployIcon} {
-      transform: rotate(90deg);
-    }
-  }
+const DeployIcon = styled(Icon)`
+  transform: rotate(${(props: {deployed: boolean}) => props.deployed ? '180deg' : '0deg'});
+  height: .5em;
+  margin-right: 1rem;
+  transition: all .5s;
 `;
 
 const EditionForm = styled.form`
   max-height: 0;
   overflow: hidden;
-  transition: all 350ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  margin-top: 15px;
-  will-change: height, max-height;
+  transition: all .5s ease-in-out;
 
   &.deployed {
     max-height: 1000vh;
@@ -99,12 +77,13 @@ interface State {
   deployed: boolean;
 }
 
-export default class PageEditor extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+export default class PageEditor extends React.Component<Props, State> {
+  subs: Rx.Subscription[] = [];
   legalPages = without(LEGAL_PAGES, 'information');
 
   constructor(props: Props) {
     super(props as any);
+
     this.state = {
       page: null,
       saving: false,
@@ -112,96 +91,95 @@ export default class PageEditor extends React.PureComponent<Props, State> {
       saved: false,
       diff: {},
       errors: null,
-      locale: 'en',
+      locale: '',
       editorState: EditorState.createEmpty(),
       deployed: false,
     };
-    this.subscriptions = [];
   }
 
   componentWillMount() {
-    const { slug } = this.props;
-    const locale$ = localeStream().observable;
-    const page$ = pageBySlugStream(slug).observable;
-
-    this.subscriptions = [
-      Rx.Observable.combineLatest(
-        locale$,
-        page$
-      ).subscribe(([locale, page]) => {
-        this.setState({
-          locale,
-          editorState: getEditorStateFromHtmlString(get(page, `data.attributes.body_multiloc.${locale}`, EditorState.createEmpty())),
-          page: (page ? page.data : null),
-          loading: false
-        });
-      })
-    ];
+    this.subs.push(
+      this.getPageSub(),
+      this.getLocale(),
+    );
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subs.forEach(sub => sub.unsubscribe());
+  }
+
+  getPageSub = () => {
+    this.setState({ loading: true });
+    return Rx.Observable.combineLatest(
+      pageBySlugStream(this.props.slug).observable,
+      localeStream().observable
+    )
+    .subscribe(([response, locale]) => {
+      if (response) {
+        const blocksFromHtml = convertFromHTML(get(response, `data.attributes.body_multiloc.${locale}`, ''));
+        const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
+        const editorState = EditorState.createWithContent(editorContent);
+
+        this.setState({ editorState, page: response.data, loading: false });
+      }
+      this.setState({ loading: false });
+    });
+  }
+
+  getLocale = () => {
+    return localeStream().observable
+    .subscribe((locale) => {
+      this.setState({ locale });
+    });
   }
 
   handleTextChange = (editorState: EditorState) => {
-    const { locale, diff } = this.state;
     const htmlValue = getHtmlStringFromEditorState(editorState);
 
-    if (diff) {
-      const newValue = diff && diff.body_multiloc || {};
-      newValue[locale] = htmlValue;
-
+    if (this.state.diff) {
+      const newValue = this.state.diff && this.state.diff.body_multiloc || {};
+      newValue[this.state.locale] = htmlValue;
       this.setState({
         editorState,
-        diff: {
-          ...diff,
-          body_multiloc: newValue
-        }
+        diff: { ...this.state.diff, body_multiloc: newValue },
       });
     }
   }
 
   createMultilocUpdater = (name: string) => (value: string) => {
-    const { locale, diff } = this.state;
-
-    if (diff) {
-      const newValue = diff && diff[name] || {};
-      newValue[locale] = value;
-
+    if (this.state.diff) {
+      const newValue = this.state.diff && this.state.diff[name] || {};
+      newValue[this.state.locale] = value;
       this.setState({
-        diff: {
-          ...diff,
-          [name]: newValue
-        }
+        diff: { ...this.state.diff, [name]: newValue },
       });
     }
   }
 
   handleSave = (event) => {
     event.preventDefault();
-
-    const { page, diff, locale } = this.state;
-    const { slug } = this.props;
     let savePromise;
 
-    if (page && page.id) {
-      savePromise = updatePage(page.id, diff);
+    if (this.state.page && this.state.page.id) {
+      savePromise = updatePage(this.state.page.id, this.state.diff);
     } else {
-      const pageData = { ...diff, slug };
+      const pageData = { ...this.state.diff, slug: this.props.slug };
 
       // Prevents errors when creating a new page with a hardcoded legal slug
-      if (includes(this.legalPages, slug)) {
+      if (includes(this.legalPages, this.props.slug)) {
         pageData.title_multiloc = {
-          [locale]: slug
+          [this.state.locale]: this.props.slug
         };
       }
 
       savePromise = createPage(pageData);
     }
 
-    savePromise.then(() => {
+    savePromise
+    .then((response) => {
       this.setState({ saving: false, saved: true, errors: null, diff: {} });
-    }).catch((e) => {
+    })
+    .catch((e) => {
       this.setState({ saving: false, saved: false, errors: e.json.errors });
     });
   }
@@ -222,12 +200,16 @@ export default class PageEditor extends React.PureComponent<Props, State> {
 
     return (
       <EditorWrapper className={`e2e-page-editor editor-${slug}`}>
-        <Toggle onClick={this.toggleDeploy} className={`${deployed && 'deployed'}`}>
-          <DeployIcon name="chevron-right" />
-          {messages[slug] ? <FormattedMessage {...messages[slug]} /> : slug}
+        <Toggle style="text" onClick={this.toggleDeploy}>
+          <DeployIcon name="dropdown" deployed={deployed} />
+          {messages[slug]
+            ? <FormattedMessage {...messages[slug]} />
+            : slug
+          }
         </Toggle>
 
         <EditionForm onSubmit={this.handleSave} className={deployed ? 'deployed' : ''} >
+
           {/* Do not show the title input for the legal pages */}
           {!includes(this.legalPages, slug) &&
             <SectionField>
@@ -244,20 +226,6 @@ export default class PageEditor extends React.PureComponent<Props, State> {
             <Editor
               onChange={this.handleTextChange}
               value={editorState}
-              toolbarConfig={{
-                options: ['inline', 'list', 'link', 'image'],
-                inline: {
-                  options: ['bold', 'italic'],
-                },
-                list: {
-                  options: ['unordered', 'ordered'],
-                },
-                image: {
-                  urlEnabled: true,
-                  uploadEnabled: false,
-                  alignmentEnabled: false,
-                },
-              }}
             />
             <Error apiErrors={errors && errors.body_multiloc} />
           </SectionField>
