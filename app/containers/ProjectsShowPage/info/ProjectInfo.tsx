@@ -5,6 +5,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 // components
 import ContentContainer from 'components/ContentContainer';
 import EventsPreview from '../EventsPreview';
+import ImageZoom from 'react-medium-image-zoom';
 
 // services
 import GetProject from 'utils/resourceLoaders/components/GetProject';
@@ -108,7 +109,11 @@ class ProjectInfo extends React.PureComponent<Props & WithRouterProps, State> {
                     <Right>
                       <ProjectImages>
                         {images.length > 0 && images.filter((image) => image).map((image) => (
-                          <img key={image.id} src={image.attributes.versions.medium || ''} alt="" role="presentation" />
+                          <ImageZoom
+                            key={image.id}
+                            image={{ src: image.attributes.versions.large }}
+                            zoomImage={{ src: image.attributes.versions.large }}
+                          />
                         ))}
                       </ProjectImages>
                     </Right>
