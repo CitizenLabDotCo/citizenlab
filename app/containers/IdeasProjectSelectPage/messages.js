@@ -42,6 +42,10 @@ export default defineMessages({
     id: 'app.containers.IdeasProjectSelect.postingNotPossible',
     defaultMessage: 'This project does currently not accept new ideas.',
   },
+  postingPossibleBecauseAdmin: {
+    id: 'app.containers.IdeasProjectSelect.postingPossibleBecauseAdmin',
+    defaultMessage: 'Only administrators can currently post in this project.',
+  },
   noProjects: {
     id: 'app.containers.IdeasProjectSelect.noProjects',
     defaultMessage: 'Sorry, there currently are no projects to add ideas to.',

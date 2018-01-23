@@ -4,17 +4,23 @@ import styled from 'styled-components';
 import { IProjectData } from 'services/projects';
 import { projectImagesStream, IProjectImageData } from 'services/projectImages';
 import { injectNestedResources, InjectedNestedResourceLoaderProps } from 'utils/resourceLoaders/nestedResourcesLoader';
-
+import { hasPermission } from 'services/permissions';
 import { media } from 'utils/styleUtils';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedDate } from 'react-intl';
 import Icon from 'components/UI/Icon';
 import T from 'components/T';
+import Radio from 'components/UI/Radio';
 
 import messages from './messages';
 
-const Container = styled<any,'div'>('div')`
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const Card = styled<any,'div'>('div')`
   height: 112px;
   width: 100%;
   display: flex;
@@ -119,13 +125,43 @@ const PostingDisabledReason = styled.div`
   overflow: hidden;
 `;
 
+const PostingEnabledReason = styled.div`
+  color: #84939E;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 300;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StyledAdminIcon = styled(Icon)`
+  width: 1.5rem;
+  margin: 1rem;
+`;
+
 type Props = {
   project: IProjectData;
   onClick: () => void;
   selected: boolean;
 };
 
-class ProjectCard extends React.Component<Props & InjectedNestedResourceLoaderProps<IProjectImageData>> {
+type State = {
+  hasPostingRights?: boolean;
+};
+
+class ProjectCard extends React.Component<Props & InjectedNestedResourceLoaderProps<IProjectImageData>, State> {
+
+  componentWillMount() {
+    hasPermission({
+      item: 'ideas',
+      action: 'create',
+      context: { project: this.props.project },
+    }).subscribe((granted) => {
+      this.setState({ hasPostingRights: granted });
+    });
+  }
 
   disabledMessage = () => {
     const project = this.props.project;
@@ -139,57 +175,89 @@ class ProjectCard extends React.Component<Props & InjectedNestedResourceLoaderPr
     }
   }
 
+  calculateCardState = () => {
+    const { hasPostingRights } = this.state;
+    const disabledMessage = this.disabledMessage();
+    if (disabledMessage && hasPostingRights) {
+      return 'enabledBecauseAdmin';
+    } else if (disabledMessage) {
+      return 'disabled';
+    } else {
+      return 'enabled';
+    }
+  }
+
   handleOnClick = () => {
-    if (!this.disabledMessage()) {
+    if (this.calculateCardState() !== 'disabled') {
       this.props.onClick();
     }
   }
 
   render() {
+    const projectId = this.props.project.id;
     const {
       title_multiloc: titleMultiloc,
       description_preview_multiloc: descriptionPreviewMultiloc
     } = this.props.project.attributes;
     const smallImage = this.props.images.all[0] && this.props.images.all[0].attributes.versions.small;
     const disabledMessage = this.disabledMessage();
-    const enabled = !disabledMessage;
+    const cardState = this.calculateCardState();
+    const enabled = cardState === 'enabled' || cardState === 'enabledBecauseAdmin';
     const futureEnabledDate = this.props.project.relationships.action_descriptor.data.posting.future_enabled;
 
+
     return (
-      <Container
-        onClick={this.handleOnClick}
-        selected={this.props.selected}
-        enabled={enabled}
-      >
-        <ImageWrapper>
-          {smallImage ?
-            <img src={smallImage} alt="project image" />
-          :
-            <ProjectImagePlaceholder>
-              <ProjectImagePlaceholderIcon name="project" />
-            </ProjectImagePlaceholder>
-          }
-        </ImageWrapper>
-        <ProjectContent>
-          <ProjectTitle>
-            <T value={titleMultiloc} />
-          </ProjectTitle>
-          {enabled &&
-            <ProjectDescription>
-              <T value={descriptionPreviewMultiloc} />
-            </ProjectDescription>
-          }
-          {disabledMessage &&
-            <PostingDisabledReason>
-              <FormattedMessage
-                {...disabledMessage}
-                values={{
-                  date: futureEnabledDate && <FormattedDate value={futureEnabledDate} />
-                }}
-              />
-            </PostingDisabledReason>
-          }
-        </ProjectContent>
+      <Container>
+        <Radio
+          onChange={this.handleOnClick}
+          currentValue={this.props.selected ? projectId : null}
+          value={projectId}
+          name="project"
+          id={projectId}
+          label=""
+          disabled={!enabled}
+        />
+        <Card
+          onClick={this.handleOnClick}
+          selected={this.props.selected}
+          enabled={enabled}
+        >
+          <ImageWrapper>
+            {smallImage ?
+              <img src={smallImage} alt="project image" />
+            :
+              <ProjectImagePlaceholder>
+                <ProjectImagePlaceholderIcon name="project" />
+              </ProjectImagePlaceholder>
+            }
+          </ImageWrapper>
+          <ProjectContent>
+            <ProjectTitle>
+              <T value={titleMultiloc} />
+            </ProjectTitle>
+            {cardState === 'enabled' &&
+              <ProjectDescription>
+                <T value={descriptionPreviewMultiloc} />
+              </ProjectDescription>
+            }
+            {cardState === 'disabled' && disabledMessage &&
+              <PostingDisabledReason>
+                <FormattedMessage
+                  {...disabledMessage}
+                  values={{
+                    date: futureEnabledDate && <FormattedDate value={futureEnabledDate} />
+                  }}
+                />
+              </PostingDisabledReason>
+            }
+            {cardState === 'enabledBecauseAdmin' &&
+              <PostingEnabledReason>
+                <FormattedMessage {...messages.postingPossibleBecauseAdmin} />
+                <StyledAdminIcon name="admin" />
+              </PostingEnabledReason>
+            }
+          </ProjectContent>
+        </Card>
       </Container>
     );
   }
