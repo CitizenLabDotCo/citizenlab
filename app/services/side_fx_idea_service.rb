@@ -74,7 +74,9 @@ class SideFxIdeaService
 
   def log_activity_jobs_after_published idea, user
     LogActivityJob.set(wait: 1.minutes).perform_later(idea, 'published', user, idea.created_at.to_i)
-    LogActivityJob.set(wait: 1.minutes).perform_later(idea, 'first published by user', user, idea.created_at.to_i)
+    if first_user_idea?(idea, user)
+      LogActivityJob.set(wait: 1.minutes).perform_later(idea, 'first published by user', user, idea.created_at.to_i)
+    end
   end
 
 end
