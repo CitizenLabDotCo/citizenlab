@@ -11,7 +11,7 @@ import GetProject from 'utils/resourceLoaders/components/GetProject';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, color, fontSize } from 'utils/styleUtils';
 import { IProjectData } from 'services/projects';
 import T from 'components/T';
 import { IProjectImageData } from 'services/projectImages';
@@ -40,9 +40,8 @@ const Left = styled.section`
 `;
 
 const IdeaBodyStyled = styled.div`
-  margin-top: 45px;
-  font-size: 18px;
-  color: #777777;
+  font-size: ${fontSize('base')};
+  color: ${color('text')};
 `;
 
 const Right = styled.aside`
@@ -54,26 +53,30 @@ const Right = styled.aside`
 `;
 
 const ProjectImages = styled.div`
+  align-items: flex-start;
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
-`;
+  margin-left: -5px;
+  margin-top: -5px;
+  width: calc(100% + 10px);
 
-const ProjectImage = styled.img`
-  margin: 5px;
-  border-radius: 5px;
+  img {
+    margin: 5px;
+    border-radius: 5px;
 
-  &:first-child {
-    width: 100%;
-  }
+    &:first-child {
+      width: calc(100% - 10px);
+    }
 
-  &:not(:first-child) {
-    width: calc(33% - 9px);
+    &:not(:first-child) {
+      width: calc(33% - 9px);
+    }
   }
 `;
 
 type Props = {
   projectId: string;
+  className?: string;
 };
 
 type State = {
@@ -87,42 +90,32 @@ class ProjectInfo extends React.PureComponent<Props & WithRouterProps, State> {
     };
   }
 
-  componentWillMount() {
-
-  }
-
-  componentWillReceiveProps() {
-  }
-
-  componentWillUnmount() {
-  }
-
   render() {
-    const className = this.props['className'];
-
     return (
       <GetProject slug={this.props.params.slug} withImages>
         {({ project, images }: {project: IProjectData, images: IProjectImageData[]}) => {
           if (project) {
             return (
-              <ContentContainer className={className}>
-                <Container>
-                  <Left>
+              <React.Fragment>
+                <ContentContainer className={this.props.className}>
+                  <Container>
+                    <Left>
                       <IdeaBodyStyled>
                         <T value={project.attributes.description_multiloc} />
                       </IdeaBodyStyled>
-                  </Left>
+                    </Left>
 
-                  <Right>
-                    <ProjectImages>
-                      {images.length > 0 && images.filter((image) => image).map((image) => (
-                        <ProjectImage key={image.id} src={image.attributes.versions.medium as string} />
-                      ))}
-                    </ProjectImages>
-                  </Right>
-                </Container>
+                    <Right>
+                      <ProjectImages>
+                        {images.length > 0 && images.filter((image) => image).map((image) => (
+                          <img key={image.id} src={image.attributes.versions.medium || ''} alt="" role="presentation" />
+                        ))}
+                      </ProjectImages>
+                    </Right>
+                  </Container>
+                </ContentContainer>
                 <EventsPreview projectId={project.id} />
-              </ContentContainer>
+              </React.Fragment>
             );
           } else {
             return null;
