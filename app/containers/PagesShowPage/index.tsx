@@ -1,70 +1,35 @@
-import * as React from 'react';
-import { isEmpty, isString } from 'lodash';
-import * as Rx from 'rxjs/Rx';
+/*
+ *
+ * PagesShowPage
+ *
+ */
 
-// components
+import * as React from 'react';
+import * as Rx from 'rxjs/Rx';
+import { includes, without } from 'lodash';
+
+import { injectTFunc } from 'components/T/utils';
 import Helmet from 'react-helmet';
+import T from 'components/T';
+import { IPageData, pageBySlugStream, LEGAL_PAGES } from 'services/pages';
+import { PageLink, getPageLink } from 'services/pageLink';
+
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import messages from './messages';
+
 import ContentContainer from 'components/ContentContainer';
+import styled from 'styled-components';
+import NotFound from 'containers/NotFoundPage';
 import Spinner from 'components/UI/Spinner';
 import Icon from 'components/UI/Icon';
 import { Link } from 'react-router';
-
-// services
-import { IPage, pageBySlugStream } from 'services/pages';
-import { PageLink, getPageLink } from 'services/pageLink';
-
-// i18n
-import { injectTFunc } from 'components/T/utils';
-import { InjectedIntlProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import T from 'components/T';
-import messages from './messages';
-
-// styling
-import styled from 'styled-components';
 import { color } from 'utils/styleUtils';
 
-
-const Container = styled.div`
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  background: #f0f0f0;
-`;
-
-const StyledContentContainer = styled(ContentContainer)`
-  max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
-  margin-left: auto;
-  margin-right: auto;
-`;
-
-const PageContent = styled.div`
-  width: 100vw;
-  background: #fff;
-  padding-top: 60px;
-  padding-bottom: 60px;
-`;
-
-const PageTitle = styled.h1`
-  color: #222;
-  font-size: 34px;
-  font-weight: 600;
-  line-height: 40px;
-  margin-bottom: 35px;
-`;
-
 const TextContainer = styled.div`
-  color: #333;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 21px;
-  -webkit-font-smoothing: antialiased;
-
-  p {
-    margin-bottom: 28px;
-  }
-
-  strong {
-    font-weight: 600;
-  }
+  margin: 30px 0;
+  padding: 3rem;
+  background-color: white;
 `;
 
 const SpinnerContainer = styled.div`
@@ -76,47 +41,39 @@ const SpinnerContainer = styled.div`
 `;
 
 const PagesNavWrapper = styled.div`
-  width: 100%;
+  background: #e5e5e5;
+  padding: 10rem 0;
+  width: 100vw;
 `;
 
 const PagesNav = styled.nav`
-  width: 100%;
+  align-items: stretch;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
   justify-content: space-between;
   list-style: none;
   margin: 0 auto;
-  padding-top: 60px;
-  padding-bottom: 60px;
-  padding-left: 30px;
-  padding-right: 30px;
+  max-width: 970px;
+  padding: 0;
+  width: 95%;
 `;
 
 const StyledLink = styled(Link)`
-  color: #666;
-  font-size: 16px;
-  font-weight: 400;
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  margin-left: -30px;
-  margin-right: -30px;
-  padding: 25px 30px;
+  background: white;
   border-radius: 5px;
   border: 1px solid ${color('separation')};
-  background: #fff;
-
-  &:hover {
-    color: #000;
-    border-color: #aaa;
-  }
+  color: ${color('darkClGreen')};
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: .5rem;
+  padding: 2rem 4rem;
 `;
 
 const LinkIcon = styled(Icon)`
   height: 1em;
 `;
+
 
 type Props = {
   params: {
@@ -126,109 +83,133 @@ type Props = {
 };
 
 type State = {
-  page: IPage | null,
-  pageLinks: { data: PageLink }[] | null,
+  page: IPageData | null,
   loading: boolean;
+  pageLinks: {data: PageLink}[];
 };
 
 class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State> {
-  slug$: Rx.BehaviorSubject<string | null> = new Rx.BehaviorSubject(null);
-  subscriptions: Rx.Subscription[];
+  sub: Rx.Subscription | null = null;
+  slug$: Rx.BehaviorSubject<string> = new Rx.BehaviorSubject('');
+  legalPages = without(LEGAL_PAGES, 'information');
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
       page: null,
-      pageLinks: null,
       loading: true,
+      pageLinks: [],
     };
-    this.subscriptions = [];
   }
 
   componentWillMount() {
-    this.slug$.next(this.props.params.slug);
+    this.sub = this.slug$
+    .switchMap((slug) => {
+      if (slug) {
+        this.setState({ loading: true });
+        return pageBySlugStream(slug).observable;
+      }
 
-    this.subscriptions = [
-      this.slug$.distinctUntilChanged().switchMap((slug: string) => {
-        return (isString(slug) && !isEmpty(slug) ? pageBySlugStream(slug).observable :  Rx.Observable.of(null));
-      }).switchMap((page) => {
-        let pageLinks$: Rx.Observable<null | { data: PageLink }[]> = Rx.Observable.of(null);
-
-        if (page) {
-          pageLinks$ = Rx.Observable.combineLatest(
-            page.data.relationships.page_links.data.map(link => getPageLink(link.id).observable)
-          );
+      return Rx.Observable.of(null);
+    })
+    .switchMap((pageResponse) => {
+      try {
+        // Page not found
+        if (!pageResponse) {
+          return Rx.Observable.of({ pageResponse: { data: null }, pageLinks: [] });
         }
 
-        return pageLinks$.map(pageLinks => ({ page, pageLinks }));
-      }).subscribe(({ page, pageLinks }) => {
-        this.setState({ page, pageLinks, loading: false });
-      })
-    ];
+        // Page has no links
+        if (pageResponse.data.relationships.page_links.data.length === 0) {
+          return Rx.Observable.of({ pageResponse, pageLinks: [] });
+        }
+
+        // Page with links
+        const linksRequests = pageResponse.data.relationships.page_links.data.map(link => getPageLink(link.id).observable.first());
+        return Rx.Observable.combineLatest(linksRequests).map((pageLinks) => ({ pageLinks, pageResponse }));
+      } catch (e) {
+        return Rx.Observable.of({ pageResponse: null, pageLinks: null });
+      }
+    })
+    .subscribe(({ pageLinks, pageResponse }) => {
+      if (pageResponse) {
+        this.setState({
+          pageLinks,
+          page: pageResponse.data,
+          loading: false,
+        });
+      } else {
+        this.setState({
+          loading: false,
+          page: null,
+          pageLinks: [],
+        });
+      }
+    });
+  }
+
+  componentDidMount() {
+    this.slug$.next(this.props.params.slug);
   }
 
   componentWillReceiveProps(newProps) {
-    this.slug$.next(newProps.params.slug);
+    if (newProps.params.slug !== this.props.params.slug) {
+      this.slug$.next(newProps.params.slug);
+    }
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.sub && this.sub.unsubscribe();
   }
 
   render() {
-    const { page, pageLinks, loading } = this.state;
+    const { page, loading, pageLinks } = this.state;
     const { tFunc } = this.props;
-    const { formatMessage } = this.props.intl;
 
     if (loading) {
       return (
         <ContentContainer>
           <SpinnerContainer>
-            <Spinner size="30px" color="#666" />
+            <Spinner size="28px" color="#84939E" />
           </SpinnerContainer>
         </ContentContainer>
       );
-    } else {
-      const seoTitle = (page ? tFunc(page.data.attributes.title_multiloc) : formatMessage(messages.notFoundTitle));
-      const seoDescription = (page ? '' : formatMessage(messages.notFoundDescription));
-      const pageTitle = (page ? <T value={page.data.attributes.title_multiloc} /> : <FormattedMessage {...messages.notFoundTitle} />);
-      const pageDescription = (page ? <T value={page.data.attributes.body_multiloc} />  : <FormattedMessage {...messages.notFoundDescription} />);
-
-      return (
-        <Container>
-          <Helmet
-            title={seoTitle}
-            description={seoDescription}
-          />
-
-          <PageContent>
-            <StyledContentContainer>
-              <TextContainer>
-                <PageTitle>
-                  {pageTitle}
-                </PageTitle>
-                {pageDescription}
-              </TextContainer>
-            </StyledContentContainer>
-          </PageContent>
-
-          {pageLinks && pageLinks.length > 0 &&
-            <PagesNavWrapper>
-              <PagesNav>
-                <StyledContentContainer>
-                  {pageLinks.map((link) => (
-                    <StyledLink to={`/pages/${link.data.attributes.linked_page_slug}`} key={link.data.id}>
-                      <T value={link.data.attributes.linked_page_title_multiloc} />
-                      <LinkIcon name="chevron-right" />
-                    </StyledLink>
-                  ))}
-                </StyledContentContainer>
-              </PagesNav>
-            </PagesNavWrapper>
-          }
-        </Container>
-      );
     }
+
+    if (page === null) {
+      return <NotFound />;
+    }
+
+    return (
+      <div>
+        <ContentContainer>
+          <Helmet>
+            <title>
+              {/* tFunc is used here because <title> doesn't accept any dom node, only a plain string */}
+              {tFunc(page.attributes.title_multiloc)}
+            </title>
+          </Helmet>
+          <TextContainer>
+            <h1>
+              <T value={page.attributes.title_multiloc} />
+            </h1>
+            <T value={page.attributes.body_multiloc} />
+          </TextContainer>
+        </ContentContainer>
+        {pageLinks && pageLinks.length > 0 &&
+          <PagesNavWrapper>
+            <PagesNav>
+              {pageLinks.map((link) => (
+                <StyledLink to={`/pages/${link.data.attributes.linked_page_slug}`} key={link.data.id}>
+                  <T value={link.data.attributes.linked_page_title_multiloc} />
+                  <LinkIcon name="chevron-right" />
+                </StyledLink>
+              ))}
+            </PagesNav>
+          </PagesNavWrapper>
+        }
+      </div>
+    );
   }
 }
 
