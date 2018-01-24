@@ -19,4 +19,8 @@ class Comment < ApplicationRecord
   def set_author_name
     self.author_name = self.author.display_name if self.author
   end
+
+  def project
+    self.idea&.project
+  end
 end

@@ -1,11 +1,13 @@
 class Idea < ApplicationRecord
   include PgSearch
 
+  @@sanitizer = Rails::Html::WhiteListSanitizer.new
+
   pg_search_scope :search_by_all, 
     :against => [:title_multiloc, :body_multiloc, :author_name],
     :using => { :tsearch => {:prefix => true} }
 
-  belongs_to :project, optional: true
+  belongs_to :project
   counter_culture :project
   belongs_to :author, class_name: 'User', optional: true
   has_many :ideas_topics#, dependent: :destroy
@@ -31,6 +33,7 @@ class Idea < ApplicationRecord
   has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
 
   PUBLICATION_STATUSES = %w(draft published closed spam)
+  validates :project, presence: true, unless: :draft?
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :body_multiloc, presence: true, multiloc: {presence: true}, unless: :draft?
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
@@ -42,6 +45,7 @@ class Idea < ApplicationRecord
   before_validation :generate_slug, on: :create
   before_validation :set_author_name
   before_validation :set_idea_status, on: :create
+  before_validation :sanitize_body_multiloc, if: :body_multiloc
   after_validation :set_published_at, if: ->(idea){ idea.published? && idea.publication_status_changed? }
 
   scope :with_all_topics, (Proc.new do |topic_ids|
@@ -75,7 +79,6 @@ class Idea < ApplicationRecord
 
   scope :with_bounding_box, (Proc.new do |coordinates|
     x1,y1,x2,y2 = eval(coordinates)
-    # where("ST_Contains(ST_MakeEnvelope(?, ?, ?, ?), location_point)", x1, y1, x2, y2)
     where("ST_Intersects(ST_MakeEnvelope(?, ?, ?, ?), location_point)", x1, y1, x2, y2)
   end)
 
@@ -139,6 +142,12 @@ class Idea < ApplicationRecord
 
   def set_published_at
     self.published_at ||= Time.now
+  end
+
+  def sanitize_body_multiloc
+    self.body_multiloc = self.body_multiloc.map do |locale, description|
+      [locale, @@sanitizer.sanitize(description, tags: %w(p b u i em strong a h1 h2 h3 h4 h5 h6 ul li ol), attributes: %w(href type style target))]
+    end.to_h
   end
 
 end

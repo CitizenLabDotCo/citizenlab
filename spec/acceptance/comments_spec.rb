@@ -72,6 +72,7 @@ resource "Comments" do
         parameter :parent_id, "The id of the comment this comment is a response to", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Comment)
+      response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::COMMENTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
 
       let(:idea_id) { @idea.id }
@@ -111,6 +112,20 @@ resource "Comments" do
           expect(json_response.dig(:errors, :body_multiloc)).to eq [{error: 'blank'}]
         end
       end
+
+      describe do
+        before do
+          project = create(:project_with_past_phases)
+          @idea.project = project
+          @idea.save
+        end
+        
+        example_request "[error] Create a comment on an idea in an inactive project" do
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:errors, :base)&.first&.dig(:error)).to eq ParticipationContextService::COMMENTING_DISABLED_REASONS[:project_inactive]
+        end
+      end
     end
 
     patch "web_api/v1/comments/:id" do
@@ -120,7 +135,7 @@ resource "Comments" do
         parameter :parent_id, "The id of the comment this comment is a response to"
       end
       ValidationErrorHelper.new.error_fields(self, Comment)
-
+      response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::COMMENTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
       let(:comment) { create(:comment, author: @user, idea: @idea) }
       let(:id) { comment.id }

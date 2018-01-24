@@ -51,6 +51,12 @@ class WebApi::V1::PhasesController < ApplicationController
       :project_id,
       :start_at,
       :end_at,
+      :participation_method,
+      :posting_enabled,
+      :commenting_enabled,
+      :voting_enabled,
+      :voting_method,
+      :voting_limited_max,
       title_multiloc: I18n.available_locales,
       description_multiloc: I18n.available_locales
     )
