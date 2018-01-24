@@ -124,7 +124,7 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
   redirectToIdeaCreation = () => {
     if (this.savedPosition && this.props.params && this.props.params.slug) {
       trackEvent(tracks.createIdeaFromMap, { position: this.savedPosition, projectSlug: this.props.params.slug });
-      browserHistory.push(`/projects/${this.props.params.slug}/ideas/new?location=[${this.savedPosition.lat},${this.savedPosition.lng}]`);
+      browserHistory.push(`/projects/${this.props.params.slug}/ideas/new?position=[${this.savedPosition.lat},${this.savedPosition.lng}]`);
     }
   }
 
