@@ -5,7 +5,7 @@ import { isString, isEmpty, isError } from 'lodash';
 // libraries
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import { browserHistory } from 'react-router';
+import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 
 // components
 import IdeasNewButtonBar from './IdeasNewButtonBar';
@@ -102,23 +102,26 @@ interface GlobalState {}
 
 interface State extends LocalState, GlobalState {}
 
-export default class IdeasNewPage2 extends React.PureComponent<Props, State> {
+class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> {
   localState: ILocalStateService<LocalState>;
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Rx.Subscription[];
 
-  constructor(props) {
+  constructor(props: Props & WithRouterProps) {
     super(props);
+
     const initialLocalState: LocalState = {
       showIdeaForm: true,
       locale: null
     };
+
     const initialGlobalState: IIdeasNewPageGlobalState = {
       title: null,
       description: null,
       selectedTopics: null,
       selectedProject: null,
       position: '',
+      position_coordinates: props.location.query.position ? { type: 'Point', coordinates: JSON.parse(props.location.query.position) as number[] } : null,
       submitError: false,
       processing: false,
       ideaId: null,
@@ -150,12 +153,12 @@ export default class IdeasNewPage2 extends React.PureComponent<Props, State> {
 
   async postIdea(publicationStatus: 'draft' | 'published', authorId: string | null = null) {
     const { locale } = await this.localState.get();
-    const { title, description, selectedTopics, selectedProject, position, ideaId } = await this.globalState.get();
+    const { title, description, selectedTopics, selectedProject, position, position_coordinates, ideaId } = await this.globalState.get();
     const ideaTitle = { [locale as string]: title as string };
     const ideaDescription = { [locale as string]: (description || '') };
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const projectId = (selectedProject ? selectedProject.value as string : null);
-    const locationGeoJSON = (isString(position) && !isEmpty(position) ? await convertToGeoJson(position) : null);
+    const locationGeoJSON = (isString(position) && !isEmpty(position) ? await convertToGeoJson(position) : position_coordinates || null);
     const locationDescription = (isString(position) && !isEmpty(position) ? position : null);
 
     if (ideaId) {
@@ -287,3 +290,5 @@ export default class IdeasNewPage2 extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export default withRouter<Props>(IdeasNewPage2);
