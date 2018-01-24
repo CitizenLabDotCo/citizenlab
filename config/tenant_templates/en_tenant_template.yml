@@ -217,7 +217,7 @@ models:
         etc. Share here how digital installations could make our lives easier in the
         city.</p>\n"
     remote_header_bg_url: 
-  - &101
+  - &1234
       title_multiloc: projects.open_idea_project_title
       description_multiloc: projects.open_idea_project_description
       internal_role: open_idea_box
@@ -241,7 +241,7 @@ models:
   - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573833/featured_lxse5u.jpg
     project_ref: *9
   - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1516809151/Idea_Box_pvkode.svg
-    project_ref: *1
+    project_ref: *1234
   idea:
   - &18
     title_multiloc:
