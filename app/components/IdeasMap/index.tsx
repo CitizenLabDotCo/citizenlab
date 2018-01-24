@@ -81,9 +81,8 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
   private createIdeaButton: HTMLElement;
   private savedPosition: Leaflet.LatLng | null = null;
 
-  constructor(props) {
-    super(props);
-
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       selectedIdea: null,
     };

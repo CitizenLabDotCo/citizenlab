@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isEmpty, isString } from 'lodash';
+import { isEmpty, isString, size, get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
@@ -150,32 +150,18 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
 
     this.subscriptions = [
       this.slug$.distinctUntilChanged().switchMap((slug: string) => {
-        console.log('slug:');
-        console.log(slug);
         return (isString(slug) && !isEmpty(slug) ? pageBySlugStream(slug).observable :  Rx.Observable.of(null));
       }).switchMap((page) => {
-        console.log('switchMap');
-        console.log('page:');
-        console.log(page);
-
         let pageLinks$: Rx.Observable<null | { data: PageLink }[]> = Rx.Observable.of(null);
 
-        if (page) {
+        if (page && size(get(page, 'data.relationships.page_links.data')) > 0) {
           pageLinks$ = Rx.Observable.combineLatest(
             page.data.relationships.page_links.data.map(link => getPageLink(link.id).observable)
           );
         }
 
-        console.log('pageLinks$:');
-        console.log(pageLinks$);
-
         return pageLinks$.map(pageLinks => ({ page, pageLinks }));
       }).subscribe(({ page, pageLinks }) => {
-        console.log('subscribed');
-        console.log('page:');
-        console.log(page);
-        console.log('pageLinks:');
-        console.log(pageLinks);
         this.setState({ page, pageLinks, loading: false });
       })
     ];

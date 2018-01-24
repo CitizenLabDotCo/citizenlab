@@ -24,12 +24,12 @@ import styled from 'styled-components';
 import { Locale } from 'typings';
 
 const Information = styled.div`
-  margin-top: 60px;
+  margin-top: 40px;
 `;
 
 const InformationTitle = styled.h2`
   color: #333;
-  font-size: 18px;
+  font-size: 21px;
   font-weight: 500;
 `;
 
@@ -37,7 +37,7 @@ const InformationBody = styled.div`
   color: #333;
   font-size: 16px;
   line-height: 21px;
-  font-weight: 400;
+  font-weight: 300;
 `;
 
 type Props = {
