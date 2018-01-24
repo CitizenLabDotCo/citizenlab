@@ -6,7 +6,6 @@ import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
 
 // Components
-import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import IdeasMap from 'components/IdeasMap';
 import { Button } from 'semantic-ui-react';
@@ -19,12 +18,13 @@ import messages from './messages';
 // Styles
 import styled from 'styled-components';
 
-const StyledContentContainer = styled(ContentContainer)`
+const Container = styled.div`
   margin-top: 30px;
+  margin-bottom: 30px;
 `;
 
 const ToggleWrapper = styled.div`
-  margin-bottom: 1rem;
+  margin-bottom: 20px;
   text-align: right;
 `;
 
@@ -58,10 +58,10 @@ export default class Ideas extends React.PureComponent<Props, State> {
     const { display } = this.state;
 
     return (
-      <StyledContentContainer>
+      <Container>
         <FeatureFlag name="maps">
           <ToggleWrapper>
-            <Button.Group size="mini" toggle onClick={this.toggleDisplay}>
+            <Button.Group size="small" toggle onClick={this.toggleDisplay}>
               <Button active={display === 'map'}><FormattedMessage {...messages.displayMap} /></Button>
               <Button active={display === 'cards'}><FormattedMessage {...messages.displayCards} /></Button>
             </Button.Group>
@@ -84,7 +84,7 @@ export default class Ideas extends React.PureComponent<Props, State> {
           }
         </FeatureFlag>
 
-      </StyledContentContainer>
+      </Container>
     );
   }
 }
