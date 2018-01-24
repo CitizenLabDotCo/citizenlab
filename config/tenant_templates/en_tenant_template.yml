@@ -217,6 +217,18 @@ models:
         etc. Share here how digital installations could make our lives easier in the
         city.</p>\n"
     remote_header_bg_url: 
+  - &101
+      title_multiloc: projects.open_idea_project_title
+      description_multiloc: projects.open_idea_project_description
+      internal_role: open_idea_box
+      presentation_mode: card
+      process_type: continuous
+      participation_method: ideation
+      posting_enabled: true
+      commenting_enabled: true
+      voting_enabled: true
+      voting_method: unlimited
+      remote_header_bg_url: http://res.cloudinary.com/citizenlabco/image/upload/v1516809200/Idea_cover_qdrwa6.jpg
   project_image:
   - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573730/rsz_fd6e28f288acfdc7a88b43f8bd3181af57f3cf8a_i7y6hj.png
     project_ref: *5
@@ -228,6 +240,8 @@ models:
     project_ref: *8
   - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573833/featured_lxse5u.jpg
     project_ref: *9
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1516809151/Idea_Box_pvkode.svg
+    project_ref: *1
   idea:
   - &18
     title_multiloc:
