@@ -39,6 +39,7 @@ resource "Idea Votes" do
       parameter :mode, "one of [up, down]", required: true
     end
     ValidationErrorHelper.new.error_fields(self, Vote)
+    response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::VOTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
   
     let(:idea_id) { @idea.id }
@@ -54,6 +55,9 @@ resource "Idea Votes" do
   end
 
   post "web_api/v1/ideas/:idea_id/votes/up" do
+    ValidationErrorHelper.new.error_fields(self, Vote)
+    response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::VOTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
+
     let(:idea_id) { @idea.id }
 
     example_request "Upvote an idea that doesn't have your vote yet" do
@@ -80,9 +84,45 @@ resource "Idea Votes" do
       expect(@idea.reload.downvotes_count).to eq 0
     end
 
+    describe do
+      before do
+        project = @idea.project
+        project.update(voting_enabled: false)
+      end
+
+      example_request "[error] Upvote an idea in a project where voting is disabled" do
+        expect(status).to eq 422
+        json_response = json_parse(response_body)
+        expect(json_response[:errors][:base][0][:error]).to eq ParticipationContextService::VOTING_DISABLED_REASONS[:voting_disabled]
+        expect(@idea.reload.upvotes_count).to eq 2
+        expect(@idea.reload.downvotes_count).to eq 0
+      end
+
+    end
+
+    describe do
+      before do
+        project = @idea.project
+        project.update(voting_method: 'limited', voting_limited_max: 1)
+        create(:vote, votable: create(:idea, project: project), user: @user)
+      end
+
+      example_request "[error] Upvote an idea in a project where you can vote only once" do
+        expect(status).to eq 422
+        json_response = json_parse(response_body)
+        expect(json_response[:errors][:base][0][:error]).to eq ParticipationContextService::VOTING_DISABLED_REASONS[:voting_limited_max_reached]
+        expect(@idea.reload.upvotes_count).to eq 2
+        expect(@idea.reload.downvotes_count).to eq 0
+      end
+
+    end
+
   end
 
   post "web_api/v1/ideas/:idea_id/votes/down" do
+    ValidationErrorHelper.new.error_fields(self, Vote)
+    response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::VOTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
+
     let(:idea_id) { @idea.id }
 
     example_request "downvote an idea that doesn't have your vote yet" do

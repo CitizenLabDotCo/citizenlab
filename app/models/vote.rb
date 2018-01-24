@@ -8,4 +8,12 @@ class Vote < ApplicationRecord
   validates :votable, :mode, presence: true
   validates :mode, inclusion: { in: MODES }
   # validates :user_id, uniqueness: {scope: [:votable_id, :votable_type, :mode]}
+
+  def up?
+    self.mode == 'up'
+  end
+
+  def down?
+    self.mode == 'down'
+  end
 end

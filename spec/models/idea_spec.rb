@@ -153,5 +153,21 @@ RSpec.describe Idea, type: :model do
     end
   end
 
+  describe "body sanitizer" do
+    it "sanitizes script tags in the body" do
+      idea = create(:idea, body_multiloc: {
+        "en" => "<p>Test</p><script>This should be removed!</script>"
+      })
+      expect(idea.body_multiloc).to eq({"en" => "<p>Test</p>This should be removed!"})
+    end
+
+    it "retains link tags with target and href attributes" do
+      idea = create(:idea, body_multiloc: {
+        "en" => "This is a <a href=\"https://someurl\" target=\"_blank\">Click here</a>"
+      })
+      expect(idea.body_multiloc).to eq({"en" => "This is a <a href=\"https://someurl\" target=\"_blank\">Click here</a>"})
+    end
+  end
+
 
 end

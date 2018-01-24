@@ -18,7 +18,6 @@ class SideFxTenantService
     if tenant.host_previously_changed?
       LogActivityJob.perform_later(tenant, 'changed_host', current_user, tenant.updated_at.to_i, payload: {changes: tenant.host_previous_change})
     end
-
   end
 
   def after_destroy frozen_tenant, current_user

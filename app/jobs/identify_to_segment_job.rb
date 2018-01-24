@@ -14,8 +14,11 @@ class IdentifyToSegmentJob < ApplicationJob
       gender: user.gender
     }
 
+    tenant_id = nil
+
     begin
       tenant = Tenant.current
+      tenant_id = tenant.id
       traits[:tenantId] = tenant.id
       traits[:tenantName] = tenant.name
       traits[:tenantHost] = tenant.host
@@ -28,6 +31,15 @@ class IdentifyToSegmentJob < ApplicationJob
     Analytics && Analytics.identify(
       user_id: user.id,
       traits: traits
+    )
+    Analytics && Analytics.group(
+      user_id: user.id,
+      group_id: tenant_id,
+      traits: {
+        name: traits[:tenantName],
+        host: traits[:tenantHost],
+        type: traits[:tenantOrganizationType]
+      }
     )
   end
 

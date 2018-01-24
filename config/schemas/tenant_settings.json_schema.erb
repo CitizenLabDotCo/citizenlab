@@ -294,8 +294,28 @@
           "tile_provider": {
             "description": "The OSM compatible tile provider URL pattern. Https is required.",
             "type": "string",
-            "pattern": "^https:\/\/.+\$\{z\}/\$\{x\}/\$\{y\}.+$",
-            "default": "https://a.tile.openstreetmap.org/${z}/${x}/${y}.png"
+            "pattern": "^https:\/\/.+",
+            "default": "https://free.tilehosting.com/styles/positron/style.json?key=DIZiuhfkZEQ5EgsaTk6D"
+          },
+          "map_center": {
+            "description": "The default center point of the map. Use a dot as decimal separator.",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "lat": {
+                "type": "string",
+                "default": "50.8503"
+              },
+              "long": {
+                "type": "string",
+                "default": "4.3517"
+              }
+            }
+          },
+          "zoom_level": {
+            "type": "number",
+            "description": "The default zoom level of the map. A number from 0 to 19. See https://wiki.openstreetmap.org/wiki/Zoom_levels",
+            "default": 12
           }
         }
       }

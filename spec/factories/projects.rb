@@ -12,6 +12,7 @@ FactoryGirl.define do
       "en" => "Let's renew the parc at the city border and make it an enjoyable place for young and old.",
       "nl" => "Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud."
     }}
+    publication_status 'published'
 
     factory :project_with_topics do
       transient do
@@ -50,7 +51,79 @@ FactoryGirl.define do
       end
     end
 
- factory :project_xl do
+    factory :project_with_active_ideation_phase do
+      after(:create) do |project, evaluator|
+        project.phases << create(:active_phase, participation_method: 'ideation')
+      end
+    end
+
+
+    factory :project_with_past_phases do
+      transient do
+        phases_count 5
+      end
+      after(:create) do |project, evaluator|
+        start_at = Faker::Date.between(2.year.ago, 1.year.ago)
+        evaluator.phases_count.times do |i|
+          project.phases << create(:phase, 
+            start_at: start_at,
+            end_at: start_at += rand(72).days
+          )
+        end
+      end
+    end
+
+    factory :project_with_current_phase do
+      transient do
+        current_phase_attrs {{}}
+        phases_config {{sequence: "xxcxx"}}
+      end
+      after(:create) do |project, evaluator|
+        active_phase = create(:phase, 
+          start_at: Faker::Date.between(6.months.ago, Time.now),
+          end_at: Faker::Date.between(Time.now, 6.months.from_now),
+          project: project,
+          **(evaluator.current_phase_attrs.merge((evaluator.phases_config[:c] || {})))
+        )
+        phases_before, phases_after = evaluator.phases_config[:sequence].split('c')
+
+        end_at = active_phase.start_at
+        phases_before.chars.map(&:to_sym).reverse.each do |sequence_char|
+          project.phases << create(:phase, 
+            end_at: end_at,
+            start_at: end_at -= rand(120).days,
+            **(evaluator.phases_config[sequence_char] || {})
+          )
+        end
+
+        start_at = active_phase.end_at
+        phases_after.chars.map(&:to_sym).each do |sequence_char|
+          project.phases << create(:phase, 
+            start_at: start_at,
+            end_at: start_at += rand(120).days,
+            **(evaluator.phases_config[sequence_char] || {})
+          )
+        end
+      end
+    end
+
+    factory :project_with_future_phases do
+      transient do
+        phases_count 5
+      end
+      after(:create) do |project, evaluator|
+        start_at = Faker::Date.between(Time.now, 1.year.from_now)
+        evaluator.phases_count.times do |i|
+          project.phases << create(:phase, 
+            start_at: start_at,
+            end_at: start_at += rand(120).days
+          )
+        end
+      end
+    end
+
+
+    factory :project_xl do
       transient do
         ideas_count 10
         topics_count 3
@@ -111,5 +184,16 @@ FactoryGirl.define do
         end
       end
     end
+
+    factory :continuous_project do
+      process_type 'continuous'
+      participation_method 'ideation'
+      posting_enabled true
+      commenting_enabled true
+      voting_enabled true
+      voting_method 'unlimited'
+      voting_limited_max 7
+    end
+
   end
 end
