@@ -41,7 +41,11 @@ const StyledRow = styled.div`
   }
 
   p {
-    margin-bottom: 0;
+    color: ${color('label')};
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+    margin-bottom: 5px;
   }
 
   &:first-child {

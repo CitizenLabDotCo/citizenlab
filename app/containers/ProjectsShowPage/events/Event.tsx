@@ -18,7 +18,7 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-// import { media } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
@@ -26,7 +26,7 @@ import { Locale } from 'typings';
 const Container = styled.div`
   width: 100%;
   padding: 15px;
-  margin: 12px auto;
+  margin: 15px auto;
   display: flex;
   flex-direction: row;
   border-radius: 5px;
@@ -36,12 +36,20 @@ const Container = styled.div`
   &.past {
     border-color: #eaeaea;
   }
+
+  ${media.smallerThanMaxTablet`
+    flex-direction: column;
+  `}
 `;
 
 const EventDateInfo = styled.div`
   flex: 0 0 80px;
   display: flex;
   flex-direction: column;
+
+  ${media.smallerThanMaxTablet`
+    order: 1;
+  `}
 `;
 
 const EventDates = styled.div`
@@ -61,8 +69,8 @@ const EventDates = styled.div`
 
 const EventDate = styled.div`
   color: #fff;
-  font-size: 25px;
-  line-height: 29px;
+  font-size: 23px;
+  line-height: 27px;
   font-weight: 500;
   display: flex;
   flex-direction: column;
@@ -72,9 +80,10 @@ const EventDate = styled.div`
 
 const EventDatesSeparator = styled.div`
   color: #fff;
-  font-size: 25px;
-  line-height: 29px;
+  font-size: 23px;
+  line-height: 27px;
   font-weight: 500;
+  text-align: center;
   padding-top: 5px;
   padding-bottom: 5px;
 `;
@@ -110,11 +119,19 @@ const EventInformation = styled.div`
   &.past {
     opacity: 0.6;
   }
+
+  ${media.smallerThanMaxTablet`
+    flex-direction: column;
+    order: 3;
+    border: none;
+    padding-right: 0;
+    margin-left: 0;
+  `}
 `;
 
 const EventTime = styled.div`
-  color: #939393;
-  font-size: 16px;
+  color: #666;
+  font-size: 17px;
   font-weight: 300;
 `;
 
@@ -143,11 +160,19 @@ const EventLocationWrapper = styled.div`
   padding: 20px;
   display: flex;
   align-items: center;
-  /* justify-content: center; */
 
   &.past {
     opacity: 0.6;
   }
+
+  ${media.smallerThanMaxTablet`
+    flex: 1;
+    order: 2;
+    align-items: left;
+    padding: 0;
+    margin-top: 30px;
+    margin-bottom: 15px;
+  `}
 `;
 
 const EventLocation = styled.div`
@@ -156,6 +181,10 @@ const EventLocation = styled.div`
   align-items: center;
   margin-left: 40px;
   margin-right: 30px;
+
+  ${media.smallerThanMaxTablet`
+    margin: 0;
+  `}
 `;
 
 const MapIcon = styled(Icon)`
@@ -241,8 +270,8 @@ export default class Event extends React.PureComponent<Props, State> {
       const eventLocationAddress = getLocalized(event.data.attributes.location_multiloc, locale, currentTenantLocales);
       const startAtMoment = moment(event.data.attributes.start_at);
       const endAtMoment = moment(event.data.attributes.end_at);
-      const startAtTime = startAtMoment.format('HH:mm');
-      const endAtTime = endAtMoment.format('HH:mm');
+      let startAtTime = startAtMoment.format('HH:mm');
+      let endAtTime = endAtMoment.format('HH:mm');
       const startAtDay = startAtMoment.format('DD');
       const endAtDay = endAtMoment.format('DD');
       const startAtMonth = startAtMoment.format('MMM');
@@ -258,6 +287,11 @@ export default class Event extends React.PureComponent<Props, State> {
         eventStatus = 'present';
       }
 
+      if (isMultiDayEvent) {
+        startAtTime = startAtMoment.format('D MMM, HH:mm');
+        endAtTime = endAtMoment.format('D MMM, HH:mm');
+      }
+
       return (
         <Container className={`${className} ${eventStatus}`}>
           <EventDateInfo>
@@ -269,7 +303,9 @@ export default class Event extends React.PureComponent<Props, State> {
 
               {isMultiDayEvent && (
                 <>
-                  <EventDatesSeparator>-</EventDatesSeparator>
+                  <EventDatesSeparator>
+                    -
+                  </EventDatesSeparator>
                   <EventDate>
                     <span>{endAtDay}</span>
                     <span>{endAtMonth}</span>
@@ -297,6 +333,7 @@ export default class Event extends React.PureComponent<Props, State> {
             </EventDescription>
           </EventInformation>
 
+          {eventLocationAddress &&
           <EventLocationWrapper className={eventStatus}>
             <EventLocation>
               <MapIcon name="mapmarker" />
@@ -311,6 +348,7 @@ export default class Event extends React.PureComponent<Props, State> {
               </EventLocationInner>
             </EventLocation>
           </EventLocationWrapper>
+          }
         </Container>
       );
     }

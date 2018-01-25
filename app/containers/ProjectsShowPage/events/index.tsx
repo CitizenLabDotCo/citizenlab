@@ -21,30 +21,28 @@ import styled from 'styled-components';
 
 const Container = styled(ContentContainer)`
   background: #f8f8f8;
-`;
-
-const StyledContentContainer = styled(ContentContainer)`
-  margin-top: 50px;
+  padding-top: 70px;
 `;
 
 const Events = styled.div`
-  margin-bottom: 120px;
+  margin-bottom: 100px;
 `;
 
 const Title = styled.h1`
   color: #333;
-  font-size: 28px;
-  font-weight: 500;
-  margin-bottom: 20px;
+  font-size: 29px;
+  line-height: 35px;
+  font-weight: 600;
+  margin-bottom: 15px;
 `;
 
 const EventList = styled.div``;
 
 const NoEvents = styled.div`
-  color: #333;
+  color: #999;
   font-size: 18px;
-  font-weight: 400;
-  line-height: 23px;
+  font-weight: 300;
+  line-height: 26px;
 `;
 
 type Props = {
@@ -109,13 +107,13 @@ export default class ProjectEventsPage extends React.PureComponent<Props, State>
     if (events && events.data && events.data.length > 0) {
       return (
         <Container>
-          <StyledContentContainer>
+          {/* <StyledContentContainer> */}
             <Events>
               <Title>
                 <FormattedMessage {...messages.upcomingEvents} />
               </Title>
 
-              {upcomingEvents ? (
+              {(upcomingEvents && upcomingEvents.length > 0) ? (
                 <EventList className={className}>
                   {upcomingEvents.map(event => <Event key={event.id} eventId={event.id} />)}
                 </EventList>
@@ -131,7 +129,7 @@ export default class ProjectEventsPage extends React.PureComponent<Props, State>
                 <FormattedMessage {...messages.pastEvents} />
               </Title>
 
-              {pastEvents ? (
+              {(pastEvents && pastEvents.length > 0) ? (
                 <EventList className={className}>
                   {pastEvents.map(event => <Event key={event.id} eventId={event.id} />)}
                 </EventList>
@@ -141,7 +139,7 @@ export default class ProjectEventsPage extends React.PureComponent<Props, State>
                 </NoEvents>
               )}
             </Events>
-          </StyledContentContainer>
+          {/* </StyledContentContainer> */}
         </Container>
       );
     }

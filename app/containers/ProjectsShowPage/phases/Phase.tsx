@@ -24,20 +24,24 @@ import styled from 'styled-components';
 import { Locale } from 'typings';
 
 const Information = styled.div`
-  margin-top: 40px;
+  margin-top: 60px;
 `;
 
 const InformationTitle = styled.h2`
   color: #333;
-  font-size: 21px;
-  font-weight: 500;
+  font-size: 24px;
+  font-weight: 600;
 `;
 
 const InformationBody = styled.div`
   color: #333;
-  font-size: 16px;
-  line-height: 21px;
+  font-size: 18px;
+  line-height: 26px;
   font-weight: 300;
+
+  strong {
+    font-weight: 500;
+  }
 `;
 
 type Props = {
@@ -54,7 +58,7 @@ export default class Phase extends React.PureComponent<Props, State> {
   phaseId$: Rx.BehaviorSubject<string>;
   subscriptions: Rx.Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       locale: null,

@@ -13,8 +13,12 @@ const Container = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  height: 42px;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
   fill: ${color('clBlue')};
+  padding: 0px;
+  margin: 0px;
   margin-right: 12px;
 `;
 
