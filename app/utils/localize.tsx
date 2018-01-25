@@ -54,9 +54,6 @@ function localize<PassedProps>(ComposedComponent) {
         currentTenantStream().observable
       )
       .subscribe(([locale, currentTenant]) => {
-
-        console.log('locale: ' + locale);
-
         this.setState({
           locale,
           tenantLocales: currentTenant.data.attributes.settings.core.locales,
