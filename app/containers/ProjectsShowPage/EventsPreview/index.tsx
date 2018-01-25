@@ -34,7 +34,7 @@ const Background = styled(ContentContainer)`
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 `;
 
 const Events = styled.div`

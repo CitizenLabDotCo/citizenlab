@@ -210,7 +210,7 @@ const SectionContainer = styled.section`
 const ExploreText = styled.div`
   color: #84939E;
   font-size: 17px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 21px;
   white-space: normal;
   margin-right: 8px;
