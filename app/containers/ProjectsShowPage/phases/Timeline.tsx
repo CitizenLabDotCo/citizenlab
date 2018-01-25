@@ -71,6 +71,14 @@ const HeaderSection = styled.div`
   justify-content: flex-start;
 `;
 
+const HeaderLeftSection = HeaderSection.extend``;
+
+const HeaderRightSection = HeaderSection.extend`
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
+`;
+
 const PhaseNumberWrapper = styled.div`
   flex: 0 0 30px;
   width: 30px;
@@ -136,6 +144,19 @@ const HeaderTitle = styled.div`
   `}
 `;
 
+const MobileDate = styled.div`
+  color: #999;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 300;
+  margin-top: 3px;
+  display: none;
+
+  ${media.smallerThanMaxTablet`
+    display: block;
+  `}
+`;
+
 const HeaderSubtitle = styled.div`
   color: #999;
   font-size: 15px;
@@ -151,6 +172,10 @@ const HeaderDate = styled.div`
   line-height: 16px;
   white-space: nowrap;
   margin-right: 20px;
+
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const Phases = styled.div`
@@ -192,7 +217,7 @@ const PhaseArrow = styled(Icon)`
 
 const PhaseText: any = styled.div`
   color: #d0d5d9;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 400;
   text-align: center;
   overflow-wrap: break-word;
@@ -209,11 +234,11 @@ const PhaseText: any = styled.div`
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
-  line-height: 18px;
+  line-height: 19px;
   max-height: 54px;
   margin-top: 12px;
-  padding-left: 2px;
-  padding-right: 2px;
+  padding-left: 5px;
+  padding-right: 5px;
   user-select: none;
   transition: color 60ms ease-out;
 `;
@@ -446,7 +471,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
       return (
         <Container className={className}>
           <Header>
-            <HeaderSection>
+            <HeaderLeftSection>
               {isSelected &&
                 <PhaseNumberWrapper className={`${isSelected && 'selected'} ${phaseStatus === 'present' && 'current'}`}>
                   <PhaseNumber className={`${isSelected && 'selected'} ${phaseStatus === 'present' && 'current'}`}>
@@ -459,10 +484,23 @@ export default class Timeline extends React.PureComponent<Props, State> {
                 <HeaderTitle className={`${isSelected && 'selected'} ${phaseStatus === 'present' && 'current'}`}>
                   {selectedPhaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
                 </HeaderTitle>
-              </HeaderTitleWrapper>
-            </HeaderSection>
+                <MobileDate>
+                  {phaseStatus === 'past' && (
+                    <FormattedMessage {...messages.endedOn} values={{ date: selectedPhaseEnd }} />
+                  )}
 
-            <HeaderSection>
+                  {phaseStatus === 'present' && (
+                    <FormattedMessage {...messages.endsOn} values={{ date: selectedPhaseEnd }} />
+                  )}
+
+                  {phaseStatus === 'future' && (
+                    <FormattedMessage {...messages.startsOn} values={{ date: selectedPhaseStart }} />
+                  )}
+                </MobileDate>
+              </HeaderTitleWrapper>
+            </HeaderLeftSection>
+
+            <HeaderRightSection>
               <HeaderDate>
                 {isSelected &&
                   <HeaderSubtitle>
@@ -484,7 +522,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
                 projectId={this.props.projectId}
                 phaseId={selectedPhaseId}
               />
-            </HeaderSection>
+            </HeaderRightSection>
           </Header>
 
 

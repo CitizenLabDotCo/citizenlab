@@ -257,7 +257,7 @@
     "react-dnd": "^2.5.4",
     "react-dnd-html5-backend": "^2.5.4",
     "react-dom": "^16.2.0",
-    "react-draft-wysiwyg": "^1.12.5",
+    "react-draft-wysiwyg": "^1.12.6",
     "react-dropzone": "^4.2.7",
     "react-helmet": "^5.2.0",
     "react-immutable-proptypes": "^2.1.0",
@@ -298,7 +298,7 @@
   "devDependencies": {
     "@types/bowser": "1.1.1",
     "@types/draft-js": "0.10.19",
-    "@types/lodash": "4.14.95",
+    "@types/lodash": "4.14.96",
     "@types/moment-timezone": "0.5.3",
     "@types/geojson": "^7946.0.0",
     "@types/leaflet": "^1.2.5",

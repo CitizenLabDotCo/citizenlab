@@ -27,7 +27,7 @@ const MoreOptionsIconWrapper = styled.div`
 const MoreOptionsLabel = styled.div`
   color: ${(props) => props.theme.colors.label};
   font-size: 15px;
-  font-weight: 300;
+  font-weight: 400;
   white-space: nowrap;
   margin-left: 10px;
   transition: all 100ms ease-out;

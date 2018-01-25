@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { has } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
@@ -52,7 +52,7 @@ const Container = styled.div``;
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: 840px;
+  max-width: 820px;
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -102,6 +102,10 @@ const ProjectLink = styled(Link)`
     color: ${(props) => darken(0.2, props.theme.colors.label)};
     text-decoration: underline;
   }
+
+  ${media.smallerThanMaxTablet`
+    text-decoration: underline;
+  `}
 `;
 
 const Header = styled.div`
@@ -143,7 +147,12 @@ const LeftColumn = styled.div`
   flex-grow: 1;
   margin: 0;
   padding: 0;
+  padding-right: 65px;
   min-width: 0;
+
+  ${media.smallerThanMaxTablet`
+    padding: 0;
+  `}
 `;
 
 const IdeaImage = styled.img`
@@ -172,7 +181,7 @@ const AuthorAndAdressWrapper = styled.div`
 const LocationLabel = styled.div`
   color: ${(props) => props.theme.colors.label};
   font-size: 15px;
-  font-weight: 300;
+  font-weight: 400;
   margin-right: 6px;
 
   ${media.smallerThanMinTablet`
@@ -183,7 +192,7 @@ const LocationLabel = styled.div`
 const LocationLabelMobile = styled.div`
   color: ${(props) => props.theme.colors.label};
   font-size: 14px;
-  font-weight: 300;
+  font-weight: 400;
   margin-right: 6px;
 
   ${media.biggerThanMinTablet`
@@ -313,7 +322,7 @@ const IdeaBody = styled.div`
   color: #474747;
   font-size: 18px;
   line-height: 30px;
-  font-weight: 300;
+  font-weight: 400;
 
   p {
     margin-bottom: 25px;
@@ -322,23 +331,6 @@ const IdeaBody = styled.div`
    strong {
      font-weight: 500;
    }
-`;
-
-const SeparatorColumn = styled.div`
-  flex: 0 0 1px;
-  padding: 0;
-  margin: 0;
-  margin-left: 40px;
-  margin-right: 40px;
-  background: #e4e4e4;
-
-  height: auto;
-  position: sticky;
-  top: 100px;
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
 `;
 
 const SeparatorRow = styled.div`
@@ -378,7 +370,6 @@ const MetaContent = styled.div`
   width: 200px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 1rem;
 `;
 
 const VoteLabel = styled.div`
@@ -423,15 +414,15 @@ const SharingWrapper = styled.div`
 `;
 
 const StyledSharing: any = styled(Sharing)`
-  margin-top: 45px;
+  margin-top: 30px;
   margin-bottom: 0px;
 `;
 
 const StyledSharingMobile = styled(StyledSharing)`
   margin: 0;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
   padding: 0;
-  padding-top: 25px;
+  padding-top: 10px;
   padding-bottom: 10px;
   border-top: solid 1px #e0e0e0;
   border-bottom: solid 1px #e0e0e0;
@@ -440,54 +431,6 @@ const StyledSharingMobile = styled(StyledSharing)`
     display: none;
   `}
 `;
-
-/*
-const IconWrapper = styled.div`
-  width: 30px;
-  margin: 0;
-  padding: 0;
-  border: none;
-  display: flex;
-  justify-content: flex-start;
-
-  svg {
-    width: 20px;
-    fill: ${(props) => props.theme.colors.label};
-    transition: all 100ms ease-out;
-  }
-`;
-
-const GiveOpinionText = styled.div`
-  color: ${(props) => props.theme.colors.label};
-  font-size: 15px;
-  font-weight: 300;
-  white-space: nowrap;
-  transition: all 100ms ease-out;
-`;
-
-const GiveOpinion = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  transition: all 100ms ease-out;
-  margin: 0;
-  padding: 0;
-
-  &:hover {
-    ${IconWrapper} svg {
-      fill: #333;
-    }
-
-    ${GiveOpinionText} {
-      color: #333;
-    }
-  }
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
-`;
-*/
 
 const MoreActionsMenuWrapper = styled.div`
   margin-top: 40px;
@@ -616,18 +559,6 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
     }
   }
 
-  scrollToCommentForm = (event) => {
-    event.preventDefault();
-
-    const element = document.querySelector('.ideaCommentForm');
-
-    if (element) {
-      const textarea = element.querySelector('textarea');
-      textarea && textarea.focus();
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  }
-
   handleMapToggle = () => {
     this.setState((state: State) => ({ showMap: !state.showMap }));
   }
@@ -645,7 +576,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { /* authUser, */ idea, ideaImage, ideaAuthor, ideaComments, project, loading, showMap, moreActions } = this.state;
+    const { idea, ideaImage, ideaAuthor, ideaComments, project, loading, showMap, moreActions } = this.state;
 
     if (!loading && idea !== null) {
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
@@ -653,8 +584,8 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
       const titleMultiloc = idea.data.attributes.title_multiloc;
       const bodyMultiloc = idea.data.attributes.body_multiloc;
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
-      const ideaImageMedium = (ideaImage && _.has(ideaImage, 'data.attributes.versions.medium') ? ideaImage.data.attributes.versions.medium : null);
-      const ideaImageLarge = (ideaImage && _.has(ideaImage, 'data.attributes.versions.large') ? ideaImage.data.attributes.versions.large : null);
+      const ideaImageMedium = (ideaImage && has(ideaImage, 'data.attributes.versions.medium') ? ideaImage.data.attributes.versions.medium : null);
+      const ideaImageLarge = (ideaImage && has(ideaImage, 'data.attributes.versions.large') ? ideaImage.data.attributes.versions.large : null);
       const isSafari = bowser.safari;
       const ideaLocation = idea.data.attributes.location_point_geojson || null;
       const ideaAdress = idea.data.attributes.location_description || null;
@@ -682,26 +613,17 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
 
           <SharingWrapper>
             <StyledSharing imageUrl={ideaImageLarge} />
-
-            {/* authUser &&
-              <GiveOpinion onClick={this.scrollToCommentForm}>
-                <IconWrapper>
-                  <Icon name="comments" />
-                </IconWrapper>
-                <GiveOpinionText>
-                  <FormattedMessage {...messages.commentsTitle} />
-                </GiveOpinionText>
-              </GiveOpinion>
-            */}
           </SharingWrapper>
 
-          <MoreActionsMenuWrapper>
-            <MoreActionsMenu
-              height="5px"
-              actions={moreActions}
-              label={<FormattedMessage {...messages.moreOptions} />}
-            />
-          </MoreActionsMenuWrapper>
+          {(moreActions && moreActions.length > 0) &&
+            <MoreActionsMenuWrapper>
+              <MoreActionsMenu
+                height="5px"
+                actions={moreActions}
+                label={<FormattedMessage {...messages.moreOptions} />}
+              />
+            </MoreActionsMenuWrapper>
+          }
         </MetaContent>
       );
 
@@ -735,11 +657,6 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
               <LeftColumn>
                 {statusId &&
                   <StatusContainerMobile>
-                    {/*
-                    <StatusTitle>
-                      <FormattedMessage {...messages.ideaStatus} />
-                    </StatusTitle>
-                    */}
                     <StatusBadge statusId={statusId} />
                   </StatusContainerMobile>
                 }
@@ -812,8 +729,6 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
 
                 {ideaComments && <Comments ideaId={idea.data.id} />}
               </LeftColumn>
-
-              <SeparatorColumn />
 
               <RightColumnDesktop className={!isSafari ? 'notSafari' : ''}>
                 {ideaMetaContent}
