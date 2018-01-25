@@ -20,6 +20,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 const facebookColor = '#3b5998';
@@ -45,7 +46,7 @@ const Text = styled.div`
   font-size: 15px;
   line-height: 19px;
   text-align: left;
-  font-weight: 300;
+  font-weight: 400;
   transition: all 100ms ease-out;
   white-space: nowrap;
 `;
@@ -65,7 +66,13 @@ const Container = styled.div`
     transition: all 100ms ease-out;
     margin: 0;
     padding: 0;
-    margin-bottom: 18px;
+    margin-top: 18px;
+
+    ${media.smallerThanMaxTablet`
+      margin: 0;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    `}
 
     &.twitter {
       ${Text} {

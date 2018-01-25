@@ -133,7 +133,7 @@ const ProjectDescription = styled.div`
   color: #84939E;
   font-size: 15px;
   line-height: 20px;
-  font-weight: 300;
+  font-weight: 400;
   margin-top: 10px;
 
   /* see https://stackoverflow.com/questions/3922739/limit-text-length-to-n-lines-using-css */

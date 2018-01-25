@@ -25,8 +25,8 @@ import { Locale } from 'typings';
 
 const Container = styled.div`
   width: 100%;
-  padding: 15px;
-  margin: 15px auto;
+  padding: 20px;
+  margin: 20px auto;
   display: flex;
   flex-direction: row;
   border-radius: 5px;
@@ -48,6 +48,8 @@ const EventDateInfo = styled.div`
   flex-direction: column;
 
   ${media.smallerThanMaxTablet`
+    width: 100%;
+    flex: 1 1 auto;
     order: 1;
   `}
 `;
@@ -65,6 +67,10 @@ const EventDates = styled.div`
   &.past {
     background: #cfcfcf;
   }
+
+  ${media.smallerThanMaxTablet`
+    
+  `}
 `;
 
 const EventDate = styled.div`

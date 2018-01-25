@@ -85,7 +85,7 @@ const IdeaTitle: any = styled.h4`
 const IdeaAuthor = styled.div`
   color: #84939d;
   font-size: 14px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 20px;
   margin-top: 12px;
 `;
