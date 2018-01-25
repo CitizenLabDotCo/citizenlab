@@ -13,8 +13,8 @@ import { phaseStream, IPhase } from 'services/phases';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+// import { FormattedMessage } from 'utils/cl-intl';
+// import messages from '../messages';
 
 // style
 import styled from 'styled-components';
@@ -24,14 +24,15 @@ import styled from 'styled-components';
 import { Locale } from 'typings';
 
 const Information = styled.div`
-  margin-top: 60px;
+  margin-top: 40px;
+  margin-bottom: 20px;
 `;
 
-const InformationTitle = styled.h2`
-  color: #333;
-  font-size: 24px;
-  font-weight: 600;
-`;
+// const InformationTitle = styled.h2`
+//   color: #333;
+//   font-size: 24px;
+//   font-weight: 600;
+// `;
 
 const InformationBody = styled.div`
   color: #333;
@@ -104,9 +105,9 @@ export default class Phase extends React.PureComponent<Props, State> {
         <ContentContainer className={className}>
           {(description && description.length > 0) &&
             <Information>
-              <InformationTitle>
+              {/* <InformationTitle>
                 <FormattedMessage {...messages.aboutThisPhase} />
-              </InformationTitle>
+              </InformationTitle> */}
               <InformationBody>
                 <span dangerouslySetInnerHTML={{ __html: description }} />
               </InformationBody>
