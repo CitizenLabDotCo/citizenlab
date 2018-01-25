@@ -16,7 +16,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, color } from 'utils/styleUtils';
 
 const ModalContent: any = styled(clickOutside)`
   width: 100%;
@@ -46,7 +46,7 @@ const ModalContent: any = styled(clickOutside)`
 
 const CloseIcon = styled(Icon)`
   height: 20px;
-  fill: #fff;
+  fill: ${color('mediumGrey')};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,8 +69,8 @@ const CloseButton = styled.div`
   `}
 
   &:hover {
-    ${CloseIcon} {
-      fill: #ccc;
+    svg {
+      fill: ${color('clBlue')};
     }
   }
 `;
@@ -232,10 +232,10 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
             onClickOutside={this.clickOutsideModal}
           >
             {children}
+            <CloseButton onClick={this.clickCloseButton}>
+              <CloseIcon name="close3" />
+            </CloseButton>
           </ModalContent>
-          <CloseButton onClick={this.clickCloseButton}>
-            <CloseIcon name="close3" />
-          </CloseButton>
         </ModalContainer>
       </CSSTransition>
     ) : null);
