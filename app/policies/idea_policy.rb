@@ -38,17 +38,24 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.admin? || (
-      ProjectPolicy.new(user, record.project).show? && (
-        record.draft? ||
-        (user && record.author_id == user.id)
+    pcs = ParticipationContextService.new
+    disabled_reason = pcs.posting_disabled_reason(record.project)
+
+    record.draft? ||
+    (user&.admin? && disabled_reason != ParticipationContextService::POSTING_DISABLED_REASONS[:not_ideation]) || 
+    (
+      user && (
+        record.author_id == user.id &&
+        !disabled_reason &&
+        ProjectPolicy.new(user, record.project).show?
       )
     )
   end
 
   def show?
     user&.admin? || record.draft? || (
-      ProjectPolicy.new(user, record.project).show? &&       %w(draft published closed).include?(record.publication_status)
+      ProjectPolicy.new(user, record.project).show? &&
+      %w(draft published closed).include?(record.publication_status)
     )
   end
 

@@ -3,7 +3,8 @@ class WebApi::V1::IdeasController < ApplicationController
   before_action :set_idea, only: [:show, :update, :destroy]
   skip_after_action :verify_authorized, only: [:index_xlsx, :index_idea_markers]
   
-
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  
   def index
     @ideas = policy_scope(Idea).includes(:author, :topics, :areas, :phases, :idea_images, project: [:phases])
       .page(params.dig(:page, :number))
@@ -158,6 +159,18 @@ class WebApi::V1::IdeasController < ApplicationController
     else
       @ideas = @ideas.where(publication_status: 'published')
     end
+  end
+
+  def user_not_authorized exception
+    pcs = ParticipationContextService.new
+    if exception.query == "create?"
+      reason = pcs.posting_disabled_reason(exception.record.project)
+      if reason
+        render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized
+        return
+      end
+    end
+    raise exception
   end
 
 end
