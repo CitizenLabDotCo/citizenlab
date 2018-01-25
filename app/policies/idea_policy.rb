@@ -19,11 +19,12 @@ class IdeaPolicy < ApplicationPolicy
         #     projects.visible_to = 'public' OR \
         #     (projects.visible_to = 'groups' AND memberships.user_id = ?)", user&.id)
         project_ids =  Pundit.policy_scope(user, Project).select(:id).map(&:id)
-          scope.where(project_id: nil).or(scope.where(project_id: project_ids))
+        scope.where(project_id: project_ids, publication_status: ['published', 'closed'])
       else
         scope
           .left_outer_joins(:project)
-          .where("projects.id IS NULL OR projects.visible_to = 'public'")
+          .where(publication_status: ['published', 'closed'])
+          .where(projects: {visible_to: 'public', publication_status: ['published', 'archived']})
       end
     end
   end
@@ -37,13 +38,25 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def create?
-    record.draft? || (user && (record.author_id == user.id || user.admin?))
+    pcs = ParticipationContextService.new
+    disabled_reason = pcs.posting_disabled_reason(record.project)
+
+    record.draft? ||
+    (user&.admin? && disabled_reason != ParticipationContextService::POSTING_DISABLED_REASONS[:not_ideation]) || 
+    (
+      user && (
+        record.author_id == user.id &&
+        !disabled_reason &&
+        ProjectPolicy.new(user, record.project).show?
+      )
+    )
   end
 
   def show?
-    user&.admin? ||
-    record.project_id.blank? ||
-    ProjectPolicy.new(user, record.project).show?
+    user&.admin? || record.draft? || (
+      ProjectPolicy.new(user, record.project).show? &&
+      %w(draft published closed).include?(record.publication_status)
+    )
   end
 
   def by_slug?
@@ -63,7 +76,8 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    shared = [:publication_status,
+    shared = [
+      :publication_status,
       :project_id,
       :author_id,
       :location_description,

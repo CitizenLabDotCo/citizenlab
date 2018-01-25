@@ -126,7 +126,7 @@ if Apartment::Tenant.current == 'public' || 'example_org'
       maps: {
         enabled: true,
         allowed: true,
-        tile_provider: "https://a.tile.openstreetmap.org/${z}/${x}/${y}.png",
+        tile_provider: "https://free.tilehosting.com/styles/positron/style.json?key=DIZiuhfkZEQ5EgsaTk6D",
         map_center: {
           lat: "50.8503",
           long: "4.3517"
@@ -284,10 +284,11 @@ if Apartment::Tenant.current == 'localhost'
         "en" => "Let's renew the parc at the city border.",
         "nl" => "Laten we het park op de grend van de stad vernieuwen."
       },
-      header_bg: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
+      header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
       visible_to: %w(admins groups public public public)[rand(5)],
       presentation_mode: ['card', 'card', 'card', 'map', 'map'][rand(5)],
-      process_type: ['timeline','timeline','timeline','timeline','continuous'][rand(5)]
+      process_type: ['timeline','timeline','timeline','timeline','continuous'][rand(5)],
+      publication_status: ['published','published','published','published','published','draft','archived'][rand(7)]
     })
 
     if project.continuous?
@@ -349,7 +350,7 @@ if Apartment::Tenant.current == 'localhost'
 
 
   MAP_CENTER = [50.8503, 4.3517]
-  MAP_OFFSET = 0.5
+  MAP_OFFSET = 0.1
 
   num_ideas.times do 
     created_at = Faker::Date.between(1.year.ago, Time.now)
@@ -362,7 +363,7 @@ if Apartment::Tenant.current == 'localhost'
       areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
       author: User.offset(rand(User.count)).first,
       project: project,
-      phases: (project && project.timeline? && project.phases.sample(rand(project.phases.count))) || [],
+      phases: (project && project.timeline? && project.phases.sample(rand(project.phases.count)).select(&:ideation?)) || [],
       publication_status: 'published',
       published_at: Faker::Date.between(created_at, Time.now),
       created_at: created_at,

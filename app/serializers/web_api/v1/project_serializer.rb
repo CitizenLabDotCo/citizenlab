@@ -1,6 +1,5 @@
 class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
-  attributes :id, :title_multiloc, :description_multiloc, :description_preview_multiloc, :slug, :header_bg, :visible_to, :process_type, :ideas_count, :presentation_mode, :internal_role, :created_at, :updated_at
-
+  attributes :id, :title_multiloc, :description_multiloc, :description_preview_multiloc, :slug, :header_bg, :visible_to, :process_type, :ideas_count, :presentation_mode, :internal_role, :publication_status, :created_at, :updated_at
   # ParticipationContext attributes
   attribute :participation_method, if: :is_participation_context?
   attribute :posting_enabled, if: :is_participation_context?
@@ -13,7 +12,7 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   has_many :areas
   has_many :topics
   
-  has_one :actions_descriptor
+  has_one :action_descriptor
 
   def header_bg
     object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
@@ -23,7 +22,7 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
     object.is_participation_context?
   end
 
-  def actions_descriptor
+  def action_descriptor
     @participation_context_service ||= ParticipationContextService.new
     posting_disabled_reason = @participation_context_service.posting_disabled_reason(object)
     {

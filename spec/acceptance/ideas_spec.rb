@@ -34,11 +34,10 @@ resource "Ideas" do
       expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }).to all(eq 'published')
     end
 
-    example "List all ideas which have draft set as publication status" do
+    example "Doesn\'t list idea which have draft set as publication status", document: false do
       do_request(publication_status: 'draft')
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 1
-      expect(json_response.dig(:data,0,:attributes,:publication_status)).to eq 'draft'
+      expect(json_response[:data].size).to eq 0
     end
 
     example "List all ideas with a topic" do
@@ -357,12 +356,14 @@ resource "Ideas" do
       end
 
       describe do
-        let (:phases) { create_list(:phase, 5, participation_method: 'information') }
-        let (:project) { create(:project, phases: phases) }
-        example_request "[error] Creating an idea in a project with a timeline but no active ideation phases" do
-          expect(response_status).to eq 422
+        let (:project) { create(:project_with_current_phase, current_phase_attrs: {
+          participation_method: 'information' 
+        })}
+
+        example_request "[error] Creating an idea in a project with an active information phase" do
+          expect(response_status).to eq 401
           json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :base).first[:error]).to eq 'project_inactive'
+          expect(json_response.dig(:errors, :base).first[:error]).to eq 'not_ideation'
         end
       end
 
