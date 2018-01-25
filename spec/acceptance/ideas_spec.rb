@@ -337,6 +337,18 @@ resource "Ideas" do
       end
     end
 
+    describe do
+      let (:project) { create(:project_with_current_phase, current_phase_attrs: {
+        participation_method: 'information' 
+      })}
+
+      example_request "[error] Creating an idea in a project with an active information phase" do
+        expect(response_status).to eq 401
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:errors, :base).first[:error]).to eq 'not_ideation'
+      end
+    end
+    
     context "when admin" do
       before do
         @user = create(:admin)
@@ -355,17 +367,6 @@ resource "Ideas" do
         end
       end
 
-      describe do
-        let (:project) { create(:project_with_current_phase, current_phase_attrs: {
-          participation_method: 'information' 
-        })}
-
-        example_request "[error] Creating an idea in a project with an active information phase" do
-          expect(response_status).to eq 401
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :base).first[:error]).to eq 'not_ideation'
-        end
-      end
 
       describe do
         let (:project) { create(:project_with_active_ideation_phase) }
