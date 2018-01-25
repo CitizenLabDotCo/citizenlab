@@ -52,19 +52,19 @@ const PageTitle = styled.h1`
 
 const TextContainer = styled.div`
   color: #333;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 300;
-  line-height: 21px;
+  line-height: 26px;
 
   h3 {
-    font-size: 21px;
-    line-height: 26px;
+    font-size: 24px;
+    line-height: 30px;
     font-weight: 600;
   }
 
   h4 {
-    font-size: 18px;
-    line-height: 22px;
+    font-size: 21px;
+    line-height: 27px;
     font-weight: 600;
   }
 

@@ -9,6 +9,7 @@ import { Link } from 'react-router';
 import Meta from './Meta';
 import Icon from 'components/UI/Icon';
 import ContentContainer from 'components/ContentContainer';
+import Footer from 'components/Footer';
 
 // services
 import { projectBySlugStream, IProject } from 'services/projects';
@@ -295,6 +296,8 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
               {children}
             </Content>
           </Container>
+
+          <Footer showCityLogoSection={false} />
 
         </React.Fragment>
       );

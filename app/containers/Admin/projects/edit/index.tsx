@@ -19,7 +19,8 @@ import messages from '../messages';
 import styled from 'styled-components';
 
 const StyledGoBackButton = styled(GoBackButton)`
-  margin-bottom: 20px;
+  margin-top: 5px;
+  margin-bottom: 30px;
 `;
 
 type Props = {
@@ -111,7 +112,17 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
   }
 
   goBack = () => {
-    browserHistory.push('/admin/projects');
+    const currentLocation = browserHistory.getCurrentLocation();
+    const currentPath = currentLocation.pathname;
+    const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
+    const newPath = currentPath.replace(lastUrlSegment, '').replace(/\/$/, '');
+    const newLastUrlSegment = newPath.substr(newPath.lastIndexOf('/') + 1);
+
+    if (newLastUrlSegment === this.props.params.slug) {
+      browserHistory.push('/admin/projects');
+    } else {
+      browserHistory.push(newPath);
+    }
   }
 
   render() {

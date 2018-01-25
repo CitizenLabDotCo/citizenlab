@@ -19,13 +19,13 @@ import messages from './messages';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  margin-top: 30px;
+  margin-top: 60px;
   margin-bottom: 30px;
 `;
 
 const ToggleWrapper = styled.div`
   margin-bottom: 20px;
-  text-align: right;
+  text-align: left;
 `;
 
 // Typings
@@ -42,7 +42,7 @@ export default class Ideas extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      display: 'map',
+      display: 'cards',
     };
   }
 
@@ -62,8 +62,8 @@ export default class Ideas extends React.PureComponent<Props, State> {
         <FeatureFlag name="maps">
           <ToggleWrapper>
             <Button.Group size="small" toggle onClick={this.toggleDisplay}>
-              <Button active={display === 'map'}><FormattedMessage {...messages.displayMap} /></Button>
               <Button active={display === 'cards'}><FormattedMessage {...messages.displayCards} /></Button>
+              <Button active={display === 'map'}><FormattedMessage {...messages.displayMap} /></Button>
             </Button.Group>
           </ToggleWrapper>
 

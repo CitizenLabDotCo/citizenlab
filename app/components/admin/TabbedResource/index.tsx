@@ -152,7 +152,7 @@ export default class TabbedResource extends React.PureComponent<Props, State> {
           <TabbedNav className="e2e-resource-tabs">
             {tabs.map((tab) => (
               <FeatureFlag key={tab.url} name={tab.feature}>
-                <Tab className={location && location.pathname && location.pathname === tab.url ? 'active' : ''}>
+                <Tab className={location && location.pathname && location.pathname.startsWith(tab.url) ? 'active' : ''}>
                   <Link to={tab.url}>{showLabel(tab.label)}</Link>
                 </Tab>
               </FeatureFlag>

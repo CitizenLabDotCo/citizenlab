@@ -62,7 +62,7 @@ const SecondLine = styled.div`
   justify-content: space-between;
   background: #fff;
   border-top: 1px solid #eaeaea;
-  padding: 18px 28px;
+  padding: 14px 28px;
 
   ${media.smallerThanMaxTablet`
     display: flex;
