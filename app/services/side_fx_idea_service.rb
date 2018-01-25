@@ -3,7 +3,6 @@ class SideFxIdeaService
   include SideFxHelper
 
   def before_create idea, user
-    check_participation_context(idea, user)
     set_phase(idea)
   end
 
@@ -43,20 +42,9 @@ class SideFxIdeaService
 
   private
 
-  def check_participation_context idea, user
-    pcs = ParticipationContextService.new
-    project = idea.project
-    if project
-      disallowed_reason = pcs.posting_disabled_reason(project)
-      if disallowed_reason
-        raise ClErrors::TransactionError.new(error_key: disallowed_reason)
-      end
-    end
-  end
-
   def set_phase idea
-    if idea.project && idea.phases.empty?
-      idea.phase_ids = [TimelineService.new.current_phase(idea.project)]
+    if idea.project&.timeline? && idea.phases.empty?
+      idea.phases = [TimelineService.new.current_phase(idea.project)]
     end
   end
 
@@ -74,7 +62,9 @@ class SideFxIdeaService
 
   def log_activity_jobs_after_published idea, user
     LogActivityJob.set(wait: 1.minutes).perform_later(idea, 'published', user, idea.created_at.to_i)
-    LogActivityJob.set(wait: 1.minutes).perform_later(idea, 'first published by user', user, idea.created_at.to_i)
+    if first_user_idea?(idea, user)
+      LogActivityJob.set(wait: 1.minutes).perform_later(idea, 'first published by user', user, idea.created_at.to_i)
+    end
   end
 
 end

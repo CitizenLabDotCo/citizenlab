@@ -24,6 +24,7 @@ class Project < ApplicationRecord
   PROCESS_TYPES = %w(timeline continuous)
   PRESENTATION_MODES = %w(card map)
   INTERNAL_ROLES = %w(open_idea_box)
+  PUBLICATION_STATUSES = %w(draft published archived)
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :description_multiloc, multiloc: {presence: false}
@@ -40,6 +41,7 @@ class Project < ApplicationRecord
   validates :process_type, presence: true, inclusion: {in: PROCESS_TYPES}
   validates :presentation_mode, presence: true, inclusion: {in: PRESENTATION_MODES}
   validates :internal_role, inclusion: {in: INTERNAL_ROLES, allow_nil: true}
+  validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
 
   before_validation :set_process_type, on: :create
   before_validation :generate_slug, on: :create
@@ -47,6 +49,7 @@ class Project < ApplicationRecord
   before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_presentation_mode, on: :create
+  before_validation :set_publication_status, on: :create
 
 
   scope :with_all_areas, (Proc.new do |area_ids|
@@ -100,6 +103,10 @@ class Project < ApplicationRecord
 
   def set_presentation_mode
     self.presentation_mode ||= 'card'
+  end
+
+  def set_publication_status
+    self.publication_status ||= 'published'
   end
 
 end

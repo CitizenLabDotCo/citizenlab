@@ -12,6 +12,7 @@ FactoryGirl.define do
       "en" => "Let's renew the parc at the city border and make it an enjoyable place for young and old.",
       "nl" => "Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud."
     }}
+    publication_status 'published'
 
     factory :project_with_topics do
       transient do

@@ -9,6 +9,12 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
+    if params[:publication_statuses].present?
+      @projects = @projects.where(publication_status: params[:publication_statuses])
+    else
+      @projects = @projects.where(publication_status: 'published')
+    end
+
     @projects = @projects.with_all_areas(params[:areas]) if params[:areas].present?
     @projects = @projects.with_all_topics(params[:topics]) if params[:topics].present?
 
