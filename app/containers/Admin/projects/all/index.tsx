@@ -234,7 +234,7 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
 
                   {project.attributes.publication_status !== 'published' &&
                     <CustomLabel>
-                      {/* <FormattedMessage {...messages[`${project.attributes.publication_status}Status`]} /> */}
+                      <FormattedMessage {...messages[`${project.attributes.publication_status}Status`]} />
                     </CustomLabel>
                   }
 
