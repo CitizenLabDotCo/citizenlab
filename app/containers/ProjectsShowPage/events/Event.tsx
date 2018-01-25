@@ -3,6 +3,9 @@ import * as Rx from 'rxjs/Rx';
 import * as moment from 'moment';
 import 'moment-timezone';
 
+// components
+import Icon from 'components/UI/Icon';
+
 // services
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
@@ -13,118 +16,114 @@ import { getLocalized } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
-import { Grid } from 'semantic-ui-react';
+// import { media } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
 
 const Container = styled.div`
-  /* opacity: ${(props: any) => props.event === 'past' ? '0.7' : 'inherit'}; */
   width: 100%;
-  min-height: 166px;
+  margin: 12px auto;
+  padding: 10px;
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 12px auto !important;
-  padding: 10px;
   border-radius: 5px;
-  background-color: #ffffff;
-  border: solid 1px #eaeaea;
-  
-  /*
-  ${media.phone`
-    width: 90%;
-  `}
-  
-  ${media.tablet`
-    width: 50%;
-  `}
-  */
+  border: solid 1px #e0e0e0;
+  background: #fff;
+`;
+
+const EventDateInfo = styled.div`
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const EventDates = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 5px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  background: #f64a00;
+`;
+
+const EventDate = styled.div`
+  color: #fff;
+  font-size: 25px;
+  line-height: 30px;
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 const EventYear = styled.div`
   color: #ffffff;
   font-size: 16px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
   border-radius: 5px;
-  background-color: #373737;
-  position: absolute;
-  bottom: 0;
-  padding: 5px;
-  width: 100%;
-  display: table-cell;
-  margin-left: -100%;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  background: #373737;
 `;
 
-const EventDate: any = styled.div`
-  border-radius: 5px;
-  /* background-color: ${(props: any) => (props.event === 'current' || props.event === 'coming' ? '#f64a00' : '#cfcfcf')}; */
-  background: #f64a00;
-  height: ${(props: any) => props.start === props.end ? '130px' : '200px'};
-  font-size: 25px;
-  font-weight: bold;
-  line-height: 1.08;
-  color: #ffffff;
-  text-align: center;
-  width: 20%;
-  position: relative;
-  display: table;
+const EventInformation = styled.div`
+  display: flex;
+  flex-direction: column;
+  /* align-items: center;
+  justify-content: center; */
+  padding: 5px 20px;
+  border-right: 1px solid #ccc;
 `;
 
-const EventDateInner = styled.div`
-  display: table-cell;
-  vertical-align: middle;
-`;
-
-const TimeLabel = styled.span`
-  display: inline-block;
-`;
-
-const EventHeader = styled.div`
-  font-size: 16px;
+const EventTime = styled.div`
   color: #939393;
+  font-size: 16px;
+  font-weight: 300;
 `;
 
 const EventTitle = styled.div`
+  color: #333;
   font-size: 20px;
-  margin-top: 10px;
-  font-weight: 600;
-  color: #141414;
+  line-height: 23px;
+  margin-top: 12px;
+  font-weight: 500;
 `;
 
 const EventDescription = styled.div`
-  font-size: 16px;
   color: #939393;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 21px;
   margin-top: 15px;
 `;
 
-const EventInformationColumn = styled.div`
-  border-right: 3px solid #eaeaea;
-  padding: 5px 20px;
-  width: 50%;
-  
-   ${media.phone`
-    width: 80%;
-    border-right: none;
-  `}
+const EventLocation = styled.div`
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
-
-const EventInformation = styled.div``;
 
 const EventAddress = styled.div`
-  font-size: 16px;
   color: #939393;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
 `;
 
-const EventLocation = styled.div`
-  padding: 5px 0 0 15px;
-  width: 30%;
-  
-  ${media.phone`
-    width: 60%;
-    margin: auto;
-  `}
+const MapIcon = styled(Icon)`
+  height: 25px;
+  fill: #939393;
+  margin-right: 10px;
 `;
 
 type Props = {
@@ -138,10 +137,9 @@ type State = {
 };
 
 export default class Event extends React.PureComponent<Props, State> {
-  state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       locale: null,
@@ -187,55 +185,56 @@ export default class Event extends React.PureComponent<Props, State> {
       const endAtTime = endAtMoment.format('HH:mm');
       const startAtDay = startAtMoment.format('DD');
       const endAtDay = endAtMoment.format('DD');
-      const startAtMonth = startAtMoment.format('MM');
-      const endAtMonth = endAtMoment.format('MM');
+      const startAtMonth = startAtMoment.format('MMM');
+      const endAtMonth = endAtMoment.format('MMM');
       const startAtYear = startAtMoment.format('YYYY');
       // const endAtYear = endAtMoment.format('YYYY');
+      const isMultiDayEvent = (startAtDay !== endAtDay);
 
       return (
         <Container className={className}>
-          <EventDate start={startAtDay} end={endAtDay}>
-            <EventDateInner>
-              {startAtDay}<br />{startAtMonth}
-              {(startAtDay !== endAtDay) && <div>-<br />{endAtDay}<br />{endAtMonth}</div>}
-            </EventDateInner>
-            <EventYear>{startAtYear}</EventYear>
-          </EventDate>
+          <EventDateInfo>
+            <EventDates>
+              <EventDate>
+                <span>{startAtDay}</span>
+                <span>{startAtMonth}</span>
+              </EventDate>
 
-          <EventInformationColumn>
-            <EventInformation>
-              <EventHeader>
-                <TimeLabel>{startAtTime} - {endAtTime}</TimeLabel>
-              </EventHeader>
+              {isMultiDayEvent && (
+                <>
+                  <span>-</span>
+                  <EventDate>
+                    <span>{endAtDay}</span>
+                    <span>{endAtMonth}</span>
+                  </EventDate>
+                </>
+              )}
+            </EventDates>
 
-              <EventTitle>
-                {eventTitle}
-              </EventTitle>
+            <EventYear>
+              <span>{startAtYear}</span>
+            </EventYear>
+          </EventDateInfo>
 
-              <EventDescription>
-                <span dangerouslySetInnerHTML={{ __html: eventDescription }} />
-              </EventDescription>
-            </EventInformation>
-          </EventInformationColumn>
+          <EventInformation>
+            <EventTime>
+              {startAtTime} - {endAtTime}
+            </EventTime>
+
+            <EventTitle>
+              {eventTitle}
+            </EventTitle>
+
+            <EventDescription>
+              <span dangerouslySetInnerHTML={{ __html: eventDescription }} />
+            </EventDescription>
+          </EventInformation>
 
           <EventLocation>
-            <Grid>
-              <Grid.Row>
-                <Grid.Column width={4}>
-                  {/* <Image src={locationIcon} /> */}
-                </Grid.Column>
-                <Grid.Column
-                  width={12}
-                  style={{
-                    padding: '0 10px 0 0 !important',
-                  }}
-                >
-                  <EventAddress>
-                    {eventLocation}
-                  </EventAddress>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
+            <EventAddress>
+              <MapIcon name="mapmarker" />
+              <span>{eventLocation}</span>
+            </EventAddress>
           </EventLocation>
         </Container>
       );

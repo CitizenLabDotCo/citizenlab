@@ -13,14 +13,15 @@ const Container = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  height: 20px;
+  height: 42px;
   fill: ${color('clBlue')};
-  margin-right: 10px;
+  margin-right: 12px;
 `;
 
 const Text = styled.div`
   color: ${color('clBlue')};
   font-size: 16px;
+  line-height: 21px;
   font-weight: 400;
 
   a {

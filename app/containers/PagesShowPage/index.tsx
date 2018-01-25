@@ -22,8 +22,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { color } from 'utils/styleUtils';
-
+import { darken } from 'polished';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
@@ -48,22 +47,42 @@ const PageTitle = styled.h1`
   font-size: 34px;
   font-weight: 600;
   line-height: 40px;
-  margin-bottom: 35px;
+  margin-bottom: 50px;
 `;
 
 const TextContainer = styled.div`
   color: #333;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 21px;
-  -webkit-font-smoothing: antialiased;
+
+  h3 {
+    font-size: 21px;
+    line-height: 26px;
+    font-weight: 600;
+  }
+
+  h4 {
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 600;
+  }
 
   p {
-    margin-bottom: 28px;
+    margin-bottom: 35px;
   }
 
   strong {
     font-weight: 600;
+  }
+
+  a {
+    color: ${(props) => props.theme.colors.clBlue};
+    text-decoration: underline;
+
+    &:hover {
+      color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
+    }
   }
 `;
 
@@ -87,30 +106,28 @@ const PagesNav = styled.nav`
   justify-content: space-between;
   list-style: none;
   margin: 0 auto;
-  padding-top: 60px;
-  padding-bottom: 60px;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-top: 90px;
+  padding-bottom: 80px;
 `;
 
 const StyledLink = styled(Link)`
   color: #666;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
-  margin-left: -30px;
-  margin-right: -30px;
-  padding: 25px 30px;
+  margin-bottom: 15px;
+  /* margin-left: -30px;
+  margin-right: -30px; */
+  padding: 23px;
   border-radius: 5px;
-  border: 1px solid ${color('separation')};
+  border: 1px solid #ddd;
   background: #fff;
 
   &:hover {
     color: #000;
-    border-color: #aaa;
+    border-color: #bbb;
   }
 `;
 
@@ -149,21 +166,24 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
     this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
-      this.slug$.distinctUntilChanged().switchMap((slug: string) => {
-        return (isString(slug) && !isEmpty(slug) ? pageBySlugStream(slug).observable :  Rx.Observable.of(null));
-      }).switchMap((page) => {
-        let pageLinks$: Rx.Observable<null | { data: PageLink }[]> = Rx.Observable.of(null);
+      this.slug$
+        .distinctUntilChanged()
+        .do(() => this.setState({ loading: true }))
+        .switchMap((slug: string) => {
+          return (isString(slug) && !isEmpty(slug) ? pageBySlugStream(slug).observable :  Rx.Observable.of(null));
+        }).switchMap((page) => {
+          let pageLinks$: Rx.Observable<null | { data: PageLink }[]> = Rx.Observable.of(null);
 
-        if (page && size(get(page, 'data.relationships.page_links.data')) > 0) {
-          pageLinks$ = Rx.Observable.combineLatest(
-            page.data.relationships.page_links.data.map(link => getPageLink(link.id).observable)
-          );
-        }
+          if (page && size(get(page, 'data.relationships.page_links.data')) > 0) {
+            pageLinks$ = Rx.Observable.combineLatest(
+              page.data.relationships.page_links.data.map(link => getPageLink(link.id).observable)
+            );
+          }
 
-        return pageLinks$.map(pageLinks => ({ page, pageLinks }));
-      }).subscribe(({ page, pageLinks }) => {
-        this.setState({ page, pageLinks, loading: false });
-      })
+          return pageLinks$.map(pageLinks => ({ page, pageLinks }));
+        }).subscribe(({ page, pageLinks }) => {
+          this.setState({ page, pageLinks, loading: false });
+        })
     ];
   }
 
