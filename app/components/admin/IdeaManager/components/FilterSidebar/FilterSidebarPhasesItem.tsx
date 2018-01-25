@@ -17,16 +17,25 @@ interface Props {
   connectDropTarget: any;
 }
 
+
 class FilterSidebarPhasesItem extends React.Component<Props> {
   render() {
     const { phase, active, onClick, connectDropTarget, isOver, canDrop, phaseNumber } = this.props;
+    const disabled = phase.attributes.participation_method !== 'ideation';
     return connectDropTarget(
       <div>
         <Menu.Item
           active={active || (isOver && canDrop)}
           onClick={onClick}
+          disabled={disabled}
         >
-          <Label circular={true} basic={true} color="teal">{phaseNumber}</Label>
+          <Label
+            circular={true}
+            basic={true}
+            color={disabled ? 'grey' : 'teal'}
+          >
+            {phaseNumber}
+          </Label>
           <T value={phase.attributes.title_multiloc} />
         </Menu.Item>
       </div>
@@ -41,6 +50,9 @@ const phaseTarget = {
       type: 'phase',
       id: props.phase.id
     };
+  },
+  canDrop(props) {
+    return props.phase.attributes.participation_method === 'ideation';
   },
 };
 
