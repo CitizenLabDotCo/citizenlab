@@ -25,6 +25,11 @@ const Container = styled(Link)`
   display: flex;
   padding: 15px;
   cursor: pointer;
+  transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
+
+  &:hover {
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  }
 
   &:not(.last) {
     margin-right: 12px;
@@ -33,8 +38,14 @@ const Container = styled(Link)`
   ${media.smallerThanMaxTablet`
     width: 100%;
     margin: 0;
-    flex-direction: column;
+    margin-bottom: 15px;
   `}
+
+  /* ${media.smallerThanMaxTablet`
+    width: 100%;
+    margin: 0;
+    flex-direction: column;
+  `} */
 `;
 
 const DateWrapper = styled.div`
@@ -44,10 +55,11 @@ const DateWrapper = styled.div`
   align-items: stretch;
   margin-right: 20px;
 
-  ${media.smallerThanMaxTablet`
-    width: 100%;
-    margin-bottom: 15px;
-  `}
+  /* ${media.smallerThanMaxTablet`
+    width: 80px;
+    margin-left: auto;
+    margin-right: auto;
+  `} */
 `;
 
 const Date = styled.div`

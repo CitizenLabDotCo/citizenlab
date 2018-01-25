@@ -95,7 +95,7 @@ const PagesNav = styled.nav`
 
 const StyledLink = styled(Link) `
   color: #999;
-  font-weight: 300;
+  font-weight: 400;
   font-size: 14px;
   line-height: 19px;
   text-decoration: none;
@@ -112,7 +112,7 @@ const StyledLink = styled(Link) `
 
 const Separator = styled.span`
   color: #999;
-  font-weight: 300;
+  font-weight: 400;
   font-size: 13px;
   line-height: 19px;
   padding-left: 15px;
