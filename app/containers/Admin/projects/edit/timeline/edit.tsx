@@ -83,8 +83,9 @@ interface State {
   errors: { [fieldName: string]: API.Error[] } | null;
   saving: boolean;
   focusedInput: 'startDate' | 'endDate' | null;
-  descState: EditorState;
+  editorState: EditorState;
   saved: boolean;
+  loaded: boolean;
 }
 
 class AdminProjectTimelineEdit extends React.Component<Props, State> {
@@ -101,15 +102,15 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
       errors: null,
       saving: false,
       focusedInput: null,
-      descState: EditorState.createEmpty(),
+      editorState: EditorState.createEmpty(),
       saved: false,
+      loaded: false
     };
     this.subscriptions = [];
     this.params$ = new Rx.BehaviorSubject({ slug: null, id: null });
   }
 
   componentWillMount() {
-    // const { locale } = this.props;
     const { slug, id } = this.props.params;
     this.params$ = new Rx.BehaviorSubject({ slug, id });
 
@@ -121,11 +122,13 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
         const phase$ = (id ? phaseStream(id).observable : Rx.Observable.of(null));
         return Rx.Observable.combineLatest(locale$, project$, phase$);
       }).subscribe(([locale, project, phase]) => {
-        console.log(locale);
-        console.log(phase);
-        const descState = getEditorStateFromHtmlString(get(phase, `data.attributes.description_multiloc.${locale}`, ''));
-        console.log(descState);
-        this.setState({ locale, project, phase, descState });
+        this.setState({
+          locale,
+          project,
+          phase,
+          editorState: getEditorStateFromHtmlString(get(phase, `data.attributes.description_multiloc.${locale}`, '')),
+          loaded: true
+        });
       })
     ];
   }
@@ -155,20 +158,20 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
     }
   }
 
-  handleDescChange = (editorState: EditorState) => {
+  handleEditorOnChange = (editorState: EditorState) => {
     const { locale, attributeDiff } = this.state;
 
     if (attributeDiff) {
       const newHtmlValue = getHtmlStringFromEditorState(editorState);
-      const newValue = attributeDiff && attributeDiff.description_multiloc || {};
-      newValue[locale] = newHtmlValue;
+      const descriptionMultiloc = attributeDiff && attributeDiff.description_multiloc || {};
+      descriptionMultiloc[locale] = newHtmlValue;
 
       this.setState({
+        editorState,
         attributeDiff: {
           ...attributeDiff,
-          description_multiloc: newValue
-        },
-        descState: editorState
+          description_multiloc: descriptionMultiloc
+        }
       });
     }
   }
@@ -252,89 +255,93 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
   }
 
   render() {
-    const { tFunc } = this.props;
-    const { formatMessage } = this.props.intl;
-    const { errors, saved, phase, attributeDiff, saving, descState } = this.state;
-    const phaseAttrs = (phase ? { ...phase.data.attributes, ...attributeDiff } : { ...attributeDiff });
-    const submitState = getSubmitState({ errors, saved, diff: attributeDiff });
-    const startDate = (phaseAttrs.start_at ? moment(phaseAttrs.start_at) : null);
-    const endDate = (phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null);
+    if (this.state.loaded) {
+      const { tFunc } = this.props;
+      const { formatMessage } = this.props.intl;
+      const { errors, saved, phase, attributeDiff, saving, editorState } = this.state;
+      const phaseAttrs = (phase ? { ...phase.data.attributes, ...attributeDiff } : { ...attributeDiff });
+      const submitState = getSubmitState({ errors, saved, diff: attributeDiff });
+      const startDate = (phaseAttrs.start_at ? moment(phaseAttrs.start_at) : null);
+      const endDate = (phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null);
 
-    return (
-      <>
-        <SectionTitle>
-          {phase && <FormattedMessage {...messages.editPhaseTitle} />}
-          {!phase && <FormattedMessage {...messages.newPhaseTitle} />}
-        </SectionTitle>
+      return (
+        <>
+          <SectionTitle>
+            {phase && <FormattedMessage {...messages.editPhaseTitle} />}
+            {!phase && <FormattedMessage {...messages.newPhaseTitle} />}
+          </SectionTitle>
 
-        <PhaseForm onSubmit={this.handleOnSubmit}>
-          <Section>
-            <SectionField>
-              <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
-              <Input
-                id="title"
-                type="text"
-                value={tFunc(phaseAttrs.title_multiloc)}
-                onChange={this.createMultilocUpdater('title_multiloc')}
-              />
-              <Error apiErrors={errors && errors.title_multiloc} />
-            </SectionField>
+          <PhaseForm onSubmit={this.handleOnSubmit}>
+            <Section>
+              <SectionField>
+                <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
+                <Input
+                  id="title"
+                  type="text"
+                  value={tFunc(phaseAttrs.title_multiloc)}
+                  onChange={this.createMultilocUpdater('title_multiloc')}
+                />
+                <Error apiErrors={errors && errors.title_multiloc} />
+              </SectionField>
 
-            <SectionField>
-              <ParticipationContext 
-                phaseId={(phase ? phase.data.id : null)}
-                onSubmit={this.handleParcticipationContextOnSubmit}
-                onChange={this.handleParticipationContextOnChange}
-              />
-            </SectionField>
+              <SectionField>
+                <ParticipationContext 
+                  phaseId={(phase ? phase.data.id : null)}
+                  onSubmit={this.handleParcticipationContextOnSubmit}
+                  onChange={this.handleParticipationContextOnChange}
+                />
+              </SectionField>
 
-            <SectionField>
-              <Label><FormattedMessage {...messages.datesLabel} /></Label>
-              <DateRangePicker
-                startDateId={'startDate'}
-                endDateId={'endDate'}
-                startDate={startDate}
-                endDate={endDate}
-                onDatesChange={this.handleDateUpdate}
-                focusedInput={this.state.focusedInput}
-                onFocusChange={this.handleDateFocusChange}
-                isOutsideRange={this.isOutsideRange}
-                firstDayOfWeek={1}
-                displayFormat="DD/MM/YYYY"
-                startDatePlaceholderText={formatMessage(messages.startDatePlaceholder)}
-                endDatePlaceholderText={formatMessage(messages.endDatePlaceholder)}
-              />
-              <Error apiErrors={errors && errors.start_at} />
-              <Error apiErrors={errors && errors.end_at} />
-            </SectionField>
+              <SectionField>
+                <Label><FormattedMessage {...messages.datesLabel} /></Label>
+                <DateRangePicker
+                  startDateId={'startDate'}
+                  endDateId={'endDate'}
+                  startDate={startDate}
+                  endDate={endDate}
+                  onDatesChange={this.handleDateUpdate}
+                  focusedInput={this.state.focusedInput}
+                  onFocusChange={this.handleDateFocusChange}
+                  isOutsideRange={this.isOutsideRange}
+                  firstDayOfWeek={1}
+                  displayFormat="DD/MM/YYYY"
+                  startDatePlaceholderText={formatMessage(messages.startDatePlaceholder)}
+                  endDatePlaceholderText={formatMessage(messages.endDatePlaceholder)}
+                />
+                <Error apiErrors={errors && errors.start_at} />
+                <Error apiErrors={errors && errors.end_at} />
+              </SectionField>
 
-            <SectionField>
-              <Label htmlFor="description"><FormattedMessage {...messages.descriptionLabel} /></Label>
-              <Editor
-                id="description"
-                placeholder=""
-                value={descState}
-                error=""
-                onChange={this.handleDescChange}
-              />
-              <Error apiErrors={errors && errors.description_multiloc} />
-            </SectionField>
-          </Section>
+              <SectionField>
+                <Label htmlFor="description"><FormattedMessage {...messages.descriptionLabel} /></Label>
+                <Editor
+                  id="description"
+                  placeholder=""
+                  value={editorState}
+                  error=""
+                  onChange={this.handleEditorOnChange}
+                />
+                <Error apiErrors={errors && errors.description_multiloc} />
+              </SectionField>
+            </Section>
 
-          <SubmitWrapper
-            loading={saving}
-            status={submitState}
-            messages={{
-              buttonSave: messages.saveLabel,
-              buttonError: messages.saveErrorLabel,
-              buttonSuccess: messages.saveSuccessLabel,
-              messageError: messages.saveErrorMessage,
-              messageSuccess: messages.saveSuccessMessage,
-            }}
-          />
-        </PhaseForm>
-      </>
-    );
+            <SubmitWrapper
+              loading={saving}
+              status={submitState}
+              messages={{
+                buttonSave: messages.saveLabel,
+                buttonError: messages.saveErrorLabel,
+                buttonSuccess: messages.saveSuccessLabel,
+                messageError: messages.saveErrorMessage,
+                messageSuccess: messages.saveSuccessMessage,
+              }}
+            />
+          </PhaseForm>
+        </>
+      );
+    }
+
+    return null;
   }
 }
 

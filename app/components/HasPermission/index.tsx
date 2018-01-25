@@ -19,7 +19,7 @@ export default class HasPermission extends React.PureComponent<Props, State> {
   subscription: Rx.Subscription;
   static No: React.SFC<any> = (props) => <React.Fragment>{props.children}</React.Fragment>;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       granted: null,

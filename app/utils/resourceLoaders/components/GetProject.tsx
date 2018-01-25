@@ -64,7 +64,6 @@ export default class GetProject extends React.PureComponent<Props, State> {
     } else {
       this.projectSub = targetStream.observable
       .switchMap((response: IProject) => {
-        console.log(response);
         if (response && response.data) {
           return projectImagesStream(response.data.id)
           .observable.first()
@@ -76,7 +75,6 @@ export default class GetProject extends React.PureComponent<Props, State> {
         return Observable.of({ project: null, images: null });
       })
       .subscribe(({ project, images }) => {
-        console.log('subscribe');
         this.setState({ project, images });
       });
     }

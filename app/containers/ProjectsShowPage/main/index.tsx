@@ -10,11 +10,6 @@ import ProjectInfoPage from '../info';
 // services
 import { projectBySlugStream, IProject } from 'services/projects';
 
-// style
-import styled from 'styled-components';
-
-const Container = styled.div``;
-
 type Props = {
   params: {
     slug: string;
@@ -60,22 +55,20 @@ export default class timeline extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const className = this.props['className'];
     const { project } = this.state;
 
     if (project) {
       return (
-        <Container className={className}>
+        <>
           {project.data.attributes.process_type === 'timeline' ? (
             <ProjectPhasesPage projectId={project.data.id} />
           ) : (
             <ProjectInfoPage projectId={project.data.id} />
           )}
-        </Container>
+        </>
       );
     }
 
     return null;
   }
 }
-

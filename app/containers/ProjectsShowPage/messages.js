@@ -45,13 +45,29 @@ export default defineMessages({
     id: 'app.containers.Projects.navEvents',
     defaultMessage: 'Events',
   },
+  pastEvents: {
+    id: 'app.containers.Projects.pastEvents',
+    defaultMessage: 'Past events',
+  },
+  noPastEvents: {
+    id: 'app.containers.Projects.noPastEvents',
+    defaultMessage: 'There are no past events',
+  },
   upcomingEvents: {
     id: 'app.containers.Projects.upcomingEvents',
     defaultMessage: 'Upcoming events',
   },
+  noUpcomingEvents: {
+    id: 'app.containers.Projects.noUpcomingEvents',
+    defaultMessage: 'There are no upcoming events at this time',
+  },
   allEvents: {
     id: 'app.containers.Projects.allEvents',
     defaultMessage: 'All events',
+  },
+  location: {
+    id: 'app.containers.Projects.location',
+    defaultMessage: 'Location:',
   },
   noPhaseSelected: {
     id: 'app.containers.Projects.noPhaseSelected',

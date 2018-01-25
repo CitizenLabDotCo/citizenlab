@@ -80,8 +80,6 @@ const IdeaTitle: any = styled.h4`
   -webkit-line-clamp: 3;
   line-height: 26px;
   max-height: 78px;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
 `;
 
 const IdeaAuthor = styled.div`

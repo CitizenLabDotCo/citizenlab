@@ -37,7 +37,7 @@ const CommentContainer = styled.div`
   position: relative;
   border: none;
   border-top: solid 1px #e4e4e4;
-  background: #f6f6f6;
+  background: #f8f8f8;
 `;
 
 const AuthorContainer = styled.div`
@@ -91,10 +91,11 @@ const CommentBody = styled.div`
   color: #6B6B6B;
   font-size: 15px;
   line-height: 22px;
-  font-weight: 400;
+  font-weight: 300;
   padding: 0;
 
-  span, p {
+  span,
+  p {
     white-space: pre-wrap;
     word-break: normal;
     word-wrap: break-word;

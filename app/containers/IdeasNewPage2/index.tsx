@@ -39,7 +39,6 @@ const PageContainer = styled.div`
   min-height: calc(100vh - 105px);
   position: relative;
   background: #f8f8f8;
-  will-change: opacity, transform;
 
   &.page-enter {
     position: absolute;

@@ -47,7 +47,8 @@ const Container = styled.div`
   margin-right: auto;
   background: #fff;
   border-radius: 5px;
-  border: solid #eaeaea 1px;
+  border: solid 1px #e4e4e4;
+  margin-top: -70px;
 
   * {
     user-select: none;
@@ -57,8 +58,8 @@ const Container = styled.div`
 const Header = styled.div`
   width: 100%;
   background: #fafafa;
-  border-bottom: solid 1px #eaeaea;
-  padding: 14px 30px;
+  border-bottom: solid 1px #e4e4e4;
+  padding: 14px 28px;
   display: flex;
   justify-content: space-between;
   min-height: 68px;
@@ -164,11 +165,11 @@ const Phases = styled.div`
   flex-wrap: nowrap;
 `;
 
-const phaseBarHeight = '24px';
+const phaseBarHeight = '25px';
 
 const PhaseBar: any = styled.div`
   width: 100%;
-  height: ${phaseBarHeight};
+  height: calc( ${phaseBarHeight} - 1px );
   color: #fff;
   font-size: 14px;
   font-weight: 400;
@@ -184,7 +185,7 @@ const PhaseArrow = styled(Icon)`
   height: ${phaseBarHeight};
   fill: #fff;
   position: absolute;
-  top: 0;
+  top: 0px;
   right: -9px;
   z-index: 2;
 `;
@@ -211,6 +212,8 @@ const PhaseText: any = styled.div`
   line-height: 18px;
   max-height: 54px;
   margin-top: 12px;
+  padding-left: 2px;
+  padding-right: 2px;
   user-select: none;
   transition: color 60ms ease-out;
 `;
@@ -422,7 +425,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
       // const currentTenantTimezone = currentTenant.data.attributes.settings.core.timezone;
       // const currentTenantTodayMoment = moment().tz(currentTenantTimezone);
       const selectedPhase = (selectedPhaseId ? phases.data.find(phase => phase.id === selectedPhaseId) : null);
-      // const selectedPhaseStart = (selectedPhase ? moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD').format('LL') : null);
+      const selectedPhaseStart = (selectedPhase ? moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD').format('LL') : null);
       const selectedPhaseEnd = (selectedPhase ? moment(selectedPhase.attributes.end_at, 'YYYY-MM-DD').format('LL') : null);
       const selectedPhaseTitle = (selectedPhase ? getLocalized(selectedPhase.attributes.title_multiloc, locale, currentTenantLocales) : null);
       const selectedPhaseNumber = (selectedPhase ? indexOf(phaseIds, selectedPhaseId) + 1 : null);
@@ -472,7 +475,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
                     )}
 
                     {phaseStatus === 'future' && (
-                      <FormattedMessage {...messages.endsOn} values={{ date: selectedPhaseEnd }} />
+                      <FormattedMessage {...messages.startsOn} values={{ date: selectedPhaseStart }} />
                     )}
                   </HeaderSubtitle>
                 }

@@ -55,15 +55,16 @@ interface State {
   };
   saving: boolean;
   focusedInput: 'startDate' | 'endDate' | null;
-  descState: EditorState;
+  editorState: EditorState;
   saved: boolean;
+  loaded: boolean;
 }
 
 class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProps & injectedLocalized, State> {
   subscriptions: Rx.Subscription[];
 
-  constructor(props) {
-    super(props);
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       locale: null,
       currentTenant: null,
@@ -72,8 +73,9 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
       errors: {},
       saving: false,
       focusedInput: null,
-      descState: EditorState.createEmpty(),
-      saved: false
+      editorState: EditorState.createEmpty(),
+      saved: false,
+      loaded: false
     };
     this.subscriptions = [];
   }
@@ -89,8 +91,9 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
         currentTenant$,
         event$
       ).subscribe(([locale, currentTenant, event]) => {
-        const descState = getEditorStateFromHtmlString(get(event, `data.attributes.description_multiloc.${locale}`, ''));
-        this.setState({ locale, currentTenant, event, descState });
+        const description = get(event, `data.attributes.description_multiloc.${locale}`, '');
+        const editorState = getEditorStateFromHtmlString(description);
+        this.setState({ locale, currentTenant, event, editorState, loaded: true });
       })
     ];
   }
@@ -122,15 +125,15 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
     const htmlValue = getHtmlStringFromEditorState(editorState);
 
     if (attributeDiff) {
-      const newValue = attributeDiff && attributeDiff.description_multiloc || {};
-      newValue[locale] = htmlValue;
+      const descriptionMultiloc = attributeDiff && attributeDiff.description_multiloc || {};
+      descriptionMultiloc[locale] = htmlValue;
 
       this.setState({
+        editorState,
         attributeDiff: {
           ...attributeDiff,
-          description_multiloc: newValue
-        },
-        descState: editorState,
+          description_multiloc: descriptionMultiloc
+        }
       });
     }
   }
@@ -183,11 +186,12 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
   }
 
   render() {
-    const { locale, currentTenant, errors, saved, event, attributeDiff, descState, saving } = this.state;
-    const eventAttrs = event ?  { ...event.data.attributes, ...attributeDiff } : { ...attributeDiff };
-    const submitState = getSubmitState({ errors, saved, diff: attributeDiff });
+    const { locale, currentTenant, loaded } = this.state;
 
-    if (locale && currentTenant) {
+    if (locale && currentTenant && loaded) {
+      const { errors, saved, event, attributeDiff, editorState, saving } = this.state;
+      const eventAttrs = event ?  { ...event.data.attributes, ...attributeDiff } : { ...attributeDiff };
+      const submitState = getSubmitState({ errors, saved, diff: attributeDiff });
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
       const title = getLocalized(eventAttrs.title_multiloc, locale, currentTenantLocales);
       const location = getLocalized(eventAttrs.location_multiloc as Multiloc, locale, currentTenantLocales);
@@ -240,7 +244,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
                 <Editor
                   id="description"
                   placeholder=""
-                  value={descState}
+                  value={editorState}
                   error=""
                   onChange={this.handleDescChange}
                 />
