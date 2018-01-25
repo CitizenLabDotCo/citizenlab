@@ -238,11 +238,11 @@ export default class IdeaEditPage extends React.PureComponent<Props, State> {
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { ideaId } = this.props.params;
     const { locale, titleMultiloc, descriptionMultiloc, ideaSlug, imageId } = this.state;
-    const { title, description, selectedTopics, selectedProject, location } = ideaFormOutput;
+    const { title, description, selectedTopics, selectedProject, position } = ideaFormOutput;
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const projectId = (selectedProject ? selectedProject.value as string : null);
-    const locationGeoJSON = (isString(location) && !isEmpty(location) ? await convertToGeoJson(location) : null);
-    const locationDescription = (isString(location) && !isEmpty(location) ? location : null);
+    const locationGeoJSON = (isString(position) && !isEmpty(position) ? await convertToGeoJson(position) : null);
+    const locationDescription = (isString(position) && !isEmpty(position) ? position : null);
     const oldImageId = imageId;
     const oldBase64Image = get(this.state, 'imageFile[0].base64');
     const newBase64Image = get(ideaFormOutput, 'imageFile[0].base64');
@@ -300,7 +300,7 @@ export default class IdeaEditPage extends React.PureComponent<Props, State> {
               description={description}
               selectedTopics={selectedTopics}
               selectedProject={selectedProject}
-              location={location}
+              position={location}
               imageFile={imageFile}
               onSubmit={this.handleIdeaFormOutput}
             />

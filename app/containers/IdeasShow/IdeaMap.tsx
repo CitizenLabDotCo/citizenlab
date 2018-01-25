@@ -13,10 +13,7 @@ const MapWrapper = styled.div`
 
 // Typing
 interface Props {
-  location: {
-    type: 'Point';
-    coordinates: [number, number];
-  };
+  location: GeoJSON.Point;
   id: string;
 }
 
