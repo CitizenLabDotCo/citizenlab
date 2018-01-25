@@ -435,7 +435,7 @@
   "app.containers.PasswordReset.updatePassword": "Bevestig wachtwoord",
   "app.containers.Projects.aboutThisPhase": "Over deze fase",
   "app.containers.Projects.allEvents": "Alle activiteiten",
-  "app.containers.Projects.displayCards": "Kaarten",
+  "app.containers.Projects.displayCards": "Raster",
   "app.containers.Projects.displayMap": "Kaart",
   "app.containers.Projects.endedOn": "Beëindigd op {date}",
   "app.containers.Projects.endsOn": "Eindigt op {date}",
