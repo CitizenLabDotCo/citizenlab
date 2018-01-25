@@ -363,7 +363,7 @@ if Apartment::Tenant.current == 'localhost'
       areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
       author: User.offset(rand(User.count)).first,
       project: project,
-      phases: (project && project.timeline? && project.phases.sample(rand(project.phases.count))) || [],
+      phases: (project && project.timeline? && project.phases.sample(rand(project.phases.count)).select(&:ideation?)) || [],
       publication_status: 'published',
       published_at: Faker::Date.between(created_at, Time.now),
       created_at: created_at,
