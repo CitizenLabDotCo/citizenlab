@@ -50,6 +50,7 @@ class LogToEventbusJob < ApplicationJob
       content_type: 'application/json',
       routing_key: "#{activity.item_type.underscore}.#{activity.action.underscore}"
     )
+    channel.close
   end
 
 end
