@@ -14,10 +14,7 @@ export interface IIdeaData {
     upvotes_count: number;
     downvotes_count: number;
     comments_count: number;
-    location_point_geojson: {
-      type: 'Point';
-      coordinates: [number, number];
-    };
+    location_point_geojson: GeoJSON.Point;
     location_description: string;
     created_at: string;
     updated_at: string;

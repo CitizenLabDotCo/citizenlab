@@ -9,7 +9,6 @@ import { projectsStream, IProjectData } from 'services/projects';
 
 import ContentContainer from 'components/ContentContainer';
 import ProjectCard from './ProjectCard';
-import Radio from 'components/UI/Radio';
 import Button from 'components/UI/Button';
 import ButtonBar from 'components/ButtonBar';
 
@@ -73,9 +72,7 @@ const ProjectsList = styled.div`
   padding: 2rem 0;
 `;
 
-const ProjectWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
+const ProjectCardWrapper = styled.div`
   ${media.biggerThanDesktop`
     margin-left: -30px;
   `}
@@ -177,7 +174,7 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
             <FormattedMessage {...messages.noProjects} />
           </EmptyStateContainer>
         }
-        {!inEmptyState && <React.Fragment>
+        {!inEmptyState && <>
           <ColumnsContainer>
             <LeftColumn>
               <ColumnTitle>
@@ -188,22 +185,14 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
               </ColumnExplanation>
               <ProjectsList>
                 {cityProjects && cityProjects.map((project) => (
-                  <ProjectWrapper key={project.id}>
-                    <Radio
-                      onChange={this.handleProjectClick(project)}
-                      currentValue={selectedProjectId}
-                      value={project.id}
-                      name="project"
-                      id={project.id}
-                      label=""
-                      disabled={!project.relationships.action_descriptor.data.posting.enabled}
-                    />
+                  <ProjectCardWrapper>
                     <ProjectCard
+                      key={project.id as any}
                       onClick={this.handleProjectClick(project) as any}
                       project={project as any}
                       selected={(selectedProjectId === project.id) as any}
                     />
-                  </ProjectWrapper>
+                  </ProjectCardWrapper>
                 ))}
               </ProjectsList>
               {hasMore && <a onClick={loadMore} role="button"><FormattedMessage {...messages.loadMore} /></a>}
@@ -217,22 +206,13 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
                   <FormattedMessage {...messages.openProjectExplanation} />
                 </ColumnExplanation>
                 <ProjectsList>
-                  <ProjectWrapper key={openProject.id}>
-                    <Radio
-                      onChange={this.handleProjectClick(openProject)}
-                      currentValue={selectedProjectId}
-                      value={openProject.id}
-                      name="project"
-                      id={openProject.id}
-                      label=""
-                      disabled={!openProject.relationships.action_descriptor.data.posting.enabled}
-                    />
+                  <ProjectCardWrapper>
                     <ProjectCard
                       onClick={this.handleProjectClick(openProject) as any}
                       project={openProject as any}
                       selected={(selectedProjectId === openProject.id) as any}
                     />
-                  </ProjectWrapper>
+                  </ProjectCardWrapper>
                 </ProjectsList>
               </RightColumn>
             }
@@ -257,10 +237,10 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
               disabled={!selectedProjectId}
             />
           </WithoutButtonBar>
-        </React.Fragment>}
+        </>}
       </StyledContentContainer>
     );
   }
 }
 
-export default injectResources('projects', projectsStream)(IdeasProjectSelectPage);
+export default injectResources('projects', projectsStream, { publication_statuses: ['draft', 'published'] })(IdeasProjectSelectPage);

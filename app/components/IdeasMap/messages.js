@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'app.components.IdeasMap.register',
     defaultMessage: 'Create an account',
   },
+  postingHereImpossible: {
+    id: 'app.components.IdeasMap.postingHereImpossible',
+    defaultMessage: 'Posting an idea here is currently impossible.',
+  },
 });
