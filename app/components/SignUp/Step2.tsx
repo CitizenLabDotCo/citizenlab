@@ -182,10 +182,10 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
         });
 
         const updatedUserProps = _.omitBy({
-          birthyear: (selectedYearOfBirth ? parseInt(selectedYearOfBirth.value, 10) : undefined),
-          gender: (selectedGender ? selectedGender.value : undefined),
-          domicile: (selectedArea ? selectedArea.value : undefined)
-        }, _.isEmpty);
+          birthyear: (selectedYearOfBirth ? selectedYearOfBirth.value : null),
+          gender: (selectedGender ? selectedGender.value : null),
+          domicile: (selectedArea ? selectedArea.value : null)
+        }, _.isNull);
 
         if (updatedUserProps && !_.isEmpty(updatedUserProps)) {
           await updateUser(authUser.data.id, updatedUserProps);
