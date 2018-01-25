@@ -62,9 +62,9 @@ const UserCell = styled.div`
 `;
 
 const StyledAvatar = styled(Avatar)`
-  width: 34px;
-  height: 34px;
-  margin-right: 10px;
+  width: 32px !important;
+  height: 32px !important;
+  margin-right: 12px;
 `;
 
 interface ISort {

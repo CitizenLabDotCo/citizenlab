@@ -13,14 +13,19 @@ const Container = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  height: 20px;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
   fill: ${color('clBlue')};
-  margin-right: 10px;
+  padding: 0px;
+  margin: 0px;
+  margin-right: 12px;
 `;
 
 const Text = styled.div`
   color: ${color('clBlue')};
   font-size: 16px;
+  line-height: 21px;
   font-weight: 400;
 
   a {

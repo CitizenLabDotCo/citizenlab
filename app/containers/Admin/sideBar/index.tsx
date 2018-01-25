@@ -23,7 +23,7 @@ const Menu = styled.div`
   z-index: 1;
   margin-top: 0px;
   background: #3b3b3b;
-  padding-top: 38px;
+  padding-top: 39px;
 `;
 
 const IconWrapper = styled.div`

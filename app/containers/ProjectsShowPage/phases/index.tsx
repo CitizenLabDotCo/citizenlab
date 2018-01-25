@@ -3,15 +3,12 @@ import * as React from 'react';
 // components
 import Timeline from './Timeline';
 import Phase from './Phase';
+import EventsPreview from '../EventsPreview';
 
 // style
 import styled from 'styled-components';
 
 const Container = styled.div``;
-
-const StyledTimeline = styled(Timeline)`
-  margin-top: -68px;
-`;
 
 type Props = {
   projectId: string
@@ -41,8 +38,9 @@ export default class ProjectPhasesPage extends React.PureComponent<Props, State>
     if (projectId) {
       return (
         <Container className={className}>
-          <StyledTimeline projectId={projectId} onPhaseClick={this.handleOnPhaseClick} />
+          <Timeline projectId={projectId} onPhaseClick={this.handleOnPhaseClick} />
           {phaseId && <Phase phaseId={phaseId} />}
+          <EventsPreview projectId={projectId} />
         </Container>
       );
     }

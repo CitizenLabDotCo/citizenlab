@@ -8,44 +8,72 @@ import { IEventData } from 'services/events';
 // Components
 import T from 'components/T';
 import { FormattedDate, FormattedTime } from 'react-intl';
-import { Icon } from 'semantic-ui-react';
+import Icon from 'components/UI/Icon';
+import { Link } from 'react-router';
 
 // Styling
 import styled from 'styled-components';
-import { color, fontSize } from 'utils/styleUtils';
+import { color, fontSize, media } from 'utils/styleUtils';
 
-const Container = styled.div`
-  align-items: flex-start;
+const Container = styled(Link)`
+  width: calc(100% * (1/3) - 26px);
+  margin-left: 13px;
+  margin-right: 13px;
   background: white;
   border-radius: 5px;
-  border: ${color('separation')};
+  border: solid 1px #e0e0e0;
   display: flex;
-  padding: 1rem 0.5rem;
-  margin: .5rem;
+  padding: 15px;
+  cursor: pointer;
+
+  &:not(.last) {
+    margin-right: 12px;
+  }
+
+  ${media.smallerThanMaxTablet`
+    width: 100%;
+    margin: 0;
+    flex-direction: column;
+  `}
+`;
+
+const DateWrapper = styled.div`
+  width: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin-right: 20px;
+
+  ${media.smallerThanMaxTablet`
+    width: 100%;
+    margin-bottom: 15px;
+  `}
 `;
 
 const Date = styled.div`
-  align-items: stretch;
-  background: #F64A00;
-  border-radius: 5px;
-  color: white;
+  width: 100%;
+  color: #fff;;
+  font-size: 16px;
+  font-weight: 500;
   display: flex;
   flex-direction: column;
-  flex: 0;
-  margin-right: 1rem;
-  padding-top: 1.5rem;
-
-  > span {
-    padding: 0 1.5rem;
-    font-size: ${fontSize('large')};
-  }
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 5px 5px 0 0;
+  background: #F64A00;
 `;
 
-const Year = styled.p`
-  background: #373737;
+const Year = styled.div`
+  width: 100%;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 300;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
   border-radius: 0 0 5px 5px;
-  margin-top: 1.5rem;
-  padding: .25rem 1.5rem;
+  background: #373737;
 `;
 
 const TextBlock = styled.div`
@@ -67,12 +95,21 @@ const Title = styled.p`
 const Location = styled.p`
   color: ${color('label')};
   font-size: ${fontSize('small')};
+  display: flex;
+  align-items: center;
 `;
 
+const StyledIcon = styled(Icon)`
+  flex: 0 0 20px;
+  height: 20px;
+  fill: ${color('label')};
+  margin-right: 5px;
+`;
 
-// Typing
 interface Props {
   event: IEventData;
+  projectSlug: string;
+  isLast: boolean;
   className?: string;
 }
 
@@ -89,24 +126,35 @@ export default class EventBlock extends React.Component<Props, State> {
   }
 
   render() {
+    const { projectSlug } = this.props;
+
     return (
-      <Container className={this.props.className}>
-        <Date>
-          <FormattedDate day="2-digit" value={this.props.event.attributes.start_at} />
-          <FormattedDate month="short" value={this.props.event.attributes.start_at} />
-          {this.state.separateDates &&
-            <React.Fragment>
-              <span>-</span>
-              <FormattedDate day="2-digit" value={this.props.event.attributes.end_at} />
-              <FormattedDate month="short" value={this.props.event.attributes.end_at} />
-            </React.Fragment>
-          }
-          <Year><FormattedDate year="numeric" value={this.props.event.attributes.start_at} /></Year>
-        </Date>
+      <Container className={`${this.props.className} ${this.props.isLast && 'last'}`} to={`/projects/${projectSlug}/events`}>
+        <DateWrapper>
+          <Date>
+            <FormattedDate day="2-digit" value={this.props.event.attributes.start_at} />
+            <FormattedDate month="short" value={this.props.event.attributes.start_at} />
+
+            {this.state.separateDates &&
+              <React.Fragment>
+                <span>-</span>
+                <FormattedDate day="2-digit" value={this.props.event.attributes.end_at} />
+                <FormattedDate month="short" value={this.props.event.attributes.end_at} />
+              </React.Fragment>
+            }
+          </Date>
+          <Year>
+            <FormattedDate year="numeric" value={this.props.event.attributes.start_at} />
+          </Year>
+        </DateWrapper>
+
         <TextBlock>
           <Time><FormattedTime value={this.props.event.attributes.start_at} /> - <FormattedTime value={this.props.event.attributes.end_at} /></Time>
           <Title><T value={this.props.event.attributes.title_multiloc} /></Title>
-          <Location><Icon name="marker" /><T value={this.props.event.attributes.location_multiloc} /></Location>
+          <Location>
+            <StyledIcon name="mapmarker" />
+            <T value={this.props.event.attributes.location_multiloc} />
+          </Location>
         </TextBlock>
       </Container>
     );

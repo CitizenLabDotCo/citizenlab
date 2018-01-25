@@ -6,7 +6,6 @@ import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
 
 // Components
-import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import IdeasMap from 'components/IdeasMap';
 import { Button } from 'semantic-ui-react';
@@ -19,13 +18,14 @@ import messages from './messages';
 // Styles
 import styled from 'styled-components';
 
-const StyledContentContainer = styled(ContentContainer)`
-  margin-top: 30px;
+const Container = styled.div`
+  margin-top: 60px;
+  margin-bottom: 30px;
 `;
 
 const ToggleWrapper = styled.div`
-  margin-bottom: 1rem;
-  text-align: right;
+  margin-bottom: 20px;
+  text-align: left;
 `;
 
 // Typings
@@ -42,7 +42,7 @@ export default class Ideas extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      display: 'map',
+      display: 'cards',
     };
   }
 
@@ -58,12 +58,12 @@ export default class Ideas extends React.PureComponent<Props, State> {
     const { display } = this.state;
 
     return (
-      <StyledContentContainer>
+      <Container>
         <FeatureFlag name="maps">
           <ToggleWrapper>
-            <Button.Group size="mini" toggle onClick={this.toggleDisplay}>
-              <Button active={display === 'map'}><FormattedMessage {...messages.displayMap} /></Button>
+            <Button.Group size="small" toggle onClick={this.toggleDisplay}>
               <Button active={display === 'cards'}><FormattedMessage {...messages.displayCards} /></Button>
+              <Button active={display === 'map'}><FormattedMessage {...messages.displayMap} /></Button>
             </Button.Group>
           </ToggleWrapper>
 
@@ -84,7 +84,7 @@ export default class Ideas extends React.PureComponent<Props, State> {
           }
         </FeatureFlag>
 
-      </StyledContentContainer>
+      </Container>
     );
   }
 }

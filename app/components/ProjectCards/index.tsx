@@ -74,7 +74,7 @@ const EmptyMessageLine = styled.div`
   color: #999;
   font-size: 18px;
   font-weight: 400;
-  line-height: 22px;
+  line-height: 25px;
   text-align: center;
 `;
 

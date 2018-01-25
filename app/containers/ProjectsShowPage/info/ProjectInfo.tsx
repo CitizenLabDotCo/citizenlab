@@ -9,19 +9,23 @@ import ImageZoom from 'react-medium-image-zoom';
 
 // services
 import GetProject from 'utils/resourceLoaders/components/GetProject';
-
-// style
-import styled from 'styled-components';
-import { media, color, fontSize } from 'utils/styleUtils';
 import { IProjectData } from 'services/projects';
+
+// i18n
 import T from 'components/T';
 import { IProjectImageData } from 'services/projectImages';
 
+// style
+import styled from 'styled-components';
+import { darken } from 'polished';
+import { media } from 'utils/styleUtils';
+
 const Container = styled.div`
-  margin-top: 75px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-top: 70px;
+  margin-bottom: 70px;
 
   ${media.phone`
     display: block;
@@ -36,18 +40,62 @@ const Left = styled.section`
   `}
 
   ${media.biggerThanPhone`
-    padding-right: 30px;
+    padding-right: 90px;
   `}
 `;
 
 const IdeaBodyStyled = styled.div`
-  font-size: ${fontSize('base')};
-  color: ${color('text')};
+  color: #333;
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 300;
+
+  h1 {
+    font-size: 29px;
+    line-height: 35px;
+    font-weight: 600;
+  }
+
+  h2 {
+    font-size: 24px;
+    line-height: 29px;
+    font-weight: 600;
+  }
+
+  h3 {
+    font-size: 21px;
+    line-height: 26px;
+    font-weight: 600;
+  }
+
+  h4 {
+    font-size: 18px;
+    line-height: 26px;
+    font-weight: 600;
+  }
+
+  p {
+    margin-bottom: 35px;
+  }
+
+  strong {
+    font-weight: 600;
+  }
+
+  a {
+    color: ${(props) => props.theme.colors.clBlue};
+    text-decoration: underline;
+
+    &:hover {
+      color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
+    }
+  }
 `;
 
 const Right = styled.aside`
   flex: 2;
   max-width: 400px;
+
   ${media.phone`
     display: none;
   `}
@@ -63,7 +111,8 @@ const ProjectImages = styled.div`
 
   img {
     margin: 5px;
-    border-radius: 5px;
+    border-radius: 6px;
+    border: solid 1px #e0e0e0;
 
     &:first-child {
       width: calc(100% - 10px);
@@ -119,6 +168,7 @@ class ProjectInfo extends React.PureComponent<Props & WithRouterProps, State> {
                     </Right>
                   </Container>
                 </ContentContainer>
+
                 <EventsPreview projectId={project.id} />
               </React.Fragment>
             );
