@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isFunction } from 'lodash';
+import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
@@ -11,8 +11,24 @@ import { userByIdStream } from 'services/users';
 // styles
 import { darken } from 'polished';
 import styled, { css } from 'styled-components';
+import { color } from 'utils/styleUtils';
 
-const AvatarImageBackground: any = styled.div`
+const AvatarImageContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const AvatarImage = styled.img`
+  height: 100%;
+  border-radius: 50%;
+  z-index: 2;
+`;
+
+const AvatarImageBackground = styled.div`
   position: absolute;
   top: -1px;
   bottom: -1px;
@@ -22,31 +38,11 @@ const AvatarImageBackground: any = styled.div`
   border-radius: 50%;
   background: #e4e4e4;
   transition: all 100ms ease-out;
-
-  ${(props: any) => props.isClickable && css`
-    &:hover {
-      background: #ccc;
-    }`
-  }
 `;
 
-const AvatarImageForeground: any = styled.img`
-  width: inherit;
-  height: inherit;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  border-radius: 50%;
-  /* background-image: url(${(props: any) => props.src});
-  background-repeat: no-repeat;
-  background-size: cover; */
-  overflow: hidden;
-  z-index: 2;
-`;
-
-const AvatarIcon: any = styled(Icon)`
+const AvatarIcon = styled(Icon)`
   height: 100%;
-  fill: ${(props) => props.theme.colors.label};
+  fill: ${color('label')};
   transition: all 100ms ease-out;
 
   ${(props: any) => props.isClickable && css`
@@ -57,11 +53,22 @@ const AvatarIcon: any = styled(Icon)`
 `;
 
 const Container: any = styled.div`
-  width: inherit;
-  height: inherit;
-  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: Center;
   cursor: ${(props: any) => props.isClickable ? 'pointer' : 'auto'};
-  border: solid 1px red;
+
+  ${(props: any) => props.isClickable && css`
+    &:hover ${AvatarIcon} {
+      fill: ${(props) => darken(0.2, props.theme.colors.label)};
+    }
+
+    &:hover ${AvatarImageBackground} {
+      background: #ccc;
+    }`
+  }
 `;
 
 type Props = {
@@ -72,33 +79,29 @@ type Props = {
 
 type State = {
   avatarSrc: string | null;
-  loaded: boolean;
 };
 
 export default class Avatar extends React.PureComponent<Props, State> {
+  state: State;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
-    super(props);
+    super(props as any);
     this.state = {
-      avatarSrc: null,
-      loaded: false
+      avatarSrc: null
     };
     this.subscriptions = [];
   }
 
-  componentDidMount() {
-    if (this.props.userId && this.props.userId.length > 0) {
+  componentWillMount() {
+    if (this.props.userId) {
       const user$ = userByIdStream(this.props.userId).observable;
-
       this.subscriptions = [
         user$.subscribe((user) => {
           const avatarSrc = (user ? user.data.attributes.avatar[this.props.size] : null);
-          this.setState({ avatarSrc, loaded: true });
+          this.setState({ avatarSrc });
         })
       ];
-    } else {
-      this.setState({ loaded: true });
     }
   }
 
@@ -114,20 +117,18 @@ export default class Avatar extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    const { avatarSrc, loaded } = this.state;
-    const isClickable = isFunction(this.props.onClick);
+    const { avatarSrc } = this.state;
+    const isClickable = (this.props.onClick && _.isFunction(this.props.onClick));
 
     return (
-      <Container className={className} onClick={this.handleOnClick}>
-        {(loaded && avatarSrc) && (
-          <React.Fragment>
-            <AvatarImageBackground isClickable={isClickable} />
-            <AvatarImageForeground src={avatarSrc} />
-          </React.Fragment>
-        )}
-
-        {(loaded && !avatarSrc) && (
-          <AvatarIcon name="user" isClickable={isClickable} />
+      <Container className={className} isClickable={isClickable} onClick={this.handleOnClick}>
+        {avatarSrc ? (
+          <AvatarImageContainer>
+            <AvatarImageBackground />
+            <AvatarImage src={avatarSrc} />
+          </AvatarImageContainer>
+        ) : (
+          <AvatarIcon name="user" />
         )}
       </Container>
     );
