@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { flow } from 'lodash';
-// import { browserHistory } from 'react-router';
+import styled from 'styled-components';
 
 import { IProjectData, projectByIdStream } from 'services/projects';
 import { IPhaseData, phaseStream } from 'services/phases';
@@ -8,8 +8,23 @@ import { postingButtonState } from 'services/ideaPostingRules';
 
 import { injectResource } from 'utils/resourceLoaders/resourceLoader';
 import Button from 'components/UI/Button';
+import Icon from 'components/UI/Icon';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+
+const DisabledText = styled.div`
+  color: rgba(121, 137, 147, 1);
+  font-size: 14px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+`;
+
+const StyledIcon = styled(Icon)`
+  height: 1rem;
+  width: 1rem;
+  margin-right: 0.5rem;
+`;
 
 type Props = {
   project?: IProjectData;
@@ -29,7 +44,12 @@ class IdeaButton extends React.Component<Props, State> {
     const { project, phase } = this.props;
     const { show, enabled } = postingButtonState({ project, phase });
 
-    if (!show) return null;
+    if (!show) return (
+      <DisabledText>
+        <StyledIcon name="lock-outlined" />
+        <FormattedMessage {...messages.postingHereImpossible} />
+      </DisabledText>
+    );
 
     return (
       <Button

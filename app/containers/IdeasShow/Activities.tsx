@@ -52,7 +52,7 @@ class IdeaActivities extends React.Component<Props, State> {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.subs.push(ideaActivities(this.props.ideaId).observable.subscribe((response) => {
       this.setState({ activities: response.data });
     }));
@@ -71,7 +71,8 @@ class IdeaActivities extends React.Component<Props, State> {
   }
 
   render() {
-    if (this.state.activities.length) {
+    // Render only if there is more than the "published" activity
+    if (this.state.activities.length > 0 && (this.state.activities.length > 1 || this.state.activities[0].attributes.action !== 'published')) {
       const lastUpdated = this.state.activities[0].attributes.acted_at;
 
       return (

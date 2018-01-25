@@ -176,6 +176,13 @@ const LanguageSelectionWrapper = styled.div`
 
   .ui.selection.dropdown {
     color: ${color('label')};
+    display: none;
+  }
+
+  &.show {
+    .ui.selection.dropdown {
+      display: block;
+    }
   }
 
   ${media.smallerThanMaxTablet`
@@ -291,7 +298,7 @@ class Footer extends React.PureComponent<Props, State> {
               <span>{poweredBy}</span>
               <CitizenLabLogo name="logo" />
             </PoweredBy>
-            <LanguageSelectionWrapper>
+            <LanguageSelectionWrapper className={this.state.languageOptions.length > 1 ? 'show' : ''}>
               <Dropdown onChange={this.handleLanguageChange} upward={true} search={true} selection={true} value={locale} options={this.state.languageOptions} />
             </LanguageSelectionWrapper>
           </SecondLine>

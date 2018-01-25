@@ -45,10 +45,10 @@ const Wrapper = styled.div`
       .DateInput_fang {
         z-index: 1000 !important;
       }
-  
+
       input {
         border-bottom: solid 2px transparent;
-  
+
         &.DateInput_input__focused {
           border-bottom: solid 2px #00a699;
         }
@@ -79,6 +79,7 @@ const TimeSeparator = styled.div`
   padding-right: 5px;
 `;
 
+// Typing
 interface Props {
   value: string | undefined;
   onChange: (arg: moment.Moment) => void;
@@ -109,19 +110,25 @@ class DateTimePicker extends React.PureComponent<Props & injectedLocalized, Stat
     this.updateDateTime(this.state.selectedMoment);
   }
 
+  componentDidCatch(error) {
+    console.log(error);
+  }
+
   updateDateTime = (newMoment: moment.Moment) => {
     this.setState({ selectedMoment: newMoment });
     this.props.onChange(newMoment);
   }
 
-  handleDateChange = (dateMoment: moment.Moment) => {
-    this.updateDateTime(
-      dateMoment.set({
-        hour: this.state.selectedMoment.get('hour'),
-        minute: this.state.selectedMoment.get('minute'), 
-        second: this.state.selectedMoment.get('second')
-      })
-    );
+  handleDateChange = (dateMoment: moment.Moment | null) => {
+    if (dateMoment) {
+      this.updateDateTime(
+        dateMoment.set({
+          hour: this.state.selectedMoment.get('hour'),
+          minute: this.state.selectedMoment.get('minute'),
+          second: this.state.selectedMoment.get('second')
+        })
+      );
+    }
   }
 
   createTimeChangeHandler = (unit: 'hour' | 'minute') => (event) => {

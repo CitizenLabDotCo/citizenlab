@@ -17,10 +17,16 @@ class PhasesSelector extends React.PureComponent<Props> {
     return this.props.selectedPhases.indexOf(phaseId) >= 0;
   }
 
-  handlePhaseClick = (phaseId) => (event) => {
+  handlePhaseClick = (phase: IPhaseData) => (event) => {
     event.stopPropagation();
-    const newSelectedPhases = xor(this.props.selectedPhases, [phaseId]);
-    this.props.onUpdateIdeaPhases(newSelectedPhases);
+    if (this.isEnabled(phase)) {
+      const newSelectedPhases = xor(this.props.selectedPhases, [phase.id]);
+      this.props.onUpdateIdeaPhases(newSelectedPhases);
+    }
+  }
+
+  isEnabled = (phase: IPhaseData) => {
+    return phase.attributes.participation_method === 'ideation';
   }
 
   render() {
@@ -32,11 +38,11 @@ class PhasesSelector extends React.PureComponent<Props> {
             key={phase.id}
             trigger={
               <Label
-                as="a"
+                as={this.isEnabled(phase) ? 'a' : undefined}
                 color={this.isActive(phase.id) ? 'teal' : undefined}
                 circular={true}
                 active={this.isActive(phase.id)}
-                onClick={this.handlePhaseClick(phase.id)}
+                onClick={this.handlePhaseClick(phase)}
                 basic={true}
               >
                 {index + 1}

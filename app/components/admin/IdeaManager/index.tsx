@@ -105,7 +105,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
       this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(this.props.project.id);
     }
 
-    this.setVisibleFilterMenus(!!this.props.project);
+    this.setVisibleFilterMenus(this.props.project);
   }
 
   componentWillUnmount() {
@@ -115,12 +115,20 @@ class IdeaManager extends React.PureComponent<Props, State> {
   componentWillReceiveProps(nextProps) {
     if ((this.props.project && this.props.project.id) !== (nextProps.project && nextProps.project.id)) {
       this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(nextProps.project && nextProps.project.id);
-      this.setVisibleFilterMenus(!!nextProps.project);
+      this.setVisibleFilterMenus(nextProps.project);
     }
   }
 
-  setVisibleFilterMenus = (inProject: boolean) => {
-    const visibleFilterMenus: TFilterMenu[] = inProject ? ['phases', 'topics'] : ['projects', 'topics', 'statuses'];
+  setVisibleFilterMenus = (project?: IProjectData | null) => {
+    let visibleFilterMenus: TFilterMenu[] = [];
+    if (project && project.attributes.process_type === 'timeline') {
+      visibleFilterMenus = ['phases', 'statuses', 'topics'];
+    } else if (project) {
+      visibleFilterMenus = ['statuses', 'topics'];
+    } else {
+      visibleFilterMenus = ['projects', 'topics', 'statuses'];
+    }
+
     this.setState({
       visibleFilterMenus,
       activeFilterMenu: visibleFilterMenus[0],
