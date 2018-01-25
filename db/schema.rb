@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180117105551) do
+ActiveRecord::Schema.define(version: 20180118125241) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -206,9 +206,9 @@ ActiveRecord::Schema.define(version: 20180117105551) do
     t.string "type"
     t.datetime "read_at"
     t.uuid "recipient_id"
-    t.string "idea_id"
-    t.string "comment_id"
-    t.string "project_id"
+    t.uuid "idea_id"
+    t.uuid "comment_id"
+    t.uuid "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "initiating_user_id"
@@ -400,6 +400,9 @@ ActiveRecord::Schema.define(version: 20180117105551) do
   add_foreign_key "identities", "users"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
+  add_foreign_key "notifications", "comments"
+  add_foreign_key "notifications", "ideas"
+  add_foreign_key "notifications", "projects"
   add_foreign_key "notifications", "spam_reports"
   add_foreign_key "notifications", "users", column: "initiating_user_id"
   add_foreign_key "notifications", "users", column: "recipient_id"
