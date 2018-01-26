@@ -1,12 +1,12 @@
 module Notifications
   class MarkedAsSpam < Notification
     
-    belongs_to :initiating_user, class_name: 'User'
-    belongs_to :spam_report
-    belongs_to :project, optional: true
+    # belongs_to :initiating_user, class_name: 'User'
+    # belongs_to :spam_report
+    # belongs_to :project, optional: true
 
-    validates :initiating_user, presence: true
-    validates :spam_report, presence: true
+    # validates :initiating_user, presence: true
+    # validates :spam_report, presence: true
 
 
     ACTIVITY_TRIGGERS = {'SpamReport' => {'created' => true}}

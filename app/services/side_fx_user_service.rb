@@ -15,6 +15,7 @@ class SideFxUserService
   end
 
   def after_update user, current_user
+    IdentifyToSegmentJob.perform_later(user)
     LogActivityJob.perform_later(user, 'changed', current_user, user.updated_at.to_i)
   end
 
