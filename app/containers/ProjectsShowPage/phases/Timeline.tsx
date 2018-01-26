@@ -48,7 +48,7 @@ const Container = styled.div`
   background: #fff;
   border-radius: 5px;
   border: solid 1px #e4e4e4;
-  margin-top: -70px;
+  margin-top: -61px;
 
   * {
     user-select: none;
@@ -59,10 +59,10 @@ const Header = styled.div`
   width: 100%;
   background: #fafafa;
   border-bottom: solid 1px #e4e4e4;
-  padding: 14px 28px;
+  padding: 10px 28px;
   display: flex;
   justify-content: space-between;
-  min-height: 68px;
+  min-height: 60px;
 `;
 
 const HeaderSection = styled.div`
@@ -468,6 +468,8 @@ export default class Timeline extends React.PureComponent<Props, State> {
         }
       }
 
+      // const canPostIdea = (phase.);
+
       return (
         <Container className={className}>
           <Header>
@@ -518,6 +520,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
                   </HeaderSubtitle>
                 }
               </HeaderDate>
+
               <IdeaButton
                 projectId={this.props.projectId}
                 phaseId={selectedPhaseId}

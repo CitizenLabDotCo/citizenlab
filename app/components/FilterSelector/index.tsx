@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isArray, find, isEmpty, isString, cloneDeep, includes, without } from 'lodash';
 
 // components
 import Title from './title';
@@ -72,11 +72,11 @@ export default class FilterSelector extends React.PureComponent<Props, State> {
   getTitle = (selection, values = this.props.values, multiple = this.props.multiple, title = this.props.title) => {
     let newTitle: any = '';
 
-    if (!multiple && _.isArray(selection) && !_.isEmpty(selection)) {
-      const selected = _.find(values, { value: selection[0] });
+    if (!multiple && isArray(selection) && !isEmpty(selection)) {
+      const selected = find(values, { value: selection[0] });
       newTitle = selected ? selected.text : '';
-    } else if (_.isArray(selection) && !_.isEmpty(selection)) {
-      if (_.isString(title)) {
+    } else if (isArray(selection) && !isEmpty(selection)) {
+      if (isString(title)) {
         newTitle = `${title} (${selection.length})`;
       } else {
         newTitle = [
@@ -101,12 +101,12 @@ export default class FilterSelector extends React.PureComponent<Props, State> {
   }
 
   selectionChange = (value) => {
-    let newSelection = _.cloneDeep(this.props.selected);
+    let newSelection = cloneDeep(this.props.selected);
 
     if (!this.props.multiple) {
       newSelection = [value];
-    } else if (_.includes(newSelection, value)) {
-      newSelection = _.without(newSelection, value);
+    } else if (includes(newSelection, value)) {
+      newSelection = without(newSelection, value);
     } else {
       newSelection.push(value);
     }

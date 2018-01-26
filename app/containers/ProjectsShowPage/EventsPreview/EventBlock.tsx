@@ -41,11 +41,13 @@ const Container = styled(Link)`
     margin-bottom: 15px;
   `}
 
-  /* ${media.smallerThanMaxTablet`
+  /*
+  ${media.smallerThanMaxTablet`
     width: 100%;
     margin: 0;
     flex-direction: column;
-  `} */
+  `}
+  */
 `;
 
 const DateWrapper = styled.div`
@@ -55,11 +57,13 @@ const DateWrapper = styled.div`
   align-items: stretch;
   margin-right: 20px;
 
-  /* ${media.smallerThanMaxTablet`
+  /*
+  ${media.smallerThanMaxTablet`
     width: 80px;
     margin-left: auto;
     margin-right: auto;
-  `} */
+  `}
+  */
 `;
 
 const Date = styled.div`
@@ -102,6 +106,7 @@ const Time = styled.p`
 const Title = styled.p`
   color: ${color('text')};
   font-size: ${fontSize('base')};
+  line-height: 20px;
 `;
 
 const Location = styled.p`
