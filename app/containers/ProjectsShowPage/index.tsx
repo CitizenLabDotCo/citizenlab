@@ -55,6 +55,7 @@ const HeaderContent = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+  justify-content: space-between;
   margin-top: 75px;
 
   ${media.smallerThanMinTablet`
@@ -64,7 +65,8 @@ const HeaderContent = styled.div`
 
 const HeaderContentLeft = styled.div`
   flex: 1;
-  margin-right: 15px;
+  margin-right: 30px;
+  max-width: 500px;
 
   ${media.biggerThanMinTablet`
     display: flex;
@@ -77,7 +79,7 @@ const HeaderContentRight = styled.div`
   ${media.biggerThanMinTablet`
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: right;
   `}
 
   ${media.smallerThanMinTablet`
@@ -118,7 +120,9 @@ const HeaderTitle = styled.div`
   `}
 `;
 
-const HeaderButtons = styled.div``;
+const HeaderButtons = styled.div`
+  min-width: 200px;
+`;
 
 const HeaderButton = styled(Link)`
   display: flex;
