@@ -194,7 +194,7 @@
   "app.containers.AdminPage.ProjectEdit.postingEnabled": "Ideeën posten",
   "app.containers.AdminPage.ProjectEdit.projectImageLabel": "Projectafbeeldingen (max. 5)",
   "app.containers.AdminPage.ProjectEdit.projectType": "Type",
-  "app.containers.AdminPage.ProjectEdit.projectTypePlaceholder": "Doorlopend of tijdslijn?",
+  "app.containers.AdminPage.ProjectEdit.projectTypePlaceholder": "With or without timeline?",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Gepubliceerd",
   "app.containers.AdminPage.ProjectEdit.saveError": "Fout",
   "app.containers.AdminPage.ProjectEdit.saveErrorMessage": "Er is een fout opgetreden bij het opslaan van uw gegevens. Probeer het opnieuw.",
