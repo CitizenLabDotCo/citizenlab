@@ -141,6 +141,6 @@ models:
       voting_method: unlimited
       remote_header_bg_url: http://res.cloudinary.com/citizenlabco/image/upload/v1516809200/Idea_cover_qdrwa6.jpg
   project_image:
-    - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1516809151/Idea_Box_pvkode.svg
+    - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1516925813/open_idea_box_gaxtpy.png
       project_ref: *1
 
