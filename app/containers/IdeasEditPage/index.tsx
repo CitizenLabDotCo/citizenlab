@@ -238,9 +238,8 @@ export default class IdeaEditPage extends React.PureComponent<Props, State> {
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { ideaId } = this.props.params;
     const { locale, titleMultiloc, descriptionMultiloc, ideaSlug, imageId } = this.state;
-    const { title, description, selectedTopics, selectedProject, position } = ideaFormOutput;
+    const { title, description, selectedTopics, position } = ideaFormOutput;
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
-    const projectId = (selectedProject ? selectedProject.value as string : null);
     const locationGeoJSON = (isString(position) && !isEmpty(position) ? await convertToGeoJson(position) : null);
     const locationDescription = (isString(position) && !isEmpty(position) ? position : null);
     const oldImageId = imageId;
@@ -270,7 +269,6 @@ export default class IdeaEditPage extends React.PureComponent<Props, State> {
           [locale]: description
         },
         topic_ids: topicIds,
-        project_id: projectId,
         location_point_geojson: locationGeoJSON,
         location_description: locationDescription
       });
