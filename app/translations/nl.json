@@ -453,7 +453,7 @@
   "app.containers.Projects.pastEvents": "Voorbije activiteiten",
   "app.containers.Projects.phaseNumber": "Fase {phaseNumber}",
   "app.containers.Projects.project": "Project",
-  "app.containers.Projects.projectInformation": "Project info",
+  "app.containers.Projects.projectInformation": "Info",
   "app.containers.Projects.startAnIdea": "Lanceer uw idee",
   "app.containers.Projects.startsOn": "Begint op {date}",
   "app.containers.Projects.upcomingEvents": "Aankomende activiteiten",
