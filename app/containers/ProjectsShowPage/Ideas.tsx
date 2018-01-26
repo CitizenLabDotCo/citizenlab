@@ -59,21 +59,24 @@ export default class Ideas extends React.PureComponent<Props, State> {
 
     return (
       <Container>
-        <FeatureFlag name="maps">
-          <ToggleWrapper>
-            <Button.Group size="small" toggle onClick={this.toggleDisplay}>
-              <Button active={display === 'cards'}><FormattedMessage {...messages.displayCards} /></Button>
-              <Button active={display === 'map'}><FormattedMessage {...messages.displayMap} /></Button>
-            </Button.Group>
-          </ToggleWrapper>
+          <FeatureFlag name="maps">
+            <ToggleWrapper>
+              <Button.Group size="small" toggle onClick={this.toggleDisplay}>
+                <Button active={display === 'cards'}><FormattedMessage {...messages.displayCards} /></Button>
+                <Button active={display === 'map'}><FormattedMessage {...messages.displayMap} /></Button>
+              </Button.Group>
+            </ToggleWrapper>
+          </FeatureFlag>
 
-          {display === 'map' && type === 'project' &&
-            <IdeasMap project={id} />
-          }
+          <FeatureFlag name="maps">
+            {display === 'map' && type === 'project' &&
+              <IdeasMap project={id} />
+            }
 
-          {display === 'map' && type === 'phase' &&
-            <IdeasMap phase={id} />
-          }
+            {display === 'map' && type === 'phase' &&
+              <IdeasMap phase={id} />
+            }
+          </FeatureFlag>
 
           {display === 'cards' && type === 'project' &&
             <IdeaCards filter={{ project: id }} />
@@ -82,8 +85,6 @@ export default class Ideas extends React.PureComponent<Props, State> {
           {display === 'cards' && type === 'phase' &&
             <IdeaCards filter={{ phase: id }} />
           }
-        </FeatureFlag>
-
       </Container>
     );
   }
