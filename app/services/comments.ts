@@ -1,15 +1,12 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
-import { IRelationship } from 'typings';
+import streams from 'utils/streams';
+import { IRelationship, Multiloc } from 'typings';
 
 export interface ICommentData {
   id: string;
   type: string;
   attributes: {
-    body_multiloc: {
-      en: string;
-      nl: string;
-    };
+    body_multiloc: Multiloc;
     upvotes_count: number;
     downvotes_count: number;
     created_at: string;

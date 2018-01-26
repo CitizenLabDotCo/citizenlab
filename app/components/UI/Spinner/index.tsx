@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 
 // style
 import styled, { keyframes } from 'styled-components';

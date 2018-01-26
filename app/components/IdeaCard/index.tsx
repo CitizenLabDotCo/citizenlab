@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+import { has } from 'lodash';
 
 // router
 import { Link, browserHistory } from 'react-router';
@@ -8,11 +8,12 @@ import { Link, browserHistory } from 'react-router';
 // components
 import Icon from 'components/UI/Icon';
 import Unauthenticated from 'components/IdeaCard/Unauthenticated';
+import BottomBounceUp from './BottomBounceUp';
+import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';
 import UserName from 'components/UI/UserName';
 
 // services
-import { authUserStream } from 'services/auth';
 import { localeStream } from 'services/locale';
 import { ideaByIdStream, IIdea } from 'services/ideas';
 import { userByIdStream, IUser } from 'services/users';
@@ -30,21 +31,18 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // styles
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { color } from 'utils/styleUtils';
 
 // typings
 import { IModalInfo } from 'containers/App';
+import { Locale } from 'typings';
 
 const IdeaImage: any = styled.img`
   width: 100%;
   height: 135px;
   object-fit: cover;
   overflow: hidden;
-`;
-
-const IdeaImageLarge = styled.img`
-  display: none;
 `;
 
 const IdeaImagePlaceholder = styled.div`
@@ -54,10 +52,6 @@ const IdeaImagePlaceholder = styled.div`
   align-items: center;
   justify-content: center;
   background: ${color('placeholderBg')};
-`;
-
-const CommentCount = styled.span`
-  padding-left: 6px;
 `;
 
 const IdeaImagePlaceholderIcon = styled(Icon) `
@@ -86,25 +80,14 @@ const IdeaTitle: any = styled.h4`
   -webkit-line-clamp: 3;
   line-height: 26px;
   max-height: 78px;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
 `;
 
 const IdeaAuthor = styled.div`
   color: #84939d;
   font-size: 14px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 20px;
   margin-top: 12px;
-`;
-
-const AuthorLink = styled.div`
-  color: #333;
-
-  &:hover {
-    color: #333;
-    text-decoration: underline;
-  }
 `;
 
 const StyledVoteControl = styled(VoteControl)`
@@ -156,7 +139,11 @@ const IdeaContainerInner = styled.div`
   overflow: hidden;
 `;
 
-type Props = {
+const VotingDisabledWrapper = styled.div`
+  padding: 22px;
+`;
+
+export type Props = {
   ideaId: string;
 };
 
@@ -164,25 +151,24 @@ type State = {
   idea: IIdea | null;
   ideaImage: IIdeaImage | null;
   ideaAuthor: IUser | null;
-  locale: string | null;
-  showUnauthenticated: boolean;
+  locale: Locale | null;
+  showFooter: 'unauthenticated' | 'votingDisabled' | null;
   loading: boolean;
 };
 
 export const namespace = 'components/IdeaCard/index';
 
 class IdeaCard extends React.PureComponent<Props, State> {
-  state: State;
   subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       idea: null,
       ideaImage: null,
       ideaAuthor: null,
       locale: null,
-      showUnauthenticated: false,
+      showFooter: null,
       loading: true
     };
     this.subscriptions = [];
@@ -205,7 +191,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
         ideaImage$,
         ideaAuthor$,
         project$
-      ).map(([idea, ideaImage, ideaAuthor, project]) => {
+      ).map(([idea, ideaImage, ideaAuthor]) => {
         return { idea, ideaImage, ideaAuthor };
       });
     });
@@ -224,7 +210,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  onCardClick = (event) => {
+  onCardClick = (event: React.FormEvent<MouseEvent>) => {
     event.preventDefault();
 
     const { idea } = this.state;
@@ -238,7 +224,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
     }
   }
 
-  onAuthorClick = (event) => {
+  onAuthorClick = (event: React.FormEvent<MouseEvent>) => {
     const { ideaAuthor } = this.state;
 
     if (ideaAuthor) {
@@ -249,24 +235,28 @@ class IdeaCard extends React.PureComponent<Props, State> {
   }
 
   unauthenticatedVoteClick = () => {
-    this.setState({ showUnauthenticated: true });
+    this.setState({ showFooter: 'unauthenticated' });
+  }
+
+  disabledVoteClick = () => {
+    this.setState({ showFooter: 'votingDisabled' });
   }
 
   render() {
-    const { idea, ideaImage, ideaAuthor, locale, showUnauthenticated, loading } = this.state;
+    const { idea, ideaImage, ideaAuthor, locale, showFooter, loading } = this.state;
 
     if (!loading && idea && locale) {
       const ideaImageUrl = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
-      const ideaImageLargeUrl = (ideaImage ? ideaImage.data.attributes.versions.large : null);
       const createdAt = <FormattedRelative value={idea.data.attributes.created_at} />;
+      const hasVotingDescriptor = has(idea, 'data.relationships.action_descriptor.data.voting');
+      const votingDescriptor = (hasVotingDescriptor ? idea.data.relationships.action_descriptor.data.voting : null);
+      const projectId = idea.data.relationships.project.data && idea.data.relationships.project.data.id;
       const className = `${this.props['className']} e2e-idea-card ${idea.data.relationships.user_vote && idea.data.relationships.user_vote.data ? 'voted' : 'not-voted' }`;
 
       return (
         <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.data.attributes.slug}`} className={className}>
           <IdeaContainerInner>
             {ideaImageUrl && <IdeaImage src={ideaImageUrl} />}
-
-            {/* ideaImageLargeUrl && <IdeaImageLarge src={ideaImageLargeUrl} /> */}
 
             {!ideaImageUrl &&
               <IdeaImagePlaceholder>
@@ -283,15 +273,29 @@ class IdeaCard extends React.PureComponent<Props, State> {
               </IdeaAuthor>
             </IdeaContent>
 
-            {!showUnauthenticated &&
+            {!showFooter &&
               <StyledVoteControl
                 ideaId={idea.data.id}
                 unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+                disabledVoteClick={this.disabledVoteClick}
                 size="normal"
               />
             }
-
-            {showUnauthenticated && <Unauthenticated />}
+            {showFooter === 'unauthenticated' &&
+              <BottomBounceUp icon="lock-outlined">
+                <Unauthenticated />
+              </BottomBounceUp>
+              }
+            {(showFooter === 'votingDisabled' && votingDescriptor) &&
+              <BottomBounceUp icon="lock-outlined">
+                <VotingDisabledWrapper>
+                  <VotingDisabled
+                    votingDescriptor={votingDescriptor}
+                    projectId={projectId}
+                  />
+                </VotingDisabledWrapper>
+              </BottomBounceUp>
+            }
           </IdeaContainerInner>
         </IdeaContainer>
       );

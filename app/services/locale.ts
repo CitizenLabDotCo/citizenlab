@@ -5,9 +5,10 @@ import { authUserStream } from 'services/auth';
 import { updateUser } from 'services/users';
 import { store } from 'app';
 import { changeLocale } from 'containers/LanguageProvider/actions';
+import { Locale } from 'typings';
 
-const savedLocale = localStorage.getItem('cl2-locale');
-const LocaleSubject = new BehaviorSubject(savedLocale || 'en');
+const savedLocale = localStorage.getItem('cl2-locale') as Locale;
+const LocaleSubject = new BehaviorSubject((savedLocale || 'en') as Locale);
 
 LocaleSubject.subscribe((locale) => {
   // Update the locale in the store each time there's a change
@@ -47,7 +48,7 @@ Observable.combineLatest(
 });
 
 // Push a new value down the stream if it belongs in the Tenant Locales
-export function updateLocale(value: string) {
+export function updateLocale(value: Locale) {
   currentTenantStream().observable
   .first()
   .subscribe((tenant) => {

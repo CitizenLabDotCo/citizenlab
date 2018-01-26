@@ -10,6 +10,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import NotificationWrapper from '../NotificationWrapper';
 import { Link } from 'react-router';
+import { Multiloc } from 'typings';
 
 
 type Props = {
@@ -18,7 +19,7 @@ type Props = {
 
 type State = {
   ideaSlug?: string,
-  ideaTitle?: { [key: string]: string },
+  ideaTitle?: Multiloc,
 };
 
 export default class CommentMarkedAsSpamNotification extends React.PureComponent<Props, State> {

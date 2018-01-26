@@ -1,17 +1,14 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
+import { isString, isEmpty, isError } from 'lodash';
 
 // libraries
 import CSSTransition from 'react-transition-group/CSSTransition';
-import Transition from 'react-transition-group/Transition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import { browserHistory } from 'react-router';
-import { EditorState, convertToRaw } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
+import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 
 // components
-import ButtonBar from './ButtonBar';
+import IdeasNewButtonBar from './IdeasNewButtonBar';
 import NewIdeaForm from './NewIdeaForm';
 import SignInUp from './SignInUp';
 
@@ -23,15 +20,11 @@ import { getAuthUserAsync } from 'services/auth';
 import { localState, ILocalStateService } from 'services/localState';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 // utils
 import { convertToGeoJson } from 'utils/locationTools';
 
 // typings
-import { IOption, ImageFile } from 'typings';
+import { Locale } from 'typings';
 
 // style
 import { media } from 'utils/styleUtils';
@@ -46,7 +39,6 @@ const PageContainer = styled.div`
   min-height: calc(100vh - 105px);
   position: relative;
   background: #f8f8f8;
-  will-change: opacity, transform;
 
   &.page-enter {
     position: absolute;
@@ -98,71 +90,37 @@ const PageContainer = styled.div`
   }
 `;
 
-const ButtonBarContainer = styled.div`
-  width: 100%;
-  height: 68px;
-  position: fixed;
-  z-index: 99999;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #fff;
-  border-top: solid 1px #ddd;
-  will-change: transform;
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
-
-  &.buttonbar-enter {
-    transform: translateY(64px);
-
-    &.buttonbar-enter-active {
-      transform: translateY(0);
-      transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
-    }
-  }
-
-  &.buttonbar-exit {
-    transform: translateY(0);
-
-    &.buttonbar-exit-active {
-      transform: translateY(64px);
-      transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
-    }
-  }
-`;
-
 interface Props {}
 
 interface LocalState {
   showIdeaForm: boolean;
-  locale: string | null;
+  locale: Locale | null;
 }
 
 interface GlobalState {}
 
 interface State extends LocalState, GlobalState {}
 
-class IdeasNewPage2 extends React.PureComponent<Props, State> {
-  initialLocalState: LocalState;
-  initialGlobalState: IIdeasNewPageGlobalState;
+class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> {
   localState: ILocalStateService<LocalState>;
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
-    const initialLocalState = {
+  constructor(props: Props & WithRouterProps) {
+    super(props);
+
+    const initialLocalState: LocalState = {
       showIdeaForm: true,
       locale: null
     };
-    this.initialGlobalState = {
+
+    const initialGlobalState: IIdeasNewPageGlobalState = {
       title: null,
       description: null,
       selectedTopics: null,
       selectedProject: null,
-      location: '',
+      position: '',
+      position_coordinates: props.location.query.position ? { type: 'Point', coordinates: JSON.parse(props.location.query.position) as number[] } : null,
       submitError: false,
       processing: false,
       ideaId: null,
@@ -170,8 +128,8 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       imageId: null,
       imageChanged: false
     };
-    this.localState = localState<LocalState>(initialLocalState);
-    this.globalState = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage', this.initialGlobalState);
+    this.localState = localState(initialLocalState);
+    this.globalState = globalState.init('IdeasNewPage', initialGlobalState);
     this.subscriptions = [];
   }
 
@@ -189,20 +147,18 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
-    // reset global state before unmounting
-    this.globalState.set(this.initialGlobalState);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   async postIdea(publicationStatus: 'draft' | 'published', authorId: string | null = null) {
     const { locale } = await this.localState.get();
-    const { title, description, selectedTopics, selectedProject, location, ideaId } = await this.globalState.get();
+    const { title, description, selectedTopics, selectedProject, position, position_coordinates, ideaId } = await this.globalState.get();
     const ideaTitle = { [locale as string]: title as string };
     const ideaDescription = { [locale as string]: (description || '') };
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const projectId = (selectedProject ? selectedProject.value as string : null);
-    const locationGeoJSON = (_.isString(location) && !_.isEmpty(location) ? await convertToGeoJson(location) : null);
-    const locationDescription = (_.isString(location) && !_.isEmpty(location) ? location : null);
+    const locationGeoJSON = (isString(position) && !isEmpty(position) ? await convertToGeoJson(position) : position_coordinates || null);
+    const locationDescription = (isString(position) && !isEmpty(position) ? position : null);
 
     if (ideaId) {
       return await updateIdea(ideaId, {
@@ -241,7 +197,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       }
 
       // upload the newly dropped image to the server
-      if (imageChanged && imageFile && imageFile[0] && imageFile[0].base64 && _.isString(imageFile[0].base64)) {
+      if (imageChanged && imageFile && imageFile[0] && imageFile[0].base64 && isString(imageFile[0].base64)) {
         ideaImage = await addIdeaImage(idea.data.id, imageFile[0].base64 as string, 0);
       }
 
@@ -262,12 +218,12 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
 
     try {
       const authUser = await getAuthUserAsync();
-      const idea = await this.postIdeaAndIdeaImage('published', authUser.data.id);
+      await this.postIdeaAndIdeaImage('published', authUser.data.id);
       browserHistory.push('/ideas');
     } catch (error) {
-      if (_.isError(error) && error.message === 'not_authenticated') {
+      if (isError(error) && error.message === 'not_authenticated') {
         try {
-          const idea = await this.postIdeaAndIdeaImage('draft');
+          await this.postIdeaAndIdeaImage('draft');
           this.globalState.set({ processing: false });
           this.localState.set({ showIdeaForm: false });
           window.scrollTo(0, 0);
@@ -296,18 +252,14 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   render() {
     if (!this.state) { return null; }
 
-    const { showIdeaForm, locale } = this.state;
+    const { showIdeaForm } = this.state;
     const timeout = 600;
 
-    const buttonBar = (showIdeaForm && locale) ? (
-      <CSSTransition classNames="buttonbar" timeout={timeout}>
-        <ButtonBarContainer>
-          <ButtonBar onSubmit={this.handleOnIdeaSubmit} />
-        </ButtonBarContainer>
-      </CSSTransition>
+    const buttonBar = (showIdeaForm) ? (
+      <IdeasNewButtonBar onSubmit={this.handleOnIdeaSubmit} />
     ) : null;
 
-    const newIdeasForm = (showIdeaForm && locale) ? (
+    const newIdeasForm = (showIdeaForm) ? (
       <CSSTransition classNames="page" timeout={timeout}>
         <PageContainer className="ideaForm">
           <NewIdeaForm onSubmit={this.handleOnIdeaSubmit} />
@@ -315,7 +267,7 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
       </CSSTransition>
     ) : null;
 
-    const signInUp = (!showIdeaForm && locale) ? (
+    const signInUp = (!showIdeaForm) ? (
       <CSSTransition classNames="page" timeout={timeout}>
         <PageContainer>
           <SignInUp
@@ -338,4 +290,4 @@ class IdeasNewPage2 extends React.PureComponent<Props, State> {
   }
 }
 
-export default IdeasNewPage2;
+export default withRouter<Props>(IdeasNewPage2);

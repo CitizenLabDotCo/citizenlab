@@ -29,7 +29,7 @@ import { darken } from 'polished';
 import styled from 'styled-components';
 
 // typings
-import { API } from 'typings';
+import { API, Locale } from 'typings';
 
 const Form = styled.form`
   width: 100%;
@@ -66,7 +66,7 @@ type Props = {
 };
 
 type State = {
-  locale: string | null;
+  locale: Locale | null;
   currentTenant: ITenant | null;
   firstName: string | null;
   lastName: string | null;
@@ -215,7 +215,6 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const timeout = 600;
     const { formatMessage } = this.props.intl;
     const {
       firstName,
@@ -227,7 +226,6 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       lastNameError,
       emailError,
       passwordError,
-      unknownError,
       apiErrors
     } = this.state;
 

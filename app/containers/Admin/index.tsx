@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
 
@@ -47,7 +46,7 @@ export default class AdminPage extends React.PureComponent<Props, State> {
     this.state = {
       adminFullWidth: false,
     };
-    this.globalState = globalState.init<IAdminFullWidth>('AdminFullWidth', { enabled: false });
+    this.globalState = globalState.init('AdminFullWidth', { enabled: false });
   }
 
   componentDidMount() {

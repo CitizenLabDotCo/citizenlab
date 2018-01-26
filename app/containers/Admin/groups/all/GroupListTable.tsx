@@ -17,12 +17,22 @@ import messages from './messages';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 import GroupAvatar from './GroupAvatar';
+import Spinner from 'components/UI/Spinner';
 import { List, Row } from 'components/admin/ResourceList';
 
 // Style
 import styled from 'styled-components';
 import { rgba } from 'polished';
 import { color } from 'utils/styleUtils';
+import { Locale } from 'typings';
+
+const Loading = styled.div`
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 const EmptyStateMessage = styled.p`
   align-items: center;
@@ -40,68 +50,66 @@ const EmptyStateMessage = styled.p`
   }
 `;
 
-// Typings
-interface Props {
+const GroupName = styled.div`
+  color: #333;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20ppx;
+`;
 
-}
+const GroupCount = styled.div`
+  font-size: 16px;
+  font-weight: 400;
+  margin-left: 50px;
+`;
+
+// Typings
+interface Props {}
 
 interface State {
   groups: IGroupData[];
-  locale: string;
-  tenantLocales: string[];
+  locale: Locale;
+  tenantLocales: Locale[];
   loading: boolean;
 }
 
-class GroupsListTable extends React.Component<Props & InjectedIntlProps, State> {
+class GroupsListTable extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
-
+  constructor(props) {
+    super(props);
     this.state = {
-      locale: '',
+      locale: 'en',
       tenantLocales: [],
       groups: [],
-      loading: false,
+      loading: true,
     };
-
     this.subscriptions = [];
   }
 
-    componentDidMount() {
-    this.subscriptions.push(this.updateLocales(), this.updateGroups());
+  componentDidMount() {
+    const locale$ = localeStream().observable;
+    const currentTenant$ = currentTenantStream().observable;
+    const groups$ = listGroups().observable;
+
+    this.subscriptions = [
+      Rx.Observable.combineLatest(
+        locale$,
+        currentTenant$,
+        groups$
+      ).subscribe(([locale, currentTenant, groups]) => {
+        this.setState({
+          locale,
+          tenantLocales: currentTenant.data.attributes.settings.core.locales,
+          groups: groups.data,
+          loading: false
+        });
+      })
+    ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach((sub) => {
-      sub.unsubscribe();
-    });
-  }
-
-  updateLocales = () => {
-    return Rx.Observable.combineLatest(
-      localeStream().observable,
-      currentTenantStream().observable
-    )
-    .subscribe(([locale, currentTenant]) => {
-      this.setState({
-        locale,
-        tenantLocales: currentTenant.data.attributes.settings.core.locales,
-      });
-    });
-  }
-
-  updateGroups = () => {
-    this.setState({
-      loading: true,
-    });
-
-    return listGroups().observable.subscribe((response) => {
-      this.setState({
-        groups: response.data,
-        loading: false,
-      });
-    });
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   createDeleteGroupHandler = (groupId) => {
@@ -118,17 +126,16 @@ class GroupsListTable extends React.Component<Props & InjectedIntlProps, State> 
 
   render() {
     const { groups, locale, tenantLocales, loading } = this.state;
-    const animationTimeout = 400;
 
     if (loading) {
       return (
-        <p>
-          <FormattedMessage {...messages.loadingMessage} />
-        </p>
+        <Loading>
+          <Spinner size="30px" color="#666" />
+        </Loading>
       );
     }
 
-    if (groups.length === 0) {
+    if (!loading && groups.length === 0) {
       return (
         <EmptyStateMessage>
           <Icon name="warning" />
@@ -137,18 +144,17 @@ class GroupsListTable extends React.Component<Props & InjectedIntlProps, State> 
       );
     }
 
-
     return (
       <List>
         {groups.map((group) => (
           <Row key={group.id}>
             <GroupAvatar groupId={group.id} />
-            <h2 className="expand">
+            <GroupName className="expand">
               {getLocalized(group.attributes.title_multiloc, locale, tenantLocales)}
-            </h2>
-            <p className="expand">
+            </GroupName>
+            <GroupCount className="expand">
               <FormattedMessage {...messages.members} values={{ count: group.attributes.memberships_count }} />
-            </p>
+            </GroupCount>
             <Button onClick={this.createDeleteGroupHandler(group.id)} style="text" circularCorners={false} icon="delete">
               <FormattedMessage {...messages.deleteButtonLabel} />
             </Button>

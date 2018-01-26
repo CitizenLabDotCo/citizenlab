@@ -12,13 +12,17 @@ import { browserHistory } from 'react-router';
 
 // Localisation
 import { InjectedIntlProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // style
 import styled from 'styled-components';
 
-// Component typing
+const StyledGoBackButton = styled(GoBackButton)`
+  margin-top: 5px;
+  margin-bottom: 30px;
+`;
+
 type Props = {
   params: {
     slug: string | null,
@@ -30,113 +34,130 @@ type Props = {
 
 type State = {
   project: IProjectData | null,
+  loaded: boolean
 };
 
-const StyledGoBackButton = styled(GoBackButton)`
-  margin-bottom: 20px;
-`;
-
 class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps, State> {
-  subscription: Rx.Subscription;
+  props$: Rx.BehaviorSubject<Props>;
+  subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
     super(props as any);
-
     this.state = {
       project: null,
+      loaded: false
     };
+    this.props$ = new Rx.BehaviorSubject(null as any);
+    this.subscriptions = [];
   }
 
-  updateSubscription (slug) {
-    this.subscription = projectBySlugStream(slug).observable.subscribe((project) => {
-      this.setState({ project: project ? project.data : null });
-    });
+  componentWillMount() {
+    this.props$.next(this.props);
+
+    this.subscriptions = [
+      this.props$.distinctUntilChanged().switchMap((props) => {
+        return (props.params && props.params.slug ? projectBySlugStream(props.params.slug).observable : Rx.Observable.of(null));
+      }).subscribe((project) => {
+        this.setState({
+          project: (project ? project.data : null),
+          loaded: true
+        });
+      })
+    ];
   }
 
-  componentDidMount() {
-    if (this.props.params.slug) {
-      this.updateSubscription(this.props.params.slug);
-    }
-  }
-
-  componentWillReceiveProps(newProps) {
-    // Update subscription if the slug changes
-    // This happens when transitioning from New to Edit view after saving a new project
-    if (newProps.params.slug && newProps.params.slug !== this.props.params.slug) {
-      this.updateSubscription(newProps.params.slug);
-    }
+  componentWillReceiveProps(nextProps) {
+    this.props$.next(nextProps);
   }
 
   componentWillUnmount() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getTabs = () => {
-    if (this.props.params.slug) {
-      const baseTabsUrl = `/admin/projects/${this.props.params.slug}`;
-      return [
-        {
-          label: this.props.intl.formatMessage(messages.generalTab),
-          url: `${baseTabsUrl}/edit`,
-        },
-        {
-          label: this.props.intl.formatMessage(messages.descriptionTab),
-          url: `${baseTabsUrl}/description`,
-        },
-        // {
-        //   label: this.props.intl.formatMessage(messages.ideasTab),
-        //   url: `${baseTabsUrl}/ideas`,
-        // },
-        {
-          label: this.props.intl.formatMessage(messages.phasesTab),
-          url: `${baseTabsUrl}/timeline`,
-        },
-        {
-          label: this.props.intl.formatMessage(messages.eventsTab),
-          url: `${baseTabsUrl}/events`,
-        },
-        {
-          label: this.props.intl.formatMessage(messages.permissionsTab),
-          url: `${baseTabsUrl}/permissions`,
-          feature: 'private_projects',
-        },
-      ];
+  getTabs = (slug: string, project: IProjectData) => {
+    const baseTabsUrl = `/admin/projects/${slug}`;
+
+    const tabs = [
+      {
+        label: this.props.intl.formatMessage(messages.generalTab),
+        url: `${baseTabsUrl}/edit`,
+      },
+      {
+        label: this.props.intl.formatMessage(messages.descriptionTab),
+        url: `${baseTabsUrl}/description`,
+      },
+      {
+        label: this.props.intl.formatMessage(messages.ideasTab),
+        url: `${baseTabsUrl}/ideas`,
+      },
+      {
+        label: this.props.intl.formatMessage(messages.eventsTab),
+        url: `${baseTabsUrl}/events`,
+      },
+      {
+        label: this.props.intl.formatMessage(messages.permissionsTab),
+        url: `${baseTabsUrl}/permissions`,
+        feature: 'private_projects',
+      },
+    ];
+
+    if (project.attributes.process_type === 'timeline') {
+      tabs.splice(3, 0, {
+        label: this.props.intl.formatMessage(messages.phasesTab),
+        url: `${baseTabsUrl}/timeline`,
+      });
     }
 
-    return [];
+    return tabs;
   }
 
   goBack = () => {
-    browserHistory.push('/admin/projects');
+    const currentLocation = browserHistory.getCurrentLocation();
+    const currentPath = currentLocation.pathname;
+    const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
+    const newPath = currentPath.replace(lastUrlSegment, '').replace(/\/$/, '');
+    const newLastUrlSegment = newPath.substr(newPath.lastIndexOf('/') + 1);
+
+    if (newLastUrlSegment === this.props.params.slug) {
+      browserHistory.push('/admin/projects');
+    } else {
+      browserHistory.push(newPath);
+    }
   }
 
   render() {
-    const { project } = this.state;
+    const { location } = this.props;
+    const { slug } = this.props.params;
+    const { project, loaded } = this.state;
+    const { formatMessage } = this.props.intl;
 
-    const tabbedProps = {
-      resource: {
-        title: project ? project.attributes.title_multiloc : '',
-        publicLink: project ? `/projects/${project.attributes.slug}` : ''
-      },
-      messages: {
-        viewPublicResource: messages.viewPublicProject,
-      },
-      tabs: this.getTabs(),
-      location: this.props.location,
-    };
+    if (loaded) {
+      const { children } = this.props;
+      const childrenWithExtraProps = React.cloneElement(children as React.ReactElement<any>, { project });
+      const tabbedProps = {
+        location,
+        resource: {
+          title: project ? project.attributes.title_multiloc : formatMessage(messages.addNewProject),
+          publicLink: project ? `/projects/${project.attributes.slug}` : ''
+        },
+        messages: {
+          viewPublicResource: messages.viewPublicProject,
+        },
+        tabs: ((slug && project) ? this.getTabs(slug, project) : [])
+      };
 
-    return(
-      <div>
-        <StyledGoBackButton onClick={this.goBack} />
+      return(
+        <>
+          <StyledGoBackButton onClick={this.goBack} />
+          <TabbedResource {...tabbedProps}>
+            {childrenWithExtraProps}
+          </TabbedResource>
+        </>
+      );
+    }
 
-        <TabbedResource {...tabbedProps}>
-          {React.cloneElement(this.props.children as React.ReactElement<any>, { project })}
-        </TabbedResource>
-      </div>
-    );
+    return null;
   }
 }
 
-export default injectIntl(AdminProjectEdition);
+export default injectIntl<Props>(AdminProjectEdition);

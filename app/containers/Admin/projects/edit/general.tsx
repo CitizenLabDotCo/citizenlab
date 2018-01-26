@@ -8,15 +8,18 @@ import { browserHistory } from 'react-router';
 // components
 import Input from 'components/UI/Input';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Radio from 'components/UI/Radio';
 import Label from 'components/UI/Label';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
-
+import { Section, SectionField } from 'components/admin/Section';
+import ParticipationContext, { IParticipationContextConfig } from './parcticipationContext';
 import { Button as SemButton, Icon as SemIcon } from 'semantic-ui-react';
+
+// animation
+import CSSTransition from 'react-transition-group/CSSTransition';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
@@ -27,68 +30,98 @@ import messages from '../messages';
 // services
 import {
   IUpdatedProjectProperties,
-  IProject,
   IProjectData,
   projectBySlugStream,
   addProject,
   updateProject,
   deleteProject,
 } from 'services/projects';
-import {
-  IProjectImageData,
-  projectImagesStream,
-  addProjectImage,
-  deleteProjectImage
-} from 'services/projectImages';
+import { projectImagesStream, addProjectImage, deleteProjectImage } from 'services/projectImages';
 import { areasStream, IAreaData } from 'services/areas';
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
+import eventEmitter from 'utils/eventEmitter';
 
 // utils
 import { convertUrlToFileObservable } from 'utils/imageTools';
-import getSubmitState from 'utils/getSubmitState';
-import { v4 as uuid } from 'uuid';
 
 // style
 import styled from 'styled-components';
 
 // typings
-import { API, IOption, IRelationship, ImageFile } from 'typings';
+import { API, IOption, ImageFile, Locale } from 'typings';
+import Select from 'semantic-ui-react/dist/commonjs/addons/Select/Select';
+
+const timeout = 350;
+
+const TitleInput = styled(Input)`
+  width: 497px;
+`;
+
+const ProjectType = styled.div`
+  color: #333;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 400;
+`;
 
 const StyledImagesDropzone = styled(ImagesDropzone)`
   margin-top: 2px;
   padding-right: 100px;
 `;
 
-const ProjectImages = styled.div`
-  display: flex;
-`;
-
-const ImageWrapper = styled.div`
-  margin: .5rem;
+const ParticipationContextWrapper = styled.div`
+  width: 497px;
   position: relative;
-
-  &:first-child{
-    margin-left: 0;
-  }
-`;
-
-const DeleteButton = styled.button`
-  background: rgba(0, 0, 0, .5);
-  border-radius: 50%;
-  color: black;
-  right: -.5rem;
-  position: absolute;
-  top: -.5rem;
-  z-index: 1;
-`;
-
-const SaveButton = styled.button`
-  background: #d60065;
+  padding: 30px;
+  padding-bottom: 15px;
+  margin-top: 8px;
+  display: inline-block;
   border-radius: 5px;
-  color: white;
-  font-size: 1.25rem;
-  padding: 1rem 2rem;
+  border: solid 1px #ddd;
+  background: #fff;
+  transition: opacity ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  will-change: opacity;
+
+  ::before,
+  ::after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+  }
+
+  ::after {
+    top: -20px;
+    left: 25px;
+    border-color: transparent transparent #fff transparent;
+    border-width: 10px;
+  }
+
+  ::before {
+    top: -22px;
+    left: 24px;
+    border-color: transparent transparent #ddd transparent;
+    border-width: 11px;
+  }
+
+  &.participationcontext-enter {
+    opacity: 0;
+
+    &.participationcontext-enter-active {
+      opacity: 1;
+    }
+  }
+
+  &.participationcontext-exit {
+    opacity: 1;
+
+    &.participationcontext-exit-active {
+      opacity: 0;
+    }
+  }
 `;
 
 type Props = {
@@ -102,17 +135,18 @@ interface State {
   loading: boolean;
   processing: boolean;
   projectData: IProjectData | null;
+  projectType: 'continuous' | 'timeline';
   projectAttributesDiff: IUpdatedProjectProperties;
   headerBg: ImageFile[] | null;
+  presentationMode: 'map' | 'card';
   oldProjectImages: ImageFile[] | null;
   newProjectImages: ImageFile[] | null;
   noTitleError: string | null;
-  // noHeaderError: string | null;
   apiErrors: { [fieldName: string]: API.Error[] };
   saved: boolean;
   areas: IAreaData[];
   areaType: 'all' | 'selection';
-  locale: string | null;
+  locale: Locale;
   currentTenant: ITenant | null;
   areasOptions: IOption[];
   submitState: 'disabled' | 'enabled' | 'error' | 'success';
@@ -120,7 +154,6 @@ interface State {
 }
 
 class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlProps, State> {
-  state: State;
   slug$: Rx.BehaviorSubject<string | null> | null;
   processing$: Rx.BehaviorSubject<boolean>;
   subscriptions: Rx.Subscription[] = [];
@@ -131,17 +164,18 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       loading: true,
       processing: false,
       projectData: null,
+      projectType: 'timeline',
       projectAttributesDiff: {},
       headerBg: null,
+      presentationMode: 'card',
       oldProjectImages: null,
       newProjectImages: null,
       noTitleError: null,
-      // noHeaderError: null,
       apiErrors: {},
       saved: false,
       areas: [],
       areaType: 'all',
-      locale: null,
+      locale: 'en',
       currentTenant: null,
       areasOptions: [],
       submitState: 'disabled',
@@ -189,9 +223,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
 
                 return Rx.Observable.of(null);
               }),
-            ).filter(([processing, headerBg, projectImages]) => {
+            ).filter(([processing]) => {
               return !processing;
-            }).map(([processing, headerBg, projectImages]) => ({
+            }).map(([_processing, headerBg, projectImages]) => ({
               headerBg,
               oldProjectImages: projectImages,
               projectData: (project ? project.data : null)
@@ -205,29 +239,37 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
           });
         })
       ).subscribe(([locale, currentTenant, areas, { headerBg, oldProjectImages, projectData }]) => {
-        this.setState((state: State) => ({
-          locale,
-          currentTenant,
-          projectData,
-          oldProjectImages,
-          newProjectImages: oldProjectImages,
-          headerBg: (headerBg ? [headerBg] : null),
-          areas: areas.data,
-          areasOptions: areas.data.map((area) => ({
+        this.setState((state) => {
+          const projectType = (projectData ? projectData.attributes.process_type : state.projectType);
+          const areaType =  ((projectData && projectData.relationships.areas.data.length > 0) ? 'selection' : 'all');
+          const areasOptions = areas.data.map((area) => ({
             value: area.id,
             label: getLocalized(area.attributes.title_multiloc, locale, currentTenant.data.attributes.settings.core.locales)
-          })),
-          loading: false,
-          projectAttributesDiff: {},
-          areaType: (projectData && projectData.relationships.areas.data.length > 0) ? 'selection' : 'all',
-        }));
+          }));
+
+          return {
+            locale,
+            currentTenant,
+            projectData,
+            projectType,
+            areaType,
+            areasOptions,
+            oldProjectImages: (oldProjectImages as ImageFile[] | null),
+            newProjectImages: (oldProjectImages as ImageFile[] | null),
+            headerBg: (headerBg ? [headerBg] : null),
+            presentationMode: (projectData && projectData.attributes.presentation_mode || state.presentationMode),
+            areas: areas.data,
+            projectAttributesDiff: {},
+            loading: false,
+          };
+        });
       }),
 
       this.processing$.subscribe(processing => this.setState({ processing }))
     ];
   }
 
-  componentWillReceiveProps(newProps) {
+  componentWillReceiveProps(newProps: Props) {
     if (newProps.params.slug !== this.props.params.slug && this.slug$ !== null) {
       this.slug$.next(newProps.params.slug);
     }
@@ -237,33 +279,60 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  setRef = (element) => {
-    // empty
-  }
-
-  changeTitle = (newTitle: string) => {
-    this.setState((state: State) => ({
+  handleTitleOnChange = (newTitle: string) => {
+    this.setState((state) => ({
       submitState: 'enabled',
       noTitleError: null,
       projectAttributesDiff: {
-        ...state.projectAttributesDiff,
+        ...(state.projectAttributesDiff || {}),
         title_multiloc: {
-          ...state.projectAttributesDiff.title_multiloc,
+          ..._.get(state, 'projectAttributesDiff.title_multiloc', {}),
           [state.locale as string]: newTitle
         }
       }
     }));
   }
 
-  handleHeaderOnAdd = (newHeader: ImageFile) => {
-    this.setState((state: State) => ({
+  handleParticipationContextOnChange = (participationContextConfig: IParticipationContextConfig) => {
+    this.setState((state) => {
+      const { projectAttributesDiff } = state;
+      const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = participationContextConfig;
+      const newprojectAttributesDiff: IUpdatedProjectProperties = {
+        ...projectAttributesDiff,
+        participation_method: participationMethod,
+        posting_enabled: postingEnabled,
+        commenting_enabled: commentingEnabled,
+        voting_enabled: votingEnabled,
+        voting_method: votingMethod,
+        voting_limited_max: votingLimit
+      };
+
+      return {
+        submitState: 'enabled',
+        projectAttributesDiff: newprojectAttributesDiff
+      };
+    });
+  }
+
+  handeProjectTypeOnChange = (projectType: 'continuous' | 'timeline') => {
+    this.setState((state) => ({
+      projectType,
       submitState: 'enabled',
       projectAttributesDiff: {
-        ...state.projectAttributesDiff,
+        ...(state.projectAttributesDiff || {}),
+        process_type: projectType
+      }
+    }));
+  }
+
+  handleHeaderOnAdd = (newHeader: ImageFile) => {
+    this.setState((state) => ({
+      submitState: 'enabled',
+      projectAttributesDiff: {
+        ...(state.projectAttributesDiff || {}),
         header_bg: newHeader.base64
       },
-      headerBg: [newHeader],
-      // noHeaderError: null
+      headerBg: [newHeader]
     }));
   }
 
@@ -272,11 +341,11 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     this.setState({ headerBg });
   }
 
-  handleHeaderOnRemove = async (removedHeader: ImageFile) => {
-    this.setState((state: State) => ({
+  handleHeaderOnRemove = async () => {
+    this.setState((state) => ({
       submitState: 'enabled',
       projectAttributesDiff: {
-        ...state.projectAttributesDiff,
+        ...(state.projectAttributesDiff || {}),
         header_bg: null
       },
       headerBg: null
@@ -284,7 +353,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 
   handleProjectImageOnAdd = (newProjectImage: ImageFile) => {
-    this.setState((state: State) => ({
+    this.setState((state) => ({
       submitState: 'enabled',
       newProjectImages: [
         ...(state.newProjectImages || []),
@@ -298,103 +367,144 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 
   handleProjectImageOnRemove = async (removedImageFile: ImageFile) => {
-    this.setState((state: State) => ({
+    this.setState((state) => ({
       submitState: 'enabled',
-      newProjectImages: _(state.newProjectImages).filter(projectImage => projectImage.objectUrl !== removedImageFile.objectUrl).value()
+      newProjectImages: (state.newProjectImages ? state.newProjectImages.filter(projectImage => projectImage.objectUrl !== removedImageFile.objectUrl) : null)
     }));
   }
 
-  handleAreaTypeChange = (value) => {
-    const newState = { areaType: value, submitState: 'enabled' } as State;
+  handleAreaTypeChange = (value: 'all' | 'selection') => {
+    this.setState((state) => ({
+      submitState: 'enabled',
+      areaType: value,
+      projectAttributesDiff: {
+        ...(state.projectAttributesDiff || {}),
+        area_ids: (value === 'all' ? [] : state.projectAttributesDiff.area_ids)
+      }
+    }));
+  }
 
-    // Clear the array of areas ids if you select "all areas"
-    if (value === 'all') {
-      const newDiff = _.cloneDeep(this.state.projectAttributesDiff);
-      newDiff.area_ids = [];
-      newState.projectAttributesDiff = newDiff;
-    }
-
-    this.setState(newState);
+  handleIdeasDisplayChange = (value: 'map' | 'card') => {
+    this.setState((state) => ({
+      submitState: 'enabled',
+      presentationMode: value,
+      projectAttributesDiff: {
+        ...(state.projectAttributesDiff || {}),
+        presentation_mode: value
+      }
+    }));
   }
 
   handleAreaSelectionChange = (values: IOption[]) => {
-    const newDiff = _.cloneDeep(this.state.projectAttributesDiff);
-    newDiff.area_ids = values.map((value) => (value.value));
-    this.setState({ submitState: 'enabled', projectAttributesDiff: newDiff });
+    this.setState((state) => ({
+      submitState: 'enabled',
+      projectAttributesDiff: {
+        ...(state.projectAttributesDiff || {}),
+        area_ids: values.map((value) => (value.value))
+      }
+    }));
+  }
+
+  onSubmit = (event: React.FormEvent<any>) => {
+    event.preventDefault();
+
+    const { projectType, projectData } = this.state;
+
+    // if it's a new project of type continuous
+    if (!projectData && projectType === 'continuous') {
+      eventEmitter.emit('AdminProjectEditGeneral', 'getParticipationContext', null);
+    } else {
+      this.save();
+    }
+  }
+
+  handleParcticipationContextOnSubmit = (participationContextConfig: IParticipationContextConfig) => {
+    this.save(participationContextConfig);
+  }
+
+  handleStatusChange = (_event, data): void => {
+    const { value } = data;
+    this.setState({ projectAttributesDiff: { ...this.state.projectAttributesDiff, publication_status: value } });
   }
 
   validate = () => {
     let hasErrors = false;
     const { formatMessage } = this.props.intl;
-    const { projectAttributesDiff, projectData, headerBg, locale, currentTenant } = this.state;
+    const { projectAttributesDiff, projectData, locale, currentTenant } = this.state;
     const currentTenantLocales = (currentTenant as ITenant).data.attributes.settings.core.locales;
     const projectAttrs = { ...(projectData ? projectData.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
-    const areaIds = projectAttrs.area_ids || (projectData && projectData.relationships.areas.data.map((area) => (area.id))) || [];
-    const projectTitle = getLocalized(projectAttrs.title_multiloc as any, locale as string, currentTenantLocales);
+    const projectTitle = getLocalized(projectAttrs.title_multiloc as any, locale, currentTenantLocales);
 
     if (!projectTitle) {
       hasErrors = true;
       this.setState({ noTitleError: formatMessage(messages.noTitleErrorMessage) });
     }
 
-    /*
-    if (!headerBg) {
-      hasErrors = true;
-      this.setState({ noHeaderError: formatMessage(messages.noHeaderErrorMessage) });
-    }
-    */
-
     return !hasErrors;
   }
 
-  saveProject = async (event) => {
-    event.preventDefault();
-
+  save = async (participationContextConfig: IParticipationContextConfig | null = null) => {
     if (this.validate()) {
       const { formatMessage } = this.props.intl;
-      const { projectAttributesDiff, projectData, oldProjectImages, newProjectImages } = this.state;
+      let { projectAttributesDiff } = this.state;
+      const { projectData, oldProjectImages, newProjectImages } = this.state;
 
-      try {
-        let redirect = false;
-        let projectId: string | null = null;
-        const imagesToAdd = _(newProjectImages).filter(newProjectImage => !_(oldProjectImages).some(oldProjectImage => oldProjectImage.base64 === newProjectImage.base64)).value();
-        const imagesToRemove = _(oldProjectImages).filter(oldProjectImage => !_(newProjectImages).some(newProjectImage => newProjectImage.base64 === oldProjectImage.base64)).value();
+      if (participationContextConfig) {
+        const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = participationContextConfig;
 
-        this.setState({ saved: false });
-        this.processing$.next(true);
+        projectAttributesDiff = {
+          ...projectAttributesDiff,
+          participation_method: participationMethod,
+          posting_enabled: postingEnabled,
+          commenting_enabled: commentingEnabled,
+          voting_enabled: votingEnabled,
+          voting_method: votingMethod,
+          voting_limited_max: votingLimit
+        };
+      }
 
-        if (projectData) {
-          projectId = projectData.id;
+      if (!_.isEmpty(projectAttributesDiff)) {
+        try {
+          let redirect = false;
+          let projectId: string | null = null;
+          const imagesToAdd = _.chain(newProjectImages).filter(newProjectImage => !_(oldProjectImages).some(oldProjectImage => oldProjectImage.base64 === newProjectImage.base64)).value();
+          const imagesToRemove = _.chain(oldProjectImages).filter(oldProjectImage => !_(newProjectImages).some(newProjectImage => newProjectImage.base64 === oldProjectImage.base64)).value();
 
-          if (!_.isEmpty(projectAttributesDiff)) {
+          this.setState({ saved: false });
+          this.processing$.next(true);
+
+          if (projectData) {
+            projectId = projectData.id;
             await updateProject(projectData.id, projectAttributesDiff);
+          } else {
+            const project = await addProject(projectAttributesDiff);
+            projectId = project.data.id;
+            redirect = true;
           }
-        } else {
-          const project = await addProject(projectAttributesDiff);
-          projectId = project.data.id;
-          redirect = true;
-        }
 
-        const imagesToAddPromises: Promise<any>[] = _(imagesToAdd).map(imageToAdd => addProjectImage(projectId, imageToAdd.base64)).value();
-        const imagesToRemovePromises: Promise<any>[] = _(imagesToRemove).map(imageToRemove => deleteProjectImage(projectId, imageToRemove['projectImageId'])).value();
+          const imagesToAddPromises: Promise<any>[] = _(imagesToAdd).map(imageToAdd => addProjectImage(projectId, imageToAdd.base64)).value();
+          const imagesToRemovePromises: Promise<any>[] = _(imagesToRemove).map(imageToRemove => deleteProjectImage(projectId, imageToRemove['projectImageId'])).value();
 
-        await Promise.all([...imagesToAddPromises, ...imagesToRemovePromises]);
+          await Promise.all([...imagesToAddPromises, ...imagesToRemovePromises]);
 
-        if (redirect) {
-          browserHistory.push(`/admin/projects`);
-        } else {
+          if (redirect) {
+            browserHistory.push(`/admin/projects`);
+          } else {
+            this.setState({
+              saved: true,
+              submitState: 'success'
+            });
+
+            this.processing$.next(false);
+          }
+        } catch (errors) {
           this.setState({
-            saved: true,
-            submitState: 'success'
+            apiErrors: _.has(errors, 'json.errors') ? errors.json.errors : formatMessage(messages.saveErrorMessage),
+            submitState: 'error'
           });
+
           this.processing$.next(false);
         }
-      } catch (errors) {
-        this.setState({
-          apiErrors: _.has(errors, 'json.errors') ? errors.json.errors : formatMessage(messages.saveErrorMessage),
-          submitState: 'error'
-        });
-        this.processing$.next(false);
       }
     }
   }
@@ -407,19 +517,32 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     }
 
     if (window.confirm(this.props.intl.formatMessage(messages.deleteProjectConfirmation))) {
-      deleteProject(this.state.projectData.id)
-      .then((response) => {
+      try {
+        await deleteProject(this.state.projectData.id);
         browserHistory.push('/admin/projects');
-      })
-      .catch((error) => {
+      } catch {
         this.setState({ deleteError: this.props.intl.formatMessage(messages.deleteProjectError) });
-      });
+      }
     }
   }
 
   render() {
-    const { currentTenant, locale, noTitleError, /* noHeaderError, */ apiErrors, saved, projectData, headerBg, newProjectImages, loading, processing, projectAttributesDiff, areasOptions, areaType, submitState } = this.state;
-    const { formatMessage } = this.props.intl;
+    const {
+      currentTenant,
+      locale,
+      projectType,
+      noTitleError,
+      projectData,
+      headerBg,
+      presentationMode,
+      newProjectImages,
+      loading,
+      processing,
+      projectAttributesDiff,
+      areasOptions,
+      areaType,
+      submitState
+    } = this.state;
 
     if (!loading && currentTenant && locale) {
       const newProjectImageFiles = (newProjectImages && newProjectImages.length > 0 ? newProjectImages : null);
@@ -434,23 +557,103 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       });
 
       return (
-        <form className="e2e-project-general-form" onSubmit={this.saveProject}>
+        <form className="e2e-project-general-form" onSubmit={this.onSubmit}>
           <Section>
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.statusLabel} />
+              </Label>
+              <Select
+                value={projectAttrs.publication_status}
+                onChange={this.handleStatusChange}
+                options={
+                  ['draft', 'published', 'archived'].map((status) => ({
+                    value: status,
+                    text: <FormattedMessage {...messages[`${status}Status`]} />,
+                  }))}
+              />
+            </SectionField>
             <SectionField>
               <Label htmlFor="project-title">
                 <FormattedMessage {...messages.titleLabel} />
               </Label>
-              <Input
+              <TitleInput
                 id="project-title"
                 type="text"
                 placeholder=""
                 value={projectTitle}
                 error=""
-                onChange={this.changeTitle}
-                setRef={this.setRef}
+                onChange={this.handleTitleOnChange}
               />
               <Error text={noTitleError} />
               <Error fieldName="title_multiloc" apiErrors={this.state.apiErrors.title_multiloc} />
+            </SectionField>
+
+            <SectionField>
+              <Label htmlFor="project-area">
+                <FormattedMessage {...messages.projectType} />
+              </Label>
+              {!projectData ? (
+                <>
+                  <Radio
+                    onChange={this.handeProjectTypeOnChange}
+                    currentValue={projectType}
+                    value="timeline"
+                    name="projecttype"
+                    id="projectype-timeline"
+                    label={<FormattedMessage {...messages.timeline} />}
+                  />
+                  <Radio
+                    onChange={this.handeProjectTypeOnChange}
+                    currentValue={projectType}
+                    value="continuous"
+                    name="projecttype"
+                    id="projectype-continuous"
+                    label={<FormattedMessage {...messages.continuous} />}
+                  />
+                </>
+              ) : (
+                <>
+                  <ProjectType>{projectType}</ProjectType>
+                </>
+              )}
+
+              {!projectData &&
+                <TransitionGroup>
+                  {projectType === 'continuous' &&
+                    <CSSTransition
+                      classNames="participationcontext"
+                      timeout={timeout}
+                      enter={true}
+                      exit={false}
+                    >
+                      <ParticipationContextWrapper>
+                        <ParticipationContext
+                          onSubmit={this.handleParcticipationContextOnSubmit}
+                          onChange={this.handleParticipationContextOnChange}
+                        />
+                      </ParticipationContextWrapper>
+                    </CSSTransition>
+                  }
+                </TransitionGroup>
+              }
+            </SectionField>
+
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.defaultDisplay} />
+              </Label>
+              {['card', 'map'].map((key) => (
+                <Radio
+                  key={key}
+                  onChange={this.handleIdeasDisplayChange}
+                  currentValue={presentationMode}
+                  value={key}
+                  name="presentation_mode"
+                  id={`presentation_mode-${key}`}
+                  label={<FormattedMessage {...messages[`${key}Display`]} />}
+                />
+              ))}
             </SectionField>
 
             <SectionField>
@@ -463,7 +666,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 value="all"
                 name="areas"
                 id="areas-all"
-                label={formatMessage(messages.areasAllLabel)}
+                label={<FormattedMessage {...messages.areasAllLabel} />}
               />
               <Radio
                 onChange={this.handleAreaTypeChange}
@@ -471,7 +674,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 value="selection"
                 name="areas"
                 id="areas-selection"
-                label={formatMessage(messages.areasSelectionLabel)}
+                label={<FormattedMessage {...messages.areasSelectionLabel} />}
               />
 
               {areaType === 'selection' &&
@@ -500,7 +703,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 onUpdate={this.handleHeaderOnUpdate}
                 onRemove={this.handleHeaderOnRemove}
               />
-              {/* <Error text={noHeaderError} /> */}
             </SectionField>
 
             <SectionField>
@@ -520,7 +722,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               />
             </SectionField>
 
-            {this.state.projectData &&
+            {projectData &&
               <SectionField>
                 <Label>
                   <FormattedMessage {...messages.deleteProjectLabel} />
@@ -536,6 +738,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
             <SubmitWrapper
               loading={processing}
               status={submitState}
+              onClick={this.onSubmit}
               messages={{
                 buttonSave: messages.saveProject,
                 buttonError: messages.saveError,

@@ -13,14 +13,19 @@ const Container = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  height: 20px;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
   fill: ${color('clBlue')};
-  margin-right: 10px;
+  padding: 0px;
+  margin: 0px;
+  margin-right: 12px;
 `;
 
 const Text = styled.div`
   color: ${color('clBlue')};
   font-size: 16px;
+  line-height: 21px;
   font-weight: 400;
 
   a {
@@ -39,19 +44,20 @@ const Text = styled.div`
 `;
 
 interface Props {
-  text: string | JSX.Element;
+  text?: string | JSX.Element;
+  children?: string | JSX.Element;
 }
 
 export default class Warning extends React.PureComponent<Props> {
   render() {
     const className = this.props['className'];
-    const { text } = this.props;
+    const { text, children } = this.props;
 
     return (
       <Container className={className}>
         <StyledIcon name="info" />
         <Text>
-          {text}
+          {text || children}
         </Text>
       </Container>
     );

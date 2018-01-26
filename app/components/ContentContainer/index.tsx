@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
 const Outer = styled.div`
   width: 100%;

@@ -2,20 +2,19 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import styled from 'styled-components';
-import { intlShape } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import * as _ from 'lodash';
+import { isString, reject } from 'lodash';
+import * as moment from 'moment';
+
 
 // Services
 import { projectBySlugStream } from 'services/projects';
 import { phasesStream, IPhaseData, deletePhase } from 'services/phases';
 
 // Components
-import { Link } from 'react-router';
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import Icon from 'components/UI/Icon';
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
 
 // Utils
@@ -85,7 +84,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
   componentDidMount () {
     this.setState({ loading: true });
 
-    if (_.isString(this.props.params.slug)) {
+    if (isString(this.props.params.slug)) {
       this.subscription = projectBySlugStream(this.props.params.slug).observable.switchMap((project) => {
         return phasesStream(project.data.id).observable.map((phases) => (phases.data));
       }).subscribe((phases) => {
@@ -102,8 +101,8 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
     return (event) => {
       event.preventDefault();
       if (window.confirm(this.props.intl.formatMessage(messages.deletePhaseConfirmation))) {
-        deletePhase(phaseId).then((response) => {
-          this.setState({ phases: _.reject(this.state.phases, { id: phaseId }) });
+        deletePhase(phaseId).then(() => {
+          this.setState({ phases: reject(this.state.phases, { id: phaseId }) });
         });
       }
     };
@@ -125,7 +124,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
 
   render() {
     const { phases, loading } = this.state;
-    const { intl: { formatDate }, params: { slug } } = this.props;
+    const { slug } = this.props.params;
 
     return (
       <ListWrapper>
@@ -139,23 +138,29 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
               <OrderHeader><FormattedMessage {...messages.orderColumnTitle} /></OrderHeader>
               <div className="expand"><FormattedMessage {...messages.nameColumnTitle} /></div>
             </HeadRow>
-            {phases.map((phase, index) => (
-              <Row className={`e2e-phase-line ${phases.length === index + 1 ? 'last' : ''}`} id={`e2e-phase_${phase.id}`} key={phase.id}>
-                <OrderLabel className={this.phaseTiming({ start_at: phase.attributes.start_at, end_at: phase.attributes.end_at })}>
-                  {index + 1}
-                </OrderLabel>
-                <div className="expand">
-                  <h1 className="e2e-phase-title"><T value={phase.attributes.title_multiloc} /></h1>
-                  <p>{formatDate(phase.attributes.start_at)} - {formatDate(phase.attributes.end_at)}</p>
-                </div>
-                <Button className="e2e-delete-phase" icon="delete" style="text" onClick={this.createDeleteClickHandler(phase.id)}>
-                  <FormattedMessage {...messages.deletePhaseButton} />
-                </Button>
-                <Button className="e2e-edit-phase" icon="edit" style="secondary" linkTo={`/admin/projects/${slug}/timeline/${phase.id}`}>
-                  <FormattedMessage {...messages.editPhaseButton} />
-                </Button>
-              </Row>
-            ))}
+
+            {phases.map((phase, index) => {
+              const startAt = moment(phase.attributes.start_at).format('D MMM YYYY');
+              const endAt = moment(phase.attributes.end_at).format('D MMM YYYY');
+
+              return (
+                <Row className={`e2e-phase-line ${phases.length === index + 1 ? 'last' : ''}`} id={`e2e-phase_${phase.id}`} key={phase.id}>
+                  <OrderLabel className={this.phaseTiming({ start_at: phase.attributes.start_at, end_at: phase.attributes.end_at })}>
+                    {index + 1}
+                  </OrderLabel>
+                  <div className="expand">
+                    <h1 className="e2e-phase-title"><T value={phase.attributes.title_multiloc} /></h1>
+                    <p>{startAt}  →  {endAt}</p>
+                  </div>
+                  <Button className="e2e-delete-phase" icon="delete" style="text" onClick={this.createDeleteClickHandler(phase.id)}>
+                    <FormattedMessage {...messages.deletePhaseButton} />
+                  </Button>
+                  <Button className="e2e-edit-phase" icon="edit" style="secondary" linkTo={`/admin/projects/${slug}/timeline/${phase.id}`}>
+                    <FormattedMessage {...messages.editPhaseButton} />
+                  </Button>
+                </Row>
+              );
+            })}
           </List>
         }
       </ListWrapper>

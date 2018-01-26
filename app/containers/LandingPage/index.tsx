@@ -1,9 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
-
-// libraries
-import * as bowser from 'bowser';
 
 // router
 import { Link, browserHistory } from 'react-router';
@@ -20,23 +16,20 @@ import Footer from 'components/Footer';
 import { authUserStream } from 'services/auth';
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
-import { ideaByIdStream, ideasStream, updateIdea, IIdeas } from 'services/ideas';
-import { projectsStream, IProjects } from 'services/projects';
+import { ideaByIdStream, ideasStream, updateIdea } from 'services/ideas';
+import { projectsStream } from 'services/projects';
 
 // i18n
-import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { getLocalized } from 'utils/i18n';
 
 // style
-import styled, { css } from 'styled-components';
-import { lighten, darken } from 'polished';
+import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 // typings
-import { IUser } from 'services/users';
-import { setTimeout } from 'timers';
+import { Locale } from 'typings';
 
 const Container: any = styled.div`
   display: flex;
@@ -192,12 +185,6 @@ const SectionHeader = styled.div`
   margin-bottom: 35px;
 `;
 
-const SectionIcon = styled(Icon)`
-  fill: #333;
-  height: 30px;
-  margin-right: 10px;
-`;
-
 const SectionTitle = styled.h2`
   color: #333;
   font-size: 28px;
@@ -223,7 +210,7 @@ const SectionContainer = styled.section`
 const ExploreText = styled.div`
   color: #84939E;
   font-size: 17px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 21px;
   white-space: normal;
   margin-right: 8px;
@@ -278,7 +265,7 @@ const ViewMoreButton = styled(Button) `
 type Props = {};
 
 type State = {
-  locale: string | null;
+  locale: Locale | null;
   currentTenant: ITenant | null;
   currentTenantHeader: string | null;
   hasIdeas: boolean;
@@ -331,7 +318,7 @@ class LandingPage extends React.PureComponent<Props, State> {
 
       // if 'idea_to_publish' parameter is present in landingpage url,
       // find the draft idea previously created (before login/signup)
-      // and update it status and author name
+      // and update its status and author name
       Rx.Observable.combineLatest(
         authUser$,
         ideaToPublish$
@@ -372,7 +359,6 @@ class LandingPage extends React.PureComponent<Props, State> {
       const headerTitleMultiLoc = currentTenant.data.attributes.settings.core.header_title;
       const headerSloganMultiLoc = currentTenant.data.attributes.settings.core.header_slogan;
       const currentTenantName = getLocalized(organizationNameMultiLoc, locale, currentTenantLocales);
-      const currentTenantLogo = currentTenant.data.attributes.logo.large;
       const currentTenantHeaderTitle = (headerTitleMultiLoc ? getLocalized(headerTitleMultiLoc, locale, currentTenantLocales) : null);
       const currentTenantHeaderSlogan = (headerSloganMultiLoc ? getLocalized(headerSloganMultiLoc, locale, currentTenantLocales) : null);
       const title = (currentTenantHeaderTitle ? currentTenantHeaderTitle : <FormattedMessage {...messages.titleCity} values={{ name: currentTenantName }}/>);
@@ -380,7 +366,7 @@ class LandingPage extends React.PureComponent<Props, State> {
       const hasHeaderImage = (currentTenantHeader !== null);
 
       return (
-        <div>
+        <>
           <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
             <Header>
               <HeaderImage>
@@ -466,7 +452,7 @@ class LandingPage extends React.PureComponent<Props, State> {
               <Footer />
             </Content>
           </Container>
-        </div>
+        </>
       );
     }
 
@@ -475,3 +461,4 @@ class LandingPage extends React.PureComponent<Props, State> {
 }
 
 export default LandingPage;
+

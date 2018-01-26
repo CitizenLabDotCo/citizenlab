@@ -1,10 +1,8 @@
 // Libraries
 import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
 import messages from './messages';
 
 // Components
@@ -29,18 +27,15 @@ const ButtonWrapper = styled.div`
   padding-bottom: 2rem;
 `;
 
-// Typing
-interface Props {
-}
+interface Props {}
 
 interface State {
   creationModalVisible: boolean;
 }
 
-class GroupsList extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props as any);
-
+export default class GroupsList extends React.PureComponent<Props, State> {
+  constructor(props) {
+    super(props);
     this.state = {
       creationModalVisible: false,
     };
@@ -70,7 +65,12 @@ class GroupsList extends React.Component<Props, State> {
 
           <GroupListTable />
 
-          <Modal opened={creationModalVisible} close={this.closeCreationModal}>
+          <Modal
+            opened={creationModalVisible}
+            close={this.closeCreationModal}
+            fixedHeight={false}
+            width="550px"
+          >
             <GroupAdditionForm onSaveSuccess={this.closeCreationModal} />
           </Modal>
         </PageWrapper>
@@ -78,5 +78,3 @@ class GroupsList extends React.Component<Props, State> {
     );
   }
 }
-
-export default GroupsList;

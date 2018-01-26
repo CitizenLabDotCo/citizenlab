@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs';
-import { IStreamParams, IStream } from 'utils/streams';
+import { IStream } from 'utils/streams';
 
 
 interface State<IResourceData> {

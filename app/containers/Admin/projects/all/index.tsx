@@ -1,14 +1,13 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { sortBy, get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // style
 import styled from 'styled-components';
-import { darken } from 'polished';
-import { media, color } from 'utils/styleUtils';
+import { color, fontSize } from 'utils/styleUtils';
 
 // services
-import { projectsStream, IProjects } from 'services/projects';
+import { projectsStream, IProjectData } from 'services/projects';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
@@ -95,17 +94,31 @@ const ProjectTitle = styled.h1`
 `;
 
 const ProjectCard = styled.li`
-  width: 260px;
-  height: 250px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin: 10px;
-  padding: 15px;
-  overflow: hidden;
+  background: white;
   border-radius: 5px;
   border: solid 1px #e4e4e4;
-  background: white;
+  display: flex;
+  flex-direction: column;
+  height: 250px;
+  justify-content: space-between;
+  margin: 8px;
+  padding: 15px;
+  position: relative;
+  width: 260px;
+`;
+
+const CustomLabel = styled.span`
+  background: rgba(0, 0, 0, .6);
+  border-radius: 5px;
+  color: white;
+  display: inline-block;
+  font-size: ${fontSize('xs')};
+  line-height: 1;
+  padding: .4em;
+  position: absolute;
+  right: 2rem;
+  text-transform: uppercase;
+  top: 2rem;
 `;
 
 const AddProjectLink = styled(Link)`
@@ -158,85 +171,104 @@ const AddProjectCard = ProjectCard.extend`
 type Props = {};
 
 type State = {
-  projects: IProjects | null
+  projects: IProjectData[] | null;
+  loaded: boolean;
 };
 
 export default class AdminProjectsList extends React.PureComponent<Props, State> {
-  subscription: Rx.Subscription;
+  subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       projects: null,
+      loaded: false
     };
   }
 
   componentDidMount() {
-    const projects$ = projectsStream().observable;
-    this.subscription = projects$.subscribe((unsortedProjects) => {
-      const projects = _.sortBy(unsortedProjects.data, (project) => project.attributes.created_at).reverse();
-      this.setState({ projects: { data: projects } });
-    });
+    const projects$ = projectsStream({
+      queryParameters: {
+        publication_statuses: ['draft', 'published', 'archived']
+      }
+    }).observable;
+
+    this.subscriptions = [
+      projects$.subscribe((unsortedProjects) => {
+        const projects = sortBy(unsortedProjects.data, (project) => project.attributes.created_at).reverse();
+        this.setState({ projects, loaded: true });
+      })
+    ];
   }
 
   componentWillUnmount() {
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   render () {
-    const { projects } = this.state;
+    const { loaded, projects } = this.state;
 
-    return (
-      <div>
-        <Title>
-          <FormattedMessage {...messages.overviewPageTitle} />
-        </Title>
+    if (loaded) {
+      return (
+        <>
+          <Title>
+            <FormattedMessage {...messages.overviewPageTitle} />
+          </Title>
 
-        <ProjectsList className="e2e-projects-list">
+          <ProjectsList className="e2e-projects-list">
 
-          <AddProjectCard className="new-project e2e-new-project">
-            <AddProjectLink to="/admin/projects/new">
-              <AddProjectIcon name="plus-circle" />
-              <AddProjectText>
-                <FormattedMessage {...messages.addNewProject} />
-              </AddProjectText>
-            </AddProjectLink>
-          </AddProjectCard>
+            <AddProjectCard className="new-project e2e-new-project">
+              <AddProjectLink to="/admin/projects/new">
+                <AddProjectIcon name="plus-circle" />
+                <AddProjectText>
+                  <FormattedMessage {...messages.addNewProject} />
+                </AddProjectText>
+              </AddProjectLink>
+            </AddProjectCard>
 
-          {projects && projects.data && projects.data.map((project) => {
-            const projectImage = (_.has(project, 'attributes.header_bg.medium') ? project.attributes.header_bg.medium : null);
+            {projects && projects && projects.map((project) => {
+              const projectImage = get(project, 'attributes.header_bg.small', null);
 
-            return (
-              <ProjectCard key={project.id} className="e2e-project-card">
+              return (
+                <ProjectCard key={project.id} className="e2e-project-card">
 
-                {projectImage && <ProjectImage src={projectImage} alt="" role="presentation" />}
+                  {project.attributes.publication_status !== 'published' &&
+                    <CustomLabel>
+                      <FormattedMessage {...messages[`${project.attributes.publication_status}Status`]} />
+                    </CustomLabel>
+                  }
 
-                {!projectImage &&
-                  <ProjectImagePlaceholder>
-                    <ProjectImagePlaceholderIcon name="project" />
-                  </ProjectImagePlaceholder>
-                }
+                  {projectImage && <ProjectImage src={projectImage} alt="" role="presentation" />}
 
-                <ProjectTitle>
-                  <T value={project.attributes.title_multiloc} />
-                </ProjectTitle>
+                  {!projectImage &&
+                    <ProjectImagePlaceholder>
+                      <ProjectImagePlaceholderIcon name="project" />
+                    </ProjectImagePlaceholder>
+                  }
 
-                <ButtonWrapper>
-                  <GoToProjectButton
-                    style="primary-outlined"
-                    linkTo={`/admin/projects/${project.attributes.slug}/edit`}
-                    circularCorners={false}
-                  >
-                    <FormattedMessage {...messages.editProject} />
-                  </GoToProjectButton>
-                </ButtonWrapper>
+                  <ProjectTitle>
+                    <T value={project.attributes.title_multiloc} />
+                  </ProjectTitle>
 
-              </ProjectCard>
-            );
-          })}
+                  <ButtonWrapper>
+                    <GoToProjectButton
+                      style="primary-outlined"
+                      linkTo={`/admin/projects/${project.attributes.slug}/edit`}
+                      circularCorners={false}
+                    >
+                      <FormattedMessage {...messages.editProject} />
+                    </GoToProjectButton>
+                  </ButtonWrapper>
 
-        </ProjectsList>
-      </div>
-    );
+                </ProjectCard>
+              );
+            })}
+
+          </ProjectsList>
+        </>
+      );
+    }
+
+    return null;
   }
 }
