@@ -25,7 +25,7 @@ namespace :fix_existing_tenants do
           voting_enabled: true,
           voting_method: 'unlimited'
         })
-        ProjectImage.create({project: open_idea_project, remote_image_url: 'http://res.cloudinary.com/citizenlabco/image/upload/v1516809151/Idea_Box_pvkode.svg'})
+        ProjectImage.create({project: open_idea_project, remote_image_url: 'http://res.cloudinary.com/citizenlabco/image/upload/v1516925813/open_idea_box_gaxtpy.png'})
         puts "Open Idea Project created."
  
         count = 0
