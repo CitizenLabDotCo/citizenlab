@@ -3,8 +3,8 @@ import * as Rx from 'rxjs/Rx';
 import { isFinite } from 'lodash';
 
 // components
-import Input from 'components/UI/Input';
-import Error from 'components/UI/Error';
+// import Input from 'components/UI/Input';
+// import Error from 'components/UI/Error';
 import Label from 'components/UI/Label';
 import Radio from 'components/UI/Radio';
 import Toggle from 'components/UI/Toggle';
@@ -48,10 +48,10 @@ const ToggleLabel = styled(Label)`
   font-weight: 400;
 `;
 
-const VotingLimitInput = styled(Input)`
-  width: 100px;
-  height: 46px !important;
-`;
+// const VotingLimitInput = styled(Input)`
+//   width: 100px;
+//   height: 46px !important;
+// `;
 
 export interface IParticipationContextConfig {
   participationMethod: 'ideation' | 'information';
@@ -209,33 +209,33 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
 
   render() {
     const className = this.props['className'];
-    const { 
+    const {
       participationMethod,
       postingEnabled,
       commentingEnabled,
       votingEnabled,
-      votingMethod,
-      votingLimit,
-      noVotingLimit,
+      // votingMethod,
+      // votingLimit,
+      // noVotingLimit,
       loaded
     } = this.state;
 
-    const votingLimitSection = (participationMethod === 'ideation' && votingMethod === 'limited') ? (
-      <>
-        <Label htmlFor="voting-title">
-          <FormattedMessage {...messages.votingLimit} />
-        </Label>
-        <VotingLimitInput
-          id="voting-limit"
-          type="number"
-          min="1"
-          placeholder=""
-          value={(votingLimit ? votingLimit.toString() : null)}
-          onChange={this.handleVotingLimitOnChange}
-        />
-        {/* <Error fieldName="title_multiloc" apiErrors={this.state.apiErrors.title_multiloc} /> */}
-      </>
-    ) : null;
+    // const votingLimitSection = (participationMethod === 'ideation' && votingMethod === 'limited') ? (
+    //   <>
+    //     <Label htmlFor="voting-title">
+    //       <FormattedMessage {...messages.votingLimit} />
+    //     </Label>
+    //     <VotingLimitInput
+    //       id="voting-limit"
+    //       type="number"
+    //       min="1"
+    //       placeholder=""
+    //       value={(votingLimit ? votingLimit.toString() : null)}
+    //       onChange={this.handleVotingLimitOnChange}
+    //     />
+    //     {/* <Error fieldName="title_multiloc" apiErrors={this.state.apiErrors.title_multiloc} /> */}
+    //   </>
+    // ) : null;
 
     if (loaded) {
       return (
@@ -265,7 +265,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
 
             {participationMethod === 'ideation' &&
               <>
-                <SectionField>
+                {/* <SectionField>
                   <Label>
                     <FormattedMessage {...messages.votingMethod} />
                   </Label>
@@ -287,7 +287,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
                   />
                   {votingLimitSection}
                   <Error text={noVotingLimit} />
-                </SectionField>
+                </SectionField> */}
 
                 <StyledSectionField>
                   <Label>

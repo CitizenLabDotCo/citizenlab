@@ -167,7 +167,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       projectType: 'timeline',
       projectAttributesDiff: {},
       headerBg: null,
-      presentationMode: 'map',
+      presentationMode: 'card',
       oldProjectImages: null,
       newProjectImages: null,
       noTitleError: null,
@@ -643,7 +643,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               <Label>
                 <FormattedMessage {...messages.defaultDisplay} />
               </Label>
-              {['map', 'card'].map((key) => (
+              {['card', 'map'].map((key) => (
                 <Radio
                   key={key}
                   onChange={this.handleIdeasDisplayChange}
