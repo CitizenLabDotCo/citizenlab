@@ -69,6 +69,7 @@ class DashboardPage extends React.Component { // eslint-disable-line react/prefe
     ...theme,
     chartStroke: '#01A1B1',
     chartFill: '#01A1B1',
+    barFill: '#ffffff',
     // chartStroke: lighten(0.3, theme.colorMain),
     // chartFill: lighten(0.3, theme.colorMain),
     chartLabelColor: '#999999',

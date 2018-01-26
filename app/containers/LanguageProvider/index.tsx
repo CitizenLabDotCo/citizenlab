@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 import { IntlProvider } from 'react-intl';
@@ -7,12 +6,14 @@ import { IntlProvider } from 'react-intl';
 // services
 import { localeStream } from 'services/locale';
 
+import { Locale } from 'typings';
+
 type Props = {
   messages: { [key: string]: any };
 };
 
 type State = {
-  locale: string | null;
+  locale: Locale | null;
 };
 
 export default class LanguageProvider extends React.PureComponent<Props, State> {

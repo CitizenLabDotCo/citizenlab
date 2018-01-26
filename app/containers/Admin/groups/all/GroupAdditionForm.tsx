@@ -1,11 +1,9 @@
 // Libraries
 import * as React from 'react';
 import * as Rx from 'rxjs';
-import * as _ from 'lodash';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
 import messages from './messages';
 
 // Services
@@ -16,33 +14,27 @@ import { localeStream } from 'services/locale';
 import getSubmitState from 'utils/getSubmitState';
 
 // Components
-import Button from 'components/UI/Button';
 import Input from 'components/UI/Input';
+import Label from 'components/UI/Label';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import { SectionField } from 'components/admin/Section';
 
 // Style
 import styled from 'styled-components';
 
 const FormWrapper = styled.form`
-  max-width: 380px;
-`;
-
-const StyledSubmitWrapper = styled.div`
-  border-top: 1px solid #EAEAEA;
-  box-shadow: 0 0 10px rgba(0, 0, 0, .15);
-  margin: 0 -25px -25px;
-  padding: 1rem 3rem;
+  margin-top: 20px;
 `;
 
 // Typing
-import { API } from 'typings';
+import { API, Locale } from 'typings';
+
 interface Props {
   onSaveSuccess?: Function;
 }
 
 interface State {
-  locale: string;
+  locale: Locale;
   diff: GroupDiff;
   errors: {
     [fieldName: string]: API.Error[]
@@ -51,56 +43,58 @@ interface State {
   saving: boolean;
 }
 
-class GroupAdditionForm extends React.Component<Props, State> {
+class GroupAdditionForm extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
 
     this.state = {
       diff: {},
       errors: {},
       saved: false,
       saving: false,
-      locale: '',
+      locale: 'en',
     };
 
     this.subscriptions = [];
   }
 
   componentDidMount() {
-    this.subscriptions.push(
-      localeStream().observable.subscribe((locale) => {
-        this.setState({ locale });
-      })
-    );
+    const locale$ = localeStream().observable;
+
+    this.subscriptions = [
+      locale$.subscribe(locale => this.setState({ locale }))
+    ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach((sub) => {
-      sub.unsubscribe();
-    });
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  titleChangeHandler = (value) => {
-    let { diff } = this.state;
-    diff = _.set(diff, `title_multiloc.${this.state.locale}`, value);
-
-    this.setState({ diff });
+  titleChangeHandler = (value: string) => {
+    this.setState((state) => ({
+      diff: {
+        ...(state.diff || {}),
+        title_multiloc: {
+          [state.locale]: value
+        }
+      }
+    }));
   }
 
-  handleFormSubmit = (e) => {
-    e.preventDefault();
+  handleFormSubmit = (event: React.FormEvent<any>) => {
+    event.preventDefault();
+
     this.setState({ saving: true });
 
-    addGroup(this.state.diff)
-    .then(() => {
+    addGroup(this.state.diff).then(() => {
       this.setState({ saving: false, saved: true });
+
       if (this.props.onSaveSuccess) {
         this.props.onSaveSuccess();
       }
-    })
-    .catch((e) => {
+    }).catch(() => {
       this.setState({ saving: false, saved: false });
     });
   }
@@ -111,13 +105,16 @@ class GroupAdditionForm extends React.Component<Props, State> {
     const submitState = getSubmitState({ errors, saved, diff });
 
     return (
-      <div>
-        <h1><FormattedMessage {...messages.creationFormTitle} /></h1>
+      <>
+        <h1>
+          <FormattedMessage {...messages.creationFormTitle} />
+        </h1>
+
         <FormWrapper onSubmit={this.handleFormSubmit}>
           <SectionField>
-            <label htmlFor="">
+            <Label htmlFor="">
               <FormattedMessage {...messages.groupTitleLabel} />
-            </label>
+            </Label>
             <Input
               autoFocus={true}
               type="text"
@@ -125,18 +122,15 @@ class GroupAdditionForm extends React.Component<Props, State> {
               value={groupAttrs.title_multiloc ? groupAttrs.title_multiloc[locale] : ''}
             />
           </SectionField>
-
         </FormWrapper>
 
-        <StyledSubmitWrapper>
-          <SubmitWrapper
-            status={submitState}
-            loading={saving}
-            messages={messages}
-            onClick={this.handleFormSubmit}
-          />
-        </StyledSubmitWrapper>
-      </div>
+        <SubmitWrapper
+          status={submitState}
+          loading={saving}
+          messages={messages}
+          onClick={this.handleFormSubmit}
+        />
+      </>
     );
   }
 }

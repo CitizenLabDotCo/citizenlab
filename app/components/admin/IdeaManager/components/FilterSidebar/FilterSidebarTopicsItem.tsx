@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { injectTFunc } from 'components/T/utils';
 import { ITopicData } from 'services/topics';
 import { flow } from 'lodash';
 
+import T from 'components/T';
 import { Menu } from 'semantic-ui-react';
 import { DropTarget } from 'react-dnd';
 
@@ -23,10 +23,11 @@ class FilterSidebarTopicsItem extends React.Component<Props> {
     return connectDropTarget(
       <div>
         <Menu.Item
-          name={this.props.tFunc(topic.attributes.title_multiloc)}
           active={active || (isOver && canDrop)}
           onClick={onClick}
-        />
+        >
+          <T value={topic.attributes.title_multiloc} />
+        </Menu.Item>
       </div>
     );
   }
@@ -50,5 +51,4 @@ const collect = (connect, monitor) => ({
 
 export default flow([
   DropTarget('IDEA', topicTarget, collect),
-  injectTFunc,
 ])(FilterSidebarTopicsItem);

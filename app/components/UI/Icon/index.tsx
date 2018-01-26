@@ -192,6 +192,17 @@ const icons = {
         <path d="M11 7h2v2h-2z"/>
       </svg>
   ),
+  info2: (className) => (
+    <svg className={className} height="100%" viewBox="0 0 7 12">
+      <path d="M3.5 3C4.301 3 5 2.3 5 1.5S4.301 0 3.5 0C2.701 0 2 .7 2 1.5S2.701 3 3.5 3zM5 9V5c0-.5-.5-1-1-1H0v1s2 0 2 2v2c0 2-2 2-2 2v1h7v-1s-2 0-2-2z"/>
+    </svg>
+  ),
+  calendar: (className) => (
+    <svg className={className} height="100%" viewBox="6.5 -4 11.701 13">
+      <path d="M14.3 1.85h1.3v1.3h-1.3zM11.699 1.85h1.3v1.3h-1.3zM9.1 1.85h1.3v1.3H9.1z"/>
+      <path d="M16.899-2.7h-.65V-4H14.95v1.3h-5.2V-4H8.449v1.3h-.65c-.721 0-1.293.585-1.293 1.3L6.5 7.7A1.3 1.3 0 0 0 7.799 9H16.9c.714 0 1.3-.585 1.3-1.3v-9.1c0-.715-.586-1.3-1.301-1.3zm0 10.4h-9.1V.55H16.9V7.7z"/>
+    </svg>
+  ),
   power: (className) => (
       <svg className={className} height="100%" viewBox="0 0 36 36">
         <path d="M16 0h4v20h-4z"/>
@@ -283,6 +294,16 @@ const icons = {
       <path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
     </svg>
   ),
+  phase_arrow: (className) => (
+    <svg className={className} height="100%" viewBox="134.282 57.93 18.666 24">
+      <path d="M144.617 80.289l8.1-9.719c.309-.371.309-.91 0-1.281l-8.1-9.719a1 1 0 0 1 .769-1.641h-11.104c.297 0 .578.132.769.359l9.166 11c.309.371.309.91 0 1.281l-9.166 11a1 1 0 0 1-.769.359h11.104a.999.999 0 0 1-.769-1.639z"/>
+    </svg>
+  ),
+  mapmarker: (className) => (
+    <svg className={className} height="100%" viewBox="0 0 17 24">
+      <path d="M8.5 0C3.807 0 0 3.762 0 8.4 0 14.7 8.5 24 8.5 24S17 14.7 17 8.4C17 3.762 13.193 0 8.5 0zm0 11.4c-1.676 0-3.036-1.344-3.036-3s1.36-3 3.036-3c1.675 0 3.035 1.344 3.035 3s-1.359 3-3.035 3z"/>
+    </svg>
+  )
 };
 
 export type IconNames = keyof typeof icons;

@@ -1,29 +1,25 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import * as _ from 'lodash';
-import { Multiloc, API } from 'typings';
+import * as moment from 'moment';
+import { get, isEmpty } from 'lodash';
 
 // libraries
-import * as moment from 'moment';
 import { browserHistory } from 'react-router';
-import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
+import { EditorState } from 'draft-js';
 
 // components
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
-import TextArea from 'components/UI/TextArea';
 import Editor from 'components/UI/Editor';
-import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 
 // utils
-import { IStream } from 'utils/streams';
 import unsubscribe from 'utils/unsubscribe';
 import getSubmitState from 'utils/getSubmitState';
-import { getHtmlStringFromEditorState } from 'utils/editorTools';
+import { getHtmlStringFromEditorState, getEditorStateFromHtmlString } from 'utils/editorTools';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -35,17 +31,11 @@ import messages from './messages';
 // services
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
-import { projectBySlugStream, IProject, IProjectData } from 'services/projects';
-import { eventStream, updateEvent, addEvent, IEvent, IEventData, IEvents, IUpdatedEventProperties } from 'services/events';
+import { IProjectData } from 'services/projects';
+import { eventStream, updateEvent, addEvent, IEvent, IUpdatedEventProperties } from 'services/events';
 
-// styling
-import styled from 'styled-components';
-
-const Container = styled.div`
-  .SingleDatePickerInput {
-    border-radius: 5px 0px 0px 5px;
-  }
-`;
+// typings
+import { Multiloc, API, Locale } from 'typings';
 
 type Props = {
   params: {
@@ -56,7 +46,7 @@ type Props = {
 };
 
 interface State {
-  locale: string | null;
+  locale: Locale | null;
   currentTenant: ITenant | null;
   event: IEvent | null;
   attributeDiff: IUpdatedEventProperties;
@@ -65,12 +55,12 @@ interface State {
   };
   saving: boolean;
   focusedInput: 'startDate' | 'endDate' | null;
-  descState: EditorState;
+  editorState: EditorState;
   saved: boolean;
+  loaded: boolean;
 }
 
 class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProps & injectedLocalized, State> {
-  state: State;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -83,8 +73,9 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
       errors: {},
       saving: false,
       focusedInput: null,
-      descState: EditorState.createEmpty(),
-      saved: false
+      editorState: EditorState.createEmpty(),
+      saved: false,
+      loaded: false
     };
     this.subscriptions = [];
   }
@@ -100,15 +91,9 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
         currentTenant$,
         event$
       ).subscribe(([locale, currentTenant, event]) => {
-        let descState = EditorState.createEmpty();
-
-        if (event) {
-          const blocksFromHtml = convertFromHTML(_.get(event, `data.attributes.description_multiloc.${locale}`, ''));
-          const editorContent = ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap);
-          descState = EditorState.createWithContent(editorContent);
-        }
-
-        this.setState({ locale, currentTenant, event, descState });
+        const description = get(event, `data.attributes.description_multiloc.${locale}`, '');
+        const editorState = getEditorStateFromHtmlString(description);
+        this.setState({ locale, currentTenant, event, editorState, loaded: true });
       })
     ];
   }
@@ -118,51 +103,65 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
   }
 
   createMultilocUpdater = (name: string) => (value: string) => {
-    if (this.state.attributeDiff) {
-      const newValue = this.state.attributeDiff && this.state.attributeDiff[name] || {};
-      newValue[this.props.locale] = value;
+    const { locale } = this.props;
+    const { attributeDiff } = this.state;
+
+    if (attributeDiff) {
+      const newValue = attributeDiff && attributeDiff[name] || {};
+      newValue[locale] = value;
+
       this.setState({
-        attributeDiff: { ...this.state.attributeDiff, [name]: newValue },
+        attributeDiff: {
+          ...attributeDiff,
+          [name]: newValue
+        }
       });
     }
   }
 
   handleDescChange = (editorState: EditorState) => {
+    const { locale } = this.props;
+    const { attributeDiff } = this.state;
     const htmlValue = getHtmlStringFromEditorState(editorState);
 
-    if (this.state.attributeDiff) {
-      const newValue = this.state.attributeDiff && this.state.attributeDiff.description_multiloc || {};
-      newValue[this.props.locale] = htmlValue;
+    if (attributeDiff) {
+      const descriptionMultiloc = attributeDiff && attributeDiff.description_multiloc || {};
+      descriptionMultiloc[locale] = htmlValue;
 
       this.setState({
+        editorState,
         attributeDiff: {
-          ...this.state.attributeDiff,
-          description_multiloc: newValue
-        },
-        descState: editorState,
+          ...attributeDiff,
+          description_multiloc: descriptionMultiloc
+        }
       });
     }
   }
 
-  createDateChangeHandler = (target: 'start_at' | 'end_at') => {
-    return (moment) => {
-      const newAttributesDiff = this.state.attributeDiff;
-      newAttributesDiff[target] = moment ? moment.toISOString() :  '';
-      this.setState({ attributeDiff: newAttributesDiff });
-    };
+  createDateChangeHandler = (name: 'start_at' | 'end_at') => (moment: moment.Moment) => {
+    const { attributeDiff } = this.state;
+
+    this.setState({
+      attributeDiff: {
+        ...attributeDiff,
+        [name]: moment.toISOString()
+      },
+      errors: {}
+    });
   }
 
   handleDateFocusChange = (focusedInput: 'startDate' | 'endDate') => {
     this.setState({ focusedInput });
   }
 
-  isOutsideRange = (day) => {
+  isOutsideRange = () => {
     return false;
   }
 
   handleOnSubmit = (event) => {
     event.preventDefault();
-    if (_.isEmpty(this.state.attributeDiff)) {
+
+    if (isEmpty(this.state.attributeDiff)) {
       return;
     }
 
@@ -179,28 +178,29 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
 
     this.setState({ saving: true, saved: false });
 
-    savingPromise
-    .then((response: IEvent) => {
+    savingPromise.then((response: IEvent) => {
       this.setState({ saving: false, saved: true, attributeDiff: {}, event: response, errors: {} });
-    })
-    .catch((e) => {
+    }).catch((e) => {
       this.setState({ saving: false, errors: e.json.errors });
     });
   }
 
   render() {
-    const { locale, currentTenant, errors, saved } = this.state;
-    const eventAttrs = this.state.event ?  { ...this.state.event.data.attributes, ...this.state.attributeDiff } : { ...this.state.attributeDiff };
-    const submitState = getSubmitState({ errors, saved, diff: this.state.attributeDiff });
+    const { locale, currentTenant, loaded } = this.state;
 
-    if (locale && currentTenant) {
+    if (locale && currentTenant && loaded) {
+      const { errors, saved, event, attributeDiff, editorState, saving } = this.state;
+      const eventAttrs = event ?  { ...event.data.attributes, ...attributeDiff } : { ...attributeDiff };
+      const submitState = getSubmitState({ errors, saved, diff: attributeDiff });
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
+      const title = getLocalized(eventAttrs.title_multiloc, locale, currentTenantLocales);
+      const location = getLocalized(eventAttrs.location_multiloc as Multiloc, locale, currentTenantLocales);
 
       return (
-        <Container>
+        <>
           <SectionTitle>
-            {this.state.event && <FormattedMessage {...messages.editEventTitle} />}
-            {!this.state.event && <FormattedMessage {...messages.createEventTitle} />}
+            {event && <FormattedMessage {...messages.editEventTitle} />}
+            {!event && <FormattedMessage {...messages.createEventTitle} />}
           </SectionTitle>
 
           <form className="e2e-project-event-edit" onSubmit={this.handleOnSubmit}>
@@ -210,7 +210,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
                 <Input
                   id="title"
                   type="text"
-                  value={getLocalized(eventAttrs.title_multiloc as Multiloc, locale, currentTenantLocales)}
+                  value={title}
                   onChange={this.createMultilocUpdater('title_multiloc')}
                 />
                 <Error apiErrors={errors.title_multiloc} />
@@ -221,7 +221,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
                 <Input
                   id="location"
                   type="text"
-                  value={getLocalized(eventAttrs.location_multiloc as Multiloc, locale, currentTenantLocales)}
+                  value={location}
                   onChange={this.createMultilocUpdater('location_multiloc')}
                 />
                 <Error apiErrors={errors.location_multiloc} />
@@ -244,7 +244,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
                 <Editor
                   id="description"
                   placeholder=""
-                  value={this.state.descState}
+                  value={editorState}
                   error=""
                   onChange={this.handleDescChange}
                 />
@@ -253,7 +253,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
             </Section>
 
             <SubmitWrapper
-              loading={this.state.saving}
+              loading={saving}
               status={submitState}
               messages={{
                 buttonSave: messages.saveButtonLabel,
@@ -264,7 +264,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
               }}
             />
           </form>
-        </Container>
+        </>
       );
     }
 

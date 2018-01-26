@@ -1,12 +1,13 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isObject, isEmpty, isEqual, has } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 
 // components
-import IdeaCard from 'components/IdeaCard';
+import IdeaCard, { Props as IdeaCardProps } from 'components/IdeaCard';
+import IdeaButton from './IdeaButton';
 import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
 import Button from 'components/UI/Button';
@@ -20,7 +21,6 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { lighten } from 'polished';
 import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -45,7 +45,7 @@ const IdeasList: any = styled.div`
   flex-wrap: wrap;
 `;
 
-const StyledIdeaCard = styled(IdeaCard)`
+const StyledIdeaCard = styled<IdeaCardProps>(IdeaCard)`
   flex-grow: 0;
   width: calc(100% * (1/3) - 26px);
   margin-left: 13px;
@@ -144,7 +144,7 @@ class IdeaCards extends React.PureComponent<Props, State> {
   }
 
   componentWillMount() {
-    const filter = (_.isObject(this.props.filter) && !_.isEmpty(this.props.filter) ? this.props.filter : {});
+    const filter = (isObject(this.props.filter) && !isEmpty(this.props.filter) ? this.props.filter : {});
 
     this.filterChange$ = new Rx.BehaviorSubject(filter);
     this.loadMore$ = new Rx.BehaviorSubject(false);
@@ -155,7 +155,7 @@ class IdeaCards extends React.PureComponent<Props, State> {
         this.loadMore$,
         (filter, loadMore) => ({ filter, loadMore })
       ).mergeScan<{ filter: object, loadMore: boolean }, IAccumulator>((acc, { filter, loadMore }) => {
-        const filterChange = !_.isEqual(acc.filter, filter) || !loadMore;
+        const filterChange = !isEqual(acc.filter, filter) || !loadMore;
         const pageNumber = (filterChange ? 1 : acc.pageNumber + 1);
 
         this.setState({ loading: (filterChange), loadingMore: (!filterChange) });
@@ -170,16 +170,16 @@ class IdeaCards extends React.PureComponent<Props, State> {
           pageNumber,
           filter,
           ideas: (filterChange ? ideas : { data: [...acc.ideas.data, ...ideas.data] }) as IIdeas,
-          hasMore: _.has(ideas, 'links.next')
+          hasMore: has(ideas, 'links.next')
         }));
       }, {
-        ideas: {} as IIdeas,
-        filter: {},
-        pageNumber: 1,
-        hasMore: false
-      }).subscribe(({ ideas, hasMore }) => {
-        this.setState({ ideas, hasMore, loading: false, loadingMore: false });
-      })
+          ideas: {} as IIdeas,
+          filter: {},
+          pageNumber: 1,
+          hasMore: false
+        }).subscribe(({ ideas, hasMore }) => {
+          this.setState({ ideas, hasMore, loading: false, loadingMore: false });
+        })
     ];
   }
 
@@ -190,8 +190,8 @@ class IdeaCards extends React.PureComponent<Props, State> {
   componentWillReceiveProps(newProps) {
     const oldProps = this.props;
 
-    if (!_.isEqual(newProps.filter, oldProps.filter)) {
-      const filter = (_.isObject(newProps.filter) && !_.isEmpty(newProps.filter) ? newProps.filter : {});
+    if (!isEqual(newProps.filter, oldProps.filter)) {
+      const filter = (isObject(newProps.filter) && !isEmpty(newProps.filter) ? newProps.filter : {});
       this.filterChange$.next(filter);
     }
   }
@@ -202,6 +202,10 @@ class IdeaCards extends React.PureComponent<Props, State> {
 
   goToAddIdeaPage = () => {
     browserHistory.push('/ideas/new');
+  }
+
+  filteredByProjectId = () => {
+    return this.props.filter.project;
   }
 
   render() {
@@ -237,23 +241,21 @@ class IdeaCards extends React.PureComponent<Props, State> {
             <FormattedMessage {...messages.noIdea} />
           </EmptyMessageLine>
         </EmptyMessage>
-        <Button
-          text={<FormattedMessage {...messages.addIdea} />}
-          style="primary"
-          size="2"
-          icon="plus-circle"
-          onClick={this.goToAddIdeaPage}
-          circularCorners={true}
+        <IdeaButton
+          projectId={this.props.filter.project}
+          phaseId={this.props.filter.phase}
         />
       </EmptyContainer>
     ) : null);
 
     const ideasList = ((!loading && hasIdeas && ideas) ? (
-      <IdeasList id="e2e-ideas-list">
-        {ideas.data.map((idea) => (
-          <StyledIdeaCard key={idea.id} ideaId={idea.id} />
-        ))}
-      </IdeasList>
+      <>
+        <IdeasList id="e2e-ideas-list">
+          {ideas.data.map((idea) => (
+            <StyledIdeaCard ideaId={idea.id} key={idea.id} />
+          ))}
+        </IdeasList>
+      </>
     ) : null);
 
     return (

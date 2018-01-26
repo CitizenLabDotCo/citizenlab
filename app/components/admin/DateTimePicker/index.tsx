@@ -2,51 +2,87 @@
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
-// Libraries
+// libraries
 import * as React from 'react';
 import * as moment from 'moment';
-import styled from 'styled-components';
-
 import { SingleDatePicker } from 'react-dates';
 
+// styling
+import styled from 'styled-components';
+
+// i18n
+import localize, { injectedLocalized } from 'utils/localize';
+
 const Wrapper = styled.div`
-  display: flex;
+  display: inline-flex;
   position: relative;
+  border-radius: 5px;
+  border: solid 1px #ccc;
+
+  input {
+    color: #333;
+    font-family: 'visuelt', sans-serif !important;
+    font-size: 16px;
+    font-weight: 400;
+    outline: none;
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+  }
 
   .SingleDatePickerInput {
-    border-radius: 5px;
+    outline: none;
+    box-shadow: none;
+    border: none;
+    border-right: solid 1px #ccc;
+    border-radius: 0;
+    background: transparent;
 
-    .DateInput,
-    .DateInput_input {
+    .DateInput {
       background: transparent;
+
+      .DateInput_fang {
+        z-index: 1000 !important;
+      }
+
+      input {
+        border-bottom: solid 2px transparent;
+
+        &.DateInput_input__focused {
+          border-bottom: solid 2px #00a699;
+        }
+      }
     }
   }
 
   .SingleDatePicker_picker {
-    z-index: 5;
+    top: 69px !important;
+    left: -1px !important;
   }
 `;
 
 const TimeWrapper = styled.div`
-  align-items: center;
-  border-radius: 0 5px 5px 0;
-  border: 1px solid #dbdbdb;
-  color: #484848;
   display: flex;
-  font-size: 18px;
+  align-items: center;
   justify-content: space-between;
-  margin-left: -1px;
+  padding-left: 10px;
+  padding-right: 10px;
 
   input {
-    font-size: 18px;
-    font-weight: 200;
-    text-align: center;
+    width: 40px;
   }
 `;
 
+const TimeSeparator = styled.div`
+  padding-left: 5px;
+  padding-right: 5px;
+`;
+
+// Typing
 interface Props {
   value: string | undefined;
-  onChange: Function;
+  onChange: (arg: moment.Moment) => void;
 }
 
 interface State {
@@ -54,15 +90,12 @@ interface State {
   selectedMoment: moment.Moment;
 }
 
-export default class DateTimePicker extends React.PureComponent<Props, State> {
-  state: State;
-
+class DateTimePicker extends React.PureComponent<Props & injectedLocalized, State> {
   constructor (props) {
-    super(props as any);
-
+    super(props);
     this.state = {
       focused: false,
-      selectedMoment: props.value ? moment(props.value) : moment().second(0),
+      selectedMoment: (props.value ? moment(props.value) : moment().second(0)),
     };
   }
 
@@ -77,28 +110,32 @@ export default class DateTimePicker extends React.PureComponent<Props, State> {
     this.updateDateTime(this.state.selectedMoment);
   }
 
+  componentDidCatch(error) {
+    console.log(error);
+  }
+
   updateDateTime = (newMoment: moment.Moment) => {
-    if (this.props.onChange) {
-      this.props.onChange(newMoment);
-    }
     this.setState({ selectedMoment: newMoment });
+    this.props.onChange(newMoment);
   }
 
-  handleDateChange = (dateMoment: moment.Moment) => {
-    // const newMoment = this.state.selectedMoment.clone();
-    // newMoment.dayOfYear(dateMoment.dayOfYear());
-    // this.updateDateTime(newMoment);
-
-    this.updateDateTime(dateMoment);
+  handleDateChange = (dateMoment: moment.Moment | null) => {
+    if (dateMoment) {
+      this.updateDateTime(
+        dateMoment.set({
+          hour: this.state.selectedMoment.get('hour'),
+          minute: this.state.selectedMoment.get('minute'),
+          second: this.state.selectedMoment.get('second')
+        })
+      );
+    }
   }
 
-  createTimeChangeHandler = (unit: 'hour' |  'minute') => {
-    return (event) => {
-      const newMoment = this.state.selectedMoment.clone();
-      newMoment[unit](event.target.value);
-
-      this.updateDateTime(newMoment);
-    };
+  createTimeChangeHandler = (unit: 'hour' | 'minute') => (event) => {
+    const { value } = event.target;
+    const newMoment = this.state.selectedMoment.clone();
+    newMoment.set(unit, value);
+    this.updateDateTime(newMoment);
   }
 
   handleFocusChange = ({ focused }) => {
@@ -111,6 +148,8 @@ export default class DateTimePicker extends React.PureComponent<Props, State> {
 
   render () {
     const { selectedMoment, focused } = this.state;
+    const hours = selectedMoment.format('HH');
+    const minutes = selectedMoment.format('mm');
 
     return (
       <Wrapper>
@@ -132,24 +171,27 @@ export default class DateTimePicker extends React.PureComponent<Props, State> {
             aria-valuemin="0"
             max="23"
             aria-valuemax="23"
-            aria-valuenow={selectedMoment.format('H')}
-            value={selectedMoment.format('H')}
+            aria-valuenow={hours}
+            step="1"
+            value={hours}
             onChange={this.createTimeChangeHandler('hour')}
           />
-          <div>:</div>
+          <TimeSeparator>:</TimeSeparator>
           <input
             type="number"
             min="0"
             aria-valuemin="0"
             max="59"
             aria-valuemax="59"
-            aria-valuenow={selectedMoment.format('m')}
-            value={selectedMoment.format('m')}
+            aria-valuenow={minutes}
+            step="1"
+            value={minutes}
             onChange={this.createTimeChangeHandler('minute')}
           />
-
         </TimeWrapper>
       </Wrapper>
     );
   }
 }
+
+export default localize<Props>(DateTimePicker);

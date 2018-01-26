@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { IRelationship, Multiloc, API } from 'typings';
+import { Multiloc, API } from 'typings';
 
 export interface IGroupData {
   id: string;
@@ -53,11 +53,11 @@ export interface MembershipsResponse {
   data: Membership[];
 }
 
-export function listGroups(streamParams: IStreamParams<IGroups> | null = null) {
+export function listGroups(streamParams: IStreamParams | null = null) {
   return streams.get<IGroups>({ apiEndpoint: `${API_PATH}/groups`, ...streamParams });
 }
 
-export function getGroup(groupId: string, streamParams: IStreamParams<IGroup> | null = null) {
+export function getGroup(groupId: string, streamParams: IStreamParams | null = null) {
   return streams.get<IGroup>({ apiEndpoint: `${API_PATH}/groups/${groupId}`, ...streamParams });
 }
 
@@ -69,18 +69,22 @@ export function deleteGroup(groupId: string) {
   return streams.delete(`${API_PATH}/groups/${groupId}`, groupId);
 }
 
-export function listMembership(groupId: string, streamParams: IStreamParams<MembershipsResponse> | null = null) {
+export function listMembership(groupId: string, streamParams: IStreamParams | null = null) {
   return streams.get<MembershipsResponse>({ apiEndpoint: `${API_PATH}/groups/${groupId}/memberships`, ...streamParams });
 }
 
-export function findMembership(groupId: string, streamParams: IStreamParams<{data: FoundUser[]}> | null = null) {
+export function findMembership(groupId: string, streamParams: IStreamParams | null = null) {
   return streams.get<{data: FoundUser[]}>({ apiEndpoint: `${API_PATH}/groups/${groupId}/memberships/users_search`, ...streamParams, cacheStream: false });
 }
 
-export async function deleteMembership(membershipId: string, groupId: string) {
-  return streams.delete(`${API_PATH}/memberships/${membershipId}`, membershipId);
+export async function deleteMembership(membershipId: string) {
+  const response = await streams.delete(`${API_PATH}/memberships/${membershipId}`, membershipId);
+  await listGroups().fetch();
+  return response;
 }
 
 export async function addMembership(groupId: string, user_id: string) {
-  return streams.add(`${API_PATH}/groups/${groupId}/memberships`, { membership: { user_id } });
+  const response = await streams.add(`${API_PATH}/groups/${groupId}/memberships`, { membership: { user_id } });
+  await listGroups().fetch();
+  return response;
 }

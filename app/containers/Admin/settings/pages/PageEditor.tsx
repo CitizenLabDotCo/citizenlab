@@ -22,7 +22,7 @@ import { EditorState } from 'draft-js';
 import { getHtmlStringFromEditorState, getEditorStateFromHtmlString } from 'utils/editorTools';
 
 // Typings
-import { API } from 'typings';
+import { API, Locale } from 'typings';
 
 // i18n
 import messages from './messages';
@@ -94,7 +94,7 @@ interface State {
     [key: string]: API.Error[];
   } | null;
   diff: PageUpdate;
-  locale: string;
+  locale: Locale;
   editorState: EditorState;
   deployed: boolean;
 }

@@ -109,7 +109,7 @@ export default class Avatar extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleOnClick = (event) => {
+  handleOnClick = () => {
     if (this.props.onClick) {
       this.props.onClick();
     }

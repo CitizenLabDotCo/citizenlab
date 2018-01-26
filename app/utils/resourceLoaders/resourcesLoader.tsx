@@ -18,13 +18,13 @@ export interface InjectedResourcesLoaderProps<IResourceData> {
     currentPage: number,
     lastPage: number,
     loadMore: () => void,
-    hasMore: () => boolean,
+    hasMore: boolean,
     loading: boolean,
   };
 }
 
 interface TStreamFn<IResources> {
-  (streamParams: IStreamParams<IResources> | null): IStream<IResources>;
+  (streamParams: IStreamParams | null): IStream<IResources>;
 }
 
 interface IIResources<IResourceData> {
@@ -35,9 +35,9 @@ interface IIResources<IResourceData> {
   };
 }
 
-export const injectResources = <IResourceData, IResources extends IIResources<IResourceData>>(propName: string, streamFn: TStreamFn<IResources>) =>
+export const injectResources = <IResourceData, IResources extends IIResources<IResourceData>>(propName: string, streamFn: TStreamFn<IResources>, queryParameters = {}) =>
   <TOriginalProps extends {}>(WrappedComponent: React.ComponentClass<TOriginalProps & InjectedResourcesLoaderProps<IResourceData>>) => {
-    return class ResourceManager extends React.Component<TOriginalProps, State<IResourceData>> {
+    return class ResourceManager extends React.PureComponent<TOriginalProps, State<IResourceData>> {
 
       subscriptions: Rx.Subscription[] = [];
 
@@ -65,6 +65,7 @@ export const injectResources = <IResourceData, IResources extends IIResources<IR
           streamFn({queryParameters: {
             'page[number]': this.state.currentPage + 1,
             'page[size]': 24,
+            ...queryParameters,
           }}).observable.subscribe((data) => {
             this.setState({ loading: false });
             const currentPage = getPageNumberFromUrl(data && data.links && data.links.self) || 1;
@@ -82,14 +83,18 @@ export const injectResources = <IResourceData, IResources extends IIResources<IR
         return this.state.lastPage > this.state.currentPage;
       }
 
+      handleLoadMore = () => {
+        this.loadMore();
+      }
+
       render() {
         const injectedProps = {
           [propName]: {
             all: this.state.resources,
             currentPage: this.state.currentPage,
             lastPage: this.state.lastPage,
-            loadMore: this.loadMore,
-            hasMore: this.hasMore,
+            loadMore: this.handleLoadMore,
+            hasMore: this.hasMore(),
             loading: this.state.loading,
           },
         };

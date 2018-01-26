@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
@@ -11,7 +10,6 @@ import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // utils
-import { IStream } from 'utils/streams';
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
@@ -79,7 +77,7 @@ interface GlobalState {
   description: string | null;
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
-  location: string;
+  position: string;
   imageFile: ImageFile[] | null;
   submitError: boolean;
   processing: boolean;
@@ -87,13 +85,13 @@ interface GlobalState {
 
 interface State extends GlobalState {}
 
-class NewIdeaForm extends React.PureComponent<Props, State> {
+export default class NewIdeaForm extends React.PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
-    this.globalState = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage');
+  constructor(props) {
+    super(props);
+    this.globalState = globalState.init('IdeasNewPage');
     this.subscriptions = [];
   }
 
@@ -106,7 +104,7 @@ class NewIdeaForm extends React.PureComponent<Props, State> {
         description,
         selectedTopics,
         selectedProject,
-        location,
+        position,
         imageFile,
         submitError,
         processing
@@ -116,7 +114,7 @@ class NewIdeaForm extends React.PureComponent<Props, State> {
           description,
           selectedTopics,
           selectedProject,
-          location,
+          position,
           imageFile,
           submitError,
           processing
@@ -137,18 +135,18 @@ class NewIdeaForm extends React.PureComponent<Props, State> {
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { imageFile: oldImageFile } = await this.globalState.get();
-    const { title, description, selectedTopics, selectedProject, location, imageFile } = ideaFormOutput;
+    const { title, description, selectedTopics, selectedProject, position, imageFile } = ideaFormOutput;
     const oldBase64Image = (oldImageFile && oldImageFile.length > 0 && oldImageFile[0].base64 ? oldImageFile[0].base64 : null);
     const newBase64Image = (imageFile && imageFile.length > 0 && imageFile[0].base64 ? imageFile[0].base64 : null);
     const imageChanged = (oldBase64Image !== newBase64Image);
-    this.globalState.set({ title, description, selectedTopics, selectedProject, location, imageFile, imageChanged });
+    this.globalState.set({ title, description, selectedTopics, selectedProject, position, imageFile, imageChanged });
     this.props.onSubmit();
   }
 
   render() {
     if (!this.state) { return null; }
 
-    const { title, description, selectedTopics, selectedProject, location, imageFile, submitError, processing } = this.state;
+    const { title, description, selectedTopics, selectedProject, position, imageFile, submitError, processing } = this.state;
     const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
 
     return (
@@ -157,12 +155,12 @@ class NewIdeaForm extends React.PureComponent<Props, State> {
           <FormattedMessage {...messages.formTitle} />
         </Title>
 
-        <IdeaForm 
+        <IdeaForm
           title={title}
           description={description}
           selectedTopics={selectedTopics}
           selectedProject={selectedProject}
-          location={location}
+          position={position}
           imageFile={imageFile}
           onSubmit={this.handleIdeaFormOutput}
         />
@@ -181,5 +179,3 @@ class NewIdeaForm extends React.PureComponent<Props, State> {
     );
   }
 }
-
-export default NewIdeaForm;

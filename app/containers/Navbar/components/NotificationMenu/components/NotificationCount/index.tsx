@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import * as Rx from 'rxjs/Rx';
 
 // components
 import Icon from 'components/UI/Icon';

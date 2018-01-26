@@ -1,0 +1,30 @@
+{
+  "basic component structure": {
+    "prefix": "component",
+    "description": "Creates a basic skeletton for a component",
+    "body": [
+      "// Libraries",
+      "import * as React from 'react';",
+      "",
+      "// Typings",
+      "interface Props {}",
+      "interface State {}",
+      "",
+      "class ${1:ComponentName} extends React.Component<Props, State> {",
+      "  constructor(props) {",
+      "    super(props);",
+      "    this.state = {};",
+      "  }",
+      "",
+      "  render() {",
+      "    return (",
+      "      <p>${1:ComponentName}</p>",
+      "    );",
+      "  }",
+      "}",
+      "",
+      "export default ${1:ComponentName};",
+      ""
+    ]
+  }
+}

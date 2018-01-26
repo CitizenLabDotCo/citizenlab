@@ -1,17 +1,10 @@
+// libraries
 import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
-// libraries
-import { Link } from 'react-router';
-import classNames from 'classnames';
-
 // components
-import Button from 'components/UI/Button';
-import TextArea from 'components/UI/TextArea';
-import Error from 'components/UI/Error';
 import Icon from 'components/UI/Icon';
-import Author from './Author';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 
 // tracking
@@ -19,46 +12,22 @@ import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { InjectedIntl, InjectedIntlProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
 import { authUserStream } from 'services/auth';
 import { localeStream } from 'services/locale';
 import { IUser } from 'services/users';
-import { addCommentToIdea, addCommentToComment } from 'services/comments';
+import { addCommentToComment } from 'services/comments';
 
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
-
-const Container = styled.div`
-  margin-bottom: 0px;
-`;
+import { Locale } from 'typings';
 
 const CommentContainer = styled.div``;
-
-const SignInMessage = styled.div`
-  color: #333;
-  font-size: 18px;
-  font-weight: 300;
-
-  a {
-    color: ${(props) => props.theme.colorMain};
-    text-decoration: none;
-    transition: all 100ms ease-out;
-
-    &:hover {
-      color: ${(props) => darken(0.15, props.theme.colorMain)};
-      text-decoration: underline;
-    }
-  }
-`;
-
-const StyledAuthor = styled(Author)`
-  margin-bottom: 30px;
-`;
 
 const StyledTextArea = styled(MentionsTextArea)`
   .textareaWrapper__highlighter,
@@ -113,10 +82,6 @@ const SendIconWrapper: any = styled.div`
   }
 `;
 
-const SuccessMessage = styled.p`
-  color: #32B67A;
-`;
-
 type Props = {
   ideaId: string;
   parentId: string;
@@ -128,7 +93,7 @@ type Tracks = {
 };
 
 type State = {
-  locale: string | null;
+  locale: Locale | null;
   authUser: IUser | null;
   inputValue: string;
   focussed: boolean;
@@ -254,11 +219,8 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
 
     if (authUser) {
       const { formatMessage } = this.props.intl;
-      const { inputValue, canSubmit, processing, errorMessage } = this.state;
+      const { inputValue, canSubmit, errorMessage } = this.state;
       const placeholder = formatMessage(messages.childCommentBodyPlaceholder);
-      const submitAreaClassNames = classNames({
-        error: _.isString(errorMessage)
-      });
 
       return (
         <CommentContainer>

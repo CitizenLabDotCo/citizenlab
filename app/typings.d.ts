@@ -24,7 +24,7 @@ export interface ImageFile extends Dropzone.ImageFile {
   objectUrl?: string;
 }
 
-interface IOption {
+declare interface IOption {
   value: any;
   label: string;
   disabled?: boolean;
@@ -35,8 +35,13 @@ declare interface Message {
   defaultMessage: string;
 }
 
+declare type Locale = 'de' | 'en' | 'fr' | 'nl';
+
 declare interface Multiloc {
-  [key: string]: string;
+  de?: string;
+  en?: string;
+  fr?: string;
+  nl?: string;
 }
 
 declare namespace API {

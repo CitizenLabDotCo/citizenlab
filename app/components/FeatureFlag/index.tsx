@@ -42,7 +42,11 @@ export default class FeatureFlag extends React.PureComponent<Props, State> {
     ));
 
     if (this.props.children && showFeature) {
-      return React.Children.only(this.props.children);
+      return (
+        <React.Fragment>
+          {this.props.children}
+        </React.Fragment>
+      );
     }
 
     return null;

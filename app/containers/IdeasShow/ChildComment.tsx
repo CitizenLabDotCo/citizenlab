@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
@@ -15,21 +14,21 @@ import UserName from 'components/UI/UserName';
 
 // services
 import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
-import { commentsForIdeaStream, commentStream, IComments, IComment } from 'services/comments';
+import { currentTenantStream } from 'services/tenant';
+import { commentStream, IComment } from 'services/comments';
 import { userByIdStream, IUser } from 'services/users';
 import { authUserStream } from 'services/auth';
 
 // i18n
-import T from 'components/T';
-import { InjectedIntlProps, FormattedRelative } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedRelative } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 
 // style
 import styled from 'styled-components';
 import { transparentize, darken } from 'polished';
+import { Locale } from 'typings';
 
 const CommentContainer = styled.div`
   margin-top: 0px;
@@ -38,7 +37,7 @@ const CommentContainer = styled.div`
   position: relative;
   border: none;
   border-top: solid 1px #e4e4e4;
-  background: #f6f6f6;
+  background: #f8f8f8;
 `;
 
 const AuthorContainer = styled.div`
@@ -95,7 +94,8 @@ const CommentBody = styled.div`
   font-weight: 400;
   padding: 0;
 
-  span, p {
+  span,
+  p {
     white-space: pre-wrap;
     word-break: normal;
     word-wrap: break-word;
@@ -129,8 +129,8 @@ type Props = {
 };
 
 type State = {
-  locale: string | null;
-  currentTenantLocales: string[] | null;
+  locale: Locale | null;
+  currentTenantLocales: Locale[] | null;
   comment: IComment | null;
   author: IUser | null;
   spamModalVisible: boolean;
@@ -184,7 +184,7 @@ export default class ChildComment extends React.PureComponent<Props, State> {
         if (authUser) {
           this.setState({ moreActions: [
             ...this.state.moreActions,
-            // { label: 'Report as spam', handler: this.openSpamModal }
+            { label: <FormattedMessage {...messages.reportAsSpam} />, handler: this.openSpamModal }
           ]});
         }
       })
@@ -224,15 +224,12 @@ export default class ChildComment extends React.PureComponent<Props, State> {
 
     if (locale && currentTenantLocales && comment && author) {
       const className = this.props['className'];
-      const ideaId = comment.data.relationships.idea.data.id;
       const authorId = comment.data.relationships.author.data ? comment.data.relationships.author.data.id : null;
       const createdAt = comment.data.attributes.created_at;
       const commentBodyMultiloc = comment.data.attributes.body_multiloc;
-      const avatar = author.data.attributes.avatar.medium;
-      const slug = author.data.attributes.slug;
       const commentText = getLocalized(commentBodyMultiloc, locale, currentTenantLocales);
       const processedCommentText = linkifyHtml(commentText.replace(
-        /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi, 
+        /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
         '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
       ));
 

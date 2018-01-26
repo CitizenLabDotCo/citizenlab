@@ -10,6 +10,7 @@ const Wrapper = styled.div`
   border: 1px solid ${(props) => props.theme.colors.separation};
   box-sizing: border-box;
   padding: 3.5rem 4rem;
+  margin-bottom: 60px;
 `;
 
 export default class PageWrapper extends React.Component{

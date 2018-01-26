@@ -1,6 +1,5 @@
 
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { Menu } from 'semantic-ui-react';
 
 // Typing
@@ -48,7 +47,7 @@ class Pagination extends React.PureComponent<Props> {
     return rangeWithDots;
   }
 
-  handleItemClick(event, data) {
+  handleItemClick(_event, data) {
     this.props.loadPage(parseInt(data.name, 10));
   }
 

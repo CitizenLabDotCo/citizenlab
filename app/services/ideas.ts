@@ -1,28 +1,20 @@
-import * as _ from 'lodash';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { IRelationship } from 'typings';
+import { IRelationship, Multiloc } from 'typings';
 
 export interface IIdeaData {
   id: string;
   type: string;
   attributes: {
-    title_multiloc: {
-      [key: string]: any;
-    };
-    body_multiloc: {
-      [key: string]: any;
-    };
+    title_multiloc: Multiloc;
+    body_multiloc: Multiloc;
     author_name: string;
     slug: string;
     publication_status: 'draft' | 'published';
     upvotes_count: number;
     downvotes_count: number;
     comments_count: number;
-    location_point_geojson: {
-      type: 'Point';
-      coordinates: [number, number];
-    };
+    location_point_geojson: GeoJSON.Point;
     location_description: string;
     created_at: string;
     updated_at: string;
@@ -45,13 +37,27 @@ export interface IIdeaData {
       data: IRelationship[];
     }
     project: {
-      data: IRelationship | null;
+      data: IRelationship;
     };
     idea_status?: {
       data: IRelationship;
     },
     user_vote: {
       data: IRelationship;
+    },
+    action_descriptor: {
+      data: {
+        voting:{
+          enabled: boolean,
+          future_enabled: string | null,
+          disabled_reason: 'project_inactive' | 'voting_disabled' | 'voting_limited_max_reached' | 'not_in_active_context' | null
+        },
+        commenting: {
+          enabled: boolean,
+          future_enabled: string | null,
+          disabled_reason: 'project_inactive' | 'commenting_disabled' | null,
+        }
+      }
     }
   };
 }
@@ -91,15 +97,12 @@ export interface IIdeaUpdate {
   author_id?: string | undefined | null;
   idea_status_id?: string | undefined | null;
   publication_status?: 'draft' | 'published' | 'closed' | 'spam' | undefined | null;
-  title_multiloc?: { [key: string]: string; } | undefined | null;
-  body_multiloc?: { [key: string]: string; } | undefined | null;
+  title_multiloc?: Multiloc;
+  body_multiloc?: Multiloc;
   topic_ids?: string[] | undefined | null;
   area_ids?: string[] | undefined | null;
   phase_ids?: string[] | undefined | null;
-  location_point_geojson?: {
-    type: string;
-    coordinates: number[];
-  } | undefined | null;
+  location_point_geojson?: GeoJSON.Point | null;
   location_description?: string | undefined | null;
 }
 
@@ -111,8 +114,12 @@ export function ideaBySlugStream(ideaSlug: string) {
   return streams.get<IIdea>({ apiEndpoint: `${API_PATH}/ideas/by_slug/${ideaSlug}` });
 }
 
-export function ideasStream(streamParams: IStreamParams<IIdeas> | null = null) {
+export function ideasStream(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeas>({ apiEndpoint: `${API_PATH}/ideas`, ...streamParams });
+}
+
+export function ideasMarkersStream(streamParams: IStreamParams | null = null) {
+  return streams.get<{data: Partial<IIdeaData>[], links: IIdeaLinks}>({ apiEndpoint: `${API_PATH}/ideas/as_markers`, ...streamParams, cacheStream: false });
 }
 
 export function addIdea(

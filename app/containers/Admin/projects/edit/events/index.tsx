@@ -2,20 +2,18 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import styled from 'styled-components';
-import { intlShape } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 // Services
 import { projectBySlugStream } from 'services/projects';
 import { eventsStream, IEventData, deleteEvent } from 'services/events';
 
 // Components
-import { Link } from 'react-router';
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import Icon from 'components/UI/Icon';
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
 
 // Utils
@@ -31,7 +29,6 @@ const AddButton = styled(Button)`
   align-self: flex-end;
 `;
 
-// Component typing
 type Props = {
   intl: ReactIntl.InjectedIntl,
   params: {
@@ -75,7 +72,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
     return (event) => {
       event.preventDefault();
       if (window.confirm(this.props.intl.formatMessage(messages.deleteConfirmationModal))) {
-        deleteEvent(eventId).then((response) => {
+        deleteEvent(eventId).then(() => {
           this.setState({ events: _.reject(this.state.events, { id: eventId }) });
         });
       }
@@ -98,7 +95,7 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
 
   render() {
     const { events, loading } = this.state;
-    const { intl: { formatDate, formatTime }, params: { slug } } = this.props;
+    const { slug } = this.props.params;
 
     return (
       <ListWrapper className="e2e-projects-events">
@@ -111,24 +108,32 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
             <HeadRow>
               <div className="expand"><FormattedMessage {...messages.titleColumnHeader} /></div>
             </HeadRow>
-            {events.map((event, index) => (
-              <Row key={event.id}>
-                <div className="expand">
-                  <h1><T value={event.attributes.title_multiloc} /></h1>
-                  <p><T value={event.attributes.location_multiloc} /></p>
-                  <p>
-                    {`${formatDate(event.attributes.start_at)} ${formatTime(event.attributes.start_at)}`}
-                    &nbsp;-&nbsp;
-                    {`${formatDate(event.attributes.end_at)} ${formatTime(event.attributes.end_at)}`}</p>
-                </div>
-                <Button style="text" icon="delete" onClick={this.createDeleteClickHandler(event.id)}>
-                  <FormattedMessage {...messages.deleteButtonLabel} />
-                </Button>
-                <Button style="secondary" icon="edit" linkTo={`/admin/projects/${slug}/events/${event.id}`}>
-                  <FormattedMessage {...messages.editButtonLabel} />
-                </Button>
-              </Row>
-            ))}
+            {events.map((event) => {
+              const startAt = moment(event.attributes.start_at).format('D MMM YYYY, HH:mm');
+              const endAt = moment(event.attributes.end_at).format('D MMM YYYY, HH:mm');
+
+              return (
+                <Row key={event.id}>
+                  <div className="expand">
+                    <h1>
+                      <T value={event.attributes.title_multiloc} />
+                    </h1>
+                    <p>
+                      <T value={event.attributes.location_multiloc} />
+                    </p>
+                    <p>
+                      {startAt}  →  {endAt}
+                    </p>
+                  </div>
+                  <Button style="text" icon="delete" onClick={this.createDeleteClickHandler(event.id)}>
+                    <FormattedMessage {...messages.deleteButtonLabel} />
+                  </Button>
+                  <Button style="secondary" icon="edit" linkTo={`/admin/projects/${slug}/events/${event.id}`}>
+                    <FormattedMessage {...messages.editButtonLabel} />
+                  </Button>
+                </Row>
+              );
+            })}
           </List>
         }
       </ListWrapper>
