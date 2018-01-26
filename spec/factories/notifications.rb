@@ -10,4 +10,18 @@ FactoryGirl.define do
     comment
     idea
   end
+
+  factory :comment_on_your_idea, parent: :notification, class: 'Notifications::CommentOnYourIdea' do
+    initiating_user
+    comment
+    idea
+  end
+
+  factory :comment_marked_as_spam, parent: :notification, class: 'Notifications::CommentMarkedAsSpam' do
+    comment
+  end
+
+  factory :idea_marked_as_spam, parent: :notification, class: 'Notifications::IdeaMarkedAsSpam' do
+    idea
+  end
 end

@@ -1,4 +1,5 @@
 class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
+
   attributes :id, :title_multiloc, :body_multiloc, :author_name, :slug, :publication_status, :upvotes_count, :downvotes_count, :comments_count, :location_point_geojson, :location_description, :created_at, :updated_at, :published_at
 
   has_many :topics
@@ -14,6 +15,8 @@ class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
     serializer.cached_user_vote
   end
 
+  has_one :action_descriptor
+
   def location_point_geojson
     RGeo::GeoJSON.encode(object.location_point)
   end
@@ -28,5 +31,23 @@ class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
     else
        object.votes.where(user_id: scope.id).first
      end
+  end
+
+  def action_descriptor
+    @participation_context_service = @instance_options[:pcs] || ParticipationContextService.new
+    commenting_disabled_reason = @participation_context_service.commenting_disabled_reason(object)
+    voting_disabled_reason = @participation_context_service.voting_disabled_reason(object, scope)
+    {
+      voting: {
+        enabled: !voting_disabled_reason,
+        disabled_reason: voting_disabled_reason,
+        future_enabled: voting_disabled_reason && @participation_context_service.future_voting_enabled_phase(object.project)&.start_at
+      },
+      commenting: {
+        enabled: !commenting_disabled_reason,
+        disabled_reason: commenting_disabled_reason,
+        future_enabled: commenting_disabled_reason && @participation_context_service.future_commenting_enabled_phase(object.project)&.start_at
+      }
+    }
   end
 end

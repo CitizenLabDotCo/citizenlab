@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180108134711) do
+ActiveRecord::Schema.define(version: 20180118125241) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -206,9 +206,9 @@ ActiveRecord::Schema.define(version: 20180108134711) do
     t.string "type"
     t.datetime "read_at"
     t.uuid "recipient_id"
-    t.string "idea_id"
-    t.string "comment_id"
-    t.string "project_id"
+    t.uuid "idea_id"
+    t.uuid "comment_id"
+    t.uuid "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "initiating_user_id"
@@ -247,6 +247,12 @@ ActiveRecord::Schema.define(version: 20180108134711) do
     t.date "end_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "participation_method", default: "ideation", null: false
+    t.boolean "posting_enabled", default: true
+    t.boolean "commenting_enabled", default: true
+    t.boolean "voting_enabled", default: true
+    t.string "voting_method", default: "unlimited"
+    t.integer "voting_limited_max", default: 10
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -279,6 +285,15 @@ ActiveRecord::Schema.define(version: 20180108134711) do
     t.string "visible_to", default: "public", null: false
     t.jsonb "description_preview_multiloc", default: {}
     t.string "presentation_mode", default: "card", null: false
+    t.string "participation_method", default: "ideation"
+    t.boolean "posting_enabled", default: true
+    t.boolean "commenting_enabled", default: true
+    t.boolean "voting_enabled", default: true
+    t.string "voting_method", default: "unlimited"
+    t.integer "voting_limited_max", default: 10
+    t.string "process_type", default: "timeline", null: false
+    t.string "internal_role"
+    t.string "publication_status", default: "published", null: false
     t.index ["created_at"], name: "index_projects_on_created_at"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
@@ -385,6 +400,9 @@ ActiveRecord::Schema.define(version: 20180108134711) do
   add_foreign_key "identities", "users"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
+  add_foreign_key "notifications", "comments"
+  add_foreign_key "notifications", "ideas"
+  add_foreign_key "notifications", "projects"
   add_foreign_key "notifications", "spam_reports"
   add_foreign_key "notifications", "users", column: "initiating_user_id"
   add_foreign_key "notifications", "users", column: "recipient_id"

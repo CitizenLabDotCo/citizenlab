@@ -3,9 +3,10 @@ class WebApi::V1::IdeasController < ApplicationController
   before_action :set_idea, only: [:show, :update, :destroy]
   skip_after_action :verify_authorized, only: [:index_xlsx, :index_idea_markers]
   
-
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  
   def index
-    @ideas = policy_scope(Idea).includes(:author, :topics, :areas, :project, :idea_images)
+    @ideas = policy_scope(Idea).includes(:author, :topics, :areas, :phases, :idea_images, project: [:phases])
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
@@ -51,9 +52,9 @@ class WebApi::V1::IdeasController < ApplicationController
     if current_user
       votes = Vote.where(user: current_user, votable_id: @idea_ids, votable_type: 'Idea')
       votes_by_idea_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
-      render json: @ideas, include: ['author', 'user_vote', 'idea_images'], vbii: votes_by_idea_id
+      render json: @ideas, include: ['author', 'user_vote', 'idea_images'], vbii: votes_by_idea_id, pcs: ParticipationContextService.new
     else
-      render json: @ideas, include: ['author', 'idea_images']
+      render json: @ideas, include: ['author', 'idea_images'], pcs: ParticipationContextService.new
     end
 
   end
@@ -65,8 +66,6 @@ class WebApi::V1::IdeasController < ApplicationController
 
     add_common_index_filters params
     @ideas = @ideas.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
-
-    @idea_ids = @ideas.map(&:id)
 
     render json: @ideas, each_serializer: WebApi::V1::IdeaMarkerSerializer
   end
@@ -95,6 +94,8 @@ class WebApi::V1::IdeasController < ApplicationController
   def create
     @idea = Idea.new(permitted_attributes(Idea))
     @idea.author ||= current_user
+
+    SideFxIdeaService.new.before_create(@idea, current_user)
 
     authorize @idea
     ActiveRecord::Base.transaction do
@@ -158,6 +159,18 @@ class WebApi::V1::IdeasController < ApplicationController
     else
       @ideas = @ideas.where(publication_status: 'published')
     end
+  end
+
+  def user_not_authorized exception
+    pcs = ParticipationContextService.new
+    if exception.query == "create?"
+      reason = pcs.posting_disabled_reason(exception.record.project)
+      if reason
+        render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized
+        return
+      end
+    end
+    raise exception
   end
 
 end

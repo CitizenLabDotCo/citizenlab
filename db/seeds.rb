@@ -122,6 +122,16 @@ if Apartment::Tenant.current == 'public' || 'example_org'
       private_projects: {
         enabled: true,
         allowed: true
+      },
+      maps: {
+        enabled: true,
+        allowed: true,
+        tile_provider: "https://free.tilehosting.com/styles/positron/style.json?key=DIZiuhfkZEQ5EgsaTk6D",
+        map_center: {
+          lat: "50.8503",
+          long: "4.3517"
+        },
+        zoom_level: 12
       }
     }
   })
@@ -261,10 +271,10 @@ if Apartment::Tenant.current == 'localhost'
   })
 
   num_projects.times do
-    project = Project.create({
+    project = Project.new({
       title_multiloc: {
-        "en": "Renewing Westbrook parc",
-        "nl": "Westbroek park vernieuwen"
+        "en": Faker::Lorem.sentence,
+        "nl": Faker::Lorem.sentence
       },
       description_multiloc: {
         "en" => "<p>Let's renew the parc at the city border and make it an enjoyable place for young and old.</p>",
@@ -274,9 +284,23 @@ if Apartment::Tenant.current == 'localhost'
         "en" => "Let's renew the parc at the city border.",
         "nl" => "Laten we het park op de grend van de stad vernieuwen."
       },
-      header_bg: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
-      visible_to: %w(admins groups public public public)[rand(5)]
+      header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
+      visible_to: %w(admins groups public public public)[rand(5)],
+      presentation_mode: ['card', 'card', 'card', 'map', 'map'][rand(5)],
+      process_type: ['timeline','timeline','timeline','timeline','continuous'][rand(5)],
+      publication_status: ['published','published','published','published','published','draft','archived'][rand(7)]
     })
+
+    if project.continuous?
+      project.update({
+        posting_enabled: rand(4) != 0,
+        voting_enabled: rand(3) != 0,
+        commenting_enabled: rand(4) != 0,
+        voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
+        voting_limited_max: rand(15),
+      })
+    end
+    project.save
 
     [0,1,2,3,4][rand(5)].times do |i|
       project.project_images.create(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
@@ -285,10 +309,10 @@ if Apartment::Tenant.current == 'localhost'
       project.project_files.create(file: Rails.root.join("spec/fixtures/afvalkalender.pdf").open)
     end
 
-    start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
-    rand(5).times do
+    start_at = Faker::Date.between(6.months.ago, 1.month.from_now)
+    rand(8).times do
       start_at += 1.days
-      project.phases.create({
+      phase = project.phases.create({
         title_multiloc: {
           "en": Faker::Lorem.sentence,
           "nl": Faker::Lorem.sentence
@@ -298,9 +322,20 @@ if Apartment::Tenant.current == 'localhost'
           "nl" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
         },
         start_at: start_at,
-        end_at: (start_at += rand(120).days)
+        end_at: (start_at += rand(150).days),
+        participation_method: (rand(5) == 0) ? 'information' : 'ideation'
       })
+      if phase.ideation?
+        phase.update({
+          posting_enabled: rand(4) != 0,
+          voting_enabled: rand(3) != 0,
+          commenting_enabled: rand(4) != 0,
+          voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
+          voting_limited_max: rand(15),
+        })
+      end
     end
+
     rand(5).times do
       start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
       project.events.create({
@@ -315,10 +350,11 @@ if Apartment::Tenant.current == 'localhost'
 
 
   MAP_CENTER = [50.8503, 4.3517]
-  MAP_OFFSET = 0.5
+  MAP_OFFSET = 0.1
 
   num_ideas.times do 
     created_at = Faker::Date.between(1.year.ago, Time.now)
+    project = Project.offset(rand(Project.count)).first
     idea = Idea.create({
       title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
       body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
@@ -326,7 +362,8 @@ if Apartment::Tenant.current == 'localhost'
       topics: rand(3).times.map{rand(Topic.count)}.uniq.map{|offset| Topic.offset(offset).first },
       areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
       author: User.offset(rand(User.count)).first,
-      project: (rand(5) != 0) ? Project.offset(rand(Project.count)).first : nil,
+      project: project,
+      phases: (project && project.timeline? && project.phases.sample(rand(project.phases.count)).select(&:ideation?)) || [],
       publication_status: 'published',
       published_at: Faker::Date.between(created_at, Time.now),
       created_at: created_at,
