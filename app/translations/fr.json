@@ -453,7 +453,7 @@
   "app.containers.Projects.pastEvents": "Evénements passés",
   "app.containers.Projects.phaseNumber": "Phase {phaseNumber}",
   "app.containers.Projects.project": "Projet",
-  "app.containers.Projects.projectInformation": "Informations sur le projet",
+  "app.containers.Projects.projectInformation": "Informations",
   "app.containers.Projects.startAnIdea": "Lancez une idée",
   "app.containers.Projects.startsOn": "Commence le {date}",
   "app.containers.Projects.upcomingEvents": "Événements à venir",
