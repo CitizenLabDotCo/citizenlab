@@ -91,6 +91,17 @@ pipeline {
         }
       }
     }
+
+    stage('Deploy to Canada production cluster') {
+      when { branch 'production' }
+      steps {
+        sshagent (credentials: ['local-ssh-user']) {
+          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 35.183.23.116 "docker pull citizenlabdotco/cl2-back:production-benelux && docker run --env-file cl2-deployment/.env-production-canada citizenlabdotco/cl2-back:production-benelux rake db:migrate cl2back:clean_tenant_settings"'
+          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 35.183.23.116 "cd cl2-deployment && docker stack deploy --compose-file docker-compose-production-canada.yml cl2-back --with-registry-auth"'
+          slackSend color: '#50c122', message: ":tada: SUCCESS: ${env.JOB_NAME} build #${env.BUILD_NUMBER} deployed to canada production cluster!\nMore info at ${env.BUILD_URL}"
+        }
+      }
+    }
   }
 
   post {
