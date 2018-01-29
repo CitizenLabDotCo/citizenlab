@@ -16,8 +16,14 @@ import ButtonBar from 'components/ButtonBar';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+const Container = styled.div`
+  background: #f8f8f8;
+`;
+
 const StyledContentContainer = styled(ContentContainer)`
-  padding-top: 4rem;
+  padding-top: 60px;
+  padding-bottom: 80px;
+
 `;
 
 const ColumnsContainer = styled.div`
@@ -165,60 +171,71 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
     const inEmptyState = !loading && !hasMore && size(projects) === 0;
 
     return (
-      <StyledContentContainer>
-        <PageTitle>
-          <FormattedMessage {...messages.pageTitle} />
-        </PageTitle>
-        {inEmptyState &&
-          <EmptyStateContainer>
-            <FormattedMessage {...messages.noProjects} />
-          </EmptyStateContainer>
-        }
-        {!inEmptyState && <>
-          <ColumnsContainer>
-            <LeftColumn>
-              <ColumnTitle>
-                <FormattedMessage {...messages.cityProjects} />
-              </ColumnTitle>
-              <ColumnExplanation>
-                <FormattedMessage {...messages.cityProjectsExplanation} />
-              </ColumnExplanation>
-              <ProjectsList>
-                {cityProjects && cityProjects.map((project) => (
-                  <ProjectCardWrapper>
-                    <ProjectCard
-                      key={project.id as any}
-                      onClick={this.handleProjectClick(project) as any}
-                      project={project as any}
-                      selected={(selectedProjectId === project.id) as any}
-                    />
-                  </ProjectCardWrapper>
-                ))}
-              </ProjectsList>
-              {hasMore && <a onClick={loadMore} role="button"><FormattedMessage {...messages.loadMore} /></a>}
-            </LeftColumn>
-            {openProject &&
-              <RightColumn>
+      <Container>
+        <StyledContentContainer>
+          <PageTitle>
+            <FormattedMessage {...messages.pageTitle} />
+          </PageTitle>
+          {inEmptyState &&
+            <EmptyStateContainer>
+              <FormattedMessage {...messages.noProjects} />
+            </EmptyStateContainer>
+          }
+          {!inEmptyState && <>
+            <ColumnsContainer>
+              <LeftColumn>
                 <ColumnTitle>
-                  <FormattedMessage {...messages.openProject} />
+                  <FormattedMessage {...messages.cityProjects} />
                 </ColumnTitle>
                 <ColumnExplanation>
-                  <FormattedMessage {...messages.openProjectExplanation} />
+                  <FormattedMessage {...messages.cityProjectsExplanation} />
                 </ColumnExplanation>
                 <ProjectsList>
-                  <ProjectCardWrapper>
-                    <ProjectCard
-                      onClick={this.handleProjectClick(openProject) as any}
-                      project={openProject as any}
-                      selected={(selectedProjectId === openProject.id) as any}
-                    />
-                  </ProjectCardWrapper>
+                  {cityProjects && cityProjects.map((project) => (
+                    <ProjectCardWrapper>
+                      <ProjectCard
+                        key={project.id as any}
+                        onClick={this.handleProjectClick(project) as any}
+                        project={project as any}
+                        selected={(selectedProjectId === project.id) as any}
+                      />
+                    </ProjectCardWrapper>
+                  ))}
                 </ProjectsList>
-              </RightColumn>
-            }
-          </ColumnsContainer>
-          <ButtonBar>
-            <ButtonBarInner>
+                {hasMore && <a onClick={loadMore} role="button"><FormattedMessage {...messages.loadMore} /></a>}
+              </LeftColumn>
+              {openProject &&
+                <RightColumn>
+                  <ColumnTitle>
+                    <FormattedMessage {...messages.openProject} />
+                  </ColumnTitle>
+                  <ColumnExplanation>
+                    <FormattedMessage {...messages.openProjectExplanation} />
+                  </ColumnExplanation>
+                  <ProjectsList>
+                    <ProjectCardWrapper>
+                      <ProjectCard
+                        onClick={this.handleProjectClick(openProject) as any}
+                        project={openProject as any}
+                        selected={(selectedProjectId === openProject.id) as any}
+                      />
+                    </ProjectCardWrapper>
+                  </ProjectsList>
+                </RightColumn>
+              }
+            </ColumnsContainer>
+            <ButtonBar>
+              <ButtonBarInner>
+                <Button
+                  className="e2e-submit-project-select-form"
+                  size="2"
+                  text={<FormattedMessage {...messages.continueButton} />}
+                  onClick={this.handleOnSubmitClick}
+                  disabled={!selectedProjectId}
+                />
+              </ButtonBarInner>
+            </ButtonBar>
+            <WithoutButtonBar>
               <Button
                 className="e2e-submit-project-select-form"
                 size="2"
@@ -226,19 +243,10 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
                 onClick={this.handleOnSubmitClick}
                 disabled={!selectedProjectId}
               />
-            </ButtonBarInner>
-          </ButtonBar>
-          <WithoutButtonBar>
-            <Button
-              className="e2e-submit-project-select-form"
-              size="2"
-              text={<FormattedMessage {...messages.continueButton} />}
-              onClick={this.handleOnSubmitClick}
-              disabled={!selectedProjectId}
-            />
-          </WithoutButtonBar>
-        </>}
-      </StyledContentContainer>
+            </WithoutButtonBar>
+          </>}
+        </StyledContentContainer>
+      </Container>
     );
   }
 }

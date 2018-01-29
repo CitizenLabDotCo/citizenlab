@@ -491,6 +491,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
           });
         }
 
+        console.log('projectAttributesDiff:');
+        console.log(projectAttributesDiff);
+
         if (!isEmpty(projectAttributesDiff)) {
           if (projectData) {
             await updateProject(projectData.id, projectAttributesDiff);

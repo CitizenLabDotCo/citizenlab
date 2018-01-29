@@ -140,8 +140,8 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
             </HeadRow>
 
             {phases.map((phase, index) => {
-              const startAt = moment(phase.attributes.start_at).format('D MMM YYYY');
-              const endAt = moment(phase.attributes.end_at).format('D MMM YYYY');
+              const startAt = moment(phase.attributes.start_at).format('LL');
+              const endAt = moment(phase.attributes.end_at).format('LL');
 
               return (
                 <Row className={`e2e-phase-line ${phases.length === index + 1 ? 'last' : ''}`} id={`e2e-phase_${phase.id}`} key={phase.id}>

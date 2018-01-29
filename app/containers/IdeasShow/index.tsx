@@ -2,9 +2,6 @@ import * as React from 'react';
 import { has } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
-// libraries
-import * as bowser from 'bowser';
-
 // router
 import { Link, browserHistory } from 'react-router';
 
@@ -351,11 +348,9 @@ const RightColumn = styled.div`
 `;
 
 const RightColumnDesktop: any = RightColumn.extend`
-  &.notSafari {
-    position: sticky;
-    top: 100px;
-    align-self: flex-start;
-  }
+  position: sticky;
+  top: 100px;
+  align-self: flex-start;
 
   ${media.smallerThanMaxTablet`
     display: none;
@@ -582,7 +577,6 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
       const ideaImageMedium = (ideaImage && has(ideaImage, 'data.attributes.versions.medium') ? ideaImage.data.attributes.versions.medium : null);
       const ideaImageLarge = (ideaImage && has(ideaImage, 'data.attributes.versions.large') ? ideaImage.data.attributes.versions.large : null);
-      const isSafari = bowser.safari;
       const ideaLocation = idea.data.attributes.location_point_geojson || null;
       const ideaAdress = idea.data.attributes.location_description || null;
       const projectTitleMultiloc = (project && project.data ? project.data.attributes.title_multiloc : null);
@@ -726,7 +720,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                 {ideaComments && <Comments ideaId={idea.data.id} />}
               </LeftColumn>
 
-              <RightColumnDesktop className={!isSafari ? 'notSafari' : ''}>
+              <RightColumnDesktop>
                 {ideaMetaContent}
               </RightColumnDesktop>
             </Content>

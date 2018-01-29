@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isString } from 'lodash';
 
 // router
 import { browserHistory } from 'react-router';
@@ -100,7 +100,7 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
   componentDidMount() {
     const { token } = this.state;
 
-    if (!_.isString(token)) {
+    if (!isString(token)) {
       browserHistory.push('/');
     } else if (this.passwordInputElement) {
       this.passwordInputElement.focus();

@@ -109,8 +109,8 @@ class AdminProjectTimelineIndex extends React.Component<Props, State> {
               <div className="expand"><FormattedMessage {...messages.titleColumnHeader} /></div>
             </HeadRow>
             {events.map((event) => {
-              const startAt = moment(event.attributes.start_at).format('D MMM YYYY, HH:mm');
-              const endAt = moment(event.attributes.end_at).format('D MMM YYYY, HH:mm');
+              const startAt = moment(event.attributes.start_at).format('LLL');
+              const endAt = moment(event.attributes.end_at).format('LLL');
 
               return (
                 <Row key={event.id}>
