@@ -32,22 +32,11 @@ const greyOpaque = css`rgba(121, 137, 147, 1)`;
 const greenTransparent = css`rgba(29, 170, 99, 0.5)`;
 const greenOpaque = css`rgba(29, 170, 99, 1)`;
 
-const MobileTLContainer = styled.div`
-  width: 100%;
-  display: flex;
-  padding: 30px;
-  align-items: center;
-  justify-content: center;
-`;
-
 const Container = styled.div`
   width: 100%;
   max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
-  background: #fff;
-  border-radius: 5px;
-  border: solid 1px #e4e4e4;
   margin-top: -61px;
 
   * {
@@ -57,12 +46,15 @@ const Container = styled.div`
 
 const Header = styled.div`
   width: 100%;
-  background: #fafafa;
-  border-bottom: solid 1px #e4e4e4;
+  min-height: 60px;
   padding: 10px 28px;
   display: flex;
   justify-content: space-between;
-  min-height: 60px;
+  border: solid 1px #e4e4e4;
+  border-bottom: none;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background: #fafafa;
 `;
 
 const HeaderSection = styled.div`
@@ -146,10 +138,10 @@ const HeaderTitle = styled.div`
 
 const MobileDate = styled.div`
   color: #999;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 20px;
-  font-weight: 300;
-  margin-top: 3px;
+  font-weight: 400;
+  margin-top: 4px;
   display: none;
 
   ${media.smallerThanMaxTablet`
@@ -178,16 +170,32 @@ const HeaderDate = styled.div`
   `}
 `;
 
+const MobileTimelineContainer = styled.div`
+  width: 100%;
+  display: flex;
+  padding: 30px;
+  align-items: center;
+  justify-content: center;
+  border: solid 1px #e4e4e4;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background: #fff;
+`;
+
 const Phases = styled.div`
   width: 100%;
   padding: 0px 30px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 50px;
-  margin-bottom: 40px;
+  padding-top: 50px;
+  padding-bottom: 40px;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+  border: solid 1px #e4e4e4;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background: #fff;
 `;
 
 const phaseBarHeight = '25px';
@@ -298,7 +306,7 @@ const PhaseContainer: any = styled.div`
 
 type Props = {
   projectId: string
-  onPhaseClick: (phaseId: string | null) => void;
+  onPhaseSelected: (phaseId: string | null) => void;
 };
 
 type State = {
@@ -368,8 +376,18 @@ export default class Timeline extends React.PureComponent<Props, State> {
             });
           }
 
+          if (!selectedPhaseId && phases && phases.data.length > 0) {
+            const lastPhase = phases.data[phases.data.length - 1];
+    
+            if (lastPhase && moment().diff(moment(lastPhase.attributes.start_at, 'YYYY-MM-DD'), 'days') <= 0) {
+              this.selectedPhaseId$.next(phases.data[0].id);
+            } else if (lastPhase && moment().diff(moment(lastPhase.attributes.start_at, 'YYYY-MM-DD'), 'days') > 0) {
+              this.selectedPhaseId$.next(lastPhase.id);
+            }
+          }
+
           if (selectedPhaseId !== state.selectedPhaseId) {
-            this.props.onPhaseClick(selectedPhaseId);
+            this.props.onPhaseSelected(selectedPhaseId);
           }
 
           return {
@@ -404,7 +422,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handlePhaseOnClick = (phaseId: string) => (event: React.FormEvent<MouseEvent>) => {
+  setSelectedPhaseId = (phaseId: string) => (event: React.FormEvent<MouseEvent>) => {
     event.preventDefault();
     this.selectedPhaseId$.next(phaseId);
   }
@@ -468,8 +486,6 @@ export default class Timeline extends React.PureComponent<Props, State> {
         }
       }
 
-      // const canPostIdea = (phase.);
-
       return (
         <Container className={className}>
           <Header>
@@ -528,54 +544,53 @@ export default class Timeline extends React.PureComponent<Props, State> {
             </HeaderRightSection>
           </Header>
 
-
-          {/* <ContentContainer> */}
-            <Responsive maxWidth={481} as={MobileTLContainer} >
+          <Responsive maxWidth={481}>
+            <MobileTimelineContainer>
               <MobileTimeline
                 phases={phases.data}
                 currentPhase={currentPhaseId}
                 selectedPhase={selectedPhaseId}
-                onPhaseSelection={this.handlePhaseOnClick}
+                onPhaseSelection={this.setSelectedPhaseId}
               />
-            </Responsive>
+            </MobileTimelineContainer>
+          </Responsive>
 
-            <Responsive minWidth={481}>
-              <Phases>
-                {phases.data.map((phase, index) => {
-                  const phaseTitle = getLocalized(phase.attributes.title_multiloc, locale, currentTenantLocales);
-                  const isFirst = (index === 0);
-                  const isLast = (index === phases.data.length - 1);
-                  const startIsoDate = phase.attributes.start_at;
-                  const endIsoDate = phase.attributes.end_at;
-                  const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
-                  const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
-                  const isCurrentPhase = (phase.id === currentPhaseId);
-                  const isSelectedPhase = (phase.id === selectedPhaseId);
-                  const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;
+          <Responsive minWidth={481}>
+            <Phases>
+              {phases.data.map((phase, index) => {
+                const phaseTitle = getLocalized(phase.attributes.title_multiloc, locale, currentTenantLocales);
+                const isFirst = (index === 0);
+                const isLast = (index === phases.data.length - 1);
+                const startIsoDate = phase.attributes.start_at;
+                const endIsoDate = phase.attributes.end_at;
+                const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
+                const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
+                const isCurrentPhase = (phase.id === currentPhaseId);
+                const isSelectedPhase = (phase.id === selectedPhaseId);
+                const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;
 
-                  return (
-                    <PhaseContainer
-                      className={`${isFirst && 'first'} ${isLast && 'last'} ${isCurrentPhase && 'current'} ${isSelectedPhase && 'selected'}`}
-                      key={index}
-                      numberOfDays={numberOfDays}
-                      onClick={this.handlePhaseOnClick(phase.id)}
+                return (
+                  <PhaseContainer
+                    className={`${isFirst && 'first'} ${isLast && 'last'} ${isCurrentPhase && 'current'} ${isSelectedPhase && 'selected'}`}
+                    key={index}
+                    numberOfDays={numberOfDays}
+                    onClick={this.setSelectedPhaseId(phase.id)}
+                  >
+                    <PhaseBar>
+                      {index + 1}
+                      {!isLast && <PhaseArrow name="phase_arrow" />}
+                    </PhaseBar>
+                    <PhaseText
+                      current={isCurrentPhase}
+                      selected={isSelectedPhase}
                     >
-                      <PhaseBar>
-                        {index + 1}
-                        {!isLast && <PhaseArrow name="phase_arrow" />}
-                      </PhaseBar>
-                      <PhaseText
-                        current={isCurrentPhase}
-                        selected={isSelectedPhase}
-                      >
-                        {phaseTitle}
-                      </PhaseText>
-                    </PhaseContainer>
-                  );
-                })}
-              </Phases>
-            </Responsive>
-          {/* </ContentContainer> */}
+                      {phaseTitle}
+                    </PhaseText>
+                  </PhaseContainer>
+                );
+              })}
+            </Phases>
+          </Responsive>
         </Container>
       );
     }

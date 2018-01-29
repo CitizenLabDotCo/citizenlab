@@ -275,6 +275,23 @@ export default function createRoutes(store) {
       },
       childRoutes: [
         {
+          path: '/projects/:slug/timeline',
+          name: 'Project\'s info page',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/ProjectsShowPage/timeline'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
           path: '/projects/:slug/info',
           name: 'Project\'s info page',
           getComponent(nextState, cb) {
@@ -297,6 +314,23 @@ export default function createRoutes(store) {
           getComponent(nextState, cb) {
             const importModules = Promise.all([
               import('containers/ProjectsShowPage/events'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
+          path: '/projects/:slug/ideas',
+          name: 'Project\'s ideas page',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/ProjectsShowPage/ideas'),
             ]);
 
             const renderRoute = loadModule(cb);

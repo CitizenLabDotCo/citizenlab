@@ -6,6 +6,7 @@ const Wrapper = styled.label`
   flex-direction: row;
   align-items: center;
   margin-bottom: 12px;
+  cursor: pointer;
 `;
 
 const CustomRadio = styled<any, 'div'>('div')`
@@ -22,15 +23,17 @@ const CustomRadio = styled<any, 'div'>('div')`
   border: 1px solid #a6a6a6;
   box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.15);
 
-
-  ${props => props.disabled ? `
-    opacity: 0.5;
-    ` : `
-    cursor: pointer;
-    &:not(.checked):hover {
-      border-color: #000;
-    }
-  `
+  ${props => props.disabled ? 
+    `
+      opacity: 0.5;
+    `
+    :
+    `
+      cursor: pointer;
+      &:not(.checked):hover {
+        border-color: #000;
+      }
+    `
   }
 `;
 

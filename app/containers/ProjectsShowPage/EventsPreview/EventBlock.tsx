@@ -83,7 +83,7 @@ const Date = styled.div`
 const Year = styled.div`
   width: 100%;
   color: #fff;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 300;
   text-align: center;
   padding-top: 10px;
@@ -98,22 +98,25 @@ const TextBlock = styled.div`
   flex: 1;
 `;
 
-const Time = styled.p`
+const Time = styled.div`
   color: ${color('label')};
   font-size: ${fontSize('small')};
+  margin-bottom: 8px;
 `;
 
-const Title = styled.p`
-  color: ${color('text')};
-  font-size: ${fontSize('base')};
+const Title = styled.div`
+  color: #333;
+  font-size: 16px;
+  font-weight: 400;
   line-height: 20px;
 `;
 
-const Location = styled.p`
+const Location = styled.div`
   color: ${color('label')};
   font-size: ${fontSize('small')};
   display: flex;
   align-items: center;
+  display: none;
 `;
 
 const StyledIcon = styled(Icon)`

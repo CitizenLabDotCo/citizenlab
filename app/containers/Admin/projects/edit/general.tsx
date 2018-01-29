@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import * as _ from 'lodash';
+import { isEmpty, get } from 'lodash';
 
 // router
 import { browserHistory } from 'react-router';
@@ -63,6 +63,7 @@ const ProjectType = styled.div`
   font-size: 16px;
   line-height: 20px;
   font-weight: 400;
+  text-transform: capitalize;
 `;
 
 const StyledImagesDropzone = styled(ImagesDropzone)`
@@ -203,7 +204,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         }).switchMap((project) => {
           if (project) {
             const projectImages$ = (project ? projectImagesStream(project.data.id).observable : Rx.Observable.of(null));
-            const headerUrl = _.get(project, 'data.attributes.header_bg.large');
+            const headerUrl = get(project, 'data.attributes.header_bg.large');
             const headerImageFileObservable = (headerUrl ? convertUrlToFileObservable(headerUrl) : Rx.Observable.of(null));
 
             return Rx.Observable.combineLatest(
@@ -284,9 +285,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       submitState: 'enabled',
       noTitleError: null,
       projectAttributesDiff: {
-        ...(state.projectAttributesDiff || {}),
+        ...state.projectAttributesDiff,
         title_multiloc: {
-          ..._.get(state, 'projectAttributesDiff.title_multiloc', {}),
+          ...get(state, 'projectAttributesDiff.title_multiloc', {}),
           [state.locale as string]: newTitle
         }
       }
@@ -319,7 +320,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       projectType,
       submitState: 'enabled',
       projectAttributesDiff: {
-        ...(state.projectAttributesDiff || {}),
+        ...state.projectAttributesDiff,
         process_type: projectType
       }
     }));
@@ -329,7 +330,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     this.setState((state) => ({
       submitState: 'enabled',
       projectAttributesDiff: {
-        ...(state.projectAttributesDiff || {}),
+        ...state.projectAttributesDiff,
         header_bg: newHeader.base64
       },
       headerBg: [newHeader]
@@ -345,7 +346,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     this.setState((state) => ({
       submitState: 'enabled',
       projectAttributesDiff: {
-        ...(state.projectAttributesDiff || {}),
+        ...state.projectAttributesDiff,
         header_bg: null
       },
       headerBg: null
@@ -369,7 +370,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   handleProjectImageOnRemove = async (removedImageFile: ImageFile) => {
     this.setState((state) => ({
       submitState: 'enabled',
-      newProjectImages: (state.newProjectImages ? state.newProjectImages.filter(projectImage => projectImage.objectUrl !== removedImageFile.objectUrl) : null)
+      newProjectImages: (state.newProjectImages ? state.newProjectImages.filter(projectImage => projectImage.base64 !== removedImageFile.base64) : null)
     }));
   }
 
@@ -378,7 +379,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       submitState: 'enabled',
       areaType: value,
       projectAttributesDiff: {
-        ...(state.projectAttributesDiff || {}),
+        ...state.projectAttributesDiff,
         area_ids: (value === 'all' ? [] : state.projectAttributesDiff.area_ids)
       }
     }));
@@ -389,7 +390,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       submitState: 'enabled',
       presentationMode: value,
       projectAttributesDiff: {
-        ...(state.projectAttributesDiff || {}),
+        ...state.projectAttributesDiff,
         presentation_mode: value
       }
     }));
@@ -399,7 +400,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     this.setState((state) => ({
       submitState: 'enabled',
       projectAttributesDiff: {
-        ...(state.projectAttributesDiff || {}),
+        ...state.projectAttributesDiff,
         area_ids: values.map((value) => (value.value))
       }
     }));
@@ -422,9 +423,15 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     this.save(participationContextConfig);
   }
 
-  handleStatusChange = (_event, data): void => {
+  handleStatusChange = (_event, data) => {
     const { value } = data;
-    this.setState({ projectAttributesDiff: { ...this.state.projectAttributesDiff, publication_status: value } });
+
+    this.setState((state) => ({
+      projectAttributesDiff: {
+        ...state.projectAttributesDiff,
+        publication_status: value
+      }
+    }));
   }
 
   validate = () => {
@@ -463,48 +470,63 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         };
       }
 
-      if (!_.isEmpty(projectAttributesDiff)) {
-        try {
-          let redirect = false;
-          let projectId: string | null = null;
-          const imagesToAdd = _.chain(newProjectImages).filter(newProjectImage => !_(oldProjectImages).some(oldProjectImage => oldProjectImage.base64 === newProjectImage.base64)).value();
-          const imagesToRemove = _.chain(oldProjectImages).filter(oldProjectImage => !_(newProjectImages).some(newProjectImage => newProjectImage.base64 === oldProjectImage.base64)).value();
+      try {
+        this.setState({ saved: false });
+        this.processing$.next(true);
 
-          this.setState({ saved: false });
-          this.processing$.next(true);
+        let redirect = false;
+        let projectId: string | null = (projectData ? projectData.id : null);
+        let imagesToAdd: ImageFile[] | null = newProjectImages;
+        let imagesToRemove: ImageFile[] | null = oldProjectImages;
+        let imagesToAddPromises: Promise<any>[] = [];
+        let imagesToRemovePromises: Promise<any>[] = [];
 
+        if (newProjectImages && oldProjectImages) {
+          imagesToAdd = newProjectImages.filter((newProjectImage) => {
+            return !oldProjectImages.some(oldProjectImage => oldProjectImage.base64 === newProjectImage.base64);
+          });
+
+          imagesToRemove = oldProjectImages.filter((oldProjectImage) => {
+            return !newProjectImages.some(newProjectImage => newProjectImage.base64 === oldProjectImage.base64);
+          });
+        }
+
+        if (!isEmpty(projectAttributesDiff)) {
           if (projectData) {
-            projectId = projectData.id;
             await updateProject(projectData.id, projectAttributesDiff);
           } else {
             const project = await addProject(projectAttributesDiff);
             projectId = project.data.id;
             redirect = true;
           }
+        }
 
-          const imagesToAddPromises: Promise<any>[] = _(imagesToAdd).map(imageToAdd => addProjectImage(projectId, imageToAdd.base64)).value();
-          const imagesToRemovePromises: Promise<any>[] = _(imagesToRemove).map(imageToRemove => deleteProjectImage(projectId, imageToRemove['projectImageId'])).value();
+        if (projectId && imagesToAdd && imagesToAdd.length > 0) {
+          imagesToAddPromises = imagesToAdd.map((imageToAdd: any) => addProjectImage(projectId as string, imageToAdd.base64));
+        }
 
-          await Promise.all([...imagesToAddPromises, ...imagesToRemovePromises]);
+        if (projectId && imagesToRemove && imagesToRemove.length > 0) {
+          imagesToRemovePromises = imagesToRemove.map((imageToRemove: any) => deleteProjectImage(projectId as string, imageToRemove.projectImageId));
+        }
 
-          if (redirect) {
-            browserHistory.push(`/admin/projects`);
-          } else {
-            this.setState({
-              saved: true,
-              submitState: 'success'
-            });
+        if (imagesToAddPromises.length > 0 || imagesToRemovePromises.length > 0) {
+          await Promise.all([
+            ...imagesToAddPromises,
+            ...imagesToRemovePromises
+          ]);
+        }
 
-            this.processing$.next(false);
-          }
-        } catch (errors) {
-          this.setState({
-            apiErrors: _.has(errors, 'json.errors') ? errors.json.errors : formatMessage(messages.saveErrorMessage),
-            submitState: 'error'
-          });
-
+        if (redirect) {
+          browserHistory.push(`/admin/projects`);
+        } else {
+          this.setState({ saved: true, submitState: 'success' });
           this.processing$.next(false);
         }
+      } catch (errors) {
+        const apiErrors = get(errors, 'json.errors', formatMessage(messages.saveErrorMessage));
+        const submitState = 'error';
+        this.setState({ apiErrors, submitState });
+        this.processing$.next(false);
       }
     }
   }
@@ -512,16 +534,15 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   deleteProject = async (event) => {
     event.preventDefault();
 
-    if (!this.state.projectData) {
-      return;
-    }
+    const { projectData } = this.state;
+    const { formatMessage } = this.props.intl;
 
-    if (window.confirm(this.props.intl.formatMessage(messages.deleteProjectConfirmation))) {
+    if (projectData && window.confirm(formatMessage(messages.deleteProjectConfirmation))) {
       try {
-        await deleteProject(this.state.projectData.id);
+        await deleteProject(projectData.id);
         browserHistory.push('/admin/projects');
       } catch {
-        this.setState({ deleteError: this.props.intl.formatMessage(messages.deleteProjectError) });
+        this.setState({ deleteError: formatMessage(messages.deleteProjectError) });
       }
     }
   }

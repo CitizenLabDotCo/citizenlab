@@ -13,7 +13,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
-// import { Transition } from 'react-transition-group';
 import EventBlock from './EventBlock';
 import Button from 'components/UI/Button';
 import ContentContainer from 'components/ContentContainer';
@@ -22,11 +21,9 @@ import ContentContainer from 'components/ContentContainer';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const Background = styled(ContentContainer)`
+const Container = styled.div`
   width: 100%;
   background: #f9f9f9;
-  box-sizing: border-box;
-  overflow: hidden;
   padding-top: 80px;
   padding-bottom: 90px;
 `;
@@ -110,27 +107,28 @@ export default class EventsPreview extends React.Component<Props, State> {
   }
 
   render() {
-    // const emptySpaceCount = Math.max(0, 3 - this.state.events.length);
     const { projectSlug, events } = this.state;
 
     if (projectSlug && events && events.length > 0) {
       return (
-        <Background className={`e2e-events-preview`}>
-          <Header>
-            <h2>
-              <FormattedMessage {...messages.upcomingEvents} />
-            </h2>
-            <Button circularCorners={false} style="primary-outlined" linkTo={`/projects/${projectSlug}/events`}>
-              <FormattedMessage {...messages.allEvents} />
-            </Button>
-          </Header>
+        <Container className={`e2e-events-preview`}>
+          <ContentContainer>
+            <Header>
+              <h2>
+                <FormattedMessage {...messages.upcomingEvents} />
+              </h2>
+              <Button circularCorners={false} style="primary-outlined" linkTo={`/projects/${projectSlug}/events`}>
+                <FormattedMessage {...messages.allEvents} />
+              </Button>
+            </Header>
 
-          <Events>
-            {events.slice(0, 3).map((event, index) => (
-              <EventBlock event={event} key={event.id} projectSlug={projectSlug} isLast={(index === 2)} />
-            ))}
-          </Events>
-        </Background>
+            <Events>
+              {events.slice(0, 3).map((event, index) => (
+                <EventBlock event={event} key={event.id} projectSlug={projectSlug} isLast={(index === 2)} />
+              ))}
+            </Events>
+          </ContentContainer>
+        </Container>
       );      
     }
 
