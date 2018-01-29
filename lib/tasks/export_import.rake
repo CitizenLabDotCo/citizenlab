@@ -35,9 +35,8 @@ namespace :migrate do
 
   task :import, [:host,:file] => [:environment] do |t, args|
     host = args[:host] ## 'vancouver_citizenlab_co'
-    yml_models = YAML.load_file args[:file] ## 'temp/vancouver.yml'
     Apartment::Tenant.switch(host.gsub('.', '_')) do
-        puts "Number of ideas: #{Idea.count}"
+      TenantTemplateService.new.apply_template args[:file], is_path=true ## 'tmp/vancouver.yml'
     end
   end
 
