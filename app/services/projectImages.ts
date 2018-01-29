@@ -31,10 +31,10 @@ export function projectImageStream(projectId: string, imageId: string, streamPar
   return streams.get<IProjectImage>({ apiEndpoint: `${apiEndpoint}/${projectId}/images/${imageId}`, ...streamParams });
 }
 
-export function addProjectImage(projectId, base64) {
+export function addProjectImage(projectId: string, base64: string) {
   return streams.add<IProjectImage>(`${apiEndpoint}/${projectId}/images`, { image: { image: base64 } });
 }
 
-export function deleteProjectImage(projectId, imageId) {
+export function deleteProjectImage(projectId: string, imageId: string) {
   return streams.delete(`${apiEndpoint}/${projectId}/images/${imageId}`, imageId);
 }

@@ -4,7 +4,7 @@ import { isString } from 'lodash';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import Ideas from '../Ideas';
+import Ideas from '../ideas/Ideas';
 
 // services
 import { localeStream } from 'services/locale';
@@ -23,8 +23,12 @@ import styled from 'styled-components';
 // typings
 import { Locale } from 'typings';
 
+const StyledContentContainer = styled(ContentContainer)`
+  padding-bottom: 70px;
+`;
+
 const Information = styled.div`
-  margin-top: 40px;
+  margin-top: 45px;
   margin-bottom: 20px;
 `;
 
@@ -43,6 +47,10 @@ const InformationBody = styled.div`
   strong {
     font-weight: 500;
   }
+`;
+
+const IdeasWrapper = styled.div`
+  margin-top: 60px;
 `;
 
 type Props = {
@@ -102,12 +110,14 @@ export default class Phase extends React.PureComponent<Props, State> {
       const description = getLocalized(phase.data.attributes.description_multiloc, locale, currentTenantLocales);
 
       return (
-        <ContentContainer className={className}>
+        <StyledContentContainer className={className}>
           {(description && description.length > 0) &&
             <Information>
-              {/* <InformationTitle>
+              {/*
+              <InformationTitle>
                 <FormattedMessage {...messages.aboutThisPhase} />
-              </InformationTitle> */}
+              </InformationTitle>
+              */}
               <InformationBody>
                 <span dangerouslySetInnerHTML={{ __html: description }} />
               </InformationBody>
@@ -115,9 +125,11 @@ export default class Phase extends React.PureComponent<Props, State> {
           }
 
           {participationMethod === 'ideation' &&
-            <Ideas type="phase" id={phase.data.id} />
+            <IdeasWrapper>
+              <Ideas type="phase" id={phase.data.id} />
+            </IdeasWrapper>
           }
-        </ContentContainer>
+        </StyledContentContainer>
       );
     }
 
