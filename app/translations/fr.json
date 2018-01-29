@@ -15,7 +15,7 @@
   "app.components.IdeaCards.suggestIdea": "Soyez le premier à en ajouter une !",
   "app.components.IdeaForm.descriptionEmptyError": "Veuillez fournir une description",
   "app.components.IdeaForm.descriptionLabel": "Description",
-  "app.components.IdeaForm.descriptionPlaceholder": "Entrez la description de votre idée : quelle est-elle ? Donnez autant de détails que possible : quel problème résout-elle ou qu'est ce qu'elle améliore ? Qu'est-ce qui est nécessaire à sa mise en place (budget, temps, individus pour vous aider, etc.) ?",
+  "app.components.IdeaForm.descriptionPlaceholder": "Entrez la description de votre idée : quelle est-elle ? \nDonnez autant de détails que possible: \n- Quel problème résout-elle ou qu'est ce qu'elle améliore ? \n- Qu'est-ce qui est nécessaire à sa mise en place (budget, temps, individus pour vous aider, etc.) ?",
   "app.components.IdeaForm.imageUploadLabel": "Image",
   "app.components.IdeaForm.imageUploadPlaceholder": "Choisissez une image qui illustre votre idée",
   "app.components.IdeaForm.locationLabel": "Emplacement",
