@@ -13,7 +13,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
-// import { Transition } from 'react-transition-group';
 import EventBlock from './EventBlock';
 import Button from 'components/UI/Button';
 import ContentContainer from 'components/ContentContainer';
@@ -108,7 +107,6 @@ export default class EventsPreview extends React.Component<Props, State> {
   }
 
   render() {
-    // const emptySpaceCount = Math.max(0, 3 - this.state.events.length);
     const { projectSlug, events } = this.state;
 
     if (projectSlug && events && events.length > 0) {
