@@ -2,6 +2,9 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import { isString } from 'lodash';
 
+// router
+import { browserHistory } from 'react-router';
+
 // components
 import Timeline from './Timeline';
 import Phase from './Phase';
@@ -26,7 +29,7 @@ type State = {
   phaseId: string | null;
 };
 
-export default class ProjectPhasesPage extends React.PureComponent<Props, State> {
+export default class ProjectTimelinePage extends React.PureComponent<Props, State> {
   slug$: Rx.BehaviorSubject<string>;
   subscriptions: Rx.Subscription[];
 
@@ -46,8 +49,12 @@ export default class ProjectPhasesPage extends React.PureComponent<Props, State>
     this.subscriptions = [
       this.slug$.distinctUntilChanged().filter(slug => isString(slug)).switchMap((slug) => {
         const project$ = projectBySlugStream(slug).observable;
-        return project$;
-      }).subscribe((project) => {
+        return project$.map((project) => ({ slug, project }));
+      }).subscribe(({ slug, project }) => {
+        if (project.data.attributes.process_type !== 'timeline') {
+          browserHistory.push(`/projects/${slug}/info`);
+        }
+
         this.setState({ projectId: project.data.id });
       })
     ];

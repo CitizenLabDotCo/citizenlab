@@ -275,6 +275,23 @@ export default function createRoutes(store) {
       },
       childRoutes: [
         {
+          path: '/projects/:slug/timeline',
+          name: 'Project\'s info page',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/ProjectsShowPage/timeline'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
           path: '/projects/:slug/info',
           name: 'Project\'s info page',
           getComponent(nextState, cb) {

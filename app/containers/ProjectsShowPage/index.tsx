@@ -3,7 +3,7 @@ import * as Rx from 'rxjs/Rx';
 import { isString } from 'lodash';
 
 // router
-import { Link, browserHistory } from 'react-router';
+import { Link } from 'react-router';
 
 // components
 import Meta from './Meta';
@@ -263,8 +263,9 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
       const projectSlug = project.data.attributes.slug;
       const projectHeaderImageLarge = (project.data.attributes.header_bg.large || null);
       const projectType = project.data.attributes.process_type;
-      const currentLocation = browserHistory.getCurrentLocation();
-      const { pathname } = currentLocation;
+      // const currentLocation = browserHistory.getCurrentLocation();
+      // const { pathname } = currentLocation;
+      // const isContinuousProject = (project.data.attributes.process_type === 'continuous');
 
       return (
         <React.Fragment>
@@ -292,8 +293,8 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
                     <HeaderButtons>
                       {project && project.data.attributes.process_type === 'timeline' &&
                         <HeaderButton
-                          to={`/projects/${projectSlug}`}
-                          className={pathname === `/projects/${projectSlug}` ? 'active' : ''}
+                          to={`/projects/${projectSlug}/timeline`}
+                          activeClassName="active"
                         >
                           <HeaderButtonIconWrapper>
                             <HeaderButtonIcon name="timeline" />
@@ -306,7 +307,7 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
 
                       <HeaderButton
                         to={`/projects/${projectSlug}/info`}
-                        className={(pathname === `/projects/${projectSlug}/info` || project.data.attributes.process_type === 'continuous' && pathname === `/projects/${projectSlug}`) ? 'active' : ''}
+                        activeClassName="active"
                       >
                         <HeaderButtonIconWrapper>
                           <HeaderButtonIcon name="info2" />
@@ -318,7 +319,7 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
 
                       <HeaderButton
                         to={`/projects/${projectSlug}/events`}
-                        className={pathname === `/projects/${projectSlug}/events` ? 'active' : ''}
+                        activeClassName="active"
                       >
                         <HeaderButtonIconWrapper>
                           <HeaderButtonIcon name="calendar" />
@@ -331,7 +332,7 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
                       {project && project.data.attributes.process_type === 'continuous' &&
                         <HeaderButton
                           to={`/projects/${projectSlug}/ideas`}
-                          className={pathname === `/projects/${projectSlug}/ideas` ? 'active' : ''}
+                          activeClassName="active"
                         >
                           <HeaderButtonIconWrapper>
                             <HeaderButtonIcon name="idea" />
