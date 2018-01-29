@@ -49,6 +49,10 @@ const InformationBody = styled.div`
   }
 `;
 
+const IdeasWrapper = styled.div`
+  margin-top: 60px;
+`;
+
 type Props = {
   phaseId: string
 };
@@ -121,7 +125,9 @@ export default class Phase extends React.PureComponent<Props, State> {
           }
 
           {participationMethod === 'ideation' &&
-            <Ideas type="phase" id={phase.data.id} />
+            <IdeasWrapper>
+              <Ideas type="phase" id={phase.data.id} />
+            </IdeasWrapper>
           }
         </StyledContentContainer>
       );

@@ -306,7 +306,7 @@ const PhaseContainer: any = styled.div`
 
 type Props = {
   projectId: string
-  onPhaseClick: (phaseId: string | null) => void;
+  onPhaseSelected: (phaseId: string | null) => void;
 };
 
 type State = {
@@ -376,8 +376,18 @@ export default class Timeline extends React.PureComponent<Props, State> {
             });
           }
 
+          if (!selectedPhaseId && phases && phases.data.length > 0) {
+            const lastPhase = phases.data[phases.data.length - 1];
+    
+            if (lastPhase && moment().diff(moment(lastPhase.attributes.start_at, 'YYYY-MM-DD'), 'days') <= 0) {
+              this.selectedPhaseId$.next(phases.data[0].id);
+            } else if (lastPhase && moment().diff(moment(lastPhase.attributes.start_at, 'YYYY-MM-DD'), 'days') > 0) {
+              this.selectedPhaseId$.next(lastPhase.id);
+            }
+          }
+
           if (selectedPhaseId !== state.selectedPhaseId) {
-            this.props.onPhaseClick(selectedPhaseId);
+            this.props.onPhaseSelected(selectedPhaseId);
           }
 
           return {
@@ -412,7 +422,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handlePhaseOnClick = (phaseId: string) => (event: React.FormEvent<MouseEvent>) => {
+  setSelectedPhaseId = (phaseId: string) => (event: React.FormEvent<MouseEvent>) => {
     event.preventDefault();
     this.selectedPhaseId$.next(phaseId);
   }
@@ -540,7 +550,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
                 phases={phases.data}
                 currentPhase={currentPhaseId}
                 selectedPhase={selectedPhaseId}
-                onPhaseSelection={this.handlePhaseOnClick}
+                onPhaseSelection={this.setSelectedPhaseId}
               />
             </MobileTimelineContainer>
           </Responsive>
@@ -564,7 +574,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
                     className={`${isFirst && 'first'} ${isLast && 'last'} ${isCurrentPhase && 'current'} ${isSelectedPhase && 'selected'}`}
                     key={index}
                     numberOfDays={numberOfDays}
-                    onClick={this.handlePhaseOnClick(phase.id)}
+                    onClick={this.setSelectedPhaseId(phase.id)}
                   >
                     <PhaseBar>
                       {index + 1}

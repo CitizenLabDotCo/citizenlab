@@ -152,10 +152,10 @@ const HeaderButton = styled(Link)`
   justify-content: flex-start;
   border-radius: 5px;
   padding: 14px 20px;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin-top: 6px;
+  margin-bottom: 6px;
   cursor: pointer;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.5);
   transition: all 80ms ease-out;
 
   &.active {
@@ -171,9 +171,8 @@ const HeaderButton = styled(Link)`
   }
 
   &:not(.active):hover {
-    color: #fff;
     text-decoration: none;
-    background: rgba(0, 0, 0, 0.9);
+    background: #000;
   }
 `;
 
@@ -307,7 +306,7 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
 
                       <HeaderButton
                         to={`/projects/${projectSlug}/info`}
-                        className={pathname === `/projects/${projectSlug}/info` ? 'active' : ''}
+                        className={(pathname === `/projects/${projectSlug}/info` || project.data.attributes.process_type === 'continuous' && pathname === `/projects/${projectSlug}`) ? 'active' : ''}
                       >
                         <HeaderButtonIconWrapper>
                           <HeaderButtonIcon name="info2" />

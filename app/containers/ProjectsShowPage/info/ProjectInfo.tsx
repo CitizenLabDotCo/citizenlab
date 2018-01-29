@@ -3,8 +3,8 @@ import 'moment-timezone';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
-import ContentContainer from 'components/ContentContainer';
-import EventsPreview from '../EventsPreview';
+// import ContentContainer from 'components/ContentContainer';
+// import EventsPreview from '../EventsPreview';
 // import Ideas from '../Ideas';
 import ImageZoom from 'react-medium-image-zoom';
 
@@ -132,12 +132,11 @@ type Props = {
   className?: string;
 };
 
-type State = {
-};
+type State = {};
 
 class ProjectInfo extends React.PureComponent<Props & WithRouterProps, State> {
-  constructor(props) {
-    super(props);
+  constructor(props: Props) {
+    super(props as any);
     this.state = {};
   }
 
@@ -147,31 +146,25 @@ class ProjectInfo extends React.PureComponent<Props & WithRouterProps, State> {
         {({ project, images }: {project: IProjectData, images: IProjectImageData[]}) => {
           if (project) {
             return (
-              <React.Fragment>
-                <ContentContainer className={this.props.className}>
-                  <Container>
-                    <Left>
-                      <IdeaBodyStyled>
-                        <T value={project.attributes.description_multiloc} />
-                      </IdeaBodyStyled>
-                    </Left>
+              <Container>
+                <Left>
+                  <IdeaBodyStyled>
+                    <T value={project.attributes.description_multiloc} />
+                  </IdeaBodyStyled>
+                </Left>
 
-                    <Right>
-                      <ProjectImages>
-                        {images.length > 0 && images.filter((image) => image).map((image) => (
-                          <ImageZoom
-                            key={image.id}
-                            image={{ src: image.attributes.versions.large }}
-                            zoomImage={{ src: image.attributes.versions.large }}
-                          />
-                        ))}
-                      </ProjectImages>
-                    </Right>
-                  </Container>
-                </ContentContainer>
-
-                <EventsPreview projectId={project.id} />
-              </React.Fragment>
+                <Right>
+                  <ProjectImages>
+                    {images.length > 0 && images.filter((image) => image).map((image) => (
+                      <ImageZoom
+                        key={image.id}
+                        image={{ src: image.attributes.versions.large }}
+                        zoomImage={{ src: image.attributes.versions.large }}
+                      />
+                    ))}
+                  </ProjectImages>
+                </Right>
+              </Container>
             );
           } else {
             return null;
