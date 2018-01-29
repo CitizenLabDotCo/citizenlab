@@ -53,6 +53,7 @@ type Props = {
 
 type State = {
   events: IEvents | null;
+  loaded: boolean;
 };
 
 export default class ProjectEventsPage extends React.PureComponent<Props, State> {
@@ -62,7 +63,8 @@ export default class ProjectEventsPage extends React.PureComponent<Props, State>
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      events: null
+      events: null,
+      loaded: false
     };
     this.slug$ = new Rx.BehaviorSubject(null as any);
     this.subscriptions = [];
@@ -79,7 +81,7 @@ export default class ProjectEventsPage extends React.PureComponent<Props, State>
         const events$ = eventsStream(project.data.id).observable;
         return events$;
       }).subscribe((events) => {
-        this.setState({ events });
+        this.setState({ events, loaded: true });
       })
     ];
   }
@@ -94,7 +96,7 @@ export default class ProjectEventsPage extends React.PureComponent<Props, State>
 
   render() {
     const className = this.props['className'];
-    const { events } = this.state;
+    const { events, loaded } = this.state;
 
     const pastEvents = (events ? events.data.filter((event) => {
       return moment().diff(moment(event.attributes.start_at, 'YYYY-MM-DD'), 'days') > 0;
@@ -104,42 +106,40 @@ export default class ProjectEventsPage extends React.PureComponent<Props, State>
       return moment().diff(moment(event.attributes.start_at, 'YYYY-MM-DD'), 'days') <= 0;
     }) : null);
 
-    if (events && events.data && events.data.length > 0) {
+    if (loaded) {
       return (
         <Container>
-          {/* <StyledContentContainer> */}
-            <Events>
-              <Title>
-                <FormattedMessage {...messages.upcomingEvents} />
-              </Title>
+          <Events>
+            <Title>
+              <FormattedMessage {...messages.upcomingEvents} />
+            </Title>
 
-              {(upcomingEvents && upcomingEvents.length > 0) ? (
-                <EventList className={className}>
-                  {upcomingEvents.map(event => <Event key={event.id} eventId={event.id} />)}
-                </EventList>
-              ) : (
-                <NoEvents>
-                  <FormattedMessage {...messages.noUpcomingEvents} />
-                </NoEvents>
-              )}
-            </Events>
+            {(upcomingEvents && upcomingEvents.length > 0) ? (
+              <EventList className={className}>
+                {upcomingEvents.map(event => <Event key={event.id} eventId={event.id} />)}
+              </EventList>
+            ) : (
+              <NoEvents>
+                <FormattedMessage {...messages.noUpcomingEvents} />
+              </NoEvents>
+            )}
+          </Events>
 
-            <Events>
-              <Title>
-                <FormattedMessage {...messages.pastEvents} />
-              </Title>
+          <Events>
+            <Title>
+              <FormattedMessage {...messages.pastEvents} />
+            </Title>
 
-              {(pastEvents && pastEvents.length > 0) ? (
-                <EventList className={className}>
-                  {pastEvents.map(event => <Event key={event.id} eventId={event.id} />)}
-                </EventList>
-              ) : (
-                <NoEvents>
-                  <FormattedMessage {...messages.noPastEvents} />
-                </NoEvents>
-              )}
-            </Events>
-          {/* </StyledContentContainer> */}
+            {(pastEvents && pastEvents.length > 0) ? (
+              <EventList className={className}>
+                {pastEvents.map(event => <Event key={event.id} eventId={event.id} />)}
+              </EventList>
+            ) : (
+              <NoEvents>
+                <FormattedMessage {...messages.noPastEvents} />
+              </NoEvents>
+            )}
+          </Events>
         </Container>
       );
     }

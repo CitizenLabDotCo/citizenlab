@@ -20,6 +20,7 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   padding-top: 70px;
+  padding-bottom: 70px;
 `;
 
 const IdeasTitle = styled.h1`
@@ -28,7 +29,7 @@ const IdeasTitle = styled.h1`
   line-height: 35px;
   font-weight: 600;
   margin-top: 40px;
-  margin-bottom: 15px;
+  margin-bottom: 30px;
 `;
 
 type Props = {
@@ -91,8 +92,8 @@ export default class ProjectIdeasPage extends React.PureComponent<Props, State> 
               <FormattedMessage {...messages.ideasTitle} />
             </IdeasTitle>
             <Ideas type="project" id={project.data.id} />
-            <EventsPreview projectId={project.data.id} />
           </ContentContainer>
+          <EventsPreview projectId={project.data.id} />
         </Container>
       );
     }

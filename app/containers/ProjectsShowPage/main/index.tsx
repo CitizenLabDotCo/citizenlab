@@ -61,9 +61,9 @@ export default class timeline extends React.PureComponent<Props, State> {
       return (
         <>
           {project.data.attributes.process_type === 'timeline' ? (
-            <ProjectPhasesPage projectId={project.data.id} />
+            <ProjectPhasesPage {...this.props} />
           ) : (
-            <ProjectInfoPage projectId={project.data.id} />
+            <ProjectInfoPage {...this.props} />
           )}
         </>
       );

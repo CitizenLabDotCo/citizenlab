@@ -107,6 +107,6 @@ export default defineMessages({
   },
   ideasTitle: {
     id: 'app.containers.Projects.ideasTitle',
-    defaultMessage: 'Ideas for this project',
+    defaultMessage: 'Ideas',
   },
 });
