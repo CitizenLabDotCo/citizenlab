@@ -6,6 +6,7 @@ import { withRouter, RouterState } from 'react-router';
 
 // components
 import IdeasShow from 'containers/IdeasShow';
+import Spinner from 'components/UI/Spinner';
 
 // services
 import { ideaBySlugStream } from 'services/ideas';
@@ -13,6 +14,18 @@ import { ideaBySlugStream } from 'services/ideas';
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
+
+const Loading = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+`;
 
 const Container = styled.div`
   background: #fff;
@@ -31,24 +44,35 @@ type Props = {
 
 type State = {
   ideaId: string | null;
+  loaded: boolean;
 };
 
 class IdeasShowPage extends React.PureComponent<Props & RouterState, State> {
   state: State;
   slug$: Rx.BehaviorSubject<string> | null;
-  subscription: Rx.Subscription | null;
+  subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
     super(props as any);
-    this.state = { ideaId: null };
+    this.state = {
+      ideaId: null,
+      loaded: false
+    };
     this.slug$ = null;
-    this.subscription = null;
+    this.subscriptions = [];
   }
 
   componentWillMount() {
     this.slug$ = new Rx.BehaviorSubject(this.props.params.slug);
+
     const ideaId$ = this.slug$.switchMap(slug => ideaBySlugStream(slug).observable.map(idea => idea.data.id));
-    this.subscription = ideaId$.subscribe(ideaId => this.setState({ ideaId }));
+
+    this.subscriptions = [
+      ideaId$.subscribe(ideaId => this.setState({
+        ideaId,
+        loaded: true
+      }))
+    ];
   }
 
   componentWillReceiveProps(newProps) {
@@ -58,20 +82,24 @@ class IdeasShowPage extends React.PureComponent<Props & RouterState, State> {
   }
 
   componentWillUnmount() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      this.subscription = null;
-    }
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   render() {
-    const { ideaId } = this.state;
+    const { ideaId, loaded } = this.state;
 
-    if (ideaId !== null) {
+    if (!loaded) {
+      return (
+        <Loading>
+          <Spinner size="30px" color="#666" />
+        </Loading>
+      );
+    }
+
+    if (loaded && ideaId !== null) {
       return (
         <Container>
           <IdeasShow ideaId={ideaId} />
-          {/* <Footer showCityLogoSection={false} /> */}
         </Container>
       );
     }

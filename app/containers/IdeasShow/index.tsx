@@ -95,17 +95,13 @@ const ProjectLink = styled(Link)`
   font-weight: 400;
   font-size: inherit;
   line-height: inherit;
+  text-decoration: underline;
   transition: all 100ms ease-out;
   margin-left: 4px;
 
   &:hover {
     color: ${(props) => darken(0.2, props.theme.colors.label)};
-    text-decoration: underline;
   }
-
-  ${media.smallerThanMaxTablet`
-    text-decoration: underline;
-  `}
 `;
 
 const Header = styled.div`

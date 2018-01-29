@@ -3,7 +3,7 @@ import * as Rx from 'rxjs/Rx';
 import { isString } from 'lodash';
 
 // router
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 
 // components
 import Meta from './Meta';
@@ -36,19 +36,22 @@ const Header = styled.div`
   width: 100%;
   height: 350px;
   display: flex;
+  align-items: center;
+  justify-content: center;
   padding-left: 30px;
   padding-right: 30px;
   position: relative;
 
   ${media.smallerThanMaxTablet`
-    padding-left: 0px;
-    padding-right: 0px;
+    padding: 0;
   `}
 
-  ${media.smallerThanMinTablet`
-    height: auto;
-    padding-bottom: 120px;
-  `}
+  &.timeline {
+    ${media.smallerThanMaxTablet`
+      height: 400px;
+      padding: 0;
+    `}
+  }
 `;
 
 const HeaderContent = styled.div`
@@ -56,10 +59,14 @@ const HeaderContent = styled.div`
   height: 100%;
   display: flex;
   justify-content: space-between;
-  margin-top: 75px;
 
-  ${media.smallerThanMinTablet`
+  &.timeline {
+    margin-top: -65px;
+  }
+
+  ${media.smallerThanMaxTablet`
     flex-direction: column;
+    justify-content: flex-start;
   `}
 `;
 
@@ -68,7 +75,7 @@ const HeaderContentLeft = styled.div`
   margin-right: 30px;
   max-width: 500px;
 
-  ${media.biggerThanMinTablet`
+  ${media.biggerThanMaxTablet`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -76,71 +83,46 @@ const HeaderContentLeft = styled.div`
 `;
 
 const HeaderContentRight = styled.div`
-  ${media.biggerThanMinTablet`
+  ${media.biggerThanMaxTablet`
     display: flex;
     align-items: center;
     justify-content: right;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     margin-top: 20px;
   `}
 `;
 
-const HeaderLabel = styled.div`
-  color: #fff;
-  font-size: 16px;
-  font-weight: 300;
-  text-align: left;
-  margin: 0;
-  padding: 0;
-  z-index: 2;
-`;
+// const HeaderLabel = styled.div`
+//   color: #fff;
+//   font-size: 16px;
+//   font-weight: 300;
+//   text-align: left;
+//   margin: 0;
+//   padding: 0;
+//   z-index: 2;
+// `;
 
 const HeaderTitle = styled.div`
   color: #fff;
   font-size: 42px;
-  line-height: 48px;
+  line-height: 46px;
   font-weight: 500;
   text-align: left;
   margin: 0;
-  margin-top: 10px;
   padding: 0;
   z-index: 2;
 
   ${media.smallerThanMaxTablet`
-    font-size: 36px;
-    line-height: 42px;
-  `}
-
-  ${media.smallerThanMinTablet`
     font-weight: 600;
-    font-size: 34px;
-    line-height: 40px;
+    font-size: 31px;
+    line-height: 36px;
   `}
 `;
 
 const HeaderButtons = styled.div`
   min-width: 200px;
-`;
-
-const HeaderButton = styled(Link)`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  border-radius: 5px;
-  padding: 14px 20px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  cursor: pointer;
-  background: rgba(0, 0, 0, 0.65);
-  transition: all 80ms ease-out;
-
-  &:hover {
-    color: #fff;
-    text-decoration: none;
-    background: rgba(0, 0, 0, 0.9);
-  }
 `;
 
 const HeaderButtonIconWrapper = styled.div`
@@ -162,6 +144,37 @@ const HeaderButtonText = styled.div`
   font-weight: 400;
   text-decoration: none;
   white-space: nowrap;
+`;
+
+const HeaderButton = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 5px;
+  padding: 14px 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.65);
+  transition: all 80ms ease-out;
+
+  &.active {
+    background: #fff;
+
+    ${HeaderButtonIcon} {
+      fill: #333;
+    }
+
+    ${HeaderButtonText} {
+      color: #333;
+    }
+  }
+
+  &:not(.active):hover {
+    color: #fff;
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0.9);
+  }
 `;
 
 const HeaderOverlay = styled.div`
@@ -250,21 +263,26 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
       const { children } = this.props;
       const projectSlug = project.data.attributes.slug;
       const projectHeaderImageLarge = (project.data.attributes.header_bg.large || null);
+      const projectType = project.data.attributes.process_type;
+      const currentLocation = browserHistory.getCurrentLocation();
+      const { pathname } = currentLocation;
 
       return (
         <React.Fragment>
           <Meta projectSlug={projectSlug} />
 
           <Container>
-            <Header>
+            <Header className={projectType}>
               <HeaderImage src={projectHeaderImageLarge} />
               <HeaderOverlay />
               <ContentContainer>
-                <HeaderContent>
+                <HeaderContent className={projectType}>
                   <HeaderContentLeft>
+                    {/*
                     <HeaderLabel>
                       <FormattedMessage {...messages.project} />
                     </HeaderLabel>
+                    */}
 
                     <HeaderTitle>
                       <T value={project.data.attributes.title_multiloc} />
@@ -273,23 +291,57 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
 
                   <HeaderContentRight>
                     <HeaderButtons>
-                      <HeaderButton to={`/projects/${projectSlug}/info`}>
+                      {project && project.data.attributes.process_type === 'timeline' &&
+                        <HeaderButton
+                          to={`/projects/${projectSlug}`}
+                          className={pathname === `/projects/${projectSlug}` ? 'active' : ''}
+                        >
+                          <HeaderButtonIconWrapper>
+                            <HeaderButtonIcon name="timeline" />
+                          </HeaderButtonIconWrapper>
+                          <HeaderButtonText>
+                            <FormattedMessage {...messages.navTimeline} />
+                          </HeaderButtonText>
+                        </HeaderButton>
+                      }
+
+                      <HeaderButton
+                        to={`/projects/${projectSlug}/info`}
+                        className={pathname === `/projects/${projectSlug}/info` ? 'active' : ''}
+                      >
                         <HeaderButtonIconWrapper>
                           <HeaderButtonIcon name="info2" />
                         </HeaderButtonIconWrapper>
                         <HeaderButtonText>
-                          <FormattedMessage {...messages.projectInformation} />
+                          <FormattedMessage {...messages.navInformation} />
                         </HeaderButtonText>
                       </HeaderButton>
 
-                      <HeaderButton to={`/projects/${projectSlug}/events`}>
+                      <HeaderButton
+                        to={`/projects/${projectSlug}/events`}
+                        className={pathname === `/projects/${projectSlug}/events` ? 'active' : ''}
+                      >
                         <HeaderButtonIconWrapper>
                           <HeaderButtonIcon name="calendar" />
                         </HeaderButtonIconWrapper>
                         <HeaderButtonText>
-                          <FormattedMessage {...messages.events} />
+                          <FormattedMessage {...messages.navEvents} />
                         </HeaderButtonText>
                       </HeaderButton>
+
+                      {project && project.data.attributes.process_type === 'continuous' &&
+                        <HeaderButton
+                          to={`/projects/${projectSlug}/ideas`}
+                          className={pathname === `/projects/${projectSlug}/ideas` ? 'active' : ''}
+                        >
+                          <HeaderButtonIconWrapper>
+                            <HeaderButtonIcon name="idea" />
+                          </HeaderButtonIconWrapper>
+                          <HeaderButtonText>
+                            <FormattedMessage {...messages.navIdeas} />
+                          </HeaderButtonText>
+                        </HeaderButton>
+                      }
                     </HeaderButtons>
                   </HeaderContentRight>
                 </HeaderContent>

@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.Projects.projectInformation',
     defaultMessage: 'Project information',
   },
+  information: {
+    id: 'app.containers.Projects.information',
+    defaultMessage: 'Information',
+  },
   events: {
     id: 'app.containers.Projects.events',
     defaultMessage: 'Events',
@@ -29,9 +33,9 @@ export default defineMessages({
     id: 'app.containers.Projects.helmetDescription',
     defaultMessage: 'Project Show page listing',
   },
-  navInfo: {
-    id: 'app.containers.Projects.navInfo',
-    defaultMessage: 'Info',
+  navInformation: {
+    id: 'app.containers.Projects.navInformation',
+    defaultMessage: 'Information',
   },
   navIdeas: {
     id: 'app.containers.Projects.navIdeas',
@@ -100,5 +104,9 @@ export default defineMessages({
   aboutThisPhase: {
     id: 'app.containers.Projects.aboutThisPhase',
     defaultMessage: 'About this phase',
+  },
+  ideasTitle: {
+    id: 'app.containers.Projects.ideasTitle',
+    defaultMessage: 'Ideas for this project',
   },
 });
