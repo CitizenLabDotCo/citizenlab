@@ -235,11 +235,20 @@ class ProjectCard extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  getProjectUrl = (project: IProject) => {
+    const projectType = project.data.attributes.process_type;
+    const rootProjectUrl = `/projects/${project.data.attributes.slug}`;
+    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/timeline` : `${rootProjectUrl}/info`);
+
+    return projectUrl;
+  }
+
   goToProject = () => {
     const { project } = this.state;
 
     if (project) {
-      browserHistory.push(`/projects/${project.data.attributes.slug}`);
+      const projectUrl = this.getProjectUrl(project);
+      browserHistory.push(projectUrl);
     }
   }
 
@@ -251,9 +260,10 @@ class ProjectCard extends React.PureComponent<Props, State> {
       const titleMultiloc = project.data.attributes.title_multiloc;
       const preview = getLocalized(project.data.attributes.description_preview_multiloc, locale, currentTenantLocales);
       const imageUrl = (projectImage ? projectImage.data.attributes.versions.medium : null);
+      const projectUrl = this.getProjectUrl(project);
 
       return (
-        <Container to={`/projects/${project.data.attributes.slug}`}>
+        <Container to={projectUrl}>
           {imageUrl && <ProjectImage imageSrc={imageUrl} />}
 
           {!imageUrl &&
