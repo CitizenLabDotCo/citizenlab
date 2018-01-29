@@ -3,9 +3,6 @@ import 'moment-timezone';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
-// import ContentContainer from 'components/ContentContainer';
-// import EventsPreview from '../EventsPreview';
-// import Ideas from '../Ideas';
 import ImageZoom from 'react-medium-image-zoom';
 
 // services
@@ -14,8 +11,6 @@ import { IProjectData } from 'services/projects';
 
 // i18n
 import T from 'components/T';
-// import { FormattedMessage } from 'utils/cl-intl';
-// import messages from '../messages';
 import { IProjectImageData } from 'services/projectImages';
 
 // style

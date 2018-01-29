@@ -89,7 +89,7 @@ export default class ProjectIdeasPage extends React.PureComponent<Props, State> 
         <Container>
           <ContentContainer>
             <IdeasTitle>
-              <FormattedMessage {...messages.ideasTitle} />
+              <FormattedMessage {...messages.navIdeas} />
             </IdeasTitle>
             <Ideas type="project" id={project.data.id} />
           </ContentContainer>

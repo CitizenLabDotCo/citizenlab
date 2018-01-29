@@ -72,7 +72,7 @@ const IdeaContainer = styled.div`
 
 const HeaderWrapper = styled.div`
   width: 100%;
-  padding-right: 280px;
+  padding-right: 260px;
   display: flex;
   flex-direction: column;
 
@@ -143,7 +143,7 @@ const LeftColumn = styled.div`
   flex-grow: 1;
   margin: 0;
   padding: 0;
-  padding-right: 65px;
+  padding-right: 55px;
   min-width: 0;
 
   ${media.smallerThanMaxTablet`
