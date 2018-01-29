@@ -31,9 +31,7 @@ const Card = styled<any,'div'>('div')`
   margin-bottom: 20px;
   background: #fff;
   border: solid 1px #e6e6e6;
-
   position: relative;
-  background: transparent;
 
   &::after {
     content: '';
@@ -100,7 +98,7 @@ const ProjectContent = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 0.5rem 1rem 0 1rem;
+  padding: 20px;
 `;
 
 const ProjectTitle = styled.h3`

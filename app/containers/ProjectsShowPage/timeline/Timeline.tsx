@@ -150,10 +150,10 @@ const MobileDate = styled.div`
 `;
 
 const HeaderSubtitle = styled.div`
-  color: #999;
+  color: ${(props) => props.theme.colors.label};
   font-size: 15px;
   line-height: 20px;
-  font-weight: 300;
+  font-weight: 400;
   margin-top: 3px;
 `;
 

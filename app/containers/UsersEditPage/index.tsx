@@ -1,75 +1,78 @@
 // Libraries
 import * as React from 'react';
-import { Subscription, Observable } from 'rxjs';
+import * as Rx from 'rxjs';
+
+// router
+import { browserHistory } from 'react-router';
 
 // Services
 import { authUserStream } from 'services/auth';
-import { areasStream, IAreaData } from 'services/areas';
-import { currentTenantStream, ITenantData } from 'services/tenant';
-import { IUserData } from 'services/users';
+import { areasStream, IAreas } from 'services/areas';
+import { currentTenantStream, ITenant } from 'services/tenant';
+import { IUser } from 'services/users';
 
 // Components
 import ProfileForm from './ProfileForm';
 
-// Typings
 interface Props {}
+
 interface State {
-  user: IUserData | null;
-  areas: IAreaData[] | null;
-  tenant: ITenantData | null;
+  authUser: IUser | null;
+  areas: IAreas | null;
+  currentTenant: ITenant | null;
+  loaded: boolean;
 }
 
+export default class ProfileEditor extends React.PureComponent<Props, State> {
+  subscriptions: Rx.Subscription[];
 
-class ProfileEditor extends React.Component<Props, State> {
-  sub: Subscription | null = null;
-
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
-
     this.state = {
-      user: null,
-      areas: [],
-      tenant: null,
+      authUser: null,
+      areas: null,
+      currentTenant: null,
+      loaded: false
     };
   }
 
   componentWillMount() {
-    this.sub = authUserStream().observable
-    .switchMap((user) => {
-      if (!user) {
-        return Observable.of({ user: null, areas: null, tenant: null });
-      }
-      return Observable.combineLatest(
-        areasStream().observable,
-        currentTenantStream().observable,
-        ((areas, tenant) => {
-          return { areas: areas.data, tenant: tenant.data, user: user.data };
-        })
-      );
-    })
-    .subscribe(({ user, areas, tenant }) => {
-      this.setState({ user, areas, tenant });
-    });
+    const currentTenant$ = currentTenantStream().observable;
+    const authUser$ = authUserStream().observable;
+    const areas$ = areasStream().observable;
+
+    this.subscriptions = [
+      Rx.Observable.combineLatest(
+        currentTenant$,
+        authUser$,
+        areas$
+      ).subscribe(([currentTenant, authUser, areas]) => {
+        this.setState({ currentTenant, authUser, areas, loaded: true });
+      })
+    ];
   }
 
   componentWillUnmount() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   render() {
-    if (this.state.user && this.state.areas && this.state.tenant) {
+    const { currentTenant, authUser, areas, loaded } = this.state;
+
+    if (loaded && !authUser) {
+      browserHistory.push('/');
+    }
+
+    if (loaded && currentTenant && authUser && areas) {
       return (
         <ProfileForm
-          user={this.state.user}
-          areas={this.state.areas}
-          tenant={this.state.tenant}
+          user={authUser.data}
+          areas={areas.data}
+          tenant={currentTenant.data}
         />
       );
     }
+
     return null;
   }
 }
-
-export default ProfileEditor;

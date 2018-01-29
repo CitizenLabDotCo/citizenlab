@@ -10,7 +10,7 @@ import FileSaver from 'file-saver';
 // individual exports for testing
 export function* getIdeasXlsx() {
   try {
-    FileSaver.saveAs(yield call(fetchIdeasXlsx), 'users-export.xlsx');
+    FileSaver.saveAs(yield call(fetchIdeasXlsx), 'ideas-export.xlsx');
     yield put(ideasXlsxLoaded());
   } catch (err) {
     // err is string
