@@ -240,7 +240,7 @@ if Apartment::Tenant.current == 'localhost'
       gender: %w(male female unspecified)[rand(4)],
       birthyear: rand(2) === 0 ? nil : 1927 + rand(90),
       education: rand(1) === 0 ? nil : rand(9),
-      avatar: (rand(3) > 0) ? generate_avatar : nil
+      avatar: nil # (rand(3) > 0) ? generate_avatar : nil
     })
   end
 
