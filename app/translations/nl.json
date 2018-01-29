@@ -15,7 +15,7 @@
   "app.components.IdeaCards.suggestIdea": "Voeg als eerste een idee toe!",
   "app.components.IdeaForm.descriptionEmptyError": "Gelieve een beschrijving te geven",
   "app.components.IdeaForm.descriptionLabel": "Beschrijving (verplicht)",
-  "app.components.IdeaForm.descriptionPlaceholder": "Beschrijf duidelijk uw idee in een paar zinnen: \nWat is uw idee? \nGeef zoveel mogelijk details bij uw idee: Welk probleem lost het op of wat verbetert het? \nWat is er nodig om uw idee te realiseren (budget, tijd, mensen, ...)?",
+  "app.components.IdeaForm.descriptionPlaceholder": "Beschrijf duidelijk uw idee in een paar zinnen: \n- Wat is uw idee? \n- Geef zoveel mogelijk details bij uw idee: Welk probleem lost het op of wat verbetert het? \n- Wat is er nodig om uw idee te realiseren (budget, tijd, mensen, ...)?",
   "app.components.IdeaForm.imageUploadLabel": "Afbeelding (optioneel)",
   "app.components.IdeaForm.imageUploadPlaceholder": "Kies een afbeelding die bij uw idee past",
   "app.components.IdeaForm.locationLabel": "Locatie (optioneel)",
