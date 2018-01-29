@@ -3,7 +3,7 @@ import React from 'react';
 
 // Utils
 import { trackEvent } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../tracks';
 
 // Components
 import IdeaCards from 'components/IdeaCards';
@@ -13,15 +13,12 @@ import FeatureFlag from 'components/FeatureFlag';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // Styles
 import styled from 'styled-components';
 
-const Container = styled.div`
-  margin-top: 60px;
-  margin-bottom: 30px;
-`;
+const Container = styled.div``;
 
 const ToggleWrapper = styled.div`
   margin-bottom: 20px;
@@ -39,7 +36,7 @@ interface State {
 }
 
 export default class Ideas extends React.PureComponent<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       display: 'cards',

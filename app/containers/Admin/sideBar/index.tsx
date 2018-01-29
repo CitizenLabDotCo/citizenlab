@@ -169,7 +169,7 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps, State> {
         </MenuItem>
 
         <MenuItem active={pathname.startsWith('/admin/settings')}>
-          <MenuLink to="/admin/settings">
+          <MenuLink to="/admin/settings/general">
             <IconWrapper><StyledIcon name="settings" /></IconWrapper>
             <Text>{formatMessage({ ...messages.settings })}</Text>
           </MenuLink>

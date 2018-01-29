@@ -19,7 +19,7 @@ const Container = styled.div`
   display: flex;
   align-items: stretch;
   justify-content: space-evenly;
-  z-index: 10000;
+  z-index: 100000;
 
   ${media.biggerThanMaxTablet`
     display: none;

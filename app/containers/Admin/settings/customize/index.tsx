@@ -172,11 +172,11 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
   handleUploadOnAdd = (name: 'logo' | 'header_bg') => (newImage: ImageFile) => {
     this.setState((state) => ({
       ...state,
+      [name]: [newImage],
       attributesDiff: {
         ...(state.attributesDiff || {}),
         [name]: (newImage.base64 as string)
-      },
-      [name]: [newImage]
+      }
     }));
   }
 
@@ -190,11 +190,11 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
   handleUploadOnRemove = (name: 'logo' | 'header_bg') => () => {
     this.setState((state) => ({
       ...state,
+      [name]: null,
       attributesDiff: {
         ...(state.attributesDiff || {}),
         [name]: null
-      },
-      [name]: null
+      }
     }));
   }
 

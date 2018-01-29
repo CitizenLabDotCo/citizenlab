@@ -245,7 +245,7 @@ export default class PageEditor extends React.PureComponent<Props, State> {
               onChange={this.handleTextChange}
               value={editorState}
               toolbarConfig={{
-                options: ['inline', 'list', 'link', 'image'],
+                options: ['inline', 'list', 'link', 'image', 'blockType'],
                 inline: {
                   options: ['bold', 'italic'],
                 },
@@ -257,6 +257,13 @@ export default class PageEditor extends React.PureComponent<Props, State> {
                   uploadEnabled: false,
                   alignmentEnabled: false,
                 },
+                blockType: {
+                  inDropdown: true,
+                  options: ['Normal', 'H1', 'H2', 'H3', 'H4'],
+                  className: undefined,
+                  component: undefined,
+                  dropdownClassName: undefined,
+                }
               }}
             />
             <Error apiErrors={errors && errors.body_multiloc} />

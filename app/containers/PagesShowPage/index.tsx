@@ -50,11 +50,23 @@ const PageTitle = styled.h1`
   margin-bottom: 50px;
 `;
 
-const TextContainer = styled.div`
+const PageDescription = styled.div`
   color: #333;
   font-size: 18px;
   font-weight: 300;
   line-height: 26px;
+
+  h1 {
+    font-size: 30px;
+    line-height: 35px;
+    font-weight: 600;
+  }
+
+  h2 {
+    font-size: 27px;
+    line-height: 33px;
+    font-weight: 600;
+  }
 
   h3 {
     font-size: 24px;
@@ -223,12 +235,12 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
 
           <PageContent>
             <StyledContentContainer>
-              <TextContainer>
-                <PageTitle>
-                  {pageTitle}
-                </PageTitle>
+              <PageTitle>
+                {pageTitle}
+              </PageTitle>
+              <PageDescription>
                 {pageDescription}
-              </TextContainer>
+              </PageDescription>
             </StyledContentContainer>
           </PageContent>
 
