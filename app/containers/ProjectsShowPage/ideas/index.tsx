@@ -1,17 +1,36 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import { isString } from 'lodash';
+import { browserHistory } from 'react-router';
 
 // components
-import ContentContainer from 'components/ContentContainer';
-import ProjectInfo from './ProjectInfo';
+import Ideas from './Ideas';
 import EventsPreview from '../EventsPreview';
+import ContentContainer from 'components/ContentContainer';
 
 // services
 import { projectBySlugStream, IProject } from 'services/projects';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
+
 // style
 import styled from 'styled-components';
+
+const Container = styled.div`
+  padding-top: 70px;
+  padding-bottom: 70px;
+`;
+
+const IdeasTitle = styled.h1`
+  color: #333;
+  font-size: 29px;
+  line-height: 35px;
+  font-weight: 600;
+  margin-top: 40px;
+  margin-bottom: 30px;
+`;
 
 type Props = {
   params: {
@@ -23,9 +42,7 @@ type State = {
   project: IProject | null;
 };
 
-const Container = styled.div``;
-
-export default class ProjectInfoPage extends React.PureComponent<Props, State> {
+export default class ProjectIdeasPage extends React.PureComponent<Props, State> {
   slug$: Rx.BehaviorSubject<string>;
   subscriptions: Rx.Subscription[];
 
@@ -43,7 +60,12 @@ export default class ProjectInfoPage extends React.PureComponent<Props, State> {
 
     this.subscriptions = [
       this.slug$.distinctUntilChanged().filter(slug => isString(slug)).switchMap((slug) => {
-        const project$ = projectBySlugStream(slug).observable;
+        const project$ = projectBySlugStream(slug).observable.do((project) => {
+          if (project.data.attributes.process_type !== 'continuous') {
+            browserHistory.push(`/projects/${slug}`);
+          }
+        });
+
         return project$;
       }).subscribe((project) => {
         this.setState({ project });
@@ -66,7 +88,10 @@ export default class ProjectInfoPage extends React.PureComponent<Props, State> {
       return (
         <Container>
           <ContentContainer>
-            <ProjectInfo projectId={project.data.id} />
+            <IdeasTitle>
+              <FormattedMessage {...messages.navIdeas} />
+            </IdeasTitle>
+            <Ideas type="project" id={project.data.id} />
           </ContentContainer>
           <EventsPreview projectId={project.data.id} />
         </Container>
