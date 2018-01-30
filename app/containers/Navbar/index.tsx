@@ -260,7 +260,7 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
   render() {
     const { pathname } = this.props.location;
     const { authUser, currentTenantLogo, scrolled } = this.state;
-    const alwaysShowBorder = [
+    let alwaysShowBorder = [
       'ideas/',
       'admin',
       'profile',
@@ -273,6 +273,10 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
     ].some((urlSegment) => {
       return pathname.startsWith('/' + urlSegment);
     });
+
+    if (!alwaysShowBorder) {
+      alwaysShowBorder = pathname.endsWith('ideas/new');
+    }
 
     return (
       <div>

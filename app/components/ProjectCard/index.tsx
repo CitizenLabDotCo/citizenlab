@@ -133,7 +133,7 @@ const ProjectDescription = styled.div`
   color: #84939E;
   font-size: 15px;
   line-height: 20px;
-  font-weight: 400;
+  font-weight: 300;
   margin-top: 10px;
 
   ${media.phone`

@@ -84,10 +84,10 @@ const IdeaTitle: any = styled.h4`
 
 const IdeaAuthor = styled.div`
   color: #84939d;
-  font-size: 14px;
-  font-weight: 400;
+  font-size: 15px;
+  font-weight: 300;
   line-height: 20px;
-  margin-top: 12px;
+  margin-top: 13px;
 `;
 
 const StyledVoteControl = styled(VoteControl)`
