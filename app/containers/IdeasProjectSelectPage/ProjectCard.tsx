@@ -11,7 +11,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedDate } from 'react-intl';
 import Icon from 'components/UI/Icon';
 import T from 'components/T';
-import Radio from 'components/UI/Radio';
+// import Radio from 'components/UI/Radio';
 
 import messages from './messages';
 
@@ -30,7 +30,7 @@ const Card = styled<any,'div'>('div')`
   border-radius: 6px;
   margin-bottom: 20px;
   background: #fff;
-  border: solid 1px #e6e6e6;
+  border: solid 3px #fff;
   position: relative;
 
   &::after {
@@ -50,7 +50,7 @@ const Card = styled<any,'div'>('div')`
 
 
   ${props => props.selected && `
-  border-color: #4BB27C;
+    border: solid 3px #4BB27C;
   `}
 
   ${props => props.enabled ? `
@@ -196,7 +196,7 @@ class ProjectCard extends React.Component<Props & InjectedNestedResourceLoaderPr
   }
 
   render() {
-    const projectId = this.props.project.id;
+    // const projectId = this.props.project.id;
     const {
       title_multiloc: titleMultiloc,
       description_preview_multiloc: descriptionPreviewMultiloc
@@ -210,7 +210,7 @@ class ProjectCard extends React.Component<Props & InjectedNestedResourceLoaderPr
 
     return (
       <Container>
-        <Radio
+        {/* <Radio
           onChange={this.handleOnClick}
           currentValue={this.props.selected ? projectId : null}
           value={projectId}
@@ -218,7 +218,7 @@ class ProjectCard extends React.Component<Props & InjectedNestedResourceLoaderPr
           id={projectId}
           label=""
           disabled={!enabled}
-        />
+        /> */}
         <Card
           onClick={this.handleOnClick}
           selected={this.props.selected}

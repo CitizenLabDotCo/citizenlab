@@ -114,9 +114,9 @@ const Header = styled.div`
 const IdeaTitle = styled.h1`
   width: 100%;
   color: #444;
-  font-size: 34px;
+  font-size: 32px;
   font-weight: 500;
-  line-height: 40px;
+  line-height: 38px;
   margin: 0;
   padding: 0;
 
@@ -315,7 +315,7 @@ const IdeaBody = styled.div`
   color: #474747;
   font-size: 18px;
   line-height: 30px;
-  font-weight: 400;
+  font-weight: 300;
 
   p {
     margin-bottom: 25px;

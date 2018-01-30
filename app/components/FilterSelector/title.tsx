@@ -8,14 +8,14 @@ import styled from 'styled-components';
 
 const Text = styled.span`
   color: #84939E;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 400;
-  line-height: 24px;
+  line-height: 26px;
   transition: all 100ms ease-out;
 `;
 
 const DropdownIcon = styled(Icon)`
-  height: 6px;
+  height: 8px;
   fill: #84939E;
   margin-left: 5px;
   margin-top: 2px;
