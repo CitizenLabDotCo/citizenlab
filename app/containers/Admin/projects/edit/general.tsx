@@ -37,7 +37,7 @@ import {
   deleteProject,
 } from 'services/projects';
 import { projectImagesStream, addProjectImage, deleteProjectImage } from 'services/projectImages';
-import { areasStream, IAreaData } from 'services/areas';
+import { areasStream, addArea, IAreaData } from 'services/areas';
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import eventEmitter from 'utils/eventEmitter';
@@ -184,6 +184,13 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     };
     this.slug$ = null;
     this.subscriptions = [];
+
+    addArea({
+      title_multiloc: { en: 'the title' + Date.now() },
+      description_multiloc: { en: 'the description' },
+    }).then((response) => {
+      console.log(response);
+    });
   }
 
   componentWillMount() {
