@@ -613,7 +613,7 @@
   "app.containers.footer.slogan": "{type, select, generic {This is an initiative from {name}} other {This is an initiative from {name}}}",
   "app.containers.footer.terms-and-conditions": "Terms and Conditions",
   "app.containers.footer.termsLink": "Terms of use",
-  "app.containers.landing.cityProjects": "The projects",
+  "app.containers.landing.cityProjects": "Projects",
   "app.containers.landing.explore": "Explore",
   "app.containers.landing.exploreAllIdeas": "All ideas",
   "app.containers.landing.exploreAllProjects": "All projects",
