@@ -178,7 +178,7 @@
   "app.containers.AdminPage.ProjectEdit.goBack": "Go back",
   "app.containers.AdminPage.ProjectEdit.headerImageLabel": "Header Image (required)",
   "app.containers.AdminPage.ProjectEdit.ideasTab": "Ideas",
-  "app.containers.AdminPage.ProjectEdit.ideation": "Ideation",
+  "app.containers.AdminPage.ProjectEdit.ideation": "Idea collection",
   "app.containers.AdminPage.ProjectEdit.information": "Information",
   "app.containers.AdminPage.ProjectEdit.limited": "Limited",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Map",
