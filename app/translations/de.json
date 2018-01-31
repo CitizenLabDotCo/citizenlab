@@ -610,7 +610,7 @@
   "app.containers.footer.information": "Impressum",
   "app.containers.footer.poweredBy": "Ermöglicht durch",
   "app.containers.footer.privacy-policy": "Datenschutzrichtlinie",
-  "app.containers.footer.slogan": "Das Ortsportal ist eine Initiative der Gemeinde Jossgrund im Rahmen des Projektes „Pfaffenhausen 2.1 – Bürger gestalten den Ortskern der Zukunft“ und wird gefördert durch das Bundesministerium für Landwirtschaft und Ernährung.",
+  "app.containers.footer.slogan": "{type, select, generic {Dies ist eine Initiative von {name}} other {Dies ist eine Initiative von {name}}}",
   "app.containers.footer.terms-and-conditions": "Geschäftsbedingungen",
   "app.containers.footer.termsLink": "Nutzungsbedingungen",
   "app.containers.landing.cityProjects": "Die Projekte",
