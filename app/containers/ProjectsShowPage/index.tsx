@@ -61,7 +61,7 @@ const HeaderContent = styled.div`
   justify-content: space-between;
 
   &.timeline {
-    margin-top: -65px;
+    margin-top: -30px;
   }
 
   ${media.smallerThanMaxTablet`
@@ -155,7 +155,7 @@ const HeaderButton = styled(Link)`
   margin-top: 6px;
   margin-bottom: 6px;
   cursor: pointer;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   transition: all 80ms ease-out;
 
   &.active {

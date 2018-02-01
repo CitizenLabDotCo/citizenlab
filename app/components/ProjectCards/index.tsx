@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isObject, isEmpty, isEqual, has } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
@@ -34,8 +34,6 @@ const Loading = styled.div`
 `;
 
 const ProjectsList: any = styled.div``;
-
-const StyledProjectCard = styled(ProjectCard)``;
 
 const LoadMore = styled.div`
   width: 100%;
@@ -99,9 +97,8 @@ type State = {
   loadingMore: boolean;
 };
 
-class ProjectCards extends React.PureComponent<Props, State> {
-  state: State;
-  filterChange$: Rx.BehaviorSubject<object>;
+export default class ProjectCards extends React.PureComponent<Props, State> {
+  filter$: Rx.BehaviorSubject<object>;
   loadMore$: Rx.BehaviorSubject<boolean>;
   subscriptions: Rx.Subscription[];
 
@@ -121,21 +118,21 @@ class ProjectCards extends React.PureComponent<Props, State> {
   }
 
   componentWillMount() {
-    const filter = (_.isObject(this.props.filter) && !_.isEmpty(this.props.filter) ? this.props.filter : {});
-
-    this.filterChange$ = new Rx.BehaviorSubject(filter);
+    this.filter$ = new Rx.BehaviorSubject(this.props.filter);
     this.loadMore$ = new Rx.BehaviorSubject(false);
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
-        this.filterChange$,
+        this.filter$
+          .map(filter => (isObject(filter) && !isEmpty(filter) ? filter : {}))
+          .distinctUntilChanged((x, y) => isEqual(x, y)),
         this.loadMore$,
         (filter, loadMore) => ({ filter, loadMore })
       ).mergeScan<{ filter: object, loadMore: boolean }, IAccumulator>((acc, { filter, loadMore }) => {
-        const filterChange = !_.isEqual(acc.filter, filter) || !loadMore;
-        const pageNumber = (filterChange ? 1 : acc.pageNumber + 1);
+        const hasFilterChanged = (!isEqual(acc.filter, filter) || !loadMore);
+        const pageNumber = (hasFilterChanged ? 1 : acc.pageNumber + 1);
 
-        this.setState({ loading: (filterChange), loadingMore: (!filterChange) });
+        this.setState({ loading: hasFilterChanged, loadingMore: !hasFilterChanged });
 
         return projectsStream({
           queryParameters: {
@@ -147,8 +144,8 @@ class ProjectCards extends React.PureComponent<Props, State> {
         }).observable.map((projects) => ({
           pageNumber,
           filter,
-          projects: (filterChange ? projects : { data: [...acc.projects.data, ...projects.data] }) as IProjects,
-          hasMore: _.has(projects, 'links.next')
+          projects: (hasFilterChanged ? projects : { data: [...acc.projects.data, ...projects.data] }) as IProjects,
+          hasMore: has(projects, 'links.next')
         }));
       }, {
         projects: {} as IProjects,
@@ -165,13 +162,8 @@ class ProjectCards extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  componentWillReceiveProps(newProps) {
-    const oldProps = this.props;
-
-    if (!_.isEqual(newProps.filter, oldProps.filter)) {
-      const filter = (_.isObject(newProps.filter) && !_.isEmpty(newProps.filter) ? newProps.filter : {});
-      this.filterChange$.next(filter);
-    }
+  componentWillReceiveProps(nextProps: Props) {
+    this.filter$.next(nextProps.filter);
   }
 
   loadMoreProjects = () => {
@@ -217,7 +209,7 @@ class ProjectCards extends React.PureComponent<Props, State> {
     const projectsList = ((!loading && hasProjects && projects) ? (
       <ProjectsList id="e2e-projects-list">
         {projects.data.map((project) => (
-          <StyledProjectCard key={project.id} id={project.id} />
+          <ProjectCard key={project.id} id={project.id} />
         ))}
       </ProjectsList>
     ) : null);
@@ -232,5 +224,3 @@ class ProjectCards extends React.PureComponent<Props, State> {
     );
   }
 }
-
-export default ProjectCards;

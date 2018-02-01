@@ -36,7 +36,7 @@ const Container = styled.div`
 
 const PageContainer = styled.div`
   width: 100%;
-  min-height: calc(100vh - 105px);
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   position: relative;
   background: #f8f8f8;
 
@@ -86,6 +86,44 @@ const PageContainer = styled.div`
           transform: translateX(-800px);
         `}
       }
+    }
+  }
+`;
+
+const ButtonBarContainer = styled.div`
+  width: 100%;
+  height: 68px;
+  position: fixed;
+  z-index: 99999;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: solid 1px #ddd;
+  -webkit-backface-visibility: hidden;
+  will-change: auto;
+
+  ${media.phone`
+    display: none;
+  `}
+
+  &.buttonbar-enter {
+    transform: translateY(64px);
+    will-change: transform;
+
+    &.buttonbar-enter-active {
+      transform: translateY(0);
+      transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+  }
+
+  &.buttonbar-exit {
+    transform: translateY(0);
+    will-change: transform;
+
+    &.buttonbar-exit-active {
+      transform: translateY(64px);
+      transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
     }
   }
 `;
@@ -256,7 +294,11 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     const timeout = 600;
 
     const buttonBar = (showIdeaForm) ? (
-      <IdeasNewButtonBar onSubmit={this.handleOnIdeaSubmit} />
+      <CSSTransition classNames="buttonbar" timeout={timeout}>
+        <ButtonBarContainer>
+          <IdeasNewButtonBar onSubmit={this.handleOnIdeaSubmit} />
+        </ButtonBarContainer>
+      </CSSTransition>
     ) : null;
 
     const newIdeasForm = (showIdeaForm) ? (

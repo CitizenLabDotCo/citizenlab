@@ -140,7 +140,7 @@ const HeaderSubtitle: any = styled.h2`
   padding: 0;
   padding-bottom: 0px;
   margin: 0;
-  margin-top: 30px;
+  margin-top: 25px;
   border-bottom: solid 1px transparent;
 
   ${media.smallerThanMinTablet`

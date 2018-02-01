@@ -276,26 +276,27 @@ export default class Event extends React.PureComponent<Props, State> {
       const eventLocationAddress = getLocalized(event.data.attributes.location_multiloc, locale, currentTenantLocales);
       const startAtMoment = moment(event.data.attributes.start_at);
       const endAtMoment = moment(event.data.attributes.end_at);
-      let startAtTime = startAtMoment.format('HH:mm');
-      let endAtTime = endAtMoment.format('HH:mm');
+      const startAtIsoDate = moment(event.data.attributes.start_at).format('YYYY-MM-DD');
+      const endAtIsoDate = moment(event.data.attributes.end_at).format('YYYY-MM-DD');
+      let startAtTime = startAtMoment.format('LT');
+      let endAtTime = endAtMoment.format('LT');
       const startAtDay = startAtMoment.format('DD');
       const endAtDay = endAtMoment.format('DD');
       const startAtMonth = startAtMoment.format('MMM');
       const endAtMonth = endAtMoment.format('MMM');
       const startAtYear = startAtMoment.format('YYYY');
-      // const endAtYear = endAtMoment.format('YYYY');
-      const isMultiDayEvent = (startAtDay !== endAtDay);
+      const isMultiDayEvent = (startAtIsoDate !== endAtIsoDate);
       let eventStatus: 'past' | 'present' | 'future' = 'past';
 
-      if (moment().diff(moment(event.data.attributes.start_at, 'YYYY-MM-DD'), 'days') < 0) {
+      if (moment().diff(startAtMoment, 'days') < 0) {
         eventStatus = 'future';
-      } else if (moment().diff(moment(event.data.attributes.start_at, 'YYYY-MM-DD'), 'days') === 0) {
+      } else if (moment().diff(endAtMoment, 'days') === 0) {
         eventStatus = 'present';
       }
 
       if (isMultiDayEvent) {
-        startAtTime = startAtMoment.format('D MMM, HH:mm');
-        endAtTime = endAtMoment.format('D MMM, HH:mm');
+        startAtTime = startAtMoment.format('D MMM LT');
+        endAtTime = endAtMoment.format('D MMM LT');
       }
 
       return (

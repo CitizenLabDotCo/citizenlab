@@ -50,7 +50,7 @@ const TenantSlogan = styled.div`
   max-width: 340px;
   color: #444;
   font-size: 20px;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 28px;
   text-align: center;
 `;
@@ -88,7 +88,7 @@ const PagesNav = styled.nav`
     order: 2;
     text-align: center;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 30px;
     margin-bottom: 15px;
   `}
 `;
@@ -188,7 +188,8 @@ const LanguageSelectionWrapper = styled.div`
   ${media.smallerThanMaxTablet`
     border-left: 0;
     margin-left: 0;
-    margin-bottom: 15px;
+    margin-top: 10px;
+    margin-bottom: 20px;
     padding-left: 0;
   `}
 `;

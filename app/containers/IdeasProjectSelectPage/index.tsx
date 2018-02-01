@@ -1,80 +1,133 @@
 import * as React from 'react';
+import * as Rx from 'rxjs/Rx';
 import { size, groupBy, isEmpty } from 'lodash';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import { browserHistory } from 'react-router';
+import Spinner from 'components/UI/Spinner';
 
-import { injectResources, InjectedResourcesLoaderProps } from 'utils/resourceLoaders/resourcesLoader';
+// services
 import { projectsStream, IProjectData } from 'services/projects';
+import { projectImagesStream } from 'services/projectImages';
 
+// components
 import ContentContainer from 'components/ContentContainer';
 import ProjectCard from './ProjectCard';
 import Button from 'components/UI/Button';
 import ButtonBar from 'components/ButtonBar';
 
-
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+const Container = styled.div`
+  height: 100%;
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  background: #f8f8f8;
+
+  ${media.smallerThanMaxTablet`
+    min-height: auto;
+  `}
+`;
+
 const StyledContentContainer = styled(ContentContainer)`
-  padding-top: 4rem;
+  padding-top: 0px;
+  padding-bottom: 120px;
+
+  ${media.smallerThanMaxTablet`
+    padding-bottom: 40px;
+  `}
+`;
+
+const Loading = styled.div`
+  width: 100%;
+  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ${media.smallerThanMaxTablet`
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+  `}
 `;
 
 const ColumnsContainer = styled.div`
   display: flex;
   flex-direction: row;
-  margin: 0 -2rem;
+  justify-content: space-between;
 
   ${media.smallerThanMaxTablet`
     flex-direction: column;
+    justify-content: flex-start;
   `}
 `;
 
 const PageTitle = styled.h1`
   width: 100%;
-  color: #444;
-  font-size: 34px;
+  color: #333;
+  font-size: 36px;
+  line-height: 42px;
   font-weight: 500;
-  line-height: 40px;
-  margin: 0;
+  text-align: center;
   padding: 0;
+  margin: 0;
+  padding-top: 40px;
+  margin-bottom: 80px;
+
   ${media.smallerThanMaxTablet`
     font-size: 28px;
     line-height: 34px;
-    margin-right: 12px;
+    text-align: left;
+    margin-bottom: 40px;
   `}
 `;
 
 const Column = styled.div`
-  padding: 2rem;
-  flex: 1;
+  flex: 0 0 46%;
+
+  &.flex {
+    flex: 1 1 100%;
+  }
 `;
 
 const LeftColumn = Column.extend`
+  ${media.smallerThanMaxTablet`
+    order: 2;
+    margin-bottom: 30px;
+  `}
 `;
 
 const RightColumn = Column.extend`
+  ${media.smallerThanMaxTablet`
+    order: 1;
+    margin-bottom: 60px;
+  `}
 `;
 
 const ColumnTitle = styled.h2`
-  font-weight: 400;
+  color: #333;
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 26px;
+  margin: 0;
+  margin-bottom: 10px;
 `;
 
 const ColumnExplanation = styled.div`
-  color: #474747;
+  color: #666;
   font-size: 18px;
-  line-height: 30px;
+  line-height: 24px;
   font-weight: 300;
   min-height: 7rem;
 `;
 
-const ProjectsList = styled.div`
-  padding: 2rem 0;
-`;
+const ProjectsList = styled.div``;
 
 const ProjectCardWrapper = styled.div`
-  ${media.biggerThanDesktop`
-    margin-left: -30px;
+  margin-bottom: 20px;
+
+  ${media.smallerThanMaxTablet`
+    margin-bottom: 10px;
   `}
 `;
 
@@ -97,6 +150,7 @@ const WithoutButtonBar = styled.div`
   ${media.biggerThanMaxTablet`
     display: none;
   `}
+
   padding-bottom: 20px;
 `;
 
@@ -112,28 +166,40 @@ type Props = {
 };
 
 type State = {
+  projects: IProjectData[] | null;
   selectedProjectId: string | null;
+  loaded: boolean;
 };
 
-class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLoaderProps<IProjectData>, State> {
+export default class IdeasProjectSelectPage extends React.PureComponent<Props, State> {
+  subscriptions: Rx.Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
+      projects: null,
       selectedProjectId: null,
+      loaded: false
     };
+    this.subscriptions = [];
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { loading, hasMore, all } = nextProps.projects;
-    if (!loading && !hasMore && size(all) === 1) {
-      this.redirectTo(nextProps.projects.all[0].attributes.slug);
-    }
+  componentWillMount() {
+    const projects$ = projectsStream().observable;
+
+    this.subscriptions = [
+      projects$.switchMap((projects) => {
+        return Rx.Observable.combineLatest(
+          projects.data.map(project => projectImagesStream(project.id).observable)
+        ).map(() => projects);
+      }).subscribe((projects) => {
+        this.setState({ projects: projects.data, loaded: true });
+      })
+    ];
   }
 
-  projectsByRole = () => {
-    const projects = this.props.projects && this.props.projects.all;
-    return groupBy(projects, (project) => project.attributes.internal_role);
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   handleProjectClick = (project) => () => {
@@ -146,8 +212,11 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
   }
 
   handleOnSubmitClick = () => {
-    if (this.props.projects && this.props.projects.all) {
-      const project = this.props.projects.all.find((project) => project.id === this.state.selectedProjectId);
+    const { projects } = this.state;
+
+    if (projects) {
+      const project = projects.find((project) => project.id === this.state.selectedProjectId);
+
       if (project) {
         this.redirectTo(project.attributes.slug);
       }
@@ -155,92 +224,107 @@ class IdeasProjectSelectPage extends React.Component<Props & InjectedResourcesLo
   }
 
   render() {
-    const { selectedProjectId } = this.state;
-    const { all: projects, loadMore, hasMore, loading } = this.props.projects;
+    const { projects, selectedProjectId, loaded } = this.state;
 
-    if (!projects) return null;
+    if (!loaded) {
+      return (
+        <Container>
+          <Loading>
+            <Spinner size="30px" color="#666" />
+          </Loading>
+        </Container>
+      );
+    }
 
-    const { open_idea_box: openProjects, null: cityProjects } = this.projectsByRole();
-    const openProject = openProjects && !isEmpty(openProjects) && openProjects[0];
-    const inEmptyState = !loading && !hasMore && size(projects) === 0;
+    if (loaded) {
+      const { open_idea_box: openProjects, null: cityProjects } = groupBy(projects, (project) => project.attributes.internal_role);
+      const openProject = openProjects && !isEmpty(openProjects) && openProjects[0];
+      const noProjects = (!projects || size(projects) === 0);
 
-    return (
-      <StyledContentContainer>
-        <PageTitle>
-          <FormattedMessage {...messages.pageTitle} />
-        </PageTitle>
-        {inEmptyState &&
-          <EmptyStateContainer>
-            <FormattedMessage {...messages.noProjects} />
-          </EmptyStateContainer>
-        }
-        {!inEmptyState && <>
-          <ColumnsContainer>
-            <LeftColumn>
-              <ColumnTitle>
-                <FormattedMessage {...messages.cityProjects} />
-              </ColumnTitle>
-              <ColumnExplanation>
-                <FormattedMessage {...messages.cityProjectsExplanation} />
-              </ColumnExplanation>
-              <ProjectsList>
-                {cityProjects && cityProjects.map((project) => (
-                  <ProjectCardWrapper>
-                    <ProjectCard
-                      key={project.id as any}
-                      onClick={this.handleProjectClick(project) as any}
-                      project={project as any}
-                      selected={(selectedProjectId === project.id) as any}
-                    />
-                  </ProjectCardWrapper>
-                ))}
-              </ProjectsList>
-              {hasMore && <a onClick={loadMore} role="button"><FormattedMessage {...messages.loadMore} /></a>}
-            </LeftColumn>
-            {openProject &&
-              <RightColumn>
-                <ColumnTitle>
-                  <FormattedMessage {...messages.openProject} />
-                </ColumnTitle>
-                <ColumnExplanation>
-                  <FormattedMessage {...messages.openProjectExplanation} />
-                </ColumnExplanation>
-                <ProjectsList>
-                  <ProjectCardWrapper>
-                    <ProjectCard
-                      onClick={this.handleProjectClick(openProject) as any}
-                      project={openProject as any}
-                      selected={(selectedProjectId === openProject.id) as any}
-                    />
-                  </ProjectCardWrapper>
-                </ProjectsList>
-              </RightColumn>
+      return (
+        <Container>
+          <StyledContentContainer>
+            <PageTitle>
+              <FormattedMessage {...messages.pageTitle} />
+            </PageTitle>
+
+            {noProjects &&
+              <EmptyStateContainer>
+                <FormattedMessage {...messages.noProjects} />
+              </EmptyStateContainer>
             }
-          </ColumnsContainer>
-          <ButtonBar>
-            <ButtonBarInner>
-              <Button
-                className="e2e-submit-project-select-form"
-                size="2"
-                text={<FormattedMessage {...messages.continueButton} />}
-                onClick={this.handleOnSubmitClick}
-                disabled={!selectedProjectId}
-              />
-            </ButtonBarInner>
-          </ButtonBar>
-          <WithoutButtonBar>
-            <Button
-              className="e2e-submit-project-select-form"
-              size="2"
-              text={<FormattedMessage {...messages.continueButton} />}
-              onClick={this.handleOnSubmitClick}
-              disabled={!selectedProjectId}
-            />
-          </WithoutButtonBar>
-        </>}
-      </StyledContentContainer>
-    );
+
+            {!noProjects && 
+              <>
+                <ColumnsContainer>
+                  <LeftColumn className={!openProject ? 'flex' : ''}>
+                    <ColumnTitle>
+                      <FormattedMessage {...messages.cityProjects} />
+                    </ColumnTitle>
+                    <ColumnExplanation>
+                      <FormattedMessage {...messages.cityProjectsExplanation} />
+                    </ColumnExplanation>
+                    <ProjectsList>
+                      {cityProjects && cityProjects.map((project) => (
+                        <ProjectCardWrapper>
+                          <ProjectCard
+                            key={project.id}
+                            onClick={this.handleProjectClick(project)}
+                            projectId={project.id}
+                            selected={(selectedProjectId === project.id)}
+                          />
+                        </ProjectCardWrapper>
+                      ))}
+                    </ProjectsList>
+                  </LeftColumn>
+                  {openProject &&
+                    <RightColumn className={noProjects ? 'flex' : ''}>
+                      <ColumnTitle>
+                        <FormattedMessage {...messages.openProject} />
+                      </ColumnTitle>
+                      <ColumnExplanation>
+                        <FormattedMessage {...messages.openProjectExplanation} />
+                      </ColumnExplanation>
+                      <ProjectsList>
+                        <ProjectCardWrapper>
+                          <ProjectCard
+                            key={openProject.id}
+                            onClick={this.handleProjectClick(openProject)}
+                            projectId={openProject.id}
+                            selected={(selectedProjectId === openProject.id)}
+                          />
+                        </ProjectCardWrapper>
+                      </ProjectsList>
+                    </RightColumn>
+                  }
+                </ColumnsContainer>
+                <ButtonBar>
+                  <ButtonBarInner>
+                    <Button
+                      className="e2e-submit-project-select-form"
+                      size="3"
+                      text={<FormattedMessage {...messages.continueButton} />}
+                      onClick={this.handleOnSubmitClick}
+                      disabled={!selectedProjectId}
+                    />
+                  </ButtonBarInner>
+                </ButtonBar>
+                <WithoutButtonBar>
+                  <Button
+                    className="e2e-submit-project-select-form"
+                    size="3"
+                    text={<FormattedMessage {...messages.continueButton} />}
+                    onClick={this.handleOnSubmitClick}
+                    disabled={!selectedProjectId}
+                  />
+                </WithoutButtonBar>
+              </>
+            }
+          </StyledContentContainer>
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
-
-export default injectResources('projects', projectsStream, { publication_statuses: ['draft', 'published'] })(IdeasProjectSelectPage);

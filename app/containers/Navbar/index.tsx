@@ -225,10 +225,8 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
   componentDidMount() {
     this.subscriptions.push(
       Rx.Observable.fromEvent(window, 'scroll', { passive: true }).sampleTime(20).subscribe(() => {
-        this.setState((state) => {
-          const scrolled = (window.scrollY > 0);
-          return (state.scrolled !== scrolled ? { scrolled } : state);
-        });
+        const scrolled = (window.scrollY > 0);
+        this.setState({ scrolled });
       })
     );
   }
@@ -260,7 +258,7 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
   render() {
     const { pathname } = this.props.location;
     const { authUser, currentTenantLogo, scrolled } = this.state;
-    const alwaysShowBorder = [
+    let alwaysShowBorder = [
       'ideas/',
       'admin',
       'profile',
@@ -273,6 +271,10 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
     ].some((urlSegment) => {
       return pathname.startsWith('/' + urlSegment);
     });
+
+    if (!alwaysShowBorder) {
+      alwaysShowBorder = pathname.endsWith('ideas/new');
+    }
 
     return (
       <div>
