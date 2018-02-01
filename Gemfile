@@ -56,7 +56,7 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "pundit", "~> 1.1.0"
-gem "active_model_serializers", "~> 0.10.0"
+gem "active_model_serializers", "~> 0.10.7"
 gem "knock", "~> 2.1.1", github: 'ngty/knock', ref: '97fb32f59b2027c808964b875be2fff22400da1d'
 gem "sidekiq", "~> 4.2.9"
 gem "sidekiq-cron", "~> 0.4.5"
