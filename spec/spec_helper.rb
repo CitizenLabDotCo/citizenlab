@@ -119,7 +119,7 @@ RSpec.configure do |config|
     Apartment::Tenant.drop('example_org') rescue nil
     # Create the default tenant for our tests
     # Tenant.create!(name: 'test-tenant', host: 'example_org')
-    FactoryGirl::create(:test_tenant)
+    FactoryBot::create(:test_tenant)
   end
 
   config.before(:each) do

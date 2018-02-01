@@ -28,7 +28,7 @@ PATH
       kaminari (~> 1.0.1)
       knock (~> 2.1.1)
       pundit (~> 1.1.0)
-      rails (~> 5.1.2)
+      rails (~> 5.1.4)
 
 GEM
   remote: https://rubygems.org/
@@ -104,11 +104,11 @@ GEM
     bunny (2.7.2)
       amq-protocol (>= 2.2.0)
     byebug (10.0.0)
-    carrierwave (1.1.0)
+    carrierwave (1.2.2)
       activemodel (>= 4.0.0)
       activesupport (>= 4.0.0)
       mime-types (>= 1.16)
-    carrierwave-base64 (2.5.0)
+    carrierwave-base64 (2.6.1)
       carrierwave (>= 0.8.0)
       mime-types (~> 3.0)
     carrierwave-imageoptimizer (1.4.0)
@@ -250,8 +250,8 @@ GEM
       omniauth-oauth (~> 1.1)
       rack
     parallel (1.12.1)
-    pg (0.20.0)
-    pg_search (2.0.1)
+    pg (0.21.0)
+    pg_search (2.1.2)
       activerecord (>= 4.2)
       activesupport (>= 4.2)
       arel (>= 6)
@@ -397,8 +397,8 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   bunny (>= 2.7.2)
   byebug
-  carrierwave (~> 1.1.0)
-  carrierwave-base64 (~> 2.5)
+  carrierwave (~> 1.2.2)
+  carrierwave-base64 (~> 2.6)
   carrierwave-imageoptimizer
   ci_reporter_rspec
   counter_culture (~> 1.0)
@@ -419,7 +419,7 @@ DEPENDENCIES
   omniauth-google-oauth2
   omniauth-twitter
   pg (~> 0.18)
-  pg_search (~> 2.0.1)
+  pg_search (~> 2.1.2)
   premailer-rails (~> 1.9.6)
   public_api!
   puma (~> 3.7)

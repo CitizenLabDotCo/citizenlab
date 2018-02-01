@@ -30,7 +30,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'faker'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'rspec_api_documentation'
   gem 'rspec-rails'
   gem 'database_cleaner'
@@ -62,16 +62,16 @@ gem "sidekiq", "~> 5.0.5"
 gem "sidekiq-cron", "~> 0.6.3"
 gem "apartment", "~> 2.1.0"
 gem "apartment-sidekiq", "~> 1.2.0"
-gem "carrierwave", "~> 1.1.0"
+gem "carrierwave", "~> 1.2.2"
 gem "kaminari", "~> 1.0.1"
 gem "activerecord_json_validator", "~> 1.2.0"
 
 gem "rest-client"
 gem "fog-aws"
 gem "mini_magick"
-gem "carrierwave-base64", "~> 2.5"
+gem "carrierwave-base64", "~> 2.6"
 gem "awesome_nested_set", "~> 3.1.3"
-gem "pg_search", "~> 2.0.1"
+gem "pg_search", "~> 2.1.2"
 gem "counter_culture", "~> 1.0"
 gem "liquid", "~> 4.0"
 gem "premailer-rails", "~> 1.9.6"
