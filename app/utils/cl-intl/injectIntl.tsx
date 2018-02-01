@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs';
-import * as _ from 'lodash';
+import { cloneDeep } from 'lodash';
 import { currentTenantStream } from 'services/tenant';
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import { injectIntl as originalInjectIntl, ComponentConstructor, InjectedIntlProps, InjectIntlConfig } from 'react-intl';
@@ -8,14 +8,22 @@ import { localeStream } from 'services/locale';
 import { getLocalized } from 'utils/i18n';
 
 type State = {
-  orgName: string;
-  orgType: string,
+  orgName: string | null;
+  orgType: string | null,
 };
 
 function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps>) {
   return class NewFormatMessageComponent extends React.PureComponent<P & InjectedIntlProps, State> {
-
     subscriptions: Rx.Subscription[];
+
+    constructor(props: P) {
+      super(props as any);
+      this.state = {
+        orgName: null,
+        orgType: null
+      };
+      this.subscriptions = [];
+    }
 
     componentWillMount() {
       const locale$ = localeStream().observable;
@@ -36,6 +44,10 @@ function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps
       ];
     }
 
+    componentWillUnmount() {
+      this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    }
+
     formatMessageReplacement = (messageDescriptor: ReactIntl.FormattedMessage.MessageDescriptor, values?: {
       [key: string]: string | number | boolean | Date;
     } | undefined): string => {
@@ -43,14 +55,17 @@ function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps
     }
 
     render() {
-      const intlReplacement = _.clone(this.props.intl);
-      intlReplacement.formatMessage = this.formatMessageReplacement;
+      if (this.state && this.state.orgName && this.state.orgType) {
+        const intlReplacement = cloneDeep(this.props.intl);
+        intlReplacement.formatMessage = this.formatMessageReplacement;
 
-      return (
-        <Component {...this.props} intl={intlReplacement} />
-      );
+        return (
+          <Component {...this.props} intl={intlReplacement} />
+        );
+      }
+
+      return null;
     }
-
   };
 }
 

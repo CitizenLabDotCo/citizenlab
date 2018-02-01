@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
+import { isString } from 'lodash';
 
 // router
 import { withRouter, RouterState } from 'react-router';
@@ -48,8 +49,7 @@ type State = {
 };
 
 class IdeasShowPage extends React.PureComponent<Props & RouterState, State> {
-  state: State;
-  slug$: Rx.BehaviorSubject<string> | null;
+  slug$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -58,27 +58,26 @@ class IdeasShowPage extends React.PureComponent<Props & RouterState, State> {
       ideaId: null,
       loaded: false
     };
-    this.slug$ = null;
+    this.slug$ = new Rx.BehaviorSubject(null);
     this.subscriptions = [];
   }
 
   componentWillMount() {
-    this.slug$ = new Rx.BehaviorSubject(this.props.params.slug);
-
-    const ideaId$ = this.slug$.switchMap(slug => ideaBySlugStream(slug).observable.map(idea => idea.data.id));
+    this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
-      ideaId$.subscribe(ideaId => this.setState({
-        ideaId,
-        loaded: true
-      }))
+      this.slug$.distinctUntilChanged().filter(slug => isString(slug)).switchMap((slug: string) => {
+        const idea$ =  ideaBySlugStream(slug).observable;
+        return idea$;
+      }).subscribe((idea) => {
+        const ideaId = idea.data.id;
+        this.setState({ ideaId, loaded: true });
+      })
     ];
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.params.slug !== this.props.params.slug && this.slug$ !== null) {
-      this.slug$.next(newProps.params.slug);
-    }
+    this.slug$.next(newProps.params.slug);
   }
 
   componentWillUnmount() {

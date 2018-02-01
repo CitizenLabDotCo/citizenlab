@@ -105,12 +105,12 @@ export async function sendPasswordResetMail(email: string) {
 
 export async function resetPassword(password: string, token: string) {
   try {
-  const bodyData = {
-    user: {
-      password,
-      token
-    }
-  };
+    const bodyData = {
+      user: {
+        password,
+        token
+      }
+    };
     const httpMethod: IHttpMethod = { method: 'POST' };
     const response = await request(`${API_PATH}/users/reset_password`, bodyData, httpMethod, null);
     return response;

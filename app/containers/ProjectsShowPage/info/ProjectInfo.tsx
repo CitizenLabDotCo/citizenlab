@@ -46,7 +46,7 @@ const IdeaBodyStyled = styled.div`
   color: #333;
   font-size: 18px;
   line-height: 26px;
-  font-weight: 400;
+  font-weight: 300;
 
   h1 {
     font-size: 29px;
@@ -77,7 +77,7 @@ const IdeaBodyStyled = styled.div`
   }
 
   strong {
-    font-weight: 600;
+    font-weight: 500;
   }
 
   a {

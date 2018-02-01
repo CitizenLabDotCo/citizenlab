@@ -2,12 +2,15 @@ import * as React from 'react';
 import { isEmpty, isString, size, get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
+// router
+import { Link } from 'react-router';
+
 // components
 import Helmet from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
 import Spinner from 'components/UI/Spinner';
 import Icon from 'components/UI/Icon';
-import { Link } from 'react-router';
+import Footer from 'components/Footer';
 
 // services
 import { IPage, pageBySlugStream } from 'services/pages';
@@ -258,6 +261,8 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
               </PagesNav>
             </PagesNavWrapper>
           }
+
+          <Footer showCityLogoSection={false} />
         </Container>
       );
     }
