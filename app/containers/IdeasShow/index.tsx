@@ -2,9 +2,6 @@ import * as React from 'react';
 import { has } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
-// libraries
-import * as bowser from 'bowser';
-
 // router
 import { Link, browserHistory } from 'react-router';
 
@@ -101,6 +98,7 @@ const ProjectLink = styled(Link)`
 
   &:hover {
     color: ${(props) => darken(0.2, props.theme.colors.label)};
+    text-decoration: underline;
   }
 `;
 
@@ -117,9 +115,9 @@ const Header = styled.div`
 const IdeaTitle = styled.h1`
   width: 100%;
   color: #444;
-  font-size: 34px;
+  font-size: 32px;
   font-weight: 500;
-  line-height: 40px;
+  line-height: 38px;
   margin: 0;
   padding: 0;
 
@@ -318,15 +316,31 @@ const IdeaBody = styled.div`
   color: #474747;
   font-size: 18px;
   line-height: 30px;
-  font-weight: 400;
+  font-weight: 300;
 
   p {
     margin-bottom: 25px;
   }
 
-   strong {
-     font-weight: 500;
-   }
+  ul {
+    list-style-type: disc;
+    list-style-position: outside;
+    padding: 0;
+    padding-left: 30px;
+    margin: 0;
+    margin-bottom: 25px;
+
+    li {
+      padding: 0;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      margin: 0;
+    }
+  }
+
+  strong {
+    font-weight: 500;
+  }
 `;
 
 const SeparatorRow = styled.div`
@@ -351,11 +365,9 @@ const RightColumn = styled.div`
 `;
 
 const RightColumnDesktop: any = RightColumn.extend`
-  &.notSafari {
-    position: sticky;
-    top: 100px;
-    align-self: flex-start;
-  }
+  position: sticky;
+  top: 100px;
+  align-self: flex-start;
 
   ${media.smallerThanMaxTablet`
     display: none;
@@ -582,7 +594,6 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
       const ideaImageMedium = (ideaImage && has(ideaImage, 'data.attributes.versions.medium') ? ideaImage.data.attributes.versions.medium : null);
       const ideaImageLarge = (ideaImage && has(ideaImage, 'data.attributes.versions.large') ? ideaImage.data.attributes.versions.large : null);
-      const isSafari = bowser.safari;
       const ideaLocation = idea.data.attributes.location_point_geojson || null;
       const ideaAdress = idea.data.attributes.location_description || null;
       const projectTitleMultiloc = (project && project.data ? project.data.attributes.title_multiloc : null);
@@ -726,7 +737,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                 {ideaComments && <Comments ideaId={idea.data.id} />}
               </LeftColumn>
 
-              <RightColumnDesktop className={!isSafari ? 'notSafari' : ''}>
+              <RightColumnDesktop>
                 {ideaMetaContent}
               </RightColumnDesktop>
             </Content>

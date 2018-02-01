@@ -22,8 +22,8 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.loadUserIdeasError',
     defaultMessage: 'User\'s ideas couldn\'t be loaded',
   },
-  joined: {
-    id: 'app.containers.UsersShowPage.joined',
-    defaultMessage: 'Joined on {date}',
+  memberSince: {
+    id: 'app.containers.UsersShowPage.memberSince',
+    defaultMessage: 'Member since {date}',
   },
 });

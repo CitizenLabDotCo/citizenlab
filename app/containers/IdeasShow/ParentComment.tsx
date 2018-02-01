@@ -34,11 +34,17 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { transparentize, darken } from 'polished';
 import { Locale } from 'typings';
 
 const timeout = 550;
+
+const StyledMoreActionsMenu: any = styled(MoreActionsMenu)`
+  position: absolute;
+  top: 5px;
+  right: 15px;
+`;
 
 const Container = styled.div`
   margin-top: 20px;
@@ -59,21 +65,14 @@ const Container = styled.div`
 `;
 
 const CommentContainer: any = styled.div`
+  padding: 30px;
   border: solid 1px #e4e4e4;
   border-radius: 6px;
   background: #fff;
   position: relative;
-
-  ${(props: any) => props.withReplyBox && css`
-    border-bottom: none;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-  `}
 `;
 
-const CommentContainerInner = styled.div`
-  padding: 30px;
-`;
+const CommentContainerInner = styled.div``;
 
 const StyledAuthor = styled(Author)`
   margin-bottom: 25px;
@@ -83,10 +82,10 @@ const CommentBody = styled.div`
   color: #333;
   font-size: 18px;
   line-height: 26px;
-  font-weight: 400;
-  margin-bottom: 5px;
+  font-weight: 300;
 
-  span, p {
+  span,
+  p {
     white-space: pre-wrap;
     word-break: normal;
     word-wrap: break-word;
@@ -109,13 +108,9 @@ const CommentBody = styled.div`
   }
 `;
 
-const StyledMoreActionsMenu: any = styled(MoreActionsMenu)`
-  position: absolute;
-  top: 5px;
-  right: 15px;
+const ChildCommentsContainer = styled.div`
+  margin-top: 30px;
 `;
-
-const ChildCommentsContainer = styled.div``;
 
 type Props = {
   ideaId: string;
@@ -275,11 +270,11 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
                 return (<ChildComment key={childCommentId} commentId={childCommentId} />);
               })}
             </ChildCommentsContainer>
-          </CommentContainer>
 
-          {showCommentForm &&
-            <ChildCommentForm ideaId={ideaId} parentId={commentId} />
-          }
+            {showCommentForm &&
+              <ChildCommentForm ideaId={ideaId} parentId={commentId} />
+            }
+          </CommentContainer>
 
           <Modal opened={this.state.spamModalVisible} close={this.closeSpamModal}>
             <SpamReportForm resourceId={this.props.commentId} resourceType="comments" />

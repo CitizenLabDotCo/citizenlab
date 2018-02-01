@@ -537,6 +537,10 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     const { projectData } = this.state;
     const { formatMessage } = this.props.intl;
 
+    if (projectData && projectData.attributes.internal_role !== 'open_idea_box') {
+      return;
+    }
+
     if (projectData && window.confirm(formatMessage(messages.deleteProjectConfirmation))) {
       try {
         await deleteProject(projectData.id);
@@ -748,7 +752,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 <Label>
                   <FormattedMessage {...messages.deleteProjectLabel} />
                 </Label>
-                <SemButton color="red" onClick={this.deleteProject}>
+                <SemButton color="red" onClick={this.deleteProject} disabled={projectData.attributes.internal_role === 'open_idea_box'}>
                   <SemIcon name="trash" />
                   <FormattedMessage {...messages.deleteProjectButton} />
                 </SemButton>
