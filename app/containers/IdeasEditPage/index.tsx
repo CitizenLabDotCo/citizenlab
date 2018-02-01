@@ -18,7 +18,6 @@ import { ideaByIdStream, updateIdea } from 'services/ideas';
 import { ideaImageStream, addIdeaImage, deleteIdeaImage } from 'services/ideaImages';
 import { projectByIdStream, IProject } from 'services/projects';
 import { topicByIdStream, ITopic } from 'services/topics';
-import { IUser } from 'services/users';
 import { authUserStream } from 'services/auth';
 import { hasPermission } from 'services/permissions';
 
@@ -153,7 +152,7 @@ export default class IdeaEditPage extends React.PureComponent<Props, State> {
         return hasPermission({
           item: idea.data,
           action: 'edit',
-          user: (authUser as IUser),
+          user: (authUser || undefined),
           context: idea.data
         });
       });

@@ -1,14 +1,14 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isString, isEmpty } from 'lodash';
+
+// components
+import Icon from 'components/UI/Icon';
+import Input from 'components/UI/Input';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-
-// components
-import Icon from 'components/UI/Icon';
-import Input from 'components/UI/Input';
 
 // style
 import styled from 'styled-components';
@@ -76,7 +76,7 @@ class SearchInput extends React.PureComponent<Props & InjectedIntlProps, State> 
 
     const { value } = this.props;
 
-    if (_.isString(value) && !_.isEmpty(value)) {
+    if (isString(value) && !isEmpty(value)) {
       this.props.onChange('');
     }
   }
@@ -85,8 +85,9 @@ class SearchInput extends React.PureComponent<Props & InjectedIntlProps, State> 
     const className = this.props['className'];
     const { value } = this.props;
     const { formatMessage } = this.props.intl;
-    const iconName = (_.isString(value) && !_.isEmpty(value) ? 'close2' : 'search');
-    const canClear = (_.isString(value) && !_.isEmpty(value));
+    const iconName = (isString(value) && !isEmpty(value) ? 'close2' : 'search');
+    const canClear = (isString(value) && !isEmpty(value));
+    const placeholder = formatMessage(messages.searchPlaceholder);
 
     return (
       <Container className={className}>
@@ -94,7 +95,7 @@ class SearchInput extends React.PureComponent<Props & InjectedIntlProps, State> 
           id="e2e-ideas-search"
           value={value}
           type="text"
-          placeholder={formatMessage(messages.searchPlaceholder)}
+          placeholder={placeholder}
           onChange={this.handleOnChange}
         />
           <IconWrapper onClick={this.handleOnClick} className={canClear ? 'clear' : ''}>

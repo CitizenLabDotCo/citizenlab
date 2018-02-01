@@ -98,6 +98,7 @@ const ProjectLink = styled(Link)`
 
   &:hover {
     color: ${(props) => darken(0.2, props.theme.colors.label)};
+    text-decoration: underline;
   }
 `;
 
@@ -321,9 +322,25 @@ const IdeaBody = styled.div`
     margin-bottom: 25px;
   }
 
-   strong {
-     font-weight: 500;
-   }
+  ul {
+    list-style-type: disc;
+    list-style-position: outside;
+    padding: 0;
+    padding-left: 30px;
+    margin: 0;
+    margin-bottom: 25px;
+
+    li {
+      padding: 0;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      margin: 0;
+    }
+  }
+
+  strong {
+    font-weight: 500;
+  }
 `;
 
 const SeparatorRow = styled.div`

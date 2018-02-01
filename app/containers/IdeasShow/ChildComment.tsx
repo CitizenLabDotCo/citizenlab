@@ -29,15 +29,34 @@ import messages from './messages';
 import styled from 'styled-components';
 import { transparentize, darken } from 'polished';
 import { Locale } from 'typings';
+import { media } from 'utils/styleUtils';
+
+const StyledMoreActionsMenu: any = styled(MoreActionsMenu)`
+  position: absolute;
+  top: 5px;
+  right: 15px;
+  opacity: 0;
+  transition: opacity 100ms ease-out;
+
+  ${media.smallerThanMaxTablet`
+    opacity: 1;
+  `}
+`;
 
 const CommentContainer = styled.div`
   margin-top: 0px;
-  margin-bottom: 0px;
-  padding: 30px;
+  margin-bottom: 10px;
+  padding: 20px;
   position: relative;
   border: none;
-  border-top: solid 1px #e4e4e4;
   background: #f8f8f8;
+  border-radius: 5px;
+
+  &:hover {
+    ${StyledMoreActionsMenu} {
+      opacity: 1;
+    }
+  }
 `;
 
 const AuthorContainer = styled.div`
@@ -56,14 +75,13 @@ const AuthorAvatar = styled(Avatar)`
 
 const AuthorMeta = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 `;
 
 const AuthorNameContainer = styled.div `
   color: #333;
   font-size: 14px;
   font-weight: 400;
-  margin-right: 35px;
 `;
 
 const AuthorName = styled(Link)`
@@ -84,11 +102,11 @@ const TimeAgo = styled.div`
   font-size: 13px;
   line-height: 17px;
   font-weight: 300;
-  margin-top: 2px;
+  margin-top: 0px;
 `;
 
 const CommentBody = styled.div`
-  color: #6B6B6B;
+  color: #666;
   font-size: 15px;
   line-height: 22px;
   font-weight: 300;
@@ -116,12 +134,6 @@ const CommentBody = styled.div`
       text-decoration: underline;
     }
   }
-`;
-
-const StyledMoreActionsMenu: any = styled(MoreActionsMenu)`
-  position: absolute;
-  top: 5px;
-  right: 15px;
 `;
 
 type Props = {

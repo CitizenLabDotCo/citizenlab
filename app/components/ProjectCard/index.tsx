@@ -35,7 +35,7 @@ const Container = styled(Link)`
   padding: 10px;
   margin-bottom: 20px;
   background: #fff;
-  border: solid 1px #e6e6e6;
+  border: solid 1px #e0e0e0;
   cursor: pointer;
 
   ${media.smallerThanMaxTablet`
@@ -97,6 +97,8 @@ const ProjectContent = styled.div`
   flex-direction: column;
   margin-right: 30px;
   margin-left: 30px;
+  padding-top: 15px;
+  padding-bottom: 15px;
 
   ${media.smallerThanMaxTablet`
     margin: 0;
@@ -131,36 +133,36 @@ const ProjectTitle = styled.h3`
 
 const ProjectDescription = styled.div`
   color: #84939E;
-  font-size: 15px;
-  line-height: 20px;
+  font-size: 16px;
+  line-height: 22px;
   font-weight: 300;
-  margin-top: 10px;
+  margin-top: 12px;
 
   ${media.phone`
     display: none;
   `}
 `;
 
-const ReadMoreWrapper = styled.div`
-  margin-top: 10px;
+// const ReadMoreWrapper = styled.div`
+//   margin-top: 12px;
 
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
-`;
+//   ${media.smallerThanMaxTablet`
+//     display: none;
+//   `}
+// `;
 
-const ReadMore = styled.div`
-  color: ${(props) => props.theme.colors.label};
-  font-size: 15px;
-  font-weight: 400;
-  text-decoration: underline;
-  display: inline-block;
-  cursor: pointer;
+// const ReadMore = styled.div`
+//   color: ${(props) => props.theme.colors.label};
+//   font-size: 16px;
+//   font-weight: 400;
+//   text-decoration: underline;
+//   display: inline-block;
+//   cursor: pointer;
 
-  &:hover {
-    color: #000;
-  }
-`;
+//   &:hover {
+//     color: #000;
+//   }
+// `;
 
 const ProjectButtonWrapper = styled.div`
   display: flex;
@@ -279,11 +281,11 @@ class ProjectCard extends React.PureComponent<Props, State> {
             <ProjectDescription>
               {preview}
             </ProjectDescription>
-            <ReadMoreWrapper>
+            {/* <ReadMoreWrapper>
               <ReadMore onClick={this.goToProject}>
                 <FormattedMessage {...messages.readMore} />
               </ReadMore>
-            </ReadMoreWrapper>
+            </ReadMoreWrapper> */}
           </ProjectContent>
 
           <ProjectButtonWrapper>
