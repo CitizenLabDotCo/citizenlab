@@ -73,17 +73,9 @@ Rx.Observable.combineLatest(tenant$, identifications$).subscribe(([tenant, ident
 
 authUser$.subscribe((authUser) => {
   if (window && window['analytics']) {
-    window['analytics'].identify(
-      (authUser ? authUser.data.id : {}),
-      {
-        isAdmin: (authUser ? isAdmin(authUser) : false) }
-      ,
-      {
-        Intercom: {
-          hideDefaultLauncher: true
-        }
-      }
-    );
+    const userId = (authUser ? authUser.data.id : '');
+    const hideMessenger = (authUser ? !isAdmin(authUser) : true);
+    window['analytics'].identify(userId, {}, { Intercom: { hideDefaultLauncher: hideMessenger } });
   }
 });
 
