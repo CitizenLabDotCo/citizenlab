@@ -122,9 +122,9 @@ type State = {
   loadingMore: boolean;
 };
 
-class IdeaCards extends React.PureComponent<Props, State> {
+export default class IdeaCards extends React.PureComponent<Props, State> {
   state: State;
-  filterChange$: Rx.BehaviorSubject<object>;
+  filter$: Rx.BehaviorSubject<object>;
   loadMore$: Rx.BehaviorSubject<boolean>;
   subscriptions: Rx.Subscription[];
 
@@ -144,32 +144,33 @@ class IdeaCards extends React.PureComponent<Props, State> {
   }
 
   componentWillMount() {
-    const filter = (isObject(this.props.filter) && !isEmpty(this.props.filter) ? this.props.filter : {});
-
-    this.filterChange$ = new Rx.BehaviorSubject(filter);
+    this.filter$ = new Rx.BehaviorSubject(this.props.filter);
     this.loadMore$ = new Rx.BehaviorSubject(false);
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
-        this.filterChange$,
+        this.filter$
+          .map(filter => (isObject(filter) && !isEmpty(filter) ? filter : {}))
+          .distinctUntilChanged((x, y) => isEqual(x, y)),
         this.loadMore$,
         (filter, loadMore) => ({ filter, loadMore })
       ).mergeScan<{ filter: object, loadMore: boolean }, IAccumulator>((acc, { filter, loadMore }) => {
-        const filterChange = !isEqual(acc.filter, filter) || !loadMore;
-        const pageNumber = (filterChange ? 1 : acc.pageNumber + 1);
+        const hasFilterChanged = (!isEqual(acc.filter, filter) || !loadMore);
+        const pageNumber = (hasFilterChanged ? 1 : acc.pageNumber + 1);
 
-        this.setState({ loading: (filterChange), loadingMore: (!filterChange) });
+        this.setState({ loading: hasFilterChanged, loadingMore: !hasFilterChanged });
 
         return ideasStream({
           queryParameters: {
             'page[size]': 15,
+            sort: 'new',
             ...filter,
             'page[number]': pageNumber
           }
         }).observable.map((ideas) => ({
           pageNumber,
           filter,
-          ideas: (filterChange ? ideas : { data: [...acc.ideas.data, ...ideas.data] }) as IIdeas,
+          ideas: (hasFilterChanged ? ideas : { data: [...acc.ideas.data, ...ideas.data] }) as IIdeas,
           hasMore: has(ideas, 'links.next')
         }));
       }, {
@@ -187,13 +188,8 @@ class IdeaCards extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  componentWillReceiveProps(newProps) {
-    const oldProps = this.props;
-
-    if (!isEqual(newProps.filter, oldProps.filter)) {
-      const filter = (isObject(newProps.filter) && !isEmpty(newProps.filter) ? newProps.filter : {});
-      this.filterChange$.next(filter);
-    }
+  componentWillReceiveProps(nextProps: Props) {
+    this.filter$.next(nextProps.filter);
   }
 
   loadMoreIdeas = () => {
@@ -268,5 +264,3 @@ class IdeaCards extends React.PureComponent<Props, State> {
     );
   }
 }
-
-export default IdeaCards;

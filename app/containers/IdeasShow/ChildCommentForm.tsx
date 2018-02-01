@@ -33,14 +33,13 @@ const StyledTextArea = styled(MentionsTextArea)`
   .textareaWrapper__highlighter,
   textarea {
     color: #666 !important;
-    font-size: 16px !important;
-    line-height: 26px !important;
-    padding: 12px 30px !important;
+    font-size: 15px !important;
+    font-weight: 300 !important;
+    line-height: 22px !important;
+    padding: 14px 20px !important;
     padding-right: 100px !important;
-    border-color: #e4e4e4 !important;
-    border-top-left-radius: 0px !important;
-    border-top-right-radius: 0px !important;
-    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1) !important;
+    border: solid 1px #e8e8e8 !important;
+    box-shadow: none !important;
 
     &:hover {
       border-color: #333 !important;
@@ -48,7 +47,7 @@ const StyledTextArea = styled(MentionsTextArea)`
 
     &:focus {
       border-color: #333 !important;
-      box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1) !important;
+      box-shadow: none !important;
     }
   }
 `;

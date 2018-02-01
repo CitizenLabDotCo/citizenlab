@@ -225,10 +225,8 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
   componentDidMount() {
     this.subscriptions.push(
       Rx.Observable.fromEvent(window, 'scroll', { passive: true }).sampleTime(20).subscribe(() => {
-        this.setState((state) => {
-          const scrolled = (window.scrollY > 0);
-          return (state.scrolled !== scrolled ? { scrolled } : state);
-        });
+        const scrolled = (window.scrollY > 0);
+        this.setState({ scrolled });
       })
     );
   }

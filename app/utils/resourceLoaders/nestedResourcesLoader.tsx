@@ -45,7 +45,7 @@ export const injectNestedResources = function <IResourceData>(propName: string, 
       }
 
       componentWillReceiveProps(nextProps) {
-        if (parentIdFn(nextProps) !== parentIdFn(this.props)) {
+        if (parentIdFn(nextProps) && parentIdFn(nextProps) !== parentIdFn(this.props)) {
           this.setState({
             resources: [],
             currentPage: 0,

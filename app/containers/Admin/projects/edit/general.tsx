@@ -37,7 +37,7 @@ import {
   deleteProject,
 } from 'services/projects';
 import { projectImagesStream, addProjectImage, deleteProjectImage } from 'services/projectImages';
-import { areasStream, addArea, IAreaData } from 'services/areas';
+import { areasStream, IAreaData } from 'services/areas';
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import eventEmitter from 'utils/eventEmitter';
@@ -184,13 +184,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     };
     this.slug$ = null;
     this.subscriptions = [];
-
-    addArea({
-      title_multiloc: { en: 'the title' + Date.now() },
-      description_multiloc: { en: 'the description' },
-    }).then((response) => {
-      console.log(response);
-    });
   }
 
   componentWillMount() {
@@ -497,9 +490,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
             return !newProjectImages.some(newProjectImage => newProjectImage.base64 === oldProjectImage.base64);
           });
         }
-
-        console.log('projectAttributesDiff:');
-        console.log(projectAttributesDiff);
 
         if (!isEmpty(projectAttributesDiff)) {
           if (projectData) {
