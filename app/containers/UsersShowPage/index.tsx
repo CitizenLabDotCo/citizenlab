@@ -1,6 +1,7 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isEmpty } from 'lodash';
 import * as Rx from 'rxjs/Rx';
+import * as moment from 'moment';
 
 // components
 import IdeaCards from 'components/IdeaCards';
@@ -11,7 +12,6 @@ import Avatar from 'components/Avatar';
 import { userBySlugStream, IUser } from 'services/users';
 
 // i18n
-import { FormattedDate } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import messages from './messages';
@@ -129,6 +129,8 @@ export default class UsersShowPage extends React.PureComponent<Props & Params, S
     const { user } = this.state;
 
     if (user) {
+      const memberSince = moment(user.data.attributes.created_at).format('LL');
+
       return (
         <StyledContentContainer>
 
@@ -139,19 +141,9 @@ export default class UsersShowPage extends React.PureComponent<Props & Params, S
           <UserInfo>
             <FullName>{user.data.attributes.first_name} {user.data.attributes.last_name}</FullName>
             <JoinedAt>
-              <FormattedMessage
-                {...messages.joined}
-                values={{
-                  date: <FormattedDate
-                          value={user.data.attributes.created_at}
-                          year="numeric"
-                          month="long"
-                          day="numeric"
-                  />
-                }}
-              />
+              <FormattedMessage {...messages.memberSince} values={{ date: memberSince }} />
             </JoinedAt>
-            {!_.isEmpty(user.data.attributes.bio_multiloc) &&
+            {!isEmpty(user.data.attributes.bio_multiloc) &&
               <Bio>
                 {user.data.attributes.bio_multiloc && <T value={user.data.attributes.bio_multiloc} />}
               </Bio>

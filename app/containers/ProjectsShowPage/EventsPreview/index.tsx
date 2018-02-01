@@ -74,7 +74,7 @@ export default class EventsPreview extends React.Component<Props, State> {
       this.projectId$.distinctUntilChanged().filter(projectId => isString(projectId)).switchMap((projectId) => {
         const projectSlug$ = projectByIdStream(projectId).observable.map(project => project.data.attributes.slug);
         const events$ = eventsStream(projectId).observable;
-        
+
         return Rx.Observable.combineLatest(
           projectSlug$,
           events$

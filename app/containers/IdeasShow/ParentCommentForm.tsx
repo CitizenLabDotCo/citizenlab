@@ -35,6 +35,13 @@ const Container = styled.div`
 
 const CommentContainer = styled.div``;
 
+const StyledTextArea = styled(MentionsTextArea)`
+  .textareaWrapper__highlighter,
+  textarea {
+    font-weight: 300 !important;
+  }
+`;
+
 const StyledAuthor = styled(Author)`
   margin-bottom: 10px;
 `;
@@ -177,7 +184,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
       <CommentContainer className="e2e-comment-form ideaCommentForm">
         <StyledAuthor authorId={authUser.data.id} />
 
-        <MentionsTextArea
+        <StyledTextArea
           name="comment"
           placeholder={placeholder}
           rows={8}
@@ -196,7 +203,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
           >
             <FormattedMessage {...messages.publishComment} />
           </SubmitButton>
-        </MentionsTextArea>
+        </StyledTextArea>
       </CommentContainer>
     ));
 
