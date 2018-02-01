@@ -45,7 +45,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'redcarpet'
-  gem 'mongo', '~> 2.4'
+  gem 'mongo', '~> 2.5'
 end
 
 group :test do
