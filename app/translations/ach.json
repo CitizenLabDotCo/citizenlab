@@ -447,6 +447,7 @@
   "app.containers.Projects.navEvents": "crwdns15829:0crwdne15829:0",
   "app.containers.Projects.navIdeas": "crwdns15830:0crwdne15830:0",
   "app.containers.Projects.navInformation": "crwdns18413:0crwdne18413:0",
+  "app.containers.Projects.navProcess": "",
   "app.containers.Projects.navTimeline": "crwdns15832:0crwdne15832:0",
   "app.containers.Projects.noPastEvents": "crwdns18408:0crwdne18408:0",
   "app.containers.Projects.noPhaseSelected": "crwdns18397:0crwdne18397:0",
