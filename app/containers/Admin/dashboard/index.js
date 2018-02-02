@@ -57,24 +57,26 @@ class DashboardPage extends React.Component { // eslint-disable-line react/prefe
     return { startAtMoment, endAtMoment };
   }
 
-  changeInterval = (interval) => {
+  changeInterval(interval) {
     this.setState({ interval, intervalIndex: 0 });
-  };
+  }
 
-  changeIntervalIndex = (intervalIndex) => {
+  changeIntervalIndex(intervalIndex) {
     this.setState({ intervalIndex });
   }
 
-  chartTheme = (theme) => ({
-    ...theme,
-    chartStroke: '#01A1B1',
-    chartFill: '#01A1B1',
-    barFill: '#ffffff',
-    // chartStroke: lighten(0.3, theme.colorMain),
-    // chartFill: lighten(0.3, theme.colorMain),
-    chartLabelColor: '#999999',
-    chartLabelSize: 13,
-  });
+  chartTheme(theme) {
+    return {
+      ...theme,
+      chartStroke: '#01A1B1',
+      chartFill: '#01A1B1',
+      barFill: '#ffffff',
+      // chartStroke: lighten(0.3, theme.colorMain),
+      // chartFill: lighten(0.3, theme.colorMain),
+      chartLabelColor: '#999999',
+      chartLabelSize: 13,
+    };
+  }
 
   render() {
     const { startAtMoment, endAtMoment } = this.calculateBoundaryDates(this.state.interval, this.state.intervalIndex);
