@@ -578,7 +578,7 @@
   "app.containers.UsersShowPage.loadUserIdeasError": "crwdns18250:0crwdne18250:0",
   "app.containers.UsersShowPage.loadingUser": "crwdns16017:0crwdne16017:0",
   "app.containers.UsersShowPage.loadingUserIdeas": "crwdns16018:0crwdne16018:0",
-  "app.containers.UsersShowPage.memberSince": "",
+  "app.containers.UsersShowPage.memberSince": "crwdns18414:0{date}crwdne18414:0",
   "app.containers.admin.ideas.all.exportComments": "crwdns16024:0crwdne16024:0",
   "app.containers.admin.ideas.all.exportIdeas": "crwdns16025:0crwdne16025:0",
   "app.containers.admin.ideas.all.header": "crwdns16026:0crwdne16026:0",

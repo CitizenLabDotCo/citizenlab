@@ -578,7 +578,7 @@
   "app.containers.UsersShowPage.loadUserIdeasError": "Die Ideen des Benutzers konnten nicht geladen werden",
   "app.containers.UsersShowPage.loadingUser": "Wird geladen...",
   "app.containers.UsersShowPage.loadingUserIdeas": "Benutzerideen werden geladen...",
-  "app.containers.UsersShowPage.memberSince": "",
+  "app.containers.UsersShowPage.memberSince": "Member since {date}",
   "app.containers.admin.ideas.all.exportComments": "Alle Kommentare exportieren",
   "app.containers.admin.ideas.all.exportIdeas": "Alle Ideen exportieren",
   "app.containers.admin.ideas.all.header": "Ideen",
