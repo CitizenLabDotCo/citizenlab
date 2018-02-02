@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
@@ -95,7 +95,6 @@ type State = {
 };
 
 class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
-  state: State;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -112,7 +111,7 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
   componentWillMount() {
     const currentTenant$ = currentTenantStream().observable.do((currentTenant) => {
       const { birthyear, domicile, gender } = currentTenant.data.attributes.settings.demographic_fields;
-      const demographicFieldsEnabled = _.get(currentTenant, `data.attributes.settings.demographic_fields.enabled`);
+      const demographicFieldsEnabled = get(currentTenant, `data.attributes.settings.demographic_fields.enabled`);
       const hasOneOrMoreActiveDemographicFields = [birthyear, domicile, gender].some(value => value === true);
 
       if (!demographicFieldsEnabled || !hasOneOrMoreActiveDemographicFields) {
