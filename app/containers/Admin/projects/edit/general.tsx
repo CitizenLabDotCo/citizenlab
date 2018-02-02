@@ -559,7 +559,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       noTitleError,
       projectData,
       headerBg,
-      presentationMode,
       newProjectImages,
       loading,
       processing,
@@ -664,22 +663,26 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               }
             </SectionField>
 
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.defaultDisplay} />
-              </Label>
-              {['card', 'map'].map((key) => (
-                <Radio
-                  key={key}
-                  onChange={this.handleIdeasDisplayChange}
-                  currentValue={presentationMode}
-                  value={key}
-                  name="presentation_mode"
-                  id={`presentation_mode-${key}`}
-                  label={<FormattedMessage {...messages[`${key}Display`]} />}
-                />
-              ))}
-            </SectionField>
+            {/*
+            {projectData && projectData.attributes.process_type === 'continuous' &&
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.defaultDisplay} />
+                </Label>
+                {['card', 'map'].map((key) => (
+                  <Radio
+                    key={key}
+                    onChange={this.handleIdeasDisplayChange}
+                    currentValue={presentationMode}
+                    value={key}
+                    name="presentation_mode"
+                    id={`presentation_mode-${key}`}
+                    label={<FormattedMessage {...messages[`${key}Display`]} />}
+                  />
+                ))}
+              </SectionField>
+            }
+            */}
 
             <SectionField>
               <Label htmlFor="project-area">

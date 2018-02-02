@@ -11,6 +11,7 @@ import ProjectCards from 'components/ProjectCards';
 import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import Footer from 'components/Footer';
+import Spinner from 'components/UI/Spinner';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -32,11 +33,29 @@ import { media } from 'utils/styleUtils';
 import { Locale } from 'typings';
 
 const Container: any = styled.div`
+  height: 100%;
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: ${(props: any) => props.hasHeader ? '#f8f8f8' : '#fff'};
+  background: ${(props: any) => props.hasHeader ? '#f6f6f6' : '#fff'};
   position: relative;
+
+  ${media.smallerThanMaxTablet`
+    min-height: auto;
+  `}
+`;
+
+const Loading = styled.div`
+  width: 100%;
+  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ${media.smallerThanMaxTablet`
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+  `}
 `;
 
 const Header = styled.div`
@@ -105,7 +124,7 @@ const HeaderTitle: any = styled.h1`
   max-width: 600px;
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
   font-size: 55px;
-  line-height: 60px;
+  line-height: 64px;
   font-weight: 600;
   text-align: left;
   white-space: normal;
@@ -153,7 +172,7 @@ const HeaderSubtitle: any = styled.h2`
 
 const Content = styled.div`
   width: 100%;
-  background: #f8f8f8;
+  background: #f6f6f6;
   z-index: 1;
 `;
 
@@ -270,13 +289,13 @@ type State = {
   currentTenantHeader: string | null;
   hasIdeas: boolean;
   hasProjects: boolean;
+  loaded: boolean;
 };
 
 export const landingPageIdeasQuery = { sort: 'trending', 'page[number]': 1, 'page[size]': 6 };
 export const landingPageProjectsQuery = { sort: 'new', 'page[number]': 1, 'page[size]': 2 };
 
-class LandingPage extends React.PureComponent<Props, State> {
-  state: State;
+export default class LandingPage extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -286,7 +305,8 @@ class LandingPage extends React.PureComponent<Props, State> {
       currentTenant: null,
       currentTenantHeader: null,
       hasIdeas: false,
-      hasProjects: false
+      hasProjects: false,
+      loaded: false
     };
     this.subscriptions = [];
   }
@@ -312,7 +332,8 @@ class LandingPage extends React.PureComponent<Props, State> {
           currentTenant,
           currentTenantHeader: (currentTenant.data.attributes.header_bg ? currentTenant.data.attributes.header_bg.large : null),
           hasIdeas: (ideas !== null && ideas.data.length > 0),
-          hasProjects: (projects !== null && projects.data.length > 0)
+          hasProjects: (projects !== null && projects.data.length > 0),
+          loaded: true
         });
       }),
 
@@ -351,9 +372,17 @@ class LandingPage extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, currentTenant, currentTenantHeader, hasIdeas, hasProjects } = this.state;
+    const { locale, currentTenant, currentTenantHeader, hasIdeas, hasProjects, loaded } = this.state;
 
-    if (locale && currentTenant) {
+    if (!loaded) {
+      return (
+        <Loading id="ideas-loading">
+          <Spinner size="30px" color="#666" />
+        </Loading>
+      );
+    }
+
+    if (loaded && locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
       const organizationNameMultiLoc = currentTenant.data.attributes.settings.core.organization_name;
       const headerTitleMultiLoc = currentTenant.data.attributes.settings.core.header_title;
@@ -406,7 +435,7 @@ class LandingPage extends React.PureComponent<Props, State> {
                       <ViewMoreButton
                         text={<FormattedMessage {...messages.exploreAllProjects} />}
                         style="primary"
-                        size="3"
+                        size="2"
                         icon="compass"
                         onClick={this.goToProjectsPage}
                         circularCorners={false}
@@ -439,7 +468,7 @@ class LandingPage extends React.PureComponent<Props, State> {
                       <ViewMoreButton
                         text={<FormattedMessage {...messages.exploreAllIdeas} />}
                         style="primary"
-                        size="3"
+                        size="2"
                         icon="compass"
                         onClick={this.goToIdeasPage}
                         circularCorners={false}
@@ -459,6 +488,3 @@ class LandingPage extends React.PureComponent<Props, State> {
     return null;
   }
 }
-
-export default LandingPage;
-

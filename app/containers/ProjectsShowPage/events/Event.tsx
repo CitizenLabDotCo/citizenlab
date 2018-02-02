@@ -30,12 +30,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   border-radius: 5px;
-  border: solid 1px #e0e0e0;
+  /* border: solid 1px #e0e0e0; */
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
   background: #fff;
-
-  &.past {
-    border-color: #eaeaea;
-  }
 
   ${media.smallerThanMaxTablet`
     flex-direction: column;
@@ -119,8 +116,6 @@ const EventInformation = styled.div`
   margin-top: 15px;
   margin-bottom: 15px;
   margin-left: 40px;
-  padding-right: 60px;
-  border-right: 1px solid #e0e0e0;
 
   &.past {
     opacity: 0.6;
@@ -166,6 +161,8 @@ const EventLocationWrapper = styled.div`
   padding: 20px;
   display: flex;
   align-items: center;
+  border-left: 1px solid #e0e0e0;
+  margin-left: 60px;
 
   &.past {
     opacity: 0.6;
@@ -194,9 +191,9 @@ const EventLocation = styled.div`
 `;
 
 const MapIcon = styled(Icon)`
-  height: 30px;
+  height: 28px;
   fill: #666;
-  margin-right: 15px;
+  margin-right: 20px;
 `;
 
 const EventLocationInner = styled.div`
@@ -341,20 +338,20 @@ export default class Event extends React.PureComponent<Props, State> {
           </EventInformation>
 
           {eventLocationAddress &&
-          <EventLocationWrapper className={eventStatus}>
-            <EventLocation>
-              <MapIcon name="mapmarker" />
+            <EventLocationWrapper className={eventStatus}>
+              <EventLocation>
+                <MapIcon name="mapmarker" />
 
-              <EventLocationInner>
-                <EventLocationLabel>
-                  <FormattedMessage {...messages.location} />
-                </EventLocationLabel>
-                <EventLocationAddress>
-                  {eventLocationAddress}
-                </EventLocationAddress>
-              </EventLocationInner>
-            </EventLocation>
-          </EventLocationWrapper>
+                <EventLocationInner>
+                  <EventLocationLabel>
+                    <FormattedMessage {...messages.location} />
+                  </EventLocationLabel>
+                  <EventLocationAddress>
+                    {eventLocationAddress}
+                  </EventLocationAddress>
+                </EventLocationInner>
+              </EventLocation>
+            </EventLocationWrapper>
           }
         </Container>
       );

@@ -148,8 +148,8 @@ class DateTimePicker extends React.PureComponent<Props & injectedLocalized, Stat
 
   render () {
     const { selectedMoment, focused } = this.state;
-    const hours = selectedMoment.format('HH');
-    const minutes = selectedMoment.format('mm');
+    const hours = parseInt(selectedMoment.format('HH'), 10);
+    const minutes = parseInt(selectedMoment.format('mm'), 10);
 
     return (
       <Wrapper>
@@ -168,9 +168,9 @@ class DateTimePicker extends React.PureComponent<Props & injectedLocalized, Stat
           <input
             type="number"
             min="0"
-            aria-valuemin="0"
+            aria-valuemin={0}
             max="23"
-            aria-valuemax="23"
+            aria-valuemax={23}
             aria-valuenow={hours}
             step="1"
             value={hours}
@@ -180,9 +180,9 @@ class DateTimePicker extends React.PureComponent<Props & injectedLocalized, Stat
           <input
             type="number"
             min="0"
-            aria-valuemin="0"
+            aria-valuemin={0}
             max="59"
-            aria-valuemax="59"
+            aria-valuemax={59}
             aria-valuenow={minutes}
             step="1"
             value={minutes}

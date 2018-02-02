@@ -26,7 +26,7 @@ const Container = styled.div`
   position: relative;
 
   ${media.smallerThanMaxTablet`
-    background: #f8f8f8;
+    background: #f6f6f6;
   `}
 `;
 
@@ -37,7 +37,7 @@ const BackgroundColor = styled.div`
   left: 0;
   right: 0;
   z-index: 0;
-  background-color: #f8f8f8;
+  background: #f6f6f6;
 
   ${media.smallerThanMaxTablet`
     display: none;
@@ -100,6 +100,11 @@ const SelectFilterArea = FilterArea.extend``;
 
 const StyledSearchInput = styled(SearchInput)`
   width: 300px;
+
+  input {
+    font-size: 18px;
+    font-weight: 400;
+  }
 
   ${media.smallerThanMaxTablet`
     width: 100%;

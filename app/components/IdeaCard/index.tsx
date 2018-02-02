@@ -43,6 +43,9 @@ const IdeaImage: any = styled.img`
   height: 135px;
   object-fit: cover;
   overflow: hidden;
+  opacity: 0.9;
+  transition: all 250ms ease-out;
+  will-change: opacity;
 `;
 
 const IdeaImagePlaceholder = styled.div`
@@ -96,31 +99,26 @@ const StyledVoteControl = styled(VoteControl)`
   left: 20px;
 `;
 
-const IdeaContainer: any = styled(Link)`
+const IdeaContainer = styled(Link)`
   width: 100%;
   height: 370px;
   margin-bottom: 24px;
   cursor: pointer;
   position: relative;
-  background: transparent;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
+  background: #fff;
+  transition: transform 250ms ease-out;
+  will-change: transform;
 
-  &::after {
-    content: '';
-    border-radius: 6px;
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-    transition: opacity 300ms cubic-bezier(0.19, 1, 0.22, 1);
-    will-change: opacity;
-  }
+  &:hover {
+    transform: scale(1.015);
 
-  &:hover::after {
-    opacity: 1;
+    ${IdeaImage},
+    ${IdeaImagePlaceholder} {
+      opacity: 1;
+    }
   }
 `;
 
@@ -132,10 +130,7 @@ const IdeaContainerInner = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  border-radius: 6px;
-  background: #fff;
   position: relative;
-  border: solid 1px #e4e4e4;
   overflow: hidden;
 `;
 

@@ -29,6 +29,7 @@ const Overlay = styled.div`
   right: -10px;
   z-index: 10;
   transform-origin: right top;
+  will-change: transform, opacity;
 
   * {
     user-select: none;
@@ -73,14 +74,14 @@ const Overlay = styled.div`
 const ListWrapper = styled.ul`
   list-style: none;
   margin: 0;
-  max-height: 325px;
+  max-height: 300px;
   overflow-y: auto;
   padding: 0;
 `;
 
 const StyledOption: any = styled.li`
-  color: #84939E;
-  font-size: 16px;
+  color: ${(props) => props.theme.colors.label};
+  font-size: 17px;
   font-weight: 400;
   padding: 10px 15px;
   background: #fff;
@@ -101,7 +102,7 @@ const StyledOption: any = styled.li`
   &.focused,
   &:hover {
     color: #000;
-    background: #f2f2f2;
+    background: #f6f6f6;
   }
 `;
 

@@ -1,9 +1,11 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import { size, groupBy, isEmpty } from 'lodash';
-import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+
+// routing
 import { browserHistory } from 'react-router';
+
+// components
 import Spinner from 'components/UI/Spinner';
 
 // services
@@ -20,10 +22,14 @@ import ButtonBar from 'components/ButtonBar';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// styling
+import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
+
 const Container = styled.div`
   height: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  background: #f8f8f8;
+  background: #f6f6f6;
 
   ${media.smallerThanMaxTablet`
     min-height: auto;
@@ -302,7 +308,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
                   <ButtonBarInner>
                     <Button
                       className="e2e-submit-project-select-form"
-                      size="3"
+                      size="2"
                       text={<FormattedMessage {...messages.continueButton} />}
                       onClick={this.handleOnSubmitClick}
                       disabled={!selectedProjectId}
@@ -312,7 +318,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
                 <WithoutButtonBar>
                   <Button
                     className="e2e-submit-project-select-form"
-                    size="3"
+                    size="2"
                     text={<FormattedMessage {...messages.continueButton} />}
                     onClick={this.handleOnSubmitClick}
                     disabled={!selectedProjectId}

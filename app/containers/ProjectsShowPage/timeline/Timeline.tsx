@@ -34,10 +34,12 @@ const greenOpaque = css`rgba(29, 170, 99, 1)`;
 
 const Container = styled.div`
   width: 100%;
-  max-width: 1100px;
+  max-width: 1050px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: -61px;
+  margin-top: -35px;
+  border-radius: 5px;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
 
   * {
     user-select: none;
@@ -47,14 +49,14 @@ const Container = styled.div`
 const Header = styled.div`
   width: 100%;
   min-height: 60px;
-  padding: 10px 28px;
+  padding: 10px 30px;
   display: flex;
   justify-content: space-between;
-  border: solid 1px #e4e4e4;
+  /* border: solid 1px #e4e4e4; */
   border-bottom: none;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-  background: #fafafa;
+  background: #f6f6f6;
 `;
 
 const HeaderSection = styled.div`
@@ -192,7 +194,7 @@ const Phases = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  border: solid 1px #e4e4e4;
+  /* border: solid 1px #e4e4e4; */
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   background: #fff;
@@ -465,16 +467,12 @@ export default class Timeline extends React.PureComponent<Props, State> {
       let phaseStatus: 'past' | 'present' | 'future' | null = null;
       const phaseIds = (phases ? phases.data.map(phase => phase.id) : null);
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-      // const currentTenantTimezone = currentTenant.data.attributes.settings.core.timezone;
-      // const currentTenantTodayMoment = moment().tz(currentTenantTimezone);
       const selectedPhase = (selectedPhaseId ? phases.data.find(phase => phase.id === selectedPhaseId) : null);
       const selectedPhaseStart = (selectedPhase ? moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD').format('LL') : null);
       const selectedPhaseEnd = (selectedPhase ? moment(selectedPhase.attributes.end_at, 'YYYY-MM-DD').format('LL') : null);
       const selectedPhaseTitle = (selectedPhase ? getLocalized(selectedPhase.attributes.title_multiloc, locale, currentTenantLocales) : null);
       const selectedPhaseNumber = (selectedPhase ? indexOf(phaseIds, selectedPhaseId) + 1 : null);
       const isSelected = (selectedPhaseId !== null);
-      // const firstPhaseSelected = (phases && selectedPhaseId && selectedPhaseId === phases.data[0].id ? true : false);
-      // const lastPhaseSelected = (phases && selectedPhaseId && selectedPhaseId === phases.data[phases.data.length - 1].id ? true : false);
 
       if (selectedPhase) {
         if (currentPhaseId && selectedPhaseId === currentPhaseId) {

@@ -221,12 +221,11 @@ const MapWrapper = styled.div`
   height: 265px;
   position: relative;
   overflow: hidden;
-  will-change: auto;
+  will-change: height, opacity;
 
   &.map-enter {
     height: 0;
     opacity: 0;
-    will-change: height, opacity;
 
     &.map-enter-active {
       height: 265px;
@@ -238,7 +237,6 @@ const MapWrapper = styled.div`
   &.map-exit {
     height: 265px;
     opacity: 1;
-    will-change: height, opacity;
 
     &.map-exit-active {
       height: 0;

@@ -7,7 +7,7 @@ import Icon from 'components/UI/Icon';
 import styled from 'styled-components';
 
 const Text = styled.span`
-  color: #84939E;
+  color: ${(props) => props.theme.colors.label};
   font-size: 17px;
   font-weight: 400;
   line-height: 26px;
@@ -16,7 +16,7 @@ const Text = styled.span`
 
 const DropdownIcon = styled(Icon)`
   height: 7px;
-  fill: #84939E;
+  fill: ${(props) => props.theme.colors.label};
   margin-left: 4px;
   margin-top: 2px;
   transition: all 100ms ease-out;

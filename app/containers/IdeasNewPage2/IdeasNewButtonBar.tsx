@@ -86,7 +86,7 @@ export default class IdeasNewButtonBar extends React.PureComponent<Props, State>
         <ButtonBarInner>
           <Button
             className="e2e-submit-idea-form"
-            size="3"
+            size="2"
             processing={processing}
             text={<FormattedMessage {...messages.submit} />}
             onClick={this.handleOnSubmitButtonClick}

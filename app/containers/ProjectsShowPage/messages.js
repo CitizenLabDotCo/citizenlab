@@ -45,6 +45,10 @@ export default defineMessages({
     id: 'app.containers.Projects.navTimeline',
     defaultMessage: 'Timeline',
   },
+  navProcess: {
+    id: 'app.containers.Projects.navProcess',
+    defaultMessage: 'Process',
+  },
   navEvents: {
     id: 'app.containers.Projects.navEvents',
     defaultMessage: 'Events',
@@ -95,11 +99,11 @@ export default defineMessages({
   },
   displayMap: {
     id: 'app.containers.Projects.displayMap',
-    defaultMessage: 'Map',
+    defaultMessage: 'Map view',
   },
   displayCards: {
     id: 'app.containers.Projects.displayCards',
-    defaultMessage: 'Cards',
+    defaultMessage: 'Card view',
   },
   aboutThisPhase: {
     id: 'app.containers.Projects.aboutThisPhase',

@@ -38,6 +38,8 @@ const CommentContainer = styled.div``;
 const StyledTextArea = styled(MentionsTextArea)`
   .textareaWrapper__highlighter,
   textarea {
+    font-size: 18px !important;
+    line-height: 26px !important;
     font-weight: 300 !important;
   }
 `;

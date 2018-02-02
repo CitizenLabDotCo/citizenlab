@@ -306,6 +306,21 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
           />
         </FormElement>
 
+        <FormElement>
+          <Label value={<FormattedMessage {...messages.imageUploadLabel} />} />
+          <ImagesDropzone
+            images={imageFile}
+            imagePreviewRatio={135 / 298}
+            acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+            maxImageFileSize={5000000}
+            maxNumberOfImages={1}
+            placeholder={<FormattedMessage {...messages.imageUploadPlaceholder} />}
+            onAdd={this.handleUploadOnAdd}
+            onUpdate={this.handleUploadOnUpdate}
+            onRemove={this.handleUploadOnRemove}
+          />
+        </FormElement>
+
         {topics && topics.length > 0 &&
           <FormElement>
             <Label value={<FormattedMessage {...messages.topicsLabel} />} htmlFor="topics" />
@@ -338,21 +353,6 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
             value={position}
             placeholder={formatMessage(messages.locationPlaceholder)}
             onChange={this.handleLocationOnChange}
-          />
-        </FormElement>
-
-        <FormElement>
-          <Label value={<FormattedMessage {...messages.imageUploadLabel} />} />
-          <ImagesDropzone
-            images={imageFile}
-            imagePreviewRatio={135 / 298}
-            acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-            maxImageFileSize={5000000}
-            maxNumberOfImages={1}
-            placeholder={<FormattedMessage {...messages.imageUploadPlaceholder} />}
-            onAdd={this.handleUploadOnAdd}
-            onUpdate={this.handleUploadOnUpdate}
-            onRemove={this.handleUploadOnRemove}
           />
         </FormElement>
       </Form>

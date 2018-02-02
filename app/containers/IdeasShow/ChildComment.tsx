@@ -44,12 +44,11 @@ const StyledMoreActionsMenu: any = styled(MoreActionsMenu)`
 `;
 
 const CommentContainer = styled.div`
-  margin-top: 0px;
-  margin-bottom: 10px;
+  margin-top: 20px;
   padding: 20px;
   position: relative;
   border: none;
-  background: #f8f8f8;
+  background: #f6f6f6;
   border-radius: 5px;
 
   &:hover {
@@ -106,9 +105,9 @@ const TimeAgo = styled.div`
 `;
 
 const CommentBody = styled.div`
-  color: #666;
-  font-size: 15px;
-  line-height: 22px;
+  color: #333;
+  font-size: 16px;
+  line-height: 24px;
   font-weight: 300;
   padding: 0;
 

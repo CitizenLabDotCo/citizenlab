@@ -15,6 +15,7 @@ import Footer from 'components/Footer';
 import { projectBySlugStream, IProject } from 'services/projects';
 import { projectImagesStream } from 'services/projectImages';
 import { phasesStream } from 'services/phases';
+import { eventsStream } from 'services/events';
 
 // i18n
 import T from 'components/T';
@@ -94,16 +95,6 @@ const HeaderContentRight = styled.div`
   `}
 `;
 
-// const HeaderLabel = styled.div`
-//   color: #fff;
-//   font-size: 16px;
-//   font-weight: 300;
-//   text-align: left;
-//   margin: 0;
-//   padding: 0;
-//   z-index: 2;
-// `;
-
 const HeaderTitle = styled.div`
   color: #fff;
   font-size: 42px;
@@ -122,12 +113,12 @@ const HeaderTitle = styled.div`
 `;
 
 const HeaderButtons = styled.div`
-  min-width: 200px;
+  min-width: 220px;
 `;
 
 const HeaderButtonIconWrapper = styled.div`
-  width: 20px;
-  height: 15px;
+  width: 22px;
+  height: 17px;
   margin-right: 10px;
   display: flex;
   align-items: center;
@@ -140,7 +131,7 @@ const HeaderButtonIcon = styled(Icon)`
 
 const HeaderButtonText = styled.div`
   color: #fff;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 400;
   text-decoration: none;
   white-space: nowrap;
@@ -151,12 +142,12 @@ const HeaderButton = styled(Link)`
   align-items: center;
   justify-content: flex-start;
   border-radius: 5px;
-  padding: 14px 20px;
+  padding: 14px 22px;
   margin-top: 6px;
   margin-bottom: 6px;
   cursor: pointer;
   background: rgba(0, 0, 0, 0.6);
-  transition: all 80ms ease-out;
+  transition: all 100ms ease-out;
 
   &.active {
     background: #fff;
@@ -212,6 +203,7 @@ type Props = {
 
 type State = {
   project: IProject | null;
+  hasEvents: boolean;
 };
 
 export default class ProjectsShowPage extends React.PureComponent<Props, State> {
@@ -221,7 +213,8 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
   constructor(props) {
     super(props);
     this.state = {
-      project: null
+      project: null,
+      hasEvents: false
     };
     this.slug$ = new Rx.BehaviorSubject(null as any);
     this.subscriptions = [];
@@ -237,12 +230,16 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
       }).switchMap((project) => {
         const projectImages$ = projectImagesStream(project.data.id).observable;
         const phases$ = phasesStream(project.data.id).observable;
+        const events$ = eventsStream(project.data.id).observable;
+
         return Rx.Observable.combineLatest(
           projectImages$,
-          phases$
-        ).map(() => project);
-      }).subscribe((project) => {
-        this.setState({ project });
+          phases$,
+          events$
+        ).map(([_projectImages, _phases, events]) => ({ project, events }));
+      }).subscribe(({ project, events }) => {
+        const hasEvents = (events && events.data && events.data.length > 0);
+        this.setState({ project, hasEvents });
       })
     ];
   }
@@ -256,16 +253,13 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
   }
 
   render() {
-    const { project } = this.state;
+    const { project, hasEvents } = this.state;
 
     if (project) {
       const { children } = this.props;
       const projectSlug = project.data.attributes.slug;
       const projectHeaderImageLarge = (project.data.attributes.header_bg.large || null);
       const projectType = project.data.attributes.process_type;
-      // const currentLocation = browserHistory.getCurrentLocation();
-      // const { pathname } = currentLocation;
-      // const isContinuousProject = (project.data.attributes.process_type === 'continuous');
 
       return (
         <React.Fragment>
@@ -278,12 +272,6 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
               <ContentContainer>
                 <HeaderContent className={projectType}>
                   <HeaderContentLeft>
-                    {/*
-                    <HeaderLabel>
-                      <FormattedMessage {...messages.project} />
-                    </HeaderLabel>
-                    */}
-
                     <HeaderTitle>
                       <T value={project.data.attributes.title_multiloc} />
                     </HeaderTitle>
@@ -291,6 +279,20 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
 
                   <HeaderContentRight>
                     <HeaderButtons>
+                      {project && project.data.attributes.process_type === 'continuous' &&
+                        <HeaderButton
+                          to={`/projects/${projectSlug}/ideas`}
+                          activeClassName="active"
+                        >
+                          <HeaderButtonIconWrapper>
+                            <HeaderButtonIcon name="idea" />
+                          </HeaderButtonIconWrapper>
+                          <HeaderButtonText>
+                            <FormattedMessage {...messages.navIdeas} />
+                          </HeaderButtonText>
+                        </HeaderButton>
+                      }
+
                       {project && project.data.attributes.process_type === 'timeline' &&
                         <HeaderButton
                           to={`/projects/${projectSlug}/timeline`}
@@ -300,7 +302,7 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
                             <HeaderButtonIcon name="timeline" />
                           </HeaderButtonIconWrapper>
                           <HeaderButtonText>
-                            <FormattedMessage {...messages.navTimeline} />
+                            <FormattedMessage {...messages.navProcess} />
                           </HeaderButtonText>
                         </HeaderButton>
                       }
@@ -317,28 +319,16 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
                         </HeaderButtonText>
                       </HeaderButton>
 
-                      <HeaderButton
-                        to={`/projects/${projectSlug}/events`}
-                        activeClassName="active"
-                      >
-                        <HeaderButtonIconWrapper>
-                          <HeaderButtonIcon name="calendar" />
-                        </HeaderButtonIconWrapper>
-                        <HeaderButtonText>
-                          <FormattedMessage {...messages.navEvents} />
-                        </HeaderButtonText>
-                      </HeaderButton>
-
-                      {project && project.data.attributes.process_type === 'continuous' &&
+                      {hasEvents &&
                         <HeaderButton
-                          to={`/projects/${projectSlug}/ideas`}
+                          to={`/projects/${projectSlug}/events`}
                           activeClassName="active"
                         >
                           <HeaderButtonIconWrapper>
-                            <HeaderButtonIcon name="idea" />
+                            <HeaderButtonIcon name="calendar" />
                           </HeaderButtonIconWrapper>
                           <HeaderButtonText>
-                            <FormattedMessage {...messages.navIdeas} />
+                            <FormattedMessage {...messages.navEvents} />
                           </HeaderButtonText>
                         </HeaderButton>
                       }

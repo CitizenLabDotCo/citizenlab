@@ -29,7 +29,7 @@ import { darken } from 'polished';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  background: #f0f0f0;
+  background: #f6f6f6;
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
@@ -133,16 +133,15 @@ const StyledLink = styled(Link)`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 15px;
-  /* margin-left: -30px;
-  margin-right: -30px; */
   padding: 23px;
   border-radius: 5px;
-  border: 1px solid #ddd;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
   background: #fff;
+  transition: all 150ms ease-out;
 
   &:hover {
     color: #000;
-    border-color: #bbb;
+    transform: scale(1.005);
   }
 `;
 
