@@ -9,7 +9,8 @@ import { getLocalized } from 'utils/i18n';
 
 type State = {
   orgName: string | null;
-  orgType: string | null,
+  orgType: string | null;
+  loaded: boolean;
 };
 
 function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps>) {
@@ -20,7 +21,8 @@ function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps
       super(props as any);
       this.state = {
         orgName: null,
-        orgType: null
+        orgType: null,
+        loaded: false
       };
       this.subscriptions = [];
     }
@@ -39,6 +41,7 @@ function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps
           this.setState({
             orgName,
             orgType: tenant.data.attributes.settings.core.organization_type,
+            loaded: true
           });
         })
       ];
@@ -55,8 +58,11 @@ function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps
     }
 
     render() {
-      if (this.state && this.state.orgName && this.state.orgType) {
-        const intlReplacement = cloneDeep(this.props.intl);
+      const { loaded } = this.state;
+      const { intl } = this.props;
+
+      if (loaded) {
+        const intlReplacement = cloneDeep(intl);
         intlReplacement.formatMessage = this.formatMessageReplacement;
 
         return (
