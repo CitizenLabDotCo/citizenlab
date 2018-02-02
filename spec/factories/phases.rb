@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :phase do
     project
     title_multiloc {{

@@ -1,6 +1,6 @@
 require 'faker'
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :tenant do
     name Faker::Address.city
     # host Faker::Internet.domain_name
