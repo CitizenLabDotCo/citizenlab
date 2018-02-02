@@ -537,7 +537,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     const { projectData } = this.state;
     const { formatMessage } = this.props.intl;
 
-    if (projectData && projectData.attributes.internal_role !== 'open_idea_box') {
+    if (projectData && projectData.attributes.internal_role === 'open_idea_box') {
       return;
     }
 
