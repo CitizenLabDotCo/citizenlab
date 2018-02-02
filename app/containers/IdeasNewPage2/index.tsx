@@ -31,14 +31,14 @@ import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  background: #f8f8f8;
+  background: #f6f6f6;
 `;
 
 const PageContainer = styled.div`
   width: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   position: relative;
-  background: #f8f8f8;
+  background: #f6f6f6;
 
   &.page-enter {
     position: absolute;
@@ -101,7 +101,7 @@ const ButtonBarContainer = styled.div`
   background: #fff;
   border-top: solid 1px #ddd;
   -webkit-backface-visibility: hidden;
-  will-change: auto;
+  will-change: transform;
 
   ${media.phone`
     display: none;
@@ -109,7 +109,6 @@ const ButtonBarContainer = styled.div`
 
   &.buttonbar-enter {
     transform: translateY(64px);
-    will-change: transform;
 
     &.buttonbar-enter-active {
       transform: translateY(0);
@@ -119,7 +118,6 @@ const ButtonBarContainer = styled.div`
 
   &.buttonbar-exit {
     transform: translateY(0);
-    will-change: transform;
 
     &.buttonbar-exit-active {
       transform: translateY(64px);

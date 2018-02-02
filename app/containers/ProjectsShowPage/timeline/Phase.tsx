@@ -41,7 +41,7 @@ const Information = styled.div`
 const InformationBody = styled.div`
   color: #333;
   font-size: 18px;
-  line-height: 26px;
+  line-height: 28px;
   font-weight: 300;
 
   strong {
@@ -126,7 +126,7 @@ export default class Phase extends React.PureComponent<Props, State> {
 
           {participationMethod === 'ideation' &&
             <IdeasWrapper>
-              <Ideas type="phase" id={phase.data.id} />
+              <Ideas type="phase" id={phase.data.id} defaultDisplay={'card'} />
             </IdeasWrapper>
           }
         </StyledContentContainer>

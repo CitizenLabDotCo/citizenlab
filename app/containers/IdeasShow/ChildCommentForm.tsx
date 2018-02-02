@@ -27,15 +27,17 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 import { Locale } from 'typings';
 
-const CommentContainer = styled.div``;
+const CommentContainer = styled.div`
+  margin-top: 20px;
+`;
 
 const StyledTextArea = styled(MentionsTextArea)`
   .textareaWrapper__highlighter,
   textarea {
-    color: #666 !important;
-    font-size: 15px !important;
+    color: #333 !important;
+    font-size: 16px !important;
     font-weight: 300 !important;
-    line-height: 22px !important;
+    line-height: 24px !important;
     padding: 14px 20px !important;
     padding-right: 100px !important;
     border: solid 1px #e8e8e8 !important;

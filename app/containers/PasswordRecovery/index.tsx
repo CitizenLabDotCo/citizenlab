@@ -25,7 +25,7 @@ import messages from './messages';
 const Container = styled.div`
   width: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  background: #f8f8f8;
+  background: #f6f6f6;
 `;
 
 const StyledContentContainer = styled(ContentContainer)`

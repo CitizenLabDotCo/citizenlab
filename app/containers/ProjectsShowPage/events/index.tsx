@@ -20,7 +20,7 @@ import { eventsStream, IEvents } from 'services/events';
 import styled from 'styled-components';
 
 const Container = styled(ContentContainer)`
-  background: #f8f8f8;
+  background: #f6f6f6;
   padding-top: 70px;
 `;
 

@@ -20,14 +20,17 @@ const Container = styled(Link)`
   margin-right: 13px;
   background: white;
   border-radius: 5px;
-  border: solid 1px #e0e0e0;
+  /* border: solid 1px #e0e0e0; */
   display: flex;
   padding: 15px;
   cursor: pointer;
-  transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
+  transition: all 250ms ease-out;
+  will-change: transform;
 
   &:hover {
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1); */
+    transform: scale(1.01);
   }
 
   &:not(.last) {

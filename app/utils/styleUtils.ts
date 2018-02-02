@@ -67,7 +67,7 @@ export const colors = {
   label: '#84939E',
   mediumGrey: '#BDBDBD',
   separation: '#EAEAEA',
-  background: '#F8F8F8',
+  background: '#f6f6f6',
   adminBackground: '#F0F3F4',
   clBlueDarkest: '#02282D',
   clBlueDarker: '#0A5159',

@@ -29,7 +29,7 @@ const Container = styled.div`
   padding: 0;
   display: flex;
   flex-direction: row;
-  background: #f8f8f8;
+  background: #f6f6f6;
   position: relative;
 
   ${media.biggerThanMaxTablet`

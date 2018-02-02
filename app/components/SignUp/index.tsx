@@ -31,12 +31,11 @@ const Form = styled.div`
   height: auto;
   max-width: 360px;
   position: relative;
-  will-change: auto;
+  will-change: opacity, transform;
 
   &.form-enter {
     opacity: 0.01;
     position: absolute;
-    will-change: opacity, transform;
 
     &.step1 {
       transform: translateX(-100px);
@@ -56,7 +55,6 @@ const Form = styled.div`
 
   &.form-exit {
     opacity: 1;
-    will-change: opacity, transform;
 
     &.step1 {
       height: 447px;

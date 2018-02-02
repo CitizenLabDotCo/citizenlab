@@ -62,6 +62,7 @@ export default class ProjectIdeasPage extends React.PureComponent<Props, State> 
       this.slug$.distinctUntilChanged().filter(slug => isString(slug)).switchMap((slug) => {
         const project$ = projectBySlugStream(slug).observable.do((project) => {
           if (project.data.attributes.process_type !== 'continuous') {
+            // redirect
             browserHistory.push(`/projects/${slug}`);
           }
         });
@@ -91,7 +92,7 @@ export default class ProjectIdeasPage extends React.PureComponent<Props, State> 
             <IdeasTitle>
               <FormattedMessage {...messages.navIdeas} />
             </IdeasTitle>
-            <Ideas type="project" id={project.data.id} />
+            <Ideas type="project" id={project.data.id} defaultDisplay={project.data.attributes.presentation_mode}/>
           </ContentContainer>
           <EventsPreview projectId={project.data.id} />
         </Container>

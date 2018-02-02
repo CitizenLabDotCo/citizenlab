@@ -48,12 +48,10 @@ const StyledMoreActionsMenu: any = styled(MoreActionsMenu)`
 
 const Container = styled.div`
   margin-top: 20px;
-  will-change: auto;
 
   &.comment-enter {
     opacity: 0;
     transform: translateY(-20px);
-    will-change: opacity, transform;
 
     &.comment-enter-active {
       opacity: 1;
@@ -66,7 +64,7 @@ const Container = styled.div`
 
 const CommentContainer: any = styled.div`
   padding: 30px;
-  border: solid 1px #e4e4e4;
+  border: solid 1px #e0e0e0;
   border-radius: 6px;
   background: #fff;
   position: relative;
@@ -92,6 +90,10 @@ const CommentBody = styled.div`
     overflow-wrap: break-word;
     hyphens: auto;
     margin-bottom: 25px;
+
+    &:last-child {
+      margin-bottom: 0px;
+    }
   }
 
   a {
@@ -265,11 +267,13 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
               </CommentBody>
             </CommentContainerInner>
 
-            <ChildCommentsContainer>
-              {childCommentIds && childCommentIds.map((childCommentId) => {
-                return (<ChildComment key={childCommentId} commentId={childCommentId} />);
-              })}
-            </ChildCommentsContainer>
+            {(childCommentIds && childCommentIds.length > 0) &&
+              <ChildCommentsContainer>
+                {childCommentIds.map((childCommentId) => {
+                  return (<ChildComment key={childCommentId} commentId={childCommentId} />);
+                })}
+              </ChildCommentsContainer>
+            }
 
             {showCommentForm &&
               <ChildCommentForm ideaId={ideaId} parentId={commentId} />

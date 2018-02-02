@@ -94,7 +94,6 @@ const ModalContainer = styled.div`
 
   &.modal-enter {
     opacity: 0.01;
-    will-change: opacity;
 
     ${ModalContent} {
       opacity: 0.01;

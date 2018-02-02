@@ -76,10 +76,10 @@ const EmptyContainer = styled.div`
   align-items: center;
   justify-content: center;
   margin: 0;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-top: 100px;
+  padding-bottom: 100px;
   border-radius: 5px;
-  border: solid 1px #eee;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
   background: #fff;
 `;
 
@@ -222,7 +222,7 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
           text={<FormattedMessage {...messages.loadMore} />}
           processing={loadingMore}
           style="primary"
-          size="3"
+          size="2"
           onClick={this.loadMoreIdeas}
           circularCorners={false}
         />

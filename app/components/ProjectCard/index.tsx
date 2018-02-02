@@ -25,26 +25,6 @@ import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 import { Locale } from 'typings';
 
-const Container = styled(Link)`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 6px;
-  padding: 10px;
-  margin-bottom: 20px;
-  background: #fff;
-  border: solid 1px #e0e0e0;
-  cursor: pointer;
-
-  ${media.smallerThanMaxTablet`
-    flex-direction: column;
-    align-items: left;
-    padding: 20px;
-  `}
-`;
-
 const ProjectImage: any = styled.div`
   flex-basis: 176px;
   flex-shrink: 0;
@@ -58,10 +38,48 @@ const ProjectImage: any = styled.div`
   background-position: center center;
   background-size: cover;
   overflow: hidden;
+  opacity: 0.9;
+  transition: opacity 250ms ease-out;
+  will-change: opacity;
 
   ${media.smallerThanMaxTablet`
     width: 100%;
     margin: 0;
+  `}
+`;
+
+const Container = styled(Link)`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 20px;
+  background: #fff;
+  border: solid 1px #e0e0e0;
+  cursor: pointer;
+  background: #fff;
+  border: solid 1px #f8f8f8;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
+  transition: transform 250ms ease-out;
+  will-change: transform;
+
+  &:hover {
+    transform: scale(1.008);
+
+    ${ProjectImage} {
+      opacity: 1;
+    }
+  }
+
+  ${media.smallerThanMaxTablet`
+    flex-direction: column;
+    align-items: left;
+    padding: 20px;
   `}
 `;
 
@@ -113,8 +131,8 @@ const ProjectContent = styled.div`
 
 const ProjectTitle = styled.h3`
   color: #333;
-  font-size: 21px;
-  line-height: 25px;
+  font-size: 23px;
+  line-height: 29px;
   font-weight: 500;
   margin: 0;
   padding: 0;
@@ -142,27 +160,6 @@ const ProjectDescription = styled.div`
     display: none;
   `}
 `;
-
-// const ReadMoreWrapper = styled.div`
-//   margin-top: 12px;
-
-//   ${media.smallerThanMaxTablet`
-//     display: none;
-//   `}
-// `;
-
-// const ReadMore = styled.div`
-//   color: ${(props) => props.theme.colors.label};
-//   font-size: 16px;
-//   font-weight: 400;
-//   text-decoration: underline;
-//   display: inline-block;
-//   cursor: pointer;
-
-//   &:hover {
-//     color: #000;
-//   }
-// `;
 
 const ProjectButtonWrapper = styled.div`
   display: flex;
@@ -240,7 +237,7 @@ class ProjectCard extends React.PureComponent<Props, State> {
   getProjectUrl = (project: IProject) => {
     const projectType = project.data.attributes.process_type;
     const rootProjectUrl = `/projects/${project.data.attributes.slug}`;
-    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/timeline` : `${rootProjectUrl}/info`);
+    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/timeline` : `${rootProjectUrl}/ideas`);
 
     return projectUrl;
   }
@@ -281,11 +278,6 @@ class ProjectCard extends React.PureComponent<Props, State> {
             <ProjectDescription>
               {preview}
             </ProjectDescription>
-            {/* <ReadMoreWrapper>
-              <ReadMore onClick={this.goToProject}>
-                <FormattedMessage {...messages.readMore} />
-              </ReadMore>
-            </ReadMoreWrapper> */}
           </ProjectContent>
 
           <ProjectButtonWrapper>

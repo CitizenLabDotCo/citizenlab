@@ -15,8 +15,6 @@ const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
 const Container = styled(ClickOutside)`
   min-width: 200px;
-  // display: flex;
-  // flex-direction: column;
   position: absolute;
   top: 42px;
   right: -10px;
@@ -27,8 +25,8 @@ const Container = styled(ClickOutside)`
   box-sizing: border-box;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.12);
   border: solid 1px #e0e0e0;
-  will-change: auto;
   transform-origin: right top;
+  will-change: opacity, transform;
 
   ::before,
   ::after {
@@ -57,7 +55,6 @@ const Container = styled(ClickOutside)`
   &.dropdown-enter {
     opacity: 0;
     transform: scale(0.9);
-    will-change: opacity, transform;
 
     &.dropdown-enter-active {
       opacity: 1;

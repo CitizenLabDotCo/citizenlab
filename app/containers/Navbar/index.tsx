@@ -89,7 +89,7 @@ const NavigationItems = styled.div`
 const NavigationItem = styled(Link) `
   height: 100%;
   color: #999;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 400;
   display: flex;
   align-items: center;

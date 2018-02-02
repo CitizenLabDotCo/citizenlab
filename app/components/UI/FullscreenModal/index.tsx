@@ -33,7 +33,7 @@ const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
 const contentDelay = 450;
 const contentTranslate = '25px';
 
-const ModalForeground: any = styled.div`
+const ModalBackground = styled.div`
   width: 100%;
   height: 100%;
   position: fixed;
@@ -58,7 +58,7 @@ const ModalForeground: any = styled.div`
 
     &.foreground-enter-active {
       opacity: 1;
-      transition: all ${foregroundTimeout}ms ${foregroundEasing};
+      transition: opacity ${foregroundTimeout}ms ${foregroundEasing};
     }
   }
 `;
@@ -72,18 +72,18 @@ const ModalContentInner = styled.div`
 
   ${media.smallerThanMaxTablet`
     height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
-    margin-top: 72px;
+    margin-top: 70px;
   `}
 `;
 
 const TopBar: any = styled.div`
-  height: 72px;
+  height: 70px;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  background: #fff;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
+  background: #f8f8f8;
+  border-bottom: solid 1px #e0e0e0;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -110,8 +110,8 @@ const GoBackIcon = styled(Icon)`
 `;
 
 const GoBackButton = styled.div`
-  height: 47px;
-  width: 47px;
+  height: 45px;
+  width: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -120,7 +120,7 @@ const GoBackButton = styled.div`
   cursor: pointer;
   border-radius: 50%;
   border: solid 1px #e0e0e0;
-  background: #fff;
+  background: transparent;
   transition: all 100ms ease-out;
 
   &:hover {
@@ -205,12 +205,11 @@ const ModalContent: any = styled.div`
   outline: none;
   background: transparent;
   z-index: 10001;
-  will-change: auto;
+  will-change: opacity, transform;
 
   &.content-enter {
     opacity: 0;
     transform: translateY(${contentTranslate});
-    will-change: opacity, transform;
 
     &.content-enter-active {
       opacity: 1;
@@ -367,7 +366,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
             unmountOnExit={true}
             exit={false}
           >
-            <ModalForeground />
+            <ModalBackground />
           </CSSTransition>
         }
 
