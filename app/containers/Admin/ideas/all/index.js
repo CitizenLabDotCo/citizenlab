@@ -48,8 +48,6 @@ const ExportLabelsContainer = styled.div`
 `;
 
 class AllIdeas extends PureComponent {
-
-
   render() {
     return (
       <div>

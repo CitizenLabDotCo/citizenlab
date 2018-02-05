@@ -123,7 +123,6 @@ type State = {
 };
 
 export default class IdeaCards extends React.PureComponent<Props, State> {
-  state: State;
   filter$: Rx.BehaviorSubject<object>;
   loadMore$: Rx.BehaviorSubject<boolean>;
   subscriptions: Rx.Subscription[];
@@ -143,16 +142,22 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.filter$ = new Rx.BehaviorSubject(this.props.filter);
     this.loadMore$ = new Rx.BehaviorSubject(false);
 
+    const filter$ = this.filter$.map((filter) => {
+      return (isObject(filter) && !isEmpty(filter) ? filter : {});
+    }).distinctUntilChanged((x, y) => {
+      return isEqual(x, y);
+    });
+
+    const loadMore$ = this.loadMore$;
+
     this.subscriptions = [
       Rx.Observable.combineLatest(
-        this.filter$
-          .map(filter => (isObject(filter) && !isEmpty(filter) ? filter : {}))
-          .distinctUntilChanged((x, y) => isEqual(x, y)),
-        this.loadMore$,
+        filter$,
+        loadMore$,
         (filter, loadMore) => ({ filter, loadMore })
       ).mergeScan<{ filter: object, loadMore: boolean }, IAccumulator>((acc, { filter, loadMore }) => {
         const hasFilterChanged = (!isEqual(acc.filter, filter) || !loadMore);
@@ -188,8 +193,8 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    this.filter$.next(nextProps.filter);
+  componentDidUpdate() {
+    this.filter$.next(this.props.filter);
   }
 
   loadMoreIdeas = () => {

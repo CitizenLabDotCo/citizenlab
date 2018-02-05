@@ -36,7 +36,7 @@ export default class ProfileEditor extends React.PureComponent<Props, State> {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const currentTenant$ = currentTenantStream().observable;
     const authUser$ = authUserStream().observable;
     const areas$ = areasStream().observable;

@@ -151,7 +151,7 @@ export default class SignInUp extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [

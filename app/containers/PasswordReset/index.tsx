@@ -76,7 +76,6 @@ type State = {
 };
 
 class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State> {
-  state: State;
   passwordInputElement: HTMLInputElement | null;
 
   constructor(props: Props) {

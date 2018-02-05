@@ -100,7 +100,7 @@ type State = {
 };
 
 export default class UserMenu extends React.PureComponent<Props, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -112,7 +112,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const authUser$ = authUserStream().observable;
 
     this.subscriptions = [

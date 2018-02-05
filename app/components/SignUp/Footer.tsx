@@ -102,7 +102,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const globalState$ = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage').observable;
     const currentTenant$ = currentTenantStream().observable;
 

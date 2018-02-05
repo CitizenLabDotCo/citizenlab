@@ -17,7 +17,7 @@ type State = {
 };
 
 class SelectSort extends React.PureComponent<Props, State> {
-  state: State;
+  
 
   constructor(props: Props) {
     super(props as any);

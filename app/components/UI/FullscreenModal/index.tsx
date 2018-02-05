@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isFunction } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
@@ -256,14 +256,10 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     this.cleanup();
   }
 
-  componentWillUpdate(nextProps: Props) {
-    const { opened } = this.props;
-
-    if (!opened && nextProps.opened) {
-      this.openModal(nextProps.url);
-    }
-
-    if (opened && !nextProps.opened) {
+  componentDidUpdate(prevProps: Props) {
+    if (!prevProps.opened && this.props.opened) {
+      this.openModal(this.props.url);
+    } else if (prevProps.opened && !this.props.opened) {
       this.cleanup();
     }
   }
@@ -334,7 +330,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
       this.subscription = null;
     }
 
-    if (_.isFunction(this.unlisten)) {
+    if (isFunction(this.unlisten)) {
       this.unlisten();
     }
   }

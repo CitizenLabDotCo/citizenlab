@@ -62,22 +62,25 @@ class IdeasShowPage extends React.PureComponent<Props & RouterState, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
-      this.slug$.distinctUntilChanged().filter(slug => isString(slug)).switchMap((slug: string) => {
-        const idea$ =  ideaBySlugStream(slug).observable;
-        return idea$;
-      }).subscribe((idea) => {
-        const ideaId = idea.data.id;
-        this.setState({ ideaId, loaded: true });
-      })
+      this.slug$
+        .distinctUntilChanged()
+        .filter(slug => isString(slug))
+        .switchMap((slug: string) => {
+          const idea$ =  ideaBySlugStream(slug).observable;
+          return idea$;
+        }).subscribe((idea) => {
+          const ideaId = idea.data.id;
+          this.setState({ ideaId, loaded: true });
+        })
     ];
   }
 
-  componentWillReceiveProps(newProps) {
-    this.slug$.next(newProps.params.slug);
+  componentDidUpdate() {
+    this.slug$.next(this.props.params.slug);
   }
 
   componentWillUnmount() {

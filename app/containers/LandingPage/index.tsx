@@ -311,7 +311,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const query = browserHistory.getCurrentLocation().query;
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;

@@ -189,7 +189,7 @@ type State = {
 export const namespace = 'containers/Navbar/index';
 
 class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -204,7 +204,7 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const authUser$ = authUserStream().observable;
     const currentTenant$ = currentTenantStream().observable;
 
@@ -218,17 +218,13 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
           currentTenant,
           currentTenantLogo: (currentTenant ? currentTenant.data.attributes.logo.medium + '?' + Date.now() : null)
         });
-      })
-    ];
-  }
+      }),
 
-  componentDidMount() {
-    this.subscriptions.push(
       Rx.Observable.fromEvent(window, 'scroll', { passive: true }).sampleTime(20).subscribe(() => {
         const scrolled = (window.scrollY > 0);
         this.setState({ scrolled });
       })
-    );
+    ];
   }
 
   componentWillUnmount() {
@@ -277,7 +273,7 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
     }
 
     return (
-      <div>
+      <>
         <MobileNavigation />
         <Container scrolled={scrolled} alwaysShowBorder={alwaysShowBorder}>
           <Left>
@@ -331,7 +327,7 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
             }
           </Right>
         </Container>
-      </div>
+      </>
     );
   }
 }

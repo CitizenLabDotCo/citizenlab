@@ -465,7 +465,7 @@ type State = {
 };
 
 export default class IdeasShow extends React.PureComponent<Props, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -485,7 +485,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { ideaId } = this.props;
     const authUser$ = authUserStream().observable;
     const comments$ = commentsForIdeaStream(ideaId).observable;

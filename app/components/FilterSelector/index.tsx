@@ -49,27 +49,20 @@ interface Props {
 
 interface State {
   deployed: boolean;
-  currentTitle: string | JSX.Element;
 }
 
 export default class FilterSelector extends React.PureComponent<Props, State> {
-  state: State;
   baseID: string;
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      deployed: false,
-      currentTitle: this.getTitle(props.selected, props.values, props.multiple, props.title),
+      deployed: false
     };
     this.baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({ currentTitle: this.getTitle(nextProps.selected) });
-  }
-
-  getTitle = (selection, values = this.props.values, multiple = this.props.multiple, title = this.props.title) => {
+  getTitle = (selection, values, multiple, title) => {
     let newTitle: any = '';
 
     if (!multiple && isArray(selection) && !isEmpty(selection)) {
@@ -82,7 +75,7 @@ export default class FilterSelector extends React.PureComponent<Props, State> {
         newTitle = [
           title,
           ' ',
-          <span key={1}>({selection.length})</span>
+          <span key={Math.floor(Math.random() * 10000000)}>({selection.length})</span>
         ];
       }
     } else {
@@ -127,8 +120,9 @@ export default class FilterSelector extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { deployed, currentTitle } = this.state;
-    const { id, values, multiple, selected } = this.props;
+    const { deployed } = this.state;
+    const { id, values, multiple, selected, title } = this.props;
+    const currentTitle = this.getTitle(selected, values, multiple, title);
 
     return (
       <Container

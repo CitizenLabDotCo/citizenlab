@@ -46,7 +46,7 @@ type State = {
 };
 
 export default class CommentsContainer extends React.PureComponent<Props, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -59,7 +59,7 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { ideaId } = this.props;
     const parentComments$ = commentsForIdeaStream(ideaId).observable.switchMap((comments) => {
       if (comments && comments.data && comments.data.length > 0) {

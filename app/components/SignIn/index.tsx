@@ -174,7 +174,7 @@ type State = {
 };
 
 class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
   emailInputElement: HTMLInputElement | null;
   passwordInputElement: HTMLInputElement | null;
@@ -198,9 +198,11 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.passwordInputElement = null;
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const globalState$ = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage').observable;
     const currentTenant$ = currentTenantStream().observable;
+
+    this.emailInputElement && this.emailInputElement.focus();
 
     this.subscriptions = [
       currentTenant$.subscribe((currentTenant) => {
@@ -211,10 +213,6 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
         this.setState({ socialLoginUrlParameter: (globalState && globalState.ideaId ? `?idea_to_publish=${globalState.ideaId}` : '') });
       })
     ];
-  }
-
-  componentDidMount() {
-    this.emailInputElement && this.emailInputElement.focus();
   }
 
   componentWillUnmount() {

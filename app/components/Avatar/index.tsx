@@ -82,7 +82,7 @@ type State = {
 };
 
 export default class Avatar extends React.PureComponent<Props, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -93,7 +93,7 @@ export default class Avatar extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.userId) {
       const user$ = userByIdStream(this.props.userId).observable;
       this.subscriptions = [

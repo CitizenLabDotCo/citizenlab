@@ -44,7 +44,7 @@ export default class Ideas extends React.PureComponent<Props, State> {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({ display: this.props.defaultDisplay });
   }
 

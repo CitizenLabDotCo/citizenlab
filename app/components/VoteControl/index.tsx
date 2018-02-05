@@ -182,7 +182,7 @@ type State = {
 };
 
 export default class VoteControl extends React.PureComponent<Props, State> {
-  state: State;
+  
   voting$: Rx.BehaviorSubject<'up' | 'down' | null>;
   subscriptions: Rx.Subscription[];
   upvoteElement: HTMLDivElement | null;
@@ -210,17 +210,23 @@ export default class VoteControl extends React.PureComponent<Props, State> {
     this.id$ = new Rx.BehaviorSubject(props.ideaId);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const authUser$ = authUserStream().observable;
 
-    const idea$ =
-    this.id$.switchMap((ideaId) => {
+    if (this.upvoteElement) {
+      this.upvoteElement.addEventListener('animationend', this.votingAnimationDone);
+    }
+
+    if (this.downvoteElement) {
+      this.downvoteElement.addEventListener('animationend', this.votingAnimationDone);
+    }
+
+    const idea$ = this.id$.distinctUntilChanged().switchMap((ideaId) => {
       return Rx.Observable.combineLatest(
         ideaByIdStream(ideaId).observable,
         this.voting$
       );
-    })
-    .filter(([_idea, voting]) => {
+    }).filter(([_idea, voting]) => {
       return voting === null;
     }).map(([idea, _voting]) => {
       return idea;
@@ -275,19 +281,9 @@ export default class VoteControl extends React.PureComponent<Props, State> {
     ];
   }
 
-  componentWillReceiveProps(newProps: Props) {
-    if (newProps.ideaId !== this.props.ideaId) {
-      this.id$.next(newProps.ideaId);
-    }
-  }
-
-  componentDidMount() {
-    if (this.upvoteElement) {
-      this.upvoteElement.addEventListener('animationend', this.votingAnimationDone);
-    }
-
-    if (this.downvoteElement) {
-      this.downvoteElement.addEventListener('animationend', this.votingAnimationDone);
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.ideaId !== prevProps.ideaId) {
+      this.id$.next(this.props.ideaId);
     }
   }
 

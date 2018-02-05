@@ -144,14 +144,10 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     this.cleanup();
   }
 
-  componentWillUpdate(nextProps: Props) {
-    const { opened } = this.props;
-
-    if (!opened && nextProps.opened) {
-      this.openModal(nextProps.url);
-    }
-
-    if (opened && !nextProps.opened) {
+  componentDidUpdate(prevProps: Props) {
+    if (!prevProps.opened && this.props.opened) {
+      this.openModal(this.props.url);
+    } else if (prevProps.opened && !this.props.opened) {
       this.cleanup();
     }
   }

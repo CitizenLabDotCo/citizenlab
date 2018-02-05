@@ -108,7 +108,7 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const currentTenant$ = currentTenantStream().observable.do((currentTenant) => {
       const { birthyear, domicile, gender } = currentTenant.data.attributes.settings.demographic_fields;
       const demographicFieldsEnabled = get(currentTenant, `data.attributes.settings.demographic_fields.enabled`);

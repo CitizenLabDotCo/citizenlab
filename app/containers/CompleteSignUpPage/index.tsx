@@ -100,7 +100,7 @@ type State = {
 };
 
 export default class CompleteSignUpPage extends React.PureComponent<Props, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -111,7 +111,7 @@ export default class CompleteSignUpPage extends React.PureComponent<Props, State
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const query = browserHistory.getCurrentLocation().query;
     const authUser$ = authUserStream().observable;
     const currentTenant$ = currentTenantStream().observable;

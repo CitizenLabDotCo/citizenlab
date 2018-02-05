@@ -144,12 +144,10 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
   constructor(props: Props & WithRouterProps) {
     super(props);
-
     const initialLocalState: LocalState = {
       showIdeaForm: true,
       locale: null
     };
-
     const initialGlobalState: IIdeasNewPageGlobalState = {
       title: null,
       description: null,
@@ -164,12 +162,13 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
       imageId: null,
       imageChanged: false
     };
+    this.state = initialLocalState;
     this.localState = localState(initialLocalState);
     this.globalState = globalState.init('IdeasNewPage', initialGlobalState);
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const localState$ = this.localState.observable;
     const locale$ = localeStream().observable;
 
@@ -286,8 +285,6 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
   }
 
   render() {
-    if (!this.state) { return null; }
-
     const { showIdeaForm } = this.state;
     const timeout = 600;
 

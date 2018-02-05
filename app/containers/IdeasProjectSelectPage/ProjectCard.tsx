@@ -177,7 +177,7 @@ export default class ProjectCard extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { projectId } = this.props;
 
     const project$ = projectByIdStream(projectId).observable;

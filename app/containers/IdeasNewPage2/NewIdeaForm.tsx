@@ -89,13 +89,23 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Rx.Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
+    this.state = {
+      title: null,
+      description: null,
+      selectedTopics: null,
+      selectedProject: null,
+      position: '',
+      imageFile: null,
+      submitError: false,
+      processing: false
+    };
     this.globalState = globalState.init('IdeasNewPage');
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const globalState$ = this.globalState.observable;
 
     this.subscriptions = [
@@ -144,8 +154,6 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
   }
 
   render() {
-    if (!this.state) { return null; }
-
     const { title, description, selectedTopics, selectedProject, position, imageFile, submitError, processing } = this.state;
     const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
 

@@ -190,7 +190,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const projects$ = projectsStream().observable;
 
     this.subscriptions = [
@@ -272,9 +272,8 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
                     </ColumnExplanation>
                     <ProjectsList>
                       {cityProjects && cityProjects.map((project) => (
-                        <ProjectCardWrapper>
+                        <ProjectCardWrapper key={project.id}>
                           <ProjectCard
-                            key={project.id}
                             onClick={this.handleProjectClick(project)}
                             projectId={project.id}
                             selected={(selectedProjectId === project.id)}

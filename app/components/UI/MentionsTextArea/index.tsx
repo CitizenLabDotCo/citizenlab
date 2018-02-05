@@ -63,7 +63,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
     this.mentionStyle = null;
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { rows } = this.props;
     const lineHeight = 24;
     const padding = (this.props.padding || '25px');
@@ -110,8 +110,8 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.error && nextProps.error !== this.props.error && this.textareaElement !== null) {
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.error && this.props.error !== prevProps.error && this.textareaElement !== null) {
       setTimeout(() => (this.textareaElement as HTMLElement).focus(), 50);
     }
   }
