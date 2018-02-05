@@ -31,11 +31,25 @@ function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps
       const locale$ = localeStream().observable;
       const currentTenant$ = currentTenantStream().observable;
 
+      console.log('componentDidMount');
+
       this.subscriptions = [
         Rx.Observable.combineLatest(
-          locale$,
-          currentTenant$,
+          locale$.do((x) => {
+            console.log('locale$:');
+            console.log(x);
+          }),
+          currentTenant$.do((x) => {
+            console.log('currentTenant$:');
+            console.log(x);
+          }),
         ).subscribe(([locale, tenant]) => {
+          console.log('locale:');
+          console.log(locale);
+
+          console.log('tenant:');
+          console.log(tenant);
+
           const tenantLocales = tenant.data.attributes.settings.core.locales;
           const orgName = getLocalized(tenant.data.attributes.settings.core.organization_name, locale, tenantLocales);
           const orgType = tenant.data.attributes.settings.core.organization_type;
@@ -56,6 +70,10 @@ function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps
 
     render() {
       const { loaded } = this.state;
+
+      console.log('render');
+      console.log('this.state:');
+      console.log(this.state);
 
       if (loaded) {
         const { intl } = this.props;
