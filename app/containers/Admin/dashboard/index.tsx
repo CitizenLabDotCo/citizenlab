@@ -52,15 +52,15 @@ export default class DashboardPage extends React.PureComponent<Props, State> {
     };
   }
 
-  changeInterval(interval: 'weeks' | 'months' | 'years') {
+  changeInterval = (interval: 'weeks' | 'months' | 'years') => {
     this.setState({ interval, intervalIndex: 0 });
   }
 
-  changeIntervalIndex(intervalIndex: number) {
+  changeIntervalIndex = (intervalIndex: number) => {
     this.setState({ intervalIndex });
   }
 
-  chartTheme(theme) {
+  chartTheme = (theme) => {
     return {
       ...theme,
       chartStroke: '#01A1B1',
@@ -73,8 +73,8 @@ export default class DashboardPage extends React.PureComponent<Props, State> {
 
   render() {
     const { interval, intervalIndex } = this.state;
-    const startAtMoment = moment().startOf(interval);
-    const endAtMoment = moment().endOf(interval);
+    const startAtMoment = moment().startOf(interval).add(intervalIndex, interval);
+    const endAtMoment = moment(startAtMoment).add(1, interval);
     const startAt = startAtMoment.toISOString();
     const endAt = endAtMoment.toISOString();
     const resolution = (interval === 'years' ? 'month' : 'day');
