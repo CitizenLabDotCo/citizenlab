@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs';
-import { cloneDeep } from 'lodash';
+// import { cloneDeep } from 'lodash';
 import { currentTenantStream } from 'services/tenant';
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import { injectIntl as originalInjectIntl, ComponentConstructor, InjectedIntlProps, InjectIntlConfig } from 'react-intl';
@@ -34,7 +34,7 @@ function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps
       this.subscriptions = [
         Rx.Observable.combineLatest(
           locale$,
-          currentTenant$
+          currentTenant$,
         ).subscribe(([locale, tenant]) => {
           const tenantLocales = tenant.data.attributes.settings.core.locales;
           const orgName = getLocalized(tenant.data.attributes.settings.core.organization_name, locale, tenantLocales);
@@ -59,8 +59,17 @@ function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps
 
       if (loaded) {
         const { intl } = this.props;
-        const intlReplacement = cloneDeep(intl);
-        intlReplacement.formatMessage = this.formatMessageReplacement;
+        // const intlReplacement = cloneDeep(intl);
+        // intlReplacement.formatMessage = this.formatMessageReplacement;
+
+        const intlReplacement = {
+          ...(intl as object),
+          formatMessage: this.formatMessageReplacement
+        };
+
+        console.log(this.props);
+        console.log(intlReplacement);
+
         return <Component {...this.props} intl={intlReplacement} />;
       }
 
