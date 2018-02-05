@@ -447,6 +447,7 @@
   "app.containers.Projects.navEvents": "Événements",
   "app.containers.Projects.navIdeas": "Idées",
   "app.containers.Projects.navInformation": "Informations",
+  "app.containers.Projects.navProcess": "",
   "app.containers.Projects.navTimeline": "Ligne de temps",
   "app.containers.Projects.noPastEvents": "Il n'y a pas d'événements passés",
   "app.containers.Projects.noPhaseSelected": "Pas de phase sélectionnée",
