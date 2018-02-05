@@ -287,11 +287,11 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
               <NavigationItem to="/" activeClassName="active">
                 <FormattedMessage {...messages.pageOverview} />
               </NavigationItem>
-              <NavigationItem to="/ideas" activeClassName="active">
-                <FormattedMessage {...messages.pageIdeas} />
-              </NavigationItem>
               <NavigationItem to="/projects" activeClassName="active">
                 <FormattedMessage {...messages.pageProjects} />
+              </NavigationItem>
+              <NavigationItem to="/ideas" activeClassName="active">
+                <FormattedMessage {...messages.pageIdeas} />
               </NavigationItem>
               <NavigationItem to="/pages/information" activeClassName="active">
                 <FormattedMessage {...messages.pageInformation} />

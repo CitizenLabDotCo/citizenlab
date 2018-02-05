@@ -38,28 +38,27 @@ const IntervalButton = styled.button`
 
 type Props = {
   value: 'weeks' | 'months' | 'years';
-  onChange: (arg: string) => void;
+  onChange: (arg: 'weeks' | 'months' | 'years') => void;
 };
 
 export default class IntervalControl extends React.PureComponent<Props> {
-  change = (interval) => () => {
+  change = (interval: 'weeks' | 'months' | 'years') => () => {
     this.props.onChange(interval);
   }
 
   render() {
     const { value } = this.props;
-    const valueSingular = value.replace(/\s$/, '') as 'week' | 'month' | 'year';
-    const intervals: ['week', 'month', 'year'] = ['week', 'month', 'year'];
+    const intervals: ['weeks', 'months', 'years'] = ['weeks', 'months', 'years'];
 
     return (
       <Container>
         {intervals.map((interval) =>
           <IntervalButton
             key={interval}
-            className={`${valueSingular === interval && 'active'}`}
+            className={`${value === interval && 'active'}`}
             onClick={this.change(interval)}
           >
-            <FormattedMessage {...messages[interval]} />
+            <FormattedMessage {...messages[interval.substring(0, interval.length - 1)]} />
           </IntervalButton>
         )}
       </Container>

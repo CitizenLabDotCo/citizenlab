@@ -88,21 +88,21 @@ export default class MobileNavigation extends React.PureComponent<{}, {}> {
           </NavigationLabel>
         </NavigationItem>
 
-        <NavigationItem to="/ideas" activeClassName="active">
-          <NavigationIconWrapper>
-            <NavigationIcon name="idea" />
-          </NavigationIconWrapper>
-          <NavigationLabel>
-            <FormattedMessage {...messages.mobilePageIdeas} />
-          </NavigationLabel>
-        </NavigationItem>
-
         <NavigationItem to="/projects" activeClassName="active">
           <NavigationIconWrapper>
             <NavigationIcon name="project" />
           </NavigationIconWrapper>
           <NavigationLabel>
             <FormattedMessage {...messages.mobilePageProjects} />
+          </NavigationLabel>
+        </NavigationItem>
+
+        <NavigationItem to="/ideas" activeClassName="active">
+          <NavigationIconWrapper>
+            <NavigationIcon name="idea" />
+          </NavigationIconWrapper>
+          <NavigationLabel>
+            <FormattedMessage {...messages.mobilePageIdeas} />
           </NavigationLabel>
         </NavigationItem>
 
