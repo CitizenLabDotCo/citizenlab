@@ -447,6 +447,7 @@
   "app.containers.Projects.navEvents": "Veranstaltungen",
   "app.containers.Projects.navIdeas": "Ideen",
   "app.containers.Projects.navInformation": "Information",
+  "app.containers.Projects.navProcess": "",
   "app.containers.Projects.navTimeline": "Zeitleiste",
   "app.containers.Projects.noPastEvents": "Es sind keine ehemaligen Veranstaltungen vorhanden",
   "app.containers.Projects.noPhaseSelected": "Keine Phase ausgewählt",

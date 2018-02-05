@@ -447,6 +447,7 @@
   "app.containers.Projects.navEvents": "Activiteiten",
   "app.containers.Projects.navIdeas": "Ideeën",
   "app.containers.Projects.navInformation": "Info",
+  "app.containers.Projects.navProcess": "",
   "app.containers.Projects.navTimeline": "Tijdlijn",
   "app.containers.Projects.noPastEvents": "Er zijn geen afgelopen activiteiten",
   "app.containers.Projects.noPhaseSelected": "Geen fase geselecteerd",
