@@ -27,7 +27,7 @@ function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps
       this.subscriptions = [];
     }
 
-    componentWillMount() {
+    componentDidMount() {
       const locale$ = localeStream().observable;
       const currentTenant$ = currentTenantStream().observable;
 
@@ -38,11 +38,8 @@ function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps
         ).subscribe(([locale, tenant]) => {
           const tenantLocales = tenant.data.attributes.settings.core.locales;
           const orgName = getLocalized(tenant.data.attributes.settings.core.organization_name, locale, tenantLocales);
-          this.setState({
-            orgName,
-            orgType: tenant.data.attributes.settings.core.organization_type,
-            loaded: true
-          });
+          const orgType = tenant.data.attributes.settings.core.organization_type;
+          this.setState({ orgName, orgType, loaded: true });
         })
       ];
     }
@@ -59,15 +56,12 @@ function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps
 
     render() {
       const { loaded } = this.state;
-      const { intl } = this.props;
 
       if (loaded) {
+        const { intl } = this.props;
         const intlReplacement = cloneDeep(intl);
         intlReplacement.formatMessage = this.formatMessageReplacement;
-
-        return (
-          <Component {...this.props} intl={intlReplacement} />
-        );
+        return <Component {...this.props} intl={intlReplacement} />;
       }
 
       return null;
