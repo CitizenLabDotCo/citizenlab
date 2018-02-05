@@ -622,7 +622,6 @@
   "app.containers.landing.subtitleCity": "Lanceer uw idee!",
   "app.containers.landing.titleCity": "Co-creëer {name}",
   "app.containers.landing.trendingIdeas": "Ontdek de ideeën",
-  "app.containers.loader.oneSecond": "Bijna klaar!",
   "app.errors.after_end_at": "De begindatum start na de einddatum",
   "app.errors.email_blank": "Gelieve uw e-mailadres in te vullen",
   "app.errors.email_taken": "Dit e-mailadres is al in gebruik. Probeer een andere.",

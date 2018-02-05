@@ -622,7 +622,6 @@
   "app.containers.landing.subtitleCity": "Lancez une idée !",
   "app.containers.landing.titleCity": "Co-créez {name}",
   "app.containers.landing.trendingIdeas": "Découvrez les idées",
-  "app.containers.loader.oneSecond": "On y est presque !",
   "app.errors.after_end_at": "La date de début a lieu après la date de fin",
   "app.errors.email_blank": "Veuillez entrer votre adresse e-mail",
   "app.errors.email_taken": "Cette adresse e-mail est déjà prise. Veuillez en choisir une autre.",
