@@ -137,7 +137,7 @@ export default class IdeasIndex extends React.PureComponent<Props, State> {
     this.topics$ = new Rx.BehaviorSubject([]);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.subscriptions = [
       Rx.Observable.combineLatest(
         this.search$.distinctUntilChanged().do(search => this.setState({ search })).debounceTime(400),

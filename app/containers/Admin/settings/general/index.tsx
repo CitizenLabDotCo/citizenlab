@@ -6,7 +6,7 @@ import * as Rx from 'rxjs/Rx';
 import { API } from 'typings';
 
 // i18n
-import {  InjectedIntl } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { appLocalePairs } from 'i18n.js';
 import messages from '../messages';
@@ -30,10 +30,7 @@ import {
 // Utils
 import getSubmitState from 'utils/getSubmitState';
 
-interface Props {
-  intl: InjectedIntl;
-  tFunc: Function;
-}
+interface Props {}
 
 interface State {
   loading: boolean;
@@ -45,7 +42,7 @@ interface State {
   };
 }
 
-class SettingsGeneralTab extends React.PureComponent<Props, State> {
+class SettingsGeneralTab extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscription: Rx.Subscription;
 
   constructor(props: Props) {

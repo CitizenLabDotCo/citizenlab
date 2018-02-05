@@ -101,7 +101,6 @@ type State = {
 };
 
 class IdeasIndex extends React.PureComponent<Props, State> {
-  state: State;
   areas$: Rx.Subject<string[]>;
   subscriptions: Rx.Subscription[];
   unlisten: Function | null;
@@ -123,7 +122,7 @@ class IdeasIndex extends React.PureComponent<Props, State> {
     this.areas$ = new Rx.Subject();
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.subscriptions = [
       this.areas$.subscribe((areas) => {
         this.setState((state) => ({
@@ -134,24 +133,22 @@ class IdeasIndex extends React.PureComponent<Props, State> {
         }));
       })
     ];
-  }
 
-  componentWillUpdate(_nextProps, nextState) {
-    if (!isEqual(this.state.filter, nextState.filter)) {
-      browserHistory.push({
-        pathname: '/projects',
-        query: nextState.filter
-      });
-    }
-  }
-
-  componentDidMount() {
     this.unlisten = browserHistory.listen((location) => {
       if (location.pathname === '/projects') {
         const filter = cloneDeep(location.query);
         this.setState(state => ({ filter: !isEqual(filter, state.filter) ? filter : state.filter }));
       }
     });
+  }
+
+  componentDidUpdate(_prevProps: Props, prevState: State) {
+    if (!isEqual(prevState.filter, this.state.filter)) {
+      browserHistory.push({
+        pathname: '/projects',
+        query: this.state.filter
+      });
+    }
   }
 
   componentWillUnmount() {

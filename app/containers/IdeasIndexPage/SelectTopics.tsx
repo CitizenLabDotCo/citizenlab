@@ -27,8 +27,7 @@ type State = {
   selectedValues: string[];
 };
 
-class SelectTopic extends React.PureComponent<Props, State> {
-  state: State;
+export default class SelectTopic extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -39,9 +38,10 @@ class SelectTopic extends React.PureComponent<Props, State> {
       topics: null,
       selectedValues: []
     };
+    this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const currentTenant$ = currentTenantStream().observable;
     const locale$ = localeStream().observable;
     const topics$ = topicsStream().observable;
@@ -97,5 +97,3 @@ class SelectTopic extends React.PureComponent<Props, State> {
     return null;
   }
 }
-
-export default SelectTopic;

@@ -134,7 +134,7 @@ type State = {
 };
 
 class Sharing extends React.PureComponent<Props & ITracks, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -145,7 +145,7 @@ class Sharing extends React.PureComponent<Props & ITracks, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [

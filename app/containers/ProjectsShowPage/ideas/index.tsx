@@ -43,7 +43,7 @@ type State = {
 };
 
 export default class ProjectIdeasPage extends React.PureComponent<Props, State> {
-  slug$: Rx.BehaviorSubject<string>;
+  slug$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -51,31 +51,32 @@ export default class ProjectIdeasPage extends React.PureComponent<Props, State> 
     this.state = {
       project: null
     };
-    this.slug$ = new Rx.BehaviorSubject(null as any);
+    this.slug$ = new Rx.BehaviorSubject(null);
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
-      this.slug$.distinctUntilChanged().filter(slug => isString(slug)).switchMap((slug) => {
-        const project$ = projectBySlugStream(slug).observable.do((project) => {
-          if (project.data.attributes.process_type !== 'continuous') {
-            // redirect
-            browserHistory.push(`/projects/${slug}`);
-          }
-        });
-
-        return project$;
-      }).subscribe((project) => {
-        this.setState({ project });
-      })
+      this.slug$
+        .distinctUntilChanged()
+        .filter(slug => isString(slug))
+        .switchMap((slug: string) => {
+          return projectBySlugStream(slug).observable.do((project) => {
+            if (project.data.attributes.process_type !== 'continuous') {
+              // redirect
+              browserHistory.push(`/projects/${slug}`);
+            }
+          });
+        }).subscribe((project) => {
+          this.setState({ project });
+        })
     ];
   }
 
-  componentWillReceiveProps(newProps: Props) {
-    this.slug$.next(newProps.params.slug);
+  componentDidUpdate(_prevProps: Props) {
+    this.slug$.next(this.props.params.slug);
   }
 
   componentWillUnmount() {

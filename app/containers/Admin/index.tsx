@@ -51,6 +51,7 @@ export default class AdminPage extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     const globalState$ = this.globalState.observable;
+
     this.subscriptions = [
       globalState$.subscribe(({ enabled }) => this.setState({ adminFullWidth: enabled }))
     ];

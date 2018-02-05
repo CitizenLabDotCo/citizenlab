@@ -1,10 +1,12 @@
 import * as React from 'react';
+import * as moment from 'moment';
 
 // components
 import Icon from 'components/UI/Icon';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
@@ -13,7 +15,6 @@ const Container = styled.div`
   display: flex;
   background: #fff;
   border-radius: 5px;
-  /* box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1); */
 `;
 
 const StyledIcon = styled(Icon)`
@@ -59,17 +60,16 @@ const CurrentTime = styled.div`
   padding: 0 1.5rem;
 `;
 
-
-type Props = {
-  value: number,
-  onChange: (number) => void,
-  interval: 'week' | 'month' | 'year',
-  currentTime?: any,
-  intl: any,
+type Props  = {
+  value: number;
+  interval: 'weeks' | 'months' | 'years';
+  currentTime?: moment.Moment;
+  onChange: (arg: number) => void;
 };
 
-class TimeControl extends React.PureComponent<Props> {
+type State  = {};
 
+class TimeControl extends React.PureComponent<Props & InjectedIntlProps, State> {
   handlePrevious = () => {
     this.props.onChange(this.props.value - 1);
   }
@@ -79,35 +79,41 @@ class TimeControl extends React.PureComponent<Props> {
   }
 
   currentTime() {
-    const { currentTime } = this.props;
-    if (!currentTime) return;
-    const fromTime = currentTime;
-    const toTime = fromTime.clone().add(1, `${this.props.interval}s`);
-    switch (this.props.interval) {
-      case 'week':
-        const from = this.props.intl.formatDate(fromTime.toDate(), {
-          day: '2-digit',
-          weekday: 'short'
-        });
-        const to = this.props.intl.formatDate(toTime.toDate(), {
-          day: '2-digit',
-          weekday: 'short',
-          year: 'numeric',
-          month: 'short',
-        });
-        return `${from} - ${to}`;
-      case 'month':
-        return this.props.intl.formatDate(fromTime.toDate(), {
-          month: 'long',
-          year: 'numeric',
-        });
-      case 'year':
-        return this.props.intl.formatDate(fromTime.toDate(), {
-          year: 'numeric',
-        });
-      default:
-        break;
+    const { currentTime, interval } = this.props;
+    const { formatDate } = this.props.intl;
+
+    if (currentTime) {
+      const fromTime = currentTime;
+      const toTime = fromTime.clone().add(1, interval);
+
+      switch (interval) {
+        case 'weeks':
+          const from = formatDate(fromTime.toDate(), {
+            day: '2-digit',
+            weekday: 'short'
+          });
+          const to = formatDate(toTime.toDate(), {
+            day: '2-digit',
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+          });
+          return `${from} - ${to}`;
+        case 'months':
+          return formatDate(fromTime.toDate(), {
+            month: 'long',
+            year: 'numeric',
+          });
+        case 'years':
+          return formatDate(fromTime.toDate(), {
+            year: 'numeric',
+          });
+        default:
+          break;
+      }
     }
+
+    return;
   }
 
   render() {

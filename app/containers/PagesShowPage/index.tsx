@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isEmpty, isString, size, get } from 'lodash';
+import { isString, size, get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // router
@@ -163,7 +163,7 @@ type State = {
 };
 
 class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State> {
-  slug$: Rx.BehaviorSubject<string | null> = new Rx.BehaviorSubject(null);
+  slug$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -174,18 +174,19 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
       loading: true,
     };
     this.subscriptions = [];
+    this.slug$ = new Rx.BehaviorSubject(null);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
       this.slug$
+        .filter(slug => isString(slug))
         .distinctUntilChanged()
         .do(() => this.setState({ loading: true }))
-        .switchMap((slug: string) => {
-          return (isString(slug) && !isEmpty(slug) ? pageBySlugStream(slug).observable :  Rx.Observable.of(null));
-        }).switchMap((page) => {
+        .switchMap((slug: string) => pageBySlugStream(slug).observable)
+        .switchMap((page) => {
           let pageLinks$: Rx.Observable<null | { data: PageLink }[]> = Rx.Observable.of(null);
 
           if (page && size(get(page, 'data.relationships.page_links.data')) > 0) {
@@ -201,8 +202,8 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
     ];
   }
 
-  componentWillReceiveProps(newProps) {
-    this.slug$.next(newProps.params.slug);
+  componentDidUpdate() {
+    this.slug$.next(this.props.params.slug);
   }
 
   componentWillUnmount() {

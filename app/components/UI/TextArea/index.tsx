@@ -89,8 +89,8 @@ export default class TextArea extends React.PureComponent<Props, State> {
     this.textareaElement = null;
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.error && nextProps.error !== this.props.error && this.textareaElement !== null) {
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.error && this.props.error !== prevProps.error && this.textareaElement !== null) {
       setTimeout(() => {
         if (this.textareaElement) {
           this.textareaElement.focus();

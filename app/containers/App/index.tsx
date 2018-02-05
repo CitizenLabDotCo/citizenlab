@@ -82,7 +82,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;

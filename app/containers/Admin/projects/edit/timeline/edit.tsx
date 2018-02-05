@@ -6,7 +6,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import moment from 'moment';
-import { get, isEmpty } from 'lodash';
+import { get, isEmpty, isEqual } from 'lodash';
 import { EditorState } from 'draft-js';
 // import { browserHistory } from 'react-router';
 
@@ -32,6 +32,7 @@ import ParticipationContext, { IParticipationContextConfig } from '../parcticipa
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectTFunc } from 'components/T/utils';
 import messages from './messages';
 
@@ -72,7 +73,6 @@ interface IParams {
 type Props = {
   params: IParams,
   tFunc: Function,
-  intl: ReactIntl.InjectedIntl;
 };
 
 interface State {
@@ -88,8 +88,8 @@ interface State {
   loaded: boolean;
 }
 
-class AdminProjectTimelineEdit extends React.Component<Props, State> {
-  params$: Rx.BehaviorSubject<IParams>;
+class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps, State> {
+  params$: Rx.BehaviorSubject<IParams | null>;
   subscriptions: Rx.Subscription[];
 
   constructor(props) {
@@ -107,35 +107,39 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
       loaded: false
     };
     this.subscriptions = [];
-    this.params$ = new Rx.BehaviorSubject({ slug: null, id: null });
+    this.params$ = new Rx.BehaviorSubject(null);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { slug, id } = this.props.params;
-    this.params$ = new Rx.BehaviorSubject({ slug, id });
+
+    this.params$.next({ slug, id });
 
     this.subscriptions = [
-      this.params$.distinctUntilChanged().switchMap((params) => {
-        const { slug, id } = params;
-        const locale$ = localeStream().observable;
-        const project$ = (slug ? projectBySlugStream(slug).observable : Rx.Observable.of(null));
-        const phase$ = (id ? phaseStream(id).observable : Rx.Observable.of(null));
-        return Rx.Observable.combineLatest(locale$, project$, phase$);
-      }).subscribe(([locale, project, phase]) => {
-        this.setState({
-          locale,
-          project,
-          phase,
-          editorState: getEditorStateFromHtmlString(get(phase, `data.attributes.description_multiloc.${locale}`, '')),
-          loaded: true
-        });
-      })
+      this.params$
+        .filter(params => params !== null)
+        .distinctUntilChanged((x, y) => isEqual(x, y))
+        .switchMap((params: IParams) => {
+          const { slug, id } = params;
+          const locale$ = localeStream().observable;
+          const project$ = (slug ? projectBySlugStream(slug).observable : Rx.Observable.of(null));
+          const phase$ = (id ? phaseStream(id).observable : Rx.Observable.of(null));
+          return Rx.Observable.combineLatest(locale$, project$, phase$);
+        }).subscribe(([locale, project, phase]) => {
+          this.setState({
+            locale,
+            project,
+            phase,
+            editorState: getEditorStateFromHtmlString(get(phase, `data.attributes.description_multiloc.${locale}`, '')),
+            loaded: true
+          });
+        })
     ];
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    const { slug, id } = nextProps.params;
-    this.params$ = new Rx.BehaviorSubject({ slug, id });
+  componentDidUpdate() {
+    const { slug, id } = this.props.params;
+    this.params$.next({ slug, id });
   }
 
   componentWillUnmount() {

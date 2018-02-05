@@ -1,18 +1,26 @@
 import * as React from 'react';
 import * as Dropzone from 'react-dropzone';
-import * as _ from 'lodash';
+import { size, compact, isEmpty, has } from 'lodash';
+
+// components
 import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
 import Error from 'components/UI/Error';
+
+// i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import styled, { css } from 'styled-components';
+
+// utils
+import shallowCompare from 'utils/shallowCompare';
 import { getBase64FromFile, createObjectUrl, revokeObjectURL } from 'utils/imageTools';
+
+// style
+import styled, { css } from 'styled-components';
 import { ImageFile } from 'typings';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import shallowCompare from 'utils/shallowCompare';
 
 const Container = styled.div`
   width: 100%;
@@ -274,8 +282,8 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     };
   }
 
-  async componentWillMount() {
-    if (_.size(this.props.images) > 0) {
+  async componentDidMount() {
+    if (size(this.props.images) > 0) {
       const images = await this.getImageFiles(this.props.images);
       this.props.onUpdate(images);
       this.setState({ images });
@@ -296,11 +304,11 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     }
   }
 
-  async componentWillReceiveProps(nextProps: Props) {
-    if (!shallowCompare(this.props, nextProps)) {
-      const images = (nextProps.images !== this.state.images ? await this.getImageFiles(nextProps.images) : this.state.images);
-      const errorMessage = (nextProps.errorMessage && nextProps.errorMessage !== this.state.errorMessage ? nextProps.errorMessage : this.state.errorMessage);
-      const processing = (this.state.canAnimate && !errorMessage && _.size(images) > _.size(this.state.images));
+  async componentDidUpdate(prevProps: Props) {
+    if (!shallowCompare(prevProps, this.props)) {
+      const images = (this.props.images !== this.state.images ? await this.getImageFiles(this.props.images) : this.state.images);
+      const errorMessage = (this.props.errorMessage && this.props.errorMessage !== this.state.errorMessage ? this.props.errorMessage : this.state.errorMessage);
+      const processing = (this.state.canAnimate && !errorMessage && size(images) > size(this.state.images));
 
       if (processing) {
         setTimeout(() => this.setState({ processing: false }), 1800);
@@ -317,11 +325,11 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
   getImageFiles = async (images: ImageFile[] | null) => {
     if (images && images.length > 0) {
       for (let i = 0; i < images.length; i += 1) {
-        if (!_.has(images[i], 'base64')) {
+        if (!has(images[i], 'base64')) {
           images[i]['base64'] = await getBase64FromFile(images[i]);
         }
 
-        if (!_.has(images[i], 'objectUrl')) {
+        if (!has(images[i], 'objectUrl')) {
           images[i]['objectUrl'] = createObjectUrl(images[i]);
         }
       }
@@ -333,8 +341,8 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
   onDrop = async (images: ImageFile[]) => {
     const { formatMessage } = this.props.intl;
     const maxItemsCount = this.props.maxNumberOfImages;
-    const oldItemsCount = _.size(this.props.images);
-    const newItemsCount = _.size(images);
+    const oldItemsCount = size(this.props.images);
+    const newItemsCount = size(images);
     const remainingItemsCount = (maxItemsCount ? maxItemsCount - oldItemsCount : null);
 
     this.setState((state: State) => {
@@ -355,7 +363,10 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
       setTimeout(() => this.setState({ errorMessage: null }), 6000);
     } else {
       const imagesWithPreviews = await this.getImageFiles(images);
-      _(imagesWithPreviews).forEach((image) => this.props.onAdd(image));
+
+      if (imagesWithPreviews && imagesWithPreviews.length > 0) {
+        imagesWithPreviews.forEach(image => this.props.onAdd(image));
+      }
     }
   }
 
@@ -400,9 +411,9 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     const { maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio, imageRadius } = this.props;
     const { formatMessage } = this.props.intl;
     const { errorMessage, processing, canAnimate } = this.state;
-    const remainingImages = (maxNumberOfImages && maxNumberOfImages !== 1 ? `(${maxNumberOfImages - _.size(images)} ${formatMessage(messages.remaining)})` : null);
+    const remainingImages = (maxNumberOfImages && maxNumberOfImages !== 1 ? `(${maxNumberOfImages - size(images)} ${formatMessage(messages.remaining)})` : null);
 
-    images = (_.compact(images) || null);
+    images = (compact(images) || null);
     acceptedFileTypes = (acceptedFileTypes || '*');
     placeholder = (placeholder || (maxNumberOfImages && maxNumberOfImages === 1 ? formatMessage(messages.dropYourImageHere) : formatMessage(messages.dropYourImagesHere)));
     objectFit = (objectFit || 'cover');
@@ -411,9 +422,9 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
       images.map((image, index) => {
         const hasSpacing = (maxNumberOfImages !== 1 && index !== 0 ? 'hasSpacing' : '');
         const animate = (canAnimate && maxNumberOfImages !== 1 ? 'animate' : '');
-        const timeout = !_.isEmpty(animate) ? { enter: 2300, exit: 300 } : 0;
-        const enter = !_.isEmpty(animate);
-        const exit = !_.isEmpty(animate);
+        const timeout = !isEmpty(animate) ? { enter: 2300, exit: 300 } : 0;
+        const enter = !isEmpty(animate);
+        const exit = !isEmpty(animate);
 
         return (
           <CSSTransition key={image.objectUrl} classNames="image" timeout={timeout} enter={enter} exit={exit}>

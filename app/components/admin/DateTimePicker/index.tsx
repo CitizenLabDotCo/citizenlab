@@ -79,7 +79,6 @@ const TimeSeparator = styled.div`
   padding-right: 5px;
 `;
 
-// Typing
 interface Props {
   value: string | undefined;
   onChange: (arg: moment.Moment) => void;
@@ -99,9 +98,9 @@ class DateTimePicker extends React.PureComponent<Props & injectedLocalized, Stat
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.value && nextProps.value !== this.props.value) {
-      this.setState({ selectedMoment: moment(nextProps.value) });
+  componentDidUpdate(prevProps) {
+    if (prevProps.value !== this.props.value) {
+      this.setState({ selectedMoment: moment(this.props.value) });
     }
   }
 

@@ -76,7 +76,7 @@ type State = {
 };
 
 class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & Tracks, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -93,7 +93,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
     };
   }
 
-  componentWillMount () {
+  componentDidMount () {
     const locale$ = localeStream().observable;
     const authUser$ = authUserStream().observable;
     const idea$ = ideaByIdStream(this.props.ideaId).observable;

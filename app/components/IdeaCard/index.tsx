@@ -44,7 +44,7 @@ const IdeaImage: any = styled.img`
   object-fit: cover;
   overflow: hidden;
   opacity: 0.9;
-  transition: all 250ms ease-out;
+  transition: opacity 250ms ease-out;
   will-change: opacity;
 `;
 
@@ -169,7 +169,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { ideaId } = this.props;
     const locale$ = localeStream().observable;
     const ideaWithRelationships$ = ideaByIdStream(ideaId).observable.switchMap((idea) => {

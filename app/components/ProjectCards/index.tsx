@@ -117,7 +117,7 @@ export default class ProjectCards extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.filter$ = new Rx.BehaviorSubject(this.props.filter);
     this.loadMore$ = new Rx.BehaviorSubject(false);
 
@@ -162,8 +162,8 @@ export default class ProjectCards extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    this.filter$.next(nextProps.filter);
+  componentDidUpdate() {
+    this.filter$.next(this.props.filter);
   }
 
   loadMoreProjects = () => {

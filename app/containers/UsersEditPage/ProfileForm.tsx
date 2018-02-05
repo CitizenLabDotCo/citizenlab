@@ -2,7 +2,7 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
-// import { isEqual } from 'lodash';
+import { isEqual } from 'lodash';
 
 // Services & Utils
 import { IAreaData } from 'services/areas';
@@ -47,7 +47,7 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 // Types
-interface Props {
+interface InputProps {
   user: IUserData;
   areas: IAreaData[];
   tenant: ITenantData;
@@ -59,16 +59,17 @@ interface State {
   localeOptions: IOption[];
 }
 
-class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLocalized & FormikProps<IUserUpdate>, State> {
+type Props = InputProps & InjectedIntlProps & injectedLocalized & FormikProps<IUserUpdate>;
+
+class ProfileForm extends React.PureComponent<Props, State> {
   localeOptions: IOption[] = [];
   genderOptions: IOption[] = [];
   domicileOptions: IOption[] = [];
   birthYearOptions: IOption[] = [];
   educationOptions: IOption[] = [];
 
-  constructor(props) {
-    super(props);
-
+  constructor(props: InputProps) {
+    super(props as any);
     this.state = {
       avatar: null,
       contextRef: null,
@@ -76,7 +77,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // Get the avatar imageFile
     const avatarUrl = this.props.user.attributes.avatar.medium;
     const avatarFileObservable = this.props.user.attributes.avatar.medium ? convertUrlToFileObservable(avatarUrl) : Observable.of(null);
@@ -136,15 +137,15 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    // if (!isEqual(this.props.tenantLocales, nextProps.tenantLocales)) {
+  componentDidUpdate(prevProps: Props) {
+    if (!isEqual(this.props.tenantLocales, prevProps.tenantLocales)) {
       this.setState({
-        localeOptions: nextProps.tenantLocales.map((locale) => ({
+        localeOptions: this.props.tenantLocales.map((locale) => ({
           value: locale,
           label: appLocalePairs[locale],
         }))
       });
-    // }
+    }
   }
 
   getToggleValue = (property) => {
@@ -397,7 +398,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
   }
 }
 
-export default withFormik<Props, IUserUpdate, IUserUpdate>({
+export default withFormik<InputProps, IUserUpdate, IUserUpdate>({
   handleSubmit: (values, { props, setSubmitting, resetForm, setErrors }) => {
     updateUser(props.user.id, values)
     .then(() => {

@@ -119,7 +119,7 @@ export default class PageEditor extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { slug } = this.props;
     const locale$ = localeStream().observable;
     const page$ = pageBySlugStream(slug).observable;

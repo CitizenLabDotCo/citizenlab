@@ -155,7 +155,7 @@ interface State {
 }
 
 class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlProps, State> {
-  slug$: Rx.BehaviorSubject<string | null> | null;
+  slug$: Rx.BehaviorSubject<string | null>;
   processing$: Rx.BehaviorSubject<boolean>;
   subscriptions: Rx.Subscription[] = [];
 
@@ -182,17 +182,17 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       submitState: 'disabled',
       deleteError: null,
     };
-    this.slug$ = null;
+    this.slug$ = new Rx.BehaviorSubject(null);
+    this.processing$ = new Rx.BehaviorSubject(false);
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
     const areas$ = areasStream().observable;
 
-    this.slug$ = new Rx.BehaviorSubject(this.props.params.slug || null);
-    this.processing$ = new Rx.BehaviorSubject(false);
+    this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
@@ -270,9 +270,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     ];
   }
 
-  componentWillReceiveProps(newProps: Props) {
-    if (newProps.params.slug !== this.props.params.slug && this.slug$ !== null) {
-      this.slug$.next(newProps.params.slug);
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.params.slug !== prevProps.params.slug) {
+      this.slug$.next(this.props.params.slug);
     }
   }
 

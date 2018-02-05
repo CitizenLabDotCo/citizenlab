@@ -39,18 +39,15 @@ export class Saga extends Component<{ saga: Function }> {
     this.runningSaga = this.context.sagas.run(this.props.saga, this.props);
   }
 
-  componentWillReceiveProps() {
-    // ??
-  }
   render() {
     return !this.props.children ? null : Children.only(this.props.children);
   }
+
   componentWillUnmount() {
     if (this.runningSaga) {
       this.runningSaga.cancel();
       delete this.runningSaga;
     }
-
   }
 }
 

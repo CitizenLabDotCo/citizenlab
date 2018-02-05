@@ -18,7 +18,10 @@ type Props = {
 
 type State = {};
 
-class IdeaButton extends React.Component<Props, State> {
+class IdeaButton extends React.PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props as any);
+  }
 
   handleOnAddIdeaClick = () => {
     const { project } = this.props;

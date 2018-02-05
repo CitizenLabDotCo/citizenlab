@@ -30,7 +30,7 @@ import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
 // animations
-import TransitionGroup from 'react-transition-group/TransitionGroup';
+// import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
@@ -137,7 +137,7 @@ type Tracks = {
 };
 
 class ParentComment extends React.PureComponent<Props & Tracks, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -156,7 +156,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { ideaId, commentId, animate } = this.props;
     const locale$ = localeStream().observable;
     const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
@@ -298,9 +298,9 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
     }
 
     return (
-      <TransitionGroup>
+      <>
         {returnValue}
-      </TransitionGroup>
+      </>
     );
   }
 }

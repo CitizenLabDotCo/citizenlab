@@ -121,7 +121,7 @@ export default class IdeaEditPage extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { ideaId } = this.props.params;
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;

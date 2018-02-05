@@ -20,16 +20,14 @@ const Container = styled(Link)`
   margin-right: 13px;
   background: white;
   border-radius: 5px;
-  /* border: solid 1px #e0e0e0; */
   display: flex;
   padding: 15px;
   cursor: pointer;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
-  transition: all 250ms ease-out;
+  transition: transform 250ms ease-out;
   will-change: transform;
 
   &:hover {
-    /* box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1); */
     transform: scale(1.01);
   }
 
@@ -42,14 +40,6 @@ const Container = styled(Link)`
     margin: 0;
     margin-bottom: 15px;
   `}
-
-  /*
-  ${media.smallerThanMaxTablet`
-    width: 100%;
-    margin: 0;
-    flex-direction: column;
-  `}
-  */
 `;
 
 const DateWrapper = styled.div`
@@ -58,14 +48,6 @@ const DateWrapper = styled.div`
   flex-direction: column;
   align-items: stretch;
   margin-right: 20px;
-
-  /*
-  ${media.smallerThanMaxTablet`
-    width: 80px;
-    margin-left: auto;
-    margin-right: auto;
-  `}
-  */
 `;
 
 const Date = styled.div`

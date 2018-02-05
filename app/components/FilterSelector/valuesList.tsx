@@ -132,7 +132,7 @@ type State = {
 };
 
 export default class ValuesList extends React.PureComponent<Props, State> {
-  state: State;
+  
   dropdownElement: HTMLElement | null;
 
   constructor(props: Props) {

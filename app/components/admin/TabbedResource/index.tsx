@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isString } from 'lodash';
 
 // style
 import styled from 'styled-components';
@@ -108,9 +108,7 @@ type Props = {
   }[],
 };
 
-type State = {
-
-};
+type State = {};
 
 function isMessage(entry: any): entry is Message {
   return entry.id && entry.defaultMessage;
@@ -121,7 +119,7 @@ function isMultiloc(entry: any): entry is Multiloc {
 }
 
 function showLabel(label: string | Multiloc | Message) {
-  if (_.isString(label)) {
+  if (isString(label)) {
     return label;
   } else if (isMessage(label)) {
     return <FormattedMessage {...label} />;
@@ -133,6 +131,10 @@ function showLabel(label: string | Multiloc | Message) {
 }
 
 export default class TabbedResource extends React.PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props as any);
+  }
+
   render() {
     const { children, resource, messages, tabs, location } = this.props;
 

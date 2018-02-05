@@ -100,7 +100,7 @@ type State = {
 };
 
 export default class UsersShowPage extends React.PureComponent<Props & Params, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -111,7 +111,7 @@ export default class UsersShowPage extends React.PureComponent<Props & Params, S
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { slug } = this.props.params;
     const user$ = userBySlugStream(slug).observable;
 

@@ -1,8 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-
 import { FormattedMessage } from 'utils/cl-intl';
-
 import messages from '../messages';
 
 const Container = styled.div`
@@ -39,25 +37,26 @@ const IntervalButton = styled.button`
 `;
 
 type Props = {
-  value: string;
-  onChange: (string) => void;
+  value: 'weeks' | 'months' | 'years';
+  onChange: (arg: string) => void;
 };
 
 export default class IntervalControl extends React.PureComponent<Props> {
-
   change = (interval) => () => {
     this.props.onChange(interval);
   }
 
   render() {
     const { value } = this.props;
-    const intervals = ['week', 'month', 'year'];
+    const valueSingular = value.replace(/\s$/, '') as 'week' | 'month' | 'year';
+    const intervals: ['week', 'month', 'year'] = ['week', 'month', 'year'];
+
     return (
       <Container>
         {intervals.map((interval) =>
           <IntervalButton
             key={interval}
-            className={`${value === interval && 'active'}`}
+            className={`${valueSingular === interval && 'active'}`}
             onClick={this.change(interval)}
           >
             <FormattedMessage {...messages[interval]} />

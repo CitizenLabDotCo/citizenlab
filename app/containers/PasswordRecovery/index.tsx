@@ -86,7 +86,6 @@ type State = {
 };
 
 class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, State> {
-  state: State;
   emailInputElement: HTMLInputElement | null;
 
   constructor(props: Props) {

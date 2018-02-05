@@ -67,7 +67,7 @@ export default class EventsPreview extends React.Component<Props, State> {
     this.projectId$ = new Rx.BehaviorSubject(null as any);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.projectId$.next(this.props.projectId);
 
     this.subscriptions = [
@@ -98,8 +98,8 @@ export default class EventsPreview extends React.Component<Props, State> {
     ];
   }
 
-  componentWillReceiveProps(newProps) {
-    this.projectId$.next(newProps.projectId);
+  componentDidUpdate() {
+    this.projectId$.next(this.props.projectId);
   }
 
   componentWillUnmount() {

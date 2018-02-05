@@ -70,24 +70,27 @@ export default class ProjectEventsPage extends React.PureComponent<Props, State>
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
-      this.slug$.distinctUntilChanged().filter(slug => isString(slug)).switchMap((slug) => {
-        const project$ = projectBySlugStream(slug).observable;
-        return project$;
-      }).switchMap((project) => {
-        const events$ = eventsStream(project.data.id).observable;
-        return events$;
-      }).subscribe((events) => {
-        this.setState({ events, loaded: true });
-      })
+      this.slug$
+        .distinctUntilChanged()
+        .filter(slug => isString(slug))
+        .switchMap((slug) => {
+          const project$ = projectBySlugStream(slug).observable;
+          return project$;
+        }).switchMap((project) => {
+          const events$ = eventsStream(project.data.id).observable;
+          return events$;
+        }).subscribe((events) => {
+          this.setState({ events, loaded: true });
+        })
     ];
   }
 
-  componentWillReceiveProps(newProps: Props) {
-    this.slug$.next(newProps.params.slug);
+  componentDidUpdate() {
+    this.slug$.next(this.props.params.slug);
   }
 
   componentWillUnmount() {

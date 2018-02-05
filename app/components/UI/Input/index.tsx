@@ -61,7 +61,7 @@ export type Props = {
 
 type State = {};
 
-export default class Input extends React.Component<Props, State> {
+export default class Input extends React.PureComponent<Props, State> {
   static contextTypes = {
     formik: PropTypes.object,
   };

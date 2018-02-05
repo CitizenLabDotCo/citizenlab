@@ -78,7 +78,7 @@ export default class Phase extends React.PureComponent<Props, State> {
     this.phaseId$ = new Rx.BehaviorSubject(null as any);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.phaseId$.next(this.props.phaseId);
 
     this.subscriptions = [
@@ -93,8 +93,8 @@ export default class Phase extends React.PureComponent<Props, State> {
     ];
   }
 
-  componentWillReceiveProps(newProps: Props) {
-    this.phaseId$.next(newProps.phaseId);
+  componentDidUpdate(_prevProps: Props) {
+    this.phaseId$.next(this.props.phaseId);
   }
 
   componentWillUnmount() {

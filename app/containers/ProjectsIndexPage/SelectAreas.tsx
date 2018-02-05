@@ -30,7 +30,7 @@ type State = {
 };
 
 class SelectAreas extends React.PureComponent<Props, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -42,7 +42,7 @@ class SelectAreas extends React.PureComponent<Props, State> {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const currentTenant$ = currentTenantStream().observable;
     const locale$ = localeStream().observable;
     const areas$ = areasStream().observable;

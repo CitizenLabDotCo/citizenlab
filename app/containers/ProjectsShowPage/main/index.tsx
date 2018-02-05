@@ -36,7 +36,7 @@ export default class timeline extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
@@ -53,8 +53,8 @@ export default class timeline extends React.PureComponent<Props, State> {
     ];
   }
 
-  componentWillReceiveProps(newProps: Props) {
-    this.slug$.next(newProps.params.slug);
+  componentDidUpdate(_prevProps: Props) {
+    this.slug$.next(this.props.params.slug);
   }
 
   componentWillUnmount() {

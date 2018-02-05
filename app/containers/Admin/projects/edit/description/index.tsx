@@ -66,7 +66,7 @@ class ProjectDescription extends React.Component<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount () {
+  componentDidMount () {
     if (this.props.params.slug) {
       const locale$ = localeStream().observable;
       const project$ = projectBySlugStream(this.props.params.slug).observable;
