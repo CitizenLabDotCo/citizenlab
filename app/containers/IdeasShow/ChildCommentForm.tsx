@@ -1,6 +1,6 @@
 // libraries
 import * as React from 'react';
-import * as _ from 'lodash';
+import { trim, isString } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
@@ -27,30 +27,18 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 import { Locale } from 'typings';
 
-const CommentContainer = styled.div`
-  margin-top: 20px;
-`;
+const CommentContainer = styled.div``;
 
 const StyledTextArea = styled(MentionsTextArea)`
   .textareaWrapper__highlighter,
   textarea {
-    color: #333 !important;
-    font-size: 16px !important;
+    font-size: 17px !important;
+    line-height: 25px !important;
     font-weight: 300 !important;
-    line-height: 24px !important;
-    padding: 14px 20px !important;
-    padding-right: 100px !important;
-    border: solid 1px #e8e8e8 !important;
+    background: #fafafa !important;
     box-shadow: none !important;
-
-    &:hover {
-      border-color: #333 !important;
-    }
-
-    &:focus {
-      border-color: #333 !important;
-      box-shadow: none !important;
-    }
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
   }
 `;
 
@@ -145,7 +133,7 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
     this.setState((state) => ({
       inputValue,
       errorMessage: null,
-      canSubmit: (state.focussed && _.trim(inputValue) !== '' ? true : false)
+      canSubmit: (state.focussed && trim(inputValue) !== '' ? true : false)
     }));
   }
 
@@ -174,7 +162,7 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
     if (canSubmit) {
       this.setState({ canSubmit: false });
 
-      if (locale && authUser && _.isString(inputValue) && _.trim(inputValue) !== '') {
+      if (locale && authUser && isString(inputValue) && trim(inputValue) !== '') {
         this.props.clickCommentPublish({
           extra: {
             ideaId,

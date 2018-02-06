@@ -18,14 +18,14 @@ import { media } from 'utils/styleUtils';
 
 const Loading = styled.div`
   width: 100%;
+  height: calc(80vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+
+  ${media.smallerThanMaxTablet`
+    height: calc(80vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+  `}
 `;
 
 const Container = styled.div`
@@ -93,7 +93,7 @@ class IdeasShowPage extends React.PureComponent<Props & RouterState, State> {
     if (!loaded) {
       return (
         <Loading>
-          <Spinner size="30px" color="#666" />
+          <Spinner size="34px" color="#666" />
         </Loading>
       );
     }

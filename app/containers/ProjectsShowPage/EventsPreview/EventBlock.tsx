@@ -23,9 +23,8 @@ const Container = styled(Link)`
   display: flex;
   padding: 15px;
   cursor: pointer;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
   transition: transform 250ms ease-out;
-  will-change: transform;
 
   &:hover {
     transform: scale(1.01);

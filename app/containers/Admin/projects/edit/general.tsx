@@ -82,7 +82,6 @@ const ParticipationContextWrapper = styled.div`
   border: solid 1px #ddd;
   background: #fff;
   transition: opacity ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  will-change: opacity;
 
   ::before,
   ::after {

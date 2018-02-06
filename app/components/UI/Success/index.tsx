@@ -46,7 +46,6 @@ const StyledSuccessMessageInner = styled.div`
 const StyledSuccessMessage: any = styled.div`
   position: relative;
   overflow: hidden;
-  will-change: opacity;
 
   ${StyledSuccessMessageInner} {
     margin-top: ${(props: IStyledSuccessMessage) => props.marginTop};

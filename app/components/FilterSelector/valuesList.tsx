@@ -29,7 +29,6 @@ const Overlay = styled.div`
   right: -10px;
   z-index: 10;
   transform-origin: right top;
-  will-change: transform, opacity;
 
   * {
     user-select: none;

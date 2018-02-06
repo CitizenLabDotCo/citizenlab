@@ -26,11 +26,10 @@ const Container = styled.div`
   width: 100%;
   position: relative;
   border-radius: 6px;
-  border: solid 2px #fff;
+  border: solid 1px #fff;
   background: #fff;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
-  transition: all 150ms ease-out;
-  will-change: transform;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
+  transition: transform 250ms ease-out;
 
   &.enabled {
     cursor: pointer;
@@ -46,7 +45,14 @@ const Container = styled.div`
   }
 
   &.enabled:hover {
-    transform: scale(1.01)
+    transform: scale(1.01);
+    /* border-color: #ccc; */
+    /* border-color: ${props => props.theme.colors.success}; */
+
+    &.selected {
+      /* transform: scale(1.01) */
+      border-color: ${props => props.theme.colors.success};
+    }
   }
 `;
 

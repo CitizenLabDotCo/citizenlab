@@ -41,7 +41,6 @@ const StyledRadio = styled(Radio)`
 `;
 
 const ReportReason = styled.div`
-  will-change: height, max-height, opacity;
   transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
   overflow: hidden;
 

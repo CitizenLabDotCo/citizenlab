@@ -29,10 +29,12 @@ const twitterColor = '#1ea4f2';
 
 const IconWrapper = styled.div`
   width: 30px;
+  height: 38px;
   margin: 0;
   padding: 0;
   border: none;
   display: flex;
+  align-items: center;
   justify-content: flex-start;
 
   svg {
@@ -62,16 +64,15 @@ const Container = styled.div`
   .sharingButton {
     display: flex;
     align-items: center;
-    cursor: pointer;
-    transition: all 100ms ease-out;
     margin: 0;
     padding: 0;
-    margin-top: 18px;
+    cursor: pointer;
+    transition: all 100ms ease-out;
 
     ${media.smallerThanMaxTablet`
-      margin: 0;
+      /* margin: 0;
       margin-top: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 10px; */
     `}
 
     &.twitter {
@@ -173,7 +174,7 @@ class Sharing extends React.PureComponent<Props & ITracks, State> {
 
       const facebook = (facebookAppId ? (
         <FacebookButton
-          className="sharingButton facebook"
+          className="sharingButton facebook first"
           url={href}
           appId={facebookAppId}
           sharer={true}

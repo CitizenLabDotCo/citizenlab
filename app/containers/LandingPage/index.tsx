@@ -48,13 +48,13 @@ const Container: any = styled.div`
 
 const Loading = styled.div`
   width: 100%;
-  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  height: calc(80vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
   align-items: center;
   justify-content: center;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+    height: calc(80vh - ${props => props.theme.mobileMenuHeight}px - 70px);
   `}
 `;
 
@@ -188,12 +188,17 @@ const ProjectsStyledContentContainer = StyledContentContainer.extend`
 
 const Section = styled.div`
   width: 100%;
-  margin-top: 80px;
-  padding-bottom: 60px;
+  padding-top: 110px;
+  padding-bottom: 110px;
 
   ${media.smallerThanMinTablet`
-    margin-top: 60px;
+    padding-top: 60px;
+    padding-bottom: 60px;
   `}
+`;
+
+const ProjectSection = Section.extend`
+  padding-top: 80px;
 `;
 
 const SectionHeader = styled.div`
@@ -377,7 +382,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
     if (!loaded) {
       return (
         <Loading id="ideas-loading">
-          <Spinner size="30px" color="#666" />
+          <Spinner size="34px" color="#666" />
         </Loading>
       );
     }
@@ -416,7 +421,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
             <Content>
               <ProjectsStyledContentContainer>
                 {hasProjects &&
-                  <Section>
+                  <ProjectSection>
                     <SectionHeader>
                       <SectionTitle>
                         <FormattedMessage {...messages.cityProjects} />
@@ -429,7 +434,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                       </Explore>
                     </SectionHeader>
                     <SectionContainer>
-                      <ProjectCards filter={landingPageProjectsQuery} loadMoreEnabled={false} />
+                      <ProjectCards filter={landingPageProjectsQuery} loadMoreEnabled={false} hasBorder={true} />
                     </SectionContainer>
                     <SectionFooter>
                       <ViewMoreButton
@@ -441,7 +446,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                         circularCorners={false}
                       />
                     </SectionFooter>
-                  </Section>
+                  </ProjectSection>
                 }
               </ProjectsStyledContentContainer>
 

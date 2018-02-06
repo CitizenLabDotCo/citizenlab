@@ -29,13 +29,13 @@ const Container = styled.div`
 
 const Loading = styled.div`
   width: 100%;
-  height: 200px;
+  height: 300px;
   background: #fff;
   border-radius: 6px;
-  border: solid 1px #eee;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
 `;
 
 const IdeasList: any = styled.div`
@@ -76,10 +76,10 @@ const EmptyContainer = styled.div`
   align-items: center;
   justify-content: center;
   margin: 0;
-  padding-top: 100px;
-  padding-bottom: 100px;
+  padding-top: 120px;
+  padding-bottom: 120px;
   border-radius: 5px;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
   background: #fff;
 `;
 
@@ -217,7 +217,7 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
 
     const loadingIndicator = (loading ? (
       <Loading id="ideas-loading">
-        <Spinner size="30px" color="#666" />
+        <Spinner size="34px" color="#666" />
       </Loading>
     ) : null);
 
