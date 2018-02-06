@@ -25,27 +25,61 @@ import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 import { Locale } from 'typings';
 
-const ProjectImage: any = styled.div`
-  flex-basis: 176px;
+
+const ProjectImageContainer =  styled.div`
+  flex-basis: 150px;
   flex-shrink: 0;
   flex-grow: 0;
-  width: 176px;
-  min-height: 176px;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 6px;
   margin-right: 10px;
-  background-image: url(${(props: any) => props.imageSrc});
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
   overflow: hidden;
-  opacity: 0.9;
-  transition: opacity 250ms ease-out;
-  will-change: opacity;
+  position: relative;
 
   ${media.smallerThanMaxTablet`
     width: 100%;
     margin: 0;
   `}
+`;
+
+const ProjectImagePlaceholder = styled.div`
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${color('placeholderBg')};
+`;
+
+const ProjectImagePlaceholderIcon = styled(Icon) `
+  height: 45px;
+  fill: #fff;
+`;
+
+const ProjectImage: any = styled.div`
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  background-image: url(${(props: any) => props.imageSrc});
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+`;
+
+const ProjectImageOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  opacity: 0.1;
+  transition: opacity 250ms ease-out;
 `;
 
 const Container = styled(Link)`
@@ -55,24 +89,26 @@ const Container = styled(Link)`
   align-items: center;
   justify-content: space-between;
   border-radius: 6px;
-  padding: 10px;
-  margin-bottom: 20px;
+  padding: 15px;
+  margin-bottom: 25px;
   background: #fff;
-  border: solid 1px #e0e0e0;
   cursor: pointer;
   background: #fff;
-  border: solid 1px #f8f8f8;
   border-radius: 6px;
   overflow: hidden;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
   transition: transform 250ms ease-out;
   will-change: transform;
+
+  &.hasBorder {
+    box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.1);
+  }
 
   &:hover {
     transform: scale(1.008);
 
-    ${ProjectImage} {
-      opacity: 1;
+    ${ProjectImageOverlay} {
+      opacity: 0;
     }
   }
 
@@ -81,31 +117,6 @@ const Container = styled(Link)`
     align-items: left;
     padding: 20px;
   `}
-`;
-
-const ProjectImagePlaceholder = styled.div`
-  flex-basis: 176px;
-  flex-shrink: 0;
-  flex-grow: 0;
-  width: 176px;
-  height: 176px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
-  margin-right: 10px;
-  background: ${color('placeholderBg')};
-  overflow: hidden;
-
-  ${media.smallerThanMaxTablet`
-    width: 100%;
-    margin: 0;
-  `}
-`;
-
-const ProjectImagePlaceholderIcon = styled(Icon) `
-  height: 45px;
-  fill: #fff;
 `;
 
 const ProjectContent = styled.div`
@@ -181,6 +192,7 @@ const ProjectButton = styled(Button) ``;
 
 type Props = {
   id: string;
+  hasBorder?: boolean | undefined;
 };
 
 type State = {
@@ -191,7 +203,6 @@ type State = {
 };
 
 class ProjectCard extends React.PureComponent<Props, State> {
-  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -252,6 +263,8 @@ class ProjectCard extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const className = this.props['className'];
+    const { hasBorder } = this.props;
     const { locale, currentTenant, project, projectImage } = this.state;
 
     if (locale && currentTenant && project) {
@@ -262,14 +275,19 @@ class ProjectCard extends React.PureComponent<Props, State> {
       const projectUrl = this.getProjectUrl(project);
 
       return (
-        <Container to={projectUrl}>
-          {imageUrl && <ProjectImage imageSrc={imageUrl} />}
+        <Container to={projectUrl} className={`${className} ${hasBorder && 'hasBorder'}`}>
 
-          {!imageUrl &&
-            <ProjectImagePlaceholder>
-              <ProjectImagePlaceholderIcon name="project" />
-            </ProjectImagePlaceholder>
-          }
+          <ProjectImageContainer>
+            {imageUrl && <ProjectImage imageSrc={imageUrl} />}
+
+            {!imageUrl &&
+              <ProjectImagePlaceholder>
+                <ProjectImagePlaceholderIcon name="project" />
+              </ProjectImagePlaceholder>
+            }
+
+            <ProjectImageOverlay />
+          </ProjectImageContainer>
 
           <ProjectContent>
             <ProjectTitle>

@@ -41,7 +41,6 @@ const DeployIcon = styled(Icon)`
   margin-right: 12px;
   transition: transform 200ms ease-out;
   transform: rotate(0deg);
-  will-change: transform;
 `;
 
 const Toggle = styled.div`
@@ -74,7 +73,6 @@ const EditionForm = styled.form`
   overflow: hidden;
   transition: all 350ms cubic-bezier(0.165, 0.84, 0.44, 1);
   margin-top: 15px;
-  will-change: height, max-height;
 
   &.deployed {
     max-height: 1000vh;

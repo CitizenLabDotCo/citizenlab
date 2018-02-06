@@ -100,8 +100,6 @@ const ButtonBarContainer = styled.div`
   right: 0;
   background: #fff;
   border-top: solid 1px #ddd;
-  -webkit-backface-visibility: hidden;
-  will-change: transform;
 
   ${media.phone`
     display: none;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { size } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
@@ -32,7 +32,7 @@ const Title = styled.h2`
 `;
 
 const ParentCommentsContainer = styled.div`
-  margin-top: 30px;
+  margin-top: 25px;
 `;
 
 type Props = {
@@ -46,7 +46,6 @@ type State = {
 };
 
 export default class CommentsContainer extends React.PureComponent<Props, State> {
-  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -69,7 +68,7 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
 
         return Rx.Observable
           .combineLatest(comments.data.map(comments => commentStream(comments.id).observable))
-          .map(() => _.size(parentComments) > 0 ? parentComments : null);
+          .map(() => size(parentComments) > 0 ? parentComments : null);
       }
 
       return Rx.Observable.of(null);

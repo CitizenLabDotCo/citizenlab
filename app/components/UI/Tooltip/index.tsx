@@ -31,7 +31,6 @@ const Container = styled(clickOutside)`
   position: relative;
   z-index: 1000;
   transform-origin: left top;
-  will-change: opacity, transform;
 
   ::after {
     content: '';

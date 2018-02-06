@@ -38,14 +38,31 @@ import { color } from 'utils/styleUtils';
 import { IModalInfo } from 'containers/App';
 import { Locale } from 'typings';
 
-const IdeaImage: any = styled.img`
+const IdeaImageContainer: any = styled.div`
   width: 100%;
   height: 135px;
-  object-fit: cover;
   overflow: hidden;
-  opacity: 0.9;
+  position: relative;
+`;
+
+const IdeaImage: any = styled.img`
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+`;
+
+const IdeaImageOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  opacity: 0.1;
   transition: opacity 250ms ease-out;
-  will-change: opacity;
 `;
 
 const IdeaImagePlaceholder = styled.div`
@@ -107,17 +124,16 @@ const IdeaContainer = styled(Link)`
   position: relative;
   border-radius: 6px;
   overflow: hidden;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
   background: #fff;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
   transition: transform 250ms ease-out;
   will-change: transform;
 
   &:hover {
     transform: scale(1.015);
 
-    ${IdeaImage},
-    ${IdeaImagePlaceholder} {
-      opacity: 1;
+    ${IdeaImageOverlay} {
+      opacity: 0;
     }
   }
 `;
@@ -251,7 +267,12 @@ class IdeaCard extends React.PureComponent<Props, State> {
       return (
         <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.data.attributes.slug}`} className={className}>
           <IdeaContainerInner>
-            {ideaImageUrl && <IdeaImage src={ideaImageUrl} />}
+            {ideaImageUrl && 
+              <IdeaImageContainer>
+                <IdeaImage src={ideaImageUrl} />
+                <IdeaImageOverlay />
+              </IdeaImageContainer>
+            }
 
             {!ideaImageUrl &&
               <IdeaImagePlaceholder>

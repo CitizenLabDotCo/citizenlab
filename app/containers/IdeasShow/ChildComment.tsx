@@ -2,15 +2,14 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import linkifyHtml from 'linkifyjs/html';
 
 // components
-import Avatar from 'components/Avatar';
+import Author from './Author';
 import Modal from 'components/UI/Modal';
 import SpamReportForm from 'containers/SpamReport';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import UserName from 'components/UI/UserName';
 
 // services
 import { localeStream } from 'services/locale';
@@ -20,7 +19,6 @@ import { userByIdStream, IUser } from 'services/users';
 import { authUserStream } from 'services/auth';
 
 // i18n
-import { FormattedRelative } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages';
@@ -44,12 +42,12 @@ const StyledMoreActionsMenu: any = styled(MoreActionsMenu)`
 `;
 
 const CommentContainer = styled.div`
-  margin-top: 20px;
-  padding: 20px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-top: solid 1px #e0e0e0;
   position: relative;
-  border: none;
-  background: #f6f6f6;
-  border-radius: 5px;
 
   &:hover {
     ${StyledMoreActionsMenu} {
@@ -58,56 +56,14 @@ const CommentContainer = styled.div`
   }
 `;
 
-const AuthorContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 0;
+const StyledAuthor = styled(Author)`
   margin-bottom: 20px;
-  padding: 0;
-`;
-
-const AuthorAvatar = styled(Avatar)`
-  width: 25px;
-  height: 25px;
-  margin-right: 8px;
-`;
-
-const AuthorMeta = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const AuthorNameContainer = styled.div `
-  color: #333;
-  font-size: 14px;
-  font-weight: 400;
-`;
-
-const AuthorName = styled(Link)`
-  color: ${(props) => props.theme.colors.clBlue};
-  font-size: 14px;
-  text-decoration: none;
-  cursor: pointer;
-
-  &:hover {
-    color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
-    text-decoration: underline;
-  }
-`;
-
-const TimeAgo = styled.div`
-  color: #585858;
-  color: #999;
-  font-size: 13px;
-  line-height: 17px;
-  font-weight: 300;
-  margin-top: 0px;
 `;
 
 const CommentBody = styled.div`
   color: #333;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 17px;
+  line-height: 25px;
   font-weight: 300;
   padding: 0;
 
@@ -251,22 +207,7 @@ export default class ChildComment extends React.PureComponent<Props, State> {
             actions={this.state.moreActions}
           />
 
-          <AuthorContainer>
-            <AuthorAvatar userId={authorId} size="small" onClick={this.goToUserProfile} />
-            <AuthorMeta>
-              <AuthorNameContainer>
-                <FormattedMessage
-                  {...messages.childCommentAuthor}
-                  values={{
-                    authorNameComponent: <AuthorName to={author ? `/profile/${author.data.attributes.slug}` : ''}><UserName user={author} /></AuthorName>
-                  }}
-                />
-              </AuthorNameContainer>
-              <TimeAgo>
-                <FormattedRelative value={createdAt} />
-              </TimeAgo>
-            </AuthorMeta>
-          </AuthorContainer>
+          <StyledAuthor authorId={authorId} createdAt={createdAt} message="childCommentAuthor" />
 
           <CommentBody onClick={this.captureClick}>
             <span dangerouslySetInnerHTML={{ __html: processedCommentText }} />

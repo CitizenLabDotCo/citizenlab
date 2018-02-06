@@ -26,10 +26,23 @@ import messages from './messages';
 // styling
 import styled from 'styled-components';
 import { darken } from 'polished';
+import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   background: #f6f6f6;
+`;
+
+const Loading = styled.div`
+  width: 100%;
+  height: calc(80vh - ${props => props.theme.menuHeight}px - 1px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ${media.smallerThanMaxTablet`
+    height: calc(80vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+  `}
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
@@ -101,14 +114,6 @@ const PageDescription = styled.div`
   }
 `;
 
-const SpinnerContainer = styled.div`
-  margin: 30px 0;
-  padding: 3rem;
-  background-color: white;
-  display: flex;
-  justify-content: center;
-`;
-
 const PagesNavWrapper = styled.div`
   width: 100%;
 `;
@@ -135,7 +140,7 @@ const StyledLink = styled(Link)`
   margin-bottom: 15px;
   padding: 23px;
   border-radius: 5px;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
   background: #fff;
   transition: all 150ms ease-out;
 
@@ -217,11 +222,9 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
 
     if (loading) {
       return (
-        <ContentContainer>
-          <SpinnerContainer>
-            <Spinner size="30px" color="#666" />
-          </SpinnerContainer>
-        </ContentContainer>
+        <Loading>
+          <Spinner size="34px" color="#666" />
+        </Loading>
       );
     } else {
       const seoTitle = (page ? tFunc(page.data.attributes.title_multiloc) : formatMessage(messages.notFoundTitle));

@@ -51,7 +51,6 @@ const ModalBackground = styled.div`
   border-radius: 0px;
   background: #fff;
   z-index: 10000;
-  will-change: opacity;
 
   &.foreground-enter {
     opacity: 0;
@@ -82,7 +81,7 @@ const TopBar: any = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  background: #f8f8f8;
+  background: #fff;
   border-bottom: solid 1px #e0e0e0;
 
   ${media.biggerThanMaxTablet`
@@ -205,7 +204,7 @@ const ModalContent: any = styled.div`
   outline: none;
   background: transparent;
   z-index: 10001;
-  will-change: opacity, transform;
+  transform: translate3d(0, 0, 0);
 
   &.content-enter {
     opacity: 0;
@@ -356,7 +355,6 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
         {opened &&
           <CSSTransition
             classNames="foreground"
-            key={1}
             timeout={foregroundTimeout}
             mountOnEnter={true}
             unmountOnExit={true}
@@ -369,7 +367,6 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
         {opened &&
           <CSSTransition
             classNames="content"
-            key={2}
             timeout={contentTimeout + contentDelay}
             mountOnEnter={true}
             unmountOnExit={true}

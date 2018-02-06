@@ -39,7 +39,7 @@ const Container = styled.div`
   margin-right: auto;
   margin-top: -35px;
   border-radius: 5px;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
 
   * {
     user-select: none;

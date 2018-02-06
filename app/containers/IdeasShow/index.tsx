@@ -2,6 +2,9 @@ import * as React from 'react';
 import { has } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
+// libraries
+// import scrollToComponent from 'react-scroll-to-component';
+
 // router
 import { Link, browserHistory } from 'react-router';
 
@@ -45,11 +48,13 @@ import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-const Container = styled.div``;
+const Container = styled.div`
+  background: #fff;
+`;
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: 820px;
+  max-width: 860px;
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -172,30 +177,44 @@ const AuthorAndAdressWrapper = styled.div`
   margin-bottom: 25px;
 `;
 
+const MetaButtons = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+`;
+
 const LocationLabel = styled.div`
   color: ${(props) => props.theme.colors.label};
   font-size: 15px;
   font-weight: 400;
   margin-right: 6px;
 
+  max-width: 200px;
+  font-size: 15px;
+  line-height: 19px;
+  text-align: left;
+  font-weight: 400;
+  transition: all 100ms ease-out;
+  white-space: nowrap;
+
   ${media.smallerThanMinTablet`
     display: none;
   `}
 `;
 
-const LocationLabelMobile = styled.div`
-  color: ${(props) => props.theme.colors.label};
-  font-size: 14px;
-  font-weight: 400;
-  margin-right: 6px;
-
-  ${media.biggerThanMinTablet`
-    display: none;
-  `}
+const LocationIconWrapper = styled.div`
+  width: 30px;
+  height: 38px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 `;
 
 const LocationIcon = styled(Icon)`
-  height: 20px;
+  width: 18px;
   fill: ${(props) => props.theme.colors.label};
 `;
 
@@ -221,7 +240,7 @@ const MapWrapper = styled.div`
   height: 265px;
   position: relative;
   overflow: hidden;
-  will-change: height, opacity;
+  z-index: 9;
 
   &.map-enter {
     height: 0;
@@ -230,7 +249,7 @@ const MapWrapper = styled.div`
     &.map-enter-active {
       height: 265px;
       opacity: 1;
-      transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: all 250ms ease-out;
     }
   }
 
@@ -241,7 +260,7 @@ const MapWrapper = styled.div`
     &.map-exit-active {
       height: 0;
       opacity: 0;
-      transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: all 250ms ease-out;
     }
   }
 `;
@@ -260,7 +279,7 @@ const AddressWrapper = styled.p`
   padding: .5rem;
   position: absolute;
   right: 0;
-  z-index: 999;
+  z-index: 100;
 `;
 
 const AuthorAvatar = styled(Avatar)`
@@ -312,7 +331,7 @@ const TimeAgo = styled.div`
 
 const IdeaBody = styled.div`
   color: #474747;
-  font-size: 18px;
+  font-size: 19px;
   line-height: 30px;
   font-weight: 300;
 
@@ -419,10 +438,7 @@ const SharingWrapper = styled.div`
   flex-direction: column;
 `;
 
-const StyledSharing: any = styled(Sharing)`
-  margin-top: 30px;
-  margin-bottom: 0px;
-`;
+const StyledSharing: any = styled(Sharing)``;
 
 const StyledSharingMobile = styled(StyledSharing)`
   margin: 0;
@@ -465,7 +481,7 @@ type State = {
 };
 
 export default class IdeasShow extends React.PureComponent<Props, State> {
-  
+  mapWrapperElement: HTMLDivElement | null;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -482,6 +498,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
       spamModalVisible: false,
       moreActions: [],
     };
+    this.mapWrapperElement = null;
     this.subscriptions = [];
   }
 
@@ -553,6 +570,14 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
     ];
   }
 
+  componentDidUpdate(_prevProps: Props, prevState: State) {
+    if (prevState.showMap && this.state.showMap && this.mapWrapperElement) {
+      console.log('componentDidUpdate');
+      console.log(this.mapWrapperElement);
+      this.mapWrapperElement.scrollIntoView(true);
+    }
+  }
+
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
@@ -566,7 +591,16 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
   }
 
   handleMapToggle = () => {
-    this.setState((state: State) => ({ showMap: !state.showMap }));
+    this.setState((state: State) => {
+      const showMap = !state.showMap;
+      return { showMap };
+    });
+  }
+
+  handleMapWrapperSetRef = (element: HTMLDivElement) => {
+    console.log('handleMapWrapperSetRef');
+    console.log(element);
+    this.mapWrapperElement = element;
   }
 
   openSpamModal = () => {
@@ -616,19 +650,39 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
             </StatusContainer>
           }
 
-          <SharingWrapper>
-            <StyledSharing imageUrl={ideaImageLarge} />
-          </SharingWrapper>
+          <MetaButtons>
+            {ideaLocation && !showMap &&
+              <LocationButton onClick={this.handleMapToggle}>
+                <LocationIconWrapper>
+                  <LocationIcon name="position" />
+                </LocationIconWrapper>
+                <LocationLabel><FormattedMessage {...messages.openMap} /></LocationLabel>
+              </LocationButton>
+            }
 
-          {(moreActions && moreActions.length > 0) &&
-            <MoreActionsMenuWrapper>
-              <MoreActionsMenu
-                height="5px"
-                actions={moreActions}
-                label={<FormattedMessage {...messages.moreOptions} />}
-              />
-            </MoreActionsMenuWrapper>
-          }
+            {ideaLocation && showMap &&
+              <LocationButton onClick={this.handleMapToggle}>
+                <LocationIconWrapper>
+                  <LocationIcon name="close" />
+                </LocationIconWrapper>
+                <LocationLabel><FormattedMessage {...messages.closeMap} /></LocationLabel>
+              </LocationButton>
+            }
+
+            <SharingWrapper>
+              <StyledSharing imageUrl={ideaImageLarge} />
+            </SharingWrapper>
+
+            {(moreActions && moreActions.length > 0) &&
+              <MoreActionsMenuWrapper>
+                <MoreActionsMenu
+                  height="5px"
+                  actions={moreActions}
+                  label={<FormattedMessage {...messages.moreOptions} />}
+                />
+              </MoreActionsMenuWrapper>
+            }
+          </MetaButtons>
         </MetaContent>
       );
 
@@ -684,6 +738,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                     </AuthorMeta>
                   </AuthorContainer>
 
+                  {/*
                   {ideaLocation && !showMap &&
                     <LocationButton onClick={this.handleMapToggle}>
                       <LocationLabel><FormattedMessage {...messages.openMap} /></LocationLabel>
@@ -699,6 +754,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                       <LocationIcon name="close" />
                     </LocationButton>
                   }
+                  */}
                 </AuthorAndAdressWrapper>
 
                 {ideaLocation &&
@@ -711,7 +767,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                         unmountOnExit={true}
                         exit={true}
                       >
-                        <MapWrapper>
+                        <MapWrapper innerRef={this.handleMapWrapperSetRef}>
                           {ideaAdress && <AddressWrapper>{ideaAdress}</AddressWrapper>}
                           <IdeaMap location={ideaLocation} id={idea.data.id} />
                         </MapWrapper>
@@ -724,7 +780,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                   <MapPaddingBottom />
                 }
 
-                <IdeaBody>
+                <IdeaBody className={`${!ideaImageLarge && 'noImage'}`}>
                   <T value={bodyMultiloc} />
                 </IdeaBody>
 

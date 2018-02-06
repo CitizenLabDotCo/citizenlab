@@ -38,7 +38,7 @@ const Container = styled.div`
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-top: 0px;
-  padding-bottom: 120px;
+  padding-bottom: 140px;
 
   ${media.smallerThanMaxTablet`
     padding-bottom: 40px;
@@ -47,13 +47,13 @@ const StyledContentContainer = styled(ContentContainer)`
 
 const Loading = styled.div`
   width: 100%;
-  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  height: calc(80vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
   align-items: center;
   justify-content: center;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+    height: calc(80vh - ${props => props.theme.mobileMenuHeight}px - 70px);
   `}
 `;
 
@@ -234,11 +234,9 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
 
     if (!loaded) {
       return (
-        <Container>
-          <Loading>
-            <Spinner size="30px" color="#666" />
-          </Loading>
-        </Container>
+        <Loading>
+          <Spinner size="34px" color="#666" />
+        </Loading>
       );
     }
 

@@ -26,7 +26,6 @@ const Container = styled(ClickOutside)`
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.12);
   border: solid 1px #e0e0e0;
   transform-origin: right top;
-  will-change: opacity, transform;
 
   ::before,
   ::after {

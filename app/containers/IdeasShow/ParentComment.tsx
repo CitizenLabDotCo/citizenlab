@@ -42,12 +42,12 @@ const timeout = 550;
 
 const StyledMoreActionsMenu: any = styled(MoreActionsMenu)`
   position: absolute;
-  top: 5px;
-  right: 15px;
+  top: 10px;
+  right: 20px;
 `;
 
 const Container = styled.div`
-  margin-top: 20px;
+  margin-top: 30px;
 
   &.comment-enter {
     opacity: 0;
@@ -63,23 +63,34 @@ const Container = styled.div`
 `;
 
 const CommentContainer: any = styled.div`
-  padding: 30px;
-  border: solid 1px #e0e0e0;
   border-radius: 6px;
   background: #fff;
+  border: solid 1px #e0e0e0;
   position: relative;
+  padding-top: 30px;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
+
+  &.hasReplyBox {
+    /* border-bottom-left-radius: 0px; */
+    /* border-bottom-right-radius: 0px; */
+    border-bottom: none;
+  }
 `;
 
-const CommentContainerInner = styled.div``;
+const CommentContainerInner = styled.div`
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+`;
 
 const StyledAuthor = styled(Author)`
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 `;
 
 const CommentBody = styled.div`
   color: #333;
-  font-size: 18px;
-  line-height: 26px;
+  font-size: 17px;
+  line-height: 25px;
   font-weight: 300;
 
   span,
@@ -110,9 +121,7 @@ const CommentBody = styled.div`
   }
 `;
 
-const ChildCommentsContainer = styled.div`
-  margin-top: 30px;
-`;
+const ChildCommentsContainer = styled.div``;
 
 type Props = {
   ideaId: string;
@@ -137,7 +146,6 @@ type Tracks = {
 };
 
 class ParentComment extends React.PureComponent<Props & Tracks, State> {
-  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -253,7 +261,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       const parentComment = (
         <Container className="e2e-comment-thread">
 
-          <CommentContainer withReplyBox={showCommentForm}>
+          <CommentContainer className={`${showCommentForm && 'hasReplyBox'}`}>
             <StyledMoreActionsMenu
               height="5px"
               actions={this.state.moreActions}

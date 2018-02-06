@@ -31,7 +31,6 @@ const Form = styled.div`
   height: auto;
   max-width: 360px;
   position: relative;
-  will-change: opacity, transform;
 
   &.form-enter {
     opacity: 0.01;
