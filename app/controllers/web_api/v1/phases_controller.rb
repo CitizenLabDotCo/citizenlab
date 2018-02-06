@@ -57,6 +57,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :voting_enabled,
       :voting_method,
       :voting_limited_max,
+      :form_id,
       title_multiloc: I18n.available_locales,
       description_multiloc: I18n.available_locales
     )
