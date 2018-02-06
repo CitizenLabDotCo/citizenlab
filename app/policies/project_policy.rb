@@ -71,6 +71,7 @@ class ProjectPolicy < ApplicationPolicy
       :voting_method,
       :voting_limited_max,
       :survey_id,
+      :survey_service,
       :presentation_mode,
       :publication_status,
       title_multiloc: I18n.available_locales, 

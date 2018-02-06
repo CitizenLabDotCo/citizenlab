@@ -5,6 +5,7 @@ module ParticipationContext
 
   PARTICIPATION_METHODS = %w(information ideation survey)
   VOTING_METHODS = %w(unlimited limited)
+  SURVEY_SERVICES = %w(typeform survey_monkey)
 
   included do
     # for timeline projects, the phases are the participation contexts, so nothing applies
@@ -20,6 +21,7 @@ module ParticipationContext
       end
       with_options if: :survey? do |survey|
         survey.validates :survey_id, presence: true
+        survey.validates :survey_service, presence: true, inclusion: {in: SURVEY_SERVICES}
       end
 
       before_validation :set_participation_method, on: :create
