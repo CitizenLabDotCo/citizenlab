@@ -19,7 +19,7 @@ module ParticipationContext
         ideation.validates :voting_limited_max, presence: true, numericality: {only_integer: true, greater_than: 0}, if: [:ideation?, :voting_limited?]
       end
       with_options if: :survey? do |survey|
-        survey.validates :form_id, presence: true
+        survey.validates :survey_id, presence: true
       end
 
       before_validation :set_participation_method, on: :create
