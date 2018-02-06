@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :idea do
     title_multiloc {{
       "en" => "Plant more trees",
