@@ -3,7 +3,7 @@ require 'active_support/concern'
 module ParticipationContext
   extend ActiveSupport::Concern
 
-  PARTICIPATION_METHODS = %w(information ideation)
+  PARTICIPATION_METHODS = %w(information ideation survey)
   VOTING_METHODS = %w(unlimited limited)
 
   included do
@@ -17,6 +17,9 @@ module ParticipationContext
         ideation.validates :voting_enabled, inclusion: {in: [true, false]}
         ideation.validates :voting_method, presence: true, inclusion: {in: VOTING_METHODS}
         ideation.validates :voting_limited_max, presence: true, numericality: {only_integer: true, greater_than: 0}, if: [:ideation?, :voting_limited?]
+      end
+      with_options if: :survey? do |survey|
+        survey.validates :form_id, presence: true
       end
 
       before_validation :set_participation_method, on: :create
@@ -33,6 +36,10 @@ module ParticipationContext
 
   def information?
     self.participation_method == 'information'
+  end
+
+  def survey?
+    self.participation_method == 'survey'
   end
 
   def voting_limited?
