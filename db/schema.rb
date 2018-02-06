@@ -253,7 +253,7 @@ ActiveRecord::Schema.define(version: 20180206132516) do
     t.boolean "voting_enabled", default: true
     t.string "voting_method", default: "unlimited"
     t.integer "voting_limited_max", default: 10
-    t.string "form_id"
+    t.string "survey_id"
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -295,6 +295,7 @@ ActiveRecord::Schema.define(version: 20180206132516) do
     t.string "process_type", default: "timeline", null: false
     t.string "internal_role"
     t.string "publication_status", default: "published", null: false
+    t.string "survey_id"
     t.index ["created_at"], name: "index_projects_on_created_at"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
