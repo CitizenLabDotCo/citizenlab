@@ -1,0 +1,2284 @@
+---
+models:
+  idea_status:
+  - &17
+    title_multiloc: statuses.proposed
+    ordering: 100
+    code: proposed
+    color: "#84939E"
+    description_multiloc: statuses.proposed_description
+  - &19
+    title_multiloc: statuses.under_consideration
+    ordering: 200
+    code: under_consideration
+    color: "#29ABD0"
+    description_multiloc: statuses.under_consideration_description
+  - &14
+    title_multiloc: statuses.accepted
+    ordering: 300
+    code: accepted
+    color: "#17C37B"
+    description_multiloc: statuses.accepted_description
+  - &12
+    title_multiloc: statuses.rejected
+    ordering: 400
+    code: rejected
+    color: "#EF3E4A"
+    description_multiloc: statuses.rejected_description
+  - &18
+    title_multiloc: statuses.implemented
+    ordering: 500
+    code: implemented
+    color: "#B5DA23"
+    description_multiloc: statuses.implemented_description
+  topic:
+  - &34
+    title_multiloc: topics.infrastructure
+    description_multiloc: topics.infrastructure_description
+  - &33
+    title_multiloc: topics.waste
+    description_multiloc: topics.waste_description
+  - &32
+    title_multiloc: topics.mobility
+    description_multiloc: topics.mobility_description
+  - title_multiloc: topics.technology
+    description_multiloc: topics.technology_description
+  - title_multiloc: topics.economy
+    description_multiloc: topics.economy_description
+  - title_multiloc: topics.nature
+    description_multiloc: topics.nature_description
+  - title_multiloc: topics.sustainability
+    description_multiloc: topics.sustainability_description
+  - title_multiloc: topics.housing
+    description_multiloc: topics.housing_description
+  - title_multiloc: topics.culture
+    description_multiloc: topics.culture_description
+  - title_multiloc: topics.citizenship
+    description_multiloc: topics.citizenship_description
+  - &35
+    title_multiloc: topics.social
+    description_multiloc: topics.social_description
+  - title_multiloc: topics.health
+    description_multiloc: topics.health_description
+  - title_multiloc: topics.sport
+    description_multiloc: topics.sport_description
+  - title_multiloc: topics.education
+    description_multiloc: topics.education_description
+  page:
+  - &1
+    title_multiloc: pages.infopage_title
+    body_multiloc: pages.infopage_body
+    slug: information
+  - &2
+    title_multiloc: pages.cookie_policy_title
+    body_multiloc: pages.cookie_policy_body
+    slug: cookie-policy
+  - &3
+    title_multiloc: pages.privacy_policy_title
+    body_multiloc: pages.privacy_policy_body
+    slug: privacy-policy
+  - &4
+    title_multiloc: pages.terms_and_conditions_title
+    body_multiloc: pages.terms_and_conditions_body
+    slug: terms-and-conditions
+  page_link:
+  - linking_page_ref: *1
+    linked_page_ref: *2
+    ordering: 1
+  - linking_page_ref: *1
+    linked_page_ref: *3
+    ordering: 2
+  - linking_page_ref: *1
+    linked_page_ref: *4
+    ordering: 3
+  - linking_page_ref: *2
+    linked_page_ref: *1
+    ordering: 1
+  - linking_page_ref: *2
+    linked_page_ref: *3
+    ordering: 2
+  - linking_page_ref: *2
+    linked_page_ref: *4
+    ordering: 3
+  - linking_page_ref: *3
+    linked_page_ref: *1
+    ordering: 1
+  - linking_page_ref: *3
+    linked_page_ref: *2
+    ordering: 2
+  - linking_page_ref: *3
+    linked_page_ref: *4
+    ordering: 3
+  - linking_page_ref: *4
+    linked_page_ref: *1
+    ordering: 1
+  - linking_page_ref: *4
+    linked_page_ref: *2
+    ordering: 2
+  - linking_page_ref: *4
+    linked_page_ref: *3
+    ordering: 3
+  user:
+  - &43
+    email: citizenlab+1@citizenlab.co
+    first_name: Max
+    last_name: Walker
+    cl1_migrated: false
+    locale: en
+    bio_multiloc:
+      en: 
+    gender: male
+    birthyear: 1950
+    domicile: 
+    education: 6
+    password_digest: "$2a$10$5J23SwF/9WPI8bLl4eiFI.CtBmVG3bg7CmX7dJy.LHvz7oFXMDrsW"
+    remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/user/avatar/de391ada-2b2c-42af-86f9-21ee29ddd984/man-388104_960_720.jpg
+    roles: []
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &1 2017-11-27 12:52:33.724737000 Z
+      zone: &2 !ruby/object:ActiveSupport::TimeZone
+        name: Etc/UTC
+      time: *1
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &3 2017-11-27 12:52:33.724737000 Z
+      zone: *2
+      time: *3
+  - &67
+    email: citizenlab+2@citizenlab.co
+    first_name: Annie
+    last_name: Smith
+    cl1_migrated: false
+    locale: en
+    bio_multiloc:
+      en: 
+    gender: female
+    birthyear: 1961
+    domicile: outside
+    education: 8
+    password_digest: "$2a$10$lKUjlitf2nclA8ZFWfSAdO.vFpyjh6Zd.zHbOlzytTZCdIkumjK1y"
+    remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/user/avatar/4e341c3b-c361-443e-896e-84732ec435e0/smiling-woman.jpg
+    roles: []
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &4 2017-11-27 12:52:35.715414000 Z
+      zone: *2
+      time: *4
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &5 2017-11-27 12:52:35.715414000 Z
+      zone: *2
+      time: *5
+  - &47
+    email: citizenlab+3@citizenlab.co
+    first_name: Emma
+    last_name: Murphy
+    cl1_migrated: false
+    locale: en
+    bio_multiloc:
+      en: 
+    gender: female
+    birthyear: 1999
+    domicile: outside
+    education: 1
+    password_digest: "$2a$10$j9mv0vs5QToxLDZecNUP8uoYu6Ll9DCocAz/4B4U3QdK/Tn75Uq3q"
+    remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/user/avatar/fd6dfe3e-99af-4bc8-80ee-715a096907d8/Germany-Girl.jpg
+    roles: []
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &6 2017-11-27 12:52:36.358115000 Z
+      zone: *2
+      time: *6
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &7 2017-11-27 12:52:36.358115000 Z
+      zone: *2
+      time: *7
+  - &51
+    email: citizenlab+4@citizenlab.co
+    first_name: Chad
+    last_name: Williams
+    cl1_migrated: false
+    locale: en
+    bio_multiloc:
+      en: 
+    gender: male
+    birthyear: 2005
+    domicile: outside
+    education: 5
+    password_digest: "$2a$10$s/afs5zOs8mrR5JFsZFfWuWm.jbIAaK7GnOqqN3Pa1t1Bo.Z0lcGG"
+    remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/user/avatar/f2da81ac-fe0c-465b-a5fe-5cff7083c947/man-838636_960_720.jpg
+    roles: []
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &8 2017-11-27 12:52:37.454717000 Z
+      zone: *2
+      time: *8
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &9 2017-11-27 12:52:37.454717000 Z
+      zone: *2
+      time: *9
+  - email: wietse+citizenlabb@citizenlab.co
+    first_name: Wietse
+    last_name: Van Ransbeeck
+    cl1_migrated: false
+    locale: en
+    bio_multiloc: {}
+    gender: 
+    birthyear: 
+    domicile: 
+    education: 
+    password_digest: "$2a$10$iaDeDqsUkMz61hqV3L/gRO76dSROs5ycSvY13bNY5.VbXSfMaf6XG"
+    remote_avatar_url: 
+    roles: []
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &10 2017-12-04 09:57:38.979338000 Z
+      zone: *2
+      time: *10
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &11 2017-12-04 09:57:38.979338000 Z
+      zone: *2
+      time: *11
+  - &130
+    email: amuylaer@gmail.com
+    first_name: Aline
+    last_name: Muylaert
+    cl1_migrated: false
+    locale: en
+    bio_multiloc: {}
+    gender: female
+    birthyear: 1993
+    domicile: 
+    education: 
+    password_digest: "$2a$10$l55rXuGcSXJVpvAnMwG1vutPqnGWyAtIYvEbmahgDhYE9nLwjqJOS"
+    remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/user/avatar/fc90d843-21b4-4956-9675-ff7ba9dbbc74/5084288ac4a533ec40abc54978a67bcc.jpeg
+    roles: []
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &12 2018-01-31 14:27:16.190349000 Z
+      zone: *2
+      time: *12
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &13 2018-01-31 14:27:30.504644000 Z
+      zone: *2
+      time: *13
+  - email: wietse+tet@citizenlab.co
+    first_name: Wietse
+    last_name: Van Ransbeeck
+    cl1_migrated: false
+    locale: en
+    bio_multiloc: {}
+    gender: 
+    birthyear: 
+    domicile: 
+    education: 
+    password_digest: "$2a$10$.NWsZyn9GUKcWdbpDWvtwO2AA2aZzcPh0kpuZRTxfIzgeIRfFvACe"
+    remote_avatar_url: 
+    roles: []
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &14 2018-01-31 18:28:53.684888000 Z
+      zone: *2
+      time: *14
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &15 2018-01-31 18:28:53.684888000 Z
+      zone: *2
+      time: *15
+  - email: wietselnlb@citizenlab.co
+    first_name: Wietse
+    last_name: Van Ransbeeck
+    cl1_migrated: false
+    locale: en
+    bio_multiloc: {}
+    gender: 
+    birthyear: 
+    domicile: 
+    education: 
+    password_digest: "$2a$10$i1TiRmd7Vg1/e8Q5fjC98erR1swhCtJy4K3dQyvkte1KDSI871jZm"
+    remote_avatar_url: 
+    roles: []
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &16 2018-02-01 10:31:40.392088000 Z
+      zone: *2
+      time: *16
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &17 2018-02-01 10:31:40.392088000 Z
+      zone: *2
+      time: *17
+  - &77
+    email: hello@citizenlab.co
+    first_name: Wietse
+    last_name: Van Ransbeeck
+    cl1_migrated: false
+    locale: en
+    bio_multiloc: {}
+    gender: 
+    birthyear: 
+    domicile: 
+    education: 
+    password_digest: "$2a$10$YhlXAjNVCoDNARVN8rCNOeKBsCHqt4KuvYdOZNAU06ePuQNDL3h/S"
+    remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/user/avatar/e852bec2-6bed-4b5a-b8af-c9a39597c5d9/b9a11a50ed3acb04d48eccd9e0395f3e.png
+    roles:
+    - type: admin
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &18 2017-11-27 13:05:26.071505000 Z
+      zone: *2
+      time: *18
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &19 2018-02-01 11:00:07.290028000 Z
+      zone: *2
+      time: *19
+  - email: wietse+test@citizenlab.co
+    first_name: Wietse
+    last_name: Van Ransbeeck
+    cl1_migrated: false
+    locale: en
+    bio_multiloc: {}
+    gender: 
+    birthyear: 
+    domicile: 
+    education: 
+    password_digest: "$2a$10$sjyZPF8mn6.tpuAkoFiPq.WLo.19bWj2XAiB/PfoKllLrzSucWWuW"
+    remote_avatar_url: 
+    roles: []
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &20 2018-02-04 18:01:29.507906000 Z
+      zone: *2
+      time: *20
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &21 2018-02-04 18:01:29.507906000 Z
+      zone: *2
+      time: *21
+  project:
+  - &36
+    title_multiloc:
+      en: For a better waste management
+    description_multiloc:
+      en: "<p>Every year, each inhabitant produce 354 kg of waste. And it goes up
+        to 536 kg when you take into account the waste produced by the municipality.
+        Reducing the amount of waste is a challenge for the environment that also
+        has a financial and societal impact.</p>"
+    remote_header_bg_url: 
+    description_preview_multiloc:
+      en: Every year, each inhabitant produce 354 kg of waste. And it goes up to 536
+        kg when you take into account the waste produced by the municipality. Reducing
+        the amount of waste is a challenge for the environment that also has a financial
+        and societal impact.
+    presentation_mode: card
+    participation_method: ideation
+    process_type: timeline
+    internal_role: 
+    publication_status: published
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &22 2017-11-27 12:52:37.905482000 Z
+      zone: *2
+      time: *22
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &23 2018-01-27 18:07:26.902423000 Z
+      zone: *2
+      time: *23
+  - &37
+    title_multiloc:
+      en: Reducing air pollution in the city
+    description_multiloc:
+      en: |-
+        <p><a href="https://en.wikipedia.org/wiki/Global_warming">Global warming</a> is becoming an increasing concern of our society. Your city wants to <strong>fight</strong> the air pollution! </p>
+        <p>You can support this initiative by proposing your ideas on how to tackle this issue.</p>
+        <p>Let's do this!</p>
+    remote_header_bg_url: 
+    description_preview_multiloc:
+      en: "Global warming is becoming an increasing concern of our society. Your city
+        wants to fight the air pollution! \nYou can support this initiative by proposing
+        your ideas on how to tackle this issue.\nLet's do this!"
+    presentation_mode: card
+    participation_method: ideation
+    process_type: timeline
+    internal_role: 
+    publication_status: published
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &24 2017-11-27 12:52:37.882114000 Z
+      zone: *2
+      time: *24
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &25 2018-01-27 18:08:08.314459000 Z
+      zone: *2
+      time: *25
+  - &38
+    title_multiloc:
+      en: Make public services more efficient
+    description_multiloc:
+      en: "<p>We will modernize the way the city works, including the administration,
+        etc. Share here how digital installations could make our lives easier in the
+        city.</p>"
+    remote_header_bg_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/project/header_bg/2da7b183-2e87-4cfd-a0e4-4619ad939c36/header_bg.jpeg
+    description_preview_multiloc:
+      en: We will modernize the way the city works, including the administration,
+        etc. Share here how digital installations could make our lives easier in the
+        city.
+    presentation_mode: card
+    participation_method: ideation
+    process_type: timeline
+    internal_role: 
+    publication_status: published
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &26 2017-11-27 12:52:37.925504000 Z
+      zone: *2
+      time: *26
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &27 2018-01-31 14:06:40.703154000 Z
+      zone: *2
+      time: *27
+  - &39
+    title_multiloc:
+      en: Other ideas for our city?
+    description_multiloc:
+      en: The ideas found here are not linked to a project.
+    remote_header_bg_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/project/header_bg/c56f46a3-667a-4e71-b2ff-7b7898efe8c8/Idea_cover_qdrwa6.jpg
+    description_preview_multiloc: {}
+    presentation_mode: card
+    participation_method: ideation
+    process_type: continuous
+    internal_role: open_idea_box
+    publication_status: published
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &28 2018-01-26 02:20:49.704724000 Z
+      zone: *2
+      time: *28
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &29 2018-01-31 14:08:55.528744000 Z
+      zone: *2
+      time: *29
+  - &40
+    title_multiloc:
+      en: Urban regeneration plan for Coventry City Centre South
+    description_multiloc:
+      en: |-
+        <p>Unfortunately, less and less people visit the city centre to enjoy the shops and the park. You can share here your ideas to make it more lively!</p>
+        <h2>Montréal, by and for its citizens</h2>
+        <p>Already well known for its vibrant digital technology sector, Montréal has the potential to become a world-class model of the “smart city”, driven by its flourishing creativity and spirit of collaboration. More than ever before, Montréalers themselves are both the creators and principal beneficiaries of their quality of life and economic prosperity.</p>
+        <p>Montréalers are among the most digitally-savvy people on the planet, and this city is busting with creative types, innovators, entrepreneurs, investors and other multi-talented players.</p>
+        <p>Today, technology provides us with numerous opportunities to pool this wealth of talent. Through technology, citizens can make their desires known and can influence the decisions that affect them, creatives and innovators can propose more effective solutions, and entrepreneurs can launch ground-breaking new services which are in turn brought to a global market by astute investors. By becoming a smart city, Montréal is choosing to bring these talented individuals together, improving the quality of life for all in the process.</p>
+        <p>With its goals of making Montréal a global model for the smart city by 2017 and tapping in to this enormous potential, in spring 2014 the city established its Smart and Digital City Office. Its team has the mission of providing a framework for the kind of transformational projects that affect every aspect of life here, whether they involve government, infrastructure, public services or social issues.</p>
+        <p>In order for this transformation to reflect the real needs of Montréal’s citizens, the office has entered into a major dialogue with institutional and private sectors, municipal workers and the citizens themselves. By analyzing the over one million phone calls and 40,000 emails to the 311 information service logged in 2013, the responses of over 7,600 Montréalers over 4 surveys, consultations with over 400 participants as part of local co-design activities, and by rubbing elbows with people all over the island, the office has developed a clear understanding of what matters most to Montréalers.</p>
+        <p>Inspired by global best practices and stimulated by an ongoing exchange with Montréalers, the Smart and Digital City Office targets 5 main areas of activity: urban mobility, direct services to citizens, quality of life, the democratic process and economic development. These are the themes that from now until 2017 will become the foundation for the <a href="http://villeintelligente.montreal.ca/en/strategy/">strategic development</a> of Montréal, smart and digital city.</p>
+    remote_header_bg_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/project/header_bg/e8b17c17-97f6-46b4-b066-9cb223f59fac/header_bg.jpeg
+    description_preview_multiloc:
+      en: Unfortunately, less and less people visit the city centre to enjoy the shops
+        and the park. You can share here your ideas to make it more lively!
+    presentation_mode: card
+    participation_method: ideation
+    process_type: timeline
+    internal_role: 
+    publication_status: published
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &30 2017-11-27 12:52:37.894422000 Z
+      zone: *2
+      time: *30
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &31 2018-02-04 17:48:15.174992000 Z
+      zone: *2
+      time: *31
+  - &41
+    title_multiloc:
+      en: Reshaping the harbour
+    description_multiloc:
+      en: |-
+        <p>Udbygningen af Aarhus Havn blev fastlagt i en masterplan vedtaget i Aarhus Byråd i 1997. Planen er revideret undervejs, men store dele af den er allerede realiseret eller i gang.</p>
+        <h1>Fremtidige planer</h1>
+        <p>Masterplanen for Aarhus Havn arbejder hen imod en samlet godskapacitet på 20 mio. årligt i 2020. Havnen udbygges til ca. 180 hektar eller 1.800.000 m2, og den maksimale vanddybde er projekteret til 15,5 meter ved kajen.</p>
+        <p>Med i alt 1300 meter kaj, 550.000 m2 landareal og en vanddybde på 14 meter kan vi modtage verdens største containerskibe med partlast i containerhavnen.</p>
+        <h1>Udvidelse i Østhavnen</h1>
+        <p>Første etape af Aarhus Havns store udbygningsplan var en ny containerterminal i Østhavnen. Terminalen blev færdig i april 2001 og omfatter 500 meter kaj med en vanddybde på 14 m og ca. 250.000 m2 landareal. Anden etape – en udvidelse med yderligere 800 meter kaj og mere end 300.000 m2 landareal – blev taget i brug den 1. september 2007.</p>
+        <h1>Etablering af Omniterminalen</h1>
+        <p>Multiterminalen nordøst for Oliehavnsområdet er i færd med at blive forlænget. Havneområdet bliver på ca. 80.000 m2 med 14 meters vanddybde og får betegnelsen Omniterminalen. Det skal fortrinsvis bruges til omsætning af godstyper, der ikke kræver oplagring under tag eller faste kraner, f.eks. bulkvarer eller vindmølleprojekter, der gøres klar til afskibning.</p>
+        <p>Indretningen vil blive udført i tæt samarbejde med de kunder, der ønsker at benytte arealet.</p>
+    remote_header_bg_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/project/header_bg/999a2464-2c86-4038-857d-ac8caead6479/header_bg.jpeg
+    description_preview_multiloc:
+      en: Udbygningen af Aarhus Havn blev fastlagt i en masterplan vedtaget i Aarhus
+        Byråd i 1997. Planen er revideret undervejs, men store dele af den er allerede
+        realiseret eller i gang.
+    presentation_mode: card
+    participation_method: ideation
+    process_type: timeline
+    internal_role: 
+    publication_status: draft
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &32 2017-11-27 12:52:37.915512000 Z
+      zone: *2
+      time: *32
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &33 2018-01-31 14:06:34.056883000 Z
+      zone: *2
+      time: *33
+  - &42
+    title_multiloc:
+      en: Where should we create new/better bikelanes?
+    description_multiloc:
+      en: |-
+        <p>Aimed at encouraging walking and rolling, the city is building different asphalt bikeways and multi-use pathways. Let us know where these are most needed by pinning the spots on a map!</p>
+        <h1>Financial support</h1>
+        <p>This project is supported by $200,000 in funds through the Municipal Cycling Infrastructure Program. The City's 2015-2018 Strategic Plan identifies creating cycling and pathway infrastructure as a transportation initiative under its Infrastructure priority.</p>
+        <h1>Project Details</h1>
+        <p><strong>Type:</strong> Construction</p>
+        <p><strong>Start Date:</strong> October 2018</p>
+        <p><strong>Projected End Date:</strong> October 2019</p>
+    remote_header_bg_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/project/header_bg/7466b584-27e5-44f6-bea3-c8e8759c5b7e/header_bg.jpeg
+    description_preview_multiloc:
+      en: Aimed at encouraging walking and rolling, the city is building different
+        asphalt bikeways and multi-use pathways. Let us know where these are most
+        needed by pinning the spots on a map!
+    presentation_mode: map
+    participation_method: ideation
+    process_type: timeline
+    internal_role: 
+    publication_status: published
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &34 2018-01-31 14:14:04.082405000 Z
+      zone: *2
+      time: *34
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &35 2018-01-31 14:17:33.004127000 Z
+      zone: *2
+      time: *35
+  project_image:
+  - project_ref: *36
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/project_image/image/4db969fd-dc0a-4eb7-8dc7-f81fcc30102d/nature_parcdegerland_ldaniere_860.jpg
+    ordering: 
+  - project_ref: *37
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/project_image/image/71cfde7f-8896-4974-b8ca-e51676b90e82/rsz_fd6e28f288acfdc7a88b43f8bd3181af57f3cf8a.png
+    ordering: 
+  - project_ref: *38
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/project_image/image/06ed128b-1f51-4c0c-aa6d-ac771af6b97b/featured.jpg
+    ordering: 
+  - project_ref: *38
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/project_image/image/cb930cce-6170-409e-8819-9e383d650b04/image.jpeg
+    ordering: 
+  - project_ref: *39
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/project_image/image/0d80c519-51de-44df-a722-5d96fcab233e/image.gif
+    ordering: 
+  - project_ref: *40
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/project_image/image/5097e424-5179-4d83-b8fc-24fa7c526755/Rugby_town_centre-2ay0y80.jpg
+    ordering: 
+  - project_ref: *40
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/project_image/image/518adb9b-e349-4fa6-8b57-8cc93c98343e/image.jpeg
+    ordering: 
+  - project_ref: *40
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/project_image/image/2a481c3c-edb0-41bb-975c-cfe8bcaa0905/image.jpeg
+    ordering: 
+  - project_ref: *40
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/project_image/image/6342312e-5ec3-428b-938b-d57120053834/image.jpeg
+    ordering: 
+  - project_ref: *41
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/project_image/image/68c9ebcb-aeea-47c2-b00e-d9ea7d98d182/image.jpeg
+    ordering: 
+  - project_ref: *42
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/project_image/image/981d4bb7-9f0e-48ba-ab7e-a4939131df8f/image.jpeg
+    ordering: 
+  idea:
+  - &96
+    title_multiloc:
+      en: Send a weekly agenda of the city by email
+    body_multiloc:
+      en: "<p>Many events are organised throughout the week but we are not aware of
+        it because we don't pass by the posters or go to the places where they are
+        advertised. Therefore it would be nice to receive an agenda of what's happening
+        in the city during the week, right into their inbox: cultural events, towhalls,
+        etc. to be able to access it all in one place from the comfort of your own
+        house.</p>\n"
+    publication_status: published
+    project_ref: *38
+    author_ref: *43
+    location_description: 
+    published_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &44 2017-11-27 12:52:45.290746000 Z
+      zone: *2
+      time: *44
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &45 2017-11-27 12:52:45.290927000 Z
+      zone: *2
+      time: *45
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &46 2018-01-31 15:44:38.065057000 Z
+      zone: *2
+      time: *46
+  - &97
+    title_multiloc:
+      en: Start an organic and food waste recovery
+    body_multiloc:
+      en: "<p>We should encourage more people to sort their organic waste and food.
+        Often, food leftovers, plants, etc. go in the ordinary household waste bin
+        when they could be set aside and serve another purpose like organic fertilizer
+        for instance. To do so, we should provide the citizens with special boxes
+        or bags, then it could be collected with the usual garbage and sorted afterwards.</p>\n"
+    publication_status: published
+    project_ref: *36
+    author_ref: *47
+    location_description: 
+    published_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &48 2017-11-27 12:52:45.221729000 Z
+      zone: *2
+      time: *48
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &49 2017-11-27 12:52:45.222178000 Z
+      zone: *2
+      time: *49
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &50 2017-11-27 12:52:45.222178000 Z
+      zone: *2
+      time: *50
+  - &98
+    title_multiloc:
+      en: Create a dog area within the park
+    body_multiloc:
+      en: "<p>There are not many spaces dedicated to dogs in parks. This project would
+        aim at having specific spaces within the park where dogs can run freely, leash-free,
+        in a closed area dedicated to this purpose only. It would allow the dogs to
+        go around in this « free but controlled » area, and also it would encourage
+        interactions with dog owners. In this space there could be benches, and games
+        for dogs.</p>\n"
+    publication_status: published
+    project_ref: *41
+    author_ref: *51
+    location_description: 
+    published_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &52 2017-11-27 12:52:45.235486000 Z
+      zone: *2
+      time: *52
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &53 2017-11-27 12:52:45.235670000 Z
+      zone: *2
+      time: *53
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &54 2017-11-27 12:52:45.235670000 Z
+      zone: *2
+      time: *54
+  - &99
+    title_multiloc:
+      en: Have more computers in the library
+    body_multiloc:
+      en: "<p>To make technology more inclusive, and especially internet access, there
+        should be more computers in the public library. Indeed, today there are only
+        two and the spots they are often occupied. It could be nice to have more monitors,
+        or even a room at the library with computers only. It could help people who
+        dn't have internet at home to look for a job for example.</p>\n"
+    publication_status: published
+    project_ref: *38
+    author_ref: *43
+    location_description: 
+    published_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &55 2017-11-27 12:52:45.262691000 Z
+      zone: *2
+      time: *55
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &56 2017-11-27 12:52:45.262861000 Z
+      zone: *2
+      time: *56
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &57 2018-01-31 15:50:24.122909000 Z
+      zone: *2
+      time: *57
+  - &100
+    title_multiloc:
+      en: Organise one car-free day per month
+    body_multiloc:
+      en: "<p>It would be nice once a month, to be able to curculate freely by foot
+        or by bike without worrying about cars or air pollution. It could be a great
+        way to raise awareness around cleaner ways to move around the city. Ideally
+        it would be on the weekends so that everyone can enjoy it!</p>\n"
+    publication_status: published
+    project_ref: *37
+    author_ref: *51
+    location_description: 
+    published_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &58 2017-11-27 12:52:45.148428000 Z
+      zone: *2
+      time: *58
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &59 2017-11-27 12:52:45.148634000 Z
+      zone: *2
+      time: *59
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &60 2017-11-27 12:52:45.148634000 Z
+      zone: *2
+      time: *60
+  - &101
+    title_multiloc:
+      en: Make the city centre more accessible thanks to free shuttles
+    body_multiloc:
+      en: "<p>One of the reason why people are not visiting the city centre as much
+        as before could be because it's hard to reach (hard to park or expensive parking,
+        limited public transportation, etc.). I suggest that the city launches a free
+        shuttle to go from the biggest residential areas to the city centre. They
+        can be electrical as well in order to remain an eco-friendly solution.</p>"
+    publication_status: published
+    project_ref: *40
+    author_ref: *47
+    location_description: Brouckere Tower Invest, Boulevard Anspach, Brussels, Belgium
+    published_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &61 2017-11-27 12:52:45.180814000 Z
+      zone: *2
+      time: *61
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &62 2017-11-27 12:52:45.181053000 Z
+      zone: *2
+      time: *62
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &63 2018-02-04 18:10:40.542730000 Z
+      zone: *2
+      time: *63
+  - &102
+    title_multiloc:
+      en: Add more night buses
+    body_multiloc:
+      en: "<p>The service of buses to and from the city centre stops early at night
+        (last bus at 11PM). There should be more buses at night to encourage people
+        to go to the restaurants and bars of the city centre. It would keep the neighbourhood
+        more lively.</p>\n"
+    publication_status: published
+    project_ref: *40
+    author_ref: *43
+    location_description: 
+    published_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &64 2017-11-27 12:52:45.164094000 Z
+      zone: *2
+      time: *64
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &65 2017-11-27 12:52:45.164275000 Z
+      zone: *2
+      time: *65
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &66 2017-11-27 12:52:45.164275000 Z
+      zone: *2
+      time: *66
+  - &103
+    title_multiloc:
+      en: Organise fun gatherings to raise awareness about waste sorting
+    body_multiloc:
+      en: "<p>I think if people sorted their waste better it would help waste management
+        a lot. The general feeling is that most people sometimes don't know how to
+        do it properly, so they don't do it at all. One idea would be to organise
+        fun social gatherings with activities to raise awareness on how important
+        this is, it could be done through games, info sessions, activities for the
+        family, etc. </p>\n"
+    publication_status: published
+    project_ref: *36
+    author_ref: *67
+    location_description: 
+    published_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &68 2017-11-27 12:52:45.208920000 Z
+      zone: *2
+      time: *68
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &69 2017-11-27 12:52:45.209084000 Z
+      zone: *2
+      time: *69
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &70 2018-01-31 15:52:12.886876000 Z
+      zone: *2
+      time: *70
+  - &104
+    title_multiloc:
+      en: Organise a crafts market in the city centre
+    body_multiloc:
+      en: "<p>The shops that we can find in the city centre are quite common and can
+        be found in other places in the city (shopping centre, etc.). So to make the
+        city centre shopping experience more original, we should organise a crafts
+        market there, gather all kind of stands such as food, accessories, etc. in
+        order to promote local crafts and have the inhabitants discover new ways of
+        doing their shopping. </p>"
+    publication_status: published
+    project_ref: *40
+    author_ref: *43
+    location_description: Anneessens Premetro Station, Brussels, Belgium
+    published_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &71 2017-11-27 12:52:45.195830000 Z
+      zone: *2
+      time: *71
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &72 2017-11-27 12:52:45.196037000 Z
+      zone: *2
+      time: *72
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &73 2018-01-31 15:49:12.084871000 Z
+      zone: *2
+      time: *73
+  - &105
+    title_multiloc:
+      en: Have internet trainings for elderly people
+    body_multiloc:
+      en: "<p>It would be interesting to have a small course given to elderly people
+        on how to use the internet. For instance, there could be a training that shows
+        how to send emails, read the news online, and other basic online activities.
+        I think if we want our city to be more modern and digital, we should make
+        sure beforehand that all the citizens can understand these tools properly.</p>\n"
+    publication_status: published
+    project_ref: *38
+    author_ref: *67
+    location_description: 
+    published_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &74 2017-11-27 12:52:45.277238000 Z
+      zone: *2
+      time: *74
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &75 2017-11-27 12:52:45.277403000 Z
+      zone: *2
+      time: *75
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &76 2018-01-31 15:50:24.124409000 Z
+      zone: *2
+      time: *76
+  - &106
+    title_multiloc:
+      en: Marks for bikers at the bridge over the water
+    body_multiloc:
+      en: "<p>A few bikers have been hurt on this spot because it's unclear how you
+        should bike on this junction.</p>"
+    publication_status: published
+    project_ref: *42
+    author_ref: *77
+    location_description: Yser, Brussels, Belgium
+    published_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &78 2018-01-31 14:21:43.673270000 Z
+      zone: *2
+      time: *78
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &79 2018-01-31 14:21:43.673424000 Z
+      zone: *2
+      time: *79
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &80 2018-02-04 17:43:31.689241000 Z
+      zone: *2
+      time: *80
+  - &107
+    title_multiloc:
+      en: Beer museum
+    body_multiloc:
+      en: "<p>We should be proud about all the +1.000 different beers that our city
+        produces. Why don't we introduce tourists visiting our city, to our city's
+        pride? The beer museum could be located in the Bourse building.</p>"
+    publication_status: published
+    project_ref: *40
+    author_ref: *77
+    location_description: Bourse, Brussels, Belgium
+    published_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &81 2018-01-31 14:10:15.873331000 Z
+      zone: *2
+      time: *81
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &82 2018-01-31 14:10:15.873491000 Z
+      zone: *2
+      time: *82
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &83 2018-01-31 14:11:30.294683000 Z
+      zone: *2
+      time: *83
+  - &108
+    title_multiloc:
+      en: Install a little coffee corner in the park
+    body_multiloc:
+      en: "<p>What the park currently misses is an area where people can meet, get
+        some tea or coffee, and sit doing together. It would attract more people of
+        all ages because it could become a meeting point. There should be a little
+        cart, truck or corner selling hot beverages and maybe some snacks, with a
+        few chairs and tables. It would really attract more people to the park and
+        it would be a nice place to take a break during long park walks at the weekend.
+        Maybe one of the local coffee shops in town could run this place?</p>\n"
+    publication_status: published
+    project_ref: *41
+    author_ref: *47
+    location_description: 
+    published_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &84 2017-11-27 12:52:45.249283000 Z
+      zone: *2
+      time: *84
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &85 2017-11-27 12:52:45.249456000 Z
+      zone: *2
+      time: *85
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &86 2017-11-27 12:52:45.249456000 Z
+      zone: *2
+      time: *86
+  - &109
+    title_multiloc:
+      en: Bikeway on the roundabout close to the movie theater
+    body_multiloc:
+      en: "<p>This roundabout is very dangerous for bikers.</p>"
+    publication_status: published
+    project_ref: *42
+    author_ref: *77
+    location_description: Naamsepoort, Ixelles, Belgium
+    published_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &87 2018-01-31 14:19:16.441329000 Z
+      zone: *2
+      time: *87
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &88 2018-01-31 14:19:16.441503000 Z
+      zone: *2
+      time: *88
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &89 2018-02-04 17:42:34.672529000 Z
+      zone: *2
+      time: *89
+  - &110
+    title_multiloc:
+      en: Biking highway from the airport to the city center
+    body_multiloc:
+      en: "<p>Why not go easily to the airport by bike? With these low-cost airlines
+        less and less passengers are taking much luggage on the plane. So the bike
+        becomes possible transport to get to the airport.</p>"
+    publication_status: published
+    project_ref: *42
+    author_ref: *77
+    location_description: Brussels Airport, Leopoldlaan, Zaventem, Belgium
+    published_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &90 2018-01-31 14:24:20.040886000 Z
+      zone: *2
+      time: *90
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &91 2018-01-31 14:24:20.041070000 Z
+      zone: *2
+      time: *91
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &92 2018-02-05 10:47:03.043403000 Z
+      zone: *2
+      time: *92
+  - &111
+    title_multiloc:
+      en: More bicycle racks
+    body_multiloc:
+      en: "<p>A lot of people are aware of how beneficial for the environment it is
+        to use their bikes to go around town. However, most of them are discouraged
+        because they can't park them because the racks are often full. It would be
+        nice to install more bicycle racks at the strategic points where they are
+        always busy: city centre, in front of the cinema, etc.</p>\n"
+    publication_status: published
+    project_ref: *37
+    author_ref: *67
+    location_description: 
+    published_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &93 2017-11-27 12:52:45.132742000 Z
+      zone: *2
+      time: *93
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &94 2017-11-27 12:52:45.133095000 Z
+      zone: *2
+      time: *94
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &95 2018-01-31 15:45:43.327197000 Z
+      zone: *2
+      time: *95
+  idea_image:
+  - idea_ref: *96
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/idea_image/image/f06f6644-0d20-419f-ba5d-137ec407b0cb/emailing1.jpg
+    ordering: 
+  - idea_ref: *97
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/idea_image/image/cf76a5f2-900a-4ad3-982c-d2bb97e15d11/organic-waste.jpg
+    ordering: 
+  - idea_ref: *98
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/idea_image/image/b74d4aa8-8439-4975-8409-e3b3ecc4beb8/dans-un-premier-temps-il-s-agira-de-rappels-a-l-ordre_2245789_667x333.jpg
+    ordering: 
+  - idea_ref: *99
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/idea_image/image/6516f733-4136-4302-bcb5-0a0fa44ebdfd/zzzfirstfloor.jpg
+    ordering: 
+  - idea_ref: *100
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/idea_image/image/7547ef00-41f0-4c4f-95fe-0967afcffd16/empty_city_road_by_spooky_dream-d4avkt3.jpg
+    ordering: 
+  - idea_ref: *101
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/idea_image/image/1d533b6a-653d-4a47-9d9e-f53fd81c11d1/Electric-Shuttle-Bus-SHT-T14-.jpg
+    ordering: 
+  - idea_ref: *102
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/idea_image/image/dfba7e32-3d23-483a-8d6a-d23c904c8a13/night-bus.jpg
+    ordering: 
+  - idea_ref: *103
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/idea_image/image/bf2811a3-c739-423f-baeb-8eb6bbb5cc8a/1200px-NEA_recycling_bins_2C_Orchard_Road.JPG
+    ordering: 
+  - idea_ref: *104
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/idea_image/image/b908735c-ad4f-4e5c-bf2e-14bdebc5abc2/norwich-market-city-centre-street-scene-in-the-evening-norfolk-england-D0KXFH.jpg
+    ordering: 
+  - idea_ref: *105
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/idea_image/image/aa5d20f6-6f68-49ad-811c-8124f19abe45/hqdefault.jpg
+    ordering: 
+  - idea_ref: *106
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/idea_image/image/49ec9bd3-970c-4516-a200-777c577a697e/image.jpeg
+    ordering: 0
+  - idea_ref: *107
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/idea_image/image/431368ab-85bc-406d-a729-5c7b7df09968/image.jpeg
+    ordering: 0
+  - idea_ref: *108
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/idea_image/image/11e7acae-f0dc-4bbf-b608-a6a312a7fe71/4015932979_f495f4e5cf_z.jpg
+    ordering: 
+  - idea_ref: *109
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/idea_image/image/af170792-ad44-4963-80b3-31c98a3c1783/image.jpeg
+    ordering: 0
+  - idea_ref: *110
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/idea_image/image/10ee7e01-f04e-42ff-bf8d-eddda711c11d/image.jpeg
+    ordering: 0
+  - idea_ref: *111
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/fa9e14f4-b97e-47f2-af03-355630d9e0b9/idea_image/image/f9df1f96-a0df-4053-aeb2-154e424ce61b/5.5.2_bike_garden_setting_4057_05152012.jpg
+    ordering: 
+  comment:
+  - body_multiloc:
+      en: "<p>Great idea, we stand behind you!</p>\n"
+    author_ref: *67
+    idea_ref: *111
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &112 2017-11-27 12:53:02.963648000 Z
+      zone: *2
+      time: *112
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &113 2017-11-27 12:53:02.963648000 Z
+      zone: *2
+      time: *113
+  - body_multiloc:
+      en: "<p>I&#39;ve never seen you riding a bicycle...</p>\n"
+    author_ref: *43
+    idea_ref: *111
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &114 2017-11-27 12:53:02.979650000 Z
+      zone: *2
+      time: *114
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &115 2017-11-27 12:53:02.979650000 Z
+      zone: *2
+      time: *115
+  - body_multiloc:
+      en: "<p>Why stop there? The city also lacks bike stables. There should at least
+        be one near the river.</p>\n"
+    author_ref: *51
+    idea_ref: *111
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &116 2017-11-27 12:53:02.998214000 Z
+      zone: *2
+      time: *116
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &117 2017-11-27 12:53:02.998214000 Z
+      zone: *2
+      time: *117
+  - body_multiloc:
+      en: "<p>What about those who work on weekends? There should be at least public
+        transportation available...</p>\n"
+    author_ref: *43
+    idea_ref: *100
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &118 2017-11-27 12:53:03.014155000 Z
+      zone: *2
+      time: *118
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &119 2017-11-27 12:53:03.014155000 Z
+      zone: *2
+      time: *119
+  - body_multiloc:
+      en: "<p>It would also be nice for the kids, it gives them more independance
+        and us, parents, don&#39;t have to go pick them up at midnight after the cinema!</p>\n"
+    author_ref: *67
+    idea_ref: *102
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &120 2017-11-27 12:53:03.027637000 Z
+      zone: *2
+      time: *120
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &121 2017-11-27 12:53:03.027637000 Z
+      zone: *2
+      time: *121
+  - body_multiloc:
+      en: "<p>It would be a great way to promote local creators and make the city
+        centre experience more fun I agree!</p>\n"
+    author_ref: *47
+    idea_ref: *104
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &122 2017-11-27 12:53:03.040383000 Z
+      zone: *2
+      time: *122
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &123 2017-11-27 12:53:03.040383000 Z
+      zone: *2
+      time: *123
+  - body_multiloc:
+      en: "<p>Cool idea but it would have to be a a kind of event that is really engaging,
+        like a family day? Something people are excited to go to</p>\n"
+    author_ref: *47
+    idea_ref: *103
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &124 2017-11-27 12:53:03.059561000 Z
+      zone: *2
+      time: *124
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &125 2017-11-27 12:53:03.059561000 Z
+      zone: *2
+      time: *125
+  - body_multiloc:
+      en: "<p>It&#39;s a very good idea. I have started to do this myself in my garden.
+        But I know that not everybody has this possibility or they don&#39;t even
+        know it&#39;s possible. It would be a good thing to raise awareness around
+        this also.</p>\n"
+    author_ref: *67
+    idea_ref: *97
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &126 2017-11-27 12:53:03.074130000 Z
+      zone: *2
+      time: *126
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &127 2017-11-27 12:53:03.074130000 Z
+      zone: *2
+      time: *127
+  - body_multiloc:
+      en: "<p>I really like the idea. I am not a dog owner myself but as a parent,
+        it is sometimes scary to see dogs running around kids that are playing on
+        the playground. Having this space for the dogs to run freely would also be
+        a peace of mind for us!</p>\n"
+    author_ref: *43
+    idea_ref: *98
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &128 2017-11-27 12:53:03.087955000 Z
+      zone: *2
+      time: *128
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &129 2017-11-27 12:53:03.087955000 Z
+      zone: *2
+      time: *129
+  - body_multiloc:
+      en: Great idea! This would also be a good solution for people working at the
+        airport.
+    author_ref: *130
+    idea_ref: *110
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &131 2018-01-31 14:28:33.380962000 Z
+      zone: *2
+      time: *131
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &132 2018-01-31 14:28:33.380962000 Z
+      zone: *2
+      time: *132
+  votes:
+  - mode: up
+    user_ref: *47
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &133 2017-11-27 12:52:45.316344000 Z
+      zone: *2
+      time: *133
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &134 2017-11-27 12:52:45.316344000 Z
+      zone: *2
+      time: *134
+    votable_ref: *111
+  - mode: up
+    user_ref: *43
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &135 2017-11-27 12:52:45.326140000 Z
+      zone: *2
+      time: *135
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &136 2017-11-27 12:52:45.326140000 Z
+      zone: *2
+      time: *136
+    votable_ref: *111
+  - mode: up
+    user_ref: *51
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &137 2017-11-27 12:52:45.333757000 Z
+      zone: *2
+      time: *137
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &138 2017-11-27 12:52:45.333757000 Z
+      zone: *2
+      time: *138
+    votable_ref: *111
+  - mode: up
+    user_ref: *67
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &139 2017-11-27 12:52:45.341088000 Z
+      zone: *2
+      time: *139
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &140 2017-11-27 12:52:45.341088000 Z
+      zone: *2
+      time: *140
+    votable_ref: *111
+  - mode: up
+    user_ref: *47
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &141 2017-11-27 12:52:45.348564000 Z
+      zone: *2
+      time: *141
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &142 2017-11-27 12:52:45.348564000 Z
+      zone: *2
+      time: *142
+    votable_ref: *100
+  - mode: up
+    user_ref: *67
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &143 2017-11-27 12:52:45.356720000 Z
+      zone: *2
+      time: *143
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &144 2017-11-27 12:52:45.356720000 Z
+      zone: *2
+      time: *144
+    votable_ref: *100
+  - mode: up
+    user_ref: *43
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &145 2017-11-27 12:52:45.367615000 Z
+      zone: *2
+      time: *145
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &146 2017-11-27 12:52:45.367615000 Z
+      zone: *2
+      time: *146
+    votable_ref: *100
+  - mode: up
+    user_ref: *51
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &147 2017-11-27 12:52:45.376863000 Z
+      zone: *2
+      time: *147
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &148 2017-11-27 12:52:45.376863000 Z
+      zone: *2
+      time: *148
+    votable_ref: *100
+  - mode: up
+    user_ref: *51
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &149 2017-11-27 12:52:45.383103000 Z
+      zone: *2
+      time: *149
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &150 2017-11-27 12:52:45.383103000 Z
+      zone: *2
+      time: *150
+    votable_ref: *102
+  - mode: up
+    user_ref: *67
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &151 2017-11-27 12:52:45.393597000 Z
+      zone: *2
+      time: *151
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &152 2017-11-27 12:52:45.393597000 Z
+      zone: *2
+      time: *152
+    votable_ref: *102
+  - mode: up
+    user_ref: *43
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &153 2017-11-27 12:52:45.401115000 Z
+      zone: *2
+      time: *153
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &154 2017-11-27 12:52:45.401115000 Z
+      zone: *2
+      time: *154
+    votable_ref: *102
+  - mode: down
+    user_ref: *47
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &155 2017-11-27 12:52:45.407779000 Z
+      zone: *2
+      time: *155
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &156 2017-11-27 12:52:45.407779000 Z
+      zone: *2
+      time: *156
+    votable_ref: *102
+  - mode: up
+    user_ref: *67
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &157 2017-11-27 12:52:45.415224000 Z
+      zone: *2
+      time: *157
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &158 2017-11-27 12:52:45.415224000 Z
+      zone: *2
+      time: *158
+    votable_ref: *101
+  - mode: up
+    user_ref: *43
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &159 2017-11-27 12:52:45.422929000 Z
+      zone: *2
+      time: *159
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &160 2017-11-27 12:52:45.422929000 Z
+      zone: *2
+      time: *160
+    votable_ref: *101
+  - mode: up
+    user_ref: *47
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &161 2017-11-27 12:52:45.430196000 Z
+      zone: *2
+      time: *161
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &162 2017-11-27 12:52:45.430196000 Z
+      zone: *2
+      time: *162
+    votable_ref: *101
+  - mode: up
+    user_ref: *51
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &163 2017-11-27 12:52:45.437529000 Z
+      zone: *2
+      time: *163
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &164 2017-11-27 12:52:45.437529000 Z
+      zone: *2
+      time: *164
+    votable_ref: *101
+  - mode: up
+    user_ref: *51
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &165 2017-11-27 12:52:45.444907000 Z
+      zone: *2
+      time: *165
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &166 2017-11-27 12:52:45.444907000 Z
+      zone: *2
+      time: *166
+    votable_ref: *104
+  - mode: up
+    user_ref: *43
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &167 2017-11-27 12:52:45.459348000 Z
+      zone: *2
+      time: *167
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &168 2017-11-27 12:52:45.459348000 Z
+      zone: *2
+      time: *168
+    votable_ref: *104
+  - mode: up
+    user_ref: *47
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &169 2017-11-27 12:52:45.469230000 Z
+      zone: *2
+      time: *169
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &170 2017-11-27 12:52:45.469230000 Z
+      zone: *2
+      time: *170
+    votable_ref: *104
+  - mode: up
+    user_ref: *67
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &171 2017-11-27 12:52:45.478661000 Z
+      zone: *2
+      time: *171
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &172 2017-11-27 12:52:45.478661000 Z
+      zone: *2
+      time: *172
+    votable_ref: *104
+  - mode: up
+    user_ref: *67
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &173 2017-11-27 12:52:45.487800000 Z
+      zone: *2
+      time: *173
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &174 2017-11-27 12:52:45.487800000 Z
+      zone: *2
+      time: *174
+    votable_ref: *103
+  - mode: up
+    user_ref: *51
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &175 2017-11-27 12:52:45.495736000 Z
+      zone: *2
+      time: *175
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &176 2017-11-27 12:52:45.495736000 Z
+      zone: *2
+      time: *176
+    votable_ref: *103
+  - mode: up
+    user_ref: *43
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &177 2017-11-27 12:52:45.503247000 Z
+      zone: *2
+      time: *177
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &178 2017-11-27 12:52:45.503247000 Z
+      zone: *2
+      time: *178
+    votable_ref: *103
+  - mode: down
+    user_ref: *47
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &179 2017-11-27 12:52:45.510876000 Z
+      zone: *2
+      time: *179
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &180 2017-11-27 12:52:45.510876000 Z
+      zone: *2
+      time: *180
+    votable_ref: *103
+  - mode: up
+    user_ref: *47
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &181 2017-11-27 12:52:45.519770000 Z
+      zone: *2
+      time: *181
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &182 2017-11-27 12:52:45.519770000 Z
+      zone: *2
+      time: *182
+    votable_ref: *97
+  - mode: up
+    user_ref: *67
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &183 2017-11-27 12:52:45.528733000 Z
+      zone: *2
+      time: *183
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &184 2017-11-27 12:52:45.528733000 Z
+      zone: *2
+      time: *184
+    votable_ref: *97
+  - mode: down
+    user_ref: *51
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &185 2017-11-27 12:52:45.538025000 Z
+      zone: *2
+      time: *185
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &186 2017-11-27 12:52:45.538025000 Z
+      zone: *2
+      time: *186
+    votable_ref: *97
+  - mode: up
+    user_ref: *51
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &187 2017-11-27 12:52:45.547466000 Z
+      zone: *2
+      time: *187
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &188 2017-11-27 12:52:45.547466000 Z
+      zone: *2
+      time: *188
+    votable_ref: *98
+  - mode: up
+    user_ref: *47
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &189 2017-11-27 12:52:45.554924000 Z
+      zone: *2
+      time: *189
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &190 2017-11-27 12:52:45.554924000 Z
+      zone: *2
+      time: *190
+    votable_ref: *98
+  - mode: down
+    user_ref: *67
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &191 2017-11-27 12:52:45.562864000 Z
+      zone: *2
+      time: *191
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &192 2017-11-27 12:52:45.562864000 Z
+      zone: *2
+      time: *192
+    votable_ref: *98
+  - mode: up
+    user_ref: *67
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &193 2017-11-27 12:52:45.570720000 Z
+      zone: *2
+      time: *193
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &194 2017-11-27 12:52:45.570720000 Z
+      zone: *2
+      time: *194
+    votable_ref: *108
+  - mode: up
+    user_ref: *47
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &195 2017-11-27 12:52:45.579862000 Z
+      zone: *2
+      time: *195
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &196 2017-11-27 12:52:45.579862000 Z
+      zone: *2
+      time: *196
+    votable_ref: *108
+  - mode: up
+    user_ref: *43
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &197 2017-11-27 12:52:45.587602000 Z
+      zone: *2
+      time: *197
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &198 2017-11-27 12:52:45.587602000 Z
+      zone: *2
+      time: *198
+    votable_ref: *108
+  - mode: up
+    user_ref: *51
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &199 2017-11-27 12:52:45.596307000 Z
+      zone: *2
+      time: *199
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &200 2017-11-27 12:52:45.596307000 Z
+      zone: *2
+      time: *200
+    votable_ref: *108
+  - mode: up
+    user_ref: *47
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &201 2017-11-27 12:52:45.604060000 Z
+      zone: *2
+      time: *201
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &202 2017-11-27 12:52:45.604060000 Z
+      zone: *2
+      time: *202
+    votable_ref: *99
+  - mode: up
+    user_ref: *67
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &203 2017-11-27 12:52:45.611561000 Z
+      zone: *2
+      time: *203
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &204 2017-11-27 12:52:45.611561000 Z
+      zone: *2
+      time: *204
+    votable_ref: *99
+  - mode: down
+    user_ref: *43
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &205 2017-11-27 12:52:45.619034000 Z
+      zone: *2
+      time: *205
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &206 2017-11-27 12:52:45.619034000 Z
+      zone: *2
+      time: *206
+    votable_ref: *99
+  - mode: down
+    user_ref: *51
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &207 2017-11-27 12:52:45.629173000 Z
+      zone: *2
+      time: *207
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &208 2017-11-27 12:52:45.629173000 Z
+      zone: *2
+      time: *208
+    votable_ref: *99
+  - mode: up
+    user_ref: *47
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &209 2017-11-27 12:52:45.636740000 Z
+      zone: *2
+      time: *209
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &210 2017-11-27 12:52:45.636740000 Z
+      zone: *2
+      time: *210
+    votable_ref: *105
+  - mode: up
+    user_ref: *51
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &211 2017-11-27 12:52:45.644402000 Z
+      zone: *2
+      time: *211
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &212 2017-11-27 12:52:45.644402000 Z
+      zone: *2
+      time: *212
+    votable_ref: *105
+  - mode: up
+    user_ref: *67
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &213 2017-11-27 12:52:45.651730000 Z
+      zone: *2
+      time: *213
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &214 2017-11-27 12:52:45.651730000 Z
+      zone: *2
+      time: *214
+    votable_ref: *105
+  - mode: up
+    user_ref: *43
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &215 2017-11-27 12:52:45.659913000 Z
+      zone: *2
+      time: *215
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &216 2017-11-27 12:52:45.659913000 Z
+      zone: *2
+      time: *216
+    votable_ref: *105
+  - mode: up
+    user_ref: *51
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &217 2017-11-27 12:52:45.667583000 Z
+      zone: *2
+      time: *217
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &218 2017-11-27 12:52:45.667583000 Z
+      zone: *2
+      time: *218
+    votable_ref: *96
+  - mode: down
+    user_ref: *43
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &219 2017-11-27 12:52:45.675534000 Z
+      zone: *2
+      time: *219
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &220 2017-11-27 12:52:45.675534000 Z
+      zone: *2
+      time: *220
+    votable_ref: *96
+  - mode: up
+    user_ref: *77
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &221 2017-11-27 14:56:30.061758000 Z
+      zone: *2
+      time: *221
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &222 2017-11-27 14:56:30.061758000 Z
+      zone: *2
+      time: *222
+    votable_ref: *105
+  - mode: up
+    user_ref: *77
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &223 2017-11-29 10:46:07.758108000 Z
+      zone: *2
+      time: *223
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &224 2017-11-29 10:46:07.758108000 Z
+      zone: *2
+      time: *224
+    votable_ref: *111
+  - mode: up
+    user_ref: *77
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &225 2018-01-31 14:10:15.894197000 Z
+      zone: *2
+      time: *225
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &226 2018-01-31 14:10:15.894197000 Z
+      zone: *2
+      time: *226
+    votable_ref: *107
+  - mode: up
+    user_ref: *77
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &227 2018-01-31 14:24:20.059182000 Z
+      zone: *2
+      time: *227
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &228 2018-01-31 14:24:20.059182000 Z
+      zone: *2
+      time: *228
+    votable_ref: *110
+  - mode: down
+    user_ref: *130
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &229 2018-01-31 14:27:45.915545000 Z
+      zone: *2
+      time: *229
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &230 2018-01-31 14:27:45.915545000 Z
+      zone: *2
+      time: *230
+    votable_ref: *101
+  - mode: down
+    user_ref: *130
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &231 2018-01-31 14:27:50.737971000 Z
+      zone: *2
+      time: *231
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &232 2018-01-31 14:27:50.737971000 Z
+      zone: *2
+      time: *232
+    votable_ref: *107
+  - mode: up
+    user_ref: *130
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &233 2018-01-31 14:28:05.112455000 Z
+      zone: *2
+      time: *233
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &234 2018-01-31 14:28:05.112455000 Z
+      zone: *2
+      time: *234
+    votable_ref: *102
+  - mode: up
+    user_ref: *77
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &235 2018-01-31 16:06:04.768346000 Z
+      zone: *2
+      time: *235
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &236 2018-01-31 16:06:04.768346000 Z
+      zone: *2
+      time: *236
+    votable_ref: *104
+  - mode: down
+    user_ref: *77
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &237 2018-02-04 17:43:39.825600000 Z
+      zone: *2
+      time: *237
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &238 2018-02-04 17:43:39.825600000 Z
+      zone: *2
+      time: *238
+    votable_ref: *109
+  - mode: up
+    user_ref: *77
+    votable_type: Idea
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &239 2018-02-04 18:03:57.976484000 Z
+      zone: *2
+      time: *239
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &240 2018-02-04 18:03:57.976484000 Z
+      zone: *2
+      time: *240
+    votable_ref: *101
+  phase:
+  - title_multiloc:
+      en: Collecting ideas
+    description_multiloc:
+      en: "<p>Share your ideas to fight global warming within the city, this is your
+        time to brainstorm and discuss around your ideas!</p>\n"
+    project_ref: *37
+    start_at: 2016-12-31
+    end_at: 2017-03-03
+    participation_method: ideation
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &241 2017-11-27 12:53:03.179250000 Z
+      zone: *2
+      time: *241
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &242 2017-11-27 12:53:03.179250000 Z
+      zone: *2
+      time: *242
+  - title_multiloc:
+      en: Vote period
+    description_multiloc:
+      en: "<p>This period is dedicated to assessing which are the most popular proposals:
+        like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
+    project_ref: *37
+    start_at: 2017-03-03
+    end_at: 2017-03-29
+    participation_method: ideation
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &243 2017-11-27 12:53:03.189148000 Z
+      zone: *2
+      time: *243
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &244 2017-11-27 12:53:03.189148000 Z
+      zone: *2
+      time: *244
+  - title_multiloc:
+      en: Presentation of most succesful ideas at the townhall
+    description_multiloc:
+      en: "<p>The ideas who gathered the most positive votes will be added to the
+        city agenda and presented at the townhall by the citizen who launched it</p>\n"
+    project_ref: *37
+    start_at: 2017-03-29
+    end_at: 2017-07-22
+    participation_method: ideation
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &245 2017-11-27 12:53:03.196700000 Z
+      zone: *2
+      time: *245
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &246 2017-11-27 12:53:03.196700000 Z
+      zone: *2
+      time: *246
+  - title_multiloc:
+      en: Implementation of ideas
+    description_multiloc:
+      en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
+    project_ref: *37
+    start_at: 2017-07-22
+    end_at: 2017-08-02
+    participation_method: ideation
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &247 2017-11-27 12:53:03.205272000 Z
+      zone: *2
+      time: *247
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &248 2017-11-27 12:53:03.205272000 Z
+      zone: *2
+      time: *248
+  - title_multiloc:
+      en: Collecting ideas
+    description_multiloc:
+      en: "<p>Share your ideas to improve the way we manage garbage, this is your
+        time to brainstorm and discuss around your ideas!</p>\n"
+    project_ref: *36
+    start_at: 2018-03-17
+    end_at: 2018-03-26
+    participation_method: ideation
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &249 2017-11-27 12:53:03.253384000 Z
+      zone: *2
+      time: *249
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &250 2017-11-27 12:53:03.253384000 Z
+      zone: *2
+      time: *250
+  - title_multiloc:
+      en: Vote period
+    description_multiloc:
+      en: "<p>This period is dedicated to assessing which are the most popular proposals:
+        like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
+    project_ref: *36
+    start_at: 2018-03-26
+    end_at: 2018-05-13
+    participation_method: ideation
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &251 2017-11-27 12:53:03.262279000 Z
+      zone: *2
+      time: *251
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &252 2017-11-27 12:53:03.262279000 Z
+      zone: *2
+      time: *252
+  - title_multiloc:
+      en: Presentation of most succesful ideas at the townhall
+    description_multiloc:
+      en: "<p>The ideas who gathered the most positive votes will be added to the
+        city agenda and presented at the townhall by the citizen who launched it</p>\n"
+    project_ref: *36
+    start_at: 2018-05-13
+    end_at: 2018-05-16
+    participation_method: ideation
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &253 2017-11-27 12:53:03.272348000 Z
+      zone: *2
+      time: *253
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &254 2017-11-27 12:53:03.272348000 Z
+      zone: *2
+      time: *254
+  - title_multiloc:
+      en: Implementation of ideas
+    description_multiloc:
+      en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
+    project_ref: *36
+    start_at: 2018-05-16
+    end_at: 2018-08-22
+    participation_method: ideation
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &255 2017-11-27 12:53:03.284241000 Z
+      zone: *2
+      time: *255
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &256 2017-11-27 12:53:03.284241000 Z
+      zone: *2
+      time: *256
+  - title_multiloc:
+      en: Collecting ideas
+    description_multiloc:
+      en: "<p>Share your ideas on how the Abbey Park should be reorganised, this is
+        your time to brainstorm and discuss around your ideas!</p>\n"
+    project_ref: *41
+    start_at: 2018-08-22
+    end_at: 2018-12-19
+    participation_method: ideation
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &257 2017-11-27 12:53:03.291973000 Z
+      zone: *2
+      time: *257
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &258 2017-11-27 12:53:03.291973000 Z
+      zone: *2
+      time: *258
+  - title_multiloc:
+      en: Vote period
+    description_multiloc:
+      en: "<p>This period is dedicated to assessing which are the most popular proposals:
+        like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
+    project_ref: *41
+    start_at: 2018-12-19
+    end_at: 2019-02-05
+    participation_method: ideation
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &259 2017-11-27 12:53:03.305534000 Z
+      zone: *2
+      time: *259
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &260 2017-11-27 12:53:03.305534000 Z
+      zone: *2
+      time: *260
+  - title_multiloc:
+      en: Analysis period
+    description_multiloc:
+      en: "<p>The most voted ideas will be examined and included (or not) into the
+        mapping of the new park</p>\n"
+    project_ref: *41
+    start_at: 2019-02-05
+    end_at: 2019-02-07
+    participation_method: ideation
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &261 2017-11-27 12:53:03.312715000 Z
+      zone: *2
+      time: *261
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &262 2017-11-27 12:53:03.312715000 Z
+      zone: *2
+      time: *262
+  - title_multiloc:
+      en: Start of the reshaping of the park
+    description_multiloc:
+      en: "<p>The selected ideas will be put into place and implemented in the new
+        park</p>\n"
+    project_ref: *41
+    start_at: 2019-02-07
+    end_at: 2019-03-14
+    participation_method: ideation
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &263 2017-11-27 12:53:03.320610000 Z
+      zone: *2
+      time: *263
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &264 2017-11-27 12:53:03.320610000 Z
+      zone: *2
+      time: *264
+  - title_multiloc:
+      en: Collecting ideas
+    description_multiloc:
+      en: "<p>Share your ideas to make the city more modern and digital, this is your
+        time to brainstorm and discuss around your ideas!</p>\n"
+    project_ref: *38
+    start_at: 2019-03-14
+    end_at: 2019-03-27
+    participation_method: ideation
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &265 2017-11-27 12:53:03.329254000 Z
+      zone: *2
+      time: *265
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &266 2017-11-27 12:53:03.329254000 Z
+      zone: *2
+      time: *266
+  - title_multiloc:
+      en: Vote period
+    description_multiloc:
+      en: "<p>This period is dedicated to assessing which are the most popular proposals:
+        like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
+    project_ref: *38
+    start_at: 2019-03-27
+    end_at: 2019-07-16
+    participation_method: ideation
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &267 2017-11-27 12:53:03.337235000 Z
+      zone: *2
+      time: *267
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &268 2017-11-27 12:53:03.337235000 Z
+      zone: *2
+      time: *268
+  - title_multiloc:
+      en: Presentation of most succesful ideas at the townhall
+    description_multiloc:
+      en: "<p>The ideas who gathered the most positive votes will be added to the
+        city agenda and presented at the townhall by the citizen who launched it</p>\n"
+    project_ref: *38
+    start_at: 2019-07-16
+    end_at: 2019-08-12
+    participation_method: ideation
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &269 2017-11-27 12:53:03.345388000 Z
+      zone: *2
+      time: *269
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &270 2017-11-27 12:53:03.345388000 Z
+      zone: *2
+      time: *270
+  - title_multiloc:
+      en: Implementation of ideas
+    description_multiloc:
+      en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
+    project_ref: *38
+    start_at: 2019-08-12
+    end_at: 2019-10-10
+    participation_method: ideation
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &271 2017-11-27 12:53:03.353537000 Z
+      zone: *2
+      time: *271
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &272 2017-11-27 12:53:03.353537000 Z
+      zone: *2
+      time: *272
+  - title_multiloc:
+      en: Implementation of ideas
+    description_multiloc:
+      en: "<p></p>"
+    project_ref: *40
+    start_at: 2018-01-11
+    end_at: 2018-03-17
+    participation_method: ideation
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &273 2017-11-27 12:53:03.242113000 Z
+      zone: *2
+      time: *273
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &274 2018-01-31 14:10:41.181455000 Z
+      zone: *2
+      time: *274
+  - title_multiloc:
+      en: Voting
+    description_multiloc: {}
+    project_ref: *42
+    start_at: 2018-03-01
+    end_at: 2018-04-30
+    participation_method: ideation
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &275 2018-01-31 14:15:24.469919000 Z
+      zone: *2
+      time: *275
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &276 2018-01-31 14:15:24.469919000 Z
+      zone: *2
+      time: *276
+  - title_multiloc:
+      en: 10 best spots are chosen
+    description_multiloc: {}
+    project_ref: *42
+    start_at: 2018-05-01
+    end_at: 2018-07-31
+    participation_method: information
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &277 2018-01-31 14:16:12.282957000 Z
+      zone: *2
+      time: *277
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &278 2018-01-31 14:16:12.282957000 Z
+      zone: *2
+      time: *278
+  - title_multiloc:
+      en: Pinning locations on the map
+    description_multiloc:
+      en: |-
+        <p>Aimed at encouraging walking and rolling, the city is building different asphalt bikeways and multi-use pathways. Let us know where these are most needed by pinning the spots on a map!</p>
+        <p></p>
+        <p>Commenting on the locations is possible. Voting will be enabled in the next phase.</p>
+    project_ref: *42
+    start_at: 2018-01-01
+    end_at: 2018-02-28
+    participation_method: ideation
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &279 2018-01-31 14:15:06.259676000 Z
+      zone: *2
+      time: *279
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &280 2018-01-31 16:03:41.344627000 Z
+      zone: *2
+      time: *280
+  - title_multiloc:
+      en: Collecting ideas
+    description_multiloc:
+      en: "<p></p>"
+    project_ref: *40
+    start_at: 2017-08-02
+    end_at: 2017-08-26
+    participation_method: ideation
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &281 2017-11-27 12:53:03.212566000 Z
+      zone: *2
+      time: *281
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &282 2018-02-04 17:52:15.502670000 Z
+      zone: *2
+      time: *282
+  - title_multiloc:
+      en: Voting period
+    description_multiloc:
+      en: "<p></p>"
+    project_ref: *40
+    start_at: 2017-08-26
+    end_at: 2017-11-26
+    participation_method: ideation
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &283 2017-11-27 12:53:03.226071000 Z
+      zone: *2
+      time: *283
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &284 2018-02-04 17:52:19.772436000 Z
+      zone: *2
+      time: *284
+  - title_multiloc:
+      en: Presentation urban plan
+    description_multiloc:
+      en: |-
+        <p><strong>Description </strong></p>
+        <p>The 560,000 square foot City Centre South scheme – which will deliver a complex the size of Solihull’s Touchwood development including shops, restaurants and cinema – was granted outline planning consent in 2012. The site, bordered by Upper Precinct, Greyfriars Road and Warwick Road, connects to Bull Yard, where it picks up the new boulevard connection to the railway station. The new water park and health spa will also be located adjacent to City Centre South – providing a leisure and recreation anchor alongside the new shops and restaurants planned for the site.</p>
+        <p><strong>Value </strong></p>
+        <p>In excess of £200million</p>
+        <p><strong>Timescale </strong></p>
+        <p>Target date of 2020</p>
+        <p><strong>Jobs </strong></p>
+        <p>2,000</p>
+    project_ref: *40
+    start_at: 2017-11-26
+    end_at: 2018-01-11
+    participation_method: information
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &285 2017-11-27 12:53:03.232980000 Z
+      zone: *2
+      time: *285
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &286 2018-02-04 17:51:28.444426000 Z
+      zone: *2
+      time: *286
+  event:
+  - title_multiloc:
+      en: Pub Crawl
+    description_multiloc:
+      en: |
+        <p>Grab your bicycle and go on a pub crawl with us. Subscription fee is 15€, all drinks are free!</p>
+
+        <p>No animals allowed.</p>
+    project_ref: *37
+    start_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &287 2017-10-22 00:00:00.000000000 Z
+      zone: *2
+      time: *287
+    end_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &288 2017-10-23 00:00:00.000000000 Z
+      zone: *2
+      time: *288
+    location_multiloc:
+      en: Many different pubs, we start from the central place.
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &289 2017-11-27 12:53:03.138109000 Z
+      zone: *2
+      time: *289
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &290 2017-11-27 12:53:03.138109000 Z
+      zone: *2
+      time: *290
+  - title_multiloc:
+      en: Walking tour through the harbour
+    description_multiloc:
+      en: "<p>What better way to imagine the future of the harbour than go through
+        it together and share our ideas in a spacial manner? It is also a nice way
+        to meet all the nature enthusiasts who are involved in this project!</p>\n"
+    project_ref: *41
+    start_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &291 2017-04-23 00:00:00.000000000 Z
+      zone: *2
+      time: *291
+    end_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &292 2017-04-24 00:00:00.000000000 Z
+      zone: *2
+      time: *292
+    location_multiloc:
+      en: Entrance of Abbey Park
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &293 2017-11-27 12:53:03.156035000 Z
+      zone: *2
+      time: *293
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &294 2017-12-04 08:33:01.673446000 Z
+      zone: *2
+      time: *294
+  - title_multiloc:
+      en: Brainstorming workshop
+    description_multiloc:
+      en: "<p>Let's all meet together at the coffee shop on the main square to discuss
+        all the ideas we have to make the city centre more lively.</p>\n"
+    project_ref: *40
+    start_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &295 2017-07-23 00:00:00.000000000 Z
+      zone: *2
+      time: *295
+    end_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &296 2017-07-24 00:00:00.000000000 Z
+      zone: *2
+      time: *296
+    location_multiloc:
+      en: The coffee shop on the main square
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &297 2017-11-27 12:53:03.148308000 Z
+      zone: *2
+      time: *297
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &298 2018-01-31 14:06:24.011128000 Z
+      zone: *2
+      time: *298
+  - title_multiloc:
+      en: Town hall meeting to present urban plans
+    description_multiloc:
+      en: "<p>During this town hall meeting, we will present you our plans for the
+        future city center, based on your input.</p>"
+    project_ref: *40
+    start_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &299 2018-03-04 17:55:00.000000000 Z
+      zone: *2
+      time: *299
+    end_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &300 2018-03-04 19:05:00.000000000 Z
+      zone: *2
+      time: *300
+    location_multiloc:
+      en: Town hall
+    created_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &301 2018-01-31 14:05:40.289972000 Z
+      zone: *2
+      time: *301
+    updated_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &302 2018-02-04 17:56:09.715075000 Z
+      zone: *2
+      time: *302
