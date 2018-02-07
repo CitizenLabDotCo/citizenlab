@@ -46,7 +46,7 @@ const BackgroundColor = styled.div`
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
-  padding-bottom: 80px;
+  padding-bottom: 100px;
 `;
 
 const FiltersArea = styled.div`
@@ -123,8 +123,10 @@ class IdeasIndex extends React.PureComponent<Props, State> {
   }
 
   componentDidMount() {
+    const areas$ = this.areas$;
+
     this.subscriptions = [
-      this.areas$.subscribe((areas) => {
+      areas$.subscribe((areas) => {
         this.setState((state) => ({
           filter: {
             ...state.filter,

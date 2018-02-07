@@ -49,7 +49,7 @@ import { media, color } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const Container = styled.div`
-  background: #fff;
+  background: #fafafa;
 `;
 
 const IdeaContainer = styled.div`

@@ -15,7 +15,7 @@ const Container = styled.div`
   padding-left: 10px;
   padding-right: 10px;
   background: #fff;
-  border-top: solid 1px #e0e0e0;
+  border-top: solid 1px #ccc;
   display: flex;
   align-items: stretch;
   justify-content: space-evenly;

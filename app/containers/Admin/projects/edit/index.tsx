@@ -1,6 +1,7 @@
 // Libraries
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
+import { isString } from 'lodash';
 
 // Services
 import { projectBySlugStream, IProjectData } from 'services/projects';
@@ -56,12 +57,11 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
 
     this.subscriptions = [
       this.slug$
-        .filter(slug => slug !== null)
         .distinctUntilChanged()
-        .switchMap((slug: string) => projectBySlugStream(slug).observable)
+        .switchMap(slug => isString(slug) ? projectBySlugStream(slug).observable : Rx.Observable.of(null))
         .subscribe((project) => {
           this.setState({
-            project: project.data,
+            project: (project ? project.data : null),
             loaded: true
           });
         })

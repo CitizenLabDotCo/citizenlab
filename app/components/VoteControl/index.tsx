@@ -50,6 +50,7 @@ const VoteIconContainer: any = styled.div`
   justify-content: center;
   border-radius: 50%;
   border: solid 1px #e0e0e0;
+  background: #fff;
   transition: all 100ms ease-out;
 
   ${(props: any) => props.size === 'small' ? css`
@@ -182,7 +183,6 @@ type State = {
 };
 
 export default class VoteControl extends React.PureComponent<Props, State> {
-  
   voting$: Rx.BehaviorSubject<'up' | 'down' | null>;
   subscriptions: Rx.Subscription[];
   upvoteElement: HTMLDivElement | null;

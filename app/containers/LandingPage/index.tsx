@@ -93,7 +93,7 @@ const HeaderImageBackground: any = styled.div`
 
 const HeaderImageOverlay = styled.div`
   background: #000;
-  opacity: 0.55;
+  opacity: 0.5;
   position: absolute;
   top: 0;
   bottom: 0;

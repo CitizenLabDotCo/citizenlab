@@ -27,7 +27,14 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 import { Locale } from 'typings';
 
-const CommentContainer = styled.div``;
+const CommentContainer = styled.div`
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  /* padding-top: 0px; */
+  border-top: solid 1px #e4e4e4;
+`;
 
 const StyledTextArea = styled(MentionsTextArea)`
   .textareaWrapper__highlighter,
@@ -35,10 +42,10 @@ const StyledTextArea = styled(MentionsTextArea)`
     font-size: 17px !important;
     line-height: 25px !important;
     font-weight: 300 !important;
-    background: #fafafa !important;
+    background: #fff !important;
     box-shadow: none !important;
-    border-top-left-radius: 0px !important;
-    border-top-right-radius: 0px !important;
+    border: none !important;
+    padding: 12px 19px !important;
   }
 `;
 

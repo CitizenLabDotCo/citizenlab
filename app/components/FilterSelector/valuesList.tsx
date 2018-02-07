@@ -16,7 +16,7 @@ const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
 const Overlay = styled.div`
   min-width: 180px;
-  border-radius: 4px;
+  border-radius: 5px;
   background-color: #fff;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
   border: solid 1px #e0e0e0;

@@ -25,13 +25,13 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const foregroundTimeout = 350;
+const foregroundTimeout = 400;
 const foregroundEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
 const contentTimeout = 700;
 const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
-const contentDelay = 450;
-const contentTranslate = '25px';
+const contentDelay = 500;
+const contentTranslate = '20px';
 
 const ModalBackground = styled.div`
   width: 100%;
@@ -82,7 +82,7 @@ const TopBar: any = styled.div`
   left: 0;
   right: 0;
   background: #fff;
-  border-bottom: solid 1px #e0e0e0;
+  border-bottom: solid 1px #ccc;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -177,6 +177,7 @@ const CloseButton = styled.div`
   right: 33px;
   border-radius: 50%;
   border: solid 1px #ccc;
+  background: #fff;
   transition: border-color 100ms ease-out;
 
   &:hover {
