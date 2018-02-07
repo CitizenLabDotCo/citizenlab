@@ -31,7 +31,7 @@ const Loading = styled.div`
   width: 100%;
   height: 300px;
   background: #fff;
-  border-radius: 6px;
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;

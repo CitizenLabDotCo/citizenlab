@@ -41,7 +41,7 @@ const Container: any = styled.div`
   transition: all 150ms ease-out;
 
   ${(props: any) => props.scrolled && css`
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.13);
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
   `}
 
   * {

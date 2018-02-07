@@ -25,7 +25,6 @@ import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 import { Locale } from 'typings';
 
-
 const ProjectImageContainer =  styled.div`
   flex-basis: 150px;
   flex-shrink: 0;
@@ -35,7 +34,7 @@ const ProjectImageContainer =  styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
+  border-radius: 5px;
   margin-right: 10px;
   overflow: hidden;
   position: relative;
@@ -88,20 +87,20 @@ const Container = styled(Link)`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-radius: 6px;
+  border-radius: 5px;
   padding: 15px;
   margin-bottom: 25px;
   background: #fff;
   cursor: pointer;
   background: #fff;
-  border-radius: 6px;
+  border-radius: 5px;
   overflow: hidden;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
   transition: transform 250ms ease-out;
   will-change: transform;
 
   &.hasBorder {
-    box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.12);
   }
 
   &:hover {

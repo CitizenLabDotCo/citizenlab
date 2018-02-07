@@ -122,10 +122,10 @@ const IdeaContainer = styled(Link)`
   margin-bottom: 24px;
   cursor: pointer;
   position: relative;
-  border-radius: 6px;
+  border-radius: 5px;
   overflow: hidden;
   background: #fff;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
   transition: transform 250ms ease-out;
   will-change: transform;
 
