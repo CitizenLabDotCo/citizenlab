@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :area do
     title_multiloc {{
       "en" => "Westside",

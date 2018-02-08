@@ -126,7 +126,7 @@ de:
             sind winzige Dateien, die auf Ihren Computer heruntergeladen werden, um Ihr Benutzererlebnis zu verbessern. Diese Seite beschreibt, welche Informationen sie sammeln, wie wir sie verwenden und warum wir diese Cookies manchmal speichern müssen.
             Wir teilen Ihnen auch mit, wie Sie verhindern können, dass diese Cookies gespeichert werden.
             Dies kann jedoch dazu führen, dass bestimmte Elemente der Funktionalität der Website herabgestuft oder unterbrochen werden.</p>
-            <p>Weitere allgemeine Informationen zu Cookies finden Sie im Wikipedia-Artikel über HTTP-Cookies.<a href="https://en.wikipedia.org/wiki/HTTP_cookie">
+            <p>Weitere allgemeine Informationen zu Cookies finden Sie im Wikipedia-Artikel über HTTP-Cookies.
             <h3>Wie wir Cookies verwenden</h3>
             <p>Wir verwenden Cookies aus einer Vielzahl von Gründen, die im Folgenden näher erläutert werden. Unglücklicherweise gibt es in den meisten Fällen keine branchenüblichen Optionen, um Cookies zu deaktivieren, ohne dass die Funktionalität und Funktionen, die sie dieser Website hinzufügen komplett entfernt werden. 
             Falls Sie sich nicht sicher sind, ob Sie Cookies ausschalten sollten oder nicht, empfehlen wir sie für den Fall das Sie einen durch Cookies ermöglichten Service benutzen, diese aktiviert zu lassen.</p>
@@ -286,3 +286,6 @@ de:
       
     infopage_title: Impressum
     infopage_body: "<h2>Impressum</h2>\n<p>CitizenLab<br />\nBeCentral, Cantersteen 12<br />\n1000 Brüssel, Belgien\n</p>\n<p>\nTelefon: +49 698 991 4888<br />\nE-Mail: <a href=\"mailto:thomas.balbach@citizenlab.de\">thomas.balbach@citizenlab.de</a>\n</p>\n<p>\nUSt.IdNr: BE0638901287<br />\n</p>\n<p>\nVertreten durch:<br />\nWietse Van Ransbeeck<br />\n</p>\n<p>\nEingetragen im Handelsregister:<br />\nRegister-Nr: HRB 638901287<br />\nGericht: Rechtbank van koophandel Brussel\n</p>\n<p>\nVerantwortlich für den Inhalt gem. § 55 Abs. 2 RStV:<br />\nWietse Van Ransbeeck<br />\nRue St.Bernard 153<br />\n1060 Saint-Gilles<br />\n</p>\n<p>\nBerufshaftpflichtversicherung:<br />\nAXA<br />\nZakenkantoor Bogaerts, <br />\nBoechtstraat 15, 1<br />\n860 Meise<br />\nGeltungsbereich: Europaweit\n</p>\n<p>\nBildrechte:<br />\n<a href=\"http://chrisbattaglia.info/;\" targe=\"_blank\">http://chrisbattaglia.info/;</a> Chris Battaglia<br />\n</p>\n<p>Wir nehmen nicht an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teil.</p>\n<p><a href=\"https://www.123recht.net/impressumsgenerator.asp\">Impressum erstellt mit dem Impressumsgenerator von 123recht.net - Rechtsberatung online.</a></p>"
+  projects:
+    open_idea_project_title: Offene Ideen-Box
+    open_idea_project_description: Die Ideen hier sind nicht mit einem Projekt verknüpft.

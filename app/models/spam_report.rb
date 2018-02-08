@@ -3,6 +3,7 @@ class SpamReport < ApplicationRecord
 
   belongs_to :spam_reportable, polymorphic: true
   belongs_to :user
+  has_many :notifications, foreign_key: :spam_report_id, dependent: :nullify
 
   validates :spam_reportable, presence: true
   validates :reason_code, inclusion: { in: REASON_CODES }, presence: true

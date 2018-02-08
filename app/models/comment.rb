@@ -1,5 +1,5 @@
 class Comment < ApplicationRecord
-  acts_as_nested_set
+  acts_as_nested_set dependent: :destroy
   belongs_to :author, class_name: 'User'
   belongs_to :idea
   has_many :votes, as: :votable, dependent: :destroy
@@ -7,6 +7,7 @@ class Comment < ApplicationRecord
   has_many :downvotes, -> { where(mode: "down") }, as: :votable, class_name: 'Vote'
   has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
   has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
+  has_many :notifications, foreign_key: :comment_id, dependent: :nullify
   
   counter_culture :idea
 
@@ -18,5 +19,9 @@ class Comment < ApplicationRecord
 
   def set_author_name
     self.author_name = self.author.display_name if self.author
+  end
+
+  def project
+    self.idea&.project
   end
 end
