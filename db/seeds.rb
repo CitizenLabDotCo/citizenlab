@@ -15,6 +15,28 @@ CarrierWave.configure do |config|
   config.enable_processing = false
 end
 
+# Possible values: large, medium, small, generic
+SEED_SIZE = ENV.fetch("SEED_SIZE")
+
+num_users = 10
+num_projects = 4
+num_ideas = 5
+case SEED_SIZE
+  when 'small'
+    num_users = 5
+    num_projects = 1
+    num_ideas = 4
+  when 'medium'
+    num_users = 20
+    num_projects = 5
+    num_ideas = 35
+  when 'large'
+    num_users = 50
+    num_projects = 20
+    num_ideas = 100
+end
+
+
 def create_comment_tree(idea, parent, depth=0)
   amount = rand(5/(depth+1))
   amount.times do |i|
@@ -25,7 +47,8 @@ def create_comment_tree(idea, parent, depth=0)
       },
       author: User.offset(rand(User.count)).first,
       idea: idea,
-      parent: parent
+      parent: parent,
+      created_at: Faker::Date.between((parent ? parent.created_at : idea.published_at), Time.now)
     })
     MakeNotificationsJob.perform_now(Activity.new(item: c, action: 'created', user: c.author, acted_at: Time.now))
     create_comment_tree(idea, c, depth+1)
@@ -40,6 +63,11 @@ def create_for_some_locales
   translations
 end
 
+def generate_avatar
+  i = rand(10)
+  Rails.root.join("spec/fixtures/avatar#{i}.#{(i > 1) ? 'jpg' : 'png'}").open
+end
+
 if Apartment::Tenant.current == 'public' || 'example_org'
   t = Tenant.create({
     name: 'local',
@@ -51,7 +79,7 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         allowed: true,
         enabled: true,
         locales: ['en','nl'],
-        organization_type: 'medium_city',
+        organization_type: %w(small medium large).include?(SEED_SIZE) ? "#{SEED_SIZE}_city" : "generic",
         organization_name: {
           "en" => Faker::Address.city,
           "nl" => Faker::Address.city,
@@ -94,6 +122,16 @@ if Apartment::Tenant.current == 'public' || 'example_org'
       private_projects: {
         enabled: true,
         allowed: true
+      },
+      maps: {
+        enabled: true,
+        allowed: true,
+        tile_provider: "https://free.tilehosting.com/styles/positron/style.json?key=DIZiuhfkZEQ5EgsaTk6D",
+        map_center: {
+          lat: "50.8503",
+          long: "4.3517"
+        },
+        zoom_level: 12
       }
     }
   })
@@ -108,7 +146,7 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         allowed: true,
         enabled: true,
         locales: ['en','nl'],
-        organization_type: 'medium_city',
+        organization_type: 'small_city',
         organization_name: {
           "en" => Faker::Address.city,
           "nl" => Faker::Address.city,
@@ -187,18 +225,22 @@ if Apartment::Tenant.current == 'localhost'
     education: 7
   })
 
-
-  7.times do 
+  num_users.times do 
+    first_name = Faker::Name.first_name
+    last_name = Faker::Name.last_name
+    has_last_name = (rand(5) > 0)
     User.create({
-      first_name: Faker::Name.first_name,
-      last_name: Faker::Name.last_name,
+      first_name: first_name,
+      last_name: has_last_name ? last_name : nil,
+      cl1_migrated: !has_last_name,
       email: Faker::Internet.email,
       password: 'testtest',
       locale: ['en','nl'][rand(1)],
       roles: rand(10) == 0 ? [{type: 'admin'}] : [],
       gender: %w(male female unspecified)[rand(4)],
       birthyear: rand(2) === 0 ? nil : 1927 + rand(90),
-      education: rand(1) === 0 ? nil : rand(9)
+      education: rand(1) === 0 ? nil : rand(9),
+      avatar: nil # (rand(3) > 0) ? generate_avatar : nil
     })
   end
 
@@ -228,11 +270,11 @@ if Apartment::Tenant.current == 'localhost'
     }
   })
 
-  4.times do
-    project = Project.create({
+  num_projects.times do
+    project = Project.new({
       title_multiloc: {
-        "en": "Renewing Westbrook parc",
-        "nl": "Westbroek park vernieuwen"
+        "en": Faker::Lorem.sentence,
+        "nl": Faker::Lorem.sentence
       },
       description_multiloc: {
         "en" => "<p>Let's renew the parc at the city border and make it an enjoyable place for young and old.</p>",
@@ -242,17 +284,35 @@ if Apartment::Tenant.current == 'localhost'
         "en" => "Let's renew the parc at the city border.",
         "nl" => "Laten we het park op de grend van de stad vernieuwen."
       },
-      header_bg: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open
+      header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
+      visible_to: %w(admins groups public public public)[rand(5)],
+      presentation_mode: ['card', 'card', 'card', 'map', 'map'][rand(5)],
+      process_type: ['timeline','timeline','timeline','timeline','continuous'][rand(5)],
+      publication_status: ['published','published','published','published','published','draft','archived'][rand(7)]
     })
+
+    if project.continuous?
+      project.update({
+        posting_enabled: rand(4) != 0,
+        voting_enabled: rand(3) != 0,
+        commenting_enabled: rand(4) != 0,
+        voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
+        voting_limited_max: rand(15),
+      })
+    end
+    project.save
 
     [0,1,2,3,4][rand(5)].times do |i|
       project.project_images.create(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
     end
+    if rand(5) == 0
+      project.project_files.create(file: Rails.root.join("spec/fixtures/afvalkalender.pdf").open)
+    end
 
-    start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
-    rand(5).times do
+    start_at = Faker::Date.between(6.months.ago, 1.month.from_now)
+    rand(8).times do
       start_at += 1.days
-      project.phases.create({
+      phase = project.phases.create({
         title_multiloc: {
           "en": Faker::Lorem.sentence,
           "nl": Faker::Lorem.sentence
@@ -262,9 +322,20 @@ if Apartment::Tenant.current == 'localhost'
           "nl" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
         },
         start_at: start_at,
-        end_at: (start_at += rand(120).days)
+        end_at: (start_at += rand(150).days),
+        participation_method: (rand(5) == 0) ? 'information' : 'ideation'
       })
+      if phase.ideation?
+        phase.update({
+          posting_enabled: rand(4) != 0,
+          voting_enabled: rand(3) != 0,
+          commenting_enabled: rand(4) != 0,
+          voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
+          voting_limited_max: rand(15),
+        })
+      end
     end
+
     rand(5).times do
       start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
       project.events.create({
@@ -279,9 +350,11 @@ if Apartment::Tenant.current == 'localhost'
 
 
   MAP_CENTER = [50.8503, 4.3517]
-  MAP_OFFSET = 0.5
+  MAP_OFFSET = 0.1
 
-  30.times do 
+  num_ideas.times do 
+    created_at = Faker::Date.between(1.year.ago, Time.now)
+    project = Project.offset(rand(Project.count)).first
     idea = Idea.create({
       title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
       body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
@@ -289,8 +362,11 @@ if Apartment::Tenant.current == 'localhost'
       topics: rand(3).times.map{rand(Topic.count)}.uniq.map{|offset| Topic.offset(offset).first },
       areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
       author: User.offset(rand(User.count)).first,
-      project: Project.offset(rand(Project.count)).first,
+      project: project,
+      phases: (project && project.timeline? && project.phases.sample(rand(project.phases.count)).select(&:ideation?)) || [],
       publication_status: 'published',
+      published_at: Faker::Date.between(created_at, Time.now),
+      created_at: created_at,
       location_point: rand(2) == 0 ? nil : "POINT(#{MAP_CENTER[0]+((rand()*2-1)*MAP_OFFSET)} #{MAP_CENTER[1]+((rand()*2-1)*MAP_OFFSET)})",
       location_description: rand(2) == 0 ? nil : Faker::Address.street_address
     })
@@ -298,13 +374,16 @@ if Apartment::Tenant.current == 'localhost'
     [0,0,1,1,2][rand(5)].times do |i|
       idea.idea_images.create(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
     end
+    if rand(5) == 0
+      idea.idea_files.create(file: Rails.root.join("spec/fixtures/afvalkalender.pdf").open)
+    end
 
     User.all.each do |u|
       r = rand(5)
       if r == 0
-        Vote.create(votable: idea, user: u, mode: "down")
+        Vote.create(votable: idea, user: u, mode: "down", created_at: Faker::Date.between(idea.published_at, Time.now))
       elsif 0 < r && r < 3
-        Vote.create(votable: idea, user: u, mode: "up")
+        Vote.create(votable: idea, user: u, mode: "up", created_at: Faker::Date.between(idea.published_at, Time.now))
       end
     end
 

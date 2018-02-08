@@ -2,6 +2,10 @@ class SideFxIdeaService
 
   include SideFxHelper
 
+  def before_create idea, user
+    set_phase(idea)
+  end
+
   def after_create idea, user
     if idea.published?
       add_autovote idea
@@ -36,9 +40,21 @@ class SideFxIdeaService
   end
 
 
+  private
+
+  def set_phase idea
+    if idea.project&.timeline? && idea.phases.empty?
+      current_phase = TimelineService.new.current_phase(idea.project)
+      idea.phases = [current_phase] if current_phase&.ideation?
+    end
+  end
+
   def add_autovote idea
-    idea.votes.create!(mode: 'up', user: idea.author)
-    idea.reload
+    pcs = ParticipationContextService.new
+    if !pcs.voting_disabled_reason(idea)
+      idea.votes.create!(mode: 'up', user: idea.author)
+      idea.reload
+    end
   end
 
   def first_user_idea? idea, user
@@ -47,7 +63,9 @@ class SideFxIdeaService
 
   def log_activity_jobs_after_published idea, user
     LogActivityJob.set(wait: 1.minutes).perform_later(idea, 'published', user, idea.created_at.to_i)
-    LogActivityJob.set(wait: 1.minutes).perform_later(idea, 'first published by user', user, idea.created_at.to_i)
+    if first_user_idea?(idea, user)
+      LogActivityJob.set(wait: 1.minutes).perform_later(idea, 'first published by user', user, idea.created_at.to_i)
+    end
   end
 
 end

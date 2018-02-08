@@ -1,4 +1,5 @@
 class Project < ApplicationRecord
+  include ParticipationContext
 
   DESCRIPTION_PREVIEW_JSON_SCHEMA = ERB.new(File.read(Rails.root.join('config', 'schemas', 'project_description_preview.json_schema.erb'))).result(binding)
 
@@ -10,16 +11,20 @@ class Project < ApplicationRecord
   has_many :ideas, dependent: :destroy
   has_and_belongs_to_many :topics
   has_and_belongs_to_many :areas
-  has_many :phases, dependent: :destroy
-  has_many :events, dependent: :destroy
+  has_many :phases, -> { order(:start_at) }, dependent: :destroy
+  has_many :events, -> { order(:start_at) }, dependent: :destroy
   has_many :pages, dependent: :destroy
   has_many :project_images, -> { order(:ordering) }, dependent: :destroy
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :groups_projects, dependent: :destroy
   has_many :groups, through: :groups_projects
+  has_many :notifications, foreign_key: :project_id, dependent: :nullify
 
   VISIBLE_TOS = %w(public groups admins)
+  PROCESS_TYPES = %w(timeline continuous)
   PRESENTATION_MODES = %w(card map)
+  INTERNAL_ROLES = %w(open_idea_box)
+  PUBLICATION_STATUSES = %w(draft published archived)
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :description_multiloc, multiloc: {presence: false}
@@ -33,13 +38,18 @@ class Project < ApplicationRecord
       errors_as_objects: true
     }
   }
+  validates :process_type, presence: true, inclusion: {in: PROCESS_TYPES}
   validates :presentation_mode, presence: true, inclusion: {in: PRESENTATION_MODES}
+  validates :internal_role, inclusion: {in: INTERNAL_ROLES, allow_nil: true}
+  validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
 
+  before_validation :set_process_type, on: :create
   before_validation :generate_slug, on: :create
   before_validation :set_visible_to, on: :create
   before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_presentation_mode, on: :create
+  before_validation :set_publication_status, on: :create
 
 
   scope :with_all_areas, (Proc.new do |area_ids|
@@ -56,6 +66,14 @@ class Project < ApplicationRecord
     .group(:id).having("COUNT(*) = ?", uniq_topic_ids.size)
   end)
 
+  def continuous?
+    self.process_type == 'continuous'
+  end
+
+  def timeline?
+    self.process_type == 'timeline'
+  end
+  
   private
 
   def generate_slug
@@ -65,7 +83,7 @@ class Project < ApplicationRecord
 
   def sanitize_description_multiloc
     self.description_multiloc = self.description_multiloc.map do |locale, description|
-      [locale, @@sanitizer.sanitize(description, tags: %w(p b u i em strong a h1 h2 h3 h4 h5 h6 ul li ol), attributes: %w(href type style))]
+      [locale, @@sanitizer.sanitize(description, tags: %w(p b u i em strong a h1 h2 h3 h4 h5 h6 ul li ol), attributes: %w(href type style target))]
     end.to_h
   end
 
@@ -79,7 +97,16 @@ class Project < ApplicationRecord
     self.visible_to ||= 'public'
   end
 
+  def set_process_type
+    self.process_type ||= 'timeline'
+  end
+
   def set_presentation_mode
     self.presentation_mode ||= 'card'
   end
+
+  def set_publication_status
+    self.publication_status ||= 'published'
+  end
+
 end

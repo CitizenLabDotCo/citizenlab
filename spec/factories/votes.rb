@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :vote do
     association :votable, factory: :idea
     mode "up"

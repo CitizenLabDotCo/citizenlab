@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :idea do
     title_multiloc {{
       "en" => "Plant more trees",
@@ -9,7 +9,7 @@ FactoryGirl.define do
       "nl" => "<p>De luchtkwaliteit zou er gevoelig op vooruitgaan!</p>"
     }}
     publication_status "published"
-    project
+    association :project, factory: :continuous_project
     author
     idea_status
     factory :idea_with_topics do
