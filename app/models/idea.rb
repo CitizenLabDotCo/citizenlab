@@ -32,7 +32,6 @@ class Idea < ApplicationRecord
   has_many :idea_images, -> { order(:ordering) }, dependent: :destroy
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy
   has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
-  has_one :idea_trending_info
 
   PUBLICATION_STATUSES = %w(draft published closed spam)
   validates :project, presence: true, unless: :draft?
@@ -87,6 +86,17 @@ class Idea < ApplicationRecord
   scope :order_new, -> (direction=:desc) {order(published_at: direction)}
   scope :order_popular, -> (direction=:desc) {order("(upvotes_count - downvotes_count) #{direction}")}
   # based on https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d
+  scope :order_trending, (Proc.new do |direction|
+    direction ||= :desc
+    order(<<~EOS
+      (
+        power(GREATEST(((upvotes_count - downvotes_count) + 10), 0.5), 0.3)
+        /
+        ABS(EXTRACT(epoch FROM (NOW() - published_at))/3600)
+      ) #{direction}
+    EOS
+    )
+  end)
 
   scope :order_status, -> (direction=:desc) {
     joins(:idea_status)
@@ -107,12 +117,14 @@ class Idea < ApplicationRecord
     self.publication_status == 'published'
   end
 
-  def score 
+  def score
     upvotes_count - downvotes_count
   end
 
-  
-  private
+  def trending_score
+    [score+10,0.5].max**0.3 /
+    ((Time.now - published_at).abs / 3600)
+  end
 
   def generate_slug
     if !self.slug
