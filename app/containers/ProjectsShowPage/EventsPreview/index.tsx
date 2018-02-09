@@ -23,7 +23,7 @@ import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
-  background: #f9f9f9;
+  background: #fff;
   padding-top: 80px;
   padding-bottom: 90px;
 `;

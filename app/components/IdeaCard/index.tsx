@@ -6,7 +6,7 @@ import { has } from 'lodash';
 import { Link, browserHistory } from 'react-router';
 
 // components
-import Icon from 'components/UI/Icon';
+// import Icon from 'components/UI/Icon';
 import Unauthenticated from 'components/IdeaCard/Unauthenticated';
 import BottomBounceUp from './BottomBounceUp';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
@@ -32,27 +32,27 @@ import messages from './messages';
 
 // styles
 import styled from 'styled-components';
-import { color } from 'utils/styleUtils';
+// import { color } from 'utils/styleUtils';
 
 // typings
 import { IModalInfo } from 'containers/App';
 import { Locale } from 'typings';
 
-const IdeaImageContainer: any = styled.div`
-  width: 100%;
-  height: 135px;
-  overflow: hidden;
-  position: relative;
-`;
+// const IdeaImageContainer: any = styled.div`
+//   width: 100%;
+//   height: 135px;
+//   overflow: hidden;
+//   position: relative;
+// `;
 
-const IdeaImage: any = styled.img`
-  width: 100%;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;
+// const IdeaImage: any = styled.img`
+//   width: 100%;
+//   position: absolute;
+//   top: 0;
+//   bottom: 0;
+//   left: 0;
+//   right: 0;
+// `;
 
 const IdeaImageOverlay = styled.div`
   position: absolute;
@@ -65,19 +65,21 @@ const IdeaImageOverlay = styled.div`
   transition: opacity 250ms ease-out;
 `;
 
-const IdeaImagePlaceholder = styled.div`
-  width: 100%;
-  height: 135px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: ${color('placeholderBg')};
-`;
+// const IdeaImagePlaceholder = styled.div`
+//   width: 100%;
+//   height: 135px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   background: ${color('placeholderBg')};
+//   background: #fff;
+// `;
 
-const IdeaImagePlaceholderIcon = styled(Icon) `
-  height: 50px;
-  fill: #fff;
-`;
+// const IdeaImagePlaceholderIcon = styled(Icon) `
+//   height: 50px;
+//   fill: #fff;
+//   fill: ${color('placeholderBg')};
+// `;
 
 const IdeaContent = styled.div`
   flex-grow: 1;
@@ -125,7 +127,7 @@ const IdeaContainer = styled(Link)`
   border-radius: 5px;
   overflow: hidden;
   background: #fff;
-  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  border: solid 1px #eaeaea;
   transition: transform 250ms ease-out;
   will-change: transform;
 
@@ -254,10 +256,10 @@ class IdeaCard extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { idea, ideaImage, ideaAuthor, locale, showFooter, loading } = this.state;
+    const { idea/*, ideaImage*/, ideaAuthor, locale, showFooter, loading } = this.state;
 
     if (!loading && idea && locale) {
-      const ideaImageUrl = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
+      // const ideaImageUrl = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
       const createdAt = <FormattedRelative value={idea.data.attributes.created_at} />;
       const hasVotingDescriptor = has(idea, 'data.relationships.action_descriptor.data.voting');
       const votingDescriptor = (hasVotingDescriptor ? idea.data.relationships.action_descriptor.data.voting : null);
@@ -267,6 +269,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
       return (
         <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.data.attributes.slug}`} className={className}>
           <IdeaContainerInner>
+            {/*
             {ideaImageUrl && 
               <IdeaImageContainer>
                 <IdeaImage src={ideaImageUrl} />
@@ -279,6 +282,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
                 <IdeaImagePlaceholderIcon name="idea" />
               </IdeaImagePlaceholder>
             }
+            */}
 
             <IdeaContent>
               <IdeaTitle>

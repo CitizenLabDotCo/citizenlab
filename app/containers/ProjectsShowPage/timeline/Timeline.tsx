@@ -39,8 +39,8 @@ const Container = styled.div`
   margin-right: auto;
   margin-top: -35px;
   border-radius: 5px;
-  /* box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.12); */
-  box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.12);
+  background: #fff;
+  border: solid 1px #e4e4e4;
 
   * {
     user-select: none;
@@ -49,15 +49,11 @@ const Container = styled.div`
 
 const Header = styled.div`
   width: 100%;
-  min-height: 60px;
+  min-height: 70px;
   padding: 10px 30px;
   display: flex;
   justify-content: space-between;
-  /* border: solid 1px #e4e4e4; */
-  border-bottom: none;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  background: #f6f6f6;
+  border-bottom: solid 1px #e6e6e6;
 `;
 
 const HeaderSection = styled.div`
@@ -195,7 +191,6 @@ const Phases = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  /* border: solid 1px #e4e4e4; */
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   background: #fff;
@@ -318,6 +313,7 @@ type State = {
   phases: IPhases | null;
   currentPhaseId: string | null;
   selectedPhaseId: string | null;
+  loaded: boolean;
 };
 
 export default class Timeline extends React.PureComponent<Props, State> {
@@ -332,7 +328,8 @@ export default class Timeline extends React.PureComponent<Props, State> {
       currentTenant: null,
       phases: null,
       currentPhaseId: null,
-      selectedPhaseId: null
+      selectedPhaseId: null,
+      loaded: false
     };
     this.subscriptions = [];
     this.projectId$ = new Rx.BehaviorSubject(null);
@@ -350,7 +347,9 @@ export default class Timeline extends React.PureComponent<Props, State> {
           const locale$ = localeStream().observable;
           const currentTenant$ = currentTenantStream().observable;
           const phases$ = phasesStream(projectId).observable;
-          const selectedPhaseId$ = this.selectedPhaseId$.distinctUntilChanged();
+          const selectedPhaseId$ = this.selectedPhaseId$.distinctUntilChanged().do((selectedPhaseId) => {
+            this.props.onPhaseSelected(selectedPhaseId);
+          });
 
           return Rx.Observable.combineLatest(
             locale$,
@@ -358,59 +357,56 @@ export default class Timeline extends React.PureComponent<Props, State> {
             phases$,
             selectedPhaseId$
           );
-        }).map(([locale, currentTenant, phases, selectedPhaseId]) => {
-          let currentPhaseId = this.state.currentPhaseId;
-
-          if (!currentPhaseId) {
-            if (phases && phases.data.length > 0) {
-              const currentTenantTimezone = currentTenant.data.attributes.settings.core.timezone;
-              const currentTenantTodayMoment = moment().tz(currentTenantTimezone);
-
-              phases.data.forEach((phase) => {
-                const startMoment = moment(phase.attributes.start_at, 'YYYY-MM-DD');
-                const endMoment = moment(phase.attributes.end_at, 'YYYY-MM-DD');
-                const isCurrentPhase = currentTenantTodayMoment.isBetween(startMoment, endMoment, 'days', '[]');
-
-                if (isCurrentPhase && (!currentPhaseId || (currentPhaseId && phase.id !== currentPhaseId))) {
-                  currentPhaseId = phase.id;
-                }
-              });
-            }
-          }
-
-          if (!selectedPhaseId) {
-            if (currentPhaseId) {
-              this.selectedPhaseId$.next(currentPhaseId);
-            } else if (phases && phases.data.length > 0) {
-              const lastPhase = phases.data[phases.data.length - 1];
-      
-              if (lastPhase && moment().diff(moment(lastPhase.attributes.start_at, 'YYYY-MM-DD'), 'days') <= 0) {
-                this.selectedPhaseId$.next(phases.data[0].id);
-              } else if (lastPhase && moment().diff(moment(lastPhase.attributes.start_at, 'YYYY-MM-DD'), 'days') > 0) {
-                this.selectedPhaseId$.next(lastPhase.id);
-              }
-            }
-          }
-
-          return { locale, currentTenant, phases, selectedPhaseId, currentPhaseId };
-        }).subscribe(({ locale, currentTenant, phases, selectedPhaseId, currentPhaseId }) => {
-          this.props.onPhaseSelected(selectedPhaseId);
-          this.setState({ locale, currentTenant, phases, selectedPhaseId, currentPhaseId });
+        }).subscribe(([locale, currentTenant, phases, selectedPhaseId]) => {
+          this.setState({ locale, currentTenant, phases, selectedPhaseId, loaded: true });
         })
     ];
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(_prevProps: Props, _prevState: State) {
     this.projectId$.next(this.props.projectId);
+
+    const { currentTenant, phases, selectedPhaseId, currentPhaseId, loaded } = this.state;
+
+    if (loaded && currentTenant && !currentPhaseId) {
+      if (phases && phases.data.length > 0) {
+        const currentTenantTimezone = currentTenant.data.attributes.settings.core.timezone;
+        const currentTenantTodayMoment = moment().tz(currentTenantTimezone);
+
+        phases.data.forEach((phase) => {
+          const startMoment = moment(phase.attributes.start_at, 'YYYY-MM-DD');
+          const endMoment = moment(phase.attributes.end_at, 'YYYY-MM-DD');
+          const isCurrentPhase = currentTenantTodayMoment.isBetween(startMoment, endMoment, 'days', '[]');
+
+          if (isCurrentPhase && (!currentPhaseId || (currentPhaseId && phase.id !== currentPhaseId))) {
+            this.setState({ currentPhaseId: phase.id });
+          }
+        });
+      }
+    }
+
+    if (loaded && !selectedPhaseId) {
+      if (currentPhaseId) {
+        this.selectedPhaseId$.next(currentPhaseId);
+      } else if (phases && phases.data.length > 0) {
+        const lastPhase = phases.data[phases.data.length - 1];
+
+        if (lastPhase && moment().diff(moment(lastPhase.attributes.start_at, 'YYYY-MM-DD'), 'days') <= 0) {
+          this.selectedPhaseId$.next(phases.data[0].id);
+        } else if (lastPhase && moment().diff(moment(lastPhase.attributes.start_at, 'YYYY-MM-DD'), 'days') > 0) {
+          this.selectedPhaseId$.next(lastPhase.id);
+        }
+      }
+    }
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  setSelectedPhaseId = (_phaseId: string) => (event: React.FormEvent<MouseEvent>) => {
+  setSelectedPhaseId = (phaseId: string) => (event: React.FormEvent<MouseEvent>) => {
     event.preventDefault();
-    // this.selectedPhaseId$.next(phaseId);
+    this.selectedPhaseId$.next(phaseId);
   }
 
   render() {
@@ -550,4 +546,3 @@ export default class Timeline extends React.PureComponent<Props, State> {
     return null;
   }
 }
-

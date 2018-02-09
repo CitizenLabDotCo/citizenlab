@@ -1,11 +1,20 @@
 import * as React from 'react';
 import { browserHistory } from 'react-router';
-
 import { postingButtonState } from 'services/ideaPostingRules';
-
 import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
+import styled from 'styled-components';
+
+const StyledButton = styled(Button)`
+  .Button {
+    border: solid 2px #eaeaea !important;
+
+    &:hover {
+      border-color: ${(props) => props.theme.colorMain} !important;
+    }
+  }
+`;
 
 type Props = {};
 
@@ -26,14 +35,13 @@ class IdeaButton extends React.PureComponent<Props, State> {
     if (!show) return null;
 
     return (
-      <Button
+      <StyledButton
         className="e2e-add-idea-button"
         text={<FormattedMessage {...messages.startIdea} />}
-        style="primary"
+        style="primary-outlined"
         size="1"
-        icon="plus-circle"
         linkTo="/ideas/new"
-        circularCorners={true}
+        circularCorners={false}
         disabled={!enabled}
       />
     );

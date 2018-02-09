@@ -93,7 +93,7 @@ export default class FilterSelector extends React.PureComponent<Props, State> {
     this.setState({ deployed: false });
   }
 
-  selectionChange = (value) => {
+  selectionChange = (value: string) => {
     let newSelection = cloneDeep(this.props.selected);
 
     if (!this.props.multiple) {
@@ -114,9 +114,7 @@ export default class FilterSelector extends React.PureComponent<Props, State> {
   }
 
   handleClickOutside = () => {
-    if (this.state.deployed) {
-      this.toggleExpanded();
-    }
+    this.closeExpanded();
   }
 
   render() {

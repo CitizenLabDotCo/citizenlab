@@ -49,7 +49,7 @@ import { media, color } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const Container = styled.div`
-  background: #fafafa;
+  background: #fff;
 `;
 
 const IdeaContainer = styled.div`
@@ -62,7 +62,7 @@ const IdeaContainer = styled.div`
   margin-right: auto;
   padding: 0;
   padding-top: 60px;
-  padding-bottom: 50px;
+  padding-bottom: 60px;
   padding-left: 30px;
   padding-right: 30px;
   position: relative;
@@ -481,7 +481,6 @@ type State = {
 };
 
 export default class IdeasShow extends React.PureComponent<Props, State> {
-  mapWrapperElement: HTMLDivElement | null;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -496,9 +495,8 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
       loading: true,
       showMap: false,
       spamModalVisible: false,
-      moreActions: [],
+      moreActions: []
     };
-    this.mapWrapperElement = null;
     this.subscriptions = [];
   }
 
@@ -570,14 +568,6 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
     ];
   }
 
-  componentDidUpdate(_prevProps: Props, prevState: State) {
-    if (prevState.showMap && this.state.showMap && this.mapWrapperElement) {
-      console.log('componentDidUpdate');
-      console.log(this.mapWrapperElement);
-      this.mapWrapperElement.scrollIntoView(true);
-    }
-  }
-
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
@@ -598,9 +588,9 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
   }
 
   handleMapWrapperSetRef = (element: HTMLDivElement) => {
-    console.log('handleMapWrapperSetRef');
-    console.log(element);
-    this.mapWrapperElement = element;
+    if (element) {
+      element.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'nearest' });
+    }
   }
 
   openSpamModal = () => {

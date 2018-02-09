@@ -37,21 +37,34 @@ const Container: any = styled.div`
   position: fixed;
   top: 0;
   background: #fff;
-  box-shadow: ${(props: any) => props.alwaysShowBorder ? '0px 1px 3px rgba(0, 0, 0, 0.13)' : '0px 1px 3px rgba(0, 0, 0, 0)'};
-  transition: all 150ms ease-out;
-
-  ${(props: any) => props.scrolled && css`
-    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
-  `}
 
   * {
     user-select: none;
     outline: none;
   }
 
+  &.scrolled::after {
+    opacity: 1;
+  }
+
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transition: opacity 100ms ease-out;
+    will-change: opacity;
+  }
+
   ${media.smallerThanMaxTablet`
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-    position: relative;
+    &::after {
+      opacity: 1;
+    }
   `}
 `;
 
@@ -186,10 +199,7 @@ type State = {
   scrolled: boolean;
 };
 
-export const namespace = 'containers/Navbar/index';
-
 class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
-  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -275,7 +285,7 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
     return (
       <>
         <MobileNavigation />
-        <Container scrolled={scrolled} alwaysShowBorder={alwaysShowBorder}>
+        <Container className={`${scrolled && 'scrolled'}`} alwaysShowBorder={alwaysShowBorder}>
           <Left>
             {currentTenantLogo &&
               <LogoLink to="/">

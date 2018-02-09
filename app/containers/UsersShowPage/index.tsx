@@ -23,7 +23,7 @@ import { media } from 'utils/styleUtils';
 const StyledContentContainer = styled(ContentContainer)`
   padding-top: 40px;
   padding-bottom: 100px;
-  background: #f6f6f6;
+  background: #f9f9fa;
 
   ${media.phone`
     padding-top: 0px;

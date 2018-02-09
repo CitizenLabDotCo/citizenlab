@@ -41,8 +41,8 @@ const StyledTextArea = styled(MentionsTextArea)`
     font-size: 17px !important;
     line-height: 25px !important;
     font-weight: 300 !important;
-    background: #fff !important;
-    box-shadow: none !important;
+    background: #fafafa !important;
+    /* box-shadow: none !important; */
   }
 `;
 

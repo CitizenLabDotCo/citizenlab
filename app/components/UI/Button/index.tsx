@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isBoolean } from 'lodash';
 import { darken, rgba } from 'polished';
 import Spinner from 'components/UI/Spinner';
 import Icon, { IconNames } from 'components/UI/Icon';
@@ -112,7 +112,7 @@ const Container: any = styled.div`
     align-items: center;
     justify-content: ${(props: any) => props.justify || 'center'};
     margin: 0;
-    padding: ${(props: any) => getPadding(props.size)};
+    padding: ${(props: any) => props.padding || getPadding(props.size)};
     border-radius: ${(props: any) => props.circularCorners ? '999em' : '5px'};
     position: relative;
     outline: none;
@@ -162,7 +162,7 @@ const Container: any = styled.div`
     &.secondary {
       &:not(.disabled) {
         border-color: #EAEAEA;
-        background: #f6f6f6;
+        background: #f9f9fa;
         ${setFillColor('#84939E')}
 
         &:not(.processing):hover,
@@ -321,10 +321,10 @@ export default class Button extends React.PureComponent<Props, State> {
     id = (id || '');
     size = (size || '1');
     style = (style || 'primary');
-    processing = (_.isBoolean(processing) ? processing : false);
-    disabled = (_.isBoolean(disabled) ? disabled : false);
-    fullWidth = (_.isBoolean(fullWidth) ? fullWidth : false);
-    circularCorners = (_.isBoolean(circularCorners) ? circularCorners : true);
+    processing = (isBoolean(processing) ? processing : false);
+    disabled = (isBoolean(disabled) ? disabled : false);
+    fullWidth = (isBoolean(fullWidth) ? fullWidth : false);
+    circularCorners = (isBoolean(circularCorners) ? circularCorners : true);
     className = `${className ? className : ''}`;
     const spinnerSize = this.getSpinnerSize(size);
 

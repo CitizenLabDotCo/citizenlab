@@ -23,7 +23,6 @@ const Container: any = styled.div`
     border-radius: 5px;
     border: solid 1px;
     border-color: ${(props: any) => props.error ? props.theme.colors.error : '#ccc'};
-    /* box-shadow: inset 0px 2px 3px rgba(0, 0, 0, 0.15); */
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     background: #fff;
     outline: none;

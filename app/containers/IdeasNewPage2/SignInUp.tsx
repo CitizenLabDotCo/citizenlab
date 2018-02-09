@@ -26,7 +26,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   border-top: solid 1px #ddd;
-  background: #f6f6f6;
+  background: #f9f9fa;
   position: relative;
   overflow: hidden;
 

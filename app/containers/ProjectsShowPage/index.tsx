@@ -31,6 +31,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: #f9f9fa;
 `;
 
 const Header = styled.div`

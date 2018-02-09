@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { includes } from 'lodash';
 
 // components
 import Checkbox from 'components/UI/Checkbox';
@@ -101,7 +101,7 @@ const StyledOption: any = styled.li`
   &.focused,
   &:hover {
     color: #000;
-    background: #f6f6f6;
+    background: #f9f9fa;
   }
 `;
 
@@ -119,7 +119,7 @@ type Value = {
 type Props = {
   title: string | JSX.Element;
   values: Value[];
-  onChange: Function;
+  onChange: (arg: string) => void;
   selected: any[];
   multiple?: boolean;
   deployed: boolean;
@@ -131,7 +131,6 @@ type State = {
 };
 
 export default class ValuesList extends React.PureComponent<Props, State> {
-  
   dropdownElement: HTMLElement | null;
 
   constructor(props: Props) {
@@ -156,7 +155,7 @@ export default class ValuesList extends React.PureComponent<Props, State> {
     }
   }
 
-  setRef = (element) => {
+  setRef = (element: HTMLElement) => {
     if (element) {
       this.dropdownElement = element;
 
@@ -167,7 +166,7 @@ export default class ValuesList extends React.PureComponent<Props, State> {
   }
 
   isSelected(value: Value) {
-    return _.includes(this.props.selected, value);
+    return includes(this.props.selected, value);
   }
 
   updateFocus = (newIndex: number) => {
@@ -220,13 +219,13 @@ export default class ValuesList extends React.PureComponent<Props, State> {
         event.preventDefault();
         this.props.onChange(this.props.values[this.state.currentFocus].value);
         break;
-
       default:
         break;
     }
   }
 
-  handleOnClick = (entry, index) => () => {
+  handleOnToggle = (entry, index) => (event: React.FormEvent<MouseEvent>) => {
+    event.preventDefault();
     this.setState({ currentFocus: index });
     this.props.onChange(entry.value);
   }
@@ -238,7 +237,6 @@ export default class ValuesList extends React.PureComponent<Props, State> {
     const dropdown = ((deployed) ? (
       <CSSTransition
         classNames="overlay"
-        key={1}
         timeout={timeout}
         mountOnEnter={true}
         unmountOnExit={true}
@@ -266,13 +264,13 @@ export default class ValuesList extends React.PureComponent<Props, State> {
                   aria-selected={checked}
                   selected={checked}
                   key={entry.value}
-                  onClick={this.handleOnClick(entry, index)}
+                  onClick={this.handleOnToggle(entry, index)}
                   className={`${focussed}`}
                 >
                   <OptionText>{entry.text}</OptionText>
 
                   {multiple &&
-                    <Checkbox size="22px" checked={checked} toggle={this.handleOnClick(entry, index)} />
+                    <Checkbox size="22px" checked={checked} toggle={this.handleOnToggle(entry, index)} />
                   }
                 </StyledOption>
               );

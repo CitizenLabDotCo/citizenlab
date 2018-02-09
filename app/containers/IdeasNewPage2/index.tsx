@@ -31,14 +31,14 @@ import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  background: #f6f6f6;
+  background: #f9f9fa;
 `;
 
 const PageContainer = styled.div`
   width: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   position: relative;
-  background: #f6f6f6;
+  background: #f9f9fa;
 
   &.page-enter {
     position: absolute;

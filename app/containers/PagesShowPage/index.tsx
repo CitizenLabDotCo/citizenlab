@@ -30,7 +30,7 @@ import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  background: #f6f6f6;
+  background: #f9f9fa;
 `;
 
 const Loading = styled.div`
@@ -140,13 +140,13 @@ const StyledLink = styled(Link)`
   margin-bottom: 15px;
   padding: 23px;
   border-radius: 5px;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
+  border: solid 1px #e4e4e4;
   background: #fff;
-  transition: all 150ms ease-out;
+  transition: all 100ms ease-out;
 
   &:hover {
     color: #000;
-    transform: scale(1.005);
+    border-color: #999;
   }
 `;
 
