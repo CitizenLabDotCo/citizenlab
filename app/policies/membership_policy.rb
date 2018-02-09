@@ -32,4 +32,8 @@ class MembershipPolicy < ApplicationPolicy
     user && user.admin?
   end
 
+  def invite?
+    user && user.admin?
+  end
+
 end
