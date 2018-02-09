@@ -428,6 +428,7 @@ resource "Ideas" do
         @idea.update(publication_status: "draft")
 
         do_request(idea: { publication_status: "published" })
+
         json_response = json_parse(response_body) 
         new_idea = Idea.find(json_response.dig(:data, :id))
         expect(new_idea.votes.size).to eq 1
