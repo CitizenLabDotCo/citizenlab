@@ -119,6 +119,33 @@ RSpec.describe Idea, type: :model do
     end
   end
 
+  describe "order_trending" do
+    before do
+
+      5.times do |i|
+        travel_to(Time.now-7.day + i.day) do 
+          idea = create(:idea)
+          rand(20).times{create(:vote, votable: idea, mode: ['up','down'][rand(1)])}
+        end
+      end
+    end
+
+    it "sorts from trending to untrending by default" do
+      trending_score_sorted = Idea.order_trending.map(&:id)
+      expect(trending_score_sorted).to eq Idea.all.sort_by(&:trending_score).map(&:id).reverse
+    end
+
+    it "sorts from trending to untrending when asking desc" do
+      trending_score_sorted = Idea.order_trending(:desc).map(&:id)
+      expect(trending_score_sorted).to eq Idea.all.sort_by(&:trending_score).map(&:id).reverse
+    end
+
+    it "sorts from untrending to trending when asking asc" do
+      trending_score_sorted = Idea.order_trending(:asc).map(&:id)
+      expect(trending_score_sorted).to eq Idea.all.sort_by(&:trending_score).map(&:id)   
+    end
+  end
+
   describe "order_status" do
     it "sorts from high status to low status when asked desc" do
       status_sorted = Idea.order_status(:desc).map(&:id)
