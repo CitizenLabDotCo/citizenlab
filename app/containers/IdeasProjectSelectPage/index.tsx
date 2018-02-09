@@ -29,7 +29,7 @@ import { media } from 'utils/styleUtils';
 const Container = styled.div`
   height: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  background: #f6f6f6;
+  background: #f9f9fa;
 
   ${media.smallerThanMaxTablet`
     min-height: auto;

@@ -26,9 +26,8 @@ const Container = styled.div`
   width: 100%;
   position: relative;
   border-radius: 5px;
-  border: solid 1px #fff;
   background: #fff;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
+  border: solid 1px #e4e4e4;
   transition: transform 250ms ease-out;
 
   &.enabled {
@@ -45,12 +44,9 @@ const Container = styled.div`
   }
 
   &.enabled:hover {
-    /* transform: scale(1.01); */
-    border-color: #ccc;
-    /* border-color: ${props => props.theme.colors.success}; */
+    border-color: #999;
 
     &.selected {
-      /* transform: scale(1.01) */
       border-color: ${props => props.theme.colors.success};
     }
   }

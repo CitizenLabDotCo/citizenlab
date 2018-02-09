@@ -30,13 +30,14 @@ import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
 // animations
-// import TransitionGroup from 'react-transition-group/TransitionGroup';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
 import { transparentize, darken } from 'polished';
 import { Locale } from 'typings';
+import { media } from 'utils/styleUtils';
 
 const timeout = 550;
 
@@ -44,10 +45,16 @@ const StyledMoreActionsMenu: any = styled(MoreActionsMenu)`
   position: absolute;
   top: 10px;
   right: 20px;
+  opacity: 0;
+  transition: opacity 100ms ease-out;
+
+  ${media.smallerThanMaxTablet`
+    opacity: 1;
+  `}
 `;
 
 const Container = styled.div`
-  margin-top: 30px;
+  margin-top: 35px;
 
   &.comment-enter {
     opacity: 0;
@@ -62,18 +69,20 @@ const Container = styled.div`
   }
 `;
 
-const CommentContainer: any = styled.div`
+const CommentsWithReplyBoxContainer = styled.div`
+  border-radius: 4px;
+  /* border: solid 1px #e4e4e4; */
+`;
+
+const CommentsContainer = styled.div`
   border-radius: 5px;
-  background: #fff;
-  /* border: solid 1px #e0e0e0; */
   position: relative;
-  padding-top: 30px;
-  /* box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12); */
-  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  border: solid 1px #e4e4e4;
+  /* background: #fff; */
 
   &.hasReplyBox {
-    /* border-bottom-left-radius: 0px; */
-    /* border-bottom-right-radius: 0px; */
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
     border-bottom: none;
   }
 `;
@@ -81,7 +90,15 @@ const CommentContainer: any = styled.div`
 const CommentContainerInner = styled.div`
   padding-left: 30px;
   padding-right: 30px;
+  padding-top: 30px;
   padding-bottom: 30px;
+  position: relative;
+
+  &:hover {
+    ${StyledMoreActionsMenu} {
+      opacity: 1;
+    }
+  }
 `;
 
 const StyledAuthor = styled(Author)`
@@ -140,6 +157,7 @@ type State = {
   spamModalVisible: boolean;
   moreActions: IAction[];
   commentingEnabled: boolean | null;
+  loaded: boolean;
 };
 
 type Tracks = {
@@ -161,6 +179,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       spamModalVisible: false,
       moreActions: [],
       commentingEnabled: null,
+      loaded: false
     };
     this.subscriptions = [];
   }
@@ -212,6 +231,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
           childCommentIds,
           moreActions,
           commentingEnabled: idea.data.relationships.action_descriptor.data.commenting.enabled,
+          loaded: true
         });
       })
     ];
@@ -245,9 +265,9 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
   render() {
     let returnValue: JSX.Element | null = null;
     const { commentId, animate } = this.props;
-    const { locale, currentTenantLocales, authUser, comment, childCommentIds, commentingEnabled } = this.state;
+    const { loaded, locale, currentTenantLocales, authUser, comment, childCommentIds, commentingEnabled } = this.state;
 
-    if (locale && currentTenantLocales && comment) {
+    if (loaded && locale && currentTenantLocales && comment) {
       const ideaId = comment.data.relationships.idea.data.id;
       const authorId = comment.data.relationships.author.data ? comment.data.relationships.author.data.id : null;
       const createdAt = comment.data.attributes.created_at;
@@ -262,36 +282,39 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       const parentComment = (
         <Container className="e2e-comment-thread">
 
-          <CommentContainer className={`${showCommentForm && 'hasReplyBox'}`}>
-            <StyledMoreActionsMenu
-              height="5px"
-              actions={this.state.moreActions}
-            />
+          <CommentsWithReplyBoxContainer>
+            <CommentsContainer className={`${showCommentForm && 'hasReplyBox'}`}>
+              <CommentContainerInner>
+                <StyledMoreActionsMenu
+                  height="5px"
+                  actions={this.state.moreActions}
+                />
 
-            <CommentContainerInner>
-              <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
+                <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
 
-              <CommentBody className="e2e-comment-body" onClick={this.captureClick}>
-                <span dangerouslySetInnerHTML={{ __html: processedCommentText }} />
-              </CommentBody>
-            </CommentContainerInner>
+                <CommentBody className="e2e-comment-body" onClick={this.captureClick}>
+                  <span dangerouslySetInnerHTML={{ __html: processedCommentText }} />
+                </CommentBody>
+              </CommentContainerInner>
 
-            {(childCommentIds && childCommentIds.length > 0) &&
-              <ChildCommentsContainer>
-                {childCommentIds.map((childCommentId) => {
-                  return (<ChildComment key={childCommentId} commentId={childCommentId} />);
-                })}
-              </ChildCommentsContainer>
-            }
+              {(childCommentIds && childCommentIds.length > 0) &&
+                <ChildCommentsContainer>
+                  {childCommentIds.map((childCommentId) => {
+                    return (<ChildComment key={childCommentId} commentId={childCommentId} />);
+                  })}
+                </ChildCommentsContainer>
+              }
+            </CommentsContainer>
 
             {showCommentForm &&
               <ChildCommentForm ideaId={ideaId} parentId={commentId} />
             }
-          </CommentContainer>
+          </CommentsWithReplyBoxContainer>
 
           <Modal opened={this.state.spamModalVisible} close={this.closeSpamModal}>
             <SpamReportForm resourceId={this.props.commentId} resourceType="comments" />
           </Modal>
+
         </Container>
       );
 
@@ -307,9 +330,9 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
     }
 
     return (
-      <>
+      <TransitionGroup>
         {returnValue}
-      </>
+      </TransitionGroup>
     );
   }
 }

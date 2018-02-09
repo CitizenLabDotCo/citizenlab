@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
@@ -13,9 +12,9 @@ import { areasStream, IAreas } from 'services/areas';
 // i18n
 import { getLocalized } from 'utils/i18n';
 import { FormattedMessage } from 'utils/cl-intl';
-
 import messages from './messages';
 
+// typings
 import { Locale } from 'typings';
 
 type Props = {
@@ -30,7 +29,6 @@ type State = {
 };
 
 class SelectAreas extends React.PureComponent<Props, State> {
-  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -40,6 +38,7 @@ class SelectAreas extends React.PureComponent<Props, State> {
       locale: null,
       areas: null
     };
+    this.subscriptions = [];
   }
 
   componentDidMount() {
@@ -67,31 +66,26 @@ class SelectAreas extends React.PureComponent<Props, State> {
   }
 
   handleOnChange = (selectedAreas: string[]) => {
-    let areas: string[] = [];
-
-    if (_.isString(selectedAreas)) {
-      areas = [selectedAreas];
-    } else if (_.isArray(selectedAreas) && !_.isEmpty(selectedAreas)) {
-      areas = selectedAreas;
-    }
-
-    this.props.onChange(areas);
+    console.log('selectedAreas:');
+    console.log(selectedAreas);
+    this.props.onChange((selectedAreas || []));
   }
 
   render() {
     const { currentTenant, locale, areas } = this.state;
     const { selectedAreas } =  this.props;
-    let options: any = [];
+    let options: {
+      text: string,
+      value: string
+    }[] = [];
 
-    if (currentTenant && locale && areas && areas.data && areas.data.length > 0) {
+    if (currentTenant && locale && areas && areas.data) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
 
-      options = areas.data.map((area) => {
-        return {
-          text: getLocalized(area.attributes.title_multiloc, locale, currentTenantLocales),
-          value: area.id
-        };
-      });
+      options = areas.data.map((area) => ({
+        text: getLocalized(area.attributes.title_multiloc, locale, currentTenantLocales),
+        value: area.id
+      }));
 
       if (options && options.length > 0) {
         return (

@@ -39,7 +39,7 @@ import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  background: #f6f6f6;
+  background: #f9f9fa;
 `;
 
 const FormContainer = styled.div`

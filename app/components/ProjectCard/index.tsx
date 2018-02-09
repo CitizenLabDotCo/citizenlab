@@ -17,7 +17,8 @@ import { projectImageStream, IProjectImage } from 'services/projectImages';
 // i18n
 import T from 'components/T';
 import { getLocalized } from 'utils/i18n';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // style
@@ -26,15 +27,15 @@ import { media, color } from 'utils/styleUtils';
 import { Locale } from 'typings';
 
 const ProjectImageContainer =  styled.div`
-  flex-basis: 150px;
+  width: 180px;
+  height: 180px;
+  flex-basis: 180px;
   flex-shrink: 0;
   flex-grow: 0;
-  width: 150px;
-  height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 5px;
+  border-radius: 4px;
   margin-right: 10px;
   overflow: hidden;
   position: relative;
@@ -88,20 +89,16 @@ const Container = styled(Link)`
   align-items: center;
   justify-content: space-between;
   border-radius: 5px;
-  padding: 15px;
+  padding: 10px;
   margin-bottom: 25px;
   background: #fff;
   cursor: pointer;
   background: #fff;
   border-radius: 5px;
   overflow: hidden;
-  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  border: solid 1px #e4e4e4;
   transition: transform 250ms ease-out;
   will-change: transform;
-
-  &.hasBorder {
-    box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.12);
-  }
 
   &:hover {
     transform: scale(1.008);
@@ -126,7 +123,7 @@ const ProjectContent = styled.div`
   margin-right: 30px;
   margin-left: 30px;
   padding-top: 15px;
-  padding-bottom: 15px;
+  padding-bottom: 20px;
 
   ${media.smallerThanMaxTablet`
     margin: 0;
@@ -160,15 +157,36 @@ const ProjectTitle = styled.h3`
 `;
 
 const ProjectDescription = styled.div`
-  color: #84939E;
-  font-size: 16px;
-  line-height: 22px;
+  color: #576773;
+  font-size: 18px;
+  line-height: 26px;
   font-weight: 300;
-  margin-top: 12px;
+  margin-top: 10px;
 
   ${media.phone`
     display: none;
   `}
+`;
+
+const ProjectMetaItems = styled.div`
+  color: ${(props) => props.theme.colors.label};
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  display: flex;
+  margin-top: 30px;
+`;
+
+const ProjectMetaItem = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const ProjectMetaIcon = styled(Icon)`
+  height: 24px;
+  fill: ${(props) => props.theme.colors.label};
+  margin-right: 8px;
+  margin-top: -6px;
 `;
 
 const ProjectButtonWrapper = styled.div`
@@ -191,7 +209,6 @@ const ProjectButton = styled(Button) ``;
 
 type Props = {
   id: string;
-  hasBorder?: boolean | undefined;
 };
 
 type State = {
@@ -201,7 +218,7 @@ type State = {
   projectImage: IProjectImage | null;
 };
 
-class ProjectCard extends React.PureComponent<Props, State> {
+class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -263,7 +280,7 @@ class ProjectCard extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    const { hasBorder } = this.props;
+    const { formatMessage } = this.props.intl;
     const { locale, currentTenant, project, projectImage } = this.state;
 
     if (locale && currentTenant && project) {
@@ -272,9 +289,10 @@ class ProjectCard extends React.PureComponent<Props, State> {
       const preview = getLocalized(project.data.attributes.description_preview_multiloc, locale, currentTenantLocales);
       const imageUrl = (projectImage ? projectImage.data.attributes.versions.medium : null);
       const projectUrl = this.getProjectUrl(project);
+      const ideasCount = project.data.attributes.ideas_count;
 
       return (
-        <Container to={projectUrl} className={`${className} ${hasBorder && 'hasBorder'}`}>
+        <Container to={projectUrl} className={className}>
 
           <ProjectImageContainer>
             {imageUrl && <ProjectImage imageSrc={imageUrl} />}
@@ -295,13 +313,26 @@ class ProjectCard extends React.PureComponent<Props, State> {
             <ProjectDescription>
               {preview}
             </ProjectDescription>
+            <ProjectMetaItems>
+              <ProjectMetaItem>
+                <ProjectMetaIcon name="idea" />
+                <FormattedMessage 
+                  {...messages.xIdeas} 
+                  values={{
+                    ideasCount,
+                    ideas: formatMessage(messages.ideas),
+                    idea: formatMessage(messages.idea)
+                  }}
+                />
+              </ProjectMetaItem>
+            </ProjectMetaItems>
           </ProjectContent>
 
           <ProjectButtonWrapper>
             <ProjectButton
               onClick={this.goToProject}
               text={<FormattedMessage {...messages.openProjectButton} />}
-              style="primary-outlined"
+              style="primary"
               size="2"
               circularCorners={false}
             />
@@ -315,4 +346,4 @@ class ProjectCard extends React.PureComponent<Props, State> {
   }
 }
 
-export default ProjectCard;
+export default injectIntl<Props>(ProjectCard);

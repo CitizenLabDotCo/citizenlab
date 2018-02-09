@@ -9,7 +9,6 @@ import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import ProjectCards from 'components/ProjectCards';
 import Icon from 'components/UI/Icon';
-import Button from 'components/UI/Button';
 import Footer from 'components/Footer';
 import Spinner from 'components/UI/Spinner';
 
@@ -38,7 +37,6 @@ const Container: any = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: ${(props: any) => props.hasHeader ? '#f6f6f6' : '#fff'};
   position: relative;
 
   ${media.smallerThanMaxTablet`
@@ -93,7 +91,7 @@ const HeaderImageBackground: any = styled.div`
 
 const HeaderImageOverlay = styled.div`
   background: #000;
-  opacity: 0.5;
+  opacity: 0.4;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -116,17 +114,18 @@ const HeaderContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   z-index: 2;
 `;
 
 const HeaderTitle: any = styled.h1`
   width: 100%;
-  max-width: 600px;
+  max-width: 980px;
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
   font-size: 55px;
   line-height: 64px;
   font-weight: 600;
-  text-align: left;
+  text-align: center;
   white-space: normal;
   word-break: normal;
   word-wrap: normal;
@@ -154,7 +153,7 @@ const HeaderSubtitle: any = styled.h2`
   overflow-wrap: normal;
   hyphens: auto;
   max-width: 980px;
-  text-align: left;
+  text-align: center;
   text-decoration: none;
   padding: 0;
   padding-bottom: 0px;
@@ -172,18 +171,40 @@ const HeaderSubtitle: any = styled.h2`
 
 const Content = styled.div`
   width: 100%;
-  background: #f6f6f6;
-  z-index: 1;
+  z-index: 4;
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-bottom: 10px;
 `;
 
-const IdeasStyledContentContainer = StyledContentContainer.extend``;
-
 const ProjectsStyledContentContainer = StyledContentContainer.extend`
-  background: #fff;
+  .FilterSelectorTitle {
+    .FilterSelectorTitleText {
+        color: #fff;
+        opacity: 0.8;
+    }
+
+    .FilterSelectorTitleIcon {
+        fill: #fff;
+        opacity: 0.8;
+    }
+
+    &:hover,
+    &.deployed {
+      .FilterSelectorTitleText {
+        opacity: 1;
+      }
+
+      .FilterSelectorTitleIcon {
+        opacity: 1;
+      }
+    }
+  }
+`;
+
+const IdeasStyledContentContainer = StyledContentContainer.extend`
+  background: #f9f9fa;
 `;
 
 const Section = styled.div`
@@ -198,7 +219,8 @@ const Section = styled.div`
 `;
 
 const ProjectSection = Section.extend`
-  padding-top: 80px;
+  padding-top: 0px;
+  margin-top: -130px;
 `;
 
 const SectionHeader = styled.div`
@@ -275,16 +297,16 @@ const Explore = styled(Link) `
   `}
 `;
 
-const SectionFooter = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+// const SectionFooter = styled.div`
+//   width: 100%;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// `;
 
-const ViewMoreButton = styled(Button) `
-  margin-top: 20px;
-`;
+// const ViewMoreButton = styled(Button) `
+//   margin-top: 20px;
+// `;
 
 type Props = {};
 
@@ -422,6 +444,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
               <ProjectsStyledContentContainer>
                 {hasProjects &&
                   <ProjectSection>
+                    {/*
                     <SectionHeader>
                       <SectionTitle>
                         <FormattedMessage {...messages.cityProjects} />
@@ -433,9 +456,11 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                         <ExploreIcon name="compass" />
                       </Explore>
                     </SectionHeader>
+                    */}
                     <SectionContainer>
-                      <ProjectCards filter={landingPageProjectsQuery} loadMoreEnabled={false} hasBorder={true} />
+                      <ProjectCards pageSize={3} />
                     </SectionContainer>
+                    {/*
                     <SectionFooter>
                       <ViewMoreButton
                         text={<FormattedMessage {...messages.exploreAllProjects} />}
@@ -446,6 +471,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                         circularCorners={false}
                       />
                     </SectionFooter>
+                    */}
                   </ProjectSection>
                 }
               </ProjectsStyledContentContainer>
@@ -466,8 +492,9 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                     }
                   </SectionHeader>
                   <SectionContainer>
-                    <IdeaCards filter={landingPageIdeasQuery} loadMoreEnabled={false} />
+                    <IdeaCards filter={landingPageIdeasQuery} loadMoreEnabled={true} />
                   </SectionContainer>
+                  {/*
                   {hasIdeas &&
                     <SectionFooter>
                       <ViewMoreButton
@@ -480,6 +507,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                       />
                     </SectionFooter>
                   }
+                  */}
                 </Section>
               </IdeasStyledContentContainer>
 

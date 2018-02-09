@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { size } from 'lodash';
+import { size, get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
@@ -31,9 +31,7 @@ const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
-const ParentCommentsContainer = styled.div`
-  margin-top: 25px;
-`;
+const ParentCommentsContainer = styled.div``;
 
 type Props = {
   ideaId: string;
@@ -41,7 +39,7 @@ type Props = {
 
 type State = {
   parentComments: IComments | null;
-  loading: boolean;
+  loaded: boolean;
   newCommentId: string | null;
 };
 
@@ -52,7 +50,7 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
     super(props as any);
     this.state = {
       parentComments: null,
-      loading: true,
+      loaded: false,
       newCommentId: null
     };
     this.subscriptions = [];
@@ -86,15 +84,19 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
           };
         }
 
-        if (this.state.parentComments === null && sortedParentComments !== null && sortedParentComments.data.length === 1
-          || this.state.parentComments !== null && sortedParentComments !== null && this.state.parentComments.data.length === sortedParentComments.data.length - 1) {
-            newCommentId = sortedParentComments.data[0].id;
+        if (this.state.loaded) {
+          const oldParentCommentsSize = size(get(this.state.parentComments, 'data', null));
+          const newParentCommentsSize = size(get(sortedParentComments, 'data', null));
+
+          if (newParentCommentsSize === (oldParentCommentsSize + 1)) {
+            newCommentId = (sortedParentComments as IComments).data[0].id;
+          }
         }
 
         this.setState({
           newCommentId,
           parentComments: sortedParentComments,
-          loading: false
+          loaded: true
         });
       })
     ];
@@ -107,9 +109,9 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
   render() {
     const className = `${this.props['className']} e2e-comments`;
     const { ideaId } = this.props;
-    const { parentComments, loading, newCommentId } = this.state;
+    const { parentComments, loaded, newCommentId } = this.state;
 
-    if (!loading) {
+    if (loaded) {
       let parentCommentsList: JSX.Element[] | null = null;
 
       if (parentComments && parentComments.data && parentComments.data.length > 0) {
@@ -118,7 +120,7 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
             key={comment.id}
             ideaId={ideaId}
             commentId={comment.id}
-            animate={newCommentId === comment.id ? true : undefined}
+            animate={(newCommentId === comment.id)}
           />
         ));
       }

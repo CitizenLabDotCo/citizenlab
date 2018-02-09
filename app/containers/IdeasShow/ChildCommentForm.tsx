@@ -28,12 +28,12 @@ import { darken } from 'polished';
 import { Locale } from 'typings';
 
 const CommentContainer = styled.div`
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
   /* padding-top: 0px; */
-  border-top: solid 1px #e4e4e4;
+  /* border-top: solid 1px #e4e4e4; */
 `;
 
 const StyledTextArea = styled(MentionsTextArea)`
@@ -42,10 +42,23 @@ const StyledTextArea = styled(MentionsTextArea)`
     font-size: 17px !important;
     line-height: 25px !important;
     font-weight: 300 !important;
-    background: #fff !important;
-    box-shadow: none !important;
-    border: none !important;
-    padding: 12px 19px !important;
+    background: #fafafa !important;
+    /* box-shadow: none !important; */
+    padding: 14px 30px !important;
+    padding-right: 55px !important;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+    /* border-color: #e4e4e4 !important; */
+
+    &:hover {
+      /* border: solid 1px #ccc !important; */
+      /* box-shadow: inset 0px 0px 2px 0px rgba(0, 0, 0, 0.2) !important; */
+    }
+
+    &:focus {
+      /* border: solid 1px #666 !important; */
+      /* box-shadow: inset 0px 0px 2px 0px rgba(0, 0, 0, 0.3) !important; */
+    }
   }
 `;
 
@@ -64,7 +77,7 @@ const SendIconWrapper: any = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  bottom: 12px;
+  bottom: 13px;
   right: 15px;
   z-index: 2;
   cursor: ${(props: any) => props.disabled ? 'auto' : 'pointer'};

@@ -22,6 +22,10 @@ const Container: any = styled.div`
     -webkit-appearance: none;
     border-color: ${(props: any) => props.error ? props.theme.colors.error : '#ccc'} !important;
 
+    &:hover {
+      border-color: ${(props: any) => props.error ? props.theme.colors.error : '#aaa'} !important;
+    }
+
     &:focus {
       border-color: ${(props: any) => props.error ? props.theme.colors.error : '#999'} !important;
     }

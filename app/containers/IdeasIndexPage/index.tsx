@@ -26,7 +26,7 @@ const Container = styled.div`
   position: relative;
 
   ${media.smallerThanMaxTablet`
-    background: #f6f6f6;
+    background: #f9f9fa;
   `}
 `;
 
@@ -37,7 +37,7 @@ const BackgroundColor = styled.div`
   left: 0;
   right: 0;
   z-index: 0;
-  background: #f6f6f6;
+  background: #f9f9fa;
 
   ${media.smallerThanMaxTablet`
     display: none;

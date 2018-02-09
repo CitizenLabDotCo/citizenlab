@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isObject, isEmpty, isEqual, has } from 'lodash';
+import { isObject, isEmpty, isEqual, get, isString } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
@@ -35,7 +35,7 @@ const Loading = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
+  border: solid 1px #e4e4e4;
 `;
 
 const IdeasList: any = styled.div`
@@ -79,7 +79,7 @@ const EmptyContainer = styled.div`
   padding-top: 120px;
   padding-bottom: 120px;
   border-radius: 5px;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
   background: #fff;
 `;
 
@@ -172,12 +172,18 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
             ...filter,
             'page[number]': pageNumber
           }
-        }).observable.map((ideas) => ({
-          pageNumber,
-          filter,
-          ideas: (hasFilterChanged ? ideas : { data: [...acc.ideas.data, ...ideas.data] }) as IIdeas,
-          hasMore: has(ideas, 'links.next')
-        }));
+        }).observable.map((ideas) => {
+          const selfLink = get(ideas, 'links.self');
+          const lastLink = get(ideas, 'links.last');
+          const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
+
+          return {
+            pageNumber,
+            filter,
+            hasMore,
+            ideas: (hasFilterChanged ? ideas : { data: [...acc.ideas.data, ...ideas.data] }) as IIdeas
+          };
+        });
       }, {
           ideas: {} as IIdeas,
           filter: {},

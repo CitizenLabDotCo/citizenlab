@@ -1,12 +1,6 @@
 import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-import { has, isString, isEmpty, isEqual, isArray, cloneDeep } from 'lodash';
-
-// libraries
-import { browserHistory } from 'react-router';
 
 // components
-import SelectAreas from './SelectAreas';
 import ContentContainer from 'components/ContentContainer';
 import ProjectCards from 'components/ProjectCards';
 import Footer from 'components/Footer';
@@ -27,7 +21,7 @@ const Container = styled.div`
   position: relative;
 
   ${media.smallerThanMaxTablet`
-    background: #f6f6f6;
+    background: #f9f9fa;
   `}
 `;
 
@@ -38,7 +32,7 @@ const BackgroundColor = styled.div`
   left: 0;
   right: 0;
   z-index: 0;
-  background: #f6f6f6;
+  background: #f9f9fa;
 
   ${media.smallerThanMaxTablet`
     display: none;
@@ -47,23 +41,6 @@ const BackgroundColor = styled.div`
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-bottom: 100px;
-`;
-
-const FiltersArea = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  margin-top: 30px;
-  margin-bottom: 35px;
-
-  ${media.smallerThanMaxTablet`
-    margin: 0;
-    margin-top: 10px;
-    margin-bottom: 30px;
-    justify-content: space-between;
-  `}
 `;
 
 const PageTitle = styled.h1`
@@ -82,120 +59,21 @@ const PageTitle = styled.h1`
   `}
 `;
 
-const FilterArea = styled.div`
-  height: 60px;
-  display: flex;
-  align-items: center;
-
-  ${media.smallerThanMaxTablet`
-    align-items: flex-end;
-  `}
-`;
-
 type Props = {};
 
-type State = {
-  filter: {
-    areas?: string[];
-  };
-};
+type State = {};
 
-class IdeasIndex extends React.PureComponent<Props, State> {
-  areas$: Rx.Subject<string[]>;
-  subscriptions: Rx.Subscription[];
-  unlisten: Function | null;
-
-  constructor(props: Props) {
-    super(props as any);
-
-    const query = browserHistory.getCurrentLocation().query;
-    let filter = {};
-
-    if (has(query, 'areas') && isString(query.areas)) {
-      filter = {
-        areas: [query.areas]
-      };
-    }
-
-    this.state = { filter };
-    this.subscriptions = [];
-    this.areas$ = new Rx.Subject();
-  }
-
-  componentDidMount() {
-    const areas$ = this.areas$;
-
-    this.subscriptions = [
-      areas$.subscribe((areas) => {
-        this.setState((state) => ({
-          filter: {
-            ...state.filter,
-            areas
-          }
-        }));
-      })
-    ];
-
-    this.unlisten = browserHistory.listen((location) => {
-      if (location.pathname === '/projects') {
-        const filter = cloneDeep(location.query);
-        this.setState(state => ({ filter: !isEqual(filter, state.filter) ? filter : state.filter }));
-      }
-    });
-  }
-
-  componentDidUpdate(_prevProps: Props, prevState: State) {
-    if (!isEqual(prevState.filter, this.state.filter)) {
-      browserHistory.push({
-        pathname: '/projects',
-        query: this.state.filter
-      });
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.unlisten !== null) {
-      this.unlisten();
-    }
-
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  handleAreasOnChange = (values: string[]) => {
-    this.areas$.next(values);
-  }
-
+export default class IdeasIndex extends React.PureComponent<Props, State> {
   render() {
-    const { filter } = this.state;
-    let selectedAreas: string[] = [];
-
-    if (has(filter, 'areas') && isString(filter.areas) && !isEmpty(filter.areas)) {
-      selectedAreas = [filter.areas];
-    } else if (has(filter, 'areas') && isArray(filter.areas) && !isEmpty(filter.areas)) {
-      selectedAreas = filter.areas;
-    }
-
     return (
       <Container>
-
         <BackgroundColor />
-
         <StyledContentContainer>
-          <FiltersArea id="e2e-ideas-filters">
-            <PageTitle><FormattedMessage {...messages.pageTitle} /></PageTitle>
-
-            <FilterArea>
-              <SelectAreas selectedAreas={selectedAreas} onChange={this.handleAreasOnChange} />
-            </FilterArea>
-          </FiltersArea>
-          <ProjectCards filter={filter} />
+          <PageTitle><FormattedMessage {...messages.pageTitle} /></PageTitle>
+          <ProjectCards pageSize={10} />
         </StyledContentContainer>
-
         <Footer />
-
       </Container>
     );
   }
 }
-
-export default IdeasIndex;

@@ -2,12 +2,9 @@ import * as React from 'react';
 import T from 'components/T';
 import { IIdeaData, ideaByIdStream } from 'services/ideas';
 import { injectResource, InjectedResourceLoaderProps } from 'utils/resourceLoaders/resourceLoader';
-
 import { List } from 'semantic-ui-react';
 
-
 class InfoSidebarMultiItem extends React.PureComponent<InjectedResourceLoaderProps<IIdeaData>> {
-
   render() {
     const { idea } = this.props;
     if (!idea) return null;

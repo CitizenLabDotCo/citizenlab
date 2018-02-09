@@ -30,8 +30,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   border-radius: 5px;
-  /* border: solid 1px #e0e0e0; */
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
+  border: solid 1px #e4e4e4;
+  /* box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.12); */
   background: #fff;
 
   ${media.smallerThanMaxTablet`

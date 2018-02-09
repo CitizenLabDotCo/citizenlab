@@ -31,8 +31,8 @@ import { media } from 'utils/styleUtils';
 
 const StyledMoreActionsMenu: any = styled(MoreActionsMenu)`
   position: absolute;
-  top: 5px;
-  right: 15px;
+  top: 10px;
+  right: 20px;
   opacity: 0;
   transition: opacity 100ms ease-out;
 
@@ -47,6 +47,7 @@ const CommentContainer = styled.div`
   padding-left: 30px;
   padding-right: 30px;
   border-top: solid 1px #e4e4e4;
+  /* background: #fff; */
   position: relative;
 
   &:hover {
