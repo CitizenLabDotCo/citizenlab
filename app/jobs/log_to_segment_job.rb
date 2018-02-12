@@ -1,7 +1,7 @@
 class LogToSegmentJob < ApplicationJob
   queue_as :default
 
-  def perform(activity)
+  def perform(activity, user_id=nil)
 
     trackingMessage = {
       event: "#{activity.item_type} #{activity.action}",
@@ -16,7 +16,9 @@ class LogToSegmentJob < ApplicationJob
     }
 
     # Segment requires us to send either a user_id or an anonymous_id
-    if activity.user_id
+    if user_id # e.g. invited users have no existing user objects
+      trackingMessage[:user_id] = user_id
+    elsif activity.user_id
       trackingMessage[:user_id] = activity.user_id
     else
       trackingMessage[:anonymous_id] = SecureRandom.base64

@@ -1,7 +1,7 @@
 class LogToEventbusJob < ApplicationJob
   queue_as :default
 
-  def perform(activity)
+  def perform(activity, user_id=nil)
 
     trackingMessage = {
       event: "#{activity.item_type} #{activity.action}",
@@ -10,7 +10,7 @@ class LogToEventbusJob < ApplicationJob
       item_id: activity.item_id,
       action: activity.action,
       payload: activity.payload,
-      user_id: activity.user_id
+      user_id: user_id || activity.user_id
     }
 
     if activity.item
