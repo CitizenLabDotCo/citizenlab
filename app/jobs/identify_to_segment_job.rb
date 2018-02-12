@@ -1,7 +1,7 @@
 class IdentifyToSegmentJob < ApplicationJob
   queue_as :default
 
-  def perform(user, options: {})
+  def perform(user, options={})
     traits = {}
     user_id = nil
     if options[:invited_user]

@@ -71,7 +71,7 @@ class WebApi::V1::MembershipsController < ApplicationController
       @invite.inviter ||= current_user
       if @invite.save
         SideFxInviteService.new.after_create(@invite, current_user)
-        render json: @invite.reload, include: ['user'], status: :created
+        render json: @invite.reload, include: ['inviter'], status: :created
       else
         render json: { errors: @invite.errors.details }, status: :unprocessable_entity
       end
