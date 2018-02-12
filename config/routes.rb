@@ -71,7 +71,7 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'groups#by_slug'
       end
 
-      resources :invite, param: :token, only: [] do
+      resources :invites, param: :token, only: [] do
         post :accept, on: :member
         # --> generates'/invites/:tok/accept'
       end
