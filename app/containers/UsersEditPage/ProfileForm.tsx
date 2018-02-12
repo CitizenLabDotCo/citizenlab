@@ -15,7 +15,6 @@ import { IOption, ImageFile, API } from 'typings';
 // Components
 import { Grid, Segment } from 'semantic-ui-react';
 import ContentContainer from 'components/ContentContainer';
-import Button from 'components/UI/Button';
 import LabelWithTooltip from './LabelWithTooltip';
 import TextArea from 'components/UI/TextArea';
 import Input from 'components/UI/Input';
@@ -35,6 +34,7 @@ import localize, { injectedLocalized } from 'utils/localize';
 // Style
 import styled from 'styled-components';
 import { color } from 'utils/styleUtils';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 const StyledContentContainer = styled(ContentContainer)`
   background: ${color('background')};
@@ -213,7 +213,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
   handleContextRef = contextRef => this.setState({ contextRef });
 
   render() {
-    const { intl: { formatMessage }, values, errors, isSubmitting, isValid, dirty } = this.props;
+    const { intl: { formatMessage }, values, errors, isSubmitting, isValid, dirty, status } = this.props;
     // const { contextRef } = this.state;
 
     return (
@@ -261,6 +261,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                         <Input
                           type="text"
                           name="first_name"
+                          id="firstName"
                         />
                         <Error apiErrors={errors.first_name} />
                       </SectionField>
@@ -270,6 +271,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                         <Input
                           type="text"
                           name="last_name"
+                          id="lastName"
                         />
                         <Error apiErrors={errors.last_name} />
                       </SectionField>
@@ -377,15 +379,17 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                       }
                     </Section>
 
-                    <Button
-                      id="e2e-profile-edit-form-button"
-                      text={
-                        dirty && !isValid
-                        ? <FormattedMessage {...messages.buttonErrorLabel} />
-                        : <FormattedMessage {...messages.submit} />
-                      }
-                      processing={isSubmitting}
-                      style={dirty && !isValid ? 'error' : 'primary'}
+                    <SubmitWrapper
+                      status={dirty && !isValid ? 'error' : status === 'success' ? 'success' : 'enabled'}
+                      style="primary"
+                      loading={isSubmitting}
+                      messages={{
+                        buttonSave: messages.submit,
+                        buttonError: messages.buttonErrorLabel,
+                        buttonSuccess: messages.buttonSuccessLabel,
+                        messageSuccess: messages.messageSuccess,
+                        messageError: messages.messageError,
+                      }}
                     />
                   </Form>
                 </Segment>
@@ -398,10 +402,13 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
 }
 
 export default withFormik<Props, IUserUpdate, IUserUpdate>({
-  handleSubmit: (values, { props, setSubmitting, resetForm, setErrors }) => {
+  handleSubmit: (values, { props, setSubmitting, resetForm, setErrors, setStatus }) => {
+    setStatus('');
+
     updateUser(props.user.id, values)
     .then(() => {
       resetForm();
+      setStatus('success');
     })
     .catch((errorResponse) => {
       if (errorResponse.json) {
