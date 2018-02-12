@@ -1,10 +1,7 @@
 FactoryBot.define do
   factory :invite do
-    email "MyString"
-    inviter nil
-    first_name "MyString"
-    last_name "MyString"
-    locale "MyString"
-    group nil
+    email "nonexisting@cocacola.gov"
+    inviter { create(:user) }
+    group { create(:group) }
   end
 end
