@@ -78,21 +78,6 @@ class WebApi::V1::MembershipsController < ApplicationController
     end
   end
 
-  def accept_invite ### dont need no group idea
-    @invite = Invite.find_by(token: accept_invite_params[:token])
-
-
-    if @user && ResetPasswordService.new.token_valid?(@user, reset_password_params[:token])
-      if @user.update(password: reset_password_params[:password], reset_password_token: nil)
-        render json: @membership
-      else
-        render json: {errors: @user.errors.details}, status: :unprocessable_entity
-      end
-    else
-      render json: {errors: {token: [{error: "invalid", value: reset_password_params[:token]}]}}, status: :unauthorized
-    end
-  end
-
 
   def set_membership
     @membership = Membership.find params[:id]
@@ -107,16 +92,7 @@ class WebApi::V1::MembershipsController < ApplicationController
 
   def invite_params
     params.require(:membership).permit(
-      :email,
-      :first_name,
-      :last_name,
-      :locale
-    )
-  end
-
-  def accept_invite_params
-    params.require(:membership).permit(
-      :token # and a user???
+      :email
     )
   end
 

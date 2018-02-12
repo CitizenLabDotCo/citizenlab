@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180118125241) do
+ActiveRecord::Schema.define(version: 20180209161249) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -190,6 +190,18 @@ ActiveRecord::Schema.define(version: 20180118125241) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_identities_on_user_id"
+  end
+
+  create_table "invites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "token", null: false
+    t.string "email", null: false
+    t.uuid "inviter_id", null: false
+    t.uuid "group_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_invites_on_group_id"
+    t.index ["inviter_id"], name: "index_invites_on_inviter_id"
+    t.index ["token"], name: "index_invites_on_token"
   end
 
   create_table "memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -398,6 +410,8 @@ ActiveRecord::Schema.define(version: 20180118125241) do
   add_foreign_key "ideas_topics", "ideas"
   add_foreign_key "ideas_topics", "topics"
   add_foreign_key "identities", "users"
+  add_foreign_key "invites", "groups"
+  add_foreign_key "invites", "users", column: "inviter_id"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
   add_foreign_key "notifications", "comments"
