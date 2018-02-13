@@ -30,7 +30,7 @@ import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
 // animations
-import TransitionGroup from 'react-transition-group/TransitionGroup';
+// import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
@@ -70,15 +70,15 @@ const Container = styled.div`
 `;
 
 const CommentsWithReplyBoxContainer = styled.div`
-  border-radius: 4px;
-  /* border: solid 1px #e4e4e4; */
+  border-radius: 5px;
+  /* box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.15); */
 `;
 
 const CommentsContainer = styled.div`
   border-radius: 5px;
   position: relative;
   border: solid 1px #e4e4e4;
-  /* background: #fff; */
+  background: #fafafa;
 
   &.hasReplyBox {
     border-bottom-left-radius: 0px;
@@ -113,11 +113,11 @@ const CommentBody = styled.div`
 
   span,
   p {
-    white-space: pre-wrap;
+    /* white-space: pre-wrap;
     word-break: normal;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    hyphens: auto;
+    hyphens: auto; */
     margin-bottom: 25px;
 
     &:last-child {
@@ -263,7 +263,6 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
   }
 
   render() {
-    let returnValue: JSX.Element | null = null;
     const { commentId, animate } = this.props;
     const { loaded, locale, currentTenantLocales, authUser, comment, childCommentIds, commentingEnabled } = this.state;
 
@@ -279,61 +278,55 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       ));
       const showCommentForm = authUser && commentingEnabled;
 
-      const parentComment = (
-        <Container className="e2e-comment-thread">
+      return (
+        <CSSTransition
+          in={(animate === true)}
+          classNames="comment"
+          timeout={timeout}
+          enter={(animate === true)}
+          exit={false}
+        >
+          <Container className="e2e-comment-thread">
 
-          <CommentsWithReplyBoxContainer>
-            <CommentsContainer className={`${showCommentForm && 'hasReplyBox'}`}>
-              <CommentContainerInner>
-                <StyledMoreActionsMenu
-                  height="5px"
-                  actions={this.state.moreActions}
-                />
+            <CommentsWithReplyBoxContainer>
+              <CommentsContainer className={`${showCommentForm && 'hasReplyBox'}`}>
+                <CommentContainerInner>
+                  <StyledMoreActionsMenu
+                    height="5px"
+                    actions={this.state.moreActions}
+                  />
 
-                <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
+                  <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
 
-                <CommentBody className="e2e-comment-body" onClick={this.captureClick}>
-                  <span dangerouslySetInnerHTML={{ __html: processedCommentText }} />
-                </CommentBody>
-              </CommentContainerInner>
+                  <CommentBody className="e2e-comment-body" onClick={this.captureClick}>
+                    <span dangerouslySetInnerHTML={{ __html: processedCommentText }} />
+                  </CommentBody>
+                </CommentContainerInner>
 
-              {(childCommentIds && childCommentIds.length > 0) &&
-                <ChildCommentsContainer>
-                  {childCommentIds.map((childCommentId) => {
-                    return (<ChildComment key={childCommentId} commentId={childCommentId} />);
-                  })}
-                </ChildCommentsContainer>
+                {(childCommentIds && childCommentIds.length > 0) &&
+                  <ChildCommentsContainer>
+                    {childCommentIds.map((childCommentId) => {
+                      return (<ChildComment key={childCommentId} commentId={childCommentId} />);
+                    })}
+                  </ChildCommentsContainer>
+                }
+              </CommentsContainer>
+
+              {showCommentForm &&
+                <ChildCommentForm ideaId={ideaId} parentId={commentId} />
               }
-            </CommentsContainer>
+            </CommentsWithReplyBoxContainer>
 
-            {showCommentForm &&
-              <ChildCommentForm ideaId={ideaId} parentId={commentId} />
-            }
-          </CommentsWithReplyBoxContainer>
+            <Modal opened={this.state.spamModalVisible} close={this.closeSpamModal}>
+              <SpamReportForm resourceId={this.props.commentId} resourceType="comments" />
+            </Modal>
 
-          <Modal opened={this.state.spamModalVisible} close={this.closeSpamModal}>
-            <SpamReportForm resourceId={this.props.commentId} resourceType="comments" />
-          </Modal>
-
-        </Container>
+          </Container>
+        </CSSTransition>
       );
-
-      if (animate === true) {
-        returnValue = (
-          <CSSTransition classNames="comment" timeout={timeout}>
-            {parentComment}
-          </CSSTransition>
-        );
-      } else {
-        returnValue = parentComment;
-      }
     }
 
-    return (
-      <TransitionGroup>
-        {returnValue}
-      </TransitionGroup>
-    );
+    return null;
   }
 }
 

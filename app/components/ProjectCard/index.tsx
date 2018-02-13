@@ -27,14 +27,11 @@ import { media, color } from 'utils/styleUtils';
 import { Locale } from 'typings';
 
 const ProjectImageContainer =  styled.div`
-  width: 180px;
-  height: 180px;
-  flex-basis: 180px;
-  flex-shrink: 0;
+  height: 200px;
   flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 200px;
   display: flex;
-  align-items: center;
-  justify-content: center;
   border-radius: 4px;
   margin-right: 10px;
   overflow: hidden;
@@ -42,13 +39,12 @@ const ProjectImageContainer =  styled.div`
 
   ${media.smallerThanMaxTablet`
     width: 100%;
+    flex-basis: 150px;
     margin: 0;
   `}
 `;
 
 const ProjectImagePlaceholder = styled.div`
-  width: 100%;
-  height: 100%;
   flex: 1;
   display: flex;
   align-items: center;
@@ -62,8 +58,6 @@ const ProjectImagePlaceholderIcon = styled(Icon) `
 `;
 
 const ProjectImage: any = styled.div`
-  width: 100%;
-  height: 100%;
   flex: 1;
   background-image: url(${(props: any) => props.imageSrc});
   background-repeat: no-repeat;
@@ -71,25 +65,13 @@ const ProjectImage: any = styled.div`
   background-size: cover;
 `;
 
-const ProjectImageOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #fff;
-  opacity: 0.1;
-  transition: opacity 250ms ease-out;
-`;
-
 const Container = styled(Link)`
   width: 100%;
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   border-radius: 5px;
-  padding: 10px;
+  padding: 16px;
   margin-bottom: 25px;
   background: #fff;
   cursor: pointer;
@@ -97,43 +79,39 @@ const Container = styled(Link)`
   border-radius: 5px;
   overflow: hidden;
   border: solid 1px #e4e4e4;
-  transition: transform 250ms ease-out;
-  will-change: transform;
 
-  &:hover {
-    transform: scale(1.008);
-
-    ${ProjectImageOverlay} {
-      opacity: 0;
-    }
-  }
+  ${media.biggerThanMaxTablet`
+    min-height: 222px;
+  `}
 
   ${media.smallerThanMaxTablet`
     flex-direction: column;
-    align-items: left;
-    padding: 20px;
+    align-items: center;
+    text-align: center;
+    padding: 15px;
   `}
 `;
 
 const ProjectContent = styled.div`
   flex: 1;
-  height: 100%;
   display: flex;
-  flex-direction: column;
-  margin-right: 30px;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 15px;
+  margin-right: 40px;
   margin-left: 30px;
-  padding-top: 15px;
-  padding-bottom: 20px;
 
   ${media.smallerThanMaxTablet`
+    align-items: flex-start;
     margin: 0;
+    padding: 15px;
+    padding-top: 0px;
   `}
+`;
 
-  ${media.phone`
-    width: 100%;
-    margin: 0;
-    align-items: center;
-  `}
+const ProjectContentInner = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const ProjectTitle = styled.h3`
@@ -147,34 +125,28 @@ const ProjectTitle = styled.h3`
   ${media.smallerThanMaxTablet`
     padding-top: 20px;
   `}
-
-  ${media.phone`
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-  `}
 `;
 
 const ProjectDescription = styled.div`
-  color: #576773;
-  font-size: 18px;
-  line-height: 26px;
+  color: ${(props) => props.theme.colors.label};
+  font-size: 16px;
+  line-height: 24px;
   font-weight: 300;
-  margin-top: 10px;
-
-  ${media.phone`
-    display: none;
-  `}
+  margin-top: 20px;
 `;
 
 const ProjectMetaItems = styled.div`
+  color: ${(props) => props.theme.colorMain};
   color: ${(props) => props.theme.colors.label};
   font-size: 16px;
   font-weight: 400;
   line-height: 20px;
   display: flex;
-  margin-top: 30px;
+  margin-top: 25px;
+
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const ProjectMetaItem = styled.div`
@@ -184,8 +156,9 @@ const ProjectMetaItem = styled.div`
 
 const ProjectMetaIcon = styled(Icon)`
   height: 24px;
+  fill: ${(props) => props.theme.colorMain};
   fill: ${(props) => props.theme.colors.label};
-  margin-right: 8px;
+  margin-right: 6px;
   margin-top: -6px;
 `;
 
@@ -196,10 +169,9 @@ const ProjectButtonWrapper = styled.div`
 
   ${media.smallerThanMaxTablet`
     width: 100%;
+    margin-right: 0px;
     margin-top: 20px;
-  `}
-
-  ${media.phone`
+    margin-bottom: 10px;
     align-items: center;
     justify-content: center;
   `}
@@ -303,29 +275,31 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
               </ProjectImagePlaceholder>
             }
 
-            <ProjectImageOverlay />
+            {/* <ProjectImageOverlay /> */}
           </ProjectImageContainer>
 
           <ProjectContent>
-            <ProjectTitle>
-              <T value={titleMultiloc} />
-            </ProjectTitle>
-            <ProjectDescription>
-              {preview}
-            </ProjectDescription>
-            <ProjectMetaItems>
-              <ProjectMetaItem>
-                <ProjectMetaIcon name="idea" />
-                <FormattedMessage 
-                  {...messages.xIdeas} 
-                  values={{
-                    ideasCount,
-                    ideas: formatMessage(messages.ideas),
-                    idea: formatMessage(messages.idea)
-                  }}
-                />
-              </ProjectMetaItem>
-            </ProjectMetaItems>
+            <ProjectContentInner>
+              <ProjectTitle>
+                <T value={titleMultiloc} />
+              </ProjectTitle>
+              <ProjectDescription>
+                {preview}
+              </ProjectDescription>
+              <ProjectMetaItems>
+                <ProjectMetaItem>
+                  <ProjectMetaIcon name="idea" />
+                  <FormattedMessage 
+                    {...messages.xIdeas} 
+                    values={{
+                      ideasCount,
+                      ideas: formatMessage(messages.ideas),
+                      idea: formatMessage(messages.idea)
+                    }}
+                  />
+                </ProjectMetaItem>
+              </ProjectMetaItems>
+            </ProjectContentInner>
           </ProjectContent>
 
           <ProjectButtonWrapper>

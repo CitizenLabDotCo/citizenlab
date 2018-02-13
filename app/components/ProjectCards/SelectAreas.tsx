@@ -66,8 +66,6 @@ class SelectAreas extends React.PureComponent<Props, State> {
   }
 
   handleOnChange = (selectedAreas: string[]) => {
-    console.log('selectedAreas:');
-    console.log(selectedAreas);
     this.props.onChange((selectedAreas || []));
   }
 

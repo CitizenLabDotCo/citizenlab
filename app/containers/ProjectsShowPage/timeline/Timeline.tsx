@@ -41,6 +41,7 @@ const Container = styled.div`
   border-radius: 5px;
   background: #fff;
   border: solid 1px #e4e4e4;
+  /* box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.15); */
 
   * {
     user-select: none;

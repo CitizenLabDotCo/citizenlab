@@ -57,6 +57,11 @@ const Loading = styled.div`
   `}
 `;
 
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const ColumnsContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -147,7 +152,7 @@ const ButtonBarInner = styled.div`
     margin-right: 10px;
   }
 
-  ${media.smallerThanDesktop`
+  ${media.smallerThanMaxTablet`
     margin-left: 35px;
   `}
 `;
@@ -259,7 +264,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
             }
 
             {!noProjects && 
-              <>
+              <Content>
                 <ColumnsContainer>
                   <LeftColumn className={!openProject ? 'flex' : ''}>
                     <ColumnTitle>
@@ -321,7 +326,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
                     disabled={!selectedProjectId}
                   />
                 </WithoutButtonBar>
-              </>
+              </Content>
             }
           </StyledContentContainer>
         </Container>

@@ -10,6 +10,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const timeout = 200;
 const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
@@ -73,9 +74,13 @@ const Overlay = styled.div`
 const ListWrapper = styled.ul`
   list-style: none;
   margin: 0;
-  max-height: 300px;
+  max-height: 320px;
   overflow-y: auto;
   padding: 0;
+
+  ${media.smallerThanMinTablet`
+    max-height: 220px;
+  `}
 `;
 
 const StyledOption: any = styled.li`
@@ -238,8 +243,6 @@ export default class ValuesList extends React.PureComponent<Props, State> {
       <CSSTransition
         classNames="overlay"
         timeout={timeout}
-        mountOnEnter={true}
-        unmountOnExit={true}
         exit={false}
       >
         <Overlay className="deployed">

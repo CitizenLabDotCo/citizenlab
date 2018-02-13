@@ -1,9 +1,6 @@
 import * as React from 'react';
-import { has } from 'lodash';
+import { has, isString } from 'lodash';
 import * as Rx from 'rxjs/Rx';
-
-// libraries
-// import scrollToComponent from 'react-scroll-to-component';
 
 // router
 import { Link, browserHistory } from 'react-router';
@@ -48,13 +45,11 @@ import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-const Container = styled.div`
-  background: #fff;
-`;
+const Container = styled.div``;
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: 860px;
+  max-width: 840px;
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -74,7 +69,7 @@ const IdeaContainer = styled.div`
 
 const HeaderWrapper = styled.div`
   width: 100%;
-  padding-right: 260px;
+  padding-right: 250px;
   display: flex;
   flex-direction: column;
 
@@ -336,7 +331,11 @@ const IdeaBody = styled.div`
   font-weight: 300;
 
   p {
-    margin-bottom: 25px;
+    margin-bottom: 30px;
+
+    &:last-child {
+      margin-bottom: 0px;
+    }
   }
 
   ul {
@@ -366,8 +365,6 @@ const SeparatorRow = styled.div`
   margin: 0;
   margin-top: 45px;
   margin-bottom: 25px;
-  background: #e0e0e0;
-  background: #fff;
 
   ${media.smallerThanMaxTablet`
     margin-top: 20px;
@@ -381,9 +378,9 @@ const RightColumn = styled.div`
   padding: 0;
 `;
 
-const RightColumnDesktop: any = RightColumn.extend`
+const RightColumnDesktop = RightColumn.extend`
   position: sticky;
-  top: 100px;
+  top: 95px;
   align-self: flex-start;
 
   ${media.smallerThanMaxTablet`
@@ -481,6 +478,7 @@ type State = {
 };
 
 export default class IdeasShow extends React.PureComponent<Props, State> {
+  ideaId$: Rx.BehaviorSubject<string>;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -497,44 +495,50 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
       spamModalVisible: false,
       moreActions: []
     };
+    this.ideaId$ = new Rx.BehaviorSubject(null as any);
     this.subscriptions = [];
   }
 
   componentDidMount() {
-    const { ideaId } = this.props;
-    const authUser$ = authUserStream().observable;
-    const comments$ = commentsForIdeaStream(ideaId).observable;
-    const idea$ = ideaByIdStream(ideaId).observable;
-    const ideaWithRelationships$ = idea$.switchMap((idea) => {
-      const ideaImages = idea.data.relationships.idea_images.data;
-      const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
-      const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
-      const ideaStatusId = (idea.data.relationships.idea_status ? idea.data.relationships.idea_status.data.id : null);
-      const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable : Rx.Observable.of(null));
-      const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : Rx.Observable.of(null);
-      const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : Rx.Observable.of(null));
-      const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : Rx.Observable.of(null));
+    this.ideaId$.next(this.props.ideaId);
 
-      return Rx.Observable.combineLatest(
-        authUser$,
-        ideaImage$,
-        ideaAuthor$,
-        ideaStatus$,
-        project$,
-      ).map(([authUser, ideaImage, ideaAuthor, _ideaStatus, project]) => ({ authUser, idea, ideaImage, ideaAuthor, project }));
-    });
+    const ideaId$ = this.ideaId$.filter(ideaId => isString(ideaId)).distinctUntilChanged();
+    const authUser$ = authUserStream().observable;
 
     this.subscriptions = [
-      ideaWithRelationships$.subscribe(({ authUser, idea, ideaImage, ideaAuthor, project }) => {
-        this.setState({ authUser, idea, ideaImage, ideaAuthor, project, loading: false });
-      }),
+      ideaId$
+        .do((x) => console.log(x))
+        .do(() => this.setState({ loading: true }))
+        .switchMap(ideaId => ideaByIdStream(ideaId).observable)
+        .switchMap((idea) => {
+          const ideaImages = idea.data.relationships.idea_images.data;
+          const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
+          const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
+          const ideaStatusId = (idea.data.relationships.idea_status ? idea.data.relationships.idea_status.data.id : null);
+          const ideaImage$ = (ideaImageId ? ideaImageStream(idea.data.id, ideaImageId).observable : Rx.Observable.of(null));
+          const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : Rx.Observable.of(null);
+          const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : Rx.Observable.of(null));
+          const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : Rx.Observable.of(null));
+    
+          return Rx.Observable.combineLatest(
+            authUser$,
+            ideaImage$,
+            ideaAuthor$,
+            ideaStatus$,
+            project$,
+          ).map(([authUser, ideaImage, ideaAuthor, _ideaStatus, project]) => ({ authUser, idea, ideaImage, ideaAuthor, project }));
+        }).subscribe(({ authUser, idea, ideaImage, ideaAuthor, project }) => {
+          this.setState({ authUser, idea, ideaImage, ideaAuthor, project, loading: false });
+        }),
 
-      comments$.subscribe((ideaComments) => {
-        this.setState({ ideaComments });
-      }),
+      ideaId$
+        .switchMap(ideaId => commentsForIdeaStream(ideaId).observable)
+        .subscribe((ideaComments) => {
+          this.setState({ ideaComments });
+        }),
 
       Rx.Observable.combineLatest(
-        idea$,
+        ideaId$.switchMap(ideaId => ideaByIdStream(ideaId).observable),
         authUser$.filter(authUser => authUser !== null)
       ).switchMap(([idea, authUser]) => {
         return hasPermission({
@@ -566,6 +570,10 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
         });
       })
     ];
+  }
+
+  componentDidUpdate() {
+    this.ideaId$.next(this.props.ideaId);
   }
 
   componentWillUnmount() {
@@ -753,8 +761,6 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                       <CSSTransition
                         classNames="map"
                         timeout={300}
-                        mountOnEnter={true}
-                        unmountOnExit={true}
                         exit={true}
                       >
                         <MapWrapper innerRef={this.handleMapWrapperSetRef}>

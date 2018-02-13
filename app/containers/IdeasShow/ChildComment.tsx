@@ -47,8 +47,8 @@ const CommentContainer = styled.div`
   padding-left: 30px;
   padding-right: 30px;
   border-top: solid 1px #e4e4e4;
-  /* background: #fff; */
   position: relative;
+  background: #fafafa;
 
   &:hover {
     ${StyledMoreActionsMenu} {
@@ -70,12 +70,16 @@ const CommentBody = styled.div`
 
   span,
   p {
-    white-space: pre-wrap;
+    /* white-space: pre-wrap;
     word-break: normal;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    hyphens: auto;
+    hyphens: auto; */
     margin-bottom: 25px;
+
+    &:last-child {
+      margin-bottom: 0px;
+    }
   }
 
   a {

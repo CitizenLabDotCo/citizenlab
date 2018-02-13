@@ -161,8 +161,6 @@ export default class Error extends React.PureComponent<Props, State> {
       <CSSTransition
         classNames="error"
         timeout={timeout}
-        mountOnEnter={true}
-        unmountOnExit={true}
         exit={true}
       >
         <StyledErrorMessage className="e2e-error-message" size={size} marginTop={marginTop} marginBottom={marginBottom}>
