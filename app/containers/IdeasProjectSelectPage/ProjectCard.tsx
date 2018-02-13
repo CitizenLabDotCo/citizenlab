@@ -178,6 +178,7 @@ type Props = {
   projectId: string;
   onClick: () => void;
   selected: boolean;
+  className?: string;
 };
 
 type State = {
@@ -290,7 +291,7 @@ export default class ProjectCard extends React.PureComponent<Props, State> {
 
       return (
         <Container className={`${className} ${selected && 'selected'} ${enabled && 'enabled'}`}>
-          <SelectedBox 
+          <SelectedBox
             onClick={this.handleOnClick}
             className={`${selected && 'selected'} ${enabled && 'enabled'}`}
           />
