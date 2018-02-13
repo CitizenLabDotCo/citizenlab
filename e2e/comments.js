@@ -11,8 +11,8 @@ module.exports = {
     .signin('koen@citizenlab.co', 'testtest');
 
     browser
-    .waitForElementVisible('#e2e-ideas-list')
-    .click('#e2e-ideas-list:first-child')
+    .waitForElementVisible('.e2e-idea-card.e2e-has-comments')
+    .click('.e2e-idea-card.e2e-has-comments')
     .waitForElementVisible('#e2e-idea-show')
     .refresh()
     .waitForElementVisible('.e2e-comments')
@@ -27,8 +27,8 @@ module.exports = {
     .signin('koen@citizenlab.co', 'testtest');
 
     browser
-    .waitForElementVisible('#e2e-ideas-list')
-    .click('#e2e-ideas-list:first-child')
+    .waitForElementVisible('.e2e-idea-card.e2e-comments-enabled')
+    .click('.e2e-idea-card.e2e-comments-enabled')
     .waitForElementVisible('#e2e-idea-show')
     .refresh()
     .waitForElementVisible('.e2e-comments')
