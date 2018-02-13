@@ -113,8 +113,6 @@ class SpamReportForm extends React.PureComponent<Props & InjectedIntlProps, Stat
             <CSSTransition
               classNames="reason" 
               timeout={timeout}
-              mountOnEnter={true}
-              unmountOnExit={true}
               enter={true}
               exit={true}
             >

@@ -28,7 +28,7 @@ import messages from './messages';
 import { darken } from 'polished';
 import styled, { css, } from 'styled-components';
 
-const Container: any = styled.div`
+const Container = styled.div`
   width: 100%;
   height: ${(props) => props.theme.menuHeight}px;
   display: flex;
@@ -43,7 +43,12 @@ const Container: any = styled.div`
     outline: none;
   }
 
-  &.scrolled::after {
+  &.hideBorder::after {
+    opacity: 0;
+  }
+
+  &.scrolled::after,
+  &.hideBorder.scrolled::after {
     opacity: 1;
   }
 
@@ -55,13 +60,14 @@ const Container: any = styled.div`
     bottom: 0;
     left: 0;
     right: 0;
-    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.15);
-    opacity: 0;
+    box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.12);
     transition: opacity 100ms ease-out;
-    will-change: opacity;
   }
 
   ${media.smallerThanMaxTablet`
+    position: relative;
+    top: auto;
+
     &::after {
       opacity: 1;
     }
@@ -81,12 +87,16 @@ const LogoLink = styled(Link) `
 `;
 
 const Logo = styled.img`
-  height: 42px;
+  max-height: 42px;
   margin: 0;
   padding: 0px;
   padding-right: 15px;
   padding-left: 30px;
   cursor: pointer;
+
+  ${media.smallerThanMinTablet`
+    max-width: 180px;
+  `}
 `;
 
 const NavigationItems = styled.div`
@@ -264,28 +274,18 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
   render() {
     const { pathname } = this.props.location;
     const { authUser, currentTenantLogo, scrolled } = this.state;
-    let alwaysShowBorder = [
-      'ideas/',
-      'admin',
-      'profile',
-      'complete-signup',
-      'sign-in',
-      'sign-up',
-      'password-recovery',
-      'reset-password',
-      'authentication-error'
+    const hideBorder = [
+      'pages',
+      'projects',
+      'ideas'
     ].some((urlSegment) => {
       return pathname.startsWith('/' + urlSegment);
     });
 
-    if (!alwaysShowBorder) {
-      alwaysShowBorder = pathname.endsWith('ideas/new');
-    }
-
     return (
       <>
         <MobileNavigation />
-        <Container className={`${scrolled && 'scrolled'}`} alwaysShowBorder={alwaysShowBorder}>
+        <Container className={`${scrolled && 'scrolled'} ${hideBorder && 'hideBorder'}`}>
           <Left>
             {currentTenantLogo &&
               <LogoLink to="/">

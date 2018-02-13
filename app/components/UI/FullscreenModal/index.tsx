@@ -25,12 +25,12 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const foregroundTimeout = 400;
+const foregroundTimeout = 350;
 const foregroundEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
-const contentTimeout = 700;
+const contentTimeout = 650;
 const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
-const contentDelay = 500;
+const contentDelay = 450;
 const contentTranslate = '20px';
 
 const ModalBackground = styled.div`
@@ -59,6 +59,10 @@ const ModalBackground = styled.div`
       opacity: 1;
       transition: opacity ${foregroundTimeout}ms ${foregroundEasing};
     }
+  }
+
+  &.foreground-exit {
+    display: none;
   }
 `;
 
@@ -119,7 +123,6 @@ const GoBackButton = styled.div`
   cursor: pointer;
   border-radius: 50%;
   border: solid 1px #e0e0e0;
-  background: transparent;
   transition: all 100ms ease-out;
 
   &:hover {
@@ -177,7 +180,6 @@ const CloseButton = styled.div`
   right: 33px;
   border-radius: 50%;
   border: solid 1px #ccc;
-  background: #fff;
   transition: border-color 100ms ease-out;
 
   &:hover {
@@ -203,9 +205,9 @@ const ModalContent: any = styled.div`
   justify-content: center;
   overflow: hidden;
   outline: none;
-  background: transparent;
   z-index: 10001;
   transform: translate3d(0, 0, 0);
+  /* will-change: transform, opacity; */
 
   &.content-enter {
     opacity: 0;
@@ -216,6 +218,10 @@ const ModalContent: any = styled.div`
       transform: translateY(0);
       transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
     }
+  }
+
+  &.content-exit {
+    display: none;
   }
 `;
 
@@ -357,8 +363,8 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
           <CSSTransition
             classNames="foreground"
             timeout={foregroundTimeout}
-            mountOnEnter={true}
-            unmountOnExit={true}
+            mountOnEnter={false}
+            unmountOnExit={false}
             exit={false}
           >
             <ModalBackground />
@@ -369,8 +375,8 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
           <CSSTransition
             classNames="content"
             timeout={contentTimeout + contentDelay}
-            mountOnEnter={true}
-            unmountOnExit={true}
+            mountOnEnter={false}
+            unmountOnExit={false}
             exit={false}
           >
             <ModalContent id="e2e-fullscreenmodal-content">

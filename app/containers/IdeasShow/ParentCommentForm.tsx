@@ -41,8 +41,8 @@ const StyledTextArea = styled(MentionsTextArea)`
     font-size: 17px !important;
     line-height: 25px !important;
     font-weight: 300 !important;
-    background: #fafafa !important;
-    /* box-shadow: none !important; */
+    background: #fff !important;
+    box-shadow: none !important;
   }
 `;
 
@@ -52,8 +52,8 @@ const StyledAuthor = styled(Author)`
 
 const SubmitButton = styled(Button)`
   position: absolute;
-  bottom: 24px;
-  right: 20px;
+  bottom: 18px;
+  right: 18px;
   z-index: 2;
 `;
 
@@ -199,7 +199,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
                 placeholder={placeholder}
                 rows={8}
                 ideaId={ideaId}
-                padding="25px 25px 70px 25px"
+                padding="20px 20px 80px 20px"
                 value={inputValue}
                 error={errorMessage}
                 onChange={this.handleTextareaOnChange}
@@ -207,6 +207,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
                 <SubmitButton
                   className="e2e-submit-comment"
                   processing={processing}
+                  icon="send"
                   circularCorners={false}
                   onClick={this.handleSubmit}
                   disabled={commentButtonDisabled}

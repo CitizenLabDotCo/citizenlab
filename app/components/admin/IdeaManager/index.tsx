@@ -221,7 +221,11 @@ class IdeaManager extends React.PureComponent<Props, State> {
               onIdeaChangePage={this.props.onIdeaChangePage}
             />
           </MiddleColumn>
-          <CSSTransition in={showInfoSidebar} timeout={200} mountOnEnter={true} unmountOnExit={true} classNames="slide">
+          <CSSTransition
+            in={showInfoSidebar}
+            timeout={200}
+            classNames="slide"
+          >
             <RightColumn>
               <Sticky context={this.state.contextRef} offset={100}>
                 <InfoSidebar

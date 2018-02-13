@@ -8,10 +8,12 @@ import styled from 'styled-components';
 
 const StyledButton = styled(Button)`
   .Button {
+    background: #fff !important;
     border: solid 2px #eaeaea !important;
 
     &:hover {
-      border-color: ${(props) => props.theme.colorMain} !important;
+      /* border-color: ${(props) => props.theme.colorMain} !important; */
+      border-color: #ccc !important;
     }
   }
 `;

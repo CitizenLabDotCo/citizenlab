@@ -105,7 +105,7 @@ const IdeaTitle: any = styled.h4`
 `;
 
 const IdeaAuthor = styled.div`
-  color: #84939d;
+  color: ${(props) => props.theme.colors.label};
   font-size: 15px;
   font-weight: 300;
   line-height: 20px;
@@ -127,12 +127,14 @@ const IdeaContainer = styled(Link)`
   border-radius: 5px;
   overflow: hidden;
   background: #fff;
-  border: solid 1px #eaeaea;
-  transition: transform 250ms ease-out;
+  border: solid 1px #e4e4e4;
+  /* box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.15); */
+  transition: all 250ms ease-out;
   will-change: transform;
 
   &:hover {
     transform: scale(1.015);
+    border-color: #ddd;
 
     ${IdeaImageOverlay} {
       opacity: 0;

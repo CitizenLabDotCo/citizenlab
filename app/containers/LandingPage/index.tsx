@@ -2,13 +2,12 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
 // router
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 
 // components
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import ProjectCards from 'components/ProjectCards';
-import Icon from 'components/UI/Icon';
 import Footer from 'components/Footer';
 import Spinner from 'components/UI/Spinner';
 
@@ -38,9 +37,14 @@ const Container: any = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
+  background: #fff;
 
   ${media.smallerThanMaxTablet`
     min-height: auto;
+  `}
+
+  ${media.smallerThanMinTablet`
+    background: #f9f9fa;
   `}
 `;
 
@@ -64,7 +68,7 @@ const Header = styled.div`
   position: relative;
 
   ${media.smallerThanMinTablet`
-    height: 250px;
+    height: 320px;
   `}
 `;
 
@@ -108,7 +112,7 @@ const HeaderContent = styled.div`
   left: 0;
   right: 0;
   margin: 0 auto;
-  margin-top: -10px;
+  margin-top: -30px;
   padding-left: 30px;
   padding-right: 30px;
   display: flex;
@@ -116,6 +120,10 @@ const HeaderContent = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 2;
+
+  ${media.smallerThanMinTablet`
+    margin-top: -60px;
+  `}
 `;
 
 const HeaderTitle: any = styled.h1`
@@ -182,22 +190,20 @@ const ProjectsStyledContentContainer = StyledContentContainer.extend`
   .FilterSelectorTitle {
     .FilterSelectorTitleText {
         color: #fff;
-        opacity: 0.8;
     }
 
     .FilterSelectorTitleIcon {
         fill: #fff;
-        opacity: 0.8;
     }
 
     &:hover,
     &.deployed {
       .FilterSelectorTitleText {
-        opacity: 1;
+        color: #ccc;
       }
 
       .FilterSelectorTitleIcon {
-        opacity: 1;
+        fill: #ccc;
       }
     }
   }
@@ -220,7 +226,11 @@ const Section = styled.div`
 
 const ProjectSection = Section.extend`
   padding-top: 0px;
-  margin-top: -130px;
+  margin-top: -120px;
+
+  ${media.smallerThanMinTablet`
+    margin-top: -160px;
+  `}
 `;
 
 const SectionHeader = styled.div`
@@ -252,61 +262,6 @@ const SectionContainer = styled.section`
   width: 100%;
   margin-top: 10px;
 `;
-
-const ExploreText = styled.div`
-  color: #84939E;
-  font-size: 17px;
-  font-weight: 400;
-  line-height: 21px;
-  white-space: normal;
-  margin-right: 8px;
-  text-decoration: underline;
-  transition: all 100ms ease-out;
-
-  ${media.smallerThanMaxTablet`
-    font-size: 15px;
-    line-height: 19px;
-  `}
-`;
-
-const ExploreIcon = styled(Icon) `
-  height: 19px;
-  fill: #84939E;
-  margin-top: 1px;
-  transition: all 100ms ease-out;
-`;
-
-const Explore = styled(Link) `
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  margin-bottom: 4px;
-
-  &:hover {
-    ${ExploreText} {
-      color: #000;
-    }
-
-    ${ExploreIcon} {
-      fill: #000;
-    }
-  }
-
-  ${media.smallerThanMinTablet`
-    display: none;
-  `}
-`;
-
-// const SectionFooter = styled.div`
-//   width: 100%;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// `;
-
-// const ViewMoreButton = styled(Button) `
-//   margin-top: 20px;
-// `;
 
 type Props = {};
 
@@ -399,7 +354,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, currentTenant, currentTenantHeader, hasIdeas, hasProjects, loaded } = this.state;
+    const { locale, currentTenant, currentTenantHeader, hasProjects, loaded } = this.state;
 
     if (!loaded) {
       return (
@@ -444,34 +399,9 @@ export default class LandingPage extends React.PureComponent<Props, State> {
               <ProjectsStyledContentContainer>
                 {hasProjects &&
                   <ProjectSection>
-                    {/*
-                    <SectionHeader>
-                      <SectionTitle>
-                        <FormattedMessage {...messages.cityProjects} />
-                      </SectionTitle>
-                      <Explore to="/projects">
-                        <ExploreText>
-                          <FormattedMessage {...messages.exploreAllProjects} />
-                        </ExploreText>
-                        <ExploreIcon name="compass" />
-                      </Explore>
-                    </SectionHeader>
-                    */}
                     <SectionContainer>
-                      <ProjectCards pageSize={3} />
+                      <ProjectCards />
                     </SectionContainer>
-                    {/*
-                    <SectionFooter>
-                      <ViewMoreButton
-                        text={<FormattedMessage {...messages.exploreAllProjects} />}
-                        style="primary"
-                        size="2"
-                        icon="compass"
-                        onClick={this.goToProjectsPage}
-                        circularCorners={false}
-                      />
-                    </SectionFooter>
-                    */}
                   </ProjectSection>
                 }
               </ProjectsStyledContentContainer>
@@ -482,32 +412,10 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                     <SectionTitle>
                       <FormattedMessage {...messages.trendingIdeas} />
                     </SectionTitle>
-                    {hasIdeas &&
-                      <Explore to="/ideas">
-                        <ExploreText>
-                          <FormattedMessage {...messages.exploreAllIdeas} />
-                        </ExploreText>
-                        <ExploreIcon name="compass" />
-                      </Explore>
-                    }
                   </SectionHeader>
                   <SectionContainer>
-                    <IdeaCards filter={landingPageIdeasQuery} loadMoreEnabled={true} />
+                    <IdeaCards />
                   </SectionContainer>
-                  {/*
-                  {hasIdeas &&
-                    <SectionFooter>
-                      <ViewMoreButton
-                        text={<FormattedMessage {...messages.exploreAllIdeas} />}
-                        style="primary"
-                        size="2"
-                        icon="compass"
-                        onClick={this.goToIdeasPage}
-                        circularCorners={false}
-                      />
-                    </SectionFooter>
-                  }
-                  */}
                 </Section>
               </IdeasStyledContentContainer>
 
