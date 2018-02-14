@@ -91,7 +91,7 @@ export default class Input extends React.Component<Props, State> {
   render() {
     let { value, placeholder, error } = this.props;
     const className = this.props['className'];
-    const { id, type } = this.props;
+    const { id, type, name } = this.props;
     const hasError = (!isNull(error) && !isUndefined(error) && !isEmpty(error));
 
     if (this.props.name && this.context.formik && this.context.formik.values[this.props.name]) {

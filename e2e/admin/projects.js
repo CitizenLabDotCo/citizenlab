@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const hash = crypto.randomBytes(20).toString('hex');
+const hash = crypto.randomBytes(5).toString('hex');
 
 module.exports = {
   '@tags': ['city', 'projects', 'zolg'],
@@ -39,7 +39,12 @@ module.exports = {
     .click('@submitButton')
 
     // Test the back to projects overview redirect
-    .waitForElementVisible('.e2e-projects-list .e2e-project-card')
+    .waitForElementVisible('.e2e-projects-list .e2e-project-card');
+
+    // Wait for stream updates
+    browser.pause(1000);
+
+    adminProjectsPage
     .assert.containsText('.e2e-projects-list .e2e-project-card h1 span', `Test Project ${hash}`)
     .click('.e2e-projects-list .e2e-project-card a')
 
