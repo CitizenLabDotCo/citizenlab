@@ -6,6 +6,7 @@ class Invite < ApplicationRecord
   validates :email, presence: true
   validates :inviter, presence: true
   validates :group, presence: true
+  validates :email, uniqueness: { scope: :group }
 
   before_validation :generate_token, on: :create
 
