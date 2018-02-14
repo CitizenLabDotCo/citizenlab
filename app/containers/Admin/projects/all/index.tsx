@@ -229,8 +229,14 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
             {projects && projects && projects.map((project) => {
               const projectImage = get(project, 'attributes.header_bg.small', null);
 
+              // Compose the className for e2e tests
+              const className = `e2e-project-card
+                process-${project.attributes.process_type}
+                participation-${project.attributes.participation_method}
+              `;
+
               return (
-                <ProjectCard key={project.id} className="e2e-project-card">
+                <ProjectCard key={project.id} className={className}>
 
                   {project.attributes.publication_status !== 'published' &&
                     <CustomLabel>
