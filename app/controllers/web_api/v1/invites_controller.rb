@@ -39,4 +39,11 @@ class WebApi::V1::InvitesController < ApplicationController
     )
   end
 
+  def secure_controller?
+    # when accepting an invite, the user is still to be created;
+    # hence, no user is logged in, therefore we do not want to
+    # authenticate a user
+    false
+  end
+
 end

@@ -31,9 +31,16 @@ resource "Invites" do
       let(:last_name) { 'Boulettos' }
       let(:password) { 'I<3BouletteSpecial' }
       let(:locale) { 'nl' }
-      example_request "Accept an invite" do
-        # expect(status).to eq(201)
-        # json_response = json_parse(response_body)
+      example_request "Accept an invite with a valid token" do
+        expect(status).to eq(201)
+        json_response = json_parse(response_body)
+        expect(
+          json_response
+            .dig(:included)
+            .select{|inc| inc[:id] == json_response.dig(:data,:relationships,:user,:data,:id)}&.first
+            &.dig(:attributes,:last_name)
+        ).to eq last_name
+        expect(json_response.dig(:data,:relationships,:group,:data,:id)).to eq @invite.group_id
       end
     
     end
