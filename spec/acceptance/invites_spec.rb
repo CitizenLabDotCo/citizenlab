@@ -24,6 +24,7 @@ resource "Invites" do
         parameter :education, "The education level of the invitee.", required: false
         parameter :bio_multiloc, "The bio (multiloc) of the invitee.", required: false
       end
+      ValidationErrorHelper.new.error_fields(self, User)
       ValidationErrorHelper.new.error_fields(self, Membership)
 
       let(:token) { @invite.token }
@@ -41,6 +42,13 @@ resource "Invites" do
             &.dig(:attributes,:last_name)
         ).to eq last_name
         expect(json_response.dig(:data,:relationships,:group,:data,:id)).to eq @invite.group_id
+      end
+
+      example "Accepting an invite with an invalid token, or an invite which has already been activated" do
+        @invite.destroy!
+
+        do_request
+        expect(response_status).to eq 401 # unauthorized
       end
     
     end
