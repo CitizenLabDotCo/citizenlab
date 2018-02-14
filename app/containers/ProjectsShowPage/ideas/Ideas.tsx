@@ -81,11 +81,11 @@ export default class Ideas extends React.PureComponent<Props, State> {
           </FeatureFlag>
 
           {display === 'card' && type === 'project' &&
-            <IdeaCards filter={{ project: id }} />
+            <IdeaCards queryParameters={{ project: id }} />
           }
 
           {display === 'card' && type === 'phase' &&
-            <IdeaCards filter={{ phase: id }} />
+            <IdeaCards queryParameters={{ phase: id }} />
           }
       </Container>
     );

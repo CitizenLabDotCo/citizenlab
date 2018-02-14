@@ -507,7 +507,6 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
 
     this.subscriptions = [
       ideaId$
-        .do((x) => console.log(x))
         .do(() => this.setState({ loading: true }))
         .switchMap(ideaId => ideaByIdStream(ideaId).observable)
         .switchMap((idea) => {
@@ -629,61 +628,6 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
       const projectTitleMultiloc = (project && project.data ? project.data.attributes.title_multiloc : null);
       const projectId = idea.data.relationships.project.data.id;
 
-      const ideaMetaContent = (
-        <MetaContent>
-          <VoteLabel>
-            <FormattedMessage {...messages.voteOnThisIdea} />
-          </VoteLabel>
-
-          <VoteWrapper
-            ideaId={idea.data.id}
-            votingDescriptor={idea.data.relationships.action_descriptor.data.voting}
-            projectId={projectId}
-          />
-
-          {statusId &&
-            <StatusContainer>
-              <StatusTitle><FormattedMessage {...messages.ideaStatus} /></StatusTitle>
-              <StatusBadge statusId={statusId} />
-            </StatusContainer>
-          }
-
-          <MetaButtons>
-            {ideaLocation && !showMap &&
-              <LocationButton onClick={this.handleMapToggle}>
-                <LocationIconWrapper>
-                  <LocationIcon name="position" />
-                </LocationIconWrapper>
-                <LocationLabel><FormattedMessage {...messages.openMap} /></LocationLabel>
-              </LocationButton>
-            }
-
-            {ideaLocation && showMap &&
-              <LocationButton onClick={this.handleMapToggle}>
-                <LocationIconWrapper>
-                  <LocationIcon name="close" />
-                </LocationIconWrapper>
-                <LocationLabel><FormattedMessage {...messages.closeMap} /></LocationLabel>
-              </LocationButton>
-            }
-
-            <SharingWrapper>
-              <StyledSharing imageUrl={ideaImageLarge} />
-            </SharingWrapper>
-
-            {(moreActions && moreActions.length > 0) &&
-              <MoreActionsMenuWrapper>
-                <MoreActionsMenu
-                  height="5px"
-                  actions={moreActions}
-                  label={<FormattedMessage {...messages.moreOptions} />}
-                />
-              </MoreActionsMenuWrapper>
-            }
-          </MetaButtons>
-        </MetaContent>
-      );
-
       return (
         <Container>
           <IdeaMeta ideaId={idea.data.id} />
@@ -718,7 +662,9 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                   </StatusContainerMobile>
                 }
 
-                {ideaImageLarge ? <IdeaImage src={ideaImageLarge} /> : null}
+                {ideaImageLarge && 
+                  <IdeaImage src={ideaImageLarge} />
+                }
 
                 <AuthorAndAdressWrapper>
                   <AuthorContainer>
@@ -735,24 +681,6 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                       }
                     </AuthorMeta>
                   </AuthorContainer>
-
-                  {/*
-                  {ideaLocation && !showMap &&
-                    <LocationButton onClick={this.handleMapToggle}>
-                      <LocationLabel><FormattedMessage {...messages.openMap} /></LocationLabel>
-                      <LocationLabelMobile><FormattedMessage {...messages.Map} /></LocationLabelMobile>
-                      <LocationIcon name="position" />
-                    </LocationButton>
-                  }
-
-                  {ideaLocation && showMap &&
-                    <LocationButton onClick={this.handleMapToggle}>
-                      <LocationLabel><FormattedMessage {...messages.closeMap} /></LocationLabel>
-                      <LocationLabelMobile><FormattedMessage {...messages.Map} /></LocationLabelMobile>
-                      <LocationIcon name="close" />
-                    </LocationButton>
-                  }
-                  */}
                 </AuthorAndAdressWrapper>
 
                 {ideaLocation &&
@@ -788,13 +716,66 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
               </LeftColumn>
 
               <RightColumnDesktop>
-                {ideaMetaContent}
+                <MetaContent>
+                  <VoteLabel>
+                    <FormattedMessage {...messages.voteOnThisIdea} />
+                  </VoteLabel>
+
+                  <VoteWrapper
+                    ideaId={idea.data.id}
+                    votingDescriptor={idea.data.relationships.action_descriptor.data.voting}
+                    projectId={projectId}
+                  />
+
+                  {statusId &&
+                    <StatusContainer>
+                      <StatusTitle><FormattedMessage {...messages.ideaStatus} /></StatusTitle>
+                      <StatusBadge statusId={statusId} />
+                    </StatusContainer>
+                  }
+
+                  <MetaButtons>
+                    {ideaLocation && !showMap &&
+                      <LocationButton onClick={this.handleMapToggle}>
+                        <LocationIconWrapper>
+                          <LocationIcon name="position" />
+                        </LocationIconWrapper>
+                        <LocationLabel><FormattedMessage {...messages.openMap} /></LocationLabel>
+                      </LocationButton>
+                    }
+
+                    {ideaLocation && showMap &&
+                      <LocationButton onClick={this.handleMapToggle}>
+                        <LocationIconWrapper>
+                          <LocationIcon name="close" />
+                        </LocationIconWrapper>
+                        <LocationLabel><FormattedMessage {...messages.closeMap} /></LocationLabel>
+                      </LocationButton>
+                    }
+
+                    <SharingWrapper>
+                      <StyledSharing imageUrl={ideaImageLarge} />
+                    </SharingWrapper>
+
+                    {(moreActions && moreActions.length > 0) &&
+                      <MoreActionsMenuWrapper>
+                        <MoreActionsMenu
+                          height="5px"
+                          actions={moreActions}
+                          label={<FormattedMessage {...messages.moreOptions} />}
+                        />
+                      </MoreActionsMenuWrapper>
+                    }
+                  </MetaButtons>
+                </MetaContent>
               </RightColumnDesktop>
             </Content>
           </IdeaContainer>
+
           <Modal opened={this.state.spamModalVisible} close={this.closeSpamModal}>
             <SpamReportForm resourceId={this.props.ideaId} resourceType="ideas" />
           </Modal>
+
         </Container>
       );
     }
