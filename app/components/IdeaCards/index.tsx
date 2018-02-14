@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isEqual, get, isString, omitBy, isNil } from 'lodash';
+import { get, isString, isEmpty, omitBy, isNil } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
@@ -41,7 +41,8 @@ const FiltersArea = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+  margin-bottom: 20px;
 `;
 
 const FilterArea = styled.div`
@@ -158,7 +159,8 @@ const LoadMoreButton = styled.div`
   }
 `;
 
-interface IFilter {
+interface IQueryParameters {
+  'page[number]'?: number | undefined;
   'page[size]'?: number | undefined;
   project?: string | undefined;
   phase?: string | undefined;
@@ -169,19 +171,19 @@ interface IFilter {
 }
 
 interface IAccumulator {
-  pageNumber: number;
   ideas: IIdeas;
-  filter: IFilter;
+  queryParameters: IQueryParameters;
   hasMore: boolean;
 }
 
 type Props = {
-  filter?: IFilter | undefined;
+  queryParameters?: IQueryParameters | undefined;
   theme?: object | undefined;
 };
 
 type State = {
-  filter: IFilter;
+  queryParameters: IQueryParameters;
+  searchValue: string | undefined;
   ideas: IIdeas | null;
   hasMore: boolean;
   querying: boolean;
@@ -189,22 +191,24 @@ type State = {
 };
 
 class IdeaCards extends React.PureComponent<Props, State> {
-  filter$: Rx.BehaviorSubject<IFilter>;
-  loadMore$: Rx.BehaviorSubject<boolean>;
+  queryParameters$: Rx.BehaviorSubject<IQueryParameters>;
+  search$: Rx.BehaviorSubject<string>;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      filter: {
+      queryParameters: {
+        'page[number]': 1,
         'page[size]': 12,
+        sort: 'trending',
         project: undefined,
         phase: undefined,
         author: undefined,
-        sort: 'trending',
-        search: '',
-        topics: []
+        search: undefined,
+        topics: undefined
       },
+      searchValue: undefined,
       ideas: null,
       hasMore: false,
       querying: true,
@@ -214,102 +218,112 @@ class IdeaCards extends React.PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    this.filter$ = new Rx.BehaviorSubject({
-      ...this.state.filter,
-      ...this.props.filter
-    });
-    this.loadMore$ = new Rx.BehaviorSubject(false);
+    const queryParameters = {
+      ...this.state.queryParameters,
+      ...this.props.queryParameters
+    };
+    const startAccumulatorValue: IAccumulator = {
+      ideas: {} as IIdeas,
+      queryParameters: {
+        'page[number]': queryParameters['page[number]'],
+        'page[size]': queryParameters['page[size]'],
+        sort: queryParameters.sort
+      },
+      hasMore: false
+    };
+
+    this.queryParameters$ = new Rx.BehaviorSubject(queryParameters);
+    this.search$ = new Rx.BehaviorSubject('');
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
-        this.filter$.distinctUntilChanged((x, y) => isEqual(x, y)),
-        this.loadMore$,
-        (filter, loadMore) => ({ filter, loadMore })
-      ).mergeScan<{ filter: IFilter, loadMore: boolean }, IAccumulator>((acc, { filter, loadMore }) => {
-        const hasFilterChanged = (!isEqual(acc.filter, filter) || !loadMore);
-        const pageNumber = (hasFilterChanged ? 1 : acc.pageNumber + 1);
+        this.queryParameters$,
+        this.search$.distinctUntilChanged().do(searchValue => this.setState({ searchValue })).debounceTime(400)
+      )
+      .map(([queryParameters, search]) => ({ ...queryParameters, search }))
+      .mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
+        const isLoadingMore = (acc.queryParameters['page[number]'] !== queryParameters['page[number]']);
+        const search = (isString(queryParameters.search) && !isEmpty(queryParameters.search) ? queryParameters.search : undefined);
+        const pageNumber = (isLoadingMore ? queryParameters['page[number]'] : 1);
+        const newQueryParameters: IQueryParameters = omitBy({
+          ...queryParameters,
+          search,
+          'page[number]': pageNumber
+        }, isNil);
 
-        this.setState({ querying: hasFilterChanged, loadingMore: !hasFilterChanged });
+        this.setState({
+          querying: !isLoadingMore,
+          loadingMore: isLoadingMore,
+        });
 
-        return ideasStream({
-          queryParameters: omitBy({
-            'page[size]': 12, // default value
-            sort: 'trending', // default value
-            ...filter,
-            'page[number]': pageNumber
-          }, isNil)
-        }).observable.map((ideas) => {
+        return ideasStream({ queryParameters: newQueryParameters }).observable.map((ideas) => {
           const selfLink = get(ideas, 'links.self');
           const lastLink = get(ideas, 'links.last');
           const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
 
           return {
-            pageNumber,
-            filter,
+            queryParameters,
             hasMore,
-            ideas: (hasFilterChanged ? ideas : { data: [...acc.ideas.data, ...ideas.data] }) as IIdeas
+            ideas: (!isLoadingMore ? ideas : { data: [...acc.ideas.data, ...ideas.data] }) as IIdeas
           };
         });
-      }, {
-          ideas: {} as IIdeas,
-          filter: {} as IFilter,
-          pageNumber: 1,
-          hasMore: false
-        }).subscribe(({ ideas, filter, hasMore }) => {
-          this.setState({ ideas, filter, hasMore, querying: false, loadingMore: false });
-        })
+      }, startAccumulatorValue).subscribe(({ ideas, queryParameters, hasMore }) => {
+        this.setState({ ideas, queryParameters, hasMore, querying: false, loadingMore: false });
+      })
     ];
   }
 
-  componentDidUpdate() {
-    this.filter$.next({
-      ...this.state.filter,
-      ...this.props.filter
-    });
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.queryParameters !== this.props.queryParameters) {
+      const queryParameters = {
+        ...this.state.queryParameters,
+        ...this.props.queryParameters
+      };
+      this.queryParameters$.next(queryParameters);
+    }
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  loadMoreIdeas = () => {
+  loadMore = () => {
     if (!this.state.loadingMore) {
-      this.loadMore$.next(true);
+      this.queryParameters$.next({
+        ...this.state.queryParameters,
+        'page[number]': (this.state.queryParameters['page[number]'] as number) + 1
+      });
     }
   }
 
   handleSearchOnChange = (search: string) => {
-    this.filter$.next({
-      ...this.state.filter,
-      search
-    });
+    this.search$.next(search);
   }
 
   handleSortOnChange = (sort: string) => {
-    this.filter$.next({
-      ...this.state.filter,
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
       sort
     });
   }
 
   handleTopicsOnChange = (topics: string[]) => {
-    this.filter$.next({
-      ...this.state.filter,
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
       topics
     });
   }
 
   render() {
     const theme: any = this.props.theme;
-    const { ideas, filter, hasMore, querying, loadingMore } = this.state;
-    const { search } = filter;
+    const { ideas, searchValue, hasMore, querying, loadingMore } = this.state;
     const hasIdeas = (ideas !== null && ideas.data.length > 0);
 
     return (
       <Container id="e2e-ideas-container">
         <FiltersArea id="e2e-ideas-filters">
           <SearchFilterArea>
-            <StyledSearchInput value={(search || '')} onChange={this.handleSearchOnChange} />
+            <StyledSearchInput value={(searchValue || '')} onChange={this.handleSearchOnChange} />
           </SearchFilterArea>
 
           <SelectFilterArea>
@@ -344,7 +358,7 @@ class IdeaCards extends React.PureComponent<Props, State> {
         }
 
         {(!querying && hasMore) &&
-          <LoadMoreButton className={`${loadingMore && 'loading'}`} onClick={this.loadMoreIdeas}>
+          <LoadMoreButton className={`${loadingMore && 'loading'}`} onClick={this.loadMore}>
             {!loadingMore ? <FormattedMessage {...messages.loadMore} /> : <Spinner size="30px" color={theme.colorMain} />}
           </LoadMoreButton>
         }

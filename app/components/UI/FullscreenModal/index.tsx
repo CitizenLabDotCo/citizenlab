@@ -4,6 +4,7 @@ import * as Rx from 'rxjs/Rx';
 
 // libraries
 import { browserHistory } from 'react-router';
+// import scrollToComponent from 'react-scroll-to-component';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -59,10 +60,6 @@ const ModalBackground = styled.div`
       opacity: 1;
       transition: opacity ${foregroundTimeout}ms ${foregroundEasing};
     }
-  }
-
-  &.foreground-exit {
-    display: none;
   }
 `;
 
@@ -206,8 +203,7 @@ const ModalContent: any = styled.div`
   overflow: hidden;
   outline: none;
   z-index: 10001;
-  transform: translate3d(0, 0, 0);
-  /* will-change: transform, opacity; */
+  will-change: transform, opacity;
 
   &.content-enter {
     opacity: 0;
@@ -218,10 +214,6 @@ const ModalContent: any = styled.div`
       transform: translateY(0);
       transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
     }
-  }
-
-  &.content-exit {
-    display: none;
   }
 `;
 
@@ -245,7 +237,7 @@ type State = {
 class Modal extends React.PureComponent<Props & ITracks, State> {
   unlisten: Function | null;
   goBackUrl: string | null;
-  keydownEventListener: any;
+  ModalContentInnerElement: HTMLDivElement | null;
   subscription: Rx.Subscription | null;
 
   constructor(props: Props) {
@@ -255,6 +247,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     };
     this.unlisten = null;
     this.goBackUrl = null;
+    this.ModalContentInnerElement = null;
     this.subscription = null;
   }
 
@@ -339,6 +332,10 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     if (isFunction(this.unlisten)) {
       this.unlisten();
     }
+
+    if (this.ModalContentInnerElement) {
+      this.ModalContentInnerElement.scrollTop = 0;
+    }
   }
 
   clickOutsideModal = () => {
@@ -351,6 +348,10 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     event.stopPropagation();
     this.props.clickCloseButton({ extra: { url: this.props.url } });
     this.manuallyCloseModal();
+  }
+
+  setRef = (element: HTMLDivElement) => {
+    this.ModalContentInnerElement = (element || null);
   }
 
   render() {
@@ -381,7 +382,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
           >
             <ModalContent id="e2e-fullscreenmodal-content">
 
-              <ModalContentInner>
+              <ModalContentInner innerRef={this.setRef}>
                 {children}
               </ModalContentInner>
 

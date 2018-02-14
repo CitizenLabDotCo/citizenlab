@@ -1,18 +1,9 @@
 import * as React from 'react';
-// import * as Rx from 'rxjs/Rx';
-// import { isString, isEmpty, isArray } from 'lodash';
 
 // components
-// import SelectTopics from './SelectTopics';
-// import SelectSort from './SelectSort';
-// import SearchInput from 'components/UI/SearchInput';
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import Footer from 'components/Footer';
-
-// i18n
-// import { FormattedMessage } from 'utils/cl-intl';
-// import messages from './messages';
 
 // style
 import styled from 'styled-components';
@@ -50,84 +41,17 @@ const StyledContentContainer = styled(ContentContainer)`
 
 type Props = {};
 
-type State = {
-  // search: string;
-  // filter: object;
-};
+type State = {};
 
 export default class IdeasIndex extends React.PureComponent<Props, State> {
-  // search$: Rx.BehaviorSubject<string>;
-  // sort$: Rx.BehaviorSubject<string>;
-  // topics$: Rx.BehaviorSubject<string[]>;
-  // subscriptions: Rx.Subscription[];
-
-  // constructor(props: Props) {
-  //   super(props as any);
-  //   this.state = {
-  //     search: '',
-  //     filter: {
-  //       sort: 'trending'
-  //     }
-  //   };
-  //   this.search$ = new Rx.BehaviorSubject('');
-  //   this.sort$ = new Rx.BehaviorSubject('trending');
-  //   this.topics$ = new Rx.BehaviorSubject([]);
-  // }
-
-  // componentDidMount() {
-  //   this.subscriptions = [
-  //     Rx.Observable.combineLatest(
-  //       this.search$.distinctUntilChanged().do(search => this.setState({ search })).debounceTime(400),
-  //       this.sort$,
-  //       this.topics$
-  //     ).subscribe(([search, sort, topics]) => {
-  //       const filter = {};
-
-  //       if (isString(sort) && !isEmpty(sort)) {
-  //         filter['sort'] = sort;
-  //       }
-
-  //       if (isString(search) && !isEmpty(search)) {
-  //         filter['search'] = search;
-  //       }
-
-  //       if (isArray(topics) && !isEmpty(topics)) {
-  //         filter['topics'] = topics;
-  //       }
-
-  //       this.setState({ filter });
-  //     })
-  //   ];
-  // }
-
-  // componentWillUnmount() {
-  //   this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  // }
-
-  // handleSearchOnChange = (value) => {
-  //   this.search$.next(value);
-  // }
-
-  // handleSortOnChange = (value) => {
-  //   this.sort$.next(value[0]);
-  // }
-
-  // handleTopicsOnChange = (values) => {
-  //   this.topics$.next(values);
-  // }
-
   render() {
     return (
       <Container>
-
         <BackgroundColor />
-
         <StyledContentContainer>
           <IdeaCards />
         </StyledContentContainer>
-
         <Footer />
-
       </Container>
     );
   }
