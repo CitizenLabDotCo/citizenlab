@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :user, aliases: [:author, :recipient, :initiating_user] do
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
-    email { Faker::Internet.email }
+    email { make_email_more_unique(Faker::Internet.email) }
     password_digest "testtest"
     demographics {}
     roles []
@@ -25,4 +25,15 @@ FactoryBot.define do
 
   end
 
+end
+
+def make_email_more_unique(email)
+  # When running tests on a huge
+  # amount of generated users,
+  # duplicate emails may occur,
+  # causing validation errors
+  # during the test.
+  parts = email.split('@')
+  parts[0] += "-#{rand(1000000)}"
+  parts.join('@')
 end
