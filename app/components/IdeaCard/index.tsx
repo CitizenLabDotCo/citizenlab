@@ -262,7 +262,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
 
     if (!loading && idea && locale) {
       // const ideaImageUrl = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
-      const createdAt = <FormattedRelative value={idea.data.attributes.created_at} />;
+      const publishedAt = <FormattedRelative value={idea.data.attributes.published_at} />;
       const hasVotingDescriptor = has(idea, 'data.relationships.action_descriptor.data.voting');
       const votingDescriptor = (hasVotingDescriptor ? idea.data.relationships.action_descriptor.data.voting : null);
       const projectId = idea.data.relationships.project.data && idea.data.relationships.project.data.id;
@@ -291,7 +291,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
                 <T value={idea.data.attributes.title_multiloc} />
               </IdeaTitle>
               <IdeaAuthor>
-                {createdAt} <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={ideaAuthor} /> }} />
+                {publishedAt} <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={ideaAuthor} /> }} />
               </IdeaAuthor>
             </IdeaContent>
 

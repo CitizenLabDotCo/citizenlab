@@ -42,7 +42,7 @@ class IdeaButton extends React.PureComponent<Props, State> {
       <Button
         onClick={this.handleOnAddIdeaClick}
         style="primary"
-        size="2"
+        size="1"
         text={<FormattedMessage {...messages.startAnIdea} />}
         circularCorners={false}
         disabled={!enabled}

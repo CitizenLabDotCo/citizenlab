@@ -79,6 +79,7 @@ const Container = styled(Link)`
   border-radius: 5px;
   overflow: hidden;
   border: solid 1px #e4e4e4;
+  /* box-shadow: 0 1px 1px 0 rgba(10, 16, 34, .2); */
 
   ${media.biggerThanMaxTablet`
     min-height: 222px;
@@ -236,7 +237,7 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
   getProjectUrl = (project: IProject) => {
     const projectType = project.data.attributes.process_type;
     const rootProjectUrl = `/projects/${project.data.attributes.slug}`;
-    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/timeline` : `${rootProjectUrl}/ideas`);
+    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/process` : `${rootProjectUrl}/ideas`);
 
     return projectUrl;
   }

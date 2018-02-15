@@ -296,7 +296,7 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
 
                       {project && project.data.attributes.process_type === 'timeline' &&
                         <HeaderButton
-                          to={`/projects/${projectSlug}/timeline`}
+                          to={`/projects/${projectSlug}/process`}
                           activeClassName="active"
                         >
                           <HeaderButtonIconWrapper>

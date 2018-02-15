@@ -169,7 +169,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
                 url={modalUrl}
                 headerChild={fullscreenModalHeaderChild}
               >
-                {modalId && <IdeasShow ideaId={modalId} />}
+                <IdeasShow ideaId={modalId} />
               </FullscreenModal>
 
               <Navbar />

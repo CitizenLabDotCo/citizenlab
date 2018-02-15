@@ -50,11 +50,11 @@ const Container = styled.div`
 
 const Header = styled.div`
   width: 100%;
-  min-height: 70px;
+  /* min-height: 70px; */
   padding: 10px 30px;
   display: flex;
   justify-content: space-between;
-  border-bottom: solid 1px #e6e6e6;
+  /* border-bottom: solid 1px #e6e6e6; */
 `;
 
 const HeaderSection = styled.div`
@@ -478,7 +478,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
                     {phaseStatus === 'present' && (
                       <FormattedMessage {...messages.endsOn} values={{ date: selectedPhaseEnd }} />
                     )}
-
+x
                     {phaseStatus === 'future' && (
                       <FormattedMessage {...messages.startsOn} values={{ date: selectedPhaseStart }} />
                     )}

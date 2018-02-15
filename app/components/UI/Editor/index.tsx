@@ -99,7 +99,6 @@ const DraftEditorContainer = styled.div`
     margin-top: 0px;
     background: transparent;
     overflow: visible;
-    z-index: 0;
 
     .public-DraftEditorPlaceholder-root {
       color: #aaa;
@@ -115,7 +114,7 @@ const DraftEditorContainer = styled.div`
       border: solid 1px #666;
       border-radius: 3px;
       position: absolute;
-      z-index: 9999;
+      z-index: 2;
 
       .rdw-suggestion-option {
         padding: 8px 12px;
