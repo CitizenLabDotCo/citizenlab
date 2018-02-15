@@ -55,29 +55,6 @@ class WebApi::V1::MembershipsController < ApplicationController
     render :json => @users, :each_serializer => WebApi::V1::MemberSerializer, :group_id => params[:group_id]
   end
 
-  def invite
-    authorize Membership
-    invitee = User.find_by(email: invite_params[:email])
-    if invitee
-      @membership = Membership.new(user: invitee, group_id: params[:group_id])
-      if @membership.save
-        render json: @membership, include: ['user'], status: :created
-      else
-        render json: { errors: @membership.errors.details }, status: :unprocessable_entity
-      end
-    else
-      @invite = Invite.new invite_params
-      @invite.group_id = params[:group_id]
-      @invite.inviter ||= current_user
-      if @invite.save
-        SideFxInviteService.new.after_create(@invite, current_user)
-        render json: @invite.reload, include: ['inviter'], status: :created
-      else
-        render json: { errors: @invite.errors.details }, status: :unprocessable_entity
-      end
-    end
-  end
-
 
   def set_membership
     @membership = Membership.find params[:id]

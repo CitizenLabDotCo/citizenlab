@@ -11,8 +11,8 @@ class SideFxInviteService
     LogActivityJob.set(wait: 5.seconds).perform_later(invite, 'created', current_user, invite.created_at.to_i, user_id: invited_user[:id])
   end
 
-  def after_accept frozen_invite, user 
-    LogActivityJob.perform_later(encode_frozen_resource(frozen_invite), 'accepted', user, Time.now.to_i)
+  def after_accept frozen_invite 
+    LogActivityJob.perform_later(encode_frozen_resource(frozen_invite), 'accepted', frozen_invite.invitee, Time.now.to_i)
   end
 
 end
