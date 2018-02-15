@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 5.1.4"
   s.add_dependency "pundit", "~> 1.1.0"
-  s.add_dependency "kaminari", "~> 1.0.1"
+  s.add_dependency "kaminari", "~> 1.1.1"
   s.add_dependency "active_model_serializers", "~> 0.10.7"
   s.add_dependency "knock", "~> 2.1.1"
   s.add_dependency "apartment", "~> 2.1.0"
