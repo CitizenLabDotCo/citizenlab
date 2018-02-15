@@ -22,14 +22,14 @@ class User < ApplicationRecord
 
   store_accessor :demographics, :gender, :birthyear, :domicile, :education
 
+  validates :email, presence: true
+  validates :first_name, :slug, :locale, presence: true, unless: :is_invited?
+
   validates :email, :slug, uniqueness: true
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
-  validates :first_name, :slug, :email, presence: true
-  validates :locale, presence: true, inclusion: { in: proc {Tenant.settings('core','locales')} }
+  validates :locale, inclusion: { in: proc {Tenant.settings('core','locales')} }
   validates :bio_multiloc, multiloc: {presence: false}
-
-
   validates :gender, inclusion: {in: %w(male female unspecified)}, allow_nil: true
   validates :birthyear, numericality: {only_integer: true, greater_than: Time.now.year - 120, less_than: Time.now.year}, allow_nil: true
   validates :domicile, inclusion: {in: proc {['outside'] + Area.select(:id).map(&:id)}}, allow_nil: true
@@ -38,14 +38,15 @@ class User < ApplicationRecord
 
   validates :password, length: { in: 5..72 }, allow_nil: true
   validate do |record|
-    record.errors.add(:last_name, :blank) unless record.last_name.present? or record.cl1_migrated
-    record.errors.add(:password, :blank) unless record.password_digest.present? or record.identities.any?
+    record.errors.add(:last_name, :blank) unless (record.last_name.present? or record.cl1_migrated or record.is_invited)
+    record.errors.add(:password, :blank) unless (record.password_digest.present? or record.identities.any? or record.is_invited)
   end
 
   ROLES_JSON_SCHEMA = Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
   validates :roles, json: { schema: ROLES_JSON_SCHEMA, message: ->(errors) { errors } }
 
-  before_validation :generate_slug, :set_cl1_migrated, on: :create
+  before_validation :set_cl1_migrated, :set_invited_at, on: :create
+  before_validation :generate_slug
   # For prepend: true, see https://github.com/carrierwaveuploader/carrierwave/wiki/Known-Issues#activerecord-callback-ordering
   before_save :generate_avatar, on: :create, prepend: true
 
@@ -71,6 +72,10 @@ class User < ApplicationRecord
 
   def avatar_blank?
     avatar.file.nil?
+  end
+
+  def is_invited?
+    is_invited
   end
 
   def display_name
@@ -112,6 +117,12 @@ class User < ApplicationRecord
 
   def set_cl1_migrated
     self.cl1_migrated ||= false
+  end
+
+  def set_invited_at
+    if self.is_invited
+      self.invited_at ||= Time.now
+    end
   end
 
   def generate_avatar

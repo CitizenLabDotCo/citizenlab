@@ -1,12 +1,10 @@
 class Invite < ApplicationRecord
   belongs_to :inviter, class_name: 'User'
-  belongs_to :group
+  belongs_to :invitee, class_name: 'User'
 
   validates :token, presence: true, uniqueness: true
-  validates :email, presence: true
   validates :inviter, presence: true
-  validates :group, presence: true
-  validates :email, uniqueness: { scope: :group }
+  validates :invitee, presence: true, uniqueness: true
 
   before_validation :generate_token, on: :create
 
@@ -14,6 +12,7 @@ class Invite < ApplicationRecord
   private
 
   def generate_token
+  	# TODO enkel lowercase letters en digits, 8 chars
     self.token ||= SecureRandom.base64
   end
 
