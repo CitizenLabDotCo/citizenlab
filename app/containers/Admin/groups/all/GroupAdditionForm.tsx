@@ -77,6 +77,7 @@ class GroupAdditionForm extends React.PureComponent<Props, State> {
       diff: {
         ...(state.diff || {}),
         title_multiloc: {
+          ...this.state.diff.title_multiloc,
           [state.locale]: value
         }
       }

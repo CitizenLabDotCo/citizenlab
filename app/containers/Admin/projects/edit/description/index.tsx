@@ -103,7 +103,16 @@ class ProjectDescription extends React.Component<Props, State> {
   }
 
   updatePreview = (value) => {
-    this.setState({ diff: { ...this.state.diff, description_preview_multiloc: { [this.state.locale]: value } } });
+    this.setState({
+      diff: {
+        ...this.state.diff,
+        description_preview_multiloc: {
+          ...get(this.state, 'data.attributes.description_preview_multiloc', {}),
+          ...get(this.state, 'diff.description_preview_multiloc', {}),
+          [this.state.locale]: value
+        }
+      }
+    });
   }
 
   changeDesc = (editorState: EditorState): void => {

@@ -163,14 +163,16 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
 
     if (attributeDiff) {
       const newHtmlValue = getHtmlStringFromEditorState(editorState);
-      const descriptionMultiloc = attributeDiff && attributeDiff.description_multiloc || {};
-      descriptionMultiloc[locale] = newHtmlValue;
 
       this.setState({
         editorState,
         attributeDiff: {
           ...attributeDiff,
-          description_multiloc: descriptionMultiloc
+          description_multiloc: {
+            ...get(this.state, 'phase.data.attributes.description_multiloc', {}),
+            ...get(attributeDiff, 'description_multiloc', {}),
+            [locale]: newHtmlValue
+          }
         }
       });
     }

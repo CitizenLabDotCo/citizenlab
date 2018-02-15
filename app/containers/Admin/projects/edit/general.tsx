@@ -287,6 +287,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       projectAttributesDiff: {
         ...state.projectAttributesDiff,
         title_multiloc: {
+          ...get(state, 'projectData.attributes.title_multiloc', {}),
           ...get(state, 'projectAttributesDiff.title_multiloc', {}),
           [state.locale as string]: newTitle
         }
@@ -493,6 +494,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
 
         if (!isEmpty(projectAttributesDiff)) {
           if (projectData) {
+            console.log(projectAttributesDiff);
             await updateProject(projectData.id, projectAttributesDiff);
           } else {
             const project = await addProject(projectAttributesDiff);

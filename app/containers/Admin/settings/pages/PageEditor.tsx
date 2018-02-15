@@ -148,14 +148,15 @@ export default class PageEditor extends React.PureComponent<Props, State> {
     const htmlValue = getHtmlStringFromEditorState(editorState);
 
     if (diff) {
-      const newValue = diff && diff.body_multiloc || {};
-      newValue[locale] = htmlValue;
-
       this.setState({
         editorState,
         diff: {
           ...diff,
-          body_multiloc: newValue
+          body_multiloc: {
+            ...get(this.state, 'page.attributes.body_multiloc', {}),
+            ...get(diff, 'body_multiloc', {}),
+            [locale]: htmlValue
+          }
         }
       });
     }
