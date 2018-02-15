@@ -125,14 +125,15 @@ class AdminProjectEventEdit extends React.PureComponent<Props & InjectedIntlProp
     const htmlValue = getHtmlStringFromEditorState(editorState);
 
     if (attributeDiff) {
-      const descriptionMultiloc = attributeDiff && attributeDiff.description_multiloc || {};
-      descriptionMultiloc[locale] = htmlValue;
-
       this.setState({
         editorState,
         attributeDiff: {
           ...attributeDiff,
-          description_multiloc: descriptionMultiloc
+          description_multiloc: {
+            ...get(this.state, 'event.data.attributes.description_multiloc', {}),
+            ...get(attributeDiff, 'description_multiloc', {}),
+            [locale]: htmlValue
+          }
         }
       });
     }
