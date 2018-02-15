@@ -28,7 +28,7 @@ const Overlay = styled.div`
   position: absolute;
   top: 35px;
   right: -10px;
-  z-index: 10;
+  z-index: 2;
   transform-origin: right top;
 
   * {
@@ -106,7 +106,7 @@ const StyledOption: any = styled.li`
   &.focused,
   &:hover {
     color: #000;
-    background: #f9f9fa;
+    background: #f6f6f6;
   }
 `;
 

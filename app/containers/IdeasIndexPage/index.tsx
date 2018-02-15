@@ -7,7 +7,6 @@ import Footer from 'components/Footer';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -15,27 +14,11 @@ const Container = styled.div`
   align-items: center;
   background: #fff;
   position: relative;
-
-  ${media.smallerThanMaxTablet`
-    background: #f9f9fa;
-  `}
-`;
-
-const BackgroundColor = styled.div`
-  position: absolute;
-  top: 200px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 0;
   background: #f9f9fa;
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
+  margin-top: 60px;
   padding-bottom: 80px;
 `;
 
@@ -47,7 +30,6 @@ export default class IdeasIndex extends React.PureComponent<Props, State> {
   render() {
     return (
       <Container>
-        <BackgroundColor />
         <StyledContentContainer>
           <IdeaCards />
         </StyledContentContainer>

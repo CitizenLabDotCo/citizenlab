@@ -4,14 +4,9 @@ import * as Rx from 'rxjs/Rx';
 
 // components
 import ParentComment from './ParentComment';
-import ParentCommentForm from './ParentCommentForm';
 
 // services
 import { commentsForIdeaStream, commentStream, IComments } from 'services/comments';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 // style
 import styled from 'styled-components';
@@ -20,18 +15,6 @@ const Container = styled.div`
   padding: 0;
   margin: 0;
 `;
-
-const Title = styled.h2`
-  color: #333;
-  font-size: 24px;
-  line-height: 38px;
-  font-weight: 500;
-  margin: 0;
-  padding: 0;
-  margin-bottom: 20px;
-`;
-
-const ParentCommentsContainer = styled.div``;
 
 type Props = {
   ideaId: string;
@@ -111,33 +94,17 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
     const { ideaId } = this.props;
     const { parentComments, loaded, newCommentId } = this.state;
 
-    if (loaded) {
-      let parentCommentsList: JSX.Element[] | null = null;
-
-      if (parentComments && parentComments.data && parentComments.data.length > 0) {
-        parentCommentsList = parentComments.data.map((comment) => (
-          <ParentComment
-            key={comment.id}
-            ideaId={ideaId}
-            commentId={comment.id}
-            animate={(newCommentId === comment.id)}
-          />
-        ));
-      }
-
+    if (loaded && parentComments && parentComments.data && parentComments.data.length > 0) {
       return (
-        <Container className={className}>
-          <Title>
-            <FormattedMessage {...messages.commentsTitle} />
-          </Title>
-
-          <ParentCommentForm ideaId={ideaId} />
-
-          {parentCommentsList !== null &&
-            <ParentCommentsContainer className="e2e-comments-container">
-              {parentCommentsList}
-            </ParentCommentsContainer>
-          }
+        <Container className={`e2e-comments-container ${className}`}>
+          {parentComments.data.map((comment) => (
+            <ParentComment
+              key={comment.id}
+              ideaId={ideaId}
+              commentId={comment.id}
+              animate={(newCommentId === comment.id)}
+            />
+          ))}
         </Container>
       );
     }

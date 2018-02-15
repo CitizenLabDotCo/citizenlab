@@ -19,6 +19,7 @@ import SpamReportForm from 'containers/SpamReport';
 import Modal from 'components/UI/Modal';
 import UserName from 'components/UI/UserName';
 import VoteWrapper from './VoteWrapper';
+import ParentCommentForm from './ParentCommentForm';
 
 // services
 import { ideaByIdStream, IIdea } from 'services/ideas';
@@ -37,7 +38,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // animations
-import TransitionGroup from 'react-transition-group/TransitionGroup';
+// import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
@@ -45,7 +46,25 @@ import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-const Container = styled.div``;
+const contentTimeout = 700;
+const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
+const contentDelay = 450;
+const contentTranslate = '22px';
+
+const Container = styled.div`
+  will-change: transform, opacity;
+
+  &.content-enter {
+    opacity: 0;
+    transform: translateY(${contentTranslate});
+
+    &.content-enter-active {
+      opacity: 1;
+      transform: translateY(0);
+      transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
+    }
+  }
+`;
 
 const IdeaContainer = styled.div`
   width: 100%;
@@ -183,7 +202,6 @@ const LocationLabel = styled.div`
   font-size: 15px;
   font-weight: 400;
   margin-right: 6px;
-
   max-width: 200px;
   font-size: 15px;
   line-height: 19px;
@@ -235,7 +253,7 @@ const MapWrapper = styled.div`
   height: 265px;
   position: relative;
   overflow: hidden;
-  z-index: 9;
+  z-index: 2;
 
   &.map-enter {
     height: 0;
@@ -265,16 +283,18 @@ const MapPaddingBottom = styled.div`
   height: 30px;
 `;
 
-const AddressWrapper = styled.p`
-  background: rgba(255, 255, 255, .7);
+const AddressWrapper = styled.div`
+  color: #fff;
+  font-size: 16px;
+  font-weight: 300;
+  background: rgba(0, 0, 0, 0.4);
   border-top: 1px solid #eaeaea;
-  bottom: 0;
-  left: 0;
   margin: 0;
-  padding: .5rem;
+  padding: 10px;
   position: absolute;
   right: 0;
-  z-index: 100;
+  left: 0;
+  bottom: 0;
 `;
 
 const AuthorAvatar = styled(Avatar)`
@@ -357,6 +377,16 @@ const IdeaBody = styled.div`
   strong {
     font-weight: 500;
   }
+`;
+
+const CommentsTitle = styled.h2`
+  color: #333;
+  font-size: 24px;
+  line-height: 38px;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 20px;
 `;
 
 const SeparatorRow = styled.div`
@@ -461,7 +491,7 @@ const MoreActionsMenuWrapper = styled.div`
 `;
 
 type Props = {
-  ideaId: string;
+  ideaId: string | null;
 };
 
 type State = {
@@ -471,44 +501,50 @@ type State = {
   ideaImage: IIdeaImage | null;
   ideaComments: IComments | null;
   project: IProject | null;
-  loading: boolean;
+  loaded: boolean;
   showMap: boolean;
   spamModalVisible: boolean;
   moreActions: IAction[];
 };
 
 export default class IdeasShow extends React.PureComponent<Props, State> {
-  ideaId$: Rx.BehaviorSubject<string>;
+  initialState: State;
+  ideaId$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
     super(props as any);
-    this.state = {
+    const initialState = {
       authUser: null,
       idea: null,
       ideaAuthor: null,
       ideaImage: null,
       ideaComments: null,
       project: null,
-      loading: true,
+      loaded: false,
       showMap: false,
       spamModalVisible: false,
       moreActions: []
     };
-    this.ideaId$ = new Rx.BehaviorSubject(null as any);
+    this.initialState = initialState;
+    this.state = initialState;
+    this.ideaId$ = new Rx.BehaviorSubject(null);
     this.subscriptions = [];
   }
 
   componentDidMount() {
     this.ideaId$.next(this.props.ideaId);
 
-    const ideaId$ = this.ideaId$.filter(ideaId => isString(ideaId)).distinctUntilChanged();
+    const ideaId$ = this.ideaId$.distinctUntilChanged().filter(ideaId => isString(ideaId));
     const authUser$ = authUserStream().observable;
 
     this.subscriptions = [
+      this.ideaId$.distinctUntilChanged().filter(ideaId => !ideaId).subscribe(() => {
+        this.setState(this.initialState);
+      }),
+
       ideaId$
-        .do(() => this.setState({ loading: true }))
-        .switchMap(ideaId => ideaByIdStream(ideaId).observable)
+        .switchMap((ideaId: string) => ideaByIdStream(ideaId).observable)
         .switchMap((idea) => {
           const ideaImages = idea.data.relationships.idea_images.data;
           const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
@@ -518,7 +554,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
           const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : Rx.Observable.of(null);
           const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : Rx.Observable.of(null));
           const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : Rx.Observable.of(null));
-    
+
           return Rx.Observable.combineLatest(
             authUser$,
             ideaImage$,
@@ -526,18 +562,19 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
             ideaStatus$,
             project$,
           ).map(([authUser, ideaImage, ideaAuthor, _ideaStatus, project]) => ({ authUser, idea, ideaImage, ideaAuthor, project }));
-        }).subscribe(({ authUser, idea, ideaImage, ideaAuthor, project }) => {
-          this.setState({ authUser, idea, ideaImage, ideaAuthor, project, loading: false });
+        })
+        .subscribe(({ authUser, idea, ideaImage, ideaAuthor, project }) => {
+          this.setState({ authUser, idea, ideaImage, ideaAuthor, project, loaded: true });
         }),
 
-      ideaId$
-        .switchMap(ideaId => commentsForIdeaStream(ideaId).observable)
-        .subscribe((ideaComments) => {
-          this.setState({ ideaComments });
-        }),
+      ideaId$.switchMap((ideaId) => {
+        return commentsForIdeaStream(ideaId as string).observable;
+      }).subscribe((ideaComments) => {
+        this.setState({ ideaComments });
+      }),
 
       Rx.Observable.combineLatest(
-        ideaId$.switchMap(ideaId => ideaByIdStream(ideaId).observable),
+        ideaId$.switchMap((ideaId: string) => ideaByIdStream(ideaId).observable),
         authUser$.filter(authUser => authUser !== null)
       ).switchMap(([idea, authUser]) => {
         return hasPermission({
@@ -548,12 +585,10 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
         }).map((granted) => ({ authUser, granted }));
       }).subscribe(({ granted }) => {
         this.setState(() => {
-          let moreActions: IAction[] = [
-            {
-              label: <FormattedMessage {...messages.reportAsSpam} />,
-              handler: this.openSpamModal
-            }
-          ];
+          let moreActions: IAction[] = [{
+            label: <FormattedMessage {...messages.reportAsSpam} />,
+            handler: this.openSpamModal
+          }];
 
           if (granted) {
             moreActions = [
@@ -613,9 +648,11 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { idea, ideaImage, ideaAuthor, ideaComments, project, loading, showMap, moreActions } = this.state;
+    let content: JSX.Element | null = null;
+    const { ideaId } = this.props;
+    const { idea, ideaImage, ideaAuthor, ideaComments, project, loaded, showMap, moreActions } = this.state;
 
-    if (!loading && idea !== null) {
+    if (loaded && idea !== null && ideaId) {
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
       const createdAt = idea.data.attributes.created_at;
       const titleMultiloc = idea.data.attributes.title_multiloc;
@@ -623,13 +660,13 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
       const ideaImageMedium = (ideaImage && has(ideaImage, 'data.attributes.versions.medium') ? ideaImage.data.attributes.versions.medium : null);
       const ideaImageLarge = (ideaImage && has(ideaImage, 'data.attributes.versions.large') ? ideaImage.data.attributes.versions.large : null);
-      const ideaLocation = idea.data.attributes.location_point_geojson || null;
-      const ideaAdress = idea.data.attributes.location_description || null;
+      const ideaLocation = (idea.data.attributes.location_point_geojson || null);
+      const ideaAdress = (idea.data.attributes.location_description || null);
       const projectTitleMultiloc = (project && project.data ? project.data.attributes.title_multiloc : null);
       const projectId = idea.data.relationships.project.data.id;
 
-      return (
-        <Container>
+      content = (
+        <>
           <IdeaMeta ideaId={idea.data.id} />
 
           <IdeaContainer id="e2e-idea-show">
@@ -676,7 +713,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                       {createdAt &&
                         <TimeAgo>
                           <FormattedRelative value={createdAt} />
-                          <Activities ideaId={this.props.ideaId} />
+                          <Activities ideaId={ideaId} />
                         </TimeAgo>
                       }
                     </AuthorMeta>
@@ -684,20 +721,19 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                 </AuthorAndAdressWrapper>
 
                 {ideaLocation &&
-                  <TransitionGroup>
-                    {showMap &&
-                      <CSSTransition
-                        classNames="map"
-                        timeout={300}
-                        exit={true}
-                      >
-                        <MapWrapper innerRef={this.handleMapWrapperSetRef}>
-                          {ideaAdress && <AddressWrapper>{ideaAdress}</AddressWrapper>}
-                          <IdeaMap location={ideaLocation} id={idea.data.id} />
-                        </MapWrapper>
-                      </CSSTransition>
-                    }
-                  </TransitionGroup>
+                  <CSSTransition
+                    classNames="map"
+                    in={showMap}
+                    timeout={300}
+                    mountOnEnter={true}
+                    unmountOnExit={true}
+                    exit={true}
+                  >
+                    <MapWrapper innerRef={this.handleMapWrapperSetRef}>
+                      <IdeaMap location={ideaLocation} id={idea.data.id} />
+                      {ideaAdress && <AddressWrapper>{ideaAdress}</AddressWrapper>}
+                    </MapWrapper>
+                  </CSSTransition>
                 }
 
                 {ideaLocation && showMap &&
@@ -711,6 +747,12 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                 <SeparatorRow />
 
                 <StyledSharingMobile imageUrl={ideaImageMedium} />
+
+                <CommentsTitle>
+                  <FormattedMessage {...messages.commentsTitle} />
+                </CommentsTitle>
+
+                <ParentCommentForm ideaId={ideaId} />
 
                 {ideaComments && <Comments ideaId={idea.data.id} />}
               </LeftColumn>
@@ -740,7 +782,9 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                         <LocationIconWrapper>
                           <LocationIcon name="position" />
                         </LocationIconWrapper>
-                        <LocationLabel><FormattedMessage {...messages.openMap} /></LocationLabel>
+                        <LocationLabel>
+                          <FormattedMessage {...messages.openMap} />
+                        </LocationLabel>
                       </LocationButton>
                     }
 
@@ -749,7 +793,9 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                         <LocationIconWrapper>
                           <LocationIcon name="close" />
                         </LocationIconWrapper>
-                        <LocationLabel><FormattedMessage {...messages.closeMap} /></LocationLabel>
+                        <LocationLabel>
+                          <FormattedMessage {...messages.closeMap} />
+                        </LocationLabel>
                       </LocationButton>
                     }
 
@@ -773,13 +819,25 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
           </IdeaContainer>
 
           <Modal opened={this.state.spamModalVisible} close={this.closeSpamModal}>
-            <SpamReportForm resourceId={this.props.ideaId} resourceType="ideas" />
+            <SpamReportForm resourceId={ideaId} resourceType="ideas" />
           </Modal>
-
-        </Container>
+        </>
       );
     }
 
-    return null;
+    return (
+      <CSSTransition
+        classNames="content"
+        in={loaded}
+        timeout={contentTimeout + contentDelay}
+        mountOnEnter={false}
+        unmountOnExit={false}
+        exit={false}
+      >
+        <Container>
+          {content}
+        </Container>
+      </CSSTransition>
+    );
   }
 }

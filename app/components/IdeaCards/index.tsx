@@ -144,7 +144,6 @@ const LoadMoreButton = styled.div`
   border-radius: 5px;
   transition: all 100ms ease-out;
   background: #f0f0f0;
-  will-change: background;
 
   &:not(.loading) {
     cursor: pointer;
@@ -218,19 +217,8 @@ class IdeaCards extends React.PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    const queryParameters = {
-      ...this.state.queryParameters,
-      ...this.props.queryParameters
-    };
-    const startAccumulatorValue: IAccumulator = {
-      ideas: {} as IIdeas,
-      queryParameters: {
-        'page[number]': queryParameters['page[number]'],
-        'page[size]': queryParameters['page[size]'],
-        sort: queryParameters.sort
-      },
-      hasMore: false
-    };
+    const queryParameters = { ...this.state.queryParameters, ...this.props.queryParameters };
+    const startAccumulatorValue: IAccumulator = { queryParameters, ideas: {} as IIdeas, hasMore: false };
 
     this.queryParameters$ = new Rx.BehaviorSubject(queryParameters);
     this.search$ = new Rx.BehaviorSubject('');
@@ -275,11 +263,10 @@ class IdeaCards extends React.PureComponent<Props, State> {
 
   componentDidUpdate(prevProps: Props) {
     if (prevProps.queryParameters !== this.props.queryParameters) {
-      const queryParameters = {
+      this.queryParameters$.next({
         ...this.state.queryParameters,
         ...this.props.queryParameters
-      };
-      this.queryParameters$.next(queryParameters);
+      });
     }
   }
 

@@ -179,7 +179,7 @@ const HeaderSubtitle: any = styled.h2`
 
 const Content = styled.div`
   width: 100%;
-  z-index: 4;
+  z-index: 3;
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
@@ -400,7 +400,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                 {hasProjects &&
                   <ProjectSection>
                     <SectionContainer>
-                      <ProjectCards />
+                      <ProjectCards queryParameters={{ 'page[size]': 2 }} />
                     </SectionContainer>
                   </ProjectSection>
                 }
@@ -414,7 +414,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                     </SectionTitle>
                   </SectionHeader>
                   <SectionContainer>
-                    <IdeaCards />
+                    <IdeaCards queryParameters={{ 'page[size]': 9 }} />
                   </SectionContainer>
                 </Section>
               </IdeasStyledContentContainer>

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 type Props = {
   children?: any;
-  onClickOutside: (arg: any) => void;
+  onClickOutside: (arg: React.FormEvent<MouseEvent>) => void;
   className?: string;
   onClick?: () => void;
   id?: string;

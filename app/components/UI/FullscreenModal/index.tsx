@@ -10,7 +10,6 @@ import { browserHistory } from 'react-router';
 import Icon from 'components/UI/Icon';
 
 // animations
-import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // i18n
@@ -26,12 +25,12 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const foregroundTimeout = 350;
+const foregroundTimeout = 400;
 const foregroundEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
-const contentTimeout = 650;
+const contentTimeout = 700;
 const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
-const contentDelay = 450;
+const contentDelay = 500;
 const contentTranslate = '20px';
 
 const ModalBackground = styled.div`
@@ -51,7 +50,12 @@ const ModalBackground = styled.div`
   overflow: hidden;
   border-radius: 0px;
   background: #fff;
-  z-index: 10000;
+  z-index: -10000;
+  will-change: opacity;
+
+  &.opened {
+    z-index: 10000;
+  }
 
   &.foreground-enter {
     opacity: 0;
@@ -202,9 +206,15 @@ const ModalContent: any = styled.div`
   justify-content: center;
   overflow: hidden;
   outline: none;
-  z-index: 10001;
-  will-change: transform, opacity;
+  z-index: -10000;
 
+  &.opened {
+    z-index: 10001;
+  }
+
+  /* will-change: transform, opacity; */
+
+  /* 
   &.content-enter {
     opacity: 0;
     transform: translateY(${contentTranslate});
@@ -215,6 +225,7 @@ const ModalContent: any = styled.div`
       transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
     }
   }
+  */
 `;
 
 interface ITracks {
@@ -359,33 +370,26 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     const { children, opened, headerChild } = this.props;
 
     return (
-      <TransitionGroup>
-        {opened &&
-          <CSSTransition
-            classNames="foreground"
-            timeout={foregroundTimeout}
-            mountOnEnter={false}
-            unmountOnExit={false}
-            exit={false}
-          >
-            <ModalBackground />
-          </CSSTransition>
-        }
+      <>
+        <CSSTransition
+          classNames="foreground"
+          in={opened}
+          timeout={foregroundTimeout}
+          mountOnEnter={false}
+          unmountOnExit={false}
+          exit={false}
+        >
+          <ModalBackground className={`${opened && 'opened'}`} />
+        </CSSTransition>
 
-        {opened &&
-          <CSSTransition
-            classNames="content"
-            timeout={contentTimeout + contentDelay}
-            mountOnEnter={false}
-            unmountOnExit={false}
-            exit={false}
-          >
-            <ModalContent id="e2e-fullscreenmodal-content">
+        <ModalContent id="e2e-fullscreenmodal-content" className={`${opened && 'opened'}`}>
 
-              <ModalContentInner innerRef={this.setRef}>
-                {children}
-              </ModalContentInner>
+          <ModalContentInner innerRef={this.setRef}>
+            {children}
+          </ModalContentInner>
 
+          {opened &&
+            <>
               <TopBar scrolled={scrolled}>
                 <TopBarInner>
                   <GoBackButtonWrapper>
@@ -403,11 +407,11 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
               <CloseButton onClick={this.clickCloseButton}>
                 <CloseIcon name="close4" />
               </CloseButton>
+            </>
+          }
 
-            </ModalContent>
-          </CSSTransition>
-        }
-      </TransitionGroup>
+        </ModalContent>
+      </>
     );
   }
 }

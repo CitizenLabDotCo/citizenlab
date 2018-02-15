@@ -11,7 +11,7 @@ const ButtonBarContainer = styled.div`
   width: 100%;
   height: 68px;
   position: fixed;
-  z-index: 99999;
+  z-index: 2;
   bottom: 0;
   left: 0;
   right: 0;

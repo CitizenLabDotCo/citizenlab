@@ -275,7 +275,7 @@ export default function createRoutes(store) {
       },
       childRoutes: [
         {
-          path: '/projects/:slug/timeline',
+          path: '/projects/:slug/process',
           name: 'Project\'s info page',
           getComponent(nextState, cb) {
             const importModules = Promise.all([

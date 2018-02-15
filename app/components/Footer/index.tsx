@@ -22,6 +22,8 @@ import { LEGAL_PAGES } from 'services/pages';
 // style
 import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
+
+// typings
 import { Locale } from 'typings';
 
 const Container = styled.div`
