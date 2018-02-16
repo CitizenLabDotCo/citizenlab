@@ -53,7 +53,7 @@ export default class timeline extends React.PureComponent<Props, State> {
     ];
   }
 
-  componentDidUpdate(_prevProps: Props) {
+  componentDidUpdate() {
     this.slug$.next(this.props.params.slug);
   }
 

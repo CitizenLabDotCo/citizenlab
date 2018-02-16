@@ -50,7 +50,7 @@ export default class ProjectTimelinePage extends React.PureComponent<Props, Stat
       this.slug$.distinctUntilChanged().filter(slug => isString(slug)).switchMap((slug) => {
         const project$ = projectBySlugStream(slug).observable;
         return project$.map((project) => ({ slug, project }));
-      }).subscribe(({ slug, project }) => {
+      }).delay(3000).subscribe(({ slug, project }) => {
         if (project.data.attributes.process_type !== 'timeline') {
           browserHistory.push(`/projects/${slug}/info`);
         }
