@@ -108,5 +108,4 @@ resource "Memberships" do
     end
 
   end
-
 end 

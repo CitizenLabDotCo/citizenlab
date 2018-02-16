@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Invite, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe "Default factory" do
+    it "is valid" do
+      expect(build(:invite)).to be_valid
+    end
+  end
 end
