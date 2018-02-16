@@ -1,7 +1,7 @@
 class WebApi::V1::MembershipsController < ApplicationController
 
   before_action :set_membership, only: [:show, :destroy]
-  skip_after_action :verify_authorized, only: [:users_search, :accept_invite]
+  skip_after_action :verify_authorized, only: [:users_search]
 
   def index
     @memberships = policy_scope(Membership)
@@ -64,12 +64,6 @@ class WebApi::V1::MembershipsController < ApplicationController
   def membership_params
     params.require(:membership).permit(
       :user_id
-    )
-  end
-
-  def invite_params
-    params.require(:membership).permit(
-      :email
     )
   end
 
