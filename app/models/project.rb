@@ -31,6 +31,7 @@ class Project < ApplicationRecord
   validates :description_preview_multiloc, multiloc: {presence: false}
   validates :slug, presence: true, uniqueness: true, format: {with: SlugService.new.regex }
   validates :visible_to, presence: true, inclusion: {in: VISIBLE_TOS}
+  validates :ordering, presence: true, uniqueness: true
   validates :description_preview_multiloc, json: { 
     schema: DESCRIPTION_PREVIEW_JSON_SCHEMA, 
     message: ->(errors) { errors.map{|e| {fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message]} } },
@@ -46,6 +47,7 @@ class Project < ApplicationRecord
   before_validation :set_process_type, on: :create
   before_validation :generate_slug, on: :create
   before_validation :set_visible_to, on: :create
+  before_validation :set_ordering, on: :create
   before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_presentation_mode, on: :create
@@ -107,6 +109,10 @@ class Project < ApplicationRecord
 
   def set_publication_status
     self.publication_status ||= 'published'
+  end
+
+  def set_ordering
+    self.ordering ||= (Project.maximum(:ordering) || 0)+1
   end
 
 end
