@@ -66,14 +66,12 @@ Rails.application.routes.draw do
       resources :groups do
         resources :memberships, shallow: true, except: [:update] do
           get :users_search, on: :collection
-          post :invite, on: :collection
         end
         get 'by_slug/:slug', on: :collection, to: 'groups#by_slug'
       end
 
-      resources :invites, param: :token, only: [] do
-        post :accept, on: :member
-        # --> generates'/invites/:tok/accept'
+      resources :invites, param: :token, only: [:create] do
+        post :accept, on: :member # --> generates'/invites/:tok/accept'
       end
 
       scope 'stats', controller: 'stats' do

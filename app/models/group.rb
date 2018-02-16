@@ -3,7 +3,6 @@ class Group < ApplicationRecord
   has_many :projects, through: :groups_projects
   has_many :memberships, dependent: :destroy
   has_many :users, through: :memberships
-  has_many :invites, dependent: :destroy
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
