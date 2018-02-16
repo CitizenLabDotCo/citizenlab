@@ -35,7 +35,7 @@
   "app.components.IdeasMap.seeIdea": "Lees het volledige idee",
   "app.components.IdeasShow.changeLogEntry": "{changeType, select, changed_status {{userName} heeft de status van dit idee bewerkt} published {{userName} publiceerde dit idee} changed_title {{userName} heeft de titel van dit idee bewerkt} changed_body {{userName} heeft de beschrijving van dit idee bewerkt}}",
   "app.components.IdeasShow.commentingDisabledInContext": "Reageren op ideeën in '{projectName}' is momenteel uitgeschakeld.",
-  "app.components.IdeasShow.commentingDisabledProjectInactive": "Reageren op dit idee is niet mogelijk, omdat '{projectName}' nog niet is of niet langer actief is.",
+  "app.components.IdeasShow.commentingDisabledProjectInactive": "Je kunt nu niet reageren op dit idee, omdat '{projectName}' voorlopig niet of niet langer actief is.",
   "app.components.IdeasShow.editIdea": "Bewerk idee",
   "app.components.IdeasShow.lastChangesTitle": "Laatste wijzigingen",
   "app.components.IdeasShow.lastUpdated": "Laatst gewijzigd {modificationTime}",
