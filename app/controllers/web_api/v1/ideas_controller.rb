@@ -7,8 +7,11 @@ class WebApi::V1::IdeasController < ApplicationController
   
   def index
     @ideas = policy_scope(Idea).includes(:author, :topics, :areas, :phases, :idea_images, project: [:phases])
+      .left_outer_joins(:idea_status).left_outer_joins(:idea_trending_info)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
+
+    trending_idea_service = TrendingIdeaService.new
 
     add_common_index_filters params
 
@@ -18,9 +21,9 @@ class WebApi::V1::IdeasController < ApplicationController
       when "-new"
         @ideas.order_new(:asc)
       when "trending"
-        @ideas.order_trending
+        trending_idea_service.sort_trending @ideas
       when "-trending"
-        @ideas.order_trending(:asc)
+        trending_idea_service.sort_trending(@ideas).reverse
       when "popular"
         @ideas.order_popular
       when "-popular"
@@ -158,6 +161,9 @@ class WebApi::V1::IdeasController < ApplicationController
       @ideas = @ideas.where(publication_status: params[:publication_status])
     else
       @ideas = @ideas.where(publication_status: 'published')
+    end
+    if params[:filter_trending] == 'true'
+      @ideas = trending_idea_service.filter_trending @ideas
     end
   end
 
