@@ -19,11 +19,12 @@ class User < ApplicationRecord
   has_many :identities, dependent: :destroy
   has_many :spam_reports, dependent: :nullify
   has_many :activities, dependent: :nullify
+  has_many :inviter_invites, class_name: 'Invite', foreign_key: :inviter_id, dependent: :nullify
+  belongs_to :invitee_notifications, class_name: 'Invite', foreign_key: :invitee_id, dependent: :destroy
 
   store_accessor :demographics, :gender, :birthyear, :domicile, :education
 
-  validates :email, presence: true
-  validates :first_name, :slug, :locale, presence: true, unless: :is_invited?
+  validates :email, :first_name, :slug, :locale, presence: true, unless: :is_invited?
 
   validates :email, :slug, uniqueness: true
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
