@@ -1,29 +1,19 @@
 class IdentifyToSegmentJob < ApplicationJob
   queue_as :default
 
-  def perform(user, options={})
-    traits = {}
-    user_id = nil
-    if options[:invited_user]
-      user_id = options[:invited_user][:id]
-      traits = {
-        id: user_id,
-        email: options[:invited_user][:email]
-      }
-    else
-      user_id = user.id
-      traits = {
-        id: user_id,
-        email: user.email,
-        firstName: user.first_name,
-        lastName: user.last_name,
-        createdAt: user.created_at,
-        locale: user.locale,
-        birthday: user.birthyear,
-        gender: user.gender,
-        is_admin: user.admin?
-      }
-    end
+  def perform(user)
+
+    traits = {
+      id: user.id,
+      email: user.email,
+      firstName: user.first_name,
+      lastName: user.last_name,
+      createdAt: user.created_at,
+      locale: user.locale,
+      birthday: user.birthyear,
+      gender: user.gender,
+      is_admin: user.admin?
+    }
 
     tenant_id = nil
 
@@ -40,11 +30,11 @@ class IdentifyToSegmentJob < ApplicationJob
     end
 
     Analytics && Analytics.identify(
-      user_id: user_id,
+      user_id: user.id,
       traits: traits
     )
     Analytics && Analytics.group(
-      user_id: user_id,
+      user_id: user.id,
       group_id: tenant_id,
       traits: {
         name: traits[:tenantName],

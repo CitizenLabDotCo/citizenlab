@@ -109,37 +109,4 @@ resource "Memberships" do
 
   end
 
-  context "Member invite" do
-    before do
-      @admin = create(:admin)
-      token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
-      header 'Authorization', "Bearer #{token}"
-
-      @group = create(:group)
-    end
-
-    post "web_api/v1/groups/:group_id/memberships/invite" do
-      with_options scope: :membership do
-        parameter :email, "The email of the invitee.", required: true
-      end
-      ValidationErrorHelper.new.error_fields(self, Membership)
-      ValidationErrorHelper.new.error_fields(self, Invite)
-
-      let(:group_id) { @group.id }
-      let(:email) { 'nonexistinguser@cocacola.gov' }
-
-      example_request "Invite a non-existing user to become member of a group" do
-        expect(response_status).to eq 201
-        json_response = json_parse(response_body)
-      end
-
-      example "Inviting the same email to the same group twice fails", document: false do
-        create(:invite, email: email, group: @group)
-
-        do_request
-        expect(response_status).to eq 422
-      end
-    end
-  end
-
 end 

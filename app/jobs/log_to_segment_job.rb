@@ -16,11 +16,7 @@ class LogToSegmentJob < ApplicationJob
     }
 
     # Segment requires us to send either a user_id or an anonymous_id
-    if user_id # e.g. invited users have no existing user objects
-      trackingMessage[:user_id] = user_id
-    elsif activity.user_id
-      trackingMessage[:user_id] = activity.user_id
-    else
+    if activity.user_id
       trackingMessage[:anonymous_id] = SecureRandom.base64
     end
 
