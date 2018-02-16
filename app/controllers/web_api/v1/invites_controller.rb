@@ -98,7 +98,16 @@ class WebApi::V1::InvitesController < ApplicationController
   def accept_params
     # TODO shared constant of user creation attributes, but no email here
     params.require(:invite).permit(
-      [:first_name, :last_name, :password, :avatar, :locale, :gender, :birthyear, :domicile, :education, bio_multiloc: I18n.available_locales]
+      :first_name, :last_name, 
+      :password, 
+      :avatar, 
+      :locale, 
+      :gender, 
+      :birthyear, 
+      :domicile, 
+      :education, 
+      bio_multiloc: I18n.available_locales, 
+      group_ids: []
     )
   end
 
