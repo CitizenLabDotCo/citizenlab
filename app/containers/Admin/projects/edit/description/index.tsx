@@ -1,9 +1,7 @@
 // Libraries
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { get, set, isEmpty } from 'lodash';
-
-import { EditorState } from 'draft-js';
+import { isEmpty, get, forOwn } from 'lodash';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -18,15 +16,14 @@ import getSubmitState from 'utils/getSubmitState';
 import { getEditorStateFromHtmlString, getHtmlStringFromEditorState } from 'utils/editorTools';
 
 // Components
-import Label from 'components/UI/Label';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Error from 'components/UI/Error';
-import Editor from 'components/UI/Editor';
+import EditorMultiloc from 'components/UI/EditorMultiloc';
 import { Section, SectionField } from 'components/admin/Section';
-import TextArea from 'components/UI/TextArea';
+import TextAreaMultiloc from 'components/UI/TextAreaMultiloc';
 
 // Typing
-import { API, Locale } from 'typings';
+import { API, Locale, Multiloc, MultilocEditorState } from 'typings';
 
 interface Props {
   params: {
@@ -43,11 +40,10 @@ interface State {
   };
   saved: boolean;
   locale: Locale;
-  editorState: EditorState;
+  descriptionMultilocEditorState: MultilocEditorState | null;
 }
 
-
-class ProjectDescription extends React.Component<Props, State> {
+export default class ProjectDescription extends React.Component<Props, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -60,7 +56,7 @@ class ProjectDescription extends React.Component<Props, State> {
       diff: {},
       errors: {},
       locale: 'en',
-      editorState: EditorState.createEmpty(),
+      descriptionMultilocEditorState: null,
     };
 
     this.subscriptions = [];
@@ -77,22 +73,20 @@ class ProjectDescription extends React.Component<Props, State> {
         Rx.Observable.combineLatest(
           locale$,
           project$
-        )
-        .subscribe(([locale, project]) => {
-          const { description_multiloc } = project.data.attributes;
-          let editorState;
+        ).subscribe(([locale, project]) => {
+          const descriptionMultilocEditorState: MultilocEditorState = {};
+ 
+          forOwn(project.data.attributes.description_multiloc, (htmlValue, locale) => {
+            descriptionMultilocEditorState[locale] = getEditorStateFromHtmlString(htmlValue);
+          });
 
-          if (description_multiloc && description_multiloc[locale] !== undefined) {
-            editorState = getEditorStateFromHtmlString(description_multiloc[locale] || null);
-          }
-
-          this.setState((state) => ({
+          this.setState({
             locale,
-            editorState: (editorState ? editorState : state.editorState),
+            descriptionMultilocEditorState,
             data: project.data,
             loading: false,
             diff: {},
-          }));
+          });
         })
       );
     }
@@ -102,29 +96,26 @@ class ProjectDescription extends React.Component<Props, State> {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  updatePreview = (value) => {
-    this.setState({
+  updatePreview = (previewDescriptionMultiloc: Multiloc) => {
+    this.setState((state) => ({
       diff: {
-        ...this.state.diff,
-        description_preview_multiloc: {
-          ...get(this.state, 'data.attributes.description_preview_multiloc', {}),
-          ...get(this.state, 'diff.description_preview_multiloc', {}),
-          [this.state.locale]: value
-        }
+        ...state.diff,
+        description_preview_multiloc: previewDescriptionMultiloc
       }
-    });
+    }));
   }
 
-  changeDesc = (editorState: EditorState): void => {
-    const { diff, locale } = this.state;
-    const htmlDescription = getHtmlStringFromEditorState(editorState);
-
-    set(diff, `description_multiloc.${locale}`, htmlDescription);
-
-    this.setState({
-      editorState,
-      diff,
-    });
+  handleDescriptionOnChange = (descriptionMultilocEditorState: MultilocEditorState, locale: Locale) => {
+    this.setState((state) => ({
+      descriptionMultilocEditorState,
+      diff: {
+        ...state.diff,
+        description_multiloc: {
+          ...get(state.diff, 'description_multiloc', {}),
+          [locale]: getHtmlStringFromEditorState(descriptionMultilocEditorState[locale])
+        }
+      }
+    }));
   }
 
   handleSaveErrors = (errors) => {
@@ -146,37 +137,30 @@ class ProjectDescription extends React.Component<Props, State> {
   }
 
   render () {
-    const { data, diff, editorState, loading, saved, errors, locale } = this.state;
+    const { data, diff, descriptionMultilocEditorState, loading, saved, errors } = this.state;
     const projectAttrs = { ...data.attributes, ...diff } as IUpdatedProjectProperties;
     const submitState = getSubmitState({ errors, saved, diff });
-    const previewValue = get(projectAttrs, `description_preview_multiloc.${locale}`, '');
 
     return (
       <form className="e2e-project-description-form" onSubmit={this.saveProject}>
         <Section>
           <SectionField>
-            <Label>
-              <FormattedMessage {...messages.descriptionPreviewLabel} />
-            </Label>
-            <TextArea
+            <TextAreaMultiloc
               name="meta_description"
+              label={<FormattedMessage {...messages.descriptionPreviewLabel} />}
               rows={5}
-              value={previewValue}
+              valueMultiloc={projectAttrs.description_preview_multiloc}
               onChange={this.updatePreview}
-              maxLength={280}
+              maxCharCount={280}
             />
             <Error fieldName="description_preview_multiloc" apiErrors={this.state.errors.description_preview_multiloc} />
           </SectionField>
           <SectionField>
-            <Label htmlFor="project-description">
-              <FormattedMessage {...messages.descriptionLabel} />
-            </Label>
-            <Editor
+            <EditorMultiloc
               id="project-description"
-              placeholder=""
-              value={editorState}
-              error=""
-              onChange={this.changeDesc}
+              label={<FormattedMessage {...messages.descriptionLabel} />}
+              valueMultiloc={descriptionMultilocEditorState}
+              onChange={this.handleDescriptionOnChange}
               toolbarConfig={{
                 options: ['inline', 'list', 'link', 'blockType'],
                 inline: {
@@ -213,5 +197,3 @@ class ProjectDescription extends React.Component<Props, State> {
     );
   }
 }
-
-export default ProjectDescription;

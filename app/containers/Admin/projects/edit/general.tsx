@@ -1,12 +1,12 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { isEmpty, get } from 'lodash';
+import { isEmpty, get, forOwn } from 'lodash';
 
 // router
 import { browserHistory } from 'react-router';
 
 // components
-import Input from 'components/UI/Input';
+import InputMultiloc from 'components/UI/InputMultiloc';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
 import Radio from 'components/UI/Radio';
@@ -49,12 +49,12 @@ import { convertUrlToFileObservable } from 'utils/imageTools';
 import styled from 'styled-components';
 
 // typings
-import { API, IOption, ImageFile, Locale } from 'typings';
+import { API, IOption, ImageFile, Locale, Multiloc } from 'typings';
 import Select from 'semantic-ui-react/dist/commonjs/addons/Select/Select';
 
 const timeout = 350;
 
-const TitleInput = styled(Input)`
+const StyledInputMultiloc = styled(InputMultiloc)`
   width: 497px;
 `;
 
@@ -142,7 +142,7 @@ interface State {
   presentationMode: 'map' | 'card';
   oldProjectImages: ImageFile[] | null;
   newProjectImages: ImageFile[] | null;
-  noTitleError: string | null;
+  noTitleError: Multiloc | null;
   apiErrors: { [fieldName: string]: API.Error[] };
   saved: boolean;
   areas: IAreaData[];
@@ -280,17 +280,16 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleTitleOnChange = (newTitle: string) => {
+  handleTitleMultilocOnChange = (titleMultiloc: Multiloc, locale: Locale) => {
     this.setState((state) => ({
       submitState: 'enabled',
-      noTitleError: null,
+      noTitleError: {
+        ...state.noTitleError,
+        [locale]: null
+      },
       projectAttributesDiff: {
         ...state.projectAttributesDiff,
-        title_multiloc: {
-          ...get(state, 'projectData.attributes.title_multiloc', {}),
-          ...get(state, 'projectAttributesDiff.title_multiloc', {}),
-          [state.locale as string]: newTitle
-        }
+        title_multiloc: titleMultiloc
       }
     }));
   }
@@ -438,15 +437,20 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   validate = () => {
     let hasErrors = false;
     const { formatMessage } = this.props.intl;
-    const { projectAttributesDiff, projectData, locale, currentTenant } = this.state;
-    const currentTenantLocales = (currentTenant as ITenant).data.attributes.settings.core.locales;
+    const { projectAttributesDiff, projectData } = this.state;
     const projectAttrs = { ...(projectData ? projectData.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
-    const projectTitle = getLocalized(projectAttrs.title_multiloc as any, locale, currentTenantLocales);
+    const noTitleError = {} as Multiloc;
 
-    if (!projectTitle) {
-      hasErrors = true;
-      this.setState({ noTitleError: formatMessage(messages.noTitleErrorMessage) });
-    }
+    forOwn(projectAttrs.title_multiloc, (title, locale) => {
+      if (!title || (title && title.length < 1)) {
+        noTitleError[locale] = formatMessage(messages.noTitleErrorMessage);
+        hasErrors = true;
+      }
+    });
+
+    this.setState({
+      noTitleError: (!noTitleError || isEmpty(noTitleError) ? null : noTitleError)
+    });
 
     return !hasErrors;
   }
@@ -573,10 +577,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
 
     if (!loading && currentTenant && locale) {
       const newProjectImageFiles = (newProjectImages && newProjectImages.length > 0 ? newProjectImages : null);
-      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
       const projectAttrs = { ...(projectData ? projectData.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
       const areaIds = projectAttrs.area_ids || (projectData && projectData.relationships.areas.data.map((area) => (area.id))) || [];
-      const projectTitle = getLocalized(projectAttrs.title_multiloc as any, locale, currentTenantLocales);
       const areasValues = areaIds.filter((id) => {
         return areasOptions.some(areaOption => areaOption.value === id);
       }).map((id) => {
@@ -600,19 +602,15 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                   }))}
               />
             </SectionField>
+
             <SectionField>
-              <Label htmlFor="project-title">
-                <FormattedMessage {...messages.titleLabel} />
-              </Label>
-              <TitleInput
-                id="project-title"
+              <StyledInputMultiloc
                 type="text"
-                placeholder=""
-                value={projectTitle}
-                error=""
-                onChange={this.handleTitleOnChange}
+                valueMultiloc={projectAttrs.title_multiloc}
+                label={<FormattedMessage {...messages.titleLabel} />}
+                onChange={this.handleTitleMultilocOnChange}
+                errorMultiloc={noTitleError}
               />
-              <Error text={noTitleError} />
               <Error fieldName="title_multiloc" apiErrors={this.state.apiErrors.title_multiloc} />
             </SectionField>
 

@@ -69,14 +69,14 @@ const TextAreaContainer: any = styled.div`
 type Props = {
   name: string;
   value: string;
-  placeholder?: string | undefined;
+  placeholder?: string | null | undefined;
   rows?: number | undefined;
   error?: string | null | undefined;
   onChange?: (arg: string) => void | undefined;
   onFocus?: () => void | undefined;
   onBlur?: () => void | undefined;
   autofocus?: boolean | undefined;
-  maxLength?: number;
+  maxCharCount?: number;
 };
 
 type State = {};
@@ -110,7 +110,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
   }
 
   handleOnChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
-    const value = this.props.maxLength ? event.currentTarget.value.substr(0, this.props.maxLength) : event.currentTarget.value;
+    const value = this.props.maxCharCount ? event.currentTarget.value.substr(0, this.props.maxCharCount) : event.currentTarget.value;
 
     if (this.props.onChange && _.isFunction(this.props.onChange)) {
       this.props.onChange(value);
@@ -130,12 +130,13 @@ export default class TextArea extends React.PureComponent<Props, State> {
   }
 
   render() {
-    let { rows } = this.props;
-    const { name, placeholder, value, error, children, maxLength } = this.props;
+    let { rows, placeholder } = this.props;
+    const { name, value, error, children, maxCharCount } = this.props;
     const hasError = (!_.isNull(error) && !_.isUndefined(error) && !_.isEmpty(error));
     const className = this.props['className'];
 
     rows = (rows || 5);
+    placeholder = (placeholder || undefined);
 
     return (
       <Container className={className}>
@@ -151,9 +152,9 @@ export default class TextArea extends React.PureComponent<Props, State> {
             onBlur={this.handleOnBlur}
             innerRef={this.setRef}
           />
-          {value && maxLength &&
-            <CharacterCount className={value.length === maxLength ? 'error' : ''}>
-              {value.length} / {maxLength}
+          {value && maxCharCount &&
+            <CharacterCount className={value.length === maxCharCount ? 'error' : ''}>
+              {value.length} / {maxCharCount}
             </CharacterCount>
           }
           {children}
