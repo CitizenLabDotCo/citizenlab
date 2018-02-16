@@ -4,7 +4,6 @@ import * as Rx from 'rxjs/Rx';
 
 // libraries
 import { browserHistory } from 'react-router';
-// import scrollToComponent from 'react-scroll-to-component';
 
 // components
 import Icon from 'components/UI/Icon';

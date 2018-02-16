@@ -19,7 +19,7 @@ import { localeStream } from 'services/locale';
 import { authUserStream } from 'services/auth';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { IUser } from 'services/users';
-import { projectsStream, IProjects } from 'services/projects';
+import { projectsStream, IProjects, IProjectData } from 'services/projects';
 
 // utils
 import { injectTracks } from 'utils/analytics';
@@ -237,7 +237,7 @@ const NavigationDropdownMenuInner = styled.div`
 `;
 
 const NavigationDropdownList = styled.div`
-  max-height: 275px;
+  max-height: 292px;
   width: 280px;
   display: flex;
   flex-direction: column;
@@ -474,14 +474,21 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
     }
   }
 
-  goToProjectsPage = () => {
-    browserHistory.push('/projects');
+  getProjectUrl = (project: IProjectData) => {
+    const projectType = project.attributes.process_type;
+    const rootProjectUrl = `/projects/${project.attributes.slug}`;
+    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/process` : `${rootProjectUrl}/ideas`);
+    return projectUrl;
   }
 
   render() {
     const { pathname } = this.props.location;
     const { locale, authUser, currentTenant, projects, scrolled, projectsDropdownOpened } = this.state;
-    const hideBorder = ['pages'].some(urlSegment => pathname.startsWith('/' + urlSegment));
+    let hideBorder = false;
+
+    if (pathname.startsWith('/pages') || pathname === '/projects' || pathname === 'projects/') {
+      hideBorder = true;
+    }
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -523,7 +530,7 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
                         <NavigationDropdownMenuInner>
                           <NavigationDropdownList innerRef={this.setRef}>
                             {projects.data.map((project) => (
-                              <NavigationDropdownListItem key={project.id} to={`/projects/${project.attributes.slug}`}>
+                              <NavigationDropdownListItem key={project.id} to={this.getProjectUrl(project)}>
                                 {getLocalized(project.attributes.title_multiloc, locale, currentTenantLocales)}
                               </NavigationDropdownListItem>
                             ))}
