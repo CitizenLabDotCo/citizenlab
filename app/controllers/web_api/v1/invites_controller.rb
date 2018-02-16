@@ -6,11 +6,12 @@ class WebApi::V1::InvitesController < ApplicationController
   def create
     @invitee = User.new(create_params)
     @invitee.is_invited = true
+    @invitee.locale ||= current_user&.locale
+    @invitee.password ||= SecureRandom.urlsafe_base64 32
     @invite = Invite.new(invitee: @invitee, inviter: current_user)
     authorize @invite
     begin
       ActiveRecord::Base.transaction do
-        @invitee.locale ||= current_user&.locale
         if !@invitee.save
           raise ClErrors::TransactionError.new(error_key: :unprocessable_invitee)
         end
@@ -43,7 +44,7 @@ class WebApi::V1::InvitesController < ApplicationController
     invitee = @invite.invitee
     begin
       ActiveRecord::Base.transaction do
-        # TODO update invitee
+        invitee.assign_attributes accept_params
         invitee.is_invited = false
         if !invitee.save
           raise ClErrors::TransactionError.new(error_key: :unprocessable_invitee)
