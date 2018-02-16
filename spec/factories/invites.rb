@@ -1,7 +1,6 @@
 FactoryBot.define do
   factory :invite do
-    email "nonexisting@cocacola.gov"
     inviter { create(:user) }
-    group { create(:group) }
+    invitee { create(:user) }
   end
 end
