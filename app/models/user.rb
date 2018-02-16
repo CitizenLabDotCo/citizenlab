@@ -26,8 +26,8 @@ class User < ApplicationRecord
 
   validates :email, :first_name, :slug, :locale, presence: true, unless: :is_invited?
 
-  validates :email, :slug, uniqueness: true
-  validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
+  validates :email, uniqueness: true
+  validates :slug, uniqueness: true, format: {with: SlugService.new.regex }, unless: :is_invited?
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
   validates :locale, inclusion: { in: proc {Tenant.settings('core','locales')} }
   validates :bio_multiloc, multiloc: {presence: false}

@@ -77,7 +77,8 @@ class WebApi::V1::InvitesController < ApplicationController
       :gender, 
       :birthyear, 
       :domicile, 
-      :education, 
+      :education,
+      roles: [:type, :project_id],
       bio_multiloc: I18n.available_locales, 
       group_ids: []
     )
