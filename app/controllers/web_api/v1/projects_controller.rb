@@ -5,7 +5,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   def index
     @projects = policy_scope(Project)
       .includes(:project_images, :phases)
-      .order(created_at: :desc)
+      .order(ordering: :desc)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
