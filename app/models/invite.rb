@@ -12,8 +12,7 @@ class Invite < ApplicationRecord
   private
 
   def generate_token
-  	# TODO enkel lowercase letters en digits, 8 chars
-    self.token ||= SecureRandom.base64
+    self.token ||= ([*('a'..'z'),*('0'..'9')]).sample(8).join
   end
 
 end

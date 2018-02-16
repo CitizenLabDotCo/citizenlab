@@ -194,12 +194,12 @@ ActiveRecord::Schema.define(version: 20180215130118) do
 
   create_table "invites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "token", null: false
-    t.string "email", null: false
     t.uuid "inviter_id", null: false
-    t.uuid "group_id", null: false
+    t.uuid "invitee_id", null: false
+    t.datetime "accepted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["group_id"], name: "index_invites_on_group_id"
+    t.index ["invitee_id"], name: "index_invites_on_invitee_id"
     t.index ["inviter_id"], name: "index_invites_on_inviter_id"
     t.index ["token"], name: "index_invites_on_token"
   end
@@ -306,7 +306,7 @@ ActiveRecord::Schema.define(version: 20180215130118) do
     t.string "process_type", default: "timeline", null: false
     t.string "internal_role"
     t.string "publication_status", default: "published", null: false
-    t.integer "ordering", null: false
+    t.integer "ordering"
     t.index ["created_at"], name: "index_projects_on_created_at"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
@@ -375,6 +375,8 @@ ActiveRecord::Schema.define(version: 20180215130118) do
     t.string "locale"
     t.jsonb "bio_multiloc", default: {}
     t.boolean "cl1_migrated", default: false
+    t.boolean "is_invited", default: false, null: false
+    t.datetime "invited_at"
     t.index ["email"], name: "index_users_on_email"
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
@@ -411,7 +413,7 @@ ActiveRecord::Schema.define(version: 20180215130118) do
   add_foreign_key "ideas_topics", "ideas"
   add_foreign_key "ideas_topics", "topics"
   add_foreign_key "identities", "users"
-  add_foreign_key "invites", "groups"
+  add_foreign_key "invites", "users", column: "invitee_id"
   add_foreign_key "invites", "users", column: "inviter_id"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
