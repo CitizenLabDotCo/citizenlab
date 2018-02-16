@@ -1,4 +1,4 @@
-class MembershipPolicy < ApplicationPolicy
+class InvitePolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -17,18 +17,6 @@ class MembershipPolicy < ApplicationPolicy
   end
 
   def create?
-    user && user.admin?
-  end
-
-  def show?
-    user && user.admin?
-  end
-
-  def destroy?
-    user && user.admin?
-  end
-
-  def users_search?
     user && user.admin?
   end
 

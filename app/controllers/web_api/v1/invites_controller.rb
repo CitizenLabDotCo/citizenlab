@@ -4,16 +4,16 @@ class WebApi::V1::InvitesController < ApplicationController
 
 
   def create
-    @invitee = User.new(invite_params)
+    @invitee = User.new(create_params)
     @invitee.is_invited = true
     @invite = Invite.new(invitee: @invitee, inviter: current_user)
+    authorize @invite
     begin
       ActiveRecord::Base.transaction do
         @invitee.locale ||= current_user&.locale
-        if !invitee.save
+        if !@invitee.save
           raise ClErrors::TransactionError.new(error_key: :unprocessable_invitee)
         end
-        authorize @invite
         if !@invite.save
           raise ClErrors::TransactionError.new(error_key: :unprocessable_invite)
         end
