@@ -1,20 +1,19 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { merge, cloneDeep, get, set, size, has, trim, isEmpty, omitBy } from 'lodash';
+import { merge, cloneDeep, forOwn, get, set, size, has, trim, isEmpty, omitBy } from 'lodash';
 
 // components
 import Label from 'components/UI/Label';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Toggle from 'components/UI/Toggle';
 import ColorPickerInput from 'components/UI/ColorPickerInput';
-import Input from 'components/UI/Input';
+import InputMultiloc from 'components/UI/InputMultiloc';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import FeatureFlag from 'components/FeatureFlag';
 
 // style
 import styled from 'styled-components';
-import { color, fontSize } from 'utils/styleUtils';
 
 // utils
 import { convertUrlToFileObservable } from 'utils/imageTools';
@@ -30,22 +29,7 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream, updateTenant, IUpdatedTenantProperties, ITenant, ITenantSettings } from 'services/tenant';
 
 // typings
-import { API, ImageFile, Locale } from 'typings';
-
-const StyledLabel = styled(Label)`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const CharCount = styled.div`
-  color: ${color('label')};
-  font-size: ${fontSize('small')};
-  font-weight: 400;
-
-  &.error {
-    color: red;
-  }
-`;
+import { API, ImageFile, Locale, Multiloc } from 'typings';
 
 const ToggleWrapper = styled.div`
   width: 100%;
@@ -70,7 +54,7 @@ const ToggleLabel = styled.div`
   font-weight: 400;
 `;
 
-const TitleInput = styled(SectionField)`
+const StyledSectionField = styled(SectionField)`
   max-width: 500px;
 `;
 
@@ -98,11 +82,13 @@ type State  = {
   saved: boolean;
   logoError: string | null;
   headerError: string | null;
-  titleError: { [key: string]: string | null };
-  subtitleError: { [key: string]: string | null };
+  titleError: Multiloc;
+  subtitleError: Multiloc;
 };
 
 class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps, State> {
+  titleMaxCharCount: number;
+  subtitleMaxCharCount: number;
   subscriptions: Rx.Subscription[];
 
   constructor(props) {
@@ -122,6 +108,8 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
       titleError: {},
       subtitleError: {}
     };
+    this.titleMaxCharCount = 45;
+    this.subtitleMaxCharCount = 90;
     this.subscriptions = [];
   }
 
@@ -198,36 +186,38 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
     }));
   }
 
-  handleTitleOnChange = (locale: Locale) => (title: string) => {
+  handleTitleOnChange = (titleMultiloc: Multiloc) => {
     this.setState((state) => {
       const { formatMessage } = this.props.intl;
-      let newAttributesDiff = cloneDeep(state.attributesDiff);
-      newAttributesDiff = set(newAttributesDiff, `settings.core.header_title.${locale}`, title);
+      const titleError = {} as Multiloc;
+
+      forOwn(titleMultiloc, (title, locale) => {
+        if (size(trim(title)) > 45) {
+          titleError[locale] = formatMessage(messages.titleMaxCharError);
+        }
+      });
 
       return {
-        attributesDiff: newAttributesDiff,
-        titleError: {
-          ...state.titleError,
-          [locale]: size(trim(title)) > 45 ? formatMessage(messages.titleMaxCharError) : null
-        },
-        ...state.errors
+        titleError,
+        attributesDiff: set(cloneDeep(state.attributesDiff), `settings.core.header_title`, titleMultiloc),
       };
     });
   }
 
-  handleSubtitleOnChange = (locale: Locale) => (subtitle: string) => {
+  handleSubtitleOnChange = (subtitleMultiloc: Multiloc) => {
     this.setState((state) => {
       const { formatMessage } = this.props.intl;
-      let newAttributesDiff = cloneDeep(state.attributesDiff);
-      newAttributesDiff = set(newAttributesDiff, `settings.core.header_slogan.${locale}`, subtitle);
+      const subtitleError = {} as Multiloc;
+
+      forOwn(subtitleMultiloc, (subtitle, locale) => {
+        if (size(trim(subtitle)) > 90) {
+          subtitleError[locale] = formatMessage(messages.subtitleMaxCharError);
+        }
+      });
 
       return {
-        ...state,
-        attributesDiff: newAttributesDiff,
-        subtitleError: {
-          ...state.subtitleError,
-          [locale]: size(trim(subtitle)) > 90 ? formatMessage(messages.subtitleMaxCharError) : null
-        }
+        subtitleError,
+        attributesDiff: set(cloneDeep(state.attributesDiff), `settings.core.header_slogan`, subtitleMultiloc),
       };
     });
   }
@@ -305,8 +295,6 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
     const { locale, currentTenant, titleError, subtitleError, errors, saved } = this.state;
 
     if (locale && currentTenant) {
-      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-      const hasMultipleTenantLocales = (currentTenant.data.attributes.settings.core.locales.length > 1);
       const { formatMessage } = this.props.intl;
       const { logo, header_bg, attributesDiff, logoError, headerError } = this.state;
       const tenantAttrs = merge(cloneDeep(currentTenant.data.attributes), attributesDiff);
@@ -373,55 +361,27 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
               />
             </SectionField>
 
-            {currentTenantLocales.map((currentTenantLocale, index) => {
-              const capitalizedTenantLocale = (hasMultipleTenantLocales ? currentTenantLocale.toUpperCase() : '');
-              const titleSize = size(get(tenantAttrs, `settings.core.header_title.${currentTenantLocale}`));
+            <StyledSectionField>
+              <InputMultiloc
+                type="text"
+                valueMultiloc={get(tenantAttrs, `settings.core.header_title`)}
+                label={<FormattedMessage {...messages.titleLabel} />}
+                maxCharCount={this.titleMaxCharCount}
+                onChange={this.handleTitleOnChange}
+                errorMultiloc={titleError}
+              />
+            </StyledSectionField>
 
-              return (
-                <TitleInput key={index}>
-                  <StyledLabel>
-                    <FormattedMessage
-                      {...messages.titleLabel}
-                      values={{ locale: capitalizedTenantLocale }}
-                    />
-                    <CharCount className={titleError[currentTenantLocale] ? 'error' : ''}>
-                      {titleSize}/45
-                    </CharCount>
-                  </StyledLabel>
-                  <Input
-                    type="text"
-                    value={get(tenantAttrs, `settings.core.header_title.${currentTenantLocale}`)}
-                    onChange={this.handleTitleOnChange(currentTenantLocale)}
-                    error={titleError[currentTenantLocale]}
-                  />
-                </TitleInput>
-              );
-            })}
-
-            {currentTenantLocales.map((currentTenantLocale, index) => {
-              const capitalizedTenantLocale = (hasMultipleTenantLocales ? currentTenantLocale.toUpperCase() : '');
-              const subtitleSize = size(get(tenantAttrs, `settings.core.header_slogan.${currentTenantLocale}`));
-
-              return (
-                <TitleInput key={index}>
-                  <StyledLabel>
-                    <FormattedMessage
-                      {...messages.subtitleLabel}
-                      values={{ locale: capitalizedTenantLocale }}
-                    />
-                    <CharCount className={subtitleError[currentTenantLocale] ? 'error' : ''}>
-                      {subtitleSize}/90
-                    </CharCount>
-                  </StyledLabel>
-                  <Input
-                    type="text"
-                    value={get(tenantAttrs, `settings.core.header_slogan.${currentTenantLocale}`)}
-                    onChange={this.handleSubtitleOnChange(currentTenantLocale)}
-                    error={subtitleError[currentTenantLocale]}
-                  />
-                </TitleInput>
-              );
-            })}
+            <StyledSectionField>
+              <InputMultiloc
+                type="text"
+                valueMultiloc={get(tenantAttrs, `settings.core.header_slogan`)}
+                label={<FormattedMessage {...messages.subtitleLabel} />}
+                maxCharCount={this.subtitleMaxCharCount}
+                onChange={this.handleSubtitleOnChange}
+                errorMultiloc={subtitleError}
+              />
+            </StyledSectionField>
           </Section>
 
           <Section key={'signup_fields'} className={'last'}>

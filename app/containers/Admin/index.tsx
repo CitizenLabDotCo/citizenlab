@@ -4,7 +4,6 @@ import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/glob
 
 // components
 import Sidebar from './sideBar/';
-import Footer from 'components/Footer';
 
 // style
 import styled from 'styled-components';
@@ -30,10 +29,6 @@ const AdminContainerStyled = styled<any, 'div'>('div')`
   flex-direction: column;
   ${(props) => props.adminFullWidth ? '' : 'max-width: 1200px;'}
   padding: 45px 51px 0px 51px;
-`;
-
-const StyledFooter = styled(Footer)`
-  z-index: 3;
 `;
 
 type Props = {};
@@ -82,8 +77,6 @@ export default class AdminPage extends React.PureComponent<Props, State> {
             </AdminContainerStyled>
           </RightColumn>
         </Container>
-
-        <StyledFooter showCityLogoSection={false} />
       </>
     );
   }

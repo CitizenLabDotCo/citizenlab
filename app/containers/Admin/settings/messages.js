@@ -109,19 +109,19 @@ export default defineMessages({
   },
   titleLabel: {
     id: 'app.containers.AdminPage.SettingsPage.titleLabel',
-    defaultMessage: 'Header title {locale}',
+    defaultMessage: 'Header title',
   },
   titleMaxCharError: {
     id: 'app.containers.AdminPage.SettingsPage.titleMaxCharError',
-    defaultMessage: 'The provided title exceeds the maximum allowed character limit of 35',
+    defaultMessage: 'The provided title exceeds the maximum allowed character limit',
   },
   subtitleLabel: {
     id: 'app.containers.AdminPage.SettingsPage.subtitleLabel',
-    defaultMessage: 'Header subtitle {locale}',
+    defaultMessage: 'Header subtitle',
   },
   subtitleMaxCharError: {
     id: 'app.containers.AdminPage.SettingsPage.subtitleMaxCharError',
-    defaultMessage: 'The provided subtitle exceeds the maximum allowed character limit of 90',
+    defaultMessage: 'The provided subtitle exceeds the maximum allowed character limit',
   },
   gender: {
     id: 'app.containers.AdminPage.SettingsPage.gender',
