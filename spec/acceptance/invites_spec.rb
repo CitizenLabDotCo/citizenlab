@@ -72,9 +72,9 @@ resource "Invites" do
       let(:first_name) { 'Bart' }
       let(:last_name) { 'Boulettos' }
 
-      #example_request "[error] invite", document: false do
-      #  expect(response_status).to eq 401
-      #end
+      example_request "[error] invite", document: false do
+        expect(response_status).to eq 401
+      end
     end
   end
 
@@ -107,14 +107,9 @@ resource "Invites" do
       let(:locale) { 'nl' }
       example_request "Accept an invite with a valid token" do
         expect(status).to eq(202)
-        #json_response = json_parse(response_body)
-        #expect(
-        #  json_response
-        #    .dig(:included)
-        #    .select{|inc| inc[:id] == json_response.dig(:data,:relationships,:user,:data,:id)}&.first
-        #    &.dig(:attributes,:last_name)
-        #).to eq last_name
-        #expect(json_response.dig(:data,:relationships,:group,:data,:id)).to eq @invite.group_id
+        @invite = @invite.reload
+        expect(@invite.invitee.last_name).to eq('Boulettos')
+        expect(@invite.invitee.is_invited).to eq(false)
       end
 
       example "Accepting an invite with an invalid token, or an invite which has already been activated" do
