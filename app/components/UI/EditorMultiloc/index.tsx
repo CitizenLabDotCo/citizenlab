@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
+import { get } from 'lodash';
 
 // components
 import Editor from 'components/UI/Editor';
@@ -38,7 +39,7 @@ type Props = {
   valueMultiloc?: MultilocEditorState | null | undefined;
   label?: string | JSX.Element | null | undefined;
   onChange?: (multilocEditorState: MultilocEditorState, locale: Locale) => void;
-  placeholderMultiloc?: MultilocStringOrJSX | null;
+  placeholder?: string | JSX.Element | null | undefined;
   errorMultiloc?: MultilocStringOrJSX | null;
   toolbarConfig?: {} | null | undefined;
 };
@@ -88,7 +89,6 @@ export default class EditorMultiloc extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { label } = this.props;
     const { locale, currentTenant } = this.state;
 
     if (locale && currentTenant) {
@@ -97,9 +97,9 @@ export default class EditorMultiloc extends React.PureComponent<Props, State> {
       return (
         <Container className={this.props['className']} >
           {currentTenantLocales.map((currentTenantLocale, index) => {
-            const value = (this.props.valueMultiloc && this.props.valueMultiloc[currentTenantLocale] && this.props.valueMultiloc[currentTenantLocale] ? this.props.valueMultiloc[currentTenantLocale] : null);
-            const placeholder = (this.props.placeholderMultiloc && this.props.placeholderMultiloc[currentTenantLocale] ? this.props.placeholderMultiloc[currentTenantLocale] : null);
-            const error = (this.props.errorMultiloc && this.props.errorMultiloc[currentTenantLocale] ? this.props.errorMultiloc[currentTenantLocale] : null);
+            const { label, valueMultiloc, placeholder, errorMultiloc } = this.props;
+            const value = get(valueMultiloc, [currentTenantLocale], null);
+            const error = get(errorMultiloc, [currentTenantLocale], null);
             const id = this.props.id && `${this.props.id}-${currentTenantLocale}`;
 
             return (

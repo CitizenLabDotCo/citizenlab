@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { isString } from 'lodash';
+import { get } from 'lodash';
 
 // components
 import TextArea from 'components/UI/TextArea';
@@ -34,11 +34,12 @@ const LanguageExtension = styled(Label)`
 `;
 
 type Props = {
+  id?: string | undefined;
   name: string;
   valueMultiloc: Multiloc | null | undefined;
   label?: string | JSX.Element | null | undefined;
   onChange?: (arg: Multiloc, locale: Locale) => void;
-  placeholderMultiloc?: Multiloc | null;
+  placeholder?: string | null | undefined;
   rows?: number | undefined;
   errorMultiloc?: Multiloc | null;
   maxCharCount?: number | undefined;
@@ -89,7 +90,6 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
   }
 
   render() {
-    const { label } = this.props;
     const { locale, currentTenant } = this.state;
 
     if (locale && currentTenant) {
@@ -98,15 +98,16 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
       return (
         <Container className={this.props['className']} >
           {currentTenantLocales.map((currentTenantLocale, index) => {
-            const value = (this.props.valueMultiloc && this.props.valueMultiloc[currentTenantLocale] && this.props.valueMultiloc[currentTenantLocale] && isString(this.props.valueMultiloc[currentTenantLocale]) ? this.props.valueMultiloc[currentTenantLocale] as string : '');
-            const placeholder = (this.props.placeholderMultiloc && this.props.placeholderMultiloc[currentTenantLocale] ? this.props.placeholderMultiloc[currentTenantLocale] : null);
-            const error = (this.props.errorMultiloc && this.props.errorMultiloc[currentTenantLocale] ? this.props.errorMultiloc[currentTenantLocale] : null);
+            const { label, name, placeholder, rows, maxCharCount, valueMultiloc, errorMultiloc } = this.props;
+            const value = get(valueMultiloc, [currentTenantLocale], '') as string;
+            const error = get(errorMultiloc, [currentTenantLocale], null);
+            const id = this.props.id && `${this.props.id}-${currentTenantLocale}`;
 
             return (
               <TextAreaWrapper key={currentTenantLocale} className={`${index === currentTenantLocales.length - 1 && 'last'}`}>
                 {label &&
                   <LabelWrapper>
-                    <Label>{label}</Label>
+                    <Label htmlFor={id}>{label}</Label>
                     {currentTenantLocales.length > 1 &&
                       <LanguageExtension>{currentTenantLocale.toUpperCase()}</LanguageExtension>
                     }
@@ -114,13 +115,14 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
                 }
 
                 <TextArea
-                  name={this.props.name}
+                  id={id}
+                  name={name}
                   value={value}
                   placeholder={placeholder}
-                  rows={this.props.rows}
+                  rows={rows}
                   error={error}
                   onChange={this.handleOnChange(currentTenantLocale)}
-                  maxCharCount={this.props.maxCharCount}
+                  maxCharCount={maxCharCount}
                 />
               </TextAreaWrapper>
             );

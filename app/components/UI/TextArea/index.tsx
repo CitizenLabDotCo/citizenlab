@@ -67,6 +67,7 @@ const TextAreaContainer: any = styled.div`
 `;
 
 type Props = {
+  id?: string | undefined;
   name: string;
   value: string;
   placeholder?: string | null | undefined;
@@ -142,6 +143,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
       <Container className={className}>
         <TextAreaContainer className="TextArea CLTextareaComponentContainer">
           <TextareaAutosize
+            id={this.props.id}
             className={`textarea CLTextareaComponent ${hasError ? 'error' : ''}`}
             name={name || ''}
             rows={rows}
