@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
+import { get } from 'lodash';
 
 // components
 import Input from 'components/UI/Input';
@@ -33,11 +34,12 @@ const LanguageExtension = styled(Label)`
 `;
 
 type Props = {
+  id?: string | undefined;
   valueMultiloc: Multiloc | null | undefined;
   label?: string | JSX.Element | null | undefined;
   onChange?: (arg: Multiloc, locale: Locale) => void;
   type: 'text' | 'email' | 'password' | 'number';
-  placeholderMultiloc?: Multiloc | null;
+  placeholder?: string | null | undefined;
   errorMultiloc?: Multiloc | null;
   maxCharCount?: number | undefined;
 };
@@ -87,7 +89,6 @@ export default class InputMultiloc extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { label } = this.props;
     const { locale, currentTenant } = this.state;
 
     if (locale && currentTenant) {
@@ -96,15 +97,16 @@ export default class InputMultiloc extends React.PureComponent<Props, State> {
       return (
         <Container className={this.props['className']} >
           {currentTenantLocales.map((currentTenantLocale, index) => {
-            const value = (this.props.valueMultiloc && this.props.valueMultiloc[currentTenantLocale] ? this.props.valueMultiloc[currentTenantLocale] : null);
-            const placeholder = (this.props.placeholderMultiloc && this.props.placeholderMultiloc[currentTenantLocale] ? this.props.placeholderMultiloc[currentTenantLocale] : null);
-            const error = (this.props.errorMultiloc && this.props.errorMultiloc[currentTenantLocale] ? this.props.errorMultiloc[currentTenantLocale] : null);
+            const { label, placeholder, valueMultiloc, errorMultiloc } = this.props;
+            const value = get(valueMultiloc, [currentTenantLocale], null);
+            const error = get(errorMultiloc, [currentTenantLocale], null);
+            const id = this.props.id && `${this.props.id}-${currentTenantLocale}`;
 
             return (
               <InputWrapper key={currentTenantLocale} className={`${index === currentTenantLocales.length - 1 && 'last'}`}>
                 {label &&
                   <LabelWrapper>
-                    <Label>{label}</Label>
+                    <Label htmlFor={id}>{label}</Label>
                     {currentTenantLocales.length > 1 &&
                       <LanguageExtension>{currentTenantLocale.toUpperCase()}</LanguageExtension>
                     }
@@ -112,6 +114,7 @@ export default class InputMultiloc extends React.PureComponent<Props, State> {
                 }
 
                 <Input
+                  id={id}
                   value={value}
                   type={this.props.type}
                   placeholder={placeholder}

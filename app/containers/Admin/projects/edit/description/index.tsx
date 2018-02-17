@@ -85,7 +85,7 @@ export default class ProjectDescription extends React.Component<Props, State> {
             descriptionMultilocEditorState,
             data: project.data,
             loading: false,
-            diff: {},
+            diff: {}
           });
         })
       );
@@ -111,6 +111,7 @@ export default class ProjectDescription extends React.Component<Props, State> {
       diff: {
         ...state.diff,
         description_multiloc: {
+          ...get(state.data, 'attributes.description_multiloc', {}),
           ...get(state.diff, 'description_multiloc', {}),
           [locale]: getHtmlStringFromEditorState(descriptionMultilocEditorState[locale])
         }
@@ -128,6 +129,7 @@ export default class ProjectDescription extends React.Component<Props, State> {
 
     if (!isEmpty(diff) && data.id) {
       this.setState({ loading: true, saved: true });
+
       updateProject(data.id, diff)
       .catch(this.handleSaveErrors)
       .then(() => {
