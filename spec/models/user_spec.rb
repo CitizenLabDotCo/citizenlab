@@ -18,6 +18,13 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "creating an invited user" do
+    it "has correct linking between invite and invitee" do
+      invitee = create(:invited_user)
+      expect(invitee.invitee_invite.invitee.id).to eq invitee.id
+    end
+  end
+
   describe "user password authentication" do
     it "should be compatible with meteor encryption" do
       u = build(:user)

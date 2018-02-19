@@ -72,7 +72,6 @@ class WebApi::V1::InvitesController < ApplicationController
     params.require(:invite).permit(
       :email,
       :first_name, :last_name, 
-      :password, 
       :avatar, 
       :locale, 
       :gender, 

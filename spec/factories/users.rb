@@ -23,6 +23,14 @@ FactoryBot.define do
       education { rand(1)==0 ? rand(8)+1 : nil }
     end
 
+    factory :invited_user do
+      is_invited true
+
+      after(:create) do |user, evaluator|
+        create(:invite, invitee: user)
+      end
+    end
+
   end
 
 end
