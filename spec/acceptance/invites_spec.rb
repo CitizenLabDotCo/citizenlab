@@ -11,7 +11,6 @@ resource "Invites" do
       parameter :email, "The email of the invitee.", required: false
       parameter :first_name, "The first name of the invitee.", required: false
       parameter :last_name, "The last name of the invitee.", required: false
-      parameter :password, "The password of the invitee.", required: false
       parameter :avatar, "The avatar of the invitee.", required: false
       parameter :locale, "The locale of the invitee.", required: false
       parameter :gender, "The gender of the invitee.", required: false
@@ -40,7 +39,7 @@ resource "Invites" do
       let(:group_ids) { @groups.shuffle.take(3).map(&:id) }
       let(:roles) { [{'type' => 'admin'}] }
 
-      example_request "Invite a non-existing user to become member of a group" do
+      example_request "Invite a non-existing user to become member of some groups" do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         invitee = User.find_by(email: email)
@@ -86,8 +85,8 @@ resource "Invites" do
 
     post "web_api/v1/invites/:token/accept" do
       with_options scope: :invite do
-        parameter :first_name, "The first name of the invitee.", required: true
-        parameter :last_name, "The last name of the invitee.", required: true
+        parameter :first_name, "The first name of the invitee.", required: false ## but may not be required if already specified upon invite
+        parameter :last_name, "The last name of the invitee.", required: false
         parameter :password, "The password of the invitee.", required: true
         parameter :avatar, "The avatar of the invitee.", required: false
         parameter :locale, "The locale of the invitee.", required: false
@@ -97,8 +96,8 @@ resource "Invites" do
         parameter :education, "The education level of the invitee.", required: false
         parameter :bio_multiloc, "The bio (multiloc) of the invitee.", required: false
       end
+      ValidationErrorHelper.new.error_fields(self, Invite)
       ValidationErrorHelper.new.error_fields(self, User)
-      ValidationErrorHelper.new.error_fields(self, Membership)
 
       let(:token) { @invite.token }
       let(:first_name) { 'Bart' }
@@ -112,13 +111,39 @@ resource "Invites" do
         expect(@invite.invitee.is_invited).to eq(false)
       end
 
-      example "Accepting an invite with an invalid token, or an invite which has already been activated" do
+      example "Accepting an invite with an invalid token" do
         @invite.destroy!
 
         do_request
         expect(response_status).to eq 401 # unauthorized
       end
     
+    end
+  end
+
+  post "web_api/v1/groups/:group_id/memberships" do
+    context "when admin" do
+      before do
+        @admin = create(:admin)
+        token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
+        header 'Authorization', "Bearer #{token}"
+
+        @group = create(:group)
+      end
+
+      with_options scope: :membership do
+        parameter :user_id, "The user id of the group member.", required: true
+      end
+      ValidationErrorHelper.new.error_fields(self, Membership)
+
+      let(:group_id) { @group.id }
+      let(:user_id) { create(:invited_user).id }
+
+      example_request "Add an invited user as a group member", document: false do
+        expect(response_status).to eq 201
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq user_id
+      end
     end
   end
 end

@@ -48,7 +48,6 @@ resource "Memberships" do
       ValidationErrorHelper.new.error_fields(self, Membership)
 
       let(:group_id) { @group.id }
-      let(:membership) { build(:membership) }
       let(:user_id) { create(:user).id }
 
       example_request "Add a group member" do

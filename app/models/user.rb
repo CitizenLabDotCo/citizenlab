@@ -20,7 +20,7 @@ class User < ApplicationRecord
   has_many :spam_reports, dependent: :nullify
   has_many :activities, dependent: :nullify
   has_many :inviter_invites, class_name: 'Invite', foreign_key: :inviter_id, dependent: :nullify
-  belongs_to :invitee_notifications, class_name: 'Invite', foreign_key: :invitee_id, dependent: :destroy
+  has_one :invitee_invite, class_name: 'Invite', foreign_key: :invitee_id, dependent: :destroy
 
   store_accessor :demographics, :gender, :birthyear, :domicile, :education
 
