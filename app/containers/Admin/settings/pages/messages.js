@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.PagesEdition.titleLabel',
     defaultMessage: 'Page Title',
   },
+  contentLabel: {
+    id: 'app.containers.AdminPage.PagesEdition.contentLabel',
+    defaultMessage: 'Page Content',
+  },
   buttonSave: {
     id: 'app.containers.AdminPage.PagesEdition.buttonSave',
     defaultMessage: 'Save',

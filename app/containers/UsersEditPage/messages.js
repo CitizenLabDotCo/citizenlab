@@ -30,6 +30,18 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.buttonErrorLabel',
     defaultMessage: 'Error',
   },
+  buttonSuccessLabel: {
+    id: 'app.containers.UsersEditPage.buttonSuccessLabel',
+    defaultMessage: 'Success',
+  },
+  messageError: {
+    id: 'app.containers.UsersEditPage.messageError',
+    defaultMessage: 'There was an error saving your profile.',
+  },
+  messageSuccess: {
+    id: 'app.containers.UsersEditPage.messageSuccess',
+    defaultMessage: 'Your profile has been saved.',
+  },
   storeError: {
     id: 'app.containers.UsersEditPage.storeError',
     defaultMessage: 'Can\'t store updated profile',
