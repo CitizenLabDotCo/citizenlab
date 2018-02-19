@@ -50,19 +50,20 @@ const Container: any = styled.div`
 
 const Loading = styled.div`
   width: 100%;
-  height: calc(80vh - ${props => props.theme.menuHeight}px - 1px);
+  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
   align-items: center;
   justify-content: center;
 
   ${media.smallerThanMaxTablet`
-    height: calc(80vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
   `}
 `;
 
 const Header = styled.div`
-  width: 100vw;
+  width: 100%;
   height: 480px;
+  flex: 0 0 480px;
   margin: 0;
   padding: 0;
   position: relative;
@@ -112,7 +113,7 @@ const HeaderContent = styled.div`
   left: 0;
   right: 0;
   margin: 0 auto;
-  margin-top: -30px;
+  margin-top: -50px;
   padding-left: 30px;
   padding-right: 30px;
   display: flex;
@@ -186,28 +187,7 @@ const StyledContentContainer = styled(ContentContainer)`
   padding-bottom: 10px;
 `;
 
-const ProjectsStyledContentContainer = StyledContentContainer.extend`
-  .FilterSelectorTitle {
-    .FilterSelectorTitleText {
-        color: #fff;
-    }
-
-    .FilterSelectorTitleIcon {
-        fill: #fff;
-    }
-
-    &:hover,
-    &.deployed {
-      .FilterSelectorTitleText {
-        color: #ccc;
-      }
-
-      .FilterSelectorTitleIcon {
-        fill: #ccc;
-      }
-    }
-  }
-`;
+const ProjectsStyledContentContainer = StyledContentContainer.extend``;
 
 const IdeasStyledContentContainer = StyledContentContainer.extend`
   background: #f9f9fa;
@@ -226,7 +206,7 @@ const Section = styled.div`
 
 const ProjectSection = Section.extend`
   padding-top: 0px;
-  margin-top: -120px;
+  margin-top: -125px;
 
   ${media.smallerThanMinTablet`
     margin-top: -160px;
@@ -400,7 +380,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                 {hasProjects &&
                   <ProjectSection>
                     <SectionContainer>
-                      <ProjectCards queryParameters={{ 'page[size]': 2 }} />
+                      <ProjectCards queryParameters={{ 'page[size]': 2 }} hideAllFilters={true} />
                     </SectionContainer>
                   </ProjectSection>
                 }

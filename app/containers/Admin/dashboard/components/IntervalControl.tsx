@@ -12,14 +12,13 @@ const IntervalButton = styled.button`
   font-size: 16px;
   padding: 1rem 1.5rem;
   color: #000000;
-  background: #e0e0e0;
-  margin-right: 2px;
+  background: #fff;
+  border: solid 1px #e4e4e4;
   cursor: pointer;
   outline: none;
-  opacity: 0.3;
 
   &.active {
-    opacity: 1;
+    background: #f0f0f0;
   }
 
   &:first-child {
@@ -32,7 +31,7 @@ const IntervalButton = styled.button`
   }
 
   &:hover {
-    opacity: 1;
+    background: #f0f0f0;
   }
 `;
 

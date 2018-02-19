@@ -6,12 +6,14 @@ import { isString } from 'lodash';
 import { browserHistory } from 'react-router';
 
 // components
+import Header from '../Header';
 import Timeline from './Timeline';
 import Phase from './Phase';
 import EventsPreview from '../EventsPreview';
 
 // services
 import { projectBySlugStream } from 'services/projects';
+import { phasesStream } from 'services/phases';
 
 // style
 import styled from 'styled-components';
@@ -47,16 +49,22 @@ export default class ProjectTimelinePage extends React.PureComponent<Props, Stat
     this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
-      this.slug$.distinctUntilChanged().filter(slug => isString(slug)).switchMap((slug) => {
-        const project$ = projectBySlugStream(slug).observable;
-        return project$.map((project) => ({ slug, project }));
-      }).delay(3000).subscribe(({ slug, project }) => {
-        if (project.data.attributes.process_type !== 'timeline') {
-          browserHistory.push(`/projects/${slug}/info`);
-        }
+      this.slug$
+        .distinctUntilChanged()
+        .filter(slug => isString(slug))
+        .switchMap((slug: string) => {
+          return projectBySlugStream(slug).observable.map(project => ({ slug, project }));
+        })
+        .switchMap(({ slug, project }) => {
+          return phasesStream(project.data.id).observable.map(() => ({ slug, project }));
+        })
+        .subscribe(({ slug, project }) => {
+          if (project.data.attributes.process_type !== 'timeline') {
+            browserHistory.push(`/projects/${slug}/info`);
+          }
 
-        this.setState({ projectId: project.data.id });
-      })
+          this.setState({ projectId: project.data.id });
+        })
     ];
   }
 
@@ -74,11 +82,13 @@ export default class ProjectTimelinePage extends React.PureComponent<Props, Stat
 
   render() {
     const className = this.props['className'];
+    const { slug } = this.props.params;
     const { projectId, phaseId } = this.state;
 
     if (projectId) {
       return (
         <Container className={className}>
+          <Header slug={slug} />
           <Timeline projectId={projectId} onPhaseSelected={this.handleOnPhaseSelected} />
           {phaseId && <Phase phaseId={phaseId} />}
           <EventsPreview projectId={projectId} />

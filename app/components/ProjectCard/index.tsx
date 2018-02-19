@@ -27,10 +27,10 @@ import { media, color } from 'utils/styleUtils';
 import { Locale } from 'typings';
 
 const ProjectImageContainer =  styled.div`
-  height: 200px;
+  height: 190px;
   flex-grow: 0;
   flex-shrink: 0;
-  flex-basis: 200px;
+  flex-basis: 190px;
   display: flex;
   border-radius: 4px;
   margin-right: 10px;
@@ -79,7 +79,14 @@ const Container = styled(Link)`
   border-radius: 5px;
   overflow: hidden;
   border: solid 1px #e4e4e4;
-  /* box-shadow: 0 1px 1px 0 rgba(10, 16, 34, .2); */
+  /* box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.12); */
+  transition: all 250ms ease-out;
+  will-change: transform;
+
+  &:hover {
+    transform: scale(1.01);
+    border-color: #ddd;
+  }
 
   ${media.biggerThanMaxTablet`
     min-height: 222px;

@@ -18,13 +18,13 @@ import { media } from 'utils/styleUtils';
 
 const Loading = styled.div`
   width: 100%;
-  height: calc(80vh - ${props => props.theme.menuHeight}px - 1px);
+  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
   align-items: center;
   justify-content: center;
 
   ${media.smallerThanMaxTablet`
-    height: calc(80vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
   `}
 `;
 

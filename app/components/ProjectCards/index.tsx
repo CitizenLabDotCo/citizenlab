@@ -122,16 +122,20 @@ const LoadMoreButton = styled.div`
   transition: all 100ms ease-out;
   background: #f0f0f0;
 
+  border: solid 2px #eaeaea;
+  background: #fff;
+
   &:not(.loading) {
     cursor: pointer;
 
     &:hover {
-      background: #e8e8e8;
+      /* background: #e8e8e8; */
+      border-color: #ccc
     }
   }
 
   &.loading {
-    background: #f0f0f0;
+    /* background: #f0f0f0; */
   }
 `;
 
@@ -150,6 +154,7 @@ interface IAccumulator {
 type Props = {
   queryParameters?: IQueryParameters | undefined;
   theme?: object | undefined;
+  hideAllFilters?: boolean | undefined;
 };
 
 type State = {
@@ -245,11 +250,13 @@ class ProjectCards extends React.PureComponent<Props, State> {
 
     return (
       <Container id="e2e-projects-container">
-        <FiltersArea id="e2e-projects-filters">
-          <FilterArea>
-            <SelectAreas selectedAreas={selectedAreas} onChange={this.handleAreasOnChange} />
-          </FilterArea>
-        </FiltersArea>
+        {this.props.hideAllFilters !== true &&
+          <FiltersArea id="e2e-projects-filters">
+            <FilterArea>
+              <SelectAreas selectedAreas={selectedAreas} onChange={this.handleAreasOnChange} />
+            </FilterArea>
+          </FiltersArea>
+        }
 
         {querying && 
           <Loading id="projects-loading">

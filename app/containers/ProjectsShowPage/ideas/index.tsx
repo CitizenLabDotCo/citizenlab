@@ -4,6 +4,7 @@ import { isString } from 'lodash';
 import { browserHistory } from 'react-router';
 
 // components
+import Header from '../Header';
 import Ideas from './Ideas';
 import EventsPreview from '../EventsPreview';
 import ContentContainer from 'components/ContentContainer';
@@ -18,7 +19,7 @@ import messages from '../messages';
 // style
 import styled from 'styled-components';
 
-const Container = styled.div`
+const IdeasContainer = styled.div`
   padding-top: 70px;
   padding-bottom: 70px;
 `;
@@ -85,18 +86,22 @@ export default class ProjectIdeasPage extends React.PureComponent<Props, State> 
 
   render() {
     const { project } = this.state;
+    const { slug } = this.props.params;
 
     if (project) {
       return (
-        <Container>
-          <ContentContainer>
-            <IdeasTitle>
-              <FormattedMessage {...messages.navIdeas} />
-            </IdeasTitle>
-            <Ideas type="project" id={project.data.id} defaultDisplay={project.data.attributes.presentation_mode}/>
-          </ContentContainer>
-          <EventsPreview projectId={project.data.id} />
-        </Container>
+        <>
+          <Header slug={slug} />
+          <IdeasContainer>
+            <ContentContainer>
+              <IdeasTitle>
+                <FormattedMessage {...messages.navIdeas} />
+              </IdeasTitle>
+              <Ideas type="project" id={project.data.id} defaultDisplay={project.data.attributes.presentation_mode}/>
+            </ContentContainer>
+            <EventsPreview projectId={project.data.id} />
+          </IdeasContainer>
+        </>
       );
     }
 

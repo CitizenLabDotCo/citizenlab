@@ -14,48 +14,37 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #fff;
   position: relative;
-
-  ${media.smallerThanMaxTablet`
-    background: #f9f9fa;
-  `}
-`;
-
-const BackgroundColor = styled.div`
-  position: absolute;
-  top: 200px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 0;
   background: #f9f9fa;
 
   ${media.smallerThanMaxTablet`
-    display: none;
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
   `}
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
+  flex: 1;
   padding-bottom: 100px;
 `;
 
 const PageTitle = styled.h1`
-  height: 60px;
   color: #333;
-  font-size: 28px;
-  line-height: 32px;
+  font-size: 34px;
+  line-height: 40px;
   font-weight: 500;
+  text-align: center;
   margin: 0;
   padding: 0;
-  display: none;
+  padding-top: 60px;
+  padding-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
-    display: flex;
-    align-items: flex-end;
+    font-size: 28px;
+    line-height: 34px;
   `}
 `;
 
@@ -67,9 +56,10 @@ export default class IdeasIndex extends React.PureComponent<Props, State> {
   render() {
     return (
       <Container>
-        <BackgroundColor />
         <StyledContentContainer>
-          <PageTitle><FormattedMessage {...messages.pageTitle} /></PageTitle>
+          <PageTitle>
+            <FormattedMessage {...messages.pageTitle} />
+          </PageTitle>
           <ProjectCards queryParameters={{ 'page[size]': 50 }} />
         </StyledContentContainer>
         <Footer />
