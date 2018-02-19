@@ -7,7 +7,7 @@ import { projectBySlugStream, IProjectData } from 'services/projects';
 
 // Components
 import GoBackButton from 'components/UI/GoBackButton';
-import TabbedResource from 'components/admin/TabbedResource';
+import TabbedResource, { TabProps } from 'components/admin/TabbedResource';
 import { browserHistory } from 'react-router';
 
 // Localisation
@@ -77,27 +77,32 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
   getTabs = (slug: string, project: IProjectData) => {
     const baseTabsUrl = `/admin/projects/${slug}`;
 
-    const tabs = [
+    const tabs: TabProps[] = [
       {
         label: this.props.intl.formatMessage(messages.generalTab),
         url: `${baseTabsUrl}/edit`,
+        className: 'general',
       },
       {
         label: this.props.intl.formatMessage(messages.descriptionTab),
         url: `${baseTabsUrl}/description`,
+        className: 'description'
       },
       {
         label: this.props.intl.formatMessage(messages.ideasTab),
         url: `${baseTabsUrl}/ideas`,
+        className: 'ideas',
       },
       {
         label: this.props.intl.formatMessage(messages.eventsTab),
         url: `${baseTabsUrl}/events`,
+        className: 'events',
       },
       {
         label: this.props.intl.formatMessage(messages.permissionsTab),
         url: `${baseTabsUrl}/permissions`,
         feature: 'private_projects',
+        className: 'permissions',
       },
     ];
 
@@ -105,6 +110,7 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
       tabs.splice(3, 0, {
         label: this.props.intl.formatMessage(messages.phasesTab),
         url: `${baseTabsUrl}/timeline`,
+        className: 'phases',
       });
     }
 
