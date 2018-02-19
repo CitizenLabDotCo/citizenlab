@@ -39,6 +39,13 @@ const icons = {
         <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
       </svg>
   ),
+  eye: (className) => (
+    <svg className={className} height="100%" viewBox="1 4.5 22 15">
+      <path fill="none" d="M0 0h24v24H0V0z"/>
+      <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.391 6 7.5 11 7.5s9.27-3.109 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+      <path d="M12 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+    </svg>
+  ),
   checkmark: (className) => (
       <svg className={className} height="100%" viewBox="0 0 19 15">
         <path d="M6.05 11.467L1.533 6.95 0 8.482l6.05 6.05 13-13L17.517 0z" fillRule="evenodd" />

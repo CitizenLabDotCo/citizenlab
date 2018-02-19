@@ -40,16 +40,19 @@ export default class timeline extends React.PureComponent<Props, State> {
     this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
-      this.slug$.distinctUntilChanged().filter(slug => isString(slug)).switchMap((slug) => {
-        const project$ = projectBySlugStream(slug).observable;
-        return project$;
-      }).subscribe((project) => {
-        const currentPathname = browserHistory.getCurrentLocation().pathname.replace(/\/$/, '');
-        const lastUrlSegment = (project.data.attributes.process_type === 'timeline' ? 'process' : 'ideas');
-        const redirectUrl = `${currentPathname}/${lastUrlSegment}`;
-        window.history.pushState({ path: redirectUrl }, '', redirectUrl);
-        this.setState({ project });
-      })
+      this.slug$
+        .distinctUntilChanged()
+        .filter(slug => isString(slug))
+        .switchMap((slug) => {
+          const project$ = projectBySlugStream(slug).observable;
+          return project$;
+        }).subscribe((project) => {
+          const currentPathname = browserHistory.getCurrentLocation().pathname.replace(/\/$/, '');
+          const lastUrlSegment = (project.data.attributes.process_type === 'timeline' ? 'process' : 'ideas');
+          const redirectUrl = `${currentPathname}/${lastUrlSegment}`;
+          window.history.pushState({ path: redirectUrl }, '', redirectUrl);
+          this.setState({ project });
+        })
     ];
   }
 

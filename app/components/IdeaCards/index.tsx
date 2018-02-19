@@ -145,16 +145,20 @@ const LoadMoreButton = styled.div`
   transition: all 100ms ease-out;
   background: #f0f0f0;
 
+  border: solid 2px #eaeaea;
+  background: #fff;
+
   &:not(.loading) {
     cursor: pointer;
 
     &:hover {
-      background: #e8e8e8;
+      /* background: #e8e8e8; */
+      border-color: #ccc
     }
   }
 
   &.loading {
-    background: #f0f0f0;
+    /* background: #f0f0f0; */
   }
 `;
 

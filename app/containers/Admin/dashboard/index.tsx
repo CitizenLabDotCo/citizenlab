@@ -20,7 +20,8 @@ const ControlBar = styled.div`
 `;
 
 const GraphCard: any = styled.div`
-  background-color: #ffffff;
+  background: #fff;
+  border: solid 1px #e4e4e4;
   border-radius: 5px;
   height: ${(props: any) => props.dynamicHeight ? 'auto' : '350px'};
   padding: 20px;

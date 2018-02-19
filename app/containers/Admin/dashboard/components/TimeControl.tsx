@@ -14,6 +14,7 @@ import styled from 'styled-components';
 const Container = styled.div`
   display: flex;
   background: #fff;
+  border: solid 1px #e4e4e4;
   border-radius: 5px;
 `;
 
@@ -37,6 +38,8 @@ const TimeButton = styled.button`
   padding: 1rem 1.5rem;
 
   &:hover {
+    background: #f0f0f0;
+
     ${PrevIcon},
     ${NextIcon} {
       fill: #000;

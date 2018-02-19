@@ -156,7 +156,7 @@ const NavigationDropdownItemText = styled.div`
 const NavigationDropdownItemIcon = styled(Icon)`
   height: 7px;
   fill: #999;
-  margin-left: 5px;
+  margin-left: 4px;
   margin-top: 4px;
   transition: all 100ms ease-out;
 `;
@@ -237,7 +237,7 @@ const NavigationDropdownMenuInner = styled.div`
 `;
 
 const NavigationDropdownList = styled.div`
-  max-height: 292px;
+  max-height: 210px;
   width: 280px;
   display: flex;
   flex-direction: column;
@@ -271,9 +271,9 @@ const NavigationDropdownFooter = styled(Link)`
   font-weight: 400;
   text-align: center;
   text-decoration: none;
-  padding: 17px 15px;
+  padding: 15px 15px;
   cursor: pointer;
-  background: #f0f0f0;
+  background: #f2f2f2;
   transition: all 80ms ease-out;
 
   &:hover {
@@ -482,13 +482,15 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
   }
 
   render() {
-    const { pathname } = this.props.location;
+    // const { pathname } = this.props.location;
     const { locale, authUser, currentTenant, projects, scrolled, projectsDropdownOpened } = this.state;
-    let hideBorder = false;
+    const hideBorder = false;
 
-    if (pathname.startsWith('/pages') || pathname === '/projects' || pathname === 'projects/') {
-      hideBorder = true;
-    }
+    // let hideBorder = false;
+
+    // if (pathname.startsWith('/pages') || pathname === '/projects' || pathname === 'projects/') {
+    //   hideBorder = true;
+    // }
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;

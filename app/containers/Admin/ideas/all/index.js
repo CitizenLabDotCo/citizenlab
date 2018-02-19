@@ -35,17 +35,17 @@ const HeaderTitle = styled.h1`
   padding: 0;
 `;
 
-const ExportLabelsContainer = styled.div`
+const ExportButtons = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-end;
-
-  .no-padding-right button {
-    padding-right: 0;
-    padding-top: .25em;
-    padding-bottom: .25em;
-  }
 `;
+
+const ExportIdeasButton = styled(Button)`
+  margin-right: 10px;
+`;
+
+const ExportCommentsButton = styled(Button)``;
 
 class AllIdeas extends PureComponent {
   render() {
@@ -56,25 +56,24 @@ class AllIdeas extends PureComponent {
           <HeaderTitle>
             <FormattedMessage {...messages.header} />
           </HeaderTitle>
-          <ExportLabelsContainer>
-            <Button
-              className="no-padding-right"
-              style={this.props.exportIdeasError ? 'error' : 'text'}
+          <ExportButtons>
+            <ExportIdeasButton
+              style={this.props.exportIdeasError ? 'error' : 'cl-blue'}
               onClick={this.props.loadIdeasXlsxRequest}
-              loading={this.props.exportIdeasLoading}
-              error={this.props.exportIdeasError}
+              processing={this.props.exportIdeasLoading}
+              circularCorners={false}
             >
               <FormattedMessage {...messages.exportIdeas} />
-            </Button>
-            <Button
-              className="no-padding-right"
-              style={this.props.exportCommentsError ? 'error' : 'text'}
+            </ExportIdeasButton>
+            <ExportCommentsButton
+              style={this.props.exportCommentsError ? 'error' : 'cl-blue'}
               onClick={this.props.loadCommentsXlsxRequest}
-              loading={this.props.exportCommentsLoading}
+              processing={this.props.exportCommentsLoading}
+              circularCorners={false}
             >
               <FormattedMessage {...messages.exportComments} />
-            </Button>
-          </ExportLabelsContainer>
+            </ExportCommentsButton>
+          </ExportButtons>
         </HeaderContainer>
         <PageWrapper>
           <IdeaManager />

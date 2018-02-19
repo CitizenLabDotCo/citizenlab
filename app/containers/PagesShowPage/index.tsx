@@ -35,13 +35,13 @@ const Container = styled.div`
 
 const Loading = styled.div`
   width: 100%;
-  height: calc(80vh - ${props => props.theme.menuHeight}px - 1px);
+  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
   align-items: center;
   justify-content: center;
 
   ${media.smallerThanMaxTablet`
-    height: calc(80vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
   `}
 `;
 
@@ -59,11 +59,20 @@ const PageContent = styled.div`
 `;
 
 const PageTitle = styled.h1`
-  color: #222;
+  color: #333;
   font-size: 34px;
-  font-weight: 600;
   line-height: 40px;
-  margin-bottom: 50px;
+  font-weight: 500;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  padding-top: 60px;
+  padding-bottom: 40px;
+
+  ${media.smallerThanMaxTablet`
+    font-size: 28px;
+    line-height: 34px;
+  `}
 `;
 
 const PageDescription = styled.div`
@@ -138,7 +147,7 @@ const StyledLink = styled(Link)`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 15px;
-  padding: 23px;
+  padding: 20px 23px;
   border-radius: 5px;
   border: solid 1px #e4e4e4;
   background: #fff;

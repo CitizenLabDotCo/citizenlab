@@ -26,13 +26,24 @@ import messages from './messages';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
+const Loading = styled.div`
+  width: 100%;
+  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ${media.smallerThanMaxTablet`
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+  `}
+`;
+
 const Container = styled.div`
-  height: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   background: #f9f9fa;
 
   ${media.smallerThanMaxTablet`
-    min-height: auto;
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
   `}
 `;
 
@@ -42,18 +53,6 @@ const StyledContentContainer = styled(ContentContainer)`
 
   ${media.smallerThanMaxTablet`
     padding-bottom: 40px;
-  `}
-`;
-
-const Loading = styled.div`
-  width: 100%;
-  height: calc(80vh - ${props => props.theme.menuHeight}px - 1px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  ${media.smallerThanMaxTablet`
-    height: calc(80vh - ${props => props.theme.mobileMenuHeight}px - 70px);
   `}
 `;
 
@@ -74,22 +73,20 @@ const ColumnsContainer = styled.div`
 `;
 
 const PageTitle = styled.h1`
-  width: 100%;
   color: #333;
-  font-size: 36px;
-  line-height: 42px;
+  font-size: 34px;
+  line-height: 40px;
   font-weight: 500;
   text-align: center;
-  padding: 0;
   margin: 0;
-  padding-top: 40px;
-  margin-bottom: 80px;
+  padding: 0;
+  padding-top: 60px;
+  padding-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
     font-size: 28px;
     line-height: 34px;
     text-align: left;
-    margin-bottom: 40px;
   `}
 `;
 
@@ -243,9 +240,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
           <Spinner size="34px" color="#666" />
         </Loading>
       );
-    }
-
-    if (loaded) {
+    } else {
       const { open_idea_box: openProjects, null: cityProjects } = groupBy(projects, (project) => project.attributes.internal_role);
       const openProject = openProjects && !isEmpty(openProjects) && openProjects[0];
       const noProjects = (!projects || size(projects) === 0);
@@ -332,7 +327,5 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
         </Container>
       );
     }
-
-    return null;
   }
 }

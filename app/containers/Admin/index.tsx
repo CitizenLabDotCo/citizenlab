@@ -21,7 +21,7 @@ const LeftColumn = styled.div`
 const RightColumn = styled.div`
   flex: 1;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  background-color: #f2f2f2;
+  background: #f9f9fa;
 `;
 
 const AdminContainerStyled = styled<any, 'div'>('div')`

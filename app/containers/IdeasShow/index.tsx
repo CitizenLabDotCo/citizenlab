@@ -47,7 +47,7 @@ import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-const contentTimeout = 700;
+const contentTimeout = 600;
 const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
 const contentDelay = 450;
 const contentTranslate = '22px';

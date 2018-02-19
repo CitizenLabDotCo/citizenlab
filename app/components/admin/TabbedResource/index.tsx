@@ -15,6 +15,7 @@ import { Message, Multiloc } from 'typings';
 // components
 import { Link } from 'react-router';
 import FeatureFlag from 'components/FeatureFlag';
+import Button from 'components/UI/Button';
 
 const ResourceHeader = styled.div`
   display: flex;
@@ -32,9 +33,9 @@ const Title = styled.h1`
   padding: 0;
 `;
 
-const PublicResourceLink = styled(Link)`
-  color: ${color('label')};
-`;
+// const PublicResourceLink = styled(Link)`
+//   color: ${color('label')};
+// `;
 
 const TabbedNav = styled.nav`
   background: #fcfcfc;
@@ -144,9 +145,14 @@ export default class TabbedResource extends React.PureComponent<Props, State> {
           <Title>{showLabel(resource.title)}</Title>
 
           {resource.publicLink &&
-            <PublicResourceLink to={resource.publicLink}>
+            <Button
+              style="cl-blue"
+              icon="eye"
+              linkTo={resource.publicLink}
+              circularCorners={false}
+            >
               <FormattedMessage {...messages.viewPublicResource} />
-            </PublicResourceLink>
+            </Button>
           }
         </ResourceHeader>
 
