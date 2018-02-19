@@ -1,5 +1,11 @@
 class WebApi::V1::InvitesController < ApplicationController
 
+  UNAUTHORIZED_ACCEPT_REASONS = {
+    token_not_found: 'token_not_found',
+    already_accepted: 'already_accepted'
+  }
+
+
   skip_after_action :verify_authorized, only: [:accept]
 
 
@@ -36,10 +42,12 @@ class WebApi::V1::InvitesController < ApplicationController
   def accept
     @invite = Invite.find_by(token: params[:token])
     if !@invite
-      #AmIDoingThisRight?
-      render json: { errors: { base: [{ error: "No invite with token #{params[:token]}" }] } }, status: :unauthorized 
+      render json: { errors: { base: [{ error: UNAUTHORIZED_ACCEPT_REASONS[:token_not_found] }] } }, status: :unauthorized 
       return
-      # raise ActiveRecord::RecordNotFound.new(id: params[:token], model: Invite, primary_key: :token)
+    end
+    if @invite.accepted_at
+      render json: { errors: { base: [{ error: UNAUTHORIZED_ACCEPT_REASONS[:already_accepted] }] } }, status: :unauthorized 
+      return
     end
     invitee = @invite.invitee
     begin
