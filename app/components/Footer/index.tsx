@@ -270,7 +270,7 @@ class Footer extends React.PureComponent<Props, State> {
       const poweredBy = <FormattedMessage {...messages.poweredBy} />;
 
       return (
-        <Container>
+        <Container className={this.props['className']}>
           {showCityLogoSection &&
             <FirstLine>
               {currentTenantLogo && <TenantLogo src={currentTenantLogo} />}
