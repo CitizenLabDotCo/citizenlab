@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { get, map } from 'lodash';
+import { get, map, merge, set } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // typings
@@ -138,7 +138,15 @@ export default class SettingsGeneralTab extends React.PureComponent<Props, State
 
     if (tenant) {
       const { errors, saved, attributesDiff } = this.state;
-      const tenantAttrs = { ...get(tenant, 'attributes', {}), ...attributesDiff };
+      const updatedLocales = get(attributesDiff, 'settings.core.locales');
+
+      let tenantAttrs = (tenant ? merge({}, tenant.attributes, attributesDiff) : merge({}, attributesDiff));
+  
+      // Prevent merging the arrays of locales
+      if (updatedLocales) {
+        tenantAttrs = set(tenantAttrs, 'settings.core.locales', updatedLocales);
+      }
+
       const tenantLocales: string[] | null = get(tenantAttrs, 'settings.core.locales', null);
       const organizationType: string | null = get(tenantAttrs, 'settings.core.organization_type', null);
       const organizationNameMultiloc: Multiloc | null = get(tenantAttrs, 'settings.core.organization_name', null);

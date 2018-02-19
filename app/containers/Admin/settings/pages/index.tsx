@@ -6,8 +6,12 @@ export default class AdminSettingsPages extends React.PureComponent {
   render() {
     return (
       <>
-        {LEGAL_PAGES.map((slug) => (
-          <PageEditor key={slug} slug={slug} />
+        {LEGAL_PAGES.map((slug, index) => (
+          <PageEditor
+            key={slug}
+            slug={slug}
+            isLast={(index === LEGAL_PAGES.length - 1)}
+          />
         ))}
       </>
     );
