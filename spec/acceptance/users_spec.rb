@@ -193,6 +193,15 @@ resource "Users" do
         end
       end
 
+      describe do
+        let!(:invitee) {create(:invited_user)}
+        let(:email) {invitee.email}
+        
+        example_request "[error] Registrating an invited user" do
+          expect(response_status).to eq 401
+        end
+      end
+
     end
 
     put "web_api/v1/users/:id" do
