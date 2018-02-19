@@ -30,6 +30,10 @@ class UserPolicy < ApplicationPolicy
     show?
   end
 
+  def by_invite?
+    true
+  end
+
   def update?
     user && (record.id == user.id || user.admin?)
   end

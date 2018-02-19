@@ -72,11 +72,11 @@ class WebApi::V1::UsersController < ::ApplicationController
     show
   end
 
-  #def by_invite
-  #  @user = User.find_by!(slug: params[:slug])
-  #  authorize @user
-  #  show
-  #end
+  def by_invite
+   @user = Invite.find_by!(token: params[:token])&.invitee
+   authorize @user
+   show
+  end
 
   def create
     @user = User.new(permitted_attributes(User))
