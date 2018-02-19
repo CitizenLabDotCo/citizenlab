@@ -8,16 +8,11 @@ import styled from 'styled-components';
 
 const Container = styled.div``;
 
-interface IDraftEditorContainer {
-  error: boolean;
-  focussed: boolean;
-}
-
-const DraftEditorContainer = styled.div`
+const DraftEditorContainer: any = styled.div`
   width: 100%;
   border-radius: 5px;
   border: solid 1px;
-  border-color: ${(props: IDraftEditorContainer) => {
+  border-color: ${(props: any) => {
     if (props.error) {
       return '#fc3c2d';
     }
@@ -152,7 +147,7 @@ type State = {
 };
 
 export default class Editor extends React.PureComponent<Props, State> {
-  private emptyEditorState: EditorState;
+  emptyEditorState: EditorState;
 
   constructor(props: Props) {
     super(props as any);

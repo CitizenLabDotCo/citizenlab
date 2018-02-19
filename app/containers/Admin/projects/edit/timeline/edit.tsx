@@ -6,9 +6,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import moment from 'moment';
-import { get, isEmpty } from 'lodash';
-import { EditorState } from 'draft-js';
-// import { browserHistory } from 'react-router';
+import { get, isEmpty, forOwn } from 'lodash';
 
 // Services
 import { localeStream } from 'services/locale';
@@ -22,8 +20,8 @@ import { getEditorStateFromHtmlString, getHtmlStringFromEditorState } from 'util
 
 // Components
 import Label from 'components/UI/Label';
-import Input from 'components/UI/Input';
-import Editor from 'components/UI/Editor';
+import InputMultiloc from 'components/UI/InputMultiloc';
+import EditorMultiloc from 'components/UI/EditorMultiloc';
 import Error from 'components/UI/Error';
 import { DateRangePicker } from 'react-dates';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -39,7 +37,7 @@ import messages from './messages';
 import styled from 'styled-components';
 
 // Typings
-import { API, Locale } from 'typings';
+import { API, Locale, MultilocEditorState } from 'typings';
 
 const PhaseForm = styled.form`
   .DateRangePickerInput {
@@ -83,7 +81,7 @@ interface State {
   errors: { [fieldName: string]: API.Error[] } | null;
   saving: boolean;
   focusedInput: 'startDate' | 'endDate' | null;
-  editorState: EditorState;
+  multilocEditorState: MultilocEditorState | null;
   saved: boolean;
   loaded: boolean;
 }
@@ -102,7 +100,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
       errors: null,
       saving: false,
       focusedInput: null,
-      editorState: EditorState.createEmpty(),
+      multilocEditorState: null,
       saved: false,
       loaded: false
     };
@@ -122,11 +120,21 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
         const phase$ = (id ? phaseStream(id).observable : Rx.Observable.of(null));
         return Rx.Observable.combineLatest(locale$, project$, phase$);
       }).subscribe(([locale, project, phase]) => {
+        let multilocEditorState: MultilocEditorState | null = null;
+ 
+        if (phase) {
+          multilocEditorState = {};
+
+          forOwn(phase.data.attributes.description_multiloc, (htmlValue, locale) => {
+            (multilocEditorState as MultilocEditorState)[locale] = getEditorStateFromHtmlString(htmlValue);
+          });
+        }
+
         this.setState({
           locale,
           project,
           phase,
-          editorState: getEditorStateFromHtmlString(get(phase, `data.attributes.description_multiloc.${locale}`, '')),
+          multilocEditorState,
           loaded: true
         });
       })
@@ -142,38 +150,27 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  createMultilocUpdater = (name: string) => (value: string) => {
-    const { locale, attributeDiff } = this.state;
-
-    if (attributeDiff) {
-      const newValue = attributeDiff && attributeDiff[name] || {};
-      newValue[locale] = value;
-
-      this.setState({
-        attributeDiff: {
-          ...attributeDiff,
-          [name]: newValue
-        }
-      });
-    }
+  handleTitleMultilocOnChange = (titleMultiloc) => {
+    this.setState((state) => ({
+      attributeDiff: {
+        ...state.attributeDiff,
+        title_multiloc: titleMultiloc
+      }
+    }));
   }
 
-  handleEditorOnChange = (editorState: EditorState) => {
-    const { locale, attributeDiff } = this.state;
-
-    if (attributeDiff) {
-      const newHtmlValue = getHtmlStringFromEditorState(editorState);
-      const descriptionMultiloc = attributeDiff && attributeDiff.description_multiloc || {};
-      descriptionMultiloc[locale] = newHtmlValue;
-
-      this.setState({
-        editorState,
-        attributeDiff: {
-          ...attributeDiff,
-          description_multiloc: descriptionMultiloc
+  handleEditorOnChange = (multilocEditorState: MultilocEditorState, locale: Locale) => {
+    this.setState((state) => ({
+      multilocEditorState,
+      attributeDiff: {
+        ...state.attributeDiff,
+        description_multiloc: {
+          ...get(state, 'phase.data.attributes.description_multiloc', {}),
+          ...get(state.attributeDiff, 'description_multiloc', {}),
+          [locale]: getHtmlStringFromEditorState(multilocEditorState[locale])
         }
-      });
-    }
+      }
+    }));
   }
 
   handleDateUpdate = ({ startDate, endDate }) => {
@@ -256,9 +253,8 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
 
   render() {
     if (this.state.loaded) {
-      const { tFunc } = this.props;
       const { formatMessage } = this.props.intl;
-      const { errors, saved, phase, attributeDiff, saving, editorState } = this.state;
+      const { errors, saved, phase, attributeDiff, saving, multilocEditorState } = this.state;
       const phaseAttrs = (phase ? { ...phase.data.attributes, ...attributeDiff } : { ...attributeDiff });
       const submitState = getSubmitState({ errors, saved, diff: attributeDiff });
       const startDate = (phaseAttrs.start_at ? moment(phaseAttrs.start_at) : null);
@@ -274,12 +270,11 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
           <PhaseForm onSubmit={this.handleOnSubmit}>
             <Section>
               <SectionField>
-                <Label htmlFor="title"><FormattedMessage {...messages.titleLabel} /></Label>
-                <Input
-                  id="title"
+                <InputMultiloc
+                  label={<FormattedMessage {...messages.titleLabel} />}
                   type="text"
-                  value={tFunc(phaseAttrs.title_multiloc)}
-                  onChange={this.createMultilocUpdater('title_multiloc')}
+                  valueMultiloc={phaseAttrs.title_multiloc}
+                  onChange={this.handleTitleMultilocOnChange}
                 />
                 <Error apiErrors={errors && errors.title_multiloc} />
               </SectionField>
@@ -313,12 +308,10 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
               </SectionField>
 
               <SectionField>
-                <Label htmlFor="description"><FormattedMessage {...messages.descriptionLabel} /></Label>
-                <Editor
+                <EditorMultiloc
                   id="description"
-                  placeholder=""
-                  value={editorState}
-                  error=""
+                  label={<FormattedMessage {...messages.descriptionLabel} />}
+                  valueMultiloc={multilocEditorState}
                   onChange={this.handleEditorOnChange}
                 />
                 <Error apiErrors={errors && errors.description_multiloc} />

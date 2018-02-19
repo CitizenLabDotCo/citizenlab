@@ -137,6 +137,7 @@
   "app.containers.AdminPage.PagesEdition.buttonError": "Fehler",
   "app.containers.AdminPage.PagesEdition.buttonSave": "Speichern",
   "app.containers.AdminPage.PagesEdition.buttonSuccess": "Gespeichert",
+  "app.containers.AdminPage.PagesEdition.contentLabel": "",
   "app.containers.AdminPage.PagesEdition.cookie-policy": "Cookie-Richtlinie",
   "app.containers.AdminPage.PagesEdition.information": "Impressum",
   "app.containers.AdminPage.PagesEdition.messageError": "Fehler beim Speichern der Seite",

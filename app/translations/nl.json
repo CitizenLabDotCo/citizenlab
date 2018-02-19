@@ -137,6 +137,7 @@
   "app.containers.AdminPage.PagesEdition.buttonError": "Fout",
   "app.containers.AdminPage.PagesEdition.buttonSave": "Opslaan",
   "app.containers.AdminPage.PagesEdition.buttonSuccess": "Opgeslagen",
+  "app.containers.AdminPage.PagesEdition.contentLabel": "",
   "app.containers.AdminPage.PagesEdition.cookie-policy": "Cookiebeleid",
   "app.containers.AdminPage.PagesEdition.information": "Over",
   "app.containers.AdminPage.PagesEdition.messageError": "Er is een fout opgetreden tijdens het opslaan van de pagina",
