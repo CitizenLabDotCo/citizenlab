@@ -117,6 +117,14 @@ resource "Invites" do
         do_request
         expect(response_status).to eq 401 # unauthorized
       end
+
+      example "Accepting an invitation twice" do
+        do_request
+        do_request
+
+        byebug
+        expect(response_status).to eq 401 # unauthorized
+      end
     
     end
   end
