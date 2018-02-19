@@ -1,7 +1,15 @@
 class WebApi::V1::UsersController < ::ApplicationController
+
+  UNAUTHORIZED_CREATE_REASONS = {
+    email_invited: 'email_invited'
+  }
+
   # before_action :authenticate_user, except: [:create]
   before_action :set_user, only: [:show, :update, :destroy]
   skip_after_action :verify_authorized, only: [:index_xlsx]
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
 
   def index
     @users = policy_scope(User)
@@ -64,6 +72,12 @@ class WebApi::V1::UsersController < ::ApplicationController
     show
   end
 
+  #def by_invite
+  #  @user = User.find_by!(slug: params[:slug])
+  #  authorize @user
+  #  show
+  #end
+
   def create
     @user = User.new(permitted_attributes(User))
     authorize @user
@@ -108,6 +122,14 @@ class WebApi::V1::UsersController < ::ApplicationController
     authorize @user
   rescue ActiveRecord::RecordNotFound
     send_error(nil, 404)
+  end
+
+  def user_not_authorized exception
+    if (exception.query == "create?") && User.find_by(email: exception.record.email, is_invited: true)
+      render json: { errors: { base: [{ error: UNAUTHORIZED_CREATE_REASONS[:email_invited] }] } }, status: :unauthorized
+      return
+    end
+    raise exception
   end
 
 end

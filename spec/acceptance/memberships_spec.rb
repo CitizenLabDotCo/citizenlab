@@ -107,4 +107,31 @@ resource "Memberships" do
     end
 
   end
+
+  post "web_api/v1/groups/:group_id/memberships" do
+    context "when admin" do
+      before do
+        @admin = create(:admin)
+        token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
+        header 'Authorization', "Bearer #{token}"
+
+        @group = create(:group)
+      end
+
+      with_options scope: :membership do
+        parameter :user_id, "The user id of the group member.", required: true
+      end
+      ValidationErrorHelper.new.error_fields(self, Membership)
+
+      let(:group_id) { @group.id }
+      let(:user_id) { create(:invited_user).id }
+
+      example_request "Add an (already) invited user as a group member" do
+        expect(response_status).to eq 201
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq user_id
+      end
+    end
+  end
+  
 end 

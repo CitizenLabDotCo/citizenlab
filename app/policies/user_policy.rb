@@ -19,7 +19,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def create?
-    true
+    record && !User.find_by(email: record.email, is_invited: true)
   end
 
   def show?

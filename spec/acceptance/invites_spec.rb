@@ -42,8 +42,11 @@ resource "Invites" do
       example_request "Invite a non-existing user to become member of some groups" do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:attributes,:accepted_at)).to be_blank
         invitee = User.find_by(email: email)
-        expect(invitee.is_invited).to eq true
+        json_invitee = json_response.dig(:included).select{|inc| inc[:id] == invitee.id}&.first
+        expect(json_invitee&.dig(:attributes,:email)).to eq(email)
+        expect(json_invitee&.dig(:attributes,:is_invited)).to eq(true)
         expect(invitee.admin?).to eq true
         expect(Membership.count).to eq 3
       end
@@ -53,7 +56,7 @@ resource "Invites" do
         expect(invitee.authenticate '').to eq false
       end
 
-      example "[error] Inviting the same email twice", document: false do
+      example "[error] Inviting two users with the same email" do
         invite = create(:invite, invitee: create(:user, email: email))
 
         do_request
@@ -85,8 +88,8 @@ resource "Invites" do
 
     post "web_api/v1/invites/:token/accept" do
       with_options scope: :invite do
-        parameter :first_name, "The first name of the invitee.", required: false ## but may not be required if already specified upon invite
-        parameter :last_name, "The last name of the invitee.", required: false
+        parameter :first_name, "The first name of the invitee. Required if not specified at creation of the invite.", required: false
+        parameter :last_name, "The last name of the invitee. Required if not specified at creation of the invite.", required: false
         parameter :password, "The password of the invitee.", required: true
         parameter :avatar, "The avatar of the invitee.", required: false
         parameter :locale, "The locale of the invitee.", required: false
@@ -105,10 +108,12 @@ resource "Invites" do
       let(:password) { 'I<3BouletteSpecial' }
       let(:locale) { 'nl' }
       example_request "Accept an invite with a valid token" do
-        expect(status).to eq(202)
-        @invite = @invite.reload
-        expect(@invite.invitee.last_name).to eq('Boulettos')
-        expect(@invite.invitee.is_invited).to eq(false)
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:attributes,:accepted_at)).to be_present
+        boulettos = json_response.dig(:included).select{|inc| inc[:id] == @invite.invitee.id}&.first
+        expect(boulettos&.dig(:attributes,:last_name)).to eq('Boulettos')
+        expect(boulettos&.dig(:attributes,:is_invited)).to eq(false)
       end
 
       example "Accepting an invite with an invalid token" do
@@ -125,32 +130,6 @@ resource "Invites" do
         expect(response_status).to eq 401 # unauthorized
       end
     
-    end
-  end
-
-  post "web_api/v1/groups/:group_id/memberships" do
-    context "when admin" do
-      before do
-        @admin = create(:admin)
-        token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
-        header 'Authorization', "Bearer #{token}"
-
-        @group = create(:group)
-      end
-
-      with_options scope: :membership do
-        parameter :user_id, "The user id of the group member.", required: true
-      end
-      ValidationErrorHelper.new.error_fields(self, Membership)
-
-      let(:group_id) { @group.id }
-      let(:user_id) { create(:invited_user).id }
-
-      example_request "Add an invited user as a group member", document: false do
-        expect(response_status).to eq 201
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq user_id
-      end
     end
   end
 end
