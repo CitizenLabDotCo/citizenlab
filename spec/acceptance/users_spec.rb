@@ -135,6 +135,25 @@ resource "Users" do
       end
     end
 
+    get "web_api/v1/users/by_invite/:token" do
+      let!(:invite) {create(:invite)}
+      let(:token) {invite.token}
+
+      example_request "Get a user by invite" do
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :id)).to eq invite.invitee.id
+      end
+
+      describe do
+        let(:token) {"n0ns3ns3"}
+        example "get an unexisting user by invite token triggers 404", document: false do
+          do_request
+          expect(status).to eq 404
+        end
+      end
+    end
+
     get "web_api/v1/users/me" do
       example_request "Get the authenticated user" do
         json_response = json_parse(response_body)
