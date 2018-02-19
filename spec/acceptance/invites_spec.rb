@@ -122,7 +122,6 @@ resource "Invites" do
         do_request
         do_request
 
-        byebug
         expect(response_status).to eq 401 # unauthorized
       end
     
