@@ -31,6 +31,13 @@ Rails.application.routes.draw do
       # auth
       post 'user_token' => 'user_token#create'
 
+
+      scope :users do
+        resources :custom_fields, defaults: {resource_type: 'User'} do
+
+        end
+      end
+
       resources :users do
         get :me, on: :collection
         get :as_xlsx, on: :collection, action: 'index_xlsx'
