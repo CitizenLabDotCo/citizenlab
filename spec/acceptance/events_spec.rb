@@ -42,7 +42,7 @@ resource "Events" do
 
     post "web_api/v1/projects/:project_id/events" do
       with_options scope: :event do
-        parameter :title_multiloc, "The title of the event in nultiple locales", required: true
+        parameter :title_multiloc, "The title of the event in multiple locales", required: true
         parameter :description_multiloc, "The description of the event in multiple languages. Supports basic HTML.", required: false
         parameter :location_multiloc, "The location of the event. Textual", required: false
         parameter :start_at, "The start datetime of the event", required: true
@@ -88,7 +88,7 @@ resource "Events" do
     patch "web_api/v1/events/:id" do
       with_options scope: :event do
         parameter :project_id, "The id of the project this event belongs to"
-        parameter :title_multiloc, "The title of the event in nultiple locales"
+        parameter :title_multiloc, "The title of the event in multiple locales"
         parameter :description_multiloc, "The description of the event in multiple languages. Supports basic HTML."
         parameter :location_multiloc, "The location of the event. Textual"
         parameter :start_at, "The start datetime of the event"
