@@ -2,39 +2,17 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import { isString } from 'lodash';
 
-// router
-import { withRouter, RouterState } from 'react-router';
-
 // components
 import IdeasShow from 'containers/IdeasShow';
-import Spinner from 'components/UI/Spinner';
 
 // services
 import { ideaBySlugStream } from 'services/ideas';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
-
-const Loading = styled.div`
-  width: 100%;
-  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
-  `}
-`;
 
 const Container = styled.div`
   background: #fff;
-  margin-top: -20px;
-
-  ${media.smallerThanMaxTablet`
-    margin-top: 0px;
-  `}
 `;
 
 type Props = {
@@ -45,18 +23,16 @@ type Props = {
 
 type State = {
   ideaId: string | null;
-  loaded: boolean;
 };
 
-class IdeasShowPage extends React.PureComponent<Props & RouterState, State> {
+class IdeasShowPage extends React.PureComponent<Props, State> {
   slug$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      ideaId: null,
-      loaded: false
+      ideaId: null
     };
     this.slug$ = new Rx.BehaviorSubject(null);
     this.subscriptions = [];
@@ -70,11 +46,9 @@ class IdeasShowPage extends React.PureComponent<Props & RouterState, State> {
         .distinctUntilChanged()
         .filter(slug => isString(slug))
         .switchMap((slug: string) => {
-          const idea$ =  ideaBySlugStream(slug).observable;
-          return idea$;
+          return ideaBySlugStream(slug).observable;
         }).subscribe((idea) => {
-          const ideaId = idea.data.id;
-          this.setState({ ideaId, loaded: true });
+          this.setState({ ideaId: idea.data.id });
         })
     ];
   }
@@ -88,26 +62,14 @@ class IdeasShowPage extends React.PureComponent<Props & RouterState, State> {
   }
 
   render() {
-    const { ideaId, loaded } = this.state;
+    const { ideaId } = this.state;
 
-    if (!loaded) {
-      return (
-        <Loading>
-          <Spinner size="34px" color="#666" />
-        </Loading>
-      );
-    }
-
-    if (loaded && ideaId !== null) {
-      return (
-        <Container>
-          <IdeasShow ideaId={ideaId} />
-        </Container>
-      );
-    }
-
-    return null;
+    return (
+      <Container>
+        <IdeasShow ideaId={ideaId} />
+      </Container>
+    );
   }
 }
 
-export default withRouter(IdeasShowPage as any);
+export default IdeasShowPage;

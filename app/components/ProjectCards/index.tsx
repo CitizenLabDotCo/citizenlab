@@ -108,6 +108,12 @@ const EmptyMessageLine = styled.div`
   text-align: center;
 `;
 
+const LoadMoreButtonWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
 const LoadMoreButton = styled.div`
   flex: 0 0 60px;
   width: 100%;
@@ -125,11 +131,21 @@ const LoadMoreButton = styled.div`
   border: solid 2px #eaeaea;
   background: #fff;
 
+  width: 300px;
+  flex: 0 0 300px;
+  background: #eee;
+  border: none;
+
+  ${media.smallerThanMinTablet`
+    width: 100%;
+    flex: 1;
+  `};
+
   &:not(.loading) {
     cursor: pointer;
 
     &:hover {
-      /* background: #e8e8e8; */
+      background: #e0e0e0;
       border-color: #ccc
     }
   }
@@ -284,9 +300,11 @@ class ProjectCards extends React.PureComponent<Props, State> {
         }
 
         {!querying && hasMore &&
-          <LoadMoreButton className={`${loadingMore && 'loading'}`} onClick={this.loadMore}>
-            {!loadingMore ? <FormattedMessage {...messages.loadMore} /> : <Spinner size="30px" color={theme.colorMain} />}
-          </LoadMoreButton>
+          <LoadMoreButtonWrapper>
+            <LoadMoreButton className={`${loadingMore && 'loading'}`} onClick={this.loadMore}>
+              {!loadingMore ? <FormattedMessage {...messages.loadMore} /> : <Spinner size="30px" color={theme.colorMain} />}
+            </LoadMoreButton>
+          </LoadMoreButtonWrapper>
         }
       </Container>
     );

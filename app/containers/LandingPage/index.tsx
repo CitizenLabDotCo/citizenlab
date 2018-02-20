@@ -206,7 +206,7 @@ const Section = styled.div`
 
 const ProjectSection = Section.extend`
   padding-top: 0px;
-  margin-top: -125px;
+  margin-top: -80px;
 
   ${media.smallerThanMinTablet`
     margin-top: -160px;
@@ -233,8 +233,11 @@ const SectionTitle = styled.h2`
   padding: 0;
 
   ${media.smallerThanMaxTablet`
+    width: 100%;
     font-size: 26px;
     line-height: 30px;
+    text-align: center;
+    justify-content: center;
   `}
 `;
 

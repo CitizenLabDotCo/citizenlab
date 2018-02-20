@@ -24,7 +24,7 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const foregroundTimeout = 400;
+const foregroundTimeout = 500;
 const foregroundEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
 const contentTimeout = 700;

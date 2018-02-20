@@ -47,6 +47,8 @@ class SelectSort extends React.PureComponent<Props, State> {
         values={options}
         onChange={this.handleOnChange}
         multiple={false}
+        maxWidth={'250px'}
+        mobileMaxWidth={'180px'}
       />
     );
   }

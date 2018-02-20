@@ -48,7 +48,7 @@ const CommentContainer = styled.div`
   padding-right: 30px;
   border-top: solid 1px #e4e4e4;
   position: relative;
-  background: #fafafa;
+  background: #fff;
 
   &:hover {
     ${StyledMoreActionsMenu} {

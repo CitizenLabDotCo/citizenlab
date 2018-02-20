@@ -78,7 +78,7 @@ const CommentsContainer = styled.div`
   border-radius: 5px;
   position: relative;
   border: solid 1px #e4e4e4;
-  background: #fafafa;
+  background: #fff;
 
   &.hasReplyBox {
     border-bottom-left-radius: 0px;
