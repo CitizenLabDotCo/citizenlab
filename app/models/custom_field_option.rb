@@ -2,7 +2,8 @@ class CustomFieldOption < ApplicationRecord
   belongs_to :custom_field
 
   validates :custom_field, presence: true
-  validates :key, presence: true, uniqueness: {scope: [:custom_field_id]}
+  validates :key, presence: true, uniqueness: {scope: [:custom_field_id]}, format: { with: /\A[a-zA-Z0-9_]+\z/,
+    message: "only letters, numbers and underscore" }
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :is_default, inclusion: {in: [true, false]}
   validates :ordering, numericality: { only_integer: true }, allow_nil: true
