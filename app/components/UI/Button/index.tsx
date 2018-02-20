@@ -242,12 +242,14 @@ const Container: any = styled.div`
     }
 
     &.cl-blue {
-      background-color: #01A1B1;
-      ${setFillColor('white')}
+      &:not(.disabled) {
+        background-color: #01A1B1;
+        ${setFillColor('white')}
 
-      &:not(.processing):hover,
-      &:not(.processing):focus {
-        background-color: ${darken(0.12, '#01A1B1')};
+        &:not(.processing):hover,
+        &:not(.processing):focus {
+          background-color: ${darken(0.12, '#01A1B1')};
+      }
       }
 
       &.disabled {

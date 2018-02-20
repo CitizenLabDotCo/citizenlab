@@ -266,7 +266,15 @@ class IdeaCard extends React.PureComponent<Props, State> {
       const hasVotingDescriptor = has(idea, 'data.relationships.action_descriptor.data.voting');
       const votingDescriptor = (hasVotingDescriptor ? idea.data.relationships.action_descriptor.data.voting : null);
       const projectId = idea.data.relationships.project.data && idea.data.relationships.project.data.id;
-      const className = `${this.props['className']} e2e-idea-card ${idea.data.relationships.user_vote && idea.data.relationships.user_vote.data ? 'voted' : 'not-voted' }`;
+
+      const commentingDescriptor = idea.data.relationships.action_descriptor.data.commenting || null;
+
+      const className = `${this.props['className']}
+        e2e-idea-card
+        ${idea.data.relationships.user_vote && idea.data.relationships.user_vote.data ? 'voted' : 'not-voted' }
+        ${commentingDescriptor && commentingDescriptor.enabled ? 'e2e-comments-enabled' : 'e2e-comments-disabled'}
+        ${idea.data.attributes.comments_count > 0 ? 'e2e-has-comments' : ''}
+      `;
 
       return (
         <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.data.attributes.slug}`} className={className}>

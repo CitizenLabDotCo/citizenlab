@@ -67,16 +67,18 @@ export default class AdminPage extends React.PureComponent<Props, State> {
     const { adminFullWidth } = this.state;
 
     return (
-      <Container className={className}>
-        <LeftColumn>
-          {<Sidebar {...this.props} />}
-        </LeftColumn>
-        <RightColumn>
-          <AdminContainerStyled adminFullWidth={adminFullWidth}>
-            {children}
-          </AdminContainerStyled>
-        </RightColumn>
-      </Container>
+      <>
+        <Container className={className}>
+          <LeftColumn>
+            {<Sidebar {...this.props} />}
+          </LeftColumn>
+          <RightColumn>
+            <AdminContainerStyled adminFullWidth={adminFullWidth}>
+              {children}
+            </AdminContainerStyled>
+          </RightColumn>
+        </Container>
+      </>
     );
   }
 }

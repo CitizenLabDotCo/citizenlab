@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const hash = crypto.randomBytes(20).toString('hex');
+const hash = crypto.randomBytes(5).toString('hex');
 const firstName = `first name ${hash}`;
 const lastName = `last name ${hash}`;
 
@@ -22,8 +22,8 @@ module.exports = {
     .setValue('#firstName', firstName)
     .clearValue('#lastName')
     .setValue('#lastName', lastName)
-    .click('#e2e-profile-edit-form-button')
-    .waitForElementVisible('.ui.message')
+    .click('.e2e-submit-wrapper-button button')
+    .waitForElementVisible('.success')
     .url('localhost:3000/profile/edit')
     .waitForElementVisible('.e2e-profile-edit-form')
     .getValue('input#firstName', function (result) {

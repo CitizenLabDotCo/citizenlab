@@ -1,20 +1,19 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { get, map, merge, set } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // typings
-import { API } from 'typings';
+import { API, Multiloc, IOption } from 'typings';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { appLocalePairs } from 'i18n.js';
 import messages from '../messages';
 
 // components
-import Input from 'components/UI/Input';
+import InputMultiloc from 'components/UI/InputMultiloc';
 import Label from 'components/UI/Label';
-import TextArea from 'components/UI/TextArea';
+import TextAreaMultiloc from 'components/UI/TextAreaMultiloc';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
@@ -42,8 +41,8 @@ interface State {
   };
 }
 
-class SettingsGeneralTab extends React.PureComponent<Props & InjectedIntlProps, State> {
-  subscription: Rx.Subscription;
+export default class SettingsGeneralTab extends React.PureComponent<Props, State> {
+  subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -57,47 +56,67 @@ class SettingsGeneralTab extends React.PureComponent<Props & InjectedIntlProps, 
   }
 
   componentDidMount() {
-    this.subscription = currentTenantStream().observable.subscribe((response) => {
-      this.setState({ tenant: response.data });
-    });
+    const currentTenant$ = currentTenantStream().observable;
+
+    this.subscriptions = [
+      currentTenant$.subscribe((currentTenant) => {
+        this.setState({ tenant: currentTenant.data });
+      })
+    ];
   }
 
-  createChangeHandler = (fieldPath: string) => {
-    return (value: any): void => {
-      let newDiff = _.cloneDeep(this.state.attributesDiff);
+  componentWillUnmount() {
+    this.subscriptions.forEach(subsription => subsription.unsubscribe());
+  }
 
-      if (typeof(value) === 'string') {
-        newDiff = _.set(newDiff, fieldPath, value);
-      } else if (_.isArray(value)) {
-        newDiff = _.set(newDiff, fieldPath, value.map((option) => option.value));
+  handleCoreMultilocSettingOnChange = (propertyName: string) => (multiloc: Multiloc) => {
+    this.setState((state) => ({
+      attributesDiff: {
+        ...state.attributesDiff,
+        settings: {
+          ...get(state.attributesDiff, 'settings', {}),
+          core: {
+            ...get(state.attributesDiff, 'settings.core', {}),
+            [propertyName]: multiloc
+          }
+        }
       }
-
-      this.setState({ attributesDiff: newDiff });
-    };
+    }));
   }
 
-  save = (e): void => {
-    e.preventDefault();
+  handleLocalesOnChange = (selectedLocaleOptions: IOption[]) => {
+    this.setState((state) => ({
+      attributesDiff: {
+        ...state.attributesDiff,
+        settings: {
+          ...get(state.attributesDiff, 'settings', {}),
+          core: {
+            ...get(state.attributesDiff, 'settings.core', {}),
+            locales: selectedLocaleOptions.map(option => option.value)
+          }
+        }
+      }
+    }));
+  }
+
+  save = (event: React.FormEvent<any>) => {
+    event.preventDefault();
 
     const { tenant, attributesDiff } = this.state;
 
-    if (!tenant) {
-      return;
+    if (tenant) {
+      this.setState({ loading: true, saved: false });
+
+      updateTenant(tenant.id, attributesDiff).then(() => {
+        this.setState({ saved: true, attributesDiff: {}, loading: false });
+      }).catch((e) => {
+        this.setState({ errors: e.json.errors, loading: false });
+      });
     }
-
-    this.setState({ loading: true, saved: false });
-
-    updateTenant(tenant.id, attributesDiff)
-    .then(() => {
-      this.setState({ saved: true, attributesDiff: {}, loading: false });
-    })
-    .catch((e) => {
-      this.setState({ errors: e.json.errors, loading: false });
-    });
   }
 
   localeOptions = () => {
-    return _.map(appLocalePairs, (label, locale) => ({
+    return map(appLocalePairs, (label, locale) => ({
       label,
       value: locale,
     }));
@@ -111,94 +130,92 @@ class SettingsGeneralTab extends React.PureComponent<Props & InjectedIntlProps, 
   }
 
   render() {
-    const { errors, saved, attributesDiff } = this.state;
-    const lang = this.props.intl.locale;
-    const updatedLocales = _.get(this.state.attributesDiff, 'settings.core.locales');
+    const { tenant } = this.state;
 
-    let tenantAttrs = this.state.tenant
-      ? _.merge({}, this.state.tenant.attributes, this.state.attributesDiff)
-      : _.merge({}, this.state.attributesDiff);
+    if (tenant) {
+      const { errors, saved, attributesDiff } = this.state;
+      const updatedLocales = get(attributesDiff, 'settings.core.locales');
 
-    // Prevent merging the arrays of locales
-    if (updatedLocales) {
-      tenantAttrs = _.set(tenantAttrs, 'settings.core.locales', updatedLocales);
+      let tenantAttrs = (tenant ? merge({}, tenant.attributes, attributesDiff) : merge({}, attributesDiff));
+  
+      // Prevent merging the arrays of locales
+      if (updatedLocales) {
+        tenantAttrs = set(tenantAttrs, 'settings.core.locales', updatedLocales);
+      }
+
+      const tenantLocales: string[] | null = get(tenantAttrs, 'settings.core.locales', null);
+      const organizationType: string | null = get(tenantAttrs, 'settings.core.organization_type', null);
+      const organizationNameMultiloc: Multiloc | null = get(tenantAttrs, 'settings.core.organization_name', null);
+      const metaTitleMultiloc: Multiloc | null = get(tenantAttrs, 'settings.core.meta_title', null);
+      const metaDescriptionMultiloc: Multiloc | null = get(tenantAttrs, 'settings.core.meta_description', null);
+      const localeOptions = this.localeOptions();
+      const selectedLocaleOptions = this.localesToOptions(tenantLocales);
+
+      return (
+        <form onSubmit={this.save}>
+          <Section>
+            <SectionTitle>
+              <FormattedMessage {...messages.titleBasic} />
+            </SectionTitle>
+
+            <SectionField>
+              <InputMultiloc
+                type="text"
+                id="organization_name"
+                label={<FormattedMessage {...messages.organizationName} values={{ type: organizationType }} />}
+                valueMultiloc={organizationNameMultiloc}
+                onChange={this.handleCoreMultilocSettingOnChange('organization_name')}
+              />
+            </SectionField>
+
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.languages} />
+              </Label>
+              <MultipleSelect
+                placeholder=""
+                value={selectedLocaleOptions}
+                onChange={this.handleLocalesOnChange}
+                options={localeOptions}
+              />
+            </SectionField>
+
+            <SectionField>
+              <InputMultiloc
+                type="text"
+                id="meta_title"
+                label={<FormattedMessage {...messages.metaTitle} />}
+                valueMultiloc={metaTitleMultiloc}
+                onChange={this.handleCoreMultilocSettingOnChange('meta_title')}
+              />
+            </SectionField>
+
+            <SectionField>
+              <TextAreaMultiloc
+                label={<FormattedMessage {...messages.metaDescription} />}
+                name="meta_description"
+                rows={5}
+                valueMultiloc={metaDescriptionMultiloc}
+                onChange={this.handleCoreMultilocSettingOnChange('meta_description')}
+              />
+            </SectionField>
+
+            <SubmitWrapper
+              loading={this.state.loading}
+              status={getSubmitState({ errors, saved, diff: attributesDiff })}
+              messages={{
+                buttonSave: messages.save,
+                buttonError: messages.saveError,
+                buttonSuccess: messages.saveSuccess,
+                messageError: messages.saveErrorMessage,
+                messageSuccess: messages.saveSuccessMessage,
+              }}
+            />
+          </Section>
+        </form>
+      );
     }
 
-    return (
-      <form onSubmit={this.save}>
-
-        <Section>
-
-          <SectionTitle>
-            <FormattedMessage {...messages.titleBasic} />
-          </SectionTitle>
-
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.organizationName} values={{ type: _.get(tenantAttrs, 'settings.core.organization_type') }} />
-            </Label>
-            <Input
-              type="text"
-              id="organization_name"
-              value={_.get(tenantAttrs, `settings.core.organization_name.${lang}`)}
-              onChange={this.createChangeHandler(`settings.core.organization_name.${lang}`)}
-            />
-          </SectionField>
-
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.languages} values={{ type: _.get(tenantAttrs, 'settings.core.locales') }} />
-            </Label>
-            <MultipleSelect
-              placeholder=""
-              value={_.get(tenantAttrs, 'settings.core.locales')}
-              onChange={this.createChangeHandler('settings.core.locales')}
-              options={this.localeOptions()}
-            />
-          </SectionField>
-
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.metaTitle} />
-            </Label>
-            <Input
-              type="text"
-              id="meta_title"
-              value={_.get(tenantAttrs, `settings.core.meta_title.${lang}`)}
-              onChange={this.createChangeHandler(`settings.core.meta_title.${lang}`)}
-            />
-          </SectionField>
-
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.metaDescription} />
-            </Label>
-            <TextArea
-              name="meta_description"
-              rows={5}
-              value={_.get(tenantAttrs, `settings.core.meta_description.${lang}`)}
-              onChange={this.createChangeHandler(`settings.core.meta_description.${lang}`)}
-              error=""
-            />
-          </SectionField>
-
-          <SubmitWrapper
-            loading={this.state.loading}
-            status={getSubmitState({ errors, saved, diff: attributesDiff })}
-            messages={{
-              buttonSave: messages.save,
-              buttonError: messages.saveError,
-              buttonSuccess: messages.saveSuccess,
-              messageError: messages.saveErrorMessage,
-              messageSuccess: messages.saveSuccessMessage,
-            }}
-          />
-
-        </Section>
-
-      </form>
-    );
+    return null;
   }
 }
-
-export default injectIntl<Props>(SettingsGeneralTab);

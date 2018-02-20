@@ -8,10 +8,8 @@ import ClickOutside from 'utils/containers/clickOutside';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
-
 const timeout = 200;
 const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
-
 
 const Container = styled(ClickOutside)`
   min-width: 200px;

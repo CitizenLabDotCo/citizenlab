@@ -57,11 +57,17 @@ function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps
       const { loaded } = this.state;
 
       if (loaded) {
+<<<<<<< HEAD
         const intlReplacement = {
           ...(this.props.intl as object),
           formatMessage: this.formatMessageReplacement
         };
 
+=======
+        const { intl } = this.props;
+        const intlReplacement = cloneDeep(intl);
+        intlReplacement.formatMessage = this.formatMessageReplacement;
+>>>>>>> a9b64e95538fed79f0cd9258242f6679272f9c7e
         return <Component {...this.props} intl={intlReplacement} />;
       }
 

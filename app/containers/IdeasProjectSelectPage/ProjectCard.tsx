@@ -154,6 +154,7 @@ type Props = {
   projectId: string;
   onClick: () => void;
   selected: boolean;
+  className?: string;
 };
 
 type State = {
