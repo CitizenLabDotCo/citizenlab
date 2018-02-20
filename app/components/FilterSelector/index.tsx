@@ -45,6 +45,8 @@ interface Props {
   onChange?: (value: any) => void;
   multiple: boolean;
   selected: string[];
+  maxWidth?: string | null | undefined;
+  mobileMaxWidth?: string | null | undefined;
 }
 
 interface State {
@@ -119,7 +121,7 @@ export default class FilterSelector extends React.PureComponent<Props, State> {
 
   render() {
     const { deployed } = this.state;
-    const { id, values, multiple, selected, title } = this.props;
+    const { id, values, multiple, selected, title, maxWidth, mobileMaxWidth } = this.props;
     const currentTitle = this.getTitle(selected, values, multiple, title);
 
     return (
@@ -142,6 +144,8 @@ export default class FilterSelector extends React.PureComponent<Props, State> {
           onChange={this.selectionChange}
           multiple={multiple}
           baseID={this.baseID}
+          maxWidth={maxWidth}
+          mobileMaxWidth={mobileMaxWidth}
         />
       </Container>
     );

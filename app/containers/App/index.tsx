@@ -44,6 +44,7 @@ const Container = styled.div`
   margin: 0;
   padding: 0;
   padding-top: ${props => props.theme.menuHeight}px;
+  background: #fff;
 
   ${media.smallerThanMaxTablet`
     padding-top: 0px;
@@ -169,7 +170,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
                 url={modalUrl}
                 headerChild={fullscreenModalHeaderChild}
               >
-                <IdeasShow ideaId={modalId} />
+                <IdeasShow ideaId={modalId} inModal={true} />
               </FullscreenModal>
 
               <Navbar />

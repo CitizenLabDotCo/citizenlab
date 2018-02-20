@@ -15,8 +15,9 @@ import { media } from 'utils/styleUtils';
 const timeout = 200;
 const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
-const Overlay = styled.div`
-  min-width: 180px;
+const Overlay: any = styled.div`
+  /* width: 100%; */
+  width: ${(props: any) => props.maxWidth ? props.maxWidth : '300px'};
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
@@ -69,12 +70,17 @@ const Overlay = styled.div`
       transition: all ${timeout}ms ${easing};
     }
   }
+
+  ${media.smallerThanMinTablet`
+    width: ${(props: any) => props.mobileMaxWidth ? props.mobileMaxWidth : '200px'};
+  `}
 `;
 
 const ListWrapper = styled.ul`
   list-style: none;
   margin: 0;
   max-height: 320px;
+  overflow-x: hidden;
   overflow-y: auto;
   padding: 0;
 
@@ -112,7 +118,6 @@ const StyledOption: any = styled.li`
 
 const OptionText = styled.span`
   flex: 1;
-  white-space: nowrap;
   margin-right: 10px;
 `;
 
@@ -129,6 +134,8 @@ type Props = {
   multiple?: boolean;
   deployed: boolean;
   baseID: string;
+  maxWidth?: string | null | undefined;
+  mobileMaxWidth?: string | null | undefined;
 };
 
 type State = {
@@ -236,8 +243,11 @@ export default class ValuesList extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { values, multiple, deployed, baseID } = this.props;
+    const { values, multiple, deployed, baseID, maxWidth, mobileMaxWidth } = this.props;
     const { currentFocus } = this.state;
+
+    console.log('maxWidth: ' + maxWidth);
+    console.log('mobileMaxWidth: ' + mobileMaxWidth);
 
     const dropdown = ((deployed) ? (
       <CSSTransition
@@ -245,7 +255,7 @@ export default class ValuesList extends React.PureComponent<Props, State> {
         timeout={timeout}
         exit={false}
       >
-        <Overlay className="deployed">
+        <Overlay className="deployed" maxWidth={maxWidth} mobileMaxWidth={mobileMaxWidth}>
           <ListWrapper
             onKeyDown={this.keypressHandler}
             role="listbox"

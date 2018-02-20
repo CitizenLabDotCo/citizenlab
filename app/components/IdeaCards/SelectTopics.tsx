@@ -89,6 +89,8 @@ export default class SelectTopic extends React.PureComponent<Props, State> {
             values={options}
             onChange={this.handleOnChange}
             multiple={true}
+            maxWidth={'350px'}
+            mobileMaxWidth={'200px'}
           />
         );
       }

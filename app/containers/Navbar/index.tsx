@@ -42,6 +42,7 @@ const Container = styled.div`
   width: 100%;
   height: ${(props) => props.theme.menuHeight}px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   z-index: 999;
   position: fixed;
@@ -51,15 +52,6 @@ const Container = styled.div`
   * {
     user-select: none;
     outline: none;
-  }
-
-  &.hideBorder::after {
-    opacity: 0;
-  }
-
-  &.scrolled::after,
-  &.hideBorder.scrolled::after {
-    opacity: 1;
   }
 
   &::after {
@@ -72,6 +64,13 @@ const Container = styled.div`
     right: 0;
     box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.12);
     transition: opacity 100ms ease-out;
+    opacity: 0;
+  }
+
+  &.scrolled::after,
+  &.alwaysShowBorder::after,
+  &.hideBorder.scrolled::after {
+    opacity: 1;
   }
 
   ${media.smallerThanMaxTablet`
@@ -86,6 +85,7 @@ const Container = styled.div`
 
 const Left = styled.div`
   display: flex;
+  align-items: center;
   z-index: 2;
 `;
 
@@ -484,12 +484,10 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
   render() {
     // const { pathname } = this.props.location;
     const { locale, authUser, currentTenant, projects, scrolled, projectsDropdownOpened } = this.state;
-    const hideBorder = false;
+    // let alwaysShowBorder: boolean = false;
 
-    // let hideBorder = false;
-
-    // if (pathname.startsWith('/pages') || pathname === '/projects' || pathname === 'projects/') {
-    //   hideBorder = true;
+    // if (pathname.startsWith('/admin') || pathname.startsWith('/sign-in') || pathname.startsWith('/sign-up') || pathname.startsWith('/ideas/new') || pathname.startsWith('/projects')) {
+    //   alwaysShowBorder = true;
     // }
 
     if (locale && currentTenant) {
@@ -499,7 +497,7 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
       return (
         <>
           <MobileNavigation />
-          <Container className={`${scrolled && 'scrolled'} ${hideBorder && 'hideBorder'}`}>
+          <Container className={`${scrolled && 'scrolled'} ${'alwaysShowBorder'}`}>
             <Left>
               {currentTenantLogo &&
                 <LogoLink to="/">

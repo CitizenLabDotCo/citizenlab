@@ -305,7 +305,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
                   <ButtonBarInner>
                     <Button
                       className="e2e-submit-project-select-form"
-                      size="2"
+                      size="1"
                       text={<FormattedMessage {...messages.continueButton} />}
                       onClick={this.handleOnSubmitClick}
                       disabled={!selectedProjectId}
@@ -315,7 +315,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
                 <WithoutButtonBar>
                   <Button
                     className="e2e-submit-project-select-form"
-                    size="2"
+                    size="1"
                     text={<FormattedMessage {...messages.continueButton} />}
                     onClick={this.handleOnSubmitClick}
                     disabled={!selectedProjectId}

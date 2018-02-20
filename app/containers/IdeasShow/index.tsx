@@ -20,7 +20,8 @@ import Modal from 'components/UI/Modal';
 import UserName from 'components/UI/UserName';
 import VoteWrapper from './VoteWrapper';
 import ParentCommentForm from './ParentCommentForm';
-// import MobileTopBar from './MobileTopBar';
+import Spinner from 'components/UI/Spinner';
+import VoteControl from 'components/VoteControl';
 
 // services
 import { ideaByIdStream, IIdea } from 'services/ideas';
@@ -47,10 +48,10 @@ import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-const contentTimeout = 600;
+const contentTimeout = 500;
 const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
-const contentDelay = 450;
-const contentTranslate = '22px';
+const contentDelay = 500;
+const contentTranslate = '20px';
 
 const Container = styled.div`
   will-change: transform, opacity;
@@ -65,6 +66,18 @@ const Container = styled.div`
       transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
     }
   }
+`;
+
+const Loading = styled.div`
+  width: 100%;
+  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ${media.smallerThanMaxTablet`
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+  `}
 `;
 
 const IdeaContainer = styled.div`
@@ -296,6 +309,7 @@ const AddressWrapper = styled.div`
   right: 0;
   left: 0;
   bottom: 0;
+  z-index: 1000;
 `;
 
 const AuthorAvatar = styled(Avatar)`
@@ -461,6 +475,19 @@ const StatusTitle = styled.h4`
   padding: 0;
 `;
 
+const VoteControlMobile = styled.div`
+  border-top: solid 1px #e0e0e0;
+  border-bottom: solid 1px #e0e0e0;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-top: -10px;
+  margin-bottom: 30px;
+
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
+`;
+
 const SharingWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -493,6 +520,7 @@ const MoreActionsMenuWrapper = styled.div`
 
 type Props = {
   ideaId: string | null;
+  inModal?: boolean | undefined;
 };
 
 type State = {
@@ -537,11 +565,13 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
     this.ideaId$.next(this.props.ideaId);
 
     const ideaId$ = this.ideaId$.distinctUntilChanged().filter(ideaId => isString(ideaId));
-    const noIdeaId$ = this.ideaId$.distinctUntilChanged().filter(ideaId => !ideaId);
     const authUser$ = authUserStream().observable;
 
     this.subscriptions = [
-      noIdeaId$.subscribe(() => {
+      this.ideaId$
+      .distinctUntilChanged()
+      .filter(ideaId => !ideaId)
+      .subscribe(() => {
         this.setState(this.initialState);
       }),
 
@@ -565,6 +595,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
           project$,
         ).map(([authUser, ideaImage, ideaAuthor, _ideaStatus, project]) => ({ authUser, idea, ideaImage, ideaAuthor, project }));
       })
+      // .delay(2000)
       .subscribe(({ authUser, idea, ideaImage, ideaAuthor, project }) => {
         this.setState({ authUser, idea, ideaImage, ideaAuthor, project, loaded: true });
       }),
@@ -649,10 +680,23 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
     browserHistory.push(`/ideas/edit/${this.props.ideaId}`);
   }
 
+  unauthenticatedVoteClick = () => {
+    browserHistory.push('/sign-in');
+  }
+
   render() {
-    let content: JSX.Element | null = null;
-    const { ideaId } = this.props;
+    const { ideaId, inModal } = this.props;
     const { idea, ideaImage, ideaAuthor, ideaComments, project, loaded, showMap, moreActions } = this.state;
+
+    let content: JSX.Element | null = null;
+
+    if (!loaded && ideaId) {
+      content = (
+        <Loading className={`${inModal && 'inModal'}`}>
+          <Spinner size="34px" color="#666" />
+        </Loading>
+      );
+    }
 
     if (loaded && idea !== null && ideaId) {
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
@@ -699,6 +743,16 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                   <StatusContainerMobile>
                     <StatusBadge statusId={statusId} />
                   </StatusContainerMobile>
+                }
+
+                {!inModal &&
+                  <VoteControlMobile>
+                    <VoteControl
+                      ideaId={ideaId}
+                      unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+                      size="small"
+                    />
+                  </VoteControlMobile>
                 }
 
                 {ideaImageLarge && 
