@@ -34,7 +34,7 @@ Rails.application.routes.draw do
 
       scope :users do
         resources :custom_fields, defaults: {resource_type: 'User'} do
-
+          resources :custom_field_options
         end
       end
 
