@@ -275,6 +275,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
                             onClick={this.handleProjectClick(project)}
                             projectId={project.id}
                             selected={(selectedProjectId === project.id)}
+                            className="e2e-project-card"
                           />
                         </ProjectCardWrapper>
                       ))}
@@ -295,6 +296,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
                             onClick={this.handleProjectClick(openProject)}
                             projectId={openProject.id}
                             selected={(selectedProjectId === openProject.id)}
+                            className="e2e-project-card e2e-open-project"
                           />
                         </ProjectCardWrapper>
                       </ProjectsList>

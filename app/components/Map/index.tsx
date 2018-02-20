@@ -208,7 +208,7 @@ class CLMap extends React.PureComponent<Props & InjectedTenant, State> {
   render() {
     return (
       <MapWrapper className={this.props.className}>
-        <div id="map-container" ref={this.bindMapContainer} onScroll={console.log} />
+        <div id="map-container" ref={this.bindMapContainer} />
       </MapWrapper>
     );
   }

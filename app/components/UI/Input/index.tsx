@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isFunction, isUndefined, isNull, isEmpty } from 'lodash';
+import { isFunction, isNil, isEmpty, size } from 'lodash';
 import PropTypes from 'prop-types';
 
 // components
@@ -28,6 +28,10 @@ const Container: any = styled.div`
     outline: none;
     -webkit-appearance: none;
 
+    &.hasMaxCharCount {
+      padding-right: 62px;
+    }
+
     &::placeholder {
       color: #aaa;
       opacity: 1;
@@ -40,6 +44,20 @@ const Container: any = styled.div`
     ${media.biggerThanPhone`
       padding-right: ${props => props.error && '40px'};
     `}
+  }
+`;
+
+const CharCount = styled.div`
+  color: ${color('label')};
+  font-size: ${fontSize('small')};
+  font-weight: 400;
+  text-align: right;
+  position: absolute;
+  top: 16px;
+  right: 10px;
+
+  &.error {
+    color: red;
   }
 `;
 
@@ -56,6 +74,7 @@ export type Props = {
   autoFocus?: boolean | undefined;
   min?: string | undefined;
   name?: string | undefined;
+  maxCharCount?: number | undefined;
 };
 
 type State = {};
@@ -70,6 +89,10 @@ export default class Input extends React.PureComponent<Props, State> {
 
     if (this.context.formik && this.props.name) {
       this.context.formik.handleChange(event);
+    }
+
+    if (this.props.maxCharCount && this.props.maxCharCount > 0) {
+
     }
   }
 
@@ -88,10 +111,11 @@ export default class Input extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const { maxCharCount } = this.props;
     let { value, placeholder, error } = this.props;
     const className = this.props['className'];
-    const { id, type } = this.props;
-    const hasError = (!isNull(error) && !isUndefined(error) && !isEmpty(error));
+    const { id, type, name } = this.props;
+    const hasError = (!isNil(error) && !isEmpty(error));
 
     if (this.props.name && this.context.formik && this.context.formik.values[this.props.name]) {
       value = value || this.context.formik.values[this.props.name];
@@ -101,11 +125,21 @@ export default class Input extends React.PureComponent<Props, State> {
     placeholder = (placeholder || '');
     error = (error || null);
 
+    const currentCharCount = (maxCharCount && size(value));
+    const tooManyChars = (maxCharCount && currentCharCount && currentCharCount > maxCharCount);
+
     return (
       <Container error={hasError} className={className}>
+
+        {maxCharCount &&
+          <CharCount className={`${tooManyChars && 'error'}`}>
+            {currentCharCount}/{maxCharCount}
+          </CharCount>
+        }
+
         <input
           id={id}
-          className={'CLInputComponent'}
+          className={`CLInputComponent ${maxCharCount && 'hasMaxCharCount'}`}
           name={name}
           type={type}
           placeholder={placeholder}
@@ -117,9 +151,11 @@ export default class Input extends React.PureComponent<Props, State> {
           min={this.props.min}
           autoFocus={this.props.autoFocus}
         />
+
         <div>
           <Error text={error} size="1" />
         </div>
+
       </Container>
     );
   }

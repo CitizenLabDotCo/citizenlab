@@ -90,6 +90,14 @@ const ChildWrapper = styled.div`
   padding: 3rem;
 `;
 
+export type TabProps = {
+  label: string | Message,
+  url: string,
+  active?: boolean,
+  feature?: string,
+  className?: string,
+};
+
 type Props = {
   location?: {
     pathname: string,
@@ -101,12 +109,7 @@ type Props = {
   messages: {
     viewPublicResource: Message,
   },
-  tabs?: {
-    label: string | Message,
-    url: string,
-    active?: boolean,
-    feature?: string,
-  }[],
+  tabs?: TabProps[],
 };
 
 type State = {};
@@ -162,7 +165,7 @@ export default class TabbedResource extends React.PureComponent<Props, State> {
 
               return (
                 <FeatureFlag key={tab.url} name={tab.feature}>
-                  <Tab className={location && location.pathname && location.pathname.startsWith(tab.url) ? 'active' : ''}>
+                  <Tab className={`${tab.className} ${location && location.pathname && location.pathname.startsWith(tab.url) ? 'active' : ''}`}>
                     <Link to={tab.url}>{showLabel(tab.label)}</Link>
                   </Tab>
                 </FeatureFlag>

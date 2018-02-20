@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const hash = crypto.randomBytes(20).toString('hex');
+const hash = crypto.randomBytes(5).toString('hex');
 
 
 module.exports = {

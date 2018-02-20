@@ -1,14 +1,16 @@
 const crypto = require('crypto');
-const hash = crypto.randomBytes(20).toString('hex');
+const hash = crypto.randomBytes(5).toString('hex');
 const title = `Test Phase ${hash}`;
 const startDate = '2017-11-05';
 const endDate = '2017-11-12';
 
 module.exports = {
   '@tags': ['city', 'projects', 'phases'],
-  createPhase: (browser) => {
+  phaseCreateAndDelete: (browser) => {
     const signinPage = browser.page.signin();
     const adminProjectsPage = browser.page.adminProjects();
+
+    let phaseLineId = '';
 
     signinPage
     .navigate()
@@ -16,7 +18,8 @@ module.exports = {
 
     adminProjectsPage
     .navigate()
-    .openLastProject()
+    .waitForElementVisible('.e2e-project-card.process-timeline')
+    .click('.e2e-project-card.process-timeline a')
     .waitForElementVisible('@phasesTab')
     .click('@phasesTab')
     .waitForElementVisible('@addPhaseButton')
@@ -35,25 +38,8 @@ module.exports = {
     .click('@phasesTab')
     .assert.containsText('.e2e-phases-table .e2e-phase-line.last .e2e-phase-title span', title);
 
-    browser.end();
-  },
-
-  deletePhase: (browser) => {
-    const signinPage = browser.page.signin();
-    const adminProjectsPage = browser.page.adminProjects();
-
-    let phaseLineId = '';
-
-    signinPage
-    .navigate()
-    .signin('koen@citizenlab.co', 'testtest');
-
+    // Delete the phase
     adminProjectsPage
-    .navigate()
-    .openLastProject()
-    .waitForElementVisible('@phasesTab')
-    .click('@phasesTab')
-    .waitForElementVisible('.e2e-phase-line')
     .getAttribute('.e2e-phase-line', 'id', (result) => {
       phaseLineId = result.value;
     })
