@@ -572,7 +572,7 @@
   "app.containers.UsersEditPage.notifications_new_comments": "Nouveaux commentaires",
   "app.containers.UsersEditPage.notifications_new_user": "Inscription d'un nouvel utilisateur",
   "app.containers.UsersEditPage.outside": "{orgType, select, city {À l'extérieur de {name}} generic {Aucun}}",
-  "app.containers.UsersEditPage.password": "Mot de passe",
+  "app.containers.UsersEditPage.password": "Modifiez votre mot de passe",
   "app.containers.UsersEditPage.processing": "Envoi...",
   "app.containers.UsersEditPage.storeError": "Le profil mis à jour ne peut être sauvegardé",
   "app.containers.UsersEditPage.stored": "Profil enregistré",
