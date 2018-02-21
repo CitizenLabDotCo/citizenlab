@@ -23,7 +23,7 @@ type State = {
 };
 
 class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
   emailInputElement: HTMLInputElement | null;
 
@@ -37,7 +37,7 @@ class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.emailInputElement = null;
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
 

@@ -1,7 +1,7 @@
 // Libs
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { omit, omitBy, isEmpty } from 'lodash';
+import { isEqual } from 'lodash';
 
 // Services & Utils
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
@@ -37,24 +37,22 @@ export default class GetIdeas extends React.PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props);
-
     this.state = {
       ideaMarkers: [],
       lastPageNumber: 0,
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.updateSubscription(this.props);
   }
 
-  componentWillReceiveProps(newProps) {
-    // Compare props to avoid excessive re-subs
-    const newParams = omit(newProps, 'children');
-    const difference = omitBy(newParams, (value, key) => this.props[key] === value);
+  componentDidUpdate(prevProps: Props) {
+    const { children: prevPropsChildren, ...prevPropsWithoutChildren } = prevProps;
+    const { children: newPropsChildren, ...newPropsWithoutChildren } = this.props;
 
-    if (!isEmpty(difference)) {
-      this.updateSubscription(newProps);
+    if (!isEqual(newPropsWithoutChildren, prevPropsWithoutChildren)) {
+      this.updateSubscription(this.props);
     }
   }
 

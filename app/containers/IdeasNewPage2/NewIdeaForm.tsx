@@ -41,14 +41,20 @@ const Container = styled.div`
 `;
 
 const Title = styled.h2`
-  width: 100%;
   color: #333;
-  font-size: 36px;
-  line-height: 42px;
+  font-size: 34px;
+  line-height: 40px;
   font-weight: 500;
   text-align: center;
-  padding-top: 40px;
-  margin-bottom: 40px;
+  margin: 0;
+  padding: 0;
+  padding-top: 60px;
+  padding-bottom: 40px;
+
+  ${media.smallerThanMaxTablet`
+    font-size: 28px;
+    line-height: 34px;
+  `}
 `;
 
 const MobileButton = styled.div`
@@ -89,13 +95,23 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Rx.Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
+    this.state = {
+      title: null,
+      description: null,
+      selectedTopics: null,
+      selectedProject: null,
+      position: '',
+      imageFile: null,
+      submitError: false,
+      processing: false
+    };
     this.globalState = globalState.init('IdeasNewPage');
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const globalState$ = this.globalState.observable;
 
     this.subscriptions = [
@@ -144,8 +160,6 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
   }
 
   render() {
-    if (!this.state) { return null; }
-
     const { title, description, selectedTopics, selectedProject, position, imageFile, submitError, processing } = this.state;
     const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
 
@@ -168,7 +182,7 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
         <MobileButton>
           <Button
             className="e2e-submit-idea-form"
-            size="3"
+            size="1"
             processing={processing}
             text={<FormattedMessage {...messages.submit} />}
             onClick={this.handleOnSubmitButtonClick}

@@ -7,7 +7,7 @@ import Icon from 'components/UI/Icon';
 import styled from 'styled-components';
 
 const Text = styled.span`
-  color: #84939E;
+  color: ${(props) => props.theme.colors.label};
   font-size: 17px;
   font-weight: 400;
   line-height: 26px;
@@ -16,7 +16,7 @@ const Text = styled.span`
 
 const DropdownIcon = styled(Icon)`
   height: 7px;
-  fill: #84939E;
+  fill: ${(props) => props.theme.colors.label};
   margin-left: 4px;
   margin-top: 2px;
   transition: all 100ms ease-out;
@@ -67,10 +67,10 @@ export default class Title extends React.PureComponent<Props, State> {
         onClick={this.handleClick}
         aria-expanded={deployed}
         id={`${baseID}-label`}
-        className={`e2e-filter-selector-button ${deployed ? 'deployed' : ''}`}
+        className={`e2e-filter-selector-button FilterSelectorTitle ${deployed ? 'deployed' : ''}`}
       >
-        <Text>{title}</Text>
-        <DropdownIcon name="dropdown" />
+        <Text className="FilterSelectorTitleText">{title}</Text>
+        <DropdownIcon className="FilterSelectorTitleIcon" name="dropdown" />
       </Container>
     );
   }

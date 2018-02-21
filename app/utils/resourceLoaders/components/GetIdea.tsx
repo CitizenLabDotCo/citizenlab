@@ -27,13 +27,13 @@ export default class GetIdea extends React.PureComponent<Props, State> {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.updateSub(this.props);
   }
 
-  componentWillReceiveProps(newProps) {
-    if ((newProps.id !== this.props.id) || (newProps.slug !== this.props.slug)) {
-      this.updateSub(newProps);
+  componentDidUpdate(prevProps: Props) {
+    if ((this.props.id !== prevProps.id) || (this.props.slug !== prevProps.slug)) {
+      this.updateSub(this.props);
     }
   }
 

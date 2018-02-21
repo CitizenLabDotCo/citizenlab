@@ -6,7 +6,6 @@ import * as Rx from 'rxjs/Rx';
 import { API, Multiloc, IOption } from 'typings';
 
 // i18n
-import {  InjectedIntl } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import { appLocalePairs } from 'i18n.js';
 import messages from '../messages';
@@ -30,10 +29,7 @@ import {
 // Utils
 import getSubmitState from 'utils/getSubmitState';
 
-interface Props {
-  intl: InjectedIntl;
-  tFunc: Function;
-}
+interface Props {}
 
 interface State {
   loading: boolean;

@@ -20,7 +20,7 @@ const InputWrapper = styled.div`
 const Color: any = styled.div`
   width: 50px;
   height: 50px;
-  border-radius: 4px;
+  border-radius: 5px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   background: ${(props: any) => props.color };

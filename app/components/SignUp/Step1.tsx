@@ -83,7 +83,7 @@ type State = {
 };
 
 class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
   firstNameInputElement: HTMLInputElement | null;
 
@@ -109,9 +109,11 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.firstNameInputElement = null;
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
+
+    this.firstNameInputElement && this.firstNameInputElement.focus();
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
@@ -121,10 +123,6 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
         this.setState({ locale, currentTenant });
       })
     ];
-  }
-
-  componentDidMount() {
-    this.firstNameInputElement && this.firstNameInputElement.focus();
   }
 
   componentWillUnmount() {

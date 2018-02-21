@@ -7,7 +7,7 @@ import 'moment-timezone';
 import { browserHistory } from 'react-router';
 
 // components
-import ProjectTimelinePage from '../timeline';
+import ProjectTimelinePage from '../process';
 import ProjectInfoPage from '../info';
 
 // services
@@ -36,25 +36,28 @@ export default class timeline extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
-      this.slug$.distinctUntilChanged().filter(slug => isString(slug)).switchMap((slug) => {
-        const project$ = projectBySlugStream(slug).observable;
-        return project$;
-      }).subscribe((project) => {
-        const currentPathname = browserHistory.getCurrentLocation().pathname.replace(/\/$/, '');
-        const lastUrlSegment = (project.data.attributes.process_type === 'timeline' ? 'timeline' : 'info');
-        const redirectUrl = `${currentPathname}/${lastUrlSegment}`;
-        window.history.pushState({ path: redirectUrl }, '', redirectUrl);
-        this.setState({ project });
-      })
+      this.slug$
+        .distinctUntilChanged()
+        .filter(slug => isString(slug))
+        .switchMap((slug) => {
+          const project$ = projectBySlugStream(slug).observable;
+          return project$;
+        }).subscribe((project) => {
+          const currentPathname = browserHistory.getCurrentLocation().pathname.replace(/\/$/, '');
+          const lastUrlSegment = (project.data.attributes.process_type === 'timeline' ? 'process' : 'info');
+          const redirectUrl = `${currentPathname}/${lastUrlSegment}`;
+          window.history.pushState({ path: redirectUrl }, '', redirectUrl);
+          this.setState({ project });
+        })
     ];
   }
 
-  componentWillReceiveProps(newProps: Props) {
-    this.slug$.next(newProps.params.slug);
+  componentDidUpdate() {
+    this.slug$.next(this.props.params.slug);
   }
 
   componentWillUnmount() {

@@ -29,7 +29,7 @@ const Container = styled.div`
   padding: 0;
   display: flex;
   flex-direction: row;
-  background: #f8f8f8;
+  background: #f9f9fa;
   position: relative;
 
   ${media.biggerThanMaxTablet`
@@ -100,7 +100,7 @@ type State = {
 };
 
 export default class CompleteSignUpPage extends React.PureComponent<Props, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -111,7 +111,7 @@ export default class CompleteSignUpPage extends React.PureComponent<Props, State
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const query = browserHistory.getCurrentLocation().query;
     const authUser$ = authUserStream().observable;
     const currentTenant$ = currentTenantStream().observable;

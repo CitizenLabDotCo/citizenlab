@@ -29,9 +29,8 @@ const Container = styled(clickOutside)`
   opacity: 1;
   padding: 6px;
   position: relative;
-  z-index: 1000;
+  z-index: 2;
   transform-origin: left top;
-  will-change: opacity, transform;
 
   ::after {
     content: '';

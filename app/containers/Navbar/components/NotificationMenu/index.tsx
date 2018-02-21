@@ -79,7 +79,7 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
     this.dropdownElement = null;
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const authUser$ = authUserStream().observable;
 
     this.subscriptions = [

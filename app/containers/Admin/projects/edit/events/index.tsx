@@ -3,6 +3,7 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import styled from 'styled-components';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -30,10 +31,9 @@ const AddButton = styled(Button)`
 `;
 
 type Props = {
-  intl: ReactIntl.InjectedIntl,
   params: {
     slug: string | null,
-  },
+  }
 };
 
 type State = {
@@ -41,7 +41,7 @@ type State = {
   loading: boolean,
 };
 
-class AdminProjectTimelineIndex extends React.Component<Props, State> {
+class AdminProjectTimelineIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscription: Rx.Subscription;
 
   constructor(props: Props) {

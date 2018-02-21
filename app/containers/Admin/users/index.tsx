@@ -227,7 +227,8 @@ export default class UsersTable extends React.PureComponent<Props, State> {
           </HeaderContainer>
 
           <PageWrapper>
-            <Input icon="search" onChange={this.handleSearchOnChange} />
+            <Input icon="search" onChange={this.handleSearchOnChange} size="large" />
+
             <Table sortable>
               <Table.Header>
                 <Table.Row>

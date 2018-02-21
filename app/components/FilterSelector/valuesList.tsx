@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { includes } from 'lodash';
 
 // components
 import Checkbox from 'components/UI/Checkbox';
@@ -10,13 +10,15 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const timeout = 200;
 const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
-const Overlay = styled.div`
-  min-width: 180px;
-  border-radius: 4px;
+const Overlay: any = styled.div`
+  /* width: 100%; */
+  width: ${(props: any) => props.maxWidth ? props.maxWidth : '300px'};
+  border-radius: 5px;
   background-color: #fff;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
   border: solid 1px #e0e0e0;
@@ -27,7 +29,7 @@ const Overlay = styled.div`
   position: absolute;
   top: 35px;
   right: -10px;
-  z-index: 10;
+  z-index: 2;
   transform-origin: right top;
 
   * {
@@ -68,19 +70,41 @@ const Overlay = styled.div`
       transition: all ${timeout}ms ${easing};
     }
   }
+
+  ${media.smallerThanMinTablet`
+    width: ${(props: any) => props.mobileMaxWidth ? props.mobileMaxWidth : '200px'};
+    right: auto;
+    left: -10px;
+    transform-origin: left top;
+
+    ::after {
+      right: auto;
+      left: 20px;
+    }
+
+    ::before {
+      right: auto;
+      left: 19px;
+    }
+  `}
 `;
 
 const ListWrapper = styled.ul`
   list-style: none;
   margin: 0;
-  max-height: 325px;
+  max-height: 320px;
+  overflow-x: hidden;
   overflow-y: auto;
   padding: 0;
+
+  ${media.smallerThanMinTablet`
+    max-height: 220px;
+  `}
 `;
 
 const StyledOption: any = styled.li`
-  color: #84939E;
-  font-size: 16px;
+  color: ${(props) => props.theme.colors.label};
+  font-size: 17px;
   font-weight: 400;
   padding: 10px 15px;
   background: #fff;
@@ -101,13 +125,12 @@ const StyledOption: any = styled.li`
   &.focused,
   &:hover {
     color: #000;
-    background: #f2f2f2;
+    background: #f6f6f6;
   }
 `;
 
 const OptionText = styled.span`
   flex: 1;
-  white-space: nowrap;
   margin-right: 10px;
 `;
 
@@ -119,11 +142,13 @@ type Value = {
 type Props = {
   title: string | JSX.Element;
   values: Value[];
-  onChange: Function;
+  onChange: (arg: string) => void;
   selected: any[];
   multiple?: boolean;
   deployed: boolean;
   baseID: string;
+  maxWidth?: string | null | undefined;
+  mobileMaxWidth?: string | null | undefined;
 };
 
 type State = {
@@ -131,7 +156,6 @@ type State = {
 };
 
 export default class ValuesList extends React.PureComponent<Props, State> {
-  state: State;
   dropdownElement: HTMLElement | null;
 
   constructor(props: Props) {
@@ -156,7 +180,7 @@ export default class ValuesList extends React.PureComponent<Props, State> {
     }
   }
 
-  setRef = (element) => {
+  setRef = (element: HTMLElement) => {
     if (element) {
       this.dropdownElement = element;
 
@@ -167,7 +191,7 @@ export default class ValuesList extends React.PureComponent<Props, State> {
   }
 
   isSelected(value: Value) {
-    return _.includes(this.props.selected, value);
+    return includes(this.props.selected, value);
   }
 
   updateFocus = (newIndex: number) => {
@@ -220,31 +244,28 @@ export default class ValuesList extends React.PureComponent<Props, State> {
         event.preventDefault();
         this.props.onChange(this.props.values[this.state.currentFocus].value);
         break;
-
       default:
         break;
     }
   }
 
-  handleOnClick = (entry, index) => () => {
+  handleOnToggle = (entry, index) => (event: React.FormEvent<MouseEvent>) => {
+    event.preventDefault();
     this.setState({ currentFocus: index });
     this.props.onChange(entry.value);
   }
 
   render() {
-    const { values, multiple, deployed, baseID } = this.props;
+    const { values, multiple, deployed, baseID, maxWidth, mobileMaxWidth } = this.props;
     const { currentFocus } = this.state;
 
     const dropdown = ((deployed) ? (
       <CSSTransition
         classNames="overlay"
-        key={1}
         timeout={timeout}
-        mountOnEnter={true}
-        unmountOnExit={true}
         exit={false}
       >
-        <Overlay className="deployed">
+        <Overlay className="deployed" maxWidth={maxWidth} mobileMaxWidth={mobileMaxWidth}>
           <ListWrapper
             onKeyDown={this.keypressHandler}
             role="listbox"
@@ -266,13 +287,13 @@ export default class ValuesList extends React.PureComponent<Props, State> {
                   aria-selected={checked}
                   selected={checked}
                   key={entry.value}
-                  onClick={this.handleOnClick(entry, index)}
+                  onClick={this.handleOnToggle(entry, index)}
                   className={`${focussed}`}
                 >
                   <OptionText>{entry.text}</OptionText>
 
                   {multiple &&
-                    <Checkbox size="22px" checked={checked} toggle={this.handleOnClick(entry, index)} />
+                    <Checkbox size="22px" checked={checked} toggle={this.handleOnToggle(entry, index)} />
                   }
                 </StyledOption>
               );

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isEmpty, isString, size, get } from 'lodash';
+import { isString, size, get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // router
@@ -26,10 +26,23 @@ import messages from './messages';
 // styling
 import styled from 'styled-components';
 import { darken } from 'polished';
+import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  background: #f0f0f0;
+  background: #f9f9fa;
+`;
+
+const Loading = styled.div`
+  width: 100%;
+  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ${media.smallerThanMaxTablet`
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+  `}
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
@@ -46,11 +59,20 @@ const PageContent = styled.div`
 `;
 
 const PageTitle = styled.h1`
-  color: #222;
+  color: #333;
   font-size: 34px;
-  font-weight: 600;
   line-height: 40px;
-  margin-bottom: 50px;
+  font-weight: 500;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  padding-top: 0px;
+  padding-bottom: 40px;
+
+  ${media.smallerThanMaxTablet`
+    font-size: 28px;
+    line-height: 34px;
+  `}
 `;
 
 const PageDescription = styled.div`
@@ -101,14 +123,6 @@ const PageDescription = styled.div`
   }
 `;
 
-const SpinnerContainer = styled.div`
-  margin: 30px 0;
-  padding: 3rem;
-  background-color: white;
-  display: flex;
-  justify-content: center;
-`;
-
 const PagesNavWrapper = styled.div`
   width: 100%;
 `;
@@ -133,16 +147,15 @@ const StyledLink = styled(Link)`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 15px;
-  /* margin-left: -30px;
-  margin-right: -30px; */
-  padding: 23px;
+  padding: 20px 23px;
   border-radius: 5px;
-  border: 1px solid #ddd;
+  border: solid 1px #e4e4e4;
   background: #fff;
+  transition: all 100ms ease-out;
 
   &:hover {
     color: #000;
-    border-color: #bbb;
+    border-color: #999;
   }
 `;
 
@@ -164,7 +177,7 @@ type State = {
 };
 
 class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State> {
-  slug$: Rx.BehaviorSubject<string | null> = new Rx.BehaviorSubject(null);
+  slug$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -175,18 +188,19 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
       loading: true,
     };
     this.subscriptions = [];
+    this.slug$ = new Rx.BehaviorSubject(null);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
       this.slug$
+        .filter(slug => isString(slug))
         .distinctUntilChanged()
         .do(() => this.setState({ loading: true }))
-        .switchMap((slug: string) => {
-          return (isString(slug) && !isEmpty(slug) ? pageBySlugStream(slug).observable :  Rx.Observable.of(null));
-        }).switchMap((page) => {
+        .switchMap((slug: string) => pageBySlugStream(slug).observable)
+        .switchMap((page) => {
           let pageLinks$: Rx.Observable<null | { data: PageLink }[]> = Rx.Observable.of(null);
 
           if (page && size(get(page, 'data.relationships.page_links.data')) > 0) {
@@ -202,8 +216,8 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
     ];
   }
 
-  componentWillReceiveProps(newProps) {
-    this.slug$.next(newProps.params.slug);
+  componentDidUpdate() {
+    this.slug$.next(this.props.params.slug);
   }
 
   componentWillUnmount() {
@@ -217,11 +231,9 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
 
     if (loading) {
       return (
-        <ContentContainer>
-          <SpinnerContainer>
-            <Spinner size="30px" color="#666" />
-          </SpinnerContainer>
-        </ContentContainer>
+        <Loading>
+          <Spinner size="34px" color="#666" />
+        </Loading>
       );
     } else {
       const seoTitle = (page ? tFunc(page.data.attributes.title_multiloc) : formatMessage(messages.notFoundTitle));

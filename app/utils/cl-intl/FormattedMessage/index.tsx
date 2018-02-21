@@ -7,14 +7,14 @@ import { localeStream } from 'services/locale';
 import { getLocalized } from 'utils/i18n';
 
 type State = {
-  orgType: string | null,
-  orgName: string | null,
+  orgType: string | null;
+  orgName: string | null;
+  loaded: boolean;
 };
 
 type Props = OriginalFormattedMessage.Props;
 
 export default class FormattedMessage extends React.PureComponent<Props, State> {
-
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -22,11 +22,11 @@ export default class FormattedMessage extends React.PureComponent<Props, State> 
     this.state = {
       orgType: null,
       orgName: null,
+      loaded: false
     };
   }
 
-  componentWillMount() {
-
+  componentDidMount() {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
 
@@ -37,10 +37,8 @@ export default class FormattedMessage extends React.PureComponent<Props, State> 
       ).subscribe(([locale, tenant]) => {
         const tenantLocales = tenant.data.attributes.settings.core.locales;
         const orgName = getLocalized(tenant.data.attributes.settings.core.organization_name, locale, tenantLocales);
-        this.setState({
-          orgName,
-          orgType: tenant.data.attributes.settings.core.organization_type,
-        });
+        const orgType = tenant.data.attributes.settings.core.organization_type;
+        this.setState({ orgName, orgType, loaded: true });
       })
     ];
   }
@@ -50,19 +48,23 @@ export default class FormattedMessage extends React.PureComponent<Props, State> 
   }
 
   render() {
-    const { orgType, orgName } = this.state;
-    const values = this.props.values || {};
-    if (orgType)
-      values.orgType = orgType;
+    if (this.state.loaded) {
+      const { orgType, orgName } = this.state;
+      const values = this.props.values || {};
 
-    if (orgName)
-      values.orgName = orgName;
+      if (orgType) {
+        values.orgType = orgType;
+      }
 
-    return (
-      <OriginalFormattedMessage
-        {...this.props}
-        values={values}
-      />
-    );
+      if (orgName) {
+        values.orgName = orgName;
+      }
+
+      return (
+        <OriginalFormattedMessage {...this.props} values={values} />
+      );
+    }
+
+    return null;
   }
 }

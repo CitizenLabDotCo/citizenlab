@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import 'moment-timezone';
 
 // components
+import Header from '../Header';
 import Event from './Event';
 import ContentContainer from 'components/ContentContainer';
 
@@ -19,8 +20,8 @@ import { eventsStream, IEvents } from 'services/events';
 // style
 import styled from 'styled-components';
 
-const Container = styled(ContentContainer)`
-  background: #f8f8f8;
+const EventsContainer = styled(ContentContainer)`
+  background: #f9f9fa;
   padding-top: 70px;
 `;
 
@@ -70,24 +71,27 @@ export default class ProjectEventsPage extends React.PureComponent<Props, State>
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
-      this.slug$.distinctUntilChanged().filter(slug => isString(slug)).switchMap((slug) => {
-        const project$ = projectBySlugStream(slug).observable;
-        return project$;
-      }).switchMap((project) => {
-        const events$ = eventsStream(project.data.id).observable;
-        return events$;
-      }).subscribe((events) => {
-        this.setState({ events, loaded: true });
-      })
+      this.slug$
+        .distinctUntilChanged()
+        .filter(slug => isString(slug))
+        .switchMap((slug) => {
+          const project$ = projectBySlugStream(slug).observable;
+          return project$;
+        }).switchMap((project) => {
+          const events$ = eventsStream(project.data.id).observable;
+          return events$;
+        }).subscribe((events) => {
+          this.setState({ events, loaded: true });
+        })
     ];
   }
 
-  componentWillReceiveProps(newProps: Props) {
-    this.slug$.next(newProps.params.slug);
+  componentDidUpdate() {
+    this.slug$.next(this.props.params.slug);
   }
 
   componentWillUnmount() {
@@ -96,6 +100,7 @@ export default class ProjectEventsPage extends React.PureComponent<Props, State>
 
   render() {
     const className = this.props['className'];
+    const { slug } = this.props.params;
     const { events, loaded } = this.state;
 
     const pastEvents = (events ? events.data.filter((event) => {
@@ -108,39 +113,42 @@ export default class ProjectEventsPage extends React.PureComponent<Props, State>
 
     if (loaded) {
       return (
-        <Container>
-          <Events>
-            <Title>
-              <FormattedMessage {...messages.upcomingEvents} />
-            </Title>
+        <>
+          <Header slug={slug} />
+          <EventsContainer>
+            <Events>
+              <Title>
+                <FormattedMessage {...messages.upcomingEvents} />
+              </Title>
 
-            {(upcomingEvents && upcomingEvents.length > 0) ? (
-              <EventList className={className}>
-                {upcomingEvents.map(event => <Event key={event.id} eventId={event.id} />)}
-              </EventList>
-            ) : (
-              <NoEvents>
-                <FormattedMessage {...messages.noUpcomingEvents} />
-              </NoEvents>
-            )}
-          </Events>
+              {(upcomingEvents && upcomingEvents.length > 0) ? (
+                <EventList className={className}>
+                  {upcomingEvents.map(event => <Event key={event.id} eventId={event.id} />)}
+                </EventList>
+              ) : (
+                <NoEvents>
+                  <FormattedMessage {...messages.noUpcomingEvents} />
+                </NoEvents>
+              )}
+            </Events>
 
-          <Events>
-            <Title>
-              <FormattedMessage {...messages.pastEvents} />
-            </Title>
+            <Events>
+              <Title>
+                <FormattedMessage {...messages.pastEvents} />
+              </Title>
 
-            {(pastEvents && pastEvents.length > 0) ? (
-              <EventList className={className}>
-                {pastEvents.map(event => <Event key={event.id} eventId={event.id} />)}
-              </EventList>
-            ) : (
-              <NoEvents>
-                <FormattedMessage {...messages.noPastEvents} />
-              </NoEvents>
-            )}
-          </Events>
-        </Container>
+              {(pastEvents && pastEvents.length > 0) ? (
+                <EventList className={className}>
+                  {pastEvents.map(event => <Event key={event.id} eventId={event.id} />)}
+                </EventList>
+              ) : (
+                <NoEvents>
+                  <FormattedMessage {...messages.noPastEvents} />
+                </NoEvents>
+              )}
+            </Events>
+          </EventsContainer>
+        </>
       );
     }
 
