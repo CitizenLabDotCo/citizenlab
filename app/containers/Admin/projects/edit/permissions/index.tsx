@@ -56,7 +56,7 @@ type State  = {
 };
 
 class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -74,7 +74,7 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.params.slug) {
       const projectSlug = this.props.params.slug;
       const project$ = projectBySlugStream(projectSlug).observable.do((project) => {

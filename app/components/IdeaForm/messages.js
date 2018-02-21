@@ -55,6 +55,6 @@ export default defineMessages({
   },
   imageUploadPlaceholder: {
     id: 'app.components.IdeaForm.imageUploadPlaceholder',
-    defaultMessage: 'Select an image that represents your idea',
+    defaultMessage: 'Select an image for your idea.<br /> This will increase the visibility of your idea!',
   },
 });

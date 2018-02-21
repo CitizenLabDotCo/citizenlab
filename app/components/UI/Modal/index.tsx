@@ -27,9 +27,7 @@ const ModalContent: any = styled(clickOutside)`
   overflow-y: auto;
   padding: 40px;
   border-radius: 5px;
-  backface-visibility: hidden;
   background: #fff;
-  will-change: opacity, transform;
 
   &.fixedHeight {
     height: 78vh;
@@ -89,12 +87,10 @@ const ModalContainer = styled.div`
   background: rgba(0, 0, 0, 0.75);
   padding: 30px;
   overflow: hidden;
-  will-change: opacity;
   z-index: 10002;
 
   &.modal-enter {
-    opacity: 0.01;
-    will-change: opacity;
+    opacity: 0;
 
     ${ModalContent} {
       opacity: 0.01;
@@ -145,14 +141,10 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     this.cleanup();
   }
 
-  componentWillUpdate(nextProps: Props) {
-    const { opened } = this.props;
-
-    if (!opened && nextProps.opened) {
-      this.openModal(nextProps.url);
-    }
-
-    if (opened && !nextProps.opened) {
+  componentDidUpdate(prevProps: Props) {
+    if (!prevProps.opened && this.props.opened) {
+      this.openModal(this.props.url);
+    } else if (prevProps.opened && !this.props.opened) {
       this.cleanup();
     }
   }

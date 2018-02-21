@@ -27,7 +27,7 @@ interface State {
   tenantLocales: Locale[];
 }
 
-function localize<PassedProps>(ComposedComponent) {
+export default function localize<PassedProps>(ComposedComponent) {
   return class Localized extends React.PureComponent<Props & PassedProps, State>{
     subscriptions: Rx.Subscription[];
 
@@ -41,24 +41,22 @@ function localize<PassedProps>(ComposedComponent) {
     }
 
     componentDidMount() {
-      this.subscriptions.push(this.updateLocales());
+      const locale$ = localeStream().observable;
+      const currentTenant$ = currentTenantStream().observable;
+
+      this.subscriptions = [
+        Rx.Observable.combineLatest(
+          locale$,
+          currentTenant$
+        ).subscribe(([locale, currentTenant]) => {
+          const tenantLocales = currentTenant.data.attributes.settings.core.locales;
+          this.setState({ locale, tenantLocales });
+        })
+      ];
     }
 
     componentWillUnmount() {
-      this.subscriptions.forEach((sub) => { sub.unsubscribe(); });
-    }
-
-    updateLocales = () => {
-      return Rx.Observable.combineLatest(
-        localeStream().observable,
-        currentTenantStream().observable
-      )
-      .subscribe(([locale, currentTenant]) => {
-        this.setState({
-          locale,
-          tenantLocales: currentTenant.data.attributes.settings.core.locales,
-        });
-      });
+      this.subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 
     localize = (multiloc: Multiloc): string => {
@@ -66,13 +64,20 @@ function localize<PassedProps>(ComposedComponent) {
     }
 
     render() {
-      if (!this.state.locale || !this.state.tenantLocales) {
-        return null;
+      const { locale, tenantLocales } = this.state;
+
+      if (locale && tenantLocales) {
+        return (
+          <ComposedComponent
+            localize={this.localize}
+            locale={this.state.locale}
+            tenantLocales={this.state.tenantLocales}
+            {...this.props}
+          />
+        );
       }
 
-      return <ComposedComponent localize={this.localize} locale={this.state.locale} tenantLocales={this.state.tenantLocales} {...this.props} />;
+      return null;
     }
   };
 }
-
-export default localize;

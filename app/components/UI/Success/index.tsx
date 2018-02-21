@@ -46,7 +46,6 @@ const StyledSuccessMessageInner = styled.div`
 const StyledSuccessMessage: any = styled.div`
   position: relative;
   overflow: hidden;
-  will-change: auto;
 
   ${StyledSuccessMessageInner} {
     margin-top: ${(props: IStyledSuccessMessage) => props.marginTop};
@@ -98,7 +97,6 @@ const StyledSuccessMessage: any = styled.div`
   &.success-enter {
     max-height: 0px;
     opacity: 0.01;
-    will-change: opacity;
 
     &.success-enter-active {
       max-height: 60px;
@@ -111,7 +109,6 @@ const StyledSuccessMessage: any = styled.div`
   &.success-exit {
     max-height: 100px;
     opacity: 1;
-    will-change: opacity;
 
     &.success-exit-active {
       max-height: 0px;

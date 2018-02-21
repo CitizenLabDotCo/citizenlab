@@ -275,11 +275,28 @@ export default function createRoutes(store) {
       },
       childRoutes: [
         {
-          path: '/projects/:slug/timeline',
-          name: 'Project\'s info page',
+          path: '/projects/:slug/process',
+          name: 'Project\'s process page',
           getComponent(nextState, cb) {
             const importModules = Promise.all([
-              import('containers/ProjectsShowPage/timeline'),
+              import('containers/ProjectsShowPage/process'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([component]) => {
+              renderRoute(component);
+            });
+
+            importModules.catch(errorLoading);
+          },
+        },
+        {
+          path: '/projects/:slug/timeline',
+          name: 'Project\'s process page',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              import('containers/ProjectsShowPage/process'),
             ]);
 
             const renderRoute = loadModule(cb);

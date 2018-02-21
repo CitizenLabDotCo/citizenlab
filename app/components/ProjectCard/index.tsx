@@ -17,7 +17,8 @@ import { projectImageStream, IProjectImage } from 'services/projectImages';
 // i18n
 import T from 'components/T';
 import { getLocalized } from 'utils/i18n';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // style
@@ -25,64 +26,30 @@ import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 import { Locale } from 'typings';
 
-const Container = styled(Link)`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 6px;
-  padding: 10px;
-  margin-bottom: 20px;
-  background: #fff;
-  border: solid 1px #e0e0e0;
-  cursor: pointer;
-
-  ${media.smallerThanMaxTablet`
-    flex-direction: column;
-    align-items: left;
-    padding: 20px;
-  `}
-`;
-
-const ProjectImage: any = styled.div`
-  flex-basis: 176px;
-  flex-shrink: 0;
+const ProjectImageContainer =  styled.div`
+  height: 190px;
   flex-grow: 0;
-  width: 176px;
-  min-height: 176px;
-  border-radius: 6px;
+  flex-shrink: 0;
+  flex-basis: 190px;
+  display: flex;
+  border-radius: 4px;
   margin-right: 10px;
-  background-image: url(${(props: any) => props.imageSrc});
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
   overflow: hidden;
+  position: relative;
 
   ${media.smallerThanMaxTablet`
     width: 100%;
+    flex-basis: 150px;
     margin: 0;
   `}
 `;
 
 const ProjectImagePlaceholder = styled.div`
-  flex-basis: 176px;
-  flex-shrink: 0;
-  flex-grow: 0;
-  width: 176px;
-  height: 176px;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
-  margin-right: 10px;
   background: ${color('placeholderBg')};
-  overflow: hidden;
-
-  ${media.smallerThanMaxTablet`
-    width: 100%;
-    margin: 0;
-  `}
 `;
 
 const ProjectImagePlaceholderIcon = styled(Icon) `
@@ -90,31 +57,96 @@ const ProjectImagePlaceholderIcon = styled(Icon) `
   fill: #fff;
 `;
 
-const ProjectContent = styled.div`
+const ProjectImage: any = styled.div`
   flex: 1;
-  height: 100%;
+  background-image: url(${(props: any) => props.imageSrc});
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+`;
+
+const Container = styled(Link)`
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  margin-right: 30px;
-  margin-left: 30px;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 5px;
+  padding: 16px;
+  margin-bottom: 25px;
+  background: #fff;
+  cursor: pointer;
+  background: #fff;
+  border-radius: 5px;
+  border: solid 1px #e4e4e4;
+
+  ${media.biggerThanMaxTablet`
+    transition: all 250ms ease-out;
+    /* transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1); */
+    will-change: transform;
+
+    &::after {
+      content: '';
+      border-radius: 5px;
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+      transition: all 250ms ease-out;
+      /* transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1); */
+      will-change: opacity;
+    }
+
+    &:hover {
+      transform: scale(1.01);
+
+      &::after {
+        opacity: 1;
+      }
+    }
+  `}
+
+  ${media.biggerThanMaxTablet`
+    min-height: 222px;
+  `}
 
   ${media.smallerThanMaxTablet`
-    margin: 0;
-  `}
-
-  ${media.phone`
-    width: 100%;
-    margin: 0;
+    flex-direction: column;
     align-items: center;
+    text-align: center;
+    padding: 15px;
   `}
+`;
+
+const ProjectContent = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 15px;
+  margin-right: 40px;
+  margin-left: 30px;
+
+  ${media.smallerThanMaxTablet`
+    align-items: flex-start;
+    margin: 0;
+    padding: 15px;
+    padding-top: 0px;
+  `}
+`;
+
+const ProjectContentInner = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const ProjectTitle = styled.h3`
   color: #333;
-  font-size: 21px;
-  line-height: 25px;
+  font-size: 23px;
+  line-height: 29px;
   font-weight: 500;
   margin: 0;
   padding: 0;
@@ -122,47 +154,42 @@ const ProjectTitle = styled.h3`
   ${media.smallerThanMaxTablet`
     padding-top: 20px;
   `}
-
-  ${media.phone`
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-  `}
 `;
 
 const ProjectDescription = styled.div`
-  color: #84939E;
+  color: ${(props) => props.theme.colors.label};
   font-size: 16px;
-  line-height: 22px;
+  line-height: 24px;
   font-weight: 300;
-  margin-top: 12px;
+  margin-top: 20px;
+`;
 
-  ${media.phone`
+const ProjectMetaItems = styled.div`
+  color: ${(props) => props.theme.colorMain};
+  color: ${(props) => props.theme.colors.label};
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  display: flex;
+  margin-top: 25px;
+
+  ${media.smallerThanMaxTablet`
     display: none;
   `}
 `;
 
-// const ReadMoreWrapper = styled.div`
-//   margin-top: 12px;
+const ProjectMetaItem = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
-//   ${media.smallerThanMaxTablet`
-//     display: none;
-//   `}
-// `;
-
-// const ReadMore = styled.div`
-//   color: ${(props) => props.theme.colors.label};
-//   font-size: 16px;
-//   font-weight: 400;
-//   text-decoration: underline;
-//   display: inline-block;
-//   cursor: pointer;
-
-//   &:hover {
-//     color: #000;
-//   }
-// `;
+const ProjectMetaIcon = styled(Icon)`
+  height: 24px;
+  fill: ${(props) => props.theme.colorMain};
+  fill: ${(props) => props.theme.colors.label};
+  margin-right: 6px;
+  margin-top: -6px;
+`;
 
 const ProjectButtonWrapper = styled.div`
   display: flex;
@@ -171,10 +198,9 @@ const ProjectButtonWrapper = styled.div`
 
   ${media.smallerThanMaxTablet`
     width: 100%;
+    margin-right: 0px;
     margin-top: 20px;
-  `}
-
-  ${media.phone`
+    margin-bottom: 10px;
     align-items: center;
     justify-content: center;
   `}
@@ -193,8 +219,7 @@ type State = {
   projectImage: IProjectImage | null;
 };
 
-class ProjectCard extends React.PureComponent<Props, State> {
-  state: State;
+class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -208,7 +233,7 @@ class ProjectCard extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { id } = this.props;
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
@@ -240,7 +265,7 @@ class ProjectCard extends React.PureComponent<Props, State> {
   getProjectUrl = (project: IProject) => {
     const projectType = project.data.attributes.process_type;
     const rootProjectUrl = `/projects/${project.data.attributes.slug}`;
-    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/timeline` : `${rootProjectUrl}/info`);
+    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/process` : `${rootProjectUrl}/info`);
 
     return projectUrl;
   }
@@ -255,6 +280,8 @@ class ProjectCard extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const className = this.props['className'];
+    const { formatMessage } = this.props.intl;
     const { locale, currentTenant, project, projectImage } = this.state;
 
     if (locale && currentTenant && project) {
@@ -263,36 +290,52 @@ class ProjectCard extends React.PureComponent<Props, State> {
       const preview = getLocalized(project.data.attributes.description_preview_multiloc, locale, currentTenantLocales);
       const imageUrl = (projectImage ? projectImage.data.attributes.versions.medium : null);
       const projectUrl = this.getProjectUrl(project);
+      const ideasCount = project.data.attributes.ideas_count;
 
       return (
-        <Container to={projectUrl}>
-          {imageUrl && <ProjectImage imageSrc={imageUrl} />}
+        <Container to={projectUrl} className={className}>
 
-          {!imageUrl &&
-            <ProjectImagePlaceholder>
-              <ProjectImagePlaceholderIcon name="project" />
-            </ProjectImagePlaceholder>
-          }
+          <ProjectImageContainer>
+            {imageUrl && <ProjectImage imageSrc={imageUrl} />}
+
+            {!imageUrl &&
+              <ProjectImagePlaceholder>
+                <ProjectImagePlaceholderIcon name="project" />
+              </ProjectImagePlaceholder>
+            }
+
+            {/* <ProjectImageOverlay /> */}
+          </ProjectImageContainer>
 
           <ProjectContent>
-            <ProjectTitle>
-              <T value={titleMultiloc} />
-            </ProjectTitle>
-            <ProjectDescription>
-              {preview}
-            </ProjectDescription>
-            {/* <ReadMoreWrapper>
-              <ReadMore onClick={this.goToProject}>
-                <FormattedMessage {...messages.readMore} />
-              </ReadMore>
-            </ReadMoreWrapper> */}
+            <ProjectContentInner>
+              <ProjectTitle>
+                <T value={titleMultiloc} />
+              </ProjectTitle>
+              <ProjectDescription>
+                {preview}
+              </ProjectDescription>
+              <ProjectMetaItems>
+                <ProjectMetaItem>
+                  <ProjectMetaIcon name="idea" />
+                  <FormattedMessage 
+                    {...messages.xIdeas} 
+                    values={{
+                      ideasCount,
+                      ideas: formatMessage(messages.ideas),
+                      idea: formatMessage(messages.idea)
+                    }}
+                  />
+                </ProjectMetaItem>
+              </ProjectMetaItems>
+            </ProjectContentInner>
           </ProjectContent>
 
           <ProjectButtonWrapper>
             <ProjectButton
               onClick={this.goToProject}
               text={<FormattedMessage {...messages.openProjectButton} />}
-              style="primary-outlined"
+              style="primary"
               size="2"
               circularCorners={false}
             />
@@ -306,4 +349,4 @@ class ProjectCard extends React.PureComponent<Props, State> {
   }
 }
 
-export default ProjectCard;
+export default injectIntl<Props>(ProjectCard);

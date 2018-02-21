@@ -7,28 +7,28 @@ import FilterSelector from 'components/FilterSelector';
 // services
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { localeStream } from 'services/locale';
-import { topicsStream, ITopics } from 'services/topics';
+import { areasStream, IAreas } from 'services/areas';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+
+// typings
 import { Locale } from 'typings';
 
 type Props = {
-  id?: string | undefined;
+  selectedAreas: string[];
   onChange: (value: any) => void;
 };
 
 type State = {
   currentTenant: ITenant | null;
   locale: Locale | null;
-  topics: ITopics | null;
-  selectedValues: string[];
+  areas: IAreas | null;
 };
 
-class SelectTopic extends React.PureComponent<Props, State> {
-  state: State;
+class SelectAreas extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -36,23 +36,27 @@ class SelectTopic extends React.PureComponent<Props, State> {
     this.state = {
       currentTenant: null,
       locale: null,
-      topics: null,
-      selectedValues: []
+      areas: null
     };
+    this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const currentTenant$ = currentTenantStream().observable;
     const locale$ = localeStream().observable;
-    const topics$ = topicsStream().observable;
+    const areas$ = areasStream().observable;
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
         currentTenant$,
         locale$,
-        topics$
-      ).subscribe(([currentTenant, locale, topics]) => {
-        this.setState({ currentTenant, locale, topics });
+        areas$
+      ).subscribe(([currentTenant, locale, areas]) => {
+        this.setState({
+          currentTenant,
+          locale,
+          areas
+        });
       })
     ];
   }
@@ -61,31 +65,32 @@ class SelectTopic extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleOnChange = (selectedValues) => {
-    this.setState({ selectedValues });
-    this.props.onChange(selectedValues);
+  handleOnChange = (selectedAreas: string[]) => {
+    this.props.onChange((selectedAreas || []));
   }
 
   render() {
-    const { currentTenant, locale, topics, selectedValues } = this.state;
-    let options: any = [];
+    const { currentTenant, locale, areas } = this.state;
+    const { selectedAreas } =  this.props;
+    let options: {
+      text: string,
+      value: string
+    }[] = [];
 
-    if (currentTenant && locale && topics && topics.data && topics.data.length > 0) {
+    if (currentTenant && locale && areas && areas.data) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
 
-      options = topics.data.map((topic) => {
-        return {
-          text: getLocalized(topic.attributes.title_multiloc, locale, currentTenantLocales),
-          value: topic.id
-        };
-      });
+      options = areas.data.map((area) => ({
+        text: getLocalized(area.attributes.title_multiloc, locale, currentTenantLocales),
+        value: area.id
+      }));
 
       if (options && options.length > 0) {
         return (
           <FilterSelector
-            title={<FormattedMessage {...messages.topicsTitle} />}
-            name="topics"
-            selected={selectedValues}
+            title={<FormattedMessage {...messages.areasTitle} />}
+            name="areas"
+            selected={selectedAreas}
             values={options}
             onChange={this.handleOnChange}
             multiple={true}
@@ -98,4 +103,4 @@ class SelectTopic extends React.PureComponent<Props, State> {
   }
 }
 
-export default SelectTopic;
+export default SelectAreas;

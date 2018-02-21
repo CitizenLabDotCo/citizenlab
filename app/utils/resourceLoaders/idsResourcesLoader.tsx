@@ -40,8 +40,8 @@ export const injectResourcesByIds = <IResourceData, IResource extends IIResource
         };
       }
 
-      componentWillReceiveProps(nextProps) {
-        if (resourceIdsFn(nextProps) !== resourceIdsFn(this.props)) {
+      componentDidUpdate(prevProps) {
+        if (resourceIdsFn(this.props) !== resourceIdsFn(prevProps)) {
           this.setState({
             resources: [],
           }, this.loadResources);

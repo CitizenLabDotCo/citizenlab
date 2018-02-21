@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isString, isEmpty } from 'lodash';
 
 // libraries
 import { MentionsInput, Mention } from 'react-mentions';
@@ -21,6 +21,10 @@ const Container: any = styled.div`
   textarea {
     -webkit-appearance: none;
     border-color: ${(props: any) => props.error ? props.theme.colors.error : '#ccc'} !important;
+
+    &:hover {
+      border-color: ${(props: any) => props.error ? props.theme.colors.error : '#aaa'} !important;
+    }
 
     &:focus {
       border-color: ${(props: any) => props.error ? props.theme.colors.error : '#999'} !important;
@@ -49,26 +53,29 @@ type Props = {
   onBlur?: () => void | undefined;
 };
 
-type State = {};
+type State = {
+  style: object | null;
+  mentionStyle: object | null;
+};
 
 export default class MentionsTextArea extends React.PureComponent<Props, State> {
   textareaElement: HTMLTextAreaElement | null = null;
-  style: object | null;
-  mentionStyle: object | null;
 
   constructor(props: Props) {
     super(props as any);
+    this.state = {
+      style: null,
+      mentionStyle: null
+    };
     this.textareaElement = null;
-    this.style = null;
-    this.mentionStyle = null;
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { rows } = this.props;
     const lineHeight = 24;
     const padding = (this.props.padding || '25px');
 
-    this.style = {
+    const style = {
       '&multiLine': {
         control: {},
         input: {
@@ -98,20 +105,22 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
             borderBottom: '1px solid #ccc',
 
             '&focused': {
-              backgroundColor: '#f4f4f4',
-            },
-          },
+              backgroundColor: '#f4f4f4'
+            }
+          }
         }
       }
     };
 
-    this.mentionStyle = {
-      backgroundColor: transparentize(0.9, color('clBlue')),
+    const mentionStyle = {
+      backgroundColor: transparentize(0.9, color('clBlue'))
     };
+
+    this.setState({ style, mentionStyle });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.error && nextProps.error !== this.props.error && this.textareaElement !== null) {
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.error && this.props.error !== prevProps.error && this.textareaElement !== null) {
       setTimeout(() => (this.textareaElement as HTMLElement).focus(), 50);
     }
   }
@@ -145,7 +154,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
   getUsers = async (query, callback) => {
     let users: any[] = [];
 
-    if (_.isString(query) && !_.isEmpty(query)) {
+    if (isString(query) && !isEmpty(query)) {
       const mention = query.toLowerCase();
       const queryParameters = { mention };
 
@@ -167,14 +176,15 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
   }
 
   render() {
+    const { style, mentionStyle } = this.state;
     const { name, placeholder, value, error, children, rows } = this.props;
     const className = this.props['className'];
 
-    if (this.style) {
+    if (style) {
       return (
         <Container className={className}>
           <MentionsInput
-            style={this.style}
+            style={style}
             className="textareaWrapper"
             name={name || ''}
             rows={rows}
@@ -191,7 +201,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
               trigger="@"
               data={this.getUsers}
               appendSpaceOnAdd={true}
-              style={this.mentionStyle}
+              style={mentionStyle}
             />
           </MentionsInput>
           {children}

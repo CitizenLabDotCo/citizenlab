@@ -29,7 +29,7 @@ export default class CommentOnYourCommentNotification extends React.PureComponen
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.notification.relationships.idea.data) {
       const idea$ = ideaByIdStream(this.props.notification.relationships.idea.data.id).observable;
       this.subscriptions = [

@@ -187,7 +187,7 @@ const StyledMultipleSelect = styled(ReactSelect)`
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
       overflow: hidden;
-      z-index: 9999;
+      z-index: 2;
 
       .Select-menu {
         max-height: 212px;
