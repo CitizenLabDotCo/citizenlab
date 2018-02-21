@@ -77,16 +77,37 @@ const Container = styled(Link)`
   cursor: pointer;
   background: #fff;
   border-radius: 5px;
-  overflow: hidden;
   border: solid 1px #e4e4e4;
-  /* box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.12); */
-  transition: all 250ms ease-out;
-  will-change: transform;
 
-  &:hover {
-    transform: scale(1.01);
-    border-color: #ddd;
-  }
+  ${media.biggerThanMaxTablet`
+    transition: all 250ms ease-out;
+    /* transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1); */
+    will-change: transform;
+
+    &::after {
+      content: '';
+      border-radius: 5px;
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+      transition: all 250ms ease-out;
+      /* transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1); */
+      will-change: opacity;
+    }
+
+    &:hover {
+      transform: scale(1.01);
+
+      &::after {
+        opacity: 1;
+      }
+    }
+  `}
 
   ${media.biggerThanMaxTablet`
     min-height: 222px;
@@ -244,7 +265,7 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
   getProjectUrl = (project: IProject) => {
     const projectType = project.data.attributes.process_type;
     const rootProjectUrl = `/projects/${project.data.attributes.slug}`;
-    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/process` : `${rootProjectUrl}/ideas`);
+    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/process` : `${rootProjectUrl}/info`);
 
     return projectUrl;
   }

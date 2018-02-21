@@ -66,7 +66,7 @@ const PageTitle = styled.h1`
   text-align: left;
   margin: 0;
   padding: 0;
-  padding-top: 60px;
+  padding-top: 0px;
   padding-bottom: 40px;
 
   ${media.smallerThanMaxTablet`

@@ -8,7 +8,6 @@ import 'moment-timezone';
 import Icon from 'components/UI/Icon';
 import IdeaButton from './IdeaButton';
 import MobileTimeline from './MobileTimeline';
-import { Responsive } from 'semantic-ui-react';
 
 // services
 import { localeStream } from 'services/locale';
@@ -27,21 +26,33 @@ import { media } from 'utils/styleUtils';
 // typings
 import { Locale } from 'typings';
 
-const greyTransparent = css`rgba(121, 137, 147, 1)`;
+const greyTransparent = css`rgba(121, 137, 147, 0.3)`;
 const greyOpaque = css`rgba(121, 137, 147, 1)`;
-const greenTransparent = css`rgba(29, 170, 99, 0.5)`;
+const greenTransparent = css`rgba(29, 170, 99, 0.3)`;
 const greenOpaque = css`rgba(29, 170, 99, 1)`;
 
 const Container = styled.div`
   width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-left: 15px;
+  padding-right: 15px;
+`;
+
+const padding = 30;
+
+const ContainerInner = styled.div`
+  width: 100%;
   max-width: 1050px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: -35px;
+  max-width: ${(props) => props.theme.maxPageWidth + (padding * 2)}px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: ${padding}px;
+  padding-top: 0px;
   border-radius: 5px;
   background: #fff;
   border: solid 1px #e4e4e4;
-  /* box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.15); */
 
   * {
     user-select: none;
@@ -50,11 +61,12 @@ const Container = styled.div`
 
 const Header = styled.div`
   width: 100%;
-  /* min-height: 70px; */
-  padding: 10px 30px;
+  min-height: 80px;
+  padding: 0px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  /* border-bottom: solid 1px #e6e6e6; */
+  /* border: solid 1px red; */
 `;
 
 const HeaderSection = styled.div`
@@ -80,33 +92,20 @@ const PhaseNumberWrapper = styled.div`
   justify-content: center;
   margin-right: 12px;
   border-radius: 50%;
-  border: solid 1px ${greyTransparent};
+  background: ${greyOpaque};
 
-  &.selected {
-    border-color: ${greyOpaque};
-  }
-
-  &.selected.current {
-    border-color: ${greenOpaque};
+  &.current {
     background: ${greenOpaque};
   }
 `;
 
 const PhaseNumber = styled.div`
-  color: ${greyTransparent};
+  color: #fff;
   font-size: 16px;
   line-height: 16px;
   font-weight: 400;
   margin: 0;
   padding: 0;
-
-  &.selected {
-    color: ${greyOpaque};
-  }
-
-  &.selected.current {
-    color: #fff;
-  }
 `;
 
 const HeaderTitleWrapper = styled.div`
@@ -116,19 +115,11 @@ const HeaderTitleWrapper = styled.div`
 `;
 
 const HeaderTitle = styled.div`
-  color: ${greyTransparent};
+  color: #222;
   font-size: 21px;
   line-height: 25px;
   font-weight: 400;
   margin-right: 20px;
-
-  &.selected {
-    color: ${greyOpaque};
-  }
-
-  &.selected.current {
-    color: #222;
-  }
 
   ${media.smallerThanMaxTablet`
     font-size: 20px;
@@ -138,10 +129,10 @@ const HeaderTitle = styled.div`
 
 const MobileDate = styled.div`
   color: #999;
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 15px;
+  line-height: 21px;
   font-weight: 400;
-  margin-top: 4px;
+  margin-top: 2px;
   display: none;
 
   ${media.smallerThanMaxTablet`
@@ -163,38 +154,41 @@ const HeaderDate = styled.div`
   font-weight: 400;
   line-height: 16px;
   white-space: nowrap;
-  margin-right: 20px;
 
   ${media.smallerThanMaxTablet`
     display: none;
   `}
 `;
 
+const StyledIdeaButton: any = styled(IdeaButton)`
+  margin-left: 20px;
+`;
+
 const MobileTimelineContainer = styled.div`
   width: 100%;
   display: flex;
-  padding: 30px;
   align-items: center;
   justify-content: center;
-  border: solid 1px #e4e4e4;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  background: #fff;
+
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const Phases = styled.div`
   width: 100%;
-  padding: 0px 30px;
+  padding: 0;
+  margin: 0;
+  margin-top: 30px;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 50px;
-  padding-bottom: 40px;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  background: #fff;
+
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const phaseBarHeight = '25px';
@@ -208,7 +202,7 @@ const PhaseBar: any = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #d0d5d9;
+  background: ${greyTransparent};
   transition: background 60ms ease-out;
   user-select: none;
 `;
@@ -223,8 +217,8 @@ const PhaseArrow = styled(Icon)`
 `;
 
 const PhaseText: any = styled.div`
-  color: #d0d5d9;
-  font-size: 15px;
+  color: ${greyTransparent};
+  font-size: 16px;
   font-weight: 400;
   text-align: center;
   overflow-wrap: break-word;
@@ -241,11 +235,11 @@ const PhaseText: any = styled.div`
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
-  line-height: 19px;
-  max-height: 54px;
+  line-height: 21px;
+  max-height: 63px;
   margin-top: 12px;
-  padding-left: 5px;
-  padding-right: 5px;
+  padding-left: 6px;
+  padding-right: 6px;
   user-select: none;
   transition: color 60ms ease-out;
 `;
@@ -437,40 +431,22 @@ export default class Timeline extends React.PureComponent<Props, State> {
 
       return (
         <Container className={className}>
-          <Header>
-            <HeaderLeftSection>
-              {isSelected &&
-                <PhaseNumberWrapper className={`${isSelected && 'selected'} ${phaseStatus === 'present' && 'current'}`}>
-                  <PhaseNumber className={`${isSelected && 'selected'} ${phaseStatus === 'present' && 'current'}`}>
-                    {selectedPhaseNumber}
-                  </PhaseNumber>
-                </PhaseNumberWrapper>
-              }
-
-              <HeaderTitleWrapper>
-                <HeaderTitle className={`${isSelected && 'selected'} ${phaseStatus === 'present' && 'current'}`}>
-                  {selectedPhaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
-                </HeaderTitle>
-                <MobileDate>
-                  {phaseStatus === 'past' && (
-                    <FormattedMessage {...messages.endedOn} values={{ date: selectedPhaseEnd }} />
-                  )}
-
-                  {phaseStatus === 'present' && (
-                    <FormattedMessage {...messages.endsOn} values={{ date: selectedPhaseEnd }} />
-                  )}
-
-                  {phaseStatus === 'future' && (
-                    <FormattedMessage {...messages.startsOn} values={{ date: selectedPhaseStart }} />
-                  )}
-                </MobileDate>
-              </HeaderTitleWrapper>
-            </HeaderLeftSection>
-
-            <HeaderRightSection>
-              <HeaderDate>
+          <ContainerInner>
+            <Header>
+              <HeaderLeftSection>
                 {isSelected &&
-                  <HeaderSubtitle>
+                  <PhaseNumberWrapper className={`${isSelected && 'selected'} ${phaseStatus === 'present' && 'current'}`}>
+                    <PhaseNumber className={`${isSelected && 'selected'} ${phaseStatus === 'present' && 'current'}`}>
+                      {selectedPhaseNumber}
+                    </PhaseNumber>
+                  </PhaseNumberWrapper>
+                }
+
+                <HeaderTitleWrapper>
+                  <HeaderTitle className={`${isSelected && 'selected'} ${phaseStatus === 'present' && 'current'}`}>
+                    {selectedPhaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
+                  </HeaderTitle>
+                  <MobileDate>
                     {phaseStatus === 'past' && (
                       <FormattedMessage {...messages.endedOn} values={{ date: selectedPhaseEnd }} />
                     )}
@@ -478,22 +454,40 @@ export default class Timeline extends React.PureComponent<Props, State> {
                     {phaseStatus === 'present' && (
                       <FormattedMessage {...messages.endsOn} values={{ date: selectedPhaseEnd }} />
                     )}
-x
+
                     {phaseStatus === 'future' && (
                       <FormattedMessage {...messages.startsOn} values={{ date: selectedPhaseStart }} />
                     )}
-                  </HeaderSubtitle>
-                }
-              </HeaderDate>
+                  </MobileDate>
+                </HeaderTitleWrapper>
+              </HeaderLeftSection>
 
-              <IdeaButton
-                projectId={this.props.projectId}
-                phaseId={selectedPhaseId}
-              />
-            </HeaderRightSection>
-          </Header>
+              <HeaderRightSection>
+                <HeaderDate>
+                  {isSelected &&
+                    <HeaderSubtitle>
+                      {phaseStatus === 'past' && (
+                        <FormattedMessage {...messages.endedOn} values={{ date: selectedPhaseEnd }} />
+                      )}
 
-          <Responsive maxWidth={481}>
+                      {phaseStatus === 'present' && (
+                        <FormattedMessage {...messages.endsOn} values={{ date: selectedPhaseEnd }} />
+                      )}
+
+                      {phaseStatus === 'future' && (
+                        <FormattedMessage {...messages.startsOn} values={{ date: selectedPhaseStart }} />
+                      )}
+                    </HeaderSubtitle>
+                  }
+                </HeaderDate>
+
+                <StyledIdeaButton
+                  projectId={this.props.projectId}
+                  phaseId={selectedPhaseId}
+                />
+              </HeaderRightSection>
+            </Header>
+
             <MobileTimelineContainer>
               <MobileTimeline
                 phases={phases.data}
@@ -502,9 +496,7 @@ x
                 onPhaseSelection={this.setSelectedPhaseId}
               />
             </MobileTimelineContainer>
-          </Responsive>
 
-          <Responsive minWidth={481}>
             <Phases>
               {phases.data.map((phase, index) => {
                 const phaseTitle = getLocalized(phase.attributes.title_multiloc, locale, currentTenantLocales);
@@ -539,7 +531,7 @@ x
                 );
               })}
             </Phases>
-          </Responsive>
+          </ContainerInner>
         </Container>
       );
     }

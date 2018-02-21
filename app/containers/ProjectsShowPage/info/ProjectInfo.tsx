@@ -23,7 +23,7 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin-top: 70px;
-  margin-bottom: 70px;
+  margin-bottom: 90px;
 
   ${media.phone`
     display: block;

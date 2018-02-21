@@ -23,12 +23,37 @@ const Container = styled(Link)`
   display: flex;
   padding: 15px;
   cursor: pointer;
-  border: solid 1px #eaeaea;
-  transition: transform 250ms ease-out;
+  border: solid 1px #e4e4e4;
 
-  &:hover {
-    transform: scale(1.015);
-  }
+  ${media.biggerThanMaxTablet`
+    transition: all 250ms ease-out;
+    /* transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1); */
+    will-change: transform; 
+
+    &::after {
+      content: '';
+      border-radius: 5px;
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+      transition: all 250ms ease-out;
+      /* transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1); */
+      will-change: opacity;
+    }
+
+    &:hover {
+      transform: scale(1.015);
+
+      &::after {
+        opacity: 1;
+      }
+    }
+  `};
 
   &:not(.last) {
     margin-right: 12px;

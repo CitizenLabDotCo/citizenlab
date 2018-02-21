@@ -24,30 +24,19 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const foregroundTimeout = 500;
-const foregroundEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
+const timeout = 350;
+const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
-const contentTimeout = 700;
-const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
-const contentDelay = 500;
-const contentTranslate = '20px';
-
-const ModalBackground = styled.div`
-  width: 100%;
-  height: 100%;
+const Container: any = styled.div`
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 0;
-  margin: 0;
   display: flex;
   justify-content: center;
-  flex-direction: column;
-  outline: none;
   overflow: hidden;
-  border-radius: 0px;
+  outline: none;
   background: #fff;
   z-index: -10000;
   will-change: opacity;
@@ -56,19 +45,24 @@ const ModalBackground = styled.div`
     z-index: 10000;
   }
 
-  &.foreground-enter {
+  &.modal-enter {
     opacity: 0;
 
-    &.foreground-enter-active {
+    &.modal-enter-active {
       opacity: 1;
-      transition: opacity ${foregroundTimeout}ms ${foregroundEasing};
+      transition: opacity ${timeout}ms ${easing};
     }
+  }
+
+  &.modal-exit {
+    display: none;
   }
 `;
 
-const ModalContentInner = styled.div`
+const Content = styled.div`
   width: 100vw;
   height: 100vh;
+  position: relative;
   overflow: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
@@ -87,6 +81,7 @@ const TopBar: any = styled.div`
   right: 0;
   background: #fff;
   border-bottom: solid 1px #ccc;
+  z-index: 10001;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -180,6 +175,7 @@ const CloseButton = styled.div`
   right: 33px;
   border-radius: 50%;
   border: solid 1px #ccc;
+  z-index: 10001;
   transition: border-color 100ms ease-out;
 
   &:hover {
@@ -195,38 +191,6 @@ const CloseButton = styled.div`
   `}
 `;
 
-const ModalContent: any = styled.div`
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-  outline: none;
-  z-index: -10000;
-
-  &.opened {
-    z-index: 10001;
-  }
-
-  /* will-change: transform, opacity; */
-
-  /* 
-  &.content-enter {
-    opacity: 0;
-    transform: translateY(${contentTranslate});
-
-    &.content-enter-active {
-      opacity: 1;
-      transform: translateY(0);
-      transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
-    }
-  }
-  */
-`;
-
 interface ITracks {
   clickCloseButton: (arg: any) => void;
   clickOutsideModal: (arg: any) => void;
@@ -240,9 +204,7 @@ type Props = {
   headerChild?: JSX.Element | undefined;
 };
 
-type State = {
-  scrolled: boolean;
-};
+type State = {};
 
 class Modal extends React.PureComponent<Props & ITracks, State> {
   unlisten: Function | null;
@@ -365,52 +327,41 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   }
 
   render() {
-    const { scrolled } = this.state;
     const { children, opened, headerChild } = this.props;
 
     return (
-      <>
-        <CSSTransition
-          classNames="foreground"
-          in={opened}
-          timeout={foregroundTimeout}
-          mountOnEnter={false}
-          unmountOnExit={false}
-          exit={false}
-        >
-          <ModalBackground className={`${opened && 'opened'}`} />
-        </CSSTransition>
-
-        <ModalContent id="e2e-fullscreenmodal-content" className={`${opened && 'opened'}`}>
-
-          <ModalContentInner innerRef={this.setRef}>
+      <CSSTransition
+        classNames="modal"
+        in={opened}
+        timeout={timeout}
+        mountOnEnter={false}
+        unmountOnExit={false}
+        exit={true}
+      >
+        <Container id="e2e-fullscreenmodal-content" className={`${opened && 'opened'}`}>
+          <Content innerRef={this.setRef}>
             {children}
-          </ModalContentInner>
+          </Content>
 
-          {opened &&
-            <>
-              <TopBar scrolled={scrolled}>
-                <TopBarInner>
-                  <GoBackButtonWrapper>
-                    <GoBackButton onClick={this.clickCloseButton}>
-                      <GoBackIcon name="arrow-back" />
-                    </GoBackButton>
-                    <GoBackLabel>
-                      <FormattedMessage {...messages.goBack} />
-                    </GoBackLabel>
-                  </GoBackButtonWrapper>
-                  {headerChild && <HeaderChildWrapper>{headerChild}</HeaderChildWrapper>}
-                </TopBarInner>
-              </TopBar>
+          <CloseButton onClick={this.clickCloseButton}>
+            <CloseIcon name="close4" />
+          </CloseButton>
 
-              <CloseButton onClick={this.clickCloseButton}>
-                <CloseIcon name="close4" />
-              </CloseButton>
-            </>
-          }
-
-        </ModalContent>
-      </>
+          <TopBar>
+            <TopBarInner>
+              <GoBackButtonWrapper>
+                <GoBackButton onClick={this.clickCloseButton}>
+                  <GoBackIcon name="arrow-back" />
+                </GoBackButton>
+                <GoBackLabel>
+                  <FormattedMessage {...messages.goBack} />
+                </GoBackLabel>
+              </GoBackButtonWrapper>
+              {headerChild && <HeaderChildWrapper>{headerChild}</HeaderChildWrapper>}
+            </TopBarInner>
+          </TopBar>
+        </Container>
+      </CSSTransition>
     );
   }
 }

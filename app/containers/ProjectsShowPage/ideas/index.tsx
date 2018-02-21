@@ -92,6 +92,7 @@ export default class ProjectIdeasPage extends React.PureComponent<Props, State> 
       return (
         <>
           <Header slug={slug} />
+
           <IdeasContainer>
             <ContentContainer>
               <IdeasTitle>
@@ -99,8 +100,9 @@ export default class ProjectIdeasPage extends React.PureComponent<Props, State> 
               </IdeasTitle>
               <Ideas type="project" id={project.data.id} defaultDisplay={project.data.attributes.presentation_mode}/>
             </ContentContainer>
-            <EventsPreview projectId={project.data.id} />
           </IdeasContainer>
+
+          <EventsPreview projectId={project.data.id} />
         </>
       );
     }

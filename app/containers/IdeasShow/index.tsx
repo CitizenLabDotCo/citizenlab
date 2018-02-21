@@ -48,17 +48,49 @@ import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-const contentTimeout = 500;
+const loadingTimeout = 500;
+const loadingEasing = 'ease-out';
+const loadingDelay = 0;
+
+const contentTimeout = 400;
 const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
-const contentDelay = 500;
-const contentTranslate = '20px';
+const contentDelay = 700;
+const contentTranslateDistance = '25px';
+
+const StyledSpinner = styled(Spinner)`
+  transition: all ${loadingTimeout}ms ${loadingEasing} ${loadingDelay}ms;
+`;
+
+const Loading = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.loading-enter {
+    ${StyledSpinner} {
+      opacity: 0;
+    }
+
+    &.loading-enter-active {
+      ${StyledSpinner} {
+        opacity: 1;
+      }
+    }
+  }
+`;
 
 const Container = styled.div`
+  background: #fff;
   will-change: transform, opacity;
 
   &.content-enter {
     opacity: 0;
-    transform: translateY(${contentTranslate});
+    transform: translateY(${contentTranslateDistance});
 
     &.content-enter-active {
       opacity: 1;
@@ -66,18 +98,10 @@ const Container = styled.div`
       transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
     }
   }
-`;
 
-const Loading = styled.div`
-  width: 100%;
-  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
-  `}
+  &.content-exit {
+    display: none;
+  }
 `;
 
 const IdeaContainer = styled.div`
@@ -530,6 +554,7 @@ type State = {
   ideaImage: IIdeaImage | null;
   ideaComments: IComments | null;
   project: IProject | null;
+  opened: boolean;
   loaded: boolean;
   showMap: boolean;
   spamModalVisible: boolean;
@@ -550,6 +575,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
       ideaImage: null,
       ideaComments: null,
       project: null,
+      opened: false,
       loaded: false,
       showMap: false,
       spamModalVisible: false,
@@ -576,6 +602,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
       }),
 
       ideaId$
+      .do(() => this.setState({ opened: true }))
       .switchMap((ideaId: string) => ideaByIdStream(ideaId).observable)
       .switchMap((idea) => {
         const ideaImages = idea.data.relationships.idea_images.data;
@@ -595,7 +622,6 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
           project$,
         ).map(([authUser, ideaImage, ideaAuthor, _ideaStatus, project]) => ({ authUser, idea, ideaImage, ideaAuthor, project }));
       })
-      // .delay(2000)
       .subscribe(({ authUser, idea, ideaImage, ideaAuthor, project }) => {
         this.setState({ authUser, idea, ideaImage, ideaAuthor, project, loaded: true });
       }),
@@ -656,7 +682,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
   }
 
   handleMapToggle = () => {
-    this.setState((state: State) => {
+    this.setState((state) => {
       const showMap = !state.showMap;
       return { showMap };
     });
@@ -685,20 +711,18 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { ideaId, inModal } = this.props;
-    const { idea, ideaImage, ideaAuthor, ideaComments, project, loaded, showMap, moreActions } = this.state;
-
+    const { inModal } = this.props;
+    const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions } = this.state;
+    let loader: JSX.Element | null = null;
     let content: JSX.Element | null = null;
 
-    if (!loaded && ideaId) {
-      content = (
-        <Loading className={`${inModal && 'inModal'}`}>
-          <Spinner size="34px" color="#666" />
-        </Loading>
+    if (opened && !loaded) {
+      loader = (
+        <StyledSpinner size="34px" color="#666" />
       );
     }
 
-    if (loaded && idea !== null && ideaId) {
+    if (idea) {
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
       const createdAt = idea.data.attributes.created_at;
       const titleMultiloc = idea.data.attributes.title_multiloc;
@@ -748,7 +772,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                 {!inModal &&
                   <VoteControlMobile>
                     <VoteControl
-                      ideaId={ideaId}
+                      ideaId={idea.data.id}
                       unauthenticatedVoteClick={this.unauthenticatedVoteClick}
                       size="small"
                     />
@@ -769,7 +793,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                       {createdAt &&
                         <TimeAgo>
                           <FormattedRelative value={createdAt} />
-                          <Activities ideaId={ideaId} />
+                          <Activities ideaId={idea.data.id} />
                         </TimeAgo>
                       }
                     </AuthorMeta>
@@ -808,7 +832,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                   <FormattedMessage {...messages.commentsTitle} />
                 </CommentsTitle>
 
-                <ParentCommentForm ideaId={ideaId} />
+                <ParentCommentForm ideaId={idea.data.id} />
 
                 {ideaComments && <Comments ideaId={idea.data.id} />}
               </LeftColumn>
@@ -875,25 +899,40 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
           </IdeaContainer>
 
           <Modal opened={this.state.spamModalVisible} close={this.closeSpamModal}>
-            <SpamReportForm resourceId={ideaId} resourceType="ideas" />
+            <SpamReportForm resourceId={idea.data.id} resourceType="ideas" />
           </Modal>
         </>
       );
     }
 
     return (
-      <CSSTransition
-        classNames="content"
-        in={loaded}
-        timeout={contentTimeout + contentDelay}
-        mountOnEnter={false}
-        unmountOnExit={false}
-        exit={false}
-      >
-        <Container>
-          {content}
-        </Container>
-      </CSSTransition>
+      <>
+        <CSSTransition
+          classNames="loading"
+          in={(opened && !loaded)}
+          timeout={loadingTimeout}
+          mountOnEnter={false}
+          unmountOnExit={false}
+          exit={false}
+        >
+          <Loading>
+            {loader}
+          </Loading>
+        </CSSTransition>
+
+        <CSSTransition
+          classNames="content"
+          in={(opened && loaded)}
+          timeout={contentTimeout + contentDelay}
+          mountOnEnter={false}
+          unmountOnExit={false}
+          exit={true}
+        >
+          <Container>
+            {content}
+          </Container>
+        </CSSTransition>
+      </>
     );
   }
 }

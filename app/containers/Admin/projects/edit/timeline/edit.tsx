@@ -239,7 +239,6 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
           this.setState({ saving: false, saved: true, attributeDiff: {}, phase: savedPhase, errors: null });
         } else if (project && slug) {
           const savedPhase = await addPhase(project.data.id, attributeDiff);
-          // browserHistory.push(`/admin/projects/${slug}/timeline/`);
           this.setState({ saving: false, saved: true, attributeDiff: {}, phase: savedPhase, errors: null });
         }
       } catch (errors) {

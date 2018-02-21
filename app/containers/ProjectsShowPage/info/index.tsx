@@ -66,9 +66,11 @@ export default class ProjectInfoPage extends React.PureComponent<Props, State> {
       return (
         <>
           <Header slug={slug} />
+
           <ContentContainer>
             <ProjectInfo projectId={project.data.id} />
           </ContentContainer>
+
           <EventsPreview projectId={project.data.id} />
         </>
       );

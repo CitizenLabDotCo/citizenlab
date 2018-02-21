@@ -7,7 +7,7 @@ import 'moment-timezone';
 import { browserHistory } from 'react-router';
 
 // components
-import ProjectTimelinePage from '../timeline';
+import ProjectTimelinePage from '../process';
 import ProjectInfoPage from '../info';
 
 // services
@@ -48,7 +48,7 @@ export default class timeline extends React.PureComponent<Props, State> {
           return project$;
         }).subscribe((project) => {
           const currentPathname = browserHistory.getCurrentLocation().pathname.replace(/\/$/, '');
-          const lastUrlSegment = (project.data.attributes.process_type === 'timeline' ? 'process' : 'ideas');
+          const lastUrlSegment = (project.data.attributes.process_type === 'timeline' ? 'process' : 'info');
           const redirectUrl = `${currentPathname}/${lastUrlSegment}`;
           window.history.pushState({ path: redirectUrl }, '', redirectUrl);
           this.setState({ project });

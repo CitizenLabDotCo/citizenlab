@@ -2,7 +2,7 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
-import { isEqual } from 'lodash';
+import { isEqual, isEmpty } from 'lodash';
 
 // Services & Utils
 import { IAreaData } from 'services/areas';
@@ -181,6 +181,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
   }
 
   createBlurHandler = (fieldName) => () => {
+    console.log(fieldName);
     // this is going to call setFieldTouched and manually update touched.topcis
     this.props.setFieldTouched(fieldName, true);
   }
@@ -213,8 +214,24 @@ class ProfileForm extends React.PureComponent<Props, State> {
 
   handleContextRef = contextRef => this.setState({ contextRef });
 
+  getStatus = () => {
+    const { isValid,  status, touched } = this.props;
+
+    console.log(touched);
+
+    if (!isEmpty(touched) && !isValid) {
+      return 'error';
+    }
+
+    if (isEmpty(touched) && status === 'success') {
+      return 'success';
+    }
+
+    return 'enabled';
+  }
+
   render() {
-    const { intl: { formatMessage }, values, errors, isSubmitting, isValid, dirty, status } = this.props;
+    const { intl: { formatMessage }, values, errors, isSubmitting } = this.props;
     // const { contextRef } = this.state;
 
     return (
@@ -263,6 +280,9 @@ class ProfileForm extends React.PureComponent<Props, State> {
                           type="text"
                           name="first_name"
                           id="firstName"
+                          value={values.first_name}
+                          onChange={this.createChangeHandler('first_name')}
+                          onBlur={this.createBlurHandler('first_name')}
                         />
                         <Error apiErrors={errors.first_name} />
                       </SectionField>
@@ -273,6 +293,9 @@ class ProfileForm extends React.PureComponent<Props, State> {
                           type="text"
                           name="last_name"
                           id="lastName"
+                          value={values.last_name}
+                          onChange={this.createChangeHandler('last_name')}
+                          onBlur={this.createBlurHandler('last_name')}
                         />
                         <Error apiErrors={errors.last_name} />
                       </SectionField>
@@ -282,6 +305,9 @@ class ProfileForm extends React.PureComponent<Props, State> {
                         <Input
                           type="email"
                           name="email"
+                          value={values.email}
+                          onChange={this.createChangeHandler('email')}
+                          onBlur={this.createBlurHandler('email')}
                         />
                         <Error apiErrors={errors.email} />
                       </SectionField>
@@ -304,6 +330,9 @@ class ProfileForm extends React.PureComponent<Props, State> {
                         <Input
                           type="password"
                           name="password"
+                          value={values.password}
+                          onChange={this.createChangeHandler('password')}
+                          onBlur={this.createBlurHandler('password')}
                         />
                         <Error apiErrors={errors.password} />
                       </SectionField>
@@ -336,6 +365,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
                             placeholder={formatMessage({ ...messages.male })}
                             options={this.genderOptions}
                             onChange={this.createChangeHandler('gender')}
+                            onBlur={this.createBlurHandler('gender')}
                             value={values.gender}
                           />
                           <Error apiErrors={errors.gender} />
@@ -349,6 +379,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
                             placeholder={formatMessage({ ...messages.domicile_placeholder })}
                             options={this.domicileOptions}
                             onChange={this.createChangeHandler('domicile')}
+                            onBlur={this.createBlurHandler('domicile')}
                             value={values.domicile}
                           />
                           <Error apiErrors={errors.domicile} />
@@ -360,6 +391,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
                           <Select
                             options={this.birthYearOptions}
                             onChange={this.createChangeHandler('birthyear')}
+                            onBlur={this.createBlurHandler('birthyear')}
                             value={`${values.birthyear}`}
                           />
                           <Error apiErrors={errors.birthyear} />
@@ -373,6 +405,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
                             placeholder={formatMessage({ ...messages.education_placeholder })}
                             options={this.educationOptions}
                             onChange={this.createChangeHandler('education')}
+                            onBlur={this.createBlurHandler('education')}
                             value={values.education}
                           />
                           <Error apiErrors={errors.education} />
@@ -381,7 +414,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
                     </Section>
 
                     <SubmitWrapper
-                      status={dirty && !isValid ? 'error' : status === 'success' ? 'success' : 'enabled'}
+                      status={this.getStatus()}
                       style="primary"
                       loading={isSubmitting}
                       messages={{
@@ -402,7 +435,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
   }
 }
 
-export default withFormik<Props, IUserUpdate, IUserUpdate>({
+export default withFormik<InputProps, IUserUpdate, IUserUpdate>({
   handleSubmit: (values, { props, setSubmitting, resetForm, setErrors, setStatus }) => {
     setStatus('');
 
@@ -422,4 +455,4 @@ export default withFormik<Props, IUserUpdate, IUserUpdate>({
   mapPropsToValues: (props) => {
     return mapUserToDiff(props.user);
   }
-})(injectIntl(localize(ProfileForm)));
+})(injectIntl<any>(localize(ProfileForm)));

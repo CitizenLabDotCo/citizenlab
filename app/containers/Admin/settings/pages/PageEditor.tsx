@@ -197,10 +197,6 @@ export default class PageEditor extends React.PureComponent<Props, State> {
     let savePromise: Promise<IPage> | null = null;
 
     if (page && page.id) {
-      console.log(1);
-      console.log('pageId: ' + page.id);
-      console.log('diff:');
-      console.log(diff);
       savePromise = updatePage(page.id, diff);
     } else if (!isEmpty(diff) && slug) {
       const pageData = { ...diff, slug };

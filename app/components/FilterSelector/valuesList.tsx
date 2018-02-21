@@ -73,6 +73,19 @@ const Overlay: any = styled.div`
 
   ${media.smallerThanMinTablet`
     width: ${(props: any) => props.mobileMaxWidth ? props.mobileMaxWidth : '200px'};
+    right: auto;
+    left: -10px;
+    transform-origin: left top;
+
+    ::after {
+      right: auto;
+      left: 20px;
+    }
+
+    ::before {
+      right: auto;
+      left: 19px;
+    }
   `}
 `;
 
@@ -245,9 +258,6 @@ export default class ValuesList extends React.PureComponent<Props, State> {
   render() {
     const { values, multiple, deployed, baseID, maxWidth, mobileMaxWidth } = this.props;
     const { currentFocus } = this.state;
-
-    console.log('maxWidth: ' + maxWidth);
-    console.log('mobileMaxWidth: ' + mobileMaxWidth);
 
     const dropdown = ((deployed) ? (
       <CSSTransition
