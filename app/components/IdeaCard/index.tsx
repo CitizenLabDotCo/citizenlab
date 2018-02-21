@@ -41,9 +41,10 @@ import { Locale } from 'typings';
 
 const IdeaImageContainer: any = styled.div`
   width: 100%;
-  height: 135px;
+  height: 130px;
   overflow: hidden;
   position: relative;
+  border-bottom: solid 1px #e4e4e4;
 `;
 
 const IdeaImage: any = styled.img`
