@@ -12,6 +12,7 @@ module.exports = {
   src_folders: 'e2e',
   page_objects_path: 'e2e/pages',
   output_folder: 'e2e/reports',
+  custom_commands_path: 'e2e/nw-commands',
   selenium: {
     start_process: true,
     host: '127.0.0.1',
