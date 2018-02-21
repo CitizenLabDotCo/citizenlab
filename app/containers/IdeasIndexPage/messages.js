@@ -12,5 +12,5 @@ export default defineMessages({
   loading: {
     id: 'app.containers.IdeasIndexPage.loading',
     defaultMessage: 'Loading...',
-  }
+  },
 });
