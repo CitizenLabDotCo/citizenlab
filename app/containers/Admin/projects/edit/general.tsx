@@ -605,6 +605,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
 
             <SectionField>
               <StyledInputMultiloc
+                id="project-title"
                 type="text"
                 valueMultiloc={projectAttrs.title_multiloc}
                 label={<FormattedMessage {...messages.titleLabel} />}

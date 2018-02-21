@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const hash = crypto.randomBytes(5).toString('hex');
 
 module.exports = {
-  '@tags': ['city', 'projects', 'zolg'],
+  '@tags': ['city', 'projects', 'projects-basics'],
   projectsList: (browser) => {
     const signinPage = browser.page.signin();
     const adminProjectsPage = browser.page.adminProjects();
@@ -34,8 +34,11 @@ module.exports = {
     .waitForElementVisible('@newProject')
     .click('@newProject')
     .waitForElementVisible('@generalForm')
-    .assert.urlEquals('http://localhost:3000/admin/projects/new')
-    .setValue('#project-title', `Test Project ${hash}`)
+    .assert.urlEquals('http://localhost:3000/admin/projects/new');
+
+    browser.fillMultiloc('#project-title', `Test Project ${hash}`);
+
+    adminProjectsPage
     .click('@submitButton')
 
     // Test the back to projects overview redirect
@@ -51,8 +54,12 @@ module.exports = {
     // Test for the description insertion
     .waitForElementVisible('@descriptionTab')
     .click('@descriptionTab')
-    .waitForElementVisible('.e2e-project-description-form')
-    .setValue('.public-DraftEditor-content', 'Test Description please ignore')
+    .waitForElementVisible('.e2e-project-description-form');
+
+    browser.fillMultiloc('#description-preview', 'Test Description Preview');
+    browser.fillMultiloc('#project-description', 'Test Description please ignore');
+
+    adminProjectsPage
     .click('@submitButton')
     .waitForElementVisible('@submitSuccess');
 
