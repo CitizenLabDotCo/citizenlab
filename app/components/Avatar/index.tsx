@@ -75,6 +75,7 @@ type Props = {
   userId: string | null;
   size: 'small' | 'medium' | 'large';
   onClick?: () => void;
+  hideIfNoAvatar?: boolean | undefined;
 };
 
 type State = {
@@ -82,7 +83,6 @@ type State = {
 };
 
 export default class Avatar extends React.PureComponent<Props, State> {
-  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -96,6 +96,7 @@ export default class Avatar extends React.PureComponent<Props, State> {
   componentDidMount() {
     if (this.props.userId) {
       const user$ = userByIdStream(this.props.userId).observable;
+
       this.subscriptions = [
         user$.subscribe((user) => {
           const avatarSrc = (user ? user.data.attributes.avatar[this.props.size] : null);
@@ -119,6 +120,10 @@ export default class Avatar extends React.PureComponent<Props, State> {
     const className = this.props['className'];
     const { avatarSrc } = this.state;
     const isClickable = (this.props.onClick && _.isFunction(this.props.onClick));
+
+    if (this.props.hideIfNoAvatar && !avatarSrc) {
+      return null;
+    }
 
     return (
       <Container className={className} isClickable={isClickable} onClick={this.handleOnClick}>

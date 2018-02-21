@@ -27,7 +27,7 @@ const Container = styled.div`
   background: #f9f9fa;
 
   ${media.smallerThanMaxTablet`
-    min-height: auto;
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
   `}
 `;
 
@@ -77,7 +77,10 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
 
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
-    const slug$ = this.slug$.distinctUntilChanged().do(() => this.setState({ loaded: false })).filter(slug => isString(slug));
+    const slug$ = this.slug$
+                    .distinctUntilChanged()
+                    .do(() => this.setState({ loaded: false }))
+                    .filter(slug => isString(slug));
 
     this.subscriptions = [
       Rx.Observable.combineLatest(

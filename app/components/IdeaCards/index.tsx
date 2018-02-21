@@ -44,15 +44,19 @@ const FiltersArea = styled.div`
   justify-content: space-between;
   margin-bottom: 20px;
 
-  ${media.smallerThanMaxTablet`
-  justify-content: center;
-  `}
+  /* ${media.smallerThanMaxTablet`
+    justify-content: center;
+  `} */
 `;
 
 const FilterArea = styled.div`
   height: 60px;
   display: flex;
   align-items: center;
+
+  ${media.smallerThanMaxTablet`
+    height: 30px;
+  `}
 `;
 
 const SearchFilterArea = FilterArea.extend`

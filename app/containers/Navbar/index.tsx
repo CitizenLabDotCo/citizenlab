@@ -404,7 +404,6 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
       }),
 
       projects$.subscribe((projects) => {
-        console.log(projects);
         this.setState({ projects });
       }),
 
@@ -477,7 +476,7 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
   getProjectUrl = (project: IProjectData) => {
     const projectType = project.attributes.process_type;
     const rootProjectUrl = `/projects/${project.attributes.slug}`;
-    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/process` : `${rootProjectUrl}/ideas`);
+    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/process` : `${rootProjectUrl}/info`);
     return projectUrl;
   }
 

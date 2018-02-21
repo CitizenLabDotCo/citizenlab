@@ -31,7 +31,6 @@ const Container = styled.div`
   flex-direction: row;
   border-radius: 5px;
   border: solid 1px #e4e4e4;
-  /* box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.12); */
   background: #fff;
 
   ${media.smallerThanMaxTablet`
@@ -173,8 +172,10 @@ const EventLocationWrapper = styled.div`
     order: 2;
     align-items: left;
     padding: 0;
+    margin: 0;
     margin-top: 30px;
     margin-bottom: 15px;
+    border: none;
   `}
 `;
 

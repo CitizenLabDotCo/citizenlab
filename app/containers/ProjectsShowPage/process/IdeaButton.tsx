@@ -25,6 +25,7 @@ class IdeaButton extends React.PureComponent<Props, State> {
 
   handleOnAddIdeaClick = () => {
     const { project } = this.props;
+
     if (project) {
       browserHistory.push(`/projects/${project.attributes.slug}/ideas/new`);
     } else {
@@ -40,6 +41,7 @@ class IdeaButton extends React.PureComponent<Props, State> {
 
     return (
       <Button
+        className={this.props['className']}
         onClick={this.handleOnAddIdeaClick}
         style="primary"
         size="1"

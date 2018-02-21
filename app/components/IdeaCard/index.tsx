@@ -6,12 +6,13 @@ import { has } from 'lodash';
 import { Link, browserHistory } from 'react-router';
 
 // components
-// import Icon from 'components/UI/Icon';
+import Icon from 'components/UI/Icon';
 import Unauthenticated from 'components/IdeaCard/Unauthenticated';
 import BottomBounceUp from './BottomBounceUp';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';
 import UserName from 'components/UI/UserName';
+import Avatar from 'components/Avatar';
 
 // services
 import { localeStream } from 'services/locale';
@@ -32,27 +33,27 @@ import messages from './messages';
 
 // styles
 import styled from 'styled-components';
-// import { color } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
 
 // typings
 import { IModalInfo } from 'containers/App';
 import { Locale } from 'typings';
 
-// const IdeaImageContainer: any = styled.div`
-//   width: 100%;
-//   height: 135px;
-//   overflow: hidden;
-//   position: relative;
-// `;
+const IdeaImageContainer: any = styled.div`
+  width: 100%;
+  height: 135px;
+  overflow: hidden;
+  position: relative;
+`;
 
-// const IdeaImage: any = styled.img`
-//   width: 100%;
-//   position: absolute;
-//   top: 0;
-//   bottom: 0;
-//   left: 0;
-//   right: 0;
-// `;
+const IdeaImage: any = styled.img`
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+`;
 
 const IdeaImageOverlay = styled.div`
   position: absolute;
@@ -62,7 +63,7 @@ const IdeaImageOverlay = styled.div`
   right: 0;
   background: #fff;
   opacity: 0.1;
-  transition: opacity 250ms ease-out;
+  transition: all 250ms ease-out;
 `;
 
 // const IdeaImagePlaceholder = styled.div`
@@ -105,17 +106,66 @@ const IdeaTitle: any = styled.h4`
 `;
 
 const IdeaAuthor = styled.div`
-  color: ${(props) => props.theme.colors.label};
-  font-size: 15px;
-  font-weight: 300;
-  line-height: 20px;
+  display: flex;
+  align-items: center;
   margin-top: 13px;
 `;
 
-const StyledVoteControl = styled(VoteControl)`
+const IdeaAuthorAvatar = styled(Avatar)`
+  width: 32px;
+  height: 32px;
+  margin-right: 10px;
+`;
+
+const IdeaAuthorText = styled.div`
+  color: ${(props) => props.theme.colors.label};
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 20px;
+  display: flex;
+  flex-direction: column;
+
+  span > span {
+    font-weight: 400;
+  }
+`;
+
+const Footer = styled.div`
   position: absolute;
   bottom: 20px;
   left: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const StyledVoteControl = styled(VoteControl)``;
+
+const CommentInfo = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+`;
+
+const CommentIcon = styled(Icon)`
+  height: 22px;
+  fill: ${(props) => props.theme.colors.label};
+  margin-bottom: 0px;
+`;
+
+const CommentCount = styled.div`
+  color: ${(props) => props.theme.colors.label};
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 18px;
+  text-align: center;
+  /* position: absolute;
+  top: 3px;
+  left: 1px;
+  width: 28px;
+  height: 20px; */
 `;
 
 const IdeaContainer = styled(Link)`
@@ -125,21 +175,42 @@ const IdeaContainer = styled(Link)`
   cursor: pointer;
   position: relative;
   border-radius: 5px;
-  overflow: hidden;
   background: #fff;
   border: solid 1px #e4e4e4;
-  /* box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.15); */
-  transition: all 250ms ease-out;
-  will-change: transform;
 
-  &:hover {
-    transform: scale(1.015);
-    border-color: #ddd;
+  ${media.biggerThanMaxTablet`
+    transition: all 250ms ease-out;
+    /* transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1); */
+    will-change: transform;
 
-    ${IdeaImageOverlay} {
+    &::after {
+      content: '';
+      border-radius: 5px;
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       opacity: 0;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+      transition: all 250ms ease-out;
+      /* transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1); */
+      will-change: opacity;
     }
-  }
+
+    &:hover {
+      transform: scale(1.015);
+
+      ${IdeaImageOverlay} {
+        opacity: 0;
+      }
+
+      &::after {
+        opacity: 1;
+      }
+    }
+  `};
 `;
 
 const IdeaContainerInner = styled.div`
@@ -167,7 +238,7 @@ type State = {
   ideaImage: IIdeaImage | null;
   ideaAuthor: IUser | null;
   locale: Locale | null;
-  showFooter: 'unauthenticated' | 'votingDisabled' | null;
+  showVotingDisabled: 'unauthenticated' | 'votingDisabled' | null;
   loading: boolean;
 };
 
@@ -183,7 +254,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
       ideaImage: null,
       ideaAuthor: null,
       locale: null,
-      showFooter: null,
+      showVotingDisabled: null,
       loading: true
     };
     this.subscriptions = [];
@@ -250,23 +321,22 @@ class IdeaCard extends React.PureComponent<Props, State> {
   }
 
   unauthenticatedVoteClick = () => {
-    this.setState({ showFooter: 'unauthenticated' });
+    this.setState({ showVotingDisabled: 'unauthenticated' });
   }
 
   disabledVoteClick = () => {
-    this.setState({ showFooter: 'votingDisabled' });
+    this.setState({ showVotingDisabled: 'votingDisabled' });
   }
 
   render() {
-    const { idea/*, ideaImage*/, ideaAuthor, locale, showFooter, loading } = this.state;
+    const { idea, ideaImage, ideaAuthor, locale, showVotingDisabled, loading } = this.state;
 
     if (!loading && idea && locale) {
-      // const ideaImageUrl = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
-      const publishedAt = <FormattedRelative value={idea.data.attributes.published_at} />;
+      const ideaImageUrl = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
       const hasVotingDescriptor = has(idea, 'data.relationships.action_descriptor.data.voting');
       const votingDescriptor = (hasVotingDescriptor ? idea.data.relationships.action_descriptor.data.voting : null);
       const projectId = idea.data.relationships.project.data && idea.data.relationships.project.data.id;
-
+      const ideaAuthorId = (ideaAuthor ? ideaAuthor.data.id : null);
       const commentingDescriptor = idea.data.relationships.action_descriptor.data.commenting || null;
 
       const className = `${this.props['className']}
@@ -279,7 +349,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
       return (
         <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.data.attributes.slug}`} className={className}>
           <IdeaContainerInner>
-            {/*
+
             {ideaImageUrl && 
               <IdeaImageContainer>
                 <IdeaImage src={ideaImageUrl} />
@@ -287,6 +357,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
               </IdeaImageContainer>
             }
 
+            {/*
             {!ideaImageUrl &&
               <IdeaImagePlaceholder>
                 <IdeaImagePlaceholderIcon name="idea" />
@@ -299,24 +370,34 @@ class IdeaCard extends React.PureComponent<Props, State> {
                 <T value={idea.data.attributes.title_multiloc} />
               </IdeaTitle>
               <IdeaAuthor>
-                {publishedAt} <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={ideaAuthor} /> }} />
+                {ideaAuthorId && <IdeaAuthorAvatar userId={ideaAuthorId} size="small" hideIfNoAvatar={true} />}
+                <IdeaAuthorText>
+                  <FormattedRelative value={idea.data.attributes.published_at} />
+                  <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={ideaAuthor} /> }} />
+                </IdeaAuthorText>
               </IdeaAuthor>
             </IdeaContent>
 
-            {!showFooter &&
-              <StyledVoteControl
-                ideaId={idea.data.id}
-                unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-                disabledVoteClick={this.disabledVoteClick}
-                size="normal"
-              />
+            {!showVotingDisabled &&
+              <Footer>
+                <StyledVoteControl
+                  ideaId={idea.data.id}
+                  unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+                  disabledVoteClick={this.disabledVoteClick}
+                  size="normal"
+                />
+                <CommentInfo>
+                  <CommentIcon name="comments2" />
+                  <CommentCount>{idea.data.attributes.comments_count}</CommentCount>
+                </CommentInfo>
+              </Footer>
             }
-            {showFooter === 'unauthenticated' &&
+            {showVotingDisabled === 'unauthenticated' &&
               <BottomBounceUp icon="lock-outlined">
                 <Unauthenticated />
               </BottomBounceUp>
               }
-            {(showFooter === 'votingDisabled' && votingDescriptor) &&
+            {(showVotingDisabled === 'votingDisabled' && votingDescriptor) &&
               <BottomBounceUp icon="lock-outlined">
                 <VotingDisabledWrapper>
                   <VotingDisabled

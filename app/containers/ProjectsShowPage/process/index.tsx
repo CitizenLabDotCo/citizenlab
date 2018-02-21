@@ -20,6 +20,13 @@ import styled from 'styled-components';
 
 const Container = styled.div``;
 
+const StyledHeader = styled(Header)``;
+
+const StyledTimeline = styled(Timeline)`
+  margin-top: -40px;
+  position: relative;
+`;
+
 type Props = {
   params: {
     slug: string;
@@ -47,6 +54,14 @@ export default class ProjectTimelinePage extends React.PureComponent<Props, Stat
 
   componentDidMount() {
     this.slug$.next(this.props.params.slug);
+
+    const currentLocation = browserHistory.getCurrentLocation();
+    const currentPath = currentLocation.pathname;
+    const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
+
+    if (lastUrlSegment === 'timeline') {
+      browserHistory.push(`/projects/${this.props.params.slug}/process`);
+    }
 
     this.subscriptions = [
       this.slug$
@@ -88,9 +103,14 @@ export default class ProjectTimelinePage extends React.PureComponent<Props, Stat
     if (projectId) {
       return (
         <Container className={className}>
-          <Header slug={slug} />
-          <Timeline projectId={projectId} onPhaseSelected={this.handleOnPhaseSelected} />
-          {phaseId && <Phase phaseId={phaseId} />}
+          <StyledHeader slug={slug} />
+
+          <StyledTimeline projectId={projectId} onPhaseSelected={this.handleOnPhaseSelected} />
+
+          {phaseId && 
+            <Phase phaseId={phaseId} />
+          }
+
           <EventsPreview projectId={projectId} />
         </Container>
       );

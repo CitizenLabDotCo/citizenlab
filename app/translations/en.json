@@ -573,7 +573,7 @@
   "app.containers.UsersEditPage.notifications_new_comments": "New comments",
   "app.containers.UsersEditPage.notifications_new_user": "New user registration",
   "app.containers.UsersEditPage.outside": "{orgType, select, city {Outside of {name}} generic {None of these}}",
-  "app.containers.UsersEditPage.password": "Password",
+  "app.containers.UsersEditPage.password": "Pick a new password",
   "app.containers.UsersEditPage.processing": "Sending...",
   "app.containers.UsersEditPage.storeError": "Can't store updated profile",
   "app.containers.UsersEditPage.stored": "Profile stored",
