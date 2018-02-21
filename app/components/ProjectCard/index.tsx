@@ -81,7 +81,6 @@ const Container = styled(Link)`
 
   ${media.biggerThanMaxTablet`
     transition: all 250ms ease-out;
-    /* transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1); */
     will-change: transform;
 
     &::after {
@@ -96,12 +95,11 @@ const Container = styled(Link)`
       opacity: 0;
       box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
       transition: all 250ms ease-out;
-      /* transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1); */
       will-change: opacity;
     }
 
     &:hover {
-      transform: scale(1.01);
+      transform: scale(1.005);
 
       &::after {
         opacity: 1;
@@ -162,6 +160,7 @@ const ProjectDescription = styled.div`
   line-height: 24px;
   font-weight: 300;
   margin-top: 20px;
+  margin-bottom: 15px;
 `;
 
 const ProjectMetaItems = styled.div`
@@ -171,7 +170,7 @@ const ProjectMetaItems = styled.div`
   font-weight: 400;
   line-height: 20px;
   display: flex;
-  margin-top: 25px;
+  margin-top: 10px;
 
   ${media.smallerThanMaxTablet`
     display: none;
