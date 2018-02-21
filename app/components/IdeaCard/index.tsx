@@ -174,9 +174,6 @@ const IdeaContainer = styled(Link)`
   margin-bottom: 24px;
   cursor: pointer;
   position: relative;
-  border-radius: 5px;
-  background: #fff;
-  border: solid 1px #e4e4e4;
 
   ${media.biggerThanMaxTablet`
     transition: all 250ms ease-out;
@@ -200,7 +197,7 @@ const IdeaContainer = styled(Link)`
     }
 
     &:hover {
-      transform: scale(1.015);
+      transform: scale(1.01);
 
       ${IdeaImageOverlay} {
         opacity: 0;
@@ -221,6 +218,9 @@ const IdeaContainerInner = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  border-radius: 5px;
+  background: #fff;
+  border: solid 1px #e4e4e4;
   position: relative;
   overflow: hidden;
 `;
