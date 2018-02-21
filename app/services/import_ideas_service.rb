@@ -12,7 +12,6 @@ class ImportIdeasService
 		  	added_idea_ids.push convert_idea(idea_data).id
 		  	puts "Created #{added_idea_ids.first}"
 		  end
-		  # raise "Aborting anyways" ### debugging purposes
 		rescue Exception => e
 			added_idea_ids.select{ |id| id }.each do |id|
 				Idea.find(id)&.destroy!
@@ -46,10 +45,10 @@ class ImportIdeasService
   	if !idea_data[:project_title]
       raise "A project title is mandatory!"
     end
-  	project_title = idea_data[:project_title].downcase
+  	project_title = idea_data[:project_title].downcase.strip
   	d[:project] = Project.all.select do |project|
   	  project.title_multiloc.values
-  		  .map{ |v| v.downcase }
+  		  .map{ |v| v.downcase.strip }
   		  .include? project_title
   	end&.first
   	if !d[:project]

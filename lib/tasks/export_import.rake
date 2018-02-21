@@ -42,6 +42,9 @@ namespace :migrate do
                    'created_at'        => u.created_at,
                    'updated_at'        => u.updated_at
                  }
+      if !yml_user['password_digest']
+        yml_user['password'] = SecureRandom.urlsafe_base64 32
+      end
       users_hash[u.id] = yml_user
       yml_user
     end
