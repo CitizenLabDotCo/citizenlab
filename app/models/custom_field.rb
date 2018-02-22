@@ -14,6 +14,8 @@ class CustomField < ApplicationRecord
   validates :required, inclusion: {in: [true, false]}
   validates :ordering, numericality: { only_integer: true }, allow_nil: true
 
+  scope :fields_for, -> (claz) { where(resource_type: claz.name.to_s) }
+
   def support_options?
     %w(select multiselect).include?(input_type)
   end

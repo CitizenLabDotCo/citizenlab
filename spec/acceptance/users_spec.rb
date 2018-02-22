@@ -156,6 +156,7 @@ resource "Users" do
         parameter :domicile, "Either an exisiting Area id or 'outside', to specify the user does not live in the city"
         parameter :education, "An integer from 0 to 8 (inclusive), corresponding to the ISCED 2011 standard"
         parameter :bio_multiloc, "A little text, allowing the user to describe herself. Multiloc and non-html"
+        parameter :custom_field_values, "An object that can only contain keys for custom fields for users. If fields are required, their presence is required as well"
       end
       ValidationErrorHelper.new.error_fields(self, User)
 
@@ -209,6 +210,7 @@ resource "Users" do
         parameter :domicile, "Either an exisiting Area id or 'outside', to specify the user does not live in the city"
         parameter :education, "An integer from 0 to 8 (inclusive), corresponding to the ISCED 2011 standard"
         parameter :bio_multiloc, "A little text, allowing the user to describe herself. Multiloc and non-html"
+        parameter :custom_field_values, "An object that can only contain keys for custom fields for users"
       end
       ValidationErrorHelper.new.error_fields(self, User)
 
@@ -220,6 +222,15 @@ resource "Users" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :first_name)).to eq "Edmond"
+      end
+
+      describe do
+        example "Edit the custom field values" do
+          cf = create(:custom_field)
+          do_request(user: {custom_field_values: {cf.key => "somevalue"}})
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :custom_field_values, cf.key.to_sym)).to eq "somevalue"
+        end
       end
     end
 

@@ -35,6 +35,10 @@ class User < ApplicationRecord
   # Follows ISCED2011 scale
   validates :education, numericality: {only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 8}, allow_nil: true
 
+  validates :custom_field_values, json: {
+    schema: lambda { CustomFieldService.new.fields_to_json_schema(CustomField.fields_for(User)) }
+  }, if: :custom_field_values_changed?
+
   validates :password, length: { in: 5..72 }, allow_nil: true
   validate do |record|
     record.errors.add(:last_name, :blank) unless record.last_name.present? or record.cl1_migrated
