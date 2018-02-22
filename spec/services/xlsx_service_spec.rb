@@ -21,7 +21,7 @@ describe XlsxService do
 
     it "contains extra columns for custom user fields" do
       custom_fields = create_list(:custom_field, 3)
-      expect(worksheet[0]).to include custom_fields.map(&:key)
+      expect(worksheet[0].cells.map(&:value)).to include *custom_fields.map(&:key)
     end
 
   end

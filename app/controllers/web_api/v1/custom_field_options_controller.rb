@@ -64,7 +64,6 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
   def option_create_params
     params.require(:custom_field_option).permit(
       :key,
-      :is_default,
       :ordering,
       title_multiloc: I18n.available_locales,
     )
@@ -72,7 +71,6 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
 
   def option_update_params
     params.require(:custom_field_option).permit(
-      :is_default,
       :ordering,
       title_multiloc: I18n.available_locales,
     )
