@@ -45,7 +45,7 @@ module.exports = {
     .waitForElementVisible('.e2e-projects-list .e2e-project-card');
 
     // Wait for stream updates
-    browser.pause(1000);
+    browser.pause(1500);
 
     adminProjectsPage
     .assert.containsText('.e2e-projects-list .e2e-project-card h1 span', `Test Project ${hash}`)
