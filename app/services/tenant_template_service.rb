@@ -24,7 +24,7 @@ class TenantTemplateService
         model = model_class.new
         attributes.each do |field_name, field_value|
           if (field_name =~ /_multiloc$/) && (field_value.is_a? String)
-            multiloc_value = Tenant.settings('core', 'locales').map do |locale|
+            multiloc_value = I18n.available_locales.map do |locale|
               translation = I18n.with_locale(locale) { I18n.t!(field_value) }
               [locale, translation]
             end.to_h
