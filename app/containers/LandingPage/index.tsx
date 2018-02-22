@@ -57,7 +57,6 @@ const Loading = styled.div`
 
   ${media.smallerThanMaxTablet`
     height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 76px);
-    border: solid 1px red;
   `}
 `;
 
@@ -292,7 +291,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
         currentTenant$,
         ideas$,
         projects$
-      ).delay(10000).subscribe(([locale, currentTenant, ideas, projects]) => {
+      ).subscribe(([locale, currentTenant, ideas, projects]) => {
         this.setState({
           locale,
           currentTenant,

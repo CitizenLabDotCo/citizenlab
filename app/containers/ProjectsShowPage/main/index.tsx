@@ -50,7 +50,8 @@ export default class timeline extends React.PureComponent<Props, State> {
           const currentPathname = browserHistory.getCurrentLocation().pathname.replace(/\/$/, '');
           const lastUrlSegment = (project.data.attributes.process_type === 'timeline' ? 'process' : 'info');
           const redirectUrl = `${currentPathname}/${lastUrlSegment}`;
-          window.history.pushState({ path: redirectUrl }, '', redirectUrl);
+          browserHistory.push(redirectUrl);
+          // window.history.pushState({ path: redirectUrl }, '', redirectUrl);
           this.setState({ project });
         })
     ];
