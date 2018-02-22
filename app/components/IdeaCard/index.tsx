@@ -162,11 +162,13 @@ const CommentCount = styled.div`
   font-weight: 400;
   line-height: 18px;
   text-align: center;
-  /* position: absolute;
+  /*
+  position: absolute;
   top: 3px;
   left: 1px;
   width: 28px;
-  height: 20px; */
+  height: 20px;
+  */
 `;
 
 const IdeaContainer = styled(Link)`
@@ -177,10 +179,6 @@ const IdeaContainer = styled(Link)`
   position: relative;
 
   ${media.biggerThanMaxTablet`
-    transition: all 250ms ease-out;
-    /* transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1); */
-    will-change: transform;
-
     &::after {
       content: '';
       border-radius: 5px;
@@ -192,14 +190,11 @@ const IdeaContainer = styled(Link)`
       height: 100%;
       opacity: 0;
       box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-      transition: all 250ms ease-out;
-      /* transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1); */
+      transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1);
       will-change: opacity;
     }
 
     &:hover {
-      transform: scale(1.01);
-
       ${IdeaImageOverlay} {
         opacity: 0;
       }
@@ -371,7 +366,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
                 <T value={idea.data.attributes.title_multiloc} />
               </IdeaTitle>
               <IdeaAuthor>
-                {ideaAuthorId && <IdeaAuthorAvatar userId={ideaAuthorId} size="small" hideIfNoAvatar={true} />}
+                {ideaAuthorId && <IdeaAuthorAvatar userId={ideaAuthorId} size="small" hideIfNoAvatar={false} />}
                 <IdeaAuthorText>
                   <FormattedRelative value={idea.data.attributes.published_at} />
                   <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={ideaAuthor} /> }} />

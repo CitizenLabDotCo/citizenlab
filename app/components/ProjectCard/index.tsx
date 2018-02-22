@@ -80,34 +80,6 @@ const Container = styled(Link)`
   border: solid 1px #e4e4e4;
 
   ${media.biggerThanMaxTablet`
-    transition: all 250ms ease-out;
-    will-change: transform;
-
-    &::after {
-      content: '';
-      border-radius: 5px;
-      position: absolute;
-      z-index: -1;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-      transition: all 250ms ease-out;
-      will-change: opacity;
-    }
-
-    &:hover {
-      transform: scale(1.005);
-
-      &::after {
-        opacity: 1;
-      }
-    }
-  `}
-
-  ${media.biggerThanMaxTablet`
     min-height: 222px;
   `}
 
@@ -160,7 +132,6 @@ const ProjectDescription = styled.div`
   line-height: 24px;
   font-weight: 300;
   margin-top: 20px;
-  margin-bottom: 15px;
 `;
 
 const ProjectMetaItems = styled.div`
@@ -170,7 +141,7 @@ const ProjectMetaItems = styled.div`
   font-weight: 400;
   line-height: 20px;
   display: flex;
-  margin-top: 10px;
+  margin-top: 25px;
 
   ${media.smallerThanMaxTablet`
     display: none;
