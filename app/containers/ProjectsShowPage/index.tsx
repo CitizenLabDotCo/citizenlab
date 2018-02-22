@@ -27,7 +27,7 @@ const Container = styled.div`
   background: #f9f9fa;
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 76px);
   `}
 `;
 
@@ -132,7 +132,7 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
             </>
           ) : (
             <Loading>
-              <Spinner size="34px" color="#666" />
+              <Spinner size="32px" color="#666" />
             </Loading>
           )}
         </Container>

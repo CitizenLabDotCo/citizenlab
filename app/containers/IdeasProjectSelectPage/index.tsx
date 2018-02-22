@@ -34,7 +34,7 @@ const Loading = styled.div`
   justify-content: center;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 76px);
   `}
 `;
 
@@ -43,7 +43,7 @@ const Container = styled.div`
   background: #f9f9fa;
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 76px);
   `}
 `;
 
@@ -239,7 +239,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
     if (!loaded) {
       return (
         <Loading>
-          <Spinner size="34px" color="#666" />
+          <Spinner size="32px" color="#666" />
         </Loading>
       );
     } else {
