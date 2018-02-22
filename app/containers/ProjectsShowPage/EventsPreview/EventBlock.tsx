@@ -27,7 +27,7 @@ const Container = styled(Link)`
 
   &:hover {
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-    transition: opacity 300ms cubic-bezier(0.19, 1, 0.22, 1);
+    transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
   }
 
   &:not(.last) {
