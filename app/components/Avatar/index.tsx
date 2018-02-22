@@ -9,9 +9,9 @@ import Icon from 'components/UI/Icon';
 import { userByIdStream } from 'services/users';
 
 // styles
-import { darken } from 'polished';
+import { darken, lighten } from 'polished';
 import styled, { css } from 'styled-components';
-import { color } from 'utils/styleUtils';
+// import { color } from 'utils/styleUtils';
 
 const AvatarImageContainer = styled.div`
   width: 100%;
@@ -42,7 +42,7 @@ const AvatarImageBackground = styled.div`
 
 const AvatarIcon = styled(Icon)`
   height: 100%;
-  fill: ${color('label')};
+  fill: ${(props) => lighten(0.2, props.theme.colors.label)};
   transition: all 100ms ease-out;
 
   ${(props: any) => props.isClickable && css`

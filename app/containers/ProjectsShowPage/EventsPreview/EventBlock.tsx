@@ -26,10 +26,6 @@ const Container = styled(Link)`
   border: solid 1px #e4e4e4;
 
   ${media.biggerThanMaxTablet`
-    transition: all 250ms ease-out;
-    /* transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1); */
-    will-change: transform; 
-
     &::after {
       content: '';
       border-radius: 5px;
@@ -41,14 +37,11 @@ const Container = styled(Link)`
       height: 100%;
       opacity: 0;
       box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-      transition: all 250ms ease-out;
-      /* transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1); */
+      transition: opacity 300ms cubic-bezier(0.19, 1, 0.22, 1);
       will-change: opacity;
     }
 
     &:hover {
-      transform: scale(1.015);
-
       &::after {
         opacity: 1;
       }
