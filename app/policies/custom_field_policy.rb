@@ -12,6 +12,10 @@ class CustomFieldPolicy < ApplicationPolicy
     end
   end
 
+  def schema?
+    true
+  end
+
   def create?
     user&.admin?
   end

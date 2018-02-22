@@ -20,7 +20,7 @@ describe XlsxService do
     end
 
     it "contains extra columns for custom user fields" do
-      custom_fields = create_list(:custom_fields, 3)
+      custom_fields = create_list(:custom_field, 3)
       expect(worksheet[0]).to include custom_fields.map(&:key)
     end
 

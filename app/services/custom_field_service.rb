@@ -4,6 +4,13 @@ class CustomFieldService
     @multiloc_service = MultilocService.new
   end
 
+  def fields_to_json_schema_multiloc tenant, fields
+    tenant.settings.dig('core', 'locales').inject({}) do |memo, locale|
+      memo[locale] = fields_to_json_schema(fields, locale)
+      memo
+    end
+  end
+
   def fields_to_json_schema fields, locale="en"
     {
       type: "object",
@@ -15,6 +22,13 @@ class CustomFieldService
     }.tap do |output|
       required = fields.select(&:required).map(&:key)
       output[:required] = required unless required.empty?
+    end
+  end
+
+  def fields_to_ui_schema_multiloc tenant, fields
+    tenant.settings.dig('core', 'locales').inject({}) do |memo, locale|
+      memo[locale] = fields_to_ui_schema(fields, locale)
+      memo
     end
   end
 
@@ -30,11 +44,15 @@ class CustomFieldService
   private
 
   def handle_description(field, locale)
-    field.description_multiloc[locale] || ""
+    I18n.with_locale(locale) do
+      @multiloc_service.t(field.description_multiloc)
+    end
   end
 
   def handle_title(field, locale)
-    field.title_multiloc[locale] || ""
+    I18n.with_locale(locale) do
+      @multiloc_service.t(field.title_multiloc)
+    end
   end
 
 # *** text ***

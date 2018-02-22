@@ -1,6 +1,6 @@
 class WebApi::V1::CustomFieldsController < ApplicationController
   before_action :set_custom_field, only: [:show, :update, :destroy]
-  before_action :set_resource_type, only: [:index, :create]
+  before_action :set_resource_type, only: [:index, :schema, :create]
 
   def index
     @custom_fields = policy_scope(CustomField)
@@ -9,9 +9,21 @@ class WebApi::V1::CustomFieldsController < ApplicationController
     render json: @custom_fields
   end
 
+  def schema
+    authorize :custom_field
+    fields = CustomField.fields_for(@resource_type.constantize)
+
+    service = CustomFieldService.new
+    json_schema_multiloc = service.fields_to_json_schema_multiloc(Tenant.current, fields)
+    ui_schema_multiloc = service.fields_to_ui_schema_multiloc(Tenant.current, fields)
+
+    render json: {json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc}
+  end
+
   def show
     render json: @custom_field
   end
+
 
   def create
     @custom_field = CustomField.new(custom_field_create_params)
