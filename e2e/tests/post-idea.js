@@ -3,7 +3,7 @@ const hash = crypto.randomBytes(20).toString('hex');
 const title = `test idea ${hash}`;
 
 module.exports = {
-  '@tags': ['citizen', 'ideas'],
+  '@tags': ['citizen', 'ideas', 'posting'],
   postIdea: (browser) => {
     const signinPage = browser.page.signin();
     const newIdeaPage = browser.page.newIdea();
@@ -19,18 +19,9 @@ module.exports = {
     browser
     .url('localhost:3000')
     .pause(500)
-    .waitForElementVisible('#e2e-ideas-list:first-child')
-    .getText('#e2e-ideas-list:first-child h4 span', function (result) {
-      this.assert.equal(result.value, title);
-    });
+    .waitForElementVisible('#e2e-ideas-list')
+    .expect.element('#e2e-ideas-list').text.to.contain(title);
 
-    browser
-    .url('localhost:3000/ideas')
-    .pause(500)
-    .waitForElementVisible('#e2e-ideas-list:first-child')
-    .getText('#e2e-ideas-list:first-child h4 span', function (result) {
-      this.assert.equal(result.value, title);
-    })
-    .end();
+    browser.end();
   },
 };

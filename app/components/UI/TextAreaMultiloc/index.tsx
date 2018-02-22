@@ -96,7 +96,7 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
 
       return (
-        <Container className={this.props['className']} >
+        <Container id={this.props.id} className={this.props['className']} >
           {currentTenantLocales.map((currentTenantLocale, index) => {
             const { label, name, placeholder, rows, maxCharCount, valueMultiloc, errorMultiloc } = this.props;
             const value = get(valueMultiloc, [currentTenantLocale], '') as string;
