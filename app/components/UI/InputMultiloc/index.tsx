@@ -95,7 +95,7 @@ export default class InputMultiloc extends React.PureComponent<Props, State> {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
 
       return (
-        <Container className={this.props['className']} >
+        <Container id={this.props.id} className={`${this.props['className']} e2e-multiloc-input`} >
           {currentTenantLocales.map((currentTenantLocale, index) => {
             const { label, placeholder, valueMultiloc, errorMultiloc } = this.props;
             const value = get(valueMultiloc, [currentTenantLocale], null);

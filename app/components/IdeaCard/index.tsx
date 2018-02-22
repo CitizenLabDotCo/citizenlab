@@ -32,6 +32,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // styles
+import { lighten } from 'polished';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
@@ -50,10 +51,11 @@ const IdeaImageContainer: any = styled.div`
 const IdeaImage: any = styled.img`
   width: 100%;
   position: absolute;
-  top: -20%;
+  top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: 1;
 `;
 
 const IdeaImageOverlay = styled.div`
@@ -65,23 +67,26 @@ const IdeaImageOverlay = styled.div`
   background: #fff;
   opacity: 0.1;
   transition: all 250ms ease-out;
+  z-index: 2;
 `;
 
-// const IdeaImagePlaceholder = styled.div`
-//   width: 100%;
-//   height: 135px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   background: ${color('placeholderBg')};
-//   background: #fff;
-// `;
+const IdeaImagePlaceholder = styled.div`
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${(props) => lighten(0.3, props.theme.colors.label)};
+`;
 
-// const IdeaImagePlaceholderIcon = styled(Icon) `
-//   height: 50px;
-//   fill: #fff;
-//   fill: ${color('placeholderBg')};
-// `;
+const IdeaImagePlaceholderIcon = styled(Icon) `
+  height: 50px;
+  fill: #fff;
+`;
 
 const IdeaContent = styled.div`
   flex-grow: 1;
@@ -125,6 +130,7 @@ const IdeaAuthorText = styled.div`
   line-height: 19px;
   display: flex;
   flex-direction: column;
+  margin-top: -1px;
 
   span > span {
     font-weight: 400;
@@ -193,8 +199,8 @@ const IdeaContainer = styled(Link)`
       width: 100%;
       height: 100%;
       opacity: 0;
-      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-      transition: opacity 300ms cubic-bezier(0.19, 1, 0.22, 1);
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+      transition: opacity 350ms cubic-bezier(0.19, 1, 0.22, 1);
       will-change: opacity;
     }
 
@@ -344,14 +350,18 @@ class IdeaCard extends React.PureComponent<Props, State> {
         ${idea.data.relationships.user_vote && idea.data.relationships.user_vote.data ? 'voted' : 'not-voted' }
         ${commentingDescriptor && commentingDescriptor.enabled ? 'e2e-comments-enabled' : 'e2e-comments-disabled'}
         ${idea.data.attributes.comments_count > 0 ? 'e2e-has-comments' : ''}
+        ${votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled'}
       `;
 
       return (
         <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.data.attributes.slug}`} className={className}>
           <IdeaContainerInner>
 
-            {ideaImageUrl && 
+            {ideaImageUrl &&
               <IdeaImageContainer>
+                <IdeaImagePlaceholder>
+                  <IdeaImagePlaceholderIcon name="idea" />
+                </IdeaImagePlaceholder>
                 <IdeaImage src={ideaImageUrl} />
                 <IdeaImageOverlay />
               </IdeaImageContainer>

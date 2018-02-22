@@ -48,8 +48,6 @@ const ContainerInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: ${padding}px;
-  padding-top: 0px;
   border-radius: 5px;
   background: #fff;
   border: solid 1px #e4e4e4;
@@ -63,10 +61,19 @@ const Header = styled.div`
   width: 100%;
   min-height: 80px;
   padding: 0px;
+  padding-left: ${padding}px;
+  padding-right: ${padding}px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* border: solid 1px red; */
+  background: #f8f8f8;
+  border-bottom: solid 1px #e4e4e4;
+
+  ${media.smallerThanMaxTablet`
+    min-height: 120px;
+  `}
 `;
 
 const HeaderSection = styled.div`
@@ -112,6 +119,10 @@ const HeaderTitleWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-right: 15px;
+
+  ${media.smallerThanMaxTablet`
+    margin-right: 0px;
+  `}
 `;
 
 const HeaderTitle = styled.div`
@@ -132,7 +143,7 @@ const MobileDate = styled.div`
   font-size: 15px;
   line-height: 21px;
   font-weight: 400;
-  margin-top: 2px;
+  margin-top: 4px;
   display: none;
 
   ${media.smallerThanMaxTablet`
@@ -169,6 +180,10 @@ const MobileTimelineContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-left: ${padding}px;
+  padding-right: ${padding}px;
+  padding-top: 30px;
+  padding-bottom: 30px;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -177,9 +192,11 @@ const MobileTimelineContainer = styled.div`
 
 const Phases = styled.div`
   width: 100%;
-  padding: 0;
+  padding-left: ${padding}px;
+  padding-right: ${padding}px;
+  padding-top: 40px;
+  padding-bottom: 40px;
   margin: 0;
-  margin-top: 30px;
   margin-left: auto;
   margin-right: auto;
   display: flex;
@@ -312,13 +329,15 @@ type State = {
 };
 
 export default class Timeline extends React.PureComponent<Props, State> {
+  initialState: State;
   projectId$: Rx.BehaviorSubject<string | null>;
   selectedPhaseId$: Rx.BehaviorSubject<string | null>;
+  currentPhaseId$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
     super(props as any);
-    this.state = {
+    const initialState = {
       locale: null,
       currentTenant: null,
       phases: null,
@@ -326,34 +345,49 @@ export default class Timeline extends React.PureComponent<Props, State> {
       selectedPhaseId: null,
       loaded: false
     };
+    this.initialState = initialState;
+    this.state = initialState;
     this.subscriptions = [];
     this.projectId$ = new Rx.BehaviorSubject(null);
     this.selectedPhaseId$ = new Rx.BehaviorSubject(null);
+    this.currentPhaseId$ = new Rx.BehaviorSubject(null);
   }
 
   componentDidMount() {
     this.projectId$.next(this.props.projectId);
 
     this.subscriptions = [
+      this.selectedPhaseId$
+        .distinctUntilChanged()
+        .filter(selectedPhaseId => isString(selectedPhaseId))
+        .subscribe((selectedPhaseId) => {
+          this.props.onPhaseSelected(selectedPhaseId);
+        }),
+
       this.projectId$
         .distinctUntilChanged()
+        .do((projectId) => {
+          console.log('projectId: ' + projectId);
+          this.selectedPhaseId$.next(null);
+          this.currentPhaseId$.next(null);
+          this.setState({ loaded: false });
+        })
         .filter(projectId => isString(projectId))
         .switchMap((projectId: string) => {
           const locale$ = localeStream().observable;
           const currentTenant$ = currentTenantStream().observable;
           const phases$ = phasesStream(projectId).observable;
-          const selectedPhaseId$ = this.selectedPhaseId$.distinctUntilChanged().do((selectedPhaseId) => {
-            this.props.onPhaseSelected(selectedPhaseId);
-          });
 
           return Rx.Observable.combineLatest(
             locale$,
             currentTenant$,
             phases$,
-            selectedPhaseId$
+            this.currentPhaseId$.distinctUntilChanged(),
+            this.selectedPhaseId$.distinctUntilChanged()
           );
-        }).subscribe(([locale, currentTenant, phases, selectedPhaseId]) => {
-          this.setState({ locale, currentTenant, phases, selectedPhaseId, loaded: true });
+        })
+        .subscribe(([locale, currentTenant, phases, currentPhaseId, selectedPhaseId]) => {
+          this.setState({ locale, currentTenant, phases, currentPhaseId, selectedPhaseId, loaded: true });
         })
     ];
   }
@@ -361,9 +395,9 @@ export default class Timeline extends React.PureComponent<Props, State> {
   componentDidUpdate(_prevProps: Props, _prevState: State) {
     this.projectId$.next(this.props.projectId);
 
-    const { currentTenant, phases, selectedPhaseId, currentPhaseId, loaded } = this.state;
+    const { currentTenant, phases, currentPhaseId, selectedPhaseId } = this.state;
 
-    if (loaded && currentTenant && !currentPhaseId) {
+    if (currentTenant && !currentPhaseId) {
       if (phases && phases.data.length > 0) {
         const currentTenantTimezone = currentTenant.data.attributes.settings.core.timezone;
         const currentTenantTodayMoment = moment().tz(currentTenantTimezone);
@@ -374,13 +408,13 @@ export default class Timeline extends React.PureComponent<Props, State> {
           const isCurrentPhase = currentTenantTodayMoment.isBetween(startMoment, endMoment, 'days', '[]');
 
           if (isCurrentPhase && (!currentPhaseId || (currentPhaseId && phase.id !== currentPhaseId))) {
-            this.setState({ currentPhaseId: phase.id });
+            this.currentPhaseId$.next(phase.id);
           }
         });
       }
     }
 
-    if (loaded && !selectedPhaseId) {
+    if (!selectedPhaseId) {
       if (currentPhaseId) {
         this.selectedPhaseId$.next(currentPhaseId);
       } else if (phases && phases.data.length > 0) {
@@ -401,6 +435,10 @@ export default class Timeline extends React.PureComponent<Props, State> {
 
   setSelectedPhaseId = (phaseId: string) => (event: React.FormEvent<MouseEvent>) => {
     event.preventDefault();
+    this.selectedPhaseId$.next(phaseId);
+  }
+
+  setSelectedPhaseIdFromDropdown = (phaseId: string) => {
     this.selectedPhaseId$.next(phaseId);
   }
 
@@ -493,7 +531,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
                 phases={phases.data}
                 currentPhase={currentPhaseId}
                 selectedPhase={selectedPhaseId}
-                onPhaseSelection={this.setSelectedPhaseId}
+                onPhaseSelection={this.setSelectedPhaseIdFromDropdown}
               />
             </MobileTimelineContainer>
 

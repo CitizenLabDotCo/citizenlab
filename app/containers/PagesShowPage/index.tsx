@@ -41,7 +41,7 @@ const Loading = styled.div`
   justify-content: center;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 76px);
   `}
 `;
 
@@ -232,7 +232,7 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
     if (loading) {
       return (
         <Loading>
-          <Spinner size="34px" color="#666" />
+          <Spinner size="32px" color="#666" />
         </Loading>
       );
     } else {

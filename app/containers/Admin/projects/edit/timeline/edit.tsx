@@ -274,6 +274,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
             <Section>
               <SectionField>
                 <InputMultiloc
+                  id="title"
                   label={<FormattedMessage {...messages.titleLabel} />}
                   type="text"
                   valueMultiloc={phaseAttrs.title_multiloc}
@@ -283,7 +284,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
               </SectionField>
 
               <SectionField>
-                <ParticipationContext 
+                <ParticipationContext
                   phaseId={(phase ? phase.data.id : null)}
                   onSubmit={this.handleParcticipationContextOnSubmit}
                   onChange={this.handleParticipationContextOnChange}

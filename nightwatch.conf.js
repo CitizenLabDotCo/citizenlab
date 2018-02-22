@@ -9,9 +9,10 @@ const seleniumServerPattern = './node_modules/selenium-standalone/.selenium/sele
 const chromeDriverPattern = './node_modules/selenium-standalone/.selenium/chromedriver/*-chromedriver';
 
 module.exports = {
-  src_folders: 'e2e',
+  src_folders: 'e2e/tests',
   page_objects_path: 'e2e/pages',
   output_folder: 'e2e/reports',
+  custom_commands_path: 'e2e/commands',
   selenium: {
     start_process: true,
     host: '127.0.0.1',

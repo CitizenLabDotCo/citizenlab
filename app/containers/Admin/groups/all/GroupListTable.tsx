@@ -130,7 +130,7 @@ class GroupsListTable extends React.PureComponent<Props & InjectedIntlProps, Sta
     if (loading) {
       return (
         <Loading>
-          <Spinner size="34px" color="#666" />
+          <Spinner size="32px" color="#666" />
         </Loading>
       );
     }
