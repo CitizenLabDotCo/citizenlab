@@ -553,7 +553,7 @@
   "app.containers.UsersEditPage.h1": "Profiel",
   "app.containers.UsersEditPage.h1sub": "Verander hier je account-gegevens",
   "app.containers.UsersEditPage.h2": "Vervolledig je profiel (optioneel)",
-  "app.containers.UsersEditPage.h2sub": "Het is niet verplicht om onderstaande informatie in te vullen. Het helpt ons om een beter analyse te maken van wat via het platform verzameld wordt. Andere gebruikers krijgen enkel je naam te zien en de datum waarop je bent ingelogd",
+  "app.containers.UsersEditPage.h2sub": "Het is niet verplicht om onderstaande informatie in te vullen. Het helpt ons om een betere analyse te maken van wat via het platform verzameld wordt. Anderen krijgen enkel je naam te zien en de datum waarop je bent ingelogd",
   "app.containers.UsersEditPage.h3": "Meldingen",
   "app.containers.UsersEditPage.h3sub": "Beheer je meldingen",
   "app.containers.UsersEditPage.helmetDescription": "Bewerk profiel",
