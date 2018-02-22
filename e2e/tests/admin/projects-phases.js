@@ -24,21 +24,25 @@ module.exports = {
     .click('@phasesTab')
     .waitForElementVisible('@addPhaseButton')
     .click('@addPhaseButton')
-
-    // Phase insertion form
     .assert.urlContains('/timeline/new');
 
-    browser.fillMultiloc('#title', title);
-    browser.fillMultiloc('#description', 'Lorem Ipsum dolor sit amet');
-
+    // Phase insertion form
     adminProjectsPage
+    .fillMultiloc('#title', title)
+    .fillMultiloc('#description', 'Lorem Ipsum dolor sit amet')
     .setValue('#startDate', startDate)
     .setValue('#endDate', endDate)
     .click('@submitButton')
-    .waitForElementVisible('@submitSuccess')
+    .waitForElementVisible('@submitSuccess');
 
     // Check for phase presence in the list
+    browser
+    .refresh();
+
+    adminProjectsPage
+    .waitForElementVisible('@phasesTab')
     .click('@phasesTab')
+    .waitForElementVisible('.e2e-phases-table .e2e-phase-line')
     .assert.containsText('.e2e-phases-table .e2e-phase-line.last .e2e-phase-title span', title);
 
     // Delete the phase
