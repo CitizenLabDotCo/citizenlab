@@ -56,7 +56,8 @@ const Loading = styled.div`
   justify-content: center;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 76px);
+    border: solid 1px red;
   `}
 `;
 
@@ -291,7 +292,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
         currentTenant$,
         ideas$,
         projects$
-      ).subscribe(([locale, currentTenant, ideas, projects]) => {
+      ).delay(10000).subscribe(([locale, currentTenant, ideas, projects]) => {
         this.setState({
           locale,
           currentTenant,
@@ -342,7 +343,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
     if (!loaded) {
       return (
         <Loading id="ideas-loading">
-          <Spinner size="34px" color="#666" />
+          <Spinner size="32px" color="#666" />
         </Loading>
       );
     }

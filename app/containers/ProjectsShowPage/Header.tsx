@@ -87,7 +87,7 @@ const HeaderContentRight = styled.div`
 const HeaderTitle = styled.div`
   color: #fff;
   font-size: 42px;
-  line-height: 50px;
+  line-height: 52px;
   font-weight: 500;
   text-align: left;
   margin: 0;

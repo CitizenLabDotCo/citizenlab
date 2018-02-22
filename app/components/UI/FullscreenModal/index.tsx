@@ -70,7 +70,7 @@ const Content = styled.div`
   -webkit-overflow-scrolling: touch;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 76px);
     margin-top: 70px;
   `}
 `;
