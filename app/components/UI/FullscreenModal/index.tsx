@@ -40,9 +40,11 @@ const Container: any = styled.div`
   background: #fff;
   z-index: -10000;
   will-change: opacity;
+  display: none;
 
   &.opened {
     z-index: 10000;
+    display: block;
   }
 
   &.modal-enter {
