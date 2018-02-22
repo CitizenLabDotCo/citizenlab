@@ -1,23 +1,19 @@
 import * as React from 'react';
-
 import InfoSidebarMultiItem from './InfoSidebarMultiItem';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { deleteIdea } from 'services/ideas';
-
-
 import { Segment, List, Button, Icon } from 'semantic-ui-react';
-
 import messages from '../../messages';
 
 interface Props {
   ideaIds: string[];
 }
 
-class InfoSidebarMulti extends React.Component<Props & InjectedIntlProps> {
-
+class InfoSidebarMulti extends React.PureComponent<Props & InjectedIntlProps> {
   handleClickDelete = () => {
     const message = this.props.intl.formatMessage(messages.deleteIdeasConfirmation, { count: this.props.ideaIds.length });
+
     if (window.confirm(message)) {
       this.props.ideaIds.forEach((id) => {
         deleteIdea(id);
@@ -48,4 +44,4 @@ class InfoSidebarMulti extends React.Component<Props & InjectedIntlProps> {
   }
 }
 
-export default injectIntl(InfoSidebarMulti);
+export default injectIntl<Props>(InfoSidebarMulti);

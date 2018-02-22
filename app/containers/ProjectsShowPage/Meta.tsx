@@ -1,10 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { isFunction, isString } from 'lodash';
-
-// router
-import { browserHistory } from 'react-router';
-import { Location } from 'history';
+import { isString } from 'lodash';
 
 // components
 import Helmet from 'react-helmet';
@@ -33,14 +29,12 @@ type State = {
   currentTenantLocales: Locale[] | null;
   project: IProject | null;
   projectImages: IProjectImages | null;
-  location: Location | null;
   loaded: boolean;
 };
 
 export default class Meta extends React.PureComponent<Props, State> {
-  slug$: Rx.BehaviorSubject<string>;
+  slug$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
-  unlisten: Function | null;
 
   constructor(props) {
     super(props);
@@ -49,19 +43,19 @@ export default class Meta extends React.PureComponent<Props, State> {
       currentTenantLocales: null,
       project: null,
       projectImages: null,
-      location: null,
       loaded: false
     };
-    this.slug$ = new Rx.BehaviorSubject(null as any);
+    this.slug$ = new Rx.BehaviorSubject(null);
     this.subscriptions = [];
-    this.unlisten = null;
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.slug$.next(this.props.projectSlug);
 
+    const slug$ = this.slug$.distinctUntilChanged().filter(slug => isString(slug));
+
     this.subscriptions = [
-      this.slug$.distinctUntilChanged().filter(slug => isString(slug)).switchMap((slug) => {
+      slug$.switchMap((slug: string) => {
         const locale$ = localeStream().observable;
         const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
         const project$ = projectBySlugStream(slug).observable;
@@ -80,21 +74,11 @@ export default class Meta extends React.PureComponent<Props, State> {
     ];
   }
 
-  componentWillReceiveProps(newProps: Props) {
-    this.slug$.next(newProps.projectSlug);
-  }
-
-  componentDidMount() {
-    this.unlisten = browserHistory.listen((location: Location) => {
-      this.setState({ location });
-    });
+  componentDidUpdate(_prevProps: Props) {
+    this.slug$.next(this.props.projectSlug);
   }
 
   componentWillUnmount() {
-    if (isFunction(this.unlisten)) {
-      this.unlisten();
-    }
-
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 

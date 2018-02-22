@@ -1,9 +1,11 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import { size, groupBy, isEmpty } from 'lodash';
-import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+
+// routing
 import { browserHistory } from 'react-router';
+
+// components
 import Spinner from 'components/UI/Spinner';
 
 // services
@@ -20,24 +22,9 @@ import ButtonBar from 'components/ButtonBar';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-const Container = styled.div`
-  height: 100%;
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  background: #f8f8f8;
-
-  ${media.smallerThanMaxTablet`
-    min-height: auto;
-  `}
-`;
-
-const StyledContentContainer = styled(ContentContainer)`
-  padding-top: 0px;
-  padding-bottom: 120px;
-
-  ${media.smallerThanMaxTablet`
-    padding-bottom: 40px;
-  `}
-`;
+// styling
+import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const Loading = styled.div`
   width: 100%;
@@ -51,34 +38,56 @@ const Loading = styled.div`
   `}
 `;
 
+const Container = styled.div`
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  background: #f9f9fa;
+
+  ${media.smallerThanMaxTablet`
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+  `}
+`;
+
+const StyledContentContainer = styled(ContentContainer)`
+  padding-top: 0px;
+  padding-bottom: 140px;
+
+  ${media.smallerThanMaxTablet`
+    padding-bottom: 40px;
+  `}
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const ColumnsContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+
+  ${media.biggerThanMaxTablet`
+    justify-content: space-between;
+  `}
 
   ${media.smallerThanMaxTablet`
     flex-direction: column;
-    justify-content: flex-start;
   `}
 `;
 
 const PageTitle = styled.h1`
-  width: 100%;
   color: #333;
-  font-size: 36px;
-  line-height: 42px;
+  font-size: 34px;
+  line-height: 40px;
   font-weight: 500;
   text-align: center;
-  padding: 0;
   margin: 0;
-  padding-top: 40px;
-  margin-bottom: 80px;
+  padding: 0;
+  padding-top: 60px;
+  padding-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
     font-size: 28px;
     line-height: 34px;
     text-align: left;
-    margin-bottom: 40px;
   `}
 `;
 
@@ -141,17 +150,18 @@ const ButtonBarInner = styled.div`
     margin-right: 10px;
   }
 
-  ${media.smallerThanDesktop`
+  ${media.smallerThanMaxTablet`
     margin-left: 35px;
   `}
 `;
 
 const WithoutButtonBar = styled.div`
+  width: 100%;
+  padding-bottom: 20px;
+
   ${media.biggerThanMaxTablet`
     display: none;
   `}
-
-  padding-bottom: 20px;
 `;
 
 const EmptyStateContainer = styled.div`
@@ -184,7 +194,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const projects$ = projectsStream().observable;
 
     this.subscriptions = [
@@ -228,15 +238,11 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
 
     if (!loaded) {
       return (
-        <Container>
-          <Loading>
-            <Spinner size="30px" color="#666" />
-          </Loading>
-        </Container>
+        <Loading>
+          <Spinner size="34px" color="#666" />
+        </Loading>
       );
-    }
-
-    if (loaded) {
+    } else {
       const { open_idea_box: openProjects, null: cityProjects } = groupBy(projects, (project) => project.attributes.internal_role);
       const openProject = openProjects && !isEmpty(openProjects) && openProjects[0];
       const noProjects = (!projects || size(projects) === 0);
@@ -254,8 +260,8 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
               </EmptyStateContainer>
             }
 
-            {!noProjects &&
-              <>
+            {!noProjects && 
+              <Content>
                 <ColumnsContainer>
                   <LeftColumn className={!openProject ? 'flex' : ''}>
                     <ColumnTitle>
@@ -268,7 +274,6 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
                       {cityProjects && cityProjects.map((project) => (
                         <ProjectCardWrapper key={project.id}>
                           <ProjectCard
-                            key={project.id}
                             onClick={this.handleProjectClick(project)}
                             projectId={project.id}
                             selected={(selectedProjectId === project.id)}
@@ -300,33 +305,33 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
                     </RightColumn>
                   }
                 </ColumnsContainer>
+
                 <ButtonBar>
                   <ButtonBarInner>
                     <Button
                       className="e2e-submit-project-select-form"
-                      size="3"
+                      size="1"
                       text={<FormattedMessage {...messages.continueButton} />}
                       onClick={this.handleOnSubmitClick}
                       disabled={!selectedProjectId}
                     />
                   </ButtonBarInner>
                 </ButtonBar>
+
                 <WithoutButtonBar>
                   <Button
                     className="e2e-submit-project-select-form"
-                    size="3"
+                    size="1"
                     text={<FormattedMessage {...messages.continueButton} />}
                     onClick={this.handleOnSubmitClick}
                     disabled={!selectedProjectId}
                   />
                 </WithoutButtonBar>
-              </>
+              </Content>
             }
           </StyledContentContainer>
         </Container>
       );
     }
-
-    return null;
   }
 }

@@ -53,6 +53,7 @@ export const findTranslatedText = (value: Multiloc | Map<Locale, string> | undef
   if (!isImmutable(value)) {
     return findTranslatedTextMutable(value as Multiloc, userLocale, tenantLocales);
   }
+
   return findTranslatedTextImmutable(value as Map<Locale, string>, userLocale, tenantLocales);
 };
 
@@ -64,6 +65,7 @@ export function injectTFunc(component) {
   const mapStateToProps = (state) => {
     const selectLocale = makeSelectLocale();
     const selectTenantLocales = makeSelectSetting(['core', 'locales']);
+
     return {
       tFunc(value) {
         return findTranslatedText(value, selectLocale(state), selectTenantLocales(state));

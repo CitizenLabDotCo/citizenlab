@@ -5,22 +5,17 @@ import { injectResource, InjectedResourceLoaderProps } from 'utils/resourceLoade
 import { browserHistory } from 'react-router';
 import eventEmitter from 'utils/eventEmitter';
 import { IModalInfo } from 'containers/App';
-
-
 import T from 'components/T';
 import { Segment, Header, Icon, Button } from 'semantic-ui-react';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-
 import messages from '../../messages';
-
 
 interface Props {
   idea: IIdeaData;
 }
 
-class InfoSidebarSingle extends React.Component<Props & InjectedResourceLoaderProps<IIdeaData> & InjectedIntlProps> {
-
+class InfoSidebarSingle extends React.PureComponent<Props & InjectedResourceLoaderProps<IIdeaData> & InjectedIntlProps> {
   handleClickDelete = () => {
     const message = this.props.intl.formatMessage(messages.deleteIdeaConfirmation);
     if (window.confirm(message)) {

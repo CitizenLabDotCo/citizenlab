@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isFunction } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
@@ -9,7 +9,6 @@ import { browserHistory } from 'react-router';
 import Icon from 'components/UI/Icon';
 
 // animations
-import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // i18n
@@ -25,65 +24,66 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const foregroundTimeout = 350;
-const foregroundEasing = `cubic-bezier(0.19, 1, 0.22, 1)`;
+const timeout = 350;
+const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
-const contentTimeout = 700;
-const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
-const contentDelay = 450;
-const contentTranslate = '25px';
-
-const ModalForeground: any = styled.div`
-  width: 100%;
-  height: 100%;
+const Container: any = styled.div`
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 0;
-  margin: 0;
   display: flex;
   justify-content: center;
-  flex-direction: column;
-  outline: none;
   overflow: hidden;
-  border-radius: 0px;
+  outline: none;
   background: #fff;
-  z-index: 10000;
+  z-index: -10000;
   will-change: opacity;
+  display: none;
 
-  &.foreground-enter {
+  &.opened {
+    z-index: 10000;
+    display: block;
+  }
+
+  &.modal-enter {
     opacity: 0;
 
-    &.foreground-enter-active {
+    &.modal-enter-active {
       opacity: 1;
-      transition: all ${foregroundTimeout}ms ${foregroundEasing};
+      transition: opacity ${timeout}ms ${easing};
     }
+  }
+
+  &.modal-exit {
+    display: none;
   }
 `;
 
-const ModalContentInner = styled.div`
+const Content = styled.div`
   width: 100vw;
   height: 100vh;
+  position: relative;
   overflow: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 
   ${media.smallerThanMaxTablet`
     height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
-    margin-top: 72px;
+    margin-top: 70px;
   `}
 `;
 
 const TopBar: any = styled.div`
-  height: 72px;
+  height: 70px;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   background: #fff;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
+  border-bottom: solid 1px #ccc;
+  z-index: 10001;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -110,8 +110,8 @@ const GoBackIcon = styled(Icon)`
 `;
 
 const GoBackButton = styled.div`
-  height: 47px;
-  width: 47px;
+  height: 45px;
+  width: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -120,7 +120,6 @@ const GoBackButton = styled.div`
   cursor: pointer;
   border-radius: 50%;
   border: solid 1px #e0e0e0;
-  background: #fff;
   transition: all 100ms ease-out;
 
   &:hover {
@@ -178,6 +177,7 @@ const CloseButton = styled.div`
   right: 33px;
   border-radius: 50%;
   border: solid 1px #ccc;
+  z-index: 10001;
   transition: border-color 100ms ease-out;
 
   &:hover {
@@ -193,33 +193,6 @@ const CloseButton = styled.div`
   `}
 `;
 
-const ModalContent: any = styled.div`
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-  outline: none;
-  background: transparent;
-  z-index: 10001;
-  will-change: auto;
-
-  &.content-enter {
-    opacity: 0;
-    transform: translateY(${contentTranslate});
-    will-change: opacity, transform;
-
-    &.content-enter-active {
-      opacity: 1;
-      transform: translateY(0);
-      transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
-    }
-  }
-`;
-
 interface ITracks {
   clickCloseButton: (arg: any) => void;
   clickOutsideModal: (arg: any) => void;
@@ -233,14 +206,12 @@ type Props = {
   headerChild?: JSX.Element | undefined;
 };
 
-type State = {
-  scrolled: boolean;
-};
+type State = {};
 
 class Modal extends React.PureComponent<Props & ITracks, State> {
   unlisten: Function | null;
   goBackUrl: string | null;
-  keydownEventListener: any;
+  ModalContentInnerElement: HTMLDivElement | null;
   subscription: Rx.Subscription | null;
 
   constructor(props: Props) {
@@ -250,6 +221,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     };
     this.unlisten = null;
     this.goBackUrl = null;
+    this.ModalContentInnerElement = null;
     this.subscription = null;
   }
 
@@ -257,14 +229,10 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     this.cleanup();
   }
 
-  componentWillUpdate(nextProps: Props) {
-    const { opened } = this.props;
-
-    if (!opened && nextProps.opened) {
-      this.openModal(nextProps.url);
-    }
-
-    if (opened && !nextProps.opened) {
+  componentDidUpdate(prevProps: Props) {
+    if (!prevProps.opened && this.props.opened) {
+      this.openModal(this.props.url);
+    } else if (prevProps.opened && !this.props.opened) {
       this.cleanup();
     }
   }
@@ -335,8 +303,12 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
       this.subscription = null;
     }
 
-    if (_.isFunction(this.unlisten)) {
+    if (isFunction(this.unlisten)) {
       this.unlisten();
+    }
+
+    if (this.ModalContentInnerElement) {
+      this.ModalContentInnerElement.scrollTop = 0;
     }
   }
 
@@ -352,62 +324,46 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     this.manuallyCloseModal();
   }
 
+  setRef = (element: HTMLDivElement) => {
+    this.ModalContentInnerElement = (element || null);
+  }
+
   render() {
-    const { scrolled } = this.state;
     const { children, opened, headerChild } = this.props;
 
     return (
-      <TransitionGroup>
-        {opened &&
-          <CSSTransition
-            classNames="foreground"
-            key={1}
-            timeout={foregroundTimeout}
-            mountOnEnter={true}
-            unmountOnExit={true}
-            exit={false}
-          >
-            <ModalForeground />
-          </CSSTransition>
-        }
+      <CSSTransition
+        classNames="modal"
+        in={opened}
+        timeout={timeout}
+        mountOnEnter={false}
+        unmountOnExit={false}
+        exit={true}
+      >
+        <Container id="e2e-fullscreenmodal-content" className={`${opened && 'opened'}`}>
+          <Content innerRef={this.setRef}>
+            {children}
+          </Content>
 
-        {opened &&
-          <CSSTransition
-            classNames="content"
-            key={2}
-            timeout={contentTimeout + contentDelay}
-            mountOnEnter={true}
-            unmountOnExit={true}
-            exit={false}
-          >
-            <ModalContent id="e2e-fullscreenmodal-content">
+          <CloseButton onClick={this.clickCloseButton}>
+            <CloseIcon name="close4" />
+          </CloseButton>
 
-              <ModalContentInner>
-                {children}
-              </ModalContentInner>
-
-              <TopBar scrolled={scrolled}>
-                <TopBarInner>
-                  <GoBackButtonWrapper>
-                    <GoBackButton onClick={this.clickCloseButton}>
-                      <GoBackIcon name="arrow-back" />
-                    </GoBackButton>
-                    <GoBackLabel>
-                      <FormattedMessage {...messages.goBack} />
-                    </GoBackLabel>
-                  </GoBackButtonWrapper>
-                  {headerChild && <HeaderChildWrapper>{headerChild}</HeaderChildWrapper>}
-                </TopBarInner>
-              </TopBar>
-
-              <CloseButton onClick={this.clickCloseButton}>
-                <CloseIcon name="close4" />
-              </CloseButton>
-
-            </ModalContent>
-          </CSSTransition>
-        }
-      </TransitionGroup>
+          <TopBar>
+            <TopBarInner>
+              <GoBackButtonWrapper>
+                <GoBackButton onClick={this.clickCloseButton}>
+                  <GoBackIcon name="arrow-back" />
+                </GoBackButton>
+                <GoBackLabel>
+                  <FormattedMessage {...messages.goBack} />
+                </GoBackLabel>
+              </GoBackButtonWrapper>
+              {headerChild && <HeaderChildWrapper>{headerChild}</HeaderChildWrapper>}
+            </TopBarInner>
+          </TopBar>
+        </Container>
+      </CSSTransition>
     );
   }
 }

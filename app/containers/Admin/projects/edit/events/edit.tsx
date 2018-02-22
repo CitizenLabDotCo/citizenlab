@@ -76,7 +76,7 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
     const event$ = (this.props.params.id ? eventStream(this.props.params.id).observable : Rx.Observable.of(null));
