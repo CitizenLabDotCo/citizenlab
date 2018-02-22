@@ -111,6 +111,7 @@ const EmptyContainer = styled.div`
   padding-top: 120px;
   padding-bottom: 120px;
   border-radius: 5px;
+  border: solid 1px #e4e4e4;
   background: #fff;
 `;
 
