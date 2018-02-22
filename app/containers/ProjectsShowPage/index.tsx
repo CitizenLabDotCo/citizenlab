@@ -87,11 +87,9 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
         locale$,
         currentTenant$,
         slug$
-      )
-      .switchMap(([_locale, _currentTenant, slug]) => {
+      ).switchMap(([_locale, _currentTenant, slug]) => {
         return projectBySlugStream(slug).observable;
-      })
-      .switchMap((project) => {
+      }).switchMap((project) => {
         const phases$ = phasesStream(project.data.id).observable;
         const events$ = eventsStream(project.data.id).observable;
 
