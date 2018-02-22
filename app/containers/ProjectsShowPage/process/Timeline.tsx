@@ -48,8 +48,6 @@ const ContainerInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: ${padding}px;
-  padding-top: 0px;
   border-radius: 5px;
   background: #fff;
   border: solid 1px #e4e4e4;
@@ -63,10 +61,19 @@ const Header = styled.div`
   width: 100%;
   min-height: 80px;
   padding: 0px;
+  padding-left: ${padding}px;
+  padding-right: ${padding}px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* border: solid 1px red; */
+  background: #f8f8f8;
+  border-bottom: solid 1px #e4e4e4;
+
+  ${media.smallerThanMaxTablet`
+    min-height: 120px;
+  `}
 `;
 
 const HeaderSection = styled.div`
@@ -112,6 +119,10 @@ const HeaderTitleWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-right: 15px;
+
+  ${media.smallerThanMaxTablet`
+    margin-right: 0px;
+  `}
 `;
 
 const HeaderTitle = styled.div`
@@ -132,7 +143,7 @@ const MobileDate = styled.div`
   font-size: 15px;
   line-height: 21px;
   font-weight: 400;
-  margin-top: 2px;
+  margin-top: 4px;
   display: none;
 
   ${media.smallerThanMaxTablet`
@@ -169,6 +180,10 @@ const MobileTimelineContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-left: ${padding}px;
+  padding-right: ${padding}px;
+  padding-top: 30px;
+  padding-bottom: 30px;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -177,9 +192,11 @@ const MobileTimelineContainer = styled.div`
 
 const Phases = styled.div`
   width: 100%;
-  padding: 0;
+  padding-left: ${padding}px;
+  padding-right: ${padding}px;
+  padding-top: 40px;
+  padding-bottom: 40px;
   margin: 0;
-  margin-top: 30px;
   margin-left: auto;
   margin-right: auto;
   display: flex;
@@ -421,6 +438,10 @@ export default class Timeline extends React.PureComponent<Props, State> {
     this.selectedPhaseId$.next(phaseId);
   }
 
+  setSelectedPhaseIdFromDropdown = (phaseId: string) => {
+    this.selectedPhaseId$.next(phaseId);
+  }
+
   render() {
     const className = this.props['className'];
     const { locale, currentTenant, phases, currentPhaseId, selectedPhaseId } = this.state;
@@ -510,7 +531,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
                 phases={phases.data}
                 currentPhase={currentPhaseId}
                 selectedPhase={selectedPhaseId}
-                onPhaseSelection={this.setSelectedPhaseId}
+                onPhaseSelection={this.setSelectedPhaseIdFromDropdown}
               />
             </MobileTimelineContainer>
 
