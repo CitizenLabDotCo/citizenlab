@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
@@ -8,29 +7,27 @@ import FilterSelector from 'components/FilterSelector';
 // services
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { localeStream } from 'services/locale';
-import { areasStream, IAreas } from 'services/areas';
+import { topicsStream, ITopics } from 'services/topics';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
 import { FormattedMessage } from 'utils/cl-intl';
-
 import messages from './messages';
-
 import { Locale } from 'typings';
 
 type Props = {
-  selectedAreas: string[];
+  id?: string | undefined;
   onChange: (value: any) => void;
 };
 
 type State = {
   currentTenant: ITenant | null;
   locale: Locale | null;
-  areas: IAreas | null;
+  topics: ITopics | null;
+  selectedValues: string[];
 };
 
-class SelectAreas extends React.PureComponent<Props, State> {
-  state: State;
+export default class SelectTopic extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -38,26 +35,24 @@ class SelectAreas extends React.PureComponent<Props, State> {
     this.state = {
       currentTenant: null,
       locale: null,
-      areas: null
+      topics: null,
+      selectedValues: []
     };
+    this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const currentTenant$ = currentTenantStream().observable;
     const locale$ = localeStream().observable;
-    const areas$ = areasStream().observable;
+    const topics$ = topicsStream().observable;
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
         currentTenant$,
         locale$,
-        areas$
-      ).subscribe(([currentTenant, locale, areas]) => {
-        this.setState({
-          currentTenant,
-          locale,
-          areas
-        });
+        topics$
+      ).subscribe(([currentTenant, locale, topics]) => {
+        this.setState({ currentTenant, locale, topics });
       })
     ];
   }
@@ -66,42 +61,36 @@ class SelectAreas extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleOnChange = (selectedAreas: string[]) => {
-    let areas: string[] = [];
-
-    if (_.isString(selectedAreas)) {
-      areas = [selectedAreas];
-    } else if (_.isArray(selectedAreas) && !_.isEmpty(selectedAreas)) {
-      areas = selectedAreas;
-    }
-
-    this.props.onChange(areas);
+  handleOnChange = (selectedValues) => {
+    this.setState({ selectedValues });
+    this.props.onChange(selectedValues);
   }
 
   render() {
-    const { currentTenant, locale, areas } = this.state;
-    const { selectedAreas } =  this.props;
+    const { currentTenant, locale, topics, selectedValues } = this.state;
     let options: any = [];
 
-    if (currentTenant && locale && areas && areas.data && areas.data.length > 0) {
+    if (currentTenant && locale && topics && topics.data && topics.data.length > 0) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
 
-      options = areas.data.map((area) => {
+      options = topics.data.map((topic) => {
         return {
-          text: getLocalized(area.attributes.title_multiloc, locale, currentTenantLocales),
-          value: area.id
+          text: getLocalized(topic.attributes.title_multiloc, locale, currentTenantLocales),
+          value: topic.id
         };
       });
 
       if (options && options.length > 0) {
         return (
           <FilterSelector
-            title={<FormattedMessage {...messages.areasTitle} />}
-            name="areas"
-            selected={selectedAreas}
+            title={<FormattedMessage {...messages.topicsTitle} />}
+            name="topics"
+            selected={selectedValues}
             values={options}
             onChange={this.handleOnChange}
             multiple={true}
+            maxWidth={'350px'}
+            mobileMaxWidth={'200px'}
           />
         );
       }
@@ -110,5 +99,3 @@ class SelectAreas extends React.PureComponent<Props, State> {
     return null;
   }
 }
-
-export default SelectAreas;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import { withRouter, WithRouterProps } from 'react-router';
-import { find } from 'lodash';
+import { find, pick, isEqual } from 'lodash';
 
 // libraries
 import scrollToComponent from 'react-scroll-to-component';
@@ -109,8 +109,9 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     this.descriptionElement = null;
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { title, description, selectedTopics, selectedProject, position, imageFile } = this.props;
+
     const locale$ = localeStream().observable;
     const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
     const topics$ = topicsStream().observable;
@@ -157,25 +158,34 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
 
       eventEmitter.observeEvent('IdeaFormSubmitEvent').subscribe(this.handleOnSubmit),
     ];
-  }
 
-  componentDidMount() {
     if (!bowser.mobile && this.titleInputElement !== null) {
       setTimeout(() => (this.titleInputElement as HTMLInputElement).focus(), 50);
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { title, description, selectedTopics, selectedProject, position, imageFile } = nextProps;
+  componentDidUpdate(prevProps: Props) {
+    const partialPropertyNames = ['selectedTopics', 'selectedTopics', 'position', 'title'];
+    const oldPartialProps = pick(prevProps, partialPropertyNames);
+    const newPartialProps = pick(this.props, partialPropertyNames);
 
-    this.setState({
-      title,
-      selectedTopics,
-      selectedProject,
-      position,
-      imageFile,
-      description: getEditorStateFromHtmlString(description)
-    });
+    if (!isEqual(oldPartialProps, newPartialProps)) {
+      const title = (this.props.title || '');
+      const { selectedTopics, selectedProject, position } = this.props;
+      this.setState({ title, selectedTopics, selectedProject, position });
+    }
+
+    if (this.props.description !== prevProps.description) {
+      this.setState({ description: getEditorStateFromHtmlString(this.props.description) });
+    }
+
+    if (
+      prevProps.imageFile !== null && this.props.imageFile === null
+      || prevProps.imageFile === null && this.props.imageFile !== null
+      || prevProps.imageFile && this.props.imageFile && prevProps.imageFile[0].base64 !== this.props.imageFile[0].base64
+    ) {
+      this.setState({ imageFile: this.props.imageFile });
+    }
   }
 
   componentWillUnmount() {
@@ -273,8 +283,6 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
   }
 
   render() {
-    if (!this.state) { return null; }
-
     const className = this.props['className'];
     const { formatMessage } = this.props.intl;
     const { topics, projects, title, description, selectedTopics, selectedProject, position, imageFile, titleError, descriptionError } = this.state;

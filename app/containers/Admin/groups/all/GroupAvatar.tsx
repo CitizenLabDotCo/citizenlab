@@ -70,7 +70,6 @@ interface State {
 }
 
 export default class GroupAvatar extends React.PureComponent<Props, State> {
-  state: State;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {

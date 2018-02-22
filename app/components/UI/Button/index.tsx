@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isBoolean } from 'lodash';
 import { darken, rgba } from 'polished';
 import Spinner from 'components/UI/Spinner';
 import Icon, { IconNames } from 'components/UI/Icon';
@@ -31,14 +31,27 @@ const ButtonContent = styled.div`
   padding: 0;
 `;
 
+function getFontSize(size) {
+  switch (size) {
+    case '2':
+      return `18px`;
+    case '3':
+      return `20px`;
+    case '4':
+      return `22px`;
+    default:
+      return `16px`;
+  }
+}
+
 function getPadding(size) {
   switch (size) {
     case '2':
-      return `10px 22px`;
+      return `11px 22px`;
     case '3':
-      return `12px 26px`;
+      return `13px 24px`;
     case '4':
-      return `14px 28px`;
+      return `15px 26px`;
     default:
       return `9px 20px`;
   }
@@ -54,6 +67,19 @@ function getIconHeight(size) {
       return `24px`;
     default:
       return `18px`;
+  }
+}
+
+function getLineHeight(size) {
+  switch (size) {
+    case '2':
+      return `24px`;
+    case '3':
+      return `26px`;
+    case '4':
+      return `28px`;
+    default:
+      return `22px`;
   }
 }
 
@@ -86,7 +112,7 @@ const Container: any = styled.div`
     align-items: center;
     justify-content: ${(props: any) => props.justify || 'center'};
     margin: 0;
-    padding: ${(props: any) => getPadding(props.size)};
+    padding: ${(props: any) => props.padding || getPadding(props.size)};
     border-radius: ${(props: any) => props.circularCorners ? '999em' : '5px'};
     position: relative;
     outline: none;
@@ -107,8 +133,8 @@ const Container: any = styled.div`
 
     ${ButtonText} {
       opacity: ${(props: any) => props.processing ? 0 : 1};
-      font-size: 16px;
-      line-height: 20px;
+      font-size: ${(props: any) => getFontSize(props.size)};
+      line-height: ${(props: any) => getLineHeight(props.size)};
     }
 
     ${StyledIcon} {
@@ -136,7 +162,7 @@ const Container: any = styled.div`
     &.secondary {
       &:not(.disabled) {
         border-color: #EAEAEA;
-        background: #F8F8F8;
+        background: #f9f9fa;
         ${setFillColor('#84939E')}
 
         &:not(.processing):hover,
@@ -277,6 +303,19 @@ export default class Button extends React.PureComponent<Props, State> {
     }
   }
 
+  getSpinnerSize = (size) => {
+    switch (size) {
+      case '2':
+        return `26px`;
+      case '3':
+        return `28px`;
+      case '4':
+        return `30px`;
+      default:
+        return `24px`;
+    }
+  }
+
   render() {
     const { text, width, height, padding, justify, icon, children, linkTo } = this.props;
     let { id, size, style, processing, disabled, fullWidth, circularCorners, className } = this.props;
@@ -284,11 +323,12 @@ export default class Button extends React.PureComponent<Props, State> {
     id = (id || '');
     size = (size || '1');
     style = (style || 'primary');
-    processing = (_.isBoolean(processing) ? processing : false);
-    disabled = (_.isBoolean(disabled) ? disabled : false);
-    fullWidth = (_.isBoolean(fullWidth) ? fullWidth : false);
-    circularCorners = (_.isBoolean(circularCorners) ? circularCorners : true);
+    processing = (isBoolean(processing) ? processing : false);
+    disabled = (isBoolean(disabled) ? disabled : false);
+    fullWidth = (isBoolean(fullWidth) ? fullWidth : false);
+    circularCorners = (isBoolean(circularCorners) ? circularCorners : true);
     className = `${className ? className : ''}`;
+    const spinnerSize = this.getSpinnerSize(size);
 
     const buttonClassnames = `Button ${disabled ? 'disabled' : ''} ${processing ? 'processing' : ''} ${fullWidth ? 'fullWidth' : ''} ${style}`;
 
@@ -296,7 +336,7 @@ export default class Button extends React.PureComponent<Props, State> {
       <ButtonContent>
         {icon && <StyledIcon name={icon} />}
         <ButtonText>{text || children}</ButtonText>
-        {processing && <SpinnerWrapper><Spinner size="24px" /></SpinnerWrapper>}
+        {processing && <SpinnerWrapper><Spinner size={spinnerSize} /></SpinnerWrapper>}
       </ButtonContent>
     );
 

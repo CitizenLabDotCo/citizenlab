@@ -84,7 +84,7 @@ const PopoverItem = styled.div`
 
   &:hover {
     color: #000;
-    background: #f2f2f2;
+    background: #f6f6f6;
 
     ${PopoverIcon} {
       fill: #000;
@@ -100,7 +100,7 @@ type State = {
 };
 
 export default class UserMenu extends React.PureComponent<Props, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -112,7 +112,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const authUser$ = authUserStream().observable;
 
     this.subscriptions = [

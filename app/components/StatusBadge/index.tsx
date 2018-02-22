@@ -32,7 +32,7 @@ type State = {
 };
 
 export default class StatusBadge extends React.PureComponent<Props, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -43,7 +43,7 @@ export default class StatusBadge extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { statusId } = this.props;
     const ideaStatus$ = ideaStatusStream(statusId).observable;
 

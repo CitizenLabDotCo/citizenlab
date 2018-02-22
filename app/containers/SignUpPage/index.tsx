@@ -21,7 +21,7 @@ const Container = styled.div`
   padding: 0;
   display: flex;
   flex-direction: row;
-  background: #f8f8f8;
+  background: #f9f9fa;
   position: relative;
 
   ${media.biggerThanMaxTablet`

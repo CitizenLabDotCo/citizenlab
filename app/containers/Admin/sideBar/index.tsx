@@ -1,8 +1,7 @@
 import * as React from 'react';
 
 // router
-import { browserHistory, Link } from 'react-router';
-import { Location } from 'history';
+import { Link, withRouter, WithRouterProps } from 'react-router';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -99,34 +98,14 @@ type State = {
   location: Location;
 };
 
-class Sidebar extends React.PureComponent<Props & InjectedIntlProps, State> {
-  state: State;
-  unlisten: Function | null;
-
+class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   constructor(props: Props) {
     super(props as any);
-    this.state = {
-      location: browserHistory.getCurrentLocation()
-    };
-    this.unlisten = null;
-  }
-
-  componentDidMount() {
-    this.unlisten = browserHistory.listen((location: Location) => {
-      this.setState({ location });
-    });
-  }
-
-  componentWillUnmount() {
-    if (this.unlisten) {
-      this.unlisten();
-    }
   }
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { location } = this.state;
-    const { pathname } = location;
+    const { pathname } = this.props.location;
 
     return (
       <Menu>
@@ -180,4 +159,4 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(Sidebar);
+export default withRouter(injectIntl<Props>(Sidebar) as any);
