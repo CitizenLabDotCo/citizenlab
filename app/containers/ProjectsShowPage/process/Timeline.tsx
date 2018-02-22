@@ -315,6 +315,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
   initialState: State;
   projectId$: Rx.BehaviorSubject<string | null>;
   selectedPhaseId$: Rx.BehaviorSubject<string | null>;
+  currentPhaseId$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -332,32 +333,44 @@ export default class Timeline extends React.PureComponent<Props, State> {
     this.subscriptions = [];
     this.projectId$ = new Rx.BehaviorSubject(null);
     this.selectedPhaseId$ = new Rx.BehaviorSubject(null);
+    this.currentPhaseId$ = new Rx.BehaviorSubject(null);
   }
 
   componentDidMount() {
     this.projectId$.next(this.props.projectId);
 
     this.subscriptions = [
+      this.selectedPhaseId$
+        .distinctUntilChanged()
+        .filter(selectedPhaseId => isString(selectedPhaseId))
+        .subscribe((selectedPhaseId) => {
+          this.props.onPhaseSelected(selectedPhaseId);
+        }),
+
       this.projectId$
         .distinctUntilChanged()
-        .do(() => this.setState(this.initialState))
+        .do((projectId) => {
+          console.log('projectId: ' + projectId);
+          this.selectedPhaseId$.next(null);
+          this.currentPhaseId$.next(null);
+          this.setState({ loaded: false });
+        })
         .filter(projectId => isString(projectId))
         .switchMap((projectId: string) => {
           const locale$ = localeStream().observable;
           const currentTenant$ = currentTenantStream().observable;
           const phases$ = phasesStream(projectId).observable;
-          const selectedPhaseId$ = this.selectedPhaseId$.distinctUntilChanged().do((selectedPhaseId) => {
-            this.props.onPhaseSelected(selectedPhaseId);
-          });
 
           return Rx.Observable.combineLatest(
             locale$,
             currentTenant$,
             phases$,
-            selectedPhaseId$
+            this.currentPhaseId$.distinctUntilChanged(),
+            this.selectedPhaseId$.distinctUntilChanged()
           );
-        }).subscribe(([locale, currentTenant, phases, selectedPhaseId]) => {
-          this.setState({ locale, currentTenant, phases, selectedPhaseId, loaded: true });
+        })
+        .subscribe(([locale, currentTenant, phases, currentPhaseId, selectedPhaseId]) => {
+          this.setState({ locale, currentTenant, phases, currentPhaseId, selectedPhaseId, loaded: true });
         })
     ];
   }
@@ -365,9 +378,9 @@ export default class Timeline extends React.PureComponent<Props, State> {
   componentDidUpdate(_prevProps: Props, _prevState: State) {
     this.projectId$.next(this.props.projectId);
 
-    const { currentTenant, phases, selectedPhaseId, currentPhaseId, loaded } = this.state;
+    const { currentTenant, phases, currentPhaseId, selectedPhaseId } = this.state;
 
-    if (loaded && currentTenant && !currentPhaseId) {
+    if (currentTenant && !currentPhaseId) {
       if (phases && phases.data.length > 0) {
         const currentTenantTimezone = currentTenant.data.attributes.settings.core.timezone;
         const currentTenantTodayMoment = moment().tz(currentTenantTimezone);
@@ -378,13 +391,13 @@ export default class Timeline extends React.PureComponent<Props, State> {
           const isCurrentPhase = currentTenantTodayMoment.isBetween(startMoment, endMoment, 'days', '[]');
 
           if (isCurrentPhase && (!currentPhaseId || (currentPhaseId && phase.id !== currentPhaseId))) {
-            this.setState({ currentPhaseId: phase.id });
+            this.currentPhaseId$.next(phase.id);
           }
         });
       }
     }
 
-    if (loaded && !selectedPhaseId) {
+    if (!selectedPhaseId) {
       if (currentPhaseId) {
         this.selectedPhaseId$.next(currentPhaseId);
       } else if (phases && phases.data.length > 0) {
@@ -432,9 +445,6 @@ export default class Timeline extends React.PureComponent<Props, State> {
           phaseStatus = 'past';
         }
       }
-
-      console.log(selectedPhaseId);
-      console.log(isSelected);
 
       return (
         <Container className={className}>
