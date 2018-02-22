@@ -17,6 +17,7 @@ import eventEmitter from 'utils/eventEmitter';
 // Utils
 import getSubmitState from 'utils/getSubmitState';
 import { getEditorStateFromHtmlString, getHtmlStringFromEditorState } from 'utils/editorTools';
+import shallowCompare from 'utils/shallowCompare';
 
 // Components
 import Label from 'components/UI/Label';
@@ -114,7 +115,9 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
     this.params$.next({ slug, id });
 
     this.subscriptions = [
-      this.params$.distinctUntilChanged().switchMap((params: IParams) => {
+      this.params$
+      .distinctUntilChanged(shallowCompare)
+      .switchMap((params: IParams) => {
         const { slug, id } = params;
         const locale$ = localeStream().observable;
         const project$ = (slug ? projectBySlugStream(slug).observable : Rx.Observable.of(null));
