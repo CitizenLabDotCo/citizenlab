@@ -4,7 +4,7 @@
 
 ### Fixed
 - Idea page
-  - Fix for voting buttons not being shown when page is accessed directly
+  - Fixed voting buttons not being displayed when page is accessed directly
 - Edit profile form page
   - Fixed broken input fields (first name, last name, password, ...)
   - Fixed broken submit button behavior
@@ -12,12 +12,15 @@
   - Fixed default view (map or card) not being saved
   - Fixed save button not being enabled when an image is added or removed
 - Project page
-  - Fix for header navigation button of the current page not being highlighted in certain scenarios
-  - Fix for no phase selected in certain scenarios
+  - Fixed header navigation button of the current page not being highlighted in certain scenarios
+  - Fixed no phase selected in certain scenarios
+  - Fixed mobile timeline phase selection not working
 - Idea cards
-  - Fix for 'Load more' button being shown when no more ideas
+  - Fixed 'Load more' button being shown when no more ideas
 - Project cards
-  - Fix for 'Load more' button being shown when no more projects
+  - Fixed 'Load more' button being shown when no more projects
+- Idea page
+  - Fixed faulty link to project page
 - Add an idea > project selection page
   - Fixed broken layout on mobile devices
 
