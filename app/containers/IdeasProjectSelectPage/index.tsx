@@ -34,7 +34,7 @@ const Loading = styled.div`
   justify-content: center;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 76px);
   `}
 `;
 
@@ -43,16 +43,17 @@ const Container = styled.div`
   background: #f9f9fa;
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 76px);
   `}
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
-  padding-top: 0px;
+  display: flex;
+  flex-direction: column;
   padding-bottom: 140px;
 
   ${media.smallerThanMaxTablet`
-    padding-bottom: 40px;
+    padding-bottom: 60px;
   `}
 `;
 
@@ -62,9 +63,12 @@ const Content = styled.div`
 `;
 
 const ColumnsContainer = styled.div`
+  flex: 1;
   display: flex;
 
   ${media.biggerThanMaxTablet`
+    flex-direction: row;
+    flex-wrap: nowrap;
     justify-content: space-between;
   `}
 
@@ -94,9 +98,13 @@ const PageTitle = styled.h1`
 const Column = styled.div`
   flex: 0 0 46%;
 
-  &.flex {
-    flex: 1 1 100%;
+  &.fullWidth {
+    flex: 1;
   }
+
+  ${media.smallerThanMaxTablet`
+    flex: 1;
+  `}
 `;
 
 const LeftColumn = Column.extend`
@@ -156,8 +164,8 @@ const ButtonBarInner = styled.div`
 `;
 
 const WithoutButtonBar = styled.div`
-  width: 100%;
-  padding-bottom: 20px;
+  flex: 1;
+  display: flex;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -239,7 +247,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
     if (!loaded) {
       return (
         <Loading>
-          <Spinner size="34px" color="#666" />
+          <Spinner size="32px" color="#666" />
         </Loading>
       );
     } else {
@@ -263,7 +271,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
             {!noProjects && 
               <Content>
                 <ColumnsContainer>
-                  <LeftColumn className={!openProject ? 'flex' : ''}>
+                  <LeftColumn className={!openProject ? 'fullWidth' : ''}>
                     <ColumnTitle>
                       <FormattedMessage {...messages.cityProjects} />
                     </ColumnTitle>
@@ -284,7 +292,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
                     </ProjectsList>
                   </LeftColumn>
                   {openProject &&
-                    <RightColumn className={noProjects ? 'flex' : ''}>
+                    <RightColumn className={noProjects ? 'fullWidth' : ''}>
                       <ColumnTitle>
                         <FormattedMessage {...messages.openProject} />
                       </ColumnTitle>
@@ -306,6 +314,16 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
                   }
                 </ColumnsContainer>
 
+                <WithoutButtonBar>
+                  <Button
+                    className="e2e-submit-project-select-form"
+                    size="1"
+                    text={<FormattedMessage {...messages.continueButton} />}
+                    onClick={this.handleOnSubmitClick}
+                    disabled={!selectedProjectId}
+                  />
+                </WithoutButtonBar>
+
                 <ButtonBar>
                   <ButtonBarInner>
                     <Button
@@ -317,16 +335,6 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
                     />
                   </ButtonBarInner>
                 </ButtonBar>
-
-                <WithoutButtonBar>
-                  <Button
-                    className="e2e-submit-project-select-form"
-                    size="1"
-                    text={<FormattedMessage {...messages.continueButton} />}
-                    onClick={this.handleOnSubmitClick}
-                    disabled={!selectedProjectId}
-                  />
-                </WithoutButtonBar>
               </Content>
             }
           </StyledContentContainer>

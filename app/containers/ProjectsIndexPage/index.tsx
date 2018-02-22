@@ -22,7 +22,7 @@ const Container = styled.div`
   background: #f9f9fa;
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 76px);
   `}
 `;
 

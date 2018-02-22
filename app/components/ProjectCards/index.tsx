@@ -276,7 +276,7 @@ class ProjectCards extends React.PureComponent<Props, State> {
 
         {querying && 
           <Loading id="projects-loading">
-            <Spinner size="34px" color="#666" />
+            <Spinner size="32px" color="#666" />
           </Loading>
         }
 

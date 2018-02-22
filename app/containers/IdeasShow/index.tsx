@@ -718,7 +718,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
 
     if (opened && !loaded) {
       loader = (
-        <StyledSpinner size="34px" color="#666" />
+        <StyledSpinner size="32px" color="#666" />
       );
     }
 

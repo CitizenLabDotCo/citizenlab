@@ -111,7 +111,7 @@ const EmptyContainer = styled.div`
   padding-top: 120px;
   padding-bottom: 120px;
   border-radius: 5px;
-  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  border: solid 1px #e4e4e4;
   background: #fff;
 `;
 
@@ -345,7 +345,7 @@ class IdeaCards extends React.PureComponent<Props, State> {
 
         {querying &&
           <Loading id="ideas-loading">
-            <Spinner size="34px" color="#666" />
+            <Spinner size="32px" color="#666" />
           </Loading>
         }
 
