@@ -312,13 +312,14 @@ type State = {
 };
 
 export default class Timeline extends React.PureComponent<Props, State> {
+  initialState: State;
   projectId$: Rx.BehaviorSubject<string | null>;
   selectedPhaseId$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
     super(props as any);
-    this.state = {
+    const initialState = {
       locale: null,
       currentTenant: null,
       phases: null,
@@ -326,6 +327,8 @@ export default class Timeline extends React.PureComponent<Props, State> {
       selectedPhaseId: null,
       loaded: false
     };
+    this.initialState = initialState;
+    this.state = initialState;
     this.subscriptions = [];
     this.projectId$ = new Rx.BehaviorSubject(null);
     this.selectedPhaseId$ = new Rx.BehaviorSubject(null);
@@ -337,6 +340,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
     this.subscriptions = [
       this.projectId$
         .distinctUntilChanged()
+        .do(() => this.setState(this.initialState))
         .filter(projectId => isString(projectId))
         .switchMap((projectId: string) => {
           const locale$ = localeStream().observable;
@@ -428,6 +432,9 @@ export default class Timeline extends React.PureComponent<Props, State> {
           phaseStatus = 'past';
         }
       }
+
+      console.log(selectedPhaseId);
+      console.log(isSelected);
 
       return (
         <Container className={className}>
