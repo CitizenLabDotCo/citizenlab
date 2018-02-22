@@ -63,12 +63,13 @@ const Content = styled.div`
 
 const ColumnsContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+
+  ${media.biggerThanMaxTablet`
+    justify-content: space-between;
+  `}
 
   ${media.smallerThanMaxTablet`
     flex-direction: column;
-    justify-content: flex-start;
   `}
 `;
 
@@ -155,11 +156,12 @@ const ButtonBarInner = styled.div`
 `;
 
 const WithoutButtonBar = styled.div`
+  width: 100%;
+  padding-bottom: 20px;
+
   ${media.biggerThanMaxTablet`
     display: none;
   `}
-
-  padding-bottom: 20px;
 `;
 
 const EmptyStateContainer = styled.div`
@@ -303,6 +305,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
                     </RightColumn>
                   }
                 </ColumnsContainer>
+
                 <ButtonBar>
                   <ButtonBarInner>
                     <Button
@@ -314,6 +317,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
                     />
                   </ButtonBarInner>
                 </ButtonBar>
+
                 <WithoutButtonBar>
                   <Button
                     className="e2e-submit-project-select-form"
