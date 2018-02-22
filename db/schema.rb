@@ -76,7 +76,6 @@ ActiveRecord::Schema.define(version: 20180221143137) do
     t.uuid "custom_field_id"
     t.string "key"
     t.jsonb "title_multiloc", default: {}
-    t.boolean "is_default", default: false
     t.integer "ordering"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
