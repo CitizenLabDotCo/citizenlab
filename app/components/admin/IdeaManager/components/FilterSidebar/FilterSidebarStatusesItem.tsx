@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { injectTFunc } from 'components/T/utils';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 import { flow } from 'lodash';
 import styled from 'styled-components';
@@ -27,12 +26,12 @@ interface Props {
   isOver: boolean;
   canDrop: boolean;
   connectDropTarget: any;
-  tFunc: ({ }) => string;
 }
 
 class FilterSidebarStatusesItem extends React.Component<Props> {
   render() {
     const { status, active, onClick, connectDropTarget, isOver, canDrop } = this.props;
+
     return connectDropTarget(
       <div>
         <Menu.Item
@@ -67,5 +66,4 @@ const collect = (connect, monitor) => ({
 
 export default flow([
   DropTarget('IDEA', statusTarget, collect),
-  injectTFunc,
 ])(FilterSidebarStatusesItem);

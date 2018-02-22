@@ -1,6 +1,6 @@
 // Libraries
 import * as React from 'react';
-import { compact, differenceBy, flow } from 'lodash';
+import { compact, flow, isEqual } from 'lodash';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 // Injectors
@@ -65,7 +65,7 @@ export interface Props {
 interface State {
 }
 
-class CLMap extends React.Component<Props & InjectedTenant, State> {
+class CLMap extends React.PureComponent<Props & InjectedTenant, State> {
   private map: Leaflet.Map;
   private mapContainer: HTMLElement;
   private clusterLayer: Leaflet.MarkerClusterGroup;
@@ -113,9 +113,9 @@ class CLMap extends React.Component<Props & InjectedTenant, State> {
     );
   }
 
-  componentWillReceiveProps(newProps: Props) {
-    if (newProps.points && differenceBy(newProps.points, this.props.points || [], 'id').length > 0) {
-      this.convertPoints(newProps.points);
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.points && !isEqual(prevProps.points, this.props.points)) {
+      this.convertPoints(this.props.points);
     }
   }
 

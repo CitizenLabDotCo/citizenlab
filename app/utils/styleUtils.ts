@@ -2,53 +2,53 @@ import { css } from 'styled-components';
 
 export const media = {
   smallPhone: (style: any, ...args) => css`
-    @media (max-width: 321px) {
+    @media (max-width: 568px) {
       ${css(style, ...args)}
     }
   `,
   phone: (style: any, ...args) => css`
-    @media (max-width: 481px) {
+    @media (max-width: 768px) {
       ${css(style, ...args)}
     }
   `,
   biggerThanPhone: (style: any, ...args) => css`
-    @media (min-width: 481px) {
+    @media (min-width: 768px) {
       ${css(style, ...args)}
     }
   `,
   tablet: (style: any, ...args) => css`
-    @media (min-width: 481px) and (max-width: 767px) {
+    @media (min-width: 768px) and (max-width: 1024px) {
+      ${css(style, ...args)}
+    }
+  `,
+  tabletLandscape: (style: any, ...args) => css`
+    @media (min-width: 768px) and (max-width: 1024px) and (orientation : landscape) {
+      ${css(style, ...args)}
+    }
+  `,
+  tabletPortrait: (style: any, ...args) => css`
+    @media (min-width: 768px) and (max-width: 1024px) and (orientation : portrait) {
       ${css(style, ...args)}
     }
   `,
   smallerThanMinTablet: (style: any, ...args) => css`
-    @media (max-width: 481px) {
+    @media (max-width: 768px) {
       ${css(style, ...args)}
     }
   `,
   biggerThanMinTablet: (style: any, ...args) => css`
-    @media (min-width: 481px) {
+    @media (min-width: 768px) {
       ${css(style, ...args)}
     }
   `,
   smallerThanMaxTablet: (style: any, ...args) => css`
-    @media (max-width: 767px) {
+    @media (max-width: 1024px) {
       ${css(style, ...args)}
     }
   `,
   biggerThanMaxTablet: (style: any, ...args) => css`
-    @media (min-width: 767px) {
+    @media (min-width: 1024px) {
       ${css(style, ...args)}
-    }
-  `,
-  smallerThanDesktop: (style: any, ...args) => css`
-    @media (max-width: 1024px) {
-      ${css(style, ...args)}
-  }
-  `,
-  biggerThanDesktop: (style: any, ...args) => css`
-    @media(min-width: 1024px) {
-      ${ css(style, ...args) }
     }
   `,
 };
@@ -67,7 +67,7 @@ export const colors = {
   label: '#84939E',
   mediumGrey: '#BDBDBD',
   separation: '#EAEAEA',
-  background: '#F8F8F8',
+  background: '#f9f9fa',
   adminBackground: '#F0F3F4',
   clBlueDarkest: '#02282D',
   clBlueDarker: '#0A5159',

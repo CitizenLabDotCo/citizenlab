@@ -21,15 +21,14 @@ import messages from './messages';
 // styling
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
-import { transparentize } from 'polished';
 
 const Container = styled.div`
   width: 100%;
   position: relative;
-  border-radius: 6px;
-  border: solid 1px #e0e0e0;
-  transition: all 80ms ease-out;
+  border-radius: 5px;
   background: #fff;
+  border: solid 1px #e4e4e4;
+  transition: transform 250ms ease-out;
 
   &.enabled {
     cursor: pointer;
@@ -37,41 +36,25 @@ const Container = styled.div`
 
   &:not(.enabled) {
     opacity: 0.5;
-    background: #f8f8f8;
     cursor: not-allowed;
   }
 
   &.selected {
-    border-color: transparent;
-    background: ${props => transparentize(0.95, props.theme.colors.success)};
+    border-color: ${props => props.theme.colors.success};
   }
 
   &.enabled:hover {
-    border-color: transparent;
+    border-color: #999;
+
+    &.selected {
+      border-color: ${props => props.theme.colors.success};
+    }
   }
 `;
 
 const ContainerInner = styled.div`
   width: 100%;
   display: flex;
-`;
-
-const SelectedBox = styled.div`
-  position: absolute;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  background: transparent;
-  border-radius: 6px;
-  border: solid 1.5px transparent;
-  z-index: 2;
-  transition: all 80ms ease-out;
-
-  &.enabled:hover,
-  &.selected {
-    border-color: ${props => props.theme.colors.success};
-  }
 `;
 
 const Card = styled.div`
@@ -81,13 +64,13 @@ const Card = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 12px;
-  border-radius: 6px;
+  border-radius: 5px;
   position: relative;
 `;
 
 const StyledRadio = styled(Radio)`
   margin: 0;
-  margin-right: 4px;
+  margin-left: 6px;
   padding: 0;
 `;
 
@@ -95,9 +78,9 @@ const ImageWrapper = styled.div`
   margin-right: 20px;
 
   img {
-    border-radius: 6px;
-    width: 120px;
-    height: 120px;
+    border-radius: 5px;
+    width: 80px;
+    height: 80px;
     object-fit: cover;
   }
 
@@ -107,8 +90,9 @@ const ImageWrapper = styled.div`
 `;
 
 const ProjectImagePlaceholder = styled.div`
-  width: 110px;
-  height: 110px;
+  width: 80px;
+  height: 80px;
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -137,14 +121,6 @@ const ProjectTitle = styled.h3`
   font-weight: 400;
   margin: 0;
 `;
-
-// const ProjectDescription = styled.div`
-//   color: #333;
-//   font-size: 15px;
-//   line-height: 21px;
-//   font-weight: 300;
-//   margin-top: 10px;
-// `;
 
 const PostingDisabledReason = styled.div`
   color: black;
@@ -204,7 +180,7 @@ export default class ProjectCard extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { projectId } = this.props;
 
     const project$ = projectByIdStream(projectId).observable;
@@ -290,23 +266,12 @@ export default class ProjectCard extends React.PureComponent<Props, State> {
       const formattedFutureEnabledDate = (futureEnabledDate ? moment(futureEnabledDate, 'YYYY-MM-DD').format('LL') : null);
 
       return (
-        <Container className={`${className} ${selected && 'selected'} ${enabled && 'enabled'}`}>
-          <SelectedBox
-            onClick={this.handleOnClick}
-            className={`${selected && 'selected'} ${enabled && 'enabled'}`}
-          />
-
+        <Container 
+          onClick={this.handleOnClick} 
+          className={`${className} ${selected && 'selected'} ${enabled && 'enabled'}`}
+        >
           <ContainerInner>
             <Card className={`${selected && 'selected'} ${enabled && 'enabled'}`}>
-              <StyledRadio
-                onChange={this.handleOnClick}
-                currentValue={selected ? projectId : null}
-                value={projectId}
-                name="project"
-                id={projectId}
-                label=""
-                disabled={!enabled}
-              />
 
               <ImageWrapper>
                 {smallImage ?
@@ -322,18 +287,13 @@ export default class ProjectCard extends React.PureComponent<Props, State> {
                 <ProjectTitle className={`${selected && 'selected'} ${enabled && 'enabled'}`}>
                   <T value={titleMultiloc} />
                 </ProjectTitle>
-                {/*
-                {cardState === 'enabled' &&
-                  <ProjectDescription className={`${selected && 'selected'} ${enabled && 'enabled'}`}>
-                    <T value={descriptionPreviewMultiloc} />
-                  </ProjectDescription>
-                }
-                */}
+
                 {cardState === 'disabled' && disabledMessage &&
                   <PostingDisabledReason>
                     <FormattedMessage {...disabledMessage} values={{ date: formattedFutureEnabledDate }} />
                   </PostingDisabledReason>
                 }
+
                 {cardState === 'enabledBecauseAdmin' &&
                   <PostingEnabledReason>
                     <AdminIconWrapper>
@@ -343,6 +303,16 @@ export default class ProjectCard extends React.PureComponent<Props, State> {
                   </PostingEnabledReason>
                 }
               </ProjectContent>
+
+              <StyledRadio
+                onChange={this.handleOnClick}
+                currentValue={selected ? projectId : null}
+                value={projectId}
+                name="project"
+                id={projectId}
+                label=""
+                disabled={!enabled}
+              />
             </Card>
           </ContainerInner>
         </Container>

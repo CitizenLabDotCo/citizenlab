@@ -17,7 +17,6 @@ type State = {
 };
 
 export default class LanguageProvider extends React.PureComponent<Props, State> {
-  state: State;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -28,7 +27,7 @@ export default class LanguageProvider extends React.PureComponent<Props, State> 
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const locale$ = localeStream().observable;
 
     this.subscriptions = [
@@ -41,13 +40,18 @@ export default class LanguageProvider extends React.PureComponent<Props, State> 
   }
 
   render() {
-    const { messages } = this.props;
     const { locale } = this.state;
 
-    return (locale ? (
-      <IntlProvider locale={locale} key={locale} messages={messages[locale]}>
-        {React.Children.only(this.props.children)}
-      </IntlProvider>
-    ) : null);
+    if (locale) {
+      const { messages } = this.props;
+
+      return (
+        <IntlProvider locale={locale} key={locale} messages={messages[locale]}>
+          {React.Children.only(this.props.children)}
+        </IntlProvider>
+      );
+    }
+
+    return null;
   }
 }

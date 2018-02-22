@@ -78,7 +78,7 @@ interface State {
 }
 
 class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -94,7 +94,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { projectId } = this.props;
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;

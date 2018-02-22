@@ -2,15 +2,14 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
 // router
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 
 // components
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import ProjectCards from 'components/ProjectCards';
-import Icon from 'components/UI/Icon';
-import Button from 'components/UI/Button';
 import Footer from 'components/Footer';
+import Spinner from 'components/UI/Spinner';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -32,22 +31,45 @@ import { media } from 'utils/styleUtils';
 import { Locale } from 'typings';
 
 const Container: any = styled.div`
+  height: 100%;
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: ${(props: any) => props.hasHeader ? '#f8f8f8' : '#fff'};
   position: relative;
+  background: #fff;
+
+  ${media.smallerThanMaxTablet`
+    min-height: auto;
+  `}
+
+  ${media.smallerThanMinTablet`
+    background: #f9f9fa;
+  `}
+`;
+
+const Loading = styled.div`
+  width: 100%;
+  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ${media.smallerThanMaxTablet`
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+  `}
 `;
 
 const Header = styled.div`
-  width: 100vw;
+  width: 100%;
   height: 480px;
+  flex: 0 0 480px;
   margin: 0;
   padding: 0;
   position: relative;
 
   ${media.smallerThanMinTablet`
-    height: 250px;
+    height: 320px;
   `}
 `;
 
@@ -74,7 +96,7 @@ const HeaderImageBackground: any = styled.div`
 
 const HeaderImageOverlay = styled.div`
   background: #000;
-  opacity: 0.55;
+  opacity: 0.4;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -91,23 +113,28 @@ const HeaderContent = styled.div`
   left: 0;
   right: 0;
   margin: 0 auto;
-  margin-top: -10px;
+  margin-top: -50px;
   padding-left: 30px;
   padding-right: 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   z-index: 2;
+
+  ${media.smallerThanMinTablet`
+    margin-top: -60px;
+  `}
 `;
 
 const HeaderTitle: any = styled.h1`
   width: 100%;
-  max-width: 600px;
+  max-width: 980px;
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
   font-size: 55px;
-  line-height: 60px;
+  line-height: 64px;
   font-weight: 600;
-  text-align: left;
+  text-align: center;
   white-space: normal;
   word-break: normal;
   word-wrap: normal;
@@ -135,7 +162,7 @@ const HeaderSubtitle: any = styled.h2`
   overflow-wrap: normal;
   hyphens: auto;
   max-width: 980px;
-  text-align: left;
+  text-align: center;
   text-decoration: none;
   padding: 0;
   padding-bottom: 0px;
@@ -153,27 +180,36 @@ const HeaderSubtitle: any = styled.h2`
 
 const Content = styled.div`
   width: 100%;
-  background: #f8f8f8;
-  z-index: 1;
+  z-index: 3;
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-bottom: 10px;
 `;
 
-const IdeasStyledContentContainer = StyledContentContainer.extend``;
+const ProjectsStyledContentContainer = StyledContentContainer.extend``;
 
-const ProjectsStyledContentContainer = StyledContentContainer.extend`
-  background: #fff;
+const IdeasStyledContentContainer = StyledContentContainer.extend`
+  background: #f9f9fa;
 `;
 
 const Section = styled.div`
   width: 100%;
-  margin-top: 80px;
-  padding-bottom: 60px;
+  padding-top: 110px;
+  padding-bottom: 110px;
 
   ${media.smallerThanMinTablet`
-    margin-top: 60px;
+    padding-top: 60px;
+    padding-bottom: 60px;
+  `}
+`;
+
+const ProjectSection = Section.extend`
+  padding-top: 0px;
+  margin-top: -80px;
+
+  ${media.smallerThanMinTablet`
+    margin-top: -160px;
   `}
 `;
 
@@ -197,69 +233,17 @@ const SectionTitle = styled.h2`
   padding: 0;
 
   ${media.smallerThanMaxTablet`
+    width: 100%;
     font-size: 26px;
     line-height: 30px;
+    /* text-align: center;
+    justify-content: center; */
   `}
 `;
 
 const SectionContainer = styled.section`
   width: 100%;
   margin-top: 10px;
-`;
-
-const ExploreText = styled.div`
-  color: #84939E;
-  font-size: 17px;
-  font-weight: 400;
-  line-height: 21px;
-  white-space: normal;
-  margin-right: 8px;
-  text-decoration: underline;
-  transition: all 100ms ease-out;
-
-  ${media.smallerThanMaxTablet`
-    font-size: 15px;
-    line-height: 19px;
-  `}
-`;
-
-const ExploreIcon = styled(Icon) `
-  height: 19px;
-  fill: #84939E;
-  margin-top: 1px;
-  transition: all 100ms ease-out;
-`;
-
-const Explore = styled(Link) `
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  margin-bottom: 4px;
-
-  &:hover {
-    ${ExploreText} {
-      color: #000;
-    }
-
-    ${ExploreIcon} {
-      fill: #000;
-    }
-  }
-
-  ${media.smallerThanMinTablet`
-    display: none;
-  `}
-`;
-
-const SectionFooter = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const ViewMoreButton = styled(Button) `
-  margin-top: 20px;
 `;
 
 type Props = {};
@@ -270,13 +254,13 @@ type State = {
   currentTenantHeader: string | null;
   hasIdeas: boolean;
   hasProjects: boolean;
+  loaded: boolean;
 };
 
 export const landingPageIdeasQuery = { sort: 'trending', 'page[number]': 1, 'page[size]': 6 };
 export const landingPageProjectsQuery = { sort: 'new', 'page[number]': 1, 'page[size]': 2 };
 
-class LandingPage extends React.PureComponent<Props, State> {
-  state: State;
+export default class LandingPage extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -286,12 +270,13 @@ class LandingPage extends React.PureComponent<Props, State> {
       currentTenant: null,
       currentTenantHeader: null,
       hasIdeas: false,
-      hasProjects: false
+      hasProjects: false,
+      loaded: false
     };
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const query = browserHistory.getCurrentLocation().query;
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
@@ -312,7 +297,8 @@ class LandingPage extends React.PureComponent<Props, State> {
           currentTenant,
           currentTenantHeader: (currentTenant.data.attributes.header_bg ? currentTenant.data.attributes.header_bg.large : null),
           hasIdeas: (ideas !== null && ideas.data.length > 0),
-          hasProjects: (projects !== null && projects.data.length > 0)
+          hasProjects: (projects !== null && projects.data.length > 0),
+          loaded: true
         });
       }),
 
@@ -351,9 +337,17 @@ class LandingPage extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, currentTenant, currentTenantHeader, hasIdeas, hasProjects } = this.state;
+    const { locale, currentTenant, currentTenantHeader, hasProjects, loaded } = this.state;
 
-    if (locale && currentTenant) {
+    if (!loaded) {
+      return (
+        <Loading id="ideas-loading">
+          <Spinner size="34px" color="#666" />
+        </Loading>
+      );
+    }
+
+    if (loaded && locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
       const organizationNameMultiLoc = currentTenant.data.attributes.settings.core.organization_name;
       const headerTitleMultiLoc = currentTenant.data.attributes.settings.core.header_title;
@@ -387,32 +381,11 @@ class LandingPage extends React.PureComponent<Props, State> {
             <Content>
               <ProjectsStyledContentContainer>
                 {hasProjects &&
-                  <Section>
-                    <SectionHeader>
-                      <SectionTitle>
-                        <FormattedMessage {...messages.cityProjects} />
-                      </SectionTitle>
-                      <Explore to="/projects">
-                        <ExploreText>
-                          <FormattedMessage {...messages.exploreAllProjects} />
-                        </ExploreText>
-                        <ExploreIcon name="compass" />
-                      </Explore>
-                    </SectionHeader>
+                  <ProjectSection>
                     <SectionContainer>
-                      <ProjectCards filter={landingPageProjectsQuery} loadMoreEnabled={false} />
+                      <ProjectCards queryParameters={{ 'page[size]': 2 }} hideAllFilters={true} />
                     </SectionContainer>
-                    <SectionFooter>
-                      <ViewMoreButton
-                        text={<FormattedMessage {...messages.exploreAllProjects} />}
-                        style="primary"
-                        size="3"
-                        icon="compass"
-                        onClick={this.goToProjectsPage}
-                        circularCorners={false}
-                      />
-                    </SectionFooter>
-                  </Section>
+                  </ProjectSection>
                 }
               </ProjectsStyledContentContainer>
 
@@ -422,30 +395,10 @@ class LandingPage extends React.PureComponent<Props, State> {
                     <SectionTitle>
                       <FormattedMessage {...messages.trendingIdeas} />
                     </SectionTitle>
-                    {hasIdeas &&
-                      <Explore to="/ideas">
-                        <ExploreText>
-                          <FormattedMessage {...messages.exploreAllIdeas} />
-                        </ExploreText>
-                        <ExploreIcon name="compass" />
-                      </Explore>
-                    }
                   </SectionHeader>
                   <SectionContainer>
-                    <IdeaCards filter={landingPageIdeasQuery} loadMoreEnabled={false} />
+                    <IdeaCards queryParameters={{ 'page[size]': 9 }} />
                   </SectionContainer>
-                  {hasIdeas &&
-                    <SectionFooter>
-                      <ViewMoreButton
-                        text={<FormattedMessage {...messages.exploreAllIdeas} />}
-                        style="primary"
-                        size="3"
-                        icon="compass"
-                        onClick={this.goToIdeasPage}
-                        circularCorners={false}
-                      />
-                    </SectionFooter>
-                  }
                 </Section>
               </IdeasStyledContentContainer>
 
@@ -459,6 +412,3 @@ class LandingPage extends React.PureComponent<Props, State> {
     return null;
   }
 }
-
-export default LandingPage;
-

@@ -29,7 +29,7 @@ type State = {
 };
 
 export default class IdeaMeta extends React.PureComponent<Props, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -42,7 +42,7 @@ export default class IdeaMeta extends React.PureComponent<Props, State> {
     };
   }
 
-  componentWillMount () {
+  componentDidMount () {
     const { ideaId } = this.props;
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;

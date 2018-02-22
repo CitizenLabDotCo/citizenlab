@@ -1,19 +1,24 @@
 import * as React from 'react';
 import { IPhaseData } from 'services/phases';
 import { Menu, Divider } from 'semantic-ui-react';
-import { injectTFunc } from 'components/T/utils';
 import FilterSidebarPhasesItem from './FilterSidebarPhasesItem';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
 
-interface Props {
+type Props  = {
   phases?: IPhaseData[];
   selectedPhase?: string;
   onChangePhaseFilter?: (string) => void;
-}
+};
 
-class FilterSidebarPhases extends React.Component<Props> {
+type State = {};
+
+export default class FilterSidebarPhases extends React.PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props as any);
+    this.state = {};
+  }
 
   handleItemClick = (id) => () => {
     this.props.onChangePhaseFilter && this.props.onChangePhaseFilter(id);
@@ -47,5 +52,3 @@ class FilterSidebarPhases extends React.Component<Props> {
     );
   }
 }
-
-export default injectTFunc(FilterSidebarPhases);

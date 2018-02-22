@@ -28,7 +28,7 @@ export const injectTenant = () => {
         };
       }
 
-      componentWillMount() {
+      componentDidMount() {
         this.sub = currentTenantStream()
         .observable
         .subscribe((response) => {

@@ -9,7 +9,7 @@ import messages from './messages';
 
 type Props = {
   id?: string | undefined;
-  onChange: (value: any) => void;
+  onChange: (value: string) => void;
 };
 
 type State = {
@@ -17,8 +17,6 @@ type State = {
 };
 
 class SelectSort extends React.PureComponent<Props, State> {
-  state: State;
-
   constructor(props: Props) {
     super(props as any);
     this.state = {
@@ -26,9 +24,9 @@ class SelectSort extends React.PureComponent<Props, State> {
     };
   }
 
-  handleOnChange = (selectedValue) => {
+  handleOnChange = (selectedValue: string[]) => {
     this.setState({ selectedValue });
-    this.props.onChange(selectedValue);
+    this.props.onChange(selectedValue[0]);
   }
 
   render() {
@@ -49,6 +47,8 @@ class SelectSort extends React.PureComponent<Props, State> {
         values={options}
         onChange={this.handleOnChange}
         multiple={false}
+        maxWidth={'250px'}
+        mobileMaxWidth={'180px'}
       />
     );
   }

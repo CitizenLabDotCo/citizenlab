@@ -207,4 +207,8 @@ export default defineMessages({
     id: 'app.components.IdeasShow.commentingDisabledInContext',
     defaultMessage: 'Commenting on ideas in \'{projectName}\' is currently disabled.',
   },
+  goBack: {
+    id: 'app.components.IdeasShow.goBack',
+    defaultMessage: 'Go back',
+  },
 });
