@@ -13,6 +13,7 @@
   - Fixed save button not being enabled when an image is added or removed
 - Project page
   - Fix for header navigation button of the current page not being highlighted in certain scenarios
+  - Fix for no phase selected in certain scenarios
 - Idea cards
   - Fix for 'Load more' button being shown when no more ideas
 - Project cards
