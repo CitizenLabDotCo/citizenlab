@@ -350,13 +350,14 @@ class IdeaCard extends React.PureComponent<Props, State> {
         ${idea.data.relationships.user_vote && idea.data.relationships.user_vote.data ? 'voted' : 'not-voted' }
         ${commentingDescriptor && commentingDescriptor.enabled ? 'e2e-comments-enabled' : 'e2e-comments-disabled'}
         ${idea.data.attributes.comments_count > 0 ? 'e2e-has-comments' : ''}
+        ${votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled'}
       `;
 
       return (
         <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.data.attributes.slug}`} className={className}>
           <IdeaContainerInner>
 
-            {ideaImageUrl && 
+            {ideaImageUrl &&
               <IdeaImageContainer>
                 <IdeaImagePlaceholder>
                   <IdeaImagePlaceholderIcon name="idea" />

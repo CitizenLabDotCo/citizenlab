@@ -31,7 +31,7 @@ module.exports = {
     .click('.e2e-idea-card.e2e-comments-enabled')
     .waitForElementVisible('#e2e-idea-show')
     .refresh()
-    .waitForElementVisible('.e2e-comments')
+    .waitForElementVisible('.e2e-comment-form')
     .setValue('.e2e-comment-form textarea', `Test Comment ${hash}`)
     .click('.e2e-comment-form .e2e-submit-comment')
     .pause(1000)

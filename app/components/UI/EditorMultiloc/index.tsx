@@ -95,7 +95,7 @@ export default class EditorMultiloc extends React.PureComponent<Props, State> {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
 
       return (
-        <Container className={this.props['className']} >
+        <Container id={this.props.id} className={`${this.props['className']} e2e-multiloc-editor`} >
           {currentTenantLocales.map((currentTenantLocale, index) => {
             const { label, valueMultiloc, placeholder, errorMultiloc } = this.props;
             const value = get(valueMultiloc, [currentTenantLocale], null);
