@@ -75,7 +75,7 @@ export default class ProjectDescription extends React.Component<Props, State> {
           project$
         ).subscribe(([locale, project]) => {
           const descriptionMultilocEditorState: MultilocEditorState = {};
- 
+
           forOwn(project.data.attributes.description_multiloc, (htmlValue, locale) => {
             descriptionMultilocEditorState[locale] = getEditorStateFromHtmlString(htmlValue);
           });
@@ -148,6 +148,7 @@ export default class ProjectDescription extends React.Component<Props, State> {
         <Section>
           <SectionField>
             <TextAreaMultiloc
+              id="description-preview"
               name="meta_description"
               label={<FormattedMessage {...messages.descriptionPreviewLabel} />}
               rows={5}
