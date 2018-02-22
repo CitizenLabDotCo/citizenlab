@@ -52,17 +52,14 @@ interface Props {
 interface State {}
 
 export default class MobileTimeline extends React.PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   onChange = (_event, data) => {
     this.props.onPhaseSelection(data.value);
   }
 
   render () {
     const { phases, currentPhase, selectedPhase } = this.props;
+
+    console.log(selectedPhase);
 
     return (
       <Wrapper>
