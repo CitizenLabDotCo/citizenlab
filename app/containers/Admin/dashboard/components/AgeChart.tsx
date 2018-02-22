@@ -3,6 +3,7 @@ import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { usersByBirthyearStream } from 'services/stats';
@@ -18,14 +19,11 @@ type State = {
 
 type Props = {
   startAt: string,
-  endAt: string,
-  theme: any,
-  intl: any,
+  endAt: string
 };
 
-class AgeChart extends React.PureComponent<Props, State> {
-
-  serieObservable: Rx.Subscription;
+class AgeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
+  subscription: Rx.Subscription;
 
   constructor(props: Props) {
     super(props as any);
@@ -38,10 +36,9 @@ class AgeChart extends React.PureComponent<Props, State> {
     this.resubscribe();
   }
 
-  componentWillUpdate(nextProps) {
-    if (nextProps.startAt !== this.props.startAt ||
-      nextProps.endAt !== this.props.endAt) {
-      this.resubscribe(nextProps.startAt, nextProps.endAt);
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.startAt !== prevProps.startAt || this.props.endAt !== prevProps.endAt) {
+      this.resubscribe(this.props.startAt, this.props.endAt);
     }
   }
 
@@ -63,9 +60,11 @@ class AgeChart extends React.PureComponent<Props, State> {
   }
 
   resubscribe(startAt= this.props.startAt, endAt= this.props.endAt) {
-    if (this.serieObservable) this.serieObservable.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
 
-    this.serieObservable = usersByBirthyearStream({
+    this.subscription = usersByBirthyearStream({
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
@@ -77,24 +76,26 @@ class AgeChart extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const theme = this.props['theme'];
+
     return (
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={this.state.serie} margin={{ right: 40 }}>
           <Bar
             dataKey="value"
             name="name"
-            fill={this.props.theme.chartFill}
-            label={{ fill: this.props.theme.barFill, fontSize: this.props.theme.chartLabelSize }}
+            fill={theme.chartFill}
+            label={{ fill: theme.barFill, fontSize: theme.chartLabelSize }}
           />
           <XAxis
             dataKey="name"
-            stroke={this.props.theme.chartLabelColor}
-            fontSize={this.props.theme.chartLabelSize}
+            stroke={theme.chartLabelColor}
+            fontSize={theme.chartLabelSize}
             tick={{ transform: 'translate(0, 7)' }}
           />
           <YAxis
-            stroke={this.props.theme.chartLabelColor}
-            fontSize={this.props.theme.chartLabelSize}
+            stroke={theme.chartLabelColor}
+            fontSize={theme.chartLabelSize}
           />
           <Tooltip isAnimationActive={false} />
 
@@ -104,4 +105,4 @@ class AgeChart extends React.PureComponent<Props, State> {
   }
 }
 
-export default withTheme(injectIntl(AgeChart));
+export default injectIntl<Props>(withTheme(AgeChart as any) as any);

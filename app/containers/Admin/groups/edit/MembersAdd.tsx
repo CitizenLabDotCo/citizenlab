@@ -107,7 +107,7 @@ class MembersAdd extends React.Component<Props & injectedLocalized, State> {
     this.input$ = new Rx.Subject<string>();
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.subscriptions.push(
       this.input$
       .debounceTime(300)

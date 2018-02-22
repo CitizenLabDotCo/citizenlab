@@ -3,15 +3,13 @@ import * as Rx from 'rxjs/Rx';
 import { isString } from 'lodash';
 
 // components
+import Header from '../Header';
 import ContentContainer from 'components/ContentContainer';
 import ProjectInfo from './ProjectInfo';
 import EventsPreview from '../EventsPreview';
 
 // services
 import { projectBySlugStream, IProject } from 'services/projects';
-
-// style
-import styled from 'styled-components';
 
 type Props = {
   params: {
@@ -23,10 +21,8 @@ type State = {
   project: IProject | null;
 };
 
-const Container = styled.div``;
-
 export default class ProjectInfoPage extends React.PureComponent<Props, State> {
-  slug$: Rx.BehaviorSubject<string>;
+  slug$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -34,25 +30,28 @@ export default class ProjectInfoPage extends React.PureComponent<Props, State> {
     this.state = {
       project: null
     };
-    this.slug$ = new Rx.BehaviorSubject(null as any);
+    this.slug$ = new Rx.BehaviorSubject(null);
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
-      this.slug$.distinctUntilChanged().filter(slug => isString(slug)).switchMap((slug) => {
-        const project$ = projectBySlugStream(slug).observable;
-        return project$;
-      }).subscribe((project) => {
-        this.setState({ project });
-      })
+      this.slug$
+        .distinctUntilChanged()
+        .filter(slug => isString(slug))
+        .switchMap((slug: string) => {
+          const project$ = projectBySlugStream(slug).observable;
+          return project$;
+        }).subscribe((project) => {
+          this.setState({ project });
+        })
     ];
   }
 
-  componentWillReceiveProps(newProps: Props) {
-    this.slug$.next(newProps.params.slug);
+  componentDidUpdate(_prevProps: Props) {
+    this.slug$.next(this.props.params.slug);
   }
 
   componentWillUnmount() {
@@ -61,15 +60,19 @@ export default class ProjectInfoPage extends React.PureComponent<Props, State> {
 
   render() {
     const { project } = this.state;
+    const { slug } = this.props.params;
 
     if (project) {
       return (
-        <Container>
+        <>
+          <Header slug={slug} />
+
           <ContentContainer>
             <ProjectInfo projectId={project.data.id} />
           </ContentContainer>
+
           <EventsPreview projectId={project.data.id} />
-        </Container>
+        </>
       );
     }
 

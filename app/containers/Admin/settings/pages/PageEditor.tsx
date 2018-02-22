@@ -48,7 +48,6 @@ const DeployIcon = styled(Icon)`
   margin-right: 12px;
   transition: transform 200ms ease-out;
   transform: rotate(0deg);
-  will-change: transform;
 `;
 
 const Toggle = styled.div`
@@ -78,9 +77,8 @@ const Toggle = styled.div`
 
 const EditionForm = styled.form`
   overflow: hidden;
-  transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  padding-top: 15px;
-  padding-bottom: 25px;
+  transition: all 350ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  margin-top: 15px;
 
   &.page-enter {
     max-height: 0px;
@@ -138,7 +136,7 @@ export default class PageEditor extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { slug } = this.props;
     const locale$ = localeStream().observable;
     const page$ = pageBySlugStream(slug).observable;
@@ -199,10 +197,6 @@ export default class PageEditor extends React.PureComponent<Props, State> {
     let savePromise: Promise<IPage> | null = null;
 
     if (page && page.id) {
-      console.log(1);
-      console.log('pageId: ' + page.id);
-      console.log('diff:');
-      console.log(diff);
       savePromise = updatePage(page.id, diff);
     } else if (!isEmpty(diff) && slug) {
       const pageData = { ...diff, slug };

@@ -41,7 +41,6 @@ const StyledRadio = styled(Radio)`
 `;
 
 const ReportReason = styled.div`
-  will-change: height, max-height, opacity;
   transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
   overflow: hidden;
 
@@ -114,8 +113,6 @@ class SpamReportForm extends React.PureComponent<Props & InjectedIntlProps, Stat
             <CSSTransition
               classNames="reason" 
               timeout={timeout}
-              mountOnEnter={true}
-              unmountOnExit={true}
               enter={true}
               exit={true}
             >

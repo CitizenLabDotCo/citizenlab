@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   margin-bottom: 60px;
 `;
 
-export default class PageWrapper extends React.Component{
+export default class PageWrapper extends React.PureComponent{
   render() {
     return (
       <Wrapper>{this.props.children}</Wrapper>

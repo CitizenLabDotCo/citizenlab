@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { isFinite } from 'lodash';
+import { isFinite, isEqual } from 'lodash';
 
 // components
 // import Input from 'components/UI/Input';
@@ -91,7 +91,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { phaseId } = this.props;
     const phase$: Rx.Observable<IPhase | null> = (phaseId ? phaseStream(phaseId).observable : Rx.Observable.of(null));
 
@@ -139,9 +139,12 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
     ];
   }
 
-  componentWillUpdate(_nextProps, nextState) {
-    if (nextState !== this.state) {
-      const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = nextState;
+  componentDidUpdate(_prevProps: Props, prevState: State) {
+    const { noVotingLimit: prevNoVotingLimit , loaded: prevLoaded, ...prevPartialState } = prevState;
+    const { noVotingLimit: nextNoVotingLimit, loaded: nextLoaded, ...nextPartialState } = this.state;
+
+    if (!isEqual(prevPartialState, nextPartialState)) {
+      const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = this.state;
 
       this.props.onChange({
         participationMethod,

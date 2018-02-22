@@ -18,10 +18,14 @@ type Props = {
 
 type State = {};
 
-class IdeaButton extends React.Component<Props, State> {
+class IdeaButton extends React.PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props as any);
+  }
 
   handleOnAddIdeaClick = () => {
     const { project } = this.props;
+
     if (project) {
       browserHistory.push(`/projects/${project.attributes.slug}/ideas/new`);
     } else {
@@ -37,9 +41,10 @@ class IdeaButton extends React.Component<Props, State> {
 
     return (
       <Button
+        className={this.props['className']}
         onClick={this.handleOnAddIdeaClick}
         style="primary"
-        size="2"
+        size="1"
         text={<FormattedMessage {...messages.startAnIdea} />}
         circularCorners={false}
         disabled={!enabled}

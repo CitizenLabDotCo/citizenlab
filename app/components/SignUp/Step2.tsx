@@ -79,7 +79,7 @@ type State = {
 };
 
 class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -101,7 +101,7 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
     const areas$ = areasStream().observable;

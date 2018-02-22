@@ -1,6 +1,7 @@
 // Libraries
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
+import { isString } from 'lodash';
 
 // Services
 import { projectBySlugStream, IProjectData } from 'services/projects';
@@ -38,7 +39,7 @@ type State = {
 };
 
 class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps, State> {
-  props$: Rx.BehaviorSubject<Props>;
+  slug$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -47,27 +48,28 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
       project: null,
       loaded: false
     };
-    this.props$ = new Rx.BehaviorSubject(null as any);
+    this.slug$ = new Rx.BehaviorSubject(null);
     this.subscriptions = [];
   }
 
-  componentWillMount() {
-    this.props$.next(this.props);
+  componentDidMount() {
+    this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
-      this.props$.distinctUntilChanged().switchMap((props) => {
-        return (props.params && props.params.slug ? projectBySlugStream(props.params.slug).observable : Rx.Observable.of(null));
-      }).subscribe((project) => {
-        this.setState({
-          project: (project ? project.data : null),
-          loaded: true
-        });
-      })
+      this.slug$
+        .distinctUntilChanged()
+        .switchMap(slug => isString(slug) ? projectBySlugStream(slug).observable : Rx.Observable.of(null))
+        .subscribe((project) => {
+          this.setState({
+            project: (project ? project.data : null),
+            loaded: true
+          });
+        })
     ];
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.props$.next(nextProps);
+  componentDidUpdate() {
+    this.slug$.next(this.props.params.slug);
   }
 
   componentWillUnmount() {

@@ -39,7 +39,7 @@ const StyledAutocompleteItem = styled.div`
   line-height: 17px;
   font-weight: 400;
   padding: 12px;
-  z-index: 9999;
+  z-index: 2;
 
   strong {
     color: #000;
@@ -117,7 +117,7 @@ export default class LocationInput extends React.PureComponent<Props, State> {
           id={id}
           highlightFirstSuggestion={true}
           inputProps={inputProps}
-          autocompleteItem={AutocompleteItem}
+          renderSuggestion={AutocompleteItem}
           styles={styles}
           onSelect={this.handleSelect}
         />
