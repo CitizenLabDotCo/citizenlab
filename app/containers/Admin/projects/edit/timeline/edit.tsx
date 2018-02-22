@@ -121,7 +121,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
         return Rx.Observable.combineLatest(locale$, project$, phase$);
       }).subscribe(([locale, project, phase]) => {
         let multilocEditorState: MultilocEditorState | null = null;
- 
+
         if (phase) {
           multilocEditorState = {};
 
@@ -243,8 +243,8 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
         }
       } catch (errors) {
         this.setState({
-          errors: get(errors, 'json.errors', null), 
-          saving: false, 
+          errors: get(errors, 'json.errors', null),
+          saving: false,
           saved: false
         });
       }
@@ -271,6 +271,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
             <Section>
               <SectionField>
                 <InputMultiloc
+                  id="title"
                   label={<FormattedMessage {...messages.titleLabel} />}
                   type="text"
                   valueMultiloc={phaseAttrs.title_multiloc}
@@ -280,7 +281,7 @@ class AdminProjectTimelineEdit extends React.Component<Props, State> {
               </SectionField>
 
               <SectionField>
-                <ParticipationContext 
+                <ParticipationContext
                   phaseId={(phase ? phase.data.id : null)}
                   onSubmit={this.handleParcticipationContextOnSubmit}
                   onChange={this.handleParticipationContextOnChange}

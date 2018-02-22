@@ -26,11 +26,14 @@ module.exports = {
     .click('@addPhaseButton')
 
     // Phase insertion form
-    .assert.urlContains('/timeline/new')
-    .setValue('#title', title)
+    .assert.urlContains('/timeline/new');
+
+    browser.fillMultiloc('#title', title);
+    browser.fillMultiloc('#description', 'Lorem Ipsum dolor sit amet');
+
+    adminProjectsPage
     .setValue('#startDate', startDate)
     .setValue('#endDate', endDate)
-    .setValue('.public-DraftEditor-content', 'Lorem ipsum dolor sit amet')
     .click('@submitButton')
     .waitForElementVisible('@submitSuccess')
 
