@@ -4,7 +4,6 @@ class CreateCustomFieldOptions < ActiveRecord::Migration[5.1]
       t.references :custom_field, foreign_key: true, type: :uuid
       t.string :key
       t.jsonb :title_multiloc, default: {}
-      t.boolean :is_default, default: false
       t.integer :ordering
 
       t.timestamps
