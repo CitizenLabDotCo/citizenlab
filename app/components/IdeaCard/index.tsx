@@ -152,25 +152,27 @@ const CommentInfo = styled.div`
 `;
 
 const CommentIcon = styled(Icon)`
-  height: 28px;
+  height: 22px;
   fill: ${(props) => props.theme.colors.label};
   margin-bottom: 0px;
 `;
 
 const CommentCount = styled.div`
   color: ${(props) => props.theme.colors.label};
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 300;
   line-height: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
 
+  /*
   position: absolute;
   top: 0px;
   left: 1px;
   width: 26px;
   height: 22px;
+  */
 `;
 
 const IdeaContainer = styled(Link)`
@@ -385,7 +387,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
                   size="normal"
                 />
                 <CommentInfo>
-                  <CommentIcon name="comments-outline" />
+                  <CommentIcon name="comments2" />
                   <CommentCount>
                     <span>{idea.data.attributes.comments_count}</span>
                   </CommentCount>
