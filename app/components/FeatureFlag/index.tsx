@@ -22,7 +22,7 @@ export default class FeatureFlag extends React.PureComponent<Props, State> {
     this.subscription = null;
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const currentTenant$ = currentTenantStream().observable;
     this.subscription = currentTenant$.subscribe(currentTenant => this.setState({ currentTenant }));
   }

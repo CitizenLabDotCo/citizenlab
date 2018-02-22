@@ -4,6 +4,7 @@ import { isString } from 'lodash';
 import { browserHistory } from 'react-router';
 
 // components
+import Header from '../Header';
 import Ideas from './Ideas';
 import EventsPreview from '../EventsPreview';
 import ContentContainer from 'components/ContentContainer';
@@ -18,7 +19,7 @@ import messages from '../messages';
 // style
 import styled from 'styled-components';
 
-const Container = styled.div`
+const IdeasContainer = styled.div`
   padding-top: 70px;
   padding-bottom: 70px;
 `;
@@ -43,7 +44,7 @@ type State = {
 };
 
 export default class ProjectIdeasPage extends React.PureComponent<Props, State> {
-  slug$: Rx.BehaviorSubject<string>;
+  slug$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -51,30 +52,32 @@ export default class ProjectIdeasPage extends React.PureComponent<Props, State> 
     this.state = {
       project: null
     };
-    this.slug$ = new Rx.BehaviorSubject(null as any);
+    this.slug$ = new Rx.BehaviorSubject(null);
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
-      this.slug$.distinctUntilChanged().filter(slug => isString(slug)).switchMap((slug) => {
-        const project$ = projectBySlugStream(slug).observable.do((project) => {
-          if (project.data.attributes.process_type !== 'continuous') {
-            browserHistory.push(`/projects/${slug}`);
-          }
-        });
-
-        return project$;
-      }).subscribe((project) => {
-        this.setState({ project });
-      })
+      this.slug$
+        .distinctUntilChanged()
+        .filter(slug => isString(slug))
+        .switchMap((slug: string) => {
+          return projectBySlugStream(slug).observable.do((project) => {
+            if (project.data.attributes.process_type !== 'continuous') {
+              // redirect
+              browserHistory.push(`/projects/${slug}`);
+            }
+          });
+        }).subscribe((project) => {
+          this.setState({ project });
+        })
     ];
   }
 
-  componentWillReceiveProps(newProps: Props) {
-    this.slug$.next(newProps.params.slug);
+  componentDidUpdate(_prevProps: Props) {
+    this.slug$.next(this.props.params.slug);
   }
 
   componentWillUnmount() {
@@ -83,18 +86,24 @@ export default class ProjectIdeasPage extends React.PureComponent<Props, State> 
 
   render() {
     const { project } = this.state;
+    const { slug } = this.props.params;
 
     if (project) {
       return (
-        <Container>
-          <ContentContainer>
-            <IdeasTitle>
-              <FormattedMessage {...messages.navIdeas} />
-            </IdeasTitle>
-            <Ideas type="project" id={project.data.id} />
-          </ContentContainer>
+        <>
+          <Header slug={slug} />
+
+          <IdeasContainer>
+            <ContentContainer>
+              <IdeasTitle>
+                <FormattedMessage {...messages.navIdeas} />
+              </IdeasTitle>
+              <Ideas type="project" id={project.data.id} defaultDisplay={project.data.attributes.presentation_mode}/>
+            </ContentContainer>
+          </IdeasContainer>
+
           <EventsPreview projectId={project.data.id} />
-        </Container>
+        </>
       );
     }
 

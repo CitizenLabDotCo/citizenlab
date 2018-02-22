@@ -23,7 +23,6 @@ const Container: any = styled.div`
     border-radius: 5px;
     border: solid 1px;
     border-color: ${(props: any) => props.error ? props.theme.colors.error : '#ccc'};
-    /* box-shadow: inset 0px 2px 3px rgba(0, 0, 0, 0.15); */
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     background: #fff;
     outline: none;
@@ -86,22 +85,30 @@ export default class Input extends React.PureComponent<Props, State> {
   };
 
   handleOnChange = (event: React.FormEvent<HTMLInputElement>) => {
-    if (this.props.onChange) this.props.onChange(event.currentTarget.value);
+    const { maxCharCount, onChange, name } = this.props;
+    const { formik } = this.context;
 
-    if (this.context.formik && this.props.name) {
-      this.context.formik.handleChange(event);
-    }
+    if (!maxCharCount || size(event.currentTarget.value) <= maxCharCount) {
+      if (onChange) {
+        onChange(event.currentTarget.value);
+      }
 
-    if (this.props.maxCharCount && this.props.maxCharCount > 0) {
-
+      if (name && formik && formik.handleChange) {
+        formik.handleChange(event);
+      }
     }
   }
 
   handleOnBlur = (event: React.FormEvent<HTMLInputElement>) => {
-    if (this.props.onBlur) this.props.onBlur(event);
+    const { onBlur/*, name */ } = this.props;
+    const { formik } = this.context;
 
-    if (this.context.formik && this.props.name) {
-      this.context.formik.handleBlur(event);
+    if (onBlur) {
+      onBlur(event);
+    }
+
+    if (name && formik && formik.handleBlur) {
+      formik.handleBlur(event);
     }
   }
 
@@ -112,14 +119,14 @@ export default class Input extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { maxCharCount } = this.props;
     let { value, placeholder, error } = this.props;
     const className = this.props['className'];
-    const { id, type, name } = this.props;
+    const { formik } = this.context;
+    const { id, type, name, maxCharCount, min, autoFocus, onFocus } = this.props;
     const hasError = (!isNil(error) && !isEmpty(error));
 
-    if (this.props.name && this.context.formik && this.context.formik.values[this.props.name]) {
-      value = value || this.context.formik.values[this.props.name];
+    if (name && formik && formik.values[name]) {
+      value = (value || formik.values[name]);
     }
 
     value = (value || '');
@@ -146,11 +153,11 @@ export default class Input extends React.PureComponent<Props, State> {
           placeholder={placeholder}
           value={value}
           onChange={this.handleOnChange}
-          onFocus={this.props.onFocus}
+          onFocus={onFocus}
           onBlur={this.handleOnBlur}
           ref={this.handleRef}
-          min={this.props.min}
-          autoFocus={this.props.autoFocus}
+          min={min}
+          autoFocus={autoFocus}
         />
 
         <div>

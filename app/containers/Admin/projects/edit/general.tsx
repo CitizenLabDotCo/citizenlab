@@ -82,7 +82,6 @@ const ParticipationContextWrapper = styled.div`
   border: solid 1px #ddd;
   background: #fff;
   transition: opacity ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  will-change: opacity;
 
   ::before,
   ::after {
@@ -155,7 +154,7 @@ interface State {
 }
 
 class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlProps, State> {
-  slug$: Rx.BehaviorSubject<string | null> | null;
+  slug$: Rx.BehaviorSubject<string | null>;
   processing$: Rx.BehaviorSubject<boolean>;
   subscriptions: Rx.Subscription[] = [];
 
@@ -182,17 +181,17 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       submitState: 'disabled',
       deleteError: null,
     };
-    this.slug$ = null;
+    this.slug$ = new Rx.BehaviorSubject(null);
+    this.processing$ = new Rx.BehaviorSubject(false);
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
     const areas$ = areasStream().observable;
 
-    this.slug$ = new Rx.BehaviorSubject(this.props.params.slug || null);
-    this.processing$ = new Rx.BehaviorSubject(false);
+    this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
@@ -270,9 +269,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     ];
   }
 
-  componentWillReceiveProps(newProps: Props) {
-    if (newProps.params.slug !== this.props.params.slug && this.slug$ !== null) {
-      this.slug$.next(newProps.params.slug);
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.params.slug !== prevProps.params.slug) {
+      this.slug$.next(this.props.params.slug);
     }
   }
 
@@ -498,7 +497,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
 
         if (!isEmpty(projectAttributesDiff)) {
           if (projectData) {
-            console.log(projectAttributesDiff);
             await updateProject(projectData.id, projectAttributesDiff);
           } else {
             const project = await addProject(projectAttributesDiff);
@@ -565,7 +563,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       noTitleError,
       projectData,
       headerBg,
-      presentationMode,
       newProjectImages,
       loading,
       processing,
@@ -665,22 +662,26 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               }
             </SectionField>
 
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.defaultDisplay} />
-              </Label>
-              {['card', 'map'].map((key) => (
-                <Radio
-                  key={key}
-                  onChange={this.handleIdeasDisplayChange}
-                  currentValue={presentationMode}
-                  value={key}
-                  name="presentation_mode"
-                  id={`presentation_mode-${key}`}
-                  label={<FormattedMessage {...messages[`${key}Display`]} />}
-                />
-              ))}
-            </SectionField>
+            {/*
+            {projectData && projectData.attributes.process_type === 'continuous' &&
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.defaultDisplay} />
+                </Label>
+                {['card', 'map'].map((key) => (
+                  <Radio
+                    key={key}
+                    onChange={this.handleIdeasDisplayChange}
+                    currentValue={presentationMode}
+                    value={key}
+                    name="presentation_mode"
+                    id={`presentation_mode-${key}`}
+                    label={<FormattedMessage {...messages[`${key}Display`]} />}
+                  />
+                ))}
+              </SectionField>
+            }
+            */}
 
             <SectionField>
               <Label htmlFor="project-area">

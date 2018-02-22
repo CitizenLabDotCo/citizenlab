@@ -20,15 +20,40 @@ const Container = styled(Link)`
   margin-right: 13px;
   background: white;
   border-radius: 5px;
-  border: solid 1px #e0e0e0;
   display: flex;
   padding: 15px;
   cursor: pointer;
-  transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
+  border: solid 1px #e4e4e4;
 
-  &:hover {
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-  }
+  ${media.biggerThanMaxTablet`
+    transition: all 250ms ease-out;
+    /* transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1); */
+    will-change: transform; 
+
+    &::after {
+      content: '';
+      border-radius: 5px;
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+      transition: all 250ms ease-out;
+      /* transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1); */
+      will-change: opacity;
+    }
+
+    &:hover {
+      transform: scale(1.015);
+
+      &::after {
+        opacity: 1;
+      }
+    }
+  `};
 
   &:not(.last) {
     margin-right: 12px;
@@ -39,14 +64,6 @@ const Container = styled(Link)`
     margin: 0;
     margin-bottom: 15px;
   `}
-
-  /*
-  ${media.smallerThanMaxTablet`
-    width: 100%;
-    margin: 0;
-    flex-direction: column;
-  `}
-  */
 `;
 
 const DateWrapper = styled.div`
@@ -55,14 +72,6 @@ const DateWrapper = styled.div`
   flex-direction: column;
   align-items: stretch;
   margin-right: 20px;
-
-  /*
-  ${media.smallerThanMaxTablet`
-    width: 80px;
-    margin-left: auto;
-    margin-right: auto;
-  `}
-  */
 `;
 
 const Date = styled.div`

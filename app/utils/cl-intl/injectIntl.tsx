@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as Rx from 'rxjs';
-import { cloneDeep } from 'lodash';
 import { currentTenantStream } from 'services/tenant';
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import { injectIntl as originalInjectIntl, ComponentConstructor, InjectedIntlProps, InjectIntlConfig } from 'react-intl';
@@ -58,9 +57,11 @@ function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps
       const { loaded } = this.state;
 
       if (loaded) {
-        const { intl } = this.props;
-        const intlReplacement = cloneDeep(intl);
-        intlReplacement.formatMessage = this.formatMessageReplacement;
+        const intlReplacement = {
+          ...(this.props.intl as object),
+          formatMessage: this.formatMessageReplacement
+        };
+
         return <Component {...this.props} intl={intlReplacement} />;
       }
 

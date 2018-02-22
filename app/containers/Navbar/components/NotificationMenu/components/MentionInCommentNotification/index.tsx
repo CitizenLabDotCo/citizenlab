@@ -28,7 +28,7 @@ export default class MentionInCommentNotification extends React.PureComponent<Pr
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.notification.relationships.idea.data) {
       const idea$ = ideaByIdStream(this.props.notification.relationships.idea.data.id).observable;
       this.subscriptions = [

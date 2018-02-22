@@ -39,7 +39,7 @@ import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  background: #f8f8f8;
+  background: #f9f9fa;
 `;
 
 const FormContainer = styled.div`
@@ -121,7 +121,7 @@ export default class IdeaEditPage extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { ideaId } = this.props.params;
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;

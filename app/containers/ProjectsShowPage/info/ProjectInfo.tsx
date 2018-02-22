@@ -23,7 +23,7 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin-top: 70px;
-  margin-bottom: 70px;
+  margin-bottom: 90px;
 
   ${media.phone`
     display: block;
@@ -109,7 +109,7 @@ const ProjectImages = styled.div`
 
   img {
     margin: 5px;
-    border-radius: 6px;
+    border-radius: 5px;
     border: solid 1px #e0e0e0;
 
     &:first-child {

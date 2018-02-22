@@ -3,7 +3,7 @@ import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
 import { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import { injectTFunc } from 'components/T/utils';
+import localize, { injectedLocalized } from 'utils/localize';
 import { ideasByTopicStream } from 'services/stats';
 
 type State = {
@@ -16,29 +16,33 @@ type State = {
 
 type Props = {
   startAt: string,
-  endAt: string,
-  theme: any,
-  tFunc: ({}) => string,
+  endAt: string
 };
 
-class IdeasByTimeChart extends React.PureComponent<Props, State> {
+class IdeasByTimeChart extends React.PureComponent<Props & injectedLocalized, State> {
+  startAt$: Rx.BehaviorSubject<string | null>;
+  endAt$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
-  props$: Rx.BehaviorSubject<Props>;
 
-  constructor(props) {
-    super(props);
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
       serie: null,
     };
     this.subscriptions = [];
-    this.props$ = new Rx.BehaviorSubject(null as any);
+    this.startAt$ = new Rx.BehaviorSubject(null);
+    this.endAt$ = new Rx.BehaviorSubject(null);
   }
 
-  componentWillMount() {
-    this.props$.next(this.props);
+  componentDidMount() {
+    this.startAt$.next(this.props.startAt);
+    this.endAt$.next(this.props.endAt);
 
     this.subscriptions = [
-      this.props$.filter(props => !_.isNil(props)).switchMap(({ startAt, endAt }) => {
+      Rx.Observable.combineLatest(
+        this.startAt$.filter(startAt => startAt !== null),
+        this.endAt$.filter(endAt => endAt !== null),
+      ).switchMap(([startAt, endAt]) => {
         return ideasByTopicStream({
           queryParameters: {
             start_at: startAt,
@@ -52,16 +56,22 @@ class IdeasByTimeChart extends React.PureComponent<Props, State> {
     ];
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.props$.next(nextProps);
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.startAt !== prevProps.startAt) {
+      this.startAt$.next(this.props.startAt);
+    }
+
+    if (this.props.endAt !== prevProps.endAt) {
+      this.endAt$.next(this.props.endAt);
+    }
   }
 
   convertToGraphFormat = (serie) => {
     const { data, topics } = serie;
-    const { tFunc } = this.props;
+    const { localize } = this.props;
 
     return _(data).map((count, topicId) => ({
-      name: tFunc(topics[topicId].title_multiloc),
+      name: localize(topics[topicId].title_multiloc),
       value: count,
       code: topicId,
     }))
@@ -70,26 +80,28 @@ class IdeasByTimeChart extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const theme = this.props['theme'];
+
     return (
       <ResponsiveContainer width="100%" height={this.state.serie && (this.state.serie.length * 50)}>
         <BarChart data={this.state.serie} layout="vertical">
           <Bar
             dataKey="value"
             name="name"
-            fill={this.props.theme.chartFill}
-            label={{ fill: this.props.theme.barFill, fontSize: this.props.theme.chartLabelSize }}
+            fill={theme.chartFill}
+            label={{ fill: theme.barFill, fontSize: theme.chartLabelSize }}
           />
           <YAxis
             dataKey="name"
             type="category"
             width={150}
-            stroke={this.props.theme.chartLabelColor}
-            fontSize={this.props.theme.chartLabelSize}
+            stroke={theme.chartLabelColor}
+            fontSize={theme.chartLabelSize}
             tickLine={false}
           />
           <XAxis
-            stroke={this.props.theme.chartLabelColor}
-            fontSize={this.props.theme.chartLabelSize}
+            stroke={theme.chartLabelColor}
+            fontSize={theme.chartLabelSize}
             type="number"
             tick={{ transform: 'translate(0, 7)' }}
           />
@@ -100,4 +112,4 @@ class IdeasByTimeChart extends React.PureComponent<Props, State> {
   }
 }
 
-export default withTheme(injectTFunc(IdeasByTimeChart));
+export default localize<Props>(withTheme(IdeasByTimeChart as any));

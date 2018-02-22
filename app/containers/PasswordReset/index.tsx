@@ -26,7 +26,7 @@ import messages from './messages';
 const Container = styled.div`
   width: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  background: #f8f8f8;
+  background: #f9f9fa;
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
@@ -76,7 +76,6 @@ type State = {
 };
 
 class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State> {
-  state: State;
   passwordInputElement: HTMLInputElement | null;
 
   constructor(props: Props) {

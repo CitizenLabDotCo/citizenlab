@@ -34,8 +34,8 @@ export default class HasPermission extends React.PureComponent<Props, State> {
     this.subscription.unsubscribe();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps !== this.props) {
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps !== this.props) {
       this.requestPermission();
     }
   }

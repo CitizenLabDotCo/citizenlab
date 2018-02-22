@@ -1,11 +1,7 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-
-import React from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import * as moment from 'moment';
 import HelmetIntl from 'components/HelmetIntl';
 import styled, { ThemeProvider } from 'styled-components';
-import { injectTFunc } from 'components/T/utils';
-import moment from 'moment';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import TimeControl from './components/TimeControl';
@@ -23,10 +19,11 @@ const ControlBar = styled.div`
   width: 100%;
 `;
 
-const GraphCard = styled.div`
-  background-color: #ffffff;
+const GraphCard: any = styled.div`
+  background: #fff;
+  border: solid 1px #e4e4e4;
   border-radius: 5px;
-  height: ${(props) => props.dynamicHeight ? 'auto' : '350px'};
+  height: ${(props: any) => props.dynamicHeight ? 'auto' : '350px'};
   padding: 20px;
   flex-direction: column;
   display: flex;
@@ -40,63 +37,64 @@ const GraphCardTitle = styled.h3`
   padding-bottom: 20px;
 `;
 
-class DashboardPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
+interface Props {}
 
-  constructor() {
-    super();
+interface State {
+  interval: 'weeks' | 'months' | 'years';
+  intervalIndex: number;
+}
+
+export default class DashboardPage extends React.PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props as any);
     this.state = {
-      interval: 'month',
-      intervalIndex: 0,
+      interval: 'months',
+      intervalIndex: 0
     };
   }
 
-  calculateBoundaryDates(interval, intervalIndex) {
-    const startAtMoment = moment().startOf(interval).add(intervalIndex, `${interval}s`);
-    const endAtMoment = moment(startAtMoment).add(1, `${interval}s`);
-
-    return { startAtMoment, endAtMoment };
+  changeInterval = (interval: 'weeks' | 'months' | 'years') => {
+    this.setState({ interval, intervalIndex: 0 });
   }
 
-  changeInterval = (interval) => {
-    this.setState({ interval, intervalIndex: 0 });
-  };
-
-  changeIntervalIndex = (intervalIndex) => {
+  changeIntervalIndex = (intervalIndex: number) => {
     this.setState({ intervalIndex });
   }
 
-  chartTheme = (theme) => ({
-    ...theme,
-    chartStroke: '#01A1B1',
-    chartFill: '#01A1B1',
-    barFill: '#ffffff',
-    // chartStroke: lighten(0.3, theme.colorMain),
-    // chartFill: lighten(0.3, theme.colorMain),
-    chartLabelColor: '#999999',
-    chartLabelSize: 13,
-  });
+  chartTheme = (theme) => {
+    return {
+      ...theme,
+      chartStroke: '#01A1B1',
+      chartFill: '#01A1B1',
+      barFill: '#ffffff',
+      chartLabelColor: '#999999',
+      chartLabelSize: 13
+    };
+  }
 
   render() {
-    const { startAtMoment, endAtMoment } = this.calculateBoundaryDates(this.state.interval, this.state.intervalIndex);
+    const { interval, intervalIndex } = this.state;
+    const startAtMoment = moment().startOf(interval).add(intervalIndex, interval);
+    const endAtMoment = moment(startAtMoment).add(1, interval);
     const startAt = startAtMoment.toISOString();
     const endAt = endAtMoment.toISOString();
-    const resolution = this.state.interval === 'year' ? 'month' : 'day';
+    const resolution = (interval === 'years' ? 'month' : 'day');
 
     return (
-      <div>
+      <>
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
         <ControlBar>
           <TimeControl
-            value={this.state.intervalIndex}
-            interval={this.state.interval}
+            value={intervalIndex}
+            interval={interval}
             onChange={this.changeIntervalIndex}
             currentTime={startAtMoment}
           />
           <IntervalControl
-            value={this.state.interval}
+            value={interval}
             onChange={this.changeInterval}
           />
         </ControlBar>
@@ -144,13 +142,7 @@ class DashboardPage extends React.Component { // eslint-disable-line react/prefe
             </Box>
           </Flex>
         </ThemeProvider>
-      </div>);
+      </>
+    );
   }
 }
-
-DashboardPage.propTypes = {
-  tFunc: PropTypes.func.isRequired,
-};
-
-
-export default injectTFunc((DashboardPage));

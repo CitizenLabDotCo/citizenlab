@@ -75,4 +75,8 @@ export default defineMessages({
     id: 'app.containers.app.navbar.mobilePageProfile',
     defaultMessage: 'Profile',
   },
+  allProjects: {
+    id: 'app.containers.app.navbar.allProjects',
+    defaultMessage: 'All projects',
+  },
 });

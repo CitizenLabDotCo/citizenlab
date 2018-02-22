@@ -23,11 +23,10 @@ import { media } from 'utils/styleUtils';
 const StyledContentContainer = styled(ContentContainer)`
   padding-top: 40px;
   padding-bottom: 100px;
-  background: #f8f8f8;
+  background: #f9f9fa;
 
   ${media.phone`
     padding-top: 0px;
-    background: #f8f8f8;
   `}
 `;
 
@@ -101,7 +100,7 @@ type State = {
 };
 
 export default class UsersShowPage extends React.PureComponent<Props & Params, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -112,7 +111,7 @@ export default class UsersShowPage extends React.PureComponent<Props & Params, S
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { slug } = this.props.params;
     const user$ = userBySlugStream(slug).observable;
 
@@ -151,7 +150,7 @@ export default class UsersShowPage extends React.PureComponent<Props & Params, S
           </UserInfo>
 
           <UserIdeas>
-            <IdeaCards filter={{ author: user.data.id }} />
+            <IdeaCards queryParameters={{ author: user.data.id }} />
           </UserIdeas>
 
         </StyledContentContainer>

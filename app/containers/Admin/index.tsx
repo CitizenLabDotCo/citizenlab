@@ -21,7 +21,7 @@ const LeftColumn = styled.div`
 const RightColumn = styled.div`
   flex: 1;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  background-color: #f2f2f2;
+  background: #f9f9fa;
 `;
 
 const AdminContainerStyled = styled<any, 'div'>('div')`
@@ -51,6 +51,7 @@ export default class AdminPage extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     const globalState$ = this.globalState.observable;
+
     this.subscriptions = [
       globalState$.subscribe(({ enabled }) => this.setState({ adminFullWidth: enabled }))
     ];
