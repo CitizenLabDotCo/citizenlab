@@ -41,7 +41,7 @@ import { Locale } from 'typings';
 
 const IdeaImageContainer: any = styled.div`
   width: 100%;
-  height: 130px;
+  height: 120px;
   overflow: hidden;
   position: relative;
   border-bottom: solid 1px #e4e4e4;
@@ -50,7 +50,7 @@ const IdeaImageContainer: any = styled.div`
 const IdeaImage: any = styled.img`
   width: 100%;
   position: absolute;
-  top: 0;
+  top: -20%;
   bottom: 0;
   left: 0;
   right: 0;
@@ -109,20 +109,20 @@ const IdeaTitle: any = styled.h4`
 const IdeaAuthor = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 13px;
+  margin-top: 15px;
 `;
 
 const IdeaAuthorAvatar = styled(Avatar)`
   width: 32px;
   height: 32px;
-  margin-right: 10px;
+  margin-right: 8px;
 `;
 
 const IdeaAuthorText = styled.div`
   color: ${(props) => props.theme.colors.label};
   font-size: 14px;
   font-weight: 300;
-  line-height: 20px;
+  line-height: 19px;
   display: flex;
   flex-direction: column;
 
@@ -148,32 +148,34 @@ const CommentInfo = styled.div`
   align-items: center;
   flex-direction: column;
   position: relative;
+  margin-top: 4px;
 `;
 
 const CommentIcon = styled(Icon)`
-  height: 22px;
+  height: 28px;
   fill: ${(props) => props.theme.colors.label};
   margin-bottom: 0px;
 `;
 
 const CommentCount = styled.div`
   color: ${(props) => props.theme.colors.label};
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 18px;
-  text-align: center;
-  /*
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   position: absolute;
-  top: 3px;
+  top: 0px;
   left: 1px;
-  width: 28px;
-  height: 20px;
-  */
+  width: 26px;
+  height: 22px;
 `;
 
 const IdeaContainer = styled(Link)`
   width: 100%;
-  height: 370px;
+  height: 360px;
   margin-bottom: 24px;
   cursor: pointer;
   position: relative;
@@ -190,7 +192,7 @@ const IdeaContainer = styled(Link)`
       height: 100%;
       opacity: 0;
       box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-      transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1);
+      transition: opacity 300ms cubic-bezier(0.19, 1, 0.22, 1);
       will-change: opacity;
     }
 
@@ -383,8 +385,10 @@ class IdeaCard extends React.PureComponent<Props, State> {
                   size="normal"
                 />
                 <CommentInfo>
-                  <CommentIcon name="comments2" />
-                  <CommentCount>{idea.data.attributes.comments_count}</CommentCount>
+                  <CommentIcon name="comments-outline" />
+                  <CommentCount>
+                    <span>{idea.data.attributes.comments_count}</span>
+                  </CommentCount>
                 </CommentInfo>
               </Footer>
             }
