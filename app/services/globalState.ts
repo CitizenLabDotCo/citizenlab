@@ -75,7 +75,6 @@ class GlobalState {
       return newState;
     })
     .filter(state => isObject(state) && !isEmpty(state))
-    // .distinctUntilChanged((oldState, newState) => shallowCompare(oldState, newState))
     .publishReplay(1)
     .refCount();
 

@@ -89,23 +89,26 @@ class Author extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { authorId } = this.props;
 
     this.authorId$.next(authorId);
 
     this.subscriptions = [
-      this.authorId$.distinctUntilChanged().filter(authorId => authorId !== null).switchMap((authorId: string) => {
-        const author$ = userByIdStream(authorId).observable;
-        return author$;
-      }).subscribe((author) => {
-        this.setState({ author });
-      })
+      this.authorId$
+        .distinctUntilChanged()
+        .filter(authorId => authorId !== null)
+        .switchMap((authorId: string) => {
+          const author$ = userByIdStream(authorId).observable;
+          return author$;
+        }).subscribe((author) => {
+          this.setState({ author });
+        })
     ];
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.authorId$.next(nextProps.authorId);
+  componentDidUpdate() {
+    this.authorId$.next(this.props.authorId);
   }
 
   componentWillUnmount() {

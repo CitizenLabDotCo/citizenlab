@@ -1,8 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-
 import { FormattedMessage } from 'utils/cl-intl';
-
 import messages from '../messages';
 
 const Container = styled.div`
@@ -14,14 +12,13 @@ const IntervalButton = styled.button`
   font-size: 16px;
   padding: 1rem 1.5rem;
   color: #000000;
-  background: #e0e0e0;
-  margin-right: 2px;
+  background: #fff;
+  border: solid 1px #e4e4e4;
   cursor: pointer;
   outline: none;
-  opacity: 0.3;
 
   &.active {
-    opacity: 1;
+    background: #f0f0f0;
   }
 
   &:first-child {
@@ -34,24 +31,24 @@ const IntervalButton = styled.button`
   }
 
   &:hover {
-    opacity: 1;
+    background: #f0f0f0;
   }
 `;
 
 type Props = {
-  value: string;
-  onChange: (string) => void;
+  value: 'weeks' | 'months' | 'years';
+  onChange: (arg: 'weeks' | 'months' | 'years') => void;
 };
 
 export default class IntervalControl extends React.PureComponent<Props> {
-
-  change = (interval) => () => {
+  change = (interval: 'weeks' | 'months' | 'years') => () => {
     this.props.onChange(interval);
   }
 
   render() {
     const { value } = this.props;
-    const intervals = ['week', 'month', 'year'];
+    const intervals: ['weeks', 'months', 'years'] = ['weeks', 'months', 'years'];
+
     return (
       <Container>
         {intervals.map((interval) =>
@@ -60,7 +57,7 @@ export default class IntervalControl extends React.PureComponent<Props> {
             className={`${value === interval && 'active'}`}
             onClick={this.change(interval)}
           >
-            <FormattedMessage {...messages[interval]} />
+            <FormattedMessage {...messages[interval.substring(0, interval.length - 1)]} />
           </IntervalButton>
         )}
       </Container>

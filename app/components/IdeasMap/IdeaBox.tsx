@@ -84,7 +84,7 @@ type State = {
   showFooter: 'unauthenticated' | 'votingDisabled' | null;
 };
 
-export default class IdeaBox extends React.Component<Props, State> {
+export default class IdeaBox extends React.PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props);
@@ -93,8 +93,8 @@ export default class IdeaBox extends React.Component<Props, State> {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.idea !== this.props.idea) {
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.idea !== prevProps.idea) {
       this.setState({
         showFooter: null,
       });

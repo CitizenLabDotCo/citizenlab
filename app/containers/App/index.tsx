@@ -44,6 +44,7 @@ const Container = styled.div`
   margin: 0;
   padding: 0;
   padding-top: ${props => props.theme.menuHeight}px;
+  background: #fff;
 
   ${media.smallerThanMaxTablet`
     padding-top: 0px;
@@ -82,7 +83,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
@@ -169,7 +170,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
                 url={modalUrl}
                 headerChild={fullscreenModalHeaderChild}
               >
-                {modalOpened && modalType === 'idea' && modalId && <IdeasShow ideaId={modalId} />}
+                <IdeasShow ideaId={modalId} inModal={true} />
               </FullscreenModal>
 
               <Navbar />

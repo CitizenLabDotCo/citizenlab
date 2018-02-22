@@ -3,10 +3,10 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import styled from 'styled-components';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import { isString, reject } from 'lodash';
 import * as moment from 'moment';
-
 
 // Services
 import { projectBySlugStream } from 'services/projects';
@@ -59,10 +59,9 @@ const OrderLabel = styled.div`
 
 // Component typing
 type Props = {
-  intl: ReactIntl.InjectedIntl,
   params: {
     slug: string | null,
-  },
+  }
 };
 
 type State = {
@@ -70,11 +69,11 @@ type State = {
   loading: boolean,
 };
 
-class AdminProjectTimelineIndex extends React.Component<Props, State> {
+class AdminProjectTimelineIndex extends React.Component<Props & InjectedIntlProps, State> {
   subscription: Rx.Subscription;
+
   constructor(props: Props) {
     super(props as any);
-
     this.state = {
       phases: [],
       loading: false,

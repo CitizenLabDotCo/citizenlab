@@ -20,7 +20,7 @@ import { convertUrlToFileObservable } from 'utils/imageTools';
 import getSubmitState from 'utils/getSubmitState';
 
 // i18n
-import { InjectedIntlProps, InjectedIntl } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
@@ -65,9 +65,7 @@ interface IAttributesDiff {
 }
 
 type Props  = {
-  intl: InjectedIntl;
   lang: string;
-  tFunc: Function;
 };
 
 type State  = {
@@ -113,7 +111,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
 

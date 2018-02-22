@@ -29,7 +29,7 @@ export const injectLocale = () => {
         };
       }
 
-      componentWillMount() {
+      componentDidMount() {
         this.sub = localeStream()
         .observable
         .subscribe((response) => {

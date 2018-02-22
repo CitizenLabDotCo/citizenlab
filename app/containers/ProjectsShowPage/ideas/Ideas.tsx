@@ -29,22 +29,27 @@ const ToggleWrapper = styled.div`
 interface Props {
   type: 'project' | 'phase';
   id: string;
+  defaultDisplay: 'map' | 'card';
 }
 
 interface State {
-  display: 'map' | 'cards';
+  display: 'map' | 'card';
 }
 
 export default class Ideas extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      display: 'cards',
+      display: 'card',
     };
   }
 
+  componentDidMount() {
+    this.setState({ display: this.props.defaultDisplay });
+  }
+
   toggleDisplay = () => {
-    const display = this.state.display === 'map' ? 'cards' : 'map';
+    const display = this.state.display === 'map' ? 'card' : 'map';
 
     trackEvent(tracks.toggleDisplay, { selectedDisplayMode: display });
     this.setState({ display });
@@ -59,7 +64,7 @@ export default class Ideas extends React.PureComponent<Props, State> {
           <FeatureFlag name="maps">
             <ToggleWrapper>
               <Button.Group size="small" toggle onClick={this.toggleDisplay}>
-                <Button active={display === 'cards'}><FormattedMessage {...messages.displayCards} /></Button>
+                <Button active={display === 'card'}><FormattedMessage {...messages.displayCards} /></Button>
                 <Button active={display === 'map'}><FormattedMessage {...messages.displayMap} /></Button>
               </Button.Group>
             </ToggleWrapper>
@@ -75,12 +80,12 @@ export default class Ideas extends React.PureComponent<Props, State> {
             }
           </FeatureFlag>
 
-          {display === 'cards' && type === 'project' &&
-            <IdeaCards filter={{ project: id }} />
+          {display === 'card' && type === 'project' &&
+            <IdeaCards queryParameters={{ project: id }} />
           }
 
-          {display === 'cards' && type === 'phase' &&
-            <IdeaCards filter={{ phase: id }} />
+          {display === 'card' && type === 'phase' &&
+            <IdeaCards queryParameters={{ phase: id }} />
           }
       </Container>
     );

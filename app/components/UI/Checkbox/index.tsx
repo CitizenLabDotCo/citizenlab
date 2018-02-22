@@ -33,14 +33,15 @@ const CheckmarkIcon = styled(Icon)`
 type Props = {
   size: string;
   checked: boolean;
-  toggle: (arg?: any) => void;
+  toggle: (event: React.FormEvent<MouseEvent>) => void;
 };
 
 type State = {};
 
 export default class Checkbox extends React.PureComponent<Props, State> {
-  handleOnClick = () => {
-    this.props.toggle();
+  handleOnClick = (event: React.FormEvent<MouseEvent>) => {
+    event.preventDefault();
+    this.props.toggle(event);
   }
 
   render() {

@@ -36,7 +36,7 @@ export default class ProfileEditor extends React.PureComponent<Props, State> {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const currentTenant$ = currentTenantStream().observable;
     const authUser$ = authUserStream().observable;
     const areas$ = areasStream().observable;
@@ -61,9 +61,7 @@ export default class ProfileEditor extends React.PureComponent<Props, State> {
 
     if (loaded && !authUser) {
       browserHistory.push('/');
-    }
-
-    if (loaded && currentTenant && authUser && areas) {
+    } else if (loaded && currentTenant && authUser && areas) {
       return (
         <ProfileForm
           user={authUser.data}

@@ -50,6 +50,7 @@ const VoteIconContainer: any = styled.div`
   justify-content: center;
   border-radius: 50%;
   border: solid 1px #e0e0e0;
+  background: #fff;
   transition: all 100ms ease-out;
 
   ${(props: any) => props.size === 'small' ? css`
@@ -70,7 +71,7 @@ const VoteIcon: any = styled(Icon) `
 `;
 
 const VoteCount = styled.div`
-  min-width: 20px;
+  min-width: 18px;
   color: #84939d;
   font-size: 16px;
   font-weight: 300;
@@ -182,7 +183,6 @@ type State = {
 };
 
 export default class VoteControl extends React.PureComponent<Props, State> {
-  state: State;
   voting$: Rx.BehaviorSubject<'up' | 'down' | null>;
   subscriptions: Rx.Subscription[];
   upvoteElement: HTMLDivElement | null;
@@ -210,17 +210,23 @@ export default class VoteControl extends React.PureComponent<Props, State> {
     this.id$ = new Rx.BehaviorSubject(props.ideaId);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const authUser$ = authUserStream().observable;
 
-    const idea$ =
-    this.id$.switchMap((ideaId) => {
+    if (this.upvoteElement) {
+      this.upvoteElement.addEventListener('animationend', this.votingAnimationDone);
+    }
+
+    if (this.downvoteElement) {
+      this.downvoteElement.addEventListener('animationend', this.votingAnimationDone);
+    }
+
+    const idea$ = this.id$.distinctUntilChanged().switchMap((ideaId) => {
       return Rx.Observable.combineLatest(
         ideaByIdStream(ideaId).observable,
         this.voting$
       );
-    })
-    .filter(([_idea, voting]) => {
+    }).filter(([_idea, voting]) => {
       return voting === null;
     }).map(([idea, _voting]) => {
       return idea;
@@ -275,19 +281,9 @@ export default class VoteControl extends React.PureComponent<Props, State> {
     ];
   }
 
-  componentWillReceiveProps(newProps: Props) {
-    if (newProps.ideaId !== this.props.ideaId) {
-      this.id$.next(newProps.ideaId);
-    }
-  }
-
-  componentDidMount() {
-    if (this.upvoteElement) {
-      this.upvoteElement.addEventListener('animationend', this.votingAnimationDone);
-    }
-
-    if (this.downvoteElement) {
-      this.downvoteElement.addEventListener('animationend', this.votingAnimationDone);
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.ideaId !== prevProps.ideaId) {
+      this.id$.next(this.props.ideaId);
     }
   }
 

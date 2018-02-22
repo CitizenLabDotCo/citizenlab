@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { isObject, isEmpty, isEqual, has } from 'lodash';
+import { get, isString, omitBy, isNil } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
 import ProjectCard from 'components/ProjectCard';
 import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
-import Button from 'components/UI/Button';
+import SelectAreas from './SelectAreas';
 
 // services
 import { projectsStream, IProjects } from 'services/projects';
@@ -16,43 +16,75 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
-  width: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Loading = styled.div`
   width: 100%;
-  height: 200px;
+  height: 300px;
   background: #fff;
-  border-radius: 6px;
-  border: solid 1px #eee;
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: solid 1px #e4e4e4;
 `;
 
-const ProjectsList: any = styled.div``;
-
-const LoadMore = styled.div`
+const FiltersArea = styled.div`
   width: 100%;
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  margin-top: 10px;
+  justify-content: flex-end;
+`;
+
+const FilterArea = styled.div`
+  height: 60px;
+  display: flex;
+  align-items: center;
+`;
+
+const ProjectsList = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  ${media.smallerThanMaxTablet`
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-left: -13px;
+    margin-right: -13px;
+  `};
+`;
+
+const StyledProjectCard = styled(ProjectCard)`
+  ${media.smallerThanMaxTablet`
+    flex-grow: 0;
+    width: calc(100% * (1/2) - 26px);
+    margin-left: 13px;
+    margin-right: 13px;
+  `};
+
+  ${media.smallerThanMinTablet`
+    width: 100%;
+  `}
 `;
 
 const EmptyContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: 0;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-top: 120px;
+  padding-bottom: 120px;
   border-radius: 5px;
-  border: solid 1px #eee;
+  border: solid 1px #e4e4e4;
   background: #fff;
 `;
 
@@ -76,84 +108,132 @@ const EmptyMessageLine = styled.div`
   text-align: center;
 `;
 
-const LoadMoreButton = styled(Button)``;
+const LoadMoreButtonWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
+const LoadMoreButton = styled.div`
+  flex: 0 0 60px;
+  width: 100%;
+  height: 60px;
+  color: ${(props) => props.theme.colorMain};
+  font-size: 18px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  transition: all 100ms ease-out;
+  background: #f0f0f0;
+
+  border: solid 2px #eaeaea;
+  background: #fff;
+
+  width: 300px;
+  flex: 0 0 300px;
+  background: #eee;
+  border: none;
+
+  ${media.smallerThanMinTablet`
+    width: 100%;
+    flex: 1;
+  `};
+
+  &:not(.loading) {
+    cursor: pointer;
+
+    &:hover {
+      background: #e0e0e0;
+      border-color: #ccc
+    }
+  }
+
+  &.loading {
+    /* background: #f0f0f0; */
+  }
+`;
+
+interface IQueryParameters {
+  'page[number]'?: number | undefined;
+  'page[size]'?: number | undefined;
+  areas?: string[] | undefined;
+}
 
 interface IAccumulator {
-  pageNumber: number;
   projects: IProjects;
-  filter: object;
+  queryParameters: IQueryParameters;
   hasMore: boolean;
 }
 
 type Props = {
-  filter: { [key: string]: any };
-  loadMoreEnabled?: boolean | undefined;
+  queryParameters?: IQueryParameters | undefined;
+  theme?: object | undefined;
+  hideAllFilters?: boolean | undefined;
 };
 
 type State = {
+  queryParameters: IQueryParameters;
   projects: IProjects | null;
   hasMore: boolean;
-  loading: boolean;
+  querying: boolean;
   loadingMore: boolean;
 };
 
-export default class ProjectCards extends React.PureComponent<Props, State> {
-  filter$: Rx.BehaviorSubject<object>;
-  loadMore$: Rx.BehaviorSubject<boolean>;
+class ProjectCards extends React.PureComponent<Props, State> {
+  queryParameters$: Rx.BehaviorSubject<IQueryParameters>;
   subscriptions: Rx.Subscription[];
-
-  static defaultProps: Partial<Props> = {
-    loadMoreEnabled: true
-  };
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
+      queryParameters: {
+        'page[number]': 1,
+        'page[size]': 12,
+        areas: []
+      },
       projects: null,
       hasMore: false,
-      loading: true,
+      querying: true,
       loadingMore: false
     };
     this.subscriptions = [];
   }
 
-  componentWillMount() {
-    this.filter$ = new Rx.BehaviorSubject(this.props.filter);
-    this.loadMore$ = new Rx.BehaviorSubject(false);
+  componentDidMount() {
+    const queryParameters = { ...this.state.queryParameters, ...this.props.queryParameters };
+    const startAccumulatorValue: IAccumulator = { queryParameters, projects: {} as IProjects, hasMore: false };
+
+    this.queryParameters$ = new Rx.BehaviorSubject(queryParameters);
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
-        this.filter$
-          .map(filter => (isObject(filter) && !isEmpty(filter) ? filter : {}))
-          .distinctUntilChanged((x, y) => isEqual(x, y)),
-        this.loadMore$,
-        (filter, loadMore) => ({ filter, loadMore })
-      ).mergeScan<{ filter: object, loadMore: boolean }, IAccumulator>((acc, { filter, loadMore }) => {
-        const hasFilterChanged = (!isEqual(acc.filter, filter) || !loadMore);
-        const pageNumber = (hasFilterChanged ? 1 : acc.pageNumber + 1);
+      this.queryParameters$.mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
+        const isLoadingMore = (acc.queryParameters['page[number]'] !== queryParameters['page[number]']);
+        const pageNumber = (isLoadingMore ? queryParameters['page[number]'] : 1);
+        const newQueryParameters: IQueryParameters = omitBy({
+          ...queryParameters,
+          'page[number]': pageNumber
+        }, isNil);
 
-        this.setState({ loading: hasFilterChanged, loadingMore: !hasFilterChanged });
+        this.setState({
+          querying: !isLoadingMore,
+          loadingMore: isLoadingMore,
+        });
 
-        return projectsStream({
-          queryParameters: {
-            'page[size]': 25,
-            sort: 'new',
-            ...filter,
-            'page[number]': pageNumber
-          }
-        }).observable.map((projects) => ({
-          pageNumber,
-          filter,
-          projects: (hasFilterChanged ? projects : { data: [...acc.projects.data, ...projects.data] }) as IProjects,
-          hasMore: has(projects, 'links.next')
-        }));
-      }, {
-        projects: {} as IProjects,
-        filter: {},
-        pageNumber: 1,
-        hasMore: false
-      }).subscribe(({ projects, hasMore }) => {
-        this.setState({ projects, hasMore, loading: false, loadingMore: false });
+        return projectsStream({ queryParameters: newQueryParameters }).observable.map((projects) => {
+          const selfLink = get(projects, 'links.self');
+          const lastLink = get(projects, 'links.last');
+          const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
+
+          return {
+            queryParameters,
+            hasMore,
+            projects: (!isLoadingMore ? projects : { data: [...acc.projects.data, ...projects.data] }) as IProjects
+          };
+        });
+      }, startAccumulatorValue).subscribe(({ projects, queryParameters, hasMore }) => {
+        this.setState({ projects, queryParameters, hasMore, querying: false, loadingMore: false });
       })
     ];
   }
@@ -162,65 +242,73 @@ export default class ProjectCards extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    this.filter$.next(nextProps.filter);
+  loadMore = () => {
+    if (!this.state.loadingMore) {
+      this.queryParameters$.next({
+        ...this.state.queryParameters,
+        'page[number]': (this.state.queryParameters['page[number]'] as number) + 1
+      });
+    }
   }
 
-  loadMoreProjects = () => {
-    this.loadMore$.next(true);
+  handleAreasOnChange = (areas: string[]) => {
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      areas
+    });
   }
 
   render() {
-    const { projects, hasMore, loading, loadingMore } = this.state;
-    const { loadMoreEnabled } = this.props;
-    const showLoadmore = (!!loadMoreEnabled && hasMore);
+    const theme: any = this.props.theme;
+    const { queryParameters, projects, hasMore, querying, loadingMore } = this.state;
     const hasProjects = (projects !== null && projects.data.length > 0);
-
-    const loadingIndicator = (loading ? (
-      <Loading id="projects-loading">
-        <Spinner size="30px" color="#666" />
-      </Loading>
-    ) : null);
-
-    const loadMore = ((!loading && hasProjects && showLoadmore) ? (
-      <LoadMore>
-        <LoadMoreButton
-          text={<FormattedMessage {...messages.loadMore} />}
-          processing={loadingMore}
-          style="primary"
-          size="3"
-          onClick={this.loadMoreProjects}
-          circularCorners={false}
-        />
-      </LoadMore>
-    ) : null);
-
-    const empty = ((!loading && !hasProjects) ? (
-      <EmptyContainer id="projects-empty">
-        <ProjectIcon name="idea" />
-        <EmptyMessage>
-          <EmptyMessageLine>
-            <FormattedMessage {...messages.noProjects} />
-          </EmptyMessageLine>
-        </EmptyMessage>
-      </EmptyContainer>
-    ) : null);
-
-    const projectsList = ((!loading && hasProjects && projects) ? (
-      <ProjectsList id="e2e-projects-list">
-        {projects.data.map((project) => (
-          <ProjectCard key={project.id} id={project.id} />
-        ))}
-      </ProjectsList>
-    ) : null);
+    const selectedAreas = (queryParameters.areas || []);
 
     return (
       <Container id="e2e-projects-container">
-        {loadingIndicator}
-        {empty}
-        {projectsList}
-        {loadMore}
+        {this.props.hideAllFilters !== true &&
+          <FiltersArea id="e2e-projects-filters">
+            <FilterArea>
+              <SelectAreas selectedAreas={selectedAreas} onChange={this.handleAreasOnChange} />
+            </FilterArea>
+          </FiltersArea>
+        }
+
+        {querying && 
+          <Loading id="projects-loading">
+            <Spinner size="34px" color="#666" />
+          </Loading>
+        }
+
+        {!querying && !hasProjects && 
+          <EmptyContainer id="projects-empty">
+            <ProjectIcon name="idea" />
+            <EmptyMessage>
+              <EmptyMessageLine>
+                <FormattedMessage {...messages.noProjects} />
+              </EmptyMessageLine>
+            </EmptyMessage>
+          </EmptyContainer>
+        }
+
+        {!querying && hasProjects && projects &&
+          <ProjectsList id="e2e-projects-list">
+            {projects.data.map((project) => (
+              <StyledProjectCard key={project.id} id={project.id} />
+            ))}
+          </ProjectsList>
+        }
+
+        {!querying && hasMore &&
+          <LoadMoreButtonWrapper>
+            <LoadMoreButton className={`${loadingMore && 'loading'}`} onClick={this.loadMore}>
+              {!loadingMore ? <FormattedMessage {...messages.loadMore} /> : <Spinner size="30px" color={theme.colorMain} />}
+            </LoadMoreButton>
+          </LoadMoreButtonWrapper>
+        }
       </Container>
     );
   }
 }
+
+export default withTheme(ProjectCards);
