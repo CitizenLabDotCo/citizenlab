@@ -8,6 +8,8 @@ class WebApi::V1::UserSerializer < ActiveModel::Serializer
   attribute :domicile, if: :view_private_attributes?
   attribute :education, if: :view_private_attributes?
 
+  attribute :custom_field_values, if: :view_private_attributes?
+
   attribute :unread_notifications, if: :unread_notifications
 
   def view_private_attributes?

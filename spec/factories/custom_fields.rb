@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :custom_field do
     resource_type "User"
-    key { "field_#{SecureRandom.hex(4)}" }
+    sequence(:key) { |n| "field_#{n}" }
     title_multiloc {{
       "en" => "Did you attend"
     }}

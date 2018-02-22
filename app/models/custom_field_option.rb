@@ -10,7 +10,7 @@ class CustomFieldOption < ApplicationRecord
   validate :belongs_to_select_field
 
   def belongs_to_select_field
-    unless custom_field&.support_options?
+    if custom_field && !custom_field.support_options?
       self.errors.add(
         :base,
         :option_on_non_select_field,
