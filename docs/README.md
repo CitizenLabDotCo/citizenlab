@@ -1,5 +1,76 @@
 # Changelog
 
+## 2018-02-22
+
+### Fixed
+- Idea page
+  - Fix for voting buttons not being shown when page is accessed directly
+- Edit profile form page
+  - Fixed broken input fields (first name, last name, password, ...)
+  - Fixed broken submit button behavior
+- Admin project section
+  - Fixed default view (map or card) not being saved
+  - Fixed save button not being enabled when an image is added or removed
+- Project page
+  - Fix for header navigation button of the current page not being highlighted in certain scenarios
+- Idea cards
+  - Fix for 'Load more' button being shown when no more ideas
+- Project cards
+  - Fix for 'Load more' button being shown when no more projects
+- Add an idea > project selection page
+  - Fixed broken layout on mobile devices
+
+### Added
+- Landing page
+  - Added 'load more' button to project and idea cards
+  - Added search, sort and filter by topic to idea cards
+- Project card
+  - Added ideas count
+- Idea card
+  - Added author avatar
+  - Added comment count and icon
+- Idea page
+  - Added loading indicator
+- Project page
+  - Added loading indicator
+  - Added border to project header buttons to make them more visible
+- Admin page section
+  - Added header options in rich-text editors
+
+### Changed
+- Navigation bar
+  - Removed 'ideas' menu item
+  - Converted 'projects' menu item into dropdown
+  - Changed style of the 'Start an idea' button 
+- Landing page
+  - Header style changes (larger image dimensions, text centered)
+  - Removed 'Projects' title on top of project cards
+- Project card
+  - Changed project image dimensions
+  - Changed typography
+- Idea card
+  - Removed image placeholder
+  - Reduced idea image height
+- Filter dropdowns
+  - Height, width and alignment changes for mobile version (to ensure the dropdown is fully visible on smaller screens)
+- Idea page
+  - Improved loading behavior
+  - Relocated 'show on map' button to sidebar (above sharing buttons)
+  - Automatically scroll to map when 'show on map' button is clicked
+  - Larger font sizes and better overall typography for idea and comment text
+  - Child comments style changes
+  - Child commenting form style change
+  - Comment options now only visible on hover on desktop
+- Project page
+  - Improved loading behavior
+  - Timeline style changes to take into account longer project titles
+  - Changed copy from 'timeline' to 'process'
+  - Changed link from projects/<projectname>/timeline to projects/<projectname>/process
+  - Events header button not being shown if there are no events
+- Add an idea > project selection page
+  - Improved project cards layout
+  - Improved mobile page layout
+
 ## 2018-01-03
 
 ### Fixed
