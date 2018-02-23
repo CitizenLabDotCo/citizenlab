@@ -107,10 +107,14 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
             commenting_enabled,
             voting_enabled,
             voting_method,
-            voting_limited_max
+            voting_limited_max,
+            survey_id,
+            survey_service,
           } = phase.data.attributes;
 
           this.setState({
+            survey_id,
+            survey_service,
             participationMethod: participation_method,
             postingEnabled: posting_enabled,
             commentingEnabled: commenting_enabled,
