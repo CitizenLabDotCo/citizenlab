@@ -163,6 +163,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.ideation',
     defaultMessage: 'Ideation',
   },
+  survey: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey',
+    defaultMessage: 'Survey',
+  },
   participationMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.participationMethod',
     defaultMessage: 'Participation method',
@@ -238,5 +242,21 @@ export default defineMessages({
   archivedStatus: {
     id: 'app.containers.AdminPage.ProjectEdit.archivedStatus',
     defaultMessage: 'Archived',
+  },
+  surveyService: {
+    id: 'app.containers.AdminPage.ProjectEdit.surveyService',
+    defaultMessage: 'Survey Service',
+  },
+  typeform: {
+    id: 'app.containers.AdminPage.ProjectEdit.typeform',
+    defaultMessage: 'Typeform',
+  },
+  survey_monkey: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey_monkey',
+    defaultMessage: 'Survey Monkey',
+  },
+  surveyId: {
+    id: 'app.containers.AdminPage.ProjectEdit.surveyId',
+    defaultMessage: 'Survey ID',
   },
 });
