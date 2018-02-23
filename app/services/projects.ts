@@ -10,6 +10,9 @@ type ProcessType = 'continuous' | 'timeline';
 type PresentationMode = 'map' | 'card';
 type PublicationStatus = 'draft' | 'published' | 'archived';
 
+import { ParticipationMethod } from './phases';
+
+
 export interface IProjectData {
   id: string;
   type: string;
@@ -24,7 +27,7 @@ export interface IProjectData {
     updated_at: string;
     visible_to: Visibility;
     process_type: ProcessType;
-    participation_method: 'ideation' | 'information';
+    participation_method: ParticipationMethod | null;
     posting_enabled: boolean;
     commenting_enabled: boolean;
     voting_enabled: boolean;
@@ -61,7 +64,7 @@ export interface IUpdatedProjectProperties {
   area_ids?: string[];
   visible_to?: Visibility;
   process_type?: ProcessType;
-  participation_method?: 'ideation' | 'information' | null;
+  participation_method?: ParticipationMethod | null;
   posting_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
   voting_enabled?: boolean | null;

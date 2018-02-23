@@ -9,9 +9,10 @@ import Label from 'components/UI/Label';
 import Radio from 'components/UI/Radio';
 import Toggle from 'components/UI/Toggle';
 import { Section, SectionField } from 'components/admin/Section';
+import Input from 'components/UI/Input';
 
 // services
-import { phaseStream, IPhase } from 'services/phases';
+import { phaseStream, IPhase, ParticipationMethod, SurveyServices } from 'services/phases';
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
@@ -54,12 +55,14 @@ const ToggleLabel = styled(Label)`
 // `;
 
 export interface IParticipationContextConfig {
-  participationMethod: 'ideation' | 'information';
+  participationMethod: ParticipationMethod;
   postingEnabled: boolean | null;
   commentingEnabled: boolean | null;
   votingEnabled: boolean | null;
   votingMethod: 'unlimited' | 'limited' | null;
   votingLimit: number | null;
+  survey_service?: SurveyServices | null;
+  survey_id?: string | null;
 }
 
 type Props = {
@@ -133,7 +136,9 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
             commentingEnabled: (participationMethod === 'ideation' ? commentingEnabled : null),
             votingEnabled: (participationMethod === 'ideation' ? votingEnabled : null),
             votingMethod: (participationMethod === 'ideation' ? votingMethod : null),
-            votingLimit: (participationMethod === 'ideation' && votingMethod === 'limited' ? votingLimit : null)
+            votingLimit: (participationMethod === 'ideation' && votingMethod === 'limited' ? votingLimit : null),
+            survey_id: (participationMethod === 'survey' ? this.state.survey_id : null),
+            survey_service: (participationMethod === 'survey' ? this.state.survey_service : null),
           });
         })
     ];
@@ -168,8 +173,18 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
       commentingEnabled: (participationMethod === 'ideation' ? true : null),
       votingEnabled: (participationMethod === 'ideation' ? true : null),
       votingMethod: (participationMethod === 'ideation' ? 'unlimited' : null),
-      votingLimit: null
+      votingLimit: null,
+      survey_id: null,
+      survey_service: null,
     });
+  }
+
+  handleSurveyProviderChange = (survey_service: SurveyServices) => {
+    this.setState({ survey_service });
+  }
+
+  handleSurveyIdChange = (survey_id: string) => {
+    this.setState({ survey_id });
   }
 
   togglePostingEnabled = () => {
@@ -220,7 +235,9 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
       // votingMethod,
       // votingLimit,
       // noVotingLimit,
-      loaded
+      loaded,
+      survey_service,
+      survey_id,
     } = this.state;
 
     // const votingLimitSection = (participationMethod === 'ideation' && votingMethod === 'limited') ? (
@@ -248,22 +265,17 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
               <Label>
                 <FormattedMessage {...messages.participationMethod} />
               </Label>
-              <Radio
-                onChange={this.handleParticipationMethodOnChange}
-                currentValue={participationMethod}
-                value="ideation"
-                name="participationmethod"
-                id="participationmethod-ideation"
-                label={<FormattedMessage {...messages.ideation} />}
-              />
-              <Radio
-                onChange={this.handleParticipationMethodOnChange}
-                currentValue={participationMethod}
-                value="information"
-                name="participationmethod"
-                id="participationmethod-information"
-                label={<FormattedMessage {...messages.information} />}
-              />
+              {['ideation', 'information', 'survey'].map((method) => (
+                <Radio
+                  onChange={this.handleParticipationMethodOnChange}
+                  currentValue={participationMethod}
+                  value={method}
+                  name="participationmethod"
+                  id={`participationmethod-${method}`}
+                  label={<FormattedMessage {...messages[method]} />}
+                  key={method}
+                />
+              ))}
             </SectionField>
 
             {participationMethod === 'ideation' &&
@@ -319,6 +331,37 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
                   </ToggleRow>
                 </StyledSectionField>
               </>
+            }
+
+            {participationMethod === 'survey' &&
+              <React.Fragment>
+                <SectionField>
+                  <Label>
+                    <FormattedMessage {...messages.surveyService} />
+                  </Label>
+                  {['typeform', 'survey_monkey'].map((provider) => (
+                    <Radio
+                      onChange={this.handleSurveyProviderChange}
+                      currentValue={survey_service}
+                      value={provider}
+                      name="survey-provider"
+                      id={`survey-provider-${provider}`}
+                      label={<FormattedMessage {...messages[provider]} />}
+                      key={provider}
+                    />
+                  ))}
+                </SectionField>
+                <SectionField>
+                  <Label>
+                    <FormattedMessage {...messages.surveyId} />
+                  </Label>
+                  <Input
+                    onChange={this.handleSurveyIdChange}
+                    type="text"
+                    value={survey_id}
+                  />
+                </SectionField>
+              </React.Fragment>
             }
 
           </StyledSection>
