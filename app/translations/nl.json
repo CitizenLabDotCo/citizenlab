@@ -376,7 +376,7 @@
   "app.containers.IdeasShow.childCommentAuthor": "{authorNameComponent} antwoordde:",
   "app.containers.IdeasShow.childCommentBodyPlaceholder": "Reageer ...",
   "app.containers.IdeasShow.closeMap": "Sluit kaart",
-  "app.containers.IdeasShow.commentBodyPlaceholder": "Wat vindt u van dit idee?",
+  "app.containers.IdeasShow.commentBodyPlaceholder": "Wat vind jij van dit idee?",
   "app.containers.IdeasShow.commentDeleteButton": "Verwijder",
   "app.containers.IdeasShow.commentEditorHeader": "Reageer op het idee!",
   "app.containers.IdeasShow.commentEditorLabel": "Reageer op het idee!",
