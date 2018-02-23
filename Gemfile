@@ -80,7 +80,7 @@ gem 'rubyzip', '~> 1.2.1'
 gem 'axlsx', '2.1.0.pre', github: 'randym/axlsx', ref: 'c8ac844572b25fda358cc01d2104720c4c42f450'
 gem 'rgeo-geojson'
 
-gem 'activerecord-postgis-adapter', '~> 5.0'
+gem 'activerecord-postgis-adapter' # , '~> 5.2'
 gem 'simple_segment', '~> 0.2.1'
 gem 'okcomputer'
 gem 'sentry-raven'
