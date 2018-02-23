@@ -74,8 +74,8 @@ gem "awesome_nested_set" # , "~> 3.1.3"
 gem "pg_search", "~> 2.1.2"
 gem "counter_culture", "~> 1.0"
 gem "liquid", "~> 4.0"
-gem "premailer-rails", "~> 1.9.6"
-gem 'groupdate', "~> 3.2.0"
+gem "premailer-rails" # , "~> 1.9.6"
+gem 'groupdate' # , "~> 3.2.0"
 gem 'rubyzip', '~> 1.2.1'
 gem 'axlsx', '2.1.0.pre', github: 'randym/axlsx', ref: 'c8ac844572b25fda358cc01d2104720c4c42f450'
 gem 'rgeo-geojson'
@@ -84,7 +84,7 @@ gem 'activerecord-postgis-adapter' # , '~> 5.2'
 gem 'simple_segment', '~> 0.2.1'
 gem 'okcomputer'
 gem 'sentry-raven'
-gem 'omniauth', '~> 1.7.1'
+gem 'omniauth' # , '~> 1.7.1'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
