@@ -171,4 +171,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.saveSuccessMessage',
     defaultMessage: 'Your changes have been saved.',
   },
+  titleCustomFields: {
+    id: 'app.containers.AdminPage.SettingsPage.titleCustomFields',
+    defaultMessage: 'Configurable fields',
+  },
 });

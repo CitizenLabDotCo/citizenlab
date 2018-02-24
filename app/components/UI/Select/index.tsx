@@ -173,7 +173,7 @@ const StyledSelect = styled(ReactSelect)`
   }
 `;
 
-type Props = {
+export type Props = {
   value?: IOption | string | null | undefined;
   placeholder?: string | JSX.Element | null | undefined;
   options: IOption[] | null;

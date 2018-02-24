@@ -296,7 +296,6 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
       const { formatMessage } = this.props.intl;
       const { logo, header_bg, attributesDiff, logoError, headerError } = this.state;
       const tenantAttrs = merge(cloneDeep(currentTenant.data.attributes), attributesDiff);
-
       return (
         <form onSubmit={this.save}>
 
@@ -382,7 +381,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
             </StyledSectionField>
           </Section>
 
-          <Section key={'signup_fields'} className={'last'}>
+          <Section key={'signup_fields'}>
             <SectionTitle>
               <FormattedMessage {...messages.titleSignupFields} />
             </SectionTitle>
