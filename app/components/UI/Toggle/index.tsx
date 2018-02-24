@@ -57,7 +57,7 @@ const Container: any = styled.div`
   */
 `;
 
-type Props = {
+export type Props = {
   checked: boolean;
   disabled?: boolean | undefined;
   onToggle: Function;
