@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :idea_status do
     title_multiloc {{
       "en" => "At the mayor",

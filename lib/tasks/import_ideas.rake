@@ -15,7 +15,7 @@ namespace :cl2_back do
   end
 
   def ii_read_csv args
-  	CSV.read(open(args[:url]), { headers: true, col_sep: ',', converters: [] })
+  	CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
   end
 
   def ii_convert_idea csv_idea

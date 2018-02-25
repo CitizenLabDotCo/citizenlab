@@ -4,7 +4,7 @@ connection = nil
 
 begin
   retries ||= 0
-  connection = Bunny.new(ENV.fetch("RABBITMQ_URI"))
+  connection = Bunny.new(ENV.fetch("RABBITMQ_URI"), automatically_recover: true, continuation_timeout: 20000)
   connection.start
 rescue Bunny::TCPConnectionFailedForAllHosts => e
   sleep 5

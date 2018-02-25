@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180117105551) do
+ActiveRecord::Schema.define(version: 20180215130118) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -206,9 +206,9 @@ ActiveRecord::Schema.define(version: 20180117105551) do
     t.string "type"
     t.datetime "read_at"
     t.uuid "recipient_id"
-    t.string "idea_id"
-    t.string "comment_id"
-    t.string "project_id"
+    t.uuid "idea_id"
+    t.uuid "comment_id"
+    t.uuid "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "initiating_user_id"
@@ -294,6 +294,7 @@ ActiveRecord::Schema.define(version: 20180117105551) do
     t.string "process_type", default: "timeline", null: false
     t.string "internal_role"
     t.string "publication_status", default: "published", null: false
+    t.integer "ordering", null: false
     t.index ["created_at"], name: "index_projects_on_created_at"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
@@ -400,6 +401,9 @@ ActiveRecord::Schema.define(version: 20180117105551) do
   add_foreign_key "identities", "users"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
+  add_foreign_key "notifications", "comments"
+  add_foreign_key "notifications", "ideas"
+  add_foreign_key "notifications", "projects"
   add_foreign_key "notifications", "spam_reports"
   add_foreign_key "notifications", "users", column: "initiating_user_id"
   add_foreign_key "notifications", "users", column: "recipient_id"
@@ -414,4 +418,25 @@ ActiveRecord::Schema.define(version: 20180117105551) do
   add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "spam_reports", "users"
   add_foreign_key "votes", "users"
+
+  create_view "idea_trending_infos",  sql_definition: <<-SQL
+      SELECT ideas.id AS idea_id,
+      GREATEST(comments_at.last_comment_at, upvotes_at.last_upvoted_at, ideas.published_at) AS last_activity_at,
+      to_timestamp(round((((GREATEST(((comments_at.comments_count)::double precision * comments_at.mean_comment_at), (0)::double precision) + GREATEST(((upvotes_at.upvotes_count)::double precision * upvotes_at.mean_upvoted_at), (0)::double precision)) + date_part('epoch'::text, ideas.published_at)) / (((GREATEST((comments_at.comments_count)::numeric, 0.0) + GREATEST((upvotes_at.upvotes_count)::numeric, 0.0)) + 1.0))::double precision))) AS mean_activity_at
+     FROM ((ideas
+       FULL JOIN ( SELECT comments.idea_id,
+              max(comments.created_at) AS last_comment_at,
+              avg(date_part('epoch'::text, comments.created_at)) AS mean_comment_at,
+              count(comments.idea_id) AS comments_count
+             FROM comments
+            GROUP BY comments.idea_id) comments_at ON ((ideas.id = comments_at.idea_id)))
+       FULL JOIN ( SELECT votes.votable_id,
+              max(votes.created_at) AS last_upvoted_at,
+              avg(date_part('epoch'::text, votes.created_at)) AS mean_upvoted_at,
+              count(votes.votable_id) AS upvotes_count
+             FROM votes
+            WHERE (((votes.mode)::text = 'up'::text) AND ((votes.votable_type)::text = 'Idea'::text))
+            GROUP BY votes.votable_id) upvotes_at ON ((ideas.id = upvotes_at.votable_id)));
+  SQL
+
 end

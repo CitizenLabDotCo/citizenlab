@@ -175,6 +175,16 @@ resource "Ideas" do
       expect(json_response[:data].map{|d| d[:relationships][:user_vote][:data]}.compact.first[:id]).to eq vote.id
       expect(json_response[:included].map{|i| i[:id]}).to include vote.id
     end
+
+    example "Search for ideas should work with trending ordering", document: false do
+      i1 = Idea.first
+      i1.title_multiloc['nl'] = 'Park met blauwe bomen'
+      i1.title_multiloc['en'] = 'A park with orange grass'
+      i1.save!
+
+      do_request(search: 'Park', sort: 'trending')
+      expect(status).to eq(200)
+    end
   end
 
   get "web_api/v1/ideas/as_markers" do
@@ -337,6 +347,18 @@ resource "Ideas" do
       end
     end
 
+    describe do
+      let (:project) { create(:project_with_current_phase, current_phase_attrs: {
+        participation_method: 'information' 
+      })}
+
+      example_request "[error] Creating an idea in a project with an active information phase" do
+        expect(response_status).to eq 401
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:errors, :base).first[:error]).to eq 'not_ideation'
+      end
+    end
+    
     context "when admin" do
       before do
         @user = create(:admin)
@@ -355,15 +377,6 @@ resource "Ideas" do
         end
       end
 
-      describe do
-        let (:phases) { create_list(:phase, 5, participation_method: 'information') }
-        let (:project) { create(:project, phases: phases) }
-        example_request "[error] Creating an idea in a project with a timeline but no active ideation phases" do
-          expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :base).first[:error]).to eq 'project_inactive'
-        end
-      end
 
       describe do
         let (:project) { create(:project_with_active_ideation_phase) }
@@ -425,7 +438,6 @@ resource "Ideas" do
         @idea.update(publication_status: "draft")
 
         do_request(idea: { publication_status: "published" })
-
         json_response = json_parse(response_body) 
         new_idea = Idea.find(json_response.dig(:data, :id))
         expect(new_idea.votes.size).to eq 1

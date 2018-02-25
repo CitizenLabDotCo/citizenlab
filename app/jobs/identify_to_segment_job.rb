@@ -11,7 +11,8 @@ class IdentifyToSegmentJob < ApplicationJob
       createdAt: user.created_at,
       locale: user.locale,
       birthday: user.birthyear,
-      gender: user.gender
+      gender: user.gender,
+      is_admin: user.admin?
     }
 
     tenant_id = nil
