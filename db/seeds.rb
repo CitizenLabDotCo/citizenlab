@@ -240,7 +240,7 @@ if Apartment::Tenant.current == 'localhost'
       gender: %w(male female unspecified)[rand(4)],
       birthyear: rand(2) === 0 ? nil : 1927 + rand(90),
       education: rand(1) === 0 ? nil : rand(9),
-      avatar: (rand(3) > 0) ? generate_avatar : nil
+      avatar: nil # (rand(3) > 0) ? generate_avatar : nil
     })
   end
 
@@ -301,7 +301,6 @@ if Apartment::Tenant.current == 'localhost'
       })
     end
     project.save
-
     [0,1,2,3,4][rand(5)].times do |i|
       project.project_images.create(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
     end
@@ -363,7 +362,7 @@ if Apartment::Tenant.current == 'localhost'
       areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
       author: User.offset(rand(User.count)).first,
       project: project,
-      phases: (project && project.timeline? && project.phases.sample(rand(project.phases.count))) || [],
+      phases: (project && project.timeline? && project.phases.sample(rand(project.phases.count)).select(&:ideation?)) || [],
       publication_status: 'published',
       published_at: Faker::Date.between(created_at, Time.now),
       created_at: created_at,

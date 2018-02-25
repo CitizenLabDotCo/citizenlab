@@ -18,7 +18,7 @@ class IdeaPolicy < ApplicationPolicy
         #   .where("projects.id IS NULL OR \
         #     projects.visible_to = 'public' OR \
         #     (projects.visible_to = 'groups' AND memberships.user_id = ?)", user&.id)
-        project_ids =  Pundit.policy_scope(user, Project).select(:id).map(&:id)
+        project_ids = Pundit.policy_scope(user, Project).select(:id).map(&:id)
         scope.where(project_id: project_ids, publication_status: ['published', 'closed'])
       else
         scope
@@ -38,17 +38,24 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.admin? || (
-      ProjectPolicy.new(user, record.project).show? && (
-        record.draft? ||
-        (user && record.author_id == user.id)
+    pcs = ParticipationContextService.new
+    disabled_reason = pcs.posting_disabled_reason(record.project)
+
+    record.draft? ||
+    user&.admin? ||
+    (
+      user && (
+        record.author_id == user.id &&
+        !disabled_reason &&
+        ProjectPolicy.new(user, record.project).show?
       )
     )
   end
 
   def show?
     user&.admin? || record.draft? || (
-      ProjectPolicy.new(user, record.project).show? &&       %w(draft published closed).include?(record.publication_status)
+      ProjectPolicy.new(user, record.project).show? &&
+      %w(draft published closed).include?(record.publication_status)
     )
   end
 

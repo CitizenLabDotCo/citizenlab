@@ -55,7 +55,7 @@
 #   context "insert" do
 #     xit "returns 201 response if successful" do
 #       # set params for the create request
-#       idea_params = FactoryGirl.build(:idea).attributes.symbolize_keys
+#       idea_params = FactoryBot.build(:idea).attributes.symbolize_keys
 #       idea_params.delete(:id)
 #       idea_params[:title_multiloc] = { en: 'My idea' }
 #       idea_params[:body_multiloc] = { en: 'idea body' }
@@ -121,6 +121,6 @@
 #
 #   private
 #   def create_idea
-#     FactoryGirl.create(:idea, title_multiloc: { en: 'My idea' })
+#     FactoryBot.create(:idea, title_multiloc: { en: 'My idea' })
 #   end
 # end

@@ -128,7 +128,8 @@ models:
       linked_page_ref: *3
       ordering: 3
   project:
-    - title_multiloc: projects.open_idea_project_title
+    - &1
+      title_multiloc: projects.open_idea_project_title
       description_multiloc: projects.open_idea_project_description
       internal_role: open_idea_box
       presentation_mode: card
@@ -138,4 +139,8 @@ models:
       commenting_enabled: true
       voting_enabled: true
       voting_method: unlimited
+      remote_header_bg_url: http://res.cloudinary.com/citizenlabco/image/upload/v1516809200/Idea_cover_qdrwa6.jpg
+  project_image:
+    - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1516925813/open_idea_box_gaxtpy.png
+      project_ref: *1
 

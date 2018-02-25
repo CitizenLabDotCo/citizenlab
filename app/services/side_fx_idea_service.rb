@@ -3,7 +3,6 @@ class SideFxIdeaService
   include SideFxHelper
 
   def before_create idea, user
-    check_participation_context(idea, user)
     set_phase(idea)
   end
 
@@ -43,20 +42,10 @@ class SideFxIdeaService
 
   private
 
-  def check_participation_context idea, user
-    pcs = ParticipationContextService.new
-    project = idea.project
-    if project
-      disallowed_reason = pcs.posting_disabled_reason(project)
-      if disallowed_reason
-        raise ClErrors::TransactionError.new(error_key: disallowed_reason)
-      end
-    end
-  end
-
   def set_phase idea
-    if idea.project && idea.phases.empty?
-      idea.phase_ids = [TimelineService.new.current_phase(idea.project)]
+    if idea.project&.timeline? && idea.phases.empty?
+      current_phase = TimelineService.new.current_phase(idea.project)
+      idea.phases = [current_phase] if current_phase&.ideation?
     end
   end
 
