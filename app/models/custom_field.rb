@@ -10,7 +10,7 @@ class CustomField < ApplicationRecord
     message: "only letters, numbers and underscore" }
   validates :input_type, presence: true, inclusion: INPUT_TYPES
   validates :title_multiloc, presence: true, multiloc: {presence: true}
-  validates :description_multiloc, presence: true, multiloc: {presence: false}
+  validates :description_multiloc, multiloc: {presence: false}
   validates :required, inclusion: {in: [true, false]}
   validates :ordering, numericality: { only_integer: true }, allow_nil: true
 
