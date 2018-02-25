@@ -183,6 +183,7 @@ export type Props = {
   multi?: boolean | undefined;
   onChange: (arg: IOption) => void;
   onBlur?: () => void;
+  disabled?: boolean;
 };
 
 type State = {};
@@ -201,7 +202,7 @@ export default class Select extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    let { value, placeholder, options, autoBlur, clearable, searchable, multi } = this.props;
+    let { value, placeholder, options, autoBlur, clearable, searchable, multi, disabled } = this.props;
 
     value = (value || undefined);
     placeholder = (placeholder || '');
@@ -225,6 +226,7 @@ export default class Select extends React.PureComponent<Props, State> {
         onChange={this.handleOnChange}
         onBlur={this.props.onBlur}
         multi={multi}
+        disabled={disabled}
       />
     );
   }

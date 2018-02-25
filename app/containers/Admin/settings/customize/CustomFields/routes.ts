@@ -1,6 +1,7 @@
 import Wrapper from './';
-import All from './all';
-import Edit from './edit';
+import All from './All';
+import Edit from './Edit';
+import New from './New';
 
 export default () => ({
   path: '/admin/custom_fields',
@@ -12,8 +13,11 @@ export default () => ({
   },
   childRoutes: [
     {
-      path: '/admin/custom_fields/edit/:customFieldId',
-      name: 'admin groups single group',
+      path: '/admin/custom_fields/new',
+      component: New,
+    },
+    {
+      path: '/admin/custom_fields/:customFieldId',
       component: Edit,
     },
   ],

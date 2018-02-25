@@ -41,6 +41,10 @@ const Container: any = styled.div`
       border-color: ${(props: any) => props.error ? props.theme.colors.error : '#999'};
     }
 
+    &:disabled {
+      background-color: #f9f9f9;
+    }
+
     ${media.biggerThanPhone`
       padding-right: ${props => props.error && '40px'};
     `}
@@ -75,6 +79,7 @@ export type Props = {
   min?: string | undefined;
   name?: string | undefined;
   maxCharCount?: number | undefined;
+  disabled?: boolean;
 };
 
 type State = {};
@@ -122,7 +127,7 @@ export default class Input extends React.PureComponent<Props, State> {
     let { value, placeholder, error } = this.props;
     const className = this.props['className'];
     const { formik } = this.context;
-    const { id, type, name, maxCharCount, min, autoFocus, onFocus } = this.props;
+    const { id, type, name, maxCharCount, min, autoFocus, onFocus, disabled } = this.props;
     const hasError = (!isNil(error) && !isEmpty(error));
 
     if (name && formik && formik.values[name]) {
@@ -158,6 +163,7 @@ export default class Input extends React.PureComponent<Props, State> {
           ref={this.handleRef}
           min={min}
           autoFocus={autoFocus}
+          disabled={disabled}
         />
 
         <div>

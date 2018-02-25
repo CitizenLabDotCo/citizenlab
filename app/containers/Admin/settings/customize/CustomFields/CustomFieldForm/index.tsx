@@ -1,23 +1,23 @@
 import * as React from 'react';
-// import { flow } from 'lodash';
-// import styled from 'styled-components';
-import { withFormik, FormikProps, Form, Field, FormikBag } from 'formik';
-import { ICustomFieldData, IInputType, updateCustomFieldForUsers } from 'services/userCustomFields';
+import { IInputType } from 'services/userCustomFields';
 
+import { Form, Field, InjectedFormikProps } from 'formik';
 import FormikInput from 'components/UI/FormikInput';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
 import FormikToggle from 'components/UI/FormikToggle';
 import FormikSelect from 'components/UI/FormikSelect';
+import Error from 'components/UI/Error';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import Label from 'components/UI/Label';
-// import { InjectedIntlProps } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import { Multiloc, API } from 'typings';
+import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 
-// Shape of form values
-interface FormValues {
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { Multiloc } from 'typings';
+import messages from '../messages';
+
+export interface FormValues {
   key: string;
   input_type: IInputType;
   title_multiloc: Multiloc;
@@ -25,30 +25,24 @@ interface FormValues {
   required: boolean;
 }
 
-interface OtherProps {
+export interface Props {
+  mode: 'new' | 'edit';
 }
 
-interface OuterProps {
-  customField: ICustomFieldData;
-}
+class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
 
-const inputTypeOptions = () => {
-  const fieldTypes = ['text', 'multiline_text', 'select', 'multiselect', 'checkbox', 'date'];
-  return fieldTypes.map(optionForInputType);
-};
-
-
-const optionForInputType = (inputType) => (
-  {
-    value: inputType,
-    label: <FormattedMessage {...messages[`inputType_${inputType}`]} />,
+  inputTypeOptions = () => {
+    const fieldTypes = ['text', 'multiline_text', 'select', 'multiselect', 'checkbox', 'date'];
+    return fieldTypes.map((inputType) => ({
+      value: inputType,
+      label: <FormattedMessage {...messages[`inputType_${inputType}`]} />,
+    }));
   }
-);
 
-const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
+  render() {
 
-    const { isSubmitting } = props;
-    // const { touched, errors, isSubmitting, values } = props;
+    const { isSubmitting, mode, errors, isValid, touched } = this.props;
+
     return (
       <Form>
         <Section>
@@ -63,8 +57,10 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
             <Field
               name="input_type"
               component={FormikSelect}
-              options={inputTypeOptions()}
+              options={this.inputTypeOptions()}
+              disabled={mode === 'edit'}
             />
+            <Error apiErrors={errors.input_type} />
           </SectionField>
 
           <SectionField>
@@ -74,7 +70,9 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
             <Field
               name="key"
               component={FormikInput}
+              disabled={mode === 'edit'}
             />
+            <Error apiErrors={errors.key} />
           </SectionField>
 
           <SectionField>
@@ -83,6 +81,7 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
               component={FormikInputMultiloc}
               label={<FormattedMessage {...messages.fieldTitle} />}
             />
+            <Error apiErrors={errors.title_multiloc} />
           </SectionField>
 
           <SectionField>
@@ -91,6 +90,7 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
               component={FormikTextAreaMultiloc}
               label={<FormattedMessage {...messages.fieldDescription} />}
             />
+            <Error apiErrors={errors.description_multiloc} />
           </SectionField>
 
           <SectionField>
@@ -101,42 +101,19 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
               name="required"
               component={FormikToggle}
             />
+            <Error apiErrors={errors.required} />
           </SectionField>
 
         </Section>
 
-        <button type="submit" disabled={isSubmitting}>
-          Submit
-        </button>
+        <FormikSubmitWrapper
+          {...{ isValid, isSubmitting, status, touched }}
+        />
+
       </Form>
     );
-};
+  }
+}
 
 
-const mapPropsToValues = (props: OuterProps): FormValues => {
-  const { customField } = props;
-  return {
-    key: props.customField.attributes.key,
-    input_type: props.customField.attributes.input_type,
-    title_multiloc: customField.attributes.title_multiloc,
-    description_multiloc: customField.attributes.description_multiloc,
-    required: customField.attributes.required,
-  };
-};
-
-const handleSubmit = (values: FormValues, formikBag: FormikBag<OuterProps, FormValues>) => {
-  const { props, setErrors, setSubmitting } = formikBag;
-  updateCustomFieldForUsers(props.customField.id, {
-    ...values
-  })
-    .then(() => {
-      alert('Victory!');
-    })
-    .catch((errorResponse) => {
-      const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
-      setErrors(apiErrors);
-      setSubmitting(false);
-    });
-};
-
-export default withFormik<OuterProps, FormValues>({ mapPropsToValues, handleSubmit })(InnerForm);
+export default CustomFieldForm;

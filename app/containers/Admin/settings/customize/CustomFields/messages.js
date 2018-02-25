@@ -51,4 +51,25 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_date',
     defaultMessage: 'Date',
   },
+  deleteButtonLabel: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.deleteButtonLabel',
+    defaultMessage: 'Delete',
+  },
+  editButtonLabel: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.editButtonLabel',
+    defaultMessage: 'Edit',
+  },
+  customFieldDeletionConfirmation: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldDeletionConfirmation',
+    defaultMessage: 'Are you sure you want to delete this custom field?',
+  },
+  listTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.listTitle',
+    defaultMessage: 'Custom fields',
+  },
+  addCustomFieldButton: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.addCustomFieldButton',
+    defaultMessage: 'Add custom field',
+  },
+
 });

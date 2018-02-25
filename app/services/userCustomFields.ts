@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
+import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 
 
@@ -32,19 +32,22 @@ export interface ICustomFields {
   data: ICustomFieldData[];
 }
 
-export function customFieldForUsersStream(customFieldId: string) {
-  return streams.get<ICustomField>({ apiEndpoint: `${API_PATH}/users/custom_fields/${customFieldId}` });
+export function customFieldForUsersStream(customFieldId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<ICustomField>({ apiEndpoint: `${API_PATH}/users/custom_fields/${customFieldId}`, ...streamParams });
 }
 
-export function customFieldsForUsersStream() {
-  return streams.get<ICustomFields>({ apiEndpoint: `${API_PATH}/users/custom_fields` });
+export function customFieldsForUsersStream(streamParams: IStreamParams | null = null) {
+  return streams.get<ICustomFields>({ apiEndpoint: `${API_PATH}/users/custom_fields`, ...streamParams });
 }
-
 
 export function addCustomFieldForUsers(data) {
-  streams.add<ICustomField>(`${API_PATH}/users/custom_fields`, data);
+  return streams.add<ICustomField>(`${API_PATH}/users/custom_fields`, { custom_field: data });
 }
 
 export function updateCustomFieldForUsers(customFieldId: string, object) {
   return streams.update<ICustomField>(`${API_PATH}/users/custom_fields/${customFieldId}`, customFieldId, { custom_field: object });
+}
+
+export function deleteCustomField(customFieldId: string) {
+  return streams.delete(`${API_PATH}/users/custom_fields/${customFieldId}`, customFieldId);
 }
