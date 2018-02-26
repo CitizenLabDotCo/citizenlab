@@ -120,6 +120,7 @@ export default class FilterSelector extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const className = this.props['className'];
     const { deployed } = this.state;
     const { id, values, multiple, selected, title, maxWidth, mobileMaxWidth } = this.props;
     const currentTitle = this.getTitle(selected, values, multiple, title);
@@ -128,7 +129,7 @@ export default class FilterSelector extends React.PureComponent<Props, State> {
       <Container
         id={id}
         onClickOutside={this.handleClickOutside}
-        className={`e2e-filter-selector-${this.props.name}`}
+        className={`e2e-filter-selector-${this.props.name} ${className}`}
       >
         <Title
           title={currentTitle}
