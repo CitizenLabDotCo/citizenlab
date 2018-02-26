@@ -11,6 +11,11 @@
   - Fixed 'start an idea' button not linking to the correct idea creation step
 - Ideas and Projects filter dropdown
   - Fixed the dropdown items not always being clickable
+- Navigation bar
+  - Fixed avatar and options menu not showing on mobile devices
+  
+### Added
+- Responsive admin sidebar 
 
 ### Changed
 - Project pages
