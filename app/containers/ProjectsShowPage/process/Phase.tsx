@@ -18,7 +18,6 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-// import { media } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
@@ -82,14 +81,17 @@ export default class Phase extends React.PureComponent<Props, State> {
     this.phaseId$.next(this.props.phaseId);
 
     this.subscriptions = [
-      this.phaseId$.distinctUntilChanged().filter(phaseId => isString(phaseId)).switchMap((phaseId) => {
-        const locale$ = localeStream().observable;
-        const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
-        const phase$ = phaseStream(phaseId).observable;
-        return Rx.Observable.combineLatest(locale$, currentTenantLocales$, phase$);
-      }).subscribe(([locale, currentTenantLocales, phase]) => {
-        this.setState({ locale, currentTenantLocales, phase });
-      })
+      this.phaseId$
+        .distinctUntilChanged()
+        .filter(phaseId => isString(phaseId))
+        .switchMap((phaseId) => {
+          const locale$ = localeStream().observable;
+          const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
+          const phase$ = phaseStream(phaseId).observable;
+          return Rx.Observable.combineLatest(locale$, currentTenantLocales$, phase$);
+        }).subscribe(([locale, currentTenantLocales, phase]) => {
+          this.setState({ locale, currentTenantLocales, phase });
+        })
     ];
   }
 

@@ -56,7 +56,7 @@ const Loading = styled.div`
   justify-content: center;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 76px);
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 66px);
   `}
 `;
 
@@ -383,7 +383,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                 {hasProjects &&
                   <ProjectSection>
                     <SectionContainer>
-                      <ProjectCards queryParameters={{ 'page[size]': 2 }} hideAllFilters={true} />
+                      <ProjectCards queryParameters={{ 'page[size]': 3 }} hideAllFilters={true} />
                     </SectionContainer>
                   </ProjectSection>
                 }

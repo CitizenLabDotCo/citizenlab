@@ -40,7 +40,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // animations
-// import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
