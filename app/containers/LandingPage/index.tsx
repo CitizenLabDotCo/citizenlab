@@ -56,7 +56,7 @@ const Loading = styled.div`
   justify-content: center;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 76px);
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 66px);
   `}
 `;
 

@@ -34,7 +34,7 @@ const Loading = styled.div`
   justify-content: center;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 76px);
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 66px);
   `}
 `;
 
@@ -43,7 +43,7 @@ const Container = styled.div`
   background: #f9f9fa;
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 76px);
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 66px);
   `}
 `;
 
