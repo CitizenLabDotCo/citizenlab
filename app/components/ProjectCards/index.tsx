@@ -15,6 +15,9 @@ import { projectsStream, IProjects } from 'services/projects';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// utils
+import shallowCompare from 'utils/shallowCompare';
+
 // style
 import styled, { withTheme } from 'styled-components';
 import { media } from 'utils/styleUtils';
@@ -81,8 +84,8 @@ const EmptyContainer = styled.div`
   align-items: center;
   justify-content: center;
   margin: 0;
-  padding-top: 120px;
-  padding-bottom: 120px;
+  padding-top: 100px;
+  padding-bottom: 100px;
   border-radius: 5px;
   border: solid 1px #e4e4e4;
   background: #fff;
@@ -208,7 +211,9 @@ class ProjectCards extends React.PureComponent<Props, State> {
     this.queryParameters$ = new Rx.BehaviorSubject(queryParameters);
 
     this.subscriptions = [
-      this.queryParameters$.mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
+      this.queryParameters$
+      .distinctUntilChanged((x, y) => shallowCompare(x, y))
+      .mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
         const isLoadingMore = (acc.queryParameters['page[number]'] !== queryParameters['page[number]']);
         const pageNumber = (isLoadingMore ? queryParameters['page[number]'] : 1);
         const newQueryParameters: IQueryParameters = omitBy({
@@ -220,6 +225,8 @@ class ProjectCards extends React.PureComponent<Props, State> {
           querying: !isLoadingMore,
           loadingMore: isLoadingMore,
         });
+
+        console.log(queryParameters);
 
         return projectsStream({ queryParameters: newQueryParameters }).observable.map((projects) => {
           const selfLink = get(projects, 'links.self');

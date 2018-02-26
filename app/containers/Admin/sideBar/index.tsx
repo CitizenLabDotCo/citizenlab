@@ -14,6 +14,7 @@ import messages from './messages';
 
 // style
 import styled, { css } from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const Menu = styled.div`
   width: 240px;
@@ -23,6 +24,10 @@ const Menu = styled.div`
   margin-top: 0px;
   background: #3b3b3b;
   padding-top: 39px;
+
+  ${media.smallerThanMinTablet`
+    width: 70px;
+  `}
 `;
 
 const IconWrapper = styled.div`
@@ -46,6 +51,10 @@ const Text = styled.div`
   line-height: 21px;
   margin-left: 20px;
   opacity: 0.4;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const MenuLink = styled(Link)`
