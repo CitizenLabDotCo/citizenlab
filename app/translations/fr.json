@@ -336,7 +336,7 @@
   "app.containers.App.loading": "Chargement...",
   "app.containers.App.unAuthorizedUser": "Oups... Il semble que vous n'ayez pas l'autorisation d'accéder à cette page",
   "app.containers.CompleteSignUpPage.title": "Complétez votre profil",
-  "app.containers.IdeaButton.startAnIdea": "",
+  "app.containers.IdeaButton.startAnIdea": "Lancez une idée",
   "app.containers.IdeaCards.areas": "Lieux",
   "app.containers.IdeaCards.newest": "Plus récentes",
   "app.containers.IdeaCards.oldest": "Plus anciennes",

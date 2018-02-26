@@ -336,7 +336,7 @@
   "app.containers.App.loading": "am Laden...",
   "app.containers.App.unAuthorizedUser": "Hoppla, es scheint, dass Sie auf die falsche Seite gewandert sind...",
   "app.containers.CompleteSignUpPage.title": "Vervollständigen Sie Ihr Profil",
-  "app.containers.IdeaButton.startAnIdea": "",
+  "app.containers.IdeaButton.startAnIdea": "Starten Sie eine Idee",
   "app.containers.IdeaCards.areas": "Gebiete",
   "app.containers.IdeaCards.newest": "Neueste",
   "app.containers.IdeaCards.oldest": "Älteste",
