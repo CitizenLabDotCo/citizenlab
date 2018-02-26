@@ -113,9 +113,20 @@ class CLMap extends React.PureComponent<Props & InjectedTenant, State> {
     );
   }
 
-  componentDidUpdate(prevProps: Props) {
+  componentDidUpdate(prevProps: Props & InjectedTenant) {
     if (this.props.points && !isEqual(prevProps.points, this.props.points)) {
       this.convertPoints(this.props.points);
+    }
+
+    // Update the center if the tenant is loaded after map init and there's no set center
+    if (this.props.tenant && !prevProps.tenant && !this.props.center && this.map && this.props.tenant.attributes.settings.maps) {
+      this.map.setView(
+        [
+          parseFloat(this.props.tenant.attributes.settings.maps.map_center.lat),
+          parseFloat(this.props.tenant.attributes.settings.maps.map_center.long),
+        ],
+        this.props.tenant.attributes.settings.maps.zoom_level
+      );
     }
   }
 

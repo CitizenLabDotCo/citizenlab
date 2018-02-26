@@ -21,10 +21,6 @@ export default defineMessages({
     id: 'app.containers.Projects.events',
     defaultMessage: 'Events',
   },
-  startAnIdea: {
-    id: 'app.containers.Projects.startAnIdea',
-    defaultMessage: 'Start an idea',
-  },
   helmetDescription: {
     id: 'app.containers.Projects.helmetDescription',
     defaultMessage: 'Project Show page listing',

@@ -87,7 +87,7 @@ const HeaderContentRight = styled.div`
 const HeaderTitle = styled.div`
   color: #fff;
   font-size: 42px;
-  line-height: 46px;
+  line-height: 52px;
   font-weight: 500;
   text-align: left;
   margin: 0;
@@ -181,6 +181,7 @@ const HeaderOverlay = styled.div`
 const HeaderImage: any = styled.div`
   background-image: url(${(props: any) => props.src});
   background-repeat: no-repeat;
+  background-position: center center;
   background-size: cover;
   position: absolute;
   top: 0;

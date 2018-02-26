@@ -29,7 +29,7 @@ const Overlay: any = styled.div`
   position: absolute;
   top: 35px;
   right: -10px;
-  z-index: 2;
+  z-index: 1000;
   transform-origin: right top;
 
   * {

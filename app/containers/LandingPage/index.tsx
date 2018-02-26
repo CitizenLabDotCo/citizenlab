@@ -56,7 +56,7 @@ const Loading = styled.div`
   justify-content: center;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 66px);
   `}
 `;
 
@@ -342,7 +342,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
     if (!loaded) {
       return (
         <Loading id="ideas-loading">
-          <Spinner size="34px" color="#666" />
+          <Spinner size="32px" color="#666" />
         </Loading>
       );
     }
@@ -383,7 +383,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                 {hasProjects &&
                   <ProjectSection>
                     <SectionContainer>
-                      <ProjectCards queryParameters={{ 'page[size]': 2 }} hideAllFilters={true} />
+                      <ProjectCards queryParameters={{ 'page[size]': 3 }} hideAllFilters={true} />
                     </SectionContainer>
                   </ProjectSection>
                 }

@@ -2,7 +2,6 @@ import moment from 'moment';
 import { IProjectData } from './projects';
 import { IPhaseData } from './phases';
 
-
 type ButtonStateResponse  = {
   show: boolean;
   enabled: boolean;

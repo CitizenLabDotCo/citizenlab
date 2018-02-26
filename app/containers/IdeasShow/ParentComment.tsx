@@ -71,7 +71,6 @@ const Container = styled.div`
 
 const CommentsWithReplyBoxContainer = styled.div`
   border-radius: 5px;
-  /* box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.15); */
 `;
 
 const CommentsContainer = styled.div`
