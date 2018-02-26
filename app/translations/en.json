@@ -553,7 +553,7 @@
   "app.containers.UsersEditPage.h1": "Basic information",
   "app.containers.UsersEditPage.h1sub": "Edit your basic information related to your account",
   "app.containers.UsersEditPage.h2": "Details",
-  "app.containers.UsersEditPage.h2sub": "All information is private and help us to know you better",
+  "app.containers.UsersEditPage.h2sub": "It is not mandatory to fill in the information below. It helps us to make a better analysis of what is collected via the platform. Others only see your name and the date you are logged in.",
   "app.containers.UsersEditPage.h3": "Notifications",
   "app.containers.UsersEditPage.h3sub": "Manage your notifications",
   "app.containers.UsersEditPage.helmetDescription": "Edit profile",
