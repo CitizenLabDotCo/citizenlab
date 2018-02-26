@@ -27,6 +27,7 @@ export interface FormValues {
 
 export interface Props {
   mode: 'new' | 'edit';
+  customFieldId: string;
 }
 
 class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormValues>> {

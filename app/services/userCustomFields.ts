@@ -14,6 +14,7 @@ export interface ICustomFieldData {
     description_multiloc: Multiloc;
     input_type: IInputType;
     required: boolean;
+    ordering: number;
     created_at: string;
     updated_at: string;
   };
@@ -31,6 +32,29 @@ export interface ICustomField {
 export interface ICustomFields {
   data: ICustomFieldData[];
 }
+
+export interface ICustomFieldOptionData {
+  id: string;
+  type: string;
+  attributes: {
+    key: string;
+    title_multiloc: Multiloc;
+    ordering: number;
+    created_at: string;
+    updated_at: string;
+  };
+  relationships: {
+    custom_field_options: {
+      data: IRelationship;
+    };
+  };
+}
+
+export interface ICustomFieldOption {
+  data: ICustomFieldOptionData;
+}
+
+
 
 export function customFieldForUsersStream(customFieldId: string, streamParams: IStreamParams | null = null) {
   return streams.get<ICustomField>({ apiEndpoint: `${API_PATH}/users/custom_fields/${customFieldId}`, ...streamParams });
@@ -50,4 +74,20 @@ export function updateCustomFieldForUsers(customFieldId: string, object) {
 
 export function deleteCustomField(customFieldId: string) {
   return streams.delete(`${API_PATH}/users/custom_fields/${customFieldId}`, customFieldId);
+}
+
+export function customFieldOptionsStream(customFieldId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<ICustomFieldOption>({ apiEndpoint: `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options`, ...streamParams });
+}
+
+export function addCustomFieldOption(customFieldId: string, data) {
+  return streams.add<ICustomField>(`${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options`, { custom_field_option: data });
+}
+
+export function updateCustomFieldOption(customFieldId: string, optionId: string, object) {
+  return streams.update<ICustomFieldOption>(`${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${optionId}`, optionId, { custom_field_option: object });
+}
+
+export function deleteCustomFieldOption(customFieldId: string, optionId: string) {
+  return streams.delete(`${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${optionId}`, optionId);
 }
