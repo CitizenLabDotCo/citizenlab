@@ -15,7 +15,8 @@
   - Fixed avatar and options menu not showing on mobile devices
   
 ### Added
-- Responsive admin sidebar 
+- Responsive admin sidebar
+- Top navigation menu stays in place when scrolling in admin section on mobile devices
 
 ### Changed
 - Project pages
