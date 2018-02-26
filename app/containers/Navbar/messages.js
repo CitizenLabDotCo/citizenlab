@@ -10,10 +10,6 @@ export default defineMessages({
     id: 'app.containers.app.navbar.search',
     defaultMessage: 'Search',
   },
-  addIdea: {
-    id: 'app.containers.app.navbar.addIdea',
-    defaultMessage: 'Add idea',
-  },
   startIdea: {
     id: 'app.containers.app.navbar.startIdea',
     defaultMessage: 'Start an idea',

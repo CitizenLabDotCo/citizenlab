@@ -6,7 +6,7 @@ import 'moment-timezone';
 
 // components
 import Icon from 'components/UI/Icon';
-import IdeaButton from './IdeaButton';
+import IdeaButton from 'components/IdeaButton';
 import MobileTimeline from './MobileTimeline';
 
 // services
@@ -48,8 +48,6 @@ const ContainerInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: ${padding}px;
-  padding-top: 0px;
   border-radius: 5px;
   background: #fff;
   border: solid 1px #e4e4e4;
@@ -63,10 +61,19 @@ const Header = styled.div`
   width: 100%;
   min-height: 80px;
   padding: 0px;
+  padding-left: ${padding}px;
+  padding-right: ${padding}px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* border: solid 1px red; */
+  background: #f8f8f8;
+  border-bottom: solid 1px #e4e4e4;
+
+  ${media.smallerThanMaxTablet`
+    min-height: 120px;
+  `}
 `;
 
 const HeaderSection = styled.div`
@@ -112,6 +119,10 @@ const HeaderTitleWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-right: 15px;
+
+  ${media.smallerThanMaxTablet`
+    margin-right: 0px;
+  `}
 `;
 
 const HeaderTitle = styled.div`
@@ -132,7 +143,7 @@ const MobileDate = styled.div`
   font-size: 15px;
   line-height: 21px;
   font-weight: 400;
-  margin-top: 2px;
+  margin-top: 4px;
   display: none;
 
   ${media.smallerThanMaxTablet`
@@ -169,6 +180,10 @@ const MobileTimelineContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-left: ${padding}px;
+  padding-right: ${padding}px;
+  padding-top: 30px;
+  padding-bottom: 30px;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -177,9 +192,11 @@ const MobileTimelineContainer = styled.div`
 
 const Phases = styled.div`
   width: 100%;
-  padding: 0;
+  padding-left: ${padding}px;
+  padding-right: ${padding}px;
+  padding-top: 40px;
+  padding-bottom: 40px;
   margin: 0;
-  margin-top: 30px;
   margin-left: auto;
   margin-right: auto;
   display: flex;
@@ -218,10 +235,10 @@ const PhaseArrow = styled(Icon)`
 
 const PhaseText: any = styled.div`
   color: ${greyTransparent};
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 400;
   text-align: center;
-  overflow-wrap: break-word;
+  /* overflow-wrap: break-word;
   word-wrap: break-word;
   -ms-word-break: break-all;
   word-break: break-all;
@@ -229,14 +246,14 @@ const PhaseText: any = styled.div`
   -ms-hyphens: auto;
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
-  hyphens: auto;
+  hyphens: auto; */
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
-  line-height: 21px;
-  max-height: 63px;
+  line-height: 20px;
+  max-height: 60px;
   margin-top: 12px;
   padding-left: 6px;
   padding-right: 6px;
@@ -312,13 +329,13 @@ type State = {
 };
 
 export default class Timeline extends React.PureComponent<Props, State> {
+  initialState: State;
   projectId$: Rx.BehaviorSubject<string | null>;
-  selectedPhaseId$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
     super(props as any);
-    this.state = {
+    const initialState = {
       locale: null,
       currentTenant: null,
       phases: null,
@@ -326,82 +343,100 @@ export default class Timeline extends React.PureComponent<Props, State> {
       selectedPhaseId: null,
       loaded: false
     };
+    this.initialState = initialState;
+    this.state = initialState;
     this.subscriptions = [];
     this.projectId$ = new Rx.BehaviorSubject(null);
-    this.selectedPhaseId$ = new Rx.BehaviorSubject(null);
   }
 
   componentDidMount() {
     this.projectId$.next(this.props.projectId);
 
+    const projectId$ = this.projectId$.distinctUntilChanged();
+    const locale$ = localeStream().observable;
+    const currentTenant$ = currentTenantStream().observable;
+
     this.subscriptions = [
-      this.projectId$
-        .distinctUntilChanged()
+      projectId$
+        .do(() => this.setState(this.initialState))
         .filter(projectId => isString(projectId))
         .switchMap((projectId: string) => {
-          const locale$ = localeStream().observable;
-          const currentTenant$ = currentTenantStream().observable;
           const phases$ = phasesStream(projectId).observable;
-          const selectedPhaseId$ = this.selectedPhaseId$.distinctUntilChanged().do((selectedPhaseId) => {
-            this.props.onPhaseSelected(selectedPhaseId);
-          });
 
           return Rx.Observable.combineLatest(
             locale$,
             currentTenant$,
-            phases$,
-            selectedPhaseId$
+            phases$
           );
-        }).subscribe(([locale, currentTenant, phases, selectedPhaseId]) => {
-          this.setState({ locale, currentTenant, phases, selectedPhaseId, loaded: true });
+        })
+        .subscribe(([locale, currentTenant, phases]) => {
+          const currentPhaseId = this.getCurrentPhaseId(currentTenant, phases);
+          const selectedPhaseId = this.getDefaultSelectedPhaseId(currentPhaseId, phases);
+          this.setSelectedPhaseId(selectedPhaseId);
+          this.setState({ locale, currentTenant, phases, currentPhaseId, loaded: true });
         })
     ];
   }
 
   componentDidUpdate(_prevProps: Props, _prevState: State) {
     this.projectId$.next(this.props.projectId);
-
-    const { currentTenant, phases, selectedPhaseId, currentPhaseId, loaded } = this.state;
-
-    if (loaded && currentTenant && !currentPhaseId) {
-      if (phases && phases.data.length > 0) {
-        const currentTenantTimezone = currentTenant.data.attributes.settings.core.timezone;
-        const currentTenantTodayMoment = moment().tz(currentTenantTimezone);
-
-        phases.data.forEach((phase) => {
-          const startMoment = moment(phase.attributes.start_at, 'YYYY-MM-DD');
-          const endMoment = moment(phase.attributes.end_at, 'YYYY-MM-DD');
-          const isCurrentPhase = currentTenantTodayMoment.isBetween(startMoment, endMoment, 'days', '[]');
-
-          if (isCurrentPhase && (!currentPhaseId || (currentPhaseId && phase.id !== currentPhaseId))) {
-            this.setState({ currentPhaseId: phase.id });
-          }
-        });
-      }
-    }
-
-    if (loaded && !selectedPhaseId) {
-      if (currentPhaseId) {
-        this.selectedPhaseId$.next(currentPhaseId);
-      } else if (phases && phases.data.length > 0) {
-        const lastPhase = phases.data[phases.data.length - 1];
-
-        if (lastPhase && moment().diff(moment(lastPhase.attributes.start_at, 'YYYY-MM-DD'), 'days') <= 0) {
-          this.selectedPhaseId$.next(phases.data[0].id);
-        } else if (lastPhase && moment().diff(moment(lastPhase.attributes.start_at, 'YYYY-MM-DD'), 'days') > 0) {
-          this.selectedPhaseId$.next(lastPhase.id);
-        }
-      }
-    }
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  setSelectedPhaseId = (phaseId: string) => (event: React.FormEvent<MouseEvent>) => {
+  getCurrentPhaseId(currentTenant: ITenant, phases: IPhases | null) {
+    let currentPhaseId: string | null = null;
+
+    if (phases && phases.data.length > 0) {
+      const currentTenantTimezone = currentTenant.data.attributes.settings.core.timezone;
+      const currentTenantTodayMoment = moment().tz(currentTenantTimezone);
+
+      phases.data.forEach((phase) => {
+        const startMoment = moment(phase.attributes.start_at, 'YYYY-MM-DD');
+        const endMoment = moment(phase.attributes.end_at, 'YYYY-MM-DD');
+        const isCurrentPhase = currentTenantTodayMoment.isBetween(startMoment, endMoment, 'days', '[]');
+
+        if (isCurrentPhase) {
+          currentPhaseId = phase.id;
+        }
+      });
+    }
+
+    return currentPhaseId as string | null;
+  }
+
+  getDefaultSelectedPhaseId(currentPhaseId: string | null, phases: IPhases | null) {
+    let selectedPhaseId: string | null = null;
+
+    if (isString(currentPhaseId)) {
+        selectedPhaseId = currentPhaseId;
+    } else if (phases && phases.data.length > 0) {
+      const lastPhase = phases.data[phases.data.length - 1];
+
+      if (lastPhase && moment().diff(moment(lastPhase.attributes.start_at, 'YYYY-MM-DD'), 'days') <= 0) {
+        selectedPhaseId = phases.data[0].id;
+      } else if (lastPhase && moment().diff(moment(lastPhase.attributes.start_at, 'YYYY-MM-DD'), 'days') > 0) {
+        selectedPhaseId = lastPhase.id;
+      }
+    }
+
+    return selectedPhaseId;
+  }
+
+  setSelectedPhaseId = (selectedPhaseId: string | null) => {
+    this.props.onPhaseSelected(selectedPhaseId);
+    this.setState({ selectedPhaseId });
+  }
+
+  handleOnPhaseSelection = (phaseId: string) => (event: React.FormEvent<MouseEvent>) => {
     event.preventDefault();
-    this.selectedPhaseId$.next(phaseId);
+    this.setSelectedPhaseId(phaseId);
+  }
+
+  handleOnPhaseSelectionFromDropdown = (phaseId: string) => {
+    this.setSelectedPhaseId(phaseId);
   }
 
   render() {
@@ -493,7 +528,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
                 phases={phases.data}
                 currentPhase={currentPhaseId}
                 selectedPhase={selectedPhaseId}
-                onPhaseSelection={this.setSelectedPhaseId}
+                onPhaseSelection={this.handleOnPhaseSelectionFromDropdown}
               />
             </MobileTimelineContainer>
 
@@ -515,7 +550,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
                     className={`${isFirst && 'first'} ${isLast && 'last'} ${isCurrentPhase && 'current'} ${isSelectedPhase && 'selected'}`}
                     key={index}
                     numberOfDays={numberOfDays}
-                    onClick={this.setSelectedPhaseId(phase.id)}
+                    onClick={this.handleOnPhaseSelection(phase.id)}
                   >
                     <PhaseBar>
                       {index + 1}

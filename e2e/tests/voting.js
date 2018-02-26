@@ -14,13 +14,13 @@ module.exports = {
     // vote
     browser
     .waitForElementVisible('#e2e-ideas-list')
-    .click('#e2e-ideas-list:first-child .e2e-idea-card .downvote')
+    .click('#e2e-ideas-list .e2e-voting-enabled .downvote')
     .pause(1000)
     .waitForElementVisible('.e2e-vote-controls.down')
-    .click('#e2e-ideas-list:first-child .e2e-idea-card .upvote')
+    .click('#e2e-ideas-list .e2e-voting-enabled .upvote')
     .pause(1000)
     .waitForElementVisible('.e2e-vote-controls.up')
-    .click('#e2e-ideas-list:first-child .e2e-idea-card .upvote')
+    .click('#e2e-ideas-list .e2e-voting-enabled .upvote')
     .pause(1000)
     .waitForElementVisible('.e2e-vote-controls.neutral')
     .end();
