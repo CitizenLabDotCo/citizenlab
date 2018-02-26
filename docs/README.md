@@ -1,5 +1,23 @@
 # Changelog
 
+## 2018-02-26
+
+### Fixed
+- Project pages
+  - Fixed header image not being centered
+- Project timeline page
+  - Fixed currently active phase not being selected by default
+  - Fixed 'start an idea' button not being shown insde the empty idea container
+  - Fixed 'start an idea' button not linking to the correct idea creation step
+- Ideas and Projects filter dropdown
+  - Fixed the dropdown items not always being clickable
+
+### Changed
+- Project pages
+  - When a continious project is opened, the default view will now be the ideas page instead of the information page
+- Project timeline
+  - Better word-breaking of phases titles in the timeline
+
 ## 2018-02-22
 
 ### Fixed
