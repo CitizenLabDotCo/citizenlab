@@ -181,6 +181,7 @@ const HeaderOverlay = styled.div`
 const HeaderImage: any = styled.div`
   background-image: url(${(props: any) => props.src});
   background-repeat: no-repeat;
+  background-position: center center;
   background-size: cover;
   position: absolute;
   top: 0;

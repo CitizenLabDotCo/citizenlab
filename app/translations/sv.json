@@ -336,7 +336,7 @@
   "app.containers.App.loading": "Loading...",
   "app.containers.App.unAuthorizedUser": "Oops, it looks like you wandered to the wrong page...",
   "app.containers.CompleteSignUpPage.title": "Complete your profile",
-  "app.containers.IdeaButton.startAnIdea": "Start an idea",
+  "app.containers.IdeaButton.startAnIdea": "",
   "app.containers.IdeaCards.areas": "Areas",
   "app.containers.IdeaCards.newest": "Newest",
   "app.containers.IdeaCards.oldest": "Oldest",

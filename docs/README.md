@@ -1,5 +1,27 @@
 # Changelog
 
+## 2018-02-26
+
+### Fixed
+- Project pages
+  - Fixed header image not being centered
+- Project timeline page
+  - Fixed currently active phase not being selected by default
+  - Fixed 'start an idea' button not being shown insde the empty idea container
+  - Fixed 'start an idea' button not linking to the correct idea creation step
+- Ideas and Projects filter dropdown
+  - Fixed the dropdown items not always being clickable
+- Navigation bar
+  - Fixed avatar and options menu not showing on mobile devices
+  
+### Added
+- Responsive admin sidebar
+- Top navigation menu stays in place when scrolling in admin section on mobile devices
+
+### Changed
+- Project timeline
+  - Better word-breaking of phases titles in the timeline
+
 ## 2018-02-22
 
 ### Fixed
