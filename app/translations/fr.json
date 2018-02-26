@@ -553,7 +553,7 @@
   "app.containers.UsersEditPage.h1": "Profil utilisateur",
   "app.containers.UsersEditPage.h1sub": "Modifiez les informations relatives à votre compte",
   "app.containers.UsersEditPage.h2": "Détails du profil",
-  "app.containers.UsersEditPage.h2sub": "Toutes ces informations resteront privées et nous aident à mieux vous connaître !",
+  "app.containers.UsersEditPage.h2sub": "Il n'est pas obligatoire de remplir les informations ci-dessous. Cela nous aide à faire une meilleure analyse de ce qui est collecté via la plateforme. Les autres ne voient que votre nom et la date à laquelle vous vous êtes inscrit",
   "app.containers.UsersEditPage.h3": "Notifications",
   "app.containers.UsersEditPage.h3sub": "Gérer vos notifications",
   "app.containers.UsersEditPage.helmetDescription": "Modifier le profil",
