@@ -19,8 +19,6 @@
 - Top navigation menu stays in place when scrolling in admin section on mobile devices
 
 ### Changed
-- Project pages
-  - When a continious project is opened, the default view will now be the ideas page instead of the information page
 - Project timeline
   - Better word-breaking of phases titles in the timeline
 
