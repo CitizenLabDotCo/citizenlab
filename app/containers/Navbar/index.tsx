@@ -37,6 +37,7 @@ import styled, { css, } from 'styled-components';
 
 // typings
 import { Locale } from 'typings';
+import { Location } from 'history';
 
 const Container = styled.div`
   width: 100%;
@@ -48,6 +49,8 @@ const Container = styled.div`
   position: fixed;
   top: 0;
   background: #fff;
+  padding-left: 30px;
+  padding-right: 30px;
 
   * {
     user-select: none;
@@ -74,12 +77,19 @@ const Container = styled.div`
   }
 
   ${media.smallerThanMaxTablet`
-    position: relative;
-    top: auto;
-
     &::after {
       opacity: 1;
     }
+
+    &:not(.admin) {
+      position: relative;
+      top: auto;
+    }
+  `}
+
+  ${media.smallerThanMinTablet`
+    padding-left: 15px;
+    padding-right: 15px;
   `}
 `;
 
@@ -100,12 +110,18 @@ const Logo = styled.img`
   max-height: 42px;
   margin: 0;
   padding: 0px;
-  padding-right: 15px;
-  padding-left: 30px;
   cursor: pointer;
 
   ${media.smallerThanMinTablet`
     max-width: 180px;
+  `}
+
+  ${media.phone`
+    max-width: 140px;
+  `}
+
+  ${media.largePhone`
+    max-width: 120px;
   `}
 `;
 
@@ -287,7 +303,6 @@ const Right = styled.div`
   display: flex;
   z-index: 2;
   align-items: center;
-  padding-right: 30px;
 `;
 
 const RightItem: any = styled.div`
@@ -295,23 +310,28 @@ const RightItem: any = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding-left: 18px;
-  padding-right: 18px;
+  padding-left: 30px;
   outline: none;
-
-  &:last-child {
-    padding-right: 0px;
-  }
-
-  &.notification {
-    padding-left: 10px;
-  }
 
   * {
     outline: none;
   }
 
+  &.notification {
+    ${media.smallerThanMinTablet`
+      display: none;
+    `}
+  }
+
+  &.usermenu {
+    ${media.smallPhone`
+      display: none;
+    `}
+  }
+
   &.addIdea {
+    padding-left: 0px;
+
     ${media.smallerThanMinTablet`
         display: none;
     `}
@@ -323,14 +343,8 @@ const RightItem: any = styled.div`
     `}
   }
 
-  ${media.phone`
-    &.addIdea {
-      padding: 0px;
-    }
-  `}
-
-  ${(props: any) => props.hideOnPhone && media.phone`
-    display: none;
+  ${media.smallerThanMinTablet`
+    padding-left: 15px;
   `}
 `;
 
@@ -363,6 +377,7 @@ type Tracks = {
 };
 
 type State = {
+  location: Location;
   locale: Locale | null;
   authUser: IUser | null;
   currentTenant: ITenant | null;
@@ -380,6 +395,7 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
+      location: browserHistory.getCurrentLocation(),
       locale: null,
       authUser: null,
       currentTenant: null,
@@ -398,7 +414,9 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
     const currentTenant$ = currentTenantStream().observable;
     const projects$ = projectsStream().observable;
 
-    this.unlisten = browserHistory.listen(() => this.setState({ projectsDropdownOpened: false }));
+    this.unlisten = browserHistory.listen((location) => {
+      this.setState({ location, projectsDropdownOpened: false });
+    });
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
@@ -491,7 +509,8 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
   }
 
   render() {
-    const { locale, authUser, currentTenant, projects, scrolled, projectsDropdownOpened } = this.state;
+    const { location, locale, authUser, currentTenant, projects, scrolled, projectsDropdownOpened } = this.state;
+    const isAdminPage = (location.pathname.startsWith('/admin'));
 
     /*
     const { pathname } = this.props.location;
@@ -509,7 +528,8 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
       return (
         <>
           <MobileNavigation />
-          <Container className={`${scrolled && 'scrolled'} ${'alwaysShowBorder'}`}>
+
+          <Container className={`${scrolled && 'scrolled'} ${isAdminPage && 'admin'} ${'alwaysShowBorder'}`}>
             <Left>
               {currentTenantLogo &&
                 <LogoLink to="/">
@@ -578,19 +598,19 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
               </RightItem>
 
               {authUser &&
-                <RightItem hideOnPhone={true} className="notification">
+                <RightItem className="notification">
                   <NotificationMenu />
                 </RightItem>
               }
 
               {authUser &&
-                <RightItem hideOnPhone={true}>
+                <RightItem className="usermenu">
                   <UserMenu />
                 </RightItem>
               }
 
               {!authUser &&
-                <RightItem hideOnPhone={false}>
+                <RightItem>
                   <Link to="/sign-in" id="e2e-login-link">
                     <LoginLink>
                       <FormattedMessage {...messages.login} />

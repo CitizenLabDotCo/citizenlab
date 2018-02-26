@@ -7,6 +7,8 @@ import Sidebar from './sideBar/';
 
 // style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
+
 
 const Container = styled.div`
   display: flex;
@@ -16,6 +18,10 @@ const Container = styled.div`
 
 const LeftColumn = styled.div`
   flex: 0 0 240px;
+
+  ${media.smallerThanMinTablet`
+    flex: 0 0 70px;
+  `}
 `;
 
 const RightColumn = styled.div`
