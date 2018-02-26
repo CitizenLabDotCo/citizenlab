@@ -553,7 +553,7 @@
   "app.containers.UsersEditPage.h1": "Grundlegende Info",
   "app.containers.UsersEditPage.h1sub": "Bearbeiten Sie die mit Ihrem Konto verbundenen grundlegenden Informationen",
   "app.containers.UsersEditPage.h2": "Details",
-  "app.containers.UsersEditPage.h2sub": "Alle Informationen sind und bleiben privat. Sie helfen uns, Sie besser kennen zu lernen",
+  "app.containers.UsersEditPage.h2sub": "Es ist nicht verpflichtend, die Informationen unten anzugeben. Es hilft uns lediglich, eine bessere Analyse dessen zu erstellen, was durch die Plattform gesammelt wird. Andere sehen nur Ihren Namen und das Datum, zu dem Sie zuletzt eingeloggt waren.",
   "app.containers.UsersEditPage.h3": "Benachrichtigungen",
   "app.containers.UsersEditPage.h3sub": "Verwalten Sie Ihre Benachrichtigungen",
   "app.containers.UsersEditPage.helmetDescription": "Profil bearbeiten",
