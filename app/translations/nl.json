@@ -48,7 +48,7 @@
   "app.components.MoreActions.buttonLabel": "Meer acties",
   "app.components.PagesShowPage.notFoundDescription": "De opgevraagde pagina kon niet worden gevonden",
   "app.components.PagesShowPage.notFoundTitle": "Pagina niet gevonden",
-  "app.components.ProjectCard.idea": "Idee",
+  "app.components.ProjectCard.idea": "idee",
   "app.components.ProjectCard.ideas": "ideeën",
   "app.components.ProjectCard.openProjectButton": "Ontdek dit project",
   "app.components.ProjectCard.xIdeas": "{x, plural, =0 {geen ideeën} one {# idee} other {# ideeën}}",
