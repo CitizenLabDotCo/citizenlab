@@ -1,11 +1,14 @@
 import * as React from 'react';
 import * as Rx from 'rxjs';
+import { flatten, values } from 'lodash';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import { IStreamParams } from 'utils/streams';
 
 
 interface State<IResourceData> {
-  resources: IResourceData[];
+  resources: {
+    [key:number]: IResourceData[];
+  };
   currentPage: number;
   lastPage: number;
 }
@@ -38,16 +41,17 @@ export const injectNestedResources = function <IResourceData>(propName: string, 
       constructor(props) {
         super(props);
         this.state = {
-          resources: [],
+          resources: {},
           currentPage: 0,
           lastPage: 0,
         };
       }
 
-      componentDidUpdate(prevProps) {
-        if (parentIdFn(this.props) && parentIdFn(this.props) !== parentIdFn(prevProps)) {
+      componentWillReceiveProps(nextProps) {
+        const prevProps = this.props;
+        if (parentIdFn(nextProps) && parentIdFn(nextProps) !== parentIdFn(prevProps)) {
           this.setState({
-            resources: [],
+            resources: {},
             currentPage: 0,
             lastPage: 0,
           }, this.loadMore);
@@ -77,7 +81,7 @@ export const injectNestedResources = function <IResourceData>(propName: string, 
               this.setState({
                 currentPage,
                 lastPage,
-                resources: this.state.resources.concat(data.data),
+                resources: { ...this.state.resources, [currentPage]: data.data },
               });
             })
           );
@@ -91,7 +95,7 @@ export const injectNestedResources = function <IResourceData>(propName: string, 
       render() {
         const injectedProps = {
           [propName]: {
-            all: this.state.resources,
+            all: flatten(values(this.state.resources)),
             currentPage: this.state.currentPage,
             lastPage: this.state.lastPage,
             loadMore: this.loadMore,

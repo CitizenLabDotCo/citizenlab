@@ -11,6 +11,7 @@ import { Formik } from 'formik';
 import { API } from 'typings';
 import { browserHistory } from 'react-router';
 import T from 'components/T';
+import OptionsForm from './OptionsForm';
 
 const PageTitle = styled.h1`
   width: 100%;
@@ -59,12 +60,18 @@ class Edit extends React.Component<Props & InjectedResourceLoaderProps<ICustomFi
       });
   }
 
+  hasOptions = (inputType) => {
+    return inputType === 'select' || inputType === 'multi_select';
+  }
 
   renderFn = (props) => (
-    <CustomFieldForm
-      {...props}
-      mode="edit"
-    />
+    this.props.customField && (
+      <CustomFieldForm
+        {...props}
+        mode="edit"
+        customFieldId={this.props.customField.id}
+      />
+    )
   )
 
   goBack = () => {
@@ -73,6 +80,8 @@ class Edit extends React.Component<Props & InjectedResourceLoaderProps<ICustomFi
 
   render() {
     const { customField } = this.props;
+    const AnyOptionsForm = OptionsForm as any;
+
     return customField && (
       <div>
         <GoBackButton onClick={this.goBack} />
@@ -85,6 +94,11 @@ class Edit extends React.Component<Props & InjectedResourceLoaderProps<ICustomFi
             onSubmit={this.handleSubmit}
             render={this.renderFn}
           />
+          {this.hasOptions(customField.attributes.input_type) &&
+            <AnyOptionsForm
+              customFieldId={customField.id}
+            />
+          }
         </PageWrapper>
       </div>
     );
