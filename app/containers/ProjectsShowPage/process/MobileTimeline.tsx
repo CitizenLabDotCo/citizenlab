@@ -59,8 +59,6 @@ export default class MobileTimeline extends React.PureComponent<Props, State> {
   render () {
     const { phases, currentPhase, selectedPhase } = this.props;
 
-    console.log(selectedPhase);
-
     return (
       <Wrapper>
         <Dropdown

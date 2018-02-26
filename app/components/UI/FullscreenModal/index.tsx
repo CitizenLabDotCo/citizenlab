@@ -56,6 +56,21 @@ const Container: any = styled.div`
     }
   }
 
+  ${media.smallerThanMaxTablet`
+    will-change: opacity, transform;
+
+    &.modal-enter {
+      opacity: 0;
+      transform: translateY(25px);
+
+      &.modal-enter-active {
+        opacity: 1;
+        transform: translateY(0);
+        transition: all ${timeout}ms ${easing};
+      }
+    }
+  `}
+
   &.modal-exit {
     display: none;
   }
@@ -70,18 +85,19 @@ const Content = styled.div`
   -webkit-overflow-scrolling: touch;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 76px);
-    margin-top: 70px;
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 66px);
+    margin-top: 66px;
   `}
 `;
 
 const TopBar: any = styled.div`
-  height: 70px;
+  height: 66px;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   background: #fff;
+  /* background: #f9f9fa; */
   border-bottom: solid 1px #ccc;
   z-index: 10001;
 
@@ -110,14 +126,15 @@ const GoBackIcon = styled(Icon)`
 `;
 
 const GoBackButton = styled.div`
-  height: 45px;
-  width: 45px;
+  height: 43px;
+  width: 43px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-right: 6px;
   margin-left: -2px;
   cursor: pointer;
+  background: #fff;
   border-radius: 50%;
   border: solid 1px #e0e0e0;
   transition: all 100ms ease-out;
@@ -137,7 +154,7 @@ const GoBackLabel = styled.div`
   font-weight: 400;
   transition: fill 100ms ease-out;
 
-  ${media.smallPhone`
+  ${media.phone`
     display: none;
   `}
 `;

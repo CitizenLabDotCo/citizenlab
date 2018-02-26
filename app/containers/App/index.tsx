@@ -40,16 +40,21 @@ import { store } from 'app';
 import { LOAD_CURRENT_TENANT_SUCCESS } from 'utils/tenant/constants';
 import { LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL } from 'utils/auth/constants';
 
+// typings
+import { Location } from 'history';
+
 const Container = styled.div`
   margin: 0;
   padding: 0;
   padding-top: ${props => props.theme.menuHeight}px;
   background: #fff;
 
-  ${media.smallerThanMaxTablet`
-    padding-top: 0px;
-    padding-bottom: ${props => props.theme.mobileMenuHeight}px;
-  `}
+  &:not(.admin) {
+    ${media.smallerThanMaxTablet`
+      padding-top: 0px;
+      padding-bottom: ${props => props.theme.mobileMenuHeight}px;
+    `}
+  }
 `;
 
 export interface IModalInfo {
@@ -61,6 +66,7 @@ export interface IModalInfo {
 type Props = {};
 
 type State = {
+  location: Location;
   currentTenant: ITenant | null;
   modalOpened: boolean;
   modalType: string | null;
@@ -70,10 +76,12 @@ type State = {
 
 export default class App extends React.PureComponent<Props & RouterState, State> {
   subscriptions: Rx.Subscription[];
+  unlisten: Function;
 
   constructor(props) {
     super(props);
     this.state = {
+      location: browserHistory.getCurrentLocation(),
       currentTenant: null,
       modalOpened: false,
       modalType: null,
@@ -87,6 +95,10 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
+
+    this.unlisten = browserHistory.listen((location) => {
+      this.setState({ location });
+    });
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
@@ -117,6 +129,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
   }
 
   componentWillUnmount() {
+    this.unlisten();
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
@@ -135,6 +148,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
   render() {
     const { location, children } = this.props;
     const { currentTenant, modalOpened, modalType, modalId, modalUrl } = this.state;
+    const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = {
       colors,
       fontSizes,
@@ -161,7 +175,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
 
         {currentTenant && (
           <ThemeProvider theme={theme}>
-            <Container>
+            <Container className={`${isAdminPage && 'admin'}`}>
               <Meta />
 
               <FullscreenModal
