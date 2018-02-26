@@ -383,7 +383,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                 {hasProjects &&
                   <ProjectSection>
                     <SectionContainer>
-                      <ProjectCards queryParameters={{ 'page[size]': 2 }} hideAllFilters={true} />
+                      <ProjectCards queryParameters={{ 'page[size]': 3 }} hideAllFilters={true} />
                     </SectionContainer>
                   </ProjectSection>
                 }
