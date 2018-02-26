@@ -181,6 +181,7 @@ const HeaderOverlay = styled.div`
 const HeaderImage: any = styled.div`
   background-image: url(${(props: any) => props.src});
   background-repeat: no-repeat;
+  background-position: center center;
   background-size: cover;
   position: absolute;
   top: 0;
@@ -275,18 +276,6 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
                     </HeaderButton>
                   }
 
-                  <HeaderButton
-                    to={`/projects/${projectSlug}/info`}
-                    activeClassName="active"
-                  >
-                    <HeaderButtonIconWrapper>
-                      <HeaderButtonIcon name="info2" />
-                    </HeaderButtonIconWrapper>
-                    <HeaderButtonText>
-                      <FormattedMessage {...messages.navInformation} />
-                    </HeaderButtonText>
-                  </HeaderButton>
-
                   {project && project.data.attributes.process_type === 'continuous' &&
                     <HeaderButton
                       to={`/projects/${projectSlug}/ideas`}
@@ -300,6 +289,18 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
                       </HeaderButtonText>
                     </HeaderButton>
                   }
+
+                  <HeaderButton
+                    to={`/projects/${projectSlug}/info`}
+                    activeClassName="active"
+                  >
+                    <HeaderButtonIconWrapper>
+                      <HeaderButtonIcon name="info2" />
+                    </HeaderButtonIconWrapper>
+                    <HeaderButtonText>
+                      <FormattedMessage {...messages.navInformation} />
+                    </HeaderButtonText>
+                  </HeaderButton>
 
                   {hasEvents &&
                     <HeaderButton

@@ -75,7 +75,7 @@ export default class ProjectTimelinePage extends React.PureComponent<Props, Stat
         })
         .subscribe(({ slug, project }) => {
           if (project.data.attributes.process_type !== 'timeline') {
-            browserHistory.push(`/projects/${slug}/info`);
+            browserHistory.push(`/projects/${slug}/ideas`);
           }
 
           this.setState({ projectId: project.data.id });

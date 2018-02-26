@@ -3,7 +3,7 @@ import * as Rx from 'rxjs/Rx';
 import { get } from 'lodash';
 
 // libraries
-import { browserHistory, withRouter, RouterState, Link } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import clickOutside from 'utils/containers/clickOutside';
 
@@ -11,7 +11,7 @@ import clickOutside from 'utils/containers/clickOutside';
 import NotificationMenu from './components/NotificationMenu';
 import UserMenu from './components/UserMenu';
 import MobileNavigation from './components/MobileNavigation';
-import IdeaButton from './components/IdeaButton';
+import IdeaButton from 'components/IdeaButton';
 import Icon from 'components/UI/Icon';
 
 // services
@@ -334,6 +334,16 @@ const RightItem: any = styled.div`
   `}
 `;
 
+const StyledIdeaButton = styled(IdeaButton)`
+  .Button {
+    border: solid 2px #eaeaea !important;
+
+    &:hover {
+      border-color: #ccc !important;
+    }
+  }
+`;
+
 const LoginLink = styled.div`
   color: ${(props) => props.theme.colorMain};
   font-size: 16px;
@@ -362,7 +372,7 @@ type State = {
   scrolled: boolean;
 };
 
-class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
+class Navbar extends React.PureComponent<Props & Tracks, State> {
   dropdownElement: HTMLElement | null;
   unlisten: Function;
   subscriptions: Rx.Subscription[];
@@ -476,18 +486,21 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
   getProjectUrl = (project: IProjectData) => {
     const projectType = project.attributes.process_type;
     const rootProjectUrl = `/projects/${project.attributes.slug}`;
-    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/process` : `${rootProjectUrl}/info`);
+    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/process` : `${rootProjectUrl}/ideas`);
     return projectUrl;
   }
 
   render() {
-    // const { pathname } = this.props.location;
     const { locale, authUser, currentTenant, projects, scrolled, projectsDropdownOpened } = this.state;
-    // let alwaysShowBorder: boolean = false;
 
-    // if (pathname.startsWith('/admin') || pathname.startsWith('/sign-in') || pathname.startsWith('/sign-up') || pathname.startsWith('/ideas/new') || pathname.startsWith('/projects')) {
-    //   alwaysShowBorder = true;
-    // }
+    /*
+    const { pathname } = this.props.location;
+    let alwaysShowBorder: boolean = false;
+
+    if (pathname.startsWith('/admin') || pathname.startsWith('/sign-in') || pathname.startsWith('/sign-up') || pathname.startsWith('/ideas/new') || pathname.startsWith('/projects')) {
+      alwaysShowBorder = true;
+    }
+    */
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -561,7 +574,7 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
 
             <Right>
               <RightItem className="addIdea" loggedIn={authUser !== null}>
-                <IdeaButton />
+                <StyledIdeaButton style="primary-outlined" />
               </RightItem>
 
               {authUser &&
@@ -595,7 +608,7 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
   }
 }
 
-export default withRouter(injectTracks<Props>({
+export default injectTracks<Props>({
   trackClickOpenNotifications: tracks.clickOpenNotifications,
   trackClickCloseNotifications: tracks.clickCloseNotifications,
-})(Navbar));
+})(Navbar);
