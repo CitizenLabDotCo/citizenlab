@@ -336,7 +336,7 @@
   "app.containers.App.loading": "Bezig met laden...",
   "app.containers.App.unAuthorizedUser": "Oeps, blijkbaar is dit niet de pagina die u zocht...",
   "app.containers.CompleteSignUpPage.title": "Vervolledig je profiel",
-  "app.containers.IdeaButton.startAnIdea": "Start an idea",
+  "app.containers.IdeaButton.startAnIdea": "Lanceer je idee",
   "app.containers.IdeaCards.areas": "Gebieden",
   "app.containers.IdeaCards.newest": "Nieuwste",
   "app.containers.IdeaCards.oldest": "Oudste",
