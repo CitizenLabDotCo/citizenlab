@@ -504,7 +504,7 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
   getProjectUrl = (project: IProjectData) => {
     const projectType = project.attributes.process_type;
     const rootProjectUrl = `/projects/${project.attributes.slug}`;
-    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/process` : `${rootProjectUrl}/ideas`);
+    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/process` : `${rootProjectUrl}/info`);
     return projectUrl;
   }
 

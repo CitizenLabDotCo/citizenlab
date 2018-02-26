@@ -235,7 +235,7 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
   getProjectUrl = (project: IProject) => {
     const projectType = project.data.attributes.process_type;
     const rootProjectUrl = `/projects/${project.data.attributes.slug}`;
-    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/process` : `${rootProjectUrl}/ideas`);
+    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/process` : `${rootProjectUrl}/info`);
 
     return projectUrl;
   }
