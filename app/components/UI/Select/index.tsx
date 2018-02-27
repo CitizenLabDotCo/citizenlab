@@ -202,8 +202,8 @@ export default class Select extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    let { value, placeholder, options, autoBlur, clearable, searchable, multi, disabled } = this.props;
-
+    let { value, placeholder, options, autoBlur, clearable, searchable, multi } = this.props;
+    const { disabled } = this.props;
     value = (value || undefined);
     placeholder = (placeholder || '');
     options = (options || this.emptyArray);

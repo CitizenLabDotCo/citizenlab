@@ -1,16 +1,15 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { addCustomFieldForUsers } from 'services/userCustomFields';
-import { FormattedMessage } from 'utils/cl-intl';
-// import messages from './messages';
+import { API } from 'typings';
+import { browserHistory } from 'react-router';
 
 import GoBackButton from 'components/UI/GoBackButton';
 import PageWrapper from 'components/admin/PageWrapper';
-
 import CustomFieldForm, { FormValues } from '../CustomFieldForm';
 import { Formik } from 'formik';
-import { API } from 'typings';
-import { browserHistory } from 'react-router';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 
@@ -71,6 +70,7 @@ class New extends React.Component<Props> {
             initialValues={this.initialValues()}
             onSubmit={this.handleSubmit}
             render={this.renderFn}
+            validate={CustomFieldForm.validate}
           />
         </PageWrapper>
       </div>

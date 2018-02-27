@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { keys, pick, isEqual } from 'lodash';
-import { ICustomFieldData, updateCustomFieldForUsers } from 'services/userCustomFields';
-import CustomFieldForm, { FormValues } from '../CustomFieldForm';
-import { Formik } from 'formik';
 import { API } from 'typings';
 import { browserHistory } from 'react-router';
+
+import { ICustomFieldData, updateCustomFieldForUsers } from 'services/userCustomFields';
+
+import CustomFieldForm, { FormValues } from '../CustomFieldForm';
+import { Formik } from 'formik';
 
 
 type Props = {
@@ -50,10 +52,6 @@ class General extends React.Component<Props, State> {
       });
   }
 
-  hasOptions = (inputType) => {
-    return inputType === 'select' || inputType === 'multi_select';
-  }
-
   renderFn = (props) => (
     this.props.customField && (
       <CustomFieldForm
@@ -72,6 +70,7 @@ class General extends React.Component<Props, State> {
         initialValues={this.initialValues()}
         onSubmit={this.handleSubmit}
         render={this.renderFn}
+        validate={CustomFieldForm.validate}
       />
     );
   }

@@ -1,11 +1,14 @@
 import * as React from 'react';
 import * as Rx from 'rxjs';
+import { flatten, values } from 'lodash';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import { IStreamParams, IStream } from 'utils/streams';
 
 
 interface State<IResourceData> {
-  resources: IResourceData[] | undefined;
+  resources: {
+    [key: number]: IResourceData[];
+  };
   currentPage: number;
   lastPage: number;
   loading: boolean;
@@ -44,7 +47,7 @@ export const injectResources = <IResourceData, IResources extends IIResources<IR
       constructor(props) {
         super(props);
         this.state = {
-          resources: undefined,
+          resources: {},
           currentPage: 0,
           lastPage: 0,
           loading: true,
@@ -73,7 +76,7 @@ export const injectResources = <IResourceData, IResources extends IIResources<IR
             this.setState({
               currentPage,
               lastPage,
-              resources: (this.state.resources || []).concat(data.data),
+              resources: { ...this.state.resources, [currentPage]: data.data },
             });
           }, undefined, () => this.setState({ loading: false }))
         );
@@ -90,7 +93,7 @@ export const injectResources = <IResourceData, IResources extends IIResources<IR
       render() {
         const injectedProps = {
           [propName]: {
-            all: this.state.resources,
+            all: flatten(values(this.state.resources)),
             currentPage: this.state.currentPage,
             lastPage: this.state.lastPage,
             loadMore: this.handleLoadMore,

@@ -1,19 +1,18 @@
 import * as React from 'react';
-import { isEmpty } from 'lodash';
 import styled from 'styled-components';
-import { Form, Field, InjectedFormikProps } from 'formik';
+
 import FormikInput from 'components/UI/FormikInput';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
-
+import { Form, Field, InjectedFormikProps } from 'formik';
 import Error from 'components/UI/Error';
 import { SectionField } from 'components/admin/Section';
 import Label from 'components/UI/Label';
+import Button from 'components/UI/Button';
+import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { Multiloc } from 'typings';
 import messages from '../messages';
-import Button from 'components/UI/Button';
-import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 
 const OptionRow = styled.div`
   display: flex;
@@ -59,7 +58,12 @@ class OptionForm extends React.Component<InjectedFormikProps<Props, FormValues>>
               component={FormikInput}
               disabled={mode === 'edit'}
             />
-            <Error apiErrors={errors.key} />
+            {touched.key &&
+              <Error
+                fieldName="key"
+                apiErrors={errors.key}
+              />
+            }
           </SectionField>
 
           <SectionField>
@@ -68,7 +72,12 @@ class OptionForm extends React.Component<InjectedFormikProps<Props, FormValues>>
               component={FormikInputMultiloc}
               label={<FormattedMessage {...messages.optionTitle} />}
             />
-            <Error apiErrors={errors.title_multiloc} />
+            {touched.title_multiloc &&
+              <Error
+                fieldName="title_multiloc"
+                apiErrors={errors.title_multiloc}
+              />
+            }
           </SectionField>
 
           {mode === 'edit' &&
@@ -96,7 +105,6 @@ class OptionForm extends React.Component<InjectedFormikProps<Props, FormValues>>
 
           <FormikSubmitWrapper
             {...{ isValid, isSubmitting, status, touched }}
-            style={isEmpty(touched) ? 'secondary' : 'primary'}
           />
 
         </OptionRow>
