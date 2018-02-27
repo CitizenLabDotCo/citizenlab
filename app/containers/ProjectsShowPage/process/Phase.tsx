@@ -5,6 +5,7 @@ import { isString } from 'lodash';
 // components
 import ContentContainer from 'components/ContentContainer';
 import Ideas from '../ideas/Ideas';
+import Survey from './Survey';
 
 // services
 import { localeStream } from 'services/locale';
@@ -126,6 +127,13 @@ export default class Phase extends React.PureComponent<Props, State> {
             <IdeasWrapper>
               <Ideas type="phase" id={phase.data.id} defaultDisplay={'card'} />
             </IdeasWrapper>
+          }
+
+          {participationMethod === 'survey' &&
+            <Survey
+              surveyId={phase.data.attributes.survey_id}
+              surveyService={phase.data.attributes.survey_service}
+            />
           }
         </StyledContentContainer>
       );
