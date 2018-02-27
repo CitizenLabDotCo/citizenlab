@@ -26,7 +26,7 @@ const ButtonWrapper = styled.div`
   padding-bottom: 2rem;
 `;
 
-const FieldName = styled.div`
+const TextCell = styled.div`
   color: #333;
   font-size: 16px;
   font-weight: 400;
@@ -70,13 +70,16 @@ class CustomFields extends React.Component<Props & InjectedResourcesLoaderProps<
             <List>
               {customFields && customFields.all && customFields.all.map((field) => (
                 <Row key={field.id}>
-                  <FieldName>
+                  <TextCell className="expand">
                     <T value={field.attributes.title_multiloc} />
-                  </FieldName>
+                  </TextCell>
+                  <TextCell className="expand">
+                    <FormattedMessage {...messages[`inputType_${field.attributes.input_type}`]} />
+                  </TextCell>
                   <Button onClick={this.handleOnDeleteClick(field.id)} style="text" circularCorners={false} icon="delete">
                     <FormattedMessage {...messages.deleteButtonLabel} />
                   </Button>
-                  <Button linkTo={`/admin/custom_fields/${field.id}`} style="secondary" circularCorners={false} icon="edit">
+                  <Button linkTo={`/admin/custom_fields/${field.id}/general`} style="secondary" circularCorners={false} icon="edit">
                     <FormattedMessage {...messages.editButtonLabel} />
                   </Button>
                 </Row>

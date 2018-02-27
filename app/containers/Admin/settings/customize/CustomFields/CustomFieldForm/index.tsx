@@ -8,7 +8,7 @@ import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
 import FormikToggle from 'components/UI/FormikToggle';
 import FormikSelect from 'components/UI/FormikSelect';
 import Error from 'components/UI/Error';
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import { Section, SectionField } from 'components/admin/Section';
 import Label from 'components/UI/Label';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 
@@ -27,6 +27,7 @@ export interface FormValues {
 
 export interface Props {
   mode: 'new' | 'edit';
+  customFieldId: string;
 }
 
 class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
@@ -46,10 +47,6 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
     return (
       <Form>
         <Section>
-          <SectionTitle>
-            Field configuration
-          </SectionTitle>
-
           <SectionField>
             <Label>
               <FormattedMessage {...messages.fieldInputType} />

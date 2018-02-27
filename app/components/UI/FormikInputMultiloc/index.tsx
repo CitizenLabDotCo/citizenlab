@@ -8,14 +8,18 @@ class FormikInputMultiloc extends React.Component<FieldProps & VanillaInputMulti
     this.props.form.setFieldValue(this.props.field.name, newValue);
   }
 
+  handleOnBlur = () => {
+    this.props.form.setFieldTouched(this.props.field.name, true);
+  }
+
   render() {
-    const { value, onBlur } = this.props.field;
+    const { value } = this.props.field;
     return (
       <InputMultiloc
         {...this.props}
         valueMultiloc={value}
         onChange={this.handleOnChange}
-        onBlur={onBlur}
+        onBlur={this.handleOnBlur}
       />
     );
   }
