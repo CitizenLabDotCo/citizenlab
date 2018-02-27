@@ -294,7 +294,7 @@ ActiveRecord::Schema.define(version: 20180215130118) do
     t.string "process_type", default: "timeline", null: false
     t.string "internal_role"
     t.string "publication_status", default: "published", null: false
-    t.integer "ordering", null: false
+    t.integer "ordering"
     t.index ["created_at"], name: "index_projects_on_created_at"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
