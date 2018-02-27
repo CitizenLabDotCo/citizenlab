@@ -306,7 +306,6 @@ if Apartment::Tenant.current == 'localhost'
       })
     end
     project.save
-
     [0,1,2,3,4][rand(5)].times do |i|
       project.project_images.create(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
     end

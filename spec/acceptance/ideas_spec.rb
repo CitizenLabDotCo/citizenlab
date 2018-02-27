@@ -175,6 +175,16 @@ resource "Ideas" do
       expect(json_response[:data].map{|d| d[:relationships][:user_vote][:data]}.compact.first[:id]).to eq vote.id
       expect(json_response[:included].map{|i| i[:id]}).to include vote.id
     end
+
+    example "Search for ideas should work with trending ordering", document: false do
+      i1 = Idea.first
+      i1.title_multiloc['nl'] = 'Park met blauwe bomen'
+      i1.title_multiloc['en'] = 'A park with orange grass'
+      i1.save!
+
+      do_request(search: 'Park', sort: 'trending')
+      expect(status).to eq(200)
+    end
   end
 
   get "web_api/v1/ideas/as_markers" do
@@ -428,7 +438,6 @@ resource "Ideas" do
         @idea.update(publication_status: "draft")
 
         do_request(idea: { publication_status: "published" })
-
         json_response = json_parse(response_body) 
         new_idea = Idea.find(json_response.dig(:data, :id))
         expect(new_idea.votes.size).to eq 1

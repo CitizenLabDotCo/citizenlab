@@ -3,6 +3,7 @@ class WebApi::V1::Notifications::CommentMarkedAsSpamSerializer < WebApi::V1::Not
   belongs_to :initiating_user, serializer: WebApi::V1::UserSerializer
   belongs_to :spam_report, serializer: WebApi::V1::SpamReportSerializer
   belongs_to :comment, serializer: WebApi::V1::CommentSerializer
+  belongs_to :idea, serializer: WebApi::V1::IdeaSerializer
   belongs_to :project, serializer: WebApi::V1::ProjectSerializer
 
   attributes :initiating_user_first_name, :initiating_user_last_name, :initiating_user_slug
