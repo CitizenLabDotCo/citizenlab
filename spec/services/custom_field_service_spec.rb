@@ -23,7 +23,7 @@ describe CustomFieldService do
         create(:custom_field, key: 'field2', input_type: 'multiline_text', ordering: 2, required: true),
         create(:custom_field, key: 'field3', input_type: 'select', ordering: 3),
         create(:custom_field, key: 'field4', input_type: 'multiselect', ordering: 4),
-        create(:custom_field, key: 'field5', input_type: 'checkbox', ordering: 5),
+        create(:custom_field, key: 'field5', input_type: 'checkbox', ordering: nil),
         create(:custom_field, key: 'field6', input_type: 'date', ordering: 6)
       ]
       create(:custom_field_option, key: 'option1', ordering: '2', custom_field: fields[2])
@@ -81,7 +81,7 @@ describe CustomFieldService do
         create(:custom_field, key: 'field1', input_type: 'text', ordering: 1),
         create(:custom_field, key: 'field2', input_type: 'multiline_text', ordering: 2, required: true),
         create(:custom_field, key: 'field3', input_type: 'select', ordering: 3),
-        create(:custom_field, key: 'field4', input_type: 'multiselect', ordering: 4),
+        create(:custom_field, key: 'field4', input_type: 'multiselect', ordering: nil),
         create(:custom_field, key: 'field5', input_type: 'checkbox', ordering: 6),
         create(:custom_field, key: 'field6', input_type: 'date', ordering: 5)
       ]
@@ -99,7 +99,7 @@ describe CustomFieldService do
          "field5"=>{},
          "field6"=>{},
          "ui:order"=>
-          ["field1", "field2", "field3", "field4", "field6", "field5"]}
+          ["field1", "field2", "field3", "field6", "field5", "field4"]}
       )
     end
   end

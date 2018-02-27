@@ -37,7 +37,7 @@ class CustomFieldService
       memo[field.key] = send("#{field.input_type}_to_ui_schema_field", field, locale)
       memo
     end.tap do |output|
-      output['ui:order'] = fields.sort_by(&:ordering).map(&:key)
+      output['ui:order'] = fields.sort_by{|f| f.ordering || Float::INFINITY }.map(&:key)
     end
   end
 
