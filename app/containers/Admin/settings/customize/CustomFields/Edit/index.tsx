@@ -1,10 +1,13 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { browserHistory } from 'react-router';
+
 import { ICustomFieldData, customFieldForUsersStream } from 'services/userCustomFields';
 import { injectResource, InjectedResourceLoaderProps } from 'utils/resourceLoaders/resourceLoader';
+
 import GoBackButton from 'components/UI/GoBackButton';
-import { browserHistory } from 'react-router';
 import TabbedResource from 'components/admin/TabbedResource';
+
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';

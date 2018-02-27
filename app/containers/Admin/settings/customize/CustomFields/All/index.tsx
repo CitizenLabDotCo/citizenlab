@@ -4,15 +4,16 @@ import { color } from 'utils/styleUtils';
 
 import { injectResources, InjectedResourcesLoaderProps } from 'utils/resourceLoaders/resourcesLoader';
 import { customFieldsForUsersStream, deleteCustomField, ICustomFieldData } from 'services/userCustomFields';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import T from 'components/T';
+
 import { List, Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import PageWrapper from 'components/admin/PageWrapper';
 
 import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
 
 
 const PageTitle = styled.h1`
