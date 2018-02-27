@@ -1,108 +1,82 @@
 import * as React from 'react';
-import { keys, pick, isEqual } from 'lodash';
 import styled from 'styled-components';
-import { ICustomFieldData, customFieldForUsersStream, updateCustomFieldForUsers } from 'services/userCustomFields';
+import { ICustomFieldData, customFieldForUsersStream } from 'services/userCustomFields';
 import { injectResource, InjectedResourceLoaderProps } from 'utils/resourceLoaders/resourceLoader';
-
-import CustomFieldForm, { FormValues } from '../CustomFieldForm';
 import GoBackButton from 'components/UI/GoBackButton';
-import PageWrapper from 'components/admin/PageWrapper';
-import { Formik } from 'formik';
-import { API } from 'typings';
 import { browserHistory } from 'react-router';
-import T from 'components/T';
-import OptionsForm from './OptionsForm';
+import TabbedResource from 'components/admin/TabbedResource';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from '../messages';
 
-const PageTitle = styled.h1`
-  width: 100%;
-  font-size: 2rem;
-  margin: 1rem 0 3rem 0;
+
+const StyledGoBackButton = styled(GoBackButton)`
+  margin-bottom: 20px;
 `;
 
-type Props = {};
+type Props = {
+  location: {
+    pathname: string
+  }
+};
 
 type State = {};
 
-class Edit extends React.Component<Props & InjectedResourceLoaderProps<ICustomFieldData>, State> {
-
-  initialValues = () => {
-    const { customField } = this.props;
-    return customField && {
-      key: customField.attributes.key,
-      input_type: customField.attributes.input_type,
-      title_multiloc: customField.attributes.title_multiloc,
-      description_multiloc: customField.attributes.description_multiloc,
-      required: customField.attributes.required,
-    };
-  }
-
-  changedValues = (initialValues, newValues) => {
-    const changedKeys = keys(newValues).filter((key) => (
-      !isEqual(initialValues[key], newValues[key])
-    ));
-    return pick(newValues, changedKeys);
-  }
-
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
-    const { customField } = this.props;
-    if (!customField) return;
-
-    updateCustomFieldForUsers(customField.id, {
-      ...this.changedValues(this.initialValues(), values)
-    })
-      .then(() => {
-        browserHistory.push('/admin/custom_fields');
-      })
-      .catch((errorResponse) => {
-        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
-        setErrors(apiErrors);
-        setSubmitting(false);
-      });
-  }
+class Edit extends React.Component<Props & InjectedResourceLoaderProps<ICustomFieldData> & InjectedIntlProps, State> {
 
   hasOptions = (inputType) => {
     return inputType === 'select' || inputType === 'multi_select';
   }
 
-  renderFn = (props) => (
-    this.props.customField && (
-      <CustomFieldForm
-        {...props}
-        mode="edit"
-        customFieldId={this.props.customField.id}
-      />
-    )
-  )
-
   goBack = () => {
     browserHistory.push('/admin/custom_fields');
   }
 
+  getTabs = (customField: ICustomFieldData) => {
+    const baseTabsUrl = `/admin/custom_fields/${customField.id}`;
+
+    const tabs = [
+      {
+        label: this.props.intl.formatMessage(messages.generalTab),
+        url: `${baseTabsUrl}/general`,
+        className: 'general',
+      },
+    ];
+
+    if (this.hasOptions(customField.attributes.input_type)) {
+      tabs.push({
+        label: this.props.intl.formatMessage(messages.optionsTab),
+        url: `${baseTabsUrl}/options`,
+        className: 'options',
+      });
+    }
+
+    return tabs;
+  }
+
   render() {
-    const { customField } = this.props;
-    const AnyOptionsForm = OptionsForm as any;
+    const { customField, children } = this.props;
+    const childrenWithExtraProps = React.cloneElement(children as React.ReactElement<any>, { customField });
 
     return customField && (
       <div>
-        <GoBackButton onClick={this.goBack} />
-        <PageTitle>
-          <T value={customField.attributes.title_multiloc} />
-        </PageTitle>
-        <PageWrapper>
-          <Formik
-            initialValues={this.initialValues()}
-            onSubmit={this.handleSubmit}
-            render={this.renderFn}
-          />
-          {this.hasOptions(customField.attributes.input_type) &&
-            <AnyOptionsForm
-              customFieldId={customField.id}
-            />
-          }
-        </PageWrapper>
+        <StyledGoBackButton onClick={this.goBack} />
+        <TabbedResource
+          location={this.props.location}
+          tabs={this.getTabs(customField)}
+          resource={{
+            title: customField.attributes.title_multiloc,
+            publicLink: '',
+          }}
+          messages={{
+            viewPublicResource: messages.addOptionButton
+          }}
+        >
+          {childrenWithExtraProps}
+        </TabbedResource>
       </div>
     );
   }
 }
 
-export default injectResource('customField', customFieldForUsersStream, (props) => (props.params.customFieldId))(Edit);
+export default injectResource('customField', customFieldForUsersStream, (props) => (props.params.customFieldId))(injectIntl(Edit));

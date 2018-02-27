@@ -11,6 +11,7 @@ interface State<IResourceData> {
   };
   currentPage: number;
   lastPage: number;
+  loading: boolean;
 }
 
 
@@ -21,6 +22,7 @@ export interface InjectedNestedResourceLoaderProps<IResourceData> {
     lastPage: number,
     loadMore: () => void,
     hasMore: () => boolean,
+    loading: boolean,
   };
 }
 
@@ -44,6 +46,7 @@ export const injectNestedResources = function <IResourceData>(propName: string, 
           resources: {},
           currentPage: 0,
           lastPage: 0,
+          loading: true,
         };
       }
 
@@ -67,6 +70,7 @@ export const injectNestedResources = function <IResourceData>(propName: string, 
       }
 
       loadMore() {
+        this.setState({ loading: true });
         const parentId = parentIdFn(this.props);
         if (parentId) {
           this.subscriptions.push(
@@ -82,8 +86,9 @@ export const injectNestedResources = function <IResourceData>(propName: string, 
                 currentPage,
                 lastPage,
                 resources: { ...this.state.resources, [currentPage]: data.data },
+                loading: false,
               });
-            })
+            }, undefined, this.setState({ loading: false }))
           );
         }
       }
@@ -100,6 +105,7 @@ export const injectNestedResources = function <IResourceData>(propName: string, 
             lastPage: this.state.lastPage,
             loadMore: this.loadMore,
             hasMore: this.hasMore,
+            loading: this.state.loading,
           },
         };
 
