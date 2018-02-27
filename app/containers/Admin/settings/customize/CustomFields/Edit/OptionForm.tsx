@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { isEmpty } from 'lodash';
 import styled from 'styled-components';
 import { Form, Field, InjectedFormikProps } from 'formik';
 import FormikInput from 'components/UI/FormikInput';
@@ -17,9 +18,13 @@ import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 const OptionRow = styled.div`
   display: flex;
   justify-content: space-between;
+
+  & > * {
+    width: 20%;
+  }
 `;
 
-const DeleteButtonContainer = styled.div`
+const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,18 +38,18 @@ export interface FormValues {
 export interface Props {
   mode: 'new' | 'edit';
   onClickDelete: () => void;
+  onClickCancel: () => void;
 }
 
 class OptionForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
 
   render() {
 
-    const { mode, errors, onClickDelete, isSubmitting, isValid, touched } = this.props;
+    const { mode, errors, onClickDelete, onClickCancel, isSubmitting, isValid, touched } = this.props;
 
     return (
       <Form>
         <OptionRow>
-
           <SectionField>
             <Label>
               <FormattedMessage {...messages.optionKey} />
@@ -67,7 +72,7 @@ class OptionForm extends React.Component<InjectedFormikProps<Props, FormValues>>
           </SectionField>
 
           {mode === 'edit' &&
-            <DeleteButtonContainer>
+            <ButtonContainer>
               <Button
                 onClick={onClickDelete}
                 style="secondary"
@@ -75,11 +80,23 @@ class OptionForm extends React.Component<InjectedFormikProps<Props, FormValues>>
               >
                 <FormattedMessage {...messages.optionDeleteButton} />
               </Button>
-            </DeleteButtonContainer>
+            </ButtonContainer>
+          }
+          {mode === 'new' &&
+            <ButtonContainer>
+              <Button
+                onClick={onClickCancel}
+                style="secondary"
+                icon="close"
+              >
+                <FormattedMessage {...messages.optionCancelButton} />
+              </Button>
+            </ButtonContainer>
           }
 
           <FormikSubmitWrapper
             {...{ isValid, isSubmitting, status, touched }}
+            style={isEmpty(touched) ? 'secondary' : 'primary'}
           />
 
         </OptionRow>

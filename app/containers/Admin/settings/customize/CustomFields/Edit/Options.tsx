@@ -4,11 +4,10 @@ import * as React from 'react';
 import { FormattedMessage } from 'utils/cl-intl';
 // import messages from './messages';
 import { injectNestedResources, InjectedNestedResourceLoaderProps } from 'utils/resourceLoaders/nestedResourcesLoader';
-import { ICustomFieldOptionData, customFieldOptionsStream, updateCustomFieldOption, deleteCustomFieldOption, addCustomFieldOption } from 'services/userCustomFields';
+import { ICustomFieldOptionData, customFieldOptionsStream, updateCustomFieldOption, deleteCustomFieldOption, addCustomFieldOption, ICustomFieldData } from 'services/userCustomFields';
 import { Formik } from 'formik';
 import OptionForm from './OptionForm';
 import { API } from 'typings';
-import { SectionTitle } from 'components/admin/Section';
 import messages from '../messages';
 import Button from 'components/UI/Button';
 import styled from 'styled-components';
@@ -19,7 +18,7 @@ const OptionContainer = styled.div`
 `;
 
 type Props = {
-  customFieldId: string;
+  customField: ICustomFieldData;
 };
 
 type State = {
@@ -50,12 +49,18 @@ class OptionsForm extends React.Component<Props & InjectedNestedResourceLoaderPr
   }
 
   handleDelete = (option) => () => {
-    deleteCustomFieldOption(this.props.customFieldId, option.id);
+    deleteCustomFieldOption(this.props.customField.id, option.id);
+  }
+
+  handleCancel = () => {
+    this.setState({
+      addingOption: false,
+    });
   }
 
   handleUpdateSubmit = (option) => (values, { setErrors, setSubmitting }) => {
 
-    updateCustomFieldOption(this.props.customFieldId, option.id, values)
+    updateCustomFieldOption(this.props.customField.id, option.id, values)
       .then(() => {
         setSubmitting(false);
       })
@@ -67,7 +72,7 @@ class OptionsForm extends React.Component<Props & InjectedNestedResourceLoaderPr
   }
 
   handleCreateSubmit = (values, { setErrors, setSubmitting }) => {
-    addCustomFieldOption(this.props.customFieldId, values)
+    addCustomFieldOption(this.props.customField.id, values)
       .then(() => {
         setSubmitting(false);
         this.setState({ addingOption: false });
@@ -88,6 +93,7 @@ class OptionsForm extends React.Component<Props & InjectedNestedResourceLoaderPr
   renderFn = (option: ICustomFieldOptionData | null = null) => (props) => (
     <OptionForm
       onClickDelete={this.handleDelete(option)}
+      onClickCancel={this.handleCancel}
       mode={option ? 'edit' : 'new'}
       {...props}
     />
@@ -95,11 +101,8 @@ class OptionsForm extends React.Component<Props & InjectedNestedResourceLoaderPr
 
   render() {
     const { addingOption } = this.state;
-    return (
+    return !this.props.options.loading && (
       <div>
-        <SectionTitle>
-          <FormattedMessage {...messages.optionsTitle} />
-        </SectionTitle>
         {this.props.options.all.map((option) => (
           <OptionContainer key={option.id}>
             <Formik
@@ -133,4 +136,4 @@ class OptionsForm extends React.Component<Props & InjectedNestedResourceLoaderPr
 
 }
 
-export default injectNestedResources('options', customFieldOptionsStream ,(props) => props.customFieldId)(OptionsForm);
+export default injectNestedResources('options', customFieldOptionsStream ,(props) => props.customField.id)(OptionsForm);

@@ -83,6 +83,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionDeleteButton',
     defaultMessage: 'Delete',
   },
+  optionCancelButton: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionCancelButton',
+    defaultMessage: 'Cancel',
+  },
   optionsTitle: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionsTitle',
     defaultMessage: 'Options',
@@ -90,5 +94,13 @@ export default defineMessages({
   addOptionButton: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.addOptionButton',
     defaultMessage: 'Add option',
+  },
+  generalTab: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.generalTab',
+    defaultMessage: 'General',
+  },
+  optionsTab: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionsTab',
+    defaultMessage: 'Options',
   },
 });

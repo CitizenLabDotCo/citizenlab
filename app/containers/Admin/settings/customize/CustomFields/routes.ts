@@ -1,6 +1,8 @@
 import Wrapper from './';
 import All from './All';
 import Edit from './Edit';
+import General from './Edit/General';
+import Options from './Edit/Options';
 import New from './New';
 
 export default () => ({
@@ -17,8 +19,17 @@ export default () => ({
       component: New,
     },
     {
-      path: '/admin/custom_fields/:customFieldId',
+      path: '/admin/custom_fields/:customFieldId/general',
       component: Edit,
+      indexRoute: {
+        component: General,
+      },
+      childRoutes: [
+        {
+          path: '/admin/custom_fields/:customFieldId/options',
+          component: Options,
+        }
+      ],
     },
   ],
 });
