@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180206132516) do
+ActiveRecord::Schema.define(version: 20180215130118) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -298,6 +298,7 @@ ActiveRecord::Schema.define(version: 20180206132516) do
     t.string "publication_status", default: "published", null: false
     t.string "survey_id"
     t.string "survey_service"
+    t.integer "ordering"
     t.index ["created_at"], name: "index_projects_on_created_at"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
@@ -421,4 +422,25 @@ ActiveRecord::Schema.define(version: 20180206132516) do
   add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "spam_reports", "users"
   add_foreign_key "votes", "users"
+
+  create_view "idea_trending_infos",  sql_definition: <<-SQL
+      SELECT ideas.id AS idea_id,
+      GREATEST(comments_at.last_comment_at, upvotes_at.last_upvoted_at, ideas.published_at) AS last_activity_at,
+      to_timestamp(round((((GREATEST(((comments_at.comments_count)::double precision * comments_at.mean_comment_at), (0)::double precision) + GREATEST(((upvotes_at.upvotes_count)::double precision * upvotes_at.mean_upvoted_at), (0)::double precision)) + date_part('epoch'::text, ideas.published_at)) / (((GREATEST((comments_at.comments_count)::numeric, 0.0) + GREATEST((upvotes_at.upvotes_count)::numeric, 0.0)) + 1.0))::double precision))) AS mean_activity_at
+     FROM ((ideas
+       FULL JOIN ( SELECT comments.idea_id,
+              max(comments.created_at) AS last_comment_at,
+              avg(date_part('epoch'::text, comments.created_at)) AS mean_comment_at,
+              count(comments.idea_id) AS comments_count
+             FROM comments
+            GROUP BY comments.idea_id) comments_at ON ((ideas.id = comments_at.idea_id)))
+       FULL JOIN ( SELECT votes.votable_id,
+              max(votes.created_at) AS last_upvoted_at,
+              avg(date_part('epoch'::text, votes.created_at)) AS mean_upvoted_at,
+              count(votes.votable_id) AS upvotes_count
+             FROM votes
+            WHERE (((votes.mode)::text = 'up'::text) AND ((votes.votable_type)::text = 'Idea'::text))
+            GROUP BY votes.votable_id) upvotes_at ON ((ideas.id = upvotes_at.votable_id)));
+  SQL
+
 end

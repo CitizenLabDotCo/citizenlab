@@ -7,44 +7,49 @@ class WebApi::V1::IdeasController < ApplicationController
   
   def index
     @ideas = policy_scope(Idea).includes(:author, :topics, :areas, :phases, :idea_images, project: [:phases])
+      .left_outer_joins(:idea_status).left_outer_joins(:idea_trending_info)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
+    trending_idea_service = TrendingIdeaService.new
+
     add_common_index_filters params
 
-    @ideas = case params[:sort]
-      when "new"
-        @ideas.order_new
-      when "-new"
-        @ideas.order_new(:asc)
-      when "trending"
-        @ideas.order_trending
-      when "-trending"
-        @ideas.order_trending(:asc)
-      when "popular"
-        @ideas.order_popular
-      when "-popular"
-        @ideas.order_popular(:asc)
-      when "author_name"
-        @ideas.order(author_name: :asc)
-      when "-author_name"
-        @ideas.order(author_name: :desc)
-      when "upvotes_count"
-        @ideas.order(upvotes_count: :asc)
-      when "-upvotes_count"
-        @ideas.order(upvotes_count: :desc)
-      when "downvotes_count"
-        @ideas.order(downvotes_count: :asc)
-      when "-downvotes_count"
-        @ideas.order(downvotes_count: :desc)
-      when "status"
-        @ideas.order_status(:asc)
-      when "-status"
-        @ideas.order_status(:desc)
-      when nil
-        @ideas
-      else
-        raise "Unsupported sort method"
+    if params[:sort].present? && !params[:search].present?
+      @ideas = case params[:sort]
+        when "new"
+          @ideas.order_new
+        when "-new"
+          @ideas.order_new(:asc)
+        when "trending"
+          trending_idea_service.sort_trending @ideas
+        when "-trending"
+          trending_idea_service.sort_trending(@ideas).reverse
+        when "popular"
+          @ideas.order_popular
+        when "-popular"
+          @ideas.order_popular(:asc)
+        when "author_name"
+          @ideas.order(author_name: :asc)
+        when "-author_name"
+          @ideas.order(author_name: :desc)
+        when "upvotes_count"
+          @ideas.order(upvotes_count: :asc)
+        when "-upvotes_count"
+          @ideas.order(upvotes_count: :desc)
+        when "downvotes_count"
+          @ideas.order(downvotes_count: :asc)
+        when "-downvotes_count"
+          @ideas.order(downvotes_count: :desc)
+        when "status"
+          @ideas.order_status(:asc)
+        when "-status"
+          @ideas.order_status(:desc)
+        when nil
+          @ideas
+        else
+          raise "Unsupported sort method"
+        end
     end
 
     @idea_ids = @ideas.map(&:id)
@@ -158,6 +163,9 @@ class WebApi::V1::IdeasController < ApplicationController
       @ideas = @ideas.where(publication_status: params[:publication_status])
     else
       @ideas = @ideas.where(publication_status: 'published')
+    end
+    if (params[:filter_trending] == 'true') && !params[:search].present?
+      @ideas = trending_idea_service.filter_trending @ideas
     end
   end
 
