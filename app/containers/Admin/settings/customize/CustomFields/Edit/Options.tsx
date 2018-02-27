@@ -1,16 +1,17 @@
 import * as React from 'react';
-// import styled from 'styled-components';
+import { isEmpty, values as getValues, every } from 'lodash';
+import styled from 'styled-components';
 
-import { FormattedMessage } from 'utils/cl-intl';
-// import messages from './messages';
+import { API } from 'typings';
 import { injectNestedResources, InjectedNestedResourceLoaderProps } from 'utils/resourceLoaders/nestedResourcesLoader';
 import { ICustomFieldOptionData, customFieldOptionsStream, updateCustomFieldOption, deleteCustomFieldOption, addCustomFieldOption, ICustomFieldData } from 'services/userCustomFields';
-import { Formik } from 'formik';
-import OptionForm from './OptionForm';
-import { API } from 'typings';
-import messages from '../messages';
+
+import { Formik, FormikErrors } from 'formik';
+import OptionForm, { FormValues } from './OptionForm';
 import Button from 'components/UI/Button';
-import styled from 'styled-components';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
 
 
 const OptionContainer = styled.div`
@@ -48,6 +49,24 @@ class OptionsForm extends React.Component<Props & InjectedNestedResourceLoaderPr
     };
   }
 
+  validate = (values: FormValues) => {
+    const errors : FormikErrors<FormValues> = {};
+
+    if (isEmpty(values.key)) {
+      errors.key = (errors.key || []).concat({ error: 'blank' });
+    }
+
+    if (!values.key.match(/^[a-zA-Z0-9_]+$/)) {
+      errors.key = (errors.key || []).concat({ error: 'invalid' });
+    }
+
+    if (every(getValues(values.title_multiloc), isEmpty)) {
+      errors.title_multiloc = (errors.title_multiloc || []).concat({ error: 'blank' });
+    }
+
+    return errors;
+  }
+
   handleDelete = (option) => () => {
     deleteCustomFieldOption(this.props.customField.id, option.id);
   }
@@ -58,11 +77,11 @@ class OptionsForm extends React.Component<Props & InjectedNestedResourceLoaderPr
     });
   }
 
-  handleUpdateSubmit = (option) => (values, { setErrors, setSubmitting }) => {
+  handleUpdateSubmit = (option) => (values, { setErrors, setSubmitting, resetForm }) => {
 
     updateCustomFieldOption(this.props.customField.id, option.id, values)
       .then(() => {
-        setSubmitting(false);
+        resetForm();
       })
       .catch((errorResponse) => {
         const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
@@ -109,6 +128,7 @@ class OptionsForm extends React.Component<Props & InjectedNestedResourceLoaderPr
               initialValues={this.initialValuesForEdit(option)}
               onSubmit={this.handleUpdateSubmit(option)}
               render={this.renderFn(option)}
+              validate={this.validate}
             />
           </OptionContainer>
         ))}
@@ -118,6 +138,7 @@ class OptionsForm extends React.Component<Props & InjectedNestedResourceLoaderPr
               initialValues={this.initialValuesForNew()}
               onSubmit={this.handleCreateSubmit}
               render={this.renderFn()}
+              validate={this.validate}
             />
           </OptionContainer>
         }
