@@ -5,7 +5,7 @@ import { isString } from 'lodash';
 // components
 import ContentContainer from 'components/ContentContainer';
 import Ideas from '../ideas/Ideas';
-import Survey from './Survey';
+import Survey from './survey';
 
 // services
 import { localeStream } from 'services/locale';
