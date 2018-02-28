@@ -9,7 +9,7 @@ const SurveyContainer = styled.div`
 
 type Props = {
   typeformUrl: string,
-  email: string,
+  email: string | null,
 };
 
 type State = {};
@@ -18,8 +18,16 @@ class TypeformSurvey extends React.Component<Props, State> {
 
   surveyContainer: HTMLElement | null = null;
 
+  surveyUrl = () => {
+    if (this.props.email) {
+      return `${this.props.typeformUrl}?email=${this.props.email}`;
+    } else {
+      return this.props.typeformUrl;
+    }
+  }
+
   componentDidMount() {
-    typeformEmbed.makeWidget(this.surveyContainer, `${this.props.typeformUrl}`, {
+    typeformEmbed.makeWidget(this.surveyContainer, this.surveyUrl(), {
       hideFooter: true,
       hideScrollbars: true,
       hideHeaders: true,

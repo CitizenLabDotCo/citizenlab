@@ -200,12 +200,12 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
 
   handleParticipationContextOnChange = (participationContextConfig: IParticipationContextConfig) => {
     const { attributeDiff } = this.state;
-    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, survey_id, survey_service } = participationContextConfig;
+    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, survey_embed_url, survey_service } = participationContextConfig;
 
     this.setState({
       attributeDiff: {
         ...attributeDiff,
-        survey_id,
+        survey_embed_url,
         survey_service,
         participation_method: participationMethod,
         posting_enabled: postingEnabled,
@@ -221,11 +221,11 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
     let { attributeDiff } = this.state;
     const { phase, project } = this.state;
     const { slug } = this.props.params;
-    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, survey_id, survey_service } = participationContextConfig;
+    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, survey_embed_url, survey_service } = participationContextConfig;
 
     attributeDiff = {
       ...attributeDiff,
-      survey_id,
+      survey_embed_url,
       survey_service,
       participation_method: participationMethod,
       posting_enabled: postingEnabled,

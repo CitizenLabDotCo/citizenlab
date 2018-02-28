@@ -255,8 +255,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey_monkey',
     defaultMessage: 'Survey Monkey',
   },
-  surveyId: {
-    id: 'app.containers.AdminPage.ProjectEdit.surveyId',
-    defaultMessage: 'Survey ID',
+  surveyEmbedUrl: {
+    id: 'app.containers.AdminPage.ProjectEdit.surveyEmbedUrl',
+    defaultMessage: 'Survey Embed URL',
   },
 });

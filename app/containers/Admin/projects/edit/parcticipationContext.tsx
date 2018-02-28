@@ -62,7 +62,7 @@ export interface IParticipationContextConfig {
   votingMethod: 'unlimited' | 'limited' | null;
   votingLimit: number | null;
   survey_service?: SurveyServices | null;
-  survey_id?: string | null;
+  survey_embed_url?: string | null;
 }
 
 type Props = {
@@ -108,12 +108,12 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
             voting_enabled,
             voting_method,
             voting_limited_max,
-            survey_id,
+            survey_embed_url,
             survey_service,
           } = phase.data.attributes;
 
           this.setState({
-            survey_id,
+            survey_embed_url,
             survey_service,
             participationMethod: participation_method,
             postingEnabled: posting_enabled,
@@ -141,7 +141,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
             votingEnabled: (participationMethod === 'ideation' ? votingEnabled : null),
             votingMethod: (participationMethod === 'ideation' ? votingMethod : null),
             votingLimit: (participationMethod === 'ideation' && votingMethod === 'limited' ? votingLimit : null),
-            survey_id: (participationMethod === 'survey' ? this.state.survey_id : null),
+            survey_embed_url: (participationMethod === 'survey' ? this.state.survey_embed_url : null),
             survey_service: (participationMethod === 'survey' ? this.state.survey_service : null),
           });
         })
@@ -178,7 +178,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
       votingEnabled: (participationMethod === 'ideation' ? true : null),
       votingMethod: (participationMethod === 'ideation' ? 'unlimited' : null),
       votingLimit: null,
-      survey_id: null,
+      survey_embed_url: null,
       survey_service: null,
     });
   }
@@ -187,8 +187,8 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
     this.setState({ survey_service });
   }
 
-  handleSurveyIdChange = (survey_id: string) => {
-    this.setState({ survey_id });
+  handleSurveyEmbedUrlChange = (survey_embed_url: string) => {
+    this.setState({ survey_embed_url });
   }
 
   togglePostingEnabled = () => {
@@ -241,7 +241,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
       // noVotingLimit,
       loaded,
       survey_service,
-      survey_id,
+      survey_embed_url,
     } = this.state;
 
     // const votingLimitSection = (participationMethod === 'ideation' && votingMethod === 'limited') ? (
@@ -357,12 +357,12 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
                 </SectionField>
                 <SectionField>
                   <Label>
-                    <FormattedMessage {...messages.surveyId} />
+                    <FormattedMessage {...messages.surveyEmbedUrl} />
                   </Label>
                   <Input
-                    onChange={this.handleSurveyIdChange}
+                    onChange={this.handleSurveyEmbedUrlChange}
                     type="text"
-                    value={survey_id}
+                    value={survey_embed_url}
                   />
                 </SectionField>
               </React.Fragment>
