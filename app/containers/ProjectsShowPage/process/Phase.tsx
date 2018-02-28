@@ -133,7 +133,7 @@ export default class Phase extends React.PureComponent<Props, State> {
 
           {participationMethod === 'survey' &&
             <Survey
-              surveyId={phase.data.attributes.survey_id}
+              surveyEmbedUrl={phase.data.attributes.survey_embed_url}
               surveyService={phase.data.attributes.survey_service}
             />
           }

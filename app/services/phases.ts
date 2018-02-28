@@ -24,7 +24,7 @@ export interface IPhaseData {
     voting_method: 'limited' | 'unlimited';
     voting_limited_max: number;
     survey_service?: SurveyServices;
-    survey_id?: string;
+    survey_embed_url?: string;
   };
   relationships: {
     project: {
@@ -57,7 +57,7 @@ export interface IUpdatedPhaseProperties {
   voting_method?: 'limited' | 'unlimited' | null;
   voting_limited_max?: number | null;
   survey_service?: SurveyServices | null;
-  survey_id?: string | null;
+  survey_embed_url?: string | null;
 }
 
 export function phasesStream(projectId: string, streamParams: IStreamParams | null = null) {
