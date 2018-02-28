@@ -40,7 +40,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // animations
-// import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
@@ -718,7 +717,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
 
     if (opened && !loaded) {
       loader = (
-        <StyledSpinner size="34px" color="#666" />
+        <StyledSpinner size="32px" color="#666" />
       );
     }
 

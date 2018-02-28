@@ -2,17 +2,27 @@ import { css } from 'styled-components';
 
 export const media = {
   smallPhone: (style: any, ...args) => css`
-    @media (max-width: 568px) {
+    @media (max-width: 320px) {
       ${css(style, ...args)}
     }
   `,
   phone: (style: any, ...args) => css`
-    @media (max-width: 768px) {
+    @media (max-width: 360px) {
+      ${css(style, ...args)}
+    }
+  `,
+  largePhone: (style: any, ...args) => css`
+    @media (max-width: 410px) {
       ${css(style, ...args)}
     }
   `,
   biggerThanPhone: (style: any, ...args) => css`
-    @media (min-width: 768px) {
+    @media (min-width: 360px) {
+      ${css(style, ...args)}
+    }
+  `,
+  biggerThanLargePhone: (style: any, ...args) => css`
+    @media (min-width: 410px) {
       ${css(style, ...args)}
     }
   `,

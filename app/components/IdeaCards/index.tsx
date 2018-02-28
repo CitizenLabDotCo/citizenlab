@@ -9,6 +9,7 @@ import Spinner from 'components/UI/Spinner';
 import SelectTopics from './SelectTopics';
 import SelectSort from './SelectSort';
 import SearchInput from 'components/UI/SearchInput';
+import IdeaButton from 'components/IdeaButton';
 
 // services
 import { ideasStream, IIdeas } from 'services/ideas';
@@ -16,6 +17,9 @@ import { ideasStream, IIdeas } from 'services/ideas';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+
+// utils
+import shallowCompare from 'utils/shallowCompare';
 
 // style
 import styled, { withTheme } from 'styled-components';
@@ -43,10 +47,6 @@ const FiltersArea = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
-
-  /* ${media.smallerThanMaxTablet`
-    justify-content: center;
-  `} */
 `;
 
 const FilterArea = styled.div`
@@ -103,15 +103,16 @@ const StyledIdeaCard = styled<IdeaCardProps>(IdeaCard)`
 `;
 
 const EmptyContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: 0;
-  padding-top: 120px;
-  padding-bottom: 120px;
+  padding-top: 100px;
+  padding-bottom: 100px;
   border-radius: 5px;
-  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  border: solid 1px #e4e4e4;
   background: #fff;
 `;
 
@@ -175,10 +176,6 @@ const LoadMoreButton = styled.div`
       background: #e0e0e0;
       border-color: #ccc
     }
-  }
-
-  &.loading {
-    /* background: #f0f0f0; */
   }
 `;
 
@@ -249,7 +246,7 @@ class IdeaCards extends React.PureComponent<Props, State> {
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
-        this.queryParameters$,
+        this.queryParameters$.distinctUntilChanged((x, y) => shallowCompare(x, y)),
         this.search$.distinctUntilChanged().do(searchValue => this.setState({ searchValue })).debounceTime(400)
       )
       .map(([queryParameters, search]) => ({ ...queryParameters, search }))
@@ -345,7 +342,7 @@ class IdeaCards extends React.PureComponent<Props, State> {
 
         {querying &&
           <Loading id="ideas-loading">
-            <Spinner size="34px" color="#666" />
+            <Spinner size="32px" color="#666" />
           </Loading>
         }
 
@@ -357,6 +354,10 @@ class IdeaCards extends React.PureComponent<Props, State> {
                 <FormattedMessage {...messages.noIdea} />
               </EmptyMessageLine>
             </EmptyMessage>
+            <IdeaButton
+              projectId={this.state.queryParameters.project}
+              phaseId={this.state.queryParameters.phase}
+            />
           </EmptyContainer>
         }
 
