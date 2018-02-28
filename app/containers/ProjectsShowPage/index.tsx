@@ -27,7 +27,7 @@ const Container = styled.div`
   background: #f9f9fa;
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 66px);
   `}
 `;
 
@@ -87,11 +87,9 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
         locale$,
         currentTenant$,
         slug$
-      )
-      .switchMap(([_locale, _currentTenant, slug]) => {
+      ).switchMap(([_locale, _currentTenant, slug]) => {
         return projectBySlugStream(slug).observable;
-      })
-      .switchMap((project) => {
+      }).switchMap((project) => {
         const phases$ = phasesStream(project.data.id).observable;
         const events$ = eventsStream(project.data.id).observable;
 
@@ -132,7 +130,7 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
             </>
           ) : (
             <Loading>
-              <Spinner size="34px" color="#666" />
+              <Spinner size="32px" color="#666" />
             </Loading>
           )}
         </Container>

@@ -1,10 +1,32 @@
 # Changelog
 
+## 2018-02-26
+
+### Fixed
+- Project pages
+  - Fixed header image not being centered
+- Project timeline page
+  - Fixed currently active phase not being selected by default
+  - Fixed 'start an idea' button not being shown insde the empty idea container
+  - Fixed 'start an idea' button not linking to the correct idea creation step
+- Ideas and Projects filter dropdown
+  - Fixed the dropdown items not always being clickable
+- Navigation bar
+  - Fixed avatar and options menu not showing on mobile devices
+  
+### Added
+- Responsive admin sidebar
+- Top navigation menu stays in place when scrolling in admin section on mobile devices
+
+### Changed
+- Project timeline
+  - Better word-breaking of phases titles in the timeline
+
 ## 2018-02-22
 
 ### Fixed
 - Idea page
-  - Fix for voting buttons not being shown when page is accessed directly
+  - Fixed voting buttons not being displayed when page is accessed directly
 - Edit profile form page
   - Fixed broken input fields (first name, last name, password, ...)
   - Fixed broken submit button behavior
@@ -12,12 +34,15 @@
   - Fixed default view (map or card) not being saved
   - Fixed save button not being enabled when an image is added or removed
 - Project page
-  - Fix for header navigation button of the current page not being highlighted in certain scenarios
-  - Fix for no phase selected in certain scenarios
+  - Fixed header navigation button of the current page not being highlighted in certain scenarios
+  - Fixed no phase selected in certain scenarios
+  - Fixed mobile timeline phase selection not working
 - Idea cards
-  - Fix for 'Load more' button being shown when no more ideas
+  - Fixed 'Load more' button being shown when no more ideas
 - Project cards
-  - Fix for 'Load more' button being shown when no more projects
+  - Fixed 'Load more' button being shown when no more projects
+- Idea page
+  - Fixed faulty link to project page
 - Add an idea > project selection page
   - Fixed broken layout on mobile devices
 

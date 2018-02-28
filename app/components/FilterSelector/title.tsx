@@ -60,6 +60,7 @@ export default class Title extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const className = this.props['className'];
     const { title, deployed, baseID } = this.props;
 
     return (
@@ -67,7 +68,7 @@ export default class Title extends React.PureComponent<Props, State> {
         onClick={this.handleClick}
         aria-expanded={deployed}
         id={`${baseID}-label`}
-        className={`e2e-filter-selector-button FilterSelectorTitle ${deployed ? 'deployed' : ''}`}
+        className={`e2e-filter-selector-button FilterSelectorTitle ${deployed ? 'deployed' : ''} ${className}`}
       >
         <Text className="FilterSelectorTitleText">{title}</Text>
         <DropdownIcon className="FilterSelectorTitleIcon" name="dropdown" />

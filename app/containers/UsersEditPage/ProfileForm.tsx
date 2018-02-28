@@ -181,7 +181,6 @@ class ProfileForm extends React.PureComponent<Props, State> {
   }
 
   createBlurHandler = (fieldName) => () => {
-    console.log(fieldName);
     // this is going to call setFieldTouched and manually update touched.topcis
     this.props.setFieldTouched(fieldName, true);
   }
@@ -216,8 +215,6 @@ class ProfileForm extends React.PureComponent<Props, State> {
 
   getStatus = () => {
     const { isValid,  status, touched } = this.props;
-
-    console.log(touched);
 
     if (!isEmpty(touched) && !isValid) {
       return 'error';

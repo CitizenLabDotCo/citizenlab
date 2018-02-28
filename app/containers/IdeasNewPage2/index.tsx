@@ -40,7 +40,7 @@ const PageContainer = styled.div`
   position: relative;
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 70px);
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 66px);
   `}
 
   &.page-enter {

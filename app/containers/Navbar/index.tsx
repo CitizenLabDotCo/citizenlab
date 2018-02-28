@@ -3,7 +3,7 @@ import * as Rx from 'rxjs/Rx';
 import { get } from 'lodash';
 
 // libraries
-import { browserHistory, withRouter, RouterState, Link } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import clickOutside from 'utils/containers/clickOutside';
 
@@ -11,7 +11,7 @@ import clickOutside from 'utils/containers/clickOutside';
 import NotificationMenu from './components/NotificationMenu';
 import UserMenu from './components/UserMenu';
 import MobileNavigation from './components/MobileNavigation';
-import IdeaButton from './components/IdeaButton';
+import IdeaButton from 'components/IdeaButton';
 import Icon from 'components/UI/Icon';
 
 // services
@@ -37,6 +37,7 @@ import styled, { css, } from 'styled-components';
 
 // typings
 import { Locale } from 'typings';
+import { Location } from 'history';
 
 const Container = styled.div`
   width: 100%;
@@ -48,6 +49,8 @@ const Container = styled.div`
   position: fixed;
   top: 0;
   background: #fff;
+  padding-left: 30px;
+  padding-right: 30px;
 
   * {
     user-select: none;
@@ -74,12 +77,19 @@ const Container = styled.div`
   }
 
   ${media.smallerThanMaxTablet`
-    position: relative;
-    top: auto;
-
     &::after {
       opacity: 1;
     }
+
+    &:not(.admin) {
+      position: relative;
+      top: auto;
+    }
+  `}
+
+  ${media.smallerThanMinTablet`
+    padding-left: 15px;
+    padding-right: 15px;
   `}
 `;
 
@@ -100,12 +110,18 @@ const Logo = styled.img`
   max-height: 42px;
   margin: 0;
   padding: 0px;
-  padding-right: 15px;
-  padding-left: 30px;
   cursor: pointer;
 
   ${media.smallerThanMinTablet`
     max-width: 180px;
+  `}
+
+  ${media.phone`
+    max-width: 140px;
+  `}
+
+  ${media.largePhone`
+    max-width: 120px;
   `}
 `;
 
@@ -287,7 +303,6 @@ const Right = styled.div`
   display: flex;
   z-index: 2;
   align-items: center;
-  padding-right: 30px;
 `;
 
 const RightItem: any = styled.div`
@@ -295,23 +310,28 @@ const RightItem: any = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding-left: 18px;
-  padding-right: 18px;
+  padding-left: 30px;
   outline: none;
-
-  &:last-child {
-    padding-right: 0px;
-  }
-
-  &.notification {
-    padding-left: 10px;
-  }
 
   * {
     outline: none;
   }
 
+  &.notification {
+    ${media.smallerThanMinTablet`
+      display: none;
+    `}
+  }
+
+  &.usermenu {
+    ${media.smallPhone`
+      display: none;
+    `}
+  }
+
   &.addIdea {
+    padding-left: 0px;
+
     ${media.smallerThanMinTablet`
         display: none;
     `}
@@ -323,15 +343,19 @@ const RightItem: any = styled.div`
     `}
   }
 
-  ${media.phone`
-    &.addIdea {
-      padding: 0px;
-    }
+  ${media.smallerThanMinTablet`
+    padding-left: 15px;
   `}
+`;
 
-  ${(props: any) => props.hideOnPhone && media.phone`
-    display: none;
-  `}
+const StyledIdeaButton = styled(IdeaButton)`
+  .Button {
+    border: solid 2px #eaeaea !important;
+
+    &:hover {
+      border-color: #ccc !important;
+    }
+  }
 `;
 
 const LoginLink = styled.div`
@@ -353,6 +377,7 @@ type Tracks = {
 };
 
 type State = {
+  location: Location;
   locale: Locale | null;
   authUser: IUser | null;
   currentTenant: ITenant | null;
@@ -362,7 +387,7 @@ type State = {
   scrolled: boolean;
 };
 
-class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
+class Navbar extends React.PureComponent<Props & Tracks, State> {
   dropdownElement: HTMLElement | null;
   unlisten: Function;
   subscriptions: Rx.Subscription[];
@@ -370,6 +395,7 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
+      location: browserHistory.getCurrentLocation(),
       locale: null,
       authUser: null,
       currentTenant: null,
@@ -388,7 +414,9 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
     const currentTenant$ = currentTenantStream().observable;
     const projects$ = projectsStream().observable;
 
-    this.unlisten = browserHistory.listen(() => this.setState({ projectsDropdownOpened: false }));
+    this.unlisten = browserHistory.listen((location) => {
+      this.setState({ location, projectsDropdownOpened: false });
+    });
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
@@ -481,13 +509,17 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
   }
 
   render() {
-    // const { pathname } = this.props.location;
-    const { locale, authUser, currentTenant, projects, scrolled, projectsDropdownOpened } = this.state;
-    // let alwaysShowBorder: boolean = false;
+    const { location, locale, authUser, currentTenant, projects, scrolled, projectsDropdownOpened } = this.state;
+    const isAdminPage = (location.pathname.startsWith('/admin'));
 
-    // if (pathname.startsWith('/admin') || pathname.startsWith('/sign-in') || pathname.startsWith('/sign-up') || pathname.startsWith('/ideas/new') || pathname.startsWith('/projects')) {
-    //   alwaysShowBorder = true;
-    // }
+    /*
+    const { pathname } = this.props.location;
+    let alwaysShowBorder: boolean = false;
+
+    if (pathname.startsWith('/admin') || pathname.startsWith('/sign-in') || pathname.startsWith('/sign-up') || pathname.startsWith('/ideas/new') || pathname.startsWith('/projects')) {
+      alwaysShowBorder = true;
+    }
+    */
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -496,7 +528,8 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
       return (
         <>
           <MobileNavigation />
-          <Container className={`${scrolled && 'scrolled'} ${'alwaysShowBorder'}`}>
+
+          <Container className={`${scrolled && 'scrolled'} ${isAdminPage && 'admin'} ${'alwaysShowBorder'}`}>
             <Left>
               {currentTenantLogo &&
                 <LogoLink to="/">
@@ -561,23 +594,23 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
 
             <Right>
               <RightItem className="addIdea" loggedIn={authUser !== null}>
-                <IdeaButton />
+                <StyledIdeaButton style="primary-outlined" />
               </RightItem>
 
               {authUser &&
-                <RightItem hideOnPhone={true} className="notification">
+                <RightItem className="notification">
                   <NotificationMenu />
                 </RightItem>
               }
 
               {authUser &&
-                <RightItem hideOnPhone={true}>
+                <RightItem className="usermenu">
                   <UserMenu />
                 </RightItem>
               }
 
               {!authUser &&
-                <RightItem hideOnPhone={false}>
+                <RightItem>
                   <Link to="/sign-in" id="e2e-login-link">
                     <LoginLink>
                       <FormattedMessage {...messages.login} />
@@ -595,7 +628,7 @@ class Navbar extends React.PureComponent<Props & Tracks & RouterState, State> {
   }
 }
 
-export default withRouter(injectTracks<Props>({
+export default injectTracks<Props>({
   trackClickOpenNotifications: tracks.clickOpenNotifications,
   trackClickCloseNotifications: tracks.clickCloseNotifications,
-})(Navbar));
+})(Navbar);
