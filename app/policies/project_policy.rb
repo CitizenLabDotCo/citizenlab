@@ -70,7 +70,7 @@ class ProjectPolicy < ApplicationPolicy
       :voting_enabled,
       :voting_method,
       :voting_limited_max,
-      :survey_id,
+      :survey_embed_url,
       :survey_service,
       :presentation_mode,
       :publication_status,

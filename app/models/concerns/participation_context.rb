@@ -20,8 +20,16 @@ module ParticipationContext
         ideation.validates :voting_limited_max, presence: true, numericality: {only_integer: true, greater_than: 0}, if: [:ideation?, :voting_limited?]
       end
       with_options if: :survey? do |survey|
-        survey.validates :survey_id, presence: true
+        survey.validates :survey_embed_url, presence: true
         survey.validates :survey_service, presence: true, inclusion: {in: SURVEY_SERVICES}
+        survey.validates :survey_embed_url, if: [:survey?, :typeform?], format: { 
+          with: /\Ahttps:\/\/.*\.typeform\.com\/to\/.*\z/,
+          message: "Not a valid Typeform embed URL"
+        }
+        survey.validates :survey_embed_url, if: [:survey?, :survey_monkey?], format: { 
+          with: /\Ahttps:\/\/widget\.surveymonkey\.com\/collect\/website\/js\/.*\.js\z/,
+          message: "Not a valid SurveyMonkey embed URL"
+        }
       end
 
       before_validation :set_participation_method, on: :create
@@ -69,6 +77,14 @@ module ParticipationContext
 
   def set_participation_method
     self.participation_method ||= 'ideation'
+  end
+
+  def typeform?
+    self.survey_service == 'typeform'
+  end
+
+  def survey_monkey?
+    self.survey_service == 'survey_monkey'
   end
 
 end
