@@ -123,11 +123,10 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         enabled: true,
         allowed: true
       },
-      #typeform: {
-      #  enabled: true,
-      #  allowed: true,
-      #  api_key: "wakawakawakuhjoopodapoubleaasdooblaah"
-      #},
+      surveys: {
+       enabled: true,
+       allowed: true,
+      },
       maps: {
         enabled: true,
         allowed: true,

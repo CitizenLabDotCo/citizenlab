@@ -283,36 +283,14 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
-      "typeform": {
+      "surveys": {
         "type": "object",
-        "description":  "Allow the creation of surveys with Typeform",
+        "description":  "Allow the embedding of surveys from Typeform and Survey Monkey",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["api_key"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "api_key": {
-            "type": "string"
-          }
-        }
-      },
-      "survey_monkey": {
-        "type": "object",
-        "description":  "Allow the creation of surveys with SurveyMonkey",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["client_id", "client_secret"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "client_id": {
-            "type": "string"
-          },
-          "client_secret": {
-            "type": "string",
-            "private": true
-          }
+          "enabled": { "type": "boolean", "default": false}
         }
       },
       "maps": {
