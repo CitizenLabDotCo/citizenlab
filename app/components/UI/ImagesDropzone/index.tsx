@@ -88,6 +88,10 @@ const StyledDropzone = styled(Dropzone)`
   background: #fff;
   transition: all 100ms ease-out;
 
+  &.rounded {
+    border-radius: 50%;
+  }
+
   &.canDrop {
     border-color: #006400;
 
@@ -228,7 +232,7 @@ const RemoveButton: any = styled.div`
   position: absolute;
   top: 8px;
   right: 8px;
-  z-index: 1;
+  z-index: 0;
   cursor: pointer;
   border-radius: 50%;
   border: solid 1px transparent;
@@ -456,6 +460,7 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
           className={(maxNumberOfImages !== 1 && images && images.length > 0 ? 'hasSpacing' : '')}
         >
           <StyledDropzone
+            className={`${this.props.imageRadius === '50%' && 'rounded'}`}
             accept={acceptedFileTypes}
             maxSize={maxImageFileSize}
             activeClassName="canDrop"

@@ -68,7 +68,7 @@ const TextAreaContainer: any = styled.div`
 
 type Props = {
   id?: string | undefined;
-  name: string;
+  name?: string;
   value: string;
   placeholder?: string | null | undefined;
   rows?: number | undefined;

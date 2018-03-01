@@ -39,6 +39,7 @@ class FormikSubmitWrapper extends React.Component<Props, State> {
 
   render() {
     const { isSubmitting, style } = this.props;
+
     return (
       <SubmitWrapper
         status={this.getStatus()}

@@ -85,6 +85,7 @@ const CreateAnAccountStyle = css`
   font-weight: 400;
   text-decoration: none;
   cursor: pointer;
+  margin-left: 15px;
 
   &:hover {
     color: ${(props) => darken(0.15, props.theme.colorMain)};
@@ -336,12 +337,11 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
               <ButtonWrapper>
                 <Button
                   onClick={this.handleOnSubmit}
-                  size="2"
+                  size="1"
                   processing={processing}
                   text={formatMessage(messages.submit)}
                   circularCorners={true}
                 />
-
                 {createAccount}
               </ButtonWrapper>
               <Error marginTop="10px" text={signInError} />

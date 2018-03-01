@@ -78,29 +78,24 @@ class OptionsForm extends React.Component<Props & InjectedNestedResourceLoaderPr
   }
 
   handleUpdateSubmit = (option) => (values, { setErrors, setSubmitting, resetForm }) => {
-
-    updateCustomFieldOption(this.props.customField.id, option.id, values)
-      .then(() => {
-        resetForm();
-      })
-      .catch((errorResponse) => {
-        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
-        setErrors(apiErrors);
-        setSubmitting(false);
-      });
+    updateCustomFieldOption(this.props.customField.id, option.id, values).then(() => {
+      resetForm();
+    }).catch((errorResponse) => {
+      const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+      setErrors(apiErrors);
+      setSubmitting(false);
+    });
   }
 
   handleCreateSubmit = (values, { setErrors, setSubmitting }) => {
-    addCustomFieldOption(this.props.customField.id, values)
-      .then(() => {
-        setSubmitting(false);
-        this.setState({ addingOption: false });
-      })
-      .catch((errorResponse) => {
-        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
-        setErrors(apiErrors);
-        setSubmitting(false);
-      });
+    addCustomFieldOption(this.props.customField.id, values).then(() => {
+      setSubmitting(false);
+      this.setState({ addingOption: false });
+    }).catch((errorResponse) => {
+      const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+      setErrors(apiErrors);
+      setSubmitting(false);
+    });
   }
 
   addOption = () => {

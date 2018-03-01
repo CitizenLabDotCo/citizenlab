@@ -15,10 +15,6 @@ import Footer from './Footer';
 // services
 import { currentTenantStream, ITenant } from 'services/tenant';
 
-// i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-
 // style
 import styled from 'styled-components';
 
@@ -93,7 +89,7 @@ type State = {
   userId: string | null;
 };
 
-class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
+export default class SignUp extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -110,7 +106,7 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
   componentDidMount() {
     const currentTenant$ = currentTenantStream().observable.do((currentTenant) => {
       const { birthyear, domicile, gender } = currentTenant.data.attributes.settings.demographic_fields;
-      const demographicFieldsEnabled = get(currentTenant, `data.attributes.settings.demographic_fields.enabled`);
+      const demographicFieldsEnabled: boolean = get(currentTenant, `data.attributes.settings.demographic_fields.enabled`, false);
       const hasOneOrMoreActiveDemographicFields = [birthyear, domicile, gender].some(value => value === true);
 
       if (!demographicFieldsEnabled || !hasOneOrMoreActiveDemographicFields) {
@@ -118,7 +114,11 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
       }
     });
 
-    this.subscriptions = [currentTenant$.subscribe(currentTenant => this.setState({ currentTenant }))];
+    this.subscriptions = [
+      currentTenant$.subscribe((currentTenant) => {
+        this.setState({ currentTenant });
+      })
+    ];
   }
 
   componentWillUnmount() {
@@ -178,5 +178,3 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
     );
   }
 }
-
-export default injectIntl<Props>(SignUp);

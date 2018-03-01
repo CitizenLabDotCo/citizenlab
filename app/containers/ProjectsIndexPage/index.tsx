@@ -28,6 +28,7 @@ const Container = styled.div`
 
 const StyledContentContainer = styled(ContentContainer)`
   flex: 1;
+  padding-top: 60px;
   padding-bottom: 100px;
 `;
 
@@ -39,12 +40,10 @@ const PageTitle = styled.h1`
   text-align: center;
   margin: 0;
   padding: 0;
-  padding-top: 60px;
   padding-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
-    font-size: 28px;
-    line-height: 34px;
+    text-align: left;
   `}
 `;
 

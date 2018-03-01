@@ -47,14 +47,15 @@ import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-const loadingTimeout = 500;
+const loadingTimeout = 400;
 const loadingEasing = 'ease-out';
-const loadingDelay = 0;
+const loadingDelay = 100;
 
-const contentTimeout = 400;
+const contentTimeout = 500;
 const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
-const contentDelay = 700;
-const contentTranslateDistance = '25px';
+// const contentEasing = `ease-out`;
+const contentDelay = 600;
+const contentTranslateDistance = '30px';
 
 const StyledSpinner = styled(Spinner)`
   transition: all ${loadingTimeout}ms ${loadingEasing} ${loadingDelay}ms;
@@ -69,6 +70,7 @@ const Loading = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  will-change: opacity;
 
   &.loading-enter {
     ${StyledSpinner} {
@@ -85,6 +87,7 @@ const Loading = styled.div`
 
 const Container = styled.div`
   background: #fff;
+  transform: none;
   will-change: transform, opacity;
 
   &.content-enter {
@@ -336,8 +339,8 @@ const AddressWrapper = styled.div`
 `;
 
 const AuthorAvatar = styled(Avatar)`
-  width: 31px;
-  height: 31px;
+  width: 35px;
+  height: 35px;
   margin-right: 8px;
   margin-top: 0px;
 `;

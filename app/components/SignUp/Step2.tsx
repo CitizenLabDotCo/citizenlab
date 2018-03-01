@@ -10,6 +10,7 @@ import Label from 'components/UI/Label';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Select from 'components/UI/Select';
+import CustomFieldsForm from 'components/CustomFieldsForm';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -53,6 +54,7 @@ const SkipButton = styled.div`
   font-weight: 400;
   line-height: 20px;
   cursor: pointer;
+  margin-left: 15px;
 
   &:hover {
     color: #000;
@@ -79,7 +81,6 @@ type State = {
 };
 
 class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
-  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -203,6 +204,10 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
+  handleCustomFieldsFormOnChange = (formData) => {
+    console.log(formData);
+  }
+
   skipStep = (event: React.FormEvent<any>) => {
     event.preventDefault();
     this.props.onCompleted();
@@ -267,11 +272,13 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
             </FormElement>
           }
 
+          <CustomFieldsForm onChange={this.handleCustomFieldsFormOnChange} />
+
           <FormElement>
             <ButtonWrapper>
               <Button
                 id="e2e-signup-step2-button"
-                size="2"
+                size="1"
                 processing={processing}
                 text={formatMessage(messages.submit)}
                 onClick={this.handleOnSubmit}

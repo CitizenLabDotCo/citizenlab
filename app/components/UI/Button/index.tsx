@@ -4,7 +4,7 @@ import { darken, rgba } from 'polished';
 import Spinner from 'components/UI/Spinner';
 import Icon, { IconNames } from 'components/UI/Icon';
 import { Link } from 'react-router';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 
 const StyledButton = styled.button``;
 
@@ -101,6 +101,10 @@ const Container: any = styled.div`
 
   * {
     user-select: none;
+  }
+
+  &.fullWidth {
+    width: 100%;
   }
 
   ${StyledButton},
@@ -200,20 +204,20 @@ const Container: any = styled.div`
 
     &.secondary-outlined {
       &:not(.disabled) {
-        background: transparent;
-        border: solid 1px #999;
-        ${setFillColor('#999')}
+        background: #fff;
+        border: solid 1px #e0e0e0;
+        ${(props: any) => setFillColor(props.theme.colorMain)}
 
         &:not(.processing):hover,
         &:not(.processing):focus {
-          border-color: #222;
-          ${setFillColor('#444')}
+          border-color: #ccc;
+          ${(props: any) => setFillColor(darken(0.12, (props.theme.colorMain)))}
         }
       }
 
       &.disabled {
-        background: transparent;
-        border: solid 1px #ccc;
+        background: #fff;
+        border-color: #f0f0f0;
         ${setFillColor('#ccc')}
       }
     }
@@ -291,11 +295,16 @@ type Props = {
   circularCorners?: boolean;
   linkTo?: string;
   id?: string;
+  theme?: object | undefined;
 };
 
 type State = {};
 
-export default class Button extends React.PureComponent<Props, State> {
+class Button extends React.PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props as any);
+  }
+
   handleOnClick = (event: React.FormEvent<HTMLButtonElement>) => {
     if (this.props.onClick && !this.props.disabled && !this.props.processing) {
       event.preventDefault();
@@ -316,6 +325,15 @@ export default class Button extends React.PureComponent<Props, State> {
     }
   }
 
+  getSpinnerColor = (style: ButtonStyles) => {
+    if (style === 'primary-outlined' || style === 'secondary-outlined') {
+      const theme = this.props.theme as object;
+      return theme['colorMain'];
+    }
+
+    return '#fff';
+  }
+
   render() {
     const { text, width, height, padding, justify, icon, children, linkTo } = this.props;
     let { id, size, style, processing, disabled, fullWidth, circularCorners, className } = this.props;
@@ -329,6 +347,7 @@ export default class Button extends React.PureComponent<Props, State> {
     circularCorners = (isBoolean(circularCorners) ? circularCorners : true);
     className = `${className ? className : ''}`;
     const spinnerSize = this.getSpinnerSize(size);
+    const spinnerColor = this.getSpinnerColor(style);
 
     const buttonClassnames = `Button ${disabled ? 'disabled' : ''} ${processing ? 'processing' : ''} ${fullWidth ? 'fullWidth' : ''} ${style}`;
 
@@ -336,7 +355,7 @@ export default class Button extends React.PureComponent<Props, State> {
       <ButtonContent>
         {icon && <StyledIcon name={icon} />}
         <ButtonText>{text || children}</ButtonText>
-        {processing && <SpinnerWrapper><Spinner size={spinnerSize} /></SpinnerWrapper>}
+        {processing && <SpinnerWrapper><Spinner size={spinnerSize} color={spinnerColor} /></SpinnerWrapper>}
       </ButtonContent>
     );
 
@@ -362,10 +381,12 @@ export default class Button extends React.PureComponent<Props, State> {
         onClick={this.handleOnClick}
         disabled={disabled}
         circularCorners={circularCorners}
-        className={className}
+        className={`${className} ${buttonClassnames}`}
       >
         {button}
       </Container>
     );
   }
 }
+
+export default withTheme(Button);

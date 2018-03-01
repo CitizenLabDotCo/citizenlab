@@ -2,7 +2,6 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 
-
 export type IInputType = 'text' | 'multiline_text' | 'select' | 'multiselect' | 'checkbox' | 'date';
 
 export interface ICustomFieldData {
@@ -54,14 +53,16 @@ export interface ICustomFieldOption {
   data: ICustomFieldOptionData;
 }
 
-
-
 export function customFieldForUsersStream(customFieldId: string, streamParams: IStreamParams | null = null) {
   return streams.get<ICustomField>({ apiEndpoint: `${API_PATH}/users/custom_fields/${customFieldId}`, ...streamParams });
 }
 
 export function customFieldsForUsersStream(streamParams: IStreamParams | null = null) {
   return streams.get<ICustomFields>({ apiEndpoint: `${API_PATH}/users/custom_fields`, ...streamParams });
+}
+
+export function customFieldsSchemaForUsersStream(streamParams: IStreamParams | null = null) {
+  return streams.get<any>({ apiEndpoint: `${API_PATH}/users/custom_fields/schema`, ...streamParams });
 }
 
 export function addCustomFieldForUsers(data) {
