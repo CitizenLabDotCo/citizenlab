@@ -9,7 +9,7 @@ import usersRoutes from './users/routes';
 import projectsRoutes from './projects/routes';
 import groupsRoutes from './groups/routes';
 import settingsRoutes from './settings/routes';
-import customFieldRoutes from './settings/customize/CustomFields/routes';
+import customFieldRoutes from './settings/registration/CustomFields/routes';
 
 const errorLoading = (err) => {
   console.error('Dynamic page loading failed', err); // eslint-disable-line no-console
@@ -40,8 +40,11 @@ export default (injectReducer) => ({
     ideasRoutes(injectReducer),
     usersRoutes(),
     projectsRoutes(injectReducer),
+    {
+      path: 'settings/registration/custom_fields',
+      ...(customFieldRoutes()),
+    },
     settingsRoutes(),
     groupsRoutes(injectReducer),
-    customFieldRoutes(injectReducer),
   ],
 });

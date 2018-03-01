@@ -31,6 +31,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabPages',
     defaultMessage: 'Pages',
   },
+  tabRegistration: {
+    id: 'app.containers.AdminPage.SettingsPage.tabRegistration',
+    defaultMessage: 'Registration',
+  },
   organizationName: {
     id: 'app.containers.AdminPage.SettingsPage.organizationName',
     defaultMessage: '{type, select, generic {Organization} other {City}} name',
@@ -91,9 +95,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.subTitleBasic',
     defaultMessage: 'Fill these out carefully, they define the platforms identity.',
   },
-  titleSignupFields: {
-    id: 'app.containers.AdminPage.SettingsPage.titleSignupFields',
-    defaultMessage: 'Signup fields',
+  titleBuiltInRegistrationFields: {
+    id: 'app.containers.AdminPage.SettingsPage.titleBuiltInRegistrationFields',
+    defaultMessage: 'Built-in registration fields',
   },
   subTitleSignupFields: {
     id: 'app.containers.AdminPage.SettingsPage.subTitleSignupFields',
@@ -171,8 +175,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.saveSuccessMessage',
     defaultMessage: 'Your changes have been saved.',
   },
-  titleCustomFields: {
-    id: 'app.containers.AdminPage.SettingsPage.titleCustomFields',
-    defaultMessage: 'Configurable fields',
+  titleConfigurableRegistrationFields: {
+    id: 'app.containers.AdminPage.SettingsPage.titleConfigurableRegistrationFields',
+    defaultMessage: 'Configurable registration fields',
   },
 });
