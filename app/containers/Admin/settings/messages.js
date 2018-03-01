@@ -97,7 +97,7 @@ export default defineMessages({
   },
   titleBuiltInRegistrationFields: {
     id: 'app.containers.AdminPage.SettingsPage.titleBuiltInRegistrationFields',
-    defaultMessage: 'Built-in registration fields',
+    defaultMessage: 'Default registration fields',
   },
   subTitleSignupFields: {
     id: 'app.containers.AdminPage.SettingsPage.subTitleSignupFields',

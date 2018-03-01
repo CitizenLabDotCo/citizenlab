@@ -27,8 +27,12 @@ class New extends React.Component<Props> {
     addCustomFieldForUsers({
       ...values
     })
-      .then(() => {
-        browserHistory.push('/admin/settings/registration');
+      .then((response) => {
+        if (this.hasOptions(values.input_type)) {
+          browserHistory.push(`/admin/settings/registration/custom_fields/${response.data.id}/options`);
+        } else {
+          browserHistory.push('/admin/settings/registration');
+        }
       })
       .catch((errorResponse) => {
         const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
@@ -53,6 +57,10 @@ class New extends React.Component<Props> {
       mode="new"
     />
   )
+
+  hasOptions = (inputType) => {
+    return inputType === 'select' || inputType === 'multiselect';
+  }
 
   goBack = () => {
     browserHistory.push('/admin/settings/registration');
