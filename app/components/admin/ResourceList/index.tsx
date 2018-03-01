@@ -15,7 +15,7 @@ const StyledList = styled.div`
 
 const timeout = 200;
 
-const StyledRow = styled.div`
+export const StyledRow = styled.div`
   align-items: center !important;
   border-bottom: 1px solid ${color('separation')};
   color: ${color('label')};
