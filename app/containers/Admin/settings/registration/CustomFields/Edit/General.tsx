@@ -43,7 +43,7 @@ class General extends React.Component<Props, State> {
       ...this.changedValues(this.initialValues(), values)
     })
       .then(() => {
-        browserHistory.push('/admin/custom_fields');
+        browserHistory.push('/admin/settings/registration/custom_fields');
       })
       .catch((errorResponse) => {
         const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
