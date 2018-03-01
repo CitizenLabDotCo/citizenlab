@@ -18,7 +18,6 @@ const Container: any = styled.div`
   background: ${(props: any) => props.checked ? props.theme.colors.success : '#fff'};
   border-color: ${(props: any) => props.checked ? props.theme.colors.success : '#aaa'};
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.15);
-  margin-left: 10px;
 
   &:hover {
     border-color: ${(props: any) => props.checked ? props.theme.colors.success : '#333'};

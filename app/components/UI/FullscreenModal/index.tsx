@@ -24,8 +24,9 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const timeout = 350;
+const timeout = 300;
 const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
+// const easing = `ease-out`;
 
 const Container: any = styled.div`
   position: fixed;
@@ -39,6 +40,7 @@ const Container: any = styled.div`
   outline: none;
   background: #fff;
   z-index: -10000;
+  transform: none;
   will-change: opacity;
   display: none;
 
@@ -61,7 +63,7 @@ const Container: any = styled.div`
 
     &.modal-enter {
       opacity: 0;
-      transform: translateY(25px);
+      transform: translateY(20px);
 
       &.modal-enter-active {
         opacity: 1;

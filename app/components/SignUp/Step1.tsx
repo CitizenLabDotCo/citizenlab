@@ -55,6 +55,7 @@ const AlreadyHaveAnAccount = styled(Link)`
   font-weight: 400;
   text-decoration: none;
   cursor: pointer;
+  margin-left: 15px;
 
   &:hover {
     color: ${(props) => darken(0.15, props.theme.colorMain)};
@@ -300,7 +301,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
           <ButtonWrapper>
             <Button
               id="e2e-signup-step1-button"
-              size="2"
+              size="1"
               processing={processing}
               text={formatMessage(messages.signUp)}
               onClick={this.handleOnSubmit}

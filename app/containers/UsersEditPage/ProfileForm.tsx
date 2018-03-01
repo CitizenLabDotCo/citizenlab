@@ -1,28 +1,29 @@
-// Libraries
 import * as React from 'react';
+import * as Rx from 'rxjs';
 import * as moment from 'moment';
-import { Observable } from 'rxjs';
-import { isEqual, isEmpty } from 'lodash';
+import { isEqual, isEmpty, get } from 'lodash';
 
-// Services & Utils
+// services
 import { IAreaData } from 'services/areas';
 import { updateUser, IUserData, IUserUpdate, mapUserToDiff } from 'services/users';
 import { ITenantData } from 'services/tenant';
-import scrollToComponent from 'react-scroll-to-component';
-import { withFormik, FormikProps, Form } from 'formik';
-import { IOption, ImageFile, API } from 'typings';
 
-// Components
+// utils
+import { withFormik, FormikProps, Form as FormikForm } from 'formik';
+// import eventEmitter from 'utils/eventEmitter';
+
+// components
 import { Grid, Segment } from 'semantic-ui-react';
 import ContentContainer from 'components/ContentContainer';
 import LabelWithTooltip from './LabelWithTooltip';
-import TextArea from 'components/UI/TextArea';
-import Input from 'components/UI/Input';
 import Error from 'components/UI/Error';
-import Select from 'components/UI/Select';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToFileObservable } from 'utils/imageTools';
 import { Section, SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Section';
+// import CustomFieldsForm from 'components/CustomFieldsForm';
+import TextArea from 'components/UI/TextArea';
+import Input from 'components/UI/Input';
+import Select from 'components/UI/Select';
 
 // i18n
 import { appLocalePairs } from 'i18n';
@@ -31,19 +32,18 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import localize, { injectedLocalized } from 'utils/localize';
 
-// Style
+// styling
 import styled from 'styled-components';
 import { color } from 'utils/styleUtils';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+
+// typings
+import { IOption, ImageFile, API } from 'typings';
 
 const StyledContentContainer = styled(ContentContainer)`
   background: ${color('background')};
   padding-top: 25px;
   padding-bottom: 40px;
-
-  .Select {
-    max-width: 500px !important;
-  }
 `;
 
 // Types
@@ -67,26 +67,34 @@ class ProfileForm extends React.PureComponent<Props, State> {
   domicileOptions: IOption[] = [];
   birthYearOptions: IOption[] = [];
   educationOptions: IOption[] = [];
+  user$: Rx.BehaviorSubject<IUserData>;
+  customFieldsFormData: any;
+  subscriptions: Rx.Subscription[];
 
   constructor(props: InputProps) {
     super(props as any);
     this.state = {
       avatar: null,
       contextRef: null,
-      localeOptions: []
+      localeOptions: [],
     };
+    this.customFieldsFormData = null;
+    this.subscriptions = [];
   }
 
   componentDidMount() {
-    // Get the avatar imageFile
-    const avatarUrl = this.props.user.attributes.avatar.medium;
-    const avatarFileObservable = this.props.user.attributes.avatar.medium ? convertUrlToFileObservable(avatarUrl) : Observable.of(null);
+    this.user$ = new Rx.BehaviorSubject(this.props.user);
 
-    avatarFileObservable.first().subscribe((avatar) => {
-      if (avatar) {
-        this.setState({ avatar: [avatar] });
-      }
-    });
+    this.subscriptions = [
+      this.user$.switchMap((user) => {
+        const avatarUrl = get(user, 'attributes.avatar.medium', null);
+        return (avatarUrl ? convertUrlToFileObservable(avatarUrl) : Rx.Observable.of(null));
+      }).subscribe((avatar) => {
+        this.setState({
+          avatar: (avatar ? [avatar] : null)
+        });
+      })
+    ];
 
     // Create options arrays only once, avoid re-calculating them on each render
     this.setState({
@@ -107,14 +115,15 @@ class ProfileForm extends React.PureComponent<Props, State> {
       },
       {
         value: 'unspecified',
-        label: this.props.intl.formatMessage({ ...messages.unspecified }),
-      },
+        label: this.props.intl.formatMessage({ ...messages.unspecified })
+      }
     ];
 
     this.domicileOptions = this.props.areas.map((area) => ({
       value: area.id,
       label: this.props.localize(area.attributes.title_multiloc),
     }));
+
     this.domicileOptions.push({
       value: 'outside',
       label: this.props.intl.formatMessage({
@@ -138,6 +147,10 @@ class ProfileForm extends React.PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
+    if (!isEqual(this.props.user, prevProps.user)) {
+      this.user$.next(this.props.user);
+    }
+
     if (!isEqual(this.props.tenantLocales, prevProps.tenantLocales)) {
       this.setState({
         localeOptions: this.props.tenantLocales.map((locale) => ({
@@ -148,32 +161,24 @@ class ProfileForm extends React.PureComponent<Props, State> {
     }
   }
 
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
   getToggleValue = (property) => {
     const { user } = this.props;
+
     if (!user) {
       return false;
     }
+
     return user[property];
-  }
-
-  createMenuClickHandler = (name: string) => () => {
-    this.goToSection(name);
-  }
-
-  goToSection = (which) => {
-    if (which === 'h1') {
-      scrollToComponent(this['section-basics']);
-    } else if (which === 'h2') {
-      scrollToComponent(this['section-details']);
-    } else if (which === 'h3') {
-      scrollToComponent(this['section-notifications']);
-    }
   }
 
   createChangeHandler = (fieldName) => value => {
     if (/_multiloc$/.test(fieldName)) {
       this.props.setFieldValue(fieldName, { [this.props.locale]: value });
-    } else if (value.value) {
+    } else if (value && value.value) {
       this.props.setFieldValue(fieldName, value.value);
     } else {
       this.props.setFieldValue(fieldName, value);
@@ -181,7 +186,6 @@ class ProfileForm extends React.PureComponent<Props, State> {
   }
 
   createBlurHandler = (fieldName) => () => {
-    // this is going to call setFieldTouched and manually update touched.topcis
     this.props.setFieldTouched(fieldName, true);
   }
 
@@ -190,10 +194,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
   }
 
   handleAvatarOnAdd = (newAvatar: ImageFile) => {
-    this.setState(() => ({
-      avatar: [newAvatar],
-    }));
-
+    this.setState(() => ({ avatar: [newAvatar] }));
     this.props.setFieldValue('avatar', newAvatar.base64);
     this.props.setFieldTouched('avatar');
   }
@@ -211,7 +212,9 @@ class ProfileForm extends React.PureComponent<Props, State> {
     this.props.setFieldTouched('avatar');
   }
 
-  handleContextRef = contextRef => this.setState({ contextRef });
+  handleContextRef = (contextRef) => {
+    this.setState({ contextRef });
+  }
 
   getStatus = () => {
     const { isValid,  status, touched } = this.props;
@@ -227,29 +230,22 @@ class ProfileForm extends React.PureComponent<Props, State> {
     return 'enabled';
   }
 
+  handleCustomFieldsFormOnChange = (formData) => {
+    console.log(formData);
+    this.customFieldsFormData = formData;
+  }
+
   render() {
     const { intl: { formatMessage }, values, errors, isSubmitting } = this.props;
-    // const { contextRef } = this.state;
 
     return (
       <StyledContentContainer>
         <Grid centered>
           <Grid.Row>
-            {/* <Grid.Column width={4} only="computer">
-              <Sticky context={contextRef} offset={100}>
-                <Menu fluid vertical text>
-                  {['h1', 'h2'].map((key) => (
-                    <Menu.Item key={key} name={key} onClick={this.createMenuClickHandler(key)}>
-                      <FormattedMessage {...messages[key]} />
-                    </Menu.Item>
-                  ))}
-                </Menu>
-              </Sticky>
-            </Grid.Column> */}
             <Grid.Column computer={12} mobile={16}>
               <div ref={this.handleContextRef}>
                 <Segment padded="very">
-                  <Form className="e2e-profile-edit-form" noValidate>
+                  <FormikForm className="e2e-profile-edit-form" noValidate>
                     {/* BASICS */}
                     <Section ref={(section1) => { this['section-basics'] = section1; }}>
                       <SectionTitle><FormattedMessage {...messages.h1} /></SectionTitle>
@@ -422,7 +418,9 @@ class ProfileForm extends React.PureComponent<Props, State> {
                         messageError: messages.messageError,
                       }}
                     />
-                  </Form>
+                  </FormikForm>
+
+                  {/* <CustomFieldsForm onChange={this.handleCustomFieldsFormOnChange} /> */}
                 </Segment>
               </div>
             </Grid.Column>
@@ -436,12 +434,10 @@ export default withFormik<InputProps, IUserUpdate, IUserUpdate>({
   handleSubmit: (values, { props, setSubmitting, resetForm, setErrors, setStatus }) => {
     setStatus('');
 
-    updateUser(props.user.id, values)
-    .then(() => {
+    updateUser(props.user.id, values).then(() => {
       resetForm();
       setStatus('success');
-    })
-    .catch((errorResponse) => {
+    }).catch((errorResponse) => {
       if (errorResponse.json) {
         const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
         setErrors(apiErrors);

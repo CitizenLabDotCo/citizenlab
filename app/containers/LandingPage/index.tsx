@@ -70,6 +70,7 @@ const Header = styled.div`
 
   ${media.smallerThanMinTablet`
     height: 320px;
+    flex: 0 0 320px;
   `}
 `;
 
@@ -123,7 +124,7 @@ const HeaderContent = styled.div`
   z-index: 2;
 
   ${media.smallerThanMinTablet`
-    margin-top: -60px;
+    margin-top: -30px;
   `}
 `;
 
@@ -209,7 +210,7 @@ const ProjectSection = Section.extend`
   margin-top: -80px;
 
   ${media.smallerThanMinTablet`
-    margin-top: -160px;
+    margin-top: -130px;
   `}
 `;
 

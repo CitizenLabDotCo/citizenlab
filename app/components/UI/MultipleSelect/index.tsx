@@ -220,7 +220,7 @@ const StyledMultipleSelect = styled(ReactSelect)`
 
 type Props = {
   value: IOption[] | null;
-  placeholder: string | JSX.Element;
+  placeholder?: string | JSX.Element | undefined;
   options: IOption[] | null;
   max?: number;
   autoBlur?: boolean;

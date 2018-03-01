@@ -9,7 +9,7 @@ const StyledSelect = styled(ReactSelect)`
     margin: 0;
     padding: 0;
 
-    &:not(.is-open):hover {
+    &:not(.is-disabled):not(.is-open):hover {
       .Select-control {
         border-color: #999;
       }
@@ -39,6 +39,13 @@ const StyledSelect = styled(ReactSelect)`
     &.has-value {
       .Select-control {
         padding-bottom: 0px;
+      }
+    }
+
+    &.is-disabled {
+      .Select-control {
+        border-color: #ccc;
+        cursor: not-allowed;
       }
     }
 
@@ -197,13 +204,14 @@ export default class Select extends React.PureComponent<Props, State> {
   }
 
   handleOnChange = (newValue: IOption) => {
-    this.props.onChange(newValue);
+    this.props.onChange(newValue || null);
   }
 
   render() {
     const className = this.props['className'];
     let { value, placeholder, options, autoBlur, clearable, searchable, multi } = this.props;
     const { disabled } = this.props;
+
     value = (value || undefined);
     placeholder = (placeholder || '');
     options = (options || this.emptyArray);

@@ -28,7 +28,7 @@ type State = {};
 class Edit extends React.Component<Props & InjectedResourceLoaderProps<ICustomFieldData> & InjectedIntlProps, State> {
 
   hasOptions = (inputType) => {
-    return inputType === 'select' || inputType === 'multi_select';
+    return inputType === 'select' || inputType === 'multiselect';
   }
 
   goBack = () => {
