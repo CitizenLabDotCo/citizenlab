@@ -32,11 +32,11 @@ class Edit extends React.Component<Props & InjectedResourceLoaderProps<ICustomFi
   }
 
   goBack = () => {
-    browserHistory.push('/admin/custom_fields');
+    browserHistory.push('/admin/settings/registration');
   }
 
   getTabs = (customField: ICustomFieldData) => {
-    const baseTabsUrl = `/admin/custom_fields/${customField.id}`;
+    const baseTabsUrl = `/admin/settings/registration/custom_fields/${customField.id}`;
 
     const tabs = [
       {
