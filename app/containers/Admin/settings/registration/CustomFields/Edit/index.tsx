@@ -28,15 +28,15 @@ type State = {};
 class Edit extends React.Component<Props & InjectedResourceLoaderProps<ICustomFieldData> & InjectedIntlProps, State> {
 
   hasOptions = (inputType) => {
-    return inputType === 'select' || inputType === 'multi_select';
+    return inputType === 'select' || inputType === 'multiselect';
   }
 
   goBack = () => {
-    browserHistory.push('/admin/custom_fields');
+    browserHistory.push('/admin/settings/registration');
   }
 
   getTabs = (customField: ICustomFieldData) => {
-    const baseTabsUrl = `/admin/custom_fields/${customField.id}`;
+    const baseTabsUrl = `/admin/settings/registration/custom_fields/${customField.id}`;
 
     const tabs = [
       {

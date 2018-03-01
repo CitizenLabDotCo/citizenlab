@@ -28,7 +28,7 @@ class New extends React.Component<Props> {
       ...values
     })
       .then(() => {
-        browserHistory.push('/admin/custom_fields');
+        browserHistory.push('/admin/settings/registration');
       })
       .catch((errorResponse) => {
         const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
@@ -55,7 +55,7 @@ class New extends React.Component<Props> {
   )
 
   goBack = () => {
-    browserHistory.push('/admin/custom_fields');
+    browserHistory.push('/admin/settings/registration');
   }
 
   render() {
