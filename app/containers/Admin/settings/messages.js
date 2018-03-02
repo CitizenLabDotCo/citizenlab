@@ -95,10 +95,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.subTitleBasic',
     defaultMessage: 'Fill these out carefully, they define the platforms identity.',
   },
-  titleBuiltInRegistrationFields: {
-    id: 'app.containers.AdminPage.SettingsPage.titleBuiltInRegistrationFields',
-    defaultMessage: 'Default registration fields',
-  },
   subTitleSignupFields: {
     id: 'app.containers.AdminPage.SettingsPage.subTitleSignupFields',
     defaultMessage: 'What questions will be asked to users when signing up?',
@@ -126,22 +122,6 @@ export default defineMessages({
   subtitleMaxCharError: {
     id: 'app.containers.AdminPage.SettingsPage.subtitleMaxCharError',
     defaultMessage: 'The provided subtitle exceeds the maximum allowed character limit',
-  },
-  gender: {
-    id: 'app.containers.AdminPage.SettingsPage.gender',
-    defaultMessage: 'Gender',
-  },
-  domicile: {
-    id: 'app.containers.AdminPage.SettingsPage.domicile',
-    defaultMessage: 'Domicile',
-  },
-  birthyear: {
-    id: 'app.containers.AdminPage.SettingsPage.birthyear',
-    defaultMessage: 'Birthyear',
-  },
-  education: {
-    id: 'app.containers.AdminPage.SettingsPage.education',
-    defaultMessage: 'Education',
   },
   uploadPlaceholder: {
     id: 'app.containers.AdminPage.SettingsPage.uploadPlaceholder',
@@ -175,8 +155,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.saveSuccessMessage',
     defaultMessage: 'Your changes have been saved.',
   },
-  titleConfigurableRegistrationFields: {
-    id: 'app.containers.AdminPage.SettingsPage.titleConfigurableRegistrationFields',
-    defaultMessage: 'Configurable registration fields',
+  titleRegistrationFields: {
+    id: 'app.containers.AdminPage.SettingsPage.titleRegistrationFields',
+    defaultMessage: 'Registration fields',
   },
 });

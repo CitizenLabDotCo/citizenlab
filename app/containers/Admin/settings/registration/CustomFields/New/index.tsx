@@ -48,6 +48,7 @@ class New extends React.Component<Props> {
       title_multiloc: {},
       description_multiloc: {},
       required: false,
+      enabled: true,
     };
   }
 
@@ -71,7 +72,7 @@ class New extends React.Component<Props> {
       <div>
         <GoBackButton onClick={this.goBack} />
         <PageTitle>
-          <FormattedMessage {...messages.addCustomFieldButton} />
+          <FormattedMessage {...messages.addFieldButton} />
         </PageTitle>
         <PageWrapper>
           <Formik

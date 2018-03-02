@@ -13,6 +13,8 @@ export interface ICustomFieldData {
     description_multiloc: Multiloc;
     input_type: IInputType;
     required: boolean;
+    code: string | null;
+    enabled: boolean;
     ordering: number;
     created_at: string;
     updated_at: string;

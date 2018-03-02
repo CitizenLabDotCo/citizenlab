@@ -25,6 +25,7 @@ class General extends React.Component<Props, State> {
       title_multiloc: customField.attributes.title_multiloc,
       description_multiloc: customField.attributes.description_multiloc,
       required: customField.attributes.required,
+      enabled: customField.attributes.enabled,
     };
   }
 
@@ -43,7 +44,7 @@ class General extends React.Component<Props, State> {
       ...this.changedValues(this.initialValues(), values)
     })
       .then(() => {
-        browserHistory.push('/admin/settings/registration/custom_fields');
+        browserHistory.push('/admin/settings/registration');
       })
       .catch((errorResponse) => {
         const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
