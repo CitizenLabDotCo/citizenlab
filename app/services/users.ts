@@ -61,6 +61,7 @@ export interface IUserUpdate {
   domicile?: string;
   education?: string;
   bio_multiloc?: Multiloc;
+  custom_field_values?: object;
 }
 
 export function usersStream(streamParams: IStreamParams | null = null) {
