@@ -20,6 +20,7 @@ import messages from '../messages';
 
 export interface FormValues {
   key: string;
+  enabled: boolean;
   input_type: IInputType;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
@@ -65,6 +66,20 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
     return (
       <Form>
         <Section>
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.fieldEnabled} />
+            </Label>
+            <Field
+              name="enabled"
+              component={FormikToggle}
+            />
+            {touched.enabled && <Error
+              fieldName="enabled"
+              apiErrors={errors.enabled}
+            />}
+          </SectionField>
+
           <SectionField>
             <Label>
               <FormattedMessage {...messages.fieldInputType} />

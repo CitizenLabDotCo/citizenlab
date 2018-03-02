@@ -13,9 +13,11 @@ import { List } from 'components/admin/ResourceList';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import Button from 'components/UI/Button';
+import Toggle from 'components/UI/Toggle';
 
 import messages from '../messages';
 import SortableRow from './SortableRow';
+import FeatureFlag from 'components/FeatureFlag';
 
 const ButtonWrapper = styled.div`
   margin-top: 2rem;
@@ -74,10 +76,20 @@ class CustomFields extends React.Component<Props & InjectedResourcesLoaderProps<
     }
   }
 
+  handleOnEnabledToggle = (field) => () => {
+    updateCustomFieldForUsers(field.id, {
+      enabled: !field.attributes.enabled,
+    });
+  }
+
   listItems = () => {
     const { customFields } = this.props;
     const result =  this.state.itemsWhileDragging || (customFields && customFields.all);
     return result;
+  }
+
+  isBuiltInField = (field: ICustomFieldData) => {
+    return !!field.attributes.code;
   }
 
   render() {
@@ -93,31 +105,41 @@ class CustomFields extends React.Component<Props & InjectedResourcesLoaderProps<
               moveRow={this.handleMoveRowHover}
               dropRow={this.handleMoveRowDrop}
             >
+              <Toggle
+                checked={field.attributes.enabled}
+                onToggle={this.handleOnEnabledToggle(field)}
+              />
               <TextCell className="expand">
                 <T value={field.attributes.title_multiloc} />
               </TextCell>
-              <TextCell className="expand">
-                <FormattedMessage {...messages[`inputType_${field.attributes.input_type}`]} />
-              </TextCell>
-              <Button onClick={this.handleOnDeleteClick(field.id)} style="text" circularCorners={false} icon="delete">
-                <FormattedMessage {...messages.deleteButtonLabel} />
-              </Button>
-              <Button linkTo={`/admin/settings/registration/custom_fields/${field.id}/general`} style="secondary" circularCorners={false} icon="edit">
-                <FormattedMessage {...messages.editButtonLabel} />
-              </Button>
+              {!this.isBuiltInField(field) &&
+                <>
+                  <Button disabled={this.isBuiltInField(field)} onClick={this.handleOnDeleteClick(field.id)} style="text" circularCorners={false} icon="delete">
+                    <FormattedMessage {...messages.deleteButtonLabel} />
+                  </Button>
+                  <Button disabled={this.isBuiltInField(field)} linkTo={`/admin/settings/registration/custom_fields/${field.id}/general`} style="secondary" circularCorners={false} icon="edit">
+                    <FormattedMessage {...messages.editButtonLabel} />
+                  </Button>
+                </>
+              }
+              {this.isBuiltInField(field) &&
+                <div><FormattedMessage {...messages.systemField} /></div>
+              }
             </SortableRow>
           ))}
         </List>
-        <ButtonWrapper>
-          <Button
-            style="cl-blue"
-            circularCorners={false}
-            icon="plus-circle"
-            linkTo="/admin/settings/registration/custom_fields/new"
-          >
-            <FormattedMessage {...messages.addCustomFieldButton} />
-          </Button>
-        </ButtonWrapper>
+        <FeatureFlag name="user_custom_fields">
+          <ButtonWrapper>
+            <Button
+              style="cl-blue"
+              circularCorners={false}
+              icon="plus-circle"
+              linkTo="/admin/settings/registration/custom_fields/new"
+            >
+              <FormattedMessage {...messages.addFieldButton} />
+            </Button>
+          </ButtonWrapper>
+        </FeatureFlag>
       </div>
     );
   }

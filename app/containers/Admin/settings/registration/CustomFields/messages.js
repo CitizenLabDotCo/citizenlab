@@ -11,6 +11,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldInputType',
     defaultMessage: 'Input type',
   },
+  fieldEnabled: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldEnabled',
+    defaultMessage: 'Enabled',
+  },
   fieldKey: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldKey',
     defaultMessage: 'Key',
@@ -67,9 +71,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.listTitle',
     defaultMessage: 'Custom fields',
   },
-  addCustomFieldButton: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.addCustomFieldButton',
-    defaultMessage: 'Add custom field',
+  addFieldButton: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.addFieldButton',
+    defaultMessage: 'Add field',
   },
   optionKey: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionKey',
@@ -102,5 +106,9 @@ export default defineMessages({
   optionsTab: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionsTab',
     defaultMessage: 'Options',
+  },
+  systemField: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.systemField',
+    defaultMessage: 'System field',
   },
 });
