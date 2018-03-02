@@ -26,6 +26,9 @@ resource "Stats" do
   describe "users" do
 
     before do
+      # we need the built in custom fields first, so lets run the base tenant template
+      TenantTemplateService.new.apply_template('base')
+      CustomField.find_by(code: 'education').update(enabled: true)
       create(:user, gender: nil)
       create(:user, gender: 'male')
       create(:user, gender: 'female')

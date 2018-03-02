@@ -17,7 +17,7 @@ class CustomFieldPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.admin?
+    user&.admin? && !record.code
   end
 
   def update?
@@ -29,6 +29,36 @@ class CustomFieldPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user&.admin?
+    user&.admin? && !record.code
+  end
+
+  def permitted_attributes_for_create
+    [
+      :key,
+      :input_type,
+      :required,
+      :ordering,
+      :enabled,
+      title_multiloc: I18n.available_locales,
+      description_multiloc: I18n.available_locales
+    ]
+  end
+
+  def permitted_attributes_for_update
+    if record.code
+      [
+        :required,
+        :ordering,
+        :enabled
+      ]
+    else
+      [
+        :required,
+        :ordering,
+        :enabled,
+        title_multiloc: I18n.available_locales,
+        description_multiloc: I18n.available_locales
+      ]
+    end
   end
 end

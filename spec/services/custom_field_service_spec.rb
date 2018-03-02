@@ -17,6 +17,17 @@ describe CustomFieldService do
       })
     end
 
+    it "creates the valid empty schema on a disabled field" do
+      create(:custom_field, enabled: false)
+      schema = service.fields_to_json_schema([], locale)
+      expect(JSON::Validator.validate!(metaschema, schema)).to be true
+      expect(schema).to match({
+        type: "object",
+        properties: {},
+        :additionalProperties => false,
+      })
+    end
+
     it "creates a valid schema with all input types" do
       fields = [
         create(:custom_field, key: 'field1', input_type: 'text', ordering: 1),
@@ -73,6 +84,21 @@ describe CustomFieldService do
          :required=>["field2"]}
       )
     end
+
+    it "properly handles the custom behaviour of the birthyear field" do
+      fields = [create(:custom_field, key: 'birthyear', code: 'birthyear')]
+      schema = service.fields_to_json_schema(fields, locale)
+      expect(JSON::Validator.validate!(metaschema, schema)).to be true
+      expect(schema.dig(:properties, 'birthyear', :enum)&.size).to be > 100
+    end
+
+    it "properly handles the custom behaviour of the domicile field" do
+      fields = [create(:custom_field, key: 'domicile', code: 'domicile')]
+      create_list(:area, 5)
+      schema = service.fields_to_json_schema(fields, locale)
+      expect(JSON::Validator.validate!(metaschema, schema)).to be true
+      expect(schema.dig(:properties, 'domicile', :enum)).to match (Area.all.map(&:id).push('outside'))
+    end
   end
 
   describe "fields_to_ui_schema" do
@@ -83,7 +109,8 @@ describe CustomFieldService do
         create(:custom_field, key: 'field3', input_type: 'select', ordering: 3),
         create(:custom_field, key: 'field4', input_type: 'multiselect', ordering: nil),
         create(:custom_field, key: 'field5', input_type: 'checkbox', ordering: 6),
-        create(:custom_field, key: 'field6', input_type: 'date', ordering: 5)
+        create(:custom_field, key: 'field6', input_type: 'date', ordering: 5),
+        create(:custom_field, enabled: false)
       ]
       create(:custom_field_option, key: 'option1', ordering: '2', custom_field: fields[2])
       create(:custom_field_option, key: 'option2', ordering: '1', custom_field: fields[2])

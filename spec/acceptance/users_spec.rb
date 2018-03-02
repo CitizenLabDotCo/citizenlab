@@ -151,11 +151,6 @@ resource "Users" do
         parameter :locale, "Locale. Should be one of the tenants locales", required: true
         parameter :avatar, "Base64 encoded avatar image"
         parameter :roles, "Roles array, only allowed when admin"
-        parameter :gender, "Either 'male', 'female' or 'unspecified'"
-        parameter :birthyear, "The year, as an integer, the user was born"
-        parameter :domicile, "Either an exisiting Area id or 'outside', to specify the user does not live in the city"
-        parameter :education, "An integer from 0 to 8 (inclusive), corresponding to the ISCED 2011 standard"
-        parameter :bio_multiloc, "A little text, allowing the user to describe herself. Multiloc and non-html"
         parameter :custom_field_values, "An object that can only contain keys for custom fields for users. If fields are required, their presence is required as well"
       end
       ValidationErrorHelper.new.error_fields(self, User)
@@ -167,7 +162,6 @@ resource "Users" do
       let(:password) {Faker::Internet.password}
       let(:locale) { "en" }
       let(:avatar) { base64_encoded_image }
-      let(:gender) { "female" }
 
       example_request "Create a new user" do
         expect(response_status).to eq 201
@@ -205,10 +199,6 @@ resource "Users" do
         parameter :locale, "Locale. Should be one of the tenants locales"
         parameter :avatar, "Base64 encoded avatar image"
         parameter :roles, "Roles array, only allowed when admin"
-        parameter :gender, "Either 'male', 'female' or 'unspecified'"
-        parameter :birthyear, "The year, as an integer, the user was born"
-        parameter :domicile, "Either an exisiting Area id or 'outside', to specify the user does not live in the city"
-        parameter :education, "An integer from 0 to 8 (inclusive), corresponding to the ISCED 2011 standard"
         parameter :bio_multiloc, "A little text, allowing the user to describe herself. Multiloc and non-html"
         parameter :custom_field_values, "An object that can only contain keys for custom fields for users"
       end

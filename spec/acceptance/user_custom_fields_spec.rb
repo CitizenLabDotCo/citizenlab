@@ -54,12 +54,13 @@ resource "User Custom Fields" do
         parameter :title_multiloc, "The title of the field as shown to users, in multiple locales", required: true
         parameter :description_multiloc, "An optional description of the field, as shown to users, in multiple locales", required: false
         parameter :required, "Whether filling out the field is mandatory. Defaults to false", required: false
+        parameter :enabled, "Whether the field is active or not. Defaults to true", required: false
         parameter :ordering, "Optional integer that is used to sort the fields", required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, CustomField)
 
-      let(:custom_field) { build(:custom_field) }
+      let(:custom_field) { build(:custom_field, enabled: false) }
 
       describe do
         let(:key) { custom_field.key }
@@ -67,6 +68,7 @@ resource "User Custom Fields" do
         let(:title_multiloc) { custom_field.title_multiloc }
         let(:description_multiloc) { custom_field.description_multiloc }
         let(:required) { custom_field.required }
+        let(:enabled) { custom_field.enabled }
         let(:ordering) { custom_field.ordering }
 
         example_request "Create a custom field on users" do
@@ -77,6 +79,7 @@ resource "User Custom Fields" do
           expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
           expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
           expect(json_response.dig(:data,:attributes,:required)).to match required
+          expect(json_response.dig(:data,:attributes,:enabled)).to match enabled
           expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
         end
       end
@@ -100,6 +103,7 @@ resource "User Custom Fields" do
         parameter :title_multiloc, "The title of the field as shown to users, in multiple locales", required: false
         parameter :description_multiloc, "An optional description of the field, as shown to users, in multiple locales", required: false
         parameter :required, "Whether filling out the field is mandatory", required: false
+        parameter :enabled, "Whether the field is active or not", required: false
         parameter :ordering, "Optional integer that is used to sort the fields", required: false
       end
       ValidationErrorHelper.new.error_fields(self, CustomField)
@@ -108,6 +112,7 @@ resource "User Custom Fields" do
       let(:title_multiloc) { {"en" => "New title"} }
       let(:description_multiloc) { {"en" => "New description"} }
       let(:required) { true }
+      let(:enabled) { false }
       let(:ordering) { 8 }
 
       example_request "Update a custom field" do
@@ -116,6 +121,7 @@ resource "User Custom Fields" do
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response.dig(:data,:attributes,:required)).to match required
+        expect(json_response.dig(:data,:attributes,:enabled)).to match enabled
         expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
       end
     end

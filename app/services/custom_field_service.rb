@@ -15,12 +15,17 @@ class CustomFieldService
     {
       type: "object",
       additionalProperties: false,
-      properties: fields.inject({}) do |memo, field|
-        memo[field.key] = send("#{field.input_type}_to_json_schema_field", field, locale)
+      properties: fields.select(&:enabled).inject({}) do |memo, field|
+        memo[field.key] = 
+          if field.code && self.respond_to?("#{field.key}_to_json_schema_field", true)
+            send("#{field.key}_to_json_schema_field", field, locale)
+          else
+            send("#{field.input_type}_to_json_schema_field", field, locale)
+          end
         memo
       end
     }.tap do |output|
-      required = fields.select(&:required).map(&:key)
+      required = fields.select(&:enabled).select(&:required).map(&:key)
       output[:required] = required unless required.empty?
     end
   end
@@ -33,11 +38,16 @@ class CustomFieldService
   end
 
   def fields_to_ui_schema fields, locale="en"
-    fields.inject({}) do |memo, field|
-      memo[field.key] = send("#{field.input_type}_to_ui_schema_field", field, locale)
+    fields.select(&:enabled).inject({}) do |memo, field|
+      memo[field.key] = 
+        if field.code && self.respond_to?("#{field.key}_to_ui_schema_field", true)
+          send("#{field.key}_to_ui_schema_field", field, locale)
+        else
+          send("#{field.input_type}_to_ui_schema_field", field, locale)
+        end
       memo
     end.tap do |output|
-      output['ui:order'] = fields.sort_by{|f| f.ordering || Float::INFINITY }.map(&:key)
+      output['ui:order'] = fields.select(&:enabled).sort_by{|f| f.ordering || Float::INFINITY }.map(&:key)
     end
   end
 
@@ -149,4 +159,33 @@ class CustomFieldService
     }
   end
 
+  # *** Built-in birthyear field ***
+
+  def birthyear_to_json_schema_field field, locale
+    normal_field = select_to_json_schema_field(field, locale)
+    normal_field[:enum] = (1900..(Time.now.year - 12)).to_a.reverse.map(&:to_s)
+    normal_field
+  end
+
+  def birthyear_to_ui_schema_field field, locale
+    {}
+  end
+
+  # *** Built-in domicile field ***
+
+  def domicile_to_json_schema_field field, locale
+    normal_field = select_to_json_schema_field(field, locale)
+    areas = Area.all
+    normal_field[:enum] = areas.map(&:id).push('outside')
+    I18n.with_locale(locale) do
+      normal_field[:enumNames] = areas.map do |area|
+        @multiloc_service.t(area.title_multiloc)
+      end.push(I18n.t('custom_field_options.domicile.outside'))
+    end
+    normal_field
+  end
+
+  def domicile_to_ui_schema_field field, locale
+    {}
+  end
 end
