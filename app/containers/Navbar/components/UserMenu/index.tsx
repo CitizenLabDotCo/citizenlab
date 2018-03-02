@@ -39,6 +39,14 @@ const StyledAvatar = styled(Avatar)`
   width: 25px;
   height: 25px;
   cursor: pointer;
+
+  svg {
+    fill: ${(props) => props.theme.colors.label};
+  }
+
+  &:hover svg {
+    fill: ${(props) => darken(0.2, props.theme.colors.label)};
+  }
 `;
 
 const IconWrapper = styled.div`

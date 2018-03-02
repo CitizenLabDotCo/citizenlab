@@ -282,7 +282,6 @@ const NavigationDropdownListItem = styled(Link)`
 
 const NavigationDropdownFooter = styled(Link)`
   width: 100%;
-  color: #333;
   color: ${(props) => props.theme.colorMain};
   font-size: 18px;
   font-weight: 400;
@@ -290,14 +289,18 @@ const NavigationDropdownFooter = styled(Link)`
   text-decoration: none;
   padding: 15px 15px;
   cursor: pointer;
-  background: #f4f4f4;
+  background: #fafafa;
+  background: #f9f9fa;
+  border-top: solid 1px #e4e4e4;
+  border-radius: 5px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
   transition: all 80ms ease-out;
 
   &:hover {
-    color: #000;
+    background: #f4f4f4;
     color: ${(props) => darken(0.2, props.theme.colorMain)};
     text-decoration: none;
-    background: #e8e8e8;
   }
 `;
 

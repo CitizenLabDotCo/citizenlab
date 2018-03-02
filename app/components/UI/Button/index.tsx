@@ -151,8 +151,7 @@ const Container: any = styled.div`
         ${setFillColor('#fff')}
         background: ${(props: any) => props.theme.colorMain || '#e0e0e0'};
 
-        &:not(.processing):hover,
-        &:not(.processing):focus {
+        &:not(.processing):hover {
           background: ${(props: any) => darken(0.12, (props.theme.colorMain || '#ccc'))};
         }
       }
@@ -165,12 +164,11 @@ const Container: any = styled.div`
 
     &.secondary {
       &:not(.disabled) {
-        border-color: #EAEAEA;
+        border-color: #eaeaea;
         background: #f9f9fa;
         ${setFillColor('#84939E')}
 
-        &:not(.processing):hover,
-        &:not(.processing):focus {
+        &:not(.processing):hover {
           background: #eee;
           ${setFillColor('#222')}
         }
@@ -188,8 +186,7 @@ const Container: any = styled.div`
         border: solid 1px ${(props: any) => props.theme.colorMain};
         ${(props: any) => setFillColor(props.theme.colorMain)}
 
-        &:not(.processing):hover,
-        &:not(.processing):focus {
+        &:not(.processing):hover {
           border-color: ${(props: any) => darken(0.12, (props.theme.colorMain))};
           ${(props: any) => setFillColor(darken(0.12, (props.theme.colorMain)))}
         }
@@ -208,10 +205,9 @@ const Container: any = styled.div`
         border: solid 1px #e0e0e0;
         ${(props: any) => setFillColor(props.theme.colorMain)}
 
-        &:not(.processing):hover,
-        &:not(.processing):focus {
-          border-color: #ccc;
-          ${(props: any) => setFillColor(darken(0.12, (props.theme.colorMain)))}
+        &:not(.processing):hover {
+          border-color: #999;
+          ${(props: any) => setFillColor(darken(0.15, (props.theme.colorMain)))}
         }
       }
 
@@ -228,8 +224,7 @@ const Container: any = styled.div`
 
       ${setFillColor('#84939E')}
 
-      &:not(.processing):hover,
-      &:not(.processing):focus {
+      &:not(.processing):hover {
         ${setFillColor('#004949')}
       }
     }
@@ -250,8 +245,7 @@ const Container: any = styled.div`
         background-color: #01A1B1;
         ${setFillColor('white')}
 
-        &:not(.processing):hover,
-        &:not(.processing):focus {
+        &:not(.processing):hover {
           background-color: ${darken(0.12, '#01A1B1')};
       }
       }

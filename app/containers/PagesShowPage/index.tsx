@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isString, size, get } from 'lodash';
+import { size, get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // router
@@ -29,7 +29,6 @@ import { darken } from 'polished';
 import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   background: #f9f9fa;
 `;
 
@@ -53,9 +52,14 @@ const StyledContentContainer = styled(ContentContainer)`
 
 const PageContent = styled.div`
   width: 100vw;
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 61px);
   background: #fff;
   padding-top: 60px;
   padding-bottom: 60px;
+
+  ${media.smallerThanMaxTablet`
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 66px);
+  `}
 `;
 
 const PageTitle = styled.h1`
@@ -195,11 +199,17 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
     this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
+      // this.slug$
+      //   .filter(slug => !isString(slug))
+      //   .subscribe((slug => {
+      //     console.log('slug:' + slug);
+      //   })),
+
       this.slug$
-        .filter(slug => isString(slug))
+        // .filter(slug => isString(slug))
         .distinctUntilChanged()
         .do(() => this.setState({ loading: true }))
-        .switchMap((slug: string) => pageBySlugStream(slug).observable)
+        .switchMap((slug) => (slug ? pageBySlugStream(slug).observable : Rx.Observable.of(null)))
         .switchMap((page) => {
           let pageLinks$: Rx.Observable<null | { data: PageLink }[]> = Rx.Observable.of(null);
 
