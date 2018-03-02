@@ -22,6 +22,7 @@ FactoryBot.define do
       required false
       input_type "select"
       ordering 1
+      enabled true
     end
 
 

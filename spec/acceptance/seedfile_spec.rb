@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "seedfile" do
+describe "seedfile", slow_test: true do
 
   #TODO Refacor this to have separate examples for various assertions. Didn't
   #seem to work the straightforward way after multiple runs, seems to be due to

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180221143137) do
+ActiveRecord::Schema.define(version: 20180302145039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,6 +93,8 @@ ActiveRecord::Schema.define(version: 20180221143137) do
     t.integer "ordering"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "enabled", default: true, null: false
+    t.string "code"
     t.index ["resource_type", "key"], name: "index_custom_fields_on_resource_type_and_key", unique: true
   end
 
@@ -376,7 +378,6 @@ ActiveRecord::Schema.define(version: 20180221143137) do
     t.string "email"
     t.string "password_digest"
     t.string "slug"
-    t.jsonb "demographics", default: {}
     t.jsonb "roles", default: []
     t.string "reset_password_token"
     t.datetime "created_at", null: false

@@ -187,6 +187,8 @@ end
 
 
 if Apartment::Tenant.current == 'empty_localhost'
+  TenantTemplateService.new.apply_template('base')
+  
   User.create({
     first_name: 'Koen',
     last_name: 'Gremmelprez',
@@ -198,11 +200,9 @@ if Apartment::Tenant.current == 'empty_localhost'
     ],
     gender: "male",
     domicile: 'outside',
-    birthyear: 1987,
-    education: 7
+    birthyear: '1987',
+    education: '7'
   })
-
-  TenantTemplateService.new.apply_template('base')
 end
 
 tenant_template = TenantTemplateService.new.available_templates
@@ -272,8 +272,8 @@ if Apartment::Tenant.current == 'localhost'
       locale: ['en','nl'][rand(1)],
       roles: rand(10) == 0 ? [{type: 'admin'}] : [],
       gender: %w(male female unspecified)[rand(4)],
-      birthyear: rand(2) === 0 ? nil : 1927 + rand(90),
-      education: rand(2) === 0 ? nil : rand(9),
+      birthyear: rand(2) === 0 ? nil : (1927 + rand(90)).to_s,
+      education: rand(2) === 0 ? nil : rand(9).to_s,
       avatar: nil, # (rand(3) > 0) ? generate_avatar : nil,
       domicile: rand(2) == 0 ? nil : Area.offset(rand(Area.count)).first.id,
       custom_field_values: rand(2) == 0 ? {} : {custom_field.key => CustomFieldOption.offset(rand(CustomFieldOption.count)).first.key}

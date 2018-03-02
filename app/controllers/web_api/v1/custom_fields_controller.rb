@@ -26,7 +26,7 @@ class WebApi::V1::CustomFieldsController < ApplicationController
 
 
   def create
-    @custom_field = CustomField.new(custom_field_create_params)
+    @custom_field = CustomField.new(permitted_attributes(CustomField))
     @custom_field.resource_type = @resource_type
     authorize @custom_field
 
@@ -42,7 +42,7 @@ class WebApi::V1::CustomFieldsController < ApplicationController
 
 
   def update
-    if @custom_field.update(custom_field_update_params)
+    if @custom_field.update(permitted_attributes(@custom_field))
       SideFxCustomFieldService.new.after_update(@custom_field, current_user)
       render json: @custom_field.reload, status: :ok
     else
@@ -72,26 +72,6 @@ class WebApi::V1::CustomFieldsController < ApplicationController
   def set_custom_field
     @custom_field = CustomField.find(params[:id])
     authorize @custom_field
-  end
-
-  def custom_field_create_params
-    params.require(:custom_field).permit(
-      :key,
-      :input_type,
-      :required,
-      :ordering,
-      title_multiloc: I18n.available_locales,
-      description_multiloc: I18n.available_locales
-    )
-  end
-
-  def custom_field_update_params
-    params.require(:custom_field).permit(
-      :required,
-      :ordering,
-      title_multiloc: I18n.available_locales,
-      description_multiloc: I18n.available_locales
-    )
   end
 
   def secure_controller?
