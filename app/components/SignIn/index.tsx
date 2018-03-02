@@ -203,8 +203,6 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     const globalState$ = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage').observable;
     const currentTenant$ = currentTenantStream().observable;
 
-    this.emailInputElement && this.emailInputElement.focus();
-
     this.subscriptions = [
       currentTenant$.subscribe((currentTenant) => {
         this.setState({ currentTenant, loading: false });
@@ -236,10 +234,12 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     this.setState({ emailError, passwordError });
 
-    if (emailError) {
-      this.emailInputElement && this.emailInputElement.focus();
-    } else if (passwordError) {
-      this.passwordInputElement && this.passwordInputElement.focus();
+    if (emailError && this.emailInputElement) {
+      this.emailInputElement.focus();
+    }
+
+    if (passwordError && this.passwordInputElement) {
+      this.passwordInputElement.focus();
     }
 
     return (!emailError && !passwordError);
@@ -266,7 +266,10 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleEmailInputSetRef = (element: HTMLInputElement) => {
-    this.emailInputElement = element;
+    if (element) {
+      this.emailInputElement = element;
+      this.emailInputElement.focus();
+    }
   }
 
   handlePasswordInputSetRef = (element: HTMLInputElement) => {

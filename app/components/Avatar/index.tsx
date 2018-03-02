@@ -42,6 +42,7 @@ const AvatarImageBackground = styled.div`
 
 const AvatarIcon = styled(Icon)`
   height: 100%;
+  fill: ${(props) => props.theme.colors.label};
   fill: ${(props) => lighten(0.2, props.theme.colors.label)};
   transition: all 100ms ease-out;
 

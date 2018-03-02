@@ -114,8 +114,6 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
 
-    this.firstNameInputElement && this.firstNameInputElement.focus();
-
     this.subscriptions = [
       Rx.Observable.combineLatest(
         locale$,
@@ -131,7 +129,10 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleFirstNameInputSetRef = (element: HTMLInputElement) => {
-    this.firstNameInputElement = element;
+    if (element) {
+      this.firstNameInputElement = element;
+      this.firstNameInputElement.focus();
+    }
   }
 
   handleFirstNameOnChange = (firstName: string) => {

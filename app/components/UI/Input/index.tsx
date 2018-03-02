@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import { media, color, fontSize } from 'utils/styleUtils';
 
 const Container: any = styled.div`
+  width: 100%;
   position: relative;
 
   input {
