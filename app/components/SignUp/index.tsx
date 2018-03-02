@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { get } from 'lodash';
+import { isEmpty } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
-import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { browserHistory } from 'react-router';
 
@@ -13,67 +12,47 @@ import Step2 from './Step2';
 import Footer from './Footer';
 
 // services
-import { currentTenantStream, ITenant } from 'services/tenant';
+import { localeStream } from 'services/locale';
+import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
+
+// utils
+import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled from 'styled-components';
 
-const Container = styled.div`
-  width: 100%;
-`;
+const timeout = 850;
+const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
-const Form = styled.div`
-  width: 100%;
-  height: auto;
-  max-width: 360px;
+const Container = styled.div``;
+
+const StepContainer = styled.div`
   position: relative;
+  display: none;
 
-  &.form-enter {
-    opacity: 0.01;
+  &.visible {
+    display: block;
+  }
+
+  &.step-enter {
+    opacity: 0;
     position: absolute;
+    transform: translateX(-400px);
 
-    &.step1 {
-      transform: translateX(-100px);
-    }
-
-    &.step2 {
-      transform: translateX(100px);
-    }
-
-    &.form-enter-active {
-      opacity: 1;
-      transform: translateX(0);
-      transition: opacity 600ms cubic-bezier(0.165, 0.84, 0.44, 1),
-                  transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    &.step-enter-active {
+      transition: opacity ${timeout}ms ${easing},
+                  transform ${timeout}ms ${easing},
+                  height ${timeout}ms ${easing};
     }
   }
 
-  &.form-exit {
-    opacity: 1;
-
-    &.step1 {
-      height: 447px;
-    }
-
-    &.step2 {
-      height: 340px;
-    }
-
-    &.form-exit-active {
-      opacity: 0.01;
-      transition: opacity 600ms cubic-bezier(0.165, 0.84, 0.44, 1),
-                  transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1),
-                  height 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
-
-      &.step1 {
-        height: 340px;
-        transform: translateX(-100px);
-      }
-
-      &.step2 {
-        height: 447px;
-        transform: translateX(100px);
-      }
+  &.step-exit {
+    &.step-exit-active {
+      opacity: 0;
+      transform: translateX(-400px);
+      transition: opacity ${timeout}ms ${easing},
+                  transform ${timeout}ms ${easing},
+                  height ${timeout}ms ${easing};
     }
   }
 `;
@@ -83,9 +62,9 @@ type Props = {
 };
 
 type State = {
-  visibleStep: 'step1' | 'step2'
+  loaded: boolean;
+  visibleStep: 'step1' | 'step2';
   hasSecondStep: boolean;
-  currentTenant: ITenant | null;
   userId: string | null;
 };
 
@@ -95,28 +74,25 @@ export default class SignUp extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
+      loaded: false,
       visibleStep: 'step1',
       hasSecondStep: true,
-      currentTenant: null,
-      userId: null
+      userId: null,
     };
     this.subscriptions = [];
   }
 
   componentDidMount() {
-    const currentTenant$ = currentTenantStream().observable.do((currentTenant) => {
-      const { birthyear, domicile, gender } = currentTenant.data.attributes.settings.demographic_fields;
-      const demographicFieldsEnabled: boolean = get(currentTenant, `data.attributes.settings.demographic_fields.enabled`, false);
-      const hasOneOrMoreActiveDemographicFields = [birthyear, domicile, gender].some(value => value === true);
-
-      if (!demographicFieldsEnabled || !hasOneOrMoreActiveDemographicFields) {
-        this.setState(({ hasSecondStep: false }));
-      }
-    });
+    const locale$ = localeStream().observable;
+    const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
 
     this.subscriptions = [
-      currentTenant$.subscribe((currentTenant) => {
-        this.setState({ currentTenant });
+      Rx.Observable.combineLatest(
+        locale$,
+        customFieldsSchemaForUsersStream$
+      ).subscribe(([locale, customFieldsSchema]) => {
+        const hasSecondStep = !isEmpty(customFieldsSchema['json_schema_multiloc'][locale]['properties']);
+        this.setState({ hasSecondStep });
       })
     ];
   }
@@ -129,6 +105,7 @@ export default class SignUp extends React.PureComponent<Props, State> {
     this.setState({ userId });
 
     if (this.state.hasSecondStep) {
+      eventEmitter.emit('SignUp', 'signUpFlowGoToSecondStep', null);
       this.setState({ visibleStep: 'step2' });
     } else {
       this.props.onSignUpCompleted(userId);
@@ -143,37 +120,43 @@ export default class SignUp extends React.PureComponent<Props, State> {
     }
   }
 
+  goToHomePage = () => {
+    browserHistory.push('/');
+  }
+
   goToSignIn = () => {
     browserHistory.push('/sign-in');
   }
 
   render() {
     const { visibleStep } = this.state;
-    const timeout = 600;
-
-    const step1 = (visibleStep === 'step1' ? (
-      <CSSTransition classNames="form" timeout={timeout}>
-        <Form className="step1">
-          <Step1 onCompleted={this.handleStep1Completed} />
-        </Form>
-      </CSSTransition>
-    ) : null);
-
-    const step2 = (visibleStep === 'step2' ? (
-      <CSSTransition classNames="form" timeout={timeout}>
-        <Form className="step2">
-          <Step2 onCompleted={this.handleStep2Completed} />
-        </Form>
-      </CSSTransition>
-    ) : null);
 
     return (
       <Container>
-        <TransitionGroup>
-          {step1}
-          {step2}
-        </TransitionGroup>
-        <Footer goToSignIn={this.goToSignIn} />
+        <CSSTransition
+          in={(visibleStep === 'step1')}
+          timeout={timeout}
+          enter={false}
+          exit={true}
+          classNames="step"
+        >
+          <StepContainer className={`${visibleStep === 'step1' && 'visible'}`}>
+            <Step1 onCompleted={this.handleStep1Completed} />
+            <Footer goToSignIn={this.goToSignIn} />
+          </StepContainer>
+        </CSSTransition>
+
+        <CSSTransition
+          in={(visibleStep === 'step2')}
+          timeout={timeout}
+          enter={true}
+          exit={false}
+          classNames="step"
+        >
+          <StepContainer className={`${visibleStep === 'step2' && 'visible'}`}>
+            <Step2 onCompleted={this.handleStep2Completed} />
+          </StepContainer>
+        </CSSTransition>
       </Container>
     );
   }
