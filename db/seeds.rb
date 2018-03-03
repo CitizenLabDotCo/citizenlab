@@ -88,14 +88,6 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         timezone: "Europe/Brussels",
         color_main: Faker::Color.hex_color,
       },
-      demographic_fields: {
-        allowed: true,
-        enabled: true,
-        gender: true,
-        domicile: true,
-        birthyear: true,
-        education: true,
-      },
       facebook_login: {
         allowed: true,
         enabled: true,
@@ -158,14 +150,6 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         },
         timezone: "Europe/Brussels",
         color_main: Faker::Color.hex_color,
-      },
-      demographic_fields: {
-        allowed: true,
-        enabled: true,
-        gender: true,
-        domicile: true,
-        birthyear: true,
-        education: true,
       },
       facebook_login: {
         allowed: true,
@@ -252,9 +236,8 @@ if Apartment::Tenant.current == 'localhost'
       {type: "admin"},
     ],
     gender: "male",
-    domicile: 'outside',
-    birthyear: 1987,
-    education: 7,
+    birthyear: "1987",
+    education: "7",
     domicile: rand(2) == 0 ? nil : Area.offset(rand(Area.count)).first.id,
     custom_field_values: (rand(2) == 0) ? {} : {custom_field.key => CustomFieldOption.offset(rand(CustomFieldOption.count)).first.key}
   })
