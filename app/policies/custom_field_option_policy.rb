@@ -20,11 +20,31 @@ class CustomFieldOptionPolicy < ApplicationPolicy
     user&.admin? && !record.custom_field.code
   end
 
+  def reorder?
+    update?
+  end
+
   def show?
     true
   end
 
   def destroy?
     user&.admin? && !record.custom_field.code
+  end
+
+
+  def permitted_attributes_for_create
+    [
+      :key,
+      title_multiloc: I18n.available_locales,
+    ]
+  end
+
+  def permitted_attributes_for_update
+    [title_multiloc: I18n.available_locales]
+  end
+
+  def permitted_attributes_for_reorder
+    [:ordering]
   end
 end

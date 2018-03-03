@@ -1,5 +1,5 @@
 class WebApi::V1::CustomFieldOptionsController < ApplicationController
-  before_action :set_option, only: [:show, :update, :destroy]
+  before_action :set_option, only: [:show, :update, :reorder, :destroy]
   before_action :set_custom_field, only: [:index, :create]
 
   def index
@@ -14,7 +14,7 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
   end
 
   def create
-    @option = CustomFieldOption.new(option_create_params)
+    @option = CustomFieldOption.new(permitted_attributes(CustomFieldOption))
     @option.custom_field = @custom_field
     authorize @option
 
@@ -30,11 +30,20 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
 
 
   def update
-    if @option.update(option_update_params)
+    if @option.update(permitted_attributes(@option))
       SideFxCustomFieldOptionService.new.after_update(@option, current_user)
       render json: @option.reload, status: :ok
     else
-      render json: { errors: @option.errors.detauls }, status: :unprocessable_entity
+      render json: { errors: @option.errors.details }, status: :unprocessable_entity
+    end
+  end
+
+  def reorder
+    if @option.insert_at(permitted_attributes(@option)[:ordering])
+      SideFxCustomFieldOptionService.new.after_update(@option, current_user)
+      render json: @option.reload, status: :ok
+    else
+      render json: { errors: @option.errors.details }, status: :unprocessable_entity
     end
   end
 
@@ -59,21 +68,6 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
   def set_option
     @option = CustomFieldOption.find(params[:id])
     authorize @option
-  end
-
-  def option_create_params
-    params.require(:custom_field_option).permit(
-      :key,
-      :ordering,
-      title_multiloc: I18n.available_locales,
-    )
-  end
-
-  def option_update_params
-    params.require(:custom_field_option).permit(
-      :ordering,
-      title_multiloc: I18n.available_locales,
-    )
   end
 
   def secure_controller?

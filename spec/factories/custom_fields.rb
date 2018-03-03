@@ -10,7 +10,6 @@ FactoryBot.define do
     }}
     required false
     input_type "text"
-    ordering 1
 
     factory :custom_field_select do
       title_multiloc {{
@@ -21,7 +20,6 @@ FactoryBot.define do
       }}
       required false
       input_type "select"
-      ordering 1
       enabled true
     end
 

@@ -1,5 +1,5 @@
 class WebApi::V1::CustomFieldsController < ApplicationController
-  before_action :set_custom_field, only: [:show, :update, :destroy]
+  before_action :set_custom_field, only: [:show, :update, :reorder, :destroy]
   before_action :set_resource_type, only: [:index, :schema, :create]
 
   def index
@@ -47,6 +47,15 @@ class WebApi::V1::CustomFieldsController < ApplicationController
       render json: @custom_field.reload, status: :ok
     else
       render json: { errors: @custom_field.errors.detauls }, status: :unprocessable_entity
+    end
+  end
+
+  def reorder
+    if @custom_field.insert_at(permitted_attributes(@custom_field)[:ordering])
+      SideFxCustomFieldService.new.after_update(@custom_field, current_user)
+      render json: @custom_field.reload, status: :ok
+    else
+      render json: { errors: @custom_field.errors.details }, status: :unprocessable_entity
     end
   end
 

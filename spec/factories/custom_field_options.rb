@@ -5,6 +5,5 @@ FactoryBot.define do
     title_multiloc {{
       "en" => "youth council"
     }}
-    ordering 1
   end
 end
