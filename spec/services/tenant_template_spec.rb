@@ -95,6 +95,8 @@ describe TenantTemplateService do
       expect(Topic.count).to be > 0
       expect(Page.count).to be > 0
       expect(Project.count).to be > 0
+      
+      expect(Topic.first.title_multiloc.keys.size).to be >= 4
     end
   end
 
