@@ -47,7 +47,6 @@ resource "User Custom Field Options" do
       with_options scope: :custom_field_option do
         parameter :key, "A unique internal name for the option. Only letters, numbers and underscores allowed. Can't be changed afterwards", required: true
         parameter :title_multiloc, "The title of the field as shown to users, in multiple locales", required: true
-        parameter :ordering, "Optional integer that is used to sort the options", required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, CustomFieldOption)
@@ -58,14 +57,12 @@ resource "User Custom Field Options" do
       describe do
         let(:key) { custom_field_option.key }
         let(:title_multiloc) { custom_field_option.title_multiloc }
-        let(:ordering) { custom_field_option.ordering }
 
         example_request "Create a custom field option" do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:key)).to match key
           expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-          expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
         end
       end
 
@@ -86,19 +83,33 @@ resource "User Custom Field Options" do
     patch "web_api/v1/users/custom_fields/:custom_field_id/custom_field_options/:id" do
       with_options scope: :custom_field_option do
         parameter :title_multiloc, "The title of the option as shown to users, in multiple locales", required: false
-        parameter :ordering, "Optional integer that is used to sort the options", required: false
       end
       ValidationErrorHelper.new.error_fields(self, CustomField)
 
       let(:id) { create(:custom_field_option, custom_field: @custom_field).id }
       let(:title_multiloc) { {"en" => "New title"} }
-      let(:ordering) { 8 }
 
       example_request "Update a custom field option" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+      end
+    end
+
+    patch "web_api/v1/users/custom_fields/:custom_field_id/custom_field_options/:id/reorder" do
+      with_options scope: :custom_field_option do
+        parameter :ordering, "The position, starting from 0, where the option should be at within its field. Options after will move down.", required: true
+      end
+
+      let(:id) { create(:custom_field_option, custom_field: @custom_field).id }
+      let(:ordering) { 1 } 
+
+      example_request "Reorder an option" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
+        expect(@custom_field.custom_field_options.order(:ordering)[1].id).to eq id
+        expect(@custom_field.custom_field_options.order(:ordering).map(&:ordering)).to eq (0..3).to_a
       end
     end
 

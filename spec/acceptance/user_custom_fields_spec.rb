@@ -55,7 +55,6 @@ resource "User Custom Fields" do
         parameter :description_multiloc, "An optional description of the field, as shown to users, in multiple locales", required: false
         parameter :required, "Whether filling out the field is mandatory. Defaults to false", required: false
         parameter :enabled, "Whether the field is active or not. Defaults to true", required: false
-        parameter :ordering, "Optional integer that is used to sort the fields", required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, CustomField)
@@ -69,7 +68,6 @@ resource "User Custom Fields" do
         let(:description_multiloc) { custom_field.description_multiloc }
         let(:required) { custom_field.required }
         let(:enabled) { custom_field.enabled }
-        let(:ordering) { custom_field.ordering }
 
         example_request "Create a custom field on users" do
           expect(response_status).to eq 201
@@ -80,7 +78,6 @@ resource "User Custom Fields" do
           expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
           expect(json_response.dig(:data,:attributes,:required)).to match required
           expect(json_response.dig(:data,:attributes,:enabled)).to match enabled
-          expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
         end
       end
 
@@ -104,7 +101,6 @@ resource "User Custom Fields" do
         parameter :description_multiloc, "An optional description of the field, as shown to users, in multiple locales", required: false
         parameter :required, "Whether filling out the field is mandatory", required: false
         parameter :enabled, "Whether the field is active or not", required: false
-        parameter :ordering, "Optional integer that is used to sort the fields", required: false
       end
       ValidationErrorHelper.new.error_fields(self, CustomField)
 
@@ -113,7 +109,6 @@ resource "User Custom Fields" do
       let(:description_multiloc) { {"en" => "New description"} }
       let(:required) { true }
       let(:enabled) { false }
-      let(:ordering) { 8 }
 
       example_request "Update a custom field" do
         expect(response_status).to eq 200
@@ -122,7 +117,23 @@ resource "User Custom Fields" do
         expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response.dig(:data,:attributes,:required)).to match required
         expect(json_response.dig(:data,:attributes,:enabled)).to match enabled
+      end
+    end
+
+    patch "web_api/v1/users/custom_fields/:id/reorder" do
+      with_options scope: :custom_field do
+        parameter :ordering, "The position, starting from 0, where the field should be at. Fields after will move down.", required: true
+      end
+
+      let(:id) { create(:custom_field).id }
+      let(:ordering) { 1 }
+
+      example_request "Reorder a custom field" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
+        expect(CustomField.fields_for(User).order(:ordering)[1].id).to eq id
+        expect(CustomField.fields_for(User).order(:ordering).map(&:ordering)).to eq (0..3).to_a
       end
     end
 

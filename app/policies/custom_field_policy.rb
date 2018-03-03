@@ -24,6 +24,10 @@ class CustomFieldPolicy < ApplicationPolicy
     user&.admin?
   end
 
+  def reorder?
+    update?
+  end
+
   def show?
     true
   end
@@ -37,7 +41,6 @@ class CustomFieldPolicy < ApplicationPolicy
       :key,
       :input_type,
       :required,
-      :ordering,
       :enabled,
       title_multiloc: I18n.available_locales,
       description_multiloc: I18n.available_locales
@@ -48,17 +51,20 @@ class CustomFieldPolicy < ApplicationPolicy
     if record.code
       [
         :required,
-        :ordering,
         :enabled
       ]
     else
       [
         :required,
-        :ordering,
         :enabled,
         title_multiloc: I18n.available_locales,
         description_multiloc: I18n.available_locales
       ]
     end
   end
+
+  def permitted_attributes_for_reorder
+    [:ordering]
+  end
+
 end

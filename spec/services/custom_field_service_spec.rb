@@ -30,17 +30,17 @@ describe CustomFieldService do
 
     it "creates a valid schema with all input types" do
       fields = [
-        create(:custom_field, key: 'field1', input_type: 'text', ordering: 1),
-        create(:custom_field, key: 'field2', input_type: 'multiline_text', ordering: 2, required: true),
-        create(:custom_field, key: 'field3', input_type: 'select', ordering: 3),
-        create(:custom_field, key: 'field4', input_type: 'multiselect', ordering: 4),
-        create(:custom_field, key: 'field5', input_type: 'checkbox', ordering: nil),
-        create(:custom_field, key: 'field6', input_type: 'date', ordering: 6)
+        create(:custom_field, key: 'field1', input_type: 'text'),
+        create(:custom_field, key: 'field2', input_type: 'multiline_text', required: true),
+        create(:custom_field, key: 'field3', input_type: 'select'),
+        create(:custom_field, key: 'field4', input_type: 'multiselect'),
+        create(:custom_field, key: 'field5', input_type: 'checkbox'),
+        create(:custom_field, key: 'field6', input_type: 'date')
       ]
-      create(:custom_field_option, key: 'option1', ordering: '2', custom_field: fields[2])
-      create(:custom_field_option, key: 'option2', ordering: '1', custom_field: fields[2])
-      create(:custom_field_option, key: 'option3', ordering: '2', custom_field: fields[3])
-      create(:custom_field_option, key: 'option4', ordering: '1', custom_field: fields[3])
+      create(:custom_field_option, key: 'option1', custom_field: fields[2])
+      create(:custom_field_option, key: 'option2', custom_field: fields[2])
+      create(:custom_field_option, key: 'option3', custom_field: fields[3])
+      create(:custom_field_option, key: 'option4', custom_field: fields[3])
 
       schema = service.fields_to_json_schema(fields, locale)
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
@@ -104,20 +104,22 @@ describe CustomFieldService do
   describe "fields_to_ui_schema" do
     it "creates a valid ui schema with all input types" do
       fields = [
-        create(:custom_field, key: 'field1', input_type: 'text', ordering: 1),
-        create(:custom_field, key: 'field2', input_type: 'multiline_text', ordering: 2, required: true),
-        create(:custom_field, key: 'field3', input_type: 'select', ordering: 3),
-        create(:custom_field, key: 'field4', input_type: 'multiselect', ordering: nil),
-        create(:custom_field, key: 'field5', input_type: 'checkbox', ordering: 6),
-        create(:custom_field, key: 'field6', input_type: 'date', ordering: 5),
+        create(:custom_field, key: 'field1', input_type: 'text'),
+        create(:custom_field, key: 'field2', input_type: 'multiline_text', required: true),
+        create(:custom_field, key: 'field3', input_type: 'select'),
+        create(:custom_field, key: 'field4', input_type: 'multiselect'),
+        field5 = create(:custom_field, key: 'field5', input_type: 'checkbox'),
+        field6 = create(:custom_field, key: 'field6', input_type: 'date'),
         create(:custom_field, enabled: false)
       ]
-      create(:custom_field_option, key: 'option1', ordering: '2', custom_field: fields[2])
-      create(:custom_field_option, key: 'option2', ordering: '1', custom_field: fields[2])
-      create(:custom_field_option, key: 'option3', ordering: '2', custom_field: fields[3])
-      create(:custom_field_option, key: 'option4', ordering: '1', custom_field: fields[3])
+      field5.insert_at(3)
+      field6.insert_at(3)
+      create(:custom_field_option, key: 'option1', custom_field: fields[2])
+      create(:custom_field_option, key: 'option2', custom_field: fields[2])
+      create(:custom_field_option, key: 'option3', custom_field: fields[3])
+      create(:custom_field_option, key: 'option4', custom_field: fields[3])
 
-      schema = service.fields_to_ui_schema(fields, locale)
+      schema = service.fields_to_ui_schema(fields.map(&:reload), locale)
       expect(schema).to match(
         {"field1"=>{},
          "field2"=>{:"ui:widget"=>"textarea"},

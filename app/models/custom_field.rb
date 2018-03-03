@@ -1,4 +1,5 @@
 class CustomField < ApplicationRecord
+  acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_type]
 
   has_many :custom_field_options, dependent: :destroy
 
@@ -14,7 +15,6 @@ class CustomField < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :description_multiloc, multiloc: {presence: false}
   validates :required, inclusion: {in: [true, false]}
-  validates :ordering, numericality: { only_integer: true }, allow_nil: true
   validates :enabled, inclusion: {in: [true, false]}
   validates :code, inclusion: {in: CODES}, uniqueness: true, allow_nil: true
 
