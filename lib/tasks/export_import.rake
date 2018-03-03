@@ -42,6 +42,9 @@ namespace :migrate do
                    'created_at'        => u.created_at,
                    'updated_at'        => u.updated_at
                  }
+      if !yml_user['password_digest']
+        yml_user['password'] = SecureRandom.urlsafe_base64 32
+      end
       users_hash[u.id] = yml_user
       yml_user
     end
@@ -83,8 +86,8 @@ namespace :migrate do
       yml_idea = { 'title_multiloc'       => i.title_multiloc,
                    'body_multiloc'        => i.body_multiloc,
                    'publication_status'   => i.publication_status,
-                   'project_ref'          => projects_hash[i.project.id],
-                   'author_ref'           => users_hash[i.author.id],
+                   'project_ref'          => projects_hash[i.project&.id],
+                   'author_ref'           => users_hash[i.author&.id],
                    'location_description' => i.location_description,
                    'published_at'         => i.published_at,
                    'created_at'           => i.created_at,
