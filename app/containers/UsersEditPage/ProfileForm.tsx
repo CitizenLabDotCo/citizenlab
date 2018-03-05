@@ -7,10 +7,12 @@ import { isEqual, isEmpty, get } from 'lodash';
 import { IAreaData } from 'services/areas';
 import { updateUser, IUserData, IUserUpdate, mapUserToDiff } from 'services/users';
 import { ITenantData } from 'services/tenant';
+import { localeStream } from 'services/locale';
+import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
 
 // utils
 import { withFormik, FormikProps, Form as FormikForm } from 'formik';
-// import eventEmitter from 'utils/eventEmitter';
+import eventEmitter from 'utils/eventEmitter';
 
 // components
 import { Grid, Segment } from 'semantic-ui-react';
@@ -20,7 +22,7 @@ import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToFileObservable } from 'utils/imageTools';
 import { Section, SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Section';
-// import CustomFieldsForm from 'components/CustomFieldsForm';
+import CustomFieldsForm from 'components/CustomFieldsForm';
 import TextArea from 'components/UI/TextArea';
 import Input from 'components/UI/Input';
 import Select from 'components/UI/Select';
@@ -55,6 +57,7 @@ interface InputProps {
 
 interface State {
   avatar: ImageFile[] | null;
+  hasCustomFields: boolean;
   contextRef: any | null;
   localeOptions: IOption[];
 }
@@ -75,6 +78,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
     super(props as any);
     this.state = {
       avatar: null,
+      hasCustomFields: false,
       contextRef: null,
       localeOptions: [],
     };
@@ -84,16 +88,25 @@ class ProfileForm extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     this.user$ = new Rx.BehaviorSubject(this.props.user);
+    const locale$ = localeStream().observable;
+    const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
 
     this.subscriptions = [
-      this.user$.switchMap((user) => {
+      Rx.Observable.combineLatest(
+        this.user$,
+        locale$,
+        customFieldsSchemaForUsersStream$
+      ).switchMap(([user, locale, customFieldsSchema]) => {
+        const hasCustomFields = !isEmpty(customFieldsSchema['json_schema_multiloc'][locale]['properties']);
         const avatarUrl = get(user, 'attributes.avatar.medium', null);
-        return (avatarUrl ? convertUrlToFileObservable(avatarUrl) : Rx.Observable.of(null));
-      }).subscribe((avatar) => {
+        return (avatarUrl ? convertUrlToFileObservable(avatarUrl) : Rx.Observable.of(null)).map(avatar => ({ avatar, hasCustomFields }));
+      }).subscribe(({ avatar, hasCustomFields }) => {
         this.setState({
+          hasCustomFields,
           avatar: (avatar ? [avatar] : null)
         });
       })
+
     ];
 
     // Create options arrays only once, avoid re-calculating them on each render
@@ -189,10 +202,6 @@ class ProfileForm extends React.PureComponent<Props, State> {
     this.props.setFieldTouched(fieldName, true);
   }
 
-  isOptionEnabled = (optionName) => {
-    return this.props.tenant.attributes.settings.demographic_fields[optionName];
-  }
-
   handleAvatarOnAdd = (newAvatar: ImageFile) => {
     this.setState(() => ({ avatar: [newAvatar] }));
     this.props.setFieldValue('avatar', newAvatar.base64);
@@ -230,13 +239,23 @@ class ProfileForm extends React.PureComponent<Props, State> {
     return 'enabled';
   }
 
-  handleCustomFieldsFormOnChange = (formData) => {
-    console.log(formData);
+  handleCustomFieldsFormOnSubmit = (formData) => {
     this.customFieldsFormData = formData;
+    this.props.submitForm();
+  }
+
+  handleOnSubmit = () => {
+    // console.log('zolg');
+    if (this.state.hasCustomFields) {
+      eventEmitter.emit('ProfileForm', 'customFieldsSubmitEvent', null);
+    } else {
+      this.props.submitForm();
+    }
   }
 
   render() {
-    const { intl: { formatMessage }, values, errors, isSubmitting } = this.props;
+    const { hasCustomFields } = this.state;
+    const { user, intl: { formatMessage }, values, errors, isSubmitting } = this.props;
 
     return (
       <StyledContentContainer>
@@ -341,86 +360,41 @@ class ProfileForm extends React.PureComponent<Props, State> {
                         <Error apiErrors={errors.locale} />
                       </SectionField>
                     </Section>
-
-                    {/* DETAILS */}
-                    <Section ref={(section2) => { this['section-details'] = section2; }}>
-                      <SectionTitle>
-                        <FormattedMessage {...messages.h2} />
-                      </SectionTitle>
-                      <SectionSubtitle>
-                        <FormattedMessage {...messages.h2sub} />
-                      </SectionSubtitle>
-
-                      {this.isOptionEnabled('gender') &&
-                        <SectionField>
-                          <LabelWithTooltip id="gender" />
-                          <Select
-                            placeholder={formatMessage({ ...messages.male })}
-                            options={this.genderOptions}
-                            onChange={this.createChangeHandler('gender')}
-                            onBlur={this.createBlurHandler('gender')}
-                            value={values.gender}
-                          />
-                          <Error apiErrors={errors.gender} />
-                        </SectionField>
-                      }
-
-                      {this.isOptionEnabled('domicile') &&
-                        <SectionField>
-                          <LabelWithTooltip id="domicile" />
-                          <Select
-                            placeholder={formatMessage({ ...messages.domicile_placeholder })}
-                            options={this.domicileOptions}
-                            onChange={this.createChangeHandler('domicile')}
-                            onBlur={this.createBlurHandler('domicile')}
-                            value={values.domicile}
-                          />
-                          <Error apiErrors={errors.domicile} />
-                        </SectionField>
-                      }
-                      {this.isOptionEnabled('birthyear') &&
-                        <SectionField>
-                          <LabelWithTooltip id="birthdate" />
-                          <Select
-                            options={this.birthYearOptions}
-                            onChange={this.createChangeHandler('birthyear')}
-                            onBlur={this.createBlurHandler('birthyear')}
-                            value={`${values.birthyear}`}
-                          />
-                          <Error apiErrors={errors.birthyear} />
-                        </SectionField>
-                      }
-
-                      {this.isOptionEnabled('education') &&
-                        <SectionField>
-                          <LabelWithTooltip id="education" />
-                          <Select
-                            placeholder={formatMessage({ ...messages.education_placeholder })}
-                            options={this.educationOptions}
-                            onChange={this.createChangeHandler('education')}
-                            onBlur={this.createBlurHandler('education')}
-                            value={values.education}
-                          />
-                          <Error apiErrors={errors.education} />
-                        </SectionField>
-                      }
-                    </Section>
-
-                    <SubmitWrapper
-                      status={this.getStatus()}
-                      style="primary"
-                      loading={isSubmitting}
-                      messages={{
-                        buttonSave: messages.submit,
-                        buttonError: messages.buttonErrorLabel,
-                        buttonSuccess: messages.buttonSuccessLabel,
-                        messageSuccess: messages.messageSuccess,
-                        messageError: messages.messageError,
-                      }}
-                    />
                   </FormikForm>
 
-                  {/* <CustomFieldsForm onChange={this.handleCustomFieldsFormOnChange} /> */}
+                  {hasCustomFields &&
+                    <CustomFieldsForm 
+                      formData={user.attributes.custom_field_values}
+                      onSubmit={this.handleCustomFieldsFormOnSubmit}
+                    />
+                  }
+
+                  {/* DETAILS */}
+                  {/*
+                  <Section ref={(section2) => { this['section-details'] = section2; }}>
+                    <SectionTitle>
+                      <FormattedMessage {...messages.h2} />
+                    </SectionTitle>
+
+                    <SectionSubtitle>
+                      <FormattedMessage {...messages.h2sub} />
+                    </SectionSubtitle>
+                  </Section>
+                  */}
+
+                  <SubmitWrapper
+                    status={this.getStatus()}
+                    style="primary"
+                    loading={isSubmitting}
+                    onClick={this.handleOnSubmit}
+                    messages={{
+                      buttonSave: messages.submit,
+                      buttonError: messages.buttonErrorLabel,
+                      buttonSuccess: messages.buttonSuccessLabel,
+                      messageSuccess: messages.messageSuccess,
+                      messageError: messages.messageError,
+                    }}
+                  />
                 </Segment>
               </div>
             </Grid.Column>

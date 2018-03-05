@@ -164,7 +164,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
       <VoteControl
         ideaId={modalId}
         unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-        size="small"
+        size="1"
       />
     ) : undefined);
 

@@ -41,8 +41,6 @@ const Container: any = styled.div`
 `;
 
 const VoteIconContainer: any = styled.div`
-  width: 53px;
-  height: 53px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -51,10 +49,21 @@ const VoteIconContainer: any = styled.div`
   border: solid 1px #e0e0e0;
   background: #fff;
   transition: all 100ms ease-out;
+  will-change: transform;
 
-  ${(props: any) => props.size === 'small' ? css`
+  ${(props: any) => props.size === '1' ? css`
     width: 45px;
     height: 45px;
+  ` : css``}
+
+  ${(props: any) => props.size === '2' ? css`
+    width: 50px;
+    height: 50px;
+  ` : css``}
+
+  ${(props: any) => props.size === '3' ? css`
+    width: 53px;
+    height: 53px;
   ` : css``}
 `;
 
@@ -64,8 +73,16 @@ const VoteIcon: any = styled(Icon) `
   transition: all 100ms ease-out;
   ${(props: any) => props.enabled ? '' : 'opacity: 0.5;'}
 
-  ${(props: any) => props.size === 'small' ? css`
+  ${(props: any) => props.size === '1' ? css`
     height: 16px;
+  ` : css``}
+
+  ${(props: any) => props.size === '2' ? css`
+    height: 17px;
+  ` : css``}
+
+  ${(props: any) => props.size === '3' ? css`
+    height: 18px;
   ` : css``}
 `;
 
@@ -157,7 +174,7 @@ type Props = {
   ideaId: string;
   unauthenticatedVoteClick?: () => void;
   disabledVoteClick?: () => void;
-  size: 'small' | 'normal';
+  size: '1' | '2' | '3';
 };
 
 type State = {

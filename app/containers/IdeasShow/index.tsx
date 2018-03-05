@@ -775,7 +775,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                     <VoteControl
                       ideaId={idea.data.id}
                       unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-                      size="small"
+                      size="1"
                     />
                   </VoteControlMobile>
                 }
