@@ -9,6 +9,7 @@ import Survey from '../process/survey';
 
 const SurveyContent = styled(ContentContainer)`
   margin: 70px 0;
+  min-height: 500px;
 `;
 
 
