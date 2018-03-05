@@ -184,8 +184,7 @@ if Apartment::Tenant.current == 'empty_localhost'
     ],
     gender: "male",
     domicile: 'outside',
-    birthyear: '1987',
-    education: '7'
+    birthyear: '1987'
   })
 end
 
@@ -206,12 +205,11 @@ if Apartment::Tenant.current == 'localhost'
     title_multiloc: { 'en' => 'Are you a politician?' },
     description_multiloc: { 'en' => 'We use this to provide you with customized information'},
     required: false,
-    ordering: 1
   )
 
-  CustomFieldOption.create(custom_field: custom_field, key: 'active_politician', title_multiloc: {'en' => 'Active politician'}, ordering: 10)
-  CustomFieldOption.create(custom_field: custom_field, key: 'retired_politician', title_multiloc: {'en' => 'Retired politician'}, ordering: 20)
-  CustomFieldOption.create(custom_field: custom_field, key: 'no', title_multiloc: {'en' => 'No'}, ordering: 30)
+  CustomFieldOption.create(custom_field: custom_field, key: 'active_politician', title_multiloc: {'en' => 'Active politician'})
+  CustomFieldOption.create(custom_field: custom_field, key: 'retired_politician', title_multiloc: {'en' => 'Retired politician'})
+  CustomFieldOption.create(custom_field: custom_field, key: 'no', title_multiloc: {'en' => 'No'})
 
   12.times do 
     Area.create({
