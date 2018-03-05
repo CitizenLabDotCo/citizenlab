@@ -23,7 +23,7 @@ type State = {
 };
 
 class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
-  
+
   subscriptions: Rx.Subscription[];
   emailInputElement: HTMLInputElement | null;
 
@@ -69,7 +69,7 @@ class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
       const organizationName = getLocalized(organizationNameMultiLoc, locale, currentTenantLocales);
       let metaDescription = getLocalized(metaDescriptionMultiLoc, locale, currentTenantLocales);
       const url = `http://${currentTenant.data.attributes.host}`;
-
+      const fbAppId = currentTenant.data.attributes.settings.facebook_login && currentTenant.data.attributes.settings.facebook_login.app_id;
       const currentTenantName = getLocalized(organizationNameMultiLoc, locale, currentTenantLocales);
       const headerTitleMultiLoc = currentTenant.data.attributes.settings.core.header_title;
       const headerSloganMultiLoc = currentTenant.data.attributes.settings.core.header_slogan;
@@ -89,6 +89,7 @@ class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
           <meta property="og:image" content={image} />
           <meta property="og:url" content={url} />
           <meta name="twitter:card" content="summary_large_image" />
+          <meta property="fb:app_id" content={fbAppId} />
           <meta property="og:site_name" content={organizationName} />
         </Helmet>
       );
