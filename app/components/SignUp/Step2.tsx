@@ -121,7 +121,6 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleCustomFieldsFormOnChange = (customFieldsResponse) => {
-    console.log(customFieldsResponse.schema.formData);
     this.setState({ customFieldsFormData: customFieldsResponse.schema.formData });
   }
 

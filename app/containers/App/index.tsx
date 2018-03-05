@@ -156,6 +156,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
       menuStyle: 'light',
       menuHeight: 74,
       mobileMenuHeight: 72,
+      mobileTopBarHeight: 66,
       maxPageWidth: 952,
     };
 

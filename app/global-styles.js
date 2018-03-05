@@ -163,6 +163,7 @@ injectGlobal`
     width: 100%;
     background-color: #fff;
     font-size: ${fontSize('small')};
+    position: relative;
   }
 
   body:not(.fontLoaded) {
