@@ -5,6 +5,7 @@ class Phase < ApplicationRecord
 
   has_many :ideas_phases, dependent: :destroy
   has_many :ideas, through: :ideas_phases
+  has_many :votes, through: :ideas
 
   validates :project, presence: true
   validates :title_multiloc, presence: true, multiloc: {presence: true}
