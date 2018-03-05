@@ -1,6 +1,6 @@
 // Libraries
 import * as React from 'react';
-import { compact, differenceBy, flow } from 'lodash';
+import { compact, flow, isEqual } from 'lodash';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 // Injectors
@@ -9,12 +9,9 @@ import { injectTenant, InjectedTenant } from 'utils/resourceLoaders/tenantLoader
 // Map
 import Leaflet, { Marker } from 'leaflet';
 import 'leaflet.markercluster';
-import 'mapbox-gl';
-import 'mapbox-gl-leaflet';
 
 // Styling
 import 'leaflet/dist/leaflet.css';
-import 'mapbox-gl/dist/mapbox-gl.css';
 import styled from 'styled-components';
 const icon = require('./marker.svg');
 
@@ -68,7 +65,7 @@ export interface Props {
 interface State {
 }
 
-class CLMap extends React.Component<Props & InjectedTenant, State> {
+class CLMap extends React.PureComponent<Props & InjectedTenant, State> {
   private map: Leaflet.Map;
   private mapContainer: HTMLElement;
   private clusterLayer: Leaflet.MarkerClusterGroup;
@@ -116,9 +113,20 @@ class CLMap extends React.Component<Props & InjectedTenant, State> {
     );
   }
 
-  componentWillReceiveProps(newProps: Props) {
-    if (newProps.points && differenceBy(newProps.points, this.props.points || [], 'id').length > 0) {
-      this.convertPoints(newProps.points);
+  componentDidUpdate(prevProps: Props & InjectedTenant) {
+    if (this.props.points && !isEqual(prevProps.points, this.props.points)) {
+      this.convertPoints(this.props.points);
+    }
+
+    // Update the center if the tenant is loaded after map init and there's no set center
+    if (this.props.tenant && !prevProps.tenant && !this.props.center && this.map && this.props.tenant.attributes.settings.maps) {
+      this.map.setView(
+        [
+          parseFloat(this.props.tenant.attributes.settings.maps.map_center.lat),
+          parseFloat(this.props.tenant.attributes.settings.maps.map_center.long),
+        ],
+        this.props.tenant.attributes.settings.maps.zoom_level
+      );
     }
   }
 
@@ -144,11 +152,6 @@ class CLMap extends React.Component<Props & InjectedTenant, State> {
         zoom = this.props.tenant.attributes.settings.maps.zoom_level;
       }
 
-      let tileProvider = 'https://free.tilehosting.com/styles/positron/style.json?key=DIZiuhfkZEQ5EgsaTk6D';
-      if (this.props.tenant && this.props.tenant.attributes.settings.maps) {
-        tileProvider = this.props.tenant.attributes.settings.maps.tile_provider;
-      }
-
       // Bind the mapElement
       this.mapContainer = element;
 
@@ -159,13 +162,12 @@ class CLMap extends React.Component<Props & InjectedTenant, State> {
         maxZoom: 17,
       });
 
-      if (this.props.onMapClick) this.map.on('click', this.handleMapClick);
-
-      // mapboxGL style
-      (Leaflet as any).mapboxGL({
-        accessToken: 'not-needed',
-        style: tileProvider,
+      Leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        subdomains: ['a','b','c']
       }).addTo(this.map);
+
+      if (this.props.onMapClick) this.map.on('click', this.handleMapClick);
     }
   }
 
@@ -217,7 +219,7 @@ class CLMap extends React.Component<Props & InjectedTenant, State> {
   render() {
     return (
       <MapWrapper className={this.props.className}>
-        <div id="map-container" ref={this.bindMapContainer} onScroll={console.log} />
+        <div id="map-container" ref={this.bindMapContainer} />
       </MapWrapper>
     );
   }

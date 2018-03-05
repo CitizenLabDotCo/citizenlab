@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isString } from 'lodash';
 
 // style
 import styled from 'styled-components';
@@ -15,6 +15,7 @@ import { Message, Multiloc } from 'typings';
 // components
 import { Link } from 'react-router';
 import FeatureFlag from 'components/FeatureFlag';
+import Button from 'components/UI/Button';
 
 const ResourceHeader = styled.div`
   display: flex;
@@ -32,9 +33,9 @@ const Title = styled.h1`
   padding: 0;
 `;
 
-const PublicResourceLink = styled(Link)`
-  color: ${color('label')};
-`;
+// const PublicResourceLink = styled(Link)`
+//   color: ${color('label')};
+// `;
 
 const TabbedNav = styled.nav`
   background: #fcfcfc;
@@ -89,6 +90,14 @@ const ChildWrapper = styled.div`
   padding: 3rem;
 `;
 
+export type TabProps = {
+  label: string | Message,
+  url: string,
+  active?: boolean,
+  feature?: string,
+  className?: string,
+};
+
 type Props = {
   location?: {
     pathname: string,
@@ -100,17 +109,10 @@ type Props = {
   messages: {
     viewPublicResource: Message,
   },
-  tabs?: {
-    label: string | Message,
-    url: string,
-    active?: boolean,
-    feature?: string,
-  }[],
+  tabs?: TabProps[],
 };
 
-type State = {
-
-};
+type State = {};
 
 function isMessage(entry: any): entry is Message {
   return entry.id && entry.defaultMessage;
@@ -121,7 +123,7 @@ function isMultiloc(entry: any): entry is Multiloc {
 }
 
 function showLabel(label: string | Multiloc | Message) {
-  if (_.isString(label)) {
+  if (isString(label)) {
     return label;
   } else if (isMessage(label)) {
     return <FormattedMessage {...label} />;
@@ -133,6 +135,10 @@ function showLabel(label: string | Multiloc | Message) {
 }
 
 export default class TabbedResource extends React.PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props as any);
+  }
+
   render() {
     const { children, resource, messages, tabs, location } = this.props;
 
@@ -142,21 +148,29 @@ export default class TabbedResource extends React.PureComponent<Props, State> {
           <Title>{showLabel(resource.title)}</Title>
 
           {resource.publicLink &&
-            <PublicResourceLink to={resource.publicLink}>
+            <Button
+              style="cl-blue"
+              icon="eye"
+              linkTo={resource.publicLink}
+              circularCorners={false}
+            >
               <FormattedMessage {...messages.viewPublicResource} />
-            </PublicResourceLink>
+            </Button>
           }
         </ResourceHeader>
 
         {(tabs && tabs.length > 0) &&
           <TabbedNav className="e2e-resource-tabs">
-            {tabs.map((tab) => (
-              <FeatureFlag key={tab.url} name={tab.feature}>
-                <Tab className={location && location.pathname && location.pathname.startsWith(tab.url) ? 'active' : ''}>
-                  <Link to={tab.url}>{showLabel(tab.label)}</Link>
-                </Tab>
-              </FeatureFlag>
-            ))}
+            {tabs.map((tab) => {
+
+              return (
+                <FeatureFlag key={tab.url} name={tab.feature}>
+                  <Tab className={`${tab.className} ${location && location.pathname && location.pathname.startsWith(tab.url) ? 'active' : ''}`}>
+                    <Link to={tab.url}>{showLabel(tab.label)}</Link>
+                  </Tab>
+                </FeatureFlag>
+              );
+            })}
           </TabbedNav>
         }
 

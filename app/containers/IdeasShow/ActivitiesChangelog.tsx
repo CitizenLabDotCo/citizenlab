@@ -69,7 +69,7 @@ export default class ActivityChangeLog extends React.Component<Props, State> {
       user: null,
     };
   }
-  componentWillMount() {
+  componentDidMount() {
     this.subs.push(userByIdStream(this.props.activity.relationships.user.data.id).observable.subscribe((response) => {
       this.setState({ user: response });
     }));

@@ -31,14 +31,17 @@ import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  background: #f8f8f8;
+  background: #f9f9fa;
 `;
 
 const PageContainer = styled.div`
   width: 100%;
-  min-height: calc(100vh - 105px);
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   position: relative;
-  background: #f8f8f8;
+
+  ${media.smallerThanMaxTablet`
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 66px);
+  `}
 
   &.page-enter {
     position: absolute;
@@ -90,6 +93,40 @@ const PageContainer = styled.div`
   }
 `;
 
+const ButtonBarContainer = styled.div`
+  width: 100%;
+  height: 68px;
+  position: fixed;
+  z-index: 2;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: solid 1px #ddd;
+
+  ${media.phone`
+    display: none;
+  `}
+
+  &.buttonbar-enter {
+    transform: translateY(64px);
+
+    &.buttonbar-enter-active {
+      transform: translateY(0);
+      transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+  }
+
+  &.buttonbar-exit {
+    transform: translateY(0);
+
+    &.buttonbar-exit-active {
+      transform: translateY(64px);
+      transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+  }
+`;
+
 interface Props {}
 
 interface LocalState {
@@ -108,12 +145,10 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
   constructor(props: Props & WithRouterProps) {
     super(props);
-
     const initialLocalState: LocalState = {
       showIdeaForm: true,
       locale: null
     };
-
     const initialGlobalState: IIdeasNewPageGlobalState = {
       title: null,
       description: null,
@@ -128,12 +163,13 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
       imageId: null,
       imageChanged: false
     };
+    this.state = initialLocalState;
     this.localState = localState(initialLocalState);
     this.globalState = globalState.init('IdeasNewPage', initialGlobalState);
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const localState$ = this.localState.observable;
     const locale$ = localeStream().observable;
 
@@ -250,13 +286,15 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
   }
 
   render() {
-    if (!this.state) { return null; }
-
     const { showIdeaForm } = this.state;
     const timeout = 600;
 
     const buttonBar = (showIdeaForm) ? (
-      <IdeasNewButtonBar onSubmit={this.handleOnIdeaSubmit} />
+      <CSSTransition classNames="buttonbar" timeout={timeout}>
+        <ButtonBarContainer>
+          <IdeasNewButtonBar onSubmit={this.handleOnIdeaSubmit} />
+        </ButtonBarContainer>
+      </CSSTransition>
     ) : null;
 
     const newIdeasForm = (showIdeaForm) ? (

@@ -41,8 +41,8 @@ export const injectResource = <IResourceData, IResource extends IIResource<IReso
         };
       }
 
-      componentWillReceiveProps(nextProps) {
-        if (resourceIdFn(nextProps) !== resourceIdFn(this.props)) {
+      componentDidUpdate(prevProps) {
+        if (resourceIdFn(this.props) !== resourceIdFn(prevProps)) {
           this.setState({
             resource: null,
           }, this.loadResource);

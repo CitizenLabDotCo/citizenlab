@@ -53,11 +53,15 @@ export default class IdeasNewButtonBar extends React.PureComponent<Props, State>
 
   constructor(props: Props) {
     super(props as any);
+    this.state = {
+      submitError: false,
+      processing: false
+    };
     this.globalState = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage');
     this.subscriptions = [];
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     const globalState$ = this.globalState.observable;
 
     this.subscriptions = [
@@ -76,8 +80,6 @@ export default class IdeasNewButtonBar extends React.PureComponent<Props, State>
   }
 
   render() {
-    if (!this.state) { return null; }
-
     const { processing, submitError } = this.state;
     const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
 
@@ -86,7 +88,7 @@ export default class IdeasNewButtonBar extends React.PureComponent<Props, State>
         <ButtonBarInner>
           <Button
             className="e2e-submit-idea-form"
-            size="2"
+            size="1"
             processing={processing}
             text={<FormattedMessage {...messages.submit} />}
             onClick={this.handleOnSubmitButtonClick}

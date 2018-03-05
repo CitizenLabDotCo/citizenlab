@@ -8,16 +8,11 @@ import styled from 'styled-components';
 
 const Container = styled.div``;
 
-interface IDraftEditorContainer {
-  error: boolean;
-  focussed: boolean;
-}
-
-const DraftEditorContainer = styled.div`
+const DraftEditorContainer: any = styled.div`
   width: 100%;
   border-radius: 5px;
   border: solid 1px;
-  border-color: ${(props: IDraftEditorContainer) => {
+  border-color: ${(props: any) => {
     if (props.error) {
       return '#fc3c2d';
     }
@@ -99,7 +94,6 @@ const DraftEditorContainer = styled.div`
     margin-top: 0px;
     background: transparent;
     overflow: visible;
-    z-index: 0;
 
     .public-DraftEditorPlaceholder-root {
       color: #aaa;
@@ -115,7 +109,7 @@ const DraftEditorContainer = styled.div`
       border: solid 1px #666;
       border-radius: 3px;
       position: absolute;
-      z-index: 9999;
+      z-index: 2;
 
       .rdw-suggestion-option {
         padding: 8px 12px;
@@ -152,7 +146,7 @@ type State = {
 };
 
 export default class Editor extends React.PureComponent<Props, State> {
-  private emptyEditorState: EditorState;
+  emptyEditorState: EditorState;
 
   constructor(props: Props) {
     super(props as any);

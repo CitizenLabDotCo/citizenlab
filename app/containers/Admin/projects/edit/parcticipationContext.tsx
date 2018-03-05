@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { isFinite } from 'lodash';
+import { isFinite, isEqual } from 'lodash';
 
 // components
-// import Input from 'components/UI/Input';
-// import Error from 'components/UI/Error';
+import Input from 'components/UI/Input';
+import Error from 'components/UI/Error';
 import Label from 'components/UI/Label';
 import Radio from 'components/UI/Radio';
 import Toggle from 'components/UI/Toggle';
@@ -48,10 +48,10 @@ const ToggleLabel = styled(Label)`
   font-weight: 400;
 `;
 
-// const VotingLimitInput = styled(Input)`
-//   width: 100px;
-//   height: 46px !important;
-// `;
+const VotingLimitInput = styled(Input)`
+  width: 100px;
+  height: 46px !important;
+`;
 
 export interface IParticipationContextConfig {
   participationMethod: 'ideation' | 'information';
@@ -91,7 +91,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { phaseId } = this.props;
     const phase$: Rx.Observable<IPhase | null> = (phaseId ? phaseStream(phaseId).observable : Rx.Observable.of(null));
 
@@ -139,9 +139,12 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
     ];
   }
 
-  componentWillUpdate(_nextProps, nextState) {
-    if (nextState !== this.state) {
-      const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = nextState;
+  componentDidUpdate(_prevProps: Props, prevState: State) {
+    const { noVotingLimit: prevNoVotingLimit , loaded: prevLoaded, ...prevPartialState } = prevState;
+    const { noVotingLimit: nextNoVotingLimit, loaded: nextLoaded, ...nextPartialState } = this.state;
+
+    if (!isEqual(prevPartialState, nextPartialState)) {
+      const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = this.state;
 
       this.props.onChange({
         participationMethod,
@@ -214,28 +217,28 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
       postingEnabled,
       commentingEnabled,
       votingEnabled,
-      // votingMethod,
-      // votingLimit,
-      // noVotingLimit,
+      votingMethod,
+      votingLimit,
+      noVotingLimit,
       loaded
     } = this.state;
 
-    // const votingLimitSection = (participationMethod === 'ideation' && votingMethod === 'limited') ? (
-    //   <>
-    //     <Label htmlFor="voting-title">
-    //       <FormattedMessage {...messages.votingLimit} />
-    //     </Label>
-    //     <VotingLimitInput
-    //       id="voting-limit"
-    //       type="number"
-    //       min="1"
-    //       placeholder=""
-    //       value={(votingLimit ? votingLimit.toString() : null)}
-    //       onChange={this.handleVotingLimitOnChange}
-    //     />
-    //     {/* <Error fieldName="title_multiloc" apiErrors={this.state.apiErrors.title_multiloc} /> */}
-    //   </>
-    // ) : null;
+    const votingLimitSection = (participationMethod === 'ideation' && votingMethod === 'limited') ? (
+      <>
+        <Label htmlFor="voting-title">
+          <FormattedMessage {...messages.votingLimit} />
+        </Label>
+        <VotingLimitInput
+          id="voting-limit"
+          type="number"
+          min="1"
+          placeholder=""
+          value={(votingLimit ? votingLimit.toString() : null)}
+          onChange={this.handleVotingLimitOnChange}
+        />
+        {/* <Error fieldName="title_multiloc" apiErrors={this.state.apiErrors.title_multiloc} /> */}
+      </>
+    ) : null;
 
     if (loaded) {
       return (
@@ -265,29 +268,6 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
 
             {participationMethod === 'ideation' &&
               <>
-                {/* <SectionField>
-                  <Label>
-                    <FormattedMessage {...messages.votingMethod} />
-                  </Label>
-                  <Radio
-                    onChange={this.handeVotingMethodOnChange}
-                    currentValue={votingMethod}
-                    value="unlimited"
-                    name="votingmethod"
-                    id="votingmethod-unlimited"
-                    label={<FormattedMessage {...messages.unlimited} />}
-                  />
-                  <Radio
-                    onChange={this.handeVotingMethodOnChange}
-                    currentValue={votingMethod}
-                    value="limited"
-                    name="votingmethod"
-                    id="votingmethod-limited"
-                    label={<FormattedMessage {...messages.limited} />}
-                  />
-                  {votingLimitSection}
-                  <Error text={noVotingLimit} />
-                </SectionField> */}
 
                 <StyledSectionField>
                   <Label>
@@ -315,6 +295,31 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
                     <Toggle checked={votingEnabled as boolean} onToggle={this.toggleVotingEnabled} />
                   </ToggleRow>
                 </StyledSectionField>
+                {votingEnabled &&
+                  <SectionField>
+                    <Label>
+                      <FormattedMessage {...messages.votingMethod} />
+                    </Label>
+                    <Radio
+                      onChange={this.handeVotingMethodOnChange}
+                      currentValue={votingMethod}
+                      value="unlimited"
+                      name="votingmethod"
+                      id="votingmethod-unlimited"
+                      label={<FormattedMessage {...messages.unlimited} />}
+                    />
+                    <Radio
+                      onChange={this.handeVotingMethodOnChange}
+                      currentValue={votingMethod}
+                      value="limited"
+                      name="votingmethod"
+                      id="votingmethod-limited"
+                      label={<FormattedMessage {...messages.limited} />}
+                    />
+                    {votingLimitSection}
+                    <Error text={noVotingLimit} />
+                  </SectionField>
+                }
               </>
             }
 

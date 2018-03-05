@@ -7,7 +7,6 @@ import { IEventData } from 'services/events';
 
 // Components
 import T from 'components/T';
-import { FormattedDate, FormattedTime } from 'react-intl';
 import Icon from 'components/UI/Icon';
 import { Link } from 'react-router';
 
@@ -21,14 +20,14 @@ const Container = styled(Link)`
   margin-right: 13px;
   background: white;
   border-radius: 5px;
-  border: solid 1px #e0e0e0;
   display: flex;
   padding: 15px;
   cursor: pointer;
-  transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
+  border: solid 1px #e4e4e4;
 
   &:hover {
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1);
   }
 
   &:not(.last) {
@@ -40,12 +39,6 @@ const Container = styled(Link)`
     margin: 0;
     margin-bottom: 15px;
   `}
-
-  /* ${media.smallerThanMaxTablet`
-    width: 100%;
-    margin: 0;
-    flex-direction: column;
-  `} */
 `;
 
 const DateWrapper = styled.div`
@@ -54,12 +47,6 @@ const DateWrapper = styled.div`
   flex-direction: column;
   align-items: stretch;
   margin-right: 20px;
-
-  /* ${media.smallerThanMaxTablet`
-    width: 80px;
-    margin-left: auto;
-    margin-right: auto;
-  `} */
 `;
 
 const Date = styled.div`
@@ -79,7 +66,7 @@ const Date = styled.div`
 const Year = styled.div`
   width: 100%;
   color: #fff;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 300;
   text-align: center;
   padding-top: 10px;
@@ -94,21 +81,25 @@ const TextBlock = styled.div`
   flex: 1;
 `;
 
-const Time = styled.p`
+const Time = styled.div`
   color: ${color('label')};
   font-size: ${fontSize('small')};
+  margin-bottom: 8px;
 `;
 
-const Title = styled.p`
-  color: ${color('text')};
-  font-size: ${fontSize('base')};
+const Title = styled.div`
+  color: #333;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
 `;
 
-const Location = styled.p`
+const Location = styled.div`
   color: ${color('label')};
   font-size: ${fontSize('small')};
   display: flex;
   align-items: center;
+  display: none;
 `;
 
 const StyledIcon = styled(Icon)`
@@ -126,46 +117,58 @@ interface Props {
 }
 
 interface State {
-  separateDates: boolean;
+  isMultiDayEvent: boolean;
 }
 
 export default class EventBlock extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      separateDates: !moment(props.event.attributes.start_at).isSame(props.event.attributes.end_at, 'day'),
+      isMultiDayEvent: !moment(props.event.attributes.start_at).isSame(props.event.attributes.end_at, 'day'),
     };
   }
 
   render() {
-    const { projectSlug } = this.props;
+    const { projectSlug, event, isLast } = this.props;
+    const { isMultiDayEvent } = this.state;
+
+    const startAtMoment = moment(event.attributes.start_at);
+    const endAtMoment = moment(event.attributes.end_at);
+    const startAtDay = startAtMoment.format('DD');
+    const endAtDay = endAtMoment.format('DD');
+    const startAtMonth = startAtMoment.format('MMM');
+    const endAtMonth = endAtMoment.format('MMM');
+    const startAtYear = startAtMoment.format('YYYY');
+    const dateFormat = (!isMultiDayEvent ? 'LT' : 'D MMM LT');
+    const startAt = moment(event.attributes.start_at).format(dateFormat);
+    const endAt = moment(event.attributes.end_at).format(dateFormat);
 
     return (
-      <Container className={`${this.props.className} ${this.props.isLast && 'last'}`} to={`/projects/${projectSlug}/events`}>
+      <Container className={`${this.props.className} ${isLast && 'last'}`} to={`/projects/${projectSlug}/events`}>
         <DateWrapper>
           <Date>
-            <FormattedDate day="2-digit" value={this.props.event.attributes.start_at} />
-            <FormattedDate month="short" value={this.props.event.attributes.start_at} />
+            <span>{startAtDay}</span>
+            <span>{startAtMonth}</span>
 
-            {this.state.separateDates &&
+            {isMultiDayEvent &&
               <React.Fragment>
                 <span>-</span>
-                <FormattedDate day="2-digit" value={this.props.event.attributes.end_at} />
-                <FormattedDate month="short" value={this.props.event.attributes.end_at} />
+                <span>{endAtDay}</span>
+                <span>{endAtMonth}</span>
               </React.Fragment>
             }
           </Date>
           <Year>
-            <FormattedDate year="numeric" value={this.props.event.attributes.start_at} />
+            {startAtYear}
           </Year>
         </DateWrapper>
 
         <TextBlock>
-          <Time><FormattedTime value={this.props.event.attributes.start_at} /> - <FormattedTime value={this.props.event.attributes.end_at} /></Time>
-          <Title><T value={this.props.event.attributes.title_multiloc} /></Title>
+          <Time>{startAt} - {endAt}</Time>
+          <Title><T value={event.attributes.title_multiloc} /></Title>
           <Location>
             <StyledIcon name="mapmarker" />
-            <T value={this.props.event.attributes.location_multiloc} />
+            <T value={event.attributes.location_multiloc} />
           </Location>
         </TextBlock>
       </Container>

@@ -1,9 +1,6 @@
 import * as React from 'react';
-import { has } from 'lodash';
+import { has, isString } from 'lodash';
 import * as Rx from 'rxjs/Rx';
-
-// libraries
-import * as bowser from 'bowser';
 
 // router
 import { Link, browserHistory } from 'react-router';
@@ -22,6 +19,9 @@ import SpamReportForm from 'containers/SpamReport';
 import Modal from 'components/UI/Modal';
 import UserName from 'components/UI/UserName';
 import VoteWrapper from './VoteWrapper';
+import ParentCommentForm from './ParentCommentForm';
+import Spinner from 'components/UI/Spinner';
+import VoteControl from 'components/VoteControl';
 
 // services
 import { ideaByIdStream, IIdea } from 'services/ideas';
@@ -40,7 +40,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // animations
-import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
@@ -48,11 +47,65 @@ import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-const Container = styled.div``;
+const loadingTimeout = 500;
+const loadingEasing = 'ease-out';
+const loadingDelay = 0;
+
+const contentTimeout = 400;
+const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
+const contentDelay = 700;
+const contentTranslateDistance = '25px';
+
+const StyledSpinner = styled(Spinner)`
+  transition: all ${loadingTimeout}ms ${loadingEasing} ${loadingDelay}ms;
+`;
+
+const Loading = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.loading-enter {
+    ${StyledSpinner} {
+      opacity: 0;
+    }
+
+    &.loading-enter-active {
+      ${StyledSpinner} {
+        opacity: 1;
+      }
+    }
+  }
+`;
+
+const Container = styled.div`
+  background: #fff;
+  will-change: transform, opacity;
+
+  &.content-enter {
+    opacity: 0;
+    transform: translateY(${contentTranslateDistance});
+
+    &.content-enter-active {
+      opacity: 1;
+      transform: translateY(0);
+      transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
+    }
+  }
+
+  &.content-exit {
+    display: none;
+  }
+`;
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: 820px;
+  max-width: 840px;
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -60,7 +113,7 @@ const IdeaContainer = styled.div`
   margin-right: auto;
   padding: 0;
   padding-top: 60px;
-  padding-bottom: 50px;
+  padding-bottom: 60px;
   padding-left: 30px;
   padding-right: 30px;
   position: relative;
@@ -72,7 +125,7 @@ const IdeaContainer = styled.div`
 
 const HeaderWrapper = styled.div`
   width: 100%;
-  padding-right: 280px;
+  padding-right: 250px;
   display: flex;
   flex-direction: column;
 
@@ -95,6 +148,7 @@ const ProjectLink = styled(Link)`
   font-weight: 400;
   font-size: inherit;
   line-height: inherit;
+  text-decoration: underline;
   transition: all 100ms ease-out;
   margin-left: 4px;
 
@@ -102,10 +156,6 @@ const ProjectLink = styled(Link)`
     color: ${(props) => darken(0.2, props.theme.colors.label)};
     text-decoration: underline;
   }
-
-  ${media.smallerThanMaxTablet`
-    text-decoration: underline;
-  `}
 `;
 
 const Header = styled.div`
@@ -121,9 +171,9 @@ const Header = styled.div`
 const IdeaTitle = styled.h1`
   width: 100%;
   color: #444;
-  font-size: 34px;
+  font-size: 32px;
   font-weight: 500;
-  line-height: 40px;
+  line-height: 38px;
   margin: 0;
   padding: 0;
 
@@ -147,7 +197,7 @@ const LeftColumn = styled.div`
   flex-grow: 1;
   margin: 0;
   padding: 0;
-  padding-right: 65px;
+  padding-right: 55px;
   min-width: 0;
 
   ${media.smallerThanMaxTablet`
@@ -178,30 +228,43 @@ const AuthorAndAdressWrapper = styled.div`
   margin-bottom: 25px;
 `;
 
+const MetaButtons = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+`;
+
 const LocationLabel = styled.div`
   color: ${(props) => props.theme.colors.label};
   font-size: 15px;
   font-weight: 400;
   margin-right: 6px;
+  max-width: 200px;
+  font-size: 15px;
+  line-height: 19px;
+  text-align: left;
+  font-weight: 400;
+  transition: all 100ms ease-out;
+  white-space: nowrap;
 
   ${media.smallerThanMinTablet`
     display: none;
   `}
 `;
 
-const LocationLabelMobile = styled.div`
-  color: ${(props) => props.theme.colors.label};
-  font-size: 14px;
-  font-weight: 400;
-  margin-right: 6px;
-
-  ${media.biggerThanMinTablet`
-    display: none;
-  `}
+const LocationIconWrapper = styled.div`
+  width: 30px;
+  height: 38px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 `;
 
 const LocationIcon = styled(Icon)`
-  height: 20px;
+  width: 18px;
   fill: ${(props) => props.theme.colors.label};
 `;
 
@@ -227,29 +290,27 @@ const MapWrapper = styled.div`
   height: 265px;
   position: relative;
   overflow: hidden;
-  will-change: auto;
+  z-index: 2;
 
   &.map-enter {
     height: 0;
     opacity: 0;
-    will-change: height, opacity;
 
     &.map-enter-active {
       height: 265px;
       opacity: 1;
-      transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: all 250ms ease-out;
     }
   }
 
   &.map-exit {
     height: 265px;
     opacity: 1;
-    will-change: height, opacity;
 
     &.map-exit-active {
       height: 0;
       opacity: 0;
-      transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: all 250ms ease-out;
     }
   }
 `;
@@ -259,16 +320,19 @@ const MapPaddingBottom = styled.div`
   height: 30px;
 `;
 
-const AddressWrapper = styled.p`
-  background: rgba(255, 255, 255, .7);
+const AddressWrapper = styled.div`
+  color: #fff;
+  font-size: 16px;
+  font-weight: 300;
+  background: rgba(0, 0, 0, 0.4);
   border-top: 1px solid #eaeaea;
-  bottom: 0;
-  left: 0;
   margin: 0;
-  padding: .5rem;
+  padding: 10px;
   position: absolute;
   right: 0;
-  z-index: 999;
+  left: 0;
+  bottom: 0;
+  z-index: 1000;
 `;
 
 const AuthorAvatar = styled(Avatar)`
@@ -320,17 +384,47 @@ const TimeAgo = styled.div`
 
 const IdeaBody = styled.div`
   color: #474747;
-  font-size: 18px;
+  font-size: 19px;
   line-height: 30px;
-  font-weight: 400;
+  font-weight: 300;
 
   p {
-    margin-bottom: 25px;
+    margin-bottom: 30px;
+
+    &:last-child {
+      margin-bottom: 0px;
+    }
   }
 
-   strong {
-     font-weight: 500;
-   }
+  ul {
+    list-style-type: disc;
+    list-style-position: outside;
+    padding: 0;
+    padding-left: 30px;
+    margin: 0;
+    margin-bottom: 25px;
+
+    li {
+      padding: 0;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      margin: 0;
+    }
+  }
+
+  strong {
+    font-weight: 500;
+  }
+`;
+
+const CommentsTitle = styled.h2`
+  color: #333;
+  font-size: 24px;
+  line-height: 38px;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 20px;
 `;
 
 const SeparatorRow = styled.div`
@@ -339,8 +433,6 @@ const SeparatorRow = styled.div`
   margin: 0;
   margin-top: 45px;
   margin-bottom: 25px;
-  background: #e0e0e0;
-  background: #fff;
 
   ${media.smallerThanMaxTablet`
     margin-top: 20px;
@@ -354,12 +446,10 @@ const RightColumn = styled.div`
   padding: 0;
 `;
 
-const RightColumnDesktop: any = RightColumn.extend`
-  &.notSafari {
-    position: sticky;
-    top: 100px;
-    align-self: flex-start;
-  }
+const RightColumnDesktop = RightColumn.extend`
+  position: sticky;
+  top: 95px;
+  align-self: flex-start;
 
   ${media.smallerThanMaxTablet`
     display: none;
@@ -408,15 +498,25 @@ const StatusTitle = styled.h4`
   padding: 0;
 `;
 
+const VoteControlMobile = styled.div`
+  border-top: solid 1px #e0e0e0;
+  border-bottom: solid 1px #e0e0e0;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-top: -10px;
+  margin-bottom: 30px;
+
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
+`;
+
 const SharingWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const StyledSharing: any = styled(Sharing)`
-  margin-top: 30px;
-  margin-bottom: 0px;
-`;
+const StyledSharing: any = styled(Sharing)``;
 
 const StyledSharingMobile = styled(StyledSharing)`
   margin: 0;
@@ -442,7 +542,8 @@ const MoreActionsMenuWrapper = styled.div`
 `;
 
 type Props = {
-  ideaId: string;
+  ideaId: string | null;
+  inModal?: boolean | undefined;
 };
 
 type State = {
@@ -452,68 +553,86 @@ type State = {
   ideaImage: IIdeaImage | null;
   ideaComments: IComments | null;
   project: IProject | null;
-  loading: boolean;
+  opened: boolean;
+  loaded: boolean;
   showMap: boolean;
   spamModalVisible: boolean;
   moreActions: IAction[];
 };
 
 export default class IdeasShow extends React.PureComponent<Props, State> {
-  state: State;
+  initialState: State;
+  ideaId$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
     super(props as any);
-    this.state = {
+    const initialState = {
       authUser: null,
       idea: null,
       ideaAuthor: null,
       ideaImage: null,
       ideaComments: null,
       project: null,
-      loading: true,
+      opened: false,
+      loaded: false,
       showMap: false,
       spamModalVisible: false,
-      moreActions: [],
+      moreActions: []
     };
+    this.initialState = initialState;
+    this.state = initialState;
+    this.ideaId$ = new Rx.BehaviorSubject(null);
     this.subscriptions = [];
   }
 
-  componentWillMount() {
-    const { ideaId } = this.props;
-    const authUser$ = authUserStream().observable;
-    const comments$ = commentsForIdeaStream(ideaId).observable;
-    const idea$ = ideaByIdStream(ideaId).observable;
-    const ideaWithRelationships$ = idea$.switchMap((idea) => {
-      const ideaImages = idea.data.relationships.idea_images.data;
-      const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
-      const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
-      const ideaStatusId = (idea.data.relationships.idea_status ? idea.data.relationships.idea_status.data.id : null);
-      const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable : Rx.Observable.of(null));
-      const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : Rx.Observable.of(null);
-      const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : Rx.Observable.of(null));
-      const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : Rx.Observable.of(null));
+  componentDidMount() {
+    this.ideaId$.next(this.props.ideaId);
 
-      return Rx.Observable.combineLatest(
-        authUser$,
-        ideaImage$,
-        ideaAuthor$,
-        ideaStatus$,
-        project$,
-      ).map(([authUser, ideaImage, ideaAuthor, _ideaStatus, project]) => ({ authUser, idea, ideaImage, ideaAuthor, project }));
-    });
+    const ideaId$ = this.ideaId$.distinctUntilChanged().filter(ideaId => isString(ideaId));
+    const authUser$ = authUserStream().observable;
 
     this.subscriptions = [
-      ideaWithRelationships$.subscribe(({ authUser, idea, ideaImage, ideaAuthor, project }) => {
-        this.setState({ authUser, idea, ideaImage, ideaAuthor, project, loading: false });
+      this.ideaId$
+      .distinctUntilChanged()
+      .filter(ideaId => !ideaId)
+      .subscribe(() => {
+        this.setState(this.initialState);
       }),
 
-      comments$.subscribe((ideaComments) => {
+      ideaId$
+      .do(() => this.setState({ opened: true }))
+      .switchMap((ideaId: string) => ideaByIdStream(ideaId).observable)
+      .switchMap((idea) => {
+        const ideaImages = idea.data.relationships.idea_images.data;
+        const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
+        const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
+        const ideaStatusId = (idea.data.relationships.idea_status ? idea.data.relationships.idea_status.data.id : null);
+        const ideaImage$ = (ideaImageId ? ideaImageStream(idea.data.id, ideaImageId).observable : Rx.Observable.of(null));
+        const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : Rx.Observable.of(null);
+        const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : Rx.Observable.of(null));
+        const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : Rx.Observable.of(null));
+
+        return Rx.Observable.combineLatest(
+          authUser$,
+          ideaImage$,
+          ideaAuthor$,
+          ideaStatus$,
+          project$,
+        ).map(([authUser, ideaImage, ideaAuthor, _ideaStatus, project]) => ({ authUser, idea, ideaImage, ideaAuthor, project }));
+      })
+      .subscribe(({ authUser, idea, ideaImage, ideaAuthor, project }) => {
+        this.setState({ authUser, idea, ideaImage, ideaAuthor, project, loaded: true });
+      }),
+
+      ideaId$.switchMap((ideaId) => {
+        return commentsForIdeaStream(ideaId as string).observable;
+      }).subscribe((ideaComments) => {
         this.setState({ ideaComments });
       }),
 
       Rx.Observable.combineLatest(
-        idea$,
+        ideaId$.switchMap((ideaId: string) => ideaByIdStream(ideaId).observable),
         authUser$.filter(authUser => authUser !== null)
       ).switchMap(([idea, authUser]) => {
         return hasPermission({
@@ -524,12 +643,10 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
         }).map((granted) => ({ authUser, granted }));
       }).subscribe(({ granted }) => {
         this.setState(() => {
-          let moreActions: IAction[] = [
-            {
-              label: <FormattedMessage {...messages.reportAsSpam} />,
-              handler: this.openSpamModal
-            }
-          ];
+          let moreActions: IAction[] = [{
+            label: <FormattedMessage {...messages.reportAsSpam} />,
+            handler: this.openSpamModal
+          }];
 
           if (granted) {
             moreActions = [
@@ -547,6 +664,10 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
     ];
   }
 
+  componentDidUpdate() {
+    this.ideaId$.next(this.props.ideaId);
+  }
+
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
@@ -560,7 +681,16 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
   }
 
   handleMapToggle = () => {
-    this.setState((state: State) => ({ showMap: !state.showMap }));
+    this.setState((state) => {
+      const showMap = !state.showMap;
+      return { showMap };
+    });
+  }
+
+  handleMapWrapperSetRef = (element: HTMLDivElement) => {
+    if (element) {
+      element.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'nearest' });
+    }
   }
 
   openSpamModal = () => {
@@ -575,10 +705,23 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
     browserHistory.push(`/ideas/edit/${this.props.ideaId}`);
   }
 
-  render() {
-    const { idea, ideaImage, ideaAuthor, ideaComments, project, loading, showMap, moreActions } = this.state;
+  unauthenticatedVoteClick = () => {
+    browserHistory.push('/sign-in');
+  }
 
-    if (!loading && idea !== null) {
+  render() {
+    const { inModal } = this.props;
+    const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions } = this.state;
+    let loader: JSX.Element | null = null;
+    let content: JSX.Element | null = null;
+
+    if (opened && !loaded) {
+      loader = (
+        <StyledSpinner size="32px" color="#666" />
+      );
+    }
+
+    if (idea) {
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
       const createdAt = idea.data.attributes.created_at;
       const titleMultiloc = idea.data.attributes.title_multiloc;
@@ -586,49 +729,13 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
       const ideaImageMedium = (ideaImage && has(ideaImage, 'data.attributes.versions.medium') ? ideaImage.data.attributes.versions.medium : null);
       const ideaImageLarge = (ideaImage && has(ideaImage, 'data.attributes.versions.large') ? ideaImage.data.attributes.versions.large : null);
-      const isSafari = bowser.safari;
-      const ideaLocation = idea.data.attributes.location_point_geojson || null;
-      const ideaAdress = idea.data.attributes.location_description || null;
+      const ideaLocation = (idea.data.attributes.location_point_geojson || null);
+      const ideaAdress = (idea.data.attributes.location_description || null);
       const projectTitleMultiloc = (project && project.data ? project.data.attributes.title_multiloc : null);
       const projectId = idea.data.relationships.project.data.id;
 
-      const ideaMetaContent = (
-        <MetaContent>
-          <VoteLabel>
-            <FormattedMessage {...messages.voteOnThisIdea} />
-          </VoteLabel>
-
-          <VoteWrapper
-            ideaId={idea.data.id}
-            votingDescriptor={idea.data.relationships.action_descriptor.data.voting}
-            projectId={projectId}
-          />
-
-          {statusId &&
-            <StatusContainer>
-              <StatusTitle><FormattedMessage {...messages.ideaStatus} /></StatusTitle>
-              <StatusBadge statusId={statusId} />
-            </StatusContainer>
-          }
-
-          <SharingWrapper>
-            <StyledSharing imageUrl={ideaImageLarge} />
-          </SharingWrapper>
-
-          {(moreActions && moreActions.length > 0) &&
-            <MoreActionsMenuWrapper>
-              <MoreActionsMenu
-                height="5px"
-                actions={moreActions}
-                label={<FormattedMessage {...messages.moreOptions} />}
-              />
-            </MoreActionsMenuWrapper>
-          }
-        </MetaContent>
-      );
-
-      return (
-        <Container>
+      content = (
+        <>
           <IdeaMeta ideaId={idea.data.id} />
 
           <IdeaContainer id="e2e-idea-show">
@@ -661,7 +768,19 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                   </StatusContainerMobile>
                 }
 
-                {ideaImageLarge ? <IdeaImage src={ideaImageLarge} /> : null}
+                {!inModal &&
+                  <VoteControlMobile>
+                    <VoteControl
+                      ideaId={idea.data.id}
+                      unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+                      size="small"
+                    />
+                  </VoteControlMobile>
+                }
+
+                {ideaImageLarge && 
+                  <IdeaImage src={ideaImageLarge} />
+                }
 
                 <AuthorAndAdressWrapper>
                   <AuthorContainer>
@@ -673,53 +792,34 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                       {createdAt &&
                         <TimeAgo>
                           <FormattedRelative value={createdAt} />
-                          <Activities ideaId={this.props.ideaId} />
+                          <Activities ideaId={idea.data.id} />
                         </TimeAgo>
                       }
                     </AuthorMeta>
                   </AuthorContainer>
-
-                  {ideaLocation && !showMap &&
-                    <LocationButton onClick={this.handleMapToggle}>
-                      <LocationLabel><FormattedMessage {...messages.openMap} /></LocationLabel>
-                      <LocationLabelMobile><FormattedMessage {...messages.Map} /></LocationLabelMobile>
-                      <LocationIcon name="position" />
-                    </LocationButton>
-                  }
-
-                  {ideaLocation && showMap &&
-                    <LocationButton onClick={this.handleMapToggle}>
-                      <LocationLabel><FormattedMessage {...messages.closeMap} /></LocationLabel>
-                      <LocationLabelMobile><FormattedMessage {...messages.Map} /></LocationLabelMobile>
-                      <LocationIcon name="close" />
-                    </LocationButton>
-                  }
                 </AuthorAndAdressWrapper>
 
                 {ideaLocation &&
-                  <TransitionGroup>
-                    {showMap &&
-                      <CSSTransition
-                        classNames="map"
-                        timeout={300}
-                        mountOnEnter={true}
-                        unmountOnExit={true}
-                        exit={true}
-                      >
-                        <MapWrapper>
-                          {ideaAdress && <AddressWrapper>{ideaAdress}</AddressWrapper>}
-                          <IdeaMap location={ideaLocation} id={idea.data.id} />
-                        </MapWrapper>
-                      </CSSTransition>
-                    }
-                  </TransitionGroup>
+                  <CSSTransition
+                    classNames="map"
+                    in={showMap}
+                    timeout={300}
+                    mountOnEnter={true}
+                    unmountOnExit={true}
+                    exit={true}
+                  >
+                    <MapWrapper innerRef={this.handleMapWrapperSetRef}>
+                      <IdeaMap location={ideaLocation} id={idea.data.id} />
+                      {ideaAdress && <AddressWrapper>{ideaAdress}</AddressWrapper>}
+                    </MapWrapper>
+                  </CSSTransition>
                 }
 
                 {ideaLocation && showMap &&
                   <MapPaddingBottom />
                 }
 
-                <IdeaBody>
+                <IdeaBody className={`${!ideaImageLarge && 'noImage'}`}>
                   <T value={bodyMultiloc} />
                 </IdeaBody>
 
@@ -727,21 +827,111 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
 
                 <StyledSharingMobile imageUrl={ideaImageMedium} />
 
+                <CommentsTitle>
+                  <FormattedMessage {...messages.commentsTitle} />
+                </CommentsTitle>
+
+                <ParentCommentForm ideaId={idea.data.id} />
+
                 {ideaComments && <Comments ideaId={idea.data.id} />}
               </LeftColumn>
 
-              <RightColumnDesktop className={!isSafari ? 'notSafari' : ''}>
-                {ideaMetaContent}
+              <RightColumnDesktop>
+                <MetaContent>
+                  <VoteLabel>
+                    <FormattedMessage {...messages.voteOnThisIdea} />
+                  </VoteLabel>
+
+                  <VoteWrapper
+                    ideaId={idea.data.id}
+                    votingDescriptor={idea.data.relationships.action_descriptor.data.voting}
+                    projectId={projectId}
+                  />
+
+                  {statusId &&
+                    <StatusContainer>
+                      <StatusTitle><FormattedMessage {...messages.ideaStatus} /></StatusTitle>
+                      <StatusBadge statusId={statusId} />
+                    </StatusContainer>
+                  }
+
+                  <MetaButtons>
+                    {ideaLocation && !showMap &&
+                      <LocationButton onClick={this.handleMapToggle}>
+                        <LocationIconWrapper>
+                          <LocationIcon name="position" />
+                        </LocationIconWrapper>
+                        <LocationLabel>
+                          <FormattedMessage {...messages.openMap} />
+                        </LocationLabel>
+                      </LocationButton>
+                    }
+
+                    {ideaLocation && showMap &&
+                      <LocationButton onClick={this.handleMapToggle}>
+                        <LocationIconWrapper>
+                          <LocationIcon name="close" />
+                        </LocationIconWrapper>
+                        <LocationLabel>
+                          <FormattedMessage {...messages.closeMap} />
+                        </LocationLabel>
+                      </LocationButton>
+                    }
+
+                    <SharingWrapper>
+                      <StyledSharing imageUrl={ideaImageLarge} />
+                    </SharingWrapper>
+
+                    {(moreActions && moreActions.length > 0) &&
+                      <MoreActionsMenuWrapper>
+                        <MoreActionsMenu
+                          height="5px"
+                          actions={moreActions}
+                          label={<FormattedMessage {...messages.moreOptions} />}
+                        />
+                      </MoreActionsMenuWrapper>
+                    }
+                  </MetaButtons>
+                </MetaContent>
               </RightColumnDesktop>
             </Content>
           </IdeaContainer>
+
           <Modal opened={this.state.spamModalVisible} close={this.closeSpamModal}>
-            <SpamReportForm resourceId={this.props.ideaId} resourceType="ideas" />
+            <SpamReportForm resourceId={idea.data.id} resourceType="ideas" />
           </Modal>
-        </Container>
+        </>
       );
     }
 
-    return null;
+    return (
+      <>
+        <CSSTransition
+          classNames="loading"
+          in={(opened && !loaded)}
+          timeout={loadingTimeout}
+          mountOnEnter={false}
+          unmountOnExit={false}
+          exit={false}
+        >
+          <Loading>
+            {loader}
+          </Loading>
+        </CSSTransition>
+
+        <CSSTransition
+          classNames="content"
+          in={(opened && loaded)}
+          timeout={contentTimeout + contentDelay}
+          mountOnEnter={false}
+          unmountOnExit={false}
+          exit={true}
+        >
+          <Container>
+            {content}
+          </Container>
+        </CSSTransition>
+      </>
+    );
   }
 }

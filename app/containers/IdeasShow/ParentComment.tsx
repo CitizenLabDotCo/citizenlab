@@ -30,24 +30,35 @@ import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
 // animations
-import TransitionGroup from 'react-transition-group/TransitionGroup';
+// import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { transparentize, darken } from 'polished';
 import { Locale } from 'typings';
+import { media } from 'utils/styleUtils';
 
 const timeout = 550;
 
+const StyledMoreActionsMenu: any = styled(MoreActionsMenu)`
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  opacity: 0;
+  transition: opacity 100ms ease-out;
+
+  ${media.smallerThanMaxTablet`
+    opacity: 1;
+  `}
+`;
+
 const Container = styled.div`
-  margin-top: 20px;
-  will-change: auto;
+  margin-top: 35px;
 
   &.comment-enter {
     opacity: 0;
     transform: translateY(-20px);
-    will-change: opacity, transform;
 
     &.comment-enter-active {
       opacity: 1;
@@ -58,41 +69,59 @@ const Container = styled.div`
   }
 `;
 
-const CommentContainer: any = styled.div`
-  border: solid 1px #e4e4e4;
-  border-radius: 6px;
-  background: #fff;
-  position: relative;
+const CommentsWithReplyBoxContainer = styled.div`
+  border-radius: 5px;
+`;
 
-  ${(props: any) => props.withReplyBox && css`
-    border-bottom: none;
+const CommentsContainer = styled.div`
+  border-radius: 5px;
+  position: relative;
+  border: solid 1px #e4e4e4;
+  background: #fff;
+
+  &.hasReplyBox {
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
-  `}
+    border-bottom: none;
+  }
 `;
 
 const CommentContainerInner = styled.div`
-  padding: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  position: relative;
+
+  &:hover {
+    ${StyledMoreActionsMenu} {
+      opacity: 1;
+    }
+  }
 `;
 
 const StyledAuthor = styled(Author)`
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 `;
 
 const CommentBody = styled.div`
   color: #333;
-  font-size: 18px;
-  line-height: 26px;
-  font-weight: 400;
-  margin-bottom: 5px;
+  font-size: 17px;
+  line-height: 25px;
+  font-weight: 300;
 
-  span, p {
-    white-space: pre-wrap;
+  span,
+  p {
+    /* white-space: pre-wrap;
     word-break: normal;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    hyphens: auto;
+    hyphens: auto; */
     margin-bottom: 25px;
+
+    &:last-child {
+      margin-bottom: 0px;
+    }
   }
 
   a {
@@ -107,12 +136,6 @@ const CommentBody = styled.div`
       text-decoration: underline;
     }
   }
-`;
-
-const StyledMoreActionsMenu: any = styled(MoreActionsMenu)`
-  position: absolute;
-  top: 5px;
-  right: 15px;
 `;
 
 const ChildCommentsContainer = styled.div``;
@@ -133,6 +156,7 @@ type State = {
   spamModalVisible: boolean;
   moreActions: IAction[];
   commentingEnabled: boolean | null;
+  loaded: boolean;
 };
 
 type Tracks = {
@@ -140,7 +164,6 @@ type Tracks = {
 };
 
 class ParentComment extends React.PureComponent<Props & Tracks, State> {
-  state: State;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -155,11 +178,12 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       spamModalVisible: false,
       moreActions: [],
       commentingEnabled: null,
+      loaded: false
     };
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { ideaId, commentId, animate } = this.props;
     const locale$ = localeStream().observable;
     const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
@@ -206,6 +230,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
           childCommentIds,
           moreActions,
           commentingEnabled: idea.data.relationships.action_descriptor.data.commenting.enabled,
+          loaded: true
         });
       })
     ];
@@ -237,11 +262,10 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
   }
 
   render() {
-    let returnValue: JSX.Element | null = null;
     const { commentId, animate } = this.props;
-    const { locale, currentTenantLocales, authUser, comment, childCommentIds, commentingEnabled } = this.state;
+    const { loaded, locale, currentTenantLocales, authUser, comment, childCommentIds, commentingEnabled } = this.state;
 
-    if (locale && currentTenantLocales && comment) {
+    if (loaded && locale && currentTenantLocales && comment) {
       const ideaId = comment.data.relationships.idea.data.id;
       const authorId = comment.data.relationships.author.data ? comment.data.relationships.author.data.id : null;
       const createdAt = comment.data.attributes.created_at;
@@ -253,56 +277,55 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       ));
       const showCommentForm = authUser && commentingEnabled;
 
-      const parentComment = (
-        <Container className="e2e-comment-thread">
+      return (
+        <CSSTransition
+          in={(animate === true)}
+          classNames="comment"
+          timeout={timeout}
+          enter={(animate === true)}
+          exit={false}
+        >
+          <Container className="e2e-comment-thread">
 
-          <CommentContainer withReplyBox={showCommentForm}>
-            <StyledMoreActionsMenu
-              height="5px"
-              actions={this.state.moreActions}
-            />
+            <CommentsWithReplyBoxContainer>
+              <CommentsContainer className={`${showCommentForm && 'hasReplyBox'}`}>
+                <CommentContainerInner>
+                  <StyledMoreActionsMenu
+                    height="5px"
+                    actions={this.state.moreActions}
+                  />
 
-            <CommentContainerInner>
-              <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
+                  <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
 
-              <CommentBody className="e2e-comment-body" onClick={this.captureClick}>
-                <span dangerouslySetInnerHTML={{ __html: processedCommentText }} />
-              </CommentBody>
-            </CommentContainerInner>
+                  <CommentBody className="e2e-comment-body" onClick={this.captureClick}>
+                    <span dangerouslySetInnerHTML={{ __html: processedCommentText }} />
+                  </CommentBody>
+                </CommentContainerInner>
 
-            <ChildCommentsContainer>
-              {childCommentIds && childCommentIds.map((childCommentId) => {
-                return (<ChildComment key={childCommentId} commentId={childCommentId} />);
-              })}
-            </ChildCommentsContainer>
-          </CommentContainer>
+                {(childCommentIds && childCommentIds.length > 0) &&
+                  <ChildCommentsContainer>
+                    {childCommentIds.map((childCommentId) => {
+                      return (<ChildComment key={childCommentId} commentId={childCommentId} />);
+                    })}
+                  </ChildCommentsContainer>
+                }
+              </CommentsContainer>
 
-          {showCommentForm &&
-            <ChildCommentForm ideaId={ideaId} parentId={commentId} />
-          }
+              {showCommentForm &&
+                <ChildCommentForm ideaId={ideaId} parentId={commentId} />
+              }
+            </CommentsWithReplyBoxContainer>
 
-          <Modal opened={this.state.spamModalVisible} close={this.closeSpamModal}>
-            <SpamReportForm resourceId={this.props.commentId} resourceType="comments" />
-          </Modal>
-        </Container>
+            <Modal opened={this.state.spamModalVisible} close={this.closeSpamModal}>
+              <SpamReportForm resourceId={this.props.commentId} resourceType="comments" />
+            </Modal>
+
+          </Container>
+        </CSSTransition>
       );
-
-      if (animate === true) {
-        returnValue = (
-          <CSSTransition classNames="comment" timeout={timeout}>
-            {parentComment}
-          </CSSTransition>
-        );
-      } else {
-        returnValue = parentComment;
-      }
     }
 
-    return (
-      <TransitionGroup>
-        {returnValue}
-      </TransitionGroup>
-    );
+    return null;
   }
 }
 

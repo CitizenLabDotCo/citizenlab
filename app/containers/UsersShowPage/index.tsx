@@ -1,6 +1,7 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isEmpty } from 'lodash';
 import * as Rx from 'rxjs/Rx';
+import * as moment from 'moment';
 
 // components
 import IdeaCards from 'components/IdeaCards';
@@ -11,7 +12,6 @@ import Avatar from 'components/Avatar';
 import { userBySlugStream, IUser } from 'services/users';
 
 // i18n
-import { FormattedDate } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import messages from './messages';
@@ -23,11 +23,10 @@ import { media } from 'utils/styleUtils';
 const StyledContentContainer = styled(ContentContainer)`
   padding-top: 40px;
   padding-bottom: 100px;
-  background: #f8f8f8;
+  background: #f9f9fa;
 
   ${media.phone`
     padding-top: 0px;
-    background: #f8f8f8;
   `}
 `;
 
@@ -101,7 +100,7 @@ type State = {
 };
 
 export default class UsersShowPage extends React.PureComponent<Props & Params, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -112,7 +111,7 @@ export default class UsersShowPage extends React.PureComponent<Props & Params, S
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { slug } = this.props.params;
     const user$ = userBySlugStream(slug).observable;
 
@@ -129,6 +128,8 @@ export default class UsersShowPage extends React.PureComponent<Props & Params, S
     const { user } = this.state;
 
     if (user) {
+      const memberSince = moment(user.data.attributes.created_at).format('LL');
+
       return (
         <StyledContentContainer>
 
@@ -139,19 +140,9 @@ export default class UsersShowPage extends React.PureComponent<Props & Params, S
           <UserInfo>
             <FullName>{user.data.attributes.first_name} {user.data.attributes.last_name}</FullName>
             <JoinedAt>
-              <FormattedMessage
-                {...messages.joined}
-                values={{
-                  date: <FormattedDate
-                          value={user.data.attributes.created_at}
-                          year="numeric"
-                          month="long"
-                          day="numeric"
-                  />
-                }}
-              />
+              <FormattedMessage {...messages.memberSince} values={{ date: memberSince }} />
             </JoinedAt>
-            {!_.isEmpty(user.data.attributes.bio_multiloc) &&
+            {!isEmpty(user.data.attributes.bio_multiloc) &&
               <Bio>
                 {user.data.attributes.bio_multiloc && <T value={user.data.attributes.bio_multiloc} />}
               </Bio>
@@ -159,7 +150,7 @@ export default class UsersShowPage extends React.PureComponent<Props & Params, S
           </UserInfo>
 
           <UserIdeas>
-            <IdeaCards filter={{ author: user.data.id }} />
+            <IdeaCards queryParameters={{ author: user.data.id }} />
           </UserIdeas>
 
         </StyledContentContainer>

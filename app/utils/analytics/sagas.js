@@ -3,7 +3,7 @@ import { takeLatest } from 'redux-saga';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { LOAD_CURRENT_USER_SUCCESS } from 'utils/auth/constants';
 import { trackIdentification, trackPage, trackEvent } from './';
-
+import { find } from 'lodash';
 
 function* trackAction(action) {
   yield call(
@@ -35,6 +35,7 @@ function* trackIdentifications(action) {
       birthday: user.attributes.birthyear,
       gender: user.attributes.gender,
       locale: user.attributes.locale,
+      isAdmin: !!find(user.attributes.roles, { type: 'admin' }),
     }
   );
 }

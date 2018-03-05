@@ -1,6 +1,7 @@
 // Libs
 import React from 'react';
 import { Subscription, Observable } from 'rxjs';
+import { isEqual } from 'lodash';
 
 // Services & utils
 import { projectByIdStream, projectBySlugStream, IProjectData, IProject } from 'services/projects';
@@ -31,13 +32,16 @@ export default class GetProject extends React.PureComponent<Props, State> {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.updateSub(this.props);
   }
 
-  componentWillReceiveProps(newProps) {
-    if ((newProps.id !== this.props.id) || (newProps.slug !== this.props.slug)) {
-      this.updateSub(newProps);
+  componentDidUpdate(prevProps: Props) {
+    const { children: prevPropsChildren, ...prevPropsWithoutChildren } = prevProps;
+    const { children: newPropsChildren, ...newPropsWithoutChildren } = this.props;
+
+    if (!isEqual(newPropsWithoutChildren, prevPropsWithoutChildren)) {
+      this.updateSub(this.props);
     }
   }
 

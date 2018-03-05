@@ -33,3 +33,14 @@ export interface IArea {
 export function areasStream(streamParams: IStreamParams | null = null) {
   return streams.get<IAreas>({ apiEndpoint, ...streamParams });
 }
+
+/*
+const data = {
+  title_multiloc: action.title,
+  description_multiloc: action.description,
+};
+*/
+
+export function addArea(object) {
+  return streams.add<IArea>(apiEndpoint, { area: object });
+}

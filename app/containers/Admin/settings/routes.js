@@ -39,6 +39,22 @@ export default () => ({
   },
   childRoutes: [
     {
+      path: 'general',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/Admin/settings/general'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+    {
       path: 'customize',
       getComponent(nextState, cb) {
         const importModules = Promise.all([

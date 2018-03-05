@@ -1,8 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-
-// router
-import { withRouter, RouterState } from 'react-router';
+import { isString } from 'lodash';
 
 // components
 import IdeasShow from 'containers/IdeasShow';
@@ -12,15 +10,9 @@ import { ideaBySlugStream } from 'services/ideas';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   background: #fff;
-  margin-top: -20px;
-
-  ${media.smallerThanMaxTablet`
-    margin-top: 0px;
-  `}
 `;
 
 type Props = {
@@ -33,51 +25,51 @@ type State = {
   ideaId: string | null;
 };
 
-class IdeasShowPage extends React.PureComponent<Props & RouterState, State> {
-  state: State;
-  slug$: Rx.BehaviorSubject<string> | null;
-  subscription: Rx.Subscription | null;
+class IdeasShowPage extends React.PureComponent<Props, State> {
+  slug$: Rx.BehaviorSubject<string | null>;
+  subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
     super(props as any);
-    this.state = { ideaId: null };
-    this.slug$ = null;
-    this.subscription = null;
+    this.state = {
+      ideaId: null
+    };
+    this.slug$ = new Rx.BehaviorSubject(null);
+    this.subscriptions = [];
   }
 
-  componentWillMount() {
-    this.slug$ = new Rx.BehaviorSubject(this.props.params.slug);
-    const ideaId$ = this.slug$.switchMap(slug => ideaBySlugStream(slug).observable.map(idea => idea.data.id));
-    this.subscription = ideaId$.subscribe(ideaId => this.setState({ ideaId }));
+  componentDidMount() {
+    this.slug$.next(this.props.params.slug);
+
+    this.subscriptions = [
+      this.slug$
+        .distinctUntilChanged()
+        .filter(slug => isString(slug))
+        .switchMap((slug: string) => {
+          return ideaBySlugStream(slug).observable;
+        }).subscribe((idea) => {
+          this.setState({ ideaId: idea.data.id });
+        })
+    ];
   }
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.params.slug !== this.props.params.slug && this.slug$ !== null) {
-      this.slug$.next(newProps.params.slug);
-    }
+  componentDidUpdate() {
+    this.slug$.next(this.props.params.slug);
   }
 
   componentWillUnmount() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      this.subscription = null;
-    }
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   render() {
     const { ideaId } = this.state;
 
-    if (ideaId !== null) {
-      return (
-        <Container>
-          <IdeasShow ideaId={ideaId} />
-          {/* <Footer showCityLogoSection={false} /> */}
-        </Container>
-      );
-    }
-
-    return null;
+    return (
+      <Container>
+        <IdeasShow ideaId={ideaId} />
+      </Container>
+    );
   }
 }
 
-export default withRouter(IdeasShowPage as any);
+export default IdeasShowPage;

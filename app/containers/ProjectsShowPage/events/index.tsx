@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import 'moment-timezone';
 
 // components
+import Header from '../Header';
 import Event from './Event';
 import ContentContainer from 'components/ContentContainer';
 
@@ -19,8 +20,8 @@ import { eventsStream, IEvents } from 'services/events';
 // style
 import styled from 'styled-components';
 
-const Container = styled(ContentContainer)`
-  background: #f8f8f8;
+const EventsContainer = styled(ContentContainer)`
+  background: #f9f9fa;
   padding-top: 70px;
 `;
 
@@ -53,6 +54,7 @@ type Props = {
 
 type State = {
   events: IEvents | null;
+  loaded: boolean;
 };
 
 export default class ProjectEventsPage extends React.PureComponent<Props, State> {
@@ -62,30 +64,34 @@ export default class ProjectEventsPage extends React.PureComponent<Props, State>
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      events: null
+      events: null,
+      loaded: false
     };
     this.slug$ = new Rx.BehaviorSubject(null as any);
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
-      this.slug$.distinctUntilChanged().filter(slug => isString(slug)).switchMap((slug) => {
-        const project$ = projectBySlugStream(slug).observable;
-        return project$;
-      }).switchMap((project) => {
-        const events$ = eventsStream(project.data.id).observable;
-        return events$;
-      }).subscribe((events) => {
-        this.setState({ events });
-      })
+      this.slug$
+        .distinctUntilChanged()
+        .filter(slug => isString(slug))
+        .switchMap((slug) => {
+          const project$ = projectBySlugStream(slug).observable;
+          return project$;
+        }).switchMap((project) => {
+          const events$ = eventsStream(project.data.id).observable;
+          return events$;
+        }).subscribe((events) => {
+          this.setState({ events, loaded: true });
+        })
     ];
   }
 
-  componentWillReceiveProps(newProps: Props) {
-    this.slug$.next(newProps.params.slug);
+  componentDidUpdate() {
+    this.slug$.next(this.props.params.slug);
   }
 
   componentWillUnmount() {
@@ -94,7 +100,8 @@ export default class ProjectEventsPage extends React.PureComponent<Props, State>
 
   render() {
     const className = this.props['className'];
-    const { events } = this.state;
+    const { slug } = this.props.params;
+    const { events, loaded } = this.state;
 
     const pastEvents = (events ? events.data.filter((event) => {
       return moment().diff(moment(event.attributes.start_at, 'YYYY-MM-DD'), 'days') > 0;
@@ -104,10 +111,11 @@ export default class ProjectEventsPage extends React.PureComponent<Props, State>
       return moment().diff(moment(event.attributes.start_at, 'YYYY-MM-DD'), 'days') <= 0;
     }) : null);
 
-    if (events && events.data && events.data.length > 0) {
+    if (loaded) {
       return (
-        <Container>
-          {/* <StyledContentContainer> */}
+        <>
+          <Header slug={slug} />
+          <EventsContainer>
             <Events>
               <Title>
                 <FormattedMessage {...messages.upcomingEvents} />
@@ -139,8 +147,8 @@ export default class ProjectEventsPage extends React.PureComponent<Props, State>
                 </NoEvents>
               )}
             </Events>
-          {/* </StyledContentContainer> */}
-        </Container>
+          </EventsContainer>
+        </>
       );
     }
 

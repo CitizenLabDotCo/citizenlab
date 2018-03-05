@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as Rx from 'rxjs';
-import * as _ from 'lodash';
 import { currentTenantStream } from 'services/tenant';
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import { injectIntl as originalInjectIntl, ComponentConstructor, InjectedIntlProps, InjectIntlConfig } from 'react-intl';
@@ -8,16 +7,26 @@ import { localeStream } from 'services/locale';
 import { getLocalized } from 'utils/i18n';
 
 type State = {
-  orgName: string;
-  orgType: string,
+  orgName: string | null;
+  orgType: string | null;
+  loaded: boolean;
 };
 
 function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps>) {
   return class NewFormatMessageComponent extends React.PureComponent<P & InjectedIntlProps, State> {
-
     subscriptions: Rx.Subscription[];
 
-    componentWillMount() {
+    constructor(props: P) {
+      super(props as any);
+      this.state = {
+        orgName: null,
+        orgType: null,
+        loaded: false
+      };
+      this.subscriptions = [];
+    }
+
+    componentDidMount() {
       const locale$ = localeStream().observable;
       const currentTenant$ = currentTenantStream().observable;
 
@@ -28,12 +37,14 @@ function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps
         ).subscribe(([locale, tenant]) => {
           const tenantLocales = tenant.data.attributes.settings.core.locales;
           const orgName = getLocalized(tenant.data.attributes.settings.core.organization_name, locale, tenantLocales);
-          this.setState({
-            orgName,
-            orgType: tenant.data.attributes.settings.core.organization_type,
-          });
+          const orgType = tenant.data.attributes.settings.core.organization_type;
+          this.setState({ orgName, orgType, loaded: true });
         })
       ];
+    }
+
+    componentWillUnmount() {
+      this.subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 
     formatMessageReplacement = (messageDescriptor: ReactIntl.FormattedMessage.MessageDescriptor, values?: {
@@ -43,14 +54,19 @@ function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps
     }
 
     render() {
-      const intlReplacement = _.clone(this.props.intl);
-      intlReplacement.formatMessage = this.formatMessageReplacement;
+      const { loaded } = this.state;
 
-      return (
-        <Component {...this.props} intl={intlReplacement} />
-      );
+      if (loaded) {
+        const intlReplacement = {
+          ...(this.props.intl as object),
+          formatMessage: this.formatMessageReplacement
+        };
+
+        return <Component {...this.props} intl={intlReplacement} />;
+      }
+
+      return null;
     }
-
   };
 }
 

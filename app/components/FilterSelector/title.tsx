@@ -7,17 +7,17 @@ import Icon from 'components/UI/Icon';
 import styled from 'styled-components';
 
 const Text = styled.span`
-  color: #84939E;
-  font-size: 16px;
+  color: ${(props) => props.theme.colors.label};
+  font-size: 17px;
   font-weight: 400;
-  line-height: 24px;
+  line-height: 26px;
   transition: all 100ms ease-out;
 `;
 
 const DropdownIcon = styled(Icon)`
-  height: 6px;
-  fill: #84939E;
-  margin-left: 5px;
+  height: 7px;
+  fill: ${(props) => props.theme.colors.label};
+  margin-left: 4px;
   margin-top: 2px;
   transition: all 100ms ease-out;
 `;
@@ -60,6 +60,7 @@ export default class Title extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const className = this.props['className'];
     const { title, deployed, baseID } = this.props;
 
     return (
@@ -67,10 +68,10 @@ export default class Title extends React.PureComponent<Props, State> {
         onClick={this.handleClick}
         aria-expanded={deployed}
         id={`${baseID}-label`}
-        className={`e2e-filter-selector-button ${deployed ? 'deployed' : ''}`}
+        className={`e2e-filter-selector-button FilterSelectorTitle ${deployed ? 'deployed' : ''} ${className}`}
       >
-        <Text>{title}</Text>
-        <DropdownIcon name="dropdown" />
+        <Text className="FilterSelectorTitleText">{title}</Text>
+        <DropdownIcon className="FilterSelectorTitleIcon" name="dropdown" />
       </Container>
     );
   }

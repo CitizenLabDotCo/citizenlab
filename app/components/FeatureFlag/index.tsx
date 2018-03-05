@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { get } from 'lodash';
 import * as Rx from 'rxjs';
 
 // services
@@ -22,7 +22,7 @@ export default class FeatureFlag extends React.PureComponent<Props, State> {
     this.subscription = null;
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const currentTenant$ = currentTenantStream().observable;
     this.subscription = currentTenant$.subscribe(currentTenant => this.setState({ currentTenant }));
   }
@@ -37,8 +37,8 @@ export default class FeatureFlag extends React.PureComponent<Props, State> {
     const { currentTenant } = this.state;
     const { name } = this.props;
     const showFeature = (!name || (
-      _.get(currentTenant, `data.attributes.settings.${name}.allowed`) === true &&
-      _.get(currentTenant, `data.attributes.settings.${name}.enabled`) === true
+      get(currentTenant, `data.attributes.settings.${name}.allowed`) === true &&
+      get(currentTenant, `data.attributes.settings.${name}.enabled`) === true
     ));
 
     if (this.props.children && showFeature) {

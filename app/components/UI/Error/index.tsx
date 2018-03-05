@@ -44,7 +44,6 @@ const StyledErrorMessageInner = styled.div`
 const StyledErrorMessage: any = styled.div`
   position: relative;
   overflow: hidden;
-  will-change: height, max-height, opacity;
 
   ${StyledErrorMessageInner} {
     margin-top: ${(props: IStyledErrorMessage) => props.marginTop};
@@ -162,8 +161,6 @@ export default class Error extends React.PureComponent<Props, State> {
       <CSSTransition
         classNames="error"
         timeout={timeout}
-        mountOnEnter={true}
-        unmountOnExit={true}
         exit={true}
       >
         <StyledErrorMessage className="e2e-error-message" size={size} marginTop={marginTop} marginBottom={marginBottom}>

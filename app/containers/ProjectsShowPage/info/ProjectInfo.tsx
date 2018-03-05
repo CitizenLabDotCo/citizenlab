@@ -3,8 +3,6 @@ import 'moment-timezone';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
-import ContentContainer from 'components/ContentContainer';
-import EventsPreview from '../EventsPreview';
 import ImageZoom from 'react-medium-image-zoom';
 
 // services
@@ -25,7 +23,7 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin-top: 70px;
-  margin-bottom: 70px;
+  margin-bottom: 90px;
 
   ${media.phone`
     display: block;
@@ -48,7 +46,7 @@ const IdeaBodyStyled = styled.div`
   color: #333;
   font-size: 18px;
   line-height: 26px;
-  font-weight: 400;
+  font-weight: 300;
 
   h1 {
     font-size: 29px;
@@ -79,7 +77,7 @@ const IdeaBodyStyled = styled.div`
   }
 
   strong {
-    font-weight: 600;
+    font-weight: 500;
   }
 
   a {
@@ -111,7 +109,7 @@ const ProjectImages = styled.div`
 
   img {
     margin: 5px;
-    border-radius: 6px;
+    border-radius: 5px;
     border: solid 1px #e0e0e0;
 
     &:first-child {
@@ -129,15 +127,12 @@ type Props = {
   className?: string;
 };
 
-type State = {
-};
+type State = {};
 
 class ProjectInfo extends React.PureComponent<Props & WithRouterProps, State> {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-    };
+  constructor(props: Props) {
+    super(props as any);
+    this.state = {};
   }
 
   render() {
@@ -146,31 +141,25 @@ class ProjectInfo extends React.PureComponent<Props & WithRouterProps, State> {
         {({ project, images }: {project: IProjectData, images: IProjectImageData[]}) => {
           if (project) {
             return (
-              <React.Fragment>
-                <ContentContainer className={this.props.className}>
-                  <Container>
-                    <Left>
-                      <IdeaBodyStyled>
-                        <T value={project.attributes.description_multiloc} />
-                      </IdeaBodyStyled>
-                    </Left>
+              <Container>
+                <Left>
+                  <IdeaBodyStyled>
+                    <T value={project.attributes.description_multiloc} />
+                  </IdeaBodyStyled>
+                </Left>
 
-                    <Right>
-                      <ProjectImages>
-                        {images.length > 0 && images.filter((image) => image).map((image) => (
-                          <ImageZoom
-                            key={image.id}
-                            image={{ src: image.attributes.versions.large }}
-                            zoomImage={{ src: image.attributes.versions.large }}
-                          />
-                        ))}
-                      </ProjectImages>
-                    </Right>
-                  </Container>
-                </ContentContainer>
-
-                <EventsPreview projectId={project.id} />
-              </React.Fragment>
+                <Right>
+                  <ProjectImages>
+                    {images.length > 0 && images.filter((image) => image).map((image) => (
+                      <ImageZoom
+                        key={image.id}
+                        image={{ src: image.attributes.versions.large }}
+                        zoomImage={{ src: image.attributes.versions.large }}
+                      />
+                    ))}
+                  </ProjectImages>
+                </Right>
+              </Container>
             );
           } else {
             return null;
