@@ -10,7 +10,7 @@ type ProcessType = 'continuous' | 'timeline';
 type PresentationMode = 'map' | 'card';
 type PublicationStatus = 'draft' | 'published' | 'archived';
 
-import { ParticipationMethod } from './phases';
+import { ParticipationMethod, SurveyServices } from './phases';
 
 
 export interface IProjectData {
@@ -36,6 +36,8 @@ export interface IProjectData {
     presentation_mode: PresentationMode;
     internal_role: 'open_idea_box' | null;
     publication_status: PublicationStatus;
+    survey_service?: SurveyServices;
+    survey_embed_url?: string;
   };
   relationships: {
     project_images: {
@@ -72,6 +74,8 @@ export interface IUpdatedProjectProperties {
   voting_limited_max?: number | null;
   presentation_mode?: PresentationMode | null;
   publication_status?: PublicationStatus;
+  survey_service?: SurveyServices | null;
+  survey_embed_url?: string | null;
 }
 
 export interface IProject {
