@@ -308,7 +308,7 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
                       activeClassName="active"
                     >
                       <HeaderButtonIconWrapper>
-                        <HeaderButtonIcon name="idea" />
+                        <HeaderButtonIcon name="survey" />
                       </HeaderButtonIconWrapper>
                       <HeaderButtonText>
                         <FormattedMessage {...messages.navSurvey} />
