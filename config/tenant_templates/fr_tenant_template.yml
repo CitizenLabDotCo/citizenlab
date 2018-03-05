@@ -1,62 +1,60 @@
 ---
 models:
   idea_status:
-  - &19
+  - &18
     title_multiloc: statuses.proposed
     ordering: 100
     code: proposed
     color: "#84939E"
     description_multiloc: statuses.proposed_description
-  - &11
+  - &16
     title_multiloc: statuses.under_consideration
     ordering: 200
     code: under_consideration
     color: "#29ABD0"
     description_multiloc: statuses.under_consideration_description
-  - &15
-    title_multiloc: statuses.accepted
+  - title_multiloc: statuses.accepted
     ordering: 300
     code: accepted
     color: "#17C37B"
     description_multiloc: statuses.accepted_description
-  - &23
+  - &14
     title_multiloc: statuses.rejected
     ordering: 400
     code: rejected
     color: "#EF3E4A"
     description_multiloc: statuses.rejected_description
-  - &25
-    title_multiloc: statuses.implemented
+  - title_multiloc: statuses.implemented
     ordering: 500
     code: implemented
     color: "#B5DA23"
     description_multiloc: statuses.implemented_description
   topic:
-  - title_multiloc: topics.infrastructure
+  - &34
+    title_multiloc: topics.infrastructure
     description_multiloc: topics.infrastructure_description
-  - &80
+  - &33
     title_multiloc: topics.waste
     description_multiloc: topics.waste_description
-  - &79
+  - &32
     title_multiloc: topics.mobility
     description_multiloc: topics.mobility_description
   - title_multiloc: topics.technology
     description_multiloc: topics.technology_description
   - title_multiloc: topics.economy
     description_multiloc: topics.economy_description
-  - &81
-    title_multiloc: topics.nature
+  - title_multiloc: topics.nature
     description_multiloc: topics.nature_description
   - title_multiloc: topics.sustainability
     description_multiloc: topics.sustainability_description
   - title_multiloc: topics.housing
     description_multiloc: topics.housing_description
-  - &82
-    title_multiloc: topics.culture
+  - title_multiloc: topics.culture
     description_multiloc: topics.culture_description
   - title_multiloc: topics.citizenship
     description_multiloc: topics.citizenship_description
-  - title_multiloc: topics.social
+  - &35
+    title_multiloc: topics.social
     description_multiloc: topics.social_description
   - title_multiloc: topics.health
     description_multiloc: topics.health_description
@@ -133,1808 +131,781 @@ models:
     remote_header_bg_url: http://res.cloudinary.com/citizenlabco/image/upload/v1516809200/Idea_cover_qdrwa6.jpg
   - &6
     title_multiloc:
-      fr: Comment améliorer la mobilité dans votre ville
+      en: Reducing air pollution in the city
     description_multiloc:
-      fr: "<p>Contribuez à création d&#39;une ville durable où la mobilité est réfléchie
-        et intermodale. Soyez créatifs afin de trouver des solutions innovantes pour
-        s&#39;adapter aux nouveaux modes de déplacements. </p>\n"
+      en: |
+        <p><a href="https://en.wikipedia.org/wiki/Global_warming">Global warming</a> is becoming an increasing concern of our society. Your city wants to <strong>fight</strong> the air pollution! </p>
+
+        <p>You can support this initiative by proposing your ideas on how to tackle this issue.</p>
+
+        <p><em>Let&#39;s do this!</em></p>
     remote_header_bg_url: 
   - &7
     title_multiloc:
-      fr: Une meilleure gestion de nos déchets
+      en: Make the city centre more lively
     description_multiloc:
-      fr: "<p>Chaque année, un habitant produit 354 kg d’ordures ménagères. En prenant
-        en compte la quantité de déchets municipaux par habitant, la quantité produite
-        monte alors à 536 kg par an. Réduire la quantité de déchets est un enjeu environnemental,
-        financier et sociétal. </p>\n"
+      en: "<p>Unfortunately, less and less people visit the city centre to enjoy the
+        shops and the park. You can share here your ideas to make it more lively!</p>\n"
     remote_header_bg_url: 
   - &8
     title_multiloc:
-      fr: Aménagement des espaces verts
+      en: For a better waste management
     description_multiloc:
-      fr: "<p>Les parcs et pelouses constituent un havre de paix dans une ville animée.
-        Ces espaces peuvent être de véritables refuges de détente pour l&#39;habitant,
-        apropriez-vous cet espace public en soumettant vos propositions! </p>\n"
+      en: "<p>Every year, each inhabitant produce 354 kg of waste. And it goes up
+        to 536 kg when you take into account the waste produced by the municipality.
+        Reducing the amount of waste is a challenge for the environment that also
+        has a financial and societal impact.</p>\n"
     remote_header_bg_url: 
   - &9
     title_multiloc:
-      fr: Démocratiser la culture
+      en: Reshaping Abbey Park
     description_multiloc:
-      fr: "<p>Selon l&#39;UNESCO, la culture peut aujourd’hui être considérée comme
-        l&#39;ensemble des traits distinctifs, spirituels , matériels, intellectuels
-        et affectifs, qui caractérisent une société ou un groupe social. Se l&#39;approprier
-        est primordial pour la cohésion de la société et des habitants de notre ville.
-        Ainsi, comment rendre la culture plus accessible à tous?</p>\n"
+      en: "<p>The city takes green spaces very much at heart because they should be
+        the lively spaces of a neighbourghood. \nThat&#39;s why we are planning to
+        reorganize Abbey Park in order to make it a more welcoming and a meeting point
+        for inhabitants of all ages! \nWho better than you, the citizens, to say what
+        you want to see in this park?\nShare your ideas below of what the park should
+        look like.</p>\n"
+    remote_header_bg_url: 
+  - &10
+    title_multiloc:
+      en: Make the city more digital
+    description_multiloc:
+      en: "<p>We should try to modernize the way the city works, including the administration,
+        etc. Share here how digital installations could make our lives easier in the
+        city.</p>\n"
     remote_header_bg_url: 
   project_image:
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1516809151/Idea_Box_pvkode.svg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1516925813/open_idea_box_gaxtpy.png
     project_ref: *5
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515512629/rsz_fd6e28f288acfdc7a88b43f8bd3181af57f3cf8a_l9du3f.png
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573730/rsz_fd6e28f288acfdc7a88b43f8bd3181af57f3cf8a_i7y6hj.png
     project_ref: *6
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515512703/20161206_idea19_pdxell.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573758/Rugby_town_centre-2ay0y80_yza0pu.jpg
     project_ref: *7
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515512756/nature_parcdegerland_ldaniere_860_tknqqd.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573788/nature_parcdegerland_ldaniere_860_sdkqs1.jpg
     project_ref: *8
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515512843/2014-01-15-8b89955f5156c785ba1b9859bbc0e247_uak0gk.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573806/IMG_1921_2_wrdghk.jpg
     project_ref: *9
-  user:
-  - &10
-    email: arry@citizenlab.co
-    first_name: Jean
-    last_name: Demarest
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 
-    domicile: outside
-    education: 1
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515512914/TrollFace_zxtg0y.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573833/featured_lxse5u.jpg
+    project_ref: *10
+  custom_field:
+  - &11
+    resource_type: User
+    key: gender
+    title_multiloc: custom_fields.gender
+    input_type: select
+    required: false
+    ordering: 0
+    enabled: true
+    code: gender
+  - resource_type: User
+    key: birthyear
+    title_multiloc: custom_fields.birthyear
+    input_type: select
+    required: false
+    ordering: 1
+    enabled: true
+    code: birthyear
+  - resource_type: User
+    key: domicile
+    title_multiloc: custom_fields.domicile
+    input_type: select
+    required: false
+    ordering: 2
+    enabled: true
+    code: domicile
   - &12
-    email: princesslea@gmail.com
-    first_name: Lea
-    last_name: Skywalker
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: female
-    birthyear: 1943
-    domicile: outside
-    education: 4
-    password: helpmeOB1
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515512946/leia-princess-leia-organa-solo-skywalker-9301321-576-1010_wkiyc5.jpg
-  - &13
-    email: bonjoursalut@gmail.com
-    first_name: Loïc
-    last_name: Didier
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1986
-    domicile: outside
-    education: 6
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515512973/profile-1474295964-7c5694e2fc409f9ba430e094fee7f906_lgsoly.jpg
-  - &14
-    email: hello@citoyen.fr
-    first_name: Simone
-    last_name: Weil
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: female
-    birthyear: 1955
-    domicile: outside
-    education: 1
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513004/simoneveil1_banhcd.jpg
-  - &16
-    email: changerlemonde@now.org
-    first_name: Jamie
-    last_name: Oliver
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1940
-    domicile: outside
-    education: 8
-    password: CitizenLab=123
-    remote_avatar_url: 
+    resource_type: User
+    key: education
+    title_multiloc: custom_fields.education
+    input_type: select
+    required: false
+    ordering: 3
+    enabled: false
+    code: education
+  custom_field_option:
+  - custom_field_ref: *11
+    key: male
+    title_multiloc: custom_field_options.gender.male
+    ordering: 0
+  - custom_field_ref: *11
+    key: female
+    title_multiloc: custom_field_options.gender.female
+    ordering: 1
+  - custom_field_ref: *11
+    key: unspecified
+    title_multiloc: custom_field_options.gender.unspecified
+    ordering: 2
+  - custom_field_ref: *12
+    key: '2'
+    title_multiloc: custom_field_options.education.ISCED2
+    ordering: 0
+  - custom_field_ref: *12
+    key: '3'
+    title_multiloc: custom_field_options.education.ISCED3
+    ordering: 1
+  - custom_field_ref: *12
+    key: '4'
+    title_multiloc: custom_field_options.education.ISCED4
+    ordering: 2
+  - custom_field_ref: *12
+    key: '5'
+    title_multiloc: custom_field_options.education.ISCED5
+    ordering: 3
+  - custom_field_ref: *12
+    key: '6'
+    title_multiloc: custom_field_options.education.ISCED6
+    ordering: 4
+  - custom_field_ref: *12
+    key: '7'
+    title_multiloc: custom_field_options.education.ISCED7
+    ordering: 5
+  - custom_field_ref: *12
+    key: '8'
+    title_multiloc: custom_field_options.education.ISCED8
+    ordering: 6
+  user:
   - &17
-    email: lavieestbelle@gmail.com
-    first_name: 'Philippe '
-    last_name: De Belgique
-    locale: fr
+    email: citizenlab+1@citizenlab.co
+    first_name: Max
+    last_name: Walker
+    locale: en
     bio_multiloc:
-      fr: 
+      en: 
     gender: male
-    birthyear: 1969
-    domicile: outside
-    education: 5
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513042/Philippe-de-Belgique_bajppp.jpg
-  - &18
-    email: jamilia-test@citizenlab.co
-    first_name: Jamila
-    last_name: Kaidi
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: female
-    birthyear: 1959
-    domicile: outside
-    education: 8
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513072/Portrait-8_irl86h.jpg
-  - &20
-    email: feline-test@citizenlab.co
-    first_name: Feline
-    last_name: Esmé
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: female
-    birthyear: 1999
+    birthyear: '1984'
     domicile: 
-    education: 3
     password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513113/popin_2016_n2ubuf.jpg
-  - &21
-    email: jan-test@citizenlab.co
-    first_name: Jan
-    last_name: Modestine
-    locale: fr
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573977/man-388104_960_720_dfehjy.jpg
+  - &13
+    email: citizenlab+2@citizenlab.co
+    first_name: Annie
+    last_name: Smith
+    locale: en
     bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1977
-    domicile: outside
-    education: 7
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513141/platon-photographer-putin-man-of-the-year-portrait_i89wfw.jpg
-  - &22
-    email: heino-test@citizenlab.co
-    first_name: Heino
-    last_name: Georgina
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1942
-    domicile: outside
-    education: 
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513176/66c297f1dcd085d2304f63c5ed612c0a--beauty-portrait-male-portraits_boonm6.jpg
-  - &24
-    email: eve-test@citizenlab.co
-    first_name: Eve
-    last_name: Gerd
-    locale: fr
-    bio_multiloc:
-      fr: 
+      en: 
     gender: female
-    birthyear: 1957
+    birthyear: '1937'
     domicile: outside
-    education: 1
     password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513204/89c81ca5da657d45d323eff5b8ad7c69_iyaj7q.jpg
-  - &26
-    email: leonard-test@citizenlab.co
-    first_name: Léonard
-    last_name: Octave
-    locale: fr
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573998/smiling-woman_kdsaal.jpg
+  - &19
+    email: citizenlab+3@citizenlab.co
+    first_name: Emma
+    last_name: Murphy
+    locale: en
     bio_multiloc:
-      fr: 
+      en: 
+    gender: female
+    birthyear: '1980'
+    domicile: outside
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515574018/tiamorrison-profile-photo-2-copy_pcnsxm.png
+  - &15
+    email: citizenlab+4@citizenlab.co
+    first_name: Chad
+    last_name: Williams
+    locale: en
+    bio_multiloc:
+      en: 
     gender: male
     birthyear: 
     domicile: outside
-    education: 8
     password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513238/49cd4c44d562e92d90a3a4c81ced02dc_smev5w.jpg
-  - &61
-    email: bill@citizenlab.co
-    first_name: Julien
-    last_name: Gabay
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1961
-    domicile: outside
-    education: 0
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513264/16992834140_99815ee4ac_m_i4sl14.jpg
-  - &27
-    email: koen@citizenlab.co
-    first_name: Koen
-    last_name: Martin
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 2007
-    domicile: outside
-    education: 6
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513301/bryan_cranston_0095_j8anml.jpg
-  - &28
-    email: rosanne-test@citizenlab.co
-    first_name: Rosanne
-    last_name: Yvette
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: female
-    birthyear: 2013
-    domicile: outside
-    education: 8
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513348/5dcf2c739263eb1e32ca1ef35d2664a8_j7m6et.jpg
-  - &29
-    email: christine-test@citizenlab.co
-    first_name: Christine
-    last_name: Rémy
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: female
-    birthyear: 
-    domicile: outside
-    education: 6
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513461/juror-ford_ucbun5.jpg
-  - &30
-    email: katelijne-test@citizenlab.co
-    first_name: Katelijne
-    last_name: Bénédicte
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: female
-    birthyear: 
-    domicile: outside
-    education: 8
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513515/BethanyR_phbshm.jpg
-  - &31
-    email: nabil-test@citizenlab.co
-    first_name: Nabil
-    last_name: Zacharie
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1929
-    domicile: outside
-    education: 2
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513541/dof2_apuqv8.jpg
-  - &60
-    email: khalida-test@citizenlab.co
-    first_name: Khalida
-    last_name: Adrienne
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: female
-    birthyear: 
-    domicile: outside
-    education: 7
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513566/83857__portrait-tips2_a6mq61.jpg
-  - &67
-    email: jules-test@citizenlab.co
-    first_name: Jules
-    last_name: Christiaens
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1974
-    domicile: outside
-    education: 5
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513597/sherlock-season-4-featured-image_lho7jm.jpg
-  - &54
-    email: alphonsine-test@citizenlab.co
-    first_name: Alphonsine
-    last_name: Maël
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: female
-    birthyear: 1954
-    domicile: outside
-    education: 5
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513624/c644c101aad7a5b28f74526a50a2d7c1--rankin-photography-light-photography_fhwumb.jpg
-  - &32
-    email: timothee-test@citizenlab.co
-    first_name: Timothée
-    last_name: Fabrice
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1985
-    domicile: outside
-    education: 0
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513649/51DLRByNOXL._UX250__g4ehve.jpg
-  - &33
-    email: bente-test@citizenlab.co
-    first_name: Bente
-    last_name: Ludo
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1943
-    domicile: outside
-    education: 0
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513675/images_k3trq4.jpg
-  - &52
-    email: geraldine-test@citizenlab.co
-    first_name: Géraldine
-    last_name: Hieronymus
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: female
-    birthyear: 2002
-    domicile: outside
-    education: 
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513706/6c44f9503011a7dd186449bd25f49f4b--painting-portraits-portrait-art_jd39dv.jpg
-  - &34
-    email: ghassan-test@citizenlab.co
-    first_name: Ghassan
-    last_name: Muhsina
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 2006
-    domicile: outside
-    education: 5
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513733/461482218-594x367_cuok3t.jpg
-  - &35
-    email: bartholomeus-test@citizenlab.co
-    first_name: Bartholomeus
-    last_name: Mailys
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1953
-    domicile: outside
-    education: 2
-    password: CitizenLab=123
-    remote_avatar_url: 
-  - &43
-    email: claude-test@citizenlab.co
-    first_name: Claude
-    last_name: Loane
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 2006
-    domicile: outside
-    education: 1
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513841/4164298-miranda-kerr-4_dtozwg.jpg
-  - &36
-    email: kevin-test@citizenlab.co
-    first_name: Joséphine
-    last_name: Heintje
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1956
-    domicile: outside
-    education: 6
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513899/1_JvrUroQL_0QkqBqlY7Wb0A_c0m2wv.jpg
-  - &37
-    email: wietse@citizenlab.co
-    first_name: Alidéa
-    last_name: Lafolle
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1938
-    domicile: outside
-    education: 7
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513938/portrait-camera-mode-e_vgrjur.jpg
-  - &38
-    email: tim-test@citizenlab.co
-    first_name: Tim
-    last_name: Lucas
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1966
-    domicile: outside
-    education: 
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513972/Prof_Ertl-Portrait_pjih1y.jpg
-  - &57
-    email: julien-test@citizenlab.co
-    first_name: Julien
-    last_name: Gabay
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 2006
-    domicile: outside
-    education: 
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514015/500_flddap.jpg
-  - &41
-    email: olivier.chaput@ecores.eu
-    first_name: Olivier
-    last_name: Chaput
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 
-    domicile: outside
-    education: 2
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514041/pexels-photo-247917_eacbhh.jpg
-  - &51
-    email: bill.cortvriend@gmail.com
-    first_name: William
-    last_name: Robert
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 2006
-    domicile: 
-    education: 8
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514066/00d6436d2d9283f7ce61f87b07ae378e--portrait-men-male-portrait-photography_zmmcof.jpg
-  - &69
-    email: odeleuze.bgm@wb.irisnet.be
-    first_name: Olivier
-    last_name: Deleuze
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1935
-    domicile: outside
-    education: 3
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514086/017840b7be8c4a19c57fd213eb8377a0--portrait-photography-men-face-photography_naxo9g.jpg
-  - &44
-    email: steve.grinnaert@lahuulpe.be
-    first_name: Steve
-    last_name: Grinnaert
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1945
-    domicile: outside
-    education: 3
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514120/3df459479af007fed226ae39b9464af8--portrait-photography-men-photography-photos_pchsgx.jpg
-  - &49
-    email: mathieu.levoir@citizenlab.co
-    first_name: Mathieu
-    last_name: Levoir
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1939
-    domicile: outside
-    education: 7
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514148/black-white-portrait2_uutdfg.jpg
-  - &76
-    email: deodat-test@citizenlab.co
-    first_name: Déodat
-    last_name: Diana
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: female
-    birthyear: 1952
-    domicile: outside
-    education: 7
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514176/csm_Karakasoglu_Yasemin1_360cb6e01f_wgwl4a.jpg
-  - &40
-    email: godfriend-test@citizenlab.co
-    first_name: Godfried
-    last_name: Katelijne
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1954
-    domicile: outside
-    education: 7
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514203/5607404f-fb91-4e9f-9522-9e3363f404a6-mahmoud-benazzouk-dentiste-_k5cjti.jpg
-  - &56
-    email: olleh@citizenlab.co
-    first_name: Wietse
-    last_name: Champion
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1962
-    domicile: outside
-    education: 2
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514242/70971_portrait-benjamin-dhardemare_pcmftc.jpg
-  - &46
-    email: julien.joxe@citizenlab.co
-    first_name: Julien
-    last_name: Joxe
-    locale: fr
-    bio_multiloc:
-      fr: 
-    gender: male
-    birthyear: 1929
-    domicile: outside
-    education: 
-    password: CitizenLab=123
-    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514260/20170601183357-5506a2c2-cu_e355_sxpaba.jpg
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515574041/man-838636_960_720_f3i6ki.jpg
   idea:
-  - &39
+  - &20
     title_multiloc:
-      fr: Créer une aire de covoiturage au centre de la ville
+      en: More bicycle racks
     body_multiloc:
-      fr: "<p>La pratique du covoiturage explose face à l&#39;inflation des prix des
-        transports en commun. Afin de faciliter et d&#39;encourager cette pratique
-        bénéfique pour les habitants d&#39;une ville, il faudrait prévoir des espaces
-        réservés dans l&#39;espace public. </p>\n"
-    author_ref: *10
-    project_ref: *6
-    areas: []
-    idea_status_ref: *11
-    publication_status: published
-  - &42
-    title_multiloc:
-      fr: Multiplier les bacs de compost urbain
-    body_multiloc:
-      fr: "<p>La moitié de nos poubelles sont composées d&#39;éléments organiques
-        qui devraient revenir à la terre au lieu d&#39;être brûlés dans des crématoires
-        qui émettent une quantité importante de dioxyde de carbone dans l&#39;atmosphère.
-        Il faut multiplier les points de compost dans la ville pour rendre cette pratique
-        accessible à tous. De plus, le compost est un engrais indispensable pour les
-        jardins partagés qui fleurissent partout à travers la ville. Autoriser ces
-        points de compost c&#39;est aussi donner les clés du quartier aux habitants
-        qui s&#39;approprient leur territoire en devenant co-acteur. Les dernières
-        expériences de compost partagés montrent que des personnes isolées parviennent
-        à recréer du lien avec les autres habitants de leur quartier. Ainsi pour un
-        voisinage de qualité, une réduction des émissions carbonique dans l&#39;atmosphère
-        et des jardins partagés féconds grâce à un engrais local, je vous invite à
-        soutenir cette initiative. Votez pour! </p>\n"
-    author_ref: *12
-    project_ref: *7
-    areas: []
-    idea_status_ref: *11
-    publication_status: published
-  - &45
-    title_multiloc:
-      fr: Verbaliser les conducteurs seuls d'une infraction de première classe
-    body_multiloc:
-      fr: "<p>Une voiture pèse en moyenne 1200 kg et mesure plus de 4 mètres soit
-        17 fois plus lourd qu&#39;un homme et deux fois et demi sa taille. La solution
-        aux bouchons, nuisances sonores et aux pollutions urbaines est alors toute
-        simple: interdire la voiture aux personnes qui pourraient s&#39;en passer.
-        Pour faire preuve de pragmatisme, j&#39;aimerais que l&#39;on commence à interdire
-        la voiture aux personnes qui ne cherchent pas à reduire leur empreinte carbone.
-        La qualité de l&#39;air et l&#39;environnement est une affaire de tous! Des
-        actions courageuses auraient dû être prises il y a déjà longtemps, nous n&#39;avons
-        plus le luxe de revendiquer notre confort personnel. En ne faisant rien, les
-        générations à venir se souviendront de nous comme des criminels égoistes ayant
-        refusé la créativité politique pour répondre à l&#39;urgence environnementale.
-        </p>\n"
+      en: "<p>A lot of people are aware of how beneficial for the environment it is
+        to use their bikes to go around town. However, most of them are discouraged
+        because they can&#39;t park them because the racks are often full. It would
+        be nice to install more bicycle racks at the strategic points where they are
+        always busy: city centre, in front of the cinema, etc.</p>\n"
     author_ref: *13
     project_ref: *6
     areas: []
-    idea_status_ref: *11
+    idea_status_ref: *14
     publication_status: published
-  - &47
+  - &21
     title_multiloc:
-      fr: Rénovation du Parc de l'église
+      en: Organise one car-free day per month
     body_multiloc:
-      fr: "<p>Le parc de l&#39;église mériterait une plaine de jeu pour les enfants
-        de la ville ; faisons appel à un paysagiste et redonnons à ce parc son utilité
-        premère au coeur de la ville.</p>\n"
-    author_ref: *14
-    project_ref: *8
+      en: "<p>It would be nice once a month, to be able to curculate freely by foot
+        or by bike without worrying about cars or air pollution. It could be a great
+        way to raise awareness around cleaner ways to move around the city. Ideally
+        it would be on the weekends so that everyone can enjoy it!</p>\n"
+    author_ref: *15
+    project_ref: *6
     areas: []
-    idea_status_ref: *15
+    idea_status_ref: *16
     publication_status: published
-  - &48
+  - &22
     title_multiloc:
-      fr: Offrir des places de théatre aux nouveaux bacheliers
+      en: Add more night buses
     body_multiloc:
-      fr: "<p>La culture est essentielle pour notre jeunesse, nous proposons d&#39;offrir
-        des places de théatre à tous les jeunes ayant obtenus ou non leur baccalauréat.</p>\n"
-    author_ref: *16
-    project_ref: *9
-    areas: []
-    idea_status_ref: *11
-    publication_status: published
-  - &50
-    title_multiloc:
-      fr: Ne plus avoir des poubelles en plastiques pour le rammassage des ordures
-    body_multiloc:
-      fr: "<p>L&#39;idée est de favoriser le tri dans la gestion des ordures ; les
-        containers sont une solution propre afin d&#39;encourager les habitants à
-        faire le tri. En effet, les poubelles de compost ne peuvent être gardées plusieurs
-        jours dans un logement sans générer un écosystème de moucherons et une odeur
-        nauséabonde! </p>\n"
+      en: "<p>The service of buses to and from the city centre stops early at night
+        (last bus at 11PM). There should be more buses at night to encourage people
+        to go to the restaurants and bars of the city centre. It would keep the neighbourhood
+        more lively.</p>\n"
     author_ref: *17
     project_ref: *7
     areas: []
-    idea_status_ref: *11
+    idea_status_ref: *18
     publication_status: published
-  - &53
+  - &23
     title_multiloc:
-      fr: Développer des garages à vélos collectifs en zone urbaine
+      en: Make the city centre more accessible thanks to free shuttles
     body_multiloc:
-      fr: "<p>Pour permettre les déplacements en partie à vélo et en bus. Vous souhaitez
-        vous déplacer à vélo mais ce qui vous freine, ce sont les longs déplacements
-        et les côtes trop raides à gravir? Une solution simple: combiner le vélo et
-        le bus. Ainsi, vous n&#39;hésiterez plus à rejoindre votre lieu de travail
-        à vélo (avec une parie du chemin effectué en bus). Vous pourrez également
-        effectuer le trajet aller à vélo et le trajet retour en bus. Pratique!</p>\n"
-    author_ref: *18
-    project_ref: *6
+      en: "<p>One of the reason why people are not visiting the city centre as much
+        as before could be because it&#39;s hard to reach (hard to park or expensive
+        parking, limited public transportation, etc.). I suggest that the city launches
+        a free shuttle to go from the biggest residential areas to the city centre.
+        They can be electrical as well in order to remain an eco-friendly solution.</p>\n"
+    author_ref: *19
+    project_ref: *7
     areas: []
-    idea_status_ref: *19
+    idea_status_ref: *14
     publication_status: published
-  - &55
+  - &24
     title_multiloc:
-      fr: Créer un couloir de mobilité douce le long de la Meuse
+      en: Organise a crafts market in the city centre
     body_multiloc:
-      fr: "<p>construction d&#39;une piste cyclable le long du boulevard de la sauvenière
-        \ pou facilité le déplacement de cycliste et ce avec un éventuelle raccordement
-        au ravel long la Meuse.</p>\n"
-    author_ref: *20
-    project_ref: *6
+      en: "<p>The shops that we can find in the city centre are quite common and can
+        be found in other places in the city (shopping centre, etc.). So to make the
+        city centre shopping experience more original, we should organise a crafts
+        market there, gather all kind of stands such as food, accessories, etc. in
+        order to promote local crafts and have the inhabitants discover new ways of
+        doing their shopping. </p>\n"
+    author_ref: *17
+    project_ref: *7
     areas: []
-    idea_status_ref: *15
+    idea_status_ref: *18
     publication_status: published
-  - &58
+  - &25
     title_multiloc:
-      fr: Navettes fluviales permanentes
+      en: Organise fun gatherings to raise awareness about waste sorting
     body_multiloc:
-      fr: |
-        <p>Il serait de bon aloi de développer le système de navettes fluviales déjà existant.</p>
-
-        <p>Il est étonnant de constater la volonté de mettre en place un système de tram alors que les voies navigables à Liège sont libres, que les quais sont déjà aménagés et que différents endroits actuels seraient déjà propices à des embarcadères.  </p>
-
-        <p>Il s&#39;agirait de multiplier les navettes déjà en place et d&#39;allonger les trajets, ajouter des destinations le long des quais de Meuse. Cela désengorgerait les rues de la cité ardente aux heures de pointes et permettrait sans aucun doute un accroissement de l&#39;intérêt touristique pour notre ville (cfr succès du service de navettes déjà en place).</p>
-    author_ref: *21
-    project_ref: *6
-    areas: []
-    idea_status_ref: *11
-    publication_status: published
-  - &59
-    title_multiloc:
-      fr: Mettre en place des véhicules autonomes partagés
-    body_multiloc:
-      fr: |
-        <p>L&#39;aménagement routier entrepris par La Ville de Liège avant l&#39;inauguration de la nouvelle gare paralyse le trafic de transit vers les Guillemins, les carrefours à feux mis en place en 2010 n&#39;ont pas solutionné le problème, dès lors, nous réclamons une étude globale pour équilibrer le flux de circulation  notamment que cette zone est desservie par les transports en commun ce qui oblige les navetteurs à descendre du véhicule du TEC et continuer le chemin à pied.
-        Ne serait-il pas pertinent de prendre les mesures nécessaires pour réguler la circulation autour de la Gare des Guillemins et l&#39;avenue de l&#39;observatoire?</p>
-    author_ref: *22
-    project_ref: *6
-    areas: []
-    idea_status_ref: *23
-    publication_status: published
-  - &62
-    title_multiloc:
-      fr: Créer un réseau cyclable cohérent et continu
-    body_multiloc:
-      fr: "<p>Une signalisation plus visible et plus efficace : places de parking
-        clairement délimitées partout avec, en plus,  un aménagement matériel (piquets,
-        panneaux) pour les places pour personnes handicapées, les accès de garages,...
-        Augmenter la sécurité au niveau des carrefours, des passages pour piétons,
-        des quais    Vidéosurveillance étendue à titre de prévention</p>\n"
-    author_ref: *24
-    project_ref: *6
-    areas: []
-    idea_status_ref: *25
-    publication_status: published
-  - &63
-    title_multiloc:
-      fr: Prolonger au delà de Liège l'utilisation des navettes fluviales
-    body_multiloc:
-      fr: "<p>Nous sommes piétons/PMR, cyclistes, usagers du TEC, de la SNCB, nous
-        devons avoir le droit de voter pour nos besoins en démocratie directe participative</p>\n"
-    author_ref: *26
-    project_ref: *6
-    areas: []
-    idea_status_ref: *11
-    publication_status: published
-  - &64
-    title_multiloc:
-      fr: Tram, Réseau Express Liégeois et deuxième phase
-    body_multiloc:
-      fr: |
-        <p>Dans les rues à stationnement alternatif par quinzaine, les usagers ne changent pas de côté tous en même temps. De plus, il est fréquent que des usagers oublient de changer leur véhicule. Cela engendre à chaque quinzaine des difficultés de circulation ainsi que des risques d&#39;accident d&#39;autant plus importants lorsque la voirie concernée est fréquentée par des transports en commun.
-        Pourquoi ne pas modifier la signalisation afin que l&#39;on se gare toujours du même côté.</p>
-    author_ref: *27
-    project_ref: *6
-    areas: []
-    idea_status_ref: *23
-    publication_status: published
-  - &65
-    title_multiloc:
-      fr: Mettre en place des bus de nuit
-    body_multiloc:
-      fr: "<p>A vol d&#39;oiseau, il y a moins de 300 mètres entre l&#39;hôpital de
-        la Citadelle et le chemon de fer situé en contrebas. \nOn peut difficilement
-        faire plus proche.\nL&#39;idée c&#39;est de connecter l&#39;hôpital au rail
-        pour favoriser les déplacements sans voiture dans la ville. Tout bénéfice
-        pour la qualité de l&#39;air, la diminution des nuisances sonores, moins d&#39;embouteillages,
-        etc. (Tout en sachant que le réseau express liégeois (REL) est en cours de
-        développement à Liège et que dans ce cadre, la réouverture de la gare Liège-Vivegnis
-        est prévue)\nLe hic c&#39;est le dénivelé, qui peut facilement être franchi
-        avec un téléphérique.</p>\n"
-    author_ref: *28
-    project_ref: *6
-    areas: []
-    idea_status_ref: *11
-    publication_status: published
-  - &66
-    title_multiloc:
-      fr: Sécuriser et achever le réseau piéton
-    body_multiloc:
-      fr: |
-        <p>ATELIER CITOYENS Chênée - lundi 8 mai</p>
-
-        <p>Encourager la mobilité à vélo est une très bonne chose.  Mais il faut pouvoir déposer son vélo en sécurité pour pouvoir le récupérer --&gt; il faudrait développer des parkings vélos qui soient sécurisés (dispositifs anti-vol) et surveillés (par des personnes engagées par la Ville ou bénévoles).  On pourrait utiliser un système de jetons ou de tickets (comme dans les parkings voiture) permettant de récupérer son vélo en toute confiance.</p>
-
-        <p>Autre idée : instaurer un système de &quot;scooter-sécurité &quot; permettant de contrôler (= limiter) le bruit et la vitesse des scooters qui perturbent la vie des habitants.</p>
-    author_ref: *29
-    project_ref: *6
-    areas: []
-    idea_status_ref: *25
-    publication_status: published
-  - &68
-    title_multiloc:
-      fr: Mettre des vélos à disposition en libreservice
-    body_multiloc:
-      fr: |
-        <p>Elaborer un vrai plan global de la mobilité concernant à la fois Chênée, rue de Gaillarmont et rue de Bois-de-Breux.
-        Plan de mobilité tenant compte notamment du développement prochain du CHU site des Bruyères et du nouveau quartier &quot;le Vergers de Fayenbois&quot; situé rue de Bois-de-Breux</p>
-    author_ref: *30
-    project_ref: *6
-    areas: []
-    idea_status_ref: *23
-    publication_status: published
-  - &70
-    title_multiloc:
-      fr: Des piétonniers accessibles aux PMR
-    body_multiloc:
-      fr: |
-        <p>Le Ravel en rive droite offre une continuité cyclable en site propre tout le long de la Meuse et de l’Ourthe. </p>
-
-        <p>En rive gauche, les nouveaux quais de Meuse entre la passerelle La Belle Liégeoise et le pont Kennedy offrent également un espace de circulation dédié aux cyclistes. Mais en amont vers le Val-Benoit ou en aval vers Coronmeuse, cette connexion est inexistante, rendant la continuité d’un pôle à l’autre impossible.
-        La Ville de Liège souhaite équiper la rive gauche d’un couloir de mobilité douce comprenant des espaces spécifiques dédiés pour chaque utilisateur (piétons et cyclistes) dans la philosophie des quais de Meuse, depuis le Val Benoit jusqu’au futur éco-quartier de Coronmeuse.</p>
-
-        <p>Le quai Saint Léonard sera équipé via les travaux liés au tram. </p>
-
-        <p>La partie entre le Val Benoit et le quai de Rome et la partie entre le pont Kennedy et la Place des Déportés seront aménagées via un budget spécifique.</p>
-    author_ref: *31
-    project_ref: *6
-    areas: []
-    idea_status_ref: *19
-    publication_status: published
-  - &71
-    title_multiloc:
-      fr: Interdire tout transit de véhicules dans l'hyper-centre
-    body_multiloc:
-      fr: |
-        <p>Retrouvez la liste complète des projets déposés dans la catégorie  &quot;Mobilité&quot; en cliquant sur ce lien :  http://bit.ly/2qFztt0 </p>
-
-        <p>Sur ce document, les titres sont cliquables et vous renvoient directement au projet que vous souhaitez découvrir.</p>
-
-        <p>Une recherche par mots-clés est aussi disponible en haut à gauche de la plate-forme.</p>
-    author_ref: *32
-    project_ref: *6
-    areas: []
-    idea_status_ref: *11
-    publication_status: published
-  - &72
-    title_multiloc:
-      fr: Funiculaire
-    body_multiloc:
-      fr: "<p>Trop souvent des fous du volant tentent de se dépasser dans le tournant
-        de Burenville en empietant parfois sur la bande de ceux qui descendent.  Il
-        faudrait sécuriser ce tournant accidentogène</p>\n"
-    author_ref: *33
-    project_ref: *6
-    areas: []
-    idea_status_ref: *11
-    publication_status: published
-  - &73
-    title_multiloc:
-      fr: Des ascenseurs à vélos dans les Coteaux
-    body_multiloc:
-      fr: "<p>Etudier l’implantation d’un téléphérique reliant la rive gauche au plateau
-        du Sart-Tilman et l’esplanade Saint Léonard à la Citadelle.</p>\n\n<p>Le téléphérique
-        est de plus en plus considéré comme un moyen de transport urbain performant
-        lorsqu’il s’agit de relier deux ou plusieurs endroits séparés par un obstacle
-        naturel (fleuve, colline, …).</p>\n\n<p>De plus en plus de villes recourent
-        au transport urbain par câble (Medellin, Budapest, Londres, Naples, Barcelone,
-        Brest, …), notamment parce qu’il rencontre pleinement les enjeux liés à la
-        transition climatique (transport non polluant, silencieux, peu consommateur
-        d’espaces), mais aussi parce qu’il garantit un temps parcours constant pour
-        l’usager (facteur devenant déterminant pour le choix d’un mode de déplacement).</p>\n\n<p>A
-        Liège, complémentairement au tram, 2 projets seront mis à l’étude (préfaisabilité
-        technique et estimation budgétaire) avec tous les partenaires concernés (dont
-        le CHR,  la SRWT, le TEC Liège, la Spi, l’Université de Liège,…) : \n-   celui
-        partant de l’esplanade St Léonard jusqu’à la Citadelle, dans l’optique d’une
-        intermodalité avec l’arrêt du tram place des déportés ;\n-   celui partant
-        du pont des modeleurs à Sclessin (arrêt du tram) jusqu’au plateau du Sart
-        Tilman.  Il s’agit ici d’étudier une solution nouvelle pour améliorer les
-        connexions entre la vallée et le pôle du sart Tilman.  Cette étude devra nous
-        démontrer sa pertinence.</p>\n"
-    author_ref: *34
+      en: "<p>I think if people sorted their waste better it would help waste management
+        a lot. The general feeling is that most people sometimes don&#39;t know how
+        to do it properly, so they don&#39;t do it at all. One idea would be to organise
+        fun social gatherings with activities to raise awareness on how important
+        this is, it could be done through games, info sessions, activities for the
+        family, etc. </p>\n"
+    author_ref: *13
     project_ref: *8
     areas: []
-    idea_status_ref: *15
+    idea_status_ref: *14
     publication_status: published
-  - &74
+  - &26
     title_multiloc:
-      fr: Des porte-vélos sur les bus
+      en: Start an organic and food waste recovery
     body_multiloc:
-      fr: "<p>quinquennal ? informatique ?</p>\n"
-    author_ref: *35
+      en: "<p>We should encourage more people to sort their organic waste and food.
+        Often, food leftovers, plants, etc. go in the ordinary household waste bin
+        when they could be set aside and serve another purpose like organic fertilizer
+        for instance. To do so, we should provide the citizens with special boxes
+        or bags, then it could be collected with the usual garbage and sorted afterwards.</p>\n"
+    author_ref: *19
     project_ref: *8
     areas: []
-    idea_status_ref: *19
+    idea_status_ref: *14
     publication_status: published
-  - &75
+  - &27
     title_multiloc:
-      fr: 'Interdire les 4x4 en ville! '
+      en: Create a dog area within the park
     body_multiloc:
-      fr: "<p>Interdire les 4x4 de plus de 5 metres de long en ville. Stop au excès.
-        \ Les 4x4 de plus de 5m de long, c&#39;est dans les bois, pas en ville!</p>\n"
-    author_ref: *36
-    project_ref: *8
+      en: "<p>There are not many spaces dedicated to dogs in parks. This project would
+        aim at having specific spaces within the park where dogs can run freely, leash-free,
+        in a closed area dedicated to this purpose only. It would allow the dogs to
+        go around in this « free but controlled » area, and also it would encourage
+        interactions with dog owners. In this space there could be benches, and games
+        for dogs.</p>\n"
+    author_ref: *15
+    project_ref: *9
     areas: []
-    idea_status_ref: *23
+    idea_status_ref: *18
     publication_status: published
-  - &77
+  - &28
     title_multiloc:
-      fr: Des Badges de localisation pour vélos
+      en: Install a little coffee corner in the park
     body_multiloc:
-      fr: "<p>Un meilleur accès à l’information serait souhaitable pour les transports
-        en commun ; tarifs, horaires, itinéraire suivi et modifications éventuelles
-        du trajet. </p>\n\n<p>Nous pensons plus particulièrement à la mise en place
-        d’un système d’indications sonores des arrêts et déviations, dans les véhicules,
-        et, dans les abris-bus, à la généralisation des panneaux interactifs signalant
-        l’heure de prochains passages et à une signalisation claire des tarifs, etc.
-        </p>\n\n<p>Nous pensons également à une multiplication des abris-bus, même
-        si nous n’ignorons pas l’espace pris par ces derniers sur les trottoirs. \nUn
-        meilleur confort est à encourager, notamment en faisant de la sensibilisation
-        auprès des conducteurs et des usagers (pour permettre aux ainés de gagner
-        une place assise).</p>\n\n<p>Enfin, il est important pour nous de desservir
-        correctement tous les quartiers de la ville. Il est parfois difficile pour
-        les séniors de faire des centaines de mètre pour rejoindre un arrêt de bus.
-        Dès lors, les modifications futures du réseau réalisées dans le cadre de l’arrivée
-        du tram devront prendre en compte cette observation.</p>\n"
-    author_ref: *37
-    project_ref: *8
+      en: "<p>What the park currently misses is an area where people can meet, get
+        some tea or coffee, and sit doing together. It would attract more people of
+        all ages because it could become a meeting point. There should be a little
+        cart, truck or corner selling hot beverages and maybe some snacks, with a
+        few chairs and tables. It would really attract more people to the park and
+        it would be a nice place to take a break during long park walks at the weekend.
+        Maybe one of the local coffee shops in town could run this place?</p>\n"
+    author_ref: *19
+    project_ref: *9
     areas: []
-    idea_status_ref: *19
+    idea_status_ref: *16
     publication_status: published
-  - &78
+  - &29
     title_multiloc:
-      fr: Ticket de transport unique
+      en: Have more computers in the library
     body_multiloc:
-      fr: |
-        <p>Le boulevard Piercot est continuellement embouteillé. Les automobilistes qui vont vers le centre n&#39;empruntent pas l&#39;avenue Destenay mais passent par le bvd Piercot. Ils sont nombreux encore à prendre la rue Isaye en &quot;raccourci&quot; vers les Chiroux.</p>
-
-        <p>Mettre la rue Isaye (très étroite) en sens unique de la place St Jacques vers le bvd Piercot supprimerait déjà tous les automobilistes qui cherchent ce raccourci. Supprimer le passage des bus 2 et 3 sur le bvd Piercot (banlieue vers centre) avec arrêt face au Conservatoire et les faire passer en site propre comme les autres bus venat des Guillemins fludifierait la cirulation.</p>
-    author_ref: *38
-    project_ref: *6
+      en: "<p>To make technology more inclusive, and especially internet access, there
+        should be more computers in the public library. Indeed, today there are only
+        two and the spots they are often occupied. It could be nice to have more monitors,
+        or even a room at the library with computers only. It could help people who
+        dn&#39;t have internet at home to look for a job for example.</p>\n"
+    author_ref: *17
+    project_ref: *10
     areas: []
-    idea_status_ref: *19
+    idea_status_ref: *16
+    publication_status: published
+  - &30
+    title_multiloc:
+      en: Have internet trainings for elderly people
+    body_multiloc:
+      en: "<p>It would be interesting to have a small course given to elderly people
+        on how to use the internet. For instance, there could be a training that shows
+        how to send emails, read the news online, and other basic online activities.
+        I think if we want our city to be more modern and digital, we should make
+        sure beforehand that all the citizens can understand these tools properly.</p>\n"
+    author_ref: *13
+    project_ref: *10
+    areas: []
+    idea_status_ref: *16
+    publication_status: published
+  - &31
+    title_multiloc:
+      en: Send a weekly agenda of the city by email
+    body_multiloc:
+      en: "<p>Many events are organised throughout the week but we are not aware of
+        it because we don&#39;t pass by the posters or go to the places where they
+        are advertised. Therefore it would be nice to receive an agenda of what&#39;s
+        happening in the city during the week, right into their inbox: cultural events,
+        towhalls, etc. to be able to access it all in one place from the comfort of
+        your own house.</p>\n"
+    author_ref: *17
+    project_ref: *10
+    areas: []
+    idea_status_ref: *18
     publication_status: published
   vote:
   - mode: up
-    user_ref: *29
-    votable_ref: *39
-  - mode: up
-    user_ref: *18
-    votable_ref: *39
-  - mode: up
-    user_ref: *34
-    votable_ref: *39
-  - mode: up
-    user_ref: *12
-    votable_ref: *39
-  - mode: up
-    user_ref: *16
-    votable_ref: *39
-  - mode: down
-    user_ref: *40
-    votable_ref: *39
-  - mode: up
-    user_ref: *41
-    votable_ref: *42
-  - mode: up
-    user_ref: *37
-    votable_ref: *42
-  - mode: up
-    user_ref: *43
-    votable_ref: *42
-  - mode: down
-    user_ref: *33
-    votable_ref: *42
-  - mode: down
-    user_ref: *44
-    votable_ref: *42
-  - mode: up
-    user_ref: *32
-    votable_ref: *45
-  - mode: up
-    user_ref: *18
-    votable_ref: *45
-  - mode: down
-    user_ref: *26
-    votable_ref: *45
-  - mode: down
-    user_ref: *46
-    votable_ref: *45
-  - mode: down
-    user_ref: *24
-    votable_ref: *45
-  - mode: up
-    user_ref: *32
-    votable_ref: *47
-  - mode: up
-    user_ref: *24
-    votable_ref: *47
+    user_ref: *15
+    votable_ref: *20
   - mode: up
     user_ref: *17
-    votable_ref: *47
-  - mode: up
-    user_ref: *31
-    votable_ref: *47
-  - mode: up
-    user_ref: *21
-    votable_ref: *47
-  - mode: up
-    user_ref: *38
-    votable_ref: *47
-  - mode: down
-    user_ref: *34
-    votable_ref: *47
-  - mode: up
-    user_ref: *32
-    votable_ref: *48
-  - mode: up
-    user_ref: *30
-    votable_ref: *48
-  - mode: up
-    user_ref: *29
-    votable_ref: *48
-  - mode: down
-    user_ref: *49
-    votable_ref: *48
-  - mode: down
-    user_ref: *27
-    votable_ref: *48
-  - mode: up
-    user_ref: *37
-    votable_ref: *50
-  - mode: down
-    user_ref: *49
-    votable_ref: *50
-  - mode: down
-    user_ref: *51
-    votable_ref: *50
-  - mode: down
-    user_ref: *13
-    votable_ref: *50
-  - mode: down
-    user_ref: *28
-    votable_ref: *50
-  - mode: down
-    user_ref: *16
-    votable_ref: *50
-  - mode: down
-    user_ref: *32
-    votable_ref: *50
-  - mode: down
-    user_ref: *41
-    votable_ref: *50
-  - mode: up
-    user_ref: *52
-    votable_ref: *53
-  - mode: up
-    user_ref: *51
-    votable_ref: *53
-  - mode: up
-    user_ref: *34
-    votable_ref: *53
-  - mode: up
-    user_ref: *36
-    votable_ref: *53
-  - mode: up
-    user_ref: *24
-    votable_ref: *53
-  - mode: down
-    user_ref: *54
-    votable_ref: *53
-  - mode: up
-    user_ref: *22
-    votable_ref: *55
-  - mode: up
-    user_ref: *56
-    votable_ref: *55
-  - mode: up
-    user_ref: *21
-    votable_ref: *55
-  - mode: down
-    user_ref: *54
-    votable_ref: *55
-  - mode: up
-    user_ref: *57
-    votable_ref: *58
-  - mode: up
-    user_ref: *28
-    votable_ref: *58
-  - mode: down
-    user_ref: *16
-    votable_ref: *58
-  - mode: up
-    user_ref: *28
-    votable_ref: *59
-  - mode: up
-    user_ref: *34
-    votable_ref: *59
-  - mode: up
-    user_ref: *32
-    votable_ref: *59
-  - mode: up
-    user_ref: *54
-    votable_ref: *59
-  - mode: up
-    user_ref: *60
-    votable_ref: *59
-  - mode: up
-    user_ref: *61
-    votable_ref: *59
-  - mode: up
-    user_ref: *44
-    votable_ref: *62
-  - mode: up
-    user_ref: *40
-    votable_ref: *62
-  - mode: up
-    user_ref: *35
-    votable_ref: *62
-  - mode: up
-    user_ref: *28
-    votable_ref: *63
-  - mode: up
-    user_ref: *56
-    votable_ref: *64
-  - mode: up
-    user_ref: *54
-    votable_ref: *64
+    votable_ref: *20
   - mode: up
     user_ref: *13
-    votable_ref: *64
+    votable_ref: *20
   - mode: up
-    user_ref: *34
-    votable_ref: *65
+    user_ref: *19
+    votable_ref: *20
   - mode: up
-    user_ref: *32
-    votable_ref: *65
-  - mode: up
-    user_ref: *30
-    votable_ref: *66
-  - mode: up
-    user_ref: *44
-    votable_ref: *66
-  - mode: up
-    user_ref: *67
-    votable_ref: *66
-  - mode: up
-    user_ref: *10
-    votable_ref: *66
-  - mode: up
-    user_ref: *26
-    votable_ref: *66
-  - mode: up
-    user_ref: *51
-    votable_ref: *66
-  - mode: down
-    user_ref: *61
-    votable_ref: *66
-  - mode: up
-    user_ref: *54
-    votable_ref: *68
-  - mode: up
-    user_ref: *36
-    votable_ref: *68
-  - mode: up
-    user_ref: *27
-    votable_ref: *68
-  - mode: down
-    user_ref: *10
-    votable_ref: *68
-  - mode: down
-    user_ref: *40
-    votable_ref: *68
-  - mode: up
-    user_ref: *69
-    votable_ref: *70
-  - mode: down
-    user_ref: *21
-    votable_ref: *70
-  - mode: down
-    user_ref: *28
-    votable_ref: *70
-  - mode: down
-    user_ref: *22
-    votable_ref: *70
-  - mode: up
-    user_ref: *29
-    votable_ref: *71
-  - mode: up
-    user_ref: *51
-    votable_ref: *71
-  - mode: up
-    user_ref: *13
-    votable_ref: *71
-  - mode: up
-    user_ref: *33
-    votable_ref: *71
-  - mode: up
-    user_ref: *20
-    votable_ref: *71
-  - mode: up
-    user_ref: *57
-    votable_ref: *71
-  - mode: down
-    user_ref: *12
-    votable_ref: *71
-  - mode: up
-    user_ref: *54
-    votable_ref: *72
-  - mode: up
-    user_ref: *49
-    votable_ref: *72
-  - mode: up
-    user_ref: *21
-    votable_ref: *72
-  - mode: down
-    user_ref: *26
-    votable_ref: *72
-  - mode: up
-    user_ref: *36
-    votable_ref: *73
+    user_ref: *15
+    votable_ref: *21
   - mode: up
     user_ref: *17
-    votable_ref: *73
-  - mode: up
-    user_ref: *51
-    votable_ref: *73
-  - mode: up
-    user_ref: *20
-    votable_ref: *73
-  - mode: up
-    user_ref: *32
-    votable_ref: *73
-  - mode: up
-    user_ref: *38
-    votable_ref: *74
-  - mode: up
-    user_ref: *17
-    votable_ref: *74
-  - mode: up
-    user_ref: *41
-    votable_ref: *74
-  - mode: up
-    user_ref: *56
-    votable_ref: *75
-  - mode: up
-    user_ref: *10
-    votable_ref: *75
-  - mode: up
-    user_ref: *38
-    votable_ref: *75
-  - mode: up
-    user_ref: *61
-    votable_ref: *75
-  - mode: up
-    user_ref: *36
-    votable_ref: *75
+    votable_ref: *21
   - mode: up
     user_ref: *13
-    votable_ref: *75
+    votable_ref: *21
   - mode: up
-    user_ref: *76
-    votable_ref: *77
+    user_ref: *19
+    votable_ref: *21
   - mode: up
-    user_ref: *60
-    votable_ref: *77
+    user_ref: *17
+    votable_ref: *22
   - mode: up
-    user_ref: *38
-    votable_ref: *77
+    user_ref: *13
+    votable_ref: *22
   - mode: up
-    user_ref: *10
-    votable_ref: *78
+    user_ref: *15
+    votable_ref: *22
+  - mode: down
+    user_ref: *19
+    votable_ref: *22
+  - mode: up
+    user_ref: *19
+    votable_ref: *23
+  - mode: up
+    user_ref: *13
+    votable_ref: *23
+  - mode: up
+    user_ref: *17
+    votable_ref: *23
+  - mode: up
+    user_ref: *15
+    votable_ref: *23
+  - mode: up
+    user_ref: *17
+    votable_ref: *24
+  - mode: up
+    user_ref: *19
+    votable_ref: *24
+  - mode: up
+    user_ref: *13
+    votable_ref: *24
+  - mode: up
+    user_ref: *15
+    votable_ref: *24
+  - mode: up
+    user_ref: *17
+    votable_ref: *25
+  - mode: up
+    user_ref: *19
+    votable_ref: *25
+  - mode: up
+    user_ref: *13
+    votable_ref: *25
+  - mode: down
+    user_ref: *15
+    votable_ref: *25
+  - mode: up
+    user_ref: *17
+    votable_ref: *26
+  - mode: up
+    user_ref: *15
+    votable_ref: *26
+  - mode: down
+    user_ref: *19
+    votable_ref: *26
+  - mode: up
+    user_ref: *19
+    votable_ref: *27
+  - mode: up
+    user_ref: *17
+    votable_ref: *27
+  - mode: down
+    user_ref: *15
+    votable_ref: *27
+  - mode: up
+    user_ref: *15
+    votable_ref: *28
+  - mode: up
+    user_ref: *19
+    votable_ref: *28
+  - mode: up
+    user_ref: *17
+    votable_ref: *28
+  - mode: up
+    user_ref: *13
+    votable_ref: *28
+  - mode: up
+    user_ref: *19
+    votable_ref: *29
+  - mode: up
+    user_ref: *15
+    votable_ref: *29
+  - mode: down
+    user_ref: *13
+    votable_ref: *29
+  - mode: down
+    user_ref: *17
+    votable_ref: *29
+  - mode: up
+    user_ref: *19
+    votable_ref: *30
+  - mode: up
+    user_ref: *15
+    votable_ref: *30
+  - mode: up
+    user_ref: *17
+    votable_ref: *30
+  - mode: up
+    user_ref: *13
+    votable_ref: *30
+  - mode: up
+    user_ref: *17
+    votable_ref: *31
+  - mode: down
+    user_ref: *19
+    votable_ref: *31
   ideas_topic:
-  - idea_ref: *39
-    topic_ref: *79
-  - idea_ref: *42
-    topic_ref: *80
-  - idea_ref: *45
-    topic_ref: *79
-  - idea_ref: *47
-    topic_ref: *81
-  - idea_ref: *48
-    topic_ref: *82
-  - idea_ref: *50
-    topic_ref: *80
-  - idea_ref: *53
-    topic_ref: *79
-  - idea_ref: *55
-    topic_ref: *79
-  - idea_ref: *58
-    topic_ref: *79
-  - idea_ref: *59
-    topic_ref: *79
-  - idea_ref: *62
-    topic_ref: *79
-  - idea_ref: *63
-    topic_ref: *79
-  - idea_ref: *64
-    topic_ref: *79
-  - idea_ref: *65
-    topic_ref: *79
-  - idea_ref: *66
-    topic_ref: *79
-  - idea_ref: *68
-    topic_ref: *79
-  - idea_ref: *70
-    topic_ref: *79
-  - idea_ref: *71
-    topic_ref: *79
-  - idea_ref: *72
-    topic_ref: *79
-  - idea_ref: *73
-    topic_ref: *81
-  - idea_ref: *74
-    topic_ref: *81
-  - idea_ref: *75
-    topic_ref: *81
-  - idea_ref: *77
-    topic_ref: *81
-  - idea_ref: *78
-    topic_ref: *79
+  - idea_ref: *20
+    topic_ref: *32
+  - idea_ref: *21
+    topic_ref: *32
+  - idea_ref: *22
+    topic_ref: *32
+  - idea_ref: *23
+    topic_ref: *32
+  - idea_ref: *25
+    topic_ref: *33
+  - idea_ref: *26
+    topic_ref: *33
+  - idea_ref: *27
+    topic_ref: *34
+  - idea_ref: *28
+    topic_ref: *35
   idea_image:
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514343/covoiturage2_rb82fm.jpg
-    idea_ref: *39
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514360/Dr-Bouti-645x400_yifqca.jpg
-    idea_ref: *42
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514384/Bikes-vs-cars-1-900x506_xmbg3u.jpg
-    idea_ref: *45
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514410/e397e41f31bd66d503a5e17ff7b0bca5_v2xli2.jpg
-    idea_ref: *47
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514433/xxl_don-giovanni-2015-roh-a2_zh1jkn.jpg
-    idea_ref: *48
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514448/870x489_fotolia-37009058-subscription-xxl_v04ei2.jpg
-    idea_ref: *50
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514467/d10057_vigymh.jpg
-    idea_ref: *53
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514485/logo_gc8o6b.png
-    idea_ref: *55
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514510/Quai-Navette-fluviale-Millenaire_fwfire.jpg
-    idea_ref: *58
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514546/000018574_imageArticlePrincipaleLarge_pggfpd.png
-    idea_ref: *59
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514564/2014_piste-cyclable_x2-sens_04_kpnna5.jpg
-    idea_ref: *62
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514580/Quai-Navette-fluviale-Millenaire_poaf2c.jpg
-    idea_ref: *63
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514602/Autoroutes_A41__26_A43_xcnuwa.jpg
-    idea_ref: *64
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514619/200911060736_vsbmju.jpg
-    idea_ref: *65
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514634/420px-Ville_souterraine_de_Montreal_04_gw3g6t.jpg
-    idea_ref: *66
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514651/1200px-VilloStationAlmostFull_wwtvzt.jpg
-    idea_ref: *68
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514670/picto-marquage-handicape-e1445681185643_gpebfs.jpg
-    idea_ref: *70
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514690/201310221553-full_bpuo8t.jpg
-    idea_ref: *71
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514705/1200px-Montmartre_Funicular_2C_Paris_22_June_2014_002_xigwjz.jpg
-    idea_ref: *72
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514725/cyclocable-brubakken-hil-ascenseur-velo_mqiju5.jpg
-    idea_ref: *73
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514746/Edgard-porte-velo_wu2wbr.jpg
-    idea_ref: *74
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514762/xxx__204x4_C_t1vncy.jpg
-    idea_ref: *75
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514793/mini-gps-gprs-localisation-sms-reseau-velo-voiture_kh9fny.jpg
-    idea_ref: *77
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514807/1200px-MP_Train_gwgvtt.jpg
-    idea_ref: *78
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515398/5.5.2_bike_garden_setting_4057_05152012_geoe3e.jpg
+    idea_ref: *20
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515416/empty_city_road_by_spooky_dream-d4avkt3_nhl6yf.jpg
+    idea_ref: *21
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515437/night-bus_l5xc4n.jpg
+    idea_ref: *22
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515453/Electric-Shuttle-Bus-SHT-T14-_ehqq6n.jpg
+    idea_ref: *23
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515469/norwich-market-city-centre-street-scene-in-the-evening-norfolk-england-D0KXFH_bixl7v.jpg
+    idea_ref: *24
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515489/1200px-NEA_recycling_bins_2C_Orchard_Road_pwpncj.jpg
+    idea_ref: *25
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515509/organic-waste_g0nyf1.jpg
+    idea_ref: *26
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515527/dans-un-premier-temps-il-s-agira-de-rappels-a-l-ordre_2245789_667x333_i86nvl.jpg
+    idea_ref: *27
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515547/4015932979_f495f4e5cf_z_o1cjo7.jpg
+    idea_ref: *28
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515565/zzzfirstfloor_zffpzz.jpg
+    idea_ref: *29
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515588/hqdefault_rltrx8.jpg
+    idea_ref: *30
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515609/emailing1_lv8sxz.jpg
+    idea_ref: *31
   comment:
   - body_multiloc:
-      fr: "<p>Super idée ; je vous soutiens ! </p>\n"
-    author_ref: *12
-    idea_ref: *39
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>Pourquoi pas, c&#39;est une bonne idée ! </p>\n"
-    author_ref: *10
-    idea_ref: *39
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>Pourquoi s&#39;arrêter en si bon chemin, nous pourrions également penser
-        à intégrer tout ceci dans une démarche de smartcity ... Qu&#39;en pensez-vous
-        ?</p>\n"
-    author_ref: *10
-    idea_ref: *39
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>Exellente idée.  Pour tous les étudiants empruntant la ligne 48, c&#39;est
-        la galère !  Une ligne téléphérique est la meilleure solution pour relier
-        la vallée au Sart-Tilman, mais pas seulement, également pour accéder à la
-        Citadelle, en partant de la place des Déportés.</p>\n"
-    author_ref: *34
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>Pourquoi pas faire d&#39;une pierre deux coups comme on dit?</p>\n"
-    author_ref: *35
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: |
-        <p>Au niveau du coût d&#39;un tel projet, cela ne passera jamais actuellement. On arrive déjà pas à faire un réseau de tram complet et cohérent...
-        Par contre, multiplier les liaisons en bus, via de nouvelles connexions (rive droite-ST,48, 58, Seraing-ST, 28, rail-ST via gare de Kinkempois ou gare de Tilff), enfin oser imaginer de nouveaux tracés de bus.</p>
-    author_ref: *43
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>Un départ des Guillemins serait complexe vu la densité des habitations
-        et le problème de survol. Un départ du Val Benoit permettrait d&#39;éviter
-        cet inconvénient en suivant une trajectoire similaire à celle de la ligne
-        à haute tension.  Autres avantages: arrêt de tram sur le site, à 800m du quai
-        de la gare, arrêt de bus sur le site, et permettrait un accès direct des 270
-        lkots à venir sur le site vers le campus.</p>\n"
-    author_ref: *36
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>J&#39;ai déjà proposé un téléphérique qui irait d&#39;Angleur à la rue
-        de la Belle Jardinière via la lande de Streupas (domaine universitaire). L&#39;avantage
-        est que la gare d&#39;Angleur est accessible  à  vélo via le Ravel ou via
-        les trains des lignes de l&#39;Ourthe et de la Vesdre, le téléphérique permettant
-        l&#39;accès aux vélos. Ce  téléphérique pourrait, comme le Poma de Laon, être
-        entièrement automatisé. Le problème est que tout le transport en commun est
-        géré par les Tec dont les subventions sont déjà insuffisantes...mais on peut
-        rêver ;-)</p>\n"
-    author_ref: *37
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>J&#39;ai déjà proposé un téléphérique qui irait d&#39;Angleur à la rue
-        de la Belle Jardinière via la lande de Streupas (domaine universitaire). L&#39;avantage
-        est que la gare d&#39;Angleur est accessible  à  vélo via le Ravel ou via
-        les trains des lignes de l&#39;Ourthe et de la Vesdre, le téléphérique permettant
-        l&#39;accès aux vélos. Ce  téléphérique pourrait, comme le Poma de Laon, être
-        entièrement automatisé. Le problème est que tout le transport en commun est
-        géré par les Tec dont les subventions sont déjà insuffisantes...mais on peut
-        rêver ;-)</p>\n"
-    author_ref: *38
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>La liaison rail-ST existe via ligne 28 qui est une des dernières lignes
-        créées par les Tec avec la 58 ;-)</p>\n"
-    author_ref: *57
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>La liaison rail-ST existe via ligne 28 qui est une des dernières lignes
-        créées par les Tec avec la 58 ;-)</p>\n"
-    author_ref: *41
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: |
-        <p>Concernant l’Université, autant continuer de la ramener en ville…
-        Pour ce qui est de la traversée des coteaux avec un téléphérique , le RER passera place Vivegnis avec la réouverture d&#39;une gare. Autant démarrer de là. On augmente grandement le nombre potentiel d&#39;usagers qui pourront aller à la Citadelle sans être venu en voiture car le RER ira loin en dehors de La ville.</p>
-    author_ref: *51
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>Je soutiens cette idée à 100%!</p>\n"
-    author_ref: *69
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: |
-        <p>Les bus4  et 1 sont en fin de vie.Non seulement vétustes,mais bruyants et polluants; et IL  EXISTE  des bus électriques:des projets&quot;pilotes&quot;  ont été mis sur pied pour certaine villes wallonnes,dont..Charleroi,Mons.
-        La ville attend tjs ceux promis.Il serait temps qu&#39;on se réveille..</p>
-    author_ref: *44
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>1er PROJET à garder !!</p>\n"
-    author_ref: *49
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>Habitant le quartier, je confirme les nuisances sonores. Certains chauffeurs
-        sont plus respectueux que d&#39;autres et pilotent ces engins avec un respect
-        certain pour les habitants des rues qu&#39;ils traversent. D&#39;autres poussent
-        des machines déjà à bout de souffle comme des bolides de course sur un circuit,
-        sauf qu&#39;ils sont en ville, au sein de la circulation et de rues habitées.
-        Leurs passages tonitruants font vibrer murs et planchers. Je pense que ces
-        véhicules ne doivent pas passer haut la main le test CO2 au contrôle technique...
-        On demande sans cesse aux citoyens de penser &quot;écologie&quot; et &quot;respect
-        de son prochain&quot;, pourquoi n&#39;en va-t-il pas de même lorsqu&#39;il
-        s&#39;agit des entreprises?</p>\n"
-    author_ref: *76
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>J&#39;oubliais : pourrait-on également adapter la taille des bus aux
-        rues dans lesquelles ils sont amenés à circuler?</p>\n"
-    author_ref: *40
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>Même avec l&#39;arrivée du tram, il restera des bus. Autant qu&#39;ils
-        soient électriques!</p>\n"
-    author_ref: *56
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>Bus hybrides ça me  paraît encore mieux car mieux adapté à notre relief</p>\n"
-    author_ref: *46
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>Je suis totalement pour!!! Aux Pays-Bas, les bus électriques existent
-        depuis longtemps...</p>\n"
-    author_ref: *10
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: |
-        <p>Une idée à tester. Mais n&#39;est-ce pas beaucoup d&#39;espace public, d&#39;argent (public?) dépensé pour protéger 5 vélos? Combien de vélos pourrait-on fabriquer avec autant de métal? Et nous n&#39;avons qu&#39;une planète :)</p>
-
-        <p>Quand je vois la densité des parkings à vélo aux Pays-Bas, ces infrastructures pour quelques vélos me semblent disproportionnées. Ce n&#39;est que mon avis.</p>
-
-        <p>J&#39;aime cependant beaucoup l&#39;idée de parquer les vélos à la place d&#39;une auto! :)</p>
-    author_ref: *12
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>Excellente idée!</p>\n"
+      en: "<p>Great idea, we stand behind you!</p>\n"
     author_ref: *13
-    idea_ref: 
+    idea_ref: *20
     parent_ref: 
   - body_multiloc:
-      fr: |
-        <p>Il me semble que nous n&#39;avons pas de &quot;pistes cyclables&quot; à La ville. A part un semblant Bvd de la Sauvenière ...</p>
-
-        <p>Les Hollandais ont des pistes cyclables.</p>
-
-        <p>A La ville, nous avons soit des RAVeL, espaces partagés avec les piétons, soit des &gt; pistes suggérées &gt; partagées avec les bus ou les autres véhicules.</p>
-
-        <p>Vivement les pistes cyclables! :)</p>
-    author_ref: *14
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: |
-        <p>Il est vrai que ces &quot;pistes&quot; sont partagées, mais vu la quantité d&#39;usagers de la route, cela devient difficile à éviter. Et il ne sera pas possible de réaménager entièrement la ville en 10 ans. Nos rues étroites sont déjà un problème pour une bande pour voiture et deux trottoirs... Par contre, en améliorant petit à petit les déplacements à vélo, il y aura de plus en plus d&#39;usagers et cela donnera une réelle légitimité à de nouveaux aménagements plus conséquents.</p>
-
-        <p>Quelques exemples d&#39;endroits où l&#39;on peut améliorer la cohabitation piéton-cyclistes : </p>
-
-        <p>1) Le chemin au milieu du Parc d&#39;Avroy. On remarquera deux feux pour vélo au croisement avec l&#39;Avenue Destenay. Evidemment, après cela, il faut un oeuil aguéri pour trouver où ces pistes continuent... mais elles sont là ! Quelques bordures rabaissées, un peu de tarmac ci et là, un peu de peinture au sol et de signalisation, permettraient de sensibiliser piétons et cyclistes.</p>
-
-        <p>2) Les trottoirs nouvellement aménagés Bvd Frère-Orban et suivants comprennent des pistes cyclables. Quelques vélos peints au sol les mettraient en valeur et aideraient à la signalisation. </p>
-
-        <p>Bref, le réseau est loin d&#39;être parfait, mais on peut, à frais limités, en tirer beaucoup plus !</p>
-    author_ref: *16
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>Même si sur le fond votre idée part d&#39;un constat qui a une part
-        de vérité, le ton est toujours aussi méprisant</p>\n"
+      en: "<p>I&#39;ve never seen you riding a bicycle...</p>\n"
     author_ref: *17
-    idea_ref: 
+    idea_ref: *20
     parent_ref: 
   - body_multiloc:
-      fr: "<p>Je vous rejoins sur ce propos... du moins, dans votre deuxième observation
-        ;)</p>\n"
-    author_ref: *18
-    idea_ref: 
+      en: "<p>Why stop there? The city also lacks bike stables. There should at least
+        be one near the river.</p>\n"
+    author_ref: *15
+    idea_ref: *20
     parent_ref: 
   - body_multiloc:
-      fr: "<p>Renard, en grand défenseur des cyclistes, je m&#39;attendais bien à
-        recevoir une critique de votre part. \nMerci,malgré  tout,  pour l&#39;intérêt
-        que vous portez à ma proposition.</p>\n"
-    author_ref: *20
-    idea_ref: 
+      en: "<p>What about those who work on weekends? There should be at least public
+        transportation available...</p>\n"
+    author_ref: *17
+    idea_ref: *21
     parent_ref: 
   - body_multiloc:
-      fr: "<p>Comme dit Renard, même si votre proposition n&#39;est pas infondée,
-        votre agressivité déforce vos propos.\n&quot;bobos écolos frustrés&quot;\nNon
-        mais franchement, abstenez vous plutôt que de déverser votre ressenti dénué
-        de pertinence. \nVous qui êtes si déterminés à améliorer La ville, commencez
-        peut être par vous même.</p>\n"
-    author_ref: *21
-    idea_ref: 
+      en: "<p>It would also be nice for the kids, it gives them more independance
+        and us, parents, don&#39;t have to go pick them up at midnight after the cinema!</p>\n"
+    author_ref: *13
+    idea_ref: *22
     parent_ref: 
   - body_multiloc:
-      fr: "<p>Quelle agressivité relevez vous dans &quot;bobos écolos frustrés &quot;
-        ? Aucune! A moins que vous ne vous sentiez visé par mon constat, aucune agressivité
-        n&#39;émane de la rédaction de ce sujet!  Mais merci pour votre soutien,  puisque
-        je ne peux que constater que vous êtes tous d&#39;accord sur le fond. La forme...
-        chacun a sa manière pour vendre son projet.  \U0001F609  La mienne est percutante
-        ; est faite pour marquer les esprits.  Et ca marche manifestement  ... lollllllll</p>\n"
-    author_ref: *22
-    idea_ref: 
+      en: "<p>It would be a great way to promote local creators and make the city
+        centre experience more fun I agree!</p>\n"
+    author_ref: *19
+    idea_ref: *24
     parent_ref: 
   - body_multiloc:
-      fr: "<p>Malheureusement, beaucoup de cyclistes utilisent de leur qualité &quot;d&#39;usagers
-        faibles&quot; pour se permettre beaucoup de choses...\nCependant, pour que
-        l&#39;idée fonctionne, il faut que le service de d&#39;immatriculation soit
-        rapide (afin d&#39;éviter le découragement de certains cyclistes) et imaginer
-        des emplacements partout dans la ville où il est possibles de louer des vélos
-        (via des bornes où le citoyen doit passer sa carte d&#39;identité pour prendre
-        le vélo)... \nEvidemment, une sensibilisation à tous les citoyens pour le
-        danger du non respect due code de la route en tant que cycliste est également
-        nécessaire. Par ex, à Louvain, je sais que toutes les écoles primaires organisent
-        régulièrement des promenades en vélos avec leur classes (groupe d&#39;une
-        vingtaines d&#39;enfants, 3-4 responsables)...</p>\n"
-    author_ref: *24
-    idea_ref: 
+      en: "<p>Cool idea but it would have to be a a kind of event that is really engaging,
+        like a family day? Something people are excited to go to</p>\n"
+    author_ref: *19
+    idea_ref: *25
     parent_ref: 
   - body_multiloc:
-      fr: |
-        <p>Le problème ne vient pas des cyclistes mais des pistes cyclables. La plupart du temps, il est impossible d&#39;aller d&#39;un point A à un point B sans devoir passer par un trottoir car la piste cyclable s&#39;arrête dessus. Le cycliste qui veut continuer sa route se retrouve donc obligé de continuer sur un trottoir jusqu&#39;à trouver un accès à la route (je rappelle que beaucoup de trottoir sont très élevés, donc descendre sur la route en vélo quand on est sur le trottoir peut être dangereux).
-        Pour les rues à sens uniques, c&#39;est la même chose : les pistes cyclables ne sont pas assez nombreuses. Si un détour de plusieurs centaines de mètre correspond à une ou deux minutes pour une voiture, cela peut se transformer en dix minutes pour un vélo ! Sans compter que certains détours induisent de monter dans une rue ce qui est parfois fastidieux pour un vélo.
-        Enfin, en vélo, on est constamment soumis à la pollution. En tant que cycliste urbaine, je roule plus de 50 % du temps dans la circulation, à mes risques et périls. Lorsque vous êtes arrêté à un feu rouge derrière une voiture voire un bus, l&#39;air devient irrespirable et ce sont les cyclistes qui paient de leur santé, pour la pollution des autres.
-        Je ne dis pas que certains comportements ne sont pas dangereux. Je dis simplement que si les itinéraires cyclables étaient mieux faits, les cyclistes ne perdraient surement pas leur temps à slalomer entre les piétons ou à risquer leur vie dans la circulation.</p>
-    author_ref: *26
-    idea_ref: 
+      en: "<p>It&#39;s a very good idea. I have started to do this myself in my garden.
+        But I know that not everybody has this possibility or they don&#39;t even
+        know it&#39;s possible. It would be a good thing to raise awareness around
+        this also.</p>\n"
+    author_ref: *13
+    idea_ref: *26
     parent_ref: 
   - body_multiloc:
-      fr: "<p>\U0001F44D</p>\n"
-    author_ref: *61
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>Le fait de permettre aux voitures de se garer &quot;à moitié&quot; sur
-        le trottoir ne va pas améliorer la sécurité des piétons, que du contraire!
-        Cela rétrécirait encore le passage qui leur est laissé... Je ne comprends
-        pas votre idée.</p>\n"
-    author_ref: *27
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>Merci pour ces explications! Je comprends mieux. De fait, c&#39;est
-        une solution.</p>\n"
-    author_ref: *28
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>Il faut vraiment un plan d&#39;ensemble pour le parking dans les quartiers...
-        et des solutions au cas par cas ! Réserver des espaces riverains en suffisance
-        (avec de beaux aménagements, pas à la 6-4-2, que ça donne envie aussi) et
-        centraliser dans des parkings &quot;par quartier&quot; les extérieurs. Parce
-        qu&#39;il ne faut pas non plus rendre impossible le parking dans les quartiers
-        pour les extérieurs. \nSi on autorise le parking à moitié sur trottoir pourquoi
-        ne pas aménager directement le trottoir en le rétrécissant? La place est quand
-        même perdue pour les piétons, non?</p>\n"
-    author_ref: *29
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>Pourquoi nous faut il une place de parking devant chez soi en ville
-        je pense qu&#39;il n&#39;est pas nécessaire d&#39;avoir une voiture ...</p>\n"
-    author_ref: *30
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>Devant chez soi? Pas besoin de voiture en ville? \n - La question c&#39;est
-        le stationnement en sécurité pour les usagers faibles devant chez soi ou pas.
-        Il y a des professions qui requièrent une voiture qu&#39;il faut bien stationner.
-        Il y a des personnes qui sans un accès proche de leur domicile ne peuvent
-        se déplacer, s&#39;approvisionner, se rendre à des soins. \nUne bonne infrastructure
-        bien organisée pallie au stationnement sauvage.</p>\n"
-    author_ref: *31
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>Promouvoir de véritables zones de stationnement au sein de la ville
-        pour ses habitants afin de réduire le stationnement en bordure des trottoirs
-        ou sur les trottoirs devient urgent, il est vrai. La division - parfois excessive
-        - des habitations en des logements multiples et qui n&#39;offrent aucune possibilité
-        de stationnement (garage, place de parking) pose également problème. Personnellement,
-        je possède un véhicule. Je vis dans une rue où les places de stationnements
-        sont payantes. Les quelques places de stationnement &quot;riverains&quot;
-        sont toujours occupées. Je loue donc un emplacement de stationnement dans
-        un parking privé. Mais tout le monde n&#39;a pas forcément les moyens financiers
-        de verser une petite centaine d&#39;euros chaque mois pour un emplacement
-        de parking... Je trouve l&#39;idée de parkings de délestage à l&#39;extérieur
-        du centre tout-à-fait judicieuse. Je ne comprends même pas pourquoi cela n&#39;a
-        pas encore été mis en place?!?  Peut-être parce qu&#39;il faudrait repenser
-        les transports en communs - et peut-être aussi le coût d&#39;un ticket de
-        bus pour un trajet en zone urbaine... De plus, les aménagements de stationnements
-        pensés par la Ville dernièrement dans certaines rues s&#39;avèrent précaires.
-        Dans la rue Wazon, par exemple, on a dessiné des emplacements de stationnement
-        en quinconce et à cheval sur les trottoirs. Cela a été tellement bien pensé
-        qu&#39;il est difficile de circuler à plus de trente kilomètres heures dans
-        cette rue, et qu&#39;il vous faut monter sur le trottoir lorsque vous croisez
-        un autobus. Et on vous parlera de mobilité et de sécurité des piétons... Il
-        existe, un peu partout dans cette ville, des parkings inutilisés les WE par
-        les bureaux/entreprises privés. Il existe des espaces arrières de bâtiments
-        inexploités, des espaces en friche qui servent rapidement de décharge pour
-        déchets en tous genres, des infrastructures qui pourraient être aménagées
-        en zones de stationnement (les dessous des ponts de chemins de fer dans le
-        laveu, par exemple). Il faudrait recenser, réfléchir et aménager... Et il
-        n&#39;est pas impossible de penser emplacement de stationnement et végétation
-        :-)</p>\n"
-    author_ref: *60
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>Que de bonnes idées</p>\n"
-    author_ref: *67
-    idea_ref: 
-    parent_ref: 
-  - body_multiloc:
-      fr: "<p>Actuellement les voitures sont parfois garées avec les 4 roues sur le
-        trottoir ou presque contre les façades. En installant des plots à 1,20 mètre
-        des façades il y aurait assez de place pour les piétons et les PMR. L&#39;espace
-        pris sur le trottoir libérerait aussi la chaussée.</p>\n"
-    author_ref: *54
-    idea_ref: 
+      en: "<p>I really like the idea. I am not a dog owner myself but as a parent,
+        it is sometimes scary to see dogs running around kids that are playing on
+        the playground. Having this space for the dogs to run freely would also be
+        a peace of mind for us!</p>\n"
+    author_ref: *17
+    idea_ref: *27
     parent_ref: 
   event:
   - title_multiloc:
-      fr: Fête du vélo
+      en: Pub Crawl
     description_multiloc:
-      fr: "<p>Venez fêter avec nous la grand fête annuelle du vélo en ville! Tout
-        véhicule est accepté à condition qu&#39;il roule sans émettre la moindre pollution.
-        </p>\n"
+      en: |
+        <p>Grab your bicycle and go on a pub crawl with us. Subscription fee is 15€, all drinks are free!</p>
+
+        <p>No animals allowed.</p>
     location_multiloc:
-      fr: Grand Place
+      en: Many different pubs, we start from the central place.
     project_ref: *6
-    start_at: 2018-07-30
-    end_at: 2018-07-31
+    start_at: 2018-06-09
+    end_at: 2018-06-10
   - title_multiloc:
-      fr: Théâtre de rue
+      en: Sunday Brunch in the city centre
     description_multiloc:
-      fr: "<p>Les &quot;Arrhes Hissent Ton Char&quot; s&#39;arrêtent dans notre ville
-        pour un spectacle endiablé. Promenez-vous dans le centre-ville pour admirer
-        cette troupe venue de l&#39;Est. Drôle et acrobatiques, cette troupe saura
-        vous donner la chaire de poule et des crises de rires. </p>\n"
+      en: "<p>Let&#39;s all meet together at the coffee shop on the main square to
+        discuss all the ideas we have to make the city centre more lively.</p>\n"
     location_multiloc:
-      fr: 
+      en: The coffee shop on the main square
+    project_ref: *7
+    start_at: 2017-12-10
+    end_at: 2017-12-11
+  - title_multiloc:
+      en: Walk in Abbey Park
+    description_multiloc:
+      en: "<p>What better way to imagine the future of the park than go through it
+        togethe and share our ideas in a spacial manner? It is also a nice way to
+        meet all the nature enthusiasts who are involved in this project!</p>\n"
+    location_multiloc:
+      en: Entrance of Abbey Park
     project_ref: *9
-    start_at: 2017-09-10
-    end_at: 2017-09-11
+    start_at: 2017-04-20
+    end_at: 2017-04-21
   phase:
   - title_multiloc:
-      fr: Récolte d'idéees
+      en: Collecting ideas
     description_multiloc:
-      fr: "<p>La première phase consiste à récolter tous les projets auprès des citoyens</p>\n"
+      en: "<p>Share your ideas to fight global warming within the city, this is your
+        time to brainstorm and discuss around your ideas!</p>\n"
     project_ref: *6
-    start_at: 2017-04-08
-    end_at: 2017-06-14
+    start_at: 2017-12-31
+    end_at: 2018-02-07
   - title_multiloc:
-      fr: Votes
+      en: Vote period
     description_multiloc:
-      fr: "<p>Cette phase laisse le temps aux citoyens de plébiciter les idées qui
-        leur semblent les plus pertinentes et réalistes</p>\n"
+      en: "<p>This period is dedicated to assessing which are the most popular proposals:
+        like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
     project_ref: *6
-    start_at: 2017-06-14
-    end_at: 2017-08-03
+    start_at: 2018-02-07
+    end_at: 2018-05-17
   - title_multiloc:
-      fr: Résultats de votes
+      en: Presentation of most succesful ideas at the townhall
     description_multiloc:
-      fr: "<p>Les résultats du vote citoyen sont annocés</p>\n"
+      en: "<p>The ideas who gathered the most positive votes will be added to the
+        city agenda and presented at the townhall by the citizen who launched it</p>\n"
     project_ref: *6
-    start_at: 2017-08-03
-    end_at: 2017-10-21
+    start_at: 2018-05-17
+    end_at: 2018-08-29
   - title_multiloc:
-      fr: Implémentation des projets retenus
+      en: Implementation of ideas
     description_multiloc:
-      fr: "<p>Mise en place des projets retenus </p>\n"
+      en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
     project_ref: *6
-    start_at: 2017-10-21
-    end_at: 2017-10-23
+    start_at: 2018-08-29
+    end_at: 2018-12-01
   - title_multiloc:
-      fr: Récolte d'idéees
+      en: Collecting ideas
     description_multiloc:
-      fr: "<p>La première phase consiste à récolter tous les projets auprès des citoyens</p>\n"
+      en: "<p>Share your ideas to make the city centre more lively, this is your time
+        to brainstorm and discuss around your ideas!</p>\n"
     project_ref: *7
-    start_at: 2017-10-23
-    end_at: 2017-11-10
+    start_at: 2018-12-01
+    end_at: 2019-01-16
   - title_multiloc:
-      fr: Votes
+      en: Vote period
     description_multiloc:
-      fr: "<p>Cette phase laisse le temps aux citoyens de plébiciter les idées qui
-        leur semblent les plus pertinentes et réalistes</p>\n"
+      en: "<p>This period is dedicated to assessing which are the most popular proposals:
+        like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
     project_ref: *7
-    start_at: 2017-11-10
-    end_at: 2018-01-31
+    start_at: 2019-01-16
+    end_at: 2019-01-24
   - title_multiloc:
-      fr: Résultats de votes
+      en: Presentation of most succesful ideas at the townhall
     description_multiloc:
-      fr: "<p>Les résultats du vote citoyen sont annocés</p>\n"
+      en: "<p>The ideas who gathered the most positive votes will be added to the
+        city agenda and presented at the townhall by the citizen who launched it</p>\n"
     project_ref: *7
-    start_at: 2018-01-31
-    end_at: 2018-03-12
+    start_at: 2019-01-24
+    end_at: 2019-02-24
   - title_multiloc:
-      fr: Implémentation des projets retenus
+      en: Implementation of ideas
     description_multiloc:
-      fr: "<p>Mise en place des projets retenus </p>\n"
+      en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
     project_ref: *7
-    start_at: 2018-03-12
-    end_at: 2018-06-16
+    start_at: 2019-02-24
+    end_at: 2019-06-15
   - title_multiloc:
-      fr: Récolte d'idéees
+      en: Collecting ideas
     description_multiloc:
-      fr: "<p>La première phase consiste à récolter tous les projets auprès des citoyens</p>\n"
+      en: "<p>Share your ideas to improve the way we manage garbage, this is your
+        time to brainstorm and discuss around your ideas!</p>\n"
     project_ref: *8
-    start_at: 2018-06-16
-    end_at: 2018-06-22
+    start_at: 2019-06-15
+    end_at: 2019-07-07
   - title_multiloc:
-      fr: Votes
+      en: Vote period
     description_multiloc:
-      fr: "<p>Cette phase laisse le temps aux citoyens de plébiciter les idées qui
-        leur semblent les plus pertinentes et réalistes</p>\n"
+      en: "<p>This period is dedicated to assessing which are the most popular proposals:
+        like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
     project_ref: *8
-    start_at: 2018-06-22
-    end_at: 2018-07-12
+    start_at: 2019-07-07
+    end_at: 2019-08-02
   - title_multiloc:
-      fr: Résultats de votes
+      en: Presentation of most succesful ideas at the townhall
     description_multiloc:
-      fr: "<p>Les résultats du vote citoyen sont annocés</p>\n"
+      en: "<p>The ideas who gathered the most positive votes will be added to the
+        city agenda and presented at the townhall by the citizen who launched it</p>\n"
     project_ref: *8
-    start_at: 2018-07-12
-    end_at: 2018-08-12
+    start_at: 2019-08-02
+    end_at: 2019-09-09
   - title_multiloc:
-      fr: Implémentation des projets retenus
+      en: Implementation of ideas
     description_multiloc:
-      fr: "<p>Mise en place des projets retenus </p>\n"
+      en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
     project_ref: *8
-    start_at: 2018-08-12
-    end_at: 2018-10-29
+    start_at: 2019-09-09
+    end_at: 2019-12-03
+  - title_multiloc:
+      en: Collecting ideas
+    description_multiloc:
+      en: "<p>Share your ideas on how the Abbey Park should be reorganised, this is
+        your time to brainstorm and discuss around your ideas!</p>\n"
+    project_ref: *9
+    start_at: 2019-12-03
+    end_at: 2020-02-17
+  - title_multiloc:
+      en: Vote period
+    description_multiloc:
+      en: "<p>This period is dedicated to assessing which are the most popular proposals:
+        like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
+    project_ref: *9
+    start_at: 2020-02-17
+    end_at: 2020-03-06
+  - title_multiloc:
+      en: Analysis period
+    description_multiloc:
+      en: "<p>The most voted ideas will be examined and included (or not) into the
+        mapping of the new park</p>\n"
+    project_ref: *9
+    start_at: 2020-03-06
+    end_at: 2020-03-14
+  - title_multiloc:
+      en: Start of the reshaping of the park
+    description_multiloc:
+      en: "<p>The selected ideas will be put into place and implemented in the new
+        park</p>\n"
+    project_ref: *9
+    start_at: 2020-03-14
+    end_at: 2020-04-15
+  - title_multiloc:
+      en: Collecting ideas
+    description_multiloc:
+      en: "<p>Share your ideas to make the city more modern and digital, this is your
+        time to brainstorm and discuss around your ideas!</p>\n"
+    project_ref: *10
+    start_at: 2020-04-15
+    end_at: 2020-08-10
+  - title_multiloc:
+      en: Vote period
+    description_multiloc:
+      en: "<p>This period is dedicated to assessing which are the most popular proposals:
+        like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
+    project_ref: *10
+    start_at: 2020-08-10
+    end_at: 2020-09-21
+  - title_multiloc:
+      en: Presentation of most succesful ideas at the townhall
+    description_multiloc:
+      en: "<p>The ideas who gathered the most positive votes will be added to the
+        city agenda and presented at the townhall by the citizen who launched it</p>\n"
+    project_ref: *10
+    start_at: 2020-09-21
+    end_at: 2020-12-16
+  - title_multiloc:
+      en: Implementation of ideas
+    description_multiloc:
+      en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
+    project_ref: *10
+    start_at: 2020-12-16
+    end_at: 2021-01-01
