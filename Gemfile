@@ -8,11 +8,11 @@ end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 # gem 'rails', '~> 5.1.0.beta1'
-gem 'rails', '~> 5.1.4'
+gem 'rails', '~> 5.1.5'
 # Use postgresql as the database for Active Record
-gem 'pg', '~> 0.18'
+gem 'pg' # , '~> 0.18'
 # Use Puma as the app server
-gem 'puma', '~> 3.7'
+gem 'puma' # , '~> 3.7'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
@@ -58,7 +58,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "pundit", "~> 1.1.0"
 gem "active_model_serializers", "~> 0.10.7"
 gem "knock", "~> 2.1.1", github: 'ngty/knock', ref: '97fb32f59b2027c808964b875be2fff22400da1d'
-gem "sidekiq", "~> 5.0.5"
+gem "sidekiq" # , "~> 5.0.5"
 gem "sidekiq-cron", "~> 0.6.3"
 gem "apartment", "~> 2.1.0"
 gem "apartment-sidekiq", "~> 1.2.0"
@@ -70,21 +70,21 @@ gem "rest-client"
 gem "fog-aws"
 gem "mini_magick"
 gem "carrierwave-base64", "~> 2.6"
-gem "awesome_nested_set", "~> 3.1.3"
+gem "awesome_nested_set" # , "~> 3.1.3"
 gem "pg_search", "~> 2.1.2"
 gem "counter_culture", "~> 1.0"
 gem "liquid", "~> 4.0"
-gem "premailer-rails", "~> 1.9.6"
-gem 'groupdate', "~> 3.2.0"
+gem "premailer-rails" # , "~> 1.9.6"
+gem 'groupdate' # , "~> 3.2.0"
 gem 'rubyzip', '~> 1.2.1'
 gem 'axlsx', '2.1.0.pre', github: 'randym/axlsx', ref: 'c8ac844572b25fda358cc01d2104720c4c42f450'
 gem 'rgeo-geojson'
 
-gem 'activerecord-postgis-adapter', '~> 5.0'
+gem 'activerecord-postgis-adapter' # , '~> 5.2'
 gem 'simple_segment', '~> 0.2.1'
 gem 'okcomputer'
 gem 'sentry-raven'
-gem 'omniauth', '~> 1.7.1'
+gem 'omniauth' # , '~> 1.7.1'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
