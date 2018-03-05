@@ -2,15 +2,14 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import linkifyHtml from 'linkifyjs/html';
 
 // components
-import Avatar from 'components/Avatar';
+import Author from './Author';
 import Modal from 'components/UI/Modal';
 import SpamReportForm from 'containers/SpamReport';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import UserName from 'components/UI/UserName';
 
 // services
 import { localeStream } from 'services/locale';
@@ -20,7 +19,6 @@ import { userByIdStream, IUser } from 'services/users';
 import { authUserStream } from 'services/auth';
 
 // i18n
-import { FormattedRelative } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages';
@@ -29,79 +27,59 @@ import messages from './messages';
 import styled from 'styled-components';
 import { transparentize, darken } from 'polished';
 import { Locale } from 'typings';
+import { media } from 'utils/styleUtils';
+
+const StyledMoreActionsMenu: any = styled(MoreActionsMenu)`
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  opacity: 0;
+  transition: opacity 100ms ease-out;
+
+  ${media.smallerThanMaxTablet`
+    opacity: 1;
+  `}
+`;
 
 const CommentContainer = styled.div`
-  margin-top: 0px;
-  margin-bottom: 0px;
-  padding: 30px;
-  position: relative;
-  border: none;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
   border-top: solid 1px #e4e4e4;
-  background: #f8f8f8;
-`;
-
-const AuthorContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 0;
-  margin-bottom: 20px;
-  padding: 0;
-`;
-
-const AuthorAvatar = styled(Avatar)`
-  width: 25px;
-  height: 25px;
-  margin-right: 8px;
-`;
-
-const AuthorMeta = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
-const AuthorNameContainer = styled.div `
-  color: #333;
-  font-size: 14px;
-  font-weight: 400;
-  margin-right: 35px;
-`;
-
-const AuthorName = styled(Link)`
-  color: ${(props) => props.theme.colors.clBlue};
-  font-size: 14px;
-  text-decoration: none;
-  cursor: pointer;
+  position: relative;
+  background: #fff;
 
   &:hover {
-    color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
-    text-decoration: underline;
+    ${StyledMoreActionsMenu} {
+      opacity: 1;
+    }
   }
 `;
 
-const TimeAgo = styled.div`
-  color: #585858;
-  color: #999;
-  font-size: 13px;
-  line-height: 17px;
-  font-weight: 300;
-  margin-top: 2px;
+const StyledAuthor = styled(Author)`
+  margin-bottom: 20px;
 `;
 
 const CommentBody = styled.div`
-  color: #6B6B6B;
-  font-size: 15px;
-  line-height: 22px;
-  font-weight: 400;
+  color: #333;
+  font-size: 17px;
+  line-height: 25px;
+  font-weight: 300;
   padding: 0;
 
   span,
   p {
-    white-space: pre-wrap;
+    /* white-space: pre-wrap;
     word-break: normal;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    hyphens: auto;
+    hyphens: auto; */
     margin-bottom: 25px;
+
+    &:last-child {
+      margin-bottom: 0px;
+    }
   }
 
   a {
@@ -118,12 +96,6 @@ const CommentBody = styled.div`
   }
 `;
 
-const StyledMoreActionsMenu: any = styled(MoreActionsMenu)`
-  position: absolute;
-  top: 5px;
-  right: 15px;
-`;
-
 type Props = {
   commentId: string;
 };
@@ -138,7 +110,7 @@ type State = {
 };
 
 export default class ChildComment extends React.PureComponent<Props, State> {
-  state: State;
+  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -154,7 +126,7 @@ export default class ChildComment extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { commentId } = this.props;
     const locale$ = localeStream().observable;
     const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
@@ -240,22 +212,7 @@ export default class ChildComment extends React.PureComponent<Props, State> {
             actions={this.state.moreActions}
           />
 
-          <AuthorContainer>
-            <AuthorAvatar userId={authorId} size="small" onClick={this.goToUserProfile} />
-            <AuthorMeta>
-              <AuthorNameContainer>
-                <FormattedMessage
-                  {...messages.childCommentAuthor}
-                  values={{
-                    authorNameComponent: <AuthorName to={author ? `/profile/${author.data.attributes.slug}` : ''}><UserName user={author} /></AuthorName>
-                  }}
-                />
-              </AuthorNameContainer>
-              <TimeAgo>
-                <FormattedRelative value={createdAt} />
-              </TimeAgo>
-            </AuthorMeta>
-          </AuthorContainer>
+          <StyledAuthor authorId={authorId} createdAt={createdAt} message="childCommentAuthor" />
 
           <CommentBody onClick={this.captureClick}>
             <span dangerouslySetInnerHTML={{ __html: processedCommentText }} />

@@ -2,9 +2,11 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs';
 import { currentTenantStream, ITenantData } from 'services/tenant';
+import { authUserStream } from 'services/auth';
 import { watchEvents, watchPageChanges, watchIdentification } from 'utils/analytics/sagas';
 import snippet from '@segment/snippet';
 import { CL_SEGMENT_API_KEY } from 'containers/App/constants';
+import { isAdmin } from 'services/permissions/roles';
 
 interface IEvent {
   name: string;
@@ -28,6 +30,7 @@ interface IPageChange {
 }
 
 const tenant$ = currentTenantStream().observable;
+const authUser$ = authUserStream().observable;
 const events$ = new Rx.Subject<IEvent>();
 const identifications$ = new Rx.Subject<IIdentification>();
 const pageChanges$ = new Rx.Subject<IPageChange>();
@@ -56,6 +59,7 @@ Rx.Observable.combineLatest(tenant$, identifications$).subscribe(([tenant, ident
       identification.userId,
       addTenantInfo(identification.properties, tenant.data),
     );
+
     window['analytics'].group(
       tenant && tenant.data.id,
       tenant && {
@@ -64,6 +68,14 @@ Rx.Observable.combineLatest(tenant$, identifications$).subscribe(([tenant, ident
         type: tenant.data.attributes.settings.core.organization_type
       }
     );
+  }
+});
+
+authUser$.subscribe((authUser) => {
+  if (window && window['analytics']) {
+    const userId = (authUser ? authUser.data.id : '');
+    const hideMessenger = (authUser ? !isAdmin(authUser) : true);
+    window['analytics'].identify(userId, {}, { Intercom: { hideDefaultLauncher: hideMessenger } });
   }
 });
 

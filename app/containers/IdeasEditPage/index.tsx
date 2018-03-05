@@ -18,7 +18,6 @@ import { ideaByIdStream, updateIdea } from 'services/ideas';
 import { ideaImageStream, addIdeaImage, deleteIdeaImage } from 'services/ideaImages';
 import { projectByIdStream, IProject } from 'services/projects';
 import { topicByIdStream, ITopic } from 'services/topics';
-import { IUser } from 'services/users';
 import { authUserStream } from 'services/auth';
 import { hasPermission } from 'services/permissions';
 
@@ -40,7 +39,7 @@ import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  background: #f8f8f8;
+  background: #f9f9fa;
 `;
 
 const FormContainer = styled.div`
@@ -122,7 +121,7 @@ export default class IdeaEditPage extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { ideaId } = this.props.params;
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
@@ -153,7 +152,7 @@ export default class IdeaEditPage extends React.PureComponent<Props, State> {
         return hasPermission({
           item: idea.data,
           action: 'edit',
-          user: (authUser as IUser),
+          user: (authUser || undefined),
           context: idea.data
         });
       });

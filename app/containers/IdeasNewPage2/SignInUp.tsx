@@ -26,7 +26,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   border-top: solid 1px #ddd;
-  background: #f8f8f8;
+  background: #f9f9fa;
   position: relative;
   overflow: hidden;
 
@@ -151,7 +151,7 @@ export default class SignInUp extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [

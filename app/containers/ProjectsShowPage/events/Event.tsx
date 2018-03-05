@@ -30,12 +30,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   border-radius: 5px;
-  border: solid 1px #e0e0e0;
+  border: solid 1px #e4e4e4;
   background: #fff;
-
-  &.past {
-    border-color: #eaeaea;
-  }
 
   ${media.smallerThanMaxTablet`
     flex-direction: column;
@@ -119,8 +115,6 @@ const EventInformation = styled.div`
   margin-top: 15px;
   margin-bottom: 15px;
   margin-left: 40px;
-  padding-right: 60px;
-  border-right: 1px solid #e0e0e0;
 
   &.past {
     opacity: 0.6;
@@ -166,6 +160,8 @@ const EventLocationWrapper = styled.div`
   padding: 20px;
   display: flex;
   align-items: center;
+  border-left: 1px solid #e0e0e0;
+  margin-left: 60px;
 
   &.past {
     opacity: 0.6;
@@ -176,8 +172,10 @@ const EventLocationWrapper = styled.div`
     order: 2;
     align-items: left;
     padding: 0;
+    margin: 0;
     margin-top: 30px;
     margin-bottom: 15px;
+    border: none;
   `}
 `;
 
@@ -194,9 +192,9 @@ const EventLocation = styled.div`
 `;
 
 const MapIcon = styled(Icon)`
-  height: 30px;
+  height: 28px;
   fill: #666;
-  margin-right: 15px;
+  margin-right: 20px;
 `;
 
 const EventLocationInner = styled.div`
@@ -244,7 +242,7 @@ export default class Event extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { eventId } = this.props;
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
@@ -276,26 +274,27 @@ export default class Event extends React.PureComponent<Props, State> {
       const eventLocationAddress = getLocalized(event.data.attributes.location_multiloc, locale, currentTenantLocales);
       const startAtMoment = moment(event.data.attributes.start_at);
       const endAtMoment = moment(event.data.attributes.end_at);
-      let startAtTime = startAtMoment.format('HH:mm');
-      let endAtTime = endAtMoment.format('HH:mm');
+      const startAtIsoDate = moment(event.data.attributes.start_at).format('YYYY-MM-DD');
+      const endAtIsoDate = moment(event.data.attributes.end_at).format('YYYY-MM-DD');
+      let startAtTime = startAtMoment.format('LT');
+      let endAtTime = endAtMoment.format('LT');
       const startAtDay = startAtMoment.format('DD');
       const endAtDay = endAtMoment.format('DD');
       const startAtMonth = startAtMoment.format('MMM');
       const endAtMonth = endAtMoment.format('MMM');
       const startAtYear = startAtMoment.format('YYYY');
-      // const endAtYear = endAtMoment.format('YYYY');
-      const isMultiDayEvent = (startAtDay !== endAtDay);
+      const isMultiDayEvent = (startAtIsoDate !== endAtIsoDate);
       let eventStatus: 'past' | 'present' | 'future' = 'past';
 
-      if (moment().diff(moment(event.data.attributes.start_at, 'YYYY-MM-DD'), 'days') < 0) {
+      if (moment().diff(startAtMoment, 'days') < 0) {
         eventStatus = 'future';
-      } else if (moment().diff(moment(event.data.attributes.start_at, 'YYYY-MM-DD'), 'days') === 0) {
+      } else if (moment().diff(endAtMoment, 'days') === 0) {
         eventStatus = 'present';
       }
 
       if (isMultiDayEvent) {
-        startAtTime = startAtMoment.format('D MMM, HH:mm');
-        endAtTime = endAtMoment.format('D MMM, HH:mm');
+        startAtTime = startAtMoment.format('D MMM LT');
+        endAtTime = endAtMoment.format('D MMM LT');
       }
 
       return (
@@ -340,20 +339,20 @@ export default class Event extends React.PureComponent<Props, State> {
           </EventInformation>
 
           {eventLocationAddress &&
-          <EventLocationWrapper className={eventStatus}>
-            <EventLocation>
-              <MapIcon name="mapmarker" />
+            <EventLocationWrapper className={eventStatus}>
+              <EventLocation>
+                <MapIcon name="mapmarker" />
 
-              <EventLocationInner>
-                <EventLocationLabel>
-                  <FormattedMessage {...messages.location} />
-                </EventLocationLabel>
-                <EventLocationAddress>
-                  {eventLocationAddress}
-                </EventLocationAddress>
-              </EventLocationInner>
-            </EventLocation>
-          </EventLocationWrapper>
+                <EventLocationInner>
+                  <EventLocationLabel>
+                    <FormattedMessage {...messages.location} />
+                  </EventLocationLabel>
+                  <EventLocationAddress>
+                    {eventLocationAddress}
+                  </EventLocationAddress>
+                </EventLocationInner>
+              </EventLocation>
+            </EventLocationWrapper>
           }
         </Container>
       );

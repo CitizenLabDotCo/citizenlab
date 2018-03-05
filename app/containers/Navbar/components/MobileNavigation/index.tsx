@@ -15,11 +15,12 @@ const Container = styled.div`
   padding-left: 10px;
   padding-right: 10px;
   background: #fff;
-  box-shadow: 0px -1px 3px rgba(0, 0, 0, 0.15);
+  /* background: #f9f9fa; */
+  border-top: solid 1px #ccc;
   display: flex;
   align-items: stretch;
   justify-content: space-evenly;
-  z-index: 10000;
+  z-index: 100000;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -87,21 +88,21 @@ export default class MobileNavigation extends React.PureComponent<{}, {}> {
           </NavigationLabel>
         </NavigationItem>
 
-        <NavigationItem to="/ideas" activeClassName="active">
-          <NavigationIconWrapper>
-            <NavigationIcon name="idea" />
-          </NavigationIconWrapper>
-          <NavigationLabel>
-            <FormattedMessage {...messages.mobilePageIdeas} />
-          </NavigationLabel>
-        </NavigationItem>
-
         <NavigationItem to="/projects" activeClassName="active">
           <NavigationIconWrapper>
             <NavigationIcon name="project" />
           </NavigationIconWrapper>
           <NavigationLabel>
             <FormattedMessage {...messages.mobilePageProjects} />
+          </NavigationLabel>
+        </NavigationItem>
+
+        <NavigationItem to="/ideas" activeClassName="active">
+          <NavigationIconWrapper>
+            <NavigationIcon name="idea" />
+          </NavigationIconWrapper>
+          <NavigationLabel>
+            <FormattedMessage {...messages.mobilePageIdeas} />
           </NavigationLabel>
         </NavigationItem>
 

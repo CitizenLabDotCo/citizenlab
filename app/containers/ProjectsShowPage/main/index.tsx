@@ -3,8 +3,11 @@ import * as Rx from 'rxjs/Rx';
 import { isString } from 'lodash';
 import 'moment-timezone';
 
+// router
+import { browserHistory } from 'react-router';
+
 // components
-import ProjectPhasesPage from '../phases';
+import ProjectTimelinePage from '../process';
 import ProjectInfoPage from '../info';
 
 // services
@@ -33,21 +36,29 @@ export default class timeline extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
-      this.slug$.distinctUntilChanged().filter(slug => isString(slug)).switchMap((slug) => {
-        const project$ = projectBySlugStream(slug).observable;
-        return project$;
-      }).subscribe((project) => {
-        this.setState({ project });
-      })
+      this.slug$
+        .distinctUntilChanged()
+        .filter(slug => isString(slug))
+        .switchMap((slug) => {
+          const project$ = projectBySlugStream(slug).observable;
+          return project$;
+        }).subscribe((project) => {
+          const currentPathname = browserHistory.getCurrentLocation().pathname.replace(/\/$/, '');
+          const lastUrlSegment = (project.data.attributes.process_type === 'timeline' ? 'process' : 'ideas');
+          const redirectUrl = `${currentPathname}/${lastUrlSegment}`;
+          browserHistory.push(redirectUrl);
+          // window.history.pushState({ path: redirectUrl }, '', redirectUrl);
+          this.setState({ project });
+        })
     ];
   }
 
-  componentWillReceiveProps(newProps: Props) {
-    this.slug$.next(newProps.params.slug);
+  componentDidUpdate() {
+    this.slug$.next(this.props.params.slug);
   }
 
   componentWillUnmount() {
@@ -61,9 +72,9 @@ export default class timeline extends React.PureComponent<Props, State> {
       return (
         <>
           {project.data.attributes.process_type === 'timeline' ? (
-            <ProjectPhasesPage projectId={project.data.id} />
+            <ProjectTimelinePage {...this.props} />
           ) : (
-            <ProjectInfoPage projectId={project.data.id} />
+            <ProjectInfoPage {...this.props} />
           )}
         </>
       );

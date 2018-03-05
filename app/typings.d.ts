@@ -1,4 +1,5 @@
 import * as Dropzone from 'react-dropzone';
+import { EditorState } from 'draft-js';
 declare module '*.png';
 
 export interface IRelationship {
@@ -42,6 +43,26 @@ declare interface Multiloc {
   en?: string;
   fr?: string;
   nl?: string;
+  da?: string;
+  no?: string;
+}
+
+declare interface MultilocEditorState {
+  de?: EditorState;
+  en?: EditorState;
+  fr?: EditorState;
+  nl?: EditorState;
+  da?: EditorState;
+  no?: EditorState;
+}
+
+declare interface MultilocStringOrJSX {
+  de?: string | JSX.Element;
+  en?: string | JSX.Element;
+  fr?: string | JSX.Element;
+  nl?: string | JSX.Element;
+  da?: string | JSX.Element;
+  no?: string | JSX.Element;
 }
 
 declare namespace API {

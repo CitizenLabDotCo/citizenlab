@@ -1,8 +1,3 @@
-/*
- * ProjectCard Messages
- *
- * This contains all the text for the ProjectCard component.
- */
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
@@ -10,12 +5,16 @@ export default defineMessages({
     id: 'app.components.ProjectCard.openProjectButton',
     defaultMessage: 'Discover this project',
   },
+  idea: {
+    id: 'app.components.ProjectCard.idea',
+    defaultMessage: 'idea',
+  },
+  ideas: {
+    id: 'app.components.ProjectCard.ideas',
+    defaultMessage: 'ideas',
+  },
   xIdeas: {
     id: 'app.components.ProjectCard.xIdeas',
-    defaultMessage: '{x, plural, =0 {no ideas} one {# ideas} other {# ideas}}',
-  },
-  readMore: {
-    id: 'app.components.ProjectCard.readMore',
-    defaultMessage: 'Read more',
+    defaultMessage: '{ideasCount, plural, no {# {ideas}} one {# {idea}} other {# {ideas}}}',
   },
 });

@@ -3,6 +3,7 @@ import Icon from 'components/UI/Icon';
 import styled from 'styled-components';
 
 const Container: any = styled.div`
+  flex: 0 0 ${(props: any) => props.size};
   width: ${(props: any) => props.size};
   height: ${(props: any) => props.size};
   color: #fff;
@@ -16,7 +17,7 @@ const Container: any = styled.div`
   background: #fff;
   background: ${(props: any) => props.checked ? props.theme.colors.success : '#fff'};
   border-color: ${(props: any) => props.checked ? props.theme.colors.success : '#aaa'};
-  box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.15);
   margin-left: 10px;
 
   &:hover {
@@ -32,14 +33,15 @@ const CheckmarkIcon = styled(Icon)`
 type Props = {
   size: string;
   checked: boolean;
-  toggle: (arg?: any) => void;
+  toggle: (event: React.FormEvent<MouseEvent>) => void;
 };
 
 type State = {};
 
 export default class Checkbox extends React.PureComponent<Props, State> {
-  handleOnClick = () => {
-    this.props.toggle();
+  handleOnClick = (event: React.FormEvent<MouseEvent>) => {
+    event.preventDefault();
+    this.props.toggle(event);
   }
 
   render() {
@@ -48,9 +50,7 @@ export default class Checkbox extends React.PureComponent<Props, State> {
 
     return (
       <Container className={className} checked={checked} size={size} onClick={this.handleOnClick}>
-        {checked &&
-          <CheckmarkIcon name="checkmark" />
-        }
+        {checked && <CheckmarkIcon name="checkmark" />}
       </Container>
     );
   }

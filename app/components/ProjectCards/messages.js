@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.components.ProjectCards.noProjects',
     defaultMessage: 'No projects were found',
   },
+  areasTitle: {
+    id: 'app.containers.ProjectCards.areasTitle',
+    defaultMessage: 'Areas',
+  },
 });

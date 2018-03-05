@@ -1,16 +1,15 @@
 import * as React from 'react';
-import { isObject, isEmpty, isEqual, has } from 'lodash';
+import { get, isString, isEmpty, omitBy, isNil } from 'lodash';
 import * as Rx from 'rxjs/Rx';
-
-// libraries
-import { browserHistory } from 'react-router';
 
 // components
 import IdeaCard, { Props as IdeaCardProps } from 'components/IdeaCard';
-import IdeaButton from './IdeaButton';
 import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
-import Button from 'components/UI/Button';
+import SelectTopics from './SelectTopics';
+import SelectSort from './SelectSort';
+import SearchInput from 'components/UI/SearchInput';
+import IdeaButton from 'components/IdeaButton';
 
 // services
 import { ideasStream, IIdeas } from 'services/ideas';
@@ -19,8 +18,11 @@ import { ideasStream, IIdeas } from 'services/ideas';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// utils
+import shallowCompare from 'utils/shallowCompare';
+
 // style
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -29,13 +31,53 @@ const Container = styled.div`
 
 const Loading = styled.div`
   width: 100%;
-  height: 200px;
+  height: 300px;
   background: #fff;
-  border-radius: 6px;
-  border: solid 1px #eee;
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: solid 1px #e4e4e4;
+`;
+
+const FiltersArea = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+`;
+
+const FilterArea = styled.div`
+  height: 60px;
+  display: flex;
+  align-items: center;
+
+  ${media.smallerThanMaxTablet`
+    height: 30px;
+  `}
+`;
+
+const SearchFilterArea = FilterArea.extend`
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
+`;
+
+const SelectFilterArea = FilterArea.extend``;
+
+const StyledSearchInput = styled(SearchInput)`
+  width: 300px;
+
+  input {
+    font-size: 18px;
+    font-weight: 400;
+  }
+
+  ${media.smallerThanMaxTablet`
+    width: 100%;
+  `}
 `;
 
 const IdeasList: any = styled.div`
@@ -51,7 +93,7 @@ const StyledIdeaCard = styled<IdeaCardProps>(IdeaCard)`
   margin-left: 13px;
   margin-right: 13px;
 
-  ${media.smallerThanDesktop`
+  ${media.smallerThanMaxTablet`
     width: calc(100% * (1/2) - 26px);
   `};
 
@@ -60,26 +102,17 @@ const StyledIdeaCard = styled<IdeaCardProps>(IdeaCard)`
   `};
 `;
 
-const LoadMore = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 10px;
-`;
-
-const LoadMoreButton = styled(Button)``;
-
 const EmptyContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: 0;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-top: 100px;
+  padding-bottom: 100px;
   border-radius: 5px;
-  border: solid 1px #eee;
+  border: solid 1px #e4e4e4;
   background: #fff;
 `;
 
@@ -103,170 +136,249 @@ const EmptyMessageLine = styled.div`
   text-align: center;
 `;
 
+const LoadMoreButtonWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
+const LoadMoreButton = styled.div`
+  flex: 0 0 60px;
+  width: 100%;
+  height: 60px;
+  color: ${(props) => props.theme.colorMain};
+  font-size: 18px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  transition: all 100ms ease-out;
+  background: #f0f0f0;
+
+  border: solid 2px #eaeaea;
+  background: #fff;
+
+  width: 300px;
+  flex: 0 0 300px;
+  background: #eee;
+  border: none;
+
+  ${media.smallerThanMinTablet`
+    width: 100%;
+    flex: 1;
+  `};
+
+  &:not(.loading) {
+    cursor: pointer;
+
+    &:hover {
+      background: #e0e0e0;
+      border-color: #ccc
+    }
+  }
+`;
+
+interface IQueryParameters {
+  'page[number]'?: number | undefined;
+  'page[size]'?: number | undefined;
+  project?: string | undefined;
+  phase?: string | undefined;
+  author?: string | undefined;
+  sort?: string | undefined;
+  search?: string | undefined;
+  topics?: string[] | undefined;
+}
+
 interface IAccumulator {
-  pageNumber: number;
   ideas: IIdeas;
-  filter: object;
+  queryParameters: IQueryParameters;
   hasMore: boolean;
 }
 
 type Props = {
-  filter: { [key: string]: any };
-  loadMoreEnabled?: boolean | undefined;
+  queryParameters?: IQueryParameters | undefined;
+  theme?: object | undefined;
 };
 
 type State = {
+  queryParameters: IQueryParameters;
+  searchValue: string | undefined;
   ideas: IIdeas | null;
   hasMore: boolean;
-  loading: boolean;
+  querying: boolean;
   loadingMore: boolean;
 };
 
 class IdeaCards extends React.PureComponent<Props, State> {
-  state: State;
-  filterChange$: Rx.BehaviorSubject<object>;
-  loadMore$: Rx.BehaviorSubject<boolean>;
+  queryParameters$: Rx.BehaviorSubject<IQueryParameters>;
+  search$: Rx.BehaviorSubject<string>;
   subscriptions: Rx.Subscription[];
-
-  static defaultProps: Partial<Props> = {
-    loadMoreEnabled: true
-  };
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
+      queryParameters: {
+        'page[number]': 1,
+        'page[size]': 12,
+        sort: 'trending',
+        project: undefined,
+        phase: undefined,
+        author: undefined,
+        search: undefined,
+        topics: undefined
+      },
+      searchValue: undefined,
       ideas: null,
       hasMore: false,
-      loading: true,
+      querying: true,
       loadingMore: false
     };
     this.subscriptions = [];
   }
 
-  componentWillMount() {
-    const filter = (isObject(this.props.filter) && !isEmpty(this.props.filter) ? this.props.filter : {});
+  componentDidMount() {
+    const queryParameters = { ...this.state.queryParameters, ...this.props.queryParameters };
+    const startAccumulatorValue: IAccumulator = { queryParameters, ideas: {} as IIdeas, hasMore: false };
 
-    this.filterChange$ = new Rx.BehaviorSubject(filter);
-    this.loadMore$ = new Rx.BehaviorSubject(false);
+    this.queryParameters$ = new Rx.BehaviorSubject(queryParameters);
+    this.search$ = new Rx.BehaviorSubject('');
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
-        this.filterChange$,
-        this.loadMore$,
-        (filter, loadMore) => ({ filter, loadMore })
-      ).mergeScan<{ filter: object, loadMore: boolean }, IAccumulator>((acc, { filter, loadMore }) => {
-        const filterChange = !isEqual(acc.filter, filter) || !loadMore;
-        const pageNumber = (filterChange ? 1 : acc.pageNumber + 1);
+        this.queryParameters$.distinctUntilChanged((x, y) => shallowCompare(x, y)),
+        this.search$.distinctUntilChanged().do(searchValue => this.setState({ searchValue })).debounceTime(400)
+      )
+      .map(([queryParameters, search]) => ({ ...queryParameters, search }))
+      .mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
+        const isLoadingMore = (acc.queryParameters['page[number]'] !== queryParameters['page[number]']);
+        const search = (isString(queryParameters.search) && !isEmpty(queryParameters.search) ? queryParameters.search : undefined);
+        const pageNumber = (isLoadingMore ? queryParameters['page[number]'] : 1);
+        const newQueryParameters: IQueryParameters = omitBy({
+          ...queryParameters,
+          search,
+          'page[number]': pageNumber
+        }, isNil);
 
-        this.setState({ loading: (filterChange), loadingMore: (!filterChange) });
+        this.setState({
+          querying: !isLoadingMore,
+          loadingMore: isLoadingMore,
+        });
 
-        return ideasStream({
-          queryParameters: {
-            'page[size]': 15,
-            ...filter,
-            'page[number]': pageNumber
-          }
-        }).observable.map((ideas) => ({
-          pageNumber,
-          filter,
-          ideas: (filterChange ? ideas : { data: [...acc.ideas.data, ...ideas.data] }) as IIdeas,
-          hasMore: has(ideas, 'links.next')
-        }));
-      }, {
-          ideas: {} as IIdeas,
-          filter: {},
-          pageNumber: 1,
-          hasMore: false
-        }).subscribe(({ ideas, hasMore }) => {
-          this.setState({ ideas, hasMore, loading: false, loadingMore: false });
-        })
+        return ideasStream({ queryParameters: newQueryParameters }).observable.map((ideas) => {
+          const selfLink = get(ideas, 'links.self');
+          const lastLink = get(ideas, 'links.last');
+          const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
+
+          return {
+            queryParameters,
+            hasMore,
+            ideas: (!isLoadingMore ? ideas : { data: [...acc.ideas.data, ...ideas.data] }) as IIdeas
+          };
+        });
+      }, startAccumulatorValue).subscribe(({ ideas, queryParameters, hasMore }) => {
+        this.setState({ ideas, queryParameters, hasMore, querying: false, loadingMore: false });
+      })
     ];
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.queryParameters !== this.props.queryParameters) {
+      this.queryParameters$.next({
+        ...this.state.queryParameters,
+        ...this.props.queryParameters
+      });
+    }
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  componentWillReceiveProps(newProps) {
-    const oldProps = this.props;
-
-    if (!isEqual(newProps.filter, oldProps.filter)) {
-      const filter = (isObject(newProps.filter) && !isEmpty(newProps.filter) ? newProps.filter : {});
-      this.filterChange$.next(filter);
+  loadMore = () => {
+    if (!this.state.loadingMore) {
+      this.queryParameters$.next({
+        ...this.state.queryParameters,
+        'page[number]': (this.state.queryParameters['page[number]'] as number) + 1
+      });
     }
   }
 
-  loadMoreIdeas = () => {
-    this.loadMore$.next(true);
+  handleSearchOnChange = (search: string) => {
+    this.search$.next(search);
   }
 
-  goToAddIdeaPage = () => {
-    browserHistory.push('/ideas/new');
+  handleSortOnChange = (sort: string) => {
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      sort
+    });
   }
 
-  filteredByProjectId = () => {
-    return this.props.filter.project;
+  handleTopicsOnChange = (topics: string[]) => {
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      topics
+    });
   }
 
   render() {
-    const { ideas, hasMore, loading, loadingMore } = this.state;
-    const { loadMoreEnabled } = this.props;
-    const showLoadmore = (!!loadMoreEnabled && hasMore);
+    const theme: any = this.props.theme;
+    const { ideas, searchValue, hasMore, querying, loadingMore } = this.state;
     const hasIdeas = (ideas !== null && ideas.data.length > 0);
-
-    const loadingIndicator = (loading ? (
-      <Loading id="ideas-loading">
-        <Spinner size="30px" color="#666" />
-      </Loading>
-    ) : null);
-
-    const loadMore = ((!loading && hasIdeas && showLoadmore) ? (
-      <LoadMore>
-        <LoadMoreButton
-          text={<FormattedMessage {...messages.loadMore} />}
-          processing={loadingMore}
-          style="primary"
-          size="3"
-          onClick={this.loadMoreIdeas}
-          circularCorners={false}
-        />
-      </LoadMore>
-    ) : null);
-
-    const empty = ((!loading && !hasIdeas) ? (
-      <EmptyContainer id="ideas-empty">
-        <IdeaIcon name="idea" />
-        <EmptyMessage>
-          <EmptyMessageLine>
-            <FormattedMessage {...messages.noIdea} />
-          </EmptyMessageLine>
-        </EmptyMessage>
-        <IdeaButton
-          projectId={this.props.filter.project}
-          phaseId={this.props.filter.phase}
-        />
-      </EmptyContainer>
-    ) : null);
-
-    const ideasList = ((!loading && hasIdeas && ideas) ? (
-      <>
-        <IdeasList id="e2e-ideas-list">
-          {ideas.data.map((idea) => (
-            <StyledIdeaCard ideaId={idea.id} key={idea.id} />
-          ))}
-        </IdeasList>
-      </>
-    ) : null);
 
     return (
       <Container id="e2e-ideas-container">
-        {loadingIndicator}
-        {empty}
-        {ideasList}
-        {loadMore}
+        <FiltersArea id="e2e-ideas-filters">
+          <SearchFilterArea>
+            <StyledSearchInput value={(searchValue || '')} onChange={this.handleSearchOnChange} />
+          </SearchFilterArea>
+
+          <SelectFilterArea>
+            <SelectSort onChange={this.handleSortOnChange} />
+            <SelectTopics onChange={this.handleTopicsOnChange} />
+          </SelectFilterArea>
+        </FiltersArea>
+
+        {querying &&
+          <Loading id="ideas-loading">
+            <Spinner size="32px" color="#666" />
+          </Loading>
+        }
+
+        {(!querying && !hasIdeas) &&
+          <EmptyContainer id="ideas-empty">
+            <IdeaIcon name="idea" />
+            <EmptyMessage>
+              <EmptyMessageLine>
+                <FormattedMessage {...messages.noIdea} />
+              </EmptyMessageLine>
+            </EmptyMessage>
+            <IdeaButton
+              projectId={this.state.queryParameters.project}
+              phaseId={this.state.queryParameters.phase}
+            />
+          </EmptyContainer>
+        }
+
+        {(!querying && hasIdeas && ideas) &&
+          <IdeasList id="e2e-ideas-list">
+            {ideas.data.map((idea) => (
+              <StyledIdeaCard ideaId={idea.id} key={idea.id} />
+            ))}
+          </IdeasList>
+        }
+
+        {(!querying && hasMore) &&
+          <LoadMoreButtonWrapper>
+            <LoadMoreButton className={`${loadingMore && 'loading'}`} onClick={this.loadMore}>
+              {!loadingMore ? <FormattedMessage {...messages.loadMore} /> : <Spinner size="30px" color={theme.colorMain} />}
+            </LoadMoreButton>
+          </LoadMoreButtonWrapper>
+        }
       </Container>
     );
   }
 }
 
-export default IdeaCards;
+export default withTheme(IdeaCards);

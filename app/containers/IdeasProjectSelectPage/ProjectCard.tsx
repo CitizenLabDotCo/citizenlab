@@ -1,76 +1,86 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import * as Rx from 'rxjs/Rx';
+import * as moment from 'moment';
 
-import { IProjectData } from 'services/projects';
-import { projectImagesStream, IProjectImageData } from 'services/projectImages';
-import { injectNestedResources, InjectedNestedResourceLoaderProps } from 'utils/resourceLoaders/nestedResourcesLoader';
+// services
+import { projectByIdStream, IProject } from 'services/projects';
+import { projectImagesStream, IProjectImages } from 'services/projectImages';
+import { authUserStream } from 'services/auth';
 import { hasPermission } from 'services/permissions';
-import { media } from 'utils/styleUtils';
+import { isAdmin } from 'services/permissions/roles';
 
+// components
 import { FormattedMessage } from 'utils/cl-intl';
-import { FormattedDate } from 'react-intl';
 import Icon from 'components/UI/Icon';
-import T from 'components/T';
 import Radio from 'components/UI/Radio';
 
+// i18n
+import T from 'components/T';
 import messages from './messages';
 
+// styling
+import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
+
 const Container = styled.div`
-  display: flex;
-  flex-direction: row;
+  width: 100%;
+  position: relative;
+  border-radius: 5px;
+  background: #fff;
+  border: solid 1px #e4e4e4;
+  transition: transform 250ms ease-out;
+
+  &.enabled {
+    cursor: pointer;
+  }
+
+  &:not(.enabled) {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.selected {
+    border-color: ${props => props.theme.colors.success};
+  }
+
+  &.enabled:hover {
+    border-color: #999;
+
+    &.selected {
+      border-color: ${props => props.theme.colors.success};
+    }
+  }
 `;
 
-const Card = styled<any,'div'>('div')`
-  height: 112px;
+const ContainerInner = styled.div`
+  width: 100%;
+  display: flex;
+`;
+
+const Card = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-radius: 6px;
-  margin-bottom: 20px;
-  background: #fff;
-  border: solid 1px #e6e6e6;
-
+  padding: 12px;
+  border-radius: 5px;
   position: relative;
-  background: transparent;
+`;
 
-  &::after {
-    content: '';
-    border-radius: 6px;
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-    transition: opacity 300ms cubic-bezier(0.19, 1, 0.22, 1);
-    will-change: opacity;
-  }
-
-
-  ${props => props.selected && `
-  border-color: #4BB27C;
-  `}
-
-  ${props => props.enabled ? `
-    cursor: pointer;
-    &:hover::after {
-      opacity: 1;
-    }
-  ` : `
-    opacity: 0.5;
-    background-color: #f8f8f8;
-  `}
+const StyledRadio = styled(Radio)`
+  margin: 0;
+  margin-left: 6px;
+  padding: 0;
 `;
 
 const ImageWrapper = styled.div`
+  margin-right: 20px;
+
   img {
-    border-radius: 6px 0 0 6px;
-    width: 110px;
-    height: 110px;
+    border-radius: 5px;
+    width: 80px;
+    height: 80px;
     object-fit: cover;
   }
 
@@ -80,13 +90,13 @@ const ImageWrapper = styled.div`
 `;
 
 const ProjectImagePlaceholder = styled.div`
+  width: 80px;
+  height: 80px;
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: ${props => props.theme.colors.placeholderBg};
-  overflow: hidden;
-  width: 110px;
-  height: 110px;
 `;
 
 const ProjectImagePlaceholderIcon = styled(Icon) `
@@ -100,95 +110,139 @@ const ProjectContent = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 0.5rem 1rem 0 1rem;
+  justify-content: center;
+  padding: 5px;
 `;
 
 const ProjectTitle = styled.h3`
   color: #333;
-  font-size: 17px;
-  font-weight: 500;
-`;
-
-const ProjectDescription = styled.div`
-  color: #84939E;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 300;
-  overflow: hidden;
+  font-size: 20px;
+  line-height: 25px;
+  font-weight: 400;
+  margin: 0;
 `;
 
 const PostingDisabledReason = styled.div`
   color: black;
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 15px;
+  line-height: 21px;
   font-weight: 300;
-  overflow: hidden;
+  margin-top: 10px;
 `;
 
 const PostingEnabledReason = styled.div`
   color: #84939E;
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 15px;
+  line-height: 21px;
   font-weight: 300;
   overflow: hidden;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
+  margin-top: 10px;
 `;
 
 const AdminIconWrapper = styled.div`
-  width: 1.2rem;
-  height: 1.4rem;
-  margin: 0 0.5rem 0 0;
+  height: 18px;
+  margin-right: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
 type Props = {
-  project: IProjectData;
+  projectId: string;
   onClick: () => void;
   selected: boolean;
+  className?: string;
 };
 
 type State = {
-  hasPostingRights?: boolean;
+  project: IProject| null;
+  projectImages: IProjectImages | null;
+  isAdmin: boolean;
+  hasPostingRights: boolean;
+  loaded: boolean;
 };
 
-class ProjectCard extends React.Component<Props & InjectedNestedResourceLoaderProps<IProjectImageData>, State> {
+export default class ProjectCard extends React.PureComponent<Props, State> {
+  subscriptions: Rx.Subscription[];
 
-  componentWillMount() {
-    hasPermission({
-      item: 'ideas',
-      action: 'create',
-      context: { project: this.props.project },
-    }).subscribe((granted) => {
-      this.setState({ hasPostingRights: granted });
-    });
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      project: null,
+      projectImages: null,
+      isAdmin: false,
+      hasPostingRights: false,
+      loaded: false
+    };
+    this.subscriptions = [];
+  }
+
+  componentDidMount() {
+    const { projectId } = this.props;
+
+    const project$ = projectByIdStream(projectId).observable;
+    const authUser$ = authUserStream().observable;
+
+    this.subscriptions = [
+      Rx.Observable.combineLatest(
+        project$,
+        authUser$
+      ).switchMap(([project, authUser]) => {
+        return Rx.Observable.combineLatest(
+          projectImagesStream(projectId).observable,
+          hasPermission({
+            item: 'ideas',
+            action: 'create',
+            user: (authUser || undefined),
+            context: { project: project.data },
+          })
+        ).map(([projectImages, hasPostingRights]) => ({ project, authUser, projectImages, hasPostingRights }));
+      }).subscribe(({ project, authUser, projectImages, hasPostingRights }) => {
+        this.setState({
+          project,
+          projectImages,
+          hasPostingRights,
+          isAdmin: (authUser ? isAdmin(authUser) : false),
+          loaded: true
+        });
+      })
+    ];
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   disabledMessage = () => {
-    const project = this.props.project;
-    const { enabled, future_enabled: futureEnabled } = project.relationships.action_descriptor.data.posting;
-    if (enabled) {
-      return null;
-    } else if (futureEnabled) {
-      return messages.postingPossibleFuture;
-    } else {
-      return messages.postingNotPossible;
+    const { project } = this.state;
+
+    if (project) {
+      const { enabled, future_enabled: futureEnabled } = project.data.relationships.action_descriptor.data.posting;
+
+      if (enabled) {
+        return null;
+      } else if (futureEnabled) {
+        return messages.postingPossibleFuture;
+      }
     }
+
+    return messages.postingNotPossible;
   }
 
   calculateCardState = () => {
     const { hasPostingRights } = this.state;
     const disabledMessage = this.disabledMessage();
+
     if (disabledMessage && hasPostingRights) {
       return 'enabledBecauseAdmin';
     } else if (disabledMessage) {
       return 'disabled';
-    } else {
-      return 'enabled';
     }
+
+    return 'enabled';
   }
 
   handleOnClick = () => {
@@ -198,79 +252,73 @@ class ProjectCard extends React.Component<Props & InjectedNestedResourceLoaderPr
   }
 
   render() {
-    const projectId = this.props.project.id;
-    const {
-      title_multiloc: titleMultiloc,
-      description_preview_multiloc: descriptionPreviewMultiloc
-    } = this.props.project.attributes;
-    const smallImage = this.props.images.all[0] && this.props.images.all[0].attributes.versions.small;
-    const disabledMessage = this.disabledMessage();
-    const cardState = this.calculateCardState();
-    const enabled = cardState === 'enabled' || cardState === 'enabledBecauseAdmin';
-    const futureEnabledDate = this.props.project.relationships.action_descriptor.data.posting.future_enabled;
+    const className = this.props['className'];
+    const { projectId, selected } = this.props;
+    const { project, projectImages, loaded } = this.state;
 
+    if (loaded && project) {
+      const { title_multiloc: titleMultiloc /*, description_preview_multiloc: descriptionPreviewMultiloc*/ } = project.data.attributes;
+      const smallImage = projectImages && projectImages.data.length > 0 && projectImages.data[0].attributes.versions.small;
+      const disabledMessage = this.disabledMessage();
+      const cardState = this.calculateCardState();
+      const enabled = (cardState === 'enabled' || cardState === 'enabledBecauseAdmin');
+      const futureEnabledDate = project.data.relationships.action_descriptor.data.posting.future_enabled;
+      const formattedFutureEnabledDate = (futureEnabledDate ? moment(futureEnabledDate, 'YYYY-MM-DD').format('LL') : null);
 
-    return (
-      <Container>
-        <Radio
-          onChange={this.handleOnClick}
-          currentValue={this.props.selected ? projectId : null}
-          value={projectId}
-          name="project"
-          id={projectId}
-          label=""
-          disabled={!enabled}
-        />
-        <Card
-          onClick={this.handleOnClick}
-          selected={this.props.selected}
-          enabled={enabled}
+      return (
+        <Container 
+          onClick={this.handleOnClick} 
+          className={`${className} ${selected && 'selected'} ${enabled && 'enabled'}`}
         >
-          <ImageWrapper>
-            {smallImage ?
-              <img src={smallImage} alt="project image" />
-            :
-              <ProjectImagePlaceholder>
-                <ProjectImagePlaceholderIcon name="project" />
-              </ProjectImagePlaceholder>
-            }
-          </ImageWrapper>
-          <ProjectContent>
-            <ProjectTitle>
-              <T value={titleMultiloc} />
-            </ProjectTitle>
-            {cardState === 'enabled' &&
-              <ProjectDescription>
-                <T value={descriptionPreviewMultiloc} />
-              </ProjectDescription>
-            }
-            {cardState === 'disabled' && disabledMessage &&
-              <PostingDisabledReason>
-                <FormattedMessage
-                  {...disabledMessage}
-                  values={{
-                    date: futureEnabledDate && <FormattedDate value={futureEnabledDate} />
-                  }}
-                />
-              </PostingDisabledReason>
-            }
-            {cardState === 'enabledBecauseAdmin' &&
-              <PostingEnabledReason>
-                <AdminIconWrapper>
-                  <Icon name="admin" />
-                </AdminIconWrapper>
-                <FormattedMessage {...messages.postingPossibleBecauseAdmin} />
-              </PostingEnabledReason>
-            }
-          </ProjectContent>
-        </Card>
-      </Container>
-    );
+          <ContainerInner>
+            <Card className={`${selected && 'selected'} ${enabled && 'enabled'}`}>
+
+              <ImageWrapper>
+                {smallImage ?
+                  <img src={smallImage} alt="project image" />
+                :
+                  <ProjectImagePlaceholder>
+                    <ProjectImagePlaceholderIcon name="project" />
+                  </ProjectImagePlaceholder>
+                }
+              </ImageWrapper>
+
+              <ProjectContent>
+                <ProjectTitle className={`${selected && 'selected'} ${enabled && 'enabled'}`}>
+                  <T value={titleMultiloc} />
+                </ProjectTitle>
+
+                {cardState === 'disabled' && disabledMessage &&
+                  <PostingDisabledReason>
+                    <FormattedMessage {...disabledMessage} values={{ date: formattedFutureEnabledDate }} />
+                  </PostingDisabledReason>
+                }
+
+                {cardState === 'enabledBecauseAdmin' &&
+                  <PostingEnabledReason>
+                    <AdminIconWrapper>
+                      <Icon name="admin" />
+                    </AdminIconWrapper>
+                    <FormattedMessage {...messages.postingPossibleBecauseAdmin} />
+                  </PostingEnabledReason>
+                }
+              </ProjectContent>
+
+              <StyledRadio
+                onChange={this.handleOnClick}
+                currentValue={selected ? projectId : null}
+                value={projectId}
+                name="project"
+                id={projectId}
+                label=""
+                disabled={!enabled}
+              />
+            </Card>
+          </ContainerInner>
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
-
-export default injectNestedResources(
-  'images',
-  projectImagesStream,
-  (props) => props.project.id
-)(ProjectCard);

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isArray, find, isEmpty, isString, cloneDeep, includes, without } from 'lodash';
 
 // components
 import Title from './title';
@@ -45,44 +45,39 @@ interface Props {
   onChange?: (value: any) => void;
   multiple: boolean;
   selected: string[];
+  maxWidth?: string | null | undefined;
+  mobileMaxWidth?: string | null | undefined;
 }
 
 interface State {
   deployed: boolean;
-  currentTitle: string | JSX.Element;
 }
 
 export default class FilterSelector extends React.PureComponent<Props, State> {
-  state: State;
   baseID: string;
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      deployed: false,
-      currentTitle: this.getTitle(props.selected, props.values, props.multiple, props.title),
+      deployed: false
     };
     this.baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({ currentTitle: this.getTitle(nextProps.selected) });
-  }
-
-  getTitle = (selection, values = this.props.values, multiple = this.props.multiple, title = this.props.title) => {
+  getTitle = (selection, values, multiple, title) => {
     let newTitle: any = '';
 
-    if (!multiple && _.isArray(selection) && !_.isEmpty(selection)) {
-      const selected = _.find(values, { value: selection[0] });
+    if (!multiple && isArray(selection) && !isEmpty(selection)) {
+      const selected = find(values, { value: selection[0] });
       newTitle = selected ? selected.text : '';
-    } else if (_.isArray(selection) && !_.isEmpty(selection)) {
-      if (_.isString(title)) {
+    } else if (isArray(selection) && !isEmpty(selection)) {
+      if (isString(title)) {
         newTitle = `${title} (${selection.length})`;
       } else {
         newTitle = [
           title,
           ' ',
-          <span key={1}>({selection.length})</span>
+          <span key={Math.floor(Math.random() * 10000000)}>({selection.length})</span>
         ];
       }
     } else {
@@ -100,13 +95,13 @@ export default class FilterSelector extends React.PureComponent<Props, State> {
     this.setState({ deployed: false });
   }
 
-  selectionChange = (value) => {
-    let newSelection = _.cloneDeep(this.props.selected);
+  selectionChange = (value: string) => {
+    let newSelection = cloneDeep(this.props.selected);
 
     if (!this.props.multiple) {
       newSelection = [value];
-    } else if (_.includes(newSelection, value)) {
-      newSelection = _.without(newSelection, value);
+    } else if (includes(newSelection, value)) {
+      newSelection = without(newSelection, value);
     } else {
       newSelection.push(value);
     }
@@ -121,20 +116,20 @@ export default class FilterSelector extends React.PureComponent<Props, State> {
   }
 
   handleClickOutside = () => {
-    if (this.state.deployed) {
-      this.toggleExpanded();
-    }
+    this.closeExpanded();
   }
 
   render() {
-    const { deployed, currentTitle } = this.state;
-    const { id, values, multiple, selected } = this.props;
+    const className = this.props['className'];
+    const { deployed } = this.state;
+    const { id, values, multiple, selected, title, maxWidth, mobileMaxWidth } = this.props;
+    const currentTitle = this.getTitle(selected, values, multiple, title);
 
     return (
       <Container
         id={id}
         onClickOutside={this.handleClickOutside}
-        className={`e2e-filter-selector-${this.props.name}`}
+        className={`e2e-filter-selector-${this.props.name} ${className}`}
       >
         <Title
           title={currentTitle}
@@ -150,6 +145,8 @@ export default class FilterSelector extends React.PureComponent<Props, State> {
           onChange={this.selectionChange}
           multiple={multiple}
           baseID={this.baseID}
+          maxWidth={maxWidth}
+          mobileMaxWidth={mobileMaxWidth}
         />
       </Container>
     );

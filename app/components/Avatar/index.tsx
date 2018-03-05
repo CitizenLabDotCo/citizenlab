@@ -9,9 +9,9 @@ import Icon from 'components/UI/Icon';
 import { userByIdStream } from 'services/users';
 
 // styles
-import { darken } from 'polished';
+import { darken, lighten } from 'polished';
 import styled, { css } from 'styled-components';
-import { color } from 'utils/styleUtils';
+// import { color } from 'utils/styleUtils';
 
 const AvatarImageContainer = styled.div`
   width: 100%;
@@ -42,7 +42,7 @@ const AvatarImageBackground = styled.div`
 
 const AvatarIcon = styled(Icon)`
   height: 100%;
-  fill: ${color('label')};
+  fill: ${(props) => lighten(0.2, props.theme.colors.label)};
   transition: all 100ms ease-out;
 
   ${(props: any) => props.isClickable && css`
@@ -75,6 +75,7 @@ type Props = {
   userId: string | null;
   size: 'small' | 'medium' | 'large';
   onClick?: () => void;
+  hideIfNoAvatar?: boolean | undefined;
 };
 
 type State = {
@@ -82,7 +83,6 @@ type State = {
 };
 
 export default class Avatar extends React.PureComponent<Props, State> {
-  state: State;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -93,9 +93,10 @@ export default class Avatar extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.userId) {
       const user$ = userByIdStream(this.props.userId).observable;
+
       this.subscriptions = [
         user$.subscribe((user) => {
           const avatarSrc = (user ? user.data.attributes.avatar[this.props.size] : null);
@@ -119,6 +120,10 @@ export default class Avatar extends React.PureComponent<Props, State> {
     const className = this.props['className'];
     const { avatarSrc } = this.state;
     const isClickable = (this.props.onClick && _.isFunction(this.props.onClick));
+
+    if (this.props.hideIfNoAvatar && !avatarSrc) {
+      return null;
+    }
 
     return (
       <Container className={className} isClickable={isClickable} onClick={this.handleOnClick}>

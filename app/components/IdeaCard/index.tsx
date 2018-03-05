@@ -12,6 +12,7 @@ import BottomBounceUp from './BottomBounceUp';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';
 import UserName from 'components/UI/UserName';
+import Avatar from 'components/Avatar';
 
 // services
 import { localeStream } from 'services/locale';
@@ -31,27 +32,55 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // styles
+import { lighten } from 'polished';
 import styled from 'styled-components';
-import { color } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
 
 // typings
 import { IModalInfo } from 'containers/App';
 import { Locale } from 'typings';
 
+const IdeaImageContainer: any = styled.div`
+  width: 100%;
+  height: 120px;
+  overflow: hidden;
+  position: relative;
+  border-bottom: solid 1px #e4e4e4;
+`;
+
 const IdeaImage: any = styled.img`
   width: 100%;
-  height: 135px;
-  object-fit: cover;
-  overflow: hidden;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+`;
+
+const IdeaImageOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  opacity: 0.1;
+  transition: all 250ms ease-out;
+  z-index: 2;
 `;
 
 const IdeaImagePlaceholder = styled.div`
   width: 100%;
-  height: 135px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${color('placeholderBg')};
+  background: ${(props) => lighten(0.3, props.theme.colors.label)};
 `;
 
 const IdeaImagePlaceholderIcon = styled(Icon) `
@@ -83,45 +112,108 @@ const IdeaTitle: any = styled.h4`
 `;
 
 const IdeaAuthor = styled.div`
-  color: #84939d;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20px;
-  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
 `;
 
-const StyledVoteControl = styled(VoteControl)`
+const IdeaAuthorAvatar = styled(Avatar)`
+  width: 32px;
+  height: 32px;
+  margin-right: 8px;
+`;
+
+const IdeaAuthorText = styled.div`
+  color: ${(props) => props.theme.colors.label};
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 19px;
+  display: flex;
+  flex-direction: column;
+  margin-top: -1px;
+
+  span > span {
+    font-weight: 400;
+  }
+`;
+
+const Footer = styled.div`
   position: absolute;
   bottom: 20px;
   left: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
-const IdeaContainer: any = styled(Link)`
+const StyledVoteControl = styled(VoteControl)``;
+
+const CommentInfo = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  margin-top: 4px;
+`;
+
+const CommentIcon = styled(Icon)`
+  height: 22px;
+  fill: ${(props) => props.theme.colors.label};
+  margin-bottom: 0px;
+`;
+
+const CommentCount = styled.div`
+  color: ${(props) => props.theme.colors.label};
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /*
+  position: absolute;
+  top: 0px;
+  left: 1px;
+  width: 26px;
+  height: 22px;
+  */
+`;
+
+const IdeaContainer = styled(Link)`
   width: 100%;
-  height: 370px;
+  height: 360px;
   margin-bottom: 24px;
   cursor: pointer;
   position: relative;
-  background: transparent;
 
-  &::after {
-    content: '';
-    border-radius: 6px;
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-    transition: opacity 300ms cubic-bezier(0.19, 1, 0.22, 1);
-    will-change: opacity;
-  }
+  ${media.biggerThanMaxTablet`
+    &::after {
+      content: '';
+      border-radius: 5px;
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+      transition: opacity 350ms cubic-bezier(0.19, 1, 0.22, 1);
+      will-change: opacity;
+    }
 
-  &:hover::after {
-    opacity: 1;
-  }
+    &:hover {
+      ${IdeaImageOverlay} {
+        opacity: 0;
+      }
+
+      &::after {
+        opacity: 1;
+      }
+    }
+  `};
 `;
 
 const IdeaContainerInner = styled.div`
@@ -132,10 +224,10 @@ const IdeaContainerInner = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  border-radius: 6px;
+  border-radius: 5px;
   background: #fff;
-  position: relative;
   border: solid 1px #e4e4e4;
+  position: relative;
   overflow: hidden;
 `;
 
@@ -152,7 +244,7 @@ type State = {
   ideaImage: IIdeaImage | null;
   ideaAuthor: IUser | null;
   locale: Locale | null;
-  showFooter: 'unauthenticated' | 'votingDisabled' | null;
+  showVotingDisabled: 'unauthenticated' | 'votingDisabled' | null;
   loading: boolean;
 };
 
@@ -168,13 +260,13 @@ class IdeaCard extends React.PureComponent<Props, State> {
       ideaImage: null,
       ideaAuthor: null,
       locale: null,
-      showFooter: null,
+      showVotingDisabled: null,
       loading: true
     };
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { ideaId } = this.props;
     const locale$ = localeStream().observable;
     const ideaWithRelationships$ = ideaByIdStream(ideaId).observable.switchMap((idea) => {
@@ -235,58 +327,89 @@ class IdeaCard extends React.PureComponent<Props, State> {
   }
 
   unauthenticatedVoteClick = () => {
-    this.setState({ showFooter: 'unauthenticated' });
+    this.setState({ showVotingDisabled: 'unauthenticated' });
   }
 
   disabledVoteClick = () => {
-    this.setState({ showFooter: 'votingDisabled' });
+    this.setState({ showVotingDisabled: 'votingDisabled' });
   }
 
   render() {
-    const { idea, ideaImage, ideaAuthor, locale, showFooter, loading } = this.state;
+    const { idea, ideaImage, ideaAuthor, locale, showVotingDisabled, loading } = this.state;
 
     if (!loading && idea && locale) {
       const ideaImageUrl = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
-      const createdAt = <FormattedRelative value={idea.data.attributes.created_at} />;
       const hasVotingDescriptor = has(idea, 'data.relationships.action_descriptor.data.voting');
       const votingDescriptor = (hasVotingDescriptor ? idea.data.relationships.action_descriptor.data.voting : null);
       const projectId = idea.data.relationships.project.data && idea.data.relationships.project.data.id;
-      const className = `${this.props['className']} e2e-idea-card ${idea.data.relationships.user_vote && idea.data.relationships.user_vote.data ? 'voted' : 'not-voted' }`;
+      const ideaAuthorId = (ideaAuthor ? ideaAuthor.data.id : null);
+      const commentingDescriptor = idea.data.relationships.action_descriptor.data.commenting || null;
+
+      const className = `${this.props['className']}
+        e2e-idea-card
+        ${idea.data.relationships.user_vote && idea.data.relationships.user_vote.data ? 'voted' : 'not-voted' }
+        ${commentingDescriptor && commentingDescriptor.enabled ? 'e2e-comments-enabled' : 'e2e-comments-disabled'}
+        ${idea.data.attributes.comments_count > 0 ? 'e2e-has-comments' : ''}
+        ${votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled'}
+      `;
 
       return (
         <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.data.attributes.slug}`} className={className}>
           <IdeaContainerInner>
-            {ideaImageUrl && <IdeaImage src={ideaImageUrl} />}
 
+            {ideaImageUrl &&
+              <IdeaImageContainer>
+                <IdeaImagePlaceholder>
+                  <IdeaImagePlaceholderIcon name="idea" />
+                </IdeaImagePlaceholder>
+                <IdeaImage src={ideaImageUrl} />
+                <IdeaImageOverlay />
+              </IdeaImageContainer>
+            }
+
+            {/*
             {!ideaImageUrl &&
               <IdeaImagePlaceholder>
                 <IdeaImagePlaceholderIcon name="idea" />
               </IdeaImagePlaceholder>
             }
+            */}
 
             <IdeaContent>
               <IdeaTitle>
                 <T value={idea.data.attributes.title_multiloc} />
               </IdeaTitle>
               <IdeaAuthor>
-                {createdAt} <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={ideaAuthor} /> }} />
+                {ideaAuthorId && <IdeaAuthorAvatar userId={ideaAuthorId} size="small" hideIfNoAvatar={false} />}
+                <IdeaAuthorText>
+                  <FormattedRelative value={idea.data.attributes.published_at} />
+                  <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={ideaAuthor} /> }} />
+                </IdeaAuthorText>
               </IdeaAuthor>
             </IdeaContent>
 
-            {!showFooter &&
-              <StyledVoteControl
-                ideaId={idea.data.id}
-                unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-                disabledVoteClick={this.disabledVoteClick}
-                size="normal"
-              />
+            {!showVotingDisabled &&
+              <Footer>
+                <StyledVoteControl
+                  ideaId={idea.data.id}
+                  unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+                  disabledVoteClick={this.disabledVoteClick}
+                  size="normal"
+                />
+                <CommentInfo>
+                  <CommentIcon name="comments2" />
+                  <CommentCount>
+                    <span>{idea.data.attributes.comments_count}</span>
+                  </CommentCount>
+                </CommentInfo>
+              </Footer>
             }
-            {showFooter === 'unauthenticated' &&
+            {showVotingDisabled === 'unauthenticated' &&
               <BottomBounceUp icon="lock-outlined">
                 <Unauthenticated />
               </BottomBounceUp>
               }
-            {(showFooter === 'votingDisabled' && votingDescriptor) &&
+            {(showVotingDisabled === 'votingDisabled' && votingDescriptor) &&
               <BottomBounceUp icon="lock-outlined">
                 <VotingDisabledWrapper>
                   <VotingDisabled

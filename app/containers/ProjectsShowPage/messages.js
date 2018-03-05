@@ -13,13 +13,13 @@ export default defineMessages({
     id: 'app.containers.Projects.projectInformation',
     defaultMessage: 'Project information',
   },
+  information: {
+    id: 'app.containers.Projects.information',
+    defaultMessage: 'Information',
+  },
   events: {
     id: 'app.containers.Projects.events',
     defaultMessage: 'Events',
-  },
-  startAnIdea: {
-    id: 'app.containers.Projects.startAnIdea',
-    defaultMessage: 'Start an idea',
   },
   helmetDescription: {
     id: 'app.containers.Projects.helmetDescription',
@@ -29,9 +29,9 @@ export default defineMessages({
     id: 'app.containers.Projects.helmetDescription',
     defaultMessage: 'Project Show page listing',
   },
-  navInfo: {
-    id: 'app.containers.Projects.navInfo',
-    defaultMessage: 'Info',
+  navInformation: {
+    id: 'app.containers.Projects.navInformation',
+    defaultMessage: 'Information',
   },
   navIdeas: {
     id: 'app.containers.Projects.navIdeas',
@@ -40,6 +40,10 @@ export default defineMessages({
   navTimeline: {
     id: 'app.containers.Projects.navTimeline',
     defaultMessage: 'Timeline',
+  },
+  navProcess: {
+    id: 'app.containers.Projects.navProcess',
+    defaultMessage: 'Process',
   },
   navEvents: {
     id: 'app.containers.Projects.navEvents',
@@ -91,14 +95,18 @@ export default defineMessages({
   },
   displayMap: {
     id: 'app.containers.Projects.displayMap',
-    defaultMessage: 'Map',
+    defaultMessage: 'Map view',
   },
   displayCards: {
     id: 'app.containers.Projects.displayCards',
-    defaultMessage: 'Cards',
+    defaultMessage: 'Card view',
   },
   aboutThisPhase: {
     id: 'app.containers.Projects.aboutThisPhase',
     defaultMessage: 'About this phase',
+  },
+  ideasTitle: {
+    id: 'app.containers.Projects.ideasTitle',
+    defaultMessage: 'Ideas',
   },
 });

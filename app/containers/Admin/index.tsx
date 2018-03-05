@@ -7,6 +7,8 @@ import Sidebar from './sideBar/';
 
 // style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
+
 
 const Container = styled.div`
   display: flex;
@@ -16,12 +18,16 @@ const Container = styled.div`
 
 const LeftColumn = styled.div`
   flex: 0 0 240px;
+
+  ${media.smallerThanMinTablet`
+    flex: 0 0 70px;
+  `}
 `;
 
 const RightColumn = styled.div`
   flex: 1;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  background-color: #f2f2f2;
+  background: #f9f9fa;
 `;
 
 const AdminContainerStyled = styled<any, 'div'>('div')`
@@ -51,6 +57,7 @@ export default class AdminPage extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     const globalState$ = this.globalState.observable;
+
     this.subscriptions = [
       globalState$.subscribe(({ enabled }) => this.setState({ adminFullWidth: enabled }))
     ];
@@ -66,16 +73,18 @@ export default class AdminPage extends React.PureComponent<Props, State> {
     const { adminFullWidth } = this.state;
 
     return (
-      <Container className={className}>
-        <LeftColumn>
-          {<Sidebar {...this.props} />}
-        </LeftColumn>
-        <RightColumn>
-          <AdminContainerStyled adminFullWidth={adminFullWidth}>
-            {children}
-          </AdminContainerStyled>
-        </RightColumn>
-      </Container>
+      <>
+        <Container className={className}>
+          <LeftColumn>
+            {<Sidebar {...this.props} />}
+          </LeftColumn>
+          <RightColumn>
+            <AdminContainerStyled adminFullWidth={adminFullWidth}>
+              {children}
+            </AdminContainerStyled>
+          </RightColumn>
+        </Container>
+      </>
     );
   }
 }

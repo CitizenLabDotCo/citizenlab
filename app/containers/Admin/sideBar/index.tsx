@@ -1,8 +1,7 @@
 import * as React from 'react';
 
 // router
-import { browserHistory, Link } from 'react-router';
-import { Location } from 'history';
+import { Link, withRouter, WithRouterProps } from 'react-router';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -15,6 +14,7 @@ import messages from './messages';
 
 // style
 import styled, { css } from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const Menu = styled.div`
   width: 240px;
@@ -24,6 +24,10 @@ const Menu = styled.div`
   margin-top: 0px;
   background: #3b3b3b;
   padding-top: 39px;
+
+  ${media.smallerThanMinTablet`
+    width: 70px;
+  `}
 `;
 
 const IconWrapper = styled.div`
@@ -47,6 +51,10 @@ const Text = styled.div`
   line-height: 21px;
   margin-left: 20px;
   opacity: 0.4;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const MenuLink = styled(Link)`
@@ -99,34 +107,14 @@ type State = {
   location: Location;
 };
 
-class Sidebar extends React.PureComponent<Props & InjectedIntlProps, State> {
-  state: State;
-  unlisten: Function | null;
-
+class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   constructor(props: Props) {
     super(props as any);
-    this.state = {
-      location: browserHistory.getCurrentLocation()
-    };
-    this.unlisten = null;
-  }
-
-  componentDidMount() {
-    this.unlisten = browserHistory.listen((location: Location) => {
-      this.setState({ location });
-    });
-  }
-
-  componentWillUnmount() {
-    if (this.unlisten) {
-      this.unlisten();
-    }
   }
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { location } = this.state;
-    const { pathname } = location;
+    const { pathname } = this.props.location;
 
     return (
       <Menu>
@@ -169,7 +157,7 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps, State> {
         </MenuItem>
 
         <MenuItem active={pathname.startsWith('/admin/settings')}>
-          <MenuLink to="/admin/settings">
+          <MenuLink to="/admin/settings/general">
             <IconWrapper><StyledIcon name="settings" /></IconWrapper>
             <Text>{formatMessage({ ...messages.settings })}</Text>
           </MenuLink>
@@ -180,4 +168,4 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(Sidebar);
+export default withRouter(injectIntl<Props>(Sidebar) as any);

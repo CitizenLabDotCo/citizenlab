@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { IProjectData } from 'services/projects';
 import { flow } from 'lodash';
-
 import T from 'components/T';
 import { Menu } from 'semantic-ui-react';
 import { DropTarget } from 'react-dnd';
-
 
 interface Props {
   project: IProjectData;
@@ -14,7 +12,6 @@ interface Props {
   isOver: boolean;
   canDrop: boolean;
   connectDropTarget: any;
-  tFunc: ({ }) => string;
 }
 
 class FilterSidebarProjectsItem extends React.Component<Props> {

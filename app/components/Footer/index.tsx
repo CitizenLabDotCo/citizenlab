@@ -22,6 +22,8 @@ import { LEGAL_PAGES } from 'services/pages';
 // style
 import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
+
+// typings
 import { Locale } from 'typings';
 
 const Container = styled.div`
@@ -50,7 +52,7 @@ const TenantSlogan = styled.div`
   max-width: 340px;
   color: #444;
   font-size: 20px;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 28px;
   text-align: center;
 `;
@@ -62,7 +64,7 @@ const SecondLine = styled.div`
   justify-content: space-between;
   background: #fff;
   border-top: 1px solid #eaeaea;
-  padding: 14px 28px;
+  padding: 10px 28px;
 
   ${media.smallerThanMaxTablet`
     display: flex;
@@ -88,7 +90,7 @@ const PagesNav = styled.nav`
     order: 2;
     text-align: center;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 30px;
     margin-bottom: 15px;
   `}
 `;
@@ -113,10 +115,10 @@ const StyledLink = styled(Link) `
 const Separator = styled.span`
   color: #999;
   font-weight: 400;
-  font-size: 13px;
+  font-size: 16px;
   line-height: 19px;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
 
   ${media.smallerThanMaxTablet`
     padding-left: 8px;
@@ -148,7 +150,7 @@ const PoweredBy = styled.a`
       color: #999;
 
       ${CitizenLabLogo} {
-        fill: #555;
+        fill: #000;
       }
     }
   `}
@@ -171,7 +173,6 @@ const PoweredBy = styled.a`
 const LanguageSelectionWrapper = styled.div`
   padding-left: 1rem;
   margin-left: 1rem;
-  border-left: 1px solid ${color('separation')};
   text-align: right;
 
   .ui.selection.dropdown {
@@ -188,7 +189,8 @@ const LanguageSelectionWrapper = styled.div`
   ${media.smallerThanMaxTablet`
     border-left: 0;
     margin-left: 0;
-    margin-bottom: 15px;
+    margin-top: 10px;
+    margin-bottom: 20px;
     padding-left: 0;
   `}
 `;
@@ -226,7 +228,7 @@ class Footer extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
 
@@ -269,7 +271,7 @@ class Footer extends React.PureComponent<Props, State> {
       const poweredBy = <FormattedMessage {...messages.poweredBy} />;
 
       return (
-        <Container>
+        <Container className={this.props['className']}>
           {showCityLogoSection &&
             <FirstLine>
               {currentTenantLogo && <TenantLogo src={currentTenantLogo} />}
@@ -282,7 +284,7 @@ class Footer extends React.PureComponent<Props, State> {
               {LEGAL_PAGES.map((slug, index) => (
                 <span key={slug}>
                   {index !== 0  &&
-                    <Separator>|</Separator>
+                    <Separator>•</Separator>
                   }
                   <li>
                     <StyledLink to={`/pages/${slug}`}>
@@ -293,11 +295,11 @@ class Footer extends React.PureComponent<Props, State> {
               ))}
             </PagesNav>
 
-
             <PoweredBy href="https://www.citizenlab.co/">
               <span>{poweredBy}</span>
               <CitizenLabLogo name="logo" />
             </PoweredBy>
+
             <LanguageSelectionWrapper className={this.state.languageOptions.length > 1 ? 'show' : ''}>
               <Dropdown onChange={this.handleLanguageChange} upward={true} search={true} selection={true} value={locale} options={this.state.languageOptions} />
             </LanguageSelectionWrapper>

@@ -2,19 +2,19 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
+import { isEqual, isEmpty } from 'lodash';
 
 // Services & Utils
 import { IAreaData } from 'services/areas';
 import { updateUser, IUserData, IUserUpdate, mapUserToDiff } from 'services/users';
 import { ITenantData } from 'services/tenant';
 import scrollToComponent from 'react-scroll-to-component';
-import { withFormik, FormikProps, Form, Field } from 'formik';
+import { withFormik, FormikProps, Form } from 'formik';
 import { IOption, ImageFile, API } from 'typings';
 
 // Components
-import { Grid, Menu, Segment, Sticky } from 'semantic-ui-react';
+import { Grid, Segment } from 'semantic-ui-react';
 import ContentContainer from 'components/ContentContainer';
-import Button from 'components/UI/Button';
 import LabelWithTooltip from './LabelWithTooltip';
 import TextArea from 'components/UI/TextArea';
 import Input from 'components/UI/Input';
@@ -34,15 +34,20 @@ import localize, { injectedLocalized } from 'utils/localize';
 // Style
 import styled from 'styled-components';
 import { color } from 'utils/styleUtils';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 const StyledContentContainer = styled(ContentContainer)`
   background: ${color('background')};
   padding-top: 25px;
   padding-bottom: 40px;
+
+  .Select {
+    max-width: 500px !important;
+  }
 `;
 
 // Types
-interface Props {
+interface InputProps {
   user: IUserData;
   areas: IAreaData[];
   tenant: ITenantData;
@@ -51,40 +56,45 @@ interface Props {
 interface State {
   avatar: ImageFile[] | null;
   contextRef: any | null;
+  localeOptions: IOption[];
 }
 
-class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLocalized & FormikProps<IUserUpdate>, State> {
+type Props = InputProps & InjectedIntlProps & injectedLocalized & FormikProps<IUserUpdate>;
+
+class ProfileForm extends React.PureComponent<Props, State> {
   localeOptions: IOption[] = [];
   genderOptions: IOption[] = [];
   domicileOptions: IOption[] = [];
   birthYearOptions: IOption[] = [];
   educationOptions: IOption[] = [];
 
-  constructor(props) {
-    super(props);
-
+  constructor(props: InputProps) {
+    super(props as any);
     this.state = {
       avatar: null,
       contextRef: null,
+      localeOptions: []
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // Get the avatar imageFile
     const avatarUrl = this.props.user.attributes.avatar.medium;
     const avatarFileObservable = this.props.user.attributes.avatar.medium ? convertUrlToFileObservable(avatarUrl) : Observable.of(null);
 
-    avatarFileObservable
-    .first()
-    .subscribe((avatar) => {
-      if (avatar) this.setState({ avatar: [avatar] });
+    avatarFileObservable.first().subscribe((avatar) => {
+      if (avatar) {
+        this.setState({ avatar: [avatar] });
+      }
     });
 
     // Create options arrays only once, avoid re-calculating them on each render
-    this.localeOptions = this.props.tenantLocales.map((locale) => ({
-      value: locale,
-      label: appLocalePairs[locale],
-    }));
+    this.setState({
+      localeOptions: this.props.tenantLocales.map((locale) => ({
+        value: locale,
+        label: appLocalePairs[locale],
+      }))
+    });
 
     this.genderOptions = [
       {
@@ -123,6 +133,17 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
       this.educationOptions.push({
         value: i,
         label: this.props.intl.formatMessage({ ...{ ...messages }[`ISCED11_${i}`] }),
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (!isEqual(this.props.tenantLocales, prevProps.tenantLocales)) {
+      this.setState({
+        localeOptions: this.props.tenantLocales.map((locale) => ({
+          value: locale,
+          label: appLocalePairs[locale],
+        }))
       });
     }
   }
@@ -192,15 +213,29 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
 
   handleContextRef = contextRef => this.setState({ contextRef });
 
+  getStatus = () => {
+    const { isValid,  status, touched } = this.props;
+
+    if (!isEmpty(touched) && !isValid) {
+      return 'error';
+    }
+
+    if (isEmpty(touched) && status === 'success') {
+      return 'success';
+    }
+
+    return 'enabled';
+  }
+
   render() {
-    const { intl: { formatMessage }, values, errors, isSubmitting, isValid, dirty } = this.props;
-    const { contextRef } = this.state;
+    const { intl: { formatMessage }, values, errors, isSubmitting } = this.props;
+    // const { contextRef } = this.state;
 
     return (
       <StyledContentContainer>
-        <Grid>
+        <Grid centered>
           <Grid.Row>
-            <Grid.Column width={4} only="computer">
+            {/* <Grid.Column width={4} only="computer">
               <Sticky context={contextRef} offset={100}>
                 <Menu fluid vertical text>
                   {['h1', 'h2'].map((key) => (
@@ -210,7 +245,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                   ))}
                 </Menu>
               </Sticky>
-            </Grid.Column>
+            </Grid.Column> */}
             <Grid.Column computer={12} mobile={16}>
               <div ref={this.handleContextRef}>
                 <Segment padded="very">
@@ -241,19 +276,36 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                         <Input
                           type="text"
                           name="first_name"
+                          id="firstName"
+                          value={values.first_name}
+                          onChange={this.createChangeHandler('first_name')}
+                          onBlur={this.createBlurHandler('first_name')}
                         />
                         <Error apiErrors={errors.first_name} />
                       </SectionField>
 
                       <SectionField>
                         <LabelWithTooltip id="lastName" />
-                        <Field name="last_name" />
+                        <Input
+                          type="text"
+                          name="last_name"
+                          id="lastName"
+                          value={values.last_name}
+                          onChange={this.createChangeHandler('last_name')}
+                          onBlur={this.createBlurHandler('last_name')}
+                        />
                         <Error apiErrors={errors.last_name} />
                       </SectionField>
 
                       <SectionField>
                         <LabelWithTooltip id="email" />
-                        <Field type="email" name="email" />
+                        <Input
+                          type="email"
+                          name="email"
+                          value={values.email}
+                          onChange={this.createChangeHandler('email')}
+                          onBlur={this.createBlurHandler('email')}
+                        />
                         <Error apiErrors={errors.email} />
                       </SectionField>
 
@@ -272,7 +324,13 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
 
                       <SectionField>
                         <LabelWithTooltip id="password" />
-                        <Field type="password" name="password" />
+                        <Input
+                          type="password"
+                          name="password"
+                          value={values.password}
+                          onChange={this.createChangeHandler('password')}
+                          onBlur={this.createBlurHandler('password')}
+                        />
                         <Error apiErrors={errors.password} />
                       </SectionField>
 
@@ -282,7 +340,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                           onChange={this.createChangeHandler('locale')}
                           onBlur={this.createBlurHandler('locale')}
                           value={values.locale}
-                          options={this.localeOptions}
+                          options={this.state.localeOptions}
                         />
                         <Error apiErrors={errors.locale} />
                       </SectionField>
@@ -304,6 +362,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                             placeholder={formatMessage({ ...messages.male })}
                             options={this.genderOptions}
                             onChange={this.createChangeHandler('gender')}
+                            onBlur={this.createBlurHandler('gender')}
                             value={values.gender}
                           />
                           <Error apiErrors={errors.gender} />
@@ -317,6 +376,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                             placeholder={formatMessage({ ...messages.domicile_placeholder })}
                             options={this.domicileOptions}
                             onChange={this.createChangeHandler('domicile')}
+                            onBlur={this.createBlurHandler('domicile')}
                             value={values.domicile}
                           />
                           <Error apiErrors={errors.domicile} />
@@ -328,6 +388,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                           <Select
                             options={this.birthYearOptions}
                             onChange={this.createChangeHandler('birthyear')}
+                            onBlur={this.createBlurHandler('birthyear')}
                             value={`${values.birthyear}`}
                           />
                           <Error apiErrors={errors.birthyear} />
@@ -341,6 +402,7 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                             placeholder={formatMessage({ ...messages.education_placeholder })}
                             options={this.educationOptions}
                             onChange={this.createChangeHandler('education')}
+                            onBlur={this.createBlurHandler('education')}
                             value={values.education}
                           />
                           <Error apiErrors={errors.education} />
@@ -348,15 +410,17 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
                       }
                     </Section>
 
-                    <Button
-                      id="e2e-profile-edit-form-button"
-                      text={
-                        dirty && !isValid
-                        ? <FormattedMessage {...messages.buttonErrorLabel} />
-                        : <FormattedMessage {...messages.submit} />
-                      }
-                      processing={isSubmitting}
-                      style={dirty && !isValid ? 'error' : 'primary'}
+                    <SubmitWrapper
+                      status={this.getStatus()}
+                      style="primary"
+                      loading={isSubmitting}
+                      messages={{
+                        buttonSave: messages.submit,
+                        buttonError: messages.buttonErrorLabel,
+                        buttonSuccess: messages.buttonSuccessLabel,
+                        messageSuccess: messages.messageSuccess,
+                        messageError: messages.messageError,
+                      }}
                     />
                   </Form>
                 </Segment>
@@ -368,11 +432,14 @@ class ProfileForm extends React.Component<Props & InjectedIntlProps & injectedLo
   }
 }
 
-export default withFormik<Props, IUserUpdate, IUserUpdate>({
-  handleSubmit: (values, { props, setSubmitting, resetForm, setErrors }) => {
+export default withFormik<InputProps, IUserUpdate, IUserUpdate>({
+  handleSubmit: (values, { props, setSubmitting, resetForm, setErrors, setStatus }) => {
+    setStatus('');
+
     updateUser(props.user.id, values)
     .then(() => {
       resetForm();
+      setStatus('success');
     })
     .catch((errorResponse) => {
       if (errorResponse.json) {
@@ -385,4 +452,4 @@ export default withFormik<Props, IUserUpdate, IUserUpdate>({
   mapPropsToValues: (props) => {
     return mapUserToDiff(props.user);
   }
-})(injectIntl(localize(ProfileForm)));
+})(injectIntl<any>(localize(ProfileForm)));
