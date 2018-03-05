@@ -76,7 +76,7 @@ const CommentsWithReplyBoxContainer = styled.div`
 const CommentsContainer = styled.div`
   border-radius: 5px;
   position: relative;
-  border: solid 1px #e4e4e4;
+  border: solid 1px #e0e0e0;
   background: #fff;
 
   &.hasReplyBox {
@@ -112,11 +112,6 @@ const CommentBody = styled.div`
 
   span,
   p {
-    /* white-space: pre-wrap;
-    word-break: normal;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto; */
     margin-bottom: 25px;
 
     &:last-child {

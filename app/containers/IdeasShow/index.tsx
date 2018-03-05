@@ -53,7 +53,6 @@ const loadingDelay = 100;
 
 const contentTimeout = 500;
 const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
-// const contentEasing = `ease-out`;
 const contentDelay = 600;
 const contentTranslateDistance = '30px';
 
@@ -388,11 +387,11 @@ const TimeAgo = styled.div`
 const IdeaBody = styled.div`
   color: #474747;
   font-size: 19px;
-  line-height: 30px;
+  line-height: 32px;
   font-weight: 300;
 
   p {
-    margin-bottom: 30px;
+    margin-bottom: 32px;
 
     &:last-child {
       margin-bottom: 0px;

@@ -537,6 +537,8 @@
   "app.containers.SignUp.passwordPlaceholder": "Enter a password",
   "app.containers.SignUp.signUp": "Sign up",
   "app.containers.SignUp.skip": "Skip this step",
+  "app.containers.SignUp.step1Title": "",
+  "app.containers.SignUp.step2Title": "",
   "app.containers.SignUp.submit": "Complete your profile",
   "app.containers.SignUp.unknownError": "Something went wrong. Please try again later.",
   "app.containers.SignUp.unspecified": "Unspecified",
