@@ -1,6 +1,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  step1Title: {
+    id: 'app.containers.SignUp.step1Title',
+    defaultMessage: 'Create an account',
+  },
+  step2Title: {
+    id: 'app.containers.SignUp.step2Title',
+    defaultMessage: 'Complete your profile',
+  },
   firstNameLabel: {
     id: 'app.containers.SignUp.firstNameLabel',
     defaultMessage: 'First name',
