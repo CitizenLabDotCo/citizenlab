@@ -48,10 +48,21 @@ export default class timeline extends React.PureComponent<Props, State> {
           return project$;
         }).subscribe((project) => {
           const currentPathname = browserHistory.getCurrentLocation().pathname.replace(/\/$/, '');
-          const lastUrlSegment = (project.data.attributes.process_type === 'timeline' ? 'process' : 'ideas');
+          let lastUrlSegment;
+
+          // Determine where to send the user based on process type & participation method
+          if (project.data.attributes.process_type === 'timeline') {
+            lastUrlSegment = 'process';
+          } else if (project.data.attributes.participation_method === 'survey') {
+            lastUrlSegment = 'survey';
+          } else if (project.data.attributes.participation_method === 'ideation') {
+            lastUrlSegment = 'ideas';
+          } else {
+            lastUrlSegment = 'info';
+          }
+
           const redirectUrl = `${currentPathname}/${lastUrlSegment}`;
           browserHistory.push(redirectUrl);
-          // window.history.pushState({ path: redirectUrl }, '', redirectUrl);
           this.setState({ project });
         })
     ];
