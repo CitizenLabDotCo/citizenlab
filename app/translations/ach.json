@@ -537,6 +537,8 @@
   "app.containers.SignUp.passwordPlaceholder": "crwdns15893:0crwdne15893:0",
   "app.containers.SignUp.signUp": "crwdns18125:0crwdne18125:0",
   "app.containers.SignUp.skip": "crwdns18126:0crwdne18126:0",
+  "app.containers.SignUp.step1Title": "",
+  "app.containers.SignUp.step2Title": "",
   "app.containers.SignUp.submit": "crwdns18076:0crwdne18076:0",
   "app.containers.SignUp.unknownError": "crwdns18181:0crwdne18181:0",
   "app.containers.SignUp.unspecified": "crwdns15896:0crwdne15896:0",
