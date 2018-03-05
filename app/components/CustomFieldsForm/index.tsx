@@ -5,6 +5,7 @@ import { isBoolean } from 'lodash';
 
 // libraries
 import Form, { FieldProps } from 'react-jsonschema-form';
+// import SchemaField from 'react-jsonschema-form/lib/components/fields/SchemaField';
 
 // services
 import { localeStream } from 'services/locale';
@@ -19,10 +20,15 @@ import Select from 'components/UI/Select';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import Checkbox from 'components/UI/Checkbox';
 import { SectionField } from 'components/admin/Section';
-// import Error from 'components/UI/Error';
+import Error from 'components/UI/Error';
 
 // utils
-// import eventEmitter from 'utils/eventEmitter';
+import eventEmitter from 'utils/eventEmitter';
+
+// i18n
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';
@@ -60,7 +66,9 @@ const CheckboxDescription = styled(Description)`
 `;
 
 interface Props {
-  onChange: (arg: any) => void;
+  formData?: object;
+  onSubmit?: (arg: any) => void;
+  onChange?: (arg: any) => void;
 }
 
 interface State {
@@ -69,7 +77,7 @@ interface State {
   uiSchema: object | null;
 }
 
-export default class CustomFieldsForm extends React.PureComponent<Props, State> {
+class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, State> {
   submitbuttonElement: HTMLButtonElement | null;
   subscriptions: Rx.Subscription[];
 
@@ -93,11 +101,18 @@ export default class CustomFieldsForm extends React.PureComponent<Props, State> 
         locale$,
         customFieldsSchemaForUsersStream$
       ).subscribe(([locale, customFields]) => {
+        console.log(customFields);
         this.setState({
           locale,
           schema: customFields['json_schema_multiloc'],
           uiSchema: customFields['ui_schema_multiloc']
         });
+      }),
+
+      eventEmitter.observeEvent('customFieldsSubmitEvent').subscribe(() => {
+        if (this.submitbuttonElement) {
+          this.submitbuttonElement.click();
+        }
       }),
     ];
   }
@@ -109,16 +124,19 @@ export default class CustomFieldsForm extends React.PureComponent<Props, State> 
   setButtonRef = (element: HTMLButtonElement) => {
     if (element) {
       this.submitbuttonElement = element;
-      // this.submitbuttonElement.click();
     }
   }
 
   handleOnChange = (value) => {
-    this.props.onChange(value);
+    if (this.props.onChange) {
+      this.props.onChange(value);
+    }
   }
 
-  handleOnSubmit = (_value) => {
-    console.log('submit!');
+  handleOnSubmit = ({ formData }) => {
+    if (this.props.onSubmit) {
+      this.props.onSubmit(formData);
+    }
   }
 
   render() {
@@ -234,7 +252,7 @@ export default class CustomFieldsForm extends React.PureComponent<Props, State> 
     };
 
     const CustomFieldTemplate: any = (props: FieldProps) => {
-      const { id, label, description, errors, children } = props;
+      const { id, label, description, rawErrors, children } = props;
 
       return (
         <SectionField>
@@ -247,8 +265,12 @@ export default class CustomFieldsForm extends React.PureComponent<Props, State> 
               }
             </>
           }
+
           {children}
-          {errors}
+
+          {rawErrors && rawErrors.length > 0 && rawErrors.map((value, index) => {
+            return (<Error key={index} marginTop="10px" text={value} />);
+          })}
         </SectionField>
       );
     };
@@ -261,16 +283,42 @@ export default class CustomFieldsForm extends React.PureComponent<Props, State> 
       );
     };
 
+    const transformErrors = (errors) => {
+      return errors.map((error) => {
+        if (error.name === 'required') {
+          error.message = this.props.intl.formatMessage(messages.requiredError);
+        }
+
+        return error;
+      });
+    };
+
+    // const CustomSchemaField = function(props) {
+    //   return (
+    //     <div id="custom">
+    //       <SchemaField {...props} />
+    //     </div>
+    //   );
+    // };
+
+    // const fields = {
+    //   SchemaField: CustomSchemaField
+    // };
+
     return (
       <Container className={this.props['className']}>
         {locale && schema && uiSchema &&
           <Form 
             schema={schema[locale]}
             uiSchema={uiSchema[locale]}
+            formData={this.props.formData}
             widgets={widgets}
+            // fields={fields}
             FieldTemplate={CustomFieldTemplate}
             ObjectFieldTemplate={ObjectFieldTemplate}
+            transformErrors={transformErrors}
             noHtml5Validate={true}
+            showErrorList={false}
             onChange={this.handleOnChange}
             onSubmit={this.handleOnSubmit}
           >
@@ -281,3 +329,5 @@ export default class CustomFieldsForm extends React.PureComponent<Props, State> 
     );
   }
 }
+
+export default injectIntl<Props>(CustomFieldsForm);

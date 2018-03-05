@@ -44,7 +44,7 @@ class VoteWrapper extends React.PureComponent<Props, State> {
             ideaId={this.props.ideaId}
             unauthenticatedVoteClick={this.unauthenticatedVoteClick}
             disabledVoteClick={this.disabledVoteClick}
-            size="normal"
+            size="3"
           />
         }
         {error === 'votingDisabled' &&

@@ -140,7 +140,7 @@ export default class IdeaBox extends React.PureComponent<Props, State> {
                     <>
                       <VoteControl
                         ideaId={idea.id}
-                        size="small"
+                        size="1"
                         unauthenticatedVoteClick={this.handleUnauthenticatedVoteClick}
                         disabledVoteClick={this.handleDisabledVoteClick}
                       />

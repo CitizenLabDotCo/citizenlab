@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isEmpty, get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
@@ -10,12 +10,16 @@ import CustomFieldsForm from 'components/CustomFieldsForm';
 // services
 import { authUserStream } from 'services/auth';
 import { updateUser, IUser } from 'services/users';
+import { localeStream } from 'services/locale';
+import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-
 import messages from './messages';
+
+// utils
+import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled from 'styled-components';
@@ -54,8 +58,8 @@ type Props = {
 
 type State = {
   authUser: IUser | null;
-  customFieldsFormData: object | null;
   loading: boolean;
+  isRequired: boolean;
   processing: boolean;
   unknownError: string | null;
   apiErrors: API.ErrorResponse | null;
@@ -68,7 +72,7 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
     super(props as any);
     this.state = {
       authUser: null,
-      customFieldsFormData: null,
+      isRequired: true,
       loading: true,
       processing: false,
       unknownError: null,
@@ -79,10 +83,22 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   componentDidMount() {
     const authUser$ = authUserStream().observable;
+    const locale$ = localeStream().observable;
+    const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
 
     this.subscriptions = [
-      authUser$.subscribe((authUser) => {
-        this.setState({ authUser, loading: false });
+      Rx.Observable.combineLatest(
+        authUser$,
+        locale$,
+        customFieldsSchemaForUsersStream$
+      ).subscribe(([authUser, locale, customFieldsSchemaForUsersStream]) => {
+        const requiredArray = get(customFieldsSchemaForUsersStream, `json_schema_multiloc.${locale}.required`, null);
+
+        this.setState({
+          authUser,
+          loading: false,
+          isRequired: (requiredArray && requiredArray.length > 0)
+        });
       })
     ];
   }
@@ -91,11 +107,14 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleOnSubmit = async (event: React.FormEvent<any>) => {
+  handleOnSubmitButtonClick = (event: React.FormEvent<any>) => {
     event.preventDefault();
+    eventEmitter.emit('SignUpStep2', 'customFieldsSubmitEvent', null);
+  }
 
+  handleCustomFieldsFormOnSubmit = async (formData) => {
     const { formatMessage } = this.props.intl;
-    const { authUser, customFieldsFormData } = this.state;
+    const { authUser } = this.state;
 
     if (authUser) {
       try {
@@ -104,8 +123,8 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
           unknownError: null
         });
 
-        if (customFieldsFormData && !_.isEmpty(customFieldsFormData)) {
-          await updateUser(authUser.data.id, { custom_field_values: customFieldsFormData });
+        if (formData && !isEmpty(formData)) {
+          await updateUser(authUser.data.id, { custom_field_values: formData });
         }
 
         this.setState({ processing: false });
@@ -120,9 +139,9 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
-  handleCustomFieldsFormOnChange = (customFieldsResponse) => {
-    this.setState({ customFieldsFormData: customFieldsResponse.schema.formData });
-  }
+  // handleCustomFieldsFormOnChange = (customFieldsResponse) => {
+  //   this.setState({ customFieldsFormData: customFieldsResponse.schema.formData });
+  // }
 
   skipStep = (event: React.FormEvent<any>) => {
     event.preventDefault();
@@ -131,12 +150,12 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { authUser, loading, processing, unknownError } = this.state;
+    const { authUser, isRequired, loading, processing, unknownError } = this.state;
 
     if (!loading && authUser) {
       return (
         <Form id="e2e-signup-step2">
-          <CustomFieldsForm onChange={this.handleCustomFieldsFormOnChange} />
+          <CustomFieldsForm onSubmit={this.handleCustomFieldsFormOnSubmit} />
 
           <FormElement>
             <ButtonWrapper>
@@ -145,10 +164,12 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
                 size="1"
                 processing={processing}
                 text={formatMessage(messages.submit)}
-                onClick={this.handleOnSubmit}
+                onClick={this.handleOnSubmitButtonClick}
                 circularCorners={true}
               />
-              <SkipButton onClick={this.skipStep}>{formatMessage(messages.skip)}</SkipButton>
+              {!isRequired &&
+                <SkipButton onClick={this.skipStep}>{formatMessage(messages.skip)}</SkipButton>
+              }
             </ButtonWrapper>
             <Error text={unknownError} />
           </FormElement>

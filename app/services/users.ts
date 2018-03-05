@@ -28,6 +28,7 @@ export interface IUserData {
     domicile?: string;
     education?: string;
     unread_notifications?: number;
+    custom_field_values: object;
   };
 }
 
