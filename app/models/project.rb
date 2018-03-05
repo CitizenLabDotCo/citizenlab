@@ -9,6 +9,7 @@ class Project < ApplicationRecord
 
 
   has_many :ideas, dependent: :destroy
+  has_many :votes, through: :ideas
   has_and_belongs_to_many :topics
   has_and_belongs_to_many :areas
   has_many :phases, -> { order(:start_at) }, dependent: :destroy
