@@ -170,8 +170,54 @@ describe ParticipationContextService do
         idea = create(:idea, project: project)
         expect(service.voting_disabled_reason(idea, user)).to eq reasons[:voting_limited_max_reached]
       end
+    end
+  end
 
-      # it returns 'project_inactive' when the project is over
+  describe "cancelling_votes_disabled_reasons" do
+
+    let(:user) { create(:user) }
+    let(:reasons) { ParticipationContextService::VOTING_DISABLED_REASONS }
+
+    context "timeline project" do
+      it "returns nil when voting is enabled in the current phase" do
+        project = create(:project_with_current_phase)
+        idea = create(:idea, project: project, phases: [project.phases[2]])
+        expect(service.cancelling_votes_disabled_reason(idea)).to be_nil
+      end
+
+      it "returns `not_in_active_context` when it's not in the current phase" do
+        project = create(:project_with_current_phase)
+        idea = create(:idea, project: project, phases: [project.phases[1]])
+        expect(service.cancelling_votes_disabled_reason(idea)).to eq reasons[:not_in_active_context]
+      end
+
+      it "returns 'voting_disabled' if it's in the current phase and voting is disabled" do
+        project = create(:project_with_current_phase, current_phase_attrs: {voting_enabled: false})
+        idea = create(:idea, project: project, phases: [project.phases[2]])
+        expect(service.cancelling_votes_disabled_reason(idea)).to eq reasons[:voting_disabled]
+      end
+
+      it "returns 'project_inactive' when the timeline has past" do
+        project = create(:project_with_past_phases)
+        idea = create(:idea, project: project, phases: project.phases)
+        expect(service.cancelling_votes_disabled_reason(idea)).to eq reasons[:project_inactive]
+      end
+
+    end
+
+    context "continuous project" do
+      it "returns nil when voting is enabled in the current project with unlimited voting" do
+        project = create(:continuous_project)
+        idea = create(:idea, project: project)
+        expect(service.cancelling_votes_disabled_reason(idea)).to be_nil
+      end
+
+      it "returns 'voting_disabled' if voting is disabled" do
+        project = create(:continuous_project, voting_enabled: false)
+        idea = create(:idea, project: project)
+        expect(service.cancelling_votes_disabled_reason(idea)).to eq reasons[:voting_disabled]
+      end
+
     end
   end
 

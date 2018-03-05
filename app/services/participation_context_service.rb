@@ -101,6 +101,23 @@ class ParticipationContextService
     end
   end
 
+  def cancelling_votes_disabled_reason idea, user=nil
+    project = idea.project
+    current_context = get_participation_context(project)
+    if !current_context
+      VOTING_DISABLED_REASONS[:project_inactive]
+    else
+      in_current_context = in_current_context?(idea, current_context)
+      if !in_current_context
+        VOTING_DISABLED_REASONS[:not_in_active_context]
+      elsif !current_context.voting_enabled
+        VOTING_DISABLED_REASONS[:voting_disabled]
+      else
+        nil
+      end
+    end
+  end
+
   def future_posting_enabled_phase project, time=Time.now
     return nil if !project.timeline?
     @timeline_service.future_phases(project, time).find do |phase|
@@ -129,14 +146,7 @@ class ParticipationContextService
     end
 
     def calculate_votes_in_context context, user
-      start_at = context.respond_to?(:start_at) ? context.start_at : nil
-      end_at = context.respond_to?(:end_at) ? context.end_at : nil
-      votes = context.votes.where(user: user)
-
-      votes = votes.where("created_at > ?", start_at) if start_at
-      votes = votes.where("created_at < ?", end_at) if end_at
-
-      votes.count
+      user.votes.where(votable_id: context.ideas).count
     end
 
 end
