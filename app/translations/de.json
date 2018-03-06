@@ -1,5 +1,6 @@
 {
   "app.components.Breadcrumbs.header": "Dies ist die Semmelbrösel-Komponente!",
+  "app.components.CustomFieldsForm.requiredError": "",
   "app.components.FullscreenModal.closeButtonLabel": "Schließen",
   "app.components.FullscreenModal.goBack": "Zurück",
   "app.components.GoBackButton.group.edit.goBack": "Zurück",
