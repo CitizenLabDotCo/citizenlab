@@ -75,6 +75,10 @@ export function updateCustomFieldForUsers(customFieldId: string, object) {
   return streams.update<ICustomField>(`${API_PATH}/users/custom_fields/${customFieldId}`, customFieldId, { custom_field: object });
 }
 
+export function reorderCustomFieldForUsers(customFieldId: string, object) {
+  return streams.update<ICustomField>(`${API_PATH}/users/custom_fields/${customFieldId}/reorder`, customFieldId, { custom_field: object });
+}
+
 export function deleteCustomField(customFieldId: string) {
   return streams.delete(`${API_PATH}/users/custom_fields/${customFieldId}`, customFieldId);
 }

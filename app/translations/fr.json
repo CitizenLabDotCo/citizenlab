@@ -537,6 +537,8 @@
   "app.containers.SignUp.passwordPlaceholder": "Entrez un mot de passe",
   "app.containers.SignUp.signUp": "S'inscrire",
   "app.containers.SignUp.skip": "Sauter cette étape",
+  "app.containers.SignUp.step1Title": "",
+  "app.containers.SignUp.step2Title": "",
   "app.containers.SignUp.submit": "Enregistrer",
   "app.containers.SignUp.unknownError": "Une erreur est survenue. Veuillez réessayer.",
   "app.containers.SignUp.unspecified": "Indéterminé",
