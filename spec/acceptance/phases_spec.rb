@@ -50,6 +50,8 @@ resource "Phases" do
         parameter :voting_enabled, "Can citizens vote in this phase? Defaults to true", required: false
         parameter :voting_method, "How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
         parameter :voting_limited_max, "Number of votes a citizen can perform in this phase, only if the voting_method is limited. Defaults to 10", required: false
+        parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
+        parameter :survey_service, "The name of the service of the survey. Either #{ParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :start_at, "The start date of the phase", required: true
         parameter :end_at, "The end date of the phase", required: true
       end
@@ -90,6 +92,18 @@ resource "Phases" do
         end
       end
 
+      describe do
+        let (:participation_method) { 'survey' }
+        let (:survey_embed_url) { 'https://citizenlabco.typeform.com/to/StrNJP' }
+        let (:survey_service) { 'typeform' }
+        example_request "Create a survey phase", document: false do
+          expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:attributes,:survey_embed_url)).to eq survey_embed_url
+          expect(json_response.dig(:data,:attributes,:survey_service)).to eq survey_service
+        end
+      end
+
     end
 
     patch "web_api/v1/phases/:id" do
@@ -103,6 +117,8 @@ resource "Phases" do
         parameter :voting_enabled, "Can citizens vote in this phase? Defaults to true", required: false
         parameter :voting_method, "How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
         parameter :voting_limited_max, "Number of votes a citizen can perform in this phase, only if the voting_method is limited. Defaults to 10", required: false
+        parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
+        parameter :survey_service, "The name of the service of the survey. Either #{ParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :start_at, "The start date of the phase"
         parameter :end_at, "The end date of the phase"
       end
