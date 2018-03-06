@@ -48,6 +48,7 @@ const Container = styled.div`
   justify-content: space-between;
   padding-left: 30px;
   padding-right: 30px;
+  position: relative;
   width: 100%;
 
   * {
@@ -202,6 +203,7 @@ const NavigationDropdownMenu = styled(clickOutside)`
   top: 35px;
   left: -10px;
   transform-origin: left top;
+  z-index: 5;
 
   * {
     user-select: none;
