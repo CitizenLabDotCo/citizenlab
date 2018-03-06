@@ -216,11 +216,8 @@
   },
   "dependencies": {
     "@segment/snippet": "^4.0.1",
-<<<<<<< HEAD
     "@types/react-jsonschema-form": "^1.0.2",
-=======
     "@typeform/embed": "^0.5.6",
->>>>>>> 6eacc6d94403a6a85046e5d12cd3f32ec30f2582
     "babel-polyfill": "6.26.0",
     "bowser": "^1.9.1",
     "chalk": "1.1.3",
