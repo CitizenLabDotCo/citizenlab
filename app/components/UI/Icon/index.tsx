@@ -333,7 +333,16 @@ const icons = {
       <path d="M20 3c.546 0 .99.449.99 1l.009 15.583-2.292-2.291-.293-.292H4c-.551 0-1-.448-1-1V4c0-.551.449-1 1-1h16m0-1H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18c0-1.1-.89-2-1.99-2z"/>
       <path fill="none" d="M0 0h24v24H0V0z"/>
     </svg>
-  )
+  ),
+  survey: (className) => (
+    <svg className={className} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="15" height="18">
+      <path id="path0_fill" d="M7.5 0a2.34 2.34 0 0 0-1.17.322 2.303 2.303 0 0 0-.845.861H0V18h15V1.174H9.515c-.2-.355-.493-.65-.847-.857A2.34 2.34 0 0 0 7.5 0zm-.825 2.761l.136-.623a.697.697 0 0 1 .248-.393.712.712 0 0 1 1.132.393l.136.623h1.122v.7H5.553v-.71l1.122.01zm6.728 13.661H1.597V2.752h2.359V5.03h7.088V2.75h2.359v13.671z"/>
+      <path id="path1_fill" d="M2.607 10.347h3.926V6.47H2.607v3.877zm1.598-2.3h.73v.723h-.73v-.722z"/>
+      <path id="path2_fill" d="M12.392 7.62H7.346v1.577h5.046V7.62z"/>
+      <path id="path3_fill" d="M2.607 15.08h3.926v-3.877H2.607v3.878zm1.598-2.299h.73v.722h-.73v-.722z"/>
+      <path id="path4_fill" d="M12.392 12.354H7.346v1.577h5.046v-1.577z"/>
+    </svg>
+  ),
 };
 
 export type IconNames = keyof typeof icons;

@@ -102,7 +102,6 @@ const HeaderImageOverlay = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 1;
 `;
 
 const HeaderContent = styled.div`
@@ -120,7 +119,6 @@ const HeaderContent = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 2;
 
   ${media.smallerThanMinTablet`
     margin-top: -60px;

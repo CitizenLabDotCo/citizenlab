@@ -10,6 +10,9 @@ type ProcessType = 'continuous' | 'timeline';
 type PresentationMode = 'map' | 'card';
 type PublicationStatus = 'draft' | 'published' | 'archived';
 
+import { ParticipationMethod, SurveyServices } from './phases';
+
+
 export interface IProjectData {
   id: string;
   type: string;
@@ -24,7 +27,7 @@ export interface IProjectData {
     updated_at: string;
     visible_to: Visibility;
     process_type: ProcessType;
-    participation_method: 'ideation' | 'information';
+    participation_method: ParticipationMethod | null;
     posting_enabled: boolean;
     commenting_enabled: boolean;
     voting_enabled: boolean;
@@ -33,6 +36,8 @@ export interface IProjectData {
     presentation_mode: PresentationMode;
     internal_role: 'open_idea_box' | null;
     publication_status: PublicationStatus;
+    survey_service?: SurveyServices;
+    survey_embed_url?: string;
   };
   relationships: {
     project_images: {
@@ -61,7 +66,7 @@ export interface IUpdatedProjectProperties {
   area_ids?: string[];
   visible_to?: Visibility;
   process_type?: ProcessType;
-  participation_method?: 'ideation' | 'information' | null;
+  participation_method?: ParticipationMethod | null;
   posting_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
   voting_enabled?: boolean | null;
@@ -69,6 +74,8 @@ export interface IUpdatedProjectProperties {
   voting_limited_max?: number | null;
   presentation_mode?: PresentationMode | null;
   publication_status?: PublicationStatus;
+  survey_service?: SurveyServices | null;
+  survey_embed_url?: string | null;
 }
 
 export interface IProject {
@@ -101,4 +108,21 @@ export function updateProject(projectId, projectData: IUpdatedProjectProperties)
 
 export function deleteProject(projectId: string) {
   return streams.delete(`${apiEndpoint}/${projectId}`, projectId);
+}
+
+export function getProjectUrl(project: IProjectData) {
+  let lastUrlSegment;
+
+  // Determine where to send the user based on process type & participation method
+  if (project.attributes.process_type === 'timeline') {
+    lastUrlSegment = 'process';
+  } else if (project.attributes.participation_method === 'survey') {
+    lastUrlSegment = 'survey';
+  } else if (project.attributes.participation_method === 'ideation') {
+    lastUrlSegment = 'ideas';
+  } else {
+    lastUrlSegment = 'info';
+  }
+
+  return `/projects/${project.attributes.slug}/${lastUrlSegment}`;
 }

@@ -200,17 +200,19 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
 
   handleParticipationContextOnChange = (participationContextConfig: IParticipationContextConfig) => {
     const { attributeDiff } = this.state;
-    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = participationContextConfig;
+    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, survey_embed_url, survey_service } = participationContextConfig;
 
     this.setState({
       attributeDiff: {
         ...attributeDiff,
+        survey_embed_url,
+        survey_service,
         participation_method: participationMethod,
         posting_enabled: postingEnabled,
         commenting_enabled: commentingEnabled,
         voting_enabled: votingEnabled,
         voting_method: votingMethod,
-        voting_limited_max: votingLimit
+        voting_limited_max: votingLimit,
       }
     });
   }
@@ -219,16 +221,18 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
     let { attributeDiff } = this.state;
     const { phase, project } = this.state;
     const { slug } = this.props.params;
-    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = participationContextConfig;
+    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, survey_embed_url, survey_service } = participationContextConfig;
 
     attributeDiff = {
       ...attributeDiff,
+      survey_embed_url,
+      survey_service,
       participation_method: participationMethod,
       posting_enabled: postingEnabled,
       commenting_enabled: commentingEnabled,
       voting_enabled: votingEnabled,
       voting_method: votingMethod,
-      voting_limited_max: votingLimit
+      voting_limited_max: votingLimit,
     };
 
     this.save(slug, project, phase, attributeDiff);
