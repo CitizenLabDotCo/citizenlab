@@ -33,11 +33,12 @@ const LanguageExtension = styled(Label)`
   margin-left: 5px;
 `;
 
-type Props = {
+export type Props = {
   id?: string | undefined;
   valueMultiloc: Multiloc | null | undefined;
   label?: string | JSX.Element | null | undefined;
   onChange?: (arg: Multiloc, locale: Locale) => void;
+  onBlur?: (arg: React.FormEvent<HTMLInputElement>) => void;
   type: 'text' | 'email' | 'password' | 'number';
   placeholder?: string | null | undefined;
   errorMultiloc?: Multiloc | null;
@@ -120,6 +121,7 @@ export default class InputMultiloc extends React.PureComponent<Props, State> {
                   placeholder={placeholder}
                   error={error}
                   onChange={this.handleOnChange(currentTenantLocale)}
+                  onBlur={this.props.onBlur}
                   maxCharCount={this.props.maxCharCount}
                 />
               </InputWrapper>

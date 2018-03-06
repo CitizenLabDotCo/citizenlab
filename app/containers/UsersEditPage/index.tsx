@@ -61,7 +61,9 @@ export default class ProfileEditor extends React.PureComponent<Props, State> {
 
     if (loaded && !authUser) {
       browserHistory.push('/');
-    } else if (loaded && currentTenant && authUser && areas) {
+    }
+
+    if (loaded && currentTenant && authUser && areas) {
       return (
         <ProfileForm
           user={authUser.data}

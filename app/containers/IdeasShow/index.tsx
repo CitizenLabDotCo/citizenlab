@@ -47,14 +47,14 @@ import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-const loadingTimeout = 500;
+const loadingTimeout = 400;
 const loadingEasing = 'ease-out';
-const loadingDelay = 0;
+const loadingDelay = 100;
 
-const contentTimeout = 400;
+const contentTimeout = 500;
 const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
-const contentDelay = 700;
-const contentTranslateDistance = '25px';
+const contentDelay = 600;
+const contentTranslateDistance = '30px';
 
 const StyledSpinner = styled(Spinner)`
   transition: all ${loadingTimeout}ms ${loadingEasing} ${loadingDelay}ms;
@@ -69,6 +69,7 @@ const Loading = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  will-change: opacity;
 
   &.loading-enter {
     ${StyledSpinner} {
@@ -85,6 +86,7 @@ const Loading = styled.div`
 
 const Container = styled.div`
   background: #fff;
+  transform: none;
   will-change: transform, opacity;
 
   &.content-enter {
@@ -336,8 +338,8 @@ const AddressWrapper = styled.div`
 `;
 
 const AuthorAvatar = styled(Avatar)`
-  width: 31px;
-  height: 31px;
+  width: 35px;
+  height: 35px;
   margin-right: 8px;
   margin-top: 0px;
 `;
@@ -354,10 +356,6 @@ const AuthorName = styled(Link) `
   font-size: 16px;
   font-weight: 400;
   line-height: 20px;
-  overflow: hidden;
-  text-decoration: none;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 
   &:hover {
     color: #333;
@@ -385,11 +383,11 @@ const TimeAgo = styled.div`
 const IdeaBody = styled.div`
   color: #474747;
   font-size: 19px;
-  line-height: 30px;
+  line-height: 32px;
   font-weight: 300;
 
   p {
-    margin-bottom: 30px;
+    margin-bottom: 32px;
 
     &:last-child {
       margin-bottom: 0px;
@@ -773,7 +771,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                     <VoteControl
                       ideaId={idea.data.id}
                       unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-                      size="small"
+                      size="1"
                     />
                   </VoteControlMobile>
                 }

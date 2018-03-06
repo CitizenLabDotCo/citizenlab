@@ -66,6 +66,10 @@ const ProjectType = styled.div`
   text-transform: capitalize;
 `;
 
+const StyledSectionField = styled(SectionField)`
+  max-width: 100%;
+`;
+
 const StyledImagesDropzone = styled(ImagesDropzone)`
   margin-top: 2px;
   padding-right: 100px;
@@ -719,7 +723,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               }
             </SectionField>
 
-            <SectionField>
+            <StyledSectionField>
               <Label>
                 <FormattedMessage {...messages.headerImageLabel} />
               </Label>
@@ -734,9 +738,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 onUpdate={this.handleHeaderOnUpdate}
                 onRemove={this.handleHeaderOnRemove}
               />
-            </SectionField>
+            </StyledSectionField>
 
-            <SectionField>
+            <StyledSectionField>
               <Label>
                 <FormattedMessage {...messages.projectImageLabel} />
               </Label>
@@ -751,7 +755,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 onUpdate={this.handleProjectImagesOnUpdate}
                 onRemove={this.handleProjectImageOnRemove}
               />
-            </SectionField>
+            </StyledSectionField>
 
             {projectData &&
               <SectionField>
