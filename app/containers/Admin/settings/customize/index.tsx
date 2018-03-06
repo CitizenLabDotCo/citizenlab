@@ -5,12 +5,10 @@ import { merge, cloneDeep, forOwn, get, set, size, has, trim, isEmpty, omitBy } 
 // components
 import Label from 'components/UI/Label';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import Toggle from 'components/UI/Toggle';
 import ColorPickerInput from 'components/UI/ColorPickerInput';
 import InputMultiloc from 'components/UI/InputMultiloc';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import FeatureFlag from 'components/FeatureFlag';
 
 // style
 import styled from 'styled-components';
@@ -30,29 +28,6 @@ import { currentTenantStream, updateTenant, IUpdatedTenantProperties, ITenant, I
 
 // typings
 import { API, ImageFile, Locale, Multiloc } from 'typings';
-
-const ToggleWrapper = styled.div`
-  width: 100%;
-  max-width: 250px;
-  display: flex;
-  justify-content: space-between;
-  padding-top: 15px;
-  padding-bottom: 15px;
-
-  &.first {
-    border-top: none;
-  }
-
-  &.last {
-    border-bottom: none;
-  }
-`;
-
-const ToggleLabel = styled.div`
-  color: #333;
-  font-size: 16px;
-  font-weight: 400;
-`;
 
 const StyledSectionField = styled(SectionField)`
   max-width: 500px;
@@ -226,11 +201,6 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
     this.setState({ attributesDiff: newDiff });
   }
 
-  handleOnToggle = (fieldPath: string, checked: boolean) => () => {
-    let newDiff = cloneDeep(this.state.attributesDiff);
-    newDiff = set(newDiff, fieldPath, !checked);
-    this.setState({ attributesDiff: newDiff });
-  }
 
   validate = (currentTenant: ITenant, attributesDiff: IAttributesDiff) => {
     const { formatMessage } = this.props.intl;
@@ -296,7 +266,6 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
       const { formatMessage } = this.props.intl;
       const { logo, header_bg, attributesDiff, logoError, headerError } = this.state;
       const tenantAttrs = merge(cloneDeep(currentTenant.data.attributes), attributesDiff);
-
       return (
         <form onSubmit={this.save}>
 
@@ -380,36 +349,6 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
                 errorMultiloc={subtitleError}
               />
             </StyledSectionField>
-          </Section>
-
-          <Section key={'signup_fields'} className={'last'}>
-            <SectionTitle>
-              <FormattedMessage {...messages.titleSignupFields} />
-            </SectionTitle>
-
-            <FeatureFlag name="demographic_fields">
-              <SectionField>
-                {['gender', 'domicile', 'birthyear'].map((fieldName, index) => {
-                  const fieldPath = `settings.demographic_fields.${fieldName}`;
-                  const checked = get(tenantAttrs, fieldPath) as boolean;
-                  const first = (index === 0 && 'first');
-                  const last = (index === 2 && 'last');
-
-                  return (
-                    <ToggleWrapper key={fieldName} className={`${first} ${last}`} >
-                      <ToggleLabel>
-                        <FormattedMessage {...messages[fieldName]} />
-                      </ToggleLabel>
-                      <Toggle
-                        checked={checked}
-                        disabled={false}
-                        onToggle={this.handleOnToggle(fieldPath, checked)}
-                      />
-                    </ToggleWrapper>
-                  );
-                })}
-              </SectionField>
-            </FeatureFlag>
           </Section>
 
           <SubmitWrapper

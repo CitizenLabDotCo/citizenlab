@@ -28,8 +28,8 @@ const AuthorContainer = styled.div`
 `;
 
 const AuthorAvatar = styled(Avatar)`
-  width: 31px;
-  height: 31px;
+  width: 35px;
+  height: 35px;
   margin-right: 8px;
   margin-top: 0px;
 `;

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { remCalc, color, fontSize, media } from 'utils/styleUtils';
 
 export const Section = styled.div`
-  margin-bottom: ${remCalc(60)};
+  margin-bottom: 0;
 `;
 
 export const SectionTitle = styled.h1`
@@ -26,13 +26,20 @@ export const SectionSubtitle = styled.p`
 export const SectionField = styled.div`
   margin-bottom: ${remCalc(30)};
   transition: all 200ms ease-in-out;
+  width: 100%;
+  max-width: 500px;
 
-  .CLTextareaComponentContainer {
-    max-width: 500px;
+  &.fullWidth {
+    max-width: auto;
+  }
+
+  .editor {
+    width: 120%;
   }
 
   .CLInputComponent,
   .CLTextareaComponent {
+    width: 100%;
     -webkit-appearance: none;
     background: #fff;
     border-radius: 5px;
@@ -42,10 +49,8 @@ export const SectionField = styled.div`
     font-size: ${fontSize('base')};
     font-weight: 400;
     line-height: 24px;
-    max-width: 500px;
     outline: none;
     padding: 12px;
-    width: 100%;
 
     &::placeholder {
       color: #aaa;
@@ -59,13 +64,5 @@ export const SectionField = styled.div`
     ${media.biggerThanPhone`
       padding-right: ${props => props.error && '40px'};
     `}
-  }
-
-  .editor {
-    max-width: 600px;
-  }
-
-  .Select {
-    max-width: 470px;
   }
 `;

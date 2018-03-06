@@ -42,12 +42,23 @@ export default class SubmitWrapper extends React.Component<Props> {
   render () {
     let style = this.props.style || 'cl-blue';
 
-    if (this.props.status === 'success') {style = 'success';}
-    if (this.props.status === 'error') {style = 'error';}
+    if (this.props.status === 'success') {
+      style = 'success';
+    }
+
+    if (this.props.status === 'error') {
+      style = 'error';
+    }
 
     return (
       <Wrapper>
-        <Button className="e2e-submit-wrapper-button" style={style} processing={this.props.loading} disabled={this.props.status === 'disabled'} onClick={this.props.onClick}>
+        <Button
+          className="e2e-submit-wrapper-button"
+          style={style}
+          processing={this.props.loading}
+          disabled={this.props.status === 'disabled'}
+          onClick={this.props.onClick}
+        >
           {(this.props.status === 'enabled' || this.props.status === 'disabled') &&
             <FormattedMessage {...this.props.messages.buttonSave} />
           }
@@ -64,6 +75,7 @@ export default class SubmitWrapper extends React.Component<Props> {
             <FormattedMessage {...this.props.messages.messageError}/>
           </Message>
         }
+
         {this.props.status === 'success' &&
           <Message className="success">
             <FormattedMessage {...this.props.messages.messageSuccess}/>
@@ -73,4 +85,3 @@ export default class SubmitWrapper extends React.Component<Props> {
     );
   }
 }
-

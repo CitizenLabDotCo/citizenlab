@@ -138,7 +138,7 @@ const NavigationItems = styled.div`
 const NavigationItem = styled(Link) `
   height: 100%;
   color: #999;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -163,7 +163,7 @@ const NavigationDropdown = styled.div`
 
 const NavigationDropdownItemText = styled.div`
   color: #999;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 400;
   transition: all 100ms ease-out;
 `;
@@ -263,7 +263,7 @@ const NavigationDropdownList = styled.div`
 
 const NavigationDropdownListItem = styled(Link)`
   color: ${(props) => props.theme.colors.label};
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 400;
   text-decoration: none;
   padding: 10px;
@@ -281,20 +281,25 @@ const NavigationDropdownListItem = styled(Link)`
 
 const NavigationDropdownFooter = styled(Link)`
   width: 100%;
-  color: #333;
-  font-size: 17px;
+  color: ${(props) => props.theme.colorMain};
+  font-size: 18px;
   font-weight: 400;
   text-align: center;
   text-decoration: none;
   padding: 15px 15px;
   cursor: pointer;
-  background: #f2f2f2;
+  background: #fafafa;
+  background: #f9f9fa;
+  border-top: solid 1px #f0f0f0;
+  border-radius: 5px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
   transition: all 80ms ease-out;
 
   &:hover {
-    color: #000;
+    background: #f6f6f6;
+    color: ${(props) => darken(0.2, props.theme.colorMain)};
     text-decoration: none;
-    background: #e0e0e0;
   }
 `;
 
@@ -330,10 +335,6 @@ const RightItem: any = styled.div`
   &.addIdea {
     padding-left: 0px;
 
-    ${media.smallerThanMinTablet`
-        display: none;
-    `}
-
     ${(props: any) => props.loggedIn && css`
       ${media.smallerThanMinTablet`
         display: flex;
@@ -346,24 +347,16 @@ const RightItem: any = styled.div`
   `}
 `;
 
-const StyledIdeaButton = styled(IdeaButton)`
-  .Button {
-    border: solid 2px #eaeaea !important;
-
-    &:hover {
-      border-color: #ccc !important;
-    }
-  }
-`;
-
 const LoginLink = styled.div`
-  color: ${(props) => props.theme.colorMain};
+  color: ${(props) => props.theme.colors.label};
   font-size: 16px;
   font-weight: 400;
   padding: 0;
 
   &:hover {
-    color: ${(props) => darken(0.15, props.theme.colorMain)};
+    /* color: ${(props) => darken(0.15, props.theme.colorMain)}; */
+    /* color: ${(props) => props.theme.colorMain}; */
+    color: ${(props) => darken(0.2, props.theme.colors.label)};
   }
 `;
 
@@ -568,14 +561,14 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
                   </NavigationDropdown>
                 }
 
-                {/*
-                <NavigationItem to="/projects" activeClassName="active">
+                {/* <NavigationItem to="/projects" activeClassName="active">
                   <FormattedMessage {...messages.pageProjects} />
                 </NavigationItem>
+                */}
+
                 <NavigationItem to="/ideas" activeClassName="active">
                   <FormattedMessage {...messages.pageIdeas} />
                 </NavigationItem>
-                */}
 
                 <NavigationItem to="/pages/information" activeClassName="active">
                   <FormattedMessage {...messages.pageInformation} />
@@ -585,7 +578,7 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
 
             <Right>
               <RightItem className="addIdea" loggedIn={authUser !== null}>
-                <StyledIdeaButton style="primary-outlined" />
+                <IdeaButton style="secondary-outlined" />
               </RightItem>
 
               {authUser &&

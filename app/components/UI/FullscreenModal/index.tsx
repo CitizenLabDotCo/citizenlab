@@ -24,8 +24,9 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const timeout = 350;
+const timeout = 300;
 const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
+// const easing = `ease-out`;
 
 const Container: any = styled.div`
   position: fixed;
@@ -39,6 +40,7 @@ const Container: any = styled.div`
   outline: none;
   background: #fff;
   z-index: -10000;
+  transform: none;
   will-change: opacity;
   display: none;
 
@@ -61,7 +63,7 @@ const Container: any = styled.div`
 
     &.modal-enter {
       opacity: 0;
-      transform: translateY(25px);
+      transform: translateY(20px);
 
       &.modal-enter-active {
         opacity: 1;
@@ -77,21 +79,24 @@ const Container: any = styled.div`
 `;
 
 const Content = styled.div`
-  width: 100vw;
-  height: 100vh;
-  position: relative;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10001;
   overflow: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 66px);
-    margin-top: 66px;
+    top: ${props => props.theme.mobileTopBarHeight}px;
+    bottom: ${props => props.theme.mobileMenuHeight}px;
   `}
 `;
 
 const TopBar: any = styled.div`
-  height: 66px;
+  height: ${props => props.theme.mobileTopBarHeight}px;
   position: absolute;
   top: 0;
   left: 0;
@@ -99,7 +104,7 @@ const TopBar: any = styled.div`
   background: #fff;
   /* background: #f9f9fa; */
   border-bottom: solid 1px #ccc;
-  z-index: 10001;
+  z-index: 10002;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -194,7 +199,7 @@ const CloseButton = styled.div`
   right: 33px;
   border-radius: 50%;
   border: solid 1px #ccc;
-  z-index: 10001;
+  z-index: 10002;
   transition: border-color 100ms ease-out;
 
   &:hover {

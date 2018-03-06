@@ -81,7 +81,7 @@ const RightInner = styled.div`
 const Title = styled.h2`
   width: 100%;
   color: #333;
-  font-size: 36px;
+  font-size: 34px;
   line-height: 42px;
   font-weight: 500;
   text-align: left;
