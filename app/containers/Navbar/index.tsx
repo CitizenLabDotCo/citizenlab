@@ -40,17 +40,15 @@ import { Locale } from 'typings';
 import { Location } from 'history';
 
 const Container = styled.div`
-  width: 100%;
-  height: ${(props) => props.theme.menuHeight}px;
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  z-index: 999;
-  position: fixed;
-  top: 0;
   background: #fff;
+  display: flex;
+  flex: 0 0 ${(props) => props.theme.menuHeight}px;
+  height: ${(props) => props.theme.menuHeight}px;
+  justify-content: space-between;
   padding-left: 30px;
   padding-right: 30px;
+  width: 100%;
 
   * {
     user-select: none;
@@ -68,6 +66,7 @@ const Container = styled.div`
     box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.12);
     transition: opacity 100ms ease-out;
     opacity: 0;
+    pointer-events: none;
   }
 
   &.scrolled::after,
