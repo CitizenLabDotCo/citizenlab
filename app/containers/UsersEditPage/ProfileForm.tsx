@@ -5,13 +5,13 @@ import { isEqual, isEmpty, get } from 'lodash';
 
 // services
 import { IAreaData } from 'services/areas';
-import { updateUser, IUserData, IUserUpdate, mapUserToDiff } from 'services/users';
+import { updateUser, IUserData/*, IUserUpdate,*/, mapUserToDiff } from 'services/users';
 import { ITenantData } from 'services/tenant';
 import { localeStream } from 'services/locale';
 import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
 
 // utils
-import { withFormik, FormikProps, Form as FormikForm } from 'formik';
+import { Formik } from 'formik';
 import eventEmitter from 'utils/eventEmitter';
 
 // components
@@ -21,7 +21,7 @@ import LabelWithTooltip from './LabelWithTooltip';
 import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToFileObservable } from 'utils/imageTools';
-import { Section, SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Section';
+import { SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Section';
 import CustomFieldsForm from 'components/CustomFieldsForm';
 import TextArea from 'components/UI/TextArea';
 import Input from 'components/UI/Input';
@@ -60,9 +60,10 @@ interface State {
   hasCustomFields: boolean;
   contextRef: any | null;
   localeOptions: IOption[];
+  customFieldsFormData: any;
 }
 
-type Props = InputProps & InjectedIntlProps & injectedLocalized & FormikProps<IUserUpdate>;
+type Props = InputProps & InjectedIntlProps & injectedLocalized;
 
 class ProfileForm extends React.PureComponent<Props, State> {
   localeOptions: IOption[] = [];
@@ -71,7 +72,6 @@ class ProfileForm extends React.PureComponent<Props, State> {
   birthYearOptions: IOption[] = [];
   educationOptions: IOption[] = [];
   user$: Rx.BehaviorSubject<IUserData>;
-  customFieldsFormData: any;
   subscriptions: Rx.Subscription[];
 
   constructor(props: InputProps) {
@@ -81,8 +81,8 @@ class ProfileForm extends React.PureComponent<Props, State> {
       hasCustomFields: false,
       contextRef: null,
       localeOptions: [],
+      customFieldsFormData: null
     };
-    this.customFieldsFormData = null;
     this.subscriptions = [];
   }
 
@@ -97,16 +97,18 @@ class ProfileForm extends React.PureComponent<Props, State> {
         locale$,
         customFieldsSchemaForUsersStream$
       ).switchMap(([user, locale, customFieldsSchema]) => {
-        const hasCustomFields = !isEmpty(customFieldsSchema['json_schema_multiloc'][locale]['properties']);
         const avatarUrl = get(user, 'attributes.avatar.medium', null);
-        return (avatarUrl ? convertUrlToFileObservable(avatarUrl) : Rx.Observable.of(null)).map(avatar => ({ avatar, hasCustomFields }));
-      }).subscribe(({ avatar, hasCustomFields }) => {
+        return (avatarUrl ? convertUrlToFileObservable(avatarUrl) : Rx.Observable.of(null)).map(avatar => ({ user, avatar, locale, customFieldsSchema }));
+      }).subscribe(({ user, avatar, locale, customFieldsSchema }) => {
+
+        console.log(customFieldsSchema);
+
         this.setState({
-          hasCustomFields,
-          avatar: (avatar ? [avatar] : null)
+          hasCustomFields: !isEmpty(customFieldsSchema['json_schema_multiloc'][locale]['properties']),
+          avatar: (avatar ? [avatar] : null),
+          customFieldsFormData: user.attributes.custom_field_values
         });
       })
-
     ];
 
     // Create options arrays only once, avoid re-calculating them on each render
@@ -178,237 +180,20 @@ class ProfileForm extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getToggleValue = (property) => {
-    const { user } = this.props;
+  handleFormikSubmit = (values, formikActions) => {
+    let newValues = values;
+    const { setSubmitting, resetForm, setErrors, setStatus } = formikActions;
 
-    if (!user) {
-      return false;
-    }
-
-    return user[property];
-  }
-
-  createChangeHandler = (fieldName) => value => {
-    if (/_multiloc$/.test(fieldName)) {
-      this.props.setFieldValue(fieldName, { [this.props.locale]: value });
-    } else if (value && value.value) {
-      this.props.setFieldValue(fieldName, value.value);
-    } else {
-      this.props.setFieldValue(fieldName, value);
-    }
-  }
-
-  createBlurHandler = (fieldName) => () => {
-    this.props.setFieldTouched(fieldName, true);
-  }
-
-  handleAvatarOnAdd = (newAvatar: ImageFile) => {
-    this.setState(() => ({ avatar: [newAvatar] }));
-    this.props.setFieldValue('avatar', newAvatar.base64);
-    this.props.setFieldTouched('avatar');
-  }
-
-  handleAvatarOnUpdate = (updatedAvatar: ImageFile[]) => {
-    const avatar = (updatedAvatar && updatedAvatar.length > 0 ? updatedAvatar : null);
-    this.setState({ avatar });
-    this.props.setFieldValue('avatar', updatedAvatar[0].base64);
-    this.props.setFieldTouched('avatar');
-  }
-
-  handleAvatarOnRemove = async () => {
-    this.setState(() => ({ avatar: null }));
-    this.props.setFieldValue('avatar', null);
-    this.props.setFieldTouched('avatar');
-  }
-
-  handleContextRef = (contextRef) => {
-    this.setState({ contextRef });
-  }
-
-  getStatus = () => {
-    const { isValid,  status, touched } = this.props;
-
-    if (!isEmpty(touched) && !isValid) {
-      return 'error';
-    }
-
-    if (isEmpty(touched) && status === 'success') {
-      return 'success';
-    }
-
-    return 'enabled';
-  }
-
-  handleCustomFieldsFormOnSubmit = (formData) => {
-    this.customFieldsFormData = formData;
-    this.props.submitForm();
-  }
-
-  handleOnSubmit = () => {
-    // console.log('zolg');
     if (this.state.hasCustomFields) {
-      eventEmitter.emit('ProfileForm', 'customFieldsSubmitEvent', null);
-    } else {
-      this.props.submitForm();
+      newValues = {
+        ...values,
+        custom_field_values: this.state.customFieldsFormData
+      };
     }
-  }
 
-  render() {
-    const { hasCustomFields } = this.state;
-    const { user, intl: { formatMessage }, values, errors, isSubmitting } = this.props;
-
-    return (
-      <StyledContentContainer>
-        <Grid centered>
-          <Grid.Row>
-            <Grid.Column computer={12} mobile={16}>
-              <div ref={this.handleContextRef}>
-                <Segment padded="very">
-                  <FormikForm className="e2e-profile-edit-form" noValidate>
-                    {/* BASICS */}
-                    <Section ref={(section1) => { this['section-basics'] = section1; }}>
-                      <SectionTitle><FormattedMessage {...messages.h1} /></SectionTitle>
-                      <SectionSubtitle><FormattedMessage {...messages.h1sub} /></SectionSubtitle>
-
-                      <SectionField>
-                        <ImagesDropzone
-                          images={this.state.avatar}
-                          imagePreviewRatio={1}
-                          maxImagePreviewWidth="160px"
-                          acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                          maxImageFileSize={5000000}
-                          maxNumberOfImages={1}
-                          onAdd={this.handleAvatarOnAdd}
-                          onUpdate={this.handleAvatarOnUpdate}
-                          onRemove={this.handleAvatarOnRemove}
-                          imageRadius="50%"
-                        />
-                        <Error apiErrors={errors.avatar} />
-                      </SectionField>
-
-                      <SectionField>
-                        <LabelWithTooltip id="firstName" />
-                        <Input
-                          type="text"
-                          name="first_name"
-                          id="firstName"
-                          value={values.first_name}
-                          onChange={this.createChangeHandler('first_name')}
-                          onBlur={this.createBlurHandler('first_name')}
-                        />
-                        <Error apiErrors={errors.first_name} />
-                      </SectionField>
-
-                      <SectionField>
-                        <LabelWithTooltip id="lastName" />
-                        <Input
-                          type="text"
-                          name="last_name"
-                          id="lastName"
-                          value={values.last_name}
-                          onChange={this.createChangeHandler('last_name')}
-                          onBlur={this.createBlurHandler('last_name')}
-                        />
-                        <Error apiErrors={errors.last_name} />
-                      </SectionField>
-
-                      <SectionField>
-                        <LabelWithTooltip id="email" />
-                        <Input
-                          type="email"
-                          name="email"
-                          value={values.email}
-                          onChange={this.createChangeHandler('email')}
-                          onBlur={this.createBlurHandler('email')}
-                        />
-                        <Error apiErrors={errors.email} />
-                      </SectionField>
-
-                      <SectionField>
-                        <LabelWithTooltip id="bio" />
-                        <TextArea
-                          name="bio_multiloc"
-                          onChange={this.createChangeHandler('bio_multiloc')}
-                          onBlur={this.createBlurHandler('bio_multiloc')}
-                          rows={6}
-                          placeholder={formatMessage({ ...messages.bio_placeholder })}
-                          value={values.bio_multiloc ? this.props.localize(values.bio_multiloc) : ''}
-                        />
-                        <Error apiErrors={errors.bio_multiloc} />
-                      </SectionField>
-
-                      <SectionField>
-                        <LabelWithTooltip id="password" />
-                        <Input
-                          type="password"
-                          name="password"
-                          value={values.password}
-                          onChange={this.createChangeHandler('password')}
-                          onBlur={this.createBlurHandler('password')}
-                        />
-                        <Error apiErrors={errors.password} />
-                      </SectionField>
-
-                      <SectionField>
-                        <LabelWithTooltip id="language" />
-                        <Select
-                          onChange={this.createChangeHandler('locale')}
-                          onBlur={this.createBlurHandler('locale')}
-                          value={values.locale}
-                          options={this.state.localeOptions}
-                        />
-                        <Error apiErrors={errors.locale} />
-                      </SectionField>
-                    </Section>
-                  </FormikForm>
-
-                  {hasCustomFields &&
-                    <CustomFieldsForm 
-                      formData={user.attributes.custom_field_values}
-                      onSubmit={this.handleCustomFieldsFormOnSubmit}
-                    />
-                  }
-
-                  {/* DETAILS */}
-                  {/*
-                  <Section ref={(section2) => { this['section-details'] = section2; }}>
-                    <SectionTitle>
-                      <FormattedMessage {...messages.h2} />
-                    </SectionTitle>
-
-                    <SectionSubtitle>
-                      <FormattedMessage {...messages.h2sub} />
-                    </SectionSubtitle>
-                  </Section>
-                  */}
-
-                  <SubmitWrapper
-                    status={this.getStatus()}
-                    style="primary"
-                    loading={isSubmitting}
-                    onClick={this.handleOnSubmit}
-                    messages={{
-                      buttonSave: messages.submit,
-                      buttonError: messages.buttonErrorLabel,
-                      buttonSuccess: messages.buttonSuccessLabel,
-                      messageSuccess: messages.messageSuccess,
-                      messageError: messages.messageError,
-                    }}
-                  />
-                </Segment>
-              </div>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </StyledContentContainer>);
-  }
-}
-
-export default withFormik<InputProps, IUserUpdate, IUserUpdate>({
-  handleSubmit: (values, { props, setSubmitting, resetForm, setErrors, setStatus }) => {
     setStatus('');
 
-    updateUser(props.user.id, values).then(() => {
+    updateUser(this.props.user.id, newValues).then(() => {
       resetForm();
       setStatus('success');
     }).catch((errorResponse) => {
@@ -418,8 +203,224 @@ export default withFormik<InputProps, IUserUpdate, IUserUpdate>({
         setSubmitting(false);
       }
     });
-  },
-  mapPropsToValues: (props) => {
-    return mapUserToDiff(props.user);
   }
-})(injectIntl<any>(localize(ProfileForm)));
+
+  formikRender = ({ values, errors, setFieldValue, setFieldTouched, setStatus, isSubmitting, submitForm, isValid,  status, touched }) => {
+    const { hasCustomFields } = this.state;
+
+    const handleContextRef = (contextRef) => {
+      this.setState({ contextRef });
+    };
+
+    const getStatus = () => {
+      let returnValue: 'enabled' | 'disabled' | 'error' | 'success' = 'enabled';
+
+      if (isSubmitting) {
+        returnValue = 'disabled';
+      } else if (!isEmpty(touched) && !isValid) {
+        returnValue = 'error';
+      } else if (isEmpty(touched) && status === 'success') {
+        returnValue = 'success';
+      }
+  
+      return returnValue;
+    };
+
+    const handleCustomFieldsFormOnChange = (formData) => {
+      console.log(formData);
+      this.setState({ customFieldsFormData: formData });
+      setStatus('enabled');
+    };
+
+    const handleCustomFieldsFormOnSubmit = (formData) => {
+      this.setState({ customFieldsFormData: formData });
+      submitForm();
+    };
+
+    const handleOnSubmit = () => {
+      if (this.state.hasCustomFields) {
+        eventEmitter.emit('ProfileForm', 'customFieldsSubmitEvent', null);
+      } else {
+        submitForm();
+      }
+    };
+
+    const createChangeHandler = (fieldName) => value => {
+      if (/_multiloc$/.test(fieldName)) {
+        setFieldValue(fieldName, { [this.props.locale]: value });
+      } else if (value && value.value) {
+        setFieldValue(fieldName, value.value);
+      } else {
+        setFieldValue(fieldName, value);
+      }
+    };
+
+    const createBlurHandler = (fieldName) => () => {
+      setFieldTouched(fieldName, true);
+    };
+
+    const handleAvatarOnAdd = (newAvatar: ImageFile) => {
+      this.setState(() => ({ avatar: [newAvatar] }));
+      setFieldValue('avatar', newAvatar.base64);
+      setFieldTouched('avatar');
+    };
+
+    const handleAvatarOnUpdate = (updatedAvatar: ImageFile[]) => {
+      const avatar = (updatedAvatar && updatedAvatar.length > 0 ? updatedAvatar : null);
+      this.setState({ avatar });
+      setFieldValue('avatar', updatedAvatar[0].base64);
+      setFieldTouched('avatar');
+    };
+
+    const handleAvatarOnRemove = async () => {
+      this.setState(() => ({ avatar: null }));
+      setFieldValue('avatar', null);
+      setFieldTouched('avatar');
+    };
+
+    return (
+      <StyledContentContainer>
+        <Grid centered>
+          <Grid.Row>
+            <Grid.Column computer={12} mobile={16}>
+              <div ref={handleContextRef}>
+                <Segment padded="very">
+
+                  <form className="e2e-profile-edit-form">
+                    <SectionTitle><FormattedMessage {...messages.h1} /></SectionTitle>
+                    <SectionSubtitle><FormattedMessage {...messages.h1sub} /></SectionSubtitle>
+
+                    <SectionField>
+                      <ImagesDropzone
+                        images={this.state.avatar}
+                        imagePreviewRatio={1}
+                        maxImagePreviewWidth="160px"
+                        acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                        maxImageFileSize={5000000}
+                        maxNumberOfImages={1}
+                        onAdd={handleAvatarOnAdd}
+                        onUpdate={handleAvatarOnUpdate}
+                        onRemove={handleAvatarOnRemove}
+                        imageRadius="50%"
+                      />
+                      <Error apiErrors={errors.avatar} />
+                    </SectionField>
+
+                    <SectionField>
+                      <LabelWithTooltip id="firstName" />
+                      <Input
+                        type="text"
+                        name="first_name"
+                        id="firstName"
+                        value={values.first_name}
+                        onChange={createChangeHandler('first_name')}
+                        onBlur={createBlurHandler('first_name')}
+                      />
+                      <Error apiErrors={errors.first_name} />
+                    </SectionField>
+
+                    <SectionField>
+                      <LabelWithTooltip id="lastName" />
+                      <Input
+                        type="text"
+                        name="last_name"
+                        id="lastName"
+                        value={values.last_name}
+                        onChange={createChangeHandler('last_name')}
+                        onBlur={createBlurHandler('last_name')}
+                      />
+                      <Error apiErrors={errors.last_name} />
+                    </SectionField>
+
+                    <SectionField>
+                      <LabelWithTooltip id="email" />
+                      <Input
+                        type="email"
+                        name="email"
+                        value={values.email}
+                        onChange={createChangeHandler('email')}
+                        onBlur={createBlurHandler('email')}
+                      />
+                      <Error apiErrors={errors.email} />
+                    </SectionField>
+
+                    <SectionField>
+                      <LabelWithTooltip id="bio" />
+                      <TextArea
+                        name="bio_multiloc"
+                        onChange={createChangeHandler('bio_multiloc')}
+                        onBlur={createBlurHandler('bio_multiloc')}
+                        rows={6}
+                        placeholder={this.props.intl.formatMessage({ ...messages.bio_placeholder })}
+                        value={values.bio_multiloc ? this.props.localize(values.bio_multiloc) : ''}
+                      />
+                      <Error apiErrors={errors.bio_multiloc} />
+                    </SectionField>
+
+                    <SectionField>
+                      <LabelWithTooltip id="password" />
+                      <Input
+                        type="password"
+                        name="password"
+                        value={values.password}
+                        onChange={createChangeHandler('password')}
+                        onBlur={createBlurHandler('password')}
+                      />
+                      <Error apiErrors={errors.password} />
+                    </SectionField>
+
+                    <SectionField>
+                      <LabelWithTooltip id="language" />
+                      <Select
+                        onChange={createChangeHandler('locale')}
+                        onBlur={createBlurHandler('locale')}
+                        value={values.locale}
+                        options={this.state.localeOptions}
+                      />
+                      <Error apiErrors={errors.locale} />
+                    </SectionField>
+                  </form>
+
+                  {hasCustomFields &&
+                    <CustomFieldsForm
+                      formData={this.state.customFieldsFormData}
+                      onChange={handleCustomFieldsFormOnChange}
+                      onSubmit={handleCustomFieldsFormOnSubmit}
+                    />
+                  }
+
+                  <SubmitWrapper
+                    status={getStatus()}
+                    style="primary"
+                    loading={isSubmitting}
+                    onClick={handleOnSubmit}
+                    messages={{
+                      buttonSave: messages.submit,
+                      buttonError: messages.buttonErrorLabel,
+                      buttonSuccess: messages.buttonSuccessLabel,
+                      messageSuccess: messages.messageSuccess,
+                      messageError: messages.messageError,
+                    }}
+                  />
+
+                </Segment>
+              </div>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </StyledContentContainer>
+    );
+  }
+
+  render() {
+    return (
+      <Formik
+        initialValues={mapUserToDiff(this.props.user)}
+        onSubmit={this.handleFormikSubmit}
+        render={this.formikRender as any}
+      />
+    );
+  }
+}
+
+export default injectIntl<any>(localize(ProfileForm));

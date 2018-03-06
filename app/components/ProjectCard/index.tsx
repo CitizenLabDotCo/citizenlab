@@ -22,6 +22,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // style
+import { darken } from 'polished';
 import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 import { Locale } from 'typings';
@@ -65,7 +66,7 @@ const ProjectImage: any = styled.div`
   background-size: cover;
 `;
 
-const Container = styled(Link)`
+const Container = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
@@ -73,8 +74,6 @@ const Container = styled(Link)`
   border-radius: 5px;
   padding: 16px;
   margin-bottom: 25px;
-  background: #fff;
-  cursor: pointer;
   background: #fff;
   border-radius: 5px;
   border: solid 1px #e4e4e4;
@@ -135,7 +134,6 @@ const ProjectDescription = styled.div`
 `;
 
 const ProjectMetaItems = styled.div`
-  color: ${(props) => props.theme.colorMain};
   color: ${(props) => props.theme.colors.label};
   font-size: 16px;
   font-weight: 400;
@@ -148,17 +146,33 @@ const ProjectMetaItems = styled.div`
   `}
 `;
 
-const ProjectMetaItem = styled.div`
+const IdeaCount = styled.div`
   display: flex;
   align-items: center;
 `;
 
-const ProjectMetaIcon = styled(Icon)`
+const IdeaCountIcon = styled(Icon)`
   height: 24px;
-  fill: ${(props) => props.theme.colorMain};
   fill: ${(props) => props.theme.colors.label};
   margin-right: 6px;
   margin-top: -6px;
+`;
+
+const IdeaCountText = styled(Link)`
+  color: ${(props) => props.theme.colors.label};
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 21px;
+  text-decoration: none;
+  transition: all 100ms ease-out;
+  padding-bottom: 0px;
+  border-bottom: solid 1px ${(props) => props.theme.colors.label};;
+
+  &:hover {
+    color: ${(props) => darken(0.2, props.theme.colors.label)};
+    border-color: ${(props) => darken(0.2, props.theme.colors.label)};
+    text-decoration: none;
+  }
 `;
 
 const ProjectButtonWrapper = styled.div`
@@ -240,6 +254,14 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
     return projectUrl;
   }
 
+  getProjectIdeasUrl = (project: IProject) => {
+    const projectType = project.data.attributes.process_type;
+    const rootProjectUrl = `/projects/${project.data.attributes.slug}`;
+    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/process` : `${rootProjectUrl}/ideas`);
+
+    return projectUrl;
+  }
+
   goToProject = () => {
     const { project } = this.state;
 
@@ -260,10 +282,11 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
       const preview = getLocalized(project.data.attributes.description_preview_multiloc, locale, currentTenantLocales);
       const imageUrl = (projectImage ? projectImage.data.attributes.versions.medium : null);
       const projectUrl = this.getProjectUrl(project);
+      const projectIdeasUrl = this.getProjectIdeasUrl(project);
       const ideasCount = project.data.attributes.ideas_count;
 
       return (
-        <Container to={projectUrl} className={className}>
+        <Container className={className}>
 
           <ProjectImageContainer>
             {imageUrl && <ProjectImage imageSrc={imageUrl} />}
@@ -286,24 +309,26 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
                 {preview}
               </ProjectDescription>
               <ProjectMetaItems>
-                <ProjectMetaItem>
-                  <ProjectMetaIcon name="idea" />
-                  <FormattedMessage 
-                    {...messages.xIdeas} 
-                    values={{
-                      ideasCount,
-                      ideas: formatMessage(messages.ideas),
-                      idea: formatMessage(messages.idea)
-                    }}
-                  />
-                </ProjectMetaItem>
+                <IdeaCount>
+                  <IdeaCountIcon name="idea" />
+                  <IdeaCountText to={projectIdeasUrl}>
+                    <FormattedMessage
+                      {...messages.xIdeas} 
+                      values={{
+                        ideasCount,
+                        ideas: formatMessage(messages.ideas),
+                        idea: formatMessage(messages.idea)
+                      }}
+                    />
+                  </IdeaCountText>
+                </IdeaCount>
               </ProjectMetaItems>
             </ProjectContentInner>
           </ProjectContent>
 
           <ProjectButtonWrapper>
             <ProjectButton
-              onClick={this.goToProject}
+              linkTo={projectUrl}
               text={<FormattedMessage {...messages.openProjectButton} />}
               style="primary"
               size="2"

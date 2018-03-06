@@ -91,10 +91,7 @@ export function mapUserToDiff(user: IUserData): IUserUpdate {
     last_name: user.attributes.last_name || undefined,
     email: user.attributes.email || undefined,
     locale: user.attributes.locale || undefined,
-    birthyear: user.attributes.birthyear || undefined,
-    gender: user.attributes.gender || undefined,
-    domicile: user.attributes.domicile || undefined,
-    education: user.attributes.education || undefined,
     bio_multiloc: user.attributes.bio_multiloc || undefined,
+    custom_field_values: undefined
   };
 }

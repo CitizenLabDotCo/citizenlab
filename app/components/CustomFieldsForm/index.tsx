@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs';
 import * as moment from 'moment';
-import { isBoolean } from 'lodash';
+import { isBoolean, forOwn } from 'lodash';
 
 // libraries
 import Form, { FieldProps } from 'react-jsonschema-form';
@@ -101,7 +101,6 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
         locale$,
         customFieldsSchemaForUsersStream$
       ).subscribe(([locale, customFields]) => {
-        console.log(customFields);
         this.setState({
           locale,
           schema: customFields['json_schema_multiloc'],
@@ -127,15 +126,27 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
     }
   }
 
-  handleOnChange = (value) => {
+  handleOnChange = ({ formData }) => {
     if (this.props.onChange) {
-      this.props.onChange(value);
+      const sanitizedFormData = {};
+
+      forOwn(formData, (value, key) => {
+        sanitizedFormData[key] = (value === null ? undefined : value);
+      });
+
+      this.props.onChange(sanitizedFormData);
     }
   }
 
   handleOnSubmit = ({ formData }) => {
     if (this.props.onSubmit) {
-      this.props.onSubmit(formData);
+      const sanitizedFormData = {};
+
+      forOwn(formData, (value, key) => {
+        sanitizedFormData[key] = (value === null ? undefined : value);
+      });
+
+      this.props.onSubmit(sanitizedFormData);
     }
   }
 
@@ -258,9 +269,11 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
         <SectionField>
           {(props.schema.type !== 'boolean') &&
             <>
-              <Label htmlFor={id}>{label}</Label>
+              {label && label.length > 0 &&
+                <Label htmlFor={id}>{label}</Label>
+              }
 
-              {description &&
+              {description && description.props && description.props.description && description.props.description.length > 0 &&
                 <Description>{description}</Description>
               }
             </>
@@ -284,6 +297,9 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
     };
 
     const transformErrors = (errors) => {
+      console.log('errors:');
+      console.log(errors);
+
       return errors.map((error) => {
         if (error.name === 'required') {
           error.message = this.props.intl.formatMessage(messages.requiredError);
@@ -293,18 +309,6 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
       });
     };
 
-    // const CustomSchemaField = function(props) {
-    //   return (
-    //     <div id="custom">
-    //       <SchemaField {...props} />
-    //     </div>
-    //   );
-    // };
-
-    // const fields = {
-    //   SchemaField: CustomSchemaField
-    // };
-
     return (
       <Container className={this.props['className']}>
         {locale && schema && uiSchema &&
@@ -313,11 +317,11 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
             uiSchema={uiSchema[locale]}
             formData={this.props.formData}
             widgets={widgets}
-            // fields={fields}
             FieldTemplate={CustomFieldTemplate}
             ObjectFieldTemplate={ObjectFieldTemplate}
             transformErrors={transformErrors}
             noHtml5Validate={true}
+            liveValidate={true}
             showErrorList={false}
             onChange={this.handleOnChange}
             onSubmit={this.handleOnSubmit}

@@ -46,7 +46,7 @@ const StyledTextArea = styled(MentionsTextArea)`
     border-top-right-radius: 0px !important;
     background: #fff !important;
     box-shadow: none !important;
-    border: solid 1px #e0e0e0 !important;
+    border: solid 1px #ddd !important;
   }
 `;
 
