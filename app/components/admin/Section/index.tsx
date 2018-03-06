@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { remCalc, color, fontSize, media } from 'utils/styleUtils';
 
 export const Section = styled.div`
-  margin-bottom: ${remCalc(60)};
+  margin-bottom: 0;
 `;
 
 export const SectionTitle = styled.h1`
@@ -26,9 +26,12 @@ export const SectionSubtitle = styled.p`
 export const SectionField = styled.div`
   margin-bottom: ${remCalc(30)};
   transition: all 200ms ease-in-out;
-
   width: 100%;
   max-width: 500px;
+
+  &.fullWidth {
+    max-width: auto;
+  }
 
   .editor {
     width: 120%;

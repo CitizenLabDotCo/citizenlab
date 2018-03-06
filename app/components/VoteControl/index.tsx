@@ -12,6 +12,7 @@ import { IUser } from 'services/users';
 import { voteStream, addVote, deleteVote } from 'services/ideaVotes';
 
 // style
+// import { lighten } from 'polished';
 import styled, { css, keyframes } from 'styled-components';
 
 const green = '#32B67A';
@@ -57,13 +58,13 @@ const VoteIconContainer: any = styled.div`
   ` : css``}
 
   ${(props: any) => props.size === '2' ? css`
-    width: 50px;
-    height: 50px;
+    width: 51px;
+    height: 51px;
   ` : css``}
 
   ${(props: any) => props.size === '3' ? css`
-    width: 53px;
-    height: 53px;
+    width: 55px;
+    height: 55px;
   ` : css``}
 `;
 
@@ -71,27 +72,26 @@ const VoteIcon: any = styled(Icon) `
   height: 19px;
   fill: #84939d;
   transition: all 100ms ease-out;
-  ${(props: any) => props.enabled ? '' : 'opacity: 0.5;'}
+  /* ${(props: any) => props.enabled ? '' : 'opacity: 0.5;'} */
 
   ${(props: any) => props.size === '1' ? css`
     height: 16px;
   ` : css``}
 
   ${(props: any) => props.size === '2' ? css`
-    height: 17px;
+    height: 18px;
   ` : css``}
 
   ${(props: any) => props.size === '3' ? css`
-    height: 18px;
+    height: 20px;
   ` : css``}
 `;
 
 const VoteCount = styled.div`
-  min-width: 18px;
   color: #84939d;
   font-size: 16px;
   font-weight: 300;
-  margin-left: 6px;
+  margin-left: 5px;
   transition: all 100ms ease-out;
 `;
 
@@ -103,15 +103,33 @@ const Vote: any = styled.div`
     animation: ${vote} 250ms;
   }
 
-  &:not(.enabled) ${VoteIconContainer} {
-    border: none;
-    background: none;
+  &:not(.enabled) {
+      ${VoteIconContainer} {
+        width: auto;
+        border: none;
+        background: none;
+      }
+
+      ${VoteIcon} {
+        opacity: 0.6;
+        margin-right: 4px;
+      }
+
+      ${VoteCount} {
+        opacity: 0.6;
+      }
   }
 `;
 
 const Upvote = Vote.extend`
   margin-right: 12px;
   margin-right: 8px;
+
+  &:not(.enabled) {
+    ${VoteCount} {
+      margin-right: 10px;
+    }
+  }
 
   ${VoteIconContainer} {
     ${props => props.active && `border-color: ${green}; background: ${green};`}
@@ -123,6 +141,8 @@ const Upvote = Vote.extend`
   }
 
   ${VoteCount} {
+    min-width: 15px;
+    margin-right: 5px;
     ${props => props.active && `color: ${green};`}
   }
 

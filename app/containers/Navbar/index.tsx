@@ -291,14 +291,14 @@ const NavigationDropdownFooter = styled(Link)`
   cursor: pointer;
   background: #fafafa;
   background: #f9f9fa;
-  border-top: solid 1px #e4e4e4;
+  border-top: solid 1px #f0f0f0;
   border-radius: 5px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   transition: all 80ms ease-out;
 
   &:hover {
-    background: #f4f4f4;
+    background: #f6f6f6;
     color: ${(props) => darken(0.2, props.theme.colorMain)};
     text-decoration: none;
   }

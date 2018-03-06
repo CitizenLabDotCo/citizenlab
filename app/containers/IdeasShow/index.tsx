@@ -356,10 +356,6 @@ const AuthorName = styled(Link) `
   font-size: 16px;
   font-weight: 400;
   line-height: 20px;
-  overflow: hidden;
-  text-decoration: none;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 
   &:hover {
     color: #333;

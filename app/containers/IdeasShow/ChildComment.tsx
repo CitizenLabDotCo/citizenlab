@@ -46,7 +46,7 @@ const CommentContainer = styled.div`
   padding-bottom: 30px;
   padding-left: 30px;
   padding-right: 30px;
-  border-top: solid 1px #e0e0e0;
+  border-top: solid 1px #ddd;
   position: relative;
   /* background: #fff; */
 

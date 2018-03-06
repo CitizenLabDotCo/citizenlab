@@ -62,8 +62,8 @@ const Loading = styled.div`
 
 const Header = styled.div`
   width: 100%;
-  height: 480px;
-  flex: 0 0 480px;
+  height: 450px;
+  flex: 0 0 450px;
   margin: 0;
   padding: 0;
   position: relative;

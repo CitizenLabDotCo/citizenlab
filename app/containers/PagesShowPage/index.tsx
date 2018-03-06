@@ -199,14 +199,7 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
     this.slug$.next(this.props.params.slug);
 
     this.subscriptions = [
-      // this.slug$
-      //   .filter(slug => !isString(slug))
-      //   .subscribe((slug => {
-      //     console.log('slug:' + slug);
-      //   })),
-
       this.slug$
-        // .filter(slug => isString(slug))
         .distinctUntilChanged()
         .do(() => this.setState({ loading: true }))
         .switchMap((slug) => (slug ? pageBySlugStream(slug).observable : Rx.Observable.of(null)))
