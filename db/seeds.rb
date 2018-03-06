@@ -115,6 +115,10 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         enabled: true,
         allowed: true
       },
+      surveys: {
+       enabled: true,
+       allowed: true,
+      },
       maps: {
         enabled: true,
         allowed: true,
