@@ -113,19 +113,21 @@ class Streams {
       });
     }
 
-    Object.keys(this.streams[streamId].dataIds).forEach((dataId) => {
-      if (_(this.streamIdsByDataIdWithQuery[dataId]).some(value => value === streamId)) {
-        this.streamIdsByDataIdWithQuery[dataId] =  this.streamIdsByDataIdWithQuery[dataId].filter((value) => {
-          return value !== streamId;
-        });
-      }
+    if (streamId && this.streams[streamId]) {
+      Object.keys(this.streams[streamId].dataIds).forEach((dataId) => {
+        if (_(this.streamIdsByDataIdWithQuery[dataId]).some(value => value === streamId)) {
+          this.streamIdsByDataIdWithQuery[dataId] =  this.streamIdsByDataIdWithQuery[dataId].filter((value) => {
+            return value !== streamId;
+          });
+        }
 
-      if (_(this.streamIdsByDataIdWithoutQuery[dataId]).some(value => value === streamId)) {
-        this.streamIdsByDataIdWithoutQuery[dataId] = this.streamIdsByDataIdWithoutQuery[dataId].filter((value) => {
-          return value !== streamId;
-        });
-      }
-    });
+        if (_(this.streamIdsByDataIdWithoutQuery[dataId]).some(value => value === streamId)) {
+          this.streamIdsByDataIdWithoutQuery[dataId] = this.streamIdsByDataIdWithoutQuery[dataId].filter((value) => {
+            return value !== streamId;
+          });
+        }
+      });
+    }
 
     delete this.streams[streamId];
   }
