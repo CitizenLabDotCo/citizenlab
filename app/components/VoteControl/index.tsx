@@ -206,6 +206,7 @@ type State = {
   myVoteId: string | null;
   myVoteMode: 'up' | 'down' | null;
   votingEnabled: boolean | null;
+  cancellingEnabled: boolean | null;
   votingFutureEnabled: string | null;
   votingDisabledReason: string | null;
 };
@@ -228,6 +229,7 @@ export default class VoteControl extends React.PureComponent<Props, State> {
       myVoteId: null,
       myVoteMode: null,
       votingEnabled: null,
+      cancellingEnabled: null,
       votingFutureEnabled: null,
       votingDisabledReason: null,
     };
@@ -292,9 +294,10 @@ export default class VoteControl extends React.PureComponent<Props, State> {
         const upvotesCount = idea.data.attributes.upvotes_count;
         const downvotesCount = idea.data.attributes.downvotes_count;
         const votingEnabled = idea.data.relationships.action_descriptor.data.voting.enabled;
+        const cancellingEnabled = idea.data.relationships.action_descriptor.data.voting.cancelling_enabled;
         const votingDisabledReason = idea.data.relationships.action_descriptor.data.voting.disabled_reason;
         const votingFutureEnabled = idea.data.relationships.action_descriptor.data.voting.future_enabled;
-        this.setState({ upvotesCount, downvotesCount, votingEnabled, votingDisabledReason, votingFutureEnabled });
+        this.setState({ upvotesCount, downvotesCount, votingEnabled, cancellingEnabled, votingDisabledReason, votingFutureEnabled });
       }),
 
       authUser$.subscribe(authUser => this.setState({ authUser })),
@@ -344,17 +347,21 @@ export default class VoteControl extends React.PureComponent<Props, State> {
   }
 
   onClickVote = async (voteMode: 'up' | 'down') => {
-    const { authUser, myVoteId, myVoteMode, votingEnabled } = this.state;
+    const { authUser, myVoteId, myVoteMode, votingEnabled, cancellingEnabled } = this.state;
     const { ideaId } = this.props;
 
-    if (!votingEnabled) {
-      this.props.disabledVoteClick && this.props.disabledVoteClick();
-    } else if (!authUser) {
+    // if (!votingEnabled) {
+    //   this.props.disabledVoteClick && this.props.disabledVoteClick();
+    // } else
+    if (!authUser) {
       this.props.unauthenticatedVoteClick && this.props.unauthenticatedVoteClick();
+    } else if ((!votingEnabled && voteMode !== myVoteMode) || (!cancellingEnabled && voteMode === myVoteMode)) {
+        this.props.disabledVoteClick && this.props.disabledVoteClick();
     } else if (authUser && this.state.voting === null) {
       try {
         this.voting$.next(voteMode);
 
+        // Change vote (up -> down or down -> up)
         if (myVoteId && myVoteMode && myVoteMode !== voteMode) {
           this.setState((state) => ({
             upvotesCount: (voteMode === 'up' ? state.upvotesCount + 1 : state.upvotesCount - 1),
@@ -365,6 +372,7 @@ export default class VoteControl extends React.PureComponent<Props, State> {
           await addVote(ideaId, { user_id: authUser.data.id, mode: voteMode });
         }
 
+        // Cancel vote
         if (myVoteId && myVoteMode && myVoteMode === voteMode) {
           this.setState((state) => ({
             upvotesCount: (voteMode === 'up' ? state.upvotesCount - 1 : state.upvotesCount),
@@ -374,6 +382,7 @@ export default class VoteControl extends React.PureComponent<Props, State> {
           await deleteVote(ideaId, myVoteId);
         }
 
+        // Vote
         if (!myVoteMode) {
           this.setState((state) => ({
             upvotesCount: (voteMode === 'up' ? state.upvotesCount + 1 : state.upvotesCount),
@@ -403,16 +412,30 @@ export default class VoteControl extends React.PureComponent<Props, State> {
   hideVotes = () => {
     return !(
       this.state.votingEnabled ||
+      this.state.cancellingEnabled ||
       this.state.votingFutureEnabled ||
       this.state.upvotesCount ||
       this.state.downvotesCount
     );
   }
 
+  upvotingEnabled = () => {
+    const { myVoteMode, votingEnabled, cancellingEnabled } = this.state;
+    return (myVoteMode !== 'up' && votingEnabled) || (myVoteMode === 'up' && cancellingEnabled);
+  }
+
+  downvotingEnabled = () => {
+    const { myVoteMode, votingEnabled, cancellingEnabled } = this.state;
+    return (myVoteMode !== 'down' && votingEnabled) || (myVoteMode === 'down' && cancellingEnabled);
+  }
+
   render() {
     const className = this.props['className'];
     const { size } = this.props;
     const { upvotesCount, downvotesCount, myVoteMode, votingAnimation, votingEnabled } = this.state;
+
+    const upvotingEnabled = this.upvotingEnabled();
+    const downvotingEnabled = this.downvotingEnabled();
 
     if (this.hideVotes()) return null;
 
@@ -422,12 +445,12 @@ export default class VoteControl extends React.PureComponent<Props, State> {
           active={myVoteMode === 'up'}
           onClick={this.onClickUpvote}
           innerRef={this.setUpvoteRef}
-          className={`${votingAnimation === 'up' ? 'voteClick' : 'upvote'} ${votingEnabled && 'enabled'}`}
+          className={`${votingAnimation === 'up' ? 'voteClick' : 'upvote'} ${upvotingEnabled && 'enabled'}`}
           size={size}
-          enabled={votingEnabled}
+          enabled={upvotingEnabled}
         >
           <VoteIconContainer size={size}>
-            <VoteIcon name="upvote-2" size={size} enabled={votingEnabled} />
+            <VoteIcon name="upvote-2" size={size} enabled={upvotingEnabled} />
           </VoteIconContainer>
           <VoteCount>{upvotesCount}</VoteCount>
         </Upvote>
@@ -435,12 +458,12 @@ export default class VoteControl extends React.PureComponent<Props, State> {
           active={myVoteMode === 'down'}
           onClick={this.onClickDownvote}
           innerRef={this.setDownvoteRef}
-          className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'} ${votingEnabled && 'enabled'}`}
+          className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'} ${downvotingEnabled && 'enabled'}`}
           size={size}
-          enabled={votingEnabled}
+          enabled={downvotingEnabled}
         >
           <VoteIconContainer size={size}>
-            <VoteIcon name="downvote-2" size={size} enabled={votingEnabled} />
+            <VoteIcon name="downvote-2" size={size} enabled={downvotingEnabled} />
           </VoteIconContainer>
           <VoteCount>{downvotesCount}</VoteCount>
         </Downvote>

@@ -109,4 +109,8 @@ export default defineMessages({
     id: 'app.containers.Projects.ideasTitle',
     defaultMessage: 'Ideas',
   },
+  navSurvey: {
+    id: 'app.containers.Projects.navSurvey',
+    defaultMessage: 'Survey',
+  },
 });

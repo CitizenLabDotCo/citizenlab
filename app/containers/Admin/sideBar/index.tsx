@@ -17,13 +17,10 @@ import styled, { css } from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const Menu = styled.div`
-  width: 240px;
   height: 100%;
-  position: fixed;
-  z-index: 1;
   margin-top: 0px;
   background: #3b3b3b;
-  padding-top: 39px;
+  padding-top: 45px;
 
   ${media.smallerThanMinTablet`
     width: 70px;

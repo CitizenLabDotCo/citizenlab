@@ -70,6 +70,7 @@ const UserIcon = styled(Icon)`
 const StyledPopover = styled(Popover)`
   display: flex;
   flex-direction: column;
+  z-index: 5;
 `;
 
 const PopoverIcon = styled(Icon)`
@@ -108,7 +109,7 @@ type State = {
 };
 
 export default class UserMenu extends React.PureComponent<Props, State> {
-  
+
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
