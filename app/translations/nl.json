@@ -537,6 +537,8 @@
   "app.containers.SignUp.passwordPlaceholder": "Voer een wachtwoord in",
   "app.containers.SignUp.signUp": "Registreren",
   "app.containers.SignUp.skip": "Sla deze stap over",
+  "app.containers.SignUp.step1Title": "",
+  "app.containers.SignUp.step2Title": "",
   "app.containers.SignUp.submit": "Vervolledig je profiel",
   "app.containers.SignUp.unknownError": "Er ging iets mis. Probeer het opnieuw.",
   "app.containers.SignUp.unspecified": "Onbepaald",

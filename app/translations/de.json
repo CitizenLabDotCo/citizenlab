@@ -537,6 +537,8 @@
   "app.containers.SignUp.passwordPlaceholder": "Geben Sie ein Passwort ein",
   "app.containers.SignUp.signUp": "Registrieren Sie sich",
   "app.containers.SignUp.skip": "Diesen Schritt überspringen",
+  "app.containers.SignUp.step1Title": "",
+  "app.containers.SignUp.step2Title": "",
   "app.containers.SignUp.submit": "Vervollständigen Sie Ihr Profil",
   "app.containers.SignUp.unknownError": "Etwas ging schief. Bitte versuchen Sie es später nochmal.",
   "app.containers.SignUp.unspecified": "Nicht spezifiziert",
