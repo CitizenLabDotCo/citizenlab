@@ -19,7 +19,7 @@ import { localeStream } from 'services/locale';
 import { authUserStream } from 'services/auth';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { IUser } from 'services/users';
-import { projectsStream, IProjects, IProjectData } from 'services/projects';
+import { projectsStream, IProjects, getProjectUrl } from 'services/projects';
 
 // utils
 import { injectTracks } from 'utils/analytics';
@@ -95,7 +95,6 @@ const Container = styled.div`
 const Left = styled.div`
   display: flex;
   align-items: center;
-  z-index: 2;
 `;
 
 const LogoLink = styled(Link) `
@@ -202,7 +201,6 @@ const NavigationDropdownMenu = styled(clickOutside)`
   position: absolute;
   top: 35px;
   left: -10px;
-  z-index: 2;
   transform-origin: left top;
 
   * {
@@ -300,7 +298,6 @@ const NavigationDropdownFooter = styled(Link)`
 
 const Right = styled.div`
   display: flex;
-  z-index: 2;
   align-items: center;
 `;
 
@@ -500,13 +497,6 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
     }
   }
 
-  getProjectUrl = (project: IProjectData) => {
-    const projectType = project.attributes.process_type;
-    const rootProjectUrl = `/projects/${project.attributes.slug}`;
-    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/process` : `${rootProjectUrl}/info`);
-    return projectUrl;
-  }
-
   render() {
     const { location, locale, authUser, currentTenant, projects, scrolled, projectsDropdownOpened } = this.state;
     const isAdminPage = (location.pathname.startsWith('/admin'));
@@ -561,7 +551,7 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
                         <NavigationDropdownMenuInner>
                           <NavigationDropdownList innerRef={this.setRef}>
                             {projects.data.map((project) => (
-                              <NavigationDropdownListItem key={project.id} to={this.getProjectUrl(project)}>
+                              <NavigationDropdownListItem key={project.id} to={getProjectUrl(project)}>
                                 {getLocalized(project.attributes.title_multiloc, locale, currentTenantLocales)}
                               </NavigationDropdownListItem>
                             ))}

@@ -109,3 +109,20 @@ export function updateProject(projectId, projectData: IUpdatedProjectProperties)
 export function deleteProject(projectId: string) {
   return streams.delete(`${apiEndpoint}/${projectId}`, projectId);
 }
+
+export function getProjectUrl(project: IProjectData) {
+  let lastUrlSegment;
+
+  // Determine where to send the user based on process type & participation method
+  if (project.attributes.process_type === 'timeline') {
+    lastUrlSegment = 'process';
+  } else if (project.attributes.participation_method === 'survey') {
+    lastUrlSegment = 'survey';
+  } else if (project.attributes.participation_method === 'ideation') {
+    lastUrlSegment = 'ideas';
+  } else {
+    lastUrlSegment = 'info';
+  }
+
+  return `/projects/${project.attributes.slug}/${lastUrlSegment}`;
+}
