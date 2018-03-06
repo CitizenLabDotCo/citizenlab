@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
 // router
-import { browserHistory, Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 
 // components
 import Icon from 'components/UI/Icon';

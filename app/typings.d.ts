@@ -44,7 +44,7 @@ declare interface Multiloc {
   fr?: string;
   nl?: string;
   da?: string;
-  sv?: string;
+  no?: string;
 }
 
 declare interface MultilocEditorState {
@@ -53,7 +53,7 @@ declare interface MultilocEditorState {
   fr?: EditorState;
   nl?: EditorState;
   da?: EditorState;
-  sv?: EditorState;
+  no?: EditorState;
 }
 
 declare interface MultilocStringOrJSX {
@@ -62,7 +62,7 @@ declare interface MultilocStringOrJSX {
   fr?: string | JSX.Element;
   nl?: string | JSX.Element;
   da?: string | JSX.Element;
-  sv?: string | JSX.Element;
+  no?: string | JSX.Element;
 }
 
 declare namespace API {

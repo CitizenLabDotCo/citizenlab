@@ -1,5 +1,16 @@
 # Changelog
 
+## 2018-03-05
+
+### Added
+- Limited voting in timeline phases
+- Facebook app id is included in the meta headers
+
+### Known issues
+- When hitting your maimum vote count as a citizen, other idea cards are not properly updating untill you try voting on them
+- Changing the participation settings on a continuous project is impossible
+
+
 ## 2018-02-26
 
 ### Fixed

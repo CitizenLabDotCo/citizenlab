@@ -300,9 +300,11 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   handleParticipationContextOnChange = (participationContextConfig: IParticipationContextConfig) => {
     this.setState((state) => {
       const { projectAttributesDiff } = state;
-      const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = participationContextConfig;
+      const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, survey_service, survey_embed_url } = participationContextConfig;
       const newprojectAttributesDiff: IUpdatedProjectProperties = {
         ...projectAttributesDiff,
+        survey_service,
+        survey_embed_url,
         participation_method: participationMethod,
         posting_enabled: postingEnabled,
         commenting_enabled: commentingEnabled,
@@ -465,10 +467,12 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       const { projectData, oldProjectImages, newProjectImages } = this.state;
 
       if (participationContextConfig) {
-        const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = participationContextConfig;
+        const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, survey_service, survey_embed_url } = participationContextConfig;
 
         projectAttributesDiff = {
           ...projectAttributesDiff,
+          survey_service,
+          survey_embed_url,
           participation_method: participationMethod,
           posting_enabled: postingEnabled,
           commenting_enabled: commentingEnabled,

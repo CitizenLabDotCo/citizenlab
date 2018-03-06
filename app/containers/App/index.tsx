@@ -33,7 +33,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled, { ThemeProvider } from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // legacy redux stuff
 import { store } from 'app';
@@ -44,17 +44,23 @@ import { LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL } from 'utils/auth
 import { Location } from 'history';
 
 const Container = styled.div`
-  margin: 0;
-  padding: 0;
-  padding-top: ${props => props.theme.menuHeight}px;
   background: #fff;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  width: 100vw;
+`;
 
-  &:not(.admin) {
-    ${media.smallerThanMaxTablet`
-      padding-top: 0px;
-      padding-bottom: ${props => props.theme.mobileMenuHeight}px;
-    `}
-  }
+const Content = styled.div`
+  flex: 0 1 calc(100vh - ${(props) => props.theme.menuHeight}px);
+  overflow-y: auto;
+
+  ${media.smallerThanMaxTablet`
+    flex-basis: calc(100vh - ${(props) => props.theme.menuHeight}px - ${(props) => props.theme.mobileMenuHeight});
+  `}
 `;
 
 export interface IModalInfo {
@@ -191,9 +197,9 @@ export default class App extends React.PureComponent<Props & RouterState, State>
               <Navbar />
 
               <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
-                <div>
+                <Content>
                   {children}
-                </div>
+                </Content>
                 <HasPermission.No>
                   <ForbiddenRoute />
                 </HasPermission.No>

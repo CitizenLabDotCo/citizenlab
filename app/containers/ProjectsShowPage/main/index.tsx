@@ -11,7 +11,7 @@ import ProjectTimelinePage from '../process';
 import ProjectInfoPage from '../info';
 
 // services
-import { projectBySlugStream, IProject } from 'services/projects';
+import { projectBySlugStream, IProject, getProjectUrl } from 'services/projects';
 
 type Props = {
   params: {
@@ -47,11 +47,8 @@ export default class timeline extends React.PureComponent<Props, State> {
           const project$ = projectBySlugStream(slug).observable;
           return project$;
         }).subscribe((project) => {
-          const currentPathname = browserHistory.getCurrentLocation().pathname.replace(/\/$/, '');
-          const lastUrlSegment = (project.data.attributes.process_type === 'timeline' ? 'process' : 'ideas');
-          const redirectUrl = `${currentPathname}/${lastUrlSegment}`;
+          const redirectUrl = getProjectUrl(project.data);
           browserHistory.push(redirectUrl);
-          // window.history.pushState({ path: redirectUrl }, '', redirectUrl);
           this.setState({ project });
         })
     ];
