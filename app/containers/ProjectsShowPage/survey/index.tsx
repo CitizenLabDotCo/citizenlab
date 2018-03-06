@@ -12,7 +12,6 @@ const SurveyContent = styled(ContentContainer)`
   min-height: 500px;
 `;
 
-
 type Props = {};
 type State = {};
 
