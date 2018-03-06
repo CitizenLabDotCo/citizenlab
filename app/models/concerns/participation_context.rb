@@ -3,8 +3,9 @@ require 'active_support/concern'
 module ParticipationContext
   extend ActiveSupport::Concern
 
-  PARTICIPATION_METHODS = %w(information ideation)
+  PARTICIPATION_METHODS = %w(information ideation survey)
   VOTING_METHODS = %w(unlimited limited)
+  SURVEY_SERVICES = %w(typeform survey_monkey)
 
   included do
     # for timeline projects, the phases are the participation contexts, so nothing applies
@@ -17,6 +18,18 @@ module ParticipationContext
         ideation.validates :voting_enabled, inclusion: {in: [true, false]}
         ideation.validates :voting_method, presence: true, inclusion: {in: VOTING_METHODS}
         ideation.validates :voting_limited_max, presence: true, numericality: {only_integer: true, greater_than: 0}, if: [:ideation?, :voting_limited?]
+      end
+      with_options if: :survey? do |survey|
+        survey.validates :survey_embed_url, presence: true
+        survey.validates :survey_service, presence: true, inclusion: {in: SURVEY_SERVICES}
+        survey.validates :survey_embed_url, if: [:survey?, :typeform?], format: { 
+          with: /\Ahttps:\/\/.*\.typeform\.com\/to\/.*\z/,
+          message: "Not a valid Typeform embed URL"
+        }
+        survey.validates :survey_embed_url, if: [:survey?, :survey_monkey?], format: { 
+          with: /\Ahttps:\/\/widget\.surveymonkey\.com\/collect\/website\/js\/.*\.js\z/,
+          message: "Not a valid SurveyMonkey embed URL"
+        }
       end
 
       before_validation :set_participation_method, on: :create
@@ -33,6 +46,10 @@ module ParticipationContext
 
   def information?
     self.participation_method == 'information'
+  end
+
+  def survey?
+    self.participation_method == 'survey'
   end
 
   def voting_limited?
@@ -60,6 +77,14 @@ module ParticipationContext
 
   def set_participation_method
     self.participation_method ||= 'ideation'
+  end
+
+  def typeform?
+    self.survey_service == 'typeform'
+  end
+
+  def survey_monkey?
+    self.survey_service == 'survey_monkey'
   end
 
 end

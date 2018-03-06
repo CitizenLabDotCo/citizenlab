@@ -283,6 +283,16 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+      "surveys": {
+        "type": "object",
+        "description":  "Allow the embedding of surveys from Typeform and Survey Monkey",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
       "maps": {
         "type": "object",
         "description":  "Show maps throughout the platform",
