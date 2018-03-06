@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
 // router
-import { browserHistory, Link } from 'react-router';
+import { Link } from 'react-router';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -11,7 +11,7 @@ import Button from 'components/UI/Button';
 // services
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
-import { projectByIdStream, IProject } from 'services/projects';
+import { projectByIdStream, IProject, getProjectUrl } from 'services/projects';
 import { projectImageStream, IProjectImage } from 'services/projectImages';
 
 // i18n
@@ -232,23 +232,6 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getProjectUrl = (project: IProject) => {
-    const projectType = project.data.attributes.process_type;
-    const rootProjectUrl = `/projects/${project.data.attributes.slug}`;
-    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/process` : `${rootProjectUrl}/info`);
-
-    return projectUrl;
-  }
-
-  goToProject = () => {
-    const { project } = this.state;
-
-    if (project) {
-      const projectUrl = this.getProjectUrl(project);
-      browserHistory.push(projectUrl);
-    }
-  }
-
   render() {
     const className = this.props['className'];
     const { formatMessage } = this.props.intl;
@@ -259,7 +242,7 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
       const titleMultiloc = project.data.attributes.title_multiloc;
       const preview = getLocalized(project.data.attributes.description_preview_multiloc, locale, currentTenantLocales);
       const imageUrl = (projectImage ? projectImage.data.attributes.versions.medium : null);
-      const projectUrl = this.getProjectUrl(project);
+      const projectUrl = getProjectUrl(project.data);
       const ideasCount = project.data.attributes.ideas_count;
 
       return (
@@ -288,8 +271,8 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
               <ProjectMetaItems>
                 <ProjectMetaItem>
                   <ProjectMetaIcon name="idea" />
-                  <FormattedMessage 
-                    {...messages.xIdeas} 
+                  <FormattedMessage
+                    {...messages.xIdeas}
                     values={{
                       ideasCount,
                       ideas: formatMessage(messages.ideas),
@@ -303,7 +286,6 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
 
           <ProjectButtonWrapper>
             <ProjectButton
-              onClick={this.goToProject}
               text={<FormattedMessage {...messages.openProjectButton} />}
               style="primary"
               size="2"
