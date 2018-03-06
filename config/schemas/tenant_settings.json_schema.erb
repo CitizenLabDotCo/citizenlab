@@ -4,316 +4,327 @@
   "type": "object",
   "required": ["core"],
   "additionalProperties": false,
-  "properties": {
-    "core": {
-      "type": "object",
-      "description": "The core of the system. Container for general settings. Always enabled",
-      "required-settings": ["organization_type", "timezone", "locales", "color_main"],
-      "additionalProperties": false,
-      "required": ["allowed", "enabled"],
-      "properties": {
-        "allowed": { "type": "boolean", "default": true},
-        "enabled": { "type": "boolean", "default": true},
-        "organization_type": {
-          "description": "For a city: <40k small, >40k medium, >120k large. Otherwise: generic",
-          "type": "string",
-          "enum": ["small_city", "medium_city", "large_city", "generic", "demo"],
-          "default": "medium_city"
-        },
-        "timezone": {
-          "type": "string",
-          "default": "Europe/Brussels",
-          "enum": [<%= TZInfo::Timezone.all_identifiers.map{|tz| ['"',tz,'"'].join}.join(",") %>]
-        },
-        "locales": {
-          "type": "array",
-          "items": {
+  "properties":
+    {
+      "core": {
+        "type": "object",
+        "description": "The core of the system. Container for general settings. Always enabled",
+        "required-settings": ["organization_type", "timezone", "locales", "color_main"],
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true},
+          "organization_type": {
+            "description": "For a city: <40k small, >40k medium, >120k large. Otherwise: generic",
             "type": "string",
-            "enum": [<%= I18n.available_locales.map{|l| "\"#{l}\""}.join(",") %>]
+            "enum": ["small_city", "medium_city", "large_city", "generic", "demo"],
+            "default": "medium_city"
           },
-          "uniqueItems": true,
-          "minItems": 1,
-          "default": "en"
-        },
-        "organization_name": {
-          "description": "The name of the city or organization, used throughout the platform",
-          "$ref": "#/definitions/multiloc_string"
-        },
-        "header_title": {
-          "description": "The main title shown on the homepage (max 45 characters)",
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            <%= I18n.available_locales.map{|l| "\"#{l.to_s}\": {\"type\": \"string\", \"maxLength\": 45}" }.join(",") %>
-          }
-        },
-        "header_slogan": {
-          "description": "The subtitle shown on the homepage (max 90 characters)",
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            <%= I18n.available_locales.map{|l| "\"#{l.to_s}\": {\"type\": \"string\", \"maxLength\": 90}" }.join(",") %>
-          } 
-        },
-        "meta_title": {
-          "description": "The title of the homepage, shown on the browser tab and in search engine results",
-          "$ref": "#/definitions/multiloc_string" 
-        },
-        "meta_description": {
-          "description": "The description of the platform shown on links on social media",
-          "$ref": "#/definitions/multiloc_string" 
-        },
-        "color_main": {
-          "description": "The main brand color as a hexadecimal value including the anchor character",
-          "type": "string",
-          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-          "default": "#335533"
-        },
-        "color_header_overlay": {
-          "description": "The color as a hexadecimal value that is transparently overlaid on the homepage header",
-          "type": "string",
-          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-          "default": "#000000"
-        }
-      }
-    },
-
-    "pages": {
-      "type": "object",
-      "description":	"Allow custom pages to be made, and potentially be added to the navigation",
-      "additionalProperties": false,
-      "required": ["allowed", "enabled"],
-      "properties": {
-        "allowed": { "type": "boolean", "default": true},
-        "enabled": { "type": "boolean", "default": true}
-      }
-    },
-
-    "password_login": {
-      "type": "object",
-      "description":  "Allow signing in with normal email/password",
-      "additionalProperties": false,
-      "required": ["allowed", "enabled"],
-      "properties": {
-        "allowed": { "type": "boolean", "default": true},
-        "enabled": { "type": "boolean", "default": true}
-      }
-    },
-
-    "facebook_login": {
-      "type": "object",
-      "description":	"Allow signing in and registering through a facebook account",
-      "additionalProperties": false,
-      "required": ["allowed", "enabled"],
-      "required-settings": ["app_id"],
-      "properties": {
-        "allowed": { "type": "boolean", "default": false},
-        "enabled": { "type": "boolean", "default": false},
-        "app_id": {
-          "type": "string"
-        },
-        "app_secret": {
-          "type": "string",
-          "private": true
-        }
-      }
-    },
-
-    "google_login": {
-      "type": "object",
-      "description":  "Allow signing in and registering through a google account",
-      "additionalProperties": false,
-      "required": ["allowed", "enabled"],
-      "required-settings": ["client_id", "client_secret"],
-      "properties": {
-        "allowed": { "type": "boolean", "default": false},
-        "enabled": { "type": "boolean", "default": false},
-        "client_id": {
-          "type": "string"
-        },
-        "client_secret": {
-          "type": "string",
-          "private": true
-        }
-      }
-    },
-
-    /* "twitter_login": {
-      "type": "object",
-      "description":  "Allow signing in and registering through a twitter account",
-      "additionalProperties": false,
-      "required": ["allowed", "enabled"],
-      "required-settings": ["client_id", "client_secret"],
-      "properties": {
-        "allowed": { "type": "boolean", "default": false},
-        "enabled": { "type": "boolean", "default": false},
-        "api_key": {
-          "type": "string"
-        },
-        "api_secret": {
-          "type": "string",
-          "private": true
-        }
-      }
-    }, */
-
-
-    /* "mydigipass_login": {
-      "type": "object",
-      "description":  "Allow signing in and registering through a mydigipass account. Requires Belgian eID.",
-      "additionalProperties": false,
-      "required": ["allowed", "enabled"],
-      "required-settings": ["client_id", "client_secret"],
-      "properties": {
-        "allowed": { "type": "boolean", "default": false},
-        "enabled": { "type": "boolean", "default": false},
-        "client_id": {
-          "type": "string"
-        },
-        "client_secret": {
-          "type": "string",
-          "private": true
-        },
-        "require_eid": {
-          "description": "Force the use of eID for profile information",
-          "type": "boolean",
-          "default": true
-        }
-      }
-    }, */
-
-    "projects": {
-      "type": "object",
-      "description":	"",
-      "additionalProperties": false,
-      "required": ["allowed", "enabled"],
-      "properties": {
-        "allowed": { "type": "boolean", "default": true},
-        "enabled": { "type": "boolean", "default": true}
-      }
-    },
-
-    "projects_phases": {
-      "type": "object",
-      "description":	"",
-      "additionalProperties": false,
-      "required": ["allowed", "enabled"],
-      "properties": {
-        "allowed": { "type": "boolean", "default": true},
-        "enabled": { "type": "boolean", "default": true}
-      }
-    },
-
-    "projects_pages": {
-      "type": "object",
-      "description":	"",
-      "additionalProperties": false,
-      "required": ["allowed", "enabled"],
-      "properties": {
-        "allowed": { "type": "boolean", "default": true},
-        "enabled": { "type": "boolean", "default": true}
-      }
-    },
-
-    "projects_events": {
-      "type": "object",
-      "description":	"",
-      "additionalProperties": false,
-      "required": ["allowed", "enabled"],
-      "properties": {
-        "allowed": { "type": "boolean", "default": true},
-        "enabled": { "type": "boolean", "default": true}
-      }
-    },
-
-    "projects_info": {
-      "type": "object",
-      "description":	"",
-      "additionalProperties": false,
-      "required": ["allowed", "enabled"],
-      "properties": {
-        "allowed": { "type": "boolean", "default": true},
-        "enabled": { "type": "boolean", "default": true}
-      }
-    },
-
-    "excel_export": {
-      "type": "object",
-      "description":	"",
-      "additionalProperties": false,
-      "required": ["allowed", "enabled"],
-      "properties": {
-        "allowed": { "type": "boolean", "default": true},
-        "enabled": { "type": "boolean", "default": true}
-      }
-    },
-    "groups": {
-      "type": "object",
-      "description":  "Assemble users in groups",
-      "additionalProperties": false,
-      "required": ["allowed", "enabled"],
-      "properties": {
-        "allowed": { "type": "boolean", "default": true},
-        "enabled": { "type": "boolean", "default": true}
-      }
-    },
-    "private_projects": {
-      "type": "object",
-      "description":  "Make projects visible to certain groups only",
-      "additionalProperties": false,
-      "required": ["allowed", "enabled"],
-      "properties": {
-        "allowed": { "type": "boolean", "default": true},
-        "enabled": { "type": "boolean", "default": true}
-      }
-    },
-    "maps": {
-      "type": "object",
-      "description":  "Show maps throughout the platform",
-      "additionalProperties": false,
-      "required": ["allowed", "enabled"],
-      "properties": {
-        "allowed": { "type": "boolean", "default": true},
-        "enabled": { "type": "boolean", "default": true},
-        "tile_provider": {
-          "description": "The OSM compatible tile provider URL pattern. Https is required.",
-          "type": "string",
-          "pattern": "^https:\/\/.+",
-          "default": "https://free.tilehosting.com/styles/positron/style.json?key=DIZiuhfkZEQ5EgsaTk6D"
-        },
-        "map_center": {
-          "description": "The default center point of the map. Use a dot as decimal separator.",
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "lat": {
+          "timezone": {
+            "type": "string",
+            "default": "Europe/Brussels",
+            "enum": [<%= TZInfo::Timezone.all_identifiers.map{|tz| ['"',tz,'"'].join}.join(",") %>]
+          },
+          "locales": {
+            "type": "array",
+            "items": {
               "type": "string",
-              "default": "50.8503"
+              "enum": [<%= I18n.available_locales.map{|l| "\"#{l}\""}.join(",") %>]
             },
-            "long": {
-              "type": "string",
-              "default": "4.3517"
+            "uniqueItems": true,
+            "minItems": 1,
+            "default": "en"
+          },
+          "organization_name": {
+            "description": "The name of the city or organization, used throughout the platform",
+            "$ref": "#/definitions/multiloc_string"
+          },
+          "header_title": {
+            "description": "The main title shown on the homepage (max 45 characters)",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              <%= I18n.available_locales.map{|l| "\"#{l.to_s}\": {\"type\": \"string\", \"maxLength\": 45}" }.join(",") %>
             }
+          },
+          "header_slogan": {
+            "description": "The subtitle shown on the homepage (max 90 characters)",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              <%= I18n.available_locales.map{|l| "\"#{l.to_s}\": {\"type\": \"string\", \"maxLength\": 90}" }.join(",") %>
+            } 
+          },
+          "meta_title": {
+            "description": "The title of the homepage, shown on the browser tab and in search engine results",
+            "$ref": "#/definitions/multiloc_string" 
+          },
+          "meta_description": {
+            "description": "The description of the platform shown on links on social media",
+            "$ref": "#/definitions/multiloc_string" 
+          },
+          "color_main": {
+            "description": "The main brand color as a hexadecimal value including the anchor character",
+            "type": "string",
+            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+            "default": "#335533"
+          },
+          "color_header_overlay": {
+            "description": "The color as a hexadecimal value that is transparently overlaid on the homepage header",
+            "type": "string",
+            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+            "default": "#000000"
           }
-        },
-        "zoom_level": {
-          "type": "number",
-          "description": "The default zoom level of the map. A number from 0 to 19. See https://wiki.openstreetmap.org/wiki/Zoom_levels",
-          "default": 12
+        }
+      },
+
+      "pages": {
+        "type": "object",
+        "description":	"Allow custom pages to be made, and potentially be added to the navigation",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "password_login": {
+        "type": "object",
+        "description":  "Allow signing in with normal email/password",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "facebook_login": {
+        "type": "object",
+        "description":	"Allow signing in and registering through a facebook account",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["app_id"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "app_id": {
+            "type": "string"
+          },
+          "app_secret": {
+            "type": "string",
+            "private": true
+          }
+        }
+      },
+
+      "google_login": {
+        "type": "object",
+        "description":  "Allow signing in and registering through a google account",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["client_id", "client_secret"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "client_id": {
+            "type": "string"
+          },
+          "client_secret": {
+            "type": "string",
+            "private": true
+          }
+        }
+      },
+
+      /* "twitter_login": {
+        "type": "object",
+        "description":  "Allow signing in and registering through a twitter account",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["client_id", "client_secret"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "api_key": {
+            "type": "string"
+          },
+          "api_secret": {
+            "type": "string",
+            "private": true
+          }
+        }
+      }, */
+
+
+      /* "mydigipass_login": {
+        "type": "object",
+        "description":  "Allow signing in and registering through a mydigipass account. Requires Belgian eID.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["client_id", "client_secret"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "client_id": {
+            "type": "string"
+          },
+          "client_secret": {
+            "type": "string",
+            "private": true
+          },
+          "require_eid": {
+            "description": "Force the use of eID for profile information",
+            "type": "boolean",
+            "default": true
+          }
+        }
+      }, */
+
+      "projects": {
+        "type": "object",
+        "description":	"",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "projects_phases": {
+        "type": "object",
+        "description":	"",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "projects_pages": {
+        "type": "object",
+        "description":	"",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "projects_events": {
+        "type": "object",
+        "description":	"",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "projects_info": {
+        "type": "object",
+        "description":	"",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "excel_export": {
+        "type": "object",
+        "description":	"",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+      "groups": {
+        "type": "object",
+        "description":  "Assemble users in groups",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+      "private_projects": {
+        "type": "object",
+        "description":  "Make projects visible to certain groups only",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+      "surveys": {
+        "type": "object",
+        "description":  "Allow the embedding of surveys from Typeform and Survey Monkey",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+      "maps": {
+        "type": "object",
+        "description":  "Show maps throughout the platform",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true},
+          "tile_provider": {
+            "description": "The OSM compatible tile provider URL pattern. Https is required.",
+            "type": "string",
+            "pattern": "^https:\/\/.+",
+            "default": "https://free.tilehosting.com/styles/positron/style.json?key=DIZiuhfkZEQ5EgsaTk6D"
+          },
+          "map_center": {
+            "description": "The default center point of the map. Use a dot as decimal separator.",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "lat": {
+                "type": "string",
+                "default": "50.8503"
+              },
+              "long": {
+                "type": "string",
+                "default": "4.3517"
+              }
+            }
+          },
+          "zoom_level": {
+            "type": "number",
+            "description": "The default zoom level of the map. A number from 0 to 19. See https://wiki.openstreetmap.org/wiki/Zoom_levels",
+            "default": 12
+          }
+        }
+      },
+      "user_custom_fields": {
+        "type": "object",
+        "description":  "Allows admin to define their own form fields that users can fill out at sign up",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
         }
       }
     },
-    "user_custom_fields": {
-      "type": "object",
-      "description":  "Allows admin to define their own form fields that users can fill out at sign up",
-      "additionalProperties": false,
-      "required": ["allowed", "enabled"],
-      "properties": {
-        "allowed": { "type": "boolean", "default": false},
-        "enabled": { "type": "boolean", "default": false}
-      }
-    }
-  },
   "dependencies": {
     "projects_info": ["projects"],
     "projects_pages": ["projects"],
