@@ -1,5 +1,6 @@
 {
   "app.components.Breadcrumbs.header": "Dit is de Breadcrumbs component!",
+  "app.components.CustomFieldsForm.requiredError": "",
   "app.components.FullscreenModal.closeButtonLabel": "Sluiten",
   "app.components.FullscreenModal.goBack": "Ga terug",
   "app.components.GoBackButton.group.edit.goBack": "Ga terug",
