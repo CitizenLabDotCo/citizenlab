@@ -15,8 +15,9 @@ describe TenantTemplateService do
   end
 
   describe "apply_template", slow_test: true do
-    it "Successfully applies all templates (residing in config/tenant_templates)" do 
-      service.available_templates.map do |template|
+    
+    TenantTemplateService.new.available_templates.map do |template|
+      it "Successfully applies '#{template}' template" do 
         name = template.split('_').join('')
         Tenant.create!({
           name: name,
@@ -37,14 +38,6 @@ describe TenantTemplateService do
               },
               timezone: "Europe/Brussels",
               color_main: Faker::Color.hex_color,
-            },
-            demographic_fields: {
-              allowed: true,
-              enabled: true,
-              gender: true,
-              domicile: true,
-              birthyear: true,
-              education: true,
             },
             facebook_login: {
               allowed: true,
@@ -89,14 +82,8 @@ describe TenantTemplateService do
       expect(Phase.count).to be 3
     end
 
-    it "Applies the base template if the requested template was not found" do
-      tenant = service.apply_template('a_tenant_template_name_that_doesnt_exist')
-      expect(IdeaStatus.count).to be > 0
-      expect(Topic.count).to be > 0
-      expect(Page.count).to be > 0
-      expect(Project.count).to be > 0
-      
-      expect(Topic.first.title_multiloc.keys.size).to be >= 4
+    it "raises an error if the requested template was not found" do
+      expect{service.apply_template('a_tenant_template_name_that_doesnt_exist')}.to raise_error
     end
   end
 
