@@ -20,6 +20,7 @@ const Menu = styled.div`
   height: 100%;
   margin-top: 0px;
   background: #3b3b3b;
+  padding-top: 45px;
 
   ${media.smallerThanMinTablet`
     width: 70px;
