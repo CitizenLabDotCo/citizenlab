@@ -60,7 +60,6 @@ const Container = styled.div`
     content: "";
     display: block;
     position: absolute;
-    top: 0;
     bottom: 0;
     left: 0;
     right: 0;
@@ -68,6 +67,8 @@ const Container = styled.div`
     transition: opacity 100ms ease-out;
     opacity: 0;
     pointer-events: none;
+    z-index: 3;
+    height: 1px;
   }
 
   &.scrolled::after,
