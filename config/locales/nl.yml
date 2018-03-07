@@ -84,10 +84,10 @@ nl:
     open_idea_project_title: Open Idee Project
     open_idea_project_description: De ideeën die zich hier bevinden werden niet aan een project toegekend.
   custom_fields:
-    gender: Gender
-    birthyear: Year of birth
-    domicile: Domicile
-    education: Education
+    gender: Geslacht
+    birthyear: Geboortejaar
+    domicile: Woonplaats
+    education: Opleiding
   custom_field_options:
     gender:
       male: Male
