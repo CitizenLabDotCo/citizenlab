@@ -90,16 +90,16 @@ nl:
     education: Opleiding
   custom_field_options:
     gender:
-      male: Male
-      female: Female
-      unspecified: Unspecified
+      male: Man
+      female: Vrouw
+      unspecified: Onbepaald
     domicile:
-      outside: Somewhere else
+      outside: Ergens anders
     education:
-      ISCED2: Lower secondary education
-      ISCED3: Upper secondary education
-      ISCED4: Post-secondary non-tertiary education
-      ISCED5: Short-cycle tertiary education
-      ISCED6: Bachelor or equivalent
-      ISCED7: Master or equivalent
+      ISCED2: Lager secundair onderwijs
+      ISCED3: Hoger secundair onderwijs
+      ISCED4: Postsecundair niet-hoger onderwijs
+      ISCED5: Tertiair onderwijs met korte cyclus
+      ISCED6: Bachelor of gelijkwaardig
+      ISCED7: Master of gelijkwaardig
       ISCED8: Doctoral or equivalent
