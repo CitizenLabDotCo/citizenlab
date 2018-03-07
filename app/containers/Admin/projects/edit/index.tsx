@@ -109,7 +109,7 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
     ];
 
     if (project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation') {
-      tabs = reject(tabs, { className: 'ideas' })
+      tabs = reject(tabs, { className: 'ideas' });
     }
 
     if (project.attributes.process_type === 'timeline') {
