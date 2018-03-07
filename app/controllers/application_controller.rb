@@ -15,6 +15,8 @@ class ApplicationController < ActionController::API
 
   rescue_from ClErrors::TransactionError, :with => :transaction_error
 
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   # all controllers are secured by default
   def secure_controller?
     true
@@ -42,5 +44,9 @@ class ApplicationController < ActionController::API
 
   def transaction_error(exception)
     render json: { errors: { base: [{ error: exception.error_key, message: exception.message }] } }, status: exception.code
+  end
+
+  def user_not_authorized
+    head :unauthorized
   end
 end

@@ -13,11 +13,11 @@ class CustomFieldOptionPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.admin? && !record.custom_field.code
+    user&.active? && user.admin? && !record.custom_field.code
   end
 
   def update?
-    user&.admin? && !record.custom_field.code
+    user&.active? && user.admin? && !record.custom_field.code
   end
 
   def reorder?
@@ -29,7 +29,7 @@ class CustomFieldOptionPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user&.admin? && !record.custom_field.code
+    user&.active? && user.admin? && !record.custom_field.code
   end
 
 

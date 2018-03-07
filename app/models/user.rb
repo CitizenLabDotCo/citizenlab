@@ -62,6 +62,10 @@ class User < ApplicationRecord
   scope :admin, -> { 
     where("roles @> '[{\"type\":\"admin\"}]'")
   }
+
+  scope :active, -> {
+    where("completed_signup_at IS NOT NULL")
+  } 
   
   def self.build_with_omniauth(auth)
     extra_user_attrs = SingleSignOnService.new.profile_to_user_attrs(auth.provider, auth)
@@ -104,6 +108,10 @@ class User < ApplicationRecord
 
   def member_of? group_id
     !self.memberships.select{ |m| m.group_id == group_id }.empty?
+  end
+
+  def active?
+    self.registration_completed_at.present?
   end
   
   private
