@@ -29,6 +29,10 @@ import { currentTenantStream, updateTenant, IUpdatedTenantProperties, ITenant, I
 // typings
 import { API, ImageFile, Locale, Multiloc } from 'typings';
 
+const ColorPickerSectionField = styled(SectionField)`
+  max-width: 150px;
+`;
+
 const StyledSectionField = styled(SectionField)`
   max-width: 500px;
 `;
@@ -274,7 +278,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
               <FormattedMessage {...messages.titleBranding} />
             </SectionTitle>
 
-            <SectionField>
+            <ColorPickerSectionField>
               <Label>
                 <FormattedMessage {...messages.mainColor} />
               </Label>
@@ -283,7 +287,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
                 value={get(tenantAttrs, 'settings.core.color_main')}
                 onChange={this.handleColorPickerOnChange}
               />
-            </SectionField>
+            </ColorPickerSectionField>
 
             <SectionField key={'logo'}>
               <Label><FormattedMessage {...messages['logo']} /></Label>

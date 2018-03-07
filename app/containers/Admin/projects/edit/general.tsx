@@ -14,12 +14,12 @@ import Label from 'components/UI/Label';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
-import ParticipationContext, { IParticipationContextConfig } from './parcticipationContext';
+import ParticipationContext, { IParticipationContextConfig } from './participationContext';
 import { Button as SemButton, Icon as SemIcon } from 'semantic-ui-react';
 
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
+// import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
@@ -417,10 +417,10 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   onSubmit = (event: React.FormEvent<any>) => {
     event.preventDefault();
 
-    const { projectType, projectData } = this.state;
+    const { projectType } = this.state;
 
     // if it's a new project of type continuous
-    if (!projectData && projectType === 'continuous') {
+    if (projectType === 'continuous') {
       eventEmitter.emit('AdminProjectEditGeneral', 'getParticipationContext', null);
     } else {
       this.save();
@@ -669,25 +669,32 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               )}
 
               {!projectData &&
-                <TransitionGroup>
-                  {projectType === 'continuous' &&
-                    <CSSTransition
-                      classNames="participationcontext"
-                      timeout={timeout}
-                      enter={true}
-                      exit={false}
-                    >
-                      <ParticipationContextWrapper>
-                        <ParticipationContext
-                          onSubmit={this.handleParcticipationContextOnSubmit}
-                          onChange={this.handleParticipationContextOnChange}
-                        />
-                      </ParticipationContextWrapper>
-                    </CSSTransition>
-                  }
-                </TransitionGroup>
+                <CSSTransition
+                  classNames="participationcontext"
+                  in={(projectType === 'continuous')}
+                  timeout={timeout}
+                  mountOnEnter={true}
+                  unmountOnExit={true}
+                  enter={true}
+                  exit={false}
+                >
+                  <ParticipationContextWrapper>
+                    <ParticipationContext
+                      onSubmit={this.handleParcticipationContextOnSubmit}
+                      onChange={this.handleParticipationContextOnChange}
+                    />
+                  </ParticipationContextWrapper>
+                </CSSTransition>
               }
             </SectionField>
+
+            {projectData && projectType === 'continuous' &&
+              <ParticipationContext
+                projectId={projectData.id}
+                onSubmit={this.handleParcticipationContextOnSubmit}
+                onChange={this.handleParticipationContextOnChange}
+              />
+            }
 
             {/*
             {projectData && projectData.attributes.process_type === 'continuous' &&
