@@ -39,12 +39,14 @@ const SelectGroupsContainer = styled.div`
   flex-direction: row;
   align-items: flex-start;
   align-items: center;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  /* justify-content: space-between; */
   margin-bottom: 30px;
 `;
 
 const StyledMultipleSelect = styled(MultipleSelect)`
   min-width: 300px;
+  z-index: 5;
 `;
 
 const AddGroupButton = styled(Button)`
@@ -53,9 +55,9 @@ const AddGroupButton = styled(Button)`
   margin-left: 40px;
 `;
 
-const GroupTitle = styled.div``;
+const GroupTitle = styled.p``;
 
-const GroupMembershipCount = styled.div``;
+const GroupMembershipCount = styled.p``;
 
 interface IProjectGroup {
   group_id: string;
@@ -203,7 +205,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
         <AddGroupButton
           text={formatMessage(messages.addGroup)}
           style="cl-blue"
-          size="2"
+          size="1"
           icon="plus-circle"
           onClick={this.handleOnAddGroupClick}
           circularCorners={false}
