@@ -39,6 +39,8 @@ const OrderLabel = styled.div`
   border-radius: 50%;
   color: white;
   height: 3rem;
+  font-size: 16px;
+  font-weight: 400;
   line-height: 3rem;
   text-align: center;
   width: 3rem;

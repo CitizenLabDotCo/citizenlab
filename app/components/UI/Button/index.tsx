@@ -20,7 +20,7 @@ const ButtonText = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  margin-right: 14px;
+  margin-right: 10px;
 `;
 
 const ButtonContent = styled.div`
@@ -60,13 +60,13 @@ function getPadding(size) {
 function getIconHeight(size) {
   switch (size) {
     case '2':
-      return `20px`;
-    case '3':
-      return `22px`;
-    case '4':
-      return `24px`;
-    default:
       return `18px`;
+    case '3':
+      return `19px`;
+    case '4':
+      return `20px`;
+    default:
+      return `17px`;
   }
 }
 

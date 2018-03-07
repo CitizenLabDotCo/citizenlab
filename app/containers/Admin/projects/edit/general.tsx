@@ -14,12 +14,12 @@ import Label from 'components/UI/Label';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
-import ParticipationContext, { IParticipationContextConfig } from './parcticipationContext';
+import ParticipationContext, { IParticipationContextConfig } from './participationContext';
 import { Button as SemButton, Icon as SemIcon } from 'semantic-ui-react';
 
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
+// import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
@@ -50,7 +50,6 @@ import styled from 'styled-components';
 
 // typings
 import { API, IOption, ImageFile, Locale, Multiloc } from 'typings';
-import Select from 'semantic-ui-react/dist/commonjs/addons/Select/Select';
 
 const timeout = 350;
 
@@ -139,6 +138,7 @@ interface State {
   loading: boolean;
   processing: boolean;
   projectData: IProjectData | null;
+  publicationStatus: 'draft' | 'published' | 'archived';
   projectType: 'continuous' | 'timeline';
   projectAttributesDiff: IUpdatedProjectProperties;
   headerBg: ImageFile[] | null;
@@ -168,6 +168,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       loading: true,
       processing: false,
       projectData: null,
+      publicationStatus: 'published',
       projectType: 'timeline',
       projectAttributesDiff: {},
       headerBg: null,
@@ -244,6 +245,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         })
       ).subscribe(([locale, currentTenant, areas, { headerBg, oldProjectImages, projectData }]) => {
         this.setState((state) => {
+          const publicationStatus = (projectData ? projectData.attributes.publication_status : state.publicationStatus);
           const projectType = (projectData ? projectData.attributes.process_type : state.projectType);
           const areaType =  ((projectData && projectData.relationships.areas.data.length > 0) ? 'selection' : 'all');
           const areasOptions = areas.data.map((area) => ({
@@ -255,6 +257,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
             locale,
             currentTenant,
             projectData,
+            publicationStatus,
             projectType,
             areaType,
             areasOptions,
@@ -414,10 +417,10 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   onSubmit = (event: React.FormEvent<any>) => {
     event.preventDefault();
 
-    const { projectType, projectData } = this.state;
+    const { projectType } = this.state;
 
     // if it's a new project of type continuous
-    if (!projectData && projectType === 'continuous') {
+    if (projectType === 'continuous') {
       eventEmitter.emit('AdminProjectEditGeneral', 'getParticipationContext', null);
     } else {
       this.save();
@@ -428,10 +431,10 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     this.save(participationContextConfig);
   }
 
-  handleStatusChange = (_event, data) => {
-    const { value } = data;
-
+  handleStatusChange = (value: 'draft' | 'published' | 'archived') => {
     this.setState((state) => ({
+      submitState: 'enabled',
+      publicationStatus: value,
       projectAttributesDiff: {
         ...state.projectAttributesDiff,
         publication_status: value
@@ -567,6 +570,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     const {
       currentTenant,
       locale,
+      publicationStatus,
       projectType,
       noTitleError,
       projectData,
@@ -597,14 +601,29 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               <Label>
                 <FormattedMessage {...messages.statusLabel} />
               </Label>
-              <Select
-                value={projectAttrs.publication_status}
+              <Radio
                 onChange={this.handleStatusChange}
-                options={
-                  ['draft', 'published', 'archived'].map((status) => ({
-                    value: status,
-                    text: <FormattedMessage {...messages[`${status}Status`]} />,
-                  }))}
+                currentValue={publicationStatus}
+                value="draft"
+                name="projectstatus"
+                id="projecstatus-draft"
+                label={<FormattedMessage {...messages.draftStatus} />}
+              />
+              <Radio
+                onChange={this.handleStatusChange}
+                currentValue={publicationStatus}
+                value="published"
+                name="projectstatus"
+                id="projecstatus-published"
+                label={<FormattedMessage {...messages.publishedStatus} />}
+              />
+              <Radio
+                onChange={this.handleStatusChange}
+                currentValue={publicationStatus}
+                value="archived"
+                name="projectstatus"
+                id="projecstatus-archived"
+                label={<FormattedMessage {...messages.archivedStatus} />}
               />
             </SectionField>
 
@@ -650,25 +669,32 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               )}
 
               {!projectData &&
-                <TransitionGroup>
-                  {projectType === 'continuous' &&
-                    <CSSTransition
-                      classNames="participationcontext"
-                      timeout={timeout}
-                      enter={true}
-                      exit={false}
-                    >
-                      <ParticipationContextWrapper>
-                        <ParticipationContext
-                          onSubmit={this.handleParcticipationContextOnSubmit}
-                          onChange={this.handleParticipationContextOnChange}
-                        />
-                      </ParticipationContextWrapper>
-                    </CSSTransition>
-                  }
-                </TransitionGroup>
+                <CSSTransition
+                  classNames="participationcontext"
+                  in={(projectType === 'continuous')}
+                  timeout={timeout}
+                  mountOnEnter={true}
+                  unmountOnExit={true}
+                  enter={true}
+                  exit={false}
+                >
+                  <ParticipationContextWrapper>
+                    <ParticipationContext
+                      onSubmit={this.handleParcticipationContextOnSubmit}
+                      onChange={this.handleParticipationContextOnChange}
+                    />
+                  </ParticipationContextWrapper>
+                </CSSTransition>
               }
             </SectionField>
+
+            {projectData && projectType === 'continuous' &&
+              <ParticipationContext
+                projectId={projectData.id}
+                onSubmit={this.handleParcticipationContextOnSubmit}
+                onChange={this.handleParticipationContextOnChange}
+              />
+            }
 
             {/*
             {projectData && projectData.attributes.process_type === 'continuous' &&
