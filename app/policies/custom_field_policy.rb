@@ -17,11 +17,11 @@ class CustomFieldPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.admin? && !record.code
+    user&.active? && user.admin? && !record.code
   end
 
   def update?
-    user&.admin?
+    user&.active? && user.admin?
   end
 
   def reorder?
@@ -33,7 +33,7 @@ class CustomFieldPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user&.admin? && !record.code
+    user&.active? && user.admin? && !record.code
   end
 
   def permitted_attributes_for_create

@@ -31,11 +31,15 @@ class UserPolicy < ApplicationPolicy
   end
 
   def update?
-    user && (record.id == user.id || user.admin?)
+    user&.active? && (record.id == user.id || user.admin?)
+  end
+
+  def complete_registration?
+    user && !user.active? && (record.id == user.id)
   end
 
   def destroy?
-    user && user.admin?
+    user&.active? && user.admin?
   end
 
   def view_private_attributes?
@@ -49,5 +53,9 @@ class UserPolicy < ApplicationPolicy
     else
       shared
     end
+  end
+
+  def permitted_attributes_for_complete_registration
+    [custom_field_values: {}]
   end
 end

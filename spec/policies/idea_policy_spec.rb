@@ -5,7 +5,7 @@ describe IdeaPolicy do
   let(:scope) { IdeaPolicy::Scope.new(user, Idea) }
 
   context "on idea in a public project" do 
-    let(:project) { create(:project)}
+    let(:project) { create(:continuous_project)}
     let!(:idea) { create(:idea, project: project) }
 
     context "for a visitor" do
@@ -21,13 +21,40 @@ describe IdeaPolicy do
       end
     end
 
-    context "for a user" do
+    context "for a user who is not the idea author" do
       let(:user) { create(:user) }
 
       it { should     permit(:show)    }
       it { should_not permit(:create)  }
       it { should_not permit(:update)  }
       it { should_not permit(:destroy) }
+
+      it "should index the idea" do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context "for a user who didn't complete registration who is the idea author" do
+      let(:user) { idea.author.update(registration_completed_at: nil); idea.author }
+
+      it { should     permit(:show)    }
+      it { should_not permit(:create)  }
+      it { should_not permit(:update)  }
+      it { should_not permit(:destroy) }
+
+      it "should index the idea" do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+
+    context "for a user who is the idea author" do
+      let(:user) { idea.author }
+
+      it { should     permit(:show)    }
+      it { should     permit(:create)  }
+      it { should     permit(:update)  }
+      it { should     permit(:destroy) }
 
       it "should index the idea" do
         expect(scope.resolve.size).to eq 1
