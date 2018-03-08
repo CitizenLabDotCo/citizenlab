@@ -1,8 +1,12 @@
 import * as React from 'react';
+import * as Rx from 'rxjs/Rx';
 import TypeformSurvey from './TypeformSurvey';
 import SurveymonkeySurvey from './SurveymonkeySurvey';
 import { authUserStream } from 'services/auth';
 import { IUser } from 'services/users';
+import styled from 'styled-components';
+
+const Container = styled.div``;
 
 type Props = {
   surveyEmbedUrl?: string,
@@ -11,54 +15,61 @@ type Props = {
 
 type State = {
   user: IUser | null;
-  userLoaded: boolean;
+  loaded: boolean;
 };
 
-class Survey extends React.Component<Props, State> {
+class Survey extends React.PureComponent<Props, State> {
+  subscriptions: Rx.Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       user: null,
-      userLoaded: false,
+      loaded: false,
     };
+    this.subscriptions = [];
   }
 
   componentDidMount() {
     const authUser$ = authUserStream().observable;
-    authUser$.subscribe((user) => {
-      this.setState({ user, userLoaded: true });
-    },
-    () => {
-      this.setState({ user: null, userLoaded: true });
-    });
+
+    this.subscriptions = [
+      authUser$.subscribe((user) => {
+        this.setState({ user, loaded: true });
+      })
+    ];
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   render() {
-    const { user, userLoaded } = this.state;
+    const { user, loaded } = this.state;
     const { surveyEmbedUrl, surveyService } = this.props;
 
-    if (!surveyEmbedUrl || !userLoaded) return null;
+    if (surveyEmbedUrl && surveyService && loaded) {
+      const email = (user ? user.data.attributes.email : null);
 
-    const email = user && user.data.attributes.email || null;
+      return (
+        <Container className={this.props['className']}>          
+          {surveyService === 'typeform' &&
+            <TypeformSurvey
+              typeformUrl={surveyEmbedUrl}
+              email={(email || null)}
+            />
+          }
+          {surveyService === 'survey_monkey' &&
+            <SurveymonkeySurvey
+              surveymonkeyUrl={surveyEmbedUrl}
+            />
+          }
+        </Container>
+      );
+    }
 
-    return (
-      <>
-        {surveyService === 'typeform' &&
-          <TypeformSurvey
-            typeformUrl={surveyEmbedUrl}
-            email={email}
-          />
-        }
-        {surveyService === 'survey_monkey' &&
-          <SurveymonkeySurvey
-            surveymonkeyUrl={surveyEmbedUrl}
-          />
-        }
-      </>
-    );
+    return null;
   }
-
 }
 
 export default Survey;

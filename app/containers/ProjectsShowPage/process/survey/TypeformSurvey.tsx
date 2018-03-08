@@ -2,9 +2,9 @@ import * as React from 'react';
 import * as typeformEmbed from '@typeform/embed';
 import styled from 'styled-components';
 
-
-const SurveyContainer = styled.div`
-  height: 500px;
+const Container = styled.div`
+  width: 100%;
+  position: relative;
 `;
 
 type Props = {
@@ -14,34 +14,43 @@ type Props = {
 
 type State = {};
 
-class TypeformSurvey extends React.Component<Props, State> {
+class TypeformSurvey extends React.PureComponent<Props, State> {
+  typeformElement: HTMLElement | null = null;
 
-  surveyContainer: HTMLElement | null = null;
-
-  surveyUrl = () => {
-    if (this.props.email) {
-      return `${this.props.typeformUrl}?email=${this.props.email}`;
-    } else {
-      return this.props.typeformUrl;
-    }
+  constructor(props: Props) {
+    super(props);
+    this.state = {};
   }
 
   componentDidMount() {
-    typeformEmbed.makeWidget(this.surveyContainer, this.surveyUrl(), {
-      hideFooter: true,
-      hideScrollbars: true,
-      hideHeaders: true,
-    });
+    const { email, typeformUrl } = this.props;
+    const surveyUrl = (email ? `${typeformUrl}?email=${email}` : typeformUrl);
+
+    if (this.typeformElement) {
+      typeformEmbed.makeWidget(this.typeformElement, surveyUrl, {
+        hideFooter: true,
+        hideScrollbars: false,
+        hideHeaders: true,
+      });
+    }
   }
 
-  setRef = (r) => this.surveyContainer = r;
+  setRef = (element) => {
+    this.typeformElement = element;
+  }
 
   render() {
+    const style = {
+      height: '500px',
+      border: '1px solid #e4e4e4'
+    };
+
     return (
-      <SurveyContainer innerRef={this.setRef} />
+      <Container className={this.props['className']}>
+        <div ref={this.setRef} style={style} />
+      </Container>
     );
   }
-
 }
 
 export default TypeformSurvey;
