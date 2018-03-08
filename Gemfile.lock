@@ -171,6 +171,7 @@ GEM
       domain_name (~> 0.5)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
+    ice_cube (0.16.2)
     image_optimizer (1.7.2)
     ipaddress (0.8.3)
     json (2.1.0)
@@ -410,6 +411,7 @@ DEPENDENCIES
   faker
   fog-aws
   groupdate
+  ice_cube
   kaminari (~> 1.1.1)
   knock (~> 2.1.1)!
   liquid (~> 4.0)
