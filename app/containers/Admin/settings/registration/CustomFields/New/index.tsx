@@ -43,7 +43,6 @@ class New extends React.Component<Props> {
 
   initialValues = () => {
     return {
-      key: '',
       input_type: 'text',
       title_multiloc: {},
       description_multiloc: {},
