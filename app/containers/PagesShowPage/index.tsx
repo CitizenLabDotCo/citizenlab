@@ -51,7 +51,6 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 const PageContent = styled.div`
-  width: 100vw;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 61px);
   background: #fff;
   padding-top: 60px;
