@@ -32,7 +32,7 @@ import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 
 // style
-import { darken } from 'polished';
+import { darken, rgba } from 'polished';
 import styled, { css, } from 'styled-components';
 
 // typings
@@ -282,24 +282,22 @@ const NavigationDropdownListItem = styled(Link)`
 
 const NavigationDropdownFooter = styled(Link)`
   width: 100%;
-  color: ${(props) => props.theme.colorMain};
+  color: ${(props) => props.theme.colors.label};
   font-size: 18px;
   font-weight: 400;
   text-align: center;
   text-decoration: none;
   padding: 15px 15px;
   cursor: pointer;
-  background: #fafafa;
-  background: #f9f9fa;
-  border-top: solid 1px #f0f0f0;
+  background: ${props => rgba(props.theme.colors.label, 0.12)};
   border-radius: 5px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   transition: all 80ms ease-out;
 
   &:hover {
-    background: #f6f6f6;
-    color: ${(props) => darken(0.2, props.theme.colorMain)};
+    color: ${(props) => darken(0.2, props.theme.colors.label)};
+    background: ${props => rgba(props.theme.colors.label, 0.22)};
     text-decoration: none;
   }
 `;

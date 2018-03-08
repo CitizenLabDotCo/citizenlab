@@ -164,12 +164,12 @@ const Container: any = styled.div`
 
     &.secondary {
       &:not(.disabled) {
-        border-color: #eaeaea;
-        background: #f9f9fa;
-        ${setFillColor('#84939E')}
+        border-color: none;
+        background: ${props => rgba(props.theme.colors.label, 0.12)};
+        ${(props: any) => setFillColor(props.theme.colors.label)}
 
         &:not(.processing):hover {
-          background: #eee;
+          background: ${props => rgba(props.theme.colors.label, 0.22)};
           ${setFillColor('#222')}
         }
       }
