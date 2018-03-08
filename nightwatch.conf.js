@@ -28,7 +28,7 @@ module.exports = {
         waitForConditionTimeout: 15000,
       },
       detailed_output: false,
-      launch_url: 'http://localhost:3000',
+      launch_url: `http://${process.env.ROOT_URL}`,
       selenium_port: 4444,
       selenium_host: 'localhost',
       silent: true,

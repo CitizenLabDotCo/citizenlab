@@ -20,3 +20,5 @@ esw
 selenium-debug.log
 e2e/reports/*
 .awcache
+local.log
+tests_output/*
