@@ -45,7 +45,7 @@ resource "User Custom Field Options" do
 
     post "web_api/v1/users/custom_fields/:custom_field_id/custom_field_options" do
       with_options scope: :custom_field_option do
-        parameter :key, "A unique internal name for the option. Only letters, numbers and underscores allowed. Can't be changed afterwards", required: true
+        parameter :key, "A unique internal name for the option. Only letters, numbers and underscores allowed. Auto-generated from the title if not provided. Can't be changed afterwards", required: false
         parameter :title_multiloc, "The title of the field as shown to users, in multiple locales", required: true
       end
 
