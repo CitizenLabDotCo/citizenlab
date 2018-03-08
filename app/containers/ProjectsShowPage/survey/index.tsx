@@ -1,41 +1,83 @@
 import * as React from 'react';
-import { WithRouterProps } from 'react-router';
-import styled from 'styled-components';
+import * as Rx from 'rxjs/Rx';
+import { isString } from 'lodash';
 
-import GetProject from 'utils/resourceLoaders/components/GetProject';
+// components
 import Header from '../Header';
 import ContentContainer from 'components/ContentContainer';
 import Survey from '../process/survey';
 
-const SurveyContent = styled(ContentContainer)`
-  margin: 70px 0;
-  min-height: 500px;
+// services
+import { projectBySlugStream, IProject } from 'services/projects';
+
+// styling
+import styled from 'styled-components';
+
+const SurveyContainer = styled.div`
+  padding-top: 70px;
+  padding-bottom: 70px;
 `;
 
-type Props = {};
-type State = {};
+type Props = {
+  params: {
+    slug: string;
+  };
+};
 
-export default class ProjectSurvey extends React.Component<Props & WithRouterProps, State> {
-  constructor(props) {
-    super(props);
+type State = {
+  project: IProject | null;
+};
 
-    this.state = {};
+export default class ProjectSurvey extends React.PureComponent<Props, State> {
+  slug$: Rx.BehaviorSubject<string>;
+  subscriptions: Rx.Subscription[];
+
+  constructor(props: Props) {
+    super(props as any);
+    this.state = {
+      project: null
+    };
+    this.slug$ = new Rx.BehaviorSubject(null as any);
+    this.subscriptions = [];
+  }
+
+  componentDidMount() {
+    this.slug$.next(this.props.params.slug);
+
+    this.subscriptions = [
+      this.slug$
+        .distinctUntilChanged()
+        .filter(slug => isString(slug))
+        .switchMap((slug: string) => projectBySlugStream(slug).observable)
+        .subscribe(project => this.setState({ project }))
+    ];
+  }
+
+  componentDidUpdate() {
+    this.slug$.next(this.props.params.slug);
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   render() {
+    const { project } = this.state;
+
     return (
-      <GetProject slug={this.props.params.slug}>
-        {({ project }) => (
-          <>
-            {project && <>
-              <Header slug={this.props.params.slug} />
-              <SurveyContent>
-                <Survey surveyService={project.attributes.survey_service} surveyEmbedUrl={project.attributes.survey_embed_url} />
-              </SurveyContent>
-            </>}
-          </>
-        )}
-      </GetProject>
+      <React.Fragment>
+        <Header slug={this.props.params.slug} />
+        <ContentContainer>
+          <SurveyContainer>
+            {project &&
+              <Survey
+                surveyService={project.data.attributes.survey_service}
+                surveyEmbedUrl={project.data.attributes.survey_embed_url}
+              />
+            }
+          </SurveyContainer>
+        </ContentContainer>
+      </React.Fragment>
     );
   }
 }
