@@ -67,16 +67,20 @@ class IdeasByTimeChart extends React.PureComponent<Props & injectedLocalized, St
   }
 
   convertToGraphFormat = (serie) => {
-    const { data, topics } = serie;
-    const { localize } = this.props;
+    if (serie) {
+      const { data, topics } = serie;
+      const { localize } = this.props;
 
-    return _(data).map((count, topicId) => ({
-      name: localize(topics[topicId].title_multiloc),
-      value: count,
-      code: topicId,
-    }))
-    .sortBy('name')
-    .value();
+      return _(data).map((count, topicId) => ({
+        name: localize(topics[topicId].title_multiloc),
+        value: count,
+        code: topicId,
+      }))
+      .sortBy('name')
+      .value();
+    }
+
+    return null;
   }
 
   render() {
