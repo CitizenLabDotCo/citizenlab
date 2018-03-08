@@ -56,7 +56,8 @@ const Container = styled.div`
 
 const Content = styled.div`
   flex: 0 1 calc(100vh - ${(props) => props.theme.menuHeight}px);
-  overflow-y: auto;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 
   ${media.smallerThanMaxTablet`
     flex-basis: calc(100vh - ${(props) => props.theme.menuHeight}px - ${(props) => props.theme.mobileMenuHeight});
