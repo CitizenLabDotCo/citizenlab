@@ -133,4 +133,11 @@ describe CustomFieldService do
     end
   end
 
+  describe "keyify" do
+    it "throws out non-valid chars" do
+      str = (0..255).map(&:chr).map(&:to_s).join
+      expect(service.keyify(str)).to eq "0123456789_abcdefghijklmnopqrstuvwxyz___abcdefghijklmnopqrstuvwxyz_aaaaaaaeceeeeiiiidnoooooxouuuuythssaaaaaaaeceeeeiiiidnooooo_ouuuuythy"
+    end
+  end
+
 end
