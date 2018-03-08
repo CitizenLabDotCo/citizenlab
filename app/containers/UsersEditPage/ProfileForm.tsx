@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as Rx from 'rxjs';
-import * as moment from 'moment';
 import { isEqual, isEmpty, get } from 'lodash';
 
 // services
@@ -67,10 +66,6 @@ type Props = InputProps & InjectedIntlProps & injectedLocalized;
 
 class ProfileForm extends React.PureComponent<Props, State> {
   localeOptions: IOption[] = [];
-  genderOptions: IOption[] = [];
-  domicileOptions: IOption[] = [];
-  birthYearOptions: IOption[] = [];
-  educationOptions: IOption[] = [];
   user$: Rx.BehaviorSubject<IUserData>;
   subscriptions: Rx.Subscription[];
 
@@ -88,6 +83,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     this.user$ = new Rx.BehaviorSubject(this.props.user);
+
     const locale$ = localeStream().observable;
     const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
 
@@ -100,9 +96,6 @@ class ProfileForm extends React.PureComponent<Props, State> {
         const avatarUrl = get(user, 'attributes.avatar.medium', null);
         return (avatarUrl ? convertUrlToFileObservable(avatarUrl) : Rx.Observable.of(null)).map(avatar => ({ user, avatar, locale, customFieldsSchema }));
       }).subscribe(({ user, avatar, locale, customFieldsSchema }) => {
-
-        console.log(customFieldsSchema);
-
         this.setState({
           hasCustomFields: !isEmpty(customFieldsSchema['json_schema_multiloc'][locale]['properties']),
           avatar: (avatar ? [avatar] : null),
@@ -118,47 +111,6 @@ class ProfileForm extends React.PureComponent<Props, State> {
         label: appLocalePairs[locale],
       }))
     });
-
-    this.genderOptions = [
-      {
-        value: 'male',
-        label: this.props.intl.formatMessage({ ...messages.male }),
-      },
-      {
-        value: 'female',
-        label: this.props.intl.formatMessage({ ...messages.female }),
-      },
-      {
-        value: 'unspecified',
-        label: this.props.intl.formatMessage({ ...messages.unspecified })
-      }
-    ];
-
-    this.domicileOptions = this.props.areas.map((area) => ({
-      value: area.id,
-      label: this.props.localize(area.attributes.title_multiloc),
-    }));
-
-    this.domicileOptions.push({
-      value: 'outside',
-      label: this.props.intl.formatMessage({
-        ...messages.outside }
-      ),
-    });
-
-    for (let i = parseInt(moment().format('YYYY'), 10); i >= 1900; i -= 1) {
-      this.birthYearOptions.push({
-        value: i,
-        label: i.toString(),
-      });
-    }
-
-    for (let i = 0; i <= 8; i += 1) {
-      this.educationOptions.push({
-        value: i,
-        label: this.props.intl.formatMessage({ ...{ ...messages }[`ISCED11_${i}`] }),
-      });
-    }
   }
 
   componentDidUpdate(prevProps: Props) {
