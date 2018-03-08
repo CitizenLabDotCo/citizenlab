@@ -5,7 +5,7 @@ import { remCalc, fontSize, color } from 'utils/styleUtils';
 const StyledLabel = styled.label`
   color: ${color('label')};
   display: flex;
-  font-size: ${fontSize('small')};
+  font-size: ${fontSize('base')};
   font-weight: 400;
   margin: 0;
   padding-bottom: ${remCalc(10)};

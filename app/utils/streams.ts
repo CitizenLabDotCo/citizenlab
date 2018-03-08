@@ -113,19 +113,21 @@ class Streams {
       });
     }
 
-    Object.keys(this.streams[streamId].dataIds).forEach((dataId) => {
-      if (_(this.streamIdsByDataIdWithQuery[dataId]).some(value => value === streamId)) {
-        this.streamIdsByDataIdWithQuery[dataId] =  this.streamIdsByDataIdWithQuery[dataId].filter((value) => {
-          return value !== streamId;
-        });
-      }
+    if (streamId && this.streams[streamId]) {
+      Object.keys(this.streams[streamId].dataIds).forEach((dataId) => {
+        if (_(this.streamIdsByDataIdWithQuery[dataId]).some(value => value === streamId)) {
+          this.streamIdsByDataIdWithQuery[dataId] =  this.streamIdsByDataIdWithQuery[dataId].filter((value) => {
+            return value !== streamId;
+          });
+        }
 
-      if (_(this.streamIdsByDataIdWithoutQuery[dataId]).some(value => value === streamId)) {
-        this.streamIdsByDataIdWithoutQuery[dataId] = this.streamIdsByDataIdWithoutQuery[dataId].filter((value) => {
-          return value !== streamId;
-        });
-      }
-    });
+        if (_(this.streamIdsByDataIdWithoutQuery[dataId]).some(value => value === streamId)) {
+          this.streamIdsByDataIdWithoutQuery[dataId] = this.streamIdsByDataIdWithoutQuery[dataId].filter((value) => {
+            return value !== streamId;
+          });
+        }
+      });
+    }
 
     delete this.streams[streamId];
   }
@@ -135,22 +137,16 @@ class Streams {
     return uuidRegExp.test(string);
   }
 
-  isQuery(queryParameters: null | object) {
-    if (queryParameters !== null && _.isObject(queryParameters) && !_.isEmpty(queryParameters)) {
-      return Object.keys(queryParameters).filter((key) => {
-        return queryParameters[key] !== '' && !_.isNull(queryParameters[key]) && !_.isUndefined(queryParameters[key]);// && Object.keys(queryParameters[key]).length > 0;
-      }).length > 0;
-    }
+  sanitizeQueryParameters = (queryParameters: IObject | null) => {
+    const sanitizedQueryParameters = queryParameters;
 
-    return false;
-  }
+    _.forOwn(queryParameters, (value, key) => {
+      if (_.isNil(value) || (_.isString(value) && _.isEmpty(value)) || (_.isArray(value) && _.isEmpty(value)) || (_.isObject(value) && _.isEmpty(value))) {
+        delete (sanitizedQueryParameters as IObject)[key];
+      }
+    });
 
-  isSearchQuery(queryParameters: object | null, isQueryStream: boolean) {
-    if (isQueryStream && queryParameters !== null) {
-      return _.has(queryParameters, 'search') && _.isString(queryParameters['search']) && queryParameters['search'] !== '';
-    }
-
-    return false;
+    return (_.isObject(sanitizedQueryParameters) && !_.isEmpty(sanitizedQueryParameters) ? sanitizedQueryParameters : null);
   }
 
   isSingleItemStream(lastUrlSegment: string, isQueryStream: boolean) {
@@ -169,7 +165,7 @@ class Streams {
     let serializedUrl = apiEndpoint;
 
     if (queryParameters !== null && isQueryStream) {
-      serializedUrl =  apiEndpoint + '?' + Object.keys(queryParameters).filter(key => queryParameters[key] !== '').sort().map((key) => {
+      serializedUrl =  apiEndpoint + '?' + Object.keys(queryParameters).sort().map((key) => {
         return encodeURIComponent(key) + '=' + encodeURIComponent((queryParameters)[key]);
       }).join('&');
 
@@ -222,9 +218,9 @@ class Streams {
   get<T>(inputParams: IInputStreamParams) {
     const params: IExtendedStreamParams = { bodyData: null, queryParameters: null, ...inputParams };
     const apiEndpoint = this.removeTrailingSlash(params.apiEndpoint);
-    const queryParameters = params.queryParameters;
-    const isQueryStream = this.isQuery(queryParameters);
-    const isSearchQuery = this.isSearchQuery(queryParameters, isQueryStream);
+    const queryParameters = this.sanitizeQueryParameters(params.queryParameters);
+    const isQueryStream = (_.isObject(queryParameters) && !_.isEmpty(queryParameters));
+    const isSearchQuery = (isQueryStream && queryParameters && queryParameters['search'] && _.isString(queryParameters['search']) && !_.isEmpty(queryParameters['search']));
     const cacheStream = ((isSearchQuery || inputParams.cacheStream === false) ? false : true);
     const streamId = this.getSerializedUrl(apiEndpoint, isQueryStream, queryParameters, cacheStream);
 
@@ -240,7 +236,7 @@ class Streams {
 
           Rx.Observable.defer(() => promise).retry(2).subscribe(
             (response) => {
-              console.log(`fetched data for ${streamId}`);
+              // console.log(`fetched data for ${streamId}`);
 
               if (this.streams[streamId]) {
                 this.streams[streamId].observer.next(response);

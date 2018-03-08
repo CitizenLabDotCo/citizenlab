@@ -9,6 +9,7 @@ import Spinner from 'components/UI/Spinner';
 import SelectTopics from './SelectTopics';
 import SelectSort from './SelectSort';
 import SearchInput from 'components/UI/SearchInput';
+import Button from 'components/UI/Button';
 import IdeaButton from 'components/IdeaButton';
 
 // services
@@ -22,7 +23,7 @@ import messages from './messages';
 import shallowCompare from 'utils/shallowCompare';
 
 // style
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -142,42 +143,7 @@ const LoadMoreButtonWrapper = styled.div`
   justify-content: center;
 `;
 
-const LoadMoreButton = styled.div`
-  flex: 0 0 60px;
-  width: 100%;
-  height: 60px;
-  color: ${(props) => props.theme.colorMain};
-  font-size: 18px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  transition: all 100ms ease-out;
-  background: #f0f0f0;
-
-  border: solid 2px #eaeaea;
-  background: #fff;
-
-  width: 300px;
-  flex: 0 0 300px;
-  background: #eee;
-  border: none;
-
-  ${media.smallerThanMinTablet`
-    width: 100%;
-    flex: 1;
-  `};
-
-  &:not(.loading) {
-    cursor: pointer;
-
-    &:hover {
-      background: #e0e0e0;
-      border-color: #ccc
-    }
-  }
-`;
+const LoadMoreButton = styled(Button)``;
 
 interface IQueryParameters {
   'page[number]'?: number | undefined;
@@ -198,7 +164,6 @@ interface IAccumulator {
 
 type Props = {
   queryParameters?: IQueryParameters | undefined;
-  theme?: object | undefined;
 };
 
 type State = {
@@ -210,7 +175,7 @@ type State = {
   loadingMore: boolean;
 };
 
-class IdeaCards extends React.PureComponent<Props, State> {
+export default class IdeaCards extends React.PureComponent<Props, State> {
   queryParameters$: Rx.BehaviorSubject<IQueryParameters>;
   search$: Rx.BehaviorSubject<string>;
   subscriptions: Rx.Subscription[];
@@ -323,7 +288,7 @@ class IdeaCards extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const theme: any = this.props.theme;
+    // const theme: any = this.props.theme;
     const { ideas, searchValue, hasMore, querying, loadingMore } = this.state;
     const hasIdeas = (ideas !== null && ideas.data.length > 0);
 
@@ -371,14 +336,19 @@ class IdeaCards extends React.PureComponent<Props, State> {
 
         {(!querying && hasMore) &&
           <LoadMoreButtonWrapper>
-            <LoadMoreButton className={`${loadingMore && 'loading'}`} onClick={this.loadMore}>
-              {!loadingMore ? <FormattedMessage {...messages.loadMore} /> : <Spinner size="30px" color={theme.colorMain} />}
-            </LoadMoreButton>
+            <LoadMoreButton
+              onClick={this.loadMore}
+              style="secondary"
+              size="2"
+              text={<FormattedMessage {...messages.loadMore} />}
+              processing={loadingMore}
+              circularCorners={false}
+              fullWidth={true}
+              height="60px"
+            />
           </LoadMoreButtonWrapper>
         }
       </Container>
     );
   }
 }
-
-export default withTheme(IdeaCards);

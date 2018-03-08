@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { get } from 'lodash';
+import { isEmpty } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
@@ -13,73 +13,101 @@ import Step2 from './Step2';
 import Footer from './Footer';
 
 // services
-import { currentTenantStream, ITenant } from 'services/tenant';
+import { localeStream } from 'services/locale';
+import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
+
+// utils
+import eventEmitter from 'utils/eventEmitter';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
+
+const timeout = 900;
+const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
 const Container = styled.div`
   width: 100%;
+  padding-top: 40px;
+  padding-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+
+  ${media.biggerThanMaxTablet`
+    min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  `}
+
+  ${media.smallerThanMaxTablet`
+    padding-bottom: 70px;
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+  `}
 `;
 
-const Form = styled.div`
+const ContainerInner = styled.div`
   width: 100%;
-  height: auto;
-  max-width: 360px;
+  position: relative;
+  flex: 1;
+`;
+
+const StepContainer = styled.div`
   position: relative;
 
-  &.form-enter {
-    opacity: 0.01;
+  &.step-enter {
+    width: 100%;
+    max-width: 420px;
     position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    z-index: 1;
+    transform: translateX(420px);
 
-    &.step1 {
-      transform: translateX(-100px);
-    }
-
-    &.step2 {
-      transform: translateX(100px);
-    }
-
-    &.form-enter-active {
+    &.step-enter-active {
+      width: 100%;
+      max-width: 420px;
+      position: absolute;
+      top: 0;
+      left: 0;
       opacity: 1;
       transform: translateX(0);
-      transition: opacity 600ms cubic-bezier(0.165, 0.84, 0.44, 1),
-                  transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: all ${timeout}ms ${easing};
     }
   }
 
-  &.form-exit {
+  &.step-exit {
+    width: 100%;
+    max-width: 420px;
+    position: absolute;
+    top: 0;
+    left: 0;
     opacity: 1;
+    transform: translateX(0);
 
-    &.step1 {
-      height: 447px;
-    }
-
-    &.step2 {
-      height: 340px;
-    }
-
-    &.form-exit-active {
-      opacity: 0.01;
-      transition: opacity 600ms cubic-bezier(0.165, 0.84, 0.44, 1),
-                  transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1),
-                  height 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
-
-      &.step1 {
-        height: 340px;
-        transform: translateX(-100px);
-      }
-
-      &.step2 {
-        height: 447px;
-        transform: translateX(100px);
-      }
+    &.step-exit-active {
+      width: 100%;
+      max-width: 420px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transform: translateX(-420px);
+      transition: all ${timeout}ms ${easing};
     }
   }
+`;
+
+const Title = styled.h2`
+  width: 100%;
+  color: #333;
+  font-size: 34px;
+  line-height: 42px;
+  font-weight: 500;
+  text-align: left;
+  margin-bottom: 35px;
 `;
 
 type Props = {
@@ -87,38 +115,39 @@ type Props = {
 };
 
 type State = {
-  visibleStep: 'step1' | 'step2'
+  loaded: boolean;
+  visibleStep: 'step1' | 'step2';
   hasSecondStep: boolean;
-  currentTenant: ITenant | null;
   userId: string | null;
 };
 
-class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
+export default class SignUp extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
+      loaded: false,
       visibleStep: 'step1',
       hasSecondStep: true,
-      currentTenant: null,
-      userId: null
+      userId: null,
     };
     this.subscriptions = [];
   }
 
   componentDidMount() {
-    const currentTenant$ = currentTenantStream().observable.do((currentTenant) => {
-      const { birthyear, domicile, gender } = currentTenant.data.attributes.settings.demographic_fields;
-      const demographicFieldsEnabled = get(currentTenant, `data.attributes.settings.demographic_fields.enabled`);
-      const hasOneOrMoreActiveDemographicFields = [birthyear, domicile, gender].some(value => value === true);
+    const locale$ = localeStream().observable;
+    const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
 
-      if (!demographicFieldsEnabled || !hasOneOrMoreActiveDemographicFields) {
-        this.setState(({ hasSecondStep: false }));
-      }
-    });
-
-    this.subscriptions = [currentTenant$.subscribe(currentTenant => this.setState({ currentTenant }))];
+    this.subscriptions = [
+      Rx.Observable.combineLatest(
+        locale$,
+        customFieldsSchemaForUsersStream$
+      ).subscribe(([locale, customFieldsSchema]) => {
+        const hasSecondStep = !isEmpty(customFieldsSchema['json_schema_multiloc'][locale]['properties']);
+        this.setState({ hasSecondStep });
+      })
+    ];
   }
 
   componentWillUnmount() {
@@ -129,6 +158,7 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ userId });
 
     if (this.state.hasSecondStep) {
+      eventEmitter.emit('SignUp', 'signUpFlowGoToSecondStep', null);
       this.setState({ visibleStep: 'step2' });
     } else {
       this.props.onSignUpCompleted(userId);
@@ -143,40 +173,48 @@ class SignUp extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
+  goToHomePage = () => {
+    browserHistory.push('/');
+  }
+
   goToSignIn = () => {
     browserHistory.push('/sign-in');
   }
 
   render() {
     const { visibleStep } = this.state;
-    const timeout = 600;
-
-    const step1 = (visibleStep === 'step1' ? (
-      <CSSTransition classNames="form" timeout={timeout}>
-        <Form className="step1">
-          <Step1 onCompleted={this.handleStep1Completed} />
-        </Form>
-      </CSSTransition>
-    ) : null);
-
-    const step2 = (visibleStep === 'step2' ? (
-      <CSSTransition classNames="form" timeout={timeout}>
-        <Form className="step2">
-          <Step2 onCompleted={this.handleStep2Completed} />
-        </Form>
-      </CSSTransition>
-    ) : null);
 
     return (
       <Container>
-        <TransitionGroup>
-          {step1}
-          {step2}
-        </TransitionGroup>
-        <Footer goToSignIn={this.goToSignIn} />
+        <ContainerInner>
+          <TransitionGroup>
+            {visibleStep === 'step1' &&
+              <CSSTransition
+                timeout={timeout}
+                classNames="step"
+              >
+                <StepContainer>
+                  <Title><FormattedMessage {...messages.step1Title} /></Title>
+                  <Step1 onCompleted={this.handleStep1Completed} />
+                  <Footer goToSignIn={this.goToSignIn} />
+                </StepContainer>
+              </CSSTransition>
+            }
+
+            {visibleStep === 'step2' &&
+              <CSSTransition
+                timeout={timeout}
+                classNames="step"
+              >
+                <StepContainer>
+                  <Title><FormattedMessage {...messages.step2Title} /></Title>
+                  <Step2 onCompleted={this.handleStep2Completed} />
+                </StepContainer>
+              </CSSTransition>
+            }
+          </TransitionGroup>
+        </ContainerInner>
       </Container>
     );
   }
 }
-
-export default injectIntl<Props>(SignUp);

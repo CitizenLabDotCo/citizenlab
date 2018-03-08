@@ -39,6 +39,14 @@ const StyledAvatar = styled(Avatar)`
   width: 25px;
   height: 25px;
   cursor: pointer;
+
+  svg {
+    fill: ${(props) => props.theme.colors.label};
+  }
+
+  &:hover svg {
+    fill: ${(props) => darken(0.2, props.theme.colors.label)};
+  }
 `;
 
 const IconWrapper = styled.div`
@@ -62,6 +70,7 @@ const UserIcon = styled(Icon)`
 const StyledPopover = styled(Popover)`
   display: flex;
   flex-direction: column;
+  z-index: 5;
 `;
 
 const PopoverIcon = styled(Icon)`
@@ -100,7 +109,7 @@ type State = {
 };
 
 export default class UserMenu extends React.PureComponent<Props, State> {
-  
+
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {

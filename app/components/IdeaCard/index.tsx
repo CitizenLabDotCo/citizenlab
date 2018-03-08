@@ -42,19 +42,17 @@ import { Locale } from 'typings';
 
 const IdeaImageContainer: any = styled.div`
   width: 100%;
-  height: 120px;
+  height: 115px;
   overflow: hidden;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-bottom: solid 1px #e4e4e4;
 `;
 
 const IdeaImage: any = styled.img`
   width: 100%;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
   z-index: 1;
 `;
 
@@ -65,9 +63,10 @@ const IdeaImageOverlay = styled.div`
   left: 0;
   right: 0;
   background: #fff;
+  z-index: 2;
   opacity: 0.1;
   transition: all 250ms ease-out;
-  z-index: 2;
+  will-change: opacity;
 `;
 
 const IdeaImagePlaceholder = styled.div`
@@ -91,6 +90,7 @@ const IdeaImagePlaceholderIcon = styled(Icon) `
 const IdeaContent = styled.div`
   flex-grow: 1;
   padding: 20px;
+  padding-top: 15px;
 `;
 
 const IdeaTitle: any = styled.h4`
@@ -114,23 +114,28 @@ const IdeaTitle: any = styled.h4`
 const IdeaAuthor = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 15px;
+  margin-top: 10px;
 `;
 
 const IdeaAuthorAvatar = styled(Avatar)`
-  width: 32px;
-  height: 32px;
-  margin-right: 8px;
+  width: 28px;
+  height: 28px;
+  margin-right: 6px;
 `;
 
 const IdeaAuthorText = styled.div`
   color: ${(props) => props.theme.colors.label};
   font-size: 14px;
   font-weight: 300;
-  line-height: 19px;
+  line-height: 18px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   margin-top: -1px;
+
+  > span:not(last-child) {
+    margin-right: 4px;
+  }
 
   span > span {
     font-weight: 400;
@@ -139,7 +144,7 @@ const IdeaAuthorText = styled.div`
 
 const Footer = styled.div`
   position: absolute;
-  bottom: 20px;
+  bottom: 18px;
   left: 20px;
   right: 20px;
   display: flex;
@@ -149,41 +154,31 @@ const Footer = styled.div`
 
 const StyledVoteControl = styled(VoteControl)``;
 
-const CommentInfo = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  position: relative;
-  margin-top: 4px;
-`;
-
 const CommentIcon = styled(Icon)`
-  height: 22px;
+  height: 23px;
   fill: ${(props) => props.theme.colors.label};
-  margin-bottom: 0px;
+  margin-right: 7px;
 `;
 
 const CommentCount = styled.div`
   color: ${(props) => props.theme.colors.label};
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 300;
-  line-height: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+`;
 
-  /*
-  position: absolute;
-  top: 0px;
-  left: 1px;
-  width: 26px;
-  height: 22px;
-  */
+const CommentInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
+  &:not(.enabled) {
+    opacity: 0.6;
+  }
 `;
 
 const IdeaContainer = styled(Link)`
   width: 100%;
-  height: 360px;
+  height: 365px;
   margin-bottom: 24px;
   cursor: pointer;
   position: relative;
@@ -344,6 +339,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
       const projectId = idea.data.relationships.project.data && idea.data.relationships.project.data.id;
       const ideaAuthorId = (ideaAuthor ? ideaAuthor.data.id : null);
       const commentingDescriptor = idea.data.relationships.action_descriptor.data.commenting || null;
+      const commentingEnabled = idea.data.relationships.action_descriptor.data.commenting.enabled;
 
       const className = `${this.props['className']}
         e2e-idea-card
@@ -394,9 +390,9 @@ class IdeaCard extends React.PureComponent<Props, State> {
                   ideaId={idea.data.id}
                   unauthenticatedVoteClick={this.unauthenticatedVoteClick}
                   disabledVoteClick={this.disabledVoteClick}
-                  size="normal"
+                  size="2"
                 />
-                <CommentInfo>
+                <CommentInfo className={`${commentingEnabled && 'enabled'}`}>
                   <CommentIcon name="comments2" />
                   <CommentCount>
                     <span>{idea.data.attributes.comments_count}</span>

@@ -199,7 +199,7 @@ type State = {
   hasEvents: boolean;
 };
 
-export default class ProjectsShowPage extends React.PureComponent<Props, State> {
+export default class ProjectHeader extends React.PureComponent<Props, State> {
   slug$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 
@@ -288,7 +288,7 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
                     </HeaderButtonText>
                   </HeaderButton>
 
-                  {project && project.data.attributes.process_type === 'continuous' &&
+                  {project && project.data.attributes.process_type === 'continuous' && project.data.attributes.participation_method === 'ideation' &&
                     <HeaderButton
                       to={`/projects/${projectSlug}/ideas`}
                       activeClassName="active"
@@ -298,6 +298,20 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
                       </HeaderButtonIconWrapper>
                       <HeaderButtonText>
                         <FormattedMessage {...messages.navIdeas} />
+                      </HeaderButtonText>
+                    </HeaderButton>
+                  }
+
+                  {project && project.data.attributes.process_type === 'continuous' && project.data.attributes.participation_method === 'survey' &&
+                    <HeaderButton
+                      to={`/projects/${projectSlug}/survey`}
+                      activeClassName="active"
+                    >
+                      <HeaderButtonIconWrapper>
+                        <HeaderButtonIcon name="survey" />
+                      </HeaderButtonIconWrapper>
+                      <HeaderButtonText>
+                        <FormattedMessage {...messages.navSurvey} />
                       </HeaderButtonText>
                     </HeaderButton>
                   }

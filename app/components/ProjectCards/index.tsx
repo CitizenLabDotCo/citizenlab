@@ -6,6 +6,7 @@ import * as Rx from 'rxjs/Rx';
 import ProjectCard from 'components/ProjectCard';
 import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
+import Button from 'components/UI/Button';
 import SelectAreas from './SelectAreas';
 
 // services
@@ -19,7 +20,7 @@ import messages from './messages';
 import shallowCompare from 'utils/shallowCompare';
 
 // style
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -44,12 +45,21 @@ const FiltersArea = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
+  margin-bottom: 20px;
+
+  ${media.smallerThanMaxTablet`
+    justify-content: flex-start;
+  `};
 `;
 
 const FilterArea = styled.div`
   height: 60px;
   display: flex;
   align-items: center;
+
+  ${media.smallerThanMaxTablet`
+    height: 30px;
+  `}
 `;
 
 const ProjectsList = styled.div`
@@ -117,46 +127,7 @@ const LoadMoreButtonWrapper = styled.div`
   justify-content: center;
 `;
 
-const LoadMoreButton = styled.div`
-  flex: 0 0 60px;
-  width: 100%;
-  height: 60px;
-  color: ${(props) => props.theme.colorMain};
-  font-size: 18px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  transition: all 100ms ease-out;
-  background: #f0f0f0;
-
-  border: solid 2px #eaeaea;
-  background: #fff;
-
-  width: 300px;
-  flex: 0 0 300px;
-  background: #eee;
-  border: none;
-
-  ${media.smallerThanMinTablet`
-    width: 100%;
-    flex: 1;
-  `};
-
-  &:not(.loading) {
-    cursor: pointer;
-
-    &:hover {
-      background: #e0e0e0;
-      border-color: #ccc
-    }
-  }
-
-  &.loading {
-    /* background: #f0f0f0; */
-  }
-`;
+const LoadMoreButton = styled(Button)``;
 
 interface IQueryParameters {
   'page[number]'?: number | undefined;
@@ -172,7 +143,6 @@ interface IAccumulator {
 
 type Props = {
   queryParameters?: IQueryParameters | undefined;
-  theme?: object | undefined;
   hideAllFilters?: boolean | undefined;
 };
 
@@ -184,7 +154,7 @@ type State = {
   loadingMore: boolean;
 };
 
-class ProjectCards extends React.PureComponent<Props, State> {
+export default class ProjectCards extends React.PureComponent<Props, State> {
   queryParameters$: Rx.BehaviorSubject<IQueryParameters>;
   subscriptions: Rx.Subscription[];
 
@@ -226,8 +196,6 @@ class ProjectCards extends React.PureComponent<Props, State> {
           loadingMore: isLoadingMore,
         });
 
-        console.log(queryParameters);
-
         return projectsStream({ queryParameters: newQueryParameters }).observable.map((projects) => {
           const selfLink = get(projects, 'links.self');
           const lastLink = get(projects, 'links.last');
@@ -266,7 +234,6 @@ class ProjectCards extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const theme: any = this.props.theme;
     const { queryParameters, projects, hasMore, querying, loadingMore } = this.state;
     const hasProjects = (projects !== null && projects.data.length > 0);
     const selectedAreas = (queryParameters.areas || []);
@@ -308,14 +275,19 @@ class ProjectCards extends React.PureComponent<Props, State> {
 
         {!querying && hasMore &&
           <LoadMoreButtonWrapper>
-            <LoadMoreButton className={`${loadingMore && 'loading'}`} onClick={this.loadMore}>
-              {!loadingMore ? <FormattedMessage {...messages.loadMore} /> : <Spinner size="30px" color={theme.colorMain} />}
-            </LoadMoreButton>
+            <LoadMoreButton
+              onClick={this.loadMore}
+              style="secondary"
+              size="2"
+              text={<FormattedMessage {...messages.loadMore} />}
+              processing={loadingMore}
+              circularCorners={false}
+              fullWidth={true}
+              height="60px"
+            />
           </LoadMoreButtonWrapper>
         }
       </Container>
     );
   }
 }
-
-export default withTheme(ProjectCards);

@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.errors.generics.unsupported_locales',
     defaultMessage: 'This field does not support the current locale.',
   },
+  taken: {
+    id: 'app.errors.generics.taken',
+    defaultMessage: 'This field should be unique. Another instance with the same value already exists.',
+  },
   title_multiloc_blank: {
     id: 'app.errors.title_multiloc_blank',
     defaultMessage: 'The title cannot be empty.',
@@ -52,5 +56,9 @@ export default defineMessages({
   after_end_at: {
     id: 'app.errors.after_end_at',
     defaultMessage: 'The start date occurs after the end date',
+  },
+  key_invalid: {
+    id: 'app.errors.key_invalid',
+    defaultMessage: 'The key can only contain letters, numbers and underscores(_)',
   },
 });
