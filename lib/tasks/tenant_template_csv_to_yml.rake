@@ -64,9 +64,8 @@ namespace :tenant_template do
   						     'locale'            => locale,
   						     'bio_multiloc'      => {locale => md_to_html(csv_user['Biography (Optional)'])},
   						     'gender'            => csv_user['Gender'],
-  						     'birthyear'	       => rand(10) === 0 ? nil : 1927 + rand(90),
+  						     'birthyear'	       => rand(10) === 0 ? nil : (1925 + rand(80)).to_s,
   						     'domicile'          => rand(10) === 0 ? nil : generate_domicile(),
-  					       'education'         => rand(10) === 0 ? nil : rand(9),
   					     	 'password'          => csv_user['Password (Optional)'] || generate_password(),
   						     'remote_avatar_url' => csv_user['Image URL (Optional)']
   				       }

@@ -79,21 +79,6 @@
         }
       },
 
-      "demographic_fields": {
-        "type": "object",
-        "description": "Asking user demographic information in a second signup step",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true},
-          "gender": {"type": "boolean", "default": true},
-          "domicile": {"type": "boolean", "default": true},
-          "birthyear": {"type": "boolean", "default": true},
-          "education": {"type": "boolean", "default": true}
-        }
-      },
-
       "pages": {
         "type": "object",
         "description":	"Allow custom pages to be made, and potentially be added to the navigation",
@@ -283,6 +268,16 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+      "surveys": {
+        "type": "object",
+        "description":  "Allow the embedding of surveys from Typeform and Survey Monkey",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
       "maps": {
         "type": "object",
         "description":  "Show maps throughout the platform",
@@ -317,6 +312,16 @@
             "description": "The default zoom level of the map. A number from 0 to 19. See https://wiki.openstreetmap.org/wiki/Zoom_levels",
             "default": 12
           }
+        }
+      },
+      "user_custom_fields": {
+        "type": "object",
+        "description":  "Allows admin to define their own form fields that users can fill out at sign up",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
         }
       }
     },

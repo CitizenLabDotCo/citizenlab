@@ -289,3 +289,23 @@ de:
   projects:
     open_idea_project_title: Offene Ideen-Box
     open_idea_project_description: Die Ideen hier sind nicht mit einem Projekt verknüpft.
+  custom_fields:
+    gender: Geschlecht
+    birthyear: Geburtsjahr
+    domicile: Wohnort
+    education: Bildungsweg
+  custom_field_options:
+    gender:
+      male: Männlich
+      female: Weiblich
+      unspecified: Nicht spezifiziert
+    domicile:
+      outside: Anderswo
+    education:
+      ISCED2: Sekundarstufe I
+      ISCED3: Sekundarstufe II
+      ISCED4: Abschluss an Berufsschule, Abendgymnasium oder Kolleg
+      ISCED5: Kurze tertiäre Bildungsprogramme (ISCED-Stufe 5)
+      ISCED6: Bachelor oder gleichwertiger Abschluss
+      ISCED7: Master oder gleichwertiger Abschluss
+      ISCED8: Doktortitel oder anderer gleichwertiger Abschluss

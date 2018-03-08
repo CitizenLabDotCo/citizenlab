@@ -50,6 +50,7 @@ end
 
 group :test do
   gem 'shoulda-matchers', '~> 3.1'
+  gem 'rubyXL'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -77,7 +78,7 @@ gem "liquid", "~> 4.0"
 gem "premailer-rails" # , "~> 1.9.6"
 gem 'groupdate' # , "~> 3.2.0"
 gem 'rubyzip', '~> 1.2.1'
-gem 'axlsx', '2.1.0.pre', github: 'randym/axlsx', ref: 'c8ac844572b25fda358cc01d2104720c4c42f450'
+gem 'axlsx', '3.0.0.pre'#, github: 'randym/axlsx', ref: 'c8ac844572b25fda358cc01d2104720c4c42f450'
 gem 'rgeo-geojson'
 
 gem 'activerecord-postgis-adapter' # , '~> 5.2'
@@ -92,5 +93,6 @@ gem 'omniauth-twitter'
 gem "bunny", ">= 2.7.2"
 gem 'carrierwave-imageoptimizer'
 gem 'scenic'
+gem 'acts_as_list'
 
 gem 'public_api', path: 'engines/public_api'

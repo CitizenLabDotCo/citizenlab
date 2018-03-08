@@ -6,7 +6,6 @@ FactoryBot.define do
     last_name { Faker::Name.last_name }
     email { make_email_more_unique(Faker::Internet.email) }
     password_digest "testtest"
-    demographics {}
     roles []
     locale "en"
     # Although the avatar is not part of the minimal model, generating it
@@ -19,8 +18,8 @@ FactoryBot.define do
 
     factory :user_with_demographics do
       gender { ['male','female','unspecified',nil][rand(4)] }
-      birthyear { rand(1)==0 ? Time.now.year - 1 - rand(100) : nil }
-      education { rand(1)==0 ? rand(8)+1 : nil }
+      birthyear { rand(1)==0 ? (Time.now.year - 12 - rand(100)).to_s : nil }
+      education { rand(1)==0 ? (rand(6)+3).to_s : nil }
     end
 
   end

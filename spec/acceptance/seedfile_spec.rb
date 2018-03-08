@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "seedfile" do
+describe "seedfile", slow_test: true do
 
   #TODO Refacor this to have separate examples for various assertions. Didn't
   #seem to work the straightforward way after multiple runs, seems to be due to
@@ -26,6 +26,8 @@ describe "seedfile" do
       expect(Notification.count).to be > 0
       expect(IdeaStatus.count).to be > 0
       expect(Group.count).to be > 0
+      expect(CustomField.count).to be > 0
+      expect(CustomFieldOption.count).to be > 0
     end
     Apartment::Tenant.switch('empty_localhost') do
       load Rails.root.join("db","seeds.rb")
