@@ -21,6 +21,7 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
+import FeatureFlag from 'components/FeatureFlag';
 
 const Container = styled.div``;
 
@@ -279,7 +280,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
               <Label>
                 <FormattedMessage {...messages.participationMethod} />
               </Label>
-              {['ideation', 'information', 'survey'].map((method) => (
+              {['ideation', 'information'].map((method) => (
                 <Radio
                   onChange={this.handleParticipationMethodOnChange}
                   currentValue={participationMethod}
@@ -290,6 +291,17 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
                   key={method}
                 />
               ))}
+              <FeatureFlag name="surveys">
+                <Radio
+                  onChange={this.handleParticipationMethodOnChange}
+                  currentValue={participationMethod}
+                  value="survey"
+                  name="participationmethod"
+                  id={`participationmethod-survey`}
+                  label={<FormattedMessage {...messages.survey} />}
+                />
+              </FeatureFlag>
+
             </SectionField>
 
             {participationMethod === 'ideation' &&
