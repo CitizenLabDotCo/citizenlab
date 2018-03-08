@@ -49,7 +49,7 @@
     "test:watch": "cross-env NODE_ENV=test jest --watchAll",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "e2e-setup": "selenium-standalone install",
-    "test:e2e": "nightwatch"
+    "test:e2e": "cross-env ROOT_URL='localhost:3000' nightwatch"
   },
   "lint-staged": {
     "*.js": "lint:eslint"
@@ -301,18 +301,18 @@
   "devDependencies": {
     "@types/bowser": "1.1.1",
     "@types/draft-js": "0.10.20",
-    "@types/lodash": "4.14.100",
-    "@types/moment-timezone": "0.5.3",
     "@types/geojson": "^7946.0.1",
     "@types/leaflet": "^1.2.5",
     "@types/leaflet.markercluster": "^1.0.2",
+    "@types/lodash": "4.14.100",
+    "@types/moment-timezone": "0.5.3",
     "@types/node-uuid": "0.0.28",
     "@types/react": "16.0.36",
     "@types/react-dates": "16.0.2",
     "@types/react-dom": "16.0.3",
     "@types/react-dropzone": "4.1.0",
-    "@types/react-jsonschema-form": "1.0.2",
     "@types/react-intl": "2.3.4",
+    "@types/react-jsonschema-form": "1.0.2",
     "@types/react-router": "3.x",
     "@types/react-scroll": "1.5.2",
     "@types/react-select": "1.2.0",
@@ -331,6 +331,7 @@
     "babel-preset-react": "6.24.1",
     "babel-preset-react-hmre": "1.1.1",
     "babel-preset-stage-0": "6.24.1",
+    "browserstack-local": "^1.3.0",
     "chai": "^3.5.0",
     "chai-jsx": "^1.0.1",
     "cheerio": "0.22.0",
@@ -394,8 +395,8 @@
     "url-loader": "0.6.2",
     "webpack": "3.11.0",
     "webpack-bundle-analyzer": "2.10.0",
-    "webpack-dev-middleware": "2.0.5",
     "webpack-dashboard": "1.0.2",
+    "webpack-dev-middleware": "2.0.5",
     "webpack-hot-middleware": "2.21.0",
     "yargs": "10.0.3"
   }

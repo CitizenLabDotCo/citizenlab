@@ -18,7 +18,7 @@ const commands = {
 };
 
 module.exports = {
-  url: 'localhost:3000/ideas',
+  url: `${process.env.ROOT_URL}/ideas`,
   elements: {
     filters: { selector: '#e2e-ideas-filters' },
     sortFilter: { selector: '#e2e-ideas-sort-filter' },
