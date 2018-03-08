@@ -67,7 +67,7 @@ const Container = styled.div`
     transition: opacity 100ms ease-out;
     opacity: 0;
     pointer-events: none;
-    z-index: 3;
+    z-index: 4;
     height: 1px;
   }
 
