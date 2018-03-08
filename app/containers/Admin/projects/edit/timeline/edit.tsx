@@ -27,7 +27,7 @@ import Error from 'components/UI/Error';
 import { DateRangePicker } from 'react-dates';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
-import ParticipationContext, { IParticipationContextConfig } from '../parcticipationContext';
+import ParticipationContext, { IParticipationContextConfig } from '../participationContext';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';

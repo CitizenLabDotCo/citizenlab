@@ -11,6 +11,7 @@ import Toggle from 'components/UI/Toggle';
 import { Section, SectionField } from 'components/admin/Section';
 
 // services
+import { projectByIdStream, IProject } from 'services/projects';
 import { phaseStream, IPhase, ParticipationMethod, SurveyServices } from 'services/phases';
 import eventEmitter from 'utils/eventEmitter';
 
@@ -28,7 +29,6 @@ const StyledSection = styled(Section)`
 `;
 
 const StyledSectionField = styled(SectionField)`
-  margin-bottom: 0;
 `;
 
 const Row = styled.div`
@@ -38,6 +38,10 @@ const Row = styled.div`
 
 const ToggleRow = Row.extend`
   margin-bottom: 10px;
+
+  &.last {
+    margin-bottom: 0px;
+  }
 `;
 
 const ToggleLabel = styled(Label)`
@@ -67,6 +71,7 @@ export interface IParticipationContextConfig {
 type Props = {
   onChange: (arg: IParticipationContextConfig) => void;
   onSubmit: (arg: IParticipationContextConfig) => void;
+  projectId?: string | undefined | null;
   phaseId?: string | undefined | null;
 };
 
@@ -94,12 +99,18 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
   }
 
   componentDidMount() {
-    const { phaseId } = this.props;
-    const phase$: Rx.Observable<IPhase | null> = (phaseId ? phaseStream(phaseId).observable : Rx.Observable.of(null));
+    const { projectId, phaseId } = this.props;
+    let data$: Rx.Observable<IProject | IPhase | null> = Rx.Observable.of(null);
+
+    if (projectId) {
+      data$ = projectByIdStream(projectId).observable;
+    } else if (phaseId) {
+      data$ = phaseStream(phaseId).observable;
+    }
 
     this.subscriptions = [
-      phase$.subscribe((phase) => {
-        if (phase) {
+      data$.subscribe((data) => {
+        if (data) {
           const {
             participation_method,
             posting_enabled,
@@ -109,12 +120,12 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
             voting_limited_max,
             survey_embed_url,
             survey_service,
-          } = phase.data.attributes;
+          } = data.data.attributes;
 
           this.setState({
             survey_embed_url,
             survey_service,
-            participationMethod: participation_method,
+            participationMethod: participation_method as ParticipationMethod,
             postingEnabled: posting_enabled,
             commentingEnabled: commenting_enabled,
             votingEnabled: voting_enabled,
@@ -283,7 +294,6 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
 
             {participationMethod === 'ideation' &&
               <>
-
                 <StyledSectionField>
                   <Label>
                     <FormattedMessage {...messages.phasePermissions} />
@@ -303,7 +313,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
                     <Toggle checked={commentingEnabled as boolean} onToggle={this.toggleCommentingEnabled} />
                   </ToggleRow>
 
-                  <ToggleRow>
+                  <ToggleRow className="last">
                     <ToggleLabel>
                       <FormattedMessage {...messages.votingEnabled} />
                     </ToggleLabel>
