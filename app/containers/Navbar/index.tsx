@@ -19,7 +19,7 @@ import { localeStream } from 'services/locale';
 import { authUserStream } from 'services/auth';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { IUser } from 'services/users';
-import { projectsStream, IProjects, IProjectData } from 'services/projects';
+import { projectsStream, IProjects, getProjectUrl } from 'services/projects';
 
 // utils
 import { injectTracks } from 'utils/analytics';
@@ -32,7 +32,7 @@ import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 
 // style
-import { darken } from 'polished';
+import { darken, rgba } from 'polished';
 import styled, { css, } from 'styled-components';
 
 // typings
@@ -40,17 +40,16 @@ import { Locale } from 'typings';
 import { Location } from 'history';
 
 const Container = styled.div`
-  width: 100%;
-  height: ${(props) => props.theme.menuHeight}px;
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  z-index: 999;
-  position: fixed;
-  top: 0;
   background: #fff;
+  display: flex;
+  flex: 0 0 ${(props) => props.theme.menuHeight}px;
+  height: ${(props) => props.theme.menuHeight}px;
+  justify-content: space-between;
   padding-left: 30px;
   padding-right: 30px;
+  position: relative;
+  width: 100%;
 
   * {
     user-select: none;
@@ -61,13 +60,15 @@ const Container = styled.div`
     content: "";
     display: block;
     position: absolute;
-    top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.12);
     transition: opacity 100ms ease-out;
     opacity: 0;
+    pointer-events: none;
+    z-index: 4;
+    height: 1px;
   }
 
   &.scrolled::after,
@@ -96,7 +97,6 @@ const Container = styled.div`
 const Left = styled.div`
   display: flex;
   align-items: center;
-  z-index: 2;
 `;
 
 const LogoLink = styled(Link) `
@@ -139,7 +139,7 @@ const NavigationItems = styled.div`
 const NavigationItem = styled(Link) `
   height: 100%;
   color: #999;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -164,7 +164,7 @@ const NavigationDropdown = styled.div`
 
 const NavigationDropdownItemText = styled.div`
   color: #999;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 400;
   transition: all 100ms ease-out;
 `;
@@ -203,8 +203,8 @@ const NavigationDropdownMenu = styled(clickOutside)`
   position: absolute;
   top: 35px;
   left: -10px;
-  z-index: 2;
   transform-origin: left top;
+  z-index: 5;
 
   * {
     user-select: none;
@@ -264,7 +264,7 @@ const NavigationDropdownList = styled.div`
 
 const NavigationDropdownListItem = styled(Link)`
   color: ${(props) => props.theme.colors.label};
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 400;
   text-decoration: none;
   padding: 10px;
@@ -282,26 +282,28 @@ const NavigationDropdownListItem = styled(Link)`
 
 const NavigationDropdownFooter = styled(Link)`
   width: 100%;
-  color: #333;
-  font-size: 17px;
+  color: ${(props) => props.theme.colors.label};
+  font-size: 18px;
   font-weight: 400;
   text-align: center;
   text-decoration: none;
   padding: 15px 15px;
   cursor: pointer;
-  background: #f2f2f2;
+  background: ${props => rgba(props.theme.colors.label, 0.12)};
+  border-radius: 5px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
   transition: all 80ms ease-out;
 
   &:hover {
-    color: #000;
+    color: ${(props) => darken(0.2, props.theme.colors.label)};
+    background: ${props => rgba(props.theme.colors.label, 0.22)};
     text-decoration: none;
-    background: #e0e0e0;
   }
 `;
 
 const Right = styled.div`
   display: flex;
-  z-index: 2;
   align-items: center;
 `;
 
@@ -332,10 +334,6 @@ const RightItem: any = styled.div`
   &.addIdea {
     padding-left: 0px;
 
-    ${media.smallerThanMinTablet`
-        display: none;
-    `}
-
     ${(props: any) => props.loggedIn && css`
       ${media.smallerThanMinTablet`
         display: flex;
@@ -348,24 +346,16 @@ const RightItem: any = styled.div`
   `}
 `;
 
-const StyledIdeaButton = styled(IdeaButton)`
-  .Button {
-    border: solid 2px #eaeaea !important;
-
-    &:hover {
-      border-color: #ccc !important;
-    }
-  }
-`;
-
 const LoginLink = styled.div`
-  color: ${(props) => props.theme.colorMain};
+  color: ${(props) => props.theme.colors.label};
   font-size: 16px;
   font-weight: 400;
   padding: 0;
 
   &:hover {
-    color: ${(props) => darken(0.15, props.theme.colorMain)};
+    /* color: ${(props) => darken(0.15, props.theme.colorMain)}; */
+    /* color: ${(props) => props.theme.colorMain}; */
+    color: ${(props) => darken(0.2, props.theme.colors.label)};
   }
 `;
 
@@ -501,13 +491,6 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
     }
   }
 
-  getProjectUrl = (project: IProjectData) => {
-    const projectType = project.attributes.process_type;
-    const rootProjectUrl = `/projects/${project.attributes.slug}`;
-    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/process` : `${rootProjectUrl}/info`);
-    return projectUrl;
-  }
-
   render() {
     const { location, locale, authUser, currentTenant, projects, scrolled, projectsDropdownOpened } = this.state;
     const isAdminPage = (location.pathname.startsWith('/admin'));
@@ -562,7 +545,7 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
                         <NavigationDropdownMenuInner>
                           <NavigationDropdownList innerRef={this.setRef}>
                             {projects.data.map((project) => (
-                              <NavigationDropdownListItem key={project.id} to={this.getProjectUrl(project)}>
+                              <NavigationDropdownListItem key={project.id} to={getProjectUrl(project)}>
                                 {getLocalized(project.attributes.title_multiloc, locale, currentTenantLocales)}
                               </NavigationDropdownListItem>
                             ))}
@@ -577,14 +560,14 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
                   </NavigationDropdown>
                 }
 
-                {/*
-                <NavigationItem to="/projects" activeClassName="active">
+                {/* <NavigationItem to="/projects" activeClassName="active">
                   <FormattedMessage {...messages.pageProjects} />
                 </NavigationItem>
+                */}
+
                 <NavigationItem to="/ideas" activeClassName="active">
                   <FormattedMessage {...messages.pageIdeas} />
                 </NavigationItem>
-                */}
 
                 <NavigationItem to="/pages/information" activeClassName="active">
                   <FormattedMessage {...messages.pageInformation} />
@@ -594,7 +577,7 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
 
             <Right>
               <RightItem className="addIdea" loggedIn={authUser !== null}>
-                <StyledIdeaButton style="primary-outlined" />
+                <IdeaButton style="secondary-outlined" />
               </RightItem>
 
               {authUser &&

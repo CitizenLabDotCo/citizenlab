@@ -27,7 +27,7 @@ const Container = styled.div`
   background: #f9f9fa;
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 66px);
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
   `}
 `;
 
@@ -42,7 +42,6 @@ const Loading = styled.div`
 const Content = styled.div`
   flex: 1;
   width: 100%;
-  z-index: 2;
 `;
 
 type Props = {

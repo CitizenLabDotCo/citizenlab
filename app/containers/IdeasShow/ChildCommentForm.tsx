@@ -46,7 +46,7 @@ const StyledTextArea = styled(MentionsTextArea)`
     border-top-right-radius: 0px !important;
     background: #fff !important;
     box-shadow: none !important;
-    border: solid 1px #e4e4e4 !important;
+    border: solid 1px #ddd !important;
   }
 `;
 
@@ -100,7 +100,6 @@ type State = {
 };
 
 class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & Tracks, State> {
-  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {

@@ -1,3 +1,4 @@
+
 const errorLoading = (err) => {
   console.error('Dynamic settings loading failed', err); // eslint-disable-line no-console
 };
@@ -75,6 +76,22 @@ export default () => ({
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/Admin/settings/pages'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+    {
+      path: 'registration',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/Admin/settings/registration'),
         ]);
 
         const renderRoute = loadModule(cb);

@@ -59,12 +59,13 @@ const TenantSlogan = styled.div`
 
 const SecondLine = styled.div`
   width: 100%;
+  min-height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: #fff;
   border-top: 1px solid #eaeaea;
-  padding: 10px 28px;
+  padding: 12px 28px;
 
   ${media.smallerThanMaxTablet`
     display: flex;

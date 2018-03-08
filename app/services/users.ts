@@ -28,6 +28,7 @@ export interface IUserData {
     domicile?: string;
     education?: string;
     unread_notifications?: number;
+    custom_field_values: object;
   };
 }
 
@@ -61,6 +62,7 @@ export interface IUserUpdate {
   domicile?: string;
   education?: string;
   bio_multiloc?: Multiloc;
+  custom_field_values?: object;
 }
 
 export function usersStream(streamParams: IStreamParams | null = null) {
@@ -89,10 +91,7 @@ export function mapUserToDiff(user: IUserData): IUserUpdate {
     last_name: user.attributes.last_name || undefined,
     email: user.attributes.email || undefined,
     locale: user.attributes.locale || undefined,
-    birthyear: user.attributes.birthyear || undefined,
-    gender: user.attributes.gender || undefined,
-    domicile: user.attributes.domicile || undefined,
-    education: user.attributes.education || undefined,
     bio_multiloc: user.attributes.bio_multiloc || undefined,
+    custom_field_values: undefined
   };
 }

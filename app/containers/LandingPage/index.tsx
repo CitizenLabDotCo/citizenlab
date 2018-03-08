@@ -56,20 +56,21 @@ const Loading = styled.div`
   justify-content: center;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - 66px);
+    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
   `}
 `;
 
 const Header = styled.div`
   width: 100%;
-  height: 480px;
-  flex: 0 0 480px;
+  height: 450px;
+  flex: 0 0 450px;
   margin: 0;
   padding: 0;
   position: relative;
 
   ${media.smallerThanMinTablet`
     height: 320px;
+    flex: 0 0 320px;
   `}
 `;
 
@@ -102,7 +103,6 @@ const HeaderImageOverlay = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 1;
 `;
 
 const HeaderContent = styled.div`
@@ -120,10 +120,9 @@ const HeaderContent = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 2;
 
   ${media.smallerThanMinTablet`
-    margin-top: -60px;
+    margin-top: -30px;
   `}
 `;
 
@@ -209,7 +208,7 @@ const ProjectSection = Section.extend`
   margin-top: -80px;
 
   ${media.smallerThanMinTablet`
-    margin-top: -160px;
+    margin-top: -130px;
   `}
 `;
 
