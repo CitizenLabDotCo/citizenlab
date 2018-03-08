@@ -202,7 +202,7 @@ const Container: any = styled.div`
     &.secondary-outlined {
       &:not(.disabled) {
         background: #fff;
-        border: solid 1px #e0e0e0;
+        border: solid 2px #e0e0e0;
         ${(props: any) => setFillColor(props.theme.colorMain)}
 
         &:not(.processing):hover {
@@ -323,6 +323,11 @@ class Button extends React.PureComponent<Props, State> {
     if (style === 'primary-outlined' || style === 'secondary-outlined') {
       const theme = this.props.theme as object;
       return theme['colorMain'];
+    }
+
+    if (style === 'secondary') {
+      const theme = this.props.theme as object;
+      return theme['colors']['label'];
     }
 
     return '#fff';
