@@ -277,7 +277,7 @@ export default class ProjectCards extends React.PureComponent<Props, State> {
           <LoadMoreButtonWrapper>
             <LoadMoreButton
               onClick={this.loadMore}
-              style="secondary-outlined"
+              style="secondary"
               size="2"
               text={<FormattedMessage {...messages.loadMore} />}
               processing={loadingMore}

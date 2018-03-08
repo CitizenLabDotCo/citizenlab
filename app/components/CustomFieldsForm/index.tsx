@@ -297,9 +297,6 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
     };
 
     const transformErrors = (errors) => {
-      console.log('errors:');
-      console.log(errors);
-
       return errors.map((error) => {
         if (error.name === 'required') {
           error.message = this.props.intl.formatMessage(messages.requiredError);

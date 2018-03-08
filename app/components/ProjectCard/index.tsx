@@ -146,11 +146,6 @@ const ProjectMetaItems = styled.div`
   `}
 `;
 
-const IdeaCount = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
 const IdeaCountIcon = styled(Icon)`
   height: 24px;
   fill: ${(props) => props.theme.colors.label};
@@ -158,22 +153,33 @@ const IdeaCountIcon = styled(Icon)`
   margin-top: -6px;
 `;
 
-const IdeaCountText = styled(Link)`
+const IdeaCountText = styled.div`
   color: ${(props) => props.theme.colors.label};
   font-size: 16px;
   font-weight: 400;
   line-height: 21px;
-  text-decoration: none;
   transition: all 100ms ease-out;
   padding-bottom: 0px;
-  border-bottom: solid 1px ${(props) => props.theme.colors.label};;
+`;
+
+const IdeaCount = styled(Link)`
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
 
   &:hover {
-    color: ${(props) => darken(0.2, props.theme.colors.label)};
-    border-color: ${(props) => darken(0.2, props.theme.colors.label)};
-    text-decoration: none;
+    ${IdeaCountIcon} {
+      fill: ${(props) => darken(0.2, props.theme.colors.label)};
+    }
+
+    ${IdeaCountText} {
+      color: ${(props) => darken(0.2, props.theme.colors.label)};
+      text-decoration: none;
+    }
   }
 `;
+
 
 const ProjectButtonWrapper = styled.div`
   display: flex;
@@ -309,9 +315,9 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
                 {preview}
               </ProjectDescription>
               <ProjectMetaItems>
-                <IdeaCount>
+                <IdeaCount to={projectIdeasUrl}>
                   <IdeaCountIcon name="idea" />
-                  <IdeaCountText to={projectIdeasUrl}>
+                  <IdeaCountText>
                     <FormattedMessage
                       {...messages.xIdeas} 
                       values={{
