@@ -776,7 +776,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                   </VoteControlMobile>
                 }
 
-                {ideaImageLarge && 
+                {ideaImageLarge &&
                   <IdeaImage src={ideaImageLarge} />
                 }
 
@@ -909,7 +909,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
           in={(opened && !loaded)}
           timeout={loadingTimeout}
           mountOnEnter={false}
-          unmountOnExit={false}
+          unmountOnExit={true}
           exit={false}
         >
           <Loading>

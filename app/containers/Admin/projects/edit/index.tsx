@@ -1,7 +1,7 @@
 // Libraries
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { isString } from 'lodash';
+import { isString, reject } from 'lodash';
 
 // Services
 import { projectBySlugStream, IProjectData } from 'services/projects';
@@ -79,7 +79,7 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
   getTabs = (slug: string, project: IProjectData) => {
     const baseTabsUrl = `/admin/projects/${slug}`;
 
-    const tabs: TabProps[] = [
+    let tabs: TabProps[] = [
       {
         label: this.props.intl.formatMessage(messages.generalTab),
         url: `${baseTabsUrl}/edit`,
@@ -107,6 +107,10 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
         className: 'permissions',
       },
     ];
+
+    if (project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation') {
+      tabs = reject(tabs, { className: 'ideas' });
+    }
 
     if (project.attributes.process_type === 'timeline') {
       tabs.splice(3, 0, {
