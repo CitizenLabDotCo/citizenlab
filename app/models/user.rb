@@ -19,7 +19,7 @@ class User < ApplicationRecord
   has_many :spam_reports, dependent: :nullify
   has_many :activities, dependent: :nullify
 
-  store_accessor :demographics, :gender, :birthyear, :domicile, :education
+  store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
   validates :email, :slug, uniqueness: true
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
@@ -34,6 +34,11 @@ class User < ApplicationRecord
   validates :domicile, inclusion: {in: proc {['outside'] + Area.select(:id).map(&:id)}}, allow_nil: true
   # Follows ISCED2011 scale
   validates :education, numericality: {only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 8}, allow_nil: true
+
+  validates :custom_field_values, json: {
+    schema: lambda { CustomFieldService.new.fields_to_json_schema(CustomField.fields_for(User)) },
+    message: ->(errors) { errors }
+  }, if: :custom_field_values_changed?
 
   validates :password, length: { in: 5..72 }, allow_nil: true
   validate do |record|

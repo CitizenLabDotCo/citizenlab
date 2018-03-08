@@ -8,17 +8,6 @@ GIT
       jwt (~> 1.5)
       rails (>= 4.2)
 
-GIT
-  remote: https://github.com/randym/axlsx.git
-  revision: c8ac844572b25fda358cc01d2104720c4c42f450
-  ref: c8ac844572b25fda358cc01d2104720c4c42f450
-  specs:
-    axlsx (2.1.0.pre)
-      htmlentities (~> 4.3.4)
-      mimemagic (~> 0.3)
-      nokogiri (>= 1.6.6)
-      rubyzip (>= 1.2.1)
-
 PATH
   remote: engines/public_api
   specs:
@@ -81,6 +70,8 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+    acts_as_list (0.9.10)
+      activerecord (>= 3.0)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
     after_commit_action (1.1.0)
@@ -98,6 +89,11 @@ GEM
     arel (8.0.0)
     awesome_nested_set (3.1.4)
       activerecord (>= 4.0.0, < 5.3)
+    axlsx (3.0.0.pre)
+      htmlentities (~> 4.3, >= 4.3.4)
+      mimemagic (~> 0.3)
+      nokogiri (~> 1.8, >= 1.8.2)
+      rubyzip (~> 1.2, >= 1.2.1)
     bcrypt (3.1.11)
     bson (4.3.0)
     builder (3.2.3)
@@ -336,6 +332,9 @@ GEM
       activesupport (>= 3.0.0)
       mustache (~> 1.0, >= 0.99.4)
       rspec (~> 3.0)
+    rubyXL (3.3.28)
+      nokogiri (>= 1.4.4)
+      rubyzip (>= 1.1.6)
     ruby_dep (1.5.0)
     rubyzip (1.2.1)
     rufus-scheduler (3.4.2)
@@ -393,10 +392,11 @@ DEPENDENCIES
   active_model_serializers (~> 0.10.7)
   activerecord-postgis-adapter
   activerecord_json_validator (~> 1.2.0)
+  acts_as_list
   apartment (~> 2.1.0)
   apartment-sidekiq (~> 1.2.0)
   awesome_nested_set
-  axlsx (= 2.1.0.pre)!
+  axlsx (= 3.0.0.pre)
   bcrypt (~> 3.1.7)
   bunny (>= 2.7.2)
   byebug
@@ -434,6 +434,7 @@ DEPENDENCIES
   rgeo-geojson
   rspec-rails
   rspec_api_documentation
+  rubyXL
   rubyzip (~> 1.2.1)
   scenic
   sentry-raven

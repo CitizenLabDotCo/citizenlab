@@ -8,14 +8,38 @@ class XlsxService
     s.add_style  :bg_color => "99ccff", :fg_color => "2626ff", :sz => 16, :alignment => { :horizontal=> :center }
   end
 
+  def user_fields areas
+    {
+      "id" => -> (u) { u.id },
+      "email" => -> (u) { u.email },
+      "first_name" => -> (u) { u.first_name },
+      "last_name" => -> (u) { u.last_name },
+      "slug" => -> (u) { u.slug },
+      "gender" => -> (u) { u.gender },
+      "birthyear" => -> (u) { u.birthyear },
+      "domicile" => -> (u) { @@multiloc_service.t(areas[u.domicile]&.title_multiloc) },
+      "education" => -> (u) { u.education },
+      "created_at" => -> (u) { u.created_at }
+    }
+  end
+
   def generate_users_xlsx users
     pa = Axlsx::Package.new
     wb = pa.workbook
     wb.styles do |s|
       wb.add_worksheet(:name => "Users") do |sheet|
-        sheet.add_row ["id","email","first_name","last_name","slug","gender","birthyear","created_at"], style: header_style(s)
+
+        areas = Area.all.map{|a| [a.id, a]}.to_h
+        fields = user_fields(areas)
+        custom_fields = CustomField.fields_for(User)&.map(&:key)
+        sheet.add_row fields.keys.concat(custom_fields), style: header_style(s)
+
         users.each do |user|
-          sheet.add_row [user.id, user.email, user.first_name, user.last_name, user.slug, user.gender, user.birthyear, user.created_at]
+          row = [
+            *fields.map{|key, f| f.call(user)},
+            *custom_fields.map{|key| user.custom_field_values[key] }
+          ]
+          sheet.add_row row
         end
       end
     end
@@ -67,7 +91,7 @@ class XlsxService
     pa = Axlsx::Package.new
     wb = pa.workbook
     wb.styles do |s|
-      wb.add_worksheet(name: "Ideas") do |sheet|
+      wb.add_worksheet(name: "Comments") do |sheet|
         sheet.add_row [
           "id",
           "body",

@@ -7,6 +7,8 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   attribute :voting_enabled, if: :is_participation_context?
   attribute :voting_method, if: :is_participation_context?
   attribute :voting_limited_max, if: :is_participation_context?
+  attribute :survey_embed_url, if: :is_participation_context?
+  attribute :survey_service, if: :is_participation_context?
 
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
   has_many :areas
