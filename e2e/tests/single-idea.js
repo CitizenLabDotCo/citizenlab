@@ -4,7 +4,7 @@ module.exports = {
     let ideaUrl;
 
     browser
-    .url(`${process.env.ROOT_URL}`)
+    .url(`http://${process.env.ROOT_URL}`)
     .waitForElementVisible('#e2e-ideas-container')
     .waitForElementVisible('#e2e-ideas-list :first-child')
     .click('#e2e-ideas-list :first-child')

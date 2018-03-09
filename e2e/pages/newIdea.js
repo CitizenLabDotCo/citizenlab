@@ -17,7 +17,7 @@ const newIdeaCommands = {
 };
 
 module.exports = {
-  url: `${process.env.ROOT_URL}/ideas/new`,
+  url: `http://${process.env.ROOT_URL}/ideas/new`,
   elements: {
     form: { selector: '#e2e-new-idea-form' },
     title: { selector: '#title' },

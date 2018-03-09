@@ -24,7 +24,7 @@ module.exports = {
     .setValue('#lastName', lastName)
     .click('.e2e-submit-wrapper-button button')
     .waitForElementVisible('.success')
-    .url(`${process.env.ROOT_URL}/profile/edit`)
+    .url(`http://${process.env.ROOT_URL}/profile/edit`)
     .waitForElementVisible('.e2e-profile-edit-form')
     .getValue('input#firstName', function (result) {
       this.assert.equal(result.value, firstName);

@@ -1,3 +1,5 @@
+console.log(`Starting Nightwatch tests on url ${process.env.ROOT_URL}`);
+
 const nwConfig = {
   src_folders: 'e2e/tests',
   page_objects_path: 'e2e/pages',
