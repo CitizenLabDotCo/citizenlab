@@ -150,173 +150,176 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
     }
   }
 
+  CustomInput = (props: FieldProps) => {
+    const onChange = (value) => props.onChange(value);
+
+    return (
+      <Input
+        type="text"
+        value={props.value}
+        onChange={onChange}
+        key={props.id}
+      />
+    );
+  }
+
+  CustomTextarea = (props: FieldProps) => {
+    const onChange = (value) => props.onChange(value);
+
+    return (
+      <TextArea
+        onChange={onChange}
+        rows={6}
+        value={props.value}
+        key={props.id}
+      />
+    );
+  }
+
+  CustomSelect = (props: FieldProps) => {
+    if (props.schema.type === 'string') {
+      const selectedOption: IOption | null = (props.value ? {
+        value: props.value,
+        label: (props.value ? props.options.enumOptions.find(enumOption => enumOption.value === props.value).label : null)
+      } : null);
+
+      const onChange = (selectedOption: IOption) => {
+        props.onChange((selectedOption ? selectedOption.value : null));
+      };
+
+      return (
+        <Select
+          clearable={true}
+          searchable={false}
+          value={selectedOption}
+          options={props.options.enumOptions}
+          onChange={onChange}
+          key={props.id}
+        />
+      );
+    }
+
+    if (props.schema.type === 'array') {
+      const selectedOptions: IOption[] | null = ((props.value && props.value.length > 0) ? props.value.map(value => ({
+        value,
+        label: props.options.enumOptions.find(enumOption => enumOption.value === value).label
+      })) : null);
+
+      const onChange = (selectedOptions: IOption[]) => {
+        props.onChange((selectedOptions ? selectedOptions.map(selectedOption => selectedOption.value) : null));
+      };
+
+      return (
+        <MultipleSelect
+          value={selectedOptions}
+          options={props.options.enumOptions}
+          onChange={onChange}
+        />
+      );
+    }
+
+    return null;
+  }
+
+  CustomCheckbox = (props: FieldProps) => {
+    const onChange = () => props.onChange((isBoolean(props.value) ? !props.value : true));
+
+    return (
+      <>
+        <Label>{props.schema.title}</Label>
+        <CheckboxContainer>
+          <Checkbox
+            size="22px"
+            checked={(isBoolean(props.value) ? props.value : false)}
+            toggle={onChange}
+          />
+          {props.schema.description &&
+            <CheckboxDescription onClick={onChange}>
+              {props.schema.description}
+            </CheckboxDescription>
+          }
+        </CheckboxContainer>
+      </>
+    );
+  }
+
+  CustomDate = (props: FieldProps) => {
+    const onChange = (value: moment.Moment | null) => props.onChange(value ? value.format('YYYY-MM-DD') : null);
+
+    return (
+      <DateInput
+        value={(props.value ? moment(props.value, 'YYYY-MM-DD') : null)}
+        onChange={onChange}
+      />
+    );
+  }
+
+  CustomFieldTemplate: any = (props: FieldProps) => {
+    const { id, label, description, rawErrors, children } = props;
+
+    return (
+      <SectionField>
+        {(props.schema.type !== 'boolean') &&
+          <>
+            {label && label.length > 0 &&
+              <Label htmlFor={id}>{label}</Label>
+            }
+
+            {description && description.props && description.props.description && description.props.description.length > 0 &&
+              <Description>{description}</Description>
+            }
+          </>
+        }
+
+        {children}
+
+        {rawErrors && rawErrors.length > 0 && rawErrors.map((value, index) => {
+          return (<Error key={index} marginTop="10px" text={value} />);
+        })}
+      </SectionField>
+    );
+  }
+
+  ObjectFieldTemplate: any = (props: FieldProps) => {
+    return (
+      <>
+        {props.properties.map((element, index) => <div key={index}>{element.content}</div>)}
+      </>
+    );
+  }
+
+  transformErrors = (errors) => {
+    return errors.map((error) => {
+      if (error.name === 'required') {
+        error.message = this.props.intl.formatMessage(messages.requiredError);
+      }
+
+      return error;
+    });
+  }
+
   render() {
     const { locale, schema, uiSchema } = this.state;
 
-    const CustomInput = (props: FieldProps) => {
-      const onChange = (value) => props.onChange(value);
-
-      return (
-        <Input
-          type="text"
-          value={props.value}
-          onChange={onChange}
-        />
-      );
-    };
-
-    const CustomTextarea = (props: FieldProps) => {
-      const onChange = (value) => props.onChange(value);
-
-      return (
-        <TextArea
-          onChange={onChange}
-          rows={6}
-          value={props.value}
-        />
-      );
-    };
-
-    const CustomSelect = (props: FieldProps) => {
-      if (props.schema.type === 'string') {
-        const selectedOption: IOption | null = (props.value ? {
-          value: props.value,
-          label: (props.value ? props.options.enumOptions.find(enumOption => enumOption.value === props.value).label : null)
-        } : null);
-
-        const onChange = (selectedOption: IOption) => {
-          props.onChange((selectedOption ? selectedOption.value : null));
-        };
-
-        return (
-          <Select
-            clearable={true}
-            searchable={false}
-            value={selectedOption}
-            options={props.options.enumOptions}
-            onChange={onChange}
-          />
-        );
-      }
-
-      if (props.schema.type === 'array') {
-        const selectedOptions: IOption[] | null = ((props.value && props.value.length > 0) ? props.value.map(value => ({
-          value,
-          label: props.options.enumOptions.find(enumOption => enumOption.value === value).label
-        })) : null);
-
-        const onChange = (selectedOptions: IOption[]) => {
-          props.onChange((selectedOptions ? selectedOptions.map(selectedOption => selectedOption.value) : null));
-        };
-
-        return (
-          <MultipleSelect
-            value={selectedOptions}
-            options={props.options.enumOptions}
-            onChange={onChange}
-          />
-        );
-      }
-
-      return null;
-    };
-
-    const CustomCheckbox = (props: FieldProps) => {
-      const onChange = () => props.onChange((isBoolean(props.value) ? !props.value : true));
-
-      return (
-        <>
-          <Label>{props.schema.title}</Label>
-          <CheckboxContainer>
-            <Checkbox
-              size="22px"
-              checked={(isBoolean(props.value) ? props.value : false)}
-              toggle={onChange}
-            />
-            {props.schema.description &&
-              <CheckboxDescription onClick={onChange}>
-                {props.schema.description}
-              </CheckboxDescription>
-            }
-          </CheckboxContainer>
-        </>
-      );
-    };
-
-    const CustomDate = (props: FieldProps) => {
-      const onChange = (value: moment.Moment | null) => props.onChange(value ? value.format('YYYY-MM-DD') : null);
-
-      return (
-        <DateInput 
-          value={(props.value ? moment(props.value, 'YYYY-MM-DD') : null)}
-          onChange={onChange}
-        />
-      );
-    };
-
     const widgets: any = {
-      TextWidget: CustomInput,
-      TextareaWidget: CustomTextarea,
-      SelectWidget: CustomSelect,
-      CheckboxWidget: CustomCheckbox,
-      DateWidget: CustomDate
-    };
-
-    const CustomFieldTemplate: any = (props: FieldProps) => {
-      const { id, label, description, rawErrors, children } = props;
-
-      return (
-        <SectionField>
-          {(props.schema.type !== 'boolean') &&
-            <>
-              {label && label.length > 0 &&
-                <Label htmlFor={id}>{label}</Label>
-              }
-
-              {description && description.props && description.props.description && description.props.description.length > 0 &&
-                <Description>{description}</Description>
-              }
-            </>
-          }
-
-          {children}
-
-          {rawErrors && rawErrors.length > 0 && rawErrors.map((value, index) => {
-            return (<Error key={index} marginTop="10px" text={value} />);
-          })}
-        </SectionField>
-      );
-    };
-
-    const ObjectFieldTemplate: any = (props: FieldProps) => {
-      return (
-        <>
-          {props.properties.map((element, index) => <div key={index}>{element.content}</div>)}
-        </>
-      );
-    };
-
-    const transformErrors = (errors) => {
-      return errors.map((error) => {
-        if (error.name === 'required') {
-          error.message = this.props.intl.formatMessage(messages.requiredError);
-        }
-
-        return error;
-      });
+      TextWidget: this.CustomInput,
+      TextareaWidget: this.CustomTextarea,
+      SelectWidget: this.CustomSelect,
+      CheckboxWidget: this.CustomCheckbox,
+      DateWidget: this.CustomDate,
     };
 
     return (
       <Container className={this.props['className']}>
         {locale && schema && uiSchema &&
-          <Form 
+          <Form
             schema={schema[locale]}
             uiSchema={uiSchema[locale]}
             formData={this.props.formData}
             widgets={widgets}
-            FieldTemplate={CustomFieldTemplate}
-            ObjectFieldTemplate={ObjectFieldTemplate}
-            transformErrors={transformErrors}
+            FieldTemplate={this.CustomFieldTemplate}
+            ObjectFieldTemplate={this.ObjectFieldTemplate}
+            transformErrors={this.transformErrors}
             noHtml5Validate={true}
             liveValidate={true}
             showErrorList={false}
