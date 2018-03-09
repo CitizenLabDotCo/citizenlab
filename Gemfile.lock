@@ -9,6 +9,17 @@ GIT
       rails (>= 4.2)
 
 PATH
+  remote: engines/email_campaigns
+  specs:
+    email_campaigns (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      apartment (~> 2.1.0)
+      ice_cube
+      kaminari (~> 1.1.1)
+      pundit (~> 1.1.0)
+      rails (~> 5.1.5)
+
+PATH
   remote: engines/public_api
   specs:
     public_api (0.1.0)
@@ -407,6 +418,7 @@ DEPENDENCIES
   ci_reporter_rspec
   counter_culture (~> 1.0)
   database_cleaner
+  email_campaigns!
   factory_bot_rails
   faker
   fog-aws

@@ -97,3 +97,4 @@ gem 'acts_as_list'
 gem 'ice_cube'
 
 gem 'public_api', path: 'engines/public_api'
+gem 'email_campaigns', path: 'engines/email_campaigns'
