@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isEmpty } from 'lodash';
+import { isEmpty, get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
@@ -117,7 +117,7 @@ type Props = {
 type State = {
   loaded: boolean;
   visibleStep: 'step1' | 'step2';
-  hasSecondStep: boolean;
+  hasCustomFields: boolean;
   userId: string | null;
 };
 
@@ -129,7 +129,7 @@ export default class SignUp extends React.PureComponent<Props, State> {
     this.state = {
       loaded: false,
       visibleStep: 'step1',
-      hasSecondStep: true,
+      hasCustomFields: true,
       userId: null,
     };
     this.subscriptions = [];
@@ -144,8 +144,10 @@ export default class SignUp extends React.PureComponent<Props, State> {
         locale$,
         customFieldsSchemaForUsersStream$
       ).subscribe(([locale, customFieldsSchema]) => {
-        const hasSecondStep = !isEmpty(customFieldsSchema['json_schema_multiloc'][locale]['properties']);
-        this.setState({ hasSecondStep });
+        console.log(customFieldsSchema);
+        this.setState({
+          hasCustomFields: !isEmpty(get(customFieldsSchema, `json_schema_multiloc.${locale}.properties`, null))
+        });
       })
     ];
   }
@@ -157,7 +159,7 @@ export default class SignUp extends React.PureComponent<Props, State> {
   handleStep1Completed = (userId: string) => {
     this.setState({ userId });
 
-    if (this.state.hasSecondStep) {
+    if (this.state.hasCustomFields) {
       eventEmitter.emit('SignUp', 'signUpFlowGoToSecondStep', null);
       this.setState({ visibleStep: 'step2' });
     } else {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+// import { isEmpty, get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // router
@@ -11,9 +11,10 @@ import SignInUpBanner from 'components/SignInUpBanner';
 import { landingPageIdeasQuery } from 'containers/LandingPage';
 
 // services
+// import { localeStream } from 'services/locale';
 import { authUserStream } from 'services/auth';
-import { currentTenantStream } from 'services/tenant';
 import { ideaByIdStream, ideasStream, updateIdea } from 'services/ideas';
+// import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -114,36 +115,26 @@ export default class CompleteSignUpPage extends React.PureComponent<Props, State
   componentDidMount() {
     const query = browserHistory.getCurrentLocation().query;
     const authUser$ = authUserStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
     const ideaToPublish$ = (query && query.idea_to_publish ? ideaByIdStream(query.idea_to_publish).observable : Rx.Observable.of(null));
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
-        currentTenant$,
-      ).subscribe(([currentTenant]) => {
-        const { birthyear, domicile, gender } = currentTenant.data.attributes.settings.demographic_fields;
-        const demographicFieldsEnabled = _.get(currentTenant, `data.attributes.settings.demographic_fields.enabled`);
-        const hasOneOrMoreActiveDemographicFields = [birthyear, domicile, gender].some(value => value === true);
-
-        if (!demographicFieldsEnabled || !hasOneOrMoreActiveDemographicFields) {
-          // exit
-          this.handleOnCompleted();
-        } else {
-          this.setState({ loading: false });
-        }
-      }),
-
-      Rx.Observable.combineLatest(
         authUser$,
-        ideaToPublish$
+        ideaToPublish$,
       ).subscribe(async ([authUser, ideaToPublish]) => {
+        // remove idea parameter from the url
+        window.history.replaceState(null, '', window.location.pathname);
+
         if (authUser && ideaToPublish && ideaToPublish.data.attributes.publication_status === 'draft') {
           await updateIdea(ideaToPublish.data.id, { author_id: authUser.data.id, publication_status: 'published' });
           ideasStream({ queryParameters: landingPageIdeasQuery }).fetch();
         }
 
-        // remove idea parameter from the url
-        window.history.replaceState(null, '', window.location.pathname);
+        if (authUser && authUser.data && authUser.data.attributes && !authUser.data.attributes.registration_completed_at) {
+          this.setState({ loading: false });
+        } else {
+          this.handleOnCompleted();
+        }
       })
     ];
   }

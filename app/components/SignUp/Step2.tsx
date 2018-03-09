@@ -9,7 +9,7 @@ import CustomFieldsForm from 'components/CustomFieldsForm';
 
 // services
 import { authUserStream } from 'services/auth';
-import { updateUser, IUser } from 'services/users';
+import { updateUser, IUser, completeRegistration } from 'services/users';
 import { localeStream } from 'services/locale';
 import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
 
@@ -59,7 +59,7 @@ type Props = {
 type State = {
   authUser: IUser | null;
   loading: boolean;
-  isRequired: boolean;
+  hasRequiredFields: boolean;
   processing: boolean;
   unknownError: string | null;
   apiErrors: API.ErrorResponse | null;
@@ -72,7 +72,7 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
     super(props as any);
     this.state = {
       authUser: null,
-      isRequired: true,
+      hasRequiredFields: true,
       loading: true,
       processing: false,
       unknownError: null,
@@ -92,12 +92,12 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
         locale$,
         customFieldsSchemaForUsersStream$
       ).subscribe(([authUser, locale, customFieldsSchemaForUsersStream]) => {
-        const requiredArray = get(customFieldsSchemaForUsersStream, `json_schema_multiloc.${locale}.required`, null);
+        const hasRequiredFields = !isEmpty(get(customFieldsSchemaForUsersStream, `json_schema_multiloc.${locale}.required`, null));
 
         this.setState({
           authUser,
-          loading: false,
-          isRequired: (requiredArray && requiredArray.length > 0)
+          hasRequiredFields,
+          loading: false
         });
       })
     ];
@@ -125,6 +125,7 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
         if (formData && !isEmpty(formData)) {
           await updateUser(authUser.data.id, { custom_field_values: formData });
+          await completeRegistration();
         }
 
         this.setState({ processing: false });
@@ -139,10 +140,6 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
-  // handleCustomFieldsFormOnChange = (customFieldsResponse) => {
-  //   this.setState({ customFieldsFormData: customFieldsResponse.schema.formData });
-  // }
-
   skipStep = (event: React.FormEvent<any>) => {
     event.preventDefault();
     this.props.onCompleted();
@@ -150,7 +147,7 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { authUser, isRequired, loading, processing, unknownError } = this.state;
+    const { authUser, hasRequiredFields, loading, processing, unknownError } = this.state;
 
     if (!loading && authUser) {
       return (
@@ -167,7 +164,7 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
                 onClick={this.handleOnSubmitButtonClick}
                 circularCorners={true}
               />
-              {!isRequired &&
+              {!hasRequiredFields &&
                 <SkipButton onClick={this.skipStep}>{formatMessage(messages.skip)}</SkipButton>
               }
             </ButtonWrapper>
