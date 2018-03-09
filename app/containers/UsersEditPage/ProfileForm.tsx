@@ -97,7 +97,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
         return (avatarUrl ? convertUrlToFileObservable(avatarUrl) : Rx.Observable.of(null)).map(avatar => ({ user, avatar, locale, customFieldsSchema }));
       }).subscribe(({ user, avatar, locale, customFieldsSchema }) => {
         this.setState({
-          hasCustomFields: !isEmpty(customFieldsSchema['json_schema_multiloc'][locale]['properties']),
+          hasCustomFields: !isEmpty(get(customFieldsSchema, `json_schema_multiloc.${locale}.properties`, null)),
           avatar: (avatar ? [avatar] : null),
           customFieldsFormData: user.attributes.custom_field_values
         });
