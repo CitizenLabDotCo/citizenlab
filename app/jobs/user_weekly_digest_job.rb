@@ -4,8 +4,17 @@ class UserWeeklyDigestJob < ApplicationJob
   N_IDEAS = 5
 
   def perform
+    ti_service = TrendingIdeaService.new # always at thy service
+    if ti_service.filter_trending(IdeaPolicy::Scope.new(nil, Idea).scope).count < N_IDEAS
+      # don't send any emails if there are fewer than N_IDEAS truly trending ideas
+      return
+    end
     User.all.each do |user|
-      top_ideas = TrendingIdeaService.new.sort_trending(IdeaPolicy::Scope.new(user, Idea).scope).take N_IDEAS
+      # No need to filter by tuly trending; the top
+      # ideas are always the truly trending ones and
+      # we made sure there are more than N_IDEAS 
+      # truly trending publicly visible ideas.
+      top_ideas = ti_service.sort_trending(IdeaPolicy::Scope.new(user, Idea).scope).take N_IDEAS
 
       serializer = "WebApi::V1::External::IdeaSerializer".constantize
       serialized_top_ideas = top_ideas.map do |idea|
