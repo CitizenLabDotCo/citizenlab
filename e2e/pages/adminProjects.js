@@ -8,7 +8,7 @@ const commands = {
 };
 
 module.exports = {
-  url: `${process.env.ROOT_URL}/admin/projects`,
+  url: `http://${process.env.ROOT_URL}/admin/projects`,
   elements: {
     projectsList: { selector: '.e2e-projects-list' },
     newProject: { selector: '.e2e-new-project' },

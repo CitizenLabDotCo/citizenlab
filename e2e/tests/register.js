@@ -5,7 +5,7 @@ module.exports = {
   '@tags': ['citizen', 'auth', 'register'],
   register: (browser) => {
     browser
-    .url(`${process.env.ROOT_URL}/sign-up`)
+    .url(`http://${process.env.ROOT_URL}/sign-up`)
     .waitForElementVisible('#e2e-signup-step1')
     .setValue('#firstName', `Test ${hash}`)
     .setValue('#lastName', `Account ${hash}`)

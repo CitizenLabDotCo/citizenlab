@@ -17,7 +17,7 @@ module.exports = {
     .postIdea(title, 'Lorem ipsum dolor sit amet');
 
     browser
-    .url(`${process.env.ROOT_URL}`)
+    .url(`http://${process.env.ROOT_URL}`)
     .pause(500)
     .waitForElementVisible('#e2e-ideas-list')
     .expect.element('#e2e-ideas-list').text.to.contain(title);

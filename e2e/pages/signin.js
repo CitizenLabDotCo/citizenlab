@@ -11,7 +11,7 @@ const signinCommands = {
 
 
 module.exports = {
-  url: `${process.env.ROOT_URL}/sign-in`,
+  url: `http://${process.env.ROOT_URL}/sign-in`,
   elements: {
     form: { selector: '#signin' },
     email: { selector: '#email' },
