@@ -49,7 +49,8 @@
     "test:watch": "cross-env NODE_ENV=test jest --watchAll",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "e2e-setup": "selenium-standalone install",
-    "test:e2e": "cross-env ROOT_URL='localhost:3000' nightwatch"
+    "test:e2e": "cross-env ROOT_URL='localhost:3000' nightwatch",
+    "test:browserstack": "cross-env ROOT_URL='localhost:3000' node ./e2e/local-runner.js -c nightwatch-bs.conf.js"
   },
   "lint-staged": {
     "*.js": "lint:eslint"
