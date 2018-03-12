@@ -6,7 +6,7 @@ module EmailCampaigns
   		'user_activity_on_your_ideas',
   		'user_updates_on_supported_ideas',
   		'user_participation_opportunities',
-  		'admin_dayly_activities',
+  		'admin_daily_activities',
   		'admin_weekly_activity_report'
   	]
 
@@ -21,12 +21,19 @@ module EmailCampaigns
 
     private
 
-    def join_campaign_email_command key
-    	42
-    end
+    # def self.join_campaign_email_command
+    # 	# TODO kill the posgresql creators
+
+    # 	# self.all.select("email_campaigns_campaign_email_commands.*, jsonb_array_elements(jsonb_extract_path(tracked_content, 'idea_ids')) as idea_id").joins("LEFT JOIN ideas ON ideas.id = idea_id")
+    # 	# EmailCampaigns::CampaignEmailCommand.join_campaign_email_command
+    # 	self.from("(SELECT  email_campaigns_campaign_email_commands.*, 
+    #                       jsonb_array_elements(jsonb_extract_path(tracked_content, 'idea_ids')) AS idea_id 
+    #               FROM email_campaigns_campaign_email_commands) AS to_join")
+    #       .joins("LEFT OUTER JOIN ideas ON ideas.id = uuid(idea_id::TEXT)")
+    # end
 
     def set_commanded_at
-    	self.commanded_at == Time.now
+    	self.commanded_at = Time.now
     end
 
   end
