@@ -20,7 +20,6 @@ class General extends React.Component<Props, State> {
   initialValues = () => {
     const { customField } = this.props;
     return customField && {
-      key: customField.attributes.key,
       input_type: customField.attributes.input_type,
       title_multiloc: customField.attributes.title_multiloc,
       description_multiloc: customField.attributes.description_multiloc,
