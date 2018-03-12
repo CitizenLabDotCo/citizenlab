@@ -62,6 +62,10 @@ const Content = styled.div`
   ${media.smallerThanMaxTablet`
     flex-basis: calc(100vh - ${(props) => props.theme.menuHeight}px - ${(props) => props.theme.mobileMenuHeight});
   `}
+
+  .admin & {
+    overflow: hidden;
+  }
 `;
 
 export interface IModalInfo {

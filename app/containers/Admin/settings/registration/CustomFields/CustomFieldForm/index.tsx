@@ -3,7 +3,6 @@ import { isEmpty, values as getValues, every } from 'lodash';
 
 import { IInputType } from 'services/userCustomFields';
 
-import FormikInput from 'components/UI/FormikInput';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
 import FormikToggle from 'components/UI/FormikToggle';
@@ -19,7 +18,6 @@ import { Multiloc } from 'typings';
 import messages from '../messages';
 
 export interface FormValues {
-  key: string;
   enabled: boolean;
   input_type: IInputType;
   title_multiloc: Multiloc;
@@ -36,14 +34,6 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
 
   public static validate = (values: FormValues): FormikErrors<FormValues> => {
     const errors: FormikErrors<FormValues> = {};
-
-    if (isEmpty(values.key)) {
-      errors.key = (errors.key || []).concat({ error: 'blank' });
-    }
-
-    if (!values.key.match(/^[a-zA-Z0-9_]+$/)) {
-      errors.key = (errors.key || []).concat({ error: 'invalid' });
-    }
 
     if (every(getValues(values.title_multiloc), isEmpty)) {
       errors.title_multiloc = (errors.title_multiloc || []).concat({ error: 'blank' });
@@ -93,21 +83,6 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
             {touched.input_type && <Error
               fieldName="input_type"
               apiErrors={errors.input_type}
-            />}
-          </SectionField>
-
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.fieldKey} />
-            </Label>
-            <Field
-              name="key"
-              component={FormikInput}
-              disabled={mode === 'edit'}
-            />
-            {touched.key && <Error
-              fieldName="key"
-              apiErrors={errors.key}
             />}
           </SectionField>
 
