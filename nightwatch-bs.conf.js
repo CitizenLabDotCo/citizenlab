@@ -1,3 +1,12 @@
+const commonCapabilities = {
+  'browserstack.user': process.env.BROWSERSTACK_USER,
+  'browserstack.key': process.env.BROWSERSTACK_KEY,
+  'browserstack.debug': true,
+  project: 'cl2-front',
+  build: 'nightwatch-browserstack',
+  'browserstack.local': false,
+};
+
 const nwConfig = {
   src_folders: 'e2e/tests',
   page_objects_path: 'e2e/pages',
@@ -18,33 +27,32 @@ const nwConfig = {
       detailed_output: false,
       launch_url: `http://${process.env.ROOT_URL}`,
       desiredCapabilities: {
+        ...commonCapabilities,
         browserName: 'internet explorer',
         version: '11',
-        build: 'nightwatch-browserstack',
-        'browserstack.user': process.env.BROWSERSTACK_USER,
-        'browserstack.key': process.env.BROWSERSTACK_KEY,
-        'browserstack.debug': true,
-        'browserstack.local': false,
-        project: 'cl2-front',
       },
     },
     chrome: {
       desiredCapabilities: {
+        ...commonCapabilities,
         browserName: 'chrome',
       },
     },
     firefox: {
       desiredCapabilities: {
+        ...commonCapabilities,
         browserName: 'firefox',
       },
     },
     edge: {
       desiredCapabilities: {
+        ...commonCapabilities,
         browserName: 'MicrosoftEdge',
       },
     },
     safari: {
       desiredCapabilities: {
+        ...commonCapabilities,
         browserName: 'safari',
       },
     },
