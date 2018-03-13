@@ -14,6 +14,7 @@ PATH
     email_campaigns (0.1.0)
       active_model_serializers (~> 0.10.7)
       apartment (~> 2.1.0)
+      apartment-sidekiq
       ice_cube
       kaminari (~> 1.1.1)
       pundit (~> 1.1.0)

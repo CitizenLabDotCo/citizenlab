@@ -7,5 +7,5 @@ class WebApi::V1::External::IdeaSerializer < ActiveModel::Serializer
 
   def url
       FrontendService.new.model_to_url object
-    end
+  end
 end

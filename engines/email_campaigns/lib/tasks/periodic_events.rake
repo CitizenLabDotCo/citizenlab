@@ -5,7 +5,7 @@ require 'ice_cube'
 @user_weekly_digest_schedule = IceCube::Schedule.new
 @user_weekly_digest_schedule.add_recurrence_rule(
   # every other Monday at 10AM
-  IceCube::Rule.weekly(2).day(:monday).hour_of_day(15) 
+  IceCube::Rule.weekly(2).day(:tuesday).hour_of_day(16) 
 )
 
 
@@ -19,7 +19,10 @@ namespace :periodic_events do
           tz_diff = (now_over_there.hour - Time.now.hour) % 24
           true_schedule_first = schedule.first - tz_diff.hours # because the other one is fake
           if (now_over_there - 30.minutes) < true_schedule_first and (now_over_there + 30.minutes) > true_schedule_first
+            
             # byebug
+
+            # Doing perform_later gives error that the tenant with that id cannot be found
             job.perform_later
           end
         end
