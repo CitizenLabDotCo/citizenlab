@@ -1,10 +1,8 @@
 const commonCapabilities = {
-  'browserstack.user': process.env.BROWSERSTACK_USER,
-  'browserstack.key': process.env.BROWSERSTACK_KEY,
-  'browserstack.debug': true,
   project: 'cl2-front',
   build: 'nightwatch-browserstack',
-  'browserstack.local': false,
+  'browserstack.user': process.env.BROWSERSTACK_USER,
+  'browserstack.key': process.env.BROWSERSTACK_KEY,
 };
 
 const nwConfig = {
