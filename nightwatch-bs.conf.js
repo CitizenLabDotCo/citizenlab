@@ -1,6 +1,6 @@
 const commonCapabilities = {
   project: 'cl2-front',
-  build: 'nightwatch-browserstack',
+  build: `nightwatch-browserstack-CI#${process.env.CIRCLE_BUILD_NUM}`,
   'browserstack.user': process.env.BROWSERSTACK_USER,
   'browserstack.key': process.env.BROWSERSTACK_KEY,
 };
@@ -24,6 +24,8 @@ const nwConfig = {
       },
       detailed_output: false,
       launch_url: `http://${process.env.ROOT_URL}`,
+    },
+    ie: {
       desiredCapabilities: {
         ...commonCapabilities,
         browserName: 'internet explorer',
