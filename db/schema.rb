@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180302145039) do
+ActiveRecord::Schema.define(version: 20180309160219) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,6 +96,16 @@ ActiveRecord::Schema.define(version: 20180302145039) do
     t.boolean "enabled", default: true, null: false
     t.string "code"
     t.index ["resource_type", "key"], name: "index_custom_fields_on_resource_type_and_key", unique: true
+  end
+
+  create_table "email_campaigns_campaign_email_commands", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "campaign"
+    t.uuid "recipient_id"
+    t.datetime "commanded_at"
+    t.jsonb "tracked_content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recipient_id"], name: "index_email_campaigns_campaign_email_commands_on_recipient_id"
   end
 
   create_table "email_snippets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -417,6 +427,7 @@ ActiveRecord::Schema.define(version: 20180302145039) do
   add_foreign_key "comments", "ideas"
   add_foreign_key "comments", "users", column: "author_id"
   add_foreign_key "custom_field_options", "custom_fields"
+  add_foreign_key "email_campaigns_campaign_email_commands", "users", column: "recipient_id"
   add_foreign_key "events", "projects"
   add_foreign_key "groups_projects", "groups"
   add_foreign_key "groups_projects", "projects"
