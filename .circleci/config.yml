@@ -215,6 +215,7 @@ workflows:
             branches:
               only:
                 - master
+                - feature/cl2-1361-ci-e2e-tests
 
     jobs:
       - test_e2e
