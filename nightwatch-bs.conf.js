@@ -24,7 +24,7 @@ const nwConfig = {
         'browserstack.user': process.env.BROWSERSTACK_USER,
         'browserstack.key': process.env.BROWSERSTACK_KEY,
         'browserstack.debug': true,
-        'browserstack.local': true,
+        'browserstack.local': false,
         project: 'cl2-front',
       },
     },
