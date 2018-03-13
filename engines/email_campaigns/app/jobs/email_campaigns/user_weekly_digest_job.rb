@@ -2,7 +2,7 @@ module EmailCampaigns
   class UserWeeklyDigestJob < ApplicationJob
     queue_as :default
   
-    N_IDEAS = 5
+    N_IDEAS = 3
   
     def perform
       ti_service = TrendingIdeaService.new # always at thy service
@@ -11,13 +11,15 @@ module EmailCampaigns
         return
       end
       User.all.each do |user|
+        # IdentifyToSegmentJob.perform_now(user)
+        
         # No need to filter by tuly trending; the top
         # ideas are always the truly trending ones and
         # we made sure there are more than N_IDEAS 
         # truly trending publicly visible ideas.
-        top_ideas = ti_service.sort_trending(IdeaPolicy::Scope.new(user, Idea).scope).take N_IDEAS
+        top_ideas = ti_service.sort_trending(ti_service.filter_trending(IdeaPolicy::Scope.new(user, Idea).scope).left_outer_joins(:idea_status)).take N_IDEAS
   
-        serializer = "WebApi::V1::External::IdeaSerializer".constantize
+        serializer = "EmailCampaigns::UserWeeklyDigestIdeaSerializer".constantize
         serialized_top_ideas = top_ideas.map do |idea|
           ActiveModelSerializers::SerializableResource.new(idea, {
             serializer: serializer,
