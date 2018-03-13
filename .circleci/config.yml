@@ -211,6 +211,10 @@ workflows:
       # Schedule a build every day at midnight UTC
       - schedule:
           cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
 
     jobs:
       - test_e2e
