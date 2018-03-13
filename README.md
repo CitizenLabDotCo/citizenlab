@@ -1,6 +1,7 @@
 # CL2 Front
 
 [![CircleCI](https://circleci.com/gh/CitizenLabDotCo/cl2-front.svg?style=svg&circle-token=46bc7ddacbeec9135870cb8765c2968f590ed7e6)](https://circleci.com/gh/CitizenLabDotCo/cl2-front)
+[![BrowserStack Status](https://www.browserstack.com/automate/badge.svg?badge_key=d2d5RDVDNHBGeHJFZjh2dHEyQ1FPUHRDc2Y3MFhGOXZiSjZsZFFqMEl0QT0tLWgwNzFuVThDUkNGR0JHSlhralhqbmc9PQ==--ee3c39ea9e8b82faaa48e43e3cea883277221935%)](https://www.browserstack.com/automate/public-build/d2d5RDVDNHBGeHJFZjh2dHEyQ1FPUHRDc2Y3MFhGOXZiSjZsZFFqMEl0QT0tLWgwNzFuVThDUkNGR0JHSlhralhqbmc9PQ==--ee3c39ea9e8b82faaa48e43e3cea883277221935%)
 
 
 
