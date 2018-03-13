@@ -140,6 +140,25 @@ jobs:
           name: Invalidate the static assets on the CDN
           command: aws cloudfront create-invalidation --distribution-id E2MY732QC516J3 --paths '/*'
 
+  test_e2e:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    working_directory: ~/cl2-front
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: npm run test:browserstack
+
 workflows:
   version: 2
   build-and-deploy:
@@ -186,3 +205,7 @@ workflows:
           filters:
             branches:
               only: production
+
+  test-e2e:
+    jobs:
+      - test_e2e

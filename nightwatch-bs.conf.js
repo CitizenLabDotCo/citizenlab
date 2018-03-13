@@ -1,5 +1,3 @@
-console.log(`Starting Nightwatch tests on url ${process.env.ROOT_URL}`);
-
 const nwConfig = {
   src_folders: 'e2e/tests',
   page_objects_path: 'e2e/pages',
@@ -23,10 +21,31 @@ const nwConfig = {
         browserName: 'internet explorer',
         version: '11',
         build: 'nightwatch-browserstack',
-        'browserstack.user': process.env.BROWSERSTACK_USERNAME || 'BROWSERSTACK_USERNAME',
-        'browserstack.key': process.env.BROWSERSTACK_ACCESS_KEY || 'BROWSERSTACK_ACCESS_KEY',
+        'browserstack.user': process.env.BROWSERSTACK_USER,
+        'browserstack.key': process.env.BROWSERSTACK_KEY,
         'browserstack.debug': true,
         'browserstack.local': true,
+        project: 'cl2-front',
+      },
+    },
+    chrome: {
+      desiredCapabilities: {
+        browserName: 'chrome',
+      },
+    },
+    firefox: {
+      desiredCapabilities: {
+        browserName: 'firefox',
+      },
+    },
+    edge: {
+      desiredCapabilities: {
+        browserName: 'MicrosoftEdge',
+      },
+    },
+    safari: {
+      desiredCapabilities: {
+        browserName: 'safari',
       },
     },
   },
