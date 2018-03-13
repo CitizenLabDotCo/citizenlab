@@ -33,8 +33,7 @@ module.exports = {
     .navigate()
     .waitForElementVisible('@newProject')
     .click('@newProject')
-    .waitForElementVisible('@generalForm')
-    .assert.urlEquals(`http://${process.env.ROOT_URL}/admin/projects/new`);
+    .waitForElementVisible('@generalForm');
 
     browser.fillMultiloc('#project-title', `Test Project ${hash}`);
 
