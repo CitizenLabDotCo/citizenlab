@@ -14,7 +14,7 @@ if (!process.env.ROOT_URL) {
 
 const commonCapabilities = {
   project: 'cl2-front',
-  build: process.env.CIRCLE_BUILD_NUM ? `CI BUILD #${process.env.CIRCLE_BUILD_NUM}` : 'Manual Run',
+  build: process.env.CIRCLE_BUILD_NUM ? `CI BUILD #${process.env.CIRCLE_BUILD_NUM}` : `Manual Run ${new Date().toUTCString()}`,
   'browserstack.user': process.env.BROWSERSTACK_USER,
   'browserstack.key': process.env.BROWSERSTACK_KEY,
 };
