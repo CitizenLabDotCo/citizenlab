@@ -30,7 +30,7 @@ API_HOST=XXX API_PORT=YYY npm start
 
 ## E2E tests
 
-Tests are run automatically every night at midnight (CEST). Please check the status of these on a regular basis in order to ensure nothing is broken.
+Tests are run automatically every night at midnight (UTC). Please check the status of these on a regular basis in order to ensure nothing is broken.
 
 If you want to manually run these tests, you will need a browserstack user/key combo and the URL of a test platform, then run this command, replacing `xxx`, `yyy` and `zzz` with the appropriate info:
 ```
