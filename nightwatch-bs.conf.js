@@ -1,6 +1,20 @@
+if (!process.env.BROWSERSTACK_USER || !process.env.BROWSERSTACK_KEY) {
+  console.error(`Please provide the user/key for Browserstack in ENV variables:
+  BROWSERSTACK_USER=xxx BROWSERSTACK_KEY=yyy ROOT_URL=zzz npm run test:browserstack
+  `);
+  process.exit(1);
+}
+
+if (!process.env.ROOT_URL) {
+  console.error(`Please provide the root URL for target platform:
+  BROWSERSTACK_USER=xxx BROWSERSTACK_KEY=yyy ROOT_URL=zzz npm run test:browserstack
+  `);
+  process.exit(1);
+}
+
 const commonCapabilities = {
   project: 'cl2-front',
-  build: `nightwatch-browserstack-CI#${process.env.CIRCLE_BUILD_NUM}`,
+  build: process.env.CIRCLE_BUILD_NUM ? `CI BUILD #${process.env.CIRCLE_BUILD_NUM}` : 'Manual Run',
   'browserstack.user': process.env.BROWSERSTACK_USER,
   'browserstack.key': process.env.BROWSERSTACK_KEY,
 };

@@ -28,6 +28,15 @@ API_HOST=XXX API_PORT=YYY npm start
 ```
 (replace `XXX` with the hostname or ip and `YYY` with the port of your instance of cl2-back)
 
+## E2E tests
+
+Tests are run automatically every night at midnight (CEST). Please check the status of these on a regular basis in order to ensure nothing is broken.
+
+If you want to manually run these tests, you will need a browserstack user/key combo and the URL of a test platform, then run this command, replacing `xxx`, `yyy` and `zzz` with the appropriate info:
+```
+BROWSERSTACK_USER=xxx BROWSERSTACK_KEY=yyy ROOT_URL=zzz npm run test:browserstack
+```
+
 ## IDE setup
 
 Your text editor of choice should support [Editorconfig][editorconfig] and [Typescript][typescript].
