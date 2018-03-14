@@ -2,7 +2,7 @@ module EmailCampaigns
   class UserWeeklyDigestJob < ApplicationJob
     queue_as :default
   
-    N_IDEAS = 3
+    N_IDEAS = ENV.fetch("N_USER_WEEKLY_DIGEST_IDEAS", 2)
   
     def perform
       ti_service = TrendingIdeaService.new # always at thy service
