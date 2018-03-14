@@ -14,6 +14,7 @@ class ProjectPolicy < ApplicationPolicy
         result = scope.where(publication_status: ['published', 'archived'])
         if user
           result
+            .distinct
             .left_outer_joins(groups: :memberships)
             .where("projects.visible_to = 'public' OR \
               (projects.visible_to = 'groups' AND memberships.user_id = ?)", user&.id)
