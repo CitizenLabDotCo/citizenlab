@@ -24,7 +24,7 @@ namespace :periodic_events do
           if ( force_schedule or 
                ( (now_over_there - 30.minutes) < true_schedule_first and 
                  (now_over_there + 30.minutes) > true_schedule_first))
-            job.perform_now
+            job.perform_later
           end
         end
       end

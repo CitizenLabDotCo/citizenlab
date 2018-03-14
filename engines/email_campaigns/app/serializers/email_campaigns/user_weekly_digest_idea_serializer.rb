@@ -1,15 +1,15 @@
 class EmailCampaigns::UserWeeklyDigestIdeaSerializer < ActiveModel::Serializer
 
-  N_TOP_COMMENTS = 2
+  N_TOP_COMMENTS = ENV.fetch("N_TOP_COMMENTS", 3)
 
 
   attributes :id, :url, :title_multiloc, :body_multiloc, :author_name, :upvotes_count, :downvotes_count, :comments_count, :publication_status, :published_at
 
-  # has_many :topics, serializer: WebApi::V1::TopicSerializer
-  has_many :areas, serializer: WebApi::V1::AreaSerializer
-  # has_many :idea_images, serializer: WebApi::V1::ImageSerializer
+  has_many :topics, serializer: WebApi::V1::TopicSerializer
+  # has_many :areas, serializer: WebApi::V1::AreaSerializer
+  has_many :idea_images, serializer: WebApi::V1::ImageSerializer
   has_many :top_comments, serializer: EmailCampaigns::TopCommentSerializer
-  # belongs_to :idea_status, serializer: WebApi::V1::IdeaStatusSerializer
+  belongs_to :idea_status, serializer: WebApi::V1::IdeaStatusSerializer
   belongs_to :author, serializer: EmailCampaigns::UserSerializer
 
   def url
