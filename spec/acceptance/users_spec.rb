@@ -165,6 +165,8 @@ resource "Users" do
 
       example_request "Create a new user" do
         expect(response_status).to eq 201
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_nil
       end
 
       describe "Creating an admin user" do
@@ -221,6 +223,36 @@ resource "Users" do
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :custom_field_values, cf.key.to_sym)).to eq "somevalue"
         end
+      end
+    end
+
+    post "web_api/v1/users/complete_registration" do
+      with_options scope: :user do
+        parameter :custom_field_values, "An object that can only contain keys for custom fields for users", required: true
+      end
+
+      let(:cf) { create(:custom_field )}
+      let(:custom_field_values) {{cf.key => "somevalue" }}
+
+      example "Complete the registration of a user" do
+        @user.update(registration_completed_at: nil)
+        do_request
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_present
+        expect(json_response.dig(:data, :attributes, :custom_field_values, cf.key.to_sym)).to eq "somevalue"
+      end
+
+      example "[Error] Complete the registration of a user fails if not all required fields are provided" do
+        @user.update(registration_completed_at: nil)
+        cf.update(required: true)
+        do_request(user: {custom_field_values: {cf.key => nil}})
+        expect(response_status).to eq 422
+      end
+
+      example "[Error] Complete the registration of a user fails if the user has already completed signup" do
+        do_request
+        expect(response_status).to eq 401
       end
     end
 

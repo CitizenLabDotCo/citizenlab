@@ -14,6 +14,7 @@ class ProjectPolicy < ApplicationPolicy
         result = scope.where(publication_status: ['published', 'archived'])
         if user
           result
+            .distinct
             .left_outer_joins(groups: :memberships)
             .where("projects.visible_to = 'public' OR \
               (projects.visible_to = 'groups' AND memberships.user_id = ?)", user&.id)
@@ -25,7 +26,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def create?
-    user && user.admin?
+    user&.active? && user.admin?
   end
 
   def images_index?
@@ -52,7 +53,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def update?
-    user && (user.admin? || user.project_moderator?(record.id))
+    user&.active? && (user.admin? || user.project_moderator?(record.id))
   end
 
   def destroy?
