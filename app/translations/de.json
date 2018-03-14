@@ -50,7 +50,7 @@
   "app.components.PagesShowPage.notFoundTitle": "Seite nicht gefunden",
   "app.components.ProjectCard.idea": "Idee",
   "app.components.ProjectCard.ideas": "Ideen",
-  "app.components.ProjectCard.openProjectButton": "Entdecken Sie dieses Projekt",
+  "app.components.ProjectCard.openProjectButton": "Mehr entdecken",
   "app.components.ProjectCard.xIdeas": "{x, plural, =0 {no ideas} one {# ideas} other {# ideas}}",
   "app.components.ProjectCards.loadMore": "Weitere Projekte anzeigen",
   "app.components.ProjectCards.noProjects": "Es wurden keine Projekte gefunden",
