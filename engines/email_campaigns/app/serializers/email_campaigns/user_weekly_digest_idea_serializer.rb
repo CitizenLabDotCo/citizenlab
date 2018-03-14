@@ -1,6 +1,6 @@
 class EmailCampaigns::UserWeeklyDigestIdeaSerializer < ActiveModel::Serializer
 
-  N_TOP_COMMENTS = ENV.fetch("N_TOP_COMMENTS", 3)
+  N_TOP_COMMENTS = ENV.fetch("N_TOP_COMMENTS", 2)
 
 
   attributes :id, :url, :title_multiloc, :body_multiloc, :author_name, :upvotes_count, :downvotes_count, :comments_count, :publication_status, :published_at
