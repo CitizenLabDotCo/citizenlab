@@ -50,7 +50,8 @@
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "e2e-setup": "selenium-standalone install",
     "test:e2e": "cross-env ROOT_URL='localhost:3000' nightwatch",
-    "test:browserstack": "nightwatch -c nightwatch-bs.conf.js -e chrome,firefox,safari,edge,ie"
+    "test:browserstack": "nightwatch -c nightwatch-bs.conf.js -e chrome,firefox,safari,edge,ie",
+    "test:pa11y": "pa11y-ci"
   },
   "lint-staged": {
     "*.js": "lint:eslint"
@@ -372,6 +373,7 @@
     "node-plop": "0.8.0",
     "node-sass": "4.7.2",
     "null-loader": "0.1.1",
+    "pa11y-ci": "^2.0.0",
     "plop": "1.7.3",
     "pre-commit": "1.1.3",
     "redux-mock-store": "^1.2.3",
