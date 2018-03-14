@@ -50,7 +50,7 @@
   "app.components.PagesShowPage.notFoundTitle": "Pagina niet gevonden",
   "app.components.ProjectCard.idea": "idee",
   "app.components.ProjectCard.ideas": "ideeën",
-  "app.components.ProjectCard.openProjectButton": "Ontdek dit project",
+  "app.components.ProjectCard.openProjectButton": "Ontdek meer",
   "app.components.ProjectCard.xIdeas": "{x, plural, =0 {geen ideeën} one {# idee} other {# ideeën}}",
   "app.components.ProjectCards.loadMore": "Toon meer projecten",
   "app.components.ProjectCards.noProjects": "Er werden geen projecten gevonden",
