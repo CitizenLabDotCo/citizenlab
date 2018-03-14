@@ -1,5 +1,8 @@
+const afterEach = require('../updateBSStatus');
+
 module.exports = {
   '@tags': ['citizen', 'auth', 'signin'],
+  afterEach,
   login: (browser) => {
     const signinPage = browser.page.signin();
 
