@@ -60,7 +60,6 @@ type State = {
   authUser: IUser | null;
   loading: boolean;
   hasRequiredFields: boolean;
-  // formData: object | undefined;
   processing: boolean;
   unknownError: string | null;
   apiErrors: API.ErrorResponse | null;
@@ -74,7 +73,6 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.state = {
       authUser: null,
       hasRequiredFields: true,
-      // formData: undefined,
       loading: true,
       processing: false,
       unknownError: null,
@@ -114,13 +112,6 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
     eventEmitter.emit('SignUpStep2', 'customFieldsSubmitEvent', null);
   }
 
-  // handleCustomFieldsFormOnChange = (formData) => {
-  //   console.log('handleCustomFieldsFormOnChange');
-  //   console.log('formData:');
-  //   console.log(formData);
-  //   this.setState({ formData });
-  // }
-
   handleCustomFieldsFormOnSubmit = async (formData) => {
     const { formatMessage } = this.props.intl;
     const { authUser } = this.state;
@@ -155,14 +146,12 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { authUser, hasRequiredFields, /*formData,*/ loading, processing, unknownError } = this.state;
+    const { authUser, hasRequiredFields, loading, processing, unknownError } = this.state;
 
     if (!loading && authUser) {
       return (
         <Form id="e2e-signup-step2">
           <CustomFieldsForm 
-            // formData={formData}
-            // onChange={this.handleCustomFieldsFormOnChange} 
             onSubmit={this.handleCustomFieldsFormOnSubmit}
           />
 
