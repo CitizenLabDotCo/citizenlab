@@ -50,7 +50,7 @@ class AdminApi::TenantsController < AdminApi::AdminApiController
   def destroy
     tenant = @tenant.destroy
     if tenant.destroyed?
-      SideFxTenantService.new.after_destroy(tenant, current_user)
+      SideFxTenantService.new.after_destroy(tenant, nil)
       head :ok
     else
       head 500
