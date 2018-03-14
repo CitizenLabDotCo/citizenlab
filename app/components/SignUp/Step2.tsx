@@ -9,7 +9,7 @@ import CustomFieldsForm from 'components/CustomFieldsForm';
 
 // services
 import { authUserStream } from 'services/auth';
-import { updateUser, IUser, completeRegistration } from 'services/users';
+import { IUser, completeRegistration } from 'services/users';
 import { localeStream } from 'services/locale';
 import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
 
@@ -60,6 +60,7 @@ type State = {
   authUser: IUser | null;
   loading: boolean;
   hasRequiredFields: boolean;
+  // formData: object | undefined;
   processing: boolean;
   unknownError: string | null;
   apiErrors: API.ErrorResponse | null;
@@ -73,6 +74,7 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.state = {
       authUser: null,
       hasRequiredFields: true,
+      // formData: undefined,
       loading: true,
       processing: false,
       unknownError: null,
@@ -112,6 +114,13 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
     eventEmitter.emit('SignUpStep2', 'customFieldsSubmitEvent', null);
   }
 
+  // handleCustomFieldsFormOnChange = (formData) => {
+  //   console.log('handleCustomFieldsFormOnChange');
+  //   console.log('formData:');
+  //   console.log(formData);
+  //   this.setState({ formData });
+  // }
+
   handleCustomFieldsFormOnSubmit = async (formData) => {
     const { formatMessage } = this.props.intl;
     const { authUser } = this.state;
@@ -124,13 +133,11 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
         });
 
         if (formData && !isEmpty(formData)) {
-          await updateUser(authUser.data.id, { custom_field_values: formData });
-          await completeRegistration();
+          await completeRegistration(formData);
         }
 
         this.setState({ processing: false });
         this.props.onCompleted();
-
       } catch (error) {
         this.setState({
           processing: false,
@@ -142,17 +149,22 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   skipStep = (event: React.FormEvent<any>) => {
     event.preventDefault();
+    completeRegistration({});
     this.props.onCompleted();
   }
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { authUser, hasRequiredFields, loading, processing, unknownError } = this.state;
+    const { authUser, hasRequiredFields, /*formData,*/ loading, processing, unknownError } = this.state;
 
     if (!loading && authUser) {
       return (
         <Form id="e2e-signup-step2">
-          <CustomFieldsForm onSubmit={this.handleCustomFieldsFormOnSubmit} />
+          <CustomFieldsForm 
+            // formData={formData}
+            // onChange={this.handleCustomFieldsFormOnChange} 
+            onSubmit={this.handleCustomFieldsFormOnSubmit}
+          />
 
           <FormElement>
             <ButtonWrapper>
