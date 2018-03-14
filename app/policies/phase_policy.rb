@@ -13,7 +13,7 @@ class PhasePolicy < ApplicationPolicy
   end
 
   def create?
-    user && (user.admin? || user.project_moderator?(record.project_id))
+    user&.active? && (user.admin? || user.project_moderator?(record.project_id))
   end
 
   def show?
@@ -21,7 +21,7 @@ class PhasePolicy < ApplicationPolicy
   end
 
   def update?
-    user && (user.admin? || user.project_moderator?(record.project_id))
+    user&.active? && (user.admin? || user.project_moderator?(record.project_id))
   end
 
   def destroy?

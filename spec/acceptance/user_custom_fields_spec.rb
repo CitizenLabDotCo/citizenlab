@@ -49,7 +49,7 @@ resource "User Custom Fields" do
 
     post "web_api/v1/users/custom_fields" do
       with_options scope: :custom_field do
-        parameter :key, "A unique internal name for the field. Only letters, numbers and underscores allowed. Can't be changed afterwards", required: true
+        parameter :key, "A unique internal name for the field. Only letters, numbers and underscores allowed. Auto-generated from the title if not provided. Can't be changed afterwards", required: false
         parameter :input_type, "The type of input presented to the user. One of #{CustomField::INPUT_TYPES.join(", ")}. Can't be changed afterwards", required: true
         parameter :title_multiloc, "The title of the field as shown to users, in multiple locales", required: true
         parameter :description_multiloc, "An optional description of the field, as shown to users, in multiple locales", required: false

@@ -17,15 +17,15 @@ class GroupsProjectPolicy < ApplicationPolicy
   end
 
   def create?
-    user && user.admin?
+    user&.active? && user.admin?
   end
 
   def show?
-    user && user.admin?
+    user&.active? && user.admin?
   end
 
   def destroy?
-    user && user.admin?
+    user&.active? && user.admin?
   end
 
 end
