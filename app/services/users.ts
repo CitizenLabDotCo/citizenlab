@@ -87,8 +87,8 @@ export async function deleteUser(userId: string) {
   return streams.delete(`${apiEndpoint}/${userId}`, userId);
 }
 
-export async function completeRegistration() {
-  const response = await streams.add<IUser>(`${apiEndpoint}/complete_registration`, { user: { custom_field_values: {} } });
+export async function completeRegistration(customFieldValues: object) {
+  const response = await streams.add<IUser>(`${apiEndpoint}/complete_registration`, { user: { custom_field_values: customFieldValues } });
   await authUserStream().fetch();
   return response;
 }

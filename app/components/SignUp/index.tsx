@@ -144,7 +144,6 @@ export default class SignUp extends React.PureComponent<Props, State> {
         locale$,
         customFieldsSchemaForUsersStream$
       ).subscribe(([locale, customFieldsSchema]) => {
-        console.log(customFieldsSchema);
         this.setState({
           hasCustomFields: !isEmpty(get(customFieldsSchema, `json_schema_multiloc.${locale}.properties`, null))
         });

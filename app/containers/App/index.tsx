@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as moment from 'moment';
+// import { cloneDeep } from 'lodash';
 import 'moment-timezone';
 
 // libraries
@@ -25,6 +26,7 @@ import tenantSaga from 'utils/tenant/sagas';
 
 // services
 import { localeStream } from 'services/locale';
+import { IUser } from 'services/users';
 import { authUserStream, signOut } from 'services/auth';
 import { currentTenantStream, ITenant } from 'services/tenant';
 
@@ -79,6 +81,7 @@ type Props = {};
 type State = {
   location: Location;
   currentTenant: ITenant | null;
+  authUser: IUser | null;
   modalOpened: boolean;
   modalType: string | null;
   modalId: string | null;
@@ -87,13 +90,15 @@ type State = {
 
 export default class App extends React.PureComponent<Props & RouterState, State> {
   subscriptions: Rx.Subscription[];
-  unlisten: Function;
+  unlisten1: Function;
+  unlisten2: Function;
 
   constructor(props) {
     super(props);
     this.state = {
       location: browserHistory.getCurrentLocation(),
       currentTenant: null,
+      authUser: null,
       modalOpened: false,
       modalType: null,
       modalId: null,
@@ -107,7 +112,20 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
 
-    this.unlisten = browserHistory.listen((location) => {
+    this.unlisten1 = browserHistory.listenBefore((location) => {
+      const { authUser } = this.state;
+
+      if (location 
+          && location.pathname !== '/complete-signup' 
+          && authUser 
+          && authUser.data.attributes.registration_completed_at === null
+      ) {
+        // redirect to second signup step
+        browserHistory.replace('/complete-signup');
+      }
+    });
+
+    this.unlisten2 = browserHistory.listen((location) => {
       this.setState({ location });
     });
 
@@ -128,8 +146,8 @@ export default class App extends React.PureComponent<Props & RouterState, State>
           moment.tz.setDefault(currentTenant.data.attributes.settings.core.timezone);
           store.dispatch({ type: LOAD_CURRENT_TENANT_SUCCESS, payload: currentTenant });
         })
-      ).subscribe(([_authUser, _locale, currentTenant]) => {
-        this.setState({ currentTenant });
+      ).subscribe(([authUser, _locale, currentTenant]) => {
+        this.setState({ currentTenant, authUser });
       }),
 
       eventEmitter.observeEvent<IModalInfo>('cardClick').subscribe(({ eventValue }) => {
@@ -140,7 +158,8 @@ export default class App extends React.PureComponent<Props & RouterState, State>
   }
 
   componentWillUnmount() {
-    this.unlisten();
+    this.unlisten1();
+    this.unlisten2();
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 

@@ -1,11 +1,10 @@
 import * as React from 'react';
 import * as Rx from 'rxjs';
 import * as moment from 'moment';
-import { isBoolean, forOwn } from 'lodash';
+import { isBoolean, forOwn, get, uniq, isNil, isEmpty } from 'lodash';
 
 // libraries
 import Form, { FieldProps } from 'react-jsonschema-form';
-// import SchemaField from 'react-jsonschema-form/lib/components/fields/SchemaField';
 
 // services
 import { localeStream } from 'services/locale';
@@ -112,7 +111,7 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
         if (this.submitbuttonElement) {
           this.submitbuttonElement.click();
         }
-      }),
+      })
     ];
   }
 
@@ -126,7 +125,9 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
     }
   }
 
-  handleOnChange = ({ formData }) => {
+  handleOnChange = ({ formData, ...others }) => {
+    console.log(others);
+
     if (this.props.onChange) {
       const sanitizedFormData = {};
 
@@ -148,6 +149,33 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
 
       this.props.onSubmit(sanitizedFormData);
     }
+  }
+
+  handleOnError = (_errors) => {
+    // empty
+  }
+
+  validate = (formData, errors) => {
+    const { schema, locale } = this.state;
+    const requiredFieldNames = get(schema, `${locale}.required`, []);
+    const fieldNames = get(schema, `${locale}.properties`, null);
+    const requiredErrorMessage = this.props.intl.formatMessage(messages.requiredError);
+
+    errors['__errors'] = [];
+
+    forOwn(fieldNames, (_value, fieldName) => {
+      errors[fieldName]['__errors'] = [];
+    });
+
+    requiredFieldNames.filter((requiredFieldName) => {
+      return (isNil(formData[requiredFieldName]) || isEmpty(formData[requiredFieldName]));
+    }).forEach((requiredFieldName) => {
+      errors[requiredFieldName].addError(requiredErrorMessage);
+    });
+
+    console.log('validate');
+
+    return errors;
   }
 
   CustomInput = (props: FieldProps) => {
@@ -256,6 +284,7 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
 
   CustomFieldTemplate: any = (props: FieldProps) => {
     const { id, label, description, rawErrors, children } = props;
+    const errors: any = uniq(rawErrors);
 
     return (
       <SectionField>
@@ -273,7 +302,7 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
 
         {children}
 
-        {rawErrors && rawErrors.length > 0 && rawErrors.map((value, index) => {
+        {errors && errors.length > 0 && errors.map((value, index) => {
           return (<Error key={index} marginTop="10px" text={value} />);
         })}
       </SectionField>
@@ -289,13 +318,12 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
   }
 
   transformErrors = (errors) => {
-    return errors.map((error) => {
-      if (error.name === 'required') {
-        error.message = this.props.intl.formatMessage(messages.requiredError);
-      }
-
-      return error;
-    });
+    return errors.filter((error) => {
+      return error.name === 'required';
+    }).map((error) => ({
+      ...error,
+      message: this.props.intl.formatMessage(messages.requiredError)
+    }));
   }
 
   render() {
@@ -321,10 +349,12 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
             ObjectFieldTemplate={this.ObjectFieldTemplate}
             transformErrors={this.transformErrors}
             noHtml5Validate={true}
-            liveValidate={true}
+            liveValidate={false}
             showErrorList={false}
+            validate={this.validate}
             onChange={this.handleOnChange}
             onSubmit={this.handleOnSubmit}
+            onError={this.handleOnError}
           >
             <InvisibleSubmitButton innerRef={this.setButtonRef} />
           </Form>

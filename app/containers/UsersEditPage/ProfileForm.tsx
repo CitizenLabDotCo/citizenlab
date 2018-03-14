@@ -84,16 +84,17 @@ class ProfileForm extends React.PureComponent<Props, State> {
   componentDidMount() {
     this.user$ = new Rx.BehaviorSubject(this.props.user);
 
+    const user$ = this.user$.distinctUntilChanged((x, y) => isEqual(x, y));
     const locale$ = localeStream().observable;
     const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
-        this.user$,
+        user$,
         locale$,
         customFieldsSchemaForUsersStream$
       ).switchMap(([user, locale, customFieldsSchema]) => {
-        const avatarUrl = get(user, 'attributes.avatar.medium', null);
+        const avatarUrl = get(user, 'attributes.avatar.medium', null) as string | null;
         return (avatarUrl ? convertUrlToFileObservable(avatarUrl) : Rx.Observable.of(null)).map(avatar => ({ user, avatar, locale, customFieldsSchema }));
       }).subscribe(({ user, avatar, locale, customFieldsSchema }) => {
         this.setState({
@@ -179,7 +180,6 @@ class ProfileForm extends React.PureComponent<Props, State> {
     };
 
     const handleCustomFieldsFormOnChange = (formData) => {
-      console.log(formData);
       this.setState({ customFieldsFormData: formData });
       setStatus('enabled');
     };
@@ -375,4 +375,4 @@ class ProfileForm extends React.PureComponent<Props, State> {
   }
 }
 
-export default injectIntl<any>(localize(ProfileForm));
+export default injectIntl<InputProps>(localize(ProfileForm));
