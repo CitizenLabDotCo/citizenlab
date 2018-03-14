@@ -9,6 +9,18 @@ GIT
       rails (>= 4.2)
 
 PATH
+  remote: engines/email_campaigns
+  specs:
+    email_campaigns (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      apartment (~> 2.1.0)
+      apartment-sidekiq
+      ice_cube
+      kaminari (~> 1.1.1)
+      pundit (~> 1.1.0)
+      rails (~> 5.1.5)
+
+PATH
   remote: engines/public_api
   specs:
     public_api (0.1.0)
@@ -171,6 +183,7 @@ GEM
       domain_name (~> 0.5)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
+    ice_cube (0.16.2)
     image_optimizer (1.7.2)
     ipaddress (0.8.3)
     json (2.1.0)
@@ -406,10 +419,12 @@ DEPENDENCIES
   ci_reporter_rspec
   counter_culture (~> 1.0)
   database_cleaner
+  email_campaigns!
   factory_bot_rails
   faker
   fog-aws
   groupdate
+  ice_cube
   kaminari (~> 1.1.1)
   knock (~> 2.1.1)!
   liquid (~> 4.0)

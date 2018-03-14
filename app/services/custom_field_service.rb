@@ -57,6 +57,22 @@ class CustomFieldService
       .update_all("custom_field_values = custom_field_values - '#{field.key}'")
   end
 
+  def generate_key record, title
+    key = keyify(title)
+    indexedKey = nil
+    i=0
+    # while record.class.find_by(key: indexedKey || key)
+    while yield(indexedKey || key)
+      i += 1
+      indexedKey = [key, '_', i].join
+    end
+    indexedKey || key
+  end
+
+  def keyify str
+    str.parameterize.gsub(/\-/, '_')
+  end
+
   private
 
   def handle_description(field, locale)
