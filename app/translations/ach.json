@@ -369,6 +369,8 @@
   "app.containers.App.helmetTitle": "crwdns18216:0{name}crwdne18216:0",
   "app.containers.App.loading": "crwdns15708:0crwdne15708:0",
   "app.containers.App.unAuthorizedUser": "crwdns18069:0crwdne18069:0",
+  "app.containers.CompleteSignUpPage.notSignedIn": "",
+  "app.containers.CompleteSignUpPage.somethingWentWrong": "",
   "app.containers.CompleteSignUpPage.title": "crwdns18104:0crwdne18104:0",
   "app.containers.IdeaButton.startAnIdea": "crwdns18433:0crwdne18433:0",
   "app.containers.IdeaCards.areas": "crwdns18422:0crwdne18422:0",
