@@ -369,6 +369,8 @@
   "app.containers.App.helmetTitle": "Co-create {name}",
   "app.containers.App.loading": "Loading...",
   "app.containers.App.unAuthorizedUser": "Oops, it looks like you wandered to the wrong page...",
+  "app.containers.CompleteSignUpPage.notSignedIn": "Something went wrong and we can't sign you in right now. Please try again in a few minutes.",
+  "app.containers.CompleteSignUpPage.somethingWentWrong": "Oops, something went wrong!",
   "app.containers.CompleteSignUpPage.title": "Complete your profile",
   "app.containers.IdeaButton.startAnIdea": "Start an idea",
   "app.containers.IdeaCards.areas": "Areas",

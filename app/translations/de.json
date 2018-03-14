@@ -369,6 +369,8 @@
   "app.containers.App.helmetTitle": "Gestalten Sie {name} mit",
   "app.containers.App.loading": "am Laden...",
   "app.containers.App.unAuthorizedUser": "Hoppla, es scheint, dass Sie auf die falsche Seite gewandert sind...",
+  "app.containers.CompleteSignUpPage.notSignedIn": "",
+  "app.containers.CompleteSignUpPage.somethingWentWrong": "",
   "app.containers.CompleteSignUpPage.title": "Vervollständigen Sie Ihr Profil",
   "app.containers.IdeaButton.startAnIdea": "Starten Sie eine Idee",
   "app.containers.IdeaCards.areas": "Gebiete",
