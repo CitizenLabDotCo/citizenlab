@@ -35,7 +35,7 @@ describe CustomFieldService do
         create(:custom_field, key: 'field3', input_type: 'select'),
         create(:custom_field, key: 'field4', input_type: 'multiselect'),
         create(:custom_field, key: 'field5', input_type: 'checkbox'),
-        create(:custom_field, key: 'field6', input_type: 'date')
+        create(:custom_field, key: 'field6', input_type: 'date', enabled: false, required: true)
       ]
       create(:custom_field_option, key: 'option1', custom_field: fields[2])
       create(:custom_field_option, key: 'option2', custom_field: fields[2])
@@ -110,7 +110,7 @@ describe CustomFieldService do
         create(:custom_field, key: 'field4', input_type: 'multiselect'),
         field5 = create(:custom_field, key: 'field5', input_type: 'checkbox'),
         field6 = create(:custom_field, key: 'field6', input_type: 'date'),
-        create(:custom_field, enabled: false)
+        create(:custom_field, key: 'field7', input_type: 'multiline_text', enabled: false, required: true)
       ]
       field5.insert_at(3)
       field6.insert_at(3)
@@ -127,9 +127,23 @@ describe CustomFieldService do
          "field4"=>{},
          "field5"=>{},
          "field6"=>{},
+         "field7"=>{:"ui:widget"=>"hidden"},
          "ui:order"=>
-          ["field1", "field2", "field3", "field6", "field5", "field4"]}
+          ["field1", "field2", "field3", "field6", "field5", "field4", "field7"]}
       )
+    end
+  end
+
+  describe "delete_custom_field_values" do
+
+    it "deletes the custom field values from all users" do
+      cf1 = create(:custom_field)
+      cf2 = create(:custom_field)
+      users_with_cf = create_list(:user, 5, custom_field_values: {cf1.key => 'some_value', cf2.key => 'other_value'})
+      users_without_cf = create_list(:user, 5)
+      service.delete_custom_field_values(cf1)
+      expect(User.all.map{|u| u.custom_field_values.keys}.flatten).to include(cf2.key)
+      expect(User.all.map{|u| u.custom_field_values.keys}.flatten).not_to include(cf1.key)
     end
   end
 

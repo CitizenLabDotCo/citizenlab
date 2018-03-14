@@ -87,6 +87,21 @@ class WebApi::V1::UsersController < ::ApplicationController
     end
   end
 
+  def complete_registration
+    @user = current_user
+    authorize @user
+
+    @user.assign_attributes(permitted_attributes(@user))
+    @user.registration_completed_at = Time.now
+
+    if @user.save
+      SideFxUserService.new.after_update(@user, current_user)
+      render json: @user, status: :ok
+    else
+      render json: { errors: @user.errors.details }, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     user = @user.destroy
     if user.destroyed?

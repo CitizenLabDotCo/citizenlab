@@ -17,6 +17,9 @@ class SideFxUserService
   def after_update user, current_user
     IdentifyToSegmentJob.perform_later(user)
     LogActivityJob.perform_later(user, 'changed', current_user, user.updated_at.to_i)
+    if user.registration_completed_at_previously_changed?
+      LogActivityJob.perform_later(user, 'completed_registration', current_user, user.updated_at.to_i)
+    end
   end
 
   def after_destroy frozen_user, current_user
