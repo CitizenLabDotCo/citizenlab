@@ -125,9 +125,7 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
     }
   }
 
-  handleOnChange = ({ formData, ...others }) => {
-    console.log(others);
-
+  handleOnChange = ({ formData }) => {
     if (this.props.onChange) {
       const sanitizedFormData = {};
 
@@ -172,8 +170,6 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
     }).forEach((requiredFieldName) => {
       errors[requiredFieldName].addError(requiredErrorMessage);
     });
-
-    console.log('validate');
 
     return errors;
   }
@@ -286,27 +282,31 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
     const { id, label, description, rawErrors, children } = props;
     const errors: any = uniq(rawErrors);
 
-    return (
-      <SectionField>
-        {(props.schema.type !== 'boolean') &&
-          <>
-            {label && label.length > 0 &&
-              <Label htmlFor={id}>{label}</Label>
-            }
+    if (props.hidden !== true) {
+      return (
+        <SectionField>
+          {(props.schema.type !== 'boolean') &&
+            <>
+              {label && label.length > 0 &&
+                <Label htmlFor={id}>{label}</Label>
+              }
 
-            {description && description.props && description.props.description && description.props.description.length > 0 &&
-              <Description>{description}</Description>
-            }
-          </>
-        }
+              {description && description.props && description.props.description && description.props.description.length > 0 &&
+                <Description>{description}</Description>
+              }
+            </>
+          }
 
-        {children}
+          {children}
 
-        {errors && errors.length > 0 && errors.map((value, index) => {
-          return (<Error key={index} marginTop="10px" text={value} />);
-        })}
-      </SectionField>
-    );
+          {errors && errors.length > 0 && errors.map((value, index) => {
+            return (<Error key={index} marginTop="10px" text={value} />);
+          })}
+        </SectionField>
+      );
+    }
+
+    return null;
   }
 
   ObjectFieldTemplate: any = (props: FieldProps) => {
