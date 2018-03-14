@@ -1,5 +1,15 @@
 # Changelog
 
+## 2018-03-14
+
+### Fixed
+- When making a registration field required, the user can't skip the second sign up step
+- When adding a registration field of the "date" type, a date in the past can now be chosen
+- The project listing on the landing page for logged in users that aren't admin is fixed
+
+### Added
+- When something goes wrong while authenticating through social networks, an error page is shown
+
 ## 2018-03-05
 
 ### Added
