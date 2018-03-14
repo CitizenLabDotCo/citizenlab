@@ -44,29 +44,39 @@ const nwConfig = {
         ...commonCapabilities,
         browserName: 'internet explorer',
         version: '11',
+        os: 'Windows',
+        os_version: '10',
       },
     },
     chrome: {
       desiredCapabilities: {
         ...commonCapabilities,
+        os: 'Windows',
+        os_version: '10',
         browserName: 'chrome',
       },
     },
     firefox: {
       desiredCapabilities: {
         ...commonCapabilities,
+        os: 'Windows',
+        os_version: '10',
         browserName: 'firefox',
       },
     },
     edge: {
       desiredCapabilities: {
         ...commonCapabilities,
+        os: 'Windows',
+        os_version: '10',
         browserName: 'MicrosoftEdge',
       },
     },
     safari: {
       desiredCapabilities: {
         ...commonCapabilities,
+        os: 'OS X',
+        os_version: 'High Sierra',
         browserName: 'safari',
       },
     },
