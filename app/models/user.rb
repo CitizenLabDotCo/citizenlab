@@ -38,7 +38,7 @@ class User < ApplicationRecord
   validates :custom_field_values, json: {
     schema: lambda { CustomFieldService.new.fields_to_json_schema(CustomField.fields_for(User)) },
     message: ->(errors) { errors }
-  }, if: :custom_field_values_changed?
+  }, if: [:custom_field_values_changed?, :active?]
 
   validates :password, length: { in: 5..72 }, allow_nil: true
   validate do |record|
