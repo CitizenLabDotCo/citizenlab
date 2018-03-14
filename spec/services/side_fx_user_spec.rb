@@ -48,6 +48,13 @@ describe SideFxUserService do
         to have_enqueued_job(LogActivityJob).with(user, 'changed', current_user, user.updated_at.to_i)
     end
 
+    it "logs a 'completed_registration' action job when the registration is set" do
+      user.update(registration_completed_at: nil)
+      user.update(registration_completed_at: Time.now)
+      expect {service.after_update(user, current_user)}.
+        to have_enqueued_job(LogActivityJob).with(user, 'completed_registration', current_user, user.updated_at.to_i)
+    end
+
   end
 
   describe "after_destroy" do

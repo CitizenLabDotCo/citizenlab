@@ -25,7 +25,7 @@ class TenantPolicy < ApplicationPolicy
   end
 
   def update?
-    user && user.admin?
+    user&.active? && user.admin?
   end
 
   def destroy?

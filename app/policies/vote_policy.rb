@@ -19,19 +19,19 @@ class VotePolicy < ApplicationPolicy
   end
 
   def create?
-    (user && (record.user_id == user.id || user.admin?))
+    (user&.active? && (record.user_id == user.id || user.admin?))
   end
 
   def show?
-    (user && (record.user_id == user.id || user.admin?))
+    (user&.active? && (record.user_id == user.id || user.admin?))
   end
 
   def up?
-    user
+    user&.active?
   end
 
   def down?
-    user
+    user&.active?
   end
 
   def destroy?

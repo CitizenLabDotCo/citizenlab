@@ -42,9 +42,9 @@ class IdeaPolicy < ApplicationPolicy
     disabled_reason = pcs.posting_disabled_reason(record.project)
 
     record.draft? ||
-    user&.admin? ||
+    (user&.active? && user.admin?) ||
     (
-      user && (
+      user&.active? && (
         record.author_id == user.id &&
         !disabled_reason &&
         ProjectPolicy.new(user, record.project).show?
@@ -53,7 +53,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def show?
-    user&.admin? || record.draft? || (
+    (user&.active? && user.admin?) || record.draft? || (
       ProjectPolicy.new(user, record.project).show? &&
       %w(draft published closed).include?(record.publication_status)
     )
@@ -64,7 +64,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def update?
-    record.draft? || (user && (record.author_id == user.id || user.admin?))
+    record.draft? || (user&.active? && (record.author_id == user.id || user.admin?))
   end
 
   def destroy?
