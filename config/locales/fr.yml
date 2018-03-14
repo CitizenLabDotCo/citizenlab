@@ -77,22 +77,22 @@ fr:
     open_idea_project_title: Boîte à idées
     open_idea_project_description: Ces idées ne sont pas liées à un projet.
   custom_fields:
-    gender: Gender
-    birthyear: Year of birth
+    gender: Genre
+    birthyear: Année de naissance
     domicile: Domicile
     education: Education
   custom_field_options:
     gender:
-      male: Male
-      female: Female
-      unspecified: Unspecified
+      male: Masculin
+      female: Féminin
+      unspecified: Autre
     domicile:
-      outside: Somewhere else
+      outside: Autre lieu
     education:
-      ISCED2: Lower secondary education
-      ISCED3: Upper secondary education
-      ISCED4: Post-secondary non-tertiary education
-      ISCED5: Short-cycle tertiary education
-      ISCED6: Bachelor or equivalent
-      ISCED7: Master or equivalent
-      ISCED8: Doctoral or equivalent
+      ISCED2: Education secondaire (1er cycle)
+      ISCED3: Education secondaire (2nd cycle)
+      ISCED4: Education supérieure
+      ISCED5: Education supérieure (cycle court)
+      ISCED6: Licence, Bachelier ou équivalent
+      ISCED7: Master ou équivalent
+      ISCED8: Doctorat ou équivalent

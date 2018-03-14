@@ -17,7 +17,7 @@ class PagePolicy < ApplicationPolicy
   end
 
   def create?
-    user && user.admin?
+    user&.active? && user.admin?
   end
 
   def show?
@@ -29,7 +29,7 @@ class PagePolicy < ApplicationPolicy
   end
 
   def update?
-    user && user.admin?
+    user&.active? && user.admin?
   end
 
   def destroy?

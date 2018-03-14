@@ -25,7 +25,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def create?
-    user && user.admin?
+    user&.active? && user.admin?
   end
 
   def images_index?
@@ -52,7 +52,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def update?
-    user && (user.admin? || user.project_moderator?(record.id))
+    user&.active? && (user.admin? || user.project_moderator?(record.id))
   end
 
   def destroy?

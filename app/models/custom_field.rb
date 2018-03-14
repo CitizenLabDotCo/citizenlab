@@ -20,6 +20,8 @@ class CustomField < ApplicationRecord
 
 
   before_validation :set_default_enabled
+  before_validation :generate_key, on: :create
+
 
   scope :fields_for, -> (claz) { where(resource_type: claz.name.to_s) }
 
@@ -29,5 +31,13 @@ class CustomField < ApplicationRecord
 
   def set_default_enabled
     self.enabled = true if self.enabled.nil?
+  end
+
+  def generate_key
+    if !self.key
+      self.key = CustomFieldService.new.generate_key(self, title_multiloc.values.first) do |key_proposal|
+        self.class.find_by(key: key_proposal, resource_type: self.resource_type)
+      end
+    end
   end
 end
