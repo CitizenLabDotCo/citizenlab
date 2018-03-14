@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { isEmpty, get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
@@ -18,6 +17,7 @@ import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
+import { hasCustomFields } from 'utils/customFields';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -129,7 +129,7 @@ export default class SignUp extends React.PureComponent<Props, State> {
     this.state = {
       loaded: false,
       visibleStep: 'step1',
-      hasCustomFields: true,
+      hasCustomFields: false,
       userId: null,
     };
     this.subscriptions = [];
@@ -145,7 +145,7 @@ export default class SignUp extends React.PureComponent<Props, State> {
         customFieldsSchemaForUsersStream$
       ).subscribe(([locale, customFieldsSchema]) => {
         this.setState({
-          hasCustomFields: !isEmpty(get(customFieldsSchema, `json_schema_multiloc.${locale}.properties`, null))
+          hasCustomFields: hasCustomFields(customFieldsSchema, locale)
         });
       })
     ];

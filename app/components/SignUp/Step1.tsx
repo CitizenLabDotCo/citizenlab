@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isEmpty, set, keys, difference, get } from 'lodash';
+import { set, keys, difference, get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
@@ -13,6 +13,7 @@ import Error from 'components/UI/Error';
 
 // utils
 import { isValidEmail } from 'utils/validate';
+import { hasCustomFields } from 'utils/customFields';
 
 // services
 import { localeStream } from 'services/locale';
@@ -128,7 +129,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
         this.setState({
           locale,
           currentTenant,
-          hasCustomFields: !isEmpty(get(customFieldsSchema, `json_schema_multiloc.${locale}.properties`, null))
+          hasCustomFields: hasCustomFields(customFieldsSchema, locale)
         });
       })
     ];

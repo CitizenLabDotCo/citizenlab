@@ -12,6 +12,7 @@ import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
 // utils
 import { Formik } from 'formik';
 import eventEmitter from 'utils/eventEmitter';
+import { hasCustomFields } from 'utils/customFields';
 
 // components
 import { Grid, Segment } from 'semantic-ui-react';
@@ -98,7 +99,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
         return (avatarUrl ? convertUrlToFileObservable(avatarUrl) : Rx.Observable.of(null)).map(avatar => ({ user, avatar, locale, customFieldsSchema }));
       }).subscribe(({ user, avatar, locale, customFieldsSchema }) => {
         this.setState({
-          hasCustomFields: !isEmpty(get(customFieldsSchema, `json_schema_multiloc.${locale}.properties`, null)),
+          hasCustomFields: hasCustomFields(customFieldsSchema, locale),
           avatar: (avatar ? [avatar] : null),
           customFieldsFormData: user.attributes.custom_field_values
         });
