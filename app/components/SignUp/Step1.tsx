@@ -88,7 +88,6 @@ type State = {
 };
 
 class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
-  
   subscriptions: Rx.Subscription[];
   firstNameInputElement: HTMLInputElement | null;
 
