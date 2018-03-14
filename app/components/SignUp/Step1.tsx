@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { set, keys, difference, get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
@@ -13,11 +13,14 @@ import Error from 'components/UI/Error';
 
 // utils
 import { isValidEmail } from 'utils/validate';
+import { hasCustomFields } from 'utils/customFields';
 
 // services
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { signUp } from 'services/auth';
+import { completeRegistration } from 'services/users';
+import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -69,6 +72,7 @@ type Props = {
 type State = {
   locale: Locale | null;
   currentTenant: ITenant | null;
+  hasCustomFields: boolean;
   firstName: string | null;
   lastName: string | null;
   email: string | null;
@@ -84,7 +88,6 @@ type State = {
 };
 
 class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
-  
   subscriptions: Rx.Subscription[];
   firstNameInputElement: HTMLInputElement | null;
 
@@ -93,6 +96,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.state = {
       locale: null,
       currentTenant: null,
+      hasCustomFields: false,
       firstName: null,
       lastName: null,
       email: null,
@@ -113,13 +117,19 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
   componentDidMount() {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
+    const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
         locale$,
-        currentTenant$
-      ).subscribe(([locale, currentTenant]) => {
-        this.setState({ locale, currentTenant });
+        currentTenant$,
+        customFieldsSchemaForUsersStream$
+      ).subscribe(([locale, currentTenant, customFieldsSchema]) => {
+        this.setState({
+          locale,
+          currentTenant,
+          hasCustomFields: hasCustomFields(customFieldsSchema, locale)
+        });
       })
     ];
   }
@@ -140,7 +150,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       firstName,
       firstNameError: null,
       unknownError: null,
-      apiErrors: (state.apiErrors ? _.set(state.apiErrors, 'json.errors.first_name', null) : null)
+      apiErrors: (state.apiErrors ? set(state.apiErrors, 'json.errors.first_name', null) : null)
     }));
   }
 
@@ -149,7 +159,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       lastName,
       lastNameError: null,
       unknownError: null,
-      apiErrors: (state.apiErrors ? _.set(state.apiErrors, 'json.errors.last_name', null) : null)
+      apiErrors: (state.apiErrors ? set(state.apiErrors, 'json.errors.last_name', null) : null)
     }));
   }
 
@@ -158,7 +168,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       email,
       emailError: null,
       unknownError: null,
-      apiErrors: (state.apiErrors ? _.set(state.apiErrors, 'json.errors.email', null) : null)
+      apiErrors: (state.apiErrors ? set(state.apiErrors, 'json.errors.email', null) : null)
     }));
   }
 
@@ -167,7 +177,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       password,
       passwordError: null,
       unknownError: null,
-      apiErrors: (state.apiErrors ? _.set(state.apiErrors, 'json.errors.password', null) : null)
+      apiErrors: (state.apiErrors ? set(state.apiErrors, 'json.errors.password', null) : null)
     }));
   }
 
@@ -175,7 +185,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
     event.preventDefault();
 
     const { formatMessage } = this.props.intl;
-    const { locale, currentTenant, firstName, lastName, email, password } = this.state;
+    const { locale, currentTenant, hasCustomFields, firstName, lastName, email, password } = this.state;
     const currentTenantLocales = currentTenant ? currentTenant.data.attributes.settings.core.locales : [];
     const hasEmailError = (!email || !isValidEmail(email));
     const emailError = (hasEmailError ? (!email ? formatMessage(messages.noEmailError) : formatMessage(messages.noValidEmailError)) : null);
@@ -203,6 +213,11 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
         });
 
         const user = await signUp(firstName, lastName, email, password, locale);
+
+        if (!hasCustomFields) {
+          await completeRegistration({});
+        }
+
         this.setState({ processing: false });
         this.props.onCompleted(user.data.id);
       } catch (errors) {
@@ -232,9 +247,9 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
     let unknownApiError: string | null = null;
 
     if (apiErrors && apiErrors.json.errors) {
-      const keys = _.keys(apiErrors.json.errors);
+      const fieldKeys = keys(apiErrors.json.errors);
 
-      if (_.difference(keys, ['first_name', 'last_name', 'email', 'password', 'locale']).length > 0) {
+      if (difference(fieldKeys, ['first_name', 'last_name', 'email', 'password', 'locale']).length > 0) {
         unknownApiError = formatMessage(messages.unknownError);
       }
     }
@@ -253,7 +268,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
             setRef={this.handleFirstNameInputSetRef}
           />
 
-          <Error fieldName={'first_name'} apiErrors={_.get(apiErrors, 'json.errors.first_name')} />
+          <Error fieldName={'first_name'} apiErrors={get(apiErrors, 'json.errors.first_name')} />
         </FormElement>
 
         <FormElement>
@@ -267,7 +282,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
             onChange={this.handleLastNameOnChange}
           />
 
-          <Error fieldName={'last_name'} apiErrors={_.get(apiErrors, 'json.errors.last_name')} />
+          <Error fieldName={'last_name'} apiErrors={get(apiErrors, 'json.errors.last_name')} />
         </FormElement>
 
         <FormElement>
@@ -281,7 +296,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
             onChange={this.handleEmailOnChange}
           />
 
-          <Error fieldName={'email'} apiErrors={_.get(apiErrors, 'json.errors.email')} />
+          <Error fieldName={'email'} apiErrors={get(apiErrors, 'json.errors.email')} />
         </FormElement>
 
         <FormElement>
@@ -295,7 +310,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
             onChange={this.handlePasswordOnChange}
           />
 
-          <Error fieldName={'password'} apiErrors={_.get(apiErrors, 'json.errors.password')} />
+          <Error fieldName={'password'} apiErrors={get(apiErrors, 'json.errors.password')} />
         </FormElement>
 
         <FormElement>
