@@ -1,8 +1,10 @@
 const crypto = require('crypto');
 const hash = crypto.randomBytes(20).toString('hex');
+const afterEach = require('../updateBSStatus');
 
 module.exports = {
   '@tags': ['citizen', 'auth', 'register'],
+  afterEach,
   register: (browser) => {
     browser
     .url(`http://${process.env.ROOT_URL}/sign-up`)

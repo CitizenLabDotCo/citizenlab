@@ -1,5 +1,8 @@
+const afterEach = require('../updateBSStatus');
+
 module.exports = {
   '@tags': ['citizen', 'ideas'],
+  afterEach,
   modalIdea: (browser) => {
     let ideaUrl;
 
