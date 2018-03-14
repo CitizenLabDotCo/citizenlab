@@ -41,7 +41,7 @@ module EmailCampaigns
             tenantOrganizationType: tenant.settings.dig('core', 'organization_type')
           }
         }
-
+        
         Analytics.track(trackingMessage)
       end
     end
