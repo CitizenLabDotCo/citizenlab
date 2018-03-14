@@ -5,7 +5,7 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import * as _ from 'lodash';
 import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
-
+import { darken } from 'polished';
 import { API, Message } from 'typings';
 import messages from './messages';
 
@@ -20,16 +20,27 @@ interface IStyledErrorMessage {
 }
 
 const ErrorMessageText = styled.div`
-  color: #f93e36;
+  color: ${(props) => props.theme.colors.error};
   font-weight: 400;
   line-height: 22px;
+
+  a {
+    color: ${(props) => props.theme.colors.error};
+    font-weight: 500;
+    text-decoration: underline;
+
+    &:hover {
+      color: ${(props) => darken(0.2, props.theme.colors.error)};
+      text-decoration: underline;
+    }
+  }
 `;
 
 const IconWrapper = styled.div`
   margin-right: 8px;
 
   svg {
-    fill: #f93e36;
+    fill: ${(props) => props.theme.colors.error};
   }
 `;
 

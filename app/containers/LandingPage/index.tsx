@@ -235,8 +235,6 @@ const SectionTitle = styled.h2`
     width: 100%;
     font-size: 26px;
     line-height: 30px;
-    /* text-align: center;
-    justify-content: center; */
   `}
 `;
 

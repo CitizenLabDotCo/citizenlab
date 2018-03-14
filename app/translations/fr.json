@@ -369,6 +369,8 @@
   "app.containers.App.helmetTitle": "Co-créez {name}",
   "app.containers.App.loading": "Chargement...",
   "app.containers.App.unAuthorizedUser": "Oups... Il semble que vous n'ayez pas l'autorisation d'accéder à cette page",
+  "app.containers.CompleteSignUpPage.notSignedIn": "",
+  "app.containers.CompleteSignUpPage.somethingWentWrong": "",
   "app.containers.CompleteSignUpPage.title": "Complétez votre profil",
   "app.containers.IdeaButton.startAnIdea": "Lancez une idée",
   "app.containers.IdeaCards.areas": "Lieux",

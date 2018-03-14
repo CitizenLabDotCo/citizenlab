@@ -1,6 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { API, Multiloc, Locale } from 'typings';
+import { authUserStream } from './auth';
 
 const apiEndpoint = `${API_PATH}/users`;
 
@@ -20,6 +21,7 @@ export interface IUserData {
     avatar: API.ImageSizes,
     roles?: IRole[],
     bio_multiloc: Multiloc,
+    registration_completed_at: string | null;
     created_at: string;
     updated_at: string;
     email?: string;
@@ -83,6 +85,12 @@ export async function updateUser(userId: string, object: IUserUpdate) {
 
 export async function deleteUser(userId: string) {
   return streams.delete(`${apiEndpoint}/${userId}`, userId);
+}
+
+export async function completeRegistration(customFieldValues: object) {
+  const response = await streams.add<IUser>(`${apiEndpoint}/complete_registration`, { user: { custom_field_values: customFieldValues } });
+  await authUserStream().fetch();
+  return response;
 }
 
 export function mapUserToDiff(user: IUserData): IUserUpdate {

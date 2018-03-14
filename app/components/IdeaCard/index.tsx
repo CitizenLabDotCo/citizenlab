@@ -155,7 +155,7 @@ const Footer = styled.div`
 const StyledVoteControl = styled(VoteControl)``;
 
 const CommentIcon = styled(Icon)`
-  height: 23px;
+  height: 21px;
   fill: ${(props) => props.theme.colors.label};
   margin-right: 7px;
 `;
