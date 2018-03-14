@@ -166,7 +166,10 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
     });
 
     requiredFieldNames.filter((requiredFieldName) => {
-      return (isNil(formData[requiredFieldName]) || isEmpty(formData[requiredFieldName]));
+      return (isNil(formData[requiredFieldName]) 
+              || (!isBoolean(formData[requiredFieldName]) && isEmpty(formData[requiredFieldName])) 
+              || (isBoolean(formData[requiredFieldName]) && formData[requiredFieldName] === false)
+      );
     }).forEach((requiredFieldName) => {
       errors[requiredFieldName].addError(requiredErrorMessage);
     });
