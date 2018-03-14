@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isString, has } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
@@ -72,7 +72,6 @@ const VoteIcon: any = styled(Icon) `
   height: 19px;
   fill: #84939d;
   transition: all 100ms ease-out;
-  /* ${(props: any) => props.enabled ? '' : 'opacity: 0.5;'} */
 
   ${(props: any) => props.size === '1' ? css`
     height: 16px;
@@ -100,7 +99,7 @@ const Vote: any = styled.div`
   align-items: center;
 
   &.voteClick ${VoteIconContainer} {
-    animation: ${vote} 250ms;
+    animation: ${vote} 350ms;
   }
 
   &:not(.enabled) {
@@ -213,10 +212,10 @@ type State = {
 
 export default class VoteControl extends React.PureComponent<Props, State> {
   voting$: Rx.BehaviorSubject<'up' | 'down' | null>;
+  id$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
   upvoteElement: HTMLDivElement | null;
   downvoteElement: HTMLDivElement | null;
-  id$: Rx.BehaviorSubject<string>;
 
   constructor(props: Props) {
     super(props as any);
@@ -234,14 +233,18 @@ export default class VoteControl extends React.PureComponent<Props, State> {
       votingDisabledReason: null,
     };
     this.voting$ = new Rx.BehaviorSubject(null);
+    this.id$ = new Rx.BehaviorSubject(null);
     this.subscriptions = [];
     this.upvoteElement = null;
     this.downvoteElement = null;
-    this.id$ = new Rx.BehaviorSubject(props.ideaId);
   }
 
   componentDidMount() {
     const authUser$ = authUserStream().observable;
+    const voting$ = this.voting$.distinctUntilChanged();
+    const id$ = this.id$.filter(ideaId => isString(ideaId)).distinctUntilChanged() as Rx.Observable<string>;
+
+    this.id$.next(this.props.ideaId);
 
     if (this.upvoteElement) {
       this.upvoteElement.addEventListener('animationend', this.votingAnimationDone);
@@ -251,10 +254,12 @@ export default class VoteControl extends React.PureComponent<Props, State> {
       this.downvoteElement.addEventListener('animationend', this.votingAnimationDone);
     }
 
-    const idea$ = this.id$.distinctUntilChanged().switchMap((ideaId) => {
+    const idea$ = id$.switchMap((ideaId: string) => {
+      const idea$ = ideaByIdStream(ideaId).observable;
+
       return Rx.Observable.combineLatest(
-        ideaByIdStream(ideaId).observable,
-        this.voting$
+        idea$,
+        voting$
       );
     }).filter(([_idea, voting]) => {
       return voting === null;
@@ -266,12 +271,13 @@ export default class VoteControl extends React.PureComponent<Props, State> {
       authUser$,
       idea$
     ).switchMap(([authUser, idea]) => {
-      if (authUser && idea && _.has(idea, 'data.relationships.user_vote.data') && idea.data.relationships.user_vote.data !== null) {
+      if (authUser && idea && has(idea, 'data.relationships.user_vote.data') && idea.data.relationships.user_vote.data !== null) {
         const voteId = idea.data.relationships.user_vote.data.id;
+        const vote$ = voteStream(voteId).observable;
 
         return Rx.Observable.combineLatest(
-          voteStream(voteId).observable,
-          this.voting$
+          vote$,
+          voting$
         ).filter(([_vote, voting]) => {
           return voting === null;
         }).map(([vote, _voting]) => {
@@ -283,7 +289,7 @@ export default class VoteControl extends React.PureComponent<Props, State> {
     });
 
     this.subscriptions = [
-      this.voting$.subscribe((voting) => {
+      voting$.subscribe((voting) => {
         this.setState((state) => ({
           voting,
           votingAnimation: (voting !== null && state.voting === null ? voting : state.votingAnimation)
@@ -297,17 +303,19 @@ export default class VoteControl extends React.PureComponent<Props, State> {
         const cancellingEnabled = idea.data.relationships.action_descriptor.data.voting.cancelling_enabled;
         const votingDisabledReason = idea.data.relationships.action_descriptor.data.voting.disabled_reason;
         const votingFutureEnabled = idea.data.relationships.action_descriptor.data.voting.future_enabled;
+
         this.setState({ upvotesCount, downvotesCount, votingEnabled, cancellingEnabled, votingDisabledReason, votingFutureEnabled });
       }),
 
-      authUser$.subscribe(authUser => this.setState({ authUser })),
+      authUser$.subscribe((authUser) => {
+        this.setState({ authUser });
+      }),
 
       myVote$.subscribe((myVote) => {
-        if (myVote) {
-          this.setState({ myVoteId: myVote.data.id, myVoteMode: myVote.data.attributes.mode });
-        } else {
-          this.setState({ myVoteId: null, myVoteMode: null });
-        }
+        this.setState({
+          myVoteId: (myVote ? myVote.data.id : null),
+          myVoteMode: (myVote ? myVote.data.attributes.mode : null)
+        });
       })
     ];
   }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
@@ -130,8 +130,8 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
   render() {
     const { currentTenant } = this.state;
     const { formatMessage } = this.props.intl;
-    const googleLoginEnabled = !!_.get(currentTenant, `data.attributes.settings.google_login.enabled`);
-    const facebookLoginEnabled = !!_.get(currentTenant, `data.attributes.settings.facebook_login.enabled`);
+    const googleLoginEnabled = get(currentTenant, `data.attributes.settings.google_login.enabled`, false);
+    const facebookLoginEnabled = get(currentTenant, `data.attributes.settings.facebook_login.enabled`, false);
     const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
 
     if (showSocialLogin) {
