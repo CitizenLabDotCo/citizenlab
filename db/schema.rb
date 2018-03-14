@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180307132304) do
+ActiveRecord::Schema.define(version: 20180309160219) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -393,7 +393,6 @@ ActiveRecord::Schema.define(version: 20180307132304) do
     t.jsonb "bio_multiloc", default: {}
     t.boolean "cl1_migrated", default: false
     t.jsonb "custom_field_values", default: {}
-    t.datetime "registration_completed_at"
     t.index ["email"], name: "index_users_on_email"
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
