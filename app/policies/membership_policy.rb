@@ -17,19 +17,19 @@ class MembershipPolicy < ApplicationPolicy
   end
 
   def create?
-    user && user.admin?
+    user&.active? && user.admin?
   end
 
   def show?
-    user && user.admin?
+    user&.active? && user.admin?
   end
 
   def destroy?
-    user && user.admin?
+    user&.active? && user.admin?
   end
 
   def users_search?
-    user && user.admin?
+    user&.active? && user.admin?
   end
 
 end

@@ -8,6 +8,7 @@ FactoryBot.define do
     password_digest "testtest"
     roles []
     locale "en"
+    registration_completed_at { Time.now }
     # Although the avatar is not part of the minimal model, generating it
     # really slows down the tests, so we fix it here
     avatar File.open(Rails.root.join("spec/fixtures/robot.jpg"))

@@ -17,11 +17,11 @@ class GroupPolicy < ApplicationPolicy
   end
 
   def create?
-    user && user.admin?
+    user&.active? && user.admin?
   end
 
   def show?
-    user && user.admin?
+    user&.active? && user.admin?
   end
 
   def by_slug?
@@ -29,11 +29,11 @@ class GroupPolicy < ApplicationPolicy
   end
 
   def update?
-    user && user.admin?
+    user&.active? && user.admin?
   end
 
   def destroy?
-    user && user.admin?
+    user&.active? && user.admin?
   end
 
 end
