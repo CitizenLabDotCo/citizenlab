@@ -156,6 +156,7 @@ const StyledVoteControl = styled(VoteControl)``;
 
 const CommentIcon = styled(Icon)`
   height: 23px;
+  width: 30px;
   fill: ${(props) => props.theme.colors.label};
   margin-right: 7px;
 `;
@@ -170,7 +171,7 @@ const CommentInfo = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  
+
   &:not(.enabled) {
     opacity: 0.6;
   }
