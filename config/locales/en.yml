@@ -92,7 +92,7 @@ en:
   custom_fields:
     gender: Gender
     birthyear: Year of birth
-    domicile: Domicile
+    domicile: Place of residence
     education: Education
   custom_field_options:
     gender:
