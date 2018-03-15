@@ -148,6 +148,7 @@ const ProjectMetaItems = styled.div`
 
 const IdeaCountIcon = styled(Icon)`
   height: 24px;
+  width: 24px;
   fill: ${(props) => props.theme.colors.label};
   margin-right: 6px;
   margin-top: -6px;
@@ -319,7 +320,7 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
                   <IdeaCountIcon name="idea" />
                   <IdeaCountText>
                     <FormattedMessage
-                      {...messages.xIdeas} 
+                      {...messages.xIdeas}
                       values={{
                         ideasCount,
                         ideas: formatMessage(messages.ideas),
