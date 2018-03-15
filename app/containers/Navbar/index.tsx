@@ -97,6 +97,7 @@ const Container = styled.div`
 const Left = styled.div`
   display: flex;
   align-items: center;
+  flex-grow: 1;
 `;
 
 const LogoLink = styled(Link) `
