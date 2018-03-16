@@ -41,7 +41,6 @@ namespace :periodic_events do
     EmailCampaigns::CampaignEmailCommand::CAMPAIGNS.each do |campaign|
       schedule = @campaign_schedules[campaign]
       tenant_hosts.each do |host|
-        byebug
         Apartment::Tenant.switch(host.gsub '.', '_') do
           now_over_there = Time.now.in_time_zone Tenant.current.settings.dig('core','timezone')
           tz_diff = (now_over_there.hour - Time.now.hour) % 24

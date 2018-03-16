@@ -2,7 +2,7 @@ module EmailCampaigns
   class UserPlatformDigestJob < ApplicationJob
     queue_as :default
   
-    N_TOP_IDEAS = ENV.fetch("N_USER_PLATFORM_DIGEST_IDEAS", 2)
+    N_TOP_IDEAS = ENV.fetch("N_USER_PLATFORM_DIGEST_IDEAS", 3)
     N_DISCOVER_PROJECTS = ENV.fetch("N_DISCOVER_PROJECTS", 3)
   
     def perform
@@ -23,7 +23,6 @@ module EmailCampaigns
         end
 
         discover_projects = ProjectPolicy::Scope.new(user, Project).resolve.sort_by(&:created_at).reverse.take N_DISCOVER_PROJECTS
-        byebug
         serializer = "EmailCampaigns::DiscoverProjectSerializer".constantize
         serialized_discover_projects = discover_projects.map do |project|
           ActiveModelSerializers::SerializableResource.new(project, {
