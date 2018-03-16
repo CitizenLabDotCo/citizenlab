@@ -14,7 +14,7 @@ namespace :periodic_events do
   task :schedule_email_campaigns, [:force_schedule, :tenant_whitelist] => [:environment] do |t, args|
     force_schedule = args.with_defaults(force_schedule: false).dig(:force_schedule)
     force_schedule = force_schedule && !(force_schedule == 'false')
-    tenant_hosts = args.with_defaults(tenant_whitelist: Tenant.all.map(&:host)).dig(:tenant_whitelist)
+    tenant_hosts = args.with_defaults(tenant_whitelist: nil).dig(:tenant_whitelist)&.split(' ') || Tenant.all.map(&:host)
     [[EmailCampaigns::UserWeeklyDigestJob, @user_weekly_digest_schedule]].each do |job, schedule|
       tenant_hosts.each do |host|
         Apartment::Tenant.switch(host.gsub '.', '_') do

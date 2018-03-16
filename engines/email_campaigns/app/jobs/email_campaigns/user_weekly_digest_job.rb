@@ -2,7 +2,7 @@ module EmailCampaigns
   class UserWeeklyDigestJob < ApplicationJob
     queue_as :default
   
-    N_IDEAS = 3
+    N_IDEAS = ENV.fetch("N_USER_WEEKLY_DIGEST_IDEAS", 3)
   
     def perform
       ti_service = TrendingIdeaService.new # always at thy service
@@ -41,7 +41,7 @@ module EmailCampaigns
             tenantOrganizationType: tenant.settings.dig('core', 'organization_type')
           }
         }
-
+        
         Analytics.track(trackingMessage)
       end
     end
