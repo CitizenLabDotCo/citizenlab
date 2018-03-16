@@ -101,6 +101,8 @@ export default class DateInput extends React.PureComponent<Props, State> {
     this.setState({ focused });
   }
 
+  isOutsideRange = () => false;
+
   render () {
     const className = this.props['className'];
     const { selectedDate, focused } = this.state;
@@ -115,6 +117,7 @@ export default class DateInput extends React.PureComponent<Props, State> {
           onFocusChange={this.handleFocusChange}
           numberOfMonths={1}
           firstDayOfWeek={1}
+          isOutsideRange={this.isOutsideRange}
           displayFormat="DD/MM/YYYY"
         />
       </Container>
