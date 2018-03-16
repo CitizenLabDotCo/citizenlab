@@ -10,7 +10,7 @@ import EventsPreview from '../EventsPreview';
 import ContentContainer from 'components/ContentContainer';
 
 // services
-import { projectBySlugStream, IProject } from 'services/projects';
+import { projectBySlugStream } from 'services/projects';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -40,18 +40,23 @@ type Props = {
 };
 
 type State = {
-  project: IProject | null;
+  projectId: string | null;
+  defaultView: 'card' | 'map' | null;
 };
 
 export default class ProjectIdeasPage extends React.PureComponent<Props, State> {
+  initialState: State;
   slug$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
     super(props as any);
-    this.state = {
-      project: null
+    const initialState = {
+      projectId: null,
+      defaultView: null
     };
+    this.initialState = initialState;
+    this.state = initialState;
     this.slug$ = new Rx.BehaviorSubject(null);
     this.subscriptions = [];
   }
@@ -62,6 +67,7 @@ export default class ProjectIdeasPage extends React.PureComponent<Props, State> 
     this.subscriptions = [
       this.slug$
         .distinctUntilChanged()
+        .do(() => this.setState(this.initialState))
         .filter(slug => isString(slug))
         .switchMap((slug: string) => {
           return projectBySlugStream(slug).observable.do((project) => {
@@ -70,8 +76,13 @@ export default class ProjectIdeasPage extends React.PureComponent<Props, State> 
               browserHistory.push(`/projects/${slug}`);
             }
           });
-        }).subscribe((project) => {
-          this.setState({ project });
+        })
+        // .delay(2000)
+        .subscribe((project) => {
+          this.setState({
+            projectId: project.data.id,
+            defaultView: (project.data.attributes.presentation_mode || null)
+          });
         })
     ];
   }
@@ -85,10 +96,13 @@ export default class ProjectIdeasPage extends React.PureComponent<Props, State> 
   }
 
   render() {
-    const { project } = this.state;
+    const { projectId, defaultView } = this.state;
     const { slug } = this.props.params;
 
-    if (project) {
+    console.log('projectId: ' + projectId);
+    console.log('defaultView: ' + defaultView);
+
+    if (projectId) {
       return (
         <>
           <Header slug={slug} />
@@ -98,11 +112,15 @@ export default class ProjectIdeasPage extends React.PureComponent<Props, State> 
               <IdeasTitle>
                 <FormattedMessage {...messages.navIdeas} />
               </IdeasTitle>
-              <Ideas type="project" id={project.data.id} defaultDisplay={project.data.attributes.presentation_mode}/>
+              <Ideas
+                type="project"
+                id={projectId}
+                defaultView={defaultView}
+              />
             </ContentContainer>
           </IdeasContainer>
 
-          <EventsPreview projectId={project.data.id} />
+          <EventsPreview projectId={projectId} />
         </>
       );
     }
