@@ -374,6 +374,8 @@
   "app.containers.CompleteSignUpPage.title": "Complete your profile",
   "app.containers.IdeaButton.startAnIdea": "Start an idea",
   "app.containers.IdeaCards.areas": "Areas",
+  "app.containers.IdeaCards.cards": "",
+  "app.containers.IdeaCards.map": "",
   "app.containers.IdeaCards.newest": "Newest",
   "app.containers.IdeaCards.oldest": "Oldest",
   "app.containers.IdeaCards.popular": "Popular",

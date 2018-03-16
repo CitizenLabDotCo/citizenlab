@@ -374,6 +374,8 @@
   "app.containers.CompleteSignUpPage.title": "crwdns18104:0crwdne18104:0",
   "app.containers.IdeaButton.startAnIdea": "crwdns18433:0crwdne18433:0",
   "app.containers.IdeaCards.areas": "crwdns18422:0crwdne18422:0",
+  "app.containers.IdeaCards.cards": "",
+  "app.containers.IdeaCards.map": "",
   "app.containers.IdeaCards.newest": "crwdns18423:0crwdne18423:0",
   "app.containers.IdeaCards.oldest": "crwdns18424:0crwdne18424:0",
   "app.containers.IdeaCards.popular": "crwdns18425:0crwdne18425:0",
