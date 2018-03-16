@@ -374,6 +374,8 @@
   "app.containers.CompleteSignUpPage.title": "Vervollständigen Sie Ihr Profil",
   "app.containers.IdeaButton.startAnIdea": "Starten Sie eine Idee",
   "app.containers.IdeaCards.areas": "Gebiete",
+  "app.containers.IdeaCards.cards": "",
+  "app.containers.IdeaCards.map": "",
   "app.containers.IdeaCards.newest": "Neueste",
   "app.containers.IdeaCards.oldest": "Älteste",
   "app.containers.IdeaCards.popular": "Meiste Stimmen",

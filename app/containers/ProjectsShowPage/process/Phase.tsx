@@ -96,7 +96,7 @@ export default class Phase extends React.PureComponent<Props, State> {
     ];
   }
 
-  componentDidUpdate(_prevProps: Props) {
+  componentDidUpdate() {
     this.phaseId$.next(this.props.phaseId);
   }
 
@@ -127,7 +127,11 @@ export default class Phase extends React.PureComponent<Props, State> {
 
           {participationMethod === 'ideation' &&
             <IdeasWrapper>
-              <Ideas type="phase" id={phase.data.id} defaultDisplay={'card'} />
+              <Ideas
+                type="phase"
+                id={phase.data.id}
+                defaultView={'card'}
+              />
             </IdeasWrapper>
           }
 

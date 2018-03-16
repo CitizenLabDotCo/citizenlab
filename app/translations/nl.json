@@ -374,6 +374,8 @@
   "app.containers.CompleteSignUpPage.title": "Vervolledig je profiel",
   "app.containers.IdeaButton.startAnIdea": "Lanceer je idee",
   "app.containers.IdeaCards.areas": "Gebieden",
+  "app.containers.IdeaCards.cards": "",
+  "app.containers.IdeaCards.map": "",
   "app.containers.IdeaCards.newest": "Nieuwste",
   "app.containers.IdeaCards.oldest": "Oudste",
   "app.containers.IdeaCards.popular": "Meeste stemmen",
