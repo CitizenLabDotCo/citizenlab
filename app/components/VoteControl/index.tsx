@@ -85,6 +85,7 @@ const VoteIcon: any = styled(Icon) `
 
   ${(props: any) => props.size === '3' ? css`
     height: 20px;
+    width: 23px;
   ` : css``}
 `;
 
