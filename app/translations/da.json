@@ -374,6 +374,8 @@
   "app.containers.CompleteSignUpPage.title": "Færdiggør din profil",
   "app.containers.IdeaButton.startAnIdea": "Start en idé",
   "app.containers.IdeaCards.areas": "Områder",
+  "app.containers.IdeaCards.cards": "",
+  "app.containers.IdeaCards.map": "",
   "app.containers.IdeaCards.newest": "Nyeste",
   "app.containers.IdeaCards.oldest": "Ældste",
   "app.containers.IdeaCards.popular": "Populære",
