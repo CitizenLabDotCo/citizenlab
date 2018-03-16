@@ -492,7 +492,7 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
           </LoadMoreButtonWrapper>
         }
 
-        {showMapView &&
+        {showMapView && hasIdeas &&
           <IdeasMap project={projectId} phase={phaseId} />
         }
       </Container>
