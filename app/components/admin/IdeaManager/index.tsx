@@ -223,6 +223,8 @@ class IdeaManager extends React.PureComponent<Props, State> {
           </MiddleColumn>
           <CSSTransition
             in={showInfoSidebar}
+            mountOnEnter={true}
+            unmountOnExit={true}
             timeout={200}
             classNames="slide"
           >
