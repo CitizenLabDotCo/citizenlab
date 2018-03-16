@@ -395,7 +395,7 @@
   "app.containers.IdeasNewPage2.submit": "Idee indienen",
   "app.containers.IdeasNewPage2.submitError": "Er ging iets mis. Probeer het opnieuw.",
   "app.containers.IdeasProjectSelect.cityProjects": "Projecten",
-  "app.containers.IdeasProjectSelect.cityProjectsExplanation": "Dit is\/zijn het\/de project(en) die vandaag actief is\/zijn op het platform van {orgName}. Maak je keuze. ",
+  "app.containers.IdeasProjectSelect.cityProjectsExplanation": "Dit is/zijn het/de project(en) die vandaag actief is/zijn op het platform van {orgName}. Maak je keuze. ",
   "app.containers.IdeasProjectSelect.continueButton": "Ga verder",
   "app.containers.IdeasProjectSelect.loadMore": "Meer laden",
   "app.containers.IdeasProjectSelect.noProjects": "Sorry, momenteel zijn er (nog) geen projecten om ideeën aan toe te voegen.",
