@@ -155,10 +155,10 @@ const Footer = styled.div`
 const StyledVoteControl = styled(VoteControl)``;
 
 const CommentIcon = styled(Icon)`
-  height: 23px;
-  width: 30px;
   fill: ${(props) => props.theme.colors.label};
+  height: 21px;
   margin-right: 7px;
+  width: 30px;
 `;
 
 const CommentCount = styled.div`
