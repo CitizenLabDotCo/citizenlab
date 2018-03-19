@@ -16,10 +16,12 @@ require 'ice_cube'
 @never_schedule.add_recurrence_rule(
   IceCube::Rule.yearly(1000).month_of_year((Time.now.month - 2) % 12)
 )
-# user platform digests, every other Monday at 10AM
+# user platform digests, every Monday at 10AM
 @user_platform_digest_schedule = IceCube::Schedule.new
 @user_platform_digest_schedule.add_recurrence_rule(
-  IceCube::Rule.weekly(2).day(:monday).hour_of_day(10) 
+  # TODO make it possible to send bi-weekly
+  # IceCube::Rule.weekly(2).day(:monday).hour_of_day(10) 
+  IceCube::Rule.weekly.day(:monday).hour_of_day(10) 
 )
 @campaign_schedules = {
   'user_platform_digest'             => @user_platform_digest_schedule,
@@ -48,8 +50,8 @@ namespace :periodic_events do
           if ( force_schedule or 
                ( (now_over_there - 30.minutes) < true_schedule_first and 
                  (now_over_there + 30.minutes) > true_schedule_first))
-            job = @campaign_jobs[campaign].constantize.new
-            job.perform_now ####
+            job = @campaign_jobs[campaign].constantize
+            job.perform_later
           end
         end
       end
