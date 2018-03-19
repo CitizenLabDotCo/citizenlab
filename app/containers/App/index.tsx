@@ -44,6 +44,7 @@ import { LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL } from 'utils/auth
 
 // typings
 import { Location } from 'history';
+import ErrorBoundary from 'components/ErrorBoundary';
 
 const Container = styled.div`
   margin: 0;
@@ -210,9 +211,9 @@ export default class App extends React.PureComponent<Props & RouterState, State>
               <Navbar />
 
               <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
-                <div>
+                <ErrorBoundary>
                   {children}
-                </div>
+                </ErrorBoundary>
                 <HasPermission.No>
                   <ForbiddenRoute />
                 </HasPermission.No>
