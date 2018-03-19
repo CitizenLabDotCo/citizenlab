@@ -40,15 +40,18 @@ import { Locale } from 'typings';
 import { Location } from 'history';
 
 const Container = styled.div`
-  align-items: center;
-  background: #fff;
-  display: flex;
-  flex: 0 0 ${(props) => props.theme.menuHeight}px;
+  width: 100%;
   height: ${(props) => props.theme.menuHeight}px;
+  display: flex;
+  align-items: center;
   justify-content: space-between;
+  z-index: 999;
+  position: fixed;
+  top: 0;
+  background: #fff;
   padding-left: 30px;
   padding-right: 30px;
-  position: relative;
+  position: fixed;
   width: 100%;
 
   * {
