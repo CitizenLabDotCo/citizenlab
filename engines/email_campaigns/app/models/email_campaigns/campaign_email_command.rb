@@ -2,12 +2,12 @@ module EmailCampaigns
   class CampaignEmailCommand < ApplicationRecord
 
   	CAMPAIGNS = [
-  		'user_platform_digest',
-  		'user_activity_on_your_ideas',
-  		'user_updates_on_supported_ideas',
-  		'user_participation_opportunities',
-  		'admin_daily_activities',
-  		'admin_weekly_activity_report'
+      'user_platform_digest',
+      'admin_weekly_report',
+      'moderator_digest',
+      'user_activity_on_your_ideas',
+      'user_updates_on_supported_ideas',
+      'user_participation_opportunities'
   	]
 
 
