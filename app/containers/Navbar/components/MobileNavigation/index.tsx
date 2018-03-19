@@ -8,7 +8,10 @@ import messages from '../../messages';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileMenuHeight}px;
-  flex: 0 0 ${(props) => props.theme.mobileMenuHeight}px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   padding-left: 10px;
   padding-right: 10px;
   background: #fff;
@@ -17,7 +20,7 @@ const Container = styled.div`
   display: flex;
   align-items: stretch;
   justify-content: space-evenly;
-  order: 3;
+  z-index: 100000;
 
   ${media.biggerThanMaxTablet`
     display: none;

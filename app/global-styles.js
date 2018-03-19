@@ -159,12 +159,15 @@ injectGlobal`
 
   html,
   body {
-    height: 100vh;
-    width: 100vw;
     background-color: #fff;
     font-size: ${fontSize('small')};
+    height: 100%;
     position: relative;
-    overflow: hidden;
+    width: 100%;
+  }
+
+  body {
+    overflow-y: scroll;
   }
 
   body:not(.fontLoaded) {
