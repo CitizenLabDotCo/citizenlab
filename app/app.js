@@ -14,10 +14,6 @@ if (process.env.NODE_ENV !== 'development') {
     window.Raven.config('https://7cc28cd69e544a9f9c1a5295cb359fb1@sentry.io/224810', {
       environment: process.env.NODE_ENV,
     }).install();
-
-    window.onunhandledrejection = (evt) => {
-      window.Raven.captureException(evt.reason);
-    };
   }
 }
 
