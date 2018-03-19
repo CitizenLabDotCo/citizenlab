@@ -2,9 +2,11 @@ const crypto = require('crypto');
 const hash = crypto.randomBytes(5).toString('hex');
 const firstName = `first name ${hash}`;
 const lastName = `last name ${hash}`;
+const afterEach = require('../updateBSStatus');
 
 module.exports = {
   '@tags': ['citizen', 'profile'],
+  afterEach,
   editProfile: (browser) => {
     const signinPage = browser.page.signin();
 

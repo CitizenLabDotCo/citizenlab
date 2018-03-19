@@ -97,6 +97,7 @@ const Container = styled.div`
 const Left = styled.div`
   display: flex;
   align-items: center;
+  flex-grow: 1;
 `;
 
 const LogoLink = styled(Link) `
@@ -171,6 +172,7 @@ const NavigationDropdownItemText = styled.div`
 
 const NavigationDropdownItemIcon = styled(Icon)`
   height: 7px;
+  width: 11px;
   fill: #999;
   margin-left: 4px;
   margin-top: 4px;

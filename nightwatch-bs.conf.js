@@ -1,4 +1,23 @@
-console.log(`Starting Nightwatch tests on url ${process.env.ROOT_URL}`);
+if (!process.env.BROWSERSTACK_USER || !process.env.BROWSERSTACK_KEY) {
+  console.error(`Please provide the user/key for Browserstack in ENV variables:
+  BROWSERSTACK_USER=xxx BROWSERSTACK_KEY=yyy ROOT_URL=zzz npm run test:browserstack
+  `);
+  process.exit(1);
+}
+
+if (!process.env.ROOT_URL) {
+  console.error(`Please provide the root URL for target platform:
+  BROWSERSTACK_USER=xxx BROWSERSTACK_KEY=yyy ROOT_URL=zzz npm run test:browserstack
+  `);
+  process.exit(1);
+}
+
+const commonCapabilities = {
+  project: 'cl2-front',
+  build: process.env.CIRCLE_BUILD_NUM ? `CI BUILD #${process.env.CIRCLE_BUILD_NUM}` : `Manual Run ${new Date().toUTCString()}`,
+  'browserstack.user': process.env.BROWSERSTACK_USER,
+  'browserstack.key': process.env.BROWSERSTACK_KEY,
+};
 
 const nwConfig = {
   src_folders: 'e2e/tests',
@@ -19,14 +38,46 @@ const nwConfig = {
       },
       detailed_output: false,
       launch_url: `http://${process.env.ROOT_URL}`,
+    },
+    ie: {
       desiredCapabilities: {
+        ...commonCapabilities,
         browserName: 'internet explorer',
         version: '11',
-        build: 'nightwatch-browserstack',
-        'browserstack.user': process.env.BROWSERSTACK_USERNAME || 'BROWSERSTACK_USERNAME',
-        'browserstack.key': process.env.BROWSERSTACK_ACCESS_KEY || 'BROWSERSTACK_ACCESS_KEY',
-        'browserstack.debug': true,
-        'browserstack.local': true,
+        os: 'Windows',
+        os_version: '10',
+      },
+    },
+    chrome: {
+      desiredCapabilities: {
+        ...commonCapabilities,
+        os: 'Windows',
+        os_version: '10',
+        browserName: 'chrome',
+      },
+    },
+    firefox: {
+      desiredCapabilities: {
+        ...commonCapabilities,
+        os: 'Windows',
+        os_version: '10',
+        browserName: 'firefox',
+      },
+    },
+    edge: {
+      desiredCapabilities: {
+        ...commonCapabilities,
+        os: 'Windows',
+        os_version: '10',
+        browserName: 'MicrosoftEdge',
+      },
+    },
+    safari: {
+      desiredCapabilities: {
+        ...commonCapabilities,
+        os: 'OS X',
+        os_version: 'High Sierra',
+        browserName: 'safari',
       },
     },
   },

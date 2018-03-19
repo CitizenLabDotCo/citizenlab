@@ -3,9 +3,11 @@ const hash = crypto.randomBytes(5).toString('hex');
 const title = `Test Phase ${hash}`;
 const startDate = '2017-11-05';
 const endDate = '2017-11-12';
+const afterEach = require('../../updateBSStatus');
 
 module.exports = {
   '@tags': ['city', 'projects', 'phases'],
+  afterEach,
   phaseCreateAndDelete: (browser) => {
     const signinPage = browser.page.signin();
     const adminProjectsPage = browser.page.adminProjects();

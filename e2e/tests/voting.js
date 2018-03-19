@@ -1,5 +1,8 @@
+const afterEach = require('../updateBSStatus');
+
 module.exports = {
   '@tags': ['citizen', 'ideas', 'voting'],
+  afterEach,
   voting: (browser) => {
     // sign in first to be able to vote
     browser.page.signin()
