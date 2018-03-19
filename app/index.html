@@ -62,8 +62,8 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=***REMOVED***&libraries=places" async defer></script>
   <script>
     if (navigator.serviceWorker) {
-      navigator.serviceWorker.getRegistrations().then((registrations) => {
-        registrations.forEach((registration) => {
+      navigator.serviceWorker.getRegistrations().then(function (registrations) {
+        registrations.forEach(function (registration) {
           registration.unregister();
         });
       });
