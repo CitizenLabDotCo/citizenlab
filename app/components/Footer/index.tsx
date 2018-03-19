@@ -132,6 +132,7 @@ const CitizenLabLogo = styled(Icon) `
   fill: #999;
   margin-left: 8px;
   transition: all 150ms ease-out;
+  flex: 1 1 100px;
 `;
 
 const PoweredBy = styled.a`
