@@ -67,6 +67,10 @@ export function updatePage(pageId: string, pageData: PageUpdate) {
   return streams.update<IPage>(`${apiEndpoint}/${pageId}`, pageId, pageData);
 }
 
+export function deletePage(pageId: string) {
+  return streams.delete(`${apiEndpoint}/${pageId}`, pageId);
+}
+
 export function pageByIdStream(pageId: string, streamParams: IStreamParams | null = null) {
   return streams.get<IPage>({ apiEndpoint: `${apiEndpoint}/${pageId}`, ...streamParams });
 }
