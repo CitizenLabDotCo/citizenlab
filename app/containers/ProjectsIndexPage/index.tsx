@@ -27,7 +27,7 @@ const Container = styled.div`
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
-  flex: 1;
+  flex: 1 1 auto;
   padding-top: 60px;
   padding-bottom: 100px;
 `;

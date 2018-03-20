@@ -199,7 +199,7 @@ type State = {
   hasEvents: boolean;
 };
 
-export default class ProjectHeader extends React.PureComponent<Props, State> {
+export default class ProjectsShowPage extends React.PureComponent<Props, State> {
   slug$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 

@@ -50,4 +50,12 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.oldest',
     defaultMessage: 'Oldest',
   },
+  map: {
+    id: 'app.containers.IdeaCards.map',
+    defaultMessage: 'Map',
+  },
+  cards: {
+    id: 'app.containers.IdeaCards.cards',
+    defaultMessage: 'Cards',
+  },
 });

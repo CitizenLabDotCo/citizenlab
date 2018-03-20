@@ -143,6 +143,7 @@ const Container: any = styled.div`
 
     ${StyledIcon} {
       height: ${(props: any) => getIconHeight(props.size)};
+      width: ${(props: any) => getIconHeight(props.size)};
       opacity: ${(props: any) => props.processing ? 0 : 1};
     }
 

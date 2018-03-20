@@ -1,5 +1,15 @@
 # Changelog
 
+## 2018-03-20
+
+### Fixed
+- Various visual glitches on IE11 and Edge
+- Scrolling behviour on mobile devices is back to normal
+- The admin idea manager no longer shows an empty right column by default
+
+### Added
+- Experimental raw HTML editing for pages in the admin at `/admin/pages`
+
 ## 2018-03-14
 
 ### Fixed
