@@ -14,7 +14,7 @@ import messages from './messages';
 import styled from 'styled-components';
 
 const Container = styled.form`
-  flex: 1;
+  flex: 1 0 200px;
   display: flex;
   align-items: center;
   align-self: stretch;

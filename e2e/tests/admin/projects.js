@@ -1,8 +1,10 @@
 const crypto = require('crypto');
 const hash = crypto.randomBytes(5).toString('hex');
+const afterEach = require('../../updateBSStatus');
 
 module.exports = {
   '@tags': ['city', 'projects', 'projects-basics'],
+  afterEach,
   projectsList: (browser) => {
     const signinPage = browser.page.signin();
     const adminProjectsPage = browser.page.adminProjects();
@@ -33,8 +35,7 @@ module.exports = {
     .navigate()
     .waitForElementVisible('@newProject')
     .click('@newProject')
-    .waitForElementVisible('@generalForm')
-    .assert.urlEquals(`http://${process.env.ROOT_URL}/admin/projects/new`);
+    .waitForElementVisible('@generalForm');
 
     browser.fillMultiloc('#project-title', `Test Project ${hash}`);
 

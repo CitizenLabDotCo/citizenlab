@@ -35,7 +35,7 @@ export default function request<T>(url, data, options, queryParameters): Promise
       Promise.all([
         response,
         response.json().catch(() => {
-          if (response.ok) return {};
+          if (response.ok || response.status === 404) return {};
           return new Error('Unsupported case. No valid JSON.');
         }),
       ])

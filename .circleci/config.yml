@@ -140,6 +140,47 @@ jobs:
           name: Invalidate the static assets on the CDN
           command: aws cloudfront create-invalidation --distribution-id E2MY732QC516J3 --paths '/*'
 
+  test_e2e:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    working_directory: ~/cl2-front
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          command: npm run test:browserstack --silent
+          no_output_timeout: '1h'
+
+  test_a11y:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    working_directory: ~/cl2-front
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: npm run test:pa11y --silent
+
+
 workflows:
   version: 2
   build-and-deploy:
@@ -186,3 +227,17 @@ workflows:
           filters:
             branches:
               only: production
+
+  nightly-reports:
+    triggers:
+      # Schedule a build every day at midnight UTC
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+
+    jobs:
+      - test_e2e
+      - test_a11y

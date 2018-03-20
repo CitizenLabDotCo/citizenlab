@@ -40,15 +40,18 @@ import { Locale } from 'typings';
 import { Location } from 'history';
 
 const Container = styled.div`
-  align-items: center;
-  background: #fff;
-  display: flex;
-  flex: 0 0 ${(props) => props.theme.menuHeight}px;
+  width: 100%;
   height: ${(props) => props.theme.menuHeight}px;
+  display: flex;
+  align-items: center;
   justify-content: space-between;
+  z-index: 999;
+  position: fixed;
+  top: 0;
+  background: #fff;
   padding-left: 30px;
   padding-right: 30px;
-  position: relative;
+  position: fixed;
   width: 100%;
 
   * {
@@ -97,6 +100,7 @@ const Container = styled.div`
 const Left = styled.div`
   display: flex;
   align-items: center;
+  flex-grow: 1;
 `;
 
 const LogoLink = styled(Link) `
@@ -171,6 +175,7 @@ const NavigationDropdownItemText = styled.div`
 
 const NavigationDropdownItemIcon = styled(Icon)`
   height: 7px;
+  width: 11px;
   fill: #999;
   margin-left: 4px;
   margin-top: 4px;

@@ -155,9 +155,10 @@ const Footer = styled.div`
 const StyledVoteControl = styled(VoteControl)``;
 
 const CommentIcon = styled(Icon)`
-  height: 21px;
   fill: ${(props) => props.theme.colors.label};
+  height: 21px;
   margin-right: 7px;
+  width: 30px;
 `;
 
 const CommentCount = styled.div`
@@ -170,7 +171,7 @@ const CommentInfo = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  
+
   &:not(.enabled) {
     opacity: 0.6;
   }
