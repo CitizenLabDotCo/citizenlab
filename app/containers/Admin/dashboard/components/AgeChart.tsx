@@ -1,18 +1,19 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import * as _ from 'lodash';
+import _ from 'lodash';
+import fp from 'lodash/fp';
 import * as moment from 'moment';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import { usersByBirthyearStream } from 'services/stats';
+import { usersByBirthyearStream, IUsersByBirthyear } from 'services/stats';
 import messages from '../messages';
 
 type State = {
   serie: {
-    name: string | number, 
-    value: number, 
+    name: string | number,
+    value: number,
     code: string
   }[] | null;
 };
@@ -42,21 +43,21 @@ class AgeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
-  convertToGraphFormat = (serie: {[key: string]: number}) => {
+  convertToGraphFormat = (serie: IUsersByBirthyear) => {
     const currentYear = moment().year();
 
-    return _(serie)
-      .map((value, key) => ({ age: key, count: value }))
-      .concat(_.map(_.range(currentYear, currentYear - 90, -10), (a) => ({ age: a.toString(), count: 0 })))
-      .groupBy(({ age }) => {
+    return fp.flow(
+      fp.map((value, key) => ({ age: key, count: value })),
+      fp.concat(_.map(_.range(currentYear, currentYear - 90, -10), (a) => ({ age: a.toString(), count: 0 }))),
+      fp.groupBy(({ age }) => {
         return age === '_blank' ? age : (Math.floor((currentYear - parseInt(age, 10)) / 10) * 10);
-      })
-      .map((counts, age) => ({
+      }),
+      fp.map((counts, age) => ({
         name: age === '_blank' ? this.props.intl.formatMessage(messages._blank) : `${age}-${parseInt(age, 10) + 10}`,
         value: _.sumBy(counts, 'count'),
         code: age,
-      }))
-      .value();
+      })),
+    )(serie);
   }
 
   resubscribe(startAt= this.props.startAt, endAt= this.props.endAt) {
