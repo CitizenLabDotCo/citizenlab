@@ -1,6 +1,7 @@
 {
   "app.components.Breadcrumbs.header": "Dette er Breadcrumbs-komponenten!",
   "app.components.CustomFieldsForm.requiredError": "Dette felt er påkrævet",
+  "app.components.ErrorBoundary.genericError": "",
   "app.components.FullscreenModal.closeButtonLabel": "Luk",
   "app.components.FullscreenModal.goBack": "Gå tilbage",
   "app.components.GoBackButton.group.edit.goBack": "Gå tilbage",
