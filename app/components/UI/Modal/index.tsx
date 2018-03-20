@@ -19,15 +19,16 @@ import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 
 const ModalContent: any = styled(clickOutside)`
-  width: 100%;
-  max-width: ${(props: any) => props.width};
+  background: #fff;
+  border-radius: 5px;
   display: flex;
   flex-direction: column;
+  max-width: ${(props: any) => props.width};
   outline: none;
   overflow-y: auto;
   padding: 40px;
-  border-radius: 5px;
-  background: #fff;
+  position: relative;
+  width: 100%;
 
   &.fixedHeight {
     height: 78vh;
