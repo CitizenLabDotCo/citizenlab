@@ -230,6 +230,7 @@
     "file-saver": "^1.3.3",
     "fontfaceobserver": "2.0.13",
     "formik": "0.11.10",
+    "grapesjs": "^0.14.6",
     "grid-styled": "^2.0.0-11",
     "hellojs": "^1.15.1",
     "immutable": "3.8.2",

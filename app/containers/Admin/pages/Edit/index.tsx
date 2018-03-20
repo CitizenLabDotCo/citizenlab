@@ -73,7 +73,7 @@ class EditPage extends React.Component<Props, State> {
       <PageForm
         {...props}
         mode="edit"
-        customFieldId={this.props.page.id}
+        pageId={this.props.page.id}
       />
     )
   )

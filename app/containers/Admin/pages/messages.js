@@ -43,4 +43,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.PagesPage.pageBody',
     defaultMessage: 'Body (supports HTML)',
   },
+  advancedEditorLink: {
+    id: 'app.containers.AdminPage.PagesPage.advancedEditorLink',
+    defaultMessage: 'Advanced editor',
+  },
 });
