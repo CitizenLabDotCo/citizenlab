@@ -61,12 +61,15 @@
 
   <script src="https://maps.googleapis.com/maps/api/js?key=***REMOVED***&libraries=places" async defer></script>
   <script>
-    navigator.serviceWorker.getRegistrations().then((registrations) => {
-      registrations.forEach((registration) => {
-        registration.unregister();
+    if (navigator.serviceWorker) {
+      navigator.serviceWorker.getRegistrations().then(function (registrations) {
+        registrations.forEach(function (registration) {
+          registration.unregister();
+        });
       });
-    });
+    }
   </script>
+  <script src="https://cdn.ravenjs.com/3.23.3/raven.min.js" crossorigin="anonymous"></script>
 </body>
 
 </html>

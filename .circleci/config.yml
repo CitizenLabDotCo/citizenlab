@@ -157,7 +157,9 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: npm run test:browserstack --silent
+      - run:
+          command: npm run test:browserstack --silent
+          no_output_timeout: '1h'
 
   test_a11y:
     docker:
