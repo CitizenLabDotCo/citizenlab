@@ -5,7 +5,9 @@
   "files.exclude": {
     "node_modules": true,
     "build": true,
-    "e2e/reports": true
+    "e2e/reports": true,
+    ".babel-cache": true,
+    ".cache-loader": true
   },
   "typescript.tsdk": "node_modules/typescript/lib"
 }
