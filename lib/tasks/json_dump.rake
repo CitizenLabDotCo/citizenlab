@@ -38,6 +38,8 @@ namespace :nlp do
         location_description: idea.location_description,
         topics:               idea.topics.map{|top| top.id},
         areas:                idea.areas.map{|ar| ar.id},
+        upvotes_count:        idea.upvotes_count,
+        downvotes_count:      idea.downvotes_count,
         comments:             encode_comments(idea)
       }
       d
