@@ -3,7 +3,6 @@ class MakeNotificationsJob < ApplicationJob
 
   def perform(activity)
     notification_classes = Notification.classes_for(activity)
-    byebug
 
     notification_classes.each do |notification_class|
       notifications = notification_class.make_notifications_on(activity)
