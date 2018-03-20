@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { isEmpty, values as getValues, every } from 'lodash';
-
-
 import FormikInput from 'components/UI/FormikInput';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
@@ -14,6 +12,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { Multiloc } from 'typings';
 import messages from '../messages';
 import Label from 'components/UI/Label';
+import { Link } from 'react-router';
 
 export interface FormValues {
   slug?: string;
@@ -23,7 +22,7 @@ export interface FormValues {
 
 export interface Props {
   mode: 'new' | 'edit';
-  customFieldId: string;
+  pageId: string;
 }
 
 class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
@@ -42,6 +41,18 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
     return errors;
   }
 
+  renderAdavancedEditorLink = (locale) => {
+    if (this.props.mode === 'edit') {
+      return (
+        <Link to={`/admin/pages/${this.props.pageId}/editor/${locale}`}>
+          <FormattedMessage {...messages.advancedEditorLink} />
+        </Link>
+      );
+    } else {
+      return null;
+    }
+  }
+
   render() {
     const { isSubmitting, errors, isValid, touched, mode } = this.props;
 
@@ -56,11 +67,11 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
                 name="slug"
                 component={FormikInput}
                 label={<FormattedMessage {...messages.pageSlug} />}
-                />
+              />
               {touched.slug && <Error
                 fieldName="slug"
                 apiErrors={errors.slug}
-                />}
+              />}
             </SectionField>
           }
 
@@ -82,6 +93,7 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
               name="body_multiloc"
               component={FormikTextAreaMultiloc}
               label={<FormattedMessage {...messages.pageBody} />}
+              renderPerLocale={this.renderAdavancedEditorLink}
             />
             {touched.body_multiloc && <Error
               fieldName="body_multiloc"
