@@ -26,7 +26,7 @@ export default class ErrorBoundary extends React.Component<Props, State>  {
   render() {
     if (this.state.hasError) {
       // You can render any custom fallback UI
-      return <FormattedMessage {...messages.genericError} />
+      return <FormattedMessage {...messages.genericError} />;
     }
     return this.props.children;
   }
