@@ -1,12 +1,10 @@
 class WebApi::V1::UserSerializer < ActiveModel::Serializer
   include Knock::Authenticable
 
-  attributes :id, :first_name, :last_name, :slug, :locale, :avatar, :roles, :bio_multiloc, :created_at, :updated_at, :is_invited
+  attributes :id, :first_name, :last_name, :slug, :locale, :avatar, :roles, :bio_multiloc, :registration_completed_at, :is_invited, :created_at, :updated_at
   attribute :email, if: :view_private_attributes?
-  attribute :gender, if: :view_private_attributes?
-  attribute :birthyear, if: :view_private_attributes?
-  attribute :domicile, if: :view_private_attributes?
-  attribute :education, if: :view_private_attributes?
+
+  attribute :custom_field_values, if: :view_private_attributes?
 
   attribute :unread_notifications, if: :unread_notifications
 

@@ -42,6 +42,9 @@ namespace :migrate do
                    'created_at'        => u.created_at,
                    'updated_at'        => u.updated_at
                  }
+      if !yml_user['password_digest']
+        yml_user['password'] = SecureRandom.urlsafe_base64 32
+      end
       users_hash[u.id] = yml_user
       yml_user
     end
@@ -52,7 +55,6 @@ namespace :migrate do
       yml_project = { 'title_multiloc'               => p.title_multiloc,
                       'description_multiloc'         => p.description_multiloc,
                       'remote_header_bg_url'         => p.header_bg_url,
-                      # 'visible_to'                   => p.visible_to,
                       'description_preview_multiloc' => p.description_preview_multiloc,
                       'presentation_mode'            => p.presentation_mode,
                       'participation_method'         => p.participation_method,
@@ -60,8 +62,17 @@ namespace :migrate do
                       'internal_role'                => p.internal_role,
                       'publication_status'           => p.publication_status,
                       'created_at'                   => p.created_at,
-                      'updated_at'                   => p.updated_at
+                      'updated_at'                   => p.updated_at,
+                      'posting_enabled'              => p.posting_enabled,
+                      'commenting_enabled'           => p.commenting_enabled,
+                      'voting_enabled'               => p.voting_enabled,
+                      'voting_method'                => p.voting_method,
+                      'voting_limited_max'           => p.voting_limited_max
                    }
+      if yml_project['participation_method'] == 'survey'
+        yml_project['survey_embed_url'] = p.survey_embed_url
+        yml_project['survey_service']   = p.survey_service
+      end
       projects_hash[p.id] = yml_project
       yml_project
     end
@@ -83,8 +94,8 @@ namespace :migrate do
       yml_idea = { 'title_multiloc'       => i.title_multiloc,
                    'body_multiloc'        => i.body_multiloc,
                    'publication_status'   => i.publication_status,
-                   'project_ref'          => projects_hash[i.project.id],
-                   'author_ref'           => users_hash[i.author.id],
+                   'project_ref'          => projects_hash[i.project&.id],
+                   'author_ref'           => users_hash[i.author&.id],
                    'location_description' => i.location_description,
                    'published_at'         => i.published_at,
                    'created_at'           => i.created_at,
@@ -152,8 +163,17 @@ namespace :migrate do
                     'end_at'               => p.end_at,
                     'participation_method' => p.participation_method,
                     'created_at'           => p.created_at,
-                    'updated_at'           => p.updated_at
+                    'updated_at'           => p.updated_at,
+                    'posting_enabled'      => p.posting_enabled,
+                    'commenting_enabled'   => p.commenting_enabled,
+                    'voting_enabled'       => p.voting_enabled,
+                    'voting_method'        => p.voting_method,
+                    'voting_limited_max'   => p.voting_limited_max
                    }
+      if yml_phase['participation_method'] == 'survey'
+        yml_phase['survey_embed_url'] = p.survey_embed_url
+        yml_phase['survey_service']   = p.survey_service
+      end
       yml_phase
     end
   end

@@ -35,11 +35,15 @@ class UserPolicy < ApplicationPolicy
   end
 
   def update?
-    user && (record.id == user.id || user.admin?)
+    user&.active? && (record.id == user.id || user.admin?)
+  end
+
+  def complete_registration?
+    user && !user.active? && (record.id == user.id)
   end
 
   def destroy?
-    user && user.admin?
+    user&.active? && user.admin?
   end
 
   def view_private_attributes?
@@ -47,11 +51,15 @@ class UserPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    shared = [:first_name, :last_name, :email, :password, :avatar, :locale, :gender, :birthyear, :domicile, :education, bio_multiloc: I18n.available_locales]
+    shared = [:first_name, :last_name, :email, :password, :avatar, :locale, custom_field_values: {}, bio_multiloc: I18n.available_locales]
     if user && user.admin?
       shared + [roles: [:type, :project_id]]
     else
       shared
     end
+  end
+
+  def permitted_attributes_for_complete_registration
+    [custom_field_values: {}]
   end
 end
