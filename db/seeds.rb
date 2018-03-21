@@ -88,14 +88,6 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         timezone: "Europe/Brussels",
         color_main: Faker::Color.hex_color,
       },
-      demographic_fields: {
-        allowed: true,
-        enabled: true,
-        gender: true,
-        domicile: true,
-        birthyear: true,
-        education: true,
-      },
       facebook_login: {
         allowed: true,
         enabled: true,
@@ -123,6 +115,10 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         enabled: true,
         allowed: true
       },
+      surveys: {
+       enabled: true,
+       allowed: true,
+      },
       maps: {
         enabled: true,
         allowed: true,
@@ -132,6 +128,10 @@ if Apartment::Tenant.current == 'public' || 'example_org'
           long: "4.3517"
         },
         zoom_level: 12
+      },
+      user_custom_fields: {
+        enabled: true,
+        allowed: true
       }
     }
   })
@@ -155,14 +155,6 @@ if Apartment::Tenant.current == 'public' || 'example_org'
         timezone: "Europe/Brussels",
         color_main: Faker::Color.hex_color,
       },
-      demographic_fields: {
-        allowed: true,
-        enabled: true,
-        gender: true,
-        domicile: true,
-        birthyear: true,
-        education: true,
-      },
       facebook_login: {
         allowed: true,
         enabled: true,
@@ -183,6 +175,8 @@ end
 
 
 if Apartment::Tenant.current == 'empty_localhost'
+  TenantTemplateService.new.apply_template('base')
+  
   User.create({
     first_name: 'Koen',
     last_name: 'Gremmelprez',
@@ -194,11 +188,8 @@ if Apartment::Tenant.current == 'empty_localhost'
     ],
     gender: "male",
     domicile: 'outside',
-    birthyear: 1987,
-    education: 7
+    birthyear: '1987'
   })
-
-  TenantTemplateService.new.apply_template('base')
 end
 
 tenant_template = TenantTemplateService.new.available_templates
@@ -210,6 +201,33 @@ TenantTemplateService.new.apply_template('base') if tenant_template
 
 if Apartment::Tenant.current == 'localhost'
 
+
+  custom_field = CustomField.create(
+    resource_type: 'User',
+    key: 'politician',
+    input_type: 'select',
+    title_multiloc: { 'en' => 'Are you a politician?' },
+    description_multiloc: { 'en' => 'We use this to provide you with customized information'},
+    required: false,
+  )
+
+  CustomFieldOption.create(custom_field: custom_field, key: 'active_politician', title_multiloc: {'en' => 'Active politician'})
+  CustomFieldOption.create(custom_field: custom_field, key: 'retired_politician', title_multiloc: {'en' => 'Retired politician'})
+  CustomFieldOption.create(custom_field: custom_field, key: 'no', title_multiloc: {'en' => 'No'})
+
+  12.times do 
+    Area.create({
+      title_multiloc: {
+        "en": Faker::Address.city,
+        "nl": Faker::Address.city
+      },
+      description_multiloc: {
+        "en": Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
+        "nl": Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
+      }
+    });
+  end
+
   User.create({
     first_name: 'Koen',
     last_name: 'Gremmelprez',
@@ -220,9 +238,10 @@ if Apartment::Tenant.current == 'localhost'
       {type: "admin"},
     ],
     gender: "male",
-    domicile: 'outside',
-    birthyear: 1987,
-    education: 7
+    birthyear: "1987",
+    education: "7",
+    domicile: rand(2) == 0 ? nil : Area.offset(rand(Area.count)).first.id,
+    custom_field_values: (rand(2) == 0) ? {} : {custom_field.key => CustomFieldOption.offset(rand(CustomFieldOption.count)).first.key}
   })
 
   num_users.times do 
@@ -238,26 +257,16 @@ if Apartment::Tenant.current == 'localhost'
       locale: ['en','nl'][rand(1)],
       roles: rand(10) == 0 ? [{type: 'admin'}] : [],
       gender: %w(male female unspecified)[rand(4)],
-      birthyear: rand(2) === 0 ? nil : 1927 + rand(90),
-      education: rand(1) === 0 ? nil : rand(9),
-      avatar: nil # (rand(3) > 0) ? generate_avatar : nil
+      birthyear: rand(2) === 0 ? nil : (1927 + rand(90)).to_s,
+      education: rand(2) === 0 ? nil : rand(9).to_s,
+      avatar: nil, # (rand(3) > 0) ? generate_avatar : nil,
+      domicile: rand(2) == 0 ? nil : Area.offset(rand(Area.count)).first.id,
+      custom_field_values: rand(2) == 0 ? {} : {custom_field.key => CustomFieldOption.offset(rand(CustomFieldOption.count)).first.key}
     })
   end
 
   TenantTemplateService.new.apply_template('base') #####
 
-  12.times do 
-    Area.create({
-      title_multiloc: {
-        "en": Faker::Address.city,
-        "nl": Faker::Address.city
-      },
-      description_multiloc: {
-        "en": Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
-        "nl": Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
-      }
-    });
-  end
 
   Area.create({
     title_multiloc: {
@@ -393,7 +402,7 @@ if Apartment::Tenant.current == 'localhost'
     Page.create({
       title_multiloc:create_for_some_locales{Faker::Lorem.sentence},
       body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
-      project: rand(1) == 1 ? Project.offset(rand(Project.count)).first : nil,
+      project: rand(2) == 0 ? Project.offset(rand(Project.count)).first : nil,
     })
   end
 
@@ -404,5 +413,6 @@ if Apartment::Tenant.current == 'localhost'
       users: User.all.shuffle.take(rand(User.count))
     })
   end
+
 
 end

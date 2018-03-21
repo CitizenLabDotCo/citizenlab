@@ -12,7 +12,7 @@ Rails.application.configure do
   # https://github.com/rails/rails/issues/27455
   # https://github.com/puma/puma/issues/1184
 
-  config.eager_load = true
+  config.eager_load = true # otherwise, active jobs of engines in development cannot find tenants (after the second time)
 
   # Show full error reports.
   config.consider_all_requests_local = true

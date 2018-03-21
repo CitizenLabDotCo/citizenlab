@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180215130118) do
+ActiveRecord::Schema.define(version: 20180309160219) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,6 +70,42 @@ ActiveRecord::Schema.define(version: 20180215130118) do
     t.index ["lft"], name: "index_comments_on_lft"
     t.index ["parent_id"], name: "index_comments_on_parent_id"
     t.index ["rgt"], name: "index_comments_on_rgt"
+  end
+
+  create_table "custom_field_options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "custom_field_id"
+    t.string "key"
+    t.jsonb "title_multiloc", default: {}
+    t.integer "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["custom_field_id", "key"], name: "index_custom_field_options_on_custom_field_id_and_key", unique: true
+    t.index ["custom_field_id"], name: "index_custom_field_options_on_custom_field_id"
+  end
+
+  create_table "custom_fields", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "resource_type"
+    t.string "key"
+    t.string "input_type"
+    t.jsonb "title_multiloc", default: {}
+    t.jsonb "description_multiloc", default: {}
+    t.boolean "required", default: false
+    t.integer "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "enabled", default: true, null: false
+    t.string "code"
+    t.index ["resource_type", "key"], name: "index_custom_fields_on_resource_type_and_key", unique: true
+  end
+
+  create_table "email_campaigns_campaign_email_commands", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "campaign"
+    t.uuid "recipient_id"
+    t.datetime "commanded_at"
+    t.jsonb "tracked_content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recipient_id"], name: "index_email_campaigns_campaign_email_commands_on_recipient_id"
   end
 
   create_table "email_snippets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -265,6 +301,8 @@ ActiveRecord::Schema.define(version: 20180215130118) do
     t.boolean "voting_enabled", default: true
     t.string "voting_method", default: "unlimited"
     t.integer "voting_limited_max", default: 10
+    t.string "survey_embed_url"
+    t.string "survey_service"
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -306,6 +344,8 @@ ActiveRecord::Schema.define(version: 20180215130118) do
     t.string "process_type", default: "timeline", null: false
     t.string "internal_role"
     t.string "publication_status", default: "published", null: false
+    t.string "survey_embed_url"
+    t.string "survey_service"
     t.integer "ordering"
     t.index ["created_at"], name: "index_projects_on_created_at"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
@@ -364,7 +404,6 @@ ActiveRecord::Schema.define(version: 20180215130118) do
     t.string "email"
     t.string "password_digest"
     t.string "slug"
-    t.jsonb "demographics", default: {}
     t.jsonb "roles", default: []
     t.string "reset_password_token"
     t.datetime "created_at", null: false
@@ -375,6 +414,8 @@ ActiveRecord::Schema.define(version: 20180215130118) do
     t.string "locale"
     t.jsonb "bio_multiloc", default: {}
     t.boolean "cl1_migrated", default: false
+    t.jsonb "custom_field_values", default: {}
+    t.datetime "registration_completed_at"
     t.boolean "is_invited", default: false, null: false
     t.datetime "invited_at"
     t.index ["email"], name: "index_users_on_email"
@@ -400,6 +441,8 @@ ActiveRecord::Schema.define(version: 20180215130118) do
   add_foreign_key "areas_projects", "projects"
   add_foreign_key "comments", "ideas"
   add_foreign_key "comments", "users", column: "author_id"
+  add_foreign_key "custom_field_options", "custom_fields"
+  add_foreign_key "email_campaigns_campaign_email_commands", "users", column: "recipient_id"
   add_foreign_key "events", "projects"
   add_foreign_key "groups_projects", "groups"
   add_foreign_key "groups_projects", "projects"

@@ -172,7 +172,10 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "demographic fields" do
+  describe "demographic fields", slow_test: true do
+    before do
+      TenantTemplateService.new.apply_template 'base'
+    end
 
     it "(gender) is valid when male, female or unspecified" do
       expect(build(:user, gender: 'male')).to be_valid
@@ -186,8 +189,8 @@ RSpec.describe User, type: :model do
     end
 
     it "(birthyear) is valid when in realistic range" do
-      expect(build(:user, birthyear: Time.now.year - 119)).to be_valid
-      expect(build(:user, birthyear: Time.now.year - 5)).to be_valid
+      expect(build(:user, birthyear: (Time.now.year - 117).to_s)).to be_valid
+      expect(build(:user, birthyear: (Time.now.year - 13).to_s)).to be_valid
     end
 
     it "(birthyear) is invalid when unrealistic" do
@@ -220,12 +223,14 @@ RSpec.describe User, type: :model do
     end
 
     it "(education) is valid when an ISCED2011 level" do
-      expect(build(:user, education: 0)).to be_valid
-      expect(build(:user, education: 4)).to be_valid
-      expect(build(:user, education: 8)).to be_valid
+      CustomField.find_by(code: 'education').update(enabled: true)
+      expect(build(:user, education: '2')).to be_valid
+      expect(build(:user, education: '4')).to be_valid
+      expect(build(:user, education: '8')).to be_valid
     end
 
     it "(education) is invalid when not an isced 2011 level" do
+      CustomField.find_by(code: 'education').update(enabled: true)
       user = build(:user, education: 'somethingelse')
       expect{ user.valid? }.to change{ user.errors[:education] }
       user = build(:user, education: 9)
@@ -274,6 +279,35 @@ RSpec.describe User, type: :model do
       expect(ssos).to receive(:profile_to_user_attrs).with('someprovider', auth).and_return({})
       expect(User).to receive(:new)
       User.build_with_omniauth(auth)
+    end
+  end
+
+  describe "custom_field_values" do
+    it "validates when custom_field_values have changed" do
+      u = create(:user)
+      u.custom_field_values = {
+        somekey: "somevalue"
+      }
+      expect{ u.save }.to change{ u.errors[:custom_field_values]}
+    end
+
+    it "doesn't validate when custom_field_values hasn't changed" do
+      u = build(:user, custom_field_values: {somekey: 'somevalue' })
+      u.save(validate: false)
+      expect{ u.save }.not_to change{ u.errors[:custom_field_values] }
+    end
+
+  end
+
+  describe "active?" do
+    it "returns false when the user has not completed signup" do
+      u = build(:user, registration_completed_at: nil)
+      expect(u.active?).to be false
+    end
+
+    it "returns true when the user has completed signup" do
+      u = build(:user)
+      expect(u.active?).to be true
     end
   end
 

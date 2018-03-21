@@ -83,3 +83,23 @@ nl:
   projects:
     open_idea_project_title: Open Idee Project
     open_idea_project_description: De ideeën die zich hier bevinden werden niet aan een project toegekend.
+  custom_fields:
+    gender: Geslacht
+    birthyear: Geboortejaar
+    domicile: Woonplaats
+    education: Opleiding
+  custom_field_options:
+    gender:
+      male: Man
+      female: Vrouw
+      unspecified: Onbepaald
+    domicile:
+      outside: Ergens anders
+    education:
+      ISCED2: Lager secundair onderwijs
+      ISCED3: Hoger secundair onderwijs
+      ISCED4: Postsecundair niet-hoger onderwijs
+      ISCED5: Tertiair onderwijs met korte cyclus
+      ISCED6: Bachelor of gelijkwaardig
+      ISCED7: Master of gelijkwaardig
+      ISCED8: Doctoraat of gelijkwaardig

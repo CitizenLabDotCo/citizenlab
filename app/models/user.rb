@@ -22,7 +22,7 @@ class User < ApplicationRecord
   has_many :inviter_invites, class_name: 'Invite', foreign_key: :inviter_id, dependent: :nullify
   has_one :invitee_invite, class_name: 'Invite', foreign_key: :invitee_id, dependent: :destroy
 
-  store_accessor :demographics, :gender, :birthyear, :domicile, :education
+  store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
   validates :email, :first_name, :slug, :locale, presence: true, unless: :is_invited?
 
@@ -36,6 +36,11 @@ class User < ApplicationRecord
   validates :domicile, inclusion: {in: proc {['outside'] + Area.select(:id).map(&:id)}}, allow_nil: true
   # Follows ISCED2011 scale
   validates :education, numericality: {only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 8}, allow_nil: true
+
+  validates :custom_field_values, json: {
+    schema: lambda { CustomFieldService.new.fields_to_json_schema(CustomField.fields_for(User)) },
+    message: ->(errors) { errors }
+  }, if: [:custom_field_values_changed?, :active?]
 
   validates :password, length: { in: 5..72 }, allow_nil: true
   validate do |record|
@@ -60,6 +65,10 @@ class User < ApplicationRecord
   scope :admin, -> { 
     where("roles @> '[{\"type\":\"admin\"}]'")
   }
+
+  scope :active, -> {
+    where("completed_signup_at IS NOT NULL")
+  } 
   
   def self.build_with_omniauth(auth)
     extra_user_attrs = SingleSignOnService.new.profile_to_user_attrs(auth.provider, auth)
@@ -106,6 +115,10 @@ class User < ApplicationRecord
 
   def member_of? group_id
     !self.memberships.select{ |m| m.group_id == group_id }.empty?
+  end
+
+  def active?
+    self.registration_completed_at.present?
   end
   
   private
