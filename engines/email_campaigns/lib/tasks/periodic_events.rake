@@ -19,12 +19,12 @@ require 'ice_cube'
 # user platform digests, every Monday at 10AM
 @user_platform_digest_schedule = IceCube::Schedule.new(now=Time.at(0))
 @user_platform_digest_schedule.add_recurrence_rule(
-  IceCube::Rule.weekly(2).day(:monday).hour_of_day(10) 
+  IceCube::Rule.weekly(1).day(:monday).hour_of_day(10) 
 )
 # admin weekly report, every Monday at 10AM
 @admin_weekly_report_schedule = IceCube::Schedule.new(now=Time.at(0))
 @admin_weekly_report_schedule.add_recurrence_rule(
-  IceCube::Rule.weekly(2).day(:monday).hour_of_day(10) 
+  IceCube::Rule.weekly(1).day(:monday).hour_of_day(10) 
 )
 @campaign_schedules = {
   'user_platform_digest'             => @user_platform_digest_schedule,

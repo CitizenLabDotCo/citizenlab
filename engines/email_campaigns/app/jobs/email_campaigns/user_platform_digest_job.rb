@@ -4,6 +4,7 @@ module EmailCampaigns
   
     N_TOP_IDEAS = ENV.fetch("N_USER_PLATFORM_DIGEST_IDEAS", 3)
     N_DISCOVER_PROJECTS = ENV.fetch("N_DISCOVER_PROJECTS", 3)
+
   
     def perform
       ti_service = TrendingIdeaService.new # always at thy service
@@ -41,7 +42,7 @@ module EmailCampaigns
             payload: {
               top_ideas: serialized_top_ideas,
               discover_projects: serialized_discover_projects
-              },
+            },
             tenantId: tenant.id,
             tenantName: tenant.name,
             tenantHost: tenant.host,
