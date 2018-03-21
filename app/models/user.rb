@@ -24,10 +24,10 @@ class User < ApplicationRecord
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
-  validates :email, :first_name, :slug, :locale, presence: true, unless: :is_invited?
+  validates :email, :first_name, :slug, :locale, presence: true, unless: :invite_pending?
 
   validates :email, uniqueness: true
-  validates :slug, uniqueness: true, format: {with: SlugService.new.regex }, unless: :is_invited?
+  validates :slug, uniqueness: true, format: {with: SlugService.new.regex }, unless: :invite_pending?
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
   validates :locale, inclusion: { in: proc {Tenant.settings('core','locales')} }
   validates :bio_multiloc, multiloc: {presence: false}
@@ -37,6 +37,9 @@ class User < ApplicationRecord
   # Follows ISCED2011 scale
   validates :education, numericality: {only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 8}, allow_nil: true
 
+  INVITE_STATUSES = %w(pending accepted)
+  validates :invite_status, inclusion: {in: INVITE_STATUSES}, allow_nil: true
+
   validates :custom_field_values, json: {
     schema: lambda { CustomFieldService.new.fields_to_json_schema(CustomField.fields_for(User)) },
     message: ->(errors) { errors }
@@ -44,14 +47,14 @@ class User < ApplicationRecord
 
   validates :password, length: { in: 5..72 }, allow_nil: true
   validate do |record|
-    record.errors.add(:last_name, :blank) unless (record.last_name.present? or record.cl1_migrated or record.is_invited)
-    record.errors.add(:password, :blank) unless (record.password_digest.present? or record.identities.any? or record.is_invited)
+    record.errors.add(:last_name, :blank) unless (record.last_name.present? or record.cl1_migrated or record.invite_pending?)
+    record.errors.add(:password, :blank) unless (record.password_digest.present? or record.identities.any? or record.invite_pending?)
   end
 
   ROLES_JSON_SCHEMA = Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
   validates :roles, json: { schema: ROLES_JSON_SCHEMA, message: ->(errors) { errors } }
 
-  before_validation :set_cl1_migrated, :set_invited_at, on: :create
+  before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
   # For prepend: true, see https://github.com/carrierwaveuploader/carrierwave/wiki/Known-Issues#activerecord-callback-ordering
   before_save :generate_avatar, on: :create, prepend: true
@@ -67,7 +70,7 @@ class User < ApplicationRecord
   }
 
   scope :active, -> {
-    where("completed_signup_at IS NOT NULL")
+    where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'")
   } 
   
   def self.build_with_omniauth(auth)
@@ -84,8 +87,8 @@ class User < ApplicationRecord
     avatar.file.nil?
   end
 
-  def is_invited?
-    is_invited
+  def invite_pending?
+    invite_status == 'pending'
   end
 
   def display_name
@@ -118,7 +121,7 @@ class User < ApplicationRecord
   end
 
   def active?
-    self.registration_completed_at.present?
+    self.registration_completed_at.present? && !self.invite_pending?
   end
   
   private
@@ -131,12 +134,6 @@ class User < ApplicationRecord
 
   def set_cl1_migrated
     self.cl1_migrated ||= false
-  end
-
-  def set_invited_at
-    if self.is_invited
-      self.invited_at ||= Time.now
-    end
   end
 
   def generate_avatar

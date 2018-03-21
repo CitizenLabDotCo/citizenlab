@@ -305,6 +305,11 @@ RSpec.describe User, type: :model do
       expect(u.active?).to be false
     end
 
+    it "return false when the user has a pending invitation" do
+      u = build(:user, invite_status: 'pending')
+      expect(u.active?).to be false
+    end
+
     it "returns true when the user has completed signup" do
       u = build(:user)
       expect(u.active?).to be true

@@ -46,7 +46,7 @@ resource "Invites" do
         invitee = User.find_by(email: email)
         json_invitee = json_response.dig(:included).select{|inc| inc[:id] == invitee.id}&.first
         expect(json_invitee&.dig(:attributes,:email)).to eq(email)
-        expect(json_invitee&.dig(:attributes,:is_invited)).to eq(true)
+        expect(json_invitee&.dig(:attributes,:invite_status)).to eq('pending')
         expect(invitee.admin?).to eq true
         expect(Membership.count).to eq 3
       end
@@ -113,7 +113,7 @@ resource "Invites" do
         expect(json_response.dig(:data,:attributes,:accepted_at)).to be_present
         boulettos = json_response.dig(:included).select{|inc| inc[:id] == @invite.invitee.id}&.first
         expect(boulettos&.dig(:attributes,:last_name)).to eq('Boulettos')
-        expect(boulettos&.dig(:attributes,:is_invited)).to eq(false)
+        expect(boulettos&.dig(:attributes,:invite_status)).to eq('accepted')
       end
 
       example "Accepting an invite with an invalid token" do
