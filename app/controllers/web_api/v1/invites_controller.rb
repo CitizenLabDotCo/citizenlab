@@ -11,7 +11,7 @@ class WebApi::V1::InvitesController < ApplicationController
 
   def create
     @invitee = User.new(create_params)
-    @invitee.is_invited = true
+    @invitee.invite_status = 'pending'
     @invitee.locale ||= current_user&.locale
     @invitee.password ||= SecureRandom.urlsafe_base64 32
     @invite = Invite.new(invitee: @invitee, inviter: current_user)
@@ -53,7 +53,7 @@ class WebApi::V1::InvitesController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
         invitee.assign_attributes accept_params
-        invitee.is_invited = false
+        invitee.invite_status = 'accepted'
         if !invitee.save
           raise ClErrors::TransactionError.new(error_key: :unprocessable_invitee)
         end

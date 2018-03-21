@@ -1,9 +1,5 @@
 class WebApi::V1::UsersController < ::ApplicationController
 
-  UNAUTHORIZED_CREATE_REASONS = {
-    email_invited: 'email_invited'
-  }
-
   # before_action :authenticate_user, except: [:create]
   before_action :set_user, only: [:show, :update, :destroy]
   skip_after_action :verify_authorized, only: [:index_xlsx]
@@ -17,6 +13,8 @@ class WebApi::V1::UsersController < ::ApplicationController
       .per(params.dig(:page, :size))
 
     @users = @users.search_by_all(params[:search]) if params[:search].present?
+
+    @users = @users.active unless params[:include_inactive]
 
     @users = case params[:sort]
       when "created_at"
@@ -137,14 +135,6 @@ class WebApi::V1::UsersController < ::ApplicationController
     authorize @user
   rescue ActiveRecord::RecordNotFound
     send_error(nil, 404)
-  end
-
-  def user_not_authorized exception
-    if (exception.query == "create?") && User.find_by(email: exception.record.email, is_invited: true)
-      render json: { errors: { base: [{ error: UNAUTHORIZED_CREATE_REASONS[:email_invited] }] } }, status: :unauthorized
-      return
-    end
-    raise exception
   end
 
 end

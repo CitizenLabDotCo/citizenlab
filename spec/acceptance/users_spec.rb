@@ -213,8 +213,8 @@ resource "Users" do
         let!(:invitee) {create(:invited_user)}
         let(:email) {invitee.email}
         
-        example_request "[error] Registrating an invited user" do
-          expect(response_status).to eq 401
+        example_request "[error] Registering an invited user" do
+          expect(response_status).to eq 422
         end
       end
 
