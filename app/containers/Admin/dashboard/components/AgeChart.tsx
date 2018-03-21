@@ -46,13 +46,16 @@ class AgeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
   convertToGraphFormat = (serie: IUsersByBirthyear) => {
     const currentYear = moment().year();
 
+    // Remove the arguments cap of 1 from fp.map
+    const mapWithKeys = fp.map.convert({ cap: false });
+
     return fp.flow(
-      fp.map((value, key) => ({ age: key, count: value })),
+      mapWithKeys((value, key) => ({ age: key, count: value })),
       fp.concat(_.map(_.range(currentYear, currentYear - 90, -10), (a) => ({ age: a.toString(), count: 0 }))),
       fp.groupBy(({ age }) => {
         return age === '_blank' ? age : (Math.floor((currentYear - parseInt(age, 10)) / 10) * 10);
       }),
-      fp.map((counts, age) => ({
+      mapWithKeys((counts, age) => ({
         name: age === '_blank' ? this.props.intl.formatMessage(messages._blank) : `${age}-${parseInt(age, 10) + 10}`,
         value: _.sumBy(counts, 'count'),
         code: age,
