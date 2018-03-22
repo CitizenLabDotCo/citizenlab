@@ -122,6 +122,7 @@ Rails.application.routes.draw do
 
 
   mount PublicApi::Engine => "/api", as: 'public_api'
+  mount AdminApi::Engine => "/api", as: 'admin_api'
 
 
 end
