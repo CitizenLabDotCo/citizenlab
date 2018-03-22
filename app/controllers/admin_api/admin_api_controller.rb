@@ -3,7 +3,8 @@ class AdminApi::AdminApiController < ActionController::API
   around_action :switch_tenant
 
   rescue_from ActiveRecord::RecordNotFound, with: :send_not_found
-  
+  rescue_from ClErrors::TransactionError, :with => :transaction_error
+
 
   def authenticate_request
     unless request.headers["Authorization"] == ENV.fetch("ADMIN_API_TOKEN")
@@ -28,5 +29,9 @@ class AdminApi::AdminApiController < ActionController::API
     else
       render json: error, status: 404
     end
+  end
+
+  def transaction_error(exception)
+    render json: { errors: { base: [{ error: exception.error_key, message: exception.message }] } }, status: exception.code
   end
 end
