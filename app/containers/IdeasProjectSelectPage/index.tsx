@@ -91,8 +91,13 @@ const PageTitle = styled.h1`
   ${media.smallerThanMaxTablet`
     font-size: 28px;
     line-height: 34px;
-    text-align: left;
   `}
+
+  &:not(.noProjects) {
+    ${media.smallerThanMaxTablet`
+      text-align: left;
+    `}
+  }
 `;
 
 const Column = styled.div`
@@ -175,7 +180,9 @@ const WithoutButtonBar = styled.div`
 const EmptyStateContainer = styled.div`
   color: #474747;
   font-size: 18px;
-  padding: 3rem 0;
+  line-height: 24px;
+  text-align: center;
+  padding-top: 15px;
 `;
 
 type Props = {
@@ -207,9 +214,13 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
 
     this.subscriptions = [
       projects$.switchMap((projects) => {
-        return Rx.Observable.combineLatest(
-          projects.data.map(project => projectImagesStream(project.id).observable)
-        ).map(() => projects);
+        if (projects && projects.data && projects.data.length > 0) {
+          return Rx.Observable.combineLatest(
+            projects.data.map(project => projectImagesStream(project.id).observable)
+          ).map(() => projects);
+        }
+
+        return Rx.Observable.of(projects);
       }).subscribe((projects) => {
         this.setState({ projects: projects.data, loaded: true });
       })
@@ -258,7 +269,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
       return (
         <Container>
           <StyledContentContainer>
-            <PageTitle>
+            <PageTitle className={noProjects ? 'noProjects' : ''}>
               <FormattedMessage {...messages.pageTitle} />
             </PageTitle>
 
