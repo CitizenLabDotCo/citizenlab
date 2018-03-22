@@ -17,7 +17,7 @@ class InvitePolicy < ApplicationPolicy
   end
 
   def create?
-    user && user.admin?
+    user&.active? && user.admin?
   end
 
 end

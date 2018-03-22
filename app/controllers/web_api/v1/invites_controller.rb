@@ -8,6 +8,14 @@ class WebApi::V1::InvitesController < ApplicationController
 
   skip_after_action :verify_authorized, only: [:accept]
 
+  def index
+    @invites = policy_scope(Invite)
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
+
+    render json: @invites
+  end
+
 
   def create
     @invitee = User.new(create_params)
@@ -68,7 +76,7 @@ class WebApi::V1::InvitesController < ApplicationController
       if e.error_key == :unprocessable_invitee
         render json: { errors: invitee.errors.details }, status: :unprocessable_entity
       elsif e.error_key == :unprocessable_invite
-        render json: { errors: invite.errors.details }, status: :unprocessable_entity
+        render json: { errors: @invite.errors.details }, status: :unprocessable_entity
       else
         raise e
       end
@@ -76,34 +84,24 @@ class WebApi::V1::InvitesController < ApplicationController
   end
 
   def create_params
-    # TODO shared constant of user creation attributes, but no email here
     params.require(:invite).permit(
       :email,
-      :first_name, :last_name, 
+      :first_name, 
+      :last_name, 
       :avatar, 
       :locale, 
-      :gender, 
-      :birthyear, 
-      :domicile, 
-      :education,
       roles: [:type, :project_id],
-      bio_multiloc: I18n.available_locales, 
       group_ids: []
     )
   end
 
   def accept_params
-    # TODO shared constant of user creation attributes, but no email here
     params.require(:invite).permit(
-      :first_name, :last_name, 
+      :email,
+      :first_name, 
+      :last_name, 
       :password, 
-      :avatar, 
       :locale, 
-      :gender, 
-      :birthyear, 
-      :domicile, 
-      :education, 
-      bio_multiloc: I18n.available_locales,
     )
   end
 
