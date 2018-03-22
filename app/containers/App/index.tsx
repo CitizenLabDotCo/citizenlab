@@ -208,6 +208,8 @@ export default class App extends React.PureComponent<Props & RouterState, State>
                 <IdeasShow ideaId={modalId} inModal={true} />
               </FullscreenModal>
 
+              <div id="modal-portal" />
+
               <Navbar />
 
               <HasPermission item={{ type: 'route', path: location.pathname }} action="access">

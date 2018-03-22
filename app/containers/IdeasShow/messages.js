@@ -94,6 +94,18 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.deleteComment',
     defaultMessage: 'Delete',
   },
+  confirmCommentDeletion: {
+    id: 'app.containers.IdeasShow.confirmCommentDeletion',
+    defaultMessage: `Are you sure you want to delete this comment? There's no turning back!`,
+  },
+  commentDeletionCancelButton: {
+    id: 'app.containers.IdeasShow.commentDeletionCancelButton',
+    defaultMessage: `Keep my comment`,
+  },
+  commentDeletionConfirmButton: {
+    id: 'app.containers.IdeasShow.commentDeletionConfirmButton',
+    defaultMessage: `Delete my comment`,
+  },
   helmetTitle: {
     id: 'app.containers.IdeasShow.helmetTitle',
     defaultMessage: 'Show idea',

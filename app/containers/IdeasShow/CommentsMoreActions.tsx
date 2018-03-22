@@ -10,6 +10,15 @@ import GetUser from 'utils/resourceLoaders/components/GetUser';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import Modal from 'components/UI/Modal';
 import SpamReportForm from 'containers/SpamReport';
+import Button from 'components/UI/Button';
+
+import styled from 'styled-components';
+
+const ButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
 
 export type Props = {
   commentId: ICommentData['id'],
@@ -18,8 +27,8 @@ export type Props = {
 };
 
 export type State = {
-  spamModalVisible: boolean,
-  deleteModalVisible: boolean,
+  modalVisible_spam: boolean,
+  modalVisible_delete: boolean,
 };
 
 export default class CommentsMoreActions extends React.Component<Props, State> {
@@ -27,21 +36,29 @@ export default class CommentsMoreActions extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      spamModalVisible: false,
-      deleteModalVisible: false,
+      modalVisible_spam: false,
+      modalVisible_delete: false,
     };
   }
 
+  openDeleteModal = () => {
+    this.setState({ modalVisible_delete: true });
+  }
+
+  closeDeleteModal = () => {
+    this.setState({ modalVisible_delete: false });
+  }
+
   deleteComment = () => {
-    console.log('Comment deletion');
+    console.log('delete');
   }
 
   openSpamModal = () => {
-    this.setState({ spamModalVisible: true });
+    this.setState({ modalVisible_spam: true });
   }
 
   closeSpamModal = () => {
-    this.setState({ spamModalVisible: false });
+    this.setState({ modalVisible_spam: false });
   }
 
   render() {
@@ -60,7 +77,7 @@ export default class CommentsMoreActions extends React.Component<Props, State> {
 
               if (user.id === this.props.authorId) {
                 // Delete
-                actions.push({ label: <FormattedMessage {...messages.deleteComment} />, handler: this.deleteComment });
+                actions.push({ label: <FormattedMessage {...messages.deleteComment} />, handler: this.openDeleteModal });
               }
 
               return (
@@ -75,8 +92,17 @@ export default class CommentsMoreActions extends React.Component<Props, State> {
             }
           }}
         </GetUser>
-        <Modal opened={this.state.spamModalVisible} close={this.closeSpamModal}>
+        <Modal fixedHeight={false} opened={this.state.modalVisible_spam} close={this.closeSpamModal}>
           <SpamReportForm resourceId={this.props.commentId} resourceType="comments" />
+        </Modal>
+        <Modal fixedHeight={false} opened={this.state.modalVisible_delete} close={this.closeDeleteModal} className="e2e-comment-deletion-modal">
+          <p>
+            <FormattedMessage {...messages.confirmCommentDeletion} />
+          </p>
+          <ButtonsWrapper>
+            <Button style="secondary" circularCorners={false} onClick={this.closeDeleteModal}><FormattedMessage {...messages.commentDeletionCancelButton} /></Button>
+            <Button style="primary" circularCorners={false} onClick={this.deleteComment}><FormattedMessage {...messages.commentDeletionConfirmButton} /></Button>
+          </ButtonsWrapper>
         </Modal>
       </>
     );
