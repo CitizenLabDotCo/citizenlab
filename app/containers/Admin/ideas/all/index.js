@@ -59,6 +59,7 @@ class AllIdeas extends PureComponent {
           <ExportButtons>
             <ExportIdeasButton
               style={this.props.exportIdeasError ? 'error' : 'cl-blue'}
+              icon="download"
               onClick={this.props.loadIdeasXlsxRequest}
               processing={this.props.exportIdeasLoading}
               circularCorners={false}
@@ -67,6 +68,7 @@ class AllIdeas extends PureComponent {
             </ExportIdeasButton>
             <ExportCommentsButton
               style={this.props.exportCommentsError ? 'error' : 'cl-blue'}
+              icon="download"
               onClick={this.props.loadCommentsXlsxRequest}
               processing={this.props.exportCommentsLoading}
               circularCorners={false}

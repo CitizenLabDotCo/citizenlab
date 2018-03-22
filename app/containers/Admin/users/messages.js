@@ -9,9 +9,17 @@ export default defineMessages({
     id: 'app.containers.Admin.User.helmetDescription',
     defaultMessage: 'User list in admin backoffice',
   },
-  headerIndex: {
-    id: 'app.containers.Admin.User.headerIndex',
+  viewPublicResource: {
+    id: 'app.containers.Admin.User.viewPublicResource',
     defaultMessage: 'Users',
+  },
+  tabRegisteredUsers: {
+    id: 'app.containers.AdminPage.User.tabRegisteredUsers',
+    defaultMessage: 'Registered users',
+  },
+  tabInviteByEmail: {
+    id: 'app.containers.AdminPage.User.tabInviteByEmail',
+    defaultMessage: 'Invitations',
   },
   exportUsers: {
     id: 'app.containers.Admin.User.exportUsers',
@@ -64,5 +72,29 @@ export default defineMessages({
   deleteUser: {
     id: 'app.containers.Admin.User.deleteUser',
     defaultMessage: 'Delete user',
+  },
+  invitePeople: {
+    id: 'app.containers.Admin.User.invitePeople',
+    defaultMessage: 'Invite people',
+  },
+  emailListLabel: {
+    id: 'app.containers.Admin.User.emailListLabel',
+    defaultMessage: 'Enter the email addresses of the people you want to invite. Seperate each address by a comma.',
+  },
+  or: {
+    id: 'app.containers.Admin.User.or',
+    defaultMessage: 'Or',
+  },
+  importLabel: {
+    id: 'app.containers.Admin.User.importLabel',
+    defaultMessage: 'Import an Excel file with the email addresses you want to invite.',
+  },
+  adminLabel: {
+    id: 'app.containers.Admin.User.adminLabel',
+    defaultMessage: 'Grant administrator rights to the invited people?',
+  },
+  localeLabel: {
+    id: 'app.containers.Admin.User.localeLabel',
+    defaultMessage: 'Select a default language for the invited people',
   },
 });

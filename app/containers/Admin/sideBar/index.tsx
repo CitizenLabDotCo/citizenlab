@@ -127,7 +127,7 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
         </MenuItem>
 
         <MenuItem active={pathname.startsWith('/admin/users')}>
-          <MenuLink to="/admin/users">
+          <MenuLink to="/admin/users/registered">
             <IconWrapper><StyledIcon name="people" /></IconWrapper>
             <Text>{formatMessage({ ...messages.users })}</Text>
           </MenuLink>
