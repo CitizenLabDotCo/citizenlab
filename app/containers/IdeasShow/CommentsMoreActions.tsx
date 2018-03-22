@@ -16,8 +16,13 @@ import styled from 'styled-components';
 
 const ButtonsWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  margin-top: 1rem;
   width: 100%;
+
+  > * + * {
+    margin-left: 1rem;
+  }
 `;
 
 export type Props = {
