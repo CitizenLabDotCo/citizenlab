@@ -7,29 +7,24 @@ import linkifyHtml from 'linkifyjs/html';
 
 // components
 import Author from './Author';
-import Modal from 'components/UI/Modal';
-import SpamReportForm from 'containers/SpamReport';
-import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 
 // services
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 import { commentStream, IComment } from 'services/comments';
 import { userByIdStream, IUser } from 'services/users';
-import { authUserStream } from 'services/auth';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
-import messages from './messages';
 
 // style
 import styled from 'styled-components';
 import { transparentize, darken } from 'polished';
 import { Locale } from 'typings';
 import { media } from 'utils/styleUtils';
+import CommentsMoreActions from './CommentsMoreActions';
 
-const StyledMoreActionsMenu: any = styled(MoreActionsMenu)`
+const StyledMoreActionsMenu: any = styled(CommentsMoreActions)`
   position: absolute;
   top: 10px;
   right: 20px;
@@ -101,11 +96,10 @@ type State = {
   comment: IComment | null;
   author: IUser | null;
   spamModalVisible: boolean;
-  moreActions: IAction[];
 };
 
 export default class ChildComment extends React.PureComponent<Props, State> {
-  
+
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -116,7 +110,6 @@ export default class ChildComment extends React.PureComponent<Props, State> {
       comment: null,
       author: null,
       spamModalVisible: false,
-      moreActions: [],
     };
     this.subscriptions = [];
   }
@@ -144,18 +137,6 @@ export default class ChildComment extends React.PureComponent<Props, State> {
         this.setState({ locale, currentTenantLocales, comment, author });
       })
     ];
-
-    this.subscriptions.push(
-      authUserStream().observable
-      .subscribe((authUser) => {
-        if (authUser) {
-          this.setState({ moreActions: [
-            ...this.state.moreActions,
-            { label: <FormattedMessage {...messages.reportAsSpam} />, handler: this.openSpamModal }
-          ]});
-        }
-      })
-    );
   }
 
   componentWillUnmount() {
@@ -202,20 +183,12 @@ export default class ChildComment extends React.PureComponent<Props, State> {
 
       return (
         <CommentContainer className={className}>
-          <StyledMoreActionsMenu
-            height="5px"
-            actions={this.state.moreActions}
-          />
-
+          <StyledMoreActionsMenu commentId={comment.data.id} authorId={authorId} />
           <StyledAuthor authorId={authorId} createdAt={createdAt} message="childCommentAuthor" />
 
           <CommentBody onClick={this.captureClick}>
             <span dangerouslySetInnerHTML={{ __html: processedCommentText }} />
           </CommentBody>
-
-          <Modal opened={this.state.spamModalVisible} close={this.closeSpamModal}>
-            <SpamReportForm resourceId={this.props.commentId} resourceType="comments" />
-          </Modal>
         </CommentContainer>
       );
     }

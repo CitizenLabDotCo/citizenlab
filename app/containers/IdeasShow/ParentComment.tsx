@@ -7,10 +7,8 @@ import linkifyHtml from 'linkifyjs/html';
 import ChildComment from './ChildComment';
 import Author from './Author';
 import ChildCommentForm from './ChildCommentForm';
+import CommentsMoreActions from './CommentsMoreActions';
 import { browserHistory } from 'react-router';
-import Modal from 'components/UI/Modal';
-import SpamReportForm from 'containers/SpamReport';
-import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -20,10 +18,6 @@ import { IUser } from 'services/users';
 import { getLocalized } from 'utils/i18n';
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 // analytics
 import { injectTracks } from 'utils/analytics';
@@ -35,13 +29,13 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 import { transparentize, darken } from 'polished';
 import { Locale } from 'typings';
-import { media } from 'utils/styleUtils';
 
 const timeout = 550;
 
-const StyledMoreActionsMenu: any = styled(MoreActionsMenu)`
+const StyledMoreActionsMenu = styled(CommentsMoreActions)`
   position: absolute;
   top: 10px;
   right: 20px;
@@ -149,7 +143,6 @@ type State = {
   childCommentIds: string[] | null;
   showForm: boolean;
   spamModalVisible: boolean;
-  moreActions: IAction[];
   commentingEnabled: boolean | null;
   loaded: boolean;
 };
@@ -171,7 +164,6 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       childCommentIds: null,
       showForm: false,
       spamModalVisible: false,
-      moreActions: [],
       commentingEnabled: null,
       loaded: false
     };
@@ -208,22 +200,12 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       ).delayWhen(() => {
         return (animate === true ? Rx.Observable.timer(100) : Rx.Observable.of(null));
       }).subscribe(([locale, currentTenantLocales, authUser, comment, childCommentIds, idea]) => {
-        let moreActions = this.state.moreActions;
-
-        if (authUser) {
-          moreActions = [
-            ...this.state.moreActions,
-            { label: <FormattedMessage {...messages.reportAsSpam} />, handler: this.openSpamModal }
-          ];
-        }
-
         this.setState({
           locale,
           currentTenantLocales,
           authUser,
           comment,
           childCommentIds,
-          moreActions,
           commentingEnabled: idea.data.relationships.action_descriptor.data.commenting.enabled,
           loaded: true
         });
@@ -246,14 +228,6 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       const link = event.target.getAttribute('data-link');
       browserHistory.push(link);
     }
-  }
-
-  openSpamModal = () => {
-    this.setState({ spamModalVisible: true });
-  }
-
-  closeSpamModal = () => {
-    this.setState({ spamModalVisible: false });
   }
 
   render() {
@@ -285,10 +259,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
             <CommentsWithReplyBoxContainer>
               <CommentsContainer className={`${showCommentForm && 'hasReplyBox'}`}>
                 <CommentContainerInner>
-                  <StyledMoreActionsMenu
-                    height="5px"
-                    actions={this.state.moreActions}
-                  />
+                  <StyledMoreActionsMenu commentId={comment.data.id} authorId={authorId} />
 
                   <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
 
@@ -310,11 +281,6 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
                 <ChildCommentForm ideaId={ideaId} parentId={commentId} />
               }
             </CommentsWithReplyBoxContainer>
-
-            <Modal opened={this.state.spamModalVisible} close={this.closeSpamModal}>
-              <SpamReportForm resourceId={this.props.commentId} resourceType="comments" />
-            </Modal>
-
           </Container>
         </CSSTransition>
       );
