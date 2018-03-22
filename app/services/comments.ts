@@ -73,3 +73,7 @@ export function addCommentToComment(ideaId: string, authorId: string, parentComm
 export function updateComment(commentId: string, object: IUpdatedComment) {
   return streams.update<IComment>(`${API_PATH}/comments/${commentId}`, commentId, { comment: object });
 }
+
+export function deleteComment(commentId: string) {
+  return streams.delete(`${API_PATH}/comments/${commentId}`, commentId);
+}

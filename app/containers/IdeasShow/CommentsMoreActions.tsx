@@ -3,7 +3,7 @@ import React from 'react';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-import { ICommentData } from 'services/comments';
+import { ICommentData, deleteComment } from 'services/comments';
 import { IUserData } from 'services/users';
 import GetUser from 'utils/resourceLoaders/components/GetUser';
 
@@ -34,6 +34,7 @@ export type Props = {
 export type State = {
   modalVisible_spam: boolean,
   modalVisible_delete: boolean,
+  loading_deleteComment: boolean;
 };
 
 export default class CommentsMoreActions extends React.Component<Props, State> {
@@ -43,6 +44,7 @@ export default class CommentsMoreActions extends React.Component<Props, State> {
     this.state = {
       modalVisible_spam: false,
       modalVisible_delete: false,
+      loading_deleteComment: false,
     };
   }
 
@@ -55,7 +57,11 @@ export default class CommentsMoreActions extends React.Component<Props, State> {
   }
 
   deleteComment = () => {
-    console.log('delete');
+    this.setState({
+      loading_deleteComment: true,
+    });
+
+    deleteComment(this.props.commentId);
   }
 
   openSpamModal = () => {
@@ -106,7 +112,7 @@ export default class CommentsMoreActions extends React.Component<Props, State> {
           </p>
           <ButtonsWrapper>
             <Button style="secondary" circularCorners={false} onClick={this.closeDeleteModal}><FormattedMessage {...messages.commentDeletionCancelButton} /></Button>
-            <Button style="primary" circularCorners={false} onClick={this.deleteComment}><FormattedMessage {...messages.commentDeletionConfirmButton} /></Button>
+            <Button style="primary" processing={this.state.loading_deleteComment} circularCorners={false} onClick={this.deleteComment}><FormattedMessage {...messages.commentDeletionConfirmButton} /></Button>
           </ButtonsWrapper>
         </Modal>
       </>
