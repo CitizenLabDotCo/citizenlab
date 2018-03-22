@@ -120,4 +120,33 @@ class XlsxService
     pa.to_stream
   end
 
+  def hash_array_to_xlsx hash_array
+    headers = hash_array.flat_map{|hash| hash.keys}.uniq
+
+    pa = Axlsx::Package.new
+    wb = pa.workbook
+
+    wb.styles do |s|
+      wb.add_worksheet do |sheet|
+        sheet.add_row headers, style: header_style(s)
+        hash_array.each do |hash|
+          sheet.add_row headers.map{|header| hash[header]}
+        end
+      end
+    end
+    
+    pa.to_stream
+  end
+
+  def xlsx_to_hash_array xlsx
+    workbook = RubyXL::Parser.parse_buffer(xlsx)
+    worksheet = workbook.worksheets[0]
+
+    worksheet.drop(1).map do |row|
+      row&.cells.map.with_index do |cell, column_index|
+        [worksheet[0][column_index].value, cell&.value]
+      end.to_h.compact
+    end.compact
+  end
+
 end
