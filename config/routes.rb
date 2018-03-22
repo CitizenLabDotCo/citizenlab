@@ -110,6 +110,11 @@ Rails.application.routes.draw do
       get :settings_schema, on: :collection
       get :templates, on: :collection
     end
+
+    resources :projects, only: [:index] do
+      get :template_export, on: :collection
+      post :template_import, on: :collection
+    end
   end
 
   get '/auth/:provider/callback', to: 'omniauth_callback#create'
