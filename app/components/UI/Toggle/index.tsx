@@ -47,14 +47,6 @@ const Container: any = styled.div`
       background: #fff;
     }
   }
-
-  /*
-  :checked + i {
-    padding-right: ${padding}px;
-    padding-left: ${size}px;
-    background: #00cc33;
-  }
-  */
 `;
 
 export type Props = {

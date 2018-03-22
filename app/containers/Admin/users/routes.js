@@ -1,9 +1,6 @@
-// These are the users you can go to.
-// They are all wrapped in the App component, which should contain the navbar etc
-// See http://blog.mxstbr.com/2016/01/react-apps-with-users for more information
-// about the code splitting business
+
 const errorLoading = (err) => {
-  console.error('Dynamic user loading failed', err); // eslint-disable-line no-console
+  console.error('Dynamic settings loading failed', err); // eslint-disable-line no-console
 };
 
 const loadModule = (cb) => (componentModule) => {
@@ -26,15 +23,27 @@ export default () => ({
 
     importModules.catch(errorLoading);
   },
-});
+  indexRoute: {
+    getComponent(nextState, cb) {
+      const importModules = Promise.all([
+        import('containers/Admin/users/registered'),
+      ]);
 
-/*
+      const renderRoute = loadModule(cb);
+
+      importModules.then(([component]) => {
+        renderRoute(component);
+      });
+
+      importModules.catch(errorLoading);
+    },
+  },
+  childRoutes: [
     {
-      path: '/',
-      name: 'home',
+      path: 'registered',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          import('containers/LandingPage'),
+          import('containers/Admin/users/registered'),
         ]);
 
         const renderRoute = loadModule(cb);
@@ -46,4 +55,21 @@ export default () => ({
         importModules.catch(errorLoading);
       },
     },
-*/
+    {
+      path: 'invitations',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/Admin/users/invitations'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
+  ],
+});
