@@ -11,11 +11,15 @@ import Radio from 'components/UI/Radio';
 // import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 
+// services
+import { currentTenantStream, ITenant } from 'services/tenant';
+
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // i18n
+import { appLocalePairs } from 'i18n.js';
 // import messages from './../messages';
 
 // styling
@@ -39,9 +43,11 @@ const Right = styled.div`
 type Props = {};
 
 type State = {
+  currentTenant: ITenant | null;
   emails: string | null;
   hasAdminRights: boolean;
   selectedLocale: Locale | null;
+  loaded: boolean;
 };
 
 export default class Invitations extends React.PureComponent<Props, State> {
@@ -50,15 +56,27 @@ export default class Invitations extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
+      currentTenant: null,
       emails: null,
       hasAdminRights: false,
-      selectedLocale: null
+      selectedLocale: null,
+      loaded: false
     };
     this.subscriptions = [];
   }
 
   componentDidMount() {
-    this.subscriptions = [];
+    const currentTenant$ = currentTenantStream().observable;
+
+    this.subscriptions = [
+      currentTenant$.subscribe((currentTenant) => {
+        this.setState({
+          currentTenant,
+          selectedLocale: (currentTenant ? currentTenant.data.attributes.settings.core.locales[0] : null),
+          loaded: true
+        });
+      })
+    ];
   }
 
   componentWillUnmount() {
@@ -75,88 +93,109 @@ export default class Invitations extends React.PureComponent<Props, State> {
   }
 
   handleAdminRightsOnToggle = () => {
-
+    this.setState(state => ({ hasAdminRights: !state.hasAdminRights }));
   }
 
-  handleLocaleChange = () => {
-
+  handleLocaleChange = (selectedLocale: Locale) => {
+    this.setState({ selectedLocale });
   }
 
   render () {
-    const { emails, hasAdminRights } = this.state;
+    const { currentTenant, emails, selectedLocale, hasAdminRights, loaded } = this.state;
 
-    return (
-      <Section>
-        <SectionTitle>
-          <FormattedMessage {...messages.invitePeople} />
-        </SectionTitle>
+    if (currentTenant && loaded) {
+      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
 
-        <SectionField>
-          <Left>
+      return (
+        <Section>
+          <SectionTitle>
+            <FormattedMessage {...messages.invitePeople} />
+          </SectionTitle>
+
+          <SectionField>
+            <Left>
+              <Label>
+                <FormattedMessage {...messages.emailListLabel} />
+              </Label>
+              <TextArea
+                value={(emails || '')}
+                onChange={this.handleEmailListOnChange}
+              />
+            </Left>
+
+            <Middle>
+              <FormattedMessage {...messages.or} />
+            </Middle>
+
+            <Right>
+              <Label>
+                <FormattedMessage {...messages.importLabel} />
+              </Label>
+              <input type="file" onChange={this.handleFileInputOnChange} />
+            </Right>
+          </SectionField>
+
+          <SectionField>
             <Label>
-              <FormattedMessage {...messages.emailListLabel} />
+              <FormattedMessage {...messages.adminLabel} />
             </Label>
-            <TextArea
-              value={(emails || '')}
-              onChange={this.handleEmailListOnChange}
-            />
-          </Left>
+            <Toggle checked={hasAdminRights} onToggle={this.handleAdminRightsOnToggle} />
+          </SectionField>
 
-          <Middle>
-            <FormattedMessage {...messages.or} />
-          </Middle>
+          {currentTenantLocales && currentTenantLocales.length > 1 && selectedLocale &&
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.localeLabel} />
+              </Label>
 
-          <Right>
-            <Label>
-              <FormattedMessage {...messages.importLabel} />
-            </Label>
-            <input type="file" onChange={this.handleFileInputOnChange} />
-          </Right>
-        </SectionField>
+              {currentTenantLocales.map((currentTenantLocale) => (
+                <Radio
+                  key={currentTenantLocale}
+                  onChange={this.handleLocaleChange}
+                  currentValue={selectedLocale}
+                  value={currentTenantLocale}
+                  label={appLocalePairs[currentTenantLocale]}
+                />
+              ))}
 
-        <SectionField>
-          <Label>
-            <FormattedMessage {...messages.adminLabel} />
-          </Label>
-          <Toggle checked={hasAdminRights} onToggle={this.handleAdminRightsOnToggle} />
-        </SectionField>
+              {/*
+              <Radio
+                onChange={this.handleLocaleChange}
+                currentValue={selectedLocale}
+                value="draft"
+                name="projectstatus"
+                id="projecstatus-draft"
+                label={<FormattedMessage {...messages.draftStatus} />}
+              />
+              <Radio
+                onChange={this.handleLocaleChange}
+                currentValue={selectedLocale}
+                value="published"
+                name="projectstatus"
+                id="projecstatus-published"
+                label={<FormattedMessage {...messages.publishedStatus} />}
+              />
+              */}
+            </SectionField>
+          }
 
-        <SectionField>
-          <Label>
-            <FormattedMessage {...messages.localeLabel} />
-          </Label>
-          <Radio
-            onChange={this.handleLocaleChange}
-            currentValue={selectedLocale}
-            value="draft"
-            name="projectstatus"
-            id="projecstatus-draft"
-            label={<FormattedMessage {...messages.draftStatus} />}
+          {/*
+          <SubmitWrapper
+            loading={this.state.loading}
+            status={getSubmitState({ errors, saved, diff: attributesDiff })}
+            messages={{
+              buttonSave: messages.save,
+              buttonError: messages.saveError,
+              buttonSuccess: messages.saveSuccess,
+              messageError: messages.saveErrorMessage,
+              messageSuccess: messages.saveSuccessMessage,
+            }}
           />
-          <Radio
-            onChange={this.handleLocaleChange}
-            currentValue={selectedLocale}
-            value="published"
-            name="projectstatus"
-            id="projecstatus-published"
-            label={<FormattedMessage {...messages.publishedStatus} />}
-          />
-        </SectionField>
+          */}
+        </Section>
+      );
+    }
 
-        {/*
-        <SubmitWrapper
-          loading={this.state.loading}
-          status={getSubmitState({ errors, saved, diff: attributesDiff })}
-          messages={{
-            buttonSave: messages.save,
-            buttonError: messages.saveError,
-            buttonSuccess: messages.saveSuccess,
-            messageError: messages.saveErrorMessage,
-            messageSuccess: messages.saveSuccessMessage,
-          }}
-        />
-        */}
-      </Section>
-    );
+    return null;
   }
 }

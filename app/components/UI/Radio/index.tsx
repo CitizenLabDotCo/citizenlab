@@ -60,8 +60,8 @@ interface Props {
   onChange: {(event): void};
   currentValue: any;
   value: any;
-  name: string;
-  id: string;
+  name?: string | undefined;
+  id?: string | undefined;
   label: string | JSX.Element;
   disabled?: boolean;
 }
