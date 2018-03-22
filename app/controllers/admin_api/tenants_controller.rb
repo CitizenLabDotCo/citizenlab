@@ -1,6 +1,7 @@
 class AdminApi::TenantsController < AdminApi::AdminApiController
 
   before_action :set_tenant, only: [:show, :update, :destroy]
+  skip_around_action :switch_tenant
 
   def index
     @tenants = Tenant.all
@@ -10,11 +11,9 @@ class AdminApi::TenantsController < AdminApi::AdminApiController
 
   def show
     render json: @tenant
-
   end
 
   def create
-
     @tenant = Tenant.new(tenant_params)
     SideFxTenantService.new.before_create(@tenant, nil)
     if @tenant.save
