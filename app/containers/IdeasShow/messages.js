@@ -94,6 +94,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.deleteComment',
     defaultMessage: 'Delete',
   },
+  editComment: {
+    id: 'app.containers.IdeasShow.editComment',
+    defaultMessage: 'Edit',
+  },
   confirmCommentDeletion: {
     id: 'app.containers.IdeasShow.confirmCommentDeletion',
     defaultMessage: `Are you sure you want to delete this comment? There's no turning back!`,

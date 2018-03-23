@@ -3,24 +3,17 @@ import * as Rx from 'rxjs/Rx';
 
 // libraries
 import { browserHistory } from 'react-router';
-import linkifyHtml from 'linkifyjs/html';
 
 // components
 import Author from './Author';
+import CommentBody from './CommentBody';
 
 // services
-import { localeStream } from 'services/locale';
-import { currentTenantStream } from 'services/tenant';
-import { commentStream, IComment } from 'services/comments';
+import { commentStream, IComment, updateComment } from 'services/comments';
 import { userByIdStream, IUser } from 'services/users';
-
-// i18n
-import { getLocalized } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
-import { transparentize, darken } from 'polished';
-import { Locale } from 'typings';
 import { media } from 'utils/styleUtils';
 import CommentsMoreActions from './CommentsMoreActions';
 
@@ -56,46 +49,15 @@ const StyledAuthor = styled(Author)`
   margin-bottom: 20px;
 `;
 
-const CommentBody = styled.div`
-  color: #333;
-  font-size: 17px;
-  line-height: 25px;
-  font-weight: 300;
-  padding: 0;
-
-  span,
-  p {
-    margin-bottom: 25px;
-
-    &:last-child {
-      margin-bottom: 0px;
-    }
-  }
-
-  a {
-    color: ${(props) => props.theme.colors.clBlue};
-
-    &.mention {
-      background: ${props => transparentize(0.92, props.theme.colors.clBlue)};
-    }
-
-    &:hover {
-      color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
-      text-decoration: underline;
-    }
-  }
-`;
-
 type Props = {
   commentId: string;
 };
 
 type State = {
-  locale: Locale | null;
-  currentTenantLocales: Locale[] | null;
   comment: IComment | null;
   author: IUser | null;
   spamModalVisible: boolean;
+  editionMode: boolean;
 };
 
 export default class ChildComment extends React.PureComponent<Props, State> {
@@ -105,50 +67,37 @@ export default class ChildComment extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      locale: null,
-      currentTenantLocales: null,
       comment: null,
       author: null,
       spamModalVisible: false,
+      editionMode: false,
     };
     this.subscriptions = [];
   }
 
   componentDidMount() {
     const { commentId } = this.props;
-    const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
     const comment$ = commentStream(commentId).observable;
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
-        locale$,
-        currentTenantLocales$,
         comment$
-      ).switchMap(([locale, currentTenantLocales, comment]) => {
+      ).switchMap(([comment]) => {
         const authorId = comment.data.relationships.author.data ? comment.data.relationships.author.data.id : null;
         if (!authorId) {
-          return Rx.Observable.of({ locale, currentTenantLocales, comment, author: null });
+          return Rx.Observable.of({ comment, author: null });
         }
 
         const author$ = userByIdStream(authorId).observable;
-        return author$.map(author => ({ locale, currentTenantLocales, comment, author }));
-      }).subscribe(({ locale, currentTenantLocales, comment, author }) => {
-        this.setState({ locale, currentTenantLocales, comment, author });
+        return author$.map(author => ({ comment, author }));
+      }).subscribe(({ comment, author }) => {
+        this.setState({ comment, author });
       })
     ];
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  goToUserProfile = () => {
-    const { author } = this.state;
-
-    if (author) {
-      browserHistory.push(`/profile/${author.data.attributes.slug}`);
-    }
   }
 
   captureClick = (event) => {
@@ -159,36 +108,32 @@ export default class ChildComment extends React.PureComponent<Props, State> {
     }
   }
 
-  openSpamModal = () => {
-    this.setState({ spamModalVisible: true });
+  onCommentEdit = () => {
+    this.setState({ editionMode: true });
   }
 
-  closeSpamModal = () => {
-    this.setState({ spamModalVisible: false });
+  onCommentSave = (comment) => {
+    updateComment(this.props.commentId, comment)
+    .then(() => {
+      this.setState({ editionMode: false });
+    });
   }
 
   render() {
-    const { locale, currentTenantLocales, comment, author } = this.state;
+    const { comment, author } = this.state;
 
-    if (locale && currentTenantLocales && comment && author) {
+    if (comment && author) {
       const className = this.props['className'];
       const authorId = comment.data.relationships.author.data ? comment.data.relationships.author.data.id : null;
       const createdAt = comment.data.attributes.created_at;
       const commentBodyMultiloc = comment.data.attributes.body_multiloc;
-      const commentText = getLocalized(commentBodyMultiloc, locale, currentTenantLocales);
-      const processedCommentText = linkifyHtml(commentText.replace(
-        /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
-        '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
-      ));
 
       return (
         <CommentContainer className={className}>
-          <StyledMoreActionsMenu commentId={comment.data.id} authorId={authorId} />
+          <StyledMoreActionsMenu commentId={comment.data.id} authorId={authorId} onCommentEdit={this.onCommentEdit} />
           <StyledAuthor authorId={authorId} createdAt={createdAt} message="childCommentAuthor" />
 
-          <CommentBody onClick={this.captureClick}>
-            <span dangerouslySetInnerHTML={{ __html: processedCommentText }} />
-          </CommentBody>
+          <CommentBody commentBody={commentBodyMultiloc} editionMode={this.state.editionMode} onCommentSave={this.onCommentSave} />
         </CommentContainer>
       );
     }
