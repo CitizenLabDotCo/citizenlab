@@ -2,8 +2,8 @@ module EmailCampaigns
   class AdminWeeklyReportJob < ApplicationJob
     queue_as :default
 
-    N_TOP_IDEAS = ENV.fetch("N_ADMIN_WEEKLY_REPORT_IDEAS", 12)
-    N_DAYS_SINCE = ENV.fetch("N_DAYS_SINCE_ADMIN_WEEKLY_REPORT", 7)
+    N_TOP_IDEAS = ENV.fetch("N_ADMIN_WEEKLY_REPORT_IDEAS", 12).to_i
+    N_DAYS_SINCE = ENV.fetch("N_DAYS_SINCE_ADMIN_WEEKLY_REPORT", 7).to_i
 
   
     def perform
@@ -86,7 +86,7 @@ module EmailCampaigns
     end
 
     def activity_count idea, since=last_week
-      idea_recent_votes(idea, since=since).select{|v| v.mode == 'up'}.size + idea_recent_comments(idea, since=since).size
+      idea_recent_votes(idea, since=since).select{|v| v.mode == 'up'}.select{|v| v.user_id != idea.author_id}.size + idea_recent_comments(idea, since=since).size
     end
 
     def idea_recent_votes idea, since=last_week

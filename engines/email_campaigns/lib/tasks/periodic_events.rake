@@ -1,6 +1,12 @@
 require 'ice_cube'
 
 
+USER_PLATFORM_DIGEST_DAY = ENV.fetch("USER_PLATFORM_DIGEST_DAY", :monday).to_sym
+USER_PLATFORM_DIGEST_HOUR = ENV.fetch("USER_PLATFORM_DIGEST_HOUR", 10).to_i
+ADMIN_WEEKLY_REPORT_DAY = ENV.fetch("ADMIN_WEEKLY_REPORT_DAY", :monday).to_sym
+ADMIN_WEEKLY_REPORT_HOUR = ENV.fetch("ADMIN_WEEKLY_REPORT_HOUR", 10).to_i
+
+
 
 @campaign_jobs = {
   'user_platform_digest'             => "EmailCampaigns::UserPlatformDigestJob",
@@ -19,12 +25,12 @@ require 'ice_cube'
 # user platform digests, every Monday at 10AM
 @user_platform_digest_schedule = IceCube::Schedule.new(now=Time.at(0))
 @user_platform_digest_schedule.add_recurrence_rule(
-  IceCube::Rule.weekly(1).day(:monday).hour_of_day(10) 
+  IceCube::Rule.weekly(1).day(USER_PLATFORM_DIGEST_DAY).hour_of_day(USER_PLATFORM_DIGEST_HOUR) 
 )
 # admin weekly report, every Monday at 10AM
 @admin_weekly_report_schedule = IceCube::Schedule.new(now=Time.at(0))
 @admin_weekly_report_schedule.add_recurrence_rule(
-  IceCube::Rule.weekly(1).day(:friday).hour_of_day(14) 
+  IceCube::Rule.weekly(1).day(ADMIN_WEEKLY_REPORT_DAY).hour_of_day(ADMIN_WEEKLY_REPORT_HOUR) 
 )
 @campaign_schedules = {
   'user_platform_digest'             => @user_platform_digest_schedule,
