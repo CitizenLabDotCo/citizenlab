@@ -8,13 +8,13 @@ module EmailCampaigns
   
     def perform
       ti_service = TrendingIdeaService.new # always at thy service
-      if ti_service.filter_trending(IdeaPolicy::Scope.new(nil, Idea).resolve).count < N_TOP_IDEAS
+      if ti_service.filter_trending(IdeaPolicy::Scope.new(nil, Idea).resolve.where(publication_status: 'published')).count < N_TOP_IDEAS
         # don't send any emails if there are fewer than N_TOP_IDEAS truly trending ideas
         return
       end
       User.all.each do |user|
 
-        top_ideas = ti_service.sort_trending(ti_service.filter_trending(IdeaPolicy::Scope.new(user, Idea).resolve).left_outer_joins(:idea_status)).take N_TOP_IDEAS
+        top_ideas = ti_service.sort_trending(ti_service.filter_trending(IdeaPolicy::Scope.new(user, Idea).resolve.where(publication_status: 'published')).left_outer_joins(:idea_status)).take N_TOP_IDEAS
         serializer = "EmailCampaigns::UserPlatformDigestIdeaSerializer".constantize
         serialized_top_ideas = top_ideas.map do |idea|
           ActiveModelSerializers::SerializableResource.new(idea, {
