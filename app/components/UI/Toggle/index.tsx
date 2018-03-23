@@ -37,6 +37,7 @@ const Container: any = styled.div`
     transition: all ease 0.15s;
     border-radius: ${size + padding}px;
     background: #ccc;
+    transform: translate3d(0, 0, 0);
 
     &:before {
       display: block;

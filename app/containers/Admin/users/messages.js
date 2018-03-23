@@ -87,14 +87,54 @@ export default defineMessages({
   },
   importLabel: {
     id: 'app.containers.Admin.User.importLabel',
-    defaultMessage: 'Import an Excel file with the email addresses you want to invite.',
+    defaultMessage: 'Import an Excel file (.xlsx) with the email addresses you want to invite.',
+  },
+  importInfo: {
+    id: 'app.containers.Admin.User.importInfo',
+    defaultMessage: `Use the column name 'email' for the column containing the email addresses.`,
   },
   adminLabel: {
     id: 'app.containers.Admin.User.adminLabel',
-    defaultMessage: 'Grant administrator rights to the invited people?',
+    defaultMessage: `Grant administrator rights to the invited people?`,
   },
   localeLabel: {
     id: 'app.containers.Admin.User.localeLabel',
-    defaultMessage: 'Select a default language for the invited people',
+    defaultMessage: 'Select the default language for the invited people',
+  },
+  groupsLabel: {
+    id: 'app.containers.Admin.User.localeLabel',
+    defaultMessage: 'Optionally select the group(s) to which the invited people belong',
+  },
+  groupsPlaceholder: {
+    id: 'app.containers.Admin.User.groupsPlaceholder',
+    defaultMessage: 'No group selected',
+  },
+  sendOutInvitations: {
+    id: 'app.containers.Admin.User.sendOutInvitations',
+    defaultMessage: 'Send out invitations',
+  },
+  processing: {
+    id: 'app.containers.Admin.User.processing',
+    defaultMessage: 'Sending out invitations. Please wait...',
+  },
+  save: {
+    id: 'app.containers.Admin.User.save',
+    defaultMessage: 'Send out invitations',
+  },
+  saveError: {
+    id: 'app.containers.Admin.User.saveError',
+    defaultMessage: 'Error',
+  },
+  saveSuccess: {
+    id: 'app.containers.Admin.User.saveSuccess',
+    defaultMessage: 'Success!',
+  },
+  saveErrorMessage: {
+    id: 'app.containers.Admin.User.saveErrorMessage',
+    defaultMessage: 'The invitations have not been sent out because the following error occured:',
+  },
+  saveSuccessMessage: {
+    id: 'app.containers.Admin.User.saveSuccessMessage',
+    defaultMessage: 'Invitation successfully sent out.',
   },
 });

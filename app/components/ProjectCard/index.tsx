@@ -22,7 +22,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // style
-import { darken } from 'polished';
+// import { darken } from 'polished';
 import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 import { Locale } from 'typings';
@@ -147,11 +147,12 @@ const ProjectMetaItems = styled.div`
 `;
 
 const IdeaCountIcon = styled(Icon)`
-  height: 24px;
-  width: 24px;
+  height: 25px;
+  width: 25px;
   fill: ${(props) => props.theme.colors.label};
   margin-right: 6px;
   margin-top: -6px;
+  transition: all 100ms ease-out;
 `;
 
 const IdeaCountText = styled.div`
@@ -171,11 +172,11 @@ const IdeaCount = styled(Link)`
 
   &:hover {
     ${IdeaCountIcon} {
-      fill: ${(props) => darken(0.2, props.theme.colors.label)};
+      fill: #000;
     }
 
     ${IdeaCountText} {
-      color: ${(props) => darken(0.2, props.theme.colors.label)};
+      color: #000;
       text-decoration: none;
     }
   }
