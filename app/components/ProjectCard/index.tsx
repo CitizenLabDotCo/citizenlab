@@ -129,7 +129,7 @@ const ProjectDescription = styled.div`
   color: ${(props) => props.theme.colors.label};
   font-size: 16px;
   line-height: 24px;
-  font-weight: 300;
+  font-weight: 400;
   margin-top: 20px;
 `;
 
