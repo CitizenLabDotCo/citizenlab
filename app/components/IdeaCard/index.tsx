@@ -126,7 +126,7 @@ const IdeaAuthorAvatar = styled(Avatar)`
 const IdeaAuthorText = styled.div`
   color: ${(props) => props.theme.colors.label};
   font-size: 14px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 18px;
   display: flex;
   flex-direction: row;
@@ -164,7 +164,7 @@ const CommentIcon = styled(Icon)`
 const CommentCount = styled.div`
   color: ${(props) => props.theme.colors.label};
   font-size: 16px;
-  font-weight: 300;
+  font-weight: 400;
 `;
 
 const CommentInfo = styled.div`
