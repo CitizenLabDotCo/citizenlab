@@ -2,8 +2,8 @@ module EmailCampaigns
   class AdminWeeklyReportJob < ApplicationJob
     queue_as :default
 
-    N_TOP_IDEAS = ENV.fetch("N_ADMIN_WEEKLY_REPORT_IDEAS", 12)
-    N_DAYS_SINCE = ENV.fetch("N_DAYS_SINCE_ADMIN_WEEKLY_REPORT", 7)
+    N_TOP_IDEAS = ENV.fetch("N_ADMIN_WEEKLY_REPORT_IDEAS", 12).to_i
+    N_DAYS_SINCE = ENV.fetch("N_DAYS_SINCE_ADMIN_WEEKLY_REPORT", 7).to_i
 
   
     def perform
@@ -11,8 +11,8 @@ module EmailCampaigns
       	since = Time.now - N_DAYS_SINCE.days
 
       	top_ideas = Idea.where(publication_status: 'published').all
-      	top_ideas = top_ideas.select{|idea| idea_recently_changed(idea, since=since)}
-      	top_ideas = top_ideas.sort_by(&:published_at).reverse.take N_TOP_IDEAS # TODO sort by activity_count
+      	top_ideas = top_ideas.sort_by{|idea| activity_score(idea, since=since)}.reverse.take N_TOP_IDEAS
+        top_ideas = top_ideas.sort_by{|idea| activity_count(idea, since=since)}.reverse
 
       	top_project_ideas = {}
         top_ideas.each do |idea|
@@ -20,8 +20,13 @@ module EmailCampaigns
         	top_project_ideas[idea.project_id] += [idea]
         end
 
+        project_order = top_project_ideas.keys.sort_by do |project_id|
+          top_project_ideas[project_id].map{|idea| activity_count(idea, since=since)}.inject(0){|x,y| x+y}
+        end.reverse
+
         # normally, the projects will be ordered by recentness of their most recent idea
-        serialized_top_project_ideas = top_project_ideas.map do |project_id, ideas|
+        serialized_top_project_ideas = project_order.map do |project_id|
+          ideas = top_project_ideas[project_id]
         	project_serializer = "EmailCampaigns::DiscoverProjectSerializer".constantize
         	serialized_project = ActiveModelSerializers::SerializableResource.new(Project.find(project_id), {
             serializer: project_serializer,
@@ -48,8 +53,10 @@ module EmailCampaigns
             		activities: {
                   new_ideas: increase_hash(Idea.all.map(&:published_at).compact),
                   new_comments: increase_hash(Comment.all.map(&:created_at).compact),
-                  new_votes: increase_hash(Vote.all.map(&:created_at).compact)
-            		},
+                  new_votes: increase_hash(Vote.all.map(&:created_at).compact),
+                  total_ideas: Idea.count,
+                  total_users: User.count
+                },
             		users: {
                   new_visitors: increase_hash([]),
                   new_users: increase_hash(User.all.map(&:registration_completed_at).compact),
@@ -69,10 +76,17 @@ module EmailCampaigns
       end
     end
 
-    def idea_recently_changed idea, since=last_week
-    	(idea.updated_at > since) || 
-    	(!idea_recent_votes(idea, since=since).empty?) ||
-    	(!idea_recent_comments(idea, since=since).empty?)
+    def activity_score idea, since=last_week
+      recent_activity = 1 + activity_count(idea, since=since)
+      if idea.published_at
+        (recent_activity**2) / (Time.now.to_i - idea.published_at.to_i)
+      else
+        0.0
+      end
+    end
+
+    def activity_count idea, since=last_week
+      idea_recent_votes(idea, since=since).select{|v| v.mode == 'up'}.select{|v| v.user_id != idea.author_id}.size + idea_recent_comments(idea, since=since).size
     end
 
     def idea_recent_votes idea, since=last_week
