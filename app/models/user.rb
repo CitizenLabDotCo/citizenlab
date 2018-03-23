@@ -26,9 +26,9 @@ class User < ApplicationRecord
 
   validates :email, :first_name, :slug, :locale, presence: true, unless: :invite_pending?
 
-  validates :email, uniqueness: true
+  validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }, unless: :invite_pending?
-  validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
+  validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, allow_nil: true
   validates :locale, inclusion: { in: proc {Tenant.settings('core','locales')} }
   validates :bio_multiloc, multiloc: {presence: false}
   validates :gender, inclusion: {in: %w(male female unspecified)}, allow_nil: true
@@ -137,7 +137,7 @@ class User < ApplicationRecord
   end
 
   def generate_avatar
-    unless self.avatar?
+    if !self.avatar? && self.email
       hash = Digest::MD5.hexdigest(self.email)
       self.remote_avatar_url = "https://www.gravatar.com/avatar/#{hash}?d=404&size=640"
     end

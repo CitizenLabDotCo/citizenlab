@@ -39,7 +39,7 @@ class FrontendService
   end
 
   def invite_url token, tenant=Tenant.current
-    "#{tenant.base_frontend_uri}/accept-invite?token=#{token}"
+    "#{tenant.base_frontend_uri}/invite?token=#{token}"
   end
 
 end
