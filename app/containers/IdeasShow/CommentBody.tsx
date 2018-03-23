@@ -45,6 +45,16 @@ const CommentWrapper = styled.div`
   }
 `;
 
+const StyledForm: any = styled(Form)`
+  position: relative;
+`;
+
+const StyledButton = styled(Button)`
+  position: absolute;
+  bottom: .5rem;
+  right: .5rem;
+`;
+
 // Typings
 import { Multiloc, Locale } from 'typings';
 import { IUpdatedComment } from 'services/comments';
@@ -102,16 +112,17 @@ class CommentBody extends React.Component<Props, State> {
                     onSubmit={this.onSaveComment}
                   >
                     {({ values, handleSubmit, isSubmitting, setFieldValue, setFieldTouched }) => (
-                      <Form onSubmit={handleSubmit}>
+                      <StyledForm onSubmit={handleSubmit}>
                         <MentionsTextArea
                           name={`body_multiloc.${locale}`}
                           value={values.body_multiloc[locale]}
                           rows={1}
                           onBlur={this.createFieldTouched(`body_multiloc.${locale}`, setFieldTouched)}
                           onChange={this.createFieldChange(`body_multiloc.${locale}`, setFieldValue)}
+                          padding="1rem"
                         />
-                        <Button icon="send" processing={isSubmitting} />
-                      </Form>
+                        <StyledButton icon="send" style="primary-outlined" circularCorners={false} processing={isSubmitting} />
+                      </StyledForm>
                     )}
                   </Formik>
                 );

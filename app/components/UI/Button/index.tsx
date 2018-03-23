@@ -7,21 +7,21 @@ import { Link } from 'react-router';
 import styled, { withTheme } from 'styled-components';
 
 const StyledButton = styled.button``;
-
 const StyledLink = styled(Link)``;
-
 const StyledA = styled.a``;
+const StyledIcon = styled(Icon)``;
 
 const ButtonText = styled.div`
   margin: 0;
   margin-top: -1px;
   padding: 0;
   white-space: nowrap;
+
+  ${StyledIcon} + & {
+    margin-left: 10px;
+  }
 `;
 
-const StyledIcon = styled(Icon)`
-  margin-right: 10px;
-`;
 
 const ButtonContent = styled.div`
   display: flex;
@@ -354,7 +354,7 @@ class Button extends React.PureComponent<Props, State> {
     const childContent = (
       <ButtonContent>
         {icon && <StyledIcon name={icon} />}
-        <ButtonText>{text || children}</ButtonText>
+        {text || children && <ButtonText>{text || children}</ButtonText>}
         {processing && <SpinnerWrapper><Spinner size={spinnerSize} color={spinnerColor} /></SpinnerWrapper>}
       </ButtonContent>
     );
