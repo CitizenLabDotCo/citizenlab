@@ -24,7 +24,7 @@ require 'ice_cube'
 # admin weekly report, every Monday at 10AM
 @admin_weekly_report_schedule = IceCube::Schedule.new(now=Time.at(0))
 @admin_weekly_report_schedule.add_recurrence_rule(
-  IceCube::Rule.weekly(1).day(:monday).hour_of_day(10) 
+  IceCube::Rule.weekly(1).day(:friday).hour_of_day(14) 
 )
 @campaign_schedules = {
   'user_platform_digest'             => @user_platform_digest_schedule,
