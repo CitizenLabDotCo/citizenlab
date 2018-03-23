@@ -29,6 +29,7 @@ export type Props = {
   commentId: ICommentData['id'],
   authorId: IUserData['id'] | null,
   className?: string,
+  onCommentEdit: {(): void};
 };
 
 export type State = {
@@ -72,29 +73,34 @@ export default class CommentsMoreActions extends React.Component<Props, State> {
     this.setState({ modalVisible_spam: false });
   }
 
+  getActions = (authUser): IAction[] => {
+    const actions: IAction[] = [];
+
+    if (authUser.id !== this.props.authorId) {
+      // Report as spam
+      actions.push({ label: <FormattedMessage {...messages.reportAsSpam} />, handler: this.openSpamModal });
+    }
+
+    if (authUser.id === this.props.authorId) {
+      // Delete
+      actions.push({ label: <FormattedMessage {...messages.deleteComment} />, handler: this.openDeleteModal });
+      // Edit
+      actions.push({ label: <FormattedMessage {...messages.editComment} />, handler: this.props.onCommentEdit });
+    }
+
+    return actions;
+  }
+
   render() {
     return (
       <>
         <GetUser current>
           {({ user }) => {
             if (user) {
-              // Create the actions menu
-              const actions: IAction[] = [];
-
-              if (user.id !== this.props.authorId) {
-                // Report as spam
-                actions.push({ label: <FormattedMessage {...messages.reportAsSpam} />, handler: this.openSpamModal });
-              }
-
-              if (user.id === this.props.authorId) {
-                // Delete
-                actions.push({ label: <FormattedMessage {...messages.deleteComment} />, handler: this.openDeleteModal });
-              }
-
               return (
                 <MoreActionsMenu
                   height="5px"
-                  actions={actions}
+                  actions={this.getActions(user)}
                   className={this.props.className}
                 />
               );
