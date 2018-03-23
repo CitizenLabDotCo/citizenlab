@@ -1,5 +1,10 @@
 # Changelog
 
+## 2018-03-23
+
+### Fixed
+- Fixed padding being added on top of navigation bar on mobile devices
+
 ## 2018-03-22
 
 ### Fixed
