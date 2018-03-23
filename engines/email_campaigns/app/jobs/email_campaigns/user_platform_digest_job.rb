@@ -2,8 +2,8 @@ module EmailCampaigns
   class UserPlatformDigestJob < ApplicationJob
     queue_as :default
   
-    N_TOP_IDEAS = ENV.fetch("N_USER_PLATFORM_DIGEST_IDEAS", 3)
-    N_DISCOVER_PROJECTS = ENV.fetch("N_DISCOVER_PROJECTS", 3)
+    N_TOP_IDEAS = ENV.fetch("N_USER_PLATFORM_DIGEST_IDEAS", 3).to_i
+    N_DISCOVER_PROJECTS = ENV.fetch("N_DISCOVER_PROJECTS", 3).to_i
 
   
     def perform
