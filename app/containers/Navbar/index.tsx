@@ -239,6 +239,7 @@ const NavigationDropdownList = styled.div`
   margin: 10px;
   margin-right: 5px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 `;
 
 const NavigationDropdownListItem = styled(Link)`
