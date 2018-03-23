@@ -45,51 +45,25 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  z-index: 999;
-  position: fixed;
-  top: 0;
-  background: #fff;
   padding-left: 30px;
   padding-right: 30px;
   position: fixed;
-  width: 100%;
+  top: 0;
+  background: #fff;
+  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.12);
+  z-index: 999;
 
   * {
     user-select: none;
     outline: none;
   }
 
-  &::after {
-    content: "";
-    display: block;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.12);
-    transition: opacity 100ms ease-out;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 4;
-    height: 1px;
-  }
-
-  &.scrolled::after,
-  &.alwaysShowBorder::after,
-  &.hideBorder.scrolled::after {
-    opacity: 1;
-  }
-
-  ${media.smallerThanMaxTablet`
-    &::after {
-      opacity: 1;
-    }
-
-    &:not(.admin) {
+  &.citizen {
+    ${media.smallerThanMaxTablet`
       position: relative;
       top: auto;
-    }
-  `}
+    `}
+  }
 
   ${media.smallerThanMinTablet`
     padding-left: 15px;
@@ -358,8 +332,6 @@ const LoginLink = styled.div`
   padding: 0;
 
   &:hover {
-    /* color: ${(props) => darken(0.15, props.theme.colorMain)}; */
-    /* color: ${(props) => props.theme.colorMain}; */
     color: ${(props) => darken(0.2, props.theme.colors.label)};
   }
 `;
@@ -383,7 +355,6 @@ type State = {
 };
 
 class Navbar extends React.PureComponent<Props & Tracks, State> {
-  dropdownElement: HTMLElement | null;
   unlisten: Function;
   subscriptions: Rx.Subscription[];
 
@@ -399,7 +370,6 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
       projectsDropdownOpened: false,
       scrolled: false
     };
-    this.dropdownElement = null;
     this.subscriptions = [];
   }
 
@@ -438,12 +408,7 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
   }
 
   componentWillUnmount() {
-    if (this.dropdownElement) {
-      this.dropdownElement.removeEventListener('wheel', this.scrolling, false);
-    }
-
     this.unlisten();
-
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
@@ -478,36 +443,9 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
     this.setState({ projectsDropdownOpened: false });
   }
 
-  setRef = (element: HTMLElement) => {
-    if (element) {
-      this.dropdownElement = element;
-
-      if (this.dropdownElement) {
-        this.dropdownElement.addEventListener('wheel', this.scrolling, false);
-      }
-    }
-  }
-
-  scrolling = (event: WheelEvent) => {
-    if (this.dropdownElement) {
-      const deltaY = (event.deltaMode === 1 ? event.deltaY * 20 : event.deltaY);
-      this.dropdownElement.scrollTop += deltaY;
-      event.preventDefault();
-    }
-  }
-
   render() {
     const { location, locale, authUser, currentTenant, projects, scrolled, projectsDropdownOpened } = this.state;
     const isAdminPage = (location.pathname.startsWith('/admin'));
-
-    /*
-    const { pathname } = this.props.location;
-    let alwaysShowBorder: boolean = false;
-
-    if (pathname.startsWith('/admin') || pathname.startsWith('/sign-in') || pathname.startsWith('/sign-up') || pathname.startsWith('/ideas/new') || pathname.startsWith('/projects')) {
-      alwaysShowBorder = true;
-    }
-    */
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -515,9 +453,11 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
 
       return (
         <>
-          <MobileNavigation />
+          {!isAdminPage &&
+            <MobileNavigation />
+          }
 
-          <Container className={`${scrolled && 'scrolled'} ${isAdminPage && 'admin'} ${'alwaysShowBorder'}`}>
+          <Container className={`${scrolled && 'scrolled'} ${isAdminPage ? 'admin' : 'citizen'} ${'alwaysShowBorder'}`}>
             <Left>
               {currentTenantLogo &&
                 <LogoLink to="/">
@@ -548,7 +488,7 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
                     >
                       <NavigationDropdownMenu onClickOutside={this.handleProjectsDropdownOnClickOutside}>
                         <NavigationDropdownMenuInner>
-                          <NavigationDropdownList innerRef={this.setRef}>
+                          <NavigationDropdownList>
                             {projects.data.map((project) => (
                               <NavigationDropdownListItem key={project.id} to={getProjectUrl(project)}>
                                 {getLocalized(project.attributes.title_multiloc, locale, currentTenantLocales)}
@@ -564,11 +504,6 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
                     </CSSTransition>
                   </NavigationDropdown>
                 }
-
-                {/* <NavigationItem to="/projects" activeClassName="active">
-                  <FormattedMessage {...messages.pageProjects} />
-                </NavigationItem>
-                */}
 
                 <NavigationItem to="/ideas" activeClassName="active">
                   <FormattedMessage {...messages.pageIdeas} />
