@@ -3,9 +3,16 @@ require 'rubyXL'
 class InvitesService
 
 
-  def bulk_create_xlsx file, inviter
+  def bulk_create_xlsx file, default_params={}, inviter=nil
     hash_array = xlsx_to_hash_array(file)
-    invites = build_invites(hash_array, {'locale' => Tenant.settings('core', 'locales').first}, inviter)
+    invites = build_invites(hash_array, default_params, inviter)
+    pre_check_invites(invites)
+    save_invites(invites)
+  end
+
+  def bulk_create emails, default_params={}, inviter=nil
+    hash_array = emails.map{|e| {"email" => e}}
+    invites = build_invites(hash_array, default_params, inviter)
     pre_check_invites(invites)
     save_invites(invites)
   end
@@ -15,7 +22,14 @@ class InvitesService
 
   def xlsx_to_hash_array file
     XlsxService.new.xlsx_to_hash_array(file).each do |hash|
-      hash['group_ids'] = xlsx_groups_to_group_ids(hash['groups']) if hash['groups']
+      if hash['groups']
+        hash['group_ids'] = xlsx_groups_to_group_ids(hash['groups'])
+        hash.delete('groups')
+      end
+      if hash['admin'] == true
+        hash['roles'] = {"type" => "admin"}
+      end
+      hash.delete('admin')
     end
   end
 
@@ -37,7 +51,7 @@ class InvitesService
       email: params["email"],
       first_name: params["first_name"], 
       last_name: params["last_name"], 
-      locale: params["locale"] || default_params["locale"], 
+      locale: params["locale"] || default_params["locale"] || Tenant.settings('core', 'locales').first, 
       group_ids: params["group_ids"] || default_params["group_ids"] || [],
       roles: params["roles"] || default_params["roles"] || [],
       invite_status: 'pending'

@@ -10,40 +10,46 @@ class WebApi::V1::InvitesController < ApplicationController
 
   def index
     @invites = policy_scope(Invite)
+      .includes(:invitee)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    render json: @invites
+    render json: @invites, include: ['invitee']
   end
 
+  def bulk_create
+    authorize :invite
+    InvitesService.new.bulk_create(
+      bulk_create_params[:emails], 
+      bulk_create_params.except(:emails).stringify_keys, 
+      current_user
+    )
+    head 200
+  rescue Exception => e
+    render json: e, status: :unprocessable_entity
+    raise e
+  end
 
-  def create
-    @invitee = User.new(create_params)
-    @invitee.invite_status = 'pending'
-    @invitee.locale ||= current_user&.locale
-    @invitee.password ||= SecureRandom.urlsafe_base64 32
-    @invite = Invite.new(invitee: @invitee, inviter: current_user)
-    authorize @invite
-    begin
-      ActiveRecord::Base.transaction do
-        if !@invitee.save
-          raise ClErrors::TransactionError.new(error_key: :unprocessable_invitee)
-        end
-        if !@invite.save
-          raise ClErrors::TransactionError.new(error_key: :unprocessable_invite)
-        end
-        SideFxInviteService.new.after_create(@invite, current_user)
-        render json: @invite.reload, include: ['invitee'], status: :created
-      end
-    rescue ClErrors::TransactionError => e
-      if e.error_key == :unprocessable_invitee
-        render json: { errors: @invitee.errors.details }, status: :unprocessable_entity
-      elsif e.error_key == :unprocessable_invite
-        render json: { errors: @invite.errors.details }, status: :unprocessable_entity
-      else
-        raise e
-      end
+  def bulk_create_xlsx
+    authorize :invite
+
+    # Strip out data;...base64 prefix if it's there
+    pure_base64 = if start = bulk_create_xlsx_params[:xlsx].index(';base64,')
+      bulk_create_xlsx_params[:xlsx][(start+8)..-1]
+    else
+      bulk_create_xlsx_params[:xlsx]
     end
+
+    xlsx = StringIO.new(Base64.decode64(pure_base64))
+    InvitesService.new.bulk_create_xlsx(
+      xlsx,
+      bulk_create_params.except(:xlsx).stringify_keys, 
+      current_user
+    )
+    head 200
+  rescue Exception => e
+    render json: e, status: :unprocessable_entity
+    raise e
   end
 
 
@@ -89,7 +95,8 @@ class WebApi::V1::InvitesController < ApplicationController
       :first_name, 
       :last_name, 
       :avatar, 
-      :locale, 
+      :locale,
+      :invite_text,
       roles: [:type, :project_id],
       group_ids: []
     )
@@ -102,6 +109,25 @@ class WebApi::V1::InvitesController < ApplicationController
       :last_name, 
       :password, 
       :locale, 
+    )
+  end
+
+  def bulk_create_params
+    params.require(:invites).permit(
+      :locale,
+      :invite_text,
+      group_ids: [],
+      roles: [:type, :project_id],
+      emails: []
+    )
+  end
+
+  def bulk_create_xlsx_params
+    params.require(:invites).permit(
+      :xlsx,
+      :locale,
+      group_ids: [],
+      roles: [:type, :project_id]
     )
   end
 

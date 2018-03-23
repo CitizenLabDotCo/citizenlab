@@ -85,6 +85,8 @@ Rails.application.routes.draw do
 
       resources :invites, param: :token do
         post :accept, on: :member
+        post :bulk_create, on: :collection
+        post :bulk_create_xlsx, on: :collection
       end
 
       scope 'stats', controller: 'stats' do

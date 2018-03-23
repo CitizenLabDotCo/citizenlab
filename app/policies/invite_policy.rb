@@ -20,4 +20,12 @@ class InvitePolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
+  def bulk_create?
+    user&.active? && user.admin?
+  end
+
+  def bulk_create_xlsx?
+    user&.active? && user.admin?
+  end
+
 end
