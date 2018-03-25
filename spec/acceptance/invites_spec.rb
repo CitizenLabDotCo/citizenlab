@@ -14,14 +14,17 @@ resource "Invites" do
     end
 
     get "web_api/v1/invites" do
-      before do
-        create_list(:invite, 5)
+      with_options scope: :page do
+        parameter :number, "Page number"
+        parameter :size, "Number of ideas per page"
       end
+
+      let!(:invites) { create_list(:invite, 5) }
 
       example_request("List all invites") do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data).size).to eq 5
+        expect(json_response.dig(:data).size).to eq invites.size
       end
     end
 
@@ -34,20 +37,45 @@ resource "Invites" do
         parameter :group_ids, "Array of group ids that the invitees will be member of, defaults to none", required: false
         parameter :invite_text, "Optional text that will be included in the outgoing e-mail to the invitee", required: false
       end
+      with_options scope: :errors do
+        response_field 'error', "One of #{InvitesService::INVITE_ERRORS.except(:unparseable_excel, :malformed_admin_value, :malformed_groups_value).values.join(', ')}"
+        response_field 'row', "The index of the emails value that caused the error, starting from 0"
+        response_field 'rows', "The indexes of the emails that caused the errors, if applicable"
+        response_field 'value', "The value that caused the error, if applicable"
+        response_field 'raw_error', "Extra internal error information, if available"
+      end
 
-      let(:emails) { 5.times.map{Faker::Internet.email}.concat([nil]) }
-      let(:group_ids) { [create(:group).id] }
-      let(:roles) {[{"type" => "admin"}]}
-      let(:locale) { "nl" }
-      let(:invite_text) { "Welcome, my friend!" }
+      describe do
+        let(:emails) { 5.times.map{Faker::Internet.email}.concat([nil]) }
+        let(:group_ids) { [create(:group).id] }
+        let(:roles) {[{"type" => "admin"}]}
+        let(:locale) { "nl" }
+        let(:invite_text) { "Welcome, my friend!" }
 
-      example_request("Bulk invite multiple users") do
-        expect(response_status).to eq 200
-        expect(Invite.count).to eq 6
-        expect(Invite.all.map{|i| i.invitee.email}).to match emails
-        expect(Invite.all.map{|i| i.invitee.groups.map(&:id)}.uniq).to match [group_ids]
-        expect(Invite.all.map{|i| i.invitee.admin?}.uniq).to eq [true]
-        expect(Invite.all.map{|i| i.invitee.locale}.uniq).to eq [locale]
+        example_request("Bulk invite multiple users") do
+          expect(response_status).to eq 200
+          expect(Invite.count).to eq 6
+          expect(Invite.all.map{|i| i.invitee.email}).to match emails
+          expect(Invite.all.map{|i| i.invitee.groups.map(&:id)}.uniq).to match [group_ids]
+          expect(Invite.all.map{|i| i.invitee.admin?}.uniq).to eq [true]
+          expect(Invite.all.map{|i| i.invitee.locale}.uniq).to eq [locale]
+        end
+      end
+
+      describe do
+        let(:emails) { [
+          'someemail@somedomain.net',
+          'someemail@somedomain.net',
+          'user_at_domain.com',
+          create(:user).email,
+          create(:invite).invitee.email,
+        ]}
+
+        example_request("[error] Bulk invite multiple users") do
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response[:errors].map{|e| e[:error]}.uniq).to match_array ["emails_duplicate", "invalid_email", "email_already_invited", "email_already_active"]
+        end
       end
     end
 
@@ -60,31 +88,70 @@ resource "Invites" do
         parameter :invite_text, "Optional text that will be included in the outgoing e-mail to the invitee", required: false
       end
 
-      let(:users) { build_list(:user, 6)}
-      let(:hash_array) { users.map.with_index do |user, i|
-        {
-          email: rand(5) == 0 ? nil : user.email,
-          first_name: rand(3) == 0 ? user.first_name : nil,
-          last_name: rand(3) == 0 ? user.last_name : nil,
-          locale: i == 0 ? 'nl' : nil,
-          admin: i == 0 ? true : nil,
-          groups: i == 0 ? create(:group).title_multiloc.values.first : nil
-        }
-      end}
+      with_options scope: :errors do
+        response_field 'error', "One of #{InvitesService::INVITE_ERRORS.values.join(', ')}"
+        response_field 'row', "The row number of the error, if applicable"
+        response_field 'rows', "The row numbers of the error, if applicable"
+        response_field 'value', "The value that appeared in the excel file and caused the error, if applicable"
+        response_field 'raw_error', "Extra internal error information, if available"
+      end
+
       let(:xlsx_stringio) { XlsxService.new.hash_array_to_xlsx(hash_array) }
       let(:xlsx) { "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{Base64.encode64(xlsx_stringio.read)}" }
-      let(:group_ids) { [create(:group).id] }
-      let(:roles) {[{"type" => "admin"}]}
-      let(:locale) { "en" }
-      let(:invite_text) { "Welcome, my friend!" }
 
-      example_request("Bulk invite multiple users with xlsx file") do
+      describe do
+        let(:users) { build_list(:user, 6)}
+        let(:hash_array) { users.map.with_index do |user, i|
+          {
+            email: rand(5) == 0 ? nil : user.email,
+            first_name: rand(3) == 0 ? user.first_name : nil,
+            last_name: rand(3) == 0 ? user.last_name : nil,
+            locale: i == 0 ? 'nl' : nil,
+            admin: i == 0 ? true : nil,
+            groups: i == 0 ? create(:group).title_multiloc.values.first : nil
+          }
+        end}
+        let(:group_ids) { [create(:group).id] }
+        let(:roles) {[{"type" => "admin"}]}
+        let(:locale) { "en" }
+        let(:invite_text) { "Welcome, my friend!" }
+
+        example_request("Bulk invite multiple users with xlsx file") do
+          expect(response_status).to eq 200
+          expect(Invite.count).to eq 6
+          expect(Invite.all.map{|i| i.invitee.email}).to match hash_array.map{|h| h[:email]}
+          expect(Invite.all.map{|i| i.invitee.groups.map(&:id)}.flatten.uniq).to match Group.all.map(&:id)
+          expect(Invite.all.map{|i| i.invitee.admin?}.uniq).to eq [true]
+          expect(Invite.all.map{|i| i.invitee.locale}.uniq).to match ['nl', locale]
+        end
+      end
+
+      describe do
+        let(:hash_array) {[
+          {email: 'someemail@somedomain.net'},
+          {email: 'someemail@somedomain.net'},
+          {email: 'user_at_domain.com'},
+          {email: create(:user).email},
+          {email: create(:invite).invitee.email},
+          {locale: 'qq'},
+          {groups: 'A positive'},
+          {groups: 24},
+          {admin: 'nope'},
+        ]}
+
+        example_request("[error] Bulk invite users with xlsx file") do
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response[:errors].map{|e| e[:error]}.uniq).to match_array ["unknown_group", "malformed_groups_value", "malformed_admin_value", "emails_duplicate", "invalid_email", "email_already_invited", "email_already_active", "unknown_locale"]
+        end
+      end
+
+    end
+
+    get "web_api/v1/invites/example_xlsx" do
+
+      example_request("Get example xlsx") do
         expect(response_status).to eq 200
-        expect(Invite.count).to eq 6
-        expect(Invite.all.map{|i| i.invitee.email}).to match hash_array.map{|h| h[:email]}
-        expect(Invite.all.map{|i| i.invitee.groups.map(&:id)}.flatten.uniq).to match Group.all.map(&:id)
-        expect(Invite.all.map{|i| i.invitee.admin?}.uniq).to eq [true]
-        expect(Invite.all.map{|i| i.invitee.locale}.uniq).to match ['nl', locale]
       end
     end
 
