@@ -28,4 +28,9 @@ class InvitePolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
+  def example_xlsx?
+    user&.active? && user.admin?
+  end
+
+
 end

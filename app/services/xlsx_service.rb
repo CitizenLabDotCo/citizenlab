@@ -120,6 +120,12 @@ class XlsxService
     pa.to_stream
   end
 
+  # Converts this hash array: 
+  #   [{'name' => 'Ron', 'size' => 'xl'), {'name' => 'John', 'age' => 35}]
+  # into this xlsx:
+  # | name  | size | age |
+  # | Ron   | xl   |     |
+  # | John  |      | 35  |
   def hash_array_to_xlsx hash_array
     headers = hash_array.flat_map{|hash| hash.keys}.uniq
 
@@ -138,6 +144,12 @@ class XlsxService
     pa.to_stream
   end
 
+  # Converts this xlsx:
+  # | name  | size | age |
+  # | Ron   | xl   |     |
+  # | John  |      | 35  |
+  # into this hash array: 
+  #   [{'name' => 'Ron', 'size' => 'xl'), {'name' => 'John', 'age' => 35}]
   def xlsx_to_hash_array xlsx
     workbook = RubyXL::Parser.parse_buffer(xlsx)
     worksheet = workbook.worksheets[0]

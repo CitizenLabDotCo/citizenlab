@@ -25,9 +25,8 @@ class WebApi::V1::InvitesController < ApplicationController
       current_user
     )
     head 200
-  rescue Exception => e
-    render json: e, status: :unprocessable_entity
-    raise e
+  rescue InvitesService::InvitesFailedError => e
+    render json: {errors: e.to_h}, status: :unprocessable_entity
   end
 
   def bulk_create_xlsx
@@ -47,9 +46,14 @@ class WebApi::V1::InvitesController < ApplicationController
       current_user
     )
     head 200
-  rescue Exception => e
-    render json: e, status: :unprocessable_entity
-    raise e
+  rescue InvitesService::InvitesFailedError => e
+    render json: {errors: e.to_h}, status: :unprocessable_entity
+  end
+
+  def example_xlsx
+    authorize :invite
+    xlsx = InvitesService.new.generate_example_xlsx
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
   end
 
 
@@ -126,6 +130,7 @@ class WebApi::V1::InvitesController < ApplicationController
     params.require(:invites).permit(
       :xlsx,
       :locale,
+      :invite_text,
       group_ids: [],
       roles: [:type, :project_id]
     )

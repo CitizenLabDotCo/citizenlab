@@ -230,7 +230,7 @@ ActiveRecord::Schema.define(version: 20180309160219) do
 
   create_table "invites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "token", null: false
-    t.uuid "inviter_id", null: false
+    t.uuid "inviter_id"
     t.uuid "invitee_id", null: false
     t.datetime "accepted_at"
     t.datetime "created_at", null: false
