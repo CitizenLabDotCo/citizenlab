@@ -98,7 +98,9 @@ class User < ApplicationRecord
   end
 
   def authenticate(unencrypted_password)
-    if cl1_authenticate(unencrypted_password)
+    if !password_digest
+      false
+    elsif cl1_authenticate(unencrypted_password)
       self.password_digest = BCrypt::Password.create(unencrypted_password)
       self
     else
