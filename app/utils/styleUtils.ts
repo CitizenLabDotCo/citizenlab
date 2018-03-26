@@ -77,7 +77,7 @@ export const colors = {
   label: '#84939E',
   mediumGrey: '#BDBDBD',
   separation: '#EAEAEA',
-  background: '#f9f9fa',
+  background: '#F9F9FA',
   adminBackground: '#F0F3F4',
   clBlueDarkest: '#02282D',
   clBlueDarker: '#0A5159',
@@ -85,7 +85,7 @@ export const colors = {
   clBlueLightest: '#BEE7EB',
   clBlueLighter: '#80CFD8',
   clBlueLight: '#40B8C5',
-  placeholderBg: '#cfd6db',
+  placeholderBg: '#CFD6DB',
 };
 
 export function color(name: keyof typeof colors) {
