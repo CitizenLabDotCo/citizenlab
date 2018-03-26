@@ -5,7 +5,7 @@ AdminApi::Engine.routes.draw do
   end
 
   resources :projects, only: [:index] do
-    get :template_export, on: :collection
+    get :template_export, on: :member
     post :template_import, on: :collection
   end
   

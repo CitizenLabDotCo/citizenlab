@@ -7,7 +7,7 @@ module AdminApi
     end
 
     def template_export
-      project = Project.find(template_export_params[:id])
+      project = Project.find(params[:id])
       template = ProjectCopyService.new.export project
       render json: {template_yaml: template.to_yaml}
     end
@@ -20,12 +20,6 @@ module AdminApi
         raise ClErrors::TransactionError.new(error_key: :bad_template)
       end
       head :ok
-    end
-
-    def template_export_params
-      params.require(:project).permit(
-        :id
-      )
     end
 
     def template_import_params
