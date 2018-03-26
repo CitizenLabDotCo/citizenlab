@@ -9,6 +9,14 @@ GIT
       rails (>= 4.2)
 
 PATH
+  remote: engines/admin_api
+  specs:
+    admin_api (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      apartment (~> 2.1.0)
+      rails (~> 5.1.5)
+
+PATH
   remote: engines/email_campaigns
   specs:
     email_campaigns (0.1.0)
@@ -406,6 +414,7 @@ DEPENDENCIES
   activerecord-postgis-adapter
   activerecord_json_validator (~> 1.2.0)
   acts_as_list
+  admin_api!
   apartment (~> 2.1.0)
   apartment-sidekiq (~> 1.2.0)
   awesome_nested_set

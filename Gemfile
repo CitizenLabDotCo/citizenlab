@@ -98,3 +98,4 @@ gem 'ice_cube'
 
 gem 'public_api', path: 'engines/public_api'
 gem 'email_campaigns', path: 'engines/email_campaigns'
+gem 'admin_api', path: 'engines/admin_api'
