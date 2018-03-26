@@ -438,6 +438,7 @@
   "app.containers.IdeasShow.confirmCommentDeletion": "",
   "app.containers.IdeasShow.deleteComment": "crwdns15782:0crwdne15782:0",
   "app.containers.IdeasShow.deletedUser": "crwdns18150:0crwdne18150:0",
+  "app.containers.IdeasShow.editComment": "",
   "app.containers.IdeasShow.emptyCommentError": "crwdns15783:0crwdne15783:0",
   "app.containers.IdeasShow.helmetTitle": "crwdns15784:0crwdne15784:0",
   "app.containers.IdeasShow.ideaNotFound": "crwdns18220:0crwdne18220:0",

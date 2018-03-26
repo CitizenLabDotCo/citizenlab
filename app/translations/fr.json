@@ -438,6 +438,7 @@
   "app.containers.IdeasShow.confirmCommentDeletion": "",
   "app.containers.IdeasShow.deleteComment": "Supprimer",
   "app.containers.IdeasShow.deletedUser": "utilisateur supprimé",
+  "app.containers.IdeasShow.editComment": "",
   "app.containers.IdeasShow.emptyCommentError": "Le commentaire ne peut être vide",
   "app.containers.IdeasShow.helmetTitle": "Afficher l'idée",
   "app.containers.IdeasShow.ideaNotFound": "Oups... il semble que cette idée ait été supprimée ou oubliée !",
