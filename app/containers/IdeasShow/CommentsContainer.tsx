@@ -89,6 +89,10 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  commentsSortingFunc = (commentA, commentB) => {
+    return new Date(commentA.attributes.created_at).getTime() - new Date(commentB.attributes.created_at).getTime();
+  }
+
   render() {
     const className = `${this.props['className']} e2e-comments`;
     const { ideaId } = this.props;
@@ -97,7 +101,7 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
     if (loaded && parentComments && parentComments.data && parentComments.data.length > 0) {
       return (
         <Container className={`e2e-comments-container ${className}`}>
-          {parentComments.data.map((comment) => (
+          {parentComments.data.sort(this.commentsSortingFunc).map((comment) => (
             <ParentComment
               key={comment.id}
               ideaId={ideaId}
