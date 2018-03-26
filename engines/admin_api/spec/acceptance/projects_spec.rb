@@ -8,16 +8,14 @@ resource "Project" do
     header 'Authorization', ENV.fetch("ADMIN_API_TOKEN")
   end
 
-  get "admin_api/projects/template_export" do
+  get "admin_api/projects/:id/template_export" do
     parameter :tenant_id, "The tenant id from which to export the project", required: true
-    with_options scope: :project do
-      parameter :id, "The id for the project to export", required: true
-    end
 
-    example "Export a project template" do
-      project = create(:project_xl, phases_count: 8)
-      do_request(tenant_id: Tenant.current.id, project: {id: project.id})
+    let(:tenant_id) { Tenant.current.id }
+    let(:project) { create(:project_xl, phases_count: 8) }
+    let(:id) { project.id } 
 
+    example_request "Export a project template" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       template = YAML.load(json_response[:template_yaml])
