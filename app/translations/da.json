@@ -438,6 +438,7 @@
   "app.containers.IdeasShow.confirmCommentDeletion": "",
   "app.containers.IdeasShow.deleteComment": "Slet",
   "app.containers.IdeasShow.deletedUser": "slettet bruger",
+  "app.containers.IdeasShow.editComment": "",
   "app.containers.IdeasShow.emptyCommentError": "Denne kommentar skal udfyldes",
   "app.containers.IdeasShow.helmetTitle": "Vis idé",
   "app.containers.IdeasShow.ideaNotFound": "Hovsa... det ser ud til at denne idé er blevet fjernet eller glemt!",
