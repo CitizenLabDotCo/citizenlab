@@ -1,4 +1,11 @@
 class Invite < ApplicationRecord
+  include PgSearch
+
+  pg_search_scope :search_by_all, {
+    :associated_against => { invitee: [:first_name, :last_name, :email] },
+    :using => { :tsearch => {:prefix => true} }
+  }
+
   belongs_to :inviter, class_name: 'User', optional: true
   belongs_to :invitee, class_name: 'User'
 

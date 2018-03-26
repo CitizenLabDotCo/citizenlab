@@ -18,14 +18,61 @@ resource "Invites" do
         parameter :number, "Page number"
         parameter :size, "Number of ideas per page"
       end
+      parameter :search, "Filter by searching in email, first_name and last_name", required: false
+      parameter :sort, "Either 'email', '-email', 'last_name', '-last_name', 'created_at', '-created_at', 'invite_status', '-invite_status'", required: false
+      parameter :invite_status, "Filter by invite_status. Either 'pending' or 'accepted'"
 
-      let!(:invites) { create_list(:invite, 5) }
 
-      example_request("List all invites") do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data).size).to eq invites.size
+      describe do
+        let!(:invites) { create_list(:invite, 5) }
+
+        example_request("List all invites") do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data).size).to eq invites.size
+        end
       end
+
+      describe do
+        let!(:invites) { create_list(:invite, 5) }
+        let(:invite) { create(:invite, invitee: create(:user, last_name: 'abcdefg1234')) }
+        let(:search) { invite.invitee.last_name[0..6]}
+
+        example_request "List all invites with search string" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data).size).to eq 1
+          expect(json_response.dig(:data).first[:relationships][:invitee][:data][:id]).to eq invite.invitee.id
+        end
+      end
+
+      describe do
+        let!(:invite3) { create(:invite, invitee: create(:user, email: 'c@domain.com')) }
+        let!(:invite1) { create(:invite, invitee: create(:user, email: 'a@domain.com')) }
+        let!(:invite2) { create(:invite, invitee: create(:user, email: 'b@domain.com')) }
+        let(:sort) { 'email' }
+
+        example_request "List all invites ordered by email" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data).size).to eq 3
+          expect(json_response.dig(:data).map{|d| d[:id]}).to match [invite1.id, invite2.id, invite3.id]
+        end
+      end
+
+      describe do
+        let!(:pending_invites) { create_list(:invite, 3) }
+        let!(:accepted_invites) { create_list(:accepted_invite, 2) }
+        let(:invite_status) { 'accepted' }
+
+        example_request "List all invites that have been accepted" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data).size).to eq accepted_invites.size
+          expect(json_response.dig(:data).map{|d| d[:id]}).to match_array accepted_invites.map(&:id)
+        end
+      end
+
     end
 
 
