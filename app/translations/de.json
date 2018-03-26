@@ -438,6 +438,7 @@
   "app.containers.IdeasShow.confirmCommentDeletion": "",
   "app.containers.IdeasShow.deleteComment": "Löschen",
   "app.containers.IdeasShow.deletedUser": "gelöschter Benutzer",
+  "app.containers.IdeasShow.editComment": "",
   "app.containers.IdeasShow.emptyCommentError": "Der Kommentar darf nicht leer sein",
   "app.containers.IdeasShow.helmetTitle": "Idee anzeigen",
   "app.containers.IdeasShow.ideaNotFound": "Uuups... es scheint, dass diese Idee entfernt oder vergessen wurde!",

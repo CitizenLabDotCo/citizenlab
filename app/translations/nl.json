@@ -438,6 +438,7 @@
   "app.containers.IdeasShow.confirmCommentDeletion": "",
   "app.containers.IdeasShow.deleteComment": "Verwijderen",
   "app.containers.IdeasShow.deletedUser": "verwijderde gebruiker",
+  "app.containers.IdeasShow.editComment": "",
   "app.containers.IdeasShow.emptyCommentError": "De reactie mag niet leeg zijn",
   "app.containers.IdeasShow.helmetTitle": "Toon idee",
   "app.containers.IdeasShow.ideaNotFound": "Oeps... dit idee is verwijderd of vergeten!",
