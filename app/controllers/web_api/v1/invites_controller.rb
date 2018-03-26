@@ -119,6 +119,18 @@ class WebApi::V1::InvitesController < ApplicationController
     end
   end
 
+  def destroy
+    @invite = Invite.find(params[:id])
+    authorize @invite
+    @invite.destroy
+    if @invite.destroyed?
+      SideFxInviteService.new.after_destroy(@invite, current_user)
+      head :ok
+    else
+      head 500
+    end
+  end
+
   def create_params
     params.require(:invite).permit(
       :email,

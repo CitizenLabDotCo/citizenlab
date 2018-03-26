@@ -32,5 +32,13 @@ class InvitePolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
+  def destroy?
+    user&.active? && user.admin?
+  end
+
+  def accept?
+    true
+  end
+
 
 end

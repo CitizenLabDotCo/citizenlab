@@ -13,9 +13,17 @@ class Invite < ApplicationRecord
   validates :invitee, presence: true, uniqueness: true
 
   before_validation :generate_token, on: :create
-
+  after_destroy :destroy_invitee, if: :pending?
 
   private
+
+  def pending?
+    !self.accepted_at
+  end
+
+  def destroy_invitee
+    self.invitee.destroy
+  end
 
   def generate_token
     self.token ||= ([*('a'..'z'),*('0'..'9')]).sample(8).join
