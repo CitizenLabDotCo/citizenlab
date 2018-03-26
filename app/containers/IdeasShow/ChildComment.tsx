@@ -16,6 +16,7 @@ import { userByIdStream, IUser } from 'services/users';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import CommentsMoreActions from './CommentsMoreActions';
+import { API } from 'typings';
 
 const StyledMoreActionsMenu: any = styled(CommentsMoreActions)`
   position: absolute;
@@ -112,10 +113,23 @@ export default class ChildComment extends React.PureComponent<Props, State> {
     this.setState({ editionMode: true });
   }
 
-  onCommentSave = (comment) => {
+  onCancelEdition = () => {
+    this.setState({ editionMode: false });
+  }
+
+  onCommentSave = (comment, formikActions) => {
+    const { setSubmitting, setErrors } = formikActions;
+
     updateComment(this.props.commentId, comment)
     .then(() => {
       this.setState({ editionMode: false });
+    })
+    .catch((errorResponse) => {
+      if (errorResponse.json) {
+        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+        setErrors(apiErrors);
+        setSubmitting(false);
+      }
     });
   }
 
@@ -133,7 +147,7 @@ export default class ChildComment extends React.PureComponent<Props, State> {
           <StyledMoreActionsMenu commentId={comment.data.id} authorId={authorId} onCommentEdit={this.onCommentEdit} />
           <StyledAuthor authorId={authorId} createdAt={createdAt} message="childCommentAuthor" />
 
-          <CommentBody commentBody={commentBodyMultiloc} editionMode={this.state.editionMode} onCommentSave={this.onCommentSave} />
+          <CommentBody commentBody={commentBodyMultiloc} editionMode={this.state.editionMode} onCommentSave={this.onCommentSave} onCancelEdition={this.onCancelEdition} />
         </CommentContainer>
       );
     }

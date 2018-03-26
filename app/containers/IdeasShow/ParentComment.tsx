@@ -26,7 +26,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
-import { Locale } from 'typings';
+import { Locale, API } from 'typings';
 
 const timeout = 550;
 
@@ -196,10 +196,23 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
     this.setState({ editionMode: true });
   }
 
-  onCommentSave = (comment) => {
+  onCancelEdition = () => {
+    this.setState({ editionMode: false });
+  }
+
+  onCommentSave = (comment, formikActions) => {
+    const { setSubmitting, setErrors } = formikActions;
+
     updateComment(this.props.commentId, comment)
     .then(() => {
       this.setState({ editionMode: false });
+    })
+    .catch((errorResponse) => {
+      if (errorResponse.json) {
+        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+        setErrors(apiErrors);
+        setSubmitting(false);
+      }
     });
   }
 
@@ -231,7 +244,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
 
                   <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
 
-                  <CommentBody commentBody={commentBodyMultiloc} editionMode={this.state.editionMode} onCommentSave={this.onCommentSave} />
+                  <CommentBody commentBody={commentBodyMultiloc} editionMode={this.state.editionMode} onCommentSave={this.onCommentSave} onCancelEdition={this.onCancelEdition} />
                 </CommentContainerInner>
 
                 {(childCommentIds && childCommentIds.length > 0) &&
