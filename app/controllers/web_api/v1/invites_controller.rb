@@ -14,6 +14,32 @@ class WebApi::V1::InvitesController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
+    @invites = @invites.search_by_all(params[:search]) if params[:search].present?
+    @invites = @invites.where("users.invite_status = ?", params[:invite_status]).references(:invitee) if params[:invite_status].present?
+
+    @invites = case params[:sort]
+      when "created_at"
+        @invites.order(created_at: :asc)
+      when "-created_at"
+        @invites.order(created_at: :desc)
+      when "last_name"
+        @invites.order("users.last_name asc")
+      when "-last_name"
+        @invites.order("users.last_name desc")
+      when "email"
+        @invites.order("users.email asc")
+      when "-email"
+        @invites.order("users.email desc")
+      when "invite_status"
+        @invites.order("users.invite_status asc")
+      when "-invite_status"
+        @invites.order("users.invite_status desc")
+      when nil
+        @invites
+      else
+        raise "Unsupported sort method"
+    end
+
     render json: @invites, include: ['invitee']
   end
 
