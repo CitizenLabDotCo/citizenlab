@@ -202,6 +202,17 @@ resource "Invites" do
       end
     end
 
+    delete "web_api/v1/invites/:id" do
+
+      let(:id) { create(:invite).id }
+
+      example_request("Delete an invite") do
+        expect(response_status).to eq 200
+        expect{Invite.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect(Invite.count).to eq 0
+      end
+    end
+
   end
 
 
@@ -210,7 +221,7 @@ resource "Invites" do
       @invite = create(:invite)
     end
 
-    post "web_api/v1/invites/:token/accept" do
+    post "web_api/v1/invites/by_token/:token/accept" do
       with_options scope: :invite do
         parameter :email, "The email of the user. Required if not sepcified at creation of the invite", required: false
         parameter :first_name, "The first name of the invitee. Required if not specified at creation of the invite.", required: false

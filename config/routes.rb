@@ -83,8 +83,8 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'groups#by_slug'
       end
 
-      resources :invites, param: :token do
-        post :accept, on: :member
+      resources :invites do
+        post 'by_token/:token/accept', on: :collection, to: 'invites#accept'
         post :bulk_create, on: :collection
         post :bulk_create_xlsx, on: :collection
         get :example_xlsx, on: :collection
