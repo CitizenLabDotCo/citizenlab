@@ -120,8 +120,8 @@ namespace :migrate do
   def encode_comments_ei comments_hash, users_hash, ideas_hash
     Comment.all.map do |c|
       yml_comment = { 'body_multiloc' => c.body_multiloc,
-                      'author_ref'    => users_hash[c.author.id],
-                      'idea_ref'      => ideas_hash[c.idea.id],
+                      'author_ref'    => users_hash[c.author&.id],
+                      'idea_ref'      => ideas_hash[c.idea&.id],
                       'created_at'    => c.created_at,
                       'updated_at'    => c.updated_at
                    }
@@ -136,7 +136,7 @@ namespace :migrate do
   def encode_votes_ei users_hash, ideas_hash, comments_hash
     Vote.all.map do |v|
       yml_vote = { 'mode'         => v.mode,
-                   'user_ref'     => users_hash[v.user.id],
+                   'user_ref'     => users_hash[v.user&.id],
                    'votable_type' => v.votable_type,
                    'created_at'   => v.created_at,
                    'updated_at'   => v.updated_at
@@ -158,7 +158,7 @@ namespace :migrate do
     Phase.all.map do |p|
       yml_phase = { 'title_multiloc'       => p.title_multiloc,
                     'description_multiloc' => p.description_multiloc,
-                    'project_ref'          => projects_hash[p.project.id],
+                    'project_ref'          => projects_hash[p.project&.id],
                     'start_at'             => p.start_at,
                     'end_at'               => p.end_at,
                     'participation_method' => p.participation_method,
@@ -182,7 +182,7 @@ namespace :migrate do
     Event.all.map do |e|
       yml_event = { 'title_multiloc'       => e.title_multiloc,
                     'description_multiloc' => e.description_multiloc,
-                    'project_ref'          => projects_hash[e.project.id],
+                    'project_ref'          => projects_hash[e.project&.id],
                     'start_at'             => e.start_at,
                     'end_at'               => e.end_at,
                     'location_multiloc'    => e.location_multiloc,
