@@ -1,7 +1,7 @@
 // Libraries
 import React from 'react';
 import linkifyHtml from 'linkifyjs/html';
-import { Form, Formik } from 'formik';
+import { Form, Formik, FormikActions } from 'formik';
 
 // Utils & Loaders
 import GetLocale from 'utils/resourceLoaders/components/GetLocale';
@@ -11,6 +11,7 @@ import { getLocalized } from 'utils/i18n';
 // Components
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
 
 // Styling
 import styled from 'styled-components';
@@ -49,10 +50,14 @@ const StyledForm: any = styled(Form)`
   position: relative;
 `;
 
-const StyledButton = styled(Button)`
-  position: absolute;
-  bottom: .5rem;
-  right: .5rem;
+const ButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1em;
+
+  > * + * {
+    margin-left: .5rem;
+  }
 `;
 
 // Typings
@@ -62,7 +67,8 @@ import { IUpdatedComment } from 'services/comments';
 export interface Props {
   commentBody: Multiloc;
   editionMode: boolean;
-  onCommentSave: {(values: IUpdatedComment): void};
+  onCommentSave: {(values: IUpdatedComment, formikActions: FormikActions<IUpdatedComment>): void};
+  onCancelEdition: {(): void};
 }
 export interface State {}
 
@@ -81,8 +87,8 @@ class CommentBody extends React.Component<Props, State> {
     return processedCommentText;
   }
 
-  onSaveComment = (values) => {
-    return this.props.onCommentSave(values);
+  onSaveComment = (values, formikActions) => {
+    return this.props.onCommentSave(values, formikActions);
   }
 
   createFieldChange = (name, setFieldValue) => (value) => {
@@ -91,6 +97,11 @@ class CommentBody extends React.Component<Props, State> {
 
   createFieldTouched = (name, setFieldTouched) => () => {
     setFieldTouched(name, true);
+  }
+
+  cancelEdition = (event) => {
+    event.preventDefault();
+    this.props.onCancelEdition();
   }
 
   render() {
@@ -111,7 +122,7 @@ class CommentBody extends React.Component<Props, State> {
                     initialValues={{ body_multiloc: { [locale]: getLocalized(this.props.commentBody, locale, tenantLocales) } }}
                     onSubmit={this.onSaveComment}
                   >
-                    {({ values, handleSubmit, isSubmitting, setFieldValue, setFieldTouched }) => (
+                    {({ values, errors, handleSubmit, isSubmitting, setFieldValue, setFieldTouched }) => (
                       <StyledForm onSubmit={handleSubmit}>
                         <MentionsTextArea
                           name={`body_multiloc.${locale}`}
@@ -121,7 +132,11 @@ class CommentBody extends React.Component<Props, State> {
                           onChange={this.createFieldChange(`body_multiloc.${locale}`, setFieldValue)}
                           padding="1rem"
                         />
-                        <StyledButton icon="send" style="primary-outlined" circularCorners={false} processing={isSubmitting} />
+                        <ButtonsWrapper>
+                          {errors && errors.body_multiloc && errors.body_multiloc[locale] && <Error apiErrors={errors.body_multiloc[locale]} />}
+                          <Button onClick={this.cancelEdition} icon="close2" style="text" circularCorners={false}  />
+                          <Button icon="send" style="primary" circularCorners={false} processing={isSubmitting} />
+                        </ButtonsWrapper>
                       </StyledForm>
                     )}
                   </Formik>
