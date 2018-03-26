@@ -75,6 +75,14 @@ resource "Invites" do
 
     end
 
+    get "web_api/v1/invites/as_xlsx" do
+      let!(:invites) { create_list(:invite, 2)}
+      let!(:invite_with_group) { create(:invite, invitee: create(:admin, groups: create_list(:group, 2)))}
+      example_request "XLSX export" do
+        expect(status).to eq 200
+      end
+    end
+
 
     post "web_api/v1/invites/bulk_create" do
       with_options scope: :invites do

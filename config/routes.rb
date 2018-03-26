@@ -88,6 +88,7 @@ Rails.application.routes.draw do
         post :bulk_create, on: :collection
         post :bulk_create_xlsx, on: :collection
         get :example_xlsx, on: :collection
+        get :as_xlsx, on: :collection, action: 'index_xlsx'
       end
 
       scope 'stats', controller: 'stats' do
