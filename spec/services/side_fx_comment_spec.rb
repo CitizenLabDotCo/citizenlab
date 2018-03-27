@@ -34,7 +34,7 @@ describe SideFxCommentService do
     it "logs a 'changed' action job when the comment has changed" do
       comment.update(body_multiloc: {'en': 'changed'})
       expect {service.after_update(comment, user)}.
-        to have_enqueued_job(LogActivityJob).with(comment, 'changed', user, comment.updated_at.to_i)
+        to have_enqueued_job(LogActivityJob).with(comment, 'changed_body', user, comment.body_updated_at.to_i)
     end
 
     it "logs a 'mentioned' action for every added mention" do
