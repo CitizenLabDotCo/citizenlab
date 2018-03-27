@@ -58,8 +58,6 @@ class WebApi::V1::CommentsController < ApplicationController
 
     SideFxCommentService.new.before_update(@comment, current_user)
 
-    # body_updated_at
-
     if @comment.update(permitted_attributes(@comment))
       SideFxCommentService.new.after_update(@comment, current_user)
       render json: @comment, status: :ok, include: ['author']

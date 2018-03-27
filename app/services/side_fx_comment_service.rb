@@ -16,6 +16,7 @@ class SideFxCommentService
 
   def before_update comment, user
     if comment.body_multiloc_changed?
+      comment.body_updated_at = Time.now
       process_mentions(comment)
     end
   end
