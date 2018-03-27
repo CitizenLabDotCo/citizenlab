@@ -136,9 +136,18 @@ resource "Comments" do
 
       let(:comment) { create(:comment, author: @user, idea: @idea) }
       let(:id) { comment.id }
+
       example_request "Mark a comment as deleted" do
         expect(response_status).to eq 200
         expect(comment.reload.publication_status).to eq('deleted')
+      end
+
+      example "Admins cannot mark a comment as deleted without reason", document: false do
+        @admin = create(:admin)
+        token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
+        header 'Authorization', "Bearer #{token}"
+        do_request
+        expect(response_status).to eq 422
       end
     end
 
