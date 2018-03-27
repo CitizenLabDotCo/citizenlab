@@ -68,8 +68,8 @@ class WebApi::V1::CommentsController < ApplicationController
 
   def mark_as_deleted
     mad_params = mark_as_deleted_params
-    if (MARK_AS_DELETED_REASON_CODES.include? mad_params[:reason_code])
-      && (mad_params[:reason_code] != 'other' || mad_params[:other_reason].present?)
+    if ((MARK_AS_DELETED_REASON_CODES.include? mad_params[:reason_code]) &&
+      (mad_params[:reason_code] != 'other' || mad_params[:other_reason].present?))
       @comment.publication_status = 'deleted'
       if @comment.save
         SideFxCommentService.new.after_mark_as_deleted(@comment, current_user, mad_params[:reason_code], mad_params[:other_reason])
