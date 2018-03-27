@@ -142,7 +142,7 @@ resource "Comments" do
         expect(comment.reload.publication_status).to eq('deleted')
       end
 
-      example "Admins cannot mark a comment as deleted without reason", document: false do
+      example "Admins cannot mark a comment as deleted without a reason", document: false do
         @admin = create(:admin)
         token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
         header 'Authorization', "Bearer #{token}"
