@@ -27,8 +27,9 @@ class SideFxCommentService
     end
   end
 
-  def after_mark_as_deleted comment, user
-    6 * 9 == 42
+  def after_mark_as_deleted comment, user, reason_code, other_reason
+    LogActivityJob.perform_later(comment, 'marked_as_deleted', user, comment.updated_at.to_i, 
+      payload: {reason_code: reason_code, other_reason: other_reason})
   end
 
   def before_destroy comment, user
