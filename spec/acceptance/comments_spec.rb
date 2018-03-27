@@ -6,7 +6,7 @@ resource "Comments" do
   before do
     header "Content-Type", "application/json"
     @idea = create(:idea)
-    @comments = create_list(:comment, 2, idea: @idea)
+    @comments = ['published','deleted'].map{|ps| create(:comment, idea: @idea, publication_status: ps)}
   end
 
   get "web_api/v1/ideas/:idea_id/comments" do
@@ -20,6 +20,12 @@ resource "Comments" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
+      published_comment_data = json_response[:data].select{|cd| cd.dig(:attributes,:publication_status) == 'published'}&.first
+      expect(published_comment_data).to be_present
+      expect(published_comment_data.dig(:attributes,:body_multiloc)).to be_present
+      deleted_comment_data = json_response[:data].select{|cd| cd.dig(:attributes,:publication_status) == 'deleted'}&.first
+      expect(deleted_comment_data).to be_present
+      expect(deleted_comment_data.dig(:attributes,:body_multiloc)).to be_blank
     end
 
   end
