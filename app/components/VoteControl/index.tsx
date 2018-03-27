@@ -91,7 +91,7 @@ const VoteIcon: any = styled(Icon) `
 const VoteCount = styled.div`
   color: #84939d;
   font-size: 16px;
-  font-weight: 300;
+  font-weight: 400;
   margin-left: 5px;
   transition: all 100ms ease-out;
 `;
