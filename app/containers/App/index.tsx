@@ -47,12 +47,13 @@ import { Location } from 'history';
 import ErrorBoundary from 'components/ErrorBoundary';
 
 const Container = styled.div`
-  margin: 0;
-  padding: 0;
-  padding-top: ${props => props.theme.menuHeight}px;
   background: #fff;
+`;
 
-  &:not(.admin) {
+const InnerContainer = styled.div`
+  padding-top: ${props => props.theme.menuHeight}px;
+
+  &.citizen {
     ${media.smallerThanMaxTablet`
       padding-top: 0px;
       padding-bottom: ${props => props.theme.mobileMenuHeight}px;
@@ -196,7 +197,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
 
         {currentTenant && (
           <ThemeProvider theme={theme}>
-            <Container className={`${isAdminPage && 'admin'}`}>
+            <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
               <Meta />
 
               <FullscreenModal
@@ -212,14 +213,16 @@ export default class App extends React.PureComponent<Props & RouterState, State>
 
               <Navbar />
 
-              <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
-                <ErrorBoundary>
-                  {children}
-                </ErrorBoundary>
-                <HasPermission.No>
-                  <ForbiddenRoute />
-                </HasPermission.No>
-              </HasPermission>
+              <InnerContainer className={`${isAdminPage ? 'admin' : 'citizen'}`}>
+                <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
+                  <ErrorBoundary>
+                    {children}
+                  </ErrorBoundary>
+                  <HasPermission.No>
+                    <ForbiddenRoute />
+                  </HasPermission.No>
+                </HasPermission>
+              </InnerContainer>
             </Container>
           </ThemeProvider>
         )}

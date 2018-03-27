@@ -24,6 +24,7 @@ import Label from 'components/UI/Label';
 import InputMultiloc from 'components/UI/InputMultiloc';
 import EditorMultiloc from 'components/UI/EditorMultiloc';
 import Error from 'components/UI/Error';
+// import Radio from 'components/UI/Radio';
 import { DateRangePicker } from 'react-dates';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
@@ -34,6 +35,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { injectTFunc } from 'components/T/utils';
 import messages from './messages';
+// import projectSettingsMessages from '../../messages';
 
 // Styling
 import styled from 'styled-components';
@@ -78,6 +80,7 @@ interface State {
   locale: Locale;
   phase: IPhase | null;
   project: IProject | null;
+  presentationMode: 'map' | 'card';
   attributeDiff: IUpdatedPhaseProperties;
   errors: { [fieldName: string]: API.Error[] } | null;
   saving: boolean;
@@ -97,6 +100,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
       locale: null as any,
       phase: null,
       project: null,
+      presentationMode: 'card',
       attributeDiff: {},
       errors: null,
       saving: false,
@@ -173,6 +177,16 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
           ...get(state.attributeDiff, 'description_multiloc', {}),
           [locale]: getHtmlStringFromEditorState(multilocEditorState[locale])
         }
+      }
+    }));
+  }
+
+  handleIdeasDisplayChange = (presentationMode: 'map' | 'card') => {
+    this.setState((state) => ({
+      presentationMode,
+      attributeDiff: {
+        ...state.attributeDiff,
+        presentation_mode: presentationMode
       }
     }));
   }
@@ -261,7 +275,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
   render() {
     if (this.state.loaded) {
       const { formatMessage } = this.props.intl;
-      const { errors, saved, phase, attributeDiff, saving, multilocEditorState } = this.state;
+      const { errors, saved, phase, /* presentationMode, */ attributeDiff, saving, multilocEditorState } = this.state;
       const phaseAttrs = (phase ? { ...phase.data.attributes, ...attributeDiff } : { ...attributeDiff });
       const submitState = getSubmitState({ errors, saved, diff: attributeDiff });
       const startDate = (phaseAttrs.start_at ? moment(phaseAttrs.start_at) : null);
@@ -294,6 +308,23 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
                   onChange={this.handleParticipationContextOnChange}
                 />
               </SectionField>
+
+              {/* <SectionField>
+                <Label>
+                  <FormattedMessage {...projectSettingsMessages.defaultDisplay} />
+                </Label>
+                {['card', 'map'].map((key) => (
+                  <Radio
+                    key={key}
+                    onChange={this.handleIdeasDisplayChange}
+                    currentValue={presentationMode}
+                    value={key}
+                    name="presentation_mode"
+                    id={`presentation_mode-${key}`}
+                    label={<FormattedMessage {...projectSettingsMessages[`${key}Display`]} />}
+                  />
+                ))}
+              </SectionField> */}
 
               <SectionField>
                 <Label><FormattedMessage {...messages.datesLabel} /></Label>
