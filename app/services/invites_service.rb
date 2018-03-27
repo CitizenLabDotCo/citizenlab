@@ -88,17 +88,42 @@ class InvitesService
     end
   end
 
+  # def generate_example_xlsx
+  #   XlsxService.new.hash_array_to_xlsx [
+  #     {
+  #       email: 'someuser@somedomain.com',
+  #       first_name: 'John',
+  #       last_name: 'Johnson',
+  #       locale: Tenant.settings('core', 'locales').first,
+  #       groups: MultilocService.new.t(Group.first&.title_multiloc),
+  #       admin: false,
+  #     }
+  #   ]
+  # end
+
   def generate_example_xlsx
-    XlsxService.new.hash_array_to_xlsx [
-      {
-        email: 'someuser@somedomain.com',
-        first_name: 'John',
-        last_name: 'Johnson',
-        locale: Tenant.settings('core', 'locales').first,
-        groups: MultilocService.new.t(Group.first&.title_multiloc),
-        admin: false,
-      }
-    ]
+    headers = ['email', 'first_name', 'last_name', 'locale', 'groups', 'admin']
+    pa = Axlsx::Package.new
+    wb = pa.workbook
+
+    wb.styles do |s|
+      wb.add_worksheet do |sheet|
+        sheet.add_row headers, style: header_style(s)
+        
+        sheet.add_data_validation("F2:F1001", {
+          :type => :list,
+          :formula1 => '"TRUE, FALSE"',
+          :showDropDown => false,
+        })
+
+        sheet.add_data_validation("D2:D1001", {
+          :type => :list,
+          :formula1 => "\"#{Tenant.settings('core', 'locales').join(',')}\"",
+          :showDropDown => false,
+        })
+      end
+    end
+    pa.to_stream
   end
 
   private
