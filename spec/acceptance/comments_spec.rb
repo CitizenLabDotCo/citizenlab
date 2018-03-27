@@ -168,13 +168,21 @@ resource "Comments" do
 
       let(:comment) { create(:comment, author: @user, idea: @idea) }
       let(:id) { comment.id }
-      let(:body_multiloc) { build(:comment).body_multiloc }
+      let(:body_multiloc) { {'en' => "His hair is not blond, it's orange. Get your facts straight!"} }
 
       example_request "Update a comment" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
         expect(@idea.reload.comments_count).to eq 3
+      end
+
+      example "Admins cannot modify a comment", document: false do
+        @admin = create(:admin)
+        token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
+        header 'Authorization', "Bearer #{token}"
+        do_request
+        expect(comment.reload.body_multiloc).not_to eq body_multiloc
       end
     end
 
