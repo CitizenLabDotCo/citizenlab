@@ -165,6 +165,7 @@ type State = {
   hasAdminRights: boolean;
   selectedLocale: Locale | null;
   selectedGroups: IOption[] | null;
+  selectedInviteText: string | null;
   invitationOptionsOpened: boolean;
   selectedView: 'import' | 'text';
   loaded: boolean;
@@ -186,6 +187,7 @@ export default class Invitations extends React.PureComponent<Props, State> {
       hasAdminRights: false,
       selectedLocale: null,
       selectedGroups: null,
+      selectedInviteText: null,
       invitationOptionsOpened: false,
       selectedView: 'import',
       loaded: false,
@@ -254,6 +256,10 @@ export default class Invitations extends React.PureComponent<Props, State> {
     this.setState({ selectedGroups: (selectedGroups.length > 0 ? selectedGroups : null) });
   }
 
+  handleInviteTextOnChange = (selectedInviteText: string) => {
+    this.setState({ selectedInviteText });
+  }
+
   handleOnSubmit = () => {
     // const { selectedLocale } = this.state;
 
@@ -288,12 +294,13 @@ export default class Invitations extends React.PureComponent<Props, State> {
       hasAdminRights: false,
       selectedLocale: (state.currentTenantLocales ? state.currentTenantLocales[0] : null),
       selectedGroups: null,
+      selectedInviteText: null,
       invitationOptionsOpened: false
     }));
   }
 
   render () {
-    const { currentTenantLocales, groupOptions, selectedEmails, selectedFileBase64, hasAdminRights, selectedLocale, selectedGroups, invitationOptionsOpened, selectedView, loaded, processing, processed } = this.state;
+    const { currentTenantLocales, groupOptions, selectedEmails, selectedFileBase64, hasAdminRights, selectedLocale, selectedGroups, selectedInviteText, invitationOptionsOpened, selectedView, loaded, processing, processed } = this.state;
     const dirty = ((isString(selectedEmails) && !isEmpty(selectedEmails)) || (isString(selectedFileBase64) && !isEmpty(selectedFileBase64)));
 
     const invitationOptions = (
@@ -349,11 +356,21 @@ export default class Invitations extends React.PureComponent<Props, State> {
                 placeholder={<FormattedMessage {...messages.groupsPlaceholder} />}
               />
             </SectionField>
+
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.inviteTextLabel} />
+              </Label>
+              <TextArea
+                value={(selectedInviteText || '')}
+                onChange={this.handleInviteTextOnChange}
+              />
+            </SectionField>
           </InvitationOptionsInner>
         </InvitationOptionsContainer>
       </>
     );
-   
+
     if (currentTenantLocales && loaded) {
       return (
         <Section>

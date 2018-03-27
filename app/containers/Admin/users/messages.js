@@ -99,11 +99,14 @@ export default defineMessages({
   },
   importInfo: {
     id: 'app.containers.Admin.User.importInfo',
-    defaultMessage: `Give the column that contains the email addresses the name <strong>email</strong> in order for the addresses to be correctly imported.`,
+    defaultMessage: `    
+      Note: the column in your Excel file that contains the email addresses should be named <strong>email</strong>.
+      Please download <a href="">the reference example</a> and visit <a href="">the support page</a> for more information.
+    `,
   },
   importOptionsInfo: {
     id: 'app.containers.Admin.User.importOptionsInfo',
-    defaultMessage: `These options will only be taken into account when they are not defined in the Excel file. Visit <a href="#">this page</a> for more information.`,
+    defaultMessage: `These options will only be taken into account when they are not defined in the Excel file. Please visit <a href="#">the support page</a> for more information.`,
   },
   adminLabel: {
     id: 'app.containers.Admin.User.adminLabel',
@@ -119,7 +122,11 @@ export default defineMessages({
   },
   groupsLabel: {
     id: 'app.containers.Admin.User.localeLabel',
-    defaultMessage: 'Optionally select the group(s) to which the invited people belong',
+    defaultMessage: 'Optionally select one or more groups that will be assigned to the invited people upon registration',
+  },
+  inviteTextLabel: {
+    id: 'app.containers.Admin.User.inviteTextLabel',
+    defaultMessage: 'Optionally type a message that will be added to the invitation mail.',
   },
   groupsPlaceholder: {
     id: 'app.containers.Admin.User.groupsPlaceholder',
