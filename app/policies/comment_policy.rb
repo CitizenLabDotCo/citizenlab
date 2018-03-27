@@ -32,5 +32,13 @@ class CommentPolicy < ApplicationPolicy
     update?
   end
 
+  def permitted_attributes_for_update
+    attrs = [:parent_id, :author_id]
+    if record.author_id == current_user&.id
+      attrs += [body_multiloc: I18n.available_locales]
+    end
+    attrs
+  end
+
 
 end
