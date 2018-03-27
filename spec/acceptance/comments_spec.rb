@@ -128,6 +128,20 @@ resource "Comments" do
       end
     end
 
+    post "web_api/v1/comments/:id/mark_as_deleted" do
+      with_options scope: :comment do
+        parameter :reason_code, "one of #{WebApi::V1::CommentsController::MARK_AS_DELETED_REASON_CODES}; only required for admins", required: false
+        parameter :other_reason, "the reason for deleting the comment, if none of the reason codes is applicable, in which case 'other' must be chosen", required: false
+      end
+
+      let(:comment) { create(:comment, author: @user, idea: @idea) }
+      let(:id) { comment.id }
+      example_request "Mark a comment as deleted" do
+        expect(response_status).to eq 200
+        expect(comment.reload.publication_status).to eq('deleted')
+      end
+    end
+
     patch "web_api/v1/comments/:id" do
       with_options scope: :comment do
         parameter :author_id, "The user id of the user owning the comment. Signed in user by default"
