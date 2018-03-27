@@ -240,7 +240,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
             <CommentsWithReplyBoxContainer>
               <CommentsContainer className={`${showCommentForm && 'hasReplyBox'}`}>
                 <CommentContainerInner>
-                  <StyledMoreActionsMenu commentId={comment.data.id} authorId={authorId} onCommentEdit={this.onCommentEdit} />
+                  <StyledMoreActionsMenu comment={comment.data} onCommentEdit={this.onCommentEdit} />
 
                   <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
 

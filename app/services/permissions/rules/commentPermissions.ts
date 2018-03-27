@@ -12,9 +12,13 @@ definePermissionRule('comments', 'create', (_comment: ICommentData, user: IUser)
 });
 
 definePermissionRule('comments', 'edit', (comment: ICommentData, user: IUser) => {
+  return !!(isAuthor(comment, user));
+});
+
+definePermissionRule('comments', 'delete', (comment: ICommentData, user: IUser) => {
   return !!(isAuthor(comment, user) || isAdmin(user));
 });
 
-definePermissionRule('comments', 'markAsSpam', () => {
-  return true;
+definePermissionRule('comments', 'markAsSpam', (comment: ICommentData, user: IUser) => {
+  return !(isAuthor(comment, user) || isAdmin(user));
 });
