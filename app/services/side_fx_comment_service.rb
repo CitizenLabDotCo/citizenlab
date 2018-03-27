@@ -23,7 +23,7 @@ class SideFxCommentService
 
   def after_update comment, user
     if comment.body_multiloc_previously_changed?
-      LogActivityJob.perform_later(comment, 'changed', user, comment.updated_at.to_i)
+      LogActivityJob.perform_later(comment, 'changed_body', user, comment.body_updated_at.to_i, payload: {change: comment.body_multiloc_previous_change})
       notify_updated_mentioned_users(comment, user)
     end
   end
