@@ -137,7 +137,7 @@ const ColumnTitle = styled.h2`
 
 const ColumnExplanation = styled.div`
   color: #666;
-  font-size: 18px;
+  font-size: 17px;
   line-height: 24px;
   font-weight: 300;
   min-height: 7rem;
@@ -328,7 +328,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
                 <WithoutButtonBar>
                   <Button
                     className="e2e-submit-project-select-form"
-                    size="1"
+                    size="2"
                     text={<FormattedMessage {...messages.continueButton} />}
                     onClick={this.handleOnSubmitClick}
                     disabled={!selectedProjectId}

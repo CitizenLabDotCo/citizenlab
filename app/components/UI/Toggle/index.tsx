@@ -4,7 +4,16 @@ import styled, { css } from 'styled-components';
 const size = 22;
 const padding = 4;
 
-const Container: any = styled.div`
+const Container = styled.div`
+  display: inline-block;
+
+  &.hasLabel {
+    display: flex;
+    align-items: center;
+  }
+`;
+
+const ToggleContainer: any = styled.div`
   height: ${size + padding * 2}px;
   display: inline-block;
 
@@ -50,28 +59,45 @@ const Container: any = styled.div`
   }
 `;
 
+const Text = styled.div`
+  color: #333;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  padding-left: 10px;
+  cursor: pointer;
+`;
+
 export type Props = {
-  checked: boolean;
+  value: boolean;
   disabled?: boolean | undefined;
-  onToggle: Function;
+  label?: string | JSX.Element | null | undefined;
+  onChange: (event: React.FormEvent<any>) => void;
 };
 
 type State = {};
 
-export default class Label extends React.PureComponent<Props, State> {
-  handleOnClick = () => {
+export default class Toggle extends React.PureComponent<Props, State> {
+  handleOnClick = (event) => {
     if (!this.props.disabled) {
-      this.props.onToggle();
+      this.props.onChange(event);
     }
   }
 
   render() {
-    const { checked, disabled } = this.props;
+    const className = this.props['className'];
+    const { value, disabled, label } = this.props;
 
     return (
-      <Container onClick={this.handleOnClick} checked={checked} disabled={disabled}>
-        <input type="checkbox" role="checkbox" aria-checked={checked} />
-        <i />
+      <Container className={`${className} ${label && 'hasLabel'}`}>
+        <ToggleContainer onClick={this.handleOnClick} checked={value} disabled={disabled}>
+          <input type="checkbox" role="checkbox" aria-checked={value} />
+          <i />
+        </ToggleContainer>
+
+        {label && 
+          <Text onClick={this.handleOnClick}>{label}</Text>
+        }
       </Container>
     );
   }

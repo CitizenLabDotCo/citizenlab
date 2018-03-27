@@ -260,7 +260,7 @@ export default class UsersTable extends React.PureComponent<Props, State> {
                       <FormattedDate value={createdAt} />
                     </Table.Cell>
                     <Table.Cell textAlign="center">
-                      <Toggle checked={isAdmin} onToggle={this.handleOnAdminToggle(user)} />
+                      <Toggle value={isAdmin} onChange={this.handleOnAdminToggle(user)} />
                     </Table.Cell>
                     <Table.Cell textAlign="center">
                       <Popup

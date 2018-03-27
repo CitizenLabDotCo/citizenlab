@@ -75,11 +75,19 @@ export default defineMessages({
   },
   invitePeople: {
     id: 'app.containers.Admin.User.invitePeople',
-    defaultMessage: 'Invite people',
+    defaultMessage: 'Invite people via email',
+  },
+  importTab: {
+    id: 'app.containers.Admin.User.importTab',
+    defaultMessage: 'Import email addresses',
+  },
+  textTab: {
+    id: 'app.containers.Admin.User.textTab',
+    defaultMessage: 'Manually enter email addresses',
   },
   emailListLabel: {
     id: 'app.containers.Admin.User.emailListLabel',
-    defaultMessage: 'Enter the email addresses of the people you want to invite. Seperate each address by a comma.',
+    defaultMessage: 'Manually enter the email addresses of the people you want to invite. Seperate each address by a comma.',
   },
   or: {
     id: 'app.containers.Admin.User.or',
@@ -87,11 +95,15 @@ export default defineMessages({
   },
   importLabel: {
     id: 'app.containers.Admin.User.importLabel',
-    defaultMessage: 'Import an Excel file (.xlsx) with the email addresses you want to invite.',
+    defaultMessage: 'Select an Excel file (.xlsx)',
   },
   importInfo: {
     id: 'app.containers.Admin.User.importInfo',
-    defaultMessage: `Use the column name 'email' for the column containing the email addresses.`,
+    defaultMessage: `Give the column that contains the email addresses the name <strong>email</strong> in order for the addresses to be correctly imported.`,
+  },
+  importOptionsInfo: {
+    id: 'app.containers.Admin.User.importOptionsInfo',
+    defaultMessage: `These options will only be taken into account when they are not defined in the Excel file. Visit <a href="#">this page</a> for more information.`,
   },
   adminLabel: {
     id: 'app.containers.Admin.User.adminLabel',
@@ -100,6 +112,10 @@ export default defineMessages({
   localeLabel: {
     id: 'app.containers.Admin.User.localeLabel',
     defaultMessage: 'Select the default language for the invited people',
+  },
+  invitationOptions: {
+    id: 'app.containers.Admin.User.invitationOptions',
+    defaultMessage: 'Invitation options',
   },
   groupsLabel: {
     id: 'app.containers.Admin.User.localeLabel',

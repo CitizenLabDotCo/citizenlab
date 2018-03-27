@@ -150,8 +150,8 @@ const IdeaCountIcon = styled(Icon)`
   height: 25px;
   width: 25px;
   fill: ${(props) => props.theme.colors.label};
-  margin-right: 6px;
-  margin-top: -6px;
+  margin-right: 8px;
+  margin-top: -5px;
   transition: all 100ms ease-out;
 `;
 

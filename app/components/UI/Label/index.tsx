@@ -20,6 +20,10 @@ type Props = {
 type State = {};
 
 export default class Label extends React.PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props);
+  }
+
   render() {
     const { value, htmlFor, children } = this.props;
     const className = this.props['className'];

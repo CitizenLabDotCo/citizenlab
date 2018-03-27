@@ -17,6 +17,8 @@ import { loadIdeasXlsxRequest, loadCommentsXlsxRequest } from './actions';
 import messages from './messages';
 import sagas from './sagas';
 
+import { color, fontSize } from 'utils/styleUtils';
+
 const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -27,12 +29,12 @@ const HeaderContainer = styled.div`
 `;
 
 const HeaderTitle = styled.h1`
-  color: #333;
-  font-size: 35px;
+  color: ${color('title')};
+  font-size: ${fontSize('xxxl')};
   line-height: 40px;
   font-weight: 600;
-  margin: 0;
   padding: 0;
+  margin: 0;
 `;
 
 const ExportButtons = styled.div`

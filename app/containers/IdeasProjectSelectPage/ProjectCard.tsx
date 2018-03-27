@@ -19,7 +19,7 @@ import T from 'components/T';
 import messages from './messages';
 
 // styling
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -35,19 +35,22 @@ const Container = styled.div`
   }
 
   &:not(.enabled) {
-    opacity: 0.5;
+    opacity: 0.45;
     cursor: not-allowed;
+    background: transparent;
   }
 
   &.selected {
     border-color: ${props => props.theme.colors.success};
+    border-color: ${(props) => props.theme.colorMain};
   }
 
   &.enabled:hover {
-    border-color: #999;
+    border-color: #ccc;
 
     &.selected {
       border-color: ${props => props.theme.colors.success};
+      border-color: ${(props) => props.theme.colorMain};
     }
   }
 `;
@@ -63,9 +66,14 @@ const Card = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 12px;
+  padding: 10px;
   border-radius: 5px;
   position: relative;
+
+  ${media.smallerThanMinTablet`
+    padding-top: 12px;
+    padding-bottom: 12px;
+  `}
 `;
 
 const StyledRadio = styled(Radio)`
@@ -155,6 +163,7 @@ type Props = {
   onClick: () => void;
   selected: boolean;
   className?: string;
+  theme?: object | undefined;
 };
 
 type State = {
@@ -165,7 +174,7 @@ type State = {
   loaded: boolean;
 };
 
-export default class ProjectCard extends React.PureComponent<Props, State> {
+class ProjectCard extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -255,6 +264,7 @@ export default class ProjectCard extends React.PureComponent<Props, State> {
     const className = this.props['className'];
     const { projectId, selected } = this.props;
     const { project, projectImages, loaded } = this.state;
+    const theme = this.props.theme as object;
 
     if (loaded && project) {
       const { title_multiloc: titleMultiloc /*, description_preview_multiloc: descriptionPreviewMultiloc*/ } = project.data.attributes;
@@ -312,6 +322,7 @@ export default class ProjectCard extends React.PureComponent<Props, State> {
                 id={projectId}
                 label=""
                 disabled={!enabled}
+                buttonColor={theme['colorMain']}
               />
             </Card>
           </ContainerInner>
@@ -322,3 +333,5 @@ export default class ProjectCard extends React.PureComponent<Props, State> {
     return null;
   }
 }
+
+export default withTheme(ProjectCard);
