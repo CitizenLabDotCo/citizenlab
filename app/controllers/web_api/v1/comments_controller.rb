@@ -67,12 +67,14 @@ class WebApi::V1::CommentsController < ApplicationController
   end
 
   def mark_as_deleted
-    mad_params = mark_as_deleted_params
-    if ((MARK_AS_DELETED_REASON_CODES.include? mad_params[:reason_code]) &&
-      (mad_params[:reason_code] != 'other' || mad_params[:other_reason].present?))
+    reason_code = params.dig(:comment, :reason_code)
+    other_reason = params.dig(:comment, :other_reason)
+    if (@comment.author_id == current_user&.id) || 
+      ((MARK_AS_DELETED_REASON_CODES.include? reason_code) &&
+       (reason_code != 'other' || other_reason.present?))
       @comment.publication_status = 'deleted'
       if @comment.save
-        SideFxCommentService.new.after_mark_as_deleted(@comment, current_user, mad_params[:reason_code], mad_params[:other_reason])
+        SideFxCommentService.new.after_mark_as_deleted(@comment, current_user, reason_code, other_reason)
         head :ok
       else
         render json: { errors: @comment.errors.details }, status: :unprocessable_entity
@@ -107,13 +109,6 @@ class WebApi::V1::CommentsController < ApplicationController
       :parent_id,
       :author_id,
       body_multiloc: I18n.available_locales
-    )
-  end
-
-  def mark_as_deleted_params
-    params.require(:comment).permit(
-      :reason_code,
-      :other_reason
     )
   end
 
