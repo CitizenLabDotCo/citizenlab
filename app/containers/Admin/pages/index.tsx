@@ -4,7 +4,7 @@ type Props = {};
 
 type State = {};
 
-export default class CustomFieldsDashboard extends React.PureComponent<Props, State> {
+export default class PagesDashboard extends React.PureComponent<Props, State> {
   render() {
     return (
       <>

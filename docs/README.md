@@ -1,5 +1,25 @@
 # Changelog
 
+## 2018-03-23
+
+### Fixed
+- Fixed padding being added on top of navigation bar on mobile devices
+
+## 2018-03-22
+
+### Fixed
+- Idea creation page would not load when no published projects where present. Instead of the loading indicator the page now shows a message telling the user there are no projects.
+
+## 2018-03-20
+
+### Fixed
+- Various visual glitches on IE11 and Edge
+- Scrolling behviour on mobile devices is back to normal
+- The admin idea manager no longer shows an empty right column by default
+
+### Added
+- Experimental raw HTML editing for pages in the admin at `/admin/pages`
+
 ## 2018-03-14
 
 ### Fixed
