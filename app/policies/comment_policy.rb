@@ -24,6 +24,10 @@ class CommentPolicy < ApplicationPolicy
     user&.active? && (record.author_id == user.id || user.admin?)
   end
 
+  def mark_as_deleted?
+    user&.active? && (record.author_id == user.id || user.admin?)
+  end
+
   def destroy?
     update?
   end
