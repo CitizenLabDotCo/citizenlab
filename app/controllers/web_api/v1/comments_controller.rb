@@ -54,11 +54,11 @@ class WebApi::V1::CommentsController < ApplicationController
   end
 
   def update
-    @comment.attributes = comment_params
+    @comment.attributes = permitted_attributes(@comment)
 
     SideFxCommentService.new.before_update(@comment, current_user)
 
-    if @comment.update(permitted_attributes(@comment))
+    if @comment.save
       SideFxCommentService.new.after_update(@comment, current_user)
       render json: @comment, status: :ok, include: ['author']
     else
@@ -105,9 +105,12 @@ class WebApi::V1::CommentsController < ApplicationController
   end
 
   def comment_params
+    # no one is allowed to modify someone else's comment, 
+    # so no one is allowed to write a comment in someone
+    # else's name
     params.require(:comment).permit(
       :parent_id,
-      :author_id,
+      # :author_id
       body_multiloc: I18n.available_locales
     )
   end
