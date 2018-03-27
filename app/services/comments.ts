@@ -4,7 +4,7 @@ import { IRelationship, Multiloc } from 'typings';
 
 export interface ICommentData {
   id: string;
-  type: string;
+  type: 'comments';
   attributes: {
     body_multiloc: Multiloc;
     upvotes_count: number;

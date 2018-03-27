@@ -18,7 +18,7 @@ import { media } from 'utils/styleUtils';
 import CommentsMoreActions from './CommentsMoreActions';
 import { API } from 'typings';
 
-const StyledMoreActionsMenu: any = styled(CommentsMoreActions)`
+const StyledMoreActionsMenu = styled(CommentsMoreActions)`
   position: absolute;
   top: 10px;
   right: 20px;
@@ -144,7 +144,7 @@ export default class ChildComment extends React.PureComponent<Props, State> {
 
       return (
         <CommentContainer className={className}>
-          <StyledMoreActionsMenu commentId={comment.data.id} authorId={authorId} onCommentEdit={this.onCommentEdit} />
+          <StyledMoreActionsMenu comment={comment.data} onCommentEdit={this.onCommentEdit} />
           <StyledAuthor authorId={authorId} createdAt={createdAt} message="childCommentAuthor" />
 
           <CommentBody commentBody={commentBodyMultiloc} editionMode={this.state.editionMode} onCommentSave={this.onCommentSave} onCancelEdition={this.onCancelEdition} />

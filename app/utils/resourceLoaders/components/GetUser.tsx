@@ -60,7 +60,7 @@ export default class GetUser extends React.PureComponent<Props, State> {
     this.sub = targetStream.observable
     .subscribe((response) => {
       this.setState({
-        user: response.data
+        user: (response && response.data) || null
       });
     });
   }
