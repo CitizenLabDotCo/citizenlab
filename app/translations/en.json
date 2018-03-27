@@ -138,7 +138,7 @@
   "app.containers.AdminPage.Groups.editTitle": "Editing a group",
   "app.containers.AdminPage.Groups.helmetDescription": "List of groups on the platform",
   "app.containers.AdminPage.Groups.helmetTitle": "Groups dashboard",
-  "app.containers.AdminPage.Groups.listTitle": "Groups of users",
+  "app.containers.AdminPage.Groups.listTitle": "Groups",
   "app.containers.AdminPage.IdeaDashboard.delete": "Delete",
   "app.containers.AdminPage.IdeaDashboard.helmetDescription": "Idea list",
   "app.containers.AdminPage.IdeaDashboard.helmetTitle": "Ideas dashboard",
