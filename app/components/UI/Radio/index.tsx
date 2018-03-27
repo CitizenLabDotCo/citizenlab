@@ -41,7 +41,7 @@ const Checked = styled.div`
   flex: 0 0 12px;
   width: 12px;
   height: 12px;
-  background: #49B47D;
+  background: ${(props: any) => props.color};
   border-radius: 50%;
 `;
 
@@ -64,6 +64,7 @@ interface Props {
   id?: string | undefined;
   label: string | JSX.Element;
   disabled?: boolean;
+  buttonColor?: string | undefined;
 }
 
 export default class Radio extends React.PureComponent<Props> {
@@ -92,7 +93,7 @@ export default class Radio extends React.PureComponent<Props> {
           className={`${checked ? 'checked' : ''}`}
           disabled={this.props.disabled}
         >
-          {checked && <Checked />}
+          {checked && <Checked color={(this.props.buttonColor || '#49B47D')}/>}
         </CustomRadio>
         <Text className="text">{this.props.label}</Text>
       </Wrapper>

@@ -25,20 +25,32 @@ const Container = styled.div`
   margin-top: 70px;
   margin-bottom: 90px;
 
-  ${media.phone`
-    display: block;
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: 50px;
+    margin-bottom: 60px;
   `}
 `;
 
 const Left = styled.section`
   flex: 3;
 
-  ${media.phone`
-    margin-bottom: 20px;
+  ${media.smallerThanMinTablet`
+    flex: 1;
   `}
+`;
 
-  ${media.biggerThanPhone`
-    padding-right: 90px;
+const Right = styled.aside`
+  flex: 2;
+  max-width: 400px;
+  margin-left: 80px;
+
+  ${media.smallerThanMinTablet`
+    flex: 1;
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
   `}
 `;
 
@@ -88,15 +100,6 @@ const IdeaBodyStyled = styled.div`
       color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
     }
   }
-`;
-
-const Right = styled.aside`
-  flex: 2;
-  max-width: 400px;
-
-  ${media.phone`
-    display: none;
-  `}
 `;
 
 const ProjectImages = styled.div`

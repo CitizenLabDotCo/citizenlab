@@ -4,10 +4,11 @@ import { isString, isEmpty } from 'lodash';
 
 // components
 import TextArea from 'components/UI/TextArea';
-import Toggle from 'components/UI/Toggle';
 import Label from 'components/UI/Label';
 import Warning from 'components/UI/Warning';
 import Radio from 'components/UI/Radio';
+import Icon from 'components/UI/Icon';
+import Toggle from 'components/UI/Toggle';
 // import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -19,15 +20,14 @@ import { currentTenantStream } from 'services/tenant';
 import { listGroups, IGroups } from 'services/groups';
 
 // i18n
+import { FormattedHTMLMessage } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { appLocalePairs } from 'i18n.js';
 import { getLocalized } from 'utils/i18n';
-// import messages from './../messages';
 
 // utils
 import { getBase64FromFile } from 'utils/imageTools';
-// import getSubmitState from 'utils/getSubmitState';
 
 // styling
 import styled from 'styled-components';
@@ -35,40 +35,124 @@ import styled from 'styled-components';
 // typings
 import { Locale, IOption } from 'typings';
 
-const StyledSectionField = styled(SectionField)`
-  max-width: 100%;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Left = styled.div`
-  width: 500px;
-  flex: 0 0 500px;
-`;
-
-const Middle = styled.div`
-  margin-left: 60px;
-  margin-right: 60px;
-  color: #333;
-  font-weight: 600;
-`;
-
-const Right = styled.div`
-  width: 100%;
-`;
+const timeout = 400;
 
 const FileInputWrapper = styled.div`
-  margin-top: 30px;
+  margin-top: 15px;
+  margin-bottom: 20px;
+`;
+
+const ArrowIcon = styled(Icon)`
+  fill: ${(props) => props.theme.colors.label};
+  height: 13px;
+  margin-right: 9px;
+  transition: transform 350ms cubic-bezier(0.165, 0.84, 0.44, 1),
+              fill 80ms ease-out;
+
+  &.opened {
+    transform: rotate(90deg);
+  }
+`;
+
+const StyledLabel = styled(Label)`
+  padding-bottom: 0px;
+  transition: all 80ms ease-out;
+  cursor: pointer;
+`;
+
+const Options: any = styled.div`
+  display: flex;
+  align-items: center;
+  padding-bottom: 8px;
+  transition: all 80ms ease-out;
+  cursor: pointer;
+
+  &:hover {
+    ${StyledLabel} {
+      color: #000;
+    }
+
+    ${ArrowIcon} {
+      fill: #000;
+    }
+  }
+`;
+
+const InvitationOptionsContainer = styled.div`
+  width: 497px;
+  position: relative;
+  border-radius: 5px;
+  border: solid 1px #ddd;
+  background: #fff;
+  z-index: 1;
+  transition: opacity ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  &:not(.opened) {
+    height: 0;
+    opacity: 0;
+  }
+
+  &.opened {
+    height: auto;
+    opacity: 1;
+  }
+`;
+
+const InvitationOptionsInner = styled.div`
+  padding: 20px;
+  padding-bottom: 0px;
 `;
 
 const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
+  padding-top: 30px;
 `;
 
 const Processing = styled.div`
   color: ${(props) => props.theme.colors.label};
   margin-left: 15px;
+`;
+
+const ViewButtons = styled.div`
+  display: flex;
+  margin-bottom: 40px;
+`;
+
+const ViewButton = styled.div`
+  min-width: 85px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: #fff;
+  border: solid 1px #e4e4e4;
+
+  &:hover,
+  &.active {
+    background: #f0f0f0;
+  }
+
+  > span {
+    color: ${(props) => props.theme.colors.label};
+    color: #333;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 24px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+`;
+
+const LeftButton = ViewButton.extend`
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+`;
+
+const RightButton = ViewButton.extend`
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 `;
 
 type Props = {};
@@ -81,6 +165,8 @@ type State = {
   hasAdminRights: boolean;
   selectedLocale: Locale | null;
   selectedGroups: IOption[] | null;
+  invitationOptionsOpened: boolean;
+  selectedView: 'import' | 'text';
   loaded: boolean;
   dirty: boolean;
   processing: boolean;
@@ -100,6 +186,8 @@ export default class Invitations extends React.PureComponent<Props, State> {
       hasAdminRights: false,
       selectedLocale: null,
       selectedGroups: null,
+      invitationOptionsOpened: false,
+      selectedView: 'import',
       loaded: false,
       dirty: false,
       processing: false,
@@ -188,10 +276,84 @@ export default class Invitations extends React.PureComponent<Props, State> {
     return 'enabled';
   }
 
+  toggleOptions = () => {
+    this.setState(state => ({ invitationOptionsOpened: !state.invitationOptionsOpened }));
+  }
+
+  selectView = (selectedView: 'import' | 'text') => () => {
+    this.setState((state) => ({
+      selectedView,
+      selectedEmails: null,
+      selectedFileBase64: null,
+      hasAdminRights: false,
+      selectedLocale: (state.currentTenantLocales ? state.currentTenantLocales[0] : null),
+      selectedGroups: null,
+      invitationOptionsOpened: false
+    }));
+  }
+
   render () {
-    const { currentTenantLocales, groupOptions, selectedEmails, selectedFileBase64, hasAdminRights, selectedLocale, selectedGroups, loaded, processing, processed } = this.state;
+    const { currentTenantLocales, groupOptions, selectedEmails, selectedFileBase64, hasAdminRights, selectedLocale, selectedGroups, invitationOptionsOpened, selectedView, loaded, processing, processed } = this.state;
     const dirty = ((isString(selectedEmails) && !isEmpty(selectedEmails)) || (isString(selectedFileBase64) && !isEmpty(selectedFileBase64)));
 
+    const invitationOptions = (
+      <>
+        <Options onClick={this.toggleOptions}>
+          <ArrowIcon name="chevron-right" className={`${invitationOptionsOpened && 'opened'}`} />
+          <StyledLabel>
+            <FormattedMessage {...messages.invitationOptions} />
+          </StyledLabel>
+        </Options>
+
+        <InvitationOptionsContainer className={`${invitationOptionsOpened && 'opened'}`}>
+          <InvitationOptionsInner>
+            {selectedView === 'import' &&
+              <SectionField>
+                <Warning text={<FormattedHTMLMessage {...messages.importOptionsInfo} />} />
+              </SectionField>
+            }
+
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.adminLabel} />
+              </Label>
+              <Toggle value={hasAdminRights} onChange={this.handleAdminRightsOnToggle} />
+            </SectionField>
+
+            {currentTenantLocales && currentTenantLocales.length > 1 &&
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.localeLabel} />
+                </Label>
+
+                {currentTenantLocales.map((currentTenantLocale) => (
+                  <Radio
+                    key={currentTenantLocale}
+                    onChange={this.handleLocaleOnChange}
+                    currentValue={selectedLocale}
+                    value={currentTenantLocale}
+                    label={appLocalePairs[currentTenantLocale]}
+                  />
+                ))}
+              </SectionField>
+            }
+
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.groupsLabel} />
+              </Label>
+              <MultipleSelect
+                value={selectedGroups}
+                options={groupOptions}
+                onChange={this.handleSelectedGroupsOnChange}
+                placeholder={<FormattedMessage {...messages.groupsPlaceholder} />}
+              />
+            </SectionField>
+          </InvitationOptionsInner>
+        </InvitationOptionsContainer>
+      </>
+    );
+   
     if (currentTenantLocales && loaded) {
       return (
         <Section>
@@ -199,114 +361,80 @@ export default class Invitations extends React.PureComponent<Props, State> {
             <FormattedMessage {...messages.invitePeople} />
           </SectionTitle>
 
-          <StyledSectionField>
-            <Left>
-              <Label>
-                <FormattedMessage {...messages.emailListLabel} />
-              </Label>
-              <TextArea
-                value={(selectedEmails || '')}
-                onChange={this.handleEmailListOnChange}
-              />
-            </Left>
+          <ViewButtons>
+            <LeftButton onClick={this.selectView('import')} className={`${selectedView === 'import' && 'active'}`}>
+              <FormattedMessage {...messages.importTab} />
+            </LeftButton>
+            <RightButton onClick={this.selectView('text')} className={`${selectedView === 'text' && 'active'}`}>
+              <FormattedMessage {...messages.textTab} />
+            </RightButton>
+          </ViewButtons>
 
-            <Middle>
-              <FormattedMessage {...messages.or} />
-            </Middle>
+          {selectedView === 'import' &&
+            <>
+              <SectionField>
+                <Label>
+                  <FormattedHTMLMessage {...messages.importLabel} />
+                </Label>
 
-            <Right>
-              <Label>
-                <FormattedMessage {...messages.importLabel} />
-              </Label>
+                <Warning text={<FormattedHTMLMessage {...messages.importInfo} />} />
 
-              <Warning text={<FormattedMessage {...messages.importInfo} />} />
+                <FileInputWrapper>
+                  <input
+                    type="file"
+                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    onChange={this.handleFileInputOnChange}
+                  />
+                </FileInputWrapper>
+              </SectionField>
 
-              <FileInputWrapper>
-                <input
-                  type="file"
-                  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                  onChange={this.handleFileInputOnChange}
+              {invitationOptions}
+            </>
+          }
+
+          {selectedView === 'text' &&
+            <>
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.emailListLabel} />
+                </Label>
+                <TextArea
+                  value={(selectedEmails || '')}
+                  onChange={this.handleEmailListOnChange}
                 />
-              </FileInputWrapper>
-            </Right>
-          </StyledSectionField>
+              </SectionField>
 
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.adminLabel} />
-            </Label>
-            <Toggle checked={hasAdminRights} onToggle={this.handleAdminRightsOnToggle} />
-          </SectionField>
-
-          {currentTenantLocales && currentTenantLocales.length > 1 &&
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.localeLabel} />
-              </Label>
-
-              {currentTenantLocales.map((currentTenantLocale) => (
-                <Radio
-                  key={currentTenantLocale}
-                  onChange={this.handleLocaleOnChange}
-                  currentValue={selectedLocale}
-                  value={currentTenantLocale}
-                  label={appLocalePairs[currentTenantLocale]}
-                />
-              ))}
-            </SectionField>
+              {invitationOptions}
+            </>
           }
 
           <SectionField>
-            <Label>
-              <FormattedMessage {...messages.groupsLabel} />
-            </Label>
-            <MultipleSelect
-              value={selectedGroups}
-              options={groupOptions}
-              onChange={this.handleSelectedGroupsOnChange}
-              placeholder={<FormattedMessage {...messages.groupsPlaceholder} />}
-            />
+            <ButtonWrapper>
+              {/*
+              <Button processing={processing} onClick={this.handleOnSubmit} circularCorners={true}>
+                <FormattedMessage {...messages.sendOutInvitations} />
+              </Button>
+              */}
+
+              <SubmitWrapper
+                loading={processing}
+                status={this.getSubmitState(null, processed, dirty)}
+                messages={{
+                  buttonSave: messages.save,
+                  buttonError: messages.saveError,
+                  buttonSuccess: messages.saveSuccess,
+                  messageError: messages.saveErrorMessage,
+                  messageSuccess: messages.saveSuccessMessage,
+                }}
+              />
+
+              {processing &&
+                <Processing>
+                  <FormattedMessage {...messages.processing} />
+                </Processing>
+              }
+            </ButtonWrapper>
           </SectionField>
-
-          <ButtonWrapper>
-            {/*
-            <Button processing={processing} onClick={this.handleOnSubmit} circularCorners={true}>
-              <FormattedMessage {...messages.sendOutInvitations} />
-            </Button>
-            */}
-
-            <SubmitWrapper
-              loading={processing}
-              status={this.getSubmitState(null, processed, dirty)}
-              messages={{
-                buttonSave: messages.save,
-                buttonError: messages.saveError,
-                buttonSuccess: messages.saveSuccess,
-                messageError: messages.saveErrorMessage,
-                messageSuccess: messages.saveSuccessMessage,
-              }}
-            />
-
-            {processing &&
-              <Processing>
-                <FormattedMessage {...messages.processing} />
-              </Processing>
-            }
-          </ButtonWrapper>
-
-          {/*
-          <SubmitWrapper
-            loading={this.state.loading}
-            status={getSubmitState({ errors, saved, diff: attributesDiff })}
-            messages={{
-              buttonSave: messages.save,
-              buttonError: messages.saveError,
-              buttonSuccess: messages.saveSuccess,
-              messageError: messages.saveErrorMessage,
-              messageSuccess: messages.saveSuccessMessage,
-            }}
-          />
-          */}
         </Section>
       );
     }

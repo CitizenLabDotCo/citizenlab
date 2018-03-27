@@ -293,7 +293,7 @@ export default class ValuesList extends React.PureComponent<Props, State> {
                   <OptionText>{entry.text}</OptionText>
 
                   {multiple &&
-                    <Checkbox size="22px" checked={checked} toggle={this.handleOnToggle(entry, index)} />
+                    <Checkbox value={checked} onChange={this.handleOnToggle(entry, index)} />
                   }
                 </StyledOption>
               );

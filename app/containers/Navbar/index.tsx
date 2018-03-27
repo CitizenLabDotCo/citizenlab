@@ -148,11 +148,11 @@ const NavigationDropdownItemText = styled.div`
 `;
 
 const NavigationDropdownItemIcon = styled(Icon)`
-  height: 7px;
+  height: 6px;
   width: 11px;
   fill: #999;
   margin-left: 4px;
-  margin-top: 4px;
+  margin-top: 3px;
   transition: all 100ms ease-out;
 `;
 

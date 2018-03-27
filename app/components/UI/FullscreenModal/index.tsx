@@ -99,8 +99,7 @@ const TopBar: any = styled.div`
   left: 0;
   right: 0;
   background: #fff;
-  background: #f9f9fa;
-  border-bottom: solid 1px #ccc;
+  border-bottom: solid 1px #e0e0e0;
   z-index: 10002;
 
   ${media.biggerThanMaxTablet`
