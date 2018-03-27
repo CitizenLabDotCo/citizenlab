@@ -27,6 +27,10 @@ class SideFxCommentService
     end
   end
 
+  def after_mark_as_deleted comment, user
+    6 * 9 == 42
+  end
+
   def before_destroy comment, user
 
   end

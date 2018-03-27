@@ -1,6 +1,6 @@
 class WebApi::V1::CommentsController < ApplicationController
 
-  before_action :set_comment, only: [:show, :update, :destroy]
+  before_action :set_comment, only: [:show, :update, :mark_as_deleted, :destroy]
   skip_after_action :verify_authorized, only: [:index_xlsx]
 
   def index
@@ -64,6 +64,21 @@ class WebApi::V1::CommentsController < ApplicationController
     end
   end
 
+  def mark_as_deleted
+    mad_params = mark_as_deleted_params
+    if mad_params[:reason_code] || mad_params[:other_reason]
+      @comment.publication_status = 'deleted'
+      if @comment.save
+        SideFxCommentService.new.after_mark_as_deleted(@comment, current_user)
+        head :ok
+      else
+        render json: { errors: @comment.errors.details }, status: :unprocessable_entity
+      end
+    else
+      raise ClErrors::TransactionError.new(error_key: :reason_blank)
+    end
+  end
+
   def destroy
 
     SideFxCommentService.new.before_destroy(@comment, current_user)
@@ -89,6 +104,13 @@ class WebApi::V1::CommentsController < ApplicationController
       :parent_id,
       :author_id,
       body_multiloc: I18n.available_locales
+    )
+  end
+
+  def mark_as_deleted_params
+    params.require(:comment).permit(
+      :reason_code,
+      :other_reason
     )
   end
 
