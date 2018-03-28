@@ -6,6 +6,7 @@ import { isString, isEmpty } from 'lodash';
 import TextArea from 'components/UI/TextArea';
 import Label from 'components/UI/Label';
 import Warning from 'components/UI/Warning';
+import Error from 'components/UI/Error';
 import Radio from 'components/UI/Radio';
 import Icon from 'components/UI/Icon';
 import Toggle from 'components/UI/Toggle';
@@ -17,7 +18,7 @@ import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 import { listGroups, IGroups } from 'services/groups';
-import { bulkInviteXLSX } from 'services/Invites';
+import { bulkInviteXLSX, bulkInviteEmails, IInvites, IInviteError, INewBulkInvite, INewBulkEmailInvite, INewBulkXLSXInvite } from 'services/Invites';
 
 // i18n
 import { FormattedHTMLMessage } from 'react-intl';
@@ -183,9 +184,11 @@ type State = {
   dirty: boolean;
   processing: boolean;
   processed: boolean;
+  errors: IInviteError[] | null;
 };
 
 export default class Invitations extends React.PureComponent<Props, State> {
+  fileInputElement: HTMLInputElement | null;
   subscriptions: Rx.Subscription[];
 
   constructor(props) {
@@ -204,8 +207,10 @@ export default class Invitations extends React.PureComponent<Props, State> {
       loaded: false,
       dirty: false,
       processing: false,
-      processed: false
+      processed: false,
+      errors: null
     };
+    this.fileInputElement = null;
     this.subscriptions = [];
   }
 
@@ -287,7 +292,7 @@ export default class Invitations extends React.PureComponent<Props, State> {
     this.setState(state => ({ invitationOptionsOpened: !state.invitationOptionsOpened }));
   }
 
-  selectView = (selectedView: 'import' | 'text') => () => {
+  resetWithView = (selectedView: 'import' | 'text') => () => {
     this.setState((state) => ({
       selectedView,
       selectedEmails: null,
@@ -296,7 +301,10 @@ export default class Invitations extends React.PureComponent<Props, State> {
       selectedLocale: (state.currentTenantLocales ? state.currentTenantLocales[0] : null),
       selectedGroups: null,
       selectedInviteText: null,
-      invitationOptionsOpened: false
+      invitationOptionsOpened: false,
+      processed: false,
+      dirty: false,
+      errors: null
     }));
   }
 
@@ -306,7 +314,11 @@ export default class Invitations extends React.PureComponent<Props, State> {
     FileSaver.saveAs(blob, 'bleh.xlsx');
   }
 
-  handleOnSubmit = async () => {
+  setFileInputRef = (ref: HTMLInputElement) => {
+    this.fileInputElement = ref;
+  }
+
+  handleOnSubmit = async (event) => {
     // currentTenantLocales: null,
     // groupOptions: null,
     // selectedEmails: null,
@@ -322,21 +334,63 @@ export default class Invitations extends React.PureComponent<Props, State> {
     // processing: false,
     // processed: false
 
+    event.preventDefault();
+
     const { selectedLocale, selectedView, selectedEmails, selectedFileBase64, hasAdminRights, selectedGroups, selectedInviteText } = this.state;
     const hasCorrectSelection = ((selectedView === 'import' && isString(selectedFileBase64) && !selectedEmails) || (selectedView === 'text' && !selectedFileBase64 && isString(selectedEmails)));
 
     if (selectedLocale && hasCorrectSelection) {
-      this.setState({ processing: true });
+      try {
+        this.setState({ processing: true, processed: false, errors: null });
 
-      await bulkInviteXLSX({
-        xlsx: selectedFileBase64 as string,
-        locale: selectedLocale,
-        roles: (hasAdminRights ? [{ type: 'admin' }] : null),
-        group_ids: (selectedGroups && selectedGroups.length > 0 ? selectedGroups.map(group => group.value) : null),
-        invite_text: selectedInviteText
-      });
+        const bulkInvite: INewBulkInvite = {
+          locale: selectedLocale,
+          roles: (hasAdminRights ? [{ type: 'admin' }] : null),
+          group_ids: (selectedGroups && selectedGroups.length > 0 ? selectedGroups.map(group => group.value) : null),
+          invite_text: selectedInviteText
+        };
 
-      this.setState({ processing: false });
+        let response: IInvites | IInviteError[] | null = null;
+
+        if (selectedView === 'import' && isString(selectedFileBase64)) {
+          const bulkXLSXInvite: INewBulkXLSXInvite = {
+            xlsx: selectedFileBase64,
+            ...bulkInvite
+          };
+
+          response = await bulkInviteXLSX(bulkXLSXInvite);
+        }
+
+        if (selectedView === 'text' && isString(selectedEmails)) {
+          const bulkEmailInvite: INewBulkEmailInvite = {
+            emails: selectedEmails,
+            ...bulkInvite
+          };
+
+          response = await bulkInviteEmails(bulkEmailInvite);
+        }
+
+        console.log('response:');
+        console.log(response);
+
+        // reset file input
+        if (this.fileInputElement) {
+          this.fileInputElement.value = '';
+        }
+
+        this.setState({
+          processing: false,
+          processed: true,
+          dirty: false,
+          selectedEmails: null,
+          selectedFileBase64: null
+        });
+      } catch (errors) {
+        const reponseErrors: IInviteError[] | null  = errors;
+        this.setState({ errors: reponseErrors, processing: false });
+        console.log('errors:');
+        console.log(errors);
+      }
     }
   }
 
@@ -421,10 +475,10 @@ export default class Invitations extends React.PureComponent<Props, State> {
             </SectionTitle>
 
             <ViewButtons>
-              <LeftButton onClick={this.selectView('import')} className={`${selectedView === 'import' && 'active'}`}>
+              <LeftButton onClick={this.resetWithView('import')} className={`${selectedView === 'import' && 'active'}`}>
                 <FormattedMessage {...messages.importTab} />
               </LeftButton>
-              <RightButton onClick={this.selectView('text')} className={`${selectedView === 'text' && 'active'}`}>
+              <RightButton onClick={this.resetWithView('text')} className={`${selectedView === 'text' && 'active'}`}>
                 <FormattedMessage {...messages.textTab} />
               </RightButton>
             </ViewButtons>
@@ -454,6 +508,7 @@ export default class Invitations extends React.PureComponent<Props, State> {
                       type="file"
                       accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                       onChange={this.handleFileInputOnChange}
+                      ref={this.setFileInputRef}
                     />
                   </FileInputWrapper>
                 </SectionField>

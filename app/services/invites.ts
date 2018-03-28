@@ -35,16 +35,35 @@ export interface IInvite {
   data: IInviteData;
 }
 
-export interface INewBulkXLSXInvite {
-  xlsx: string;
+export interface IInviteError {
+  error: string;
+  raw_error: string;
+  row?: number | undefined;
+  rows?: number[] | undefined;
+  value?: number | string | undefined;
+}
+
+export interface INewBulkInvite {
   locale?: string | null | undefined;
   roles?: [{ type: 'admin'}] | null | undefined;
   group_ids?: string[] | null | undefined;
   invite_text?: string | null | undefined;
 }
 
+export interface INewBulkEmailInvite extends INewBulkInvite {
+  emails: string;
+}
+
+export interface INewBulkXLSXInvite extends INewBulkInvite {
+  xlsx: string;
+}
+
 export function invitesStream(streamParams: IStreamParams | null = null) {
   return streams.get<IInvites>({ apiEndpoint: `${API_PATH}/invites`, ...streamParams });
+}
+
+export function bulkInviteEmails(object: INewBulkEmailInvite) {
+  return streams.add<IInvites>(`${API_PATH}/invites/bulk_create`, { invites: object });
 }
 
 export function bulkInviteXLSX(object: INewBulkXLSXInvite) {
