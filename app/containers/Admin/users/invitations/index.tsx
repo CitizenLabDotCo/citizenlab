@@ -28,6 +28,9 @@ import { getLocalized } from 'utils/i18n';
 
 // utils
 import { getBase64FromFile } from 'utils/imageTools';
+import FileSaver from 'file-saver';
+import { requestBlob } from 'utils/request';
+import { API_PATH } from 'containers/App/constants';
 
 // styling
 import styled from 'styled-components';
@@ -154,6 +157,8 @@ const RightButton = ViewButton.extend`
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 `;
+
+// const Bleh = styled.div``;
 
 type Props = {};
 
@@ -299,6 +304,12 @@ export default class Invitations extends React.PureComponent<Props, State> {
     }));
   }
 
+  downloadExampleFile = async (event) => {
+    event.preventDefault();
+    const blob = await requestBlob(`${API_PATH}/invites/example_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    FileSaver.saveAs(blob, 'bleh.xlsx');
+  }
+
   render () {
     const { currentTenantLocales, groupOptions, selectedEmails, selectedFileBase64, hasAdminRights, selectedLocale, selectedGroups, selectedInviteText, invitationOptionsOpened, selectedView, loaded, processing, processed } = this.state;
     const dirty = ((isString(selectedEmails) && !isEmpty(selectedEmails)) || (isString(selectedFileBase64) && !isEmpty(selectedFileBase64)));
@@ -394,7 +405,18 @@ export default class Invitations extends React.PureComponent<Props, State> {
                   <FormattedHTMLMessage {...messages.importLabel} />
                 </Label>
 
-                <Warning text={<FormattedHTMLMessage {...messages.importInfo} />} />
+                <Warning 
+                  text={
+                    <FormattedMessage
+                      {...messages.importInfo}
+                      values={{
+                        emailColumnName: <strong><FormattedMessage {...messages.emailColumnName} /></strong>, // tslint:disable-next-line
+                        downloadLink: <a href="#" onClick={this.downloadExampleFile}><FormattedMessage {...messages.exampleFile} /></a>, // tslint:disable-next-line
+                        supportPageLink: <a href="#"><FormattedMessage {...messages.supportPage} /></a>
+                      }}
+                    />
+                  }
+                />
 
                 <FileInputWrapper>
                   <input
