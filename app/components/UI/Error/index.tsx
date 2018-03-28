@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import { darken } from 'polished';
 import { API, Message } from 'typings';
+import { IInviteError } from 'services/invites';
 import messages from './messages';
 
 interface IStyledErrorMessageInner {
@@ -132,7 +133,7 @@ type Props = {
   text?: string | JSX.Element | null;
   fieldName?: string | undefined;
   errors?: string[];
-  apiErrors?: API.Error[] | null;
+  apiErrors?: (API.Error | IInviteError)[] | null;
   size?: string;
   marginTop?: string;
   marginBottom?: string;
@@ -196,7 +197,7 @@ export default class Error extends React.PureComponent<Props, State> {
                 return null;
               })}
 
-              {apiErrors && apiErrors.map((error) => {
+              {apiErrors && apiErrors.length > 0 && apiErrors.map((error) => {
                 const errorMessage = findMessage(fieldName, error.error);
 
                 if (errorMessage) {
