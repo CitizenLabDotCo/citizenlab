@@ -37,10 +37,10 @@ export interface IInvite {
 
 export interface INewBulkXLSXInvite {
   xlsx: string;
-  locale?: string;
-  roles?: [{ type: 'admin'}];
-  group_ids?: string[];
-  invite_text?: string;
+  locale?: string | null | undefined;
+  roles?: [{ type: 'admin'}] | null | undefined;
+  group_ids?: string[] | null | undefined;
+  invite_text?: string | null | undefined;
 }
 
 export function invitesStream(streamParams: IStreamParams | null = null) {
