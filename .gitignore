@@ -27,3 +27,5 @@ public/uploads
 !.elasticbeanstalk/*.global.yml
 
 doc/
+
+.custom_env
