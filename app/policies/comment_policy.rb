@@ -29,7 +29,7 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def destroy?
-    update?
+    false
   end
 
   def permitted_attributes_for_update

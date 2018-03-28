@@ -187,15 +187,16 @@ resource "Comments" do
     end
 
 
-    delete "web_api/v1/comments/:id" do
-      let(:comment) { create(:comment, author: @user, idea: @idea) }
-      let(:id) { comment.id }
-      example_request "Delete a comment" do
-        expect(response_status).to eq 200
-        expect{Comment.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
-        expect(@idea.reload.comments_count).to eq 2
-      end
-    end
+    ## Currently not allowed by anyone, but works at the moment of writing (if permitted, that is)
+    # delete "web_api/v1/comments/:id" do
+    #   let(:comment) { create(:comment, author: @user, idea: @idea) }
+    #   let(:id) { comment.id }
+    #   example_request "Delete a comment" do
+    #     expect(response_status).to eq 200
+    #     expect{Comment.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+    #     expect(@idea.reload.comments_count).to eq 2
+    #   end
+    # end
 
   end
 
