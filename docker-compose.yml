@@ -33,7 +33,7 @@ services:
       - '.:/cl2_back'
     env_file:
       - '.env'
-      - '.custom_env'
+      # - '.custom_env'
     tty: true
     stdin_open: true
 
