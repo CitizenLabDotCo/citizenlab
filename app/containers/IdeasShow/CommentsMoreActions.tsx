@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { FormEvent } from 'react';
 import { combineLatest } from 'rxjs/Observable/combineLatest';
 
 // i18n
@@ -7,7 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Services
-import { ICommentData, deleteComment, markForDeletion } from 'services/comments';
+import { ICommentData, markForDeletion, DeleteReason } from 'services/comments';
 import { hasPermission } from 'services/permissions';
 
 // Components
@@ -73,17 +73,17 @@ export default class CommentsMoreActions extends React.Component<Props, State> {
     this.setState({ modalVisible_delete: false });
   }
 
-  deleteComment = (reason) => {
-    if (reason && !reason.reason_code) {
-      return;
+  deleteComment = (reason: DeleteReason | FormEvent<HTMLButtonElement>) => {
+    function isDeleteReason(reason: any): reason is DeleteReason {
+      return reason.reason_code;
     }
 
     this.setState({
       loading_deleteComment: true,
     });
 
-    if (!reason) {
-      deleteComment(this.props.comment.id);
+    if (!isDeleteReason(reason)) {
+      markForDeletion(this.props.comment.id);
     } else {
       markForDeletion(this.props.comment.id, reason);
     }
