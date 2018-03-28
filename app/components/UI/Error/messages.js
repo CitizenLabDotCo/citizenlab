@@ -63,6 +63,6 @@ export default defineMessages({
   },
   email_already_invited: {
     id: 'app.errors.email_already_invited',
-    defaultMessage: 'email already invited',
+    defaultMessage: '{email} is already invited',
   },
 });

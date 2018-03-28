@@ -201,6 +201,14 @@ export default class Error extends React.PureComponent<Props, State> {
                 const errorMessage = findMessage(fieldName, error.error);
 
                 if (errorMessage) {
+                  if (error.error === 'email_already_invited' && error.value) {
+                    return (
+                      <p key={error.error}>
+                        <FormattedMessage {...errorMessage} values={{ email: <strong>{error.value}</strong> }} />
+                      </p>
+                    );
+                  }
+
                   return (
                     <p key={error.error}>
                       <FormattedMessage {...errorMessage} />

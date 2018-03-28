@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { isString, isEmpty } from 'lodash';
+import { isString, isEmpty, get } from 'lodash';
 
 // components
 import TextArea from 'components/UI/TextArea';
@@ -165,7 +165,9 @@ const RightButton = ViewButton.extend`
   border-bottom-right-radius: 5px;
 `;
 
-// const Bleh = styled.div``;
+const StyledError = styled(Error)`
+  margin-top: 10px;
+`;
 
 type Props = {};
 
@@ -276,8 +278,8 @@ export default class Invitations extends React.PureComponent<Props, State> {
     this.setState({ selectedInviteText });
   }
 
-  getSubmitState = (errors: object | null, processed: boolean, dirty: boolean) => {
-    if (errors && !isEmpty(errors)) {
+  getSubmitState = (errors: IInviteError[] | null, processed: boolean, dirty: boolean) => {
+    if (errors && errors.length > 0) {
       return 'error';
     } else if (processed && !dirty) {
       return 'success';
@@ -311,7 +313,7 @@ export default class Invitations extends React.PureComponent<Props, State> {
   downloadExampleFile = async (event) => {
     event.preventDefault();
     const blob = await requestBlob(`${API_PATH}/invites/example_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    FileSaver.saveAs(blob, 'bleh.xlsx');
+    FileSaver.saveAs(blob, 'example.xlsx');
   }
 
   setFileInputRef = (ref: HTMLInputElement) => {
@@ -319,21 +321,6 @@ export default class Invitations extends React.PureComponent<Props, State> {
   }
 
   handleOnSubmit = async (event) => {
-    // currentTenantLocales: null,
-    // groupOptions: null,
-    // selectedEmails: null,
-    // selectedFileBase64: null,
-    // hasAdminRights: false,
-    // selectedLocale: null,
-    // selectedGroups: null,
-    // selectedInviteText: null,
-    // invitationOptionsOpened: false,
-    // selectedView: 'import',
-    // loaded: false,
-    // dirty: false,
-    // processing: false,
-    // processed: false
-
     event.preventDefault();
 
     const { selectedLocale, selectedView, selectedEmails, selectedFileBase64, hasAdminRights, selectedGroups, selectedInviteText } = this.state;
@@ -386,8 +373,12 @@ export default class Invitations extends React.PureComponent<Props, State> {
           selectedFileBase64: null
         });
       } catch (errors) {
-        const reponseErrors: IInviteError[] | null  = errors;
-        this.setState({ errors: reponseErrors, processing: false });
+        this.setState({
+          errors: get(errors, 'json.errors', null),
+          processing: false
+        });
+
+        // reponseErrors.json.errors[0].error === 'email_already_invited'
         console.log('errors:');
         console.log(errors);
       }
@@ -397,6 +388,10 @@ export default class Invitations extends React.PureComponent<Props, State> {
   render () {
     const { currentTenantLocales, groupOptions, selectedEmails, selectedFileBase64, hasAdminRights, selectedLocale, selectedGroups, selectedInviteText, invitationOptionsOpened, selectedView, loaded, processing, processed, errors } = this.state;
     const dirty = ((isString(selectedEmails) && !isEmpty(selectedEmails)) || (isString(selectedFileBase64) && !isEmpty(selectedFileBase64)));
+
+    console.log('render:');
+    console.log('errors:');
+    console.log(errors);    
 
     const invitationOptions = (
       <>
@@ -537,7 +532,7 @@ export default class Invitations extends React.PureComponent<Props, State> {
               <ButtonWrapper>
                 <SubmitWrapper
                   loading={processing}
-                  status={this.getSubmitState(null, processed, dirty)}
+                  status={this.getSubmitState(errors, processed, dirty)}
                   messages={{
                     buttonSave: messages.save,
                     buttonError: messages.saveError,
@@ -554,7 +549,13 @@ export default class Invitations extends React.PureComponent<Props, State> {
                 }
               </ButtonWrapper>
 
-              <Error apiErrors={errors} />
+              {/* {errors && errors.length > 0 &&
+                <ErrorMessage>
+                  <FormattedMessage {...messages.couldNotSendError} />
+                </ErrorMessage>
+              } */}
+
+              <StyledError apiErrors={errors} />
             </SectionField>
           </Section>
         </form>
