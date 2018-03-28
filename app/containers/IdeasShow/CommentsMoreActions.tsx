@@ -1,17 +1,24 @@
+// Libraries
 import React from 'react';
 import { combineLatest } from 'rxjs/Observable/combineLatest';
 
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-import { ICommentData, deleteComment } from 'services/comments';
+// Services
+import { ICommentData, deleteComment, markForDeletion } from 'services/comments';
+import { hasPermission } from 'services/permissions';
 
+// Components
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import Modal from 'components/UI/Modal';
 import SpamReportForm from 'containers/SpamReport';
 import Button from 'components/UI/Button';
-import { hasPermission } from 'services/permissions';
+import HasPermission from 'components/HasPermission';
+import CommentsAdminDeletionModal from './CommentsAdminDeletionModal';
 
+// Styling
 import styled from 'styled-components';
 
 const ButtonsWrapper = styled.div`
@@ -25,6 +32,7 @@ const ButtonsWrapper = styled.div`
   }
 `;
 
+// Typing
 export type Props = {
   comment: ICommentData,
   className?: string,
@@ -60,16 +68,25 @@ export default class CommentsMoreActions extends React.Component<Props, State> {
     this.setState({ modalVisible_delete: true });
   }
 
-  closeDeleteModal = () => {
+  closeDeleteModal = (event?) => {
+    event && event.preventDefault();
     this.setState({ modalVisible_delete: false });
   }
 
-  deleteComment = () => {
+  deleteComment = (reason) => {
+    if (reason && !reason.reason_code) {
+      return;
+    }
+
     this.setState({
       loading_deleteComment: true,
     });
 
-    deleteComment(this.props.comment.id);
+    if (!reason) {
+      deleteComment(this.props.comment.id);
+    } else {
+      markForDeletion(this.props.comment.id, reason);
+    }
   }
 
   openSpamModal = () => {
@@ -111,20 +128,27 @@ export default class CommentsMoreActions extends React.Component<Props, State> {
 
     return (
       <>
-        {}
         <MoreActionsMenu
           height="5px"
           className={this.props.className}
           actions={this.state.actions}
         />
         <Modal fixedHeight={false} opened={this.state.modalVisible_delete} close={this.closeDeleteModal} className="e2e-comment-deletion-modal">
-          <p>
-            <FormattedMessage {...messages.confirmCommentDeletion} />
-          </p>
-          <ButtonsWrapper>
-            <Button style="secondary" circularCorners={false} onClick={this.closeDeleteModal}><FormattedMessage {...messages.commentDeletionCancelButton} /></Button>
-            <Button style="primary" processing={this.state.loading_deleteComment} circularCorners={false} onClick={this.deleteComment}><FormattedMessage {...messages.commentDeletionConfirmButton} /></Button>
-          </ButtonsWrapper>
+          <HasPermission item={this.props.comment} action="justifyDeletion">
+            {/* Justification required for the deletion */}
+            <CommentsAdminDeletionModal onCloseDeleteModal={this.closeDeleteModal} onDeleteComment={this.deleteComment} />
+
+            {/* No justification required */}
+            <HasPermission.No>
+              <p>
+                <FormattedMessage {...messages.confirmCommentDeletion} />
+              </p>
+              <ButtonsWrapper>
+                <Button style="secondary" circularCorners={false} onClick={this.closeDeleteModal}><FormattedMessage {...messages.commentDeletionCancelButton} /></Button>
+                <Button style="primary" processing={this.state.loading_deleteComment} circularCorners={false} onClick={this.deleteComment}><FormattedMessage {...messages.commentDeletionConfirmButton} /></Button>
+              </ButtonsWrapper>
+            </HasPermission.No>
+          </HasPermission>
         </Modal>
         <Modal fixedHeight={false} opened={this.state.modalVisible_spam} close={this.closeSpamModal}>
           <SpamReportForm resourceId={this.props.comment.id} resourceType="comments" />

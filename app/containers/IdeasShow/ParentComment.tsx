@@ -8,6 +8,7 @@ import ChildCommentForm from './ChildCommentForm';
 import CommentsMoreActions from './CommentsMoreActions';
 import CommentBody from './CommentBody';
 import { browserHistory } from 'react-router';
+import Icon from 'components/UI/Icon';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -19,16 +20,26 @@ import { IUser } from 'services/users';
 import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
 // animations
 // import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 import { Locale, API } from 'typings';
 
 const timeout = 550;
+
+const DeletedIcon = styled(Icon)`
+  height: 1em;
+  margin-right: 1rem;
+  width: 1em;
+`;
 
 const StyledMoreActionsMenu = styled(CommentsMoreActions)`
   position: absolute;
@@ -87,6 +98,12 @@ const CommentContainerInner = styled.div`
       opacity: 1;
     }
   }
+
+  &.deleted {
+    display: flex;
+    align-items: center;
+    background: ${colors.placeholderBg};
+  }
 `;
 
 const StyledAuthor = styled(Author)`
@@ -144,7 +161,10 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
     const comment$ = commentStream(commentId).observable;
     const childCommentIds$ = commentsForIdeaStream(ideaId).observable.switchMap((comments) => {
       const childCommentIds = comments.data.filter((comment) => {
-        return (comment.relationships.parent.data !== null ? comment.relationships.parent.data.id === commentId : false);
+        if (!comment.relationships.parent.data) return false;
+        if (comment.attributes.publication_status === 'deleted') return false;
+        if (comment.relationships.parent.data.id === commentId) return true;
+        return false;
       }).map(comment => comment.id);
 
       if (childCommentIds && childCommentIds.length > 0) {
@@ -223,9 +243,15 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
     if (loaded && comment) {
       const ideaId = comment.data.relationships.idea.data.id;
       const authorId = comment.data.relationships.author.data ? comment.data.relationships.author.data.id : null;
+      const commentDeleted = comment.data.attributes.publication_status === 'deleted';
       const createdAt = comment.data.attributes.created_at;
       const commentBodyMultiloc = comment.data.attributes.body_multiloc;
-      const showCommentForm = authUser && commentingEnabled;
+      const showCommentForm = authUser && commentingEnabled && !commentDeleted;
+
+      // Hide parent comments that are deleted with no children
+      if (comment.data.attributes.publication_status === 'deleted' && (!childCommentIds || childCommentIds.length === 0)) {
+        return null;
+      }
 
       return (
         <CSSTransition
@@ -239,12 +265,20 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
 
             <CommentsWithReplyBoxContainer>
               <CommentsContainer className={`${showCommentForm && 'hasReplyBox'}`}>
-                <CommentContainerInner>
-                  <StyledMoreActionsMenu comment={comment.data} onCommentEdit={this.onCommentEdit} />
-
-                  <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
-
-                  <CommentBody commentBody={commentBodyMultiloc} editionMode={this.state.editionMode} onCommentSave={this.onCommentSave} onCancelEdition={this.onCancelEdition} />
+                <CommentContainerInner className={`${commentDeleted && 'deleted'}`}>
+                  {!commentDeleted &&
+                    <>
+                      <StyledMoreActionsMenu comment={comment.data} onCommentEdit={this.onCommentEdit} />
+                      <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
+                      <CommentBody commentBody={commentBodyMultiloc} editionMode={this.state.editionMode} onCommentSave={this.onCommentSave} onCancelEdition={this.onCancelEdition} />
+                    </>
+                  }
+                  {commentDeleted &&
+                    <>
+                      <DeletedIcon name="delete" />
+                      <FormattedMessage {...messages.commentDeletedPlaceholder} />
+                    </>
+                  }
                 </CommentContainerInner>
 
                 {(childCommentIds && childCommentIds.length > 0) &&
