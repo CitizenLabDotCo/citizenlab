@@ -395,7 +395,7 @@ export default class Invitations extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { currentTenantLocales, groupOptions, selectedEmails, selectedFileBase64, hasAdminRights, selectedLocale, selectedGroups, selectedInviteText, invitationOptionsOpened, selectedView, loaded, processing, processed } = this.state;
+    const { currentTenantLocales, groupOptions, selectedEmails, selectedFileBase64, hasAdminRights, selectedLocale, selectedGroups, selectedInviteText, invitationOptionsOpened, selectedView, loaded, processing, processed, errors } = this.state;
     const dirty = ((isString(selectedEmails) && !isEmpty(selectedEmails)) || (isString(selectedFileBase64) && !isEmpty(selectedFileBase64)));
 
     const invitationOptions = (
@@ -553,6 +553,8 @@ export default class Invitations extends React.PureComponent<Props, State> {
                   </Processing>
                 }
               </ButtonWrapper>
+
+              <Error apiErrors={errors} />
             </SectionField>
           </Section>
         </form>

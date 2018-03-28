@@ -61,4 +61,8 @@ export default defineMessages({
     id: 'app.errors.key_invalid',
     defaultMessage: 'The key can only contain letters, numbers and underscores(_)',
   },
+  email_already_invited: {
+    id: 'app.errors.email_already_invited',
+    defaultMessage: 'email already invited',
+  },
 });
