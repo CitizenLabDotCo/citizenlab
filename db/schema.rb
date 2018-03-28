@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180309160219) do
+ActiveRecord::Schema.define(version: 20180328123240) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -291,6 +291,7 @@ ActiveRecord::Schema.define(version: 20180309160219) do
     t.integer "voting_limited_max", default: 10
     t.string "survey_embed_url"
     t.string "survey_service"
+    t.string "presentation_mode", default: "card", null: false
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
