@@ -86,12 +86,8 @@ export function updateComment(commentId: string, object: IUpdatedComment) {
   return streams.update<IComment>(`${API_PATH}/comments/${commentId}`, commentId, { comment: object });
 }
 
-export function deleteComment(commentId: string) {
-  return streams.delete(`${API_PATH}/comments/${commentId}`, commentId);
-}
-
-export async function markForDeletion(commentId: ICommentData['id'], reason: DeleteReason) {
-  if (reason.reason_code !== 'other') {
+export async function markForDeletion(commentId: ICommentData['id'], reason?: DeleteReason) {
+  if (reason && reason.reason_code !== 'other') {
     delete reason.other_reason;
   }
 
