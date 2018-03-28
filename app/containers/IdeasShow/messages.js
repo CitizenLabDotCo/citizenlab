@@ -110,6 +110,18 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.commentDeletionConfirmButton',
     defaultMessage: `Delete my comment`,
   },
+  deleteReason_inappropriate: {
+    id: 'app.containers.IdeasShow.deleteReason_inappropriate',
+    defaultMessage: `Inappropriate comment`,
+  },
+  deleteReason_other: {
+    id: 'app.containers.IdeasShow.deleteReason_other',
+    defaultMessage: `Other reason (please specify)`,
+  },
+  adminCommentDeletionConfirmButton: {
+    id: 'app.containers.IdeasShow.adminCommentDeletionConfirmButton',
+    defaultMessage: `Delete this comment`,
+  },
   helmetTitle: {
     id: 'app.containers.IdeasShow.helmetTitle',
     defaultMessage: 'Show idea',
@@ -121,6 +133,10 @@ export default defineMessages({
   deletedUser: {
     id: 'app.containers.IdeasShow.deletedUser',
     defaultMessage: 'deleted user',
+  },
+  commentDeletedPlaceholder: {
+    id: 'app.containers.IdeasShow.commentDeletedPlaceholder',
+    defaultMessage: 'This comment has been deleted.',
   },
   author: {
     id: 'app.containers.IdeasShow.author',

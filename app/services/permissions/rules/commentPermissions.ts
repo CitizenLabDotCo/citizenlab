@@ -19,6 +19,10 @@ definePermissionRule('comments', 'delete', (comment: ICommentData, user: IUser) 
   return !!(isAuthor(comment, user) || isAdmin(user));
 });
 
+definePermissionRule('comments', 'justifyDeletion', (comment: ICommentData, user: IUser) => {
+  return !isAuthor(comment, user) && isAdmin(user);
+});
+
 definePermissionRule('comments', 'markAsSpam', (comment: ICommentData, user: IUser) => {
-  return !(isAuthor(comment, user) || isAdmin(user));
+  return (user && !(isAuthor(comment, user) || isAdmin(user)));
 });
