@@ -100,9 +100,21 @@ export default defineMessages({
   importInfo: {
     id: 'app.containers.Admin.User.importInfo',
     defaultMessage: `    
-      Note: the column in your Excel file that contains the email addresses should be named <strong>email</strong>.
-      Please download <a href="">the reference example</a> and visit <a href="">the support page</a> for more information.
+      Note: The column in your Excel file that contains the email addresses should be named {emailColumnName}.
+      Download this {downloadLink} and visit this {supportPageLink} for more information about all the supported columns.
     `,
+  },
+  emailColumnName: {
+    id: 'app.containers.Admin.User.emailColumnName',
+    defaultMessage: `email`,
+  },
+  exampleFile: {
+    id: 'app.containers.Admin.User.exampleFile',
+    defaultMessage: `example file`,
+  },
+  supportPage: {
+    id: 'app.containers.Admin.User.supportPage',
+    defaultMessage: `support page`,
   },
   importOptionsInfo: {
     id: 'app.containers.Admin.User.importOptionsInfo',
@@ -159,5 +171,9 @@ export default defineMessages({
   saveSuccessMessage: {
     id: 'app.containers.Admin.User.saveSuccessMessage',
     defaultMessage: 'Invitation successfully sent out.',
+  },
+  bleh: {
+    id: 'app.containers.Admin.User.bleh',
+    defaultMessage: 'Zolg',
   },
 });
