@@ -143,7 +143,7 @@ resource "Projects" do
       parameter :voting_limited_max, "Only for continuous project with limited voting. Number of votes a citizen can perform in this project. Defaults to 10", required: false
       parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
       parameter :survey_service, "The name of the service of the survey. Either #{ParticipationContext::SURVEY_SERVICES.join(",")}", required: false
-      parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
+      parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
       parameter :publication_status, "Describes the publication status of the project, either #{Project::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
     end
     ValidationErrorHelper.new.error_fields(self, Project)
@@ -249,7 +249,7 @@ resource "Projects" do
       parameter :voting_limited_max, "Only for continuous project with limited voting. Number of votes a citizen can perform in this project.", required: false
       parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
       parameter :survey_service, "The name of the service of the survey. Either #{ParticipationContext::SURVEY_SERVICES.join(",")}", required: false
-      parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}.", required: false
+      parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}.", required: false
       parameter :publication_status, "Describes the publication status of the project, either #{Project::PUBLICATION_STATUSES.join(",")}.", required: false
     end
     ValidationErrorHelper.new.error_fields(self, Project)
