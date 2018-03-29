@@ -29,10 +29,13 @@ class IdentifyToSegmentJob < ApplicationJob
       # Tenant can't be found, so we don't add anything
     end
 
-    Analytics && Analytics.identify(
+    Rails.logger.info "Identify to segment request: #{{user_id: user.id, traits: traits}}"
+    identify_response = Analytics && Analytics.identify(
       user_id: user.id,
       traits: traits
     )
+    Rails.logger.info "Identify to segment response: #{identify_response&.body}"
+
     Analytics && Analytics.group(
       user_id: user.id,
       group_id: tenant_id,
