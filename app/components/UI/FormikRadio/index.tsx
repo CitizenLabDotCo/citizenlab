@@ -10,7 +10,7 @@ export interface Props {
 }
 export interface State {}
 
-class FormikTextArea extends React.Component<Props & VanillaProps, State> {
+class FormikRadio extends React.Component<Props & VanillaProps, State> {
   static contextTypes = {
     formik: PropTypes.object,
   };
@@ -35,4 +35,4 @@ class FormikTextArea extends React.Component<Props & VanillaProps, State> {
   }
 }
 
-export default FormikTextArea;
+export default FormikRadio;
