@@ -12,12 +12,13 @@ import Toggle from 'components/UI/Toggle';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import InvitesTable from './all';
 
 // services
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 import { listGroups, IGroups } from 'services/groups';
-import { bulkInviteXLSX } from 'services/Invites';
+import { bulkInviteXLSX } from 'services/invites';
 
 // i18n
 import { FormattedHTMLMessage } from 'react-intl';
@@ -414,6 +415,7 @@ export default class Invitations extends React.PureComponent<Props, State> {
 
     if (currentTenantLocales && loaded) {
       return (
+        <>
         <form onSubmit={this.handleOnSubmit}>
           <Section>
             <SectionTitle>
@@ -436,7 +438,7 @@ export default class Invitations extends React.PureComponent<Props, State> {
                     <FormattedHTMLMessage {...messages.importLabel} />
                   </Label>
 
-                  <Warning 
+                  <Warning
                     text={
                       <FormattedMessage
                         {...messages.importInfo}
@@ -501,6 +503,8 @@ export default class Invitations extends React.PureComponent<Props, State> {
             </SectionField>
           </Section>
         </form>
+        <InvitesTable />
+        </>
       );
     }
 

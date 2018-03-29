@@ -6,9 +6,9 @@ export interface IInviteData {
   type: 'invites';
   attributes: {
     token: 'string';
-    accepted_at: string | null;
-    updated_at: string | null;
-    created_at: string | null;
+    accepted_at: string;
+    updated_at: string;
+    created_at: string;
     activate_invite_url: string
   };
   relationships: {
@@ -29,6 +29,13 @@ export interface IInviteData {
 
 export interface IInvites {
   data: IInviteData[];
+  links: {
+    self: string;
+    first: string;
+    prev: string;
+    next: string;
+    last: string;
+  };
 }
 
 export interface IInvite {
@@ -49,4 +56,8 @@ export function invitesStream(streamParams: IStreamParams | null = null) {
 
 export function bulkInviteXLSX(object: INewBulkXLSXInvite) {
   return streams.add<IInvites>(`${API_PATH}/invites/bulk_create_xlsx`, { invites: object });
+}
+
+export function deleteInvite(inviteId: string) {
+  return streams.delete(`${API_PATH}/invites/${inviteId}`, inviteId);
 }
