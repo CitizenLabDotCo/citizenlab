@@ -17,7 +17,7 @@ type Props = {
 
 type State = {};
 
-class Row extends React.Component<Props & GetUserChildProps, State> {
+class Row extends React.PureComponent<Props & GetUserChildProps, State> {
 
   handleOnDeleteInvite = (inviteId: string) => () => {
     deleteInvite(inviteId);

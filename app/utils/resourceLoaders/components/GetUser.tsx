@@ -1,10 +1,8 @@
-// Libs
 import React from 'react';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription, Observable } from 'rxjs';
+import shallowCompare from 'utils/shallowCompare';
+import { IUserData, userBySlugStream, userByIdStream } from 'services/users';
 
-// Services & utils
-import { IUserData, userBySlugStream, userByIdStream, IUser } from 'services/users';
-// Typing
 interface InputProps {
   id?: string;
   slug?: string;
@@ -21,52 +19,50 @@ interface State {
 export type GetUserChildProps = State;
 
 export default class GetIdea extends React.PureComponent<Props, State> {
-  private inputProps$: BehaviorSubject<{id: string | undef} | null>;
-  private subscription: Subscription;
+  private inputProps$: BehaviorSubject<InputProps>;
+  private subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props);
-
     this.state = {
       user: null
     };
   }
 
   componentDidMount() {
-    this.updateSubscription();
+    const { id, slug } = this.props;
+
+    this.inputProps$ = new BehaviorSubject({ id, slug });
+
+    this.subscriptions = [
+      this.inputProps$.distinctUntilChanged((prev, next) => {
+        return shallowCompare(prev, next);
+      }).switchMap(({ id, slug }) => {
+        if (id) {
+          return userByIdStream(id).observable;
+        } else if (slug) {
+          return userBySlugStream(slug).observable;
+        } else {
+          return Observable.of(null);
+        }
+      }).subscribe((user) => {
+        this.setState({ user: (user ? user.data : null) });
+      })
+    ];
   }
 
-  componentDidUpdate(prevProps: Props) {
-    if ((this.props.id !== prevProps.id) || (this.props.slug !== prevProps.slug)) {
-      this.updateSubscription();
-    }
+  componentDidUpdate() {
+    const { id, slug } = this.props;
+    this.inputProps$.next({ id, slug });
   }
 
   componentWillUnmount() {
-    this.subscription.unsubscribe();
-  }
-
-  updateSubscription() {
-    if (this.subscription) this.subscription.unsubscribe();
-
-    let targetStream;
-    if (this.props.slug) targetStream = userBySlugStream(this.props.slug);
-    if (this.props.id) targetStream = userByIdStream(this.props.id);
-
-    if (!targetStream) return;
-
-    this.subscription = targetStream.observable.subscribe((response: IUser) => {
-      this.setState({
-        user: response.data
-      });
-    });
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   render() {
-    const renderProps = {
-      ...this.state
-    };
-
-    return this.props.children(renderProps);
+    const { children } = this.props;
+    const { user } = this.state;
+    return children({ user });
   }
 }
