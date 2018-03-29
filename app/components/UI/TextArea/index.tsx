@@ -66,10 +66,10 @@ const TextAreaContainer: any = styled.div`
   position: relative;
 `;
 
-type Props = {
+export type Props = {
   id?: string | undefined;
   name?: string;
-  value: string;
+  value?: string;
   placeholder?: string | null | undefined;
   rows?: number | undefined;
   error?: string | null | undefined;
