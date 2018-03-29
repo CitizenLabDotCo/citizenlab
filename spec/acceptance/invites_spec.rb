@@ -36,13 +36,24 @@ resource "Invites" do
       describe do
         let!(:invites) { create_list(:invite, 5) }
         let(:invite) { create(:invite, invitee: create(:user, last_name: 'abcdefg1234')) }
-        let(:search) { invite.invitee.last_name[0..6]}
+        let(:search) { invite.invitee.last_name[0..6] }
 
         example_request "List all invites with search string" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data).size).to eq 1
           expect(json_response.dig(:data).first[:relationships][:invitee][:data][:id]).to eq invite.invitee.id
+        end
+      end
+
+      describe do
+        let!(:invites) { create_list(:invite, 5) }
+        let(:invite_status) { 'pending' }
+        let(:search) { 'abc' }
+        let(:sort) { '-email' }
+
+        example_request "List all invites by combining filter, sort and search", document: false do
+          expect(response_status).to eq 200
         end
       end
 
