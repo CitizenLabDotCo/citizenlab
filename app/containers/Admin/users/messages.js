@@ -99,7 +99,7 @@ export default defineMessages({
   },
   importInfo: {
     id: 'app.containers.Admin.User.importInfo',
-    defaultMessage: `    
+    defaultMessage: `
       Note: The column in your Excel file that contains the email addresses should be named {emailColumnName}.
       Download this {downloadLink} and visit this {supportPageLink} for more information about all the supported columns.
     `,
@@ -172,8 +172,36 @@ export default defineMessages({
     id: 'app.containers.Admin.User.saveSuccessMessage',
     defaultMessage: 'Invitation successfully sent out.',
   },
-  bleh: {
-    id: 'app.containers.Admin.User.bleh',
-    defaultMessage: 'Zolg',
+  inviteStatus: {
+    id: 'app.containers.Admin.User.inviteStatus',
+    defaultMessage: 'Status',
+  },
+  invitedSince: {
+    id: 'app.containers.Admin.User.invitedSince',
+    defaultMessage: 'Invited',
+  },
+  deleteInvite: {
+    id: 'app.containers.Admin.User.deleteInvite',
+    defaultMessage: 'Delete',
+  },
+  exportInvites: {
+    id: 'app.containers.Admin.User.exportInvites',
+    defaultMessage: 'Export all invitations',
+  },
+  inviteStatusPending: {
+    id: 'app.containers.Admin.User.inviteStatusPending',
+    defaultMessage: 'Pending',
+  },
+  inviteStatusAccepted: {
+    id: 'app.containers.Admin.User.inviteStatusAccepted',
+    defaultMessage: 'Accepted',
+  },
+  confirmDelete: {
+    id: 'app.containers.Admin.User.confirmDelete',
+    defaultMessage: 'Yes, I\'m sure',
+  },
+  currentlyNoInvites: {
+    id: 'app.containers.Admin.User.currentlyNoInvites',
+    defaultMessage: 'There currently are no invites yet',
   },
 });

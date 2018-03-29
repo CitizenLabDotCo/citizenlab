@@ -31,6 +31,7 @@ export interface IUserData {
     education?: string;
     unread_notifications?: number;
     custom_field_values: object;
+    invite_status: 'pending' | 'accepted' | null;
   };
 }
 
