@@ -166,11 +166,15 @@ export default defineMessages({
   },
   saveErrorMessage: {
     id: 'app.containers.Admin.User.saveErrorMessage',
-    defaultMessage: 'The invitations have not been sent out because the following error occured:',
+    defaultMessage: 'Invitations could not be sent out. Errors are highlighted below.',
   },
   saveSuccessMessage: {
     id: 'app.containers.Admin.User.saveSuccessMessage',
     defaultMessage: 'Invitation successfully sent out.',
+  },
+  couldNotSendError: {
+    id: 'app.containers.Admin.User.couldNotSendError',
+    defaultMessage: 'Could not sent out invitations. The following error(s) occured:',
   },
   inviteStatus: {
     id: 'app.containers.Admin.User.inviteStatus',
