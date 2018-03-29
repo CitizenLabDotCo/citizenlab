@@ -1,27 +1,30 @@
 import * as React from 'react';
+import { Link } from 'react-router';
 import { isBoolean } from 'lodash';
-import { darken, rgba } from 'polished';
+
+import styled, { withTheme } from 'styled-components';
+import { darken, rgba, readableColor } from 'polished';
+import { color } from 'utils/styleUtils';
+
 import Spinner from 'components/UI/Spinner';
 import Icon, { IconNames } from 'components/UI/Icon';
-import { Link } from 'react-router';
-import styled, { withTheme } from 'styled-components';
 
 const StyledButton = styled.button``;
-
 const StyledLink = styled(Link)``;
-
 const StyledA = styled.a``;
+const StyledIcon = styled(Icon)``;
 
 const ButtonText = styled.div`
   margin: 0;
   margin-top: -1px;
   padding: 0;
   white-space: nowrap;
+
+  ${StyledIcon} + & {
+    margin-left: 10px;
+  }
 `;
 
-const StyledIcon = styled(Icon)`
-  margin-right: 10px;
-`;
 
 const ButtonContent = styled.div`
   display: flex;
@@ -53,7 +56,7 @@ function getPadding(size) {
     case '4':
       return `15px 26px`;
     default:
-      return `9px 20px`;
+      return `.5em 1.25em`;
   }
 }
 
@@ -95,6 +98,30 @@ function setFillColor(color) {
   `;
 }
 
+// Sets the button colors depending on Background color, optionally set the text/icon fill color and border color.
+function buttonTheme(bgColor: string, textColor: string | null = null, borderColor: string = 'transparent') {
+  return `
+    &:not(.disabled) {
+      ${setFillColor(textColor || readableColor(bgColor))}
+      background: ${bgColor};
+      border-color: ${borderColor};
+
+      &:not(.processing):hover,
+      &:not(.processing):focus {
+        ${bgColor !== 'transparent' && `background: ${darken(0.12, bgColor)};`}
+        ${bgColor === 'transparent' && textColor && setFillColor(darken(0.12, textColor))}
+        ${bgColor === 'transparent' && borderColor !== 'transparent' && `border-color: ${darken(0.12, borderColor)};`}
+      }
+    }
+
+    &.disabled {
+      background: #d0d0d0;
+      ${setFillColor('#fff')}
+    }
+  `;
+}
+
+
 const Container: any = styled.div`
   user-select: none;
   font-weight: 400;
@@ -107,20 +134,20 @@ const Container: any = styled.div`
     width: 100%;
   }
 
-  ${StyledButton},
-  ${StyledLink},
-  ${StyledA} {
-    width: ${(props: any) => props.width || 'auto'};
-    height: ${(props: any) => props.height || 'auto'};
-    display: ${(props: any) => !props.width ? 'inline-flex' : 'flex'};
+  button,
+  a {
     align-items: center;
+    border: 1px solid transparent;
+    border-radius: ${(props: any) => props.circularCorners ? '999em' : '5px'};
+    display: ${(props: any) => !props.width ? 'inline-flex' : 'flex'};
+    height: ${(props: any) => props.height || 'auto'};
     justify-content: ${(props: any) => props.justify || 'center'};
     margin: 0;
-    padding: ${(props: any) => props.padding || getPadding(props.size)};
-    border-radius: ${(props: any) => props.circularCorners ? '999em' : '5px'};
-    position: relative;
     outline: none;
+    padding: ${(props: any) => props.padding || getPadding(props.size)};
+    position: relative;
     transition: all 120ms ease-out;
+    width: ${(props: any) => props.width || 'auto'};
 
     &:not(.disabled) {
       cursor: pointer;
@@ -148,113 +175,35 @@ const Container: any = styled.div`
     }
 
     &.primary {
-      &:not(.disabled) {
-        ${setFillColor('#fff')}
-        background: ${(props: any) => props.theme.colorMain || '#e0e0e0'};
-
-        &:not(.processing):hover {
-          background: ${(props: any) => darken(0.12, (props.theme.colorMain || '#ccc'))};
-        }
-      }
-
-      &.disabled {
-        background: #d0d0d0;
-        ${setFillColor('#fff')}
-      }
+      ${(props: any) => buttonTheme(props.theme.colorMain || 'e0e0e0')}
     }
 
     &.secondary {
-      &:not(.disabled) {
-        border-color: none;
-        background: ${props => rgba(props.theme.colors.label, 0.12)};
-        ${(props: any) => setFillColor(props.theme.colors.label)}
-
-        &:not(.processing):hover {
-          background: ${props => rgba(props.theme.colors.label, 0.22)};
-          ${setFillColor('#222')}
-        }
-      }
-
-      &.disabled {
-        background: #ccc;
-        ${setFillColor('#fff')}
-      }
+      ${buttonTheme(color('separation'))}
     }
 
     &.primary-outlined {
-      &:not(.disabled) {
-        background: transparent;
-        border: solid 1px ${(props: any) => props.theme.colorMain};
-        ${(props: any) => setFillColor(props.theme.colorMain)}
-
-        &:not(.processing):hover {
-          border-color: ${(props: any) => darken(0.12, (props.theme.colorMain))};
-          ${(props: any) => setFillColor(darken(0.12, (props.theme.colorMain)))}
-        }
-      }
-
-      &.disabled {
-        background: transparent;
-        border: solid 1px #ccc;
-        ${setFillColor('#ccc')}
-      }
+      ${(props: any) => buttonTheme('transparent', props.theme.colorMain || 'e0e0e0', props.theme.colorMain || 'e0e0e0')}
     }
 
     &.secondary-outlined {
-      &:not(.disabled) {
-        background: #fff;
-        border: solid 2px #e0e0e0;
-        ${(props: any) => setFillColor(props.theme.colorMain)}
-
-        &:not(.processing):hover {
-          border-color: #999;
-          ${(props: any) => setFillColor(darken(0.15, (props.theme.colorMain)))}
-        }
-      }
-
-      &.disabled {
-        background: #fff;
-        border-color: #f0f0f0;
-        ${setFillColor('#ccc')}
-      }
+      ${buttonTheme('transparent', color('label'), color('label'))}
     }
 
     &.text {
-      border: none;
-      background: none;
-
-      ${setFillColor('#84939E')}
-
-      &:not(.processing):hover {
-        ${setFillColor('#004949')}
-      }
+      ${buttonTheme('transparent', color('label'))}
     }
 
     &.success {
-      background-color: ${rgba('#32B67A', 0.15)};
-      ${setFillColor('#32B67A')}
+      ${buttonTheme(rgba(color('success'), .15), color('success'))}
     }
 
     &.error {
-      background-color: ${rgba('#FC3C2D', 0.15)};
-      color: #FC3C2D;
-      ${setFillColor('#FC3C2D')}
+      ${buttonTheme(rgba(color('error'), .15), color('error'))}
     }
 
     &.cl-blue {
-      &:not(.disabled) {
-        background-color: #01A1B1;
-        ${setFillColor('white')}
-
-        &:not(.processing):hover {
-          background-color: ${darken(0.12, '#01A1B1')};
-      }
-      }
-
-      &.disabled {
-        background: #d0d0d0;
-        ${setFillColor('#fff')}
-      }
+      ${buttonTheme(color('clBlue'))}
     }
   }
 `;
@@ -354,7 +303,7 @@ class Button extends React.PureComponent<Props, State> {
     const childContent = (
       <ButtonContent>
         {icon && <StyledIcon name={icon} />}
-        <ButtonText>{text || children}</ButtonText>
+        {text || children && <ButtonText>{text || children}</ButtonText>}
         {processing && <SpinnerWrapper><Spinner size={spinnerSize} color={spinnerColor} /></SpinnerWrapper>}
       </ButtonContent>
     );
