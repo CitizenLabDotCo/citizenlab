@@ -7,7 +7,6 @@ import TextArea from 'components/UI/TextArea';
 import Label from 'components/UI/Label';
 import Warning from 'components/UI/Warning';
 import Error from 'components/UI/Error';
-// import Success from 'components/UI/Success';
 import Radio from 'components/UI/Radio';
 import Icon from 'components/UI/Icon';
 import Toggle from 'components/UI/Toggle';
@@ -19,7 +18,7 @@ import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 import { listGroups, IGroups } from 'services/groups';
-import { bulkInviteXLSX, bulkInviteEmails, IInvites, IInviteError, INewBulkInvite } from 'services/Invites';
+import { bulkInviteXLSX, bulkInviteEmails, IInviteError, INewBulkInvite } from 'services/Invites';
 
 // i18n
 import { FormattedHTMLMessage } from 'react-intl';
@@ -372,32 +371,20 @@ export default class Invitations extends React.PureComponent<Props, State> {
           invite_text: selectedInviteText
         };
 
-        let response: IInvites | IInviteError[] | null = null;
-
         if (selectedView === 'import' && isString(selectedFileBase64)) {
-          response = await bulkInviteXLSX({
+          await bulkInviteXLSX({
             xlsx: selectedFileBase64,
             ...bulkInvite
           });
         }
 
         if (selectedView === 'text' && isString(selectedEmails)) {
-          console.log('INewBulkInviteEmails:');
-          console.log({
-            emails: selectedEmails.split(',').map(item => item.trim()),
-            ...bulkInvite
-          });
-
-          response = await bulkInviteEmails({
+          await bulkInviteEmails({
             emails: selectedEmails.split(',').map(item => item.trim()),
             ...bulkInvite
           });
         }
 
-        console.log('response:');
-        console.log(response);
-
-        // success
         // reset file input
         if (this.fileInputElement) {
           this.fileInputElement.value = '';
@@ -416,9 +403,6 @@ export default class Invitations extends React.PureComponent<Props, State> {
           errors: get(errors, 'json.errors', null),
           processing: false
         });
-
-        console.log('errors:');
-        console.log(errors);
       }
     }
   }
@@ -426,10 +410,6 @@ export default class Invitations extends React.PureComponent<Props, State> {
   render () {
     const { currentTenantLocales, groupOptions, selectedEmails, selectedFileBase64, hasAdminRights, selectedLocale, selectedGroups, selectedInviteText, invitationOptionsOpened, selectedView, loaded, processing, processed, errors } = this.state;
     const dirty = ((isString(selectedEmails) && !isEmpty(selectedEmails)) || (isString(selectedFileBase64) && !isEmpty(selectedFileBase64)));
-
-    console.log('render:');
-    console.log('errors:');
-    console.log(errors);    
 
     const invitationOptions = (
       <>
