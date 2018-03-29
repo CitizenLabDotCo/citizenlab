@@ -27,7 +27,7 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 import { Locale } from 'typings';
 
-const CommentContainer = styled.div`
+const CommentContainer = styled.form`
   padding-left: 0px;
   padding-right: 0px;
   padding-top: 0px;
@@ -56,7 +56,7 @@ const SendIcon = styled(Icon)`
   transition: all 100ms ease-out;
 `;
 
-const SendIconWrapper: any = styled.div`
+const SendIconWrapper: any = styled.button`
   width: 30px;
   height: 30px;
   position: absolute;

@@ -1,68 +1,81 @@
 // Libs
 import React from 'react';
 import { Subscription } from 'rxjs';
+import { isEqual } from 'lodash';
 
 // Services & utils
-import { IUserData, userBySlugStream, userByIdStream, IUser } from 'services/users';
+import { userByIdStream, userBySlugStream, IUserData } from 'services/users';
+import { authUserStream } from 'services/auth';
+
 // Typing
 interface Props {
   id?: string;
   slug?: string;
-  children: (renderProps: GetUserChildProps) => JSX.Element | null ;
+  children: {(state: Partial<State>): any};
+  current?: boolean;
 }
 
 interface State {
   user: IUserData | null;
 }
 
-export type GetUserChildProps = State;
-
-export default class GetIdea extends React.PureComponent<Props, State> {
-  private subscription: Subscription;
+export default class GetUser extends React.PureComponent<Props, State> {
+  private sub: Subscription;
 
   constructor(props: Props) {
     super(props);
 
     this.state = {
-      user: null
+      user: null,
     };
   }
 
   componentDidMount() {
-    this.updateSubscription();
+    this.updateSub(this.props);
   }
 
   componentDidUpdate(prevProps: Props) {
-    if ((this.props.id !== prevProps.id) || (this.props.slug !== prevProps.slug)) {
-      this.updateSubscription();
+    const { children: prevPropsChildren, ...prevPropsWithoutChildren } = prevProps;
+    const { children: newPropsChildren, ...newPropsWithoutChildren } = this.props;
+
+    if (!isEqual(newPropsWithoutChildren, prevPropsWithoutChildren)) {
+      this.updateSub(this.props);
     }
   }
 
   componentWillUnmount() {
-    this.subscription.unsubscribe();
+    this.sub.unsubscribe();
   }
 
-  updateSubscription() {
-    if (this.subscription) this.subscription.unsubscribe();
+  updateSub(props: Props) {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
 
     let targetStream;
-    if (this.props.slug) targetStream = userBySlugStream(this.props.slug);
-    if (this.props.id) targetStream = userByIdStream(this.props.id);
 
-    if (!targetStream) return;
+    if (props.current) {
+      targetStream = authUserStream();
+    }
 
-    this.subscription = targetStream.observable
-      .subscribe((response: IUser) => {
+    if (props.id) {
+      targetStream = userByIdStream(props.id);
+    }
+
+    if (props.slug) {
+      targetStream = userBySlugStream(props.slug);
+    }
+
+    if (targetStream) {
+      this.sub = targetStream.observable.subscribe((response) => {
         this.setState({
-          user: response.data
+          user: (response && response.data) || null
         });
       });
+    }
   }
 
   render() {
-    const renderProps = {
-      ...this.state
-    };
-    return this.props.children(renderProps);
+    return this.props.children(this.state);
   }
 }
