@@ -50,11 +50,11 @@ export interface INewBulkInvite {
   invite_text?: string | null | undefined;
 }
 
-export interface INewBulkEmailInvite extends INewBulkInvite {
-  emails: string;
+export interface INewBulkInviteEmails extends INewBulkInvite {
+  emails: string[];
 }
 
-export interface INewBulkXLSXInvite extends INewBulkInvite {
+export interface INewBulkXLSXInviteXLSX extends INewBulkInvite {
   xlsx: string;
 }
 
@@ -62,10 +62,10 @@ export function invitesStream(streamParams: IStreamParams | null = null) {
   return streams.get<IInvites>({ apiEndpoint: `${API_PATH}/invites`, ...streamParams });
 }
 
-export function bulkInviteEmails(object: INewBulkEmailInvite) {
+export function bulkInviteEmails(object: INewBulkInviteEmails) {
   return streams.add<IInvites>(`${API_PATH}/invites/bulk_create`, { invites: object });
 }
 
-export function bulkInviteXLSX(object: INewBulkXLSXInvite) {
+export function bulkInviteXLSX(object: INewBulkXLSXInviteXLSX) {
   return streams.add<IInvites>(`${API_PATH}/invites/bulk_create_xlsx`, { invites: object });
 }

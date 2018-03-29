@@ -23,7 +23,6 @@ interface IStyledErrorMessage {
 const ErrorMessageText = styled.div`
   color: ${(props) => props.theme.colors.error};
   font-weight: 400;
-  line-height: 22px;
 
   a {
     color: ${(props) => props.theme.colors.error};
@@ -34,6 +33,10 @@ const ErrorMessageText = styled.div`
       color: ${(props) => darken(0.2, props.theme.colors.error)};
       text-decoration: underline;
     }
+  }
+
+  strong {
+    font-weight: 500;
   }
 `;
 
@@ -129,6 +132,26 @@ const StyledErrorMessage: any = styled.div`
   }
 `;
 
+const ErrorList = styled.ul`
+  list-style-type: none;
+  list-style-position: inside;
+  list-style-image: none;
+  padding: 0;
+  margin: 0;
+
+  &.showBullets {
+    list-style-type: disc;
+    margin-left: 5px;
+  }
+`;
+
+const ErrorListItem = styled.li`
+  padding: 0;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin: 0;
+`;
+
 type Props = {
   text?: string | JSX.Element | null;
   fieldName?: string | undefined;
@@ -140,6 +163,7 @@ type Props = {
   showIcon?: boolean;
   showBackground?: boolean;
   className?: string;
+  animate?: boolean | undefined;
 };
 
 type State = {};
@@ -158,9 +182,9 @@ function findMessage(fieldName: string | undefined, error: string) {
 
 export default class Error extends React.PureComponent<Props, State> {
   render() {
-    const { text, errors, apiErrors, fieldName } = this.props;
+    const { text, errors, apiErrors, fieldName, } = this.props;
     const timeout = { enter: 400, exit: 350 };
-    let { size, marginTop, marginBottom, showIcon, showBackground, className } = this.props;
+    let { size, marginTop, marginBottom, showIcon, showBackground, className, animate } = this.props;
 
     size = (size || '1');
     marginTop = (marginTop || '3px');
@@ -168,12 +192,14 @@ export default class Error extends React.PureComponent<Props, State> {
     showIcon = (_.isBoolean(showIcon) ? showIcon : true);
     showBackground = (_.isBoolean(showBackground) ? showBackground : true);
     className = (className || '');
+    animate = (animate !== undefined ? animate : true);
 
     const errorElement = (text || errors || apiErrors) && (
       <CSSTransition
         classNames="error"
         timeout={timeout}
-        exit={true}
+        enter={animate}
+        exit={animate}
       >
         <StyledErrorMessage className="e2e-error-message" size={size} marginTop={marginTop} marginBottom={marginBottom}>
           <StyledErrorMessageInner showBackground={showBackground}>
@@ -197,27 +223,42 @@ export default class Error extends React.PureComponent<Props, State> {
                 return null;
               })}
 
-              {apiErrors && apiErrors.length > 0 && apiErrors.map((error) => {
-                const errorMessage = findMessage(fieldName, error.error);
+              {apiErrors && apiErrors.length > 0 && 
+                <ErrorList className={`${apiErrors.length > 1 && 'showBullets'}`}>
+                  {apiErrors.map((error) => {
+                    const errorMessage = findMessage(fieldName, error.error);
+                    const isInviteErrorCode = [
+                      'email_already_invited', 
+                      'unknown_locale',
+                      'invalid_row',
+                      'invalid_email', 
+                      'email_already_invited', 
+                      'email_already_active', 
+                      'emails_duplicate'
+                    ].some((errorCode) => errorCode === error.error);
 
-                if (errorMessage) {
-                  if (error.error === 'email_already_invited' && error.value) {
-                    return (
-                      <p key={error.error}>
-                        <FormattedMessage {...errorMessage} values={{ email: <strong>{error.value}</strong> }} />
-                      </p>
-                    );
-                  }
+                    if (errorMessage) {
+                      if (isInviteErrorCode && error.value) {
+                        const value = (error.error === 'invalid_row' ? error['row'] : error.value);
 
-                  return (
-                    <p key={error.error}>
-                      <FormattedMessage {...errorMessage} />
-                    </p>
-                  );
-                }
+                        return (
+                          <ErrorListItem key={error.value}>
+                            <FormattedMessage {...errorMessage} values={{ value: <strong>{value}</strong> }} />
+                          </ErrorListItem>
+                        );
+                      }
 
-                return null;
-              })}
+                      return (
+                        <ErrorListItem key={error.error}>
+                          <FormattedMessage {...errorMessage} />
+                        </ErrorListItem>
+                      );
+                    }
+
+                    return null;
+                  })}
+                </ErrorList>
+              }
             </ErrorMessageText>
           </StyledErrorMessageInner>
         </StyledErrorMessage>
