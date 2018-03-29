@@ -23,7 +23,7 @@ const CustomRadio = styled<any, 'div'>('div')`
   border: 1px solid #a6a6a6;
   box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.15);
 
-  ${props => props.disabled ? 
+  ${props => props.disabled ?
     `
       opacity: 0.5;
     `
@@ -56,9 +56,9 @@ const HiddenInput = styled.input`
   display: none;
 `;
 
-interface Props {
-  onChange: {(event): void};
-  currentValue: any;
+export interface Props {
+  onChange?: {(event): void};
+  currentValue?: any;
   value: any;
   name?: string | undefined;
   id?: string | undefined;
@@ -70,20 +70,22 @@ interface Props {
 export default class Radio extends React.PureComponent<Props> {
   handleChange = () => {
     if (!this.props.disabled) {
-      this.props.onChange(this.props.value);
+      if (this.props.onChange) this.props.onChange(this.props.value);
     }
   }
 
   render() {
+    const id = this.props.id || `${this.props.name}-${this.props.value}`;
+
     const className = this.props['className'];
     const checked = (this.props.value === this.props.currentValue);
 
     return (
-      <Wrapper className={className} htmlFor={this.props.id}>
+      <Wrapper className={className} htmlFor={id}>
         <HiddenInput
           type="radio"
           name={this.props.name}
-          id={this.props.id}
+          id={id}
           value={this.props.value}
           aria-checked={checked}
           checked={checked}

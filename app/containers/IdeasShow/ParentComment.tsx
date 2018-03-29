@@ -1,33 +1,28 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
-import linkifyHtml from 'linkifyjs/html';
-
 // components
 import ChildComment from './ChildComment';
 import Author from './Author';
 import ChildCommentForm from './ChildCommentForm';
+import CommentsMoreActions from './CommentsMoreActions';
+import CommentBody from './CommentBody';
 import { browserHistory } from 'react-router';
-import Modal from 'components/UI/Modal';
-import SpamReportForm from 'containers/SpamReport';
-import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+import Icon from 'components/UI/Icon';
 
 // services
 import { authUserStream } from 'services/auth';
-import { commentsForIdeaStream, commentStream, IComment } from 'services/comments';
+import { commentsForIdeaStream, commentStream, IComment, updateComment } from 'services/comments';
 import { ideaByIdStream } from 'services/ideas';
 import { IUser } from 'services/users';
-import { getLocalized } from 'utils/i18n';
-import { localeStream } from 'services/locale';
-import { currentTenantStream } from 'services/tenant';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 // analytics
 import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // animations
 // import TransitionGroup from 'react-transition-group/TransitionGroup';
@@ -35,13 +30,18 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { transparentize, darken } from 'polished';
-import { Locale } from 'typings';
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
+import { Locale, API } from 'typings';
 
 const timeout = 550;
 
-const StyledMoreActionsMenu: any = styled(MoreActionsMenu)`
+const DeletedIcon = styled(Icon)`
+  height: 1em;
+  margin-right: 1rem;
+  width: 1em;
+`;
+
+const StyledMoreActionsMenu = styled(CommentsMoreActions)`
   position: absolute;
   top: 10px;
   right: 20px;
@@ -98,39 +98,16 @@ const CommentContainerInner = styled.div`
       opacity: 1;
     }
   }
+
+  &.deleted {
+    display: flex;
+    align-items: center;
+    background: ${colors.placeholderBg};
+  }
 `;
 
 const StyledAuthor = styled(Author)`
   margin-bottom: 20px;
-`;
-
-const CommentBody = styled.div`
-  color: #333;
-  font-size: 17px;
-  line-height: 25px;
-  font-weight: 300;
-
-  span,
-  p {
-    margin-bottom: 25px;
-
-    &:last-child {
-      margin-bottom: 0px;
-    }
-  }
-
-  a {
-    color: ${(props) => props.theme.colors.clBlue};
-
-    &.mention {
-      background: ${props => transparentize(0.92, props.theme.colors.clBlue)};
-    }
-
-    &:hover {
-      color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
-      text-decoration: underline;
-    }
-  }
 `;
 
 const ChildCommentsContainer = styled.div``;
@@ -149,9 +126,9 @@ type State = {
   childCommentIds: string[] | null;
   showForm: boolean;
   spamModalVisible: boolean;
-  moreActions: IAction[];
   commentingEnabled: boolean | null;
   loaded: boolean;
+  editionMode: boolean;
 };
 
 type Tracks = {
@@ -171,22 +148,23 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       childCommentIds: null,
       showForm: false,
       spamModalVisible: false,
-      moreActions: [],
       commentingEnabled: null,
-      loaded: false
+      loaded: false,
+      editionMode: false,
     };
     this.subscriptions = [];
   }
 
   componentDidMount() {
     const { ideaId, commentId, animate } = this.props;
-    const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
     const authUser$ = authUserStream().observable;
     const comment$ = commentStream(commentId).observable;
     const childCommentIds$ = commentsForIdeaStream(ideaId).observable.switchMap((comments) => {
       const childCommentIds = comments.data.filter((comment) => {
-        return (comment.relationships.parent.data !== null ? comment.relationships.parent.data.id === commentId : false);
+        if (!comment.relationships.parent.data) return false;
+        if (comment.attributes.publication_status === 'deleted') return false;
+        if (comment.relationships.parent.data.id === commentId) return true;
+        return false;
       }).map(comment => comment.id);
 
       if (childCommentIds && childCommentIds.length > 0) {
@@ -199,31 +177,17 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
-        locale$,
-        currentTenantLocales$,
         authUser$,
         comment$,
         childCommentIds$,
         idea$,
       ).delayWhen(() => {
         return (animate === true ? Rx.Observable.timer(100) : Rx.Observable.of(null));
-      }).subscribe(([locale, currentTenantLocales, authUser, comment, childCommentIds, idea]) => {
-        let moreActions = this.state.moreActions;
-
-        if (authUser) {
-          moreActions = [
-            ...this.state.moreActions,
-            { label: <FormattedMessage {...messages.reportAsSpam} />, handler: this.openSpamModal }
-          ];
-        }
-
+      }).subscribe(([authUser, comment, childCommentIds, idea]) => {
         this.setState({
-          locale,
-          currentTenantLocales,
           authUser,
           comment,
           childCommentIds,
-          moreActions,
           commentingEnabled: idea.data.relationships.action_descriptor.data.commenting.enabled,
           loaded: true
         });
@@ -248,29 +212,46 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
     }
   }
 
-  openSpamModal = () => {
-    this.setState({ spamModalVisible: true });
+  onCommentEdit = () => {
+    this.setState({ editionMode: true });
   }
 
-  closeSpamModal = () => {
-    this.setState({ spamModalVisible: false });
+  onCancelEdition = () => {
+    this.setState({ editionMode: false });
+  }
+
+  onCommentSave = (comment, formikActions) => {
+    const { setSubmitting, setErrors } = formikActions;
+
+    updateComment(this.props.commentId, comment)
+    .then(() => {
+      this.setState({ editionMode: false });
+    })
+    .catch((errorResponse) => {
+      if (errorResponse.json) {
+        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+        setErrors(apiErrors);
+        setSubmitting(false);
+      }
+    });
   }
 
   render() {
     const { commentId, animate } = this.props;
-    const { loaded, locale, currentTenantLocales, authUser, comment, childCommentIds, commentingEnabled } = this.state;
+    const { loaded, authUser, comment, childCommentIds, commentingEnabled } = this.state;
 
-    if (loaded && locale && currentTenantLocales && comment) {
+    if (loaded && comment) {
       const ideaId = comment.data.relationships.idea.data.id;
       const authorId = comment.data.relationships.author.data ? comment.data.relationships.author.data.id : null;
+      const commentDeleted = comment.data.attributes.publication_status === 'deleted';
       const createdAt = comment.data.attributes.created_at;
       const commentBodyMultiloc = comment.data.attributes.body_multiloc;
-      const commentText = getLocalized(commentBodyMultiloc, locale, currentTenantLocales);
-      const processedCommentText = linkifyHtml(commentText.replace(
-        /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
-        '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
-      ));
-      const showCommentForm = authUser && commentingEnabled;
+      const showCommentForm = authUser && commentingEnabled && !commentDeleted;
+
+      // Hide parent comments that are deleted with no children
+      if (comment.data.attributes.publication_status === 'deleted' && (!childCommentIds || childCommentIds.length === 0)) {
+        return null;
+      }
 
       return (
         <CSSTransition
@@ -284,17 +265,20 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
 
             <CommentsWithReplyBoxContainer>
               <CommentsContainer className={`${showCommentForm && 'hasReplyBox'}`}>
-                <CommentContainerInner>
-                  <StyledMoreActionsMenu
-                    height="5px"
-                    actions={this.state.moreActions}
-                  />
-
-                  <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
-
-                  <CommentBody className="e2e-comment-body" onClick={this.captureClick}>
-                    <span dangerouslySetInnerHTML={{ __html: processedCommentText }} />
-                  </CommentBody>
+                <CommentContainerInner className={`${commentDeleted && 'deleted'}`}>
+                  {!commentDeleted &&
+                    <>
+                      <StyledMoreActionsMenu comment={comment.data} onCommentEdit={this.onCommentEdit} />
+                      <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
+                      <CommentBody commentBody={commentBodyMultiloc} editionMode={this.state.editionMode} onCommentSave={this.onCommentSave} onCancelEdition={this.onCancelEdition} />
+                    </>
+                  }
+                  {commentDeleted &&
+                    <>
+                      <DeletedIcon name="delete" />
+                      <FormattedMessage {...messages.commentDeletedPlaceholder} />
+                    </>
+                  }
                 </CommentContainerInner>
 
                 {(childCommentIds && childCommentIds.length > 0) &&
@@ -310,11 +294,6 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
                 <ChildCommentForm ideaId={ideaId} parentId={commentId} />
               }
             </CommentsWithReplyBoxContainer>
-
-            <Modal opened={this.state.spamModalVisible} close={this.closeSpamModal}>
-              <SpamReportForm resourceId={this.props.commentId} resourceType="comments" />
-            </Modal>
-
           </Container>
         </CSSTransition>
       );

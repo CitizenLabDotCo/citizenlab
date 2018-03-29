@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import { Subscription, BehaviorSubject, Observable } from 'rxjs/Rx';
 
 // router
 import { Link, browserHistory } from 'react-router';
@@ -77,15 +77,15 @@ type State = {
 };
 
 class Author extends React.PureComponent<Props, State> {
-  authorId$: Rx.BehaviorSubject<string | null>;
-  subscriptions: Rx.Subscription[];
+  authorId$: BehaviorSubject<string | null>;
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
       author: null
     };
-    this.authorId$ = new Rx.BehaviorSubject(null);
+    this.authorId$ = new BehaviorSubject(null);
     this.subscriptions = [];
   }
 
@@ -98,7 +98,8 @@ class Author extends React.PureComponent<Props, State> {
       this.authorId$
         .distinctUntilChanged()
         .filter(authorId => authorId !== null)
-        .switchMap((authorId: string) => {
+        .switchMap((authorId: string | null) => {
+          if (authorId === null) return Observable.of(null);
           const author$ = userByIdStream(authorId).observable;
           return author$;
         }).subscribe((author) => {

@@ -209,6 +209,8 @@ export default class App extends React.PureComponent<Props & RouterState, State>
                 <IdeasShow ideaId={modalId} inModal={true} />
               </FullscreenModal>
 
+              <div id="modal-portal" />
+
               <Navbar />
 
               <InnerContainer className={`${isAdminPage ? 'admin' : 'citizen'}`}>
