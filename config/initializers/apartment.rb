@@ -90,7 +90,7 @@ Rails.application.config.middleware.use Apartment::Elevators::Generic, (Proc.new
     nil
   else
     if Rails.env.development?
-      "localhost"
+      ENV.fetch('DEFAULT_HOST', 'localhost').gsub(/\./, "_")
     else
       request.host.gsub(/\./, "_")
     end
