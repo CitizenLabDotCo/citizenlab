@@ -7,6 +7,7 @@ import TextArea from 'components/UI/TextArea';
 import Label from 'components/UI/Label';
 import Warning from 'components/UI/Warning';
 import Error from 'components/UI/Error';
+// import Success from 'components/UI/Success';
 import Radio from 'components/UI/Radio';
 import Icon from 'components/UI/Icon';
 import Toggle from 'components/UI/Toggle';
@@ -18,7 +19,7 @@ import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 import { listGroups, IGroups } from 'services/groups';
-import { bulkInviteXLSX, bulkInviteEmails, IInvites, IInviteError, INewBulkInvite, INewBulkEmailInvite, INewBulkXLSXInvite } from 'services/Invites';
+import { bulkInviteXLSX, bulkInviteEmails, IInvites, IInviteError, INewBulkInvite } from 'services/Invites';
 
 // i18n
 import { FormattedHTMLMessage } from 'react-intl';
@@ -33,96 +34,16 @@ import FileSaver from 'file-saver';
 import { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
 
+// animation
+import CSSTransition from 'react-transition-group/CSSTransition';
+
 // styling
 import styled from 'styled-components';
 
 // typings
 import { Locale, IOption } from 'typings';
 
-const timeout = 350;
-
-const FileInputWrapper = styled.div`
-  margin-top: 15px;
-  margin-bottom: 20px;
-`;
-
-const ArrowIcon = styled(Icon)`
-  fill: ${(props) => props.theme.colors.label};
-  height: 13px;
-  margin-right: 9px;
-  transition: transform 350ms cubic-bezier(0.165, 0.84, 0.44, 1),
-              fill 80ms ease-out;
-
-  &.opened {
-    transform: rotate(90deg);
-  }
-`;
-
-const StyledLabel = styled(Label)`
-  padding-bottom: 0px;
-  transition: all 80ms ease-out;
-  cursor: pointer;
-`;
-
-const Options: any = styled.div`
-  display: flex;
-  align-items: center;
-  padding-bottom: 8px;
-  transition: all 80ms ease-out;
-  cursor: pointer;
-
-  &:hover {
-    ${StyledLabel} {
-      color: #000;
-    }
-
-    ${ArrowIcon} {
-      fill: #000;
-    }
-  }
-`;
-
-const InvitationOptionsContainer = styled.div`
-  width: 497px;
-  position: relative;
-  border-radius: 5px;
-  border: solid 1px #ddd;
-  background: #fff;
-  z-index: 1;
-  transition: opacity ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
-
-  &:not(.opened) {
-    /* visibility: hidden; */
-    /* height: 0; */
-    /* opacity: 0; */
-
-    display: none;
-  }
-
-  &.opened {
-    /* visibility: visible; */
-    /* height: auto; */
-    /* opacity: 1; */
-
-    display: block;
-  }
-`;
-
-const InvitationOptionsInner = styled.div`
-  padding: 20px;
-  padding-bottom: 0px;
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  padding-top: 30px;
-`;
-
-const Processing = styled.div`
-  color: ${(props) => props.theme.colors.label};
-  margin-left: 15px;
-`;
+const timeout = 400;
 
 const ViewButtons = styled.div`
   display: flex;
@@ -165,8 +86,112 @@ const RightButton = ViewButton.extend`
   border-bottom-right-radius: 5px;
 `;
 
-const StyledError = styled(Error)`
-  margin-top: 10px;
+const FileInputWrapper = styled.div`
+  margin-top: 15px;
+  margin-bottom: 20px;
+`;
+
+const ArrowIcon = styled(Icon)`
+  fill: ${(props) => props.theme.colors.label};
+  height: 11px;
+  margin-right: 8px;
+  transition: transform 350ms cubic-bezier(0.165, 0.84, 0.44, 1),
+              fill 80ms ease-out;
+
+  &.opened {
+    transform: rotate(90deg);
+  }
+`;
+
+const StyledLabel = styled(Label)`
+  padding-bottom: 0px;
+  transition: all 80ms ease-out;
+  cursor: pointer;
+`;
+
+const Options: any = styled.div`
+  display: flex;
+  align-items: center;
+  padding-bottom: 8px;
+  transition: all 80ms ease-out;
+  cursor: pointer;
+
+  &:hover {
+    ${StyledLabel} {
+      color: #000;
+    }
+
+    ${ArrowIcon} {
+      fill: #000;
+    }
+  }
+`;
+
+const InvitationOptionsContainer = styled.div`
+  width: 497px;
+  position: relative;
+  border-radius: 5px;
+  border: solid 1px #ddd;
+  background: #fff;
+  z-index: 1;
+  opacity: 0;
+  display: none;
+  transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  will-change: opacity, height;
+
+  &.options-enter {
+    opacity: 0;
+    max-height: 0px;
+    overflow: hidden;
+    display: block;
+
+    &.options-enter-active {
+      opacity: 1;
+      max-height: 500px;
+      overflow: hidden;
+      display: block;
+    }
+  }
+
+  &.options-enter-done {
+    opacity: 1;
+    overflow: visible;
+    display: block;
+  }
+
+  &.options-exit {
+    opacity: 1;
+    max-height: 500px;
+    overflow: hidden;
+    display: block;
+
+    &.options-exit-active {
+      opacity: 0;
+      max-height: 0px;
+      overflow: hidden;
+      display: block;
+    }
+  }
+
+  &.options-exit-done {
+    display: none;
+  }
+`;
+
+const InvitationOptionsInner = styled.div`
+  padding: 20px;
+  padding-bottom: 0px;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding-top: 30px;
+`;
+
+const Processing = styled.div`
+  color: ${(props) => props.theme.colors.label};
+  margin-left: 15px;
 `;
 
 type Props = {};
@@ -252,29 +277,39 @@ export default class Invitations extends React.PureComponent<Props, State> {
     return null;
   }
 
+  resetErrorAndSuccessState() {
+    this.setState({ processed: false, errors: null });
+  }
+
   handleEmailListOnChange = (selectedEmails: string) => {
+    this.resetErrorAndSuccessState();
     this.setState({ selectedEmails });
   }
 
   handleFileInputOnChange = async (event) => {
     const selectedFile: File | null = (event.target.files && event.target.files.length === 1 ? event.target.files['0'] : null);
     const selectedFileBase64 = (selectedFile ? await getBase64FromFile(selectedFile) : null);
+    this.resetErrorAndSuccessState();
     this.setState({ selectedFileBase64 });
   }
 
   handleAdminRightsOnToggle = () => {
+    this.resetErrorAndSuccessState();
     this.setState(state => ({ hasAdminRights: !state.hasAdminRights }));
   }
 
   handleLocaleOnChange = (selectedLocale: Locale) => {
+    this.resetErrorAndSuccessState();
     this.setState({ selectedLocale });
   }
 
   handleSelectedGroupsOnChange = (selectedGroups: IOption[]) => {
+    this.resetErrorAndSuccessState();
     this.setState({ selectedGroups: (selectedGroups.length > 0 ? selectedGroups : null) });
   }
 
   handleInviteTextOnChange = (selectedInviteText: string) => {
+    this.resetErrorAndSuccessState();
     this.setState({ selectedInviteText });
   }
 
@@ -340,31 +375,35 @@ export default class Invitations extends React.PureComponent<Props, State> {
         let response: IInvites | IInviteError[] | null = null;
 
         if (selectedView === 'import' && isString(selectedFileBase64)) {
-          const bulkXLSXInvite: INewBulkXLSXInvite = {
+          response = await bulkInviteXLSX({
             xlsx: selectedFileBase64,
             ...bulkInvite
-          };
-
-          response = await bulkInviteXLSX(bulkXLSXInvite);
+          });
         }
 
         if (selectedView === 'text' && isString(selectedEmails)) {
-          const bulkEmailInvite: INewBulkEmailInvite = {
-            emails: selectedEmails,
+          console.log('INewBulkInviteEmails:');
+          console.log({
+            emails: selectedEmails.split(',').map(item => item.trim()),
             ...bulkInvite
-          };
+          });
 
-          response = await bulkInviteEmails(bulkEmailInvite);
+          response = await bulkInviteEmails({
+            emails: selectedEmails.split(',').map(item => item.trim()),
+            ...bulkInvite
+          });
         }
 
         console.log('response:');
         console.log(response);
 
+        // success
         // reset file input
         if (this.fileInputElement) {
           this.fileInputElement.value = '';
         }
 
+        // reset state
         this.setState({
           processing: false,
           processed: true,
@@ -378,7 +417,6 @@ export default class Invitations extends React.PureComponent<Props, State> {
           processing: false
         });
 
-        // reponseErrors.json.errors[0].error === 'email_already_invited'
         console.log('errors:');
         console.log(errors);
       }
@@ -402,62 +440,72 @@ export default class Invitations extends React.PureComponent<Props, State> {
           </StyledLabel>
         </Options>
 
-        <InvitationOptionsContainer className={`${invitationOptionsOpened && 'opened'}`}>
-          <InvitationOptionsInner>
-            {selectedView === 'import' &&
-              <SectionField>
-                <Warning text={<FormattedHTMLMessage {...messages.importOptionsInfo} />} />
-              </SectionField>
-            }
+        <CSSTransition
+          classNames="options"
+          in={invitationOptionsOpened}
+          timeout={timeout}
+          mounOnEnter={false}
+          unmountOnExit={false}
+          enter={true}
+          exit={true}
+        >
+          <InvitationOptionsContainer>
+            <InvitationOptionsInner>
+              {selectedView === 'import' &&
+                <SectionField>
+                  <Warning text={<FormattedHTMLMessage {...messages.importOptionsInfo} />} />
+                </SectionField>
+              }
 
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.adminLabel} />
-              </Label>
-              <Toggle value={hasAdminRights} onChange={this.handleAdminRightsOnToggle} />
-            </SectionField>
-
-            {currentTenantLocales && currentTenantLocales.length > 1 &&
               <SectionField>
                 <Label>
-                  <FormattedMessage {...messages.localeLabel} />
+                  <FormattedMessage {...messages.adminLabel} />
                 </Label>
-
-                {currentTenantLocales.map((currentTenantLocale) => (
-                  <Radio
-                    key={currentTenantLocale}
-                    onChange={this.handleLocaleOnChange}
-                    currentValue={selectedLocale}
-                    value={currentTenantLocale}
-                    label={appLocalePairs[currentTenantLocale]}
-                  />
-                ))}
+                <Toggle value={hasAdminRights} onChange={this.handleAdminRightsOnToggle} />
               </SectionField>
-            }
 
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.groupsLabel} />
-              </Label>
-              <MultipleSelect
-                value={selectedGroups}
-                options={groupOptions}
-                onChange={this.handleSelectedGroupsOnChange}
-                placeholder={<FormattedMessage {...messages.groupsPlaceholder} />}
-              />
-            </SectionField>
+              {currentTenantLocales && currentTenantLocales.length > 1 &&
+                <SectionField>
+                  <Label>
+                    <FormattedMessage {...messages.localeLabel} />
+                  </Label>
 
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.inviteTextLabel} />
-              </Label>
-              <TextArea
-                value={(selectedInviteText || '')}
-                onChange={this.handleInviteTextOnChange}
-              />
-            </SectionField>
-          </InvitationOptionsInner>
-        </InvitationOptionsContainer>
+                  {currentTenantLocales.map((currentTenantLocale) => (
+                    <Radio
+                      key={currentTenantLocale}
+                      onChange={this.handleLocaleOnChange}
+                      currentValue={selectedLocale}
+                      value={currentTenantLocale}
+                      label={appLocalePairs[currentTenantLocale]}
+                    />
+                  ))}
+                </SectionField>
+              }
+
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.groupsLabel} />
+                </Label>
+                <MultipleSelect
+                  value={selectedGroups}
+                  options={groupOptions}
+                  onChange={this.handleSelectedGroupsOnChange}
+                  placeholder={<FormattedMessage {...messages.groupsPlaceholder} />}
+                />
+              </SectionField>
+
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.inviteTextLabel} />
+                </Label>
+                <TextArea
+                  value={(selectedInviteText || '')}
+                  onChange={this.handleInviteTextOnChange}
+                />
+              </SectionField>
+            </InvitationOptionsInner>
+          </InvitationOptionsContainer>
+        </CSSTransition>
       </>
     );
 
@@ -549,13 +597,12 @@ export default class Invitations extends React.PureComponent<Props, State> {
                 }
               </ButtonWrapper>
 
-              {/* {errors && errors.length > 0 &&
-                <ErrorMessage>
-                  <FormattedMessage {...messages.couldNotSendError} />
-                </ErrorMessage>
-              } */}
-
-              <StyledError apiErrors={errors} />
+              <Error
+                apiErrors={errors}
+                showIcon={true}
+                marginTop="15px"
+                animate={false}
+              />
             </SectionField>
           </Section>
         </form>
