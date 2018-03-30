@@ -25,7 +25,6 @@ const ButtonText = styled.div`
   }
 `;
 
-
 const ButtonContent = styled.div`
   display: flex;
   align-items: center;
@@ -175,7 +174,7 @@ const Container: any = styled.div`
     }
 
     &.primary {
-      ${(props: any) => buttonTheme(props.theme.colorMain || 'e0e0e0')}
+      ${(props: any) => buttonTheme((props.theme.colorMain || 'e0e0e0'), '#fff')}
     }
 
     &.secondary {
@@ -246,7 +245,7 @@ type State = {};
 
 class Button extends React.PureComponent<Props, State> {
   constructor(props: Props) {
-    super(props as any);
+    super(props);
   }
 
   handleOnClick = (event: React.FormEvent<HTMLButtonElement>) => {
@@ -286,6 +285,8 @@ class Button extends React.PureComponent<Props, State> {
   render() {
     const { text, width, height, padding, justify, icon, children, linkTo } = this.props;
     let { id, size, style, processing, disabled, fullWidth, circularCorners, className } = this.props;
+
+    console.log(this.props);
 
     id = (id || '');
     size = (size || '1');
