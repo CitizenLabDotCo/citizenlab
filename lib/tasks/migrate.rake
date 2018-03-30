@@ -146,19 +146,19 @@ namespace :migrate do
         timezone: migration_settings['timezone'],
         color_main: s['accentColor']
       },
-      demographic_fields: {
-        allowed: true,
-        enabled: true,
-        gender: true,
-        domicile: true,
-        birthyear: true,
-        education: true,
+      surveys: {
+       enabled: true,
+       allowed: true,
       },
       groups: {
         enabled: true,
         allowed:true
       },
       private_projects: {
+        enabled: true,
+        allowed: true
+      },
+      user_custom_fields: {
         enabled: true,
         allowed: true
       }
