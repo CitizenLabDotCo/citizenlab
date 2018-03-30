@@ -69,7 +69,7 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: npm run build
+      - run:
           command: npm run build
           no_output_timeout: '30m'
 
