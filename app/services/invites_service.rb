@@ -108,7 +108,16 @@ class InvitesService
 
     wb.styles do |s|
       wb.add_worksheet do |sheet|
-        sheet.add_row headers, style: header_style(s)
+        sheet.add_row headers
+
+        sheet.add_row [
+          'someuser@somedomain.com',
+          'John',
+          'Johnson',
+          locale: Tenant.settings('core', 'locales').first,
+          groups: MultilocService.new.t(Group.first&.title_multiloc),
+          admin: 'FALSE'
+        ]
         
         sheet.add_data_validation("F2:F1001", {
           :type => :list,
