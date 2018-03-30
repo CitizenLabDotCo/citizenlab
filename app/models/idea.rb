@@ -1,6 +1,9 @@
 class Idea < ApplicationRecord
   include PgSearch
 
+  MAX_TITLE_LEN = 100
+
+
   @@sanitizer = Rails::Html::WhiteListSanitizer.new
 
   pg_search_scope :search_by_all, 
@@ -36,7 +39,7 @@ class Idea < ApplicationRecord
 
   PUBLICATION_STATUSES = %w(draft published closed spam)
   validates :project, presence: true, unless: :draft?
-  validates :title_multiloc, presence: true, multiloc: {presence: true, length: {maximum: 100}}
+  validates :title_multiloc, presence: true, multiloc: {presence: true, length: {maximum: MAX_TITLE_LEN}}
   validates :body_multiloc, presence: true, multiloc: {presence: true}, unless: :draft?
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
   validates :author, presence: true, unless: :draft?, on: :create
