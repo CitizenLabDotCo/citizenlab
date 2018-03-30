@@ -76,7 +76,7 @@ export const colors = {
   error: '#FC3C2D',
   label: '#84939E',
   mediumGrey: '#BDBDBD',
-  lightGreyishBlue: '#f0f2f3',
+  lightGreyishBlue: '#ebedef',
   separation: '#EAEAEA',
   background: '#F9F9FA',
   adminBackground: '#F0F3F4',
