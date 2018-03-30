@@ -70,6 +70,8 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm run build
+          command: npm run build
+          no_output_timeout: '30m'
 
   deploy_demo:
     docker:
