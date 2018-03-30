@@ -203,7 +203,7 @@ const Container: any = styled.div`
     }
 
     &.cl-blue {
-      ${buttonTheme(color('clBlue'))}
+      ${buttonTheme(color('clBlue'), 'white')}
     }
   }
 `;
