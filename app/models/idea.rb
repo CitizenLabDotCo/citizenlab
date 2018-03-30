@@ -36,7 +36,7 @@ class Idea < ApplicationRecord
 
   PUBLICATION_STATUSES = %w(draft published closed spam)
   validates :project, presence: true, unless: :draft?
-  validates :title_multiloc, presence: true, multiloc: {presence: true}
+  validates :title_multiloc, presence: true, multiloc: {presence: true, length: {maximum: 150}}
   validates :body_multiloc, presence: true, multiloc: {presence: true}, unless: :draft?
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
   validates :author, presence: true, unless: :draft?, on: :create
