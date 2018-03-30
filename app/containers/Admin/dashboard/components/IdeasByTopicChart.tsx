@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import localize, { injectedLocalized } from 'utils/localize';
-import { ideasByTopicStream } from 'services/stats';
+import { ideasByTopicStream, IIdeasByTopic } from 'services/stats';
 
 type State = {
   serie: {
@@ -66,18 +66,18 @@ class IdeasByTimeChart extends React.PureComponent<Props & injectedLocalized, St
     }
   }
 
-  convertToGraphFormat = (serie) => {
+  convertToGraphFormat = (serie: IIdeasByTopic) => {
     if (serie) {
       const { data, topics } = serie;
       const { localize } = this.props;
 
-      return _(data).map((count, topicId) => ({
+      const mapped = _.map(data, (count: number, topicId: string) => ({
         name: localize(topics[topicId].title_multiloc),
         value: count,
         code: topicId,
-      }))
-      .sortBy('name')
-      .value();
+      }));
+
+      return _.sortBy(mapped, 'name');
     }
 
     return null;
