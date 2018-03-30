@@ -176,8 +176,8 @@ class CLMap extends React.PureComponent<Props & InjectedTenant, State> {
       const bounds: [number, number][] = [];
 
       this.markers = compact(points).map((point) => {
-        bounds.push([point.coordinates[0], point.coordinates[1]]);
-        return new Marker(point.coordinates as [number, number], ({ ...this.markerOptions, data: point.data, id: point.id } as DataMarkerOptions));
+        bounds.push([point.coordinates[1], point.coordinates[0]]);
+        return new Marker([point.coordinates[1], point.coordinates[0]] as [number, number], ({ ...this.markerOptions, data: point.data, id: point.id } as DataMarkerOptions));
       });
 
       if (bounds.length > 0) this.markerBounds = new Leaflet.LatLngBounds(bounds);
