@@ -114,7 +114,6 @@ class GetInvites extends React.PureComponent<Props, State> {
     this.inviteStatusFilter$.next(inviteStatus);
   }
 
-
   render() {
     const renderProps: GetInvitesChildProps = {
       ...this.state,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
-import { IUserData, userBySlugStream, userByIdStream } from 'services/users';
+import { IUser, IUserData, userBySlugStream, userByIdStream } from 'services/users';
 
 interface InputProps {
   id?: string;
@@ -35,19 +35,21 @@ export default class GetIdea extends React.PureComponent<Props, State> {
     this.inputProps$ = new BehaviorSubject({ id, slug });
 
     this.subscriptions = [
-      this.inputProps$.distinctUntilChanged((prev, next) => {
-        return shallowCompare(prev, next);
-      }).switchMap(({ id, slug }) => {
-        if (id) {
-          return userByIdStream(id).observable;
-        } else if (slug) {
-          return userBySlugStream(slug).observable;
-        } else {
-          return Observable.of(null);
-        }
-      }).subscribe((user) => {
-        this.setState({ user: (user ? user.data : null) });
-      })
+      this.inputProps$
+        .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
+        .switchMap(({ id, slug }) => {
+          let user$: Observable<IUser | null> = Observable.of(null);
+
+          if (id) {
+            user$ = userByIdStream(id).observable;
+          } else if (slug) {
+            user$ = userBySlugStream(slug).observable;
+          }
+
+          return user$;
+        }).subscribe((user) => {
+          this.setState({ user: (user ? user.data : null) });
+        })
     ];
   }
 
