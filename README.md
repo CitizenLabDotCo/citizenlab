@@ -42,6 +42,7 @@ docker-compose run --rm --user "$(id -u):$(id -g)" web bash -c "sleep 5 && bundl
 
 Afterwards you can run the normal `docker-compose up --build`
 
+
 ## Testing
 
 Resetting the database, with the previous command, upsets the testing database as well. Before running the tests, it's sometimes necessary to put it back in it's default shape. We can do this with the following command:
@@ -55,3 +56,10 @@ To actually run the tests:
 docker-compose run --rm --user "$(id -u):$(id -g)" web rspec
 
 ```
+
+
+## Using Customized Tenants for Development
+
+Two environment variables can be used for this purpose: `SEED_SIZE` (e.g. small, medium, large, empty) and `DEFAULT_HOST` (e.g. empty.localhost, dendermonde.citizenlab.co). Set the desired values in the `.env` file and re-build the docker container.
+
+NOTE: Watch out that you don't accidently commit these changes!
