@@ -414,5 +414,10 @@ if Apartment::Tenant.current == 'localhost'
     })
   end
 
+  5.times do
+    Invite.create(
+      invitee: User.create(email: Faker::Internet.email, locale: 'en', invite_status: 'pending', first_name: Faker::Name.first_name, last_name: Faker::Name.last_name)
+    )
+  end
 
 end
