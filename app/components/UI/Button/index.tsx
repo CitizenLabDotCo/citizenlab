@@ -56,7 +56,7 @@ function getPadding(size) {
     case '4':
       return `15px 26px`;
     default:
-      return `.5em 1.25em`;
+      return `.75em 1.5em`;
   }
 }
 
