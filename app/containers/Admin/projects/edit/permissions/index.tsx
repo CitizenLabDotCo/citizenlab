@@ -56,7 +56,7 @@ type State  = {
 };
 
 class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, State> {
-  
+
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -112,8 +112,8 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
 
   componentWillUnmount() {
     const { project, unsavedVisibleTo, oldGroupsProjects, newGroupsProjects } = this.state;
-    const oldGroupsProjectIds = (oldGroupsProjects ? _(oldGroupsProjects.data).map(groupsProject => groupsProject.id).value() : []);
-    const newGroupsProjectsIds = (newGroupsProjects ? _(newGroupsProjects.data).map(groupsProject => groupsProject.id).value() : []);
+    const oldGroupsProjectIds = (oldGroupsProjects ? _.map(oldGroupsProjects.data, groupsProject => groupsProject.id) : []);
+    const newGroupsProjectsIds = (newGroupsProjects ? _.map(newGroupsProjects.data, groupsProject => groupsProject.id) : []);
 
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
 
