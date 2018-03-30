@@ -299,6 +299,10 @@ const RightItem: any = styled.div`
     outline: none;
   }
 
+  &.buttonText {
+    color: red !important;
+  }
+
   &.notification {
     ${media.smallerThanMinTablet`
       display: none;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router';
-import { isBoolean } from 'lodash';
+import { isBoolean, isNil } from 'lodash';
 
 import styled, { withTheme } from 'styled-components';
 import { darken, rgba, readableColor } from 'polished';
@@ -55,7 +55,7 @@ function getPadding(size) {
     case '4':
       return `15px 26px`;
     default:
-      return `.5em 1.25em`;
+      return `.7em 1.5em`;
   }
 }
 
@@ -75,13 +75,13 @@ function getIconHeight(size) {
 function getLineHeight(size) {
   switch (size) {
     case '2':
-      return `24px`;
-    case '3':
-      return `26px`;
-    case '4':
-      return `28px`;
-    default:
       return `22px`;
+    case '3':
+      return `24px`;
+    case '4':
+      return `26px`;
+    default:
+      return `20px`;
   }
 }
 
@@ -98,7 +98,12 @@ function setFillColor(color) {
 }
 
 // Sets the button colors depending on Background color, optionally set the text/icon fill color and border color.
-function buttonTheme(bgColor: string, textColor: string | null = null, borderColor: string = 'transparent') {
+function buttonTheme(
+  bgColor: string,
+  textColor: string | null = null,
+  borderColor: string = 'transparent',
+  bgHoverColor: string | null = null
+) {
   return `
     &:not(.disabled) {
       ${setFillColor(textColor || readableColor(bgColor))}
@@ -107,9 +112,9 @@ function buttonTheme(bgColor: string, textColor: string | null = null, borderCol
 
       &:not(.processing):hover,
       &:not(.processing):focus {
-        ${bgColor !== 'transparent' && `background: ${darken(0.12, bgColor)};`}
-        ${bgColor === 'transparent' && textColor && setFillColor(darken(0.12, textColor))}
-        ${bgColor === 'transparent' && borderColor !== 'transparent' && `border-color: ${darken(0.12, borderColor)};`}
+        ${bgColor !== 'transparent' && `background: ${bgHoverColor || darken(0.12, bgColor)};`}
+        ${bgColor === 'transparent' && textColor && setFillColor(darken(0.2, textColor))}
+        ${bgColor === 'transparent' && borderColor !== 'transparent' && `border-color: ${darken(0.2, borderColor)};`}
       }
     }
 
@@ -119,7 +124,6 @@ function buttonTheme(bgColor: string, textColor: string | null = null, borderCol
     }
   `;
 }
-
 
 const Container: any = styled.div`
   user-select: none;
@@ -145,7 +149,7 @@ const Container: any = styled.div`
     outline: none;
     padding: ${(props: any) => props.padding || getPadding(props.size)};
     position: relative;
-    transition: all 120ms ease-out;
+    transition: all 100ms ease-out;
     width: ${(props: any) => props.width || 'auto'};
 
     &:not(.disabled) {
@@ -178,7 +182,7 @@ const Container: any = styled.div`
     }
 
     &.secondary {
-      ${buttonTheme(color('separation'))}
+      ${buttonTheme(color('lightGreyishBlue'), color('label'), 'transparent', darken(0.05, color('lightGreyishBlue')))}
     }
 
     &.primary-outlined {
@@ -202,7 +206,7 @@ const Container: any = styled.div`
     }
 
     &.cl-blue {
-      ${buttonTheme(color('clBlue'))}
+      ${buttonTheme(color('clBlue'), 'white')}
     }
   }
 `;
@@ -286,8 +290,6 @@ class Button extends React.PureComponent<Props, State> {
     const { text, width, height, padding, justify, icon, children, linkTo } = this.props;
     let { id, size, style, processing, disabled, fullWidth, circularCorners, className } = this.props;
 
-    console.log(this.props);
-
     id = (id || '');
     size = (size || '1');
     style = (style || 'primary');
@@ -296,28 +298,19 @@ class Button extends React.PureComponent<Props, State> {
     fullWidth = (isBoolean(fullWidth) ? fullWidth : false);
     circularCorners = (isBoolean(circularCorners) ? circularCorners : true);
     className = `${className ? className : ''}`;
+
     const spinnerSize = this.getSpinnerSize(size);
     const spinnerColor = this.getSpinnerColor(style);
-
     const buttonClassnames = `Button ${disabled ? 'disabled' : ''} ${processing ? 'processing' : ''} ${fullWidth ? 'fullWidth' : ''} ${style}`;
+    const hasText = (!isNil(text) || !isNil(children));
 
     const childContent = (
       <ButtonContent>
         {icon && <StyledIcon name={icon} />}
-        {text || children && <ButtonText>{text || children}</ButtonText>}
+        {hasText && <ButtonText className="bleh">{text || children}</ButtonText>}
         {processing && <SpinnerWrapper><Spinner size={spinnerSize} color={spinnerColor} /></SpinnerWrapper>}
       </ButtonContent>
     );
-
-    let button = <StyledButton className={buttonClassnames}>{childContent}</StyledButton>;
-
-    if (linkTo) {
-      if (linkTo.startsWith('http://') || linkTo.startsWith('https://')) {
-        button = <StyledA href={linkTo} className={buttonClassnames}>{childContent}</StyledA>;
-      } else {
-        button = <StyledLink to={linkTo} className={buttonClassnames}>{childContent}</StyledLink>;
-      }
-    }
 
     return (
       <Container
@@ -333,7 +326,15 @@ class Button extends React.PureComponent<Props, State> {
         circularCorners={circularCorners}
         className={`${className} ${buttonClassnames}`}
       >
-        {button}
+        {linkTo ? (
+          (linkTo.startsWith('http')) ? (
+            <StyledA href={linkTo} className={buttonClassnames}>{childContent}</StyledA>
+          ) : (
+            <StyledLink to={linkTo} className={buttonClassnames}>{childContent}</StyledLink>
+          )
+        ) : (
+          <StyledButton className={buttonClassnames}>{childContent}</StyledButton>
+        )}
       </Container>
     );
   }

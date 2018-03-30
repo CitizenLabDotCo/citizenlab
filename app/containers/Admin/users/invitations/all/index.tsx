@@ -181,7 +181,7 @@ class InvitesTable extends React.PureComponent<Props & GetInvitesChildProps, Sta
                     currentPage={currentPage}
                     totalPages={lastPage}
                     loadPage={onChangePage}
-                    />
+                  />
                 </Table.HeaderCell>
               </Table.Row>
             </Table.Footer>

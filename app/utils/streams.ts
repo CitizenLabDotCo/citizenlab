@@ -100,13 +100,13 @@ class Streams {
   }
 
   deleteStream(streamId: string, apiEndpoint: string) {
-    if (_(this.streamIdsByApiEndPointWithQuery[apiEndpoint]).some(value => value === streamId)) {
+    if (_.some(this.streamIdsByApiEndPointWithQuery[apiEndpoint], value => value === streamId)) {
       this.streamIdsByApiEndPointWithQuery[apiEndpoint] = this.streamIdsByApiEndPointWithQuery[apiEndpoint].filter((value) => {
         return value !== streamId;
       });
     }
 
-    if (_(this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]).some(value => value === streamId)) {
+    if (_.some(this.streamIdsByApiEndPointWithoutQuery[apiEndpoint], value => value === streamId)) {
       this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] = this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].filter((value) => {
         return value !== streamId;
       });
@@ -114,13 +114,13 @@ class Streams {
 
     if (streamId && this.streams[streamId]) {
       Object.keys(this.streams[streamId].dataIds).forEach((dataId) => {
-        if (_(this.streamIdsByDataIdWithQuery[dataId]).some(value => value === streamId)) {
+        if (_.some(this.streamIdsByDataIdWithQuery[dataId], value => value === streamId)) {
           this.streamIdsByDataIdWithQuery[dataId] =  this.streamIdsByDataIdWithQuery[dataId].filter((value) => {
             return value !== streamId;
           });
         }
 
-        if (_(this.streamIdsByDataIdWithoutQuery[dataId]).some(value => value === streamId)) {
+        if (_.some(this.streamIdsByDataIdWithoutQuery[dataId], value => value === streamId)) {
           this.streamIdsByDataIdWithoutQuery[dataId] = this.streamIdsByDataIdWithoutQuery[dataId].filter((value) => {
             return value !== streamId;
           });
@@ -365,7 +365,7 @@ class Streams {
     try {
       const response = await request<T>(apiEndpoint, bodyData, { method: 'POST' }, null);
 
-      _(this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]).forEach((streamId) => {
+      _.forEach(this.streamIdsByApiEndPointWithoutQuery[apiEndpoint], (streamId) => {
         const stream = this.streams[streamId];
 
         if (!stream.cacheStream) {
@@ -378,7 +378,7 @@ class Streams {
         }
       });
 
-      _(this.streamIdsByApiEndPointWithQuery[apiEndpoint]).forEach((streamId) => {
+      _.forEach(this.streamIdsByApiEndPointWithQuery[apiEndpoint], (streamId) => {
         this.streams[streamId].fetch();
       });
 

@@ -13,7 +13,8 @@ import { postingButtonState } from 'services/ideaPostingRules';
 import Button, { ButtonStyles } from 'components/UI/Button';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 type Props = {
@@ -27,7 +28,7 @@ type State = {
   phase?: IPhaseData | undefined;
 };
 
-export default class IdeaButton extends React.PureComponent<Props, State> {
+class IdeaButton extends React.PureComponent<Props & InjectedIntlProps, State> {
   projectId$: Rx.BehaviorSubject<string | undefined>;
   phaseId$: Rx.BehaviorSubject<string | undefined>;
   subscriptions: Rx.Subscription[];
@@ -90,20 +91,22 @@ export default class IdeaButton extends React.PureComponent<Props, State> {
   }
 
   render() {
-    let { style } = this.props;
     const { project, phase } = this.state;
     const { show, enabled } = postingButtonState({ project, phase });
 
-    style = (style || 'primary');
-
     if (show) {
+      let { style } = this.props;
+      const startAnIdeaText = this.props.intl.formatMessage(messages.startAnIdea);
+  
+      style = (style || 'primary');
+
       return (
         <Button
           className={this.props['className']}
           onClick={this.handleOnAddIdeaClick}
           style={style}
           size="1"
-          text={<FormattedMessage {...messages.startAnIdea} />}
+          text={startAnIdeaText}
           circularCorners={false}
           disabled={!enabled}
         />
@@ -113,3 +116,5 @@ export default class IdeaButton extends React.PureComponent<Props, State> {
     return null;
   }
 }
+
+export default injectIntl<Props>(IdeaButton);
