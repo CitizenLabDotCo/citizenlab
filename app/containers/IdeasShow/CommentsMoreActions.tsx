@@ -1,6 +1,6 @@
 // Libraries
 import React, { FormEvent } from 'react';
-import { combineLatest } from 'rxjs/Observable/combineLatest';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
