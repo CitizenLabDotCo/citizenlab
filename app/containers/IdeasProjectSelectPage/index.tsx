@@ -282,34 +282,42 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
             {!noProjects && 
               <Content>
                 <ColumnsContainer>
-                  <LeftColumn className={!openProject ? 'fullWidth' : ''}>
-                    <ColumnTitle>
-                      <FormattedMessage {...messages.cityProjects} />
-                    </ColumnTitle>
-                    <ColumnExplanation>
-                      <FormattedMessage {...messages.cityProjectsExplanation} />
-                    </ColumnExplanation>
-                    <ProjectsList>
-                      {cityProjects && cityProjects.map((project) => (
-                        <ProjectCardWrapper key={project.id}>
-                          <ProjectCard
-                            onClick={this.handleProjectClick(project)}
-                            projectId={project.id}
-                            selected={(selectedProjectId === project.id)}
-                            className="e2e-project-card"
-                          />
-                        </ProjectCardWrapper>
-                      ))}
-                    </ProjectsList>
-                  </LeftColumn>
-                  {openProject &&
-                    <RightColumn className={noProjects ? 'fullWidth' : ''}>
+
+                  {cityProjects && 
+                    <LeftColumn className={!openProject ? 'fullWidth' : ''}>
                       <ColumnTitle>
-                        <FormattedMessage {...messages.openProject} />
+                        <FormattedMessage {...messages.cityProjects} />
                       </ColumnTitle>
                       <ColumnExplanation>
-                        <FormattedMessage {...messages.openProjectExplanation} />
+                        <FormattedMessage {...messages.cityProjectsExplanation} />
                       </ColumnExplanation>
+                      <ProjectsList>
+                        {cityProjects.map((project) => (
+                          <ProjectCardWrapper key={project.id}>
+                            <ProjectCard
+                              onClick={this.handleProjectClick(project)}
+                              projectId={project.id}
+                              selected={(selectedProjectId === project.id)}
+                              className="e2e-project-card"
+                            />
+                          </ProjectCardWrapper>
+                        ))}
+                      </ProjectsList>
+                    </LeftColumn>
+                  }
+
+                  {openProject &&
+                    <RightColumn className={!cityProjects ? 'fullWidth' : ''}>
+                      {cityProjects &&
+                        <>
+                          <ColumnTitle>
+                            <FormattedMessage {...messages.openProject} />
+                          </ColumnTitle>
+                          <ColumnExplanation>
+                            <FormattedMessage {...messages.openProjectExplanation} />
+                          </ColumnExplanation>
+                        </>
+                      }
                       <ProjectsList>
                         <ProjectCardWrapper>
                           <ProjectCard
