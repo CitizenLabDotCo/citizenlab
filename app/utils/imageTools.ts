@@ -43,8 +43,11 @@ export async function convertUrlToFile(imageUrl: string | null): Promise<File | 
   // We don't cache this, to deal with CORS issues.
   // https://bugs.chromium.org/p/chromium/issues/detail?id=260239
   // https://stackoverflow.com/questions/26352083/chrome-cors-cache-requesting-same-file-from-two-different-origins
-  if (!imageUrl)
+
+  if (!imageUrl) {
     return null;
+  }
+
   const headers = new Headers();
   headers.append('cache-control', 'no-cache');
   headers.append('pragma', 'no-cache');
