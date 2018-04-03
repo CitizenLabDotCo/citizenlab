@@ -47,9 +47,21 @@ const WEBPACK_CONFIG = {
         }),
       },
       {
-        test: /\.(eot|svg|ttf|woff|woff2|jpg|png|gif)$/,
+        test: /\.(svg|jpg|png|gif)$/,
         use: [
           'cache-loader',
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(eot|ttf|woff|woff2)$/,
+        use: [
+          // 'cache-loader',
           {
             loader: 'url-loader',
             options: {

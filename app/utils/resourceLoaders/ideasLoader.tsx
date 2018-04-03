@@ -3,10 +3,6 @@ import * as Rx from 'rxjs';
 import { ideasStream, IIdeaData } from 'services/ideas';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
-interface ExternalProps {
-
-}
-
 interface State {
   ideas: IIdeaData[];
   ideaSortDirection: string;
@@ -44,9 +40,9 @@ export interface InjectedIdeaLoaderProps {
 }
 
 export const injectIdeasLoader = <TOriginalProps extends {}>(WrappedComponent: React.ComponentClass<TOriginalProps & InjectedIdeaLoaderProps>) => {
-  type ResultProps = TOriginalProps & ExternalProps;
+  type ResultProps = TOriginalProps & InjectedIdeaLoaderProps;
+  
   return class IdeaManager extends React.Component<ResultProps, State> {
-
     ideasObservable: Rx.Subscription;
 
     constructor(props: ResultProps) {
@@ -173,7 +169,6 @@ export const injectIdeasLoader = <TOriginalProps extends {}>(WrappedComponent: R
         ideaCurrentPageNumber: page,
       }, this.resubscribeIdeas);
     }
-
 
     render() {
       return (
