@@ -114,9 +114,9 @@ class InvitesService
           'someuser@somedomain.com',
           'John',
           'Johnson',
-          locale: Tenant.settings('core', 'locales').first,
-          groups: MultilocService.new.t(Group.first&.title_multiloc),
-          admin: 'FALSE'
+          Tenant.settings('core', 'locales').first,
+          MultilocService.new.t(Group.first&.title_multiloc),
+          'FALSE'
         ]
         
         sheet.add_data_validation("F2:F1001", {
