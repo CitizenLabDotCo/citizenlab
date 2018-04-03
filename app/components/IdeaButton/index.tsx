@@ -1,9 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
-// routing
-import { browserHistory } from 'react-router';
-
 // services
 import { IProjectData, projectByIdStream } from 'services/projects';
 import { IPhaseData, phaseStream } from 'services/phases';
@@ -80,16 +77,6 @@ class IdeaButton extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleOnAddIdeaClick = () => {
-    const { project } = this.state;
-
-    if (project) {
-      browserHistory.push(`/projects/${project.attributes.slug}/ideas/new`);
-    } else {
-      browserHistory.push('/ideas/new');
-    }
-  }
-
   render() {
     const { project, phase } = this.state;
     const { show, enabled } = postingButtonState({ project, phase });
@@ -103,7 +90,7 @@ class IdeaButton extends React.PureComponent<Props & InjectedIntlProps, State> {
       return (
         <Button
           className={this.props['className']}
-          onClick={this.handleOnAddIdeaClick}
+          linkTo={(project ? `/projects/${project.attributes.slug}/ideas/new` : '/ideas/new')}
           style={style}
           size="1"
           text={startAnIdeaText}
