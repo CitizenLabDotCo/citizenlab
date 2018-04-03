@@ -129,8 +129,6 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
         customFieldsSchemaForUsersStream$,
         invitedUser$
       ).subscribe(([locale, currentTenant, customFieldsSchema, invitedUser]) => {
-        console.log(invitedUser);
-
         this.setState((state) => ({
           locale,
           currentTenant,

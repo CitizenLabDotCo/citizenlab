@@ -43,7 +43,7 @@ class Row extends React.PureComponent<Props & GetUserChildProps, State> {
           ?
             <Badge><FormattedMessage {...messages.inviteStatusPending} /></Badge>
           :
-            <Badge color={colors.clBlueLight}><FormattedMessage {...messages.inviteStatusAccepted} /></Badge>
+            <Badge color={colors.success}><FormattedMessage {...messages.inviteStatusAccepted} /></Badge>
           }
         </Table.Cell>
         <Table.Cell textAlign="center">

@@ -299,10 +299,6 @@ const RightItem: any = styled.div`
     outline: none;
   }
 
-  &.buttonText {
-    color: red !important;
-  }
-
   &.notification {
     ${media.smallerThanMinTablet`
       display: none;
@@ -328,6 +324,22 @@ const RightItem: any = styled.div`
   ${media.smallerThanMinTablet`
     padding-left: 15px;
   `}
+`;
+
+const StyledIdeaButton = styled(IdeaButton)`
+  &:hover {
+    .Button {
+      border-color: ${darken(0.2, '#e0e0e0')} !important;
+    }
+  }
+
+  .Button {
+    border: solid 2px #e0e0e0 !important;
+  }
+
+  .buttonText {
+    color: ${(props) => props.theme.colorMain};
+  }
 `;
 
 const LoginLink = styled.div`
@@ -522,7 +534,7 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
 
             <Right>
               <RightItem className="addIdea" loggedIn={authUser !== null}>
-                <IdeaButton style="secondary-outlined" />
+                <StyledIdeaButton style="secondary-outlined" />
               </RightItem>
 
               {authUser &&
