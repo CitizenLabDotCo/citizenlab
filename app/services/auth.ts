@@ -60,12 +60,6 @@ export async function signUp(
   try {
     const signUpEndpoint = (token ? `${API_PATH}/invites/by_token/${token}/accept` : `${API_PATH}/users`);
     const bodyData = { [token ? 'invite' : 'user']: innerBodyData };
-
-    console.log('token: ' + token);
-    console.log('endpoint: ' + signUpEndpoint);
-    console.log('bodyData: ');
-    console.log(bodyData);
-
     await request(signUpEndpoint, bodyData, httpMethod, null);
     const authenticatedUser = await signIn(email, password);
     return authenticatedUser;

@@ -475,6 +475,19 @@ class Streams {
       throw `error for delete() of Streams for api endpoint ${apiEndpoint}`;
     }
   }
+
+  async fetchAllWithEndpoint(apiEndpoint: string) {
+    const promises: Promise<any>[] = [];
+
+    _.union(
+      this.streamIdsByApiEndPointWithQuery[apiEndpoint],
+      this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]
+    ).forEach((streamId) => {
+      promises.push(this.streams[streamId].fetch());
+    });
+
+    return await Promise.all(promises);
+  }
 }
 
 const streams = new Streams();
