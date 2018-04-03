@@ -22,6 +22,7 @@ const CommentWrapper = styled.div`
   font-size: 17px;
   line-height: 25px;
   font-weight: 300;
+  word-break: break-word;
 
   span,
   p {

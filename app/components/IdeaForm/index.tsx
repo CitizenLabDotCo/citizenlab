@@ -299,6 +299,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
             error={titleError}
             onChange={this.handleTitleOnChange}
             setRef={this.handleTitleInputSetRef}
+            maxCharCount={80}
           />
         </FormElement>
 
