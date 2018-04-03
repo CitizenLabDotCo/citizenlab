@@ -54,6 +54,10 @@ const StyledErrorMessageInner = styled.div`
   border-radius: 5px;
   background: rgba(252, 60, 45, 0.1);
   background: ${(props: IStyledErrorMessageInner) => (props.showBackground ? 'rgba(252, 60, 45, 0.1)' : 'transparent')};
+
+  &.isList {
+    /* align-items: flex-start; */
+  }
 `;
 
 const StyledErrorMessage: any = styled.div`
@@ -133,23 +137,27 @@ const StyledErrorMessage: any = styled.div`
 `;
 
 const ErrorList = styled.ul`
-  list-style-type: none;
-  list-style-position: inside;
-  list-style-image: none;
+  list-style: none;
   padding: 0;
   margin: 0;
-
-  &.showBullets {
-    list-style-type: disc;
-    margin-left: 5px;
-  }
 `;
 
 const ErrorListItem = styled.li`
-  padding: 0;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  margin: 0;
+  margin-top: 5px;
+  margin-bottom: 5px;
+
+  &.isList {
+    display: flex;
+    align-items: flex-start;
+    margin-left: 5px;
+
+    :before {
+      content: '•';
+      font-size: 24px;
+      font-weight: 500;
+      margin-right: 10px;
+    }
+  }
 `;
 
 type Props = {
@@ -202,8 +210,9 @@ export default class Error extends React.PureComponent<Props, State> {
         exit={animate}
       >
         <StyledErrorMessage className="e2e-error-message" size={size} marginTop={marginTop} marginBottom={marginBottom}>
-          <StyledErrorMessageInner showBackground={showBackground}>
+          <StyledErrorMessageInner showBackground={showBackground} className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}>
             {showIcon && <IconWrapper><Icon name="error" /></IconWrapper>}
+
             <ErrorMessageText>
               {text &&
                 <p>{text}</p>
@@ -224,11 +233,12 @@ export default class Error extends React.PureComponent<Props, State> {
               })}
 
               {apiErrors && apiErrors.length > 0 && 
-                <ErrorList className={`${apiErrors.length > 1 && 'showBullets'}`}>
+                <ErrorList>
                   {apiErrors.map((error) => {
                     const errorMessage = findMessage(fieldName, error.error);
                     const isInviteErrorCode = [
-                      'email_already_invited', 
+                      'email_already_invited',
+                      'unknown_group',
                       'unknown_locale',
                       'invalid_row',
                       'invalid_email', 
@@ -242,7 +252,7 @@ export default class Error extends React.PureComponent<Props, State> {
                         const value = (error.error === 'invalid_row' ? error['row'] : error.value);
 
                         return (
-                          <ErrorListItem key={error.value}>
+                          <ErrorListItem key={error.value} className={`${apiErrors.length > 1 && 'isList'}`}>
                             <FormattedMessage {...errorMessage} values={{ value: <strong>{value}</strong> }} />
                           </ErrorListItem>
                         );
