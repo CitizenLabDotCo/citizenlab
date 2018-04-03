@@ -291,6 +291,7 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
       const projectUrl = this.getProjectUrl(project);
       const projectIdeasUrl = this.getProjectIdeasUrl(project);
       const ideasCount = project.data.attributes.ideas_count;
+      const showIdeasCount = !(project.data.attributes.process_type === 'continuous' && project.data.attributes.participation_method !== 'ideation');
 
       return (
         <Container className={className}>
@@ -316,19 +317,21 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
                 {preview}
               </ProjectDescription>
               <ProjectMetaItems>
-                <IdeaCount to={projectIdeasUrl}>
-                  <IdeaCountIcon name="idea" />
-                  <IdeaCountText>
-                    <FormattedMessage
-                      {...messages.xIdeas}
-                      values={{
-                        ideasCount,
-                        ideas: formatMessage(messages.ideas),
-                        idea: formatMessage(messages.idea)
-                      }}
-                    />
-                  </IdeaCountText>
-                </IdeaCount>
+                {showIdeasCount &&
+                  <IdeaCount to={projectIdeasUrl}>
+                    <IdeaCountIcon name="idea" />
+                    <IdeaCountText>
+                      <FormattedMessage
+                        {...messages.xIdeas}
+                        values={{
+                          ideasCount,
+                          ideas: formatMessage(messages.ideas),
+                          idea: formatMessage(messages.idea)
+                        }}
+                      />
+                    </IdeaCountText>
+                  </IdeaCount>
+                }
               </ProjectMetaItems>
             </ProjectContentInner>
           </ProjectContent>
