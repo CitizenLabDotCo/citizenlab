@@ -51,6 +51,7 @@ const Right = styled.aside`
     width: 100%;
     max-width: 100%;
     margin-left: 0;
+    margin-top: 20px;
   `}
 `;
 
@@ -151,17 +152,19 @@ class ProjectInfo extends React.PureComponent<Props & WithRouterProps, State> {
                   </IdeaBodyStyled>
                 </Left>
 
-                <Right>
-                  <ProjectImages>
-                    {images.length > 0 && images.filter((image) => image).map((image) => (
-                      <ImageZoom
-                        key={image.id}
-                        image={{ src: image.attributes.versions.large }}
-                        zoomImage={{ src: image.attributes.versions.large }}
-                      />
-                    ))}
-                  </ProjectImages>
-                </Right>
+                {images && images.length > 0 &&
+                  <Right>
+                    <ProjectImages>
+                      {images.filter((image) => image).map((image) => (
+                        <ImageZoom
+                          key={image.id}
+                          image={{ src: image.attributes.versions.large }}
+                          zoomImage={{ src: image.attributes.versions.large }}
+                        />
+                      ))}
+                    </ProjectImages>
+                  </Right>
+                }
               </Container>
             );
           } else {
