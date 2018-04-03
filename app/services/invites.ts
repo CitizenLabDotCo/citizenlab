@@ -69,12 +69,16 @@ export function invitesStream(streamParams: IStreamParams | null = null) {
   return streams.get<IInvites>({ apiEndpoint: `${API_PATH}/invites`, ...streamParams });
 }
 
-export function bulkInviteEmails(object: INewBulkInviteEmails) {
-  return streams.add<IInvites>(`${API_PATH}/invites/bulk_create`, { invites: object });
+export async function bulkInviteEmails(object: INewBulkInviteEmails) {
+  const response = await streams.add<IInvites>(`${API_PATH}/invites/bulk_create`, { invites: object });
+  await streams.fetchAllWithEndpoint(`${API_PATH}/invites`);
+  return response;
 }
 
-export function bulkInviteXLSX(object: INewBulkXLSXInviteXLSX) {
-  return streams.add<IInvites>(`${API_PATH}/invites/bulk_create_xlsx`, { invites: object });
+export async function bulkInviteXLSX(object: INewBulkXLSXInviteXLSX) {
+  const response = await streams.add<IInvites>(`${API_PATH}/invites/bulk_create_xlsx`, { invites: object });
+  await streams.fetchAllWithEndpoint(`${API_PATH}/invites`);
+  return response;
 }
 
 export function deleteInvite(inviteId: string) {
