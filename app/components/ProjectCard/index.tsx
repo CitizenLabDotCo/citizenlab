@@ -161,7 +161,6 @@ const IdeaCountText = styled.div`
   font-weight: 400;
   line-height: 21px;
   transition: all 100ms ease-out;
-  padding-bottom: 0px;
 `;
 
 const IdeaCount = styled(Link)`

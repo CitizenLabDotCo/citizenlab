@@ -199,7 +199,6 @@ class InvitesTable extends React.PureComponent<Props & GetInvitesChildProps, Sta
   }
 }
 
-
 export default (props: Props) => (
   <GetInvites>
     {(invites) => <InvitesTable {...props} {...invites} />}

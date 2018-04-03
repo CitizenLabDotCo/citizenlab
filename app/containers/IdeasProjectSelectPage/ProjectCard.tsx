@@ -19,8 +19,8 @@ import T from 'components/T';
 import messages from './messages';
 
 // styling
-import styled, { withTheme } from 'styled-components';
-import { media } from 'utils/styleUtils';
+import styled from 'styled-components';
+import { media, color } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -42,7 +42,6 @@ const Container = styled.div`
 
   &.selected {
     border-color: ${props => props.theme.colors.success};
-    border-color: ${(props) => props.theme.colorMain};
   }
 
   &.enabled:hover {
@@ -50,7 +49,6 @@ const Container = styled.div`
 
     &.selected {
       border-color: ${props => props.theme.colors.success};
-      border-color: ${(props) => props.theme.colorMain};
     }
   }
 `;
@@ -163,7 +161,6 @@ type Props = {
   onClick: () => void;
   selected: boolean;
   className?: string;
-  theme?: object | undefined;
 };
 
 type State = {
@@ -264,7 +261,6 @@ class ProjectCard extends React.PureComponent<Props, State> {
     const className = this.props['className'];
     const { projectId, selected } = this.props;
     const { project, projectImages, loaded } = this.state;
-    const theme = this.props.theme as object;
 
     if (loaded && project) {
       const { title_multiloc: titleMultiloc /*, description_preview_multiloc: descriptionPreviewMultiloc*/ } = project.data.attributes;
@@ -322,7 +318,7 @@ class ProjectCard extends React.PureComponent<Props, State> {
                 id={projectId}
                 label=""
                 disabled={!enabled}
-                buttonColor={theme['colorMain']}
+                buttonColor={color('success')}
               />
             </Card>
           </ContainerInner>
@@ -334,4 +330,4 @@ class ProjectCard extends React.PureComponent<Props, State> {
   }
 }
 
-export default withTheme(ProjectCard);
+export default ProjectCard;
