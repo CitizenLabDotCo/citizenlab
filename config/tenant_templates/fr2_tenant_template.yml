@@ -1155,7 +1155,7 @@ models:
   - &96
     title_multiloc:
       fr: Boîte à idées
-    ordering: 6
+    ordering: 1
     description_multiloc:
       fr: Ces idées ne sont pas liées à un projet.
     remote_header_bg_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/d9665d5d-111c-4327-a00b-46d5eae9a577/project/header_bg/705fdae4-5d86-4f23-8779-1d007ab07813/Idea_cover_qdrwa6.jpg
@@ -1181,7 +1181,7 @@ models:
   - &97
     title_multiloc:
       fr: Comment améliorer la mobilité dans votre ville
-    ordering: 1
+    ordering: 6
     description_multiloc:
       fr: "<p>Contribuez à création d'une ville durable où la mobilité est réfléchie
         et intermodale. Soyez créatifs afin de trouver des solutions innovantes pour
@@ -1212,7 +1212,7 @@ models:
   - &98
     title_multiloc:
       fr: Une meilleure gestion de nos déchets
-    ordering: 2
+    ordering: 5
     description_multiloc:
       fr: "<p>Chaque année, un habitant produit 354 kg d’ordures ménagères. En prenant
         en compte la quantité de déchets municipaux par habitant, la quantité produite
@@ -1244,7 +1244,7 @@ models:
   - &99
     title_multiloc:
       fr: Consultation sur les rythmes scolaires
-    ordering: 3
+    ordering: 4
     description_multiloc:
       fr: |-
         <p>La problématique de l'aménagement du temps scolaire repose sur deux axes : le respect physiologique de l'enfant, de son rythme et de son développement, et la nécessité de répondre aux besoins des parents qui ne sont pas les mêmes que ceux de leurs enfants. </p>
@@ -1277,7 +1277,7 @@ models:
   - &100
     title_multiloc:
       fr: Forums de quartier
-    ordering: 4
+    ordering: 3
     description_multiloc:
       fr: |-
         <h1>Présentation et missions</h1>
@@ -1330,7 +1330,7 @@ models:
   - &101
     title_multiloc:
       fr: Budget participatif
-    ordering: 5
+    ordering: 2
     description_multiloc:
       fr: |
         <p><strong>Participez au  budget participatif de notre ville. </strong></p>

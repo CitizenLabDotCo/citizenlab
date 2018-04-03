@@ -23,7 +23,7 @@ module EmailCampaigns
           }).serializable_hash
         end
 
-        discover_projects = ProjectPolicy::Scope.new(user, Project).resolve.sort_by(&:created_at).reverse.take N_DISCOVER_PROJECTS
+        discover_projects = ProjectPolicy::Scope.new(user, Project).resolve.where(publication_status: 'published').sort_by(&:created_at).reverse.take N_DISCOVER_PROJECTS
         serializer = "EmailCampaigns::DiscoverProjectSerializer".constantize
         serialized_discover_projects = discover_projects.map do |project|
           ActiveModelSerializers::SerializableResource.new(project, {
