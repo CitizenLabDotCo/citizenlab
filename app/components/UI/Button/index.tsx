@@ -75,13 +75,13 @@ function getIconHeight(size) {
 function getLineHeight(size) {
   switch (size) {
     case '2':
-      return `22px`;
-    case '3':
       return `24px`;
-    case '4':
+    case '3':
       return `26px`;
+    case '4':
+      return `28px`;
     default:
-      return `20px`;
+      return `22px`;
   }
 }
 

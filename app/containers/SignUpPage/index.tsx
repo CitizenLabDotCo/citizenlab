@@ -103,7 +103,11 @@ const RightInnerInner = styled.div`
   padding-right: 30px;
 `;
 
-type Props = {};
+type Props = {
+  params?: {
+    token: string;
+  } | undefined;
+};
 
 type State = {
   loaded: boolean;

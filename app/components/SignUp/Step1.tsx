@@ -3,7 +3,7 @@ import { set, keys, difference, get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
-import { Link } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 
 // components
 import Label from 'components/UI/Label';
@@ -19,7 +19,7 @@ import { hasCustomFields } from 'utils/customFields';
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { signUp } from 'services/auth';
-import { completeRegistration } from 'services/users';
+import { userByInviteStream, completeRegistration } from 'services/users';
 import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
 
 // i18n
@@ -75,7 +75,7 @@ type State = {
   hasCustomFields: boolean;
   firstName: string | null;
   lastName: string | null;
-  email: string | null;
+  email: string | null | undefined;
   password: string | null;
   processing: boolean;
   firstNameError: string | null;
@@ -115,21 +115,30 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentDidMount() {
+    const location = browserHistory.getCurrentLocation();
+    const token: string | null = get(location, 'query.token', null);
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
     const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
+    const invitedUser$ = (token ? userByInviteStream(token).observable : Rx.Observable.of(null));
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
         locale$,
         currentTenant$,
-        customFieldsSchemaForUsersStream$
-      ).subscribe(([locale, currentTenant, customFieldsSchema]) => {
-        this.setState({
+        customFieldsSchemaForUsersStream$,
+        invitedUser$
+      ).subscribe(([locale, currentTenant, customFieldsSchema, invitedUser]) => {
+        console.log(invitedUser);
+
+        this.setState((state) => ({
           locale,
           currentTenant,
+          firstName: (invitedUser ? invitedUser.data.attributes.first_name : state.firstName),
+          lastName: (invitedUser ? invitedUser.data.attributes.last_name : state.lastName),
+          email: (invitedUser ? invitedUser.data.attributes.email : state.email),
           hasCustomFields: hasCustomFields(customFieldsSchema, locale)
-        });
+        }));
       })
     ];
   }
@@ -186,6 +195,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     const { formatMessage } = this.props.intl;
     const { locale, currentTenant, hasCustomFields, firstName, lastName, email, password } = this.state;
+    const location = browserHistory.getCurrentLocation();
+    const token: string | null = get(location, 'query.token', null);
     const currentTenantLocales = currentTenant ? currentTenant.data.attributes.settings.core.locales : [];
     const hasEmailError = (!email || !isValidEmail(email));
     const emailError = (hasEmailError ? (!email ? formatMessage(messages.noEmailError) : formatMessage(messages.noValidEmailError)) : null);
@@ -212,7 +223,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
           unknownError: null
         });
 
-        const user = await signUp(firstName, lastName, email, password, locale);
+        const user = await signUp(firstName, lastName, email, password, locale, token);
 
         if (!hasCustomFields) {
           await completeRegistration({});

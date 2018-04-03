@@ -79,7 +79,7 @@ export default defineMessages({
   },
   invalid_email: {
     id: 'app.errors.invalid_email',
-    defaultMessage: '{value} is not a valid email address',
+    defaultMessage: 'Invalid email address: {value}',
   },
   invalid_row: {
     id: 'app.errors.invalid_row',
