@@ -9,5 +9,4 @@ class WebApi::V1::InviteSerializer < ActiveModel::Serializer
   def activate_invite_url
     FrontendService.new.invite_url object.token
   end
-
 end
