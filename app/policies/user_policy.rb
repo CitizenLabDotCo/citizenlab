@@ -31,7 +31,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def by_invite?
-    true
+    record&.invite_pending?
   end
 
   def update?
@@ -47,7 +47,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def view_private_attributes?
-    user && (record.id == user.id || user.admin?)
+    (user && (record.id == user.id || user.admin?)) || record.invite_pending?
   end
 
   def permitted_attributes

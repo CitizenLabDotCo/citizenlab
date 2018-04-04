@@ -10,6 +10,4 @@ class WebApi::V1::InviteSerializer < ActiveModel::Serializer
     FrontendService.new.invite_url object.token
   end
 
-
-
 end
