@@ -90,7 +90,9 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING npm run build:staging
+      - run:
+          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING npm run build:staging
+          no_output_timeout: '30m'
       - deploy:
           name: Deploy to S3 if tests pass and branch is Master
           command: aws s3 sync build/ s3://cl2-front-staging/ --delete --acl public-read
@@ -112,7 +114,9 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: CROWDIN_PLUGIN_ENABLED=true SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING npm run build:staging
+      - run:
+          command: CROWDIN_PLUGIN_ENABLED=true SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING npm run build:staging
+          no_output_timeout: '30m'
       - deploy :
           name: Deploy translatable version to i18n.stg.citizenlab.co
           command: aws s3 sync build/ s3://cl2-front-translations/ --delete --acl public-read
@@ -134,7 +138,9 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION npm run build
+      - run:
+          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION npm run build
+          no_output_timeout: '30m'
       - deploy :
           name: Deploy production version to benelux cluster
           command: aws s3 sync build/ s3://cl2-front-production-benelux/ --delete --acl public-read
