@@ -25,9 +25,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.editEventTitle',
     defaultMessage: 'Edit Event',
   },
-  createEventTitle: {
-    id: 'app.containers.AdminPage.ProjectEvents.createEventTitle',
-    defaultMessage: 'Edit Event',
+  newEventTitle: {
+    id: 'app.containers.AdminPage.ProjectEvents.newEventTitle',
+    defaultMessage: 'New Event',
   },
   titleLabel: {
     id: 'app.containers.AdminPage.ProjectEvents.titleLabel',

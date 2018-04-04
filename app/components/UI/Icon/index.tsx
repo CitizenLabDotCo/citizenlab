@@ -343,6 +343,12 @@ const icons = {
       <path id="path4_fill" d="M12.392 12.354H7.346v1.577h5.046v-1.577z"/>
     </svg>
   ),
+  download: (className) => (
+    <svg className={className} height="100%" viewBox="5 3 14 17">
+      <path d="M19 9h-4V3H9v6H5l7 7zM5 18h14v2H5z"/>
+      <path fill="none" d="M0 0h24v24H0V0z"/>
+    </svg>
+  ),
 };
 
 export type IconNames = keyof typeof icons;

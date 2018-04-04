@@ -27,8 +27,11 @@ const ListWrapper = styled.div`
 `;
 
 const AddButton = styled(Button)`
-  align-self: flex-end;
-  flex-grow: 0;
+  align-self: flex-start;
+`;
+
+const StyledList = styled(List)`
+  margin-top: 30px;
 `;
 
 const OrderHeader = styled.div`
@@ -134,35 +137,37 @@ class AdminProjectTimelineIndex extends React.Component<Props & InjectedIntlProp
         </AddButton>
 
         {!loading && phases.length > 0 &&
-          <List className={`e2e-phases-table`}>
-            <HeadRow>
-              <OrderHeader><FormattedMessage {...messages.orderColumnTitle} /></OrderHeader>
-              <div className="expand"><FormattedMessage {...messages.nameColumnTitle} /></div>
-            </HeadRow>
+          <div className={`e2e-phases-table`}>
+            <StyledList>
+              <HeadRow>
+                <OrderHeader><FormattedMessage {...messages.orderColumnTitle} /></OrderHeader>
+                <div className="expand"><FormattedMessage {...messages.nameColumnTitle} /></div>
+              </HeadRow>
 
-            {phases.map((phase, index) => {
-              const startAt = moment(phase.attributes.start_at).format('LL');
-              const endAt = moment(phase.attributes.end_at).format('LL');
+              {phases.map((phase, index) => {
+                const startAt = moment(phase.attributes.start_at).format('LL');
+                const endAt = moment(phase.attributes.end_at).format('LL');
 
-              return (
-                <Row className={`e2e-phase-line ${phases.length === index + 1 ? 'last' : ''}`} id={`e2e-phase_${phase.id}`} key={phase.id}>
-                  <OrderLabel className={this.phaseTiming({ start_at: phase.attributes.start_at, end_at: phase.attributes.end_at })}>
-                    {index + 1}
-                  </OrderLabel>
-                  <div className="expand">
-                    <h1 className="e2e-phase-title"><T value={phase.attributes.title_multiloc} /></h1>
-                    <p>{startAt}  →  {endAt}</p>
-                  </div>
-                  <Button className="e2e-delete-phase" icon="delete" style="text" onClick={this.createDeleteClickHandler(phase.id)}>
-                    <FormattedMessage {...messages.deletePhaseButton} />
-                  </Button>
-                  <Button className="e2e-edit-phase" icon="edit" style="secondary" linkTo={`/admin/projects/${slug}/timeline/${phase.id}`}>
-                    <FormattedMessage {...messages.editPhaseButton} />
-                  </Button>
-                </Row>
-              );
-            })}
-          </List>
+                return (
+                  <Row className={`e2e-phase-line ${phases.length === index + 1 ? 'last' : ''}`} id={`e2e-phase_${phase.id}`} key={phase.id}>
+                    <OrderLabel className={this.phaseTiming({ start_at: phase.attributes.start_at, end_at: phase.attributes.end_at })}>
+                      {index + 1}
+                    </OrderLabel>
+                    <div className="expand">
+                      <h1 className="e2e-phase-title"><T value={phase.attributes.title_multiloc} /></h1>
+                      <p>{startAt}  →  {endAt}</p>
+                    </div>
+                    <Button className="e2e-delete-phase" icon="delete" style="text" onClick={this.createDeleteClickHandler(phase.id)}>
+                      <FormattedMessage {...messages.deletePhaseButton} />
+                    </Button>
+                    <Button className="e2e-edit-phase" icon="edit" style="secondary" linkTo={`/admin/projects/${slug}/timeline/${phase.id}`}>
+                      <FormattedMessage {...messages.editPhaseButton} />
+                    </Button>
+                  </Row>
+                );
+              })}
+            </StyledList>
+          </div>
         }
       </ListWrapper>
     );

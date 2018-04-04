@@ -42,16 +42,15 @@ export async function signUp(
   lastName: string,
   email: string,
   password: string,
-  locale: Locale
+  locale: Locale,
+  token: string | undefined | null
 ) {
-  const bodyData = {
-    user: {
-      email,
-      password,
-      locale,
-      first_name: firstName,
-      last_name: lastName
-    }
+  const innerBodyData = {
+    email,
+    password,
+    locale,
+    first_name: firstName,
+    last_name: lastName
   };
 
   const httpMethod: IHttpMethod = {
@@ -59,7 +58,9 @@ export async function signUp(
   };
 
   try {
-    await request(`${API_PATH}/users`, bodyData, httpMethod, null);
+    const signUpEndpoint = (token ? `${API_PATH}/invites/by_token/${token}/accept` : `${API_PATH}/users`);
+    const bodyData = { [token ? 'invite' : 'user']: innerBodyData };
+    await request(signUpEndpoint, bodyData, httpMethod, null);
     const authenticatedUser = await signIn(email, password);
     return authenticatedUser;
   } catch (error) {

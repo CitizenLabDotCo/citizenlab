@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   listTitle: {
     id: 'app.containers.AdminPage.Groups.listTitle',
-    defaultMessage: 'Groups of users',
+    defaultMessage: 'Groups',
   },
   members: {
     id: 'app.containers.AdminPage.groups.list.members',
