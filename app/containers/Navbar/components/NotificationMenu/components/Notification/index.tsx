@@ -5,6 +5,7 @@ import CommentOnYourIdeaNotification from '../CommentOnYourIdeaNotification';
 import MentionInCommentNotification from '../MentionInCommentNotification';
 import CommentMarkedAsSpamNotification from '../CommentMarkedAsSpamNotification';
 import IdeaMarkedAsSpamNotification from '../IdeaMarkedAsSpamNotification';
+import InviteAcceptedNotification from '../InviteAcceptedNotification';
 
 import {
   TNotificationData,
@@ -12,7 +13,8 @@ import {
   ICommentOnYourIdeaNotificationData,
   ICommentMarkedAsSpamNotificationData,
   IIdeaMarkedAsSpamNotificationData,
-  IMentionInCommentNotificationData
+  IMentionInCommentNotificationData,
+  IInviteAcceptedNotificationData
 } from 'services/notifications';
 
 
@@ -36,6 +38,8 @@ export default class Notification extends React.PureComponent<Props> {
         return <IdeaMarkedAsSpamNotification notification={notification as IIdeaMarkedAsSpamNotificationData} />;
       case 'mention_in_comment':
         return <MentionInCommentNotification notification={notification as IMentionInCommentNotificationData} />;
+      case 'invite_accepted':
+        return <InviteAcceptedNotification notification={notification as IInviteAcceptedNotificationData} />;
       default: return null;
     }
   }
