@@ -26,7 +26,6 @@ import { media } from 'utils/styleUtils';
 
 const timeout = 300;
 const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
-// const easing = `ease-out`;
 
 const Container: any = styled.div`
   position: fixed;
@@ -259,7 +258,12 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     this.goBackUrl = window.location.href;
     window.addEventListener('popstate', this.handlePopstateEvent);
     window.addEventListener('keydown', this.onEscKeyPressed, true);
-    this.unlisten = browserHistory.listen(this.props.close);
+    this.unlisten = browserHistory.listen(() => {
+      // on route change
+      setTimeout(() => {
+        this.props.close();
+      }, 250);
+    });
 
     if (!document.body.classList.contains('modal-active')) {
       document.body.classList.add('modal-active');
