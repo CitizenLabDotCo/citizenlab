@@ -249,8 +249,6 @@ class InvitesService
         SideFxInviteService.new.after_create(invite, invite.inviter)
       end
     end
-  rescue Exception => e
-    # byebug
   end
 
   def add_error key, options={}
