@@ -336,7 +336,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
               <InputMultiloc
                 type="text"
                 valueMultiloc={get(tenantAttrs, `settings.core.header_title`)}
-                label={<FormattedMessage {...messages.titleLabel} />}
+                label={<FormattedMessage {...messages.headerTitleLabel} />}
                 maxCharCount={this.titleMaxCharCount}
                 onChange={this.handleTitleOnChange}
                 errorMultiloc={titleError}
@@ -347,7 +347,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
               <InputMultiloc
                 type="text"
                 valueMultiloc={get(tenantAttrs, `settings.core.header_slogan`)}
-                label={<FormattedMessage {...messages.subtitleLabel} />}
+                label={<FormattedMessage {...messages.headerSubtitleLabel} />}
                 maxCharCount={this.subtitleMaxCharCount}
                 onChange={this.handleSubtitleOnChange}
                 errorMultiloc={subtitleError}
