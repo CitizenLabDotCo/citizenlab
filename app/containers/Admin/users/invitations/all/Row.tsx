@@ -25,8 +25,6 @@ class Row extends React.PureComponent<Props & GetUserChildProps, State> {
 
   render() {
     const { invite, user } = this.props;
-    console.log(invite);
-    console.log(user);
     if (!user) return null;
     const { first_name, last_name } = user.attributes;
     return (

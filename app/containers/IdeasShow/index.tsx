@@ -448,6 +448,7 @@ const RightColumnDesktop = RightColumn.extend`
   position: sticky;
   top: 95px;
   align-self: flex-start;
+  transform: translate3d(0, 0, 0);
 
   ${media.smallerThanMaxTablet`
     display: none;
