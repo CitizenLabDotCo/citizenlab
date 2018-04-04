@@ -383,8 +383,9 @@ const TimeAgo = styled.div`
 const IdeaBody = styled.div`
   color: #474747;
   font-size: 19px;
-  line-height: 32px;
   font-weight: 300;
+  line-height: 32px;
+  word-break: break-word;
 
   p {
     margin-bottom: 32px;
