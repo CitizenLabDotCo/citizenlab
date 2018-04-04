@@ -250,7 +250,7 @@ class InvitesService
       end
     end
   rescue Exception => e
-    byebug
+    # byebug
   end
 
   def add_error key, options={}

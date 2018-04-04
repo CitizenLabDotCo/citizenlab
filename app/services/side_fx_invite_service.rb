@@ -4,14 +4,8 @@ class SideFxInviteService
 
   def after_create invite, current_user
     IdentifyToSegmentJob.perform_later(invite.invitee)
-    # TODO create a second event where invitee is the user, add invite and other stuff to payload
-    serializer = "WebApi::V1::InviteSerializer".constantize
-    serialized_invite = ActiveModelSerializers::SerializableResource.new(invite, {
-      serializer: serializer,
-      adapter: :json
-    }).serializable_hash
     LogActivityJob.set(wait: 5.seconds).perform_later(invite, 'created', current_user, invite.created_at.to_i)
-    LogActivityJob.set(wait: 5.seconds).perform_later(invite, 'email_requested', invite.invitee, Time.now.to_i, payload: {invite: serialized_invite}) 
+    LogActivityJob.set(wait: 5.seconds).perform_later(invite, 'email_requested', invite.invitee, Time.now.to_i) 
   end
 
   def after_accept invite 
