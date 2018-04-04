@@ -33,7 +33,6 @@ import styled from 'styled-components';
 
 // typings
 import { API, Locale } from 'typings';
-import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
 const Form = styled.form`
   width: 100%;
@@ -245,11 +244,6 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
         this.setState({ processing: false });
         this.props.onCompleted(user.data.id);
       } catch (errors) {
-        // console.log('errors:');
-        // console.log(errors);
-        // error.json.errors.base[0].error === 'token_not_found'
-        // const tokenError = ((isInvitation && !token) ? formatMessage(messages.noTokenError) : null);
-
         if (get(errors, 'json.errors.base[0].error', null) === 'token_not_found') {
           tokenError = formatMessage(messages.tokenNotFoundError);
         }
@@ -298,7 +292,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <Form id="e2e-signup-step1" onSubmit={this.handleOnSubmit} noValidate={true}>
-        {isInvitation && !this.props.token &&
+        {isInvitation &&
           <FormElement>
             <Label value={formatMessage(messages.tokenLabel)} htmlFor="token" />
             <Input
