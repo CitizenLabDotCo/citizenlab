@@ -1,67 +1,61 @@
-// Libs
 import React from 'react';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
+import shallowCompare from 'utils/shallowCompare';
 import { IStream } from 'utils/streams';
 
-// Services & utils
+// TODO: add generic types to component when typescript 2.9 is released
+type IResource = { data: IResourceData };
+type IResourceData = any;
 
-interface IStreamFn<IResource> {
-  (resourceId: string): IStream<IResource>;
-}
-
-// Typing
-interface Props<resource, IResourceData> {
-  stream: IStreamFn<resource>;
+interface InputProps {
   id: string;
-  children: (state: State<IResourceData>) => JSX.Element | null;
 }
 
-interface State<IResourceData> {
+interface Props extends InputProps {
+  stream: (resourceId: string) => IStream<IResource>;
+  children: (renderProps: GetResourceChildProps) => JSX.Element | null ;
+}
+
+interface State {
   resource: IResourceData | null;
 }
 
-interface IIResource<IResourceData> {
-  data: IResourceData;
-}
+export type GetResourceChildProps = State;
 
-export default class GetResource<resource extends IIResource<IResourceData>, IResourceData> extends React.PureComponent<Props<resource, IResourceData>, State<IResourceData>> {
-  private subscription: Subscription;
+export default class GetResource extends React.PureComponent<Props, State> {
+  private inputProps$: BehaviorSubject<InputProps>;
+  private subscriptions: Subscription[];
 
   constructor(props) {
     super(props);
-
     this.state = {
       resource: null
     };
   }
 
   componentDidMount() {
-    this.updateSub();
+    this.inputProps$ = new BehaviorSubject({ id: this.props.id });
+
+    this.subscriptions = [
+      this.inputProps$
+        .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
+        .switchMap(({ id }) => this.props.stream(id).observable)
+        .subscribe((response) => this.setState({ resource: response.data }))
+    ];
   }
 
-  componentDidUpdate(prevProps: Props<resource, IResourceData>) {
-    if (this.props.id !== prevProps.id) {
-      this.updateSub();
-    }
+  componentDidUpdate() {
+    const { id } = this.props;
+    this.inputProps$.next({ id });
   }
 
   componentWillUnmount() {
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
-
-  updateSub() {
-    if (this.subscription) this.subscription.unsubscribe();
-
-
-    this.subscription = this.props.stream(this.props.id).observable
-      .subscribe((response) => {
-        this.setState({
-          resource: response.data
-        });
-      });
-  }
-
+  
   render() {
-    return this.props.children(this.state);
+    const { children } = this.props;
+    const { resource } = this.state;
+    return children({ resource });
   }
 }
