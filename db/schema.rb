@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180309160219) do
+ActiveRecord::Schema.define(version: 20180404092302) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -232,6 +232,7 @@ ActiveRecord::Schema.define(version: 20180309160219) do
     t.string "token", null: false
     t.uuid "inviter_id"
     t.uuid "invitee_id", null: false
+    t.string "invite_text"
     t.datetime "accepted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -261,8 +262,10 @@ ActiveRecord::Schema.define(version: 20180309160219) do
     t.datetime "updated_at", null: false
     t.uuid "initiating_user_id"
     t.uuid "spam_report_id"
+    t.uuid "invite_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
+    t.index ["invite_id"], name: "index_notifications_on_invite_id"
     t.index ["recipient_id", "read_at"], name: "index_notifications_on_recipient_id_and_read_at"
     t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
     t.index ["spam_report_id"], name: "index_notifications_on_spam_report_id"
@@ -461,6 +464,7 @@ ActiveRecord::Schema.define(version: 20180309160219) do
   add_foreign_key "memberships", "users"
   add_foreign_key "notifications", "comments"
   add_foreign_key "notifications", "ideas"
+  add_foreign_key "notifications", "invites"
   add_foreign_key "notifications", "projects"
   add_foreign_key "notifications", "spam_reports"
   add_foreign_key "notifications", "users", column: "initiating_user_id"

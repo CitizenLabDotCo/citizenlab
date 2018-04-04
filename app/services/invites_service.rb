@@ -200,7 +200,7 @@ class InvitesService
       roles: params["roles"] || default_params["roles"] || [],
       invite_status: 'pending'
     })
-    Invite.new(invitee: invitee, inviter: inviter)
+    Invite.new(invitee: invitee, inviter: inviter, invite_text: params["invite_text"] || default_params["invite_text"])
   end
 
   def pre_check_invites invites
@@ -246,6 +246,7 @@ class InvitesService
       invites.each do |invite|
         invite.invitee.save
         invite.save
+        SideFxInviteService.new.after_create(invite, invite.inviter)
       end
     end
   rescue Exception => e
