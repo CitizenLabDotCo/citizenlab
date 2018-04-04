@@ -1,6 +1,12 @@
 require 'ice_cube'
 
 
+USER_PLATFORM_DIGEST_DAY = ENV.fetch("USER_PLATFORM_DIGEST_DAY", :tuesday).to_sym
+USER_PLATFORM_DIGEST_HOUR = ENV.fetch("USER_PLATFORM_DIGEST_HOUR", 16).to_i
+ADMIN_WEEKLY_REPORT_DAY = ENV.fetch("ADMIN_WEEKLY_REPORT_DAY", :tuesday).to_sym
+ADMIN_WEEKLY_REPORT_HOUR = ENV.fetch("ADMIN_WEEKLY_REPORT_HOUR", 16).to_i
+
+
 
 @campaign_jobs = {
   'user_platform_digest'             => "EmailCampaigns::UserPlatformDigestJob",
@@ -17,15 +23,18 @@ require 'ice_cube'
   IceCube::Rule.yearly(1000).month_of_year((Time.now.month - 2) % 12)
 )
 # user platform digests, every Monday at 10AM
-@user_platform_digest_schedule = IceCube::Schedule.new
+@user_platform_digest_schedule = IceCube::Schedule.new(now=Time.at(0))
 @user_platform_digest_schedule.add_recurrence_rule(
-  # TODO make it possible to send bi-weekly
-  # IceCube::Rule.weekly(2).day(:monday).hour_of_day(10) 
-  IceCube::Rule.weekly.day(:monday).hour_of_day(10) 
+  IceCube::Rule.weekly(1).day(USER_PLATFORM_DIGEST_DAY).hour_of_day(USER_PLATFORM_DIGEST_HOUR) 
+)
+# admin weekly report, every Monday at 10AM
+@admin_weekly_report_schedule = IceCube::Schedule.new(now=Time.at(0))
+@admin_weekly_report_schedule.add_recurrence_rule(
+  IceCube::Rule.weekly(1).day(ADMIN_WEEKLY_REPORT_DAY).hour_of_day(ADMIN_WEEKLY_REPORT_HOUR) 
 )
 @campaign_schedules = {
   'user_platform_digest'             => @user_platform_digest_schedule,
-  'admin_weekly_report'              => @never_schedule,
+  'admin_weekly_report'              => @admin_weekly_report_schedule,
   'moderator_digest'                 => @never_schedule,
   'user_activity_on_your_ideas'      => @never_schedule,
   'user_updates_on_supported_ideas'  => @never_schedule,
@@ -46,10 +55,10 @@ namespace :periodic_events do
         Apartment::Tenant.switch(host.gsub '.', '_') do
           now_over_there = Time.now.in_time_zone Tenant.current.settings.dig('core','timezone')
           tz_diff = (now_over_there.hour - Time.now.hour) % 24
-          true_schedule_first = schedule.first - tz_diff.hours # because the other one is fake
+          true_schedule_next = schedule.next_occurrence(Time.now) - tz_diff.hours # because the other one is fake
           if ( force_schedule or 
-               ( (now_over_there - 30.minutes) < true_schedule_first and 
-                 (now_over_there + 30.minutes) > true_schedule_first))
+               ( (now_over_there - 30.minutes) < true_schedule_next and 
+                 (now_over_there + 30.minutes) > true_schedule_next))
             job = @campaign_jobs[campaign].constantize
             job.perform_later
           end

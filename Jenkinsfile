@@ -39,6 +39,15 @@ pipeline {
       }
     }
 
+    stage('Test admin API') {
+      steps {
+        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e RAILS_ENV=test web bundle exec rake admin_api:docs:generate'
+        withAWS(credentials: 'aws') {
+          s3Upload(file: 'doc/admin_api', bucket:'developers.citizenlab.co', path: "admin_api/", acl:'PublicRead')
+        }
+      }
+    }
+
     stage('Test slow tests (tenant templates)') {
       when { branch 'master' }
       steps {

@@ -12,15 +12,7 @@ Rails.application.configure do
   # https://github.com/rails/rails/issues/27455
   # https://github.com/puma/puma/issues/1184
 
-
-  # Either value for this is bad, true being the better choice.
-  # When set to true, active jobs of engines will not be able
-  # to find tenants in development. When set to false, 
-  # descendants of classes will not be found because they are
-  # not loaded and therefore notifications will not work.
-  # Luckily, this problem is only present in development.
-  config.eager_load = true
-
+  config.eager_load = true # otherwise, active jobs of engines in development cannot find tenants (after the second time)
 
   # Show full error reports.
   config.consider_all_requests_local = true
