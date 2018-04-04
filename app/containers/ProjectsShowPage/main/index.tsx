@@ -48,7 +48,7 @@ export default class timeline extends React.PureComponent<Props, State> {
           return project$;
         }).subscribe((project) => {
           const redirectUrl = getProjectUrl(project.data);
-          browserHistory.push(redirectUrl);
+          browserHistory.replace(redirectUrl);
           this.setState({ project });
         })
     ];

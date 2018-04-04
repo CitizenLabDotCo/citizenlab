@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs/Observable';
 import 'whatwg-fetch';
 import * as Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
@@ -165,7 +164,7 @@ class Streams {
     let serializedUrl = apiEndpoint;
 
     if (queryParameters !== null && isQueryStream) {
-      serializedUrl =  apiEndpoint + '?' + Object.keys(queryParameters).sort().map((key) => {
+      serializedUrl = apiEndpoint + '?' + Object.keys(queryParameters).sort().map((key) => {
         return encodeURIComponent(key) + '=' + encodeURIComponent((queryParameters)[key]);
       }).join('&');
 
@@ -236,8 +235,6 @@ class Streams {
 
           Rx.Observable.defer(() => promise).retry(2).subscribe(
             (response) => {
-              // console.log(`fetched data for ${streamId}`);
-
               if (this.streams[streamId]) {
                 this.streams[streamId].observer.next(response);
               } else {
@@ -261,7 +258,7 @@ class Streams {
         });
       };
 
-      const observable = new Observable<T | null>((observer) => {
+      const observable = new Rx.Observable<T | null>((observer) => {
         const dataId = lastUrlSegment;
         this.streams[streamId].observer = observer;
 
@@ -475,6 +472,19 @@ class Streams {
       }
       throw `error for delete() of Streams for api endpoint ${apiEndpoint}`;
     }
+  }
+
+  async fetchAllWithEndpoint(apiEndpoint: string) {
+    const promises: Promise<any>[] = [];
+
+    _.union(
+      this.streamIdsByApiEndPointWithQuery[apiEndpoint],
+      this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]
+    ).forEach((streamId) => {
+      promises.push(this.streams[streamId].fetch());
+    });
+
+    return await Promise.all(promises);
   }
 }
 

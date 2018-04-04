@@ -61,4 +61,40 @@ export default defineMessages({
     id: 'app.errors.key_invalid',
     defaultMessage: 'The key can only contain letters, numbers and underscores(_)',
   },
+  max_invites_limit_exceeded: {
+    id: 'app.errors.max_invites_limit_exceeded',
+    defaultMessage: 'The maximum number of allowed invitations is exceeded',
+  },
+  no_invites_specified: {
+    id: 'app.errors.no_invites_specified',
+    defaultMessage: 'Could not find any email addresses',
+  },
+  unknown_group: {
+    id: 'app.errors.unknown_group',
+    defaultMessage: 'Unknown group: {value}',
+  },
+  unknown_locale: {
+    id: 'app.errors.unknown_locale',
+    defaultMessage: 'Unknown language: {value}',
+  },
+  invalid_email: {
+    id: 'app.errors.invalid_email',
+    defaultMessage: 'Invalid email address: {value}',
+  },
+  invalid_row: {
+    id: 'app.errors.invalid_row',
+    defaultMessage: 'Could not process row number {value}',
+  },
+  email_already_invited: {
+    id: 'app.errors.email_already_invited',
+    defaultMessage: '{value} was already invited',
+  },
+  email_already_active: {
+    id: 'app.errors.email_already_active',
+    defaultMessage: '{value} is already a registered user',
+  },
+  emails_duplicate: {
+    id: 'app.errors.emails_duplicate',
+    defaultMessage: 'Duplicate email found: {value} ',
+  },
 });

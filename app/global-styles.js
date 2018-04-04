@@ -1,53 +1,53 @@
 import { injectGlobal } from 'styled-components';
 import { fontSize } from 'utils/styleUtils';
 
-import visueltLightEOT from '../assets/fonts/Visuelt-Light.eot';
-import visueltLightSVG from '../assets/fonts/Visuelt-Light.svg';
-import visueltLightTTF from '../assets/fonts/Visuelt-Light.ttf';
-import visueltLightWOFF from '../assets/fonts/Visuelt-Light.woff';
-import visueltLightWOFF2 from '../assets/fonts/Visuelt-Light.woff2';
+import visueltLightEOT from 'assets/fonts/Visuelt-Light.eot';
+import visueltLightSVG from 'assets/fonts/Visuelt-Light.svg';
+import visueltLightTTF from 'assets/fonts/Visuelt-Light.ttf';
+import visueltLightWOFF from 'assets/fonts/Visuelt-Light.woff';
+import visueltLightWOFF2 from 'assets/fonts/Visuelt-Light.woff2';
 
-import visueltLightItalicEOT from '../assets/fonts/Visuelt-LightItalic.eot';
-import visueltLightItalicSVG from '../assets/fonts/Visuelt-LightItalic.svg';
-import visueltLightItalicTTF from '../assets/fonts/Visuelt-LightItalic.ttf';
-import visueltLightItalicWOFF from '../assets/fonts/Visuelt-LightItalic.woff';
-import visueltLightItalicWOFF2 from '../assets/fonts/Visuelt-LightItalic.woff2';
+import visueltLightItalicEOT from 'assets/fonts/Visuelt-LightItalic.eot';
+import visueltLightItalicSVG from 'assets/fonts/Visuelt-LightItalic.svg';
+import visueltLightItalicTTF from 'assets/fonts/Visuelt-LightItalic.ttf';
+import visueltLightItalicWOFF from 'assets/fonts/Visuelt-LightItalic.woff';
+import visueltLightItalicWOFF2 from 'assets/fonts/Visuelt-LightItalic.woff2';
 
-import visueltRegularEOT from '../assets/fonts/Visuelt-Regular.eot';
-import visueltRegularSVG from '../assets/fonts/Visuelt-Regular.svg';
-import visueltRegularTTF from '../assets/fonts/Visuelt-Regular.ttf';
-import visueltRegularWOFF from '../assets/fonts/Visuelt-Regular.woff';
-import visueltRegularWOFF2 from '../assets/fonts/Visuelt-Regular.woff2';
+import visueltRegularEOT from 'assets/fonts/Visuelt-Regular.eot';
+import visueltRegularSVG from 'assets/fonts/Visuelt-Regular.svg';
+import visueltRegularTTF from 'assets/fonts/Visuelt-Regular.ttf';
+import visueltRegularWOFF from 'assets/fonts/Visuelt-Regular.woff';
+import visueltRegularWOFF2 from 'assets/fonts/Visuelt-Regular.woff2';
 
-import visueltRegularItalicEOT from '../assets/fonts/Visuelt-Italic.eot';
-import visueltRegularItalicSVG from '../assets/fonts/Visuelt-Italic.svg';
-import visueltRegularItalicTTF from '../assets/fonts/Visuelt-Italic.ttf';
-import visueltRegularItalicWOFF from '../assets/fonts/Visuelt-Italic.woff';
-import visueltRegularItalicWOFF2 from '../assets/fonts/Visuelt-Italic.woff2';
+import visueltRegularItalicEOT from 'assets/fonts/Visuelt-Italic.eot';
+import visueltRegularItalicSVG from 'assets/fonts/Visuelt-Italic.svg';
+import visueltRegularItalicTTF from 'assets/fonts/Visuelt-Italic.ttf';
+import visueltRegularItalicWOFF from 'assets/fonts/Visuelt-Italic.woff';
+import visueltRegularItalicWOFF2 from 'assets/fonts/Visuelt-Italic.woff2';
 
-import visueltMediumEOT from '../assets/fonts/Visuelt-Medium.eot';
-import visueltMediumSVG from '../assets/fonts/Visuelt-Medium.svg';
-import visueltMediumTTF from '../assets/fonts/Visuelt-Medium.ttf';
-import visueltMediumWOFF from '../assets/fonts/Visuelt-Medium.woff';
-import visueltMediumWOFF2 from '../assets/fonts/Visuelt-Medium.woff2';
+import visueltMediumEOT from 'assets/fonts/Visuelt-Medium.eot';
+import visueltMediumSVG from 'assets/fonts/Visuelt-Medium.svg';
+import visueltMediumTTF from 'assets/fonts/Visuelt-Medium.ttf';
+import visueltMediumWOFF from 'assets/fonts/Visuelt-Medium.woff';
+import visueltMediumWOFF2 from 'assets/fonts/Visuelt-Medium.woff2';
 
-import visueltMediumItalicEOT from '../assets/fonts/Visuelt-MediumItalic.eot';
-import visueltMediumItalicSVG from '../assets/fonts/Visuelt-MediumItalic.svg';
-import visueltMediumItalicTTF from '../assets/fonts/Visuelt-MediumItalic.ttf';
-import visueltMediumItalicWOFF from '../assets/fonts/Visuelt-MediumItalic.woff';
-import visueltMediumItalicWOFF2 from '../assets/fonts/Visuelt-MediumItalic.woff2';
+import visueltMediumItalicEOT from 'assets/fonts/Visuelt-MediumItalic.eot';
+import visueltMediumItalicSVG from 'assets/fonts/Visuelt-MediumItalic.svg';
+import visueltMediumItalicTTF from 'assets/fonts/Visuelt-MediumItalic.ttf';
+import visueltMediumItalicWOFF from 'assets/fonts/Visuelt-MediumItalic.woff';
+import visueltMediumItalicWOFF2 from 'assets/fonts/Visuelt-MediumItalic.woff2';
 
-import visueltBoldEOT from '../assets/fonts/Visuelt-Bold.eot';
-import visueltBoldSVG from '../assets/fonts/Visuelt-Bold.svg';
-import visueltBoldTTF from '../assets/fonts/Visuelt-Bold.ttf';
-import visueltBoldWOFF from '../assets/fonts/Visuelt-Bold.woff';
-import visueltBoldWOFF2 from '../assets/fonts/Visuelt-Bold.woff2';
+import visueltBoldEOT from 'assets/fonts/Visuelt-Bold.eot';
+import visueltBoldSVG from 'assets/fonts/Visuelt-Bold.svg';
+import visueltBoldTTF from 'assets/fonts/Visuelt-Bold.ttf';
+import visueltBoldWOFF from 'assets/fonts/Visuelt-Bold.woff';
+import visueltBoldWOFF2 from 'assets/fonts/Visuelt-Bold.woff2';
 
-import visueltBoldItalicEOT from '../assets/fonts/Visuelt-BoldItalic.eot';
-import visueltBoldItalicSVG from '../assets/fonts/Visuelt-BoldItalic.svg';
-import visueltBoldItalicTTF from '../assets/fonts/Visuelt-BoldItalic.ttf';
-import visueltBoldItalicWOFF from '../assets/fonts/Visuelt-BoldItalic.woff';
-import visueltBoldItalicWOFF2 from '../assets/fonts/Visuelt-BoldItalic.woff2';
+import visueltBoldItalicEOT from 'assets/fonts/Visuelt-BoldItalic.eot';
+import visueltBoldItalicSVG from 'assets/fonts/Visuelt-BoldItalic.svg';
+import visueltBoldItalicTTF from 'assets/fonts/Visuelt-BoldItalic.ttf';
+import visueltBoldItalicWOFF from 'assets/fonts/Visuelt-BoldItalic.woff';
+import visueltBoldItalicWOFF2 from 'assets/fonts/Visuelt-BoldItalic.woff2';
 
 /* eslint no-unused-expressions: 0 */
 injectGlobal`

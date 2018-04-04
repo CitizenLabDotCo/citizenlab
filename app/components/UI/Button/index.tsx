@@ -55,7 +55,7 @@ function getPadding(size) {
     case '4':
       return `15px 26px`;
     default:
-      return `.7em 1.5em`;
+      return `.65em 1.45em`;
   }
 }
 
@@ -75,13 +75,13 @@ function getIconHeight(size) {
 function getLineHeight(size) {
   switch (size) {
     case '2':
-      return `22px`;
-    case '3':
       return `24px`;
-    case '4':
+    case '3':
       return `26px`;
+    case '4':
+      return `28px`;
     default:
-      return `20px`;
+      return `22px`;
   }
 }
 
@@ -307,7 +307,7 @@ class Button extends React.PureComponent<Props, State> {
     const childContent = (
       <ButtonContent>
         {icon && <StyledIcon name={icon} />}
-        {hasText && <ButtonText className="bleh">{text || children}</ButtonText>}
+        {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
         {processing && <SpinnerWrapper><Spinner size={spinnerSize} color={spinnerColor} /></SpinnerWrapper>}
       </ButtonContent>
     );
