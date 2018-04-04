@@ -41,6 +41,25 @@ module EmailCampaigns
         		} 
         	}
         end
+
+        statistics = {
+          activities: {
+            new_ideas: increase_hash(Idea.all.map(&:published_at).compact),
+            new_comments: increase_hash(Comment.all.map(&:created_at).compact),
+            new_votes: increase_hash(Vote.all.map(&:created_at).compact),
+            total_ideas: Idea.count,
+            total_users: User.count
+          },
+          users: {
+            new_visitors: increase_hash([]),
+            new_users: increase_hash(User.all.map(&:registration_completed_at).compact),
+            active_users: increase_hash([])
+          } 
+        }
+
+        if no_increase_in_stats statistics
+          return
+        end
   
         tenant = Tenant.current
         trackingMessage = {
@@ -50,20 +69,8 @@ module EmailCampaigns
           properties: {
             source: 'cl2-back',
             payload: {
-            	statistics: {
-            		activities: {
-                  new_ideas: increase_hash(Idea.all.map(&:published_at).compact),
-                  new_comments: increase_hash(Comment.all.map(&:created_at).compact),
-                  new_votes: increase_hash(Vote.all.map(&:created_at).compact),
-                  total_ideas: Idea.count,
-                  total_users: User.count
-                },
-            		users: {
-                  new_visitors: increase_hash([]),
-                  new_users: increase_hash(User.all.map(&:registration_completed_at).compact),
-                  active_users: increase_hash([])
-            		} 
-            	},
+            	statistics: statistics,
+              has_new_ideas: (top_ideas.size > 0),
               top_project_ideas: serialized_top_project_ideas
             },
             tenantId: tenant.id,
@@ -125,6 +132,15 @@ module EmailCampaigns
     		increase: last_n_ago.size,
     		past_increase: (last_2n_ago.size - last_n_ago.size)
     	}
+    end
+
+    def no_increase_in_stats stats
+      ((stats.dig(:activities,:new_ideas,:increase) == 0) && 
+        (stats.dig(:activities,:new_ideas,:increase) == 0) && 
+        (stats.dig(:activities,:new_comments,:increase) == 0) && 
+        (stats.dig(:users,:new_visitors,:increase) == 0) && 
+        (stats.dig(:users,:new_users,:increase) == 0) && 
+        (stats.dig(:users,:active_users,:increase) == 0))
     end
   end
 end
