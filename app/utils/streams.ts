@@ -235,8 +235,6 @@ class Streams {
 
           Rx.Observable.defer(() => promise).retry(2).subscribe(
             (response) => {
-              // console.log(`fetched data for ${streamId}`);
-
               if (this.streams[streamId]) {
                 this.streams[streamId].observer.next(response);
               } else {
