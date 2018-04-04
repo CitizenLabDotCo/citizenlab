@@ -43,6 +43,7 @@ export async function signUp(
   email: string,
   password: string,
   locale: Locale,
+  isInvitation: boolean | null | undefined,
   token: string | undefined | null
 ) {
   const innerBodyData = {
@@ -58,7 +59,7 @@ export async function signUp(
   };
 
   try {
-    const signUpEndpoint = (token ? `${API_PATH}/invites/by_token/${token}/accept` : `${API_PATH}/users`);
+    const signUpEndpoint = (isInvitation === true ? `${API_PATH}/invites/by_token/${token}/accept` : `${API_PATH}/users`);
     const bodyData = { [token ? 'invite' : 'user']: innerBodyData };
     await request(signUpEndpoint, bodyData, httpMethod, null);
     const authenticatedUser = await signIn(email, password);
