@@ -82,5 +82,14 @@ RSpec.describe Notification, type: :model do
       notifications = Notifications::CommentDeletedByAdmin.make_notifications_on activity
       expect(notifications).to be_present
     end
+
+    it "makes an invite accepted notification on invite accepted" do
+      initiating_user = create(:user)
+      invite = create(:invite, invitee: initiating_user)
+      activity = create(:activity, item: invite, action: 'accepted')
+
+      notifications = Notifications::InviteAccepted.make_notifications_on activity
+      expect(notifications).to be_present
+    end
   end
 end

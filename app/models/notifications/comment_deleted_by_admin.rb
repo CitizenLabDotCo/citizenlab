@@ -36,8 +36,8 @@ module Notifications
            idea_id: idea_id,
            comment_id: comment_id,
            project_id: project_id,
-           reason_code: acitvity.payload[:reason_code],
-           other_reason: acitvity.payload[:other_reason]
+           reason_code: activity.payload[:reason_code],
+           other_reason: activity.payload[:other_reason]
          )]
       else
         []
