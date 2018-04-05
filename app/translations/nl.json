@@ -471,6 +471,7 @@
   "app.containers.NotificationMenu.loading": "Meldingen laden...",
   "app.containers.NotificationMenu.mentionInComment": "{name} heeft u vermeld in een reactie",
   "app.containers.NotificationMenu.noNotifications": "U hebt nog geen meldingen",
+  "app.containers.NotificationMenu.statusChangedOfYourIdea": "",
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "{name} heeft gereageerd op je idee",
   "app.containers.NotificationMenu.userMarkedCommentAsSpam": "{name} markeerde een commentaar op '{ideaTitle}' als spam",
   "app.containers.NotificationMenu.userMarkedIdeaAsSpam": "{name} markeerde '{ideaTitle}' als spam",
