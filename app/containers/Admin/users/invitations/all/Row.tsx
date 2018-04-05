@@ -11,13 +11,15 @@ import GetUser, { GetUserChildProps } from 'utils/resourceLoaders/components/Get
 import { Table, Button as SemanticButton, Popup } from 'semantic-ui-react';
 import Badge from 'components/admin/Badge';
 
-type Props = {
+interface InputProps {
   invite: IInviteData;
-};
+}
 
-type State = {};
+interface Props extends InputProps, GetUserChildProps{}
 
-class Row extends React.PureComponent<Props & GetUserChildProps, State> {
+interface State {}
+
+class Row extends React.PureComponent<Props, State> {
 
   handleOnDeleteInvite = (inviteId: string) => () => {
     deleteInvite(inviteId);
@@ -25,8 +27,11 @@ class Row extends React.PureComponent<Props & GetUserChildProps, State> {
 
   render() {
     const { invite, user } = this.props;
+
     if (!user) return null;
+
     const { first_name, last_name } = user.attributes;
+
     return (
       <Table.Row key={invite.id}>
         <Table.Cell>
@@ -59,9 +64,8 @@ class Row extends React.PureComponent<Props & GetUserChildProps, State> {
   }
 }
 
-
-export default (props) => (
+export default (props: InputProps) => (
   <GetUser id={props.invite.relationships.invitee.data.id}>
-    {(getUserChildProps) => <Row {...props} {...getUserChildProps} />}
+    {({ user }) => <Row invite={props.invite} user={user} />}
   </GetUser>
 );

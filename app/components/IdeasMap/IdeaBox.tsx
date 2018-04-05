@@ -122,50 +122,49 @@ export default class IdeaBox extends React.PureComponent<Props, State> {
 
   render() {
     const { showFooter } = this.state;
+
     return (
       <GetIdea id={this.props.idea}>
         {({ idea }) => {
-          if (!idea) {
-            return null;
-          } else {
-            return (
-              <Wrapper className={this.props.className}>
-                {this.props.onClose && <CloseButton onClick={this.props.onClose} icon="close" circular basic />}
-                <Title><T value={idea.attributes.title_multiloc} /></Title>
-                <Description>
-                  <T as="div" value={idea.attributes.body_multiloc} />
-                </Description>
-                <VoteComments>
-                  {!showFooter &&
-                    <>
-                      <VoteControl
-                        ideaId={idea.id}
-                        size="1"
-                        unauthenticatedVoteClick={this.handleUnauthenticatedVoteClick}
-                        disabledVoteClick={this.handleDisabledVoteClick}
-                      />
-                      <CommentsCount>
-                        <Icon name="comments" />
-                        {idea.attributes.comments_count}
-                      </CommentsCount>
-                    </>
-                  }
-                  {showFooter === 'unauthenticated' &&
-                    <Unauthenticated />
-                  }
-                  {showFooter === 'votingDisabled' &&
-                    <VotingDisabled
-                      votingDescriptor={idea.relationships.action_descriptor.data.voting}
-                      projectId={idea.relationships.project.data.id}
+          if (!idea) return null;
+
+          return (
+            <Wrapper className={this.props.className}>
+              {this.props.onClose && <CloseButton onClick={this.props.onClose} icon="close" circular basic />}
+              <Title><T value={idea.attributes.title_multiloc} /></Title>
+              <Description>
+                <T as="div" value={idea.attributes.body_multiloc} />
+              </Description>
+              <VoteComments>
+                {!showFooter &&
+                  <>
+                    <VoteControl
+                      ideaId={idea.id}
+                      size="1"
+                      unauthenticatedVoteClick={this.handleUnauthenticatedVoteClick}
+                      disabledVoteClick={this.handleDisabledVoteClick}
                     />
-                  }
-                </VoteComments>
-                <StyledButton circularCorners={false} width="100%" onClick={this.createIdeaClickHandler(idea)}>
-                  <FormattedMessage {...messages.seeIdea} />
-                </StyledButton>
-              </Wrapper>
-            );
-          }
+                    <CommentsCount>
+                      <Icon name="comments" />
+                      {idea.attributes.comments_count}
+                    </CommentsCount>
+                  </>
+                }
+                {showFooter === 'unauthenticated' &&
+                  <Unauthenticated />
+                }
+                {showFooter === 'votingDisabled' &&
+                  <VotingDisabled
+                    votingDescriptor={idea.relationships.action_descriptor.data.voting}
+                    projectId={idea.relationships.project.data.id}
+                  />
+                }
+              </VoteComments>
+              <StyledButton circularCorners={false} width="100%" onClick={this.createIdeaClickHandler(idea)}>
+                <FormattedMessage {...messages.seeIdea} />
+              </StyledButton>
+            </Wrapper>
+          );
         }}
       </GetIdea>
     );
