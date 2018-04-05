@@ -357,12 +357,12 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, _prevState: State) {
-    const prevProjectId = get(prevProps, 'queryParameters.project');
-    const prevPhaseId = get(prevProps, 'queryParameters.phase');
-    const prevProjectOrPhaseId = (prevProjectId || prevPhaseId || null);
-    const projectId = get(this.props, 'queryParameters.project');
-    const phaseId = get(this.props, 'queryParameters.phase');
-    const projectOrPhaseId = (projectId || phaseId || null);
+    const prevProjectId: string | null = get(prevProps, 'queryParameters.project', null);
+    const prevPhaseId: string | null = get(prevProps, 'queryParameters.phase', null);
+    const prevProjectOrPhaseId: string | null = (prevProjectId || prevPhaseId || null);
+    const projectId: string | null = get(this.props, 'queryParameters.project', null);
+    const phaseId: string | null = get(this.props, 'queryParameters.phase', null);
+    const projectOrPhaseId: string | null = (projectId || phaseId || null);
 
     if ((projectOrPhaseId !== prevProjectOrPhaseId) || (this.props.defaultView !== prevProps.defaultView)) {
       const selectedView = (this.props.defaultView || 'card');

@@ -141,33 +141,31 @@ class ProjectInfo extends React.PureComponent<Props & WithRouterProps, State> {
     return (
       <GetProject slug={this.props.params.slug} withImages>
         {({ project, images }) => {
-          if (project) {
-            return (
-              <Container>
-                <Left>
-                  <IdeaBodyStyled>
-                    <T value={project.attributes.description_multiloc} />
-                  </IdeaBodyStyled>
-                </Left>
+          if (!project) return null;
 
-                {images && images.length > 0 &&
-                  <Right>
-                    <ProjectImages>
-                      {images.filter((image) => image).map((image) => (
-                        <ImageZoom
-                          key={image.id}
-                          image={{ src: image.attributes.versions.large }}
-                          zoomImage={{ src: image.attributes.versions.large }}
-                        />
-                      ))}
-                    </ProjectImages>
-                  </Right>
-                }
-              </Container>
-            );
-          } else {
-            return null;
-          }
+          return (
+            <Container>
+              <Left>
+                <IdeaBodyStyled>
+                  <T value={project.attributes.description_multiloc} />
+                </IdeaBodyStyled>
+              </Left>
+
+              {images && images.length > 0 &&
+                <Right>
+                  <ProjectImages>
+                    {images.filter((image) => image).map((image) => (
+                      <ImageZoom
+                        key={image.id}
+                        image={{ src: image.attributes.versions.large }}
+                        zoomImage={{ src: image.attributes.versions.large }}
+                      />
+                    ))}
+                  </ProjectImages>
+                </Right>
+              }
+            </Container>
+          );
         }}
       </GetProject>
     );

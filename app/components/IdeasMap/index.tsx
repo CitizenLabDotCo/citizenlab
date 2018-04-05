@@ -137,7 +137,7 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
     return (
       <GetIdeas {...searchProps} markers>
         {({ ideaMarkers }) => (
-          <React.Fragment>
+          <>
             {ideaMarkers.length > 0 && this.getPoints(ideaMarkers).length === 0 &&
               <Message info>
                 <FormattedMessage {...messages.noIdeasWithLocation} />
@@ -156,7 +156,7 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
                 />
               </div>
             </MapWrapper>
-          </React.Fragment>
+          </>
         )}
       </GetIdeas>
     );

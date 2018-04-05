@@ -2,8 +2,9 @@ import * as React from 'react';
 
 import { IStatusChangeOfYourIdeaNotificationData } from 'services/notifications';
 import { IIdeaData } from 'services/ideas';
+import { IIdeaStatusData } from 'services/ideaStatuses';
 import GetIdea from 'utils/resourceLoaders/components/GetIdea';
-import GetIdeaStatus, { GetIdeaStatusChildProps } from 'utils/resourceLoaders/components/GetIdeaStatus';
+import GetIdeaStatus from 'utils/resourceLoaders/components/GetIdeaStatus';
 
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -11,18 +12,23 @@ import T from 'components/T';
 
 import NotificationWrapper from '../NotificationWrapper';
 
-type Props = {
+interface InputProps {
   notification: IStatusChangeOfYourIdeaNotificationData;
+}
+
+interface Props extends InputProps {
   idea: IIdeaData | null;
-};
+  ideaStatus: IIdeaStatusData | null;
+}
 
-type State = {
-};
+interface State {
+}
 
-class StatusChangeOfYourIdeaNotification extends React.PureComponent<Props & GetIdeaStatusChildProps, State> {
+class StatusChangeOfYourIdeaNotification extends React.PureComponent<Props, State> {
 
   render() {
     const { notification, idea, ideaStatus } = this.props;
+
     if (!idea || !ideaStatus) return null;
 
     return (
@@ -44,18 +50,24 @@ class StatusChangeOfYourIdeaNotification extends React.PureComponent<Props & Get
   }
 }
 
-export default (props: { notification: IStatusChangeOfYourIdeaNotificationData }) => {
+export default (props: InputProps) => {
   const { notification } = props;
 
   if (!notification.relationships.idea.data) return null;
+
   return (
     <GetIdea id={notification.relationships.idea.data.id}>
-      {(getIdeaProps) => {
+      {({ idea }) => {
         if (!notification.relationships.idea_status.data) return null;
+
         return (
           <GetIdeaStatus id={notification.relationships.idea_status.data.id}>
-            {(getIdeaStatusProps) => (
-              <StatusChangeOfYourIdeaNotification {...props} {...getIdeaProps} {...getIdeaStatusProps} />
+            {({ ideaStatus }) => (
+              <StatusChangeOfYourIdeaNotification
+                notification={notification}
+                idea={idea}
+                ideaStatus={ideaStatus}
+              />
             )}
           </GetIdeaStatus>
         );
