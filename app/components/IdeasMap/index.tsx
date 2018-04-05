@@ -15,7 +15,7 @@ import IdeaButton from './IdeaButton';
 import { Message } from 'semantic-ui-react';
 
 // Injectors
-import GetIdeas, { SearchQueryProps } from 'utils/resourceLoaders/components/GetIdeas';
+import GetIdeaMarkers, { SearchQueryProps } from 'utils/resourceLoaders/components/GetIdeaMarkers';
 import { injectTenant, InjectedTenant } from 'utils/resourceLoaders/tenantLoader';
 import { injectLocale, InjectedLocale } from 'utils/resourceLoaders/localeLoader';
 
@@ -88,16 +88,17 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
     };
   }
 
-  getPoints = (ideas: Partial<IIdeaData>[]) => {
+  getPoints = (ideas: Partial<IIdeaData>[] | null) => {
     if (ideas) {
       const ideaPoints: any[] = [];
       ideas.forEach((idea) => {
         if (idea.attributes && idea.attributes.location_point_geojson) ideaPoints.push({ ...idea.attributes.location_point_geojson, id: idea.id });
       });
       return ideaPoints;
-    } else {
-      return [];
     }
+
+    return [];
+
   }
 
   selectIdea = (id) => {
@@ -112,10 +113,11 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
   onMapClick = ({ map, position }: {map: Leaflet.Map, position: Leaflet.LatLng}): void => {
     this.savedPosition = position;
 
-    Leaflet.popup()
-    .setLatLng(position)
-    .setContent(this.createIdeaButton)
-    .openOn(map);
+    Leaflet
+      .popup()
+      .setLatLng(position)
+      .setContent(this.createIdeaButton)
+      .openOn(map);
 
     return;
   }
@@ -132,17 +134,16 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
   }
 
   render() {
-    const searchProps = pick(this.props, 'areas', 'currentPageNumber', 'pageSize', 'phase', 'project', 'searchTerm', 'sortAttribute', 'sortDirection', 'status', 'topics');
-
     return (
-      <GetIdeas {...searchProps} markers>
+      <GetIdeaMarkers projectId={this.props.project} phaseId={this.props.phase}>
         {({ ideaMarkers }) => (
           <>
-            {ideaMarkers.length > 0 && this.getPoints(ideaMarkers).length === 0 &&
+            {ideaMarkers && ideaMarkers.length > 0 && this.getPoints(ideaMarkers).length === 0 &&
               <Message info>
                 <FormattedMessage {...messages.noIdeasWithLocation} />
               </Message>
             }
+
             <MapWrapper>
               {this.state.selectedIdea &&
                 <StyledBox idea={this.state.selectedIdea} onClose={this.deselectIdea} />
@@ -158,7 +159,7 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
             </MapWrapper>
           </>
         )}
-      </GetIdeas>
+      </GetIdeaMarkers>
     );
   }
 }
