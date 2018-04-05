@@ -136,7 +136,7 @@ resource "Comments" do
 
     post "web_api/v1/comments/:id/mark_as_deleted" do
       with_options scope: :comment do
-        parameter :reason_code, "one of #{WebApi::V1::CommentsController::MARK_AS_DELETED_REASON_CODES}; only required for admins", required: false
+        parameter :reason_code, "one of #{Notifications::CommentDeletedByAdmin::REASON_CODES}; only required for admins", required: false
         parameter :other_reason, "the reason for deleting the comment, if none of the reason codes is applicable, in which case 'other' must be chosen", required: false
       end
 
