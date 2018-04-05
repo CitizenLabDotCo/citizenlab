@@ -1,7 +1,7 @@
 class Idea < ApplicationRecord
   include PgSearch
 
-  MAX_TITLE_LEN = 100
+  MAX_TITLE_LEN = 80
 
 
   @@sanitizer = Rails::Html::WhiteListSanitizer.new
