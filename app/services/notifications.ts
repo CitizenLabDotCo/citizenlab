@@ -224,13 +224,55 @@ export interface IStatusChangeOfYourIdeaNotificationData extends IBaseNotificati
   };
 }
 
+export interface ICommentDeletedByAdminNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'comment_deleted_by_admin';
+    read_at: string;
+    created_at: string;
+    initiating_user_first_name: string;
+    initiating_user_last_name: string;
+    initiating_user_slug: string;
+    idea_title: Multiloc;
+    reason_code: 'wrong_content' | 'inappropriate' | 'other';
+    other_reason: string;
+  };
+  relationships: {
+    initiating_user: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    idea: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    comment: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    project: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
+
 export type TNotificationData =
   ICommentOnYourCommentNotificationData |
   ICommentOnYourIdeaNotificationData |
   ICommentMarkedAsSpamNotificationData |
   IIdeaMarkedAsSpamNotificationData |
   IMentionInCommentNotificationData |
-  IStatusChangeOfYourIdeaNotificationData;
+  IStatusChangeOfYourIdeaNotificationData |
+  ICommentDeletedByAdminNotificationData;
 
 
 export interface INotificationLinks {
