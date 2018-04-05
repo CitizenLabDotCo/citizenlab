@@ -471,6 +471,7 @@
   "app.containers.NotificationMenu.loading": "crwdns15808:0crwdne15808:0",
   "app.containers.NotificationMenu.mentionInComment": "crwdns18107:0{name}crwdne18107:0",
   "app.containers.NotificationMenu.noNotifications": "crwdns15809:0crwdne15809:0",
+  "app.containers.NotificationMenu.statusChangedOfYourIdea": "",
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "crwdns18108:0{name}crwdne18108:0",
   "app.containers.NotificationMenu.userMarkedCommentAsSpam": "crwdns18309:0{name}crwdnd18309:0{ideaTitle}crwdne18309:0",
   "app.containers.NotificationMenu.userMarkedIdeaAsSpam": "crwdns18310:0{name}crwdnd18310:0{ideaTitle}crwdne18310:0",
