@@ -79,6 +79,7 @@ const Right = Section.extend`
   ${media.biggerThanMaxTablet`
     overflow: hidden;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   `}
 `;
 

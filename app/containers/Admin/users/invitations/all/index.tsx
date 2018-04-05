@@ -12,8 +12,6 @@ import Pagination from 'components/admin/Pagination';
 import Button from 'components/UI/Button';
 import Row from './Row';
 
-// utils
-
 // services
 import GetInvites, { GetInvitesChildProps } from 'utils/resourceLoaders/components/GetInvites';
 

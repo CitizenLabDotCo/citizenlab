@@ -215,7 +215,6 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
     const firstNameError = (!firstName ? formatMessage(messages.noFirstNameError) : null);
     const lastNameError = (!lastName ? formatMessage(messages.noLastNameError) : null);
     const localeError = (!currentTenantLocales.some(currentTenantLocale => locale === currentTenantLocale) ? formatMessage(messages.noValidLocaleError) : null);
-
     let passwordError: string | null = null;
 
     if (!password) {
@@ -244,6 +243,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
         this.setState({ processing: false });
         this.props.onCompleted(user.data.id);
       } catch (errors) {
+        // custom error handling for invitation codes
         if (get(errors, 'json.errors.base[0].error', null) === 'token_not_found') {
           tokenError = formatMessage(messages.tokenNotFoundError);
         }
@@ -292,7 +292,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <Form id="e2e-signup-step1" onSubmit={this.handleOnSubmit} noValidate={true}>
-        {isInvitation &&
+        {isInvitation && !this.props.token &&
           <FormElement>
             <Label value={formatMessage(messages.tokenLabel)} htmlFor="token" />
             <Input
@@ -382,6 +382,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
         </FormElement>
 
         <Error text={unknownApiError} />
+        <Error text={((isInvitation && this.props.token && tokenError) ? tokenError : null)} />
       </Form>
     );
   }

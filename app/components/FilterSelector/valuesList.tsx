@@ -95,6 +95,7 @@ const ListWrapper = styled.ul`
   max-height: 320px;
   overflow-x: hidden;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 0;
 
   ${media.smallerThanMinTablet`
