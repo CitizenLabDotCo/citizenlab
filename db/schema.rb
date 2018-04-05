@@ -230,6 +230,19 @@ ActiveRecord::Schema.define(version: 20180405090646) do
     t.index ["user_id"], name: "index_identities_on_user_id"
   end
 
+  create_table "invites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "token", null: false
+    t.uuid "inviter_id"
+    t.uuid "invitee_id", null: false
+    t.string "invite_text"
+    t.datetime "accepted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invitee_id"], name: "index_invites_on_invitee_id"
+    t.index ["inviter_id"], name: "index_invites_on_inviter_id"
+    t.index ["token"], name: "index_invites_on_token"
+  end
+
   create_table "memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "group_id"
     t.uuid "user_id"
@@ -253,8 +266,10 @@ ActiveRecord::Schema.define(version: 20180405090646) do
     t.uuid "spam_report_id"
     t.string "reason_code"
     t.string "other_reason"
+    t.uuid "invite_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
+    t.index ["invite_id"], name: "index_notifications_on_invite_id"
     t.index ["recipient_id", "read_at"], name: "index_notifications_on_recipient_id_and_read_at"
     t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
     t.index ["spam_report_id"], name: "index_notifications_on_spam_report_id"
@@ -406,6 +421,7 @@ ActiveRecord::Schema.define(version: 20180405090646) do
     t.string "locale"
     t.jsonb "bio_multiloc", default: {}
     t.boolean "cl1_migrated", default: false
+    t.string "invite_status"
     t.jsonb "custom_field_values", default: {}
     t.datetime "registration_completed_at"
     t.index ["email"], name: "index_users_on_email"
@@ -446,10 +462,13 @@ ActiveRecord::Schema.define(version: 20180405090646) do
   add_foreign_key "ideas_topics", "ideas"
   add_foreign_key "ideas_topics", "topics"
   add_foreign_key "identities", "users"
+  add_foreign_key "invites", "users", column: "invitee_id"
+  add_foreign_key "invites", "users", column: "inviter_id"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
   add_foreign_key "notifications", "comments"
   add_foreign_key "notifications", "ideas"
+  add_foreign_key "notifications", "invites"
   add_foreign_key "notifications", "projects"
   add_foreign_key "notifications", "spam_reports"
   add_foreign_key "notifications", "users", column: "initiating_user_id"
