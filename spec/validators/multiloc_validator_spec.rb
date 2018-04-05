@@ -16,7 +16,7 @@ class Validatable3
   include ActiveModel::Validations
   validates :multiloc_field1, multiloc: {length: {in: 2..4}}
   validates :multiloc_field2, multiloc: {length: {maximum: 5}}
-  validates :multiloc_field3, multiloc: {length: {is: 3}}
+  validates :multiloc_field3, multiloc: {presence: true, length: {is: 3}}
   attr_accessor :multiloc_field1
   attr_accessor :multiloc_field2
   attr_accessor :multiloc_field3
