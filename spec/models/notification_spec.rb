@@ -22,7 +22,9 @@ RSpec.describe Notification, type: :model do
     end
     it "are valid" do
       Notification.descendants.each do |notification_subclass|
-        expect(build(notification_subclass.model_name.element.to_sym)).to be_valid
+        if notification_subclass.descendants.empty?
+          expect(build(notification_subclass.model_name.element.to_sym)).to be_valid
+        end
       end
     end
   end
