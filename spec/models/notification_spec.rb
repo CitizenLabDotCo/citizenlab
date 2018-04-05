@@ -35,5 +35,52 @@ RSpec.describe Notification, type: :model do
       notifications = Notifications::CommentOnYourIdea.make_notifications_on activity
       expect(notifications).to be_present
     end
+
+    it "makes a mentioned in comment notification on comment mentioned" do
+      comment = create(:comment)
+      mentioned_user = create(:user)
+      activity = create(:activity, item: comment, action: 'mentioned', payload: {mentioned_user: mentioned_user.id})
+
+      notifications = Notifications::MentionInComment.make_notifications_on activity
+      expect(notifications).to be_present
+    end
+
+    it "makes an idea marked as spam notification on spam report created" do
+      recipient = create(:admin)
+      idea = create(:idea)
+      spam_report = create(:spam_report, spam_reportable: idea)
+      activity = create(:activity, item: spam_report, action: 'created')
+
+      notifications = Notifications::IdeaMarkedAsSpam.make_notifications_on activity
+      expect(notifications).to be_present
+    end
+
+    it "makes a comment marked as spam notification on spam report created" do
+      recipient = create(:admin)
+      comment = create(:comment)
+      spam_report = create(:spam_report, spam_reportable: comment)
+      activity = create(:activity, item: spam_report, action: 'created')
+
+      notifications = Notifications::CommentMarkedAsSpam.make_notifications_on activity
+      expect(notifications).to be_present
+    end
+
+    it "makes a status change of your idea notification on spam report created" do
+      recipient = create(:user)
+      idea = create(:idea, author: recipient)
+      activity = create(:activity, item: idea, action: 'changed_status')
+
+      notifications = Notifications::StatusChangeOfYourIdea.make_notifications_on activity
+      expect(notifications).to be_present
+    end
+
+    it "makes a comment deleted by admin notification on comment marked_as_deleted" do
+      recipient = create(:user)
+      comment = create(:comment, author: recipient)
+      activity = create(:activity, item: comment, action: 'marked_as_deleted', payload: {reason_code: 'other', other_reason: "it's just a test"})
+
+      notifications = Notifications::CommentDeletedByAdmin.make_notifications_on activity
+      expect(notifications).to be_present
+    end
   end
 end
