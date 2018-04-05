@@ -466,6 +466,7 @@
   "app.containers.IdeasShow.submittingComment": "Publiceren...",
   "app.containers.IdeasShow.voteOnThisIdea": "Stem voor of tegen dit idee",
   "app.containers.NotificationMenu.clearAll": "Alles gelezen",
+  "app.containers.NotificationMenu.commentDeletedByAdmin": "",
   "app.containers.NotificationMenu.error": "Kan meldingen niet laden",
   "app.containers.NotificationMenu.loadMore": "Laad meer...",
   "app.containers.NotificationMenu.loading": "Meldingen laden...",

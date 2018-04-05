@@ -466,6 +466,7 @@
   "app.containers.IdeasShow.submittingComment": "crwdns15798:0crwdne15798:0",
   "app.containers.IdeasShow.voteOnThisIdea": "crwdns18106:0crwdne18106:0",
   "app.containers.NotificationMenu.clearAll": "crwdns15800:0crwdne15800:0",
+  "app.containers.NotificationMenu.commentDeletedByAdmin": "",
   "app.containers.NotificationMenu.error": "crwdns15806:0crwdne15806:0",
   "app.containers.NotificationMenu.loadMore": "crwdns15807:0crwdne15807:0",
   "app.containers.NotificationMenu.loading": "crwdns15808:0crwdne15808:0",
