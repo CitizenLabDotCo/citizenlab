@@ -312,7 +312,7 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
     this.selectedView$ = new Rx.BehaviorSubject(selectedView);
 
     const queryParameters$ = this.queryParameters$.distinctUntilChanged((x, y) => shallowCompare(x, y));
-    const search$ = this.search$.distinctUntilChanged().do(searchValue => this.setState({ searchValue })).debounceTime(400);
+    const search$ = this.search$.distinctUntilChanged().do(searchValue => this.setState({ searchValue })).debounceTime(400).startWith('');
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
