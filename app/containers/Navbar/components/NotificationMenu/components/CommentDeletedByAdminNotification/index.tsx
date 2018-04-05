@@ -13,7 +13,7 @@ import { IIdeaData } from 'services/ideas';
 
 type Props = {
   notification: ICommentDeletedByAdminNotificationData;
-  idea: IIdeaData;
+  idea: IIdeaData | null;
 };
 
 type State = {};
@@ -45,8 +45,12 @@ class CommentDeletedByAdminNotification extends React.PureComponent<Props, State
   }
 }
 
-export default (props) => (
-  <GetIdea>
-    {(getIdeaProps) => <CommentDeletedByAdminNotification {...props} {...getIdeaProps} />}
-  </GetIdea>
-);
+export default (props: {notification: ICommentDeletedByAdminNotificationData}) => {
+  const { notification } = props;
+  if (!notification.relationships.idea.data) return null;
+  return (
+    <GetIdea id={notification.relationships.idea.data.id}>
+      {(getIdeaProps) => <CommentDeletedByAdminNotification {...props} {...getIdeaProps} />}
+    </GetIdea>
+  );
+};

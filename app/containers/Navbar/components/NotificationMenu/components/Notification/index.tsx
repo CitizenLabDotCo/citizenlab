@@ -6,6 +6,7 @@ import MentionInCommentNotification from '../MentionInCommentNotification';
 import CommentMarkedAsSpamNotification from '../CommentMarkedAsSpamNotification';
 import IdeaMarkedAsSpamNotification from '../IdeaMarkedAsSpamNotification';
 import StatusChangeOfYourIdeaNotification from '../StatusChangeOfYourIdeaNotification';
+import CommentDeletedByAdminNotification from '../CommentDeletedByAdminNotification';
 
 import {
   TNotificationData,
@@ -14,7 +15,8 @@ import {
   ICommentMarkedAsSpamNotificationData,
   IIdeaMarkedAsSpamNotificationData,
   IMentionInCommentNotificationData,
-  IStatusChangeOfYourIdeaNotificationData
+  IStatusChangeOfYourIdeaNotificationData,
+  ICommentDeletedByAdminNotificationData
 } from 'services/notifications';
 
 
@@ -40,6 +42,8 @@ export default class Notification extends React.PureComponent<Props> {
         return <MentionInCommentNotification notification={notification as IMentionInCommentNotificationData} />;
       case 'status_change_of_your_idea':
         return <StatusChangeOfYourIdeaNotification notification={notification as IStatusChangeOfYourIdeaNotificationData} />;
+      case 'comment_deleted_by_admin':
+        return <CommentDeletedByAdminNotification notification={notification as ICommentDeletedByAdminNotificationData} />;
       default: return null;
     }
   }
