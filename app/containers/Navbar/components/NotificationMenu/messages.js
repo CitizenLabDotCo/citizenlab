@@ -50,4 +50,14 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.statusChangedOfYourIdea',
     defaultMessage: '\'{ideaTitle}\' status has changed to {status}',
   },
+  commentDeletedByAdmin: {
+    id: 'app.containers.NotificationMenu.commentDeletedByAdmin',
+    defaultMessage: `Your comment on '{ideaTitle}' has been deleted by an admin because
+      {reasonCode, select
+        wrong_content {it is irrelevant}
+        inappropriate {its content is inappropriate}
+        other {{otherReason}}
+      }
+    `,
+  },
 });
