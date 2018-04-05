@@ -110,7 +110,7 @@ const StyledLabel = styled(Label)`
 `;
 
 const Options: any = styled.div`
-  display: flex;
+  display: inline-flex;
   align-items: center;
   padding-bottom: 8px;
   transition: all 80ms ease-out;

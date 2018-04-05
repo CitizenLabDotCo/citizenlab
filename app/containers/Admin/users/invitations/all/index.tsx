@@ -12,8 +12,6 @@ import Pagination from 'components/admin/Pagination';
 import Button from 'components/UI/Button';
 import Row from './Row';
 
-// utils
-
 // services
 import GetInvites, { GetInvitesChildProps } from 'utils/resourceLoaders/components/GetInvites';
 
@@ -104,7 +102,7 @@ class InvitesTable extends React.PureComponent<Props & GetInvitesChildProps, Sta
       onChangePage,
     } = this.props;
 
-    if (!invites) return null;
+    if (!invites || invites.length === 0) return null;
 
     return (
       <Container>
