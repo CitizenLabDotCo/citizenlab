@@ -171,7 +171,7 @@ export interface ICommentMarkedAsSpamNotificationData extends IBaseNotificationD
     initiating_user_first_name: string;
     initiating_user_last_name: string;
     initiating_user_slug: string;
-    idea_title: Multiloc;
+    idea_title: { [key: string]: any; }
   };
   relationships: {
     initiating_user: {
@@ -224,12 +224,38 @@ export interface IStatusChangeOfYourIdeaNotificationData extends IBaseNotificati
   };
 }
 
+export interface IInviteAcceptedNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'invite_accepted';
+    read_at: string;
+    created_at: string;
+    initiating_user_first_name: string;
+    initiating_user_last_name: string;
+    initiating_user_slug: string;
+  };
+  relationships: {
+    initiating_user: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    invite: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
 export type TNotificationData =
   ICommentOnYourCommentNotificationData |
   ICommentOnYourIdeaNotificationData |
   ICommentMarkedAsSpamNotificationData |
   IIdeaMarkedAsSpamNotificationData |
   IMentionInCommentNotificationData |
+  IInviteAcceptedNotificationData |
   IStatusChangeOfYourIdeaNotificationData;
 
 

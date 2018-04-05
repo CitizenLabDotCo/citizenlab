@@ -32,7 +32,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // styles
-import { lighten } from 'polished';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
@@ -48,12 +47,10 @@ const IdeaImageContainer: any = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: solid 1px #e4e4e4;
 `;
 
 const IdeaImage: any = styled.img`
   width: 100%;
-  z-index: 1;
 `;
 
 const IdeaImageOverlay = styled.div`
@@ -63,28 +60,9 @@ const IdeaImageOverlay = styled.div`
   left: 0;
   right: 0;
   background: #fff;
-  z-index: 2;
   opacity: 0.1;
   transition: all 250ms ease-out;
   will-change: opacity;
-`;
-
-const IdeaImagePlaceholder = styled.div`
-  width: 100%;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: ${(props) => lighten(0.3, props.theme.colors.label)};
-`;
-
-const IdeaImagePlaceholderIcon = styled(Icon) `
-  height: 50px;
-  fill: #fff;
 `;
 
 const IdeaContent = styled.div`
@@ -195,7 +173,7 @@ const IdeaContainer = styled(Link)`
       width: 100%;
       height: 100%;
       opacity: 0;
-      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+      box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.12);
       transition: opacity 350ms cubic-bezier(0.19, 1, 0.22, 1);
       will-change: opacity;
     }
@@ -356,21 +334,10 @@ class IdeaCard extends React.PureComponent<Props, State> {
 
             {ideaImageUrl &&
               <IdeaImageContainer>
-                <IdeaImagePlaceholder>
-                  <IdeaImagePlaceholderIcon name="idea" />
-                </IdeaImagePlaceholder>
                 <IdeaImage src={ideaImageUrl} />
                 <IdeaImageOverlay />
               </IdeaImageContainer>
             }
-
-            {/*
-            {!ideaImageUrl &&
-              <IdeaImagePlaceholder>
-                <IdeaImagePlaceholderIcon name="idea" />
-              </IdeaImagePlaceholder>
-            }
-            */}
 
             <IdeaContent>
               <IdeaTitle>
