@@ -1,7 +1,7 @@
 module Notifications
   class CommentDeletedByAdmin < Notification
 
-    REASON_CODES = %w(wrong_content inappropriate other)
+    REASON_CODES = %w(irrelevant inappropriate other)
 
     
     belongs_to :initiating_user, class_name: 'User'
