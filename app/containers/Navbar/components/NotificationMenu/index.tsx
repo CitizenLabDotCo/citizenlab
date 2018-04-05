@@ -28,6 +28,7 @@ const StyledPopover = styled(Popover)`
   width: 370px;
   max-height: 400px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 `;
 
 const LoadingContainer = styled.div`
@@ -119,10 +120,11 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
   )
 
   onClickIcon = () => {
-    if (this.state.PopoverOpen)
+    if (this.state.PopoverOpen) {
       this.closePopover();
-    else
+    } else {
       this.openPopover();
+    }
   }
 
   openPopover = () => {

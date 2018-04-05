@@ -26,7 +26,6 @@ import { media } from 'utils/styleUtils';
 
 const timeout = 300;
 const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
-// const easing = `ease-out`;
 
 const Container: any = styled.div`
   position: fixed;
@@ -79,19 +78,16 @@ const Container: any = styled.div`
 `;
 
 const Content = styled.div`
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  width: 100vw;
+  height: 100vh;
   z-index: 10001;
   overflow: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 
   ${media.smallerThanMaxTablet`
-    top: ${props => props.theme.mobileTopBarHeight}px;
-    bottom: ${props => props.theme.mobileMenuHeight}px;
+    height: calc(100vh - ${props => props.theme.mobileTopBarHeight}px - ${props => props.theme.mobileMenuHeight}px);
+    margin-top: ${props => props.theme.mobileTopBarHeight}px;
   `}
 `;
 
@@ -102,8 +98,7 @@ const TopBar: any = styled.div`
   left: 0;
   right: 0;
   background: #fff;
-  /* background: #f9f9fa; */
-  border-bottom: solid 1px #ccc;
+  border-bottom: solid 1px #e0e0e0;
   z-index: 10002;
 
   ${media.biggerThanMaxTablet`
@@ -263,11 +258,18 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     this.goBackUrl = window.location.href;
     window.addEventListener('popstate', this.handlePopstateEvent);
     window.addEventListener('keydown', this.onEscKeyPressed, true);
-    this.unlisten = browserHistory.listen(this.props.close);
+    this.unlisten = browserHistory.listen(() => {
+      // on route change
+      setTimeout(() => {
+        this.props.close();
+      }, 250);
+    });
 
     if (!document.body.classList.contains('modal-active')) {
       document.body.classList.add('modal-active');
     }
+
+    this.stopBodyScrolling(true);
 
     if (url) {
       window.history.pushState({ path: url }, '', url);
@@ -277,6 +279,18 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
       // Don't try this at home!
       trackPage(url, { modal: true });
     }
+  }
+
+  stopBodyScrolling = (stopScroll: boolean) => {
+    if (stopScroll === true) {
+      document.body.addEventListener('touchmove', this.freezeViewport, false);
+    } else {
+      document.body.removeEventListener('touchmove', this.freezeViewport, false);
+    }
+  }
+
+  freezeViewport = (event) => {
+    event.preventDefault();
   }
 
   onEscKeyPressed = (event) => {
@@ -313,7 +327,11 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
 
   cleanup = () => {
     this.goBackUrl = null;
+
     document.body.classList.remove('modal-active');
+
+    this.stopBodyScrolling(false);
+
     window.removeEventListener('popstate', this.handlePopstateEvent);
     window.removeEventListener('keydown', this.onEscKeyPressed, true);
 

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import _ from 'lodash';
-import fp from 'lodash/fp';
+import { range, forOwn, get } from 'lodash';
 import * as moment from 'moment';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -46,21 +45,31 @@ class AgeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
   convertToGraphFormat = (serie: IUsersByBirthyear) => {
     const currentYear = moment().year();
 
-    // Remove the arguments cap of 1 from fp.map
-    const mapWithKeys = fp.map.convert({ cap: false });
+    return [
+      ...range(0, 100, 10).map((minAge) => {
+        let numberOfUsers = 0;
+        const maxAge = (minAge + 10);
 
-    return fp.flow(
-      mapWithKeys((value, key) => ({ age: key, count: value })),
-      fp.concat(_.map(_.range(currentYear, currentYear - 90, -10), (a) => ({ age: a.toString(), count: 0 }))),
-      fp.groupBy(({ age }) => {
-        return age === '_blank' ? age : (Math.floor((currentYear - parseInt(age, 10)) / 10) * 10);
+        forOwn(serie, (userCount, birthYear) => {
+          const age = currentYear - parseInt(birthYear, 10);
+
+          if (age >= minAge && age <= maxAge) {
+            numberOfUsers = userCount;
+          }
+        });
+
+        return {
+          name: `${minAge} - ${maxAge}`,
+          value: numberOfUsers,
+          code: `${minAge}`
+        };
       }),
-      mapWithKeys((counts, age) => ({
-        name: age === '_blank' ? this.props.intl.formatMessage(messages._blank) : `${age}-${parseInt(age, 10) + 10}`,
-        value: _.sumBy(counts, 'count'),
-        code: age,
-      })),
-    )(serie);
+      {
+        name: this.props.intl.formatMessage(messages._blank),
+        value: get(serie, '_blank', 0),
+        code: ''
+      }
+    ];
   }
 
   resubscribe(startAt= this.props.startAt, endAt= this.props.endAt) {
