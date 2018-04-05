@@ -57,7 +57,7 @@ export interface ICommentOnYourIdeaNotificationData extends IBaseNotificationDat
     initiating_user_first_name: string;
     initiating_user_last_name: string;
     initiating_user_slug: string;
-    idea_title: { [key: string]: any; }
+    idea_title: Multiloc;
   };
   relationships: {
     initiating_user: {
@@ -95,7 +95,7 @@ export interface IMentionInCommentNotificationData extends IBaseNotificationData
     initiating_user_first_name: string;
     initiating_user_last_name: string;
     initiating_user_slug: string;
-    idea_title: { [key: string]: any; }
+    idea_title: Multiloc;
   };
   relationships: {
     initiating_user: {
@@ -133,7 +133,7 @@ export interface IIdeaMarkedAsSpamNotificationData extends IBaseNotificationData
     initiating_user_first_name: string;
     initiating_user_last_name: string;
     initiating_user_slug: string;
-    idea_title: { [key: string]: any; }
+    idea_title: Multiloc;
   };
   relationships: {
     initiating_user: {
@@ -195,6 +195,35 @@ export interface ICommentMarkedAsSpamNotificationData extends IBaseNotificationD
   };
 }
 
+export interface IStatusChangeOfYourIdeaNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'status_change_of_your_idea';
+    read_at: string;
+    created_at: string;
+    idea_title: Multiloc;
+  };
+  relationships: {
+    idea: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    idea_status: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    project: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
 export interface IInviteAcceptedNotificationData extends IBaseNotificationData {
   attributes: {
     type: 'invite_accepted';
@@ -226,7 +255,8 @@ export type TNotificationData =
   ICommentMarkedAsSpamNotificationData |
   IIdeaMarkedAsSpamNotificationData |
   IMentionInCommentNotificationData |
-  IInviteAcceptedNotificationData;
+  IInviteAcceptedNotificationData |
+  IStatusChangeOfYourIdeaNotificationData;
 
 
 export interface INotificationLinks {
