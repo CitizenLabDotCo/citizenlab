@@ -24,4 +24,12 @@ FactoryBot.define do
   factory :idea_marked_as_spam, parent: :notification, class: 'Notifications::IdeaMarkedAsSpam' do
     idea
   end
+
+  factory :comment_deleted_by_admin, parent: :notification, class: 'Notifications::CommentDeletedByAdmin' do
+    comment
+    idea
+    initiating_user
+    reason_code 'wrong_content'
+    other_reason nil
+  end
 end
