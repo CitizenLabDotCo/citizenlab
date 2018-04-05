@@ -139,7 +139,7 @@ class CLMap extends React.PureComponent<Props & InjectedTenant, State> {
     if (!this.map) {
       let center: [number, number] = [0, 0];
       if (this.props.center && this.props.center !== [0, 0]) {
-        center = this.props.center as [number, number];
+        center = [this.props.center[1], this.props.center[0]];
       } else if (this.props.tenant && this.props.tenant.attributes.settings.maps) {
         center = [
           parseFloat(this.props.tenant.attributes.settings.maps.map_center.lat),
