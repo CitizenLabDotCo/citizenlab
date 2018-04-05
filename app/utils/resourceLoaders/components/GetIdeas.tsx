@@ -4,7 +4,7 @@ import { BehaviorSubject, Subscription, Observable } from 'rxjs/Rx';
 import { ideasStream, IIdeas } from 'services/ideas';
 import shallowCompare from 'utils/shallowCompare';
 
-interface IQueryParameters {
+export interface IQueryParameters {
   'page[number]'?: number | undefined;
   'page[size]'?: number | undefined;
   project?: string | undefined;
