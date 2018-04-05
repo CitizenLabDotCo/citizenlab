@@ -42,6 +42,7 @@ export interface IUpdatedComment {
 }
 
 export const DeleteReasonCode = {
+  irrelevant: 'irrelevant',
   inappropriate: 'inappropriate',
   other: 'other',
 };
