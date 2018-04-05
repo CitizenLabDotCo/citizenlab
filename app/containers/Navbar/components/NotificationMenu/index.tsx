@@ -28,6 +28,7 @@ const StyledPopover = styled(Popover)`
   width: 370px;
   max-height: 400px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 `;
 
 const LoadingContainer = styled.div`

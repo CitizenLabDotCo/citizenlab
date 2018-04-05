@@ -5,9 +5,33 @@ export default defineMessages({
     id: 'app.containers.SignUp.step1Title',
     defaultMessage: 'Create an account',
   },
+  step1InvitationTitle: {
+    id: 'app.containers.SignUp.step1InvitationTitle',
+    defaultMessage: 'Redeem your invitation',
+  },
   step2Title: {
     id: 'app.containers.SignUp.step2Title',
     defaultMessage: 'Complete your profile',
+  },
+  tokenLabel: {
+    id: 'app.containers.SignUp.tokenLabel',
+    defaultMessage: 'Invitation code',
+  },
+  tokenPlaceholder: {
+    id: 'app.containers.SignUp.tokenPlaceholder',
+    defaultMessage: 'Enter your invitation code',
+  },
+  noTokenError: {
+    id: 'app.containers.SignUp.noTokenError',
+    defaultMessage: 'Please enter your invitation code',
+  },
+  tokenNotFoundError: {
+    id: 'app.containers.SignUp.tokenNotFoundError',
+    defaultMessage: 'The invitation code could not be found',
+  },
+  tokenAlreadyAcceptedError: {
+    id: 'app.containers.SignUp.tokenAlreadyAcceptedError',
+    defaultMessage: 'The invitation has already been redeemed',
   },
   firstNameLabel: {
     id: 'app.containers.SignUp.firstNameLabel',
@@ -120,6 +144,10 @@ export default defineMessages({
   signUp: {
     id: 'app.containers.SignUp.signUp',
     defaultMessage: 'Sign up',
+  },
+  redeem: {
+    id: 'app.containers.SignUp.redeem',
+    defaultMessage: 'Redeem',
   },
   submit: {
     id: 'app.containers.SignUp.submit',

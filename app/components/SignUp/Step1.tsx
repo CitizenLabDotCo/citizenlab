@@ -3,7 +3,7 @@ import { set, keys, difference, get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
-import { browserHistory, Link } from 'react-router';
+import { Link } from 'react-router';
 
 // components
 import Label from 'components/UI/Label';
@@ -66,6 +66,8 @@ const AlreadyHaveAnAccount = styled(Link)`
 `;
 
 type Props = {
+  isInvitation?: boolean | undefined;
+  token?: string | null | undefined;
   onCompleted: (userId: string) => void;
 };
 
@@ -73,11 +75,13 @@ type State = {
   locale: Locale | null;
   currentTenant: ITenant | null;
   hasCustomFields: boolean;
+  token: string | null | undefined;
   firstName: string | null;
   lastName: string | null;
   email: string | null | undefined;
   password: string | null;
   processing: boolean;
+  tokenError: string | null;
   firstNameError: string | null;
   lastNameError: string | null;
   emailError: string | null;
@@ -97,11 +101,13 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       locale: null,
       currentTenant: null,
       hasCustomFields: false,
+      token: null,
       firstName: null,
       lastName: null,
       email: null,
       password: null,
       processing: false,
+      tokenError: null,
       firstNameError: null,
       lastNameError: null,
       emailError: null,
@@ -115,8 +121,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentDidMount() {
-    const location = browserHistory.getCurrentLocation();
-    const token: string | null = get(location, 'query.token', null);
+    const { token } = this.props;
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
     const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
@@ -132,6 +137,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
         this.setState((state) => ({
           locale,
           currentTenant,
+          token,
           firstName: (invitedUser ? invitedUser.data.attributes.first_name : state.firstName),
           lastName: (invitedUser ? invitedUser.data.attributes.last_name : state.lastName),
           email: (invitedUser ? invitedUser.data.attributes.email : state.email),
@@ -146,11 +152,19 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleFirstNameInputSetRef = (element: HTMLInputElement) => {
-    if (element) {
+    if (!(this.props.isInvitation && !this.props.token) && element) {
       this.firstNameInputElement = element;
       this.firstNameInputElement.focus();
     }
   }
+
+  handleTokenOnChange = (token: string) => {
+    this.setState({
+      token,
+      tokenError: null,
+      unknownError: null
+    });
+  } 
 
   handleFirstNameOnChange = (firstName: string) => {
     this.setState((state) => ({
@@ -191,17 +205,16 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
   handleOnSubmit = async (event: React.FormEvent<any>) => {
     event.preventDefault();
 
+    const { isInvitation } = this.props;
     const { formatMessage } = this.props.intl;
-    const { locale, currentTenant, hasCustomFields, firstName, lastName, email, password } = this.state;
-    const location = browserHistory.getCurrentLocation();
-    const token: string | null = get(location, 'query.token', null);
+    const { locale, currentTenant, hasCustomFields, token, firstName, lastName, email, password } = this.state;
     const currentTenantLocales = currentTenant ? currentTenant.data.attributes.settings.core.locales : [];
+    let tokenError = ((isInvitation && !token) ? formatMessage(messages.noTokenError) : null);
     const hasEmailError = (!email || !isValidEmail(email));
     const emailError = (hasEmailError ? (!email ? formatMessage(messages.noEmailError) : formatMessage(messages.noValidEmailError)) : null);
     const firstNameError = (!firstName ? formatMessage(messages.noFirstNameError) : null);
     const lastNameError = (!lastName ? formatMessage(messages.noLastNameError) : null);
     const localeError = (!currentTenantLocales.some(currentTenantLocale => locale === currentTenantLocale) ? formatMessage(messages.noValidLocaleError) : null);
-
     let passwordError: string | null = null;
 
     if (!password) {
@@ -210,9 +223,9 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       passwordError = formatMessage(messages.noValidPasswordError);
     }
 
-    const hasErrors = [emailError, firstNameError, lastNameError, passwordError, localeError].some(error => error !== null);
+    const hasErrors = [tokenError, emailError, firstNameError, lastNameError, passwordError, localeError].some(error => error !== null);
 
-    this.setState({ emailError, firstNameError, lastNameError, passwordError, localeError });
+    this.setState({ tokenError, emailError, firstNameError, lastNameError, passwordError, localeError });
 
     if (!hasErrors && firstName && lastName && email && password && locale) {
       try {
@@ -221,7 +234,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
           unknownError: null
         });
 
-        const user = await signUp(firstName, lastName, email, password, locale, token);
+        const user = await signUp(firstName, lastName, email, password, locale, isInvitation, token);
 
         if (!hasCustomFields) {
           await completeRegistration({});
@@ -230,7 +243,17 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
         this.setState({ processing: false });
         this.props.onCompleted(user.data.id);
       } catch (errors) {
+        // custom error handling for invitation codes
+        if (get(errors, 'json.errors.base[0].error', null) === 'token_not_found') {
+          tokenError = formatMessage(messages.tokenNotFoundError);
+        }
+
+        if (get(errors, 'json.errors.base[0].error', null) === 'already_accepted') {
+          tokenError = formatMessage(messages.tokenAlreadyAcceptedError);
+        }
+
         this.setState({
+          tokenError,
           processing: false,
           apiErrors: errors
         });
@@ -239,32 +262,50 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
+    const { isInvitation } = this.props;
     const { formatMessage } = this.props.intl;
     const {
+      token,
       firstName,
       lastName,
       email,
       password,
       processing,
+      tokenError,
       firstNameError,
       lastNameError,
       emailError,
       passwordError,
       apiErrors
     } = this.state;
+    const buttonText = (isInvitation ? formatMessage(messages.redeem) : formatMessage(messages.signUp));
 
     let unknownApiError: string | null = null;
 
     if (apiErrors && apiErrors.json.errors) {
       const fieldKeys = keys(apiErrors.json.errors);
 
-      if (difference(fieldKeys, ['first_name', 'last_name', 'email', 'password', 'locale']).length > 0) {
+      if (difference(fieldKeys, ['first_name', 'last_name', 'email', 'password', 'locale', 'base']).length > 0) {
         unknownApiError = formatMessage(messages.unknownError);
       }
     }
 
     return (
       <Form id="e2e-signup-step1" onSubmit={this.handleOnSubmit} noValidate={true}>
+        {isInvitation && !this.props.token &&
+          <FormElement>
+            <Label value={formatMessage(messages.tokenLabel)} htmlFor="token" />
+            <Input
+              id="token"
+              type="text"
+              value={token}
+              placeholder={formatMessage(messages.tokenPlaceholder)}
+              error={tokenError}
+              onChange={this.handleTokenOnChange}
+            />
+          </FormElement>
+        }
+
         <FormElement>
           <Label value={formatMessage(messages.firstNameLabel)} htmlFor="firstName" />
           <Input
@@ -328,17 +369,20 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
               id="e2e-signup-step1-button"
               size="1"
               processing={processing}
-              text={formatMessage(messages.signUp)}
+              text={buttonText}
               onClick={this.handleOnSubmit}
               circularCorners={true}
             />
-            <AlreadyHaveAnAccount to="/sign-in">
-              <FormattedMessage {...messages.alreadyHaveAnAccount} />
-            </AlreadyHaveAnAccount>
+            {!isInvitation &&
+              <AlreadyHaveAnAccount to="/sign-in">
+                <FormattedMessage {...messages.alreadyHaveAnAccount} />
+              </AlreadyHaveAnAccount>
+            }
           </ButtonWrapper>
         </FormElement>
 
         <Error text={unknownApiError} />
+        <Error text={((isInvitation && this.props.token && tokenError) ? tokenError : null)} />
       </Form>
     );
   }

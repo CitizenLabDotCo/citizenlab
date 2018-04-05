@@ -2,7 +2,7 @@ import * as React from 'react';
 import Icon from 'components/UI/Icon';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import * as _ from 'lodash';
+import { isBoolean, isArray, isEmpty } from 'lodash';
 import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import { darken } from 'polished';
@@ -197,8 +197,8 @@ export default class Error extends React.PureComponent<Props, State> {
     size = (size || '1');
     marginTop = (marginTop || '3px');
     marginBottom = (marginTop || '0px');
-    showIcon = (_.isBoolean(showIcon) ? showIcon : true);
-    showBackground = (_.isBoolean(showBackground) ? showBackground : true);
+    showIcon = (isBoolean(showIcon) ? showIcon : true);
+    showBackground = (isBoolean(showBackground) ? showBackground : true);
     className = (className || '');
     animate = (animate !== undefined ? animate : true);
 
@@ -218,7 +218,7 @@ export default class Error extends React.PureComponent<Props, State> {
                 <p>{text}</p>
               }
 
-              {errors && errors.map((error) => {
+              {errors && isArray(errors) && !isEmpty(errors) && errors.map((error) => {
                 const errorMessage = findMessage(fieldName, error);
 
                 if (errorMessage) {
@@ -232,7 +232,7 @@ export default class Error extends React.PureComponent<Props, State> {
                 return null;
               })}
 
-              {apiErrors && apiErrors.length > 0 && 
+              {apiErrors && isArray(apiErrors) && !isEmpty(apiErrors) &&
                 <ErrorList>
                   {apiErrors.map((error) => {
                     const errorMessage = findMessage(fieldName, error.error);

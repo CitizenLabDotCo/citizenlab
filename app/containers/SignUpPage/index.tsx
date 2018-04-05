@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
+import { get } from 'lodash';
 
 // router
 import { browserHistory } from 'react-router';
@@ -78,6 +79,7 @@ const Right = Section.extend`
   ${media.biggerThanMaxTablet`
     overflow: hidden;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   `}
 `;
 
@@ -118,7 +120,7 @@ export default class SignUpPage extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
       loaded: false
     };
@@ -162,6 +164,9 @@ export default class SignUpPage extends React.PureComponent<Props, State> {
 
   render() {
     const { loaded } = this.state;
+    const location = browserHistory.getCurrentLocation();
+    const isInvitation = (location.pathname === '/invite');
+    const token: string | null = get(location.query, 'token', null);
 
     if (!loaded) {
       return (
@@ -180,7 +185,7 @@ export default class SignUpPage extends React.PureComponent<Props, State> {
           <Right innerRef={this.setRef}>
             <RightInner>
               <RightInnerInner>
-                <SignUp onSignUpCompleted={this.onSignUpCompleted} />
+                <SignUp isInvitation={isInvitation} token={token} onSignUpCompleted={this.onSignUpCompleted} />
               </RightInnerInner>
             </RightInner>
           </Right>
