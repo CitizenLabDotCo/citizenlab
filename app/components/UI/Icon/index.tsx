@@ -343,6 +343,13 @@ const icons = {
       <path id="path4_fill" d="M12.392 12.354H7.346v1.577h5.046v-1.577z"/>
     </svg>
   ),
+  notification_status: (className) => (
+    <svg className={className} viewBox="0 0 24 24" version="1.1" fill="#6B6B6B">
+      <g id="surface1">
+        <path d="M 2 8 L 2 16 C 2 17.101563 2.898438 18 4 18 L 15.199219 18 C 15.699219 18 16.199219 17.800781 16.601563 17.398438 L 22 12 L 16.601563 6.601563 C 16.199219 6.199219 15.699219 6 15.199219 6 L 4 6 C 2.898438 6 2 6.898438 2 8 Z " />
+      </g>
+    </svg>
+  ),
 };
 
 export type IconNames = keyof typeof icons;
