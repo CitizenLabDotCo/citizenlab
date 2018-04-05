@@ -120,4 +120,66 @@ class XlsxService
     pa.to_stream
   end
 
+  def invite_fields
+    {
+      token: -> (i) {i.token },
+      invite_status: -> (i) { i.invitee.invite_status },
+      email: -> (i) {i.invitee.email },
+      first_name: -> (i) {i.invitee.first_name },
+      last_name: -> (i) {i.invitee.last_name },
+      locale: -> (i) {i.invitee.locale},
+      groups: -> (i) {i.invitee.groups.map{|g| @@multiloc_service.t(g.title_multiloc)}.join(',')},
+      admin: -> (i) {i.invitee.admin?}
+    }
+  end
+
+  def generate_invites_xlsx invites
+    fields = invite_fields
+    hash_array = invites.map do |invite|
+      fields.each_with_object({}){|(field, f), object| object[field] = f.call(invite)}
+    end
+    hash_array_to_xlsx(hash_array)
+  end
+
+  # Converts this hash array: 
+  #   [{'name' => 'Ron', 'size' => 'xl'), {'name' => 'John', 'age' => 35}]
+  # into this xlsx:
+  # | name  | size | age |
+  # | Ron   | xl   |     |
+  # | John  |      | 35  |
+  def hash_array_to_xlsx hash_array
+    headers = hash_array.flat_map{|hash| hash.keys}.uniq
+
+    pa = Axlsx::Package.new
+    wb = pa.workbook
+
+    wb.styles do |s|
+      wb.add_worksheet do |sheet|
+        sheet.add_row headers, style: header_style(s)
+        hash_array.each do |hash|
+          sheet.add_row headers.map{|header| hash[header]}
+        end
+      end
+    end
+    
+    pa.to_stream
+  end
+
+  # Converts this xlsx:
+  # | name  | size | age |
+  # | Ron   | xl   |     |
+  # | John  |      | 35  |
+  # into this hash array: 
+  #   [{'name' => 'Ron', 'size' => 'xl'), {'name' => 'John', 'age' => 35}]
+  def xlsx_to_hash_array xlsx
+    workbook = RubyXL::Parser.parse_buffer(xlsx)
+    worksheet = workbook.worksheets[0]
+
+    worksheet.drop(1).map do |row|
+      row&.cells.map.with_index do |cell, column_index|
+        [worksheet[0][column_index].value, cell&.value]
+      end.to_h.compact
+    end.compact
+  end
+
 end
