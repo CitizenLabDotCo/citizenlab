@@ -60,6 +60,7 @@ export interface Props {
   zoom?: number;
   onMarkerClick?: {(id: string, data: any): void};
   onMapClick?: {({ map, position }: {map: Leaflet.Map, position: Leaflet.LatLng}): void};
+  fitBounds?: boolean;
 }
 
 interface State {
@@ -116,7 +117,7 @@ class CLMap extends React.PureComponent<Props & InjectedTenant, State> {
     // Refresh bounds
     this.subs.push(
       this.bounds$.distinctUntilChanged().subscribe((bounds) => {
-        if (bounds) this.map.fitBounds(bounds, { maxZoom: 12 });
+        if (bounds && this.props.fitBounds) this.map.fitBounds(bounds, { maxZoom: 12 });
       })
     );
   }
@@ -127,7 +128,7 @@ class CLMap extends React.PureComponent<Props & InjectedTenant, State> {
     }
 
     // Update the center if the tenant is loaded after map init and there's no set center
-    if (this.props.tenant && !prevProps.tenant && !this.markers && this.map && this.props.tenant.attributes.settings.maps) {
+    if (this.props.tenant && !prevProps.tenant && !this.props.center && this.map && this.props.tenant.attributes.settings.maps) {
       this.map.setView(
         [
           parseFloat(this.props.tenant.attributes.settings.maps.map_center.lat),
