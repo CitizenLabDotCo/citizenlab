@@ -1,4 +1,6 @@
 class WebApi::V1::External::Notifications::CommentDeletedByAdminSerializer < WebApi::V1::External::Notifications::NotificationSerializer
+  attributes :reason_code, :other_reason
+
   belongs_to :initiating_user, serializer: CustomUserSerializer
   belongs_to :comment, serializer: CustomCommentSerializer
   belongs_to :comment_author, serializer: CustomUserSerializer

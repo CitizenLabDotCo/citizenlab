@@ -1,5 +1,8 @@
 module Notifications
   class CommentDeletedByAdmin < Notification
+
+    REASON_CODES = %w(wrong_content inappropriate other)
+
     
     belongs_to :initiating_user, class_name: 'User'
     belongs_to :comment
@@ -9,6 +12,7 @@ module Notifications
     validates :comment_id, presence: true
     validates :initiating_user, presence: true
     validates :idea_id, presence: true
+    validates :reason_code, inclusion: { in: REASON_CODES }, presence: true
 
 
     ACTIVITY_TRIGGERS = {'Comment' => {'marked_as_deleted' => true}}
@@ -31,7 +35,9 @@ module Notifications
            initiating_user: User.find(initiator_id),
            idea_id: idea_id,
            comment_id: comment_id,
-           project_id: project_id
+           project_id: project_id,
+           reason_code: acitvity.payload[:reason_code],
+           other_reason: acitvity.payload[:other_reason]
          )]
       else
         []
