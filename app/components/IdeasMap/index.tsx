@@ -1,6 +1,6 @@
 // Libs
 import * as React from 'react';
-import { flow, pick } from 'lodash';
+import { flow } from 'lodash';
 import Leaflet from 'leaflet';
 import { browserHistory, withRouter } from 'react-router';
 
@@ -15,7 +15,7 @@ import IdeaButton from './IdeaButton';
 import { Message } from 'semantic-ui-react';
 
 // Injectors
-import GetIdeaMarkers, { SearchQueryProps } from 'utils/resourceLoaders/components/GetIdeaMarkers';
+import GetIdeaMarkers from 'utils/resourceLoaders/components/GetIdeaMarkers';
 import { injectTenant, InjectedTenant } from 'utils/resourceLoaders/tenantLoader';
 import { injectLocale, InjectedLocale } from 'utils/resourceLoaders/localeLoader';
 
@@ -63,11 +63,10 @@ const MapWrapper = styled.div`
 
 // Typing
 import { IIdeaData } from 'services/ideas';
-interface Props extends SearchQueryProps {
+
+interface Props {
   project?: string;
   phase?: string;
-  topics?: string[];
-  areas?: string[];
   params?: {
     [key: string]: string | number;
   };
@@ -89,16 +88,20 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
   }
 
   getPoints = (ideas: Partial<IIdeaData>[] | null) => {
-    if (ideas) {
-      const ideaPoints: any[] = [];
+    const ideaPoints: any[] = [];
+
+    if (ideas && ideas.length > 0) {      
       ideas.forEach((idea) => {
-        if (idea.attributes && idea.attributes.location_point_geojson) ideaPoints.push({ ...idea.attributes.location_point_geojson, id: idea.id });
+        if (idea.attributes && idea.attributes.location_point_geojson) {
+          ideaPoints.push({
+            ...idea.attributes.location_point_geojson,
+            id: idea.id
+          });
+        }
       });
-      return ideaPoints;
     }
 
-    return [];
-
+    return ideaPoints;
   }
 
   selectIdea = (id) => {
@@ -136,29 +139,36 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
   render() {
     return (
       <GetIdeaMarkers projectId={this.props.project} phaseId={this.props.phase}>
-        {({ ideaMarkers }) => (
-          <>
-            {ideaMarkers && ideaMarkers.length > 0 && this.getPoints(ideaMarkers).length === 0 &&
-              <Message info>
-                <FormattedMessage {...messages.noIdeasWithLocation} />
-              </Message>
-            }
+        {({ ideaMarkers }) => {
+          const { selectedIdea } = this.state;
+          const points = this.getPoints(ideaMarkers);
 
-            <MapWrapper>
-              {this.state.selectedIdea &&
-                <StyledBox idea={this.state.selectedIdea} onClose={this.deselectIdea} />
+          return (
+            <>
+              {ideaMarkers && ideaMarkers.length > 0 && points.length === 0 &&
+                <Message info>
+                  <FormattedMessage {...messages.noIdeasWithLocation} />
+                </Message>
               }
-              <StyledMap points={this.getPoints(ideaMarkers)} onMarkerClick={this.selectIdea} onMapClick={this.onMapClick} />
-              <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
-                <IdeaButton
-                  phaseId={this.props.phase}
-                  projectId={this.props.project}
-                  onClick={this.redirectToIdeaCreation}
-                />
-              </div>
-            </MapWrapper>
-          </>
-        )}
+
+              <MapWrapper>
+                {selectedIdea &&
+                  <StyledBox idea={selectedIdea} onClose={this.deselectIdea} />
+                }
+
+                <StyledMap points={points} onMarkerClick={this.selectIdea} onMapClick={this.onMapClick} />
+
+                <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
+                  <IdeaButton
+                    phaseId={this.props.phase}
+                    projectId={this.props.project}
+                    onClick={this.redirectToIdeaCreation}
+                  />
+                </div>
+              </MapWrapper>
+            </>
+          );
+        }}
       </GetIdeaMarkers>
     );
   }
