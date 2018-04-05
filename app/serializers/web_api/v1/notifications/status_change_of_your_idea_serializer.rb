@@ -6,11 +6,6 @@ class WebApi::V1::Notifications::StatusChangeOfYourIdeaSerializer < WebApi::V1::
 
   attributes :idea_title
 
-
-  def idea_status
-    object.idea&.idea_status
-  end
-
   def idea_title
     object.idea&.title_multiloc
   end
