@@ -69,12 +69,12 @@ class CLMap extends React.PureComponent<Props & InjectedTenant, State> {
   private map: Leaflet.Map;
   private mapContainer: HTMLElement;
   private clusterLayer: Leaflet.MarkerClusterGroup;
-  private markerBounds: Leaflet.LatLngBoundsExpression;
   private markers: Leaflet.Marker[];
   private interval: number;
   private subs: Subscription[] = [];
   private dimensionW$: BehaviorSubject<number> = new BehaviorSubject(0);
   private dimensionH$: BehaviorSubject<number> = new BehaviorSubject(0);
+  private bounds$: BehaviorSubject<Leaflet.LatLngBounds | null> = new BehaviorSubject(null);
 
   private clusterOptions = {
     showCoverageOnHover: false,
@@ -107,19 +107,27 @@ class CLMap extends React.PureComponent<Props & InjectedTenant, State> {
       this.convertPoints(this.props.points);
     }
 
+    // Map container dimensions change
     this.subs.push(
       this.dimensionH$.distinctUntilChanged().subscribe(() => this.map.invalidateSize()),
       this.dimensionW$.distinctUntilChanged().subscribe(() => this.map.invalidateSize()),
     );
+
+    // Refresh bounds
+    this.subs.push(
+      this.bounds$.distinctUntilChanged().subscribe((bounds) => {
+        if (bounds) this.map.fitBounds(bounds, { maxZoom: 12 });
+      })
+    );
   }
 
   componentDidUpdate(prevProps: Props & InjectedTenant) {
-    if (this.props.points && !isEqual(prevProps.points, this.props.points)) {
+    if (this.props.points && !isEqual(prevProps.points, this.props.points) && !isEqual(prevProps.points, this.props.points)) {
       this.convertPoints(this.props.points);
     }
 
     // Update the center if the tenant is loaded after map init and there's no set center
-    if (this.props.tenant && !prevProps.tenant && !this.props.center && this.map && this.props.tenant.attributes.settings.maps) {
+    if (this.props.tenant && !prevProps.tenant && !this.markers && this.map && this.props.tenant.attributes.settings.maps) {
       this.map.setView(
         [
           parseFloat(this.props.tenant.attributes.settings.maps.map_center.lat),
@@ -180,7 +188,7 @@ class CLMap extends React.PureComponent<Props & InjectedTenant, State> {
         return new Marker([point.coordinates[1], point.coordinates[0]] as [number, number], ({ ...this.markerOptions, data: point.data, id: point.id } as DataMarkerOptions));
       });
 
-      if (bounds.length > 0) this.markerBounds = new Leaflet.LatLngBounds(bounds);
+      if (bounds.length > 0) this.bounds$.next(new Leaflet.LatLngBounds(bounds));
 
       this.addClusters();
     }
@@ -194,8 +202,6 @@ class CLMap extends React.PureComponent<Props & InjectedTenant, State> {
       this.map.addLayer(this.clusterLayer);
 
       if (this.props.onMarkerClick) this.clusterLayer.on('click', this.handleMarkerClick);
-
-      if (this.markerBounds) this.map.fitBounds(this.markerBounds, { maxZoom: 12 });
     }
   }
 
