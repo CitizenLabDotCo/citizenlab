@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
       resources :ideas do
         resources :comments, shallow: true do
+          post :mark_as_deleted, on: :member
           resources :votes, except: [:update], shallow: true, defaults: { votable: 'Comment' } do
             post :up, on: :collection
             post :down, on: :collection

@@ -24,8 +24,20 @@ class CommentPolicy < ApplicationPolicy
     user&.active? && (record.author_id == user.id || user.admin?)
   end
 
+  def mark_as_deleted?
+    user&.active? && (record.author_id == user.id || user.admin?)
+  end
+
   def destroy?
-    update?
+    false
+  end
+
+  def permitted_attributes_for_update
+    attrs = [:parent_id, :author_id]
+    if record.author_id == user&.id
+      attrs += [body_multiloc: I18n.available_locales]
+    end
+    attrs
   end
 
 
