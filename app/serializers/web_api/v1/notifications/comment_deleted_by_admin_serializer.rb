@@ -1,4 +1,5 @@
 class WebApi::V1::Notifications::CommentDeletedByAdminSerializer < WebApi::V1::Notifications::NotificationSerializer
+  attributes :reason_code, :other_reason
 
   belongs_to :initiating_user, serializer: WebApi::V1::UserSerializer
   belongs_to :idea, serializer: WebApi::V1::IdeaSerializer

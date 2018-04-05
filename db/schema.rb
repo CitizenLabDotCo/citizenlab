@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180327132833) do
+ActiveRecord::Schema.define(version: 20180405090646) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -251,8 +251,12 @@ ActiveRecord::Schema.define(version: 20180327132833) do
     t.datetime "updated_at", null: false
     t.uuid "initiating_user_id"
     t.uuid "spam_report_id"
+    t.string "reason_code_id"
+    t.string "other_reason_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
+    t.index ["other_reason_id"], name: "index_notifications_on_other_reason_id"
+    t.index ["reason_code_id"], name: "index_notifications_on_reason_code_id"
     t.index ["recipient_id", "read_at"], name: "index_notifications_on_recipient_id_and_read_at"
     t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
     t.index ["spam_report_id"], name: "index_notifications_on_spam_report_id"

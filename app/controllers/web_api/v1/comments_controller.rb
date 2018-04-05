@@ -1,7 +1,5 @@
 class WebApi::V1::CommentsController < ApplicationController
 
-  MARK_AS_DELETED_REASON_CODES = %w(wrong_content inappropriate other)
-
   before_action :set_comment, only: [:show, :update, :mark_as_deleted, :destroy]
   skip_after_action :verify_authorized, only: [:index_xlsx]
 
@@ -70,7 +68,7 @@ class WebApi::V1::CommentsController < ApplicationController
     reason_code = params.dig(:comment, :reason_code)
     other_reason = params.dig(:comment, :other_reason)
     if (@comment.author_id == current_user&.id) || 
-      ((MARK_AS_DELETED_REASON_CODES.include? reason_code) &&
+      ((Notifications::CommentDeletedByAdmin.REASON_CODES.include? reason_code) &&
        (reason_code != 'other' || other_reason.present?))
       @comment.publication_status = 'deleted'
       if @comment.save
