@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-
 import { IInviteData, invitesStream } from 'services/invites';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
@@ -22,7 +21,7 @@ type SortAttribute = 'email' | 'last_name' | 'created_at' | 'invite_status';
 type SortDirection = 'ascending' | 'descending';
 type SortDescriptor = {
   attribute: SortAttribute,
-  direction: SortDirection,
+  direction: SortDirection
 };
 type InviteStatus = 'pending' | 'accepted';
 
@@ -33,7 +32,7 @@ export type GetInvitesChildProps = State & {
   onChangeFilterInviteStatus: (inviteStatus: InviteStatus) => void;
 };
 
-class GetInvites extends React.PureComponent<Props, State> {
+export default class GetInvites extends React.PureComponent<Props, State> {
   searchTerm$: Rx.BehaviorSubject<string | null>;
   sortDescriptor$: Rx.BehaviorSubject<SortDescriptor>;
   currentPage$: Rx.BehaviorSubject<number>;
@@ -115,15 +114,12 @@ class GetInvites extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const renderProps: GetInvitesChildProps = {
+    return this.props.children({
       ...this.state,
       onChangeSorting: this.handleChangeSorting,
       onChangeSearchTerm: this.handleChangeSearchTerm,
       onChangePage: this.handleChangePage,
       onChangeFilterInviteStatus: this.handleChangeFilterInviteStatus,
-    };
-    return this.props.children(renderProps);
+    });
   }
 }
-
-export default GetInvites;

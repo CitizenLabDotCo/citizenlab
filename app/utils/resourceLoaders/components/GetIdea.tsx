@@ -1,64 +1,70 @@
-// Libs
 import React from 'react';
-import { Subscription } from 'rxjs';
-
-// Services & utils
+import { BehaviorSubject, Subscription, Observable } from 'rxjs';
+import shallowCompare from 'utils/shallowCompare';
 import { IIdeaData, ideaByIdStream, ideaBySlugStream, IIdea } from 'services/ideas';
 
-// Typing
-interface Props {
+interface InputProps {
   id?: string;
   slug?: string;
-  children: {(state: State): any};
+}
+
+interface Props extends InputProps {
+  children: (renderProps: GetIdeaChildProps) => JSX.Element | null ;
 }
 
 interface State {
   idea: IIdeaData | null;
 }
 
+export type GetIdeaChildProps = State;
+
 export default class GetIdea extends React.PureComponent<Props, State> {
-  private ideaSub: Subscription;
+  private inputProps$: BehaviorSubject<InputProps>;
+  private subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props);
-
     this.state = {
       idea: null
     };
   }
 
   componentDidMount() {
-    this.updateSub(this.props);
+    const { id, slug } = this.props;
+
+    this.inputProps$ = new BehaviorSubject({ id, slug });
+
+    this.subscriptions = [
+      this.inputProps$
+        .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
+        .switchMap(({ id, slug }) => {
+          let idea$: Observable<IIdea | null> = Observable.of(null);
+
+          if (id) {
+            idea$ = ideaByIdStream(id).observable;
+          } else if (slug) {
+            idea$ = ideaBySlugStream(slug).observable;
+          }
+
+          return idea$;
+        }).subscribe((idea) => {
+          this.setState({ idea: (idea ? idea.data : null) });
+        })
+    ];
   }
 
-  componentDidUpdate(prevProps: Props) {
-    if ((this.props.id !== prevProps.id) || (this.props.slug !== prevProps.slug)) {
-      this.updateSub(this.props);
-    }
+  componentDidUpdate() {
+    const { id, slug } = this.props;
+    this.inputProps$.next({ id, slug });
   }
 
   componentWillUnmount() {
-    this.ideaSub.unsubscribe();
-  }
-
-  updateSub(props: Props) {
-    if (this.ideaSub) this.ideaSub.unsubscribe();
-
-    let targetStream;
-    if (props.id) targetStream = ideaByIdStream(props.id);
-    if (props.slug) targetStream = ideaBySlugStream(props.slug);
-
-    if (!targetStream) return;
-
-    this.ideaSub = targetStream.observable
-    .subscribe((response: IIdea) => {
-      this.setState({
-        idea: response.data
-      });
-    });
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   render() {
-    return this.props.children(this.state);
+    const { children } = this.props;
+    const { idea } = this.state;
+    return children({ idea });
   }
 }

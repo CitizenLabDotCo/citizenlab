@@ -7,11 +7,9 @@ import ImageZoom from 'react-medium-image-zoom';
 
 // services
 import GetProject from 'utils/resourceLoaders/components/GetProject';
-import { IProjectData } from 'services/projects';
 
 // i18n
 import T from 'components/T';
-import { IProjectImageData } from 'services/projectImages';
 
 // style
 import styled from 'styled-components';
@@ -142,34 +140,32 @@ class ProjectInfo extends React.PureComponent<Props & WithRouterProps, State> {
   render() {
     return (
       <GetProject slug={this.props.params.slug} withImages>
-        {({ project, images }: {project: IProjectData, images: IProjectImageData[]}) => {
-          if (project) {
-            return (
-              <Container>
-                <Left>
-                  <IdeaBodyStyled>
-                    <T value={project.attributes.description_multiloc} />
-                  </IdeaBodyStyled>
-                </Left>
+        {({ project, images }) => {
+          if (!project) return null;
 
-                {images && images.length > 0 &&
-                  <Right>
-                    <ProjectImages>
-                      {images.filter((image) => image).map((image) => (
-                        <ImageZoom
-                          key={image.id}
-                          image={{ src: image.attributes.versions.large }}
-                          zoomImage={{ src: image.attributes.versions.large }}
-                        />
-                      ))}
-                    </ProjectImages>
-                  </Right>
-                }
-              </Container>
-            );
-          } else {
-            return null;
-          }
+          return (
+            <Container>
+              <Left>
+                <IdeaBodyStyled>
+                  <T value={project.attributes.description_multiloc} />
+                </IdeaBodyStyled>
+              </Left>
+
+              {images && images.length > 0 &&
+                <Right>
+                  <ProjectImages>
+                    {images.filter((image) => image).map((image) => (
+                      <ImageZoom
+                        key={image.id}
+                        image={{ src: image.attributes.versions.large }}
+                        zoomImage={{ src: image.attributes.versions.large }}
+                      />
+                    ))}
+                  </ProjectImages>
+                </Right>
+              }
+            </Container>
+          );
         }}
       </GetProject>
     );

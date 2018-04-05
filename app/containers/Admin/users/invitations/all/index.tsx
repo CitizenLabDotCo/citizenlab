@@ -46,11 +46,13 @@ const EmptyStateContainer = styled.div`
   justify-content: center;
 `;
 
-type Props = {};
+interface InputProps {}
 
-type State = {
+interface Props extends InputProps, GetInvitesChildProps {}
+
+interface State {
   exporting: boolean;
-};
+}
 
 class InvitesTable extends React.PureComponent<Props & GetInvitesChildProps, State> {
 
@@ -86,15 +88,12 @@ class InvitesTable extends React.PureComponent<Props & GetInvitesChildProps, Sta
     this.props.onChangeSearchTerm(event.target.value);
   }
 
-  showEmptyState = () => {
-    const { invites, searchTerm, inviteStatusFilter } = this.props;
-    return invites && isEmpty(this.props.invites) && !searchTerm && !inviteStatusFilter;
-  }
-
   render() {
     const { exporting } = this.state;
     const {
       invites,
+      searchTerm,
+      inviteStatusFilter,
       sortAttribute,
       sortDirection,
       currentPage,
@@ -103,6 +102,8 @@ class InvitesTable extends React.PureComponent<Props & GetInvitesChildProps, Sta
     } = this.props;
 
     if (!invites || invites.length === 0) return null;
+
+    const isTableEmpty = (invites && isEmpty(this.props.invites) && !searchTerm && !inviteStatusFilter);
 
     return (
       <Container>
@@ -170,7 +171,6 @@ class InvitesTable extends React.PureComponent<Props & GetInvitesChildProps, Sta
             ))}
           </Table.Body>
 
-
           {(currentPage && lastPage && lastPage > 1) &&
             <Table.Footer fullWidth={true}>
               <Table.Row>
@@ -186,19 +186,18 @@ class InvitesTable extends React.PureComponent<Props & GetInvitesChildProps, Sta
           }
         </Table>
 
-        {this.showEmptyState() &&
+        {isTableEmpty &&
           <EmptyStateContainer>
             <FormattedMessage {...messages.currentlyNoInvites} />
           </EmptyStateContainer>
         }
-
       </Container>
     );
   }
 }
 
-export default (props: Props) => (
+export default (inputProps: InputProps) => (
   <GetInvites>
-    {(invites) => <InvitesTable {...props} {...invites} />}
+    {(getInvitesChildProps) => <InvitesTable {...inputProps} {...getInvitesChildProps} />}
   </GetInvites>
 );
