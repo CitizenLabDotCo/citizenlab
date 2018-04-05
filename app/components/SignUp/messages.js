@@ -31,7 +31,7 @@ export default defineMessages({
   },
   tokenAlreadyAcceptedError: {
     id: 'app.containers.SignUp.tokenAlreadyAcceptedError',
-    defaultMessage: 'This invitation has already been redeemed',
+    defaultMessage: 'The invitation has already been redeemed',
   },
   firstNameLabel: {
     id: 'app.containers.SignUp.firstNameLabel',
