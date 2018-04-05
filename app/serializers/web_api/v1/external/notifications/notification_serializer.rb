@@ -19,10 +19,14 @@ class WebApi::V1::External::Notifications::NotificationSerializer < ActiveModel:
   end
 
   class CustomCommentSerializer < ActiveModel::Serializer
-    attributes :id, :body_multiloc, :upvotes_count, :downvotes_count, :url, :created_at, :author_name
+    attributes :id, :body_multiloc, :upvotes_count, :downvotes_count, :url, :created_at, :author_name, :author_avatar
 
     def url
       FrontendService.new.model_to_url object
+    end
+
+    def author_avatar
+      object.author&.avatar && object.author.avatar.versions.map{|k, v| [k.to_s, v.url]}.to_h
     end
   end
 

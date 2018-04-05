@@ -689,7 +689,6 @@ models:
       fr: Ces idées ne sont pas liées à un projet.
       nl: De ideeën die zich hier bevinden werden niet aan een project toegekend.
       'no': The ideas found here are not linked to a project.
-    remote_header_bg_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project/header_bg/9a6f36ec-a2e1-44e6-8c0b-247cc05836c0/Idea_cover_qdrwa6.jpg
     description_preview_multiloc: {}
     presentation_mode: card
     participation_method: ideation
@@ -718,7 +717,6 @@ models:
         for young and old.</p>"
       nl: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
         plek van maken, voor jong en oud.</p>"
-    remote_header_bg_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project/header_bg/48876da1-c315-4929-9fd8-1bb7e02aa9da/image13.png
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl: Laten we het park op de grend van de stad vernieuwen.
@@ -780,7 +778,6 @@ models:
         for young and old.</p>"
       nl: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
         plek van maken, voor jong en oud.</p>"
-    remote_header_bg_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project/header_bg/4d558d34-f226-4e99-ac42-efb032190523/image5.png
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl: Laten we het park op de grend van de stad vernieuwen.
@@ -811,7 +808,6 @@ models:
         for young and old.</p>"
       nl: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
         plek van maken, voor jong en oud.</p>"
-    remote_header_bg_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project/header_bg/70926dd4-c68d-4253-89f5-7ecaf7575aba/image13.png
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl: Laten we het park op de grend van de stad vernieuwen.
@@ -842,7 +838,6 @@ models:
         for young and old.</p>"
       nl: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
         plek van maken, voor jong en oud.</p>"
-    remote_header_bg_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project/header_bg/b5d06385-add7-4d18-983d-9255f11b0af1/image17.png
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl: Laten we het park op de grend van de stad vernieuwen.
@@ -880,7 +875,6 @@ models:
           <li>de 'vaste ideeën' kunnen de SDG's zijn of thema's op basis van de DESTEP (<a href="https://www.citizenlab.co/blog/burgerparticipatie-nl/online-platform-vergemakkelijkt-inspraak-bij-omgevingsanalyse/?lang=nl">zie artikel</a> ).</li>
           <li>van zodra de 'interne fase' voorbij is, creëren we een nieuw 'open' project en maken we een selectie van ideeën (vast of los) die we verslepen naar dat nieuwe project. Dat open project kan dan (bijvoorbeeld vanaf november, na #vk2018)?   </li>
         </ul>
-    remote_header_bg_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project/header_bg/1b99f39e-476c-49c0-bbe0-b7d569f5ac44/header_bg.png
     description_preview_multiloc:
       nl: 'Bent u al begonnen met de opmaak van een Omgevingsanalyse of het Meerjarenplan
         2020-2025? Dat kan vandaag al, laagdrempelig, overzichtelijk en zonder veel
@@ -932,7 +926,6 @@ models:
         <p>Op 1 juli 2016 bekrachtigde de Vlaamse Regering een decreet waardoor de planmilieueffectrapportage en andere effectbeoordelingen in het planningsproces van een ruimtelijk uitvoeringsplan geïntegreerd worden.</p>
         <p>De gewijzigde regelgeving sluit hierdoor inhoudelijke en procedurele inconsistenties uit die optreden bij de overgang van de milieueffectrapportage naar het planproces. Bovendien beoogt de nieuwe procedure een versterking van het draagvlak voor de ruimtelijke uitvoeringsplannen door een consultatie bij het begin van het planningsproces en een openbaar onderzoek op het einde.</p>
         <p></p>
-    remote_header_bg_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project/header_bg/0dd30803-790b-4ae7-912e-bf5af8d7d17f/header_bg.png
     description_preview_multiloc:
       nl: 'Het stadsbestuur wil graag de mening van de bevolking kennen over het ruimtelijk
         uitvoeringsplan (RUP) “XYZ” in onze gemeente/stad dat in opmaak is. Op verschillende
@@ -955,82 +948,6 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-  project_image:
-  - project_ref: *60
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/8d355201-0d51-484b-8af4-ff720094142f/open_idea_box_gaxtpy.png
-    ordering: 
-  - project_ref: *61
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/04f6d953-4eb1-4ea1-84c3-af5b4bba4c72/image17.png
-    ordering: 
-  - project_ref: *61
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/1a325bf2-2aed-4271-bcdc-e5104eae9c38/image3.png
-    ordering: 
-  - project_ref: *61
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/79262f5a-1609-42c1-98b9-b0735ca6e0e2/image6.png
-    ordering: 
-  - project_ref: *61
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/f152ca85-3d58-429b-8fbc-317129493763/image15.png
-    ordering: 
-  - project_ref: *62
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/32a79c5f-5f36-48aa-b371-26254efdfca1/image19.png
-    ordering: 
-  - project_ref: *62
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/02f6c35c-dbb0-41fe-af52-0783fa484e67/image1.png
-    ordering: 
-  - project_ref: *62
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/2c76df22-9a7c-48a0-89a5-541f2f4a63a6/image3.png
-    ordering: 
-  - project_ref: *63
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/290698a6-5ec5-4c8d-a8bd-84b7bc2a1212/image2.png
-    ordering: 
-  - project_ref: *64
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/699b3c59-6a29-465b-87d7-f2da26028987/image8.png
-    ordering: 
-  - project_ref: *64
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/f43e7a18-e95e-4c77-963f-f690fde2ed50/image2.png
-    ordering: 
-  - project_ref: *64
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/6d43645d-e30a-495d-85d7-17c9cb79601e/image7.png
-    ordering: 
-  - project_ref: *64
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/7a6399a6-b859-4228-b1bd-ed80bc13d6c8/image18.png
-    ordering: 
-  - project_ref: *65
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/3352fd08-b90e-4487-a9b8-cce53f1969e3/image19.png
-    ordering: 
-  - project_ref: *65
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/28640689-4d26-478c-80b4-9fb6ad5f417d/image12.png
-    ordering: 
-  - project_ref: *66
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/dca20f6f-f92f-442c-abfb-4a202a7426f2/image.png
-    ordering: 
-  - project_ref: *66
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/0cb0165b-500a-427c-8f49-608cee7f7a20/image.jpeg
-    ordering: 
-  - project_ref: *66
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/f6b83cd7-ac7c-47d8-a604-62b9edd9219e/image.png
-    ordering: 
-  - project_ref: *66
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/e66b5508-3b89-4e05-b514-3fffd8d43be1/image.png
-    ordering: 
-  - project_ref: *66
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/b3712e5c-6667-44a6-a8cb-a43494ed224d/image.png
-    ordering: 
-  - project_ref: *67
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/499ce8da-180f-4dab-b2cc-c44dfdc79a5a/image.png
-    ordering: 
-  - project_ref: *67
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/49e49446-804f-42fb-a1a1-3ac8aada2733/image.png
-    ordering: 
-  - project_ref: *67
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/b305867f-e2e5-457f-8ecc-b835999cfb9d/image.png
-    ordering: 
-  - project_ref: *67
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/7223b744-4301-42b7-86c2-79072c55b12a/image.png
-    ordering: 
-  - project_ref: *67
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/project_image/image/50d66457-f398-4385-839a-677957859812/image.png
-    ordering: 
   idea:
   - &193
     title_multiloc:
@@ -1963,76 +1880,6 @@ models:
       utc: &192 2018-03-28 13:35:24.595567000 Z
       zone: *2
       time: *192
-  idea_image:
-  - idea_ref: *193
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/2f072db3-bcf9-45f2-ab4d-e1d7c572e060/image14.png
-    ordering: 
-  - idea_ref: *193
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/ecc31c30-72c4-41f7-8cab-52f798fe4572/image2.png
-    ordering: 
-  - idea_ref: *194
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/030aa6a4-0b73-4401-aca4-8a4054f9f545/image15.png
-    ordering: 
-  - idea_ref: *194
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/5ae5d2f4-6158-418a-8a86-d5bd1ab74280/image8.png
-    ordering: 
-  - idea_ref: *195
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/cca19861-5a82-475c-87fe-0cfd84718f01/image18.png
-    ordering: 
-  - idea_ref: *195
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/5c1d61b2-ed47-40bc-82a5-68e482eb9055/image7.png
-    ordering: 
-  - idea_ref: *196
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/25508650-13a6-49bf-ba6d-a0f16580a1ff/image18.png
-    ordering: 
-  - idea_ref: *197
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/00c9143e-4782-4fe3-ab86-0814862a0e21/image15.png
-    ordering: 
-  - idea_ref: *198
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/b6f10c6f-7164-4ac8-8ebb-ee878ec32209/image17.png
-    ordering: 
-  - idea_ref: *199
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/c0813f83-6000-47fc-8bc8-98d4261ed745/image8.png
-    ordering: 
-  - idea_ref: *200
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/e683fcd8-539f-4720-88b1-d664d4910b46/image9.png
-    ordering: 
-  - idea_ref: *200
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/523e1c48-6dca-48bc-ab50-dd5835c4d7b6/image3.png
-    ordering: 
-  - idea_ref: *201
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/e49c2e0e-5e4e-471e-b40d-7d307d11ea1e/image13.png
-    ordering: 
-  - idea_ref: *201
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/b196c863-fd29-4f8a-b82b-5b76e485e99b/image8.png
-    ordering: 
-  - idea_ref: *202
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/23402093-f102-4d2f-99ef-b03ffe0ba384/image12.png
-    ordering: 
-  - idea_ref: *203
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/beeceea6-fb44-4563-a2c0-272b68e561fb/image3.png
-    ordering: 
-  - idea_ref: *203
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/b4fd3259-2528-415c-8a86-45478306ec2c/image13.png
-    ordering: 
-  - idea_ref: *204
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/4f845767-39e3-4224-9b3a-0d5bb962a193/image14.png
-    ordering: 
-  - idea_ref: *204
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/71e73ef6-f4cc-4cee-a521-201be86ac53b/image12.png
-    ordering: 
-  - idea_ref: *205
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/57a32341-dbb9-4343-a29f-a3f982f316b5/image8.png
-    ordering: 
-  - idea_ref: *206
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/53a05c0b-a133-480f-922a-7f9aea6339df/image13.png
-    ordering: 
-  - idea_ref: *207
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/6bc76694-909d-487c-b62c-1943ee0163fc/image4.png
-    ordering: 
-  - idea_ref: *207
-    remote_image_url: http://localhost:4000/uploads/7478341e-187f-4ee8-92c4-2e5f159b840a/idea_image/image/37c9cddf-c03f-4360-bf6a-2938fdf170b7/image16.png
-    ordering: 
   comment:
   - body_multiloc:
       en: "<p>Consequatur eligendi sint. Necessitatibus ut consequuntur dicta nemo
