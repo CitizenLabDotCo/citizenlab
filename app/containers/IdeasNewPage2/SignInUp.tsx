@@ -60,6 +60,7 @@ const Right = Section.extend`
   padding-left: 50vw;
   overflow: hidden;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 
   ${media.smallerThanMaxTablet`
     padding: 0;

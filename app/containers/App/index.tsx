@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as moment from 'moment';
-// import { cloneDeep } from 'lodash';
 import 'moment-timezone';
 
 // libraries

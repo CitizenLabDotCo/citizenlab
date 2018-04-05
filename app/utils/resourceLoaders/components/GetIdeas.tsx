@@ -7,7 +7,6 @@ import { isEqual } from 'lodash';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import { IIdeaData, ideasMarkersStream, ideasStream } from 'services/ideas';
 
-
 // Typing
 export interface SearchQueryProps {
   areas?: string[];

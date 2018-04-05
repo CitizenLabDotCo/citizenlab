@@ -315,21 +315,21 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
                     <ToggleLabel>
                       <FormattedMessage {...messages.postingEnabled} />
                     </ToggleLabel>
-                    <Toggle checked={postingEnabled as boolean} onToggle={this.togglePostingEnabled} />
+                    <Toggle value={postingEnabled as boolean} onChange={this.togglePostingEnabled} />
                   </ToggleRow>
 
                   <ToggleRow>
                     <ToggleLabel>
                       <FormattedMessage {...messages.commentingEnabled} />
                     </ToggleLabel>
-                    <Toggle checked={commentingEnabled as boolean} onToggle={this.toggleCommentingEnabled} />
+                    <Toggle value={commentingEnabled as boolean} onChange={this.toggleCommentingEnabled} />
                   </ToggleRow>
 
                   <ToggleRow className="last">
                     <ToggleLabel>
                       <FormattedMessage {...messages.votingEnabled} />
                     </ToggleLabel>
-                    <Toggle checked={votingEnabled as boolean} onToggle={this.toggleVotingEnabled} />
+                    <Toggle value={votingEnabled as boolean} onChange={this.toggleVotingEnabled} />
                   </ToggleRow>
                 </StyledSectionField>
                 {votingEnabled &&

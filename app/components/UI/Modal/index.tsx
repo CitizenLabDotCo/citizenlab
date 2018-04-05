@@ -27,6 +27,7 @@ const ModalContent: any = styled(clickOutside)`
   max-width: ${(props: any) => props.width};
   outline: none;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 40px;
   position: relative;
   width: 100%;

@@ -20,12 +20,12 @@ import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 
 const Title = styled.h1`
-  color: #333;
-  font-size: 35px;
+  color: ${color('title')};
+  font-size: ${fontSize('xxxl')};
   line-height: 40px;
   font-weight: 600;
-  margin: 0;
   padding: 0;
+  margin: 0;
   margin-bottom: 30px;
 `;
 

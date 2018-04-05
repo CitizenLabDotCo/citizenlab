@@ -44,12 +44,14 @@ class IdeaButton extends React.Component<Props, State> {
     const { project, phase } = this.props;
     const { show, enabled } = postingButtonState({ project, phase });
 
-    if (!show) return (
-      <DisabledText>
-        <StyledIcon name="lock-outlined" />
-        <FormattedMessage {...messages.postingHereImpossible} />
-      </DisabledText>
-    );
+    if (!show) {
+      return (
+        <DisabledText>
+          <StyledIcon name="lock-outlined" />
+          <FormattedMessage {...messages.postingHereImpossible} />
+        </DisabledText>
+      );
+    }
 
     return (
       <Button

@@ -8,6 +8,7 @@ import { currentTenantStream, ITenantData } from 'services/tenant';
 export interface Props {
   children: {(state: Partial<State>): any};
 }
+
 export interface State {
   tenant: ITenantData | null;
   tenantLocales: Locale[] | null;
@@ -26,7 +27,10 @@ class GetTenant extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     this.sub = currentTenantStream().observable.subscribe((response) => {
-      this.setState({ tenant: response.data, tenantLocales: response.data.attributes.settings.core.locales });
+      this.setState({
+        tenant: response.data,
+        tenantLocales: response.data.attributes.settings.core.locales
+      });
     });
   }
 

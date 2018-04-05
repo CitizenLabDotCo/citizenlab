@@ -27,7 +27,11 @@ const ListWrapper = styled.div`
 `;
 
 const AddButton = styled(Button)`
-  align-self: flex-end;
+  align-self: flex-start;
+`;
+
+const StyledList = styled(List)`
+  margin-top: 30px;
 `;
 
 type Props = {
@@ -104,7 +108,7 @@ class AdminProjectTimelineIndex extends React.PureComponent<Props & InjectedIntl
         </AddButton>
 
         {!loading && events.length > 0 &&
-          <List>
+          <StyledList>
             <HeadRow>
               <div className="expand"><FormattedMessage {...messages.titleColumnHeader} /></div>
             </HeadRow>
@@ -134,7 +138,7 @@ class AdminProjectTimelineIndex extends React.PureComponent<Props & InjectedIntl
                 </Row>
               );
             })}
-          </List>
+          </StyledList>
         }
       </ListWrapper>
     );
