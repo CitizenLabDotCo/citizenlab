@@ -468,6 +468,7 @@
   "app.containers.IdeasShow.submittingComment": "Publicerer...",
   "app.containers.IdeasShow.voteOnThisIdea": "Stem på denne idé",
   "app.containers.NotificationMenu.clearAll": "Ryd alle",
+  "app.containers.NotificationMenu.commentDeletedByAdmin": "",
   "app.containers.NotificationMenu.error": "Kunne ikke indlæse notifikationer",
   "app.containers.NotificationMenu.loadMore": "Indlæs flere...",
   "app.containers.NotificationMenu.loading": "Indlæser notifikationer...",

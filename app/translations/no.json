@@ -468,6 +468,7 @@
   "app.containers.IdeasShow.submittingComment": "Publiserer...",
   "app.containers.IdeasShow.voteOnThisIdea": "Stem på denne idéen",
   "app.containers.NotificationMenu.clearAll": "Fjern alt",
+  "app.containers.NotificationMenu.commentDeletedByAdmin": "",
   "app.containers.NotificationMenu.error": "Kunne ikke laste inn varsler",
   "app.containers.NotificationMenu.loadMore": "Last inn mer...",
   "app.containers.NotificationMenu.loading": "Laster inn varsler...",

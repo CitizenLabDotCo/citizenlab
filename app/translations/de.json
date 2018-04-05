@@ -468,6 +468,7 @@
   "app.containers.IdeasShow.submittingComment": "Wird veröffentlicht...",
   "app.containers.IdeasShow.voteOnThisIdea": "Stimmen Sie zu dieser Idee ab",
   "app.containers.NotificationMenu.clearAll": "Alle Benachrichtigungen löschen",
+  "app.containers.NotificationMenu.commentDeletedByAdmin": "",
   "app.containers.NotificationMenu.error": "Benachrichtigungen konnten nicht geladen werden",
   "app.containers.NotificationMenu.loadMore": "Mehr laden...",
   "app.containers.NotificationMenu.loading": "Benachrichtigungen werden geladen...",

@@ -171,7 +171,7 @@ export interface ICommentMarkedAsSpamNotificationData extends IBaseNotificationD
     initiating_user_first_name: string;
     initiating_user_last_name: string;
     initiating_user_slug: string;
-    idea_title: { [key: string]: any; }
+    idea_title: Multiloc;
   };
   relationships: {
     initiating_user: {
@@ -249,6 +249,46 @@ export interface IInviteAcceptedNotificationData extends IBaseNotificationData {
   };
 }
 
+export interface ICommentDeletedByAdminNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'comment_deleted_by_admin';
+    read_at: string;
+    created_at: string;
+    initiating_user_first_name: string;
+    initiating_user_last_name: string;
+    initiating_user_slug: string;
+    idea_title: Multiloc;
+    reason_code: 'irrelevant' | 'inappropriate' | 'other';
+    other_reason: string;
+  };
+  relationships: {
+    initiating_user: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    idea: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    comment: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    project: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
 export type TNotificationData =
   ICommentOnYourCommentNotificationData |
   ICommentOnYourIdeaNotificationData |
@@ -256,7 +296,8 @@ export type TNotificationData =
   IIdeaMarkedAsSpamNotificationData |
   IMentionInCommentNotificationData |
   IInviteAcceptedNotificationData |
-  IStatusChangeOfYourIdeaNotificationData;
+  IStatusChangeOfYourIdeaNotificationData |
+  ICommentDeletedByAdminNotificationData;
 
 
 export interface INotificationLinks {
