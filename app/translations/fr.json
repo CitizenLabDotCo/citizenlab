@@ -466,6 +466,7 @@
   "app.containers.IdeasShow.submittingComment": "Publication...",
   "app.containers.IdeasShow.voteOnThisIdea": "Votez pour ou contre cette idée",
   "app.containers.NotificationMenu.clearAll": "Effacer toutes les notifications",
+  "app.containers.NotificationMenu.commentDeletedByAdmin": "",
   "app.containers.NotificationMenu.error": "Les notifications n'ont pas pu être chargées",
   "app.containers.NotificationMenu.loadMore": "Afficher la suite...",
   "app.containers.NotificationMenu.loading": "Chargement des notifications...",
