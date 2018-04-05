@@ -50,6 +50,7 @@ Rails.application.routes.draw do
         post "reset_password_email" => "reset_password#reset_password_email", on: :collection
         post "reset_password" => "reset_password#reset_password", on: :collection
         get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
+        get 'by_invite/:token', on: :collection, to: 'users#by_invite'
       end
 
       resources :topics, only: [:index, :show]
@@ -81,6 +82,14 @@ Rails.application.routes.draw do
           get :users_search, on: :collection
         end
         get 'by_slug/:slug', on: :collection, to: 'groups#by_slug'
+      end
+
+      resources :invites do
+        post 'by_token/:token/accept', on: :collection, to: 'invites#accept'
+        post :bulk_create, on: :collection
+        post :bulk_create_xlsx, on: :collection
+        get :example_xlsx, on: :collection
+        get :as_xlsx, on: :collection, action: 'index_xlsx'
       end
 
       scope 'stats', controller: 'stats' do

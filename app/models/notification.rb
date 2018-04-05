@@ -6,6 +6,7 @@ class Notification < ApplicationRecord
   belongs_to :idea, optional: true
   belongs_to :comment, optional: true
   belongs_to :spam_report, optional: true
+  belongs_to :invite, optional: true
 
   scope :unread,  -> {where(read_at: nil)}
 
