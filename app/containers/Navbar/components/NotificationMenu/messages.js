@@ -58,7 +58,7 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.commentDeletedByAdmin',
     defaultMessage: `Your comment on '{ideaTitle}' has been deleted by an admin because
       {reasonCode, select,
-        wrong_content {it is irrelevant}
+        irrelevant {it is irrelevant}
         inappropriate {its content is inappropriate}
         other {{otherReason}}
       }
