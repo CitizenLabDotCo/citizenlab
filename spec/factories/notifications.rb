@@ -42,4 +42,9 @@ FactoryBot.define do
     reason_code 'irrelevant'
     other_reason nil
   end
+
+  factory :invite_accepted, parent: :notification, class: 'Notifications::InviteAccepted' do
+    initiating_user
+    invite
+  end
 end
