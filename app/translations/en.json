@@ -468,6 +468,7 @@
   "app.containers.IdeasShow.submittingComment": "Publishing...",
   "app.containers.IdeasShow.voteOnThisIdea": "Vote on this idea",
   "app.containers.NotificationMenu.clearAll": "Clear all",
+  "app.containers.NotificationMenu.commentDeletedByAdmin": "Your comment on '{ideaTitle}' has been deleted by an admin because\n      {reasonCode, select, irrelevant {it is irrelevant} inappropriate {its content is inappropriate} other {{otherReason}}}",
   "app.containers.NotificationMenu.error": "Couldn't load notifications",
   "app.containers.NotificationMenu.loadMore": "Load more...",
   "app.containers.NotificationMenu.loading": "Loading notifications...",

@@ -54,4 +54,14 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.userAcceptedYourInvitation',
     defaultMessage: '{name} accepted your invitation',
   },
+  commentDeletedByAdmin: {
+    id: 'app.containers.NotificationMenu.commentDeletedByAdmin',
+    defaultMessage: `Your comment on '{ideaTitle}' has been deleted by an admin because
+      {reasonCode, select,
+        irrelevant {it is irrelevant}
+        inappropriate {its content is inappropriate}
+        other {{otherReason}}
+      }
+    `,
+  },
 });
