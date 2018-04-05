@@ -18,7 +18,7 @@ export type GetLocaleChildProps = State;
 export default class GetLocale extends React.PureComponent<Props, State> {
   private subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       locale: 'en',

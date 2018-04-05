@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-
 import { IInviteData, invitesStream } from 'services/invites';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
