@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { get, isString, isEmpty, omitBy, isNil } from 'lodash';
-import * as Rx from 'rxjs/Rx';
 
 // components
 import IdeaCard, { Props as IdeaCardProps } from 'components/IdeaCard';
@@ -14,15 +12,14 @@ import Button from 'components/UI/Button';
 import IdeaButton from 'components/IdeaButton';
 import FeatureFlag from 'components/FeatureFlag';
 
-// services
-import { ideasStream, IIdeas } from 'services/ideas';
+// resources
+import GetIdeas, { GetIdeasChildProps, IQueryParameters } from 'utils/resourceLoaders/components/GetIdeas';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import shallowCompare from 'utils/shallowCompare';
 import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
 
@@ -240,181 +237,53 @@ const LoadMoreButtonWrapper = styled.div`
 
 const LoadMoreButton = styled(Button)``;
 
-interface IQueryParameters {
-  'page[number]'?: number | undefined;
-  'page[size]'?: number | undefined;
-  project?: string | undefined;
-  phase?: string | undefined;
-  author?: string | undefined;
-  sort?: string | undefined;
-  search?: string | undefined;
-  topics?: string[] | undefined;
-}
-
-interface IAccumulator {
-  ideas: IIdeas;
-  queryParameters: IQueryParameters;
-  hasMore: boolean;
-}
-
-type Props = {
-  queryParameters?: IQueryParameters | undefined;
+interface InputProps {
+  inputQueryParameters?: IQueryParameters | undefined;
   showViewToggle?: boolean | undefined;
   defaultView?: 'card' | 'map' | null | undefined;
-};
+}
+
+interface Props extends InputProps, GetIdeasChildProps {}
 
 type State = {
-  queryParameters: IQueryParameters;
-  searchValue: string | undefined;
   selectedView: 'card' | 'map';
-  ideas: IIdeas | null;
-  hasMore: boolean;
-  querying: boolean;
-  loadingMore: boolean;
 };
 
-export default class IdeaCards extends React.PureComponent<Props, State> {
-  queryParameters$: Rx.BehaviorSubject<IQueryParameters>;
-  selectedView$: Rx.BehaviorSubject<'card' | 'map'>;
-  search$: Rx.BehaviorSubject<string>;
-  subscriptions: Rx.Subscription[];
-
+class IdeaCards extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      queryParameters: {
-        'page[number]': 1,
-        'page[size]': 12,
-        sort: 'trending',
-        project: undefined,
-        phase: undefined,
-        author: undefined,
-        search: '',
-        topics: undefined
-      },
-      searchValue: undefined,
-      selectedView: 'card',
-      ideas: null,
-      hasMore: false,
-      querying: true,
-      loadingMore: false
+      selectedView: 'card'
     };
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const queryParameters = { ...this.state.queryParameters, ...this.props.queryParameters };
-    const startAccumulatorValue: IAccumulator = { queryParameters, ideas: {} as IIdeas, hasMore: false };
-    const selectedView = (this.props.defaultView || 'card');
-
-    this.queryParameters$ = new Rx.BehaviorSubject(queryParameters);
-    this.search$ = new Rx.BehaviorSubject('');
-    this.selectedView$ = new Rx.BehaviorSubject(selectedView);
-
-    const queryParameters$ = this.queryParameters$.distinctUntilChanged((x, y) => shallowCompare(x, y));
-    const search$ = this.search$.distinctUntilChanged().do(searchValue => this.setState({ searchValue })).debounceTime(400).startWith('');
-
-    this.subscriptions = [
-      Rx.Observable.combineLatest(
-        queryParameters$,
-        search$
-      )
-      .map(([queryParameters, search]) => ({ ...queryParameters, search }))
-      .mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
-        const isLoadingMore = (acc.queryParameters['page[number]'] !== queryParameters['page[number]']);
-        const search = (isString(queryParameters.search) && !isEmpty(queryParameters.search) ? queryParameters.search : undefined);
-        const pageNumber = (isLoadingMore ? queryParameters['page[number]'] : 1);
-        const newQueryParameters: IQueryParameters = omitBy({
-          ...queryParameters,
-          search,
-          'page[number]': pageNumber
-        }, isNil);
-
-        this.setState({
-          querying: !isLoadingMore,
-          loadingMore: isLoadingMore,
-        });
-
-        return ideasStream({ queryParameters: newQueryParameters }).observable.map((ideas) => {
-          const selfLink = get(ideas, 'links.self');
-          const lastLink = get(ideas, 'links.last');
-          const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
-
-          return {
-            queryParameters,
-            hasMore,
-            ideas: (!isLoadingMore ? ideas : { data: [...acc.ideas.data, ...ideas.data] }) as IIdeas
-          };
-        });
-      }, startAccumulatorValue).subscribe(({ ideas, queryParameters, hasMore }) => {
-        this.setState({ ideas, queryParameters, hasMore, querying: false, loadingMore: false });
-      }),
-
-      this.selectedView$.subscribe((selectedView) => {
-        this.setState({ selectedView });
-      })
-    ];
-  }
-
-  componentDidUpdate(prevProps: Props, _prevState: State) {
-    const prevProjectId: string | null = get(prevProps, 'queryParameters.project', null);
-    const prevPhaseId: string | null = get(prevProps, 'queryParameters.phase', null);
-    const prevProjectOrPhaseId: string | null = (prevProjectId || prevPhaseId || null);
-    const projectId: string | null = get(this.props, 'queryParameters.project', null);
-    const phaseId: string | null = get(this.props, 'queryParameters.phase', null);
-    const projectOrPhaseId: string | null = (projectId || phaseId || null);
-
-    if ((projectOrPhaseId !== prevProjectOrPhaseId) || (this.props.defaultView !== prevProps.defaultView)) {
-      const selectedView = (this.props.defaultView || 'card');
-      this.selectedView$.next(selectedView);
-    }
-
-    if (prevProps.queryParameters !== this.props.queryParameters) {
-      this.queryParameters$.next({ ...this.state.queryParameters, ...this.props.queryParameters });
-    }
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   loadMore = () => {
-    if (!this.state.loadingMore) {
-      this.queryParameters$.next({
-        ...this.state.queryParameters,
-        'page[number]': (this.state.queryParameters['page[number]'] as number) + 1
-      });
+    if (!this.props.loadingMore) {
+      this.props.onLoadMore();
     }
   }
 
   handleSearchOnChange = (search: string) => {
-    this.search$.next(search);
+    this.props.onChangeSearchTerm(search);
   }
 
   handleSortOnChange = (sort: string) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      sort
-    });
+    this.props.onChangeSorting(sort);
   }
 
   handleTopicsOnChange = (topics: string[]) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      topics
-    });
+    this.props.onChangeTopics(topics);
   }
 
   selectView = (selectedView: 'card' | 'map') => (event: React.FormEvent<any>) => {
     event.preventDefault();
     trackEvent(tracks.toggleDisplay, { selectedDisplayMode: selectedView });
-    this.selectedView$.next(selectedView);
+    this.setState({ selectedView });
   }
 
   render() {
-    const { ideas, queryParameters, searchValue, selectedView, hasMore, querying, loadingMore } = this.state;
-    const projectId = queryParameters.project;
-    const phaseId = queryParameters.phase;
+    const { selectedView } = this.state;
+    const { queryParameters, searchValue, ideas, hasMore, querying, loadingMore } = this.props;
     const hasIdeas = (ideas !== null && ideas.data.length > 0);
     const showViewToggle = (this.props.showViewToggle || false);
     const showCardView = (selectedView === 'card');
@@ -463,8 +332,8 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
               </EmptyMessageLine>
             </EmptyMessage>
             <IdeaButton
-              projectId={this.state.queryParameters.project}
-              phaseId={this.state.queryParameters.phase}
+              projectId={queryParameters.project}
+              phaseId={queryParameters.phase}
             />
           </EmptyContainer>
         }
@@ -493,9 +362,15 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
         }
 
         {showMapView && hasIdeas &&
-          <IdeasMap projectId={projectId} phaseId={phaseId} />
+          <IdeasMap projectId={queryParameters.project} phaseId={queryParameters.phase} />
         }
       </Container>
     );
   }
 }
+
+export default (inputProps: InputProps) => (
+  <GetIdeas queryParameters={inputProps.inputQueryParameters}>
+    {(getIdeasChildProps) => <IdeaCards {...inputProps} {...getIdeasChildProps} />}
+  </GetIdeas>
+);

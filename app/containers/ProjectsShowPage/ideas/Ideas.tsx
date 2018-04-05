@@ -24,7 +24,7 @@ export default class Ideas extends React.PureComponent<Props, State> {
     return (
       <Container>
         <IdeaCards
-          queryParameters={queryParameters}
+          inputQueryParameters={queryParameters}
           showViewToggle={true}
           defaultView={defaultView}
         />

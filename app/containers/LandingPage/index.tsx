@@ -394,7 +394,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                     </SectionTitle>
                   </SectionHeader>
                   <SectionContainer>
-                    <IdeaCards queryParameters={landingPageIdeasQuery} />
+                    <IdeaCards inputQueryParameters={landingPageIdeasQuery} />
                   </SectionContainer>
                 </Section>
               </IdeasStyledContentContainer>
