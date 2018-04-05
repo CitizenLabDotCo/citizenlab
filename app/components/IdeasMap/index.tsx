@@ -1,8 +1,7 @@
 // Libs
 import * as React from 'react';
-import { flow } from 'lodash';
 import Leaflet from 'leaflet';
-import { browserHistory, withRouter } from 'react-router';
+import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 
 // Services & utils
 import { trackEvent } from 'utils/analytics';
@@ -16,8 +15,6 @@ import { Message } from 'semantic-ui-react';
 
 // Injectors
 import GetIdeaMarkers from 'utils/resourceLoaders/components/GetIdeaMarkers';
-import { injectTenant, InjectedTenant } from 'utils/resourceLoaders/tenantLoader';
-import { injectLocale, InjectedLocale } from 'utils/resourceLoaders/localeLoader';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -65,19 +62,16 @@ const MapWrapper = styled.div`
 import { IIdeaData } from 'services/ideas';
 
 interface Props {
-  project?: string;
-  phase?: string;
-  params?: {
-    [key: string]: string | number;
-  };
+  projectId?: string;
+  phaseId?: string;
 }
 
 interface State {
   selectedIdea: string | null;
 }
 
-class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, State> {
-  private createIdeaButton: HTMLElement;
+class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
+  private createIdeaButton: HTMLDivElement;
   private savedPosition: Leaflet.LatLng | null = null;
 
   constructor(props: Props) {
@@ -113,7 +107,7 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
     this.setState({ selectedIdea: null });
   }
 
-  onMapClick = ({ map, position }: {map: Leaflet.Map, position: Leaflet.LatLng}): void => {
+  onMapClick = ({ map, position }: {map: Leaflet.Map, position: Leaflet.LatLng}) => {
     this.savedPosition = position;
 
     Leaflet
@@ -132,13 +126,17 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
     }
   }
 
-  bindIdeaCreationButton = (element) => {
-    if (!this.createIdeaButton) this.createIdeaButton = element;
+  bindIdeaCreationButton = (element: HTMLDivElement) => {
+    if (element) {
+      this.createIdeaButton = element;
+    }
   }
 
   render() {
+    const { phaseId, projectId } = this.props;
+
     return (
-      <GetIdeaMarkers projectId={this.props.project} phaseId={this.props.phase}>
+      <GetIdeaMarkers projectId={projectId} phaseId={phaseId}>
         {({ ideaMarkers }) => {
           const { selectedIdea } = this.state;
           const points = this.getPoints(ideaMarkers);
@@ -153,15 +151,22 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
 
               <MapWrapper>
                 {selectedIdea &&
-                  <StyledBox idea={selectedIdea} onClose={this.deselectIdea} />
+                  <StyledBox
+                    idea={selectedIdea}
+                    onClose={this.deselectIdea}
+                  />
                 }
 
-                <StyledMap points={points} onMarkerClick={this.selectIdea} onMapClick={this.onMapClick} />
+                <StyledMap
+                  points={points}
+                  onMarkerClick={this.selectIdea}
+                  onMapClick={this.onMapClick}
+                />
 
                 <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
                   <IdeaButton
-                    phaseId={this.props.phase}
-                    projectId={this.props.project}
+                    projectId={projectId}
+                    phaseId={phaseId}
                     onClick={this.redirectToIdeaCreation}
                   />
                 </div>
@@ -174,8 +179,4 @@ class IdeasMap extends React.Component<Props & InjectedTenant & InjectedLocale, 
   }
 }
 
-export default flow([
-  withRouter,
-  injectTenant(),
-  injectLocale(),
-])(IdeasMap);
+export default withRouter(IdeasMap);

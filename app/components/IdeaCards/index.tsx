@@ -493,7 +493,7 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
         }
 
         {showMapView && hasIdeas &&
-          <IdeasMap project={projectId} phase={phaseId} />
+          <IdeasMap projectId={projectId} phaseId={phaseId} />
         }
       </Container>
     );
