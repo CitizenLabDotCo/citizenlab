@@ -471,6 +471,7 @@
   "app.containers.NotificationMenu.loading": "Benachrichtigungen werden geladen...",
   "app.containers.NotificationMenu.mentionInComment": "{name} erwähnte Sie in einem Kommentar",
   "app.containers.NotificationMenu.noNotifications": "Sie haben noch keine Benachrichtigungen",
+  "app.containers.NotificationMenu.statusChangedOfYourIdea": "",
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "{name} kommentierte Ihre Idee",
   "app.containers.NotificationMenu.userMarkedCommentAsSpam": "{name} meldete einen Kommentar auf '{ideaTitle}' als Spam",
   "app.containers.NotificationMenu.userMarkedIdeaAsSpam": "{name} meldete '{ideaTitle}' als Spam",
