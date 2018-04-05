@@ -68,7 +68,7 @@ class WebApi::V1::CommentsController < ApplicationController
     reason_code = params.dig(:comment, :reason_code)
     other_reason = params.dig(:comment, :other_reason)
     if (@comment.author_id == current_user&.id) || 
-      ((Notifications::CommentDeletedByAdmin.REASON_CODES.include? reason_code) &&
+      ((Notifications::CommentDeletedByAdmin::REASON_CODES.include? reason_code) &&
        (reason_code != 'other' || other_reason.present?))
       @comment.publication_status = 'deleted'
       if @comment.save
