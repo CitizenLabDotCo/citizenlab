@@ -224,6 +224,31 @@ export interface IStatusChangeOfYourIdeaNotificationData extends IBaseNotificati
   };
 }
 
+export interface IInviteAcceptedNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'invite_accepted';
+    read_at: string;
+    created_at: string;
+    initiating_user_first_name: string;
+    initiating_user_last_name: string;
+    initiating_user_slug: string;
+  };
+  relationships: {
+    initiating_user: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    invite: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
 export interface ICommentDeletedByAdminNotificationData extends IBaseNotificationData {
   attributes: {
     type: 'comment_deleted_by_admin';
@@ -264,13 +289,13 @@ export interface ICommentDeletedByAdminNotificationData extends IBaseNotificatio
   };
 }
 
-
 export type TNotificationData =
   ICommentOnYourCommentNotificationData |
   ICommentOnYourIdeaNotificationData |
   ICommentMarkedAsSpamNotificationData |
   IIdeaMarkedAsSpamNotificationData |
   IMentionInCommentNotificationData |
+  IInviteAcceptedNotificationData |
   IStatusChangeOfYourIdeaNotificationData |
   ICommentDeletedByAdminNotificationData;
 

@@ -40,8 +40,13 @@ const IconWrapper = styled.div`
 
 const StyledIcon = styled(Icon)`
   height: 18px;
+  max-width: 30px;
   fill: #fff;
   opacity: 0.5;
+
+  &.idea {
+    height: 21px;
+  }
 `;
 
 const Text = styled.div`
@@ -49,7 +54,7 @@ const Text = styled.div`
   font-size: 17px;
   font-weight: 400;
   line-height: 21px;
-  margin-left: 20px;
+  margin-left: 15px;
   opacity: 0.4;
 
   ${media.smallerThanMinTablet`
@@ -127,7 +132,7 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
         </MenuItem>
 
         <MenuItem active={pathname.startsWith('/admin/users')}>
-          <MenuLink to="/admin/users">
+          <MenuLink to="/admin/users/registered">
             <IconWrapper><StyledIcon name="people" /></IconWrapper>
             <Text>{formatMessage({ ...messages.users })}</Text>
           </MenuLink>
@@ -151,7 +156,7 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
 
         <MenuItem active={pathname.startsWith('/admin/ideas')}>
           <MenuLink to="/admin/ideas">
-            <IconWrapper><StyledIcon name="idea" /></IconWrapper>
+            <IconWrapper><StyledIcon name="idea" className="idea" /></IconWrapper>
             <Text>{formatMessage({ ...messages.ideas })}</Text>
           </MenuLink>
         </MenuItem>

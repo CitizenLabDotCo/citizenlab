@@ -17,7 +17,9 @@ const timeout = 200;
 
 export const StyledRow = styled.div`
   align-items: center !important;
+  border-top: 1px solid ${color('separation')};
   border-bottom: 1px solid ${color('separation')};
+  margin-top: -1px;
   color: ${color('label')};
   display: flex !important;
   font-size: ${fontSize('small')};
@@ -46,10 +48,6 @@ export const StyledRow = styled.div`
     font-weight: 400;
     line-height: 20px;
     margin-bottom: 5px;
-  }
-
-  &:first-child {
-    border-top: 1px solid ${color('separation')};
   }
 
   > * {
