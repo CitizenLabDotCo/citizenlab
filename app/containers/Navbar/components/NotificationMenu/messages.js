@@ -46,6 +46,10 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.userMarkedIdeaAsSpam',
     defaultMessage: '{name} reported \'{ideaTitle}\' as spam',
   },
+  statusChangedOfYourIdea: {
+    id: 'app.containers.NotificationMenu.statusChangedOfYourIdea',
+    defaultMessage: '\'{ideaTitle}\' status has changed to {status}',
+  },
   userAcceptedYourInvitation: {
     id: 'app.containers.NotificationMenu.userAcceptedYourInvitation',
     defaultMessage: '{name} accepted your invitation',
