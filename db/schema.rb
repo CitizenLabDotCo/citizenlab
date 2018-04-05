@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180405090646) do
+ActiveRecord::Schema.define(version: 20180405195146) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -264,10 +264,12 @@ ActiveRecord::Schema.define(version: 20180405090646) do
     t.datetime "updated_at", null: false
     t.uuid "initiating_user_id"
     t.uuid "spam_report_id"
+    t.uuid "invite_id"
     t.string "reason_code"
     t.string "other_reason"
-    t.uuid "invite_id"
+    t.uuid "idea_status_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
+    t.index ["idea_status_id"], name: "index_notifications_on_idea_status_id"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
     t.index ["invite_id"], name: "index_notifications_on_invite_id"
     t.index ["recipient_id", "read_at"], name: "index_notifications_on_recipient_id_and_read_at"
@@ -467,6 +469,7 @@ ActiveRecord::Schema.define(version: 20180405090646) do
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
   add_foreign_key "notifications", "comments"
+  add_foreign_key "notifications", "idea_statuses"
   add_foreign_key "notifications", "ideas"
   add_foreign_key "notifications", "invites"
   add_foreign_key "notifications", "projects"

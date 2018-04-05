@@ -3,6 +3,7 @@ module Notifications
     
     belongs_to :idea
     belongs_to :project, optional: true
+    belongs_to :idea_status, optional: true
 
     validates :idea_id, presence: true
 
@@ -17,12 +18,14 @@ module Notifications
       idea_id = idea&.id
       recipient_id = idea&.author_id
       project_id = idea&.project_id
+      idea_status_id = idea&.idea_status_id
 
       if idea_id && recipient_id
-        [self.create(
+        [self.create!(
            recipient_id: recipient_id,
            idea_id: idea_id,
-           project_id: project_id
+           project_id: project_id,
+           idea_status_id: idea_status_id
          )]
       else
         []
