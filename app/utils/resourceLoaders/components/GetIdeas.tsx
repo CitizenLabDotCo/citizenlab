@@ -1,13 +1,9 @@
-// Libs
 import React from 'react';
 import { Subscription } from 'rxjs';
 import { isEqual } from 'lodash';
-
-// Services & Utils
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import { IIdeaData, ideasMarkersStream, ideasStream } from 'services/ideas';
 
-// Typing
 export interface SearchQueryProps {
   areas?: string[];
   currentPageNumber?: number;
