@@ -196,7 +196,5 @@ export const injectIdeasLoader = <TOriginalProps extends {}>(WrappedComponent: R
         />
       );
     }
-
   };
-
 };
