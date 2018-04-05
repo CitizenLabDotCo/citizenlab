@@ -33,6 +33,7 @@ FactoryBot.define do
 
   factory :status_change_of_your_idea, parent: :notification, class: 'Notifications::StatusChangeOfYourIdea' do
     idea
+    idea_status
   end
 
   factory :comment_deleted_by_admin, parent: :notification, class: 'Notifications::CommentDeletedByAdmin' do
