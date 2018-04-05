@@ -29,7 +29,7 @@ export default class IdeaMap extends React.PureComponent<Props, State> {
   render() {
     return (
       <MapWrapper>
-        <Map points={[{ ...this.props.location }]} />
+        <Map points={[{ ...this.props.location }]} center={this.props.location.coordinates} />
       </MapWrapper>
     );
   }
