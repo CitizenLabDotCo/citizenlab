@@ -258,7 +258,7 @@ export interface ICommentDeletedByAdminNotificationData extends IBaseNotificatio
     initiating_user_last_name: string;
     initiating_user_slug: string;
     idea_title: Multiloc;
-    reason_code: 'wrong_content' | 'inappropriate' | 'other';
+    reason_code: 'irrelevant' | 'inappropriate' | 'other';
     other_reason: string;
   };
   relationships: {
