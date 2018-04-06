@@ -152,6 +152,7 @@ class InvitesService
     end
   rescue Exception => e
     add_error(:unparseable_excel, raw_error: e.to_s)
+    fail_now
   end
 
   def xlsx_groups_to_group_ids groups, row_index
@@ -246,8 +247,11 @@ class InvitesService
       invites.each do |invite|
         invite.invitee.save
         invite.save
-        SideFxInviteService.new.after_create(invite, invite.inviter)
       end
+    end
+    invites.each do |invite|
+      SideFxUserService.new.after_create(invite.invitee, invite.inviter)
+      SideFxInviteService.new.after_create(invite, invite.inviter)
     end
   end
 

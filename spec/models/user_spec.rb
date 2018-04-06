@@ -164,12 +164,6 @@ RSpec.describe User, type: :model do
       user.save
       expect(user.avatar).to be_blank
     end
-
-    it "is retrieved when the user has a gravatar for his email address" do
-      user = build(:user, email: 'sebastien+withgravatar@citizenlab.co')
-      user.save
-      expect(user.avatar).to be_present
-    end
   end
 
   describe "demographic fields", slow_test: true do
