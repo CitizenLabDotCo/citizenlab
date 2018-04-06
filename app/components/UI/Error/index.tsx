@@ -2,7 +2,7 @@ import * as React from 'react';
 import Icon from 'components/UI/Icon';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import { isBoolean, isArray, isEmpty } from 'lodash';
+import { get, isBoolean, isArray, isEmpty } from 'lodash';
 import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import { darken } from 'polished';
@@ -143,13 +143,12 @@ const ErrorList = styled.ul`
 `;
 
 const ErrorListItem = styled.li`
-  margin-top: 5px;
-  margin-bottom: 5px;
-
   &.isList {
     display: flex;
     align-items: flex-start;
     margin-left: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 
     :before {
       content: '•';
@@ -236,31 +235,22 @@ export default class Error extends React.PureComponent<Props, State> {
                 <ErrorList>
                   {apiErrors.map((error) => {
                     const errorMessage = findMessage(fieldName, error.error);
-                    const isInviteErrorCode = [
-                      'email_already_invited',
-                      'unknown_group',
-                      'unknown_locale',
-                      'invalid_row',
-                      'invalid_email', 
-                      'email_already_invited', 
-                      'email_already_active', 
-                      'emails_duplicate'
-                    ].some((errorCode) => errorCode === error.error);
 
                     if (errorMessage) {
-                      if (isInviteErrorCode && error.value) {
-                        const value = (error.error === 'invalid_row' ? error['row'] : error.value);
-
-                        return (
-                          <ErrorListItem key={error.value} className={`${apiErrors.length > 1 && 'isList'}`}>
-                            <FormattedMessage {...errorMessage} values={{ value: <strong>{value}</strong> }} />
-                          </ErrorListItem>
-                        );
-                      }
+                      const value = get(error, 'value', null);
+                      const row = get(error, 'row', null);
+                      const rows = get(error, 'rows', null);
 
                       return (
-                        <ErrorListItem key={error.error}>
-                          <FormattedMessage {...errorMessage} />
+                        <ErrorListItem key={error.value} className={`${apiErrors.length > 1 && 'isList'}`}>
+                          <FormattedMessage 
+                            {...errorMessage}
+                            values={{
+                              row: <strong>{row}</strong>,
+                              rows: (rows ? <strong>{rows.join(', ')}</strong> : null),
+                              value: <strong>'{value}'</strong>
+                            }}
+                          />
                         </ErrorListItem>
                       );
                     }
