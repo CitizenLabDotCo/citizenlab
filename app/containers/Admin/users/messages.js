@@ -119,7 +119,7 @@ export default defineMessages({
   importOptionsInfo: {
     id: 'app.containers.Admin.User.importOptionsInfo',
     defaultMessage: `
-      These options will only be taken into account when they are not defined in the Excel file. 
+      These options will only be taken into account when they are not defined in the Excel file.
       Please visit the {supportPageLink} for more information.
     `,
   },
@@ -136,7 +136,7 @@ export default defineMessages({
     defaultMessage: 'Invitation options',
   },
   groupsLabel: {
-    id: 'app.containers.Admin.User.localeLabel',
+    id: 'app.containers.Admin.User.groupsLabel',
     defaultMessage: 'Optionally select one or more groups that will be assigned to the invited people upon registration',
   },
   inviteTextLabel: {
@@ -170,8 +170,8 @@ export default defineMessages({
   saveErrorMessage: {
     id: 'app.containers.Admin.User.saveErrorMessage',
     defaultMessage: `
-      One or more errors occured. 
-      Therefore no invitations were sent out. 
+      One or more errors occured.
+      Therefore no invitations were sent out.
       Please correct the error(s) listed below and try again.
     `,
   },
