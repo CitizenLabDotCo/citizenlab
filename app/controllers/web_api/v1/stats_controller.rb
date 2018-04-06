@@ -4,7 +4,7 @@ class WebApi::V1::StatsController < ApplicationController
 
   @@stats_service = StatsService.new
   def users_by_time
-    serie = @@stats_service.group_by_time(User.active, 'created_at', params[:start_at], params[:end_at], params[:interval])
+    serie = @@stats_service.group_by_time(User.active, 'registration_completed_at', params[:start_at], params[:end_at], params[:interval])
     render json: serie
   end
 
