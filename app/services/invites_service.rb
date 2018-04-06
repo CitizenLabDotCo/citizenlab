@@ -88,51 +88,17 @@ class InvitesService
     end
   end
 
-  # def generate_example_xlsx
-  #   XlsxService.new.hash_array_to_xlsx [
-  #     {
-  #       email: 'someuser@somedomain.com',
-  #       first_name: 'John',
-  #       last_name: 'Johnson',
-  #       locale: Tenant.settings('core', 'locales').first,
-  #       groups: MultilocService.new.t(Group.first&.title_multiloc),
-  #       admin: false,
-  #     }
-  #   ]
-  # end
-
   def generate_example_xlsx
-    headers = ['email', 'first_name', 'last_name', 'locale', 'groups', 'admin']
-    pa = Axlsx::Package.new
-    wb = pa.workbook
-
-    wb.styles do |s|
-      wb.add_worksheet do |sheet|
-        sheet.add_row headers
-
-        sheet.add_row [
-          'someuser@somedomain.com',
-          'John',
-          'Johnson',
-          Tenant.settings('core', 'locales').first,
-          MultilocService.new.t(Group.first&.title_multiloc),
-          'FALSE'
-        ]
-        
-        sheet.add_data_validation("F2:F1001", {
-          :type => :list,
-          :formula1 => '"TRUE, FALSE"',
-          :showDropDown => false,
-        })
-
-        sheet.add_data_validation("D2:D1001", {
-          :type => :list,
-          :formula1 => "\"#{Tenant.settings('core', 'locales').join(',')}\"",
-          :showDropDown => false,
-        })
-      end
-    end
-    pa.to_stream
+    XlsxService.new.hash_array_to_xlsx [
+      {
+        email: 'someuser@somedomain.com',
+        first_name: 'John',
+        last_name: 'Johnson',
+        language: Tenant.settings('core', 'locales').first,
+        groups: MultilocService.new.t(Group.first&.title_multiloc),
+        admin: false,
+      }
+    ]
   end
 
   private
@@ -148,6 +114,11 @@ class InvitesService
         hash['roles'] = xlsx_admin_to_roles(hash['admin'], row_index)
       end
       hash.delete('admin')
+
+      if hash['language'].present?
+        hash['locale'] = hash['language']
+      end
+      hash.delete('language')
 
     end
   rescue Exception => e
