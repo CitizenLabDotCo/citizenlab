@@ -51,13 +51,11 @@ namespace :fix_existing_tenants do
 
             latitude, longitude = location_to_coordinates[idea.location_description]
             vancouver_mappings += ["#{idea.slug}: #{idea.location_description} => #{[latitude,longitude]}"]
-            idea.location_point = "Point(#{longitude} #{latitude})"
-            idea.save!
+            idea.update_columns(location_point:  "Point(#{longitude} #{latitude})")
 
           elsif idea.location_point
             latitude, longitude = RGeo::GeoJSON.encode(idea.location_point)['coordinates']
-            idea.location_point = "Point(#{longitude} #{latitude})"
-            idea.save!
+            idea.update_columns(location_point: "Point(#{longitude} #{latitude})")
             swap_count += 1
             if latitude.abs.floor == CUTOFF_FOOTPRINT || longitude.abs.floor == CUTOFF_FOOTPRINT
               cutoffs += [idea.slug]
