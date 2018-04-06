@@ -18,9 +18,11 @@ import { getEditorStateFromHtmlString, getHtmlStringFromEditorState } from 'util
 // Components
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Error from 'components/UI/Error';
-import EditorMultiloc from 'components/UI/EditorMultiloc';
 import { Section, SectionField } from 'components/admin/Section';
-import TextAreaMultiloc from 'components/UI/TextAreaMultiloc';
+
+import { Formik, Form, Field } from 'formik';
+import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
+import FormikEditorMultiloc from 'components/UI/FormikEditorMultiloc';
 
 // Typing
 import { API, Locale, Multiloc, MultilocEditorState } from 'typings';
@@ -33,7 +35,7 @@ interface Props {
 
 interface State {
   loading: boolean;
-  data: IProjectData | { id: null, attributes: {}, relationships: { areas: {data} }};
+  data: IProjectData | { id: null, attributes: { description_preview_multiloc: Multiloc, description_multiloc: Multiloc }, relationships: { areas: {data} }};
   diff: IUpdatedProjectProperties;
   errors: {
     [fieldName: string]: API.Error[]
@@ -52,7 +54,7 @@ export default class ProjectDescription extends React.Component<Props, State> {
     this.state = {
       loading: false,
       saved: false,
-      data: { id: null, attributes: {}, relationships: { areas: { data: [] } } },
+      data: { id: null, attributes: { description_multiloc: {}, description_preview_multiloc: {} }, relationships: { areas: { data: [] } } },
       diff: {},
       errors: {},
       locale: 'en',
@@ -139,64 +141,72 @@ export default class ProjectDescription extends React.Component<Props, State> {
   }
 
   render () {
-    const { data, diff, descriptionMultilocEditorState, loading, saved, errors } = this.state;
-    const projectAttrs = { ...data.attributes, ...diff } as IUpdatedProjectProperties;
+    const { data, diff, loading, saved, errors } = this.state;
     const submitState = getSubmitState({ errors, saved, diff });
 
     return (
-      <form className="e2e-project-description-form" onSubmit={this.saveProject}>
-        <Section>
-          <SectionField>
-            <TextAreaMultiloc
-              id="description-preview"
-              name="meta_description"
-              label={<FormattedMessage {...messages.descriptionPreviewLabel} />}
-              rows={5}
-              valueMultiloc={projectAttrs.description_preview_multiloc}
-              onChange={this.updatePreview}
-              maxCharCount={280}
-            />
-            <Error fieldName="description_preview_multiloc" apiErrors={this.state.errors.description_preview_multiloc} />
-          </SectionField>
-          <SectionField>
-            <EditorMultiloc
-              id="project-description"
-              label={<FormattedMessage {...messages.descriptionLabel} />}
-              valueMultiloc={descriptionMultilocEditorState}
-              onChange={this.handleDescriptionOnChange}
-              toolbarConfig={{
-                options: ['inline', 'list', 'link', 'blockType'],
-                inline: {
-                  options: ['bold', 'italic'],
-                },
-                list: {
-                  options: ['unordered', 'ordered'],
-                },
-                blockType: {
-                  inDropdown: false,
-                  options: ['Normal', 'H1'],
-                  className: undefined,
-                  component: undefined,
-                  dropdownClassName: undefined,
-                }
+      <Formik
+        initialValues={{
+          description_preview_multiloc: data.attributes.description_preview_multiloc,
+          description_multiloc: data.attributes.description_multiloc,
+        }}
+        onSubmit={this.saveProject}
+      >
+        {({ errors }) => (
+          <Form noValidate className="e2e-project-description-form">
+            <Section>
+              <SectionField>
+                <Field
+                  name="description_preview_multiloc"
+                  component={FormikTextAreaMultiloc}
+                  id="description-preview"
+                  label={<FormattedMessage {...messages.descriptionPreviewLabel} />}
+                  rows={5}
+                  maxCharCount={280}
+                />
+                <Error fieldName="description_preview_multiloc" apiErrors={errors.description_preview_multiloc} />
+              </SectionField>
+              <SectionField>
+                <Field
+                  component={FormikEditorMultiloc}
+                  id="project-description"
+                  name="description_multiloc"
+                  label={<FormattedMessage {...messages.descriptionLabel} />}
+                  toolbarConfig={{
+                    options: ['inline', 'list', 'link', 'blockType'],
+                    inline: {
+                      options: ['bold', 'italic'],
+                    },
+                    list: {
+                      options: ['unordered', 'ordered'],
+                    },
+                    blockType: {
+                      inDropdown: false,
+                      options: ['Normal', 'H1'],
+                      className: undefined,
+                      component: undefined,
+                      dropdownClassName: undefined,
+                    }
+                  }}
+                />
+                <Error fieldName="description_multiloc" apiErrors={errors.description_multiloc} />
+              </SectionField>
+            </Section>
+
+            <SubmitWrapper
+              loading={loading}
+              status={submitState}
+              messages={{
+                buttonSave: messages.saveButtonLabel,
+                buttonError: messages.saveErrorLabel,
+                buttonSuccess: messages.saveSuccessLabel,
+                messageError: messages.saveErrorMessage,
+                messageSuccess: messages.saveSuccessMessage,
               }}
             />
-            <Error fieldName="description_multiloc" apiErrors={this.state.errors.description_multiloc} />
-          </SectionField>
-
-          <SubmitWrapper
-            loading={loading}
-            status={submitState}
-            messages={{
-              buttonSave: messages.saveButtonLabel,
-              buttonError: messages.saveErrorLabel,
-              buttonSuccess: messages.saveSuccessLabel,
-              messageError: messages.saveErrorMessage,
-              messageSuccess: messages.saveSuccessMessage,
-            }}
-          />
-        </Section>
-      </form>
+          </Form>
+        )}
+      </Formik>
     );
   }
 }
