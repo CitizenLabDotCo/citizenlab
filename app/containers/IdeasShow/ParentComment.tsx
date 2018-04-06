@@ -81,10 +81,7 @@ const CommentsContainer = styled.div`
 `;
 
 const CommentContainerInner = styled.div`
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 30px;
-  padding-bottom: 30px;
+  padding: 20px;
   position: relative;
 
   &.deleted {

@@ -24,10 +24,7 @@ const StyledMoreActionsMenu = styled(CommentsMoreActions)`
 `;
 
 const CommentContainer = styled.div`
-  padding-top: 30px;
-  padding-bottom: 30px;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding: 20px;
   border-top: solid 1px #ddd;
   position: relative;
 `;

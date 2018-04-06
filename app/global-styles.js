@@ -166,10 +166,6 @@ injectGlobal`
     width: 100%;
   }
 
-  body {
-    overflow-y: scroll;
-  }
-
   body:not(.fontLoaded) {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
