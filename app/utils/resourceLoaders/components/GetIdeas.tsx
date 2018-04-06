@@ -121,7 +121,7 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, _prevState: State) {
-    if (!isEqual(prevProps, this.props)) {
+    if (!isEqual(prevProps.queryParameters, this.props.queryParameters)) {
       this.queryParameters$.next({ ...this.state.queryParameters, ...this.props.queryParameters });
     }
   }
