@@ -420,7 +420,7 @@
   "app.containers.IdeasProjectSelect.postingPossibleFuture": "Adding ideas to this project will be possible from {date}.",
   "app.containers.IdeasShow.Map": "Map View",
   "app.containers.IdeasShow.addCommentError": "Something went wrong. Please try again later.",
-  "app.containers.IdeasShow.adminCommentDeletionCancelButton": "Leave the comment",
+  "app.containers.IdeasShow.adminCommentDeletionCancelButton": "Retain the comment",
   "app.containers.IdeasShow.adminCommentDeletionConfirmButton": "Delete this comment",
   "app.containers.IdeasShow.author": "{authorNameComponent}",
   "app.containers.IdeasShow.byAuthorName": "by {authorName}",
