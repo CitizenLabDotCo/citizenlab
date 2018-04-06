@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import { BehaviorSubject, Subscription, Observable } from 'rxjs/Rx';
 import { IInviteData, invitesStream } from 'services/invites';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
@@ -33,11 +33,11 @@ export type GetInvitesChildProps = State & {
 };
 
 export default class GetInvites extends React.PureComponent<Props, State> {
-  searchTerm$: Rx.BehaviorSubject<string | null>;
-  sortDescriptor$: Rx.BehaviorSubject<SortDescriptor>;
-  currentPage$: Rx.BehaviorSubject<number>;
-  inviteStatusFilter$: Rx.BehaviorSubject<InviteStatus | null>;
-  subscriptions: Rx.Subscription[];
+  searchTerm$: BehaviorSubject<string | null>;
+  sortDescriptor$: BehaviorSubject<SortDescriptor>;
+  currentPage$: BehaviorSubject<number>;
+  inviteStatusFilter$: BehaviorSubject<InviteStatus | null>;
+  subscriptions: Subscription[];
 
   constructor(props) {
     super(props);
@@ -50,16 +50,16 @@ export default class GetInvites extends React.PureComponent<Props, State> {
       inviteStatusFilter: null,
       searchTerm: null,
     };
-    this.searchTerm$ = new Rx.BehaviorSubject(null);
-    this.sortDescriptor$ = new Rx.BehaviorSubject({ attribute: 'created_at', direction: 'descending' } as SortDescriptor);
-    this.currentPage$ = new Rx.BehaviorSubject(1);
-    this.inviteStatusFilter$ = new Rx.BehaviorSubject(null);
+    this.searchTerm$ = new BehaviorSubject(null);
+    this.sortDescriptor$ = new BehaviorSubject({ attribute: 'created_at', direction: 'descending' } as SortDescriptor);
+    this.currentPage$ = new BehaviorSubject(1);
+    this.inviteStatusFilter$ = new BehaviorSubject(null);
   }
 
   componentDidMount() {
     this.subscriptions = [
-      Rx.Observable.combineLatest(
-        Rx.Observable.combineLatest(
+      Observable.combineLatest(
+        Observable.combineLatest(
           this.inviteStatusFilter$,
           this.searchTerm$.debounceTime(300)
         ).do(() => { this.currentPage$.next(1); }),
