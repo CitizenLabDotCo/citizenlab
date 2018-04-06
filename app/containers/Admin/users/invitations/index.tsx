@@ -201,6 +201,7 @@ const Invites = styled.div`
 type Props = {};
 
 type State = {
+  locale: Locale | null;
   currentTenantLocales: Locale[] | null;
   groupOptions: IOption[] | null;
   selectedEmails: string | null;
@@ -215,7 +216,9 @@ type State = {
   dirty: boolean;
   processing: boolean;
   processed: boolean;
-  errors: IInviteError[] | null;
+  apiErrors: IInviteError[] | null;
+  filetypeError: JSX.Element | null;
+  unknownError: JSX.Element | null;
 };
 
 export default class Invitations extends React.PureComponent<Props, State> {
@@ -225,6 +228,7 @@ export default class Invitations extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
+      locale: null,
       currentTenantLocales: null,
       groupOptions: null,
       selectedEmails: null,
@@ -239,7 +243,9 @@ export default class Invitations extends React.PureComponent<Props, State> {
       dirty: false,
       processing: false,
       processed: false,
-      errors: null
+      apiErrors: null,
+      filetypeError: null,
+      unknownError: null
     };
     this.fileInputElement = null;
     this.subscriptions = [];
@@ -257,6 +263,7 @@ export default class Invitations extends React.PureComponent<Props, State> {
         groups$
       ).subscribe(([locale, currentTenantLocales, groups]) => {
         this.setState({
+          locale,
           currentTenantLocales,
           groupOptions: this.getGroupOptions(groups, locale, currentTenantLocales),
           selectedLocale: currentTenantLocales[0],
@@ -282,7 +289,7 @@ export default class Invitations extends React.PureComponent<Props, State> {
   }
 
   resetErrorAndSuccessState() {
-    this.setState({ processed: false, errors: null });
+    this.setState({ processed: false, apiErrors: null, unknownError: null });
   }
 
   handleEmailListOnChange = (selectedEmails: string) => {
@@ -291,10 +298,21 @@ export default class Invitations extends React.PureComponent<Props, State> {
   }
 
   handleFileInputOnChange = async (event) => {
-    const selectedFile: File | null = (event.target.files && event.target.files.length === 1 ? event.target.files['0'] : null);
+    let selectedFile: File | null = (event.target.files && event.target.files.length === 1 ? event.target.files['0'] : null);
+    let filetypeError: JSX.Element | null = null;
+
+    if (selectedFile && selectedFile.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+      filetypeError = <FormattedMessage {...messages.filetypeError} />;
+      selectedFile = null;
+
+      if (this.fileInputElement) {
+        this.fileInputElement.value = '';
+      }
+    }
+
     const selectedFileBase64 = (selectedFile ? await getBase64FromFile(selectedFile) : null);
     this.resetErrorAndSuccessState();
-    this.setState({ selectedFileBase64 });
+    this.setState({ selectedFileBase64, filetypeError });
   }
 
   handleAdminRightsOnToggle = () => {
@@ -345,7 +363,9 @@ export default class Invitations extends React.PureComponent<Props, State> {
       invitationOptionsOpened: false,
       processed: false,
       dirty: false,
-      errors: null
+      apiErrors: null,
+      filetypeError: null,
+      unknownError: null
     }));
   }
 
@@ -367,7 +387,13 @@ export default class Invitations extends React.PureComponent<Props, State> {
 
     if (selectedLocale && hasCorrectSelection) {
       try {
-        this.setState({ processing: true, processed: false, errors: null });
+        this.setState({
+          processing: true,
+          processed: false,
+          apiErrors: null,
+          filetypeError: null,
+          unknownError: null
+        });
 
         const bulkInvite: INewBulkInvite = {
           locale: selectedLocale,
@@ -404,8 +430,11 @@ export default class Invitations extends React.PureComponent<Props, State> {
           selectedFileBase64: null
         });
       } catch (errors) {
+        const apiErrors = get(errors, 'json.errors', null);
+
         this.setState({
-          errors: get(errors, 'json.errors', null),
+          apiErrors,
+          unknownError: (!apiErrors ? <FormattedMessage {...messages.unknownError} /> : null),
           processing: false
         });
       }
@@ -413,8 +442,33 @@ export default class Invitations extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { currentTenantLocales, groupOptions, selectedEmails, selectedFileBase64, hasAdminRights, selectedLocale, selectedGroups, selectedInviteText, invitationOptionsOpened, selectedView, loaded, processing, processed, errors } = this.state;
+    const {
+      locale,
+      currentTenantLocales,
+      groupOptions,
+      selectedEmails,
+      selectedFileBase64,
+      hasAdminRights,
+      selectedLocale,
+      selectedGroups,
+      selectedInviteText,
+      invitationOptionsOpened,
+      selectedView,
+      loaded,
+      processing,
+      processed,
+      apiErrors,
+      filetypeError,
+      unknownError
+    } = this.state;
     const dirty = ((isString(selectedEmails) && !isEmpty(selectedEmails)) || (isString(selectedFileBase64) && !isEmpty(selectedFileBase64)));
+    let supportPageURL = 'http://support.citizenlab.co/eng-getting-started/invite-people-to-the-platform';
+
+    if (locale === 'nl') {
+      supportPageURL = 'http://support.citizenlab.co/nl-opstartgids/uitnodigingen-versturen';
+    } else if (locale === 'fr') {
+      supportPageURL = 'http://support.citizenlab.co/fr-demarrez-avec-votre-plateforme/inviter-des-gens';
+    }
 
     const invitationOptions = (
       <>
@@ -438,7 +492,17 @@ export default class Invitations extends React.PureComponent<Props, State> {
             <InvitationOptionsInner>
               {selectedView === 'import' &&
                 <SectionField>
-                  <Warning text={<FormattedHTMLMessage {...messages.importOptionsInfo} />} />
+                  <Warning
+                    text={
+                      <FormattedMessage
+                        {...messages.importOptionsInfo}
+                        values={{
+                          // tslint:disable-next-line
+                          supportPageLink: <a href={supportPageURL} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
+                        }}
+                      />
+                    }
+                  />
                 </SectionField>
               }
 
@@ -526,7 +590,7 @@ export default class Invitations extends React.PureComponent<Props, State> {
                           values={{
                             emailColumnName: <strong><FormattedMessage {...messages.emailColumnName} /></strong>, // tslint:disable-next-line
                             downloadLink: <a href="#" onClick={this.downloadExampleFile}><FormattedMessage {...messages.exampleFile} /></a>, // tslint:disable-next-line
-                            supportPageLink: <a href="#"><FormattedMessage {...messages.supportPage} /></a>
+                            supportPageLink: <a href={supportPageURL} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
                           }}
                         />
                       }
@@ -540,6 +604,7 @@ export default class Invitations extends React.PureComponent<Props, State> {
                         ref={this.setFileInputRef}
                       />
                     </FileInputWrapper>
+                    <Error text={filetypeError} />
                   </SectionField>
 
                   {invitationOptions}
@@ -566,7 +631,7 @@ export default class Invitations extends React.PureComponent<Props, State> {
                 <ButtonWrapper>
                   <SubmitWrapper
                     loading={processing}
-                    status={this.getSubmitState(errors, processed, dirty)}
+                    status={this.getSubmitState(apiErrors, processed, dirty)}
                     messages={{
                       buttonSave: messages.save,
                       buttonError: messages.saveError,
@@ -584,11 +649,13 @@ export default class Invitations extends React.PureComponent<Props, State> {
                 </ButtonWrapper>
 
                 <Error
-                  apiErrors={errors}
+                  apiErrors={apiErrors}
                   showIcon={true}
                   marginTop="15px"
                   animate={false}
                 />
+
+                <Error text={unknownError} />
               </SectionField>
             </Section>
           </form>

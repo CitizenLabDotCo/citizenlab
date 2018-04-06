@@ -61,40 +61,52 @@ export default defineMessages({
     id: 'app.errors.key_invalid',
     defaultMessage: 'The key can only contain letters, numbers and underscores(_)',
   },
+  unparseable_excel: {
+    id: 'app.errors.unparseable_excel',
+    defaultMessage: 'The selected Excel file could not be processed.',
+  },
   max_invites_limit_exceeded: {
     id: 'app.errors.max_invites_limit_exceeded',
-    defaultMessage: 'The maximum number of allowed invitations is exceeded',
+    defaultMessage: 'The maximum number of allowed invitations is exceeded.',
   },
   no_invites_specified: {
     id: 'app.errors.no_invites_specified',
-    defaultMessage: 'Could not find any email addresses',
+    defaultMessage: 'Could not find any email addresses.',
   },
   unknown_group: {
     id: 'app.errors.unknown_group',
-    defaultMessage: 'Unknown group: {value}',
+    defaultMessage: 'The group {value} found in row {row} is not a known group',
+  },
+  malformed_admin_value: {
+    id: 'app.errors.malformed_admin_value',
+    defaultMessage: 'The admin value {value} found in row {row} is not valid',
+  },
+  malformed_groups_value: {
+    id: 'app.errors.malformed_groups_value',
+    defaultMessage: 'The group {value} found in row {row} is not a valid group',
   },
   unknown_locale: {
     id: 'app.errors.unknown_locale',
-    defaultMessage: 'Unknown language: {value}',
+    defaultMessage: 'The language {value} found in row {row} is not a configured language',
   },
   invalid_email: {
     id: 'app.errors.invalid_email',
-    defaultMessage: 'Invalid email address: {value}',
+    defaultMessage: 'The email {value} found in row {row} is not a valid email address',
   },
   invalid_row: {
     id: 'app.errors.invalid_row',
-    defaultMessage: 'Could not process row number {value}',
+    defaultMessage: 'An unknown error occured while trying to process row {row}',
   },
   email_already_invited: {
     id: 'app.errors.email_already_invited',
-    defaultMessage: '{value} was already invited',
+    defaultMessage: 'The email address {value} found in row {row} was already invited',
   },
   email_already_active: {
     id: 'app.errors.email_already_active',
-    defaultMessage: '{value} is already a registered user',
+    defaultMessage: 'The email address {value} found in row {row} already belongs to a registered user',
   },
   emails_duplicate: {
     id: 'app.errors.emails_duplicate',
-    defaultMessage: 'Duplicate email found: {value} ',
+    defaultMessage: 'One or more duplicate values for the email address {value} were found in the following row(s): {rows}',
   },
 });
