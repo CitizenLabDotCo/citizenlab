@@ -174,11 +174,10 @@ class XlsxService
   def xlsx_to_hash_array xlsx
     workbook = RubyXL::Parser.parse_buffer(xlsx)
     worksheet = workbook.worksheets[0]
-
     worksheet.drop(1).map do |row|
-      row&.cells.map.with_index do |cell, column_index|
-        [worksheet[0][column_index].value, cell&.value]
-      end.to_h.compact
+      (row&.cells || []).compact.map do |cell|
+        [worksheet[0][cell.column]&.value, cell.value] if cell.value
+      end.compact.to_h
     end.compact
   end
 
