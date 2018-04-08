@@ -25,7 +25,7 @@ pipeline {
             ]
         ])
         withAWS(credentials: 'aws') {
-          s3Upload(file:'doc/api', bucket:'developers.citizenlab.co', path: "frontweb_api/${env.BRANCH_NAME}", acl:'PublicRead')
+          s3Upload(file:'doc/api', bucket:'developers.citizenlab.co', path: "api-docs/frontweb_api/${env.BRANCH_NAME}", acl:'PublicRead')
         }
       }
     }
@@ -34,7 +34,7 @@ pipeline {
       steps {
         sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e RAILS_ENV=test web bundle exec rake public_api:docs:generate'
         withAWS(credentials: 'aws') {
-          s3Upload(file: 'doc/public_api', bucket:'developers.citizenlab.co', path: "public_api/", acl:'PublicRead')
+          s3Upload(file: 'doc/public_api', bucket:'developers.citizenlab.co', path: "api-docs/public_api/", acl:'PublicRead')
         }
       }
     }
@@ -43,7 +43,7 @@ pipeline {
       steps {
         sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e RAILS_ENV=test web bundle exec rake admin_api:docs:generate'
         withAWS(credentials: 'aws') {
-          s3Upload(file: 'doc/admin_api', bucket:'developers.citizenlab.co', path: "admin_api/", acl:'PublicRead')
+          s3Upload(file: 'doc/admin_api', bucket:'developers.citizenlab.co', path: "api-docs/admin_api/", acl:'PublicRead')
         }
       }
     }
