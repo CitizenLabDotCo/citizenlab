@@ -111,16 +111,17 @@ pipeline {
         }
       }
     }
+
+    stage('Trigger rebuild and deployment of cl-docs-portal') {
+      environment {
+        CIRCLE_API_TOKEN = credentials('circle-api-token')
+      }
+      steps {
+        sh "curl -u ${CIRCLE_API_TOKEN}: -d build_parameters[CIRCLE_JOB]=build https://circleci.com/api/v1.1/project/github/CitizenLabDotCo/cl-docs-portal/tree/master"
+      }
+    }
   }
 
-  stage('Trigger rebuild and deployment of cl-docs-portal') {
-    environment {
-      CIRCLE_API_TOKEN = credentials('circle-api-token')
-    }
-    steps {
-      sh "curl -u ${CIRCLE_API_TOKEN}: -d build_parameters[CIRCLE_JOB]=build https://circleci.com/api/v1.1/project/github/CitizenLabDotCo/cl-docs-portal/tree/master"
-    }
-  }
 
   post {
     always {
