@@ -89,10 +89,6 @@ export default defineMessages({
     id: 'app.containers.Admin.User.emailListLabel',
     defaultMessage: 'Manually enter the email addresses of the people you want to invite. Seperate each address by a comma.',
   },
-  or: {
-    id: 'app.containers.Admin.User.or',
-    defaultMessage: 'Or',
-  },
   importLabel: {
     id: 'app.containers.Admin.User.importLabel',
     defaultMessage: 'Select an Excel file (.xlsx)',
@@ -118,7 +114,10 @@ export default defineMessages({
   },
   importOptionsInfo: {
     id: 'app.containers.Admin.User.importOptionsInfo',
-    defaultMessage: `These options will only be taken into account when they are not defined in the Excel file. Please visit <a href="#">the support page</a> for more information.`,
+    defaultMessage: `
+      These options will only be taken into account when they are not defined in the Excel file.
+      Please visit the {supportPageLink} for more information.
+    `,
   },
   adminLabel: {
     id: 'app.containers.Admin.User.adminLabel',
@@ -133,7 +132,7 @@ export default defineMessages({
     defaultMessage: 'Invitation options',
   },
   groupsLabel: {
-    id: 'app.containers.Admin.User.localeLabel',
+    id: 'app.containers.Admin.User.groupsLabel',
     defaultMessage: 'Optionally select one or more groups that will be assigned to the invited people upon registration',
   },
   inviteTextLabel: {
@@ -143,10 +142,6 @@ export default defineMessages({
   groupsPlaceholder: {
     id: 'app.containers.Admin.User.groupsPlaceholder',
     defaultMessage: 'No group selected',
-  },
-  sendOutInvitations: {
-    id: 'app.containers.Admin.User.sendOutInvitations',
-    defaultMessage: 'Send out invitations',
   },
   processing: {
     id: 'app.containers.Admin.User.processing',
@@ -166,15 +161,15 @@ export default defineMessages({
   },
   saveErrorMessage: {
     id: 'app.containers.Admin.User.saveErrorMessage',
-    defaultMessage: 'Invitations could not be sent out. Errors are highlighted below.',
+    defaultMessage: `
+      One or more errors occured.
+      Therefore no invitations were sent out.
+      Please correct the error(s) listed below and try again.
+    `,
   },
   saveSuccessMessage: {
     id: 'app.containers.Admin.User.saveSuccessMessage',
     defaultMessage: 'Invitation successfully sent out.',
-  },
-  couldNotSendError: {
-    id: 'app.containers.Admin.User.couldNotSendError',
-    defaultMessage: 'Could not sent out invitations. The following error(s) occured:',
   },
   inviteStatus: {
     id: 'app.containers.Admin.User.inviteStatus',
@@ -207,5 +202,13 @@ export default defineMessages({
   currentlyNoInvites: {
     id: 'app.containers.Admin.User.currentlyNoInvites',
     defaultMessage: 'There currently are no invites yet',
+  },
+  filetypeError: {
+    id: 'app.containers.Admin.User.filetypeError',
+    defaultMessage: 'Incorrect file type. Only XLSX files are supported.',
+  },
+  unknownError: {
+    id: 'app.containers.Admin.User.unknownError',
+    defaultMessage: 'Something went wrong. Please try again later.',
   },
 });

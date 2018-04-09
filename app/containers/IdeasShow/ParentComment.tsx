@@ -30,7 +30,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 import { Locale, API } from 'typings';
 
 const timeout = 550;
@@ -45,12 +45,6 @@ const StyledMoreActionsMenu = styled(CommentsMoreActions)`
   position: absolute;
   top: 10px;
   right: 20px;
-  opacity: 0;
-  transition: opacity 100ms ease-out;
-
-  ${media.smallerThanMaxTablet`
-    opacity: 1;
-  `}
 `;
 
 const Container = styled.div`
@@ -87,17 +81,8 @@ const CommentsContainer = styled.div`
 `;
 
 const CommentContainerInner = styled.div`
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 30px;
-  padding-bottom: 30px;
+  padding: 20px;
   position: relative;
-
-  &:hover {
-    ${StyledMoreActionsMenu} {
-      opacity: 1;
-    }
-  }
 
   &.deleted {
     display: flex;
