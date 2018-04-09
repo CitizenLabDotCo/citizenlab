@@ -89,10 +89,6 @@ export default defineMessages({
     id: 'app.containers.Admin.User.emailListLabel',
     defaultMessage: 'Manually enter the email addresses of the people you want to invite. Seperate each address by a comma.',
   },
-  or: {
-    id: 'app.containers.Admin.User.or',
-    defaultMessage: 'Or',
-  },
   importLabel: {
     id: 'app.containers.Admin.User.importLabel',
     defaultMessage: 'Select an Excel file (.xlsx)',
@@ -146,10 +142,6 @@ export default defineMessages({
   groupsPlaceholder: {
     id: 'app.containers.Admin.User.groupsPlaceholder',
     defaultMessage: 'No group selected',
-  },
-  sendOutInvitations: {
-    id: 'app.containers.Admin.User.sendOutInvitations',
-    defaultMessage: 'Send out invitations',
   },
   processing: {
     id: 'app.containers.Admin.User.processing',
