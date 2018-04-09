@@ -343,6 +343,26 @@ const icons = {
       <path id="path4_fill" d="M12.392 12.354H7.346v1.577h5.046v-1.577z"/>
     </svg>
   ),
+  download: (className) => (
+    <svg className={className} height="100%" viewBox="5 3 14 17">
+      <path d="M19 9h-4V3H9v6H5l7 7zM5 18h14v2H5z"/>
+      <path fill="none" d="M0 0h24v24H0V0z"/>
+    </svg>
+  ),
+  notification_invitation_accepted: (className) => (
+    <svg className={className} viewBox="0 0 24 24" version="1.1" fill="#6B6B6B">
+      <g id="surface1">
+        <path d="M 9 4 C 6.789063 4 5 5.789063 5 8 C 5 10.210938 6.789063 12 9 12 C 11.210938 12 13 10.210938 13 8 C 13 5.789063 11.210938 4 9 4 Z M 22.28125 6.8125 L 17.6875 11.5625 L 15.59375 9.5 L 14.1875 10.90625 L 17.71875 14.4375 L 18.40625 13.6875 L 23.71875 8.1875 Z M 9 14 C 2.898438 14 1 18 1 18 L 1 20 L 17 20 L 17 18 C 17 18 15.101563 14 9 14 Z " />
+      </g>
+    </svg>
+  ),
+  notification_status: (className) => (
+    <svg className={className} viewBox="0 0 24 24" version="1.1" fill="#6B6B6B">
+      <g id="surface1">
+        <path d="M 2 8 L 2 16 C 2 17.101563 2.898438 18 4 18 L 15.199219 18 C 15.699219 18 16.199219 17.800781 16.601563 17.398438 L 22 12 L 16.601563 6.601563 C 16.199219 6.199219 15.699219 6 15.199219 6 L 4 6 C 2.898438 6 2 6.898438 2 8 Z " />
+      </g>
+    </svg>
+  ),
 };
 
 export type IconNames = keyof typeof icons;

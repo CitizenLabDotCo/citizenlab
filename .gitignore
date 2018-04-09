@@ -23,3 +23,5 @@ e2e/reports/*
 local.log
 tests_output/*
 browserstack.err
+.babel-cache/*
+.cache-loader/*

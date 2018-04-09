@@ -27,7 +27,7 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 import { Locale } from 'typings';
 
-const CommentContainer = styled.div`
+const CommentContainer = styled.form`
   padding-left: 0px;
   padding-right: 0px;
   padding-top: 0px;
@@ -40,13 +40,13 @@ const StyledTextArea = styled(MentionsTextArea)`
     font-size: 17px !important;
     line-height: 25px !important;
     font-weight: 300 !important;
-    padding: 12px 30px !important;
+    padding: 12px 20px !important;
     padding-right: 60px !important;
     border-top-left-radius: 0px !important;
     border-top-right-radius: 0px !important;
     background: #fff !important;
-    box-shadow: none !important;
-    border: solid 1px #ddd !important;
+    /* box-shadow: none !important; */
+    /* border: solid 1px #ddd !important; */
   }
 `;
 
@@ -56,7 +56,7 @@ const SendIcon = styled(Icon)`
   transition: all 100ms ease-out;
 `;
 
-const SendIconWrapper: any = styled.div`
+const SendIconWrapper: any = styled.button`
   width: 30px;
   height: 30px;
   position: absolute;

@@ -2,11 +2,12 @@ import * as React from 'react';
 import Icon from 'components/UI/Icon';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import * as _ from 'lodash';
+import { get, isBoolean, isArray, isEmpty } from 'lodash';
 import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import { darken } from 'polished';
 import { API, Message } from 'typings';
+import { IInviteError } from 'services/invites';
 import messages from './messages';
 
 interface IStyledErrorMessageInner {
@@ -22,7 +23,6 @@ interface IStyledErrorMessage {
 const ErrorMessageText = styled.div`
   color: ${(props) => props.theme.colors.error};
   font-weight: 400;
-  line-height: 22px;
 
   a {
     color: ${(props) => props.theme.colors.error};
@@ -33,6 +33,10 @@ const ErrorMessageText = styled.div`
       color: ${(props) => darken(0.2, props.theme.colors.error)};
       text-decoration: underline;
     }
+  }
+
+  strong {
+    font-weight: 500;
   }
 `;
 
@@ -50,6 +54,10 @@ const StyledErrorMessageInner = styled.div`
   border-radius: 5px;
   background: rgba(252, 60, 45, 0.1);
   background: ${(props: IStyledErrorMessageInner) => (props.showBackground ? 'rgba(252, 60, 45, 0.1)' : 'transparent')};
+
+  &.isList {
+    /* align-items: flex-start; */
+  }
 `;
 
 const StyledErrorMessage: any = styled.div`
@@ -128,17 +136,41 @@ const StyledErrorMessage: any = styled.div`
   }
 `;
 
+const ErrorList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+`;
+
+const ErrorListItem = styled.li`
+  &.isList {
+    display: flex;
+    align-items: flex-start;
+    margin-left: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    :before {
+      content: '•';
+      font-size: 24px;
+      font-weight: 500;
+      margin-right: 10px;
+    }
+  }
+`;
+
 type Props = {
   text?: string | JSX.Element | null;
   fieldName?: string | undefined;
   errors?: string[];
-  apiErrors?: API.Error[] | null;
+  apiErrors?: (API.Error | IInviteError)[] | null;
   size?: string;
   marginTop?: string;
   marginBottom?: string;
   showIcon?: boolean;
   showBackground?: boolean;
   className?: string;
+  animate?: boolean | undefined;
 };
 
 type State = {};
@@ -157,32 +189,35 @@ function findMessage(fieldName: string | undefined, error: string) {
 
 export default class Error extends React.PureComponent<Props, State> {
   render() {
-    const { text, errors, apiErrors, fieldName } = this.props;
+    const { text, errors, apiErrors, fieldName, } = this.props;
     const timeout = { enter: 400, exit: 350 };
-    let { size, marginTop, marginBottom, showIcon, showBackground, className } = this.props;
+    let { size, marginTop, marginBottom, showIcon, showBackground, className, animate } = this.props;
 
     size = (size || '1');
     marginTop = (marginTop || '3px');
     marginBottom = (marginTop || '0px');
-    showIcon = (_.isBoolean(showIcon) ? showIcon : true);
-    showBackground = (_.isBoolean(showBackground) ? showBackground : true);
+    showIcon = (isBoolean(showIcon) ? showIcon : true);
+    showBackground = (isBoolean(showBackground) ? showBackground : true);
     className = (className || '');
+    animate = (animate !== undefined ? animate : true);
 
     const errorElement = (text || errors || apiErrors) && (
       <CSSTransition
         classNames="error"
         timeout={timeout}
-        exit={true}
+        enter={animate}
+        exit={animate}
       >
         <StyledErrorMessage className="e2e-error-message" size={size} marginTop={marginTop} marginBottom={marginBottom}>
-          <StyledErrorMessageInner showBackground={showBackground}>
+          <StyledErrorMessageInner showBackground={showBackground} className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}>
             {showIcon && <IconWrapper><Icon name="error" /></IconWrapper>}
+
             <ErrorMessageText>
               {text &&
                 <p>{text}</p>
               }
 
-              {errors && errors.map((error) => {
+              {errors && isArray(errors) && !isEmpty(errors) && errors.map((error) => {
                 const errorMessage = findMessage(fieldName, error);
 
                 if (errorMessage) {
@@ -196,19 +231,34 @@ export default class Error extends React.PureComponent<Props, State> {
                 return null;
               })}
 
-              {apiErrors && apiErrors.map((error) => {
-                const errorMessage = findMessage(fieldName, error.error);
+              {apiErrors && isArray(apiErrors) && !isEmpty(apiErrors) &&
+                <ErrorList>
+                  {apiErrors.map((error) => {
+                    const errorMessage = findMessage(fieldName, error.error);
 
-                if (errorMessage) {
-                  return (
-                    <p key={error.error}>
-                      <FormattedMessage {...errorMessage} />
-                    </p>
-                  );
-                }
+                    if (errorMessage) {
+                      const value = get(error, 'value', null);
+                      const row = get(error, 'row', null);
+                      const rows = get(error, 'rows', null);
 
-                return null;
-              })}
+                      return (
+                        <ErrorListItem key={error.value} className={`${apiErrors.length > 1 && 'isList'}`}>
+                          <FormattedMessage 
+                            {...errorMessage}
+                            values={{
+                              row: <strong>{row}</strong>,
+                              rows: (rows ? <strong>{rows.join(', ')}</strong> : null),
+                              value: <strong>'{value}'</strong>
+                            }}
+                          />
+                        </ErrorListItem>
+                      );
+                    }
+
+                    return null;
+                  })}
+                </ErrorList>
+              }
             </ErrorMessageText>
           </StyledErrorMessageInner>
         </StyledErrorMessage>

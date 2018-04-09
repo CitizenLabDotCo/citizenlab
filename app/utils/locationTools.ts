@@ -5,6 +5,6 @@ export async function convertToGeoJson(location: string): Promise<GeoJSON.Point>
   const { lat, lng } = await getLatLng(results[0]);
   return {
     type: 'Point',
-    coordinates: [lat as number, lng as number]
+    coordinates: [lng as number, lat as number]
   };
 }

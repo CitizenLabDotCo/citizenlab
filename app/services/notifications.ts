@@ -57,7 +57,7 @@ export interface ICommentOnYourIdeaNotificationData extends IBaseNotificationDat
     initiating_user_first_name: string;
     initiating_user_last_name: string;
     initiating_user_slug: string;
-    idea_title: { [key: string]: any; }
+    idea_title: Multiloc;
   };
   relationships: {
     initiating_user: {
@@ -95,7 +95,7 @@ export interface IMentionInCommentNotificationData extends IBaseNotificationData
     initiating_user_first_name: string;
     initiating_user_last_name: string;
     initiating_user_slug: string;
-    idea_title: { [key: string]: any; }
+    idea_title: Multiloc;
   };
   relationships: {
     initiating_user: {
@@ -133,7 +133,7 @@ export interface IIdeaMarkedAsSpamNotificationData extends IBaseNotificationData
     initiating_user_first_name: string;
     initiating_user_last_name: string;
     initiating_user_slug: string;
-    idea_title: { [key: string]: any; }
+    idea_title: Multiloc;
   };
   relationships: {
     initiating_user: {
@@ -171,7 +171,7 @@ export interface ICommentMarkedAsSpamNotificationData extends IBaseNotificationD
     initiating_user_first_name: string;
     initiating_user_last_name: string;
     initiating_user_slug: string;
-    idea_title: { [key: string]: any; }
+    idea_title: Multiloc;
   };
   relationships: {
     initiating_user: {
@@ -195,12 +195,109 @@ export interface ICommentMarkedAsSpamNotificationData extends IBaseNotificationD
   };
 }
 
+export interface IStatusChangeOfYourIdeaNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'status_change_of_your_idea';
+    read_at: string;
+    created_at: string;
+    idea_title: Multiloc;
+  };
+  relationships: {
+    idea: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    idea_status: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    project: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
+export interface IInviteAcceptedNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'invite_accepted';
+    read_at: string;
+    created_at: string;
+    initiating_user_first_name: string;
+    initiating_user_last_name: string;
+    initiating_user_slug: string;
+  };
+  relationships: {
+    initiating_user: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    invite: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
+export interface ICommentDeletedByAdminNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'comment_deleted_by_admin';
+    read_at: string;
+    created_at: string;
+    initiating_user_first_name: string;
+    initiating_user_last_name: string;
+    initiating_user_slug: string;
+    idea_title: Multiloc;
+    reason_code: 'irrelevant' | 'inappropriate' | 'other';
+    other_reason: string;
+  };
+  relationships: {
+    initiating_user: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    idea: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    comment: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    project: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
 export type TNotificationData =
   ICommentOnYourCommentNotificationData |
   ICommentOnYourIdeaNotificationData |
   ICommentMarkedAsSpamNotificationData |
   IIdeaMarkedAsSpamNotificationData |
-  IMentionInCommentNotificationData;
+  IMentionInCommentNotificationData |
+  IInviteAcceptedNotificationData |
+  IStatusChangeOfYourIdeaNotificationData |
+  ICommentDeletedByAdminNotificationData;
 
 
 export interface INotificationLinks {

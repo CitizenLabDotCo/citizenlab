@@ -18,6 +18,11 @@ import { transparentize } from 'polished';
 const Container: any = styled.div`
   position: relative;
 
+  * {
+    border: none;
+    -webkit-appearance: none !important;
+  }
+
   textarea {
     -webkit-appearance: none;
     border-color: ${(props: any) => props.error ? props.theme.colors.error : '#ccc'} !important;
