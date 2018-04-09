@@ -11,7 +11,7 @@ interface InputProps {
 }
 
 interface Props extends InputProps {
-  children: (renderProps: GetProjectChildProps) => JSX.Element | null ;
+  children: (renderProps: GetProjectChildProps) => JSX.Element | null;
 }
 
 interface State {

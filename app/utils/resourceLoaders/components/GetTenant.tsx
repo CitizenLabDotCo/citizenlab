@@ -1,18 +1,20 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { Locale } from 'typings';
 import { currentTenantStream, ITenantData } from 'services/tenant';
 
-interface Props {
-  children: (renderProps: GetTenantChildProps) => JSX.Element | null ;
+interface InputProps {}
+
+type children = (renderProps: GetTenantChildProps) => JSX.Element | null;
+
+interface Props extends InputProps {
+  children?: children;
 }
 
 interface State {
   tenant: ITenantData | null;
-  tenantLocales: Locale[] | null;
 }
 
-export type GetTenantChildProps = State;
+export type GetTenantChildProps = ITenantData | null;
 
 export default class GetTenant extends React.PureComponent<Props, State> {
   private subscriptions: Subscription[];
@@ -20,8 +22,7 @@ export default class GetTenant extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      tenant: null,
-      tenantLocales: null,
+      tenant: null
     };
   }
 
@@ -31,8 +32,7 @@ export default class GetTenant extends React.PureComponent<Props, State> {
     this.subscriptions = [
       currentTenant$.subscribe((currentTenant) => {
         this.setState({
-          tenant: currentTenant.data,
-          tenantLocales: currentTenant.data.attributes.settings.core.locales
+          tenant: currentTenant.data
         });
       })
     ];
@@ -44,7 +44,7 @@ export default class GetTenant extends React.PureComponent<Props, State> {
 
   render() {
     const { children } = this.props;
-    const { tenant, tenantLocales } = this.state;
-    return children({ tenant, tenantLocales });
+    const { tenant } = this.state;
+    return (children as children)(tenant);
   }
 }

@@ -21,8 +21,10 @@ interface InputProps {
   hideAllFilters?: boolean | undefined;
 }
 
+type children = (renderProps: GetProjectsChildProps) => JSX.Element | null;
+
 interface Props extends InputProps {
-  children: (obj: GetProjectsChildProps) => JSX.Element | null;
+  children?: children;
 }
 
 export type GetProjectsChildProps = State & {
@@ -39,8 +41,8 @@ interface State {
 }
 
 export default class GetProjects extends React.PureComponent<Props, State> {
-  queryParameters$: BehaviorSubject<IQueryParameters>;
-  subscriptions: Subscription[];
+  private queryParameters$: BehaviorSubject<IQueryParameters>;
+  private subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -124,7 +126,8 @@ export default class GetProjects extends React.PureComponent<Props, State> {
   }
 
   render() {
-    return this.props.children({
+    const { children } = this.props;
+    return (children as children)({
       ...this.state,
       onLoadMore: this.loadMore,
       onChangeAreas: this.handleAreasOnChange

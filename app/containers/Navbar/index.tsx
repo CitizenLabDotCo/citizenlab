@@ -1,9 +1,8 @@
 // libraries
 import React from 'react';
-// import * as Rx from 'rxjs/Rx';
 import { get } from 'lodash';
 import { adopt } from 'react-adopt';
-import { browserHistory, Link } from 'react-router';
+import { Link } from 'react-router';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import clickOutside from 'utils/containers/clickOutside';
 
@@ -14,16 +13,17 @@ import MobileNavigation from './components/MobileNavigation';
 import IdeaButton from 'components/IdeaButton';
 import Icon from 'components/UI/Icon';
 
-// services
-// import { localeStream } from 'services/locale';
-// import { authUserStream } from 'services/auth';
-// import { currentTenantStream, ITenant } from 'services/tenant';
-// import { IUser } from 'services/users';
-// import { projectsStream, IProjects, getProjectUrl } from 'services/projects';
+// resources
+import GetLocation, { GetLocationChildProps } from 'utils/resourceLoaders/components/GetLocation';
+import GetAuthUser, { GetAuthUserChildProps } from 'utils/resourceLoaders/components/GetAuthUser';
+import GetTenant, { GetTenantChildProps } from 'utils/resourceLoaders/components/GetTenant';
+import GetLocale, { GetLocaleChildProps } from 'utils/resourceLoaders/components/GetLocale';
+import GetProjects, { GetProjectsChildProps } from 'utils/resourceLoaders/components/GetProjects';
 
 // utils
-import { injectTracks } from 'utils/analytics';
-import tracks from './tracks';
+// import { injectTracks } from 'utils/analytics';
+// import tracks from './tracks';
+import { getProjectUrl } from 'services/projects';
 
 // i18n
 import { media } from 'utils/styleUtils';
@@ -34,13 +34,6 @@ import messages from './messages';
 // style
 import { darken, rgba } from 'polished';
 import styled, { css, } from 'styled-components';
-
-// typings
-import { Locale } from 'typings';
-import { Location } from 'history';
-import { IUserData } from 'services/users';
-import { ITenantData } from 'services/tenant';
-import { IProjects } from 'services/projects';
 
 const Container = styled.div`
   width: 100%;
@@ -356,88 +349,49 @@ const LoginLink = styled.div`
   }
 `;
 
-type Props = {};
+interface InputProps {}
 
-type Tracks = {
-  trackClickOpenNotifications: () => void;
-  trackClickCloseNotifications: () => void;
-};
+interface DataProps {
+  location: GetLocationChildProps;
+  authUser: GetAuthUserChildProps;
+  tenant: GetTenantChildProps;
+  locale: GetLocaleChildProps;
+  getProjectsChildProps: GetProjectsChildProps;
+}
 
-type State = {
-  location: Location;
-  locale: Locale | null;
-  authUser: IUser | null;
-  currentTenant: ITenant | null;
-  projects: IProjects | null;
+interface Props extends InputProps, DataProps {}
+
+// interface Tracks {
+//   trackClickOpenNotifications: () => void;
+//   trackClickCloseNotifications: () => void;
+// }
+
+interface State {
   notificationPanelOpened: boolean;
   projectsDropdownOpened: boolean;
-  scrolled: boolean;
-};
+}
 
-class Navbar extends React.PureComponent<Props & Tracks, State> {
-  unlisten: Function;
-  // subscriptions: Rx.Subscription[];
-
+class Navbar extends React.PureComponent<Props, State> {
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
-      location: browserHistory.getCurrentLocation(),
-      // locale: null,
-      // authUser: null,
-      // currentTenant: null,
-      // projects: null,
       notificationPanelOpened: false,
-      projectsDropdownOpened: false,
-      scrolled: false
+      projectsDropdownOpened: false
     };
-    // this.subscriptions = [];
   }
 
-  // componentDidMount() {
-  //   const locale$ = localeStream().observable;
-  //   const authUser$ = authUserStream().observable;
-  //   const currentTenant$ = currentTenantStream().observable;
-  //   const projects$ = projectsStream().observable;
-
-  //   this.unlisten = browserHistory.listen((location) => {
-  //     this.setState({ location, projectsDropdownOpened: false });
-  //   });
-
-  //   this.subscriptions = [
-  //     Rx.Observable.combineLatest(
-  //       locale$,
-  //       authUser$,
-  //       currentTenant$
-  //     ).subscribe(([locale, authUser, currentTenant]) => {
-  //       this.setState({
-  //         locale,
-  //         authUser,
-  //         currentTenant
-  //       });
-  //     }),
-
-  //     projects$.subscribe((projects) => {
-  //       this.setState({ projects });
-  //     }),
-
-  //     Rx.Observable.fromEvent(window, 'scroll', { passive: true }).sampleTime(20).subscribe(() => {
-  //       const scrolled = (window.scrollY > 0);
-  //       this.setState({ scrolled });
-  //     })
-  //   ];
-  // }
-
-  componentWillUnmount() {
-    this.unlisten();
-    // this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.location !== this.props.location) {
+      this.setState({ projectsDropdownOpened: false });
+    }
   }
 
   toggleNotificationPanel = () => {
-    if (this.state.notificationPanelOpened) {
-      this.props.trackClickCloseNotifications();
-    } else {
-      this.props.trackClickOpenNotifications();
-    }
+    // if (this.state.notificationPanelOpened) {
+    //   this.props.trackClickCloseNotifications();
+    // } else {
+    //   this.props.trackClickOpenNotifications();
+    // }
 
     this.setState(state => ({ notificationPanelOpened: !state.notificationPanelOpened }));
   }
@@ -445,9 +399,9 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
   closeNotificationPanel = () => {
     // There seem to be some false closing triggers on initializing,
     // so we check whether it's actually open
-    if (this.state.notificationPanelOpened) {
-      this.props.trackClickCloseNotifications();
-    }
+    // if (this.state.notificationPanelOpened) {
+    //   this.props.trackClickCloseNotifications();
+    // }
 
     this.setState({ notificationPanelOpened: false });
   }
@@ -464,12 +418,14 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
   }
 
   render() {
-    const { location, locale, authUser, currentTenant, projects, scrolled, projectsDropdownOpened } = this.state;
-    const isAdminPage = (location.pathname.startsWith('/admin'));
+    const { location, locale, authUser, tenant } = this.props;
+    const { projects } = this.props.getProjectsChildProps;
+    const { projectsDropdownOpened } = this.state;
 
-    if (locale && currentTenant) {
-      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-      const currentTenantLogo = get(currentTenant, 'data.attributes.logo.medium', null);
+    if (location && locale && tenant) {
+      const isAdminPage = location.pathname.startsWith('/admin');
+      const tenantLocales = tenant.attributes.settings.core.locales;
+      const tenantLogo = get(tenant, 'attributes.logo.medium', null);
 
       return (
         <>
@@ -477,11 +433,11 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
             <MobileNavigation />
           }
 
-          <Container className={`${scrolled && 'scrolled'} ${isAdminPage ? 'admin' : 'citizen'} ${'alwaysShowBorder'}`}>
+          <Container className={`${isAdminPage ? 'admin' : 'citizen'} ${'alwaysShowBorder'}`}>
             <Left>
-              {currentTenantLogo &&
+              {tenantLogo &&
                 <LogoLink to="/">
-                  <Logo src={currentTenantLogo} alt="logo" />
+                  <Logo src={tenantLogo} alt="logo" />
                 </LogoLink>
               }
 
@@ -511,7 +467,7 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
                           <NavigationDropdownList>
                             {projects.data.map((project) => (
                               <NavigationDropdownListItem key={project.id} to={getProjectUrl(project)}>
-                                {getLocalized(project.attributes.title_multiloc, locale, currentTenantLocales)}
+                                {getLocalized(project.attributes.title_multiloc, locale, tenantLocales)}
                               </NavigationDropdownListItem>
                             ))}
                           </NavigationDropdownList>
@@ -571,7 +527,17 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
   }
 }
 
-export default injectTracks<Props>({
-  trackClickOpenNotifications: tracks.clickOpenNotifications,
-  trackClickCloseNotifications: tracks.clickCloseNotifications,
-})(Navbar);
+const Data = adopt<DataProps, {}>({
+  location: <GetLocation />,
+  authUser: <GetAuthUser />,
+  tenant: <GetTenant />,
+  locale: <GetLocale />,
+  getProjectsChildProps: <GetProjects />
+});
+
+export default (inputProps: InputProps) => <Data>{dataProps => <Navbar {...inputProps} {...dataProps} />}</Data>;
+
+// export default injectTracks<InputProps>({
+//   trackClickOpenNotifications: tracks.clickOpenNotifications,
+//   trackClickCloseNotifications: tracks.clickCloseNotifications,
+// })(Navbar);

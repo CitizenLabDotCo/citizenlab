@@ -8,15 +8,17 @@ interface InputProps {
   projectId?: string;
 }
 
+type children = (renderProps: GetIdeaMarkersChildProps) => JSX.Element | null;
+
 interface Props extends InputProps {
-  children: (renderProps: GetIdeaMarkersChildProps) => JSX.Element | null ;
+  children: children;
 }
 
 interface State {
   ideaMarkers: Partial<IIdeaData>[] | null;
 }
 
-export type GetIdeaMarkersChildProps = State;
+export type GetIdeaMarkersChildProps = Partial<IIdeaData>[] | null;
 
 export default class GetIdeaMarkers extends React.PureComponent<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -65,6 +67,6 @@ export default class GetIdeaMarkers extends React.PureComponent<Props, State> {
   render() {
     const { children } = this.props;
     const { ideaMarkers } = this.state;
-    return children({ ideaMarkers });
+    return (children as children)(ideaMarkers);
   }
 }

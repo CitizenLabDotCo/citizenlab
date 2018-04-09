@@ -54,8 +54,7 @@ interface State {
   exporting: boolean;
 }
 
-class InvitesTable extends React.PureComponent<Props & GetInvitesChildProps, State> {
-
+class InvitesTable extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -198,6 +197,6 @@ class InvitesTable extends React.PureComponent<Props & GetInvitesChildProps, Sta
 
 export default (inputProps: InputProps) => (
   <GetInvites>
-    {(getInvitesChildProps) => <InvitesTable {...inputProps} {...getInvitesChildProps} />}
+    {getInvitesChildProps => <InvitesTable {...inputProps} {...getInvitesChildProps} />}
   </GetInvites>
 );

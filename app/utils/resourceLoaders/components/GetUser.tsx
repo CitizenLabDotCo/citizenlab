@@ -8,15 +8,17 @@ interface InputProps {
   slug?: string;
 }
 
+type children = (renderProps: GetUserChildProps) => JSX.Element | null;
+
 interface Props extends InputProps {
-  children: (renderProps: GetUserChildProps) => JSX.Element | null ;
+  children: children;
 }
 
 interface State {
   user: IUserData | null;
 }
 
-export type GetUserChildProps = State;
+export type GetUserChildProps = IUserData | null;
 
 export default class GetUser extends React.PureComponent<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -65,6 +67,6 @@ export default class GetUser extends React.PureComponent<Props, State> {
   render() {
     const { children } = this.props;
     const { user } = this.state;
-    return children({ user });
+    return (children as children)(user);
   }
 }
