@@ -8,58 +8,13 @@ module EmailCampaigns
   
     def perform
       User.all.select{|user| user.admin?}.each do |admin|
-      	since = Time.now - N_DAYS_SINCE.days
-
-      	top_ideas = Idea.where(publication_status: 'published').all
-        top_ideas = top_ideas.select{|idea| (activity_count(idea, since=since) > 0) || (idea.published_at > (Time.now - N_DAYS_SINCE.days))}
-      	top_ideas = top_ideas.sort_by{|idea| activity_score(idea, since=since)}.reverse.take N_TOP_IDEAS
-        top_ideas = top_ideas.sort_by{|idea| activity_count(idea, since=since)}.reverse
-
-      	top_project_ideas = {}
-        top_ideas.each do |idea|
-        	top_project_ideas[idea.project_id] ||= []
-        	top_project_ideas[idea.project_id] += [idea]
-        end
-
-        project_order = top_project_ideas.keys.sort_by do |project_id|
-          top_project_ideas[project_id].map{|idea| activity_count(idea, since=since)}.inject(0){|x,y| x+y}
-        end.reverse
-
-        # normally, the projects will be ordered by recentness of their most recent idea
-        serialized_top_project_ideas = project_order.map do |project_id|
-          ideas = top_project_ideas[project_id]
-        	project_serializer = "EmailCampaigns::DiscoverProjectSerializer".constantize
-        	serialized_project = ActiveModelSerializers::SerializableResource.new(Project.find(project_id), {
-            serializer: project_serializer,
-            adapter: :json
-           }).serializable_hash
-
-        	{
-        		project: serialized_project,
-        		top_ideas: ideas.map{ |idea|
-              to_weekly_report_idea_hash(idea, since=since)
-        		} 
-        	}
-        end
-
-        statistics = {
-          activities: {
-            new_ideas: increase_hash(Idea.all.map(&:published_at).compact),
-            new_comments: increase_hash(Comment.all.map(&:created_at).compact),
-            new_votes: increase_hash(Vote.all.map(&:created_at).compact),
-            total_ideas: Idea.count,
-            total_users: User.count
-          },
-          users: {
-            new_visitors: increase_hash([]),
-            new_users: increase_hash(User.all.map(&:registration_completed_at).compact),
-            active_users: increase_hash([])
-          } 
-        }
-
+        statistics = admin_report_statistics
         if no_increase_in_stats statistics
           return
         end
+
+        top_project_ideas = admin_report_top_project_ideas
+        has_new_ideas = (top_project_ideas.size > 0)
   
         tenant = Tenant.current
         trackingMessage = {
@@ -70,8 +25,8 @@ module EmailCampaigns
             source: 'cl2-back',
             payload: {
             	statistics: statistics,
-              has_new_ideas: (top_ideas.size > 0),
-              top_project_ideas: serialized_top_project_ideas
+              has_new_ideas: has_new_ideas,
+              top_project_ideas: top_project_ideas
             },
             tenantId: tenant.id,
             tenantName: tenant.name,
@@ -82,6 +37,61 @@ module EmailCampaigns
         
         Analytics.track(trackingMessage)
       end
+    end
+
+    def admin_report_top_project_ideas
+      since = Time.now - N_DAYS_SINCE.days
+
+      top_ideas = Idea.where(publication_status: 'published').all
+      top_ideas = top_ideas.select{|idea| (activity_count(idea, since=since) > 0) || (idea.published_at > since)}
+      top_ideas = top_ideas.sort_by{|idea| activity_score(idea, since=since)}.reverse.take N_TOP_IDEAS
+      top_ideas = top_ideas.sort_by{|idea| activity_count(idea, since=since)}.reverse
+
+      top_project_ideas = {}
+      top_ideas.each do |idea|
+        top_project_ideas[idea.project_id] ||= []
+        top_project_ideas[idea.project_id] += [idea]
+      end
+
+      project_order = top_project_ideas.keys.sort_by do |project_id|
+        top_project_ideas[project_id].map{|idea| activity_count(idea, since=since)}.inject(0){|x,y| x+y}
+      end.reverse
+
+      # normally, the projects will be ordered by recentness of their most recent idea
+      serialized_top_project_ideas = project_order.map do |project_id|
+        ideas = top_project_ideas[project_id]
+        project_serializer = "EmailCampaigns::DiscoverProjectSerializer".constantize
+        serialized_project = ActiveModelSerializers::SerializableResource.new(Project.find(project_id), {
+          serializer: project_serializer,
+          adapter: :json
+         }).serializable_hash
+
+        {
+          project: serialized_project,
+          top_ideas: ideas.map{ |idea|
+            to_weekly_report_idea_hash(idea, since=since)
+          } 
+        }
+      end
+
+      serialized_top_project_ideas
+    end
+
+    def admin_report_statistics
+      {
+        activities: {
+          new_ideas: increase_hash(Idea.all.map(&:published_at).compact),
+          new_comments: increase_hash(Comment.all.map(&:created_at).compact),
+          new_votes: increase_hash(Vote.all.map(&:created_at).compact),
+          total_ideas: Idea.count,
+          total_users: User.count
+        },
+        users: {
+          new_visitors: increase_hash([]),
+          new_users: increase_hash(User.all.map(&:registration_completed_at).compact),
+          active_users: increase_hash([])
+        } 
+      }
     end
 
     def activity_score idea, since=last_week
