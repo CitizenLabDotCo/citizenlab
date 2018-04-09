@@ -135,7 +135,7 @@
   "app.containers.Admin.User.publishButton": "Publish User",
   "app.containers.Admin.User.save": "Send out invitations",
   "app.containers.Admin.User.saveError": "Error",
-  "app.containers.Admin.User.saveErrorMessage": "One or more errors occured.       Therefore no invitations were sent out.       Please correct the error(s) listed below and try again.",
+  "app.containers.Admin.User.saveErrorMessage": "One or more errors occurred.       Therefore no invitations were sent out.       Please correct the error(s) listed below and try again.",
   "app.containers.Admin.User.saveSuccess": "Success!",
   "app.containers.Admin.User.saveSuccessMessage": "Invitations successfully sent out.",
   "app.containers.Admin.User.sendOutInvitations": "Send out invitations",
