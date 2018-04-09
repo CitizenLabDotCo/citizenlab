@@ -6,7 +6,7 @@ resource "Comments" do
   before do
     header "Content-Type", "application/json"
     @idea = create(:idea)
-    @comments = create_list(:comment, 2, idea: @idea)
+    @comments = ['published','deleted'].map{|ps| create(:comment, idea: @idea, publication_status: ps)}
   end
 
   get "web_api/v1/ideas/:idea_id/comments" do
@@ -20,6 +20,12 @@ resource "Comments" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
+      published_comment_data = json_response[:data].select{|cd| cd.dig(:attributes,:publication_status) == 'published'}&.first
+      expect(published_comment_data).to be_present
+      expect(published_comment_data.dig(:attributes,:body_multiloc)).to be_present
+      deleted_comment_data = json_response[:data].select{|cd| cd.dig(:attributes,:publication_status) == 'deleted'}&.first
+      expect(deleted_comment_data).to be_present
+      expect(deleted_comment_data.dig(:attributes,:body_multiloc)).to be_blank
     end
 
   end
@@ -128,6 +134,29 @@ resource "Comments" do
       end
     end
 
+    post "web_api/v1/comments/:id/mark_as_deleted" do
+      with_options scope: :comment do
+        parameter :reason_code, "one of #{Notifications::CommentDeletedByAdmin::REASON_CODES}; only required for admins", required: false
+        parameter :other_reason, "the reason for deleting the comment, if none of the reason codes is applicable, in which case 'other' must be chosen", required: false
+      end
+
+      let(:comment) { create(:comment, author: @user, idea: @idea) }
+      let(:id) { comment.id }
+
+      example_request "Mark a comment as deleted" do
+        expect(response_status).to eq 200
+        expect(comment.reload.publication_status).to eq('deleted')
+      end
+
+      example "Admins cannot mark a comment as deleted without a reason", document: false do
+        @admin = create(:admin)
+        token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
+        header 'Authorization', "Bearer #{token}"
+        do_request
+        expect(response_status).to eq 422
+      end
+    end
+
     patch "web_api/v1/comments/:id" do
       with_options scope: :comment do
         parameter :author_id, "The user id of the user owning the comment. Signed in user by default"
@@ -139,7 +168,7 @@ resource "Comments" do
 
       let(:comment) { create(:comment, author: @user, idea: @idea) }
       let(:id) { comment.id }
-      let(:body_multiloc) { build(:comment).body_multiloc }
+      let(:body_multiloc) { {'en' => "His hair is not blond, it's orange. Get your facts straight!"} }
 
       example_request "Update a comment" do
         expect(response_status).to eq 200
@@ -147,18 +176,27 @@ resource "Comments" do
         expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
         expect(@idea.reload.comments_count).to eq 3
       end
-    end
 
-
-    delete "web_api/v1/comments/:id" do
-      let(:comment) { create(:comment, author: @user, idea: @idea) }
-      let(:id) { comment.id }
-      example_request "Delete a comment" do
-        expect(response_status).to eq 200
-        expect{Comment.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
-        expect(@idea.reload.comments_count).to eq 2
+      example "Admins cannot modify a comment", document: false do
+        @admin = create(:admin)
+        token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
+        header 'Authorization', "Bearer #{token}"
+        do_request
+        expect(comment.reload.body_multiloc).not_to eq body_multiloc
       end
     end
+
+
+    ## Currently not allowed by anyone, but works at the moment of writing (if permitted, that is)
+    # delete "web_api/v1/comments/:id" do
+    #   let(:comment) { create(:comment, author: @user, idea: @idea) }
+    #   let(:id) { comment.id }
+    #   example_request "Delete a comment" do
+    #     expect(response_status).to eq 200
+    #     expect{Comment.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+    #     expect(@idea.reload.comments_count).to eq 2
+    #   end
+    # end
 
   end
 

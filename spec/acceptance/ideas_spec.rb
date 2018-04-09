@@ -325,7 +325,7 @@ resource "Ideas" do
       example "Check for the automatic creation of an upvote by the author when an idea is created", :document => false do
 
         do_request
-
+        
         json_response = json_parse(response_body) 
         new_idea = Idea.find(json_response.dig(:data, :id))
         expect(new_idea.votes.size).to eq 1
@@ -336,6 +336,20 @@ resource "Ideas" do
       end
 
     end
+
+    describe do
+      let(:idea) { build(:idea) }
+      let(:project) { create(:continuous_project) }
+      let(:project_id) { project.id }
+      let(:title_multiloc) { {'en' => 'I have a fantastic Idea but with a superduper extremely long title so someone should do something about this or else it may look bad in the UI and no one would read it anyways'} } # { idea.title_multiloc }
+      let(:body_multiloc) { idea.body_multiloc }
+      example_request "Creating an idea with too long title" do
+        expect(response_status).to eq 422
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:errors, :title_multiloc)).to eq [{error: 'too_long'}]
+      end
+    end
+
 
     describe do
       let(:publication_status) { "fake_status" }

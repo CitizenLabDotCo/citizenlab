@@ -209,6 +209,18 @@ resource "Projects" do
       end
     end
 
+    context 'when not admin' do
+      before do
+        @user.update(roles: [])
+      end
+
+      let(:presentation_mode) { 'map' }
+
+      example_request "[error] Create a project", document: false do
+        expect(response_status).to eq 401
+      end
+    end
+
 
     describe do
 

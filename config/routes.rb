@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
       resources :ideas do
         resources :comments, shallow: true do
+          post :mark_as_deleted, on: :member
           resources :votes, except: [:update], shallow: true, defaults: { votable: 'Comment' } do
             post :up, on: :collection
             post :down, on: :collection
@@ -49,6 +50,7 @@ Rails.application.routes.draw do
         post "reset_password_email" => "reset_password#reset_password_email", on: :collection
         post "reset_password" => "reset_password#reset_password", on: :collection
         get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
+        get 'by_invite/:token', on: :collection, to: 'users#by_invite'
       end
 
       resources :topics, only: [:index, :show]
@@ -82,6 +84,14 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'groups#by_slug'
       end
 
+      resources :invites do
+        post 'by_token/:token/accept', on: :collection, to: 'invites#accept'
+        post :bulk_create, on: :collection
+        post :bulk_create_xlsx, on: :collection
+        get :example_xlsx, on: :collection
+        get :as_xlsx, on: :collection, action: 'index_xlsx'
+      end
+
       scope 'stats', controller: 'stats' do
         get 'users_by_time'
         get 'users_by_gender'
@@ -110,5 +120,9 @@ Rails.application.routes.draw do
   mount PublicApi::Engine => "/api", as: 'public_api'
   mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
 
+  if Rails.env.development?
+    require_dependency 'sidekiq/web'
+    mount Sidekiq::Web => '/sidekiq'
+  end
 
 end

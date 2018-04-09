@@ -1,6 +1,6 @@
 class WebApi::V1::CommentsController < ApplicationController
 
-  before_action :set_comment, only: [:show, :update, :destroy]
+  before_action :set_comment, only: [:show, :update, :mark_as_deleted, :destroy]
   skip_after_action :verify_authorized, only: [:index_xlsx]
 
   def index
@@ -52,15 +52,33 @@ class WebApi::V1::CommentsController < ApplicationController
   end
 
   def update
-    @comment.attributes = comment_params
+    @comment.attributes = permitted_attributes(@comment)
 
     SideFxCommentService.new.before_update(@comment, current_user)
 
-    if @comment.save(comment_params)
+    if @comment.save
       SideFxCommentService.new.after_update(@comment, current_user)
       render json: @comment, status: :ok, include: ['author']
     else
       render json: { errors: @comment.errors.details }, status: :unprocessable_entity
+    end
+  end
+
+  def mark_as_deleted
+    reason_code = params.dig(:comment, :reason_code)
+    other_reason = params.dig(:comment, :other_reason)
+    if (@comment.author_id == current_user&.id) || 
+      ((Notifications::CommentDeletedByAdmin::REASON_CODES.include? reason_code) &&
+       (reason_code != 'other' || other_reason.present?))
+      @comment.publication_status = 'deleted'
+      if @comment.save
+        SideFxCommentService.new.after_mark_as_deleted(@comment, current_user, reason_code, other_reason)
+        head :ok
+      else
+        render json: { errors: @comment.errors.details }, status: :unprocessable_entity
+      end
+    else
+      raise ClErrors::TransactionError.new(error_key: :invalid_reason)
     end
   end
 
@@ -85,9 +103,12 @@ class WebApi::V1::CommentsController < ApplicationController
   end
 
   def comment_params
+    # no one is allowed to modify someone else's comment, 
+    # so no one is allowed to write a comment in someone
+    # else's name
     params.require(:comment).permit(
       :parent_id,
-      :author_id,
+      # :author_id
       body_multiloc: I18n.available_locales
     )
   end

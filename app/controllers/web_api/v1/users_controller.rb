@@ -1,7 +1,11 @@
 class WebApi::V1::UsersController < ::ApplicationController
+
   # before_action :authenticate_user, except: [:create]
   before_action :set_user, only: [:show, :update, :destroy]
   skip_after_action :verify_authorized, only: [:index_xlsx]
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
 
   def index
     @users = policy_scope(User)
@@ -9,6 +13,8 @@ class WebApi::V1::UsersController < ::ApplicationController
       .per(params.dig(:page, :size))
 
     @users = @users.search_by_all(params[:search]) if params[:search].present?
+
+    @users = @users.active unless params[:include_inactive]
 
     @users = case params[:sort]
       when "created_at"
@@ -62,6 +68,12 @@ class WebApi::V1::UsersController < ::ApplicationController
     @user = User.find_by!(slug: params[:slug])
     authorize @user
     show
+  end
+
+  def by_invite
+   @user = Invite.find_by!(token: params[:token])&.invitee
+   authorize @user
+   show
   end
 
   def create
