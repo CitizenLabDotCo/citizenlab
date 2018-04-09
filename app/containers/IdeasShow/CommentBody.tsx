@@ -108,9 +108,11 @@ class CommentBody extends React.Component<Props, State> {
   render() {
     return (
       <GetLocale>
-        {({ locale }) => (
+        {(locale) => (
           <GetTenant>
-            {({ tenantLocales }) => {
+            {(tenant) => {
+              const tenantLocales = (tenant && tenant.attributes.settings.core.locales);
+
               if (locale && tenantLocales && !this.props.editionMode) {
                 return (
                   <CommentWrapper className="e2e-comment-body">

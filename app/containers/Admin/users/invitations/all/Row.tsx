@@ -15,7 +15,11 @@ interface InputProps {
   invite: IInviteData;
 }
 
-interface Props extends InputProps, GetUserChildProps{}
+interface DataProps {
+  user: GetUserChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 interface State {}
 
@@ -66,6 +70,6 @@ class Row extends React.PureComponent<Props, State> {
 
 export default (props: InputProps) => (
   <GetUser id={props.invite.relationships.invitee.data.id}>
-    {({ user }) => <Row invite={props.invite} user={user} />}
+    {user => user ? <Row invite={props.invite} user={user} /> : null}
   </GetUser>
 );

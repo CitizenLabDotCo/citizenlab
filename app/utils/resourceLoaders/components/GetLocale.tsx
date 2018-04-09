@@ -5,15 +5,17 @@ import { localeStream } from 'services/locale';
 
 interface InputProps {}
 
+type children = (renderProps: GetLocaleChildProps) => JSX.Element | null;
+
 interface Props extends InputProps {
-  children: (renderProps: GetLocaleChildProps) => JSX.Element | null ;
+  children?: children;
 }
 
 interface State {
   locale: Locale;
 }
 
-export type GetLocaleChildProps = State;
+export type GetLocaleChildProps = Locale;
 
 export default class GetLocale extends React.PureComponent<Props, State> {
   private subscriptions: Subscription[];
@@ -42,6 +44,6 @@ export default class GetLocale extends React.PureComponent<Props, State> {
   render() {
     const { children } = this.props;
     const { locale } = this.state;
-    return children({ locale });
+    return (children as children)(locale);
   }
 }

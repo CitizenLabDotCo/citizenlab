@@ -137,7 +137,7 @@ class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
 
     return (
       <GetIdeaMarkers projectId={projectId} phaseId={phaseId}>
-        {({ ideaMarkers }) => {
+        {(ideaMarkers) => {
           const { selectedIdea } = this.state;
           const points = this.getPoints(ideaMarkers);
 

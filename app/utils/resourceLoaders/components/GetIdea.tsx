@@ -2,21 +2,24 @@ import React from 'react';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { IIdeaData, ideaByIdStream, ideaBySlugStream, IIdea } from 'services/ideas';
+import { isString } from 'lodash';
 
 interface InputProps {
-  id?: string;
-  slug?: string;
+  id?: string | null;
+  slug?: string | null;
 }
 
+type children = (renderProps: GetIdeaChildProps) => JSX.Element | null;
+
 interface Props extends InputProps {
-  children: (renderProps: GetIdeaChildProps) => JSX.Element | null ;
+  children?: children;
 }
 
 interface State {
   idea: IIdeaData | null;
 }
 
-export type GetIdeaChildProps = State;
+export type GetIdeaChildProps = IIdeaData | null;
 
 export default class GetIdea extends React.PureComponent<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -37,6 +40,7 @@ export default class GetIdea extends React.PureComponent<Props, State> {
     this.subscriptions = [
       this.inputProps$
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
+        .filter(({ id, slug }) => (isString(id) || isString(slug)))
         .switchMap(({ id, slug }) => {
           let idea$: Observable<IIdea | null> = Observable.of(null);
 
@@ -65,6 +69,6 @@ export default class GetIdea extends React.PureComponent<Props, State> {
   render() {
     const { children } = this.props;
     const { idea } = this.state;
-    return children({ idea });
+    return (children as children)(idea);
   }
 }
