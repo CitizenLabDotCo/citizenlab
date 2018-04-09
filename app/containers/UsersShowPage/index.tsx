@@ -150,7 +150,7 @@ export default class UsersShowPage extends React.PureComponent<Props & Params, S
           </UserInfo>
 
           <UserIdeas>
-            <IdeaCards inputQueryParameters={{ author: user.data.id }} />
+            <IdeaCards query={{ author: user.data.id }} />
           </UserIdeas>
 
         </StyledContentContainer>

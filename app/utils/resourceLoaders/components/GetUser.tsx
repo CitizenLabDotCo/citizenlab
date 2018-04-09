@@ -18,7 +18,7 @@ interface State {
 
 export type GetUserChildProps = State;
 
-export default class GetIdea extends React.PureComponent<Props, State> {
+export default class GetUser extends React.PureComponent<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 

@@ -3,9 +3,7 @@ import { Subscription } from 'rxjs';
 import { Locale } from 'typings';
 import { currentTenantStream, ITenantData } from 'services/tenant';
 
-interface InputProps {}
-
-interface Props extends InputProps {
+interface Props {
   children: (renderProps: GetTenantChildProps) => JSX.Element | null ;
 }
 

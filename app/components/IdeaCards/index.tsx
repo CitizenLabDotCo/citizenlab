@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 // components
 import IdeaCard, { Props as IdeaCardProps } from 'components/IdeaCard';
@@ -238,7 +238,7 @@ const LoadMoreButtonWrapper = styled.div`
 const LoadMoreButton = styled(Button)``;
 
 interface InputProps {
-  inputQueryParameters?: IQueryParameters | undefined;
+  query?: IQueryParameters | undefined;
   showViewToggle?: boolean | undefined;
   defaultView?: 'card' | 'map' | null | undefined;
 }
@@ -258,9 +258,7 @@ class IdeaCards extends React.PureComponent<Props, State> {
   }
 
   loadMore = () => {
-    if (!this.props.loadingMore) {
-      this.props.onLoadMore();
-    }
+    this.props.onLoadMore();
   }
 
   handleSearchOnChange = (search: string) => {
@@ -370,7 +368,7 @@ class IdeaCards extends React.PureComponent<Props, State> {
 }
 
 export default (inputProps: InputProps) => (
-  <GetIdeas queryParameters={inputProps.inputQueryParameters}>
+  <GetIdeas queryParameters={inputProps.query}>
     {(getIdeasChildProps) => <IdeaCards {...inputProps} {...getIdeasChildProps} />}
   </GetIdeas>
 );
