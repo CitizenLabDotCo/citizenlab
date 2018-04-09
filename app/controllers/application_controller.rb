@@ -47,6 +47,6 @@ class ApplicationController < ActionController::API
   end
 
   def user_not_authorized
-    head :unauthorized
+    render json: { errors: { base: [{ error: 'Unauthorized!' }] } }, status: :unauthorized
   end
 end

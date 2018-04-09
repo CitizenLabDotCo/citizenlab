@@ -9,8 +9,8 @@ class SideFxUserService
   end
 
   def after_create user, current_user
-    # UserMailer.welcome(@user).deliver_later
     IdentifyToSegmentJob.perform_later(user)
+    GenerateUserAvatarJob.perform_later(user)
     LogActivityJob.set(wait: 10.seconds).perform_later(user, 'created', user, user.created_at.to_i)
   end
 
