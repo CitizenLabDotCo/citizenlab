@@ -21,7 +21,7 @@ import { localState, ILocalStateService } from 'services/localState';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // utils
-import { convertToGeoJson } from 'utils/locationTools';
+import { convertToGeoJson, reverseGeocode } from 'utils/locationTools';
 
 // typings
 import { Locale } from 'typings';
@@ -172,6 +172,12 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
   componentDidMount() {
     const localState$ = this.localState.observable;
     const locale$ = localeStream().observable;
+
+    if (this.props.location.query.position) {
+      reverseGeocode(JSON.parse(this.props.location.query.position)).then((position) => {
+        globalState.set('IdeasNewPage', { position });
+      });
+    }
 
     this.subscriptions = [
       localState$.subscribe(({ showIdeaForm, locale }) => {
