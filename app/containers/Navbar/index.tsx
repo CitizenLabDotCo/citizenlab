@@ -1,8 +1,8 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-import { get } from 'lodash';
-
 // libraries
+import React from 'react';
+// import * as Rx from 'rxjs/Rx';
+import { get } from 'lodash';
+import { adopt } from 'react-adopt';
 import { browserHistory, Link } from 'react-router';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import clickOutside from 'utils/containers/clickOutside';
@@ -15,11 +15,11 @@ import IdeaButton from 'components/IdeaButton';
 import Icon from 'components/UI/Icon';
 
 // services
-import { localeStream } from 'services/locale';
-import { authUserStream } from 'services/auth';
-import { currentTenantStream, ITenant } from 'services/tenant';
-import { IUser } from 'services/users';
-import { projectsStream, IProjects, getProjectUrl } from 'services/projects';
+// import { localeStream } from 'services/locale';
+// import { authUserStream } from 'services/auth';
+// import { currentTenantStream, ITenant } from 'services/tenant';
+// import { IUser } from 'services/users';
+// import { projectsStream, IProjects, getProjectUrl } from 'services/projects';
 
 // utils
 import { injectTracks } from 'utils/analytics';
@@ -38,6 +38,9 @@ import styled, { css, } from 'styled-components';
 // typings
 import { Locale } from 'typings';
 import { Location } from 'history';
+import { IUserData } from 'services/users';
+import { ITenantData } from 'services/tenant';
+import { IProjects } from 'services/projects';
 
 const Container = styled.div`
   width: 100%;
@@ -373,60 +376,60 @@ type State = {
 
 class Navbar extends React.PureComponent<Props & Tracks, State> {
   unlisten: Function;
-  subscriptions: Rx.Subscription[];
+  // subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
       location: browserHistory.getCurrentLocation(),
-      locale: null,
-      authUser: null,
-      currentTenant: null,
-      projects: null,
+      // locale: null,
+      // authUser: null,
+      // currentTenant: null,
+      // projects: null,
       notificationPanelOpened: false,
       projectsDropdownOpened: false,
       scrolled: false
     };
-    this.subscriptions = [];
+    // this.subscriptions = [];
   }
 
-  componentDidMount() {
-    const locale$ = localeStream().observable;
-    const authUser$ = authUserStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
-    const projects$ = projectsStream().observable;
+  // componentDidMount() {
+  //   const locale$ = localeStream().observable;
+  //   const authUser$ = authUserStream().observable;
+  //   const currentTenant$ = currentTenantStream().observable;
+  //   const projects$ = projectsStream().observable;
 
-    this.unlisten = browserHistory.listen((location) => {
-      this.setState({ location, projectsDropdownOpened: false });
-    });
+  //   this.unlisten = browserHistory.listen((location) => {
+  //     this.setState({ location, projectsDropdownOpened: false });
+  //   });
 
-    this.subscriptions = [
-      Rx.Observable.combineLatest(
-        locale$,
-        authUser$,
-        currentTenant$
-      ).subscribe(([locale, authUser, currentTenant]) => {
-        this.setState({
-          locale,
-          authUser,
-          currentTenant
-        });
-      }),
+  //   this.subscriptions = [
+  //     Rx.Observable.combineLatest(
+  //       locale$,
+  //       authUser$,
+  //       currentTenant$
+  //     ).subscribe(([locale, authUser, currentTenant]) => {
+  //       this.setState({
+  //         locale,
+  //         authUser,
+  //         currentTenant
+  //       });
+  //     }),
 
-      projects$.subscribe((projects) => {
-        this.setState({ projects });
-      }),
+  //     projects$.subscribe((projects) => {
+  //       this.setState({ projects });
+  //     }),
 
-      Rx.Observable.fromEvent(window, 'scroll', { passive: true }).sampleTime(20).subscribe(() => {
-        const scrolled = (window.scrollY > 0);
-        this.setState({ scrolled });
-      })
-    ];
-  }
+  //     Rx.Observable.fromEvent(window, 'scroll', { passive: true }).sampleTime(20).subscribe(() => {
+  //       const scrolled = (window.scrollY > 0);
+  //       this.setState({ scrolled });
+  //     })
+  //   ];
+  // }
 
   componentWillUnmount() {
     this.unlisten();
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    // this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   toggleNotificationPanel = () => {

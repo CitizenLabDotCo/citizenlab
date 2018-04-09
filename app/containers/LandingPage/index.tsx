@@ -385,7 +385,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                 {hasProjects &&
                   <ProjectSection>
                     <SectionContainer>
-                      <ProjectCards queryParameters={landingPageProjectsQuery} hideAllFilters={true} />
+                      <ProjectCards query={landingPageProjectsQuery} hideAllFilters={true} />
                     </SectionContainer>
                   </ProjectSection>
                 }
@@ -399,7 +399,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                     </SectionTitle>
                   </SectionHeader>
                   <SectionContainer>
-                    <IdeaCards inputQueryParameters={landingPageIdeasQuery} />
+                    <IdeaCards query={landingPageIdeasQuery} />
                   </SectionContainer>
                 </Section>
               </IdeasStyledContentContainer>

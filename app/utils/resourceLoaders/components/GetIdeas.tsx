@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { isEqual, get, isString, isEmpty, omitBy, isNil } from 'lodash';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs/Rx';
 import { ideasStream, IIdeas } from 'services/ideas';
@@ -45,7 +45,7 @@ interface State {
   loadingMore: boolean;
 }
 
-export default class IdeaCards extends React.PureComponent<Props, State> {
+export default class GetIdeas extends React.PureComponent<Props, State> {
   queryParameters$: BehaviorSubject<IQueryParameters>;
   search$: BehaviorSubject<string>;
   subscriptions: Subscription[];

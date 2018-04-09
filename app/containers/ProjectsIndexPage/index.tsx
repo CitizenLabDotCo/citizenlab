@@ -59,7 +59,7 @@ export default class IdeasIndex extends React.PureComponent<Props, State> {
           <PageTitle>
             <FormattedMessage {...messages.pageTitle} />
           </PageTitle>
-          <ProjectCards queryParameters={{ 'page[size]': 50 }} />
+          <ProjectCards query={{ 'page[size]': 50 }} />
         </StyledContentContainer>
         <Footer />
       </Container>
