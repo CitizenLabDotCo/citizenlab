@@ -172,7 +172,7 @@ resource "Invites" do
             email: rand(5) == 0 ? nil : user.email,
             first_name: rand(3) == 0 ? user.first_name : nil,
             last_name: rand(3) == 0 ? user.last_name : nil,
-            locale: i == 0 ? 'nl' : nil,
+            language: i == 0 ? 'nl' : nil,
             admin: i == 0 ? true : nil,
             groups: i == 0 ? create(:group).title_multiloc.values.first : nil
           }

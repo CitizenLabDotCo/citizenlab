@@ -56,8 +56,6 @@ class User < ApplicationRecord
 
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
-  # For prepend: true, see https://github.com/carrierwaveuploader/carrierwave/wiki/Known-Issues#activerecord-callback-ordering
-  before_save :generate_avatar, on: :create, prepend: true
 
   scope :order_role, -> (direction=:asc) {  
     subquery = User.select("jsonb_array_elements(roles) as ro, id")
@@ -136,13 +134,6 @@ class User < ApplicationRecord
 
   def set_cl1_migrated
     self.cl1_migrated ||= false
-  end
-
-  def generate_avatar
-    if !self.avatar? && self.email
-      hash = Digest::MD5.hexdigest(self.email)
-      self.remote_avatar_url = "https://www.gravatar.com/avatar/#{hash}?d=404&size=640"
-    end
   end
 
   def original_authenticate(unencrypted_password)

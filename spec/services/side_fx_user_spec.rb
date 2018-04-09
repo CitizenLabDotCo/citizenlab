@@ -33,6 +33,11 @@ describe SideFxUserService do
         to have_enqueued_job(LogActivityJob).with(user, 'created', user, user.updated_at.to_i)
     end
 
+    it "generates an avatar after a user is created" do
+      expect {service.after_create(user, current_user)}.
+        to have_enqueued_job(GenerateUserAvatarJob).with(user)
+    end
+
     it "identifies the user with segment after a user is created" do
       expect {service.after_create(user, current_user)}.
         to have_enqueued_job(IdentifyToSegmentJob).with(user)

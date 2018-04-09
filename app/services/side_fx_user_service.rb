@@ -10,7 +10,7 @@ class SideFxUserService
 
   def after_create user, current_user
     IdentifyToSegmentJob.perform_later(user)
-    LogActivityJob.set(wait: 10.seconds).perform_later(user, 'completed signup', user, user.created_at.to_i)
+    GenerateUserAvatarJob.perform_later(user)
     LogActivityJob.set(wait: 10.seconds).perform_later(user, 'created', user, user.created_at.to_i)
   end
 
