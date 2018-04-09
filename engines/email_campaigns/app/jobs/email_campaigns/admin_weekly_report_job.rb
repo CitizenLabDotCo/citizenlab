@@ -11,7 +11,7 @@ module EmailCampaigns
       	since = Time.now - N_DAYS_SINCE.days
 
       	top_ideas = Idea.where(publication_status: 'published').all
-        top_ideas = top_ideas.select{|idea| (activity_count(idea, since=since) > 0) || (idea.published_at > (Time.now - (N_DAYS_SINCE * 2)))}
+        top_ideas = top_ideas.select{|idea| (activity_count(idea, since=since) > 0) || (idea.published_at > (Time.now - N_DAYS_SINCE.days))}
       	top_ideas = top_ideas.sort_by{|idea| activity_score(idea, since=since)}.reverse.take N_TOP_IDEAS
         top_ideas = top_ideas.sort_by{|idea| activity_count(idea, since=since)}.reverse
 
