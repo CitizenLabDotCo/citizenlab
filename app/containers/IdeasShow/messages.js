@@ -94,6 +94,42 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.deleteComment',
     defaultMessage: 'Delete',
   },
+  editComment: {
+    id: 'app.containers.IdeasShow.editComment',
+    defaultMessage: 'Edit',
+  },
+  confirmCommentDeletion: {
+    id: 'app.containers.IdeasShow.confirmCommentDeletion',
+    defaultMessage: `Are you sure you want to delete this comment? There's no turning back!`,
+  },
+  commentDeletionCancelButton: {
+    id: 'app.containers.IdeasShow.commentDeletionCancelButton',
+    defaultMessage: `Keep my comment`,
+  },
+  adminCommentDeletionCancelButton: {
+    id: 'app.containers.IdeasShow.adminCommentDeletionCancelButton',
+    defaultMessage: `Leave the comment`,
+  },
+  commentDeletionConfirmButton: {
+    id: 'app.containers.IdeasShow.commentDeletionConfirmButton',
+    defaultMessage: `Delete my comment`,
+  },
+  deleteReason_inappropriate: {
+    id: 'app.containers.IdeasShow.deleteReason_inappropriate',
+    defaultMessage: `Inappropriate comment`,
+  },
+  deleteReason_irrelevant: {
+    id: 'app.containers.IdeasShow.deleteReason_irrelevant',
+    defaultMessage: `Irrelevant comment`,
+  },
+  deleteReason_other: {
+    id: 'app.containers.IdeasShow.deleteReason_other',
+    defaultMessage: `Other reason (please specify)`,
+  },
+  adminCommentDeletionConfirmButton: {
+    id: 'app.containers.IdeasShow.adminCommentDeletionConfirmButton',
+    defaultMessage: `Delete this comment`,
+  },
   helmetTitle: {
     id: 'app.containers.IdeasShow.helmetTitle',
     defaultMessage: 'Show idea',
@@ -105,6 +141,10 @@ export default defineMessages({
   deletedUser: {
     id: 'app.containers.IdeasShow.deletedUser',
     defaultMessage: 'deleted user',
+  },
+  commentDeletedPlaceholder: {
+    id: 'app.containers.IdeasShow.commentDeletedPlaceholder',
+    defaultMessage: 'This comment has been deleted.',
   },
   author: {
     id: 'app.containers.IdeasShow.author',

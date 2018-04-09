@@ -80,7 +80,7 @@ interface State {
 }
 
 class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, State> {
-  
+
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -111,8 +111,8 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
         groupsProjects$
       ).subscribe(([locale, currentTenant, groups, groupsProjects]) => {
         const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-        const projectGroups = _(groupsProjects.data).map((groupProject) => {
-          const group = _(groups.data).find(group => group.id === groupProject.relationships.group.data.id) as IGroupData;
+        const projectGroups = _.map(groupsProjects.data, (groupProject) => {
+          const group = _.find(groups.data, group => group.id === groupProject.relationships.group.data.id) as IGroupData;
 
           return {
             group_id: group.id,
@@ -120,7 +120,8 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
             title: getLocalized(group.attributes.title_multiloc, locale, currentTenantLocales),
             membership_count: group.attributes.memberships_count
           };
-        }).reverse().value();
+        })
+        .reverse();
         const groupsOptions = this.getOptions(groups, groupsProjects, locale, currentTenantLocales);
         const loading = false;
 

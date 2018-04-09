@@ -31,6 +31,7 @@ export interface IUserData {
     education?: string;
     unread_notifications?: number;
     custom_field_values: object;
+    invite_status: 'pending' | 'accepted' | null;
   };
 }
 
@@ -77,6 +78,10 @@ export function userByIdStream(userId: string) {
 
 export function userBySlugStream(userSlug: string) {
   return streams.get<IUser>({ apiEndpoint: `${apiEndpoint}/by_slug/${userSlug}` });
+}
+
+export function userByInviteStream(token: string) {
+  return streams.get<IUser>({ apiEndpoint: `${apiEndpoint}/by_invite/${token}` });
 }
 
 export async function updateUser(userId: string, object: IUserUpdate) {
