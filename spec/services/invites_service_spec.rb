@@ -21,7 +21,7 @@ describe InvitesService do
           email: user.email,
           first_name: rand(3) == 0 ? user.first_name : nil,
           last_name: rand(3) == 0 ? user.last_name : nil,
-          locale: rand(3) == 0 ? user.locale : nil,
+          language: rand(3) == 0 ? user.locale : nil,
           admin: rand(5) == 0 ? true : nil,
           groups: rand(3) == 0 ? rand(3).times.map{Group.offset(rand(Group.count)).first.title_multiloc.values.first}.join(',') : nil
         }
@@ -96,9 +96,9 @@ describe InvitesService do
       end
     end
 
-    context "with an unknown locale field" do
+    context "with an unknown language value" do
       let(:hash_array) {[
-        {locale: 'qq'}
+        {language: 'qq'}
       ]}
 
       it "fails with unknown_locale error" do
