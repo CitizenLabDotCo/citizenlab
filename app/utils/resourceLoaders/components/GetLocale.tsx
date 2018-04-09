@@ -21,7 +21,7 @@ export default class GetLocale extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      locale: 'en',
+      locale: 'en'
     };
   }
 

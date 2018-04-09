@@ -3,9 +3,11 @@ import { BehaviorSubject, Subscription, Observable } from 'rxjs/Rx';
 import { IInviteData, invitesStream } from 'services/invites';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
-type Props = {
+interface InputProps {}
+
+interface Props extends InputProps {
   children: (obj: GetInvitesChildProps) => JSX.Element | null;
-};
+}
 
 type State = {
   invites: IInviteData[] | null;
@@ -19,10 +21,7 @@ type State = {
 
 type SortAttribute = 'email' | 'last_name' | 'created_at' | 'invite_status';
 type SortDirection = 'ascending' | 'descending';
-type SortDescriptor = {
-  attribute: SortAttribute,
-  direction: SortDirection
-};
+type SortDescriptor = { attribute: SortAttribute, direction: SortDirection };
 type InviteStatus = 'pending' | 'accepted';
 
 export type GetInvitesChildProps = State & {

@@ -4,6 +4,7 @@ import * as Rx from 'rxjs/Rx';
 
 // libraries
 import { browserHistory } from 'react-router';
+import * as bowser from 'bowser';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -78,17 +79,29 @@ const Container: any = styled.div`
 `;
 
 const Content = styled.div`
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   z-index: 10001;
-  overflow: hidden;
-  overflow-y: scroll;
+  overflow: auto;
   -webkit-overflow-scrolling: touch;
 
   ${media.smallerThanMaxTablet`
     height: calc(100vh - ${props => props.theme.mobileTopBarHeight}px - ${props => props.theme.mobileMenuHeight}px);
     margin-top: ${props => props.theme.mobileTopBarHeight}px;
   `}
+`;
+
+const ContentInner = styled.div`
+  width: 100%;
+
+  &.ipad {
+    min-height: 101vh;
+  }
 `;
 
 const TopBar: any = styled.div`
@@ -254,10 +267,33 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     }
   }
 
+  disableBodyScroll = () => {
+    if (!document.body.classList.contains('modal-active')) document.body.classList.add('modal-active');
+    // document.addEventListener('touchmove', this.freezeViewport, false);
+    document.documentElement.addEventListener('touchmove', this.freezeViewport, false);
+    document.body.addEventListener('touchmove', this.freezeViewport, false);
+
+  }
+
+  enableBodyScroll = () => {
+    document.body.classList.remove('modal-active');
+    // document.removeEventListener('touchmove', this.freezeViewport, false);
+    document.documentElement.removeEventListener('touchmove', this.freezeViewport, false);
+    document.body.removeEventListener('touchmove', this.freezeViewport, false);
+  }
+
+  freezeViewport = (event) => {
+    event.preventDefault();
+  }
+
   openModal = (url: string| null) => {
     this.goBackUrl = window.location.href;
+
     window.addEventListener('popstate', this.handlePopstateEvent);
     window.addEventListener('keydown', this.onEscKeyPressed, true);
+
+    this.disableBodyScroll();
+
     this.unlisten = browserHistory.listen(() => {
       // on route change
       setTimeout(() => {
@@ -265,32 +301,10 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
       }, 250);
     });
 
-    if (!document.body.classList.contains('modal-active')) {
-      document.body.classList.add('modal-active');
-    }
-
-    this.stopBodyScrolling(true);
-
     if (url) {
       window.history.pushState({ path: url }, '', url);
-
-      // Since we bypass the normal history mechanism and take it into our own hands here,
-      // we exceptionally also need to track the page change manually
-      // Don't try this at home!
       trackPage(url, { modal: true });
     }
-  }
-
-  stopBodyScrolling = (stopScroll: boolean) => {
-    if (stopScroll === true) {
-      document.body.addEventListener('touchmove', this.freezeViewport, false);
-    } else {
-      document.body.removeEventListener('touchmove', this.freezeViewport, false);
-    }
-  }
-
-  freezeViewport = (event) => {
-    event.preventDefault();
   }
 
   onEscKeyPressed = (event) => {
@@ -328,9 +342,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   cleanup = () => {
     this.goBackUrl = null;
 
-    document.body.classList.remove('modal-active');
-
-    this.stopBodyScrolling(false);
+    this.enableBodyScroll();
 
     window.removeEventListener('popstate', this.handlePopstateEvent);
     window.removeEventListener('keydown', this.onEscKeyPressed, true);
@@ -382,7 +394,9 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
       >
         <Container id="e2e-fullscreenmodal-content" className={`${opened && 'opened'}`}>
           <Content innerRef={this.setRef}>
-            {children}
+            <ContentInner className={`${bowser.ipad && 'ipad'}`}>
+              {children}
+            </ContentInner>
           </Content>
 
           <CloseButton onClick={this.clickCloseButton}>

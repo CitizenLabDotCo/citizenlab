@@ -130,8 +130,8 @@ const HeaderTitle: any = styled.h1`
   width: 100%;
   max-width: 980px;
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
-  font-size: 55px;
-  line-height: 64px;
+  font-size: 52px;
+  line-height: 60px;
   font-weight: 600;
   text-align: center;
   white-space: normal;
@@ -141,10 +141,14 @@ const HeaderTitle: any = styled.h1`
   margin: 0;
   padding: 0;
 
+  ${media.smallerThanMaxTablet`
+    font-size: 48px;
+    line-height: 60px;
+  `}
+
   ${media.smallerThanMinTablet`
     font-size: 34px;
     line-height: 39px;
-    padding: 0;
   `}
 `;
 
@@ -194,8 +198,8 @@ const IdeasStyledContentContainer = StyledContentContainer.extend`
 
 const Section = styled.div`
   width: 100%;
-  padding-top: 110px;
-  padding-bottom: 110px;
+  padding-top: 100px;
+  padding-bottom: 100px;
 
   ${media.smallerThanMinTablet`
     padding-top: 60px;
@@ -206,6 +210,7 @@ const Section = styled.div`
 const ProjectSection = Section.extend`
   padding-top: 0px;
   margin-top: -80px;
+  padding-bottom: 80px;
 
   ${media.smallerThanMinTablet`
     margin-top: -130px;
