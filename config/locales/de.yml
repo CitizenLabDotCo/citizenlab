@@ -3,13 +3,13 @@ de:
     proposed: vorgeschlagen
     proposed_description: Diese Idee wurde der Stadtverwaltung vorgestellt
     under_consideration: unter Berücksichtigung
-    under_consideration_description: '{orgName, select, München {Dieses Anliegen oder Mängelmeldung wird von der Stadtverwaltung derzeit bearbeitet} other {Diese Idee wird von der Stadtverwaltung berücksichtigt}}'
+    under_consideration_description: Diese Idee wird von der Stadtverwaltung berücksichtigt
     accepted: akzeptiert
     accepted_description: Diese Idee wurde von der Stadtverwaltung akzeptiert und wird umgesetzt werden
     implemented: umgesetzt
-    implemented_description: '{orgName, select, München {Dieses Anliegen wurde von der Stadtverwaltung umgesetzt oder der Mangel beseitigt.} other {Diese Idee wurde von der Stadtverwaltung umgesetzt}}'
+    implemented_description: Diese Idee wurde von der Stadtverwaltung umgesetzt
     rejected: abgelehnt
-    rejected_description: '{orgName, select, München {Dieses Anliegen oder Mängelmeldung wurde von der Stadtverwaltung abgelehnt.} other {Diese Idee wurde abgelehnt}}'
+    rejected_description: Diese Idee wurde abgelehnt
   topics:
     infrastructure: Straßen und Plätze
     infrastructure_description: Straßen und Plätze
