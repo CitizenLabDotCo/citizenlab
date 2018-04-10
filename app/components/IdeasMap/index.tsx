@@ -4,7 +4,7 @@ import Leaflet from 'leaflet';
 import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 
 // Services & utils
-import { trackEvent } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // Components
@@ -99,7 +99,7 @@ class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
   }
 
   selectIdea = (id) => {
-    trackEvent(tracks.clickOnIdeaMapMarker, { ideaId: id });
+    trackEventByName(tracks.clickOnIdeaMapMarker, { ideaId: id });
     this.setState({ selectedIdea: id });
   }
 
@@ -121,7 +121,7 @@ class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
 
   redirectToIdeaCreation = () => {
     if (this.savedPosition && this.props.params && this.props.params.slug) {
-      trackEvent(tracks.createIdeaFromMap, { position: this.savedPosition, projectSlug: this.props.params.slug });
+      trackEventByName(tracks.createIdeaFromMap, { position: this.savedPosition, projectSlug: this.props.params.slug });
       browserHistory.push(`/projects/${this.props.params.slug}/ideas/new?position=[${this.savedPosition.lat},${this.savedPosition.lng}]`);
     }
   }

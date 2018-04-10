@@ -103,10 +103,17 @@ export function trackIdentification(userId: string, properties: {} = {}) {
   });
 }
 
-export function trackEvent(eventName: string, properties: {} = {}) {
+export function trackEventByName(eventName: string, properties: {} = {}) {
   events$.next({
     properties,
     name: eventName,
+  });
+}
+
+export function trackEvent(event: IEvent) {
+  events$.next({
+    properties: (event.properties || {}),
+    name: event.name,
   });
 }
 
@@ -115,7 +122,7 @@ export const injectTracks = <P>(events: {[key: string]: IEvent}) => (component: 
     const eventFunctions = _.mapValues(events, (event) => (
       (extra) => {
         const extraProps = extra && extra.extra;
-        trackEvent(event.name, { ...event.properties, ...extraProps });
+        trackEventByName(event.name, { ...event.properties, ...extraProps });
       }
     ));
     const propsWithEvents = {
