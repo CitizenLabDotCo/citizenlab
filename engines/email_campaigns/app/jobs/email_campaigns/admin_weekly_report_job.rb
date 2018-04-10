@@ -2,8 +2,9 @@ module EmailCampaigns
   class AdminWeeklyReportJob < ApplicationJob
     queue_as :default
 
+    CAMPAIGN = 'admin_weekly_report'
     N_TOP_IDEAS = ENV.fetch("N_ADMIN_WEEKLY_REPORT_IDEAS", 12).to_i
-    N_DAYS_SINCE = ENV.fetch("N_DAYS_SINCE_ADMIN_WEEKLY_REPORT", 7).to_i
+    N_DAYS_SINCE = ENV.fetch("N_DAYS_SINCE_ADMIN_WEEKLY_REPORT", 14).to_i
 
   
     def perform
@@ -18,7 +19,7 @@ module EmailCampaigns
   
         tenant = Tenant.current
         trackingMessage = {
-          event: "Periodic email for admin weekly report",
+          event: "Periodic email for #{CAMPAIGN.gsub '_', ' '}",
           user_id: admin.id,
           timestamp: Time.now,
           properties: {
@@ -36,6 +37,8 @@ module EmailCampaigns
         }
         
         Analytics.track(trackingMessage)
+
+        create_campaign_email_commands admin, top_project_ideas
       end
     end
 
@@ -92,6 +95,17 @@ module EmailCampaigns
           active_users: increase_hash([])
         } 
       }
+    end
+
+    def create_campaign_email_commands user, top_project_ideas
+      # Also store projects?
+      # project_ids = []
+      idea_ids = []
+      top_project_ideas.each do |tpi|
+        idea_ids += tpi[:top_ideas].map{|idea_h| idea_h[:id]}
+      end
+      idea_ids.uniq!
+      EmailCampaigns::CampaignEmailCommand.create! campaign: CAMPAIGN, recipient: user, tracked_content: {'idea_ids': idea_ids}
     end
 
     def activity_score idea, since=last_week
