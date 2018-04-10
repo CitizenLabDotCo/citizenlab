@@ -20,7 +20,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { trackEvent } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
@@ -275,7 +275,7 @@ class IdeaCards extends React.PureComponent<Props, State> {
 
   selectView = (selectedView: 'card' | 'map') => (event: React.FormEvent<any>) => {
     event.preventDefault();
-    trackEvent(tracks.toggleDisplay, { selectedDisplayMode: selectedView });
+    trackEventByName(tracks.toggleDisplay, { selectedDisplayMode: selectedView });
     this.setState({ selectedView });
   }
 

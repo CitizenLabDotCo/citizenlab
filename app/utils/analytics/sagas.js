@@ -2,12 +2,12 @@ import { call } from 'redux-saga/effects';
 import { takeLatest } from 'redux-saga';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { LOAD_CURRENT_USER_SUCCESS } from 'utils/auth/constants';
-import { trackIdentification, trackPage, trackEvent } from './';
+import { trackIdentification, trackPage, trackEventByName } from './';
 import { find } from 'lodash';
 
 function* trackAction(action) {
   yield call(
-    trackEvent,
+    trackEventByName,
     action.meta.track.name,
     action.meta.track.properties,
   );

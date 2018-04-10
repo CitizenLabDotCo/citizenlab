@@ -21,8 +21,8 @@ import GetLocale, { GetLocaleChildProps } from 'utils/resourceLoaders/components
 import GetProjects, { GetProjectsChildProps } from 'utils/resourceLoaders/components/GetProjects';
 
 // utils
-// import { injectTracks } from 'utils/analytics';
-// import tracks from './tracks';
+import { trackEvent } from 'utils/analytics';
+import tracks from './tracks';
 import { getProjectUrl } from 'services/projects';
 
 // i18n
@@ -361,11 +361,6 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-// interface Tracks {
-//   trackClickOpenNotifications: () => void;
-//   trackClickCloseNotifications: () => void;
-// }
-
 interface State {
   notificationPanelOpened: boolean;
   projectsDropdownOpened: boolean;
@@ -387,11 +382,11 @@ class Navbar extends React.PureComponent<Props, State> {
   }
 
   toggleNotificationPanel = () => {
-    // if (this.state.notificationPanelOpened) {
-    //   this.props.trackClickCloseNotifications();
-    // } else {
-    //   this.props.trackClickOpenNotifications();
-    // }
+    if (this.state.notificationPanelOpened) {
+      trackEvent(tracks.clickCloseNotifications);
+    } else {
+      trackEvent(tracks.clickOpenNotifications);
+    }
 
     this.setState(state => ({ notificationPanelOpened: !state.notificationPanelOpened }));
   }
@@ -399,9 +394,9 @@ class Navbar extends React.PureComponent<Props, State> {
   closeNotificationPanel = () => {
     // There seem to be some false closing triggers on initializing,
     // so we check whether it's actually open
-    // if (this.state.notificationPanelOpened) {
-    //   this.props.trackClickCloseNotifications();
-    // }
+    if (this.state.notificationPanelOpened) {
+      trackEvent(tracks.clickCloseNotifications);
+    }
 
     this.setState({ notificationPanelOpened: false });
   }
@@ -536,8 +531,3 @@ const Data = adopt<DataProps, {}>({
 });
 
 export default (inputProps: InputProps) => <Data>{dataProps => <Navbar {...inputProps} {...dataProps} />}</Data>;
-
-// export default injectTracks<InputProps>({
-//   trackClickOpenNotifications: tracks.clickOpenNotifications,
-//   trackClickCloseNotifications: tracks.clickCloseNotifications,
-// })(Navbar);
