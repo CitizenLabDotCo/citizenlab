@@ -3,7 +3,7 @@ require 'ice_cube'
 
 USER_PLATFORM_DIGEST_DAY = ENV.fetch("USER_PLATFORM_DIGEST_DAY", :tuesday).to_sym
 USER_PLATFORM_DIGEST_HOUR = ENV.fetch("USER_PLATFORM_DIGEST_HOUR", 16).to_i
-ADMIN_WEEKLY_REPORT_DAY = ENV.fetch("ADMIN_WEEKLY_REPORT_DAY", :tuesday).to_sym
+ADMIN_WEEKLY_REPORT_DAY = ENV.fetch("ADMIN_WEEKLY_REPORT_DAY", :monday).to_sym
 ADMIN_WEEKLY_REPORT_HOUR = ENV.fetch("ADMIN_WEEKLY_REPORT_HOUR", 16).to_i
 
 
@@ -60,7 +60,7 @@ namespace :periodic_events do
                ( (now_over_there - 30.minutes) < true_schedule_next and 
                  (now_over_there + 30.minutes) > true_schedule_next))
             job = @campaign_jobs[campaign].constantize
-            job.perform_later
+            job.perform_later schedule.previous_occurrence(Time.now).to_i
           end
         end
       end
