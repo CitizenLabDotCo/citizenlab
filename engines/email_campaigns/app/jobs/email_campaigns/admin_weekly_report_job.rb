@@ -4,17 +4,19 @@ module EmailCampaigns
 
     CAMPAIGN = 'admin_weekly_report'
     N_TOP_IDEAS = ENV.fetch("N_ADMIN_WEEKLY_REPORT_IDEAS", 12).to_i
-    N_DAYS_SINCE = ENV.fetch("N_DAYS_SINCE_ADMIN_WEEKLY_REPORT", 14).to_i
 
   
-    def perform
+    def perform last_scheduled_at=(Time.now - 7.days).to_i
+      last_scheduled_at = Time.at(last_scheduled_at)
       User.all.select{|user| user.admin?}.each do |admin|
-        statistics = admin_report_statistics
+        days_interval = ((Time.now - last_scheduled_at) / 1.day).days
+
+        statistics = admin_report_statistics days_interval
         if no_increase_in_stats statistics
           return
         end
 
-        top_project_ideas = admin_report_top_project_ideas
+        top_project_ideas = admin_report_top_project_ideas days_interval
         has_new_ideas = (top_project_ideas.size > 0)
   
         tenant = Tenant.current
@@ -42,8 +44,8 @@ module EmailCampaigns
       end
     end
 
-    def admin_report_top_project_ideas
-      since = Time.now - N_DAYS_SINCE.days
+    def admin_report_top_project_ideas days_interval
+      since = Time.now - days_interval
 
       top_ideas = Idea.where(publication_status: 'published').all
       top_ideas = top_ideas.select{|idea| (activity_count(idea, since=since) > 0) || (idea.published_at > since)}
@@ -80,26 +82,25 @@ module EmailCampaigns
       serialized_top_project_ideas
     end
 
-    def admin_report_statistics
+    def admin_report_statistics days_interval
       {
         activities: {
-          new_ideas: increase_hash(Idea.all.map(&:published_at).compact),
-          new_comments: increase_hash(Comment.all.map(&:created_at).compact),
-          new_votes: increase_hash(Vote.all.map(&:created_at).compact),
+          new_ideas: increase_hash(Idea.all.map(&:published_at).compact, days_interval),
+          new_comments: increase_hash(Comment.all.map(&:created_at).compact, days_interval),
+          new_votes: increase_hash(Vote.all.map(&:created_at).compact, days_interval),
           total_ideas: Idea.count,
           total_users: User.count
         },
         users: {
-          new_visitors: increase_hash([]),
-          new_users: increase_hash(User.all.map(&:registration_completed_at).compact),
-          active_users: increase_hash([])
+          new_visitors: increase_hash([], days_interval),
+          new_users: increase_hash(User.all.map(&:registration_completed_at).compact, days_interval),
+          active_users: increase_hash([], days_interval)
         } 
       }
     end
 
     def create_campaign_email_commands user, top_project_ideas
       # Also store projects?
-      # project_ids = []
       idea_ids = []
       top_project_ideas.each do |tpi|
         idea_ids += tpi[:top_ideas].map{|idea_h| idea_h[:id]}
@@ -108,7 +109,7 @@ module EmailCampaigns
       EmailCampaigns::CampaignEmailCommand.create! campaign: CAMPAIGN, recipient: user, tracked_content: {'idea_ids': idea_ids}
     end
 
-    def activity_score idea, since=last_week
+    def activity_score idea, since
       recent_activity = 1 + activity_count(idea, since=since)
       if idea.published_at
         (recent_activity**2) / (Time.now.to_i - idea.published_at.to_i)
@@ -117,23 +118,19 @@ module EmailCampaigns
       end
     end
 
-    def activity_count idea, since=last_week
+    def activity_count idea, since
       idea_recent_votes(idea, since=since).select{|v| v.mode == 'up'}.select{|v| v.user_id != idea.author_id}.size + idea_recent_comments(idea, since=since).size
     end
 
-    def idea_recent_votes idea, since=last_week
+    def idea_recent_votes idea, since
     	idea.votes.select{|v| v.created_at > since}
     end
 
-    def idea_recent_comments idea, since=last_week
+    def idea_recent_comments idea, since
     	idea.comments.select{|c| c.created_at > since}
     end
 
-    def last_week
-    	Time.now - 1.weeks
-    end
-
-    def to_weekly_report_idea_hash idea, since=last_week
+    def to_weekly_report_idea_hash idea, since
     	{
     		id: idea.id,
     		title_multiloc: idea.title_multiloc,
@@ -141,17 +138,17 @@ module EmailCampaigns
     		published_at: idea.published_at,
     		author_name: idea.author_name,
     		upvotes_count: idea.upvotes_count,
-    		upvotes_increment: idea_recent_votes(idea, since=since).select{|v| v.mode == 'up'}.count,
+    		upvotes_increment: idea_recent_votes(idea, since).select{|v| v.mode == 'up'}.count,
     		downvotes_count: idea.downvotes_count,
-    		downvotes_increment: idea_recent_votes(idea, since=since).select{|v| v.mode == 'down'}.count,
+    		downvotes_increment: idea_recent_votes(idea, since).select{|v| v.mode == 'down'}.count,
     		comments_count: idea.comments_count,
-    		comments_increment: idea_recent_comments(idea, since=since).count
+    		comments_increment: idea_recent_comments(idea, since).count
     	}
     end
 
-    def increase_hash timestamps
-    	last_2n_ago = timestamps.select{|ts| ts > (Time.now - (N_DAYS_SINCE * 2).days)}
-    	last_n_ago = last_2n_ago.select{|ts| ts > (Time.now - N_DAYS_SINCE.days)}
+    def increase_hash timestamps, days_interval
+    	last_2n_ago = timestamps.select{|ts| ts > (Time.now - (days_interval * 2))}
+    	last_n_ago = last_2n_ago.select{|ts| ts > (Time.now - days_interval)}
     	{
     		increase: last_n_ago.size,
     		past_increase: (last_2n_ago.size - last_n_ago.size)
