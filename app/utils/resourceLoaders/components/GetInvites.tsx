@@ -1,115 +1,167 @@
-import * as React from 'react';
+import React from 'react';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs/Rx';
 import { IInviteData, invitesStream } from 'services/invites';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
+import shallowCompare from 'utils/shallowCompare';
+import { isEqual, omit } from 'lodash';
 
-interface InputProps {}
+export type SortAttribute = 'email' | 'last_name' | 'created_at' | 'invite_status';
+type SortDirection = 'ascending' | 'descending';
+type Sort =  'email' | '-email' | 'last_name' | '-last_name' | 'created_at' | '-created_at' | 'invite_status' | '-invite_status';
+type InviteStatus = 'pending' | 'accepted';
+
+export interface IInputQueryParameters {
+  'page[number]'?: number;
+  'page[size]'?: number;
+  sort?: Sort;
+  search?: string;
+  invite_status?: InviteStatus;
+}
+
+interface IInternalQueryParameters {
+  'page[number]': number;
+  'page[size]': number;
+  sort: Sort;
+  search: string;
+  invite_status?: InviteStatus;
+}
+
+interface InputProps {
+  queryParameters?: IInputQueryParameters;
+}
 
 interface Props extends InputProps {
   children: (obj: GetInvitesChildProps) => JSX.Element | null;
 }
 
 type State = {
+  queryParameters: IInternalQueryParameters;
+  searchValue: string;
   invites: IInviteData[] | null;
-  sortAttribute: SortAttribute;
-  sortDirection: SortDirection;
+  sortAttribute: SortAttribute,
+  sortDirection: SortDirection,
   currentPage: number;
   lastPage: number;
-  inviteStatusFilter: InviteStatus | null;
-  searchTerm: String | null;
 };
 
-type SortAttribute = 'email' | 'last_name' | 'created_at' | 'invite_status';
-type SortDirection = 'ascending' | 'descending';
-type SortDescriptor = { attribute: SortAttribute, direction: SortDirection };
-type InviteStatus = 'pending' | 'accepted';
-
 export type GetInvitesChildProps = State & {
-  onChangeSorting: (attribute: SortAttribute, direction: SortDirection) => void;
-  onChangeSearchTerm: (string) => void;
-  onChangePage: (number) => void;
+  onChangeSorting: (sortAttribute: SortAttribute) => void;
+  onChangeSearchTerm: (search: string) => void;
+  onChangePage: (pageNumber: number) => void;
   onChangeFilterInviteStatus: (inviteStatus: InviteStatus) => void;
 };
 
 export default class GetInvites extends React.PureComponent<Props, State> {
-  searchTerm$: BehaviorSubject<string | null>;
-  sortDescriptor$: BehaviorSubject<SortDescriptor>;
-  currentPage$: BehaviorSubject<number>;
-  inviteStatusFilter$: BehaviorSubject<InviteStatus | null>;
+  queryParameters$: BehaviorSubject<IInternalQueryParameters>;
+  search$: BehaviorSubject<string | undefined>;
   subscriptions: Subscription[];
 
   constructor(props) {
     super(props);
+
+    const initialSort = '-created_at';
+
     this.state = {
+      queryParameters: {
+        'page[number]': 1,
+        'page[size]': 20,
+        sort: initialSort,
+        search: '',
+        invite_status: undefined
+      },
       invites: null,
-      sortAttribute: 'created_at',
-      sortDirection: 'descending',
+      searchValue: '',
+      sortAttribute: this.getSortAttribute(initialSort),
+      sortDirection: this.getSortDirection(initialSort),
       currentPage: 1,
-      lastPage: 1,
-      inviteStatusFilter: null,
-      searchTerm: null,
+      lastPage: 1
     };
-    this.searchTerm$ = new BehaviorSubject(null);
-    this.sortDescriptor$ = new BehaviorSubject({ attribute: 'created_at', direction: 'descending' } as SortDescriptor);
-    this.currentPage$ = new BehaviorSubject(1);
-    this.inviteStatusFilter$ = new BehaviorSubject(null);
   }
 
   componentDidMount() {
+    const queryParameters = { ...this.state.queryParameters, ...this.props.queryParameters };
+    const searchValue = (queryParameters.search || '');
+
+    this.queryParameters$ = new BehaviorSubject({ ...this.state.queryParameters, ...this.props.queryParameters });
+    this.search$ = new BehaviorSubject(searchValue);
+
     this.subscriptions = [
       Observable.combineLatest(
-        Observable.combineLatest(
-          this.inviteStatusFilter$,
-          this.searchTerm$.debounceTime(300)
-        ).do(() => { this.currentPage$.next(1); }),
-        this.sortDescriptor$,
-        this.currentPage$.distinctUntilChanged()
-      ).switchMap(([[inviteStatusFilter, searchTerm], sortDescriptor, currentPage]) => {
-        const queryParameters = {
-          'page[number]': currentPage || 1,
-          'page[size]': 20,
-          sort: `${sortDescriptor.direction === 'ascending' ? '' : '-'}${sortDescriptor.attribute}`,
-          search: searchTerm || null,
-          invite_status: inviteStatusFilter,
-        };
-        return invitesStream({ queryParameters, cacheStream: false }).observable.map((invites) => ({
-          invites,
-          sortDescriptor,
-          inviteStatusFilter,
-          searchTerm,
-        }));
-      }).subscribe(({ invites, sortDescriptor, inviteStatusFilter, searchTerm }) => {
+        this.queryParameters$
+          .distinctUntilChanged((x, y) => shallowCompare(x, y)),
+        this.search$
+          .map(searchValue => (searchValue || ''))
+          .do(searchValue => this.setState({ searchValue }))
+          .debounceTime(400)
+          .startWith('')
+          .distinctUntilChanged()
+      ).switchMap(([queryParameters, searchValue]) => {
+        queryParameters.search = (searchValue || '');
+        const oldPartialQuery = omit(this.state.queryParameters, 'page[number]');
+        const newPartialQuery = omit(queryParameters, 'page[number]');
+        queryParameters['page[number]'] = (!isEqual(oldPartialQuery, newPartialQuery) ? 1 : queryParameters['page[number]']);
+        return invitesStream({ queryParameters, cacheStream: false }).observable.map(invites => ({ invites, queryParameters, searchValue }));
+      }).subscribe(({ invites, queryParameters, searchValue }) => {
         this.setState({
-          inviteStatusFilter,
-          searchTerm,
-          sortAttribute: sortDescriptor.attribute,
-          sortDirection: sortDescriptor.direction,
+          queryParameters,
+          searchValue,
           invites: invites.data,
+          sortAttribute: this.getSortAttribute(queryParameters.sort),
+          sortDirection: this.getSortDirection(queryParameters.sort),
           currentPage: getPageNumberFromUrl(invites.links.self) || 1,
-          lastPage: getPageNumberFromUrl(invites.links.last) || 1,
+          lastPage: getPageNumberFromUrl(invites.links.last) || 1
         });
       })
     ];
+  }
+
+  componentDidUpdate(prevProps: Props, _prevState: State) {
+    if (!isEqual(prevProps.queryParameters, this.props.queryParameters)) {
+      this.queryParameters$.next({ ...this.state.queryParameters, ...this.props.queryParameters });
+    }
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleChangeSorting = (attribute: SortAttribute, direction: SortDirection) => {
-    this.sortDescriptor$.next({ attribute, direction });
+  getSortAttribute(sort: Sort) {
+    return sort.replace(/^-/, '') as SortAttribute;
+  }
+
+  getSortDirection(sort: Sort) {
+    return sort.startsWith('-') ? 'descending' : 'ascending';
+  }
+
+  handleChangeSorting = (newSortAttribute: SortAttribute) => {
+    const oldSortAttribute = this.getSortAttribute(this.state.queryParameters.sort);
+    const oldSortDirection = this.getSortDirection(this.state.queryParameters.sort);
+    const newSortDirection = (newSortAttribute === oldSortAttribute && oldSortDirection === 'descending') ? 'ascending' : 'descending';
+    const newSortDirectionSymbol = (newSortDirection === 'descending' ? '-' : '');
+    const sort = `${newSortDirectionSymbol}${newSortAttribute}` as Sort;
+
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      sort
+    });
   }
 
   handleChangeSearchTerm = (searchTerm) => {
-    this.searchTerm$.next(searchTerm);
+    this.search$.next(searchTerm);
   }
 
-  handleChangePage = (page: number) => {
-    this.currentPage$.next(page);
+  handleChangePage = (pageNumber: number) => {
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      'page[number]': pageNumber
+    });
   }
 
   handleChangeFilterInviteStatus = (inviteStatus: InviteStatus) => {
-    this.inviteStatusFilter$.next(inviteStatus);
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      invite_status: inviteStatus
+    });
   }
 
   render() {
