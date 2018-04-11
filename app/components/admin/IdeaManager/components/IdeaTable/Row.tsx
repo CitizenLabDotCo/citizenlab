@@ -157,9 +157,7 @@ class Row extends React.PureComponent<Props> {
               />
             }
             {activeFilterMenu === 'projects' &&
-              <ProjectSelector
-                selectedProject={idea.relationships.project.data && idea.relationships.project.data.id}
-              />
+              <ProjectSelector projectId={idea.relationships.project.data && idea.relationships.project.data.id} />
             }
             {activeFilterMenu === 'statuses' &&
               <StatusSelector

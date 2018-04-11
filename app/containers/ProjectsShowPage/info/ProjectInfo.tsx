@@ -5,7 +5,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 // components
 import ImageZoom from 'react-medium-image-zoom';
 
-// services
+// resources
 import GetProject from 'utils/resourceLoaders/components/GetProject';
 
 // i18n

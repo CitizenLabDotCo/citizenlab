@@ -204,8 +204,8 @@ const Invites = styled.div`
 interface InputProps {}
 
 interface DataProps {
-  tenantLocales: GetTenantLocalesChildProps;
   locale: GetLocaleChildProps;
+  tenantLocales: GetTenantLocalesChildProps;
   groups: GetGroupsChildProps;
 }
 
@@ -261,28 +261,6 @@ class Invitations extends React.PureComponent<Props, State> {
 
     return null;
   }
-
-  // componentDidMount() {
-  //   const locale$ = localeStream().observable;
-  //   const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
-  //   const groups$ = listGroups().observable;
-
-  //   this.subscriptions = [
-  //     Rx.Observable.combineLatest(
-  //       locale$,
-  //       currentTenantLocales$,
-  //       groups$
-  //     ).subscribe(([locale, currentTenantLocales, groups]) => {
-  //       this.setState({
-  //         locale,
-  //         currentTenantLocales,
-  //         groupOptions: this.getGroupOptions(groups, locale, currentTenantLocales),
-  //         selectedLocale: currentTenantLocales[0],
-  //         loaded: true
-  //       });
-  //     })
-  //   ];
-  // }
 
   getGroupOptions = (groups: IGroupData[] | null, locale: Locale, tenantLocales: Locale[] | null) => {
     if (tenantLocales && groups && groups && groups.length > 0) {
@@ -677,9 +655,9 @@ class Invitations extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, {}>({
-  groups: <GetGroups />,
+  locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
-  locale: <GetLocale />
+  groups: <GetGroups />
 });
 
 export default (inputProps: InputProps) => <Data>{dataProps => <Invitations {...inputProps} {...dataProps} />}</Data>;
