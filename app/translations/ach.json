@@ -101,6 +101,7 @@
   "app.containers.Admin.User.confirmDelete": "",
   "app.containers.Admin.User.createButton": "crwdns18348:0crwdne18348:0",
   "app.containers.Admin.User.currentlyNoInvites": "",
+  "app.containers.Admin.User.currentlyNoInvitesThatMatchSearch": "",
   "app.containers.Admin.User.delete": "crwdns15581:0crwdne15581:0",
   "app.containers.Admin.User.deleteButton": "crwdns18349:0crwdne18349:0",
   "app.containers.Admin.User.deleteInvite": "",
