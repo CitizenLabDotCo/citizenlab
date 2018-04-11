@@ -1,7 +1,5 @@
-import * as React from 'react';
+import React from 'react';
 import { get } from 'lodash';
-import * as Rx from 'rxjs/Rx';
-
 import FileSaver from 'file-saver';
 import { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
@@ -10,17 +8,16 @@ import { API_PATH } from 'containers/App/constants';
 import { Table, Input, Popup, Button as SemanticButton } from 'semantic-ui-react';
 import { FormattedMessage } from 'utils/cl-intl';
 import Pagination from 'components/admin/Pagination';
-// import PageWrapper from 'components/admin/PageWrapper';
 import { FormattedDate } from 'react-intl';
 import Avatar from 'components/Avatar';
 import Toggle from 'components/UI/Toggle';
 import Button from 'components/UI/Button';
 
-// utils
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
+// resources
+import GetUsers, { GetUsersChildProps, SortAttribute } from 'utils/resourceLoaders/components/GetUsers';
 
 // services
-import { usersStream, deleteUser, updateUser, IUsers, IUserData, IRole } from 'services/users';
+import { IUserData, IRole, updateUser, deleteUser } from 'services/users';
 
 // i18n
 import messages from './../messages';
@@ -58,98 +55,32 @@ const StyledAvatar = styled(Avatar)`
   margin-right: 12px;
 `;
 
-interface ISort {
-  property: string | undefined;
-  direction: 'ascending' | 'descending' | undefined;
-}
+interface InputProps {}
 
-type Props = {};
+interface Props extends InputProps, GetUsersChildProps {}
 
 type State = {
-  users: IUsers | null;
-  searchValue: string | null;
-  sortProperty: string | undefined;
-  sortDirection: 'ascending' | 'descending' | undefined;
-  currentPageNumber: number;
-  lastPageNumber: number | null;
   exporting: boolean;
 };
 
-export default class UsersTable extends React.PureComponent<Props, State> {
-  searchValue$: Rx.BehaviorSubject<string | null>;
-  sort$: Rx.BehaviorSubject<ISort | null>;
-  currentPageNumber$: Rx.BehaviorSubject<number>;
-  subscriptions: Rx.Subscription[];
-
+class UsersTable extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      users: null,
-      sortProperty: undefined,
-      sortDirection: undefined,
-      currentPageNumber: 1,
-      lastPageNumber: null,
-      searchValue: null,
-      exporting: false
+      exporting: false,
     };
-    this.searchValue$ = new Rx.BehaviorSubject(null);
-    this.sort$ = new Rx.BehaviorSubject(null);
-    this.currentPageNumber$ = new Rx.BehaviorSubject(1);
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const { searchValue, sortProperty, sortDirection, currentPageNumber } = this.state;
-
-    this.searchValue$.next(searchValue);
-    this.sort$.next({ property: sortProperty, direction: sortDirection });
-    this.currentPageNumber$.next(currentPageNumber);
-
-    this.subscriptions = [
-      Rx.Observable.combineLatest(
-        Rx.Observable.combineLatest(
-          this.searchValue$,
-          this.sort$,
-        ).do(() => {
-          this.currentPageNumber$.next(1);
-        }),
-        this.currentPageNumber$.distinctUntilChanged()
-      ).switchMap(([[searchValue, sort], currentPageNumber]) => {
-        const queryParameters = {
-          sort: ((sort && sort.direction === 'descending') ? `-${sort.property}` : get(sort, 'property', 'created_at')),
-          'page[number]': (currentPageNumber || 1),
-          'page[size]': 10,
-          search: (searchValue && searchValue.length > 0 ? searchValue : null)
-        };
-
-        return usersStream({ queryParameters, cacheStream: false }).observable.map((users) => ({ users, sort, currentPageNumber }));
-      }).subscribe(({ users, sort, currentPageNumber }) => {
-        const sortProperty = get(sort, 'property', undefined);
-        const sortDirection = get(sort, 'direction', undefined);
-        const lastPageUrl = get(users.links, 'last', null);
-        const lastPageNumber = (getPageNumberFromUrl(lastPageUrl) || currentPageNumber);
-        this.setState({ users, sortProperty, sortDirection, currentPageNumber, lastPageNumber });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   handlePaginationClick = (newCurrentPageNumber: number) => {
-    this.currentPageNumber$.next(newCurrentPageNumber);
+    this.props.onChangePage(newCurrentPageNumber);
   }
 
-  handleOnSort = (property: string) => () => {
-    this.sort$.next({
-      property,
-      direction: (this.state.sortDirection === 'descending' ? 'ascending' : 'descending')
-    });
+  handleOnSort = (sortAttribute: SortAttribute) => () => {
+    this.props.onChangeSorting(sortAttribute);
   }
 
   handleSearchOnChange = (event: React.FormEvent<HTMLInputElement>) => {
-    this.searchValue$.next(event.currentTarget.value);
+    this.props.onChangeSearchTerm(event.currentTarget.value);
   }
 
   handleOnDeleteUser = (userId: string) => () => {
@@ -197,7 +128,8 @@ export default class UsersTable extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { users, sortProperty, sortDirection, currentPageNumber, lastPageNumber, exporting } = this.state;
+    const { exporting } = this.state;
+    const { users, sortAttribute, sortDirection, currentPage, lastPage } = this.props;
 
     if (users) {
       return (
@@ -219,16 +151,16 @@ export default class UsersTable extends React.PureComponent<Props, State> {
           <Table sortable>
             <Table.Header>
               <Table.Row>
-                <Table.HeaderCell sorted={sortProperty === 'last_name' ? sortDirection : undefined} onClick={this.handleOnSort('last_name')}>
+                <Table.HeaderCell sorted={sortAttribute === 'last_name' ? sortDirection : undefined} onClick={this.handleOnSort('last_name')}>
                   <FormattedMessage {...messages.name} />
                 </Table.HeaderCell>
-                <Table.HeaderCell sorted={sortProperty === 'email' ? sortDirection : undefined} onClick={this.handleOnSort('email')}>
+                <Table.HeaderCell sorted={sortAttribute === 'email' ? sortDirection : undefined} onClick={this.handleOnSort('email')}>
                   <FormattedMessage {...messages.email} />
                 </Table.HeaderCell>
-                <Table.HeaderCell sorted={sortProperty === 'created_at' ? sortDirection : undefined} onClick={this.handleOnSort('created_at')}>
+                <Table.HeaderCell sorted={sortAttribute === 'created_at' ? sortDirection : undefined} onClick={this.handleOnSort('created_at')}>
                   <FormattedMessage {...messages.member} />
                 </Table.HeaderCell>
-                <Table.HeaderCell textAlign="center" sorted={sortProperty === 'role' ? sortDirection : undefined} onClick={this.handleOnSort('role')}>
+                <Table.HeaderCell textAlign="center" sorted={sortAttribute === 'role' ? sortDirection : undefined} onClick={this.handleOnSort('role')}>
                   <FormattedMessage {...messages.admin} />
                 </Table.HeaderCell>
                 <Table.HeaderCell textAlign="center">
@@ -238,7 +170,7 @@ export default class UsersTable extends React.PureComponent<Props, State> {
             </Table.Header>
 
             <Table.Body>
-              {users.data.map((user) => {
+              {users.map((user) => {
                 const firstName = user.attributes.first_name;
                 const lastName = user.attributes.last_name;
                 const createdAt = user.attributes.created_at;
@@ -275,13 +207,13 @@ export default class UsersTable extends React.PureComponent<Props, State> {
               })}
             </Table.Body>
 
-            {(currentPageNumber && lastPageNumber && lastPageNumber > 1) &&
+            {(currentPage && lastPage && lastPage > 1) &&
             <Table.Footer fullWidth={true}>
               <Table.Row>
                 <Table.HeaderCell colSpan="6">
                   <Pagination
-                    currentPage={currentPageNumber}
-                    totalPages={lastPageNumber}
+                    currentPage={currentPage}
+                    totalPages={lastPage}
                     loadPage={this.handlePaginationClick}
                   />
                 </Table.HeaderCell>
@@ -296,3 +228,9 @@ export default class UsersTable extends React.PureComponent<Props, State> {
     return null;
   }
 }
+
+export default (inputProps: InputProps) => (
+  <GetUsers>
+    {getUsersChildProps => <UsersTable {...inputProps} {...getUsersChildProps} />}
+  </GetUsers>
+);

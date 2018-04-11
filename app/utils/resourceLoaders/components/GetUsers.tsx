@@ -1,21 +1,19 @@
 import React from 'react';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs/Rx';
-import { IInviteData, invitesStream } from 'services/invites';
+import { usersStream, IUserData } from 'services/users';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import shallowCompare from 'utils/shallowCompare';
 import { isEqual, omit } from 'lodash';
 
-export type SortAttribute = 'email' | 'last_name' | 'created_at' | 'invite_status';
+export type SortAttribute = 'email' | 'last_name' | 'created_at' | 'role';
 type SortDirection = 'ascending' | 'descending';
-type Sort = 'email' | '-email' | 'last_name' | '-last_name' | 'created_at' | '-created_at' | 'invite_status' | '-invite_status';
-type InviteStatus = 'pending' | 'accepted';
+type Sort = 'created_at' | '-created_at' | 'last_name' | '-last_name' | 'email' | '-email' | 'role' | '-role';
 
 export interface IInputPropsQueryParameters {
   'page[number]'?: number;
   'page[size]'?: number;
   sort?: Sort;
   search?: string;
-  invite_status?: InviteStatus;
 }
 
 interface IInternalQueryParameters {
@@ -23,7 +21,6 @@ interface IInternalQueryParameters {
   'page[size]': number;
   sort: Sort;
   search: string;
-  invite_status?: InviteStatus;
 }
 
 interface InputProps {
@@ -31,24 +28,23 @@ interface InputProps {
 }
 
 interface Props extends InputProps {
-  children: (obj: GetInvitesChildProps) => JSX.Element | null;
+  children: (obj: GetUsersChildProps) => JSX.Element | null;
 }
 
 type State = {
   queryParameters: IInternalQueryParameters;
   searchValue: string;
-  invites: IInviteData[] | null;
+  users: IUserData[] | null;
   sortAttribute: SortAttribute,
   sortDirection: SortDirection,
   currentPage: number;
   lastPage: number;
 };
 
-export type GetInvitesChildProps = State & {
+export type GetUsersChildProps = State & {
   onChangeSorting: (sortAttribute: SortAttribute) => void;
   onChangeSearchTerm: (search: string) => void;
   onChangePage: (pageNumber: number) => void;
-  onChangeFilterInviteStatus: (inviteStatus: InviteStatus) => void;
 };
 
 export default class GetInvites extends React.PureComponent<Props, State> {
@@ -66,10 +62,9 @@ export default class GetInvites extends React.PureComponent<Props, State> {
         'page[number]': 1,
         'page[size]': 20,
         sort: initialSort,
-        search: '',
-        invite_status: undefined
+        search: ''
       },
-      invites: null,
+      users: null,
       searchValue: '',
       sortAttribute: this.getSortAttribute(initialSort),
       sortDirection: this.getSortDirection(initialSort),
@@ -100,12 +95,12 @@ export default class GetInvites extends React.PureComponent<Props, State> {
         const oldPartialQuery = omit(this.state.queryParameters, 'page[number]');
         const newPartialQuery = omit(queryParameters, 'page[number]');
         queryParameters['page[number]'] = (!isEqual(oldPartialQuery, newPartialQuery) ? 1 : queryParameters['page[number]']);
-        return invitesStream({ queryParameters, cacheStream: false }).observable.map(invites => ({ invites, queryParameters, searchValue }));
+        return usersStream({ queryParameters, cacheStream: false }).observable.map(invites => ({ invites, queryParameters, searchValue }));
       }).subscribe(({ invites, queryParameters, searchValue }) => {
         this.setState({
           queryParameters,
           searchValue,
-          invites: invites.data,
+          users: invites.data,
           sortAttribute: this.getSortAttribute(queryParameters.sort),
           sortDirection: this.getSortDirection(queryParameters.sort),
           currentPage: getPageNumberFromUrl(invites.links.self) || 1,
@@ -157,20 +152,12 @@ export default class GetInvites extends React.PureComponent<Props, State> {
     });
   }
 
-  handleChangeFilterInviteStatus = (inviteStatus: InviteStatus) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      invite_status: inviteStatus
-    });
-  }
-
   render() {
     return this.props.children({
       ...this.state,
       onChangeSorting: this.handleChangeSorting,
       onChangeSearchTerm: this.handleChangeSearchTerm,
-      onChangePage: this.handleChangePage,
-      onChangeFilterInviteStatus: this.handleChangeFilterInviteStatus,
+      onChangePage: this.handleChangePage
     });
   }
 }
