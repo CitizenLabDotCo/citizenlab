@@ -101,6 +101,7 @@
   "app.containers.Admin.User.confirmDelete": "",
   "app.containers.Admin.User.createButton": "Nieuwe gebruiker",
   "app.containers.Admin.User.currentlyNoInvites": "",
+  "app.containers.Admin.User.currentlyNoInvitesThatMatchSearch": "",
   "app.containers.Admin.User.delete": "Verwijder",
   "app.containers.Admin.User.deleteButton": "Verwijderen",
   "app.containers.Admin.User.deleteInvite": "",
