@@ -1,22 +1,17 @@
 // Libraries
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-import { isEmpty, get, forOwn } from 'lodash';
+import React from 'react';
+import { Subscription, Observable } from 'rxjs/Rx';
+import { isEmpty } from 'lodash';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Services
-import { projectBySlugStream, updateProject,  IProjectData, IUpdatedProjectProperties } from 'services/projects';
-import { localeStream } from 'services/locale';
-
-// Utils
-import getSubmitState from 'utils/getSubmitState';
-import { getEditorStateFromHtmlString, getHtmlStringFromEditorState } from 'utils/editorTools';
+import { projectBySlugStream, updateProject,  IProjectData } from 'services/projects';
 
 // Components
-import SubmitWrapper from 'components/admin/SubmitWrapper';
+import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import Error from 'components/UI/Error';
 import { Section, SectionField } from 'components/admin/Section';
 
@@ -25,7 +20,7 @@ import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
 import FormikEditorMultiloc from 'components/UI/FormikEditorMultiloc';
 
 // Typing
-import { API, Locale, Multiloc, MultilocEditorState } from 'typings';
+import { API, Multiloc } from 'typings';
 
 interface Props {
   params: {
@@ -34,31 +29,17 @@ interface Props {
 }
 
 interface State {
-  loading: boolean;
   data: IProjectData | { id: null, attributes: { description_preview_multiloc: Multiloc, description_multiloc: Multiloc }, relationships: { areas: {data} }};
-  diff: IUpdatedProjectProperties;
-  errors: {
-    [fieldName: string]: API.Error[]
-  };
-  saved: boolean;
-  locale: Locale;
-  descriptionMultilocEditorState: MultilocEditorState | null;
 }
 
 export default class ProjectDescription extends React.Component<Props, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
 
     this.state = {
-      loading: false,
-      saved: false,
       data: { id: null, attributes: { description_multiloc: {}, description_preview_multiloc: {} }, relationships: { areas: { data: [] } } },
-      diff: {},
-      errors: {},
-      locale: 'en',
-      descriptionMultilocEditorState: null,
     };
 
     this.subscriptions = [];
@@ -66,28 +47,15 @@ export default class ProjectDescription extends React.Component<Props, State> {
 
   componentDidMount () {
     if (this.props.params.slug) {
-      const locale$ = localeStream().observable;
       const project$ = projectBySlugStream(this.props.params.slug).observable;
 
-      this.setState({ loading: true });
-
       this.subscriptions.push(
-        Rx.Observable.combineLatest(
-          locale$,
+        Observable.combineLatest(
           project$
-        ).subscribe(([locale, project]) => {
-          const descriptionMultilocEditorState: MultilocEditorState = {};
-
-          forOwn(project.data.attributes.description_multiloc, (htmlValue, locale) => {
-            descriptionMultilocEditorState[locale] = getEditorStateFromHtmlString(htmlValue);
-          });
+        ).subscribe(([project]) => {
 
           this.setState({
-            locale,
-            descriptionMultilocEditorState,
             data: project.data,
-            loading: false,
-            diff: {}
           });
         })
       );
@@ -98,51 +66,29 @@ export default class ProjectDescription extends React.Component<Props, State> {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  updatePreview = (previewDescriptionMultiloc: Multiloc) => {
-    this.setState((state) => ({
-      diff: {
-        ...state.diff,
-        description_preview_multiloc: previewDescriptionMultiloc
-      }
-    }));
-  }
+  saveProject = (values: { description_preview_multiloc: Multiloc, description_multiloc: Multiloc }, { setSubmitting, setErrors, setStatus }) => {
+    const { data } = this.state;
 
-  handleDescriptionOnChange = (descriptionMultilocEditorState: MultilocEditorState, locale: Locale) => {
-    this.setState((state) => ({
-      descriptionMultilocEditorState,
-      diff: {
-        ...state.diff,
-        description_multiloc: {
-          ...get(state.data, 'attributes.description_multiloc', {}),
-          ...get(state.diff, 'description_multiloc', {}),
-          [locale]: getHtmlStringFromEditorState(descriptionMultilocEditorState[locale])
-        }
-      }
-    }));
-  }
+    if (!isEmpty(values) && data.id) {
+      setSubmitting(true);
+      setStatus(null);
 
-  handleSaveErrors = (errors) => {
-    this.setState({ errors: errors.json.errors });
-  }
-
-  saveProject = (event) => {
-    event.preventDefault();
-    const { diff, data } = this.state;
-
-    if (!isEmpty(diff) && data.id) {
-      this.setState({ loading: true, saved: true });
-
-      updateProject(data.id, diff)
-      .catch(this.handleSaveErrors)
+      updateProject(data.id, values)
+      .catch((errorResponse) => {
+        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+        setErrors(apiErrors);
+        setSubmitting(false);
+        setStatus(false);
+      })
       .then(() => {
-        this.setState({ loading: false, saved: true });
+        setSubmitting(false);
+        setStatus(true);
       });
     }
   }
 
   render () {
-    const { data, diff, loading, saved, errors } = this.state;
-    const submitState = getSubmitState({ errors, saved, diff });
+    const { data } = this.state;
 
     return (
       <Formik
@@ -152,7 +98,7 @@ export default class ProjectDescription extends React.Component<Props, State> {
         }}
         onSubmit={this.saveProject}
       >
-        {({ errors }) => (
+        {({ errors, isSubmitting, status, isValid, touched }) => (
           <Form noValidate className="e2e-project-description-form">
             <Section>
               <SectionField>
@@ -193,9 +139,8 @@ export default class ProjectDescription extends React.Component<Props, State> {
               </SectionField>
             </Section>
 
-            <SubmitWrapper
-              loading={loading}
-              status={submitState}
+            <FormikSubmitWrapper
+              {...{isValid, isSubmitting, status, touched}}
               messages={{
                 buttonSave: messages.saveButtonLabel,
                 buttonError: messages.saveErrorLabel,
