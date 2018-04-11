@@ -78,11 +78,10 @@ export default class ProjectDescription extends React.Component<Props, State> {
         const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
         setErrors(apiErrors);
         setSubmitting(false);
-        setStatus(false);
       })
       .then(() => {
         setSubmitting(false);
-        setStatus(true);
+        setStatus('success');
       });
     }
   }
