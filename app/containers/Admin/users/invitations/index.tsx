@@ -1,6 +1,6 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
 import { isString, isEmpty, get } from 'lodash';
+import { adopt } from 'react-adopt';
 
 // components
 import TextArea from 'components/UI/TextArea';
@@ -16,10 +16,13 @@ import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import InvitesTable from './all';
 
 // services
-import { localeStream } from 'services/locale';
-import { currentTenantStream } from 'services/tenant';
-import { listGroups, IGroups } from 'services/groups';
+import { IGroupData } from 'services/groups';
 import { bulkInviteXLSX, bulkInviteEmails, IInviteError, INewBulkInvite } from 'services/invites';
+
+// resources
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'utils/resourceLoaders/components/GetTenantLocales';
+import GetLocale, { GetLocaleChildProps } from 'utils/resourceLoaders/components/GetLocale';
+import GetGroups, { GetGroupsChildProps } from 'utils/resourceLoaders/components/GetGroups';
 
 // i18n
 import { FormattedHTMLMessage } from 'react-intl';
@@ -198,12 +201,17 @@ const Invites = styled.div`
   margin-top: 100px;
 `;
 
-type Props = {};
+interface InputProps {}
+
+interface DataProps {
+  tenantLocales: GetTenantLocalesChildProps;
+  locale: GetLocaleChildProps;
+  groups: GetGroupsChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 type State = {
-  locale: Locale | null;
-  currentTenantLocales: Locale[] | null;
-  groupOptions: IOption[] | null;
   selectedEmails: string | null;
   selectedFileBase64: string | null;
   hasAdminRights: boolean;
@@ -212,7 +220,6 @@ type State = {
   selectedInviteText: string | null;
   invitationOptionsOpened: boolean;
   selectedView: 'import' | 'text';
-  loaded: boolean;
   dirty: boolean;
   processing: boolean;
   processed: boolean;
@@ -221,16 +228,12 @@ type State = {
   unknownError: JSX.Element | null;
 };
 
-export default class Invitations extends React.PureComponent<Props, State> {
+class Invitations extends React.PureComponent<Props, State> {
   fileInputElement: HTMLInputElement | null;
-  subscriptions: Rx.Subscription[];
 
   constructor(props) {
     super(props);
     this.state = {
-      locale: null,
-      currentTenantLocales: null,
-      groupOptions: null,
       selectedEmails: null,
       selectedFileBase64: null,
       hasAdminRights: false,
@@ -239,7 +242,6 @@ export default class Invitations extends React.PureComponent<Props, State> {
       selectedInviteText: null,
       invitationOptionsOpened: false,
       selectedView: 'import',
-      loaded: false,
       dirty: false,
       processing: false,
       processed: false,
@@ -248,40 +250,45 @@ export default class Invitations extends React.PureComponent<Props, State> {
       unknownError: null
     };
     this.fileInputElement = null;
-    this.subscriptions = [];
   }
 
-  componentDidMount() {
-    const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
-    const groups$ = listGroups().observable;
+  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+    if (nextProps.tenantLocales && !prevState.selectedLocale) {
+      return {
+        selectedLocale: nextProps.tenantLocales[0]
+      };
+    }
 
-    this.subscriptions = [
-      Rx.Observable.combineLatest(
-        locale$,
-        currentTenantLocales$,
-        groups$
-      ).subscribe(([locale, currentTenantLocales, groups]) => {
-        this.setState({
-          locale,
-          currentTenantLocales,
-          groupOptions: this.getGroupOptions(groups, locale, currentTenantLocales),
-          selectedLocale: currentTenantLocales[0],
-          loaded: true
-        });
-      })
-    ];
+    return null;
   }
 
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
+  // componentDidMount() {
+  //   const locale$ = localeStream().observable;
+  //   const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
+  //   const groups$ = listGroups().observable;
 
-  getGroupOptions = (groups: IGroups | null, locale: Locale, currentTenantLocales: Locale[]) => {
-    if (groups && groups.data && groups.data.length > 0) {
-      return groups.data.map((group) => ({
+  //   this.subscriptions = [
+  //     Rx.Observable.combineLatest(
+  //       locale$,
+  //       currentTenantLocales$,
+  //       groups$
+  //     ).subscribe(([locale, currentTenantLocales, groups]) => {
+  //       this.setState({
+  //         locale,
+  //         currentTenantLocales,
+  //         groupOptions: this.getGroupOptions(groups, locale, currentTenantLocales),
+  //         selectedLocale: currentTenantLocales[0],
+  //         loaded: true
+  //       });
+  //     })
+  //   ];
+  // }
+
+  getGroupOptions = (groups: IGroupData[] | null, locale: Locale, tenantLocales: Locale[] | null) => {
+    if (tenantLocales && groups && groups && groups.length > 0) {
+      return groups.map((group) => ({
         value: group.id,
-        label: getLocalized(group.attributes.title_multiloc, locale, currentTenantLocales)
+        label: getLocalized(group.attributes.title_multiloc, locale, tenantLocales)
       }));
     }
 
@@ -352,12 +359,12 @@ export default class Invitations extends React.PureComponent<Props, State> {
   }
 
   resetWithView = (selectedView: 'import' | 'text') => () => {
-    this.setState((state) => ({
+    this.setState({
       selectedView,
       selectedEmails: null,
       selectedFileBase64: null,
       hasAdminRights: false,
-      selectedLocale: (state.currentTenantLocales ? state.currentTenantLocales[0] : null),
+      selectedLocale: (this.props.tenantLocales ? this.props.tenantLocales [0] : null),
       selectedGroups: null,
       selectedInviteText: null,
       invitationOptionsOpened: false,
@@ -366,7 +373,7 @@ export default class Invitations extends React.PureComponent<Props, State> {
       apiErrors: null,
       filetypeError: null,
       unknownError: null
-    }));
+    });
   }
 
   downloadExampleFile = async (event) => {
@@ -442,10 +449,8 @@ export default class Invitations extends React.PureComponent<Props, State> {
   }
 
   render () {
+    const { locale, tenantLocales, groups } = this.props;
     const {
-      locale,
-      currentTenantLocales,
-      groupOptions,
       selectedEmails,
       selectedFileBase64,
       hasAdminRights,
@@ -454,13 +459,13 @@ export default class Invitations extends React.PureComponent<Props, State> {
       selectedInviteText,
       invitationOptionsOpened,
       selectedView,
-      loaded,
       processing,
       processed,
       apiErrors,
       filetypeError,
       unknownError
     } = this.state;
+    const groupOptions = this.getGroupOptions(groups, locale, tenantLocales);
     const dirty = ((isString(selectedEmails) && !isEmpty(selectedEmails)) || (isString(selectedFileBase64) && !isEmpty(selectedFileBase64)));
     let supportPageURL = 'http://support.citizenlab.co/eng-getting-started/invite-people-to-the-platform';
 
@@ -513,13 +518,13 @@ export default class Invitations extends React.PureComponent<Props, State> {
                 <Toggle value={hasAdminRights} onChange={this.handleAdminRightsOnToggle} />
               </SectionField>
 
-              {currentTenantLocales && currentTenantLocales.length > 1 &&
+              {tenantLocales && tenantLocales.length > 1 &&
                 <SectionField>
                   <Label>
                     <FormattedMessage {...messages.localeLabel} />
                   </Label>
 
-                  {currentTenantLocales.map((currentTenantLocale) => (
+                  {tenantLocales.map((currentTenantLocale) => (
                     <Radio
                       key={currentTenantLocale}
                       onChange={this.handleLocaleOnChange}
@@ -558,7 +563,7 @@ export default class Invitations extends React.PureComponent<Props, State> {
       </>
     );
 
-    if (currentTenantLocales && loaded) {
+    if (tenantLocales) {
       return (
         <>
           <form onSubmit={this.handleOnSubmit}>
@@ -670,3 +675,11 @@ export default class Invitations extends React.PureComponent<Props, State> {
     return null;
   }
 }
+
+const Data = adopt<DataProps, {}>({
+  groups: <GetGroups />,
+  tenantLocales: <GetTenantLocales />,
+  locale: <GetLocale />
+});
+
+export default (inputProps: InputProps) => <Data>{dataProps => <Invitations {...inputProps} {...dataProps} />}</Data>;

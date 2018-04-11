@@ -24,7 +24,6 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class Row extends React.PureComponent<Props, State> {
-
   handleOnDeleteInvite = (inviteId: string) => () => {
     deleteInvite(inviteId);
   }
