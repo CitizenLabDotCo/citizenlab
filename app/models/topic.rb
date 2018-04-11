@@ -4,4 +4,5 @@ class Topic < ApplicationRecord
   #TODO Settle on iconset and validate icon to be part of it
 
   has_and_belongs_to_many :projects
+  has_and_belongs_to_many :ideas
 end
