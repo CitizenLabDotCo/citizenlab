@@ -1,16 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { darken } from 'polished';
-
 import { FormattedDate } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-
 import T from 'components/T';
-
 import { IIdeaData } from 'services/ideas';
-import { projectByIdStream, IProjectData } from 'services/projects';
-import { injectResource, InjectedResourceLoaderProps } from 'utils/resourceLoaders/resourceLoader';
-
+import GetProject, { GetProjectChildProps } from 'utils/resourceLoaders/components/GetProject';
 import messages from './messages';
 import browserHistory from 'react-router/lib/browserHistory';
 
@@ -32,11 +27,16 @@ const ProjectLink = styled.span`
   }
 `;
 
-type Props = {
+interface InputProps {
+  projectId: string;
   votingDescriptor: IIdeaData['relationships']['action_descriptor']['data']['voting'];
-};
+}
 
-class VotingDisabled extends React.PureComponent<Props & InjectedResourceLoaderProps<IProjectData>> {
+interface Props extends InputProps, GetProjectChildProps {}
+
+interface State {}
+
+class VotingDisabled extends React.PureComponent<Props, State> {
 
   reasonToMessage = () => {
     const { disabled_reason, future_enabled } = this.props.votingDescriptor;
@@ -56,7 +56,7 @@ class VotingDisabled extends React.PureComponent<Props & InjectedResourceLoaderP
   handleProjectLinkClick = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    const projectSlug = this.props.project && (this.props.project as IProjectData).attributes.slug;
+    const projectSlug = this.props.project && (this.props.project).attributes.slug;
     browserHistory.push(`/projects/${projectSlug}`);
   }
 
@@ -64,6 +64,7 @@ class VotingDisabled extends React.PureComponent<Props & InjectedResourceLoaderP
     const { votingDescriptor, project } = this.props;
     const projectTitle = project && project.attributes.title_multiloc || {};
     const message = this.reasonToMessage();
+
     return (
       <Container>
         <FormattedMessage
@@ -81,4 +82,8 @@ class VotingDisabled extends React.PureComponent<Props & InjectedResourceLoaderP
   }
 }
 
-export default injectResource('project', projectByIdStream, (props) => props.projectId)(VotingDisabled);
+export default (inputProps: InputProps) => (
+  <GetProject id={inputProps.projectId}>
+    {getProjectChildProps => <VotingDisabled {...inputProps} {...getProjectChildProps} />}
+  </GetProject>
+);

@@ -1,19 +1,20 @@
-import * as React from 'react';
-
-import { InjectedResourceLoaderProps, injectResource } from 'utils/resourceLoaders/resourceLoader';
-import { projectByIdStream, IProjectData } from 'services/projects';
-
+import React from 'react';
 import { Label } from 'semantic-ui-react';
 import T from 'components/T';
+import GetProject, { GetProjectChildProps } from 'utils/resourceLoaders/components/GetProject';
 
-type Props = {
-  project: IProjectData,
-};
+interface InputProps {
+  projectId: string;
+}
 
-class ProjectSelector extends React.PureComponent<Props & InjectedResourceLoaderProps<IProjectData>> {
+interface Props extends InputProps, GetProjectChildProps {}
 
+interface State {}
+
+class ProjectSelector extends React.PureComponent<Props, State> {
   render() {
     const { project } = this.props;
+
     if (!project) return null;
 
     return (
@@ -28,4 +29,8 @@ class ProjectSelector extends React.PureComponent<Props & InjectedResourceLoader
   }
 }
 
-export default injectResource('project', projectByIdStream, (props) => props.selectedProject)(ProjectSelector);
+export default (inputProps: InputProps) => (
+  <GetProject id={inputProps.projectId}>
+    {getProjectChildProps => <ProjectSelector {...inputProps} {...getProjectChildProps} />}
+  </GetProject>
+);
