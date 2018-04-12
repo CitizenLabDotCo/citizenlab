@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { size, get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
@@ -96,7 +96,7 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
   render() {
     const className = `${this.props['className']} e2e-comments`;
     const { ideaId } = this.props;
-    const { parentComments, loaded, newCommentId } = this.state;
+    const { parentComments, loaded } = this.state;
 
     if (loaded && parentComments && parentComments.data && parentComments.data.length > 0) {
       return (
@@ -106,7 +106,6 @@ export default class CommentsContainer extends React.PureComponent<Props, State>
               key={comment.id}
               ideaId={ideaId}
               commentId={comment.id}
-              animate={(newCommentId === comment.id)}
             />
           ))}
         </Container>

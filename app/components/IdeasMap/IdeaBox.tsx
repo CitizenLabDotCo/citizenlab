@@ -1,5 +1,5 @@
 // Libs
-import * as React from 'react';
+import React from 'react';
 
 // Utils
 import eventEmitter from 'utils/eventEmitter';
