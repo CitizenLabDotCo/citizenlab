@@ -1,11 +1,14 @@
 class Project < ApplicationRecord
   include ParticipationContext
+  acts_as_list column: :ordering, top_of_list: 0, add_new_at: :top
+  mount_base64_uploader :header_bg, ProjectHeaderBgUploader
+
 
   DESCRIPTION_PREVIEW_JSON_SCHEMA = ERB.new(File.read(Rails.root.join('config', 'schemas', 'project_description_preview.json_schema.erb'))).result(binding)
 
   @@sanitizer = Rails::Html::WhiteListSanitizer.new
 
-  mount_base64_uploader :header_bg, ProjectHeaderBgUploader
+  
 
 
   has_many :ideas, dependent: :destroy
@@ -48,11 +51,11 @@ class Project < ApplicationRecord
   before_validation :set_process_type, on: :create
   before_validation :generate_slug, on: :create
   before_validation :set_visible_to, on: :create
-  before_validation :set_ordering, on: :create
   before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_presentation_mode, on: :create
   before_validation :set_publication_status, on: :create
+  before_validation :set_ordering, unless: :ordering
 
 
   scope :with_all_areas, (Proc.new do |area_ids|
@@ -113,7 +116,14 @@ class Project < ApplicationRecord
   end
 
   def set_ordering
-    self.ordering ||= (Project.maximum(:ordering) || 0)+1
+    # In the case of the Open idea project, which 
+    # is read out from a template, create is not
+    # called but the ordering must still be set.
+    # It is probably more desirable in such cases
+    # to add the project to the bottom instead of
+    # the top.
+    self.insert_at(0) # otherwise move to bottom may not work...
+    self.move_to_bottom
   end
 
 end
