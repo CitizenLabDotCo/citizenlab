@@ -56,6 +56,10 @@ class ProjectPolicy < ApplicationPolicy
     user&.active? && (user.admin? || user.project_moderator?(record.id))
   end
 
+  def reorder?
+    update?
+  end
+
   def destroy?
     update?
   end
