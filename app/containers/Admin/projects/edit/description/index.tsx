@@ -29,7 +29,7 @@ interface Props {
 }
 
 interface State {
-  data: IProjectData | { id: null, attributes: { description_preview_multiloc: Multiloc, description_multiloc: Multiloc }, relationships: { areas: {data} }};
+  data: IProjectData | null;
 }
 
 export default class ProjectDescription extends React.Component<Props, State> {
@@ -39,7 +39,7 @@ export default class ProjectDescription extends React.Component<Props, State> {
     super(props as any);
 
     this.state = {
-      data: { id: null, attributes: { description_multiloc: {}, description_preview_multiloc: {} }, relationships: { areas: { data: [] } } },
+      data: null,
     };
 
     this.subscriptions = [];
@@ -66,8 +66,9 @@ export default class ProjectDescription extends React.Component<Props, State> {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  saveProject = (values: { description_preview_multiloc: Multiloc, description_multiloc: Multiloc }, { setSubmitting, setErrors, setStatus }) => {
+  saveProject = (values: { description_preview_multiloc: Multiloc, description_multiloc: Multiloc }, { setSubmitting, setErrors, setStatus, resetForm }) => {
     const { data } = this.state;
+    if ( !data ) return;
 
     if (!isEmpty(values) && data.id) {
       setSubmitting(true);
@@ -80,7 +81,7 @@ export default class ProjectDescription extends React.Component<Props, State> {
         setSubmitting(false);
       })
       .then(() => {
-        setSubmitting(false);
+        resetForm();
         setStatus('success');
       });
     }
@@ -89,6 +90,7 @@ export default class ProjectDescription extends React.Component<Props, State> {
   render () {
     const { data } = this.state;
 
+    if (!data) return null;
     return (
       <Formik
         initialValues={{
@@ -140,6 +142,7 @@ export default class ProjectDescription extends React.Component<Props, State> {
 
             <FormikSubmitWrapper
               {...{isValid, isSubmitting, status, touched}}
+              style='cl-blue'
               messages={{
                 buttonSave: messages.saveButtonLabel,
                 buttonError: messages.saveErrorLabel,

@@ -1,12 +1,12 @@
 // Libraries
 import React from 'react';
 import { FieldProps } from 'formik';
-import { throttle } from 'lodash';
+import { throttle, isEmpty, isEqual } from 'lodash';
 
-import { getHtmlStringFromEditorState } from 'utils/editorTools';
+import { getHtmlStringFromEditorState, getEditorStateFromHtmlString } from 'utils/editorTools';
 
 import EditorMultiloc, { Props as VanillaProps } from 'components/UI/EditorMultiloc';
-import { MultilocEditorState, Locale } from 'typings';
+import { MultilocEditorState, Locale, Multiloc } from 'typings';
 
 interface State {
   editorStateMultiloc: MultilocEditorState;
@@ -26,6 +26,27 @@ class FormikEditorMultiloc extends React.Component<FieldProps & VanillaProps, St
     this.state = {
       editorStateMultiloc: {},
     };
+  }
+
+  componentDidMount() {
+    if (this.props.field.value && !isEmpty(this.props.field.value)) {
+      this.updateEditorState(this.props.field.value);
+    }
+  }
+
+  componentDidUpdate(prevProps: FieldProps & VanillaProps) {
+    if (isEmpty(this.state.editorStateMultiloc) && !isEqual(prevProps.field.value, this.props.field.value) && !isEmpty(this.props.field.value)) {
+      this.updateEditorState(this.props.field.value);
+    }
+  }
+
+  updateEditorState = (htmlValues: Multiloc) => {
+    const editorStateMultiloc: MultilocEditorState = {};
+    Object.keys(htmlValues).forEach((key) => {
+      if (htmlValues[key]) editorStateMultiloc[key] = getEditorStateFromHtmlString(htmlValues[key]);
+    });
+
+    this.setState({editorStateMultiloc});
   }
 
   handleEditorOnChange = (values: MultilocEditorState, locale: Locale) => {
