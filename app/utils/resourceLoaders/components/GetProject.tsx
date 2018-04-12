@@ -2,12 +2,10 @@ import React from 'react';
 import { Subscription, BehaviorSubject, Observable } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { projectByIdStream, projectBySlugStream, IProjectData, IProject } from 'services/projects';
-import { projectImagesStream, IProjectImageData } from 'services/projectImages';
 
 interface InputProps {
   id?: string | null;
   slug?: string | null;
-  withImages?: boolean;
 }
 
 type children = (renderProps: GetProjectChildProps) => JSX.Element | null;
@@ -18,10 +16,9 @@ interface Props extends InputProps {
 
 interface State {
   project: IProjectData | null;
-  images: IProjectImageData[] | null;
 }
 
-export type GetProjectChildProps = State;
+export type GetProjectChildProps = IProjectData | null;
 
 export default class GetProject extends React.PureComponent<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -30,23 +27,19 @@ export default class GetProject extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      project: null,
-      images: null
+      project: null
     };
   }
 
   componentDidMount() {
-    const { id, slug, withImages } = this.props;
+    const { id, slug } = this.props;
 
-    console.log('GetProject componentDidMount props:');
-    console.log(this.props);
-
-    this.inputProps$ = new BehaviorSubject({ id, slug, withImages });
+    this.inputProps$ = new BehaviorSubject({ id, slug });
 
     this.subscriptions = [
       this.inputProps$
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .switchMap(({ id, slug, withImages }) => {
+        .switchMap(({ id, slug }) => {
           let project$: Observable<IProject | null> = Observable.of(null);
 
           if (id) {
@@ -55,25 +48,17 @@ export default class GetProject extends React.PureComponent<Props, State> {
             project$ = projectBySlugStream(slug).observable;
           }
 
-          return project$.map(project => ({ withImages, project }));
-        }).switchMap(({ withImages, project }) => {
-          if (withImages && project && project.data) {
-            return projectImagesStream(project.data.id).observable.map(images => ({ project, images }));
-          }
-
-          return Observable.of({ project, images: null });
-        }).subscribe(({ project, images }) => {
-          this.setState({
-            project: (project ? project.data : null),
-            images: (images ? images.data : null)
-          });
+          return project$;
+        })
+        .subscribe((project) => {
+          this.setState({ project: (project ? project.data : null) });
         })
     ];
   }
 
   componentDidUpdate() {
-    const { id, slug, withImages } = this.props;
-    this.inputProps$.next({ id, slug, withImages });
+    const { id, slug } = this.props;
+    this.inputProps$.next({ id, slug });
   }
 
   componentWillUnmount() {
@@ -81,11 +66,8 @@ export default class GetProject extends React.PureComponent<Props, State> {
   }
 
   render() {
-    console.log('GetProject render props:');
-    console.log(this.props);
-
     const { children } = this.props;
-    const { project, images } = this.state;
-    return (children as children)({ project, images });
+    const { project } = this.state;
+    return (children as children)(project);
   }
 }

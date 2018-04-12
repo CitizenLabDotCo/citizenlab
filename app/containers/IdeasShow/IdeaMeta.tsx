@@ -1,82 +1,43 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-
-// components
+// libraries
+import React from 'react';
+import { adopt } from 'react-adopt';
 import Helmet from 'react-helmet';
 
-// services
-import { currentTenantStream, ITenant } from 'services/tenant';
-import { localeStream } from 'services/locale';
-import { ideaByIdStream, IIdea } from 'services/ideas';
-import { ideaImagesStream, IIdeaImages } from 'services/ideaImages';
+// resources
+import GetLocale, { GetLocaleChildProps } from 'utils/resourceLoaders/components/GetLocale';
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'utils/resourceLoaders/components/GetTenantLocales';
+import GetIdea, { GetIdeaChildProps } from 'utils/resourceLoaders/components/GetIdea';
+import GetIdeaImages, { GetIdeaImagesChildProps } from 'utils/resourceLoaders/components/GetIdeaImages';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
 
 // utils
 import { stripHtml } from 'utils/textUtils';
-import { Locale } from 'typings';
 
-interface Props {
+interface InputProps {
   ideaId: string;
 }
 
-interface State {
-  locale: Locale | null;
-  currentTenant: ITenant | null;
-  idea: IIdea | null;
-  ideaImages: IIdeaImages | null;
+interface DataProps {
+  locale: GetLocaleChildProps;
+  tenantLocales: GetTenantLocalesChildProps;
+  idea: GetIdeaChildProps;
+  ideaImages: GetIdeaImagesChildProps;
 }
 
-export default class IdeaMeta extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+interface Props extends InputProps, DataProps {}
 
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      locale: null,
-      currentTenant: null,
-      idea: null,
-      ideaImages: null
-    };
-  }
+interface State {}
 
-  componentDidMount () {
-    const { ideaId } = this.props;
-    const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
-    const idea$ = ideaByIdStream(ideaId).observable;
-    const ideaImages$ = ideaImagesStream(ideaId).observable;
-
-    this.subscriptions = [
-      Rx.Observable.combineLatest(
-        locale$,
-        currentTenant$,
-        idea$,
-        ideaImages$
-      ).subscribe(([locale, currentTenant, idea, ideaImages]) => {
-        this.setState({
-          locale,
-          currentTenant,
-          idea,
-          ideaImages
-        });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
+class IdeaMeta extends React.PureComponent<Props, State> {
   render() {
-    const { locale, currentTenant, idea, ideaImages } = this.state;
+    const { locale, tenantLocales, idea, ideaImages } = this.props;
 
-    if (locale && currentTenant && idea) {
-      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-      const ideaTitle = getLocalized(idea.data.attributes.title_multiloc, locale, currentTenantLocales);
-      const ideaDescription = getLocalized(idea.data.attributes.body_multiloc, locale, currentTenantLocales);
-      const ideaImage = (ideaImages && ideaImages.data.length > 0 ? ideaImages.data[0].attributes.versions.large : null);
+    if (locale && tenantLocales && idea) {
+      const ideaTitle = getLocalized(idea.attributes.title_multiloc, locale, tenantLocales);
+      const ideaDescription = getLocalized(idea.attributes.body_multiloc, locale, tenantLocales);
+      const ideaImage = (ideaImages && ideaImages.length > 0 ? ideaImages[0].attributes.versions.large : null);
       const ideaUrl = window.location.href;
 
       return (
@@ -94,3 +55,18 @@ export default class IdeaMeta extends React.PureComponent<Props, State> {
     return null;
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />,
+  tenantLocales: <GetTenantLocales />,
+  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>
+});
+
+export default (inputProps: InputProps) => {
+  return (
+    <Data {...inputProps}>
+      {dataProps => <IdeaMeta {...inputProps} {...dataProps} />}
+    </Data>
+  );
+};
