@@ -106,6 +106,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.commentDeletionCancelButton',
     defaultMessage: `Keep my comment`,
   },
+  adminCommentDeletionCancelButton: {
+    id: 'app.containers.IdeasShow.adminCommentDeletionCancelButton',
+    defaultMessage: `Leave the comment`,
+  },
   commentDeletionConfirmButton: {
     id: 'app.containers.IdeasShow.commentDeletionConfirmButton',
     defaultMessage: `Delete my comment`,
@@ -113,6 +117,10 @@ export default defineMessages({
   deleteReason_inappropriate: {
     id: 'app.containers.IdeasShow.deleteReason_inappropriate',
     defaultMessage: `Inappropriate comment`,
+  },
+  deleteReason_irrelevant: {
+    id: 'app.containers.IdeasShow.deleteReason_irrelevant',
+    defaultMessage: `Irrelevant comment`,
   },
   deleteReason_other: {
     id: 'app.containers.IdeasShow.deleteReason_other',

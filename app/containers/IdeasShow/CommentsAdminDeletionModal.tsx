@@ -118,7 +118,7 @@ class CommentsAdminDeletionForm extends React.Component<Props, State> {
             </TransitionGroup>
 
             <ButtonsWrapper>
-              <Button style="secondary" circularCorners={false} onClick={this.props.onCloseDeleteModal}><FormattedMessage {...messages.commentDeletionCancelButton} /></Button>
+              <Button style="secondary" circularCorners={false} onClick={this.props.onCloseDeleteModal}><FormattedMessage {...messages.adminCommentDeletionCancelButton} /></Button>
               <Button disabled={!isValid} style="primary" processing={isSubmitting} circularCorners={false}><FormattedMessage {...messages.adminCommentDeletionConfirmButton} /></Button>
             </ButtonsWrapper>
           </Form>

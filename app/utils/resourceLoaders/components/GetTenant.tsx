@@ -1,20 +1,23 @@
-// Libraries
 import React from 'react';
 import { Subscription } from 'rxjs';
 import { Locale } from 'typings';
 import { currentTenantStream, ITenantData } from 'services/tenant';
 
-// Typings
-export interface Props {
-  children: {(state: Partial<State>): any};
+interface InputProps {}
+
+interface Props extends InputProps {
+  children: (renderProps: GetTenantChildProps) => JSX.Element | null ;
 }
-export interface State {
+
+interface State {
   tenant: ITenantData | null;
   tenantLocales: Locale[] | null;
 }
 
-class GetTenant extends React.PureComponent<Props, State> {
-  private sub: Subscription;
+export type GetTenantChildProps = State;
+
+export default class GetTenant extends React.PureComponent<Props, State> {
+  private subscriptions: Subscription[];
 
   constructor(props) {
     super(props);
@@ -25,18 +28,25 @@ class GetTenant extends React.PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    this.sub = currentTenantStream().observable.subscribe((response) => {
-      this.setState({ tenant: response.data, tenantLocales: response.data.attributes.settings.core.locales });
-    });
+    const currentTenant$ = currentTenantStream().observable;
+
+    this.subscriptions = [
+      currentTenant$.subscribe((currentTenant) => {
+        this.setState({
+          tenant: currentTenant.data,
+          tenantLocales: currentTenant.data.attributes.settings.core.locales
+        });
+      })
+    ];
   }
 
   componentWillUnmount() {
-    this.sub.unsubscribe();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   render() {
-    return this.props.children(this.state);
+    const { children } = this.props;
+    const { tenant, tenantLocales } = this.state;
+    return children({ tenant, tenantLocales });
   }
 }
-
-export default GetTenant;

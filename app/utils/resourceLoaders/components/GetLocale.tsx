@@ -1,40 +1,47 @@
-// Libraries
 import React from 'react';
 import { Subscription } from 'rxjs';
 import { Locale } from 'typings';
 import { localeStream } from 'services/locale';
 
-// Typings
-export interface Props {
-  children: {(state: Partial<State>): any};
+interface InputProps {}
+
+interface Props extends InputProps {
+  children: (renderProps: GetLocaleChildProps) => JSX.Element | null ;
 }
-export interface State {
+
+interface State {
   locale: Locale;
 }
 
-class GetLocale extends React.PureComponent<Props, State> {
-  private sub: Subscription;
+export type GetLocaleChildProps = State;
 
-  constructor(props) {
+export default class GetLocale extends React.PureComponent<Props, State> {
+  private subscriptions: Subscription[];
+
+  constructor(props: Props) {
     super(props);
     this.state = {
-      locale: 'en',
+      locale: 'en'
     };
   }
 
   componentDidMount() {
-    this.sub = localeStream().observable.subscribe((locale) => {
-      this.setState({ locale });
-    });
+    const locale$ = localeStream().observable;
+
+    this.subscriptions = [
+      locale$.subscribe((locale) => {
+        this.setState({ locale });
+      })
+    ];
   }
 
   componentWillUnmount() {
-    this.sub.unsubscribe();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   render() {
-    return this.props.children(this.state);
+    const { children } = this.props;
+    const { locale } = this.state;
+    return children({ locale });
   }
 }
-
-export default GetLocale;

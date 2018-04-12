@@ -148,11 +148,11 @@ const NavigationDropdownItemText = styled.div`
 `;
 
 const NavigationDropdownItemIcon = styled(Icon)`
-  height: 7px;
+  height: 6px;
   width: 11px;
   fill: #999;
   margin-left: 4px;
-  margin-top: 4px;
+  margin-top: 3px;
   transition: all 100ms ease-out;
 `;
 
@@ -239,6 +239,7 @@ const NavigationDropdownList = styled.div`
   margin: 10px;
   margin-right: 5px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 `;
 
 const NavigationDropdownListItem = styled(Link)`
@@ -323,6 +324,22 @@ const RightItem: any = styled.div`
   ${media.smallerThanMinTablet`
     padding-left: 15px;
   `}
+`;
+
+const StyledIdeaButton = styled(IdeaButton)`
+  &:hover {
+    .Button {
+      border-color: ${darken(0.2, '#e0e0e0')} !important;
+    }
+  }
+
+  .Button {
+    border: solid 2px #e0e0e0 !important;
+  }
+
+  .buttonText {
+    color: ${(props) => props.theme.colorMain};
+  }
 `;
 
 const LoginLink = styled.div`
@@ -517,7 +534,7 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
 
             <Right>
               <RightItem className="addIdea" loggedIn={authUser !== null}>
-                <IdeaButton style="secondary-outlined" />
+                <StyledIdeaButton style="secondary-outlined" />
               </RightItem>
 
               {authUser &&

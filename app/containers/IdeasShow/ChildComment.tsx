@@ -14,7 +14,6 @@ import { userByIdStream, IUser } from 'services/users';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 import CommentsMoreActions from './CommentsMoreActions';
 import { API } from 'typings';
 
@@ -22,28 +21,12 @@ const StyledMoreActionsMenu = styled(CommentsMoreActions)`
   position: absolute;
   top: 10px;
   right: 20px;
-  opacity: 0;
-  transition: opacity 100ms ease-out;
-
-  ${media.smallerThanMaxTablet`
-    opacity: 1;
-  `}
 `;
 
 const CommentContainer = styled.div`
-  padding-top: 30px;
-  padding-bottom: 30px;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding: 20px;
   border-top: solid 1px #ddd;
   position: relative;
-  /* background: #fff; */
-
-  &:hover {
-    ${StyledMoreActionsMenu} {
-      opacity: 1;
-    }
-  }
 `;
 
 const StyledAuthor = styled(Author)`

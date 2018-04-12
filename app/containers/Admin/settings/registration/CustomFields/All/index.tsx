@@ -27,7 +27,7 @@ const TextCell = styled.div`
   color: #333;
   font-size: 16px;
   font-weight: 400;
-  line-height: 20ppx;
+  line-height: 20px;
 `;
 
 type Props = {
@@ -113,8 +113,8 @@ class CustomFields extends React.Component<Props & InjectedResourcesLoaderProps<
               dropRow={this.handleDropRow}
             >
               <Toggle
-                checked={field.attributes.enabled}
-                onToggle={this.handleOnEnabledToggle(field)}
+                value={field.attributes.enabled}
+                onChange={this.handleOnEnabledToggle(field)}
               />
               <TextCell className="expand">
                 <T value={field.attributes.title_multiloc} />

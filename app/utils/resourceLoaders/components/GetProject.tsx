@@ -1,90 +1,83 @@
-// Libs
 import React from 'react';
-import { Subscription, Observable } from 'rxjs';
-import { isEqual } from 'lodash';
-
-// Services & utils
+import { Subscription, BehaviorSubject, Observable } from 'rxjs';
+import shallowCompare from 'utils/shallowCompare';
 import { projectByIdStream, projectBySlugStream, IProjectData, IProject } from 'services/projects';
 import { projectImagesStream, IProjectImageData } from 'services/projectImages';
 
-// Typing
-interface Props {
+interface InputProps {
   id?: string;
   slug?: string;
-  children: {(state: Partial<State>): any};
   withImages?: boolean;
+}
+
+interface Props extends InputProps {
+  children: (renderProps: GetProjectChildProps) => JSX.Element | null ;
 }
 
 interface State {
   project: IProjectData | null;
-  images: IProjectImageData[];
+  images: IProjectImageData[] | null;
 }
 
+export type GetProjectChildProps = State;
+
 export default class GetProject extends React.PureComponent<Props, State> {
-  private projectSub: Subscription;
+  private inputProps$: BehaviorSubject<InputProps>;
+  private subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props);
-
     this.state = {
       project: null,
-      images: [],
+      images: null,
     };
   }
 
   componentDidMount() {
-    this.updateSub(this.props);
+    const { id, slug, withImages } = this.props;
+
+    this.inputProps$ = new BehaviorSubject({ id, slug, withImages });
+
+    this.subscriptions = [
+      this.inputProps$
+        .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
+        .switchMap(({ id, slug, withImages }) => {
+          let project$: Observable<IProject | null> = Observable.of(null);
+
+          if (id) {
+            project$ = projectByIdStream(id).observable;
+          } else if (slug) {
+            project$ = projectBySlugStream(slug).observable;
+          }
+
+          return project$.map(project => ({ withImages, project }));
+        }).switchMap(({ withImages, project }) => {
+          if (withImages && project && project.data) {
+            return projectImagesStream(project.data.id).observable.map(images => ({ project, images }));
+          }
+
+          return Observable.of({ project, images: null });
+        }).subscribe(({ project, images }) => {
+          this.setState({
+            project: (project ? project.data : null),
+            images: (images ? images.data : null)
+          });
+        })
+    ];
   }
 
-  componentDidUpdate(prevProps: Props) {
-    const { children: prevPropsChildren, ...prevPropsWithoutChildren } = prevProps;
-    const { children: newPropsChildren, ...newPropsWithoutChildren } = this.props;
-
-    if (!isEqual(newPropsWithoutChildren, prevPropsWithoutChildren)) {
-      this.updateSub(this.props);
-    }
+  componentDidUpdate() {
+    const { id, slug, withImages } = this.props;
+    this.inputProps$.next({ id, slug, withImages });
   }
 
   componentWillUnmount() {
-    this.projectSub.unsubscribe();
-  }
-
-  updateSub(props: Props) {
-    if (this.projectSub) this.projectSub.unsubscribe();
-
-    let targetStream;
-    if (props.id) targetStream = projectByIdStream(props.id);
-    if (props.slug) targetStream = projectBySlugStream(props.slug);
-
-    if (!targetStream) return;
-
-    if (!this.props.withImages) {
-      this.projectSub = targetStream.observable
-      .subscribe((response: IProject) => {
-        this.setState({
-          project: response.data
-        });
-      });
-    } else {
-      this.projectSub = targetStream.observable
-      .switchMap((response: IProject) => {
-        if (response && response.data) {
-          return projectImagesStream(response.data.id)
-          .observable.first()
-          .map((imagesResponse) => {
-            return { project: response.data, images: imagesResponse.data };
-          });
-        }
-
-        return Observable.of({ project: null, images: null });
-      })
-      .subscribe(({ project, images }) => {
-        this.setState({ project, images });
-      });
-    }
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   render() {
-    return this.props.children(this.state);
+    const { children } = this.props;
+    const { project, images } = this.state;
+    return children({ project, images });
   }
 }

@@ -22,7 +22,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // style
-import { darken } from 'polished';
+// import { darken } from 'polished';
 import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 import { Locale } from 'typings';
@@ -147,11 +147,12 @@ const ProjectMetaItems = styled.div`
 `;
 
 const IdeaCountIcon = styled(Icon)`
-  height: 24px;
-  width: 24px;
+  height: 25px;
+  width: 25px;
   fill: ${(props) => props.theme.colors.label};
-  margin-right: 6px;
-  margin-top: -6px;
+  margin-right: 8px;
+  margin-top: -5px;
+  transition: all 100ms ease-out;
 `;
 
 const IdeaCountText = styled.div`
@@ -160,7 +161,6 @@ const IdeaCountText = styled.div`
   font-weight: 400;
   line-height: 21px;
   transition: all 100ms ease-out;
-  padding-bottom: 0px;
 `;
 
 const IdeaCount = styled(Link)`
@@ -171,11 +171,11 @@ const IdeaCount = styled(Link)`
 
   &:hover {
     ${IdeaCountIcon} {
-      fill: ${(props) => darken(0.2, props.theme.colors.label)};
+      fill: #000;
     }
 
     ${IdeaCountText} {
-      color: ${(props) => darken(0.2, props.theme.colors.label)};
+      color: #000;
       text-decoration: none;
     }
   }
@@ -291,6 +291,7 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
       const projectUrl = this.getProjectUrl(project);
       const projectIdeasUrl = this.getProjectIdeasUrl(project);
       const ideasCount = project.data.attributes.ideas_count;
+      const showIdeasCount = !(project.data.attributes.process_type === 'continuous' && project.data.attributes.participation_method !== 'ideation');
 
       return (
         <Container className={className}>
@@ -316,19 +317,21 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
                 {preview}
               </ProjectDescription>
               <ProjectMetaItems>
-                <IdeaCount to={projectIdeasUrl}>
-                  <IdeaCountIcon name="idea" />
-                  <IdeaCountText>
-                    <FormattedMessage
-                      {...messages.xIdeas}
-                      values={{
-                        ideasCount,
-                        ideas: formatMessage(messages.ideas),
-                        idea: formatMessage(messages.idea)
-                      }}
-                    />
-                  </IdeaCountText>
-                </IdeaCount>
+                {showIdeasCount &&
+                  <IdeaCount to={projectIdeasUrl}>
+                    <IdeaCountIcon name="idea" />
+                    <IdeaCountText>
+                      <FormattedMessage
+                        {...messages.xIdeas}
+                        values={{
+                          ideasCount,
+                          ideas: formatMessage(messages.ideas),
+                          idea: formatMessage(messages.idea)
+                        }}
+                      />
+                    </IdeaCountText>
+                  </IdeaCount>
+                }
               </ProjectMetaItems>
             </ProjectContentInner>
           </ProjectContent>
