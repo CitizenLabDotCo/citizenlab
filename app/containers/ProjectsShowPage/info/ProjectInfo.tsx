@@ -134,42 +134,6 @@ interface DataProps {
   projectImages: GetProjectImagesChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
-
-type State = {};
-
-class ProjectInfo extends React.PureComponent<Props, State> {
-  render() {
-    const { project, projectImages } = this.props;
-
-    if (!project) return null;
-
-    return (
-      <Container>
-        <Left>
-          <IdeaBodyStyled>
-            <T value={project.attributes.description_multiloc} />
-          </IdeaBodyStyled>
-        </Left>
-
-        {projectImages && projectImages.length > 0 &&
-          <Right>
-            <ProjectImages>
-              {projectImages.filter(projectImage => projectImage).map((projectImage) => (
-                <ImageZoom
-                  key={projectImage.id}
-                  image={{ src: projectImage.attributes.versions.large }}
-                  zoomImage={{ src: projectImage.attributes.versions.large }}
-                />
-              ))}
-            </ProjectImages>
-          </Right>
-        }
-      </Container>
-    );
-  }
-}
-
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
@@ -178,7 +142,33 @@ const Data = adopt<DataProps, InputProps>({
 export default (inputProps: InputProps) => {
   return (
     <Data {...inputProps}>
-      {dataProps => <ProjectInfo {...inputProps} {...dataProps} />}
+      {({ project, projectImages }) => {
+        if (!project) return null;
+
+        return (
+          <Container>
+            <Left>
+              <IdeaBodyStyled>
+                <T value={project.attributes.description_multiloc} />
+              </IdeaBodyStyled>
+            </Left>
+
+            {projectImages && projectImages.length > 0 &&
+              <Right>
+                <ProjectImages>
+                  {projectImages.filter(projectImage => projectImage).map((projectImage) => (
+                    <ImageZoom
+                      key={projectImage.id}
+                      image={{ src: projectImage.attributes.versions.large }}
+                      zoomImage={{ src: projectImage.attributes.versions.large }}
+                    />
+                  ))}
+                </ProjectImages>
+              </Right>
+            }
+          </Container>
+        );
+      }}
     </Data>
   );
 };

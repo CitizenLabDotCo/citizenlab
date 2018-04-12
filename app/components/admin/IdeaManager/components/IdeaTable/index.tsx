@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { clone, omit, every, fromPairs, isEmpty } from 'lodash';
 
 import { IIdeaData } from 'services/ideas';
@@ -31,10 +31,7 @@ interface Props {
   activeFilterMenu: string | null;
 }
 
-interface State {
-
-}
-
+interface State {}
 
 export default class IdeaTable extends React.Component<Props, State> {
 

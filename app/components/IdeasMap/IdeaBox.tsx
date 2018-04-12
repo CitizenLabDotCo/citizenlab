@@ -73,6 +73,7 @@ const CloseButton: any = styled(SemanticButton)`
   top: 0;
   right: 0;
 `;
+
 // Typings
 export interface Props {
   idea: string;
@@ -85,7 +86,6 @@ type State = {
 };
 
 export default class IdeaBox extends React.PureComponent<Props, State> {
-
   constructor(props: Props) {
     super(props);
     this.state = {

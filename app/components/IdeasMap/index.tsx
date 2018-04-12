@@ -178,9 +178,9 @@ class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
   }
 }
 
-export default (inputProps: InputProps) => {
-  const IdeasMapWithRouter = withRouter(IdeasMap);
+const IdeasMapWithRouter = withRouter(IdeasMap);
 
+export default (inputProps: InputProps) => {
   return (
     <GetIdeaMarkers projectId={inputProps.projectId} phaseId={inputProps.phaseId}>
       {ideaMarkers => <IdeasMapWithRouter {...inputProps} ideaMarkers={ideaMarkers} />}
