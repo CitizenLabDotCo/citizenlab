@@ -1,16 +1,23 @@
-import * as React from 'react';
-import { flow } from 'lodash';
-import styled from 'styled-components';
+import React from 'react';
+import { adopt } from 'react-adopt';
 
-import { IProjectData, projectByIdStream } from 'services/projects';
-import { IPhaseData, phaseStream } from 'services/phases';
-import { postingButtonState } from 'services/ideaPostingRules';
-
-import { injectResource } from 'utils/resourceLoaders/resourceLoader';
+// components
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
+
+// services
+import { postingButtonState } from 'services/ideaPostingRules';
+
+// resources
+import GetProject, { GetProjectChildProps } from 'utils/resourceLoaders/components/GetProject';
+import GetPhase, { GetPhaseChildProps } from 'utils/resourceLoaders/components/GetPhase';
+
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+
+// styling
+import styled from 'styled-components';
 
 const DisabledText = styled.div`
   color: rgba(121, 137, 147, 1);
@@ -26,22 +33,30 @@ const StyledIcon = styled(Icon)`
   margin-right: 0.5rem;
 `;
 
-type Props = {
-  project?: IProjectData;
-  phase?: IPhaseData;
+interface InputProps {
+  projectId?: string;
+  phaseId?: string;
   onClick?: () => void;
-};
+}
 
-type State = {};
+interface DataProps {
+  getProjectChildProps: GetProjectChildProps;
+  phase: GetPhaseChildProps;
+}
 
-class IdeaButton extends React.Component<Props, State> {
+interface Props extends InputProps, DataProps {}
+
+interface State {}
+
+class IdeaButton extends React.PureComponent<Props, State> {
 
   handleOnAddIdeaClick = () => {
     this.props.onClick && this.props.onClick();
   }
 
   render() {
-    const { project, phase } = this.props;
+    const { getProjectChildProps, phase } = this.props;
+    const { project } = getProjectChildProps;
     const { show, enabled } = postingButtonState({ project, phase });
 
     if (!show) {
@@ -67,7 +82,15 @@ class IdeaButton extends React.Component<Props, State> {
   }
 }
 
-export default flow(
-  injectResource('project', projectByIdStream, props => props.projectId),
-  injectResource('phase', phaseStream, props => props.phaseId)
-)(IdeaButton);
+const Data = adopt<DataProps, InputProps>({
+  getProjectChildProps: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
+  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
+});
+
+export default (inputProps: InputProps) => {
+  return (
+    <Data {...inputProps}>
+      {dataProps => <IdeaButton {...inputProps} {...dataProps} />}
+    </Data>
+  );
+};
