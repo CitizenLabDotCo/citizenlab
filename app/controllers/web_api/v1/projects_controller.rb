@@ -1,6 +1,6 @@
 class WebApi::V1::ProjectsController < ::ApplicationController
 
-  before_action :set_project, only: [:show, :update, :destroy]
+  before_action :set_project, only: [:show, :update, :reorder, :destroy]
 
   def index
     @projects = policy_scope(Project)
@@ -45,6 +45,14 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     params[:project][:area_ids] ||= [] if params[:project].has_key?(:area_ids)
     params[:project][:topic_ids] ||= [] if params[:project].has_key?(:topic_ids)
     if @project.update(permitted_attributes(Project))
+      render json: @project, status: :ok
+    else
+      render json: {errors: @project.errors.details}, status: :unprocessable_entity, include: ['project_images']
+    end
+  end
+
+  def reorder
+    if @project.insert_at(permitted_attributes(@project)[:ordering])
       render json: @project, status: :ok
     else
       render json: {errors: @project.errors.details}, status: :unprocessable_entity, include: ['project_images']

@@ -93,4 +93,8 @@ class ProjectPolicy < ApplicationPolicy
     attrs = shared_permitted_attributes
     attrs
   end
+
+  def permitted_attributes_for_reorder
+    [:ordering]
+  end
 end
