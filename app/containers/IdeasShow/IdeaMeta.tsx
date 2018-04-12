@@ -17,19 +17,18 @@ import { getLocalized } from 'utils/i18n';
 import { stripHtml } from 'utils/textUtils';
 import { Locale } from 'typings';
 
-type Props = {
+interface Props {
   ideaId: string;
-};
+}
 
-type State = {
+interface State {
   locale: Locale | null;
   currentTenant: ITenant | null;
   idea: IIdea | null;
   ideaImages: IIdeaImages | null;
-};
+}
 
 export default class IdeaMeta extends React.PureComponent<Props, State> {
-  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
