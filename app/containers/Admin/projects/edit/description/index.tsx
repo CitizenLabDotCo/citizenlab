@@ -53,7 +53,7 @@ class ProjectDescription extends React.Component<Props> {
         }}
       >
         {({ errors, isSubmitting, status, isValid, touched }) => (
-          <DescriptionEditionForm {...{errors, isSubmitting, status, isValid, touched}} />
+          <DescriptionEditionForm {...{ errors, isSubmitting, status, isValid, touched }} />
         )}
       </Formik>
     );
