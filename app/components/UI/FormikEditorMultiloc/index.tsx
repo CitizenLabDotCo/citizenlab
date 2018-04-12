@@ -14,7 +14,7 @@ interface State {
 
 // Pure function to update Formik state that will be throttled for performance
 function formikUpdate(multilocEditorState, locale, existingValues, fieldName, setFieldValue) {
-  const newValues = {...existingValues, [locale]: getHtmlStringFromEditorState(multilocEditorState[locale])}
+  const newValues = { ...existingValues, [locale]: getHtmlStringFromEditorState(multilocEditorState[locale]) };
   setFieldValue(fieldName, newValues);
 }
 const throttledFormikUpdate = throttle(formikUpdate, 500);
@@ -46,7 +46,7 @@ class FormikEditorMultiloc extends React.Component<FieldProps & VanillaProps, St
       if (htmlValues[key]) editorStateMultiloc[key] = getEditorStateFromHtmlString(htmlValues[key]);
     });
 
-    this.setState({editorStateMultiloc});
+    this.setState({ editorStateMultiloc });
   }
 
   handleEditorOnChange = (values: MultilocEditorState, locale: Locale) => {
