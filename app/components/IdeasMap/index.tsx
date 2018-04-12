@@ -14,7 +14,7 @@ import IdeaButton from './IdeaButton';
 import { Message } from 'semantic-ui-react';
 
 // Injectors
-import GetIdeaMarkers from 'utils/resourceLoaders/components/GetIdeaMarkers';
+import GetIdeaMarkers, { GetIdeaMarkersChildProps } from 'utils/resourceLoaders/components/GetIdeaMarkers';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -61,10 +61,16 @@ const MapWrapper = styled.div`
 // Typing
 import { IIdeaData } from 'services/ideas';
 
-interface Props {
+interface InputProps {
   projectId?: string;
   phaseId?: string;
 }
+
+interface DataProps {
+  ideaMarkers: GetIdeaMarkersChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 interface State {
   selectedIdea: string | null;
@@ -133,50 +139,51 @@ class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
   }
 
   render() {
-    const { phaseId, projectId } = this.props;
+    const { phaseId, projectId, ideaMarkers } = this.props;
+    const { selectedIdea } = this.state;
+    const points = this.getPoints(ideaMarkers);
 
     return (
-      <GetIdeaMarkers projectId={projectId} phaseId={phaseId}>
-        {(ideaMarkers) => {
-          const { selectedIdea } = this.state;
-          const points = this.getPoints(ideaMarkers);
+      <>
+        {ideaMarkers && ideaMarkers.length > 0 && points.length === 0 &&
+          <Message info>
+            <FormattedMessage {...messages.noIdeasWithLocation} />
+          </Message>
+        }
 
-          return (
-            <>
-              {ideaMarkers && ideaMarkers.length > 0 && points.length === 0 &&
-                <Message info>
-                  <FormattedMessage {...messages.noIdeasWithLocation} />
-                </Message>
-              }
+        <MapWrapper>
+          {selectedIdea &&
+            <StyledBox
+              idea={selectedIdea}
+              onClose={this.deselectIdea}
+            />
+          }
 
-              <MapWrapper>
-                {selectedIdea &&
-                  <StyledBox
-                    idea={selectedIdea}
-                    onClose={this.deselectIdea}
-                  />
-                }
+          <StyledMap
+            points={points}
+            onMarkerClick={this.selectIdea}
+            onMapClick={this.onMapClick}
+          />
 
-                <StyledMap
-                  points={points}
-                  onMarkerClick={this.selectIdea}
-                  onMapClick={this.onMapClick}
-                />
-
-                <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
-                  <IdeaButton
-                    projectId={projectId}
-                    phaseId={phaseId}
-                    onClick={this.redirectToIdeaCreation}
-                  />
-                </div>
-              </MapWrapper>
-            </>
-          );
-        }}
-      </GetIdeaMarkers>
+          <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
+            <IdeaButton
+              projectId={projectId}
+              phaseId={phaseId}
+              onClick={this.redirectToIdeaCreation}
+            />
+          </div>
+        </MapWrapper>
+      </>
     );
   }
 }
 
-export default withRouter(IdeasMap);
+export default (inputProps: InputProps) => {
+  const IdeasMapWithRouter = withRouter(IdeasMap);
+
+  return (
+    <GetIdeaMarkers projectId={inputProps.projectId} phaseId={inputProps.phaseId}>
+      {ideaMarkers => <IdeasMapWithRouter {...inputProps} ideaMarkers={ideaMarkers} />}
+    </GetIdeaMarkers>
+  );
+};

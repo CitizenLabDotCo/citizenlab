@@ -10,7 +10,7 @@ import messages from './messages';
 import browserHistory from 'react-router/lib/browserHistory';
 
 const Container = styled.div`
-  color: #84939d;
+  color: ${(props) => props.theme.colors.label};
   font-size: 14px;
   font-weight: 300;
   line-height: 20px;
@@ -56,8 +56,12 @@ class VotingDisabled extends React.PureComponent<Props, State> {
   handleProjectLinkClick = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    const projectSlug = this.props.project && (this.props.project).attributes.slug;
-    browserHistory.push(`/projects/${projectSlug}`);
+
+    const projectSlug = (this.props.project && this.props.project.attributes.slug);
+
+    if (projectSlug) {
+      browserHistory.push(`/projects/${projectSlug}`);
+    }
   }
 
   render() {

@@ -5,13 +5,15 @@ import { projectByIdStream, projectBySlugStream, IProjectData, IProject } from '
 import { projectImagesStream, IProjectImageData } from 'services/projectImages';
 
 interface InputProps {
-  id?: string;
-  slug?: string;
+  id?: string | null;
+  slug?: string | null;
   withImages?: boolean;
 }
 
+type children = (renderProps: GetProjectChildProps) => JSX.Element | null;
+
 interface Props extends InputProps {
-  children: (renderProps: GetProjectChildProps) => JSX.Element | null;
+  children?: children;
 }
 
 interface State {
@@ -29,12 +31,15 @@ export default class GetProject extends React.PureComponent<Props, State> {
     super(props);
     this.state = {
       project: null,
-      images: null,
+      images: null
     };
   }
 
   componentDidMount() {
     const { id, slug, withImages } = this.props;
+
+    console.log('GetProject componentDidMount props:');
+    console.log(this.props);
 
     this.inputProps$ = new BehaviorSubject({ id, slug, withImages });
 
@@ -76,8 +81,11 @@ export default class GetProject extends React.PureComponent<Props, State> {
   }
 
   render() {
+    console.log('GetProject render props:');
+    console.log(this.props);
+
     const { children } = this.props;
     const { project, images } = this.state;
-    return children({ project, images });
+    return (children as children)({ project, images });
   }
 }
