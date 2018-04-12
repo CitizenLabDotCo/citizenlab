@@ -35,7 +35,6 @@ class Project < ApplicationRecord
   validates :description_preview_multiloc, multiloc: {presence: false}
   validates :slug, presence: true, uniqueness: true, format: {with: SlugService.new.regex }
   validates :visible_to, presence: true, inclusion: {in: VISIBLE_TOS}
-  validates :ordering, presence: true, uniqueness: true
   validates :description_preview_multiloc, json: { 
     schema: DESCRIPTION_PREVIEW_JSON_SCHEMA, 
     message: ->(errors) { errors.map{|e| {fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message]} } },
@@ -55,7 +54,6 @@ class Project < ApplicationRecord
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_presentation_mode, on: :create
   before_validation :set_publication_status, on: :create
-  before_validation :set_ordering, unless: :ordering
 
 
   scope :with_all_areas, (Proc.new do |area_ids|
@@ -113,17 +111,6 @@ class Project < ApplicationRecord
 
   def set_publication_status
     self.publication_status ||= 'published'
-  end
-
-  def set_ordering
-    # In the case of the Open idea project, which 
-    # is read out from a template, create is not
-    # called but the ordering must still be set.
-    # It is probably more desirable in such cases
-    # to add the project to the bottom instead of
-    # the top.
-    self.insert_at(0) # otherwise move to bottom may not work...
-    self.move_to_bottom
   end
 
 end
