@@ -11,14 +11,12 @@ const MapWrapper = styled.div`
   height: 265px;
 `;
 
-// Typing
 interface Props {
   location: GeoJSON.Point;
   id: string;
 }
 
-interface State {
-}
+interface State {}
 
 export default class IdeaMap extends React.PureComponent<Props, State> {
   constructor(props: Props) {

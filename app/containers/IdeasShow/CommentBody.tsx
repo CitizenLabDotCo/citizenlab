@@ -6,7 +6,7 @@ import { adopt } from 'react-adopt';
 
 // Utils & Loaders
 import GetLocale, { GetLocaleChildProps } from 'utils/resourceLoaders/components/GetLocale';
-import GetTenant, { GetTenantChildProps } from 'utils/resourceLoaders/components/GetTenant';
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'utils/resourceLoaders/components/GetTenantLocales';
 import { getLocalized } from 'utils/i18n';
 
 // Components
@@ -75,7 +75,7 @@ interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenant: GetTenantChildProps;
+  tenantLocales: GetTenantLocalesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -83,11 +83,6 @@ interface Props extends InputProps, DataProps {}
 export interface State {}
 
 class CommentBody extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {};
-  }
-
   getCommentText = (locale: Locale, tenantLocales: Locale[]) => {
     const commentText = getLocalized(this.props.commentBody, locale, tenantLocales);
     const processedCommentText = linkifyHtml(commentText.replace(
@@ -115,8 +110,7 @@ class CommentBody extends React.Component<Props, State> {
   }
 
   render() {
-    const { editionMode, commentBody, locale, tenant } = this.props;
-    const tenantLocales = (tenant && tenant.attributes.settings.core.locales);
+    const { editionMode, commentBody, locale, tenantLocales } = this.props;
 
     if (locale && tenantLocales && !editionMode) {
       return (
@@ -159,7 +153,7 @@ class CommentBody extends React.Component<Props, State> {
 
 const Data = adopt<DataProps, {}>({
   locale: <GetLocale />,
-  tenant: <GetTenant />
+  tenantLocales: <GetTenantLocales />
 });
 
 export default (inputProps: InputProps) => <Data>{dataProps => <CommentBody {...inputProps} {...dataProps} />}</Data>;
