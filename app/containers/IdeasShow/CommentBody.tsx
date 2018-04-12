@@ -2,10 +2,11 @@
 import React from 'react';
 import linkifyHtml from 'linkifyjs/html';
 import { Form, Formik, FormikActions } from 'formik';
+import { adopt } from 'react-adopt';
 
 // Utils & Loaders
-import GetLocale from 'utils/resourceLoaders/components/GetLocale';
-import GetTenant from 'utils/resourceLoaders/components/GetTenant';
+import GetLocale, { GetLocaleChildProps } from 'utils/resourceLoaders/components/GetLocale';
+import GetTenant, { GetTenantChildProps } from 'utils/resourceLoaders/components/GetTenant';
 import { getLocalized } from 'utils/i18n';
 
 // Components
@@ -65,16 +66,24 @@ const ButtonsWrapper = styled.div`
 import { Multiloc, Locale } from 'typings';
 import { IUpdatedComment } from 'services/comments';
 
-export interface Props {
+interface InputProps {
   commentBody: Multiloc;
   editionMode: boolean;
   onCommentSave: {(values: IUpdatedComment, formikActions: FormikActions<IUpdatedComment>): void};
   onCancelEdition: {(): void};
 }
+
+interface DataProps {
+  locale: GetLocaleChildProps;
+  tenant: GetTenantChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
 export interface State {}
 
 class CommentBody extends React.Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {};
   }
@@ -106,53 +115,51 @@ class CommentBody extends React.Component<Props, State> {
   }
 
   render() {
-    return (
-      <GetLocale>
-        {(locale) => (
-          <GetTenant>
-            {(tenant) => {
-              const tenantLocales = (tenant && tenant.attributes.settings.core.locales);
+    const { editionMode, commentBody, locale, tenant } = this.props;
+    const tenantLocales = (tenant && tenant.attributes.settings.core.locales);
 
-              if (locale && tenantLocales && !this.props.editionMode) {
-                return (
-                  <CommentWrapper className="e2e-comment-body">
-                    <div dangerouslySetInnerHTML={{ __html: this.getCommentText(locale, tenantLocales) }} />
-                  </CommentWrapper>
-                );
-              } else if (locale && tenantLocales && this.props.editionMode) {
-                return (
-                  <Formik
-                    initialValues={{ body_multiloc: { [locale]: getLocalized(this.props.commentBody, locale, tenantLocales) } }}
-                    onSubmit={this.onSaveComment}
-                  >
-                    {({ values, errors, handleSubmit, isSubmitting, setFieldValue, setFieldTouched }) => (
-                      <StyledForm onSubmit={handleSubmit}>
-                        <MentionsTextArea
-                          name={`body_multiloc.${locale}`}
-                          value={values.body_multiloc[locale]}
-                          rows={1}
-                          onBlur={this.createFieldTouched(`body_multiloc.${locale}`, setFieldTouched)}
-                          onChange={this.createFieldChange(`body_multiloc.${locale}`, setFieldValue)}
-                          padding="1rem"
-                        />
-                        <ButtonsWrapper>
-                          {errors && errors.body_multiloc && errors.body_multiloc[locale] && <Error apiErrors={errors.body_multiloc[locale]} />}
-                          <Button onClick={this.cancelEdition} icon="close2" style="text" circularCorners={false}  />
-                          <Button icon="send" style="primary" circularCorners={false} processing={isSubmitting} />
-                        </ButtonsWrapper>
-                      </StyledForm>
-                    )}
-                  </Formik>
-                );
-              } else {
-                return null;
-              }
-            }}
-          </GetTenant>
-        )}
-      </GetLocale>
-    );
+    if (locale && tenantLocales && !editionMode) {
+      return (
+        <CommentWrapper className="e2e-comment-body">
+          <div dangerouslySetInnerHTML={{ __html: this.getCommentText(locale, tenantLocales) }} />
+        </CommentWrapper>
+      );
+    }
+
+    if (locale && tenantLocales && editionMode) {
+      return (
+        <Formik
+          initialValues={{ body_multiloc: { [locale]: getLocalized(commentBody, locale, tenantLocales) } }}
+          onSubmit={this.onSaveComment}
+        >
+          {({ values, errors, handleSubmit, isSubmitting, setFieldValue, setFieldTouched }) => (
+            <StyledForm onSubmit={handleSubmit}>
+              <MentionsTextArea
+                name={`body_multiloc.${locale}`}
+                value={values.body_multiloc[locale]}
+                rows={1}
+                onBlur={this.createFieldTouched(`body_multiloc.${locale}`, setFieldTouched)}
+                onChange={this.createFieldChange(`body_multiloc.${locale}`, setFieldValue)}
+                padding="1rem"
+              />
+              <ButtonsWrapper>
+                {errors && errors.body_multiloc && errors.body_multiloc[locale] && <Error apiErrors={errors.body_multiloc[locale]} />}
+                <Button onClick={this.cancelEdition} icon="close2" style="text" circularCorners={false}  />
+                <Button icon="send" style="primary" circularCorners={false} processing={isSubmitting} />
+              </ButtonsWrapper>
+            </StyledForm>
+          )}
+        </Formik>
+      );
+    }
+
+    return null;
   }
 }
 
-export default CommentBody;
+const Data = adopt<DataProps, {}>({
+  locale: <GetLocale />,
+  tenant: <GetTenant />
+});
+
+export default (inputProps: InputProps) => <Data>{dataProps => <CommentBody {...inputProps} {...dataProps} />}</Data>;

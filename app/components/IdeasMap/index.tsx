@@ -1,5 +1,5 @@
 // Libs
-import * as React from 'react';
+import React from 'react';
 import Leaflet from 'leaflet';
 import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 
