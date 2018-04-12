@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { isString, trim } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 

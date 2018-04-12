@@ -27,7 +27,7 @@ interface State {
 
 class CommentsContainer extends React.PureComponent<Props, State> {
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
       newCommentId: null
     };

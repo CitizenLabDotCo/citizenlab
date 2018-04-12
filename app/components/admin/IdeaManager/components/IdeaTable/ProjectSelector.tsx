@@ -7,7 +7,11 @@ interface InputProps {
   projectId: string;
 }
 
-interface Props extends InputProps, GetProjectChildProps {}
+interface DataProps {
+  project: GetProjectChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 interface State {}
 
@@ -31,6 +35,6 @@ class ProjectSelector extends React.PureComponent<Props, State> {
 
 export default (inputProps: InputProps) => (
   <GetProject id={inputProps.projectId}>
-    {getProjectChildProps => <ProjectSelector {...inputProps} {...getProjectChildProps} />}
+    {project => <ProjectSelector {...inputProps} project={project} />}
   </GetProject>
 );

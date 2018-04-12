@@ -32,7 +32,11 @@ interface InputProps {
   votingDescriptor: IIdeaData['relationships']['action_descriptor']['data']['voting'];
 }
 
-interface Props extends InputProps, GetProjectChildProps {}
+interface DataProps {
+  project: GetProjectChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 interface State {}
 
@@ -88,6 +92,6 @@ class VotingDisabled extends React.PureComponent<Props, State> {
 
 export default (inputProps: InputProps) => (
   <GetProject id={inputProps.projectId}>
-    {getProjectChildProps => <VotingDisabled {...inputProps} {...getProjectChildProps} />}
+    {project => <VotingDisabled {...inputProps} project={project} />}
   </GetProject>
 );
