@@ -20,7 +20,7 @@ import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
 import FormikEditorMultiloc from 'components/UI/FormikEditorMultiloc';
 
 // Typing
-import { API, Multiloc } from 'typings';
+import { API } from 'typings';
 
 interface Props {
   params: {
@@ -66,7 +66,7 @@ export default class ProjectDescription extends React.Component<Props, State> {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  saveProject = (values: { description_preview_multiloc: Multiloc, description_multiloc: Multiloc }, { setSubmitting, setErrors, setStatus, resetForm }) => {
+  saveProject = (values, { setSubmitting, setErrors, setStatus, resetForm }) => {
     const { data } = this.state;
     if ( !data ) return;
 
