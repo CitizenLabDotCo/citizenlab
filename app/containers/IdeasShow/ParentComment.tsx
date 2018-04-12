@@ -224,6 +224,10 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
   }
 }
 
+const ParentCommentWithTracks = injectTracks<Props>({
+  clickReply: tracks.clickReply,
+})(ParentComment);
+
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale/>,
   tenantLocales: <GetTenantLocales/>,
@@ -235,10 +239,6 @@ const Data = adopt<DataProps, InputProps>({
 });
 
 export default (inputProps: InputProps) => {
-  const ParentCommentWithTracks = injectTracks<Props>({
-    clickReply: tracks.clickReply,
-  })(ParentComment);
-
   return (
     <Data {...inputProps}>
       {dataProps => <ParentCommentWithTracks {...inputProps} {...dataProps} />}

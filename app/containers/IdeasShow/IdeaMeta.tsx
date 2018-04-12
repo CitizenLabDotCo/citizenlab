@@ -1,5 +1,5 @@
 // libraries
-import React from 'react';
+import React, { SFC } from 'react';
 import { adopt } from 'react-adopt';
 import Helmet from 'react-helmet';
 
@@ -28,33 +28,27 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+const IdeaMeta: SFC<Props> = ({ locale, tenantLocales, idea, ideaImages }) => {
+  if (locale && tenantLocales && idea) {
+    const ideaTitle = getLocalized(idea.attributes.title_multiloc, locale, tenantLocales);
+    const ideaDescription = getLocalized(idea.attributes.body_multiloc, locale, tenantLocales);
+    const ideaImage = (ideaImages && ideaImages.length > 0 ? ideaImages[0].attributes.versions.large : null);
+    const ideaUrl = window.location.href;
 
-class IdeaMeta extends React.PureComponent<Props, State> {
-  render() {
-    const { locale, tenantLocales, idea, ideaImages } = this.props;
-
-    if (locale && tenantLocales && idea) {
-      const ideaTitle = getLocalized(idea.attributes.title_multiloc, locale, tenantLocales);
-      const ideaDescription = getLocalized(idea.attributes.body_multiloc, locale, tenantLocales);
-      const ideaImage = (ideaImages && ideaImages.length > 0 ? ideaImages[0].attributes.versions.large : null);
-      const ideaUrl = window.location.href;
-
-      return (
-        <Helmet>
-          <title>{ideaTitle}</title>
-          <meta property="og:title" content={ideaTitle} />
-          <meta property="og:description" content={stripHtml(ideaDescription)} />
-          {ideaImage && <meta property="og:image" content={ideaImage} />}
-          <meta property="og:url" content={ideaUrl} />
-          <meta name="twitter:card" content="summary_large_image" />
-        </Helmet>
-      );
-    }
-
-    return null;
+    return (
+      <Helmet>
+        <title>{ideaTitle}</title>
+        <meta property="og:title" content={ideaTitle} />
+        <meta property="og:description" content={stripHtml(ideaDescription)} />
+        {ideaImage && <meta property="og:image" content={ideaImage} />}
+        <meta property="og:url" content={ideaUrl} />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
+    );
   }
-}
+
+  return null;
+};
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,

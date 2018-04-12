@@ -1,6 +1,6 @@
 // libraries
 import React from 'react';
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty } from 'lodash';
 import FileSaver from 'file-saver';
 
 // components
@@ -57,7 +57,7 @@ interface State {
 }
 
 class InvitesTable extends React.PureComponent<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       exporting: false,
@@ -85,17 +85,9 @@ class InvitesTable extends React.PureComponent<Props, State> {
 
   render() {
     const { exporting } = this.state;
-    const {
-      invites,
-      searchValue,
-      sortAttribute,
-      sortDirection,
-      currentPage,
-      lastPage,
-      onChangePage,
-    } = this.props;
+    const { invites, searchValue, sortAttribute, sortDirection, currentPage, lastPage, onChangePage } = this.props;
 
-    if (!isNil(invites)) {
+    if (invites) {
       return (
         <Container>
           <HeaderContainer>
