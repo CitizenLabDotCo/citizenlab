@@ -51,19 +51,6 @@ const Description = styled.div`
   padding: 0;
 `;
 
-const CheckboxContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-
-const CheckboxDescription = styled(Description)`
-  cursor: pointer;
-  padding-left: 10px;
-  user-select: none;
-  margin: 0;
-`;
-
 interface Props {
   formData?: object;
   onSubmit?: (arg: any) => void;
@@ -254,18 +241,11 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
     return (
       <>
         <Label>{props.schema.title}</Label>
-        <CheckboxContainer>
-          <Checkbox
-            size="22px"
-            checked={(isBoolean(props.value) ? props.value : false)}
-            toggle={onChange}
-          />
-          {props.schema.description &&
-            <CheckboxDescription onClick={onChange}>
-              {props.schema.description}
-            </CheckboxDescription>
-          }
-        </CheckboxContainer>
+        <Checkbox
+          value={(isBoolean(props.value) ? props.value : false)}
+          onChange={onChange}
+          label={(props.schema.description || null)}
+        />
       </>
     );
   }

@@ -4,6 +4,7 @@ import * as Rx from 'rxjs/Rx';
 
 // libraries
 import { browserHistory } from 'react-router';
+import * as bowser from 'bowser';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -26,7 +27,6 @@ import { media } from 'utils/styleUtils';
 
 const timeout = 300;
 const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
-// const easing = `ease-out`;
 
 const Container: any = styled.div`
   position: fixed;
@@ -79,20 +79,29 @@ const Container: any = styled.div`
 `;
 
 const Content = styled.div`
-  position: fixed;
+  width: 100%;
+  height: 100%;
+  position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 10001;
-  overflow: hidden;
-  overflow-y: scroll;
+  overflow: auto;
   -webkit-overflow-scrolling: touch;
 
   ${media.smallerThanMaxTablet`
-    top: ${props => props.theme.mobileTopBarHeight}px;
-    bottom: ${props => props.theme.mobileMenuHeight}px;
+    height: calc(100vh - ${props => props.theme.mobileTopBarHeight}px - ${props => props.theme.mobileMenuHeight}px);
+    margin-top: ${props => props.theme.mobileTopBarHeight}px;
   `}
+`;
+
+const ContentInner = styled.div`
+  width: 100%;
+
+  &.ipad {
+    min-height: 101vh;
+  }
 `;
 
 const TopBar: any = styled.div`
@@ -102,8 +111,7 @@ const TopBar: any = styled.div`
   left: 0;
   right: 0;
   background: #fff;
-  /* background: #f9f9fa; */
-  border-bottom: solid 1px #ccc;
+  border-bottom: solid 1px #e0e0e0;
   z-index: 10002;
 
   ${media.biggerThanMaxTablet`
@@ -259,22 +267,42 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     }
   }
 
+  disableBodyScroll = () => {
+    if (!document.body.classList.contains('modal-active')) document.body.classList.add('modal-active');
+    // document.addEventListener('touchmove', this.freezeViewport, false);
+    document.documentElement.addEventListener('touchmove', this.freezeViewport, false);
+    document.body.addEventListener('touchmove', this.freezeViewport, false);
+
+  }
+
+  enableBodyScroll = () => {
+    document.body.classList.remove('modal-active');
+    // document.removeEventListener('touchmove', this.freezeViewport, false);
+    document.documentElement.removeEventListener('touchmove', this.freezeViewport, false);
+    document.body.removeEventListener('touchmove', this.freezeViewport, false);
+  }
+
+  freezeViewport = (event) => {
+    event.preventDefault();
+  }
+
   openModal = (url: string| null) => {
     this.goBackUrl = window.location.href;
+
     window.addEventListener('popstate', this.handlePopstateEvent);
     window.addEventListener('keydown', this.onEscKeyPressed, true);
-    this.unlisten = browserHistory.listen(this.props.close);
 
-    if (!document.body.classList.contains('modal-active')) {
-      document.body.classList.add('modal-active');
-    }
+    this.disableBodyScroll();
+
+    this.unlisten = browserHistory.listen(() => {
+      // on route change
+      setTimeout(() => {
+        this.props.close();
+      }, 250);
+    });
 
     if (url) {
       window.history.pushState({ path: url }, '', url);
-
-      // Since we bypass the normal history mechanism and take it into our own hands here,
-      // we exceptionally also need to track the page change manually
-      // Don't try this at home!
       trackPage(url, { modal: true });
     }
   }
@@ -313,7 +341,9 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
 
   cleanup = () => {
     this.goBackUrl = null;
-    document.body.classList.remove('modal-active');
+
+    this.enableBodyScroll();
+
     window.removeEventListener('popstate', this.handlePopstateEvent);
     window.removeEventListener('keydown', this.onEscKeyPressed, true);
 
@@ -364,7 +394,9 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
       >
         <Container id="e2e-fullscreenmodal-content" className={`${opened && 'opened'}`}>
           <Content innerRef={this.setRef}>
-            {children}
+            <ContentInner className={`${bowser.ipad && 'ipad'}`}>
+              {children}
+            </ContentInner>
           </Content>
 
           <CloseButton onClick={this.clickCloseButton}>

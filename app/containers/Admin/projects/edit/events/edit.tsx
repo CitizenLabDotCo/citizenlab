@@ -187,7 +187,7 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
         <>
           <SectionTitle>
             {event && <FormattedMessage {...messages.editEventTitle} />}
-            {!event && <FormattedMessage {...messages.createEventTitle} />}
+            {!event && <FormattedMessage {...messages.newEventTitle} />}
           </SectionTitle>
 
           <form className="e2e-project-event-edit" onSubmit={this.handleOnSubmit}>

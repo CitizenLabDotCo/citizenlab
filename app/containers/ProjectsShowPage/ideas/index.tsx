@@ -99,9 +99,6 @@ export default class ProjectIdeasPage extends React.PureComponent<Props, State> 
     const { projectId, defaultView } = this.state;
     const { slug } = this.props.params;
 
-    console.log('projectId: ' + projectId);
-    console.log('defaultView: ' + defaultView);
-
     if (projectId) {
       return (
         <>

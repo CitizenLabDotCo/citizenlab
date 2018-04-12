@@ -3,6 +3,19 @@ import Icon from 'components/UI/Icon';
 import styled from 'styled-components';
 
 const Container: any = styled.div`
+  &:not(.hasLabel) {
+    flex: 0 0 ${(props: any) => props.size};
+    width: ${(props: any) => props.size};
+    height: ${(props: any) => props.size};
+  }
+
+  &.hasLabel {
+    display: flex;
+    align-items: center;
+  }
+`;
+
+const CheckboxContainer: any = styled.div`
   flex: 0 0 ${(props: any) => props.size};
   width: ${(props: any) => props.size};
   height: ${(props: any) => props.size};
@@ -29,27 +42,41 @@ const CheckmarkIcon = styled(Icon)`
   height: 55%;
 `;
 
+const Text = styled.div`
+  color: #333;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  padding-left: 10px;
+  cursor: pointer;
+`;
+
 type Props = {
-  size: string;
-  checked: boolean;
-  toggle: (event: React.FormEvent<MouseEvent>) => void;
+  value: boolean;
+  onChange: (event: React.FormEvent<any>) => void;
+  label?: string | JSX.Element | null | undefined;
+  size?: string | undefined;
 };
 
 type State = {};
 
 export default class Checkbox extends React.PureComponent<Props, State> {
-  handleOnClick = (event: React.FormEvent<MouseEvent>) => {
+  handleOnClick = (event: React.FormEvent<any>) => {
     event.preventDefault();
-    this.props.toggle(event);
+    this.props.onChange(event);
   }
 
   render() {
     const className = this.props['className'];
-    const { size, checked } = this.props;
+    const { size, value, label } = this.props;
+    const checkboxSize = (size || '22px');
 
     return (
-      <Container className={className} checked={checked} size={size} onClick={this.handleOnClick}>
-        {checked && <CheckmarkIcon name="checkmark" />}
+      <Container className={`${className} ${label && 'hasLabel'}`} size={checkboxSize}>
+        <CheckboxContainer checked={value} size={checkboxSize} onClick={this.handleOnClick}>
+          {value && <CheckmarkIcon name="checkmark" />}
+        </CheckboxContainer>
+        {label && <Text onClick={this.handleOnClick}>{label}</Text>}
       </Container>
     );
   }

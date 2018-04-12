@@ -69,6 +69,8 @@ declare namespace API {
   interface Error {
     error: string;
     value?: string;
+    row?: number;
+    rows?: number[];
   }
 
   interface Errors {
