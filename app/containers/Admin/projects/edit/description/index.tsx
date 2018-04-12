@@ -1,72 +1,32 @@
 // Libraries
 import React from 'react';
-import { Subscription, Observable } from 'rxjs/Rx';
 import { isEmpty } from 'lodash';
+import { Formik } from 'formik';
 
-// Services
-import { projectBySlugStream, updateProject,  IProjectData } from 'services/projects';
+// Services / Data loading
+import { updateProject,  IProjectData } from 'services/projects';
+import GetProject from 'utils/resourceLoaders/components/GetProject';
 
 // Components
-import { Formik } from 'formik';
-import DescriptionEditionForm from './DescriptionEditionFOrm';
+import DescriptionEditionForm from './DescriptionEditionForm';
 
 // Typing
 import { API } from 'typings';
 
 interface Props {
-  params: {
-    slug: string | null;
-  };
+  project: IProjectData;
 }
 
-interface State {
-  data: IProjectData | null;
-}
-
-export default class ProjectDescription extends React.Component<Props, State> {
-  subscriptions: Subscription[];
-
-  constructor(props: Props) {
-    super(props as any);
-
-    this.state = {
-      data: null,
-    };
-
-    this.subscriptions = [];
-  }
-
-  componentDidMount () {
-    if (this.props.params.slug) {
-      const project$ = projectBySlugStream(this.props.params.slug).observable;
-
-      this.subscriptions.push(
-        Observable.combineLatest(
-          project$
-        ).subscribe(([project]) => {
-
-          this.setState({
-            data: project.data,
-          });
-        })
-      );
-    }
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
-  }
-
+class ProjectDescription extends React.Component<Props> {
   saveProject = (values, { setSubmitting, setErrors, setStatus, resetForm }) => {
-    const { data } = this.state;
-    if ( !data ) return;
+    const { project } = this.props;
 
-    if (!isEmpty(values) && data.id) {
+    if (!isEmpty(values) && project.id) {
       setSubmitting(true);
       setStatus(null);
 
       // Send the values to the API
-      updateProject(data.id, values)
+      updateProject(project.id, values)
       .catch((errorResponse) => {
         // Process errors from the API and push them to the Formik context
         const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
@@ -74,6 +34,7 @@ export default class ProjectDescription extends React.Component<Props, State> {
         setSubmitting(false);
       })
       .then(() => {
+        // Reset the Formik context for touched and errors tracking
         resetForm();
         setStatus('success');
       });
@@ -81,17 +42,15 @@ export default class ProjectDescription extends React.Component<Props, State> {
   }
 
   render () {
-    const { data } = this.state;
-
-    if (!data) return null;
+    const { description_preview_multiloc, description_multiloc } = this.props.project.attributes;
 
     return (
       <Formik
-        initialValues={{
-          description_preview_multiloc: data.attributes.description_preview_multiloc,
-          description_multiloc: data.attributes.description_multiloc,
-        }}
         onSubmit={this.saveProject}
+        initialValues={{
+          description_preview_multiloc,
+          description_multiloc,
+        }}
       >
         {({ errors, isSubmitting, status, isValid, touched }) => (
           <DescriptionEditionForm {...{errors, isSubmitting, status, isValid, touched}} />
@@ -100,3 +59,11 @@ export default class ProjectDescription extends React.Component<Props, State> {
     );
   }
 }
+
+export default (props) => (
+  <GetProject slug={props.params.slug}>
+    {({ project }) => (
+      project && < ProjectDescription {...props} project={project} />
+    )}
+  </GetProject>
+);
