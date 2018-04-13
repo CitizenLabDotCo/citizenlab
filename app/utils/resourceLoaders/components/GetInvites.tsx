@@ -84,7 +84,7 @@ export default class GetInvites extends React.PureComponent<Props, State> {
     const queryParameters$ = this.queryParameters$.distinctUntilChanged((x, y) => shallowCompare(x, y));
     const queryParametersSearch$ = queryParameters$.map(queryParameters => queryParameters.search).distinctUntilChanged();
     const search$ = Observable.merge(
-      this.search$.debounceTime(400),
+      this.search$.debounceTime(500),
       queryParametersSearch$
     )
     .startWith(queryParameters.search)

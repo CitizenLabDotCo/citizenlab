@@ -143,7 +143,7 @@ export default class GetProjects extends React.PureComponent<Props, State> {
     if (!this.state.loadingMore) {
       this.queryParameters$.next({
         ...this.state.queryParameters,
-        'page[number]': (this.state.queryParameters['page[number]'] as number) + 1
+        'page[number]': this.state.queryParameters['page[number]'] + 1
       });
     }
   }
