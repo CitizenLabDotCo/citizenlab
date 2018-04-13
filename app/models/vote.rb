@@ -9,6 +9,10 @@ class Vote < ApplicationRecord
   validates :mode, inclusion: { in: MODES }
   # validates :user_id, uniqueness: {scope: [:votable_id, :votable_type, :mode]}
 
+  scope :up, -> {where mode: 'up'}
+  scope :down, -> {where mode: 'down'}
+
+
   def up?
     self.mode == 'up'
   end
