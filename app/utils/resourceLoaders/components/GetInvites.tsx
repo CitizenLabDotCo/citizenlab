@@ -1,42 +1,39 @@
 import React from 'react';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs/Rx';
+import { BehaviorSubject, Subject, Subscription, Observable } from 'rxjs/Rx';
 import { IInviteData, invitesStream } from 'services/invites';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import shallowCompare from 'utils/shallowCompare';
-import { isEqual, omit } from 'lodash';
+import { isEqual, omit, omitBy, isString, isEmpty, isNil } from 'lodash';
 
 export type SortAttribute = 'email' | 'last_name' | 'created_at' | 'invite_status';
 type SortDirection = 'ascending' | 'descending';
 type Sort = 'email' | '-email' | 'last_name' | '-last_name' | 'created_at' | '-created_at' | 'invite_status' | '-invite_status';
 type InviteStatus = 'pending' | 'accepted';
 
-export interface IInputPropsQueryParameters {
-  'page[number]'?: number;
-  'page[size]'?: number;
+export interface InputProps {
+  pageNumber?: number;
+  pageSize?: number;
   sort?: Sort;
   search?: string;
-  invite_status?: InviteStatus;
+  inviteStatus?: string[];
 }
 
-interface IInternalQueryParameters {
+interface IQueryParameters {
   'page[number]': number;
   'page[size]': number;
   sort: Sort;
-  search: string;
-  invite_status?: InviteStatus;
+  search: string | undefined;
+  invite_status: InviteStatus | undefined;
 }
 
-interface InputProps {
-  queryParameters?: IInputPropsQueryParameters;
-}
+type children = (renderProps: GetInvitesChildProps) => JSX.Element | null;
 
 interface Props extends InputProps {
-  children: (obj: GetInvitesChildProps) => JSX.Element | null;
+  children?: children;
 }
 
 type State = {
-  queryParameters: IInternalQueryParameters;
-  searchValue: string;
+  queryParameters: IQueryParameters;
   invites: IInviteData[] | null;
   sortAttribute: SortAttribute,
   sortDirection: SortDirection,
@@ -52,25 +49,25 @@ export type GetInvitesChildProps = State & {
 };
 
 export default class GetInvites extends React.PureComponent<Props, State> {
-  queryParameters$: BehaviorSubject<IInternalQueryParameters>;
-  search$: BehaviorSubject<string | undefined>;
+  queryParameters$: BehaviorSubject<IQueryParameters>;
+  search$: Subject<string | undefined>;
   subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
-    const initialSort = '-created_at';
+    const initialSort: Partial<Sort> = '-created_at';
 
     this.state = {
+      // defaults
       queryParameters: {
         'page[number]': 1,
         'page[size]': 20,
         sort: initialSort,
-        search: '',
+        search: undefined,
         invite_status: undefined
       },
       invites: null,
-      searchValue: '',
       sortAttribute: this.getSortAttribute(initialSort),
       sortDirection: this.getSortDirection(initialSort),
       currentPage: 1,
@@ -79,32 +76,35 @@ export default class GetInvites extends React.PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    const queryParameters = { ...this.state.queryParameters, ...this.props.queryParameters };
-    const searchValue = (queryParameters.search || '');
+    const queryParameters = this.getQueryParameters(this.state, this.props);
 
-    this.queryParameters$ = new BehaviorSubject({ ...this.state.queryParameters, ...this.props.queryParameters });
-    this.search$ = new BehaviorSubject(searchValue);
+    this.queryParameters$ = new BehaviorSubject(queryParameters);
+    this.search$ = new Subject();
+
+    const queryParameters$ = this.queryParameters$.distinctUntilChanged((x, y) => shallowCompare(x, y));
+    const queryParametersSearch$ = queryParameters$.map(queryParameters => queryParameters.search).distinctUntilChanged();
+    const search$ = Observable.merge(
+      this.search$.debounceTime(400),
+      queryParametersSearch$
+    )
+    .startWith(queryParameters.search)
+    .map(searchValue => ((isString(searchValue) && !isEmpty(searchValue)) ? searchValue : undefined))
+    .distinctUntilChanged();
 
     this.subscriptions = [
       Observable.combineLatest(
-        this.queryParameters$
-          .distinctUntilChanged((x, y) => shallowCompare(x, y)),
-        this.search$
-          .map(searchValue => (searchValue || ''))
-          .do(searchValue => this.setState({ searchValue }))
-          .debounceTime(400)
-          .startWith('')
-          .distinctUntilChanged()
-      ).switchMap(([queryParameters, searchValue]) => {
-        queryParameters.search = (searchValue || '');
+        queryParameters$,
+        search$
+      )
+      .map(([queryParameters, search]) => ({ ...queryParameters, search }))
+      .switchMap((queryParameters) => {
         const oldPartialQuery = omit(this.state.queryParameters, 'page[number]');
         const newPartialQuery = omit(queryParameters, 'page[number]');
         queryParameters['page[number]'] = (!isEqual(oldPartialQuery, newPartialQuery) ? 1 : queryParameters['page[number]']);
-        return invitesStream({ queryParameters, cacheStream: false }).observable.map(invites => ({ invites, queryParameters, searchValue }));
-      }).subscribe(({ invites, queryParameters, searchValue }) => {
+        return invitesStream({ queryParameters, cacheStream: false }).observable.map(invites => ({ invites, queryParameters }));
+      }).subscribe(({ invites, queryParameters }) => {
         this.setState({
           queryParameters,
-          searchValue,
           invites: invites.data,
           sortAttribute: this.getSortAttribute(queryParameters.sort),
           sortDirection: this.getSortDirection(queryParameters.sort),
@@ -116,8 +116,12 @@ export default class GetInvites extends React.PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, _prevState: State) {
-    if (!isEqual(prevProps.queryParameters, this.props.queryParameters)) {
-      this.queryParameters$.next({ ...this.state.queryParameters, ...this.props.queryParameters });
+    const { children: prevChildren, ...prevPropsWithoutChildren } = prevProps;
+    const { children: nextChildren, ...nextPropsWithoutChildren } = this.props;
+
+    if (!isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren)) {
+      const queryParameters = this.getQueryParameters(this.state, this.props);
+      this.queryParameters$.next(queryParameters);
     }
   }
 
@@ -125,17 +129,30 @@ export default class GetInvites extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getSortAttribute(sort: Sort) {
+  getQueryParameters = (state: State, props: Props) => {
+    return {
+      ...state.queryParameters,
+      ...omitBy({
+        'page[number]': props.pageNumber,
+        'page[size]': props.pageSize,
+        sort: props.sort,
+        search: props.search
+      }, isNil)
+    };
+  }
+
+  getSortAttribute = (sort: Sort) => {
     return sort.replace(/^-/, '') as SortAttribute;
   }
 
-  getSortDirection(sort: Sort) {
+  getSortDirection = (sort: Sort) => {
     return sort.startsWith('-') ? 'descending' : 'ascending';
   }
 
   handleChangeSorting = (newSortAttribute: SortAttribute) => {
-    const oldSortAttribute = this.getSortAttribute(this.state.queryParameters.sort);
-    const oldSortDirection = this.getSortDirection(this.state.queryParameters.sort);
+    const { sort: oldSort } = this.state.queryParameters;
+    const oldSortAttribute = this.getSortAttribute(oldSort);
+    const oldSortDirection = this.getSortDirection(oldSort);
     const newSortDirection = (newSortAttribute === oldSortAttribute && oldSortDirection === 'descending') ? 'ascending' : 'descending';
     const newSortDirectionSymbol = (newSortDirection === 'descending' ? '-' : '');
     const sort = `${newSortDirectionSymbol}${newSortAttribute}` as Sort;
@@ -165,7 +182,8 @@ export default class GetInvites extends React.PureComponent<Props, State> {
   }
 
   render() {
-    return this.props.children({
+    const { children } = this.props;
+    return (children as children)({
       ...this.state,
       onChangeSorting: this.handleChangeSorting,
       onChangeSearchTerm: this.handleChangeSearchTerm,
