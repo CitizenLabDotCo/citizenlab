@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { has, isString } from 'lodash';
-import * as Rx from 'rxjs/Rx';
+import { BehaviorSubject, Subscription, Observable } from 'rxjs/Rx';
 
 // router
 import { Link, browserHistory } from 'react-router';
@@ -562,8 +562,8 @@ type State = {
 
 export default class IdeasShow extends React.PureComponent<Props, State> {
   initialState: State;
-  ideaId$: Rx.BehaviorSubject<string | null>;
-  subscriptions: Rx.Subscription[];
+  ideaId$: BehaviorSubject<string | null>;
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -582,7 +582,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
     };
     this.initialState = initialState;
     this.state = initialState;
-    this.ideaId$ = new Rx.BehaviorSubject(null);
+    this.ideaId$ = new BehaviorSubject(null);
     this.subscriptions = [];
   }
 
@@ -608,12 +608,12 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
         const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
         const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
         const ideaStatusId = (idea.data.relationships.idea_status ? idea.data.relationships.idea_status.data.id : null);
-        const ideaImage$ = (ideaImageId ? ideaImageStream(idea.data.id, ideaImageId).observable : Rx.Observable.of(null));
-        const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : Rx.Observable.of(null);
-        const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : Rx.Observable.of(null));
-        const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : Rx.Observable.of(null));
+        const ideaImage$ = (ideaImageId ? ideaImageStream(idea.data.id, ideaImageId).observable : Observable.of(null));
+        const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : Observable.of(null);
+        const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : Observable.of(null));
+        const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : Observable.of(null));
 
-        return Rx.Observable.combineLatest(
+        return Observable.combineLatest(
           authUser$,
           ideaImage$,
           ideaAuthor$,
@@ -631,7 +631,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
         this.setState({ ideaComments });
       }),
 
-      Rx.Observable.combineLatest(
+      Observable.combineLatest(
         ideaId$.switchMap((ideaId: string) => ideaByIdStream(ideaId).observable),
         authUser$.filter(authUser => authUser !== null)
       ).switchMap(([idea, authUser]) => {

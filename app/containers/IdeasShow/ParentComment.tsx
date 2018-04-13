@@ -109,9 +109,9 @@ interface State {
   editionMode: boolean;
 }
 
-type Tracks = {
+interface Tracks {
   clickReply: Function;
-};
+}
 
 class ParentComment extends React.PureComponent<Props & Tracks, State> {
   constructor(props: Props) {
@@ -162,7 +162,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
   render() {
     const { commentId, authUser, comment, childComments, author, idea } = this.props;
 
-    if (authUser && comment && author && idea) {
+    if (comment && author && idea) {
       const ideaId = comment.relationships.idea.data.id;
       const authorId = (comment.relationships.author.data ? comment.relationships.author.data.id : null);
       const commentDeleted = (comment.attributes.publication_status === 'deleted');

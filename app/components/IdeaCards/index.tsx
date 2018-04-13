@@ -368,9 +368,10 @@ class IdeaCards extends React.PureComponent<Props, State> {
 
 export default (inputProps: InputProps) => {
   const { showViewToggle, defaultView, ...getIdeasInputProps } = inputProps;
-  
+  const props: GetIdeasInputProps = { ...getIdeasInputProps, type: 'load-more' };
+
   return (
-    <GetIdeas {...getIdeasInputProps}>
+    <GetIdeas {...props}>
       {(getIdeasChildProps) => <IdeaCards {...inputProps} {...getIdeasChildProps} />}
     </GetIdeas>
   );
