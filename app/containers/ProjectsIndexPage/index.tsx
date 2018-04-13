@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -47,22 +47,14 @@ const PageTitle = styled.h1`
   `}
 `;
 
-type Props = {};
-
-type State = {};
-
-export default class IdeasIndex extends React.PureComponent<Props, State> {
-  render() {
-    return (
-      <Container>
-        <StyledContentContainer>
-          <PageTitle>
-            <FormattedMessage {...messages.pageTitle} />
-          </PageTitle>
-          <ProjectCards query={{ 'page[size]': 50 }} />
-        </StyledContentContainer>
-        <Footer />
-      </Container>
-    );
-  }
-}
+export default () => (
+  <Container>
+    <StyledContentContainer>
+      <PageTitle>
+        <FormattedMessage {...messages.pageTitle} />
+      </PageTitle>
+      <ProjectCards pageSize={50} />
+    </StyledContentContainer>
+    <Footer />
+  </Container>
+);

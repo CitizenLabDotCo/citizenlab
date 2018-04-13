@@ -4,21 +4,29 @@ import { BehaviorSubject, Subscription } from 'rxjs/Rx';
 import { projectsStream, IProjects } from 'services/projects';
 import shallowCompare from 'utils/shallowCompare';
 
-export interface IQueryParameters {
-  'page[number]'?: number | undefined;
-  'page[size]'?: number | undefined;
-  areas?: string[] | undefined;
+type Sort =  'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular';
+
+export interface InputProps {
+  pageNumber?: number;
+  pageSize?: number;
+  sort?: Sort;
+  areas?: string[];
+  topics?: string[];
+  hideAllFilters?: boolean;
+}
+
+interface IQueryParameters {
+  'page[number]': number;
+  'page[size]': number;
+  sort: Sort;
+  areas: string[] | undefined;
+  topics: string[] | undefined;
 }
 
 interface IAccumulator {
   projects: IProjects;
   queryParameters: IQueryParameters;
   hasMore: boolean;
-}
-
-interface InputProps {
-  queryParameters?: IQueryParameters | undefined;
-  hideAllFilters?: boolean | undefined;
 }
 
 type children = (renderProps: GetProjectsChildProps) => JSX.Element | null;
@@ -29,7 +37,9 @@ interface Props extends InputProps {
 
 export type GetProjectsChildProps = State & {
   onLoadMore: () => void;
+  onChangeSorting: (sort: Sort) => void;
   onChangeAreas: (areas: string[]) => void;
+  onChangeTopics: (topics: string[]) => void;
 };
 
 interface State {
@@ -45,12 +55,15 @@ export default class GetProjects extends React.PureComponent<Props, State> {
   private subscriptions: Subscription[];
 
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
+      // defaults
       queryParameters: {
         'page[number]': 1,
         'page[size]': 12,
-        areas: []
+        sort: 'new',
+        areas: undefined,
+        topics: undefined
       },
       projects: null,
       hasMore: false,
@@ -61,7 +74,7 @@ export default class GetProjects extends React.PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    const queryParameters = { ...this.state.queryParameters, ...this.props.queryParameters };
+    const queryParameters = this.getQueryParameters(this.state, this.props);
     const startAccumulatorValue: IAccumulator = { queryParameters, projects: {} as IProjects, hasMore: false };
 
     this.queryParameters$ = new BehaviorSubject(queryParameters);
@@ -72,10 +85,10 @@ export default class GetProjects extends React.PureComponent<Props, State> {
         .mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
           const isLoadingMore = (acc.queryParameters['page[number]'] !== queryParameters['page[number]']);
           const pageNumber = (isLoadingMore ? queryParameters['page[number]'] : 1);
-          const newQueryParameters: IQueryParameters = omitBy({
+          const newQueryParameters: IQueryParameters = {
             ...queryParameters,
             'page[number]': pageNumber
-          }, isNil);
+          };
 
           this.setState({
             querying: !isLoadingMore,
@@ -100,13 +113,30 @@ export default class GetProjects extends React.PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, _prevState: State) {
-    if (!isEqual(prevProps.queryParameters, this.props.queryParameters)) {
-      this.queryParameters$.next({ ...this.state.queryParameters, ...this.props.queryParameters });
+    const { children: prevChildren, ...prevPropsWithoutChildren } = prevProps;
+    const { children: nextChildren, ...nextPropsWithoutChildren } = this.props;
+
+    if (!isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren)) {
+      const queryParameters = this.getQueryParameters(this.state, this.props);
+      this.queryParameters$.next(queryParameters);
     }
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  getQueryParameters = (state: State, props: Props) => {
+    return {
+      ...state.queryParameters,
+      ...omitBy({
+        'page[number]': props.pageNumber,
+        'page[size]': props.pageSize,
+        sort: props.sort,
+        areas: props.areas,
+        topics: props.topics
+      }, isNil)
+    };
   }
 
   loadMore = () => {
@@ -118,10 +148,24 @@ export default class GetProjects extends React.PureComponent<Props, State> {
     }
   }
 
+  handleSortOnChange = (sort: Sort) => {
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      sort
+    });
+  }
+
   handleAreasOnChange = (areas: string[]) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
       areas
+    });
+  }
+
+  handleTopicsOnChange = (topics: string[]) => {
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      topics
     });
   }
 
@@ -130,7 +174,9 @@ export default class GetProjects extends React.PureComponent<Props, State> {
     return (children as children)({
       ...this.state,
       onLoadMore: this.loadMore,
-      onChangeAreas: this.handleAreasOnChange
+      onChangeSorting: this.handleSortOnChange,
+      onChangeAreas: this.handleAreasOnChange,
+      onChangeTopics: this.handleTopicsOnChange
     });
   }
 }

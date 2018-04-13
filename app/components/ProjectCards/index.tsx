@@ -8,7 +8,7 @@ import Button from 'components/UI/Button';
 import SelectAreas from './SelectAreas';
 
 // resources
-import GetProjects, { GetProjectsChildProps, IQueryParameters } from 'utils/resourceLoaders/components/GetProjects';
+import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps } from 'utils/resourceLoaders/components/GetProjects';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -124,10 +124,7 @@ const LoadMoreButtonWrapper = styled.div`
 
 const LoadMoreButton = styled(Button)``;
 
-interface InputProps {
-  query?: IQueryParameters | undefined;
-  hideAllFilters?: boolean | undefined;
-}
+interface InputProps extends GetProjectsInputProps {}
 
 interface Props extends InputProps, GetProjectsChildProps {}
 
@@ -135,7 +132,7 @@ interface State {}
 
 class ProjectCards extends React.PureComponent<Props, State> {
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {};
   }
 
@@ -207,7 +204,7 @@ class ProjectCards extends React.PureComponent<Props, State> {
 }
 
 export default (inputProps: InputProps) => (
-  <GetProjects queryParameters={inputProps.query}>
+  <GetProjects {...inputProps}>
     {(getProjectsChildProps) => <ProjectCards {...inputProps} {...getProjectsChildProps} />}
   </GetProjects>
 );

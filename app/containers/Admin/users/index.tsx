@@ -54,10 +54,8 @@ const UsersPage: SFC<Props & InjectedIntlProps> = ({ location, children, intl })
 
 const UsersPageWithIntl = injectIntl(UsersPage);
 
-export default (inputProps: InputProps) => {
-  return (
-    <GetLocation>
-      {location => <UsersPageWithIntl {...inputProps} location={location} />}
-    </GetLocation>
-  );
-};
+export default (inputProps: InputProps) => (
+  <GetLocation>
+    {location => <UsersPageWithIntl {...inputProps} location={location} />}
+  </GetLocation>
+);

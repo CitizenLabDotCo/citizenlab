@@ -53,6 +53,7 @@ interface InputProps {}
 interface Props extends InputProps, GetInvitesChildProps {}
 
 interface State {
+  searchValue: string;
   exporting: boolean;
 }
 
@@ -60,6 +61,7 @@ class InvitesTable extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
+      searchValue: '',
       exporting: false,
     };
   }
@@ -80,12 +82,14 @@ class InvitesTable extends React.PureComponent<Props, State> {
   }
 
   handleChangeSearchTerm = (event) => {
-    this.props.onChangeSearchTerm(event.target.value);
+    const searchValue = event.target.value;
+    this.setState({ searchValue });
+    this.props.onChangeSearchTerm(searchValue);
   }
 
   render() {
-    const { exporting } = this.state;
-    const { invites, searchValue, sortAttribute, sortDirection, currentPage, lastPage, onChangePage } = this.props;
+    const { searchValue, exporting } = this.state;
+    const { invites, sortAttribute, sortDirection, currentPage, lastPage, onChangePage } = this.props;
 
     if (invites) {
       return (

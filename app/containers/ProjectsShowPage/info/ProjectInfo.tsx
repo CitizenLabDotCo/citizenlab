@@ -139,36 +139,34 @@ const Data = adopt<DataProps, InputProps>({
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
 });
 
-export default (inputProps: InputProps) => {
-  return (
-    <Data {...inputProps}>
-      {({ project, projectImages }) => {
-        if (!project) return null;
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {({ project, projectImages }) => {
+      if (!project) return null;
 
-        return (
-          <Container>
-            <Left>
-              <IdeaBodyStyled>
-                <T value={project.attributes.description_multiloc} />
-              </IdeaBodyStyled>
-            </Left>
+      return (
+        <Container>
+          <Left>
+            <IdeaBodyStyled>
+              <T value={project.attributes.description_multiloc} />
+            </IdeaBodyStyled>
+          </Left>
 
-            {projectImages && projectImages.length > 0 &&
-              <Right>
-                <ProjectImages>
-                  {projectImages.filter(projectImage => projectImage).map((projectImage) => (
-                    <ImageZoom
-                      key={projectImage.id}
-                      image={{ src: projectImage.attributes.versions.large }}
-                      zoomImage={{ src: projectImage.attributes.versions.large }}
-                    />
-                  ))}
-                </ProjectImages>
-              </Right>
-            }
-          </Container>
-        );
-      }}
-    </Data>
-  );
-};
+          {projectImages && projectImages.length > 0 &&
+            <Right>
+              <ProjectImages>
+                {projectImages.filter(projectImage => projectImage).map((projectImage) => (
+                  <ImageZoom
+                    key={projectImage.id}
+                    image={{ src: projectImage.attributes.versions.large }}
+                    zoomImage={{ src: projectImage.attributes.versions.large }}
+                  />
+                ))}
+              </ProjectImages>
+            </Right>
+          }
+        </Container>
+      );
+    }}
+  </Data>
+);

@@ -13,7 +13,7 @@ import IdeaButton from 'components/IdeaButton';
 import FeatureFlag from 'components/FeatureFlag';
 
 // resources
-import GetIdeas, { GetIdeasChildProps, IQueryParameters } from 'utils/resourceLoaders/components/GetIdeas';
+import GetIdeas, { GetIdeasChildProps, InputProps as GetIdeasInputProps } from 'utils/resourceLoaders/components/GetIdeas';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -237,8 +237,7 @@ const LoadMoreButtonWrapper = styled.div`
 
 const LoadMoreButton = styled(Button)``;
 
-interface InputProps {
-  query?: IQueryParameters | undefined;
+interface InputProps extends GetIdeasInputProps  {
   showViewToggle?: boolean | undefined;
   defaultView?: 'card' | 'map' | null | undefined;
 }
@@ -251,7 +250,7 @@ type State = {
 
 class IdeaCards extends React.PureComponent<Props, State> {
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
       selectedView: 'card'
     };
@@ -367,8 +366,12 @@ class IdeaCards extends React.PureComponent<Props, State> {
   }
 }
 
-export default (inputProps: InputProps) => (
-  <GetIdeas queryParameters={inputProps.query}>
-    {(getIdeasChildProps) => <IdeaCards {...inputProps} {...getIdeasChildProps} />}
-  </GetIdeas>
-);
+export default (inputProps: InputProps) => {
+  const { showViewToggle, defaultView, ...getIdeasInputProps } = inputProps;
+  
+  return (
+    <GetIdeas {...getIdeasInputProps}>
+      {(getIdeasChildProps) => <IdeaCards {...inputProps} {...getIdeasChildProps} />}
+    </GetIdeas>
+  );
+};

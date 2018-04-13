@@ -1,18 +1,31 @@
 import React from 'react';
-import { isEqual, get, isString, isEmpty, omitBy, isNil } from 'lodash';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs/Rx';
+import { get, isString, isEmpty, omitBy, isNil, isEqual } from 'lodash';
+import { BehaviorSubject, Subject, Subscription, Observable } from 'rxjs/Rx';
 import { ideasStream, IIdeas } from 'services/ideas';
 import shallowCompare from 'utils/shallowCompare';
 
-export interface IQueryParameters {
-  'page[number]'?: number | undefined;
-  'page[size]'?: number | undefined;
-  project?: string | undefined;
-  phase?: string | undefined;
-  author?: string | undefined;
-  sort?: string | undefined;
-  search?: string | undefined;
-  topics?: string[] | undefined;
+type Sort =  'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular' | 'author_name' | '-author_name' | 'upvotes_count' | '-upvotes_count' | 'downvotes_count' | '-downvotes_count' | 'status' | '-status';
+
+export interface InputProps {
+  pageNumber?: number;
+  pageSize?: number;
+  projectId?: string;
+  phaseId?: string;
+  authorId?: string;
+  sort?: Sort;
+  search?: string;
+  topics?: string[];
+}
+
+interface IQueryParameters {
+  'page[number]': number;
+  'page[size]': number;
+  project: string | undefined;
+  phase: string | undefined;
+  author: string | undefined;
+  sort: Sort;
+  search: string | undefined;
+  topics: string[] | undefined;
 }
 
 interface IAccumulator {
@@ -21,12 +34,10 @@ interface IAccumulator {
   hasMore: boolean;
 }
 
-interface InputProps {
-  queryParameters?: IQueryParameters | undefined;
-}
+type children = (renderProps: GetIdeasChildProps) => JSX.Element | null;
 
 interface Props extends InputProps {
-  children: (obj: GetIdeasChildProps) => JSX.Element | null;
+  children?: (obj: GetIdeasChildProps) => JSX.Element | null;
 }
 
 export type GetIdeasChildProps = State & {
@@ -47,12 +58,13 @@ interface State {
 
 export default class GetIdeas extends React.PureComponent<Props, State> {
   queryParameters$: BehaviorSubject<IQueryParameters>;
-  search$: BehaviorSubject<string>;
+  search$: Subject<string | undefined>;
   subscriptions: Subscription[];
 
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
+      // defaults
       queryParameters: {
         'page[number]': 1,
         'page[size]': 12,
@@ -60,7 +72,7 @@ export default class GetIdeas extends React.PureComponent<Props, State> {
         project: undefined,
         phase: undefined,
         author: undefined,
-        search: '',
+        search: undefined,
         topics: undefined
       },
       searchValue: undefined,
@@ -73,14 +85,21 @@ export default class GetIdeas extends React.PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    const queryParameters = { ...this.state.queryParameters, ...this.props.queryParameters };
+    const queryParameters = this.getQueryParameters(this.state, this.props);
     const startAccumulatorValue: IAccumulator = { queryParameters, ideas: {} as IIdeas, hasMore: false };
 
     this.queryParameters$ = new BehaviorSubject(queryParameters);
-    this.search$ = new BehaviorSubject('');
+    this.search$ = new Subject();
 
     const queryParameters$ = this.queryParameters$.distinctUntilChanged((x, y) => shallowCompare(x, y));
-    const search$ = this.search$.distinctUntilChanged().do(searchValue => this.setState({ searchValue })).debounceTime(400).startWith('');
+    const queryParametersSearch$ = queryParameters$.map(queryParameters => queryParameters.search).distinctUntilChanged();
+    const search$ = Observable.merge(
+      this.search$.do(searchValue => this.setState({ searchValue })).debounceTime(400),
+      queryParametersSearch$.do(searchValue => this.setState({ searchValue }))
+    )
+    .startWith(queryParameters.search)
+    .map(searchValue => ((isString(searchValue) && !isEmpty(searchValue)) ? searchValue : undefined))
+    .distinctUntilChanged();
 
     this.subscriptions = [
       Observable.combineLatest(
@@ -90,13 +109,11 @@ export default class GetIdeas extends React.PureComponent<Props, State> {
       .map(([queryParameters, search]) => ({ ...queryParameters, search }))
       .mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
         const isLoadingMore = (acc.queryParameters['page[number]'] !== queryParameters['page[number]']);
-        const search = (isString(queryParameters.search) && !isEmpty(queryParameters.search) ? queryParameters.search : undefined);
         const pageNumber = (isLoadingMore ? queryParameters['page[number]'] : 1);
-        const newQueryParameters: IQueryParameters = omitBy({
+        const newQueryParameters: IQueryParameters = {
           ...queryParameters,
-          search,
           'page[number]': pageNumber
-        }, isNil);
+        };
 
         this.setState({
           querying: !isLoadingMore,
@@ -121,13 +138,33 @@ export default class GetIdeas extends React.PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, _prevState: State) {
-    if (!isEqual(prevProps.queryParameters, this.props.queryParameters)) {
-      this.queryParameters$.next({ ...this.state.queryParameters, ...this.props.queryParameters });
+    const { children: prevChildren, ...prevPropsWithoutChildren } = prevProps;
+    const { children: nextChildren, ...nextPropsWithoutChildren } = this.props;
+
+    if (!isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren)) {
+      const queryParameters = this.getQueryParameters(this.state, this.props);
+      this.queryParameters$.next(queryParameters);
     }
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  getQueryParameters = (state: State, props: Props) => {
+    return {
+      ...state.queryParameters,
+      ...omitBy({
+        'page[number]': props.pageNumber,
+        'page[size]': props.pageSize,
+        project: props.projectId,
+        phase: props.phaseId,
+        author: props.authorId,
+        sort: props.sort,
+        search: props.search,
+        topics: props.topics
+      }, isNil)
+    };
   }
 
   loadMore = () => {
@@ -143,7 +180,7 @@ export default class GetIdeas extends React.PureComponent<Props, State> {
     this.search$.next(search);
   }
 
-  handleSortOnChange = (sort: string) => {
+  handleSortOnChange = (sort: Sort) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
       sort
@@ -158,7 +195,8 @@ export default class GetIdeas extends React.PureComponent<Props, State> {
   }
 
   render() {
-    return this.props.children({
+    const { children } = this.props;
+    return (children as children)({
       ...this.state,
       onLoadMore: this.loadMore,
       onChangeSearchTerm: this.handleSearchOnChange,

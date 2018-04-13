@@ -259,8 +259,8 @@ type State = {
   loaded: boolean;
 };
 
-export const landingPageIdeasQuery = { sort: 'trending', 'page[size]': 9 };
-export const landingPageProjectsQuery = { sort: 'new', 'page[size]': 3 };
+export const landingPageIdeasQuery: { sort: 'trending', 'page[size]': number } = { sort: 'trending', 'page[size]': 9 };
+export const landingPageProjectsQuery: { sort: 'new', 'page[size]': number } = { sort: 'new', 'page[size]': 3 };
 
 export default class LandingPage extends React.PureComponent<Props, State> {
   subscriptions: Subscription[];
@@ -385,7 +385,11 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                 {hasProjects &&
                   <ProjectSection>
                     <SectionContainer>
-                      <ProjectCards query={landingPageProjectsQuery} hideAllFilters={true} />
+                      <ProjectCards
+                        pageSize={landingPageProjectsQuery['page[size]']}
+                        sort={landingPageProjectsQuery.sort}
+                        hideAllFilters={true}
+                      />
                     </SectionContainer>
                   </ProjectSection>
                 }
@@ -399,7 +403,10 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                     </SectionTitle>
                   </SectionHeader>
                   <SectionContainer>
-                    <IdeaCards query={landingPageIdeasQuery} />
+                    <IdeaCards
+                      sort={landingPageIdeasQuery.sort}
+                      pageSize={landingPageIdeasQuery['page[size]']}
+                    />
                   </SectionContainer>
                 </Section>
               </IdeasStyledContentContainer>
