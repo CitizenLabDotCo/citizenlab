@@ -1,8 +1,6 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-import { has } from 'lodash';
-
-// router
+import React, { FormEvent, PureComponent } from 'react';
+import { get } from 'lodash';
+import { adopt } from 'react-adopt';
 import { Link, browserHistory } from 'react-router';
 
 // components
@@ -14,21 +12,18 @@ import VoteControl from 'components/VoteControl';
 import UserName from 'components/UI/UserName';
 import Avatar from 'components/Avatar';
 
-// services
-import { localeStream } from 'services/locale';
-import { ideaByIdStream, IIdea } from 'services/ideas';
-import { userByIdStream, IUser } from 'services/users';
-import { ideaImageStream, IIdeaImage } from 'services/ideaImages';
-import { projectByIdStream } from 'services/projects';
+// resrources
+import GetIdea, { GetIdeaChildProps } from 'utils/resourceLoaders/components/GetIdea';
+import GetIdeaImage, { GetIdeaImageChildProps } from 'utils/resourceLoaders/components/GetIdeaImage';
+import GetUser, { GetUserChildProps } from 'utils/resourceLoaders/components/GetUser';
 
 // utils
-import T from 'components/T';
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
+import T from 'components/T';
 import { FormattedRelative } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-
 import messages from './messages';
 
 // styles
@@ -37,7 +32,6 @@ import { media } from 'utils/styleUtils';
 
 // typings
 import { IModalInfo } from 'containers/App';
-import { Locale } from 'typings';
 
 const IdeaImageContainer: any = styled.div`
   width: 100%;
@@ -209,94 +203,53 @@ const VotingDisabledWrapper = styled.div`
   padding: 22px;
 `;
 
-export type Props = {
+export interface InputProps {
   ideaId: string;
-};
+}
 
-type State = {
-  idea: IIdea | null;
-  ideaImage: IIdeaImage | null;
-  ideaAuthor: IUser | null;
-  locale: Locale | null;
+interface DataProps {
+  idea: GetIdeaChildProps;
+  ideaImage: GetIdeaImageChildProps;
+  ideaAuthor: GetUserChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+interface State {
   showVotingDisabled: 'unauthenticated' | 'votingDisabled' | null;
-  loading: boolean;
-};
+}
 
 export const namespace = 'components/IdeaCard/index';
 
-class IdeaCard extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
-
-  constructor(props) {
+class IdeaCard extends PureComponent<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
-      idea: null,
-      ideaImage: null,
-      ideaAuthor: null,
-      locale: null,
       showVotingDisabled: null,
-      loading: true
     };
-    this.subscriptions = [];
   }
 
-  componentDidMount() {
-    const { ideaId } = this.props;
-    const locale$ = localeStream().observable;
-    const ideaWithRelationships$ = ideaByIdStream(ideaId).observable.switchMap((idea) => {
-      const ideaId = idea.data.id;
-      const ideaImages = idea.data.relationships.idea_images.data;
-      const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
-      const idea$ = ideaByIdStream(ideaId).observable;
-      const ideaAuthor$ = idea.data.relationships.author.data ? userByIdStream(idea.data.relationships.author.data.id).observable : Rx.Observable.of(null);
-      const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable : Rx.Observable.of(null));
-      const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : Rx.Observable.of(null));
-
-      return Rx.Observable.combineLatest(
-        idea$,
-        ideaImage$,
-        ideaAuthor$,
-        project$
-      ).map(([idea, ideaImage, ideaAuthor]) => {
-        return { idea, ideaImage, ideaAuthor };
-      });
-    });
-
-    this.subscriptions = [
-      Rx.Observable.combineLatest(
-        locale$,
-        ideaWithRelationships$
-      ).subscribe(([locale, { idea, ideaImage, ideaAuthor }]) => {
-        this.setState({ idea, ideaImage, ideaAuthor, locale, loading: false });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  onCardClick = (event: React.FormEvent<MouseEvent>) => {
+  onCardClick = (event: FormEvent<MouseEvent>) => {
     event.preventDefault();
 
-    const { idea } = this.state;
+    const { idea } = this.props;
 
     if (idea) {
       eventEmitter.emit<IModalInfo>(namespace, 'cardClick', {
         type: 'idea',
-        id: idea.data.id,
-        url: `/ideas/${idea.data.attributes.slug}`
+        id: idea.id,
+        url: `/ideas/${idea.attributes.slug}`
       });
     }
   }
 
-  onAuthorClick = (event: React.FormEvent<MouseEvent>) => {
-    const { ideaAuthor } = this.state;
+  onAuthorClick = (event: FormEvent<MouseEvent>) => {
+    const { ideaAuthor } = this.props;
 
     if (ideaAuthor) {
       event.stopPropagation();
       event.preventDefault();
-      browserHistory.push(`/profile/${ideaAuthor.data.attributes.slug}`);
+      browserHistory.push(`/profile/${ideaAuthor.attributes.slug}`);
     }
   }
 
@@ -309,27 +262,27 @@ class IdeaCard extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { idea, ideaImage, ideaAuthor, locale, showVotingDisabled, loading } = this.state;
+    const { idea, ideaImage, ideaAuthor } = this.props;
+    const { showVotingDisabled } = this.state;
 
-    if (!loading && idea && locale) {
-      const ideaImageUrl = (ideaImage ? ideaImage.data.attributes.versions.medium : null);
-      const hasVotingDescriptor = has(idea, 'data.relationships.action_descriptor.data.voting');
-      const votingDescriptor = (hasVotingDescriptor ? idea.data.relationships.action_descriptor.data.voting : null);
-      const projectId = idea.data.relationships.project.data && idea.data.relationships.project.data.id;
-      const ideaAuthorId = (ideaAuthor ? ideaAuthor.data.id : null);
-      const commentingDescriptor = idea.data.relationships.action_descriptor.data.commenting || null;
-      const commentingEnabled = idea.data.relationships.action_descriptor.data.commenting.enabled;
+    if (idea) {
+      const ideaImageUrl = (ideaImage ? ideaImage.attributes.versions.medium : null);
+      const votingDescriptor = get(idea.relationships.action_descriptor.data, 'voting', null);
+      const projectId = idea.relationships.project.data.id;
+      const ideaAuthorId = (ideaAuthor ? ideaAuthor.id : null);
+      const commentingDescriptor = (idea.relationships.action_descriptor.data.commenting || null);
+      const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
 
       const className = `${this.props['className']}
         e2e-idea-card
-        ${idea.data.relationships.user_vote && idea.data.relationships.user_vote.data ? 'voted' : 'not-voted' }
+        ${idea.relationships.user_vote && idea.relationships.user_vote.data ? 'voted' : 'not-voted' }
         ${commentingDescriptor && commentingDescriptor.enabled ? 'e2e-comments-enabled' : 'e2e-comments-disabled'}
-        ${idea.data.attributes.comments_count > 0 ? 'e2e-has-comments' : ''}
+        ${idea.attributes.comments_count > 0 ? 'e2e-has-comments' : ''}
         ${votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled'}
       `;
 
       return (
-        <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.data.attributes.slug}`} className={className}>
+        <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.attributes.slug}`} className={className}>
           <IdeaContainerInner>
 
             {ideaImageUrl &&
@@ -341,12 +294,12 @@ class IdeaCard extends React.PureComponent<Props, State> {
 
             <IdeaContent>
               <IdeaTitle>
-                <T value={idea.data.attributes.title_multiloc} />
+                <T value={idea.attributes.title_multiloc} />
               </IdeaTitle>
               <IdeaAuthor>
                 {ideaAuthorId && <IdeaAuthorAvatar userId={ideaAuthorId} size="small" hideIfNoAvatar={false} />}
                 <IdeaAuthorText>
-                  <FormattedRelative value={idea.data.attributes.published_at} />
+                  <FormattedRelative value={idea.attributes.published_at} />
                   <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={ideaAuthor} /> }} />
                 </IdeaAuthorText>
               </IdeaAuthor>
@@ -355,7 +308,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
             {!showVotingDisabled &&
               <Footer>
                 <StyledVoteControl
-                  ideaId={idea.data.id}
+                  ideaId={idea.id}
                   unauthenticatedVoteClick={this.unauthenticatedVoteClick}
                   disabledVoteClick={this.disabledVoteClick}
                   size="2"
@@ -363,17 +316,19 @@ class IdeaCard extends React.PureComponent<Props, State> {
                 <CommentInfo className={`${commentingEnabled && 'enabled'}`}>
                   <CommentIcon name="comments2" />
                   <CommentCount>
-                    <span>{idea.data.attributes.comments_count}</span>
+                    <span>{idea.attributes.comments_count}</span>
                   </CommentCount>
                 </CommentInfo>
               </Footer>
             }
+
             {showVotingDisabled === 'unauthenticated' &&
               <BottomBounceUp icon="lock-outlined">
                 <Unauthenticated />
               </BottomBounceUp>
-              }
-            {(showVotingDisabled === 'votingDisabled' && votingDescriptor) &&
+            }
+
+            {(showVotingDisabled === 'votingDisabled' && votingDescriptor && projectId) &&
               <BottomBounceUp icon="lock-outlined">
                 <VotingDisabledWrapper>
                   <VotingDisabled
@@ -392,4 +347,16 @@ class IdeaCard extends React.PureComponent<Props, State> {
   }
 }
 
-export default IdeaCard;
+const Data = adopt<DataProps, InputProps>({
+  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  ideaImage: ({ ideaId, idea, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={get(idea, 'relationships.idea_images.data[0].id', null)}>{render}</GetIdeaImage>,
+  ideaAuthor: ({ idea, render }) => <GetUser id={get(idea, 'relationships.author.data.id')}>{render}</GetUser>
+});
+
+export default (inputProps: InputProps) => {
+  return (
+    <Data {...inputProps}>
+      {dataProps => <IdeaCard {...inputProps} {...dataProps} />}
+    </Data>
+  );
+};

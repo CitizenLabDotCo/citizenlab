@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import IdeaCard, { Props as IdeaCardProps } from 'components/IdeaCard';
+import IdeaCard, { InputProps as IdeaCardProps } from 'components/IdeaCard';
 import IdeasMap from 'components/IdeasMap';
 import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
