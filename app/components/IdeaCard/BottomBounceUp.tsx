@@ -68,7 +68,6 @@ type Props = {
 };
 
 export default class BottomBounceUp extends React.PureComponent<Props> {
-
   render() {
     return (
       <Container>
