@@ -1,8 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-import { injectResources, InjectedResourcesLoaderProps } from 'utils/resourceLoaders/resourcesLoader';
-import { listPages, IPageData, deletePage } from 'services/pages';
+import { deletePage } from 'services/pages';
+
+import GetPages, { GetPagesChildProps } from 'utils/resourceLoaders/components/GetPages';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -10,7 +11,6 @@ import T from 'components/T';
 
 import { List, Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
-
 
 import messages from '../messages';
 import FeatureFlag from 'components/FeatureFlag';
@@ -32,13 +32,17 @@ const TextCell = styled.div`
   line-height: 20ppx;
 `;
 
-type Props = {
-};
+interface InputProps {}
 
-type State = {
-};
+interface DataProps {
+  pages: GetPagesChildProps;
+}
 
-class Pages extends React.Component<Props & InjectedResourcesLoaderProps<IPageData> & InjectedIntlProps, State> {
+interface Props extends InputProps, DataProps {}
+
+interface State {}
+
+class Pages extends React.Component<Props & InjectedIntlProps, State> {
 
   handleOnDeleteClick = (pageId) => (event) => {
     const deleteMessage = this.props.intl.formatMessage(messages.pageDeletionConfirmation);
@@ -53,10 +57,12 @@ class Pages extends React.Component<Props & InjectedResourcesLoaderProps<IPageDa
   }
 
   render() {
-    const pages = this.props.pages.all;
+    const pages = this.props.pages;
+
     if (!pages) return null;
+
     return (
-      <div>
+      <>
         <PageTitle>
           <FormattedMessage {...messages.listTitle} />
         </PageTitle>
@@ -96,9 +102,15 @@ class Pages extends React.Component<Props & InjectedResourcesLoaderProps<IPageDa
             ))}
           </List>
         </PageWrapper>
-      </div>
+      </>
     );
   }
 }
 
-export default injectResources('pages', listPages)(injectIntl(Pages));
+const PagesWithInjectedIntl = injectIntl<Props>(Pages);
+
+export default (inputProps: Props) => (
+  <GetPages>
+    {pages => <PagesWithInjectedIntl {...inputProps} pages={pages} />}
+  </GetPages>
+);

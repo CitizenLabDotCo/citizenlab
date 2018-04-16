@@ -3,12 +3,8 @@ import { Label } from 'semantic-ui-react';
 import T from 'components/T';
 import GetProject from 'utils/resourceLoaders/components/GetProject';
 
-interface InputProps {
-  projectId: string;
-}
-
-export default (inputProps: InputProps) => (
-  <GetProject id={inputProps.projectId}>
+export default (props: { projectId: string }) => (
+  <GetProject id={props.projectId}>
     {project => {
       if (!project) return null;
 

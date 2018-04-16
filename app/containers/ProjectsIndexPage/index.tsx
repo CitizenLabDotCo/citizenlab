@@ -53,7 +53,7 @@ export default () => (
       <PageTitle>
         <FormattedMessage {...messages.pageTitle} />
       </PageTitle>
-      <ProjectCards pageSize={50} />
+      <ProjectCards pageSize={50} sort="new" />
     </StyledContentContainer>
     <Footer />
   </Container>

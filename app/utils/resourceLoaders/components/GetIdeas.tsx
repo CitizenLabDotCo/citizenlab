@@ -111,16 +111,15 @@ export default class GetIdeas extends React.PureComponent<Props, State> {
       currentPage: 1,
       lastPage: 1
     };
+    const queryParameters = this.getQueryParameters(this.state, this.props);
+    this.queryParameters$ = new BehaviorSubject(queryParameters);
+    this.search$ = new Subject();
     this.subscriptions = [];
   }
 
   componentDidMount() {
     const queryParameters = this.getQueryParameters(this.state, this.props);
     const startAccumulatorValue: IAccumulator = { queryParameters, ideas: null, hasMore: false };
-
-    this.queryParameters$ = new BehaviorSubject(queryParameters);
-    this.search$ = new Subject();
-
     const queryParametersInput$ = this.queryParameters$.distinctUntilChanged((x, y) => shallowCompare(x, y));
     const queryParametersSearch$ = queryParametersInput$.map(queryParameters => queryParameters.search).distinctUntilChanged();
     const search$ = Observable.merge(
