@@ -413,8 +413,8 @@ class Navbar extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { location, locale, authUser, tenant } = this.props;
-    const { projects } = this.props.getProjectsChildProps;
+    const { getProjectsChildProps, location, locale, authUser, tenant } = this.props;
+    const { projects } = getProjectsChildProps;
     const { projectsDropdownOpened } = this.state;
 
     if (location && locale && tenant) {
@@ -441,7 +441,7 @@ class Navbar extends React.PureComponent<Props, State> {
                   <FormattedMessage {...messages.pageOverview} />
                 </NavigationItem>
 
-                {projects && projects.data && projects.data.length > 0 &&
+                {projects && projects.length > 0 &&
                   <NavigationDropdown>
                     <NavigationDropdownItem onClick={this.handleProjectsDropdownToggle}>
                       <NavigationDropdownItemText>
@@ -460,7 +460,7 @@ class Navbar extends React.PureComponent<Props, State> {
                       <NavigationDropdownMenu onClickOutside={this.handleProjectsDropdownOnClickOutside}>
                         <NavigationDropdownMenuInner>
                           <NavigationDropdownList>
-                            {projects.data.map((project) => (
+                            {projects.map((project) => (
                               <NavigationDropdownListItem key={project.id} to={getProjectUrl(project)}>
                                 {getLocalized(project.attributes.title_multiloc, locale, tenantLocales)}
                               </NavigationDropdownListItem>

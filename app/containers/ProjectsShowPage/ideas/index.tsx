@@ -110,6 +110,9 @@ export default class ProjectIdeasPage extends React.PureComponent<Props, State> 
                 <FormattedMessage {...messages.navIdeas} />
               </IdeasTitle>
               <IdeaCards
+                type="load-more"
+                sort={'trending'}
+                pageSize={12}
                 projectId={projectId}
                 showViewToggle={true}
                 defaultView={defaultView}

@@ -1,14 +1,14 @@
 import React from 'react';
 import { BehaviorSubject, Subject, Subscription, Observable } from 'rxjs/Rx';
 import { IInviteData, invitesStream } from 'services/invites';
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import shallowCompare from 'utils/shallowCompare';
-import { isEqual, omit, omitBy, isString, isEmpty, isNil } from 'lodash';
+import { isEqual, omitBy, isString, isEmpty, isNil } from 'lodash';
+import { getPageNumberFromUrl, getSortAttribute, getSortDirection, SortDirection } from 'utils/paginationUtils';
+
 
 export type SortAttribute = 'email' | 'last_name' | 'created_at' | 'invite_status';
-type SortDirection = 'ascending' | 'descending';
-type Sort = 'email' | '-email' | 'last_name' | '-last_name' | 'created_at' | '-created_at' | 'invite_status' | '-invite_status';
-type InviteStatus = 'pending' | 'accepted';
+export type Sort = 'email' | '-email' | 'last_name' | '-last_name' | 'created_at' | '-created_at' | 'invite_status' | '-invite_status';
+export type InviteStatus = 'pending' | 'accepted';
 
 export interface InputProps {
   pageNumber?: number;
@@ -32,14 +32,14 @@ interface Props extends InputProps {
   children?: children;
 }
 
-type State = {
+interface State {
   queryParameters: IQueryParameters;
   invites: IInviteData[] | null;
-  sortAttribute: SortAttribute,
-  sortDirection: SortDirection,
+  sortAttribute: SortAttribute;
+  sortDirection: SortDirection;
   currentPage: number;
   lastPage: number;
-};
+}
 
 export type GetInvitesChildProps = State & {
   onChangeSorting: (sortAttribute: SortAttribute) => void;
@@ -55,9 +55,7 @@ export default class GetInvites extends React.PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props);
-
     const initialSort: Partial<Sort> = '-created_at';
-
     this.state = {
       // defaults
       queryParameters: {
@@ -68,8 +66,8 @@ export default class GetInvites extends React.PureComponent<Props, State> {
         invite_status: undefined
       },
       invites: null,
-      sortAttribute: this.getSortAttribute(initialSort),
-      sortDirection: this.getSortDirection(initialSort),
+      sortAttribute: getSortAttribute<Sort, SortAttribute>(initialSort),
+      sortDirection: getSortDirection<Sort>(initialSort),
       currentPage: 1,
       lastPage: 1
     };
@@ -98,16 +96,17 @@ export default class GetInvites extends React.PureComponent<Props, State> {
       )
       .map(([queryParameters, search]) => ({ ...queryParameters, search }))
       .switchMap((queryParameters) => {
-        const oldPartialQuery = omit(this.state.queryParameters, 'page[number]');
-        const newPartialQuery = omit(queryParameters, 'page[number]');
-        queryParameters['page[number]'] = (!isEqual(oldPartialQuery, newPartialQuery) ? 1 : queryParameters['page[number]']);
+        const oldPageNumber = this.state.queryParameters['page[number]'];
+        const newPageNumber = queryParameters['page[number]'];
+        queryParameters['page[number]'] = (newPageNumber !== oldPageNumber ? newPageNumber : 1);
+
         return invitesStream({ queryParameters, cacheStream: false }).observable.map(invites => ({ invites, queryParameters }));
       }).subscribe(({ invites, queryParameters }) => {
         this.setState({
           queryParameters,
           invites: invites.data,
-          sortAttribute: this.getSortAttribute(queryParameters.sort),
-          sortDirection: this.getSortDirection(queryParameters.sort),
+          sortAttribute: getSortAttribute<Sort, SortAttribute>(queryParameters.sort),
+          sortDirection: getSortDirection<Sort>(queryParameters.sort),
           currentPage: getPageNumberFromUrl(invites.links.self) || 1,
           lastPage: getPageNumberFromUrl(invites.links.last) || 1
         });
@@ -141,18 +140,10 @@ export default class GetInvites extends React.PureComponent<Props, State> {
     };
   }
 
-  getSortAttribute = (sort: Sort) => {
-    return sort.replace(/^-/, '') as SortAttribute;
-  }
-
-  getSortDirection = (sort: Sort) => {
-    return sort.startsWith('-') ? 'descending' : 'ascending';
-  }
-
   handleChangeSorting = (newSortAttribute: SortAttribute) => {
     const { sort: oldSort } = this.state.queryParameters;
-    const oldSortAttribute = this.getSortAttribute(oldSort);
-    const oldSortDirection = this.getSortDirection(oldSort);
+    const oldSortAttribute = getSortAttribute<Sort, SortAttribute>(oldSort);
+    const oldSortDirection = getSortDirection<Sort>(oldSort);
     const newSortDirection = (newSortAttribute === oldSortAttribute && oldSortDirection === 'descending') ? 'ascending' : 'descending';
     const newSortDirectionSymbol = (newSortDirection === 'descending' ? '-' : '');
     const sort = `${newSortDirectionSymbol}${newSortAttribute}` as Sort;

@@ -1,21 +1,28 @@
 import React from 'react';
-import { get, isString, isEmpty, omit, omitBy, isNil, isEqual } from 'lodash';
+import { get, isString, isEmpty, omitBy, isNil, isEqual } from 'lodash';
 import { BehaviorSubject, Subject, Subscription, Observable } from 'rxjs/Rx';
-import { ideasStream, IIdeas } from 'services/ideas';
+import { ideasStream, IIdeaData } from 'services/ideas';
 import shallowCompare from 'utils/shallowCompare';
+import { getPageNumberFromUrl, getSortAttribute, getSortDirection, SortDirection } from 'utils/paginationUtils';
 
-type Sort =  'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular' | 'author_name' | '-author_name' | 'upvotes_count' | '-upvotes_count' | 'downvotes_count' | '-downvotes_count' | 'status' | '-status';
+export type SortAttribute = 'new' | 'trending' | 'popular' | 'author_name' | 'upvotes_count' | 'downvotes_count' | 'status';
+export type Sort =  'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular' | 'author_name' | '-author_name' | 'upvotes_count' | '-upvotes_count' | 'downvotes_count' | '-downvotes_count' | 'status' | '-status';
+export type PublicationStatus = 'draft' | 'published' | 'archived';
 
 export interface InputProps {
-  type?: 'load-more' | 'paginated';
+  type: 'load-more' | 'paginated';
   pageNumber?: number;
-  pageSize?: number;
+  pageSize: number;
   projectId?: string;
   phaseId?: string;
   authorId?: string;
-  sort?: Sort;
+  sort: Sort;
   search?: string;
   topics?: string[];
+  areas?: string[];
+  ideaStatusId?: string;
+  publicationStatus?: PublicationStatus;
+  boundingBox?: number[];
 }
 
 interface IQueryParameters {
@@ -27,10 +34,14 @@ interface IQueryParameters {
   sort: Sort;
   search: string | undefined;
   topics: string[] | undefined;
+  areas: string[] | undefined;
+  idea_status: string | undefined;
+  publication_status: PublicationStatus | undefined;
+  bounding_box: number[] | undefined;
 }
 
 interface IAccumulator {
-  ideas: IIdeas;
+  ideas: IIdeaData[] | null;
   queryParameters: IQueryParameters;
   hasMore: boolean;
 }
@@ -44,18 +55,27 @@ interface Props extends InputProps {
 export type GetIdeasChildProps = State & {
   onLoadMore: () => void;
   onChangePage: (pageNumber: number) => void;
+  onChangeProject: (projectId: string) => void;
+  onChangePhase: (phaseId: string) => void;
   onChangeSearchTerm: (search: string) => void;
   onChangeSorting: (sort: string) => void;
-  onChangeTopics: (topics: string[]) => void
+  onChangeTopics: (topics: string[]) => void;
+  onChangeAreas: (areas: string[]) => void;
+  onChangeIdeaStatus: (ideaStatus: string) => void;
+  onChangePublicationStatus: (publicationStatus: PublicationStatus) => void;
 };
 
 interface State {
   queryParameters: IQueryParameters;
   searchValue: string | undefined;
-  ideas: IIdeas | null;
+  ideas: IIdeaData[] | null;
   hasMore: boolean;
   querying: boolean;
   loadingMore: boolean;
+  sortAttribute: SortAttribute;
+  sortDirection: SortDirection;
+  currentPage: number;
+  lastPage: number;
 }
 
 export default class GetIdeas extends React.PureComponent<Props, State> {
@@ -69,26 +89,34 @@ export default class GetIdeas extends React.PureComponent<Props, State> {
       // defaults
       queryParameters: {
         'page[number]': 1,
-        'page[size]': 12,
-        sort: 'trending',
+        'page[size]': this.props.pageSize,
+        sort: this.props.sort,
         project: undefined,
         phase: undefined,
         author: undefined,
         search: undefined,
-        topics: undefined
+        topics: undefined,
+        areas: undefined,
+        idea_status: undefined,
+        publication_status: undefined,
+        bounding_box: undefined
       },
       searchValue: undefined,
       ideas: null,
       hasMore: false,
       querying: true,
-      loadingMore: false
+      loadingMore: false,
+      sortAttribute: getSortAttribute<Sort, SortAttribute>(this.props.sort),
+      sortDirection: getSortDirection<Sort>(this.props.sort),
+      currentPage: 1,
+      lastPage: 1
     };
     this.subscriptions = [];
   }
 
   componentDidMount() {
     const queryParameters = this.getQueryParameters(this.state, this.props);
-    const startAccumulatorValue: IAccumulator = { queryParameters, ideas: {} as IIdeas, hasMore: false };
+    const startAccumulatorValue: IAccumulator = { queryParameters, ideas: null, hasMore: false };
 
     this.queryParameters$ = new BehaviorSubject(queryParameters);
     this.search$ = new Subject();
@@ -131,7 +159,7 @@ export default class GetIdeas extends React.PureComponent<Props, State> {
             return {
               queryParameters,
               hasMore,
-              ideas: (!isLoadingMore ? ideas : { data: [...acc.ideas.data, ...ideas.data] }) as IIdeas
+              ideas: (!isLoadingMore ? ideas.data : [...(acc.ideas || []), ...ideas.data])
             };
           });
         }, startAccumulatorValue).subscribe(({ ideas, queryParameters, hasMore }) => {
@@ -141,13 +169,23 @@ export default class GetIdeas extends React.PureComponent<Props, State> {
     } else {
       this.subscriptions = [
         queryParametersOutput$.switchMap((queryParameters) => {
-          const oldPartialQuery = omit(this.state.queryParameters, 'page[number]');
-          const newPartialQuery = omit(queryParameters, 'page[number]');
-          queryParameters['page[number]'] = (!isEqual(oldPartialQuery, newPartialQuery) ? 1 : queryParameters['page[number]']);
-          return ideasStream({ queryParameters, cacheStream: false }).observable.map(ideas => ({ ideas, queryParameters }));
+          const oldPageNumber = this.state.queryParameters['page[number]'];
+          const newPageNumber = queryParameters['page[number]'];
+          queryParameters['page[number]'] = (newPageNumber !== oldPageNumber ? newPageNumber : 1);
+
+          return ideasStream({ queryParameters, cacheStream: false }).observable.map(ideas => ({ queryParameters, ideas }));
         })
         .subscribe(({ ideas, queryParameters }) => {
-          this.setState({ ideas, queryParameters, querying: false, loadingMore: false });
+          this.setState({
+            queryParameters,
+            ideas: (ideas ? ideas.data : null),
+            querying: false,
+            loadingMore: false,
+            sortAttribute: getSortAttribute<Sort, SortAttribute>(queryParameters.sort),
+            sortDirection: getSortDirection<Sort>(queryParameters.sort),
+            currentPage: getPageNumberFromUrl(ideas.links.self) || 1,
+            lastPage: getPageNumberFromUrl(ideas.links.last) || 1
+          });
         })
       ];
     }
@@ -168,19 +206,39 @@ export default class GetIdeas extends React.PureComponent<Props, State> {
   }
 
   getQueryParameters = (state: State, props: Props) => {
+    const InputPropsQueryParameters: IQueryParameters = {
+      'page[number]': props.pageNumber as number,
+      'page[size]': props.pageSize,
+      project: props.projectId,
+      phase: props.phaseId,
+      author: props.authorId,
+      sort: props.sort,
+      search: props.search,
+      topics: props.topics,
+      areas: props.areas,
+      idea_status: props.ideaStatusId,
+      publication_status: props.publicationStatus,
+      bounding_box: props.boundingBox
+    };
+
     return {
       ...state.queryParameters,
-      ...omitBy({
-        'page[number]': props.pageNumber,
-        'page[size]': props.pageSize,
-        project: props.projectId,
-        phase: props.phaseId,
-        author: props.authorId,
-        sort: props.sort,
-        search: props.search,
-        topics: props.topics
-      }, isNil)
+      ...omitBy(InputPropsQueryParameters, isNil)
     };
+  }
+
+  handleChangeSorting = (newSortAttribute: SortAttribute) => {
+    const { sort: oldSort } = this.state.queryParameters;
+    const oldSortAttribute = getSortAttribute<Sort, SortAttribute>(oldSort);
+    const oldSortDirection = getSortDirection<Sort>(oldSort);
+    const newSortDirection = (newSortAttribute === oldSortAttribute && oldSortDirection === 'descending') ? 'ascending' : 'descending';
+    const newSortDirectionSymbol = (newSortDirection === 'descending' ? '-' : '');
+    const sort = `${newSortDirectionSymbol}${newSortAttribute}` as Sort;
+
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      sort
+    });
   }
 
   loadMore = () => {
@@ -196,6 +254,20 @@ export default class GetIdeas extends React.PureComponent<Props, State> {
     this.queryParameters$.next({
       ...this.state.queryParameters,
       'page[number]': pageNumber
+    });
+  }
+
+  handleProjectOnChange = (projectId: string) => {
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      project: projectId
+    });
+  }
+
+  handlePhaseOnChange = (phaseId: string) => {
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      phase: phaseId
     });
   }
 
@@ -217,15 +289,41 @@ export default class GetIdeas extends React.PureComponent<Props, State> {
     });
   }
 
+  handleAreasOnchange = (areas: string[]) => {
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      areas
+    });
+  }
+
+  handleIdeaStatusOnChange = (ideaStatus: string) => {
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      idea_status: ideaStatus
+    });
+  }
+
+  handlePublicationStatusOnChange = (publicationStatus: PublicationStatus) => {
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      publication_status: publicationStatus
+    });
+  }
+
   render() {
     const { children } = this.props;
     return (children as children)({
       ...this.state,
       onLoadMore: this.loadMore,
       onChangePage: this.handleChangePage,
+      onChangeProject: this.handleProjectOnChange,
+      onChangePhase: this.handlePhaseOnChange,
       onChangeSearchTerm: this.handleSearchOnChange,
       onChangeSorting: this.handleSortOnChange,
-      onChangeTopics: this.handleTopicsOnChange
+      onChangeTopics: this.handleTopicsOnChange,
+      onChangeAreas: this.handleAreasOnchange,
+      onChangeIdeaStatus: this.handleIdeaStatusOnChange,
+      onChangePublicationStatus: this.handlePublicationStatusOnChange
     });
   }
 }

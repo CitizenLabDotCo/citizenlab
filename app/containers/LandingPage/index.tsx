@@ -404,6 +404,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                   </SectionHeader>
                   <SectionContainer>
                     <IdeaCards
+                      type="load-more"
                       sort={landingPageIdeasQuery.sort}
                       pageSize={landingPageIdeasQuery['page[size]']}
                     />
