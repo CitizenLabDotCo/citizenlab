@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import * as Rx from 'rxjs';
 import { uniq, keys, isEmpty } from 'lodash';
 import { findDOMNode } from 'react-dom';
