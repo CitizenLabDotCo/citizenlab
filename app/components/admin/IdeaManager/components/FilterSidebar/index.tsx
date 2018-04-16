@@ -16,9 +16,9 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 interface Props {
-  project: IProjectData | null;
-  phases: IPhaseData[];
-  topics: ITopicData[];
+  project?: IProjectData;
+  phases?: IPhaseData[];
+  topics?: ITopicData[];
   projects?: IProjectData[];
   statuses: IIdeaStatusData[];
   selectedTopics?: string[];

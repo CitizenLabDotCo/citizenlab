@@ -82,7 +82,7 @@ interface Props extends InputProps, DataProps {}
 
 export interface State {}
 
-class CommentBody extends React.Component<Props, State> {
+class CommentBody extends React.PureComponent<Props, State> {
   getCommentText = (locale: Locale, tenantLocales: Locale[]) => {
     const commentText = getLocalized(this.props.commentBody, locale, tenantLocales);
     const processedCommentText = linkifyHtml(commentText.replace(

@@ -128,6 +128,9 @@ export default class Phase extends React.PureComponent<Props, State> {
           {participationMethod === 'ideation' &&
             <IdeasWrapper>
               <IdeaCards
+                type="load-more"
+                sort={'trending'}
+                pageSize={12}
                 phaseId={phase.data.id}
                 showViewToggle={true}
                 defaultView={'card'}

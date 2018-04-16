@@ -1,7 +1,7 @@
 import React from 'react';
 import { isEqual, get, isString, omitBy, isNil } from 'lodash';
 import { BehaviorSubject, Subscription } from 'rxjs/Rx';
-import { projectsStream, IProjects } from 'services/projects';
+import { projectsStream, IProjectData } from 'services/projects';
 import shallowCompare from 'utils/shallowCompare';
 
 type Sort =  'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular';
@@ -24,7 +24,7 @@ interface IQueryParameters {
 }
 
 interface IAccumulator {
-  projects: IProjects;
+  projects: IProjectData[] | null;
   queryParameters: IQueryParameters;
   hasMore: boolean;
 }
@@ -44,7 +44,7 @@ export type GetProjectsChildProps = State & {
 
 interface State {
   queryParameters: IQueryParameters;
-  projects: IProjects | null;
+  projects: IProjectData[] | null;
   hasMore: boolean;
   querying: boolean;
   loadingMore: boolean;
@@ -75,7 +75,7 @@ export default class GetProjects extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     const queryParameters = this.getQueryParameters(this.state, this.props);
-    const startAccumulatorValue: IAccumulator = { queryParameters, projects: {} as IProjects, hasMore: false };
+    const startAccumulatorValue: IAccumulator = { queryParameters, projects: null, hasMore: false };
 
     this.queryParameters$ = new BehaviorSubject(queryParameters);
 
@@ -103,7 +103,7 @@ export default class GetProjects extends React.PureComponent<Props, State> {
             return {
               queryParameters,
               hasMore,
-              projects: (!isLoadingMore ? projects : { data: [...acc.projects.data, ...projects.data] }) as IProjects
+              projects: (!isLoadingMore ? projects.data : [...(acc.projects || []), ...projects.data])
             };
           });
         }, startAccumulatorValue).subscribe(({ projects, queryParameters, hasMore }) => {

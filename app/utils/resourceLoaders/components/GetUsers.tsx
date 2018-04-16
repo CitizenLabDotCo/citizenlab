@@ -1,13 +1,12 @@
 import React from 'react';
 import { BehaviorSubject, Subject, Subscription, Observable } from 'rxjs/Rx';
 import { usersStream, IUserData } from 'services/users';
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import shallowCompare from 'utils/shallowCompare';
-import { isEqual, omit, omitBy, isNil, isString, isEmpty } from 'lodash';
+import { isEqual, omitBy, isNil, isString, isEmpty } from 'lodash';
+import { getPageNumberFromUrl, getSortAttribute, getSortDirection, SortDirection } from 'utils/paginationUtils';
 
 export type SortAttribute = 'email' | 'last_name' | 'created_at' | 'role';
-type SortDirection = 'ascending' | 'descending';
-type Sort = 'created_at' | '-created_at' | 'last_name' | '-last_name' | 'email' | '-email' | 'role' | '-role';
+export type Sort = 'created_at' | '-created_at' | 'last_name' | '-last_name' | 'email' | '-email' | 'role' | '-role';
 
 export interface InputProps {
   pageNumber?: number;
@@ -63,8 +62,8 @@ export default class GetInvites extends React.PureComponent<Props, State> {
         search: undefined
       },
       users: null,
-      sortAttribute: this.getSortAttribute(initialSort),
-      sortDirection: this.getSortDirection(initialSort),
+      sortAttribute: getSortAttribute<Sort, SortAttribute>(initialSort),
+      sortDirection: getSortDirection<Sort>(initialSort),
       currentPage: 1,
       lastPage: 1
     };
@@ -93,16 +92,17 @@ export default class GetInvites extends React.PureComponent<Props, State> {
       )
       .map(([queryParameters, search]) => ({ ...queryParameters, search }))
       .switchMap((queryParameters) => {
-        const oldPartialQuery = omit(this.state.queryParameters, 'page[number]');
-        const newPartialQuery = omit(queryParameters, 'page[number]');
-        queryParameters['page[number]'] = (!isEqual(oldPartialQuery, newPartialQuery) ? 1 : queryParameters['page[number]']);
+        const oldPageNumber = this.state.queryParameters['page[number]'];
+        const newPageNumber = queryParameters['page[number]'];
+        queryParameters['page[number]'] = (newPageNumber !== oldPageNumber ? newPageNumber : 1);
+
         return usersStream({ queryParameters, cacheStream: false }).observable.map(invites => ({ invites, queryParameters }));
       }).subscribe(({ invites, queryParameters }) => {
         this.setState({
           queryParameters,
           users: invites.data,
-          sortAttribute: this.getSortAttribute(queryParameters.sort),
-          sortDirection: this.getSortDirection(queryParameters.sort),
+          sortAttribute: getSortAttribute<Sort, SortAttribute>(queryParameters.sort),
+          sortDirection: getSortDirection<Sort>(queryParameters.sort),
           currentPage: getPageNumberFromUrl(invites.links.self) || 1,
           lastPage: getPageNumberFromUrl(invites.links.last) || 1
         });
@@ -136,17 +136,9 @@ export default class GetInvites extends React.PureComponent<Props, State> {
     };
   }
 
-  getSortAttribute(sort: Sort) {
-    return sort.replace(/^-/, '') as SortAttribute;
-  }
-
-  getSortDirection(sort: Sort) {
-    return sort.startsWith('-') ? 'descending' : 'ascending';
-  }
-
   handleChangeSorting = (newSortAttribute: SortAttribute) => {
-    const oldSortAttribute = this.getSortAttribute(this.state.queryParameters.sort);
-    const oldSortDirection = this.getSortDirection(this.state.queryParameters.sort);
+    const oldSortAttribute = getSortAttribute<Sort, SortAttribute>(this.state.queryParameters.sort);
+    const oldSortDirection = getSortDirection<Sort>(this.state.queryParameters.sort);
     const newSortDirection = (newSortAttribute === oldSortAttribute && oldSortDirection === 'descending') ? 'ascending' : 'descending';
     const newSortDirectionSymbol = (newSortDirection === 'descending' ? '-' : '');
     const sort = `${newSortDirectionSymbol}${newSortAttribute}` as Sort;

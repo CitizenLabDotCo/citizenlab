@@ -281,7 +281,7 @@ class IdeaCards extends React.PureComponent<Props, State> {
   render() {
     const { selectedView } = this.state;
     const { queryParameters, searchValue, ideas, hasMore, querying, loadingMore } = this.props;
-    const hasIdeas = (ideas !== null && ideas.data.length > 0);
+    const hasIdeas = (ideas !== null && ideas.length > 0);
     const showViewToggle = (this.props.showViewToggle || false);
     const showCardView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');
@@ -337,7 +337,7 @@ class IdeaCards extends React.PureComponent<Props, State> {
 
         {showCardView && !querying && hasIdeas && ideas &&
           <IdeasList id="e2e-ideas-list">
-            {ideas.data.map((idea) => (
+            {ideas.map((idea) => (
               <StyledIdeaCard ideaId={idea.id} key={idea.id} />
             ))}
           </IdeasList>

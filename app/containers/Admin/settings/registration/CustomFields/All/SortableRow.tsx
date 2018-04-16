@@ -1,11 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { findDOMNode } from 'react-dom';
-
 import { DragSource, DropTarget } from 'react-dnd';
 import { Row } from 'components/admin/ResourceList';
 import { Icon } from 'semantic-ui-react';
-
 
 const DragHandle = styled.div`
   cursor: move;
