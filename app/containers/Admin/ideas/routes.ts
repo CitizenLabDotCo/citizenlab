@@ -1,7 +1,3 @@
-// These are the ideas you can go to.
-// They are all wrapped in the App component, which should contain the navbar etc
-// See http://blog.mxstbr.com/2016/01/react-apps-with-ideas for more information
-// about the code splitting business
 const errorLoading = (err) => {
   console.error('Dynamic idea loading failed', err); // eslint-disable-line no-console
 };
@@ -10,10 +6,10 @@ const loadModule = (cb) => (componentModule) => {
   cb(null, componentModule.default);
 };
 
-export default (injectReducer) => ({
+export default () => ({
   path: '/admin/ideas',
   name: 'admin Ideas',
-  getComponent(nextState, cb) {
+  getComponent(_nextState, cb) {
     const importModules = Promise.all([
       import('containers/Admin/ideas'),
     ]);
@@ -28,16 +24,14 @@ export default (injectReducer) => ({
   },
   indexRoute: {
     name: 'admin ideas index',
-    getComponent(nextState, cb) {
+    getComponent(_nextState, cb) {
       const importModules = Promise.all([
-        import('containers/Admin/ideas/all/reducer'),
-        import('containers/Admin/ideas/all/index'),
+        import('containers/Admin/ideas/all'),
       ]);
 
       const renderRoute = loadModule(cb);
 
-      importModules.then(([reducer, component]) => {
-        injectReducer('adminIdeasIndex', reducer.default);
+      importModules.then(([component]) => {
         renderRoute(component);
       });
 

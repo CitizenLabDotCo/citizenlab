@@ -122,8 +122,8 @@ class IdeaManager extends React.PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    const oldProjectId = get(prevProps, 'project.id', null);
-    const newProjectId = get(this.props, 'project.id', null);
+    const oldProjectId = get(prevProps.project, 'id', null);
+    const newProjectId = get(this.props.project, 'id', null);
 
     if (this.props.project && newProjectId !== oldProjectId) {
       if (isFunction(this.props.getIdeasChildProps.onChangeProject)) {
@@ -136,6 +136,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
   setVisibleFilterMenus = (project?: IProjectData | null) => {
     let visibleFilterMenus: TFilterMenu[] = [];
+
     if (project && project.attributes.process_type === 'timeline') {
       visibleFilterMenus = ['phases', 'statuses', 'topics'];
     } else if (project) {
