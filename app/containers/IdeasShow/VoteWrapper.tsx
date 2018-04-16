@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import VotingPopContainer from './VotingPopContainer';
 import VoteControl from 'components/VoteControl';

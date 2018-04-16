@@ -4,14 +4,17 @@ import { BehaviorSubject, Subscription } from 'rxjs/Rx';
 import { projectsStream, IProjectData } from 'services/projects';
 import shallowCompare from 'utils/shallowCompare';
 
-type Sort =  'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular';
+export type SortAttribute = 'new' | 'trending' | 'popular';
+export type Sort =  'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular';
+export type PublicationStatus = 'draft' | 'published' | 'archived';
 
 export interface InputProps {
   pageNumber?: number;
-  pageSize?: number;
-  sort?: Sort;
+  pageSize: number;
+  sort: Sort;
   areas?: string[];
   topics?: string[];
+  publicationStatus?: PublicationStatus;
   hideAllFilters?: boolean;
 }
 
@@ -21,6 +24,7 @@ interface IQueryParameters {
   sort: Sort;
   areas: string[] | undefined;
   topics: string[] | undefined;
+  publication_status: PublicationStatus | undefined;
 }
 
 interface IAccumulator {
@@ -60,24 +64,25 @@ export default class GetProjects extends React.PureComponent<Props, State> {
       // defaults
       queryParameters: {
         'page[number]': 1,
-        'page[size]': 12,
-        sort: 'new',
+        'page[size]': this.props.pageSize,
+        sort: this.props.sort,
         areas: undefined,
-        topics: undefined
+        topics: undefined,
+        publication_status: undefined
       },
       projects: null,
       hasMore: false,
       querying: true,
       loadingMore: false
     };
+    const queryParameters = this.getQueryParameters(this.state, this.props);
+    this.queryParameters$ = new BehaviorSubject(queryParameters);
     this.subscriptions = [];
   }
 
   componentDidMount() {
     const queryParameters = this.getQueryParameters(this.state, this.props);
     const startAccumulatorValue: IAccumulator = { queryParameters, projects: null, hasMore: false };
-
-    this.queryParameters$ = new BehaviorSubject(queryParameters);
 
     this.subscriptions = [
       this.queryParameters$

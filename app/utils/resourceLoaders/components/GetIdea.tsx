@@ -1,7 +1,7 @@
 import React from 'react';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
-import { IIdeaData, ideaByIdStream, ideaBySlugStream, IIdea } from 'services/ideas';
+import { IIdeaData, ideaByIdStream, ideaBySlugStream } from 'services/ideas';
 import { isString } from 'lodash';
 
 interface InputProps {
@@ -42,15 +42,13 @@ export default class GetIdea extends React.PureComponent<Props, State> {
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
         .filter(({ id, slug }) => (isString(id) || isString(slug)))
         .switchMap(({ id, slug }) => {
-          let idea$: Observable<IIdea | null> = Observable.of(null);
-
           if (id) {
-            idea$ = ideaByIdStream(id).observable;
+            return ideaByIdStream(id).observable;
           } else if (slug) {
-            idea$ = ideaBySlugStream(slug).observable;
+            return ideaBySlugStream(slug).observable;
           }
 
-          return idea$;
+          return Observable.of(null);
         }).subscribe((idea) => {
           this.setState({ idea: (idea ? idea.data : null) });
         })

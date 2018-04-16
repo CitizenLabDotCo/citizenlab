@@ -527,7 +527,7 @@ const Data = adopt<DataProps, {}>({
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
-  getProjectsChildProps: <GetProjects />
+  getProjectsChildProps: <GetProjects pageSize={1000} sort="new" />
 });
 
 export default (inputProps: InputProps) => <Data>{dataProps => <Navbar {...inputProps} {...dataProps} />}</Data>;
