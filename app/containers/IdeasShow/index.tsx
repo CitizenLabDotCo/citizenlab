@@ -22,7 +22,6 @@ import VoteWrapper from './VoteWrapper';
 import ParentCommentForm from './ParentCommentForm';
 import Spinner from 'components/UI/Spinner';
 import VoteControl from 'components/VoteControl';
-import Button from 'components/UI/Button';
 
 // services
 import { ideaByIdStream, IIdea } from 'services/ideas';
@@ -45,7 +44,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, color, fontSizes, colors } from 'utils/styleUtils';
+import { media, color } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const loadingTimeout = 400;
@@ -542,17 +541,6 @@ const MoreActionsMenuWrapper = styled.div`
   }
 `;
 
-const IdeaNotFoundWrapper = styled.div`
-  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 4rem;
-  font-size: ${fontSizes.large}px;
-  color: ${colors.label};
-`;
-
-
 type Props = {
   ideaId: string | null;
   inModal?: boolean | undefined;
@@ -913,17 +901,6 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
             <SpamReportForm resourceId={idea.data.id} resourceType="ideas" />
           </Modal>
         </>
-      );
-    } else {
-      content = (
-        <IdeaNotFoundWrapper>
-          <p><FormattedMessage {...messages.noIdeaFoundHere} /></p>
-          <Button
-            linkTo="/ideas"
-            text={<FormattedMessage {...messages.goBackToList} />}
-            icon="arrow-back"
-          />
-        </IdeaNotFoundWrapper>
       );
     }
 
