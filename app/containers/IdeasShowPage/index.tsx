@@ -95,6 +95,7 @@ class IdeasShowPage extends React.PureComponent<Props, State> {
             linkTo="/ideas"
             text={<FormattedMessage {...messages.goBackToList} />}
             icon="arrow-back"
+            circularCorners={false}
           />
         </IdeaNotFoundWrapper>
       );

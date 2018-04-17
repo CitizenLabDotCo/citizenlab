@@ -6,6 +6,11 @@ import { isString } from 'lodash';
 import Meta from './Meta';
 import Footer from 'components/Footer';
 import Spinner from 'components/UI/Spinner';
+import Button from 'components/UI/Button';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // services
 import { localeStream } from 'services/locale';
@@ -16,7 +21,7 @@ import { eventsStream } from 'services/events';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -43,6 +48,17 @@ const Content = styled.div`
   flex: 1;
   width: 100%;
 `;
+
+const ProjectNotFoundWrapper = styled.div`
+  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem;
+  font-size: ${fontSizes.large}px;
+  color: ${colors.label};
+`;
+
 
 type Props = {
   params: {
@@ -89,15 +105,15 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
       ).switchMap(([_locale, _currentTenant, slug]) => {
         return projectBySlugStream(slug).observable;
       }).switchMap((project) => {
-        const phases$ = phasesStream(project.data.id).observable;
-        const events$ = eventsStream(project.data.id).observable;
+        const phases$ = project && project.data ? phasesStream(project.data.id).observable : Rx.Observable.of(null);
+        const events$ = project && project.data ? eventsStream(project.data.id).observable : Rx.Observable.of(null);
 
         return Rx.Observable.combineLatest(
           phases$,
           events$
         ).map(([_phases, events]) => ({ events, project }));
       }).subscribe(({ events, project }) => {
-        const hasEvents = (events && events.data && events.data.length > 0);
+        const hasEvents = !!(events && events.data && events.data.length > 0);
         this.setState({ project, hasEvents, loaded: true });
       })
     ];
@@ -114,24 +130,36 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
   render() {
     const { children } = this.props;
     const { slug } = this.props.params;
-    const { loaded } = this.state;
+    const { loaded, project } = this.state;
 
     return (
       <>
         <Meta projectSlug={slug} />
         <Container>
-          {loaded ? (
+          {!loaded &&
+            <Loading>
+              <Spinner size="32px" color="#666" />
+            </Loading>
+          }
+          {loaded && !project &&
+            <ProjectNotFoundWrapper>
+              <p><FormattedMessage {...messages.noProjectFoundHere} /></p>
+              <Button
+                linkTo="/projects"
+                text={<FormattedMessage {...messages.goBackToList} />}
+                icon="arrow-back"
+                circularCorners={false}
+              />
+            </ProjectNotFoundWrapper>
+          }
+          {loaded && project &&
             <>
               <Content>
                 {children}
               </Content>
               <Footer showCityLogoSection={false} />
             </>
-          ) : (
-            <Loading>
-              <Spinner size="32px" color="#666" />
-            </Loading>
-          )}
+          }
         </Container>
       </>
     );
