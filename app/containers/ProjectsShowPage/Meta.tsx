@@ -66,7 +66,7 @@ export default class Meta extends React.PureComponent<Props, State> {
           project$
         );
       }).switchMap(([locale, currentTenantLocales, project]) => {
-        const projectImages$ = projectImagesStream(project.data.id).observable;
+        const projectImages$ = project && project.data ? projectImagesStream(project.data.id).observable : Rx.Observable.of(null);
         return projectImages$.map((projectImages) => ({ locale, currentTenantLocales, project, projectImages }));
       }).subscribe(({ locale, currentTenantLocales, project }) => {
         this.setState({ locale, currentTenantLocales, project, loaded: true });
