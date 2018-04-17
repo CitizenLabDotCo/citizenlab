@@ -113,4 +113,12 @@ export default defineMessages({
     id: 'app.containers.Projects.navSurvey',
     defaultMessage: 'Survey',
   },
+  noProjectFoundHere: {
+    id: 'app.containers.Projects.noProjectFoundHere',
+    defaultMessage: 'There is no project here.',
+  },
+  goBackToList: {
+    id: 'app.containers.Projects.goBackToList',
+    defaultMessage: 'Go back to the list',
+  },
 });
