@@ -48,7 +48,9 @@ class IdeasShowPage extends React.PureComponent<Props, State> {
         .switchMap((slug: string) => {
           return ideaBySlugStream(slug).observable;
         }).subscribe((idea) => {
-          this.setState({ ideaId: idea.data.id });
+          if (idea && idea.data) {
+            this.setState({ ideaId: idea.data.id });
+          }
         })
     ];
   }
