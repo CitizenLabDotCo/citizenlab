@@ -278,7 +278,12 @@
     "@types/bowser": "1.1.1",
     "@types/draft-js": "0.10.22",
     "@types/geojson": "7946.0.2",
+<<<<<<< HEAD
     "@types/leaflet": "1.2.7",
+=======
+    "@types/googlemaps": "^3.30.8",
+    "@types/leaflet": "1.2.6",
+>>>>>>> b90c9f48e4815bac7515ff5d8413c120f1992306
     "@types/leaflet.markercluster": "1.0.3",
     "@types/lodash": "4.14.107",
     "@types/moment-timezone": "0.5.4",
