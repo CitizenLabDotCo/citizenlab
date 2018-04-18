@@ -62,7 +62,7 @@ export default class InputMultiloc extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
 
