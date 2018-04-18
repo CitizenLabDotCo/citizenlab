@@ -20,7 +20,7 @@ interface State {
 
 export type GetAreaChildProps = IAreaData | null;
 
-export default class GetArea extends React.PureComponent<Props, State> {
+export default class GetArea extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 

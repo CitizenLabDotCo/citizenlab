@@ -20,7 +20,7 @@ interface State {
 
 export type GetProjectChildProps = IProjectData | null;
 
-export default class GetProject extends React.PureComponent<Props, State> {
+export default class GetProject extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 

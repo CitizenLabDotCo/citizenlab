@@ -51,8 +51,6 @@ class InfoSidebarSingle extends React.PureComponent<Props & InjectedIntlProps> {
   render() {
     const { idea } = this.props;
 
-    console.log('zolg');
-
     if (!idea) return null;
 
     return (

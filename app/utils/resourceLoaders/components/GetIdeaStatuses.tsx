@@ -16,7 +16,7 @@ interface State {
 
 export type GetIdeaStatusesChildProps = IIdeaStatusData[] | null;
 
-export default class GetIdeaStatuses extends React.PureComponent<Props, State> {
+export default class GetIdeaStatuses extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
   constructor(props: Props) {

@@ -16,7 +16,7 @@ interface State {
 
 export type GetLocationChildProps = Location | null;
 
-export default class GetLocation extends React.PureComponent<Props, State> {
+export default class GetLocation extends React.Component<Props, State> {
   private unlisten: Function;
 
   constructor(props: Props) {

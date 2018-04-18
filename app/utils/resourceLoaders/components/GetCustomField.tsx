@@ -19,7 +19,7 @@ interface State {
 
 export type GetCustomFieldChildProps = ICustomFieldData | null;
 
-export default class GetCustomField extends React.PureComponent<Props, State> {
+export default class GetCustomField extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 

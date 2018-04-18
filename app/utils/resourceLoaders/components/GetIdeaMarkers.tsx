@@ -20,7 +20,7 @@ interface State {
 
 export type GetIdeaMarkersChildProps = Partial<IIdeaData>[] | null;
 
-export default class GetIdeaMarkers extends React.PureComponent<Props, State> {
+export default class GetIdeaMarkers extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 

@@ -20,7 +20,7 @@ interface State {
 
 export type GetPhasesChildProps = IPhaseData[] | null;
 
-export default class GetPhases extends React.PureComponent<Props, State> {
+export default class GetPhases extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 

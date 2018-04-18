@@ -530,4 +530,10 @@ const Data = adopt<DataProps, {}>({
   projects: <GetProjects pageSize={1000} sort="new" />
 });
 
-export default (inputProps: InputProps) => <Data>{dataProps => <Navbar {...inputProps} {...dataProps} />}</Data>;
+export default (inputProps: InputProps) => (
+  <Data>
+    {dataProps => {
+      return (<Navbar {...inputProps} {...dataProps} />);
+    }}
+  </Data>
+);

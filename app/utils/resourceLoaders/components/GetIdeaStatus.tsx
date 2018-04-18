@@ -20,7 +20,7 @@ interface State {
 
 export type GetIdeaStatusChildProps = IIdeaStatusData | null;
 
-export default class GetIdeaStatus extends React.PureComponent<Props, State> {
+export default class GetIdeaStatus extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 

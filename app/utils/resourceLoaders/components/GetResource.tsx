@@ -22,7 +22,7 @@ interface State {
 
 export type GetResourceChildProps = State;
 
-export default class GetResource extends React.PureComponent<Props, State> {
+export default class GetResource extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
