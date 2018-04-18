@@ -101,6 +101,7 @@
   "app.containers.Admin.User.confirmDelete": "Yes, I'm sure",
   "app.containers.Admin.User.createButton": "Ny bruger",
   "app.containers.Admin.User.currentlyNoInvites": "There currently are no invites yet",
+  "app.containers.Admin.User.currentlyNoInvitesThatMatchSearch": "",
   "app.containers.Admin.User.delete": "Slet",
   "app.containers.Admin.User.deleteButton": "Slet",
   "app.containers.Admin.User.deleteInvite": "Delete",
