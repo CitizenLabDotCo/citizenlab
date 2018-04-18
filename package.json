@@ -278,7 +278,7 @@
     "@types/bowser": "1.1.1",
     "@types/draft-js": "0.10.22",
     "@types/geojson": "7946.0.2",
-    "@types/googlemaps": "^3.30.8",
+    "@types/googlemaps": "3.30.8",
     "@types/leaflet": "1.2.6",
     "@types/leaflet.markercluster": "1.0.3",
     "@types/lodash": "4.14.107",

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs/Rx';
 import { isString, isEmpty, isError } from 'lodash';
 
@@ -356,8 +356,6 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
 export default withRouter<Props>((props: Props & WithRouterProps) => (
   <GetProject slug={props.params.slug}>
-    {({ project }) => (
-      <IdeasNewPage2 {...props} project={project} />
-    )}
+    {project => <IdeasNewPage2 {...props} project={project} />}
   </GetProject>
 ));

@@ -1,10 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import { isEmpty, values as getValues, every } from 'lodash';
 import styled from 'styled-components';
 
 import { API } from 'typings';
-import { injectNestedResources, InjectedNestedResourceLoaderProps } from 'utils/resourceLoaders/nestedResourcesLoader';
-import { ICustomFieldOptionData, customFieldOptionsStream, updateCustomFieldOption, deleteCustomFieldOption, addCustomFieldOption, ICustomFieldData } from 'services/userCustomFields';
+import { ICustomFieldOptionsData, updateCustomFieldOption, deleteCustomFieldOption, addCustomFieldOption, ICustomFieldData } from 'services/userCustomFields';
+import GetCustomFieldOptions, { GetCustomFieldOptionsChildProps } from 'utils/resourceLoaders/components/GetCustomFieldOptions';
 
 import { Formik, FormikErrors } from 'formik';
 import OptionForm, { FormValues } from './OptionForm';
@@ -13,20 +13,23 @@ import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
+const OptionContainer = styled.div``;
 
-const OptionContainer = styled.div`
-
-`;
-
-type Props = {
+interface InputProps {
   customField: ICustomFieldData;
-};
+}
 
-type State = {
+interface DataProps {
+  customFieldOptions: GetCustomFieldOptionsChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+interface State {
   addingOption: boolean;
-};
+}
 
-class OptionsForm extends React.Component<Props & InjectedNestedResourceLoaderProps<ICustomFieldOptionData>, State> {
+class OptionsForm extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
@@ -35,7 +38,7 @@ class OptionsForm extends React.Component<Props & InjectedNestedResourceLoaderPr
     };
   }
 
-  initialValuesForEdit = (option: ICustomFieldOptionData) => {
+  initialValuesForEdit = (option: ICustomFieldOptionsData) => {
     return {
       key: option.attributes.key,
       title_multiloc: option.attributes.title_multiloc,
@@ -104,7 +107,7 @@ class OptionsForm extends React.Component<Props & InjectedNestedResourceLoaderPr
     });
   }
 
-  renderFn = (option: ICustomFieldOptionData | null = null) => (props) => (
+  renderFn = (option: ICustomFieldOptionsData | null = null) => (props) => (
     <OptionForm
       onClickDelete={this.handleDelete(option)}
       onClickCancel={this.handleCancel}
@@ -115,18 +118,20 @@ class OptionsForm extends React.Component<Props & InjectedNestedResourceLoaderPr
 
   render() {
     const { addingOption } = this.state;
-    return !this.props.options.loading && (
-      <div>
-        {this.props.options.all.map((option) => (
-          <OptionContainer key={option.id}>
+
+    return this.props.customFieldOptions && (
+      <>
+        {this.props.customFieldOptions.map((customFieldOption) => (
+          <OptionContainer key={customFieldOption.id}>
             <Formik
-              initialValues={this.initialValuesForEdit(option)}
-              onSubmit={this.handleUpdateSubmit(option)}
-              render={this.renderFn(option)}
+              initialValues={this.initialValuesForEdit(customFieldOption)}
+              onSubmit={this.handleUpdateSubmit(customFieldOption)}
+              render={this.renderFn(customFieldOption)}
               validate={this.validate}
             />
           </OptionContainer>
         ))}
+
         {addingOption &&
           <OptionContainer>
             <Formik
@@ -137,6 +142,7 @@ class OptionsForm extends React.Component<Props & InjectedNestedResourceLoaderPr
             />
           </OptionContainer>
         }
+
         {!addingOption &&
           <Button
             onClick={this.addOption}
@@ -145,11 +151,13 @@ class OptionsForm extends React.Component<Props & InjectedNestedResourceLoaderPr
             <FormattedMessage {...messages.addOptionButton} />
           </Button>
         }
-      </div>
+      </>
     );
   }
-
-
 }
 
-export default injectNestedResources('options', customFieldOptionsStream ,(props) => props.customField.id)(OptionsForm);
+export default (inputProps: InputProps) => (
+  <GetCustomFieldOptions customFieldId={inputProps.customField.id}>
+    {customField => <OptionsForm {...inputProps} customFieldOptions={customField} />}
+  </GetCustomFieldOptions>
+);
