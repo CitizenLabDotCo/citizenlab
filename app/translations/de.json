@@ -101,6 +101,7 @@
   "app.containers.Admin.User.confirmDelete": "Ja, ich bin mir sicher.",
   "app.containers.Admin.User.createButton": "Neuer Benutzer",
   "app.containers.Admin.User.currentlyNoInvites": "Es gibt derzeit keine Einladungen.",
+  "app.containers.Admin.User.currentlyNoInvitesThatMatchSearch": "",
   "app.containers.Admin.User.delete": "Löschen",
   "app.containers.Admin.User.deleteButton": "Löschen",
   "app.containers.Admin.User.deleteInvite": "Löschen",
