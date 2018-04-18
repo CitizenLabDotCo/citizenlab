@@ -34,7 +34,7 @@ const LanguageExtension = styled(Label)`
   margin-left: 5px;
 `;
 
-type Props = {
+export type Props = {
   id?: string | undefined;
   valueMultiloc?: MultilocEditorState | null | undefined;
   label?: string | JSX.Element | null | undefined;

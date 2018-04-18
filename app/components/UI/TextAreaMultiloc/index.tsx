@@ -36,7 +36,7 @@ const LanguageExtension = styled(Label)`
 export type Props = {
   id?: string | undefined;
   name: string;
-  valueMultiloc: Multiloc | null | undefined;
+  valueMultiloc?: Multiloc | null;
   label?: string | JSX.Element | null | undefined;
   onChange?: (arg: Multiloc, locale: Locale) => void;
   placeholder?: string | null | undefined;
