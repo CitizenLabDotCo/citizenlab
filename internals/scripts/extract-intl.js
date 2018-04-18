@@ -135,7 +135,7 @@ const extractFromFile = async (fileName) => {
     extractTaskDone()
   } catch(error) {
     process.stderr.write('Some messages.js files contain errors. First fix them and run the script again.');
-    process.exit();
+    process.exit(1);
   }
 
   // Make the directory if it doesn't exist, especially for first run

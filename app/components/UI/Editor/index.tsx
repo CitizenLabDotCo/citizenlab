@@ -129,7 +129,7 @@ const DraftEditorContainer: any = styled.div`
   }
 `;
 
-type Props = {
+export type Props = {
   id?: string | undefined;
   value?: EditorState | null | undefined;
   placeholder?: string | JSX.Element | null | undefined;
