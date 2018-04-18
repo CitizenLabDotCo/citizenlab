@@ -48,7 +48,7 @@ export type GetProjectsChildProps = State & {
 
 interface State {
   queryParameters: IQueryParameters;
-  projects: IProjectData[] | null;
+  projectsList: IProjectData[] | null;
   hasMore: boolean;
   querying: boolean;
   loadingMore: boolean;
@@ -70,7 +70,7 @@ export default class GetProjects extends React.PureComponent<Props, State> {
         topics: undefined,
         publication_status: undefined
       },
-      projects: null,
+      projectsList: null,
       hasMore: false,
       querying: true,
       loadingMore: false
@@ -112,7 +112,7 @@ export default class GetProjects extends React.PureComponent<Props, State> {
             };
           });
         }, startAccumulatorValue).subscribe(({ projects, queryParameters, hasMore }) => {
-          this.setState({ projects, queryParameters, hasMore, querying: false, loadingMore: false });
+          this.setState({ queryParameters, hasMore, projectsList: projects, querying: false, loadingMore: false });
         })
     ];
   }

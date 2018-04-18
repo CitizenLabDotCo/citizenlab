@@ -450,7 +450,7 @@ class Invitations extends React.PureComponent<Props, State> {
     if (locale === 'nl') {
       supportPageURL = 'http://support.citizenlab.co/nl-opstartgids/uitnodigingen-versturen';
     } else if (locale === 'fr') {
-      supportPageURL = 'http://support.citizenlab.co/fr-demarrez-avec-votre-plateforme/inviter-des-gens';
+      supportPageURL = 'http://support.citizenlab.co/fr-demarrez-avec-votre-plateforme/inviter-des-utilisateurs-sur-la-plate-forme';
     }
 
     const invitationOptions = (

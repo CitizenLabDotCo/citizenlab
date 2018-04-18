@@ -129,9 +129,9 @@ class UsersTable extends React.PureComponent<Props, State> {
 
   render () {
     const { exporting } = this.state;
-    const { users, sortAttribute, sortDirection, currentPage, lastPage } = this.props;
+    const { usersList, sortAttribute, sortDirection, currentPage, lastPage } = this.props;
 
-    if (users) {
+    if (usersList) {
       return (
         <Container>
           <HeaderContainer>
@@ -170,7 +170,7 @@ class UsersTable extends React.PureComponent<Props, State> {
             </Table.Header>
 
             <Table.Body>
-              {users.map((user) => {
+              {usersList.map((user) => {
                 const firstName = user.attributes.first_name;
                 const lastName = user.attributes.last_name;
                 const createdAt = user.attributes.created_at;
@@ -231,6 +231,6 @@ class UsersTable extends React.PureComponent<Props, State> {
 
 export default (inputProps: InputProps) => (
   <GetUsers>
-    {getUsersChildProps => <UsersTable {...inputProps} {...getUsersChildProps} />}
+    {users => <UsersTable {...inputProps} {...users} />}
   </GetUsers>
 );

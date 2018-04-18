@@ -356,7 +356,7 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   tenant: GetTenantChildProps;
   locale: GetLocaleChildProps;
-  getProjectsChildProps: GetProjectsChildProps;
+  projects: GetProjectsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -413,8 +413,8 @@ class Navbar extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { getProjectsChildProps, location, locale, authUser, tenant } = this.props;
-    const { projects } = getProjectsChildProps;
+    const { projects, location, locale, authUser, tenant } = this.props;
+    const { projectsList } = projects;
     const { projectsDropdownOpened } = this.state;
 
     if (location && locale && tenant) {
@@ -441,7 +441,7 @@ class Navbar extends React.PureComponent<Props, State> {
                   <FormattedMessage {...messages.pageOverview} />
                 </NavigationItem>
 
-                {projects && projects.length > 0 &&
+                {projectsList && projectsList.length > 0 &&
                   <NavigationDropdown>
                     <NavigationDropdownItem onClick={this.handleProjectsDropdownToggle}>
                       <NavigationDropdownItemText>
@@ -460,7 +460,7 @@ class Navbar extends React.PureComponent<Props, State> {
                       <NavigationDropdownMenu onClickOutside={this.handleProjectsDropdownOnClickOutside}>
                         <NavigationDropdownMenuInner>
                           <NavigationDropdownList>
-                            {projects.map((project) => (
+                            {projectsList.map((project) => (
                               <NavigationDropdownListItem key={project.id} to={getProjectUrl(project)}>
                                 {getLocalized(project.attributes.title_multiloc, locale, tenantLocales)}
                               </NavigationDropdownListItem>
@@ -527,7 +527,7 @@ const Data = adopt<DataProps, {}>({
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
-  getProjectsChildProps: <GetProjects pageSize={1000} sort="new" />
+  projects: <GetProjects pageSize={1000} sort="new" />
 });
 
 export default (inputProps: InputProps) => <Data>{dataProps => <Navbar {...inputProps} {...dataProps} />}</Data>;
