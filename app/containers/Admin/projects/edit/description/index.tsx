@@ -52,8 +52,8 @@ class ProjectDescription extends React.Component<Props> {
           description_multiloc,
         }}
       >
-        {({ errors, isSubmitting, status, isValid, touched }) => (
-          <DescriptionEditionForm {...{ errors, isSubmitting, status, isValid, touched }} />
+        {(formikProps) => (
+          <DescriptionEditionForm {...formikProps} />
         )}
       </Formik>
     );
