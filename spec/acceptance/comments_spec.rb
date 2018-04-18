@@ -66,7 +66,6 @@ resource "Comments" do
 
         do_request
         json_response = json_parse(response_body)
-        byebug
         expect(json_response[:data].map{|d| d[:relationships][:user_vote][:data]}.compact.first[:id]).to eq vote.id
         expect(json_response[:included].map{|i| i[:id]}).to include vote.id
       end
