@@ -8,7 +8,7 @@ import { updateProject,  IProjectData } from 'services/projects';
 import GetProject from 'utils/resourceLoaders/components/GetProject';
 
 // Components
-import DescriptionEditionForm from './DescriptionEditionForm';
+import DescriptionEditionForm, { Values } from './DescriptionEditionForm';
 
 // Typing
 import { API } from 'typings';
@@ -42,7 +42,7 @@ class ProjectDescription extends React.Component<Props> {
   }
 
   render () {
-    const { description_preview_multiloc, description_multiloc } = this.props.project.attributes;
+    const { description_preview_multiloc, description_multiloc }: Values = this.props.project.attributes;
 
     return (
       <Formik
