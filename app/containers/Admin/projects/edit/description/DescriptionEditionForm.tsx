@@ -6,7 +6,7 @@ import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
 
 // Components
-import { Form, Field } from 'formik';
+import { Form, Field, InjectedFormikProps } from 'formik';
 import Error from 'components/UI/Error';
 import { Section, SectionField } from 'components/admin/Section';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
@@ -14,15 +14,15 @@ import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
 import FormikEditorMultiloc from 'components/UI/FormikEditorMultiloc';
 
 // Typings
-export interface Props {
-  errors: any;
-  isValid: boolean;
-  isSubmitting: boolean;
-  touched: any;
-}
+import { Multiloc } from 'typings';
+export interface Props {}
 export interface State {}
+export interface Values {
+  description_multiloc: Multiloc;
+  description_preview_multiloc: Multiloc;
+}
 
-class DescriptionEditionForm extends React.Component<Props, State> {
+class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, Values> , State> {
   constructor(props) {
     super(props);
     this.state = {};
