@@ -364,13 +364,13 @@ export default class LandingPage extends React.PureComponent<Props, State> {
       return (
         <>
           <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
-            <Header>
-              <HeaderImage>
+            <Header id="hook-header">
+              <HeaderImage id="hook-header-image">
                 <HeaderImageBackground src={currentTenantHeader} />
                 <HeaderImageOverlay />
               </HeaderImage>
 
-              <HeaderContent>
+              <HeaderContent id="hook-header-content">
                 <HeaderTitle hasHeader={hasHeaderImage}>
                   {title}
                 </HeaderTitle>
