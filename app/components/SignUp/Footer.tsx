@@ -1,14 +1,16 @@
-import * as React from 'react';
+import React from 'react';
+import Rx from 'rxjs/Rx';
 import { get } from 'lodash';
-import * as Rx from 'rxjs/Rx';
 
 // components
 import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
 
 // services
-import { currentTenantStream, ITenant } from 'services/tenant';
 import { globalState, IIdeasNewPageGlobalState } from 'services/globalState';
+
+// resources
+import GetTenant, { GetTenantChildProps } from 'utils/resourceLoaders/components/GetTenant';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -81,14 +83,19 @@ const SocialSignInButtons = styled.div`
   display: flex;
 `;
 
-type Props = {
+interface InputProps {
   goToSignIn: () => void;
-};
+}
 
-type State = {
-  currentTenant: ITenant | null;
+interface DataProps {
+  tenant: GetTenantChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+interface State {
   socialLoginUrlParameter: string;
-};
+}
 
 class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Rx.Subscription[];
@@ -96,7 +103,6 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      currentTenant: null,
       socialLoginUrlParameter: ''
     };
     this.subscriptions = [];
@@ -104,13 +110,12 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   componentDidMount() {
     const globalState$ = globalState.init<IIdeasNewPageGlobalState>('IdeasNewPage').observable;
-    const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
-      currentTenant$.subscribe(currentTenant => this.setState({ currentTenant })),
-
       globalState$.subscribe((globalState) => {
-        this.setState({ socialLoginUrlParameter: (globalState && globalState.ideaId ? `?idea_to_publish=${globalState.ideaId}` : '') });
+        this.setState({
+          socialLoginUrlParameter: (globalState && globalState.ideaId ? `?idea_to_publish=${globalState.ideaId}` : '')
+        });
       })
     ];
   }
@@ -128,10 +133,10 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { currentTenant } = this.state;
+    const { tenant } = this.props;
     const { formatMessage } = this.props.intl;
-    const googleLoginEnabled = get(currentTenant, `data.attributes.settings.google_login.enabled`, false);
-    const facebookLoginEnabled = get(currentTenant, `data.attributes.settings.facebook_login.enabled`, false);
+    const googleLoginEnabled = (tenant ? get(tenant.attributes.settings.google_login, 'enabled', false) : false);
+    const facebookLoginEnabled = (tenant ? get(tenant.attributes.settings.facebook_login, 'enabled', false) : false); 
     const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
 
     if (showSocialLogin) {
@@ -174,4 +179,12 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(Footer);
+const FooterWithInjectedIntl = injectIntl<Props>(Footer);
+
+export default (inputProps: InputProps) => {
+  return (
+    <GetTenant>
+      {tenant => <FooterWithInjectedIntl {...inputProps} tenant={tenant} />}
+    </GetTenant>
+  );
+};

@@ -5,7 +5,6 @@ import shallowCompare from 'utils/shallowCompare';
 import { isEqual, omitBy, isString, isEmpty, isNil } from 'lodash';
 import { getPageNumberFromUrl, getSortAttribute, getSortDirection, SortDirection } from 'utils/paginationUtils';
 
-
 export type SortAttribute = 'email' | 'last_name' | 'created_at' | 'invite_status';
 export type Sort = 'email' | '-email' | 'last_name' | '-last_name' | 'created_at' | '-created_at' | 'invite_status' | '-invite_status';
 export type InviteStatus = 'pending' | 'accepted';
@@ -34,7 +33,7 @@ interface Props extends InputProps {
 
 interface State {
   queryParameters: IQueryParameters;
-  invites: IInviteData[] | null;
+  invitesList: IInviteData[] | null;
   sortAttribute: SortAttribute;
   sortDirection: SortDirection;
   currentPage: number;
@@ -65,7 +64,7 @@ export default class GetInvites extends React.PureComponent<Props, State> {
         search: undefined,
         invite_status: undefined
       },
-      invites: null,
+      invitesList: null,
       sortAttribute: getSortAttribute<Sort, SortAttribute>(initialSort),
       sortDirection: getSortDirection<Sort>(initialSort),
       currentPage: 1,
@@ -104,7 +103,7 @@ export default class GetInvites extends React.PureComponent<Props, State> {
       }).subscribe(({ invites, queryParameters }) => {
         this.setState({
           queryParameters,
-          invites: invites.data,
+          invitesList: invites.data,
           sortAttribute: getSortAttribute<Sort, SortAttribute>(queryParameters.sort),
           sortDirection: getSortDirection<Sort>(queryParameters.sort),
           currentPage: getPageNumberFromUrl(invites.links.self) || 1,

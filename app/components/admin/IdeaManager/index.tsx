@@ -32,8 +32,8 @@ interface InputProps {
 }
 
 interface DataProps {
-  getProjectsChildProps: GetProjectsChildProps;
-  getIdeasChildProps: GetIdeasChildProps;
+  projects: GetProjectsChildProps;
+  ideas: GetIdeasChildProps;
   topics: GetTopicsChildProps;
   ideaStatuses: GetIdeaStatusesChildProps;
   phases: GetPhasesChildProps;
@@ -110,8 +110,8 @@ class IdeaManager extends React.PureComponent<Props, State> {
   componentDidMount() {
     this.globalState.set({ enabled: true });
 
-    if (this.props.project && isFunction(this.props.getIdeasChildProps.onChangeProject)) {
-      this.props.getIdeasChildProps.onChangeProject(this.props.project.id);
+    if (this.props.project && isFunction(this.props.ideas.onChangeProject)) {
+      this.props.ideas.onChangeProject(this.props.project.id);
     }
 
     this.setVisibleFilterMenus(this.props.project);
@@ -126,8 +126,8 @@ class IdeaManager extends React.PureComponent<Props, State> {
     const newProjectId = get(this.props.project, 'id', null);
 
     if (this.props.project && newProjectId !== oldProjectId) {
-      if (isFunction(this.props.getIdeasChildProps.onChangeProject)) {
-        this.props.getIdeasChildProps.onChangeProject(this.props.project.id);
+      if (isFunction(this.props.ideas.onChangeProject)) {
+        this.props.ideas.onChangeProject(this.props.project.id);
       }
 
       this.setVisibleFilterMenus(this.props.project);
@@ -154,8 +154,8 @@ class IdeaManager extends React.PureComponent<Props, State> {
   handleSearchChange = (event) => {
     const term = event.target.value;
 
-    if (isFunction(this.props.getIdeasChildProps.onChangeSearchTerm)) {
-      this.props.getIdeasChildProps.onChangeSearchTerm(term);
+    if (isFunction(this.props.ideas.onChangeSearchTerm)) {
+      this.props.ideas.onChangeSearchTerm(term);
     }
   }
 
@@ -180,13 +180,13 @@ class IdeaManager extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { project, getProjectsChildProps, getIdeasChildProps, phases, ideaStatuses, topics } = this.props;
-    const { projects } = getProjectsChildProps;
-    const { ideas, onChangePhase, onChangeTopics, onChangeProject, onChangeIdeaStatus } = getIdeasChildProps;
-    const selectedTopics = getIdeasChildProps.queryParameters.topics;
-    const selectedPhase = getIdeasChildProps.queryParameters.phase;
-    const selectedProject = getIdeasChildProps.queryParameters.project;
-    const selectedIdeaStatus = getIdeasChildProps.queryParameters.idea_status;
+    const { project, projects, ideas, phases, ideaStatuses, topics } = this.props;
+    const { projectsList } = projects;
+    const { ideasList, onChangePhase, onChangeTopics, onChangeProject, onChangeIdeaStatus } = ideas;
+    const selectedTopics = ideas.queryParameters.topics;
+    const selectedPhase = ideas.queryParameters.phase;
+    const selectedProject = ideas.queryParameters.project;
+    const selectedIdeaStatus = ideas.queryParameters.idea_status;
     const { selectedIdeas, activeFilterMenu, visibleFilterMenus } = this.state;
     const selectedIdeaIds = keys(this.state.selectedIdeas);
     const showInfoSidebar = this.isAnyIdeaSelected();
@@ -209,7 +209,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
                 project={project || undefined}
                 phases={phases || undefined}
                 topics={topics || undefined}
-                projects={projects || undefined}
+                projects={projectsList || undefined}
                 statuses={ideaStatuses || []}
                 selectedTopics={selectedTopics}
                 selectedPhase={selectedPhase}
@@ -233,17 +233,17 @@ class IdeaManager extends React.PureComponent<Props, State> {
           <MiddleColumn>
             <IdeaTable
               activeFilterMenu={activeFilterMenu}
-              ideaSortAttribute={getIdeasChildProps.sortAttribute}
-              ideaSortDirection={getIdeasChildProps.sortDirection}
-              onChangeIdeaSort={getIdeasChildProps.onChangeSorting}
-              ideas={ideas || undefined}
+              ideaSortAttribute={ideas.sortAttribute}
+              ideaSortDirection={ideas.sortDirection}
+              onChangeIdeaSort={ideas.onChangeSorting}
+              ideas={ideasList || undefined}
               phases={phases || undefined}
               statuses={ideaStatuses || undefined}
               selectedIdeas={selectedIdeas}
               onChangeIdeaSelection={this.handleChangeIdeaSelection}
-              ideaCurrentPageNumber={getIdeasChildProps.currentPage}
-              ideaLastPageNumber={getIdeasChildProps.lastPage}
-              onIdeaChangePage={getIdeasChildProps.onChangePage}
+              ideaCurrentPageNumber={ideas.currentPage}
+              ideaLastPageNumber={ideas.lastPage}
+              onIdeaChangePage={ideas.onChangePage}
             />
           </MiddleColumn>
           <CSSTransition
@@ -268,8 +268,8 @@ class IdeaManager extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  getProjectsChildProps: <GetProjects pageSize={1000} sort="new" />,
-  getIdeasChildProps: <GetIdeas type="paginated" pageSize={5} sort="new" />,
+  projects: <GetProjects pageSize={1000} sort="new" />,
+  ideas: <GetIdeas type="paginated" pageSize={5} sort="new" />,
   topics: <GetTopics />,
   ideaStatuses: <GetIdeaStatuses />,
   phases: ({ project, render }) => <GetPhases projectId={get(project, 'id')}>{render}</GetPhases>,

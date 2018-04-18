@@ -68,7 +68,7 @@ export type GetIdeasChildProps = State & {
 interface State {
   queryParameters: IQueryParameters;
   searchValue: string | undefined;
-  ideas: IIdeaData[] | null;
+  ideasList: IIdeaData[] | null;
   hasMore: boolean;
   querying: boolean;
   loadingMore: boolean;
@@ -102,7 +102,7 @@ export default class GetIdeas extends React.PureComponent<Props, State> {
         bounding_box: undefined
       },
       searchValue: undefined,
-      ideas: null,
+      ideasList: null,
       hasMore: false,
       querying: true,
       loadingMore: false,
@@ -162,7 +162,7 @@ export default class GetIdeas extends React.PureComponent<Props, State> {
             };
           });
         }, startAccumulatorValue).subscribe(({ ideas, queryParameters, hasMore }) => {
-          this.setState({ ideas, queryParameters, hasMore, querying: false, loadingMore: false });
+          this.setState({ queryParameters, hasMore, ideasList: ideas, querying: false, loadingMore: false });
         })
       ];
     } else {
@@ -177,7 +177,7 @@ export default class GetIdeas extends React.PureComponent<Props, State> {
         .subscribe(({ ideas, queryParameters }) => {
           this.setState({
             queryParameters,
-            ideas: (ideas ? ideas.data : null),
+            ideasList: (ideas ? ideas.data : null),
             querying: false,
             loadingMore: false,
             sortAttribute: getSortAttribute<Sort, SortAttribute>(queryParameters.sort),

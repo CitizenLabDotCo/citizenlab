@@ -30,7 +30,7 @@ interface Props extends InputProps {
 
 type State = {
   queryParameters: IQueryParameters;
-  users: IUserData[] | null;
+  usersList: IUserData[] | null;
   sortAttribute: SortAttribute,
   sortDirection: SortDirection,
   currentPage: number;
@@ -50,9 +50,7 @@ export default class GetInvites extends React.PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props);
-
     const initialSort: Partial<Sort> = '-created_at';
-
     this.state = {
       // defaults
       queryParameters: {
@@ -61,7 +59,7 @@ export default class GetInvites extends React.PureComponent<Props, State> {
         sort: initialSort,
         search: undefined
       },
-      users: null,
+      usersList: null,
       sortAttribute: getSortAttribute<Sort, SortAttribute>(initialSort),
       sortDirection: getSortDirection<Sort>(initialSort),
       currentPage: 1,
@@ -100,7 +98,7 @@ export default class GetInvites extends React.PureComponent<Props, State> {
       }).subscribe(({ invites, queryParameters }) => {
         this.setState({
           queryParameters,
-          users: invites.data,
+          usersList: invites.data,
           sortAttribute: getSortAttribute<Sort, SortAttribute>(queryParameters.sort),
           sortDirection: getSortDirection<Sort>(queryParameters.sort),
           currentPage: getPageNumberFromUrl(invites.links.self) || 1,

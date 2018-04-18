@@ -89,9 +89,9 @@ class InvitesTable extends React.PureComponent<Props, State> {
 
   render() {
     const { searchValue, exporting } = this.state;
-    const { invites, sortAttribute, sortDirection, currentPage, lastPage, onChangePage } = this.props;
+    const { invitesList, sortAttribute, sortDirection, currentPage, lastPage, onChangePage } = this.props;
 
-    if (invites) {
+    if (invitesList) {
       return (
         <Container>
           <HeaderContainer>
@@ -108,7 +108,7 @@ class InvitesTable extends React.PureComponent<Props, State> {
             </Button>
           </HeaderContainer>
 
-          {invites.length > 0 &&
+          {invitesList.length > 0 &&
             <Table sortable>
               <Table.Header>
                 <Table.Row>
@@ -151,7 +151,7 @@ class InvitesTable extends React.PureComponent<Props, State> {
               </Table.Header>
 
               <Table.Body>
-                {invites.map((invite) => (
+                {invitesList.map((invite) => (
                   <Row
                     key={invite.id}
                     invite={invite}
@@ -175,7 +175,7 @@ class InvitesTable extends React.PureComponent<Props, State> {
             </Table>
           }
 
-          {isEmpty(invites) && !isEmpty(searchValue) &&
+          {isEmpty(invitesList) && !isEmpty(searchValue) &&
             <EmptyStateContainer>
               <FormattedMessage {...messages.currentlyNoInvitesThatMatchSearch} />
             </EmptyStateContainer>
@@ -190,6 +190,6 @@ class InvitesTable extends React.PureComponent<Props, State> {
 
 export default (inputProps: InputProps) => (
   <GetInvites>
-    {getInvitesChildProps => <InvitesTable {...inputProps} {...getInvitesChildProps} />}
+    {invites => <InvitesTable {...inputProps} {...invites} />}
   </GetInvites>
 );

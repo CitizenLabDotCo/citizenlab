@@ -145,8 +145,8 @@ class ProjectCards extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { queryParameters, projects, hasMore, querying, loadingMore } = this.props;
-    const hasProjects = (projects && projects.length > 0);
+    const { queryParameters, projectsList, hasMore, querying, loadingMore } = this.props;
+    const hasProjects = (projectsList && projectsList.length > 0);
     const selectedAreas = (queryParameters.areas || []);
 
     return (
@@ -176,9 +176,9 @@ class ProjectCards extends React.PureComponent<Props, State> {
           </EmptyContainer>
         }
 
-        {!querying && hasProjects && projects &&
+        {!querying && hasProjects && projectsList &&
           <ProjectsList id="e2e-projects-list">
-            {projects.map((project) => (
+            {projectsList.map((project) => (
               <StyledProjectCard key={project.id} id={project.id} />
             ))}
           </ProjectsList>
@@ -205,6 +205,6 @@ class ProjectCards extends React.PureComponent<Props, State> {
 
 export default (inputProps: InputProps) => (
   <GetProjects {...inputProps}>
-    {(getProjectsChildProps) => <ProjectCards {...inputProps} {...getProjectsChildProps} />}
+    {projects => <ProjectCards {...inputProps} {...projects} />}
   </GetProjects>
 );
