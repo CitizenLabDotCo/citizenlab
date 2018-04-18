@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Input, { Props as VanillaInputProps } from 'components/UI/Input';
 import { FieldProps } from 'formik';
 

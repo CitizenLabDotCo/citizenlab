@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import TextAreaMultiloc, { Props as VanillaTextAreaMultilocProps } from 'components/UI/TextAreaMultiloc';
 import { FieldProps } from 'formik';
 
