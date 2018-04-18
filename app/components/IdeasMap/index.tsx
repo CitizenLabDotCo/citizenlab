@@ -8,7 +8,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // Components
-import Map, { Props as MapProps } from 'components/Map';
+import Map from 'components/Map';
 import IdeaBox, { Props as IdeaBoxProps } from './IdeaBox';
 import IdeaButton from './IdeaButton';
 import { Message } from 'semantic-ui-react';
@@ -24,7 +24,7 @@ import messages from './messages';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const StyledMap = styled<MapProps>(Map)`
+const StyledMap = styled(Map)`
   flex: 1;
   height: 400px;
   width: 100%;

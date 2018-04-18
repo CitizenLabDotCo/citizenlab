@@ -1,31 +1,27 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { browserHistory } from 'react-router';
-
-import { ICustomFieldData, customFieldForUsersStream } from 'services/userCustomFields';
-import { injectResource, InjectedResourceLoaderProps } from 'utils/resourceLoaders/resourceLoader';
-
+import { withRouter, WithRouterProps, browserHistory } from 'react-router';
+import { ICustomFieldData } from 'services/userCustomFields';
+import GetCustomField, { GetCustomFieldChildProps } from 'utils/resourceLoaders/components/GetCustomField';
 import GoBackButton from 'components/UI/GoBackButton';
 import TabbedResource from 'components/admin/TabbedResource';
-
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
-
 
 const StyledGoBackButton = styled(GoBackButton)`
   margin-bottom: 20px;
 `;
 
-type Props = {
-  location: {
-    pathname: string
-  }
-};
+interface InputProps {}
 
-type State = {};
+interface DataProps {
+  customField: GetCustomFieldChildProps;
+}
 
-class Edit extends React.Component<Props & InjectedResourceLoaderProps<ICustomFieldData> & InjectedIntlProps, State> {
+interface Props extends InputProps, DataProps {}
+
+class Edit extends React.Component<Props & WithRouterProps & InjectedIntlProps> {
 
   hasOptions = (inputType) => {
     return inputType === 'select' || inputType === 'multiselect';
@@ -62,7 +58,7 @@ class Edit extends React.Component<Props & InjectedResourceLoaderProps<ICustomFi
     const childrenWithExtraProps = React.cloneElement(children as React.ReactElement<any>, { customField });
 
     return customField && (
-      <div>
+      <>
         <StyledGoBackButton onClick={this.goBack} />
         <TabbedResource
           location={this.props.location}
@@ -77,9 +73,13 @@ class Edit extends React.Component<Props & InjectedResourceLoaderProps<ICustomFi
         >
           {childrenWithExtraProps}
         </TabbedResource>
-      </div>
+      </>
     );
   }
 }
 
-export default injectResource('customField', customFieldForUsersStream, (props) => (props.params.customFieldId))(injectIntl(Edit));
+export default withRouter(injectIntl((inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
+  <GetCustomField id={inputProps.params.customFieldId}>
+    {customField => <Edit {...inputProps} customField={customField} />}
+  </GetCustomField>
+)));

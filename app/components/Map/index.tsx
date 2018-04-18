@@ -1,10 +1,10 @@
 // Libraries
-import * as React from 'react';
-import { compact, flow, isEqual } from 'lodash';
+import React from 'react';
+import { compact, isEqual } from 'lodash';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
-// Injectors
-import { injectTenant, InjectedTenant } from 'utils/resourceLoaders/tenantLoader';
+// resources
+import GetTenant, { GetTenantChildProps } from 'utils/resourceLoaders/components/GetTenant';
 
 // Map
 import Leaflet, { Marker } from 'leaflet';
@@ -52,21 +52,25 @@ interface DataMarkerOptions extends Leaflet.MarkerOptions {
   id: string;
 }
 
-export interface Props {
+export interface InputProps {
   center?: GeoJSON.Position;
   points?: Point[];
   areas?: GeoJSON.Polygon[];
-  className?: string;
   zoom?: number;
   onMarkerClick?: {(id: string, data: any): void};
   onMapClick?: {({ map, position }: {map: Leaflet.Map, position: Leaflet.LatLng}): void};
   fitBounds?: boolean;
 }
 
-interface State {
+interface DataProps {
+  tenant: GetTenantChildProps;
 }
 
-class CLMap extends React.PureComponent<Props & InjectedTenant, State> {
+interface Props extends InputProps, DataProps {}
+
+interface State {}
+
+class CLMap extends React.PureComponent<Props, State> {
   private map: Leaflet.Map;
   private mapContainer: HTMLElement;
   private clusterLayer: Leaflet.MarkerClusterGroup;
@@ -122,7 +126,7 @@ class CLMap extends React.PureComponent<Props & InjectedTenant, State> {
     );
   }
 
-  componentDidUpdate(prevProps: Props & InjectedTenant) {
+  componentDidUpdate(prevProps: Props) {
     if (this.props.points && !isEqual(prevProps.points, this.props.points) && !isEqual(prevProps.points, this.props.points)) {
       this.convertPoints(this.props.points);
     }
@@ -225,13 +229,18 @@ class CLMap extends React.PureComponent<Props & InjectedTenant, State> {
 
   render() {
     return (
-      <MapWrapper className={this.props.className}>
+      <MapWrapper className={this.props['className']}>
         <div id="map-container" ref={this.bindMapContainer} />
       </MapWrapper>
     );
   }
 }
 
-export default flow([
-  injectTenant(),
-])(CLMap);
+export default (inputProps: InputProps) => {
+  return (
+    <GetTenant>
+      {tenant => <CLMap {...inputProps} tenant={tenant} />}
+    </GetTenant>
+  );
+};
+
