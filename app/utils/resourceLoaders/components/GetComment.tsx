@@ -20,7 +20,7 @@ interface State {
 
 export type GetCommentChildProps = ICommentData | null;
 
-export default class GetComment extends React.PureComponent<Props, State> {
+export default class GetComment extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 

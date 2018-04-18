@@ -17,7 +17,7 @@ interface State {
 
 export type GetLocaleChildProps = Locale;
 
-export default class GetLocale extends React.PureComponent<Props, State> {
+export default class GetLocale extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
   constructor(props: Props) {

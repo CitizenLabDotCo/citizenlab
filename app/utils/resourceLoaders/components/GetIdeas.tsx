@@ -78,7 +78,7 @@ interface State {
   lastPage: number;
 }
 
-export default class GetIdeas extends React.PureComponent<Props, State> {
+export default class GetIdeas extends React.Component<Props, State> {
   queryParameters$: BehaviorSubject<IQueryParameters>;
   search$: Subject<string | undefined>;
   subscriptions: Subscription[];

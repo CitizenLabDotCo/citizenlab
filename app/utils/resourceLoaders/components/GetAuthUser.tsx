@@ -17,7 +17,7 @@ interface State {
 
 export type GetAuthUserChildProps = IUserData | null;
 
-export default class GetAuthUser extends React.PureComponent<Props, State> {
+export default class GetAuthUser extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
   constructor(props: InputProps) {

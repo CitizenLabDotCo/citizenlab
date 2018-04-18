@@ -16,7 +16,7 @@ interface State {
 
 export type GetGroupsChildProps = IGroupData[] | null;
 
-export default class GetGroups extends React.PureComponent<Props, State> {
+export default class GetGroups extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
   constructor(props: Props) {

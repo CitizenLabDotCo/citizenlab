@@ -47,7 +47,7 @@ export type GetInvitesChildProps = State & {
   onChangeFilterInviteStatus: (inviteStatus: InviteStatus) => void;
 };
 
-export default class GetInvites extends React.PureComponent<Props, State> {
+export default class GetInvites extends React.Component<Props, State> {
   queryParameters$: BehaviorSubject<IQueryParameters>;
   search$: Subject<string | undefined>;
   subscriptions: Subscription[];

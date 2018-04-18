@@ -17,7 +17,7 @@ interface State {
 
 export type GetTenantLocalesChildProps = Locale[] | null;
 
-export default class GetTenantLocales extends React.PureComponent<Props, State> {
+export default class GetTenantLocales extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
   constructor(props) {

@@ -19,7 +19,7 @@ interface State {
 
 export type GetTopicsChildProps = ITopicData[] | null;
 
-export default class GetTopics extends React.PureComponent<Props, State> {
+export default class GetTopics extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 

@@ -19,7 +19,7 @@ interface State {
 
 export type GetPagesChildProps = IPageData[] | null;
 
-export default class GetPages extends React.PureComponent<Props, State> {
+export default class GetPages extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 

@@ -16,7 +16,7 @@ interface State {
 
 export type GetAreasChildProps = IAreaData[] | null;
 
-export default class GetAreas extends React.PureComponent<Props, State> {
+export default class GetAreas extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
   constructor(props: Props) {

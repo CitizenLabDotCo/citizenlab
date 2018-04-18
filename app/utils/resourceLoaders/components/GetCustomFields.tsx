@@ -16,7 +16,7 @@ interface State {
 
 export type GetCustomFieldsChildProps = ICustomFieldData[] | null;
 
-export default class GetCustomFields extends React.PureComponent<Props, State> {
+export default class GetCustomFields extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
   constructor(props) {
