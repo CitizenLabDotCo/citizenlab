@@ -9,7 +9,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import T from 'components/T';
 
-import { List, Row } from 'components/admin/ResourceList';
+import { List, Row, TextCell } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 
 import messages from '../messages';
@@ -25,12 +25,6 @@ const ButtonWrapper = styled.div`
   margin-top: 2rem;
 `;
 
-const TextCell = styled.div`
-  color: #333;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 20ppx;
-`;
 
 interface InputProps {}
 

@@ -6,7 +6,7 @@ import GetCustomFields, { GetCustomFieldsChildProps } from 'resources/GetCustomF
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import T from 'components/T';
-import { List } from 'components/admin/ResourceList';
+import { List, TextCell } from 'components/admin/ResourceList';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import Button from 'components/UI/Button';
@@ -19,12 +19,6 @@ const ButtonWrapper = styled.div`
   margin-top: 2rem;
 `;
 
-const TextCell = styled.div`
-  color: #333;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 20px;
-`;
 
 interface InputProps {}
 
