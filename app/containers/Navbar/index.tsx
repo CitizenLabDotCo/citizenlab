@@ -338,7 +338,7 @@ const StyledIdeaButton = styled(IdeaButton)`
   }
 `;
 
-const LoginLink = styled.div`
+const LoginLink = styled(Link)`
   color: ${(props) => props.theme.colors.label};
   font-size: 16px;
   font-weight: 400;
@@ -505,11 +505,9 @@ class Navbar extends React.PureComponent<Props, State> {
 
               {!authUser &&
                 <RightItem>
-                  <Link to="/sign-in" id="e2e-login-link">
-                    <LoginLink>
-                      <FormattedMessage {...messages.login} />
-                    </LoginLink>
-                  </Link>
+                  <LoginLink to="/sign-in" id="e2e-login-link">
+                    <FormattedMessage {...messages.login} />
+                  </LoginLink>
                 </RightItem>
               }
             </Right>
@@ -522,7 +520,7 @@ class Navbar extends React.PureComponent<Props, State> {
   }
 }
 
-const Data = adopt<DataProps, {}>({
+const Data = adopt<DataProps, InputProps>({
   location: <GetLocation />,
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
@@ -531,7 +529,7 @@ const Data = adopt<DataProps, {}>({
 });
 
 export default (inputProps: InputProps) => (
-  <Data>
+  <Data {...inputProps}>
     {dataProps => <Navbar {...inputProps} {...dataProps} />}
   </Data>
 );
