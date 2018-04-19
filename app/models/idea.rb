@@ -24,7 +24,7 @@ class Idea < ApplicationRecord
   # has_and_belongs_to_many :areas
   has_many :areas, through: :areas_ideas
 
-  # has_many :ideas_phases, dependent: :destroy
+  has_many :ideas_phases, dependent: :destroy
   has_many :phases, through: :ideas_phases
 
   has_many :comments, dependent: :destroy
