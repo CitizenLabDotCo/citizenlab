@@ -1,4 +1,4 @@
-import React, { FormEvent, PureComponent } from 'react';
+import React from 'react';
 import { get } from 'lodash';
 import { adopt } from 'react-adopt';
 import { Link, browserHistory } from 'react-router';
@@ -221,7 +221,7 @@ interface State {
 
 export const namespace = 'components/IdeaCard/index';
 
-class IdeaCard extends PureComponent<Props, State> {
+class IdeaCard extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -229,7 +229,7 @@ class IdeaCard extends PureComponent<Props, State> {
     };
   }
 
-  onCardClick = (event: FormEvent<MouseEvent>) => {
+  onCardClick = (event: React.FormEvent<MouseEvent>) => {
     event.preventDefault();
 
     const { idea } = this.props;
@@ -243,7 +243,7 @@ class IdeaCard extends PureComponent<Props, State> {
     }
   }
 
-  onAuthorClick = (event: FormEvent<MouseEvent>) => {
+  onAuthorClick = (event: React.FormEvent<MouseEvent>) => {
     const { ideaAuthor } = this.props;
 
     if (ideaAuthor) {
@@ -353,10 +353,8 @@ const Data = adopt<DataProps, InputProps>({
   ideaAuthor: ({ idea, render }) => <GetUser id={get(idea, 'relationships.author.data.id')}>{render}</GetUser>
 });
 
-export default (inputProps: InputProps) => {
-  return (
-    <Data {...inputProps}>
-      {dataProps => <IdeaCard {...inputProps} {...dataProps} />}
-    </Data>
-  );
-};
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <IdeaCard {...inputProps} {...dataProps} />}
+  </Data>
+);
