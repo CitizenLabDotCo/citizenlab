@@ -180,10 +180,8 @@ class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
 
 const IdeasMapWithRouter = withRouter(IdeasMap);
 
-export default (inputProps: InputProps) => {
-  return (
-    <GetIdeaMarkers projectId={inputProps.projectId} phaseId={inputProps.phaseId}>
-      {ideaMarkers => <IdeasMapWithRouter {...inputProps} ideaMarkers={ideaMarkers} />}
-    </GetIdeaMarkers>
-  );
-};
+export default (inputProps: InputProps) => (
+  <GetIdeaMarkers projectId={inputProps.projectId} phaseId={inputProps.phaseId}>
+    {ideaMarkers => <IdeasMapWithRouter {...inputProps} ideaMarkers={ideaMarkers} />}
+  </GetIdeaMarkers>
+);
