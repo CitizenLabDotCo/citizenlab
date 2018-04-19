@@ -11,7 +11,11 @@ class Idea < ApplicationRecord
     :using => { :tsearch => {:prefix => true} }
 
   belongs_to :project
-  counter_culture :project
+  counter_culture :project, 
+    column_name: proc {|idea| idea.publication_status == 'draft' ? nil : "ideas_count"},
+    column_names: {
+      ["ideas.publication_status != ?", 'draft'] => 'ideas_count'
+    }
   belongs_to :author, class_name: 'User', optional: true
   has_many :ideas_topics#, dependent: :destroy
   # has_many :topics, through: :ideas_topics
