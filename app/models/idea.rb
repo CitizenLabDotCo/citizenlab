@@ -17,15 +17,13 @@ class Idea < ApplicationRecord
       ["ideas.publication_status != ?", 'draft'] => 'ideas_count'
     }
   belongs_to :author, class_name: 'User', optional: true
-  # has_many :ideas_topics#, dependent: :destroy
-  # has_and_belongs_to_many :topics
+  
   has_many :topics, through: :ideas_topics
-  # has_many :areas_ideas#, dependent: :destroy
-  # has_and_belongs_to_many :areas
+  has_many :ideas_topics, dependent: :destroy
   has_many :areas, through: :areas_ideas
-
-  has_many :ideas_phases, dependent: :destroy
+  has_many :areas_ideas, dependent: :destroy
   has_many :phases, through: :ideas_phases
+  has_many :ideas_phases, dependent: :destroy
 
   has_many :comments, dependent: :destroy
   has_many :votes, as: :votable, dependent: :destroy
