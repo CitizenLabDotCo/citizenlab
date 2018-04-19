@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs';
+import React from 'react';
+import { Subscription, Observable } from 'rxjs';
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import { FormattedMessage as OriginalFormattedMessage } from 'react-intl';
 import { currentTenantStream } from 'services/tenant';
@@ -15,7 +15,7 @@ type State = {
 type Props = OriginalFormattedMessage.Props;
 
 export default class FormattedMessage extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props);
@@ -31,7 +31,7 @@ export default class FormattedMessage extends React.PureComponent<Props, State> 
     const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      Observable.combineLatest(
         locale$,
         currentTenant$
       ).subscribe(([locale, tenant]) => {
