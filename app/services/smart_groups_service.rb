@@ -28,11 +28,6 @@ class SmartGroupsService
 
   def generate_rules_json_schema
 
-    locals = OpenStruct.new({
-
-    })
-    ERB.new(File.read(Rails.root.join('config', 'schemas', 'smart_group_rules.json_schema.erb')))
-      .result(locals.instance_eval { binding })
   end
 
 end
