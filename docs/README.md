@@ -1,5 +1,10 @@
 # Changelog
 
+## 2018-04-18
+
+### Fixed
+- Adding an idea at a specific location by clicking on the map is fixed
+
 ## 2018-04-09
 
 ### Fixed
