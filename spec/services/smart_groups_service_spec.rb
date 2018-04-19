@@ -21,7 +21,7 @@ describe SettingsService do
     let(:cf3) { create(:custom_field_select) }
     let(:options) { create_list(:custom_field_option, 3, custom_field: cf3 )}
     let!(:users) {
-      users = build_list(:user, 5)
+      users = build_list(:admin, 4)
       users[0].custom_field_values[cf1.key] = 'one'
       users[0].custom_field_values[cf2.key] = 'a'
       users[0].custom_field_values[cf3.key] = options[0].key
@@ -38,16 +38,14 @@ describe SettingsService do
       users[3].custom_field_values[cf2.key] = 'a'
       users[3].custom_field_values[cf3.key] = options[2].key
 
-      users[4].custom_field_values[cf1.key] = 'five'
-      users[4].custom_field_values[cf2.key] = 'a'
-      users[4].custom_field_values[cf3.key] = options[2].key
       users.each(&:save)
     }
 
     let(:rules) {[
       { 'ruleType' => 'custom_field_text', 'customFieldId' => cf1.id, 'predicate' => 'is', 'value' => 'three' },
       { 'ruleType' => 'custom_field_text', 'customFieldId' => cf2.id, 'predicate' => 'is', 'value' => 'a' },
-      { 'ruleType' => 'custom_field_select', 'customFieldId' => cf3.id, 'predicate' => 'has_value', 'value' => options[1].id }
+      { 'ruleType' => 'custom_field_select', 'customFieldId' => cf3.id, 'predicate' => 'has_value', 'value' => options[1].id },
+      { 'ruleType' => 'role', 'predicate' => 'is_admin'}
     ]}
 
     it "filters users with a combination of diverse rules" do
