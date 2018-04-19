@@ -223,6 +223,7 @@
   "app.containers.AdminPage.ProjectEdit.descriptionLabel": "crwdns16144:0crwdne16144:0",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "crwdns18055:0crwdne18055:0",
   "app.containers.AdminPage.ProjectEdit.draftStatus": "crwdns18362:0crwdne18362:0",
+  "app.containers.AdminPage.ProjectEdit.editButtonLabel": "",
   "app.containers.AdminPage.ProjectEdit.eventsTab": "crwdns18056:0crwdne18056:0",
   "app.containers.AdminPage.ProjectEdit.generalTab": "crwdns18057:0crwdne18057:0",
   "app.containers.AdminPage.ProjectEdit.goBack": "crwdns18209:0crwdne18209:0",

@@ -223,6 +223,7 @@
   "app.containers.AdminPage.ProjectEdit.descriptionLabel": "Description",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Description",
   "app.containers.AdminPage.ProjectEdit.draftStatus": "Draft",
+  "app.containers.AdminPage.ProjectEdit.editButtonLabel": "Edit",
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Events",
   "app.containers.AdminPage.ProjectEdit.generalTab": "General",
   "app.containers.AdminPage.ProjectEdit.goBack": "Go back",
