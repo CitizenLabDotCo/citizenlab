@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import Warning from 'components/UI/Warning';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
-import GetProject, { GetProjectChildProps } from 'utils/resourceLoaders/components/GetProject';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { IIdeaData } from 'services/ideas';
 import messages from './messages';
 

@@ -11,7 +11,7 @@ import Button from 'components/UI/Button';
 import Row from './Row';
 
 // resources
-import GetInvites, { GetInvitesChildProps, SortAttribute } from 'utils/resourceLoaders/components/GetInvites';
+import GetInvites, { GetInvitesChildProps, SortAttribute } from 'resources/GetInvites';
 
 // utils
 import { API_PATH } from 'containers/App/constants';

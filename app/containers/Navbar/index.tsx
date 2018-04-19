@@ -14,11 +14,11 @@ import IdeaButton from 'components/IdeaButton';
 import Icon from 'components/UI/Icon';
 
 // resources
-import GetLocation, { GetLocationChildProps } from 'utils/resourceLoaders/components/GetLocation';
-import GetAuthUser, { GetAuthUserChildProps } from 'utils/resourceLoaders/components/GetAuthUser';
-import GetTenant, { GetTenantChildProps } from 'utils/resourceLoaders/components/GetTenant';
-import GetLocale, { GetLocaleChildProps } from 'utils/resourceLoaders/components/GetLocale';
-import GetProjects, { GetProjectsChildProps } from 'utils/resourceLoaders/components/GetProjects';
+import GetLocation, { GetLocationChildProps } from 'resources/GetLocation';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // utils
 import { trackEvent } from 'utils/analytics';

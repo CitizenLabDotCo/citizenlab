@@ -12,8 +12,8 @@ import CommentBody from './CommentBody';
 import { updateComment } from 'services/comments';
 
 // resources
-import GetComment, { GetCommentChildProps } from 'utils/resourceLoaders/components/GetComment';
-import GetUser, { GetUserChildProps } from 'utils/resourceLoaders/components/GetUser';
+import GetComment, { GetCommentChildProps } from 'resources/GetComment';
+import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // style
 import styled from 'styled-components';

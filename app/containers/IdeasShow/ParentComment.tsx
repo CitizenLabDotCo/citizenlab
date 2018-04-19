@@ -15,13 +15,13 @@ import Icon from 'components/UI/Icon';
 import { updateComment } from 'services/comments';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'utils/resourceLoaders/components/GetLocale';
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'utils/resourceLoaders/components/GetTenantLocales';
-import GetAuthUser, { GetAuthUserChildProps } from 'utils/resourceLoaders/components/GetAuthUser';
-import GetComment, { GetCommentChildProps } from 'utils/resourceLoaders/components/GetComment';
-import GetComments, { GetCommentsChildProps } from 'utils/resourceLoaders/components/GetComments';
-import GetUser, { GetUserChildProps } from 'utils/resourceLoaders/components/GetUser';
-import GetIdea, { GetIdeaChildProps } from 'utils/resourceLoaders/components/GetIdea';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetComment, { GetCommentChildProps } from 'resources/GetComment';
+import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
+import GetUser, { GetUserChildProps } from 'resources/GetUser';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // analytics
 import { injectTracks } from 'utils/analytics';

@@ -13,9 +13,9 @@ import UserName from 'components/UI/UserName';
 import Avatar from 'components/Avatar';
 
 // resrources
-import GetIdea, { GetIdeaChildProps } from 'utils/resourceLoaders/components/GetIdea';
-import GetIdeaImage, { GetIdeaImageChildProps } from 'utils/resourceLoaders/components/GetIdeaImage';
-import GetUser, { GetUserChildProps } from 'utils/resourceLoaders/components/GetUser';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetIdeaImage, { GetIdeaImageChildProps } from 'resources/GetIdeaImage';
+import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';

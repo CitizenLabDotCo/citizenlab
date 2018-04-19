@@ -1,6 +1,6 @@
 import React from 'react';
 import IdeasShow from 'containers/IdeasShow';
-import GetIdea from 'utils/resourceLoaders/components/GetIdea';
+import GetIdea from 'resources/GetIdea';
 import styled from 'styled-components';
 
 const Container = styled.div`

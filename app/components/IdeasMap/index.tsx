@@ -14,7 +14,7 @@ import IdeaButton from './IdeaButton';
 import { Message } from 'semantic-ui-react';
 
 // Injectors
-import GetIdeaMarkers, { GetIdeaMarkersChildProps } from 'utils/resourceLoaders/components/GetIdeaMarkers';
+import GetIdeaMarkers, { GetIdeaMarkersChildProps } from 'resources/GetIdeaMarkers';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { deleteIdea } from 'services/ideas';
-import GetIdea, { GetIdeaChildProps } from 'utils/resourceLoaders/components/GetIdea';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import { browserHistory } from 'react-router';
 import eventEmitter from 'utils/eventEmitter';
 import { IModalInfo } from 'containers/App';

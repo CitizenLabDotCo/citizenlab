@@ -14,7 +14,7 @@ import Toggle from 'components/UI/Toggle';
 import Button from 'components/UI/Button';
 
 // resources
-import GetUsers, { GetUsersChildProps, SortAttribute } from 'utils/resourceLoaders/components/GetUsers';
+import GetUsers, { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';
 
 // services
 import { IUserData, IRole, updateUser, deleteUser } from 'services/users';

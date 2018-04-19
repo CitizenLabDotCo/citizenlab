@@ -20,9 +20,9 @@ import { IGroupData } from 'services/groups';
 import { bulkInviteXLSX, bulkInviteEmails, IInviteError, INewBulkInvite } from 'services/invites';
 
 // resources
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'utils/resourceLoaders/components/GetTenantLocales';
-import GetLocale, { GetLocaleChildProps } from 'utils/resourceLoaders/components/GetLocale';
-import GetGroups, { GetGroupsChildProps } from 'utils/resourceLoaders/components/GetGroups';
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 
 // i18n
 import { FormattedHTMLMessage } from 'react-intl';

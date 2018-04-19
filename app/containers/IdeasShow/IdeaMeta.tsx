@@ -4,10 +4,10 @@ import { adopt } from 'react-adopt';
 import Helmet from 'react-helmet';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'utils/resourceLoaders/components/GetLocale';
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'utils/resourceLoaders/components/GetTenantLocales';
-import GetIdea, { GetIdeaChildProps } from 'utils/resourceLoaders/components/GetIdea';
-import GetIdeaImages, { GetIdeaImagesChildProps } from 'utils/resourceLoaders/components/GetIdeaImages';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetIdeaImages, { GetIdeaImagesChildProps } from 'resources/GetIdeaImages';
 
 // i18n
 import { getLocalized } from 'utils/i18n';

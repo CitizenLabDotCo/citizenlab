@@ -1,7 +1,7 @@
 import React from 'react';
 import { Label } from 'semantic-ui-react';
 import T from 'components/T';
-import GetProject from 'utils/resourceLoaders/components/GetProject';
+import GetProject from 'resources/GetProject';
 
 export default (props: { projectId: string }) => (
   <GetProject id={props.projectId}>

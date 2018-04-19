@@ -7,7 +7,7 @@ import ProjectInfo from './ProjectInfo';
 import EventsPreview from '../EventsPreview';
 
 // resources
-import GetProject from 'utils/resourceLoaders/components/GetProject';
+import GetProject from 'resources/GetProject';
 
 interface InputProps {
   params: {

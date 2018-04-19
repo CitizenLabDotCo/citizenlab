@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { deletePage } from 'services/pages';
 
-import GetPages, { GetPagesChildProps } from 'utils/resourceLoaders/components/GetPages';
+import GetPages, { GetPagesChildProps } from 'resources/GetPages';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';

@@ -2,7 +2,7 @@ import React from 'react';
 import { clone, isEqual } from 'lodash';
 import styled from 'styled-components';
 import { deleteCustomField, ICustomFieldData, updateCustomFieldForUsers, reorderCustomFieldForUsers } from 'services/userCustomFields';
-import GetCustomFields, { GetCustomFieldsChildProps } from 'utils/resourceLoaders/components/GetCustomFields';
+import GetCustomFields, { GetCustomFieldsChildProps } from 'resources/GetCustomFields';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import T from 'components/T';

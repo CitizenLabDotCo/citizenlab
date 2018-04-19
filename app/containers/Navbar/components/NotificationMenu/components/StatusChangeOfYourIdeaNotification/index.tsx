@@ -1,8 +1,8 @@
 import React from 'react';
 import { IStatusChangeOfYourIdeaNotificationData } from 'services/notifications';
 import { adopt } from 'react-adopt';
-import GetIdea, { GetIdeaChildProps } from 'utils/resourceLoaders/components/GetIdea';
-import GetIdeaStatus, { GetIdeaStatusChildProps } from 'utils/resourceLoaders/components/GetIdeaStatus';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetIdeaStatus, { GetIdeaStatusChildProps } from 'resources/GetIdeaStatus';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';

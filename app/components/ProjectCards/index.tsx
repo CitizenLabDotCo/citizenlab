@@ -8,7 +8,7 @@ import Button from 'components/UI/Button';
 import SelectAreas from './SelectAreas';
 
 // resources
-import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps } from 'utils/resourceLoaders/components/GetProjects';
+import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps } from 'resources/GetProjects';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

@@ -5,8 +5,8 @@ import { Form, Formik, FormikActions } from 'formik';
 import { adopt } from 'react-adopt';
 
 // Utils & Loaders
-import GetLocale, { GetLocaleChildProps } from 'utils/resourceLoaders/components/GetLocale';
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'utils/resourceLoaders/components/GetTenantLocales';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import { getLocalized } from 'utils/i18n';
 
 // Components
