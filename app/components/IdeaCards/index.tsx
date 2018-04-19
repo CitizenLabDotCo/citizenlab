@@ -13,7 +13,7 @@ import IdeaButton from 'components/IdeaButton';
 import FeatureFlag from 'components/FeatureFlag';
 
 // resources
-import GetIdeas, { GetIdeasChildProps, InputProps as GetIdeasInputProps } from 'utils/resourceLoaders/components/GetIdeas';
+import GetIdeas, { GetIdeasChildProps, InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

@@ -14,7 +14,7 @@ import Unauthenticated from './Unauthenticated';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 
 // resources
-import GetIdea from 'utils/resourceLoaders/components/GetIdea';
+import GetIdea from 'resources/GetIdea';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

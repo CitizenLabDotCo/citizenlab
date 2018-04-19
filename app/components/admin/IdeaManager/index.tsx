@@ -11,11 +11,11 @@ import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/glob
 import { IProjectData } from 'services/projects';
 
 // resources
-import GetProjects, { GetProjectsChildProps } from 'utils/resourceLoaders/components/GetProjects';
-import GetTopics, { GetTopicsChildProps } from 'utils/resourceLoaders/components/GetTopics';
-import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'utils/resourceLoaders/components/GetIdeaStatuses';
-import GetPhases, { GetPhasesChildProps } from 'utils/resourceLoaders/components/GetPhases';
-import GetIdeas, { GetIdeasChildProps } from 'utils/resourceLoaders/components/GetIdeas';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
+import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 
 // components
 import FilterSidebar from './components/FilterSidebar';

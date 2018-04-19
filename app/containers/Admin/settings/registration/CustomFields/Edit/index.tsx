@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { withRouter, WithRouterProps, browserHistory } from 'react-router';
 import { ICustomFieldData } from 'services/userCustomFields';
-import GetCustomField, { GetCustomFieldChildProps } from 'utils/resourceLoaders/components/GetCustomField';
+import GetCustomField, { GetCustomFieldChildProps } from 'resources/GetCustomField';
 import GoBackButton from 'components/UI/GoBackButton';
 import TabbedResource from 'components/admin/TabbedResource';
 import { injectIntl } from 'utils/cl-intl';

@@ -1,7 +1,7 @@
 import React from 'react';
 import T from 'components/T';
 import { List } from 'semantic-ui-react';
-import GetIdea from 'utils/resourceLoaders/components/GetIdea';
+import GetIdea from 'resources/GetIdea';
 
 export default (props: { ideaId: string }) => (
   <GetIdea id={props.ideaId}>

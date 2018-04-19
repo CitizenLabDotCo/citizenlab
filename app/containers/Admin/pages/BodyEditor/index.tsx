@@ -1,7 +1,7 @@
 import React from 'react';
 import { updatePage } from 'services/pages';
 import Grapes from 'components/admin/Grapes';
-import GetPage, { GetPageChildProps } from 'utils/resourceLoaders/components/GetPage';
+import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 
 interface InputProps {}

@@ -2,7 +2,7 @@ import React from 'react';
 import { pull } from 'lodash';
 import { Label, Icon } from 'semantic-ui-react';
 import T from 'components/T';
-import GetTopics from 'utils/resourceLoaders/components/GetTopics';
+import GetTopics from 'resources/GetTopics';
 
 interface Props {
   selectedTopics: string[];

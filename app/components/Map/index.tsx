@@ -4,7 +4,7 @@ import { compact, isEqual } from 'lodash';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'utils/resourceLoaders/components/GetTenant';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // Map
 import Leaflet, { Marker } from 'leaflet';

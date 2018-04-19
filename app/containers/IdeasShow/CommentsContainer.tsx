@@ -4,7 +4,7 @@ import React from 'react';
 import ParentComment from './ParentComment';
 
 // resources
-import GetComments, { GetCommentsChildProps } from 'utils/resourceLoaders/components/GetComments';
+import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // style
 import styled from 'styled-components';

@@ -9,8 +9,8 @@ import Icon from 'components/UI/Icon';
 import { postingButtonState } from 'services/ideaPostingRules';
 
 // resources
-import GetProject, { GetProjectChildProps } from 'utils/resourceLoaders/components/GetProject';
-import GetPhase, { GetPhaseChildProps } from 'utils/resourceLoaders/components/GetPhase';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

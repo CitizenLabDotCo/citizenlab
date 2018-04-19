@@ -14,7 +14,7 @@ import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 
 // resources
-import { Sort, SortAttribute } from 'utils/resourceLoaders/components/GetIdeas';
+import { Sort, SortAttribute } from 'resources/GetIdeas';
 
 // utils
 import { SortDirection } from 'utils/paginationUtils';

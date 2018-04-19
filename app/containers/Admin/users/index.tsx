@@ -5,7 +5,7 @@ import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
 
 // resources
-import GetLocation, { GetLocationChildProps } from 'utils/resourceLoaders/components/GetLocation';
+import GetLocation, { GetLocationChildProps } from 'resources/GetLocation';
 
 // i18n
 import messages from './messages';

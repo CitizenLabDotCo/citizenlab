@@ -19,7 +19,7 @@ import { addIdeaImage, deleteIdeaImage, IIdeaImage } from 'services/ideaImages';
 import { getAuthUserAsync } from 'services/auth';
 import { localState, ILocalStateService } from 'services/localState';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
-import GetProject from 'utils/resourceLoaders/components/GetProject';
+import GetProject from 'resources/GetProject';
 
 // utils
 import { convertToGeoJson, reverseGeocode } from 'utils/locationTools';

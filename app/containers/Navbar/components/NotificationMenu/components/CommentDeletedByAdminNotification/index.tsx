@@ -4,7 +4,7 @@ import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import NotificationWrapper from '../NotificationWrapper';
-import GetIdea, { GetIdeaChildProps } from 'utils/resourceLoaders/components/GetIdea';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 interface InputProps {
   notification: ICommentDeletedByAdminNotificationData;

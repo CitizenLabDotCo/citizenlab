@@ -10,7 +10,7 @@ import FeatureFlag from 'components/FeatureFlag';
 import { globalState, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'utils/resourceLoaders/components/GetTenant';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';

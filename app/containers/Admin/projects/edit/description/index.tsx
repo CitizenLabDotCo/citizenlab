@@ -5,7 +5,7 @@ import { Formik } from 'formik';
 
 // Services / Data loading
 import { updateProject,  IProjectData } from 'services/projects';
-import GetProject from 'utils/resourceLoaders/components/GetProject';
+import GetProject from 'resources/GetProject';
 
 // Components
 import DescriptionEditionForm, { Values } from './DescriptionEditionForm';

@@ -4,7 +4,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedDate } from 'react-intl';
 import messages from '../../messages';
 import { IInviteData, deleteInvite } from 'services/invites';
-import GetUser from 'utils/resourceLoaders/components/GetUser';
+import GetUser from 'resources/GetUser';
 import { Table, Button as SemanticButton, Popup } from 'semantic-ui-react';
 import Badge from 'components/admin/Badge';
 

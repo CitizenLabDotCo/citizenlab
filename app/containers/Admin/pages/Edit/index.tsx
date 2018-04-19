@@ -4,7 +4,7 @@ import { keys, pick, isEqual } from 'lodash';
 import { API } from 'typings';
 import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 import { updatePage } from 'services/pages';
-import GetPage, { GetPageChildProps } from 'utils/resourceLoaders/components/GetPage';
+import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import PageForm, { FormValues } from '../Form';
 import { Formik } from 'formik';
 import PageWrapper from 'components/admin/PageWrapper';

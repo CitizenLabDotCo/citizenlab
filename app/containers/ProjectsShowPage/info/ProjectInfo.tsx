@@ -6,8 +6,8 @@ import { adopt } from 'react-adopt';
 import ImageZoom from 'react-medium-image-zoom';
 
 // resources
-import GetProject, { GetProjectChildProps } from 'utils/resourceLoaders/components/GetProject';
-import GetProjectImages, { GetProjectImagesChildProps } from 'utils/resourceLoaders/components/GetProjectImages';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
 
 // i18n
 import T from 'components/T';

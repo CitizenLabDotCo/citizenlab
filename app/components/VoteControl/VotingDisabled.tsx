@@ -5,7 +5,7 @@ import { FormattedDate } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import { IIdeaData } from 'services/ideas';
-import GetProject, { GetProjectChildProps } from 'utils/resourceLoaders/components/GetProject';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import messages from './messages';
 import browserHistory from 'react-router/lib/browserHistory';
 

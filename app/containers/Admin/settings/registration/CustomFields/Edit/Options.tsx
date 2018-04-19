@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { API } from 'typings';
 import { ICustomFieldOptionsData, updateCustomFieldOption, deleteCustomFieldOption, addCustomFieldOption, ICustomFieldData } from 'services/userCustomFields';
-import GetCustomFieldOptions, { GetCustomFieldOptionsChildProps } from 'utils/resourceLoaders/components/GetCustomFieldOptions';
+import GetCustomFieldOptions, { GetCustomFieldOptionsChildProps } from 'resources/GetCustomFieldOptions';
 
 import { Formik, FormikErrors } from 'formik';
 import OptionForm, { FormValues } from './OptionForm';
