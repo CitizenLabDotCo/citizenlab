@@ -1,4 +1,4 @@
-import * as Rx from 'rxjs/Rx';
+import { Observer, Observable } from 'rxjs/Rx';
 import { isObject, isEmpty, has } from 'lodash';
 
 // utils
@@ -23,9 +23,11 @@ export interface IIdeasNewPageGlobalState {
   imageChanged: boolean;
 }
 
-export type IAdminFullWidth = {
+export interface IAdminFullWidth {
   enabled: boolean;
-};
+}
+
+type valueof<T> = T[keyof T];
 
 type State = {
   IdeasNewPage?: IIdeasNewPageGlobalState;
@@ -34,16 +36,16 @@ type State = {
 
 interface IStateInput {
   propertyName: keyof State;
-  updatedStateProperties: object;
+  updatedStateProperties: valueof<State>;
 }
 
 interface IStream<T> {
-  observer: Rx.Observer<T>;
-  observable: Rx.Observable<T>;
+  observer: Observer<T>;
+  observable: Observable<T>;
 }
 
 export interface IGlobalStateService<T> {
-  observable: Rx.Observable<T>;
+  observable: Observable<T>;
   set: (newState: Partial<T>) => void;
   get: () => Promise<T>;
 }
@@ -57,7 +59,7 @@ class GlobalState {
       observable: null as any
     };
 
-    this.stream.observable = new Rx.Observable<State>((observer) => {
+    this.stream.observable = new Observable<State>((observer) => {
       this.stream.observer = observer;
     })
     .startWith({})
@@ -83,7 +85,7 @@ class GlobalState {
   }
 
   init<T>(propertyName: keyof State, initialState?: T) {
-    const observable: Rx.Observable<T> = this.stream.observable
+    const observable: Observable<T> = this.stream.observable
       .map(state => state[propertyName])
       .filter(filteredState => isObject(filteredState) && !isEmpty(filteredState))
       .distinctUntilChanged((filteredState, newFilteredState) => shallowCompare(filteredState, newFilteredState));
@@ -108,12 +110,10 @@ class GlobalState {
   }
 
   set<T>(propertyName: keyof State, updatedStateProperties: Partial<T>) {
-    const stateInput: IStateInput = {
+    this.stream.observer.next({
       propertyName,
       updatedStateProperties
-    };
-
-    this.stream.observer.next(stateInput);
+    });
   }
 
   get<T>(propertyName: keyof State) {

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { Subscription, Observable }  from 'rxjs/Rx';
 
 // router
 import { browserHistory } from 'react-router';
@@ -259,11 +259,11 @@ type State = {
   loaded: boolean;
 };
 
-export const landingPageIdeasQuery = { sort: 'trending', 'page[number]': 1, 'page[size]': 9 };
-export const landingPageProjectsQuery = { sort: 'new', 'page[number]': 1, 'page[size]': 3 };
+export const landingPageIdeasQuery: { sort: 'trending', 'page[size]': number } = { sort: 'trending', 'page[size]': 9 };
+export const landingPageProjectsQuery: { sort: 'new', 'page[size]': number } = { sort: 'new', 'page[size]': 3 };
 
 export default class LandingPage extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -285,10 +285,10 @@ export default class LandingPage extends React.PureComponent<Props, State> {
     const currentTenant$ = currentTenantStream().observable;
     const ideas$ = ideasStream({ queryParameters: landingPageIdeasQuery }).observable;
     const projects$ = projectsStream({ queryParameters: landingPageProjectsQuery }).observable;
-    const ideaToPublish$ = (query && query.idea_to_publish ? ideaByIdStream(query.idea_to_publish).observable : Rx.Observable.of(null));
+    const ideaToPublish$ = (query && query.idea_to_publish ? ideaByIdStream(query.idea_to_publish).observable : Observable.of(null));
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      Observable.combineLatest(
         locale$,
         currentTenant$,
         ideas$,
@@ -307,7 +307,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
       // if 'idea_to_publish' parameter is present in landingpage url,
       // find the draft idea previously created (before login/signup)
       // and update its status and author name
-      Rx.Observable.combineLatest(
+      Observable.combineLatest(
         authUser$,
         ideaToPublish$
       ).subscribe(async ([authUser, ideaToPublish]) => {
@@ -385,7 +385,11 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                 {hasProjects &&
                   <ProjectSection>
                     <SectionContainer>
-                      <ProjectCards queryParameters={landingPageProjectsQuery} hideAllFilters={true} />
+                      <ProjectCards
+                        pageSize={landingPageProjectsQuery['page[size]']}
+                        sort={landingPageProjectsQuery.sort}
+                        hideAllFilters={true}
+                      />
                     </SectionContainer>
                   </ProjectSection>
                 }
@@ -399,7 +403,11 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                     </SectionTitle>
                   </SectionHeader>
                   <SectionContainer>
-                    <IdeaCards queryParameters={landingPageIdeasQuery} />
+                    <IdeaCards
+                      type="load-more"
+                      sort={landingPageIdeasQuery.sort}
+                      pageSize={landingPageIdeasQuery['page[size]']}
+                    />
                   </SectionContainer>
                 </Section>
               </IdeasStyledContentContainer>

@@ -80,6 +80,8 @@ export default class ActivityChangeLog extends React.Component<Props, State> {
   }
 
   render () {
+    const { user } = this.state;
+
     return (
       <ChangeLogEntry>
         <AvatarWrapper>
@@ -90,7 +92,7 @@ export default class ActivityChangeLog extends React.Component<Props, State> {
             <FormattedMessage
               {...messages.changeLogEntry}
               values={{
-                userName: <UserName user={this.state.user} />,
+                userName: <UserName user={(user ? user.data : null)} />,
                 changeType: this.props.activity.attributes.action,
               }}
             />
