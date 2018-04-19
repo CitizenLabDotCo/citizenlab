@@ -14,6 +14,10 @@ const TextCell = styled.div`
   line-height: 20px;
 `;
 
+const ButtonWrapper = styled.div`
+  margin-top: 2rem;
+`;
+
 export default class AdminSettingsAreas extends React.PureComponent {
   render() {
     return (
@@ -34,6 +38,16 @@ export default class AdminSettingsAreas extends React.PureComponent {
             </Button>
           </Row>
         </List>
+        <ButtonWrapper>
+            <Button
+              style="cl-blue"
+              circularCorners={false}
+              icon="plus-circle"
+              linkTo="/admin/settings/areas/new"
+            >
+              <FormattedMessage {...messages.addAreaButton} />
+            </Button>
+          </ButtonWrapper>
       </Section>
     );
   }
