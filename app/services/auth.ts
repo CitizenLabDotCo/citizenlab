@@ -76,7 +76,13 @@ export function signOut() {
     removeJwt();
     streams.reset();
     authUserStream().observer.next(null);
-    browserHistory.push('/');
+    const currentLocation = browserHistory.getCurrentLocation();
+
+    if (currentLocation.pathname !== '' && currentLocation.pathname !== '/') {
+      browserHistory.push('/');
+    } else {
+      window.location.reload();
+    }
   }
 }
 

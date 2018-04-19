@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import * as Rx from 'rxjs';
 import { uniq, keys, isEmpty } from 'lodash';
 import { findDOMNode } from 'react-dom';
@@ -157,9 +157,7 @@ class Row extends React.PureComponent<Props> {
               />
             }
             {activeFilterMenu === 'projects' &&
-              <ProjectSelector
-                selectedProject={idea.relationships.project.data && idea.relationships.project.data.id}
-              />
+              <ProjectSelector projectId={idea.relationships.project.data && idea.relationships.project.data.id} />
             }
             {activeFilterMenu === 'statuses' &&
               <StatusSelector

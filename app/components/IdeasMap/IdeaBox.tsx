@@ -1,12 +1,11 @@
-// Libs
-import * as React from 'react';
+// libs
+import React from 'react';
 
-// Utils
+// utils
 import eventEmitter from 'utils/eventEmitter';
 import { IModalInfo } from 'containers/App';
 
-// Components
-import GetIdea from 'utils/resourceLoaders/components/GetIdea';
+// components
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import { Button as SemanticButton, Icon } from 'semantic-ui-react';
@@ -14,11 +13,14 @@ import VoteControl from 'components/VoteControl';
 import Unauthenticated from './Unauthenticated';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 
+// resources
+import GetIdea from 'resources/GetIdea';
+
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// Style
+// style
 import styled from 'styled-components';
 import { color, fontSize } from 'utils/styleUtils';
 
@@ -73,6 +75,7 @@ const CloseButton: any = styled(SemanticButton)`
   top: 0;
   right: 0;
 `;
+
 // Typings
 export interface Props {
   idea: string;
@@ -85,7 +88,6 @@ type State = {
 };
 
 export default class IdeaBox extends React.PureComponent<Props, State> {
-
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -125,7 +127,7 @@ export default class IdeaBox extends React.PureComponent<Props, State> {
 
     return (
       <GetIdea id={this.props.idea}>
-        {({ idea }) => {
+        {(idea) => {
           if (!idea) return null;
 
           return (

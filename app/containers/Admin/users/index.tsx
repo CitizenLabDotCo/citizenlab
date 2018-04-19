@@ -1,56 +1,61 @@
-import * as React from 'react';
-
-// router
-import { withRouter, RouterState } from 'react-router';
+import React, { SFC } from 'react';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
+
+// resources
+import GetLocation, { GetLocationChildProps } from 'resources/GetLocation';
 
 // i18n
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-type Props = {};
+interface InputProps {}
 
-type State = {};
-
-class UsersPage extends React.PureComponent<Props & InjectedIntlProps & RouterState, State> {
-  constructor(props: Props) {
-    super(props as any);
-  }
-
-  render() {
-    const { location, children } = this.props;
-    const { formatMessage } = this.props.intl;
-
-    const tabs = [
-      { label: formatMessage(messages.tabRegisteredUsers), url: '/admin/users/registered' },
-      { label: formatMessage(messages.tabInviteByEmail), url: '/admin/users/invitations' },
-    ];
-
-    const resource = {
-      title: formatMessage(messages.viewPublicResource)
-    };
-
-    return (
-      <>
-        <TabbedResource
-          resource={resource}
-          messages={messages}
-          tabs={tabs}
-          location={location}
-        >
-          <HelmetIntl
-            title={messages.helmetTitle}
-            description={messages.helmetDescription}
-          />
-          {children}
-        </TabbedResource>
-      </>
-    );
-  }
+interface DataProps {
+  location: GetLocationChildProps;
 }
 
-export default withRouter(injectIntl<Props>(UsersPage) as any);
+interface Props extends InputProps, DataProps {}
+
+const UsersPage: SFC<Props & InjectedIntlProps> = ({ location, children, intl }) => {
+  const { formatMessage } = intl;
+
+  const tabs = [
+    { label: formatMessage(messages.tabRegisteredUsers), url: '/admin/users/registered' },
+    { label: formatMessage(messages.tabInviteByEmail), url: '/admin/users/invitations' },
+  ];
+
+  const resource = {
+    title: formatMessage(messages.viewPublicResource)
+  };
+
+  if (!location) return null;
+
+  return (
+    <>
+      <TabbedResource
+        resource={resource}
+        messages={messages}
+        tabs={tabs}
+        location={location}
+      >
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
+        />
+        {children}
+      </TabbedResource>
+    </>
+  );
+};
+
+const UsersPageWithIntl = injectIntl(UsersPage);
+
+export default (inputProps: InputProps) => (
+  <GetLocation>
+    {location => <UsersPageWithIntl {...inputProps} location={location} />}
+  </GetLocation>
+);

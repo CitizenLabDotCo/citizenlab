@@ -1,7 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-
-// router
+import React from 'react';
+import { adopt } from 'react-adopt';
 import { Link, browserHistory } from 'react-router';
 
 // components
@@ -9,10 +7,13 @@ import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 
 // services
-import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
-import { projectByIdStream, IProject } from 'services/projects';
-import { projectImageStream, IProjectImage } from 'services/projectImages';
+import { IProjectData } from 'services/projects';
+
+// resrources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
 
 // i18n
 import T from 'components/T';
@@ -22,10 +23,8 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // style
-// import { darken } from 'polished';
 import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
-import { Locale } from 'typings';
 
 const ProjectImageContainer =  styled.div`
   height: 190px;
@@ -181,7 +180,6 @@ const IdeaCount = styled(Link)`
   }
 `;
 
-
 const ProjectButtonWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -199,78 +197,41 @@ const ProjectButtonWrapper = styled.div`
 
 const ProjectButton = styled(Button) ``;
 
-type Props = {
-  id: string;
-};
+export interface InputProps {
+  projectId: string;
+}
 
-type State = {
-  locale: Locale | null,
-  currentTenant: ITenant | null;
-  project: IProject | null;
-  projectImage: IProjectImage | null;
-};
+interface DataProps {
+  locale: GetLocaleChildProps;
+  tenantLocales: GetTenantLocalesChildProps;
+  project: GetProjectChildProps;
+  projectImages: GetProjectImagesChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+interface State {}
 
 class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> {
-  subscriptions: Rx.Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      locale: null,
-      currentTenant: null,
-      project: null,
-      projectImage: null
-    };
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const { id } = this.props;
-    const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
-    const project$ = projectByIdStream(id).observable.switchMap((project) => {
-      const projectImages = project.data.relationships.project_images.data;
-
-      if (projectImages && projectImages.length > 0) {
-        return projectImageStream(project.data.id, projectImages[0].id).observable.map(projectImage => ({ project, projectImage }));
-      }
-
-      return Rx.Observable.of({ project, projectImage: null });
-    });
-
-    this.subscriptions = [
-      Rx.Observable.combineLatest(
-        locale$,
-        currentTenant$,
-        project$
-      ).subscribe(([locale, currentTenant, { project, projectImage }]) => {
-        this.setState({ locale, currentTenant, project, projectImage });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  getProjectUrl = (project: IProject) => {
-    const projectType = project.data.attributes.process_type;
-    const rootProjectUrl = `/projects/${project.data.attributes.slug}`;
+  getProjectUrl = (project: IProjectData) => {
+    const projectType = project.attributes.process_type;
+    const rootProjectUrl = `/projects/${project.attributes.slug}`;
     const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/process` : `${rootProjectUrl}/info`);
 
     return projectUrl;
   }
 
-  getProjectIdeasUrl = (project: IProject) => {
-    const projectType = project.data.attributes.process_type;
-    const rootProjectUrl = `/projects/${project.data.attributes.slug}`;
+  getProjectIdeasUrl = (project: IProjectData) => {
+    const projectType = project.attributes.process_type;
+    const rootProjectUrl = `/projects/${project.attributes.slug}`;
     const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/process` : `${rootProjectUrl}/ideas`);
 
     return projectUrl;
   }
 
   goToProject = () => {
-    const { project } = this.state;
+    const { project } = this.props;
 
     if (project) {
       const projectUrl = this.getProjectUrl(project);
@@ -281,17 +242,16 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
   render() {
     const className = this.props['className'];
     const { formatMessage } = this.props.intl;
-    const { locale, currentTenant, project, projectImage } = this.state;
+    const { locale, tenantLocales, project, projectImages } = this.props;
 
-    if (locale && currentTenant && project) {
-      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-      const titleMultiloc = project.data.attributes.title_multiloc;
-      const preview = getLocalized(project.data.attributes.description_preview_multiloc, locale, currentTenantLocales);
-      const imageUrl = (projectImage ? projectImage.data.attributes.versions.medium : null);
+    if (locale && tenantLocales && project) {
+      const titleMultiloc = project.attributes.title_multiloc;
+      const preview = getLocalized(project.attributes.description_preview_multiloc, locale, tenantLocales);
+      const imageUrl = (projectImages && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
       const projectUrl = this.getProjectUrl(project);
       const projectIdeasUrl = this.getProjectIdeasUrl(project);
-      const ideasCount = project.data.attributes.ideas_count;
-      const showIdeasCount = !(project.data.attributes.process_type === 'continuous' && project.data.attributes.participation_method !== 'ideation');
+      const ideasCount = project.attributes.ideas_count;
+      const showIdeasCount = !(project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation');
 
       return (
         <Container className={className}>
@@ -304,8 +264,6 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
                 <ProjectImagePlaceholderIcon name="project" />
               </ProjectImagePlaceholder>
             }
-
-            {/* <ProjectImageOverlay /> */}
           </ProjectImageContainer>
 
           <ProjectContent>
@@ -354,4 +312,17 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 }
 
-export default injectIntl<Props>(ProjectCard);
+const ProjectCardWithHoCs = injectIntl<Props>(ProjectCard);
+
+const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />,
+  tenantLocales: <GetTenantLocales />,
+  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
+  projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <ProjectCardWithHoCs {...inputProps} {...dataProps} />}
+  </Data>
+);

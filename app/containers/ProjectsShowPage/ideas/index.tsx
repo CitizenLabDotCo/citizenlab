@@ -5,9 +5,9 @@ import { browserHistory } from 'react-router';
 
 // components
 import Header from '../Header';
-import Ideas from './Ideas';
 import EventsPreview from '../EventsPreview';
 import ContentContainer from 'components/ContentContainer';
+import IdeaCards from 'components/IdeaCards';
 
 // services
 import { projectBySlugStream } from 'services/projects';
@@ -109,9 +109,12 @@ export default class ProjectIdeasPage extends React.PureComponent<Props, State> 
               <IdeasTitle>
                 <FormattedMessage {...messages.navIdeas} />
               </IdeasTitle>
-              <Ideas
-                type="project"
-                id={projectId}
+              <IdeaCards
+                type="load-more"
+                sort={'trending'}
+                pageSize={12}
+                projectId={projectId}
+                showViewToggle={true}
                 defaultView={defaultView}
               />
             </ContentContainer>
