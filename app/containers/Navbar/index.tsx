@@ -420,7 +420,7 @@ class Navbar extends React.PureComponent<Props, State> {
     if (location && locale && tenant) {
       const isAdminPage = location.pathname.startsWith('/admin');
       const tenantLocales = tenant.attributes.settings.core.locales;
-      const tenantLogo: string | null = get(tenant, 'attributes.logo.medium', null);
+      const tenantLogo = get(tenant.attributes.logo, 'medium');
 
       return (
         <>

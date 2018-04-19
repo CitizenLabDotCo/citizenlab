@@ -179,7 +179,7 @@ class ProjectCards extends React.PureComponent<Props, State> {
         {!querying && hasProjects && projectsList &&
           <ProjectsList id="e2e-projects-list">
             {projectsList.map((project) => (
-              <StyledProjectCard key={project.id} id={project.id} />
+              <StyledProjectCard key={project.id} projectId={project.id} />
             ))}
           </ProjectsList>
         }

@@ -1,5 +1,5 @@
 import 'whatwg-fetch';
-import { Observer, Observable } from 'rxjs/Rx';
+import { Observer, Observable, Subscription } from 'rxjs/Rx';
 import { some, forOwn, isNil, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union } from 'lodash';
 import request from 'utils/request';
 import { store } from 'app';
@@ -36,6 +36,7 @@ export interface IStream<T> {
   fetch: fetchFn;
   observer: IObserver<T>;
   observable: IObservable<T>;
+  subscription?: Subscription;
   dataIds: { [key: string]: true };
 }
 
@@ -126,6 +127,10 @@ class Streams {
           });
         }
       });
+    }
+
+    if (this.streams[streamId] && this.streams[streamId].subscription) {
+      (this.streams[streamId].subscription as Subscription).unsubscribe();
     }
 
     delete this.streams[streamId];
@@ -348,7 +353,7 @@ class Streams {
 
       if (cacheStream) {
         // keep stream hot
-        this.streams[streamId].observable.subscribe();
+        this.streams[streamId].subscription = this.streams[streamId].observable.subscribe();
       }
 
       return this.streams[streamId] as IStream<T>;

@@ -633,20 +633,26 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
 
       Observable.combineLatest(
         ideaId$.switchMap((ideaId: string) => ideaByIdStream(ideaId).observable),
-        authUser$.filter(authUser => authUser !== null)
+        authUser$
       ).switchMap(([idea, authUser]) => {
         return hasPermission({
           item: idea.data,
           action: 'edit',
-          user: (authUser as IUser),
           context: idea.data
         }).map((granted) => ({ authUser, granted }));
-      }).subscribe(({ granted }) => {
+      }).subscribe(({ authUser, granted }) => {
         this.setState(() => {
-          let moreActions: IAction[] = [{
-            label: <FormattedMessage {...messages.reportAsSpam} />,
-            handler: this.openSpamModal
-          }];
+          let moreActions: IAction[] = [];
+
+          if (authUser) {
+            moreActions = [
+              ...moreActions,
+              {
+                label: <FormattedMessage {...messages.reportAsSpam} />,
+                handler: this.openSpamModal
+              }
+            ];
+          }
 
           if (granted) {
             moreActions = [
