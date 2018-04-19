@@ -268,7 +268,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  projects: <GetProjects pageSize={1000} sort="new" />,
+  projects: <GetProjects pageSize={250} sort="new" />,
   ideas: <GetIdeas type="paginated" pageSize={5} sort="new" />,
   topics: <GetTopics />,
   ideaStatuses: <GetIdeaStatuses />,

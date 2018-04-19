@@ -1,22 +1,22 @@
 import React from 'react';
-import { Subscription, Observable }  from 'rxjs/Rx';
-
-// router
+import { adopt } from 'react-adopt';
 import { browserHistory } from 'react-router';
+import { Observable, Subscription } from 'rxjs/Rx';
 
 // components
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import ProjectCards from 'components/ProjectCards';
 import Footer from 'components/Footer';
-import Spinner from 'components/UI/Spinner';
 
 // services
 import { authUserStream } from 'services/auth';
-import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
 import { ideaByIdStream, ideasStream, updateIdea } from 'services/ideas';
-import { projectsStream } from 'services/projects';
+
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -26,9 +26,6 @@ import { getLocalized } from 'utils/i18n';
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
-
-// typings
-import { Locale } from 'typings';
 
 const Container: any = styled.div`
   height: 100%;
@@ -45,18 +42,6 @@ const Container: any = styled.div`
 
   ${media.smallerThanMinTablet`
     background: #f9f9fa;
-  `}
-`;
-
-const Loading = styled.div`
-  width: 100%;
-  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
   `}
 `;
 
@@ -248,62 +233,37 @@ const SectionContainer = styled.section`
   margin-top: 10px;
 `;
 
-type Props = {};
+export interface InputProps {
+  ideaId: string;
+}
 
-type State = {
-  locale: Locale | null;
-  currentTenant: ITenant | null;
-  currentTenantHeader: string | null;
-  hasIdeas: boolean;
-  hasProjects: boolean;
-  loaded: boolean;
-};
+interface DataProps {
+  locale: GetLocaleChildProps;
+  tenant: GetTenantChildProps;
+  projects: GetProjectsChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+interface State {}
 
 export const landingPageIdeasQuery: { sort: 'trending', 'page[size]': number } = { sort: 'trending', 'page[size]': 9 };
 export const landingPageProjectsQuery: { sort: 'new', 'page[size]': number } = { sort: 'new', 'page[size]': 3 };
 
-export default class LandingPage extends React.PureComponent<Props, State> {
+class LandingPage extends React.PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      locale: null,
-      currentTenant: null,
-      currentTenantHeader: null,
-      hasIdeas: false,
-      hasProjects: false,
-      loaded: false
-    };
-    this.subscriptions = [];
+    super(props);
+    this.state = {};
   }
 
   componentDidMount() {
     const query = browserHistory.getCurrentLocation().query;
     const authUser$ = authUserStream().observable;
-    const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
-    const ideas$ = ideasStream({ queryParameters: landingPageIdeasQuery }).observable;
-    const projects$ = projectsStream({ queryParameters: landingPageProjectsQuery }).observable;
     const ideaToPublish$ = (query && query.idea_to_publish ? ideaByIdStream(query.idea_to_publish).observable : Observable.of(null));
 
     this.subscriptions = [
-      Observable.combineLatest(
-        locale$,
-        currentTenant$,
-        ideas$,
-        projects$
-      ).subscribe(([locale, currentTenant, ideas, projects]) => {
-        this.setState({
-          locale,
-          currentTenant,
-          currentTenantHeader: (currentTenant.data.attributes.header_bg ? currentTenant.data.attributes.header_bg.large : null),
-          hasIdeas: (ideas !== null && ideas.data.length > 0),
-          hasProjects: (projects !== null && projects.data.length > 0),
-          loaded: true
-        });
-      }),
-
       // if 'idea_to_publish' parameter is present in landingpage url,
       // find the draft idea previously created (before login/signup)
       // and update its status and author name
@@ -339,34 +299,28 @@ export default class LandingPage extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, currentTenant, currentTenantHeader, hasProjects, loaded } = this.state;
+    const { locale, tenant, projects } = this.props;
 
-    if (!loaded) {
-      return (
-        <Loading id="ideas-loading">
-          <Spinner size="32px" color="#666" />
-        </Loading>
-      );
-    }
-
-    if (loaded && locale && currentTenant) {
-      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-      const organizationNameMultiLoc = currentTenant.data.attributes.settings.core.organization_name;
-      const headerTitleMultiLoc = currentTenant.data.attributes.settings.core.header_title;
-      const headerSloganMultiLoc = currentTenant.data.attributes.settings.core.header_slogan;
-      const currentTenantName = getLocalized(organizationNameMultiLoc, locale, currentTenantLocales);
-      const currentTenantHeaderTitle = (headerTitleMultiLoc ? getLocalized(headerTitleMultiLoc, locale, currentTenantLocales) : null);
-      const currentTenantHeaderSlogan = (headerSloganMultiLoc ? getLocalized(headerSloganMultiLoc, locale, currentTenantLocales) : null);
-      const title = (currentTenantHeaderTitle ? currentTenantHeaderTitle : <FormattedMessage {...messages.titleCity} values={{ name: currentTenantName }}/>);
-      const subtitle = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
-      const hasHeaderImage = (currentTenantHeader !== null);
+    if (locale && tenant) {
+      const tenantLocales = tenant.attributes.settings.core.locales;
+      const organizationNameMultiLoc = tenant.attributes.settings.core.organization_name;
+      const headerTitleMultiLoc = tenant.attributes.settings.core.header_title;
+      const headerSloganMultiLoc = tenant.attributes.settings.core.header_slogan;
+      const tenantName = getLocalized(organizationNameMultiLoc, locale, tenantLocales);
+      const tenantHeaderTitle = (headerTitleMultiLoc ? getLocalized(headerTitleMultiLoc, locale, tenantLocales) : null);
+      const tenantHeaderSlogan = (headerSloganMultiLoc ? getLocalized(headerSloganMultiLoc, locale, tenantLocales) : null);
+      const tenantHeaderImage = (tenant.attributes.header_bg ? tenant.attributes.header_bg.large : null);
+      const title = (tenantHeaderTitle ? tenantHeaderTitle : <FormattedMessage {...messages.titleCity} values={{ name: tenantName }}/>);
+      const subtitle = (tenantHeaderSlogan ? tenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
+      const hasHeaderImage = (tenantHeaderImage !== null);
+      const hasProjects = (projects.projectsList && projects.projectsList.length === 0 ? false : true);
 
       return (
         <>
           <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
             <Header id="hook-header">
               <HeaderImage id="hook-header-image">
-                <HeaderImageBackground src={currentTenantHeader} />
+                <HeaderImageBackground src={tenantHeaderImage} />
                 <HeaderImageOverlay />
               </HeaderImage>
 
@@ -379,6 +333,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                 </HeaderSubtitle>
               </HeaderContent>
             </Header>
+
 
             <Content>
               <ProjectsStyledContentContainer>
@@ -422,3 +377,15 @@ export default class LandingPage extends React.PureComponent<Props, State> {
     return null;
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />,
+  tenant: <GetTenant />,
+  projects: <GetProjects pageSize={250} sort="new" />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <LandingPage {...inputProps} {...dataProps} />}
+  </Data>
+);
