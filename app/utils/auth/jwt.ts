@@ -10,10 +10,10 @@ export function getJwt() {
   }
 }
 
-export function setJwt(jwt) {
+export function setJwt(jwt: string) {
   Cookies.set(COOKIE_NAME, jwt, { expires: 60 });
 }
 
 export function removeJwt() {
-  Cookies.remove(COOKIE_NAME);
+  Cookies.remove(COOKIE_NAME, { expires: 60 });
 }
