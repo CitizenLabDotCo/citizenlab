@@ -532,8 +532,6 @@ const Data = adopt<DataProps, {}>({
 
 export default (inputProps: InputProps) => (
   <Data>
-    {dataProps => {
-      return (<Navbar {...inputProps} {...dataProps} />);
-    }}
+    {dataProps => <Navbar {...inputProps} {...dataProps} />}
   </Data>
 );

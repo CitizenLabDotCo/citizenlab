@@ -238,10 +238,8 @@ const Data = adopt<DataProps, InputProps>({
   idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>,
 });
 
-export default (inputProps: InputProps) => {
-  return (
-    <Data {...inputProps}>
-      {dataProps => <ParentCommentWithTracks {...inputProps} {...dataProps} />}
-    </Data>
-  );
-};
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <ParentCommentWithTracks {...inputProps} {...dataProps} />}
+  </Data>
+);

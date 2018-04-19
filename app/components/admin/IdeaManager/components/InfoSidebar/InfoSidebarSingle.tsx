@@ -83,10 +83,8 @@ class InfoSidebarSingle extends React.PureComponent<Props & InjectedIntlProps> {
 
 const InfoSidebarSingleWithInjectedIntl = injectIntl<Props>(InfoSidebarSingle);
 
-export default (inputProps: InputProps) => {
-  return (
-    <GetIdea id={inputProps.ideaId}>
-      {idea => <InfoSidebarSingleWithInjectedIntl {...inputProps} idea={idea} />}
-    </GetIdea>
-  );
-};
+export default (inputProps: InputProps) => (
+  <GetIdea id={inputProps.ideaId}>
+    {idea => <InfoSidebarSingleWithInjectedIntl {...inputProps} idea={idea} />}
+  </GetIdea>
+);

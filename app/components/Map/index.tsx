@@ -236,11 +236,8 @@ class CLMap extends React.PureComponent<Props, State> {
   }
 }
 
-export default (inputProps: InputProps) => {
-  return (
-    <GetTenant>
-      {tenant => <CLMap {...inputProps} tenant={tenant} />}
-    </GetTenant>
-  );
-};
-
+export default (inputProps: InputProps) => (
+  <GetTenant>
+    {tenant => <CLMap {...inputProps} tenant={tenant} />}
+  </GetTenant>
+);

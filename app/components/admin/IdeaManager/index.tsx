@@ -275,12 +275,10 @@ const Data = adopt<DataProps, InputProps>({
   phases: ({ project, render }) => <GetPhases projectId={get(project, 'id')}>{render}</GetPhases>,
 });
 
-export default (inputProps: InputProps) => {
-  const IdeaManagerWithDragDropContext = DragDropContext(HTML5Backend)(IdeaManager);
+const IdeaManagerWithDragDropContext = DragDropContext(HTML5Backend)(IdeaManager);
 
-  return (
-    <Data {...inputProps}>
-      {dataProps => <IdeaManagerWithDragDropContext {...inputProps} {...dataProps} />}
-    </Data>
-  );
-};
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <IdeaManagerWithDragDropContext {...inputProps} {...dataProps} />}
+  </Data>
+);
