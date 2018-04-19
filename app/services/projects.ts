@@ -106,6 +106,11 @@ export function updateProject(projectId, projectData: IUpdatedProjectProperties)
   return streams.update<IProject>(`${apiEndpoint}/${projectId}`, projectId, { project: projectData });
 }
 
+export function reorderProject(projectId: IProjectData['id'], newOrder: number) {
+  return streams.update<IProject>(`${apiEndpoint}/${projectId}/reorder`, projectId, { project: { ordering: newOrder } });
+}
+
+
 export function deleteProject(projectId: string) {
   return streams.delete(`${apiEndpoint}/${projectId}`, projectId);
 }
