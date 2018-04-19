@@ -3,6 +3,7 @@ class SmartGroupsService
   RULE_TYPE_TO_CLASS = {
     'custom_field_text' => SmartGroupRules::CustomFieldText,
     'custom_field_select' => SmartGroupRules::CustomFieldSelect,
+    'role' => SmartGroupRules::Role
   }
 
   def filter users_scope, json_rules
