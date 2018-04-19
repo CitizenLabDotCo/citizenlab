@@ -98,7 +98,7 @@ class DateTimePicker extends React.PureComponent<Props & injectedLocalized, Stat
     };
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (prevProps.value !== this.props.value) {
       this.setState({ selectedMoment: moment(this.props.value) });
     }

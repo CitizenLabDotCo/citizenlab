@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { isEmpty } from 'lodash';
-import * as Rx from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 import * as moment from 'moment';
 
 // components
@@ -100,8 +100,7 @@ type State = {
 };
 
 export default class UsersShowPage extends React.PureComponent<Props & Params, State> {
-  
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -150,7 +149,12 @@ export default class UsersShowPage extends React.PureComponent<Props & Params, S
           </UserInfo>
 
           <UserIdeas>
-            <IdeaCards queryParameters={{ author: user.data.id }} />
+            <IdeaCards 
+              type="load-more"
+              sort={'trending'}
+              pageSize={12}
+              authorId={user.data.id}
+            />
           </UserIdeas>
 
         </StyledContentContainer>

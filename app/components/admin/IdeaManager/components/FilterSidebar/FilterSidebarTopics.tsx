@@ -1,11 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import { xor } from 'lodash';
-
 import { ITopicData } from 'services/topics';
 import { Menu, Divider } from 'semantic-ui-react';
 import FilterSidebarTopicsItem from './FilterSidebarTopicsItem';
 import { FormattedMessage } from 'utils/cl-intl';
-
 import messages from '../../messages';
 
 interface Props {

@@ -1,10 +1,10 @@
-import * as Rx from 'rxjs/Rx';
-import * as _ from 'lodash';
+import { Observer, Observable } from 'rxjs/Rx';
+import { isObject, isEmpty } from 'lodash';
 import shallowCompare from 'utils/shallowCompare';
 
 export interface ILocalStateService<T> {
-  observer: Rx.Observer<T>;
-  observable: Rx.Observable<T>;
+  observer: Observer<T>;
+  observable: Observable<T>;
   set: (newState: Partial<T>) => void;
   get: () => Promise<T>;
 }
@@ -17,7 +17,7 @@ export function localState<T>(initialState: T): ILocalStateService<T> {
     get: null as any
   };
 
-  service.observable = new Rx.Observable<T>((observer) => {
+  service.observable = new Observable<T>((observer) => {
     service.observer = observer;
     service.observer.next(initialState);
   })
@@ -30,7 +30,7 @@ export function localState<T>(initialState: T): ILocalStateService<T> {
 
     return newState;
   })
-  .filter(state => _.isObject(state) && !_.isEmpty(state))
+  .filter(state => isObject(state) && !isEmpty(state))
   .distinctUntilChanged((oldState, newState) => shallowCompare(oldState, newState))
   .publishReplay(1)
   .refCount();
