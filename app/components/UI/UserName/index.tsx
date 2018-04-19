@@ -1,12 +1,8 @@
-// Libraries
-import * as React from 'react';
-
-// I18n
+import React from 'react';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-
-// Style
 import styled from 'styled-components';
+import { IUserData } from 'services/users';
 
 const User = styled.span`
   &.deleted-user {
@@ -14,18 +10,10 @@ const User = styled.span`
   }
 `;
 
-// Typings
-import { IUser } from 'services/users';
-interface Props {
-  user: IUser | null;
-}
-
-const UserName: React.SFC<Props> = ({ user }) => {
+export default ({ user }: { user: IUserData | null }) => {
   if (!user) {
     return (<User className="deleted-user"><FormattedMessage {...messages.deletedUser} /></User>);
-  } else {
-    return (<User>{`${user.data.attributes.first_name} ${user.data.attributes.last_name || ''}`}</User>);
   }
-};
 
-export default UserName;
+  return (<User>{`${user.attributes.first_name} ${user.attributes.last_name || ''}`}</User>);
+};
