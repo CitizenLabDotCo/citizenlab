@@ -77,6 +77,7 @@ type State = {
   modalType: string | null;
   modalId: string | null;
   modalUrl: string | null;
+  visible: boolean;
 };
 
 export default class App extends React.PureComponent<Props & RouterState, State> {
@@ -93,7 +94,8 @@ export default class App extends React.PureComponent<Props & RouterState, State>
       modalOpened: false,
       modalType: null,
       modalId: null,
-      modalUrl: null
+      modalUrl: null,
+      visible: true
     };
     this.subscriptions = [];
   }
@@ -128,6 +130,15 @@ export default class App extends React.PureComponent<Props & RouterState, State>
             store.dispatch({ type: DELETE_CURRENT_USER_LOCAL });
           } else {
             store.dispatch({ type: LOAD_CURRENT_USER_SUCCESS, payload: authUser });
+          }
+
+          // Important (and just a tiny bit hacky)!
+          // force a remount of all child components after login/logout event
+          // this is needed to guarantee any subscriptions inside of components get reintialised
+          // after streams.ts has executed a reset() of all its streams
+          if ((this.state.authUser && !authUser) || (!this.state.authUser && authUser)) {
+            this.setState({ visible: false });
+            setTimeout(() => this.setState({ visible: true }), 50);
           }
         }),
         locale$.do((locale) => {
@@ -168,7 +179,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
 
   render() {
     const { location, children } = this.props;
-    const { currentTenant, modalOpened, modalType, modalId, modalUrl } = this.state;
+    const { currentTenant, modalOpened, modalType, modalId, modalUrl, visible } = this.state;
     const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = {
       colors,
@@ -195,7 +206,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
         <WatchSagas sagas={areasSagas} />
         <WatchSagas sagas={{ tenantSaga }} />
 
-        {currentTenant && (
+        {currentTenant && visible && (
           <ThemeProvider theme={theme}>
             <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
               <Meta />
