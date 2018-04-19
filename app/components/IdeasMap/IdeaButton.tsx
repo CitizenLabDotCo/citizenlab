@@ -86,10 +86,8 @@ const Data = adopt<DataProps, InputProps>({
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
 });
 
-export default (inputProps: InputProps) => {
-  return (
-    <Data {...inputProps}>
-      {dataProps => <IdeaButton {...inputProps} {...dataProps} />}
-    </Data>
-  );
-};
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <IdeaButton {...inputProps} {...dataProps} />}
+  </Data>
+);

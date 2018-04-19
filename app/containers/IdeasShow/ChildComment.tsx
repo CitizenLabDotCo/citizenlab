@@ -134,10 +134,8 @@ const Data = adopt<DataProps, InputProps>({
   author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>
 });
 
-export default (inputProps: InputProps) => {
-  return (
-    <Data {...inputProps}>
-      {dataProps => <ChildComment {...inputProps} {...dataProps} />}
-    </Data>
-  );
-};
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <ChildComment {...inputProps} {...dataProps} />}
+  </Data>
+);

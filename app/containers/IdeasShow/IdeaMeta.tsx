@@ -57,10 +57,8 @@ const Data = adopt<DataProps, InputProps>({
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>
 });
 
-export default (inputProps: InputProps) => {
-  return (
-    <Data {...inputProps}>
-      {dataProps => <IdeaMeta {...inputProps} {...dataProps} />}
-    </Data>
-  );
-};
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <IdeaMeta {...inputProps} {...dataProps} />}
+  </Data>
+);

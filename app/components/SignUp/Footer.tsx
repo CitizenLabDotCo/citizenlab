@@ -181,10 +181,8 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
 
 const FooterWithInjectedIntl = injectIntl<Props>(Footer);
 
-export default (inputProps: InputProps) => {
-  return (
-    <GetTenant>
-      {tenant => <FooterWithInjectedIntl {...inputProps} tenant={tenant} />}
-    </GetTenant>
-  );
-};
+export default (inputProps: InputProps) => (
+  <GetTenant>
+    {tenant => <FooterWithInjectedIntl {...inputProps} tenant={tenant} />}
+  </GetTenant>
+);
