@@ -1,5 +1,3 @@
-CUTOFF_FOOTPRINT = 90
-
 
 namespace :fix_existing_tenants do
   desc "Fix the counts for all existing tenants."
@@ -18,7 +16,7 @@ namespace :fix_existing_tenants do
 
     puts "#{fixes.size} counters fixed:"
     fixes.each do |fix|
-      puts "  changed #{fix[:what]} of #{fix[:entity]} #{fix[:id]} from #{fix[:wrong]} to #{fix[:right]} in tenant #{fix[:tenant]}"
+      puts "  changed #{fix[:what]} of #{fix[:entity]} #{fix[:id]} from #{fix[:wrong]} to #{fix[:right]} in #{fix[:tenant]}"
     end
   end
 end
