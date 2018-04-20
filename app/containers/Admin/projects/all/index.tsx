@@ -1,9 +1,4 @@
 import React from 'react';
-import * as Rx from 'rxjs/Rx';
-
-// style
-import styled from 'styled-components';
-import { color, fontSize } from 'utils/styleUtils';
 
 // services
 import { IProjectData, reorderProject } from 'services/projects';
@@ -18,16 +13,7 @@ import messages from '../messages';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import PageWrapper, { ButtonWrapper } from 'components/admin/PageWrapper';
 import Button from 'components/UI/Button';
-
-const Title = styled.h1`
-  color: ${color('title')};
-  font-size: ${fontSize('xxxl')};
-  line-height: 40px;
-  font-weight: 600;
-  padding: 0;
-  margin: 0;
-  margin-bottom: 30px;
-`;
+import Title from 'components/admin/PageTitle';
 
 export interface Props {
   projects: IProjectData[];
@@ -36,10 +22,10 @@ export interface Props {
 export interface State {}
 
 class AdminProjectsList extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
-
   constructor(props) {
     super(props);
+
+    this.state = {};
   }
 
   handleReorder = (projectId, newOrder) => {
