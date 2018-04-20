@@ -4,7 +4,9 @@ import { browserHistory } from 'react-router';
 import messages from '../messages';
 
 import GoBackButton from 'components/UI/GoBackButton';
+import PageWrapper from 'components/admin/PageWrapper';
 import { FormattedMessage } from 'utils/cl-intl';
+import Formik from 'formik';
 
 const PageTitle = styled.h1`
   width: 100%;
@@ -25,6 +27,11 @@ class New extends React.Component {
         <PageTitle>
           <FormattedMessage {...messages.addAreaButton} />
         </PageTitle>
+        <PageWrapper>
+          <Formik 
+            
+          />
+        </PageWrapper>
       </>
     )
   }
