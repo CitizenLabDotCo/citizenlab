@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { sortBy } from 'lodash';
+import React from 'react';
 import * as Rx from 'rxjs/Rx';
 
 // style
@@ -55,9 +54,8 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
     }).observable;
 
     this.subscriptions = [
-      projects$.subscribe((unsortedProjects) => {
-        const projects = sortBy(unsortedProjects.data, (project) => project.attributes.created_at).reverse();
-        this.setState({ projects, loaded: true });
+      projects$.subscribe((projectsResponse) => {
+        this.setState({ projects: projectsResponse.data, loaded: true });
       })
     ];
   }
