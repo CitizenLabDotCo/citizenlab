@@ -1,5 +1,3 @@
-CUTOFF_FOOTPRINT = 90
-
 
 namespace :fix_existing_tenants do
   desc "Fix the counts for all existing tenants."
