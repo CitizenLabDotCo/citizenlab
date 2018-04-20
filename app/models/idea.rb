@@ -12,9 +12,9 @@ class Idea < ApplicationRecord
 
   belongs_to :project
   counter_culture :project, 
-    column_name: proc {|idea| idea.publication_status == 'draft' ? nil : "ideas_count"},
+    column_name: proc {|idea| idea.publication_status == 'published' ? "ideas_count" : nil},
     column_names: {
-      ["ideas.publication_status != ?", 'draft'] => 'ideas_count'
+      ["ideas.publication_status = ?", 'published'] => 'ideas_count'
     }
   belongs_to :author, class_name: 'User', optional: true
   has_many :ideas_topics#, dependent: :destroy
