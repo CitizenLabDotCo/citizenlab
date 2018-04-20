@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.editButtonLabel',
     defaultMessage: 'Edit',
   },
+  addAreaButton: {
+    id: 'app.containers.AdminPage.SettingsPage.addAreaButton',
+    defaultMessage: 'Add area',
+  },
   areaDeletionConfirmation: {
     id: 'app.containers.AdminPage.SettingsPage.areaDeletionConfirmation',
     defaultMessage: 'Are you sure you want to delete this area?',
