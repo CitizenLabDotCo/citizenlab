@@ -13,8 +13,8 @@ import styled from 'styled-components';
 const Container = styled.div``;
 
 interface InputProps {
-  surveyEmbedUrl?: string,
-  surveyService?: string,
+  surveyEmbedUrl?: string;
+  surveyService?: string;
 }
 
 interface DataProps {
