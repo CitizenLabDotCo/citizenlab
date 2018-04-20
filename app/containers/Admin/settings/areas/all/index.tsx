@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import messages from './messages';
+import messages from '../messages';
 import { Section, SectionTitle } from 'components/admin/Section';
 import { List, Row } from 'components/admin/ResourceList';
 import { FormattedMessage } from 'utils/cl-intl';
