@@ -223,6 +223,7 @@
   "app.containers.AdminPage.ProjectEdit.descriptionLabel": "Beskrivelse",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Beskrivelse",
   "app.containers.AdminPage.ProjectEdit.draftStatus": "Utkast",
+  "app.containers.AdminPage.ProjectEdit.editButtonLabel": "",
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Hendelser",
   "app.containers.AdminPage.ProjectEdit.generalTab": "Generelt",
   "app.containers.AdminPage.ProjectEdit.goBack": "Gå tilbake",
