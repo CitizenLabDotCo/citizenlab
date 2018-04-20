@@ -1,15 +1,20 @@
 import React from 'react';
+import styled from 'styled-components';
 
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 import { deleteArea } from 'services/areas';
 import T from 'components/T';
-import messages from './messages';
+import messages from '../messages';
 
 import { Section, SectionTitle } from 'components/admin/Section';
 import { List, Row, TextCell } from 'components/admin/ResourceList';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import Button from 'components/UI/Button';
+
+const ButtonWrapper = styled.div`
+  margin-top: 2rem;
+`;
 
 interface InputProps {}
 
@@ -52,6 +57,16 @@ class AreasList extends React.PureComponent<Props & InjectedIntlProps>{
             </Button>
           </Row>)}
         </List>}
+        <ButtonWrapper>
+            <Button
+              style="cl-blue"
+              circularCorners={false}
+              icon="plus-circle"
+              linkTo="/admin/settings/areas/new"
+            >
+              <FormattedMessage {...messages.addAreaButton} />
+            </Button>
+          </ButtonWrapper>
       </Section>
     );
   }

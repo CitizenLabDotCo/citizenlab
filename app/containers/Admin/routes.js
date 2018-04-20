@@ -9,6 +9,7 @@ import usersRoutes from './users/routes';
 import projectsRoutes from './projects/routes';
 import groupsRoutes from './groups/routes';
 import settingsRoutes from './settings/routes';
+import settingsAreasRoutes from './settings/areas/routes';
 import customFieldRoutes from './settings/registration/CustomFields/routes';
 import pagesRoutes from './pages/routes';
 
@@ -46,6 +47,7 @@ export default (injectReducer) => ({
       ...(customFieldRoutes()),
     },
     settingsRoutes(),
+    settingsAreasRoutes(),
     groupsRoutes(injectReducer),
     pagesRoutes(),
   ],
