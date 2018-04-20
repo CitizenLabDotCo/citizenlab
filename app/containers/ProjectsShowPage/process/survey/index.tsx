@@ -1,55 +1,36 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+
+// components
 import TypeformSurvey from './TypeformSurvey';
 import SurveymonkeySurvey from './SurveymonkeySurvey';
-import { authUserStream } from 'services/auth';
-import { IUser } from 'services/users';
+
+// resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+
+// styling
 import styled from 'styled-components';
 
 const Container = styled.div``;
 
-type Props = {
+interface InputProps {
   surveyEmbedUrl?: string,
   surveyService?: string,
-};
+}
 
-type State = {
-  user: IUser | null;
-  loaded: boolean;
-};
+interface DataProps {
+  authUser: GetAuthUserChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+interface State {}
 
 class Survey extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      user: null,
-      loaded: false,
-    };
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const authUser$ = authUserStream().observable;
-
-    this.subscriptions = [
-      authUser$.subscribe((user) => {
-        this.setState({ user, loaded: true });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
   render() {
-    const { user, loaded } = this.state;
-    const { surveyEmbedUrl, surveyService } = this.props;
+    const { surveyEmbedUrl, surveyService, authUser } = this.props;
 
-    if (surveyEmbedUrl && surveyService && loaded) {
-      const email = (user ? user.data.attributes.email : null);
+    if (surveyEmbedUrl && surveyService) {
+      const email = (authUser ? authUser.attributes.email : null);
 
       return (
         <Container className={this.props['className']}>          
@@ -59,6 +40,7 @@ class Survey extends React.PureComponent<Props, State> {
               email={(email || null)}
             />
           }
+
           {surveyService === 'survey_monkey' &&
             <SurveymonkeySurvey
               surveymonkeyUrl={surveyEmbedUrl}
@@ -72,4 +54,8 @@ class Survey extends React.PureComponent<Props, State> {
   }
 }
 
-export default Survey;
+export default (inputProps: InputProps) => (
+  <GetAuthUser>
+    {authUser => <Survey {...inputProps} authUser={authUser} />}
+  </GetAuthUser>
+);

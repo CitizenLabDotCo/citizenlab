@@ -472,9 +472,11 @@ class Streams {
       if (process.env.NODE_ENV === 'development') {
         console.log(error);
       }
+
       if (error.json && error.json.errors) {
         return Promise.reject(error);
       }
+
       throw `error for delete() of Streams for api endpoint ${apiEndpoint}`;
     }
   }
