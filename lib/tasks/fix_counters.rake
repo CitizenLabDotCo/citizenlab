@@ -16,7 +16,7 @@ namespace :fix_existing_tenants do
 
     puts "#{fixes.size} counters fixed:"
     fixes.each do |fix|
-      puts "  changed #{fix[:what]} of #{fix[:entity]} #{fix[:id]} from #{fix[:wrong]} to #{fix[:right]} in tenant #{fix[:tenant]}"
+      puts "  changed #{fix[:what]} of #{fix[:entity]} #{fix[:id]} from #{fix[:wrong]} to #{fix[:right]} in #{fix[:tenant]}"
     end
   end
 end
