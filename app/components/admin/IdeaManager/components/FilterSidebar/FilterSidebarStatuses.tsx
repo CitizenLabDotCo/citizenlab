@@ -1,5 +1,4 @@
-import * as React from 'react';
-
+import React from 'react';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 import { Menu, Divider } from 'semantic-ui-react';
 import FilterSidebarStatusesItem from './FilterSidebarStatusesItem';

@@ -2,6 +2,8 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { API, Multiloc, Locale } from 'typings';
 
+export const currentTenantApiEndpoint = `${API_PATH}/tenants/current`;
+
 interface TenantFeature {
   allowed: boolean;
   enabled: boolean;
@@ -84,7 +86,7 @@ export interface IUpdatedTenantProperties {
 }
 
 export function currentTenantStream() {
-  return streams.get<ITenant>({ apiEndpoint: `${API_PATH}/tenants/current` });
+  return streams.get<ITenant>({ apiEndpoint: currentTenantApiEndpoint });
 }
 
 export async function updateTenant(tenantId: string, object: IUpdatedTenantProperties) {

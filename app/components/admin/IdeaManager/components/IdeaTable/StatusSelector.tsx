@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 import { Popup } from 'semantic-ui-react';
@@ -38,6 +38,7 @@ class StatusSelector extends React.PureComponent<Props> {
 
   render() {
     const { statuses } = this.props;
+
     return (
       <Container>
         {statuses.map((status) => (

@@ -1,6 +1,0 @@
-export const LOAD_IDEAS_XLSX_REQUEST = 'app/Admin/ideas/LOAD_IDEAS_XLSX_REQUEST';
-export const LOAD_IDEAS_XLSX_SUCCESS = 'app/Admin/ideas/LOAD_IDEAS_XLSX_SUCCESS';
-export const LOAD_IDEAS_XLSX_ERROR = 'app/Admin/ideas/LOAD_IDEAS_XLSX_ERROR';
-export const LOAD_COMMENTS_XLSX_REQUEST = 'app/Admin/ideas/LOAD_COMMENTS_XLSX_REQUEST';
-export const LOAD_COMMENTS_XLSX_SUCCESS = 'app/Admin/ideas/LOAD_COMMENTS_XLSX_SUCCESS';
-export const LOAD_COMMENTS_XLSX_ERROR = 'app/Admin/ideas/LOAD_COMMENTS_XLSX_ERROR';

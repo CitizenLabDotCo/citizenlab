@@ -1,11 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { findDOMNode } from 'react-dom';
-
 import { DragSource, DropTarget } from 'react-dnd';
 import { Row } from 'components/admin/ResourceList';
 import { Icon } from 'semantic-ui-react';
-
 
 const DragHandle = styled.div`
   cursor: move;
@@ -61,7 +59,8 @@ const dropTarget = {
     }
 
     // Determine rectangle on screen
-    const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+    const domNode = findDOMNode(component);
+    const hoverBoundingRect = (domNode as Element).getBoundingClientRect();
 
     // Get vertical middle
     const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;

@@ -1,6 +1,5 @@
-import * as React from 'react';
+import React from 'react';
 import { xor } from 'lodash';
-
 import { IPhaseData } from 'services/phases';
 import { Label, Popup } from 'semantic-ui-react';
 import T from 'components/T';

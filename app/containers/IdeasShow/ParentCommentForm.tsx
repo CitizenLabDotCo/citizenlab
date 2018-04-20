@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { isString, trim } from 'lodash';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { isString, trim, get } from 'lodash';
+import { adopt } from 'react-adopt';
 
 // components
 import Button from 'components/UI/Button';
@@ -18,15 +18,15 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { authUserStream } from 'services/auth';
-import { localeStream } from 'services/locale';
-import { ideaByIdStream, IIdeaData } from 'services/ideas';
-import { IUser } from 'services/users';
 import { addCommentToIdea } from 'services/comments';
+
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // style
 import styled from 'styled-components';
-import { Locale } from 'typings';
 
 const Container = styled.div`
   padding: 0;
@@ -44,7 +44,6 @@ const StyledTextArea = styled(MentionsTextArea)`
     padding-right: 20px !important;
     padding-left: 20px !important;
     background: #fff !important;
-    /* box-shadow: none !important; */
   }
 `;
 
@@ -59,70 +58,37 @@ const SubmitButton = styled(Button)`
   z-index: 2;
 `;
 
-type Props = {
+interface InputProps {
   ideaId: string;
-};
+}
 
-type Tracks = {
+interface DataProps {
+  locale: GetLocaleChildProps;
+  authUser: GetAuthUserChildProps;
+  idea: GetIdeaChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+interface Tracks {
   focusEditor: Function;
   clickCommentPublish: Function;
-};
+}
 
-type State = {
-  locale: Locale | null;
-  authUser: IUser | null;
+interface State {
   inputValue: string;
   processing: boolean;
   errorMessage: string | null;
-  commentingEnabled: boolean | null;
-  commentingDisabledReason: IIdeaData['relationships']['action_descriptor']['data']['commenting']['disabled_reason'] | null;
-  projectId: string | null;
-  loaded: boolean;
-};
+}
 
 class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & Tracks, State> {
-  subscriptions: Rx.Subscription[];
-
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      locale: null,
-      authUser: null,
       inputValue: '',
       processing: false,
-      errorMessage: null,
-      commentingEnabled: null,
-      commentingDisabledReason: null,
-      projectId: null,
-      loaded: false
+      errorMessage: null
     };
-  }
-
-  componentDidMount () {
-    const locale$ = localeStream().observable;
-    const authUser$ = authUserStream().observable;
-    const idea$ = ideaByIdStream(this.props.ideaId).observable;
-
-    this.subscriptions = [
-      Rx.Observable.combineLatest(
-        locale$,
-        authUser$,
-        idea$,
-      ).subscribe(([locale, authUser, idea]) => {
-        this.setState({
-          locale,
-          authUser,
-          commentingEnabled: idea.data.relationships.action_descriptor.data.commenting.enabled,
-          commentingDisabledReason: idea.data.relationships.action_descriptor.data.commenting.disabled_reason,
-          projectId: idea.data.relationships.project.data.id,
-          loaded: true
-        });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   handleTextareaOnChange = (inputValue) => {
@@ -141,9 +107,9 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
   }
 
   handleSubmit = async (event) => {
-    const { ideaId } = this.props;
+    const { locale, authUser, ideaId } = this.props;
     const { formatMessage } = this.props.intl;
-    const { locale, authUser, inputValue } = this.state;
+    const { inputValue } = this.state;
 
     event.preventDefault();
 
@@ -162,7 +128,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
 
       try {
         this.setState({ processing: true });
-        await addCommentToIdea(ideaId, authUser.data.id, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') });
+        await addCommentToIdea(ideaId, authUser.id, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') });
         this.setState({ inputValue: '', processing: false });
       } catch (error) {
         const errorMessage = formatMessage(messages.addCommentError);
@@ -176,58 +142,69 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
   }
 
   render() {
-    if (this.state.loaded) {
-      const { ideaId } = this.props;
-      const { formatMessage } = this.props.intl;
-      const { authUser, inputValue, processing, errorMessage, commentingEnabled, commentingDisabledReason, projectId } = this.state;
-      const placeholder = formatMessage(messages.commentBodyPlaceholder);
-      const commentButtonDisabled = (!inputValue || inputValue === '');
-      const canComment = (authUser && commentingEnabled);
+    const { authUser, idea, ideaId } = this.props;
+    const { formatMessage } = this.props.intl;
+    const { inputValue, processing, errorMessage } = this.state;
+    const commentingEnabled = (idea ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
+    const commentingDisabledReason = (idea ? get(idea.relationships.action_descriptor.data.commenting, 'disabled_reason', null) : null);
+    const projectId = (idea ? get(idea.relationships.project.data, 'id', null) : null);
+    const placeholder = formatMessage(messages.commentBodyPlaceholder);
+    const commentButtonDisabled = (!inputValue || inputValue === '');
+    const canComment = (authUser && commentingEnabled);
 
-      return (
-        <Container>
-          <CommentingDisabled
-            isLoggedIn={!!authUser}
-            commentingEnabled={commentingEnabled}
-            commentingDisabledReason={commentingDisabledReason}
-            projectId={projectId}
-          />
-          {(authUser && canComment) && 
-            <CommentContainer className="e2e-comment-form ideaCommentForm">
-              <StyledAuthor authorId={authUser.data.id} />
+    return (
+      <Container>
+        <CommentingDisabled
+          isLoggedIn={!!authUser}
+          commentingEnabled={commentingEnabled}
+          commentingDisabledReason={commentingDisabledReason}
+          projectId={projectId}
+        />
+        {(authUser && canComment) && 
+          <CommentContainer className="e2e-comment-form ideaCommentForm">
+            <StyledAuthor authorId={authUser.id} />
 
-              <StyledTextArea
-                name="comment"
-                placeholder={placeholder}
-                rows={8}
-                ideaId={ideaId}
-                padding="20px 20px 80px 20px"
-                value={inputValue}
-                error={errorMessage}
-                onChange={this.handleTextareaOnChange}
+            <StyledTextArea
+              name="comment"
+              placeholder={placeholder}
+              rows={8}
+              ideaId={ideaId}
+              padding="20px 20px 80px 20px"
+              value={inputValue}
+              error={errorMessage}
+              onChange={this.handleTextareaOnChange}
+            >
+              <SubmitButton
+                className="e2e-submit-comment"
+                processing={processing}
+                icon="send"
+                circularCorners={false}
+                onClick={this.handleSubmit}
+                disabled={commentButtonDisabled}
               >
-                <SubmitButton
-                  className="e2e-submit-comment"
-                  processing={processing}
-                  icon="send"
-                  circularCorners={false}
-                  onClick={this.handleSubmit}
-                  disabled={commentButtonDisabled}
-                >
-                  <FormattedMessage {...messages.publishComment} />
-                </SubmitButton>
-              </StyledTextArea>
-            </CommentContainer>
-          }
-        </Container>
-      );
-    }
-
-    return null;
+                <FormattedMessage {...messages.publishComment} />
+              </SubmitButton>
+            </StyledTextArea>
+          </CommentContainer>
+        }
+      </Container>
+    );
   }
 }
 
-export default injectTracks<Props>({
-  focusEditor: tracks.focusNewCommentTextbox,
-  clickCommentPublish: tracks.clickCommentPublish,
-})(injectIntl<Props>(ParentCommentForm));
+const ParentCommentFormWithHoCs = injectTracks<Props>({
+    focusEditor: tracks.focusNewCommentTextbox,
+    clickCommentPublish: tracks.clickCommentPublish,
+  })(injectIntl<Props>(ParentCommentForm));
+
+const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />,
+  authUser: <GetAuthUser />,
+  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <ParentCommentFormWithHoCs {...inputProps} {...dataProps} />}
+  </Data>
+);

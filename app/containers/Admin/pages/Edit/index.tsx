@@ -1,19 +1,16 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { keys, pick, isEqual } from 'lodash';
 import { API } from 'typings';
-import { browserHistory } from 'react-router';
-
-import { IPageData, updatePage, pageByIdStream } from 'services/pages';
-
+import { browserHistory, withRouter, WithRouterProps } from 'react-router';
+import { updatePage } from 'services/pages';
+import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import PageForm, { FormValues } from '../Form';
 import { Formik } from 'formik';
-import { injectResource } from 'utils/resourceLoaders/resourceLoader';
 import PageWrapper from 'components/admin/PageWrapper';
 import { color, fontSize } from 'utils/styleUtils';
 import GoBackButton from 'components/UI/GoBackButton';
 import T from 'components/T';
-
 
 const Title = styled.h1`
   color: ${color('title')};
@@ -23,16 +20,21 @@ const Title = styled.h1`
   margin: 1rem 0 3rem 0;
 `;
 
-type Props = {
-  page: IPageData;
-};
+interface InputProps {}
 
-type State = {};
+interface DataProps {
+  page: GetPageChildProps;
+}
 
-class EditPage extends React.Component<Props, State> {
+interface Props extends InputProps, DataProps {}
+
+interface State {}
+
+class EditPage extends React.Component<Props & WithRouterProps, State> {
 
   initialValues = () => {
     const { page } = this.props;
+
     return page && {
       title_multiloc: page.attributes.title_multiloc,
       slug: page.attributes.slug,
@@ -49,19 +51,16 @@ class EditPage extends React.Component<Props, State> {
 
   handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
     const { page } = this.props;
+
     if (!page) return;
 
-    updatePage(page.id, {
-      ...this.changedValues(this.initialValues(), values)
-    })
-      .then(() => {
-        browserHistory.push('/admin/pages');
-      })
-      .catch((errorResponse) => {
-        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
-        setErrors(apiErrors);
-        setSubmitting(false);
-      });
+    updatePage(page.id, { ...this.changedValues(this.initialValues(), values) }).then(() => {
+      browserHistory.push('/admin/pages');
+    }).catch((errorResponse) => {
+      const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+      setErrors(apiErrors);
+      setSubmitting(false);
+    });
   }
 
   handleGoBack = () => {
@@ -80,14 +79,15 @@ class EditPage extends React.Component<Props, State> {
 
   render() {
     const { page } = this.props;
+    const initialValues = this.initialValues();
 
-    return page && (
+    return page && initialValues && (
       <>
         <GoBackButton onClick={this.handleGoBack} />
         <Title><T value={page.attributes.title_multiloc} /></Title>
         <PageWrapper>
           <Formik
-            initialValues={this.initialValues()}
+            initialValues={initialValues}
             onSubmit={this.handleSubmit}
             render={this.renderFn}
             validate={PageForm.validate}
@@ -98,4 +98,8 @@ class EditPage extends React.Component<Props, State> {
   }
 }
 
-export default injectResource('page', pageByIdStream, (props) => props.params.pageId)(EditPage);
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <GetPage id={inputProps.params.pageId}>
+    {page => <EditPage {...inputProps} page={page} />}
+  </GetPage>
+));
