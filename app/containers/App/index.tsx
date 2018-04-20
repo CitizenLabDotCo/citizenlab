@@ -3,11 +3,10 @@ import { Subscription, Observable } from 'rxjs/Rx';
 import * as moment from 'moment';
 import 'moment-timezone';
 import 'moment/locale/de';
-import 'moment/locale/en';
 import 'moment/locale/fr';
 import 'moment/locale/nl';
 import 'moment/locale/da';
-import 'moment/locale/no';
+import 'moment/locale/nb';
 
 // libraries
 import { RouterState, browserHistory } from 'react-router';
@@ -148,8 +147,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
           }
         }),
         locale$.do((locale) => {
-          console.log('locale: ' + locale);
-          moment.locale(locale);
+          moment.locale((locale === 'no' ? 'nb' : locale));
         }),
         tenant$.do((tenant) => {
           console.log('timezone: ' + tenant.data.attributes.settings.core.timezone);
