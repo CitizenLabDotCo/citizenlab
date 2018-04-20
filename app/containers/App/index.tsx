@@ -2,6 +2,12 @@ import React from 'react';
 import { Subscription, Observable } from 'rxjs/Rx';
 import * as moment from 'moment';
 import 'moment-timezone';
+import 'moment/locale/de';
+import 'moment/locale/en';
+import 'moment/locale/fr';
+import 'moment/locale/nl';
+import 'moment/locale/da';
+import 'moment/locale/no';
 
 // libraries
 import { RouterState, browserHistory } from 'react-router';
