@@ -14,6 +14,7 @@ import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import PageWrapper, { ButtonWrapper } from 'components/admin/PageWrapper';
 import Button from 'components/UI/Button';
 import Title from 'components/admin/PageTitle';
+import StatusLabel from 'components/UI/StatusLabel';
 
 export interface Props {
   projects: IProjectData[];
@@ -60,6 +61,11 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
                   >
                     <div className="expand primary">
                       <T value={project.attributes.title_multiloc} />
+                      {project.attributes.publication_status !== 'published' &&
+                        <StatusLabel color={project.attributes.publication_status === 'archived' ? 'clBlue' : 'draftYellow'}>
+                          <FormattedMessage {...messages[`${project.attributes.publication_status}Status`]} />
+                        </StatusLabel>
+                      }
                     </div>
                     <Button linkTo={`/admin/projects/${project.id}/edit`} style="secondary" circularCorners={false} icon="edit">
                       <FormattedMessage {...messages.editButtonLabel} />
