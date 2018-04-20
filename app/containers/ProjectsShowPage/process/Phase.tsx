@@ -4,8 +4,8 @@ import { isString } from 'lodash';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import Ideas from '../ideas/Ideas';
 import Survey from './survey';
+import IdeaCards from 'components/IdeaCards';
 
 // services
 import { localeStream } from 'services/locale';
@@ -96,7 +96,7 @@ export default class Phase extends React.PureComponent<Props, State> {
     ];
   }
 
-  componentDidUpdate(_prevProps: Props) {
+  componentDidUpdate() {
     this.phaseId$.next(this.props.phaseId);
   }
 
@@ -127,7 +127,14 @@ export default class Phase extends React.PureComponent<Props, State> {
 
           {participationMethod === 'ideation' &&
             <IdeasWrapper>
-              <Ideas type="phase" id={phase.data.id} defaultDisplay={'card'} />
+              <IdeaCards
+                type="load-more"
+                sort={'trending'}
+                pageSize={12}
+                phaseId={phase.data.id}
+                showViewToggle={true}
+                defaultView={'card'}
+              />
             </IdeasWrapper>
           }
 

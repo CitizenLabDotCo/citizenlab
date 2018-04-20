@@ -19,7 +19,6 @@ import { Button as SemButton, Icon as SemIcon } from 'semantic-ui-react';
 
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';
-// import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
@@ -576,6 +575,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       projectData,
       headerBg,
       newProjectImages,
+      presentationMode,
       loading,
       processing,
       projectAttributesDiff,
@@ -696,7 +696,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               />
             }
 
-            {/*
             {projectData && projectData.attributes.process_type === 'continuous' &&
               <SectionField>
                 <Label>
@@ -715,7 +714,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 ))}
               </SectionField>
             }
-            */}
 
             <SectionField>
               <Label htmlFor="project-area">

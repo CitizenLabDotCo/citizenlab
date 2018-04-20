@@ -1,5 +1,5 @@
 // Libraries
-import * as React from 'react';
+import React from 'react';
 
 // Components
 import Map from 'components/Map';
@@ -11,14 +11,12 @@ const MapWrapper = styled.div`
   height: 265px;
 `;
 
-// Typing
 interface Props {
   location: GeoJSON.Point;
   id: string;
 }
 
-interface State {
-}
+interface State {}
 
 export default class IdeaMap extends React.PureComponent<Props, State> {
   constructor(props: Props) {
@@ -27,9 +25,15 @@ export default class IdeaMap extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const points: any = [{ ...this.props.location }];
+    const center = this.props.location.coordinates;
+
     return (
       <MapWrapper>
-        <Map points={[{ ...this.props.location }]} />
+        <Map
+          points={points}
+          center={center}
+        />
       </MapWrapper>
     );
   }

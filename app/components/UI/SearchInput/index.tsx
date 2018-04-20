@@ -13,8 +13,8 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 
-const Container = styled.form`
-  flex: 1;
+const SearchForm = styled.form`
+  flex: 1 0 200px;
   display: flex;
   align-items: center;
   align-self: stretch;
@@ -81,6 +81,10 @@ class SearchInput extends React.PureComponent<Props & InjectedIntlProps, State> 
     }
   }
 
+  handleSubmit = (event) => {
+    event.preventDefault();
+  }
+
   render() {
     const className = this.props['className'];
     const { value } = this.props;
@@ -90,7 +94,7 @@ class SearchInput extends React.PureComponent<Props & InjectedIntlProps, State> 
     const placeholder = formatMessage(messages.searchPlaceholder);
 
     return (
-      <Container className={className}>
+      <SearchForm className={className} onSubmit={this.handleSubmit}>
         <StyledInput
           id="e2e-ideas-search"
           value={value}
@@ -98,10 +102,10 @@ class SearchInput extends React.PureComponent<Props & InjectedIntlProps, State> 
           placeholder={placeholder}
           onChange={this.handleOnChange}
         />
-          <IconWrapper onClick={this.handleOnClick} className={canClear ? 'clear' : ''}>
-            <StyledIcon name={iconName} />
-          </IconWrapper>
-      </Container>
+        <IconWrapper onClick={this.handleOnClick} className={canClear ? 'clear' : ''}>
+          <StyledIcon name={iconName} />
+        </IconWrapper>
+      </SearchForm>
     );
   }
 }

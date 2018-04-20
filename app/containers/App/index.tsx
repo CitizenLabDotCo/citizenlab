@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as moment from 'moment';
-// import { cloneDeep } from 'lodash';
 import 'moment-timezone';
 
 // libraries
@@ -35,7 +34,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled, { ThemeProvider } from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // legacy redux stuff
 import { store } from 'app';
@@ -44,29 +43,21 @@ import { LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL } from 'utils/auth
 
 // typings
 import { Location } from 'history';
+import ErrorBoundary from 'components/ErrorBoundary';
 
 const Container = styled.div`
   background: #fff;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  margin: 0;
-  overflow: hidden;
-  padding: 0;
-  width: 100vw;
+  position: relative;
 `;
 
-const Content = styled.div`
-  flex: 0 1 calc(100vh - ${(props) => props.theme.menuHeight}px);
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
+const InnerContainer = styled.div`
+  padding-top: ${props => props.theme.menuHeight}px;
 
-  ${media.smallerThanMaxTablet`
-    flex-basis: calc(100vh - ${(props) => props.theme.menuHeight}px - ${(props) => props.theme.mobileMenuHeight});
-  `}
-
-  .admin & {
-    overflow: hidden;
+  &.citizen {
+    ${media.smallerThanMaxTablet`
+      padding-top: 0px;
+      padding-bottom: ${props => props.theme.mobileMenuHeight}px;
+    `}
   }
 `;
 
@@ -115,9 +106,9 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     this.unlisten1 = browserHistory.listenBefore((location) => {
       const { authUser } = this.state;
 
-      if (location 
-          && location.pathname !== '/complete-signup' 
-          && authUser 
+      if (location
+          && location.pathname !== '/complete-signup'
+          && authUser
           && authUser.data.attributes.registration_completed_at === null
       ) {
         // redirect to second signup step
@@ -206,7 +197,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
 
         {currentTenant && (
           <ThemeProvider theme={theme}>
-            <Container className={`${isAdminPage && 'admin'}`}>
+            <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
               <Meta />
 
               <FullscreenModal
@@ -218,16 +209,20 @@ export default class App extends React.PureComponent<Props & RouterState, State>
                 <IdeasShow ideaId={modalId} inModal={true} />
               </FullscreenModal>
 
+              <div id="modal-portal" />
+
               <Navbar />
 
-              <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
-                <Content>
-                  {children}
-                </Content>
-                <HasPermission.No>
-                  <ForbiddenRoute />
-                </HasPermission.No>
-              </HasPermission>
+              <InnerContainer className={`${isAdminPage ? 'admin' : 'citizen'}`}>
+                <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
+                  <ErrorBoundary>
+                    {children}
+                  </ErrorBoundary>
+                  <HasPermission.No>
+                    <ForbiddenRoute />
+                  </HasPermission.No>
+                </HasPermission>
+              </InnerContainer>
             </Container>
           </ThemeProvider>
         )}

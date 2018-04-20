@@ -1,9 +1,8 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-import { get } from 'lodash';
-
 // libraries
-import { browserHistory, Link } from 'react-router';
+import React from 'react';
+import { get } from 'lodash';
+import { adopt } from 'react-adopt';
+import { Link } from 'react-router';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import clickOutside from 'utils/containers/clickOutside';
 
@@ -14,16 +13,17 @@ import MobileNavigation from './components/MobileNavigation';
 import IdeaButton from 'components/IdeaButton';
 import Icon from 'components/UI/Icon';
 
-// services
-import { localeStream } from 'services/locale';
-import { authUserStream } from 'services/auth';
-import { currentTenantStream, ITenant } from 'services/tenant';
-import { IUser } from 'services/users';
-import { projectsStream, IProjects, getProjectUrl } from 'services/projects';
+// resources
+import GetLocation, { GetLocationChildProps } from 'resources/GetLocation';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // utils
-import { injectTracks } from 'utils/analytics';
+import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
+import { getProjectUrl } from 'services/projects';
 
 // i18n
 import { media } from 'utils/styleUtils';
@@ -35,58 +35,31 @@ import messages from './messages';
 import { darken, rgba } from 'polished';
 import styled, { css, } from 'styled-components';
 
-// typings
-import { Locale } from 'typings';
-import { Location } from 'history';
-
 const Container = styled.div`
-  align-items: center;
-  background: #fff;
-  display: flex;
-  flex: 0 0 ${(props) => props.theme.menuHeight}px;
+  width: 100%;
   height: ${(props) => props.theme.menuHeight}px;
+  display: flex;
+  align-items: center;
   justify-content: space-between;
   padding-left: 30px;
   padding-right: 30px;
-  position: relative;
-  width: 100%;
+  position: fixed;
+  top: 0;
+  background: #fff;
+  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.12);
+  z-index: 999;
 
   * {
     user-select: none;
     outline: none;
   }
 
-  &::after {
-    content: "";
-    display: block;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.12);
-    transition: opacity 100ms ease-out;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 4;
-    height: 1px;
-  }
-
-  &.scrolled::after,
-  &.alwaysShowBorder::after,
-  &.hideBorder.scrolled::after {
-    opacity: 1;
-  }
-
-  ${media.smallerThanMaxTablet`
-    &::after {
-      opacity: 1;
-    }
-
-    &:not(.admin) {
+  &.citizen {
+    ${media.smallerThanMaxTablet`
       position: relative;
       top: auto;
-    }
-  `}
+    `}
+  }
 
   ${media.smallerThanMinTablet`
     padding-left: 15px;
@@ -97,6 +70,7 @@ const Container = styled.div`
 const Left = styled.div`
   display: flex;
   align-items: center;
+  flex-grow: 1;
 `;
 
 const LogoLink = styled(Link) `
@@ -170,10 +144,11 @@ const NavigationDropdownItemText = styled.div`
 `;
 
 const NavigationDropdownItemIcon = styled(Icon)`
-  height: 7px;
+  height: 6px;
+  width: 11px;
   fill: #999;
   margin-left: 4px;
-  margin-top: 4px;
+  margin-top: 3px;
   transition: all 100ms ease-out;
 `;
 
@@ -260,6 +235,7 @@ const NavigationDropdownList = styled.div`
   margin: 10px;
   margin-right: 5px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 `;
 
 const NavigationDropdownListItem = styled(Link)`
@@ -346,6 +322,22 @@ const RightItem: any = styled.div`
   `}
 `;
 
+const StyledIdeaButton = styled(IdeaButton)`
+  &:hover {
+    .Button {
+      border-color: ${darken(0.2, '#e0e0e0')} !important;
+    }
+  }
+
+  .Button {
+    border: solid 2px #e0e0e0 !important;
+  }
+
+  .buttonText {
+    color: ${(props) => props.theme.colorMain};
+  }
+`;
+
 const LoginLink = styled.div`
   color: ${(props) => props.theme.colors.label};
   font-size: 16px;
@@ -353,100 +345,47 @@ const LoginLink = styled.div`
   padding: 0;
 
   &:hover {
-    /* color: ${(props) => darken(0.15, props.theme.colorMain)}; */
-    /* color: ${(props) => props.theme.colorMain}; */
     color: ${(props) => darken(0.2, props.theme.colors.label)};
   }
 `;
 
-type Props = {};
+interface InputProps {}
 
-type Tracks = {
-  trackClickOpenNotifications: () => void;
-  trackClickCloseNotifications: () => void;
-};
+interface DataProps {
+  location: GetLocationChildProps;
+  authUser: GetAuthUserChildProps;
+  tenant: GetTenantChildProps;
+  locale: GetLocaleChildProps;
+  projects: GetProjectsChildProps;
+}
 
-type State = {
-  location: Location;
-  locale: Locale | null;
-  authUser: IUser | null;
-  currentTenant: ITenant | null;
-  projects: IProjects | null;
+interface Props extends InputProps, DataProps {}
+
+interface State {
   notificationPanelOpened: boolean;
   projectsDropdownOpened: boolean;
-  scrolled: boolean;
-};
+}
 
-class Navbar extends React.PureComponent<Props & Tracks, State> {
-  dropdownElement: HTMLElement | null;
-  unlisten: Function;
-  subscriptions: Rx.Subscription[];
-
+class Navbar extends React.PureComponent<Props, State> {
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
-      location: browserHistory.getCurrentLocation(),
-      locale: null,
-      authUser: null,
-      currentTenant: null,
-      projects: null,
       notificationPanelOpened: false,
-      projectsDropdownOpened: false,
-      scrolled: false
+      projectsDropdownOpened: false
     };
-    this.dropdownElement = null;
-    this.subscriptions = [];
   }
 
-  componentDidMount() {
-    const locale$ = localeStream().observable;
-    const authUser$ = authUserStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
-    const projects$ = projectsStream().observable;
-
-    this.unlisten = browserHistory.listen((location) => {
-      this.setState({ location, projectsDropdownOpened: false });
-    });
-
-    this.subscriptions = [
-      Rx.Observable.combineLatest(
-        locale$,
-        authUser$,
-        currentTenant$
-      ).subscribe(([locale, authUser, currentTenant]) => {
-        this.setState({
-          locale,
-          authUser,
-          currentTenant
-        });
-      }),
-
-      projects$.subscribe((projects) => {
-        this.setState({ projects });
-      }),
-
-      Rx.Observable.fromEvent(window, 'scroll', { passive: true }).sampleTime(20).subscribe(() => {
-        const scrolled = (window.scrollY > 0);
-        this.setState({ scrolled });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    if (this.dropdownElement) {
-      this.dropdownElement.removeEventListener('wheel', this.scrolling, false);
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.location !== this.props.location) {
+      this.setState({ projectsDropdownOpened: false });
     }
-
-    this.unlisten();
-
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   toggleNotificationPanel = () => {
     if (this.state.notificationPanelOpened) {
-      this.props.trackClickCloseNotifications();
+      trackEvent(tracks.clickCloseNotifications);
     } else {
-      this.props.trackClickOpenNotifications();
+      trackEvent(tracks.clickOpenNotifications);
     }
 
     this.setState(state => ({ notificationPanelOpened: !state.notificationPanelOpened }));
@@ -456,7 +395,7 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
     // There seem to be some false closing triggers on initializing,
     // so we check whether it's actually open
     if (this.state.notificationPanelOpened) {
-      this.props.trackClickCloseNotifications();
+      trackEvent(tracks.clickCloseNotifications);
     }
 
     this.setState({ notificationPanelOpened: false });
@@ -473,50 +412,27 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
     this.setState({ projectsDropdownOpened: false });
   }
 
-  setRef = (element: HTMLElement) => {
-    if (element) {
-      this.dropdownElement = element;
-
-      if (this.dropdownElement) {
-        this.dropdownElement.addEventListener('wheel', this.scrolling, false);
-      }
-    }
-  }
-
-  scrolling = (event: WheelEvent) => {
-    if (this.dropdownElement) {
-      const deltaY = (event.deltaMode === 1 ? event.deltaY * 20 : event.deltaY);
-      this.dropdownElement.scrollTop += deltaY;
-      event.preventDefault();
-    }
-  }
-
   render() {
-    const { location, locale, authUser, currentTenant, projects, scrolled, projectsDropdownOpened } = this.state;
-    const isAdminPage = (location.pathname.startsWith('/admin'));
+    const { projects, location, locale, authUser, tenant } = this.props;
+    const { projectsList } = projects;
+    const { projectsDropdownOpened } = this.state;
 
-    /*
-    const { pathname } = this.props.location;
-    let alwaysShowBorder: boolean = false;
-
-    if (pathname.startsWith('/admin') || pathname.startsWith('/sign-in') || pathname.startsWith('/sign-up') || pathname.startsWith('/ideas/new') || pathname.startsWith('/projects')) {
-      alwaysShowBorder = true;
-    }
-    */
-
-    if (locale && currentTenant) {
-      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-      const currentTenantLogo = get(currentTenant, 'data.attributes.logo.medium', null);
+    if (location && locale && tenant) {
+      const isAdminPage = location.pathname.startsWith('/admin');
+      const tenantLocales = tenant.attributes.settings.core.locales;
+      const tenantLogo = get(tenant.attributes.logo, 'medium');
 
       return (
         <>
-          <MobileNavigation />
+          {!isAdminPage &&
+            <MobileNavigation />
+          }
 
-          <Container className={`${scrolled && 'scrolled'} ${isAdminPage && 'admin'} ${'alwaysShowBorder'}`}>
+          <Container className={`${isAdminPage ? 'admin' : 'citizen'} ${'alwaysShowBorder'}`}>
             <Left>
-              {currentTenantLogo &&
+              {tenantLogo &&
                 <LogoLink to="/">
-                  <Logo src={currentTenantLogo} alt="logo" />
+                  <Logo src={tenantLogo} alt="logo" />
                 </LogoLink>
               }
 
@@ -525,7 +441,7 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
                   <FormattedMessage {...messages.pageOverview} />
                 </NavigationItem>
 
-                {projects && projects.data && projects.data.length > 0 &&
+                {projectsList && projectsList.length > 0 &&
                   <NavigationDropdown>
                     <NavigationDropdownItem onClick={this.handleProjectsDropdownToggle}>
                       <NavigationDropdownItemText>
@@ -543,10 +459,10 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
                     >
                       <NavigationDropdownMenu onClickOutside={this.handleProjectsDropdownOnClickOutside}>
                         <NavigationDropdownMenuInner>
-                          <NavigationDropdownList innerRef={this.setRef}>
-                            {projects.data.map((project) => (
+                          <NavigationDropdownList>
+                            {projectsList.map((project) => (
                               <NavigationDropdownListItem key={project.id} to={getProjectUrl(project)}>
-                                {getLocalized(project.attributes.title_multiloc, locale, currentTenantLocales)}
+                                {getLocalized(project.attributes.title_multiloc, locale, tenantLocales)}
                               </NavigationDropdownListItem>
                             ))}
                           </NavigationDropdownList>
@@ -560,11 +476,6 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
                   </NavigationDropdown>
                 }
 
-                {/* <NavigationItem to="/projects" activeClassName="active">
-                  <FormattedMessage {...messages.pageProjects} />
-                </NavigationItem>
-                */}
-
                 <NavigationItem to="/ideas" activeClassName="active">
                   <FormattedMessage {...messages.pageIdeas} />
                 </NavigationItem>
@@ -577,7 +488,7 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
 
             <Right>
               <RightItem className="addIdea" loggedIn={authUser !== null}>
-                <IdeaButton style="secondary-outlined" />
+                <StyledIdeaButton style="secondary-outlined" />
               </RightItem>
 
               {authUser &&
@@ -611,7 +522,16 @@ class Navbar extends React.PureComponent<Props & Tracks, State> {
   }
 }
 
-export default injectTracks<Props>({
-  trackClickOpenNotifications: tracks.clickOpenNotifications,
-  trackClickCloseNotifications: tracks.clickCloseNotifications,
-})(Navbar);
+const Data = adopt<DataProps, {}>({
+  location: <GetLocation />,
+  authUser: <GetAuthUser />,
+  tenant: <GetTenant />,
+  locale: <GetLocale />,
+  projects: <GetProjects pageSize={1000} sort="new" />
+});
+
+export default (inputProps: InputProps) => (
+  <Data>
+    {dataProps => <Navbar {...inputProps} {...dataProps} />}
+  </Data>
+);

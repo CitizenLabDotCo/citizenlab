@@ -1,8 +1,10 @@
 const crypto = require('crypto');
 const hash = crypto.randomBytes(20).toString('hex');
+const afterEach = require('../updateBSStatus');
 
 module.exports = {
   '@tags': ['citizen', 'ideas', 'comments'],
+  afterEach,
   seeComments: (browser) => {
     const signinPage = browser.page.signin();
 

@@ -42,16 +42,16 @@ export async function signUp(
   lastName: string,
   email: string,
   password: string,
-  locale: Locale
+  locale: Locale,
+  isInvitation: boolean | null | undefined,
+  token: string | undefined | null
 ) {
-  const bodyData = {
-    user: {
-      email,
-      password,
-      locale,
-      first_name: firstName,
-      last_name: lastName
-    }
+  const innerBodyData = {
+    email,
+    password,
+    locale,
+    first_name: firstName,
+    last_name: lastName
   };
 
   const httpMethod: IHttpMethod = {
@@ -59,7 +59,9 @@ export async function signUp(
   };
 
   try {
-    await request(`${API_PATH}/users`, bodyData, httpMethod, null);
+    const signUpEndpoint = (isInvitation === true ? `${API_PATH}/invites/by_token/${token}/accept` : `${API_PATH}/users`);
+    const bodyData = { [token ? 'invite' : 'user']: innerBodyData };
+    await request(signUpEndpoint, bodyData, httpMethod, null);
     const authenticatedUser = await signIn(email, password);
     return authenticatedUser;
   } catch (error) {
@@ -74,7 +76,13 @@ export function signOut() {
     removeJwt();
     streams.reset();
     authUserStream().observer.next(null);
-    browserHistory.push('/');
+    const currentLocation = browserHistory.getCurrentLocation();
+
+    if (currentLocation.pathname !== '' && currentLocation.pathname !== '/') {
+      browserHistory.push('/');
+    } else {
+      window.location.reload();
+    }
   }
 }
 

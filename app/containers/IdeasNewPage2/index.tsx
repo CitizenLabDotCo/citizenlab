@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { BehaviorSubject, Subscription } from 'rxjs/Rx';
 import { isString, isEmpty, isError } from 'lodash';
 
 // libraries
@@ -19,12 +19,14 @@ import { addIdeaImage, deleteIdeaImage, IIdeaImage } from 'services/ideaImages';
 import { getAuthUserAsync } from 'services/auth';
 import { localState, ILocalStateService } from 'services/localState';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
+import GetProject from 'resources/GetProject';
 
 // utils
-import { convertToGeoJson } from 'utils/locationTools';
+import { convertToGeoJson, reverseGeocode } from 'utils/locationTools';
 
 // typings
 import { Locale } from 'typings';
+import { IProjectData } from 'services/projects';
 
 // style
 import { media } from 'utils/styleUtils';
@@ -127,7 +129,9 @@ const ButtonBarContainer = styled.div`
   }
 `;
 
-interface Props {}
+interface Props {
+  project: IProjectData | null;
+}
 
 interface LocalState {
   showIdeaForm: boolean;
@@ -141,7 +145,9 @@ interface State extends LocalState, GlobalState {}
 class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> {
   localState: ILocalStateService<LocalState>;
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
+  projectId$: BehaviorSubject<string> = new BehaviorSubject('');
+
 
   constructor(props: Props & WithRouterProps) {
     super(props);
@@ -173,17 +179,37 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     const localState$ = this.localState.observable;
     const locale$ = localeStream().observable;
 
+    if (this.props.project && this.props.project.id) {
+      this.projectId$.next(this.props.project.id);
+    }
+
+    if (this.props.location.query.position) {
+      reverseGeocode(JSON.parse(this.props.location.query.position)).then((position) => {
+        globalState.set('IdeasNewPage', { position });
+      });
+    }
+
     this.subscriptions = [
       localState$.subscribe(({ showIdeaForm, locale }) => {
         const newState: State = { showIdeaForm, locale };
         this.setState(newState);
       }),
-      locale$.subscribe(locale => this.localState.set({ locale }))
+      locale$.subscribe(locale => this.localState.set({ locale })),
+      this.projectId$.distinctUntilChanged().subscribe((projectId) => {
+        globalState.set('IdeasNewPage', { selectedProject: { value: projectId } });
+      })
     ];
+
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  componentDidUpdate() {
+    if (this.props.project && this.props.project.id) {
+      this.projectId$.next(this.props.project.id);
+    }
   }
 
   async postIdea(publicationStatus: 'draft' | 'published', authorId: string | null = null) {
@@ -328,4 +354,8 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
   }
 }
 
-export default withRouter<Props>(IdeasNewPage2);
+export default withRouter<Props>((props: Props & WithRouterProps) => (
+  <GetProject slug={props.params.slug}>
+    {project => <IdeasNewPage2 {...props} project={project} />}
+  </GetProject>
+));

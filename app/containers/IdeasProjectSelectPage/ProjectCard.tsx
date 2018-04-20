@@ -20,7 +20,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, color } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -35,8 +35,9 @@ const Container = styled.div`
   }
 
   &:not(.enabled) {
-    opacity: 0.5;
+    opacity: 0.45;
     cursor: not-allowed;
+    background: transparent;
   }
 
   &.selected {
@@ -44,7 +45,7 @@ const Container = styled.div`
   }
 
   &.enabled:hover {
-    border-color: #999;
+    border-color: #ccc;
 
     &.selected {
       border-color: ${props => props.theme.colors.success};
@@ -63,9 +64,14 @@ const Card = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 12px;
+  padding: 10px;
   border-radius: 5px;
   position: relative;
+
+  ${media.smallerThanMinTablet`
+    padding-top: 12px;
+    padding-bottom: 12px;
+  `}
 `;
 
 const StyledRadio = styled(Radio)`
@@ -165,7 +171,7 @@ type State = {
   loaded: boolean;
 };
 
-export default class ProjectCard extends React.PureComponent<Props, State> {
+class ProjectCard extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -312,6 +318,7 @@ export default class ProjectCard extends React.PureComponent<Props, State> {
                 id={projectId}
                 label=""
                 disabled={!enabled}
+                buttonColor={color('success')}
               />
             </Card>
           </ContainerInner>
@@ -322,3 +329,5 @@ export default class ProjectCard extends React.PureComponent<Props, State> {
     return null;
   }
 }
+
+export default ProjectCard;

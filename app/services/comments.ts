@@ -1,16 +1,18 @@
 import { API_PATH } from 'containers/App/constants';
+import request from 'utils/request';
 import streams from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 
 export interface ICommentData {
   id: string;
-  type: string;
+  type: 'comments';
   attributes: {
     body_multiloc: Multiloc;
     upvotes_count: number;
     downvotes_count: number;
     created_at: string;
     updated_at: string;
+    publication_status: 'published' | 'deleted';
   };
   relationships: {
     idea: {
@@ -37,6 +39,17 @@ export interface IUpdatedComment {
   author_id: string;
   parent_id: string;
   body_multiloc: { [key: string]: string };
+}
+
+export const DeleteReasonCode = {
+  irrelevant: 'irrelevant',
+  inappropriate: 'inappropriate',
+  other: 'other',
+};
+
+export interface DeleteReason {
+  reason_code: keyof typeof DeleteReasonCode;
+  other_reason: string | null;
 }
 
 export function commentStream(commentId: string) {
@@ -72,4 +85,15 @@ export function addCommentToComment(ideaId: string, authorId: string, parentComm
 
 export function updateComment(commentId: string, object: IUpdatedComment) {
   return streams.update<IComment>(`${API_PATH}/comments/${commentId}`, commentId, { comment: object });
+}
+
+export async function markForDeletion(commentId: ICommentData['id'], reason?: DeleteReason) {
+  if (reason && reason.reason_code !== 'other') {
+    delete reason.other_reason;
+  }
+
+  const deletion = await request(`${API_PATH}/comments/${commentId}/mark_as_deleted`, { comment: reason }, { method: 'POST' }, {});
+  await commentStream(commentId).fetch();
+
+  return deletion;
 }

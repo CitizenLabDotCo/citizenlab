@@ -1,92 +1,53 @@
 # CL2 Front
 
-![Build Status](https://codeship.com/projects/8d4a8a10-dfdf-0134-b77a-46a6c2bb70db/status?branch=master)
+[![CircleCI](https://circleci.com/gh/CitizenLabDotCo/cl2-front.svg?style=svg&circle-token=46bc7ddacbeec9135870cb8765c2968f590ed7e6)](https://circleci.com/gh/CitizenLabDotCo/cl2-front)
+[![BrowserStack Status](https://www.browserstack.com/automate/badge.svg?badge_key=d2d5RDVDNHBGeHJFZjh2dHEyQ1FPUHRDc2Y3MFhGOXZiSjZsZFFqMEl0QT0tLWgwNzFuVThDUkNGR0JHSlhralhqbmc9PQ==--ee3c39ea9e8b82faaa48e43e3cea883277221935%)](https://www.browserstack.com/automate/public-build/d2d5RDVDNHBGeHJFZjh2dHEyQ1FPUHRDc2Y3MFhGOXZiSjZsZFFqMEl0QT0tLWgwNzFuVThDUkNGR0JHSlhralhqbmc9PQ==--ee3c39ea9e8b82faaa48e43e3cea883277221935%)
 
+
+
+## Prerequisites
+- NodeJS (use nvm or a similar tool in order to be able to install different versions side by side)
+- A text editor/IDE that is compatible with [Editorconfig][editorconfig] and [Typescript][typescript]
+- [cl2-back][cl2back] must be running on an accessible machine. The usual setup is to make it run in the same machine.
+
+## Setup
+1. `git clone` the repository
+2. Run `npm install` in the root of the repository
+3. Optional: If you want to be able to run the end-to-end tests, run `npm run e2e-setup`
 
 ## Running
 
-Install the latest version of the Docker toolbox. Docker Compose should be included. No other dependencies on your system are required.
-
-To run the application, simply run the following command
+If you have [cl2-back][cl2back] running on the same machine, with the default port (4000):
 ```
-docker-compose up --build
+npm start
 ```
 
-To have access to the command line within the docker container, run
+If [cl2-back][cl2back] runs on a different machine / port:
 ```
-docker-compose run --user "$(id -u):$(id -g)" --rm web /bin/bash
+API_HOST=XXX API_PORT=YYY npm start
 ```
-On mac, you can skip the `--user "$(id -u):$(id -g)"` part.
+(replace `XXX` with the hostname or ip and `YYY` with the port of your instance of cl2-back)
 
-## Notes
+## E2E tests
 
-**We are using react-boilerplate v3.4.0**
+Tests are run automatically every night at midnight (UTC). Please check the status of these on a regular basis in order to ensure nothing is broken.
 
- * [react-bolierplate v3.4.0 docs](https://github.com/react-boilerplate/react-boilerplate/tree/v3.4.0/docs)
-
-
-**How to customize Foundation components**
-
-1. edit components in `./app/components/Foudation/src`
-2. visit `http://localhost:3000/dev/foundation` to see changes
-3. run `npm run test:foundation` to make sure tests are passing
-
-## Tips
-
-**A First rule: ALWAYS run `npm t` before `git push`**
-
-**Useful Cli commands**
-
-* `npm generate component`
-* `npm generate route`
-
-**How to import CSS libraries**
-
-Install library using npm/yarn and add a import statement to app.js like below. That's it!
-
-`import '../node_modules/foundation-sites/dist/css/foundation.min.css';`
+If you want to manually run these tests, you will need a browserstack user/key combo and the URL of a test platform, then run this command, replacing `xxx`, `yyy` and `zzz` with the appropriate info:
+```
+BROWSERSTACK_USER=xxx BROWSERSTACK_KEY=yyy ROOT_URL=zzz npm run test:browserstack
+```
 
 ## IDE setup
 
-### Atom
-Works quite well with Atom out of the box. It is highly recommended to install `linter` and `linter-eslint` plugins. They will automatically pick up the linter settings from the `package.json` file and give you inline warnings to adhere to the coding standards.
+Your text editor of choice should support [Editorconfig][editorconfig] and [Typescript][typescript].
+It is also recommended that it supports [ESLint][eslint] and [TSLint][tslint] in order to give you immediate feedback.
 
-### Webstorm (build 2017.1)
-#### eslint
-
-File -> Settings -> Language & Frameworks -> Javascript -> Code Quality Tools -> ESLINT -> `"Enable"` (if necessary set the path to eslint from node_mdules). The configuration is taken directly from `package.json`
-
-Webstorm also offers options for automatic code formatting so the lint is basically corrected by itself:
+For all these reasons, [VSCode][vscode] is the preferred editor, but feel free to use something else if you'd like.
 
 
-File -> Settings -> Edit -> Code Style -> `Javascript` (various options in different tabs)
-
-#### Debugging
-
-> Set up
-
-##### React debugging
-
-Install JETBRAINS DEBUGGER TOOLS for Chrome.
-Top right corner of the window -> Click on dropdown next to `play` icon -> `Edit configurations` -> `New (+ button)` Javascript debugger. 
-
-##### Jest debugging
-
-Install [JETBRAINS DEBUGGER TOOLS](https://chrome.google.com/webstore/detail/jetbrains-ide-support/hmhgeddbohgjknpmjagkdomcpobmllji?hl=en) for Chrome.
-Top right corner of the window -> Click on dropdown next to `play` icon -> `Edit configurations` -> `New (+ button)` Jest debugger. If necessary set Jest package location (from node_modules) and set working directory.
-
-> Use a debugging configuration
-
-To run the the debugger (either React or just, choose from dropdown next to icon): just set a breakpoint (left click next to line number) and press the `bug` icon next to `play` icon mentioned above.
-Webstorm will open a new browser window. The rest works as we we were working in ChromeDevTools (`continue`, `next line`, automatic variable watch...)
-
-### Sublime
-
-Install [ESLint](https://packagecontrol.io/packages/ESLint) plugins and add
-
-{
-  "node_path": "PATH_TO_NODE",
-  "node_modules_path": "PATH_TO_LOCAL_NODE_MODULES"
-}
-
-to the Eslint's configuration. You might have to start eslint manually.
+[cl2back]: https://github.com/CitizenLabDotCo/cl2-back
+[editorconfig]: http://editorconfig.org/
+[typescript]: http://www.typescriptlang.org/
+[eslint]: https://eslint.org/
+[tslint]: https://palantir.github.io/tslint/
+[vscode]: https://code.visualstudio.com/

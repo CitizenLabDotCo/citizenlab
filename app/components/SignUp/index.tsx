@@ -111,6 +111,8 @@ const Title = styled.h2`
 `;
 
 type Props = {
+  isInvitation?: boolean | undefined;
+  token?: string | null | undefined;
   onSignUpCompleted: (userId: string) => void;
 };
 
@@ -184,6 +186,7 @@ export default class SignUp extends React.PureComponent<Props, State> {
 
   render() {
     const { visibleStep } = this.state;
+    const { isInvitation, token } = this.props;
 
     return (
       <Container>
@@ -195,9 +198,13 @@ export default class SignUp extends React.PureComponent<Props, State> {
                 classNames="step"
               >
                 <StepContainer>
-                  <Title><FormattedMessage {...messages.step1Title} /></Title>
-                  <Step1 onCompleted={this.handleStep1Completed} />
-                  <Footer goToSignIn={this.goToSignIn} />
+                  <Title>
+                    {isInvitation ? <FormattedMessage {...messages.step1InvitationTitle} /> : <FormattedMessage {...messages.step1Title} />}
+                  </Title>
+                  <Step1 isInvitation={isInvitation} token={token} onCompleted={this.handleStep1Completed} />
+                  {!isInvitation &&
+                    <Footer goToSignIn={this.goToSignIn} />
+                  }
                 </StepContainer>
               </CSSTransition>
             }

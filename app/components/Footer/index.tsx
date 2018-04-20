@@ -132,6 +132,7 @@ const CitizenLabLogo = styled(Icon) `
   fill: #999;
   margin-left: 8px;
   transition: all 150ms ease-out;
+  flex: 1 1 100px;
 `;
 
 const PoweredBy = styled.a`
@@ -272,9 +273,9 @@ class Footer extends React.PureComponent<Props, State> {
       const poweredBy = <FormattedMessage {...messages.poweredBy} />;
 
       return (
-        <Container className={this.props['className']}>
+        <Container className={this.props['className']} id="hook-footer">
           {showCityLogoSection &&
-            <FirstLine>
+            <FirstLine id="hook-footer-logo">
               {currentTenantLogo && <TenantLogo src={currentTenantLogo} />}
               <TenantSlogan>{slogan}</TenantSlogan>
             </FirstLine>

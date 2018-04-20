@@ -8,16 +8,18 @@ import messages from '../../messages';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileMenuHeight}px;
-  flex: 0 0 ${(props) => props.theme.mobileMenuHeight}px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   padding-left: 10px;
   padding-right: 10px;
   background: #fff;
-  /* background: #f9f9fa; */
-  border-top: solid 1px #ccc;
+  border-top: solid 1px #e0e0e0;
   display: flex;
   align-items: stretch;
   justify-content: space-evenly;
-  order: 3;
+  z-index: 100000;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -42,7 +44,7 @@ const NavigationLabel = styled.div`
   height: 16px;
   color: #999;
   font-size: 14px;
-  font-weight: 300;
+  font-weight: 400;
   text-align: center;
   flex: 1;
   display: flex;
@@ -66,7 +68,7 @@ const NavigationItem = styled(Link)`
 
     ${NavigationLabel} {
       color: ${(props) => props.theme.colorMain};
-      font-weight: 500;
+      font-weight: 400;
     }
   }
 `;
@@ -74,7 +76,7 @@ const NavigationItem = styled(Link)`
 export default class MobileNavigation extends React.PureComponent<{}, {}> {
   render() {
     return (
-      <Container>
+      <Container className={this.props['className']}>
 
         <NavigationItem to="/" activeClassName="active">
           <NavigationIconWrapper>

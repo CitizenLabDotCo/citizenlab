@@ -1,6 +1,4 @@
-import * as React from 'react';
-import { get, isString, omitBy, isNil } from 'lodash';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
 
 // components
 import ProjectCard from 'components/ProjectCard';
@@ -9,15 +7,12 @@ import Spinner from 'components/UI/Spinner';
 import Button from 'components/UI/Button';
 import SelectAreas from './SelectAreas';
 
-// services
-import { projectsStream, IProjects } from 'services/projects';
+// resources
+import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps } from 'resources/GetProjects';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-
-// utils
-import shallowCompare from 'utils/shallowCompare';
 
 // style
 import styled from 'styled-components';
@@ -129,113 +124,29 @@ const LoadMoreButtonWrapper = styled.div`
 
 const LoadMoreButton = styled(Button)``;
 
-interface IQueryParameters {
-  'page[number]'?: number | undefined;
-  'page[size]'?: number | undefined;
-  areas?: string[] | undefined;
-}
+interface InputProps extends GetProjectsInputProps {}
 
-interface IAccumulator {
-  projects: IProjects;
-  queryParameters: IQueryParameters;
-  hasMore: boolean;
-}
+interface Props extends InputProps, GetProjectsChildProps {}
 
-type Props = {
-  queryParameters?: IQueryParameters | undefined;
-  hideAllFilters?: boolean | undefined;
-};
+interface State {}
 
-type State = {
-  queryParameters: IQueryParameters;
-  projects: IProjects | null;
-  hasMore: boolean;
-  querying: boolean;
-  loadingMore: boolean;
-};
-
-export default class ProjectCards extends React.PureComponent<Props, State> {
-  queryParameters$: Rx.BehaviorSubject<IQueryParameters>;
-  subscriptions: Rx.Subscription[];
-
+class ProjectCards extends React.PureComponent<Props, State> {
   constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      queryParameters: {
-        'page[number]': 1,
-        'page[size]': 12,
-        areas: []
-      },
-      projects: null,
-      hasMore: false,
-      querying: true,
-      loadingMore: false
-    };
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const queryParameters = { ...this.state.queryParameters, ...this.props.queryParameters };
-    const startAccumulatorValue: IAccumulator = { queryParameters, projects: {} as IProjects, hasMore: false };
-
-    this.queryParameters$ = new Rx.BehaviorSubject(queryParameters);
-
-    this.subscriptions = [
-      this.queryParameters$
-      .distinctUntilChanged((x, y) => shallowCompare(x, y))
-      .mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
-        const isLoadingMore = (acc.queryParameters['page[number]'] !== queryParameters['page[number]']);
-        const pageNumber = (isLoadingMore ? queryParameters['page[number]'] : 1);
-        const newQueryParameters: IQueryParameters = omitBy({
-          ...queryParameters,
-          'page[number]': pageNumber
-        }, isNil);
-
-        this.setState({
-          querying: !isLoadingMore,
-          loadingMore: isLoadingMore,
-        });
-
-        return projectsStream({ queryParameters: newQueryParameters }).observable.map((projects) => {
-          const selfLink = get(projects, 'links.self');
-          const lastLink = get(projects, 'links.last');
-          const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
-
-          return {
-            queryParameters,
-            hasMore,
-            projects: (!isLoadingMore ? projects : { data: [...acc.projects.data, ...projects.data] }) as IProjects
-          };
-        });
-      }, startAccumulatorValue).subscribe(({ projects, queryParameters, hasMore }) => {
-        this.setState({ projects, queryParameters, hasMore, querying: false, loadingMore: false });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    super(props);
+    this.state = {};
   }
 
   loadMore = () => {
-    if (!this.state.loadingMore) {
-      this.queryParameters$.next({
-        ...this.state.queryParameters,
-        'page[number]': (this.state.queryParameters['page[number]'] as number) + 1
-      });
-    }
+    this.props.onLoadMore();
   }
 
   handleAreasOnChange = (areas: string[]) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      areas
-    });
+    this.props.onChangeAreas(areas);
   }
 
   render() {
-    const { queryParameters, projects, hasMore, querying, loadingMore } = this.state;
-    const hasProjects = (projects !== null && projects.data.length > 0);
+    const { queryParameters, projectsList, hasMore, querying, loadingMore } = this.props;
+    const hasProjects = (projectsList && projectsList.length > 0);
     const selectedAreas = (queryParameters.areas || []);
 
     return (
@@ -265,10 +176,10 @@ export default class ProjectCards extends React.PureComponent<Props, State> {
           </EmptyContainer>
         }
 
-        {!querying && hasProjects && projects &&
+        {!querying && hasProjects && projectsList &&
           <ProjectsList id="e2e-projects-list">
-            {projects.data.map((project) => (
-              <StyledProjectCard key={project.id} id={project.id} />
+            {projectsList.map((project) => (
+              <StyledProjectCard key={project.id} projectId={project.id} />
             ))}
           </ProjectsList>
         }
@@ -291,3 +202,9 @@ export default class ProjectCards extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export default (inputProps: InputProps) => (
+  <GetProjects {...inputProps}>
+    {projects => <ProjectCards {...inputProps} {...projects} />}
+  </GetProjects>
+);

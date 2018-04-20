@@ -1,9 +1,8 @@
-import * as React from 'react';
-import { get, isString, isEmpty, omitBy, isNil } from 'lodash';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
 
 // components
-import IdeaCard, { Props as IdeaCardProps } from 'components/IdeaCard';
+import IdeaCard, { InputProps as IdeaCardProps } from 'components/IdeaCard';
+import IdeasMap from 'components/IdeasMap';
 import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
 import SelectTopics from './SelectTopics';
@@ -11,16 +10,18 @@ import SelectSort from './SelectSort';
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
 import IdeaButton from 'components/IdeaButton';
+import FeatureFlag from 'components/FeatureFlag';
 
-// services
-import { ideasStream, IIdeas } from 'services/ideas';
+// resources
+import GetIdeas, { GetIdeasChildProps, InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import shallowCompare from 'utils/shallowCompare';
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
@@ -48,25 +49,64 @@ const FiltersArea = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
-`;
 
-const FilterArea = styled.div`
-  height: 60px;
-  display: flex;
-  align-items: center;
+  &.mapView {
+    justify-content: flex-end;
+  }
 
-  ${media.smallerThanMaxTablet`
-    height: 30px;
+  ${media.smallerThanMinTablet`
+    margin-bottom: 30px;
   `}
 `;
 
-const SearchFilterArea = FilterArea.extend`
+const FilterArea = styled.div`
+  display: flex;
+  align-items: center;
+
+  ${media.smallerThanMinTablet`
+    align-items: left;
+  `}
+`;
+
+const LeftFilterArea = FilterArea.extend`
+  &.hidden {
+    display: none;
+  }
+
   ${media.smallerThanMaxTablet`
     display: none;
   `}
 `;
 
-const SelectFilterArea = FilterArea.extend``;
+const RightFilterArea = FilterArea.extend`
+  &.hidden {
+    display: none;
+  }
+
+  ${media.smallerThanMaxTablet`
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  `}
+
+  ${media.smallerThanMinTablet`
+    width: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+  `}
+`;
+
+const DropdownFilters = styled.div`
+  &.hidden {
+    display: none;
+  }
+
+  &.hasViewToggle {
+    ${media.smallerThanMinTablet`
+      margin-top: 20px;
+    `}
+  }
+`;
 
 const StyledSearchInput = styled(SearchInput)`
   width: 300px;
@@ -79,6 +119,58 @@ const StyledSearchInput = styled(SearchInput)`
   ${media.smallerThanMaxTablet`
     width: 100%;
   `}
+`;
+
+const ViewButtons = styled.div`
+  display: flex;
+
+  &.cardView {
+    margin-left: 30px;
+
+    ${media.smallerThanMinTablet`
+      margin-left: 0px;
+    `}
+  }
+`;
+
+const ViewButton = styled.div`
+  min-width: 85px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: #fff;
+  border: solid 1px #e4e4e4;
+
+  &:hover,
+  &.active {
+    background: #f0f0f0;
+  }
+
+  > span {
+    color: ${(props) => props.theme.colors.label};
+    color: #333;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 24px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  ${media.smallerThanMinTablet`
+    height: 44px;
+  `}
+`;
+
+const CardsButton = ViewButton.extend`
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+`;
+
+const MapButton = ViewButton.extend`
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 `;
 
 const IdeasList: any = styled.div`
@@ -145,173 +237,90 @@ const LoadMoreButtonWrapper = styled.div`
 
 const LoadMoreButton = styled(Button)``;
 
-interface IQueryParameters {
-  'page[number]'?: number | undefined;
-  'page[size]'?: number | undefined;
-  project?: string | undefined;
-  phase?: string | undefined;
-  author?: string | undefined;
-  sort?: string | undefined;
-  search?: string | undefined;
-  topics?: string[] | undefined;
+interface InputProps extends GetIdeasInputProps  {
+  showViewToggle?: boolean | undefined;
+  defaultView?: 'card' | 'map' | null | undefined;
 }
 
-interface IAccumulator {
-  ideas: IIdeas;
-  queryParameters: IQueryParameters;
-  hasMore: boolean;
-}
-
-type Props = {
-  queryParameters?: IQueryParameters | undefined;
-};
+interface Props extends InputProps, GetIdeasChildProps {}
 
 type State = {
-  queryParameters: IQueryParameters;
-  searchValue: string | undefined;
-  ideas: IIdeas | null;
-  hasMore: boolean;
-  querying: boolean;
-  loadingMore: boolean;
+  selectedView: 'card' | 'map';
 };
 
-export default class IdeaCards extends React.PureComponent<Props, State> {
-  queryParameters$: Rx.BehaviorSubject<IQueryParameters>;
-  search$: Rx.BehaviorSubject<string>;
-  subscriptions: Rx.Subscription[];
-
+class IdeaCards extends React.PureComponent<Props, State> {
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
-      queryParameters: {
-        'page[number]': 1,
-        'page[size]': 12,
-        sort: 'trending',
-        project: undefined,
-        phase: undefined,
-        author: undefined,
-        search: undefined,
-        topics: undefined
-      },
-      searchValue: undefined,
-      ideas: null,
-      hasMore: false,
-      querying: true,
-      loadingMore: false
+      selectedView: 'card'
     };
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const queryParameters = { ...this.state.queryParameters, ...this.props.queryParameters };
-    const startAccumulatorValue: IAccumulator = { queryParameters, ideas: {} as IIdeas, hasMore: false };
-
-    this.queryParameters$ = new Rx.BehaviorSubject(queryParameters);
-    this.search$ = new Rx.BehaviorSubject('');
-
-    this.subscriptions = [
-      Rx.Observable.combineLatest(
-        this.queryParameters$.distinctUntilChanged((x, y) => shallowCompare(x, y)),
-        this.search$.distinctUntilChanged().do(searchValue => this.setState({ searchValue })).debounceTime(400)
-      )
-      .map(([queryParameters, search]) => ({ ...queryParameters, search }))
-      .mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
-        const isLoadingMore = (acc.queryParameters['page[number]'] !== queryParameters['page[number]']);
-        const search = (isString(queryParameters.search) && !isEmpty(queryParameters.search) ? queryParameters.search : undefined);
-        const pageNumber = (isLoadingMore ? queryParameters['page[number]'] : 1);
-        const newQueryParameters: IQueryParameters = omitBy({
-          ...queryParameters,
-          search,
-          'page[number]': pageNumber
-        }, isNil);
-
-        this.setState({
-          querying: !isLoadingMore,
-          loadingMore: isLoadingMore,
-        });
-
-        return ideasStream({ queryParameters: newQueryParameters }).observable.map((ideas) => {
-          const selfLink = get(ideas, 'links.self');
-          const lastLink = get(ideas, 'links.last');
-          const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
-
-          return {
-            queryParameters,
-            hasMore,
-            ideas: (!isLoadingMore ? ideas : { data: [...acc.ideas.data, ...ideas.data] }) as IIdeas
-          };
-        });
-      }, startAccumulatorValue).subscribe(({ ideas, queryParameters, hasMore }) => {
-        this.setState({ ideas, queryParameters, hasMore, querying: false, loadingMore: false });
-      })
-    ];
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    if (prevProps.queryParameters !== this.props.queryParameters) {
-      this.queryParameters$.next({
-        ...this.state.queryParameters,
-        ...this.props.queryParameters
-      });
-    }
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   loadMore = () => {
-    if (!this.state.loadingMore) {
-      this.queryParameters$.next({
-        ...this.state.queryParameters,
-        'page[number]': (this.state.queryParameters['page[number]'] as number) + 1
-      });
-    }
+    this.props.onLoadMore();
   }
 
   handleSearchOnChange = (search: string) => {
-    this.search$.next(search);
+    this.props.onChangeSearchTerm(search);
   }
 
   handleSortOnChange = (sort: string) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      sort
-    });
+    this.props.onChangeSorting(sort);
   }
 
   handleTopicsOnChange = (topics: string[]) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      topics
-    });
+    this.props.onChangeTopics(topics);
+  }
+
+  selectView = (selectedView: 'card' | 'map') => (event: React.FormEvent<any>) => {
+    event.preventDefault();
+    trackEventByName(tracks.toggleDisplay, { selectedDisplayMode: selectedView });
+    this.setState({ selectedView });
   }
 
   render() {
-    // const theme: any = this.props.theme;
-    const { ideas, searchValue, hasMore, querying, loadingMore } = this.state;
-    const hasIdeas = (ideas !== null && ideas.data.length > 0);
+    const { selectedView } = this.state;
+    const { queryParameters, searchValue, ideasList, hasMore, querying, loadingMore } = this.props;
+    const hasIdeas = (ideasList !== null && ideasList.length > 0);
+    const showViewToggle = (this.props.showViewToggle || false);
+    const showCardView = (selectedView === 'card');
+    const showMapView = (selectedView === 'map');
 
     return (
       <Container id="e2e-ideas-container">
-        <FiltersArea id="e2e-ideas-filters">
-          <SearchFilterArea>
+        <FiltersArea id="e2e-ideas-filters" className={`${showMapView && 'mapView'}`}>
+          <LeftFilterArea className={`${showMapView && 'hidden'}`}>
             <StyledSearchInput value={(searchValue || '')} onChange={this.handleSearchOnChange} />
-          </SearchFilterArea>
+          </LeftFilterArea>
 
-          <SelectFilterArea>
-            <SelectSort onChange={this.handleSortOnChange} />
-            <SelectTopics onChange={this.handleTopicsOnChange} />
-          </SelectFilterArea>
+          <RightFilterArea>
+            <DropdownFilters className={`${showMapView && 'hidden'} ${showViewToggle && 'hasViewToggle'}`}>
+              <SelectSort onChange={this.handleSortOnChange} />
+              <SelectTopics onChange={this.handleTopicsOnChange} />
+            </DropdownFilters>
+
+            {showViewToggle &&
+              <FeatureFlag name="maps">
+                <ViewButtons className={`${showCardView && 'cardView'}`}>
+                    <CardsButton onClick={this.selectView('card')} className={`${showCardView && 'active'}`}>
+                      <FormattedMessage {...messages.cards} />
+                    </CardsButton>
+                    <MapButton onClick={this.selectView('map')} className={`${showMapView && 'active'}`}>
+                      <FormattedMessage {...messages.map} />
+                    </MapButton>
+                </ViewButtons>
+              </FeatureFlag>
+            }
+          </RightFilterArea>
         </FiltersArea>
 
-        {querying &&
+        {showCardView && querying &&
           <Loading id="ideas-loading">
             <Spinner size="32px" color="#666" />
           </Loading>
         }
 
-        {(!querying && !hasIdeas) &&
+        {!querying && !hasIdeas &&
           <EmptyContainer id="ideas-empty">
             <IdeaIcon name="idea" />
             <EmptyMessage>
@@ -320,21 +329,21 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
               </EmptyMessageLine>
             </EmptyMessage>
             <IdeaButton
-              projectId={this.state.queryParameters.project}
-              phaseId={this.state.queryParameters.phase}
+              projectId={queryParameters.project}
+              phaseId={queryParameters.phase}
             />
           </EmptyContainer>
         }
 
-        {(!querying && hasIdeas && ideas) &&
+        {showCardView && !querying && hasIdeas && ideasList &&
           <IdeasList id="e2e-ideas-list">
-            {ideas.data.map((idea) => (
+            {ideasList.map((idea) => (
               <StyledIdeaCard ideaId={idea.id} key={idea.id} />
             ))}
           </IdeasList>
         }
 
-        {(!querying && hasMore) &&
+        {showCardView && !querying && hasMore &&
           <LoadMoreButtonWrapper>
             <LoadMoreButton
               onClick={this.loadMore}
@@ -348,7 +357,22 @@ export default class IdeaCards extends React.PureComponent<Props, State> {
             />
           </LoadMoreButtonWrapper>
         }
+
+        {showMapView && hasIdeas &&
+          <IdeasMap projectId={queryParameters.project} phaseId={queryParameters.phase} />
+        }
       </Container>
     );
   }
 }
+
+export default (inputProps: InputProps) => {
+  const { showViewToggle, defaultView, ...getIdeasInputProps } = inputProps;
+  const props: GetIdeasInputProps = { ...getIdeasInputProps, type: 'load-more' };
+
+  return (
+    <GetIdeas {...props}>
+      {ideas => <IdeaCards {...inputProps} {...ideas} />}
+    </GetIdeas>
+  );
+};

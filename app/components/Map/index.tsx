@@ -1,10 +1,10 @@
 // Libraries
-import * as React from 'react';
-import { compact, flow, isEqual } from 'lodash';
+import React from 'react';
+import { compact, isEqual } from 'lodash';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
-// Injectors
-import { injectTenant, InjectedTenant } from 'utils/resourceLoaders/tenantLoader';
+// resources
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // Map
 import Leaflet, { Marker } from 'leaflet';
@@ -52,29 +52,34 @@ interface DataMarkerOptions extends Leaflet.MarkerOptions {
   id: string;
 }
 
-export interface Props {
+export interface InputProps {
   center?: GeoJSON.Position;
   points?: Point[];
   areas?: GeoJSON.Polygon[];
-  className?: string;
   zoom?: number;
   onMarkerClick?: {(id: string, data: any): void};
   onMapClick?: {({ map, position }: {map: Leaflet.Map, position: Leaflet.LatLng}): void};
+  fitBounds?: boolean;
 }
 
-interface State {
+interface DataProps {
+  tenant: GetTenantChildProps;
 }
 
-class CLMap extends React.PureComponent<Props & InjectedTenant, State> {
+interface Props extends InputProps, DataProps {}
+
+interface State {}
+
+class CLMap extends React.PureComponent<Props, State> {
   private map: Leaflet.Map;
   private mapContainer: HTMLElement;
   private clusterLayer: Leaflet.MarkerClusterGroup;
-  private markerBounds: Leaflet.LatLngBoundsExpression;
   private markers: Leaflet.Marker[];
   private interval: number;
   private subs: Subscription[] = [];
   private dimensionW$: BehaviorSubject<number> = new BehaviorSubject(0);
   private dimensionH$: BehaviorSubject<number> = new BehaviorSubject(0);
+  private bounds$: BehaviorSubject<Leaflet.LatLngBounds | null> = new BehaviorSubject(null);
 
   private clusterOptions = {
     showCoverageOnHover: false,
@@ -107,14 +112,22 @@ class CLMap extends React.PureComponent<Props & InjectedTenant, State> {
       this.convertPoints(this.props.points);
     }
 
+    // Map container dimensions change
     this.subs.push(
       this.dimensionH$.distinctUntilChanged().subscribe(() => this.map.invalidateSize()),
       this.dimensionW$.distinctUntilChanged().subscribe(() => this.map.invalidateSize()),
     );
+
+    // Refresh bounds
+    this.subs.push(
+      this.bounds$.distinctUntilChanged().subscribe((bounds) => {
+        if (bounds && this.props.fitBounds) this.map.fitBounds(bounds, { maxZoom: 12 });
+      })
+    );
   }
 
-  componentDidUpdate(prevProps: Props & InjectedTenant) {
-    if (this.props.points && !isEqual(prevProps.points, this.props.points)) {
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.points && !isEqual(prevProps.points, this.props.points) && !isEqual(prevProps.points, this.props.points)) {
       this.convertPoints(this.props.points);
     }
 
@@ -139,7 +152,7 @@ class CLMap extends React.PureComponent<Props & InjectedTenant, State> {
     if (!this.map) {
       let center: [number, number] = [0, 0];
       if (this.props.center && this.props.center !== [0, 0]) {
-        center = this.props.center as [number, number];
+        center = [this.props.center[1], this.props.center[0]];
       } else if (this.props.tenant && this.props.tenant.attributes.settings.maps) {
         center = [
           parseFloat(this.props.tenant.attributes.settings.maps.map_center.lat),
@@ -176,11 +189,11 @@ class CLMap extends React.PureComponent<Props & InjectedTenant, State> {
       const bounds: [number, number][] = [];
 
       this.markers = compact(points).map((point) => {
-        bounds.push([point.coordinates[0], point.coordinates[1]]);
-        return new Marker(point.coordinates as [number, number], ({ ...this.markerOptions, data: point.data, id: point.id } as DataMarkerOptions));
+        bounds.push([point.coordinates[1], point.coordinates[0]]);
+        return new Marker([point.coordinates[1], point.coordinates[0]] as [number, number], ({ ...this.markerOptions, data: point.data, id: point.id } as DataMarkerOptions));
       });
 
-      if (bounds.length > 0) this.markerBounds = new Leaflet.LatLngBounds(bounds);
+      if (bounds.length > 0) this.bounds$.next(new Leaflet.LatLngBounds(bounds));
 
       this.addClusters();
     }
@@ -194,8 +207,6 @@ class CLMap extends React.PureComponent<Props & InjectedTenant, State> {
       this.map.addLayer(this.clusterLayer);
 
       if (this.props.onMarkerClick) this.clusterLayer.on('click', this.handleMarkerClick);
-
-      if (this.markerBounds) this.map.fitBounds(this.markerBounds, { maxZoom: 12 });
     }
   }
 
@@ -218,13 +229,15 @@ class CLMap extends React.PureComponent<Props & InjectedTenant, State> {
 
   render() {
     return (
-      <MapWrapper className={this.props.className}>
+      <MapWrapper className={this.props['className']}>
         <div id="map-container" ref={this.bindMapContainer} />
       </MapWrapper>
     );
   }
 }
 
-export default flow([
-  injectTenant(),
-])(CLMap);
+export default (inputProps: InputProps) => (
+  <GetTenant>
+    {tenant => <CLMap {...inputProps} tenant={tenant} />}
+  </GetTenant>
+);

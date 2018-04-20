@@ -1,10 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import { findIndex, isEmpty } from 'lodash';
 import { IPhaseData } from 'services/phases';
 import { ITopicData } from 'services/topics';
 import { IProjectData } from 'services/projects';
 import { IIdeaStatusData } from 'services/ideaStatuses';
-
 import { Tab } from 'semantic-ui-react';
 import PhasesMenu from './FilterSidebarPhases';
 import TopicsMenu from './FilterSidebarTopics';
@@ -12,13 +11,12 @@ import ProjectsMenu from './FilterSidebarProjects';
 import StatusesMenu from './FilterSidebarStatuses';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-
 import messages from '../../messages';
 
 interface Props {
-  project: IProjectData | null;
-  phases: IPhaseData[];
-  topics: ITopicData[];
+  project?: IProjectData;
+  phases?: IPhaseData[];
+  topics?: ITopicData[];
   projects?: IProjectData[];
   statuses: IIdeaStatusData[];
   selectedTopics?: string[];

@@ -79,17 +79,19 @@ const VoteIcon: any = styled(Icon) `
 
   ${(props: any) => props.size === '2' ? css`
     height: 18px;
+    width: 20px;
   ` : css``}
 
   ${(props: any) => props.size === '3' ? css`
     height: 20px;
+    width: 23px;
   ` : css``}
 `;
 
 const VoteCount = styled.div`
   color: #84939d;
   font-size: 16px;
-  font-weight: 300;
+  font-weight: 400;
   margin-left: 5px;
   transition: all 100ms ease-out;
 `;

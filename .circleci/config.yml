@@ -69,7 +69,9 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: npm run build
+      - run:
+          command: npm run build
+          no_output_timeout: '30m'
 
   deploy_demo:
     docker:
@@ -88,7 +90,9 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING npm run build:staging
+      - run:
+          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING npm run build:staging
+          no_output_timeout: '30m'
       - deploy:
           name: Deploy to S3 if tests pass and branch is Master
           command: aws s3 sync build/ s3://cl2-front-staging/ --delete --acl public-read
@@ -110,7 +114,9 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: CROWDIN_PLUGIN_ENABLED=true SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING npm run build:staging
+      - run:
+          command: CROWDIN_PLUGIN_ENABLED=true SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING npm run build:staging
+          no_output_timeout: '30m'
       - deploy :
           name: Deploy translatable version to i18n.stg.citizenlab.co
           command: aws s3 sync build/ s3://cl2-front-translations/ --delete --acl public-read
@@ -132,13 +138,56 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION npm run build
+      - run:
+          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION npm run build
+          no_output_timeout: '30m'
       - deploy :
           name: Deploy production version to benelux cluster
           command: aws s3 sync build/ s3://cl2-front-production-benelux/ --delete --acl public-read
       - deploy:
           name: Invalidate the static assets on the CDN
           command: aws cloudfront create-invalidation --distribution-id E2MY732QC516J3 --paths '/*'
+
+  test_e2e:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    working_directory: ~/cl2-front
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          command: npm run test:browserstack --silent
+          no_output_timeout: '1h'
+
+  test_a11y:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    working_directory: ~/cl2-front
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: npm run test:pa11y --silent
+
 
 workflows:
   version: 2
@@ -186,3 +235,17 @@ workflows:
           filters:
             branches:
               only: production
+
+  nightly-reports:
+    triggers:
+      # Schedule a build every day at midnight UTC
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+
+    jobs:
+      - test_e2e
+      - test_a11y

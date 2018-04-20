@@ -1,9 +1,11 @@
 const crypto = require('crypto');
 const hash = crypto.randomBytes(20).toString('hex');
 const title = `test idea ${hash}`;
+const afterEach = require('../updateBSStatus');
 
 module.exports = {
   '@tags': ['citizen', 'ideas', 'posting'],
+  afterEach,
   postIdea: (browser) => {
     const signinPage = browser.page.signin();
     const newIdeaPage = browser.page.newIdea();
