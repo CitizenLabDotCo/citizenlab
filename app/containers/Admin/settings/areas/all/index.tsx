@@ -38,7 +38,7 @@ class AreasList extends React.PureComponent<Props & InjectedIntlProps>{
     const { areas } = this.props;
     const isAreas = areas !== null && areas.length > 0;
     return (
-      <Section key={'signup_fields'}>
+      <Section>
         <SectionTitle>
           <FormattedMessage {...messages.titleAreas} />
         </SectionTitle>
@@ -52,7 +52,7 @@ class AreasList extends React.PureComponent<Props & InjectedIntlProps>{
             <Button style="text" circularCorners={false} onClick={this.handleOnDeleteClick(area.id)} icon="delete">
               <FormattedMessage {...messages.deleteButtonLabel} />
             </Button>
-            <Button style="secondary" circularCorners={false} icon="edit">
+            <Button style="secondary" circularCorners={false} linkTo={`/admin/settings/areas/${area.id}`} icon="edit">
               <FormattedMessage {...messages.editButtonLabel} />
             </Button>
           </Row>)}

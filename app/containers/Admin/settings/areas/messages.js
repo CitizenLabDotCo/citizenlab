@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.areaDeletionConfirmation',
     defaultMessage: 'Are you sure you want to delete this area?',
   },
+  editFormTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.editFormTitle',
+    defaultMessage: 'Edit area',
+  },
 });
