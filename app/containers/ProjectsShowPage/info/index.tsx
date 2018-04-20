@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import Header from '../Header';
@@ -9,13 +10,9 @@ import EventsPreview from '../EventsPreview';
 // resources
 import GetProject from 'resources/GetProject';
 
-interface InputProps {
-  params: {
-    slug: string;
-  };
-}
+interface InputProps {}
 
-export default (inputProps: InputProps) => (
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <GetProject slug={inputProps.params.slug}>
     {project => {
       const { slug } = inputProps.params;
@@ -24,7 +21,7 @@ export default (inputProps: InputProps) => (
 
       return (
         <>
-          <Header slug={slug} />
+          <Header projectSlug={slug} />
 
           <ContentContainer>
             <ProjectInfo projectId={project.id} />
@@ -35,4 +32,4 @@ export default (inputProps: InputProps) => (
       );
     }}
   </GetProject>
-);
+));

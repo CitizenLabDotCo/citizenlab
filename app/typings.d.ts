@@ -36,7 +36,7 @@ declare interface Message {
   defaultMessage: string;
 }
 
-declare type Locale = 'de' | 'en' | 'fr' | 'nl';
+declare type Locale = 'de' | 'en' | 'fr' | 'nl' | 'da' | 'no';
 
 declare interface Multiloc {
   de?: string;

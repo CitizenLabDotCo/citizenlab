@@ -1,16 +1,15 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-import { isString } from 'lodash';
+import React from 'react';
+import { adopt } from 'react-adopt';
 
 // components
 import ContentContainer from 'components/ContentContainer';
 import Survey from './survey';
 import IdeaCards from 'components/IdeaCards';
 
-// services
-import { localeStream } from 'services/locale';
-import { currentTenantStream } from 'services/tenant';
-import { phaseStream, IPhase } from 'services/phases';
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
@@ -19,9 +18,6 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-
-// typings
-import { Locale } from 'typings';
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-bottom: 70px;
@@ -53,64 +49,28 @@ const IdeasWrapper = styled.div`
   margin-top: 60px;
 `;
 
-type Props = {
-  phaseId: string
-};
+interface InputProps {
+  phaseId: string;
+}
 
-type State = {
-  locale: Locale | null;
-  currentTenantLocales: Locale[] | null;
-  phase: IPhase | null;
-};
+interface DataProps {
+  locale: GetLocaleChildProps;
+  tenantLocales: GetTenantLocalesChildProps;
+  phase: GetPhaseChildProps;
+}
 
-export default class Phase extends React.PureComponent<Props, State> {
-  phaseId$: Rx.BehaviorSubject<string>;
-  subscriptions: Rx.Subscription[];
+interface Props extends InputProps, DataProps {}
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      locale: null,
-      currentTenantLocales: null,
-      phase: null
-    };
-    this.subscriptions = [];
-    this.phaseId$ = new Rx.BehaviorSubject(null as any);
-  }
+interface State {}
 
-  componentDidMount() {
-    this.phaseId$.next(this.props.phaseId);
-
-    this.subscriptions = [
-      this.phaseId$
-        .distinctUntilChanged()
-        .filter(phaseId => isString(phaseId))
-        .switchMap((phaseId) => {
-          const locale$ = localeStream().observable;
-          const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
-          const phase$ = phaseStream(phaseId).observable;
-          return Rx.Observable.combineLatest(locale$, currentTenantLocales$, phase$);
-        }).subscribe(([locale, currentTenantLocales, phase]) => {
-          this.setState({ locale, currentTenantLocales, phase });
-        })
-    ];
-  }
-
-  componentDidUpdate() {
-    this.phaseId$.next(this.props.phaseId);
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
+class Phase extends React.PureComponent<Props, State> {
   render() {
     const className = this.props['className'];
-    const { locale, currentTenantLocales, phase } = this.state;
+    const { locale, tenantLocales, phase } = this.props;
 
-    if (locale && currentTenantLocales && phase) {
-      const participationMethod = phase.data.attributes.participation_method;
-      const description = getLocalized(phase.data.attributes.description_multiloc, locale, currentTenantLocales);
+    if (locale && tenantLocales && phase) {
+      const participationMethod = phase.attributes.participation_method;
+      const description = getLocalized(phase.attributes.description_multiloc, locale, tenantLocales);
 
       return (
         <StyledContentContainer className={className}>
@@ -131,7 +91,7 @@ export default class Phase extends React.PureComponent<Props, State> {
                 type="load-more"
                 sort={'trending'}
                 pageSize={12}
-                phaseId={phase.data.id}
+                phaseId={phase.id}
                 showViewToggle={true}
                 defaultView={'card'}
               />
@@ -140,8 +100,8 @@ export default class Phase extends React.PureComponent<Props, State> {
 
           {participationMethod === 'survey' &&
             <Survey
-              surveyEmbedUrl={phase.data.attributes.survey_embed_url}
-              surveyService={phase.data.attributes.survey_service}
+              surveyEmbedUrl={phase.attributes.survey_embed_url}
+              surveyService={phase.attributes.survey_service}
             />
           }
         </StyledContentContainer>
@@ -151,3 +111,15 @@ export default class Phase extends React.PureComponent<Props, State> {
     return null;
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale/>,
+  tenantLocales: <GetTenantLocales/>,
+  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <Phase {...inputProps} {...dataProps} />}
+  </Data>
+);

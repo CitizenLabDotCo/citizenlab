@@ -416,107 +416,102 @@ class Navbar extends React.PureComponent<Props, State> {
     const { projects, location, locale, authUser, tenant } = this.props;
     const { projectsList } = projects;
     const { projectsDropdownOpened } = this.state;
+    const isAdminPage = (location && location.pathname.startsWith('/admin'));
+    const tenantLocales = (tenant && tenant.attributes.settings.core.locales);
+    const tenantLogo = (tenant && get(tenant.attributes.logo, 'medium'));
 
-    if (location && locale && tenant) {
-      const isAdminPage = location.pathname.startsWith('/admin');
-      const tenantLocales = tenant.attributes.settings.core.locales;
-      const tenantLogo = get(tenant.attributes.logo, 'medium');
+    return (
+      <>
+        {!isAdminPage &&
+          <MobileNavigation />
+        }
 
-      return (
-        <>
-          {!isAdminPage &&
-            <MobileNavigation />
-          }
+        <Container className={`${isAdminPage ? 'admin' : 'citizen'} ${'alwaysShowBorder'}`}>
+          <Left>
+            {tenantLogo &&
+              <LogoLink to="/">
+                <Logo src={tenantLogo} alt="logo" />
+              </LogoLink>
+            }
 
-          <Container className={`${isAdminPage ? 'admin' : 'citizen'} ${'alwaysShowBorder'}`}>
-            <Left>
-              {tenantLogo &&
-                <LogoLink to="/">
-                  <Logo src={tenantLogo} alt="logo" />
-                </LogoLink>
+            <NavigationItems>
+              <NavigationItem to="/" activeClassName="active">
+                <FormattedMessage {...messages.pageOverview} />
+              </NavigationItem>
+
+              {projectsList && projectsList.length > 0 &&
+                <NavigationDropdown>
+                  <NavigationDropdownItem onClick={this.handleProjectsDropdownToggle}>
+                    <NavigationDropdownItemText>
+                      <FormattedMessage {...messages.pageProjects} />
+                    </NavigationDropdownItemText>
+                    <NavigationDropdownItemIcon name="dropdown" />
+                  </NavigationDropdownItem>
+                  <CSSTransition
+                    in={projectsDropdownOpened}
+                    timeout={200}
+                    mountOnEnter={true}
+                    unmountOnExit={true}
+                    classNames="dropdown"
+                    exit={false}
+                  >
+                    <NavigationDropdownMenu onClickOutside={this.handleProjectsDropdownOnClickOutside}>
+                      <NavigationDropdownMenuInner>
+                        <NavigationDropdownList>
+                          {tenantLocales && projectsList.map((project) => (
+                            <NavigationDropdownListItem key={project.id} to={getProjectUrl(project)}>
+                              {getLocalized(project.attributes.title_multiloc, locale, tenantLocales)}
+                            </NavigationDropdownListItem>
+                          ))}
+                        </NavigationDropdownList>
+
+                        <NavigationDropdownFooter to={`/projects`}>
+                          <FormattedMessage {...messages.allProjects} />
+                        </NavigationDropdownFooter>
+                      </NavigationDropdownMenuInner>
+                    </NavigationDropdownMenu>
+                  </CSSTransition>
+                </NavigationDropdown>
               }
 
-              <NavigationItems>
-                <NavigationItem to="/" activeClassName="active">
-                  <FormattedMessage {...messages.pageOverview} />
-                </NavigationItem>
+              <NavigationItem to="/ideas" activeClassName="active">
+                <FormattedMessage {...messages.pageIdeas} />
+              </NavigationItem>
 
-                {projectsList && projectsList.length > 0 &&
-                  <NavigationDropdown>
-                    <NavigationDropdownItem onClick={this.handleProjectsDropdownToggle}>
-                      <NavigationDropdownItemText>
-                        <FormattedMessage {...messages.pageProjects} />
-                      </NavigationDropdownItemText>
-                      <NavigationDropdownItemIcon name="dropdown" />
-                    </NavigationDropdownItem>
-                    <CSSTransition
-                      in={projectsDropdownOpened}
-                      timeout={200}
-                      mountOnEnter={true}
-                      unmountOnExit={true}
-                      classNames="dropdown"
-                      exit={false}
-                    >
-                      <NavigationDropdownMenu onClickOutside={this.handleProjectsDropdownOnClickOutside}>
-                        <NavigationDropdownMenuInner>
-                          <NavigationDropdownList>
-                            {projectsList.map((project) => (
-                              <NavigationDropdownListItem key={project.id} to={getProjectUrl(project)}>
-                                {getLocalized(project.attributes.title_multiloc, locale, tenantLocales)}
-                              </NavigationDropdownListItem>
-                            ))}
-                          </NavigationDropdownList>
+              <NavigationItem to="/pages/information" activeClassName="active">
+                <FormattedMessage {...messages.pageInformation} />
+              </NavigationItem>
+            </NavigationItems>
+          </Left>
 
-                          <NavigationDropdownFooter to={`/projects`}>
-                            <FormattedMessage {...messages.allProjects} />
-                          </NavigationDropdownFooter>
-                        </NavigationDropdownMenuInner>
-                      </NavigationDropdownMenu>
-                    </CSSTransition>
-                  </NavigationDropdown>
-                }
+          <Right>
+            <RightItem className="addIdea" loggedIn={authUser !== null}>
+              <StyledIdeaButton style="secondary-outlined" />
+            </RightItem>
 
-                <NavigationItem to="/ideas" activeClassName="active">
-                  <FormattedMessage {...messages.pageIdeas} />
-                </NavigationItem>
-
-                <NavigationItem to="/pages/information" activeClassName="active">
-                  <FormattedMessage {...messages.pageInformation} />
-                </NavigationItem>
-              </NavigationItems>
-            </Left>
-
-            <Right>
-              <RightItem className="addIdea" loggedIn={authUser !== null}>
-                <StyledIdeaButton style="secondary-outlined" />
+            {authUser &&
+              <RightItem className="notification">
+                <NotificationMenu />
               </RightItem>
+            }
 
-              {authUser &&
-                <RightItem className="notification">
-                  <NotificationMenu />
-                </RightItem>
-              }
+            {authUser &&
+              <RightItem className="usermenu">
+                <UserMenu />
+              </RightItem>
+            }
 
-              {authUser &&
-                <RightItem className="usermenu">
-                  <UserMenu />
-                </RightItem>
-              }
-
-              {!authUser &&
-                <RightItem>
-                  <LoginLink to="/sign-in" id="e2e-login-link">
-                    <FormattedMessage {...messages.login} />
-                  </LoginLink>
-                </RightItem>
-              }
-            </Right>
-          </Container>
-        </>
-      );
-    }
-
-    return null;
+            {!authUser &&
+              <RightItem>
+                <LoginLink to="/sign-in" id="e2e-login-link">
+                  <FormattedMessage {...messages.login} />
+                </LoginLink>
+              </RightItem>
+            }
+          </Right>
+        </Container>
+      </>
+    );
   }
 }
 
@@ -525,7 +520,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
-  projects: <GetProjects pageSize={1000} sort="new" />
+  projects: <GetProjects pageSize={250} sort="new" />
 });
 
 export default (inputProps: InputProps) => (
