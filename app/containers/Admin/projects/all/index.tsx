@@ -16,7 +16,7 @@ import messages from '../messages';
 
 // components
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
-import PageWrapper from 'components/admin/PageWrapper';
+import PageWrapper, { ButtonWrapper } from 'components/admin/PageWrapper';
 import Button from 'components/UI/Button';
 
 const Title = styled.h1`
@@ -81,11 +81,11 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
           </Title>
 
           <PageWrapper>
-            <p>
+            <ButtonWrapper>
               <Button linkTo="/admin/projects/new" style="cl-blue" circularCorners={false} icon="plus-circle">
                 <FormattedMessage {...messages.addNewProject} />
               </Button>
-            </p>
+            </ButtonWrapper>
             <SortableList items={projects} onReorder={this.handleReorder}>
               {({ itemsList, handleDragRow, handleDropRow }) => (
                 itemsList.map((project, index) => (
