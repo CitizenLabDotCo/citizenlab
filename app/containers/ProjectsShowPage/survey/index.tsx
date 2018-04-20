@@ -66,7 +66,7 @@ export default class ProjectSurvey extends React.PureComponent<Props, State> {
 
     return (
       <React.Fragment>
-        <Header slug={this.props.params.slug} />
+        <Header projectSlug={this.props.params.slug} />
         <ContentContainer>
           <SurveyContainer>
             {project &&
