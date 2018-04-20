@@ -51,7 +51,7 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
             </ButtonWrapper>
             <SortableList items={projects} onReorder={this.handleReorder}>
               {({ itemsList, handleDragRow, handleDropRow }) => (
-                itemsList.map((project, index) => (
+                itemsList.map((project: IProjectData, index: number) => (
                   <SortableRow
                     key={project.id}
                     id={project.id}
