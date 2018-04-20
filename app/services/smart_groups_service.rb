@@ -13,7 +13,37 @@ class SmartGroupsService
     end
   end
 
+  def generate_rules_json_schema
+    {
+      "description" => "Schema for validating the rules used in smart groups",
+      "type" => "array",
+      "items" => {
+        "anyOf" => each_rule.flat_map do |rule_claz|
+          rule_claz.to_json_schema
+        end
+      },
+      "definitions" => {
+        "uuid" => {
+          "type" => "string",
+          "pattern" => "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+        },
+        "customFieldId" => {
+          "description" => "The ID of a custom field",
+          "$ref" => "#/definitions/uuid"
+        },
+        "customFieldOptionId" => {
+          "description" => "The ID of a custom field option",
+          "$ref" => "#/definitions/uuid"
+        }
+      }
+    }
+  end
+
   private
+
+  def each_rule
+    RULE_TYPE_TO_CLASS.values.each
+  end
 
   def rule_type_to_class rule_type
     RULE_TYPE_TO_CLASS[rule_type]
@@ -27,9 +57,6 @@ class SmartGroupsService
   end
 
 
-  def generate_rules_json_schema
-
-  end
 
 end
 

@@ -2,14 +2,55 @@ module SmartGroupRules
   class CustomFieldText
 
     PREDICATE_VALUES = %w(is not_is contains not_contains begins_with not_begins_with ends_on not_ends_on is_empty not_is_empty)
+    VALUELESS_PREDICATES = %w(is_empty not_is_empty)
     RULE_TYPE = "custom_field_text"
 
     include CustomFieldRule
 
     validates :custom_field_id, inclusion: { in: proc { CustomField.where(input_type: 'text').map(&:id) } }
 
-    def self.to_json_schema custom_field, locale
-
+    def self.to_json_schema
+      [   
+        {
+          "type": "object",
+          "required" => ["ruleType", "customFieldId", "predicate", "value"],
+          "additionalProperties" => false,
+          "properties" => {
+            "ruleType" => {
+              "type" => "string",
+              "enum" => [RULE_TYPE],
+            },
+            "customFieldId" => {
+              "$ref": "#/definitions/customFieldId"
+            },
+            "predicate" => {
+              "type": "string",
+              "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
+            },
+            "value" => {
+              "type" => "string",
+            }
+          },
+        },
+        {
+          "type" => "object",
+          "required" => ["ruleType", "customFieldId", "predicate", "value"],
+          "additionalProperties" => false,
+          "properties" => {
+            "ruleType" => {
+              "type" => "string",
+              "enum" => [RULE_TYPE],
+            },
+            "customFieldId" => {
+              "$ref": "#/definitions/customFieldId"
+            },
+            "predicate" => {
+              "type" => "string",
+              "enum" => VALUELESS_PREDICATES
+            }
+          }
+        }
+      ]
     end
 
     def initialize custom_field_id, predicate, value=nil
@@ -34,7 +75,7 @@ module SmartGroupRules
     private
 
     def needs_value?
-      !%w(is_empty not_is_empty).include?(predicate)
+      !VALUELESS_PREDICATES.include?(predicate)
     end
 
   end

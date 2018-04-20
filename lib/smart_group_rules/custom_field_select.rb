@@ -2,6 +2,8 @@ module SmartGroupRules
   class CustomFieldSelect
 
     PREDICATE_VALUES = %w(has_value not_has_value is_empty not_is_empty)
+    VALUELESS_PREDICATES = %w(is_empty not_is_empty)
+
     RULE_TYPE = "custom_field_select"
 
     include CustomFieldRule
@@ -9,8 +11,48 @@ module SmartGroupRules
     validates :custom_field_id, inclusion: { in: proc { CustomField.where(input_type: ['select', 'multiselect']).map(&:id) } }
     validates :value, inclusion: { in: -> (record) { CustomFieldOption.where(custom_field_id: record.custom_field_id).map(&:id) } }, if: :needs_value?
 
-    def self.to_json_schema custom_field, locale
-
+    def self.to_json_schema
+      [   
+        {
+          "type": "object",
+          "required" => ["ruleType", "customFieldId", "predicate", "value"],
+          "additionalProperties" => false,
+          "properties" => {
+            "ruleType" => {
+              "type" => "string",
+              "enum" => [RULE_TYPE],
+            },
+            "customFieldId" => {
+              "$ref": "#/definitions/customFieldId"
+            },
+            "predicate" => {
+              "type": "string",
+              "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
+            },
+            "value" => {
+              "$ref": "#/definitions/customFieldOptionId"
+            }
+          },
+        },
+        {
+          "type" => "object",
+          "required" => ["ruleType", "customFieldId", "predicate", "value"],
+          "additionalProperties" => false,
+          "properties" => {
+            "ruleType" => {
+              "type" => "string",
+              "enum" => [RULE_TYPE],
+            },
+            "customFieldId" => {
+              "$ref": "#/definitions/customFieldId"
+            },
+            "predicate" => {
+              "type" => "string",
+              "enum" => VALUELESS_PREDICATES
+            }
+          }
+        }
+      ]
     end
 
     def initialize custom_field_id, predicate, value=nil

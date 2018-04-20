@@ -8,10 +8,24 @@ module SmartGroupRules
     attr_accessor :predicate
 
     validates :predicate, presence: true
-    validates :predicate, inclusion: { in: self::PREDICATE_VALUES }
+    validates :predicate, inclusion: { in: PREDICATE_VALUES }
 
-    def self.to_json_schema custom_field, locale
-
+    def self.to_json_schema
+      {
+        "type" => "object",
+        "additionalProperties" => false,
+        "required" => ["ruleType", "predicate"],
+        "properties" => {
+          "ruleType" => {
+            "type" => "string",
+            "enum" => [RULE_TYPE]
+          },
+          "predicate" => {
+            "type" => "string",
+            "enum" => PREDICATE_VALUES
+          }
+        }
+      }
     end
 
     def self.from_json json
