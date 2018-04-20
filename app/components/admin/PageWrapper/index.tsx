@@ -20,3 +20,8 @@ export default class PageWrapper extends React.PureComponent{
     );
   }
 }
+
+export const ButtonWrapper = styled.div`
+  margin-bottom: 0;
+  padding-bottom: 2rem;
+`;
