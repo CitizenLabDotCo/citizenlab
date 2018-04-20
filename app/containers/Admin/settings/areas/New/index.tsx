@@ -14,8 +14,7 @@ const PageTitle = styled.h1`
   margin: 1rem 0 3rem 0;
 `;
 
-class New extends React.Component {
-
+export default class New extends React.Component {
   goBack = () => {
     browserHistory.push('/admin/settings/areas');
   }
@@ -28,13 +27,10 @@ class New extends React.Component {
           <FormattedMessage {...messages.addAreaButton} />
         </PageTitle>
         <PageWrapper>
-          <Formik 
-            
-          />
+          
         </PageWrapper>
       </>
     )
   }
 }
 
-export default New;
