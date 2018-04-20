@@ -15,7 +15,7 @@ import { ParticipationMethod, SurveyServices } from './phases';
 
 export interface IProjectData {
   id: string;
-  type: string;
+  type: 'projects';
   attributes: {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
@@ -38,6 +38,7 @@ export interface IProjectData {
     publication_status: PublicationStatus;
     survey_service?: SurveyServices;
     survey_embed_url?: string;
+    ordering: number;
   };
   relationships: {
     project_images: {
