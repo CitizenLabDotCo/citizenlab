@@ -119,5 +119,21 @@ export default () => ({
         importModules.catch(errorLoading);
       },
     },
+    {
+      path: 'areas/new',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/Admin/settings/areas/new'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([component]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },
   ],
 });
