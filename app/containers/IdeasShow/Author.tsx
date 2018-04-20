@@ -134,7 +134,7 @@ class Author extends React.PureComponent<Props, State> {
 
     const authorNameComponent = (
       <AuthorName to={author ? `/profile/${author.data.attributes.slug}` : ''}>
-        <UserName user={author} />
+        <UserName user={(author ? author.data : null)} />
       </AuthorName>
     );
 

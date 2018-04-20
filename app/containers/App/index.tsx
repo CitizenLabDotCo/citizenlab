@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { Subscription, Observable } from 'rxjs/Rx';
 import * as moment from 'moment';
 import 'moment-timezone';
 
@@ -71,16 +71,17 @@ type Props = {};
 
 type State = {
   location: Location;
-  currentTenant: ITenant | null;
+  tenant: ITenant | null;
   authUser: IUser | null;
   modalOpened: boolean;
   modalType: string | null;
   modalId: string | null;
   modalUrl: string | null;
+  visible: boolean;
 };
 
 export default class App extends React.PureComponent<Props & RouterState, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
   unlisten1: Function;
   unlisten2: Function;
 
@@ -88,12 +89,13 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     super(props);
     this.state = {
       location: browserHistory.getCurrentLocation(),
-      currentTenant: null,
+      tenant: null,
       authUser: null,
       modalOpened: false,
       modalType: null,
       modalId: null,
-      modalUrl: null
+      modalUrl: null,
+      visible: true
     };
     this.subscriptions = [];
   }
@@ -101,7 +103,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
   componentDidMount() {
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
+    const tenant$ = currentTenantStream().observable;
 
     this.unlisten1 = browserHistory.listenBefore((location) => {
       const { authUser } = this.state;
@@ -121,7 +123,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     });
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      Observable.combineLatest(
         authUser$.do((authUser) => {
           if (!authUser) {
             signOut();
@@ -129,16 +131,27 @@ export default class App extends React.PureComponent<Props & RouterState, State>
           } else {
             store.dispatch({ type: LOAD_CURRENT_USER_SUCCESS, payload: authUser });
           }
+
+          // Important (and just a tiny bit hacky)!
+          // force a remount of all child components after login/logout event
+          // this is needed to guarantee any subscriptions inside of components get reintialised
+          // after streams.ts has executed a reset() of all its streams
+          if ((this.state.authUser && !authUser) || (!this.state.authUser && authUser)) {
+            this.setState({ visible: false });
+            setTimeout(() => this.setState({ visible: true }), 50);
+          }
         }),
         locale$.do((locale) => {
+          console.log('locale: ' + locale);
           moment.locale(locale);
         }),
-        currentTenant$.do((currentTenant) => {
-          moment.tz.setDefault(currentTenant.data.attributes.settings.core.timezone);
-          store.dispatch({ type: LOAD_CURRENT_TENANT_SUCCESS, payload: currentTenant });
+        tenant$.do((tenant) => {
+          console.log('timezone: ' + tenant.data.attributes.settings.core.timezone);
+          moment.tz.setDefault(tenant.data.attributes.settings.core.timezone);
+          store.dispatch({ type: LOAD_CURRENT_TENANT_SUCCESS, payload: tenant });
         })
-      ).subscribe(([authUser, _locale, currentTenant]) => {
-        this.setState({ currentTenant, authUser });
+      ).subscribe(([authUser, _locale, tenant]) => {
+        this.setState({ tenant, authUser });
       }),
 
       eventEmitter.observeEvent<IModalInfo>('cardClick').subscribe(({ eventValue }) => {
@@ -168,12 +181,12 @@ export default class App extends React.PureComponent<Props & RouterState, State>
 
   render() {
     const { location, children } = this.props;
-    const { currentTenant, modalOpened, modalType, modalId, modalUrl } = this.state;
+    const { tenant, modalOpened, modalType, modalId, modalUrl, visible } = this.state;
     const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = {
       colors,
       fontSizes,
-      colorMain: (currentTenant ? currentTenant.data.attributes.settings.core.color_main : '#ef0071'),
+      colorMain: (tenant ? tenant.data.attributes.settings.core.color_main : '#ef0071'),
       menuStyle: 'light',
       menuHeight: 74,
       mobileMenuHeight: 72,
@@ -195,7 +208,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
         <WatchSagas sagas={areasSagas} />
         <WatchSagas sagas={{ tenantSaga }} />
 
-        {currentTenant && (
+        {tenant && visible && (
           <ThemeProvider theme={theme}>
             <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
               <Meta />

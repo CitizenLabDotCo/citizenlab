@@ -76,7 +76,12 @@ export function signOut() {
     removeJwt();
     streams.reset();
     authUserStream().observer.next(null);
-    browserHistory.push('/');
+
+    const currentLocation = browserHistory.getCurrentLocation();
+
+    if (currentLocation.pathname.startsWith('/admin')) {
+      browserHistory.push('/');
+    }
   }
 }
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { IProjectData } from 'services/projects';
 import { flow } from 'lodash';
 import T from 'components/T';

@@ -1,10 +1,8 @@
-import * as React from 'react';
-import { clone, find, map, isEqual } from 'lodash';
+import React from 'react';
+import { clone, isEqual } from 'lodash';
 import styled from 'styled-components';
-
-import { injectResources, InjectedResourcesLoaderProps } from 'utils/resourceLoaders/resourcesLoader';
-import { customFieldsForUsersStream, deleteCustomField, ICustomFieldData, updateCustomFieldForUsers, reorderCustomFieldForUsers } from 'services/userCustomFields';
-
+import { deleteCustomField, ICustomFieldData, updateCustomFieldForUsers, reorderCustomFieldForUsers } from 'services/userCustomFields';
+import GetCustomFields, { GetCustomFieldsChildProps } from 'resources/GetCustomFields';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import T from 'components/T';
@@ -14,7 +12,6 @@ import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import Button from 'components/UI/Button';
 import Toggle from 'components/UI/Toggle';
-
 import messages from '../messages';
 import FeatureFlag from 'components/FeatureFlag';
 
@@ -29,14 +26,19 @@ const TextCell = styled.div`
   line-height: 20px;
 `;
 
-type Props = {
-};
+interface InputProps {}
 
-type State = {
+interface DataProps {
+  customFields: GetCustomFieldsChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+interface State {
   itemsWhileDragging: ICustomFieldData[] | null;
-};
+}
 
-class CustomFields extends React.Component<Props & InjectedResourcesLoaderProps<ICustomFieldData> & InjectedIntlProps, State> {
+class CustomFields extends React.Component<Props & InjectedIntlProps, State> {
 
   constructor(props) {
     super(props);
@@ -45,8 +47,12 @@ class CustomFields extends React.Component<Props & InjectedResourcesLoaderProps<
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.state.itemsWhileDragging && !isEqual(map(nextProps.customFields.all, 'id'), map(this.props.customFields.all, 'id'))) {
+  componentDidUpdate(prevProps: Props) {
+    const { itemsWhileDragging } = this.state;
+    const prevCustomFieldsIds = (prevProps.customFields && prevProps.customFields.map(customField => customField.id));
+    const nextCustomFieldsIds = (this.props.customFields && this.props.customFields.map(customField => customField.id));
+
+    if (itemsWhileDragging && !isEqual(prevCustomFieldsIds, nextCustomFieldsIds)) {
       this.setState({ itemsWhileDragging: null });
     }
   }
@@ -54,6 +60,7 @@ class CustomFields extends React.Component<Props & InjectedResourcesLoaderProps<
   handleOnDeleteClick = (customFieldId) => (event) => {
     const deleteMessage = this.props.intl.formatMessage(messages.customFieldDeletionConfirmation);
     event.preventDefault();
+
     if (window.confirm(deleteMessage)) {
       this.setState({ itemsWhileDragging: null });
       deleteCustomField(customFieldId);
@@ -62,6 +69,7 @@ class CustomFields extends React.Component<Props & InjectedResourcesLoaderProps<
 
   handleDragRow = (fromIndex, toIndex) => {
     const listItems = this.listItems();
+
     if (!listItems) return;
 
     const itemsWhileDragging = clone(listItems);
@@ -70,14 +78,15 @@ class CustomFields extends React.Component<Props & InjectedResourcesLoaderProps<
     this.setState({ itemsWhileDragging });
   }
 
-  handleDropRow = (fieldId, toIndex) => {
+  handleDropRow = (fieldId: string, toIndex: number) => {
     const listItems = this.listItems();
+
     if (!listItems) return;
-    const field = find(listItems, { id: fieldId });
+
+    const field = listItems.find(listItem => listItem.id === fieldId);
+
     if (field && field.attributes.ordering !== toIndex) {
-      reorderCustomFieldForUsers(fieldId, {
-        ordering: toIndex,
-      });
+      reorderCustomFieldForUsers(fieldId, { ordering: toIndex });
     } else {
       this.setState({ itemsWhileDragging: null });
     }
@@ -90,8 +99,9 @@ class CustomFields extends React.Component<Props & InjectedResourcesLoaderProps<
   }
 
   listItems = () => {
+    const { itemsWhileDragging } = this.state;
     const { customFields } = this.props;
-    return this.state.itemsWhileDragging || (customFields && customFields.all);
+    return (itemsWhileDragging || customFields);
   }
 
   isBuiltInField = (field: ICustomFieldData) => {
@@ -100,8 +110,9 @@ class CustomFields extends React.Component<Props & InjectedResourcesLoaderProps<
 
   render() {
     const listItems = this.listItems() || [];
+
     return (
-      <div>
+      <>
         <List key={listItems.length}>
           {listItems.map((field, index) => (
             <SortableRow
@@ -146,9 +157,15 @@ class CustomFields extends React.Component<Props & InjectedResourcesLoaderProps<
             </Button>
           </ButtonWrapper>
         </FeatureFlag>
-      </div>
+      </>
     );
   }
 }
 
-export default DragDropContext(HTML5Backend)(injectResources('customFields', customFieldsForUsersStream)(injectIntl(CustomFields)));
+const CustomFieldsWithHoCs = DragDropContext(HTML5Backend)(injectIntl<Props>(CustomFields));
+
+export default (inputProps: InputProps) => (
+  <GetCustomFields>
+    {customFields => <CustomFieldsWithHoCs {...inputProps} customFields={customFields} />}
+  </GetCustomFields>
+);

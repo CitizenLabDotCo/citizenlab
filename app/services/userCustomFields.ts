@@ -34,7 +34,7 @@ export interface ICustomFields {
   data: ICustomFieldData[];
 }
 
-export interface ICustomFieldOptionData {
+export interface ICustomFieldOptionsData {
   id: string;
   type: string;
   attributes: {
@@ -51,8 +51,8 @@ export interface ICustomFieldOptionData {
   };
 }
 
-export interface ICustomFieldOption {
-  data: ICustomFieldOptionData;
+export interface ICustomFieldOptions {
+  data: ICustomFieldOptionsData[];
 }
 
 export function customFieldForUsersStream(customFieldId: string, streamParams: IStreamParams | null = null) {
@@ -84,7 +84,7 @@ export function deleteCustomField(customFieldId: string) {
 }
 
 export function customFieldOptionsStream(customFieldId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<ICustomFieldOption>({ apiEndpoint: `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options`, ...streamParams });
+  return streams.get<ICustomFieldOptions>({ apiEndpoint: `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options`, ...streamParams });
 }
 
 export function addCustomFieldOption(customFieldId: string, data) {
@@ -92,7 +92,7 @@ export function addCustomFieldOption(customFieldId: string, data) {
 }
 
 export function updateCustomFieldOption(customFieldId: string, optionId: string, object) {
-  return streams.update<ICustomFieldOption>(`${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${optionId}`, optionId, { custom_field_option: object });
+  return streams.update<ICustomFieldOptions>(`${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${optionId}`, optionId, { custom_field_option: object });
 }
 
 export function deleteCustomFieldOption(customFieldId: string, optionId: string) {

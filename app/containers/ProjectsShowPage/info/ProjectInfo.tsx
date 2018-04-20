@@ -1,12 +1,13 @@
-import * as React from 'react';
+import React from 'react';
 import 'moment-timezone';
-import { withRouter, WithRouterProps } from 'react-router';
+import { adopt } from 'react-adopt';
 
 // components
 import ImageZoom from 'react-medium-image-zoom';
 
-// services
-import GetProject from 'utils/resourceLoaders/components/GetProject';
+// resources
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
 
 // i18n
 import T from 'components/T';
@@ -124,52 +125,48 @@ const ProjectImages = styled.div`
   }
 `;
 
-type Props = {
+interface InputProps {
   projectId: string;
-  className?: string;
-};
-
-type State = {};
-
-class ProjectInfo extends React.PureComponent<Props & WithRouterProps, State> {
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {};
-  }
-
-  render() {
-    return (
-      <GetProject slug={this.props.params.slug} withImages>
-        {({ project, images }) => {
-          if (!project) return null;
-
-          return (
-            <Container>
-              <Left>
-                <IdeaBodyStyled>
-                  <T value={project.attributes.description_multiloc} />
-                </IdeaBodyStyled>
-              </Left>
-
-              {images && images.length > 0 &&
-                <Right>
-                  <ProjectImages>
-                    {images.filter((image) => image).map((image) => (
-                      <ImageZoom
-                        key={image.id}
-                        image={{ src: image.attributes.versions.large }}
-                        zoomImage={{ src: image.attributes.versions.large }}
-                      />
-                    ))}
-                  </ProjectImages>
-                </Right>
-              }
-            </Container>
-          );
-        }}
-      </GetProject>
-    );
-  }
 }
 
-export default withRouter(ProjectInfo);
+interface DataProps {
+  project: GetProjectChildProps;
+  projectImages: GetProjectImagesChildProps;
+}
+
+const Data = adopt<DataProps, InputProps>({
+  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
+  projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {({ project, projectImages }) => {
+      if (!project) return null;
+
+      return (
+        <Container>
+          <Left>
+            <IdeaBodyStyled>
+              <T value={project.attributes.description_multiloc} />
+            </IdeaBodyStyled>
+          </Left>
+
+          {projectImages && projectImages.length > 0 &&
+            <Right>
+              <ProjectImages>
+                {projectImages.filter(projectImage => projectImage).map((projectImage) => (
+                  <ImageZoom
+                    key={projectImage.id}
+                    image={{ src: projectImage.attributes.versions.large }}
+                    zoomImage={{ src: projectImage.attributes.versions.large }}
+                  />
+                ))}
+              </ProjectImages>
+            </Right>
+          }
+        </Container>
+      );
+    }}
+  </Data>
+);
