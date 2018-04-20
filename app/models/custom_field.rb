@@ -24,6 +24,7 @@ class CustomField < ApplicationRecord
 
 
   scope :fields_for, -> (claz) { where(resource_type: claz.name.to_s) }
+  scope :enabled, -> { where(enabled: true) }
 
   def support_options?
     %w(select multiselect).include?(input_type)
