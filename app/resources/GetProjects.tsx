@@ -10,21 +10,23 @@ export type PublicationStatus = 'draft' | 'published' | 'archived';
 
 export interface InputProps {
   pageNumber?: number;
-  pageSize: number;
-  sort: Sort;
+  pageSize?: number;
+  sort?: Sort;
   areas?: string[];
   topics?: string[];
   publicationStatus?: PublicationStatus;
+  publicationStatuses?: PublicationStatus[];
   hideAllFilters?: boolean;
 }
 
 interface IQueryParameters {
-  'page[number]': number;
-  'page[size]': number;
-  sort: Sort;
-  areas: string[] | undefined;
-  topics: string[] | undefined;
-  publication_status: PublicationStatus | undefined;
+  'page[number]'?: number;
+  'page[size]'?: number;
+  sort?: Sort;
+  areas?: string[];
+  topics?: string[];
+  publication_status?: PublicationStatus;
+  publication_statuses?: PublicationStatus[];
 }
 
 interface IAccumulator {
@@ -68,13 +70,15 @@ export default class GetProjects extends React.Component<Props, State> {
         sort: this.props.sort,
         areas: undefined,
         topics: undefined,
-        publication_status: undefined
+        publication_status: undefined,
+        publication_statuses: undefined
       },
       projectsList: null,
       hasMore: false,
       querying: true,
       loadingMore: false
     };
+
     const queryParameters = this.getQueryParameters(this.state, this.props);
     this.queryParameters$ = new BehaviorSubject(queryParameters);
     this.subscriptions = [];
@@ -139,7 +143,9 @@ export default class GetProjects extends React.Component<Props, State> {
         'page[size]': props.pageSize,
         sort: props.sort,
         areas: props.areas,
-        topics: props.topics
+        topics: props.topics,
+        publication_status: props.publicationStatus,
+        publication_statuses: props.publicationStatuses,
       }, isNil)
     };
   }
@@ -148,7 +154,7 @@ export default class GetProjects extends React.Component<Props, State> {
     if (!this.state.loadingMore) {
       this.queryParameters$.next({
         ...this.state.queryParameters,
-        'page[number]': this.state.queryParameters['page[number]'] + 1
+        'page[number]': (this.state.queryParameters['page[number]'] || 0) + 1
       });
     }
   }

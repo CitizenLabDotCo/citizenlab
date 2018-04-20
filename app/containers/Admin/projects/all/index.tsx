@@ -6,7 +6,8 @@ import styled from 'styled-components';
 import { color, fontSize } from 'utils/styleUtils';
 
 // services
-import { projectsStream, IProjectData, reorderProject } from 'services/projects';
+import { IProjectData, reorderProject } from 'services/projects';
+import GetProjects from 'resources/GetProjects';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
@@ -28,40 +29,17 @@ const Title = styled.h1`
   margin-bottom: 30px;
 `;
 
-type Props = {};
+export interface Props {
+  projects: IProjectData[];
+}
 
-type State = {
-  projects: IProjectData[] | null;
-  loaded: boolean;
-};
+export interface State {}
 
-export default class AdminProjectsList extends React.PureComponent<Props, State> {
+class AdminProjectsList extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props) {
     super(props);
-    this.state = {
-      projects: null,
-      loaded: false
-    };
-  }
-
-  componentDidMount() {
-    const projects$ = projectsStream({
-      queryParameters: {
-        publication_statuses: ['draft', 'published', 'archived']
-      }
-    }).observable;
-
-    this.subscriptions = [
-      projects$.subscribe((projectsResponse) => {
-        this.setState({ projects: projectsResponse.data, loaded: true });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   handleReorder = (projectId, newOrder) => {
@@ -69,9 +47,9 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
   }
 
   render () {
-    const { loaded, projects } = this.state;
+    const { projects } = this.props;
 
-    if (loaded) {
+    if (projects) {
       return (
         <>
           <Title>
@@ -112,3 +90,11 @@ export default class AdminProjectsList extends React.PureComponent<Props, State>
     return null;
   }
 }
+
+export default (props) => (
+  <GetProjects publicationStatuses={['draft', 'published', 'archived']}>
+    {({ projectsList }) => (
+      projectsList && <AdminProjectsList {...props} projects={projectsList} />
+    )}
+  </GetProjects>
+);
