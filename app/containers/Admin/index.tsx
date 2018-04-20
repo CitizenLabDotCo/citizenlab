@@ -14,8 +14,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  align-items: stretch;
-  height: 100%;
 `;
 
 const LeftColumn = styled.div`
@@ -28,9 +26,8 @@ const LeftColumn = styled.div`
 
 const RightColumn = styled.div`
   flex: 1;
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   background: #f9f9fa;
-  overflow: auto;
-  height: 100%;
 `;
 
 const AdminContainerStyled = styled<any, 'div'>('div')`

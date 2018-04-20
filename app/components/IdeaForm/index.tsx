@@ -5,7 +5,7 @@ import { find, pick, isEqual } from 'lodash';
 
 // libraries
 import scrollToComponent from 'react-scroll-to-component';
-import * as bowser from 'bowser';
+import bowser from 'bowser';
 
 // draft-js
 import { EditorState } from 'draft-js';
@@ -299,6 +299,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
             error={titleError}
             onChange={this.handleTitleOnChange}
             setRef={this.handleTitleInputSetRef}
+            maxCharCount={80}
           />
         </FormElement>
 

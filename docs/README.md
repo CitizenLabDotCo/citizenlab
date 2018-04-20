@@ -1,5 +1,71 @@
 # Changelog
 
+## 2018-04-18
+
+### Fixed
+- Adding an idea at a specific location by clicking on the map is fixed
+
+## 2018-04-09
+
+### Fixed
+- An idea with a location now centers on that location
+- Map markers far west or east (e.g. Vancouver) are now positioned as expected
+- Links in comment now correctly break to a new line when they're too long
+- Hitting enter in the idea search box no longer reloads the page
+- A survey project no longer shows the amount of ideas on the project card
+- The navbar no longer shows empty space above it on mobile
+- The report as spam window no longer scrolls in a weird way
+- The project listing on the homepage no longer repeats the same project for some non-admin users
+- Google/Facebook login errors are captured and shown on an error page
+- Some rendering issues were fixed for IE11 and Edge, some remain
+- An idea body with very long words no longer overlaps the controls on the right
+- Project cards no longer overlap the notification menu
+
+### Added
+- A user can now edit and delete its own comments
+- An admin can now delete a user's comment and specify the reason, notifying the user by notification
+- Invitations
+  - Admins can invite users by specifying comma separated email addresses
+  - Admins can invite users with extra information by uploading an excel file
+  - Invited users can be placed in groups, made admin, and given a specific language
+  - Admins can specify a message that will be included in the email to the invited users
+  - Admins receive a notification when invited users sign up
+- Users receive a notification and email when their idea changes status
+- Idea titles are now limited to 80 characters
+
+### Known issues
+- Adding an idea through the map does not position it correctly
+
+## 2018-03-23
+
+### Fixed
+- Fixed padding being added on top of navigation bar on mobile devices
+
+## 2018-03-22
+
+### Fixed
+- Idea creation page would not load when no published projects where present. Instead of the loading indicator the page now shows a message telling the user there are no projects.
+
+## 2018-03-20
+
+### Fixed
+- Various visual glitches on IE11 and Edge
+- Scrolling behviour on mobile devices is back to normal
+- The admin idea manager no longer shows an empty right column by default
+
+### Added
+- Experimental raw HTML editing for pages in the admin at `/admin/pages`
+
+## 2018-03-14
+
+### Fixed
+- When making a registration field required, the user can't skip the second sign up step
+- When adding a registration field of the "date" type, a date in the past can now be chosen
+- The project listing on the landing page for logged in users that aren't admin is fixed
+
+### Added
+- When something goes wrong while authenticating through social networks, an error page is shown
+
 ## 2018-03-05
 
 ### Added

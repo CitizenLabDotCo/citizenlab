@@ -1,4 +1,5 @@
 import * as React from 'react';
+import ReactDOM from 'react-dom';
 import { isFunction, isBoolean, isString } from 'lodash';
 import { browserHistory } from 'react-router';
 
@@ -19,15 +20,17 @@ import styled from 'styled-components';
 import { media, color } from 'utils/styleUtils';
 
 const ModalContent: any = styled(clickOutside)`
-  width: 100%;
-  max-width: ${(props: any) => props.width};
+  background: #fff;
+  border-radius: 5px;
   display: flex;
   flex-direction: column;
+  max-width: ${(props: any) => props.width};
   outline: none;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 40px;
-  border-radius: 5px;
-  background: #fff;
+  position: relative;
+  width: 100%;
 
   &.fixedHeight {
     height: 78vh;
@@ -123,6 +126,7 @@ type Props = {
   fixedHeight?: boolean | undefined;
   width?: string | undefined;
   close: () => void;
+  className?: string;
 };
 
 type State = {};
@@ -130,15 +134,31 @@ type State = {};
 class Modal extends React.PureComponent<Props & ITracks, State> {
   private unlisten: Function | null;
   private goBackUrl: string | null;
+  private el: HTMLDivElement;
+  private ModalPortal = document.getElementById('modal-portal');
 
   constructor(props: Props) {
     super(props as any);
     this.unlisten = null;
     this.goBackUrl = null;
+    this.el = document.createElement('div');
+  }
+
+  componentDidMount() {
+    if (!this.ModalPortal) {
+      console.log('There was no Portal to insert the modal. Please make sure you have a Portal root');
+    } else {
+      this.ModalPortal.appendChild(this.el);
+    }
   }
 
   componentWillUnmount() {
     this.cleanup();
+    if (!this.ModalPortal) {
+      console.log('There was no Portal to insert the modal. Please make sure you have a Portal root');
+    } else {
+      this.ModalPortal.removeChild(this.el);
+    }
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -217,7 +237,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
 
     const element = (opened ? (
       <CSSTransition classNames="modal" timeout={350} exit={false}>
-        <ModalContainer id="e2e-modal-container">
+        <ModalContainer id="e2e-modal-container" className={this.props.className}>
           <ModalContent
             className={`${fixedHeight && 'fixedHeight'}`}
             width={width}
@@ -232,10 +252,11 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
       </CSSTransition>
     ) : null);
 
-    return (
+    return ReactDOM.createPortal(
       <TransitionGroup>
         {element}
-      </TransitionGroup>
+      </TransitionGroup>,
+      this.el,
     );
   }
 }

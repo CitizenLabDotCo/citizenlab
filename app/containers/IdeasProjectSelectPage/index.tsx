@@ -91,8 +91,13 @@ const PageTitle = styled.h1`
   ${media.smallerThanMaxTablet`
     font-size: 28px;
     line-height: 34px;
-    text-align: left;
   `}
+
+  &:not(.noProjects) {
+    ${media.smallerThanMaxTablet`
+      text-align: left;
+    `}
+  }
 `;
 
 const Column = styled.div`
@@ -132,7 +137,7 @@ const ColumnTitle = styled.h2`
 
 const ColumnExplanation = styled.div`
   color: #666;
-  font-size: 18px;
+  font-size: 17px;
   line-height: 24px;
   font-weight: 300;
   min-height: 7rem;
@@ -175,7 +180,9 @@ const WithoutButtonBar = styled.div`
 const EmptyStateContainer = styled.div`
   color: #474747;
   font-size: 18px;
-  padding: 3rem 0;
+  line-height: 24px;
+  text-align: center;
+  padding-top: 15px;
 `;
 
 type Props = {
@@ -207,9 +214,13 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
 
     this.subscriptions = [
       projects$.switchMap((projects) => {
-        return Rx.Observable.combineLatest(
-          projects.data.map(project => projectImagesStream(project.id).observable)
-        ).map(() => projects);
+        if (projects && projects.data && projects.data.length > 0) {
+          return Rx.Observable.combineLatest(
+            projects.data.map(project => projectImagesStream(project.id).observable)
+          ).map(() => projects);
+        }
+
+        return Rx.Observable.of(projects);
       }).subscribe((projects) => {
         this.setState({ projects: projects.data, loaded: true });
       })
@@ -258,7 +269,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
       return (
         <Container>
           <StyledContentContainer>
-            <PageTitle>
+            <PageTitle className={noProjects ? 'noProjects' : ''}>
               <FormattedMessage {...messages.pageTitle} />
             </PageTitle>
 
@@ -271,34 +282,42 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
             {!noProjects && 
               <Content>
                 <ColumnsContainer>
-                  <LeftColumn className={!openProject ? 'fullWidth' : ''}>
-                    <ColumnTitle>
-                      <FormattedMessage {...messages.cityProjects} />
-                    </ColumnTitle>
-                    <ColumnExplanation>
-                      <FormattedMessage {...messages.cityProjectsExplanation} />
-                    </ColumnExplanation>
-                    <ProjectsList>
-                      {cityProjects && cityProjects.map((project) => (
-                        <ProjectCardWrapper key={project.id}>
-                          <ProjectCard
-                            onClick={this.handleProjectClick(project)}
-                            projectId={project.id}
-                            selected={(selectedProjectId === project.id)}
-                            className="e2e-project-card"
-                          />
-                        </ProjectCardWrapper>
-                      ))}
-                    </ProjectsList>
-                  </LeftColumn>
-                  {openProject &&
-                    <RightColumn className={noProjects ? 'fullWidth' : ''}>
+
+                  {cityProjects && 
+                    <LeftColumn className={!openProject ? 'fullWidth' : ''}>
                       <ColumnTitle>
-                        <FormattedMessage {...messages.openProject} />
+                        <FormattedMessage {...messages.cityProjects} />
                       </ColumnTitle>
                       <ColumnExplanation>
-                        <FormattedMessage {...messages.openProjectExplanation} />
+                        <FormattedMessage {...messages.cityProjectsExplanation} />
                       </ColumnExplanation>
+                      <ProjectsList>
+                        {cityProjects.map((project) => (
+                          <ProjectCardWrapper key={project.id}>
+                            <ProjectCard
+                              onClick={this.handleProjectClick(project)}
+                              projectId={project.id}
+                              selected={(selectedProjectId === project.id)}
+                              className="e2e-project-card"
+                            />
+                          </ProjectCardWrapper>
+                        ))}
+                      </ProjectsList>
+                    </LeftColumn>
+                  }
+
+                  {openProject &&
+                    <RightColumn className={!cityProjects ? 'fullWidth' : ''}>
+                      {cityProjects &&
+                        <>
+                          <ColumnTitle>
+                            <FormattedMessage {...messages.openProject} />
+                          </ColumnTitle>
+                          <ColumnExplanation>
+                            <FormattedMessage {...messages.openProjectExplanation} />
+                          </ColumnExplanation>
+                        </>
+                      }
                       <ProjectsList>
                         <ProjectCardWrapper>
                           <ProjectCard
@@ -317,7 +336,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
                 <WithoutButtonBar>
                   <Button
                     className="e2e-submit-project-select-form"
-                    size="1"
+                    size="2"
                     text={<FormattedMessage {...messages.continueButton} />}
                     onClick={this.handleOnSubmitClick}
                     disabled={!selectedProjectId}

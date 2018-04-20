@@ -34,7 +34,7 @@ const LanguageExtension = styled(Label)`
   margin-left: 5px;
 `;
 
-type Props = {
+export type Props = {
   id?: string | undefined;
   valueMultiloc?: MultilocEditorState | null | undefined;
   label?: string | JSX.Element | null | undefined;
@@ -61,7 +61,7 @@ export default class EditorMultiloc extends React.PureComponent<Props, State> {
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { ITopicData } from 'services/topics';
 import { flow } from 'lodash';
 import T from 'components/T';
@@ -29,7 +29,6 @@ class FilterSidebarTopicsItem extends React.Component<Props> {
     );
   }
 }
-
 
 const topicTarget = {
   drop(props) {

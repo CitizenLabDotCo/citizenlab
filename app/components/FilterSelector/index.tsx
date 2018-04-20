@@ -69,7 +69,7 @@ export default class FilterSelector extends React.PureComponent<Props, State> {
 
     if (!multiple && isArray(selection) && !isEmpty(selection)) {
       const selected = find(values, { value: selection[0] });
-      newTitle = selected ? selected.text : '';
+      newTitle = selected ? selected['text'] : '';
     } else if (isArray(selection) && !isEmpty(selection)) {
       if (isString(title)) {
         newTitle = `${title} (${selection.length})`;

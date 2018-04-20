@@ -1,51 +1,52 @@
-import * as React from 'react';
-import { clone, omit, every, fromPairs, isEmpty } from 'lodash';
+import React from 'react';
+import { clone, omit, every, fromPairs, isEmpty, isFunction } from 'lodash';
 
-import { IIdeaData } from 'services/ideas';
-import { IPhaseData } from 'services/phases';
-import { IIdeaStatusData } from 'services/ideaStatuses';
-
-// Components
+// components
 import { Table, Checkbox } from 'semantic-ui-react';
 import { FormattedMessage } from 'utils/cl-intl';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
 import Row from './Row';
 import Pagination from 'components/admin/Pagination';
 
+// services
+import { IIdeaData } from 'services/ideas';
+import { IPhaseData } from 'services/phases';
+import { IIdeaStatusData } from 'services/ideaStatuses';
 
+// resources
+import { Sort, SortAttribute } from 'resources/GetIdeas';
+
+// utils
+import { SortDirection } from 'utils/paginationUtils';
+
+// i18n
 import messages from '../../messages';
 
 interface Props {
-  ideaSortAttribute?: string;
-  ideaSortDirection?: 'asc' | 'desc';
+  ideaSortAttribute?: SortAttribute;
+  ideaSortDirection?: SortDirection;
   ideas?: IIdeaData[];
   phases?: IPhaseData[];
   statuses?: IIdeaStatusData[];
-  onChangeIdeaSortDirection?: (direction: 'asc' | 'desc') => void;
-  onChangeIdeaSortAttribute?: (string) => void;
+  onChangeIdeaSort?: (sort: Sort) => void;
   selectedIdeas: { [key: string]: boolean };
   onChangeIdeaSelection: (selection: { [key: string]: boolean }) => void;
   ideaCurrentPageNumber?: number;
   ideaLastPageNumber?: number;
-  onIdeaChangePage?: (number) => void;
+  onIdeaChangePage?: (number: number) => void;
   activeFilterMenu: string | null;
 }
 
-interface State {
-
-}
-
+interface State {}
 
 export default class IdeaTable extends React.Component<Props, State> {
 
-  handleSortClick = (attribute) => () => {
-    let newDirection: 'asc' | 'desc' = 'desc';
-    if (this.props.ideaSortAttribute === attribute) {
-      newDirection = this.props.ideaSortDirection === 'asc' ? 'desc' : 'asc';
+  handleSortClick = (sort: SortAttribute) => () => {
+    if (isFunction(this.props.onChangeIdeaSort)) {
+      this.props.onChangeIdeaSort(sort);
     }
-    this.props.onChangeIdeaSortAttribute && this.props.onChangeIdeaSortAttribute(attribute);
-    this.props.onChangeIdeaSortDirection && this.props.onChangeIdeaSortDirection(newDirection);
   }
+
   selectIdea = (idea) => () => {
     const selectedIdeas = clone(this.props.selectedIdeas);
     selectedIdeas[idea.id] = true;
@@ -94,7 +95,7 @@ export default class IdeaTable extends React.Component<Props, State> {
     const { ideaSortAttribute, ideaSortDirection, ideas, selectedIdeas, phases, activeFilterMenu, statuses } = this.props;
 
     return(
-      <Table>
+      <Table sortable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell width={1}>

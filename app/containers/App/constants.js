@@ -9,12 +9,9 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
-const API_HOST = process.env.API_HOST || (typeof window === "undefined" ? '' : window.location.hostname);
-const API_PORT = process.env.API_PORT || 4000;
-
 export const DEFAULT_LOCALE = 'en';
-export const AUTH_PATH = (process.env.NODE_ENV === 'development') ? `http://${API_HOST}:${API_PORT}/auth` : '/auth';
-export const API_PATH = (process.env.NODE_ENV === 'development') ? `http://${API_HOST}:${API_PORT}/web_api/v1` : '/web_api/v1';
+export const AUTH_PATH = '/auth';
+export const API_PATH = '/web_api/v1';
 export const GOOGLE_MAPS_API_KEY = 'AIzaSyDRtFe1KRBnGfDy_ijw6yCYsYnEkQRl9Cw';
 
 export const LOADED_CURRENT_TENANT = 'app/App/LOADED_CURRENT_TENANT';

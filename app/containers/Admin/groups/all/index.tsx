@@ -14,15 +14,20 @@ import GroupAdditionForm from './GroupAdditionForm';
 
 // Style
 import styled from 'styled-components';
-import { color } from 'utils/styleUtils';
+import { color, fontSize } from 'utils/styleUtils';
 
 const PageTitle = styled.h1`
-  font-size: 2.5rem;
-  margin-bottom: 3rem;
+  color: ${color('title')};
+  font-size: ${fontSize('xxxl')};
+  line-height: 40px;
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 30px;
 `;
 
 const ButtonWrapper = styled.div`
-  border-bottom: 1px solid ${color('separation')};
+  /* border-bottom: 1px solid ${color('separation')}; */
   margin-bottom: 0;
   padding-bottom: 2rem;
 `;

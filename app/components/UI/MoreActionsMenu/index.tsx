@@ -71,6 +71,7 @@ export interface Props {
   height: string;
   actions: IAction[];
   label?: string | JSX.Element | undefined;
+  className?: string;
 }
 
 interface State {
@@ -96,7 +97,7 @@ export default class MoreActionsMenu extends React.PureComponent<Props, State> {
 
   render () {
     const { height, label, actions } = this.props;
-    const className = this.props['className'];
+    const className = this.props.className;
 
     if (!actions || actions.length === 0) {
       return null;

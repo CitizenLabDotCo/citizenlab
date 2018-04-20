@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { Subscription, Observable }  from 'rxjs/Rx';
 
 // router
 import { browserHistory } from 'react-router';
@@ -130,8 +130,8 @@ const HeaderTitle: any = styled.h1`
   width: 100%;
   max-width: 980px;
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
-  font-size: 55px;
-  line-height: 64px;
+  font-size: 52px;
+  line-height: 60px;
   font-weight: 600;
   text-align: center;
   white-space: normal;
@@ -141,10 +141,14 @@ const HeaderTitle: any = styled.h1`
   margin: 0;
   padding: 0;
 
+  ${media.smallerThanMaxTablet`
+    font-size: 48px;
+    line-height: 60px;
+  `}
+
   ${media.smallerThanMinTablet`
     font-size: 34px;
     line-height: 39px;
-    padding: 0;
   `}
 `;
 
@@ -194,8 +198,8 @@ const IdeasStyledContentContainer = StyledContentContainer.extend`
 
 const Section = styled.div`
   width: 100%;
-  padding-top: 110px;
-  padding-bottom: 110px;
+  padding-top: 100px;
+  padding-bottom: 100px;
 
   ${media.smallerThanMinTablet`
     padding-top: 60px;
@@ -206,6 +210,7 @@ const Section = styled.div`
 const ProjectSection = Section.extend`
   padding-top: 0px;
   margin-top: -80px;
+  padding-bottom: 80px;
 
   ${media.smallerThanMinTablet`
     margin-top: -130px;
@@ -254,11 +259,11 @@ type State = {
   loaded: boolean;
 };
 
-export const landingPageIdeasQuery = { sort: 'trending', 'page[number]': 1, 'page[size]': 6 };
-export const landingPageProjectsQuery = { sort: 'new', 'page[number]': 1, 'page[size]': 2 };
+export const landingPageIdeasQuery: { sort: 'trending', 'page[size]': number } = { sort: 'trending', 'page[size]': 9 };
+export const landingPageProjectsQuery: { sort: 'new', 'page[size]': number } = { sort: 'new', 'page[size]': 3 };
 
 export default class LandingPage extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -280,10 +285,10 @@ export default class LandingPage extends React.PureComponent<Props, State> {
     const currentTenant$ = currentTenantStream().observable;
     const ideas$ = ideasStream({ queryParameters: landingPageIdeasQuery }).observable;
     const projects$ = projectsStream({ queryParameters: landingPageProjectsQuery }).observable;
-    const ideaToPublish$ = (query && query.idea_to_publish ? ideaByIdStream(query.idea_to_publish).observable : Rx.Observable.of(null));
+    const ideaToPublish$ = (query && query.idea_to_publish ? ideaByIdStream(query.idea_to_publish).observable : Observable.of(null));
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      Observable.combineLatest(
         locale$,
         currentTenant$,
         ideas$,
@@ -302,7 +307,7 @@ export default class LandingPage extends React.PureComponent<Props, State> {
       // if 'idea_to_publish' parameter is present in landingpage url,
       // find the draft idea previously created (before login/signup)
       // and update its status and author name
-      Rx.Observable.combineLatest(
+      Observable.combineLatest(
         authUser$,
         ideaToPublish$
       ).subscribe(async ([authUser, ideaToPublish]) => {
@@ -359,13 +364,13 @@ export default class LandingPage extends React.PureComponent<Props, State> {
       return (
         <>
           <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
-            <Header>
-              <HeaderImage>
+            <Header id="hook-header">
+              <HeaderImage id="hook-header-image">
                 <HeaderImageBackground src={currentTenantHeader} />
                 <HeaderImageOverlay />
               </HeaderImage>
 
-              <HeaderContent>
+              <HeaderContent id="hook-header-content">
                 <HeaderTitle hasHeader={hasHeaderImage}>
                   {title}
                 </HeaderTitle>
@@ -380,7 +385,11 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                 {hasProjects &&
                   <ProjectSection>
                     <SectionContainer>
-                      <ProjectCards queryParameters={{ 'page[size]': 3 }} hideAllFilters={true} />
+                      <ProjectCards
+                        pageSize={landingPageProjectsQuery['page[size]']}
+                        sort={landingPageProjectsQuery.sort}
+                        hideAllFilters={true}
+                      />
                     </SectionContainer>
                   </ProjectSection>
                 }
@@ -394,7 +403,11 @@ export default class LandingPage extends React.PureComponent<Props, State> {
                     </SectionTitle>
                   </SectionHeader>
                   <SectionContainer>
-                    <IdeaCards queryParameters={{ 'page[size]': 9 }} />
+                    <IdeaCards
+                      type="load-more"
+                      sort={landingPageIdeasQuery.sort}
+                      pageSize={landingPageIdeasQuery['page[size]']}
+                    />
                   </SectionContainer>
                 </Section>
               </IdeasStyledContentContainer>

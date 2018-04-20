@@ -107,16 +107,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.subTitleBranding',
     defaultMessage: 'Establish your visual branding on the platform',
   },
-  titleLabel: {
-    id: 'app.containers.AdminPage.SettingsPage.titleLabel',
+  headerTitleLabel: {
+    id: 'app.containers.AdminPage.SettingsPage.headerTitleLabel',
     defaultMessage: 'Header title',
   },
   titleMaxCharError: {
     id: 'app.containers.AdminPage.SettingsPage.titleMaxCharError',
     defaultMessage: 'The provided title exceeds the maximum allowed character limit',
   },
-  subtitleLabel: {
-    id: 'app.containers.AdminPage.SettingsPage.subtitleLabel',
+  headerSubtitleLabel: {
+    id: 'app.containers.AdminPage.SettingsPage.headerSubtitleLabel',
     defaultMessage: 'Header subtitle',
   },
   subtitleMaxCharError: {
@@ -158,5 +158,13 @@ export default defineMessages({
   titleRegistrationFields: {
     id: 'app.containers.AdminPage.SettingsPage.titleRegistrationFields',
     defaultMessage: 'Registration fields',
+  },
+  tabAreas: {
+    id: 'app.containers.AdminPage.SettingsPage.tabAreas',
+    defaultMessage: 'Areas',
+  },
+  titleAreas: {
+    id: 'app.containers.AdminPage.SettingsPage.titleAreas',
+    defaultMessage: 'My Areas',
   },
 });

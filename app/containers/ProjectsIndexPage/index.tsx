@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -27,7 +27,7 @@ const Container = styled.div`
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
-  flex: 1;
+  flex: 1 1 auto;
   padding-top: 60px;
   padding-bottom: 100px;
 `;
@@ -47,22 +47,14 @@ const PageTitle = styled.h1`
   `}
 `;
 
-type Props = {};
-
-type State = {};
-
-export default class IdeasIndex extends React.PureComponent<Props, State> {
-  render() {
-    return (
-      <Container>
-        <StyledContentContainer>
-          <PageTitle>
-            <FormattedMessage {...messages.pageTitle} />
-          </PageTitle>
-          <ProjectCards queryParameters={{ 'page[size]': 50 }} />
-        </StyledContentContainer>
-        <Footer />
-      </Container>
-    );
-  }
-}
+export default () => (
+  <Container>
+    <StyledContentContainer>
+      <PageTitle>
+        <FormattedMessage {...messages.pageTitle} />
+      </PageTitle>
+      <ProjectCards pageSize={50} sort="new" />
+    </StyledContentContainer>
+    <Footer />
+  </Container>
+);

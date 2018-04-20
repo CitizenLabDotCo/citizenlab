@@ -1,17 +1,16 @@
-import * as React from 'react';
+import React from 'react';
 import 'moment-timezone';
-import { withRouter, WithRouterProps } from 'react-router';
+import { adopt } from 'react-adopt';
 
 // components
 import ImageZoom from 'react-medium-image-zoom';
 
-// services
-import GetProject from 'utils/resourceLoaders/components/GetProject';
-import { IProjectData } from 'services/projects';
+// resources
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
 
 // i18n
 import T from 'components/T';
-import { IProjectImageData } from 'services/projectImages';
 
 // style
 import styled from 'styled-components';
@@ -25,20 +24,33 @@ const Container = styled.div`
   margin-top: 70px;
   margin-bottom: 90px;
 
-  ${media.phone`
-    display: block;
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: 50px;
+    margin-bottom: 60px;
   `}
 `;
 
 const Left = styled.section`
   flex: 3;
 
-  ${media.phone`
-    margin-bottom: 20px;
+  ${media.smallerThanMinTablet`
+    flex: 1;
   `}
+`;
 
-  ${media.biggerThanPhone`
-    padding-right: 90px;
+const Right = styled.aside`
+  flex: 2;
+  max-width: 400px;
+  margin-left: 80px;
+
+  ${media.smallerThanMinTablet`
+    flex: 1;
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-top: 20px;
   `}
 `;
 
@@ -90,15 +102,6 @@ const IdeaBodyStyled = styled.div`
   }
 `;
 
-const Right = styled.aside`
-  flex: 2;
-  max-width: 400px;
-
-  ${media.phone`
-    display: none;
-  `}
-`;
-
 const ProjectImages = styled.div`
   align-items: flex-start;
   display: flex;
@@ -122,52 +125,48 @@ const ProjectImages = styled.div`
   }
 `;
 
-type Props = {
+interface InputProps {
   projectId: string;
-  className?: string;
-};
-
-type State = {};
-
-class ProjectInfo extends React.PureComponent<Props & WithRouterProps, State> {
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {};
-  }
-
-  render() {
-    return (
-      <GetProject slug={this.props.params.slug} withImages>
-        {({ project, images }: {project: IProjectData, images: IProjectImageData[]}) => {
-          if (project) {
-            return (
-              <Container>
-                <Left>
-                  <IdeaBodyStyled>
-                    <T value={project.attributes.description_multiloc} />
-                  </IdeaBodyStyled>
-                </Left>
-
-                <Right>
-                  <ProjectImages>
-                    {images.length > 0 && images.filter((image) => image).map((image) => (
-                      <ImageZoom
-                        key={image.id}
-                        image={{ src: image.attributes.versions.large }}
-                        zoomImage={{ src: image.attributes.versions.large }}
-                      />
-                    ))}
-                  </ProjectImages>
-                </Right>
-              </Container>
-            );
-          } else {
-            return null;
-          }
-        }}
-      </GetProject>
-    );
-  }
 }
 
-export default withRouter(ProjectInfo);
+interface DataProps {
+  project: GetProjectChildProps;
+  projectImages: GetProjectImagesChildProps;
+}
+
+const Data = adopt<DataProps, InputProps>({
+  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
+  projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {({ project, projectImages }) => {
+      if (!project) return null;
+
+      return (
+        <Container>
+          <Left>
+            <IdeaBodyStyled>
+              <T value={project.attributes.description_multiloc} />
+            </IdeaBodyStyled>
+          </Left>
+
+          {projectImages && projectImages.length > 0 &&
+            <Right>
+              <ProjectImages>
+                {projectImages.filter(projectImage => projectImage).map((projectImage) => (
+                  <ImageZoom
+                    key={projectImage.id}
+                    image={{ src: projectImage.attributes.versions.large }}
+                    zoomImage={{ src: projectImage.attributes.versions.large }}
+                  />
+                ))}
+              </ProjectImages>
+            </Right>
+          }
+        </Container>
+      );
+    }}
+  </Data>
+);

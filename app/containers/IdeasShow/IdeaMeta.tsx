@@ -1,97 +1,64 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-
-// components
+// libraries
+import React from 'react';
+import { adopt } from 'react-adopt';
 import Helmet from 'react-helmet';
 
-// services
-import { currentTenantStream, ITenant } from 'services/tenant';
-import { localeStream } from 'services/locale';
-import { ideaByIdStream, IIdea } from 'services/ideas';
-import { ideaImagesStream, IIdeaImages } from 'services/ideaImages';
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetIdeaImages, { GetIdeaImagesChildProps } from 'resources/GetIdeaImages';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
 
 // utils
 import { stripHtml } from 'utils/textUtils';
-import { Locale } from 'typings';
 
-type Props = {
+interface InputProps {
   ideaId: string;
-};
-
-type State = {
-  locale: Locale | null;
-  currentTenant: ITenant | null;
-  idea: IIdea | null;
-  ideaImages: IIdeaImages | null;
-};
-
-export default class IdeaMeta extends React.PureComponent<Props, State> {
-  
-  subscriptions: Rx.Subscription[];
-
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      locale: null,
-      currentTenant: null,
-      idea: null,
-      ideaImages: null
-    };
-  }
-
-  componentDidMount () {
-    const { ideaId } = this.props;
-    const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
-    const idea$ = ideaByIdStream(ideaId).observable;
-    const ideaImages$ = ideaImagesStream(ideaId).observable;
-
-    this.subscriptions = [
-      Rx.Observable.combineLatest(
-        locale$,
-        currentTenant$,
-        idea$,
-        ideaImages$
-      ).subscribe(([locale, currentTenant, idea, ideaImages]) => {
-        this.setState({
-          locale,
-          currentTenant,
-          idea,
-          ideaImages
-        });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  render() {
-    const { locale, currentTenant, idea, ideaImages } = this.state;
-
-    if (locale && currentTenant && idea) {
-      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-      const ideaTitle = getLocalized(idea.data.attributes.title_multiloc, locale, currentTenantLocales);
-      const ideaDescription = getLocalized(idea.data.attributes.body_multiloc, locale, currentTenantLocales);
-      const ideaImage = (ideaImages && ideaImages.data.length > 0 ? ideaImages.data[0].attributes.versions.large : null);
-      const ideaUrl = window.location.href;
-
-      return (
-        <Helmet>
-          <title>{ideaTitle}</title>
-          <meta property="og:title" content={ideaTitle} />
-          <meta property="og:description" content={stripHtml(ideaDescription)} />
-          {ideaImage && <meta property="og:image" content={ideaImage} />}
-          <meta property="og:url" content={ideaUrl} />
-          <meta name="twitter:card" content="summary_large_image" />
-        </Helmet>
-      );
-    }
-
-    return null;
-  }
 }
+
+interface DataProps {
+  locale: GetLocaleChildProps;
+  tenantLocales: GetTenantLocalesChildProps;
+  idea: GetIdeaChildProps;
+  ideaImages: GetIdeaImagesChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+const IdeaMeta: React.SFC<Props> = ({ locale, tenantLocales, idea, ideaImages }) => {
+  if (locale && tenantLocales && idea) {
+    const ideaTitle = getLocalized(idea.attributes.title_multiloc, locale, tenantLocales);
+    const ideaDescription = stripHtml(getLocalized(idea.attributes.body_multiloc, locale, tenantLocales));
+    const ideaImage = (ideaImages && ideaImages.length > 0 ? ideaImages[0].attributes.versions.large : null);
+    const ideaUrl = window.location.href;
+
+    return (
+      <Helmet>
+        <title>{ideaTitle}</title>
+        <meta property="og:title" content={ideaTitle} />
+        <meta property="og:description" content={ideaDescription} />
+        {ideaImage && <meta property="og:image" content={ideaImage} />}
+        <meta property="og:url" content={ideaUrl} />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
+    );
+  }
+
+  return null;
+};
+
+const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />,
+  tenantLocales: <GetTenantLocales />,
+  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <IdeaMeta {...inputProps} {...dataProps} />}
+  </Data>
+);
