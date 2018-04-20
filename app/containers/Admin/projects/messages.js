@@ -259,4 +259,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.surveyEmbedUrl',
     defaultMessage: 'Survey Embed URL',
   },
+  editButtonLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.editButtonLabel',
+    defaultMessage: 'Edit',
+  },
 });
