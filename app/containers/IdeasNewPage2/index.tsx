@@ -148,7 +148,6 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
   subscriptions: Subscription[];
   projectId$: BehaviorSubject<string> = new BehaviorSubject('');
 
-
   constructor(props: Props & WithRouterProps) {
     super(props);
     const initialLocalState: LocalState = {
@@ -199,7 +198,6 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
         globalState.set('IdeasNewPage', { selectedProject: { value: projectId } });
       })
     ];
-
   }
 
   componentWillUnmount() {
