@@ -37,6 +37,7 @@ module SmartGroupRules
     end
 
     def filter users_scope
+      @predicate
       case predicate
       when 'is_admin'
         users_scope.admin
@@ -45,12 +46,6 @@ module SmartGroupRules
       else
         raise "Unsupported predicate #{predicate}"
       end
-    end
-
-    private
-
-    def needs_value?
-      !%w(is_empty not_is_empty).include?(predicate)
     end
 
   end
