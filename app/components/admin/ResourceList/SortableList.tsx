@@ -5,7 +5,7 @@ import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { List } from 'components/admin/ResourceList';
 
-export interface SortableListProps {
+export interface InputProps {
   items: any[];
   onReorder: (fieldId: string, newOrder: number) => void;
   children: (renderProps: RenderProps) => JSX.Element | null ;
@@ -21,7 +21,7 @@ export interface SortableListState {
   itemsWhileDragging: any[] | null;
 }
 
-export class SortableList extends React.Component<SortableListProps, SortableListState> {
+export class SortableList extends React.Component<InputProps, SortableListState> {
   constructor(props) {
     super(props);
 
@@ -68,4 +68,4 @@ export class SortableList extends React.Component<SortableListProps, SortableLis
   }
 }
 
-export default DragDropContext<SortableListProps>(HTML5Backend)(SortableList);
+export default DragDropContext<InputProps>(HTML5Backend)(SortableList);
