@@ -1,11 +1,11 @@
 import React from 'react';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { IEventData, eventsStream } from 'services/events';
-import { isString } from 'lodash';
 
 interface InputProps {
   projectId: string | null;
+  resetOnChange?: boolean;
 }
 
 type children = (renderProps: GetEventsChildProps) => JSX.Element | null;
@@ -32,16 +32,16 @@ export default class GetEvents extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { projectId } = this.props;
+    const { projectId, resetOnChange } = this.props;
 
     this.inputProps$ = new BehaviorSubject({ projectId });
 
     this.subscriptions = [
       this.inputProps$
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .filter(({ projectId }) => isString(projectId))
-        .switchMap(({ projectId }: { projectId: string }) => eventsStream(projectId).observable)
-        .subscribe((events) => this.setState({ events: events.data }))
+        .do(() => resetOnChange && this.setState({ events: null }))
+        .switchMap(({ projectId }) => projectId ? eventsStream(projectId).observable : Observable.of(null))
+        .subscribe((events) => this.setState({ events: (events ? events.data : null) }))
     ];
   }
 

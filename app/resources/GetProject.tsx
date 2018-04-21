@@ -6,6 +6,7 @@ import { projectByIdStream, projectBySlugStream, IProjectData, IProject } from '
 interface InputProps {
   id?: string | null;
   slug?: string | null;
+  resetOnChange?: boolean;
 }
 
 type children = (renderProps: GetProjectChildProps) => JSX.Element | null;
@@ -32,13 +33,14 @@ export default class GetProject extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { id, slug } = this.props;
+    const { id, slug, resetOnChange } = this.props;
 
     this.inputProps$ = new BehaviorSubject({ id, slug });
 
     this.subscriptions = [
       this.inputProps$
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
+        .do(() => resetOnChange && this.setState({ project: null }))
         .switchMap(({ id, slug }) => {
           let project$: Observable<IProject | null> = Observable.of(null);
 

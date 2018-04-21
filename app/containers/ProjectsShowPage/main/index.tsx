@@ -1,5 +1,4 @@
 import React from 'react';
-import 'moment-timezone';
 import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 
 // components
@@ -29,12 +28,7 @@ class ProjectMainPage extends React.PureComponent<Props & WithRouterProps, State
     if (project) {
       const redirectUrl = getProjectUrl(project);
       browserHistory.replace(redirectUrl);
-
-      return (
-        <>
-          {project.attributes.process_type === 'timeline' ? <ProjectTimelinePage /> : <ProjectInfoPage />}
-        </>
-      );
+      return project.attributes.process_type === 'timeline' ? <ProjectTimelinePage /> : <ProjectInfoPage />;
     }
 
     return null;
