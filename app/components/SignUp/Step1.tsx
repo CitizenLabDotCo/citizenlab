@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { set, keys, difference, get } from 'lodash';
-import * as Rx from 'rxjs/Rx';
+import { Subscription, Observable } from 'rxjs/Rx';
 
 // libraries
 import { Link } from 'react-router';
@@ -10,6 +10,7 @@ import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
+import Checkbox from 'components/UI/Checkbox';
 
 // utils
 import { isValidEmail } from 'utils/validate';
@@ -92,7 +93,7 @@ type State = {
 };
 
 class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
   firstNameInputElement: HTMLInputElement | null;
 
   constructor(props: Props) {
@@ -125,10 +126,10 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
     const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
-    const invitedUser$ = (token ? userByInviteStream(token).observable : Rx.Observable.of(null));
+    const invitedUser$ = (token ? userByInviteStream(token).observable : Observable.of(null));
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      Observable.combineLatest(
         locale$,
         currentTenant$,
         customFieldsSchemaForUsersStream$,
@@ -200,6 +201,10 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       unknownError: null,
       apiErrors: (state.apiErrors ? set(state.apiErrors, 'json.errors.password', null) : null)
     }));
+  }
+
+  handleTaCOnChange = () => {
+
   }
 
   handleOnSubmit = async (event: React.FormEvent<any>) => {
@@ -379,6 +384,19 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
               </AlreadyHaveAnAccount>
             }
           </ButtonWrapper>
+        </FormElement>
+
+        <FormElement>
+          <Checkbox 
+            value={true}
+            onChange={this.handleTaCOnChange}
+            label={
+              <FormattedMessage 
+                {...messages.acceptTermsAndConditions} 
+                values={{ tacLik: <Link><FormattedMessage {...messages.termsAndConditions} /></Link> }}
+              />
+            }
+          />
         </FormElement>
 
         <Error text={unknownApiError} />
