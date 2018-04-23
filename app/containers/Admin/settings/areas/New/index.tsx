@@ -1,26 +1,22 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Formik } from 'formik';
-import { addArea } from 'services/areas';
 import { browserHistory } from 'react-router';
-import { API } from 'typings';
+
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-import GoBackButton from 'components/UI/GoBackButton';
-import PageWrapper from 'components/admin/PageWrapper';
+import { Section, SectionTitle } from 'components/admin/Section';
+
+import { addArea } from 'services/areas';
+
+import { Formik } from 'formik';
 import AreaForm, { FormValues } from '../AreaForm';
 
-const PageTitle = styled.h1`
-  width: 100%;
-  font-size: 2rem;
-  margin: 1rem 0 3rem 0;
-`;
 
+import { API } from 'typings';
 type Props = {}
 
 export default class New extends React.Component<Props> {
-  
+
   handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
     addArea({
       ...values
@@ -34,10 +30,7 @@ export default class New extends React.Component<Props> {
         setSubmitting(false);
       });
   }
- 
-  goBack = () => {
-    browserHistory.push('/admin/settings/areas');
-  }
+
 
   renderFn = (props) => {
     return <AreaForm {...props} />;
@@ -50,21 +43,17 @@ export default class New extends React.Component<Props> {
 
   render() {
     return (
-      <>
-        <GoBackButton onClick={this.goBack} />
-        <PageTitle>
+      <Section>
+        <SectionTitle>
           <FormattedMessage {...messages.addAreaButton} />
-        </PageTitle>
-        <PageWrapper>
-          <Formik 
+        </SectionTitle>
+          <Formik
             initialValues={this.initialValues()}
             render={this.renderFn}
             onSubmit={this.handleSubmit}
             validate={AreaForm.validate}
           />
-        </PageWrapper>
-      </>
+      </Section>
     )
   }
 }
-
