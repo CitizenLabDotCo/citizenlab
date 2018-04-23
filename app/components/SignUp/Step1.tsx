@@ -53,7 +53,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const TermsAndConditionsWrapper: any = styled.div`
-  padding: 15px;
+  padding: 15px 30px;
   border-radius: 5px;
   background: #f0f1f3;
   border: solid 1px transparent;
@@ -64,7 +64,9 @@ const TermsAndConditionsWrapper: any = styled.div`
 
   span {
     color: #707075 !important;
-    line-height: 24px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 21px;
   }
 
   a > span {

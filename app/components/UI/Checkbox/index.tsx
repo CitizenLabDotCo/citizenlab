@@ -64,6 +64,7 @@ type State = {};
 export default class Checkbox extends React.PureComponent<Props, State> {
   toggleCheckbox = (event: React.FormEvent<any>) => {
     event.preventDefault();
+    event.stopPropagation();
     this.props.onChange(event);
   }
 
