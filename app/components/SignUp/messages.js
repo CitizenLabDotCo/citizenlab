@@ -177,6 +177,14 @@ export default defineMessages({
     id: 'app.containers.SignUp.acceptTermsAndConditions',
     defaultMessage: 'By signing up, you agree to our {tacLink}',
   },
+  acceptTermsAndConditionsGoogle: {
+    id: 'app.containers.SignUp.acceptTermsAndConditionsGoogle',
+    defaultMessage: 'Accept our {tacLink} to sign up via Google',
+  },
+  acceptTermsAndConditionsFacebook: {
+    id: 'app.containers.SignUp.acceptTermsAndConditionsFacebook',
+    defaultMessage: 'Accept our {tacLink} to sign up via Facebook',
+  },
   termsAndConditions: {
     id: 'app.containers.SignUp.termsAndConditions',
     defaultMessage: 'terms and conditions',
