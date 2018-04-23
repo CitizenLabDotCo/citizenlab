@@ -1,78 +1,38 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-import { isString } from 'lodash';
+import React from 'react';
 import 'moment-timezone';
-
-// router
-import { browserHistory } from 'react-router';
+import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 
 // components
 import ProjectTimelinePage from '../process';
 import ProjectInfoPage from '../info';
 
 // services
-import { projectBySlugStream, IProject, getProjectUrl } from 'services/projects';
+import {  getProjectUrl } from 'services/projects';
 
-type Props = {
-  params: {
-    slug: string;
-  };
-};
+// resources
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
-type State = {
-  project: IProject | null;
-};
+interface InputProps {}
 
-export default class timeline extends React.PureComponent<Props, State> {
-  slug$: Rx.BehaviorSubject<string>;
-  subscriptions: Rx.Subscription[];
+interface DataProps {
+  project: GetProjectChildProps['project'];
+}
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      project: null
-    };
-    this.slug$ = new Rx.BehaviorSubject(null as any);
-    this.subscriptions = [];
-  }
+interface Props extends InputProps, DataProps {}
 
-  componentDidMount() {
-    this.slug$.next(this.props.params.slug);
+interface State {}
 
-    this.subscriptions = [
-      this.slug$
-        .distinctUntilChanged()
-        .filter(slug => isString(slug))
-        .switchMap((slug) => {
-          const project$ = projectBySlugStream(slug).observable;
-          return project$;
-        }).subscribe((project) => {
-          const redirectUrl = getProjectUrl(project.data);
-          browserHistory.replace(redirectUrl);
-          this.setState({ project });
-        })
-    ];
-  }
-
-  componentDidUpdate() {
-    this.slug$.next(this.props.params.slug);
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
+class ProjectMainPage extends React.PureComponent<Props & WithRouterProps, State> {
   render() {
-    const { project } = this.state;
+    const { project } = this.props;
 
     if (project) {
+      const redirectUrl = getProjectUrl(project);
+      browserHistory.replace(redirectUrl);
+
       return (
         <>
-          {project.data.attributes.process_type === 'timeline' ? (
-            <ProjectTimelinePage {...this.props} />
-          ) : (
-            <ProjectInfoPage {...this.props} />
-          )}
+          {project.attributes.process_type === 'timeline' ? <ProjectTimelinePage /> : <ProjectInfoPage />}
         </>
       );
     }
@@ -80,3 +40,9 @@ export default class timeline extends React.PureComponent<Props, State> {
     return null;
   }
 }
+
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <GetProject slug={inputProps.params.slug}>
+    {({ project }) => <ProjectMainPage {...inputProps} project={project} />}
+  </GetProject>
+));

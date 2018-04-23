@@ -1,4 +1,4 @@
-import moment from 'moment';
+import * as moment from 'moment';
 import { IProjectData } from './projects';
 import { IPhaseData } from './phases';
 
@@ -14,7 +14,7 @@ const isCurrentPhase = (phase: IPhaseData) : boolean => {
   return currentTenantTodayMoment.isBetween(startMoment, endMoment, 'days', '[]');
 };
 
-export const postingButtonState = ({ project, phase }: {project?: IProjectData, phase?: IPhaseData}): ButtonStateResponse => {
+export const postingButtonState = ({ project, phase }: {project?: IProjectData | null, phase?: IPhaseData | null}): ButtonStateResponse => {
 
   if (phase) {
     const inCurrentPhase = isCurrentPhase(phase);

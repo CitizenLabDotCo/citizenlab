@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import * as typeformEmbed from '@typeform/embed';
 import styled from 'styled-components';
 

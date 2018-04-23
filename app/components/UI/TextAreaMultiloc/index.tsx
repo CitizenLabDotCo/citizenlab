@@ -36,7 +36,7 @@ const LanguageExtension = styled(Label)`
 export type Props = {
   id?: string | undefined;
   name: string;
-  valueMultiloc: Multiloc | null | undefined;
+  valueMultiloc?: Multiloc | null;
   label?: string | JSX.Element | null | undefined;
   onChange?: (arg: Multiloc, locale: Locale) => void;
   placeholder?: string | null | undefined;
@@ -63,7 +63,7 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
     this.subscriptions = [];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
 

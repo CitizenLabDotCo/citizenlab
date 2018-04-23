@@ -1,20 +1,18 @@
-import * as React from 'react';
+import React from 'react';
 import T from 'components/T';
-import { IIdeaData, ideaByIdStream } from 'services/ideas';
-import { injectResource, InjectedResourceLoaderProps } from 'utils/resourceLoaders/resourceLoader';
 import { List } from 'semantic-ui-react';
+import GetIdea from 'resources/GetIdea';
 
-class InfoSidebarMultiItem extends React.PureComponent<InjectedResourceLoaderProps<IIdeaData>> {
-  render() {
-    const { idea } = this.props;
-    if (!idea) return null;
+export default (props: { ideaId: string }) => (
+  <GetIdea id={props.ideaId}>
+    {idea => {      
+      if (!idea) return null;
 
-    return (
-      <List.Item>
-        <T value={idea.attributes.title_multiloc} />
-      </List.Item>
-    );
-  }
-}
-
-export default injectResource('idea', ideaByIdStream, (props) => props.ideaId)(InfoSidebarMultiItem);
+      return (
+        <List.Item>
+          <T value={idea.attributes.title_multiloc} />
+        </List.Item>
+      );
+    }}
+  </GetIdea>
+);

@@ -1,9 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-import { isString } from 'lodash';
-
-// router
-import { browserHistory } from 'react-router';
+import React from 'react';
+import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 
 // components
 import Header from '../Header';
@@ -11,9 +7,8 @@ import Timeline from './Timeline';
 import Phase from './Phase';
 import EventsPreview from '../EventsPreview';
 
-// services
-import { projectBySlugStream } from 'services/projects';
-import { phasesStream } from 'services/phases';
+// resources
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // style
 import styled from 'styled-components';
@@ -27,91 +22,61 @@ const StyledTimeline = styled(Timeline)`
   position: relative;
 `;
 
-type Props = {
-  params: {
-    slug: string;
-  };
-};
+interface InputProps {}
 
-type State = {
-  projectId: string | null;
-  phaseId: string | null;
-};
+interface DataProps {
+  project: GetProjectChildProps['project'];
+}
 
-export default class ProjectTimelinePage extends React.PureComponent<Props, State> {
-  slug$: Rx.BehaviorSubject<string>;
-  subscriptions: Rx.Subscription[];
+interface Props extends InputProps, DataProps {}
+
+interface State {
+  selectedPhaseId: string | null;
+}
+
+class ProjectTimelinePage extends React.PureComponent<Props & WithRouterProps, State> {
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      projectId: null,
-      phaseId: null
+      selectedPhaseId: null
     };
-    this.slug$ = new Rx.BehaviorSubject(null as any);
-    this.subscriptions = [];
   }
 
-  componentDidMount() {
-    this.slug$.next(this.props.params.slug);
-
-    const currentLocation = browserHistory.getCurrentLocation();
-    const currentPath = currentLocation.pathname;
-    const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
-
-    if (lastUrlSegment === 'timeline') {
-      browserHistory.push(`/projects/${this.props.params.slug}/process`);
-    }
-
-    this.subscriptions = [
-      this.slug$
-        .distinctUntilChanged()
-        .filter(slug => isString(slug))
-        .switchMap((slug: string) => {
-          return projectBySlugStream(slug).observable.map(project => ({ slug, project }));
-        })
-        .switchMap(({ slug, project }) => {
-          return phasesStream(project.data.id).observable.map(() => ({ slug, project }));
-        })
-        .subscribe(({ slug, project }) => {
-          if (project.data.attributes.process_type !== 'timeline') {
-            browserHistory.push(`/projects/${slug}/info`);
-          }
-
-          this.setState({ projectId: project.data.id });
-        })
-    ];
-  }
-
-  componentDidUpdate(_prevProps: Props) {
-    this.slug$.next(this.props.params.slug);
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  handleOnPhaseSelected = (phaseId: string | null) => {
-    this.setState({ phaseId });
+  handleOnPhaseSelected = (selectedPhaseId: string | null) => {
+    this.setState({ selectedPhaseId });
   }
 
   render() {
     const className = this.props['className'];
+    const { project } = this.props;
     const { slug } = this.props.params;
-    const { projectId, phaseId } = this.state;
+    const { selectedPhaseId } = this.state;
 
-    if (projectId) {
+    // const currentLocation = browserHistory.getCurrentLocation();
+    // const currentPath = currentLocation.pathname;
+    // const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
+
+    // if (lastUrlSegment === 'timeline') {
+    //   browserHistory.push(`/projects/${this.props.params.slug}/process`);
+    // }
+
+    if (project) {
+      if (project.attributes.process_type !== 'timeline') {
+        browserHistory.push(`/projects/${slug}/info`);
+      }
+
       return (
         <Container className={className}>
-          <StyledHeader slug={slug} />
+          <StyledHeader projectSlug={slug} />
 
-          <StyledTimeline projectId={projectId} onPhaseSelected={this.handleOnPhaseSelected} />
+          <StyledTimeline projectId={project.id} onPhaseSelected={this.handleOnPhaseSelected} />
 
-          {phaseId && 
-            <Phase phaseId={phaseId} />
+          {selectedPhaseId &&
+            <Phase phaseId={selectedPhaseId} />
           }
 
-          <EventsPreview projectId={projectId} />
+          <EventsPreview projectId={project.id} />
         </Container>
       );
     }
@@ -119,3 +84,9 @@ export default class ProjectTimelinePage extends React.PureComponent<Props, Stat
     return null;
   }
 }
+
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <GetProject slug={inputProps.params.slug}>
+    {({ project }) => <ProjectTimelinePage {...inputProps} project={project} />}
+  </GetProject>
+));

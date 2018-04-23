@@ -1,8 +1,4 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-import { isString } from 'lodash';
-
-// components
+import React from 'react';
 import IdeasShow from 'containers/IdeasShow';
 import Button from 'components/UI/Button';
 
@@ -10,10 +6,8 @@ import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// services
-import { ideaBySlugStream } from 'services/ideas';
-
 // style
+import GetIdea from 'resources/GetIdea';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
@@ -37,59 +31,12 @@ type Props = {
   };
 };
 
-type State = {
-  ideaId: string | null;
-  loading: boolean;
-};
-
-class IdeasShowPage extends React.PureComponent<Props, State> {
-  slug$: Rx.BehaviorSubject<string | null>;
-  subscriptions: Rx.Subscription[];
-
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      ideaId: null,
-      loading: true,
-    };
-    this.slug$ = new Rx.BehaviorSubject(null);
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    this.slug$.next(this.props.params.slug);
-
-    this.subscriptions = [
-      this.slug$
-        .distinctUntilChanged()
-        .filter(slug => isString(slug))
-        .switchMap((slug: string) => {
-          return ideaBySlugStream(slug).observable;
-        }).subscribe((idea) => {
-          if (idea && idea.data) {
-            this.setState({ ideaId: idea.data.id, loading: false });
-          } else {
-            // No idea has been found
-            this.setState({ loading: false });
-          }
-        })
-    ];
-  }
-
-  componentDidUpdate() {
-    this.slug$.next(this.props.params.slug);
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  render() {
-    const { ideaId, loading } = this.state;
-
-    if (!loading && !ideaId) {
-      return (
-        <IdeaNotFoundWrapper>
+export default (props: Props) => (
+  <GetIdea slug={props.params.slug}>
+    {(idea) => {
+      if (!idea) {
+        return (
+          <IdeaNotFoundWrapper>
           <p><FormattedMessage {...messages.noIdeaFoundHere} /></p>
           <Button
             linkTo="/ideas"
@@ -101,12 +48,11 @@ class IdeasShowPage extends React.PureComponent<Props, State> {
       );
     }
 
-    return (
-      <Container>
-        <IdeasShow ideaId={ideaId} />
-      </Container>
-    );
-  }
-}
-
-export default IdeasShowPage;
+      return (
+        <Container>
+          <IdeasShow ideaId={idea.id} />
+        </Container>
+      );
+    }}
+  </GetIdea>
+);
