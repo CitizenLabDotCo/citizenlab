@@ -1,15 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
+import { InjectedIntlProps } from 'react-intl';
 
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 import { deleteArea } from 'services/areas';
-import T from 'components/T';
+
 import messages from '../messages';
+import T from 'components/T';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 import { Section, SectionTitle } from 'components/admin/Section';
 import { List, Row, TextCell } from 'components/admin/ResourceList';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import Button from 'components/UI/Button';
 
 const ButtonWrapper = styled.div`
@@ -24,8 +25,8 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-class AreasList extends React.PureComponent<Props & InjectedIntlProps>{
-  handleOnDeleteClick = (areaId: string) => (event: React.FormEvent<any>) => {
+class AreaList extends React.PureComponent<Props & InjectedIntlProps>{
+  handleDeleteClick = (areaId: string) => (event: React.FormEvent<any>) => {
     const deleteMessage = this.props.intl.formatMessage(messages.areaDeletionConfirmation);
     event.preventDefault();
 
@@ -36,27 +37,33 @@ class AreasList extends React.PureComponent<Props & InjectedIntlProps>{
 
   render() {
     const { areas } = this.props;
-    const isAreas = areas !== null && areas.length > 0;
     return (
       <Section>
         <SectionTitle>
           <FormattedMessage {...messages.titleAreas} />
         </SectionTitle>
-        {isAreas &&
         <List>
           {areas && areas.map(area =>
           <Row key={area.id}>
             <TextCell className="expand">
               <T value={area.attributes.title_multiloc}/>
             </TextCell>
-            <Button style="text" circularCorners={false} onClick={this.handleOnDeleteClick(area.id)} icon="delete">
+            <Button 
+              onClick={this.handleDeleteClick(area.id)} 
+              style="text" 
+              circularCorners={false} 
+              icon="delete">
               <FormattedMessage {...messages.deleteButtonLabel} />
             </Button>
-            <Button style="secondary" circularCorners={false} linkTo={`/admin/settings/areas/${area.id}`} icon="edit">
+            <Button 
+              linkTo={`/admin/settings/areas/${area.id}`}
+              style="secondary" 
+              circularCorners={false}    
+              icon="edit">
               <FormattedMessage {...messages.editButtonLabel} />
             </Button>
           </Row>)}
-        </List>}
+        </List>
         <ButtonWrapper>
             <Button
               style="cl-blue"
@@ -72,10 +79,10 @@ class AreasList extends React.PureComponent<Props & InjectedIntlProps>{
   }
 }
 
-const AreasListWithHoCs = injectIntl<Props>(AreasList);
+const AreaListWithHoCs = injectIntl<Props>(AreaList);
 
 export default () => (
   <GetAreas>
-    {areas => (<AreasListWithHoCs areas={areas} />)}
+    {areas => (<AreaListWithHoCs areas={areas} />)}
   </GetAreas>
 );
