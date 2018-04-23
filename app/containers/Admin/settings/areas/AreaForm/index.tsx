@@ -1,5 +1,6 @@
 import React from 'react';
-import { Form, Field, InjectedFormikProps } from 'formik';
+import { isEmpty, values as getValues, every } from 'lodash';
+import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
 import Error from 'components/UI/Error';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
@@ -17,9 +18,20 @@ export interface FormValues {
 export interface Props {}
 
 export default class AreaForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
+
+  public static validate = (values: FormValues): FormikErrors<FormValues> => {
+    const errors: FormikErrors<FormValues> = {};
+
+    if (every(getValues(values.title_multiloc), isEmpty)) {
+      errors.title_multiloc = (errors.title_multiloc || []).concat({ error: 'blank' });
+    }
+
+    return errors;
+  }
+
   render() {
     const { isSubmitting, errors, isValid, touched } = this.props;
-
+    
     return (
       <Form>
         <Section>

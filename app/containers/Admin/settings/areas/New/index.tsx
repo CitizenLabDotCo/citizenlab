@@ -47,6 +47,7 @@ export default class New extends React.Component<Props> {
             initialValues={this.initialValues()}
             render={this.renderFn}
             onSubmit={this.handleSubmit}
+            validate={AreaForm.validate}
           />
         </PageWrapper>
       </>
