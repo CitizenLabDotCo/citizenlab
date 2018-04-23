@@ -177,6 +177,9 @@ if (isDev) {
     },
   };
 
+  // Show progress
+  WEBPACK_CONFIG.plugins.push(new webpack.ProgressPlugin());
+
   // HMR plugin
   WEBPACK_CONFIG.plugins.push(new webpack.HotModuleReplacementPlugin());
   WEBPACK_CONFIG.plugins.push(new webpack.NamedModulesPlugin());
