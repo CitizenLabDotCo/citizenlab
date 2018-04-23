@@ -175,10 +175,14 @@ export default defineMessages({
   },
   acceptTermsAndConditions: {
     id: 'app.containers.SignUp.acceptTermsAndConditions',
-    defaultMessage: 'By signing up you agree with and accept our {tacLink}',
+    defaultMessage: 'By signing up, you agree to our {tacLink}',
   },
   termsAndConditions: {
     id: 'app.containers.SignUp.termsAndConditions',
     defaultMessage: 'terms and conditions',
+  },
+  tacError: {
+    id: 'app.containers.SignUp.tacError',
+    defaultMessage: 'Please accept the terms and conditions',
   },
 });
