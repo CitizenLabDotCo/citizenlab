@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { Observable, Subscription } from 'rxjs/Rx';
 import { isString, isEmpty, get } from 'lodash';
 
 // router
@@ -105,7 +105,7 @@ type State = {
 };
 
 export default class CompleteSignUpPage extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -121,10 +121,10 @@ export default class CompleteSignUpPage extends React.PureComponent<Props, State
     const query = location.query;
     const hasError = (location.pathname === '/authentication-error');
     const authUser$ = authUserStream().observable;
-    const ideaToPublish$ = (query && query.idea_to_publish ? ideaByIdStream(query.idea_to_publish).observable : Rx.Observable.of(null));
+    const ideaToPublish$ = (query && query.idea_to_publish ? ideaByIdStream(query.idea_to_publish).observable : Observable.of(null));
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      Observable.combineLatest(
         authUser$,
         ideaToPublish$,
       ).subscribe(async ([authUser, ideaToPublish]) => {
