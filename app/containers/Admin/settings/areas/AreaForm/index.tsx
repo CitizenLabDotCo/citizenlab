@@ -1,14 +1,16 @@
 import React from 'react';
 import { isEmpty, values as getValues, every } from 'lodash';
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
-import Error from 'components/UI/Error';
+import { FormattedMessage } from 'utils/cl-intl';
+import { Multiloc } from 'typings';
+import messages from '../messages';
+
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
+
 import { Section, SectionField } from 'components/admin/Section';
-import { Multiloc } from 'typings';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import Error from 'components/UI/Error';
 
 export interface FormValues {
   title_multiloc: Multiloc;
