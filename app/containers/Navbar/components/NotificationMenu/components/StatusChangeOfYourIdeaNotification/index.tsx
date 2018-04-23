@@ -14,7 +14,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  idea: GetIdeaChildProps;
+  idea: GetIdeaChildProps['idea'];
   ideaStatus: GetIdeaStatusChildProps;
 }
 

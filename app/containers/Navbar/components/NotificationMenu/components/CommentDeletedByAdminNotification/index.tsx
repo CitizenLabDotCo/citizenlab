@@ -11,7 +11,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  idea: GetIdeaChildProps;
+  idea: GetIdeaChildProps['idea'];
 }
 
 interface Props extends InputProps, DataProps {}
@@ -52,7 +52,7 @@ export default (inputProps: InputProps) => {
 
   return (
     <GetIdea id={notification.relationships.idea.data.id}>
-      {idea => <CommentDeletedByAdminNotification notification={notification} idea={idea} />}
+      {({ idea }) =>  <CommentDeletedByAdminNotification notification={notification} idea={idea} />}
     </GetIdea>
   );
 };

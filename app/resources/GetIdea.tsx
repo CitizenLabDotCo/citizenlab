@@ -17,9 +17,10 @@ interface Props extends InputProps {
 
 interface State {
   idea: IIdeaData | null;
+  ideaLoadingError: string | null;
 }
 
-export type GetIdeaChildProps = IIdeaData | null;
+export type GetIdeaChildProps = State;
 
 export default class GetIdea extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -28,7 +29,8 @@ export default class GetIdea extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      idea: null
+      idea: null,
+      ideaLoadingError: null,
     };
   }
 
@@ -50,7 +52,11 @@ export default class GetIdea extends React.Component<Props, State> {
 
           return Observable.of(null);
         }).subscribe((idea) => {
-          this.setState({ idea: (idea ? idea.data : null) });
+          if (idea) {
+            this.setState({ idea: idea.data });
+          } else {
+            this.setState({ ideaLoadingError: 'no idea found' });
+          }
         })
     ];
   }
@@ -66,7 +72,6 @@ export default class GetIdea extends React.Component<Props, State> {
 
   render() {
     const { children } = this.props;
-    const { idea } = this.state;
-    return (children as children)(idea);
+    return (children as children)(this.state);
   }
 }
