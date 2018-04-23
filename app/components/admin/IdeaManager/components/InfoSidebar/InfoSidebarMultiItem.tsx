@@ -5,7 +5,7 @@ import GetIdea from 'resources/GetIdea';
 
 export default (props: { ideaId: string }) => (
   <GetIdea id={props.ideaId}>
-    {idea => {      
+    {({ idea }) =>  {      
       if (!idea) return null;
 
       return (

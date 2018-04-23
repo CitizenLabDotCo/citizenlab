@@ -65,7 +65,7 @@ interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
-  idea: GetIdeaChildProps;
+  idea: GetIdeaChildProps['idea'];
 }
 
 interface Props extends InputProps, DataProps {}

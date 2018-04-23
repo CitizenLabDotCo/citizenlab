@@ -22,7 +22,7 @@ interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   tenantLocales: GetTenantLocalesChildProps;
-  idea: GetIdeaChildProps;
+  idea: GetIdeaChildProps['idea'];
   ideaImages: GetIdeaImagesChildProps;
 }
 

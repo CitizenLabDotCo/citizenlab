@@ -98,7 +98,7 @@ interface DataProps {
   comment: GetCommentChildProps;
   childComments: GetCommentsChildProps;
   author: GetUserChildProps;
-  idea: GetIdeaChildProps;
+  idea: GetIdeaChildProps['idea'];
 }
 
 interface Props extends InputProps, DataProps {}

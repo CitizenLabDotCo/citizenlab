@@ -33,26 +33,28 @@ type Props = {
 
 export default (props: Props) => (
   <GetIdea slug={props.params.slug}>
-    {(idea) => {
-      if (!idea) {
+    {({ idea, ideaLoadingError }) => {
+      if (ideaLoadingError) {
         return (
           <IdeaNotFoundWrapper>
-          <p><FormattedMessage {...messages.noIdeaFoundHere} /></p>
-          <Button
-            linkTo="/ideas"
-            text={<FormattedMessage {...messages.goBackToList} />}
-            icon="arrow-back"
-            circularCorners={false}
-          />
-        </IdeaNotFoundWrapper>
-      );
-    }
-
-      return (
-        <Container>
-          <IdeasShow ideaId={idea.id} />
-        </Container>
-      );
+            <p><FormattedMessage {...messages.noIdeaFoundHere} /></p>
+            <Button
+              linkTo="/ideas"
+              text={<FormattedMessage {...messages.goBackToList} />}
+              icon="arrow-back"
+              circularCorners={false}
+            />
+          </IdeaNotFoundWrapper>
+        );
+      } else if (idea) {
+        return (
+          <Container>
+            <IdeasShow ideaId={idea.id} />
+          </Container>
+        );
+      } else {
+        return null;
+      }
     }}
   </GetIdea>
 );
