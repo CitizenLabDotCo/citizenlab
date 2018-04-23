@@ -1,10 +1,12 @@
 import React from 'react';
 import Rx from 'rxjs/Rx';
 import { get } from 'lodash';
+import { Link } from 'react-router';
 
 // components
 // import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
+import Checkbox from 'components/UI/Checkbox';
 
 // services
 import { globalState, IIdeasNewPageGlobalState } from 'services/globalState';
@@ -14,7 +16,7 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
@@ -168,33 +170,20 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     // window.location.href = `${AUTH_PATH}/${provider}${this.state.socialLoginUrlParameter}`;
   }
 
-  handleSSOTACAccepted = () => () => {
+  handleSocialLoginAcceptTaC = (provider: 'google' | 'facebook') => () => {
     this.setState({ socialLoginTaCAccepted: true });
+    setTimeout(() => {
+      window.location.href = `${AUTH_PATH}/${provider}${this.state.socialLoginUrlParameter}`;
+    }, 500);
   }
 
   render() {
     const { tenant } = this.props;
     const { formatMessage } = this.props.intl;
-    const { socialLoginClicked } = this.state;
+    const { socialLoginClicked, socialLoginTaCAccepted } = this.state;
     const googleLoginEnabled = (tenant ? get(tenant.attributes.settings.google_login, 'enabled', false) : false);
     const facebookLoginEnabled = (tenant ? get(tenant.attributes.settings.facebook_login, 'enabled', false) : false); 
     const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
-
-    // const bleh = (
-    //   <TermsAndConditionsWrapper className={`${this.state.tacError && 'error'}`}>
-    //     <Checkbox 
-    //       value={this.state.tacAccepted}
-    //       onChange={this.handleTaCAcceptedOnChange}
-    //       disableLabelClick={true}
-    //       label={
-    //         <FormattedMessage
-    //           {...messages.acceptTermsAndConditions} 
-    //           values={{ tacLink: <Link to="pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link> }}
-    //         />
-    //       }
-    //     />
-    //   </TermsAndConditionsWrapper>
-    // )
 
     if (showSocialLogin) {
       return (
@@ -207,15 +196,46 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
             <SocialSignInButtons>
               <FeatureFlag name="google_login">
                 <SocialSignInButton className={`google ${socialLoginClicked === 'google' && 'active'}`} onClick={this.handleOnSSOClick('google')}>
-                {socialLoginClicked === 'google' 
-                  ? 
-                  : <img src={googleLogo} height="31px" role="presentation" alt="" />
-                }
+                  {socialLoginClicked === 'google' 
+                    ? (
+                      <Checkbox 
+                        value={socialLoginTaCAccepted}
+                        onChange={this.handleSocialLoginAcceptTaC('google')}
+                        disableLabelClick={true}
+                        label={
+                          <FormattedMessage
+                            {...messages.acceptTermsAndConditionsGoogle} 
+                            values={{ tacLink: <Link to="pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link> }}
+                          />
+                        }
+                      />
+                    )
+                    : (
+                      <img src={googleLogo} height="31px" role="presentation" alt="" />
+                    )
+                  }
                 </SocialSignInButton>
               </FeatureFlag>
               <FeatureFlag name="facebook_login">
                 <SocialSignInButton className={`facebook ${socialLoginClicked === 'facebook' && 'active'}`} onClick={this.handleOnSSOClick('google')}>
-                  {socialLoginClicked !== 'facebook' && <img src={facebookLogo} height="23px" role="presentation" alt="" />}
+                  {socialLoginClicked === 'facebook' 
+                    ? (
+                      <Checkbox 
+                        value={socialLoginTaCAccepted}
+                        onChange={this.handleSocialLoginAcceptTaC('facebook')}
+                        disableLabelClick={true}
+                        label={
+                          <FormattedMessage
+                            {...messages.acceptTermsAndConditionsFacebook} 
+                            values={{ tacLink: <Link to="pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link> }}
+                          />
+                        }
+                      />
+                    )
+                    : (
+                      <img src={facebookLogo} height="23px" role="presentation" alt="" />
+                    )
+                  }
                 </SocialSignInButton>
               </FeatureFlag>
             </SocialSignInButtons>
