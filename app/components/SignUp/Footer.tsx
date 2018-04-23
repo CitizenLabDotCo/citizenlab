@@ -125,6 +125,8 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
+  socialLoginClicked: 'google' | 'facebook' | null;
+  socialLoginTaCAccepted: boolean;
   socialLoginUrlParameter: string;
 }
 
@@ -134,6 +136,8 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
+      socialLoginClicked: null,
+      socialLoginTaCAccepted: false,
       socialLoginUrlParameter: ''
     };
     this.subscriptions = [];
@@ -159,16 +163,38 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.props.goToSignIn();
   }
 
-  handleOnSSOClick = (provider) => () => {
-    window.location.href = `${AUTH_PATH}/${provider}${this.state.socialLoginUrlParameter}`;
+  handleOnSSOClick = (provider: 'google' | 'facebook') => () => {
+    this.setState({ socialLoginClicked: provider });
+    // window.location.href = `${AUTH_PATH}/${provider}${this.state.socialLoginUrlParameter}`;
+  }
+
+  handleSSOTACAccepted = () => () => {
+    this.setState({ socialLoginTaCAccepted: true });
   }
 
   render() {
     const { tenant } = this.props;
     const { formatMessage } = this.props.intl;
+    const { socialLoginClicked } = this.state;
     const googleLoginEnabled = (tenant ? get(tenant.attributes.settings.google_login, 'enabled', false) : false);
     const facebookLoginEnabled = (tenant ? get(tenant.attributes.settings.facebook_login, 'enabled', false) : false); 
     const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
+
+    // const bleh = (
+    //   <TermsAndConditionsWrapper className={`${this.state.tacError && 'error'}`}>
+    //     <Checkbox 
+    //       value={this.state.tacAccepted}
+    //       onChange={this.handleTaCAcceptedOnChange}
+    //       disableLabelClick={true}
+    //       label={
+    //         <FormattedMessage
+    //           {...messages.acceptTermsAndConditions} 
+    //           values={{ tacLink: <Link to="pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link> }}
+    //         />
+    //       }
+    //     />
+    //   </TermsAndConditionsWrapper>
+    // )
 
     if (showSocialLogin) {
       return (
@@ -180,13 +206,16 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
             </SocialSignInText>
             <SocialSignInButtons>
               <FeatureFlag name="google_login">
-                <SocialSignInButton className={`google ${}`} onClick={this.handleOnSSOClick('google')}>
-                  <img src={googleLogo} height="31px" role="presentation" alt="" />
+                <SocialSignInButton className={`google ${socialLoginClicked === 'google' && 'active'}`} onClick={this.handleOnSSOClick('google')}>
+                {socialLoginClicked === 'google' 
+                  ? 
+                  : <img src={googleLogo} height="31px" role="presentation" alt="" />
+                }
                 </SocialSignInButton>
               </FeatureFlag>
               <FeatureFlag name="facebook_login">
-                <SocialSignInButton className={`facebook ${}`} onClick={this.handleOnSSOClick('google')}>
-                  <img src={facebookLogo} height="23px" role="presentation" alt="" />
+                <SocialSignInButton className={`facebook ${socialLoginClicked === 'facebook' && 'active'}`} onClick={this.handleOnSSOClick('google')}>
+                  {socialLoginClicked !== 'facebook' && <img src={facebookLogo} height="23px" role="presentation" alt="" />}
                 </SocialSignInButton>
               </FeatureFlag>
             </SocialSignInButtons>
