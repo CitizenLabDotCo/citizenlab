@@ -34,7 +34,7 @@ module SmartGroupRules
         },
         {
           "type" => "object",
-          "required" => ["ruleType", "customFieldId", "predicate", "value"],
+          "required" => ["ruleType", "customFieldId", "predicate"],
           "additionalProperties" => false,
           "properties" => {
             "ruleType" => {

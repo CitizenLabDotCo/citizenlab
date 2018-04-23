@@ -48,7 +48,7 @@ describe SmartGroupRules::CustomFieldSelect do
         users[2].custom_field_values[custom_field.key] = options[1].key
         users[3].custom_field_values[custom_field.key] = options[2].key
         users[4].custom_field_values[custom_field.key] = nil
-        users.each(&:save)
+        users.each(&:save!)
       }
 
       it "correctly filters on 'has_value' predicate" do
@@ -61,12 +61,12 @@ describe SmartGroupRules::CustomFieldSelect do
         expect(rule.filter(User).count).to eq User.count - 1
       end
 
-      pending "correctly filters on 'is_empty' predicate" do
+      it "correctly filters on 'is_empty' predicate" do
         rule = SmartGroupRules::CustomFieldSelect.new(custom_field.id, 'is_empty')
         expect(rule.filter(User).count).to eq 1 
       end
 
-      pending "correctly filters on 'not_is_empty' predicate" do
+      it "correctly filters on 'not_is_empty' predicate" do
         rule = SmartGroupRules::CustomFieldSelect.new(custom_field.id, 'not_is_empty')
         expect(rule.filter(User).count).to eq User.count - 1
       end

@@ -1,10 +1,19 @@
 class SmartGroupsService
 
-  RULE_TYPE_TO_CLASS = {
-    'custom_field_text' => SmartGroupRules::CustomFieldText,
-    'custom_field_select' => SmartGroupRules::CustomFieldSelect,
-    'role' => SmartGroupRules::Role
-  }
+  # RULE_TYPE_TO_CLASS = {
+  #   'custom_field_text' => SmartGroupRules::CustomFieldText,
+  #   'custom_field_select' => SmartGroupRules::CustomFieldSelect,
+  #   'custom_field_checkbox' => SmartGroupRules::CustomFieldCheckbox,
+  #   'role' => SmartGroupRules::Role
+  # }
+  RULE_TYPE_TO_CLASS = [
+    SmartGroupRules::CustomFieldText,
+    SmartGroupRules::CustomFieldSelect,
+    SmartGroupRules::CustomFieldCheckbox,
+    SmartGroupRules::Role
+  ].map do |smart_group_class|
+    [smart_group_class.RULE_TYPE, smart_group_class]
+  end.to_h
 
   def filter users_scope, json_rules
     rules = parse_json_rules json_rules
