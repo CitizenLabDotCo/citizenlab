@@ -32,5 +32,9 @@ export default defineMessages({
   fieldDescription: { 
     id: 'app.containers.AdminPage.SettingsPage.fieldDescription',
     defaultMessage: 'Area description',
-  }
+  },
+  editFormTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.editFormTitle',
+    defaultMessage: 'Edit area',
+  },
 });
