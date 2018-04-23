@@ -6,13 +6,13 @@ import GetCustomFields, { GetCustomFieldsChildProps } from 'resources/GetCustomF
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import T from 'components/T';
-import { List, TextCell } from 'components/admin/ResourceList';
+
+import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import Button from 'components/UI/Button';
 import Toggle from 'components/UI/Toggle';
 import messages from '../messages';
-import SortableRow from './SortableRow';
 import FeatureFlag from 'components/FeatureFlag';
 
 const ButtonWrapper = styled.div`

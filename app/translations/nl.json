@@ -224,6 +224,7 @@
   "app.containers.AdminPage.ProjectEdit.descriptionLabel": "Beschrijving",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Beschrijving",
   "app.containers.AdminPage.ProjectEdit.draftStatus": "Draft",
+  "app.containers.AdminPage.ProjectEdit.editButtonLabel": "",
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Activiteiten",
   "app.containers.AdminPage.ProjectEdit.generalTab": "Algemeen",
   "app.containers.AdminPage.ProjectEdit.goBack": "Ga terug",
