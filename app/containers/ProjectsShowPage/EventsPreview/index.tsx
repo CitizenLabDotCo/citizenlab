@@ -1,12 +1,11 @@
 // libraries
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { adopt } from 'react-adopt';
 import * as moment from 'moment';
-import { isString } from 'lodash';
 
-// services
-import { projectByIdStream } from 'services/projects';
-import { eventsStream, IEventData } from 'services/events';
+// resources
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -45,93 +44,52 @@ const Events = styled.div`
   `}
 `;
 
-type Props = {
+interface InputProps {
   projectId: string;
-};
-
-type State = {
-  projectSlug: string | null;
-  events: IEventData[];
-};
-
-export default class EventsPreview extends React.Component<Props, State> {
-  projectId$: Rx.BehaviorSubject<string>;
-  subscriptions: Rx.Subscription[];
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      projectSlug: null,
-      events: []
-    };
-    this.projectId$ = new Rx.BehaviorSubject(null as any);
-  }
-
-  componentDidMount() {
-    this.projectId$.next(this.props.projectId);
-
-    this.subscriptions = [
-      this.projectId$.distinctUntilChanged().filter(projectId => isString(projectId)).switchMap((projectId) => {
-        const projectSlug$ = projectByIdStream(projectId).observable.map(project => project.data.attributes.slug);
-        const events$ = eventsStream(projectId).observable;
-
-        return Rx.Observable.combineLatest(
-          projectSlug$,
-          events$
-        );
-      }).subscribe(([projectSlug, events]) => {
-        let eventsArray: IEventData[] = [];
-
-        if (events && events.data && events.data.length > 0) {
-          const now = moment();
-
-          eventsArray = events.data.filter((event) => {
-            return moment(event.attributes.start_at).isSameOrAfter(now, 'day');
-          });
-        }
-
-        this.setState({
-          projectSlug,
-          events: eventsArray
-        });
-      })
-    ];
-  }
-
-  componentDidUpdate() {
-    this.projectId$.next(this.props.projectId);
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  render() {
-    const { projectSlug, events } = this.state;
-
-    if (projectSlug && events && events.length > 0) {
-      return (
-        <Container className={`e2e-events-preview`}>
-          <ContentContainer>
-            <Header>
-              <h2>
-                <FormattedMessage {...messages.upcomingEvents} />
-              </h2>
-              <Button circularCorners={false} style="primary-outlined" linkTo={`/projects/${projectSlug}/events`}>
-                <FormattedMessage {...messages.allEvents} />
-              </Button>
-            </Header>
-
-            <Events>
-              {events.slice(0, 3).map((event, index) => (
-                <EventBlock event={event} key={event.id} projectSlug={projectSlug} isLast={(index === 2)} />
-              ))}
-            </Events>
-          </ContentContainer>
-        </Container>
-      );      
-    }
-
-    return null;
-  }
 }
+
+interface DataProps {
+  project: GetProjectChildProps;
+  events: GetEventsChildProps;
+}
+
+const Data = adopt<DataProps, InputProps>({
+  project: ({ projectId, render }) => <GetProject slug={projectId}>{render}</GetProject>,
+  events: ({ project, render }) => <GetEvents projectId={(project ? project.id : null)}>{render}</GetEvents>
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {({ project, events }) => {
+      if (project && events && events.length > 0) {
+        const now = moment();
+
+        return (
+          <Container className={`e2e-events-preview`}>
+            <ContentContainer>
+              <Header>
+                <h2>
+                  <FormattedMessage {...messages.upcomingEvents} />
+                </h2>
+                <Button circularCorners={false} style="primary-outlined" linkTo={`/projects/${project.attributes.slug}/events`}>
+                  <FormattedMessage {...messages.allEvents} />
+                </Button>
+              </Header>
+
+              <Events>
+                {events
+                  .filter((event) => moment(event.attributes.start_at).isSameOrAfter(now, 'day'))
+                  .slice(0, 3)
+                  .map((event, index) => (
+                    <EventBlock event={event} key={event.id} projectSlug={project.attributes.slug} isLast={(index === 2)} />
+                  ))}
+              </Events>
+            </ContentContainer>
+          </Container>
+        );      
+      }
+
+      return null;
+    }}
+  </Data>
+);
