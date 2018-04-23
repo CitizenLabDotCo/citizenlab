@@ -1,13 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Formik } from 'formik';
+import { addArea } from 'services/areas';
 import { browserHistory } from 'react-router';
+import { API } from 'typings';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 import GoBackButton from 'components/UI/GoBackButton';
 import PageWrapper from 'components/admin/PageWrapper';
-import AreaForm from '../AreaForm';
-import { FormattedMessage } from 'utils/cl-intl';
+import AreaForm, { FormValues } from '../AreaForm';
 
 const PageTitle = styled.h1`
   width: 100%;
@@ -18,6 +20,21 @@ const PageTitle = styled.h1`
 type Props = {}
 
 export default class New extends React.Component<Props> {
+  
+  handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
+    addArea({
+      ...values
+    })
+      .then(() => {
+        browserHistory.push('/admin/settings/areas');
+      })
+      .catch((errorResponse) => {
+        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+        setErrors(apiErrors);
+        setSubmitting(false);
+      });
+  }
+ 
   goBack = () => {
     browserHistory.push('/admin/settings/areas');
   }
@@ -30,10 +47,6 @@ export default class New extends React.Component<Props> {
     title_multiloc: {},
     description_multiloc: {}
   });
-
-  handleSubmit = () => {
-    console.log('Help us')
-  }
 
   render() {
     return (
