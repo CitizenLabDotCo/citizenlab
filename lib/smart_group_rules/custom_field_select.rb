@@ -36,7 +36,7 @@ module SmartGroupRules
         },
         {
           "type" => "object",
-          "required" => ["ruleType", "customFieldId", "predicate", "value"],
+          "required" => ["ruleType", "customFieldId", "predicate"],
           "additionalProperties" => false,
           "properties" => {
             "ruleType" => {
@@ -62,7 +62,6 @@ module SmartGroupRules
     end
 
     def filter users_scope
-
       custom_field = CustomField.find(custom_field_id)
       key = custom_field.key
       if custom_field.input_type == 'select'
@@ -73,6 +72,10 @@ module SmartGroupRules
         when 'not_has_value'
           option_key = CustomFieldOption.find(value).key
           users_scope.where("custom_field_values->>'#{key}' <> ?", option_key)
+        when 'is_empty'
+          users_scope.where("custom_field_values->>'#{key}' IS NULL")
+        when 'not_is_empty'
+          users_scope.where("custom_field_values->>'#{key}' IS NOT NULL")
         else
           raise "Unsupported predicate #{predicate}"
         end
