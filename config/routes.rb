@@ -54,7 +54,7 @@ Rails.application.routes.draw do
       end
 
       resources :topics, only: [:index, :show]
-      resources :areas, only: [:index, :show]
+      resources :areas
 
       resources :tenants, only: [:update] do
         get :current, on: :collection
