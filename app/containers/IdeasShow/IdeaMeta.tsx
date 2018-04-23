@@ -22,13 +22,13 @@ interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   tenantLocales: GetTenantLocalesChildProps;
-  idea: GetIdeaChildProps['idea'];
+  ideaLoaderState: GetIdeaChildProps;
   ideaImages: GetIdeaImagesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaMeta: React.SFC<Props> = ({ locale, tenantLocales, idea, ideaImages }) => {
+const IdeaMeta: React.SFC<Props> = ({ locale, tenantLocales, ideaLoaderState: { idea }, ideaImages }) => {
   if (locale && tenantLocales && idea) {
     const ideaTitle = getLocalized(idea.attributes.title_multiloc, locale, tenantLocales);
     const ideaDescription = stripHtml(getLocalized(idea.attributes.body_multiloc, locale, tenantLocales));
@@ -53,7 +53,7 @@ const IdeaMeta: React.SFC<Props> = ({ locale, tenantLocales, idea, ideaImages })
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  ideaLoaderState: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>
 });
 
