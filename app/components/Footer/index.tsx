@@ -276,7 +276,7 @@ class Footer extends React.PureComponent<Props, State> {
       return (
         <Container className={this.props['className']} id="hook-footer">
           {showCityLogoSection &&
-            <Fragment name="footer-city-logoo">
+            <Fragment name="footer-city-logo">
               <FirstLine id="hook-footer-logo">
                 {currentTenantLogo && <TenantLogo src={currentTenantLogo} />}
                 <TenantSlogan>{slogan}</TenantSlogan>
