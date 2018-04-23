@@ -79,6 +79,7 @@ class WebApi::V1::IdeasController < ApplicationController
     I18n.with_locale(current_user&.locale) do
       @ideas = policy_scope(Idea)
         .includes(:author, :topics, :areas, :project)
+        .where(publication_status: 'published')
       @ideas = @ideas.where(project_id: params[:project]) if params[:project].present?
       xlsx = XlsxService.new.generate_ideas_xlsx @ideas
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
