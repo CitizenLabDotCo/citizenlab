@@ -150,7 +150,6 @@ export default class App extends React.PureComponent<Props & RouterState, State>
           moment.locale((locale === 'no' ? 'nb' : locale));
         }),
         tenant$.do((tenant) => {
-          console.log('timezone: ' + tenant.data.attributes.settings.core.timezone);
           moment.tz.setDefault(tenant.data.attributes.settings.core.timezone);
           store.dispatch({ type: LOAD_CURRENT_TENANT_SUCCESS, payload: tenant });
         })
