@@ -65,7 +65,7 @@ interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
-  idea: GetIdeaChildProps['idea'];
+  ideaLoaderState: GetIdeaChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -142,7 +142,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
   }
 
   render() {
-    const { authUser, idea, ideaId } = this.props;
+    const { authUser, ideaLoaderState: { idea } , ideaId } = this.props;
     const { formatMessage } = this.props.intl;
     const { inputValue, processing, errorMessage } = this.state;
     const commentingEnabled = (idea ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
@@ -160,7 +160,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
           commentingDisabledReason={commentingDisabledReason}
           projectId={projectId}
         />
-        {(authUser && canComment) && 
+        {(authUser && canComment) &&
           <CommentContainer className="e2e-comment-form ideaCommentForm">
             <StyledAuthor authorId={authUser.id} />
 
@@ -200,7 +200,7 @@ const ParentCommentFormWithHoCs = injectTracks<Props>({
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>
+  ideaLoaderState: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>
 });
 
 export default (inputProps: InputProps) => (
