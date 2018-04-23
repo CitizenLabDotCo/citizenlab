@@ -203,6 +203,10 @@ export default defineMessages({
     id: 'app.containers.Admin.User.currentlyNoInvites',
     defaultMessage: 'There currently are no invites yet',
   },
+  currentlyNoInvitesThatMatchSearch: {
+    id: 'app.containers.Admin.User.currentlyNoInvitesThatMatchSearch',
+    defaultMessage: 'There are no invites that match your search',
+  },
   filetypeError: {
     id: 'app.containers.Admin.User.filetypeError',
     defaultMessage: 'Incorrect file type. Only XLSX files are supported.',

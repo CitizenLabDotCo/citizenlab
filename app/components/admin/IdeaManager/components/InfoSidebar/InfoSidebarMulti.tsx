@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import InfoSidebarMultiItem from './InfoSidebarMultiItem';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -25,7 +25,7 @@ class InfoSidebarMulti extends React.PureComponent<Props & InjectedIntlProps> {
     const { ideaIds } = this.props;
 
     return (
-      <div>
+      <>
         <Button.Group size="small" attached="top">
           <Button negative={true} basic={true} onClick={this.handleClickDelete}>
             <Icon name="trash" />
@@ -39,7 +39,7 @@ class InfoSidebarMulti extends React.PureComponent<Props & InjectedIntlProps> {
             ))}
           </List>
         </Segment>
-      </div>
+      </>
     );
   }
 }

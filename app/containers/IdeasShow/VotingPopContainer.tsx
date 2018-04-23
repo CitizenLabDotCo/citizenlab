@@ -1,5 +1,5 @@
 
-import * as React from 'react';
+import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import Icon, { IconNames } from 'components/UI/Icon';
 
