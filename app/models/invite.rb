@@ -8,6 +8,7 @@ class Invite < ApplicationRecord
 
   belongs_to :inviter, class_name: 'User', optional: true
   belongs_to :invitee, class_name: 'User'
+  has_many :notifications, foreign_key: :invite_id, dependent: :nullify
 
   validates :token, presence: true, uniqueness: true
   validates :invitee, presence: true, uniqueness: true
