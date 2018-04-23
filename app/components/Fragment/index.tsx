@@ -7,7 +7,11 @@ import GetTenant from 'resources/GetTenant';
 // import { globalCss } from 'global-styles';
 
 
-const StyledFrame = styled(Frame)`
+// const StyledFrame = styled(Frame)`
+//   border: 0;
+// `;
+
+const StyledIframe = styled.iframe`
   border: 0;
 `;
 
@@ -64,11 +68,7 @@ class Fragment extends React.Component<Props, State> {
 
     if (fragmentHtml) {
       return (
-        <StyledFrame>
-          <div style={innerFragmentStyle}>
-            <div dangerouslySetInnerHTML={{ __html: fragmentHtml }} />
-          </div>
-        </StyledFrame>
+        <StyledIframe src={this.fragmentUrl()} />
       );
     } else if (fragmentHtml === null) {
       return children;
