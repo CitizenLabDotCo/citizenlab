@@ -2,6 +2,7 @@ import React from 'react';
 import Rx from 'rxjs/Rx';
 import { get } from 'lodash';
 import { Link } from 'react-router';
+// import CSSTransition from 'react-transition-group/CSSTransition';
 
 // components
 // import Button from 'components/UI/Button';
@@ -56,8 +57,8 @@ const SocialSignInButtons = styled.div`
 
 const SocialSignInButton = styled.div`
   width: 100%;
-  height: 60px;
-  padding: 15px;
+  height: 58px;
+  padding: 15px 30px;
   margin-bottom: 15px;
   display: flex;
   align-items: center;
@@ -76,36 +77,24 @@ const SocialSignInButton = styled.div`
   &.facebook.active {
     border-color: #345697;
   }
+
+  span {
+    color: #707075 !important;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 19px;
+  }
+
+  a > span {
+    color: #707075 !important;
+    text-decoration: underline;
+  }
+
+  a:hover > span {
+    color: #000 !important;
+    text-decoration: underline;
+  }
 `;
-
-// const SocialSignInButtonLogo = styled.div``;
-
-// const SocialSignInButton = styled(Button)`
-//   .Button {
-//     background: #fff !important;
-//     border: solid 1px #eaeaea !important;
-//   }
-
-//   &:hover {
-//     .Button {
-//       border-color: #ccc !important;
-//     }
-//   }
-// `;
-
-// const GoogleLogin = SocialSignInButton.extend`
-//   margin-right: 15px;
-
-//   .Button {
-//     color: #518EF8 !important;
-//   }
-// `;
-
-// const FacebookLogin = SocialSignInButton.extend`
-//   .Button {
-//     color: #4B6696 !important;
-//   }
-// `;
 
 const SocialSignInText = styled.div`
   color: ${(props) => props.theme.colors.label};
@@ -166,15 +155,14 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleOnSSOClick = (provider: 'google' | 'facebook') => () => {
-    this.setState({ socialLoginClicked: provider });
-    // window.location.href = `${AUTH_PATH}/${provider}${this.state.socialLoginUrlParameter}`;
+    this.setState(state => ({ socialLoginClicked: (state.socialLoginClicked === provider && !state.socialLoginTaCAccepted ? null : provider) }));
   }
 
   handleSocialLoginAcceptTaC = (provider: 'google' | 'facebook') => () => {
     this.setState({ socialLoginTaCAccepted: true });
     setTimeout(() => {
       window.location.href = `${AUTH_PATH}/${provider}${this.state.socialLoginUrlParameter}`;
-    }, 500);
+    }, 250);
   }
 
   render() {
@@ -211,13 +199,13 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                       />
                     )
                     : (
-                      <img src={googleLogo} height="31px" role="presentation" alt="" />
+                      <img src={googleLogo} height="29px" role="presentation" alt="" />
                     )
                   }
                 </SocialSignInButton>
               </FeatureFlag>
               <FeatureFlag name="facebook_login">
-                <SocialSignInButton className={`facebook ${socialLoginClicked === 'facebook' && 'active'}`} onClick={this.handleOnSSOClick('google')}>
+                <SocialSignInButton className={`facebook ${socialLoginClicked === 'facebook' && 'active'}`} onClick={this.handleOnSSOClick('facebook')}>
                   {socialLoginClicked === 'facebook' 
                     ? (
                       <Checkbox 
@@ -233,7 +221,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                       />
                     )
                     : (
-                      <img src={facebookLogo} height="23px" role="presentation" alt="" />
+                      <img src={facebookLogo} height="21px" role="presentation" alt="" />
                     )
                   }
                 </SocialSignInButton>
