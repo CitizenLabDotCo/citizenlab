@@ -42,6 +42,10 @@ export function addArea(object) {
   return streams.add<IArea>(apiEndpoint, { area: object });
 }
 
+export function updateArea(areaId: string, object) {
+  return streams.update<IArea>(`${apiEndpoint}/${areaId}`, areaId, { area: object });
+}
+
 export function deleteArea(areaId: string) {
   return streams.delete(`${apiEndpoint}/${areaId}`, areaId);
 }
