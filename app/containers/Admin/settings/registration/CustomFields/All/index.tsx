@@ -110,40 +110,50 @@ class CustomFields extends React.Component<Props & InjectedIntlProps, State> {
 
   render() {
     const listItems = this.listItems() || [];
+    const listItemsLength = listItems.length;
+    let lastItem = false;
 
     return (
       <>
         <List key={listItems.length}>
-          {listItems.map((field, index) => (
-            <SortableRow
-              key={field.id}
-              id={field.id}
-              index={index}
-              moveRow={this.handleDragRow}
-              dropRow={this.handleDropRow}
-            >
-              <Toggle
-                value={field.attributes.enabled}
-                onChange={this.handleOnEnabledToggle(field)}
-              />
-              <TextCell className="expand">
-                <T value={field.attributes.title_multiloc} />
-              </TextCell>
-              {!this.isBuiltInField(field) &&
-                <>
-                  <Button disabled={this.isBuiltInField(field)} onClick={this.handleOnDeleteClick(field.id)} style="text" circularCorners={false} icon="delete">
-                    <FormattedMessage {...messages.deleteButtonLabel} />
-                  </Button>
-                  <Button disabled={this.isBuiltInField(field)} linkTo={`/admin/settings/registration/custom_fields/${field.id}/general`} style="secondary" circularCorners={false} icon="edit">
-                    <FormattedMessage {...messages.editButtonLabel} />
-                  </Button>
-                </>
+          {
+            listItems.map((field, index) => {
+              if (index === listItemsLength - 1) {
+                lastItem = true;
               }
-              {this.isBuiltInField(field) &&
-                <div><FormattedMessage {...messages.systemField} /></div>
-              }
-            </SortableRow>
-          ))}
+              return (
+                <SortableRow
+                  key={field.id}
+                  id={field.id}
+                  index={index}
+                  lastItem={lastItem}
+                  moveRow={this.handleDragRow}
+                  dropRow={this.handleDropRow}
+                >
+                  <Toggle
+                    value={field.attributes.enabled}
+                    onChange={this.handleOnEnabledToggle(field)}
+                  />
+                  <TextCell className="expand">
+                    <T value={field.attributes.title_multiloc} />
+                  </TextCell>
+                  {!this.isBuiltInField(field) &&
+                    <>
+                      <Button disabled={this.isBuiltInField(field)} onClick={this.handleOnDeleteClick(field.id)} style="text" circularCorners={false} icon="delete">
+                        <FormattedMessage {...messages.deleteButtonLabel} />
+                      </Button>
+                      <Button disabled={this.isBuiltInField(field)} linkTo={`/admin/settings/registration/custom_fields/${field.id}/general`} style="secondary" circularCorners={false} icon="edit">
+                        <FormattedMessage {...messages.editButtonLabel} />
+                      </Button>
+                    </>
+                  }
+                  {this.isBuiltInField(field) &&
+                    <div><FormattedMessage {...messages.systemField} /></div>
+                  }
+                </SortableRow>
+              );
+            })
+          }
         </List>
         <FeatureFlag name="user_custom_fields">
           <ButtonWrapper>
