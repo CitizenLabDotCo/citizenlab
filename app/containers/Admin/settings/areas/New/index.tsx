@@ -13,7 +13,7 @@ import AreaForm, { FormValues } from '../AreaForm';
 
 
 import { API } from 'typings';
-type Props = {}
+type Props = {};
 
 export default class New extends React.Component<Props> {
 
@@ -39,7 +39,7 @@ export default class New extends React.Component<Props> {
   initialValues = () => ({
     title_multiloc: {},
     description_multiloc: {}
-  });
+  })
 
   render() {
     return (
@@ -54,6 +54,6 @@ export default class New extends React.Component<Props> {
             validate={AreaForm.validate}
           />
       </Section>
-    )
+    );
   }
 }

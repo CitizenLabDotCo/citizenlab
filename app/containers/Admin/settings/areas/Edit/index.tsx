@@ -16,7 +16,7 @@ import AreaForm, { FormValues } from '../AreaForm';
 import { API } from 'typings';
 interface InputProps {}
 interface DataProps {
-  area: GetAreaChildProps
+  area: GetAreaChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -67,11 +67,11 @@ class Edit extends React.PureComponent<Props> {
           validate={AreaForm.validate}
         />}
       </Section>
-    )
+    );
   }
 }
 
-export default withRouter((inputProps: InputProps & WithRouterProps ) => (
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <GetArea id={inputProps.params.areaId} >
     {area => (<Edit area={area} />)}
   </GetArea>
