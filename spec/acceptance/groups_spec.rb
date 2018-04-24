@@ -41,6 +41,8 @@ resource "Groups" do
     post "web_api/v1/groups" do
       with_options scope: :group do
         parameter :title_multiloc, "The title of the group in multiple locales", required: true
+        parameter :membership_type, "Whether members are manually or automatically added. Either #{Group::MEMBERSHIP_TYPES.join(', ')}. Defaults to 'manual'"
+        parameter :rules, "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{SmartGroupsService.new.generate_rules_json_schema}"
       end
       ValidationErrorHelper.new.error_fields(self, Group)
 
@@ -48,11 +50,27 @@ resource "Groups" do
 
       describe do
         let(:title_multiloc) { group.title_multiloc }
+        let(:membership_type) { 'manual' }
 
-        example_request "Create a group" do
+        example_request "Create a group with 'manual' membership_type" do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+          expect(json_response.dig(:data,:attributes,:membership_type)).to eq 'manual'
+        end
+      end
+
+      describe do
+        let(:title_multiloc) { group.title_multiloc }
+        let(:membership_type) { 'rules' }
+        let(:rules) { [{ ruleType: 'role', predicate: 'is_admin' }] }
+
+        example_request "Create a group with 'rules' membership_type" do
+          expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+          expect(json_response.dig(:data,:attributes,:membership_type)).to eq 'rules'
+          expect(json_response.dig(:data,:attributes,:rules)).to match rules
         end
       end
     end
@@ -60,6 +78,8 @@ resource "Groups" do
     patch "web_api/v1/groups/:id" do
       with_options scope: :group do
         parameter :title_multiloc, "The title of the group in multiple locales"
+        parameter :membership_type, "Whether members are manually or automatically added. Either #{Group::MEMBERSHIP_TYPES.join(', ')}"
+        parameter :rules, "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{SmartGroupsService.new.generate_rules_json_schema}"
       end
       ValidationErrorHelper.new.error_fields(self, Group)
 
