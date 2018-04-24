@@ -1,5 +1,4 @@
 import React from 'react';
-
 import styled from 'styled-components';
 import GetTenant from 'resources/GetTenant';
 
@@ -38,19 +37,19 @@ class Fragment extends React.Component<Props, State> {
       } else {
         throw('not found');
       }
-      })
-      .catch(() => {
-        this.setState({ fragmentExists: false });
-      });
-    }
+    })
+    .catch(() => {
+      this.setState({ fragmentExists: false });
+    });
+  }
 
-    fragmentUrl = () => `/fragments/${this.props.tenantId}/${this.props.name}.html`;
+  fragmentUrl = () => `/fragments/${this.props.tenantId}/${this.props.name}.html`;
 
-    render() {
-      const { children } = this.props;
-      const { fragmentExists } = this.state;
+  render() {
+    const { children } = this.props;
+    const { fragmentExists } = this.state;
 
-      if (fragmentExists) {
+    if (fragmentExists) {
       return (
         <StyledIframe src={this.fragmentUrl()} />
       );
