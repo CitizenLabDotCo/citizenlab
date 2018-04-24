@@ -49,6 +49,7 @@ describe SmartGroupRules::CustomFieldSelect do
         users[3].custom_field_values[custom_field.key] = options[2].key
         # TODO make setting it to nil work
         # users[4].custom_field_values[custom_field.key] = nil
+        users[4].custom_field_values = {}
         users.each(&:save!)
       }
 

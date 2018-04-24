@@ -71,7 +71,7 @@ module SmartGroupRules
           users_scope.where("custom_field_values->>'#{key}' = ?", option_key)
         when 'not_has_value'
           option_key = CustomFieldOption.find(value).key
-          users_scope.where("custom_field_values->>'#{key}' <> ?", option_key)
+          users_scope.where("custom_field_values->>'#{key}' IS NULL or custom_field_values->>'#{key}' != ?", option_key)
         when 'is_empty'
           users_scope.where("custom_field_values->>'#{key}' IS NULL")
         when 'not_is_empty'
