@@ -25,11 +25,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.areaDeletionConfirmation',
     defaultMessage: 'Are you sure you want to delete this area?',
   },
-  fieldTitle: { 
+  fieldTitle: {
     id: 'app.containers.AdminPage.SettingsPage.fieldTitle',
     defaultMessage: 'Area name',
   },
-  fieldDescription: { 
+  fieldDescription: {
     id: 'app.containers.AdminPage.SettingsPage.fieldDescription',
     defaultMessage: 'Area description',
   },
