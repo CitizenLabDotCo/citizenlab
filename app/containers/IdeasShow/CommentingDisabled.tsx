@@ -26,7 +26,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  project: GetProjectChildProps;
+  project: GetProjectChildProps['project'];
 }
 
 interface Props extends InputProps, DataProps {}
@@ -69,6 +69,6 @@ class CommentingDisabled extends React.PureComponent<Props> {
 
 export default (inputProps: InputProps) => (
   <GetProject id={inputProps.projectId}>
-    {project => <CommentingDisabled {...inputProps} project={project} />}
+    {({ project }) => <CommentingDisabled {...inputProps} project={project} />}
   </GetProject>
 );

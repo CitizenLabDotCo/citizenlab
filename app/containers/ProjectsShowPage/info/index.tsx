@@ -14,7 +14,7 @@ interface InputProps {}
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <GetProject slug={inputProps.params.slug}>
-    {project => {
+    {({ project }) => {
       const { slug } = inputProps.params;
 
       if (!project) return null;

@@ -204,7 +204,7 @@ export interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   tenantLocales: GetTenantLocalesChildProps;
-  project: GetProjectChildProps;
+  projectLoaderState: GetProjectChildProps;
   projectImages: GetProjectImagesChildProps;
 }
 
@@ -231,7 +231,7 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 
   goToProject = () => {
-    const { project } = this.props;
+    const { projectLoaderState: { project } } = this.props;
 
     if (project) {
       const projectUrl = this.getProjectUrl(project);
@@ -242,7 +242,7 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
   render() {
     const className = this.props['className'];
     const { formatMessage } = this.props.intl;
-    const { locale, tenantLocales, project, projectImages } = this.props;
+    const { locale, tenantLocales, projectLoaderState: { project } , projectImages } = this.props;
 
     if (locale && tenantLocales && project) {
       const titleMultiloc = project.attributes.title_multiloc;
@@ -317,7 +317,7 @@ const ProjectCardWithHoCs = injectIntl<Props>(ProjectCard);
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
-  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
+  projectLoaderState: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
 });
 

@@ -93,7 +93,7 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   comment: GetCommentChildProps;
   childComments: GetCommentsChildProps;
-  idea: GetIdeaChildProps;
+  ideaLoaderState: GetIdeaChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -155,7 +155,8 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
   }
 
   render() {
-    const { commentId, authUser, comment, childComments, idea } = this.props;
+    const { commentId, authUser, comment, childComments, ideaLoaderState: { idea } } = this.props;
+
 
     if (comment && idea) {
       const ideaId = comment.relationships.idea.data.id;
@@ -240,7 +241,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser/>,
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
   childComments: ({ ideaId, render }) => <GetComments ideaId={ideaId}>{render}</GetComments>,
-  idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>,
+  ideaLoaderState: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>,
 });
 
 export default (inputProps: InputProps) => (

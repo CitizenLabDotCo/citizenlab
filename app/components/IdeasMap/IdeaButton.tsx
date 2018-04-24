@@ -40,7 +40,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  project: GetProjectChildProps;
+  projectLoaderState: GetProjectChildProps;
   phase: GetPhaseChildProps;
 }
 
@@ -55,7 +55,7 @@ class IdeaButton extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { project, phase } = this.props;
+    const { projectLoaderState: { project }, phase } = this.props;
     const { show, enabled } = postingButtonState({ project, phase });
 
     if (!show) {
@@ -82,7 +82,7 @@ class IdeaButton extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
+  projectLoaderState: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
 });
 
