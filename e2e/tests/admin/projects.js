@@ -3,7 +3,7 @@ const hash = crypto.randomBytes(5).toString('hex');
 const afterEach = require('../../updateBSStatus');
 
 module.exports = {
-  '@tags': ['city', 'projects', 'projects-basics'],
+  '@tags': ['city', 'projects', 'projects-basics', 'bleh'],
   afterEach,
   projectsList: (browser) => {
     const signinPage = browser.page.signin();
@@ -16,8 +16,8 @@ module.exports = {
     adminProjectsPage
     .navigate()
     .waitForElementVisible('@projectsList')
-    .waitForElementVisible('@newProject')
-    .waitForElementVisible('@projectCard');
+    .waitForElementVisible('@addProjectButton')
+    .waitForElementVisible('@projectListItem');
 
     browser
     .end();
@@ -33,8 +33,8 @@ module.exports = {
 
     adminProjectsPage
     .navigate()
-    .waitForElementVisible('@newProject')
-    .click('@newProject')
+    .waitForElementVisible('@addProjectButton')
+    .click('@addProjectButton')
     .waitForElementVisible('@generalForm');
 
     browser.fillMultiloc('#project-title', `Test Project ${hash}`);
@@ -43,14 +43,14 @@ module.exports = {
     .click('@submitButton')
 
     // Test the back to projects overview redirect
-    .waitForElementVisible('.e2e-projects-list .e2e-project-card');
+    .waitForElementVisible('.e2e-admin-projects-list .e2e-admin-list-row');
 
     // Wait for stream updates
     browser.pause(1500);
 
     adminProjectsPage
-    .assert.containsText('.e2e-projects-list .e2e-project-card h1 span', `Test Project ${hash}`)
-    .click('.e2e-projects-list .e2e-project-card a')
+    .assert.containsText('.e2e-admin-projects-list .e2e-admin-list-row span', `Test Project ${hash}`)
+    .click('.e2e-admin-projects-list .e2e-admin-list-row .e2e-admin-edit-project a')
 
     // Test for the description insertion
     .waitForElementVisible('@descriptionTab')
