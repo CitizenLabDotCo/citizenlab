@@ -1,15 +1,10 @@
 class SmartGroupsService
 
-  # RULE_TYPE_TO_CLASS = {
-  #   'custom_field_text' => SmartGroupRules::CustomFieldText,
-  #   'custom_field_select' => SmartGroupRules::CustomFieldSelect,
-  #   'custom_field_checkbox' => SmartGroupRules::CustomFieldCheckbox,
-  #   'role' => SmartGroupRules::Role
-  # }
   RULE_TYPE_TO_CLASS = [
     SmartGroupRules::CustomFieldText,
     SmartGroupRules::CustomFieldSelect,
     SmartGroupRules::CustomFieldCheckbox,
+    SmartGroupRules::CustomFieldDate,
     SmartGroupRules::Role
   ].map do |smart_group_class|
     [smart_group_class::RULE_TYPE, smart_group_class]
