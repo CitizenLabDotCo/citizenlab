@@ -163,8 +163,4 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabAreas',
     defaultMessage: 'Areas',
   },
-  titleAreas: {
-    id: 'app.containers.AdminPage.SettingsPage.titleAreas',
-    defaultMessage: 'My Areas',
-  },
 });
