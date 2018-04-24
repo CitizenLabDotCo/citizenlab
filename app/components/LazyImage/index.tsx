@@ -10,6 +10,7 @@ export interface Props {
   alt?: string;
   role?: string;
   srcset?: string;
+  cover?: boolean;
 }
 export interface State {}
 
@@ -39,9 +40,24 @@ export class LazyImage extends React.PureComponent<Props, State> {
       role = 'presentation';
     }
 
-    return (
-      <img src="" className={this.props['className']} data-src={this.props.src} data-srcset={this.props.srcset || ''} {...{ alt, role }} ref={this.observeImage} />
-    );
+    if (this.props.cover && !CSS.supports('object-fit: cover')) {
+      // Legacy browsers, no lazy-loading for you!
+      return <div className={this.props['className']} style={{ background: `center / cover no-repeat url("${this.props.src}")` }} />;
+    } else {
+      const style = this.props.cover ? { objectFit: 'cover', objectPosition: 'center' } as any : undefined;
+
+      return (
+        <img
+          src=""
+          {...{ alt, role, style }}
+          className={this.props['className']}
+          data-src={this.props.src}
+          data-srcset={this.props.srcset || ''}
+          ref={this.observeImage}
+        />
+      );
+    }
+
   }
 }
 
