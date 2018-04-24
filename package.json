@@ -219,6 +219,7 @@
     "grid-styled": "3.2.1",
     "hellojs": "1.16.1",
     "immutable": "3.8.2",
+    "intersection-observer": "^0.5.0",
     "intl": "1.2.5",
     "invariant": "2.2.4",
     "json-api-normalizer": "0.4.10",
