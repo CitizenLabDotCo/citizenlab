@@ -3,7 +3,7 @@ const hash = crypto.randomBytes(20).toString('hex');
 const afterEach = require('../updateBSStatus');
 
 module.exports = {
-  '@tags': ['citizen', 'ideas', 'comments'],
+  '@tags': ['citizen', 'ideas', 'comments', 'bleh'],
   afterEach,
   seeComments: (browser) => {
     const signinPage = browser.page.signin();
@@ -38,7 +38,7 @@ module.exports = {
     .click('.e2e-comment-form .e2e-submit-comment')
     .pause(1000)
     .waitForElementVisible('.e2e-comment-thread')
-    .assert.containsText(`.e2e-comment-body`, `Test Comment ${hash}`)
+    .assert.containsText(`.e2e-comment-body.last div`, `Test Comment ${hash}`)
     .end();
   },
 };
