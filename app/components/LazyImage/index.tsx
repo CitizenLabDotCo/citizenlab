@@ -6,10 +6,10 @@ import { lazyImageObserver } from 'utils/lazyImagesObserver';
 
 // Typings
 export interface Props {
-  src: string;
-  alt?: string;
+  src: HTMLImageElement['src'];
+  alt?: HTMLImageElement['alt'];
+  srcset?: HTMLImageElement['srcset'];
   role?: string;
-  srcset?: string;
   cover?: boolean;
 }
 export interface State {}
