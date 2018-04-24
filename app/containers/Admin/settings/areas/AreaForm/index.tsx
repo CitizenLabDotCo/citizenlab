@@ -12,7 +12,7 @@ import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
-//Typings
+// Typings
 import { Multiloc } from 'typings';
 export interface Props {}
 export interface FormValues {
@@ -85,4 +85,4 @@ export default class AreaForm extends React.Component<InjectedFormikProps<Props,
       </Form>
     );
   }
-};
+}

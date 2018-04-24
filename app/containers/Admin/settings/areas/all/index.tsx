@@ -20,7 +20,7 @@ const ButtonWrapper = styled.div`
 interface InputProps {}
 
 interface DataProps {
-  areas: GetAreasChildProps
+  areas: GetAreasChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -48,18 +48,20 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps>{
             <TextCell className="expand">
               <T value={area.attributes.title_multiloc}/>
             </TextCell>
-            <Button 
-              onClick={this.handleDeleteClick(area.id)} 
-              style="text" 
-              circularCorners={false} 
-              icon="delete">
+            <Button
+              onClick={this.handleDeleteClick(area.id)}
+              style="text"
+              circularCorners={false}
+              icon="delete"
+            >
               <FormattedMessage {...messages.deleteButtonLabel} />
             </Button>
-            <Button 
+            <Button
               linkTo={`/admin/settings/areas/${area.id}`}
-              style="secondary" 
-              circularCorners={false}    
-              icon="edit">
+              style="secondary"
+              circularCorners={false}
+              icon="edit"
+            >
               <FormattedMessage {...messages.editButtonLabel} />
             </Button>
           </Row>)}
