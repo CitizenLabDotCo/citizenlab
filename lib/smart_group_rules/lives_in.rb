@@ -1,10 +1,10 @@
 module SmartGroupRules
-  class Email
+  class LivesIn
     include ActiveModel::Validations
 
-    PREDICATE_VALUES = %w(is not_is contains not_contains begins_with not_begins_with ends_on not_ends_on is_empty not_is_empty)
+    PREDICATE_VALUES = %w(has_value not_has_value is_empty not_is_empty)
     VALUELESS_PREDICATES = %w(is_empty not_is_empty)
-    RULE_TYPE = 'email'
+    RULE_TYPE = 'lives_in'
 
     attr_accessor :predicate, :value
 
@@ -62,10 +62,14 @@ module SmartGroupRules
 
     def filter users_scope
       case predicate
-      when 'is'
-        users_scope.where("email = ?", value)
-      when 'not_is'
-        users_scope.where("email <> ?", value)
+      when 'has_value'
+        raise "Unsupported predicate #{predicate}"
+      when 'not_has_value'
+        raise "Unsupported predicate #{predicate}"      
+      when 'is_empty'
+        raise "Unsupported predicate #{predicate}"      
+      when 'not_is_empty'
+        raise "Unsupported predicate #{predicate}"      
       else
         raise "Unsupported predicate #{predicate}"
       end
