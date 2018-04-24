@@ -56,7 +56,9 @@ class WebApi::V1::GroupsController < ApplicationController
 
   def group_params
     params.require(:group).permit(
-      title_multiloc: I18n.available_locales
+      :membership_type, 
+      title_multiloc: I18n.available_locales,
+      rules: [:ruleType, :customFieldId, :predicate, :value]
     )
   end
 

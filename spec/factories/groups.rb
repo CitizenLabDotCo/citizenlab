@@ -4,5 +4,6 @@ FactoryBot.define do
       "en" => "Martians",
       "nl" => "Marsmannen"
     }}
+    membership_type 'manual'
   end
 end
