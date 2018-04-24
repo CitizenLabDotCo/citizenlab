@@ -579,6 +579,8 @@
   "app.containers.SignInPage.title": "Log in",
   "app.containers.SignInUpBanner.slogan": "What are your ideas? Make your voice heard!",
   "app.containers.SignUp.acceptTermsAndConditions": "By signing up, you agree to our {tacLink}",
+  "app.containers.SignUp.acceptTermsAndConditionsFacebook": "Accept our {tacLink} to sign up via Facebook",
+  "app.containers.SignUp.acceptTermsAndConditionsGoogle": "Accept our {tacLink} to sign up via Google",
   "app.containers.SignUp.alreadyHaveAnAccount": "Already have an account?",
   "app.containers.SignUp.areaLabel": "Area",
   "app.containers.SignUp.areaPlaceholder": "Select the area you live in",
