@@ -62,6 +62,6 @@ class ProjectDescription extends React.Component<Props> {
 
 export default (props) => (
   <GetProject slug={props.params.slug}>
-    {project => project && < ProjectDescription {...props} project={project} />}
+    {({ project }) => project && < ProjectDescription {...props} project={project} />}
   </GetProject>
 );

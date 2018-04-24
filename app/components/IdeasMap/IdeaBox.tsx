@@ -127,7 +127,7 @@ export default class IdeaBox extends React.PureComponent<Props, State> {
 
     return (
       <GetIdea id={this.props.idea}>
-        {(idea) => {
+        {({ idea }) => {
           if (!idea) return null;
 
           return (

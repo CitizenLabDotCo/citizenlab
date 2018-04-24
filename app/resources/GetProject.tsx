@@ -8,7 +8,7 @@ interface InputProps {
   slug?: string | null;
 }
 
-type children = (renderProps: GetProjectChildProps) => JSX.Element | null;
+type children = (renderProps: State) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
@@ -16,9 +16,10 @@ interface Props extends InputProps {
 
 interface State {
   project: IProjectData | null;
+  projectLoadingError: string | null;
 }
 
-export type GetProjectChildProps = IProjectData | null;
+export type GetProjectChildProps = State;
 
 export default class GetProject extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -27,7 +28,8 @@ export default class GetProject extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      project: null
+      project: null,
+      projectLoadingError: null,
     };
   }
 
@@ -51,7 +53,11 @@ export default class GetProject extends React.Component<Props, State> {
           return project$;
         })
         .subscribe((project) => {
-          this.setState({ project: (project ? project.data : null) });
+          if (project) {
+            this.setState({ project: project.data });
+          } else {
+            this.setState({ projectLoadingError: 'Could not find a project' });
+          }
         })
     ];
   }
@@ -67,7 +73,6 @@ export default class GetProject extends React.Component<Props, State> {
 
   render() {
     const { children } = this.props;
-    const { project } = this.state;
-    return (children as children)(project);
+    return (children as children)(this.state);
   }
 }

@@ -194,7 +194,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  project: GetProjectChildProps;
+  projectLoaderState: GetProjectChildProps;
   events: GetEventsChildProps;
 }
 
@@ -204,7 +204,7 @@ interface State {}
 
 class ProjectsShowPage extends React.PureComponent<Props, State> {
   render() {
-    const { project, events } = this.props;
+    const { projectLoaderState: { project }, events } = this.props;
 
     if (project) {
       const className = this.props['className'];
@@ -307,8 +307,8 @@ class ProjectsShowPage extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  project: ({ projectSlug, render }) => <GetProject slug={projectSlug}>{render}</GetProject>,
-  events: ({ project, render }) => <GetEvents projectId={(project ? project.id : null)}>{render}</GetEvents>
+  projectLoaderState: ({ projectSlug, render }) => <GetProject slug={projectSlug}>{render}</GetProject>,
+  events: ({ projectLoaderState: { project }, render }) => <GetEvents projectId={(project ? project.id : null)}>{render}</GetEvents>
 });
 
 export default (inputProps: InputProps) => (

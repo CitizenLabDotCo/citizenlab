@@ -25,7 +25,7 @@ const StyledTimeline = styled(Timeline)`
 interface InputProps {}
 
 interface DataProps {
-  project: GetProjectChildProps;
+  project: GetProjectChildProps['project'];
 }
 
 interface Props extends InputProps, DataProps {}
@@ -72,7 +72,7 @@ class ProjectTimelinePage extends React.PureComponent<Props & WithRouterProps, S
 
           <StyledTimeline projectId={project.id} onPhaseSelected={this.handleOnPhaseSelected} />
 
-          {selectedPhaseId && 
+          {selectedPhaseId &&
             <Phase phaseId={selectedPhaseId} />
           }
 
@@ -87,6 +87,6 @@ class ProjectTimelinePage extends React.PureComponent<Props & WithRouterProps, S
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <GetProject slug={inputProps.params.slug}>
-    {project => <ProjectTimelinePage {...inputProps} project={project} />}
+    {({ project }) => <ProjectTimelinePage {...inputProps} project={project} />}
   </GetProject>
 ));

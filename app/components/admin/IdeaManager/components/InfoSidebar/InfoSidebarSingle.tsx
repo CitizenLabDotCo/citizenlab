@@ -15,7 +15,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  idea: GetIdeaChildProps;
+  idea: GetIdeaChildProps['idea'];
 }
 
 interface Props extends InputProps, DataProps {}
@@ -85,6 +85,6 @@ const InfoSidebarSingleWithInjectedIntl = injectIntl<Props>(InfoSidebarSingle);
 
 export default (inputProps: InputProps) => (
   <GetIdea id={inputProps.ideaId}>
-    {idea => <InfoSidebarSingleWithInjectedIntl {...inputProps} idea={idea} />}
+    {({ idea }) =>  <InfoSidebarSingleWithInjectedIntl {...inputProps} idea={idea} />}
   </GetIdea>
 );

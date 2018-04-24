@@ -15,7 +15,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 interface InputProps {}
 
 interface DataProps {
-  project: GetProjectChildProps;
+  project: GetProjectChildProps['project'];
 }
 
 interface Props extends InputProps, DataProps {}
@@ -43,6 +43,6 @@ class ProjectMainPage extends React.PureComponent<Props & WithRouterProps, State
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <GetProject slug={inputProps.params.slug}>
-    {project => <ProjectMainPage {...inputProps} project={project} />}
+    {({ project }) => <ProjectMainPage {...inputProps} project={project} />}
   </GetProject>
 ));
