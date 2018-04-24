@@ -4,7 +4,7 @@ const title = `test idea ${hash}`;
 const afterEach = require('../updateBSStatus');
 
 module.exports = {
-  '@tags': ['citizen', 'ideas', 'posting'],
+  '@tags': ['citizen', 'ideas', 'posting', 'bleh'],
   afterEach,
   postIdea: (browser) => {
     const signinPage = browser.page.signin();
