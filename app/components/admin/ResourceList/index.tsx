@@ -22,8 +22,6 @@ const timeout = 200;
 export const StyledRow = styled.div`
   align-items: center !important;
   border-top: 1px solid ${colors.separation};
-  border-bottom: 1px solid ${colors.separation};
-  margin-top: -1px;
   color: ${colors.label};
   display: flex !important;
   font-size: ${fontSize('small')};
@@ -31,6 +29,10 @@ export const StyledRow = styled.div`
   justify-content: space-between !important;
   line-height: 20px;
   transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  &.last-item {
+    border-bottom: 1px solid ${colors.separation};
+  }
 
   h1, h2, h3, h4, h5 {
     color: ${colors.text};
@@ -115,7 +117,7 @@ export const List = ({ children, ...props }) => (
 
 export const Row = ({ children, ...props }) => (
   <CSSTransition classNames="list-item" timeout={timeout} {...props}>
-    <StyledRow className={`e2e-admin-list-row ${props['className']}`}>
+    <StyledRow className={`e2e-admin-list-row ${props['className']} ${props.lastItem && 'last-item'}`}>
       {children}
     </StyledRow>
   </CSSTransition>
