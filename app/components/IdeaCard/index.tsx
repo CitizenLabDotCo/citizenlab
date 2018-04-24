@@ -349,8 +349,8 @@ class IdeaCard extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   ideaLoaderState: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  ideaImage: ({ ideaId, ideaLoaderState, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={ideaLoaderState.idea && ideaLoaderState.idea.relationships.idea_images.data[0].id}>{render}</GetIdeaImage>,
-  ideaAuthor: ({ ideaLoaderState, render }) => <GetUser id={ideaLoaderState.idea && ideaLoaderState.idea.relationships.author.data && ideaLoaderState.idea.relationships.author.data[0].id}>{render}</GetUser>
+  ideaImage: ({ ideaId, ideaLoaderState, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={get(ideaLoaderState, 'idea.relationships.idea_images.data[0].id', null)}>{render}</GetIdeaImage>,
+  ideaAuthor: ({ ideaLoaderState, render }) => <GetUser id={get(ideaLoaderState, 'idea.relationships.author.data[0].id', null)}>{render}</GetUser>
 });
 
 export default (inputProps: InputProps) => (
