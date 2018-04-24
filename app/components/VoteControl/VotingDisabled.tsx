@@ -33,7 +33,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  project: GetProjectChildProps;
+  projectLoaderState: GetProjectChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -61,7 +61,7 @@ class VotingDisabled extends React.PureComponent<Props, State> {
     event.preventDefault();
     event.stopPropagation();
 
-    const projectSlug = (this.props.project && this.props.project.attributes.slug);
+    const projectSlug = (this.props.projectLoaderState.project && this.props.projectLoaderState.project.attributes.slug);
 
     if (projectSlug) {
       browserHistory.push(`/projects/${projectSlug}`);
@@ -69,7 +69,7 @@ class VotingDisabled extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { votingDescriptor, project } = this.props;
+    const { votingDescriptor, projectLoaderState: { project } } = this.props;
     const projectTitle = project && project.attributes.title_multiloc || {};
     const message = this.reasonToMessage();
 
@@ -92,6 +92,6 @@ class VotingDisabled extends React.PureComponent<Props, State> {
 
 export default (inputProps: InputProps) => (
   <GetProject id={inputProps.projectId}>
-    {project => <VotingDisabled {...inputProps} project={project} />}
+    {projectLoaderState => <VotingDisabled {...inputProps} projectLoaderState={projectLoaderState} />}
   </GetProject>
 );
