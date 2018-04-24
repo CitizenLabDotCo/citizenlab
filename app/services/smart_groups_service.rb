@@ -5,7 +5,8 @@ class SmartGroupsService
     SmartGroupRules::CustomFieldSelect,
     SmartGroupRules::CustomFieldCheckbox,
     SmartGroupRules::CustomFieldDate,
-    SmartGroupRules::Role
+    SmartGroupRules::Role,
+    SmartGroupRules::Email
   ].map do |smart_group_class|
     [smart_group_class::RULE_TYPE, smart_group_class]
   end.to_h
