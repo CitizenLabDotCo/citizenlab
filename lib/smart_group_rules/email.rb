@@ -1,27 +1,28 @@
 module SmartGroupRules
-  class CustomFieldText
+  class Email
+    include ActiveModel::Validations
 
     PREDICATE_VALUES = %w(is not_is contains not_contains begins_with not_begins_with ends_on not_ends_on is_empty not_is_empty)
     VALUELESS_PREDICATES = %w(is_empty not_is_empty)
-    RULE_TYPE = "custom_field_text"
+    RULE_TYPE = 'email'
 
-    include CustomFieldRule
+    attr_accessor :predicate, :value
 
-    validates :custom_field_id, inclusion: { in: proc { CustomField.where(input_type: 'text').map(&:id) } }
+    validates :predicate, presence: true
+    validates :predicate, inclusion: { in: PREDICATE_VALUES }
+    validates :value, absence: true, unless: :needs_value?
+    validates :value, presence: true, if: :needs_value?
 
     def self.to_json_schema
       [   
         {
           "type": "object",
-          "required" => ["ruleType", "customFieldId", "predicate", "value"],
+          "required" => ["ruleType", "predicate", "value"],
           "additionalProperties" => false,
           "properties" => {
             "ruleType" => {
               "type" => "string",
               "enum" => [RULE_TYPE],
-            },
-            "customFieldId" => {
-              "$ref": "#/definitions/customFieldId"
             },
             "predicate" => {
               "type": "string",
@@ -34,15 +35,12 @@ module SmartGroupRules
         },
         {
           "type" => "object",
-          "required" => ["ruleType", "customFieldId", "predicate"],
+          "required" => ["ruleType", "predicate"],
           "additionalProperties" => false,
           "properties" => {
             "ruleType" => {
               "type" => "string",
               "enum" => [RULE_TYPE],
-            },
-            "customFieldId" => {
-              "$ref": "#/definitions/customFieldId"
             },
             "predicate" => {
               "type" => "string",
@@ -53,24 +51,26 @@ module SmartGroupRules
       ]
     end
 
-    def initialize custom_field_id, predicate, value=nil
-      self.custom_field_id = custom_field_id
+    def self.from_json json
+      self.new(json['predicate'])
+    end
+
+    def initialize predicate, value=nil
       self.predicate = predicate
       self.value = value
     end
 
     def filter users_scope
-      custom_field = CustomField.find(custom_field_id)
-      key = custom_field.key
       case predicate
       when 'is'
-        users_scope.where("custom_field_values->>'#{key}' = ?", value)
+        users_scope.where("email = ?", value)
       when 'not_is'
-        users_scope.where("custom_field_values->>'#{key}' <> ?", value)
+        users_scope.where("email <> ?", value)
       else
         raise "Unsupported predicate #{predicate}"
       end
     end
+
 
     private
 
