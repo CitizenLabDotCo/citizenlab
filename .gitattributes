@@ -20,6 +20,8 @@
 *.less text
 *.styl text
 *.js text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
 *.coffee text
 *.json text
 *.htm text
