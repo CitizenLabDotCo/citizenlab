@@ -1,28 +1,11 @@
 import React from 'react';
 
-import Frame from 'react-frame-component';
-
 import styled from 'styled-components';
 import GetTenant from 'resources/GetTenant';
-// import { globalCss } from 'global-styles';
-
-
-// const StyledFrame = styled(Frame)`
-//   border: 0;
-// `;
 
 const StyledIframe = styled.iframe`
   border: 0;
 `;
-
-// Waiting for this PR to be merged, to support rendering styled components within an iframe
-// https://github.com/styled-components/styled-components/pull/1491
-// const InnerFragmentStyle = styled.div`${globalCss}`;
-
-// While waiting, here is some basic duplication of the base style
-const innerFragmentStyle = {
-  fontFamily: 'visuelt',
-};
 
 type Props = {
   name: string;
@@ -31,46 +14,47 @@ type Props = {
 };
 
 type State = {
-  fragmentHtml?: string | null;
+  fragmentExists?: boolean;
 };
 
+/**
+ * Wrap content in a named fragment to allow the content to be overridden
+ * for a specific tenant
+*/
 class Fragment extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
     this.state = {
-      fragmentHtml: undefined,
+      fragmentExists: undefined,
     };
   }
 
   componentDidMount() {
     fetch(this.fragmentUrl())
-      .then((response) => {
-        if (response.ok) {
-          return response.text();
-        } else {
-          throw('not found');
-        }
-      })
-      .then((fragmentHtml) => {
-        this.setState({ fragmentHtml });
+    .then((response) => {
+      if (response.ok) {
+        this.setState({ fragmentExists: true });
+      } else {
+        throw('not found');
+      }
       })
       .catch(() => {
-        this.setState({ fragmentHtml: null });
+        this.setState({ fragmentExists: false });
       });
-  }
+    }
 
-  fragmentUrl = () => `/fragments/${this.props.tenantId}/${this.props.name}.html`;
+    fragmentUrl = () => `/fragments/${this.props.tenantId}/${this.props.name}.html`;
 
-  render() {
-    const { children } = this.props;
-    const { fragmentHtml } = this.state;
+    render() {
+      const { children } = this.props;
+      const { fragmentExists } = this.state;
 
-    if (fragmentHtml) {
+      if (fragmentExists) {
       return (
         <StyledIframe src={this.fragmentUrl()} />
       );
-    } else if (fragmentHtml === null) {
+    } else if (fragmentExists === false) {
       return children;
     } else return null;
   }
