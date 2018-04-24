@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { get, isFunction } from 'lodash';
-import * as Rx from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 
 // libraries
 import { browserHistory, Link } from 'react-router';
@@ -30,6 +30,10 @@ import { AUTH_PATH } from 'containers/App/constants';
 import { darken } from 'polished';
 import styled, { css } from 'styled-components';
 import { color } from 'utils/styleUtils';
+
+// logos
+const googleLogo = require('components/SignUp/google.svg') as string;
+const facebookLogo = require('components/SignUp/facebook.svg') as string;
 
 const Container = styled.div`
   flex: 1;
@@ -115,33 +119,6 @@ const Footer = styled.div`
   flex-direction: column;
 `;
 
-const SocialLoginButton = styled(Button)`
-  .Button {
-    background: #fff !important;
-    border: solid 1px #eaeaea !important;
-  }
-
-  &:hover {
-    .Button {
-      border-color: #ccc !important;
-    }
-  }
-`;
-
-const GoogleLogin = SocialLoginButton.extend`
-  margin-right: 15px;
-
-  .Button {
-    color: #518EF8 !important;
-  }
-`;
-
-const FacebookLogin = SocialLoginButton.extend`
-  .Button {
-    color: #4B6696 !important;
-  }
-`;
-
 const SocialLoginText = styled.div`
   color: ${(props) => props.theme.colors.label};
   font-size: 16px;
@@ -154,6 +131,32 @@ const SocialLoginText = styled.div`
 const SocialLoginButtons = styled.div`
   width: 100%;
   display: flex;
+  flex-direction: column;
+`;
+
+const SocialSignInButton = styled.div`
+  width: 100%;
+  height: 58px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 5px;
+  border: solid 1px #e4e4e4;
+  user-select: none;
+  cursor: pointer;
+  position: relative;
+
+  &.google:hover,
+  &.google.active {
+    border-color: #2a81f4;
+  }
+
+  &.facebook:hover,
+  &.facebook.active {
+    border-color: #345697;
+  }
 `;
 
 type Props = {
@@ -175,8 +178,7 @@ type State = {
 };
 
 class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
-  
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
   emailInputElement: HTMLInputElement | null;
   passwordInputElement: HTMLInputElement | null;
 
@@ -360,24 +362,14 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                   </SocialLoginText>
                   <SocialLoginButtons>
                     <FeatureFlag name="google_login">
-                      <GoogleLogin
-                        text="Google"
-                        style="primary"
-                        size="1"
-                        icon="google-colored"
-                        onClick={this.handleOnSSOClick('google')}
-                        circularCorners={true}
-                      />
+                      <SocialSignInButton className="google" onClick={this.handleOnSSOClick('google')}>
+                        <img src={googleLogo} height="29px" role="presentation" alt="" />
+                      </SocialSignInButton>
                     </FeatureFlag>
                     <FeatureFlag name="facebook_login">
-                      <FacebookLogin
-                        text="Facebook"
-                        style="primary"
-                        size="1"
-                        icon="facebook-blue"
-                        onClick={this.handleOnSSOClick('facebook')}
-                        circularCorners={true}
-                      />
+                      <SocialSignInButton className="facebook" onClick={this.handleOnSSOClick('facebook')}>
+                        <img src={facebookLogo} height="21px" role="presentation" alt="" />
+                      </SocialSignInButton>
                     </FeatureFlag>
                   </SocialLoginButtons>
                 </Footer>

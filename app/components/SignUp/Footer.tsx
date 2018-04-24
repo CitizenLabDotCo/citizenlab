@@ -1,11 +1,11 @@
 import React from 'react';
-import Rx from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 import { get } from 'lodash';
 import { Link } from 'react-router';
-// import CSSTransition from 'react-transition-group/CSSTransition';
+import CSSTransition from 'react-transition-group/CSSTransition';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 // components
-// import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
 import Checkbox from 'components/UI/Checkbox';
 
@@ -29,6 +29,8 @@ import styled from 'styled-components';
 // logos
 const googleLogo = require('./google.svg') as string;
 const facebookLogo = require('./facebook.svg') as string;
+
+const timeout = 250;
 
 const Container = styled.div`
   width: 100%;
@@ -58,7 +60,6 @@ const SocialSignInButtons = styled.div`
 const SocialSignInButton = styled.div`
   width: 100%;
   height: 58px;
-  padding: 15px 30px;
   margin-bottom: 15px;
   display: flex;
   align-items: center;
@@ -66,7 +67,9 @@ const SocialSignInButton = styled.div`
   background: #fff;
   border-radius: 5px;
   border: solid 1px #e4e4e4;
+  user-select: none;
   cursor: pointer;
+  position: relative;
 
   &.google:hover,
   &.google.active {
@@ -82,7 +85,7 @@ const SocialSignInButton = styled.div`
     color: #707075 !important;
     font-size: 15px;
     font-weight: 400;
-    line-height: 19px;
+    line-height: 18px;
   }
 
   a > span {
@@ -93,6 +96,42 @@ const SocialSignInButton = styled.div`
   a:hover > span {
     color: #000 !important;
     text-decoration: underline;
+  }
+`;
+
+const SocialSignInButtonInner = styled.div`
+  padding-left: 20px;
+  padding-right: 20px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all ${timeout}ms ease-out;
+  will-change: opacity;
+
+  &.tac-enter {
+    opacity: 0;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+
+    &.tac-enter-active {
+      opacity: 1;
+    }
+  }
+
+  &.tac-exit {
+    opacity: 1;
+
+    &.tac-exit-active {
+      opacity: 0;
+    }
   }
 `;
 
@@ -122,7 +161,7 @@ interface State {
 }
 
 class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -162,7 +201,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ socialLoginTaCAccepted: true });
     setTimeout(() => {
       window.location.href = `${AUTH_PATH}/${provider}${this.state.socialLoginUrlParameter}`;
-    }, 250);
+    }, 200);
   }
 
   render() {
@@ -172,6 +211,58 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     const googleLoginEnabled = (tenant ? get(tenant.attributes.settings.google_login, 'enabled', false) : false);
     const facebookLoginEnabled = (tenant ? get(tenant.attributes.settings.facebook_login, 'enabled', false) : false); 
     const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
+
+    const googleCheckbox = (socialLoginClicked === 'google' && (
+      <CSSTransition classNames="tac" timeout={timeout} exit={true}>
+        <SocialSignInButtonInner>
+          <Checkbox 
+            value={socialLoginTaCAccepted}
+            onChange={this.handleSocialLoginAcceptTaC('google')}
+            disableLabelClick={true}
+            label={
+              <FormattedMessage
+                {...messages.acceptTermsAndConditionsGoogle} 
+                values={{ tacLink: <Link to="pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link> }}
+              />
+            }
+          />
+        </SocialSignInButtonInner>
+      </CSSTransition>
+    ));
+
+    const googleImage = (socialLoginClicked !== 'google' && (
+      <CSSTransition classNames="tac" timeout={timeout} exit={true}>
+        <SocialSignInButtonInner>
+          <img src={googleLogo} height="29px" role="presentation" alt="" />
+        </SocialSignInButtonInner>
+      </CSSTransition>
+    ));
+
+    const facebookCheckbox = (socialLoginClicked === 'facebook' && (
+      <CSSTransition classNames="tac" timeout={timeout} exit={true}>
+        <SocialSignInButtonInner>
+          <Checkbox 
+            value={socialLoginTaCAccepted}
+            onChange={this.handleSocialLoginAcceptTaC('facebook')}
+            disableLabelClick={true}
+            label={
+              <FormattedMessage
+                {...messages.acceptTermsAndConditionsFacebook} 
+                values={{ tacLink: <Link to="pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link> }}
+              />
+            }
+          />
+        </SocialSignInButtonInner>
+      </CSSTransition>
+    ));
+
+    const facebookImage = (socialLoginClicked !== 'facebook' && (
+      <CSSTransition classNames="tac" timeout={timeout} exit={true}>
+        <SocialSignInButtonInner>
+          <img src={facebookLogo} height="21px" role="presentation" alt="" />
+        </SocialSignInButtonInner>
+      </CSSTransition>
+    ));
 
     if (showSocialLogin) {
       return (
@@ -183,47 +274,25 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
             </SocialSignInText>
             <SocialSignInButtons>
               <FeatureFlag name="google_login">
-                <SocialSignInButton className={`google ${socialLoginClicked === 'google' && 'active'}`} onClick={this.handleOnSSOClick('google')}>
-                  {socialLoginClicked === 'google' 
-                    ? (
-                      <Checkbox 
-                        value={socialLoginTaCAccepted}
-                        onChange={this.handleSocialLoginAcceptTaC('google')}
-                        disableLabelClick={true}
-                        label={
-                          <FormattedMessage
-                            {...messages.acceptTermsAndConditionsGoogle} 
-                            values={{ tacLink: <Link to="pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link> }}
-                          />
-                        }
-                      />
-                    )
-                    : (
-                      <img src={googleLogo} height="29px" role="presentation" alt="" />
-                    )
-                  }
+                <SocialSignInButton 
+                  className={`google ${socialLoginClicked === 'google' && 'active'}`} 
+                  onClick={this.handleOnSSOClick('google')}
+                >
+                  <TransitionGroup>
+                    {googleCheckbox}
+                    {googleImage}
+                  </TransitionGroup>
                 </SocialSignInButton>
               </FeatureFlag>
               <FeatureFlag name="facebook_login">
-                <SocialSignInButton className={`facebook ${socialLoginClicked === 'facebook' && 'active'}`} onClick={this.handleOnSSOClick('facebook')}>
-                  {socialLoginClicked === 'facebook' 
-                    ? (
-                      <Checkbox 
-                        value={socialLoginTaCAccepted}
-                        onChange={this.handleSocialLoginAcceptTaC('facebook')}
-                        disableLabelClick={true}
-                        label={
-                          <FormattedMessage
-                            {...messages.acceptTermsAndConditionsFacebook} 
-                            values={{ tacLink: <Link to="pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link> }}
-                          />
-                        }
-                      />
-                    )
-                    : (
-                      <img src={facebookLogo} height="21px" role="presentation" alt="" />
-                    )
-                  }
+                <SocialSignInButton
+                  className={`facebook ${socialLoginClicked === 'facebook' && 'active'}`}
+                  onClick={this.handleOnSSOClick('facebook')}
+                >
+                  <TransitionGroup>
+                    {facebookCheckbox}
+                    {facebookImage}
+                  </TransitionGroup>
                 </SocialSignInButton>
               </FeatureFlag>
             </SocialSignInButtons>
