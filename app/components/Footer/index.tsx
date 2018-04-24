@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 
 // components
 import Icon from 'components/UI/Icon';
+import Fragment from 'components/Fragment';
 import { Dropdown } from 'semantic-ui-react';
 
 // i18n
@@ -275,10 +276,12 @@ class Footer extends React.PureComponent<Props, State> {
       return (
         <Container className={this.props['className']} id="hook-footer">
           {showCityLogoSection &&
-            <FirstLine id="hook-footer-logo">
-              {currentTenantLogo && <TenantLogo src={currentTenantLogo} />}
-              <TenantSlogan>{slogan}</TenantSlogan>
-            </FirstLine>
+            <Fragment name="footer-city-logo">
+              <FirstLine id="hook-footer-logo">
+                {currentTenantLogo && <TenantLogo src={currentTenantLogo} />}
+                <TenantSlogan>{slogan}</TenantSlogan>
+              </FirstLine>
+            </Fragment>
           }
 
           <SecondLine>
