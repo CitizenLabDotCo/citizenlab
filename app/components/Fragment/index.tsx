@@ -4,6 +4,7 @@ import GetTenant from 'resources/GetTenant';
 
 const StyledIframe = styled.iframe`
   border: 0;
+  height: ${props => props.height ? `${props.height}px` : 'auto'};
 `;
 
 type Props = {
@@ -14,6 +15,7 @@ type Props = {
 
 type State = {
   fragmentExists?: boolean;
+  iframeHeight?: number;
 };
 
 /**
@@ -21,6 +23,8 @@ type State = {
  * for a specific tenant
 */
 class Fragment extends React.Component<Props, State> {
+
+  iframeNode: HTMLIFrameElement;
 
   constructor(props) {
     super(props);
@@ -45,13 +49,30 @@ class Fragment extends React.Component<Props, State> {
 
   fragmentUrl = () => `/fragments/${this.props.tenantId}/${this.props.name}.html`;
 
+  setIframeRef = (ref) => {
+    this.iframeNode = ref;
+  }
+
+  setIframeHeight = () => {
+    if (this.iframeNode && this.iframeNode.contentWindow) {
+      this.setState({
+        iframeHeight: this.iframeNode.contentWindow.document.body.scrollHeight,
+      });
+    }
+  }
+
   render() {
     const { children } = this.props;
-    const { fragmentExists } = this.state;
+    const { fragmentExists, iframeHeight } = this.state;
 
     if (fragmentExists) {
       return (
-        <StyledIframe src={this.fragmentUrl()} />
+        <StyledIframe
+          innerRef={this.setIframeRef}
+          src={this.fragmentUrl()}
+          height={iframeHeight}
+          onLoad={this.setIframeHeight}
+        />
       );
     } else if (fragmentExists === false) {
       return children;
