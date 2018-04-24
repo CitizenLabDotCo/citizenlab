@@ -56,14 +56,22 @@ type Props = {
   onChange: (event: React.FormEvent<any>) => void;
   label?: string | JSX.Element | null | undefined;
   size?: string | undefined;
+  disableLabelClick?: boolean;
 };
 
 type State = {};
 
 export default class Checkbox extends React.PureComponent<Props, State> {
-  handleOnClick = (event: React.FormEvent<any>) => {
+  toggleCheckbox = (event: React.FormEvent<any>) => {
     event.preventDefault();
+    event.stopPropagation();
     this.props.onChange(event);
+  }
+
+  handleLabelOnClick = (event: React.FormEvent<any>) => {
+    if (this.props.disableLabelClick !== true) {
+      this.toggleCheckbox(event);
+    }
   }
 
   render() {
@@ -73,10 +81,10 @@ export default class Checkbox extends React.PureComponent<Props, State> {
 
     return (
       <Container className={`${className} ${label && 'hasLabel'}`} size={checkboxSize}>
-        <CheckboxContainer checked={value} size={checkboxSize} onClick={this.handleOnClick}>
+        <CheckboxContainer checked={value} size={checkboxSize} onClick={this.toggleCheckbox}>
           {value && <CheckmarkIcon name="checkmark" />}
         </CheckboxContainer>
-        {label && <Text onClick={this.handleOnClick}>{label}</Text>}
+        {label && <Text onClick={this.handleLabelOnClick}>{label}</Text>}
       </Container>
     );
   }
