@@ -130,18 +130,18 @@ interface InputProps {
 }
 
 interface DataProps {
-  project: GetProjectChildProps;
+  projectLoaderState: GetProjectChildProps;
   projectImages: GetProjectImagesChildProps;
 }
 
 const Data = adopt<DataProps, InputProps>({
-  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
+  projectLoaderState: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {({ project, projectImages }) => {
+    {({ projectLoaderState: { project }, projectImages }) => {
       if (!project) return null;
 
       return (

@@ -14,7 +14,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  idea: GetIdeaChildProps;
+  ideaLoaderState: GetIdeaChildProps;
   ideaStatus: GetIdeaStatusChildProps;
 }
 
@@ -24,7 +24,7 @@ interface State {}
 
 class StatusChangeOfYourIdeaNotification extends React.PureComponent<Props, State> {
   render() {
-    const { notification, idea, ideaStatus } = this.props;
+    const { notification, ideaLoaderState: { idea }, ideaStatus } = this.props;
 
     if (!idea || !ideaStatus) return null;
 
@@ -48,7 +48,7 @@ class StatusChangeOfYourIdeaNotification extends React.PureComponent<Props, Stat
 }
 
 const Data = adopt<DataProps, { ideaId: string }>({
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  ideaLoaderState: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaStatus: ({ ideaId, render }) => <GetIdeaStatus id={ideaId}>{render}</GetIdeaStatus>,
 });
 

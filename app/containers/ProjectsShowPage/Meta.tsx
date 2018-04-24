@@ -23,7 +23,7 @@ interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   tenantLocales: GetTenantLocalesChildProps;
-  project: GetProjectChildProps;
+  projectLoaderState: GetProjectChildProps;
   projectImages: GetProjectImagesChildProps;
 }
 
@@ -33,7 +33,7 @@ interface State {}
 
 class Meta extends React.PureComponent<Props, State> {
   render() {
-    const { locale, tenantLocales, project, projectImages } = this.props;
+    const { locale, tenantLocales, projectLoaderState: { project } , projectImages } = this.props;
 
     if (locale && tenantLocales && project) {
       const title = getLocalized(project.attributes.title_multiloc, locale, tenantLocales);
@@ -60,8 +60,8 @@ class Meta extends React.PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale/>,
   tenantLocales: <GetTenantLocales/>,
-  project: ({ projectSlug, render }) => <GetProject slug={projectSlug}>{render}</GetProject>,
-  projectImages: ({ project, render }) => <GetProjectImages projectId={(project ? project.id : null)}>{render}</GetProjectImages>
+  projectLoaderState: ({ projectSlug, render }) => <GetProject slug={projectSlug}>{render}</GetProject>,
+  projectImages: ({ projectLoaderState, render }) => <GetProjectImages projectId={(projectLoaderState.project ? projectLoaderState.project.id : null)}>{render}</GetProjectImages>
 });
 
 export default (inputProps: InputProps) => (
