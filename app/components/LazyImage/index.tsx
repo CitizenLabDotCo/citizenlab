@@ -4,6 +4,20 @@ import React from 'react';
 // Lazy Images observer
 import { lazyImageObserver } from 'utils/lazyImagesObserver';
 
+// Stylings
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+
+const Image: any = styled.img`
+  background: ${colors.placeholderBg};
+  transition: opacity .2s;
+  opacity: 0;
+
+  &.loaded{
+    opacity: 1;
+  }
+`;
+
 // Typings
 export interface Props {
   src: HTMLImageElement['src'];
@@ -12,14 +26,18 @@ export interface Props {
   role?: string;
   cover?: boolean;
 }
-export interface State {}
+export interface State {
+  loaded: boolean;
+}
 
 export class LazyImage extends React.PureComponent<Props, State> {
   image: HTMLImageElement | null;
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      loaded: false,
+    };
   }
 
   observeImage = (image: HTMLImageElement) => {
@@ -29,6 +47,10 @@ export class LazyImage extends React.PureComponent<Props, State> {
     } else if (this.image) {
       lazyImageObserver.unobserve(this.image);
     }
+  }
+
+  handleImageLoaded = () => {
+    this.setState({ loaded: true });
   }
 
   render() {
@@ -47,13 +69,14 @@ export class LazyImage extends React.PureComponent<Props, State> {
       const style = this.props.cover ? { objectFit: 'cover', objectPosition: 'center' } as any : undefined;
 
       return (
-        <img
+        <Image
           src=""
           {...{ alt, role, style }}
-          className={this.props['className']}
+          className={`${this.state.loaded ? 'loaded' : ''} ${this.props['className']}`}
           data-src={this.props.src}
           data-srcset={this.props.srcset || ''}
-          ref={this.observeImage}
+          innerRef={this.observeImage}
+          onLoad={this.handleImageLoaded}
         />
       );
     }
