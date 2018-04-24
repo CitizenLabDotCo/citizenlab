@@ -158,6 +158,7 @@ const Container: any = styled.div`
 
     &.disabled {
       cursor: not-allowed;
+      pointer-events: none;
     }
 
     &.fullWidth {
