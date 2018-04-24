@@ -14,13 +14,20 @@ export interface Props {
 export interface State {}
 
 export class LazyImage extends React.PureComponent<Props, State> {
+  image: HTMLImageElement | null;
+
   constructor(props) {
     super(props);
     this.state = {};
   }
 
   observeImage = (image: HTMLImageElement) => {
-    lazyImageObserver.observe(image);
+    if (image) {
+      lazyImageObserver.observe(image);
+      this.image = image;
+    } else if (this.image) {
+      lazyImageObserver.unobserve(this.image);
+    }
   }
 
   render() {
