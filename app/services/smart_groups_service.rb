@@ -7,7 +7,8 @@ class SmartGroupsService
     SmartGroupRules::CustomFieldDate,
     SmartGroupRules::Role,
     SmartGroupRules::Email,
-    SmartGroupRules::LivesIn
+    SmartGroupRules::LivesIn,
+    SmartGroupRules::RegistrationCompletedAt
   ].map do |smart_group_class|
     [smart_group_class::RULE_TYPE, smart_group_class]
   end.to_h
