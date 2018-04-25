@@ -1,7 +1,7 @@
 // libraries
-import * as React from 'react';
+import React from 'react';
 import { trim, isString } from 'lodash';
-import * as Rx from 'rxjs/Rx';
+import { adopt } from 'react-adopt';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -17,15 +17,15 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { authUserStream } from 'services/auth';
-import { localeStream } from 'services/locale';
-import { IUser } from 'services/users';
 import { addCommentToComment } from 'services/comments';
+
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { Locale } from 'typings';
 
 const CommentContainer = styled.form`
   padding-left: 0px;
@@ -45,8 +45,6 @@ const StyledTextArea = styled(MentionsTextArea)`
     border-top-left-radius: 0px !important;
     border-top-right-radius: 0px !important;
     background: #fff !important;
-    /* box-shadow: none !important; */
-    /* border: solid 1px #ddd !important; */
   }
 `;
 
@@ -79,61 +77,41 @@ const SendIconWrapper: any = styled.button`
   }
 `;
 
-type Props = {
+interface InputProps {
   ideaId: string;
   parentId: string;
-};
+}
 
-type Tracks = {
+interface DataProps {
+  locale: GetLocaleChildProps;
+  authUser: GetAuthUserChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+interface Tracks {
   focusEditor: Function;
   clickCommentPublish: Function;
-};
+}
 
-type State = {
-  locale: Locale | null;
-  authUser: IUser | null;
+interface State {
   inputValue: string;
   focussed: boolean;
   processing: boolean;
   errorMessage: string | null;
   canSubmit: boolean;
-};
+}
 
 class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & Tracks, State> {
-  subscriptions: Rx.Subscription[];
-
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      locale: null,
-      authUser: null,
       inputValue: '',
       focussed: false,
       processing: false,
       errorMessage: null,
       canSubmit: false
     };
-  }
-
-  componentDidMount () {
-    const locale$ = localeStream().observable;
-    const authUser$ = authUserStream().observable;
-
-    this.subscriptions = [
-      Rx.Observable.combineLatest(
-        locale$,
-        authUser$
-      ).subscribe(([locale, authUser]) => {
-        this.setState({
-          locale,
-          authUser
-        });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   handleTextareaOnChange = (inputValue) => {
@@ -160,9 +138,9 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
   }
 
   handleSubmit = async (event) => {
-    const { ideaId, parentId } = this.props;
+    const { locale, authUser, ideaId, parentId } = this.props;
     const { formatMessage } = this.props.intl;
-    const { locale, authUser, inputValue, canSubmit } = this.state;
+    const { inputValue, canSubmit } = this.state;
 
     event.preventDefault();
 
@@ -181,7 +159,7 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
         try {
           this.setState({ processing: true });
 
-          await addCommentToComment(ideaId, authUser.data.id, parentId, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') });
+          await addCommentToComment(ideaId, authUser.id, parentId, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') });
 
           this.setState({
             inputValue: '',
@@ -210,8 +188,7 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
   }
 
   render() {
-    const { ideaId } = this.props;
-    const { authUser } = this.state;
+    const { ideaId, authUser } = this.props;
 
     if (authUser) {
       const { formatMessage } = this.props.intl;
@@ -244,7 +221,18 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
   }
 }
 
-export default injectTracks<Props>({
+const ChildCommentFormWithHoCs = injectTracks<Props>({
   focusEditor: tracks.focusNewCommentTextbox,
   clickCommentPublish: tracks.clickCommentPublish,
 })(injectIntl<Props>(ChildCommentForm));
+
+const Data = adopt<DataProps>({
+  locale: <GetLocale />,
+  authUser: <GetAuthUser />
+});
+
+export default (inputProps: InputProps) => (
+  <Data>
+    {dataProps => <ChildCommentFormWithHoCs {...inputProps} {...dataProps} />}
+  </Data>
+);

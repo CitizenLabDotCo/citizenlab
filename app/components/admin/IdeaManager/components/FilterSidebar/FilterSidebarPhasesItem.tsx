@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { IPhaseData } from 'services/phases';
 import { flow } from 'lodash';
 

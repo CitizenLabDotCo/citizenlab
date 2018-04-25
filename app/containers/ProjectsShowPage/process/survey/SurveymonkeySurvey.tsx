@@ -1,6 +1,5 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
-
 
 const SurveyContainer = styled.div`
   display: flex;

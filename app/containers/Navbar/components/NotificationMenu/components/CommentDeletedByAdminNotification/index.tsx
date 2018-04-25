@@ -1,20 +1,20 @@
-import * as React from 'react';
-
+import React from 'react';
 import { ICommentDeletedByAdminNotificationData } from 'services/notifications';
-
 import messages from '../../messages';
-
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import NotificationWrapper from '../NotificationWrapper';
-import GetIdea from 'utils/resourceLoaders/components/GetIdea';
-import { IIdeaData } from 'services/ideas';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
-
-type Props = {
+interface InputProps {
   notification: ICommentDeletedByAdminNotificationData;
-  idea: IIdeaData | null;
-};
+}
+
+interface DataProps {
+  idea: GetIdeaChildProps['idea'];
+}
+
+interface Props extends InputProps, DataProps {}
 
 type State = {};
 
@@ -45,12 +45,14 @@ class CommentDeletedByAdminNotification extends React.PureComponent<Props, State
   }
 }
 
-export default (props: {notification: ICommentDeletedByAdminNotificationData}) => {
-  const { notification } = props;
+export default (inputProps: InputProps) => {
+  const { notification } = inputProps;
+
   if (!notification.relationships.idea.data) return null;
+
   return (
     <GetIdea id={notification.relationships.idea.data.id}>
-      {(getIdeaProps) => <CommentDeletedByAdminNotification {...props} {...getIdeaProps} />}
+      {({ idea }) =>  <CommentDeletedByAdminNotification notification={notification} idea={idea} />}
     </GetIdea>
   );
 };

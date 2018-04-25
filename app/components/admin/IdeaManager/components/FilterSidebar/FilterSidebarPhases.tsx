@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { IPhaseData } from 'services/phases';
 import { Menu, Divider } from 'semantic-ui-react';
 import FilterSidebarPhasesItem from './FilterSidebarPhasesItem';

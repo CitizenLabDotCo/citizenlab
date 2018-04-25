@@ -49,7 +49,6 @@ export type State = {
 export default class CommentsMoreActions extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-
     this.state = {
       modalVisible_spam: false,
       modalVisible_delete: false,

@@ -1,6 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-import { isString } from 'lodash';
+import React from 'react';
+import { adopt } from 'react-adopt';
 
 // router
 import { Link } from 'react-router';
@@ -9,9 +8,9 @@ import { Link } from 'react-router';
 import Icon from 'components/UI/Icon';
 import ContentContainer from 'components/ContentContainer';
 
-// services
-import { projectBySlugStream, IProject } from 'services/projects';
-import { eventsStream } from 'services/events';
+// resources
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
 
 // i18n
 import T from 'components/T';
@@ -190,63 +189,29 @@ const HeaderImage: any = styled.div`
   right: 0;
 `;
 
-type Props = {
-  slug: string;
-};
+interface InputProps {
+  projectSlug: string;
+}
 
-type State = {
-  project: IProject | null;
-  hasEvents: boolean;
-};
+interface DataProps {
+  projectLoaderState: GetProjectChildProps;
+  events: GetEventsChildProps;
+}
 
-export default class ProjectsShowPage extends React.PureComponent<Props, State> {
-  slug$: Rx.BehaviorSubject<string | null>;
-  subscriptions: Rx.Subscription[];
+interface Props extends InputProps, DataProps {}
 
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      project: null,
-      hasEvents: false
-    };
-    this.slug$ = new Rx.BehaviorSubject(null);
-    this.subscriptions = [];
-  }
+interface State {}
 
-  componentDidMount() {
-    this.slug$.next(this.props.slug);
-
-    this.subscriptions = [
-      this.slug$
-        .distinctUntilChanged()
-        .filter(slug => isString(slug))
-        .switchMap((slug: string) => {
-          return projectBySlugStream(slug).observable;
-        }).switchMap((project) => {
-          return eventsStream(project.data.id).observable.map(events => ({ events, project }));
-        }).subscribe(({ events, project }) => {
-          const hasEvents = (events && events.data && events.data.length > 0);
-          this.setState({ project, hasEvents });
-        })
-    ];
-  }
-
-  componentDidUpdate() {
-    this.slug$.next(this.props.slug);
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
+class ProjectsShowPage extends React.PureComponent<Props, State> {
   render() {
-    const { project, hasEvents } = this.state;
+    const { projectLoaderState: { project }, events } = this.props;
 
     if (project) {
       const className = this.props['className'];
-      const projectSlug = project.data.attributes.slug;
-      const projectHeaderImageLarge = (project.data.attributes.header_bg.large || null);
-      const projectType = project.data.attributes.process_type;
+      const projectSlug = project.attributes.slug;
+      const projectHeaderImageLarge = (project.attributes.header_bg.large || null);
+      const projectType = project.attributes.process_type;
+      const hasEvents = (events && events.length > 0);
 
       return (
         <Container className={`${className} ${projectType}`}>
@@ -256,13 +221,13 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
             <HeaderContent className={projectType}>
               <HeaderContentLeft>
                 <HeaderTitle>
-                  <T value={project.data.attributes.title_multiloc} />
+                  <T value={project.attributes.title_multiloc} />
                 </HeaderTitle>
               </HeaderContentLeft>
 
               <HeaderContentRight>
                 <HeaderButtons>
-                  {project && project.data.attributes.process_type === 'timeline' &&
+                  {project && project.attributes.process_type === 'timeline' &&
                     <HeaderButton
                       to={`/projects/${projectSlug}/process`}
                       activeClassName="active"
@@ -288,7 +253,7 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
                     </HeaderButtonText>
                   </HeaderButton>
 
-                  {project && project.data.attributes.process_type === 'continuous' && project.data.attributes.participation_method === 'ideation' &&
+                  {project && project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'ideation' &&
                     <HeaderButton
                       to={`/projects/${projectSlug}/ideas`}
                       activeClassName="active"
@@ -302,7 +267,7 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
                     </HeaderButton>
                   }
 
-                  {project && project.data.attributes.process_type === 'continuous' && project.data.attributes.participation_method === 'survey' &&
+                  {project && project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'survey' &&
                     <HeaderButton
                       to={`/projects/${projectSlug}/survey`}
                       activeClassName="active"
@@ -340,3 +305,14 @@ export default class ProjectsShowPage extends React.PureComponent<Props, State> 
     return null;
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  projectLoaderState: ({ projectSlug, render }) => <GetProject slug={projectSlug}>{render}</GetProject>,
+  events: ({ projectLoaderState: { project }, render }) => <GetEvents projectId={(project ? project.id : null)}>{render}</GetEvents>
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <ProjectsShowPage {...inputProps} {...dataProps} />}
+  </Data>
+);

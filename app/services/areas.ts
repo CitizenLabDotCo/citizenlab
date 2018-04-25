@@ -30,17 +30,22 @@ export interface IArea {
   data: IAreaData;
 }
 
+export function areaByIdStream(areaId: string) {
+  return streams.get<IArea>({ apiEndpoint: `${apiEndpoint}/${areaId}` });
+}
+
 export function areasStream(streamParams: IStreamParams | null = null) {
   return streams.get<IAreas>({ apiEndpoint, ...streamParams });
 }
 
-/*
-const data = {
-  title_multiloc: action.title,
-  description_multiloc: action.description,
-};
-*/
-
 export function addArea(object) {
   return streams.add<IArea>(apiEndpoint, { area: object });
+}
+
+export function updateArea(areaId: string, object) {
+  return streams.update<IArea>(`${apiEndpoint}/${areaId}`, areaId, { area: object });
+}
+
+export function deleteArea(areaId: string) {
+  return streams.delete(`${apiEndpoint}/${areaId}`, areaId);
 }

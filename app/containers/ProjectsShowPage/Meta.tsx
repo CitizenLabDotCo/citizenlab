@@ -1,15 +1,14 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-import { isString } from 'lodash';
+import React from 'react';
+import { adopt } from 'react-adopt';
 
 // components
 import Helmet from 'react-helmet';
 
-// services
-import { localeStream } from 'services/locale';
-import { currentTenantStream } from 'services/tenant';
-import { projectBySlugStream, IProject } from 'services/projects';
-import { projectImagesStream, IProjectImages } from 'services/projectImages';
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
 
 // utils
 import { stripHtml } from 'utils/textUtils';
@@ -17,78 +16,29 @@ import { stripHtml } from 'utils/textUtils';
 // i18n
 import { getLocalized } from 'utils/i18n';
 
-// typings
-import { Locale } from 'typings';
-
-type Props = {
+interface InputProps {
   projectSlug: string;
-};
+}
 
-type State = {
-  locale: Locale | null;
-  currentTenantLocales: Locale[] | null;
-  project: IProject | null;
-  projectImages: IProjectImages | null;
-  loaded: boolean;
-};
+interface DataProps {
+  locale: GetLocaleChildProps;
+  tenantLocales: GetTenantLocalesChildProps;
+  projectLoaderState: GetProjectChildProps;
+  projectImages: GetProjectImagesChildProps;
+}
 
-export default class Meta extends React.PureComponent<Props, State> {
-  slug$: Rx.BehaviorSubject<string | null>;
-  subscriptions: Rx.Subscription[];
+interface Props extends InputProps, DataProps {}
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      locale: null,
-      currentTenantLocales: null,
-      project: null,
-      projectImages: null,
-      loaded: false
-    };
-    this.slug$ = new Rx.BehaviorSubject(null);
-    this.subscriptions = [];
-  }
+interface State {}
 
-  componentDidMount() {
-    this.slug$.next(this.props.projectSlug);
-
-    const slug$ = this.slug$.distinctUntilChanged().filter(slug => isString(slug));
-
-    this.subscriptions = [
-      slug$.switchMap((slug: string) => {
-        const locale$ = localeStream().observable;
-        const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
-        const project$ = projectBySlugStream(slug).observable;
-
-        return Rx.Observable.combineLatest(
-          locale$,
-          currentTenantLocales$,
-          project$
-        );
-      }).switchMap(([locale, currentTenantLocales, project]) => {
-        const projectImages$ = projectImagesStream(project.data.id).observable;
-        return projectImages$.map((projectImages) => ({ locale, currentTenantLocales, project, projectImages }));
-      }).subscribe(({ locale, currentTenantLocales, project }) => {
-        this.setState({ locale, currentTenantLocales, project, loaded: true });
-      })
-    ];
-  }
-
-  componentDidUpdate(_prevProps: Props) {
-    this.slug$.next(this.props.projectSlug);
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
+class Meta extends React.PureComponent<Props, State> {
   render() {
-    const { locale, currentTenantLocales, project, projectImages, loaded } = this.state;
+    const { locale, tenantLocales, projectLoaderState: { project } , projectImages } = this.props;
 
-    if (loaded && locale && currentTenantLocales && project) {
-      const title = getLocalized(project.data.attributes.title_multiloc, locale, currentTenantLocales);
-      const description = stripHtml(getLocalized(project.data.attributes.description_multiloc, locale, currentTenantLocales));
-      const image = (projectImages && projectImages.data && projectImages.data.length > 0 ? projectImages.data[0].attributes.versions.large : null);
+    if (locale && tenantLocales && project) {
+      const title = getLocalized(project.attributes.title_multiloc, locale, tenantLocales);
+      const description = stripHtml(getLocalized(project.attributes.description_multiloc, locale, tenantLocales));
+      const image = (projectImages && projectImages && projectImages.length > 0 ? projectImages[0].attributes.versions.large : null);
       const url = window.location.href;
 
       return (
@@ -106,3 +56,16 @@ export default class Meta extends React.PureComponent<Props, State> {
     return null;
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale/>,
+  tenantLocales: <GetTenantLocales/>,
+  projectLoaderState: ({ projectSlug, render }) => <GetProject slug={projectSlug}>{render}</GetProject>,
+  projectImages: ({ projectLoaderState, render }) => <GetProjectImages projectId={(projectLoaderState.project ? projectLoaderState.project.id : null)}>{render}</GetProjectImages>
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <Meta {...inputProps} {...dataProps} />}
+  </Data>
+);

@@ -5,7 +5,7 @@ import { Formik } from 'formik';
 
 // Services / Data loading
 import { updateProject,  IProjectData } from 'services/projects';
-import GetProject from 'utils/resourceLoaders/components/GetProject';
+import GetProject from 'resources/GetProject';
 
 // Components
 import DescriptionEditionForm, { Values } from './DescriptionEditionForm';
@@ -62,8 +62,6 @@ class ProjectDescription extends React.Component<Props> {
 
 export default (props) => (
   <GetProject slug={props.params.slug}>
-    {({ project }) => (
-      project && < ProjectDescription {...props} project={project} />
-    )}
+    {({ project }) => project && < ProjectDescription {...props} project={project} />}
   </GetProject>
 );

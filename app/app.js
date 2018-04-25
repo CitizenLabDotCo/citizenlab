@@ -17,7 +17,6 @@ if (process.env.NODE_ENV !== 'development') {
   }
 }
 
-
 // Needed for redux-saga es6 generator support
 import 'babel-polyfill';
 
@@ -32,6 +31,9 @@ import { useScroll } from 'react-router-scroll';
 import 'sanitize.css/sanitize.css';
 import 'react-select/dist/react-select.css';
 import { fromJS } from 'immutable';
+
+// Creates the LazyImages Observer
+import 'utils/lazyImagesObserver';
 
 // add reactMap to immutible
 import 'utils/immutablePatch';

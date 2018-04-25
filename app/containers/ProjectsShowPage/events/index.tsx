@@ -114,7 +114,7 @@ export default class ProjectEventsPage extends React.PureComponent<Props, State>
     if (loaded) {
       return (
         <>
-          <Header slug={slug} />
+          <Header projectSlug={slug} />
           <EventsContainer>
             <Events>
               <Title>

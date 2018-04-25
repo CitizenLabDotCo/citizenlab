@@ -1,11 +1,15 @@
 // Libraries
-import * as React from 'react';
+import React from 'react';
 
 // Style
 import styled from 'styled-components';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import { remCalc, fontSize, color } from 'utils/styleUtils';
+import { remCalc, fontSize, colors } from 'utils/styleUtils';
+
+// Components
+export { default as SortableList } from './SortableList';
+export { default as SortableRow } from './SortableRow';
 
 const StyledList = styled.div`
   display: flex;
@@ -17,10 +21,8 @@ const timeout = 200;
 
 export const StyledRow = styled.div`
   align-items: center !important;
-  border-top: 1px solid ${color('separation')};
-  border-bottom: 1px solid ${color('separation')};
-  margin-top: -1px;
-  color: ${color('label')};
+  border-top: 1px solid ${colors.separation};
+  color: ${colors.label};
   display: flex !important;
   font-size: ${fontSize('small')};
   font-weight: 300;
@@ -28,8 +30,12 @@ export const StyledRow = styled.div`
   line-height: 20px;
   transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
 
+  &.last-item {
+    border-bottom: 1px solid ${colors.separation};
+  }
+
   h1, h2, h3, h4, h5 {
-    color: ${color('text')};
+    color: ${colors.text};
     font-weight: 500;
     margin-bottom: ${remCalc(10)};
   }
@@ -43,7 +49,7 @@ export const StyledRow = styled.div`
   }
 
   p {
-    color: ${color('label')};
+    color: ${colors.label};
     font-size: 15px;
     font-weight: 400;
     line-height: 20px;
@@ -64,6 +70,13 @@ export const StyledRow = styled.div`
 
   > .expand {
     flex: 1;
+  }
+
+  > .primary {
+    color: ${colors.text};
+    font-size: ${fontSize('base')}
+    font-weight: 400;
+    line-height: 20px;
   }
 
   &.list-item-enter {
@@ -88,10 +101,17 @@ export const StyledRow = styled.div`
 
   &.e2e-admin-list-head-row {
     border-top: 0;
-    color: ${color('label')};
+    color: ${colors.label};
     font-size: ${fontSize('small')};
     font-weight: 500;
   }
+`;
+
+export const TextCell = styled.div`
+  color: #333;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
 `;
 
 export const List = ({ children, ...props }) => (
@@ -104,7 +124,7 @@ export const List = ({ children, ...props }) => (
 
 export const Row = ({ children, ...props }) => (
   <CSSTransition classNames="list-item" timeout={timeout} {...props}>
-    <StyledRow className={`e2e-admin-list-row ${props['className']}`}>
+    <StyledRow className={`e2e-admin-list-row ${props['className']} ${props.lastItem && 'last-item'}`}>
       {children}
     </StyledRow>
   </CSSTransition>
