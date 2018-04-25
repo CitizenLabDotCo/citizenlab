@@ -1,7 +1,6 @@
-import * as React from 'react';
-import { flow } from 'lodash';
-import { IIdeaData, ideaByIdStream, deleteIdea } from 'services/ideas';
-import { injectResource, InjectedResourceLoaderProps } from 'utils/resourceLoaders/resourceLoader';
+import React from 'react';
+import { deleteIdea } from 'services/ideas';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import { browserHistory } from 'react-router';
 import eventEmitter from 'utils/eventEmitter';
 import { IModalInfo } from 'containers/App';
@@ -11,17 +10,23 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
-interface Props {
-  idea: IIdeaData;
+interface InputProps {
+  ideaId: string;
 }
 
-class InfoSidebarSingle extends React.PureComponent<Props & InjectedResourceLoaderProps<IIdeaData> & InjectedIntlProps> {
+interface DataProps {
+  idea: GetIdeaChildProps['idea'];
+}
+
+interface Props extends InputProps, DataProps {}
+
+class InfoSidebarSingle extends React.PureComponent<Props & InjectedIntlProps> {
+
   handleClickDelete = () => {
     const message = this.props.intl.formatMessage(messages.deleteIdeaConfirmation);
-    if (window.confirm(message)) {
-      if (this.props.idea) {
-        deleteIdea(this.props.idea.id);
-      }
+
+    if (window.confirm(message) && this.props.idea) {
+      deleteIdea(this.props.idea.id);
     }
   }
 
@@ -33,6 +38,7 @@ class InfoSidebarSingle extends React.PureComponent<Props & InjectedResourceLoad
 
   handleClickShow = () => {
     const { idea } = this.props;
+
     if (idea) {
       eventEmitter.emit<IModalInfo>('adminIdeas', 'cardClick', {
         type: 'idea',
@@ -44,10 +50,11 @@ class InfoSidebarSingle extends React.PureComponent<Props & InjectedResourceLoad
 
   render() {
     const { idea } = this.props;
+
     if (!idea) return null;
 
     return (
-      <div>
+      <>
         <Button.Group attached="top" size="small">
           <Button onClick={this.handleClickShow}>
             <Icon name="external" />
@@ -69,12 +76,15 @@ class InfoSidebarSingle extends React.PureComponent<Props & InjectedResourceLoad
             <T value={idea.attributes.body_multiloc} />
           </p>
         </Segment>
-      </div>
+      </>
     );
   }
 }
 
-export default flow(
-  injectResource('idea', ideaByIdStream, (props) => props.ideaId),
-  injectIntl)
-(InfoSidebarSingle);
+const InfoSidebarSingleWithInjectedIntl = injectIntl<Props>(InfoSidebarSingle);
+
+export default (inputProps: InputProps) => (
+  <GetIdea id={inputProps.ideaId}>
+    {({ idea }) =>  <InfoSidebarSingleWithInjectedIntl {...inputProps} idea={idea} />}
+  </GetIdea>
+);

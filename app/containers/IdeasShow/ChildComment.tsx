@@ -1,7 +1,7 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-
 // libraries
+import React from 'react';
+import { get } from 'lodash';
+import { adopt } from 'react-adopt';
 import { browserHistory } from 'react-router';
 
 // components
@@ -9,8 +9,11 @@ import Author from './Author';
 import CommentBody from './CommentBody';
 
 // services
-import { commentStream, IComment, updateComment } from 'services/comments';
-import { userByIdStream, IUser } from 'services/users';
+import { updateComment } from 'services/comments';
+
+// resources
+import GetComment, { GetCommentChildProps } from 'resources/GetComment';
+import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // style
 import styled from 'styled-components';
@@ -33,55 +36,29 @@ const StyledAuthor = styled(Author)`
   margin-bottom: 20px;
 `;
 
-type Props = {
+interface InputProps {
   commentId: string;
-};
+}
 
-type State = {
-  comment: IComment | null;
-  author: IUser | null;
+interface DataProps {
+  comment: GetCommentChildProps;
+  author: GetUserChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+interface State {
   spamModalVisible: boolean;
   editionMode: boolean;
-};
+}
 
-export default class ChildComment extends React.PureComponent<Props, State> {
-
-  subscriptions: Rx.Subscription[];
-
+class ChildComment extends React.PureComponent<Props, State> {
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
-      comment: null,
-      author: null,
       spamModalVisible: false,
       editionMode: false,
     };
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const { commentId } = this.props;
-    const comment$ = commentStream(commentId).observable;
-
-    this.subscriptions = [
-      Rx.Observable.combineLatest(
-        comment$
-      ).switchMap(([comment]) => {
-        const authorId = comment.data.relationships.author.data ? comment.data.relationships.author.data.id : null;
-        if (!authorId) {
-          return Rx.Observable.of({ comment, author: null });
-        }
-
-        const author$ = userByIdStream(authorId).observable;
-        return author$.map(author => ({ comment, author }));
-      }).subscribe(({ comment, author }) => {
-        this.setState({ comment, author });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   captureClick = (event) => {
@@ -100,37 +77,50 @@ export default class ChildComment extends React.PureComponent<Props, State> {
     this.setState({ editionMode: false });
   }
 
-  onCommentSave = (comment, formikActions) => {
+  onCommentSave = async (comment, formikActions) => {
     const { setSubmitting, setErrors } = formikActions;
 
-    updateComment(this.props.commentId, comment)
-    .then(() => {
+    try {
+      await updateComment(this.props.commentId, comment);
       this.setState({ editionMode: false });
-    })
-    .catch((errorResponse) => {
-      if (errorResponse.json) {
-        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+    } catch (error) {
+      if (error && error.json) {
+        const apiErrors = (error as API.ErrorResponse).json.errors;
         setErrors(apiErrors);
         setSubmitting(false);
       }
-    });
+    }
   }
 
   render() {
-    const { comment, author } = this.state;
+    const { comment, author } = this.props;
+    const { editionMode } = this.state;
 
     if (comment && author) {
       const className = this.props['className'];
-      const authorId = comment.data.relationships.author.data ? comment.data.relationships.author.data.id : null;
-      const createdAt = comment.data.attributes.created_at;
-      const commentBodyMultiloc = comment.data.attributes.body_multiloc;
+      const authorId = comment.relationships.author.data ? comment.relationships.author.data.id : null;
+      const createdAt = comment.attributes.created_at;
+      const commentBodyMultiloc = comment.attributes.body_multiloc;
 
       return (
         <CommentContainer className={className}>
-          <StyledMoreActionsMenu comment={comment.data} onCommentEdit={this.onCommentEdit} />
-          <StyledAuthor authorId={authorId} createdAt={createdAt} message="childCommentAuthor" />
+          <StyledMoreActionsMenu
+            comment={comment}
+            onCommentEdit={this.onCommentEdit}
+          />
 
-          <CommentBody commentBody={commentBodyMultiloc} editionMode={this.state.editionMode} onCommentSave={this.onCommentSave} onCancelEdition={this.onCancelEdition} />
+          <StyledAuthor
+            authorId={authorId}
+            createdAt={createdAt}
+            message="childCommentAuthor"
+          />
+
+          <CommentBody
+            commentBody={commentBodyMultiloc}
+            editionMode={editionMode}
+            onCommentSave={this.onCommentSave}
+            onCancelEdition={this.onCancelEdition}
+          />
         </CommentContainer>
       );
     }
@@ -138,3 +128,14 @@ export default class ChildComment extends React.PureComponent<Props, State> {
     return null;
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
+  author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <ChildComment {...inputProps} {...dataProps} />}
+  </Data>
+);

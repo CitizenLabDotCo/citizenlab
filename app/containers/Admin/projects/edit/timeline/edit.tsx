@@ -5,7 +5,7 @@ import 'react-dates/lib/css/_datepicker.css';
 // Libraries
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import moment from 'moment';
+import * as moment from 'moment';
 import { get, isEmpty, forOwn } from 'lodash';
 
 // Services

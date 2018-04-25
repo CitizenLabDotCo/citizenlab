@@ -10,7 +10,7 @@
       "export interface Props {}",
       "export interface State {}",
       "",
-      "class ${1:ComponentName} extends React.Component<Props, State> {",
+      "export class ${1:ComponentName} extends React.PureComponent<Props, State> {",
       "  constructor(props) {",
       "    super(props);",
       "    this.state = {};",

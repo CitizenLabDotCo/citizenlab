@@ -135,7 +135,6 @@ type State = {
 };
 
 class Sharing extends React.PureComponent<Props & ITracks, State> {
-  
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {

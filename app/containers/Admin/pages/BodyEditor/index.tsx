@@ -1,29 +1,34 @@
-import * as React from 'react';
-
-import { IPageData, pageByIdStream, updatePage } from 'services/pages';
+import React from 'react';
+import { updatePage } from 'services/pages';
 import Grapes from 'components/admin/Grapes';
-import { injectResource } from 'utils/resourceLoaders/resourceLoader';
-import { browserHistory } from 'react-router';
+import GetPage, { GetPageChildProps } from 'resources/GetPage';
+import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 
-type Props = {
-  page: IPageData;
-  params: any;
-};
+interface InputProps {}
 
-type State = {};
+interface DataProps {
+  page: GetPageChildProps;
+}
 
-class BodyEditor extends React.Component<Props, State> {
+interface Props extends InputProps, DataProps {}
+
+interface State {}
+
+class BodyEditor extends React.Component<Props & WithRouterProps, State> {
 
   handleOnSave = (html: string) => {
-    const newBody = {
-      ...this.props.page.attributes.body_multiloc,
-      [this.props.params.locale]: html,
-    };
-    updatePage(this.props.page.id, {
-      body_multiloc: newBody,
-    }).then(() => {
-        browserHistory.push(`/admin/pages/${this.props.page.id}`);
+    const { page } = this.props;
+
+    if (page) {
+      const newBody = {
+        ...page.attributes.body_multiloc,
+        [this.props.params.locale]: html,
+      };
+
+      updatePage(page.id, { body_multiloc: newBody }).then(() => {
+        browserHistory.push(`/admin/pages/${page.id}`);
       });
+    }
   }
 
   render() {
@@ -41,4 +46,8 @@ class BodyEditor extends React.Component<Props, State> {
   }
 }
 
-export default injectResource('page', pageByIdStream, (props) => props.params.pageId)(BodyEditor);
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <GetPage id={inputProps.params.pageId}>
+    {page => <BodyEditor {...inputProps} page={page} />}
+  </GetPage>
+));

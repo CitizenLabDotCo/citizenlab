@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { indexOf, isString } from 'lodash';
-import * as Rx from 'rxjs/Rx';
+import { BehaviorSubject, Subscription, Observable } from 'rxjs/Rx';
 import * as moment from 'moment';
 import 'moment-timezone';
 
@@ -330,8 +330,8 @@ type State = {
 
 export default class Timeline extends React.PureComponent<Props, State> {
   initialState: State;
-  projectId$: Rx.BehaviorSubject<string | null>;
-  subscriptions: Rx.Subscription[];
+  projectId$: BehaviorSubject<string | null>;
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -346,7 +346,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
     this.initialState = initialState;
     this.state = initialState;
     this.subscriptions = [];
-    this.projectId$ = new Rx.BehaviorSubject(null);
+    this.projectId$ = new BehaviorSubject(null);
   }
 
   componentDidMount() {
@@ -363,7 +363,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
         .switchMap((projectId: string) => {
           const phases$ = phasesStream(projectId).observable;
 
-          return Rx.Observable.combineLatest(
+          return Observable.combineLatest(
             locale$,
             currentTenant$,
             phases$
