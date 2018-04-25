@@ -20,8 +20,8 @@ module.exports = {
 
     adminProjectsPage
     .navigate()
-    .waitForElementVisible('.e2e-project-card.process-timeline')
-    .click('.e2e-project-card.process-timeline a')
+    .waitForElementVisible('.e2e-admin-edit-project.timeline')
+    .click('.e2e-admin-edit-project.timeline')
     .waitForElementVisible('@phasesTab')
     .click('@phasesTab')
     .waitForElementVisible('@addPhaseButton')
@@ -38,12 +38,9 @@ module.exports = {
     .waitForElementVisible('@submitSuccess');
 
     // Check for phase presence in the list
-    browser
-    .refresh();
+    browser.back();
 
     adminProjectsPage
-    .waitForElementVisible('@phasesTab')
-    .click('@phasesTab')
     .waitForElementVisible('.e2e-phases-table .e2e-phase-line')
     .assert.containsText('.e2e-phases-table .e2e-phase-line.last .e2e-phase-title span', title);
 
