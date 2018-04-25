@@ -80,7 +80,7 @@ module SmartGroupRules
           raise "Unsupported predicate #{predicate}"
         end
       elsif custom_field.input_type == 'multiselect'
-
+        raise "Unsupported predicate #{predicate}"
       end
     end
 
