@@ -105,6 +105,13 @@ export const StyledRow = styled.div`
   }
 `;
 
+export const TextCell = styled.div`
+  color: #333;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+`;
+
 export const List = ({ children, ...props }) => (
   <StyledList className="e2e-admin-list" {...props}>
     <TransitionGroup>
