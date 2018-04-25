@@ -52,7 +52,7 @@ module SmartGroupRules
     end
 
     def self.from_json json
-      self.new(json['predicate'])
+      self.new(json['predicate'], json['value'])
     end
 
     def initialize predicate, value=nil
