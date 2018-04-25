@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180412140227) do
+ActiveRecord::Schema.define(version: 20180423123634) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 20180412140227) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "areas_ideas", id: false, force: :cascade do |t|
+  create_table "areas_ideas", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "area_id"
     t.uuid "idea_id"
     t.index ["area_id"], name: "index_areas_ideas_on_area_id"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 20180412140227) do
     t.index ["idea_id"], name: "index_areas_ideas_on_idea_id"
   end
 
-  create_table "areas_projects", id: false, force: :cascade do |t|
+  create_table "areas_projects", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "area_id"
     t.uuid "project_id"
     t.index ["area_id"], name: "index_areas_projects_on_area_id"
@@ -212,7 +212,7 @@ ActiveRecord::Schema.define(version: 20180412140227) do
     t.index ["phase_id"], name: "index_ideas_phases_on_phase_id"
   end
 
-  create_table "ideas_topics", id: false, force: :cascade do |t|
+  create_table "ideas_topics", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "idea_id"
     t.uuid "topic_id"
     t.index ["idea_id", "topic_id"], name: "index_ideas_topics_on_idea_id_and_topic_id", unique: true
@@ -360,7 +360,7 @@ ActiveRecord::Schema.define(version: 20180412140227) do
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
-  create_table "projects_topics", id: false, force: :cascade do |t|
+  create_table "projects_topics", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "project_id"
     t.uuid "topic_id"
     t.index ["project_id"], name: "index_projects_topics_on_project_id"
