@@ -110,6 +110,12 @@ end
 # - registration_completed_at
 #   {custom_field_date_options}
 
+# - role
+
+# - birthyear
+
+# - custom_field_number
+
 
 
 
