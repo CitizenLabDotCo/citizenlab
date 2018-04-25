@@ -66,7 +66,23 @@ module SmartGroupRules
       when 'is'
         users_scope.where("custom_field_values->>'#{key}' = ?", value)
       when 'not_is'
-        users_scope.where("custom_field_values->>'#{key}' <> ?", value)
+        users_scope.where("custom_field_values->>'#{key}' IS NULL or custom_field_values->>'#{key}' != ?", value)
+      when 'contains'
+        users_scope.where("custom_field_values->>'#{key}' LIKE ?", "%#{value}%")
+      when 'not_contains'
+        users_scope.where("custom_field_values->>'#{key}' NOT LIKE ?", "%#{value}%")
+      when 'begins_with'
+        users_scope.where("custom_field_values->>'#{key}' LIKE ?", "#{value}%")
+      when 'not_begins_with'
+        users_scope.where("custom_field_values->>'#{key}' NOT LIKE ?", "#{value}%")
+      when 'ends_on'
+        users_scope.where("custom_field_values->>'#{key}' LIKE ?", "%#{value}")
+      when 'not_ends_on'
+        users_scope.where("custom_field_values->>'#{key}' NOT LIKE ?", "%#{value}")
+      when 'is_empty'
+        users_scope.where("custom_field_values->>'#{key}' IS NULL")
+      when 'not_is_empty'
+        users_scope.where("custom_field_values->>'#{key}' IS NOT NULL")
       else
         raise "Unsupported predicate #{predicate}"
       end

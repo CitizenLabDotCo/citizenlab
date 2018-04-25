@@ -53,44 +53,44 @@ describe SmartGroupRules::CustomFieldText do
       expect(rule.filter(User).count).to eq User.count - 1
     end
 
-    pending "correctly filters on 'contains' predicate" do
-      rule = SmartGroupRules::CustomFieldText.new(custom_field.id, 'contains', 'two')
+    it "correctly filters on 'contains' predicate" do
+      rule = SmartGroupRules::CustomFieldText.new(custom_field.id, 'contains', 'hre')
       expect(rule.filter(User).count).to eq 1 
     end
 
-    pending "correctly filters on 'not_contains' predicate" do
-      rule = SmartGroupRules::CustomFieldText.new(custom_field.id, 'not_contains', 'two')
-      expect(rule.filter(User).count).to eq 1 
+    it "correctly filters on 'not_contains' predicate" do
+      rule = SmartGroupRules::CustomFieldText.new(custom_field.id, 'not_contains', 'hre')
+      expect(rule.filter(User).count).to eq User.count - 1
     end
 
-    pending "correctly filters on 'begins_with' predicate" do
-      rule = SmartGroupRules::CustomFieldText.new(custom_field.id, 'begins_with', 'two')
-      expect(rule.filter(User).count).to eq 1 
+    it "correctly filters on 'begins_with' predicate" do
+      rule = SmartGroupRules::CustomFieldText.new(custom_field.id, 'begins_with', 'f')
+      expect(rule.filter(User).count).to eq 2
     end
 
-    pending "correctly filters on 'not_begins_with' predicate" do
-      rule = SmartGroupRules::CustomFieldText.new(custom_field.id, 'not_begins_with', 'two')
-      expect(rule.filter(User).count).to eq 1 
+    it "correctly filters on 'not_begins_with' predicate" do
+      rule = SmartGroupRules::CustomFieldText.new(custom_field.id, 'not_begins_with', 'fiv')
+      expect(rule.filter(User).count).to eq User.count - 1
     end
 
-    pending "correctly filters on 'ends_on' predicate" do
-      rule = SmartGroupRules::CustomFieldText.new(custom_field.id, 'ends_on', 'two')
-      expect(rule.filter(User).count).to eq 1 
+    it "correctly filters on 'ends_on' predicate" do
+      rule = SmartGroupRules::CustomFieldText.new(custom_field.id, 'ends_on', 'e')
+      expect(rule.filter(User).count).to eq 3
     end
 
-    pending "correctly filters on 'not_ends_on' predicate" do
-      rule = SmartGroupRules::CustomFieldText.new(custom_field.id, 'not_ends_on', 'two')
-      expect(rule.filter(User).count).to eq 1 
+    it "correctly filters on 'not_ends_on' predicate" do
+      rule = SmartGroupRules::CustomFieldText.new(custom_field.id, 'not_ends_on', 'three')
+      expect(rule.filter(User).count).to eq User.count - 1
     end
 
-    pending "correctly filters on 'is_empty' predicate" do
-      rule = SmartGroupRules::CustomFieldText.new(custom_field.id, 'is_empty', 'two')
-      expect(rule.filter(User).count).to eq 1 
+    it "correctly filters on 'is_empty' predicate" do
+      rule = SmartGroupRules::CustomFieldText.new(custom_field.id, 'is_empty')
+      expect(rule.filter(User).count).to eq 0
     end
 
-    pending "correctly filters on 'not_is_empty' predicate" do
-      rule = SmartGroupRules::CustomFieldText.new(custom_field.id, 'not_is_empty', 'two')
-      expect(rule.filter(User).count).to eq 1 
+    it "correctly filters on 'not_is_empty' predicate" do
+      rule = SmartGroupRules::CustomFieldText.new(custom_field.id, 'not_is_empty')
+      expect(rule.filter(User).count).to eq User.count
     end
   end
 
