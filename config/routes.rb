@@ -70,6 +70,7 @@ Rails.application.routes.draw do
         resources :files, defaults: {container_class: Project, file_class: ProjectFile}
         resources :groups_projects, shallow: true, except: [:update]
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
+        patch 'reorder', on: :member
       end
 
       resources :notifications, only: [:index, :show] do
