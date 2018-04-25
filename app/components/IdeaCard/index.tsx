@@ -11,6 +11,7 @@ import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';
 import UserName from 'components/UI/UserName';
 import Avatar from 'components/Avatar';
+import LazyImage from 'components/LazyImage';
 
 // resrources
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
@@ -43,7 +44,7 @@ const IdeaImageContainer: any = styled.div`
   justify-content: center;
 `;
 
-const IdeaImage: any = styled.img`
+const IdeaImage: any = styled(LazyImage)`
   width: 100%;
 `;
 
