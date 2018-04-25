@@ -20,6 +20,13 @@ class SmartGroupsService
     end
   end
 
+  def groups_for_user user
+    # Very naive but correct implementation
+    Group.where(membership_type: 'rules').each.select do |group|
+      filter(User.where(id: user.id), group.rules).count == 1
+    end
+  end
+
   def generate_rules_json_schema
     {
       "description" => "Schema for validating the rules used in smart groups",
