@@ -17,19 +17,17 @@ import messages from './messages';
 
 // style
 import styled, { css } from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 const Menu = styled.div`
-  width: 240px;
-  height: 100%;
-  position: fixed;
-  z-index: 1;
+  background: ${ colors.adminMenuBackground };
+  flex: 0 0 240px;
   margin-top: 0px;
-  background: #3b3b3b;
   padding-top: 45px;
+  z-index: 1;
 
   ${media.smallerThanMinTablet`
-    width: 70px;
+    flex: 0 0 70px;
   `}
 `;
 
@@ -214,9 +212,9 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
               <MenuLink to={route.link}>
                 <IconWrapper><StyledIcon name={route.iconName} /></IconWrapper>
                 <Text>{formatMessage({ ...messages[route.message] })}</Text>
-          </MenuLink>
-        </MenuItem>
-        </FeatureFlag>
+              </MenuLink>
+            </MenuItem>
+          </FeatureFlag>
         ))}
       </Menu>
     );
