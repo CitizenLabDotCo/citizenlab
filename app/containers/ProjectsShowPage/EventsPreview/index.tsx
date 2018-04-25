@@ -1,6 +1,7 @@
 // libraries
 import React from 'react';
 import { adopt } from 'react-adopt';
+import { isNullOrError } from 'utils/helperUtils';
 import * as moment from 'moment';
 
 // resources
@@ -55,13 +56,13 @@ interface DataProps {
 
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject slug={projectId}>{render}</GetProject>,
-  events: ({ project, render }) => <GetEvents projectId={(project ? project.id : null)}>{render}</GetEvents>
+  events: ({ project, render }) => <GetEvents projectId={(!isNullOrError(project) ? project.id : null)}>{render}</GetEvents>
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {({ project, events }) => {
-      if (project && events && events.length > 0) {
+      if (!isNullOrError(project) && events && events.length > 0) {
         const now = moment();
 
         return (

@@ -2,6 +2,7 @@ import React from 'react';
 import * as moment from 'moment';
 import 'moment-timezone';
 import { adopt } from 'react-adopt';
+import { isNullOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
@@ -55,7 +56,7 @@ interface DataProps {
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   project: ({ params, render }) => <GetProject slug={params.slug} resetOnChange>{render}</GetProject>,
-  events: ({ project, render }) => <GetEvents projectId={(project ? project.id : null)}>{render}</GetEvents>
+  events: ({ project, render }) => <GetEvents projectId={(!isNullOrError(project) ? project.id : null)}>{render}</GetEvents>
 });
 
 export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps) => (

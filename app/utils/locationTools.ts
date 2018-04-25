@@ -1,13 +1,17 @@
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 
-export async function convertToGeoJson(location: string): Promise<GeoJSON.Point> {
-  const results = await geocodeByAddress(location);
-  const { lat, lng } = await getLatLng(results[0]);
-
-  return {
-    type: 'Point',
-    coordinates: [lng as number, lat as number]
-  };
+export async function convertToGeoJson(location: string) {
+  try {
+    const results = await geocodeByAddress(location);
+    const { lat, lng } = await getLatLng(results[0]);
+    const point: GeoJSON.Point = {
+      type: 'Point',
+      coordinates: [lng as number, lat as number]
+    };
+    return point;
+  } catch (error) {
+    return null;
+  }
 }
 
 export async function reverseGeocode(coordinates: number[]): Promise<string> {

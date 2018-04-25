@@ -636,9 +636,10 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
         authUser$
       ).switchMap(([idea, authUser]) => {
         return hasPermission({
-          item: idea.data,
+          item: idea  && idea.data ? idea.data : null,
           action: 'edit',
-          context: idea.data
+          user: (authUser as IUser),
+          context: idea && idea.data ? idea.data : null,
         }).map((granted) => ({ authUser, granted }));
       }).subscribe(({ authUser, granted }) => {
         this.setState(() => {

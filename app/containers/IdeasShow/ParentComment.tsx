@@ -15,12 +15,9 @@ import Icon from 'components/UI/Icon';
 import { updateComment } from 'services/comments';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // analytics
@@ -33,7 +30,6 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 import { API } from 'typings';
 
 const DeletedIcon = styled(Icon)`
@@ -74,9 +70,10 @@ const CommentContainerInner = styled.div`
   position: relative;
 
   &.deleted {
-    display: flex;
     align-items: center;
-    background: ${colors.placeholderBg};
+    display: flex;
+    font-style: italic;
+    font-weight: 500;
   }
 `;
 
@@ -92,13 +89,10 @@ interface InputProps {
 }
 
 interface DataProps {
-  locale: GetLocaleChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
   authUser: GetAuthUserChildProps;
   comment: GetCommentChildProps;
   childComments: GetCommentsChildProps;
-  author: GetUserChildProps;
-  idea: GetIdeaChildProps;
+  ideaLoaderState: GetIdeaChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -160,9 +154,10 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
   }
 
   render() {
-    const { commentId, authUser, comment, childComments, author, idea } = this.props;
+    const { commentId, authUser, comment, childComments, ideaLoaderState: { idea } } = this.props;
 
-    if (comment && author && idea) {
+
+    if (comment && idea) {
       const ideaId = comment.relationships.idea.data.id;
       const authorId = (comment.relationships.author.data ? comment.relationships.author.data.id : null);
       const commentDeleted = (comment.attributes.publication_status === 'deleted');
@@ -229,13 +224,10 @@ const ParentCommentWithTracks = injectTracks<Props>({
 })(ParentComment);
 
 const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale/>,
-  tenantLocales: <GetTenantLocales/>,
   authUser: <GetAuthUser/>,
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
   childComments: ({ ideaId, render }) => <GetComments ideaId={ideaId}>{render}</GetComments>,
-  author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>,
-  idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>,
+  ideaLoaderState: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>,
 });
 
 export default (inputProps: InputProps) => (

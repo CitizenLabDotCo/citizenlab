@@ -1,4 +1,5 @@
 import React from 'react';
+import { isNullOrError } from 'utils/helperUtils';
 import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 
 // components
@@ -14,7 +15,7 @@ import GetProject from 'resources/GetProject';
 export default withRouter((props: WithRouterProps) => (
   <GetProject slug={props.params.slug}>
     {project => {
-      if (project) {
+      if (!isNullOrError(project)) {
         const redirectUrl = getProjectUrl(project);
         browserHistory.replace(redirectUrl);
         return project.attributes.process_type === 'timeline' ? <ProjectTimelinePage /> : <ProjectInfoPage />;

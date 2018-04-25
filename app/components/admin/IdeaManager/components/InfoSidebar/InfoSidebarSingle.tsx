@@ -1,4 +1,5 @@
 import React from 'react';
+import { isNullOrError } from 'utils/helperUtils';
 import { deleteIdea } from 'services/ideas';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import { browserHistory } from 'react-router';
@@ -23,23 +24,26 @@ interface Props extends InputProps, DataProps {}
 class InfoSidebarSingle extends React.PureComponent<Props & InjectedIntlProps> {
 
   handleClickDelete = () => {
+    const { idea } = this.props;
     const message = this.props.intl.formatMessage(messages.deleteIdeaConfirmation);
 
-    if (window.confirm(message) && this.props.idea) {
-      deleteIdea(this.props.idea.id);
+    if (window.confirm(message) && !isNullOrError(idea)) {
+      deleteIdea(idea.id);
     }
   }
 
   handleClickEdit = () => {
-    if (this.props.idea) {
-      browserHistory.push(`/ideas/edit/${this.props.idea.id}`);
+    const { idea } = this.props;
+
+    if (!isNullOrError(idea)) {
+      browserHistory.push(`/ideas/edit/${idea.id}`);
     }
   }
 
   handleClickShow = () => {
     const { idea } = this.props;
 
-    if (idea) {
+    if (!isNullOrError(idea)) {
       eventEmitter.emit<IModalInfo>('adminIdeas', 'cardClick', {
         type: 'idea',
         id: idea.id,
@@ -51,7 +55,7 @@ class InfoSidebarSingle extends React.PureComponent<Props & InjectedIntlProps> {
   render() {
     const { idea } = this.props;
 
-    if (!idea) return null;
+    if (isNullOrError(idea)) return null;
 
     return (
       <>
@@ -85,6 +89,6 @@ const InfoSidebarSingleWithInjectedIntl = injectIntl<Props>(InfoSidebarSingle);
 
 export default (inputProps: InputProps) => (
   <GetIdea id={inputProps.ideaId}>
-    {idea => <InfoSidebarSingleWithInjectedIntl {...inputProps} idea={idea} />}
+    {idea =>  <InfoSidebarSingleWithInjectedIntl {...inputProps} idea={idea} />}
   </GetIdea>
 );
