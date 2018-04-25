@@ -79,15 +79,16 @@ class ProfileForm extends React.PureComponent<Props, State> {
       localeOptions: [],
       customFieldsFormData: null
     };
+    this.user$ = new Rx.BehaviorSubject(null as any);
     this.subscriptions = [];
   }
 
   componentDidMount() {
-    this.user$ = new Rx.BehaviorSubject(this.props.user);
-
-    const user$ = this.user$.distinctUntilChanged((x, y) => isEqual(x, y));
+    const user$ = this.user$.filter(user => user !== null).distinctUntilChanged((x, y) => isEqual(x, y));
     const locale$ = localeStream().observable;
     const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
+
+    this.user$.next(this.props.user);
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
