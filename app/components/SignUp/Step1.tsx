@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { set, keys, difference, get } from 'lodash';
-import * as Rx from 'rxjs/Rx';
+import { Subscription, Observable } from 'rxjs/Rx';
 
 // libraries
 import { Link } from 'react-router';
@@ -10,6 +10,7 @@ import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
+import Checkbox from 'components/UI/Checkbox';
 
 // utils
 import { isValidEmail } from 'utils/validate';
@@ -51,6 +52,34 @@ const ButtonWrapper = styled.div`
   padding-top: 10px;
 `;
 
+const TermsAndConditionsWrapper: any = styled.div`
+  padding: 15px 30px;
+  border-radius: 5px;
+  background: #f0f1f3;
+  border: solid 1px transparent;
+
+  &.error {
+    border-color: ${(props: any) => props.theme.colors.error};
+  }
+
+  span {
+    color: #707075 !important;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 21px;
+  }
+
+  a > span {
+    color: #707075 !important;
+    text-decoration: underline;
+  }
+
+  a:hover > span {
+    color: #000 !important;
+    text-decoration: underline;
+  }
+`;
+
 const AlreadyHaveAnAccount = styled(Link)`
   color: ${(props) => props.theme.colorMain};
   font-size: 16px;
@@ -80,19 +109,21 @@ type State = {
   lastName: string | null;
   email: string | null | undefined;
   password: string | null;
+  tacAccepted: boolean;
   processing: boolean;
   tokenError: string | null;
   firstNameError: string | null;
   lastNameError: string | null;
   emailError: string | null;
   passwordError: string | null;
+  tacError: string | null;
   localeError: string | null;
   unknownError: string | null;
   apiErrors: API.ErrorResponse | null;
 };
 
 class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
   firstNameInputElement: HTMLInputElement | null;
 
   constructor(props: Props) {
@@ -106,12 +137,14 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       lastName: null,
       email: null,
       password: null,
+      tacAccepted: false,
       processing: false,
       tokenError: null,
       firstNameError: null,
       lastNameError: null,
       emailError: null,
       passwordError: null,
+      tacError: null,
       localeError: null,
       unknownError: null,
       apiErrors: null
@@ -125,10 +158,10 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
     const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
-    const invitedUser$ = (token ? userByInviteStream(token).observable : Rx.Observable.of(null));
+    const invitedUser$ = (token ? userByInviteStream(token).observable : Observable.of(null));
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      Observable.combineLatest(
         locale$,
         currentTenant$,
         customFieldsSchemaForUsersStream$,
@@ -202,12 +235,16 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
     }));
   }
 
+  handleTaCAcceptedOnChange = () => {
+    this.setState(state => ({ tacAccepted: !state.tacAccepted, tacError: null }));
+  }
+
   handleOnSubmit = async (event: React.FormEvent<any>) => {
     event.preventDefault();
 
     const { isInvitation } = this.props;
     const { formatMessage } = this.props.intl;
-    const { locale, currentTenant, hasCustomFields, token, firstName, lastName, email, password } = this.state;
+    const { locale, currentTenant, hasCustomFields, token, firstName, lastName, email, password, tacAccepted } = this.state;
     const currentTenantLocales = currentTenant ? currentTenant.data.attributes.settings.core.locales : [];
     let tokenError = ((isInvitation && !token) ? formatMessage(messages.noTokenError) : null);
     const hasEmailError = (!email || !isValidEmail(email));
@@ -215,6 +252,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
     const firstNameError = (!firstName ? formatMessage(messages.noFirstNameError) : null);
     const lastNameError = (!lastName ? formatMessage(messages.noLastNameError) : null);
     const localeError = (!currentTenantLocales.some(currentTenantLocale => locale === currentTenantLocale) ? formatMessage(messages.noValidLocaleError) : null);
+    const tacError = (!tacAccepted ? formatMessage(messages.tacError) : null);
     let passwordError: string | null = null;
 
     if (!password) {
@@ -223,9 +261,9 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       passwordError = formatMessage(messages.noValidPasswordError);
     }
 
-    const hasErrors = [tokenError, emailError, firstNameError, lastNameError, passwordError, localeError].some(error => error !== null);
+    const hasErrors = [tokenError, emailError, firstNameError, lastNameError, passwordError, localeError, tacError].some(error => error !== null);
 
-    this.setState({ tokenError, emailError, firstNameError, lastNameError, passwordError, localeError });
+    this.setState({ tokenError, emailError, firstNameError, lastNameError, passwordError, localeError, tacError });
 
     if (!hasErrors && firstName && lastName && email && password && locale) {
       try {
@@ -361,6 +399,23 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
           />
 
           <Error fieldName={'password'} apiErrors={get(apiErrors, 'json.errors.password')} />
+        </FormElement>
+
+        <FormElement>
+          <TermsAndConditionsWrapper className={`${this.state.tacError && 'error'}`}>
+            <Checkbox 
+              value={this.state.tacAccepted}
+              onChange={this.handleTaCAcceptedOnChange}
+              disableLabelClick={true}
+              label={
+                <FormattedMessage
+                  {...messages.acceptTermsAndConditions} 
+                  values={{ tacLink: <Link to="pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link> }}
+                />
+              }
+            />
+          </TermsAndConditionsWrapper>
+          <Error text={this.state.tacError} />
         </FormElement>
 
         <FormElement>

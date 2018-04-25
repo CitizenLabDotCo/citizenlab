@@ -1,4 +1,5 @@
 import React from 'react';
+import { isNullOrError } from 'utils/helperUtils';
 import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 
 // components
@@ -36,7 +37,7 @@ interface InputProps {}
 export default withRouter<InputProps>((props: WithRouterProps) => (
   <GetProject slug={props.params.slug} resetOnChange>
     {project => {
-      if (project) {
+      if (!isNullOrError(project)) {
 
         if (project.attributes.process_type !== 'continuous') {
           // redirect

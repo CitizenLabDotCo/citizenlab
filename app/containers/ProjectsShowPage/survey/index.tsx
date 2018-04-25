@@ -1,4 +1,5 @@
 import React from 'react';
+import { isNullOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
@@ -19,7 +20,10 @@ const SurveyContainer = styled.div`
 
 export default withRouter((props: WithRouterProps) => (
   <GetProject slug={props.params.slug}>
-    {project => (
+    {project => {
+      if (isNullOrError(project)) return null;
+
+      return (
         <>
           <Header projectSlug={props.params.slug} />
           <ContentContainer>
@@ -33,6 +37,7 @@ export default withRouter((props: WithRouterProps) => (
             </SurveyContainer>
           </ContentContainer>
         </>
-    )}
+      );
+    }}
   </GetProject>
 ));

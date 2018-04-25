@@ -1,4 +1,5 @@
 import * as moment from 'moment';
+import { isNil, isError } from 'lodash';
 import { IProjectData } from './projects';
 import { IPhaseData } from './phases';
 
@@ -14,9 +15,9 @@ const isCurrentPhase = (phase: IPhaseData) : boolean => {
   return currentTenantTodayMoment.isBetween(startMoment, endMoment, 'days', '[]');
 };
 
-export const postingButtonState = ({ project, phase }: {project?: IProjectData | null, phase?: IPhaseData | null}): ButtonStateResponse => {
+export const postingButtonState = ({ project, phase }: {project?: IProjectData | null | Error, phase?: IPhaseData | null | Error}): ButtonStateResponse => {
 
-  if (phase) {
+  if (!isNil(phase) && !isError(phase)) {
     const inCurrentPhase = isCurrentPhase(phase);
     if (inCurrentPhase) {
       return {
@@ -29,7 +30,7 @@ export const postingButtonState = ({ project, phase }: {project?: IProjectData |
         enabled: false,
       };
     }
-  } else if (project) { // if in known project context but unknown phase context
+  } else if (!isNil(project) && !isError(project)) { // if in known project context but unknown phase context
     return {
       show: project.attributes.posting_enabled,
       enabled: true,

@@ -1,10 +1,13 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
+import { isError } from 'lodash';
+import { isNullOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import Meta from './Meta';
 import Footer from 'components/Footer';
+import Button from 'components/Button';
 import Spinner from 'components/UI/Spinner';
 
 // resources
@@ -14,9 +17,13 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
 
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 
 const Loading = styled.div`
   flex: 1;
@@ -44,6 +51,16 @@ const Content = styled.div`
   width: 100%;
 `;
 
+const ProjectNotFoundWrapper = styled.div`
+  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem;
+  font-size: ${fontSizes.large}px;
+  color: ${colors.label};
+`;
+
 interface InputProps {}
 
 interface DataProps {
@@ -56,7 +73,10 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+interface State {
+  hasEvents: boolean;
+  loaded: boolean;
+}
 
 class ProjectsShowPage extends React.PureComponent<Props & WithRouterProps, State> {
   render() {
@@ -67,6 +87,19 @@ class ProjectsShowPage extends React.PureComponent<Props & WithRouterProps, Stat
       <>
         <Meta projectSlug={slug} />
         <Container>
+
+          {isError(project) &&
+            <ProjectNotFoundWrapper>
+              <p><FormattedMessage {...messages.noProjectFoundHere} /></p>
+              <Button
+                linkTo="/projects"
+                text={<FormattedMessage {...messages.goBackToList} />}
+                icon="arrow-back"
+                circularCorners={false}
+              />
+            </ProjectNotFoundWrapper>
+          }
+
           {(locale && tenant && project !== null && phases !== null && events !== null) ? (
             <>
               <Content>
@@ -89,8 +122,8 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale/>,
   tenant: <GetTenant/>,
   project: ({ params, render }) => <GetProject slug={params.slug} resetOnChange>{render}</GetProject>,
-  phases: ({ project, render }) => <GetPhases projectId={(project ? project.id : null)}>{render}</GetPhases>,
-  events: ({ project, render }) => <GetEvents projectId={(project ? project.id : null)}>{render}</GetEvents>
+  phases: ({ project, render }) => <GetPhases projectId={(!isNullOrError(project) ? project.id : null)}>{render}</GetPhases>,
+  events: ({ project, render }) => <GetEvents projectId={(!isNullOrError(project) ? project.id : null)}>{render}</GetEvents>
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (

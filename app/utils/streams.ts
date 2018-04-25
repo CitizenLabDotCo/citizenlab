@@ -249,10 +249,12 @@ class Streams {
               resolve(response);
             },
             () => {
-              console.log(`promise for stream ${streamId} did not resolve`);
+              // promise for stream /web_api/v1/users/me did not resolve
 
               if (this.streams[streamId]) {
-                this.streams[streamId].observer.next(null);
+                console.log(`promise for stream ${streamId} did not resolve`);
+                // this.streams[streamId].observer.next({ error: `promise for stream ${streamId} did not resolve` });
+                this.streams[streamId].observer.next(new Error(`promise for stream ${streamId} did not resolve`));
               } else {
                 console.log(`no stream exists for ${streamId}`);
               }
@@ -276,7 +278,10 @@ class Streams {
         }
 
         return () => {
-          console.log(`stream for stream ${streamId} completed`);
+          if (process.env.NODE_ENV === 'development') {
+            console.log(`stream for stream ${streamId} completed`);
+          }
+
           this.deleteStream(streamId, apiEndpoint);
         };
       })

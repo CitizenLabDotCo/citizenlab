@@ -1,5 +1,6 @@
 import React from 'react';
 import { get } from 'lodash';
+import { isNullOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import { Link, browserHistory } from 'react-router';
 
@@ -11,6 +12,7 @@ import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';
 import UserName from 'components/UI/UserName';
 import Avatar from 'components/Avatar';
+import LazyImage from 'components/LazyImage';
 
 // resrources
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
@@ -43,7 +45,7 @@ const IdeaImageContainer: any = styled.div`
   justify-content: center;
 `;
 
-const IdeaImage: any = styled.img`
+const IdeaImage: any = styled(LazyImage)`
   width: 100%;
 `;
 
@@ -208,7 +210,7 @@ export interface InputProps {
 }
 
 interface DataProps {
-  idea: GetIdeaChildProps;
+  ideaLoaderState: GetIdeaChildProps;
   ideaImage: GetIdeaImageChildProps;
   ideaAuthor: GetUserChildProps;
 }
@@ -349,8 +351,8 @@ class IdeaCard extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  ideaImage: ({ ideaId, idea, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={get(idea, 'relationships.idea_images.data[0].id', null)}>{render}</GetIdeaImage>,
-  ideaAuthor: ({ idea, render }) => <GetUser id={get(idea, 'relationships.author.data.id')}>{render}</GetUser>
+  ideaImage: ({ ideaId, ideaLoaderState, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={get(ideaLoaderState, 'idea.relationships.idea_images.data[0].id', null)}>{render}</GetIdeaImage>,
+  ideaAuthor: ({ idea, render }) => <GetUser id={get(ideaLoaderState, 'idea.relationships.author.data.id', null)}>{render}</GetUser>
 });
 
 export default (inputProps: InputProps) => (

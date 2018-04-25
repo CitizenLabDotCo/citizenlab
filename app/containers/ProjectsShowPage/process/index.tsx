@@ -1,4 +1,5 @@
 import React from 'react';
+import { isNullOrError } from 'utils/helperUtils';
 import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 
 // components
@@ -61,7 +62,7 @@ class ProjectTimelinePage extends React.PureComponent<Props & WithRouterProps, S
     //   browserHistory.push(`/projects/${this.props.params.slug}/process`);
     // }
 
-    if (project) {
+    if (!isNullOrError(project)) {
       if (project.attributes.process_type !== 'timeline') {
         browserHistory.push(`/projects/${slug}/info`);
       }
@@ -72,7 +73,7 @@ class ProjectTimelinePage extends React.PureComponent<Props & WithRouterProps, S
 
           <StyledTimeline projectId={project.id} onPhaseSelected={this.handleOnPhaseSelected} />
 
-          {selectedPhaseId && 
+          {selectedPhaseId &&
             <Phase phaseId={selectedPhaseId} />
           }
 
