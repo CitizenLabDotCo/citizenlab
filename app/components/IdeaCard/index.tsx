@@ -210,7 +210,7 @@ export interface InputProps {
 }
 
 interface DataProps {
-  ideaLoaderState: GetIdeaChildProps;
+  idea: GetIdeaChildProps;
   ideaImage: GetIdeaImageChildProps;
   ideaAuthor: GetUserChildProps;
 }
@@ -236,7 +236,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
 
     const { idea } = this.props;
 
-    if (idea) {
+    if (!isNullOrError(idea)) {
       eventEmitter.emit<IModalInfo>(namespace, 'cardClick', {
         type: 'idea',
         id: idea.id,
@@ -267,7 +267,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
     const { idea, ideaImage, ideaAuthor } = this.props;
     const { showVotingDisabled } = this.state;
 
-    if (idea) {
+    if (!isNullOrError(idea)) {
       const ideaImageUrl = (ideaImage ? ideaImage.attributes.versions.medium : null);
       const votingDescriptor = get(idea.relationships.action_descriptor.data, 'voting', null);
       const projectId = idea.relationships.project.data.id;
@@ -351,8 +351,8 @@ class IdeaCard extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  ideaImage: ({ ideaId, ideaLoaderState, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={get(ideaLoaderState, 'idea.relationships.idea_images.data[0].id', null)}>{render}</GetIdeaImage>,
-  ideaAuthor: ({ idea, render }) => <GetUser id={get(ideaLoaderState, 'idea.relationships.author.data.id', null)}>{render}</GetUser>
+  ideaImage: ({ ideaId, idea, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={!isNullOrError(idea) ? idea.relationships.idea_images.data[0].id : null}>{render}</GetIdeaImage>,
+  ideaAuthor: ({ idea, render }) => <GetUser id={!isNullOrError(idea) ? get(idea.relationships.author.data, 'id', null) : null}>{render}</GetUser>
 });
 
 export default (inputProps: InputProps) => (
