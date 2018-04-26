@@ -3,7 +3,7 @@ const hash = crypto.randomBytes(5).toString('hex');
 const afterEach = require('../../updateBSStatus');
 
 module.exports = {
-  '@tags': ['city', 'projects', 'projects-basics', 'bleh'],
+  '@tags': ['city', 'projects', 'projects-basics', 'sara'],
   afterEach,
   projectsList: (browser) => {
     const signinPage = browser.page.signin();
