@@ -243,7 +243,7 @@ type Props = {
   linkTo?: string;
   id?: string;
   theme?: object | undefined;
-  setSubmitButtonRef: (value: HTMLInputElement) => void;
+  setSubmitButtonRef?: (value: HTMLInputElement) => void;
 };
 
 type State = {};
