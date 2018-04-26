@@ -27,6 +27,11 @@ export default async function request<T>(url, data, options, queryParameters): P
   try {
     response = await fetch(urlWithParams, { ...defaultOptions, ...options });
     json = await response.json();
+
+    if (response.ok !== true) {
+      throw new Error('fetch error');
+    }
+
     return json;
   } catch {
     const status = response.statusText || response.status.toString();
