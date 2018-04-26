@@ -16,7 +16,6 @@ const isCurrentPhase = (phase: IPhaseData) : boolean => {
 };
 
 export const postingButtonState = ({ project, phase }: {project?: IProjectData | null | Error, phase?: IPhaseData | null | Error}): ButtonStateResponse => {
-
   if (!isNil(phase) && !isError(phase)) {
     const inCurrentPhase = isCurrentPhase(phase);
     if (inCurrentPhase) {

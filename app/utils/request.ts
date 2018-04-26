@@ -21,24 +21,23 @@ export default async function request<T>(url, data, options, queryParameters): P
     defaultOptions.body = JSON.stringify(data);
   }
 
-  let response: Response = null as any;
-  let json: Promise<any> = {} as any;
+  // let response: Response = null as any;
+  // let json: Promise<any> = {} as any;
 
-  try {
-    response = await fetch(urlWithParams, { ...defaultOptions, ...options });
-    json = await response.json();
+  // try {
+  //   response = await fetch(urlWithParams, { ...defaultOptions, ...options });
+  //   json = await response.json();
 
-    if (response.ok !== true) {
-      throw new Error('fetch error');
-    }
+  //   if (response.ok !== true) {
+  //     throw new Error('fetch error');
+  //   }
 
-    return json;
-  } catch {
-    const status = response.statusText || response.status.toString();
-    throw { status, response, json };
-  }
+  //   return json;
+  // } catch {
+  //   const status = response.statusText || response.status.toString();
+  //   throw { status, response, json };
+  // }
 
-  /*
   return fetch(urlWithParams, Object.assign(defaultOptions, options)).then((response) => {
     return Promise.all([
       response,
@@ -58,7 +57,6 @@ export default async function request<T>(url, data, options, queryParameters): P
     const error = new Error(response.statusText);
     throw { ...error, json };
   });
-  */
 }
 
 // we use xhr rather than fetch API, to enforce response type
