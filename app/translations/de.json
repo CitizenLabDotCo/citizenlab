@@ -732,6 +732,7 @@
   "app.containers.app.navbar.pageOverview": "Startseite",
   "app.containers.app.navbar.pageProjects": "{orgName, select, München {Bezirke} other {Projekte}}",
   "app.containers.app.navbar.profilePage": "Mein Profil",
+  "app.containers.app.navbar.projectsModeration": "",
   "app.containers.app.navbar.register": "Konto erstellen",
   "app.containers.app.navbar.search": "Suchen",
   "app.containers.app.navbar.signOut": "Abmelden",

@@ -732,6 +732,7 @@
   "app.containers.app.navbar.pageOverview": "Home",
   "app.containers.app.navbar.pageProjects": "Projects",
   "app.containers.app.navbar.profilePage": "Profile page",
+  "app.containers.app.navbar.projectsModeration": "Projects Moderation",
   "app.containers.app.navbar.register": "Register",
   "app.containers.app.navbar.search": "Search",
   "app.containers.app.navbar.signOut": "Sign out",

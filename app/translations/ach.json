@@ -732,6 +732,7 @@
   "app.containers.app.navbar.pageOverview": "crwdns18047:0crwdne18047:0",
   "app.containers.app.navbar.pageProjects": "crwdns16041:0crwdne16041:0",
   "app.containers.app.navbar.profilePage": "crwdns17113:0crwdne17113:0",
+  "app.containers.app.navbar.projectsModeration": "",
   "app.containers.app.navbar.register": "crwdns16042:0crwdne16042:0",
   "app.containers.app.navbar.search": "crwdns16043:0crwdne16043:0",
   "app.containers.app.navbar.signOut": "crwdns16044:0crwdne16044:0",

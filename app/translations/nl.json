@@ -732,6 +732,7 @@
   "app.containers.app.navbar.pageOverview": "Home",
   "app.containers.app.navbar.pageProjects": "Projecten",
   "app.containers.app.navbar.profilePage": "Profiel",
+  "app.containers.app.navbar.projectsModeration": "",
   "app.containers.app.navbar.register": "Registreren",
   "app.containers.app.navbar.search": "Zoek",
   "app.containers.app.navbar.signOut": "Afmelden",
