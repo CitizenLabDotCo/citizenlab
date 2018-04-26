@@ -16,6 +16,7 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from './participationContext';
 import { Button as SemButton, Icon as SemIcon } from 'semantic-ui-react';
+import HasPermission from 'components/HasPermission';
 
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -782,16 +783,18 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
             </StyledSectionField>
 
             {projectData &&
-              <SectionField>
-                <Label>
-                  <FormattedMessage {...messages.deleteProjectLabel} />
-                </Label>
-                <SemButton color="red" onClick={this.deleteProject} disabled={projectData.attributes.internal_role === 'open_idea_box'}>
-                  <SemIcon name="trash" />
-                  <FormattedMessage {...messages.deleteProjectButton} />
-                </SemButton>
-                <Error text={this.state.deleteError} />
-              </SectionField>
+              <HasPermission item={projectData} action="delete">
+                <SectionField>
+                  <Label>
+                    <FormattedMessage {...messages.deleteProjectLabel} />
+                  </Label>
+                  <SemButton color="red" onClick={this.deleteProject} disabled={projectData.attributes.internal_role === 'open_idea_box'}>
+                    <SemIcon name="trash" />
+                    <FormattedMessage {...messages.deleteProjectButton} />
+                  </SemButton>
+                  <Error text={this.state.deleteError} />
+                </SectionField>
+              </HasPermission>
             }
 
             <SubmitWrapper
