@@ -3,7 +3,9 @@ import * as withQuery from 'with-query';
 import qs from 'qs';
 import { getJwt } from 'utils/auth/jwt';
 
-export default function request<T>(url, data, options, queryParameters): Promise<T> {
+export default async function request<T>(url, data, options, queryParameters): Promise<T> {
+  const urlParams = qs.stringify(queryParameters, { arrayFormat: 'brackets', addQueryPrefix: true });
+  const urlWithParams = `${url}${urlParams}`;
   const jwt = getJwt();
   const defaultOptions: { [key: string]: any } = {
     headers: {
@@ -19,9 +21,19 @@ export default function request<T>(url, data, options, queryParameters): Promise
     defaultOptions.body = JSON.stringify(data);
   }
 
-  const urlParams = qs.stringify(queryParameters, { arrayFormat: 'brackets', addQueryPrefix: true });
-  const urlWithParams = `${url}${urlParams}`;
+  let response: Response = null as any;
+  let json: Promise<any> = {} as any;
 
+  try {
+    response = await fetch(urlWithParams, { ...defaultOptions, ...options });
+    json = await response.json();
+    return json;
+  } catch {
+    const status = response.statusText || response.status.toString();
+    throw { status, response, json };
+  }
+
+  /*
   return fetch(urlWithParams, Object.assign(defaultOptions, options)).then((response) => {
     return Promise.all([
       response,
@@ -41,6 +53,7 @@ export default function request<T>(url, data, options, queryParameters): Promise
     const error = new Error(response.statusText);
     throw { ...error, json };
   });
+  */
 }
 
 // we use xhr rather than fetch API, to enforce response type
