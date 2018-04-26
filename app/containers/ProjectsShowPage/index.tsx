@@ -1,13 +1,13 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { isError } from 'lodash';
+import { isError, isNull } from 'lodash';
 import { isNullOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import Meta from './Meta';
 import Footer from 'components/Footer';
-import Button from 'components/Button';
+import Button from 'components/UI/Button';
 import Spinner from 'components/UI/Spinner';
 
 // resources
@@ -87,7 +87,6 @@ class ProjectsShowPage extends React.PureComponent<Props & WithRouterProps, Stat
       <>
         <Meta projectSlug={slug} />
         <Container>
-
           {isError(project) &&
             <ProjectNotFoundWrapper>
               <p><FormattedMessage {...messages.noProjectFoundHere} /></p>
@@ -95,23 +94,28 @@ class ProjectsShowPage extends React.PureComponent<Props & WithRouterProps, Stat
                 linkTo="/projects"
                 text={<FormattedMessage {...messages.goBackToList} />}
                 icon="arrow-back"
-                circularCorners={false}
               />
             </ProjectNotFoundWrapper>
           }
 
-          {(locale && tenant && project !== null && phases !== null && events !== null) ? (
+          {isNull(project) && 
+            <Loading>
+              <Spinner size="32px" color="#666" />
+            </Loading>
+          }
+
+          {!isNullOrError(locale) && 
+            !isNullOrError(tenant) && 
+            !isNullOrError(project) && 
+            !isNullOrError(phases) && 
+            !isNullOrError(events) &&
             <>
               <Content>
                 {children}
               </Content>
               <Footer showCityLogoSection={false} />
             </>
-          ) : (
-            <Loading>
-              <Spinner size="32px" color="#666" />
-            </Loading>
-          )}
+          }
         </Container>
       </>
     );
