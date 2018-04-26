@@ -94,7 +94,8 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
       votingMethod: 'unlimited',
       votingLimit: 5,
       noVotingLimit: null,
-      loaded: false
+      loaded: false,
+      presentationMode: 'card'
     };
     this.subscriptions = [];
   }
@@ -253,6 +254,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
       votingMethod,
       votingLimit,
       noVotingLimit,
+      presentationMode
     } = this.state;
 
     const votingLimitSection = (participationMethod === 'ideation' && votingMethod === 'limited') ? (
@@ -357,6 +359,22 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
                     <Error text={noVotingLimit} />
                   </SectionField>
                 }
+                <SectionField>
+                  <Label>
+                    <FormattedMessage {...messages.defaultDisplay} />
+                  </Label>
+                  {['card', 'map'].map((key) => (
+                    <Radio
+                      key={key}
+                      onChange={this.handleIdeasDisplayChange}
+                      currentValue={presentationMode}
+                      value={key}
+                      name="presentation_mode"
+                      id={`presentation_mode-${key}`}
+                      label={<FormattedMessage {...messages[`${key}Display`]} />}
+                    />
+                  ))}
+                </SectionField>
               </>
             }
 
