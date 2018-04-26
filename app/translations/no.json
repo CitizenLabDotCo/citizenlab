@@ -732,6 +732,7 @@
   "app.containers.app.navbar.pageOverview": "Hjem",
   "app.containers.app.navbar.pageProjects": "Prosjekter",
   "app.containers.app.navbar.profilePage": "Profilside",
+  "app.containers.app.navbar.projectsModeration": "",
   "app.containers.app.navbar.register": "Registrer",
   "app.containers.app.navbar.search": "Søk",
   "app.containers.app.navbar.signOut": "Logg av",
