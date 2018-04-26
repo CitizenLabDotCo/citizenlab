@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
@@ -17,12 +16,12 @@ const StyledAvatar = styled(Avatar)`
 `;
 
 interface Props {
-  users: IUserData[] | null;
+  moderators: IUserData[] | null;
 }
 
 export default class ModeratorList extends React.PureComponent<Props>{
   render() {
-    const moderators = this.props.users;
+    const { moderators } = this.props;
     return (
       <List>
         { moderators && moderators.map(moderator =>

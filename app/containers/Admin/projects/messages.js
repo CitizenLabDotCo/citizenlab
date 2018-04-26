@@ -267,4 +267,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.moderatorsTab',
     defaultMessage: 'Moderators',
   },
+  moderatorsTabTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderatorsTabTitle',
+    defaultMessage: 'Manage moderators for this project',
+  },
+  deleteModeratorLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.deleteModeratorLabel',
+    defaultMessage: 'Delete',
+  },
 });

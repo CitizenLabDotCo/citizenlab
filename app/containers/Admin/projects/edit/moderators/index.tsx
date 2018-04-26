@@ -9,30 +9,32 @@ import messages from '../../messages';
 import ModeratorSelect from './ModeratorSelect';
 import ModeratorList from './ModeratorList';
 
-import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
+import GetModerators, { GetModeratorsChildProps } from 'resources/GetModerators';
 
 interface InputProps {
   projectId: string;
 }
 
-interface Props extends InputProps, GetUsersChildProps {}
+interface Props {
+  moderators: GetModeratorsChildProps;
+}
 
 class Moderators extends React.PureComponent<Props>{
   render() {
-    console.log(this.props.projectId);
+
     return (
       <Section>
         <SectionTitle>
           <FormattedMessage {...messages.moderatorsTabTitle} />
         </SectionTitle>
         <ModeratorSelect />
-        <ModeratorList users={this.props.usersList} />
+        <ModeratorList moderators={this.props.moderators} />
       </Section>
     );
   }
 }
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <GetUsers>
-    {users => <Moderators {... users} projectId={inputProps.params.slug} />}
-  </GetUsers>
+  <GetModerators projectId={inputProps.params.slug}>
+    {moderators => <Moderators moderators={moderators} />}
+  </GetModerators>
 ));
