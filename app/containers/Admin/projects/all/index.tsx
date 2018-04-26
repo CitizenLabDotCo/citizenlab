@@ -15,6 +15,7 @@ import PageWrapper, { ButtonWrapper } from 'components/admin/PageWrapper';
 import Button from 'components/UI/Button';
 import Title from 'components/admin/PageTitle';
 import StatusLabel from 'components/UI/StatusLabel';
+import HasPermission from 'components/HasPermission';
 
 export interface Props {
   projects: IProjectData[];
@@ -44,11 +45,13 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
           </Title>
 
           <PageWrapper>
-            <ButtonWrapper>
-              <Button linkTo="/admin/projects/new" style="cl-blue" circularCorners={false} icon="plus-circle">
-                <FormattedMessage {...messages.addNewProject} />
-              </Button>
-            </ButtonWrapper>
+            <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">
+              <ButtonWrapper>
+                <Button linkTo="/admin/projects/new" style="cl-blue" circularCorners={false} icon="plus-circle">
+                  <FormattedMessage {...messages.addNewProject} />
+                </Button>
+              </ButtonWrapper>
+            </HasPermission>
             <SortableList items={projects} onReorder={this.handleReorder}>
               {({ itemsList, handleDragRow, handleDropRow }) => (
                 itemsList.map((project: IProjectData, index: number) => (
