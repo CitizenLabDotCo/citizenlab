@@ -20,7 +20,7 @@ class ModeratorPolicy < ApplicationPolicy
   private
 
   def admin_or_moderator?
-    user&.active? && (user.admin? || user.project_moderator?(record.project_id)
+    user&.active? && (user.admin? || user.project_moderator?(record.project_id))
   end
-  
+
 end
