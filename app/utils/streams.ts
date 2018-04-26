@@ -248,13 +248,10 @@ class Streams {
 
               resolve(response);
             },
-            () => {
-              // promise for stream /web_api/v1/users/me did not resolve
-
+            (_error) => {
               if (this.streams[streamId]) {
-                console.log(`promise for stream ${streamId} did not resolve`);
-                // this.streams[streamId].observer.next({ error: `promise for stream ${streamId} did not resolve` });
-                this.streams[streamId].observer.next(new Error(`promise for stream ${streamId} did not resolve`));
+                const error = (!streamId.endsWith('users/me') ? new Error(`promise for stream ${streamId} did not resolve`) : null);
+                this.streams[streamId].observer.next(error);
               } else {
                 console.log(`no stream exists for ${streamId}`);
               }
