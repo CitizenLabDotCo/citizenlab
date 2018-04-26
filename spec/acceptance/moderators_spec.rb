@@ -54,4 +54,51 @@ resource "Moderators" do
       end
     end
   end
+
+  get "web_api/v1/projects/:project_id/moderators/:user_id" do
+    ValidationErrorHelper.new.error_fields(self, User)
+
+    context "when moderator" do
+      before do
+        @project = create(:project)
+        @moderator = create(:moderator, project: @project)
+        token = Knock::AuthToken.new(payload: { sub: @moderator.id }).token
+        header 'Authorization', "Bearer #{token}"
+      end
+
+      let(:other_moderators) { create_list(:moderator, 2, project: @project) }
+      let(:project_id) { @project.id }
+      let(:user_id) { other_moderators.first.id }
+
+      example_request "Get one moderator by id" do
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :id)).to eq other_moderators.first.id
+      end
+    end
+  end
+
+  delete "web_api/v1/projects/:project_id/moderators/:user_id" do
+    ValidationErrorHelper.new.error_fields(self, User)
+
+    context "when moderator" do
+      before do
+        @project = create(:project)
+        @moderator = create(:moderator, project: @project)
+        token = Knock::AuthToken.new(payload: { sub: @moderator.id }).token
+        header 'Authorization', "Bearer #{token}"
+      end
+
+      let(:other_moderators) { create_list(:moderator, 2, project: @project) }
+      let(:project_id) { @project.id }
+      let(:user_id) { other_moderators.first.id }
+
+      example("Delete the moderator role of a user for a project") do
+        n_roles_before = other_moderators.first.reload.roles.size
+        do_request
+        expect(response_status).to eq 200
+        expect(other_moderators.first.reload.roles.size).to eq(n_roles_before - 1)
+      end
+    end
+  end
 end

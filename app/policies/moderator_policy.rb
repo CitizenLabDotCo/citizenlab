@@ -12,7 +12,7 @@ class ModeratorPolicy < ApplicationPolicy
     admin_or_moderator?
   end
 
-  def delete?
+  def destroy?
     admin_or_moderator?
   end
 

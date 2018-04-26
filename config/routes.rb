@@ -69,7 +69,7 @@ Rails.application.routes.draw do
         resources :images, defaults: {container_class: Project, image_class: ProjectImage}
         resources :files, defaults: {container_class: Project, file_class: ProjectFile}
         resources :groups_projects, shallow: true, except: [:update]
-        resources :moderators, shallow: true, except: [:update] do
+        resources :moderators, except: [:update] do
           get :users_search, on: :collection
         end
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'

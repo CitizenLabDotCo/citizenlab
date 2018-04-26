@@ -60,21 +60,21 @@ class WebApi::V1::ModeratorsController < ApplicationController
 
 
   def set_moderator
-    @moderator = User.find params[:user_id]
+    @moderator = User.find params[:id]
   end
 
-  def moderator_params
-    params.require(:moderator).permit(
-      :user_id
-    )
-  end
+  # def moderator_params
+  #   params.require(:moderator).permit(
+  #     :user_id
+  #   )
+  # end
 
   def secure_controller?
     false
   end
 
   def do_authorize
-    authorize Moderator.new({user_id: params[:user_id], project_id: params[:project_id]})
+    authorize Moderator.new({user_id: params[:id], project_id: params[:project_id]})
   end
 
 end
