@@ -29,7 +29,6 @@ interface Props {
   loading: boolean;
   messages: {
     buttonSave: any,
-    buttonError: any,
     buttonSuccess: any,
     messageSuccess: any,
     messageError: any,
@@ -46,10 +45,6 @@ export default class SubmitWrapper extends React.Component<Props> {
       style = 'success';
     }
 
-    if (this.props.status === 'error') {
-      style = 'error';
-    }
-
     return (
       <Wrapper>
         <Button
@@ -59,11 +54,10 @@ export default class SubmitWrapper extends React.Component<Props> {
           disabled={this.props.status === 'disabled'}
           onClick={this.props.onClick}
         >
-          {(this.props.status === 'enabled' || this.props.status === 'disabled') &&
+          {(this.props.status === 'enabled' ||
+            this.props.status === 'disabled' ||
+            this.props.status === 'error') &&
             <FormattedMessage {...this.props.messages.buttonSave} />
-          }
-          {this.props.status === 'error' &&
-            <FormattedMessage {...this.props.messages.buttonError} />
           }
           {this.props.status === 'success' &&
             <FormattedMessage {...this.props.messages.buttonSuccess} />
