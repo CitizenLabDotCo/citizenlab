@@ -1,4 +1,5 @@
 import React from 'react';
+import { isNullOrError } from 'utils/helperUtils';
 import { IStatusChangeOfYourIdeaNotificationData } from 'services/notifications';
 import { adopt } from 'react-adopt';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
@@ -14,7 +15,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  ideaLoaderState: GetIdeaChildProps;
+  idea: GetIdeaChildProps;
   ideaStatus: GetIdeaStatusChildProps;
 }
 
@@ -24,9 +25,9 @@ interface State {}
 
 class StatusChangeOfYourIdeaNotification extends React.PureComponent<Props, State> {
   render() {
-    const { notification, ideaLoaderState: { idea }, ideaStatus } = this.props;
+    const { notification, idea, ideaStatus } = this.props;
 
-    if (!idea || !ideaStatus) return null;
+    if (isNullOrError(idea) || !ideaStatus) return null;
 
     return (
       <NotificationWrapper
@@ -48,7 +49,7 @@ class StatusChangeOfYourIdeaNotification extends React.PureComponent<Props, Stat
 }
 
 const Data = adopt<DataProps, { ideaId: string }>({
-  ideaLoaderState: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaStatus: ({ ideaId, render }) => <GetIdeaStatus id={ideaId}>{render}</GetIdeaStatus>,
 });
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { isNullOrError } from 'utils/helperUtils';
 import { ICommentDeletedByAdminNotificationData } from 'services/notifications';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -11,7 +12,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  idea: GetIdeaChildProps['idea'];
+  idea: GetIdeaChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -19,11 +20,10 @@ interface Props extends InputProps, DataProps {}
 type State = {};
 
 class CommentDeletedByAdminNotification extends React.PureComponent<Props, State> {
-
   render() {
     const { notification, idea } = this.props;
 
-    if (!idea) return null;
+    if (isNullOrError(idea)) return null;
 
     return (
       <NotificationWrapper
@@ -52,7 +52,7 @@ export default (inputProps: InputProps) => {
 
   return (
     <GetIdea id={notification.relationships.idea.data.id}>
-      {({ idea }) =>  <CommentDeletedByAdminNotification notification={notification} idea={idea} />}
+      {idea => <CommentDeletedByAdminNotification notification={notification} idea={idea} />}
     </GetIdea>
   );
 };
