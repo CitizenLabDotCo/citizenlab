@@ -36,5 +36,22 @@ resource "Moderators" do
         expect(status).to eq(401)
       end
     end
+
+    context "when admin" do
+      before do
+        @project = create(:project)
+        @admin = create(:admin)
+        token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
+        header 'Authorization', "Bearer #{token}"
+      end
+
+      let(:project_id) { @project.id }
+      let!(:same_project_moderators) { create_list(:moderator, 2, project: @project) }
+      example_request "List all moderators of a project" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq same_project_moderators.size
+      end
+    end
   end
 end
