@@ -1,13 +1,14 @@
 class WebApi::V1::ModeratorsController < ApplicationController
 
-  before_action :do_authorize
+  before_action :do_authorize, except: [:index]
   before_action :set_moderator, only: [:show, :create, :destroy]
+  
   skip_after_action :verify_authorized, only: [:users_search]
+  skip_after_action :verify_policy_scoped, only: [:index]
 
   def index
     @moderators = User
-      .where("role->'type' = 'moderator'")
-      .where("role->'project_id' = '?'", params[:project_id])
+      .where("roles @> ?", JSON.generate([{type: 'project_moderator', project_id: params[:project_id]}]))
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
     render json: @moderators, :each_serializer => WebApi::V1::UserSerializer
@@ -19,7 +20,7 @@ class WebApi::V1::ModeratorsController < ApplicationController
 
   # insert
   def create
-    @moderator.add_role 'moderator', project_id: params[:project_id]
+    @moderator.add_role 'project_moderator', project_id: params[:project_id]
     if @moderator.save
       render json: @moderator, serializer: WebApi::V1::UserSerializer, status: :created
     else
@@ -29,7 +30,7 @@ class WebApi::V1::ModeratorsController < ApplicationController
 
   # delete
   def destroy
-    @moderator.delete_role 'moderator', project_id: params[:project_id]
+    @moderator.delete_role 'project_moderator', project_id: params[:project_id]
     if @moderator.save
       head :ok
     else
