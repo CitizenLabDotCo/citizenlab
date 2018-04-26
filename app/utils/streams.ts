@@ -250,8 +250,13 @@ class Streams {
             },
             (_error) => {
               if (this.streams[streamId]) {
-                const error = (!streamId.endsWith('users/me') ? new Error(`promise for stream ${streamId} did not resolve`) : null);
+                const error = (streamId !== authApiEndpoint ? new Error(`promise for stream ${streamId} did not resolve`) : null);
                 this.streams[streamId].observer.next(error);
+
+                if (streamId !== authApiEndpoint) {
+                  const apiEndpoint = this.streams[streamId].params.apiEndpoint;
+                  this.deleteStream(streamId, apiEndpoint);
+                }
               } else {
                 console.log(`no stream exists for ${streamId}`);
               }
