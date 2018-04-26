@@ -33,7 +33,7 @@ resource "Moderators" do
 
       example "Listing moderators of a project you don't moderate should fail" do
         do_request project_id: other_project.id
-        # byebug
+        expect(status).to eq(401)
       end
     end
   end

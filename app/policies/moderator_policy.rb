@@ -1,8 +1,8 @@
 class ModeratorPolicy < ApplicationPolicy
 
-  # def index?
-  #   admin_or_moderator?
-  # end
+  def index?
+    admin_or_moderator?
+  end
 
   def show?
     admin_or_moderator?
