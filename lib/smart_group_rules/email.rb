@@ -2,8 +2,7 @@ module SmartGroupRules
   class Email
     include ActiveModel::Validations
 
-    PREDICATE_VALUES = %w(is not_is contains not_contains begins_with not_begins_with ends_on not_ends_on is_empty not_is_empty)
-    VALUELESS_PREDICATES = %w(is_empty not_is_empty)
+    PREDICATE_VALUES = %w(is not_is contains not_contains begins_with not_begins_with ends_on not_ends_on)
     RULE_TYPE = 'email'
 
     attr_accessor :predicate, :value
@@ -26,36 +25,21 @@ module SmartGroupRules
             },
             "predicate" => {
               "type": "string",
-              "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
+              "enum": PREDICATE_VALUES
             },
             "value" => {
               "type" => "string",
             }
           },
-        },
-        {
-          "type" => "object",
-          "required" => ["ruleType", "predicate"],
-          "additionalProperties" => false,
-          "properties" => {
-            "ruleType" => {
-              "type" => "string",
-              "enum" => [RULE_TYPE],
-            },
-            "predicate" => {
-              "type" => "string",
-              "enum" => VALUELESS_PREDICATES
-            }
-          }
         }
       ]
     end
 
     def self.from_json json
-      self.new(json['predicate'])
+      self.new json['predicate'], json['value']
     end
 
-    def initialize predicate, value=nil
+    def initialize predicate, value
       self.predicate = predicate
       self.value = value
     end
@@ -65,7 +49,19 @@ module SmartGroupRules
       when 'is'
         users_scope.where("email = ?", value)
       when 'not_is'
-        users_scope.where("email <> ?", value)
+        users_scope.where("email IS NULL or email != ?", value)
+      when 'contains'
+        users_scope.where("email LIKE ?", "%#{value}%")
+      when 'not_contains'
+        users_scope.where("email NOT LIKE ?", "%#{value}%")
+      when 'begins_with'
+        users_scope.where("email LIKE ?", "#{value}%")
+      when 'not_begins_with'
+        users_scope.where("email NOT LIKE ?", "#{value}%")
+      when 'ends_on'
+        users_scope.where("email LIKE ?", "%#{value}")
+      when 'not_ends_on'
+        users_scope.where("email NOT LIKE ?", "%#{value}")
       else
         raise "Unsupported predicate #{predicate}"
       end
@@ -75,7 +71,7 @@ module SmartGroupRules
     private
 
     def needs_value?
-      !VALUELESS_PREDICATES.include?(predicate)
+      true
     end
 
   end
