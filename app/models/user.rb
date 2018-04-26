@@ -103,6 +103,11 @@ class User < ApplicationRecord
 
   def add_role type, options={}
     self.roles << {"type" => type}.merge(options)
+    self.roles.uniq!
+  end
+
+  def delete_role type, options={}
+    self.roles.delete({"type" => type}.merge(options))
   end
 
   def authenticate(unencrypted_password)
