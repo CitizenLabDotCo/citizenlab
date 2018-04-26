@@ -107,7 +107,7 @@ class User < ApplicationRecord
   end
 
   def delete_role type, options={}
-    self.roles.delete({"type" => type}.merge(options))
+    self.roles.delete({"type" => type}.merge(options.stringify_keys))
   end
 
   def authenticate(unencrypted_password)
