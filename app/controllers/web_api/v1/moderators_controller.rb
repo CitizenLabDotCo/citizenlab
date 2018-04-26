@@ -6,7 +6,15 @@ class WebApi::V1::ModeratorsController < ApplicationController
   skip_after_action :verify_authorized, only: [:users_search]
   skip_after_action :verify_policy_scoped, only: [:index]
 
+  class Moderator < OpenStruct
+    def self.policy_class
+      ModeratorPolicy
+    end
+  end
+
   def index
+    # TODO something about authorize index (e.g. user_id nastiness)
+    authorize Moderator.new({user_id: nil, project_id: params[:project_id]})
     @moderators = User
       .where("roles @> ?", JSON.generate([{type: 'project_moderator', project_id: params[:project_id]}]))
       .page(params.dig(:page, :number))
@@ -66,7 +74,7 @@ class WebApi::V1::ModeratorsController < ApplicationController
   end
 
   def do_authorize
-    authorize OpenStruct.new({user_id: params[:user_id], project_id: params[:project_id]})
+    authorize Moderator.new({user_id: params[:user_id], project_id: params[:project_id]})
   end
 
 end
