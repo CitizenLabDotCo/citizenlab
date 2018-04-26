@@ -38,11 +38,29 @@ interface Props {
 }
 
 export default class SubmitWrapper extends React.Component<Props> {
+  submitButton: HTMLInputElement | null;
+
+  constructor(props: Props)  {
+    super(props as any);
+    this.submitButton = null;
+  }
+  removeFocus = (el) => {
+    el && el.blur();
+  }
+
+  setSubmitButtonRef = (el) => {
+    this.submitButton = el;
+  }
+
   render () {
     let style = this.props.style || 'cl-blue';
 
     if (this.props.status === 'success') {
       style = 'success';
+    }
+
+    if (this.props.status === 'error') {
+      this.removeFocus(this.submitButton);
     }
 
     return (
@@ -53,6 +71,7 @@ export default class SubmitWrapper extends React.Component<Props> {
           processing={this.props.loading}
           disabled={this.props.status === 'disabled'}
           onClick={this.props.onClick}
+          setSubmitButtonRef={this.setSubmitButtonRef}
         >
           {(this.props.status === 'enabled' ||
             this.props.status === 'disabled' ||
