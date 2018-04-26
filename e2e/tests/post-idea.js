@@ -4,7 +4,7 @@ const title = `test idea ${hash}`;
 const afterEach = require('../updateBSStatus');
 
 module.exports = {
-  '@tags': ['citizen', 'ideas', 'posting'],
+  '@tags': ['citizen', 'ideas', 'posting', 'psst'],
   afterEach,
   postIdea: (browser) => {
     const signinPage = browser.page.signin();
@@ -16,7 +16,8 @@ module.exports = {
 
     newIdeaPage
     .navigate()
-    .postIdea(title, 'Lorem ipsum dolor sit amet');
+    .postIdea(title, 'Lorem ipsum dolor sit amet')
+    .waitForElementVisible('#e2e-ideas-list');
 
     browser
     .url(`http://${process.env.ROOT_URL}`)
