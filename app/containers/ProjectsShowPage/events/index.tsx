@@ -1,8 +1,9 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-import { isString } from 'lodash';
+import React from 'react';
 import * as moment from 'moment';
 import 'moment-timezone';
+import { adopt } from 'react-adopt';
+import { isNullOrError } from 'utils/helperUtils';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import Header from '../Header';
@@ -13,9 +14,9 @@ import ContentContainer from 'components/ContentContainer';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// services
-import { projectBySlugStream } from 'services/projects';
-import { eventsStream, IEvents } from 'services/events';
+// resources
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
 
 // style
 import styled from 'styled-components';
@@ -46,112 +47,75 @@ const NoEvents = styled.div`
   line-height: 26px;
 `;
 
-type Props = {
-  params: {
-    slug: string;
-  };
-};
+interface InputProps {}
 
-type State = {
-  events: IEvents | null;
-  loaded: boolean;
-};
-
-export default class ProjectEventsPage extends React.PureComponent<Props, State> {
-  slug$: Rx.BehaviorSubject<string>;
-  subscriptions: Rx.Subscription[];
-
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      events: null,
-      loaded: false
-    };
-    this.slug$ = new Rx.BehaviorSubject(null as any);
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    this.slug$.next(this.props.params.slug);
-
-    this.subscriptions = [
-      this.slug$
-        .distinctUntilChanged()
-        .filter(slug => isString(slug))
-        .switchMap((slug) => {
-          const project$ = projectBySlugStream(slug).observable;
-          return project$;
-        }).switchMap((project) => {
-          const events$ = eventsStream(project.data.id).observable;
-          return events$;
-        }).subscribe((events) => {
-          this.setState({ events, loaded: true });
-        })
-    ];
-  }
-
-  componentDidUpdate() {
-    this.slug$.next(this.props.params.slug);
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  render() {
-    const className = this.props['className'];
-    const { slug } = this.props.params;
-    const { events, loaded } = this.state;
-
-    const pastEvents = (events ? events.data.filter((event) => {
-      return moment().diff(moment(event.attributes.start_at, 'YYYY-MM-DD'), 'days') > 0;
-    }) : null);
-
-    const upcomingEvents = (events ? events.data.filter((event) => {
-      return moment().diff(moment(event.attributes.start_at, 'YYYY-MM-DD'), 'days') <= 0;
-    }) : null);
-
-    if (loaded) {
-      return (
-        <>
-          <Header projectSlug={slug} />
-          <EventsContainer>
-            <Events>
-              <Title>
-                <FormattedMessage {...messages.upcomingEvents} />
-              </Title>
-
-              {(upcomingEvents && upcomingEvents.length > 0) ? (
-                <EventList className={className}>
-                  {upcomingEvents.map(event => <Event key={event.id} eventId={event.id} />)}
-                </EventList>
-              ) : (
-                <NoEvents>
-                  <FormattedMessage {...messages.noUpcomingEvents} />
-                </NoEvents>
-              )}
-            </Events>
-
-            <Events>
-              <Title>
-                <FormattedMessage {...messages.pastEvents} />
-              </Title>
-
-              {(pastEvents && pastEvents.length > 0) ? (
-                <EventList className={className}>
-                  {pastEvents.map(event => <Event key={event.id} eventId={event.id} />)}
-                </EventList>
-              ) : (
-                <NoEvents>
-                  <FormattedMessage {...messages.noPastEvents} />
-                </NoEvents>
-              )}
-            </Events>
-          </EventsContainer>
-        </>
-      );
-    }
-
-    return null;
-  }
+interface DataProps {
+  project: GetProjectChildProps;
+  events: GetEventsChildProps;
 }
+
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  project: ({ params, render }) => <GetProject slug={params.slug} resetOnChange>{render}</GetProject>,
+  events: ({ project, render }) => <GetEvents projectId={(!isNullOrError(project) ? project.id : null)}>{render}</GetEvents>
+});
+
+export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps) => (
+  <Data {...inputProps}>
+    {dataProps => {
+      const className = inputProps['className'];
+      const { slug } = inputProps.params;
+      const { project, events } = dataProps;
+
+      if (project !== null && events !== null) {
+        const pastEvents = (events ? events.filter((event) => {
+          return moment().diff(moment(event.attributes.start_at, 'YYYY-MM-DD'), 'days') > 0;
+        }) : null);
+
+        const upcomingEvents = (events ? events.filter((event) => {
+          return moment().diff(moment(event.attributes.start_at, 'YYYY-MM-DD'), 'days') <= 0;
+        }) : null);
+
+        return (
+          <>
+            <Header projectSlug={slug} />
+            <EventsContainer>
+              <Events>
+                <Title>
+                  <FormattedMessage {...messages.upcomingEvents} />
+                </Title>
+
+                {(upcomingEvents && upcomingEvents.length > 0) ? (
+                  <EventList className={className}>
+                    {upcomingEvents.map(event => <Event key={event.id} event={event} />)}
+                  </EventList>
+                ) : (
+                  <NoEvents>
+                    <FormattedMessage {...messages.noUpcomingEvents} />
+                  </NoEvents>
+                )}
+              </Events>
+
+              <Events>
+                <Title>
+                  <FormattedMessage {...messages.pastEvents} />
+                </Title>
+
+                {(pastEvents && pastEvents.length > 0) ? (
+                  <EventList className={className}>
+                    {pastEvents.map(event => <Event key={event.id} event={event} />)}
+                  </EventList>
+                ) : (
+                  <NoEvents>
+                    <FormattedMessage {...messages.noPastEvents} />
+                  </NoEvents>
+                )}
+              </Events>
+            </EventsContainer>
+          </>
+        );
+      }
+
+      return null;
+    }}
+  </Data>
+));

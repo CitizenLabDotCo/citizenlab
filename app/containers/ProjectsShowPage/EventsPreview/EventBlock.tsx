@@ -1,5 +1,4 @@
-// Libraries
-import * as React from 'react';
+import React from 'react';
 import * as moment from 'moment';
 
 // Services
@@ -113,65 +112,50 @@ interface Props {
   event: IEventData;
   projectSlug: string;
   isLast: boolean;
-  className?: string;
 }
 
-interface State {
-  isMultiDayEvent: boolean;
-}
+export default (props: Props) => {
+  const { projectSlug, event, isLast } = props;
+  const isMultiDayEvent = !moment(props.event.attributes.start_at).isSame(props.event.attributes.end_at, 'day');
+  const startAtMoment = moment(event.attributes.start_at);
+  const endAtMoment = moment(event.attributes.end_at);
+  const startAtDay = startAtMoment.format('DD');
+  const endAtDay = endAtMoment.format('DD');
+  const startAtMonth = startAtMoment.format('MMM');
+  const endAtMonth = endAtMoment.format('MMM');
+  const startAtYear = startAtMoment.format('YYYY');
+  const dateFormat = (!isMultiDayEvent ? 'LT' : 'D MMM LT');
+  const startAt = moment(event.attributes.start_at).format(dateFormat);
+  const endAt = moment(event.attributes.end_at).format(dateFormat);
 
-export default class EventBlock extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      isMultiDayEvent: !moment(props.event.attributes.start_at).isSame(props.event.attributes.end_at, 'day'),
-    };
-  }
+  return (
+    <Container className={`${props['className']} ${isLast && 'last'}`} to={`/projects/${projectSlug}/events`}>
+      <DateWrapper>
+        <Date>
+          <span>{startAtDay}</span>
+          <span>{startAtMonth}</span>
 
-  render() {
-    const { projectSlug, event, isLast } = this.props;
-    const { isMultiDayEvent } = this.state;
+          {isMultiDayEvent &&
+            <>
+              <span>-</span>
+              <span>{endAtDay}</span>
+              <span>{endAtMonth}</span>
+            </>
+          }
+        </Date>
+        <Year>
+          {startAtYear}
+        </Year>
+      </DateWrapper>
 
-    const startAtMoment = moment(event.attributes.start_at);
-    const endAtMoment = moment(event.attributes.end_at);
-    const startAtDay = startAtMoment.format('DD');
-    const endAtDay = endAtMoment.format('DD');
-    const startAtMonth = startAtMoment.format('MMM');
-    const endAtMonth = endAtMoment.format('MMM');
-    const startAtYear = startAtMoment.format('YYYY');
-    const dateFormat = (!isMultiDayEvent ? 'LT' : 'D MMM LT');
-    const startAt = moment(event.attributes.start_at).format(dateFormat);
-    const endAt = moment(event.attributes.end_at).format(dateFormat);
-
-    return (
-      <Container className={`${this.props.className} ${isLast && 'last'}`} to={`/projects/${projectSlug}/events`}>
-        <DateWrapper>
-          <Date>
-            <span>{startAtDay}</span>
-            <span>{startAtMonth}</span>
-
-            {isMultiDayEvent &&
-              <React.Fragment>
-                <span>-</span>
-                <span>{endAtDay}</span>
-                <span>{endAtMonth}</span>
-              </React.Fragment>
-            }
-          </Date>
-          <Year>
-            {startAtYear}
-          </Year>
-        </DateWrapper>
-
-        <TextBlock>
-          <Time>{startAt} - {endAt}</Time>
-          <Title><T value={event.attributes.title_multiloc} /></Title>
-          <Location>
-            <StyledIcon name="mapmarker" />
-            <T value={event.attributes.location_multiloc} />
-          </Location>
-        </TextBlock>
-      </Container>
-    );
-  }
-}
+      <TextBlock>
+        <Time>{startAt} - {endAt}</Time>
+        <Title><T value={event.attributes.title_multiloc} /></Title>
+        <Location>
+          <StyledIcon name="mapmarker" />
+          <T value={event.attributes.location_multiloc} />
+        </Location>
+      </TextBlock>
+    </Container>
+  );
+};

@@ -5,8 +5,8 @@ import GetProject from 'resources/GetProject';
 
 export default (props: { projectId: string }) => (
   <GetProject id={props.projectId}>
-    {({ project }) => {
-      if (!project) return null;
+    {(project) => {
+      if (!project || project instanceof Error) return null;
 
       return (
         <Label
