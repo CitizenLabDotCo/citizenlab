@@ -1,4 +1,9 @@
 import React from 'react';
+import { isError } from 'lodash';
+import { isNullOrError } from 'utils/helperUtils';
+import { withRouter, WithRouterProps } from 'react-router';
+
+// components
 import IdeasShow from 'containers/IdeasShow';
 import Button from 'components/UI/Button';
 
@@ -25,16 +30,12 @@ const IdeaNotFoundWrapper = styled.div`
   color: ${colors.label};
 `;
 
-type Props = {
-  params: {
-    slug: string;
-  };
-};
+interface InputProps {}
 
-export default (props: Props) => (
+export default withRouter<InputProps>((props: InputProps & WithRouterProps) => (
   <GetIdea slug={props.params.slug}>
-    {({ idea, ideaLoadingError }) => {
-      if (ideaLoadingError) {
+    {(idea) => {
+      if (isError(idea)) {
         return (
           <IdeaNotFoundWrapper>
             <p><FormattedMessage {...messages.noIdeaFoundHere} /></p>
@@ -46,15 +47,17 @@ export default (props: Props) => (
             />
           </IdeaNotFoundWrapper>
         );
-      } else if (idea) {
+      }
+
+      if (!isNullOrError(idea)) {
         return (
           <Container>
             <IdeasShow ideaId={idea.id} />
           </Container>
         );
-      } else {
-        return null;
       }
+
+      return null;
     }}
   </GetIdea>
-);
+));

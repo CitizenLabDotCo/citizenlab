@@ -1,4 +1,5 @@
 import React from 'react';
+import { isNullOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
 // components
@@ -23,7 +24,7 @@ interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   tenantLocales: GetTenantLocalesChildProps;
-  projectLoaderState: GetProjectChildProps;
+  project: GetProjectChildProps;
   projectImages: GetProjectImagesChildProps;
 }
 
@@ -33,9 +34,9 @@ interface State {}
 
 class Meta extends React.PureComponent<Props, State> {
   render() {
-    const { locale, tenantLocales, projectLoaderState: { project } , projectImages } = this.props;
+    const { locale, tenantLocales, project, projectImages } = this.props;
 
-    if (locale && tenantLocales && project) {
+    if (locale && tenantLocales && !isNullOrError(project)) {
       const title = getLocalized(project.attributes.title_multiloc, locale, tenantLocales);
       const description = stripHtml(getLocalized(project.attributes.description_multiloc, locale, tenantLocales));
       const image = (projectImages && projectImages && projectImages.length > 0 ? projectImages[0].attributes.versions.large : null);
@@ -60,8 +61,8 @@ class Meta extends React.PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale/>,
   tenantLocales: <GetTenantLocales/>,
-  projectLoaderState: ({ projectSlug, render }) => <GetProject slug={projectSlug}>{render}</GetProject>,
-  projectImages: ({ projectLoaderState, render }) => <GetProjectImages projectId={(projectLoaderState.project ? projectLoaderState.project.id : null)}>{render}</GetProjectImages>
+  project: ({ projectSlug, render }) => <GetProject slug={projectSlug}>{render}</GetProject>,
+  projectImages: ({ project, render }) => <GetProjectImages projectId={(!isNullOrError(project) ? project.id : null)}>{render}</GetProjectImages>
 });
 
 export default (inputProps: InputProps) => (

@@ -119,6 +119,6 @@ export default defineMessages({
   },
   goBackToList: {
     id: 'app.containers.Projects.goBackToList',
-    defaultMessage: 'Go back to the list',
+    defaultMessage: 'Go to the projects overview',
   },
 });
