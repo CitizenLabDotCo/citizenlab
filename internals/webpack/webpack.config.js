@@ -192,8 +192,6 @@ if (isDev) {
   WEBPACK_CONFIG.plugins.push(new webpack.HotModuleReplacementPlugin());
   WEBPACK_CONFIG.plugins.push(new webpack.NamedModulesPlugin());
 } else {
-  WEBPACK_CONFIG.devtool = 'source-map';
-
   // Optimization of the output
   WEBPACK_CONFIG.plugins.push(
     new UglifyJSPlugin({
@@ -211,6 +209,8 @@ if (isDev) {
 
   // Stats output
   if (!argv.json) {
+    WEBPACK_CONFIG.devtool = 'hidden-source-map';
+
     WEBPACK_CONFIG.stats = {
       chunks: false,
       chunkOrigins: false,
