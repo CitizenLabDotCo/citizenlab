@@ -6,10 +6,11 @@ import { Section, SectionTitle } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
-import ModeratorSelect from './ModeratorSelect';
 import ModeratorList from './ModeratorList';
+import UserSearch from 'components/UserSearch';
 
 import GetModerators, { GetModeratorsChildProps } from 'resources/GetModerators';
+import { findMembership, addMembership } from 'services/moderators';
 
 interface InputProps {
   projectId: string;
@@ -28,7 +29,7 @@ class Moderators extends React.PureComponent<Props>{
         <SectionTitle>
           <FormattedMessage {...messages.moderatorsTabTitle} />
         </SectionTitle>
-        <ModeratorSelect />
+        <UserSearch resourceId={projectId} messages={messages} searchFunction={findMembership} addFunction={addMembership} />
         <ModeratorList moderators={moderators} projectId={projectId}/>
       </Section>
     );

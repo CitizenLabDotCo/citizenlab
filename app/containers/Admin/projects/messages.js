@@ -279,4 +279,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.moderatorDeletionConfirmation',
     defaultMessage: 'Are you sure?',
   },
+  moderatorsNotFound: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderatorsNotFound',
+    defaultMessage: 'Moderators not found',
+  },
+  addUser: {
+    id: 'app.containers.AdminPage.ProjectEdit.addUser',
+    defaultMessage: 'Add moderator',
+  },
 });

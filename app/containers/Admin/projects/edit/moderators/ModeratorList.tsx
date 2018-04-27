@@ -56,7 +56,7 @@ class ModeratorList extends React.PureComponent<Props & InjectedIntlProps>{
         )
       }
       {isError(moderators) &&
-      <div>Error loading moderators</div>}
+      <FormattedMessage {...messages.moderatorsNotFound} />}
     </List>
     );
   }
