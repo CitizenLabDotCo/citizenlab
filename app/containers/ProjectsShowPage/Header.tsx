@@ -1,5 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
+import { isNullOrError } from 'utils/helperUtils';
 
 // router
 import { Link } from 'react-router';
@@ -194,7 +195,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  projectLoaderState: GetProjectChildProps;
+  project: GetProjectChildProps;
   events: GetEventsChildProps;
 }
 
@@ -204,9 +205,9 @@ interface State {}
 
 class ProjectsShowPage extends React.PureComponent<Props, State> {
   render() {
-    const { projectLoaderState: { project }, events } = this.props;
+    const { project, events } = this.props;
 
-    if (project) {
+    if (!isNullOrError(project)) {
       const className = this.props['className'];
       const projectSlug = project.attributes.slug;
       const projectHeaderImageLarge = (project.attributes.header_bg.large || null);
@@ -307,8 +308,8 @@ class ProjectsShowPage extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  projectLoaderState: ({ projectSlug, render }) => <GetProject slug={projectSlug}>{render}</GetProject>,
-  events: ({ projectLoaderState: { project }, render }) => <GetEvents projectId={(project ? project.id : null)}>{render}</GetEvents>
+  project: ({ projectSlug, render }) => <GetProject slug={projectSlug}>{render}</GetProject>,
+  events: ({ project, render }) => <GetEvents projectId={(!isNullOrError(project) ? project.id : null)}>{render}</GetEvents>
 });
 
 export default (inputProps: InputProps) => (

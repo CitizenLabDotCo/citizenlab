@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { isError } from 'lodash';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
@@ -8,6 +9,7 @@ import Button from 'components/UI/Button';
 import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
 
+import { isNullOrError } from 'utils/helperUtils';
 import { deleteModerator } from 'services/moderators';
 
 const StyledAvatar = styled(Avatar)`
@@ -37,7 +39,7 @@ class ModeratorList extends React.PureComponent<Props & InjectedIntlProps>{
     const { moderators, projectId } = this.props;
     return (
       <List>
-        { moderators && moderators.map(moderator =>
+        { !isNullOrError(moderators) && moderators.map(moderator =>
           <Row key={moderator.id}>
             <StyledAvatar userId={moderator.id} size="small" />
             <div className="expand">{`${moderator.attributes.first_name} ${moderator.attributes.last_name}`}</div>
@@ -51,8 +53,11 @@ class ModeratorList extends React.PureComponent<Props & InjectedIntlProps>{
               <FormattedMessage {...messages.deleteModeratorLabel} />
             </Button>
           </Row>
-        )}
-      </List>
+        )
+      }
+      {isError(moderators) &&
+      <div>Error loading moderators</div>}
+    </List>
     );
   }
 }

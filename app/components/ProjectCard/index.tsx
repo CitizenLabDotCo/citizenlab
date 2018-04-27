@@ -1,6 +1,7 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { Link, browserHistory } from 'react-router';
+import { isNullOrError } from 'utils/helperUtils';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -202,7 +203,7 @@ export interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   tenantLocales: GetTenantLocalesChildProps;
-  projectLoaderState: GetProjectChildProps;
+  project: GetProjectChildProps;
   projectImages: GetProjectImagesChildProps;
 }
 
@@ -229,9 +230,9 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 
   goToProject = () => {
-    const { projectLoaderState: { project } } = this.props;
+    const { project } = this.props;
 
-    if (project) {
+    if (!isNullOrError(project)) {
       const projectUrl = this.getProjectUrl(project);
       browserHistory.push(projectUrl);
     }
@@ -240,9 +241,9 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
   render() {
     const className = this.props['className'];
     const { formatMessage } = this.props.intl;
-    const { locale, tenantLocales, projectLoaderState: { project } , projectImages } = this.props;
+    const { locale, tenantLocales, project, projectImages } = this.props;
 
-    if (locale && tenantLocales && project) {
+    if (locale && tenantLocales && !isNullOrError(project)) {
       const titleMultiloc = project.attributes.title_multiloc;
       const preview = getLocalized(project.attributes.description_preview_multiloc, locale, tenantLocales);
       const imageUrl = (projectImages && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
@@ -315,7 +316,7 @@ const ProjectCardWithHoCs = injectIntl<Props>(ProjectCard);
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
-  projectLoaderState: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
+  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
 });
 
