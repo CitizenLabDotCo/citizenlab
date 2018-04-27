@@ -1,6 +1,7 @@
 import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs/Rx';
 import { isString, isEmpty, isError } from 'lodash';
+import { isNullOrError } from 'utils/helperUtils';
 
 // libraries
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -19,14 +20,15 @@ import { addIdeaImage, deleteIdeaImage, IIdeaImage } from 'services/ideaImages';
 import { getAuthUserAsync } from 'services/auth';
 import { localState, ILocalStateService } from 'services/localState';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
-import GetProject from 'resources/GetProject';
+
+// resources
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // utils
 import { convertToGeoJson, reverseGeocode } from 'utils/locationTools';
 
 // typings
 import { Locale } from 'typings';
-import { IProjectData } from 'services/projects';
 
 // style
 import { media } from 'utils/styleUtils';
@@ -129,9 +131,15 @@ const ButtonBarContainer = styled.div`
   }
 `;
 
-interface Props {
-  project: IProjectData | null;
+interface InputProps {
+
 }
+
+interface DataProps {
+  project: GetProjectChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 interface LocalState {
   showIdeaForm: boolean;
@@ -175,11 +183,12 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
   }
 
   componentDidMount() {
+    const { project } = this.props;
     const localState$ = this.localState.observable;
     const locale$ = localeStream().observable;
 
-    if (this.props.project && this.props.project.id) {
-      this.projectId$.next(this.props.project.id);
+    if (!isNullOrError(project)) {
+      this.projectId$.next(project.id);
     }
 
     if (this.props.location.query.position) {
@@ -205,8 +214,10 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
   }
 
   componentDidUpdate() {
-    if (this.props.project && this.props.project.id) {
-      this.projectId$.next(this.props.project.id);
+    const { project } = this.props;
+
+    if (!isNullOrError(project) && isString(project.id)) {
+      this.projectId$.next(project.id);
     }
   }
 
@@ -352,8 +363,8 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
   }
 }
 
-export default withRouter<Props>((props: Props & WithRouterProps) => (
-  <GetProject slug={props.params.slug}>
-    {({ project }) => <IdeasNewPage2 {...props} project={project} />}
+export default withRouter<Props>((inputProps: Props & WithRouterProps) => (
+  <GetProject slug={inputProps.params.slug}>
+    {project => <IdeasNewPage2 {...inputProps} project={project} />}
   </GetProject>
 ));

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { adopt } from 'react-adopt';
 import * as moment from 'moment';
 import 'moment-timezone';
 
@@ -7,9 +7,11 @@ import 'moment-timezone';
 import Icon from 'components/UI/Icon';
 
 // services
-import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
-import { eventStream, IEvent } from 'services/events';
+import { IEventData } from 'services/events';
+
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
@@ -19,9 +21,6 @@ import messages from '../messages';
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
-
-// typings
-import { Locale } from 'typings';
 
 const Container = styled.div`
   width: 100%;
@@ -219,63 +218,33 @@ const EventLocationAddress = styled.div`
   align-items: center;
 `;
 
-type Props = {
-  eventId: string;
-};
+interface InputProps {
+  event: IEventData;
+}
 
-type State = {
-  locale: Locale | null;
-  currentTenant: ITenant | null;
-  event: IEvent | null;
-};
+interface DataProps {
+  locale: GetLocaleChildProps;
+  tenant: GetTenantChildProps;
+}
 
-export default class Event extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+interface Props extends InputProps, DataProps {}
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      locale: null,
-      currentTenant: null,
-      event: null
-    };
-    this.subscriptions = [];
-  }
+interface State {}
 
-  componentDidMount() {
-    const { eventId } = this.props;
-    const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
-    const event$ = eventStream(eventId).observable;
-
-    this.subscriptions = [
-      Rx.Observable.combineLatest(
-        locale$,
-        currentTenant$,
-        event$
-      ).subscribe(([locale, currentTenant, event]) => {
-        this.setState({ locale, currentTenant, event });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
+class Event extends React.PureComponent<Props, State> {
   render() {
     const className = this.props['className'];
-    const { locale, currentTenant, event } = this.state;
+    const { locale, tenant, event } = this.props;
 
-    if (locale && currentTenant && event) {
-      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-      const eventTitle = getLocalized(event.data.attributes.title_multiloc, locale, currentTenantLocales);
-      const eventDescription = getLocalized(event.data.attributes.description_multiloc, locale, currentTenantLocales);
-      const eventLocationAddress = getLocalized(event.data.attributes.location_multiloc, locale, currentTenantLocales);
-      const startAtMoment = moment(event.data.attributes.start_at);
-      const endAtMoment = moment(event.data.attributes.end_at);
-      const startAtIsoDate = moment(event.data.attributes.start_at).format('YYYY-MM-DD');
-      const endAtIsoDate = moment(event.data.attributes.end_at).format('YYYY-MM-DD');
+    if (locale && tenant && event !== null) {
+      const tenantLocales = tenant.attributes.settings.core.locales;
+      const eventTitle = getLocalized(event.attributes.title_multiloc, locale, tenantLocales);
+      const eventDescription = getLocalized(event.attributes.description_multiloc, locale, tenantLocales);
+      const eventLocationAddress = getLocalized(event.attributes.location_multiloc, locale, tenantLocales);
+      const startAtMoment = moment(event.attributes.start_at);
+      const endAtMoment = moment(event.attributes.end_at);
+      const startAtIsoDate = moment(event.attributes.start_at).format('YYYY-MM-DD');
+      const endAtIsoDate = moment(event.attributes.end_at).format('YYYY-MM-DD');
       let startAtTime = startAtMoment.format('LT');
       let endAtTime = endAtMoment.format('LT');
       const startAtDay = startAtMoment.format('DD');
@@ -361,3 +330,14 @@ export default class Event extends React.PureComponent<Props, State> {
     return null;
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />,
+  tenant: <GetTenant />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <Event {...inputProps} {...dataProps} />}
+  </Data>
+);

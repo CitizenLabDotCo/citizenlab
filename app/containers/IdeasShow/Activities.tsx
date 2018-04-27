@@ -1,9 +1,8 @@
 // Libraries
-import * as React from 'react';
-import { Subscription } from 'rxjs';
+import React from 'react';
 
-// services
-import { ideaActivities, IdeaActivity } from 'services/ideas';
+// resourcs
+import GetIdeaActivities, { GetIdeaActivitiesChildProps } from 'resources/GetIdeaActivities';
 
 // Components
 import ActivitiesChangeLog from './ActivitiesChangelog';
@@ -30,35 +29,26 @@ const Title = styled.h1`
   margin-bottom: 60px;
 `;
 
-// Typing
-interface Props {
+interface InputProps {
   ideaId: string;
 }
 
+interface DataProps {
+  ideaActivities: GetIdeaActivitiesChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
 interface State {
-  activities: IdeaActivity[];
   modalOpen: boolean;
 }
 
 class IdeaActivities extends React.Component<Props, State> {
-  subs: Subscription[] = [];
-
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
-      activities: [],
-      modalOpen: false,
+      modalOpen: false
     };
-  }
-
-  componentDidMount() {
-    this.subs.push(ideaActivities(this.props.ideaId).observable.subscribe((response) => {
-      this.setState({ activities: response.data });
-    }));
-  }
-
-  componentWillUnmount() {
-    this.subs.forEach(sub => sub.unsubscribe());
   }
 
   openModal = () => {
@@ -70,27 +60,33 @@ class IdeaActivities extends React.Component<Props, State> {
   }
 
   render() {
+    const { ideaActivities } = this.props;
+
     // Render only if there is more than the "published" activity
-    if (this.state.activities.length > 0 && (this.state.activities.length > 1 || this.state.activities[0].attributes.action !== 'published')) {
-      const lastUpdated = this.state.activities[0].attributes.acted_at;
+    if (ideaActivities && ideaActivities.length > 0 && (ideaActivities.length > 1 || ideaActivities[0].attributes.action !== 'published')) {
+      const lastUpdated = ideaActivities[0].attributes.acted_at;
 
       return (
-        <React.Fragment>
+        <>
           <span> - <LinkButton onClick={this.openModal}>
             <FormattedMessage {...messages.lastUpdated} values={{ modificationTime: <FormattedRelative value={lastUpdated} /> }} />
           </LinkButton></span>
           <Modal opened={this.state.modalOpen} close={this.closeModal} >
             <Title><FormattedMessage {...messages.lastChangesTitle} /></Title>
-            {this.state.activities.map((activity) => (
+            {ideaActivities.map((activity) => (
               <ActivitiesChangeLog key={activity.id} activity={activity} />
             ))}
           </Modal>
-        </React.Fragment>
+        </>
       );
-    } else {
-      return null;
     }
+
+    return null;
   }
 }
 
-export default IdeaActivities;
+export default (inputProps: InputProps) => (
+  <GetIdeaActivities ideaId={inputProps.ideaId}>
+    {ideaActivities => <IdeaActivities {...inputProps} ideaActivities={ideaActivities} />}
+  </GetIdeaActivities>
+);
