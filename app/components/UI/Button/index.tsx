@@ -243,13 +243,16 @@ type Props = {
   linkTo?: string;
   id?: string;
   theme?: object | undefined;
+  setSubmitButtonRef?: (value: HTMLInputElement) => void;
 };
 
 type State = {};
 
 class Button extends React.PureComponent<Props, State> {
+
   constructor(props: Props) {
     super(props);
+
   }
 
   handleOnClick = (event: React.FormEvent<HTMLButtonElement>) => {
@@ -328,12 +331,12 @@ class Button extends React.PureComponent<Props, State> {
       >
         {linkTo ? (
           (linkTo.startsWith('http')) ? (
-            <StyledA href={linkTo} className={buttonClassnames}>{childContent}</StyledA>
+            <StyledA innerRef={this.props.setSubmitButtonRef} href={linkTo} className={buttonClassnames}>{childContent}</StyledA>
           ) : (
-            <StyledLink to={linkTo} className={buttonClassnames}>{childContent}</StyledLink>
+            <StyledLink innerRef={this.props.setSubmitButtonRef} to={linkTo} className={buttonClassnames}>{childContent}</StyledLink>
           )
         ) : (
-          <StyledButton className={buttonClassnames}>{childContent}</StyledButton>
+          <StyledButton innerRef={this.props.setSubmitButtonRef} className={buttonClassnames}>{childContent}</StyledButton>
         )}
       </Container>
     );

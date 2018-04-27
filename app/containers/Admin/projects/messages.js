@@ -35,10 +35,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.saveProject',
     defaultMessage: 'Save',
   },
-  saveError: {
-    id: 'app.containers.AdminPage.ProjectEdit.saveError',
-    defaultMessage: 'Error',
-  },
   saveSuccess: {
     id: 'app.containers.AdminPage.ProjectEdit.saveSuccess',
     defaultMessage: 'Success!',
