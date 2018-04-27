@@ -9,6 +9,15 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
+    if params[:filter_can_moderate] == 'true'
+      if current_user
+        moderatable_project_ids = current_user.roles
+          .select{|role| role['role'] == 'project_moderator'}
+          .map{|role| role['project_id']}.compact
+        @projects = @projects.where(id: moderatable_project_ids)
+      else
+        @projects = []
+    end
     if params[:publication_statuses].present?
       @projects = @projects.where(publication_status: params[:publication_statuses])
     else
