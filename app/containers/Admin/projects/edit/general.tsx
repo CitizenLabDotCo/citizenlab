@@ -575,7 +575,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       projectData,
       headerBg,
       newProjectImages,
-      presentationMode,
       loading,
       processing,
       projectAttributesDiff,
@@ -694,25 +693,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 onSubmit={this.handleParcticipationContextOnSubmit}
                 onChange={this.handleParticipationContextOnChange}
               />
-            }
-
-            {projectData && projectData.attributes.process_type === 'continuous' &&
-              <SectionField>
-                <Label>
-                  <FormattedMessage {...messages.defaultDisplay} />
-                </Label>
-                {['card', 'map'].map((key) => (
-                  <Radio
-                    key={key}
-                    onChange={this.handleIdeasDisplayChange}
-                    currentValue={presentationMode}
-                    value={key}
-                    name="presentation_mode"
-                    id={`presentation_mode-${key}`}
-                    label={<FormattedMessage {...messages[`${key}Display`]} />}
-                  />
-                ))}
-              </SectionField>
             }
 
             <SectionField>
