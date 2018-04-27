@@ -5,6 +5,7 @@ import * as Rx from 'rxjs/Rx';
 // components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
+import Spinner from 'components/UI/Spinner';
 import CustomFieldsForm from 'components/CustomFieldsForm';
 
 // services
@@ -27,7 +28,11 @@ import styled from 'styled-components';
 // typings
 import { API } from 'typings';
 
-const Form = styled.div``;
+const Loading = styled.div`
+  padding-top: 15px;
+`;
+
+const Container = styled.div``;
 
 const FormElement = styled.div`
   margin-bottom: 20px;
@@ -92,11 +97,9 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
         locale$,
         customFieldsSchemaForUsersStream$
       ).subscribe(([authUser, locale, customFieldsSchemaForUsersStream]) => {
-        const hasRequiredFields = !isEmpty(get(customFieldsSchemaForUsersStream, `json_schema_multiloc.${locale}.required`, null));
-
         this.setState({
           authUser,
-          hasRequiredFields,
+          hasRequiredFields: !isEmpty(get(customFieldsSchemaForUsersStream, `json_schema_multiloc.${locale}.required`, null)),
           loading: false
         });
       })
@@ -148,10 +151,19 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
     const { formatMessage } = this.props.intl;
     const { authUser, hasRequiredFields, loading, processing, unknownError } = this.state;
 
+    if (loading) {
+      return (
+        <Loading id="ideas-loading">
+          <Spinner size="28px" color="#666" />
+        </Loading>
+      );
+    }
+
     if (!loading && authUser) {
       return (
-        <Form id="e2e-signup-step2">
-          <CustomFieldsForm 
+        <Container id="e2e-signup-step2">
+          <CustomFieldsForm
+            formData={authUser.data.attributes.custom_field_values}
             onSubmit={this.handleCustomFieldsFormOnSubmit}
           />
 
@@ -171,7 +183,7 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
             </ButtonWrapper>
             <Error text={unknownError} />
           </FormElement>
-        </Form>
+        </Container>
       );
     }
 

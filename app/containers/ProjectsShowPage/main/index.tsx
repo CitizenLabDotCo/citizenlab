@@ -1,5 +1,5 @@
 import React from 'react';
-import 'moment-timezone';
+import { isNullOrError } from 'utils/helperUtils';
 import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 
 // components
@@ -10,39 +10,18 @@ import ProjectInfoPage from '../info';
 import {  getProjectUrl } from 'services/projects';
 
 // resources
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetProject from 'resources/GetProject';
 
-interface InputProps {}
+export default withRouter((props: WithRouterProps) => (
+  <GetProject slug={props.params.slug}>
+    {project => {
+      if (!isNullOrError(project)) {
+        const redirectUrl = getProjectUrl(project);
+        browserHistory.replace(redirectUrl);
+        return project.attributes.process_type === 'timeline' ? <ProjectTimelinePage /> : <ProjectInfoPage />;
+      }
 
-interface DataProps {
-  project: GetProjectChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-interface State {}
-
-class ProjectMainPage extends React.PureComponent<Props & WithRouterProps, State> {
-  render() {
-    const { project } = this.props;
-
-    if (project) {
-      const redirectUrl = getProjectUrl(project);
-      browserHistory.replace(redirectUrl);
-
-      return (
-        <>
-          {project.attributes.process_type === 'timeline' ? <ProjectTimelinePage /> : <ProjectInfoPage />}
-        </>
-      );
-    }
-
-    return null;
-  }
-}
-
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <GetProject slug={inputProps.params.slug}>
-    {project => <ProjectMainPage {...inputProps} project={project} />}
+      return null;
+    }}
   </GetProject>
 ));

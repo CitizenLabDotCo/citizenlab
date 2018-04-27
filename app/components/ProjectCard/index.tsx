@@ -1,10 +1,12 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { Link, browserHistory } from 'react-router';
+import { isNullOrError } from 'utils/helperUtils';
 
 // components
 import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
+import LazyImage, { Props as LazyImageProps } from 'components/LazyImage';
 
 // services
 import { IProjectData } from 'services/projects';
@@ -57,12 +59,9 @@ const ProjectImagePlaceholderIcon = styled(Icon) `
   fill: #fff;
 `;
 
-const ProjectImage: any = styled.div`
+const ProjectImage = styled<LazyImageProps>(LazyImage)`
   flex: 1;
-  background-image: url(${(props: any) => props.imageSrc});
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
+  width: 100%;
 `;
 
 const Container = styled.div`
@@ -233,7 +232,7 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
   goToProject = () => {
     const { project } = this.props;
 
-    if (project) {
+    if (!isNullOrError(project)) {
       const projectUrl = this.getProjectUrl(project);
       browserHistory.push(projectUrl);
     }
@@ -244,7 +243,7 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
     const { formatMessage } = this.props.intl;
     const { locale, tenantLocales, project, projectImages } = this.props;
 
-    if (locale && tenantLocales && project) {
+    if (locale && tenantLocales && !isNullOrError(project)) {
       const titleMultiloc = project.attributes.title_multiloc;
       const preview = getLocalized(project.attributes.description_preview_multiloc, locale, tenantLocales);
       const imageUrl = (projectImages && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
@@ -257,7 +256,7 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
         <Container className={className}>
 
           <ProjectImageContainer>
-            {imageUrl && <ProjectImage imageSrc={imageUrl} />}
+            {imageUrl && <ProjectImage src={imageUrl} cover />}
 
             {!imageUrl &&
               <ProjectImagePlaceholder>
