@@ -469,7 +469,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       const { projectData, oldProjectImages, newProjectImages } = this.state;
 
       if (participationContextConfig) {
-        const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, survey_service, survey_embed_url } = participationContextConfig;
+        const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, presentationMode, survey_service, survey_embed_url } = participationContextConfig;
 
         projectAttributesDiff = {
           ...projectAttributesDiff,
@@ -480,7 +480,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
           commenting_enabled: commentingEnabled,
           voting_enabled: votingEnabled,
           voting_method: votingMethod,
-          voting_limited_max: votingLimit
+          voting_limited_max: votingLimit,
+          presentation_mode: presentationMode
         };
       }
 
