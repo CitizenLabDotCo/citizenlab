@@ -121,6 +121,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
             voting_enabled,
             voting_method,
             voting_limited_max,
+            presentation_mode,
             survey_embed_url,
             survey_service,
           } = data.data.attributes;
@@ -134,6 +135,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
             votingEnabled: voting_enabled,
             votingMethod: voting_method,
             votingLimit: voting_limited_max,
+            presentationMode: presentation_mode,
             loaded: true
           });
         } else {
@@ -145,6 +147,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
         .observeEvent('getParticipationContext')
         .filter(() => this.validate())
         .subscribe(() => {
+          console.log('Step 2');
           const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, presentationMode } = this.state;
 
           this.props.onSubmit({
