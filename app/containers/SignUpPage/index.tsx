@@ -28,8 +28,7 @@ const Container = styled.div`
   position: relative;
 
   ${media.biggerThanMaxTablet`
-    overflow: hidden;
-    height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+    min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   `}
 
   ${media.smallerThanMaxTablet`
@@ -49,8 +48,6 @@ const Left = Section.extend`
   top: 0;
   left: 0;
   bottom: 0;
-  overflow: hidden;
-  pointer-events: none;
   display: none;
 
   ${media.biggerThanMaxTablet`
@@ -59,33 +56,22 @@ const Left = Section.extend`
 `;
 
 const Right = Section.extend`
-  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
 
   ${media.biggerThanMaxTablet`
-    overflow: hidden;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    padding-left: 50vw;
   `}
 `;
 
 const RightInner = styled.div`
   width: 100%;
-
-  ${media.biggerThanMaxTablet`
-    width: calc(50vw - 20px);
-    position: absolute;
-    top: 0;
-    left: 50vw;
-    overflow: hidden;
-    padding-left: 20px;
-  `}
-`;
-
-const RightInnerInner = styled.div`
-  width: 100%;
   max-width: 420px;
   margin-left: auto;
   margin-right: auto;
+  padding-top: 60px;
+  padding-bottom: 60px;
   padding-left: 30px;
   padding-right: 30px;
 `;
@@ -101,22 +87,18 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class SignUpPage extends React.PureComponent<Props, State> {
-  scrollDivElement: HTMLDivElement | null;
   subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props);
     this.state = {};
-    this.scrollDivElement = null;
     this.subscriptions = [];
   }
 
   componentDidMount() {
     this.subscriptions = [
       eventEmitter.observeEvent('signUpFlowGoToSecondStep').subscribe(() => {
-        if (this.scrollDivElement) {
-          this.scrollDivElement.scrollTop = 0;
-        }
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
       })
     ];
   }
@@ -129,17 +111,13 @@ class SignUpPage extends React.PureComponent<Props, State> {
     browserHistory.push('/');
   }
 
-  setRef = (element: HTMLDivElement) => {
-    this.scrollDivElement = element;
-  }
-
   render() {
     const { authUser, location } = this.props;
     const isInvitation = (location.pathname === '/invite');
     const token: string | null = get(location.query, 'token', null);
 
-    if (authUser) {
-      browserHistory.push('/');
+    if (authUser && authUser.attributes.registration_completed_at) {
+      this.onSignUpCompleted();
     }
 
     return (
@@ -147,11 +125,13 @@ class SignUpPage extends React.PureComponent<Props, State> {
         <Left>
           <SignInUpBanner />
         </Left>
-        <Right innerRef={this.setRef}>
+        <Right>
           <RightInner>
-            <RightInnerInner>
-              <SignUp isInvitation={isInvitation} token={token} onSignUpCompleted={this.onSignUpCompleted} />
-            </RightInnerInner>
+            <SignUp
+              isInvitation={isInvitation}
+              token={token}
+              onSignUpCompleted={this.onSignUpCompleted}
+            />
           </RightInner>
         </Right>
       </Container>
