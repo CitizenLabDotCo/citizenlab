@@ -1,27 +1,40 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 import Button from 'components/UI/Button';
 import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
 
-import { IUserData } from 'services/users';
+import { deleteModerator } from 'services/moderators';
 
 const StyledAvatar = styled(Avatar)`
   width: 2rem;
   height: 2rem;
 `;
 
-interface Props {
-  moderators: IUserData[] | null;
+import { GetModeratorsChildProps } from 'resources/GetModerators';
+import { InjectedIntlProps } from 'react-intl';
+interface InputProps {
+  projectId: string;
+}
+interface Props extends InputProps {
+  moderators: GetModeratorsChildProps;
 }
 
-export default class ModeratorList extends React.PureComponent<Props>{
+class ModeratorList extends React.PureComponent<Props & InjectedIntlProps>{
+  handleDeleteClick = (projectId: string, moderatorId: string) => (event: React.FormEvent<any>) => {
+    const deleteMessage = this.props.intl.formatMessage(messages.moderatorDeletionConfirmation);
+    event.preventDefault();
+
+    if (window.confirm(deleteMessage)) {
+      deleteModerator(projectId, moderatorId);
+    }
+  }
   render() {
-    const { moderators } = this.props;
+    const { moderators, projectId } = this.props;
     return (
       <List>
         { moderators && moderators.map(moderator =>
@@ -30,6 +43,7 @@ export default class ModeratorList extends React.PureComponent<Props>{
             <div className="expand">{`${moderator.attributes.first_name} ${moderator.attributes.last_name}`}</div>
             <div className="expand">{moderator.attributes.email}</div>
             <Button
+              onClick={this.handleDeleteClick(projectId, moderator.id)}
               style="text"
               circularCorners={false}
               icon="delete"
@@ -42,3 +56,5 @@ export default class ModeratorList extends React.PureComponent<Props>{
     );
   }
 }
+
+export default injectIntl<Props>(ModeratorList);

@@ -6,7 +6,7 @@ import { moderatorsStream } from 'services/moderators';
 
 interface InputProps {}
 
-export type GetModeratorsChildProps = IUserData[] | null;
+export type GetModeratorsChildProps = IUserData[] | null | Error;
 type children = (renderProps: GetModeratorsChildProps) => JSX.Element | null;
 
 interface Props extends InputProps {
@@ -29,7 +29,6 @@ export default class GetModerators extends React.Component<Props, State> {
   }
   componentDidMount() {
     const { projectId } = this.props;
-    console.log(projectId);
     this.subscriptions = [
         moderatorsStream(projectId).observable
         .subscribe(moderators => this.setState({ moderators: moderators.data }))

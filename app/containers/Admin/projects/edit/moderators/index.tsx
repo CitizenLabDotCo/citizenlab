@@ -15,12 +15,13 @@ interface InputProps {
   projectId: string;
 }
 
-interface Props {
+interface Props extends InputProps {
   moderators: GetModeratorsChildProps;
 }
 
 class Moderators extends React.PureComponent<Props>{
   render() {
+    const { moderators, projectId } = this.props;
 
     return (
       <Section>
@@ -28,13 +29,16 @@ class Moderators extends React.PureComponent<Props>{
           <FormattedMessage {...messages.moderatorsTabTitle} />
         </SectionTitle>
         <ModeratorSelect />
-        <ModeratorList moderators={this.props.moderators} />
+        <ModeratorList moderators={moderators} projectId={projectId}/>
       </Section>
     );
   }
 }
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <GetModerators projectId={inputProps.params.slug}>
-    {moderators => <Moderators moderators={moderators} />}
-  </GetModerators>
-));
+export default withRouter((inputProps: InputProps & WithRouterProps) => {
+  const projectId = inputProps.params.slug;
+  return (
+    <GetModerators projectId={projectId}>
+      {moderators => <Moderators moderators={moderators} projectId={projectId} />}
+    </GetModerators>
+  );
+});

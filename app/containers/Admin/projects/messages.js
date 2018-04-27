@@ -275,4 +275,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.deleteModeratorLabel',
     defaultMessage: 'Delete',
   },
+  moderatorDeletionConfirmation: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderatorDeletionConfirmation',
+    defaultMessage: 'Are you sure?',
+  },
 });
