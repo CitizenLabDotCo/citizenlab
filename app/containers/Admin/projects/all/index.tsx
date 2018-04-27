@@ -70,7 +70,7 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
                         </StatusLabel>
                       }
                     </div>
-                    <Button linkTo={`/admin/projects/${project.id}/edit`} style="secondary" circularCorners={false} icon="edit">
+                    <Button linkTo={`/admin/projects/${project.attributes.slug}/edit`} style="secondary" circularCorners={false} icon="edit">
                       <FormattedMessage {...messages.editButtonLabel} />
                     </Button>
                   </SortableRow>
