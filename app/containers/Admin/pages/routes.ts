@@ -2,22 +2,22 @@ import loadAndRender from 'utils/loadAndRender';
 
 export default () => ({
   path: 'pages',
-  getComponent: loadAndRender('./'),
+  getComponent: loadAndRender(import('./')),
   indexRoute: {
-    getComponent: loadAndRender('./All'),
+    getComponent: loadAndRender(import('./All')),
   },
   childRoutes: [
     {
       path: 'new',
-      getComponent: loadAndRender('./Edit'),
+      getComponent: loadAndRender(import('./Edit')),
     },
     {
       path: ':pageId/editor/:locale',
-      getComponent: loadAndRender('./New'),
+      getComponent: loadAndRender(import('./New')),
     },
     {
       path: ':pageId',
-      getComponent: loadAndRender('./BodyEditor'),
+      getComponent: loadAndRender(import('./BodyEditor')),
     },
   ],
 });
