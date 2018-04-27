@@ -4,8 +4,6 @@ require 'rspec_api_documentation/dsl'
 resource "Projects" do
   before do 
     header "Content-Type", "application/json"
-    @projects = ['published','published','draft','published','archived','published','archived']
-      .map { |ps|  create(:project, publication_status: ps)}
   end
 
   context 'when admin' do
@@ -13,6 +11,9 @@ resource "Projects" do
       @user = create(:user, roles: [{type: 'admin'}])
       token = Knock::AuthToken.new(payload: { sub: @user.id }).token
       header 'Authorization', "Bearer #{token}"
+
+      @projects = ['published','published','draft','published','archived','published','archived']
+        .map { |ps|  create(:project, publication_status: ps)}
     end
 
     get "web_api/v1/projects" do
@@ -356,6 +357,8 @@ resource "Projects" do
       @moderator = create(:moderator, project: @project)
       token = Knock::AuthToken.new(payload: { sub: @moderator.id }).token
       header 'Authorization', "Bearer #{token}"
+
+      @projects = create_list(:project, 10, publication_status: 'published')
     end
 
     get "web_api/v1/projects" do
