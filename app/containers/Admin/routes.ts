@@ -17,7 +17,7 @@ import pagesRoutes from './pages/routes';
 export default () => ({
   path: '/admin',
   name: 'Admin page',
-  getComponent: loadAndRender('containers/Admin'),
+  getComponent: loadAndRender(import('containers/Admin')),
   indexRoute: dashboardRoutes(),
   childRoutes: [
     ideasRoutes(),
