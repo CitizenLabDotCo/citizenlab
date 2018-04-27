@@ -34,15 +34,21 @@ RSpec.describe Group, type: :model do
       expect(g.members).to be_empty
       u1 = create(:user)
       u2 = create(:user)
+
       g.add_member u1
       g.add_member u2
+      g.reload
       expect(u1.groups).to include(g)
       expect(u2.groups).to include(g)
+
       g.remove_member u1
-      expect(u1.groups).not_to include(g)
-      expect(u2.groups).to include(g)
+      g.reload
+      expect(u1.reload.groups).not_to include(g)
+      expect(u2.reload.groups).to include(g)
+
       g.remove_member u2
-      expect(u2.groups).not_to include(g)
+      g.reload
+      expect(u2.reload.groups).not_to include(g)
       expect(g.members).to be_empty
     end
 
