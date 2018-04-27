@@ -1,6 +1,7 @@
 // Libraries
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
 
 import { IStreamParams, IStream } from 'utils/streams';
 
@@ -81,7 +82,7 @@ const OptionIcon = styled(Icon)`
 `;
 
 // Typing
-import { IOption } from 'typings';
+import { IOption, Message } from 'typings';
 
 type FoundResponse = {
   data: GroupsFoundUser[] | ModeratorsFoundUser[];
@@ -89,7 +90,7 @@ type FoundResponse = {
 
 interface Props {
   resourceId: string;
-  messages: {addUser: {}};
+  messages: {addUser: Message};
   searchFunction: (resourceId: string, streamParams: IStreamParams) => IStream<FoundResponse>;
   addFunction: (resourceId: string, userId: string) => Promise<{}>;
 }
@@ -106,8 +107,8 @@ function isGroupUser(user: GroupsFoundUser | ModeratorsFoundUser): user is Group
 
 
 class MembersAdd extends React.Component<Props & injectedLocalized, State> {
-  subscriptions: Rx.Subscription[];
-  input$: Rx.Subject<string>;
+  subscriptions: Subscription[];
+  input$: Subject<string>;
 
   constructor(props: Props) {
     super(props as any);
@@ -119,7 +120,7 @@ class MembersAdd extends React.Component<Props & injectedLocalized, State> {
     };
 
     this.subscriptions = [];
-    this.input$ = new Rx.Subject<string>();
+    this.input$ = new Subject<string>();
   }
 
   componentDidMount() {
