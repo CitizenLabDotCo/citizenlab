@@ -42,6 +42,7 @@ const PageContainer = styled.div`
   width: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   position: relative;
+  will-change: transform, opacity;
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
@@ -49,7 +50,7 @@ const PageContainer = styled.div`
 
   &.page-enter {
     position: absolute;
-    opacity: 0.01;
+    opacity: 0;
     transform: translateX(100vw);
 
     ${media.biggerThanMaxTablet`
@@ -77,7 +78,7 @@ const PageContainer = styled.div`
     transform: translateX(0);
 
     &.page-exit-active {
-      opacity: 0.01;
+      opacity: 0;
       transform: translateX(100vw);
       transition: transform 600ms cubic-bezier(0.19, 1, 0.22, 1),
                   opacity 600ms cubic-bezier(0.19, 1, 0.22, 1);
@@ -131,9 +132,7 @@ const ButtonBarContainer = styled.div`
   }
 `;
 
-interface InputProps {
-
-}
+interface InputProps {}
 
 interface DataProps {
   project: GetProjectChildProps;
@@ -315,7 +314,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     const { ideaId } = await this.globalState.get();
 
     if (ideaId) {
-      await updateIdea(ideaId, { author_id: userId, publication_status: 'published' });
+      updateIdea(ideaId, { author_id: userId, publication_status: 'published' });
       browserHistory.push('/ideas');
     }
   }
