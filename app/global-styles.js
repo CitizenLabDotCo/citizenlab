@@ -50,77 +50,78 @@ import visueltBoldItalicWOFF from 'assets/fonts/Visuelt-BoldItalic.woff';
 import visueltBoldItalicWOFF2 from 'assets/fonts/Visuelt-BoldItalic.woff2';
 
 /* eslint no-unused-expressions: 0 */
-injectGlobal`
-  @font-face {
-    font-family: 'visuelt';
-    font-style: normal;
-    font-weight: 300;
-    src: url(${visueltLightEOT}); /* IE9 Compat Modes */
-    src: url(${visueltLightEOT}?#iefix) format('embedded-opentype'), /* IE6-IE8 */
-        url(${visueltLightWOFF2}) format('woff2'), /* Super Modern Browsers */
-        url(${visueltLightWOFF}) format('woff'), /* Pretty Modern Browsers */
-        url(${visueltLightTTF})  format('truetype'), /* Safari, Android, iOS */
-        url('${visueltLightSVG}#svgFontName') format('svg'); /* Legacy iOS */
-  }
 
-  @font-face {
-    font-family: 'visuelt';
-    font-style: italic;
-    font-weight: 300;
-    src: url(${visueltLightItalicEOT}); /* IE9 Compat Modes */
-    src: url(${visueltLightItalicEOT}?#iefix) format('embedded-opentype'), /* IE6-IE8 */
-        url(${visueltLightItalicWOFF2}) format('woff2'), /* Super Modern Browsers */
-        url(${visueltLightItalicWOFF}) format('woff'), /* Pretty Modern Browsers */
-        url(${visueltLightItalicTTF})  format('truetype'), /* Safari, Android, iOS */
-        url('${visueltLightItalicSVG}#svgFontName') format('svg'); /* Legacy iOS */
-  }
+export const globalCss = `
+@font-face {
+  font-family: 'visuelt';
+  font-style: normal;
+  font-weight: 300;
+  src: url(${visueltLightEOT}); /* IE9 Compat Modes */
+  src: url(${visueltLightEOT}?#iefix) format('embedded-opentype'), /* IE6-IE8 */
+  url(${visueltLightWOFF2}) format('woff2'), /* Super Modern Browsers */
+  url(${visueltLightWOFF}) format('woff'), /* Pretty Modern Browsers */
+  url(${visueltLightTTF})  format('truetype'), /* Safari, Android, iOS */
+  url('${visueltLightSVG}#svgFontName') format('svg'); /* Legacy iOS */
+}
 
-  @font-face {
-    font-family: 'visuelt';
-    font-style: normal;
-    font-weight: 400;
-    src: url(${visueltRegularEOT}); /* IE9 Compat Modes */
-    src: url(${visueltRegularEOT}?#iefix) format('embedded-opentype'), /* IE6-IE8 */
-        url(${visueltRegularWOFF2}) format('woff2'), /* Super Modern Browsers */
-        url(${visueltRegularWOFF}) format('woff'), /* Pretty Modern Browsers */
-        url(${visueltRegularTTF})  format('truetype'), /* Safari, Android, iOS */
-        url('${visueltRegularSVG}#svgFontName') format('svg'); /* Legacy iOS */
-  }
+@font-face {
+  font-family: 'visuelt';
+  font-style: italic;
+  font-weight: 300;
+  src: url(${visueltLightItalicEOT}); /* IE9 Compat Modes */
+  src: url(${visueltLightItalicEOT}?#iefix) format('embedded-opentype'), /* IE6-IE8 */
+  url(${visueltLightItalicWOFF2}) format('woff2'), /* Super Modern Browsers */
+  url(${visueltLightItalicWOFF}) format('woff'), /* Pretty Modern Browsers */
+  url(${visueltLightItalicTTF})  format('truetype'), /* Safari, Android, iOS */
+  url('${visueltLightItalicSVG}#svgFontName') format('svg'); /* Legacy iOS */
+}
 
-  @font-face {
-    font-family: 'visuelt';
-    font-style: italic;
-    font-weight: 400;
-    src: url(${visueltRegularItalicEOT}); /* IE9 Compat Modes */
-    src: url(${visueltRegularItalicEOT}?#iefix) format('embedded-opentype'), /* IE6-IE8 */
-        url(${visueltRegularItalicWOFF2}) format('woff2'), /* Super Modern Browsers */
-        url(${visueltRegularItalicWOFF}) format('woff'), /* Pretty Modern Browsers */
-        url(${visueltRegularItalicTTF})  format('truetype'), /* Safari, Android, iOS */
-        url('${visueltRegularItalicSVG}#svgFontName') format('svg'); /* Legacy iOS */
-  }
+@font-face {
+  font-family: 'visuelt';
+  font-style: normal;
+  font-weight: 400;
+  src: url(${visueltRegularEOT}); /* IE9 Compat Modes */
+  src: url(${visueltRegularEOT}?#iefix) format('embedded-opentype'), /* IE6-IE8 */
+  url(${visueltRegularWOFF2}) format('woff2'), /* Super Modern Browsers */
+  url(${visueltRegularWOFF}) format('woff'), /* Pretty Modern Browsers */
+  url(${visueltRegularTTF})  format('truetype'), /* Safari, Android, iOS */
+  url('${visueltRegularSVG}#svgFontName') format('svg'); /* Legacy iOS */
+}
 
-  @font-face {
-    font-family: 'visuelt';
-    font-style: normal;
-    font-weight: 500;
-    src: url(${visueltMediumEOT}); /* IE9 Compat Modes */
-    src: url(${visueltMediumEOT}?#iefix) format('embedded-opentype'), /* IE6-IE8 */
-        url(${visueltMediumWOFF2}) format('woff2'), /* Super Modern Browsers */
-        url(${visueltMediumWOFF}) format('woff'), /* Pretty Modern Browsers */
-        url(${visueltMediumTTF})  format('truetype'), /* Safari, Android, iOS */
-        url('${visueltMediumSVG}#svgFontName') format('svg'); /* Legacy iOS */
-  }
+@font-face {
+  font-family: 'visuelt';
+  font-style: italic;
+  font-weight: 400;
+  src: url(${visueltRegularItalicEOT}); /* IE9 Compat Modes */
+  src: url(${visueltRegularItalicEOT}?#iefix) format('embedded-opentype'), /* IE6-IE8 */
+  url(${visueltRegularItalicWOFF2}) format('woff2'), /* Super Modern Browsers */
+  url(${visueltRegularItalicWOFF}) format('woff'), /* Pretty Modern Browsers */
+  url(${visueltRegularItalicTTF})  format('truetype'), /* Safari, Android, iOS */
+  url('${visueltRegularItalicSVG}#svgFontName') format('svg'); /* Legacy iOS */
+}
 
-  @font-face {
-    font-family: 'visuelt';
-    font-style: italic;
-    font-weight: 500;
-    src: url(${visueltMediumItalicEOT}); /* IE9 Compat Modes */
-    src: url(${visueltMediumItalicEOT}?#iefix) format('embedded-opentype'), /* IE6-IE8 */
-        url(${visueltMediumItalicWOFF2}) format('woff2'), /* Super Modern Browsers */
-        url(${visueltMediumItalicWOFF}) format('woff'), /* Pretty Modern Browsers */
-        url(${visueltMediumItalicTTF})  format('truetype'), /* Safari, Android, iOS */
-        url('${visueltMediumItalicSVG}#svgFontName') format('svg'); /* Legacy iOS */
+@font-face {
+  font-family: 'visuelt';
+  font-style: normal;
+  font-weight: 500;
+  src: url(${visueltMediumEOT}); /* IE9 Compat Modes */
+  src: url(${visueltMediumEOT}?#iefix) format('embedded-opentype'), /* IE6-IE8 */
+  url(${visueltMediumWOFF2}) format('woff2'), /* Super Modern Browsers */
+  url(${visueltMediumWOFF}) format('woff'), /* Pretty Modern Browsers */
+  url(${visueltMediumTTF})  format('truetype'), /* Safari, Android, iOS */
+  url('${visueltMediumSVG}#svgFontName') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+  font-family: 'visuelt';
+  font-style: italic;
+  font-weight: 500;
+  src: url(${visueltMediumItalicEOT}); /* IE9 Compat Modes */
+  src: url(${visueltMediumItalicEOT}?#iefix) format('embedded-opentype'), /* IE6-IE8 */
+  url(${visueltMediumItalicWOFF2}) format('woff2'), /* Super Modern Browsers */
+  url(${visueltMediumItalicWOFF}) format('woff'), /* Pretty Modern Browsers */
+  url(${visueltMediumItalicTTF})  format('truetype'), /* Safari, Android, iOS */
+  url('${visueltMediumItalicSVG}#svgFontName') format('svg'); /* Legacy iOS */
   }
 
   @font-face {
@@ -129,70 +130,72 @@ injectGlobal`
     font-weight: 600;
     src: url(${visueltBoldEOT}); /* IE9 Compat Modes */
     src: url(${visueltBoldEOT}?#iefix) format('embedded-opentype'), /* IE6-IE8 */
-        url(${visueltBoldWOFF2}) format('woff2'), /* Super Modern Browsers */
-        url(${visueltBoldWOFF}) format('woff'), /* Pretty Modern Browsers */
+    url(${visueltBoldWOFF2}) format('woff2'), /* Super Modern Browsers */
+    url(${visueltBoldWOFF}) format('woff'), /* Pretty Modern Browsers */
         url(${visueltBoldTTF})  format('truetype'), /* Safari, Android, iOS */
         url('${visueltBoldSVG}#svgFontName') format('svg'); /* Legacy iOS */
-  }
+      }
 
-  @font-face {
-    font-family: 'visuelt';
-    font-style: italic;
-    font-weight: 600;
-    src: url(${visueltBoldItalicEOT}); /* IE9 Compat Modes */
-    src: url(${visueltBoldItalicEOT}?#iefix) format('embedded-opentype'), /* IE6-IE8 */
+      @font-face {
+        font-family: 'visuelt';
+        font-style: italic;
+        font-weight: 600;
+        src: url(${visueltBoldItalicEOT}); /* IE9 Compat Modes */
+        src: url(${visueltBoldItalicEOT}?#iefix) format('embedded-opentype'), /* IE6-IE8 */
         url(${visueltBoldItalicWOFF2}) format('woff2'), /* Super Modern Browsers */
         url(${visueltBoldItalicWOFF}) format('woff'), /* Pretty Modern Browsers */
         url(${visueltBoldItalicTTF})  format('truetype'), /* Safari, Android, iOS */
         url('${visueltBoldItalicSVG}#svgFontName') format('svg'); /* Legacy iOS */
-  }
+      }
 
-  html {
-    box-sizing: border-box;
-  }
+      html {
+        box-sizing: border-box;
+      }
 
-  *,
-  *:before,
-  *:after {
-    box-sizing: inherit;
-  }
+      *,
+      *:before,
+      *:after {
+        box-sizing: inherit;
+      }
 
-  html,
-  body {
-    background-color: #fff;
-    font-size: ${fontSize('small')};
-    height: 100%;
-    position: relative;
-    width: 100%;
-  }
+      html,
+      body {
+        background-color: #fff;
+        font-size: ${fontSize('small')};
+        height: 100%;
+        position: relative;
+        width: 100%;
+      }
 
-  body:not(.fontLoaded) {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  }
+      body:not(.fontLoaded) {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      }
 
-  body.fontLoaded {
-    font-family: 'visuelt', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      body.fontLoaded {
+        font-family: 'visuelt', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
-    h1, h2, h3, h4, h5, h6,
-    button, input, optgroup, select, textarea,
-    .ui.button {
-      font-family: 'visuelt', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    }
-  }
+        h1, h2, h3, h4, h5, h6,
+        button, input, optgroup, select, textarea,
+        .ui.button {
+          font-family: 'visuelt', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+      }
 
-  body.modal-active {
-    overflow: hidden;
-  }
+      body.modal-active {
+        overflow: hidden;
+      }
 
-  p,
-  label {
-    line-height: 1.5em;
-  }
+      p,
+      label {
+        line-height: 1.5em;
+      }
 
-  /* Semantic UI Overrides */
-  .ui.message,
-  .ui.message.warning,
-  .ui.message.info {
-    box-shadow: none;
-  }
-`;
+      /* Semantic UI Overrides */
+      .ui.message,
+      .ui.message.warning,
+      .ui.message.info {
+        box-shadow: none;
+      }
+      `;
+
+injectGlobal`${globalCss}`;

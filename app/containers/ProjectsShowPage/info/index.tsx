@@ -1,4 +1,5 @@
 import React from 'react';
+import { isNullOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
@@ -12,16 +13,14 @@ import GetProject from 'resources/GetProject';
 
 interface InputProps {}
 
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <GetProject slug={inputProps.params.slug}>
+export default withRouter<InputProps>((props: WithRouterProps) => (
+  <GetProject slug={props.params.slug}>
     {project => {
-      const { slug } = inputProps.params;
-
-      if (!project) return null;
+      if (isNullOrError(project)) return null;
 
       return (
         <>
-          <Header projectSlug={slug} />
+          <Header projectSlug={props.params.slug} />
 
           <ContentContainer>
             <ProjectInfo projectId={project.id} />

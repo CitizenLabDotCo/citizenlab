@@ -1,12 +1,13 @@
 import React from 'react';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs';
+import { isNullOrError } from 'utils/helperUtils';
+import { Subscription, BehaviorSubject, Observable } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
-import { IIdeaData, ideaByIdStream, ideaBySlugStream } from 'services/ideas';
-import { isString } from 'lodash';
+import { IIdea, IIdeaData, ideaByIdStream, ideaBySlugStream } from 'services/ideas';
 
 interface InputProps {
   id?: string | null;
   slug?: string | null;
+  resetOnChange?: boolean;
 }
 
 type children = (renderProps: GetIdeaChildProps) => JSX.Element | null;
@@ -16,10 +17,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  idea: IIdeaData | null;
+  idea: IIdeaData | null | Error;
 }
 
-export type GetIdeaChildProps = IIdeaData | null;
+export type GetIdeaChildProps = IIdeaData | null | Error;
 
 export default class GetIdea extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -33,24 +34,27 @@ export default class GetIdea extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { id, slug } = this.props;
+    const { id, slug, resetOnChange } = this.props;
 
     this.inputProps$ = new BehaviorSubject({ id, slug });
 
     this.subscriptions = [
       this.inputProps$
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .filter(({ id, slug }) => (isString(id) || isString(slug)))
+        .do(() => resetOnChange && this.setState({ idea: null }))
         .switchMap(({ id, slug }) => {
+          let idea$: Observable<IIdea | null | Error> = Observable.of(null);
+
           if (id) {
-            return ideaByIdStream(id).observable;
+            idea$ = ideaByIdStream(id).observable;
           } else if (slug) {
-            return ideaBySlugStream(slug).observable;
+            idea$ = ideaBySlugStream(slug).observable;
           }
 
-          return Observable.of(null);
-        }).subscribe((idea) => {
-          this.setState({ idea: (idea ? idea.data : null) });
+          return idea$;
+        })
+        .subscribe((idea) => {
+          this.setState({ idea: !isNullOrError(idea) ? idea.data : idea });
         })
     ];
   }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { isNullOrError } from 'utils/helperUtils';
 import { Subscription, BehaviorSubject, Observable } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { projectByIdStream, projectBySlugStream, IProjectData, IProject } from 'services/projects';
@@ -6,6 +7,7 @@ import { projectByIdStream, projectBySlugStream, IProjectData, IProject } from '
 interface InputProps {
   id?: string | null;
   slug?: string | null;
+  resetOnChange?: boolean;
 }
 
 type children = (renderProps: GetProjectChildProps) => JSX.Element | null;
@@ -15,10 +17,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  project: IProjectData | null;
+  project: IProjectData | null | Error;
 }
 
-export type GetProjectChildProps = IProjectData | null;
+export type GetProjectChildProps = IProjectData | null | Error;
 
 export default class GetProject extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -32,15 +34,16 @@ export default class GetProject extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { id, slug } = this.props;
+    const { id, slug, resetOnChange } = this.props;
 
     this.inputProps$ = new BehaviorSubject({ id, slug });
 
     this.subscriptions = [
       this.inputProps$
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
+        .do(() => resetOnChange && this.setState({ project: null }))
         .switchMap(({ id, slug }) => {
-          let project$: Observable<IProject | null> = Observable.of(null);
+          let project$: Observable<IProject | null | Error> = Observable.of(null);
 
           if (id) {
             project$ = projectByIdStream(id).observable;
@@ -51,7 +54,7 @@ export default class GetProject extends React.Component<Props, State> {
           return project$;
         })
         .subscribe((project) => {
-          this.setState({ project: (project ? project.data : null) });
+          this.setState({ project: !isNullOrError(project) ? project.data : project });
         })
     ];
   }

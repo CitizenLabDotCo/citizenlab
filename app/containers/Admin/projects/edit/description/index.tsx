@@ -1,7 +1,9 @@
 // Libraries
 import React from 'react';
 import { isEmpty } from 'lodash';
+import { isNullOrError } from 'utils/helperUtils';
 import { Formik } from 'formik';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // Services / Data loading
 import { updateProject,  IProjectData } from 'services/projects';
@@ -13,11 +15,15 @@ import DescriptionEditionForm, { Values } from './DescriptionEditionForm';
 // Typing
 import { API } from 'typings';
 
-interface Props {
+interface InputProps {}
+
+interface DataProps {
   project: IProjectData;
 }
 
-class ProjectDescription extends React.Component<Props> {
+interface Props extends InputProps, DataProps {}
+
+class ProjectDescription extends React.PureComponent<Props> {
   saveProject = (values, { setSubmitting, setErrors, setStatus, resetForm }) => {
     const { project } = this.props;
 
@@ -60,8 +66,8 @@ class ProjectDescription extends React.Component<Props> {
   }
 }
 
-export default (props) => (
-  <GetProject slug={props.params.slug}>
-    {project => project && < ProjectDescription {...props} project={project} />}
+export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps) => (
+  <GetProject slug={inputProps.params.slug}>
+    {project => !isNullOrError(project) ? < ProjectDescription {...inputProps} project={project} /> : null}
   </GetProject>
-);
+));

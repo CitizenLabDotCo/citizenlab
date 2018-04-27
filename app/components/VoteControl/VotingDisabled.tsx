@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { isNullOrError } from 'utils/helperUtils';
 import { darken } from 'polished';
 import { FormattedDate } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -44,6 +45,7 @@ class VotingDisabled extends React.PureComponent<Props, State> {
 
   reasonToMessage = () => {
     const { disabled_reason, future_enabled } = this.props.votingDescriptor;
+
     if (disabled_reason === 'project_inactive') {
       return messages.votingDisabledProjectInactive;
     } else if (disabled_reason === 'voting_disabled' && future_enabled) {
@@ -61,16 +63,16 @@ class VotingDisabled extends React.PureComponent<Props, State> {
     event.preventDefault();
     event.stopPropagation();
 
-    const projectSlug = (this.props.project && this.props.project.attributes.slug);
+    const { project } = this.props;
 
-    if (projectSlug) {
-      browserHistory.push(`/projects/${projectSlug}`);
+    if (!isNullOrError(project)) {
+      browserHistory.push(`/projects/${project.attributes.slug}`);
     }
   }
 
   render() {
     const { votingDescriptor, project } = this.props;
-    const projectTitle = project && project.attributes.title_multiloc || {};
+    const projectTitle = (!isNullOrError(project) ? project.attributes.title_multiloc : {});
     const message = this.reasonToMessage();
 
     return (

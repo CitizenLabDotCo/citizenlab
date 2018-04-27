@@ -1,11 +1,11 @@
 import React from 'react';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { IPhaseData, phasesStream } from 'services/phases';
-import { isString } from 'lodash';
 
 interface InputProps {
   projectId?: string | null | undefined;
+  resetOnChange?: boolean;
 }
 
 type children = (renderProps: GetPhasesChildProps) => JSX.Element | null;
@@ -32,16 +32,16 @@ export default class GetPhases extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { projectId } = this.props;
+    const { projectId, resetOnChange } = this.props;
 
     this.inputProps$ = new BehaviorSubject({ projectId });
 
     this.subscriptions = [
       this.inputProps$
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .filter(({ projectId }) => isString(projectId))
-        .switchMap(({ projectId }: { projectId: string }) => phasesStream(projectId).observable)
-        .subscribe((phases) => this.setState({ phases: phases.data }))
+        .do(() => resetOnChange && this.setState({ phases: null }))
+        .switchMap(({ projectId }) => projectId ? phasesStream(projectId).observable : Observable.of(null))
+        .subscribe((phases) => this.setState({ phases: (phases ? phases.data : null) }))
     ];
   }
 

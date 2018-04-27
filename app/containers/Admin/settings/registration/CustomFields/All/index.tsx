@@ -7,7 +7,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import T from 'components/T';
 
-import { List, SortableRow } from 'components/admin/ResourceList';
+import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import Button from 'components/UI/Button';
@@ -19,12 +19,6 @@ const ButtonWrapper = styled.div`
   margin-top: 2rem;
 `;
 
-const TextCell = styled.div`
-  color: #333;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 20px;
-`;
 
 interface InputProps {}
 
@@ -110,40 +104,50 @@ class CustomFields extends React.Component<Props & InjectedIntlProps, State> {
 
   render() {
     const listItems = this.listItems() || [];
+    const listItemsLength = listItems.length;
+    let lastItem = false;
 
     return (
       <>
         <List key={listItems.length}>
-          {listItems.map((field, index) => (
-            <SortableRow
-              key={field.id}
-              id={field.id}
-              index={index}
-              moveRow={this.handleDragRow}
-              dropRow={this.handleDropRow}
-            >
-              <Toggle
-                value={field.attributes.enabled}
-                onChange={this.handleOnEnabledToggle(field)}
-              />
-              <TextCell className="expand">
-                <T value={field.attributes.title_multiloc} />
-              </TextCell>
-              {!this.isBuiltInField(field) &&
-                <>
-                  <Button disabled={this.isBuiltInField(field)} onClick={this.handleOnDeleteClick(field.id)} style="text" circularCorners={false} icon="delete">
-                    <FormattedMessage {...messages.deleteButtonLabel} />
-                  </Button>
-                  <Button disabled={this.isBuiltInField(field)} linkTo={`/admin/settings/registration/custom_fields/${field.id}/general`} style="secondary" circularCorners={false} icon="edit">
-                    <FormattedMessage {...messages.editButtonLabel} />
-                  </Button>
-                </>
+          {
+            listItems.map((field, index) => {
+              if (index === listItemsLength - 1) {
+                lastItem = true;
               }
-              {this.isBuiltInField(field) &&
-                <div><FormattedMessage {...messages.systemField} /></div>
-              }
-            </SortableRow>
-          ))}
+              return (
+                <SortableRow
+                  key={field.id}
+                  id={field.id}
+                  index={index}
+                  lastItem={lastItem}
+                  moveRow={this.handleDragRow}
+                  dropRow={this.handleDropRow}
+                >
+                  <Toggle
+                    value={field.attributes.enabled}
+                    onChange={this.handleOnEnabledToggle(field)}
+                  />
+                  <TextCell className="expand">
+                    <T value={field.attributes.title_multiloc} />
+                  </TextCell>
+                  {!this.isBuiltInField(field) &&
+                    <>
+                      <Button disabled={this.isBuiltInField(field)} onClick={this.handleOnDeleteClick(field.id)} style="text" circularCorners={false} icon="delete">
+                        <FormattedMessage {...messages.deleteButtonLabel} />
+                      </Button>
+                      <Button disabled={this.isBuiltInField(field)} linkTo={`/admin/settings/registration/custom_fields/${field.id}/general`} style="secondary" circularCorners={false} icon="edit">
+                        <FormattedMessage {...messages.editButtonLabel} />
+                      </Button>
+                    </>
+                  }
+                  {this.isBuiltInField(field) &&
+                    <div><FormattedMessage {...messages.systemField} /></div>
+                  }
+                </SortableRow>
+              );
+            })
+          }
         </List>
         <FeatureFlag name="user_custom_fields">
           <ButtonWrapper>

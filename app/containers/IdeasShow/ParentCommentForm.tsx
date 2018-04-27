@@ -1,6 +1,7 @@
 import React from 'react';
 import { isString, trim, get } from 'lodash';
 import { adopt } from 'react-adopt';
+import { isNullOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -145,9 +146,9 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
     const { authUser, idea, ideaId } = this.props;
     const { formatMessage } = this.props.intl;
     const { inputValue, processing, errorMessage } = this.state;
-    const commentingEnabled = (idea ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
-    const commentingDisabledReason = (idea ? get(idea.relationships.action_descriptor.data.commenting, 'disabled_reason', null) : null);
-    const projectId = (idea ? get(idea.relationships.project.data, 'id', null) : null);
+    const commentingEnabled = (!isNullOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
+    const commentingDisabledReason = (!isNullOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'disabled_reason', null) : null);
+    const projectId = (!isNullOrError(idea) ? get(idea.relationships.project.data, 'id', null) : null);
     const placeholder = formatMessage(messages.commentBodyPlaceholder);
     const commentButtonDisabled = (!inputValue || inputValue === '');
     const canComment = (authUser && commentingEnabled);
@@ -160,7 +161,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
           commentingDisabledReason={commentingDisabledReason}
           projectId={projectId}
         />
-        {(authUser && canComment) && 
+        {(authUser && canComment) &&
           <CommentContainer className="e2e-comment-form ideaCommentForm">
             <StyledAuthor authorId={authUser.id} />
 

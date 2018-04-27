@@ -439,7 +439,7 @@ class Navbar extends React.PureComponent<Props, State> {
                 <FormattedMessage {...messages.pageOverview} />
               </NavigationItem>
 
-              {projectsList && projectsList.length > 0 &&
+              {(projectsList === null || (projectsList && projectsList.length > 0)) &&
                 <NavigationDropdown>
                   <NavigationDropdownItem onClick={this.handleProjectsDropdownToggle}>
                     <NavigationDropdownItemText>
@@ -458,7 +458,7 @@ class Navbar extends React.PureComponent<Props, State> {
                     <NavigationDropdownMenu onClickOutside={this.handleProjectsDropdownOnClickOutside}>
                       <NavigationDropdownMenuInner>
                         <NavigationDropdownList>
-                          {tenantLocales && projectsList.map((project) => (
+                          {tenantLocales && projectsList && projectsList.length > 0 && projectsList.map((project) => (
                             <NavigationDropdownListItem key={project.id} to={getProjectUrl(project)}>
                               {getLocalized(project.attributes.title_multiloc, locale, tenantLocales)}
                             </NavigationDropdownListItem>

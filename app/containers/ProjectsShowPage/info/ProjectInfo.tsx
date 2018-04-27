@@ -1,6 +1,7 @@
 import React from 'react';
 import 'moment-timezone';
 import { adopt } from 'react-adopt';
+import { isNullOrError } from 'utils/helperUtils';
 
 // components
 import ImageZoom from 'react-medium-image-zoom';
@@ -142,7 +143,7 @@ const Data = adopt<DataProps, InputProps>({
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {({ project, projectImages }) => {
-      if (!project) return null;
+      if (isNullOrError(project)) return null;
 
       return (
         <Container>

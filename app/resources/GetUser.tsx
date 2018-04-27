@@ -4,8 +4,8 @@ import shallowCompare from 'utils/shallowCompare';
 import { IUser, IUserData, userBySlugStream, userByIdStream } from 'services/users';
 
 interface InputProps {
-  id?: string;
-  slug?: string;
+  id?: string | null;
+  slug?: string | null;
 }
 
 type children = (renderProps: GetUserChildProps) => JSX.Element | null;
