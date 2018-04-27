@@ -48,15 +48,12 @@ class WebApi::V1::ModeratorsController < ApplicationController
   end
 
   def users_search
-    # authorize Membership
-    # @users = policy_scope(User)
-    #   .search_by_all(params[:search])
-    #   .includes(:memberships)
-    #   .page(params.dig(:page, :number))
-    #   .per(params.dig(:page, :size))
-
-    # render :json => @users, :each_serializer => WebApi::V1::MemberSerializer, :group_id => params[:group_id]
-    render json: [], each_serializer: WebApi::V1::UserSerializer
+    authorize Moderator.new({user_id: nil, project_id: params[:project_id]})
+    @users = User
+      .search_by_all(params[:search])
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
+    render json: @users, each_serializer: WebApi::V1::ModeratorSerializer, project_id: params[:project_id]
   end
 
 

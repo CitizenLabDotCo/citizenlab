@@ -126,4 +126,61 @@ resource "Moderators" do
       end
     end
   end
+
+  get "web_api/v1/projects/:project_id/moderators/users_search" do
+    context "when moderator" do
+      before do
+        @project = create(:project)
+        @moderator = create(:moderator, project: @project)
+        token = Knock::AuthToken.new(payload: { sub: @moderator.id }).token
+        header 'Authorization', "Bearer #{token}"
+      end
+
+      with_options scope: :page do
+        parameter :number, "Page number"
+        parameter :size, "Number of users per page"
+      end
+      parameter :search, "The query used for searching users", required: true
+
+      let(:project_id) { @project.id }
+      let(:search) { 'jo' }
+      let(:other_project) { create(:project) }
+      let!(:u1) { 
+        create(:user, 
+          first_name: 'Freddy', last_name: 'Smith', email: 'jofreddy@jojo.com', 
+          roles: [{'type' => 'project_moderator', 'project_id' => @project.id}]) 
+      }
+      let!(:u2) { 
+        create(:user, 
+          first_name: 'Jon', last_name: 'Smith', email: 'freddy1@zmail.com', 
+          roles: [{'type' => 'project_moderator', 'project_id' => other_project.id}]) 
+      }
+      let!(:u3) { 
+        create(:user, 
+          first_name: 'Jonny', last_name: 'Johnson', email: 'freddy2@zmail.com', 
+          roles: []) 
+      }
+      let!(:u4) { 
+        create(:user, 
+          first_name: 'Freddy', last_name: 'Johnson', email: 'freddy3@zmail.com', 
+          roles: [{'type' => 'project_moderator', 'project_id' => @project.id}, {'type' => 'project_moderator', 'project_id' => other_project.id}]) 
+      }
+      let!(:u5) { 
+        create(:user, 
+          first_name: 'Freddy', last_name: 'Smith', email: 'freddy4@zmail.com', 
+          roles: [{'type' => 'project_moderator', 'project_id' => @project.id}]) 
+      }
+
+      example_request "Search for users and whether or not they are member of the group" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to be >= 4
+        expect(json_response[:data].select{ |d| d[:id] == u1.id }.first.dig(:attributes, :is_moderator)).to be true
+        expect(json_response[:data].select{ |d| d[:id] == u2.id }.first.dig(:attributes, :is_moderator)).to be false
+        expect(json_response[:data].select{ |d| d[:id] == u3.id }.first.dig(:attributes, :is_moderator)).to be false
+        expect(json_response[:data].select{ |d| d[:id] == u4.id }.first.dig(:attributes, :is_moderator)).to be true
+        expect(json_response[:data].select{ |d| d[:id] == u5.id }.empty?).to be true
+      end
+    end
+  end
 end
