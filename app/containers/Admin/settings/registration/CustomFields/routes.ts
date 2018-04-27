@@ -1,10 +1,4 @@
-// Helper function to load components as async chunks
-// Explanation why the import must be static: see the warnings at the bottom of this section: https://webpack.js.org/api/module-methods/#import-
-const loadAndRender = (importPromise) => (_nextState, cb) => {
-  importPromise
-  .then((Module) => cb(null, Module.default))
-  .catch((e) => console.error(e)); // eslint-disable-line no-console
-};
+import loadAndRender from 'utils/loadAndRender';
 
 export default () => ({
   getComponent: loadAndRender(import('./')),
