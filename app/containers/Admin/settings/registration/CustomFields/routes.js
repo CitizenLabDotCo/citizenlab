@@ -1,31 +1,32 @@
-import Wrapper from './';
-import All from './All';
-import Edit from './Edit';
-import General from './Edit/General';
-import Options from './Edit/Options';
-import New from './New';
+// Helper function to load components as async chunks
+// Explanation why the import must be static: see the warnings at the bottom of this section: https://webpack.js.org/api/module-methods/#import-
+const loadAndRender = (importPromise) => (_nextState, cb) => {
+  importPromise
+  .then((Module) => cb(null, Module.default))
+  .catch((e) => console.error(e)); // eslint-disable-line no-console
+};
 
 export default () => ({
-  component: Wrapper,
+  getComponent: loadAndRender(import('./')),
   indexRoute: {
-    component: All,
+    getComponent: loadAndRender(import('./All')),
   },
   childRoutes: [
     {
       path: 'new',
-      component: New,
+      getComponent: loadAndRender(import('./New')),
     },
     {
       path: ':customFieldId',
-      component: Edit,
+      getComponent: loadAndRender(import('./Edit')),
       childRoutes: [
         {
           path: 'general',
-          component: General,
+          getComponent: loadAndRender(import('./Edit/General')),
         },
         {
           path: 'options',
-          component: Options,
+          getComponent: loadAndRender(import('./Edit/Options')),
         },
       ],
     },
