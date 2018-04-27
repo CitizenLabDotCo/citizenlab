@@ -590,6 +590,7 @@
   "app.containers.SignIn.signInError": "Der blev ikke fundet nogen konto med de angivne adgangsoplysninger",
   "app.containers.SignIn.signUp": "Registrer dig",
   "app.containers.SignIn.submit": "Log ind",
+  "app.containers.SignIn.title": "",
   "app.containers.SignInPage.title": "Log ind",
   "app.containers.SignInUpBanner.slogan": "Hvad er dine ideer? Få din stemme hørt!",
   "app.containers.SignUp.acceptTermsAndConditions": "By signing up, you agree to our {tacLink}",
