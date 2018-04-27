@@ -180,7 +180,7 @@ FactoryBot.define do
         group = create(:group)
         project.groups << group
         if evaluator&.user
-          group.users << evaluator&.user
+          group.members << evaluator&.user
         end
       end
     end
