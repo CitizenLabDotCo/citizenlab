@@ -13,14 +13,14 @@ class User < ApplicationRecord
   has_many :votes, dependent: :nullify
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
   has_many :initiator_notifications, class_name: 'Notification', foreign_key: :initiating_user_id, dependent: :nullify
-  has_many :memberships, dependent: :destroy
-  has_many :groups, through: :memberships
   has_many :invites, foreign_key: :inviter_id, dependent: :destroy
   has_many :identities, dependent: :destroy
   has_many :spam_reports, dependent: :nullify
   has_many :activities, dependent: :nullify
   has_many :inviter_invites, class_name: 'Invite', foreign_key: :inviter_id, dependent: :nullify
   has_one :invitee_invite, class_name: 'Invite', foreign_key: :invitee_id, dependent: :destroy
+  has_many :memberships, dependent: :destroy
+  has_many :manual_groups, class_name: 'Group', source: 'group', through: :memberships
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
@@ -122,6 +122,14 @@ class User < ApplicationRecord
 
   def active?
     self.registration_completed_at.present? && !self.invite_pending?
+  end
+
+  def groups
+    manual_groups + SmartGroupsService.new.groups_for_user(self)
+  end
+
+  def group_ids
+    manual_group_ids + SmartGroupsService.new.groups_for_user(self).map(&:id)
   end
   
   private

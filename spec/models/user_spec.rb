@@ -310,6 +310,31 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "groups" do
+
+    let!(:manual_group) { create(:group) }
+    let!(:rules_group) {
+      create(:smart_group, rules: [
+        {ruleType: 'email', predicate: 'is', value: 'user@test.com'}
+      ])
+    }
+
+    it "returns manual groups" do
+      user = create(:user, manual_groups: [manual_group])
+      expect(user.groups).to match [manual_group]
+    end
+
+    it "returns rule groups" do
+      user = create(:user, email: 'user@test.com')
+      expect(user.groups).to match [rules_group]
+    end
+
+    it "returns manual groups and rule groups" do
+      user = create(:user, manual_groups: [manual_group], email: 'user@test.com')
+      expect(user.groups).to match [manual_group, rules_group]
+    end
+  end
+
 
 
 end

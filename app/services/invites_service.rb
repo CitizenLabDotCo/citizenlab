@@ -168,7 +168,7 @@ class InvitesService
       first_name: params["first_name"], 
       last_name: params["last_name"], 
       locale: params["locale"] || default_params["locale"] || Tenant.settings('core', 'locales').first, 
-      group_ids: params["group_ids"] || default_params["group_ids"] || [],
+      manual_group_ids: params["group_ids"] || default_params["group_ids"] || [],
       roles: params["roles"] || default_params["roles"] || [],
       invite_status: 'pending'
     })
