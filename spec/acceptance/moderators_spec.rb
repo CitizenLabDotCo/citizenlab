@@ -78,6 +78,31 @@ resource "Moderators" do
     end
   end
 
+  post "web_api/v1/projects/:project_id/moderators" do
+    with_options scope: :moderator do
+        parameter :user_id, "The id of user to become moderator (the id of the moderator will be the same).", required: true
+      end
+    ValidationErrorHelper.new.error_fields(self, User)
+    
+    context "when moderator" do
+      before do
+        @project = create(:project)
+        @moderator = create(:moderator, project: @project)
+        token = Knock::AuthToken.new(payload: { sub: @moderator.id }).token
+        header 'Authorization', "Bearer #{token}"
+      end
+
+      let(:project_id) { @project.id }
+      let(:user_id) { create(:user).id }
+
+      example_request "Add a moderator role" do
+        expect(response_status).to eq 201
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:id)).to eq user_id
+      end
+    end
+  end
+
   delete "web_api/v1/projects/:project_id/moderators/:user_id" do
     ValidationErrorHelper.new.error_fields(self, User)
 

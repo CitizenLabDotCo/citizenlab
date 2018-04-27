@@ -1,7 +1,7 @@
 class WebApi::V1::ModeratorsController < ApplicationController
 
   before_action :do_authorize, except: [:index]
-  before_action :set_moderator, only: [:show, :create, :destroy]
+  before_action :set_moderator, only: [:show, :destroy]
   
   skip_after_action :verify_authorized, only: [:users_search]
   skip_after_action :verify_policy_scoped, only: [:index]
@@ -28,11 +28,12 @@ class WebApi::V1::ModeratorsController < ApplicationController
 
   # insert
   def create
-    @moderator.add_role 'project_moderator', project_id: params[:project_id]
-    if @moderator.save
-      render json: @moderator, serializer: WebApi::V1::UserSerializer, status: :created
+    @user = User.find create_moderator_params[:user_id]
+    @user.add_role 'project_moderator', project_id: params[:project_id]
+    if @user.save
+      render json: @user, serializer: WebApi::V1::UserSerializer, status: :created
     else
-      render json: { errors: @moderator.errors.details }, status: :unprocessable_entity
+      render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
   end
 
@@ -63,11 +64,11 @@ class WebApi::V1::ModeratorsController < ApplicationController
     @moderator = User.find params[:id]
   end
 
-  # def moderator_params
-  #   params.require(:moderator).permit(
-  #     :user_id
-  #   )
-  # end
+  def create_moderator_params
+    params.require(:moderator).permit(
+      :user_id
+    )
+  end
 
   def secure_controller?
     false
