@@ -20,11 +20,17 @@ class SmartGroupsService
     end
   end
 
+  # This method is very carefully written to do it all in
+  # 2 queries, so beware when editing
   def groups_for_user user
-    # Very naive but correct implementation
-    Group.where(membership_type: 'rules').each.select do |group|
-      filter(User.where(id: user.id), group.rules).count == 1
-    end
+    Group.where(membership_type: 'rules').map do |group|
+      # We're using `id: [user.id]` instead of `id: user.id` to
+      # workaround this rails/arel issue:
+      # https://github.com/rails/rails/issues/20077
+      Group
+        .where(id: group.id)
+        .where(filter(User.where(id: [user.id]), group.rules).exists)
+    end.inject(:or)
   end
 
   def generate_rules_json_schema

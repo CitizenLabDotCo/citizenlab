@@ -129,7 +129,7 @@ class User < ApplicationRecord
   end
 
   def group_ids
-    manual_group_ids + SmartGroupsService.new.groups_for_user(self).map(&:id)
+    manual_group_ids + SmartGroupsService.new.groups_for_user(self).pluck(:id)
   end
   
   private
