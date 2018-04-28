@@ -310,8 +310,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "groups" do
-
+  describe "groups and group_ids" do
     let!(:manual_group) { create(:group) }
     let!(:rules_group) {
       create(:smart_group, rules: [
@@ -322,16 +321,19 @@ RSpec.describe User, type: :model do
     it "returns manual groups" do
       user = create(:user, manual_groups: [manual_group])
       expect(user.groups).to match [manual_group]
+      expect(user.group_ids).to match [manual_group.id]
     end
 
     it "returns rule groups" do
       user = create(:user, email: 'user@test.com')
       expect(user.groups).to match [rules_group]
+      expect(user.group_ids).to match [rules_group.id]
     end
 
     it "returns manual groups and rule groups" do
       user = create(:user, manual_groups: [manual_group], email: 'user@test.com')
       expect(user.groups).to match [manual_group, rules_group]
+      expect(user.group_ids).to match [manual_group.id, rules_group.id]
     end
   end
 

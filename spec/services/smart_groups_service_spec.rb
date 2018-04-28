@@ -72,7 +72,7 @@ describe SmartGroupsService do
       expect(groups.map(&:id)).to eq [group1.id]
     end
 
-    pending "uses a maximun of 2 queries" do
+    it "uses a maximun of 2 queries" do
       query_count = count_queries do
         groups = service.groups_for_user(user)
       end

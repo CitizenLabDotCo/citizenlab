@@ -11,14 +11,7 @@ class IdeaPolicy < ApplicationPolicy
       if user&.admin?
         scope.all
       elsif user
-        # This version caused issues with the pagination, so we use a more expensive 2-query approach.
-        # TODO: Improve this 
-        # scope
-        #   .left_outer_joins(project: {groups: :memberships})
-        #   .where("projects.id IS NULL OR \
-        #     projects.visible_to = 'public' OR \
-        #     (projects.visible_to = 'groups' AND memberships.user_id = ?)", user&.id)
-        project_ids = Pundit.policy_scope(user, Project).select(:id).map(&:id)
+        project_ids = Pundit.policy_scope(user, Project).pluck(:id)
         scope.where(project_id: project_ids, publication_status: ['published', 'closed'])
       else
         scope
