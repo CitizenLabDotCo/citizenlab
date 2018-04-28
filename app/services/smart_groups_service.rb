@@ -30,7 +30,7 @@ class SmartGroupsService
       Group
         .where(id: group.id)
         .where(filter(User.where(id: [user.id]), group.rules).exists)
-    end.inject(:or)
+    end.inject(:or) || Group.none
   end
 
   def generate_rules_json_schema
