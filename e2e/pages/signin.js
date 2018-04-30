@@ -4,8 +4,7 @@ const signinCommands = {
     .waitForElementVisible('@form')
     .setValue('@email', email)
     .setValue('@password', password)
-    .click('@submit')
-    .waitForElementVisible('#e2e-landing-page');
+    .click('@submit');
   },
 };
 
