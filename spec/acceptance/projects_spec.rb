@@ -395,5 +395,23 @@ resource "Projects" do
         expect(json_response[:data].size).to eq @projects.size
       end
     end
+
+    context 'when non-moderator/non-admin user' do
+      before do
+        @user = create(:user, roles: [])
+        token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+        header 'Authorization', "Bearer #{token}"
+
+        @projects = ['published','published','draft','published','archived','published','archived']
+          .map { |ps|  create(:project, publication_status: ps)}
+      end
+
+      example "Normal users cannot moderate any projects" do
+        do_request(filter_can_moderate: true, publication_statuses: Project::PUBLICATION_STATUSES)
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 0
+      end
+    end
   end
 end
