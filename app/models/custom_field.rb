@@ -4,7 +4,7 @@ class CustomField < ApplicationRecord
   has_many :custom_field_options, dependent: :destroy
 
   FIELDABLE_TYPES = %w(User)
-  INPUT_TYPES = %w(text multiline_text select multiselect checkbox date)
+  INPUT_TYPES = %w(text number multiline_text select multiselect checkbox date)
 
   CODES = %w(gender birthyear domicile education)
 
