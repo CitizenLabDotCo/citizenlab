@@ -71,7 +71,7 @@ class Phase extends React.PureComponent<Props, State> {
     if (locale && tenantLocales && phase) {
       const participationMethod = phase.attributes.participation_method;
       const description = getLocalized(phase.attributes.description_multiloc, locale, tenantLocales);
-
+      console.log(phase.attributes.presentation_mode);
       return (
         <StyledContentContainer className={className}>
           {(description && description.length > 0) &&
@@ -93,7 +93,7 @@ class Phase extends React.PureComponent<Props, State> {
                 pageSize={12}
                 phaseId={phase.id}
                 showViewToggle={true}
-                defaultView={'card'}
+                defaultView={phase.attributes.presentation_mode}
               />
             </IdeasWrapper>
           }
