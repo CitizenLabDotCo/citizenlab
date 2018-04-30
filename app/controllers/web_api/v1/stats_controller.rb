@@ -4,12 +4,13 @@ class WebApi::V1::StatsController < ApplicationController
 
   @@stats_service = StatsService.new
   def users_by_time
-    serie = @@stats_service.group_by_time(User, 'created_at', params[:start_at], params[:end_at], params[:interval])
+    serie = @@stats_service.group_by_time(User.active, 'registration_completed_at', params[:start_at], params[:end_at], params[:interval])
     render json: serie
   end
 
   def users_by_gender
     serie = User
+      .active
       .where(created_at: params[:start_at]..params[:end_at])
       .group("custom_field_values->'gender'")
       .order("custom_field_values->'gender'")
@@ -20,6 +21,7 @@ class WebApi::V1::StatsController < ApplicationController
 
   def users_by_birthyear
     serie = User
+      .active
       .where(created_at: params[:start_at]..params[:end_at])
       .group("custom_field_values->'birthyear'")
       .order("custom_field_values->'birthyear'")
@@ -30,6 +32,7 @@ class WebApi::V1::StatsController < ApplicationController
 
   def users_by_domicile
     serie = User
+      .active
       .where(created_at: params[:start_at]..params[:end_at])
       .group("custom_field_values->'domicile'")
       .order("custom_field_values->'domicile'")
@@ -41,6 +44,7 @@ class WebApi::V1::StatsController < ApplicationController
 
   def users_by_education
     serie = User
+      .active
       .where(created_at: params[:start_at]..params[:end_at])
       .group("custom_field_values->'education'")
       .order("custom_field_values->'education'")

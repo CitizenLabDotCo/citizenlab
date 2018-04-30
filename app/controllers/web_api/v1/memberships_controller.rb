@@ -46,12 +46,6 @@ class WebApi::V1::MembershipsController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    # @users += policy_scope(User)
-    #   .where("first_name || ' ' || last_name || ' ' || email ILIKE (?)", "%#{params[:query]}%")
-    #   .where.not(id: @users.map(&:id))
-    #   .includes(:memberships)
-    #   .page(params.dig(:page, :number))
-    #   .per(params.dig(:page, :size))
     render :json => @users, :each_serializer => WebApi::V1::MemberSerializer, :group_id => params[:group_id]
   end
 

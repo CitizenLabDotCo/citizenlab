@@ -21,7 +21,7 @@ class EmailCampaigns::UserPlatformDigestIdeaSerializer < ActiveModel::Serializer
   end
 
   def top_comments
-    top_coms = Comment.where(idea_id: object.id)
+    top_coms = Comment.where(idea_id: object.id, publication_status: 'published')
     top_coms.sort_by{|c| -c.children.count}.take N_TOP_COMMENTS
   end
 
