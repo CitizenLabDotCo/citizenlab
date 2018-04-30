@@ -79,7 +79,7 @@ interface State {
 }
 
 export default class MoreActionsMenu extends React.PureComponent<Props, State> {
-  constructor (props) {
+  constructor (props: Props) {
     super(props);
     this.state = {
       visible: false,
@@ -122,23 +122,24 @@ export default class MoreActionsMenu extends React.PureComponent<Props, State> {
                 style="text"
                 width="100%"
                 justify="left"
+                size="1"
                 key={index}
                 onClick={action.handler}
                 icon={action.icon}
                 text={action.label}
+                textHoverColor="#fff"
                 circularCorners={false}
               />
             ))}
           </StyledTooltip>
         </MoreOptionsIconWrapper>
 
-        {label ? (
+        {label &&
           <MoreOptionsLabel>
             {label}
           </MoreOptionsLabel>
-        ) : null }
+        }
       </Container>
     );
   }
-
 }

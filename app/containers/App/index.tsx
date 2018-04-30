@@ -136,15 +136,6 @@ export default class App extends React.PureComponent<Props & RouterState, State>
           } else {
             store.dispatch({ type: LOAD_CURRENT_USER_SUCCESS, payload: authUser });
           }
-
-          // Important (and just a tiny bit hacky)!
-          // force a remount of all child components after login/logout event
-          // this is needed to guarantee any subscriptions inside of components get reintialised
-          // after streams.ts has executed a reset() of all its streams
-          if ((this.state.authUser && !authUser) || (!this.state.authUser && authUser && authUser.data.attributes.registration_completed_at)) {
-            this.setState({ visible: false });
-            setTimeout(() => this.setState({ visible: true }), 50);
-          }
         }),
         locale$.do((locale) => {
           moment.locale((locale === 'no' ? 'nb' : locale));
