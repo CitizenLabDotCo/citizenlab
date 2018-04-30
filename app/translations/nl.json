@@ -584,6 +584,7 @@
   "app.containers.SignIn.signInError": "Er werd geen account gevonden met deze inloggegevens",
   "app.containers.SignIn.signUp": "Registreren",
   "app.containers.SignIn.submit": "Inloggen",
+  "app.containers.SignIn.title": "",
   "app.containers.SignInPage.title": "Inloggen",
   "app.containers.SignInUpBanner.slogan": "Wat zijn je ideeën? Laat je stem horen!",
   "app.containers.SignUp.acceptTermsAndConditions": "Door je in te schrijven, ga je akkoord met onze {tacLink}",
