@@ -151,10 +151,6 @@ export default defineMessages({
     id: 'app.containers.Admin.User.save',
     defaultMessage: 'Send out invitations',
   },
-  saveError: {
-    id: 'app.containers.Admin.User.saveError',
-    defaultMessage: 'Error',
-  },
   saveSuccess: {
     id: 'app.containers.Admin.User.saveSuccess',
     defaultMessage: 'Success!',

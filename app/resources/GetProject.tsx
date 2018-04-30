@@ -1,4 +1,5 @@
 import React from 'react';
+import { isNullOrError } from 'utils/helperUtils';
 import { Subscription, BehaviorSubject, Observable } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { projectByIdStream, projectBySlugStream, IProjectData, IProject } from 'services/projects';
@@ -6,20 +7,20 @@ import { projectByIdStream, projectBySlugStream, IProjectData, IProject } from '
 interface InputProps {
   id?: string | null;
   slug?: string | null;
+  resetOnChange?: boolean;
 }
 
-type children = (renderProps: State) => JSX.Element | null;
+type children = (renderProps: GetProjectChildProps) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
 }
 
 interface State {
-  project: IProjectData | null;
-  projectLoadingError: string | null;
+  project: IProjectData | null | Error;
 }
 
-export type GetProjectChildProps = State;
+export type GetProjectChildProps = IProjectData | null | Error;
 
 export default class GetProject extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -28,21 +29,21 @@ export default class GetProject extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      project: null,
-      projectLoadingError: null,
+      project: null
     };
   }
 
   componentDidMount() {
-    const { id, slug } = this.props;
+    const { id, slug, resetOnChange } = this.props;
 
     this.inputProps$ = new BehaviorSubject({ id, slug });
 
     this.subscriptions = [
       this.inputProps$
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
+        .do(() => resetOnChange && this.setState({ project: null }))
         .switchMap(({ id, slug }) => {
-          let project$: Observable<IProject | null> = Observable.of(null);
+          let project$: Observable<IProject | null | Error> = Observable.of(null);
 
           if (id) {
             project$ = projectByIdStream(id).observable;
@@ -53,11 +54,7 @@ export default class GetProject extends React.Component<Props, State> {
           return project$;
         })
         .subscribe((project) => {
-          if (project) {
-            this.setState({ project: project.data });
-          } else {
-            this.setState({ projectLoadingError: 'Could not find a project' });
-          }
+          this.setState({ project: !isNullOrError(project) ? project.data : project });
         })
     ];
   }
@@ -73,6 +70,7 @@ export default class GetProject extends React.Component<Props, State> {
 
   render() {
     const { children } = this.props;
-    return (children as children)(this.state);
+    const { project } = this.state;
+    return (children as children)(project);
   }
 }
