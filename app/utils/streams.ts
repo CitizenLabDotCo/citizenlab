@@ -70,8 +70,15 @@ class Streams {
     Object.keys(this.streams)
       .filter(streamId => streamId !== authApiEndpoint)
       .forEach((streamId) => {
-        const apiEndpoint = this.streams[streamId].params.apiEndpoint;
-        this.deleteStream(streamId, apiEndpoint);
+        const apiEndpoint = cloneDeep(this.streams[streamId].params.apiEndpoint);
+        const refCount = cloneDeep(this.streams[streamId].observable.source['_refCount']);
+        const cacheStream = cloneDeep(this.streams[streamId].cacheStream);
+
+        if ((cacheStream && refCount > 1) || (!cacheStream && refCount > 0)) {
+          this.streams[streamId].fetch();
+        } else {
+          this.deleteStream(streamId, apiEndpoint);
+        }
       });
   }
 
@@ -250,8 +257,14 @@ class Streams {
             },
             (_error) => {
               if (this.streams[streamId]) {
-                const error = (!streamId.endsWith('users/me') ? new Error(`promise for stream ${streamId} did not resolve`) : null);
-                this.streams[streamId].observer.next(error);
+                if (streamId !== authApiEndpoint) {
+                  const apiEndpoint = cloneDeep(this.streams[streamId].params.apiEndpoint);
+                  const error = new Error(`promise for stream ${streamId} did not resolve`);
+                  this.streams[streamId].observer.next(error);
+                  this.deleteStream(streamId, apiEndpoint);
+                } else {
+                  this.streams[streamId].observer.next(null);
+                }
               } else {
                 console.log(`no stream exists for ${streamId}`);
               }

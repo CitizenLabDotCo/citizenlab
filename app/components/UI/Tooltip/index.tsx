@@ -110,11 +110,20 @@ const Container = styled(clickOutside)`
       color: inherit;
       fill: inherit;
 
-      &.text:hover {
+      &:hover {
+        background: rgba(255, 255, 255, .1);
+
+        .text {
+          color: white;
+          fill: white;
+        }
+      }
+
+      /* .text:hover {
         background: rgba(255, 255, 255, .1);
         color: white;
         fill: white;
-      }
+      } */
     }
   }
 `;

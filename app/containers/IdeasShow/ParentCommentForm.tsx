@@ -194,9 +194,9 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
 }
 
 const ParentCommentFormWithHoCs = injectTracks<Props>({
-    focusEditor: tracks.focusNewCommentTextbox,
-    clickCommentPublish: tracks.clickCommentPublish,
-  })(injectIntl<Props>(ParentCommentForm));
+  focusEditor: tracks.focusNewCommentTextbox,
+  clickCommentPublish: tracks.clickCommentPublish,
+})(injectIntl<Props>(ParentCommentForm));
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,

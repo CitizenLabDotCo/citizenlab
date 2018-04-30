@@ -96,7 +96,7 @@ const ModalContainer = styled.div`
     opacity: 0;
 
     ${ModalContent} {
-      opacity: 0.01;
+      opacity: 0;
       transform: translateY(-40px);
     }
 

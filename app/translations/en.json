@@ -584,6 +584,7 @@
   "app.containers.SignIn.signInError": "No account was found for the provided credentials",
   "app.containers.SignIn.signUp": "Sign up",
   "app.containers.SignIn.submit": "Log in",
+  "app.containers.SignIn.title": "Log in",
   "app.containers.SignInPage.title": "Log in",
   "app.containers.SignInUpBanner.slogan": "What are your ideas? Make your voice heard!",
   "app.containers.SignUp.acceptTermsAndConditions": "By signing up, you agree to our {tacLink}",

@@ -584,6 +584,7 @@
   "app.containers.SignIn.signInError": "Aucun compte n’a été trouvé avec les informations fournies",
   "app.containers.SignIn.signUp": "S'inscrire",
   "app.containers.SignIn.submit": "Se connecter",
+  "app.containers.SignIn.title": "",
   "app.containers.SignInPage.title": "Se connecter",
   "app.containers.SignInUpBanner.slogan": "Partagez vos idées et exprimez-vous !",
   "app.containers.SignUp.acceptTermsAndConditions": "En vous inscrivant, vous acceptez nos {tacLink}",
