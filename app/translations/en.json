@@ -316,6 +316,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_date": "Date",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_multiline_text": "Multiline text",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_multiselect": "Select multiple",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_number": "Number",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_select": "Select",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_text": "Text",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.listTitle": "Custom fields",
