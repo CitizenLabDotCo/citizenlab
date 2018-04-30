@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Link } from 'react-router';
 import { isBoolean, isNil } from 'lodash';
 
@@ -100,9 +100,10 @@ function setFillColor(color) {
 // Sets the button colors depending on Background color, optionally set the text/icon fill color and border color.
 function buttonTheme(
   bgColor: string,
-  textColor: string | null = null,
-  borderColor: string = 'transparent',
-  bgHoverColor: string | null = null
+  textColor: string,
+  borderColor = 'transparent',
+  bgHoverColor?: string | null,
+  textHoverColor?: string | null
 ) {
   return `
     &:not(.disabled) {
@@ -113,7 +114,7 @@ function buttonTheme(
       &:not(.processing):hover,
       &:not(.processing):focus {
         ${bgColor !== 'transparent' && `background: ${bgHoverColor || darken(0.12, bgColor)};`}
-        ${bgColor === 'transparent' && textColor && setFillColor(darken(0.2, textColor))}
+        ${bgColor === 'transparent' && textColor && (textHoverColor || setFillColor(darken(0.2, textColor)))}
         ${bgColor === 'transparent' && borderColor !== 'transparent' && `border-color: ${darken(0.2, borderColor)};`}
       }
     }
@@ -194,7 +195,7 @@ const Container: any = styled.div`
     }
 
     &.text {
-      ${buttonTheme('transparent', color('label'))}
+      ${(props: any) => buttonTheme('transparent', props.textColor || color('label'), undefined, undefined, props.textHoverColor)}
     }
 
     &.success {
@@ -226,6 +227,8 @@ export type ButtonStyles = 'primary' | 'primary-outlined' | 'secondary' | 'secon
 
 type Props = {
   text?: string | JSX.Element;
+  textColor?: string;
+  textHoverColor?: string;
   children?: any;
   size?: '1' | '2' | '3' | '4';
   style?: ButtonStyles;
@@ -290,7 +293,7 @@ class Button extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { text, width, height, padding, justify, icon, children, linkTo } = this.props;
+    const { text, textColor, textHoverColor, width, height, padding, justify, icon, children, linkTo } = this.props;
     let { id, size, style, processing, disabled, fullWidth, circularCorners, className } = this.props;
 
     id = (id || '');
@@ -328,6 +331,8 @@ class Button extends React.PureComponent<Props, State> {
         disabled={disabled}
         circularCorners={circularCorners}
         className={`${className} ${buttonClassnames}`}
+        textColor={textColor}
+        textHoverColor={textHoverColor}
       >
         {linkTo ? (
           (linkTo.startsWith('http')) ? (

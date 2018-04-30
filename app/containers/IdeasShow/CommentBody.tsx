@@ -24,6 +24,7 @@ const CommentWrapper = styled.div`
   line-height: 25px;
   font-weight: 300;
   word-break: break-word;
+  white-space: pre-line;
 
   span,
   p {
@@ -112,6 +113,8 @@ class CommentBody extends React.PureComponent<Props, State> {
 
   render() {
     const { editionMode, commentBody, locale, tenantLocales, last } = this.props;
+
+    console.log(commentBody);
 
     if (locale && tenantLocales && !editionMode) {
       return (
