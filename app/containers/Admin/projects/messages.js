@@ -263,12 +263,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.editButtonLabel',
     defaultMessage: 'Edit',
   },
-  moderatorsTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.moderatorsTab',
-    defaultMessage: 'Moderators',
-  },
-  moderatorsTabTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.moderatorsTabTitle',
+  moderatorsSectionTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle',
     defaultMessage: 'Who can moderate this project?',
   },
   deleteModeratorLabel: {
