@@ -96,6 +96,14 @@ const WEBPACK_CONFIG = {
         API_PORT: JSON.stringify(process.env.API_PORT),
         CROWDIN_PLUGIN_ENABLED: !!process.env.CROWDIN_PLUGIN_ENABLED,
         SEGMENT_API_KEY: JSON.stringify(process.env.SEGMENT_API_KEY),
+        // Sentry DSN
+        SENTRY_DSN: JSON.stringify(process.env.SENTRY_DSN),
+        // Circle CI flags, used for Sentry reporting
+        CI: JSON.stringify(process.env.CI),
+        CIRCLECI: JSON.stringify(process.env.CIRCLECI),
+        CIRCLE_BUILD_NUM: JSON.stringify(process.env.CIRCLE_BUILD_NUM),
+        CIRCLE_SHA1: JSON.stringify(process.env.CIRCLE_SHA1),
+        CIRCLE_BRANCH: JSON.stringify(process.env.CIRCLE_BRANCH),
       },
     }),
 

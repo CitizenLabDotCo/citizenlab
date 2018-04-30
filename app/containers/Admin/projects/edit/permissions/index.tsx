@@ -218,7 +218,6 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
             onClick={this.saveChanges}
             messages={{
               buttonSave: messages.save,
-              buttonError: messages.saveError,
               buttonSuccess: messages.saveSuccess,
               messageError: messages.saveErrorMessage,
               messageSuccess: messages.saveSuccessMessage,
