@@ -67,7 +67,8 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
                         </StatusLabel>
                       }
                     </div>
-                    <Button className={`e2e-admin-edit-project ${project.attributes.process_type === "timeline"? 'timeline' : 'continuous'}`}
+                    <Button
+                      className={`e2e-admin-edit-project ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
                       linkTo={`/admin/projects/${project.id}/edit`}
                       style="secondary"
                       circularCorners={false}
