@@ -2,6 +2,7 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import Helmet from 'react-helmet';
+import { isNullOrError } from 'utils/helperUtils';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -22,14 +23,14 @@ interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   tenantLocales: GetTenantLocalesChildProps;
-  ideaLoaderState: GetIdeaChildProps;
+  idea: GetIdeaChildProps;
   ideaImages: GetIdeaImagesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaMeta: React.SFC<Props> = ({ locale, tenantLocales, ideaLoaderState: { idea }, ideaImages }) => {
-  if (locale && tenantLocales && idea) {
+const IdeaMeta: React.SFC<Props> = ({ locale, tenantLocales, idea, ideaImages }) => {
+  if (locale && tenantLocales && !isNullOrError(idea)) {
     const ideaTitle = getLocalized(idea.attributes.title_multiloc, locale, tenantLocales);
     const ideaDescription = stripHtml(getLocalized(idea.attributes.body_multiloc, locale, tenantLocales));
     const ideaImage = (ideaImages && ideaImages.length > 0 ? ideaImages[0].attributes.versions.large : null);
@@ -53,7 +54,7 @@ const IdeaMeta: React.SFC<Props> = ({ locale, tenantLocales, ideaLoaderState: { 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
-  ideaLoaderState: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>
 });
 

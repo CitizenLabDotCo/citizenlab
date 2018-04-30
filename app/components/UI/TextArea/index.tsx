@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as _ from 'lodash';
+import React from 'react';
+import { isNil, isEmpty, isFunction } from 'lodash';
 
 // components
 import Error from 'components/UI/Error';
@@ -11,6 +11,10 @@ import { color } from 'utils/styleUtils';
 
 const Container: any = styled.div`
   position: relative;
+  padding: 0;
+  margin: 0;
+  border: none;
+  -webkit-appearance: none;
 
   .textarea {
     width: 100%;
@@ -64,6 +68,9 @@ const CharacterCount = styled.p`
 const TextAreaContainer: any = styled.div`
   width: 100%;
   position: relative;
+  padding: 0;
+  margin: 0;
+  border: none;
 `;
 
 export type Props = {
@@ -113,7 +120,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
   handleOnChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
     const value = this.props.maxCharCount ? event.currentTarget.value.substr(0, this.props.maxCharCount) : event.currentTarget.value;
 
-    if (this.props.onChange && _.isFunction(this.props.onChange)) {
+    if (this.props.onChange && isFunction(this.props.onChange)) {
       this.props.onChange(value);
     }
   }
@@ -133,7 +140,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
   render() {
     let { rows, placeholder } = this.props;
     const { name, value, error, children, maxCharCount } = this.props;
-    const hasError = (!_.isNull(error) && !_.isUndefined(error) && !_.isEmpty(error));
+    const hasError = (!isNil(error) && !isEmpty(error));
     const className = this.props['className'];
 
     rows = (rows || 5);

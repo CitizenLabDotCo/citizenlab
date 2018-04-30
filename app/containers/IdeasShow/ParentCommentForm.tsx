@@ -1,6 +1,7 @@
 import React from 'react';
 import { isString, trim, get } from 'lodash';
 import { adopt } from 'react-adopt';
+import { isNullOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -65,7 +66,7 @@ interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
-  ideaLoaderState: GetIdeaChildProps;
+  idea: GetIdeaChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -142,12 +143,12 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
   }
 
   render() {
-    const { authUser, ideaLoaderState: { idea } , ideaId } = this.props;
+    const { authUser, idea, ideaId } = this.props;
     const { formatMessage } = this.props.intl;
     const { inputValue, processing, errorMessage } = this.state;
-    const commentingEnabled = (idea ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
-    const commentingDisabledReason = (idea ? get(idea.relationships.action_descriptor.data.commenting, 'disabled_reason', null) : null);
-    const projectId = (idea ? get(idea.relationships.project.data, 'id', null) : null);
+    const commentingEnabled = (!isNullOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
+    const commentingDisabledReason = (!isNullOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'disabled_reason', null) : null);
+    const projectId = (!isNullOrError(idea) ? get(idea.relationships.project.data, 'id', null) : null);
     const placeholder = formatMessage(messages.commentBodyPlaceholder);
     const commentButtonDisabled = (!inputValue || inputValue === '');
     const canComment = (authUser && commentingEnabled);
@@ -193,14 +194,14 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
 }
 
 const ParentCommentFormWithHoCs = injectTracks<Props>({
-    focusEditor: tracks.focusNewCommentTextbox,
-    clickCommentPublish: tracks.clickCommentPublish,
-  })(injectIntl<Props>(ParentCommentForm));
+  focusEditor: tracks.focusNewCommentTextbox,
+  clickCommentPublish: tracks.clickCommentPublish,
+})(injectIntl<Props>(ParentCommentForm));
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
-  ideaLoaderState: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>
+  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>
 });
 
 export default (inputProps: InputProps) => (

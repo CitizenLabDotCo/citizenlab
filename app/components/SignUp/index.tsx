@@ -25,26 +25,14 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
 const timeout = 900;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
 const Container = styled.div`
   width: 100%;
-  padding-top: 40px;
-  padding-bottom: 100px;
   display: flex;
   flex-direction: column;
-
-  ${media.biggerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  `}
-
-  ${media.smallerThanMaxTablet`
-    padding-bottom: 70px;
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
-  `}
 `;
 
 const ContainerInner = styled.div`
@@ -64,7 +52,7 @@ const StepContainer = styled.div`
     left: 0;
     opacity: 0;
     z-index: 1;
-    transform: translateX(420px);
+    transform: translateX(150px);
 
     &.step-enter-active {
       width: 100%;
@@ -94,7 +82,7 @@ const StepContainer = styled.div`
       top: 0;
       left: 0;
       opacity: 0;
-      transform: translateX(-420px);
+      transform: translateX(-150px);
       transition: all ${timeout}ms ${easing};
     }
   }
@@ -113,6 +101,8 @@ const Title = styled.h2`
 type Props = {
   isInvitation?: boolean | undefined;
   token?: string | null | undefined;
+  step1Title?: string | JSX.Element;
+  step2Title?: string | JSX.Element;
   onSignUpCompleted: (userId: string) => void;
 };
 
@@ -176,17 +166,13 @@ export default class SignUp extends React.PureComponent<Props, State> {
     }
   }
 
-  goToHomePage = () => {
-    browserHistory.push('/');
-  }
-
   goToSignIn = () => {
     browserHistory.push('/sign-in');
   }
 
   render() {
     const { visibleStep } = this.state;
-    const { isInvitation, token } = this.props;
+    const { isInvitation, token, step1Title, step2Title } = this.props;
 
     return (
       <Container>
@@ -199,9 +185,11 @@ export default class SignUp extends React.PureComponent<Props, State> {
               >
                 <StepContainer>
                   <Title>
-                    {isInvitation ? <FormattedMessage {...messages.step1InvitationTitle} /> : <FormattedMessage {...messages.step1Title} />}
+                    {step1Title || <FormattedMessage {...messages.step1Title} />}
                   </Title>
+
                   <Step1 isInvitation={isInvitation} token={token} onCompleted={this.handleStep1Completed} />
+
                   {!isInvitation &&
                     <Footer goToSignIn={this.goToSignIn} />
                   }
@@ -215,7 +203,7 @@ export default class SignUp extends React.PureComponent<Props, State> {
                 classNames="step"
               >
                 <StepContainer>
-                  <Title><FormattedMessage {...messages.step2Title} /></Title>
+                  <Title>{step2Title || <FormattedMessage {...messages.step2Title} />}</Title>
                   <Step2 onCompleted={this.handleStep2Completed} />
                 </StepContainer>
               </CSSTransition>

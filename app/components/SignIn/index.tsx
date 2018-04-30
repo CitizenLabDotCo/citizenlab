@@ -41,6 +41,16 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
+const Title = styled.h2`
+  width: 100%;
+  color: #333;
+  font-size: 34px;
+  line-height: 42px;
+  font-weight: 500;
+  text-align: left;
+  margin-bottom: 35px;
+`;
+
 const Form = styled.form`
   width: 100%;
 `;
@@ -161,6 +171,7 @@ const SocialSignInButton = styled.div`
 
 type Props = {
   onSignedIn: (userId: string) => void;
+  title?: string | JSX.Element;
   goToSignUpForm?: () => void;
 };
 
@@ -291,6 +302,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
+    const { title } = this.props;
     const { formatMessage } = this.props.intl;
     const { location, currentTenant, email, password, processing, emailError, passwordError, signInError, loading } = this.state;
     const googleLoginEnabled = !!get(currentTenant, `data.attributes.settings.google_login.enabled`);
@@ -310,6 +322,8 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     if (!loading) {
       return (
         <Container>
+          <Title>{title || <FormattedMessage {...messages.title} />}</Title>
+
           <Form id="signin" onSubmit={this.handleOnSubmit} noValidate={true}>
             <FormElement>
               <Input

@@ -360,7 +360,6 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
             status={getSubmitState({ errors, saved, diff: attributesDiff })}
             messages={{
               buttonSave: messages.save,
-              buttonError: messages.saveError,
               buttonSuccess: messages.saveSuccess,
               messageError: messages.saveErrorMessage,
               messageSuccess: messages.saveSuccessMessage,

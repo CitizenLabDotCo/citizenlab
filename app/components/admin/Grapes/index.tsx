@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import * as grapesjs from 'grapesjs/dist/grapes.min.js';
 import 'grapesjs/dist/css/grapes.min.css';
 import loadBasicBlocks from './basic_blocks';
 
@@ -25,12 +24,14 @@ class Grapes extends React.Component<Props, State> {
   ref: any = null;
 
   componentDidMount() {
-    this.editor = grapesjs.init({
-      container: `#${this.ref.id}`,
-      style: '.txt-red{color: red}',
+    import('grapesjs/dist/grapes.min.js').then((grapesjs) => {
+      this.editor = grapesjs.init({
+        container: `#${this.ref.id}`,
+        style: '.txt-red{color: red}',
+      });
+      this.editor.setComponents(this.props.initialValue);
+      this.setupBlocks();
     });
-    this.editor.setComponents(this.props.initialValue);
-    this.setupBlocks();
   }
 
   setupBlocks = () => {

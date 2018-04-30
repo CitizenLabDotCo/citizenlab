@@ -25,10 +25,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.saveLabel',
     defaultMessage: 'Save',
   },
-  saveErrorLabel: {
-    id: 'app.containers.AdminPage.ProjectTimeline.saveErrorLabel',
-    defaultMessage: 'Error',
-  },
   saveSuccessLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.saveSuccessLabel',
     defaultMessage: 'Success',

@@ -70,8 +70,15 @@ class Streams {
     Object.keys(this.streams)
       .filter(streamId => streamId !== authApiEndpoint)
       .forEach((streamId) => {
-        const apiEndpoint = this.streams[streamId].params.apiEndpoint;
-        this.deleteStream(streamId, apiEndpoint);
+        const apiEndpoint = cloneDeep(this.streams[streamId].params.apiEndpoint);
+        const refCount = cloneDeep(this.streams[streamId].observable.source['_refCount']);
+        const cacheStream = cloneDeep(this.streams[streamId].cacheStream);
+
+        if ((cacheStream && refCount > 1) || (!cacheStream && refCount > 0)) {
+          this.streams[streamId].fetch();
+        } else {
+          this.deleteStream(streamId, apiEndpoint);
+        }
       });
   }
 
@@ -248,11 +255,16 @@ class Streams {
 
               resolve(response);
             },
-            () => {
-              console.log(`promise for stream ${streamId} did not resolve`);
-
+            (_error) => {
               if (this.streams[streamId]) {
-                this.streams[streamId].observer.next(null);
+                if (streamId !== authApiEndpoint) {
+                  const apiEndpoint = cloneDeep(this.streams[streamId].params.apiEndpoint);
+                  const error = new Error(`promise for stream ${streamId} did not resolve`);
+                  this.streams[streamId].observer.next(error);
+                  this.deleteStream(streamId, apiEndpoint);
+                } else {
+                  this.streams[streamId].observer.next(null);
+                }
               } else {
                 console.log(`no stream exists for ${streamId}`);
               }
@@ -276,7 +288,10 @@ class Streams {
         }
 
         return () => {
-          console.log(`stream for stream ${streamId} completed`);
+          if (process.env.NODE_ENV === 'development') {
+            console.log(`stream for stream ${streamId} completed`);
+          }
+
           this.deleteStream(streamId, apiEndpoint);
         };
       })

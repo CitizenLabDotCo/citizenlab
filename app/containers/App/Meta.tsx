@@ -61,7 +61,7 @@ class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
     if (locale && currentTenant) {
       const { formatMessage } = this.props.intl;
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-      const image = currentTenant.data.attributes.logo.large || '';
+      const image = currentTenant.data.attributes.header_bg.large || '';
       const metaTitleMultiLoc = currentTenant.data.attributes.settings.core.meta_title;
       const organizationNameMultiLoc = currentTenant.data.attributes.settings.core.organization_name;
       const metaDescriptionMultiLoc = currentTenant.data.attributes.settings.core.meta_description;

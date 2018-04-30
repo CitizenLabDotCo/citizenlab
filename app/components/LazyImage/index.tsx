@@ -62,7 +62,7 @@ export class LazyImage extends React.PureComponent<Props, State> {
       role = 'presentation';
     }
 
-    if (this.props.cover && !CSS.supports('object-fit: cover')) {
+    if (this.props.cover && !(window['CSS'] && CSS.supports('object-fit: cover'))) {
       // Legacy browsers, no lazy-loading for you!
       return <div className={this.props['className']} style={{ background: `center / cover no-repeat url("${this.props.src}")` }} />;
     } else {
