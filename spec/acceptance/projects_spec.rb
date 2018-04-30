@@ -209,6 +209,18 @@ resource "Projects" do
       end
     end
 
+    context 'when not admin' do
+      before do
+        @user.update(roles: [])
+      end
+
+      let(:presentation_mode) { 'map' }
+
+      example_request "[error] Create a project", document: false do
+        expect(response_status).to eq 401
+      end
+    end
+
 
     describe do
 
@@ -285,6 +297,29 @@ resource "Projects" do
       expect(json_response.dig(:data,:relationships,:areas,:data).size).to eq 0
     end
   end
+
+  patch "web_api/v1/projects/:id/reorder" do
+      with_options scope: :project do
+        parameter :ordering, "The position, starting from 0, where the project should be at. Projects after will move down.", required: true
+      end
+
+      before do
+        Project.all.each(&:destroy!)
+      end
+      describe do
+        let!(:id) { create_list(:project, 5).first.id }
+        let(:ordering) { 2 }
+        example "Reorder a project" do
+          old_second_project = Project.find_by(ordering: ordering)
+          do_request
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
+          expect(Project.find_by(ordering: 2).id).to eq id
+          expect(old_second_project.reload.ordering).to eq 3 # previous second is now third
+        end
+      end
+    end
 
 
   delete "web_api/v1/projects/:id" do

@@ -28,6 +28,7 @@ describe "seedfile", slow_test: true do
       expect(Group.count).to be > 0
       expect(CustomField.count).to be > 0
       expect(CustomFieldOption.count).to be > 0
+      expect(Invite.count).to be > 0
     end
     Apartment::Tenant.switch('empty_localhost') do
       load Rails.root.join("db","seeds.rb")

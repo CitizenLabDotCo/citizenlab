@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180328123240) do
+ActiveRecord::Schema.define(version: 20180423123634) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 20180328123240) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "areas_ideas", id: false, force: :cascade do |t|
+  create_table "areas_ideas", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "area_id"
     t.uuid "idea_id"
     t.index ["area_id"], name: "index_areas_ideas_on_area_id"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 20180328123240) do
     t.index ["idea_id"], name: "index_areas_ideas_on_idea_id"
   end
 
-  create_table "areas_projects", id: false, force: :cascade do |t|
+  create_table "areas_projects", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "area_id"
     t.uuid "project_id"
     t.index ["area_id"], name: "index_areas_projects_on_area_id"
@@ -65,6 +65,8 @@ ActiveRecord::Schema.define(version: 20180328123240) do
     t.datetime "updated_at", null: false
     t.integer "upvotes_count", default: 0, null: false
     t.integer "downvotes_count", default: 0, null: false
+    t.string "publication_status", default: "published", null: false
+    t.datetime "body_updated_at"
     t.index ["author_id"], name: "index_comments_on_author_id"
     t.index ["idea_id"], name: "index_comments_on_idea_id"
     t.index ["lft"], name: "index_comments_on_lft"
@@ -210,7 +212,7 @@ ActiveRecord::Schema.define(version: 20180328123240) do
     t.index ["phase_id"], name: "index_ideas_phases_on_phase_id"
   end
 
-  create_table "ideas_topics", id: false, force: :cascade do |t|
+  create_table "ideas_topics", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "idea_id"
     t.uuid "topic_id"
     t.index ["idea_id", "topic_id"], name: "index_ideas_topics_on_idea_id_and_topic_id", unique: true
@@ -226,6 +228,19 @@ ActiveRecord::Schema.define(version: 20180328123240) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_identities_on_user_id"
+  end
+
+  create_table "invites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "token", null: false
+    t.uuid "inviter_id"
+    t.uuid "invitee_id", null: false
+    t.string "invite_text"
+    t.datetime "accepted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invitee_id"], name: "index_invites_on_invitee_id"
+    t.index ["inviter_id"], name: "index_invites_on_inviter_id"
+    t.index ["token"], name: "index_invites_on_token"
   end
 
   create_table "memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -249,8 +264,14 @@ ActiveRecord::Schema.define(version: 20180328123240) do
     t.datetime "updated_at", null: false
     t.uuid "initiating_user_id"
     t.uuid "spam_report_id"
+    t.uuid "invite_id"
+    t.string "reason_code"
+    t.string "other_reason"
+    t.uuid "idea_status_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
+    t.index ["idea_status_id"], name: "index_notifications_on_idea_status_id"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
+    t.index ["invite_id"], name: "index_notifications_on_invite_id"
     t.index ["recipient_id", "read_at"], name: "index_notifications_on_recipient_id_and_read_at"
     t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
     t.index ["spam_report_id"], name: "index_notifications_on_spam_report_id"
@@ -340,7 +361,7 @@ ActiveRecord::Schema.define(version: 20180328123240) do
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
-  create_table "projects_topics", id: false, force: :cascade do |t|
+  create_table "projects_topics", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "project_id"
     t.uuid "topic_id"
     t.index ["project_id"], name: "index_projects_topics_on_project_id"
@@ -403,6 +424,7 @@ ActiveRecord::Schema.define(version: 20180328123240) do
     t.string "locale"
     t.jsonb "bio_multiloc", default: {}
     t.boolean "cl1_migrated", default: false
+    t.string "invite_status"
     t.jsonb "custom_field_values", default: {}
     t.datetime "registration_completed_at"
     t.index ["email"], name: "index_users_on_email"
@@ -443,10 +465,14 @@ ActiveRecord::Schema.define(version: 20180328123240) do
   add_foreign_key "ideas_topics", "ideas"
   add_foreign_key "ideas_topics", "topics"
   add_foreign_key "identities", "users"
+  add_foreign_key "invites", "users", column: "invitee_id"
+  add_foreign_key "invites", "users", column: "inviter_id"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
   add_foreign_key "notifications", "comments"
+  add_foreign_key "notifications", "idea_statuses"
   add_foreign_key "notifications", "ideas"
+  add_foreign_key "notifications", "invites"
   add_foreign_key "notifications", "projects"
   add_foreign_key "notifications", "spam_reports"
   add_foreign_key "notifications", "users", column: "initiating_user_id"

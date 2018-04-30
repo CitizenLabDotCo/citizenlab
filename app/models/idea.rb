@@ -1,6 +1,9 @@
 class Idea < ApplicationRecord
   include PgSearch
 
+  MAX_TITLE_LEN = 80
+
+
   @@sanitizer = Rails::Html::WhiteListSanitizer.new
 
   pg_search_scope :search_by_all, 
@@ -8,15 +11,17 @@ class Idea < ApplicationRecord
     :using => { :tsearch => {:prefix => true} }
 
   belongs_to :project
-  counter_culture :project
+  counter_culture :project, 
+    column_name: proc {|idea| idea.publication_status == 'published' ? "ideas_count" : nil},
+    column_names: {
+      ["ideas.publication_status = ?", 'published'] => 'ideas_count'
+    }
   belongs_to :author, class_name: 'User', optional: true
-  has_many :ideas_topics#, dependent: :destroy
-  # has_many :topics, through: :ideas_topics
-  has_and_belongs_to_many :topics
-  has_many :areas_ideas#, dependent: :destroy
-  # has_many :areas, through: :areas_ideas
-  has_and_belongs_to_many :areas
 
+  has_many :ideas_topics, dependent: :destroy
+  has_many :topics, through: :ideas_topics
+  has_many :areas_ideas, dependent: :destroy
+  has_many :areas, through: :areas_ideas
   has_many :ideas_phases, dependent: :destroy
   has_many :phases, through: :ideas_phases
 
@@ -36,7 +41,7 @@ class Idea < ApplicationRecord
 
   PUBLICATION_STATUSES = %w(draft published closed spam)
   validates :project, presence: true, unless: :draft?
-  validates :title_multiloc, presence: true, multiloc: {presence: true}
+  validates :title_multiloc, presence: true, multiloc: {presence: true, length: {maximum: MAX_TITLE_LEN}}
   validates :body_multiloc, presence: true, multiloc: {presence: true}, unless: :draft?
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
   validates :author, presence: true, unless: :draft?, on: :create
