@@ -26,7 +26,7 @@ export default class Moderators extends React.PureComponent<Props>{
     return (
       <Section>
         <Label>
-          <FormattedMessage {...messages.moderatorsTabTitle} />
+          <FormattedMessage {...messages.moderatorsSectionTitle} />
         </Label>
         <UserSearch resourceId={projectId} messages={messages} searchFunction={findMembership} addFunction={addMembership} />
         <ModeratorList moderators={moderators} projectId={projectId}/>
