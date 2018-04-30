@@ -16,6 +16,9 @@ import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
+// resources utilities
+import { isNullOrError } from 'utils/helperUtils';
+
 // style
 import styled from 'styled-components';
 import CommentsMoreActions from './CommentsMoreActions';
@@ -44,7 +47,7 @@ interface InputProps {
 interface DataProps {
   comment: GetCommentChildProps;
   author: GetUserChildProps;
-  ideaLoaderState: GetIdeaChildProps;
+  idea: GetIdeaChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -95,10 +98,10 @@ class ChildComment extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { comment, author, ideaLoaderState: { idea } } = this.props;
+    const { comment, author, idea } = this.props;
     const { editionMode } = this.state;
 
-    if (comment && author && idea) {
+    if (comment && author && !isNullOrError(idea)) {
       const className = this.props['className'];
       const authorId = comment.relationships.author.data ? comment.relationships.author.data.id : null;
       const createdAt = comment.attributes.created_at;
@@ -136,7 +139,7 @@ class ChildComment extends React.PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
   author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>,
-  ideaLoaderState: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>,
+  idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>,
 });
 
 export default (inputProps: InputProps) => (
