@@ -20,6 +20,7 @@ module.exports = {
 
     adminProjectsPage
     .navigate()
+    .waitForElementVisible('@projectsList')
     .waitForElementVisible('.e2e-admin-edit-project.timeline')
     .click('.e2e-admin-edit-project.timeline')
     .waitForElementVisible('@phasesTab')

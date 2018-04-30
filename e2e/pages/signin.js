@@ -4,7 +4,8 @@ const signinCommands = {
     .waitForElementVisible('@form')
     .setValue('@email', email)
     .setValue('@password', password)
-    .click('@submit');
+    .click('@submit')
+    .waitForElementNotPresent('@submit');
   },
 };
 
