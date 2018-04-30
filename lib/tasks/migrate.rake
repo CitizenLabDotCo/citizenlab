@@ -407,6 +407,12 @@ namespace :migrate do
     else
       d[:visible_to] = 'public'
     end
+    # process_type
+    if p.dig('timeline', 'phases') && p.dig('timeline', 'phases').size >= 2
+      d[:process_type] = 'timeline'
+    else
+      d[:process_type] = 'continuous'
+    end
     begin
       record = Project.new d
       # slug
@@ -433,12 +439,9 @@ namespace :migrate do
       end
       # phases
       if p.dig('timeline', 'phases') && p.dig('timeline', 'phases').size >= 2
-        d[:process_type] = 'timeline'
         p.dig('timeline', 'phases').each do |f|
           migrate_phase(f, record, phases_hash, locales_mapping)
         end
-      else
-        d[:process_type] = 'continuous'
       end
       projects_hash[p['_id']] = record
     rescue Exception => e
