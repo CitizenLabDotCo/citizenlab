@@ -316,6 +316,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_date": "Dato",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_multiline_text": "Multilinjetekst",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_multiselect": "Vælg flere",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_number": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_select": "Vælg",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_text": "Tekst",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.listTitle": "Brugerdefinerede felter",

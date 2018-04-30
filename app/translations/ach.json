@@ -316,6 +316,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_date": "crwdns18459:0crwdne18459:0",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_multiline_text": "crwdns18460:0crwdne18460:0",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_multiselect": "crwdns18461:0crwdne18461:0",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_number": "",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_select": "crwdns18462:0crwdne18462:0",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_text": "crwdns18463:0crwdne18463:0",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.listTitle": "crwdns18464:0crwdne18464:0",
