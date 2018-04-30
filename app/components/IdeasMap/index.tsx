@@ -9,9 +9,9 @@ import tracks from './tracks';
 
 // Components
 import Map from 'components/Map';
+import Warning from 'components/UI/Warning';
 import IdeaBox, { Props as IdeaBoxProps } from './IdeaBox';
 import IdeaButton from './IdeaButton';
-import { Message } from 'semantic-ui-react';
 
 // Injectors
 import GetIdeaMarkers, { GetIdeaMarkersChildProps } from 'resources/GetIdeaMarkers';
@@ -56,6 +56,10 @@ const MapWrapper = styled.div`
   > .create-idea-wrapper {
     display: none;
   }
+`;
+
+const StyledWarning = styled(Warning)`
+  margin-bottom: 10px;
 `;
 
 // Typing
@@ -146,9 +150,7 @@ class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
     return (
       <>
         {ideaMarkers && ideaMarkers.length > 0 && points.length === 0 &&
-          <Message info>
-            <FormattedMessage {...messages.noIdeasWithLocation} />
-          </Message>
+          <StyledWarning text={<FormattedMessage {...messages.noIdeasWithLocation} />} />
         }
 
         <MapWrapper>

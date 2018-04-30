@@ -1,8 +1,9 @@
 import React from 'react';
+import { isNullOrError } from 'utils/helperUtils';
 
 // services
 import { IProjectData, reorderProject } from 'services/projects';
-import GetProjects from 'resources/GetProjects';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
@@ -17,16 +18,19 @@ import Title from 'components/admin/PageTitle';
 import StatusLabel from 'components/UI/StatusLabel';
 import HasPermission from 'components/HasPermission';
 
-export interface Props {
-  projects: IProjectData[];
+interface InputProps {}
+
+interface DataProps {
+  projects: GetProjectsChildProps;
 }
 
-export interface State {}
+interface Props extends InputProps, DataProps {}
+
+interface State {}
 
 class AdminProjectsList extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
-
     this.state = {};
   }
 
@@ -35,9 +39,9 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { projects } = this.props;
+    const { projectsList } = this.props.projects;
 
-    if (projects) {
+    if (!isNullOrError(projectsList)) {
       return (
         <>
           <Title>
@@ -52,7 +56,7 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
                 </Button>
               </ButtonWrapper>
             </HasPermission>
-            <SortableList items={projects} onReorder={this.handleReorder}>
+            <SortableList items={projectsList} onReorder={this.handleReorder}>
               {({ itemsList, handleDragRow, handleDropRow }) => (
                 itemsList.map((project: IProjectData, index: number) => (
                   <SortableRow
@@ -88,8 +92,6 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
 
 export default (props) => (
   <GetProjects publicationStatuses={['draft', 'published', 'archived']}>
-    {({ projectsList }) => (
-      projectsList && <AdminProjectsList {...props} projects={projectsList} />
-    )}
+    {projects => <AdminProjectsList {...props} projects={projects} />}
   </GetProjects>
 );

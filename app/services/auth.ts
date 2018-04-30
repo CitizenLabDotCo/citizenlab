@@ -28,8 +28,8 @@ export async function signIn(email: string, password: string) {
     setJwt(jwt);
     store.dispatch({ type: STORE_JWT, payload: jwt });
     const authenticatedUser = await getAuthUserAsync();
-    streams.reset();
     authUserStream().observer.next(authenticatedUser);
+    streams.reset();
     return authenticatedUser;
   } catch (error) {
     signOut();
@@ -74,8 +74,8 @@ export function signOut() {
 
   if (jwt) {
     removeJwt();
-    streams.reset();
     authUserStream().observer.next(null);
+    streams.reset();
 
     const currentLocation = browserHistory.getCurrentLocation();
 

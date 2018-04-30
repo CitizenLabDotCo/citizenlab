@@ -193,45 +193,43 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
                   value="public"
                   id="permissions-all"
                 />
-                <StyledRadio
-                  onChange={this.handlePermissionTypeChange}
-                  currentValue={unsavedVisibleTo}
-                  name="permissionsType"
-                  label={formatMessage(messages.permissionsAdministrators)}
-                  value="admins"
-                  id="permissions-administrators"
-                />
-                <StyledRadio
-                  onChange={this.handlePermissionTypeChange}
-                  currentValue={unsavedVisibleTo}
-                  name="permissionsType"
-                  label={formatMessage(messages.permissionsSelectionLabel)}
-                  value="groups"
-                  id="permissions-selection"
-                />
-              </RadioButtonsWrapper>
-            </SectionField>
-
-            {groups}
-            <SectionField>
-              <SubmitWrapper
-                loading={saving}
-                status={status}
-                onClick={this.saveChanges}
-                messages={{
-                  buttonSave: messages.save,
-                  buttonError: messages.saveError,
-                  buttonSuccess: messages.saveSuccess,
-                  messageError: messages.saveErrorMessage,
-                  messageSuccess: messages.saveSuccessMessage,
-                }}
+              <StyledRadio
+                onChange={this.handlePermissionTypeChange}
+                currentValue={unsavedVisibleTo}
+                name="permissionsType"
+                label={formatMessage(messages.permissionsAdministrators)}
+                value="admins"
+                id="permissions-administrators"
               />
-            </SectionField>
+              <StyledRadio
+                onChange={this.handlePermissionTypeChange}
+                currentValue={unsavedVisibleTo}
+                name="permissionsType"
+                label={formatMessage(messages.permissionsSelectionLabel)}
+                value="groups"
+                id="permissions-selection"
+              />
+            </RadioButtonsWrapper>
+          </SectionField>
 
-            {project &&
-                <GetModerators projectId={project.data.id}>
-                  {moderators => <Moderators moderators={moderators} projectId={project.data.id} />}
-                </GetModerators>}
+          {groups}
+          <SectionField>
+            <SubmitWrapper
+              loading={saving}
+              status={status}
+              onClick={this.saveChanges}
+              messages={{
+                buttonSave: messages.save,
+                buttonSuccess: messages.saveSuccess,
+                messageError: messages.saveErrorMessage,
+                messageSuccess: messages.saveSuccessMessage,
+              }}
+            />
+          </SectionField>
+          {project &&
+            <GetModerators projectId={project.data.id}>
+              {moderators => <Moderators moderators={moderators} projectId={project.data.id} />}
+            </GetModerators>}
         </Section>
       );
     }

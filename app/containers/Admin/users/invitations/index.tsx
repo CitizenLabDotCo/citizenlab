@@ -617,7 +617,6 @@ class Invitations extends React.PureComponent<Props, State> {
                     status={this.getSubmitState(apiErrors, processed, dirty)}
                     messages={{
                       buttonSave: messages.save,
-                      buttonError: messages.saveError,
                       buttonSuccess: messages.saveSuccess,
                       messageError: messages.saveErrorMessage,
                       messageSuccess: messages.saveSuccessMessage,

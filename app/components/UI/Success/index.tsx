@@ -96,7 +96,7 @@ const StyledSuccessMessage: any = styled.div`
 
   &.success-enter {
     max-height: 0px;
-    opacity: 0.01;
+    opacity: 0;
 
     &.success-enter-active {
       max-height: 60px;
@@ -112,7 +112,7 @@ const StyledSuccessMessage: any = styled.div`
 
     &.success-exit-active {
       max-height: 0px;
-      opacity: 0.01;
+      opacity: 0;
       transition: max-height 350ms cubic-bezier(0.19, 1, 0.22, 1),
                   opacity 350ms cubic-bezier(0.19, 1, 0.22, 1);
     }
