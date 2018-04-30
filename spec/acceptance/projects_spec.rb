@@ -8,7 +8,7 @@ resource "Projects" do
 
   context 'when admin' do
     before do
-      @user = create(:user, roles: [{type: 'admin'}])
+      @user = create(:admin)
       token = Knock::AuthToken.new(payload: { sub: @user.id }).token
       header 'Authorization', "Bearer #{token}"
 
@@ -351,17 +351,18 @@ resource "Projects" do
     end
   end
 
-  context "when moderator" do
-    before do
-      @project = create(:project)
-      @moderator = create(:moderator, project: @project)
-      token = Knock::AuthToken.new(payload: { sub: @moderator.id }).token
-      header 'Authorization', "Bearer #{token}"
 
-      @projects = create_list(:project, 10, publication_status: 'published')
-    end
+  get "web_api/v1/projects" do
+    context "when moderator" do
+      before do
+        @project = create(:project)
+        @moderator = create(:moderator, project: @project)
+        token = Knock::AuthToken.new(payload: { sub: @moderator.id }).token
+        header 'Authorization', "Bearer #{token}"
 
-    get "web_api/v1/projects" do
+        @projects = create_list(:project, 10, publication_status: 'published')
+      end
+
       example "Moderators can see which projects they moderate" do
         n_moderating_projects = 3
         pj1, pj2 = @projects.shuffle.take 2
@@ -370,10 +371,28 @@ resource "Projects" do
         end
         @moderator.save!
 
-        do_request(filter_can_moderate: true, publication_statuses: Project::PUBLICATION_STATUSES)
+        do_request(filter_can_moderate: true)
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq n_moderating_projects + 1
+      end
+    end
+
+    context 'when admin' do
+      before do
+        @user = create(:admin)
+        token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+        header 'Authorization', "Bearer #{token}"
+
+        @projects = ['published','published','draft','published','archived','published','archived']
+          .map { |ps|  create(:project, publication_status: ps)}
+      end
+
+      example "Admins moderate all projects" do
+        do_request(filter_can_moderate: true, publication_statuses: Project::PUBLICATION_STATUSES)
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq @projects.size
       end
     end
   end
