@@ -1,14 +1,10 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
 
 // components
 import Icon from 'components/UI/Icon';
 import SignIn from 'components/SignIn';
 import SignUp from 'components/SignUp';
 import SignInUpBanner from 'components/SignInUpBanner';
-
-// services
-import { currentTenantStream, ITenant } from 'services/tenant';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -20,19 +16,21 @@ import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
-  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: row;
+  align-items: stretch;
   border-top: solid 1px #ddd;
   background: #f9f9fa;
   position: relative;
-  overflow: hidden;
+
+  ${media.biggerThanMaxTablet`
+    min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  `}
 
   ${media.smallerThanMaxTablet`
-    overflow: auto;
-    height: auto;
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
   `}
 `;
 
@@ -47,24 +45,19 @@ const Left = Section.extend`
   top: 0;
   left: 0;
   bottom: 0;
-  overflow: hidden;
-  pointer-events: none;
+  display: none;
 
-  ${media.smallerThanMaxTablet`
-    display: none;
+  ${media.biggerThanMaxTablet`
+    display: block;
   `}
 `;
 
 const Right = Section.extend`
   width: 100%;
   padding-left: 50vw;
-  overflow: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 
   ${media.smallerThanMaxTablet`
     padding: 0;
-    overflow: auto;
   `}
 `;
 
@@ -73,14 +66,10 @@ const RightInner = styled.div`
   max-width: 420px;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 40px;
-  padding-bottom: 100px;
+  padding-top: 60px;
+  padding-bottom: 60px;
   padding-left: 30px;
   padding-right: 30px;
-
-  ${media.smallerThanMaxTablet`
-    padding-bottom: 130px;
-  `}
 `;
 
 const FormContainer = styled.div``;
@@ -89,7 +78,7 @@ const GoBackContainer = styled.div`
   display: inline-flex;
   align-items: center;
   margin-left: -3px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   cursor: pointer;
 
   &:hover {
@@ -120,16 +109,6 @@ const Form = styled.div`
   max-width: 600px;
 `;
 
-const Title = styled.h2`
-  width: 100%;
-  color: #333;
-  font-size: 36px;
-  line-height: 42px;
-  font-weight: 500;
-  text-align: left;
-  margin-bottom: 35px;
-`;
-
 type Props = {
   onGoBack?: () => void;
   onSignInUpCompleted: (userId: string) => void;
@@ -137,31 +116,15 @@ type Props = {
 
 type State = {
   show: 'signIn' | 'signUp';
-  currentTenant: ITenant | null;
 };
 
 export default class SignInUp extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
-      show: 'signIn',
-      currentTenant: null
+      show: 'signIn'
     };
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const currentTenant$ = currentTenantStream().observable;
-
-    this.subscriptions = [
-      currentTenant$.subscribe(currentTenant => this.setState({ currentTenant }))
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   goBack = () => {
@@ -191,10 +154,8 @@ export default class SignInUp extends React.PureComponent<Props, State> {
     const signIn = (show === 'signIn' ? (
       <FormContainer>
         <Form>
-          <Title>
-            <FormattedMessage {...messages.signInTitle} />
-          </Title>
           <SignIn
+            title={<FormattedMessage {...messages.signInTitle} />}
             onSignedIn={this.handleOnSignedIn}
             goToSignUpForm={this.goToSignUpForm}
           />
@@ -205,10 +166,10 @@ export default class SignInUp extends React.PureComponent<Props, State> {
     const signUp = (show === 'signUp' ? (
       <FormContainer>
         <Form>
-          <Title>
-            <FormattedMessage {...messages.signUpTitle} />
-          </Title>
-          <SignUp onSignUpCompleted={this.handleOnSignUpCompleted} />
+          <SignUp
+            step1Title={<FormattedMessage {...messages.signUpTitle} />}
+            onSignUpCompleted={this.handleOnSignUpCompleted}
+          />
         </Form>
       </FormContainer>
     ) : null);

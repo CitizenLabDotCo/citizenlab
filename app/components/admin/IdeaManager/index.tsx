@@ -72,7 +72,7 @@ const RightColumn = styled.div`
 
   &.slide-enter {
     transform: translateX(100%);
-    opacity: 0.01;
+    opacity: 0;
 
     &.slide-enter-active {
       transition: 200ms;
@@ -88,7 +88,7 @@ const RightColumn = styled.div`
 
     &.slide-exit-active {
       transform: translateX(100%);
-      opacity: 0.01;
+      opacity: 0;
     }
   }
 `;
