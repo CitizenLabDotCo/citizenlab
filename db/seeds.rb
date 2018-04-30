@@ -401,9 +401,10 @@ if Apartment::Tenant.current == 'localhost'
 
     3.times do
       Group.create({
+        membership_type: 'manual',
         title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
         projects: Project.all.shuffle.take(rand(Project.count)),
-        users: User.all.shuffle.take(rand(User.count))
+        members: User.all.shuffle.take(rand(User.count))
       })
     end
 
