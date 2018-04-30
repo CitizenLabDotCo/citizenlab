@@ -57,10 +57,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.save',
     defaultMessage: 'Save',
   },
-  saveError: {
-    id: 'app.containers.AdminPage.groups.permissions.saveError',
-    defaultMessage: 'Error',
-  },
   saveSuccess: {
     id: 'app.containers.AdminPage.groups.permissions.saveSuccess',
     defaultMessage: 'Success!',

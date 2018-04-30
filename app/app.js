@@ -9,14 +9,19 @@
 import { cl } from 'utils/debugUtils'; // eslint-disable-line
 
 // Sentry error tracking
-if (process.env.NODE_ENV !== 'development') {
-  if (window.Raven) {
-    window.Raven.config('https://7cc28cd69e544a9f9c1a5295cb359fb1@sentry.io/224810', {
+if (process.env.NODE_ENV !== 'development' && process.env.SENTRY_DSN) {
+  import('raven-js')
+  .then((Raven) => {
+    Raven.config(process.env.SENTRY_DSN, {
       environment: process.env.NODE_ENV,
+      release: process.env.CIRCLE_BUILD_NUM,
+      tags: {
+        git_commit: process.env.CIRCLE_SHA1,
+        branch: process.env.CIRCLE_BRANCH,
+      },
     }).install();
-  }
+  });
 }
-
 
 // Needed for redux-saga es6 generator support
 import 'babel-polyfill';
@@ -32,6 +37,9 @@ import { useScroll } from 'react-router-scroll';
 import 'sanitize.css/sanitize.css';
 import 'react-select/dist/react-select.css';
 import { fromJS } from 'immutable';
+
+// Creates the LazyImages Observer
+import 'utils/lazyImagesObserver';
 
 // add reactMap to immutible
 import 'utils/immutablePatch';

@@ -12,8 +12,7 @@ type Props = {
 
 type State = {};
 
-class SurveymonekySurvey extends React.Component<Props, State> {
-
+class SurveymonekySurvey extends React.PureComponent<Props, State> {
   surveyContainer: HTMLElement | null = null;
 
   componentDidMount() {
@@ -27,7 +26,9 @@ class SurveymonekySurvey extends React.Component<Props, State> {
     }
   }
 
-  setRef = (r) => this.surveyContainer = r;
+  setRef = (element) => {
+    this.surveyContainer = element;
+  }
 
   render() {
     return (

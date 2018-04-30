@@ -53,10 +53,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.saveButtonLabel',
     defaultMessage: 'Save',
   },
-  saveErrorLabel: {
-    id: 'app.containers.AdminPage.ProjectEvents.saveErrorLabel',
-    defaultMessage: 'Error',
-  },
   saveSuccessLabel: {
     id: 'app.containers.AdminPage.ProjectEvents.saveSuccessLabel',
     defaultMessage: 'Success!',

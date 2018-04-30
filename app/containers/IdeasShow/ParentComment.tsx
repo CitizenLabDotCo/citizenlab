@@ -1,6 +1,7 @@
 import React from 'react';
 import { get } from 'lodash';
 import { adopt } from 'react-adopt';
+import { isNullOrError } from 'utils/helperUtils';
 
 // components
 import ChildComment from './ChildComment';
@@ -93,7 +94,7 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   comment: GetCommentChildProps;
   childComments: GetCommentsChildProps;
-  ideaLoaderState: GetIdeaChildProps;
+  idea: GetIdeaChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -155,10 +156,9 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
   }
 
   render() {
-    const { commentId, authUser, comment, childComments, ideaLoaderState: { idea } } = this.props;
+    const { commentId, authUser, comment, childComments, idea } = this.props;
 
-
-    if (comment && idea) {
+    if (!isNullOrError(comment) && !isNullOrError(idea)) {
       const ideaId = comment.relationships.idea.data.id;
       const authorId = (comment.relationships.author.data ? comment.relationships.author.data.id : null);
       const commentDeleted = (comment.attributes.publication_status === 'deleted');
@@ -241,7 +241,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser/>,
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
   childComments: ({ ideaId, render }) => <GetComments ideaId={ideaId}>{render}</GetComments>,
-  ideaLoaderState: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>,
+  idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>,
 });
 
 export default (inputProps: InputProps) => (

@@ -1,17 +1,14 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
 import { get } from 'lodash';
-
-// router
-import { browserHistory } from 'react-router';
+import { Subscription } from 'rxjs/Rx';
+import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 
 // components
 import SignUp from 'components/SignUp';
 import SignInUpBanner from 'components/SignInUpBanner';
-import Spinner from 'components/UI/Spinner';
 
-// services
-import { authUserStream } from 'services/auth';
+// resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -19,18 +16,6 @@ import eventEmitter from 'utils/eventEmitter';
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
-
-const Loading = styled.div`
-  width: 100%;
-  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
-  `}
-`;
 
 const Container = styled.div`
   width: 100%;
@@ -105,46 +90,34 @@ const RightInnerInner = styled.div`
   padding-right: 30px;
 `;
 
-type Props = {
-  params?: {
-    token: string;
-  } | undefined;
-};
+interface InputProps extends WithRouterProps{}
 
-type State = {
-  loaded: boolean;
-};
+interface DataProps {
+  authUser: GetAuthUserChildProps;
+}
 
-export default class SignUpPage extends React.PureComponent<Props, State> {
+interface Props extends InputProps, DataProps {}
+
+interface State {}
+
+class SignUpPage extends React.PureComponent<Props, State> {
   scrollDivElement: HTMLDivElement | null;
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props);
-    this.state = {
-      loaded: false
-    };
+    this.state = {};
     this.scrollDivElement = null;
     this.subscriptions = [];
   }
 
   componentDidMount() {
-    const authUser$ = authUserStream().observable;
-
     this.subscriptions = [
-      authUser$.first().subscribe((authUser) => {
-        if (authUser) {
-          browserHistory.push('/');
-        } else {
-          this.setState({ loaded: true });
-        }
-      }),
-
       eventEmitter.observeEvent('signUpFlowGoToSecondStep').subscribe(() => {
         if (this.scrollDivElement) {
           this.scrollDivElement.scrollTop = 0;
         }
-      }),
+      })
     ];
   }
 
@@ -157,42 +130,37 @@ export default class SignUpPage extends React.PureComponent<Props, State> {
   }
 
   setRef = (element: HTMLDivElement) => {
-    if (element) {
-      this.scrollDivElement = element;
-    }
+    this.scrollDivElement = element;
   }
 
   render() {
-    const { loaded } = this.state;
-    const location = browserHistory.getCurrentLocation();
+    const { authUser, location } = this.props;
     const isInvitation = (location.pathname === '/invite');
     const token: string | null = get(location.query, 'token', null);
 
-    if (!loaded) {
-      return (
-        <Loading>
-          <Spinner size="32px" color="#666" />
-        </Loading>
-      );
+    if (authUser) {
+      browserHistory.push('/');
     }
 
-    if (loaded) {
-      return (
-        <Container>
-          <Left>
-            <SignInUpBanner />
-          </Left>
-          <Right innerRef={this.setRef}>
-            <RightInner>
-              <RightInnerInner>
-                <SignUp isInvitation={isInvitation} token={token} onSignUpCompleted={this.onSignUpCompleted} />
-              </RightInnerInner>
-            </RightInner>
-          </Right>
-        </Container>
-      );
-    }
-
-    return null;
+    return (
+      <Container>
+        <Left>
+          <SignInUpBanner />
+        </Left>
+        <Right innerRef={this.setRef}>
+          <RightInner>
+            <RightInnerInner>
+              <SignUp isInvitation={isInvitation} token={token} onSignUpCompleted={this.onSignUpCompleted} />
+            </RightInnerInner>
+          </RightInner>
+        </Right>
+      </Container>
+    );
   }
 }
+
+export default withRouter((inputProps: InputProps) => (
+  <GetAuthUser>
+    {authUser => <SignUpPage {...inputProps} authUser={authUser} />}
+  </GetAuthUser>
+));
