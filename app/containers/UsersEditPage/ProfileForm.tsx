@@ -79,15 +79,16 @@ class ProfileForm extends React.PureComponent<Props, State> {
       localeOptions: [],
       customFieldsFormData: null
     };
+    this.user$ = new Rx.BehaviorSubject(null as any);
     this.subscriptions = [];
   }
 
   componentDidMount() {
-    this.user$ = new Rx.BehaviorSubject(this.props.user);
-
-    const user$ = this.user$.distinctUntilChanged((x, y) => isEqual(x, y));
+    const user$ = this.user$.filter(user => user !== null).distinctUntilChanged((x, y) => isEqual(x, y));
     const locale$ = localeStream().observable;
     const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
+
+    this.user$.next(this.props.user);
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
@@ -176,7 +177,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
       } else if (isEmpty(touched) && status === 'success') {
         returnValue = 'success';
       }
-  
+
       return returnValue;
     };
 
@@ -349,7 +350,6 @@ class ProfileForm extends React.PureComponent<Props, State> {
                     onClick={handleOnSubmit}
                     messages={{
                       buttonSave: messages.submit,
-                      buttonError: messages.buttonErrorLabel,
                       buttonSuccess: messages.buttonSuccessLabel,
                       messageSuccess: messages.messageSuccess,
                       messageError: messages.messageError,

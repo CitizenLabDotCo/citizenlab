@@ -1,4 +1,3 @@
-
 const errorLoading = (err) => {
   console.error('Dynamic settings loading failed', err); // eslint-disable-line no-console
 };
@@ -10,7 +9,7 @@ const loadModule = (cb) => (componentModule) => {
 export default () => ({
   path: '/admin/settings',
   name: 'admin settings',
-  getComponent(nextState, cb) {
+  getComponent(_nextState, cb) {
     const importModules = Promise.all([
       import('containers/Admin/settings'),
     ]);
@@ -24,7 +23,7 @@ export default () => ({
     importModules.catch(errorLoading);
   },
   indexRoute: {
-    getComponent(nextState, cb) {
+    getComponent(_nextState, cb) {
       const importModules = Promise.all([
         import('containers/Admin/settings/general'),
       ]);
@@ -41,7 +40,7 @@ export default () => ({
   childRoutes: [
     {
       path: 'general',
-      getComponent(nextState, cb) {
+      getComponent(_nextState, cb) {
         const importModules = Promise.all([
           import('containers/Admin/settings/general'),
         ]);
@@ -57,7 +56,7 @@ export default () => ({
     },
     {
       path: 'customize',
-      getComponent(nextState, cb) {
+      getComponent(_nextState, cb) {
         const importModules = Promise.all([
           import('containers/Admin/settings/customize'),
         ]);
@@ -73,7 +72,7 @@ export default () => ({
     },
     {
       path: 'pages',
-      getComponent(nextState, cb) {
+      getComponent(_nextState, cb) {
         const importModules = Promise.all([
           import('containers/Admin/settings/pages'),
         ]);
@@ -89,7 +88,7 @@ export default () => ({
     },
     {
       path: 'registration',
-      getComponent(nextState, cb) {
+      getComponent(_nextState, cb) {
         const importModules = Promise.all([
           import('containers/Admin/settings/registration'),
         ]);

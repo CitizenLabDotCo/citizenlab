@@ -139,10 +139,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.save',
     defaultMessage: 'Save',
   },
-  saveError: {
-    id: 'app.containers.AdminPage.SettingsPage.saveError',
-    defaultMessage: 'Error',
-  },
   saveSuccess: {
     id: 'app.containers.AdminPage.SettingsPage.saveSuccess',
     defaultMessage: 'Success!',
@@ -158,5 +154,9 @@ export default defineMessages({
   titleRegistrationFields: {
     id: 'app.containers.AdminPage.SettingsPage.titleRegistrationFields',
     defaultMessage: 'Registration fields',
+  },
+  tabAreas: {
+    id: 'app.containers.AdminPage.SettingsPage.tabAreas',
+    defaultMessage: 'Areas',
   },
 });
