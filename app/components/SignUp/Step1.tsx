@@ -197,7 +197,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       tokenError: null,
       unknownError: null
     });
-  } 
+  }
 
   handleFirstNameOnChange = (firstName: string) => {
     this.setState((state) => ({
@@ -403,13 +403,14 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
         <FormElement>
           <TermsAndConditionsWrapper className={`${this.state.tacError && 'error'}`}>
-            <Checkbox 
+            <Checkbox
+              className="e2e-terms-and-conditions"
               value={this.state.tacAccepted}
               onChange={this.handleTaCAcceptedOnChange}
               disableLabelClick={true}
               label={
                 <FormattedMessage
-                  {...messages.acceptTermsAndConditions} 
+                  {...messages.acceptTermsAndConditions}
                   values={{ tacLink: <Link to="pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link> }}
                 />
               }
