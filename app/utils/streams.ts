@@ -70,8 +70,15 @@ class Streams {
     Object.keys(this.streams)
       .filter(streamId => streamId !== authApiEndpoint)
       .forEach((streamId) => {
-        const apiEndpoint = this.streams[streamId].params.apiEndpoint;
-        this.deleteStream(streamId, apiEndpoint);
+        const apiEndpoint = cloneDeep(this.streams[streamId].params.apiEndpoint);
+        const refCount = cloneDeep(this.streams[streamId].observable.source['_refCount']);
+        const cacheStream = cloneDeep(this.streams[streamId].cacheStream);
+
+        if ((cacheStream && refCount > 1) || (!cacheStream && refCount > 0)) {
+          this.streams[streamId].fetch();
+        } else {
+          this.deleteStream(streamId, apiEndpoint);
+        }
       });
   }
 
