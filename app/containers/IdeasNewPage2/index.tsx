@@ -1,6 +1,7 @@
 import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs/Rx';
 import { isString, isEmpty, isError } from 'lodash';
+import { isNullOrError } from 'utils/helperUtils';
 
 // libraries
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -11,6 +12,7 @@ import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 import IdeasNewButtonBar from './IdeasNewButtonBar';
 import NewIdeaForm from './NewIdeaForm';
 import SignInUp from './SignInUp';
+// import Spinner from 'components/UI/Spinner';
 
 // services
 import { localeStream } from 'services/locale';
@@ -19,27 +21,42 @@ import { addIdeaImage, deleteIdeaImage, IIdeaImage } from 'services/ideaImages';
 import { getAuthUserAsync } from 'services/auth';
 import { localState, ILocalStateService } from 'services/localState';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
-import GetProject from 'resources/GetProject';
+
+// resources
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // utils
 import { convertToGeoJson, reverseGeocode } from 'utils/locationTools';
 
 // typings
 import { Locale } from 'typings';
-import { IProjectData } from 'services/projects';
 
 // style
 import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
 
+const timeout = 600;
+
 const Container = styled.div`
   background: #f9f9fa;
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+
+  ${media.smallerThanMaxTablet`
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+  `}
+`;
+
+const ContainerInner = styled.div`
+  &.hidden {
+    display: none;
+  }
 `;
 
 const PageContainer = styled.div`
   width: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   position: relative;
+  will-change: transform, opacity;
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
@@ -47,7 +64,7 @@ const PageContainer = styled.div`
 
   &.page-enter {
     position: absolute;
-    opacity: 0.01;
+    opacity: 0;
     transform: translateX(100vw);
 
     ${media.biggerThanMaxTablet`
@@ -65,8 +82,8 @@ const PageContainer = styled.div`
     &.page-enter-active {
       opacity: 1;
       transform: translateX(0);
-      transition: transform 600ms cubic-bezier(0.19, 1, 0.22, 1),
-                  opacity 600ms cubic-bezier(0.19, 1, 0.22, 1);
+      transition: transform ${timeout}ms cubic-bezier(0.19, 1, 0.22, 1),
+                  opacity ${timeout}ms cubic-bezier(0.19, 1, 0.22, 1);
     }
   }
 
@@ -75,10 +92,10 @@ const PageContainer = styled.div`
     transform: translateX(0);
 
     &.page-exit-active {
-      opacity: 0.01;
+      opacity: 0;
       transform: translateX(100vw);
-      transition: transform 600ms cubic-bezier(0.19, 1, 0.22, 1),
-                  opacity 600ms cubic-bezier(0.19, 1, 0.22, 1);
+      transition: transform ${timeout}ms cubic-bezier(0.19, 1, 0.22, 1),
+                  opacity ${timeout}ms cubic-bezier(0.19, 1, 0.22, 1);
 
       ${media.biggerThanMaxTablet`
         transform: translateX(800px);
@@ -115,7 +132,7 @@ const ButtonBarContainer = styled.div`
 
     &.buttonbar-enter-active {
       transform: translateY(0);
-      transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: transform ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
     }
   }
 
@@ -124,18 +141,23 @@ const ButtonBarContainer = styled.div`
 
     &.buttonbar-exit-active {
       transform: translateY(64px);
-      transition: transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: transform ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
     }
   }
 `;
 
-interface Props {
-  project: IProjectData | null;
+interface InputProps {}
+
+interface DataProps {
+  project: GetProjectChildProps;
 }
+
+interface Props extends InputProps, DataProps {}
 
 interface LocalState {
   showIdeaForm: boolean;
   locale: Locale | null;
+  publishing: Boolean;
 }
 
 interface GlobalState {}
@@ -152,7 +174,8 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     super(props);
     const initialLocalState: LocalState = {
       showIdeaForm: true,
-      locale: null
+      locale: null,
+      publishing: false
     };
     const initialGlobalState: IIdeasNewPageGlobalState = {
       title: null,
@@ -175,11 +198,12 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
   }
 
   componentDidMount() {
+    const { project } = this.props;
     const localState$ = this.localState.observable;
     const locale$ = localeStream().observable;
 
-    if (this.props.project && this.props.project.id) {
-      this.projectId$.next(this.props.project.id);
+    if (!isNullOrError(project)) {
+      this.projectId$.next(project.id);
     }
 
     if (this.props.location.query.position) {
@@ -189,8 +213,8 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     }
 
     this.subscriptions = [
-      localState$.subscribe(({ showIdeaForm, locale }) => {
-        const newState: State = { showIdeaForm, locale };
+      localState$.subscribe(({ showIdeaForm, locale, publishing }) => {
+        const newState: State = { showIdeaForm, locale, publishing };
         this.setState(newState);
       }),
       locale$.subscribe(locale => this.localState.set({ locale })),
@@ -205,8 +229,10 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
   }
 
   componentDidUpdate() {
-    if (this.props.project && this.props.project.id) {
-      this.projectId$.next(this.props.project.id);
+    const { project } = this.props;
+
+    if (!isNullOrError(project) && isString(project.id)) {
+      this.projectId$.next(project.id);
     }
   }
 
@@ -301,59 +327,60 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
   }
 
   handleOnSignInUpCompleted = async (userId: string) => {
+    this.localState.set({ publishing: true });
+
     const { ideaId } = await this.globalState.get();
 
     if (ideaId) {
       await updateIdea(ideaId, { author_id: userId, publication_status: 'published' });
       browserHistory.push('/ideas');
+    } else {
+      browserHistory.push('/ideas');
     }
   }
 
   render() {
-    const { showIdeaForm } = this.state;
-    const timeout = 600;
-
-    const buttonBar = (showIdeaForm) ? (
-      <CSSTransition classNames="buttonbar" timeout={timeout}>
-        <ButtonBarContainer>
-          <IdeasNewButtonBar onSubmit={this.handleOnIdeaSubmit} />
-        </ButtonBarContainer>
-      </CSSTransition>
-    ) : null;
-
-    const newIdeasForm = (showIdeaForm) ? (
-      <CSSTransition classNames="page" timeout={timeout}>
-        <PageContainer className="ideaForm">
-          <NewIdeaForm onSubmit={this.handleOnIdeaSubmit} />
-        </PageContainer>
-      </CSSTransition>
-    ) : null;
-
-    const signInUp = (!showIdeaForm) ? (
-      <CSSTransition classNames="page" timeout={timeout}>
-        <PageContainer>
-          <SignInUp
-            onGoBack={this.handleOnSignInUpGoBack}
-            onSignInUpCompleted={this.handleOnSignInUpCompleted}
-          />
-        </PageContainer>
-      </CSSTransition>
-    ) : null;
+    const { showIdeaForm, publishing } = this.state;
 
     return (
       <Container>
-        <TransitionGroup>
-          {buttonBar}
-          {newIdeasForm}
-          {signInUp}
-        </TransitionGroup>
+        <ContainerInner className={`${publishing && 'hidden'}`}>
+          <TransitionGroup>
+            {showIdeaForm &&
+              <CSSTransition classNames="buttonbar" timeout={timeout}>
+                <ButtonBarContainer>
+                  <IdeasNewButtonBar onSubmit={this.handleOnIdeaSubmit} />
+                </ButtonBarContainer>
+              </CSSTransition>
+            }
+
+            {showIdeaForm &&
+              <CSSTransition classNames="page" timeout={timeout}>
+                <PageContainer className="ideaForm">
+                  <NewIdeaForm onSubmit={this.handleOnIdeaSubmit} />
+                </PageContainer>
+              </CSSTransition>
+            }
+
+            {!showIdeaForm &&
+              <CSSTransition classNames="page" timeout={timeout}>
+                <PageContainer>
+                  <SignInUp
+                    onGoBack={this.handleOnSignInUpGoBack}
+                    onSignInUpCompleted={this.handleOnSignInUpCompleted}
+                  />
+                </PageContainer>
+              </CSSTransition>
+            }
+          </TransitionGroup>
+        </ContainerInner>
       </Container>
     );
   }
 }
 
-export default withRouter<Props>((props: Props & WithRouterProps) => (
-  <GetProject slug={props.params.slug}>
-    {({ project }) => <IdeasNewPage2 {...props} project={project} />}
+export default withRouter<Props>((inputProps: Props & WithRouterProps) => (
+  <GetProject slug={inputProps.params.slug}>
+    {project => <IdeasNewPage2 {...inputProps} project={project} />}
   </GetProject>
 ));

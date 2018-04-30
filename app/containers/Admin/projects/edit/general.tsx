@@ -781,7 +781,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               onClick={this.onSubmit}
               messages={{
                 buttonSave: messages.saveProject,
-                buttonError: messages.saveError,
                 buttonSuccess: messages.saveSuccess,
                 messageError: messages.saveErrorMessage,
                 messageSuccess: messages.saveSuccessMessage,

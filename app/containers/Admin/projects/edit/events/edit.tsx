@@ -88,7 +88,7 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
         event$
       ).subscribe(([locale, currentTenant, event]) => {
         let descriptionMultilocEditorState: MultilocEditorState | null = null;
- 
+
         if (event) {
           descriptionMultilocEditorState = {};
 
@@ -242,7 +242,6 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
               status={submitState}
               messages={{
                 buttonSave: messages.saveButtonLabel,
-                buttonError: messages.saveErrorLabel,
                 buttonSuccess: messages.saveSuccessLabel,
                 messageError: messages.saveErrorMessage,
                 messageSuccess: messages.saveSuccessMessage,

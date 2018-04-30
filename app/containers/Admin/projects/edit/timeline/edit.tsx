@@ -364,7 +364,6 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
               status={submitState}
               messages={{
                 buttonSave: messages.saveLabel,
-                buttonError: messages.saveErrorLabel,
                 buttonSuccess: messages.saveSuccessLabel,
                 messageError: messages.saveErrorMessage,
                 messageSuccess: messages.saveSuccessMessage,
