@@ -91,7 +91,7 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
 }
 
 export default (props) => (
-  <GetProjects publicationStatuses={['draft', 'published', 'archived']}>
+  <GetProjects publicationStatuses={['draft', 'published', 'archived']} filterCanModerate={true}>
     {projects => <AdminProjectsList {...props} projects={projects} />}
   </GetProjects>
 );
