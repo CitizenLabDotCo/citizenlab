@@ -16,6 +16,7 @@ const LocationInputWrapper = styled.div`
     border: solid 1px #ccc;
     background: #fff;
     outline: none;
+    cursor: text;
 
     ::placeholder {
       color: #aaa;

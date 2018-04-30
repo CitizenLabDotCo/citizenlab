@@ -1,5 +1,36 @@
 # Changelog
 
+## 2018-04-30
+
+### Fixed
+- When posting an idea and only afterward signing in, the content originally typed is no longer lost
+- An error is no longer shown on the homepage when using Internet Explorer
+- Deleting a user is possible again
+
+### Changed
+- The idea manager again shows 10 ideas on one page, instead of 5
+- Submit buttons in the admin no longer show 'Error' on the buttons themselves
+
+### Removed
+- The project an idea belongs to can no longer be changed through the edit idea form, only through the idea manager
+
+## 2018-04-26
+
+### Added
+- Areas can now be created, edited and deleted in the admin settings
+- The order of projects can now be changed through drag&drop in the admin projects overview
+- Before signing up, the user is requested to accept the terms and conditions
+- It's possible to experiment with platform-specific content on the landing page footer, currently through setup & support
+- Images are only loaded when they appear on screen, improving page loading speed
+
+### Fixed
+- You can no longer click a disabled "add an idea" button on the timeline
+- When accessing a removed idea or project, a message is shown
+
+### Known issues
+- Posting an idea before logging in is currently broken; the user is redirected to an empty posting form
+- Social sharing is not consistently showing all metadata
+
 ## 2018-04-18
 
 ### Fixed

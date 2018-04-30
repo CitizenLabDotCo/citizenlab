@@ -137,7 +137,7 @@ export default class SettingsGeneralTab extends React.PureComponent<Props, State
       const updatedLocales = get(attributesDiff, 'settings.core.locales');
 
       let tenantAttrs = (tenant ? merge({}, tenant.attributes, attributesDiff) : merge({}, attributesDiff));
-  
+
       // Prevent merging the arrays of locales
       if (updatedLocales) {
         tenantAttrs = set(tenantAttrs, 'settings.core.locales', updatedLocales);
@@ -205,7 +205,6 @@ export default class SettingsGeneralTab extends React.PureComponent<Props, State
               status={getSubmitState({ errors, saved, diff: attributesDiff })}
               messages={{
                 buttonSave: messages.save,
-                buttonError: messages.saveError,
                 buttonSuccess: messages.saveSuccess,
                 messageError: messages.saveErrorMessage,
                 messageSuccess: messages.saveSuccessMessage,

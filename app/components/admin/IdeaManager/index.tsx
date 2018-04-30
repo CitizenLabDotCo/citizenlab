@@ -72,7 +72,7 @@ const RightColumn = styled.div`
 
   &.slide-enter {
     transform: translateX(100%);
-    opacity: 0.01;
+    opacity: 0;
 
     &.slide-enter-active {
       transition: 200ms;
@@ -88,7 +88,7 @@ const RightColumn = styled.div`
 
     &.slide-exit-active {
       transform: translateX(100%);
-      opacity: 0.01;
+      opacity: 0;
     }
   }
 `;
@@ -269,7 +269,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   projects: <GetProjects pageSize={250} sort="new" />,
-  ideas: <GetIdeas type="paginated" pageSize={5} sort="new" />,
+  ideas: <GetIdeas type="paginated" pageSize={10} sort="new" />,
   topics: <GetTopics />,
   ideaStatuses: <GetIdeaStatuses />,
   phases: ({ project, render }) => <GetPhases projectId={get(project, 'id')}>{render}</GetPhases>,

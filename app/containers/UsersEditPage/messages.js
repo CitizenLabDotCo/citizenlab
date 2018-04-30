@@ -26,10 +26,6 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.processing',
     defaultMessage: 'Sending...',
   },
-  buttonErrorLabel: {
-    id: 'app.containers.UsersEditPage.buttonErrorLabel',
-    defaultMessage: 'Error',
-  },
   buttonSuccessLabel: {
     id: 'app.containers.UsersEditPage.buttonSuccessLabel',
     defaultMessage: 'Success',

@@ -29,7 +29,6 @@ interface Props {
   loading: boolean;
   messages: {
     buttonSave: any,
-    buttonError: any,
     buttonSuccess: any,
     messageSuccess: any,
     messageError: any,
@@ -39,6 +38,20 @@ interface Props {
 }
 
 export default class SubmitWrapper extends React.Component<Props> {
+  submitButton: HTMLInputElement | null;
+
+  constructor(props: Props)  {
+    super(props as any);
+    this.submitButton = null;
+  }
+  removeFocus = (el) => {
+    el && el.blur();
+  }
+
+  setSubmitButtonRef = (el) => {
+    this.submitButton = el;
+  }
+
   render () {
     let style = this.props.style || 'cl-blue';
 
@@ -47,7 +60,7 @@ export default class SubmitWrapper extends React.Component<Props> {
     }
 
     if (this.props.status === 'error') {
-      style = 'error';
+      this.removeFocus(this.submitButton);
     }
 
     return (
@@ -58,12 +71,12 @@ export default class SubmitWrapper extends React.Component<Props> {
           processing={this.props.loading}
           disabled={this.props.status === 'disabled'}
           onClick={this.props.onClick}
+          setSubmitButtonRef={this.setSubmitButtonRef}
         >
-          {(this.props.status === 'enabled' || this.props.status === 'disabled') &&
+          {(this.props.status === 'enabled' ||
+            this.props.status === 'disabled' ||
+            this.props.status === 'error') &&
             <FormattedMessage {...this.props.messages.buttonSave} />
-          }
-          {this.props.status === 'error' &&
-            <FormattedMessage {...this.props.messages.buttonError} />
           }
           {this.props.status === 'success' &&
             <FormattedMessage {...this.props.messages.buttonSuccess} />

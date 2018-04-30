@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as moment from 'moment';
+import { isNullOrError } from 'utils/helperUtils';
 
 // services
 import { projectByIdStream, IProject } from 'services/projects';
@@ -262,9 +263,9 @@ class ProjectCard extends React.PureComponent<Props, State> {
     const { projectId, selected } = this.props;
     const { project, projectImages, loaded } = this.state;
 
-    if (loaded && project) {
-      const { title_multiloc: titleMultiloc /*, description_preview_multiloc: descriptionPreviewMultiloc*/ } = project.data.attributes;
-      const smallImage = projectImages && projectImages.data.length > 0 && projectImages.data[0].attributes.versions.small;
+    if (loaded && !isNullOrError(project)) {
+      const { title_multiloc: titleMultiloc } = project.data.attributes;
+      const smallImage = !isNullOrError(projectImages) && projectImages.data.length > 0 && projectImages.data[0].attributes.versions.small;
       const disabledMessage = this.disabledMessage();
       const cardState = this.calculateCardState();
       const enabled = (cardState === 'enabled' || cardState === 'enabledBecauseAdmin');
@@ -280,13 +281,13 @@ class ProjectCard extends React.PureComponent<Props, State> {
             <Card className={`${selected && 'selected'} ${enabled && 'enabled'}`}>
 
               <ImageWrapper>
-                {smallImage ?
+                {smallImage ? (
                   <img src={smallImage} alt="project image" />
-                :
+                ) : (
                   <ProjectImagePlaceholder>
                     <ProjectImagePlaceholderIcon name="project" />
                   </ProjectImagePlaceholder>
-                }
+                )}
               </ImageWrapper>
 
               <ProjectContent>
