@@ -23,7 +23,21 @@ class ProjectPolicy < ApplicationPolicy
         end
       end
     end
+
+    def moderatable
+      if user&.admin?
+        scope.all
+      elsif user
+        moderatable_project_ids = user.roles
+          .select{|role| role['type'] == 'project_moderator'}
+          .map{|role| role['project_id']}.compact
+        scope.where(id: moderatable_project_ids)
+      else
+        []
+      end
+    end
   end
+
 
   def create?
     user&.active? && user.admin?
