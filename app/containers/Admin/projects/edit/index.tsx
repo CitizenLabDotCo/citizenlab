@@ -106,11 +106,6 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
         feature: 'private_projects',
         className: 'permissions',
       },
-      {
-        label: this.props.intl.formatMessage(messages.moderatorsTab),
-        url: `${baseTabsUrl}/moderators`,
-        className: 'moderators',
-      },
     ];
 
     if (project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation') {

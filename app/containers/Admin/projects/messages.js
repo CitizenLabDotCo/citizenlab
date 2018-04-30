@@ -269,7 +269,7 @@ export default defineMessages({
   },
   moderatorsTabTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.moderatorsTabTitle',
-    defaultMessage: 'Manage moderators for this project',
+    defaultMessage: 'Who can moderate this project?',
   },
   deleteModeratorLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.deleteModeratorLabel',

@@ -13,10 +13,12 @@ import Radio from 'components/UI/Radio';
 import ProjectGroupsList from './ProjectGroupsList';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
+import Moderators from './Moderators';
 
 // services
 import { projectBySlugStream, updateProject, IProject } from 'services/projects';
 import { groupsProjectsByProjectIdStream, addGroupProject, deleteGroupProject, IGroupsProjects } from 'services/groupsProjects';
+import GetModerators from 'resources/GetModerators';
 
 // style
 import styled from 'styled-components';
@@ -176,54 +178,60 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
 
     if (!loading && unsavedVisibleTo) {
       return (
-        <Section>
-          <SectionField>
-            <Label htmlFor="permissions-type">
-              <FormattedMessage {...messages.permissionTypeLabel} />
-            </Label>
+          <Section>
+            <SectionField>
+              <Label htmlFor="permissions-type">
+                <FormattedMessage {...messages.permissionTypeLabel} />
+              </Label>
 
-            <RadioButtonsWrapper>
-              <StyledRadio
-                onChange={this.handlePermissionTypeChange}
-                currentValue={unsavedVisibleTo}
-                name="permissionsType"
-                label={formatMessage(messages.permissionsEveryoneLabel)}
-                value="public"
-                id="permissions-all"
-              />
-              <StyledRadio
-                onChange={this.handlePermissionTypeChange}
-                currentValue={unsavedVisibleTo}
-                name="permissionsType"
-                label={formatMessage(messages.permissionsAdministrators)}
-                value="admins"
-                id="permissions-administrators"
-              />
-              <StyledRadio
-                onChange={this.handlePermissionTypeChange}
-                currentValue={unsavedVisibleTo}
-                name="permissionsType"
-                label={formatMessage(messages.permissionsSelectionLabel)}
-                value="groups"
-                id="permissions-selection"
-              />
-            </RadioButtonsWrapper>
-          </SectionField>
+              <RadioButtonsWrapper>
+                <StyledRadio
+                  onChange={this.handlePermissionTypeChange}
+                  currentValue={unsavedVisibleTo}
+                  name="permissionsType"
+                  label={formatMessage(messages.permissionsEveryoneLabel)}
+                  value="public"
+                  id="permissions-all"
+                />
+                <StyledRadio
+                  onChange={this.handlePermissionTypeChange}
+                  currentValue={unsavedVisibleTo}
+                  name="permissionsType"
+                  label={formatMessage(messages.permissionsAdministrators)}
+                  value="admins"
+                  id="permissions-administrators"
+                />
+                <StyledRadio
+                  onChange={this.handlePermissionTypeChange}
+                  currentValue={unsavedVisibleTo}
+                  name="permissionsType"
+                  label={formatMessage(messages.permissionsSelectionLabel)}
+                  value="groups"
+                  id="permissions-selection"
+                />
+              </RadioButtonsWrapper>
+            </SectionField>
 
-          {groups}
+            {groups}
+            <SectionField>
+              <SubmitWrapper
+                loading={saving}
+                status={status}
+                onClick={this.saveChanges}
+                messages={{
+                  buttonSave: messages.save,
+                  buttonError: messages.saveError,
+                  buttonSuccess: messages.saveSuccess,
+                  messageError: messages.saveErrorMessage,
+                  messageSuccess: messages.saveSuccessMessage,
+                }}
+              />
+            </SectionField>
 
-          <SubmitWrapper
-            loading={saving}
-            status={status}
-            onClick={this.saveChanges}
-            messages={{
-              buttonSave: messages.save,
-              buttonError: messages.saveError,
-              buttonSuccess: messages.saveSuccess,
-              messageError: messages.saveErrorMessage,
-              messageSuccess: messages.saveSuccessMessage,
-            }}
-          />
+            {project &&
+                <GetModerators projectId={project.data.id}>
+                  {moderators => <Moderators moderators={moderators} projectId={project.data.id} />}
+                </GetModerators>}
         </Section>
       );
     }
