@@ -265,23 +265,6 @@ export default (injectReducer) => ({
             importModules.catch(errorLoading);
           },
         },
-        {
-          path: '/admin/projects/:slug/moderators',
-          name: 'admin projects edit moderators',
-          getComponent(nextState, cb) {
-            const importModules = Promise.all([
-              import('containers/Admin/projects/edit/moderators'),
-            ]);
-
-            const renderRoute = loadModule(cb);
-
-            importModules.then(([component]) => {
-              renderRoute(component);
-            });
-
-            importModules.catch(errorLoading);
-          },
-        },
       ],
     },
   ],
