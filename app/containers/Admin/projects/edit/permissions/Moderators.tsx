@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Label from 'components/UI/Label';
-import { Section } from 'components/admin/Section';
+import { SectionField } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
@@ -24,13 +24,13 @@ export default class Moderators extends React.PureComponent<Props>{
   render() {
     const { moderators, projectId } = this.props;
     return (
-      <Section>
+      <SectionField>
         <Label>
           <FormattedMessage {...messages.moderatorsSectionTitle} />
         </Label>
         <UserSearch resourceId={projectId} messages={messages} searchFunction={findMembership} addFunction={addMembership} />
         <ModeratorList moderators={moderators} projectId={projectId}/>
-      </Section>
+      </SectionField>
     );
   }
 }

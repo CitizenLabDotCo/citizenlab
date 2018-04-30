@@ -169,7 +169,9 @@ if (isDev) {
   WEBPACK_CONFIG.devServer = {
     contentBase: path.join(process.cwd(), 'build'),
     compress: true,
+    host: '0.0.0.0',
     port: 3000,
+    disableHostCheck: true,
     hot: true,
     historyApiFallback: true,
     proxy: {

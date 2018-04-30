@@ -1,8 +1,6 @@
 import React from 'react';
 import { Observable, Subscription } from 'rxjs/Rx';
-import { isString, isEmpty, get } from 'lodash';
-
-// router
+import { isString, isEmpty } from 'lodash';
 import { browserHistory } from 'react-router';
 
 // components
@@ -29,6 +27,8 @@ const Container = styled.div`
   padding: 0;
   display: flex;
   flex-direction: row;
+  align-items: stretch;
+  border-top: solid 1px #ddd;
   background: #f9f9fa;
   position: relative;
 
@@ -37,7 +37,6 @@ const Container = styled.div`
   `}
 
   ${media.smallerThanMaxTablet`
-    padding-bottom: 70px;
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
   `}
 `;
@@ -53,8 +52,6 @@ const Left = Section.extend`
   top: 0;
   left: 0;
   bottom: 0;
-  overflow: hidden;
-  pointer-events: none;
   display: none;
 
   ${media.biggerThanMaxTablet`
@@ -64,12 +61,10 @@ const Left = Section.extend`
 
 const Right = Section.extend`
   width: 100%;
+  padding-left: 50vw;
 
-  ${media.biggerThanMaxTablet`
-    padding-left: 50vw;
-    overflow: hidden;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+  ${media.smallerThanMaxTablet`
+    padding: 0;
   `}
 `;
 
@@ -78,29 +73,26 @@ const RightInner = styled.div`
   max-width: 420px;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 40px;
-  padding-bottom: 100px;
+  padding-top: 60px;
+  padding-bottom: 60px;
   padding-left: 30px;
   padding-right: 30px;
-
-  ${media.smallerThanMaxTablet`
-    padding-bottom: 70px;
-  `}
 `;
 
 const Title = styled.h2`
   width: 100%;
   color: #333;
-  font-size: 36px;
+  font-size: 34px;
   line-height: 42px;
   font-weight: 500;
+  text-align: left;
   margin-bottom: 35px;
 `;
 
 type Props = {};
 
 type State = {
-  hasError: boolean;
+  authError: boolean;
   loading: boolean;
 };
 
@@ -110,7 +102,7 @@ export default class CompleteSignUpPage extends React.PureComponent<Props, State
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      hasError: false,
+      authError: false,
       loading: false
     };
     this.subscriptions = [];
@@ -119,7 +111,7 @@ export default class CompleteSignUpPage extends React.PureComponent<Props, State
   componentDidMount() {
     const location = browserHistory.getCurrentLocation();
     const query = location.query;
-    const hasError = (location.pathname === '/authentication-error');
+    const authError = (location.pathname === '/authentication-error');
     const authUser$ = authUserStream().observable;
     const ideaToPublish$ = (query && query.idea_to_publish ? ideaByIdStream(query.idea_to_publish).observable : Observable.of(null));
 
@@ -128,7 +120,7 @@ export default class CompleteSignUpPage extends React.PureComponent<Props, State
         authUser$,
         ideaToPublish$,
       ).subscribe(async ([authUser, ideaToPublish]) => {
-        const registrationCompletedAt = get(authUser, `data.attributes.registration_completed_at`, null);
+        const registrationCompletedAt = (authUser ? authUser.data.attributes.registration_completed_at : null);
         const isRegistrationCompleted = (isString(registrationCompletedAt) && !isEmpty(registrationCompletedAt));
 
         // remove idea parameter from the url
@@ -141,11 +133,13 @@ export default class CompleteSignUpPage extends React.PureComponent<Props, State
           }
 
           if (isRegistrationCompleted) {
-            this.handleOnCompleted();
+            this.redirectToLandingPage();
           }
+        } else {
+          this.redirectToLandingPage();
         }
 
-        this.setState({ hasError, loading: false });
+        this.setState({ authError, loading: false });
       })
     ];
   }
@@ -154,12 +148,12 @@ export default class CompleteSignUpPage extends React.PureComponent<Props, State
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleOnCompleted = () => {
+  redirectToLandingPage = () => {
     browserHistory.push('/');
   }
 
   render() {
-    const { loading, hasError } = this.state;
+    const { loading, authError } = this.state;
 
     if (!loading) {
       return (
@@ -169,19 +163,17 @@ export default class CompleteSignUpPage extends React.PureComponent<Props, State
           </Left>
           <Right>
             <RightInner>
-              {!hasError &&
+              {!authError ? (
                 <>
                   <Title><FormattedMessage {...messages.title} /></Title>
-                  <Step2 onCompleted={this.handleOnCompleted} />
+                  <Step2 onCompleted={this.redirectToLandingPage} />
                 </>
-              }
-
-              {hasError &&
+              ) : (
                 <>
                   <Title><FormattedMessage {...messages.somethingWentWrong} /></Title>
                   <Error text={<FormattedMessage {...messages.notSignedIn} />} />
                 </>
-              }
+              )}
             </RightInner>
           </Right>
         </Container>

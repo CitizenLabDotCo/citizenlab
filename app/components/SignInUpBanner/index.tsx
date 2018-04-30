@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -11,12 +11,10 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   padding: 50px;
+  padding-top: 58px;
+  padding-left: 70px;
   position: relative;
   background: #fff;
-`;
-
-const LogoContainer = styled.div`
-  height: 55px;
 `;
 
 const Slogan = styled.div`
@@ -26,7 +24,8 @@ const Slogan = styled.div`
   font-size: 34px;
   line-height: 44px;
   font-weight: 600;
-  margin-top: 55px;
+  position: sticky;
+  top: 140px;
 `;
 
 type Props = {};
@@ -37,9 +36,7 @@ export default class SignInUpBanner extends React.PureComponent<Props, State> {
   render() {
     return (
       <Container>
-        <LogoContainer>
-          <Slogan><FormattedMessage {...messages.slogan} /></Slogan>
-        </LogoContainer>
+        <Slogan><FormattedMessage {...messages.slogan} /></Slogan>
       </Container>
     );
   }

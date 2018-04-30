@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { isString, isEmpty } from 'lodash';
 
 // libraries
@@ -15,33 +15,21 @@ import styled from 'styled-components';
 import { color } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
-const Container: any = styled.div`
+const Container = styled.div`
   position: relative;
 
-  * {
-    border: none;
-    -webkit-appearance: none !important;
-  }
-
   textarea {
-    -webkit-appearance: none;
-    border-color: ${(props: any) => props.error ? props.theme.colors.error : '#ccc'} !important;
-
     &:hover {
-      border-color: ${(props: any) => props.error ? props.theme.colors.error : '#aaa'} !important;
-    }
-
-    &:focus {
       border-color: ${(props: any) => props.error ? props.theme.colors.error : '#999'} !important;
     }
 
-    background: none !important;
+    &:focus {
+      border-color: ${(props: any) => props.error ? props.theme.colors.error : '#666'} !important;
+    }
   }
 
-  .textareaWrapper__suggestions__list {
-    li:last-child {
-      border: none !important;
-    }
+  .textareaWrapper__suggestions__list li:last-child {
+    border: none !important;
   }
 `;
 
@@ -82,9 +70,15 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
 
     const style = {
       '&multiLine': {
-        control: {},
+        control: {
+          padding: 0,
+          margin: 0,
+          border: 'none',
+          '-webkit-appearance': 'none'
+        },
         input: {
           padding,
+          margin: 0,
           color: color('text'),
           fontSize: '18px',
           lineHeight: `${lineHeight}px`,
@@ -93,7 +87,8 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
           border: '1px solid #ccc',
           borderRadius: '5px',
           boxShadow: 'inset 0 0 2px rgba(0, 0, 0, 0.1)',
-          background: 'transparent'
+          background: 'transparent',
+          '-webkit-appearance': 'none'
         },
         suggestions: {
           list: {

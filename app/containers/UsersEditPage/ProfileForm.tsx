@@ -177,7 +177,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
       } else if (isEmpty(touched) && status === 'success') {
         returnValue = 'success';
       }
-  
+
       return returnValue;
     };
 
@@ -350,7 +350,6 @@ class ProfileForm extends React.PureComponent<Props, State> {
                     onClick={handleOnSubmit}
                     messages={{
                       buttonSave: messages.submit,
-                      buttonError: messages.buttonErrorLabel,
                       buttonSuccess: messages.buttonSuccessLabel,
                       messageSuccess: messages.messageSuccess,
                       messageError: messages.messageError,
