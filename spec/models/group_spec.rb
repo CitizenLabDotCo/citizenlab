@@ -80,4 +80,47 @@ RSpec.describe Group, type: :model do
     end
 
   end
+
+  describe "using_custom_field scope" do
+    let(:cf1) { create(:custom_field_select)}
+    let(:cf2) { create(:custom_field)}
+    let!(:group1) { create(:smart_group, rules: [
+      {ruleType: 'email', predicate: 'is_empty'},
+      {ruleType: 'custom_field_select', customFieldId: cf1.id, predicate: 'is_empty'}
+    ]) }
+    let!(:group2) { create(:group) }
+    let!(:group3) { create(:smart_group, rules: [
+      {ruleType: 'custom_field_text', customFieldId: cf2.id, predicate: 'is', value: 'abc'}
+    ])}
+
+    it "returns exactly the rules groups that reference the given custom field" do
+      expect(Group.using_custom_field(cf1).all).to match [group1]
+      expect(Group.using_custom_field(cf2).all).to match [group3]
+    end
+  end
+
+  describe "using_custom_field_option scope" do
+    let(:cf1) { create(:custom_field_select)}
+    let!(:cfo1) { create_list(:custom_field_option, 3, custom_field: cf1) }
+    let(:cf2) { create(:custom_field_select)}
+    let!(:cfo2) { create_list(:custom_field_option, 3, custom_field: cf2) }
+
+    let!(:group1) { create(:smart_group, rules: [
+      {ruleType: 'email', predicate: 'is_empty'},
+      {ruleType: 'custom_field_select', customFieldId: cf1.id, predicate: 'has_value', value: cfo1[0].id}
+    ]) }
+    let!(:group2) { create(:group) }
+    let!(:group3) { create(:smart_group, rules: [
+      {ruleType: 'custom_field_select', customFieldId: cf2.id, predicate: 'has_value', value: cfo2[1].id}
+    ])}
+
+    it "returns exactly the rules groups that reference the given custom field option" do
+      expect(Group.using_custom_field_option(cfo1[0]).all).to match [group1]
+      expect(Group.using_custom_field_option(cfo1[1]).all).to match []
+      expect(Group.using_custom_field_option(cfo1[2]).all).to match []
+      expect(Group.using_custom_field_option(cfo2[0]).all).to match []
+      expect(Group.using_custom_field_option(cfo2[1]).all).to match [group3]
+      expect(Group.using_custom_field_option(cfo2[2]).all).to match []
+    end
+  end
 end

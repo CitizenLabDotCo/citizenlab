@@ -23,6 +23,22 @@ class Group < ApplicationRecord
   before_validation :generate_slug, on: :create
   before_validation :set_membership_type, on: :create
 
+  scope :using_custom_field, -> (custom_field) {
+    subquery = Group.select("jsonb_array_elements(rules) as rule, id")
+    where(membership_type: 'rules')
+      .joins("LEFT OUTER JOIN (#{subquery.to_sql}) as r ON groups.id = r.id")
+      .where("r.rule->>'customFieldId' = ?", custom_field.id)
+      .distinct
+  }
+
+  scope :using_custom_field_option, -> (custom_field_option) {
+    subquery = Group.select("jsonb_array_elements(rules) as rule, id")
+    where(membership_type: 'rules')
+      .joins("LEFT OUTER JOIN (#{subquery.to_sql}) as r ON groups.id = r.id")
+      .where("r.rule->>'value' = ?", custom_field_option.id)
+      .distinct
+  }
+
   def add_member user
     if manual?
       users << user

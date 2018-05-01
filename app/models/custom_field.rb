@@ -21,6 +21,7 @@ class CustomField < ApplicationRecord
 
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
+  before_destroy :check_group_references, prepend: true
 
 
   scope :fields_for, -> (claz) { where(resource_type: claz.name.to_s) }
@@ -29,6 +30,8 @@ class CustomField < ApplicationRecord
   def support_options?
     %w(select multiselect).include?(input_type)
   end
+
+  private
 
   def set_default_enabled
     self.enabled = true if self.enabled.nil?
@@ -39,6 +42,13 @@ class CustomField < ApplicationRecord
       self.key = CustomFieldService.new.generate_key(self, title_multiloc.values.first) do |key_proposal|
         self.class.find_by(key: key_proposal, resource_type: self.resource_type)
       end
+    end
+  end
+
+  def check_group_references
+    if Group.using_custom_field(self).exists?
+      self.errors.add(:base, :dangling_group_references, message: Group.using_custom_field(self).all.map(&:id).join(","))
+      throw :abort
     end
   end
 end
