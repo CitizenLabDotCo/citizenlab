@@ -89,7 +89,10 @@ namespace :migrate do
 
   def connect(platform: nil, db_user: nil, password: nil)
     if platform && db_user && password
-      Mongo::Client.new("mongodb://lamppost.14.mongolayer.com:10323/#{platform}", auth_mech: :mongodb_cr, user: db_user, password: password)
+      Mongo::Client.new(
+        "mongodb://lamppost.14.mongolayer.com:10323/#{platform}", 
+        auth_mech: :mongodb_cr, user: db_user, password: password
+        )
     else
       Mongo::Client.new 'mongodb://docker.for.mac.localhost:27017/schiedam'
     end
@@ -310,11 +313,11 @@ namespace :migrate do
     end
     # birthyear
     if u.dig('telescope', 'birthyear')
-      d[:birthyear] = u.dig('telescope', 'birthyear')
+      d[:birthyear] = u.dig('telescope', 'birthyear').to_s
     end
     # education
-    if u.dig('telescope', 'education')
-      d[:education] = u.dig('telescope', 'education')
+    if u.dig('telescope', 'education') && (u.dig('telescope', 'education') <= 8) && (u.dig('telescope', 'education') >= 2)
+      d[:education] = u.dig('telescope', 'education').to_s
     end
     # image
     if u.dig('profile', 'image')
@@ -323,6 +326,7 @@ namespace :migrate do
     # timestamps
     if u['createdAt']
       d[:created_at] = u['createdAt']
+      d[:registration_completed_at] = u['createdAt']
     end
     begin
       record = User.new d
@@ -403,6 +407,12 @@ namespace :migrate do
     else
       d[:visible_to] = 'public'
     end
+    # process_type
+    if p.dig('timeline', 'phases') && p.dig('timeline', 'phases').size >= 2
+      d[:process_type] = 'timeline'
+    else
+      d[:process_type] = 'continuous'
+    end
     begin
       record = Project.new d
       # slug
@@ -428,7 +438,7 @@ namespace :migrate do
         end
       end
       # phases
-      if p.dig('timeline', 'phases')
+      if p.dig('timeline', 'phases') && p.dig('timeline', 'phases').size >= 2
         p.dig('timeline', 'phases').each do |f|
           migrate_phase(f, record, phases_hash, locales_mapping)
         end

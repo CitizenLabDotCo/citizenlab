@@ -56,6 +56,10 @@ class ProjectPolicy < ApplicationPolicy
     user&.active? && (user.admin? || user.project_moderator?(record.id))
   end
 
+  def reorder?
+    update?
+  end
+
   def destroy?
     update?
   end
@@ -92,5 +96,9 @@ class ProjectPolicy < ApplicationPolicy
   def permitted_attributes_for_update
     attrs = shared_permitted_attributes
     attrs
+  end
+
+  def permitted_attributes_for_reorder
+    [:ordering]
   end
 end
