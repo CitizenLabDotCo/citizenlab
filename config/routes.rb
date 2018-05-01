@@ -54,7 +54,7 @@ Rails.application.routes.draw do
       end
 
       resources :topics, only: [:index, :show]
-      resources :areas, only: [:index, :show]
+      resources :areas
 
       resources :tenants, only: [:update] do
         get :current, on: :collection
@@ -70,6 +70,7 @@ Rails.application.routes.draw do
         resources :files, defaults: {container_class: Project, file_class: ProjectFile}
         resources :groups_projects, shallow: true, except: [:update]
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
+        patch 'reorder', on: :member
       end
 
       resources :notifications, only: [:index, :show] do
