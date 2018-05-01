@@ -1,5 +1,19 @@
 # Changelog
 
+## 2018-04-30
+
+### Fixed
+- When posting an idea and only afterward signing in, the content originally typed is no longer lost
+- An error is no longer shown on the homepage when using Internet Explorer
+- Deleting a user is possible again
+
+### Changed
+- The idea manager again shows 10 ideas on one page, instead of 5
+- Submit buttons in the admin no longer show 'Error' on the buttons themselves
+
+### Removed
+- The project an idea belongs to can no longer be changed through the edit idea form, only through the idea manager
+
 ## 2018-04-26
 
 ### Added
