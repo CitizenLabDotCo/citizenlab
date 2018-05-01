@@ -5,6 +5,7 @@ resource "Groups" do
   before do
     header "Content-Type", "application/json"
     @groups = create_list(:group, 3)
+    create(:smart_group)
   end
 
   context "when authenticated" do
@@ -19,13 +20,21 @@ resource "Groups" do
         parameter :number, "Page number"
         parameter :size, "Number of groups per page"
       end
+      parameter :membership_type, "If set, only return groups of given membership_type. Either #{Group::MEMBERSHIP_TYPES.join(" or ")}", required: false
 
       example_request "List all groups" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].size).to eq 4
       end
+
     
+      example "List all groups with membership_type 'rules'" do
+        do_request(membership_type: 'rules')
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 1
+      end
     end
 
     get "web_api/v1/groups/:id" do
