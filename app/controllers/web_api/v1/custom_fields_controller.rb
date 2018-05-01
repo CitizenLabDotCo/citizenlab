@@ -66,6 +66,8 @@ class WebApi::V1::CustomFieldsController < ApplicationController
     if frozen_custom_field
       SideFxCustomFieldService.new.after_destroy(frozen_custom_field, current_user)
       head :ok
+    elsif @custom_field.errors
+      render json: { errors: @custom_field.errors.details }, status: :unprocessable_entity
     else
       head 500
     end
