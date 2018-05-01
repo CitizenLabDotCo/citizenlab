@@ -1,8 +1,28 @@
 import React from 'react';
-import { Subscription } from 'rxjs';
-import { IGroupData, listGroups } from 'services/groups';
+import { isEqual, get, isString, omitBy, isNil } from 'lodash';
+import { BehaviorSubject, Subscription } from 'rxjs/Rx';
+import { listGroups, IGroupData } from 'services/groups';
+import shallowCompare from 'utils/shallowCompare';
 
-interface InputProps {}
+export type MembershipType = 'manual' | 'rules';
+
+export interface InputProps {
+  pageNumber?: number;
+  pageSize?: number;
+  membershipType?: MembershipType;
+}
+
+interface IQueryParameters {
+  'page[number]'?: number;
+  'page[size]'?: number;
+  membership_type?: MembershipType;
+}
+
+interface IAccumulator {
+  groups: IGroupData[] | null;
+  queryParameters: IQueryParameters;
+  hasMore: boolean;
+}
 
 type children = (renderProps: GetGroupsChildProps) => JSX.Element | null;
 
@@ -10,39 +30,127 @@ interface Props extends InputProps {
   children?: children;
 }
 
+export type GetGroupsChildProps = State & {
+  onLoadMore: () => void;
+  onChangeMembershipType: (membershipType: MembershipType) => void;
+};
+
 interface State {
-  groups: IGroupData[] | null;
+  queryParameters: IQueryParameters;
+  groupsList: IGroupData[] | null;
+  hasMore: boolean;
+  querying: boolean;
+  loadingMore: boolean;
 }
 
-export type GetGroupsChildProps = IGroupData[] | null;
-
-export default class GetGroups extends React.Component<Props, State> {
+export default class GetProjects extends React.Component<Props, State> {
+  private queryParameters$: BehaviorSubject<IQueryParameters>;
   private subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      groups: null,
+      // defaults
+      queryParameters: {
+        'page[number]': 1,
+        'page[size]': this.props.pageSize,
+        membership_type: undefined,
+      },
+      groupsList: null,
+      hasMore: false,
+      querying: true,
+      loadingMore: false
     };
+
+    const queryParameters = this.getQueryParameters(this.state, this.props);
+    this.queryParameters$ = new BehaviorSubject(queryParameters);
+    this.subscriptions = [];
   }
 
   componentDidMount() {
+    const queryParameters = this.getQueryParameters(this.state, this.props);
+    const startAccumulatorValue: IAccumulator = { queryParameters, groups: null, hasMore: false };
+
     this.subscriptions = [
-      listGroups().observable.subscribe((groups) => {
-        this.setState({
-          groups: (groups ? groups.data : null),
-        });
-      })
+      this.queryParameters$
+        .distinctUntilChanged((x, y) => shallowCompare(x, y))
+        .mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
+          const isLoadingMore = (acc.queryParameters['page[number]'] !== queryParameters['page[number]']);
+          const pageNumber = (isLoadingMore ? queryParameters['page[number]'] : 1);
+          const newQueryParameters: IQueryParameters = {
+            ...queryParameters,
+            'page[number]': pageNumber
+          };
+
+          this.setState({
+            querying: !isLoadingMore,
+            loadingMore: isLoadingMore,
+          });
+
+          return listGroups({ queryParameters: newQueryParameters }).observable.map((groups) => {
+            const selfLink = get(groups, 'links.self');
+            const lastLink = get(groups, 'links.last');
+            const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
+
+            return {
+              queryParameters,
+              hasMore,
+              groups: (!isLoadingMore ? groups.data : [...(acc.groups || []), ...groups.data])
+            };
+          });
+        }, startAccumulatorValue).subscribe(({ groups, queryParameters, hasMore }) => {
+          this.setState({ queryParameters, hasMore, groupsList: groups, querying: false, loadingMore: false });
+        })
     ];
+  }
+
+  componentDidUpdate(prevProps: Props, _prevState: State) {
+    const { children: prevChildren, ...prevPropsWithoutChildren } = prevProps;
+    const { children: nextChildren, ...nextPropsWithoutChildren } = this.props;
+
+    if (!isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren)) {
+      const queryParameters = this.getQueryParameters(this.state, this.props);
+      this.queryParameters$.next(queryParameters);
+    }
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  getQueryParameters = (state: State, props: Props) => {
+    return {
+      ...state.queryParameters,
+      ...omitBy({
+        'page[number]': props.pageNumber,
+        'page[size]': props.pageSize,
+        membership_type: props.membershipType,
+      }, isNil)
+    };
+  }
+
+  loadMore = () => {
+    if (!this.state.loadingMore) {
+      this.queryParameters$.next({
+        ...this.state.queryParameters,
+        'page[number]': (this.state.queryParameters['page[number]'] || 0) + 1
+      });
+    }
+  }
+
+  handleMembershipTypeOnChange = (membershipType: MembershipType) => {
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      membership_type: membershipType,
+    });
+  }
+
   render() {
     const { children } = this.props;
-    const { groups } = this.state;
-    return (children as children)(groups);
+    return (children as children)({
+      ...this.state,
+      onLoadMore: this.loadMore,
+      onChangeMembershipType: this.handleMembershipTypeOnChange,
+    });
   }
 }

@@ -9,6 +9,7 @@ export interface IGroupData {
     title_multiloc: Multiloc;
     slug: string;
     memberships_count: number;
+    membership_type: 'manual' | 'rules';
   };
 }
 
