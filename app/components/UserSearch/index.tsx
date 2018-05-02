@@ -1,7 +1,5 @@
 // Libraries
 import React from 'react';
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
 
 import { IStreamParams, IStream } from 'utils/streams';
 
@@ -17,7 +15,7 @@ import localize, { injectedLocalized } from 'utils/localize';
 // Components
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
-import ReactSelect from 'react-select';
+import { Async } from 'react-select';
 import Avatar from 'components/Avatar';
 
 // Style
@@ -34,7 +32,7 @@ const AddUserRow = styled.div`
   border-top: 1px solid ${color('separation')};
 `;
 
-const StyledSelect = styled(ReactSelect)`
+const StyledSelectWrapper = styled.div`
   max-width: 300px;
 `;
 
@@ -99,7 +97,6 @@ interface State {
   selectVisible: boolean;
   selection: (IOption & {email: string})[];
   loading: boolean;
-  value: string;
 }
 
 function isGroupUser(user: GroupsFoundUser | ModeratorsFoundUser): user is GroupsFoundUser {
@@ -108,9 +105,6 @@ function isGroupUser(user: GroupsFoundUser | ModeratorsFoundUser): user is Group
 
 
 class MembersAdd extends React.Component<Props & injectedLocalized, State> {
-  subscriptions: Subscription[];
-  input$: Subject<string>;
-
   constructor(props: Props) {
     super(props as any);
 
@@ -118,46 +112,37 @@ class MembersAdd extends React.Component<Props & injectedLocalized, State> {
       selectVisible: false,
       selection: [],
       loading: false,
-      value: '',
     };
-
-    this.subscriptions = [];
-    this.input$ = new Subject<string>();
   }
 
-  componentDidMount() {
-    this.subscriptions.push(
-      this.input$
-      .debounceTime(300)
-      .switchMap(inputValue => {
-        this.setState({ loading: true });
-        return this.props.searchFunction(this.props.resourceId, {
-          queryParameters: {
-            search: inputValue
-          }
-        }).observable;
-      })
-      .subscribe((usersResponse) => {
-        const options = this.getOptions(usersResponse.data);
-        this.setState({ selection: options, loading: false });
-      })
-    );
+  loadOptions = (inputValue) => {
+    if (inputValue) {
+      this.setState({ loading: true });
+
+      return this.props.searchFunction(this.props.resourceId, {
+        queryParameters: {
+          search: inputValue
+        }
+      }).observable
+      .first()
+      .toPromise()
+      .then((response) => {
+        const options = this.getOptions(response.data);
+        this.setState({ loading: false });
+        return { options };
+      });
+    } else {
+      return Promise.resolve();
+    }
   }
 
-  componentWillUnmount() {
-    this.subscriptions.forEach((sub) => { sub.unsubscribe(); });
+  filterOptions = (options) => {
+    // Do no filtering, just return all options
+    return options;
   }
 
   toggleSelectVisible = () => {
     this.setState({ selectVisible: !this.state.selectVisible });
-  }
-
-  handleSearchChange = (inputValue) => {
-    this.setState({ value: inputValue });
-    // Broadcast change in the the stream for request handling
-    this.input$.next(inputValue);
-    // Return new value for the component
-    return inputValue;
   }
 
   handleSelection = (selection: IOption) => {
@@ -201,18 +186,17 @@ class MembersAdd extends React.Component<Props & injectedLocalized, State> {
           </AddUserButton>
         }
         {this.state.selectVisible &&
-          <div>
-            <StyledSelect
+          <StyledSelectWrapper>
+            <Async
               autofocus={true}
               name="search-user"
-              value={this.state.value}
+              loadOptions={this.loadOptions}
               isLoading={this.state.loading}
-              options={this.state.selection}
-              onInputChange={this.handleSearchChange}
               onChange={this.handleSelection}
               optionRenderer={this.renderOption}
+              filterOptions={this.filterOptions}
             />
-          </div>
+          </StyledSelectWrapper>
         }
       </AddUserRow>
     );
