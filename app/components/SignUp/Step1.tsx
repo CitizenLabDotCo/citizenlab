@@ -171,9 +171,9 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
           locale,
           currentTenant,
           token,
-          firstName: (invitedUser ? invitedUser.data.attributes.first_name : state.firstName),
-          lastName: (invitedUser ? invitedUser.data.attributes.last_name : state.lastName),
-          email: (invitedUser ? invitedUser.data.attributes.email : state.email),
+          firstName: (invitedUser && invitedUser.data ? invitedUser.data.attributes.first_name : state.firstName),
+          lastName: (invitedUser && invitedUser.data ? invitedUser.data.attributes.last_name : state.lastName),
+          email: (invitedUser && invitedUser.data ? invitedUser.data.attributes.email : state.email),
           hasCustomFields: hasCustomFields(customFieldsSchema, locale)
         }));
       })
