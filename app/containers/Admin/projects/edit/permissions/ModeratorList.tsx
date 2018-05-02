@@ -11,6 +11,7 @@ import Avatar from 'components/Avatar';
 
 import { isNullOrError } from 'utils/helperUtils';
 import { deleteModerator } from 'services/moderators';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const StyledAvatar = styled(Avatar)`
   width: 2rem;
@@ -21,10 +22,12 @@ import { GetModeratorsChildProps } from 'resources/GetModerators';
 import { InjectedIntlProps } from 'react-intl';
 interface InputProps {
   projectId: string;
-}
-interface Props extends InputProps {
   moderators: GetModeratorsChildProps;
 }
+interface DataProps {
+  authUser: GetAuthUserChildProps;
+}
+interface Props extends InputProps, DataProps {}
 
 class ModeratorList extends React.PureComponent<Props & InjectedIntlProps>{
   handleDeleteClick = (projectId: string, moderatorId: string) => (event: React.FormEvent<any>) => {
@@ -36,10 +39,10 @@ class ModeratorList extends React.PureComponent<Props & InjectedIntlProps>{
     }
   }
   render() {
-    const { moderators, projectId } = this.props;
+    const { moderators, projectId, authUser } = this.props;
     return (
       <List>
-        { !isNullOrError(moderators) && moderators.map(moderator =>
+        { authUser && !isNullOrError(moderators) && moderators.map(moderator =>
           <Row key={moderator.id}>
             <StyledAvatar userId={moderator.id} size="small" />
             <p className="expand">{`${moderator.attributes.first_name} ${moderator.attributes.last_name}`}</p>
@@ -49,6 +52,7 @@ class ModeratorList extends React.PureComponent<Props & InjectedIntlProps>{
               style="text"
               circularCorners={false}
               icon="delete"
+              disabled={authUser.id === moderator.id}
             >
               <FormattedMessage {...messages.deleteModeratorLabel} />
             </Button>
@@ -62,4 +66,10 @@ class ModeratorList extends React.PureComponent<Props & InjectedIntlProps>{
   }
 }
 
-export default injectIntl<Props>(ModeratorList);
+const ModeratorListWithHoc = injectIntl<Props>(ModeratorList);
+
+export default (props) => (
+  <GetAuthUser {...props}>
+    {authUser => <ModeratorListWithHoc authUser={authUser} {...props}/>}
+  </GetAuthUser>
+);
