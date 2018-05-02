@@ -143,7 +143,7 @@ resource "Projects" do
       parameter :voting_limited_max, "Only for continuous project with limited voting. Number of votes a citizen can perform in this project. Defaults to 10", required: false
       parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
       parameter :survey_service, "The name of the service of the survey. Either #{ParticipationContext::SURVEY_SERVICES.join(",")}", required: false
-      parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
+      parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
       parameter :publication_status, "Describes the publication status of the project, either #{Project::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
     end
     ValidationErrorHelper.new.error_fields(self, Project)
@@ -156,7 +156,6 @@ resource "Projects" do
       let(:header_bg) { encode_image_as_base64("header.jpg")}
       let(:area_ids) { create_list(:area, 2).map(&:id) }
       let(:visible_to) { 'admins' }
-      let(:presentation_mode) { 'map' }
       let(:publication_status) { 'draft' }
 
 
@@ -169,7 +168,6 @@ resource "Projects" do
         expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
         expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
         expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'admins'
-        expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'map'
         expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'draft'
       end
     end
@@ -184,6 +182,7 @@ resource "Projects" do
       let(:visible_to) { 'admins' }
       let(:process_type) { project.process_type }
       let(:participation_method) { project.participation_method }
+      let(:presentation_mode){ 'map' }
       let(:posting_enabled) { project.posting_enabled }
       let(:commenting_enabled) { project.commenting_enabled }
       let(:voting_enabled) { project.voting_enabled }
@@ -201,6 +200,7 @@ resource "Projects" do
         expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
         expect(json_response.dig(:data,:attributes,:visible_to)).to eq visible_to
         expect(json_response.dig(:data,:attributes,:participation_method)).to eq participation_method 
+        expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq presentation_mode
         expect(json_response.dig(:data,:attributes,:posting_enabled)).to eq posting_enabled 
         expect(json_response.dig(:data,:attributes,:commenting_enabled)).to eq commenting_enabled 
         expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq voting_enabled 
@@ -241,7 +241,7 @@ resource "Projects" do
 
   patch "web_api/v1/projects/:id" do
     before do 
-      @project = create(:project)
+      @project = create(:project, process_type: 'continuous')
     end
 
     with_options scope: :project do
@@ -261,7 +261,7 @@ resource "Projects" do
       parameter :voting_limited_max, "Only for continuous project with limited voting. Number of votes a citizen can perform in this project.", required: false
       parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
       parameter :survey_service, "The name of the service of the survey. Either #{ParticipationContext::SURVEY_SERVICES.join(",")}", required: false
-      parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}.", required: false
+      parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}.", required: false
       parameter :publication_status, "Describes the publication status of the project, either #{Project::PUBLICATION_STATUSES.join(",")}.", required: false
     end
     ValidationErrorHelper.new.error_fields(self, Project)
