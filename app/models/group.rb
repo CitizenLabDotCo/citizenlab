@@ -95,6 +95,13 @@ class Group < ApplicationRecord
     self.membership_type == 'rules'
   end
 
+  def update_memberships_count!
+    if rules?
+      self.update(memberships_count: members.count)
+    end
+    # The manual? case is covered by counter_culture in membership.rb
+  end
+
   private
 
   def generate_slug

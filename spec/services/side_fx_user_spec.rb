@@ -43,6 +43,10 @@ describe SideFxUserService do
         to have_enqueued_job(IdentifyToSegmentJob).with(user)
     end
 
+    it "logs a UpdateMemberCountJob" do
+      expect {service.after_create(user, current_user)}.to have_enqueued_job(UpdateMemberCountJob)
+    end
+
   end
 
   describe "after_update" do
@@ -60,6 +64,10 @@ describe SideFxUserService do
         to have_enqueued_job(LogActivityJob).with(user, 'completed_registration', current_user, user.updated_at.to_i)
     end
 
+    it "logs a UpdateMemberCountJob" do
+      expect {service.after_update(user, current_user)}.to have_enqueued_job(UpdateMemberCountJob)
+    end
+
   end
 
   describe "after_destroy" do
@@ -69,6 +77,10 @@ describe SideFxUserService do
         expect {service.after_destroy(frozen_user, current_user)}.
           to have_enqueued_job(LogActivityJob)
       end
+    end
+
+    it "logs a UpdateMemberCountJob" do
+      expect {service.after_destroy(user, current_user)}.to have_enqueued_job(UpdateMemberCountJob)
     end
 
   end
