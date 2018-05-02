@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 
 // Services
-import { projectBySlugStream } from 'services/projects';
+import { projectByIdStream } from 'services/projects';
 import { eventsStream, IEventData, deleteEvent } from 'services/events';
 
 // Components
@@ -36,7 +36,7 @@ const StyledList = styled(List)`
 
 type Props = {
   params: {
-    slug: string | null,
+    projectId: string | null,
   }
 };
 
@@ -59,8 +59,8 @@ class AdminProjectTimelineIndex extends React.PureComponent<Props & InjectedIntl
   componentDidMount () {
     this.setState({ loading: true });
 
-    if (_.isString(this.props.params.slug)) {
-      this.subscription = projectBySlugStream(this.props.params.slug).observable.switchMap((project) => {
+    if (_.isString(this.props.params.projectId)) {
+      this.subscription = projectByIdStream(this.props.params.projectId).observable.switchMap((project) => {
         return eventsStream(project.data.id).observable.map((events) => (events.data));
       }).subscribe((events) => {
         this.setState({ events, loading: false });
@@ -99,11 +99,11 @@ class AdminProjectTimelineIndex extends React.PureComponent<Props & InjectedIntl
 
   render() {
     const { events, loading } = this.state;
-    const { slug } = this.props.params;
+    const { projectId } = this.props.params;
 
     return (
       <ListWrapper className="e2e-projects-events">
-        <AddButton style="cl-blue" icon="plus-circle" circularCorners={false} linkTo={`/admin/projects/${slug}/events/new`}>
+        <AddButton style="cl-blue" icon="plus-circle" circularCorners={false} linkTo={`/admin/projects/${projectId}/events/new`}>
           <FormattedMessage {...messages.addEventButton} />
         </AddButton>
 
@@ -132,7 +132,7 @@ class AdminProjectTimelineIndex extends React.PureComponent<Props & InjectedIntl
                   <Button style="text" icon="delete" onClick={this.createDeleteClickHandler(event.id)}>
                     <FormattedMessage {...messages.deleteButtonLabel} />
                   </Button>
-                  <Button style="secondary" icon="edit" linkTo={`/admin/projects/${slug}/events/${event.id}`}>
+                  <Button style="secondary" icon="edit" linkTo={`/admin/projects/${projectId}/events/${event.id}`}>
                     <FormattedMessage {...messages.editButtonLabel} />
                   </Button>
                 </Row>
