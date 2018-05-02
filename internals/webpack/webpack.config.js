@@ -5,7 +5,6 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-// const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const argv = require('yargs').argv;
 
 // Avoid repeating the babel loader config
@@ -196,7 +195,7 @@ if (isDev) {
   WEBPACK_CONFIG.plugins.push(
     new UglifyJSPlugin({
       cache: true,
-      sourceMap: true,
+      sourceMap: false,
       parallel: true,
       uglifyOptions: {
 
@@ -209,8 +208,6 @@ if (isDev) {
 
   // Stats output
   if (!argv.json) {
-    WEBPACK_CONFIG.devtool = 'hidden-source-map';
-
     WEBPACK_CONFIG.stats = {
       chunks: false,
       chunkOrigins: false,
