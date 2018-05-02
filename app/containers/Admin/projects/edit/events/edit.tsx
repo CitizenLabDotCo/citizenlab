@@ -36,7 +36,7 @@ import { Multiloc, MultilocEditorState, API, Locale } from 'typings';
 type Props = {
   params: {
     id: string | null,
-    slug: string | null,
+    projectId: string | null,
   },
   project: IProjectData | null;
 };
@@ -158,7 +158,7 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
         savingPromise = updateEvent(this.state.event.data.id, this.state.attributeDiff);
       } else if (this.props.project) {
         savingPromise = addEvent(this.props.project.id, this.state.attributeDiff).then((response) => {
-          browserHistory.push(`/admin/projects/${this.props.params.slug}/events/${response.data.id}`);
+          browserHistory.push(`/admin/projects/${this.props.params.projectId}/events/${response.data.id}`);
           return response;
         });
       }

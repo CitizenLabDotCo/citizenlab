@@ -31,7 +31,7 @@ import messages from '../messages';
 import {
   IUpdatedProjectProperties,
   IProjectData,
-  projectBySlugStream,
+  projectByIdStream,
   addProject,
   updateProject,
   deleteProject,
@@ -130,7 +130,7 @@ const ParticipationContextWrapper = styled.div`
 type Props = {
   lang: string,
   params: {
-    slug: string,
+    projectId: string,
   }
 };
 
@@ -158,7 +158,7 @@ interface State {
 }
 
 class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlProps, State> {
-  slug$: Rx.BehaviorSubject<string | null>;
+  projectId$: Rx.BehaviorSubject<string | null>;
   processing$: Rx.BehaviorSubject<boolean>;
   subscriptions: Rx.Subscription[] = [];
 
@@ -186,7 +186,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       submitState: 'disabled',
       deleteError: null,
     };
-    this.slug$ = new Rx.BehaviorSubject(null);
+    this.projectId$ = new Rx.BehaviorSubject(null);
     this.processing$ = new Rx.BehaviorSubject(false);
     this.subscriptions = [];
   }
@@ -196,15 +196,15 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     const currentTenant$ = currentTenantStream().observable;
     const areas$ = areasStream().observable;
 
-    this.slug$.next(this.props.params.slug);
+    this.projectId$.next(this.props.params.projectId);
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
         locale$,
         currentTenant$,
         areas$,
-        this.slug$.distinctUntilChanged().switchMap((slug) => {
-          return (slug ? projectBySlugStream(slug).observable : Rx.Observable.of(null));
+        this.projectId$.distinctUntilChanged().switchMap((projectId) => {
+          return (projectId ? projectByIdStream(projectId).observable : Rx.Observable.of(null));
         }).switchMap((project) => {
           if (project) {
             const projectImages$ = (project ? projectImagesStream(project.data.id).observable : Rx.Observable.of(null));
@@ -277,8 +277,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.params.slug !== prevProps.params.slug) {
-      this.slug$.next(this.props.params.slug);
+    if (this.props.params.projectId !== prevProps.params.projectId) {
+      this.projectId$.next(this.props.params.projectId);
     }
   }
 

@@ -16,7 +16,7 @@ import { Section, SectionField } from 'components/admin/Section';
 import Moderators from './Moderators';
 
 // services
-import { projectBySlugStream, updateProject, IProject } from 'services/projects';
+import { projectByIdStream, updateProject, IProject } from 'services/projects';
 import { groupsProjectsByProjectIdStream, addGroupProject, deleteGroupProject, IGroupsProjects } from 'services/groupsProjects';
 import GetModerators from 'resources/GetModerators';
 
@@ -42,7 +42,7 @@ const StyledRadio = styled(Radio)`
 
 type Props  = {
   params: {
-    slug: string | null
+    projectId: string | null
   };
 };
 
@@ -77,9 +77,9 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
   }
 
   componentDidMount() {
-    if (this.props.params.slug) {
-      const projectSlug = this.props.params.slug;
-      const project$ = projectBySlugStream(projectSlug).observable.do((project) => {
+    if (this.props.params.projectId) {
+      const projectId = this.props.params.projectId;
+      const project$ = projectByIdStream(projectId).observable.do((project) => {
         this.setState({
           savedVisibleTo: project.data.attributes.visible_to,
           unsavedVisibleTo: project.data.attributes.visible_to
