@@ -273,7 +273,7 @@ models:
     bio_multiloc:
       en: 
     gender: male
-    birthyear: '1984'
+    birthyear: 1984
     domicile: 
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573977/man-388104_960_720_dfehjy.jpg
@@ -285,7 +285,7 @@ models:
     bio_multiloc:
       en: 
     gender: female
-    birthyear: '1937'
+    birthyear: 1937
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573998/smiling-woman_kdsaal.jpg
@@ -297,7 +297,7 @@ models:
     bio_multiloc:
       en: 
     gender: female
-    birthyear: '1980'
+    birthyear: 1980
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515574018/tiamorrison-profile-photo-2-copy_pcnsxm.png

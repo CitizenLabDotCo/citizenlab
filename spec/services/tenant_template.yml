@@ -87,7 +87,7 @@ models:
     bio_multiloc:
       en: 
     gender: male
-    birthyear: "1974"
+    birthyear: 1974
     domicile: outside
     password: 5oaIqe41Zxs
     remote_avatar_url: http://i0.kym-cdn.com/entries/icons/original/000/000/091/TrollFace.jpg
@@ -99,7 +99,7 @@ models:
     bio_multiloc:
       en: 
     gender: female
-    birthyear: "1945"
+    birthyear: 1945
     domicile: outside
     password: helpmeOB1
     remote_avatar_url: http://images2.fanpop.com/image/photos/9300000/leia-princess-leia-organa-solo-skywalker-9301321-576-1010.jpg
