@@ -183,8 +183,8 @@ RSpec.describe User, type: :model do
     end
 
     it "(birthyear) is valid when in realistic range" do
-      expect(build(:user, birthyear: (Time.now.year - 117).to_s)).to be_valid
-      expect(build(:user, birthyear: (Time.now.year - 13).to_s)).to be_valid
+      expect(build(:user, birthyear: (Time.now.year - 117))).to be_valid
+      expect(build(:user, birthyear: (Time.now.year - 13))).to be_valid
     end
 
     it "(birthyear) is invalid when unrealistic" do
