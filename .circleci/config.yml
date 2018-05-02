@@ -20,7 +20,7 @@ jobs:
       - run: npm install
       - save_cache:
           paths:
-            - node_modules
+            - /root/.npm
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm run lint:js --silent
       - run: npm run lint:ts --silent
@@ -40,7 +40,7 @@ jobs:
       - run: npm install --no-save # Avoid diffs in package-lock.json
       - save_cache:
           paths:
-            - node_modules
+            - /root/.npm
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm run extract-intl
       - run: git add app/translations/*.json
@@ -67,7 +67,7 @@ jobs:
       - run: npm install
       - save_cache:
           paths:
-            - node_modules
+            - /root/.npm
           key: v1-dependencies-{{ checksum "package.json" }}
       - run:
           command: npm run build
@@ -88,7 +88,7 @@ jobs:
       - run: npm install
       - save_cache:
           paths:
-            - node_modules
+            - /root/.npm
           key: v1-dependencies-{{ checksum "package.json" }}
       - run:
           command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING npm run build:staging
@@ -112,7 +112,7 @@ jobs:
       - run: npm install
       - save_cache:
           paths:
-            - node_modules
+            - /root/.npm
           key: v1-dependencies-{{ checksum "package.json" }}
       - run:
           command: CROWDIN_PLUGIN_ENABLED=true SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING npm run build:staging
@@ -136,7 +136,7 @@ jobs:
       - run: npm install
       - save_cache:
           paths:
-            - node_modules
+            - /root/.npm
           key: v1-dependencies-{{ checksum "package.json" }}
       - run:
           command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION npm run build
@@ -163,7 +163,7 @@ jobs:
       - run: npm install
       - save_cache:
           paths:
-            - node_modules
+            - /root/.npm
           key: v1-dependencies-{{ checksum "package.json" }}
       - run:
           command: npm run test:browserstack --silent
@@ -184,7 +184,7 @@ jobs:
       - run: npm install
       - save_cache:
           paths:
-            - node_modules
+            - /root/.npm
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm run test:pa11y --silent
 
