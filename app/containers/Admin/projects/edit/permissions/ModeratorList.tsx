@@ -42,8 +42,8 @@ class ModeratorList extends React.PureComponent<Props & InjectedIntlProps>{
         { !isNullOrError(moderators) && moderators.map(moderator =>
           <Row key={moderator.id}>
             <StyledAvatar userId={moderator.id} size="small" />
-            <div className="expand">{`${moderator.attributes.first_name} ${moderator.attributes.last_name}`}</div>
-            <div className="expand">{moderator.attributes.email}</div>
+            <p className="expand">{`${moderator.attributes.first_name} ${moderator.attributes.last_name}`}</p>
+            <p className="expand">{moderator.attributes.email}</p>
             <Button
               onClick={this.handleDeleteClick(projectId, moderator.id)}
               style="text"
