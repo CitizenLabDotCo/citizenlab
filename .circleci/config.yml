@@ -14,14 +14,14 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+          - v1-npm-cache-
       - run: npm install
       - save_cache:
           paths:
             - /root/.npm
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v1-npm-cache-{{ checksum "package.json" }}
       - run: npm run lint:js --silent
       - run: npm run lint:ts --silent
 
@@ -34,14 +34,14 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+          - v1-npm-cache-
       - run: npm install --no-save # Avoid diffs in package-lock.json
       - save_cache:
           paths:
             - /root/.npm
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v1-npm-cache-{{ checksum "package.json" }}
       - run: npm run extract-intl
       - run: git add app/translations/*.json
       - run: git config --global user.email "hello@citizenlab.co"
@@ -61,14 +61,14 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+          - v1-npm-cache-
       - run: npm install
       - save_cache:
           paths:
             - /root/.npm
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
           command: npm run build
           no_output_timeout: '30m'
@@ -82,14 +82,14 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+          - v1-npm-cache-
       - run: npm install
       - save_cache:
           paths:
             - /root/.npm
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
           command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING npm run build:staging
           no_output_timeout: '30m'
@@ -106,14 +106,14 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+          - v1-npm-cache-
       - run: npm install
       - save_cache:
           paths:
             - /root/.npm
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
           command: CROWDIN_PLUGIN_ENABLED=true SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING npm run build:staging
           no_output_timeout: '30m'
@@ -130,14 +130,14 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+          - v1-npm-cache-
       - run: npm install
       - save_cache:
           paths:
             - /root/.npm
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
           command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION npm run build
           no_output_timeout: '30m'
@@ -157,14 +157,14 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+          - v1-npm-cache-
       - run: npm install
       - save_cache:
           paths:
             - /root/.npm
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
           command: npm run test:browserstack --silent
           no_output_timeout: '1h'
@@ -178,14 +178,14 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+          - v1-npm-cache-
       - run: npm install
       - save_cache:
           paths:
             - /root/.npm
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v1-npm-cache-{{ checksum "package.json" }}
       - run: npm run test:pa11y --silent
 
 
