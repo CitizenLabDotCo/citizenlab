@@ -17,7 +17,7 @@ jobs:
           - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-npm-cache-
-      - run: npm install
+      - run: npm ci
       - save_cache:
           paths:
             - /root/.npm
@@ -37,7 +37,7 @@ jobs:
           - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-npm-cache-
-      - run: npm install --no-save # Avoid diffs in package-lock.json
+      - run: npm ci
       - save_cache:
           paths:
             - /root/.npm
@@ -64,7 +64,7 @@ jobs:
           - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-npm-cache-
-      - run: npm install
+      - run: npm ci
       - save_cache:
           paths:
             - /root/.npm
@@ -85,7 +85,7 @@ jobs:
           - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-npm-cache-
-      - run: npm install
+      - run: npm ci
       - save_cache:
           paths:
             - /root/.npm
@@ -109,7 +109,7 @@ jobs:
           - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-npm-cache-
-      - run: npm install
+      - run: npm ci
       - save_cache:
           paths:
             - /root/.npm
@@ -133,7 +133,7 @@ jobs:
           - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-npm-cache-
-      - run: npm install
+      - run: npm ci
       - save_cache:
           paths:
             - /root/.npm
@@ -160,7 +160,7 @@ jobs:
           - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-npm-cache-
-      - run: npm install
+      - run: npm ci
       - save_cache:
           paths:
             - /root/.npm
@@ -181,7 +181,7 @@ jobs:
           - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-npm-cache-
-      - run: npm install
+      - run: npm ci
       - save_cache:
           paths:
             - /root/.npm
