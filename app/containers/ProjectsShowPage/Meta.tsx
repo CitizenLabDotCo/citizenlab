@@ -45,6 +45,7 @@ class Meta extends React.PureComponent<Props, State> {
       return (
         <Helmet>
           <title>{title}</title>
+          <meta name="description" content={description} />
           <meta property="og:title" content={title} />
           <meta property="og:description" content={description} />
           {image && <meta property="og:image" content={image} />}
