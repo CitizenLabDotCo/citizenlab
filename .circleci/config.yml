@@ -145,7 +145,7 @@ jobs:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
-          command: npm run test:browserstack --silent
+          command: npm run test:browserstack --silent -e chrome
           no_output_timeout: '1h'
 
   test_a11y:
@@ -186,6 +186,12 @@ workflows:
                 - crowdin_master
                 - master
                 - production
+      - test_e2e:
+          requires:
+            - deploy_demo
+          filters:
+            branches:
+              only: master
       - deploy_demo:
           requires:
             - lint
@@ -216,5 +222,4 @@ workflows:
                 - master
 
     jobs:
-      - test_e2e
       - test_a11y
