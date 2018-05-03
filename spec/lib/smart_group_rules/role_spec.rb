@@ -29,7 +29,7 @@ describe SmartGroupRules::Role do
   describe "filter" do
 
     let!(:users) {
-      mortals = create_list(:user, 2)
+      mortals = create_list(:user, 3)
       admins = create_list(:admin, 2)
       mortals + admins
     }
@@ -39,9 +39,9 @@ describe SmartGroupRules::Role do
       expect(rule.filter(User).count).to eq 2 
     end
 
-    pending "correctly filters on 'not_is_admin' predicate" do
+    it "correctly filters on 'not_is_admin' predicate" do
       rule = SmartGroupRules::Role.new('not_is_admin')
-      expect(rule.filter(User).count).to eq 2
+      expect(rule.filter(User).count).to eq 3
     end
  
   end
