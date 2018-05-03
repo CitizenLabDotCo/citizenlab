@@ -196,10 +196,11 @@ workflows:
       - lint:
           filters:
             branches:
+              ignore:
+                - crowdin_master
                 - master
+                - production
       - extract_intl:
-          requires:
-            - lint
           filters:
             branches:
               ignore:
@@ -209,21 +210,18 @@ workflows:
       - deploy_demo:
           requires:
             - lint
-            - build
           filters:
             branches:
               only: master
       - deploy_crowdin:
           requires:
             - lint
-            - build
           filters:
             branches:
               only: master
       - deploy_production:
           requires:
             - lint
-            - build
           filters:
             branches:
               only: production
