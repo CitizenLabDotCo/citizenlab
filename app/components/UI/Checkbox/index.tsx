@@ -57,6 +57,7 @@ type Props = {
   label?: string | JSX.Element | null | undefined;
   size?: string | undefined;
   disableLabelClick?: boolean;
+  className?: string;
 };
 
 type State = {};
