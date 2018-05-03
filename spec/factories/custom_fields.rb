@@ -32,6 +32,15 @@ FactoryBot.define do
       enabled true
     end
 
+    factory :custom_field_date do
+      title_multiloc {{
+        "en" => "When did you last eat durum?"
+      }}
+      required false
+      input_type "date"
+      enabled true
+    end
+
 
   end
 end
