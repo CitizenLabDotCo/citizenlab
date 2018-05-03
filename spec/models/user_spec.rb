@@ -183,8 +183,8 @@ RSpec.describe User, type: :model do
     end
 
     it "(birthyear) is valid when in realistic range" do
-      expect(build(:user, birthyear: (Time.now.year - 117).to_s)).to be_valid
-      expect(build(:user, birthyear: (Time.now.year - 13).to_s)).to be_valid
+      expect(build(:user, birthyear: (Time.now.year - 117))).to be_valid
+      expect(build(:user, birthyear: (Time.now.year - 13))).to be_valid
     end
 
     it "(birthyear) is invalid when unrealistic" do
@@ -307,6 +307,33 @@ RSpec.describe User, type: :model do
     it "returns true when the user has completed signup" do
       u = build(:user)
       expect(u.active?).to be true
+    end
+  end
+
+  describe "groups and group_ids" do
+    let!(:manual_group) { create(:group) }
+    let!(:rules_group) {
+      create(:smart_group, rules: [
+        {ruleType: 'email', predicate: 'is', value: 'user@test.com'}
+      ])
+    }
+
+    it "returns manual groups" do
+      user = create(:user, manual_groups: [manual_group])
+      expect(user.groups).to match [manual_group]
+      expect(user.group_ids).to match [manual_group.id]
+    end
+
+    it "returns rule groups" do
+      user = create(:user, email: 'user@test.com')
+      expect(user.groups).to match [rules_group]
+      expect(user.group_ids).to match [rules_group.id]
+    end
+
+    it "returns manual groups and rule groups" do
+      user = create(:user, manual_groups: [manual_group], email: 'user@test.com')
+      expect(user.groups).to match [manual_group, rules_group]
+      expect(user.group_ids).to match [manual_group.id, rules_group.id]
     end
   end
 

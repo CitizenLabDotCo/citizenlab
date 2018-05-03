@@ -35,7 +35,8 @@ describe CustomFieldService do
         create(:custom_field, key: 'field3', input_type: 'select'),
         create(:custom_field, key: 'field4', input_type: 'multiselect'),
         create(:custom_field, key: 'field5', input_type: 'checkbox'),
-        create(:custom_field, key: 'field6', input_type: 'date', enabled: false, required: true)
+        create(:custom_field, key: 'field6', input_type: 'date', enabled: false, required: true),
+        create(:custom_field, key: 'field7', input_type: 'number')
       ]
       create(:custom_field_option, key: 'option1', custom_field: fields[2])
       create(:custom_field_option, key: 'option2', custom_field: fields[2])
@@ -80,13 +81,17 @@ describe CustomFieldService do
             {:title=>"Did you attend",
              :description=>"Which councils are you attending in our city?",
              :type=>"string",
-             :format=>"date"}},
+             :format=>"date"},
+            "field7"=>
+            {:title=>"Did you attend",
+             :description=>"Which councils are you attending in our city?",
+             :type=>"number"}},
          :required=>["field2"]}
       )
     end
 
     it "properly handles the custom behaviour of the birthyear field" do
-      fields = [create(:custom_field, key: 'birthyear', code: 'birthyear')]
+      fields = [create(:custom_field, key: 'birthyear', code: 'birthyear', input_type: 'number')]
       schema = service.fields_to_json_schema(fields, locale)
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
       expect(schema.dig(:properties, 'birthyear', :enum)&.size).to be > 100

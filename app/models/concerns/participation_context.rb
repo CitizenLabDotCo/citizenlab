@@ -5,6 +5,7 @@ module ParticipationContext
 
   PARTICIPATION_METHODS = %w(information ideation survey)
   VOTING_METHODS = %w(unlimited limited)
+  PRESENTATION_MODES = %w(card map)
   SURVEY_SERVICES = %w(typeform survey_monkey)
 
   included do
@@ -18,6 +19,7 @@ module ParticipationContext
         ideation.validates :voting_enabled, inclusion: {in: [true, false]}
         ideation.validates :voting_method, presence: true, inclusion: {in: VOTING_METHODS}
         ideation.validates :voting_limited_max, presence: true, numericality: {only_integer: true, greater_than: 0}, if: [:ideation?, :voting_limited?]
+        ideation.validates :presentation_mode, presence: true, inclusion: {in: PRESENTATION_MODES}
       end
       with_options if: :survey? do |survey|
         survey.validates :survey_embed_url, presence: true
@@ -33,6 +35,7 @@ module ParticipationContext
       end
 
       before_validation :set_participation_method, on: :create
+      before_validation :set_presentation_mode, on: :create
     end
   end
 
@@ -77,6 +80,10 @@ module ParticipationContext
 
   def set_participation_method
     self.participation_method ||= 'ideation'
+  end
+
+  def set_presentation_mode
+    self.presentation_mode ||= 'card'
   end
 
   def typeform?

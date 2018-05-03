@@ -1,17 +1,28 @@
 class WebApi::V1::StatsController < ApplicationController
 
-  before_action :do_authorize
+  before_action :do_authorize, :parse_time_boundaries
 
   @@stats_service = StatsService.new
+
+  # ** users ***
+
+  def users_count
+    count = User
+      .where(registration_completed_at: @start_at..@end_at)
+      .active
+      .count
+    render json: { count: count }
+  end
+
   def users_by_time
-    serie = @@stats_service.group_by_time(User.active, 'registration_completed_at', params[:start_at], params[:end_at], params[:interval])
+    serie = @@stats_service.group_by_time(User.active, 'registration_completed_at', @start_at, @end_at, params[:interval])
     render json: serie
   end
 
   def users_by_gender
     serie = User
       .active
-      .where(created_at: params[:start_at]..params[:end_at])
+      .where(created_at: @start_at..@end_at)
       .group("custom_field_values->'gender'")
       .order("custom_field_values->'gender'")
       .count
@@ -22,7 +33,7 @@ class WebApi::V1::StatsController < ApplicationController
   def users_by_birthyear
     serie = User
       .active
-      .where(created_at: params[:start_at]..params[:end_at])
+      .where(created_at: @start_at..@end_at)
       .group("custom_field_values->'birthyear'")
       .order("custom_field_values->'birthyear'")
       .count
@@ -33,7 +44,7 @@ class WebApi::V1::StatsController < ApplicationController
   def users_by_domicile
     serie = User
       .active
-      .where(created_at: params[:start_at]..params[:end_at])
+      .where(created_at: @start_at..@end_at)
       .group("custom_field_values->'domicile'")
       .order("custom_field_values->'domicile'")
       .count
@@ -45,7 +56,7 @@ class WebApi::V1::StatsController < ApplicationController
   def users_by_education
     serie = User
       .active
-      .where(created_at: params[:start_at]..params[:end_at])
+      .where(created_at: @start_at..@end_at)
       .group("custom_field_values->'education'")
       .order("custom_field_values->'education'")
       .count
@@ -53,9 +64,20 @@ class WebApi::V1::StatsController < ApplicationController
     render json: serie
   end
 
+  # # *** ideas ***
+
+  def ideas_count
+    count = Idea
+      .where(published_at: @start_at..@end_at)
+      .published
+      .count
+      
+    render json: { count: count }
+  end
+
   def ideas_by_topic
     serie = Idea
-      .where(published_at: params[:start_at]..params[:end_at])
+      .where(published_at: @start_at..@end_at)
       .joins(:ideas_topics)
       .group("ideas_topics.topic_id")
       .order("ideas_topics.topic_id")
@@ -66,7 +88,7 @@ class WebApi::V1::StatsController < ApplicationController
 
   def ideas_by_area
     serie = Idea
-      .where(published_at: params[:start_at]..params[:end_at])
+      .where(published_at: @start_at..@end_at)
       .joins(:areas_ideas)
       .group("areas_ideas.area_id")
       .order("areas_ideas.area_id")
@@ -76,18 +98,50 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def ideas_by_time
-    serie = @@stats_service.group_by_time(Idea, 'published_at', params[:start_at], params[:end_at], params[:interval])
+    serie = @@stats_service.group_by_time(Idea, 'published_at', @start_at, @end_at, params[:interval])
     render json: serie
+  end
+
+  # ** comments ***
+
+  def comments_count
+    count = Comment
+      .where(created_at: @start_at..@end_at)
+      .published
+      .count
+      
+    render json: { count: count }
   end
 
   def comments_by_time
-    serie = @@stats_service.group_by_time(Comment, 'created_at', params[:start_at], params[:end_at], params[:interval])
+    serie = @@stats_service.group_by_time(Comment, 'created_at', @start_at, @end_at, params[:interval])
     render json: serie
   end
 
+  # *** votes ***
+
+  def votes_count
+    count = Vote
+      .where(created_at: @start_at..@end_at)
+      .group(:mode)
+      .count
+    render json: { 
+      up: count["up"], 
+      down: count["down"], 
+      count: (count["up"] || 0) + (count["down"] || 0)
+    }
+  end
+
   def votes_by_time
-    serie = @@stats_service.group_by_time(Vote, 'created_at', params[:start_at], params[:end_at], params[:interval])
+    serie = @@stats_service.group_by_time(Vote, 'created_at', @start_at, @end_at, params[:interval])
     render json: serie
+  end
+
+  private
+
+  def parse_time_boundaries
+    @start_at =  params[:start_at] || -Float::INFINITY
+    @end_at = params[:end_at] || Float::INFINITY
   end
 
   def secure_controller?
