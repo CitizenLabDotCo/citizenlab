@@ -11,6 +11,7 @@ import ContentContainer from 'components/ContentContainer';
 import Spinner from 'components/UI/Spinner';
 import Icon from 'components/UI/Icon';
 import Footer from 'components/Footer';
+import Fragment from 'components/Fragment';
 
 // services
 import { IPage, pageBySlugStream } from 'services/pages';
@@ -252,12 +253,14 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
 
           <PageContent>
             <StyledContentContainer>
-              <PageTitle>
-                {pageTitle}
-              </PageTitle>
-              <PageDescription>
-                {pageDescription}
-              </PageDescription>
+              <Fragment name={`pages/${page && page.data.id}/content`}>
+                <PageTitle>
+                  {pageTitle}
+                </PageTitle>
+                <PageDescription>
+                  {pageDescription}
+                </PageDescription>
+              </Fragment>
             </StyledContentContainer>
           </PageContent>
 
