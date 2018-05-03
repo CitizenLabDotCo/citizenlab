@@ -196,7 +196,7 @@ workflows:
       - lint:
           filters:
             branches:
-              ignore: crowdin_master
+                - master
       - extract_intl:
           requires:
             - lint
