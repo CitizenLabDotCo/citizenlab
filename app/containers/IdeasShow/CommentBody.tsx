@@ -113,8 +113,6 @@ class CommentBody extends React.PureComponent<Props, State> {
   render() {
     const { editionMode, commentBody, locale, tenantLocales } = this.props;
 
-    console.log(commentBody);
-
     if (locale && tenantLocales && !editionMode) {
       return (
         <CommentWrapper className="e2e-comment-body">

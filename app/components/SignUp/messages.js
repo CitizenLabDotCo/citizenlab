@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.containers.SignUp.step1Title',
     defaultMessage: 'Create an account',
   },
-  step1InvitationTitle: {
-    id: 'app.containers.SignUp.step1InvitationTitle',
-    defaultMessage: 'Redeem your invitation',
-  },
   step2Title: {
     id: 'app.containers.SignUp.step2Title',
     defaultMessage: 'Complete your profile',

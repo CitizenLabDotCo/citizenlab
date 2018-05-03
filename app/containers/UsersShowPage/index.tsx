@@ -1,6 +1,7 @@
 import React from 'react';
 import { isEmpty } from 'lodash';
-import { Subscription } from 'rxjs/Rx';
+import { isNullOrError } from 'utils/helperUtils';
+import { withRouter, WithRouterProps } from 'react-router';
 import * as moment from 'moment';
 
 // components
@@ -8,8 +9,8 @@ import IdeaCards from 'components/IdeaCards';
 import ContentContainer from 'components/ContentContainer';
 import Avatar from 'components/Avatar';
 
-// services
-import { userBySlugStream, IUser } from 'services/users';
+// resources
+import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -87,63 +88,37 @@ const UserIdeas = styled.div`
   justify-content: center;
 `;
 
-type Props = {};
+interface InputProps {}
 
-type Params = {
-  params: {
-    slug: string;
-  }
-};
+interface DataProps {
+  user: GetUserChildProps;
+}
 
-type State = {
-  user: IUser | null;
-};
+interface Props extends InputProps, DataProps {}
 
-export default class UsersShowPage extends React.PureComponent<Props & Params, State> {
-  subscriptions: Subscription[];
+interface State {}
 
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      user: null
-    };
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const { slug } = this.props.params;
-    const user$ = userBySlugStream(slug).observable;
-
-    this.subscriptions = [
-      user$.subscribe(user => this.setState({ user }))
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
+class UsersShowPage extends React.PureComponent<Props, State> {
   render() {
-    const { user } = this.state;
+    const { user } = this.props;
 
-    if (user) {
-      const memberSince = moment(user.data.attributes.created_at).format('LL');
+    if (!isNullOrError(user)) {
+      const memberSince = moment(user.attributes.created_at).format('LL');
 
       return (
         <StyledContentContainer>
-
           <UserAvatar>
-            <StyledAvatar userId={user.data.id} size="large" />
+            <StyledAvatar userId={user.id} size="large" />
           </UserAvatar>
 
           <UserInfo>
-            <FullName>{user.data.attributes.first_name} {user.data.attributes.last_name}</FullName>
+            <FullName>{user.attributes.first_name} {user.attributes.last_name}</FullName>
             <JoinedAt>
               <FormattedMessage {...messages.memberSince} values={{ date: memberSince }} />
             </JoinedAt>
-            {!isEmpty(user.data.attributes.bio_multiloc) &&
+            {!isEmpty(user.attributes.bio_multiloc) &&
               <Bio>
-                {user.data.attributes.bio_multiloc && <T value={user.data.attributes.bio_multiloc} />}
+                {user.attributes.bio_multiloc && <T value={user.attributes.bio_multiloc} />}
               </Bio>
             }
           </UserInfo>
@@ -151,12 +126,11 @@ export default class UsersShowPage extends React.PureComponent<Props & Params, S
           <UserIdeas>
             <IdeaCards 
               type="load-more"
-              sort={'trending'}
+              sort="trending"
               pageSize={12}
-              authorId={user.data.id}
+              authorId={user.id}
             />
           </UserIdeas>
-
         </StyledContentContainer>
       );
     }
@@ -164,3 +138,9 @@ export default class UsersShowPage extends React.PureComponent<Props & Params, S
     return null;
   }
 }
+
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <GetUser slug={inputProps.params.slug}>
+    {user => <UsersShowPage user={user} />}
+  </GetUser>
+));
