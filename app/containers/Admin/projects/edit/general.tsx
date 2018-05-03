@@ -469,7 +469,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       const { projectData, oldProjectImages, newProjectImages } = this.state;
 
       if (participationContextConfig) {
-        const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, survey_service, survey_embed_url } = participationContextConfig;
+        const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, presentationMode, survey_service, survey_embed_url } = participationContextConfig;
 
         projectAttributesDiff = {
           ...projectAttributesDiff,
@@ -480,7 +480,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
           commenting_enabled: commentingEnabled,
           voting_enabled: votingEnabled,
           voting_method: votingMethod,
-          voting_limited_max: votingLimit
+          voting_limited_max: votingLimit,
+          presentation_mode: presentationMode
         };
       }
 
@@ -575,7 +576,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       projectData,
       headerBg,
       newProjectImages,
-      presentationMode,
       loading,
       processing,
       projectAttributesDiff,
@@ -694,25 +694,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 onSubmit={this.handleParcticipationContextOnSubmit}
                 onChange={this.handleParticipationContextOnChange}
               />
-            }
-
-            {projectData && projectData.attributes.process_type === 'continuous' &&
-              <SectionField>
-                <Label>
-                  <FormattedMessage {...messages.defaultDisplay} />
-                </Label>
-                {['card', 'map'].map((key) => (
-                  <Radio
-                    key={key}
-                    onChange={this.handleIdeasDisplayChange}
-                    currentValue={presentationMode}
-                    value={key}
-                    name="presentation_mode"
-                    id={`presentation_mode-${key}`}
-                    label={<FormattedMessage {...messages[`${key}Display`]} />}
-                  />
-                ))}
-              </SectionField>
             }
 
             <SectionField>
