@@ -23,6 +23,15 @@ FactoryBot.define do
       enabled true
     end
 
+    factory :custom_field_checkbox do
+      title_multiloc {{
+        "en" => "I'm not a robot"
+      }}
+      required true # default should be false, right?
+      input_type "checkbox"
+      enabled true
+    end
+
 
   end
 end

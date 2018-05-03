@@ -6,7 +6,7 @@ describe SmartGroupRules::CustomFieldSelect do
   describe "validations" do
 
     let(:custom_field) { create(:custom_field_select) }
-    let(:options) { create_list(:custom_field_option, 3, custom_field: custom_field )}
+    let(:options) { create_list(:custom_field_option, 3, custom_field: custom_field) }
 
     let(:valid_json_rule) {{
       'ruleType' => 'custom_field_select',
