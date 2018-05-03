@@ -45,6 +45,7 @@ resource "Users" do
         end
         parameter :search, 'Filter by searching in first_name, last_name and email', required: false
         parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'", required: false
+        parameter :group, "Filter by group_id", required: false
 
         example_request "Get all users" do
           expect(status).to eq 200
@@ -76,6 +77,18 @@ resource "Users" do
           expect(json_response[:data].size).to eq 6
           correctly_sorted = User.all.sort_by{|u| u.last_name}
           expect(json_response[:data].map{|u| u[:id]}).to eq correctly_sorted.map(&:id)
+
+        end
+
+        example "List all users in group" do
+          group = create(:group)
+          group_users = create_list(:user, 3, manual_groups: [group])
+
+          do_request(group: group.id)
+          json_response = json_parse(response_body)
+
+          expect(json_response[:data].size).to eq 3
+          expect(json_response[:data].map{|u| u[:id]}).to match_array group_users.map(&:id)
 
         end
       end

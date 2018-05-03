@@ -15,6 +15,8 @@ class WebApi::V1::UsersController < ::ApplicationController
     @users = @users.search_by_all(params[:search]) if params[:search].present?
 
     @users = @users.active unless params[:include_inactive]
+    @users = @users.in_group(Group.find(params[:group])) if params[:group]
+
 
     @users = case params[:sort]
       when "created_at"

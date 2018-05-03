@@ -337,6 +337,23 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "in_group" do
+    it "gets all users in a manual group" do
+      group = create(:group)
+      users = create_list(:user, 3, manual_groups: [group])
+      create_list(:user, 2)
+      expect(User.in_group(group).pluck(:id)).to match users.map(&:id) 
+    end
 
+    it "gets all users in a rules group" do
+      group = create(:smart_group)
+      user1 = create(:user, email: 'jos@test.com')
+      user2 = create(:user, email: 'jules@test.com')
+      user3 = create(:user)
+      user4 = create(:user, manual_groups: [create(:group)])
+
+      expect(User.in_group(group).pluck(:id)).to match [user1.id, user2.id]
+    end
+  end
 
 end

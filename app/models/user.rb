@@ -70,7 +70,15 @@ class User < ApplicationRecord
 
   scope :active, -> {
     where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'")
-  } 
+  }
+
+  scope :in_group, -> (group) {
+    if group.rules?
+      SmartGroupsService.new.filter(self, group.rules)
+    elsif group.manual?
+      joins(:memberships).where(memberships: {group_id: group.id})
+    end
+  }
   
   def self.build_with_omniauth(auth)
     extra_user_attrs = SingleSignOnService.new.profile_to_user_attrs(auth.provider, auth)
