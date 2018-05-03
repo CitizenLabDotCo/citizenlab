@@ -286,9 +286,9 @@ class Streams {
         }
 
         return () => {
-          if (process.env.NODE_ENV === 'development') {
-            console.log(`stream for stream ${streamId} completed`);
-          }
+          // if (process.env.NODE_ENV === 'development') {
+          //   console.log(`stream for stream ${streamId} completed`);
+          // }
 
           this.deleteStream(streamId, apiEndpoint);
         };
