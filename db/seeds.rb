@@ -184,7 +184,7 @@ admin_koen = {
   ],
   gender: "male",
   domicile: 'outside',
-  birthyear: '1987',
+  birthyear: 1987,
   registration_completed_at: Time.now
 }
 
@@ -251,7 +251,7 @@ if Apartment::Tenant.current == 'localhost'
         locale: ['en','nl'][rand(1)],
         roles: rand(10) == 0 ? [{type: 'admin'}] : [],
         gender: %w(male female unspecified)[rand(4)],
-        birthyear: rand(2) === 0 ? nil : (1927 + rand(90)).to_s,
+        birthyear: rand(2) === 0 ? nil : (1927 + rand(90)),
         education: rand(2) === 0 ? nil : rand(9).to_s,
         avatar: nil, # (rand(3) > 0) ? generate_avatar : nil,
         domicile: rand(2) == 0 ? nil : Area.offset(rand(Area.count)).first.id,
@@ -401,9 +401,10 @@ if Apartment::Tenant.current == 'localhost'
 
     3.times do
       Group.create({
+        membership_type: 'manual',
         title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
         projects: Project.all.shuffle.take(rand(Project.count)),
-        users: User.all.shuffle.take(rand(User.count))
+        members: User.all.shuffle.take(rand(User.count))
       })
     end
 

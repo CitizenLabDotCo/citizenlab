@@ -146,6 +146,15 @@ resource "User Custom Fields" do
         expect(response_status).to eq 200
         expect{CustomField.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
       end
+
+      example "[error] Delete a custom field that's still referenced in a rules group" do
+        group = create(:smart_group, rules: [
+          {ruleType: 'custom_field_text', customFieldId: id, predicate: 'is_empty'}
+        ])
+        do_request
+        expect(response_status).to eq 422
+        expect(CustomField.find(id)).to be_present
+      end
     end
 
   end

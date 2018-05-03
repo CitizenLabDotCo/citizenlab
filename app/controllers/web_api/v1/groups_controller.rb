@@ -6,6 +6,9 @@ class WebApi::V1::GroupsController < ApplicationController
     @groups = policy_scope(Group)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
+
+    @groups = @groups.where(membership_type: params[:membership_type]) if params[:membership_type]
+    
   	render json: @groups
   end
 

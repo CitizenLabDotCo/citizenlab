@@ -103,6 +103,20 @@ class CustomFieldService
       description: handle_description(field, locale),
       type: "string"
     }
+  end
+
+  # *** number ***
+
+  def number_to_ui_schema_field field, locale
+    base_ui_schema_field(field, locale)
+  end
+
+  def number_to_json_schema_field field, locale
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: "number"
+    }
   end 
   
   # *** multiline_text ***
@@ -193,8 +207,8 @@ class CustomFieldService
   # *** Built-in birthyear field ***
 
   def birthyear_to_json_schema_field field, locale
-    normal_field = select_to_json_schema_field(field, locale)
-    normal_field[:enum] = (1900..(Time.now.year - 12)).to_a.reverse.map(&:to_s)
+    normal_field = number_to_json_schema_field(field, locale)
+    normal_field[:enum] = (1900..(Time.now.year - 12)).to_a.reverse
     normal_field
   end
 

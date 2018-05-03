@@ -240,7 +240,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '2016'
+    birthyear: 2016
     domicile: outside
     education: '4'
     password_digest: "$2a$10$PwbaOGAAS9ixdcnVitjixOJdgAEv8fYTWxXc4ZHzBCg2nBRtezazi"
@@ -263,7 +263,7 @@ models:
     bio_multiloc:
       fr: 
     gender: female
-    birthyear: '1996'
+    birthyear: 1996
     domicile: outside
     education: '8'
     password_digest: "$2a$10$xc.4clD8ALe63wseQBxbv.Y0ThpbKwYBPzG6z.3Ef/uf9xL6vslBa"
@@ -286,7 +286,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '1958'
+    birthyear: 1958
     domicile: outside
     education: '1'
     password_digest: "$2a$10$sN9Hz/ZLXSABIKcByMnrT.d8Hb2d76/AFJ3nKxo4tqmxZkS8pz6vm"
@@ -309,7 +309,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '1956'
+    birthyear: 1956
     domicile: 
     education: 
     password_digest: "$2a$10$WWtdPdDwy/kYybvpsNOI7Oq5KUYroP.gG8epz9TeYZOqHm.7LhqW."
@@ -332,7 +332,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '1972'
+    birthyear: 1972
     domicile: 
     education: '4'
     password_digest: "$2a$10$1YvrW32PjbwTav9NTerMSeMexcTJwxsIIe1X3q6kQ5BVBh8HAyAYy"
@@ -355,7 +355,7 @@ models:
     bio_multiloc:
       fr: 
     gender: female
-    birthyear: '1958'
+    birthyear: 1958
     domicile: outside
     education: '3'
     password_digest: "$2a$10$yN4Q5dmD5nrA9n15lcnNQOiAxkUp7izfr764jJLbKJzJdGrFvTJH."
@@ -378,7 +378,7 @@ models:
     bio_multiloc:
       fr: 
     gender: female
-    birthyear: '1934'
+    birthyear: 1934
     domicile: outside
     education: '7'
     password_digest: "$2a$10$rbHnRV2wJRo1cDOurctMcudoJv5Jj5NjrhFftZ/7d6JbGRVBf3l8G"
@@ -401,7 +401,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '1995'
+    birthyear: 1995
     domicile: outside
     education: '1'
     password_digest: "$2a$10$MoRW4uQfO267wYVxwE9npOIEH7NFhFl1TWcHvZhi717MuwchX0pam"
@@ -424,7 +424,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '1993'
+    birthyear: 1993
     domicile: outside
     education: '8'
     password_digest: "$2a$10$bIqZRPjChPrdwVhH5fQwrum4138jmB4kR6cd61ep/BiQBOl.iCOoy"
@@ -447,7 +447,7 @@ models:
     bio_multiloc:
       fr: 
     gender: female
-    birthyear: '1942'
+    birthyear: 1942
     domicile: outside
     education: '7'
     password_digest: "$2a$10$gU1bYY2jFLtCq7Dt4N1EJuJQgA3wHeYe5ek1BeAZMoQ2EgqTe2hDi"
@@ -470,7 +470,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '1987'
+    birthyear: 1987
     domicile: outside
     education: '1'
     password_digest: "$2a$10$G/wKDvEAltemxRMp2ViQMOIHpEaGiEMNNqASSqPqmP3etHHP86P9q"
@@ -493,7 +493,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '2013'
+    birthyear: 2013
     domicile: outside
     education: '4'
     password_digest: "$2a$10$OXH1Zrph0hUK/j/u.AaT6OJgVkidckR0W5Wm2KD6hbkeJZBLyJ10O"
@@ -562,7 +562,7 @@ models:
     bio_multiloc:
       fr: 
     gender: female
-    birthyear: '2007'
+    birthyear: 2007
     domicile: outside
     education: '4'
     password_digest: "$2a$10$vBWVYDVyYaX8JNZQjauxm.48DCdRL66eYm3A7IRC1tsY71GHvAclW"
@@ -585,7 +585,7 @@ models:
     bio_multiloc:
       fr: 
     gender: female
-    birthyear: '2007'
+    birthyear: 2007
     domicile: outside
     education: '4'
     password_digest: "$2a$10$SfF.2EEmtZe78YonmQpnoedtcxNyTB0T7GMgCVhJ6kPOCdmp0GcsG"
@@ -608,7 +608,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '1993'
+    birthyear: 1993
     domicile: outside
     education: '2'
     password_digest: "$2a$10$d6GdbwpdixbNzwM6BP9pnuLd3PUe5wxDqcT6AgpOGAZKFZk5KIAqS"
@@ -631,7 +631,7 @@ models:
     bio_multiloc:
       fr: 
     gender: female
-    birthyear: '1959'
+    birthyear: 1959
     domicile: outside
     education: '2'
     password_digest: "$2a$10$/xK7BKyvod6w1dygMI6zNOf.rGSI9g4aZXlYylCeXTD3SD9sh7VD2"
@@ -677,7 +677,7 @@ models:
     bio_multiloc:
       fr: 
     gender: female
-    birthyear: '1956'
+    birthyear: 1956
     domicile: outside
     education: '1'
     password_digest: "$2a$10$JllCIYkpv6CFriTtRKetB.2j9qd4t4kNMSl4Upobc6HW8xl6IKFg6"
@@ -700,7 +700,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '1931'
+    birthyear: 1931
     domicile: outside
     education: '7'
     password_digest: "$2a$10$X6v1gkQuBBim3yi7pdeXmutqH96iW/qiqU6PlITmrvwW1Bll5h/52"
@@ -723,7 +723,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '2003'
+    birthyear: 2003
     domicile: outside
     education: '3'
     password_digest: "$2a$10$1LTppZm.U4lYO0QXDW35YOYnssix0wmGXHi//cErs/JbXUBk9B3MK"
@@ -746,7 +746,7 @@ models:
     bio_multiloc:
       fr: 
     gender: female
-    birthyear: '1940'
+    birthyear: 1940
     domicile: outside
     education: '2'
     password_digest: "$2a$10$TgmDMJbkf/wy87EGUCLEwOax3IAVzBzVto4cm/erMwbDFDe1zO8au"
@@ -769,7 +769,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '1968'
+    birthyear: 1968
     domicile: outside
     education: '6'
     password_digest: "$2a$10$xC9cPtn/rkjuPwVH6fDtE.S14oFsFCLCkk/eNTBjOZ0fHX.kdHlnO"
@@ -792,7 +792,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '2003'
+    birthyear: 2003
     domicile: 
     education: '2'
     password_digest: "$2a$10$Y/eIBiWh2kQHN.mhNrCgRutorwu3H4z5/JbekniF32vyMNCisTb5W"
@@ -815,7 +815,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '2011'
+    birthyear: 2011
     domicile: outside
     education: '3'
     password_digest: "$2a$10$Rt1PBV5ZwIW/NDvXDyAG7.o9wydxk/QfHetwKAjyFHFGiUf9t30GO"
@@ -838,7 +838,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '1939'
+    birthyear: 1939
     domicile: outside
     education: '5'
     password_digest: "$2a$10$g5K3cjeKAIvv9cXY.KbEfOBu7YcwTX5mOkbR4oQhFRf.BCrPTD7ei"
@@ -861,7 +861,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '1966'
+    birthyear: 1966
     domicile: outside
     education: '6'
     password_digest: "$2a$10$Pe7I8KUQ5lCEvAMtxVqt0ecE2aSxOKnSRrh8WZAb2AUxdivmYrXHC"
@@ -884,7 +884,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '1934'
+    birthyear: 1934
     domicile: outside
     education: '5'
     password_digest: "$2a$10$CjhYzNCbJcv4BfPaZMn4WeIGHDgv.yK3Hv3OWCD/lzgNmw9kF6htC"
@@ -907,7 +907,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '1952'
+    birthyear: 1952
     domicile: outside
     education: 
     password_digest: "$2a$10$.CPIl90ExqxYf79Ved3SAeN27OoahkoDbTZaDVj5wCYifo1vneLHe"
@@ -930,7 +930,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '2015'
+    birthyear: 2015
     domicile: outside
     education: '8'
     password_digest: "$2a$10$f0img/0jVtFUDx51mCIsnODmLJCCHNqLF62QFnp14601HJUiMYgr."
@@ -953,7 +953,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '1976'
+    birthyear: 1976
     domicile: outside
     education: '5'
     password_digest: "$2a$10$KWrq1tUeg3yUG1z2/A.kWuymcxY5FP.3HAPtICoebzQtQqCCJlz0a"
@@ -976,7 +976,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '1981'
+    birthyear: 1981
     domicile: outside
     education: '5'
     password_digest: "$2a$10$w8EFgLD5gBNoQmvPcI9ccelQX9/ZvmWK4TwgdO/yBwWlXjdoPFf6q"
@@ -999,7 +999,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '1959'
+    birthyear: 1959
     domicile: outside
     education: '4'
     password_digest: "$2a$10$7ZOIHTdMZeN.NPoVvwFI0.C.Pkt4zope1GI5xK25xmUZncpccqCeW"
@@ -1022,7 +1022,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '1933'
+    birthyear: 1933
     domicile: outside
     education: '6'
     password_digest: "$2a$10$UeXD3XWbI85shLBj5qbN2uIrKMrbOI0llPqVE3oTHkmAG/Vr4z15u"
@@ -1045,7 +1045,7 @@ models:
     bio_multiloc:
       fr: 
     gender: female
-    birthyear: '1959'
+    birthyear: 1959
     domicile: outside
     education: 
     password_digest: "$2a$10$a7niTMGhR2/br8yWjj5X3.NmiM7t5eci6ncAYqcIGGgZId9vLCVIO"
@@ -1068,7 +1068,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '1963'
+    birthyear: 1963
     domicile: 
     education: '5'
     password_digest: "$2a$10$B7ubEVrwaDRqUC81qefwZ.MePehqDlBn13lbk8uWugbm.qrM.BVXq"
@@ -1091,7 +1091,7 @@ models:
     bio_multiloc:
       fr: 
     gender: male
-    birthyear: '1939'
+    birthyear: 1939
     domicile: 
     education: '2'
     password_digest: "$2a$10$qylGLo.6k.2yc5VbQI4XeOOVfnOI6wTAXzd45zA.fYnWM5aA6dFee"
@@ -1136,7 +1136,7 @@ models:
     locale: fr
     bio_multiloc: {}
     gender: male
-    birthyear: '2005'
+    birthyear: 2005
     domicile: outside
     education: 
     password_digest: "$2a$10$F4MZkuWRT7095Js74SHHB.LFkQyWDmHTQCcQ5054Io9cBwNIU5fvi"

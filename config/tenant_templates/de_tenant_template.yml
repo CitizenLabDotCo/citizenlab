@@ -280,7 +280,7 @@ models:
     bio_multiloc:
       de: 
     gender: male
-    birthyear: '1981'
+    birthyear: 1981
     domicile: outside
     password: UdTWBlSeLpU
     remote_avatar_url: 
@@ -292,7 +292,7 @@ models:
     bio_multiloc:
       de: 
     gender: male
-    birthyear: '2001'
+    birthyear: 2001
     domicile: outside
     password: kkDumj8dzQM
     remote_avatar_url: 
@@ -304,7 +304,7 @@ models:
     bio_multiloc:
       de: 
     gender: female
-    birthyear: '1980'
+    birthyear: 1980
     domicile: outside
     password: dFqnudIEMXQ
     remote_avatar_url: 
@@ -316,7 +316,7 @@ models:
     bio_multiloc:
       de: 
     gender: male
-    birthyear: '1971'
+    birthyear: 1971
     domicile: 
     password: CTgWoR83bQw
     remote_avatar_url: 
@@ -328,7 +328,7 @@ models:
     bio_multiloc:
       de: 
     gender: male
-    birthyear: '1980'
+    birthyear: 1980
     domicile: outside
     password: PTz9hw95llI
     remote_avatar_url: 
@@ -352,7 +352,7 @@ models:
     bio_multiloc:
       de: 
     gender: male
-    birthyear: '1951'
+    birthyear: 1951
     domicile: 
     password: 0O1vD2YHyo4
     remote_avatar_url: 
@@ -364,7 +364,7 @@ models:
     bio_multiloc:
       de: 
     gender: female
-    birthyear: '1970'
+    birthyear: 1970
     domicile: outside
     password: wZqpATerPWk
     remote_avatar_url: 
@@ -400,7 +400,7 @@ models:
     bio_multiloc:
       de: 
     gender: female
-    birthyear: '1987'
+    birthyear: 1987
     domicile: outside
     password: wGIhl5z5VMY
     remote_avatar_url: 
@@ -412,7 +412,7 @@ models:
     bio_multiloc:
       de: 
     gender: male
-    birthyear: '1957'
+    birthyear: 1957
     domicile: outside
     password: UQ9_rxrt_IQ
     remote_avatar_url: 
@@ -424,7 +424,7 @@ models:
     bio_multiloc:
       de: 
     gender: male
-    birthyear: '1934'
+    birthyear: 1934
     domicile: outside
     password: SAcGCoeK_Rk
     remote_avatar_url: 
@@ -436,7 +436,7 @@ models:
     bio_multiloc:
       de: 
     gender: female
-    birthyear: '1936'
+    birthyear: 1936
     domicile: outside
     password: TyMZNov_oC0
     remote_avatar_url: 
