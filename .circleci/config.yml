@@ -52,27 +52,6 @@ jobs:
       - run: git diff --quiet && git diff --staged --quiet || git commit -m "Translations updated by CI (extract-intl)"
       - run: git push origin $CIRCLE_BRANCH
 
-  build:
-    docker:
-      - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: ~/cl2-front
-    steps:
-      - checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-npm-cache-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-npm-cache-
-      - run: npm ci
-      - save_cache:
-          paths:
-            - /root/.npm
-          key: v1-npm-cache-{{ checksum "package.json" }}
-      - run:
-          command: npm run build
-          no_output_timeout: '30m'
-
   deploy_demo:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
