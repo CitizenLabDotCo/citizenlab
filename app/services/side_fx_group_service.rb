@@ -7,7 +7,7 @@ class SideFxGroupService
 
   def after_create group, user
     LogActivityJob.perform_later(group, 'created', user, group.created_at.to_i)
-    UpdateMemberCountJob.perform_later
+    UpdateMemberCountJob.perform_now(group)
   end
 
   def before_update group, user
@@ -16,7 +16,7 @@ class SideFxGroupService
 
   def after_update group, user
     LogActivityJob.perform_later(group, 'changed', user, group.updated_at.to_i)
-    UpdateMemberCountJob.perform_later
+    UpdateMemberCountJob.perform_now(group)
   end
 
   def before_destroy group, user
