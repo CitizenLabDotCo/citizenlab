@@ -77,6 +77,7 @@ RSpec.describe Group, type: :model do
       create(:user, email: 'u3@not-in-group.com')
       members = g1.members
       expect(g1.member_ids).to match g1.members.map(&:id)
+      expect(2).to eq(3)
     end
 
   end
