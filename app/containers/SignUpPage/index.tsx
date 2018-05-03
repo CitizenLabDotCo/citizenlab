@@ -13,6 +13,10 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // utils
 import eventEmitter from 'utils/eventEmitter';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
@@ -76,7 +80,7 @@ const RightInner = styled.div`
   padding-right: 30px;
 `;
 
-interface InputProps extends WithRouterProps{}
+interface InputProps{}
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
@@ -86,10 +90,10 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class SignUpPage extends React.PureComponent<Props, State> {
+class SignUpPage extends React.PureComponent<Props & WithRouterProps, State> {
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
+  constructor(props: Props & WithRouterProps) {
     super(props);
     this.state = {};
     this.subscriptions = [];
@@ -112,13 +116,10 @@ class SignUpPage extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { authUser, location } = this.props;
+    const { location } = this.props;
     const isInvitation = (location.pathname === '/invite');
     const token: string | null = get(location.query, 'token', null);
-
-    if (authUser && authUser.attributes.registration_completed_at) {
-      this.onSignUpCompleted();
-    }
+    const title = (isInvitation ? <FormattedMessage {...messages.invitationTitle} /> : undefined);
 
     return (
       <Container>
@@ -128,6 +129,7 @@ class SignUpPage extends React.PureComponent<Props, State> {
         <Right>
           <RightInner>
             <SignUp
+              step1Title={title}
               isInvitation={isInvitation}
               token={token}
               onSignUpCompleted={this.onSignUpCompleted}
@@ -139,8 +141,10 @@ class SignUpPage extends React.PureComponent<Props, State> {
   }
 }
 
-export default withRouter((inputProps: InputProps) => (
+const SignUpPageWithHoCs = withRouter(SignUpPage);
+
+export default (inputProps: InputProps) => (
   <GetAuthUser>
-    {authUser => <SignUpPage {...inputProps} authUser={authUser} />}
+    {authUser => <SignUpPageWithHoCs {...inputProps} authUser={authUser} />}
   </GetAuthUser>
-));
+);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { set, keys, difference, get } from 'lodash';
 import { Subscription, Observable } from 'rxjs/Rx';
+import { isNullOrError } from 'utils/helperUtils';
 
 // libraries
 import { Link } from 'react-router';
@@ -158,22 +159,22 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
     const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
-    const invitedUser$ = (token ? userByInviteStream(token).observable : Observable.of(null));
+    const invitedUser$ = (token ? userByInviteStream(token, { cacheStream: false }).observable : Observable.of(null));
 
     this.subscriptions = [
       Observable.combineLatest(
         locale$,
         currentTenant$,
         customFieldsSchemaForUsersStream$,
-        invitedUser$
+        invitedUser$.first()
       ).subscribe(([locale, currentTenant, customFieldsSchema, invitedUser]) => {
         this.setState((state) => ({
           locale,
           currentTenant,
           token,
-          firstName: (invitedUser && invitedUser.data ? invitedUser.data.attributes.first_name : state.firstName),
-          lastName: (invitedUser && invitedUser.data ? invitedUser.data.attributes.last_name : state.lastName),
-          email: (invitedUser && invitedUser.data ? invitedUser.data.attributes.email : state.email),
+          firstName: (!isNullOrError(invitedUser) && invitedUser.data ? invitedUser.data.attributes.first_name : state.firstName),
+          lastName: (!isNullOrError(invitedUser) && invitedUser.data ? invitedUser.data.attributes.last_name : state.lastName),
+          email: (!isNullOrError(invitedUser) && invitedUser.data ? invitedUser.data.attributes.email : state.email),
           hasCustomFields: hasCustomFields(customFieldsSchema, locale)
         }));
       })
