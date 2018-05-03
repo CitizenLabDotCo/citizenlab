@@ -51,7 +51,7 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
           <PageWrapper>
             <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">
               <ButtonWrapper>
-                <Button linkTo="/admin/projects/new" style="cl-blue" circularCorners={false} icon="plus-circle">
+                <Button className="e2e-admin-add-project" linkTo="/admin/projects/new" style="cl-blue" circularCorners={false} icon="plus-circle">
                   <FormattedMessage {...messages.addNewProject} />
                 </Button>
               </ButtonWrapper>
@@ -74,7 +74,13 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
                         </StatusLabel>
                       }
                     </div>
-                    <Button linkTo={`/admin/projects/${project.id}/edit`} style="secondary" circularCorners={false} icon="edit">
+                    <Button
+                      className={`e2e-admin-edit-project ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
+                      linkTo={`/admin/projects/${project.id}/edit`}
+                      style="secondary"
+                      circularCorners={false}
+                      icon="edit"
+                    >
                       <FormattedMessage {...messages.editButtonLabel} />
                     </Button>
                   </SortableRow>
