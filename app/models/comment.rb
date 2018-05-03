@@ -20,6 +20,8 @@ class Comment < ApplicationRecord
 
   before_validation :set_author_name, :set_publication_status, on: :create
 
+  scope :published, -> {where publication_status: 'published'}
+  
   def set_author_name
     self.author_name = self.author.display_name if self.author
   end

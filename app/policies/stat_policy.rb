@@ -1,5 +1,9 @@
 class StatPolicy < ApplicationPolicy
 
+  def users_count?
+    user&.active? && user.admin?
+  end
+  
   def users_by_time?
     user&.active? && user.admin?
   end
@@ -20,6 +24,10 @@ class StatPolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
+  def ideas_count?
+    user&.active? && user.admin?
+  end
+
   def ideas_by_topic?
     user&.active? && user.admin?
   end
@@ -36,7 +44,15 @@ class StatPolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
+  def comments_count?
+    user&.active? && user.admin?
+  end
+
   def comments_by_time?
+    user&.active? && user.admin?
+  end
+
+  def votes_count?
     user&.active? && user.admin?
   end
 

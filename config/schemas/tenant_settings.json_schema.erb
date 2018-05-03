@@ -21,6 +21,13 @@
             "enum": ["small_city", "medium_city", "large_city", "generic", "demo"],
             "default": "medium_city"
           },
+          "lifecycle_stage": {
+            "description": "The lifecycle stage the customer is currently at",
+            "type": "string",
+            "enum": ["demo", "active", "churned", "not_applicable"],
+            "default": "demo",
+            "private": true
+          },
           "timezone": {
             "type": "string",
             "default": "Europe/Brussels",
