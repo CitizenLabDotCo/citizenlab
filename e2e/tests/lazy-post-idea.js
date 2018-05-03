@@ -4,19 +4,18 @@ const title = `test idea ${hash}`;
 const afterEach = require('../updateBSStatus');
 
 module.exports = {
-  '@tags': ['citizen', 'ideas', 'posting', 'psst'],
+  '@tags': ['citizen', 'ideas', 'posting', 'lazy'],
   afterEach,
-  postIdea: (browser) => {
+  lazyPostIdea: (browser) => {
     const signinPage = browser.page.signin();
     const newIdeaPage = browser.page.newIdea();
 
-    signinPage
-    .navigate()
-    .signin('koen@citizenlab.co', 'testtest');
-
     newIdeaPage
     .navigate()
-    .postIdea(title, 'Lorem ipsum dolor sit amet')
+    .postIdea(title, 'Lorem ipsum dolor sit amet');
+
+    signinPage
+    .signin('koen@citizenlab.co', 'testtest')
     .waitForElementVisible('#e2e-ideas-list');
 
     browser

@@ -49,11 +49,11 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
 
           <PageWrapper>
             <ButtonWrapper>
-              <Button linkTo="/admin/projects/new" style="cl-blue" circularCorners={false} icon="plus-circle">
+              <Button className="e2e-admin-add-project" linkTo="/admin/projects/new" style="cl-blue" circularCorners={false} icon="plus-circle">
                 <FormattedMessage {...messages.addNewProject} />
               </Button>
             </ButtonWrapper>
-            <SortableList items={projectsList} onReorder={this.handleReorder}>
+              <SortableList items={projectsList} onReorder={this.handleReorder} className="e2e-admin-projects-list">
               {({ itemsList, handleDragRow, handleDropRow }) => (
                 itemsList.map((project: IProjectData, index: number) => (
                   <SortableRow
@@ -71,7 +71,13 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
                         </StatusLabel>
                       }
                     </div>
-                    <Button linkTo={`/admin/projects/${project.id}/edit`} style="secondary" circularCorners={false} icon="edit">
+                    <Button
+                      className={`e2e-admin-edit-project ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
+                      linkTo={`/admin/projects/${project.id}/edit`}
+                      style="secondary"
+                      circularCorners={false}
+                      icon="edit"
+                    >
                       <FormattedMessage {...messages.editButtonLabel} />
                     </Button>
                   </SortableRow>

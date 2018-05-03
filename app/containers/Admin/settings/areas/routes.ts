@@ -1,26 +1,23 @@
-import SettingsContainer from '../';
-import AreasIndex from './all';
-import AreasNew from './New';
-import AreasEdit from './Edit';
+import loadAndRender from 'utils/loadAndRender';
 
 export default () => ({
   path: '/admin/settings/areas',
   name: 'admin settings areas',
-  component: SettingsContainer,
+  getComponent: loadAndRender(import('../')),
   indexRoute: {
     name: 'admin setting areas index',
-    component: AreasIndex,
+    getComponent: loadAndRender(import('./all')),
   },
   childRoutes: [
     {
       path: '/admin/settings/areas/new',
       name: 'admin setting areas new',
-      component: AreasNew,
+      getComponent: loadAndRender(import('./New')),
     },
     {
       path: '/admin/settings/areas/:areaId',
       name: 'admin setting area edit',
-      component: AreasEdit,
+      getComponent: loadAndRender(import('./Edit')),
     },
   ],
 });

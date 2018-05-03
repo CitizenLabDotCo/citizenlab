@@ -87,6 +87,7 @@ const ChildCommentsContainer = styled.div``;
 interface InputProps {
   ideaId: string;
   commentId: string;
+  last: boolean;
 }
 
 interface DataProps {
@@ -184,9 +185,22 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
               <CommentContainerInner className={`${commentDeleted && 'deleted'}`}>
                 {!commentDeleted &&
                   <>
-                    <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} />
-                    <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
-                    <CommentBody commentBody={commentBodyMultiloc} editionMode={this.state.editionMode} onCommentSave={this.onCommentSave} onCancelEdition={this.onCancelEdition} />
+                    <StyledMoreActionsMenu 
+                      comment={comment}
+                      onCommentEdit={this.onCommentEdit}
+                    />
+                    <StyledAuthor 
+                      authorId={authorId}
+                      createdAt={createdAt}
+                      message="parentCommentAuthor"
+                    />
+                    <CommentBody 
+                      commentBody={commentBodyMultiloc}
+                      editionMode={this.state.editionMode}
+                      last={this.props.last}
+                      onCommentSave={this.onCommentSave} 
+                      onCancelEdition={this.onCancelEdition}
+                    />
                   </>
                 }
 
