@@ -335,7 +335,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
 
                 <WithoutButtonBar>
                   <Button
-                    className="e2e-submit-project-select-form"
+                    className="e2e-submit-project-select-form-mobile"
                     size="2"
                     text={<FormattedMessage {...messages.continueButton} />}
                     onClick={this.handleOnSubmitClick}

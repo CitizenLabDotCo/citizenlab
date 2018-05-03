@@ -11,8 +11,7 @@ const newIdeaCommands = {
     // Fill in the form
     .setValue('@title', title)
     .setValue('@content', content)
-    .click('@submit')
-    .waitForElementVisible('#e2e-ideas-list');
+    .click('@submit');
   },
 };
 
