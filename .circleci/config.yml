@@ -197,14 +197,6 @@ workflows:
           filters:
             branches:
               ignore: crowdin_master
-      - build:
-          requires:
-            - lint
-          filters:
-            branches:
-              only:
-                - master
-                - production
       - extract_intl:
           requires:
             - lint
