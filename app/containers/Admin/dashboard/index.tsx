@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import * as moment from 'moment';
 import HelmetIntl from 'components/HelmetIntl';
 import styled, { ThemeProvider } from 'styled-components';
@@ -99,7 +99,7 @@ export default class DashboardPage extends React.PureComponent<Props, State> {
           />
         </ControlBar>
         <ThemeProvider theme={this.chartTheme}>
-          <Flex mx={-10} my={20} wrap>
+          <Flex mx={-10} my={20} flexWrap>
             <Box width={[1, 1, 1 / 2]} p={10}>
               <GraphCard >
                 <GraphCardTitle>

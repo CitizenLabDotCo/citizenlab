@@ -589,7 +589,7 @@
   "app.containers.SignIn.signInError": "Für die bereitgestellten Anmeldedaten wurde kein Konto gefunden",
   "app.containers.SignIn.signUp": "Registrieren Sie sich",
   "app.containers.SignIn.submit": "Anmelden",
-  "app.containers.SignIn.title": "",
+  "app.containers.SignIn.title": "Anmeldung",
   "app.containers.SignInPage.title": "Anmelden",
   "app.containers.SignInUpBanner.slogan": "{orgName, select, München {Welche Anliegen haben Sie? Verschaffen Sie Ihrer Stimme Gehör!} other {Welche Ideen haben Sie? Verschaffen Sie Ihrer Stimme Gehör!}}!",
   "app.containers.SignUp.acceptTermsAndConditions": "Mit der Registrierung erklären Sie sich mit unseren {tacLink} einverstanden",
