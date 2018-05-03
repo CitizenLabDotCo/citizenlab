@@ -23,6 +23,7 @@ export interface IPhaseData {
     voting_enabled: boolean;
     voting_method: 'limited' | 'unlimited';
     voting_limited_max: number;
+    presentation_mode: 'card' | 'map';
     survey_service?: SurveyServices;
     survey_embed_url?: string;
   };
@@ -56,6 +57,7 @@ export interface IUpdatedPhaseProperties {
   voting_enabled?: boolean | null;
   voting_method?: 'limited' | 'unlimited' | null;
   voting_limited_max?: number | null;
+  presentation_mode?: 'card' | 'map' | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
 }
