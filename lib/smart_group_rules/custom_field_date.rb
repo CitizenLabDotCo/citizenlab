@@ -9,7 +9,8 @@ module SmartGroupRules
     include CustomFieldRule
 
     validates :custom_field_id, inclusion: { in: proc { CustomField.where(input_type: 'date').map(&:id) } }
-    validates :value, inclusion: { in: -> (record) { CustomFieldOption.where(custom_field_id: record.custom_field_id).map(&:id) } }, if: :needs_value?
+    validates :value, absence: true, unless: :needs_value?
+    validates :value, presence: true, if: :needs_value?
 
     def self.to_json_schema
       [   
@@ -30,7 +31,7 @@ module SmartGroupRules
               "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
             },
             "value" => {
-              "$ref": "#/definitions/customFieldOptionId"
+              "type": "string"
             }
           },
         },
@@ -58,14 +59,20 @@ module SmartGroupRules
     def initialize custom_field_id, predicate, value=nil
       self.custom_field_id = custom_field_id
       self.predicate = predicate
-      self.value = value
+      self.value = value.to_s
     end
 
     def filter users_scope
       custom_field = CustomField.find(custom_field_id)
       key = custom_field.key
-      if custom_field.input_type == 'select'
+      if custom_field.input_type == 'date'
         case predicate
+        when 'is_before'
+          users_scope.where("(custom_field_values->>'#{key}')::date < (?)::date", value)
+        when 'is_after'
+          users_scope.where("(custom_field_values->>'#{key}')::date > (?)::date", value)
+        when 'is_exactly'
+          users_scope.where("(custom_field_values->>'#{key}')::date >= (?)::date AND (custom_field_values->>'#{key}')::date < ((?)::date + '1 day'::interval)", value, value)
         when 'is_empty'
           users_scope.where("custom_field_values->>'#{key}' IS NULL")
         when 'not_is_empty'
