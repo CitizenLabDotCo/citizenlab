@@ -238,15 +238,6 @@ const PhaseText: any = styled.div`
   font-size: 15px;
   font-weight: 400;
   text-align: center;
-  /* overflow-wrap: break-word;
-  word-wrap: break-word;
-  -ms-word-break: break-all;
-  word-break: break-all;
-  word-break: break-word;
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto; */
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;

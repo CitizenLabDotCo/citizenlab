@@ -28,10 +28,6 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class AdminProjectsList extends React.PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
 
   handleReorder = (projectId, newOrder) => {
     reorderProject(projectId, newOrder);
@@ -73,7 +69,7 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
                     </div>
                     <Button
                       className={`e2e-admin-edit-project ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
-                      linkTo={`/admin/projects/${project.id}/edit`}
+                      linkTo={`/admin/projects/${project.attributes.slug}/edit`}
                       style="secondary"
                       circularCorners={false}
                       icon="edit"
