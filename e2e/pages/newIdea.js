@@ -1,17 +1,19 @@
 const newIdeaCommands = {
   postIdea(title, content) {
-    return this
+    this
 
     // Select project
     .waitForElementVisible('.e2e-project-card.e2e-open-project')
-    .click('.e2e-project-card.e2e-open-project')
-    .click('.e2e-submit-project-select-form')
+    .click('.e2e-project-card.e2e-open-project');
+    this.api.execute('window.scrollTo(0,document.body.scrollHeight);');
+    this.click('.e2e-submit-project-select-form')
     .waitForElementVisible('@form')
 
     // Fill in the form
     .setValue('@title', title)
-    .setValue('@content', content)
-    .click('@submit');
+    .setValue('@content', content);
+
+    return this.click('.e2e-submit-form').waitForElementNotPresent('@form');
   },
 };
 
