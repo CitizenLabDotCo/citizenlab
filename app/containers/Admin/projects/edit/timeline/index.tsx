@@ -1,24 +1,25 @@
 // Libraries
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
 import styled from 'styled-components';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-import { isString, reject } from 'lodash';
+import { isNullOrError } from 'utils/helperUtils';
 import * as moment from 'moment';
+import { adopt } from 'react-adopt';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // Services
-import { projectBySlugStream } from 'services/projects';
-import { phasesStream, IPhaseData, deletePhase } from 'services/phases';
+import { deletePhase } from 'services/phases';
+
+// Resources
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 // Components
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
-
-// Utils
-import unsubscribe from 'utils/unsubscribe';
 
 // Styles
 const ListWrapper = styled.div`
@@ -62,72 +63,42 @@ const OrderLabel = styled.div`
   }
 `;
 
-// Component typing
-type Props = {
-  params: {
-    slug: string | null,
-  }
-};
+interface InputProps {}
 
-type State = {
-  phases: IPhaseData[],
-  loading: boolean,
-};
+interface DataProps {
+  project: GetProjectChildProps;
+  phases: GetPhasesChildProps;
+}
 
-class AdminProjectTimelineIndex extends React.Component<Props & InjectedIntlProps, State> {
-  subscription: Rx.Subscription;
+interface Props extends InputProps, DataProps {}
 
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      phases: [],
-      loading: false,
-    };
-  }
+interface State {}
 
-  componentDidMount () {
-    this.setState({ loading: true });
+class AdminProjectTimelineIndex extends React.Component<Props & WithRouterProps & InjectedIntlProps, State> {
 
-    if (isString(this.props.params.slug)) {
-      this.subscription = projectBySlugStream(this.props.params.slug).observable.switchMap((project) => {
-        return phasesStream(project.data.id).observable.map((phases) => (phases.data));
-      }).subscribe((phases) => {
-        this.setState({ phases, loading: false });
-      });
+  createDeleteClickHandler = (phaseId: string) => (event: React.FormEvent<any>) => {
+    event.preventDefault();
+
+    if (window.confirm(this.props.intl.formatMessage(messages.deletePhaseConfirmation))) {
+      deletePhase(phaseId);
     }
   }
 
-  componentWillUnmount() {
-    unsubscribe(this.subscription);
-  }
+  phaseTiming = (start_at: string, end_at: string): 'past' | 'current' | 'future' => {
+    const startAtMoment = moment(start_at);
+    const endAtMoment = moment(end_at);
 
-  createDeleteClickHandler = (phaseId) => {
-    return (event) => {
-      event.preventDefault();
-      if (window.confirm(this.props.intl.formatMessage(messages.deletePhaseConfirmation))) {
-        deletePhase(phaseId).then(() => {
-          this.setState({ phases: reject(this.state.phases, { id: phaseId }) });
-        });
-      }
-    };
-  }
-
-  phaseTiming = ({ start_at, end_at }): 'past' | 'current' | 'future' => {
-    const start = new Date(start_at);
-    const end = new Date(end_at);
-    const now = new Date();
-
-    if (end < now) {
-      return 'past';
-    } else if (start > now) {
+    if (moment().diff(startAtMoment, 'days') < 0) {
       return 'future';
-    } else {
+    } else if (moment().diff(endAtMoment, 'days') === 0) {
       return 'current';
+    } else {
+      return 'past';
     }
   }
 
   render() {
-    const { phases, loading } = this.state;
+    const { phases } = this.props;
     const { slug } = this.props.params;
 
     return (
@@ -136,7 +107,7 @@ class AdminProjectTimelineIndex extends React.Component<Props & InjectedIntlProp
           <FormattedMessage {...messages.addPhaseButton} />
         </AddButton>
 
-        {!loading && phases.length > 0 &&
+        {!isNullOrError(phases) && phases.length > 0 &&
           <div className={`e2e-phases-table`}>
             <StyledList>
               <HeadRow>
@@ -150,7 +121,7 @@ class AdminProjectTimelineIndex extends React.Component<Props & InjectedIntlProp
 
                 return (
                   <Row className={`e2e-phase-line ${phases.length === index + 1 ? 'last' : ''}`} id={`e2e-phase_${phase.id}`} key={phase.id}>
-                    <OrderLabel className={this.phaseTiming({ start_at: phase.attributes.start_at, end_at: phase.attributes.end_at })}>
+                    <OrderLabel className={this.phaseTiming(phase.attributes.start_at, phase.attributes.end_at)}>
                       {index + 1}
                     </OrderLabel>
                     <div className="expand">
@@ -174,4 +145,15 @@ class AdminProjectTimelineIndex extends React.Component<Props & InjectedIntlProp
   }
 }
 
-export default injectIntl(AdminProjectTimelineIndex);
+const Data = adopt<DataProps, InputProps & WithRouterProps & InjectedIntlProps>({
+  project: ({ params, render }) => <GetProject slug={params.slug} resetOnChange>{render}</GetProject>,
+  phases: ({ project, render }) => <GetPhases projectId={(!isNullOrError(project) ? project.id : null)} resetOnChange>{render}</GetPhases>
+});
+
+const AdminProjectTimelineIndexWithHoCs = withRouter(injectIntl(AdminProjectTimelineIndex));
+
+export default (inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
+  <Data {...inputProps}>
+    {dataProps => <AdminProjectTimelineIndexWithHoCs {...inputProps} {...dataProps} />}
+  </Data>
+);
