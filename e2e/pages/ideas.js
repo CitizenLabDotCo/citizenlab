@@ -1,7 +1,7 @@
 const commands = {
   searchText(text) {
     return this
-    .waitForElementVisible('@searchInput')
+    .waitForElementPresent('@searchInput')
     .setValue('@searchInput', text)
     .waitForElementVisible('@ideasContainer');
   },
