@@ -61,7 +61,6 @@ class Edit extends React.Component<Props & WithRouterProps & InjectedIntlProps> 
       <>
         <StyledGoBackButton onClick={this.goBack} />
         <TabbedResource
-          location={this.props.location}
           tabs={this.getTabs(customField)}
           resource={{
             title: customField.attributes.title_multiloc,

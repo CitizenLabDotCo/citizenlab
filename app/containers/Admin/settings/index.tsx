@@ -1,7 +1,4 @@
-import * as React from 'react';
-
-// router
-import { withRouter, RouterState } from 'react-router';
+import React from 'react';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
@@ -16,13 +13,10 @@ type Props = {};
 
 type State = {};
 
-class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & RouterState, State> {
-  constructor(props: Props) {
-    super(props as any);
-  }
+class SettingsPage extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
-    const { location, children } = this.props;
+    const { children } = this.props;
     const { formatMessage } = this.props.intl;
 
     const tabs = [
@@ -38,22 +32,19 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & Route
     };
 
     return (
-      <>
-        <TabbedResource
-          resource={resource}
-          messages={messages}
-          tabs={tabs}
-          location={location}
-        >
-          <HelmetIntl
-            title={messages.helmetTitle}
-            description={messages.helmetDescription}
-          />
-          {children}
-        </TabbedResource>
-      </>
+      <TabbedResource
+        resource={resource}
+        messages={messages}
+        tabs={tabs}
+      >
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
+        />
+        {children}
+      </TabbedResource>
     );
   }
 }
 
-export default withRouter(injectIntl<Props>(SettingsPage) as any);
+export default injectIntl<Props>(SettingsPage);
