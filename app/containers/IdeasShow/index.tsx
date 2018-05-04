@@ -639,7 +639,6 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
         return hasPermission({
           item: idea  && idea.data ? idea.data : null,
           action: 'edit',
-          user: (authUser as IUser),
           context: idea && idea.data ? idea.data : null,
         }).map((granted) => ({ authUser, granted }));
       }).subscribe(({ authUser, granted }) => {
