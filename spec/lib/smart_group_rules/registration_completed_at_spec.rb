@@ -23,10 +23,10 @@ describe SmartGroupRules::RegistrationCompletedAt do
 
       let!(:users) {
         users = build_list(:user, 5)
-        users[0].registration_completed_at = Date.today
-        users[1].registration_completed_at = (Date.today - 1.day)
-        users[2].registration_completed_at = (Date.today + 1.day)
-        users[3].registration_completed_at = (Date.today - 1.year)
+        users[0].registration_completed_at = Time.now
+        users[1].registration_completed_at = (Time.now - 25.hours)
+        users[2].registration_completed_at = (Time.now + 25.hours)
+        users[3].registration_completed_at = (Time.now - 1.year)
         users[4].registration_completed_at = nil
         users.each(&:save!)
       }
