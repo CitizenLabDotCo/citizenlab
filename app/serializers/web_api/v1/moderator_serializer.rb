@@ -7,7 +7,7 @@ class WebApi::V1::ModeratorSerializer < ActiveModel::Serializer
   end
 
   def is_moderator
-  	object.project_moderator? instance_options[:project_id]
+    object.project_moderator? instance_options[:project_id]
   end
 
 end

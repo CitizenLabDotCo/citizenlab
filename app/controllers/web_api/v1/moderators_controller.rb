@@ -16,7 +16,7 @@ class WebApi::V1::ModeratorsController < ApplicationController
     # TODO something about authorize index (e.g. user_id nastiness)
     authorize Moderator.new({user_id: nil, project_id: params[:project_id]})
     @moderators = User
-      .where("roles @> ?", JSON.generate([{type: 'project_moderator', project_id: params[:project_id]}]))
+      .project_moderators(params[:project_id])
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
     render json: @moderators, :each_serializer => WebApi::V1::UserSerializer
