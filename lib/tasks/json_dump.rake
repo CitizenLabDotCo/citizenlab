@@ -7,6 +7,7 @@ namespace :nlp do
     host = args[:host]
     data = {host: host}
     Apartment::Tenant.switch(host.gsub('.', '_')) do
+        data[:id]       = Tenant.current.id
         data[:name]     = Tenant.current.name
         data[:locales]  = Tenant.current.settings.dig('core','locales')
         data[:topics]   = encode_topics
@@ -28,7 +29,7 @@ namespace :nlp do
   end
 
   def encode_ideas
-    Idea.all.map do |idea|
+    Idea.where(publication_status: 'published').all.map do |idea|
       d = {
         id:                   idea.id,
         title_multiloc:       idea.title_multiloc,
