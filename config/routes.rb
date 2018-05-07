@@ -94,15 +94,19 @@ Rails.application.routes.draw do
       end
 
       scope 'stats', controller: 'stats' do
+        get 'users_count'
         get 'users_by_time'
         get 'users_by_gender'
         get 'users_by_birthyear'
         get 'users_by_domicile'
         get 'users_by_education'
+        get 'ideas_count'
         get 'ideas_by_time'
         get 'ideas_by_topic'
         get 'ideas_by_area'
+        get 'comments_count'
         get 'comments_by_time'
+        get 'votes_count'
         get 'votes_by_time'
       end
 

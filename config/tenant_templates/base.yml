@@ -157,7 +157,7 @@ models:
       resource_type: User
       key: birthyear
       title_multiloc: custom_fields.birthyear
-      input_type: select
+      input_type: number
       required: false
       ordering: 1
       enabled: true
