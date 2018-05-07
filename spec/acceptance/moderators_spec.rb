@@ -31,7 +31,7 @@ resource "Moderators" do
         expect(json_response[:data].size).to eq same_project_moderators.size + 1
       end
 
-      example "Listing moderators of a project you don't moderate should fail" do
+      example "[error] Listing moderators of a project you don't moderate" do
         do_request project_id: other_project.id
         expect(status).to eq(401)
       end
