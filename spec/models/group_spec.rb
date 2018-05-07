@@ -123,4 +123,20 @@ RSpec.describe Group, type: :model do
       expect(Group.using_custom_field_option(cfo2[2]).all).to match []
     end
   end
+
+  describe "update_memberships_count!" do
+    it "does nothing for a manual group" do
+      group = build(:group)
+      expect(group.update_memberships_count!).not_to receive(:update_memberships_count!)
+    end
+
+    # Waiting on ends_on support
+    pending "updates the membership count for a rules group" do
+      group = create(:smart_group)
+      create(:user, email: 'jos@test.com')
+      create(:user, email: 'jef@test.com')
+      expect(group).to receive(:update).with({memberships_count: 2})
+      group.update_memberships_count!
+    end
+  end
 end
