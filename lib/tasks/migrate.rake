@@ -568,7 +568,7 @@ namespace :migrate do
     end
     IdeaStatus.find_by!(code: 'proposed')
     # project
-    if p.dig('projectId')
+    if p.dig('projectId') && projects_hash[p.dig('projectId')]
       d[:project] = projects_hash[p.dig('projectId')]
     else
       oip = Project.find_by(internal_role: 'open_idea_box')
