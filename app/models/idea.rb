@@ -53,6 +53,7 @@ class Idea < ApplicationRecord
   before_validation :set_author_name
   before_validation :set_idea_status, on: :create
   before_validation :sanitize_body_multiloc, if: :body_multiloc
+  before_validation :strip_title
   after_validation :set_published_at, if: ->(idea){ idea.published? && idea.publication_status_changed? }
 
   scope :with_all_topics, (Proc.new do |topic_ids|
@@ -136,6 +137,12 @@ class Idea < ApplicationRecord
 
   def set_published_at
     self.published_at ||= Time.now
+  end
+
+  def strip_title
+    self.title_multiloc.each do |key, value|
+      self.title_multiloc[key] = value.strip
+    end
   end
 
   def sanitize_body_multiloc
