@@ -68,7 +68,7 @@ export type GetIdeasChildProps = State & {
 interface State {
   queryParameters: IQueryParameters;
   searchValue: string | undefined;
-  ideasList: IIdeaData[] | null;
+  ideasList: IIdeaData[] | undefined| null;
   hasMore: boolean;
   querying: boolean;
   loadingMore: boolean;
@@ -102,7 +102,7 @@ export default class GetIdeas extends React.Component<Props, State> {
         bounding_box: undefined
       },
       searchValue: undefined,
-      ideasList: null,
+      ideasList: undefined,
       hasMore: false,
       querying: true,
       loadingMore: false,

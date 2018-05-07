@@ -7,6 +7,7 @@ import { IInviteData, deleteInvite } from 'services/invites';
 import GetUser from 'resources/GetUser';
 import { Table, Button as SemanticButton, Popup } from 'semantic-ui-react';
 import Badge from 'components/admin/Badge';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   invite: IInviteData;
@@ -17,7 +18,7 @@ export default (inputProps: InputProps) => (
     {user => {
       const handleOnDeleteInvite = (inviteId: string) => () => deleteInvite(inviteId);
 
-      if (!user) return null;
+      if (isNilOrError(user)) return null;
 
       return (
         <Table.Row key={inputProps.invite.id}>

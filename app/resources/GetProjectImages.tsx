@@ -3,6 +3,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { IProjectImageData, projectImagesStream } from 'services/projectImages';
 import { isString } from 'lodash';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   projectId: string | null;
@@ -15,10 +16,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  projectImages: IProjectImageData[] | null;
+  projectImages: IProjectImageData[] | undefined | null | Error;
 }
 
-export type GetProjectImagesChildProps = IProjectImageData[] | null;
+export type GetProjectImagesChildProps = IProjectImageData[] | undefined | null | Error;
 
 export default class GetIdea extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -27,7 +28,7 @@ export default class GetIdea extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      projectImages: null
+      projectImages: undefined
     };
   }
 
@@ -42,7 +43,7 @@ export default class GetIdea extends React.Component<Props, State> {
         .filter(({ projectId }) => isString(projectId))
         .switchMap(({ projectId }: {projectId: string}) => projectImagesStream(projectId).observable)
         .subscribe((projectImages) => {
-          this.setState({ projectImages: (projectImages ? projectImages.data : null) });
+          this.setState({ projectImages: (!isNilOrError(projectImages) ? projectImages.data : projectImages) });
         })
     ];
   }

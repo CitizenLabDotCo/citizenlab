@@ -2,7 +2,7 @@ import React from 'react';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { IPageData, pageByIdStream, pageBySlugStream } from 'services/pages';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   id?: string;
@@ -17,19 +17,23 @@ interface Props extends InputProps {
 }
 
 interface State {
-  page: IPageData | null | Error;
+  page: IPageData | undefined | null | Error;
 }
 
-export type GetPageChildProps = IPageData | null | Error;
+export type GetPageChildProps = IPageData | undefined | null | Error;
 
 export default class GetPage extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
+  public static defaultProps: Partial<Props> = {
+    resetOnChange: true
+  };
+
   constructor(props: Props) {
     super(props);
     this.state = {
-      page: null
+      page: undefined
     };
   }
 
@@ -41,7 +45,7 @@ export default class GetPage extends React.Component<Props, State> {
     this.subscriptions = [
       this.inputProps$
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .do(() => resetOnChange && this.setState({ page: null }))
+        .do(() => resetOnChange && this.setState({ page: undefined }))
         .switchMap(({ id, slug }) => {
           if (id) {
             return pageByIdStream(id).observable;
@@ -52,7 +56,7 @@ export default class GetPage extends React.Component<Props, State> {
           return Observable.of(null);
         })
         .subscribe((page) => {
-          this.setState({ page: !isNullOrError(page) ? page.data : page });
+          this.setState({ page: !isNilOrError(page) ? page.data : page });
         })
       ];
   }

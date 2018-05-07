@@ -201,13 +201,13 @@ class SignUp extends React.PureComponent<Props, State> {
   }
 }
 
-const Data = adopt<DataProps>({
+const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   customFieldsSchema: <GetCustomFieldsSchema />
 });
 
 export default (inputProps: InputProps) => (
-  <Data>
+  <Data {...inputProps}>
     {dataProps => <SignUp {...inputProps} {...dataProps} />}
   </Data>
 );

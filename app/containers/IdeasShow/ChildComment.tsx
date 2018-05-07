@@ -3,6 +3,7 @@ import React from 'react';
 import { get } from 'lodash';
 import { adopt } from 'react-adopt';
 import { browserHistory } from 'react-router';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Author from './Author';
@@ -96,7 +97,7 @@ class ChildComment extends React.PureComponent<Props, State> {
     const { comment, author } = this.props;
     const { editionMode } = this.state;
 
-    if (comment && author) {
+    if (!isNilOrError(comment) && !isNilOrError(author)) {
       const className = this.props['className'];
       const authorId = comment.relationships.author.data ? comment.relationships.author.data.id : null;
       const createdAt = comment.attributes.created_at;

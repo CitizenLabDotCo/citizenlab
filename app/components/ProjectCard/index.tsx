@@ -1,7 +1,7 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { Link, browserHistory } from 'react-router';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -232,7 +232,7 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
   goToProject = () => {
     const { project } = this.props;
 
-    if (!isNullOrError(project)) {
+    if (!isNilOrError(project)) {
       const projectUrl = this.getProjectUrl(project);
       browserHistory.push(projectUrl);
     }
@@ -243,10 +243,10 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
     const { formatMessage } = this.props.intl;
     const { locale, tenantLocales, project, projectImages } = this.props;
 
-    if (locale && tenantLocales && !isNullOrError(project)) {
+    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(project)) {
       const titleMultiloc = project.attributes.title_multiloc;
       const preview = getLocalized(project.attributes.description_preview_multiloc, locale, tenantLocales);
-      const imageUrl = (projectImages && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
+      const imageUrl = (!isNilOrError(projectImages) && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
       const projectUrl = this.getProjectUrl(project);
       const projectIdeasUrl = this.getProjectIdeasUrl(project);
       const ideasCount = project.attributes.ideas_count;

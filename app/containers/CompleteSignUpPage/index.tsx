@@ -1,17 +1,25 @@
 import React from 'react';
-import { Observable, Subscription } from 'rxjs/Rx';
-import { isString, isEmpty } from 'lodash';
-import { browserHistory } from 'react-router';
+// import { Observable, Subscription } from 'rxjs/Rx';
+import { get, isUndefined } from 'lodash';
+import { isNilOrError } from 'utils/helperUtils';
+import { hasCustomFields } from 'utils/customFields';
+import { browserHistory, withRouter, WithRouterProps } from 'react-router';
+import { adopt } from 'react-adopt';
 
 // components
 import Error from 'components/UI/Error';
 import Step2 from 'components/SignUp/Step2';
 import SignInUpBanner from 'components/SignInUpBanner';
-import { landingPageIdeasQuery } from 'containers/LandingPage';
+// import { landingPageIdeasQuery } from 'containers/LandingPage';
 
 // services
-import { authUserStream } from 'services/auth';
-import { ideaByIdStream, ideasStream, updateIdea } from 'services/ideas';
+import { updateIdea } from 'services/ideas';
+
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -89,73 +97,97 @@ const Title = styled.h2`
   margin-bottom: 35px;
 `;
 
-type Props = {};
+interface InputProps {}
 
-type State = {
-  authError: boolean;
-  loading: boolean;
-};
+interface DataProps {
+  locale: GetLocaleChildProps;
+  authUser: GetAuthUserChildProps;
+  idea: GetIdeaChildProps;
+  customFieldsSchema: GetCustomFieldsSchemaChildProps;
+}
 
-export default class CompleteSignUpPage extends React.PureComponent<Props, State> {
-  subscriptions: Subscription[];
+interface Props extends InputProps, DataProps {}
 
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      authError: false,
-      loading: false
-    };
-    this.subscriptions = [];
-  }
+interface State {}
 
-  componentDidMount() {
-    const location = browserHistory.getCurrentLocation();
-    const query = location.query;
-    const authError = (location.pathname === '/authentication-error');
-    const authUser$ = authUserStream().observable;
-    const ideaToPublish$ = (query && query.idea_to_publish ? ideaByIdStream(query.idea_to_publish).observable : Observable.of(null));
+class CompleteSignUpPage extends React.PureComponent<Props & WithRouterProps, State> {
+  // subscriptions: Subscription[];
 
-    this.subscriptions = [
-      Observable.combineLatest(
-        authUser$,
-        ideaToPublish$,
-      ).subscribe(async ([authUser, ideaToPublish]) => {
-        const registrationCompletedAt = (authUser ? authUser.data.attributes.registration_completed_at : null);
-        const isRegistrationCompleted = (isString(registrationCompletedAt) && !isEmpty(registrationCompletedAt));
+  // constructor(props: Props) {
+  //   super(props as any);
+  //   this.state = {
+  //     authError: false,
+  //     loading: false
+  //   };
+  //   this.subscriptions = [];
+  // }
 
-        // remove idea parameter from the url
-        window.history.replaceState(null, '', window.location.pathname);
+  // componentDidMount() {
+  //   const location = browserHistory.getCurrentLocation();
+  //   const query = location.query;
+  //   const authError = (location.pathname === '/authentication-error');
+  //   const authUser$ = authUserStream().observable;
+  //   const ideaToPublish$ = (query && query.idea_to_publish ? ideaByIdStream(query.idea_to_publish).observable : Observable.of(null));
 
-        if (authUser) {
-          if (ideaToPublish && ideaToPublish.data.attributes.publication_status === 'draft') {
-            await updateIdea(ideaToPublish.data.id, { author_id: authUser.data.id, publication_status: 'published' });
-            ideasStream({ queryParameters: landingPageIdeasQuery }).fetch();
-          }
+  //   this.subscriptions = [
+  //     Observable.combineLatest(
+  //       authUser$,
+  //       ideaToPublish$,
+  //     ).subscribe(async ([authUser, ideaToPublish]) => {
+  //       const registrationCompletedAt = (authUser ? authUser.data.attributes.registration_completed_at : null);
+  //       const isRegistrationCompleted = (isString(registrationCompletedAt) && !isEmpty(registrationCompletedAt));
 
-          if (isRegistrationCompleted) {
-            this.redirectToLandingPage();
-          }
-        } else {
-          this.redirectToLandingPage();
-        }
+  //       // remove idea parameter from the url
+  //       window.history.replaceState(null, '', window.location.pathname);
 
-        this.setState({ authError, loading: false });
-      })
-    ];
-  }
+  //       if (authUser) {
+  //         if (ideaToPublish && ideaToPublish.data.attributes.publication_status === 'draft') {
+  //           await updateIdea(ideaToPublish.data.id, { author_id: authUser.data.id, publication_status: 'published' });
+  //           ideasStream({ queryParameters: landingPageIdeasQuery }).fetch();
+  //         }
 
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
+  //         if (isRegistrationCompleted) {
+  //           this.redirectToLandingPage();
+  //         }
+  //       } else {
+  //         this.redirectToLandingPage();
+  //       }
+
+  //       this.setState({ authError, loading: false });
+  //     })
+  //   ];
+  // }
+
+  // componentWillUnmount() {
+  //   this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  // }
 
   redirectToLandingPage = () => {
     browserHistory.push('/');
   }
 
   render() {
-    const { loading, authError } = this.state;
+    const { location, locale, authUser, idea, customFieldsSchema } = this.props;
 
-    if (!loading) {
+    if (get(location.query, 'idea_to_publish', null)) {
+      // remove idea parameter from the url
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+
+    console.log(this.props);
+
+    if (!isNilOrError(locale) && !isUndefined(authUser) && !isUndefined(idea) && !isUndefined(customFieldsSchema)) {
+      const authError = (location.pathname === '/authentication-error');
+      const registrationCompletedAt = (authUser ? authUser.attributes.registration_completed_at : null);
+
+      if (!isNilOrError(authUser) && !isNilOrError(idea) && idea.attributes.publication_status === 'draft') {
+        updateIdea(idea.id, { author_id: authUser.id, publication_status: 'published' });
+      }
+
+      if (registrationCompletedAt || !hasCustomFields(customFieldsSchema, locale)) {
+        this.redirectToLandingPage();
+      }
+
       return (
         <Container>
           <Left>
@@ -183,3 +215,16 @@ export default class CompleteSignUpPage extends React.PureComponent<Props, State
     return null;
   }
 }
+
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  locale: <GetLocale />,
+  authUser: <GetAuthUser />,
+  idea: ({ location, render }) => <GetIdea id={get(location.query, 'idea_to_publish', null)}>{render}</GetIdea>,
+  customFieldsSchema: <GetCustomFieldsSchema />
+});
+
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <Data {...inputProps}>
+    {dataProps => <CompleteSignUpPage {...inputProps} {...dataProps} />}
+  </Data>
+));

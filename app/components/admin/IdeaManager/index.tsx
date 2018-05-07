@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 import CSSTransition from 'react-transition-group/CSSTransition';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
@@ -206,11 +207,11 @@ class IdeaManager extends React.PureComponent<Props, State> {
                 activeFilterMenu={activeFilterMenu}
                 visibleFilterMenus={visibleFilterMenus}
                 onChangeActiveFilterMenu={this.handleChangeActiveFilterMenu}
-                project={project || undefined}
-                phases={phases || undefined}
-                topics={topics || undefined}
-                projects={projectsList || undefined}
-                statuses={ideaStatuses || []}
+                project={!isNilOrError(project) ? project : undefined}
+                phases={!isNilOrError(phases) ? phases : undefined}
+                topics={!isNilOrError(topics) ? topics : undefined}
+                projects={!isNilOrError(projectsList) ? projectsList : undefined}
+                statuses={!isNilOrError(ideaStatuses) ? ideaStatuses : []}
                 selectedTopics={selectedTopics}
                 selectedPhase={selectedPhase}
                 selectedProject={selectedProject}

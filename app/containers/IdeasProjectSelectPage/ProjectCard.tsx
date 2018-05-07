@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as moment from 'moment';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { projectByIdStream, IProject } from 'services/projects';
@@ -263,9 +263,9 @@ class ProjectCard extends React.PureComponent<Props, State> {
     const { projectId, selected } = this.props;
     const { project, projectImages, loaded } = this.state;
 
-    if (loaded && !isNullOrError(project)) {
+    if (loaded && !isNilOrError(project)) {
       const { title_multiloc: titleMultiloc } = project.data.attributes;
-      const smallImage = !isNullOrError(projectImages) && projectImages.data.length > 0 && projectImages.data[0].attributes.versions.small;
+      const smallImage = !isNilOrError(projectImages) && projectImages.data.length > 0 && projectImages.data[0].attributes.versions.small;
       const disabledMessage = this.disabledMessage();
       const cardState = this.calculateCardState();
       const enabled = (cardState === 'enabled' || cardState === 'enabledBecauseAdmin');

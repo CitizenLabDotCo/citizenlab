@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { IProjectData, reorderProject } from 'services/projects';
@@ -40,7 +40,7 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
   render () {
     const { projectsList } = this.props.projects;
 
-    if (!isNullOrError(projectsList)) {
+    if (!isNilOrError(projectsList)) {
       return (
         <>
           <Title>
