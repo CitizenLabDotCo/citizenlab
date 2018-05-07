@@ -312,6 +312,7 @@ ActiveRecord::Schema.define(version: 20180423123634) do
     t.integer "voting_limited_max", default: 10
     t.string "survey_embed_url"
     t.string "survey_service"
+    t.string "presentation_mode", default: "card", null: false
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
