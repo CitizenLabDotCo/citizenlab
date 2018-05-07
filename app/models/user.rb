@@ -21,6 +21,7 @@ class User < ApplicationRecord
   has_one :invitee_invite, class_name: 'Invite', foreign_key: :invitee_id, dependent: :destroy
   has_many :memberships, dependent: :destroy
   has_many :manual_groups, class_name: 'Group', source: 'group', through: :memberships
+  has_many :campaign_email_commands, class_name: 'EmailCampaigns::CampaignEmailCommand', foreign_key: :recipient_id, dependent: :destroy
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
@@ -69,7 +70,15 @@ class User < ApplicationRecord
 
   scope :active, -> {
     where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'")
-  } 
+  }
+
+  scope :in_group, -> (group) {
+    if group.rules?
+      SmartGroupsService.new.filter(self, group.rules)
+    elsif group.manual?
+      joins(:memberships).where(memberships: {group_id: group.id})
+    end
+  }
   
   def self.build_with_omniauth(auth)
     extra_user_attrs = SingleSignOnService.new.profile_to_user_attrs(auth.provider, auth)
