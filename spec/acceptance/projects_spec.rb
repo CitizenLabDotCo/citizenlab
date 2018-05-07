@@ -156,7 +156,7 @@ resource "Projects" do
         parameter :voting_limited_max, "Only for continuous project with limited voting. Number of votes a citizen can perform in this project. Defaults to 10", required: false
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
         parameter :survey_service, "The name of the service of the survey. Either #{ParticipationContext::SURVEY_SERVICES.join(",")}", required: false
-        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
+        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
         parameter :publication_status, "Describes the publication status of the project, either #{Project::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Project)
@@ -169,57 +169,94 @@ resource "Projects" do
         let(:header_bg) { encode_image_as_base64("header.jpg")}
         let(:area_ids) { create_list(:area, 2).map(&:id) }
         let(:visible_to) { 'admins' }
-        let(:presentation_mode) { 'map' }
         let(:publication_status) { 'draft' }
 
+      post "web_api/v1/projects" do
+        with_options scope: :project do
+          parameter :process_type, "The type of process used in this project. Can't be changed after. One of #{Project::PROCESS_TYPES.join(",")}. Defaults to timeline"
+          parameter :title_multiloc, "The title of the project, as a multiloc string", required: true
+          parameter :description_multiloc, "The description of the project, as a multiloc HTML string", required: true
+          parameter :description_preview_multiloc, "The description preview of the project, as a multiloc string"
+          parameter :slug, "The unique slug of the project. If not given, it will be auto generated"
+          parameter :header_bg, "Base64 encoded header image"
+          parameter :area_ids, "Array of ids of the associated areas"
+          parameter :topic_ids, "Array of ids of the associated topics"
+          parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public.", required: false
+          parameter :participation_method, "Only for continuous project. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}. Defaults to ideation.", required: false
+          parameter :posting_enabled, "Only for continuous project. Can citizens post ideas in this project? Defaults to true", required: false
+          parameter :commenting_enabled, "Only for continuous project. Can citizens post comment in this project? Defaults to true", required: false
+          parameter :voting_enabled, "Only for continuous project. Can citizens vote in this project? Defaults to true", required: false
+          parameter :voting_method, "Only for continuous project with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
+          parameter :voting_limited_max, "Only for continuous project with limited voting. Number of votes a citizen can perform in this project. Defaults to 10", required: false
+          parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
+          parameter :survey_service, "The name of the service of the survey. Either #{ParticipationContext::SURVEY_SERVICES.join(",")}", required: false
+          parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
+          parameter :publication_status, "Describes the publication status of the project, either #{Project::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
+        end
+        ValidationErrorHelper.new.error_fields(self, Project)
 
-        example_request "Create a timeline project" do
-          expect(response_status).to eq 201
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:attributes,:process_type)).to eq 'timeline'
-          expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-          expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-          expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-          expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
-          expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'admins'
-          expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'map'
-          expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'draft'
+        describe do
+          let(:project) { build(:project) }
+          let(:title_multiloc) { project.title_multiloc }
+          let(:description_multiloc) { project.description_multiloc }
+          let(:description_preview_multiloc) { project.description_preview_multiloc }
+          let(:header_bg) { encode_image_as_base64("header.jpg")}
+          let(:area_ids) { create_list(:area, 2).map(&:id) }
+          let(:visible_to) { 'admins' }
+          let(:presentation_mode) { 'map' }
+          let(:publication_status) { 'draft' }
+
+
+          example_request "Create a timeline project" do
+            expect(response_status).to eq 201
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data,:attributes,:process_type)).to eq 'timeline'
+            expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+            expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
+            expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+            expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
+            expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'admins'
+            expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'map'
+            expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'draft'
+          end
         end
       end
+    end
 
-      describe do
-        let(:project) { build(:continuous_project) }
-        let(:title_multiloc) { project.title_multiloc }
-        let(:description_multiloc) { project.description_multiloc }
-        let(:description_preview_multiloc) { project.description_preview_multiloc }
-        let(:header_bg) { encode_image_as_base64("header.jpg")}
-        let(:area_ids) { create_list(:area, 2).map(&:id) }
-        let(:visible_to) { 'admins' }
-        let(:process_type) { project.process_type }
-        let(:participation_method) { project.participation_method }
-        let(:posting_enabled) { project.posting_enabled }
-        let(:commenting_enabled) { project.commenting_enabled }
-        let(:voting_enabled) { project.voting_enabled }
-        let(:voting_method) { project.voting_method }
-        let(:voting_limited_max) { project.voting_limited_max }
+    describe do
+      let(:project) { build(:continuous_project) }
+      let(:title_multiloc) { project.title_multiloc }
+      let(:description_multiloc) { project.description_multiloc }
+      let(:description_preview_multiloc) { project.description_preview_multiloc }
+      let(:header_bg) { encode_image_as_base64("header.jpg")}
+      let(:area_ids) { create_list(:area, 2).map(&:id) }
+      let(:visible_to) { 'admins' }
+      let(:process_type) { project.process_type }
+      let(:participation_method) { project.participation_method }
+      let(:presentation_mode){ 'map' }
+      let(:posting_enabled) { project.posting_enabled }
+      let(:commenting_enabled) { project.commenting_enabled }
+      let(:voting_enabled) { project.voting_enabled }
+      let(:voting_method) { project.voting_method }
+      let(:voting_limited_max) { project.voting_limited_max }
 
 
-        example_request "Create a continuous project" do
-          expect(response_status).to eq 201
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:attributes,:process_type)).to eq process_type
-          expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-          expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-          expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-          expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
-          expect(json_response.dig(:data,:attributes,:visible_to)).to eq visible_to
-          expect(json_response.dig(:data,:attributes,:participation_method)).to eq participation_method 
-          expect(json_response.dig(:data,:attributes,:posting_enabled)).to eq posting_enabled 
-          expect(json_response.dig(:data,:attributes,:commenting_enabled)).to eq commenting_enabled 
-          expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq voting_enabled 
-          expect(json_response.dig(:data,:attributes,:voting_method)).to eq voting_method 
-          expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max 
-        end
+      example_request "Create a continuous project" do
+        expect(response_status).to eq 201
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:attributes,:process_type)).to eq process_type
+        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
+        expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
+        expect(json_response.dig(:data,:attributes,:visible_to)).to eq visible_to
+        expect(json_response.dig(:data,:attributes,:participation_method)).to eq participation_method 
+        expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq presentation_mode
+        expect(json_response.dig(:data,:attributes,:posting_enabled)).to eq posting_enabled 
+        expect(json_response.dig(:data,:attributes,:commenting_enabled)).to eq commenting_enabled 
+        expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq voting_enabled 
+        expect(json_response.dig(:data,:attributes,:voting_method)).to eq voting_method 
+        expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max 
       end
 
       context 'when not admin' do
@@ -247,9 +284,6 @@ resource "Projects" do
           expect(json_response.dig(:errors,:slug)).to eq [{:error=>"taken", :value=>"this-is-taken"}]
         end
       end
-
-
-
     end
 
     patch "web_api/v1/projects/:id" do
@@ -294,6 +328,7 @@ resource "Projects" do
 
       example_request "Updating the project" do
         json_response = json_parse(response_body)
+        byebug
         expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq "Changed title"
         expect(json_response.dig(:data,:attributes,:description_multiloc,:en)).to eq "Changed body"
         expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
@@ -333,7 +368,7 @@ resource "Projects" do
           end
         end
       end
-
+    end
 
     delete "web_api/v1/projects/:id" do
       let(:project) { create(:project) }
@@ -344,10 +379,57 @@ resource "Projects" do
       end
     end
 
-    private
+    patch "web_api/v1/projects/:id" do
+      before do 
+        @project = create(:project, process_type: 'continuous')
+      end
 
-    def encode_image_as_base64 filename
-      "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
+      with_options scope: :project do
+        parameter :title_multiloc, "The title of the project, as a multiloc string", required: true
+        parameter :description_multiloc, "The description of the project, as a multiloc HTML string", required: true
+        parameter :description_preview_multiloc, "The description preview of the project, as a multiloc string"
+        parameter :slug, "The unique slug of the project"
+        parameter :header_bg, "Base64 encoded header image"
+        parameter :area_ids, "Array of ids of the associated areas"
+        parameter :topic_ids, "Array of ids of the associated topics"
+        parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}.", required: false
+        parameter :participation_method, "Only for continuous project. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}.", required: false
+        parameter :posting_enabled, "Only for continuous project. Can citizens post ideas in this project?", required: false
+        parameter :commenting_enabled, "Only for continuous project. Can citizens post comment in this project?", required: false
+        parameter :voting_enabled, "Only for continuous project. Can citizens vote in this project?", required: false
+        parameter :voting_method, "Only for continuous project with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}.", required: false
+        parameter :voting_limited_max, "Only for continuous project with limited voting. Number of votes a citizen can perform in this project.", required: false
+        parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
+        parameter :survey_service, "The name of the service of the survey. Either #{ParticipationContext::SURVEY_SERVICES.join(",")}", required: false
+        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}.", required: false
+        parameter :publication_status, "Describes the publication status of the project, either #{Project::PUBLICATION_STATUSES.join(",")}.", required: false
+      end
+      ValidationErrorHelper.new.error_fields(self, Project)
+
+
+      let(:id) { @project.id }
+      let(:title_multiloc) { {"en" => "Changed title" } }
+      let(:description_multiloc) { {"en" => "Changed body" } }
+      let(:description_preview_multiloc) { @project.description_preview_multiloc }
+      let(:slug) { "changed-title" }
+      let(:header_bg) { encode_image_as_base64("header.jpg")}
+      let(:area_ids) { create_list(:area, 2).map(&:id) }
+      let(:visible_to) { 'groups' }
+      let(:presentation_mode) { 'card' }
+      let(:publication_status) { 'archived' }
+
+
+      example_request "Updating the project" do
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq "Changed title"
+        expect(json_response.dig(:data,:attributes,:description_multiloc,:en)).to eq "Changed body"
+        expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+        expect(json_response.dig(:data,:attributes,:slug)).to eq "changed-title"
+        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
+        expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'groups'
+        expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'card'
+        expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'archived'
+      end
     end
   end
 
@@ -414,4 +496,8 @@ resource "Projects" do
       end
     end
   end
+end
+
+def encode_image_as_base64 filename
+  "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
 end
