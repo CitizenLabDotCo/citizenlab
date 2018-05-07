@@ -5,6 +5,7 @@ class SmartGroupsService
     SmartGroupRules::CustomFieldSelect,
     SmartGroupRules::CustomFieldCheckbox,
     SmartGroupRules::CustomFieldDate,
+    SmartGroupRules::CustomFieldNumber,
     SmartGroupRules::Role,
     SmartGroupRules::Email,
     SmartGroupRules::LivesIn,
