@@ -16,7 +16,7 @@ module Notifications
       moderator_ids = []
       if project_id
         moderator_ids = User
-          .where("roles @> ?", JSON.generate([{type: 'project_moderator', project_id: project_id}]))
+          .project_moderators(project_id)
           .map(&:id)
       end
       ids = (admin_ids + moderator_ids).uniq
