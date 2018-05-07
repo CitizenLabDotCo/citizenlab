@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { Subscription, BehaviorSubject, Observable } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { projectByIdStream, projectBySlugStream, IProjectData, IProject } from 'services/projects';
@@ -17,19 +17,23 @@ interface Props extends InputProps {
 }
 
 interface State {
-  project: IProjectData | null | Error;
+  project: IProjectData | undefined | null | Error;
 }
 
-export type GetProjectChildProps = IProjectData | null | Error;
+export type GetProjectChildProps = IProjectData | undefined | null | Error;
 
 export default class GetProject extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
+  public static defaultProps: Partial<Props> = {
+    resetOnChange: true
+  };
+
   constructor(props: Props) {
     super(props);
     this.state = {
-      project: null
+      project: undefined
     };
   }
 
@@ -41,7 +45,7 @@ export default class GetProject extends React.Component<Props, State> {
     this.subscriptions = [
       this.inputProps$
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .do(() => resetOnChange && this.setState({ project: null }))
+        .do(() => resetOnChange && this.setState({ project: undefined }))
         .switchMap(({ id, slug }) => {
           let project$: Observable<IProject | null | Error> = Observable.of(null);
 
@@ -54,7 +58,7 @@ export default class GetProject extends React.Component<Props, State> {
           return project$;
         })
         .subscribe((project) => {
-          this.setState({ project: !isNullOrError(project) ? project.data : project });
+          this.setState({ project: !isNilOrError(project) ? project.data : project });
         })
     ];
   }

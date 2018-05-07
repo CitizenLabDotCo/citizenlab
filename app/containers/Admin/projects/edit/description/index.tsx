@@ -1,7 +1,7 @@
 // Libraries
 import React from 'react';
 import { isEmpty } from 'lodash';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { Formik } from 'formik';
 import { withRouter, WithRouterProps } from 'react-router';
 
@@ -68,6 +68,6 @@ class ProjectDescription extends React.PureComponent<Props> {
 
 export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps) => (
   <GetProject slug={inputProps.params.slug}>
-    {project => !isNullOrError(project) ? < ProjectDescription {...inputProps} project={project} /> : null}
+    {project => !isNilOrError(project) ? < ProjectDescription {...inputProps} project={project} /> : null}
   </GetProject>
 ));

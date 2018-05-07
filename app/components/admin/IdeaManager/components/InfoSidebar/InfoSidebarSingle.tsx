@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { deleteIdea } from 'services/ideas';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import { browserHistory } from 'react-router';
@@ -27,7 +27,7 @@ class InfoSidebarSingle extends React.PureComponent<Props & InjectedIntlProps> {
     const { idea } = this.props;
     const message = this.props.intl.formatMessage(messages.deleteIdeaConfirmation);
 
-    if (window.confirm(message) && !isNullOrError(idea)) {
+    if (window.confirm(message) && !isNilOrError(idea)) {
       deleteIdea(idea.id);
     }
   }
@@ -35,7 +35,7 @@ class InfoSidebarSingle extends React.PureComponent<Props & InjectedIntlProps> {
   handleClickEdit = () => {
     const { idea } = this.props;
 
-    if (!isNullOrError(idea)) {
+    if (!isNilOrError(idea)) {
       browserHistory.push(`/ideas/edit/${idea.id}`);
     }
   }
@@ -43,7 +43,7 @@ class InfoSidebarSingle extends React.PureComponent<Props & InjectedIntlProps> {
   handleClickShow = () => {
     const { idea } = this.props;
 
-    if (!isNullOrError(idea)) {
+    if (!isNilOrError(idea)) {
       eventEmitter.emit<IModalInfo>('adminIdeas', 'cardClick', {
         type: 'idea',
         id: idea.id,
@@ -55,7 +55,7 @@ class InfoSidebarSingle extends React.PureComponent<Props & InjectedIntlProps> {
   render() {
     const { idea } = this.props;
 
-    if (isNullOrError(idea)) return null;
+    if (isNilOrError(idea)) return null;
 
     return (
       <>

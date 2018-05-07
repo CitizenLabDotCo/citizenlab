@@ -2,6 +2,7 @@ import React from 'react';
 import { adopt } from 'react-adopt';
 import { browserHistory } from 'react-router';
 import { Observable, Subscription } from 'rxjs/Rx';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -301,7 +302,7 @@ class LandingPage extends React.PureComponent<Props, State> {
   render() {
     const { locale, tenant, projects } = this.props;
 
-    if (locale && tenant) {
+    if (!isNilOrError(locale) && !isNilOrError(tenant)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
       const organizationNameMultiLoc = tenant.attributes.settings.core.organization_name;
       const headerTitleMultiLoc = tenant.attributes.settings.core.header_title;

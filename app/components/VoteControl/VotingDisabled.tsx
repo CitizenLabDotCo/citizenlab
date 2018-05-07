@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { darken } from 'polished';
 import { FormattedDate } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -65,14 +65,14 @@ class VotingDisabled extends React.PureComponent<Props, State> {
 
     const { project } = this.props;
 
-    if (!isNullOrError(project)) {
+    if (!isNilOrError(project)) {
       browserHistory.push(`/projects/${project.attributes.slug}`);
     }
   }
 
   render() {
     const { votingDescriptor, project } = this.props;
-    const projectTitle = (!isNullOrError(project) ? project.attributes.title_multiloc : {});
+    const projectTitle = (!isNilOrError(project) ? project.attributes.title_multiloc : {});
     const message = this.reasonToMessage();
 
     return (

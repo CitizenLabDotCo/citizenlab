@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter, WithRouterProps, browserHistory } from 'react-router';
+import { isNilOrError } from 'utils/helperUtils';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -26,7 +27,7 @@ class Edit extends React.PureComponent<Props> {
   handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
     const { area } = this.props;
 
-    if (!area) return;
+    if (isNilOrError(area)) return;
 
     updateArea(area.id, {
       ...values
@@ -47,7 +48,8 @@ class Edit extends React.PureComponent<Props> {
 
   initialValues = () => {
     const { area } = this.props;
-    return area && ({
+    
+    return !isNilOrError(area) && ({
       title_multiloc: area.attributes.title_multiloc,
       description_multiloc: area.attributes.description_multiloc
     });
