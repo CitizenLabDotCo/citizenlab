@@ -15,7 +15,7 @@ describe SmartGroupRules::CustomFieldDate do
     }}
     let(:valid_rule) { SmartGroupRules::CustomFieldDate.from_json(valid_json_rule) }
 
-    it "successfully validate the valid rule" do
+    it "successfully validates a valid rule" do
       expect(valid_rule).to be_valid
     end
   end

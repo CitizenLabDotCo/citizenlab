@@ -1,14 +1,14 @@
 module SmartGroupRules
-  class CustomFieldName
+  class CustomFieldNumber
 
-    PREDICATE_VALUES = %w(is_before is_exactly is_after is_empty not_is_empty)
+    PREDICATE_VALUES = %w(is_empty not_is_empty is_equal not_is_equal is_larger_than is_larger_than_or_equal is_smaller_than is_smaller_than_or_equal)
     VALUELESS_PREDICATES = %w(is_empty not_is_empty)
 
     RULE_TYPE = "custom_field_number"
 
     include CustomFieldRule
 
-    validates :custom_field_id, inclusion: { in: proc { CustomField.where(input_type: 'date').map(&:id) } }
+    validates :custom_field_id, inclusion: { in: proc { CustomField.where(input_type: 'number').map(&:id) } }
     validates :value, absence: true, unless: :needs_value?
     validates :value, presence: true, if: :needs_value?
 
@@ -31,7 +31,7 @@ module SmartGroupRules
               "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
             },
             "value" => {
-              "type": "string"
+              "type": "number"
             }
           },
         },
@@ -59,20 +59,26 @@ module SmartGroupRules
     def initialize custom_field_id, predicate, value=nil
       self.custom_field_id = custom_field_id
       self.predicate = predicate
-      self.value = value.to_s
+      self.value = value
     end
 
     def filter users_scope
       custom_field = CustomField.find(custom_field_id)
       key = custom_field.key
-      if custom_field.input_type == 'date'
+      if custom_field.input_type == 'number'
         case predicate
-        when 'is_before'
-          users_scope.where("(custom_field_values->>'#{key}')::date < (?)::date", value)
-        when 'is_after'
-          users_scope.where("(custom_field_values->>'#{key}')::date > (?)::date", value)
-        when 'is_exactly'
-          users_scope.where("(custom_field_values->>'#{key}')::date >= (?)::date AND (custom_field_values->>'#{key}')::date < ((?)::date + '1 day'::interval)", value, value)
+        when 'is_equal'
+          users_scope.where("(custom_field_values->>'#{key}')::float = ?", value)
+        when 'not_is_equal'
+          users_scope.where("custom_field_values->>'#{key}' IS NULL OR (custom_field_values->>'#{key}')::float != ?", value)
+        when 'is_larger_than'
+          users_scope.where("(custom_field_values->>'#{key}')::float > ?", value)
+        when 'is_larger_than_or_equal'
+          users_scope.where("(custom_field_values->>'#{key}')::float >= ?", value)
+        when 'is_smaller_than'
+          users_scope.where("(custom_field_values->>'#{key}')::float < ?", value)
+        when 'is_smaller_than_or_equal'
+          users_scope.where("(custom_field_values->>'#{key}')::float <= ?", value)
         when 'is_empty'
           users_scope.where("custom_field_values->>'#{key}' IS NULL")
         when 'not_is_empty'
