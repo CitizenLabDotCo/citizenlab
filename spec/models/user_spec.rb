@@ -119,6 +119,39 @@ RSpec.describe User, type: :model do
 
   end
 
+  describe "add_role" do
+    it "gives a user moderator rights for a project" do 
+      usr = create(:user, roles: [])
+      prj = create(:project)
+      expect(usr.project_moderator? prj.id).to eq false
+
+      usr.add_role 'project_moderator', project_id: prj.id
+      expect(usr.save).to eq true
+      expect(usr.project_moderator? prj.id).to eq true
+      expect(usr.project_moderator? create(:project).id).to eq false
+    end
+  end
+
+  describe "delete_role" do
+    it "denies a user from his moderator rights" do
+      prj = create(:project)
+      mod = create(:moderator, project: prj)
+
+      mod.delete_role 'project_moderator', project_id: prj.id
+      expect(mod.save).to eq true
+      expect(mod.project_moderator? prj.id).to eq false
+    end
+
+    it "denies a user from his admin rights" do
+      prj = create(:project)
+      adm = create(:moderator, project: prj)
+
+      adm.delete_role 'admin'
+      expect(adm.save).to eq true
+      expect(adm.admin?).to eq false
+    end
+  end
+
   describe "locale" do
     before do
       tenant = Tenant.current
