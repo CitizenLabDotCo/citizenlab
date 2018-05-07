@@ -1,9 +1,8 @@
-import * as React from 'react';
-import { size, get } from 'lodash';
-import * as Rx from 'rxjs/Rx';
-
-// router
-import { Link } from 'react-router';
+import React from 'react';
+import { adopt } from 'react-adopt';
+import { Link, withRouter, WithRouterProps } from 'react-router';
+import { isNull, isError, isArray, isEmpty } from 'lodash';
+import { isNullOrError } from 'utils/helperUtils';
 
 // components
 import Helmet from 'react-helmet';
@@ -11,15 +10,21 @@ import ContentContainer from 'components/ContentContainer';
 import Spinner from 'components/UI/Spinner';
 import Icon from 'components/UI/Icon';
 import Footer from 'components/Footer';
+import Fragment from 'components/Fragment';
 
 // services
-import { IPage, pageBySlugStream } from 'services/pages';
-import { PageLink, getPageLink } from 'services/pageLink';
+import { PageLink } from 'services/pageLink';
+
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetPage, { GetPageChildProps } from 'resources/GetPage';
+import GetPageLinks, { GetPageLinksChildProps } from 'resources/GetPageLinks';
 
 // i18n
-import { injectTFunc } from 'components/T/utils';
 import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { getLocalized } from 'utils/i18n';
 import T from 'components/T';
 import messages from './messages';
 
@@ -166,82 +171,43 @@ const LinkIcon = styled(Icon)`
   height: 1em;
 `;
 
-type Props = {
-  params: {
-    slug: string;
-  }
-  tFunc: ({}) => string;
-};
+interface InputProps {}
 
-type State = {
-  page: IPage | null,
-  pageLinks: { data: PageLink }[] | null,
-  loading: boolean;
-};
+interface DataProps {
+  locale: GetLocaleChildProps;
+  tenantLocales: GetTenantLocalesChildProps;
+  page: GetPageChildProps;
+  pageLinks: GetPageLinksChildProps;
+}
 
-class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State> {
-  slug$: Rx.BehaviorSubject<string | null>;
-  subscriptions: Rx.Subscription[];
+interface Props extends InputProps, DataProps {}
 
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      page: null,
-      pageLinks: null,
-      loading: true,
-    };
-    this.subscriptions = [];
-    this.slug$ = new Rx.BehaviorSubject(null);
-  }
+interface State {}
 
-  componentDidMount() {
-    this.slug$.next(this.props.params.slug);
-
-    this.subscriptions = [
-      this.slug$
-        .distinctUntilChanged()
-        .do(() => this.setState({ loading: true }))
-        .switchMap((slug) => (slug ? pageBySlugStream(slug).observable : Rx.Observable.of(null)))
-        .switchMap((page) => {
-          let pageLinks$: Rx.Observable<null | { data: PageLink }[]> = Rx.Observable.of(null);
-
-          if (page && size(get(page, 'data.relationships.page_links.data')) > 0) {
-            pageLinks$ = Rx.Observable.combineLatest(
-              page.data.relationships.page_links.data.map(link => getPageLink(link.id).observable)
-            );
-          }
-
-          return pageLinks$.map(pageLinks => ({ page, pageLinks }));
-        }).subscribe(({ page, pageLinks }) => {
-          this.setState({ page, pageLinks, loading: false });
-        })
-    ];
-  }
-
-  componentDidUpdate() {
-    this.slug$.next(this.props.params.slug);
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
+class PagesShowPage extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
   render() {
-    const { page, pageLinks, loading } = this.state;
-    const { tFunc } = this.props;
     const { formatMessage } = this.props.intl;
+    const { locale, tenantLocales, page, pageLinks } = this.props;
+    let seoTitle = formatMessage(messages.notFoundTitle);
+    let seoDescription = formatMessage(messages.notFoundDescription);
+    let pageTitle = <FormattedMessage {...messages.notFoundTitle} />;
+    let pageDescription =  <FormattedMessage {...messages.notFoundDescription} />;
 
-    if (loading) {
+    if (isNull(locale) || isNull(tenantLocales) || isNull(page)) {
       return (
         <Loading>
           <Spinner size="32px" color="#666" />
         </Loading>
       );
-    } else {
-      const seoTitle = (page ? tFunc(page.data.attributes.title_multiloc) : formatMessage(messages.notFoundTitle));
-      const seoDescription = (page ? '' : formatMessage(messages.notFoundDescription));
-      const pageTitle = (page ? <T value={page.data.attributes.title_multiloc} /> : <FormattedMessage {...messages.notFoundTitle} />);
-      const pageDescription = (page ? <T value={page.data.attributes.body_multiloc} />  : <FormattedMessage {...messages.notFoundDescription} />);
+    }
+
+    if (!isNullOrError(locale) && !isNullOrError(tenantLocales) && !isNull(page)) {
+      if (!isError(page)) {
+        seoTitle = getLocalized(page.attributes.title_multiloc, locale, tenantLocales);
+        seoDescription = '';
+        pageTitle = <T value={page.attributes.title_multiloc} />;
+        pageDescription = <T value={page.attributes.body_multiloc} />;
+      }
 
       return (
         <Container>
@@ -252,22 +218,24 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
 
           <PageContent>
             <StyledContentContainer>
-              <PageTitle>
-                {pageTitle}
-              </PageTitle>
-              <PageDescription>
-                {pageDescription}
-              </PageDescription>
+              <Fragment name={!isNullOrError(page) ? `pages/${page && page.id}/content` : ''}>
+                <PageTitle>
+                  {pageTitle}
+                </PageTitle>
+                <PageDescription>
+                  {pageDescription}
+                </PageDescription>
+              </Fragment>
             </StyledContentContainer>
           </PageContent>
 
-          {pageLinks && pageLinks.length > 0 &&
+          {!isNullOrError(pageLinks) && isArray(pageLinks) && !isEmpty(pageLinks) &&
             <PagesNavWrapper>
               <PagesNav>
                 <StyledContentContainer>
-                  {pageLinks.map((link) => (
-                    <StyledLink to={`/pages/${link.data.attributes.linked_page_slug}`} key={link.data.id}>
-                      <T value={link.data.attributes.linked_page_title_multiloc} />
+                  {pageLinks.filter(pageLink => !isNullOrError(pageLink)).map((pageLink: PageLink) => (
+                    <StyledLink to={`/pages/${pageLink.attributes.linked_page_slug}`} key={pageLink.id}>
+                      <T value={pageLink.attributes.linked_page_title_multiloc} />
                       <LinkIcon name="chevron-right" />
                     </StyledLink>
                   ))}
@@ -280,7 +248,20 @@ class PagesShowPage extends React.PureComponent<Props & InjectedIntlProps, State
         </Container>
       );
     }
+
+    return null;
   }
 }
 
-export default injectIntl(injectTFunc(PagesShowPage));
+const Data = adopt<DataProps, InputProps & WithRouterProps & InjectedIntlProps>({
+  locale: <GetLocale />,
+  tenantLocales: <GetTenantLocales />,
+  page: ({ params, render }) => <GetPage slug={params.slug} resetOnChange>{render}</GetPage>,
+  pageLinks: ({ page, render }) => <GetPageLinks pageId={(!isNullOrError(page) ? page.id : null)}>{render}</GetPageLinks>,
+});
+
+export default withRouter(injectIntl((inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
+  <Data {...inputProps}>
+    {dataProps => <PagesShowPage {...inputProps} {...dataProps} />}
+  </Data>
+)));

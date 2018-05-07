@@ -259,4 +259,24 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.editButtonLabel',
     defaultMessage: 'Edit',
   },
+  moderatorsSectionTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle',
+    defaultMessage: 'Who can moderate this project?',
+  },
+  deleteModeratorLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.deleteModeratorLabel',
+    defaultMessage: 'Delete',
+  },
+  moderatorDeletionConfirmation: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderatorDeletionConfirmation',
+    defaultMessage: 'Are you sure?',
+  },
+  moderatorsNotFound: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderatorsNotFound',
+    defaultMessage: 'Moderators not found',
+  },
+  addUser: {
+    id: 'app.containers.AdminPage.ProjectEdit.addUser',
+    defaultMessage: 'Add moderator',
+  },
 });

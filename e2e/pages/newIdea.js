@@ -1,18 +1,20 @@
 const newIdeaCommands = {
   postIdea(title, content) {
-    return this
+    this
 
     // Select project
     .waitForElementVisible('.e2e-project-card.e2e-open-project')
-    .click('.e2e-project-card.e2e-open-project')
+    .click('.e2e-project-card.e2e-open-project');
+    this.api.execute('window.scrollTo(0,document.body.scrollHeight);')
     .click('.e2e-submit-project-select-form')
-    .waitForElementVisible('@form')
+    .click('.e2e-submit-project-select-form-mobile');
+    this.waitForElementPresent('@form')
 
     // Fill in the form
     .setValue('@title', title)
-    .setValue('@content', content)
-    .click('@submit')
-    .waitForElementVisible('#e2e-ideas-list');
+    .setValue('@content', content);
+    this.api.execute('window.scrollTo(0,document.body.scrollHeight);');
+    return this.click('@submit').click('.e2e-submit-idea-form-mobile');
   },
 };
 

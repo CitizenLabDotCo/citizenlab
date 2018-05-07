@@ -24,12 +24,10 @@ export interface SortableListState {
 export class SortableList extends React.Component<InputProps, SortableListState> {
   constructor(props) {
     super(props);
-
     this.state = {
       itemsWhileDragging: null,
     };
   }
-
 
   handleDragRow = (fromIndex, toIndex) => {
     const listItems = this.listItems();
@@ -60,8 +58,9 @@ export class SortableList extends React.Component<InputProps, SortableListState>
   render() {
     const itemsList = this.listItems() || [];
     const { children } = this.props;
+
     return (
-      <List>
+      <List className={this.props['className']}>
         {children({ itemsList, handleDragRow: this.handleDragRow, handleDropRow: this.handleDropRow })}
       </List>
     );

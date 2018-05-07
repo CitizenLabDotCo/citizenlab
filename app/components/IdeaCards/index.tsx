@@ -252,8 +252,14 @@ class IdeaCards extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      selectedView: 'card'
+      selectedView: (props.defaultView || 'card')
     };
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.phaseId !== prevProps.phaseId) {
+      this.setState({ selectedView: this.props.defaultView || 'card' });
+    }
   }
 
   loadMore = () => {

@@ -87,6 +87,7 @@ const ChildCommentsContainer = styled.div``;
 interface InputProps {
   ideaId: string;
   commentId: string;
+  last: boolean;
 }
 
 interface DataProps {
@@ -159,6 +160,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
 
     if (!isNullOrError(comment) && !isNullOrError(idea)) {
       const ideaId = comment.relationships.idea.data.id;
+      const projectId = idea.relationships.project.data.id;
       const authorId = (comment.relationships.author.data ? comment.relationships.author.data.id : null);
       const commentDeleted = (comment.attributes.publication_status === 'deleted');
       const createdAt = comment.attributes.created_at;
@@ -184,9 +186,9 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
               <CommentContainerInner className={`${commentDeleted && 'deleted'}`}>
                 {!commentDeleted &&
                   <>
-                    <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} />
+                    <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
                     <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
-                    <CommentBody commentBody={commentBodyMultiloc} editionMode={this.state.editionMode} onCommentSave={this.onCommentSave} onCancelEdition={this.onCancelEdition} />
+                    <CommentBody commentBody={commentBodyMultiloc} editionMode={this.state.editionMode} onCommentSave={this.onCommentSave} onCancelEdition={this.onCancelEdition} last={this.props.last} />
                   </>
                 }
 
