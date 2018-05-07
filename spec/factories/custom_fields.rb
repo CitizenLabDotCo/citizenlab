@@ -23,6 +23,15 @@ FactoryBot.define do
       enabled true
     end
 
+    factory :custom_field_multiselect do
+      title_multiloc {{
+        "en" => "What languages do you speak?"
+      }}
+      required false
+      input_type "multiselect"
+      enabled true
+    end
+
     factory :custom_field_checkbox do
       title_multiloc {{
         "en" => "I want to join the army"
