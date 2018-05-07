@@ -15,6 +15,10 @@ class Phase < ApplicationRecord
   validate :validate_belongs_to_timeline_project
 
   before_validation :sanitize_description_multiloc
+  before_validation :strip_title
+
+
+  private
 
   def sanitize_description_multiloc
     self.description_multiloc = self.description_multiloc.map do |locale, description|
@@ -31,6 +35,12 @@ class Phase < ApplicationRecord
   def validate_belongs_to_timeline_project
     if project.present? && project.process_type != 'timeline'
       errors.add(:project, :is_not_timeline_project, message: 'is not a timeline project')
+    end
+  end
+
+  def strip_title
+    self.title_multiloc.each do |key, value|
+      self.title_multiloc[key] = value.strip
     end
   end
 end
