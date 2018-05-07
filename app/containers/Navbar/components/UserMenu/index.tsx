@@ -180,6 +180,18 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                     <PopoverIcon name="admin" />
                   </IconWrapper>
                 </PopoverItem>
+
+                <HasPermission.No>
+                  {/* Display the project moderation page for moderators, they don't have access to the dashboard */}
+                  <HasPermission item={{ type: 'route', path: '/admin/projects' }} action="access">
+                    <PopoverItem id="e2e-projects-admin-link" onClick={this.navigateTo('/admin/projects')}>
+                      <FormattedMessage {...messages.projectsModeration} />
+                      <IconWrapper>
+                        <PopoverIcon name="admin" />
+                      </IconWrapper>
+                    </PopoverItem>
+                  </HasPermission>
+                </HasPermission.No>
               </HasPermission>
               <PopoverItem id="e2e-profile-profile-link" onClick={this.navigateTo(`/profile/${userSlug}`)}>
                 <FormattedMessage {...messages.profilePage} />
