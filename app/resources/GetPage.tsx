@@ -1,10 +1,13 @@
 import React from 'react';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
-import { IPageData, pageByIdStream } from 'services/pages';
+import { IPageData, pageByIdStream, pageBySlugStream } from 'services/pages';
+import { isNullOrError } from 'utils/helperUtils';
 
 interface InputProps {
-  id: string;
+  id?: string;
+  slug?: string;
+  resetOnChange?: boolean;
 }
 
 type children = (renderProps: GetPageChildProps) => JSX.Element | null;
@@ -14,10 +17,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  page: IPageData | null;
+  page: IPageData | null | Error;
 }
 
-export type GetPageChildProps = IPageData | null;
+export type GetPageChildProps = IPageData | null | Error;
 
 export default class GetPage extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -31,21 +34,32 @@ export default class GetPage extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { id } = this.props;
+    const { id, slug, resetOnChange } = this.props;
 
-    this.inputProps$ = new BehaviorSubject({ id });
+    this.inputProps$ = new BehaviorSubject({ id, slug, resetOnChange });
 
     this.subscriptions = [
       this.inputProps$
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .switchMap(({ id }) => pageByIdStream(id).observable)
-        .subscribe((page) => this.setState({ page: page.data }))
-    ];
+        .do(() => resetOnChange && this.setState({ page: null }))
+        .switchMap(({ id, slug }) => {
+          if (id) {
+            return pageByIdStream(id).observable;
+          } else if (slug) {
+            return pageBySlugStream(slug).observable;
+          }
+
+          return Observable.of(null);
+        })
+        .subscribe((page) => {
+          this.setState({ page: !isNullOrError(page) ? page.data : page });
+        })
+      ];
   }
 
   componentDidUpdate() {
-    const { id } = this.props;
-    this.inputProps$.next({ id });
+    const { id, slug, resetOnChange } = this.props;
+    this.inputProps$.next({ id, slug, resetOnChange });
   }
 
   componentWillUnmount() {

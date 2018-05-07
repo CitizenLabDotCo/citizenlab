@@ -160,7 +160,7 @@ class AdminProjectTimelineIndex extends React.Component<Props & InjectedIntlProp
                     <Button className="e2e-delete-phase" icon="delete" style="text" onClick={this.createDeleteClickHandler(phase.id)}>
                       <FormattedMessage {...messages.deletePhaseButton} />
                     </Button>
-                    <Button className="e2e-edit-phase" icon="edit" style="secondary" linkTo={`/admin/projects/${projectId}/timeline/${phase.id}`}>
+                    <Button  circularCorners={false} className="e2e-edit-phase" icon="edit" style="secondary" linkTo={`/admin/projects/${projectId}/timeline/${phase.id}`}>
                       <FormattedMessage {...messages.editPhaseButton} />
                     </Button>
                   </Row>

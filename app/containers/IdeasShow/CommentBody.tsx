@@ -114,8 +114,6 @@ class CommentBody extends React.PureComponent<Props, State> {
   render() {
     const { editionMode, commentBody, locale, tenantLocales, last } = this.props;
 
-    console.log(commentBody);
-
     if (locale && tenantLocales && !editionMode) {
       return (
         <CommentWrapper className={`e2e-comment-body ${last ? 'last' : ''}`}>

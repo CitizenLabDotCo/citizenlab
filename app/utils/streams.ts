@@ -1,6 +1,8 @@
 import 'whatwg-fetch';
 import { Observer, Observable, Subscription } from 'rxjs/Rx';
-import { some, forOwn, isNil, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union } from 'lodash';
+import { fromPromise } from 'rxjs/observable/fromPromise';
+import { retry, catchError } from 'rxjs/operators';
+import { some, forOwn, isError, isNil, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union } from 'lodash';
 import request from 'utils/request';
 import { store } from 'app';
 import { authApiEndpoint } from 'services/auth';
@@ -245,33 +247,29 @@ class Streams {
         return new Promise((resolve, reject) => {
           const promise = request<any>(apiEndpoint, bodyData, { method: 'GET' }, queryParameters);
 
-          Observable.defer(() => promise).retry(2).subscribe(
-            (response) => {
-              if (this.streams[streamId]) {
+          fromPromise(promise).pipe(
+            retry(3),
+            catchError(() => Observable.of(new Error(`promise for stream ${streamId} did not resolve`)))
+          ).subscribe((response) => {
+            if (!this.streams[streamId]) {
+              console.log(`no stream exists for ${streamId}`);
+            } else {
+              if (!isError(response)) {
                 this.streams[streamId].observer.next(response);
+                resolve(response);
               } else {
-                console.log(`no stream exists for ${streamId}`);
-              }
-
-              resolve(response);
-            },
-            (_error) => {
-              if (this.streams[streamId]) {
                 if (streamId !== authApiEndpoint) {
                   const apiEndpoint = cloneDeep(this.streams[streamId].params.apiEndpoint);
-                  const error = new Error(`promise for stream ${streamId} did not resolve`);
-                  this.streams[streamId].observer.next(error);
+                  this.streams[streamId].observer.next(response);
                   this.deleteStream(streamId, apiEndpoint);
                 } else {
                   this.streams[streamId].observer.next(null);
                 }
-              } else {
-                console.log(`no stream exists for ${streamId}`);
-              }
 
-              reject();
+                reject();
+              }
             }
-          );
+          });
         });
       };
 
@@ -288,9 +286,9 @@ class Streams {
         }
 
         return () => {
-          if (process.env.NODE_ENV === 'development') {
-            console.log(`stream for stream ${streamId} completed`);
-          }
+          // if (process.env.NODE_ENV === 'development') {
+          //   console.log(`stream for stream ${streamId} completed`);
+          // }
 
           this.deleteStream(streamId, apiEndpoint);
         };

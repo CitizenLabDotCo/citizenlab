@@ -99,7 +99,7 @@ export default class DashboardPage extends React.PureComponent<Props, State> {
           />
         </ControlBar>
         <ThemeProvider theme={this.chartTheme}>
-          <Flex mx={-10} my={20} flexWrap>
+          <Flex mx={-10} my={20} flexWrap="wrap">
             <Box width={[1, 1, 1 / 2]} p={10}>
               <GraphCard >
                 <GraphCardTitle>
