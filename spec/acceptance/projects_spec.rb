@@ -203,7 +203,6 @@ resource "Projects" do
           let(:header_bg) { encode_image_as_base64("header.jpg")}
           let(:area_ids) { create_list(:area, 2).map(&:id) }
           let(:visible_to) { 'admins' }
-          let(:presentation_mode) { 'map' }
           let(:publication_status) { 'draft' }
 
 
@@ -216,7 +215,6 @@ resource "Projects" do
             expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
             expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
             expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'admins'
-            expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'map'
             expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'draft'
           end
         end
@@ -288,7 +286,7 @@ resource "Projects" do
 
     patch "web_api/v1/projects/:id" do
       before do 
-        @project = create(:project)
+        @project = create(:project, process_type: 'continuous')
       end
 
       with_options scope: :project do
@@ -328,7 +326,6 @@ resource "Projects" do
 
       example_request "Updating the project" do
         json_response = json_parse(response_body)
-        byebug
         expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq "Changed title"
         expect(json_response.dig(:data,:attributes,:description_multiloc,:en)).to eq "Changed body"
         expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
