@@ -9,7 +9,7 @@ import { isString, reject } from 'lodash';
 import * as moment from 'moment';
 
 // Services
-import { projectBySlugStream } from 'services/projects';
+import { projectByIdStream } from 'services/projects';
 import { phasesStream, IPhaseData, deletePhase } from 'services/phases';
 
 // Components
@@ -65,7 +65,7 @@ const OrderLabel = styled.div`
 // Component typing
 type Props = {
   params: {
-    slug: string | null,
+    projectId: string | null,
   }
 };
 
@@ -88,8 +88,8 @@ class AdminProjectTimelineIndex extends React.Component<Props & InjectedIntlProp
   componentDidMount () {
     this.setState({ loading: true });
 
-    if (isString(this.props.params.slug)) {
-      this.subscription = projectBySlugStream(this.props.params.slug).observable.switchMap((project) => {
+    if (isString(this.props.params.projectId)) {
+      this.subscription = projectByIdStream(this.props.params.projectId).observable.switchMap((project) => {
         return phasesStream(project.data.id).observable.map((phases) => (phases.data));
       }).subscribe((phases) => {
         this.setState({ phases, loading: false });
@@ -128,11 +128,11 @@ class AdminProjectTimelineIndex extends React.Component<Props & InjectedIntlProp
 
   render() {
     const { phases, loading } = this.state;
-    const { slug } = this.props.params;
+    const { projectId } = this.props.params;
 
     return (
       <ListWrapper>
-        <AddButton className="e2e-add-phase-button" icon="plus-circle" style="cl-blue" circularCorners={false} linkTo={`/admin/projects/${slug}/timeline/new`}>
+        <AddButton className="e2e-add-phase-button" icon="plus-circle" style="cl-blue" circularCorners={false} linkTo={`/admin/projects/${projectId}/timeline/new`}>
           <FormattedMessage {...messages.addPhaseButton} />
         </AddButton>
 
@@ -160,7 +160,7 @@ class AdminProjectTimelineIndex extends React.Component<Props & InjectedIntlProp
                     <Button className="e2e-delete-phase" icon="delete" style="text" onClick={this.createDeleteClickHandler(phase.id)}>
                       <FormattedMessage {...messages.deletePhaseButton} />
                     </Button>
-                    <Button className="e2e-edit-phase" icon="edit" style="secondary" linkTo={`/admin/projects/${slug}/timeline/${phase.id}`}>
+                    <Button  circularCorners={false} className="e2e-edit-phase" icon="edit" style="secondary" linkTo={`/admin/projects/${projectId}/timeline/${phase.id}`}>
                       <FormattedMessage {...messages.editPhaseButton} />
                     </Button>
                   </Row>

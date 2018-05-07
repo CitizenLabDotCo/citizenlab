@@ -10,7 +10,7 @@ import { get, isEmpty, forOwn } from 'lodash';
 
 // Services
 import { localeStream } from 'services/locale';
-import { projectBySlugStream, IProject } from 'services/projects';
+import { projectByIdStream, IProject } from 'services/projects';
 import { phaseStream, updatePhase, addPhase, IPhase, IUpdatedPhaseProperties } from 'services/phases';
 import eventEmitter from 'utils/eventEmitter';
 
@@ -67,7 +67,7 @@ const PhaseForm = styled.form`
 `;
 
 interface IParams {
-  slug: string | null;
+  projectId: string | null;
   id: string | null;
 }
 
@@ -114,17 +114,17 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
   }
 
   componentDidMount() {
-    const { slug, id } = this.props.params;
+    const { projectId, id } = this.props.params;
 
-    this.params$.next({ slug, id });
+    this.params$.next({ projectId, id });
 
     this.subscriptions = [
       this.params$
       .distinctUntilChanged(shallowCompare)
       .switchMap((params: IParams) => {
-        const { slug, id } = params;
+        const { projectId, id } = params;
         const locale$ = localeStream().observable;
-        const project$ = (slug ? projectBySlugStream(slug).observable : Rx.Observable.of(null));
+        const project$ = (projectId ? projectByIdStream(projectId).observable : Rx.Observable.of(null));
         const phase$ = (id ? phaseStream(id).observable : Rx.Observable.of(null));
         return Rx.Observable.combineLatest(locale$, project$, phase$);
       }).subscribe(([locale, project, phase]) => {
@@ -150,8 +150,8 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
   }
 
   componentDidUpdate() {
-    const { slug, id } = this.props.params;
-    this.params$.next({ slug, id });
+    const { projectId, id } = this.props.params;
+    this.params$.next({ projectId, id });
   }
 
   componentWillUnmount() {
@@ -235,8 +235,8 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
   handleParcticipationContextOnSubmit = (participationContextConfig: IParticipationContextConfig) => {
     let { attributeDiff } = this.state;
     const { phase, project } = this.state;
-    const { slug } = this.props.params;
-    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, presentationMode, survey_embed_url, survey_service } = participationContextConfig;
+    const { projectId } = this.props.params;
+    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, survey_embed_url, survey_service, presentationMode } = participationContextConfig;
 
     attributeDiff = {
       ...attributeDiff,
@@ -251,16 +251,16 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
       presentation_mode: presentationMode
     };
 
-    this.save(slug, project, phase, attributeDiff);
+    this.save(projectId, project, phase, attributeDiff);
   }
 
-  save = async (slug: string | null, project: IProject | null, phase: IPhase | null, attributeDiff: IUpdatedPhaseProperties) => {
+  save = async (projectId: string | null, project: IProject | null, phase: IPhase | null, attributeDiff: IUpdatedPhaseProperties) => {
     if (!isEmpty(attributeDiff)) {
       try {
         if (phase) {
           const savedPhase = await updatePhase(phase.data.id, attributeDiff);
           this.setState({ saving: false, saved: true, attributeDiff: {}, phase: savedPhase, errors: null });
-        } else if (project && slug) {
+        } else if (project && projectId) {
           const savedPhase = await addPhase(project.data.id, attributeDiff);
           this.setState({ saving: false, saved: true, attributeDiff: {}, phase: savedPhase, errors: null });
         }
