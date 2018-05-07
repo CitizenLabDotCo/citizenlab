@@ -5,7 +5,7 @@ describe IdeaPolicy do
   let(:scope) { IdeaPolicy::Scope.new(user, Idea) }
 
   context "on idea in a public project" do 
-    let(:project) { create(:continuous_project)}
+    let(:project) { create(:continuous_project) }
     let!(:idea) { create(:idea, project: project) }
 
     context "for a visitor" do
@@ -73,6 +73,19 @@ describe IdeaPolicy do
         expect(scope.resolve.size).to eq 1
       end
     end
+
+    context "for a moderator" do
+      let(:user) { create(:moderator, project: project) }
+
+      it { should permit(:show)    }
+      it { should permit(:create)  }
+      it { should permit(:update)  }
+      it { should permit(:destroy) }
+
+      it "should index the project"  do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
   end
 
   context "on idea in a private admins project" do 
@@ -114,6 +127,19 @@ describe IdeaPolicy do
       it { should permit(:destroy) }
 
       it "should index the idea" do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context "for a moderator" do
+      let(:user) { create(:moderator, project: project) }
+
+      it { should permit(:show)    }
+      it { should permit(:create)  }
+      it { should permit(:update)  }
+      it { should permit(:destroy) }
+
+      it "should index the project"  do
         expect(scope.resolve.size).to eq 1
       end
     end

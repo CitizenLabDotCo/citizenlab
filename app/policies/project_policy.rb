@@ -11,19 +11,44 @@ class ProjectPolicy < ApplicationPolicy
       if user&.admin?
         scope.all
       else
-        result = scope.where(publication_status: ['published', 'archived'])
-        if user
-          result
+        normal_user_result = scope.where(publication_status: ['published', 'archived'])
+        if user && user.roles.select{|role| role['type'] == 'project_moderator'}.present?
+          moderatable_project_ids = user.roles
+            .select{|role| role['type'] == 'project_moderator'}
+            .map{|role| role['project_id']}.compact
+          normal_access_project_ids = normal_user_result
+            .distinct
+            .left_outer_joins(groups: :memberships)
+            .where("projects.visible_to = 'public' OR \
+              (projects.visible_to = 'groups' AND memberships.user_id = ?)", user&.id)
+            .map(&:id)
+          Project.where(id: moderatable_project_ids + normal_access_project_ids)
+        elsif user
+          normal_user_result
             .distinct
             .left_outer_joins(groups: :memberships)
             .where("projects.visible_to = 'public' OR \
               (projects.visible_to = 'groups' AND memberships.user_id = ?)", user&.id)
         else
-          result.where(visible_to: 'public')
+          normal_user_result.where(visible_to: 'public')
         end
       end
     end
+
+    def moderatable
+      if user&.admin?
+        scope.all
+      elsif user
+        moderatable_project_ids = user.roles
+          .select{|role| role['type'] == 'project_moderator'}
+          .map{|role| role['project_id']}.compact
+        scope.where(id: moderatable_project_ids)
+      else
+        []
+      end
+    end
   end
+
 
   def create?
     user&.active? && user.admin?
@@ -38,7 +63,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def show?
-    user&.admin? || (
+    user&.admin? || user&.project_moderator?(record.id) || (
       %w(published archived).include?(record.publication_status) && (
         record.visible_to == 'public' || (
           record.visible_to == 'groups' && 
@@ -61,7 +86,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def destroy?
-    update?
+    user&.active? && user.admin?
   end
 
   def shared_permitted_attributes

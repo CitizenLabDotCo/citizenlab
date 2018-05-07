@@ -1,14 +1,19 @@
 class WebApi::V1::ProjectsController < ::ApplicationController
 
   before_action :set_project, only: [:show, :update, :reorder, :destroy]
+  skip_after_action :verify_policy_scoped, only: [:index]
+
 
   def index
-    @projects = policy_scope(Project)
-      .includes(:project_images, :phases)
+    @projects = if params[:filter_can_moderate]
+      ProjectPolicy::Scope.new(current_user, Project).moderatable 
+    else 
+      policy_scope(Project)
+    end.includes(:project_images, :phases)
       .order(:ordering)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
-
+      
     if params[:publication_statuses].present?
       @projects = @projects.where(publication_status: params[:publication_statuses])
     else
