@@ -8,8 +8,6 @@ class Project < ApplicationRecord
 
   @@sanitizer = Rails::Html::WhiteListSanitizer.new
 
-  
-
 
   has_many :ideas, dependent: :destroy
   has_many :votes, through: :ideas
