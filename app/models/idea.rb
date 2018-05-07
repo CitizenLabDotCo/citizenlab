@@ -139,16 +139,16 @@ class Idea < ApplicationRecord
     self.published_at ||= Time.now
   end
 
-  def strip_title
-    self.title_multiloc.each do |key, value|
-      self.title_multiloc[key] = value.strip
-    end
-  end
-
   def sanitize_body_multiloc
     self.body_multiloc = self.body_multiloc.map do |locale, description|
       [locale, @@sanitizer.sanitize(description, tags: %w(p b u i em strong a h1 h2 h3 h4 h5 h6 ul li ol), attributes: %w(href type style target))]
     end.to_h
+  end
+
+  def strip_title
+    self.title_multiloc.each do |key, value|
+      self.title_multiloc[key] = value.strip
+    end
   end
 
 end
