@@ -26,7 +26,9 @@ class WebApi::V1::GroupsController < ApplicationController
   def create
     @group = Group.new(group_params)
     authorize @group
+    SideFxGroupService.new.before_create(@group, current_user)
     if @group.save
+      SideFxGroupService.new.after_create(@group, current_user)
       render json: @group.reload, status: :created
     else
       render json: { errors: @group.errors.details }, status: :unprocessable_entity
@@ -35,7 +37,9 @@ class WebApi::V1::GroupsController < ApplicationController
 
   # patch
   def update
+    SideFxGroupService.new.before_update(@group, current_user)
     if @group.update(group_params)
+      SideFxGroupService.new.after_update(@group, current_user)
       render json: @group.reload, status: :ok
     else
       render json: { errors: @group.errors.details }, status: :unprocessable_entity
@@ -44,8 +48,10 @@ class WebApi::V1::GroupsController < ApplicationController
 
   # delete
   def destroy
+    SideFxGroupService.new.before_destroy(@group, current_user)
     group = @group.destroy
     if group.destroyed?
+      SideFxGroupService.new.after_destroy(@group, current_user)
       head :ok
     else
       head 500
