@@ -1,5 +1,6 @@
 import React from 'react';
 import { Subscription, Observable } from 'rxjs/Rx';
+import { get } from 'lodash';
 import * as moment from 'moment';
 import 'moment-timezone';
 import 'moment/locale/de';
@@ -7,6 +8,9 @@ import 'moment/locale/fr';
 import 'moment/locale/nl';
 import 'moment/locale/da';
 import 'moment/locale/nb';
+
+// context
+import { PreviousPathnameContext } from 'context';
 
 // libraries
 import { RouterState, browserHistory } from 'react-router';
@@ -47,7 +51,6 @@ import { LOAD_CURRENT_TENANT_SUCCESS } from 'utils/tenant/constants';
 import { LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL } from 'utils/auth/constants';
 
 // typings
-import { Location } from 'history';
 import ErrorBoundary from 'components/ErrorBoundary';
 
 const Container = styled.div`
@@ -75,7 +78,7 @@ export interface IModalInfo {
 type Props = {};
 
 type State = {
-  location: Location;
+  previousPathname: string | null;
   tenant: ITenant | null;
   authUser: IUser | null;
   modalOpened: boolean;
@@ -87,13 +90,12 @@ type State = {
 
 export default class App extends React.PureComponent<Props & RouterState, State> {
   subscriptions: Subscription[];
-  unlisten1: Function;
-  unlisten2: Function;
+  unlisten: Function;
 
   constructor(props) {
     super(props);
     this.state = {
-      location: browserHistory.getCurrentLocation(),
+      previousPathname: null,
       tenant: null,
       authUser: null,
       modalOpened: false,
@@ -110,21 +112,20 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     const locale$ = localeStream().observable;
     const tenant$ = currentTenantStream().observable;
 
-    this.unlisten1 = browserHistory.listenBefore((location) => {
+    this.unlisten = browserHistory.listenBefore((newLocation) => {
       const { authUser } = this.state;
+      const previousLocation = browserHistory.getCurrentLocation();
+      const previousPathname = get(previousLocation, 'pathname', null);
+      this.setState({ previousPathname });
 
-      if (location
-          && location.pathname !== '/complete-signup'
+      if (newLocation
+          && newLocation.pathname !== '/complete-signup'
           && authUser
           && authUser.data.attributes.registration_completed_at === null
       ) {
         // redirect to second signup step
         browserHistory.replace('/complete-signup');
       }
-    });
-
-    this.unlisten2 = browserHistory.listen((location) => {
-      this.setState({ location });
     });
 
     this.subscriptions = [
@@ -156,8 +157,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
   }
 
   componentWillUnmount() {
-    this.unlisten1();
-    this.unlisten2();
+    this.unlisten();
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
@@ -175,7 +175,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
 
   render() {
     const { location, children } = this.props;
-    const { tenant, modalOpened, modalType, modalId, modalUrl, visible } = this.state;
+    const { previousPathname, tenant, modalOpened, modalType, modalId, modalUrl, visible } = this.state;
     const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = {
       colors,
@@ -203,35 +203,37 @@ export default class App extends React.PureComponent<Props & RouterState, State>
         <WatchSagas sagas={{ tenantSaga }} />
 
         {tenant && visible && (
-          <ThemeProvider theme={theme}>
-            <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
-              <Meta />
+          <PreviousPathnameContext.Provider value={previousPathname}>
+            <ThemeProvider theme={theme}>
+              <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
+                <Meta />
 
-              <FullscreenModal
-                opened={modalOpened}
-                close={this.closeModal}
-                url={modalUrl}
-                headerChild={fullscreenModalHeaderChild}
-              >
-                <IdeasShow ideaId={modalId} inModal={true} />
-              </FullscreenModal>
+                <FullscreenModal
+                  opened={modalOpened}
+                  close={this.closeModal}
+                  url={modalUrl}
+                  headerChild={fullscreenModalHeaderChild}
+                >
+                  <IdeasShow ideaId={modalId} inModal={true} />
+                </FullscreenModal>
 
-              <div id="modal-portal" />
+                <div id="modal-portal" />
 
-              <Navbar />
+                <Navbar />
 
-              <InnerContainer className={`${isAdminPage ? 'admin' : 'citizen'}`}>
-                <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
-                  <ErrorBoundary>
-                    {children}
-                  </ErrorBoundary>
-                  <HasPermission.No>
-                    <ForbiddenRoute />
-                  </HasPermission.No>
-                </HasPermission>
-              </InnerContainer>
-            </Container>
-          </ThemeProvider>
+                <InnerContainer className={`${isAdminPage ? 'admin' : 'citizen'}`}>
+                  <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
+                    <ErrorBoundary>
+                      {children}
+                    </ErrorBoundary>
+                    <HasPermission.No>
+                      <ForbiddenRoute />
+                    </HasPermission.No>
+                  </HasPermission>
+                </InnerContainer>
+              </Container>
+            </ThemeProvider>
+          </PreviousPathnameContext.Provider>
         )}
       </>
     );

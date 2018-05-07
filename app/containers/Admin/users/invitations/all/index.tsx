@@ -92,6 +92,8 @@ class InvitesTable extends React.PureComponent<Props, State> {
     const { searchValue, exporting } = this.state;
     const { invitesList, sortAttribute, sortDirection, currentPage, lastPage, onChangePage } = this.props;
 
+    console.log(invitesList);
+
     if (!isNullOrError(invitesList) && invitesList.length > 0) {
       return (
         <Container>

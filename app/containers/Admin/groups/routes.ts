@@ -1,20 +1,18 @@
-import GroupContainer from './';
-import GroupList from './all';
-import GroupEdit from './edit';
+import loadAndRender from 'utils/loadAndRender';
 
 export default () => ({
   path: '/admin/groups',
   name: 'admin groups',
-  component: GroupContainer,
+  getComponent: loadAndRender(import('./')),
   indexRoute: {
     name: 'admin groups index',
-    component: GroupList,
+    getComponent: loadAndRender(import('./all')),
   },
   childRoutes: [
     {
       path: '/admin/groups/edit/:groupId',
       name: 'admin groups single group',
-      component: GroupEdit,
+      getComponent: loadAndRender(import('./edit')),
     },
   ],
 });
