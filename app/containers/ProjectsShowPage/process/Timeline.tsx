@@ -1,5 +1,5 @@
 import React from 'react';
-import { indexOf, isString } from 'lodash';
+import { indexOf, isString, forEach } from 'lodash';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs/Rx';
 import * as moment from 'moment';
 import 'moment-timezone';
@@ -325,7 +325,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     const initialState = {
       locale: null,
       currentTenant: null,
@@ -385,9 +385,9 @@ export default class Timeline extends React.PureComponent<Props, State> {
       const currentTenantTodayMoment = moment().tz(currentTenantTimezone);
 
       phases.data.forEach((phase) => {
-        const startMoment = moment(phase.attributes.start_at, 'YYYY-MM-DD');
-        const endMoment = moment(phase.attributes.end_at, 'YYYY-MM-DD');
-        const isCurrentPhase = currentTenantTodayMoment.isBetween(startMoment, endMoment, 'days', '[]');
+        const startIsoDate = moment(phase.attributes.start_at, 'YYYY-MM-DD');
+        const endIsoDate = moment(phase.attributes.end_at, 'YYYY-MM-DD');
+        const isCurrentPhase = currentTenantTodayMoment.isBetween(startIsoDate, endIsoDate, 'days', '[]');
 
         if (isCurrentPhase) {
           currentPhaseId = phase.id;
@@ -402,13 +402,25 @@ export default class Timeline extends React.PureComponent<Props, State> {
     let selectedPhaseId: string | null = null;
 
     if (isString(currentPhaseId)) {
-        selectedPhaseId = currentPhaseId;
+      selectedPhaseId = currentPhaseId;
     } else if (phases && phases.data.length > 0) {
+      const currentIsoDate = moment().format('YYYY-MM-DD');
       const lastPhase = phases.data[phases.data.length - 1];
 
-      if (lastPhase && moment().diff(moment(lastPhase.attributes.start_at, 'YYYY-MM-DD'), 'days') <= 0) {
-        selectedPhaseId = phases.data[0].id;
-      } else if (lastPhase && moment().diff(moment(lastPhase.attributes.start_at, 'YYYY-MM-DD'), 'days') > 0) {
+      forEach(phases.data, (phase) => {
+        const phaseStartsAtIsoDate = moment(phase.attributes.start_at).format('YYYY-MM-DD');
+
+        if (moment(phaseStartsAtIsoDate).isSameOrAfter(currentIsoDate)) {
+          selectedPhaseId = phase.id;
+
+          // break
+          return false;
+        }
+
+        return true;
+      });
+
+      if (!selectedPhaseId) {
         selectedPhaseId = lastPhase.id;
       }
     }
@@ -438,6 +450,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
       let phaseStatus: 'past' | 'present' | 'future' | null = null;
       const phaseIds = (phases ? phases.data.map(phase => phase.id) : null);
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
+      const currentIsoDate = moment().format('YYYY-MM-DD');
       const selectedPhase = (selectedPhaseId ? phases.data.find(phase => phase.id === selectedPhaseId) : null);
       const selectedPhaseStart = (selectedPhase ? moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD').format('LL') : null);
       const selectedPhaseEnd = (selectedPhase ? moment(selectedPhase.attributes.end_at, 'YYYY-MM-DD').format('LL') : null);
@@ -446,11 +459,13 @@ export default class Timeline extends React.PureComponent<Props, State> {
       const isSelected = (selectedPhaseId !== null);
 
       if (selectedPhase) {
+        const selectedPhaseStartsAtIsoDate = moment(selectedPhase.attributes.start_at).format('YYYY-MM-DD');
+
         if (currentPhaseId && selectedPhaseId === currentPhaseId) {
           phaseStatus = 'present';
-        } else if (moment().diff(moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD'), 'days') <= 0) {
+        } else if (moment(selectedPhaseStartsAtIsoDate).isAfter(currentIsoDate)) {
           phaseStatus = 'future';
-        } else if (moment().diff(moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD'), 'days') > 0) {
+        } else {
           phaseStatus = 'past';
         }
       }
