@@ -8,6 +8,7 @@ import { isNullOrError } from 'utils/helperUtils';
 import * as moment from 'moment';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // Services
 import { deletePhase } from 'services/phases';
@@ -50,7 +51,7 @@ const OrderLabel = styled.div`
   width: 3rem;
   flex: 0 0 3rem;
 
-  &.current {
+  &.present {
     background: #32B67A;
   }
 
@@ -84,18 +85,6 @@ class AdminProjectTimelineIndex extends React.Component<Props & WithRouterProps 
     }
   }
 
-  phaseTiming = (startIsoDate: string, endIsoDate: string): 'past' | 'current' | 'future' => {
-    const currentIsoDate = moment().format('YYYY-MM-DD');
-
-    if (moment(currentIsoDate).isBetween(startIsoDate, endIsoDate, 'days', '[]')) {
-      return 'current';
-    } else if (moment(startIsoDate).isAfter(currentIsoDate)) {
-      return 'future';
-    } else {
-      return 'past';
-    }
-  }
-
   render() {
     const { phases } = this.props;
     const { slug } = this.props.params;
@@ -115,14 +104,12 @@ class AdminProjectTimelineIndex extends React.Component<Props & WithRouterProps 
               </HeadRow>
 
               {phases.map((phase, index) => {
-                const startAtIsoDate = moment(phase.attributes.start_at).format('YYYY-MM-DD');
                 const startAt = moment(phase.attributes.start_at).format('LL');
-                const endAtIsoDate = moment(phase.attributes.end_at).format('YYYY-MM-DD');
                 const endAt = moment(phase.attributes.end_at).format('LL');
 
                 return (
                   <Row className={`e2e-phase-line ${phases.length === index + 1 ? 'last' : ''}`} id={`e2e-phase_${phase.id}`} key={phase.id}>
-                    <OrderLabel className={this.phaseTiming(startAtIsoDate, endAtIsoDate)}>
+                    <OrderLabel className={pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at])}>
                       {index + 1}
                     </OrderLabel>
                     <div className="expand">

@@ -18,6 +18,9 @@ import { getLocalized } from 'utils/i18n';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
+// utils
+import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
+
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
@@ -243,29 +246,17 @@ class Event extends React.PureComponent<Props, State> {
       const eventLocationAddress = getLocalized(event.attributes.location_multiloc, locale, tenantLocales);
       const startAtMoment = moment(event.attributes.start_at);
       const endAtMoment = moment(event.attributes.end_at);
-      const currentIsoDate = moment().format('YYYY-MM-DD');
-      const startAtIsoDate = moment(event.attributes.start_at).format('YYYY-MM-DD');
-      const endAtIsoDate = moment(event.attributes.end_at).format('YYYY-MM-DD');
-      let startAtTime = startAtMoment.format('LT');
-      let endAtTime = endAtMoment.format('LT');
+      const startAtIsoDate = getIsoDate(event.attributes.start_at);
+      const endAtIsoDate = getIsoDate(event.attributes.end_at);
       const startAtDay = startAtMoment.format('DD');
       const endAtDay = endAtMoment.format('DD');
       const startAtMonth = startAtMoment.format('MMM');
       const endAtMonth = endAtMoment.format('MMM');
       const startAtYear = startAtMoment.format('YYYY');
       const isMultiDayEvent = (startAtIsoDate !== endAtIsoDate);
-      let eventStatus: 'past' | 'present' | 'future' = 'past';
-
-      if (moment(currentIsoDate).isBetween(startAtIsoDate, endAtIsoDate, 'days', '[]')) {
-        eventStatus = 'present';
-      } else if (moment(startAtIsoDate).isAfter(currentIsoDate)) {
-        eventStatus =  'future';
-      }
-
-      if (isMultiDayEvent) {
-        startAtTime = startAtMoment.format('D MMM LT');
-        endAtTime = endAtMoment.format('D MMM LT');
-      }
+      const startAtTime = (isMultiDayEvent ? startAtMoment.format('D MMM LT') : startAtMoment.format('LT'));
+      const endAtTime = (isMultiDayEvent ? endAtMoment.format('D MMM LT') : endAtMoment.format('LT'));
+      const eventStatus = pastPresentOrFuture([event.attributes.start_at, event.attributes.end_at]);
 
       return (
         <Container className={`${className} ${eventStatus}`}>
