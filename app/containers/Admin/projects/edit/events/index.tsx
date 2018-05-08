@@ -13,6 +13,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { deleteEvent } from 'services/events';
 
 // Resources
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
 
 // Components
@@ -37,6 +38,7 @@ const StyledList = styled(List)`
 interface InputProps {}
 
 interface DataProps {
+  project: GetProjectChildProps;
   events: GetEventsChildProps;
 }
 
@@ -55,11 +57,11 @@ class AdminProjectEventsIndex extends React.PureComponent<Props & WithRouterProp
 
   render() {
     const { events } = this.props;
-    const { projectId } = this.props.params;
+    const { slug } = this.props.params;
 
     return (
       <ListWrapper className="e2e-projects-events">
-        <AddButton style="cl-blue" icon="plus-circle" circularCorners={false} linkTo={`/admin/projects/${projectId}/events/new`}>
+        <AddButton style="cl-blue" icon="plus-circle" circularCorners={false} linkTo={`/admin/projects/${slug}/events/new`}>
           <FormattedMessage {...messages.addEventButton} />
         </AddButton>
 
@@ -88,7 +90,7 @@ class AdminProjectEventsIndex extends React.PureComponent<Props & WithRouterProp
                   <Button style="text" icon="delete" onClick={this.createDeleteClickHandler(event.id)}>
                     <FormattedMessage {...messages.deleteButtonLabel} />
                   </Button>
-                  <Button style="secondary" icon="edit" linkTo={`/admin/projects/${projectId}/events/${event.id}`}>
+                  <Button style="secondary" icon="edit" linkTo={`/admin/projects/${slug}/events/${event.id}`}>
                     <FormattedMessage {...messages.editButtonLabel} />
                   </Button>
                 </Row>
@@ -102,7 +104,8 @@ class AdminProjectEventsIndex extends React.PureComponent<Props & WithRouterProp
 }
 
 const Data = adopt<DataProps, InputProps & WithRouterProps & InjectedIntlProps>({
-  events: ({ params, render }) => <GetEvents projectId={params.projectId} resetOnChange>{render}</GetEvents>
+  project: ({ params, render }) => <GetProject slug={params.slug} resetOnChange>{render}</GetProject>,
+  events: ({ project, render }) => <GetEvents projectId={(!isNullOrError(project) ? project.id : null)} resetOnChange>{render}</GetEvents>
 });
 
 const AdminProjectEventsIndexWithHoCs = withRouter(injectIntl(AdminProjectEventsIndex));
@@ -112,3 +115,4 @@ export default (inputProps: InputProps & WithRouterProps & InjectedIntlProps) =>
     {dataProps => <AdminProjectEventsIndexWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );
+
