@@ -29,10 +29,6 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class AdminProjectsList extends React.PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
 
   handleReorder = (projectId, newOrder) => {
     reorderProject(projectId, newOrder);
