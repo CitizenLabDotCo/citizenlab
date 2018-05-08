@@ -464,7 +464,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
                 }
 
                 <HeaderTitleWrapper>
-                  <HeaderTitle className={`${isSelected && 'selected'} ${phaseStatus === 'present'}`}>
+                  <HeaderTitle className={`${isSelected && 'selected'} ${phaseStatus}`}>
                     {selectedPhaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
                   </HeaderTitle>
                   <MobileDate>
