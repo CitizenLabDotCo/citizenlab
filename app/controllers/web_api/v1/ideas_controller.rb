@@ -121,9 +121,9 @@ class WebApi::V1::IdeasController < ApplicationController
     params[:idea][:topic_ids] ||= [] if params[:idea].has_key?(:topic_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].has_key?(:phase_ids)
     ActiveRecord::Base.transaction do
-      if @idea.update(permitted_attributes(Idea))
+      if @idea.update(permitted_attributes(@idea))
         SideFxIdeaService.new.after_update(@idea, current_user)
-        render json: @idea.reload, status: :ok, include: ['author','topics','areas','user_vote', 'idea_images']
+        render json: @idea.reload, status: :ok, include: ['author','topics','areas','user_vote','idea_images']
       else
         render json: { errors: @idea.errors.details }, status: :unprocessable_entity
       end

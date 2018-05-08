@@ -158,5 +158,12 @@ RSpec.describe Idea, type: :model do
     end
   end
 
+  describe "title" do
+    it "is stripped from spaces at beginning and ending" do
+      idea = create(:idea, title_multiloc: {'en' => ' my fantastic idea  '})
+      expect(idea.title_multiloc['en']).to eq 'my fantastic idea'
+    end
+  end
+
 
 end
