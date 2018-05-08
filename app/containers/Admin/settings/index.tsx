@@ -1,7 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 
 // router
-import { withRouter, RouterState } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
@@ -12,15 +12,11 @@ import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-type Props = {};
+interface Props {}
 
-type State = {};
+interface State {}
 
-class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & RouterState, State> {
-  constructor(props: Props) {
-    super(props as any);
-  }
-
+class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   render() {
     const { location, children } = this.props;
     const { formatMessage } = this.props.intl;
@@ -56,4 +52,4 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & Route
   }
 }
 
-export default withRouter(injectIntl<Props>(SettingsPage) as any);
+export default withRouter(injectIntl(SettingsPage));

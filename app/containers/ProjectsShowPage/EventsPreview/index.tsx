@@ -1,8 +1,12 @@
 // libraries
 import React from 'react';
 import { adopt } from 'react-adopt';
+<<<<<<< HEAD
 import { isNilOrError } from 'utils/helperUtils';
 import * as moment from 'moment';
+=======
+import { isNullOrError } from 'utils/helperUtils';
+>>>>>>> 8c65c73370d346ca34a17518fec7a85a9fe85252
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -16,6 +20,9 @@ import messages from '../messages';
 import EventBlock from './EventBlock';
 import Button from 'components/UI/Button';
 import ContentContainer from 'components/ContentContainer';
+
+// utils
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // styling
 import styled from 'styled-components';
@@ -62,9 +69,13 @@ const Data = adopt<DataProps, InputProps>({
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {({ project, events }) => {
+<<<<<<< HEAD
       if (!isNilOrError(project) && events && events.length > 0) {
         const now = moment();
 
+=======
+      if (!isNullOrError(project) && events && events.length > 0) {
+>>>>>>> 8c65c73370d346ca34a17518fec7a85a9fe85252
         return (
           <Container className={`e2e-events-preview`}>
             <ContentContainer>
@@ -79,7 +90,10 @@ export default (inputProps: InputProps) => (
 
               <Events>
                 {events
-                  .filter((event) => moment(event.attributes.start_at).isSameOrAfter(now, 'day'))
+                  .filter((event) => {
+                    const eventTime = pastPresentOrFuture([event.attributes.start_at, event.attributes.end_at]);
+                    return (eventTime === 'present' || eventTime === 'future');
+                  })
                   .slice(0, 3)
                   .map((event, index) => (
                     <EventBlock event={event} key={event.id} projectSlug={project.attributes.slug} isLast={(index === 2)} />
