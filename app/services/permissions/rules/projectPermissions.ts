@@ -10,3 +10,7 @@ definePermissionRule('projects', 'create', (_project: IProjectData, user: IUser)
 definePermissionRule('projects', 'delete', (_project: IProjectData, user: IUser) => {
   return isAdmin(user);
 });
+
+definePermissionRule('projects', 'reorder', (_project: IProjectData, user: IUser) => {
+  return isAdmin(user);
+});

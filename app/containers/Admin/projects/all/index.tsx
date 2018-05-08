@@ -86,6 +86,8 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
                   <FormattedMessage {...messages.addNewProject} />
                 </Button>
               </ButtonWrapper>
+              </HasPermission>
+              <HasPermission item="projects" action="reorder">
             <SortableList items={projectsList} onReorder={this.handleReorder}>
               {({ itemsList, handleDragRow, handleDropRow }) => (
                 itemsList.map((project: IProjectData, index: number) => (
@@ -103,7 +105,7 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
             </SortableList>
             <HasPermission.No>
             <List>
-              {projectsList.map((project: IProjectData, index: number) => (
+              {projectsList.map((project: IProjectData) => (
                   <SRow
                     key={project.id}
                   >
