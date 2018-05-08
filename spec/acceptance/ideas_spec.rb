@@ -521,6 +521,24 @@ resource "Ideas" do
         end
       end
     end
+
+    context "when moderator" do
+      before do
+        @moderator = create(:moderator, project: @idea.project)
+        token = Knock::AuthToken.new(payload: { sub: @moderator.id }).token
+        header 'Authorization', "Bearer #{token}"
+      end
+
+      describe do
+        let(:idea_status_id) { create(:idea_status).id }
+
+        example_request "Change the idea status (as a moderator)" do
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:relationships,:idea_status,:data,:id)).to eq idea_status_id
+        end
+      end
+    end
   end
 
 

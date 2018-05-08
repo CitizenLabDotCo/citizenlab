@@ -8,7 +8,10 @@ class Event < ApplicationRecord
   validate :validate_start_at_before_end_at
 
   before_validation :sanitize_description_multiloc
+  before_validation :strip_title
 
+
+  private
   
   def sanitize_description_multiloc
     self.description_multiloc = self.description_multiloc.map do |locale, description|
@@ -19,6 +22,12 @@ class Event < ApplicationRecord
   def validate_start_at_before_end_at
     if start_at.present? && end_at.present? && start_at > end_at
       errors.add(:start_at, :after_end_at, message: 'is after end_at')
+    end
+  end
+
+  def strip_title
+    self.title_multiloc.each do |key, value|
+      self.title_multiloc[key] = value.strip
     end
   end
 end
