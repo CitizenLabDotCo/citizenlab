@@ -30,6 +30,8 @@ module SmartGroupRules
             },
             "value" => {
               "type" => "string",
+              "format": "date",
+              "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}$"
             }
           },
         },
@@ -52,7 +54,7 @@ module SmartGroupRules
     end
 
     def self.from_json json
-      self.new(json['predicate'])
+      self.new(json['predicate'], json['value'])
     end
 
     def initialize predicate, value=nil
@@ -62,6 +64,12 @@ module SmartGroupRules
 
     def filter users_scope
       case predicate
+      when 'is_before'
+        users_scope.where("registration_completed_at::date < (?)::date", value)
+      when 'is_after'
+        users_scope.where("registration_completed_at::date > (?)::date", value)
+      when 'is_exactly'
+        users_scope.where("registration_completed_at::date >= (?)::date AND registration_completed_at::date < ((?)::date + '1 day'::interval)", value, value)
       when 'is_empty'
         users_scope.where("registration_completed_at IS NULL")
       when 'not_is_empty'

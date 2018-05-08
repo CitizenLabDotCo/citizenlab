@@ -5,6 +5,7 @@ class SmartGroupsService
     SmartGroupRules::CustomFieldSelect,
     SmartGroupRules::CustomFieldCheckbox,
     SmartGroupRules::CustomFieldDate,
+    SmartGroupRules::CustomFieldNumber,
     SmartGroupRules::Role,
     SmartGroupRules::Email,
     SmartGroupRules::LivesIn,
@@ -122,6 +123,14 @@ end
 
 # - registration_completed_at
 #   {custom_field_date_options}
+
+# - role
+
+# - birthyear
+
+# - custom_field_select multiselect
+
+# - custom_field_number
 
 
 

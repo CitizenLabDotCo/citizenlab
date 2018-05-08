@@ -80,7 +80,20 @@ module SmartGroupRules
           raise "Unsupported predicate #{predicate}"
         end
       elsif custom_field.input_type == 'multiselect'
-
+        case predicate
+        when 'has_value'
+          option_key = CustomFieldOption.find(value).key
+          users_scope.where("(custom_field_values->>'#{key}')::jsonb ? :value", value: option_key)
+        when 'not_has_value'
+          option_key = CustomFieldOption.find(value).key
+          users_scope.where("custom_field_values->>'#{key}' IS NULL OR NOT (custom_field_values->>'#{key}')::jsonb ? :value", value: option_key)
+        when 'is_empty'
+          users_scope.where("custom_field_values->>'#{key}' IS NULL OR (custom_field_values->>'#{key}')::jsonb = '[]'::jsonb")
+        when 'not_is_empty'
+          users_scope.where("custom_field_values->>'#{key}' IS NOT NULL AND (custom_field_values->>'#{key}')::jsonb != '[]'::jsonb")
+        else
+          raise "Unsupported predicate #{predicate}"
+        end
       end
     end
 

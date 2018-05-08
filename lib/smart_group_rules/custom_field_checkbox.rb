@@ -35,7 +35,6 @@ module SmartGroupRules
     def initialize custom_field_id, predicate, value=nil
       self.custom_field_id = custom_field_id
       self.predicate = predicate
-      # self.value = value
     end
 
     def filter users_scope
@@ -44,9 +43,9 @@ module SmartGroupRules
       if custom_field.input_type == 'checkbox'
         case predicate
         when 'is_checked'
-          raise "Unsupported predicate #{predicate}"
+          users_scope.where("(custom_field_values->>'#{key}')::boolean")
         when 'not_is_checked'
-          raise "Unsupported predicate #{predicate}"
+          users_scope.where.not("(custom_field_values->>'#{key}')::boolean")
         else
           raise "Unsupported predicate #{predicate}"
         end

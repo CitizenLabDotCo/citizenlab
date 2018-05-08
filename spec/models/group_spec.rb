@@ -77,6 +77,7 @@ RSpec.describe Group, type: :model do
       create(:user, email: 'u3@not-in-group.com')
       members = g1.members
       expect(g1.member_ids).to match g1.members.map(&:id)
+      expect(2).to eq(3)
     end
 
   end
@@ -85,7 +86,7 @@ RSpec.describe Group, type: :model do
     let(:cf1) { create(:custom_field_select)}
     let(:cf2) { create(:custom_field)}
     let!(:group1) { create(:smart_group, rules: [
-      {ruleType: 'email', predicate: 'is_empty'},
+      {ruleType: 'email', predicate: 'ends_on', value: '@citizenlab.co'},
       {ruleType: 'custom_field_select', customFieldId: cf1.id, predicate: 'is_empty'}
     ]) }
     let!(:group2) { create(:group) }
@@ -106,7 +107,7 @@ RSpec.describe Group, type: :model do
     let!(:cfo2) { create_list(:custom_field_option, 3, custom_field: cf2) }
 
     let!(:group1) { create(:smart_group, rules: [
-      {ruleType: 'email', predicate: 'is_empty'},
+      {ruleType: 'email', predicate: 'ends_on', value: '@citizenlab.co'},
       {ruleType: 'custom_field_select', customFieldId: cf1.id, predicate: 'has_value', value: cfo1[0].id}
     ]) }
     let!(:group2) { create(:group) }

@@ -12,10 +12,12 @@ describe ProjectPolicy do
       it { should     permit(:show)    }
       it { should_not permit(:create)  }
       it { should_not permit(:update)  }
+      it { should_not permit(:reorder) }
       it { should_not permit(:destroy) }
 
       it "should index the project"  do
         expect(scope.resolve.size).to eq 1
+        expect(scope.moderatable.size).to eq 0
       end
     end
 
@@ -25,10 +27,12 @@ describe ProjectPolicy do
       it { should     permit(:show)    }
       it { should_not permit(:create)  }
       it { should_not permit(:update)  }
+      it { should_not permit(:reorder) }
       it { should_not permit(:destroy) }
 
       it "should index the project"  do
         expect(scope.resolve.size).to eq 1
+        expect(scope.moderatable.size).to eq 0
       end
     end
 
@@ -38,10 +42,27 @@ describe ProjectPolicy do
       it { should permit(:show)    }
       it { should permit(:create)  }
       it { should permit(:update)  }
+      it { should permit(:reorder) }
       it { should permit(:destroy) }
 
       it "should index the project"  do
         expect(scope.resolve.size).to eq 1
+        expect(scope.moderatable.size).to eq 1
+      end
+    end
+
+    context "for a moderator of another project" do
+      let(:user) { create(:moderator, project: create(:project)) }
+
+      it { should     permit(:show)    }
+      it { should_not permit(:create)  }
+      it { should_not permit(:update)  }
+      it { should_not permit(:reorder) }
+      it { should_not permit(:destroy) }
+
+      it "should index the project"  do
+        expect(scope.resolve.size).to eq 2
+        expect(scope.moderatable.size).to eq 1
       end
     end
   end
@@ -54,10 +75,12 @@ describe ProjectPolicy do
       it { should_not permit(:show)    }
       it { should_not permit(:create)  }
       it { should_not permit(:update)  }
+      it { should_not permit(:reorder) }
       it { should_not permit(:destroy) }
 
       it "should not index the project"  do
         expect(scope.resolve.size).to eq 0
+        expect(scope.moderatable.size).to eq 0
       end
     end
 
@@ -67,10 +90,12 @@ describe ProjectPolicy do
       it { should_not permit(:show)    }
       it { should_not permit(:create)  }
       it { should_not permit(:update)  }
+      it { should_not permit(:reorder) }
       it { should_not permit(:destroy) }
 
       it "should not index the project"  do
         expect(scope.resolve.size).to eq 0
+        expect(scope.moderatable.size).to eq 0
       end
     end
 
@@ -80,10 +105,27 @@ describe ProjectPolicy do
       it { should permit(:show)    }
       it { should permit(:create)  }
       it { should permit(:update)  }
+      it { should permit(:reorder) }
       it { should permit(:destroy) }
 
       it "should index the project"  do
         expect(scope.resolve.size).to eq 1
+        expect(scope.moderatable.size).to eq 1
+      end
+    end
+
+    context "for a moderator" do
+      let(:user) { create(:moderator, project: project) }
+
+      it { should     permit(:show)    }
+      it { should_not permit(:create)  }
+      it { should     permit(:update)  }
+      it { should     permit(:reorder) }
+      it { should_not permit(:destroy) }
+
+      it "should index the project"  do
+        expect(scope.resolve.size).to eq 1
+        expect(scope.moderatable.size).to eq 1
       end
     end
   end
@@ -95,10 +137,12 @@ describe ProjectPolicy do
     it { should_not permit(:show)    }
     it { should_not permit(:create)  }
     it { should_not permit(:update)  }
+    it { should_not permit(:reorder) }
     it { should_not permit(:destroy) }
 
     it "should not index the project"  do
       expect(scope.resolve.size).to eq 0
+      expect(scope.moderatable.size).to eq 0
     end
   end
 
@@ -109,9 +153,11 @@ describe ProjectPolicy do
     it { should_not permit(:show)    }
     it { should_not permit(:create)  }
     it { should_not permit(:update)  }
+    it { should_not permit(:reorder) }
     it { should_not permit(:destroy) }
     it "should not index the project"  do
       expect(scope.resolve.size).to eq 0
+      expect(scope.moderatable.size).to eq 0
     end
   end
 
@@ -122,10 +168,12 @@ describe ProjectPolicy do
     it { should permit(:show)    }
     it { should_not permit(:create)  }
     it { should_not permit(:update)  }
+    it { should_not permit(:reorder) }
     it { should_not permit(:destroy) }
 
     it "should index the project"  do
       expect(scope.resolve.size).to eq 1
+      expect(scope.moderatable.size).to eq 0
     end
   end
 
@@ -169,10 +217,12 @@ describe ProjectPolicy do
     it { should permit(:show)    }
     it { should permit(:create)  }
     it { should permit(:update)  }
+    it { should permit(:reorder) }
     it { should permit(:destroy) }
 
     it "should index the project"  do
       expect(scope.resolve.size).to eq 1
+      expect(scope.moderatable.size).to eq 1
     end
 
   end
@@ -185,10 +235,12 @@ describe ProjectPolicy do
       it { should_not permit(:show)    }
       it { should_not permit(:create)  }
       it { should_not permit(:update)  }
+      it { should_not permit(:reorder) }
       it { should_not permit(:destroy) }
 
       it "should not index the project"  do
         expect(scope.resolve.size).to eq 0
+        expect(scope.moderatable.size).to eq 0
       end
     end
 
@@ -198,10 +250,12 @@ describe ProjectPolicy do
       it { should_not permit(:show)    }
       it { should_not permit(:create)  }
       it { should_not permit(:update)  }
+      it { should_not permit(:reorder) }
       it { should_not permit(:destroy) }
 
       it "should not index the project"  do
         expect(scope.resolve.size).to eq 0
+        expect(scope.moderatable.size).to eq 0
       end
     end
 
@@ -211,10 +265,27 @@ describe ProjectPolicy do
       it { should permit(:show)    }
       it { should permit(:create)  }
       it { should permit(:update)  }
+      it { should permit(:reorder) }
       it { should permit(:destroy) }
 
       it "should index the project"  do
         expect(scope.resolve.size).to eq 1
+        expect(scope.moderatable.size).to eq 1
+      end
+    end
+
+    context "for a moderator" do
+      let(:user) { create(:moderator, project: project) }
+
+      it { should     permit(:show)    }
+      it { should_not permit(:create)  }
+      it { should     permit(:update)  }
+      it { should     permit(:reorder)  }
+      it { should_not permit(:destroy) }
+
+      it "should index the project"  do
+        expect(scope.resolve.size).to eq 1
+        expect(scope.moderatable.size).to eq 1
       end
     end
   end

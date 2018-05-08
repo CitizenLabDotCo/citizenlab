@@ -11,7 +11,7 @@ module SmartGroupRules
     validates :predicate, presence: true
     validates :predicate, inclusion: { in: PREDICATE_VALUES }
     validates :value, absence: true, unless: :needs_value?
-    validates :value, presence: true, if: :needs_value?
+    validates :value, presence: true, inclusion: { in: -> (record) { ['outside'] + Area.all.map(&:id) } }, if: :needs_value?
 
     def self.to_json_schema
       [   
@@ -52,7 +52,7 @@ module SmartGroupRules
     end
 
     def self.from_json json
-      self.new(json['predicate'])
+      self.new(json['predicate'], json['value'])
     end
 
     def initialize predicate, value=nil
@@ -63,13 +63,13 @@ module SmartGroupRules
     def filter users_scope
       case predicate
       when 'has_value'
-        raise "Unsupported predicate #{predicate}"
+        users_scope.where("custom_field_values->>'domicile' = ?", value)
       when 'not_has_value'
-        raise "Unsupported predicate #{predicate}"      
+        users_scope.where("custom_field_values->>'domicile' IS NULL or custom_field_values->>'domicile' != ?", value)
       when 'is_empty'
-        raise "Unsupported predicate #{predicate}"      
+        users_scope.where("custom_field_values->>'domicile' IS NULL")
       when 'not_is_empty'
-        raise "Unsupported predicate #{predicate}"      
+        users_scope.where("custom_field_values->>'domicile' IS NOT NULL")     
       else
         raise "Unsupported predicate #{predicate}"
       end

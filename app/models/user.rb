@@ -68,6 +68,10 @@ class User < ApplicationRecord
     where("roles @> '[{\"type\":\"admin\"}]'")
   }
 
+  scope :project_moderators, -> (project_id) {
+    where("roles @> ?", JSON.generate([{type: 'project_moderator', project_id: project_id}]))
+  }
+
   scope :active, -> {
     where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'")
   }
@@ -112,6 +116,11 @@ class User < ApplicationRecord
 
   def add_role type, options={}
     self.roles << {"type" => type}.merge(options)
+    self.roles.uniq!
+  end
+
+  def delete_role type, options={}
+    self.roles.delete({"type" => type}.merge(options.stringify_keys))
   end
 
   def authenticate(unencrypted_password)

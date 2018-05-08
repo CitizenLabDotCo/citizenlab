@@ -51,6 +51,28 @@ describe SmartGroupsService do
       expect(JSON::Validator.validate!(schema, rules)).to be true
     end
 
+    it "successfully validates valid custom field date rule" do
+      schema = service.generate_rules_json_schema
+      invalid_rule = { 
+        'ruleType' => 'custom_field_date', 
+        'customFieldId' => create(:custom_field_date).id, 
+        'predicate' => 'is_before', 
+        'value' => '2018-05-04' 
+      }
+      expect(JSON::Validator.validate(schema, [invalid_rule])).to be true
+    end
+
+    it "rejects invalid custom field date rule" do
+      schema = service.generate_rules_json_schema
+      invalid_rule = { 
+        'ruleType' => 'custom_field_date', 
+        'customFieldId' => create(:custom_field_date).id, 
+        'predicate' => 'is_before', 
+        'value' => 'garbage' 
+      }
+      expect(JSON::Validator.validate(schema, [invalid_rule])).to be false
+    end
+
   end
 
   describe "filter" do

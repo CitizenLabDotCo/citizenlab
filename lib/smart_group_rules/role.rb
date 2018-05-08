@@ -42,7 +42,7 @@ module SmartGroupRules
       when 'is_admin'
         users_scope.admin
       when 'not_is_admin'
-        users_scope #todo
+        users_scope.where.not("roles @> '[{\"type\":\"admin\"}]'")
       else
         raise "Unsupported predicate #{predicate}"
       end

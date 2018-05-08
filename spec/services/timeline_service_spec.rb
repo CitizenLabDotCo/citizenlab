@@ -12,10 +12,16 @@ describe TimelineService do
   describe "current_phase" do
     let(:project) {create(:project)}
     let!(:active_phase) { create_active_phase(project) }
-    let!(:inactive_phases) { Array.new(10).map{|_| create_inactive_phase(project)} }
+    let!(:inactive_phases) { 10.times{create_inactive_phase(project)} }
 
     it "returns an active phase of the project" do
       expect(service.current_phase(project)&.id).to eq(active_phase.id)
+    end
+
+    it "returns the active phase when we're in the last day of the phase" do
+      project = create(:project)
+      phase = create(:phase, start_at: Time.now.to_date - 1.week, end_at: Time.now.to_date, project: project)
+      expect(service.current_phase(project)&.id).to eq (phase.id)
     end
   end
 
