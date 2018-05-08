@@ -148,8 +148,8 @@ class CustomFieldService
     {
       title: handle_title(field, locale),
       description: handle_description(field, locale),
-      type: "string",
-      enum: field.custom_field_options.map(&:key),
+      type: ['string']+(field.required ? [] : ['null']),
+      enum: field.custom_field_options.map(&:key)+(field.required ? [] : [nil]),
       enumNames: field.custom_field_options.map{|o| handle_title(o, locale)}
     }
   end

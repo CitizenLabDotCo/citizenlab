@@ -13,7 +13,7 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.active? && (record.author_id == user.id || user.admin?)
+    user&.active? && (record.author_id == user.id || user.admin? || user.project_moderator?(record.idea.project_id))
   end
 
   def show?
@@ -21,11 +21,11 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def update?
-    user&.active? && (record.author_id == user.id || user.admin?)
+    user&.active? && (record.author_id == user.id || user.admin? || user.project_moderator?(record.idea.project_id))
   end
 
   def mark_as_deleted?
-    user&.active? && (record.author_id == user.id || user.admin?)
+    user&.active? && (record.author_id == user.id || user.admin? || user.project_moderator?(record.idea.project_id))
   end
 
   def destroy?

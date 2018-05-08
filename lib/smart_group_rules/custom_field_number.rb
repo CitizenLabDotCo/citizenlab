@@ -1,13 +1,16 @@
 module SmartGroupRules
-  class CustomFieldText
+  class CustomFieldNumber
 
-    PREDICATE_VALUES = %w(is not_is contains not_contains begins_with not_begins_with ends_on not_ends_on is_empty not_is_empty)
+    PREDICATE_VALUES = %w(is_empty not_is_empty is_equal not_is_equal is_larger_than is_larger_than_or_equal is_smaller_than is_smaller_than_or_equal)
     VALUELESS_PREDICATES = %w(is_empty not_is_empty)
-    RULE_TYPE = "custom_field_text"
+
+    RULE_TYPE = "custom_field_number"
 
     include CustomFieldRule
 
-    validates :custom_field_id, inclusion: { in: proc { CustomField.where(input_type: 'text').map(&:id) } }
+    validates :custom_field_id, inclusion: { in: proc { CustomField.where(input_type: 'number').map(&:id) } }
+    validates :value, absence: true, unless: :needs_value?
+    validates :value, presence: true, if: :needs_value?
 
     def self.to_json_schema
       [   
@@ -28,7 +31,7 @@ module SmartGroupRules
               "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
             },
             "value" => {
-              "type" => "string",
+              "type": "number"
             }
           },
         },
@@ -62,29 +65,27 @@ module SmartGroupRules
     def filter users_scope
       custom_field = CustomField.find(custom_field_id)
       key = custom_field.key
-      case predicate
-      when 'is'
-        users_scope.where("custom_field_values->>'#{key}' = ?", value)
-      when 'not_is'
-        users_scope.where("custom_field_values->>'#{key}' IS NULL or custom_field_values->>'#{key}' != ?", value)
-      when 'contains'
-        users_scope.where("custom_field_values->>'#{key}' LIKE ?", "%#{value}%")
-      when 'not_contains'
-        users_scope.where("custom_field_values->>'#{key}' NOT LIKE ?", "%#{value}%")
-      when 'begins_with'
-        users_scope.where("custom_field_values->>'#{key}' LIKE ?", "#{value}%")
-      when 'not_begins_with'
-        users_scope.where("custom_field_values->>'#{key}' NOT LIKE ?", "#{value}%")
-      when 'ends_on'
-        users_scope.where("custom_field_values->>'#{key}' LIKE ?", "%#{value}")
-      when 'not_ends_on'
-        users_scope.where("custom_field_values->>'#{key}' NOT LIKE ?", "%#{value}")
-      when 'is_empty'
-        users_scope.where("custom_field_values->>'#{key}' IS NULL")
-      when 'not_is_empty'
-        users_scope.where("custom_field_values->>'#{key}' IS NOT NULL")
-      else
-        raise "Unsupported predicate #{predicate}"
+      if custom_field.input_type == 'number'
+        case predicate
+        when 'is_equal'
+          users_scope.where("(custom_field_values->>'#{key}')::float = ?", value)
+        when 'not_is_equal'
+          users_scope.where("custom_field_values->>'#{key}' IS NULL OR (custom_field_values->>'#{key}')::float != ?", value)
+        when 'is_larger_than'
+          users_scope.where("(custom_field_values->>'#{key}')::float > ?", value)
+        when 'is_larger_than_or_equal'
+          users_scope.where("(custom_field_values->>'#{key}')::float >= ?", value)
+        when 'is_smaller_than'
+          users_scope.where("(custom_field_values->>'#{key}')::float < ?", value)
+        when 'is_smaller_than_or_equal'
+          users_scope.where("(custom_field_values->>'#{key}')::float <= ?", value)
+        when 'is_empty'
+          users_scope.where("custom_field_values->>'#{key}' IS NULL")
+        when 'not_is_empty'
+          users_scope.where("custom_field_values->>'#{key}' IS NOT NULL")
+        else
+          raise "Unsupported predicate #{predicate}"
+        end
       end
     end
 
