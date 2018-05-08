@@ -29,7 +29,7 @@ namespace :nlp do
   end
 
   def encode_ideas
-    Idea.where(publication_status: 'published').all.map do |idea|
+    Idea.published.all.map do |idea|
       d = {
         id:                   idea.id,
         title_multiloc:       idea.title_multiloc,
