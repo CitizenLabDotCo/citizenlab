@@ -49,7 +49,7 @@ module.exports = {
     browser.pause(1500);
 
     adminProjectsPage
-    .assert.containsText('.e2e-admin-projects-list .e2e-admin-list-row span', `Test Project ${hash}`)
+    .assert.containsText('.e2e-admin-projects-list', `Test Project ${hash}`)
     .click('.e2e-admin-projects-list .e2e-admin-list-row .e2e-admin-edit-project a')
 
     // Test for the description insertion

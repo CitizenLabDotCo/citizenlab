@@ -21,7 +21,7 @@ export default (inputProps: InputProps) => (
       if (isNilOrError(user)) return null;
 
       return (
-        <Table.Row key={inputProps.invite.id}>
+        <Table.Row key={inputProps.invite.id} className={inputProps.invite.attributes.token}>
           <Table.Cell>
             {user.attributes.email}
           </Table.Cell>

@@ -9,6 +9,7 @@ import messages from './messages';
 // Services
 import { ICommentData, markForDeletion, DeleteReason } from 'services/comments';
 import { hasPermission } from 'services/permissions';
+import { IProjectData } from 'services/projects';
 
 // Components
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
@@ -35,6 +36,7 @@ const ButtonsWrapper = styled.div`
 // Typing
 export type Props = {
   comment: ICommentData,
+  projectId: IProjectData['id'];
   className?: string,
   onCommentEdit: {(): void};
 };
@@ -98,9 +100,9 @@ export default class CommentsMoreActions extends React.Component<Props, State> {
 
   getActions = async (): Promise<IAction[]> => {
     return combineLatest([
-      hasPermission({ item: this.props.comment, action: 'markAsSpam' }),
-      hasPermission({ item: this.props.comment, action: 'delete' }),
-      hasPermission({ item: this.props.comment, action: 'edit' }),
+      hasPermission({ item: this.props.comment, action: 'markAsSpam', context: { projectId: this.props.projectId } }),
+      hasPermission({ item: this.props.comment, action: 'delete', context: { projectId: this.props.projectId } }),
+      hasPermission({ item: this.props.comment, action: 'edit', context: { projectId: this.props.projectId } }),
     ])
     .map(([canReport, canDelete, canEdit]) => {
       const actions: IAction[] = [];
@@ -133,7 +135,7 @@ export default class CommentsMoreActions extends React.Component<Props, State> {
           actions={this.state.actions}
         />
         <Modal fixedHeight={false} opened={this.state.modalVisible_delete} close={this.closeDeleteModal} className="e2e-comment-deletion-modal">
-          <HasPermission item={this.props.comment} action="justifyDeletion">
+          <HasPermission item={this.props.comment} action="justifyDeletion" context={{ projectId: this.props.projectId }}>
             {/* Justification required for the deletion */}
             <CommentsAdminDeletionModal onCloseDeleteModal={this.closeDeleteModal} onDeleteComment={this.deleteComment} />
 

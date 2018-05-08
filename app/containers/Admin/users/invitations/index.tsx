@@ -541,6 +541,7 @@ class Invitations extends React.PureComponent<Props, State> {
       </>
     );
 
+<<<<<<< HEAD
     return (
       <>
         <form onSubmit={this.handleOnSubmit}>
@@ -564,6 +565,45 @@ class Invitations extends React.PureComponent<Props, State> {
                   <Label>
                     <FormattedHTMLMessage {...messages.importLabel} />
                   </Label>
+=======
+    if (tenantLocales) {
+      return (
+        <>
+          <form onSubmit={this.handleOnSubmit} id="invitation">
+            <Section>
+              <SectionTitle>
+                <FormattedMessage {...messages.invitePeople} />
+              </SectionTitle>
+
+              <ViewButtons>
+                <LeftButton onClick={this.resetWithView('import')} className={`${selectedView === 'import' && 'active'}`}>
+                  <FormattedMessage {...messages.importTab} />
+                </LeftButton>
+                <RightButton onClick={this.resetWithView('text')} className={`${selectedView === 'text' && 'active'} e2e-manual-invite`}>
+                  <FormattedMessage {...messages.textTab} />
+                </RightButton>
+              </ViewButtons>
+
+              {selectedView === 'import' &&
+                <>
+                  <SectionField>
+                    <Label>
+                      <FormattedHTMLMessage {...messages.importLabel} />
+                    </Label>
+
+                    <Warning
+                      text={
+                        <FormattedMessage
+                          {...messages.importInfo}
+                          values={{
+                            emailColumnName: <strong><FormattedMessage {...messages.emailColumnName} /></strong>, // tslint:disable-next-line
+                            downloadLink: <a href="#" onClick={this.downloadExampleFile}><FormattedMessage {...messages.exampleFile} /></a>, // tslint:disable-next-line
+                            supportPageLink: <a href={supportPageURL} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
+                          }}
+                        />
+                      }
+                    />
+>>>>>>> 1261a48b20c1748658d547348414312642b83e5c
 
                   <Warning
                     text={
@@ -578,12 +618,25 @@ class Invitations extends React.PureComponent<Props, State> {
                     }
                   />
 
+<<<<<<< HEAD
                   <FileInputWrapper>
                     <input
                       type="file"
                       accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                       onChange={this.handleFileInputOnChange}
                       ref={this.setFileInputRef}
+=======
+              {selectedView === 'text' &&
+                <>
+                  <SectionField>
+                    <Label>
+                      <FormattedMessage {...messages.emailListLabel} />
+                    </Label>
+                    <TextArea
+                      value={(selectedEmails || '')}
+                      onChange={this.handleEmailListOnChange}
+                      id="emails"
+>>>>>>> 1261a48b20c1748658d547348414312642b83e5c
                     />
                   </FileInputWrapper>
                   <Error text={filetypeError} />
