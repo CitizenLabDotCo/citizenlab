@@ -22,6 +22,7 @@ import VoteWrapper from './VoteWrapper';
 import ParentCommentForm from './ParentCommentForm';
 import Spinner from 'components/UI/Spinner';
 import VoteControl from 'components/VoteControl';
+import Fragment from 'components/Fragment';
 
 // services
 import { ideaByIdStream, IIdea } from 'services/ideas';
@@ -826,9 +827,11 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                   <MapPaddingBottom />
                 }
 
-                <IdeaBody className={`${!ideaImageLarge && 'noImage'}`}>
-                  <T value={bodyMultiloc} />
-                </IdeaBody>
+                <Fragment name={`ideas/${idea.data.id}/body`}>
+                  <IdeaBody className={`${!ideaImageLarge && 'noImage'}`}>
+                    <T value={bodyMultiloc} />
+                  </IdeaBody>
+                </Fragment>
 
                 <SeparatorRow />
 

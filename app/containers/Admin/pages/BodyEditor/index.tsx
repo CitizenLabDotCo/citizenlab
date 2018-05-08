@@ -3,6 +3,7 @@ import { updatePage } from 'services/pages';
 import Grapes from 'components/admin/Grapes';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import { browserHistory, withRouter, WithRouterProps } from 'react-router';
+import { isNullOrError } from 'utils/helperUtils';
 
 interface InputProps {}
 
@@ -19,7 +20,7 @@ class BodyEditor extends React.Component<Props & WithRouterProps, State> {
   handleOnSave = (html: string) => {
     const { page } = this.props;
 
-    if (page) {
+    if (!isNullOrError(page)) {
       const newBody = {
         ...page.attributes.body_multiloc,
         [this.props.params.locale]: html,
@@ -33,7 +34,7 @@ class BodyEditor extends React.Component<Props & WithRouterProps, State> {
 
   render() {
     const { page, params } = this.props;
-    if (!page) return null;
+    if (isNullOrError(page)) return null;
 
     const body = page.attributes.body_multiloc[params.locale];
 

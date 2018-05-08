@@ -39,6 +39,7 @@ const IdeaMeta: React.SFC<Props> = ({ locale, tenantLocales, idea, ideaImages })
     return (
       <Helmet>
         <title>{ideaTitle}</title>
+        <meta name="description" content={ideaDescription} />
         <meta property="og:title" content={ideaTitle} />
         <meta property="og:description" content={ideaDescription} />
         {ideaImage && <meta property="og:image" content={ideaImage} />}

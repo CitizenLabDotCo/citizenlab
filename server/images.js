@@ -9,5 +9,5 @@ app.use('/uploads', (req, res) => {
 });
 
 app.listen(4000, () => {
-  console.log('Image upload proxy started on port 4000');
+  console.log('Image upload proxy started on port 4000'); // eslint-disable-line no-console
 });

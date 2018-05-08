@@ -13,6 +13,7 @@ module.exports = {
     .setValue('#lastName', `Account ${hash}`)
     .setValue('#email', `test+${hash}@citizenlab.co`)
     .setValue('#password', '123456789')
+    .click('.e2e-terms-and-conditions > :first-child')
     .click('#e2e-signup-step1-button')
     .waitForElementVisible('#e2e-signup-step2-button')
     .pause(500)
