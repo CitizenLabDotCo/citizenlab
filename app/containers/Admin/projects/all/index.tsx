@@ -16,6 +16,7 @@ import PageWrapper, { ButtonWrapper } from 'components/admin/PageWrapper';
 import Button from 'components/UI/Button';
 import Title from 'components/admin/PageTitle';
 import StatusLabel from 'components/UI/StatusLabel';
+import HasPermission from 'components/HasPermission';
 
 interface InputProps {}
 
@@ -44,12 +45,14 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
           </Title>
 
           <PageWrapper>
-            <ButtonWrapper>
-              <Button className="e2e-admin-add-project" linkTo="/admin/projects/new" style="cl-blue" circularCorners={false} icon="plus-circle">
-                <FormattedMessage {...messages.addNewProject} />
-              </Button>
-            </ButtonWrapper>
-              <SortableList items={projectsList} onReorder={this.handleReorder} className="e2e-admin-projects-list">
+            <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">
+              <ButtonWrapper>
+                <Button className="e2e-admin-add-project" linkTo="/admin/projects/new" style="cl-blue" circularCorners={false} icon="plus-circle">
+                  <FormattedMessage {...messages.addNewProject} />
+                </Button>
+              </ButtonWrapper>
+            </HasPermission>
+            <SortableList items={projectsList} onReorder={this.handleReorder}>
               {({ itemsList, handleDragRow, handleDropRow }) => (
                 itemsList.map((project: IProjectData, index: number) => (
                   <SortableRow
@@ -90,7 +93,7 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
 }
 
 export default (props) => (
-  <GetProjects publicationStatuses={['draft', 'published', 'archived']}>
+  <GetProjects publicationStatuses={['draft', 'published', 'archived']} filterCanModerate={true}>
     {projects => <AdminProjectsList {...props} projects={projects} />}
   </GetProjects>
 );

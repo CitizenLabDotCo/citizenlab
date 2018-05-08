@@ -16,6 +16,7 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from './participationContext';
 import { Button as SemButton, Icon as SemIcon } from 'semantic-ui-react';
+import HasPermission from 'components/HasPermission';
 
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -30,7 +31,7 @@ import messages from '../messages';
 import {
   IUpdatedProjectProperties,
   IProjectData,
-  projectBySlugStream,
+  projectByIdStream,
   addProject,
   updateProject,
   deleteProject,
@@ -129,7 +130,7 @@ const ParticipationContextWrapper = styled.div`
 type Props = {
   lang: string,
   params: {
-    slug: string,
+    projectId: string,
   }
 };
 
@@ -157,7 +158,7 @@ interface State {
 }
 
 class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlProps, State> {
-  slug$: Rx.BehaviorSubject<string | null>;
+  projectId$: Rx.BehaviorSubject<string | null>;
   processing$: Rx.BehaviorSubject<boolean>;
   subscriptions: Rx.Subscription[] = [];
 
@@ -185,7 +186,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       submitState: 'disabled',
       deleteError: null,
     };
-    this.slug$ = new Rx.BehaviorSubject(null);
+    this.projectId$ = new Rx.BehaviorSubject(null);
     this.processing$ = new Rx.BehaviorSubject(false);
     this.subscriptions = [];
   }
@@ -195,15 +196,15 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     const currentTenant$ = currentTenantStream().observable;
     const areas$ = areasStream().observable;
 
-    this.slug$.next(this.props.params.slug);
+    this.projectId$.next(this.props.params.projectId);
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
         locale$,
         currentTenant$,
         areas$,
-        this.slug$.distinctUntilChanged().switchMap((slug) => {
-          return (slug ? projectBySlugStream(slug).observable : Rx.Observable.of(null));
+        this.projectId$.distinctUntilChanged().switchMap((projectId) => {
+          return (projectId ? projectByIdStream(projectId).observable : Rx.Observable.of(null));
         }).switchMap((project) => {
           if (project) {
             const projectImages$ = (project ? projectImagesStream(project.data.id).observable : Rx.Observable.of(null));
@@ -276,8 +277,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.params.slug !== prevProps.params.slug) {
-      this.slug$.next(this.props.params.slug);
+    if (this.props.params.projectId !== prevProps.params.projectId) {
+      this.projectId$.next(this.props.params.projectId);
     }
   }
 
@@ -763,16 +764,18 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
             </StyledSectionField>
 
             {projectData &&
-              <SectionField>
-                <Label>
-                  <FormattedMessage {...messages.deleteProjectLabel} />
-                </Label>
-                <SemButton color="red" onClick={this.deleteProject} disabled={projectData.attributes.internal_role === 'open_idea_box'}>
-                  <SemIcon name="trash" />
-                  <FormattedMessage {...messages.deleteProjectButton} />
-                </SemButton>
-                <Error text={this.state.deleteError} />
-              </SectionField>
+              <HasPermission item={projectData} action="delete">
+                <SectionField>
+                  <Label>
+                    <FormattedMessage {...messages.deleteProjectLabel} />
+                  </Label>
+                  <SemButton color="red" onClick={this.deleteProject} disabled={projectData.attributes.internal_role === 'open_idea_box'}>
+                    <SemIcon name="trash" />
+                    <FormattedMessage {...messages.deleteProjectButton} />
+                  </SemButton>
+                  <Error text={this.state.deleteError} />
+                </SectionField>
+              </HasPermission>
             }
 
             <SubmitWrapper

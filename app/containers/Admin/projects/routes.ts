@@ -10,7 +10,7 @@ export default () => ({
   },
   childRoutes: [
     {
-      path: '/admin/projects/:slug/edit',
+      path: '/admin/projects/:projectId/edit',
       name: 'admin projects single project',
       getComponent: loadAndRender(import('containers/Admin/projects/edit')),
       indexRoute: {
@@ -19,42 +19,42 @@ export default () => ({
       },
       childRoutes: [
         {
-          path: '/admin/projects/:slug/description',
+          path: '/admin/projects/:projectId/description',
           name: 'admin projects description',
           getComponent: loadAndRender(import('containers/Admin/projects/edit/description')),
         },
         {
-          path: '/admin/projects/:slug/ideas',
+          path: '/admin/projects/:projectId/ideas',
           name: 'admin projects ideas manager',
           getComponent: loadAndRender(import('components/admin/IdeaManager')),
         },
         {
-          path: '/admin/projects/:slug/timeline',
+          path: '/admin/projects/:projectId/timeline',
           name: 'admin projects timeline',
           getComponent: loadAndRender(import('containers/Admin/projects/edit/timeline')),
         },
         {
-          path: '/admin/projects/:slug/timeline/new',
+          path: '/admin/projects/:projectId/timeline/new',
           name: 'admin projects timeline create',
           getComponent: loadAndRender(import('containers/Admin/projects/edit/timeline/edit')),
         },
         {
-          path: '/admin/projects/:slug/timeline/:id',
+          path: '/admin/projects/:projectId/timeline/:id',
           name: 'admin projects timeline edit',
           getComponent: loadAndRender(import('containers/Admin/projects/edit/timeline/edit')),
         },
         {
-          path: '/admin/projects/:slug/events',
+          path: '/admin/projects/:projectId/events',
           name: 'admin projects events',
           getComponent: loadAndRender(import('containers/Admin/projects/edit/events')),
         },
         {
-          path: '/admin/projects/:slug/events/new',
+          path: '/admin/projects/:projectId/events/new',
           name: 'admin projects events create',
           getComponent: loadAndRender(import('containers/Admin/projects/edit/events/edit')),
         },
         {
-          path: '/admin/projects/:slug/events/:id',
+          path: '/admin/projects/:projectId/events/:id',
           name: 'admin projects events edit',
           getComponent: loadAndRender(import('containers/Admin/projects/edit/events/edit')),
         },
@@ -64,12 +64,12 @@ export default () => ({
           getComponent: loadAndRender(import('containers/Admin/projects/edit/general')),
         },
         {
-          path: '/admin/projects/:slug/events',
+          path: '/admin/projects/:projectId/events',
           name: 'admin projects edit events',
           getComponent: loadAndRender(import('containers/Admin/projects/edit/events')),
         },
         {
-          path: '/admin/projects/:slug/permissions',
+          path: '/admin/projects/:projectId/permissions',
           name: 'admin projects edit permissions',
           getComponent: loadAndRender(import('containers/Admin/projects/edit/permissions')),
         },
