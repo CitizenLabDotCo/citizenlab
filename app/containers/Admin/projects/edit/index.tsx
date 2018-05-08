@@ -4,7 +4,7 @@ import * as Rx from 'rxjs/Rx';
 import { isString, reject } from 'lodash';
 
 // Services
-import { projectBySlugStream, IProjectData } from 'services/projects';
+import { projectByIdStream, IProjectData } from 'services/projects';
 
 // Components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -26,7 +26,10 @@ const StyledGoBackButton = styled(GoBackButton)`
 
 type Props = {
   params: {
-    slug: string | null,
+    projectId: string | null,
+  },
+  location: {
+    pathname: string
   }
 };
 
@@ -36,7 +39,7 @@ type State = {
 };
 
 class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps, State> {
-  slug$: Rx.BehaviorSubject<string | null>;
+  projectId$: Rx.BehaviorSubject<string | null>;
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -45,17 +48,17 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
       project: null,
       loaded: false
     };
-    this.slug$ = new Rx.BehaviorSubject(null);
+    this.projectId$ = new Rx.BehaviorSubject(null);
     this.subscriptions = [];
   }
 
   componentDidMount() {
-    this.slug$.next(this.props.params.slug);
+    this.projectId$.next(this.props.params.projectId);
 
     this.subscriptions = [
-      this.slug$
+      this.projectId$
         .distinctUntilChanged()
-        .switchMap(slug => isString(slug) ? projectBySlugStream(slug).observable : Rx.Observable.of(null))
+        .switchMap(projectId => isString(projectId) ? projectByIdStream(projectId).observable : Rx.Observable.of(null))
         .subscribe((project) => {
           this.setState({
             project: (project ? project.data : null),
@@ -66,15 +69,15 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
   }
 
   componentDidUpdate() {
-    this.slug$.next(this.props.params.slug);
+    this.projectId$.next(this.props.params.projectId);
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getTabs = (slug: string, project: IProjectData) => {
-    const baseTabsUrl = `/admin/projects/${slug}`;
+  getTabs = (projectId: string, project: IProjectData) => {
+    const baseTabsUrl = `/admin/projects/${projectId}`;
 
     let tabs: TabProps[] = [
       {
@@ -127,7 +130,7 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
     const newPath = currentPath.replace(lastUrlSegment, '').replace(/\/$/, '');
     const newLastUrlSegment = newPath.substr(newPath.lastIndexOf('/') + 1);
 
-    if (newLastUrlSegment === this.props.params.slug) {
+    if (newLastUrlSegment === this.props.params.projectId) {
       browserHistory.push('/admin/projects');
     } else {
       browserHistory.push(newPath);
@@ -135,7 +138,7 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
   }
 
   render() {
-    const { slug } = this.props.params;
+    const { projectId } = this.props.params;
     const { project, loaded } = this.state;
     const { formatMessage } = this.props.intl;
 
@@ -145,12 +148,12 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
       const tabbedProps = {
         resource: {
           title: project ? project.attributes.title_multiloc : formatMessage(messages.addNewProject),
-          publicLink: project ? `/projects/${project.attributes.slug}` : ''
+          publicLink: project ? `/projects/${project.id}` : ''
         },
         messages: {
           viewPublicResource: messages.viewPublicProject,
         },
-        tabs: ((slug && project) ? this.getTabs(slug, project) : [])
+        tabs: ((projectId && project) ? this.getTabs(projectId, project) : [])
       };
 
       return(

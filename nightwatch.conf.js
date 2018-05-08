@@ -38,9 +38,6 @@ module.exports = {
         acceptSslCerts: true,
         elementScrollBehavior: 0,
         chromeOptions: {
-          args: [
-            "window-size=1280,800",
-          ],
         },
       },
     },

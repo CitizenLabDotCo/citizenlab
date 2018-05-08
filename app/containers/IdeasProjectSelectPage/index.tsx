@@ -279,11 +279,11 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
               </EmptyStateContainer>
             }
 
-            {!noProjects && 
+            {!noProjects &&
               <Content>
                 <ColumnsContainer>
 
-                  {cityProjects && 
+                  {cityProjects &&
                     <LeftColumn className={!openProject ? 'fullWidth' : ''}>
                       <ColumnTitle>
                         <FormattedMessage {...messages.cityProjects} />

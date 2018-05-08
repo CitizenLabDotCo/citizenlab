@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled, { css } from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 const size = 22;
 const padding = 4;
@@ -30,7 +31,7 @@ const ToggleContainer: any = styled.div`
     i {
       padding-right: ${padding}px !important;
       padding-left: ${size}px !important;
-      background: #00cc33 !important;
+      background: ${colors.success} !important;
     }
   `};
 
@@ -95,7 +96,7 @@ export default class Toggle extends React.PureComponent<Props, State> {
           <i />
         </ToggleContainer>
 
-        {label && 
+        {label &&
           <Text onClick={this.handleOnClick}>{label}</Text>
         }
       </Container>

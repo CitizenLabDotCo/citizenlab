@@ -13,10 +13,12 @@ import Radio from 'components/UI/Radio';
 import ProjectGroupsList from './ProjectGroupsList';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
+import Moderators from './Moderators';
 
 // services
-import { projectBySlugStream, updateProject, IProject } from 'services/projects';
+import { projectByIdStream, updateProject, IProject } from 'services/projects';
 import { groupsProjectsByProjectIdStream, addGroupProject, deleteGroupProject, IGroupsProjects } from 'services/groupsProjects';
+import GetModerators from 'resources/GetModerators';
 
 // style
 import styled from 'styled-components';
@@ -40,7 +42,7 @@ const StyledRadio = styled(Radio)`
 
 type Props  = {
   params: {
-    slug: string | null
+    projectId: string | null
   };
 };
 
@@ -75,9 +77,9 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
   }
 
   componentDidMount() {
-    if (this.props.params.slug) {
-      const projectSlug = this.props.params.slug;
-      const project$ = projectBySlugStream(projectSlug).observable.do((project) => {
+    if (this.props.params.projectId) {
+      const projectId = this.props.params.projectId;
+      const project$ = projectByIdStream(projectId).observable.do((project) => {
         this.setState({
           savedVisibleTo: project.data.attributes.visible_to,
           unsavedVisibleTo: project.data.attributes.visible_to
@@ -176,21 +178,21 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
 
     if (!loading && unsavedVisibleTo) {
       return (
-        <Section>
-          <SectionField>
-            <Label htmlFor="permissions-type">
-              <FormattedMessage {...messages.permissionTypeLabel} />
-            </Label>
+          <Section>
+            <SectionField>
+              <Label htmlFor="permissions-type">
+                <FormattedMessage {...messages.permissionTypeLabel} />
+              </Label>
 
-            <RadioButtonsWrapper>
-              <StyledRadio
-                onChange={this.handlePermissionTypeChange}
-                currentValue={unsavedVisibleTo}
-                name="permissionsType"
-                label={formatMessage(messages.permissionsEveryoneLabel)}
-                value="public"
-                id="permissions-all"
-              />
+              <RadioButtonsWrapper>
+                <StyledRadio
+                  onChange={this.handlePermissionTypeChange}
+                  currentValue={unsavedVisibleTo}
+                  name="permissionsType"
+                  label={formatMessage(messages.permissionsEveryoneLabel)}
+                  value="public"
+                  id="permissions-all"
+                />
               <StyledRadio
                 onChange={this.handlePermissionTypeChange}
                 currentValue={unsavedVisibleTo}
@@ -211,18 +213,23 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
           </SectionField>
 
           {groups}
-
-          <SubmitWrapper
-            loading={saving}
-            status={status}
-            onClick={this.saveChanges}
-            messages={{
-              buttonSave: messages.save,
-              buttonSuccess: messages.saveSuccess,
-              messageError: messages.saveErrorMessage,
-              messageSuccess: messages.saveSuccessMessage,
-            }}
-          />
+          <SectionField>
+            <SubmitWrapper
+              loading={saving}
+              status={status}
+              onClick={this.saveChanges}
+              messages={{
+                buttonSave: messages.save,
+                buttonSuccess: messages.saveSuccess,
+                messageError: messages.saveErrorMessage,
+                messageSuccess: messages.saveSuccessMessage,
+              }}
+            />
+          </SectionField>
+          {project &&
+            <GetModerators projectId={project.data.id}>
+              {moderators => <Moderators moderators={moderators} projectId={project.data.id} />}
+            </GetModerators>}
         </Section>
       );
     }
