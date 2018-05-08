@@ -105,10 +105,10 @@ const Data = adopt<DataProps, InputProps & WithRouterProps & InjectedIntlProps>(
   events: ({ params, render }) => <GetEvents projectId={params.projectId} resetOnChange>{render}</GetEvents>
 });
 
-const AdminProjectTimelineIndexWithHoCs = withRouter(injectIntl(AdminProjectEventsIndex));
+const AdminProjectEventsIndexWithHoCs = withRouter(injectIntl(AdminProjectEventsIndex));
 
 export default (inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
   <Data {...inputProps}>
-    {dataProps => <AdminProjectTimelineIndexWithHoCs {...inputProps} {...dataProps} />}
+    {dataProps => <AdminProjectEventsIndexWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );
