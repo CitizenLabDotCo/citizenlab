@@ -2,7 +2,6 @@ import React from 'react';
 // import { Observable, Subscription } from 'rxjs/Rx';
 import { get, isUndefined } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
-import { hasCustomFields } from 'utils/customFields';
 import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 import { adopt } from 'react-adopt';
 
@@ -13,13 +12,12 @@ import SignInUpBanner from 'components/SignInUpBanner';
 // import { landingPageIdeasQuery } from 'containers/LandingPage';
 
 // services
-import { updateIdea } from 'services/ideas';
+// import { updateIdea } from 'services/ideas';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -103,7 +101,6 @@ interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
   idea: GetIdeaChildProps;
-  customFieldsSchema: GetCustomFieldsSchemaChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -162,54 +159,57 @@ class CompleteSignUpPage extends React.PureComponent<Props & WithRouterProps, St
   //   this.subscriptions.forEach(subscription => subscription.unsubscribe());
   // }
 
-  redirectToLandingPage = () => {
-    browserHistory.push('/');
+  // componentDidMount() {
+  //   const { location } = this.props;
+  //   const hasIdeaToPublish = get(location.query, 'idea_to_publish', null);
+
+  //   if (hasIdeaToPublish) {
+  //     // remove idea parameter from the url
+  //     window.history.replaceState(null, '', window.location.pathname);
+  //   }
+  // }
+
+  redirectToLandingPage = (ideaToPublishId: string | null) => () => {
+    browserHistory.push({
+      pathname: '/',
+      search:(ideaToPublishId ? `?idea_to_publish=${ideaToPublishId}` : undefined),
+    });
   }
 
   render() {
-    const { location, locale, authUser, idea, customFieldsSchema } = this.props;
+    const { location, locale, authUser, idea } = this.props;
 
-    if (get(location.query, 'idea_to_publish', null)) {
-      // remove idea parameter from the url
-      window.history.replaceState(null, '', window.location.pathname);
-    }
-
-    console.log(this.props);
-
-    if (!isNilOrError(locale) && !isUndefined(authUser) && !isUndefined(idea) && !isUndefined(customFieldsSchema)) {
+    if (!isNilOrError(locale) && !isUndefined(authUser) && !isUndefined(idea)) {
       const authError = (location.pathname === '/authentication-error');
       const registrationCompletedAt = (authUser ? authUser.attributes.registration_completed_at : null);
+      const ideaToPublishId = ((!authError && !isNilOrError(authUser) && !isNilOrError(idea) && idea.attributes.publication_status === 'draft') ? idea.id : null);
 
-      if (!isNilOrError(authUser) && !isNilOrError(idea) && idea.attributes.publication_status === 'draft') {
-        updateIdea(idea.id, { author_id: authUser.id, publication_status: 'published' });
+      if (!authError && registrationCompletedAt) {
+        this.redirectToLandingPage(ideaToPublishId);
+      } else {
+        return (
+          <Container>
+            <Left>
+              <SignInUpBanner />
+            </Left>
+            <Right>
+              <RightInner>
+                {!authError ? (
+                  <>
+                    <Title><FormattedMessage {...messages.title} /></Title>
+                    <Step2 onCompleted={this.redirectToLandingPage(ideaToPublishId)} />
+                  </>
+                ) : (
+                  <>
+                    <Title><FormattedMessage {...messages.somethingWentWrong} /></Title>
+                    <Error text={<FormattedMessage {...messages.notSignedIn} />} />
+                  </>
+                )}
+              </RightInner>
+            </Right>
+          </Container>
+        );
       }
-
-      if (registrationCompletedAt || !hasCustomFields(customFieldsSchema, locale)) {
-        this.redirectToLandingPage();
-      }
-
-      return (
-        <Container>
-          <Left>
-            <SignInUpBanner />
-          </Left>
-          <Right>
-            <RightInner>
-              {!authError ? (
-                <>
-                  <Title><FormattedMessage {...messages.title} /></Title>
-                  <Step2 onCompleted={this.redirectToLandingPage} />
-                </>
-              ) : (
-                <>
-                  <Title><FormattedMessage {...messages.somethingWentWrong} /></Title>
-                  <Error text={<FormattedMessage {...messages.notSignedIn} />} />
-                </>
-              )}
-            </RightInner>
-          </Right>
-        </Container>
-      );
     }
 
     return null;
@@ -219,8 +219,7 @@ class CompleteSignUpPage extends React.PureComponent<Props & WithRouterProps, St
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
-  idea: ({ location, render }) => <GetIdea id={get(location.query, 'idea_to_publish', null)}>{render}</GetIdea>,
-  customFieldsSchema: <GetCustomFieldsSchema />
+  idea: ({ location, render }) => <GetIdea id={get(location.query, 'idea_to_publish', null)}>{render}</GetIdea>
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
