@@ -13,6 +13,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { deletePhase } from 'services/phases';
 
 // Resources
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 // Components
@@ -65,6 +66,7 @@ const OrderLabel = styled.div`
 interface InputProps {}
 
 interface DataProps {
+  project: GetProjectChildProps;
   phases: GetPhasesChildProps;
 }
 
@@ -96,11 +98,11 @@ class AdminProjectTimelineIndex extends React.Component<Props & WithRouterProps 
 
   render() {
     const { phases } = this.props;
-    const { projectId } = this.props.params;
+    const { slug } = this.props.params;
 
     return (
       <ListWrapper>
-        <AddButton className="e2e-add-phase-button" icon="plus-circle" style="cl-blue" circularCorners={false} linkTo={`/admin/projects/${projectId}/timeline/new`}>
+        <AddButton className="e2e-add-phase-button" icon="plus-circle" style="cl-blue" circularCorners={false} linkTo={`/admin/projects/${slug}/timeline/new`}>
           <FormattedMessage {...messages.addPhaseButton} />
         </AddButton>
 
@@ -130,7 +132,7 @@ class AdminProjectTimelineIndex extends React.Component<Props & WithRouterProps 
                     <Button className="e2e-delete-phase" icon="delete" style="text" onClick={this.createDeleteClickHandler(phase.id)}>
                       <FormattedMessage {...messages.deletePhaseButton} />
                     </Button>
-                    <Button  circularCorners={false} className="e2e-edit-phase" icon="edit" style="secondary" linkTo={`/admin/projects/${projectId}/timeline/${phase.id}`}>
+                    <Button  circularCorners={false} className="e2e-edit-phase" icon="edit" style="secondary" linkTo={`/admin/projects/${slug}/timeline/${phase.id}`}>
                       <FormattedMessage {...messages.editPhaseButton} />
                     </Button>
                   </Row>
@@ -145,7 +147,8 @@ class AdminProjectTimelineIndex extends React.Component<Props & WithRouterProps 
 }
 
 const Data = adopt<DataProps, InputProps & WithRouterProps & InjectedIntlProps>({
-  phases: ({ params, render }) => <GetPhases projectId={params.projectId} resetOnChange>{render}</GetPhases>
+  project: ({ params, render }) => <GetProject slug={params.slug} resetOnChange>{render}</GetProject>,
+  phases: ({ project, render }) => <GetPhases projectId={(!isNullOrError(project) ? project.id : null)} resetOnChange>{render}</GetPhases>
 });
 
 const AdminProjectTimelineIndexWithHoCs = withRouter(injectIntl(AdminProjectTimelineIndex));
