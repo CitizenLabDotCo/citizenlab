@@ -116,14 +116,16 @@ interface Props {
 
 export default (props: Props) => {
   const { projectSlug, event, isLast } = props;
-  const isMultiDayEvent = !moment(props.event.attributes.start_at).isSame(props.event.attributes.end_at, 'day');
   const startAtMoment = moment(event.attributes.start_at);
   const endAtMoment = moment(event.attributes.end_at);
+  const startAtIsoDate = startAtMoment.format('YYYY-MM-DD');
+  const endAtIsoDate = endAtMoment.format('YYYY-MM-DD');
   const startAtDay = startAtMoment.format('DD');
   const endAtDay = endAtMoment.format('DD');
   const startAtMonth = startAtMoment.format('MMM');
   const endAtMonth = endAtMoment.format('MMM');
   const startAtYear = startAtMoment.format('YYYY');
+  const isMultiDayEvent = !moment(startAtIsoDate).isSame(endAtIsoDate);
   const dateFormat = (!isMultiDayEvent ? 'LT' : 'D MMM LT');
   const startAt = moment(event.attributes.start_at).format(dateFormat);
   const endAt = moment(event.attributes.end_at).format(dateFormat);

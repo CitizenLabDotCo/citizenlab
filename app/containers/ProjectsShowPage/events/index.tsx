@@ -67,12 +67,16 @@ export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps)
       const { project, events } = dataProps;
 
       if (project !== null && events !== null) {
+        const currentIsoDate = moment().format('YYYY-MM-DD');
+
         const pastEvents = (events ? events.filter((event) => {
-          return moment().diff(moment(event.attributes.start_at, 'YYYY-MM-DD'), 'days') > 0;
+          const eventEndIsoDate = moment(event.attributes.end_at).format('YYYY-MM-DD');
+          return moment(eventEndIsoDate).isBefore(currentIsoDate);
         }) : null);
 
         const upcomingEvents = (events ? events.filter((event) => {
-          return moment().diff(moment(event.attributes.start_at, 'YYYY-MM-DD'), 'days') <= 0;
+          const eventStartIsoDate = moment(event.attributes.start_at).format('YYYY-MM-DD');
+          return moment(eventStartIsoDate).isSameOrAfter(currentIsoDate);
         }) : null);
 
         return (

@@ -10,9 +10,9 @@ type ButtonStateResponse  = {
 
 const isCurrentPhase = (phase: IPhaseData) : boolean => {
   const currentTenantTodayMoment = moment();
-  const startMoment = moment(phase.attributes.start_at, 'YYYY-MM-DD');
-  const endMoment = moment(phase.attributes.end_at, 'YYYY-MM-DD');
-  return currentTenantTodayMoment.isBetween(startMoment, endMoment, 'days', '[]');
+  const startIsoDate = moment(phase.attributes.start_at, 'YYYY-MM-DD');
+  const endIsoDate = moment(phase.attributes.end_at, 'YYYY-MM-DD');
+  return currentTenantTodayMoment.isBetween(startIsoDate, endIsoDate, 'days', '[]');
 };
 
 export const postingButtonState = ({ project, phase }: {project?: IProjectData | null | Error, phase?: IPhaseData | null | Error}): ButtonStateResponse => {

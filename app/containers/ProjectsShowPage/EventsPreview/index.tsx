@@ -63,8 +63,6 @@ export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {({ project, events }) => {
       if (!isNullOrError(project) && events && events.length > 0) {
-        const now = moment();
-
         return (
           <Container className={`e2e-events-preview`}>
             <ContentContainer>
@@ -79,7 +77,11 @@ export default (inputProps: InputProps) => (
 
               <Events>
                 {events
-                  .filter((event) => moment(event.attributes.start_at).isSameOrAfter(now, 'day'))
+                  .filter((event) => {
+                    const eventStartsAtIsoDate = moment(event.attributes.start_at).format('YYYY-MM-DD');
+                    const currentIsoDate = moment().format('YYYY-MM-DD');
+                    return moment(eventStartsAtIsoDate).isSameOrAfter(currentIsoDate);
+                  })
                   .slice(0, 3)
                   .map((event, index) => (
                     <EventBlock event={event} key={event.id} projectSlug={project.attributes.slug} isLast={(index === 2)} />

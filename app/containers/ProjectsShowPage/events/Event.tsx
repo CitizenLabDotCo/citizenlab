@@ -243,6 +243,7 @@ class Event extends React.PureComponent<Props, State> {
       const eventLocationAddress = getLocalized(event.attributes.location_multiloc, locale, tenantLocales);
       const startAtMoment = moment(event.attributes.start_at);
       const endAtMoment = moment(event.attributes.end_at);
+      const currentIsoDate = moment().format('YYYY-MM-DD');
       const startAtIsoDate = moment(event.attributes.start_at).format('YYYY-MM-DD');
       const endAtIsoDate = moment(event.attributes.end_at).format('YYYY-MM-DD');
       let startAtTime = startAtMoment.format('LT');
@@ -255,10 +256,10 @@ class Event extends React.PureComponent<Props, State> {
       const isMultiDayEvent = (startAtIsoDate !== endAtIsoDate);
       let eventStatus: 'past' | 'present' | 'future' = 'past';
 
-      if (moment().diff(startAtMoment, 'days') < 0) {
-        eventStatus = 'future';
-      } else if (moment().diff(endAtMoment, 'days') === 0) {
+      if (moment(currentIsoDate).isBetween(startAtIsoDate, endAtIsoDate, 'days', '[]')) {
         eventStatus = 'present';
+      } else if (moment(startAtIsoDate).isAfter(currentIsoDate)) {
+        eventStatus =  'future';
       }
 
       if (isMultiDayEvent) {
