@@ -20,5 +20,5 @@ app.use('/auth', (req, res) => {
 app.use(express.static('build'));
 
 app.listen(3000, () => {
-  console.log('Serving production build on port 3000');
+  console.log('Serving production build on port 3000'); // eslint-disable-line no-console
 });

@@ -38,6 +38,10 @@ export default defineMessages({
     id: 'app.containers.app.navbar.admin',
     defaultMessage: 'Admin',
   },
+  projectsModeration: {
+    id: 'app.containers.app.navbar.projectsModeration',
+    defaultMessage: 'Projects Moderation',
+  },
 
   pageIdeas: {
     id: 'app.containers.app.navbar.pageIdeas',

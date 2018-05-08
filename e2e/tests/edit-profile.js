@@ -5,7 +5,7 @@ const lastName = `last name ${hash}`;
 const afterEach = require('../updateBSStatus');
 
 module.exports = {
-  '@tags': ['citizen', 'profile'],
+  '@tags': ['citizen', 'profile', 'edit-profile'],
   afterEach,
   editProfile: (browser) => {
     const signinPage = browser.page.signin();
@@ -24,6 +24,7 @@ module.exports = {
     .setValue('#firstName', firstName)
     .clearValue('#lastName')
     .setValue('#lastName', lastName)
+    .execute('var submitChange = document.getElementsByClassName("e2e-submit-wrapper-button");submitChange[0].scrollIntoView(true);')
     .click('.e2e-submit-wrapper-button button')
     .waitForElementVisible('.success')
     .url(`http://${process.env.ROOT_URL}/profile/edit`)

@@ -17,6 +17,7 @@ export interface InputProps {
   publicationStatus?: PublicationStatus;
   publicationStatuses?: PublicationStatus[];
   hideAllFilters?: boolean;
+  filterCanModerate?: boolean;
 }
 
 interface IQueryParameters {
@@ -27,6 +28,7 @@ interface IQueryParameters {
   topics?: string[];
   publication_status?: PublicationStatus;
   publication_statuses?: PublicationStatus[];
+  filter_can_moderate?: boolean;
 }
 
 interface IAccumulator {
@@ -146,6 +148,7 @@ export default class GetProjects extends React.Component<Props, State> {
         topics: props.topics,
         publication_status: props.publicationStatus,
         publication_statuses: props.publicationStatuses,
+        filter_can_moderate: props.filterCanModerate,
       }, isNil)
     };
   }

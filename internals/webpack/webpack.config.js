@@ -5,6 +5,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ResourceHintWebpackPlugin = require('resource-hints-webpack-plugin');
 const argv = require('yargs').argv;
 
 // Avoid repeating the babel loader config
@@ -128,7 +129,22 @@ const WEBPACK_CONFIG = {
         minifyURLs: true,
       },
       inject: true,
+      // Preload anything that's necessary (download as fast as possible)
+      preload: [
+        'main.js',
+        'main.*.js',
+        '*.eot',
+        '*.ttf',
+        '*.woff',
+        '*.woff2',
+      ],
+      // Prefetch any chunk to have them load faster when switching pages
+      prefetch: [
+        '*.chunk.js',
+      ],
     }),
+
+    new ResourceHintWebpackPlugin(),
 
     // Common chunks optimization
     new webpack.optimize.CommonsChunkPlugin({
