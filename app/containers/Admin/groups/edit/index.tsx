@@ -5,7 +5,8 @@ import * as Rx from 'rxjs/Rx';
 import { browserHistory } from 'react-router';
 
 // Services
-import { getGroup, IGroupData } from 'services/groups';
+import { getGroup, IGroupData, findMembership, addMembership } from 'services/groups';
+import messages from './messages';
 
 // i18n
 import localize, { injectedLocalized } from 'utils/localize';
@@ -13,8 +14,8 @@ import localize, { injectedLocalized } from 'utils/localize';
 // Components
 import GoBackButton from 'components/UI/GoBackButton';
 import PageWrapper from 'components/admin/PageWrapper';
+import UserSearch from 'components/UserSearch';
 import MembersList from './MembersList';
-import MembersAdd from './MembersAdd';
 
 // Style
 import styled from 'styled-components';
@@ -78,7 +79,7 @@ class GroupsEdit extends React.Component<Props & injectedLocalized, State> {
           </PageTitle>
 
           <PageWrapper>
-            <MembersAdd groupId={this.props.params.groupId} />
+            <UserSearch resourceId={this.props.params.groupId} messages={messages} searchFunction={findMembership} addFunction={addMembership}/>
             <MembersList groupId={this.props.params.groupId} />
           </PageWrapper>
         </Container>

@@ -7,7 +7,7 @@ import Sidebar from './sideBar/';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 
 const Container = styled.div`
@@ -16,18 +16,10 @@ const Container = styled.div`
   flex-wrap: nowrap;
 `;
 
-const LeftColumn = styled.div`
-  flex: 0 0 240px;
-
-  ${media.smallerThanMinTablet`
-    flex: 0 0 70px;
-  `}
-`;
-
 const RightColumn = styled.div`
   flex: 1;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  background: #f9f9fa;
+  background: ${colors.background};
 `;
 
 const AdminContainerStyled = styled<any, 'div'>('div')`
@@ -75,9 +67,7 @@ export default class AdminPage extends React.PureComponent<Props, State> {
     return (
       <>
         <Container className={className}>
-          <LeftColumn>
-            {<Sidebar {...this.props} />}
-          </LeftColumn>
+          <Sidebar {...this.props} />
           <RightColumn>
             <AdminContainerStyled adminFullWidth={adminFullWidth}>
               {children}

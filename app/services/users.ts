@@ -6,8 +6,8 @@ import { authUserStream } from './auth';
 const apiEndpoint = `${API_PATH}/users`;
 
 export interface IRole {
-  type: string;
-  [key: string]: string;
+  type: 'admin' | 'project_moderator';
+  project_id?: string;
 }
 
 export interface IUserData {
