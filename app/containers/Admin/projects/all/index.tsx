@@ -52,7 +52,7 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
                 </Button>
               </ButtonWrapper>
             </HasPermission>
-            <SortableList items={projectsList} onReorder={this.handleReorder}>
+            <SortableList items={projectsList} onReorder={this.handleReorder} className="e2e-admin-projects-list">
               {({ itemsList, handleDragRow, handleDropRow }) => (
                 itemsList.map((project: IProjectData, index: number) => (
                   <SortableRow
