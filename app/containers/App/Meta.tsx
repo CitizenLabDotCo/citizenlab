@@ -68,7 +68,7 @@ class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
       let metaTitle = getLocalized(metaTitleMultiLoc, locale, currentTenantLocales);
       const organizationName = getLocalized(organizationNameMultiLoc, locale, currentTenantLocales);
       let metaDescription = getLocalized(metaDescriptionMultiLoc, locale, currentTenantLocales);
-      const url = `http://${currentTenant.data.attributes.host}`;
+      const url = `https://${currentTenant.data.attributes.host}`;
       const fbAppId = currentTenant.data.attributes.settings.facebook_login && currentTenant.data.attributes.settings.facebook_login.app_id;
       const currentTenantName = getLocalized(organizationNameMultiLoc, locale, currentTenantLocales);
       const headerTitleMultiLoc = currentTenant.data.attributes.settings.core.header_title;
