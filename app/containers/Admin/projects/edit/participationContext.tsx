@@ -65,6 +65,7 @@ export interface IParticipationContextConfig {
   votingEnabled: boolean | null;
   votingMethod: 'unlimited' | 'limited' | null;
   votingLimit: number | null;
+  presentationMode: 'map' | 'card' | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
 }
@@ -94,7 +95,8 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
       votingMethod: 'unlimited',
       votingLimit: 5,
       noVotingLimit: null,
-      loaded: false
+      loaded: false,
+      presentationMode: 'card'
     };
     this.subscriptions = [];
   }
@@ -119,6 +121,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
             voting_enabled,
             voting_method,
             voting_limited_max,
+            presentation_mode,
             survey_embed_url,
             survey_service,
           } = data.data.attributes;
@@ -132,6 +135,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
             votingEnabled: voting_enabled,
             votingMethod: voting_method,
             votingLimit: voting_limited_max,
+            presentationMode: presentation_mode,
             loaded: true
           });
         } else {
@@ -143,7 +147,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
         .observeEvent('getParticipationContext')
         .filter(() => this.validate())
         .subscribe(() => {
-          const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = this.state;
+          const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, presentationMode } = this.state;
 
           this.props.onSubmit({
             participationMethod,
@@ -152,6 +156,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
             votingEnabled: (participationMethod === 'ideation' ? votingEnabled : null),
             votingMethod: (participationMethod === 'ideation' ? votingMethod : null),
             votingLimit: (participationMethod === 'ideation' && votingMethod === 'limited' ? votingLimit : null),
+            presentationMode: (participationMethod === 'ideation' ? presentationMode : null),
             survey_embed_url: (participationMethod === 'survey' ? this.state.survey_embed_url : null),
             survey_service: (participationMethod === 'survey' ? this.state.survey_service : null),
           });
@@ -164,7 +169,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
     const { noVotingLimit: nextNoVotingLimit, loaded: nextLoaded, ...nextPartialState } = this.state;
 
     if (!isEqual(prevPartialState, nextPartialState)) {
-      const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit } = this.state;
+      const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, presentationMode } = this.state;
 
       this.props.onChange({
         participationMethod,
@@ -172,7 +177,8 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
         commentingEnabled: (participationMethod === 'ideation' ? commentingEnabled : null),
         votingEnabled: (participationMethod === 'ideation' ? votingEnabled : null),
         votingMethod: (participationMethod === 'ideation' ? votingMethod : null),
-        votingLimit: (participationMethod === 'ideation' && votingMethod === 'limited' ? votingLimit : null)
+        votingLimit: (participationMethod === 'ideation' && votingMethod === 'limited' ? votingLimit : null),
+        presentationMode: (participationMethod === 'ideation' ? presentationMode : null),
       });
     }
   }
@@ -189,6 +195,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
       votingEnabled: (participationMethod === 'ideation' ? true : null),
       votingMethod: (participationMethod === 'ideation' ? 'unlimited' : null),
       votingLimit: null,
+      presentationMode: (participationMethod === 'ideation' ? 'card' : null),
       survey_embed_url: null,
       survey_service: null,
     });
@@ -225,6 +232,12 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
     this.setState({ votingLimit: parseInt(votingLimit, 10) });
   }
 
+  handleIdeasDisplayChange = (value: 'map' | 'card') => {
+    this.setState({
+      presentationMode: value,
+    });
+  }
+
   validate() {
     let isValidated = true;
     let noVotingLimit: JSX.Element | null = null;
@@ -253,6 +266,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
       votingMethod,
       votingLimit,
       noVotingLimit,
+      presentationMode
     } = this.state;
 
     const votingLimitSection = (participationMethod === 'ideation' && votingMethod === 'limited') ? (
@@ -357,6 +371,22 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
                     <Error text={noVotingLimit} />
                   </SectionField>
                 }
+                <SectionField>
+                  <Label>
+                    <FormattedMessage {...messages.defaultDisplay} />
+                  </Label>
+                  {['card', 'map'].map((key) => (
+                    <Radio
+                      key={key}
+                      onChange={this.handleIdeasDisplayChange}
+                      currentValue={presentationMode}
+                      value={key}
+                      name="presentation_mode"
+                      id={`presentation_mode-${key}`}
+                      label={<FormattedMessage {...messages[`${key}Display`]} />}
+                    />
+                  ))}
+                </SectionField>
               </>
             }
 

@@ -36,6 +36,9 @@ module.exports = {
         browserName: 'chrome',
         javascriptEnabled: true,
         acceptSslCerts: true,
+        elementScrollBehavior: 0,
+        chromeOptions: {
+        },
       },
     },
   },

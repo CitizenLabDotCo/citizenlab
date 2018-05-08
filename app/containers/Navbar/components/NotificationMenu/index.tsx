@@ -1,6 +1,6 @@
 
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import Rx from 'rxjs/Rx';
 
 import styled from 'styled-components';
 import { injectTracks } from 'utils/analytics';
@@ -48,9 +48,7 @@ const EmptyStateContainer = styled.div`
 `;
 
 
-type Props = {
-
-};
+type Props = {};
 
 interface ITracks {
   clickOpenNotifications: () => void;

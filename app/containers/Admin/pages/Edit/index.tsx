@@ -11,6 +11,7 @@ import PageWrapper from 'components/admin/PageWrapper';
 import { color, fontSize } from 'utils/styleUtils';
 import GoBackButton from 'components/UI/GoBackButton';
 import T from 'components/T';
+import { isNullOrError } from 'utils/helperUtils';
 
 const Title = styled.h1`
   color: ${color('title')};
@@ -35,7 +36,7 @@ class EditPage extends React.Component<Props & WithRouterProps, State> {
   initialValues = () => {
     const { page } = this.props;
 
-    return page && {
+    return !isNullOrError(page) && {
       title_multiloc: page.attributes.title_multiloc,
       slug: page.attributes.slug,
       body_multiloc: page.attributes.body_multiloc,
@@ -52,7 +53,7 @@ class EditPage extends React.Component<Props & WithRouterProps, State> {
   handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
     const { page } = this.props;
 
-    if (!page) return;
+    if (isNullOrError(page)) return;
 
     updatePage(page.id, { ...this.changedValues(this.initialValues(), values) }).then(() => {
       browserHistory.push('/admin/pages');
@@ -68,7 +69,7 @@ class EditPage extends React.Component<Props & WithRouterProps, State> {
   }
 
   renderFn = (props) => (
-    this.props.page && (
+    !isNullOrError(this.props.page) && (
       <PageForm
         {...props}
         mode="edit"
@@ -81,7 +82,7 @@ class EditPage extends React.Component<Props & WithRouterProps, State> {
     const { page } = this.props;
     const initialValues = this.initialValues();
 
-    return page && initialValues && (
+    return !isNullOrError(page) && initialValues && (
       <>
         <GoBackButton onClick={this.handleGoBack} />
         <Title><T value={page.attributes.title_multiloc} /></Title>
