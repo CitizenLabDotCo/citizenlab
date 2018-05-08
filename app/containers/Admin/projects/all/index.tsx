@@ -1,5 +1,6 @@
 import React from 'react';
 import { isNullOrError } from 'utils/helperUtils';
+import styled from 'styled-components';
 
 // services
 import { IProjectData, reorderProject } from 'services/projects';
@@ -11,12 +12,18 @@ import T from 'components/T';
 import messages from '../messages';
 
 // components
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import { SortableList, SortableRow, List, Row } from 'components/admin/ResourceList';
 import PageWrapper, { ButtonWrapper } from 'components/admin/PageWrapper';
 import Button from 'components/UI/Button';
 import Title from 'components/admin/PageTitle';
 import StatusLabel from 'components/UI/StatusLabel';
 import HasPermission from 'components/HasPermission';
+
+const SRow = styled(Row)`
+  &:first-child {
+    border-top: none !important
+  }
+`;
 
 interface InputProps {}
 
@@ -38,6 +45,30 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
     reorderProject(projectId, newOrder);
   }
 
+  renderRow = (project : IProjectData) => {
+    return (
+      <>
+        <div className="expand primary">
+          <T value={project.attributes.title_multiloc} />
+          {project.attributes.publication_status !== 'published' &&
+            <StatusLabel color={project.attributes.publication_status === 'archived' ? 'clBlue' : 'draftYellow'}>
+              <FormattedMessage {...messages[`${project.attributes.publication_status}Status`]} />
+            </StatusLabel>
+          }
+        </div>
+        <Button
+          className={`e2e-admin-edit-project ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
+          linkTo={`/admin/projects/${project.id}/edit`}
+          style="secondary"
+          circularCorners={false}
+          icon="edit"
+        >
+          <FormattedMessage {...messages.editButtonLabel} />
+        </Button>
+      </>
+    );
+  }
+
   render () {
     const { projectsList } = this.props.projects;
 
@@ -55,7 +86,6 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
                   <FormattedMessage {...messages.addNewProject} />
                 </Button>
               </ButtonWrapper>
-            </HasPermission>
             <SortableList items={projectsList} onReorder={this.handleReorder}>
               {({ itemsList, handleDragRow, handleDropRow }) => (
                 itemsList.map((project: IProjectData, index: number) => (
@@ -66,27 +96,25 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
                     moveRow={handleDragRow}
                     dropRow={handleDropRow}
                   >
-                    <div className="expand primary">
-                      <T value={project.attributes.title_multiloc} />
-                      {project.attributes.publication_status !== 'published' &&
-                        <StatusLabel color={project.attributes.publication_status === 'archived' ? 'clBlue' : 'draftYellow'}>
-                          <FormattedMessage {...messages[`${project.attributes.publication_status}Status`]} />
-                        </StatusLabel>
-                      }
-                    </div>
-                    <Button
-                      className={`e2e-admin-edit-project ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
-                      linkTo={`/admin/projects/${project.id}/edit`}
-                      style="secondary"
-                      circularCorners={false}
-                      icon="edit"
-                    >
-                      <FormattedMessage {...messages.editButtonLabel} />
-                    </Button>
+                  {this.renderRow(project)}
                   </SortableRow>
                 ))
               )}
             </SortableList>
+            <HasPermission.No>
+            <List>
+              {projectsList.map((project: IProjectData, index: number) => (
+                  <SRow
+                    key={project.id}
+                  >
+                    {this.renderRow(project)}
+                  </SRow>
+                ))
+              }
+            </List>
+            </HasPermission.No>
+          </HasPermission>
+
           </PageWrapper>
         </>
       );
