@@ -1,12 +1,7 @@
 // libraries
 import React from 'react';
 import { adopt } from 'react-adopt';
-<<<<<<< HEAD
 import { isNilOrError } from 'utils/helperUtils';
-import * as moment from 'moment';
-=======
-import { isNullOrError } from 'utils/helperUtils';
->>>>>>> 8c65c73370d346ca34a17518fec7a85a9fe85252
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -69,13 +64,7 @@ const Data = adopt<DataProps, InputProps>({
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {({ project, events }) => {
-<<<<<<< HEAD
       if (!isNilOrError(project) && events && events.length > 0) {
-        const now = moment();
-
-=======
-      if (!isNullOrError(project) && events && events.length > 0) {
->>>>>>> 8c65c73370d346ca34a17518fec7a85a9fe85252
         return (
           <Container className={`e2e-events-preview`}>
             <ContentContainer>

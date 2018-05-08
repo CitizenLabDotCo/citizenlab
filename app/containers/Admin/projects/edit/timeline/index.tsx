@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import * as moment from 'moment';
 import { withRouter, WithRouterProps } from 'react-router';
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -92,7 +92,7 @@ class AdminProjectTimelineIndex extends React.Component<Props & WithRouterProps 
           <FormattedMessage {...messages.addPhaseButton} />
         </AddButton>
 
-        {!isNullOrError(phases) && phases.length > 0 &&
+        {!isNilOrError(phases) && phases.length > 0 &&
           <div className={`e2e-phases-table`}>
             <StyledList>
               <HeadRow>
