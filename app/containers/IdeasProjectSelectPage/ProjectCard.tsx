@@ -1,14 +1,13 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
 import * as moment from 'moment';
+import { adopt } from 'react-adopt';
 import { isNullOrError } from 'utils/helperUtils';
+import { get, isError } from 'lodash';
 
-// services
-import { projectByIdStream, IProject } from 'services/projects';
-import { projectImagesStream, IProjectImages } from 'services/projectImages';
-import { authUserStream } from 'services/auth';
-import { hasPermission } from 'services/permissions';
-import { isAdmin } from 'services/permissions/roles';
+// resources
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
+import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
 
 // components
 import { FormattedMessage } from 'utils/cl-intl';
@@ -157,77 +156,29 @@ const AdminIconWrapper = styled.div`
   justify-content: center;
 `;
 
-type Props = {
+interface InputProps {
   projectId: string;
   onClick: () => void;
   selected: boolean;
   className?: string;
-};
+}
 
-type State = {
-  project: IProject| null;
-  projectImages: IProjectImages | null;
-  isAdmin: boolean;
-  hasPostingRights: boolean;
-  loaded: boolean;
-};
+interface DataProps {
+  project: GetProjectChildProps;
+  projectImages: GetProjectImagesChildProps;
+  permission: GetPermissionChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+interface State {}
 
 class ProjectCard extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      project: null,
-      projectImages: null,
-      isAdmin: false,
-      hasPostingRights: false,
-      loaded: false
-    };
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const { projectId } = this.props;
-
-    const project$ = projectByIdStream(projectId).observable;
-    const authUser$ = authUserStream().observable;
-
-    this.subscriptions = [
-      Rx.Observable.combineLatest(
-        project$,
-        authUser$
-      ).switchMap(([project, authUser]) => {
-        return Rx.Observable.combineLatest(
-          projectImagesStream(projectId).observable,
-          hasPermission({
-            item: 'ideas',
-            action: 'create',
-            user: (authUser || undefined),
-            context: { project: project.data },
-          })
-        ).map(([projectImages, hasPostingRights]) => ({ project, authUser, projectImages, hasPostingRights }));
-      }).subscribe(({ project, authUser, projectImages, hasPostingRights }) => {
-        this.setState({
-          project,
-          projectImages,
-          hasPostingRights,
-          isAdmin: (authUser ? isAdmin(authUser) : false),
-          loaded: true
-        });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
   disabledMessage = () => {
-    const { project } = this.state;
+    const { project } = this.props;
 
-    if (project) {
-      const { enabled, future_enabled: futureEnabled } = project.data.relationships.action_descriptor.data.posting;
+    if (!isNullOrError(project)) {
+      const { enabled, future_enabled: futureEnabled } = project.relationships.action_descriptor.data.posting;
 
       if (enabled) {
         return null;
@@ -240,10 +191,10 @@ class ProjectCard extends React.PureComponent<Props, State> {
   }
 
   calculateCardState = () => {
-    const { hasPostingRights } = this.state;
+    const { permission } = this.props;
     const disabledMessage = this.disabledMessage();
 
-    if (disabledMessage && hasPostingRights) {
+    if (disabledMessage && permission) {
       return 'enabledBecauseAdmin';
     } else if (disabledMessage) {
       return 'disabled';
@@ -261,15 +212,15 @@ class ProjectCard extends React.PureComponent<Props, State> {
   render() {
     const className = this.props['className'];
     const { projectId, selected } = this.props;
-    const { project, projectImages, loaded } = this.state;
+    const { project, projectImages, permission } = this.props;
 
-    if (loaded && !isNullOrError(project)) {
-      const { title_multiloc: titleMultiloc } = project.data.attributes;
-      const smallImage = !isNullOrError(projectImages) && projectImages.data.length > 0 && projectImages.data[0].attributes.versions.small;
+    if (!isNullOrError(project) && !isNullOrError(permission)) {
+      const { title_multiloc: titleMultiloc } = project.attributes;
+      const smallImage = !isNullOrError(projectImages) && projectImages.length > 0 && projectImages[0].attributes.versions.small;
       const disabledMessage = this.disabledMessage();
       const cardState = this.calculateCardState();
       const enabled = (cardState === 'enabled' || cardState === 'enabledBecauseAdmin');
-      const futureEnabledDate = project.data.relationships.action_descriptor.data.posting.future_enabled;
+      const futureEnabledDate = project.relationships.action_descriptor.data.posting.future_enabled;
       const formattedFutureEnabledDate = (futureEnabledDate ? moment(futureEnabledDate, 'YYYY-MM-DD').format('LL') : null);
 
       return (
@@ -331,4 +282,14 @@ class ProjectCard extends React.PureComponent<Props, State> {
   }
 }
 
-export default ProjectCard;
+const Data = adopt<DataProps, InputProps>({
+  project: ({ projectId, render }) => <GetProject id={projectId} resetOnChange>{render}</GetProject>,
+  projectImages: ({ project, render }) => <GetProjectImages projectId={get(project, 'id')} resetOnChange>{render}</GetProjectImages>,
+  permission: ({ project, render }) => <GetPermission item="ideas" action="create" context={{ project: (!isError(project) ? project : null) }}>{render}</GetPermission>
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <ProjectCard {...inputProps} {...dataProps} />}
+  </Data>
+);

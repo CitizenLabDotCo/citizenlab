@@ -25,11 +25,10 @@ class FormikSubmitWrapper extends React.Component<Props, State> {
 
   getStatus = () => {
     const { isValid, status, touched } = this.props;
-    console.log(isValid, status, touched);
 
     if (isEmpty(touched) && status === 'success') {
       return 'success';
-   } else if (!isValid) {
+    } else if (!isValid) {
       return 'disabled';
     }
 
