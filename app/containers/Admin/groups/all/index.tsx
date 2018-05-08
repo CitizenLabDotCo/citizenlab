@@ -11,6 +11,7 @@ import Modal from 'components/UI/Modal';
 import PageWrapper from 'components/admin/PageWrapper';
 import GroupListTable from './GroupListTable';
 import GroupAdditionForm from './GroupAdditionForm';
+import MultipleSelectDropdown from 'components/admin/MultipleSelectDropdown';
 
 // Style
 import styled from 'styled-components';
@@ -59,6 +60,13 @@ export default class GroupsList extends React.PureComponent<Props, State> {
 
     return (
       <div>
+        <MultipleSelectDropdown
+          messages={messages}
+          choices={[
+            { id:'1', text:{en: 'group1'} },
+          ]}
+
+        />
         <PageTitle>
           <FormattedMessage {...messages.listTitle} />
         </PageTitle>
