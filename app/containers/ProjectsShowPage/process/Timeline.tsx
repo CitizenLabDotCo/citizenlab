@@ -2,7 +2,6 @@ import React from 'react';
 import { indexOf, isString, forEach } from 'lodash';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs/Rx';
 import * as moment from 'moment';
-import 'moment-timezone';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -18,6 +17,9 @@ import { phasesStream, IPhases } from 'services/phases';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { getLocalized } from 'utils/i18n';
+
+// utils
+import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled, { css } from 'styled-components';
@@ -101,7 +103,7 @@ const PhaseNumberWrapper = styled.div`
   border-radius: 50%;
   background: ${greyOpaque};
 
-  &.current {
+  &.present {
     background: ${greenOpaque};
   }
 `;
@@ -288,7 +290,7 @@ const PhaseContainer: any = styled.div`
     ${selectedPhaseBar}
   }
 
-  &.current:not(.selected) {
+  &.currentPhase:not(.selectedPhase) {
     ${currentPhaseBar}
 
     &:hover {
@@ -296,11 +298,11 @@ const PhaseContainer: any = styled.div`
     }
   }
 
-  &.selected:not(.current) {
+  &.selectedPhase:not(.currentPhase) {
     ${selectedPhaseBar}
   }
 
-  &.selected.current {
+  &.selectedPhase.currentPhase {
     ${currentSelectedPhaseBar}
   }
 `;
@@ -361,7 +363,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
           );
         })
         .subscribe(([locale, currentTenant, phases]) => {
-          const currentPhaseId = this.getCurrentPhaseId(currentTenant, phases);
+          const currentPhaseId = this.getCurrentPhaseId(phases);
           const selectedPhaseId = this.getDefaultSelectedPhaseId(currentPhaseId, phases);
           this.setSelectedPhaseId(selectedPhaseId);
           this.setState({ locale, currentTenant, phases, currentPhaseId, loaded: true });
@@ -377,21 +379,17 @@ export default class Timeline extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getCurrentPhaseId(currentTenant: ITenant, phases: IPhases | null) {
+  getCurrentPhaseId(phases: IPhases | null) {
     let currentPhaseId: string | null = null;
 
     if (phases && phases.data.length > 0) {
-      const currentTenantTimezone = currentTenant.data.attributes.settings.core.timezone;
-      const currentTenantTodayMoment = moment().tz(currentTenantTimezone);
-
-      phases.data.forEach((phase) => {
-        const startIsoDate = moment(phase.attributes.start_at, 'YYYY-MM-DD');
-        const endIsoDate = moment(phase.attributes.end_at, 'YYYY-MM-DD');
-        const isCurrentPhase = currentTenantTodayMoment.isBetween(startIsoDate, endIsoDate, 'days', '[]');
-
-        if (isCurrentPhase) {
+      forEach(phases.data, (phase) => {
+        if (pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]) === 'present') {
           currentPhaseId = phase.id;
+          return false;
         }
+
+        return true;
       });
     }
 
@@ -404,16 +402,11 @@ export default class Timeline extends React.PureComponent<Props, State> {
     if (isString(currentPhaseId)) {
       selectedPhaseId = currentPhaseId;
     } else if (phases && phases.data.length > 0) {
-      const currentIsoDate = moment().format('YYYY-MM-DD');
-      const lastPhase = phases.data[phases.data.length - 1];
-
       forEach(phases.data, (phase) => {
-        const phaseStartsAtIsoDate = moment(phase.attributes.start_at).format('YYYY-MM-DD');
+        const phaseTime = pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]);
 
-        if (moment(phaseStartsAtIsoDate).isSameOrAfter(currentIsoDate)) {
+        if (phaseTime === 'present' || phaseTime === 'future') {
           selectedPhaseId = phase.id;
-
-          // break
           return false;
         }
 
@@ -421,7 +414,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
       });
 
       if (!selectedPhaseId) {
-        selectedPhaseId = lastPhase.id;
+        selectedPhaseId = phases.data[phases.data.length - 1].id;
       }
     }
 
@@ -447,28 +440,15 @@ export default class Timeline extends React.PureComponent<Props, State> {
     const { locale, currentTenant, phases, currentPhaseId, selectedPhaseId } = this.state;
 
     if (locale && currentTenant && phases && phases.data.length > 0) {
-      let phaseStatus: 'past' | 'present' | 'future' | null = null;
       const phaseIds = (phases ? phases.data.map(phase => phase.id) : null);
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-      const currentIsoDate = moment().format('YYYY-MM-DD');
       const selectedPhase = (selectedPhaseId ? phases.data.find(phase => phase.id === selectedPhaseId) : null);
       const selectedPhaseStart = (selectedPhase ? moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD').format('LL') : null);
       const selectedPhaseEnd = (selectedPhase ? moment(selectedPhase.attributes.end_at, 'YYYY-MM-DD').format('LL') : null);
       const selectedPhaseTitle = (selectedPhase ? getLocalized(selectedPhase.attributes.title_multiloc, locale, currentTenantLocales) : null);
       const selectedPhaseNumber = (selectedPhase ? indexOf(phaseIds, selectedPhaseId) + 1 : null);
       const isSelected = (selectedPhaseId !== null);
-
-      if (selectedPhase) {
-        const selectedPhaseStartsAtIsoDate = moment(selectedPhase.attributes.start_at).format('YYYY-MM-DD');
-
-        if (currentPhaseId && selectedPhaseId === currentPhaseId) {
-          phaseStatus = 'present';
-        } else if (moment(selectedPhaseStartsAtIsoDate).isAfter(currentIsoDate)) {
-          phaseStatus = 'future';
-        } else {
-          phaseStatus = 'past';
-        }
-      }
+      const phaseStatus = (selectedPhase && pastPresentOrFuture([selectedPhase.attributes.start_at, selectedPhase.attributes.end_at]));
 
       return (
         <Container className={className}>
@@ -476,15 +456,15 @@ export default class Timeline extends React.PureComponent<Props, State> {
             <Header>
               <HeaderLeftSection>
                 {isSelected &&
-                  <PhaseNumberWrapper className={`${isSelected && 'selected'} ${phaseStatus === 'present' && 'current'}`}>
-                    <PhaseNumber className={`${isSelected && 'selected'} ${phaseStatus === 'present' && 'current'}`}>
+                  <PhaseNumberWrapper className={`${isSelected && 'selected'} ${phaseStatus}`}>
+                    <PhaseNumber className={`${isSelected && 'selected'} ${phaseStatus}`}>
                       {selectedPhaseNumber}
                     </PhaseNumber>
                   </PhaseNumberWrapper>
                 }
 
                 <HeaderTitleWrapper>
-                  <HeaderTitle className={`${isSelected && 'selected'} ${phaseStatus === 'present' && 'current'}`}>
+                  <HeaderTitle className={`${isSelected && 'selected'} ${phaseStatus === 'present'}`}>
                     {selectedPhaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
                   </HeaderTitle>
                   <MobileDate>
@@ -543,8 +523,8 @@ export default class Timeline extends React.PureComponent<Props, State> {
                 const phaseTitle = getLocalized(phase.attributes.title_multiloc, locale, currentTenantLocales);
                 const isFirst = (index === 0);
                 const isLast = (index === phases.data.length - 1);
-                const startIsoDate = phase.attributes.start_at;
-                const endIsoDate = phase.attributes.end_at;
+                const startIsoDate = getIsoDate(phase.attributes.start_at);
+                const endIsoDate = getIsoDate(phase.attributes.end_at);
                 const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
                 const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
                 const isCurrentPhase = (phase.id === currentPhaseId);
@@ -553,7 +533,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
 
                 return (
                   <PhaseContainer
-                    className={`${isFirst && 'first'} ${isLast && 'last'} ${isCurrentPhase && 'current'} ${isSelectedPhase && 'selected'}`}
+                    className={`${isFirst && 'first'} ${isLast && 'last'} ${isCurrentPhase && 'currentPhase'} ${isSelectedPhase && 'selectedPhase'}`}
                     key={index}
                     numberOfDays={numberOfDays}
                     onClick={this.handleOnPhaseSelection(phase.id)}

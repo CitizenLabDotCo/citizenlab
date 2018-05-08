@@ -2,7 +2,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { isNullOrError } from 'utils/helperUtils';
-import * as moment from 'moment';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -16,6 +15,9 @@ import messages from '../messages';
 import EventBlock from './EventBlock';
 import Button from 'components/UI/Button';
 import ContentContainer from 'components/ContentContainer';
+
+// utils
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // styling
 import styled from 'styled-components';
@@ -78,9 +80,8 @@ export default (inputProps: InputProps) => (
               <Events>
                 {events
                   .filter((event) => {
-                    const eventStartsAtIsoDate = moment(event.attributes.start_at).format('YYYY-MM-DD');
-                    const currentIsoDate = moment().format('YYYY-MM-DD');
-                    return moment(eventStartsAtIsoDate).isSameOrAfter(currentIsoDate);
+                    const eventTime = pastPresentOrFuture([event.attributes.start_at, event.attributes.end_at]);
+                    return (eventTime === 'present' || eventTime === 'future');
                   })
                   .slice(0, 3)
                   .map((event, index) => (

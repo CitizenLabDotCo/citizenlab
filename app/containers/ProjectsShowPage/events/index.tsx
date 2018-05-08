@@ -1,6 +1,4 @@
 import React from 'react';
-import * as moment from 'moment';
-import 'moment-timezone';
 import { adopt } from 'react-adopt';
 import { isNullOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -17,6 +15,9 @@ import messages from '../messages';
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
+
+// utils
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // style
 import styled from 'styled-components';
@@ -67,16 +68,14 @@ export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps)
       const { project, events } = dataProps;
 
       if (project !== null && events !== null) {
-        const currentIsoDate = moment().format('YYYY-MM-DD');
-
         const pastEvents = (events ? events.filter((event) => {
-          const eventEndIsoDate = moment(event.attributes.end_at).format('YYYY-MM-DD');
-          return moment(eventEndIsoDate).isBefore(currentIsoDate);
+          const eventTime = pastPresentOrFuture([event.attributes.start_at, event.attributes.end_at]);
+          return eventTime === 'past';
         }) : null);
 
         const upcomingEvents = (events ? events.filter((event) => {
-          const eventStartIsoDate = moment(event.attributes.start_at).format('YYYY-MM-DD');
-          return moment(eventStartIsoDate).isSameOrAfter(currentIsoDate);
+          const eventTime = pastPresentOrFuture([event.attributes.start_at, event.attributes.end_at]);
+          return (eventTime === 'present' || eventTime === 'future');
         }) : null);
 
         return (
