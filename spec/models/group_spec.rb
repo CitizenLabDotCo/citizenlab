@@ -69,15 +69,13 @@ RSpec.describe Group, type: :model do
       expect(g1.member_ids).to match g1.members.map(&:id)
     end
 
-    # Currently pending until email ends_on rule is supported
-    pending "has consistent responses between member and member_ids for rules groups" do
+    it "has consistent responses between member and member_ids for rules groups" do
       g1 = create(:smart_group)
       create(:user, email: 'u1@test.com')
       create(:user, email: 'u2@test.com')
       create(:user, email: 'u3@not-in-group.com')
       members = g1.members
       expect(g1.member_ids).to match g1.members.map(&:id)
-      expect(2).to eq(3)
     end
 
   end
@@ -131,8 +129,7 @@ RSpec.describe Group, type: :model do
       expect(group.update_memberships_count!).not_to receive(:update_memberships_count!)
     end
 
-    # Waiting on ends_on support
-    pending "updates the membership count for a rules group" do
+    it "updates the membership count for a rules group" do
       group = create(:smart_group)
       create(:user, email: 'jos@test.com')
       create(:user, email: 'jef@test.com')
