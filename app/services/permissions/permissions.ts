@@ -1,8 +1,6 @@
 import { authUserStream } from 'services/auth';
 import { IUser } from 'services/users';
 import { isObject } from 'lodash';
-import * as Rx from 'rxjs';
-
 
 type TPermissionItem = IResourceData | IRouteItem | TResourceType;
 
@@ -29,9 +27,7 @@ interface IPermissionRules {
 type TResourceType = string;
 type TAction = string;
 
-
 const permissionRules: IPermissionRules = {};
-
 
 const isResource = (object: any): object is IResourceData => {
   return isObject(object) && 'type' in object;
@@ -49,14 +45,15 @@ const getPermissionRule = (resourceType: TResourceType, action: TAction) => (per
  * @param param0.action The action to apply to the item, typically a verb
  * @param param0.context Optional context argument that can be used to pass in aditional context to make the permissions decision
  */
-const hasPermission = ({ item, action, context }: { item: TPermissionItem | null, action: string, user?: IUser, context?: any }): Rx.Observable<boolean> => {
-
+const hasPermission = ({ item, action, context }: { item: TPermissionItem | null, action: string, context?: any }) => {
   return authUserStream().observable.map((user) => {
     if (!item) {
       return false;
     }
+
     const resourceType = isResource(item) ? item.type : item;
     const rule = getPermissionRule(resourceType, action);
+
     if (rule) {
       return rule(item, user, context);
     } else {

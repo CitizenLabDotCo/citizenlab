@@ -229,7 +229,7 @@ const NavigationDropdownMenuInner = styled.div`
 `;
 
 const NavigationDropdownList = styled.div`
-  max-height: 210px;
+  max-height: 410px;
   width: 280px;
   display: flex;
   flex-direction: column;
