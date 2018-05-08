@@ -87,7 +87,7 @@ class IdeaPolicy < ApplicationPolicy
       topic_ids: [],
       area_ids: []
     ]
-    if user&.admin?
+    if user&.admin? || (record&.project_id && user.project_moderator?(record.project_id))
       [:idea_status_id] + shared + [phase_ids: []]
     else
       shared
