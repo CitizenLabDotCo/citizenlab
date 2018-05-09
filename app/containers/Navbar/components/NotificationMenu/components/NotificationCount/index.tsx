@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as _ from 'lodash';
+import React from 'react';
+import { isNumber } from 'lodash';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -53,7 +53,7 @@ export default class NotificationCount extends React.PureComponent<Props, State>
     return (
       <Container onClick={this.props.onClick}>
         <NotificationIcon name="notification" />
-        {(_.isNumber(count) && count > 0) ? <NewNotificationsIndicator /> : null}
+        {(isNumber(count) && count > 0) ? <NewNotificationsIndicator /> : null}
       </Container>
     );
   }
