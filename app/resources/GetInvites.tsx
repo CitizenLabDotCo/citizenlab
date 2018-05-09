@@ -33,7 +33,7 @@ interface Props extends InputProps {
 
 interface State {
   queryParameters: IQueryParameters;
-  invitesList: IInviteData[] | null;
+  invitesList: IInviteData[] | undefined| null;
   sortAttribute: SortAttribute;
   sortDirection: SortDirection;
   currentPage: number;
@@ -64,7 +64,7 @@ export default class GetInvites extends React.Component<Props, State> {
         search: undefined,
         invite_status: undefined
       },
-      invitesList: null,
+      invitesList: undefined,
       sortAttribute: getSortAttribute<Sort, SortAttribute>(initialSort),
       sortDirection: getSortDirection<Sort>(initialSort),
       currentPage: 1,
@@ -103,7 +103,7 @@ export default class GetInvites extends React.Component<Props, State> {
       }).subscribe(({ invites, queryParameters }) => {
         this.setState({
           queryParameters,
-          invitesList: invites.data,
+          invitesList: (invites ? invites.data : null),
           sortAttribute: getSortAttribute<Sort, SortAttribute>(queryParameters.sort),
           sortDirection: getSortDirection<Sort>(queryParameters.sort),
           currentPage: getPageNumberFromUrl(invites.links.self) || 1,

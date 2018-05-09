@@ -2,6 +2,7 @@ import React from 'react';
 import { adopt } from 'react-adopt';
 import * as moment from 'moment';
 import 'moment-timezone';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -239,7 +240,7 @@ class Event extends React.PureComponent<Props, State> {
     const className = this.props['className'];
     const { locale, tenant, event } = this.props;
 
-    if (locale && tenant && event !== null) {
+    if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(event)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
       const eventTitle = getLocalized(event.attributes.title_multiloc, locale, tenantLocales);
       const eventDescription = getLocalized(event.attributes.description_multiloc, locale, tenantLocales);

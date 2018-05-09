@@ -3,6 +3,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { ICommentData, commentStream } from 'services/comments';
 import { isString } from 'lodash';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   id?: string | null;
@@ -15,10 +16,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  comment: ICommentData | null;
+  comment: ICommentData | undefined | null | Error;
 }
 
-export type GetCommentChildProps = ICommentData | null;
+export type GetCommentChildProps = ICommentData | undefined | null | Error;
 
 export default class GetComment extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -27,7 +28,7 @@ export default class GetComment extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      comment: null
+      comment: undefined
     };
   }
 
@@ -41,7 +42,7 @@ export default class GetComment extends React.Component<Props, State> {
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
         .filter(({ id }) => isString(id))
         .switchMap(({ id }: { id: string }) => commentStream(id).observable)
-        .subscribe((comment) => this.setState({ comment: comment.data }))
+        .subscribe((comment) => this.setState({ comment: !isNilOrError(comment) ? comment.data : comment }))
     ];
   }
 

@@ -17,7 +17,7 @@ interface Props extends InputProps {
 }
 
 interface State {
-  resource: IResourceData | null;
+  resource: IResourceData | undefined | null;
 }
 
 export type GetResourceChildProps = State;
@@ -26,10 +26,10 @@ export default class GetResource extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
-      resource: null
+      resource: undefined
     };
   }
 

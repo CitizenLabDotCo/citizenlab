@@ -1,7 +1,7 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { isError, isNull } from 'lodash';
-import { isNullOrError } from 'utils/helperUtils';
+import { isError, isUndefined } from 'lodash';
+import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
@@ -82,12 +82,14 @@ class ProjectsShowPage extends React.PureComponent<Props & WithRouterProps, Stat
   render() {
     const { children, locale, tenant, project, phases, events } = this.props;
     const { slug } = this.props.params;
+    const projectNotFound = isError(project);
+    const loading = (isUndefined(locale) || isUndefined(tenant) || isUndefined(project) || isUndefined(phases) || isUndefined(events));
 
     return (
       <>
         <Meta projectSlug={slug} />
         <Container>
-          {isError(project) &&
+          {projectNotFound ? (
             <ProjectNotFoundWrapper>
               <p><FormattedMessage {...messages.noProjectFoundHere} /></p>
               <Button
@@ -96,26 +98,20 @@ class ProjectsShowPage extends React.PureComponent<Props & WithRouterProps, Stat
                 icon="arrow-back"
               />
             </ProjectNotFoundWrapper>
-          }
-
-          {isNull(project) && 
-            <Loading>
-              <Spinner size="32px" color="#666" />
-            </Loading>
-          }
-
-          {!isNullOrError(locale) && 
-            !isNullOrError(tenant) && 
-            !isNullOrError(project) && 
-            !isNullOrError(phases) && 
-            !isNullOrError(events) &&
-            <>
-              <Content>
-                {children}
-              </Content>
-              <Footer showCityLogoSection={false} />
-            </>
-          }
+          ) : (
+            loading ? (
+              <Loading>
+                <Spinner size="32px" color="#666" />
+              </Loading>
+            ) : (
+              <>
+                <Content>
+                  {children}
+                </Content>
+                <Footer showCityLogoSection={false} />
+              </>
+            )
+          )}
         </Container>
       </>
     );
@@ -125,9 +121,9 @@ class ProjectsShowPage extends React.PureComponent<Props & WithRouterProps, Stat
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale/>,
   tenant: <GetTenant/>,
-  project: ({ params, render }) => <GetProject slug={params.slug} resetOnChange>{render}</GetProject>,
-  phases: ({ project, render }) => <GetPhases projectId={(!isNullOrError(project) ? project.id : null)}>{render}</GetPhases>,
-  events: ({ project, render }) => <GetEvents projectId={(!isNullOrError(project) ? project.id : null)}>{render}</GetEvents>
+  project: ({ params, render }) => <GetProject slug={params.slug}>{render}</GetProject>,
+  phases: ({ project, render }) => <GetPhases projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetPhases>,
+  events: ({ project, render }) => <GetEvents projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetEvents>
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (

@@ -9,7 +9,7 @@ import Button from 'components/UI/Button';
 import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
 
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { deleteModerator } from 'services/moderators';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
@@ -42,7 +42,7 @@ class ModeratorList extends React.PureComponent<Props & InjectedIntlProps>{
     const { moderators, projectId, authUser } = this.props;
     return (
       <List>
-        { authUser && !isNullOrError(moderators) && moderators.map(moderator =>
+        { authUser && !isNilOrError(moderators) && moderators.map(moderator =>
           <Row key={moderator.id}>
             <StyledAvatar userId={moderator.id} size="small" />
             <p className="expand">{`${moderator.attributes.first_name} ${moderator.attributes.last_name}`}</p>

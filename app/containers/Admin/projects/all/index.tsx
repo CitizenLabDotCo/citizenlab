@@ -1,6 +1,5 @@
 import React from 'react';
-import { isNullOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { IProjectData, reorderProject } from 'services/projects';
@@ -18,6 +17,9 @@ import Button from 'components/UI/Button';
 import Title from 'components/admin/PageTitle';
 import StatusLabel from 'components/UI/StatusLabel';
 import HasPermission from 'components/HasPermission';
+
+// style
+import styled from 'styled-components';
 
 const SRow = styled(Row)`
   &:first-child {
@@ -68,7 +70,7 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
   render () {
     const { projectsList } = this.props.projects;
 
-    if (!isNullOrError(projectsList)) {
+    if (!isNilOrError(projectsList)) {
       return (
         <>
           <Title>
@@ -122,8 +124,8 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
   }
 }
 
-export default (props) => (
+export default (inputProps: InputProps) => (
   <GetProjects publicationStatuses={['draft', 'published', 'archived']} filterCanModerate={true}>
-    {projects => <AdminProjectsList {...props} projects={projects} />}
+    {projects => <AdminProjectsList {...inputProps} projects={projects} />}
   </GetProjects>
 );

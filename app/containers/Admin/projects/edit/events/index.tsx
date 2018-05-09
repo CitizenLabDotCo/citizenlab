@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import * as moment from 'moment';
 import { withRouter, WithRouterProps } from 'react-router';
 
@@ -62,7 +62,7 @@ class AdminProjectEventsIndex extends React.PureComponent<Props & WithRouterProp
           <FormattedMessage {...messages.addEventButton} />
         </AddButton>
 
-        {!isNullOrError(events) && events.length > 0 &&
+        {!isNilOrError(events) && events.length > 0 &&
           <StyledList>
             <HeadRow>
               <div className="expand"><FormattedMessage {...messages.titleColumnHeader} /></div>
@@ -101,7 +101,7 @@ class AdminProjectEventsIndex extends React.PureComponent<Props & WithRouterProp
 }
 
 export default withRouter(injectIntl((inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
-  <GetEvents projectId={inputProps.params.projectId} resetOnChange>
+  <GetEvents projectId={inputProps.params.projectId}>
     {events => <AdminProjectEventsIndex {...inputProps} events={events} />}
   </GetEvents>
 )));

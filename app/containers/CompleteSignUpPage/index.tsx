@@ -1,17 +1,18 @@
 import React from 'react';
-import { Observable, Subscription } from 'rxjs/Rx';
-import { isString, isEmpty } from 'lodash';
-import { browserHistory } from 'react-router';
+import { get, isUndefined } from 'lodash';
+import { isNilOrError } from 'utils/helperUtils';
+import { browserHistory, withRouter, WithRouterProps } from 'react-router';
+import { adopt } from 'react-adopt';
 
 // components
 import Error from 'components/UI/Error';
 import Step2 from 'components/SignUp/Step2';
 import SignInUpBanner from 'components/SignInUpBanner';
-import { landingPageIdeasQuery } from 'containers/LandingPage';
 
-// services
-import { authUserStream } from 'services/auth';
-import { ideaByIdStream, ideasStream, updateIdea } from 'services/ideas';
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -89,97 +90,75 @@ const Title = styled.h2`
   margin-bottom: 35px;
 `;
 
-type Props = {};
+interface InputProps {}
 
-type State = {
-  authError: boolean;
-  loading: boolean;
-};
+interface DataProps {
+  locale: GetLocaleChildProps;
+  authUser: GetAuthUserChildProps;
+  idea: GetIdeaChildProps;
+}
 
-export default class CompleteSignUpPage extends React.PureComponent<Props, State> {
-  subscriptions: Subscription[];
+interface Props extends InputProps, DataProps {}
 
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      authError: false,
-      loading: false
-    };
-    this.subscriptions = [];
-  }
+interface State {}
 
-  componentDidMount() {
-    const location = browserHistory.getCurrentLocation();
-    const query = location.query;
-    const authError = (location.pathname === '/authentication-error');
-    const authUser$ = authUserStream().observable;
-    const ideaToPublish$ = (query && query.idea_to_publish ? ideaByIdStream(query.idea_to_publish).observable : Observable.of(null));
+class CompleteSignUpPage extends React.PureComponent<Props & WithRouterProps, State> {
 
-    this.subscriptions = [
-      Observable.combineLatest(
-        authUser$,
-        ideaToPublish$,
-      ).subscribe(async ([authUser, ideaToPublish]) => {
-        const registrationCompletedAt = (authUser ? authUser.data.attributes.registration_completed_at : null);
-        const isRegistrationCompleted = (isString(registrationCompletedAt) && !isEmpty(registrationCompletedAt));
-
-        // remove idea parameter from the url
-        window.history.replaceState(null, '', window.location.pathname);
-
-        if (authUser) {
-          if (ideaToPublish && ideaToPublish.data.attributes.publication_status === 'draft') {
-            await updateIdea(ideaToPublish.data.id, { author_id: authUser.data.id, publication_status: 'published' });
-            ideasStream({ queryParameters: landingPageIdeasQuery }).fetch();
-          }
-
-          if (isRegistrationCompleted) {
-            this.redirectToLandingPage();
-          }
-        } else {
-          this.redirectToLandingPage();
-        }
-
-        this.setState({ authError, loading: false });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  redirectToLandingPage = () => {
-    browserHistory.push('/');
+  redirectToLandingPage = (ideaToPublishId: string | null) => () => {
+    browserHistory.push({
+      pathname: '/',
+      search:(ideaToPublishId ? `?idea_to_publish=${ideaToPublishId}` : undefined),
+    });
   }
 
   render() {
-    const { loading, authError } = this.state;
+    const { location, locale, authUser, idea } = this.props;
 
-    if (!loading) {
-      return (
-        <Container>
-          <Left>
-            <SignInUpBanner />
-          </Left>
-          <Right>
-            <RightInner>
-              {!authError ? (
-                <>
-                  <Title><FormattedMessage {...messages.title} /></Title>
-                  <Step2 onCompleted={this.redirectToLandingPage} />
-                </>
-              ) : (
-                <>
-                  <Title><FormattedMessage {...messages.somethingWentWrong} /></Title>
-                  <Error text={<FormattedMessage {...messages.notSignedIn} />} />
-                </>
-              )}
-            </RightInner>
-          </Right>
-        </Container>
-      );
+    if (!isNilOrError(locale) && !isUndefined(authUser) && !isUndefined(idea)) {
+      const authError = (location.pathname === '/authentication-error');
+      const registrationCompletedAt = (authUser ? authUser.attributes.registration_completed_at : null);
+      const ideaToPublishId = ((!authError && !isNilOrError(authUser) && !isNilOrError(idea) && idea.attributes.publication_status === 'draft') ? idea.id : null);
+
+      if (!authError && registrationCompletedAt) {
+        this.redirectToLandingPage(ideaToPublishId);
+      } else {
+        return (
+          <Container>
+            <Left>
+              <SignInUpBanner />
+            </Left>
+            <Right>
+              <RightInner>
+                {!authError ? (
+                  <>
+                    <Title><FormattedMessage {...messages.title} /></Title>
+                    <Step2 onCompleted={this.redirectToLandingPage(ideaToPublishId)} />
+                  </>
+                ) : (
+                  <>
+                    <Title><FormattedMessage {...messages.somethingWentWrong} /></Title>
+                    <Error text={<FormattedMessage {...messages.notSignedIn} />} />
+                  </>
+                )}
+              </RightInner>
+            </Right>
+          </Container>
+        );
+      }
     }
 
     return null;
   }
 }
+
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  locale: <GetLocale />,
+  authUser: <GetAuthUser />,
+  idea: ({ location, render }) => <GetIdea id={get(location.query, 'idea_to_publish', null)}>{render}</GetIdea>
+});
+
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <Data {...inputProps}>
+    {dataProps => <CompleteSignUpPage {...inputProps} {...dataProps} />}
+  </Data>
+));
