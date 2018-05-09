@@ -15,7 +15,15 @@ namespace :migrate do
     platform = migration_settings['platform']
     password = migration_settings['password']
     db_user = migration_settings['db_user'] || 'citizenlab'
-    locales_mapping = { 'en' => 'en', 'nl' => 'nl', 'nl-BE' => 'nl', 'fr' => 'fr' } 
+    locales_mapping = { 
+      'en' => 'en', 
+      'nl' => 'nl', 
+      'nl-BE' => 'nl', 
+      'fr' => 'fr', 
+      'de' => 'de',  
+      'da' => 'da',
+      'no' => 'no'
+    } 
     topics_mapping = migration_settings['topics_mapping'] || {}
     idea_statuses_mapping = migration_settings['idea_statuses_mapping'] || {}
 
