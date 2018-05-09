@@ -28,8 +28,7 @@ module SmartGroupRules
               "enum": PREDICATE_VALUES
             },
             "value" => {
-              "description" => "A string with which the user emails are compared",
-              "type" => "string",
+              "type" => "string"
             }
           },
         }
