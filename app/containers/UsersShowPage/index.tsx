@@ -1,6 +1,6 @@
 import React from 'react';
 import { isEmpty } from 'lodash';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import * as moment from 'moment';
 
@@ -102,7 +102,7 @@ class UsersShowPage extends React.PureComponent<Props, State> {
   render() {
     const { user } = this.props;
 
-    if (!isNullOrError(user)) {
+    if (!isNilOrError(user)) {
       const memberSince = moment(user.attributes.created_at).format('LL');
 
       return (

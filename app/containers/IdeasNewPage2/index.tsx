@@ -1,7 +1,7 @@
 import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs/Rx';
 import { isString, isEmpty, isError } from 'lodash';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // libraries
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -202,7 +202,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     const localState$ = this.localState.observable;
     const locale$ = localeStream().observable;
 
-    if (!isNullOrError(project)) {
+    if (!isNilOrError(project)) {
       this.projectId$.next(project.id);
     }
 
@@ -231,7 +231,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
   componentDidUpdate() {
     const { project } = this.props;
 
-    if (!isNullOrError(project) && isString(project.id)) {
+    if (!isNilOrError(project) && isString(project.id)) {
       this.projectId$.next(project.id);
     }
   }

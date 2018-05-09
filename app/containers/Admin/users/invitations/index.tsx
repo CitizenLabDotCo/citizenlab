@@ -1,6 +1,7 @@
 import React from 'react';
 import { isString, isEmpty, get } from 'lodash';
 import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import TextArea from 'components/UI/TextArea';
@@ -16,7 +17,6 @@ import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import InvitesTable from './all';
 
 // services
-import { IGroupData } from 'services/groups';
 import { bulkInviteXLSX, bulkInviteEmails, IInviteError, INewBulkInvite } from 'services/invites';
 
 // resources
@@ -262,8 +262,8 @@ class Invitations extends React.PureComponent<Props, State> {
     return null;
   }
 
-  getGroupOptions = (groups: IGroupData[] | null, locale: Locale, tenantLocales: Locale[] | null) => {
-    if (tenantLocales && groups && groups && groups.length > 0) {
+  getGroupOptions = (groups: GetGroupsChildProps, locale: GetLocaleChildProps, tenantLocales: GetTenantLocalesChildProps) => {
+    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(groups) && groups.length > 0) {
       return groups.map((group) => ({
         value: group.id,
         label: getLocalized(group.attributes.title_multiloc, locale, tenantLocales)
@@ -496,7 +496,7 @@ class Invitations extends React.PureComponent<Props, State> {
                 <Toggle value={hasAdminRights} onChange={this.handleAdminRightsOnToggle} />
               </SectionField>
 
-              {tenantLocales && tenantLocales.length > 1 &&
+              {!isNilOrError(tenantLocales) && tenantLocales.length > 1 &&
                 <SectionField>
                   <Label>
                     <FormattedMessage {...messages.localeLabel} />
@@ -541,116 +541,111 @@ class Invitations extends React.PureComponent<Props, State> {
       </>
     );
 
-    if (tenantLocales) {
-      return (
-        <>
-          <form onSubmit={this.handleOnSubmit} id="invitation">
-            <Section>
-              <SectionTitle>
-                <FormattedMessage {...messages.invitePeople} />
-              </SectionTitle>
+    return (
+      <>
+        <form onSubmit={this.handleOnSubmit}>
+          <Section>
+            <SectionTitle>
+              <FormattedMessage {...messages.invitePeople} />
+            </SectionTitle>
 
-              <ViewButtons>
-                <LeftButton onClick={this.resetWithView('import')} className={`${selectedView === 'import' && 'active'}`}>
-                  <FormattedMessage {...messages.importTab} />
-                </LeftButton>
-                <RightButton onClick={this.resetWithView('text')} className={`${selectedView === 'text' && 'active'} e2e-manual-invite`}>
-                  <FormattedMessage {...messages.textTab} />
-                </RightButton>
-              </ViewButtons>
+            <ViewButtons>
+              <LeftButton onClick={this.resetWithView('import')} className={`${selectedView === 'import' && 'active'}`}>
+                <FormattedMessage {...messages.importTab} />
+              </LeftButton>
+              <RightButton onClick={this.resetWithView('text')} className={`${selectedView === 'text' && 'active'}`}>
+                <FormattedMessage {...messages.textTab} />
+              </RightButton>
+            </ViewButtons>
 
-              {selectedView === 'import' &&
-                <>
-                  <SectionField>
-                    <Label>
-                      <FormattedHTMLMessage {...messages.importLabel} />
-                    </Label>
+            {selectedView === 'import' &&
+              <>
+                <SectionField>
+                  <Label>
+                    <FormattedHTMLMessage {...messages.importLabel} />
+                  </Label>
 
-                    <Warning
-                      text={
-                        <FormattedMessage
-                          {...messages.importInfo}
-                          values={{
-                            emailColumnName: <strong><FormattedMessage {...messages.emailColumnName} /></strong>, // tslint:disable-next-line
-                            downloadLink: <a href="#" onClick={this.downloadExampleFile}><FormattedMessage {...messages.exampleFile} /></a>, // tslint:disable-next-line
-                            supportPageLink: <a href={supportPageURL} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
-                          }}
-                        />
-                      }
-                    />
-
-                    <FileInputWrapper>
-                      <input
-                        type="file"
-                        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                        onChange={this.handleFileInputOnChange}
-                        ref={this.setFileInputRef}
+                  <Warning
+                    text={
+                      <FormattedMessage
+                        {...messages.importInfo}
+                        values={{
+                          emailColumnName: <strong><FormattedMessage {...messages.emailColumnName} /></strong>, // tslint:disable-next-line
+                          downloadLink: <a href="#" onClick={this.downloadExampleFile}><FormattedMessage {...messages.exampleFile} /></a>, // tslint:disable-next-line
+                          supportPageLink: <a href={supportPageURL} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
+                        }}
                       />
-                    </FileInputWrapper>
-                    <Error text={filetypeError} />
-                  </SectionField>
-
-                  {invitationOptions}
-                </>
-              }
-
-              {selectedView === 'text' &&
-                <>
-                  <SectionField>
-                    <Label>
-                      <FormattedMessage {...messages.emailListLabel} />
-                    </Label>
-                    <TextArea
-                      value={(selectedEmails || '')}
-                      onChange={this.handleEmailListOnChange}
-                      id="emails"
-                    />
-                  </SectionField>
-
-                  {invitationOptions}
-                </>
-              }
-
-              <SectionField>
-                <ButtonWrapper>
-                  <SubmitWrapper
-                    loading={processing}
-                    status={this.getSubmitState(apiErrors, processed, dirty)}
-                    messages={{
-                      buttonSave: messages.save,
-                      buttonSuccess: messages.saveSuccess,
-                      messageError: messages.saveErrorMessage,
-                      messageSuccess: messages.saveSuccessMessage,
-                    }}
+                    }
                   />
 
-                  {processing &&
-                    <Processing>
-                      <FormattedMessage {...messages.processing} />
-                    </Processing>
-                  }
-                </ButtonWrapper>
+                  <FileInputWrapper>
+                    <input
+                      type="file"
+                      accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                      onChange={this.handleFileInputOnChange}
+                      ref={this.setFileInputRef}
+                    />
+                  </FileInputWrapper>
+                  <Error text={filetypeError} />
+                </SectionField>
 
-                <Error
-                  apiErrors={apiErrors}
-                  showIcon={true}
-                  marginTop="15px"
-                  animate={false}
+                {invitationOptions}
+              </>
+            }
+
+            {selectedView === 'text' &&
+              <>
+                <SectionField>
+                  <Label>
+                    <FormattedMessage {...messages.emailListLabel} />
+                  </Label>
+                  <TextArea
+                    value={(selectedEmails || '')}
+                    onChange={this.handleEmailListOnChange}
+                  />
+                </SectionField>
+
+                {invitationOptions}
+              </>
+            }
+
+            <SectionField>
+              <ButtonWrapper>
+                <SubmitWrapper
+                  loading={processing}
+                  status={this.getSubmitState(apiErrors, processed, dirty)}
+                  messages={{
+                    buttonSave: messages.save,
+                    buttonSuccess: messages.saveSuccess,
+                    messageError: messages.saveErrorMessage,
+                    messageSuccess: messages.saveSuccessMessage,
+                  }}
                 />
 
-                <Error text={unknownError} />
-              </SectionField>
-            </Section>
-          </form>
+                {processing &&
+                  <Processing>
+                    <FormattedMessage {...messages.processing} />
+                  </Processing>
+                }
+              </ButtonWrapper>
 
-          <Invites>
-            <InvitesTable />
-          </Invites>
-        </>
-      );
-    }
+              <Error
+                apiErrors={apiErrors}
+                showIcon={true}
+                marginTop="15px"
+                animate={false}
+              />
 
-    return null;
+              <Error text={unknownError} />
+            </SectionField>
+          </Section>
+        </form>
+
+        <Invites>
+          <InvitesTable />
+        </Invites>
+      </>
+    );
   }
 }
 
