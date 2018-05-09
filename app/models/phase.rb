@@ -24,7 +24,7 @@ class Phase < ApplicationRecord
   end
 
   def other_project_phases
-    Phase.where(project_id: self.project_id)].all.select{|p| p.id != self.id}
+    Phase.where(project_id: self.project_id).all.select{|p| p.id != self.id}
   end
 
 
