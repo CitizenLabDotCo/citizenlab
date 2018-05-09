@@ -1,13 +1,13 @@
 import React from 'react';
 import { get, isString, isEmpty, omitBy, isNil, isEqual } from 'lodash';
 import { BehaviorSubject, Subject, Subscription, Observable } from 'rxjs/Rx';
-import { ideasStream, IIdeaData } from 'services/ideas';
+import { ideasStream, IIdeaData, IdeaPublicationStatus } from 'services/ideas';
 import shallowCompare from 'utils/shallowCompare';
 import { getPageNumberFromUrl, getSortAttribute, getSortDirection, SortDirection } from 'utils/paginationUtils';
 
 export type SortAttribute = 'new' | 'trending' | 'popular' | 'author_name' | 'upvotes_count' | 'downvotes_count' | 'status';
 export type Sort =  'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular' | 'author_name' | '-author_name' | 'upvotes_count' | '-upvotes_count' | 'downvotes_count' | '-downvotes_count' | 'status' | '-status';
-export type PublicationStatus = 'draft' | 'published' | 'archived';
+export type PublicationStatus = IdeaPublicationStatus;
 
 export interface InputProps {
   type: 'load-more' | 'paginated';
