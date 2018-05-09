@@ -239,6 +239,7 @@
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Kartvisning",
   "app.containers.AdminPage.ProjectEdit.moderatorDeletionConfirmation": "",
   "app.containers.AdminPage.ProjectEdit.moderatorsNotFound": "",
+  "app.containers.AdminPage.ProjectEdit.moderatorsRoleExplanation": "",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "",
   "app.containers.AdminPage.ProjectEdit.noHeaderErrorMessage": "Vennligst velg et bilde til prosjektets topptekst",
   "app.containers.AdminPage.ProjectEdit.noProjectTypeErrorMessage": "Vennligst oppgi en prosjekttittel",
