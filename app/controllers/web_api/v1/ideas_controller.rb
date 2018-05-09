@@ -172,7 +172,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def user_not_authorized exception
     pcs = ParticipationContextService.new
-    if exception.query == "create?"
+    if exception.query == "create?" # TODO add case for update?
       reason = pcs.posting_disabled_reason(exception.record.project)
       if reason
         render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized
