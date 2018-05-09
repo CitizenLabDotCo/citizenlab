@@ -1,5 +1,5 @@
 import * as React from 'react';
-// import { flow } from 'lodash';
+import { keys } from 'lodash';
 // import styled from 'styled-components';
 
 // import { FormattedMessage } from 'utils/cl-intl';
@@ -22,7 +22,7 @@ class PredicateSelector extends React.PureComponent<Props & InjectedIntlProps, S
 
   generateOptions = (): IOption[] => {
     if (this.props.ruleType) {
-      return ruleTypeConstraints[this.props.ruleType].predicates.map((predicate) => (
+      return keys(ruleTypeConstraints[this.props.ruleType]).map((predicate) => (
         {
           value: predicate,
           label: this.props.intl.formatMessage(messages[`predicate_${predicate}`]),
@@ -44,6 +44,7 @@ class PredicateSelector extends React.PureComponent<Props & InjectedIntlProps, S
         value={predicate}
         options={this.generateOptions()}
         onChange={this.handleOnChange}
+        clearable={false}
       />
     );
   }
