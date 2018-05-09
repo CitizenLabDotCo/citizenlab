@@ -2,7 +2,7 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { Subscription, BehaviorSubject, Observable } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
-import { projectByIdStream, projectBySlugStream, IProjectData, IProject } from 'services/projects';
+import { projectByIdStream, projectBySlugStream, IProjectData } from 'services/projects';
 
 interface InputProps {
   id?: string | null;
