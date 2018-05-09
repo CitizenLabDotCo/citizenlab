@@ -19,15 +19,6 @@ class Phase < ApplicationRecord
   before_validation :strip_title
 
 
-  def overlaps? other_phase
-    !((self.end_at.to_date < other_phase.start_at.to_date) || (other_phase.end_at.to_date < self.start_at.to_date)) 
-  end
-
-  def other_project_phases
-    Phase.where(project_id: self.project_id).all.select{|p| p.id != self.id}
-  end
-
-
   private
 
   def sanitize_description_multiloc
@@ -49,8 +40,9 @@ class Phase < ApplicationRecord
   end
 
   def validate_no_other_overlapping_phases
-    self.other_project_phases.each do |other_phase|
-      if self.overlaps? other_phase
+    ts = TimelineService.new
+    ts.other_project_phases(self).each do |other_phase|
+      if ts.overlaps? self, other_phase
         errors.add(:project, :has_other_overlapping_phases, message: 'has other phases which overlap in start and end date')
       end
     end
