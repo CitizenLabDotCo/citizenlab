@@ -36,10 +36,6 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class AdminProjectsList extends React.PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
 
   handleReorder = (projectId, newOrder) => {
     reorderProject(projectId, newOrder);
@@ -86,34 +82,34 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
                   <FormattedMessage {...messages.addNewProject} />
                 </Button>
               </ButtonWrapper>
-              </HasPermission>
-              <HasPermission item="projects" action="reorder">
-            <SortableList items={projectsList} onReorder={this.handleReorder}>
-              {({ itemsList, handleDragRow, handleDropRow }) => (
-                itemsList.map((project: IProjectData, index: number) => (
-                  <SortableRow
-                    key={project.id}
-                    id={project.id}
-                    index={index}
-                    moveRow={handleDragRow}
-                    dropRow={handleDropRow}
-                  >
-                  {this.renderRow(project)}
-                  </SortableRow>
-                ))
-              )}
-            </SortableList>
-            <HasPermission.No>
-            <List>
-              {projectsList.map((project: IProjectData) => (
-                  <SRow
-                    key={project.id}
-                  >
-                    {this.renderRow(project)}
-                  </SRow>
-                ))
-              }
-            </List>
+             </HasPermission>
+             <HasPermission item="projects" action="reorder">
+              <SortableList items={projectsList} onReorder={this.handleReorder} className="e2e-admin-projects-list">
+                {({ itemsList, handleDragRow, handleDropRow }) => (
+                  itemsList.map((project: IProjectData, index: number) => (
+                    <SortableRow
+                      key={project.id}
+                      id={project.id}
+                      index={index}
+                      moveRow={handleDragRow}
+                      dropRow={handleDropRow}
+                    >
+                      {this.renderRow(project)}
+                    </SortableRow>
+                  ))
+                )}
+              </SortableList>
+              <HasPermission.No>
+                <List>
+                  {projectsList.map((project: IProjectData) => (
+                    <SRow
+                      key={project.id}
+                    >
+                      {this.renderRow(project)}
+                    </SRow>
+                  ))
+                }
+              </List>
             </HasPermission.No>
           </HasPermission>
 
