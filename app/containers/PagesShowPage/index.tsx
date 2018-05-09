@@ -1,8 +1,8 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { Link, withRouter, WithRouterProps } from 'react-router';
-import { isNull, isError, isArray, isEmpty } from 'lodash';
-import { isNullOrError } from 'utils/helperUtils';
+import { isUndefined } from 'lodash';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Helmet from 'react-helmet';
@@ -188,12 +188,8 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
   render() {
     const { formatMessage } = this.props.intl;
     const { locale, tenantLocales, page, pageLinks } = this.props;
-    let seoTitle = formatMessage(messages.notFoundTitle);
-    let seoDescription = formatMessage(messages.notFoundDescription);
-    let pageTitle = <FormattedMessage {...messages.notFoundTitle} />;
-    let pageDescription =  <FormattedMessage {...messages.notFoundDescription} />;
 
-    if (isNull(locale) || isNull(tenantLocales) || isNull(page)) {
+    if (isUndefined(locale) || isUndefined(tenantLocales) || isUndefined(page)) {
       return (
         <Loading>
           <Spinner size="32px" color="#666" />
@@ -201,8 +197,13 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
       );
     }
 
-    if (!isNullOrError(locale) && !isNullOrError(tenantLocales) && !isNull(page)) {
-      if (!isError(page)) {
+    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isUndefined(page)) {
+      let seoTitle = formatMessage(messages.notFoundTitle);
+      let seoDescription = formatMessage(messages.notFoundDescription);
+      let pageTitle = <FormattedMessage {...messages.notFoundTitle} />;
+      let pageDescription =  <FormattedMessage {...messages.notFoundDescription} />;
+
+      if (!isNilOrError(page)) {
         seoTitle = getLocalized(page.attributes.title_multiloc, locale, tenantLocales);
         seoDescription = '';
         pageTitle = <T value={page.attributes.title_multiloc} />;
@@ -218,7 +219,7 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
 
           <PageContent>
             <StyledContentContainer>
-              <Fragment name={!isNullOrError(page) ? `pages/${page && page.id}/content` : ''}>
+              <Fragment name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}>
                 <PageTitle>
                   {pageTitle}
                 </PageTitle>
@@ -229,11 +230,11 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
             </StyledContentContainer>
           </PageContent>
 
-          {!isNullOrError(pageLinks) && isArray(pageLinks) && !isEmpty(pageLinks) &&
+          {!isNilOrError(pageLinks) &&
             <PagesNavWrapper>
               <PagesNav>
                 <StyledContentContainer>
-                  {pageLinks.filter(pageLink => !isNullOrError(pageLink)).map((pageLink: PageLink) => (
+                  {pageLinks.filter(pageLink => !isNilOrError(pageLink)).map((pageLink: PageLink) => (
                     <StyledLink to={`/pages/${pageLink.attributes.linked_page_slug}`} key={pageLink.id}>
                       <T value={pageLink.attributes.linked_page_title_multiloc} />
                       <LinkIcon name="chevron-right" />
@@ -256,8 +257,8 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
 const Data = adopt<DataProps, InputProps & WithRouterProps & InjectedIntlProps>({
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
-  page: ({ params, render }) => <GetPage slug={params.slug} resetOnChange>{render}</GetPage>,
-  pageLinks: ({ page, render }) => <GetPageLinks pageId={(!isNullOrError(page) ? page.id : null)}>{render}</GetPageLinks>,
+  page: ({ params, render }) => <GetPage slug={params.slug}>{render}</GetPage>,
+  pageLinks: ({ page, render }) => <GetPageLinks pageId={(!isNilOrError(page) ? page.id : null)}>{render}</GetPageLinks>,
 });
 
 export default withRouter(injectIntl((inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (

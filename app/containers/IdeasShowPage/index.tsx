@@ -1,6 +1,6 @@
 import React from 'react';
 import { isError } from 'lodash';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
@@ -49,7 +49,7 @@ export default withRouter<InputProps>((props: InputProps & WithRouterProps) => (
         );
       }
 
-      if (!isNullOrError(idea)) {
+      if (!isNilOrError(idea)) {
         return (
           <Container>
             <IdeasShow ideaId={idea.id} />

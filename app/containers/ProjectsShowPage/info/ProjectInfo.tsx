@@ -1,7 +1,7 @@
 import React from 'react';
 import 'moment-timezone';
 import { adopt } from 'react-adopt';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ImageZoom from 'react-medium-image-zoom';
@@ -144,7 +144,7 @@ const Data = adopt<DataProps, InputProps>({
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {({ project, projectImages }) => {
-      if (isNullOrError(project)) return null;
+      if (isNilOrError(project)) return null;
 
       return (
         <Container>
@@ -155,7 +155,7 @@ export default (inputProps: InputProps) => (
               </ProjectDescriptionStyled>
             </Left>
 
-            {projectImages && projectImages.length > 0 &&
+            {!isNilOrError(projectImages) && projectImages.length > 0 &&
               <Right>
                 <ProjectImages>
                   {projectImages.filter(projectImage => projectImage).map((projectImage) => (

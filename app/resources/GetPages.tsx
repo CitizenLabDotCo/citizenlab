@@ -14,10 +14,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  pages: IPageData[] | null;
+  pages: IPageData[] | undefined | null | Error;
 }
 
-export type GetPagesChildProps = IPageData[] | null;
+export type GetPagesChildProps = IPageData[] |undefined |  null | Error;
 
 export default class GetPages extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -26,7 +26,7 @@ export default class GetPages extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      pages: null,
+      pages: undefined
     };
   }
 

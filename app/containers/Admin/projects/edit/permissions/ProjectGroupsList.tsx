@@ -1,7 +1,7 @@
 // Libraries
-import * as React from 'react';
+import React from 'react';
 import * as Rx from 'rxjs/Rx';
-import * as _ from 'lodash';
+import { find, map } from 'lodash';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -111,8 +111,8 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
         groupsProjects$
       ).subscribe(([locale, currentTenant, groups, groupsProjects]) => {
         const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-        const projectGroups = _.map(groupsProjects.data, (groupProject) => {
-          const group = _.find(groups.data, group => group.id === groupProject.relationships.group.data.id) as IGroupData;
+        const projectGroups = map(groupsProjects.data, (groupProject) => {
+          const group = find(groups.data, group => group.id === groupProject.relationships.group.data.id) as IGroupData;
 
           return {
             group_id: group.id,

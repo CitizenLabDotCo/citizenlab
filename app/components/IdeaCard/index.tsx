@@ -1,6 +1,6 @@
 import React from 'react';
 import { get } from 'lodash';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import { Link, browserHistory } from 'react-router';
 
@@ -236,7 +236,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
 
     const { idea } = this.props;
 
-    if (!isNullOrError(idea)) {
+    if (!isNilOrError(idea)) {
       eventEmitter.emit<IModalInfo>(namespace, 'cardClick', {
         type: 'idea',
         id: idea.id,
@@ -248,7 +248,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
   onAuthorClick = (event: React.FormEvent<MouseEvent>) => {
     const { ideaAuthor } = this.props;
 
-    if (ideaAuthor) {
+    if (!isNilOrError(ideaAuthor)) {
       event.stopPropagation();
       event.preventDefault();
       browserHistory.push(`/profile/${ideaAuthor.attributes.slug}`);
@@ -267,11 +267,11 @@ class IdeaCard extends React.PureComponent<Props, State> {
     const { idea, ideaImage, ideaAuthor } = this.props;
     const { showVotingDisabled } = this.state;
 
-    if (!isNullOrError(idea)) {
+    if (!isNilOrError(idea)) {
       const ideaImageUrl = (ideaImage ? ideaImage.attributes.versions.medium : null);
       const votingDescriptor = get(idea.relationships.action_descriptor.data, 'voting', null);
       const projectId = idea.relationships.project.data.id;
-      const ideaAuthorId = (ideaAuthor ? ideaAuthor.id : null);
+      const ideaAuthorId = (!isNilOrError(ideaAuthor) ? ideaAuthor.id : null);
       const commentingDescriptor = (idea.relationships.action_descriptor.data.commenting || null);
       const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
 
@@ -302,7 +302,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
                 {ideaAuthorId && <IdeaAuthorAvatar userId={ideaAuthorId} size="small" hideIfNoAvatar={false} />}
                 <IdeaAuthorText>
                   <FormattedRelative value={idea.attributes.published_at} />
-                  <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={ideaAuthor} /> }} />
+                  <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={!isNilOrError(ideaAuthor) ? ideaAuthor : null} /> }} />
                 </IdeaAuthorText>
               </IdeaAuthor>
             </IdeaContent>
@@ -351,8 +351,8 @@ class IdeaCard extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  ideaImage: ({ ideaId, idea, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={!isNullOrError(idea) ? get(idea.relationships.idea_images.data[0], 'id', null) : null}>{render}</GetIdeaImage>,
-  ideaAuthor: ({ idea, render }) => <GetUser id={!isNullOrError(idea) ? get(idea.relationships.author.data, 'id', null) : null}>{render}</GetUser>
+  ideaImage: ({ ideaId, idea, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={!isNilOrError(idea) ? get(idea.relationships.idea_images.data[0], 'id', null) : null}>{render}</GetIdeaImage>,
+  ideaAuthor: ({ idea, render }) => <GetUser id={!isNilOrError(idea) ? get(idea.relationships.author.data, 'id', null) : null}>{render}</GetUser>
 });
 
 export default (inputProps: InputProps) => (
