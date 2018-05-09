@@ -53,6 +53,7 @@ class Project < ApplicationRecord
   before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_publication_status, on: :create
+  before_validation :strip_title
 
 
   scope :with_all_areas, (Proc.new do |area_ids|
@@ -106,6 +107,12 @@ class Project < ApplicationRecord
 
   def set_publication_status
     self.publication_status ||= 'published'
+  end
+
+  def strip_title
+    self.title_multiloc.each do |key, value|
+      self.title_multiloc[key] = value.strip
+    end
   end
 
 end

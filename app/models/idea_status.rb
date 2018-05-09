@@ -10,6 +10,8 @@ class IdeaStatus < ApplicationRecord
   validates :code, uniqueness: true, unless: :custom?
   validates :description_multiloc, presence: true, multiloc: {presence: true}
 
+  before_validation :strip_title
+
 
   def self.create_defaults
     (CODES - ['custom']).each.with_index do |code, i|
@@ -33,6 +35,15 @@ class IdeaStatus < ApplicationRecord
 
   def custom?
     self.code == 'custom'
+  end
+
+
+  private
+
+  def strip_title
+    self.title_multiloc.each do |key, value|
+      self.title_multiloc[key] = value.strip
+    end
   end
 
 end
