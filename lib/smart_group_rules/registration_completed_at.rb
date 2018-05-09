@@ -29,6 +29,7 @@ module SmartGroupRules
               "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
             },
             "value" => {
+              "description" => "The date formatted as yyyy-mm-dd",
               "type" => "string",
               "format": "date",
               "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}$"
