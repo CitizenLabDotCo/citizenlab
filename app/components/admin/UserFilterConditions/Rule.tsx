@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { pick, clone } from 'lodash';
+import { pick, clone, omit } from 'lodash';
 import styled from 'styled-components';
 
 import { TRule } from './rules';
 
 import Button from 'components/UI/Button';
 import FieldSelector, { FieldDescriptor } from './FieldSelector';
+import PredicateSelector from './PredicateSelector';
 // import messages from './messages';
 
 const Container = styled.div`
@@ -31,6 +32,11 @@ class Rule extends React.Component<Props, State> {
     return pick(rule, ['ruleType', 'customFieldId']);
   }
 
+  handleChangePredicate = (predicate: TRule['predicate']) => {
+    const newRule = omit({ ...this.props.rule, predicate }, 'value') as TRule;
+    this.props.onChange(newRule);
+  }
+
   render() {
     const { rule, onRemove } = this.props;
     return (
@@ -43,6 +49,13 @@ class Rule extends React.Component<Props, State> {
           field={this.fieldDescriptorFromRule(rule)}
           onChange={this.handleChangeField}
         />
+        {rule.ruleType &&
+          <PredicateSelector
+            ruleType={rule.ruleType}
+            predicate={rule.predicate}
+            onChange={this.handleChangePredicate}
+          />
+        }
       </Container>
     );
   }
