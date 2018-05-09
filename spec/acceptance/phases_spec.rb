@@ -6,7 +6,7 @@ resource "Phases" do
   before do
     header "Content-Type", "application/json"
     @project = create(:project)
-    @phases = create_list(:phase, 2, project: @project)
+    @phases = create_list(:phase_sequence, 2, project: @project)
   end
 
   get "web_api/v1/projects/:project_id/phases" do
