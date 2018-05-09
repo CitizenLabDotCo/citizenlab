@@ -9,12 +9,12 @@
  */
 export type TRule = (
   | {
-      ruleType: 'custom_field_text';
+      ruleType?: 'custom_field_text';
       /**
        * The ID of a custom field
        */
-      customFieldId: string;
-      predicate:
+      customFieldId?: string;
+      predicate?:
         | 'is'
         | 'not_is'
         | 'contains'
@@ -23,91 +23,91 @@ export type TRule = (
         | 'not_begins_with'
         | 'ends_on'
         | 'not_ends_on';
-      value: string;
+      value?: string;
     }
   | {
-      ruleType: 'custom_field_text';
+      ruleType?: 'custom_field_text';
       /**
        * The ID of a custom field
        */
-      customFieldId: string;
-      predicate: 'is_empty' | 'not_is_empty';
+      customFieldId?: string;
+      predicate?: 'is_empty' | 'not_is_empty';
     }
   | {
-      ruleType: 'custom_field_select';
+      ruleType?: 'custom_field_select';
       /**
        * The ID of a custom field
        */
-      customFieldId: string;
-      predicate: 'has_value' | 'not_has_value';
+      customFieldId?: string;
+      predicate?: 'has_value?' | 'not_has_value?';
       /**
        * The ID of a custom field option
        */
-      value: string;
+      value?: string;
     }
   | {
-      ruleType: 'custom_field_select';
+      ruleType?: 'custom_field_select';
       /**
        * The ID of a custom field
        */
-      customFieldId: string;
-      predicate: 'is_empty' | 'not_is_empty';
+      customFieldId?: string;
+      predicate?: 'is_empty' | 'not_is_empty';
     }
   | {
-      ruleType: 'custom_field_checkbox';
+      ruleType?: 'custom_field_checkbox';
       /**
        * The ID of a custom field
        */
-      customFieldId: string;
-      predicate: 'is_checked' | 'not_is_checked';
+      customFieldId?: string;
+      predicate?: 'is_checked' | 'not_is_checked';
     }
   | {
-      ruleType: 'custom_field_date';
+      ruleType?: 'custom_field_date';
       /**
        * The ID of a custom field
        */
-      customFieldId: string;
-      predicate: 'is_before' | 'is_exactly' | 'is_after';
-      value: string;
+      customFieldId?: string;
+      predicate?: 'is_before' | 'is_exactly' | 'is_after';
+      value?: string;
     }
   | {
-      ruleType: 'custom_field_date';
+      ruleType?: 'custom_field_date';
       /**
        * The ID of a custom field
        */
-      customFieldId: string;
-      predicate: 'is_empty' | 'not_is_empty';
+      customFieldId?: string;
+      predicate?: 'is_empty' | 'not_is_empty';
     }
   | {
-      ruleType: 'custom_field_number';
+      ruleType?: 'custom_field_number';
       /**
        * The ID of a custom field
        */
-      customFieldId: string;
-      predicate:
+      customFieldId?: string;
+      predicate?:
         | 'is_equal'
         | 'not_is_equal'
         | 'is_larger_than'
         | 'is_larger_than_or_equal'
         | 'is_smaller_than'
         | 'is_smaller_than_or_equal';
-      value: number;
+      value?: number;
     }
   | {
-      ruleType: 'custom_field_number';
+      ruleType?: 'custom_field_number';
       /**
        * The ID of a custom field
        */
-      customFieldId: string;
-      predicate: 'is_empty' | 'not_is_empty';
+      customFieldId?: string;
+      predicate?: 'is_empty' | 'not_is_empty';
     }
   | {
-      ruleType: 'role';
-      predicate: 'is_admin' | 'not_is_admin';
+      ruleType?: 'role';
+      predicate?: 'is_admin' | 'not_is_admin';
     }
   | {
-      ruleType: 'email';
-      predicate:
+      ruleType?: 'email';
+      predicate?:
         | 'is'
         | 'not_is'
         | 'contains'
@@ -116,23 +116,23 @@ export type TRule = (
         | 'not_begins_with'
         | 'ends_on'
         | 'not_ends_on';
-      value: string;
+      value?: string;
     }
   | {
-      ruleType: 'lives_in';
-      predicate: 'has_value' | 'not_has_value';
-      value: string;
+      ruleType?: 'lives_in';
+      predicate?: 'has_value?' | 'not_has_value?';
+      value?: string;
     }
   | {
-      ruleType: 'lives_in';
-      predicate: 'is_empty' | 'not_is_empty';
+      ruleType?: 'lives_in';
+      predicate?: 'is_empty' | 'not_is_empty';
     }
   | {
-      ruleType: 'registration_completed_at';
-      predicate: 'is_before' | 'is_exactly' | 'is_after';
-      value: string;
+      ruleType?: 'registration_completed_at';
+      predicate?: 'is_before' | 'is_exactly' | 'is_after';
+      value?: string;
     }
   | {
-      ruleType: 'registration_completed_at';
-      predicate: 'is_empty' | 'not_is_empty';
+      ruleType?: 'registration_completed_at';
+      predicate?: 'is_empty' | 'not_is_empty';
     });
