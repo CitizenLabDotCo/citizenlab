@@ -10,7 +10,6 @@ class SideFxProjectService
     LogActivityJob.perform_later(project, 'changed', user, project.updated_at.to_i)
   end
 
-
   def after_destroy frozen_project, user
     remove_moderators frozen_project.id
     serialized_project = clean_time_attributes(frozen_project.attributes)
