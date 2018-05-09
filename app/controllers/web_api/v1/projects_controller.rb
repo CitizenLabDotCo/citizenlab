@@ -40,6 +40,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     @project = Project.new(permitted_attributes(Project))
     authorize @project
     if @project.save
+      SideFxProjectService.new.after_create(@project, current_user)
       render json: @project, status: :created
     else
       render json: {errors: @project.errors.details}, status: :unprocessable_entity, include: ['project_images']
@@ -50,6 +51,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     params[:project][:area_ids] ||= [] if params[:project].has_key?(:area_ids)
     params[:project][:topic_ids] ||= [] if params[:project].has_key?(:topic_ids)
     if @project.update(permitted_attributes(Project))
+      SideFxProjectService.new.after_update(@project, current_user)
       render json: @project, status: :ok
     else
       render json: {errors: @project.errors.details}, status: :unprocessable_entity, include: ['project_images']
@@ -58,6 +60,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
   def reorder
     if @project.insert_at(permitted_attributes(@project)[:ordering])
+      SideFxProjectService.new.after_update(@project, current_user)
       render json: @project, status: :ok
     else
       render json: {errors: @project.errors.details}, status: :unprocessable_entity, include: ['project_images']
@@ -65,8 +68,13 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   end
 
   def destroy
-    @project.destroy
-    head :ok
+    project = @project.destroy
+    if project.destroyed?
+      SideFxProjectService.new.after_destroy(project, current_user)
+      head :ok
+    else
+      head 500
+    end
   end
 
   private
