@@ -10,6 +10,8 @@ interface InputProps {
   resetOnChange?: boolean;
 }
 
+export type GetPageChildProps = IPageData | undefined | null | Error;
+
 type children = (renderProps: GetPageChildProps) => JSX.Element | null;
 
 interface Props extends InputProps {
@@ -17,10 +19,8 @@ interface Props extends InputProps {
 }
 
 interface State {
-  page: IPageData | undefined | null | Error;
+  page: GetPageChildProps;
 }
-
-export type GetPageChildProps = IPageData | undefined | null | Error;
 
 export default class GetPage extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;

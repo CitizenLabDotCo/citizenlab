@@ -47,15 +47,13 @@ export default class GetProject extends React.Component<Props, State> {
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
         .do(() => resetOnChange && this.setState({ project: undefined }))
         .switchMap(({ id, slug }) => {
-          let project$: Observable<IProject | null | Error> = Observable.of(null);
-
           if (id) {
-            project$ = projectByIdStream(id).observable;
+            return projectByIdStream(id).observable;
           } else if (slug) {
-            project$ = projectBySlugStream(slug).observable;
+            return projectBySlugStream(slug).observable;
           }
 
-          return project$;
+          return Observable.of(null);
         })
         .subscribe((project) => {
           this.setState({ project: !isNilOrError(project) ? project.data : project });

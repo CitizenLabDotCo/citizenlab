@@ -45,7 +45,7 @@ export default class GetIdea extends React.Component<Props, State> {
     this.subscriptions = [
       this.inputProps$
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .do(() => resetOnChange && this.setState({ projectImages: null }))
+        .do(() => resetOnChange && this.setState({ projectImages: undefined }))
         .filter(({ projectId }) => isString(projectId))
         .switchMap(({ projectId }: {projectId: string}) => projectImagesStream(projectId).observable)
         .subscribe((projectImages) => {
