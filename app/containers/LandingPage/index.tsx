@@ -3,6 +3,8 @@ import { adopt } from 'react-adopt';
 import { browserHistory } from 'react-router';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { isNilOrError } from 'utils/helperUtils';
+import { API_PATH } from 'containers/App/constants';
+import streams from 'utils/streams';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -12,7 +14,7 @@ import Footer from 'components/Footer';
 
 // services
 import { authUserStream } from 'services/auth';
-import { ideaByIdStream, ideasStream, updateIdea } from 'services/ideas';
+import { ideaByIdStream, updateIdea } from 'services/ideas';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -248,9 +250,6 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-export const landingPageIdeasQuery: { sort: 'trending', 'page[size]': number } = { sort: 'trending', 'page[size]': 9 };
-export const landingPageProjectsQuery: { sort: 'new', 'page[size]': number } = { sort: 'new', 'page[size]': 3 };
-
 class LandingPage extends React.PureComponent<Props, State> {
   subscriptions: Subscription[];
 
@@ -274,11 +273,9 @@ class LandingPage extends React.PureComponent<Props, State> {
       ).subscribe(async ([authUser, ideaToPublish]) => {
         if (authUser && ideaToPublish && ideaToPublish.data.attributes.publication_status === 'draft') {
           await updateIdea(ideaToPublish.data.id, { author_id: authUser.data.id, publication_status: 'published' });
-          ideasStream({ queryParameters: landingPageIdeasQuery }).fetch();
+          streams.fetchAllStreamsWithEndpoint(`${API_PATH}/ideas`);
+          window.history.replaceState(null, '', window.location.pathname);
         }
-
-        // remove 'idea_to_publish' parameter from url
-        window.history.replaceState(null, '', window.location.pathname);
       })
     ];
   }
@@ -342,8 +339,8 @@ class LandingPage extends React.PureComponent<Props, State> {
                   <ProjectSection>
                     <SectionContainer>
                       <ProjectCards
-                        pageSize={landingPageProjectsQuery['page[size]']}
-                        sort={landingPageProjectsQuery.sort}
+                        pageSize={3}
+                        sort="new"
                         hideAllFilters={true}
                       />
                     </SectionContainer>
@@ -361,8 +358,8 @@ class LandingPage extends React.PureComponent<Props, State> {
                   <SectionContainer>
                     <IdeaCards
                       type="load-more"
-                      sort={landingPageIdeasQuery.sort}
-                      pageSize={landingPageIdeasQuery['page[size]']}
+                      sort="trending"
+                      pageSize={9}
                     />
                   </SectionContainer>
                 </Section>

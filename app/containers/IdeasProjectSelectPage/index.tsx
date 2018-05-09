@@ -1,7 +1,7 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { browserHistory, withRouter, WithRouterProps } from 'react-router';
-import { groupBy, isEmpty, isNull } from 'lodash';
+import { groupBy, isEmpty, isUndefined } from 'lodash';
 
 // services
 import { IProjectData } from 'services/projects';
@@ -229,7 +229,7 @@ class IdeasProjectSelectPage extends React.PureComponent<Props & WithRouterProps
     const { projectsList } = this.props.projects;
     const { selectedProjectId } = this.state;
 
-    if (isNull(projectsList)) {
+    if (isUndefined(projectsList)) {
       return (
         <Loading>
           <Spinner size="32px" color="#666" />
