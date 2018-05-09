@@ -239,6 +239,7 @@
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Op kaart",
   "app.containers.AdminPage.ProjectEdit.moderatorDeletionConfirmation": "",
   "app.containers.AdminPage.ProjectEdit.moderatorsNotFound": "",
+  "app.containers.AdminPage.ProjectEdit.moderatorsRoleExplanation": "",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "",
   "app.containers.AdminPage.ProjectEdit.noHeaderErrorMessage": "Kies een bannerafbeelding voor je project",
   "app.containers.AdminPage.ProjectEdit.noProjectTypeErrorMessage": "Kies het type project",
