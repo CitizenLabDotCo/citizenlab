@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Observable, Subscription } from 'rxjs/Rx';
 import { get, isUndefined } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
 import { browserHistory, withRouter, WithRouterProps } from 'react-router';
@@ -9,10 +8,6 @@ import { adopt } from 'react-adopt';
 import Error from 'components/UI/Error';
 import Step2 from 'components/SignUp/Step2';
 import SignInUpBanner from 'components/SignInUpBanner';
-// import { landingPageIdeasQuery } from 'containers/LandingPage';
-
-// services
-// import { updateIdea } from 'services/ideas';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -108,66 +103,6 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class CompleteSignUpPage extends React.PureComponent<Props & WithRouterProps, State> {
-  // subscriptions: Subscription[];
-
-  // constructor(props: Props) {
-  //   super(props as any);
-  //   this.state = {
-  //     authError: false,
-  //     loading: false
-  //   };
-  //   this.subscriptions = [];
-  // }
-
-  // componentDidMount() {
-  //   const location = browserHistory.getCurrentLocation();
-  //   const query = location.query;
-  //   const authError = (location.pathname === '/authentication-error');
-  //   const authUser$ = authUserStream().observable;
-  //   const ideaToPublish$ = (query && query.idea_to_publish ? ideaByIdStream(query.idea_to_publish).observable : Observable.of(null));
-
-  //   this.subscriptions = [
-  //     Observable.combineLatest(
-  //       authUser$,
-  //       ideaToPublish$,
-  //     ).subscribe(async ([authUser, ideaToPublish]) => {
-  //       const registrationCompletedAt = (authUser ? authUser.data.attributes.registration_completed_at : null);
-  //       const isRegistrationCompleted = (isString(registrationCompletedAt) && !isEmpty(registrationCompletedAt));
-
-  //       // remove idea parameter from the url
-  //       window.history.replaceState(null, '', window.location.pathname);
-
-  //       if (authUser) {
-  //         if (ideaToPublish && ideaToPublish.data.attributes.publication_status === 'draft') {
-  //           await updateIdea(ideaToPublish.data.id, { author_id: authUser.data.id, publication_status: 'published' });
-  //           ideasStream({ queryParameters: landingPageIdeasQuery }).fetch();
-  //         }
-
-  //         if (isRegistrationCompleted) {
-  //           this.redirectToLandingPage();
-  //         }
-  //       } else {
-  //         this.redirectToLandingPage();
-  //       }
-
-  //       this.setState({ authError, loading: false });
-  //     })
-  //   ];
-  // }
-
-  // componentWillUnmount() {
-  //   this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  // }
-
-  // componentDidMount() {
-  //   const { location } = this.props;
-  //   const hasIdeaToPublish = get(location.query, 'idea_to_publish', null);
-
-  //   if (hasIdeaToPublish) {
-  //     // remove idea parameter from the url
-  //     window.history.replaceState(null, '', window.location.pathname);
-  //   }
-  // }
 
   redirectToLandingPage = (ideaToPublishId: string | null) => () => {
     browserHistory.push({
