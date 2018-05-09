@@ -22,6 +22,7 @@ class Group < ApplicationRecord
 
   before_validation :generate_slug, on: :create
   before_validation :set_membership_type, on: :create
+  before_validation :strip_title
 
   scope :using_custom_field, -> (custom_field) {
     subquery = Group.select("jsonb_array_elements(rules) as rule, id")
@@ -113,4 +114,10 @@ class Group < ApplicationRecord
     self.membership_type ||= 'manual'
   end
 
+
+  def strip_title
+    self.title_multiloc.each do |key, value|
+      self.title_multiloc[key] = value.strip
+    end
+  end
 end
