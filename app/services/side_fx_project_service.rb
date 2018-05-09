@@ -12,9 +12,13 @@ class SideFxProjectService
 
 
   def after_destroy frozen_project, user
-    remove_moderators frozen_projec.id
-    frozen_project = clean_time_attributes(frozen_project.attributes)
-    LogActivityJob.perform_later(encode_frozen_resource(frozen_project), 'deleted', user, Time.now.to_i, payload: {project: frozen_project})
+    remove_moderators frozen_project.id
+    serialized_project = clean_time_attributes(frozen_project.attributes)
+    LogActivityJob.perform_later(
+      encode_frozen_resource(frozen_project), 'deleted',
+      user, Time.now.to_i, 
+      payload: {project: serialized_project}
+      )
   end
 
 
