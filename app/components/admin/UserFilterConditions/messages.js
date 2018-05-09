@@ -47,7 +47,7 @@ export default defineMessages({
   },
   predicate_ends_on: {
     id: 'app.components.admin.UserFilterConditions.predicate_ends_on',
-    defaultMessage: 'end ons',
+    defaultMessage: 'ends on',
   },
   predicate_not_ends_on: {
     id: 'app.components.admin.UserFilterConditions.predicate_not_ends_on',

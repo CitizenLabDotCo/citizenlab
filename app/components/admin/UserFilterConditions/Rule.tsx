@@ -7,6 +7,7 @@ import { TRule } from './rules';
 import Button from 'components/UI/Button';
 import FieldSelector, { FieldDescriptor } from './FieldSelector';
 import PredicateSelector from './PredicateSelector';
+import ValueSelector from './ValueSelector';
 // import messages from './messages';
 
 const Container = styled.div`
@@ -37,6 +38,11 @@ class Rule extends React.Component<Props, State> {
     this.props.onChange(newRule);
   }
 
+  handleChangeValue = (value: any) => {
+    const newRule = { ...this.props.rule, value };
+    this.props.onChange(newRule);
+  }
+
   render() {
     const { rule, onRemove } = this.props;
     return (
@@ -54,6 +60,13 @@ class Rule extends React.Component<Props, State> {
             ruleType={rule.ruleType}
             predicate={rule.predicate}
             onChange={this.handleChangePredicate}
+          />
+        }
+        {rule.predicate &&
+          <ValueSelector
+            rule={rule}
+            value={rule.value}
+            onChange={this.handleChangeValue}
           />
         }
       </Container>
