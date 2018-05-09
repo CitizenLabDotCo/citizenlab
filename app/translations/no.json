@@ -98,6 +98,7 @@
   "app.components.admin.IdeaManager.title": "Tittel",
   "app.components.admin.IdeaManager.topicsTab": "Emner",
   "app.components.admin.IdeaManager.up": "Opp",
+  "app.components.admin.UserFilterConditions.rules": "",
   "app.containers.Admin.User.admin": "Administrator",
   "app.containers.Admin.User.adminLabel": "Grant administrator rights to the invited people?",
   "app.containers.Admin.User.confirmDelete": "Yes, I'm sure",
