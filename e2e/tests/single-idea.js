@@ -9,7 +9,7 @@ module.exports = {
     browser
     .url(`http://${process.env.ROOT_URL}`)
     .waitForElementVisible('#e2e-ideas-container')
-    .waitForElementVisible('#e2e-ideas-list :first-child')
+    .waitForElementVisible('#e2e-ideas-list>:first-child')
     .click('#e2e-ideas-list :first-child')
     .waitForElementVisible('#e2e-fullscreenmodal-content')
     .waitForElementVisible('#e2e-idea-show')
