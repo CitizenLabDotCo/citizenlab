@@ -9,133 +9,133 @@
  */
 export type TRule = (
   | {
-      ruleType?: 'custom_field_text';
-      /**
-       * The ID of a custom field
-       */
-      customFieldId?: string;
-      predicate?:
-        | 'is'
-        | 'not_is'
-        | 'contains'
-        | 'not_contains'
-        | 'begins_with'
-        | 'not_begins_with'
-        | 'ends_on'
-        | 'not_ends_on';
-      value?: string;
-    }
+    ruleType?: 'custom_field_text';
+    /**
+     * The ID of a custom field
+     */
+    customFieldId?: string;
+    predicate?:
+    | 'is'
+    | 'not_is'
+    | 'contains'
+    | 'not_contains'
+    | 'begins_with'
+    | 'not_begins_with'
+    | 'ends_on'
+    | 'not_ends_on';
+    value: string;
+  }
   | {
-      ruleType?: 'custom_field_text';
-      /**
-       * The ID of a custom field
-       */
-      customFieldId?: string;
-      predicate?: 'is_empty' | 'not_is_empty';
-    }
+    ruleType?: 'custom_field_text';
+    /**
+     * The ID of a custom field
+     */
+    customFieldId?: string;
+    predicate?: 'is_empty' | 'not_is_empty';
+  }
   | {
-      ruleType?: 'custom_field_select';
-      /**
-       * The ID of a custom field
-       */
-      customFieldId?: string;
-      predicate?: 'has_value?' | 'not_has_value?';
-      /**
-       * The ID of a custom field option
-       */
-      value?: string;
-    }
+    ruleType?: 'custom_field_select';
+    /**
+     * The ID of a custom field
+     */
+    customFieldId?: string;
+    predicate?: 'has_value' | 'not_has_value';
+    /**
+     * The ID of a custom field option
+     */
+    value: string;
+  }
   | {
-      ruleType?: 'custom_field_select';
-      /**
-       * The ID of a custom field
-       */
-      customFieldId?: string;
-      predicate?: 'is_empty' | 'not_is_empty';
-    }
+    ruleType?: 'custom_field_select';
+    /**
+     * The ID of a custom field
+     */
+    customFieldId?: string;
+    predicate?: 'is_empty' | 'not_is_empty';
+  }
   | {
-      ruleType?: 'custom_field_checkbox';
-      /**
-       * The ID of a custom field
-       */
-      customFieldId?: string;
-      predicate?: 'is_checked' | 'not_is_checked';
-    }
+    ruleType?: 'custom_field_checkbox';
+    /**
+     * The ID of a custom field
+     */
+    customFieldId?: string;
+    predicate?: 'is_checked' | 'not_is_checked';
+  }
   | {
-      ruleType?: 'custom_field_date';
-      /**
-       * The ID of a custom field
-       */
-      customFieldId?: string;
-      predicate?: 'is_before' | 'is_exactly' | 'is_after';
-      value?: string;
-    }
+    ruleType?: 'custom_field_date';
+    /**
+     * The ID of a custom field
+     */
+    customFieldId?: string;
+    predicate?: 'is_before' | 'is_exactly' | 'is_after';
+    value: string;
+  }
   | {
-      ruleType?: 'custom_field_date';
-      /**
-       * The ID of a custom field
-       */
-      customFieldId?: string;
-      predicate?: 'is_empty' | 'not_is_empty';
-    }
+    ruleType?: 'custom_field_date';
+    /**
+     * The ID of a custom field
+     */
+    customFieldId?: string;
+    predicate?: 'is_empty' | 'not_is_empty';
+  }
   | {
-      ruleType?: 'custom_field_number';
-      /**
-       * The ID of a custom field
-       */
-      customFieldId?: string;
-      predicate?:
-        | 'is_equal'
-        | 'not_is_equal'
-        | 'is_larger_than'
-        | 'is_larger_than_or_equal'
-        | 'is_smaller_than'
-        | 'is_smaller_than_or_equal';
-      value?: number;
-    }
+    ruleType?: 'custom_field_number';
+    /**
+     * The ID of a custom field
+     */
+    customFieldId?: string;
+    predicate?:
+    | 'is_equal'
+    | 'not_is_equal'
+    | 'is_larger_than'
+    | 'is_larger_than_or_equal'
+    | 'is_smaller_than'
+    | 'is_smaller_than_or_equal';
+    value: number;
+  }
   | {
-      ruleType?: 'custom_field_number';
-      /**
-       * The ID of a custom field
-       */
-      customFieldId?: string;
-      predicate?: 'is_empty' | 'not_is_empty';
-    }
+    ruleType?: 'custom_field_number';
+    /**
+     * The ID of a custom field
+     */
+    customFieldId?: string;
+    predicate?: 'is_empty' | 'not_is_empty';
+  }
   | {
-      ruleType?: 'role';
-      predicate?: 'is_admin' | 'not_is_admin';
-    }
+    ruleType?: 'role';
+    predicate?: 'is_admin' | 'not_is_admin';
+  }
   | {
-      ruleType?: 'email';
-      predicate?:
-        | 'is'
-        | 'not_is'
-        | 'contains'
-        | 'not_contains'
-        | 'begins_with'
-        | 'not_begins_with'
-        | 'ends_on'
-        | 'not_ends_on';
-      value?: string;
-    }
+    ruleType?: 'email';
+    predicate?:
+    | 'is'
+    | 'not_is'
+    | 'contains'
+    | 'not_contains'
+    | 'begins_with'
+    | 'not_begins_with'
+    | 'ends_on'
+    | 'not_ends_on';
+    value: string;
+  }
   | {
-      ruleType?: 'lives_in';
-      predicate?: 'has_value?' | 'not_has_value?';
-      value?: string;
-    }
+    ruleType?: 'lives_in';
+    predicate?: 'has_value' | 'not_has_value';
+    value: string;
+  }
   | {
-      ruleType?: 'lives_in';
-      predicate?: 'is_empty' | 'not_is_empty';
-    }
+    ruleType?: 'lives_in';
+    predicate?: 'is_empty' | 'not_is_empty';
+  }
   | {
-      ruleType?: 'registration_completed_at';
-      predicate?: 'is_before' | 'is_exactly' | 'is_after';
-      value?: string;
-    }
+    ruleType?: 'registration_completed_at';
+    predicate?: 'is_before' | 'is_exactly' | 'is_after';
+    value: string;
+  }
   | {
-      ruleType?: 'registration_completed_at';
-      predicate?: 'is_empty' | 'not_is_empty';
-    });
+    ruleType?: 'registration_completed_at';
+    predicate?: 'is_empty' | 'not_is_empty';
+  });
 
 export const staticRuleTypes: TRule['ruleType'][] = [
   'email',
@@ -143,3 +143,83 @@ export const staticRuleTypes: TRule['ruleType'][] = [
   'registration_completed_at',
   'role',
 ];
+
+
+const textPredicates = [
+  'is',
+  'not_is',
+  'contains',
+  'not_contains',
+  'begins_with',
+  'not_begins_with',
+  'ends_on',
+  'not_ends_on',
+  'is_empty',
+  'not_is_empty',
+];
+
+const selectPredicates = [
+  'has_value',
+  'not_has_value',
+  'is_empty',
+  'not_is_empty',
+];
+
+const checkboxPredicates = [
+  'is_checked',
+  'not_is_checked',
+];
+
+const datePredicates = [
+  'is_before',
+  'is_exactly',
+  'is_after',
+  'is_empty',
+  'not_is_empty'
+];
+
+const numberPredicates = [
+  'is_equal',
+  'not_is_equal',
+  'is_larger_than',
+  'is_larger_than_or_equal',
+  'is_smaller_than',
+  'is_smaller_than_or_equal',
+  'is_empty',
+  'not_is_empty'
+];
+
+const rolePredicates = [
+  'is_admin',
+  'not_is_admin',
+];
+
+export const ruleTypeConstraints = {
+  custom_field_text: {
+    predicates: textPredicates,
+  },
+  custom_field_select: {
+    predicates: selectPredicates,
+  },
+  custom_field_checkbox: {
+    predicates: checkboxPredicates,
+  },
+  custom_field_date: {
+    predicates: datePredicates,
+  },
+  custom_field_number: {
+    predicates: numberPredicates,
+  },
+  email: {
+    predicates: textPredicates,
+  },
+  lives_in: {
+    predicates: selectPredicates,
+  },
+  registration_completed_at: {
+    predicates: datePredicates,
+  },
+  role: {
+    predicates: rolePredicates,
+  },
+};

@@ -34,12 +34,14 @@ class FieldSelector extends React.PureComponent<Props & InjectedIntlProps, State
         label: this.props.intl.formatMessage(messages[`field_${ruleType}`]),
       }
     ));
-    const customFieldOptions = (this.props.customFields || []).map((customField) => (
-      {
-        value: this.descriptorToOptionValue(this.customFieldToDescriptor(customField)),
-        label: this.props.tFunc(customField.attributes.title_multiloc),
-      }
-    ));
+    const customFieldOptions = (this.props.customFields || [])
+      .filter((customField) => customField.attributes.code !== 'domicile')
+      .map((customField) => (
+        {
+          value: this.descriptorToOptionValue(this.customFieldToDescriptor(customField)),
+          label: this.props.tFunc(customField.attributes.title_multiloc),
+        }
+      ));
     return staticOptions.concat(customFieldOptions);
   }
 
