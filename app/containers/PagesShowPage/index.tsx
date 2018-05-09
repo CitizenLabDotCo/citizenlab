@@ -56,14 +56,9 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 const PageContent = styled.div`
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 61px);
   background: #fff;
   padding-top: 60px;
   padding-bottom: 60px;
-
-  ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
-  `}
 `;
 
 const PageTitle = styled.h1`

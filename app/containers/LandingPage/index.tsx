@@ -211,6 +211,10 @@ const SectionHeader = styled.div`
   align-items: flex-end;
   justify-content: space-between;
   margin-bottom: 35px;
+
+  ${media.smallerThanMaxTablet`
+    margin-bottom: 20px;
+  `}
 `;
 
 const SectionTitle = styled.h2`

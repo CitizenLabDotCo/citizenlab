@@ -214,9 +214,9 @@ class ProjectCard extends React.PureComponent<Props, State> {
     const { projectId, selected } = this.props;
     const { project, projectImages, permission } = this.props;
 
-    if (!isNilOrError(project) && !isNilOrError(permission)) {
+    if (!isNilOrError(project) && !isNilOrError(permission) && !isNilOrError(projectImages)) {
       const { title_multiloc: titleMultiloc } = project.attributes;
-      const smallImage = !isNilOrError(projectImages) && projectImages.length > 0 && projectImages[0].attributes.versions.small;
+      const smallImage = (projectImages.length > 0 ? projectImages[0].attributes.versions.small : null);
       const disabledMessage = this.disabledMessage();
       const cardState = this.calculateCardState();
       const enabled = (cardState === 'enabled' || cardState === 'enabledBecauseAdmin');

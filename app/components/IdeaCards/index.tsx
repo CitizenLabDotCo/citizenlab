@@ -55,17 +55,16 @@ const FiltersArea = styled.div`
     justify-content: flex-end;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     margin-bottom: 30px;
   `}
 `;
 
 const FilterArea = styled.div`
   display: flex;
-  align-items: center;
 
-  ${media.smallerThanMinTablet`
-    align-items: left;
+  ${media.biggerThanMinTablet`
+    align-items: center;
   `}
 `;
 
