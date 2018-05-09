@@ -11,6 +11,7 @@ import { Map } from 'immutable';
 type Props = {
   value: Multiloc | Map<string,string>;
   as?: string;
+  className?: string;
 };
 
 type State = {
@@ -19,7 +20,7 @@ type State = {
 };
 
 export default class T extends React.PureComponent<Props, State> {
-  
+
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -57,11 +58,11 @@ export default class T extends React.PureComponent<Props, State> {
       const localizedText = getLocalized(value, locale, currentTenantLocales);
 
       if (this.props.as) {
-        return React.createElement(this.props.as, { dangerouslySetInnerHTML: { __html: localizedText } });
+        return React.createElement(this.props.as, { className: this.props.className, dangerouslySetInnerHTML: { __html: localizedText } });
       }
 
       return (
-        <span dangerouslySetInnerHTML={{ __html: localizedText }} />
+        <span className={this.props.className} dangerouslySetInnerHTML={{ __html: localizedText }} />
       );
     }
 
