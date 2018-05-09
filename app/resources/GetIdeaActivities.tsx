@@ -14,10 +14,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  ideaActivities: IdeaActivity[] | null;
+  ideaActivities: IdeaActivity[] | undefined | null;
 }
 
-export type GetIdeaActivitiesChildProps = IdeaActivity[] | null;
+export type GetIdeaActivitiesChildProps = IdeaActivity[] | undefined | null;
 
 export default class GetIdeaActivities extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -26,7 +26,7 @@ export default class GetIdeaActivities extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      ideaActivities: null
+      ideaActivities: undefined
     };
   }
 

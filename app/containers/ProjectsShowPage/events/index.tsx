@@ -1,8 +1,6 @@
 import React from 'react';
-import * as moment from 'moment';
-import 'moment-timezone';
 import { adopt } from 'react-adopt';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
@@ -17,6 +15,9 @@ import messages from '../messages';
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
+
+// utils
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // style
 import styled from 'styled-components';
@@ -55,8 +56,8 @@ interface DataProps {
 }
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  project: ({ params, render }) => <GetProject slug={params.slug} resetOnChange>{render}</GetProject>,
-  events: ({ project, render }) => <GetEvents projectId={(!isNullOrError(project) ? project.id : null)}>{render}</GetEvents>
+  project: ({ params, render }) => <GetProject slug={params.slug}>{render}</GetProject>,
+  events: ({ project, render }) => <GetEvents projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetEvents>
 });
 
 export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps) => (
@@ -68,11 +69,13 @@ export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps)
 
       if (project !== null && events !== null) {
         const pastEvents = (events ? events.filter((event) => {
-          return moment().diff(moment(event.attributes.start_at, 'YYYY-MM-DD'), 'days') > 0;
+          const eventTime = pastPresentOrFuture([event.attributes.start_at, event.attributes.end_at]);
+          return eventTime === 'past';
         }) : null);
 
         const upcomingEvents = (events ? events.filter((event) => {
-          return moment().diff(moment(event.attributes.start_at, 'YYYY-MM-DD'), 'days') <= 0;
+          const eventTime = pastPresentOrFuture([event.attributes.start_at, event.attributes.end_at]);
+          return (eventTime === 'present' || eventTime === 'future');
         }) : null);
 
         return (

@@ -1,5 +1,8 @@
 import React from 'react';
 
+// router
+import { withRouter, WithRouterProps } from 'react-router';
+
 // components
 import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
@@ -9,12 +12,11 @@ import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-type Props = {};
+interface Props {}
 
-type State = {};
+interface State {}
 
-class SettingsPage extends React.PureComponent<Props & InjectedIntlProps, State> {
-
+class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   render() {
     const { children } = this.props;
     const { formatMessage } = this.props.intl;
@@ -47,4 +49,4 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps, State>
   }
 }
 
-export default injectIntl<Props>(SettingsPage);
+export default withRouter(injectIntl(SettingsPage));

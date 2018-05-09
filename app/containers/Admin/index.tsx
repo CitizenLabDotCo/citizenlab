@@ -9,7 +9,6 @@ import Sidebar from './sideBar/';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-
 const Container = styled.div`
   display: flex;
   flex-direction: row;
@@ -40,7 +39,7 @@ export default class AdminPage extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
       adminFullWidth: false,
     };
@@ -67,7 +66,7 @@ export default class AdminPage extends React.PureComponent<Props, State> {
     return (
       <>
         <Container className={className}>
-          <Sidebar {...this.props} />
+          <Sidebar />
           <RightColumn>
             <AdminContainerStyled adminFullWidth={adminFullWidth}>
               {children}

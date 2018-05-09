@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isFunction } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // components
@@ -120,7 +120,7 @@ export default class Avatar extends React.PureComponent<Props, State> {
   render() {
     const className = this.props['className'];
     const { avatarSrc } = this.state;
-    const isClickable = (this.props.onClick && _.isFunction(this.props.onClick));
+    const isClickable = (this.props.onClick && isFunction(this.props.onClick));
 
     if (this.props.hideIfNoAvatar && !avatarSrc) {
       return null;

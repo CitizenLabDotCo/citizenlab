@@ -1,8 +1,7 @@
 // libraries
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { isNullOrError } from 'utils/helperUtils';
-import * as moment from 'moment';
+import { isNilOrError } from 'utils/helperUtils';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -16,6 +15,9 @@ import messages from '../messages';
 import EventBlock from './EventBlock';
 import Button from 'components/UI/Button';
 import ContentContainer from 'components/ContentContainer';
+
+// utils
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // styling
 import styled from 'styled-components';
@@ -56,15 +58,13 @@ interface DataProps {
 
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject slug={projectId}>{render}</GetProject>,
-  events: ({ project, render }) => <GetEvents projectId={(!isNullOrError(project) ? project.id : null)}>{render}</GetEvents>
+  events: ({ project, render }) => <GetEvents projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetEvents>
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {({ project, events }) => {
-      if (!isNullOrError(project) && events && events.length > 0) {
-        const now = moment();
-
+      if (!isNilOrError(project) && events && events.length > 0) {
         return (
           <Container className={`e2e-events-preview`}>
             <ContentContainer>
@@ -79,7 +79,10 @@ export default (inputProps: InputProps) => (
 
               <Events>
                 {events
-                  .filter((event) => moment(event.attributes.start_at).isSameOrAfter(now, 'day'))
+                  .filter((event) => {
+                    const eventTime = pastPresentOrFuture([event.attributes.start_at, event.attributes.end_at]);
+                    return (eventTime === 'present' || eventTime === 'future');
+                  })
                   .slice(0, 3)
                   .map((event, index) => (
                     <EventBlock event={event} key={event.id} projectSlug={project.attributes.slug} isLast={(index === 2)} />

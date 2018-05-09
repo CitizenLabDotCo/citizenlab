@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { IStatusChangeOfYourIdeaNotificationData } from 'services/notifications';
 import { adopt } from 'react-adopt';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
@@ -27,7 +27,7 @@ class StatusChangeOfYourIdeaNotification extends React.PureComponent<Props, Stat
   render() {
     const { notification, idea, ideaStatus } = this.props;
 
-    if (isNullOrError(idea) || !ideaStatus) return null;
+    if (isNilOrError(idea) || !ideaStatus) return null;
 
     return (
       <NotificationWrapper
