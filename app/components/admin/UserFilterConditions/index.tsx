@@ -4,8 +4,9 @@ import styled from 'styled-components';
 
 import { TRule } from './rules';
 import Rule from './Rule';
-// import { FormattedMessage } from 'utils/cl-intl';
-// import messages from './messages';
+import Button from 'components/UI/Button';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 
 const Container = styled.div`
@@ -37,6 +38,12 @@ class UserFilterConditions extends React.PureComponent<Props, State> {
     this.props.onChange(newRules);
   }
 
+  handleOnAddRule = () => {
+    const newRules = clone(this.props.rules);
+    newRules.push({ });
+    this.props.onChange(newRules);
+  }
+
   render() {
     const { rules } = this.props;
     return (
@@ -51,6 +58,12 @@ class UserFilterConditions extends React.PureComponent<Props, State> {
             />
           ))}
         </RulesList>
+        <Button
+          icon="plus"
+          onClick={this.handleOnAddRule}
+        >
+          <FormattedMessage {...messages.addCondition} />
+        </Button>
       </Container>
     );
   }
