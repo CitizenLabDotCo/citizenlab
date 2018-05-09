@@ -74,7 +74,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
           padding: 0,
           margin: 0,
           border: 'none',
-          '-webkit-appearance': 'none'
+          appearance: 'none'
         },
         input: {
           padding,
@@ -88,7 +88,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
           borderRadius: '5px',
           boxShadow: 'inset 0 0 2px rgba(0, 0, 0, 0.1)',
           background: 'transparent',
-          '-webkit-appearance': 'none'
+          appearance: 'none'
         },
         suggestions: {
           list: {

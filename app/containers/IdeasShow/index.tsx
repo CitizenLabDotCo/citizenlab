@@ -1,6 +1,9 @@
 import React from 'react';
-import { has, isString } from 'lodash';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs/Rx';
+import has from 'lodash/has';
+import isString from 'lodash/isString';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 
 // router
 import { Link, browserHistory } from 'react-router';
