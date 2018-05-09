@@ -136,3 +136,10 @@ export type TRule = (
       ruleType?: 'registration_completed_at';
       predicate?: 'is_empty' | 'not_is_empty';
     });
+
+export const staticRuleTypes: TRule['ruleType'][] = [
+  'email',
+  'lives_in',
+  'registration_completed_at',
+  'role',
+];
