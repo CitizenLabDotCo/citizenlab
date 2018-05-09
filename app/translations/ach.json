@@ -98,6 +98,7 @@
   "app.components.admin.IdeaManager.title": "crwdns18326:0crwdne18326:0",
   "app.components.admin.IdeaManager.topicsTab": "crwdns18327:0crwdne18327:0",
   "app.components.admin.IdeaManager.up": "crwdns18328:0crwdne18328:0",
+  "app.components.admin.UserFilterConditions.rules": "",
   "app.containers.Admin.User.admin": "crwdns17118:0crwdne17118:0",
   "app.containers.Admin.User.adminLabel": "crwdns18522:0crwdne18522:0",
   "app.containers.Admin.User.confirmDelete": "crwdns18523:0crwdne18523:0",
