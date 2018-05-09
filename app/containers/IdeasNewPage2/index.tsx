@@ -265,7 +265,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     }
   }
 
-  async postIdeaAndIdeaImage(publicationStatus: 'draft' | 'published', authorId: string | null = null) {
+  async postIdeaAndIdeaImage(publicationStatus: 'draft' | 'published', authorId: string | null) {
     try {
       let ideaImage: IIdeaImage | null = null;
       const { imageId, imageChanged, imageFile } = await this.globalState.get();
@@ -305,7 +305,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     } catch (error) {
       if (isError(error) && error.message === 'not_authenticated') {
         try {
-          await this.postIdeaAndIdeaImage('draft');
+          await this.postIdeaAndIdeaImage('draft', null);
           this.globalState.set({ processing: false });
           this.localState.set({ showIdeaForm: false });
           window.scrollTo(0, 0);
