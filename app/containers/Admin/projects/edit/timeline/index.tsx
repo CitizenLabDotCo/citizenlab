@@ -131,7 +131,7 @@ class AdminProjectTimelineIndex extends React.Component<Props & WithRouterProps 
 }
 
 export default withRouter(injectIntl((inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
-  <GetPhases projectId={inputProps.params.projectId} resetOnChange>
+  <GetPhases projectId={inputProps.params.projectId}>
     {phases => <AdminProjectTimelineIndex {...inputProps} phases={phases} />}
   </GetPhases>
 )));

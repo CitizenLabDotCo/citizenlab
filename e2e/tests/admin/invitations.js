@@ -20,7 +20,7 @@ module.exports = {
     .waitForElementVisible('#emails')
     .setValue('#emails', email)
     .click('#invitation button')
-    .pause(300)
+    .waitForElementPresent('.Button.success')
     .assert.containsText('table', email);
   },
   useInvite: (browser) => {
