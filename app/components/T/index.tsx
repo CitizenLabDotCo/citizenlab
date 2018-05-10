@@ -1,15 +1,13 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import { Multiloc, Locale } from 'typings';
-
-// services
 import { getLocalized } from 'utils/i18n';
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
-import { Map } from 'immutable';
 
 type Props = {
-  value: Multiloc | Map<string,string>;
+  value: Multiloc;
   as?: string;
 };
 
@@ -19,11 +17,10 @@ type State = {
 };
 
 export default class T extends React.PureComponent<Props, State> {
-  
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
       locale: null,
       currentTenantLocales: null
@@ -36,7 +33,7 @@ export default class T extends React.PureComponent<Props, State> {
     const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      Observable.combineLatest(
         locale$,
         currentTenantLocales$
       ).subscribe(([locale, currentTenantLocales]) => {
