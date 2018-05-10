@@ -73,6 +73,13 @@ const icons = {
         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
       </svg>
   ),
+  'minus-circle': (className) => (
+    <svg className={className} width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <g id="ic_remove_circle_48px">
+        <path id="Vector" d="M9 0C4.0275 0 0 4.0275 0 9C0 13.9725 4.0275 18 9 18C13.9725 18 18 13.9725 18 9C18 4.0275 13.9725 0 9 0ZM13.5 9.9H4.5V8.1H13.5V9.9Z" fill="#FC3C2D" />
+      </g>
+    </svg>
+  ),
   comment: (className) => (
     <svg className={className} height="100%" viewBox="0 0 24 24">
         <path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18z" />

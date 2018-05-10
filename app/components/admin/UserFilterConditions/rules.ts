@@ -29,7 +29,7 @@ export type TRule = (
     | 'not_begins_with'
     | 'ends_on'
     | 'not_ends_on';
-    value: string;
+    value?: string;
   }
   | {
     ruleType?: 'custom_field_text';
@@ -38,7 +38,7 @@ export type TRule = (
      */
     customFieldId?: string;
     predicate?: 'is_empty' | 'not_is_empty';
-    value: undefined;
+    value?: undefined;
   }
   | {
     ruleType?: 'custom_field_select';
@@ -50,7 +50,7 @@ export type TRule = (
     /**
      * The ID of a custom field option
      */
-    value: string;
+    value?: string;
   }
   | {
     ruleType?: 'custom_field_select';
@@ -59,7 +59,7 @@ export type TRule = (
      */
     customFieldId?: string;
     predicate?: 'is_empty' | 'not_is_empty';
-    value: undefined;
+    value?: undefined;
   }
   | {
     ruleType?: 'custom_field_checkbox';
@@ -68,7 +68,7 @@ export type TRule = (
      */
     customFieldId?: string;
     predicate?: 'is_checked' | 'not_is_checked';
-    value: undefined;
+    value?: undefined;
   }
   | {
     ruleType?: 'custom_field_date';
@@ -77,7 +77,7 @@ export type TRule = (
      */
     customFieldId?: string;
     predicate?: 'is_before' | 'is_exactly' | 'is_after';
-    value: string;
+    value?: string;
   }
   | {
     ruleType?: 'custom_field_date';
@@ -86,7 +86,7 @@ export type TRule = (
      */
     customFieldId?: string;
     predicate?: 'is_empty' | 'not_is_empty';
-    value: undefined;
+    value?: undefined;
   }
   | {
     ruleType?: 'custom_field_number';
@@ -101,7 +101,7 @@ export type TRule = (
     | 'is_larger_than_or_equal'
     | 'is_smaller_than'
     | 'is_smaller_than_or_equal';
-    value: number;
+    value?: number;
   }
   | {
     ruleType?: 'custom_field_number';
@@ -110,12 +110,12 @@ export type TRule = (
      */
     customFieldId?: string;
     predicate?: 'is_empty' | 'not_is_empty';
-    value: undefined;
+    value?: undefined;
   }
   | {
     ruleType?: 'role';
     predicate?: 'is_admin' | 'not_is_admin';
-    value: undefined;
+    value?: undefined;
   }
   | {
     ruleType?: 'email';
@@ -128,36 +128,28 @@ export type TRule = (
     | 'not_begins_with'
     | 'ends_on'
     | 'not_ends_on';
-    value: string;
+    value?: string;
   }
   | {
     ruleType?: 'lives_in';
     predicate?: 'has_value' | 'not_has_value';
-    value: string;
+    value?: string;
   }
   | {
     ruleType?: 'lives_in';
     predicate?: 'is_empty' | 'not_is_empty';
-    value: undefined;
+    value?: undefined;
   }
   | {
     ruleType?: 'registration_completed_at';
     predicate?: 'is_before' | 'is_exactly' | 'is_after';
-    value: string;
+    value?: string;
   }
   | {
     ruleType?: 'registration_completed_at';
     predicate?: 'is_empty' | 'not_is_empty';
-    value: undefined;
+    value?: undefined;
   });
-
-export const staticRuleTypes: TRule['ruleType'][] = [
-  'email',
-  'lives_in',
-  'registration_completed_at',
-  'role',
-];
-
 
 export const ruleTypeConstraints = {
   custom_field_text: {
