@@ -1,5 +1,6 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 
 // libraries
 import Helmet from 'react-helmet';
@@ -23,8 +24,7 @@ type State = {
 };
 
 class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
-
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
   emailInputElement: HTMLInputElement | null;
 
   constructor(props: Props) {
@@ -42,7 +42,7 @@ class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
     const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      Observable.combineLatest(
         locale$,
         currentTenant$
       ).subscribe(([locale, currentTenant]) => {
