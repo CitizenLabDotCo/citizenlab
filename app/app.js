@@ -5,13 +5,9 @@
  * code.
  */
 
-// debug utils
-import { cl } from 'utils/debugUtils'; // eslint-disable-line
-
 // Sentry error tracking
 if (process.env.NODE_ENV !== 'development' && process.env.SENTRY_DSN) {
-  import('raven-js')
-  .then((Raven) => {
+  import('raven-js').then((Raven) => {
     Raven.config(process.env.SENTRY_DSN, {
       environment: process.env.NODE_ENV,
       release: process.env.CIRCLE_BUILD_NUM,
@@ -23,34 +19,20 @@ if (process.env.NODE_ENV !== 'development' && process.env.SENTRY_DSN) {
   });
 }
 
-// Needed for redux-saga es6 generator support
-import 'babel-polyfill';
-
 // Import all the third party stuff
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
+import { applyRouterMiddleware, Router } from 'react-router';
 import FontFaceObserver from 'fontfaceobserver';
 import { useScroll } from 'react-router-scroll';
 import 'sanitize.css/sanitize.css';
 import 'react-select/dist/react-select.css';
-import { fromJS } from 'immutable';
 
 // Creates the LazyImages Observer
 import 'utils/lazyImagesObserver';
 
-// add reactMap to immutible
-import 'utils/immutablePatch';
-
-import { Sagas } from 'utils/react-redux-saga';
-
 // Import root app
 import App from 'containers/App';
-
-// Import selector for `syncHistoryWithStore`
-import { makeSelectLocationState } from 'containers/App/selectors';
 
 // Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';
@@ -62,24 +44,17 @@ import '!file-loader?name=[name].[ext]!./manifest.json';
 import 'file-loader?name=[name].[ext]!./.htaccess';
 /* eslint-enable import/no-unresolved, import/extensions */
 
-import configureStore, { getSagaMiddleware } from './store';
-
 // Import i18n messages
 import { translationMessages } from './i18n';
 
 /* eslint-disable import/first */
-// Import CSS reset and Global Styles
-// import '../vendor/foundation/main.scss';
 import 'semantic-ui-css/semantic.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './global-styles';
-
 /* eslint-enable import/first */
 
 // Import root routes
 import createRoutes from './routes';
-
-import { loadState } from './persistedData';
 
 import { initializeAnalytics } from 'utils/analytics';
 
@@ -93,52 +68,27 @@ visuelt.load().then(() => {
   document.body.classList.remove('fontLoaded');
 });
 
-// Create redux store with history
-// this uses the singleton browserHistory provided by react-router
-// Optionally, this could be changed to leverage a created history
-// e.g. `const browserHistory = useRouterHistory(createBrowserHistory)();`
-
-const initialState = fromJS({
-  persistedData: loadState(),
-});
-
-export const store = configureStore(initialState, browserHistory);
-
-// The sagas for analytics tracking need to be mounted here,
-// because they need to be able to watch the very first events
-// like initial route change, authenitcation
-initializeAnalytics(store);
-
-// Sync history and store, as the react-router-redux reducer
-// is under the non-default key ("routing"), selectLocationState
-// must be provided for resolving how to retrieve the "route" in the state
-const history = syncHistoryWithStore(browserHistory, store, {
-  selectLocationState: makeSelectLocationState(),
-});
+initializeAnalytics();
 
 // Set up the router, wrapping all Routes in the App component
 const rootRoute = {
   component: App,
-  childRoutes: createRoutes(store),
+  childRoutes: createRoutes(),
 };
 
 const render = (messages) => {
   ReactDOM.render(
-    <Provider store={store}>
-      <Sagas middleware={getSagaMiddleware()}>
-        <LanguageProvider messages={messages}>
-          <Router
-            history={history}
-            routes={rootRoute}
-            render={
-              // Scroll to top when going to a new page, imitating default browser
-              // behaviour
-              applyRouterMiddleware(useScroll())
-            }
-          />
-        </LanguageProvider>
-      </Sagas>
-    </Provider>,
+    <LanguageProvider messages={messages}>
+      <Router
+        history={history}
+        routes={rootRoute}
+        render={
+          // Scroll to top when going to a new page, imitating default browser
+          // behaviour
+          applyRouterMiddleware(useScroll())
+        }
+      />
+    </LanguageProvider>,
     document.getElementById('app')
   );
 };

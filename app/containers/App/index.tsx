@@ -1,6 +1,7 @@
 import React from 'react';
-import { Subscription, Observable } from 'rxjs/Rx';
-import { get } from 'lodash';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+import get from 'lodash/get';
 import * as moment from 'moment';
 import 'moment-timezone';
 import 'moment/locale/de';
@@ -26,12 +27,6 @@ import VoteControl from 'components/VoteControl';
 // auth
 import HasPermission from 'components/HasPermission';
 
-// sagas
-import WatchSagas from 'containers/WatchSagas';
-import authSagas from 'utils/auth/sagas';
-import areasSagas from 'utils/areas/sagas';
-import tenantSaga from 'utils/tenant/sagas';
-
 // services
 import { localeStream } from 'services/locale';
 import { IUser } from 'services/users';
@@ -44,11 +39,6 @@ import eventEmitter from 'utils/eventEmitter';
 // style
 import styled, { ThemeProvider } from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
-
-// legacy redux stuff
-import { store } from 'app';
-import { LOAD_CURRENT_TENANT_SUCCESS } from 'utils/tenant/constants';
-import { LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL } from 'utils/auth/constants';
 
 // typings
 import ErrorBoundary from 'components/ErrorBoundary';
@@ -133,9 +123,6 @@ export default class App extends React.PureComponent<Props & RouterState, State>
         authUser$.do((authUser) => {
           if (!authUser) {
             signOut();
-            store.dispatch({ type: DELETE_CURRENT_USER_LOCAL });
-          } else {
-            store.dispatch({ type: LOAD_CURRENT_USER_SUCCESS, payload: authUser });
           }
         }),
         locale$.do((locale) => {
@@ -143,7 +130,6 @@ export default class App extends React.PureComponent<Props & RouterState, State>
         }),
         tenant$.do((tenant) => {
           moment.tz.setDefault(tenant.data.attributes.settings.core.timezone);
-          store.dispatch({ type: LOAD_CURRENT_TENANT_SUCCESS, payload: tenant });
         })
       ).subscribe(([authUser, _locale, tenant]) => {
         this.setState({ tenant, authUser });
@@ -198,10 +184,6 @@ export default class App extends React.PureComponent<Props & RouterState, State>
 
     return (
       <>
-        <WatchSagas sagas={authSagas} />
-        <WatchSagas sagas={areasSagas} />
-        <WatchSagas sagas={{ tenantSaga }} />
-
         {tenant && visible && (
           <PreviousPathnameContext.Provider value={previousPathname}>
             <ThemeProvider theme={theme}>
