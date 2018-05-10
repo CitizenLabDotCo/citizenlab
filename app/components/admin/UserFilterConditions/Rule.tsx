@@ -4,14 +4,32 @@ import styled from 'styled-components';
 
 import { TRule } from './rules';
 
-import Button from 'components/UI/Button';
 import FieldSelector, { FieldDescriptor } from './FieldSelector';
 import PredicateSelector from './PredicateSelector';
 import ValueSelector from './ValueSelector';
+import Icon from 'components/UI/Icon';
 // import messages from './messages';
 
 const Container = styled.div`
+  display: flex;
+`;
 
+const IconCell = styled.div`
+  width: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SelectorCell = styled.div`
+  flex: 1;
+  padding: 10px 5px;
+`;
+
+const StyledRemoveButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
 `;
 
 type Props = {
@@ -47,28 +65,36 @@ class Rule extends React.Component<Props, State> {
     const { rule, onRemove } = this.props;
     return (
       <Container>
-        <Button
-          onClick={onRemove}
-          icon="delete"
-        />
-        <FieldSelector
-          field={this.fieldDescriptorFromRule(rule)}
-          onChange={this.handleChangeField}
-        />
-        {rule.ruleType &&
-          <PredicateSelector
-            ruleType={rule.ruleType}
-            predicate={rule.predicate}
-            onChange={this.handleChangePredicate}
+
+        <IconCell>
+          <StyledRemoveButton onClick={onRemove}>
+            <Icon name="minus-circle" />
+          </StyledRemoveButton>
+        </IconCell>
+        <SelectorCell>
+          <FieldSelector
+            field={this.fieldDescriptorFromRule(rule)}
+            onChange={this.handleChangeField}
           />
-        }
-        {rule.predicate &&
-          <ValueSelector
-            rule={rule}
-            value={rule.value}
-            onChange={this.handleChangeValue}
-          />
-        }
+        </SelectorCell>
+        <SelectorCell>
+          {rule.ruleType &&
+            <PredicateSelector
+              ruleType={rule.ruleType}
+              predicate={rule.predicate}
+              onChange={this.handleChangePredicate}
+            />
+          }
+        </SelectorCell>
+        <SelectorCell>
+          {rule.predicate &&
+            <ValueSelector
+              rule={rule}
+              value={rule.value}
+              onChange={this.handleChangeValue}
+            />
+          }
+        </SelectorCell>
       </Container>
     );
   }

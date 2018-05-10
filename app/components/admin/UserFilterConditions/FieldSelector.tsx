@@ -1,8 +1,8 @@
 import * as React from 'react';
-// import styled from 'styled-components';
+import { keys } from 'lodash';
 import Select from 'components/UI/Select';
 import { IOption } from 'typings';
-import { TRule, staticRuleTypes } from './rules';
+import { TRule, ruleTypeConstraints } from './rules';
 
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
@@ -28,12 +28,14 @@ type State = {};
 class FieldSelector extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   generateOptions = (): IOption[] => {
-    const staticOptions = staticRuleTypes.map((ruleType) => (
-      {
-        value: this.descriptorToOptionValue({ ruleType }),
-        label: this.props.intl.formatMessage(messages[`field_${ruleType}`]),
-      }
-    ));
+    const staticOptions = keys(ruleTypeConstraints)
+      .filter((ruleType) => !/^custom_field_.*$/.test(ruleType))
+      .map((ruleType) => (
+        {
+          value: this.descriptorToOptionValue({ ruleType: ruleType as TRule['ruleType'] }),
+          label: this.props.intl.formatMessage(messages[`field_${ruleType}`]),
+        }
+      ));
     const customFieldOptions = (this.props.customFields || [])
       .filter((customField) => customField.attributes.code !== 'domicile')
       .map((customField) => (
