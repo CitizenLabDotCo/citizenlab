@@ -1,6 +1,7 @@
 // Libraries
-import * as React from 'react';
-import * as Rx from 'rxjs';
+import React from 'react';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 
 // Services
 import { localeStream } from 'services/locale';
@@ -29,7 +30,7 @@ interface State {
 
 export default function localize<PassedProps>(ComposedComponent) {
   return class Localized extends React.PureComponent<Props & PassedProps, State>{
-    subscriptions: Rx.Subscription[];
+    subscriptions: Subscription[];
 
     constructor(props) {
       super(props);
@@ -45,7 +46,7 @@ export default function localize<PassedProps>(ComposedComponent) {
       const currentTenant$ = currentTenantStream().observable;
 
       this.subscriptions = [
-        Rx.Observable.combineLatest(
+        Observable.combineLatest(
           locale$,
           currentTenant$
         ).subscribe(([locale, currentTenant]) => {

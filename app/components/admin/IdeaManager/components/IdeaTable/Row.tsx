@@ -1,26 +1,31 @@
 import React from 'react';
-import * as Rx from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { uniq, keys, isEmpty } from 'lodash';
 import { findDOMNode } from 'react-dom';
-import eventEmitter from 'utils/eventEmitter';
 import { IModalInfo } from 'containers/App';
+import { DragSource } from 'react-dnd';
+
+// services
 import { IIdeaData, updateIdea, ideaByIdStream } from 'services/ideas';
 import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
-import { injectTFunc } from 'components/T/utils';
-import { DragSource } from 'react-dnd';
 
 // components
 import { Table, Icon, Checkbox } from 'semantic-ui-react';
 import WrappedRow from './WrappedRow';
-import { FormattedDate } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
 import T from 'components/T';
 import PhasesSelector from './PhasesSelector';
 import TopicsSelector from './TopicsSelector';
 import ProjectSelector from './ProjectSelector';
 import StatusSelector from './StatusSelector';
 
+// utils
+import eventEmitter from 'utils/eventEmitter';
+import localize, { injectedLocalized } from 'utils/localize';
+
+// i18n
+import { FormattedDate, InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // style
@@ -54,7 +59,6 @@ type Props = {
   idea: IIdeaData,
   phases: IPhaseData[],
   statuses: IIdeaStatusData[],
-  tFunc: () => string,
   onDeleteIdea: () => void,
   selected?: boolean,
   selectedIdeas: { [key: string]: boolean },
@@ -66,7 +70,9 @@ type Props = {
   activeFilterMenu: string;
 };
 
-class Row extends React.PureComponent<Props> {
+type State = {};
+
+class Row extends React.PureComponent<Props & InjectedIntlProps & injectedLocalized, State> {
 
   onClickRow = (event) => {
     if (event.ctrlKey) {
@@ -174,24 +180,27 @@ class Row extends React.PureComponent<Props> {
 }
 
 const ideaSource = {
-  beginDrag(props) {
+  beginDrag(props: Props) {
     return {
       type: 'idea',
       id: props.idea.id,
       idea: props.idea,
     };
   },
-  endDrag(props, monitor) {
+  endDrag(props: Props & InjectedIntlProps & injectedLocalized, monitor) {
     const item = monitor.getItem();
     const dropResult = monitor.getDropResult();
 
     if (dropResult && dropResult.type === 'topic') {
       let ids = keys(props.selectedIdeas);
+
       if (ids.indexOf(item.id) < 0) {
         ids = [item.id];
       }
+
       const observables = ids.map((id) => ideaByIdStream(id).observable);
-      Rx.Observable.combineLatest(observables).take(1).subscribe((ideas) => {
+
+      Observable.combineLatest(observables).take(1).subscribe((ideas) => {
         ideas.map((idea) => {
           const currentTopics = idea.data.relationships.topics.data.map((d) => d.id);
           const newTopics = uniq(currentTopics.concat(dropResult.id));
@@ -204,11 +213,14 @@ const ideaSource = {
 
     if (dropResult && dropResult.type === 'phase') {
       let ids = keys(props.selectedIdeas);
+
       if (ids.indexOf(item.id) < 0) {
         ids = [item.id];
       }
+
       const observables = ids.map((id) => ideaByIdStream(id).observable);
-      Rx.Observable.combineLatest(observables).take(1).subscribe((ideas) => {
+
+      Observable.combineLatest(observables).take(1).subscribe((ideas) => {
         ideas.map((idea) => {
           const currentPhases = idea.data.relationships.phases.data.map((d) => d.id);
           const newPhases = uniq(currentPhases.concat(dropResult.id));
@@ -221,17 +233,22 @@ const ideaSource = {
 
     if (dropResult && dropResult.type === 'project') {
       let ids = keys(props.selectedIdeas);
+
       if (ids.indexOf(item.id) < 0) {
         ids = [item.id];
       }
+
       const observables = ids.map((id) => ideaByIdStream(id).observable);
-      Rx.Observable.combineLatest(observables).take(1).subscribe((ideas) => {
+
+      Observable.combineLatest(observables).take(1).subscribe((ideas) => {
         ideas.map((idea) => {
           const newProject = dropResult.id;
           const hasPhases = !isEmpty(idea.data.relationships.phases.data);
+
           if (hasPhases) {
-            const ideaTitle = props.tFunc(idea.data.attributes.title_multiloc);
+            const ideaTitle = props.localize(idea.data.attributes.title_multiloc);
             const message = props.intl.formatMessage(messages.losePhaseInfoConfirmation, { ideaTitle });
+
             if (window.confirm(message)) {
               updateIdea(idea.data.id, {
                 project_id: newProject,
@@ -250,6 +267,7 @@ const ideaSource = {
 
     if (dropResult && dropResult.type === 'ideaStatus') {
       let ids = keys(props.selectedIdeas);
+
       if (ids.indexOf(item.id) < 0) {
         ids = [item.id];
       }
@@ -271,4 +289,4 @@ function collect(connect, monitor) {
   };
 }
 
-export default injectTFunc(injectIntl(DragSource('IDEA', ideaSource, collect)(Row)));
+export default localize(injectIntl(DragSource<Props & InjectedIntlProps & injectedLocalized>('IDEA', ideaSource, collect)(Row)));

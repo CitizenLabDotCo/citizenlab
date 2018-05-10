@@ -6,9 +6,7 @@ import { fromPromise } from 'rxjs/observable/fromPromise';
 import { retry, catchError } from 'rxjs/operators';
 import { some, forOwn, isError, isNil, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union } from 'lodash';
 import request from 'utils/request';
-import { store } from 'app';
 import { authApiEndpoint } from 'services/auth';
-import { mergeJsonApiResources } from 'utils/resources/actions';
 
 export type pureFn<T> = (arg: T) => T;
 type fetchFn = () => Promise<{}>;
@@ -349,11 +347,6 @@ class Streams {
       })
       .filter(data => data !== 'initial')
       .distinctUntilChanged()
-      .do((data) => {
-        if (cacheStream) {
-          store.dispatch(mergeJsonApiResources(data));
-        }
-      })
       .publishReplay(1)
       .refCount();
 
