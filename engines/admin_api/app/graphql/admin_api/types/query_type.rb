@@ -36,6 +36,11 @@ module AdminApi
       ::IdeaPolicy::Scope.new(nil, Idea).resolve.published
     end
 
+    field :public_projects , Types::ProjectType.connection_type, null:false
+
+    def public_projects
+      ::ProjectPolicy::Scope.new(nil, Project).resolve
+    end
 
     field :idea, Types::IdeaType, null: false do
       argument :id, ID, required: true
