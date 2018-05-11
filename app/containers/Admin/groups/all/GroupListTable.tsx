@@ -19,6 +19,7 @@ import Icon from 'components/UI/Icon';
 import GroupAvatar from './GroupAvatar';
 import Spinner from 'components/UI/Spinner';
 import { List, Row } from 'components/admin/ResourceList';
+import MultipleSelectDropdown from 'components/admin/MultipleSelectDropdown';
 
 // Style
 import styled from 'styled-components';
@@ -123,6 +124,14 @@ class GroupsListTable extends React.PureComponent<Props & InjectedIntlProps, Sta
       }
     };
   }
+  getChoices = (groups) => {
+    return groups.map((group) => {
+      return { id: group.id, text: group.attributes.title_multiloc, selected: false };
+    });
+  }
+  addToGroups = (ids) => {
+    console.log(ids);
+  }
 
   render() {
     const { groups, locale, tenantLocales, loading } = this.state;
@@ -145,6 +154,14 @@ class GroupsListTable extends React.PureComponent<Props & InjectedIntlProps, Sta
     }
 
     return (
+      <>
+      <MultipleSelectDropdown
+        messages={messages}
+        choices={this.getChoices(groups)}
+        onSubmit={this.addToGroups}
+      >
+        <div>choose</div>
+      </MultipleSelectDropdown>
       <List>
         {groups.map((group) => (
           <Row key={group.id}>
@@ -164,6 +181,7 @@ class GroupsListTable extends React.PureComponent<Props & InjectedIntlProps, Sta
           </Row>
         ))}
       </List>
+      </>
     );
   }
 }
