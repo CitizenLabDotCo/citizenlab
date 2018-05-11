@@ -74,6 +74,10 @@ const DropdownMenu = styled(clickOutside)`
       transition: all 200ms cubic-bezier(0.19, 1, 0.22, 1);
     }
   }
+  :focus {
+    outline: none;
+    border: 1px solid #044D6C;
+  }
 `;
 
 const DropdownMenuInner = styled.div`
@@ -97,7 +101,6 @@ const DropdownListItem = styled.div`
   color: #044D6C;
   font-size: 16px;
   font-weight: 400;
-  text-decoration: none;
   padding: 10px;
   margin-right: 5px;
   background: #fff;
@@ -169,7 +172,7 @@ class MultipleSelectDropdown extends React.PureComponent<Props & InjectedIntlPro
     this.setState(state => ({ dropdownOpened: !state.dropdownOpened }));
   }
 
-  onClickCheckbox = (id) => () => {
+  onClickRow = (id) => () => {
     const index = this.state.chosen.indexOf(id);
     if (index < 0) {
       this.setState({ chosen: [...this.state.chosen, id] });
@@ -179,8 +182,13 @@ class MultipleSelectDropdown extends React.PureComponent<Props & InjectedIntlPro
       })});
     }
   }
+
+
   submit = (chosen) => () => {
-    this.props.onSubmit(chosen);
+    if (this.state.chosen.length > 0) {
+      this.props.onSubmit(chosen);
+      this.setState({ chosen: [], dropdownOpened: false });
+    }
   }
 
   render() {
@@ -204,9 +212,9 @@ class MultipleSelectDropdown extends React.PureComponent<Props & InjectedIntlPro
                 {choices.length > 0 && choices.map((choice) => {
                   const id = choice.id;
                   return (
-                    <DropdownListItem key={id}>
+                    <DropdownListItem key={id} onClick={this.onClickRow(id)}>
                       <Checkbox
-                        onChange={this.onClickCheckbox(id)}
+                        onChange={this.onClickRow(id)}
                         value={this.state.chosen.includes(id)}
                         label={<T value={choice.text} truncate={21}/>}
                       />
