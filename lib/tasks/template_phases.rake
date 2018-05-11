@@ -29,7 +29,7 @@ namespace :fix_templates do
     phases_by_project.each do |key, phase_hs|
       t = nil
       phase_hs.each do |phase_h|
-        t = (t && (t+ 1.day)) || phase_h['start_at']
+        t = (t && (t + 1.day)) || phase_h['start_at']
         phase_h['start_at'] = t
         t += (rand(30)+1).days
         phase_h['end_at'] = t
