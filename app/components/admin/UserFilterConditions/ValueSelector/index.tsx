@@ -1,10 +1,7 @@
 import * as React from 'react';
-import { TRule, ruleTypeConstraints } from '../rules';
-// import { flow } from 'lodash';
-// import styled from 'styled-components';
 
-// import { FormattedMessage } from 'utils/cl-intl';
-// import messages from './messages';
+import { TRule, ruleTypeConstraints } from '../rules';
+
 
 type Props = {
   rule: TRule,

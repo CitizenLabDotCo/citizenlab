@@ -7,8 +7,7 @@ import { TRule } from './rules';
 import FieldSelector, { FieldDescriptor } from './FieldSelector';
 import PredicateSelector from './PredicateSelector';
 import ValueSelector from './ValueSelector';
-import Icon from 'components/UI/Icon';
-// import messages from './messages';
+import Button from 'components/UI/Button';
 
 const Container = styled.div`
   display: flex;
@@ -26,10 +25,10 @@ const SelectorCell = styled.div`
   padding: 10px 5px;
 `;
 
-const StyledRemoveButton = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
+const StyledRemoveButton = styled(Button)`
+  button {
+    padding: 0;
+  }
 `;
 
 type Props = {
@@ -67,9 +66,11 @@ class Rule extends React.Component<Props, State> {
       <Container>
 
         <IconCell>
-          <StyledRemoveButton onClick={onRemove}>
-            <Icon name="minus-circle" />
-          </StyledRemoveButton>
+          <StyledRemoveButton
+            onClick={onRemove}
+            icon="minus-circle"
+            style="text"
+          />
         </IconCell>
         <SelectorCell>
           <FieldSelector

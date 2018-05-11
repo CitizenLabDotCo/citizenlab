@@ -1,15 +1,17 @@
 import * as React from 'react';
 import { keys } from 'lodash';
 import Select from 'components/UI/Select';
+
 import { IOption } from 'typings';
 import { TRule, ruleTypeConstraints } from './rules';
-
-import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import GetCustomFields, { GetCustomFieldsChildProps } from 'resources/GetCustomFields';
 import { ICustomFieldData } from 'services/userCustomFields';
+
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectTFunc } from 'components/T/utils';
+import messages from './messages';
+
 
 export interface FieldDescriptor {
   ruleType?: TRule['ruleType'];

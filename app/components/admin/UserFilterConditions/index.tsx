@@ -4,37 +4,27 @@ import styled from 'styled-components';
 
 import { TRule } from './rules';
 import Rule from './Rule';
+
+import Button from 'components/UI/Button';
+
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import Icon from 'components/UI/Icon';
 
 
-const Container = styled.div`
-
-`;
+const Container = styled.div``;
 
 const RulesList = styled.div`
-
+  margin: 0 -5px;
 `;
 
-const AddButton = styled.button`
-  display: flex;
-  align-items: center;
-  margin: 10px 0 0 60px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  color: #044D6C;
-`;
-
-const AddIcon = styled(Icon)`
-  width: 23px;
-  height: 23px;
-  & > path:nth-child(2) {
+const AddButton = styled(Button)`
+  margin: 5px 0 0 60px;
+  button {
+    padding-left: 0;
+  }
+  path:nth-child(2) {
     fill: ${props => props.theme.colors.clBlue};
   }
-  margin-right: 10px;
 `;
 
 type Props = {
@@ -78,10 +68,11 @@ class UserFilterConditions extends React.PureComponent<Props, State> {
             />
           ))}
         </RulesList>
-        <AddButton onClick={this.handleOnAddRule}>
-          <AddIcon
-            name="plus-circle"
-          />
+        <AddButton
+          onClick={this.handleOnAddRule}
+          icon="plus-circle"
+          style="text"
+        >
           <FormattedMessage {...messages.addCondition} />
         </AddButton>
       </Container>

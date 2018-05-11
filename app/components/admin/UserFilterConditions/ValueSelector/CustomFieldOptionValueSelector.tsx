@@ -8,6 +8,7 @@ import Select from 'components/UI/Select';
 
 import { injectTFunc } from 'components/T/utils';
 
+
 type Props = {
   rule: TRule;
   value: string;
