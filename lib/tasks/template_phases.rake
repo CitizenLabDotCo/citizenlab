@@ -39,4 +39,39 @@ namespace :fix_templates do
     phases_by_project.values.flatten
   end
 
+
+  task :list_phase_overlaps => [:environment] do |t, args|
+    overlaps = {}
+    Tenant.all.each do |tenant|
+      Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
+        project_overlaps = {}
+        Project.all.each do |pj|
+          pj.phases.each do |ph|
+            ph.presentation_mode = 'card' #####
+            if !ph.valid?
+              project_overlaps[pj.slug] = (project_overlaps[pj.slug] || []) + [ph]
+            end
+          end
+        end
+        if project_overlaps.present?
+          overlaps[tenant.host] = (overlaps[tenant.host] || []) + [project_overlaps]
+        end
+      end
+    end
+    overlaps.each do |host, project_overlaps|
+      puts "-------"
+      puts "Overlapping phases for tenant #{host}:"
+      project_overlaps.each do |pj_h|
+        pj_h.each do |pj_name, phases|
+          puts "  In project #{pj_name}:"
+          phases.each do |ph|
+            puts "    - #{ph.title_multiloc.values.first}"
+            puts "      #{ph.start_at}-#{ph.end_at}"
+          end
+        end
+      end
+      puts "-------\n\n"
+    end
+  end
+
 end
