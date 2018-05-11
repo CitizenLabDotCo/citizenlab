@@ -1,6 +1,7 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
 import { IAreaData, areasStream } from 'services/areas';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {}
 
@@ -11,10 +12,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  areas: IAreaData[] | null;
+  areas: IAreaData[] | undefined | null | Error;
 }
 
-export type GetAreasChildProps = IAreaData[] | null;
+export type GetAreasChildProps = IAreaData[] | undefined | null | Error;
 
 export default class GetAreas extends React.Component<Props, State> {
   private subscriptions: Subscription[];
@@ -22,13 +23,13 @@ export default class GetAreas extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      areas: null
+      areas: undefined
     };
   }
 
   componentDidMount() {
     this.subscriptions = [
-        areasStream().observable.subscribe(areas => this.setState({ areas: areas.data }))
+        areasStream().observable.subscribe(areas => this.setState({ areas: !isNilOrError(areas) ? areas.data : areas }))
     ];
   }
 

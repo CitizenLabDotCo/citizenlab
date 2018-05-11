@@ -1,7 +1,7 @@
 import React from 'react';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { browserHistory, withRouter, WithRouterProps } from 'react-router';
-import { groupBy, isEmpty, isNull } from 'lodash';
+import { groupBy, isEmpty, isUndefined } from 'lodash';
 
 // services
 import { IProjectData } from 'services/projects';
@@ -216,7 +216,7 @@ class IdeasProjectSelectPage extends React.PureComponent<Props & WithRouterProps
   handleOnSubmitClick = () => {
     const { projectsList } = this.props.projects;
 
-    if (!isNullOrError(projectsList)) {
+    if (!isNilOrError(projectsList)) {
       const project = projectsList.find((project) => project.id === this.state.selectedProjectId);
 
       if (project) {
@@ -229,7 +229,7 @@ class IdeasProjectSelectPage extends React.PureComponent<Props & WithRouterProps
     const { projectsList } = this.props.projects;
     const { selectedProjectId } = this.state;
 
-    if (isNull(projectsList)) {
+    if (isUndefined(projectsList)) {
       return (
         <Loading>
           <Spinner size="32px" color="#666" />
@@ -237,7 +237,7 @@ class IdeasProjectSelectPage extends React.PureComponent<Props & WithRouterProps
       );
     }
 
-    if (!isNullOrError(projectsList)) {
+    if (!isNilOrError(projectsList)) {
       const { open_idea_box: openProjects, null: cityProjects } = groupBy(projectsList, (project) => project.attributes.internal_role);
       const openProject = openProjects && !isEmpty(openProjects) && openProjects[0];
       const noProjects = isEmpty(projectsList);

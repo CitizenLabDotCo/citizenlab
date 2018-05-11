@@ -1,7 +1,10 @@
 import React from 'react';
-import { BehaviorSubject, Subscription } from 'rxjs/Rx';
-import { isString, isEmpty, isError } from 'lodash';
-import { isNullOrError } from 'utils/helperUtils';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
+import isString from 'lodash/isString';
+import isEmpty from 'lodash/isEmpty';
+import isError from 'lodash/isError';
+import { isNilOrError } from 'utils/helperUtils';
 
 // libraries
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -12,11 +15,10 @@ import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 import IdeasNewButtonBar from './IdeasNewButtonBar';
 import NewIdeaForm from './NewIdeaForm';
 import SignInUp from './SignInUp';
-// import Spinner from 'components/UI/Spinner';
 
 // services
 import { localeStream } from 'services/locale';
-import { addIdea, updateIdea } from 'services/ideas';
+import { addIdea, updateIdea, IIdeaAdd } from 'services/ideas';
 import { addIdeaImage, deleteIdeaImage, IIdeaImage } from 'services/ideaImages';
 import { getAuthUserAsync } from 'services/auth';
 import { localState, ILocalStateService } from 'services/localState';
@@ -202,7 +204,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     const localState$ = this.localState.observable;
     const locale$ = localeStream().observable;
 
-    if (!isNullOrError(project)) {
+    if (!isNilOrError(project)) {
       this.projectId$.next(project.id);
     }
 
@@ -231,12 +233,12 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
   componentDidUpdate() {
     const { project } = this.props;
 
-    if (!isNullOrError(project) && isString(project.id)) {
+    if (!isNilOrError(project) && isString(project.id)) {
       this.projectId$.next(project.id);
     }
   }
 
-  async postIdea(publicationStatus: 'draft' | 'published', authorId: string | null = null) {
+  async postIdea(publicationStatus: 'draft' | 'published', authorId: string | null) {
     const { locale } = await this.localState.get();
     const { title, description, selectedTopics, selectedProject, position, position_coordinates, ideaId } = await this.globalState.get();
     const ideaTitle = { [locale as string]: title as string };
@@ -245,31 +247,25 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     const projectId = (selectedProject ? selectedProject.value as string : null);
     const locationGeoJSON = (isString(position) && !isEmpty(position) ? await convertToGeoJson(position) : position_coordinates || null);
     const locationDescription = (isString(position) && !isEmpty(position) ? position : null);
+    const ideaObject: IIdeaAdd = {
+      author_id: authorId,
+      publication_status: publicationStatus,
+      title_multiloc: ideaTitle,
+      body_multiloc: ideaDescription,
+      topic_ids: topicIds,
+      project_id: projectId,
+      location_point_geojson: locationGeoJSON,
+      location_description: locationDescription
+    };
 
     if (ideaId) {
-      return await updateIdea(ideaId, {
-        title_multiloc: ideaTitle,
-        body_multiloc: ideaDescription,
-        topic_ids: topicIds,
-        project_id: projectId,
-        location_point_geojson: locationGeoJSON,
-        location_description: locationDescription
-      });
+      return await updateIdea(ideaId, ideaObject);
+    } else {
+      return await addIdea(ideaObject);
     }
-
-    return await addIdea(
-      authorId,
-      publicationStatus,
-      ideaTitle,
-      ideaDescription,
-      topicIds,
-      projectId,
-      locationGeoJSON,
-      locationDescription
-    );
   }
 
-  async postIdeaAndIdeaImage(publicationStatus: 'draft' | 'published', authorId: string | null = null) {
+  async postIdeaAndIdeaImage(publicationStatus: 'draft' | 'published', authorId: string | null) {
     try {
       let ideaImage: IIdeaImage | null = null;
       const { imageId, imageChanged, imageFile } = await this.globalState.get();
@@ -309,7 +305,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     } catch (error) {
       if (isError(error) && error.message === 'not_authenticated') {
         try {
-          await this.postIdeaAndIdeaImage('draft');
+          await this.postIdeaAndIdeaImage('draft', null);
           this.globalState.set({ processing: false });
           this.localState.set({ showIdeaForm: false });
           window.scrollTo(0, 0);
@@ -328,15 +324,13 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
   handleOnSignInUpCompleted = async (userId: string) => {
     this.localState.set({ publishing: true });
-
     const { ideaId } = await this.globalState.get();
 
     if (ideaId) {
       await updateIdea(ideaId, { author_id: userId, publication_status: 'published' });
-      browserHistory.push('/ideas');
-    } else {
-      browserHistory.push('/ideas');
     }
+
+    browserHistory.push('/ideas');
   }
 
   render() {

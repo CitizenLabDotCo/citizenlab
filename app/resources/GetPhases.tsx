@@ -15,19 +15,23 @@ interface Props extends InputProps {
 }
 
 interface State {
-  phases: IPhaseData[] | null;
+  phases: IPhaseData[] | undefined | null;
 }
 
-export type GetPhasesChildProps = IPhaseData[] | null;
+export type GetPhasesChildProps = IPhaseData[] | undefined | null;
 
 export default class GetPhases extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
+  public static defaultProps: Partial<Props> = {
+    resetOnChange: true
+  };
+
   constructor(props: Props) {
     super(props);
     this.state = {
-      phases: null
+      phases: undefined
     };
   }
 
@@ -39,7 +43,7 @@ export default class GetPhases extends React.Component<Props, State> {
     this.subscriptions = [
       this.inputProps$
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .do(() => resetOnChange && this.setState({ phases: null }))
+        .do(() => resetOnChange && this.setState({ phases: undefined }))
         .switchMap(({ projectId }) => projectId ? phasesStream(projectId).observable : Observable.of(null))
         .subscribe((phases) => this.setState({ phases: (phases ? phases.data : null) }))
     ];

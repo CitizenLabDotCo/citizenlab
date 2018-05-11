@@ -1,5 +1,6 @@
 import React from 'react';
 import { isEmpty, values as getValues, every } from 'lodash';
+import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
 import { API } from 'typings';
@@ -117,11 +118,12 @@ class OptionsForm extends React.Component<Props, State> {
   )
 
   render() {
+    const { customFieldOptions } = this.props;
     const { addingOption } = this.state;
 
-    return this.props.customFieldOptions && (
+    return !isNilOrError(customFieldOptions) && (
       <>
-        {this.props.customFieldOptions.map((customFieldOption) => (
+        {customFieldOptions.map((customFieldOption) => (
           <OptionContainer key={customFieldOption.id}>
             <Formik
               initialValues={this.initialValuesForEdit(customFieldOption)}

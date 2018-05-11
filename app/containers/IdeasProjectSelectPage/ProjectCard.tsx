@@ -1,7 +1,7 @@
 import React from 'react';
 import * as moment from 'moment';
+import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { isNullOrError } from 'utils/helperUtils';
 import { get, isError } from 'lodash';
 
 // resources
@@ -177,7 +177,7 @@ class ProjectCard extends React.PureComponent<Props, State> {
   disabledMessage = () => {
     const { project } = this.props;
 
-    if (!isNullOrError(project)) {
+    if (!isNilOrError(project)) {
       const { enabled, future_enabled: futureEnabled } = project.relationships.action_descriptor.data.posting;
 
       if (enabled) {
@@ -214,9 +214,9 @@ class ProjectCard extends React.PureComponent<Props, State> {
     const { projectId, selected } = this.props;
     const { project, projectImages, permission } = this.props;
 
-    if (!isNullOrError(project) && !isNullOrError(permission)) {
+    if (!isNilOrError(project) && !isNilOrError(permission) && !isNilOrError(projectImages)) {
       const { title_multiloc: titleMultiloc } = project.attributes;
-      const smallImage = !isNullOrError(projectImages) && projectImages.length > 0 && projectImages[0].attributes.versions.small;
+      const smallImage = (projectImages.length > 0 ? projectImages[0].attributes.versions.small : null);
       const disabledMessage = this.disabledMessage();
       const cardState = this.calculateCardState();
       const enabled = (cardState === 'enabled' || cardState === 'enabledBecauseAdmin');
@@ -283,8 +283,8 @@ class ProjectCard extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  project: ({ projectId, render }) => <GetProject id={projectId} resetOnChange>{render}</GetProject>,
-  projectImages: ({ project, render }) => <GetProjectImages projectId={get(project, 'id')} resetOnChange>{render}</GetProjectImages>,
+  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
+  projectImages: ({ project, render }) => <GetProjectImages projectId={get(project, 'id')}>{render}</GetProjectImages>,
   permission: ({ project, render }) => <GetPermission item="ideas" action="create" context={{ project: (!isError(project) ? project : null) }}>{render}</GetPermission>
 });
 

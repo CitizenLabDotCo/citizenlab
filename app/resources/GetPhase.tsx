@@ -15,10 +15,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  phase: IPhaseData | null;
+  phase: IPhaseData | undefined | null;
 }
 
-export type GetPhaseChildProps = IPhaseData | null;
+export type GetPhaseChildProps = IPhaseData | undefined | null;
 
 export default class GetPhase extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -27,7 +27,7 @@ export default class GetPhase extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      phase: null
+      phase: undefined
     };
   }
 

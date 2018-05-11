@@ -1,7 +1,7 @@
 import React from 'react';
 import { isString, trim, get } from 'lodash';
 import { adopt } from 'react-adopt';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -146,9 +146,9 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
     const { authUser, idea, ideaId } = this.props;
     const { formatMessage } = this.props.intl;
     const { inputValue, processing, errorMessage } = this.state;
-    const commentingEnabled = (!isNullOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
-    const commentingDisabledReason = (!isNullOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'disabled_reason', null) : null);
-    const projectId = (!isNullOrError(idea) ? get(idea.relationships.project.data, 'id', null) : null);
+    const commentingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
+    const commentingDisabledReason = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'disabled_reason', null) : null);
+    const projectId = (!isNilOrError(idea) ? get(idea.relationships.project.data, 'id', null) : null);
     const placeholder = formatMessage(messages.commentBodyPlaceholder);
     const commentButtonDisabled = (!inputValue || inputValue === '');
     const canComment = (authUser && commentingEnabled);
