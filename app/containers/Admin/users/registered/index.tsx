@@ -139,7 +139,6 @@ class UsersTable extends React.PureComponent<Props, State> {
 
           <GroupHeader
             title={{ en: 'Test group please ignore' }}
-            filters={['Evere', '< 18']}
             onEdit={console.log}
             onDelete={console.log}
             onSearch={console.log}
@@ -148,7 +147,6 @@ class UsersTable extends React.PureComponent<Props, State> {
 
           <GroupHeader
             title={{ en: 'Super very long title that should probably be stopped at some point but it keeps on coming why are you doing this to me' }}
-            filters={['Test filter label', 'Lorem', 'Ipsum']}
             onEdit={console.log}
             onDelete={console.log}
             onSearch={console.log}

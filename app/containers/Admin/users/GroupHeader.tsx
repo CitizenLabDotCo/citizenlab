@@ -10,8 +10,6 @@ import SearchInput from 'components/UI/SearchInput';
 
 // Styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-
 
 const gutter = '.5rem';
 
@@ -35,20 +33,16 @@ const TitleIcon = styled(Icon)`
   flex: 0 0 calc(3rem + 2 * ${gutter});
 `;
 
-const TitleAndFilters = styled.div``;
+const TextAndButtons = styled.div`
+  margin: 0 0 .5rem 0;
 
+  h1 {
+    display: inline;
+  }
 
-const TitleText = styled(T)`
-  margin: 0 0 .5em 0;
-`;
-
-const FilterLabel = styled.span`
-  padding: .25em .5em;
-  border: 1px solid ${colors.separation};
-  border-radius: 5px;
-
-  & + & {
-    margin-left: .5em;
+  > .Button {
+    display: inline-block;
+    margin-left: 1rem;
   }
 `;
 
@@ -66,7 +60,6 @@ const Spacer = styled.div`
 export interface Props {
   title: Multiloc;
   smartGroup?: boolean;
-  filters: any[];
   onEdit: () => void;
   onDelete: () => void;
   onSearch: () => void;
@@ -91,14 +84,11 @@ export class GroupHeader extends React.PureComponent<Props, State> {
     return (
       <TitleWrapper>
         {this.props.smartGroup && <TitleIcon name="lightingBolt" />}
-        <TitleAndFilters>
-          <TitleText as="h1" value={this.props.title} />
-          {this.props.filters.map((filter, index) => (
-            <FilterLabel key={index}>{filter}</FilterLabel>
-          ))}
-        </TitleAndFilters>
-        <Button padding=".65em" icon="edit" style="secondary" circularCorners={false} onClick={this.props.onEdit} />
-        <Button padding=".65em" icon="delete" style="text" circularCorners={false} onClick={this.props.onDelete} />
+        <TextAndButtons>
+          <T as="h1" value={this.props.title} />
+          <Button padding=".65em" icon="edit" style="secondary" circularCorners={false} onClick={this.props.onEdit} />
+          <Button padding=".65em" icon="delete" style="text" circularCorners={false} onClick={this.props.onDelete} />
+        </TextAndButtons>
         <Spacer />
         <StyledSearch value={this.state.searchValue} onChange={this.handleSearchChange} />
       </TitleWrapper>
