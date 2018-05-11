@@ -8,5 +8,7 @@ AdminApi::Engine.routes.draw do
     get :template_export, on: :member
     post :template_import, on: :collection
   end
-  
+
+  post "/graphql", to: "graphql#execute"
+
 end

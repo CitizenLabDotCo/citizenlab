@@ -15,8 +15,9 @@ module AdminApi
     end
 
     def switch_tenant
-    	if params[:tenant_id]
-    	  Apartment::Tenant.switch(Tenant.find(params[:tenant_id]).schema_name) do
+      tenant_id = params[:tenant_id] || request.headers["tenant"]
+    	if tenant_id
+    	  Apartment::Tenant.switch(Tenant.find(tenant_id).schema_name) do
     		  yield
     	  end
     	else
