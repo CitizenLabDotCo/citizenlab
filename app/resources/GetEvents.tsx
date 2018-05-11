@@ -15,19 +15,23 @@ interface Props extends InputProps {
 }
 
 interface State {
-  events: IEventData[] | null;
+  events: IEventData[] | undefined | null;
 }
 
-export type GetEventsChildProps = IEventData[] | null;
+export type GetEventsChildProps = IEventData[] | undefined | null;
 
 export default class GetEvents extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
+  public static defaultProps: Partial<Props> = {
+    resetOnChange: true
+  };
+
   constructor(props: Props) {
     super(props);
     this.state = {
-      events: null
+      events: undefined
     };
   }
 
@@ -39,7 +43,7 @@ export default class GetEvents extends React.Component<Props, State> {
     this.subscriptions = [
       this.inputProps$
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .do(() => resetOnChange && this.setState({ events: null }))
+        .do(() => resetOnChange && this.setState({ events: undefined }))
         .switchMap(({ projectId }) => projectId ? eventsStream(projectId).observable : Observable.of(null))
         .subscribe((events) => this.setState({ events: (events ? events.data : null) }))
     ];

@@ -239,6 +239,7 @@
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "auf geografischer Karte",
   "app.containers.AdminPage.ProjectEdit.moderatorDeletionConfirmation": "",
   "app.containers.AdminPage.ProjectEdit.moderatorsNotFound": "",
+  "app.containers.AdminPage.ProjectEdit.moderatorsRoleExplanation": "",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "",
   "app.containers.AdminPage.ProjectEdit.noHeaderErrorMessage": "{orgName, select, München {Bitte wählen Sie ein Kopfzeilen-Bild für den Bezirk} other {Bitte wählen Sie ein Kopfzeilen-Bild für das Projekt}}",
   "app.containers.AdminPage.ProjectEdit.noProjectTypeErrorMessage": "Bitte wählen Sie einen Projekt-Typ",

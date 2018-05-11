@@ -4,6 +4,7 @@ import { get } from 'lodash';
 import { Link } from 'react-router';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
@@ -208,8 +209,8 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     const { tenant } = this.props;
     const { formatMessage } = this.props.intl;
     const { socialLoginClicked, socialLoginTaCAccepted } = this.state;
-    const googleLoginEnabled = (tenant ? get(tenant.attributes.settings.google_login, 'enabled', false) : false);
-    const facebookLoginEnabled = (tenant ? get(tenant.attributes.settings.facebook_login, 'enabled', false) : false); 
+    const googleLoginEnabled = (!isNilOrError(tenant) ? get(tenant.attributes.settings.google_login, 'enabled', false) : false);
+    const facebookLoginEnabled = (!isNilOrError(tenant) ? get(tenant.attributes.settings.facebook_login, 'enabled', false) : false); 
     const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
 
     const googleCheckbox = (socialLoginClicked === 'google' && (

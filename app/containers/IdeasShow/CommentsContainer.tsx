@@ -1,4 +1,5 @@
 import React from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ParentComment from './ParentComment';
@@ -44,7 +45,7 @@ class CommentsContainer extends React.PureComponent<Props, State> {
     const className = `${this.props['className']} e2e-comments`;
     const { ideaId, comments } = this.props;
 
-    if (comments && comments.length > 0) {
+    if (!isNilOrError(comments) && comments.length > 0) {
       const parentComments = comments.filter(comment => comment.relationships.parent.data === null);
 
       if (parentComments && parentComments.length > 0) {

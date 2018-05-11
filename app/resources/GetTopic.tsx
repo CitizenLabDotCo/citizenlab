@@ -3,6 +3,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { ITopicData, topicByIdStream } from 'services/topics';
 import { isString } from 'lodash';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   id: string;
@@ -15,10 +16,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  topic: ITopicData | null;
+  topic: ITopicData | undefined | null | Error;
 }
 
-export type GetTopicChildProps = ITopicData | null;
+export type GetTopicChildProps = ITopicData | undefined | null | Error;
 
 export default class GetTopic extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -27,7 +28,7 @@ export default class GetTopic extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      topic: null
+      topic: undefined
     };
   }
 
@@ -41,7 +42,7 @@ export default class GetTopic extends React.Component<Props, State> {
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
         .filter(({ id }) => isString(id))
         .switchMap(({ id }) => topicByIdStream(id).observable)
-        .subscribe((topic) => this.setState({ topic: topic.data }))
+        .subscribe((topic) => this.setState({ topic: (!isNilOrError(topic) ? topic.data : topic) }))
     ];
   }
 

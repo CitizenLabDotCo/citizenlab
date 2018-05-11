@@ -1,7 +1,7 @@
 // libraries
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -58,13 +58,13 @@ interface DataProps {
 
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject slug={projectId}>{render}</GetProject>,
-  events: ({ project, render }) => <GetEvents projectId={(!isNullOrError(project) ? project.id : null)}>{render}</GetEvents>
+  events: ({ project, render }) => <GetEvents projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetEvents>
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {({ project, events }) => {
-      if (!isNullOrError(project) && events && events.length > 0) {
+      if (!isNilOrError(project) && events && events.length > 0) {
         return (
           <Container className={`e2e-events-preview`}>
             <ContentContainer>
