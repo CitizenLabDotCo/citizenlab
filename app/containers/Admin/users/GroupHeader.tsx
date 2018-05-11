@@ -90,11 +90,11 @@ export class GroupHeader extends React.PureComponent<Props, State> {
   render() {
     return (
       <TitleWrapper>
-        {this.props.smartGroup && <TitleIcon name="user" />}
+        {this.props.smartGroup && <TitleIcon name="lightingBolt" />}
         <TitleAndFilters>
           <TitleText as="h1" value={this.props.title} />
-          {this.props.filters.map((filter) => (
-            <FilterLabel>{filter}</FilterLabel>
+          {this.props.filters.map((filter, index) => (
+            <FilterLabel key={index}>{filter}</FilterLabel>
           ))}
         </TitleAndFilters>
         <Button padding=".65em" icon="edit" style="secondary" circularCorners={false} onClick={this.props.onEdit} />
