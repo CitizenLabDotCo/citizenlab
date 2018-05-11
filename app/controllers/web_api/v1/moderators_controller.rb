@@ -30,7 +30,8 @@ class WebApi::V1::ModeratorsController < ApplicationController
   def create
     @user = User.find create_moderator_params[:user_id]
     @user.add_role 'project_moderator', project_id: params[:project_id]
-    if @user.save
+    if @user.
+      SideFxModeratorService.new.after_create(@user, Project.find(params[:project_id]), current_user)
       render json: @user, serializer: WebApi::V1::UserSerializer, status: :created
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
@@ -41,6 +42,7 @@ class WebApi::V1::ModeratorsController < ApplicationController
   def destroy
     @moderator.delete_role 'project_moderator', project_id: params[:project_id]
     if @moderator.save
+      SideFxModeratorService.new.after_destroy(@moderator, Project.find(params[:project_id]), current_user)
       head :ok
     else
       head 500
