@@ -15,8 +15,8 @@ module Notifications
       moderator = activity.item
       recipient_id = moderator.id
       initiator_id = activity.user_id
-      project_id = activity.payload[:project_id]
-
+      project_id = activity.payload['project_id']
+      
       if project_id && recipient_id && initiator_id && (recipient_id != initiator_id)
         [self.create(
            recipient_id: moderator.id,
