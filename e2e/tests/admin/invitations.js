@@ -17,9 +17,9 @@ module.exports = {
     .url(`http://${process.env.ROOT_URL}/admin/users/invitations`)
     .waitForElementVisible('.e2e-manual-invite')
     .click('.e2e-manual-invite')
-    .waitForElementVisible('#emails')
-    .setValue('#emails', email)
-    .click('#invitation button')
+    .waitForElementVisible('#e2e-emails')
+    .setValue('#e2e-emails', email)
+    .click('#e2e-invitations button')
     .waitForElementPresent('.Button.success')
     .assert.containsText('table', email);
   },
