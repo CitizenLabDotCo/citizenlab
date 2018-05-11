@@ -400,6 +400,7 @@
   "app.containers.AdminPage.groups.create.buttonSave": "Save",
   "app.containers.AdminPage.groups.create.buttonSuccess": "Success",
   "app.containers.AdminPage.groups.create.creationFormTitle": "Create a new group",
+  "app.containers.AdminPage.groups.create.dropdownFooterMessage": "Add users",
   "app.containers.AdminPage.groups.create.messageError": "There was an error creating your group",
   "app.containers.AdminPage.groups.create.messageSuccess": "Your group has been created",
   "app.containers.AdminPage.groups.list.addGroupButton": "Add a group",
