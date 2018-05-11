@@ -3,7 +3,7 @@ import { Observer } from 'rxjs/Observer';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { fromPromise } from 'rxjs/observable/fromPromise';
-import { retry, catchError } from 'rxjs/operators';
+import { retry, catchError, startWith, scan, filter, distinctUntilChanged, refCount, publishReplay } from 'rxjs/operators';
 import { some, forOwn, isError, isNil, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union } from 'lodash';
 import request from 'utils/request';
 import { authApiEndpoint } from 'services/auth';
@@ -299,56 +299,57 @@ class Streams {
 
           this.deleteStream(streamId, apiEndpoint);
         };
-      })
-      .startWith('initial' as any)
-      .scan((accumulated: T, current: T | pureFn<T>) => {
-        let data: any = accumulated;
-        const dataIds = {};
+      }).pipe(
+        startWith('initial' as any),
+        scan((accumulated: T, current: T | pureFn<T>) => {
+          let data: any = accumulated;
+          const dataIds = {};
 
-        this.streams[streamId].type = 'unknown';
+          this.streams[streamId].type = 'unknown';
 
-        if (data !== 'inital') {
-          data = (isFunction(current) ? current(data) : current);
+          if (data !== 'inital') {
+            data = (isFunction(current) ? current(data) : current);
 
-          if (isObject(data) && !isEmpty(data)) {
-            const innerData = data.data;
+            if (isObject(data) && !isEmpty(data)) {
+              const innerData = data.data;
 
-            if (isArray(innerData)) {
-              this.streams[streamId].type = 'arrayOfObjects';
-              innerData.filter(item => has(item, 'id')).forEach((item) => {
-                const dataId = item.id;
+              if (isArray(innerData)) {
+                this.streams[streamId].type = 'arrayOfObjects';
+                innerData.filter(item => has(item, 'id')).forEach((item) => {
+                  const dataId = item.id;
+                  dataIds[dataId] = true;
+                  if (cacheStream) { this.resourcesByDataId[dataId] = this.deepFreeze({ data: item }); }
+                  this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
+                });
+              } else if (isObject(innerData) && has(innerData, 'id')) {
+                const dataId = innerData.id;
+                this.streams[streamId].type = 'singleObject';
                 dataIds[dataId] = true;
-                if (cacheStream) { this.resourcesByDataId[dataId] = this.deepFreeze({ data: item }); }
+                if (cacheStream) { this.resourcesByDataId[dataId] = this.deepFreeze({ data: innerData }); }
                 this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
-              });
-            } else if (isObject(innerData) && has(innerData, 'id')) {
-              const dataId = innerData.id;
-              this.streams[streamId].type = 'singleObject';
-              dataIds[dataId] = true;
-              if (cacheStream) { this.resourcesByDataId[dataId] = this.deepFreeze({ data: innerData }); }
-              this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
+              }
+
+              if (has(data, 'included')) {
+                data.included.filter(item => item.id).forEach(item => this.resourcesByDataId[item.id] = { data: item });
+                data = omit(data, 'included');
+              }
             }
 
-            if (has(data, 'included')) {
-              data.included.filter(item => item.id).forEach(item => this.resourcesByDataId[item.id] = { data: item });
-              data = omit(data, 'included');
+            if (!isSingleItemStream) {
+              data = this.deepFreeze(data);
+              this.resourcesByStreamId[streamId] = data;
             }
           }
 
-          if (!isSingleItemStream) {
-            data = this.deepFreeze(data);
-            this.resourcesByStreamId[streamId] = data;
-          }
-        }
+          this.streams[streamId].dataIds = dataIds;
 
-        this.streams[streamId].dataIds = dataIds;
-
-        return this.deepFreeze(data);
-      })
-      .filter(data => data !== 'initial')
-      .distinctUntilChanged()
-      .publishReplay(1)
-      .refCount();
+          return this.deepFreeze(data);
+        }),
+        filter(data => data !== 'initial'),
+        distinctUntilChanged(),
+        publishReplay(1),
+        refCount()
+      );
 
       this.streams[streamId] = {
         params,

@@ -1,6 +1,4 @@
-import { createSelector } from 'reselect';
 import { init as mixpanelInit } from 'mixpanel-browser';
-import trakingSaga from 'resources/analitics/sagas';
 import { CL_GA_TRACKING_ID, CL_GA_TRACKER_NAME } from 'containers/App/constants';
 
 const getStore = {};
