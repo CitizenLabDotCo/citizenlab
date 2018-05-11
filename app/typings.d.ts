@@ -2,6 +2,11 @@ import * as Dropzone from 'react-dropzone';
 import { EditorState } from 'draft-js';
 declare module '*.png';
 
+declare module "*.svg" {
+  const content: any;
+  export default content;
+}
+
 export interface IRelationship {
   id: string;
   type: string;

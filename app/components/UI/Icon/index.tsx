@@ -1,4 +1,6 @@
-import * as React from 'react';
+import React from 'react';
+
+const LightingBolt = require('assets/icons/lightning_bolt.svg');
 
 const icons = {
   logo: (className) => (
@@ -363,7 +365,11 @@ const icons = {
       </g>
     </svg>
   ),
+  lightingBolt: (className) => (
+    <LightingBolt className={className} />
+  )
 };
+
 
 export type IconNames = keyof typeof icons;
 
