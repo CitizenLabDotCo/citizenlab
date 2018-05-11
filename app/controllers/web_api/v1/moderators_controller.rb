@@ -30,7 +30,7 @@ class WebApi::V1::ModeratorsController < ApplicationController
   def create
     @user = User.find create_moderator_params[:user_id]
     @user.add_role 'project_moderator', project_id: params[:project_id]
-    if @user.
+    if @user.save
       SideFxModeratorService.new.after_create(@user, Project.find(params[:project_id]), current_user)
       render json: @user, serializer: WebApi::V1::UserSerializer, status: :created
     else
