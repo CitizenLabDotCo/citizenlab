@@ -1,21 +1,19 @@
 module AdminApi
-  class Types::IdeaType < GraphQL::Schema::Object
-    description "Single unit of citizen input"
+  class Types::ProjectType < GraphQL::Schema::Object
+    description "A city defined scope to constrain the citizen input received"
 
-    class IdeaPublicationStatus < GraphQL::Schema::Enum
-      Idea::PUBLICATION_STATUSES.each do |ps|
+    class ProjectPublicationStatus < GraphQL::Schema::Enum
+      Project::PUBLICATION_STATUSES.each do |ps|
         value ps
       end
     end
 
-
     field :id, ID, null: false
     field :title_multiloc, Types::MultilocType, null: false
     field :slug, String, null: false
-    field :publication_status, IdeaPublicationStatus, null: false
+    field :publication_status, ProjectPublicationStatus, null: false
     field :updated_at, String, null: false
     field :created_at, String, null: false
-    field :published_at, String, null: false
     field :href, String, null: true
 
     @@frontend_service = FrontendService.new
