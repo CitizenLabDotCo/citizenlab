@@ -5,7 +5,8 @@ class SideFxModeratorService
   def after_create moderator, project, current_user
     LogActivityJob.set(wait: 5.seconds).perform_later(
       moderator, 'project_moderation_rights_given', 
-      current_user, Time.now.to_i
+      current_user, Time.now.to_i,
+      payload: {project_id: project.id}
       )
     log_project_moderation_rights_given_email_requested moderator, project, current_user
   end
