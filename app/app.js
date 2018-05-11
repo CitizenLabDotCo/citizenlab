@@ -1,28 +1,7 @@
-/**
- * app.js
- *
- * This is the entry file for the application, only setup and boilerplate
- * code.
- */
-
-// Sentry error tracking
-if (process.env.NODE_ENV !== 'development' && process.env.SENTRY_DSN) {
-  import('raven-js').then((Raven) => {
-    Raven.config(process.env.SENTRY_DSN, {
-      environment: process.env.NODE_ENV,
-      release: process.env.CIRCLE_BUILD_NUM,
-      tags: {
-        git_commit: process.env.CIRCLE_SHA1,
-        branch: process.env.CIRCLE_BRANCH,
-      },
-    }).install();
-  });
-}
-
-// Import all the third party stuff
+import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { applyRouterMiddleware, Router } from 'react-router';
+import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import FontFaceObserver from 'fontfaceobserver';
 import { useScroll } from 'react-router-scroll';
 import 'sanitize.css/sanitize.css';
@@ -80,11 +59,10 @@ const render = (messages) => {
   ReactDOM.render(
     <LanguageProvider messages={messages}>
       <Router
-        history={history}
+        history={browserHistory}
         routes={rootRoute}
         render={
-          // Scroll to top when going to a new page, imitating default browser
-          // behaviour
+          // Scroll to top when going to a new page
           applyRouterMiddleware(useScroll())
         }
       />
@@ -116,4 +94,18 @@ if (!window.Intl) {
     });
 } else {
   render(translationMessages);
+}
+
+// Sentry error tracking
+if (process.env.NODE_ENV !== 'development' && process.env.SENTRY_DSN) {
+  import('raven-js').then((Raven) => {
+    Raven.config(process.env.SENTRY_DSN, {
+      environment: process.env.NODE_ENV,
+      release: process.env.CIRCLE_BUILD_NUM,
+      tags: {
+        git_commit: process.env.CIRCLE_SHA1,
+        branch: process.env.CIRCLE_BRANCH,
+      },
+    }).install();
+  });
 }

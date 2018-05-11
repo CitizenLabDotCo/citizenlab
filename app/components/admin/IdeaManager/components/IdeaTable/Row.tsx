@@ -289,4 +289,4 @@ function collect(connect, monitor) {
   };
 }
 
-export default localize(injectIntl(DragSource<Props & InjectedIntlProps & injectedLocalized>('IDEA', ideaSource, collect)(Row)));
+export default injectIntl(localize(DragSource('IDEA', ideaSource, collect)(Row)));

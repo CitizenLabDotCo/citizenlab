@@ -47,7 +47,7 @@ const WEBPACK_CONFIG = {
         }),
       },
       {
-        test: /\.(svg|jpg|png|gif)$/,
+        test: /\.(svg|jpg|png|gif|eot|ttf|woff|woff2)$/,
         use: [
           'cache-loader',
           {
@@ -58,18 +58,18 @@ const WEBPACK_CONFIG = {
           },
         ],
       },
-      {
-        test: /\.(eot|ttf|woff|woff2)$/,
-        use: [
-          // 'cache-loader',
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192,
-            },
-          },
-        ],
-      },
+      // {
+      //   test: /\.(eot|ttf|woff|woff2)$/,
+      //   use: [
+      //     // 'cache-loader',
+      //     {
+      //       loader: 'url-loader',
+      //       options: {
+      //         limit: 8192,
+      //       },
+      //     },
+      //   ],
+      // },
       {
         test: /manifest\.json$|\.htaccess/,
         include: path.resolve(process.cwd(), 'app'),

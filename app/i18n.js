@@ -4,6 +4,10 @@
  * This will setup the i18n language files and locale data for your app.
  *
  */
+import assign from 'lodash/assign';
+import keys from 'lodash/keys';
+import reduce from 'lodash/reduce';
+
 import { addLocaleData } from 'react-intl';
 import enLocaleData from 'react-intl/locale-data/en';
 import frLocaleData from 'react-intl/locale-data/fr';
@@ -46,15 +50,19 @@ if (process.env.CROWDIN_PLUGIN_ENABLED) {
 }
 
 export const formatTranslationMessages = (locale, messages) => {
-  const defaultFormattedMessages = locale !== DEFAULT_LOCALE
+  const defaultFormattedMessages = ((locale !== DEFAULT_LOCALE)
     ? formatTranslationMessages(DEFAULT_LOCALE, process.env.CROWDIN_PLUGIN_ENABLED ? achTranslationMessages : enTranslationMessages)
-    : {};
-  return Object.keys(messages).reduce((formattedMessages, key) => {
+    : {}
+  );
+
+  return reduce(keys(messages), (formattedMessages, key) => {
     let message = messages[key];
+
     if (!message && locale !== DEFAULT_LOCALE) {
       message = defaultFormattedMessages[key];
     }
-    return Object.assign(formattedMessages, { [key]: message });
+
+    return assign(formattedMessages, { [key]: message });
   }, {});
 };
 
