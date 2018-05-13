@@ -81,8 +81,12 @@ class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
       metaTitle = (metaTitle || helmetTitle);
       metaDescription = (metaDescription || helmetDescription);
 
+      const lifecycleStage = currentTenant.data.attributes.settings.core.lifecycle_stage;
+      const blockIndexing = lifecycleStage === 'demo' || lifecycleStage === 'not_applicable';
+
       return (
         <Helmet>
+          {blockIndexing && <meta name="robots" content="noindex" />}
           <title>{metaTitle}</title>
           <meta name="description" content={metaDescription} />
           <meta property="og:title" content={metaTitle} />

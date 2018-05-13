@@ -4,6 +4,7 @@ import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/glob
 
 // components
 import Sidebar from './sideBar/';
+import { Helmet } from 'react-helmet';
 
 // style
 import styled from 'styled-components';
@@ -65,6 +66,9 @@ export default class AdminPage extends React.PureComponent<Props, State> {
 
     return (
       <>
+        <Helmet>
+          <meta name="robots" content="noindex" />
+        </Helmet>
         <Container className={className}>
           <Sidebar />
           <RightColumn>

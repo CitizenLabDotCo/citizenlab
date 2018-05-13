@@ -195,22 +195,25 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
     if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isUndefined(page)) {
       let seoTitle = formatMessage(messages.notFoundTitle);
       let seoDescription = formatMessage(messages.notFoundDescription);
+      let blockIndexing = true;
       let pageTitle = <FormattedMessage {...messages.notFoundTitle} />;
       let pageDescription =  <FormattedMessage {...messages.notFoundDescription} />;
 
       if (!isNilOrError(page)) {
         seoTitle = getLocalized(page.attributes.title_multiloc, locale, tenantLocales);
         seoDescription = '';
+        blockIndexing = false;
         pageTitle = <T value={page.attributes.title_multiloc} />;
         pageDescription = <T value={page.attributes.body_multiloc} />;
       }
 
       return (
         <Container>
-          <Helmet
-            title={seoTitle}
-            description={seoDescription}
-          />
+          <Helmet>
+            <title>{seoTitle}</title>
+            <meta name="description" content={seoDescription} />
+            {blockIndexing && <meta name="robots" content="noindex" />}
+          </Helmet>
 
           <PageContent>
             <StyledContentContainer>
