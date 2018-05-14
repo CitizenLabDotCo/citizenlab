@@ -71,7 +71,7 @@ export class ProjectModIndicator extends React.PureComponent<InputProps & DataPr
         case 'icon':
         default:
           component = (
-            <Icon name="shield" className={className} />
+            <Icon name="shield" className={className} title={<FormattedMessage {...messages.projectModeratorIndicator} />} />
           );
           break;
       }
