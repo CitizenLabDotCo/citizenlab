@@ -154,6 +154,13 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
         isActive: (pathName) => (pathName.startsWith('/admin/groups'))
       },
       {
+        id: 'ideas',
+        link: '/admin/ideas',
+        iconName: 'idea',
+        message: 'ideas',
+        isActive: (pathName) => (pathName.startsWith('/admin/ideas'))
+      },
+      {
         id: 'projects',
         link: '/admin/projects',
         iconName: 'project',
