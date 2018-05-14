@@ -146,7 +146,7 @@ FactoryBot.define do
           project.areas << create(:area)
         end
         evaluator.phases_count.times do |i|
-          project.phases << create(:phase)
+          project.phases << create(:phase_sequence)
         end
         evaluator.events_count.times do |i|
           project.events << create(:event)

@@ -381,9 +381,8 @@ resource "Ideas" do
       end
 
       describe do
-        let (:active_phases) { create_list(:active_phase, 2, participation_method: 'ideation') }
-        let (:project) { create(:project, phases: active_phases) }
-        let (:phase_ids) { active_phases.map(&:id) }
+        let (:project) { create(:project_with_current_phase, phases_config: {sequence: "xxcx"}) }
+        let (:phase_ids) { project.phases.shuffle.take(2).map(&:id) }
         example_request "Creating an idea in specific phases" do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)

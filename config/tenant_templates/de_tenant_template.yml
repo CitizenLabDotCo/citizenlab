@@ -1635,7 +1635,7 @@ models:
         an Diskussionen beteiligen.</p>\n"
     project_ref: *7
     start_at: 2017-03-12
-    end_at: 2017-03-20
+    end_at: 2017-04-07
   - title_multiloc:
       de: Zusammenfassung und Aufbereitung
     description_multiloc:
@@ -1643,8 +1643,8 @@ models:
         im Stadtrat aufbereitet. Über die Entscheidungen werden Sie anschließend hier
         informiert.</p>\n"
     project_ref: *7
-    start_at: 2017-03-20
-    end_at: 2017-06-06
+    start_at: 2017-04-08
+    end_at: 2017-04-19
   - title_multiloc:
       de: Ihre Ideen
     description_multiloc:
@@ -1652,37 +1652,37 @@ models:
         und diese kommentieren.</p>\n"
     project_ref: *8
     start_at: 2017-06-06
-    end_at: 2017-06-12
+    end_at: 2017-06-21
   - title_multiloc:
       de: 'Zusammenfassung '
     description_multiloc:
       de: "<p>Das Amt für Verkehrsmanagement wertet Ihre Ideen aus.</p>\n"
     project_ref: *8
-    start_at: 2017-06-12
-    end_at: 2017-08-16
+    start_at: 2017-06-22
+    end_at: 2017-07-19
   - title_multiloc:
       de: Abstimmung
     description_multiloc:
       de: "<p>Stimmen Sie nun für die besten Ideen ab. Sie können Ihre Stimmen maximal
         für 5 Ideen abgeben.</p>\n"
     project_ref: *8
-    start_at: 2017-08-16
-    end_at: 2017-09-19
+    start_at: 2017-07-20
+    end_at: 2017-08-07
   - title_multiloc:
       de: Ihre Ideen
     description_multiloc:
       de: "<p>Was würden Sie gerne verbessern? Äußern Sie in dieser Phase Ihre Ideen.</p>\n"
     project_ref: *12
     start_at: 2017-09-19
-    end_at: 2017-12-25
+    end_at: 2017-09-27
   - title_multiloc:
       de: Überprüfung Ihrer Ideen
     description_multiloc:
       de: "<p>Die Verkehrsbehörde schaut sich Ihre Ideen an: welche lassen sich umsetzen?
         In dieser Phase ist das Einreichen neuer Ideen und das Abstimmen deaktiviert.</p>\n"
     project_ref: *12
-    start_at: 2017-12-25
-    end_at: 2018-01-27
+    start_at: 2017-09-28
+    end_at: 2017-10-28
   - title_multiloc:
       de: Abstimmungsphase
     description_multiloc:
@@ -1690,12 +1690,12 @@ models:
         Ideen Ihrer MitbürgerInnen abzustimmen. Die Ideen, die die meisten Zustimmungen
         erhalten, werden in den Nahverkehrsplan mit aufgenommen.</p>\n"
     project_ref: *12
-    start_at: 2018-01-27
-    end_at: 2018-03-04
+    start_at: 2017-10-29
+    end_at: 2017-10-30
   - title_multiloc:
       de: Phase 4
     description_multiloc:
       de: "<p>Die Inhalte der Phase 4 ergeben sich aus den Ergebnissen der Abstimmung.</p>\n"
     project_ref: *12
-    start_at: 2018-03-04
-    end_at: 2018-04-23
+    start_at: 2017-10-31
+    end_at: 2017-11-17

@@ -27,4 +27,12 @@ class TimelineService
     idea.phases.include?(current_phase(idea.project))
   end
 
+  def overlaps? phase1, phase2
+    !((phase1.end_at.to_date < phase2.start_at.to_date) || (phase2.end_at.to_date < phase1.start_at.to_date)) 
+  end
+
+  def other_project_phases phase
+    Phase.where(project_id: phase.project_id).all.select{|p| p.id != phase.id}
+  end
+
 end
