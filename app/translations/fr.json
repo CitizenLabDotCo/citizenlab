@@ -239,6 +239,7 @@
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Carte",
   "app.containers.AdminPage.ProjectEdit.moderatorDeletionConfirmation": "",
   "app.containers.AdminPage.ProjectEdit.moderatorsNotFound": "",
+  "app.containers.AdminPage.ProjectEdit.moderatorsRoleExplanation": "",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "",
   "app.containers.AdminPage.ProjectEdit.noHeaderErrorMessage": "Veuillez choisir une image de couverture pour votre projet",
   "app.containers.AdminPage.ProjectEdit.noProjectTypeErrorMessage": "Veuillez choisir un type de projet",

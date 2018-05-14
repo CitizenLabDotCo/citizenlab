@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { Subscription, BehaviorSubject, Observable } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { IIdea, IIdeaData, ideaByIdStream, ideaBySlugStream } from 'services/ideas';
@@ -17,19 +17,23 @@ interface Props extends InputProps {
 }
 
 interface State {
-  idea: IIdeaData | null | Error;
+  idea: IIdeaData | undefined | null | Error;
 }
 
-export type GetIdeaChildProps = IIdeaData | null | Error;
+export type GetIdeaChildProps = IIdeaData | undefined | null | Error;
 
 export default class GetIdea extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
+  public static defaultProps: Partial<Props> = {
+    resetOnChange: true
+  };
+
   constructor(props: Props) {
     super(props);
     this.state = {
-      idea: null
+      idea: undefined
     };
   }
 
@@ -41,7 +45,7 @@ export default class GetIdea extends React.Component<Props, State> {
     this.subscriptions = [
       this.inputProps$
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .do(() => resetOnChange && this.setState({ idea: null }))
+        .do(() => resetOnChange && this.setState({ idea: undefined }))
         .switchMap(({ id, slug }) => {
           let idea$: Observable<IIdea | null | Error> = Observable.of(null);
 
@@ -54,7 +58,7 @@ export default class GetIdea extends React.Component<Props, State> {
           return idea$;
         })
         .subscribe((idea) => {
-          this.setState({ idea: !isNullOrError(idea) ? idea.data : idea });
+          this.setState({ idea: !isNilOrError(idea) ? idea.data : idea });
         })
     ];
   }

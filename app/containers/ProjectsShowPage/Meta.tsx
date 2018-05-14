@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
 // components
@@ -36,10 +36,10 @@ class Meta extends React.PureComponent<Props, State> {
   render() {
     const { locale, tenantLocales, project, projectImages } = this.props;
 
-    if (locale && tenantLocales && !isNullOrError(project)) {
+    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(project)) {
       const title = getLocalized(project.attributes.title_multiloc, locale, tenantLocales);
       const description = stripHtml(getLocalized(project.attributes.description_multiloc, locale, tenantLocales));
-      const image = (projectImages && projectImages && projectImages.length > 0 ? projectImages[0].attributes.versions.large : null);
+      const image = (!isNilOrError(projectImages) && projectImages && projectImages.length > 0 ? projectImages[0].attributes.versions.large : null);
       const url = window.location.href;
 
       return (
@@ -63,7 +63,7 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale/>,
   tenantLocales: <GetTenantLocales/>,
   project: ({ projectSlug, render }) => <GetProject slug={projectSlug}>{render}</GetProject>,
-  projectImages: ({ project, render }) => <GetProjectImages projectId={(!isNullOrError(project) ? project.id : null)}>{render}</GetProjectImages>
+  projectImages: ({ project, render }) => <GetProjectImages projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetProjectImages>
 });
 
 export default (inputProps: InputProps) => (

@@ -20,7 +20,7 @@ module.exports = {
     .waitForElementVisible('#emails')
     .setValue('#emails', email)
     .click('#invitation button')
-    .pause(300)
+    .waitForElementPresent('.Button.success')
     .assert.containsText('table', email);
   },
   useInvite: (browser) => {
@@ -47,9 +47,12 @@ module.exports = {
         .setValue('#firstName', `Test ${hash}`)
         .setValue('#lastName', `Account ${hash}`)
         .setValue('#password', '123456789')
+        .execute('window.scrollTo(0,document.body.scrollHeight);')
         .click('.e2e-terms-and-conditions > :first-child')
         .click('#e2e-signup-step1-button')
         .waitForElementVisible('#e2e-signup-step2-button')
+        .pause(500)
+        .execute('window.scrollTo(0,document.body.scrollHeight);')
         .pause(500)
         .click('#e2e-signup-step2-button')
         .waitForElementVisible('#e2e-landing-page')

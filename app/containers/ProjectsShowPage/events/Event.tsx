@@ -2,6 +2,7 @@ import React from 'react';
 import { adopt } from 'react-adopt';
 import * as moment from 'moment';
 import 'moment-timezone';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -17,6 +18,9 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import { getLocalized } from 'utils/i18n';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+
+// utils
+import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled from 'styled-components';
@@ -236,35 +240,24 @@ class Event extends React.PureComponent<Props, State> {
     const className = this.props['className'];
     const { locale, tenant, event } = this.props;
 
-    if (locale && tenant && event !== null) {
+    if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(event)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
       const eventTitle = getLocalized(event.attributes.title_multiloc, locale, tenantLocales);
       const eventDescription = getLocalized(event.attributes.description_multiloc, locale, tenantLocales);
       const eventLocationAddress = getLocalized(event.attributes.location_multiloc, locale, tenantLocales);
       const startAtMoment = moment(event.attributes.start_at);
       const endAtMoment = moment(event.attributes.end_at);
-      const startAtIsoDate = moment(event.attributes.start_at).format('YYYY-MM-DD');
-      const endAtIsoDate = moment(event.attributes.end_at).format('YYYY-MM-DD');
-      let startAtTime = startAtMoment.format('LT');
-      let endAtTime = endAtMoment.format('LT');
+      const startAtIsoDate = getIsoDate(event.attributes.start_at);
+      const endAtIsoDate = getIsoDate(event.attributes.end_at);
       const startAtDay = startAtMoment.format('DD');
       const endAtDay = endAtMoment.format('DD');
       const startAtMonth = startAtMoment.format('MMM');
       const endAtMonth = endAtMoment.format('MMM');
       const startAtYear = startAtMoment.format('YYYY');
       const isMultiDayEvent = (startAtIsoDate !== endAtIsoDate);
-      let eventStatus: 'past' | 'present' | 'future' = 'past';
-
-      if (moment().diff(startAtMoment, 'days') < 0) {
-        eventStatus = 'future';
-      } else if (moment().diff(endAtMoment, 'days') === 0) {
-        eventStatus = 'present';
-      }
-
-      if (isMultiDayEvent) {
-        startAtTime = startAtMoment.format('D MMM LT');
-        endAtTime = endAtMoment.format('D MMM LT');
-      }
+      const startAtTime = (isMultiDayEvent ? startAtMoment.format('D MMM LT') : startAtMoment.format('LT'));
+      const endAtTime = (isMultiDayEvent ? endAtMoment.format('D MMM LT') : endAtMoment.format('LT'));
+      const eventStatus = pastPresentOrFuture([event.attributes.start_at, event.attributes.end_at]);
 
       return (
         <Container className={`${className} ${eventStatus}`}>

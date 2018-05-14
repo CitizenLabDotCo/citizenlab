@@ -52,7 +52,7 @@ export type GetProjectsChildProps = State & {
 
 interface State {
   queryParameters: IQueryParameters;
-  projectsList: IProjectData[] | null;
+  projectsList: IProjectData[] | undefined | null;
   hasMore: boolean;
   querying: boolean;
   loadingMore: boolean;
@@ -75,7 +75,7 @@ export default class GetProjects extends React.Component<Props, State> {
         publication_status: undefined,
         publication_statuses: undefined
       },
-      projectsList: null,
+      projectsList: undefined,
       hasMore: false,
       querying: true,
       loadingMore: false

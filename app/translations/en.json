@@ -239,6 +239,7 @@
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Map View",
   "app.containers.AdminPage.ProjectEdit.moderatorDeletionConfirmation": "Are you sure?",
   "app.containers.AdminPage.ProjectEdit.moderatorsNotFound": "Moderators not found",
+  "app.containers.AdminPage.ProjectEdit.moderatorsRoleExplanation": "Moderation rights grant somebody who's not an admin the rights to alter the project settings and moderate ideas and comments which belong to this project. Admins always have Moderation rights over all projects.",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Who can moderate this project?",
   "app.containers.AdminPage.ProjectEdit.noHeaderErrorMessage": "Please select a project header image",
   "app.containers.AdminPage.ProjectEdit.noProjectTypeErrorMessage": "Please enter a project title",

@@ -71,13 +71,13 @@ export function invitesStream(streamParams: IStreamParams | null = null) {
 
 export async function bulkInviteEmails(object: INewBulkInviteEmails) {
   const response = await streams.add<IInvites>(`${API_PATH}/invites/bulk_create`, { invites: object });
-  await streams.fetchAllWithEndpoint(`${API_PATH}/invites`);
+  await streams.fetchAllStreamsWithEndpoint(`${API_PATH}/invites`);
   return response;
 }
 
 export async function bulkInviteXLSX(object: INewBulkXLSXInviteXLSX) {
   const response = await streams.add<IInvites>(`${API_PATH}/invites/bulk_create_xlsx`, { invites: object });
-  await streams.fetchAllWithEndpoint(`${API_PATH}/invites`);
+  await streams.fetchAllStreamsWithEndpoint(`${API_PATH}/invites`);
   return response;
 }
 

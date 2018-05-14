@@ -5,6 +5,7 @@ import { adopt } from 'react-adopt';
 import { Link } from 'react-router';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import clickOutside from 'utils/containers/clickOutside';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import NotificationMenu from './components/NotificationMenu';
@@ -228,7 +229,7 @@ const NavigationDropdownMenuInner = styled.div`
 `;
 
 const NavigationDropdownList = styled.div`
-  max-height: 210px;
+  max-height: 410px;
   width: 280px;
   display: flex;
   flex-direction: column;
@@ -417,8 +418,8 @@ class Navbar extends React.PureComponent<Props, State> {
     const { projectsList } = projects;
     const { projectsDropdownOpened } = this.state;
     const isAdminPage = (location && location.pathname.startsWith('/admin'));
-    const tenantLocales = (tenant && tenant.attributes.settings.core.locales);
-    const tenantLogo = (tenant && get(tenant.attributes.logo, 'medium'));
+    const tenantLocales = (!isNilOrError(tenant) && tenant.attributes.settings.core.locales);
+    const tenantLogo = (!isNilOrError(tenant) && get(tenant.attributes.logo, 'medium'));
 
     return (
       <>
@@ -460,7 +461,7 @@ class Navbar extends React.PureComponent<Props, State> {
                         <NavigationDropdownList>
                           {tenantLocales && projectsList && projectsList.length > 0 && projectsList.map((project) => (
                             <NavigationDropdownListItem key={project.id} to={getProjectUrl(project)}>
-                              {getLocalized(project.attributes.title_multiloc, locale, tenantLocales)}
+                              {!isNilOrError(locale) ? getLocalized(project.attributes.title_multiloc, locale, tenantLocales) : null}
                             </NavigationDropdownListItem>
                           ))}
                         </NavigationDropdownList>

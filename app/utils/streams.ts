@@ -1,5 +1,7 @@
 import 'whatwg-fetch';
-import { Observer, Observable, Subscription } from 'rxjs/Rx';
+import { Observer } from 'rxjs/Observer';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { retry, catchError } from 'rxjs/operators';
 import { some, forOwn, isError, isNil, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union } from 'lodash';
@@ -72,14 +74,10 @@ class Streams {
     Object.keys(this.streams)
       .filter(streamId => streamId !== authApiEndpoint)
       .forEach((streamId) => {
-        const apiEndpoint = cloneDeep(this.streams[streamId].params.apiEndpoint);
-        const refCount = cloneDeep(this.streams[streamId].observable.source['_refCount']);
-        const cacheStream = cloneDeep(this.streams[streamId].cacheStream);
-
-        if ((cacheStream && refCount > 1) || (!cacheStream && refCount > 0)) {
+        if (this.isActiveStream(streamId)) {
           this.streams[streamId].fetch();
         } else {
-          this.deleteStream(streamId, apiEndpoint);
+          this.deleteStream(streamId, this.streams[streamId].params.apiEndpoint);
         }
       });
   }
@@ -107,6 +105,17 @@ class Streams {
     }
 
     return frozenObject;
+  }
+
+  isActiveStream(streamId: string) {
+    const refCount = cloneDeep(this.streams[streamId].observable.source['_refCount']);
+    const cacheStream = cloneDeep(this.streams[streamId].cacheStream);
+
+    if ((cacheStream && refCount > 1) || (!cacheStream && refCount > 0)) {
+      return true;
+    }
+
+    return false;
   }
 
   deleteStream(streamId: string, apiEndpoint: string) {
@@ -494,7 +503,7 @@ class Streams {
     }
   }
 
-  async fetchAllWithEndpoint(apiEndpoint: string) {
+  async fetchAllStreamsWithEndpoint(apiEndpoint: string) {
     const promises: Promise<any>[] = [];
 
     union(
@@ -502,6 +511,21 @@ class Streams {
       this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]
     ).forEach((streamId) => {
       promises.push(this.streams[streamId].fetch());
+    });
+
+    return await Promise.all(promises);
+  }
+
+  async fetchAllActiveStreamsWithEndpoint(apiEndpoint: string) {
+    const promises: Promise<any>[] = [];
+
+    union(
+      this.streamIdsByApiEndPointWithQuery[apiEndpoint],
+      this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]
+    ).forEach((streamId) => {
+      if (this.isActiveStream(streamId)) {
+        promises.push(this.streams[streamId].fetch());
+      }
     });
 
     return await Promise.all(promises);
