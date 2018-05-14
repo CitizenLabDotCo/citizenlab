@@ -21,7 +21,6 @@ const Dropdown = styled.div`
   position: relative;
   &>:focus {
     outline: none;
-    border: 1px solid #044D6C;
   }
 `;
 
