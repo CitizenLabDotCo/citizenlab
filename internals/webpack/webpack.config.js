@@ -47,7 +47,7 @@ const WEBPACK_CONFIG = {
         }),
       },
       {
-        test: /\.(svg|jpg|png|gif|eot|ttf|woff|woff2)$/,
+        test: /\.(svg|jpg|png|gif|ttf|woff|woff2)$/,
         use: [
           'cache-loader',
           {
@@ -59,7 +59,7 @@ const WEBPACK_CONFIG = {
         ],
       },
       // {
-      //   test: /\.(eot|ttf|woff|woff2)$/,
+      //   test: /\.(ttf|woff|woff2)$/,
       //   use: [
       //     // 'cache-loader',
       //     {
@@ -133,7 +133,6 @@ const WEBPACK_CONFIG = {
       preload: [
         'main.js',
         'main.*.js',
-        '*.eot',
         '*.ttf',
         '*.woff',
         '*.woff2',
