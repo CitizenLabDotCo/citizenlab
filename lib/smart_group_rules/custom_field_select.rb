@@ -30,6 +30,7 @@ module SmartGroupRules
               "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
             },
             "value" => {
+              "description" => "The id of one of the options of the custom field",
               "$ref": "#/definitions/customFieldOptionId"
             }
           },

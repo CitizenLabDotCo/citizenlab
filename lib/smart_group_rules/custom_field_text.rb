@@ -28,7 +28,7 @@ module SmartGroupRules
               "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
             },
             "value" => {
-              "type" => "string",
+              "type" => "string"
             }
           },
         },
