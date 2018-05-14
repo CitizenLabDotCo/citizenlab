@@ -3,7 +3,7 @@ import { EditorState } from 'draft-js';
 
 declare module '*.png';
 
-declare module "*.json" {
+declare module '*.json' {
   const value: any;
   export default value;
 }
