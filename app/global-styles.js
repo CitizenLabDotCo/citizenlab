@@ -127,7 +127,7 @@ export const globalCss = `
     width: 100%;
   }
 
-  body:not(.fontLoaded) {
+  body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
 

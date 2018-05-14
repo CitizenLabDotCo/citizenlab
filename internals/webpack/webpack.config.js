@@ -17,7 +17,11 @@ const BabelLoaderConfig = {
 };
 
 const WEBPACK_CONFIG = {
-  entry: path.join(process.cwd(), 'app/app.js'),
+  entry: [
+    // 'core-js',
+    // 'babel-polyfill',
+    path.join(process.cwd(), 'app/app.js'),
+  ],
 
   output: {
     path: path.resolve(process.cwd(), 'build'),
@@ -47,9 +51,21 @@ const WEBPACK_CONFIG = {
         }),
       },
       {
-        test: /\.(svg|jpg|png|gif|ttf|woff|woff2)$/,
+        test: /\.(svg|jpg|png|gif)$/,
         use: [
           'cache-loader',
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(eot|ttf|woff|woff2)$/,
+        use: [
+          // 'cache-loader',
           {
             loader: 'url-loader',
             options: {
@@ -84,8 +100,10 @@ const WEBPACK_CONFIG = {
         API_PORT: JSON.stringify(process.env.API_PORT),
         CROWDIN_PLUGIN_ENABLED: !!process.env.CROWDIN_PLUGIN_ENABLED,
         SEGMENT_API_KEY: JSON.stringify(process.env.SEGMENT_API_KEY),
-        SENTRY_DSN: JSON.stringify(process.env.SENTRY_DSN), // Sentry DSN
-        CI: JSON.stringify(process.env.CI), // Circle CI flags, used for Sentry reporting
+        // Sentry DSN
+        SENTRY_DSN: JSON.stringify(process.env.SENTRY_DSN),
+        // Circle CI flags, used for Sentry reporting
+        CI: JSON.stringify(process.env.CI),
         CIRCLECI: JSON.stringify(process.env.CIRCLECI),
         CIRCLE_BUILD_NUM: JSON.stringify(process.env.CIRCLE_BUILD_NUM),
         CIRCLE_SHA1: JSON.stringify(process.env.CIRCLE_SHA1),
@@ -119,6 +137,7 @@ const WEBPACK_CONFIG = {
       preload: [
         'main.js',
         'main.*.js',
+        '*.eot',
         '*.ttf',
         '*.woff',
         '*.woff2',
@@ -200,7 +219,9 @@ if (isDev) {
       cache: true,
       sourceMap: false,
       parallel: true,
-      uglifyOptions: {},
+      uglifyOptions: {
+
+      },
     })
   );
 

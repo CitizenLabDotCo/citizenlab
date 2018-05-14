@@ -53,7 +53,7 @@ const PhaseForm = styled.form`
     .DateInput,
     .DateInput_input {
       color: #333;
-      font-family: 'visuelt', sans-serif !important;
+      /* font-family: 'visuelt', sans-serif !important; */
       font-size: 16px;
       font-weight: 400;
       background: transparent;
