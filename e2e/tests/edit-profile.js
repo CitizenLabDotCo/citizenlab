@@ -23,7 +23,6 @@ module.exports = {
     .clearValue('#firstName')
     .pause(200)
     .setValue('#firstName', newFirstName)
-    .pause(200)
     .clearValue('#lastName')
     .pause(200)
     .setValue('#lastName', newLastName)
@@ -32,12 +31,10 @@ module.exports = {
     .waitForElementVisible('.success')
     .url(`http://${process.env.ROOT_URL}/profile/edit`)
     .waitForElementVisible('.e2e-profile-edit-form')
-    .getValue('input#firstName', function (result) {
-      this.assert.equal(result.value, newFirstName);
-    })
-    .getValue('input#lastName', function (result) {
-      this.assert.equal(result.value, newLastName);
-    })
+    .verify.value('input#firstName', newFirstName)
+    .assert.valueContains('input#firstName', newFirstName)
+    .verify.value('input#lastName', newLastName)
+    .assert.valueContains('input#lastName', newLastName)
     .end();
   },
 };
