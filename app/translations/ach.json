@@ -400,6 +400,7 @@
   "app.containers.AdminPage.groups.create.buttonSave": "crwdns18001:0crwdne18001:0",
   "app.containers.AdminPage.groups.create.buttonSuccess": "crwdns18002:0crwdne18002:0",
   "app.containers.AdminPage.groups.create.creationFormTitle": "crwdns18003:0crwdne18003:0",
+  "app.containers.AdminPage.groups.create.dropdownFooterMessage": "",
   "app.containers.AdminPage.groups.create.messageError": "crwdns18004:0crwdne18004:0",
   "app.containers.AdminPage.groups.create.messageSuccess": "crwdns18005:0crwdne18005:0",
   "app.containers.AdminPage.groups.list.addGroupButton": "crwdns18006:0crwdne18006:0",
