@@ -7,6 +7,13 @@ import Header from '../Header';
 import ContentContainer from 'components/ContentContainer';
 import ProjectInfo from './ProjectInfo';
 import EventsPreview from '../EventsPreview';
+import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
+
+import styled from 'styled-components';
+
+const Mod = styled(ProjectModeratorIndicator)`
+  max-width: ${props => props.theme.maxPageWidth}px;
+`;
 
 // resources
 import GetProject from 'resources/GetProject';
@@ -21,6 +28,7 @@ export default withRouter<InputProps>((props: WithRouterProps) => (
       return (
         <>
           <Header projectSlug={props.params.slug} />
+          <Mod projectId={project.id} displayType="message" />
 
           <ContentContainer>
             <ProjectInfo projectId={project.id} />

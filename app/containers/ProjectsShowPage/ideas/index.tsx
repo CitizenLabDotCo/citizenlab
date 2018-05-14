@@ -7,6 +7,7 @@ import Header from '../Header';
 import EventsPreview from '../EventsPreview';
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
+import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
 
 // resources
 import GetProject from 'resources/GetProject';
@@ -32,6 +33,10 @@ const IdeasTitle = styled.h1`
   margin-bottom: 30px;
 `;
 
+const Mod = styled(ProjectModeratorIndicator)`
+  max-width: ${props => props.theme.maxPageWidth}px;
+`;
+
 interface InputProps {}
 
 export default withRouter<InputProps>((props: WithRouterProps) => (
@@ -47,6 +52,7 @@ export default withRouter<InputProps>((props: WithRouterProps) => (
         return (
           <>
             <Header projectSlug={props.params.slug} />
+            <Mod projectId={project.id} displayType="message" />
 
             <IdeasContainer>
               <ContentContainer>

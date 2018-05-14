@@ -51,6 +51,7 @@
   "app.components.MoreActions.buttonLabel": "More actions",
   "app.components.PagesShowPage.notFoundDescription": "The requested page could not be found",
   "app.components.PagesShowPage.notFoundTitle": "Page not found",
+  "app.components.Project.projectModeratorIndicator": "You're a moderator of this project",
   "app.components.ProjectCard.idea": "idea",
   "app.components.ProjectCard.ideas": "ideas",
   "app.components.ProjectCard.openProjectButton": "Discover more",

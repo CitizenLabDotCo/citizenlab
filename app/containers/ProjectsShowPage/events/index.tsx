@@ -7,6 +7,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import Header from '../Header';
 import Event from './Event';
 import ContentContainer from 'components/ContentContainer';
+import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -48,6 +49,12 @@ const NoEvents = styled.div`
   line-height: 26px;
 `;
 
+const Mod = styled(ProjectModeratorIndicator)`
+  max-width: ${props => props.theme.maxPageWidth}px;
+`;
+
+
+
 interface InputProps {}
 
 interface DataProps {
@@ -81,6 +88,7 @@ export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps)
         return (
           <>
             <Header projectSlug={slug} />
+            {!isNilOrError(project) && <Mod projectId={project.id} displayType="message" />}
             <EventsContainer>
               <Events>
                 <Title>
