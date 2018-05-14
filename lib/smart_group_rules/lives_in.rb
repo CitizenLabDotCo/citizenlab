@@ -29,7 +29,8 @@ module SmartGroupRules
               "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
             },
             "value" => {
-              "type" => "string",
+              "description" => "The id of an area",
+              "type" => "string"
             }
           },
         },

@@ -28,7 +28,7 @@ module SmartGroupRules
               "enum": PREDICATE_VALUES
             },
             "value" => {
-              "type" => "string",
+              "type" => "string"
             }
           },
         }
