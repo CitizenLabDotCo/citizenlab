@@ -136,14 +136,19 @@ namespace :tenant_template do
   end
 
   def convert_phases(csv_phases, locale, projects_hash)
-    start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
-  	csv_phases.map{|csv_phase| 
+    project_to_time = {}
+  	csv_phases.map do |csv_phase| 
+      t = (project_to_time[csv_phase['Project ID']] || Faker::Date.between(4.months.ago, 1.month.from_now)) + 1.day
+      start_at = t
+      end_at = t + (rand(30)+1).days
+      project_to_time[csv_phase['Project ID']] = end_at
   		{	'title_multiloc'       => {locale => csv_phase['Title']},
   			'description_multiloc' => {locale => md_to_html(csv_phase['Description'])},
         'project_ref'          => projects_hash[csv_phase['Project ID']],
         'start_at'             => start_at,
-        'end_at'               => (start_at += rand(120).days)
-  		}}
+        'end_at'               => end_at
+  		}
+    end
   end
 
 
