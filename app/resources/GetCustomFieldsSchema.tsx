@@ -19,10 +19,10 @@ export type GetCustomFieldsSchemaChildProps = any;
 export default class GetCustomFieldsSchema extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
-      customFieldsSchema: null
+      customFieldsSchema: undefined
     };
   }
 

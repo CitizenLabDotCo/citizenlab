@@ -15,10 +15,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  ideaMarkers: Partial<IIdeaData>[] | null;
+  ideaMarkers: Partial<IIdeaData>[] | undefined| null;
 }
 
-export type GetIdeaMarkersChildProps = Partial<IIdeaData>[] | null;
+export type GetIdeaMarkersChildProps = Partial<IIdeaData>[] | undefined| null;
 
 export default class GetIdeaMarkers extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -27,7 +27,7 @@ export default class GetIdeaMarkers extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      ideaMarkers: null,
+      ideaMarkers: undefined
     };
   }
 

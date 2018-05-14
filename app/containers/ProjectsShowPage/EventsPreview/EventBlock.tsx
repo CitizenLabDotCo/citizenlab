@@ -9,6 +9,9 @@ import T from 'components/T';
 import Icon from 'components/UI/Icon';
 import { Link } from 'react-router';
 
+// Utils
+import { getIsoDate } from 'utils/dateUtils';
+
 // Styling
 import styled from 'styled-components';
 import { color, fontSize, media } from 'utils/styleUtils';
@@ -116,14 +119,16 @@ interface Props {
 
 export default (props: Props) => {
   const { projectSlug, event, isLast } = props;
-  const isMultiDayEvent = !moment(props.event.attributes.start_at).isSame(props.event.attributes.end_at, 'day');
   const startAtMoment = moment(event.attributes.start_at);
   const endAtMoment = moment(event.attributes.end_at);
+  const startAtIsoDate = getIsoDate(event.attributes.start_at);
+  const endAtIsoDate = getIsoDate(event.attributes.end_at);
   const startAtDay = startAtMoment.format('DD');
   const endAtDay = endAtMoment.format('DD');
   const startAtMonth = startAtMoment.format('MMM');
   const endAtMonth = endAtMoment.format('MMM');
   const startAtYear = startAtMoment.format('YYYY');
+  const isMultiDayEvent = (startAtIsoDate !== endAtIsoDate);
   const dateFormat = (!isMultiDayEvent ? 'LT' : 'D MMM LT');
   const startAt = moment(event.attributes.start_at).format(dateFormat);
   const endAt = moment(event.attributes.end_at).format(dateFormat);

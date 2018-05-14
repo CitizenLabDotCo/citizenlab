@@ -11,18 +11,18 @@ interface Props extends InputProps {
 }
 
 interface State {
-  customFields: ICustomFieldData[] | null;
+  customFields: ICustomFieldData[] | undefined | null;
 }
 
-export type GetCustomFieldsChildProps = ICustomFieldData[] | null;
+export type GetCustomFieldsChildProps = ICustomFieldData[] | undefined | null;
 
 export default class GetCustomFields extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
-      customFields: null
+      customFields: undefined
     };
   }
 

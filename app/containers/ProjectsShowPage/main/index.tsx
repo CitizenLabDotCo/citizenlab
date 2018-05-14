@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 
 // services
@@ -11,7 +11,7 @@ import GetProject from 'resources/GetProject';
 export default withRouter((props: WithRouterProps) => (
   <GetProject slug={props.params.slug}>
     {project => {
-      if (!isNullOrError(project)) {
+      if (!isNilOrError(project)) {
         const redirectUrl = getProjectUrl(project);
 
         if (window.location.pathname !== redirectUrl) {
