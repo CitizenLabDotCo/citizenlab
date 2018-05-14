@@ -41,5 +41,26 @@ RSpec.describe Phase, type: :model do
       phase = build(:phase, project: build(:continuous_project))
       expect(phase).to be_invalid
     end
+
+    it "fails when the associated project has overlapping phases" do
+      project = create(:project, process_type: 'timeline')
+      other_phase = create(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now + 5.days))
+      phase_left_overlap = build(:phase, project: project.reload, start_at: (Time.now - 10.days), end_at: (Time.now - 3.days))
+      expect(phase_left_overlap).to be_invalid
+      phase_left_overlap = build(:phase, project: project.reload, start_at: (Time.now - 10.days), end_at: (Time.now - 5.days))
+      expect(phase_left_overlap).to be_invalid # also not same day
+      phase_right_overlap = build(:phase, project: project.reload, start_at: (Time.now + 5.days), end_at: (Time.now + 10.days))
+      expect(phase_right_overlap).to be_invalid # also not same day
+      phase_inside = build(:phase, project: project.reload, start_at: (Time.now - 3.days), end_at: (Time.now + 3.days))
+      expect(phase_inside).to be_invalid
+      phase_outside = build(:phase, project: project.reload, start_at: (Time.now - 10.days), end_at: (Time.now + 10.days))
+      expect(phase_outside).to be_invalid
+      phase_equal = build(:phase, project: project.reload, start_at: (Time.now - 5.days), end_at: (Time.now + 5.days))
+      expect(phase_equal).to be_invalid
+      phase_left = build(:phase, project: project.reload, start_at: (Time.now - 10.days), end_at: (Time.now - 6.days))
+      expect(phase_left).to be_valid
+      phase_right = build(:phase, project: project.reload, start_at: (Time.now + 6.days), end_at: (Time.now + 10.days))
+      expect(phase_right).to be_valid
+    end
   end
 end
