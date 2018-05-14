@@ -21,7 +21,6 @@ const Wrapper = styled.div`
 
   input {
     color: #333;
-    /* font-family: 'visuelt', 'Helvetica Neue', Helvetica, Arial, sans-serif; */
     font-size: 16px;
     font-weight: 400;
     outline: none;
