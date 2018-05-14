@@ -27,8 +27,8 @@ class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Subscription[];
   emailInputElement: HTMLInputElement | null;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props: Props & InjectedIntlProps) {
+    super(props);
     this.state = {
       locale: null,
       currentTenant: null
