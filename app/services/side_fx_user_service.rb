@@ -6,7 +6,7 @@ class SideFxUserService
     if User.admin.empty?
       user.add_role 'admin'
     end
-    if CustomField.count == 0
+    if CustomField.where(enabled: true).count == 0
       user.registration_completed_at ||= Time.now
     end
   end
