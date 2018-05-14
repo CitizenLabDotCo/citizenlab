@@ -113,11 +113,11 @@ class WebApi::V1::InvitesController < ApplicationController
         if !invitee.save
           raise ClErrors::TransactionError.new(error_key: :unprocessable_invitee)
         end
-        @invite.accepted_at = Time.now
+        SideFxInviteService.new.before_accept @invite
         if !@invite.save
           raise ClErrors::TransactionError.new(error_key: :unprocessable_invite)
         end
-        SideFxInviteService.new.after_accept(@invite)
+        SideFxInviteService.new.after_accept @invite
         render json: @invite.reload, include: ['invitee'], status: :ok
       end
     rescue ClErrors::TransactionError => e
