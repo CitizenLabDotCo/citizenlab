@@ -7,6 +7,7 @@ import Header from '../Header';
 import Timeline from './Timeline';
 import Phase from './Phase';
 import EventsPreview from '../EventsPreview';
+import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -21,6 +22,10 @@ const StyledHeader = styled(Header)``;
 const StyledTimeline = styled(Timeline)`
   margin-top: -40px;
   position: relative;
+`;
+
+const Mod = styled(ProjectModeratorIndicator)`
+  max-width: ${props => props.theme.maxPageWidth}px;
 `;
 
 interface InputProps {}
@@ -72,6 +77,8 @@ class ProjectTimelinePage extends React.PureComponent<Props & WithRouterProps, S
           <StyledHeader projectSlug={slug} />
 
           <StyledTimeline projectId={project.id} onPhaseSelected={this.handleOnPhaseSelected} />
+
+          <Mod projectId={project.id} displayType="message" />
 
           {selectedPhaseId &&
             <Phase phaseId={selectedPhaseId} />
