@@ -19,11 +19,13 @@ import { Message, Multiloc } from 'typings';
 
 const Dropdown = styled.div`
   position: relative;
+  &>:focus {
+    outline: none;
+    border: 1px solid #044D6C;
+  }
 `;
 
 const DropdownMenu = styled(clickOutside)`
-  display: flex;
-  flex-direction: column;
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
@@ -34,7 +36,7 @@ const DropdownMenu = styled(clickOutside)`
   transform-origin: left top;
   z-index: 5;
   width: 250px;
-  height: 240px;
+  max-height: 240px;
 
   * {
     user-select: none;
@@ -97,19 +99,24 @@ const DropdownList = styled.div`
   -webkit-overflow-scrolling: touch;
 `;
 
-const DropdownListItem = styled.div`
+const DropdownListItem = styled.button`
+  align-items: center;
   color: #044D6C;
   font-size: 16px;
   font-weight: 400;
   padding: 10px;
+  padding-left: 15px;
   margin-right: 5px;
   background: #fff;
   border-radius: 5px;
   cursor: pointer;
+  display: flex;
+  flex: 1 0;
+  justify-content: space-between !important;
 
-  &:hover {
+  &:hover, &:focus {
+    outline: none;
     color: #000;
-    text-decoration: none;
     background: #f6f6f6;
   }
 `;
@@ -120,7 +127,6 @@ const DropdownFooter = styled.div`
   font-size: 18px;
   font-weight: 400;
   text-align: center;
-  text-decoration: none;
   padding: 15px 15px;
   cursor: pointer;
   background: #044D6C;
@@ -129,10 +135,11 @@ const DropdownFooter = styled.div`
   border-top-right-radius: 0;
   transition: all 80ms ease-out;
 
-  &:hover {
+  &:hover, &:focus {
     color: #000;
     background: #044D6C;
     text-decoration: none;
+    outline: none;
   }
 `;
 
@@ -213,10 +220,11 @@ class MultipleSelectDropdown extends React.PureComponent<Props & InjectedIntlPro
                   const id = choice.id;
                   return (
                     <DropdownListItem key={id} onClick={this.onClickRow(id)}>
+                      <T value={choice.text} truncate={21}/>
                       <Checkbox
                         onChange={this.onClickRow(id)}
                         value={this.state.chosen.includes(id)}
-                        label={<T value={choice.text} truncate={21}/>}
+                        size="26px"
                       />
                     </DropdownListItem>
                   );
