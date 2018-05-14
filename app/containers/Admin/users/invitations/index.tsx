@@ -543,7 +543,7 @@ class Invitations extends React.PureComponent<Props, State> {
 
     return (
       <>
-        <form onSubmit={this.handleOnSubmit}>
+        <form onSubmit={this.handleOnSubmit} id="e2e-invitations">
           <Section>
             <SectionTitle>
               <FormattedMessage {...messages.invitePeople} />
@@ -553,7 +553,7 @@ class Invitations extends React.PureComponent<Props, State> {
               <LeftButton onClick={this.resetWithView('import')} className={`${selectedView === 'import' && 'active'}`}>
                 <FormattedMessage {...messages.importTab} />
               </LeftButton>
-              <RightButton onClick={this.resetWithView('text')} className={`${selectedView === 'text' && 'active'}`}>
+              <RightButton onClick={this.resetWithView('text')} className={`${selectedView === 'text' && 'active'} e2e-manual-invite`}>
                 <FormattedMessage {...messages.textTab} />
               </RightButton>
             </ViewButtons>
@@ -602,6 +602,7 @@ class Invitations extends React.PureComponent<Props, State> {
                   <TextArea
                     value={(selectedEmails || '')}
                     onChange={this.handleEmailListOnChange}
+                    id="e2e-emails"
                   />
                 </SectionField>
 
