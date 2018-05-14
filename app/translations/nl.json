@@ -521,6 +521,7 @@
   "app.containers.NotificationMenu.loading": "Meldingen laden...",
   "app.containers.NotificationMenu.mentionInComment": "{name} heeft u vermeld in een reactie",
   "app.containers.NotificationMenu.noNotifications": "U hebt nog geen meldingen",
+  "app.containers.NotificationMenu.projectModerationRightsReceived": "",
   "app.containers.NotificationMenu.statusChangedOfYourIdea": "De status van '{ideaTitle}' is gewijzigd naar {status}",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} aanvaardde de uitnodiging",
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "{name} heeft gereageerd op je idee",

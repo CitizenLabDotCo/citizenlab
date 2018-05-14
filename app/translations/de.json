@@ -521,6 +521,7 @@
   "app.containers.NotificationMenu.loading": "Benachrichtigungen werden geladen...",
   "app.containers.NotificationMenu.mentionInComment": "{name} erwähnte Sie in einem Kommentar",
   "app.containers.NotificationMenu.noNotifications": "Sie haben noch keine Benachrichtigungen",
+  "app.containers.NotificationMenu.projectModerationRightsReceived": "",
   "app.containers.NotificationMenu.statusChangedOfYourIdea": "Der Status von '{ideaTitle}' wurde auf {status} geändert",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} akzeptierte Ihre Einladung",
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "{orgName, select, München {{name} kommentierte Ihre Mängelmeldung}} other {{name} kommentierte Ihre Idee}}",
