@@ -521,6 +521,7 @@
   "app.containers.NotificationMenu.loading": "Chargement des notifications...",
   "app.containers.NotificationMenu.mentionInComment": "{name} vous a mentionné dans un commentaire",
   "app.containers.NotificationMenu.noNotifications": "Vous n'avez pas de notifications",
+  "app.containers.NotificationMenu.projectModerationRightsReceived": "",
   "app.containers.NotificationMenu.statusChangedOfYourIdea": "Le statut de l'idée '{ideaTitle}' est passé à {status}",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} a accepté votre invitation",
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "{name} a commenté sur votre idée",
