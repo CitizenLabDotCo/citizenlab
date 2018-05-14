@@ -1,5 +1,4 @@
 {
-  "app.components.Breadcrumbs.header": "Ceci est le component Breadcrumbs!",
   "app.components.CustomFieldsForm.requiredError": "Ce champ est requis",
   "app.components.ErrorBoundary.genericError": "Une erreur s'est produite et le contenu n'a pas pu être affiché. Veuillez essayer à nouveau",
   "app.components.FullscreenModal.closeButtonLabel": "Fermer",
@@ -27,7 +26,6 @@
   "app.components.IdeaForm.titlePlaceholder": "Entrez le titre de votre idée",
   "app.components.IdeaForm.topicsLabel": "Thèmes (2 maximum)",
   "app.components.IdeaForm.topicsPlaceholder": "Choisissez un thème pour votre idée (2 maximum)",
-  "app.components.IdeaTag.header": "Ceci est le component IdeaTag !",
   "app.components.IdeasMap.login": "Se connecter",
   "app.components.IdeasMap.noIdeasWithLocation": "Les idées de ce projet n'ont aucun emplacement renseigné.",
   "app.components.IdeasMap.postIdeaHere": "Postez une idée ici",
@@ -73,8 +71,6 @@
   "app.components.VoteControl.votingDisabledNotInActiveContext": "Cette idée n'est pas encore ou plus considérée dans '{projectName}'",
   "app.components.VoteControl.votingDisabledPossibleLater": "Le vote sur les idées de '{projectName}' sera possible à partir du '{enabledFromDate}'",
   "app.components.VoteControl.votingDisabledProjectInactive": "Vous ne pouvez plus voter sur les idées de '{projectName}'",
-  "app.components.admin.ExportLabel.downloadError": "Erreur de chargement. Veuillez réessayer",
-  "app.components.admin.ExportLabel.processingDownload": "Chargement...",
   "app.components.admin.FormikSubmitWrapper.buttonError": "Erreur",
   "app.components.admin.FormikSubmitWrapper.buttonSave": "Enregistrer",
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "Enregistré !",

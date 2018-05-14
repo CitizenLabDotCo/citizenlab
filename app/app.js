@@ -12,11 +12,8 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
-import FontFaceObserver from 'fontfaceobserver';
 import { useScroll } from 'react-router-scroll';
 import Raven from 'raven-js';
-import 'sanitize.css/sanitize.css';
-import 'react-select/dist/react-select.css';
 
 // Creates the LazyImages Observer
 import 'utils/lazyImagesObserver';
@@ -40,7 +37,9 @@ import { translationMessages } from './i18n';
 /* eslint-disable import/first */
 // Import CSS reset and Global Styles
 // import '../vendor/foundation/main.scss';
+import 'sanitize.css/sanitize.css';
 import 'semantic-ui-css/semantic.css';
+import 'react-select/dist/react-select.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './global-styles';
 /* eslint-enable import/first */
@@ -61,16 +60,6 @@ if (process.env.NODE_ENV !== 'development' && process.env.SENTRY_DSN) {
     },
   }).install();
 }
-
-// Observe loading of custom font
-const visuelt = new FontFaceObserver('visuelt');
-
-// When custom font is loaded, add a 'fontLoaded' class to the body tag
-visuelt.load().then(() => {
-  document.body.classList.add('fontLoaded');
-}, () => {
-  document.body.classList.remove('fontLoaded');
-});
 
 initializeAnalytics();
 

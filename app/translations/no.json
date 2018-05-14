@@ -1,5 +1,4 @@
 {
-  "app.components.Breadcrumbs.header": "Dette er komponenten for navigasjonssti!",
   "app.components.CustomFieldsForm.requiredError": "Dette feltet er påkrevd",
   "app.components.ErrorBoundary.genericError": "En feil oppsto og vi kan ikke vise dette innholdet. Vennligst prøv igjen.",
   "app.components.FullscreenModal.closeButtonLabel": "Lukk",
@@ -27,7 +26,6 @@
   "app.components.IdeaForm.titlePlaceholder": "Oppgi tittelen på idéen din",
   "app.components.IdeaForm.topicsLabel": "Emner (valgfritt, maks 2)",
   "app.components.IdeaForm.topicsPlaceholder": "Velg ett eller to emner for idéen din",
-  "app.components.IdeaTag.header": "Dette er komponenten for idéetikett!",
   "app.components.IdeasMap.login": "Logg inn",
   "app.components.IdeasMap.noIdeasWithLocation": "Idéene i dette prosjektet har ingen informasjon om lokalitet.",
   "app.components.IdeasMap.postIdeaHere": "Legg til en idé her",
@@ -73,8 +71,6 @@
   "app.components.VoteControl.votingDisabledNotInActiveContext": "Denne idéen er ikke lenger eller ikke ennå vurdert i {projectName}",
   "app.components.VoteControl.votingDisabledPossibleLater": "Det vil være mulig å stemme på idéer i {projectName} fra {enabledFromDate}",
   "app.components.VoteControl.votingDisabledProjectInactive": "Du kan ikke lenger stemme på idéer i {projectName}",
-  "app.components.admin.ExportLabel.downloadError": "Feil ved nedlasting. Vennligst prøv igjen",
-  "app.components.admin.ExportLabel.processingDownload": "Behandler...",
   "app.components.admin.FormikSubmitWrapper.buttonError": "Feil",
   "app.components.admin.FormikSubmitWrapper.buttonSave": "Lagre",
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "Suksess",

@@ -1,5 +1,4 @@
 {
-  "app.components.Breadcrumbs.header": "Dit is de Breadcrumbs component!",
   "app.components.CustomFieldsForm.requiredError": "Dit veld is verplicht",
   "app.components.ErrorBoundary.genericError": "Er is een fout opgetreden en we kunnen inhoud niet weergeven. Probeer het opnieuw.",
   "app.components.FullscreenModal.closeButtonLabel": "Sluiten",
@@ -27,7 +26,6 @@
   "app.components.IdeaForm.titlePlaceholder": "Geef een gevatte titel voor je idee",
   "app.components.IdeaForm.topicsLabel": "Thema's (optioneel, max. 2)",
   "app.components.IdeaForm.topicsPlaceholder": "Selecteer eventueel 1 of 2 thema's bij je idee",
-  "app.components.IdeaTag.header": "Dit is de IdeaTag component!",
   "app.components.IdeasMap.login": "Inloggen",
   "app.components.IdeasMap.noIdeasWithLocation": "De ideeën in dit project bevatten geen informatie ivm de locatie. ",
   "app.components.IdeasMap.postIdeaHere": "Plaats hier een idee",
@@ -73,8 +71,6 @@
   "app.components.VoteControl.votingDisabledNotInActiveContext": "Dit idee zit niet langer of nog niet in {projectName}",
   "app.components.VoteControl.votingDisabledPossibleLater": "Stemmen op ideeën in {projectName} wordt mogelijk vanaf {enabledFromDate}",
   "app.components.VoteControl.votingDisabledProjectInactive": "U kunt niet meer stemmen op ideeën in {projectName}",
-  "app.components.admin.ExportLabel.downloadError": "Fout tijdens het downloaden. Gelieve opnieuw te proberen",
-  "app.components.admin.ExportLabel.processingDownload": "Wordt verwerkt...",
   "app.components.admin.FormikSubmitWrapper.buttonError": "Fout",
   "app.components.admin.FormikSubmitWrapper.buttonSave": "Opslaan",
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "Opgeslagen!",
