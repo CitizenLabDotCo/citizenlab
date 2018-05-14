@@ -64,4 +64,8 @@ export default defineMessages({
       }
     `,
   },
+  projectModerationRightsReceived: {
+    id: 'app.containers.NotificationMenu.projectModerationRightsReceived',
+    defaultMessage: 'You\'re now a moderator of {projectLink}',
+  },
 });
