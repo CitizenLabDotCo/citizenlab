@@ -51,6 +51,7 @@
   "app.components.MoreActions.buttonLabel": "Meer acties",
   "app.components.PagesShowPage.notFoundDescription": "De opgevraagde pagina kon niet worden gevonden",
   "app.components.PagesShowPage.notFoundTitle": "Pagina niet gevonden",
+  "app.components.Project.projectModeratorIndicator": "",
   "app.components.ProjectCard.idea": "idee",
   "app.components.ProjectCard.ideas": "ideeën",
   "app.components.ProjectCard.openProjectButton": "Ontdek meer",
