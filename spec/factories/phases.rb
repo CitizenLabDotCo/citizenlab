@@ -20,6 +20,17 @@ FactoryBot.define do
       end
     end
 
+    factory :phase_sequence do
+      transient do
+        duration_in_days 5
+      end
+
+      after(:build) do |phase, evaluator|
+        phase.start_at  = Time.now + (evaluator.duration_in_days * Phase.count + 1).days
+        phase.end_at = Time.now + (evaluator.duration_in_days * (Phase.count + 1)).days
+      end
+    end
+
   end
 
 end

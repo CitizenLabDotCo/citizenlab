@@ -1,85 +1,83 @@
 ---
 models:
   custom_field:
-    - &cfgender
-      resource_type: User
-      key: gender
-      title_multiloc: custom_fields.gender
-      input_type: select
-      required: false
-      ordering: 0
-      enabled: true
-      code: gender
-    - &cfbirthyear
-      resource_type: User
-      key: birthyear
-      title_multiloc: custom_fields.birthyear
-      input_type: select
-      required: false
-      ordering: 1
-      enabled: true
-      code: birthyear
-    - &cfdomicile
-      resource_type: User
-      key: domicile
-      title_multiloc: custom_fields.domicile
-      input_type: select
-      required: false
-      ordering: 2
-      enabled: true
-      code: domicile
-    - &cfeducation
-      resource_type: User
-      key: education
-      title_multiloc: custom_fields.education
-      input_type: select
-      required: false
-      ordering: 3
-      enabled: false
-      code: education
+  - &1
+    resource_type: User
+    key: gender
+    title_multiloc: custom_fields.gender
+    input_type: select
+    required: false
+    ordering: 0
+    enabled: true
+    code: gender
+  - resource_type: User
+    key: birthyear
+    title_multiloc: custom_fields.birthyear
+    input_type: select
+    required: false
+    ordering: 1
+    enabled: true
+    code: birthyear
+  - resource_type: User
+    key: domicile
+    title_multiloc: custom_fields.domicile
+    input_type: select
+    required: false
+    ordering: 2
+    enabled: true
+    code: domicile
+  - &2
+    resource_type: User
+    key: education
+    title_multiloc: custom_fields.education
+    input_type: select
+    required: false
+    ordering: 3
+    enabled: false
+    code: education
   custom_field_option:
-    - custom_field_ref: *cfgender
-      key: male
-      title_multiloc: custom_field_options.gender.male
-      ordering: 0
-    - custom_field_ref: *cfgender
-      key: female
-      title_multiloc: custom_field_options.gender.female
-      ordering: 1
-    - custom_field_ref: *cfgender
-      key: unspecified
-      title_multiloc: custom_field_options.gender.unspecified
-      ordering: 2
-    - custom_field_ref: *cfeducation
-      key: "2"
-      title_multiloc: custom_field_options.education.ISCED2
-      ordering: 0
-    - custom_field_ref: *cfeducation
-      key: "3"
-      title_multiloc: custom_field_options.education.ISCED3
-      ordering: 1
-    - custom_field_ref: *cfeducation
-      key: "4"
-      title_multiloc: custom_field_options.education.ISCED4
-      ordering: 2
-    - custom_field_ref: *cfeducation
-      key: "5"
-      title_multiloc: custom_field_options.education.ISCED5
-      ordering: 3
-    - custom_field_ref: *cfeducation
-      key: "6"
-      title_multiloc: custom_field_options.education.ISCED6
-      ordering: 4
-    - custom_field_ref: *cfeducation
-      key: "7"
-      title_multiloc: custom_field_options.education.ISCED7
-      ordering: 5
-    - custom_field_ref: *cfeducation
-      key: "8"
-      title_multiloc: custom_field_options.education.ISCED8
-      ordering: 6
+  - custom_field_ref: *1
+    key: male
+    title_multiloc: custom_field_options.gender.male
+    ordering: 0
+  - custom_field_ref: *1
+    key: female
+    title_multiloc: custom_field_options.gender.female
+    ordering: 1
+  - custom_field_ref: *1
+    key: unspecified
+    title_multiloc: custom_field_options.gender.unspecified
+    ordering: 2
+  - custom_field_ref: *2
+    key: '2'
+    title_multiloc: custom_field_options.education.ISCED2
+    ordering: 0
+  - custom_field_ref: *2
+    key: '3'
+    title_multiloc: custom_field_options.education.ISCED3
+    ordering: 1
+  - custom_field_ref: *2
+    key: '4'
+    title_multiloc: custom_field_options.education.ISCED4
+    ordering: 2
+  - custom_field_ref: *2
+    key: '5'
+    title_multiloc: custom_field_options.education.ISCED5
+    ordering: 3
+  - custom_field_ref: *2
+    key: '6'
+    title_multiloc: custom_field_options.education.ISCED6
+    ordering: 4
+  - custom_field_ref: *2
+    key: '7'
+    title_multiloc: custom_field_options.education.ISCED7
+    ordering: 5
+  - custom_field_ref: *2
+    key: '8'
+    title_multiloc: custom_field_options.education.ISCED8
+    ordering: 6
   user:
-  - &5
+  - &7
     email: arry@citizenlab.co
     first_name: Arry
     last_name: Snow
@@ -87,11 +85,11 @@ models:
     bio_multiloc:
       en: 
     gender: male
-    birthyear: "1974"
+    birthyear: '1974'
     domicile: outside
     password: 5oaIqe41Zxs
     remote_avatar_url: http://i0.kym-cdn.com/entries/icons/original/000/000/091/TrollFace.jpg
-  - &2
+  - &4
     email: princesslea@gmail.com
     first_name: Lea
     last_name: Skywalker
@@ -99,7 +97,7 @@ models:
     bio_multiloc:
       en: 
     gender: female
-    birthyear: "1945"
+    birthyear: '1945'
     domicile: outside
     password: helpmeOB1
     remote_avatar_url: http://images2.fanpop.com/image/photos/9300000/leia-princess-leia-organa-solo-skywalker-9301321-576-1010.jpg
@@ -108,7 +106,7 @@ models:
     description_multiloc: topics.infrastructure_description
   - title_multiloc: topics.waste
     description_multiloc: topics.waste_description
-  - &6
+  - &8
     title_multiloc: topics.mobility
     description_multiloc: topics.mobility_description
   - title_multiloc: topics.technology
@@ -139,7 +137,7 @@ models:
     code: proposed
     color: "#84939E"
     description_multiloc: statuses.proposed_description
-  - &3
+  - &5
     title_multiloc: statuses.under_consideration
     ordering: 200
     code: under_consideration
@@ -161,7 +159,7 @@ models:
     color: "#B5DA23"
     description_multiloc: statuses.implemented_description
   project:
-  - &1
+  - &3
     title_multiloc:
       en: Reducing Air Pollution in the City
     description_multiloc:
@@ -171,50 +169,49 @@ models:
         <p>You can support this innitiative by proposing your ideas on how to tackle this issue.</p>
 
         <p><em>Let&#39;s do this!</em></p>
-  
     remote_header_bg_url: 
   project_image:
   - remote_image_url: http://static.tvtropes.org/pmwiki/pub/images/rsz_fd6e28f288acfdc7a88b43f8bd3181af57f3cf8a.png
-    project_ref: *1
+    project_ref: *3
   idea:
-  - &4
+  - &6
     title_multiloc:
       en: More Bicycle Racks
     body_multiloc:
       en: "<p>Title says it all.</p>\n"
-    author_ref: *2
-    project_ref: *1
+    author_ref: *4
+    project_ref: *3
     areas: []
-    idea_status_ref: *3
+    idea_status_ref: *5
     publication_status: published
   vote:
   - mode: up
-    user_ref: *2
-    votable_ref: *4
+    user_ref: *4
+    votable_ref: *6
   - mode: up
-    user_ref: *5
-    votable_ref: *4
+    user_ref: *7
+    votable_ref: *6
   ideas_topic:
-  - idea_ref: *4
-    topic_ref: *6
+  - idea_ref: *6
+    topic_ref: *8
   idea_image: []
   comment:
-  - &7
+  - &9
     body_multiloc:
       en: "<p>Great idea, we stand behind you!</p>\n"
-    author_ref: *2
-    idea_ref: *4
+    author_ref: *4
+    idea_ref: *6
     parent_ref: 
   - body_multiloc:
       en: "<p>I&#39;ve never seen you riding a bicycle...</p>\n"
-    author_ref: *5
-    idea_ref: *4
-    parent_ref: *7
+    author_ref: *7
+    idea_ref: *6
+    parent_ref: *9
   - body_multiloc:
       en: "<p>Why stop there? The city also lacks stables. There should at least be
         one near the river.</p>\n"
-    author_ref: *5
-    idea_ref: *4
+    author_ref: *7
+    idea_ref: *6
     parent_ref: 
   event:
   - title_multiloc:
@@ -226,7 +223,7 @@ models:
         <p>No animals allowed.</p>
     location_multiloc:
       en: Many different pubs, we start from the central place.
-    project_ref: *1
+    project_ref: *3
     start_at: 2017-08-11
     end_at: 2017-08-12
   phase:
@@ -235,21 +232,21 @@ models:
     description_multiloc:
       en: "<p>The first phase consists of increasing the amount of cyclists in the
         city.</p>\n"
-    project_ref: *1
+    project_ref: *3
     start_at: 2018-08-08
-    end_at: 2018-10-21
+    end_at: 2018-08-18
   - title_multiloc:
       en: Autocar Expelsion
     description_multiloc:
       en: "<p>Next, we will hunt away cars and trucks from the inner city. Only busses
         are welcome!</p>\n"
-    project_ref: *1
-    start_at: 2018-10-21
-    end_at: 2018-12-08
+    project_ref: *3
+    start_at: 2018-08-19
+    end_at: 2018-09-10
   - title_multiloc:
       en: Breathe Fresh Air
     description_multiloc:
       en: "<p>Finally, we can enjoy breathing fresh, clean air.</p>\n"
-    project_ref: *1
-    start_at: 2018-12-08
-    end_at: 2018-12-30
+    project_ref: *3
+    start_at: 2018-09-11
+    end_at: 2018-10-08
