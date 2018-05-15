@@ -1,6 +1,8 @@
 import React from 'react';
 import { indexOf, isString, forEach } from 'lodash';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs/Rx';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import * as moment from 'moment';
 
 // components
@@ -356,7 +358,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
         .switchMap((projectId: string) => {
           const phases$ = phasesStream(projectId).observable;
 
-          return Observable.combineLatest(
+          return combineLatest(
             locale$,
             currentTenant$,
             phases$

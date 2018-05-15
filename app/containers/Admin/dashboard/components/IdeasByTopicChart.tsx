@@ -1,6 +1,6 @@
 import React from 'react';
 import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
@@ -42,7 +42,7 @@ class IdeasByTimeChart extends React.PureComponent<Props & injectedLocalized, St
     this.endAt$.next(this.props.endAt);
 
     this.subscriptions = [
-      Observable.combineLatest(
+      combineLatest(
         this.startAt$.filter(startAt => startAt !== null),
         this.endAt$.filter(endAt => endAt !== null),
       ).switchMap(([startAt, endAt]) => {

@@ -186,7 +186,6 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
       // Since we bypass the normal history mechanism and take it into our own hands here,
       // we exceptionally also need to track the page change manually
       // Don't try this at home!
-      console.log(url);
       trackPage(url, { modal: true });
     }
   }

@@ -5,7 +5,8 @@ import 'react-dates/lib/css/_datepicker.css';
 // Libraries
 import React from 'react';
 import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { of } from 'rxjs/observable/of';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as moment from 'moment';
 import { get, isEmpty, forOwn } from 'lodash';
@@ -121,9 +122,9 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
       .switchMap((params: IParams) => {
         const { projectId, id } = params;
         const locale$ = localeStream().observable;
-        const project$ = (projectId ? projectByIdStream(projectId).observable : Observable.of(null));
-        const phase$ = (id ? phaseStream(id).observable : Observable.of(null));
-        return Observable.combineLatest(locale$, project$, phase$);
+        const project$ = (projectId ? projectByIdStream(projectId).observable : of(null));
+        const phase$ = (id ? phaseStream(id).observable : of(null));
+        return combineLatest(locale$, project$, phase$);
       }).subscribe(([locale, project, phase]) => {
         let multilocEditorState: MultilocEditorState | null = null;
 

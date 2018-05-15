@@ -3,6 +3,7 @@ import { Observer } from 'rxjs/Observer';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { fromPromise } from 'rxjs/observable/fromPromise';
+import { of } from 'rxjs/observable/of';
 import { retry, catchError, startWith, scan, filter, distinctUntilChanged, refCount, publishReplay } from 'rxjs/operators';
 import { some, forOwn, isError, isNil, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union } from 'lodash';
 import request from 'utils/request';
@@ -256,7 +257,7 @@ class Streams {
 
           fromPromise(promise).pipe(
             retry(3),
-            catchError(() => Observable.of(new Error(`promise for stream ${streamId} did not resolve`)))
+            catchError(() => of(new Error(`promise for stream ${streamId} did not resolve`)))
           ).subscribe((response) => {
             if (!this.streams[streamId]) {
               console.log(`no stream exists for ${streamId}`);

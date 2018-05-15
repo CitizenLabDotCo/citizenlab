@@ -1,6 +1,6 @@
 import React from 'react';
 import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import { mapValues } from 'lodash';
 import { currentTenantStream, ITenantData } from 'services/tenant';
 import { authUserStream } from 'services/auth';
@@ -35,7 +35,7 @@ const events$ = new Subject<IEvent>();
 const identifications$ = new Subject<IIdentification>();
 const pageChanges$ = new Subject<IPageChange>();
 
-Observable.combineLatest(tenant$, events$).subscribe(([tenant, event]) => {
+combineLatest(tenant$, events$).subscribe(([tenant, event]) => {
   if (window && window['analytics']) {
     window['analytics'].track(
       event.name,
@@ -44,8 +44,9 @@ Observable.combineLatest(tenant$, events$).subscribe(([tenant, event]) => {
   }
 });
 
-Observable.combineLatest(tenant$, pageChanges$).subscribe(([tenant, pageChange]) => {
+combineLatest(tenant$, pageChanges$).subscribe(([tenant, pageChange]) => {
   if (window && window['analytics']) {
+    console.log(pageChange.name);
     window['analytics'].page(
       pageChange.name,
       addTenantInfo(pageChange.properties, tenant.data),
@@ -53,7 +54,7 @@ Observable.combineLatest(tenant$, pageChanges$).subscribe(([tenant, pageChange])
   }
 });
 
-Observable.combineLatest(tenant$, identifications$).subscribe(([tenant, identification]) => {
+combineLatest(tenant$, identifications$).subscribe(([tenant, identification]) => {
   if (window && window['analytics']) {
     window['analytics'].identify(
       identification.userId,

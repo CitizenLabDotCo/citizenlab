@@ -1,6 +1,6 @@
 import React from 'react';
 import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import { Multiloc, Locale } from 'typings';
 import { getLocalized } from 'utils/i18n';
 import { localeStream } from 'services/locale';
@@ -33,7 +33,7 @@ export default class T extends React.PureComponent<Props, State> {
     const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
 
     this.subscriptions = [
-      Observable.combineLatest(
+      combineLatest(
         locale$,
         currentTenantLocales$
       ).subscribe(([locale, currentTenantLocales]) => {
