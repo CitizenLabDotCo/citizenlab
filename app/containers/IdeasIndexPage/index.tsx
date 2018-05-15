@@ -40,10 +40,11 @@ const PageTitle = styled.h1`
   text-align: center;
   margin: 0;
   padding: 0;
-  padding-bottom: 40px;
+  margin-bottom: 35px;
 
   ${media.smallerThanMaxTablet`
     text-align: left;
+    margin-bottom: 20px;
   `}
 `;
 

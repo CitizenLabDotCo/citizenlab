@@ -4,6 +4,7 @@ import { usersStream, IUserData } from 'services/users';
 import shallowCompare from 'utils/shallowCompare';
 import { isEqual, omitBy, isNil, isString, isEmpty } from 'lodash';
 import { getPageNumberFromUrl, getSortAttribute, getSortDirection, SortDirection } from 'utils/paginationUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 export type SortAttribute = 'email' | 'last_name' | 'created_at' | 'role';
 export type Sort = 'created_at' | '-created_at' | 'last_name' | '-last_name' | 'email' | '-email' | 'role' | '-role';
@@ -30,7 +31,7 @@ interface Props extends InputProps {
 
 type State = {
   queryParameters: IQueryParameters;
-  usersList: IUserData[] | null;
+  usersList: IUserData[] | undefined | null | Error;
   sortAttribute: SortAttribute,
   sortDirection: SortDirection,
   currentPage: number;
@@ -59,7 +60,7 @@ export default class GetInvites extends React.Component<Props, State> {
         sort: initialSort,
         search: undefined
       },
-      usersList: null,
+      usersList: undefined,
       sortAttribute: getSortAttribute<Sort, SortAttribute>(initialSort),
       sortDirection: getSortDirection<Sort>(initialSort),
       currentPage: 1,
@@ -94,15 +95,15 @@ export default class GetInvites extends React.Component<Props, State> {
         const newPageNumber = queryParameters['page[number]'];
         queryParameters['page[number]'] = (newPageNumber !== oldPageNumber ? newPageNumber : 1);
 
-        return usersStream({ queryParameters, cacheStream: false }).observable.map(invites => ({ invites, queryParameters }));
-      }).subscribe(({ invites, queryParameters }) => {
+        return usersStream({ queryParameters, cacheStream: false }).observable.map(users => ({ users, queryParameters }));
+      }).subscribe(({ users, queryParameters }) => {
         this.setState({
           queryParameters,
-          usersList: invites.data,
+          usersList: (!isNilOrError(users) ? users.data : users),
           sortAttribute: getSortAttribute<Sort, SortAttribute>(queryParameters.sort),
           sortDirection: getSortDirection<Sort>(queryParameters.sort),
-          currentPage: getPageNumberFromUrl(invites.links.self) || 1,
-          lastPage: getPageNumberFromUrl(invites.links.last) || 1
+          currentPage: getPageNumberFromUrl(users.links.self) || 1,
+          lastPage: getPageNumberFromUrl(users.links.last) || 1
         });
       })
     ];

@@ -22,7 +22,7 @@ module.exports = {
     .setValue('.e2e-comment-form textarea', `Test Comment ${hash}`)
     .execute('var submitComment = document.getElementsByClassName("e2e-submit-comment");submitComment[0].scrollIntoView(true);')
     .click('.e2e-comment-form .e2e-submit-comment')
-    .pause(1000)
+    .waitForElementVisible('.Button.disabled')
     .waitForElementVisible('.e2e-comment-thread')
     .assert.containsText(`.e2e-comment-body.last div`, `Test Comment ${hash}`)
     .end();

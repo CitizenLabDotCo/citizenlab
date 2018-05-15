@@ -1,7 +1,7 @@
 import React from 'react';
 import { set, keys, difference, get } from 'lodash';
 import { Subscription, Observable } from 'rxjs/Rx';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // libraries
 import { Link } from 'react-router';
@@ -172,9 +172,9 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
           locale,
           currentTenant,
           token,
-          firstName: (!isNullOrError(invitedUser) && invitedUser.data ? invitedUser.data.attributes.first_name : state.firstName),
-          lastName: (!isNullOrError(invitedUser) && invitedUser.data ? invitedUser.data.attributes.last_name : state.lastName),
-          email: (!isNullOrError(invitedUser) && invitedUser.data ? invitedUser.data.attributes.email : state.email),
+          firstName: (!isNilOrError(invitedUser) && invitedUser.data ? invitedUser.data.attributes.first_name : state.firstName),
+          lastName: (!isNilOrError(invitedUser) && invitedUser.data ? invitedUser.data.attributes.last_name : state.lastName),
+          email: (!isNilOrError(invitedUser) && invitedUser.data ? invitedUser.data.attributes.email : state.email),
           hasCustomFields: hasCustomFields(customFieldsSchema, locale)
         }));
       })

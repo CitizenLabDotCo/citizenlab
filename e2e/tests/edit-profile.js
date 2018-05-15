@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const hash = crypto.randomBytes(5).toString('hex');
-const firstName = `first name ${hash}`;
-const lastName = `last name ${hash}`;
+const newFirstName = `first name ${hash}`;
+const newLastName = `last name ${hash}`;
 const afterEach = require('../updateBSStatus');
 
 module.exports = {
@@ -21,20 +21,20 @@ module.exports = {
     .click('#e2e-profile-edit-link')
     .waitForElementVisible('.e2e-profile-edit-form')
     .clearValue('#firstName')
-    .setValue('#firstName', firstName)
+    .pause(200)
+    .setValue('#firstName', newFirstName)
     .clearValue('#lastName')
-    .setValue('#lastName', lastName)
+    .pause(200)
+    .setValue('#lastName', newLastName)
     .execute('var submitChange = document.getElementsByClassName("e2e-submit-wrapper-button");submitChange[0].scrollIntoView(true);')
     .click('.e2e-submit-wrapper-button button')
     .waitForElementVisible('.success')
     .url(`http://${process.env.ROOT_URL}/profile/edit`)
     .waitForElementVisible('.e2e-profile-edit-form')
-    .getValue('input#firstName', function (result) {
-      this.assert.equal(result.value, firstName);
-    })
-    .getValue('input#lastName', function (result) {
-      this.assert.equal(result.value, lastName);
-    })
+    .verify.value('input#firstName', newFirstName)
+    .assert.valueContains('input#firstName', newFirstName)
+    .verify.value('input#lastName', newLastName)
+    .assert.valueContains('input#lastName', newLastName)
     .end();
   },
 };

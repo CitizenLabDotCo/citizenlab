@@ -43,7 +43,7 @@ interface State {
   loadingMore: boolean;
 }
 
-export default class GetProjects extends React.Component<Props, State> {
+export default class GetGroups extends React.Component<Props, State> {
   private queryParameters$: BehaviorSubject<IQueryParameters>;
   private subscriptions: Subscription[];
 

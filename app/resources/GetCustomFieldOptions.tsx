@@ -2,6 +2,7 @@ import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { customFieldOptionsStream, ICustomFieldOptionsData } from 'services/userCustomFields';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   customFieldId: string;
@@ -14,10 +15,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  customFieldOptions: ICustomFieldOptionsData[] | null;
+  customFieldOptions: ICustomFieldOptionsData[] | undefined | null | Error;
 }
 
-export type GetCustomFieldOptionsChildProps = ICustomFieldOptionsData[] | null;
+export type GetCustomFieldOptionsChildProps = ICustomFieldOptionsData[] | undefined | null | Error;
 
 export default class GetCustomFieldOptions extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -26,7 +27,7 @@ export default class GetCustomFieldOptions extends React.Component<Props, State>
   constructor(props) {
     super(props);
     this.state = {
-      customFieldOptions: null
+      customFieldOptions: undefined
     };
   }
 
@@ -39,7 +40,7 @@ export default class GetCustomFieldOptions extends React.Component<Props, State>
       this.inputProps$
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
         .switchMap(({ customFieldId }) => customFieldOptionsStream(customFieldId).observable)
-        .subscribe((customFieldOptions) => this.setState({ customFieldOptions: customFieldOptions.data }))
+        .subscribe((customFieldOptions) => this.setState({ customFieldOptions: !isNilOrError(customFieldOptions) ? customFieldOptions.data : customFieldOptions }))
     ];
   }
 

@@ -1,12 +1,13 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { Link, browserHistory } from 'react-router';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import LazyImage, { Props as LazyImageProps } from 'components/LazyImage';
+import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
 
 // services
 import { IProjectData } from 'services/projects';
@@ -26,7 +27,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, color } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 const ProjectImageContainer =  styled.div`
   height: 190px;
@@ -51,7 +52,7 @@ const ProjectImagePlaceholder = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${color('placeholderBg')};
+  background: ${colors.placeholderBg};
 `;
 
 const ProjectImagePlaceholderIcon = styled(Icon) `
@@ -74,7 +75,8 @@ const Container = styled.div`
   margin-bottom: 25px;
   background: #fff;
   border-radius: 5px;
-  border: solid 1px #e4e4e4;
+  border: solid 1px ${colors.separation};
+  position: relative;
 
   ${media.biggerThanMaxTablet`
     min-height: 222px;
@@ -87,6 +89,14 @@ const Container = styled.div`
     padding: 15px;
   `}
 `;
+
+const Mod = styled(ProjectModeratorIndicator)`
+  position: absolute;
+  top: .5rem;
+  right: .5rem;
+  width: 1rem;
+`;
+
 
 const ProjectContent = styled.div`
   flex: 1;
@@ -232,7 +242,7 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
   goToProject = () => {
     const { project } = this.props;
 
-    if (!isNullOrError(project)) {
+    if (!isNilOrError(project)) {
       const projectUrl = this.getProjectUrl(project);
       browserHistory.push(projectUrl);
     }
@@ -243,10 +253,10 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
     const { formatMessage } = this.props.intl;
     const { locale, tenantLocales, project, projectImages } = this.props;
 
-    if (locale && tenantLocales && !isNullOrError(project)) {
+    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(project)) {
       const titleMultiloc = project.attributes.title_multiloc;
       const preview = getLocalized(project.attributes.description_preview_multiloc, locale, tenantLocales);
-      const imageUrl = (projectImages && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
+      const imageUrl = (!isNilOrError(projectImages) && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
       const projectUrl = this.getProjectUrl(project);
       const projectIdeasUrl = this.getProjectIdeasUrl(project);
       const ideasCount = project.attributes.ideas_count;
@@ -254,6 +264,7 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
 
       return (
         <Container className={className}>
+          <Mod projectId={project.id} />
 
           <ProjectImageContainer>
             {imageUrl && <ProjectImage src={imageUrl} cover />}
