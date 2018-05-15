@@ -47,7 +47,7 @@ export default class NoUsers extends React.PureComponent<Props> {
               {...messages.goToAllUsers}
               values={{
                 allUsersLink: (
-                  <Link to="/users/all">
+                  <Link to="/users/">
                     <FormattedMessage {...messages.allUsers} />
                   </Link>),
               }}
