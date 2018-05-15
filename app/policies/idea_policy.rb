@@ -42,7 +42,7 @@ class IdeaPolicy < ApplicationPolicy
     disabled_reason = pcs.posting_disabled_reason(record.project)
 
     record.draft? ||
-    (user&.active? && user.admin?) ||
+    (user&.active? && (user.admin? || user.project_moderator?(record.project_id))) ||
     (
       user&.active? && (
         record.author_id == user.id &&
@@ -53,7 +53,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def show?
-    (user&.active? && user.admin?) || record.draft? || (
+    (user&.active? && (user.admin? || user.project_moderator?(record.project_id))) || record.draft? || (
       ProjectPolicy.new(user, record.project).show? &&
       %w(draft published closed).include?(record.publication_status)
     )
@@ -64,7 +64,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def update?
-    record.draft? || (user&.active? && (record.author_id == user.id || user.admin?))
+    record.draft? || (user&.active? && (record.author_id == user.id || user.admin? || user.project_moderator?(record.project_id)))
   end
 
   def destroy?
@@ -87,7 +87,7 @@ class IdeaPolicy < ApplicationPolicy
       topic_ids: [],
       area_ids: []
     ]
-    if user&.admin?
+    if user&.admin? || (record.class != Class && user&.project_moderator?(record.project_id))
       [:idea_status_id] + shared + [phase_ids: []]
     else
       shared

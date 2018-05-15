@@ -381,9 +381,8 @@ resource "Ideas" do
       end
 
       describe do
-        let (:active_phases) { create_list(:active_phase, 2, participation_method: 'ideation') }
-        let (:project) { create(:project, phases: active_phases) }
-        let (:phase_ids) { active_phases.map(&:id) }
+        let (:project) { create(:project_with_current_phase, phases_config: {sequence: "xxcx"}) }
+        let (:phase_ids) { project.phases.shuffle.take(2).map(&:id) }
         example_request "Creating an idea in specific phases" do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
@@ -518,6 +517,24 @@ resource "Ideas" do
           expect(status).to be 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match_array phase_ids
+        end
+      end
+    end
+
+    context "when moderator" do
+      before do
+        @moderator = create(:moderator, project: @idea.project)
+        token = Knock::AuthToken.new(payload: { sub: @moderator.id }).token
+        header 'Authorization', "Bearer #{token}"
+      end
+
+      describe do
+        let(:idea_status_id) { create(:idea_status).id }
+
+        example_request "Change the idea status (as a moderator)" do
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:relationships,:idea_status,:data,:id)).to eq idea_status_id
         end
       end
     end

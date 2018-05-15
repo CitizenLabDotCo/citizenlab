@@ -68,7 +68,10 @@ def generate_avatar
   Rails.root.join("spec/fixtures/avatar#{i}.#{(i > 1) ? 'jpg' : 'png'}").open
 end
 
+
 if Apartment::Tenant.current == 'public' || 'example_org'
+
+  
   t = Tenant.create({
     name: 'local',
     host: 'localhost',
@@ -203,6 +206,11 @@ TenantTemplateService.new.apply_template('base') if tenant_template
 
 if Apartment::Tenant.current == 'localhost'
 
+  PublicApi::ApiClient.create(
+    id: '42cb419a-b1f8-4600-8c4e-fd45cca4bfd9',
+    secret: "Hx7C27lxV7Qszw-zCg9UT-GFRQuxJNffllTpeU262CGabllbyTYwOmpizCygtPIZSwg",
+  )
+  
   if SEED_SIZE != 'empty'
     custom_field = CustomField.create(
       resource_type: 'User',

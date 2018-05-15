@@ -15,7 +15,15 @@ namespace :migrate do
     platform = migration_settings['platform']
     password = migration_settings['password']
     db_user = migration_settings['db_user'] || 'citizenlab'
-    locales_mapping = { 'en' => 'en', 'nl' => 'nl', 'nl-BE' => 'nl', 'fr' => 'fr' } 
+    locales_mapping = { 
+      'en' => 'en', 
+      'nl' => 'nl', 
+      'nl-BE' => 'nl', 
+      'fr' => 'fr', 
+      'de' => 'de',  
+      'da' => 'da',
+      'no' => 'no'
+    } 
     topics_mapping = migration_settings['topics_mapping'] || {}
     idea_statuses_mapping = migration_settings['idea_statuses_mapping'] || {}
 
@@ -568,7 +576,7 @@ namespace :migrate do
     end
     IdeaStatus.find_by!(code: 'proposed')
     # project
-    if p.dig('projectId')
+    if p.dig('projectId') && projects_hash[p.dig('projectId')]
       d[:project] = projects_hash[p.dig('projectId')]
     else
       oip = Project.find_by(internal_role: 'open_idea_box')
