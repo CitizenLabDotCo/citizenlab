@@ -16,10 +16,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  ideaImage: IIdeaImageData | null;
+  ideaImage: IIdeaImageData | undefined| null;
 }
 
-export type GetIdeaImageChildProps = IIdeaImageData | null;
+export type GetIdeaImageChildProps = IIdeaImageData | undefined| null;
 
 export default class GetIdeaImage extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -28,7 +28,7 @@ export default class GetIdeaImage extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      ideaImage: null
+      ideaImage: undefined
     };
   }
 

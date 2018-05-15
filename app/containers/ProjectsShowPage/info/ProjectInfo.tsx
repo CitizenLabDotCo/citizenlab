@@ -1,10 +1,11 @@
 import React from 'react';
 import 'moment-timezone';
 import { adopt } from 'react-adopt';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ImageZoom from 'react-medium-image-zoom';
+import Fragment from 'components/Fragment';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -55,7 +56,7 @@ const Right = styled.aside`
   `}
 `;
 
-const IdeaBodyStyled = styled.div`
+const ProjectDescriptionStyled = styled.div`
   color: #333;
   font-size: 18px;
   line-height: 26px;
@@ -143,29 +144,31 @@ const Data = adopt<DataProps, InputProps>({
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {({ project, projectImages }) => {
-      if (isNullOrError(project)) return null;
+      if (isNilOrError(project)) return null;
 
       return (
         <Container>
-          <Left>
-            <IdeaBodyStyled>
-              <T value={project.attributes.description_multiloc} />
-            </IdeaBodyStyled>
-          </Left>
+          <Fragment name={`projects/${project.id}/info`}>
+            <Left>
+              <ProjectDescriptionStyled>
+                <T value={project.attributes.description_multiloc} />
+              </ProjectDescriptionStyled>
+            </Left>
 
-          {projectImages && projectImages.length > 0 &&
-            <Right>
-              <ProjectImages>
-                {projectImages.filter(projectImage => projectImage).map((projectImage) => (
-                  <ImageZoom
-                    key={projectImage.id}
-                    image={{ src: projectImage.attributes.versions.large }}
-                    zoomImage={{ src: projectImage.attributes.versions.large }}
-                  />
-                ))}
-              </ProjectImages>
-            </Right>
-          }
+            {!isNilOrError(projectImages) && projectImages.length > 0 &&
+              <Right>
+                <ProjectImages>
+                  {projectImages.filter(projectImage => projectImage).map((projectImage) => (
+                    <ImageZoom
+                      key={projectImage.id}
+                      image={{ src: projectImage.attributes.versions.large }}
+                      zoomImage={{ src: projectImage.attributes.versions.large }}
+                    />
+                  ))}
+                </ProjectImages>
+              </Right>
+            }
+          </Fragment>
         </Container>
       );
     }}

@@ -2,6 +2,8 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 
+export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
+
 export interface IIdeaData {
   id: string;
   type: string;
@@ -10,7 +12,7 @@ export interface IIdeaData {
     body_multiloc: Multiloc;
     author_name: string;
     slug: string;
-    publication_status: 'draft' | 'published';
+    publication_status: IdeaPublicationStatus;
     upvotes_count: number;
     downvotes_count: number;
     comments_count: number;
@@ -93,18 +95,18 @@ export interface IdeaActivity {
   };
 }
 
-export interface IIdeaUpdate {
-  project_id?: string | undefined | null;
-  author_id?: string | undefined | null;
-  idea_status_id?: string | undefined | null;
-  publication_status?: 'draft' | 'published' | 'closed' | 'spam' | undefined | null;
-  title_multiloc?: Multiloc;
-  body_multiloc?: Multiloc;
-  topic_ids?: string[] | undefined | null;
-  area_ids?: string[] | undefined | null;
-  phase_ids?: string[] | undefined | null;
-  location_point_geojson?: GeoJSON.Point | null;
-  location_description?: string | undefined | null;
+export interface IIdeaAdd {
+  author_id: string | null;
+  project_id: string | null;
+  idea_status_id?: string | null;
+  publication_status: IdeaPublicationStatus;
+  title_multiloc: Multiloc;
+  body_multiloc: Multiloc;
+  topic_ids: string[] | null;
+  area_ids?: string[] | null;
+  phase_ids?: string[] | null;
+  location_point_geojson: GeoJSON.Point | null;
+  location_description: string | null;
 }
 
 export function ideaByIdStream(ideaId: string) {
@@ -123,34 +125,11 @@ export function ideasMarkersStream(streamParams: IStreamParams | null = null) {
   return streams.get<{data: Partial<IIdeaData>[], links: IIdeaLinks}>({ apiEndpoint: `${API_PATH}/ideas/as_markers`, ...streamParams, cacheStream: false });
 }
 
-export function addIdea(
-  authorId: string | null,
-  publicationStatus: 'draft' | 'published',
-  title: { [key: string]: string },
-  body: { [key: string]: string },
-  topicIds: string[] | null,
-  projectId: string | null,
-  locationGeoJSON: {} | null,
-  locationDescription: string | null,
-) {
-  const bodyData = {
-    idea: {
-      author_id: authorId,
-      project_id: projectId,
-      publication_status: publicationStatus,
-      title_multiloc: title,
-      body_multiloc: body,
-      topic_ids: topicIds,
-      area_ids: null,
-      location_point_geojson: locationGeoJSON,
-      location_description: locationDescription
-    }
-  };
-
-  return streams.add<IIdea>(`${API_PATH}/ideas/`, bodyData);
+export function addIdea(object: IIdeaAdd) {
+  return streams.add<IIdea>(`${API_PATH}/ideas/`, { idea: object });
 }
 
-export function updateIdea(ideaId: string, object: IIdeaUpdate) {
+export function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
   return streams.update<IIdea>(`${API_PATH}/ideas/${ideaId}`, ideaId, { idea: object });
 }
 

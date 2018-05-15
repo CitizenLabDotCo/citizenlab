@@ -1,7 +1,11 @@
 import React from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ParentComment from './ParentComment';
+
+// services
+import { ICommentData } from 'services/comments';
 
 // resources
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
@@ -33,7 +37,7 @@ class CommentsContainer extends React.PureComponent<Props, State> {
     };
   }
 
-  commentsSortingFunc = (commentA, commentB) => {
+  sortCommentsByDateAscending = (commentA: ICommentData, commentB: ICommentData) => {
     return new Date(commentA.attributes.created_at).getTime() - new Date(commentB.attributes.created_at).getTime();
   }
 
@@ -41,15 +45,16 @@ class CommentsContainer extends React.PureComponent<Props, State> {
     const className = `${this.props['className']} e2e-comments`;
     const { ideaId, comments } = this.props;
 
-    if (comments && comments.length > 0) {
+    if (!isNilOrError(comments) && comments.length > 0) {
       const parentComments = comments.filter(comment => comment.relationships.parent.data === null);
 
       if (parentComments && parentComments.length > 0) {
         return (
           <Container className={`e2e-comments-container ${className}`}>
-            {parentComments.sort(this.commentsSortingFunc).map((parentComment) => (
+            {parentComments.sort(this.sortCommentsByDateAscending).map((parentComment, index) => (
               <ParentComment
                 key={parentComment.id}
+                last={index === parentComments.length - 1}
                 ideaId={ideaId}
                 commentId={parentComment.id}
               />

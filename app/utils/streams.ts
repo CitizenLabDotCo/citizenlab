@@ -1,6 +1,10 @@
 import 'whatwg-fetch';
-import { Observer, Observable, Subscription } from 'rxjs/Rx';
-import { some, forOwn, isNil, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union } from 'lodash';
+import { Observer } from 'rxjs/Observer';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+import { fromPromise } from 'rxjs/observable/fromPromise';
+import { retry, catchError } from 'rxjs/operators';
+import { some, forOwn, isError, isNil, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union } from 'lodash';
 import request from 'utils/request';
 import { store } from 'app';
 import { authApiEndpoint } from 'services/auth';
@@ -70,14 +74,10 @@ class Streams {
     Object.keys(this.streams)
       .filter(streamId => streamId !== authApiEndpoint)
       .forEach((streamId) => {
-        const apiEndpoint = cloneDeep(this.streams[streamId].params.apiEndpoint);
-        const refCount = cloneDeep(this.streams[streamId].observable.source['_refCount']);
-        const cacheStream = cloneDeep(this.streams[streamId].cacheStream);
-
-        if ((cacheStream && refCount > 1) || (!cacheStream && refCount > 0)) {
+        if (this.isActiveStream(streamId)) {
           this.streams[streamId].fetch();
         } else {
-          this.deleteStream(streamId, apiEndpoint);
+          this.deleteStream(streamId, this.streams[streamId].params.apiEndpoint);
         }
       });
   }
@@ -105,6 +105,17 @@ class Streams {
     }
 
     return frozenObject;
+  }
+
+  isActiveStream(streamId: string) {
+    const refCount = cloneDeep(this.streams[streamId].observable.source['_refCount']);
+    const cacheStream = cloneDeep(this.streams[streamId].cacheStream);
+
+    if ((cacheStream && refCount > 1) || (!cacheStream && refCount > 0)) {
+      return true;
+    }
+
+    return false;
   }
 
   deleteStream(streamId: string, apiEndpoint: string) {
@@ -245,33 +256,29 @@ class Streams {
         return new Promise((resolve, reject) => {
           const promise = request<any>(apiEndpoint, bodyData, { method: 'GET' }, queryParameters);
 
-          Observable.defer(() => promise).retry(2).subscribe(
-            (response) => {
-              if (this.streams[streamId]) {
+          fromPromise(promise).pipe(
+            retry(3),
+            catchError(() => Observable.of(new Error(`promise for stream ${streamId} did not resolve`)))
+          ).subscribe((response) => {
+            if (!this.streams[streamId]) {
+              console.log(`no stream exists for ${streamId}`);
+            } else {
+              if (!isError(response)) {
                 this.streams[streamId].observer.next(response);
+                resolve(response);
               } else {
-                console.log(`no stream exists for ${streamId}`);
-              }
-
-              resolve(response);
-            },
-            (_error) => {
-              if (this.streams[streamId]) {
                 if (streamId !== authApiEndpoint) {
                   const apiEndpoint = cloneDeep(this.streams[streamId].params.apiEndpoint);
-                  const error = new Error(`promise for stream ${streamId} did not resolve`);
-                  this.streams[streamId].observer.next(error);
+                  this.streams[streamId].observer.next(response);
                   this.deleteStream(streamId, apiEndpoint);
                 } else {
                   this.streams[streamId].observer.next(null);
                 }
-              } else {
-                console.log(`no stream exists for ${streamId}`);
-              }
 
-              reject();
+                reject();
+              }
             }
-          );
+          });
         });
       };
 
@@ -288,9 +295,9 @@ class Streams {
         }
 
         return () => {
-          if (process.env.NODE_ENV === 'development') {
-            console.log(`stream for stream ${streamId} completed`);
-          }
+          // if (process.env.NODE_ENV === 'development') {
+          //   console.log(`stream for stream ${streamId} completed`);
+          // }
 
           this.deleteStream(streamId, apiEndpoint);
         };
@@ -496,7 +503,7 @@ class Streams {
     }
   }
 
-  async fetchAllWithEndpoint(apiEndpoint: string) {
+  async fetchAllStreamsWithEndpoint(apiEndpoint: string) {
     const promises: Promise<any>[] = [];
 
     union(
@@ -504,6 +511,21 @@ class Streams {
       this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]
     ).forEach((streamId) => {
       promises.push(this.streams[streamId].fetch());
+    });
+
+    return await Promise.all(promises);
+  }
+
+  async fetchAllActiveStreamsWithEndpoint(apiEndpoint: string) {
+    const promises: Promise<any>[] = [];
+
+    union(
+      this.streamIdsByApiEndPointWithQuery[apiEndpoint],
+      this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]
+    ).forEach((streamId) => {
+      if (this.isActiveStream(streamId)) {
+        promises.push(this.streams[streamId].fetch());
+      }
     });
 
     return await Promise.all(promises);

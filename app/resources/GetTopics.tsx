@@ -2,6 +2,7 @@ import React from 'react';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import { ITopicData, topicByIdStream, topicsStream } from 'services/topics';
 import { isEqual } from 'lodash';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   ids?: string[];
@@ -14,10 +15,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  topics: ITopicData[] | null;
+  topics: (ITopicData | Error)[] | undefined | null | Error;
 }
 
-export type GetTopicsChildProps = ITopicData[] | null;
+export type GetTopicsChildProps = (ITopicData | Error)[] | undefined | null | Error;
 
 export default class GetTopics extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -26,7 +27,7 @@ export default class GetTopics extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      topics: null,
+      topics: undefined
     };
   }
 
@@ -42,7 +43,7 @@ export default class GetTopics extends React.Component<Props, State> {
           if (ids) {
             if (ids.length > 0) {
               return Observable.combineLatest(
-                ids.map(id => topicByIdStream(id).observable.map(topic => topic.data))
+                ids.map(id => topicByIdStream(id).observable.map(topic => (!isNilOrError(topic) ? topic.data : topic)))
               );
             }
 

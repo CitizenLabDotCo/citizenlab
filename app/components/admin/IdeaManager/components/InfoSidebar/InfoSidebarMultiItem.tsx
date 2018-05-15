@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
 import { List } from 'semantic-ui-react';
 import GetIdea from 'resources/GetIdea';
@@ -7,7 +7,7 @@ import GetIdea from 'resources/GetIdea';
 export default (props: { ideaId: string }) => (
   <GetIdea id={props.ideaId}>
     {(idea) =>  {      
-      if (isNullOrError(idea)) return null;
+      if (isNilOrError(idea)) return null;
 
       return (
         <List.Item>
