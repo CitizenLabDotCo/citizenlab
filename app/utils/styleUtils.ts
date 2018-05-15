@@ -82,6 +82,7 @@ export const colors = {
   background: '#F9F9FA',
   adminBackground: '#F0F3F4',
   adminMenuBackground: '#3B3B3B',
+  adminTextColor: '#044D6C',
   clBlueDarkest: '#02282D',
   clBlueDarker: '#0A5159',
   clBlueDark: '#147985',
