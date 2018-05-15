@@ -14,6 +14,10 @@ import messages from './messages';
 import { API_PATH } from 'containers/App/constants';
 import { requestBlob } from 'utils/request';
 
+// analytics
+import { injectTracks } from 'utils/analytics';
+import tracks from '../tracks';
+
 // styling
 import styled from 'styled-components';
 import { color, fontSize } from 'utils/styleUtils';
@@ -50,13 +54,18 @@ const ExportCommentsButton = styled(Button)``;
 
 interface Props {}
 
+interface ITracks {
+  clickExportAllIdeas: () => void;
+  clickExportAllComments: () => void;
+}
+
 interface State {
   exportingIdeas: boolean;
   exportingComments: boolean;
 }
 
-export default class AllIdeas extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
+export class AllIdeas extends React.PureComponent<Props & ITracks, State> {
+  constructor(props: Props & ITracks) {
     super(props);
     this.state = {
       exportingIdeas: false,
@@ -65,6 +74,8 @@ export default class AllIdeas extends React.PureComponent<Props, State> {
   }
 
   handleExportIdeas = async () => {
+    // track this click for user analytics
+    this.props.clickExportAllIdeas();
     try {
       this.setState({ exportingIdeas: true });
       const blob = await requestBlob(`${API_PATH}/ideas/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -76,11 +87,14 @@ export default class AllIdeas extends React.PureComponent<Props, State> {
   }
 
   handleExportComments = async () => {
+    // track this click for user analytics
+    this.props.clickExportAllComments();
     try {
       this.setState({ exportingComments: true });
       const blob = await requestBlob(`${API_PATH}/comments/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
       FileSaver.saveAs(blob, 'comments-export.xlsx');
       this.setState({ exportingComments: false });
+
     } catch (error) {
       this.setState({ exportingComments: false });
     }
@@ -121,3 +135,5 @@ export default class AllIdeas extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export default injectTracks<Props>(tracks)(AllIdeas);

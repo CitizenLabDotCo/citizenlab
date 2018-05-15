@@ -10,9 +10,9 @@ const commands = {
 module.exports = {
   url: `http://${process.env.ROOT_URL}/admin/projects`,
   elements: {
-    projectsList: { selector: '.e2e-projects-list' },
-    newProject: { selector: '.e2e-new-project' },
-    projectCard: { selector: '.e2e-project-card' },
+    projectsList: { selector: '.e2e-admin-projects-list' },
+    addProjectButton: { selector: '.e2e-admin-add-project a' },
+    projectListItem: { selector: '.e2e-admin-projects-list .e2e-admin-list-row' },
     generalForm: { selector: '.e2e-project-general-form' },
     descriptionForm: { selector: '.e2e-project-description-form' },
     submitButton: { selector: '.e2e-submit-wrapper-button' },

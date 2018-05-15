@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { Subscription } from 'rxjs/Subscription';
 
 // components
 import Button from 'components/UI/Button';
@@ -93,7 +93,7 @@ interface State extends GlobalState {}
 
 export default class NewIdeaForm extends React.PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props);
@@ -181,7 +181,7 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
 
         <MobileButton>
           <Button
-            className="e2e-submit-idea-form"
+            className="e2e-submit-idea-form-mobile"
             size="2"
             processing={processing}
             text={<FormattedMessage {...messages.submit} />}

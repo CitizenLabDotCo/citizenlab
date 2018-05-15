@@ -1,5 +1,5 @@
 import React from 'react';
-import { Subscription, Observable } from 'rxjs/Rx';
+import { adopt } from 'react-adopt';
 
 // libraries
 import TransitionGroup from 'react-transition-group/TransitionGroup';
@@ -11,9 +11,9 @@ import Step1 from './Step1';
 import Step2 from './Step2';
 import Footer from './Footer';
 
-// services
-import { localeStream } from 'services/locale';
-import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -98,59 +98,41 @@ const Title = styled.h2`
   margin-bottom: 35px;
 `;
 
-type Props = {
+interface InputProps {
   isInvitation?: boolean | undefined;
   token?: string | null | undefined;
   step1Title?: string | JSX.Element;
   step2Title?: string | JSX.Element;
   onSignUpCompleted: (userId: string) => void;
-};
+}
 
-type State = {
-  loaded: boolean;
+interface DataProps {
+  locale: GetLocaleChildProps;
+  customFieldsSchema: GetCustomFieldsSchemaChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+interface State {
   visibleStep: 'step1' | 'step2';
-  hasCustomFields: boolean;
   userId: string | null;
-};
+}
 
-export default class SignUp extends React.PureComponent<Props, State> {
-  subscriptions: Subscription[];
-
+class SignUp extends React.PureComponent<Props, State> {
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
-      loaded: false,
       visibleStep: 'step1',
-      hasCustomFields: false,
-      userId: null,
+      userId: null
     };
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const locale$ = localeStream().observable;
-    const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
-
-    this.subscriptions = [
-      Observable.combineLatest(
-        locale$,
-        customFieldsSchemaForUsersStream$
-      ).subscribe(([locale, customFieldsSchema]) => {
-        this.setState({
-          hasCustomFields: hasCustomFields(customFieldsSchema, locale)
-        });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   handleStep1Completed = (userId: string) => {
+    const { customFieldsSchema, locale } = this.props;
+
     this.setState({ userId });
 
-    if (this.state.hasCustomFields) {
+    if (hasCustomFields(customFieldsSchema, locale)) {
       eventEmitter.emit('SignUp', 'signUpFlowGoToSecondStep', null);
       this.setState({ visibleStep: 'step2' });
     } else {
@@ -188,7 +170,11 @@ export default class SignUp extends React.PureComponent<Props, State> {
                     {step1Title || <FormattedMessage {...messages.step1Title} />}
                   </Title>
 
-                  <Step1 isInvitation={isInvitation} token={token} onCompleted={this.handleStep1Completed} />
+                  <Step1
+                    isInvitation={isInvitation}
+                    token={token}
+                    onCompleted={this.handleStep1Completed}
+                  />
 
                   {!isInvitation &&
                     <Footer goToSignIn={this.goToSignIn} />
@@ -214,3 +200,14 @@ export default class SignUp extends React.PureComponent<Props, State> {
     );
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />,
+  customFieldsSchema: <GetCustomFieldsSchema />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <SignUp {...inputProps} {...dataProps} />}
+  </Data>
+);

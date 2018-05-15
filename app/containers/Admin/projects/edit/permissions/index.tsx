@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import * as Rx from 'rxjs/Rx';
-import * as _ from 'lodash';
+import { map, isEmpty, isEqual, difference } from 'lodash';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -13,10 +13,12 @@ import Radio from 'components/UI/Radio';
 import ProjectGroupsList from './ProjectGroupsList';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
+import Moderators from './Moderators';
 
 // services
-import { projectBySlugStream, updateProject, IProject } from 'services/projects';
+import { projectByIdStream, updateProject, IProject } from 'services/projects';
 import { groupsProjectsByProjectIdStream, addGroupProject, deleteGroupProject, IGroupsProjects } from 'services/groupsProjects';
+import GetModerators from 'resources/GetModerators';
 
 // style
 import styled from 'styled-components';
@@ -40,7 +42,7 @@ const StyledRadio = styled(Radio)`
 
 type Props  = {
   params: {
-    slug: string | null
+    projectId: string | null
   };
 };
 
@@ -75,9 +77,9 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
   }
 
   componentDidMount() {
-    if (this.props.params.slug) {
-      const projectSlug = this.props.params.slug;
-      const project$ = projectBySlugStream(projectSlug).observable.do((project) => {
+    if (this.props.params.projectId) {
+      const projectId = this.props.params.projectId;
+      const project$ = projectByIdStream(projectId).observable.do((project) => {
         this.setState({
           savedVisibleTo: project.data.attributes.visible_to,
           unsavedVisibleTo: project.data.attributes.visible_to
@@ -94,7 +96,7 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
           this.setState((state) => {
             const oldGroupsProjects = (state.loading ? groupsProjects : state.oldGroupsProjects);
             const newGroupsProjects = groupsProjects;
-            const status = (state.unsavedVisibleTo === 'groups' && !_.isEqual(newGroupsProjects, oldGroupsProjects) ? 'enabled' : state.status);
+            const status = (state.unsavedVisibleTo === 'groups' && !isEqual(newGroupsProjects, oldGroupsProjects) ? 'enabled' : state.status);
             const loading = false;
 
             return {
@@ -112,14 +114,14 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
 
   componentWillUnmount() {
     const { project, unsavedVisibleTo, oldGroupsProjects, newGroupsProjects } = this.state;
-    const oldGroupsProjectIds = (oldGroupsProjects ? _.map(oldGroupsProjects.data, groupsProject => groupsProject.id) : []);
-    const newGroupsProjectsIds = (newGroupsProjects ? _.map(newGroupsProjects.data, groupsProject => groupsProject.id) : []);
+    const oldGroupsProjectIds = (oldGroupsProjects ? map(oldGroupsProjects.data, groupsProject => groupsProject.id) : []);
+    const newGroupsProjectsIds = (newGroupsProjects ? map(newGroupsProjects.data, groupsProject => groupsProject.id) : []);
 
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
 
-    if (project && unsavedVisibleTo === 'groups' && !_.isEqual(oldGroupsProjectIds, newGroupsProjectsIds)) {
-      const groupsProjectIdsToRemove = _.difference(newGroupsProjectsIds, oldGroupsProjectIds);
-      const groupsProjectIdsToAdd = _.difference(oldGroupsProjectIds, newGroupsProjectsIds);
+    if (project && unsavedVisibleTo === 'groups' && !isEqual(oldGroupsProjectIds, newGroupsProjectsIds)) {
+      const groupsProjectIdsToRemove = difference(newGroupsProjectsIds, oldGroupsProjectIds);
+      const groupsProjectIdsToAdd = difference(oldGroupsProjectIds, newGroupsProjectsIds);
 
       Promise.all<any>([
         ...groupsProjectIdsToRemove.map(groupsProjectId => deleteGroupProject(groupsProjectId)),
@@ -138,7 +140,7 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
         promises = [updateProject(project.data.id, { visible_to: unsavedVisibleTo })];
       }
 
-      if (unsavedVisibleTo !== 'groups' && newGroupsProjects !== null && !_.isEmpty(newGroupsProjects.data)) {
+      if (unsavedVisibleTo !== 'groups' && newGroupsProjects !== null && !isEmpty(newGroupsProjects.data)) {
         promises = [
           ...promises,
           ...newGroupsProjects.data.map(groupsProject => deleteGroupProject(groupsProject.id))
@@ -162,7 +164,7 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
   handlePermissionTypeChange = (unsavedVisibleTo: 'public' | 'groups' | 'admins') => {
     this.setState((state) => ({
       unsavedVisibleTo,
-      status: (unsavedVisibleTo === 'groups' && (state.newGroupsProjects === null || _.isEmpty(state.newGroupsProjects.data))) ? 'disabled' : 'enabled'
+      status: (unsavedVisibleTo === 'groups' && (state.newGroupsProjects === null || isEmpty(state.newGroupsProjects.data))) ? 'disabled' : 'enabled'
     }));
   }
 
@@ -176,21 +178,21 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
 
     if (!loading && unsavedVisibleTo) {
       return (
-        <Section>
-          <SectionField>
-            <Label htmlFor="permissions-type">
-              <FormattedMessage {...messages.permissionTypeLabel} />
-            </Label>
+          <Section>
+            <SectionField>
+              <Label htmlFor="permissions-type">
+                <FormattedMessage {...messages.permissionTypeLabel} />
+              </Label>
 
-            <RadioButtonsWrapper>
-              <StyledRadio
-                onChange={this.handlePermissionTypeChange}
-                currentValue={unsavedVisibleTo}
-                name="permissionsType"
-                label={formatMessage(messages.permissionsEveryoneLabel)}
-                value="public"
-                id="permissions-all"
-              />
+              <RadioButtonsWrapper>
+                <StyledRadio
+                  onChange={this.handlePermissionTypeChange}
+                  currentValue={unsavedVisibleTo}
+                  name="permissionsType"
+                  label={formatMessage(messages.permissionsEveryoneLabel)}
+                  value="public"
+                  id="permissions-all"
+                />
               <StyledRadio
                 onChange={this.handlePermissionTypeChange}
                 currentValue={unsavedVisibleTo}
@@ -211,18 +213,23 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
           </SectionField>
 
           {groups}
-
-          <SubmitWrapper
-            loading={saving}
-            status={status}
-            onClick={this.saveChanges}
-            messages={{
-              buttonSave: messages.save,
-              buttonSuccess: messages.saveSuccess,
-              messageError: messages.saveErrorMessage,
-              messageSuccess: messages.saveSuccessMessage,
-            }}
-          />
+          <SectionField>
+            <SubmitWrapper
+              loading={saving}
+              status={status}
+              onClick={this.saveChanges}
+              messages={{
+                buttonSave: messages.save,
+                buttonSuccess: messages.saveSuccess,
+                messageError: messages.saveErrorMessage,
+                messageSuccess: messages.saveSuccessMessage,
+              }}
+            />
+          </SectionField>
+          {project &&
+            <GetModerators projectId={project.data.id}>
+              {moderators => <Moderators moderators={moderators} projectId={project.data.id} />}
+            </GetModerators>}
         </Section>
       );
     }

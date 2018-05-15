@@ -1,11 +1,13 @@
-import * as React from 'react';
+import React from 'react';
+import { Observable, Subscription } from 'rxjs/Rx';
 
 // router
 import { Link, withRouter, WithRouterProps } from 'react-router';
 
 // components
-import Icon from 'components/UI/Icon';
+import Icon, { IconNames } from 'components/UI/Icon';
 import FeatureFlag from 'components/FeatureFlag';
+import { hasPermission } from 'services/permissions';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -14,19 +16,17 @@ import messages from './messages';
 
 // style
 import styled, { css } from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 const Menu = styled.div`
-  width: 240px;
-  height: 100%;
-  position: fixed;
-  z-index: 1;
+  background: ${ colors.adminMenuBackground };
+  flex: 0 0 240px;
   margin-top: 0px;
-  background: #3b3b3b;
   padding-top: 45px;
+  z-index: 1;
 
   ${media.smallerThanMinTablet`
-    width: 70px;
+    flex: 0 0 70px;
   `}
 `;
 
@@ -109,68 +109,120 @@ const MenuItem: any = styled.div`
 type Props = {};
 
 type State = {
-  location: Location;
+  navItems: NavItem[];
+};
+
+type NavItem = {
+  id: string,
+  link: string,
+  iconName: IconNames,
+  message: keyof typeof messages,
+  featureName?: string,
+  isActive: (pathname: string) => boolean,
 };
 
 class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
-  constructor(props: Props) {
-    super(props as any);
+  routes: NavItem[];
+  subscriptions: Subscription[];
+
+  constructor(props: Props & InjectedIntlProps & WithRouterProps) {
+    super(props);
+    this.state = {
+      navItems: [],
+    };
+    this.routes = [
+      {
+        id: 'dashboard',
+        link: '/admin',
+        iconName: 'analytics',
+        message: 'dashboard',
+        isActive: (pathname) => (pathname === '/admin'),
+      },
+      {
+        id: 'users',
+        link: '/admin/users/registered',
+        iconName: 'people',
+        message: 'users',
+        isActive: (pathName) => (pathName.startsWith('/admin/users'))
+      },
+      {
+        id: 'groups',
+        link: '/admin/groups',
+        iconName: 'groups',
+        message: 'groups',
+        featureName: 'groups',
+        isActive: (pathName) => (pathName.startsWith('/admin/groups'))
+      },
+      {
+        id: 'ideas',
+        link: '/admin/ideas',
+        iconName: 'idea',
+        message: 'ideas',
+        isActive: (pathName) => (pathName.startsWith('/admin/ideas'))
+      },
+      {
+        id: 'projects',
+        link: '/admin/projects',
+        iconName: 'project',
+        message: 'projects',
+        isActive: (pathName) => (pathName.startsWith('/admin/projects'))
+      },
+      {
+        id: 'settings',
+        link: '/admin/settings/general',
+        iconName: 'settings',
+        message: 'settings',
+        isActive: (pathName) => (pathName.startsWith('/admin/settings'))
+      },
+    ];
+    this.subscriptions = [];
+  }
+
+  componentDidMount() {
+    this.subscriptions = [
+      Observable.combineLatest(
+        this.routes.map((route) => hasPermission({
+          item: { type: 'route', path: route.link },
+          action: 'access'
+        }))
+      ).subscribe((permissions) => {
+        this.setState({
+          navItems: permissions.filter(permission => permission).map((_permission, index) => {
+            return this.routes[index];
+          })
+        });
+      })
+    ];
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   render() {
     const { formatMessage } = this.props.intl;
     const { pathname } = this.props.location;
+    const { navItems } = this.state;
+
+    if (navItems.length <= 1) {
+      return null;
+    }
 
     return (
       <Menu>
-
-        <MenuItem active={pathname === '/admin'}>
-          <MenuLink to="/admin">
-            <IconWrapper><StyledIcon name="analytics" /></IconWrapper>
-            <Text>{formatMessage({ ...messages.dashboard })}</Text>
-          </MenuLink>
-        </MenuItem>
-
-        <MenuItem active={pathname.startsWith('/admin/users')}>
-          <MenuLink to="/admin/users/registered">
-            <IconWrapper><StyledIcon name="people" /></IconWrapper>
-            <Text>{formatMessage({ ...messages.users })}</Text>
-          </MenuLink>
-        </MenuItem>
-
-        <FeatureFlag name="groups">
-          <MenuItem active={pathname.startsWith('/admin/groups')}>
-            <MenuLink to="/admin/groups">
-              <IconWrapper><StyledIcon name="groups" /></IconWrapper>
-              <Text>{formatMessage({ ...messages.groups })}</Text>
-            </MenuLink>
-          </MenuItem>
-        </FeatureFlag>
-
-        <MenuItem active={pathname.startsWith('/admin/projects')}>
-          <MenuLink to="/admin/projects" className={'e2e-projects-list-link'}>
-            <IconWrapper><StyledIcon name="project" /></IconWrapper>
-            <Text>{formatMessage({ ...messages.projects })}</Text>
-          </MenuLink>
-        </MenuItem>
-
-        <MenuItem active={pathname.startsWith('/admin/ideas')}>
-          <MenuLink to="/admin/ideas">
-            <IconWrapper><StyledIcon name="idea" className="idea" /></IconWrapper>
-            <Text>{formatMessage({ ...messages.ideas })}</Text>
-          </MenuLink>
-        </MenuItem>
-
-        <MenuItem active={pathname.startsWith('/admin/settings')}>
-          <MenuLink to="/admin/settings/general">
-            <IconWrapper><StyledIcon name="settings" /></IconWrapper>
-            <Text>{formatMessage({ ...messages.settings })}</Text>
-          </MenuLink>
-        </MenuItem>
-
+        {navItems.map((route) => (
+          <FeatureFlag name={route.featureName} key={route.id}>
+            <MenuItem active={route.isActive(pathname)}>
+              <MenuLink to={route.link}>
+                <IconWrapper><StyledIcon name={route.iconName} /></IconWrapper>
+                <Text>{formatMessage({ ...messages[route.message] })}</Text>
+              </MenuLink>
+            </MenuItem>
+          </FeatureFlag>
+        ))}
       </Menu>
     );
   }
 }
 
-export default withRouter(injectIntl<Props>(Sidebar) as any);
+export default withRouter<Props>(injectIntl(Sidebar));

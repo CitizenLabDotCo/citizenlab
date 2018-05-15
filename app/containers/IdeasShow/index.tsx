@@ -1,6 +1,9 @@
 import React from 'react';
-import { has, isString } from 'lodash';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs/Rx';
+import has from 'lodash/has';
+import isString from 'lodash/isString';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 
 // router
 import { Link, browserHistory } from 'react-router';
@@ -22,6 +25,7 @@ import VoteWrapper from './VoteWrapper';
 import ParentCommentForm from './ParentCommentForm';
 import Spinner from 'components/UI/Spinner';
 import VoteControl from 'components/VoteControl';
+import Fragment from 'components/Fragment';
 
 // services
 import { ideaByIdStream, IIdea } from 'services/ideas';
@@ -638,7 +642,6 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
         return hasPermission({
           item: idea  && idea.data ? idea.data : null,
           action: 'edit',
-          user: (authUser as IUser),
           context: idea && idea.data ? idea.data : null,
         }).map((granted) => ({ authUser, granted }));
       }).subscribe(({ authUser, granted }) => {
@@ -826,9 +829,11 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                   <MapPaddingBottom />
                 }
 
-                <IdeaBody className={`${!ideaImageLarge && 'noImage'}`}>
-                  <T value={bodyMultiloc} />
-                </IdeaBody>
+                <Fragment name={`ideas/${idea.data.id}/body`}>
+                  <IdeaBody className={`${!ideaImageLarge && 'noImage'}`}>
+                    <T value={bodyMultiloc} />
+                  </IdeaBody>
+                </Fragment>
 
                 <SeparatorRow />
 

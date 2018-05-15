@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { ICommentDeletedByAdminNotificationData } from 'services/notifications';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -23,7 +23,7 @@ class CommentDeletedByAdminNotification extends React.PureComponent<Props, State
   render() {
     const { notification, idea } = this.props;
 
-    if (isNullOrError(idea)) return null;
+    if (isNilOrError(idea)) return null;
 
     return (
       <NotificationWrapper

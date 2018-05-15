@@ -259,4 +259,28 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.editButtonLabel',
     defaultMessage: 'Edit',
   },
+  moderatorsSectionTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle',
+    defaultMessage: 'Who can moderate this project?',
+  },
+  moderatorsRoleExplanation: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderatorsRoleExplanation',
+    defaultMessage: `Moderation rights grant somebody who's not an admin the rights to alter the project settings and moderate ideas and comments which belong to this project. Admins always have Moderation rights over all projects.`,
+  },
+  deleteModeratorLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.deleteModeratorLabel',
+    defaultMessage: 'Delete',
+  },
+  moderatorDeletionConfirmation: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderatorDeletionConfirmation',
+    defaultMessage: 'Are you sure?',
+  },
+  moderatorsNotFound: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderatorsNotFound',
+    defaultMessage: 'Moderators not found',
+  },
+  addUser: {
+    id: 'app.containers.AdminPage.ProjectEdit.addUser',
+    defaultMessage: 'Add moderator',
+  },
 });
