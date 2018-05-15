@@ -99,6 +99,8 @@
   "app.components.admin.IdeaManager.title": "Überschrift",
   "app.components.admin.IdeaManager.topicsTab": "Themen",
   "app.components.admin.IdeaManager.up": "Dafür",
+  "app.components.admin.pagination.back": "",
+  "app.components.admin.pagination.next": "",
   "app.containers.Admin.User.admin": "Administrator",
   "app.containers.Admin.User.adminLabel": "Möchten Sie den eingeladenen Personen Administrator-Rechte geben?",
   "app.containers.Admin.User.confirmDelete": "Ja, ich bin mir sicher.",

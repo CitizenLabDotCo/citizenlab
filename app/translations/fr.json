@@ -99,6 +99,8 @@
   "app.components.admin.IdeaManager.title": "Titre",
   "app.components.admin.IdeaManager.topicsTab": "Thèmes",
   "app.components.admin.IdeaManager.up": "Pour",
+  "app.components.admin.pagination.back": "",
+  "app.components.admin.pagination.next": "",
   "app.containers.Admin.User.admin": "Admin",
   "app.containers.Admin.User.adminLabel": "Souhaitez-vous donner des droits d'administrateurs aux utilisateurs invités ?",
   "app.containers.Admin.User.confirmDelete": "Oui, j'en suis sûr(e)",
