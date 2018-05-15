@@ -2,16 +2,19 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-// Typings
-export interface Props {
-  className?: string;
-}
-export interface State {}
+// Resources
+import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
+import { isNilOrError } from 'utils/helperUtils';
+
+// Components
+import Button from 'components/UI/Button';
+import Icon from 'components/UI/Icon';
+import T from 'components/T';
 
 // Styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { rgba } from 'polished';
+import { rgba, ellipsis } from 'polished';
 
 const Panel = styled.div`
   align-items: stretch;
@@ -41,17 +44,56 @@ const PanelEntry = `
 
 const MenuTitle = styled.div`
   ${PanelEntry}
+
+  h2 {
+    margin: 0;
+  }
 `;
 
 const MenuLink = styled(Link)`
   ${PanelEntry}
+  color: ${colors.adminTextColor};
+  margin-bottom: .5rem;
 
   &.active {
     background: ${rgba(colors.adminTextColor, .1)};
   }
+
+  &:hover,
+  &:focus {
+    background: ${rgba(colors.adminTextColor, .2)};
+    color: ${colors.adminTextColor};
+  }
 `;
 
-export class GroupsListPanel extends React.PureComponent<Props, State> {
+const GroupsList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    margin: 0;
+    padding: 0;
+  }
+`;
+
+const GroupName = styled.span`
+  ${ellipsis('200px') as any}
+  min-width: 0;
+`;
+
+const MembersCount = styled.span`
+  margin-left: 1rem;
+`;
+
+// Typings
+export interface InputProps {
+  className?: string;
+}
+
+export interface State {}
+
+export class GroupsListPanel extends React.PureComponent<InputProps & GetGroupsChildProps, State> {
   constructor(props) {
     super(props);
     this.state = {};
@@ -63,14 +105,30 @@ export class GroupsListPanel extends React.PureComponent<Props, State> {
         <MenuLink to="/admin/users" activeClassName="active" onlyActiveOnIndex>All Users</MenuLink>
         <Separator />
         <MenuTitle>
-          <h2>
-            Groups
-          </h2>
+          <h2>Groups</h2>
+          <Button icon="plus-circle" iconTitle="Add a group" style="text" padding="0"/>
         </MenuTitle>
+        <GroupsList>
+        {!isNilOrError(this.props.groupsList) && this.props.groupsList.map((group) => (
+          <li key={group.id}>
+            <MenuLink to={`/admin/users/${group.id}`} activeClassName="active">
+              {group.attributes.membership_type === 'rules' && <Icon name="shield" />}
+              <GroupName><T value={group.attributes.title_multiloc} /></GroupName>
+              <MembersCount>{group.attributes.memberships_count}</MembersCount>
+            </MenuLink>
+          </li>
+        ))}
+        </GroupsList>
       </Panel>
     );
   }
 }
 
-export default GroupsListPanel;
+export default (props: InputProps) => (
+  <GetGroups>
+    {(dataProps) => (
+      <GroupsListPanel {...dataProps} {...props} />
+    )}
+  </GetGroups>
+);
 

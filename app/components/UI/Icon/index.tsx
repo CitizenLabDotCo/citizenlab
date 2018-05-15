@@ -436,9 +436,9 @@ const icons = {
 
 export type IconNames = keyof typeof icons;
 
-const Icon: React.SFC<IIcon> = ({ name, className, title }) => icons[name](className, title);
+const Icon: React.SFC<Props> = ({ name, className, title }) => icons[name](className, title);
 
-interface IIcon {
+export interface Props {
   name: IconNames;
   onClick?: () => void;
   className?: string;
