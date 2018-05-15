@@ -443,7 +443,7 @@ class Invitations extends React.PureComponent<Props, State> {
       filetypeError,
       unknownError
     } = this.state;
-    const groupOptions = this.getGroupOptions(groups, locale, tenantLocales);
+    const groupOptions = this.getGroupOptions(groups.groupsList, locale, tenantLocales);
     const dirty = ((isString(selectedEmails) && !isEmpty(selectedEmails)) || (isString(selectedFileBase64) && !isEmpty(selectedFileBase64)));
     let supportPageURL = 'http://support.citizenlab.co/eng-getting-started/invite-people-to-the-platform';
 
@@ -653,7 +653,7 @@ class Invitations extends React.PureComponent<Props, State> {
 const Data = adopt<DataProps, {}>({
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
-  groups: <GetGroups />
+  groups: <GetGroups membershipType="manual" />
 });
 
 export default (inputProps: InputProps) => <Data>{dataProps => <Invitations {...inputProps} {...dataProps} />}</Data>;
