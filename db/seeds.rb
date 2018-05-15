@@ -43,7 +43,7 @@ def create_comment_tree(idea, parent, depth=0)
     c = Comment.create({
       body_multiloc: {
         "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
-        "nl" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
+        "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
       },
       author: User.offset(rand(User.count)).first,
       idea: idea,
@@ -59,7 +59,7 @@ def create_for_some_locales
   translations = {}
   show_en = (rand(6) == 0)
   translations["en"] = yield if show_en
-  translations["nl"] = yield if rand(6) == 0 || !show_en
+  translations["nl-BE"] = yield if rand(6) == 0 || !show_en
   translations
 end
 
@@ -78,12 +78,12 @@ if Apartment::Tenant.current == 'public' || 'example_org'
       core: {
         allowed: true,
         enabled: true,
-        locales: ['en','nl'],
+        locales: ['en','nl-BE'],
         organization_type: %w(small medium large).include?(SEED_SIZE) ? "#{SEED_SIZE}_city" : "generic",
         organization_name: {
           "en" => Faker::Address.city,
-          "nl" => Faker::Address.city,
-          "fr" => Faker::Address.city
+          "nl-BE" => Faker::Address.city,
+          "fr-FR" => Faker::Address.city
         },
         timezone: "Europe/Brussels",
         color_main: Faker::Color.hex_color,
@@ -145,12 +145,12 @@ if Apartment::Tenant.current == 'public' || 'example_org'
       core: {
         allowed: true,
         enabled: true,
-        locales: ['en','nl'],
+        locales: ['en','nl-BE'],
         organization_type: 'small_city',
         organization_name: {
           "en" => Faker::Address.city,
-          "nl" => Faker::Address.city,
-          "fr" => Faker::Address.city
+          "nl-BE" => Faker::Address.city,
+          "fr-FR" => Faker::Address.city
         },
         timezone: "Europe/Brussels",
         color_main: Faker::Color.hex_color,
@@ -219,11 +219,11 @@ if Apartment::Tenant.current == 'localhost'
     Area.create({
       title_multiloc: {
         "en": Faker::Address.city,
-        "nl": Faker::Address.city
+        "nl-BE": Faker::Address.city
       },
       description_multiloc: {
         "en": Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
-        "nl": Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
+        "nl-BE": Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
       }
     });
   end
@@ -254,7 +254,7 @@ if Apartment::Tenant.current == 'localhost'
       cl1_migrated: !has_last_name,
       email: Faker::Internet.email,
       password: 'testtest',
-      locale: ['en','nl'][rand(1)],
+      locale: ['en','nl-BE'][rand(1)],
       roles: rand(10) == 0 ? [{type: 'admin'}] : [],
       gender: %w(male female unspecified)[rand(4)],
       birthyear: rand(2) === 0 ? nil : (1927 + rand(90)).to_s,
@@ -271,11 +271,11 @@ if Apartment::Tenant.current == 'localhost'
   Area.create({
     title_multiloc: {
       "en": "Westbrook",
-      "nl": "Westbroek"
+      "nl-BE": "Westbroek"
     },
     description_multiloc: {
       "en": "<p>The place to be these days</p>",
-      "nl": "<p>Moet je geweest zijn</p>"
+      "nl-BE": "<p>Moet je geweest zijn</p>"
     }
   })
 
@@ -283,15 +283,15 @@ if Apartment::Tenant.current == 'localhost'
     project = Project.new({
       title_multiloc: {
         "en": Faker::Lorem.sentence,
-        "nl": Faker::Lorem.sentence
+        "nl-BE": Faker::Lorem.sentence
       },
       description_multiloc: {
         "en" => "<p>Let's renew the parc at the city border and make it an enjoyable place for young and old.</p>",
-        "nl" => "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.</p>"
+        "nl-BE" => "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.</p>"
       },
       description_preview_multiloc: {
         "en" => "Let's renew the parc at the city border.",
-        "nl" => "Laten we het park op de grend van de stad vernieuwen."
+        "nl-BE" => "Laten we het park op de grend van de stad vernieuwen."
       },
       header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
       visible_to: %w(admins groups public public public)[rand(5)],
@@ -323,11 +323,11 @@ if Apartment::Tenant.current == 'localhost'
       phase = project.phases.create({
         title_multiloc: {
           "en": Faker::Lorem.sentence,
-          "nl": Faker::Lorem.sentence
+          "nl-BE": Faker::Lorem.sentence
         },
         description_multiloc: {
           "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
-          "nl" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
+          "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
         },
         start_at: start_at,
         end_at: (start_at += rand(150).days),
