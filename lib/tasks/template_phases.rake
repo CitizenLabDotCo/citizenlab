@@ -54,6 +54,7 @@ namespace :fix_templates do
               prev_phase.end_at = prev_phase.end_at - 1.day
               if prev_phase.save
                 overlapping_phases[prev_phase.id][:new_end_at] = prev_phase.end_at
+                overlapping_phases[prev_phase.id][:error_message] = nil
               end
             end
             if !cur_phase.valid?
@@ -61,7 +62,7 @@ namespace :fix_templates do
                 host: tenant.host, project: pj.slug, 
                 phase: cur_phase.title_multiloc.values.first, 
                 start_at: cur_phase.start_at, end_at: cur_phase.end_at,
-                new_end_at: nil
+                new_end_at: nil, error_message: cur_phase.errors.full_messages.join(', ')
               }
             end
             prev_phase = cur_phase
