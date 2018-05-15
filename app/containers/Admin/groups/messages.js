@@ -17,4 +17,24 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Groups.addGroupTitle',
     defaultMessage: 'Create a new group',
   },
+  emptyGroup: {
+    id: 'app.containers.AdminPage.Users.Groups.emptyGroup',
+    defaultMessage: 'There is no users in this group yet',
+  },
+  goToAllUsers: {
+    id: 'app.containers.AdminPage.Users.Groups.goToAllUsers',
+    defaultMessage: 'Go on the {allUsersLink} tab to move users manually.',
+  },
+  allUsers: {
+    id: 'app.containers.AdminPage.Users.Groups.allUsers',
+    defaultMessage: 'All Users',
+  },
+  emptySmartGroup: {
+    id: 'app.containers.AdminPage.Users.Groups.emptySmartGroup',
+    defaultMessage: 'This group is empty',
+  },
+  noUserMatching: {
+    id: 'app.containers.AdminPage.Users.Groups.noUserMatching',
+    defaultMessage: 'No registered user match the criteria',
+  },
 });
