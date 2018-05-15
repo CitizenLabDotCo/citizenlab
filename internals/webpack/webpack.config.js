@@ -47,21 +47,7 @@ const WEBPACK_CONFIG = {
         }),
       },
       {
-        test: /\.svg$/,
-        use: [
-          'svg-react-loader',
-          {
-            loader: 'svgo-loader',
-            options: {
-              plugins: [
-                { inlineStyles: false },
-              ],
-            },
-          },
-        ],
-      },
-      {
-        test: /\.(jpg|png|gif)$/,
+        test: /\.(svg|jpg|png|gif)$/,
         use: [
           'cache-loader',
           {
