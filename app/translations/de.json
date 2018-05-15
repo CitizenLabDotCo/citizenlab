@@ -402,7 +402,6 @@
   "app.containers.AdminPage.groups.create.buttonSave": "Speichern",
   "app.containers.AdminPage.groups.create.buttonSuccess": "Fertig!",
   "app.containers.AdminPage.groups.create.creationFormTitle": "Erstellen Sie eine neue Gruppe",
-  "app.containers.AdminPage.groups.create.dropdownFooterMessage": "",
   "app.containers.AdminPage.groups.create.messageError": "Es gab einen Fehler beim Erstellen Ihrer Gruppe",
   "app.containers.AdminPage.groups.create.messageSuccess": "Ihre Gruppe wurde erstellt",
   "app.containers.AdminPage.groups.list.addGroupButton": "Neue Gruppe hinzufügen",
