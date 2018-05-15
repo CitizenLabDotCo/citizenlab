@@ -31,9 +31,7 @@ module.exports = {
     .waitForElementVisible('.success')
     .url(`http://${process.env.ROOT_URL}/profile/edit`)
     .waitForElementVisible('.e2e-profile-edit-form')
-    .verify.value('input#firstName', newFirstName)
     .assert.valueContains('input#firstName', newFirstName)
-    .verify.value('input#lastName', newLastName)
     .assert.valueContains('input#lastName', newLastName)
     .end();
   },

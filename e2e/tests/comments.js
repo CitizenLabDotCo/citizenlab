@@ -15,6 +15,7 @@ module.exports = {
 
     browser
     .waitForElementVisible('.e2e-idea-card.e2e-comments-enabled')
+    .execute('var ideaCard = document.getElementsByClassName("e2e-comments-enabled");ideaCard[0].scrollIntoView(true);')
     .click('.e2e-idea-card.e2e-comments-enabled')
     .waitForElementVisible('#e2e-idea-show')
     .refresh()
@@ -35,6 +36,7 @@ module.exports = {
 
     browser
     .waitForElementVisible('.e2e-idea-card.e2e-has-comments')
+    .execute('var ideaCard = document.getElementsByClassName("e2e-has-comments");ideaCard[0].scrollIntoView(true);')
     .click('.e2e-idea-card.e2e-has-comments')
     .waitForElementVisible('#e2e-idea-show')
     .refresh()
