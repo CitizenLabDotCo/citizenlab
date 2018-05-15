@@ -3,6 +3,7 @@ import { get } from 'lodash';
 import FileSaver from 'file-saver';
 import { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { Table, Input, Popup, Button as SemanticButton } from 'semantic-ui-react';
@@ -170,7 +171,7 @@ class UsersTable extends React.PureComponent<Props, State> {
             </Table.Header>
 
             <Table.Body>
-              {usersList.map((user) => {
+              {!isNilOrError(usersList) && usersList.map((user) => {
                 const firstName = user.attributes.first_name;
                 const lastName = user.attributes.last_name;
                 const createdAt = user.attributes.created_at;

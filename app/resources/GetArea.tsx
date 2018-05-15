@@ -3,6 +3,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { IAreaData, areaByIdStream } from 'services/areas';
 import { isString } from 'lodash';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   id: string;
@@ -15,10 +16,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  area: IAreaData | null;
+  area: IAreaData | undefined | null | Error;
 }
 
-export type GetAreaChildProps = IAreaData | null;
+export type GetAreaChildProps = IAreaData | undefined | null | Error;
 
 export default class GetArea extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -27,7 +28,7 @@ export default class GetArea extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      area: null
+      area: undefined
     };
   }
 
@@ -41,7 +42,7 @@ export default class GetArea extends React.Component<Props, State> {
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
         .filter(({ id }) => isString(id))
         .switchMap(({ id }) => areaByIdStream(id).observable)
-        .subscribe((area) => this.setState({ area: area.data }))
+        .subscribe((area) => this.setState({ area: !isNilOrError(area) ? area.data : area }))
     ];
   }
 

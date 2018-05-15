@@ -12,11 +12,12 @@ import StatusesMenu from './FilterSidebarStatuses';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   project?: IProjectData;
   phases?: IPhaseData[];
-  topics?: ITopicData[];
+  topics?: (ITopicData | Error)[];
   projects?: IProjectData[];
   statuses: IIdeaStatusData[];
   selectedTopics?: string[];
@@ -61,11 +62,19 @@ class FilterSidebar extends React.Component<Props & InjectedIntlProps> {
       {
         menuItem: this.tabName(messages.topicsTab, this.props.selectedTopics),
         id: 'topics',
-        render: () => (
-          <Tab.Pane>
-            <TopicsMenu topics={this.props.topics} selectedTopics={this.props.selectedTopics} onChangeTopicsFilter={this.props.onChangeTopicsFilter} />
-          </Tab.Pane>
-        )
+        render: () => {
+          const topics = (!isNilOrError(this.props.topics) ? this.props.topics.filter(topic => !isNilOrError(topic)) as  ITopicData[] : []);
+
+          return (
+            <Tab.Pane>
+              <TopicsMenu
+                topics={topics}
+                selectedTopics={this.props.selectedTopics}
+                onChangeTopicsFilter={this.props.onChangeTopicsFilter}
+              />
+            </Tab.Pane>
+          );
+        }
       }
     ),
     projects: () => (

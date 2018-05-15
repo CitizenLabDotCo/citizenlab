@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import * as Rx from 'rxjs/Rx';
-import * as _ from 'lodash';
+import { map, isEmpty, isEqual, difference } from 'lodash';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -96,7 +96,7 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
           this.setState((state) => {
             const oldGroupsProjects = (state.loading ? groupsProjects : state.oldGroupsProjects);
             const newGroupsProjects = groupsProjects;
-            const status = (state.unsavedVisibleTo === 'groups' && !_.isEqual(newGroupsProjects, oldGroupsProjects) ? 'enabled' : state.status);
+            const status = (state.unsavedVisibleTo === 'groups' && !isEqual(newGroupsProjects, oldGroupsProjects) ? 'enabled' : state.status);
             const loading = false;
 
             return {
@@ -114,14 +114,14 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
 
   componentWillUnmount() {
     const { project, unsavedVisibleTo, oldGroupsProjects, newGroupsProjects } = this.state;
-    const oldGroupsProjectIds = (oldGroupsProjects ? _.map(oldGroupsProjects.data, groupsProject => groupsProject.id) : []);
-    const newGroupsProjectsIds = (newGroupsProjects ? _.map(newGroupsProjects.data, groupsProject => groupsProject.id) : []);
+    const oldGroupsProjectIds = (oldGroupsProjects ? map(oldGroupsProjects.data, groupsProject => groupsProject.id) : []);
+    const newGroupsProjectsIds = (newGroupsProjects ? map(newGroupsProjects.data, groupsProject => groupsProject.id) : []);
 
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
 
-    if (project && unsavedVisibleTo === 'groups' && !_.isEqual(oldGroupsProjectIds, newGroupsProjectsIds)) {
-      const groupsProjectIdsToRemove = _.difference(newGroupsProjectsIds, oldGroupsProjectIds);
-      const groupsProjectIdsToAdd = _.difference(oldGroupsProjectIds, newGroupsProjectsIds);
+    if (project && unsavedVisibleTo === 'groups' && !isEqual(oldGroupsProjectIds, newGroupsProjectsIds)) {
+      const groupsProjectIdsToRemove = difference(newGroupsProjectsIds, oldGroupsProjectIds);
+      const groupsProjectIdsToAdd = difference(oldGroupsProjectIds, newGroupsProjectsIds);
 
       Promise.all<any>([
         ...groupsProjectIdsToRemove.map(groupsProjectId => deleteGroupProject(groupsProjectId)),
@@ -140,7 +140,7 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
         promises = [updateProject(project.data.id, { visible_to: unsavedVisibleTo })];
       }
 
-      if (unsavedVisibleTo !== 'groups' && newGroupsProjects !== null && !_.isEmpty(newGroupsProjects.data)) {
+      if (unsavedVisibleTo !== 'groups' && newGroupsProjects !== null && !isEmpty(newGroupsProjects.data)) {
         promises = [
           ...promises,
           ...newGroupsProjects.data.map(groupsProject => deleteGroupProject(groupsProject.id))
@@ -164,7 +164,7 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
   handlePermissionTypeChange = (unsavedVisibleTo: 'public' | 'groups' | 'admins') => {
     this.setState((state) => ({
       unsavedVisibleTo,
-      status: (unsavedVisibleTo === 'groups' && (state.newGroupsProjects === null || _.isEmpty(state.newGroupsProjects.data))) ? 'disabled' : 'enabled'
+      status: (unsavedVisibleTo === 'groups' && (state.newGroupsProjects === null || isEmpty(state.newGroupsProjects.data))) ? 'disabled' : 'enabled'
     }));
   }
 

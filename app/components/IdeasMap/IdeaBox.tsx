@@ -1,6 +1,6 @@
 // libs
 import React from 'react';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -129,7 +129,7 @@ export default class IdeaBox extends React.PureComponent<Props, State> {
     return (
       <GetIdea id={this.props.idea}>
         {(idea) => {
-          if (isNullOrError(idea)) return null;
+          if (isNilOrError(idea)) return null;
 
           return (
             <Wrapper className={this.props.className}>
