@@ -99,6 +99,8 @@
   "app.components.admin.IdeaManager.title": "Titel",
   "app.components.admin.IdeaManager.topicsTab": "Emner",
   "app.components.admin.IdeaManager.up": "Op",
+  "app.containers.Admin.User.GroupsPanel.allUsers": "",
+  "app.containers.Admin.User.GroupsPanel.groupsTitle": "",
   "app.containers.Admin.User.admin": "Administrator",
   "app.containers.Admin.User.adminLabel": "Grant administrator rights to the invited people?",
   "app.containers.Admin.User.confirmDelete": "Yes, I'm sure",

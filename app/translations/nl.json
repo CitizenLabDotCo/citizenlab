@@ -99,6 +99,8 @@
   "app.components.admin.IdeaManager.title": "Titel",
   "app.components.admin.IdeaManager.topicsTab": "Thema's",
   "app.components.admin.IdeaManager.up": "Omhoog",
+  "app.containers.Admin.User.GroupsPanel.allUsers": "",
+  "app.containers.Admin.User.GroupsPanel.groupsTitle": "",
   "app.containers.Admin.User.admin": "Admin",
   "app.containers.Admin.User.adminLabel": "Admin-rechten geven aan de uitgenodigde mensen?",
   "app.containers.Admin.User.confirmDelete": "Ja, ik ben het zeker",
