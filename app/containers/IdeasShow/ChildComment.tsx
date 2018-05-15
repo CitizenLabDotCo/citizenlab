@@ -1,8 +1,8 @@
 // libraries
 import React from 'react';
-import { get } from 'lodash';
 import { adopt } from 'react-adopt';
 import { browserHistory } from 'react-router';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Author from './Author';
@@ -13,11 +13,7 @@ import { updateComment } from 'services/comments';
 
 // resources
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-
-// resources utilities
-import { isNullOrError } from 'utils/helperUtils';
 
 // style
 import styled from 'styled-components';
@@ -46,7 +42,6 @@ interface InputProps {
 
 interface DataProps {
   comment: GetCommentChildProps;
-  author: GetUserChildProps;
   idea: GetIdeaChildProps;
 }
 
@@ -98,10 +93,10 @@ class ChildComment extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { comment, author, idea } = this.props;
+    const { comment, idea } = this.props;
     const { editionMode } = this.state;
 
-    if (comment && author && !isNullOrError(idea)) {
+    if (!isNilOrError(comment) && !isNilOrError(idea)) {
       const className = this.props['className'];
       const authorId = comment.relationships.author.data ? comment.relationships.author.data.id : null;
       const createdAt = comment.attributes.created_at;
@@ -138,8 +133,7 @@ class ChildComment extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
-  author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>,
-  idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>,
+  idea: ({ comment, render }) => <GetIdea id={(!isNilOrError(comment) ? comment.relationships.idea.data.id : null)}>{render}</GetIdea>,
 });
 
 export default (inputProps: InputProps) => (

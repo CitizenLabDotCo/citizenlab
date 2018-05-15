@@ -12,10 +12,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  locale: Locale;
+  locale: Locale | undefined | null;
 }
 
-export type GetLocaleChildProps = Locale;
+export type GetLocaleChildProps = Locale | undefined | null;
 
 export default class GetLocale extends React.Component<Props, State> {
   private subscriptions: Subscription[];
@@ -23,7 +23,7 @@ export default class GetLocale extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      locale: 'en'
+      locale: undefined
     };
   }
 

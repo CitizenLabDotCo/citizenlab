@@ -1,4 +1,5 @@
 import React from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import IdeaCard, { InputProps as IdeaCardProps } from 'components/IdeaCard';
@@ -54,17 +55,16 @@ const FiltersArea = styled.div`
     justify-content: flex-end;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     margin-bottom: 30px;
   `}
 `;
 
 const FilterArea = styled.div`
   display: flex;
-  align-items: center;
 
-  ${media.smallerThanMinTablet`
-    align-items: left;
+  ${media.biggerThanMinTablet`
+    align-items: center;
   `}
 `;
 
@@ -287,7 +287,7 @@ class IdeaCards extends React.PureComponent<Props, State> {
   render() {
     const { selectedView } = this.state;
     const { queryParameters, searchValue, ideasList, hasMore, querying, loadingMore } = this.props;
-    const hasIdeas = (ideasList !== null && ideasList.length > 0);
+    const hasIdeas = (!isNilOrError(ideasList) && ideasList.length > 0);
     const showViewToggle = (this.props.showViewToggle || false);
     const showCardView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');

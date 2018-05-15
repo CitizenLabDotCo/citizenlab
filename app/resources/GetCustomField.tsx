@@ -2,6 +2,7 @@ import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { customFieldForUsersStream, ICustomFieldData } from 'services/userCustomFields';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   id: string;
@@ -14,19 +15,19 @@ interface Props extends InputProps {
 }
 
 interface State {
-  customField: ICustomFieldData | null;
+  customField: ICustomFieldData | undefined | null | Error;
 }
 
-export type GetCustomFieldChildProps = ICustomFieldData | null;
+export type GetCustomFieldChildProps = ICustomFieldData | undefined | null | Error;
 
 export default class GetCustomField extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
-      customField: null
+      customField: undefined
     };
   }
 
@@ -39,7 +40,7 @@ export default class GetCustomField extends React.Component<Props, State> {
       this.inputProps$
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
         .switchMap(({ id }) => customFieldForUsersStream(id).observable)
-        .subscribe((customField) => this.setState({ customField: customField.data }))
+        .subscribe((customField) => this.setState({ customField: !isNilOrError(customField) ? customField.data : customField }))
     ];
   }
 

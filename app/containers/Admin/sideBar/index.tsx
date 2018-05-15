@@ -1,6 +1,5 @@
-import * as React from 'react';
-import { Observable } from 'rxjs/Observable';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import React from 'react';
+import { Observable, Subscription } from 'rxjs/Rx';
 
 // router
 import { Link, withRouter, WithRouterProps } from 'react-router';
@@ -124,14 +123,13 @@ type NavItem = {
 
 class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   routes: NavItem[];
+  subscriptions: Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
-
+  constructor(props: Props & InjectedIntlProps & WithRouterProps) {
+    super(props);
     this.state = {
       navItems: [],
     };
-
     this.routes = [
       {
         id: 'dashboard',
@@ -156,6 +154,13 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
         isActive: (pathName) => (pathName.startsWith('/admin/groups'))
       },
       {
+        id: 'ideas',
+        link: '/admin/ideas',
+        iconName: 'idea',
+        message: 'ideas',
+        isActive: (pathName) => (pathName.startsWith('/admin/ideas'))
+      },
+      {
         id: 'projects',
         link: '/admin/projects',
         iconName: 'project',
@@ -170,29 +175,28 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
         isActive: (pathName) => (pathName.startsWith('/admin/settings'))
       },
     ];
+    this.subscriptions = [];
   }
 
   componentDidMount() {
-    const permissionsObservables: Observable<boolean>[] = [];
-    const navItems: NavItem[] = [];
+    this.subscriptions = [
+      Observable.combineLatest(
+        this.routes.map((route) => hasPermission({
+          item: { type: 'route', path: route.link },
+          action: 'access'
+        }))
+      ).subscribe((permissions) => {
+        this.setState({
+          navItems: permissions.filter(permission => permission).map((_permission, index) => {
+            return this.routes[index];
+          })
+        });
+      })
+    ];
+  }
 
-    this.routes.forEach((route) => {
-      permissionsObservables.push(hasPermission({
-        item: { type: 'route', path: route.link },
-        action: 'access'
-      }));
-    });
-
-    combineLatest(permissionsObservables)
-    .subscribe((permissions) => {
-      permissions.forEach((permission, index) => {
-        if (permission) {
-          navItems.push(this.routes[index]);
-        }
-      });
-
-      this.setState({ navItems });
-    });
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   render() {
@@ -221,4 +225,4 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
   }
 }
 
-export default withRouter(injectIntl<Props>(Sidebar) as any);
+export default withRouter<Props>(injectIntl(Sidebar));

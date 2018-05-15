@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as _ from 'lodash';
+import React from 'react';
+import { isBoolean } from 'lodash';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -140,8 +140,8 @@ export default class Success extends React.PureComponent<Props, State> {
     size = (size || '1');
     marginTop = (marginTop || '5px');
     marginBottom = (marginTop || '0px');
-    showIcon = (_.isBoolean(showIcon) ? showIcon : true);
-    showBackground = (_.isBoolean(showBackground) ? showBackground : true);
+    showIcon = (isBoolean(showIcon) ? showIcon : true);
+    showBackground = (isBoolean(showBackground) ? showBackground : true);
 
     const successElement = (text ? (
       <CSSTransition classNames="success" timeout={timeout}>
