@@ -41,36 +41,41 @@ namespace :fix_templates do
 
 
   task :list_phase_overlaps => [:environment] do |t, args|
-    overlaps = {}
+    overlaps = []
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
-        project_overlaps = {}
         Project.all.each do |pj|
-          pj.phases.each do |ph|
-            ph.presentation_mode = 'card' #####
-            if !ph.valid?
-              project_overlaps[pj.slug] = (project_overlaps[pj.slug] || []) + [ph]
+          overlapping_phases = {}
+          phase_stack = pj.phases.sort_by(&:start_at).reverse
+          prev_phase = nil
+          while !phase_stack.empty?
+            cur_phase = phase_stack.pop
+            if prev_phase && (prev_phase.end_at == cur_phase.start_at) && (cur_phase.end_at != cur_phase.start_at)
+              prev_phase.end_at = prev_phase.end_at - 1.day
+              if prev_phase.save
+                overlapping_phases[prev_phase.id][:new_end_at] = prev_phase.end_at
+                overlapping_phases[prev_phase.id][:error_message] = nil
+              end
             end
+            if !cur_phase.valid?
+              overlapping_phases[cur_phase.id] = {
+                host: tenant.host, project: pj.slug, 
+                phase: cur_phase.title_multiloc.values.first, 
+                start_at: cur_phase.start_at, end_at: cur_phase.end_at,
+                new_end_at: nil, error_message: cur_phase.errors.full_messages.join(', ')
+              }
+            end
+            prev_phase = cur_phase
           end
-        end
-        if project_overlaps.present?
-          overlaps[tenant.host] = (overlaps[tenant.host] || []) + [project_overlaps]
+          overlaps += overlapping_phases.values
         end
       end
     end
-    overlaps.each do |host, project_overlaps|
-      puts "-------"
-      puts "Overlapping phases for tenant #{host}:"
-      project_overlaps.each do |pj_h|
-        pj_h.each do |pj_name, phases|
-          puts "  In project #{pj_name}:"
-          phases.each do |ph|
-            puts "    - #{ph.title_multiloc.values.first}"
-            puts "      #{ph.start_at}-#{ph.end_at}"
-          end
-        end
+    CSV.open('overlaps.csv', "wb") do |csv|
+      csv << overlaps.first.keys
+      overlaps.each do |d|
+        csv << d.values
       end
-      puts "-------\n\n"
     end
   end
 
