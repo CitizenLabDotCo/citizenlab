@@ -61,8 +61,4 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.create.messageError',
     defaultMessage: 'There was an error creating your group',
   },
-  dropdownFooterMessage: {
-    id: 'app.containers.AdminPage.groups.create.dropdownFooterMessage',
-    defaultMessage: 'Add users',
-  },
 });

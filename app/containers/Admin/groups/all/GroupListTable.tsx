@@ -124,10 +124,6 @@ class GroupsListTable extends React.PureComponent<Props & InjectedIntlProps, Sta
     };
   }
 
-  addToGroups = (ids) => {
-    console.log(ids);
-  }
-
   render() {
     const { groups, locale, tenantLocales, loading } = this.state;
 
