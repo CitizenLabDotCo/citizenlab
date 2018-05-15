@@ -1,6 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // router
 import { Link } from 'react-router';
@@ -207,7 +207,7 @@ class ProjectsShowPage extends React.PureComponent<Props, State> {
   render() {
     const { project, events } = this.props;
 
-    if (!isNullOrError(project)) {
+    if (!isNilOrError(project)) {
       const className = this.props['className'];
       const projectSlug = project.attributes.slug;
       const projectHeaderImageLarge = (project.attributes.header_bg.large || null);
@@ -215,7 +215,7 @@ class ProjectsShowPage extends React.PureComponent<Props, State> {
       const hasEvents = (events && events.length > 0);
 
       return (
-        <Container className={`${className} ${projectType}`}>
+        <Container className={`${className ? className : ''} ${projectType}`}>
           <HeaderImage src={projectHeaderImageLarge} />
           <HeaderOverlay />
           <ContentContainer>
@@ -309,7 +309,7 @@ class ProjectsShowPage extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectSlug, render }) => <GetProject slug={projectSlug}>{render}</GetProject>,
-  events: ({ project, render }) => <GetEvents projectId={(!isNullOrError(project) ? project.id : null)}>{render}</GetEvents>
+  events: ({ project, render }) => <GetEvents projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetEvents>
 });
 
 export default (inputProps: InputProps) => (

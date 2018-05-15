@@ -226,13 +226,13 @@ const ChildCommentFormWithHoCs = injectTracks<Props>({
   clickCommentPublish: tracks.clickCommentPublish,
 })(injectIntl<Props>(ChildCommentForm));
 
-const Data = adopt<DataProps>({
+const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />
 });
 
 export default (inputProps: InputProps) => (
-  <Data>
+  <Data {...inputProps}>
     {dataProps => <ChildCommentFormWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );

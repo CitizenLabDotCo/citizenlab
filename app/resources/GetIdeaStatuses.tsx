@@ -11,10 +11,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  ideaStatuses: IIdeaStatusData[] | null;
+  ideaStatuses: IIdeaStatusData[] | undefined| null;
 }
 
-export type GetIdeaStatusesChildProps = IIdeaStatusData[] | null;
+export type GetIdeaStatusesChildProps = IIdeaStatusData[] | undefined| null;
 
 export default class GetIdeaStatuses extends React.Component<Props, State> {
   private subscriptions: Subscription[];
@@ -22,7 +22,7 @@ export default class GetIdeaStatuses extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      ideaStatuses: null,
+      ideaStatuses: undefined
     };
   }
 
