@@ -13,8 +13,6 @@ import Avatar from 'components/Avatar';
 import Toggle from 'components/UI/Toggle';
 import Button from 'components/UI/Button';
 
-import GroupHeader from '../GroupHeader';
-
 // resources
 import GetUsers, { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';
 
@@ -136,23 +134,6 @@ class UsersTable extends React.PureComponent<Props, State> {
     if (usersList) {
       return (
         <Container>
-
-          <GroupHeader
-            title={{ en: 'Test group please ignore' }}
-            onEdit={console.log}
-            onDelete={console.log}
-            onSearch={console.log}
-            smartGroup
-          />
-
-          <GroupHeader
-            title={{ en: 'Super very long title that should probably be stopped at some point but it keeps on coming why are you doing this to me' }}
-            onEdit={console.log}
-            onDelete={console.log}
-            onSearch={console.log}
-          />
-
-
           <HeaderContainer>
             <Input icon="search" onChange={this.handleSearchOnChange} size="large" />
 
