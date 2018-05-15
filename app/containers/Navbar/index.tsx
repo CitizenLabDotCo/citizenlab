@@ -2,9 +2,10 @@
 import React from 'react';
 import { get } from 'lodash';
 import { adopt } from 'react-adopt';
-import { Link } from 'react-router';
+import { Link, withRouter, WithRouterProps } from 'react-router';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import clickOutside from 'utils/containers/clickOutside';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import NotificationMenu from './components/NotificationMenu';
@@ -14,7 +15,6 @@ import IdeaButton from 'components/IdeaButton';
 import Icon from 'components/UI/Icon';
 
 // resources
-import GetLocation, { GetLocationChildProps } from 'resources/GetLocation';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -228,7 +228,7 @@ const NavigationDropdownMenuInner = styled.div`
 `;
 
 const NavigationDropdownList = styled.div`
-  max-height: 210px;
+  max-height: 410px;
   width: 280px;
   display: flex;
   flex-direction: column;
@@ -352,7 +352,6 @@ const LoginLink = styled(Link)`
 interface InputProps {}
 
 interface DataProps {
-  location: GetLocationChildProps;
   authUser: GetAuthUserChildProps;
   tenant: GetTenantChildProps;
   locale: GetLocaleChildProps;
@@ -366,8 +365,8 @@ interface State {
   projectsDropdownOpened: boolean;
 }
 
-class Navbar extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
+class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
+  constructor(props: Props & WithRouterProps) {
     super(props);
     this.state = {
       notificationPanelOpened: false,
@@ -375,7 +374,7 @@ class Navbar extends React.PureComponent<Props, State> {
     };
   }
 
-  componentDidUpdate(prevProps: Props) {
+  componentDidUpdate(prevProps: Props & WithRouterProps) {
     if (prevProps.location !== this.props.location) {
       this.setState({ projectsDropdownOpened: false });
     }
@@ -417,8 +416,8 @@ class Navbar extends React.PureComponent<Props, State> {
     const { projectsList } = projects;
     const { projectsDropdownOpened } = this.state;
     const isAdminPage = (location && location.pathname.startsWith('/admin'));
-    const tenantLocales = (tenant && tenant.attributes.settings.core.locales);
-    const tenantLogo = (tenant && get(tenant.attributes.logo, 'medium'));
+    const tenantLocales = (!isNilOrError(tenant) && tenant.attributes.settings.core.locales);
+    const tenantLogo = (!isNilOrError(tenant) && get(tenant.attributes.logo, 'medium'));
 
     return (
       <>
@@ -460,7 +459,7 @@ class Navbar extends React.PureComponent<Props, State> {
                         <NavigationDropdownList>
                           {tenantLocales && projectsList && projectsList.length > 0 && projectsList.map((project) => (
                             <NavigationDropdownListItem key={project.id} to={getProjectUrl(project)}>
-                              {getLocalized(project.attributes.title_multiloc, locale, tenantLocales)}
+                              {!isNilOrError(locale) ? getLocalized(project.attributes.title_multiloc, locale, tenantLocales) : null}
                             </NavigationDropdownListItem>
                           ))}
                         </NavigationDropdownList>
@@ -516,15 +515,16 @@ class Navbar extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  location: <GetLocation />,
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
   projects: <GetProjects pageSize={250} sort="new" />
 });
 
+const NavBarWithHoCs = withRouter(Navbar);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <Navbar {...inputProps} {...dataProps} />}
+    {dataProps => <NavBarWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import GetTenant from 'resources/GetTenant';
+import { isNilOrError } from 'utils/helperUtils';
 
 const StyledIframe = styled.iframe`
   border: 0;
@@ -83,6 +84,6 @@ class Fragment extends React.Component<Props, State> {
 
 export default (inputProps) => (
   <GetTenant>
-    {(tenant) => tenant ? <Fragment {...inputProps} tenantId={tenant.id} /> : null}
+    {(tenant) => !isNilOrError(tenant) ? <Fragment {...inputProps} tenantId={tenant.id} /> : null}
   </GetTenant>
 );

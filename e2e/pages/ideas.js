@@ -22,7 +22,7 @@ module.exports = {
   elements: {
     filters: { selector: '#e2e-ideas-filters' },
     sortFilter: { selector: '#e2e-ideas-sort-filter' },
-    firstIdea: { selector: '#e2e-ideas-list :first-child' },
+    firstIdea: { selector: '#e2e-ideas-list>:first-child' },
     ideasContainer: { selector: '#e2e-ideas-container' },
     ideasList: { selector: '#e2e-ideas-list' },
     searchInput: { selector: '#e2e-ideas-search' },

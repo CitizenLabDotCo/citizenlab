@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isBoolean } from 'lodash';
 import ReactSelect from 'react-select';
 import { IOption } from 'typings';
 import styled from 'styled-components';
@@ -252,7 +252,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
     placeholder = (placeholder || '');
     options = (options || this.emptyArray);
     max = (max || undefined);
-    autoBlur = (_.isBoolean(autoBlur) ? autoBlur : false);
+    autoBlur = (isBoolean(autoBlur) ? autoBlur : false);
 
     return (
       <StyledMultipleSelect

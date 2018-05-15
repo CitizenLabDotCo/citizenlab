@@ -3,7 +3,7 @@ import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { pageByIdStream } from 'services/pages';
 import { getPageLink, PageLink } from 'services/pageLink';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { get, isArray, isEmpty } from 'lodash';
 
 interface InputProps {
@@ -17,10 +17,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  pageLinks: (PageLink | Error)[] | null | Error;
+  pageLinks: (PageLink | Error)[] | undefined | null | Error;
 }
 
-export type GetPageLinksChildProps = (PageLink | Error)[] | null | Error;
+export type GetPageLinksChildProps = (PageLink | Error)[] | undefined | null | Error;
 
 export default class GetPage extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -29,7 +29,7 @@ export default class GetPage extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      pageLinks: null
+      pageLinks: undefined
     };
   }
 
@@ -43,7 +43,7 @@ export default class GetPage extends React.Component<Props, State> {
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
         .switchMap(({ pageId }) => pageId ? pageByIdStream(pageId).observable : Observable.of(null))
         .switchMap((page) => {
-          if (!isNullOrError(page)) {
+          if (!isNilOrError(page)) {
             const pageLinks = get(page.data.relationships.page_links, 'data');
 
             if (isArray(pageLinks) && !isEmpty(pageLinks)) {
@@ -55,9 +55,9 @@ export default class GetPage extends React.Component<Props, State> {
             return Observable.of([]);
           }
 
-          return Observable.of(null);
+          return Observable.of(page);
         }).subscribe((pageLinks) => {
-          this.setState({ pageLinks: pageLinks && pageLinks.map(pageLink => !isNullOrError(pageLink) ? pageLink.data : pageLink) });
+          this.setState({ pageLinks: pageLinks && pageLinks.map(pageLink => !isNilOrError(pageLink) ? pageLink.data : pageLink) });
         })
       ];
   }

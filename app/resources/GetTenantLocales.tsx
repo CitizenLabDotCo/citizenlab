@@ -2,6 +2,7 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 import { currentTenantStream } from 'services/tenant';
 import { Locale } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {}
 
@@ -12,18 +13,18 @@ interface Props extends InputProps {
 }
 
 interface State {
-  tenantLocales: Locale[] | null;
+  tenantLocales: Locale[] | undefined | null | Error;
 }
 
-export type GetTenantLocalesChildProps = Locale[] | null;
+export type GetTenantLocalesChildProps = Locale[] | undefined | null | Error;
 
 export default class GetTenantLocales extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
-      tenantLocales: null
+      tenantLocales: undefined
     };
   }
 
@@ -33,7 +34,7 @@ export default class GetTenantLocales extends React.Component<Props, State> {
     this.subscriptions = [
       currentTenant$.subscribe((currentTenant) => {
         this.setState({
-          tenantLocales: currentTenant.data.attributes.settings.core.locales
+          tenantLocales: (!isNilOrError(currentTenant) ? currentTenant.data.attributes.settings.core.locales : currentTenant)
         });
       })
     ];

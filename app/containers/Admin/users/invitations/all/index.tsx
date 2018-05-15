@@ -1,6 +1,6 @@
 // libraries
 import React from 'react';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash';
 import FileSaver from 'file-saver';
 
@@ -92,9 +92,7 @@ class InvitesTable extends React.PureComponent<Props, State> {
     const { searchValue, exporting } = this.state;
     const { invitesList, sortAttribute, sortDirection, currentPage, lastPage, onChangePage } = this.props;
 
-    console.log(invitesList);
-
-    if (!isNullOrError(invitesList) && invitesList.length > 0) {
+    if (!isNilOrError(invitesList) && invitesList.length > 0) {
       return (
         <Container>
           <HeaderContainer>
