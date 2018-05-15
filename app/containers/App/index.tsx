@@ -1,6 +1,7 @@
 import React from 'react';
 import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { tap } from 'rxjs/operators';
 import get from 'lodash/get';
 import * as moment from 'moment';
 import 'moment-timezone';
@@ -15,6 +16,9 @@ import { PreviousPathnameContext } from 'context';
 
 // libraries
 import { RouterState, browserHistory } from 'react-router';
+
+// analytics
+import { trackPage } from 'utils/analytics';
 
 // components
 import Meta from './Meta';
@@ -108,6 +112,8 @@ export default class App extends React.PureComponent<Props & RouterState, State>
       const previousPathname = get(previousLocation, 'pathname', null);
       this.setState({ previousPathname });
 
+      trackPage(newLocation.pathname);
+
       if (newLocation
           && newLocation.pathname !== '/complete-signup'
           && authUser
@@ -119,18 +125,18 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     });
 
     this.subscriptions = [
-      Observable.combineLatest(
-        authUser$.do((authUser) => {
+      combineLatest(
+        authUser$.pipe(tap((authUser) => {
           if (!authUser) {
             signOut();
           }
-        }),
-        locale$.do((locale) => {
+        })),
+        locale$.pipe(tap((locale) => {
           moment.locale((locale === 'no' ? 'nb' : locale));
-        }),
-        tenant$.do((tenant) => {
+        })),
+        tenant$.pipe(tap((tenant) => {
           moment.tz.setDefault(tenant.data.attributes.settings.core.timezone);
-        })
+        }))
       ).subscribe(([authUser, _locale, tenant]) => {
         this.setState({ tenant, authUser });
       }),

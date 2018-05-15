@@ -1,5 +1,6 @@
 import React from 'react';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 
 // router
 import { Link, withRouter, WithRouterProps } from 'react-router';
@@ -173,7 +174,7 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
 
   componentDidMount() {
     this.subscriptions = [
-      Observable.combineLatest(
+      combineLatest(
         this.routes.map((route) => hasPermission({
           item: { type: 'route', path: route.link },
           action: 'access'

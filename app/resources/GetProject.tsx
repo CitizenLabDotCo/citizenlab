@@ -1,6 +1,10 @@
 import React from 'react';
+import isString from 'lodash/isString';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
+import { of } from 'rxjs/observable/of';
+import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
-import { Subscription, BehaviorSubject, Observable } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { projectByIdStream, projectBySlugStream, IProjectData } from 'services/projects';
 
@@ -43,21 +47,22 @@ export default class GetProject extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ id, slug });
 
     this.subscriptions = [
-      this.inputProps$
-        .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .do(() => resetOnChange && this.setState({ project: undefined }))
-        .switchMap(({ id, slug }) => {
-          if (id) {
+      this.inputProps$.pipe(
+        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+        tap(() => resetOnChange && this.setState({ project: undefined })),
+        switchMap(({ id, slug }) => {
+          if (isString(id)) {
             return projectByIdStream(id).observable;
-          } else if (slug) {
+          } else if (isString(slug)) {
             return projectBySlugStream(slug).observable;
           }
 
-          return Observable.of(null);
+          return of(null);
         })
-        .subscribe((project) => {
-          this.setState({ project: !isNilOrError(project) ? project.data : project });
-        })
+      )
+      .subscribe((project) => {
+        this.setState({ project: !isNilOrError(project) ? project.data : project });
+      })
     ];
   }
 

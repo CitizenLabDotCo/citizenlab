@@ -1,7 +1,11 @@
 import React from 'react';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
+import { of } from 'rxjs/observable/of';
+import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { IPhaseData, phasesStream } from 'services/phases';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   projectId?: string | null | undefined;
@@ -41,11 +45,12 @@ export default class GetPhases extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ projectId });
 
     this.subscriptions = [
-      this.inputProps$
-        .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .do(() => resetOnChange && this.setState({ phases: undefined }))
-        .switchMap(({ projectId }) => projectId ? phasesStream(projectId).observable : Observable.of(null))
-        .subscribe((phases) => this.setState({ phases: (phases ? phases.data : null) }))
+      this.inputProps$.pipe(
+        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+        tap(() => resetOnChange && this.setState({ phases: undefined })),
+        switchMap(({ projectId }) => projectId ? phasesStream(projectId).observable : of(null))
+      )
+      .subscribe((phases) => this.setState({ phases: !isNilOrError(phases) ? phases.data : phases }))
     ];
   }
 
