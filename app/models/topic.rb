@@ -7,4 +7,16 @@ class Topic < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :description_multiloc, multiloc: {presence: false}
   #TODO Settle on iconset and validate icon to be part of it
+
+  before_validation :strip_title
+
+
+  private
+
+  def strip_title
+    self.title_multiloc.each do |key, value|
+      self.title_multiloc[key] = value.strip
+    end
+  end
+  
 end

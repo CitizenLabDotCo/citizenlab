@@ -47,5 +47,8 @@ module Cl2Back
     config.middleware.use ActionDispatch::Cookies # Required for all session management
     config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
     
+    config.skylight.environments = ["staging"]
+    
   end
 end
+
