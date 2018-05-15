@@ -1,27 +1,11 @@
-/**
- * app.js
- *
- * This is the entry file for the application, only setup and boilerplate
- * code.
- */
-
-// Needed for redux-saga es6 generator support
 import 'babel-polyfill';
-
-// Import all the third party stuff
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { useScroll } from 'react-router-scroll';
 import Raven from 'raven-js';
-
-// Creates the LazyImages Observer
 import 'utils/lazyImagesObserver';
-
-// Import root app
 import App from 'containers/App';
-
-// Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';
 
 // Load the favicon, the manifest.json file and the .htaccess file
@@ -38,8 +22,8 @@ import { translationMessages } from './i18n';
 // Import CSS reset and Global Styles
 // import '../vendor/foundation/main.scss';
 import 'sanitize.css/sanitize.css';
-import 'semantic-ui-css/semantic.css';
-import 'react-select/dist/react-select.css';
+import 'semantic-ui-css/semantic.min.css';
+import 'react-select/dist/react-select.min.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './global-styles';
 /* eslint-enable import/first */

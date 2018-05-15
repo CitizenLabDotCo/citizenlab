@@ -125,6 +125,7 @@ export const injectTracks = <P>(events: {[key: string]: IEvent}) => (component: 
         trackEventByName(event.name, { ...event.properties, ...extraProps });
       }
     ));
+
     const propsWithEvents = {
       ...eventFunctions,
       ...props as any,

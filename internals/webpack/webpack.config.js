@@ -46,8 +46,8 @@ const WEBPACK_CONFIG = {
         test: /\.css$/,
         include: /node_modules/,
         use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
           use: 'css-loader',
+          fallback: 'style-loader',
         }),
       },
       {
@@ -142,7 +142,7 @@ const WEBPACK_CONFIG = {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       children: true,
-      minChunks: 2,
+      minChunks: 3,
       async: true,
     }),
 
