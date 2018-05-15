@@ -43,7 +43,7 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
   }
 
   inputTypeOptions = () => {
-    const fieldTypes = ['text', 'multiline_text', 'select', 'multiselect', 'checkbox', 'date'];
+    const fieldTypes = ['text', 'number', 'multiline_text', 'select', 'multiselect', 'checkbox', 'date'];
     return fieldTypes.map((inputType) => ({
       value: inputType,
       label: <FormattedMessage {...messages[`inputType_${inputType}`]} />,
