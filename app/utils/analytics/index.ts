@@ -1,7 +1,7 @@
 import React from 'react';
 import { Subject } from 'rxjs/Subject';
 import { combineLatest } from 'rxjs/observable/combineLatest';
-import { mapValues } from 'lodash';
+import mapValues from 'lodash/mapValues';
 import { currentTenantStream, ITenantData } from 'services/tenant';
 import { authUserStream } from 'services/auth';
 import snippet from '@segment/snippet';
@@ -46,7 +46,6 @@ combineLatest(tenant$, events$).subscribe(([tenant, event]) => {
 
 combineLatest(tenant$, pageChanges$).subscribe(([tenant, pageChange]) => {
   if (window && window['analytics']) {
-    console.log(pageChange.name);
     window['analytics'].page(
       pageChange.name,
       addTenantInfo(pageChange.properties, tenant.data),

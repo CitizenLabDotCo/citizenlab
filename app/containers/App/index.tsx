@@ -10,6 +10,8 @@ import 'moment/locale/fr';
 import 'moment/locale/nl';
 import 'moment/locale/da';
 import 'moment/locale/nb';
+import find from 'lodash/find';
+import { isNilOrError } from 'utils/helperUtils';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -18,7 +20,7 @@ import { PreviousPathnameContext } from 'context';
 import { RouterState, browserHistory } from 'react-router';
 
 // analytics
-import { trackPage } from 'utils/analytics';
+import { trackPage, trackIdentification } from 'utils/analytics';
 
 // components
 import Meta from './Meta';
@@ -127,8 +129,20 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     this.subscriptions = [
       combineLatest(
         authUser$.pipe(tap((authUser) => {
-          if (!authUser) {
+          if (isNilOrError(authUser)) {
             signOut();
+          } else {
+            trackIdentification(authUser.data.id, {
+              email: authUser.data.attributes.email,
+              firstName: authUser.data.attributes.first_name,
+              lastName: authUser.data.attributes.last_name,
+              createdAt: authUser.data.attributes.created_at,
+              avatar: authUser.data.attributes.avatar.large,
+              birthday: authUser.data.attributes.birthyear,
+              gender: authUser.data.attributes.gender,
+              locale: authUser.data.attributes.locale,
+              isAdmin: !!find(authUser.data.attributes.roles, { type: 'admin' })
+            });
           }
         })),
         locale$.pipe(tap((locale) => {
