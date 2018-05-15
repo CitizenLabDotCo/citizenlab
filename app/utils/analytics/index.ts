@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as _ from 'lodash';
+import React from 'react';
+import { mapValues } from 'lodash';
 import * as Rx from 'rxjs';
 import { currentTenantStream, ITenantData } from 'services/tenant';
 import { authUserStream } from 'services/auth';
@@ -119,7 +119,7 @@ export function trackEvent(event: IEvent) {
 
 export const injectTracks = <P>(events: {[key: string]: IEvent}) => (component: React.ComponentClass<P>) => {
   return (props: P) => {
-    const eventFunctions = _.mapValues(events, (event) => (
+    const eventFunctions = mapValues(events, (event) => (
       (extra) => {
         const extraProps = extra && extra.extra;
         trackEventByName(event.name, { ...event.properties, ...extraProps });

@@ -57,7 +57,7 @@ export const media = {
     }
   `,
   biggerThanMaxTablet: (style: any, ...args) => css`
-    @media (min-width: 1024px) {
+    @media (min-width: 1025px) {
       ${css(style, ...args)}
     }
   `,
@@ -82,6 +82,7 @@ export const colors = {
   background: '#F9F9FA',
   adminBackground: '#F0F3F4',
   adminMenuBackground: '#3B3B3B',
+  adminTextColor: '#044D6C',
   clBlueDarkest: '#02282D',
   clBlueDarker: '#0A5159',
   clBlueDark: '#147985',
@@ -89,6 +90,7 @@ export const colors = {
   clBlueLighter: '#80CFD8',
   clBlueLight: '#40B8C5',
   placeholderBg: '#CFD6DB',
+  clBlue2Darkest: '#044D6C'
 };
 
 export function color(name: keyof typeof colors) {

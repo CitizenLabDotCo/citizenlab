@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import Warning from 'components/UI/Warning';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
@@ -51,7 +51,7 @@ class CommentingDisabled extends React.PureComponent<Props> {
     render() {
       const { project } = this.props;
       const messageDescriptor = this.calculateMessageDescriptor();
-      const projectTitle = (!isNullOrError(project) ? project.attributes.title_multiloc : null);
+      const projectTitle = (!isNilOrError(project) ? project.attributes.title_multiloc : null);
 
       if (!messageDescriptor) return null;
 

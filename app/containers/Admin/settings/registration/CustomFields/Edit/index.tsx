@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { withRouter, WithRouterProps, browserHistory } from 'react-router';
+import { isNilOrError } from 'utils/helperUtils';
 import { ICustomFieldData } from 'services/userCustomFields';
 import GetCustomField, { GetCustomFieldChildProps } from 'resources/GetCustomField';
 import GoBackButton from 'components/UI/GoBackButton';
@@ -57,11 +58,10 @@ class Edit extends React.Component<Props & WithRouterProps & InjectedIntlProps> 
     const { customField, children } = this.props;
     const childrenWithExtraProps = React.cloneElement(children as React.ReactElement<any>, { customField });
 
-    return customField && (
+    return !isNilOrError(customField) && (
       <>
         <StyledGoBackButton onClick={this.goBack} />
         <TabbedResource
-          location={this.props.location}
           tabs={this.getTabs(customField)}
           resource={{
             title: customField.attributes.title_multiloc,
