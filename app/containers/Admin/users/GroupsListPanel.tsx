@@ -10,6 +10,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 import T from 'components/T';
+import GetUserCount from './GetUserCount';
 
 // Styling
 import styled from 'styled-components';
@@ -102,7 +103,10 @@ export class GroupsListPanel extends React.PureComponent<InputProps & GetGroupsC
   render() {
     return (
       <Panel className={this.props.className}>
-        <MenuLink to="/admin/users" activeClassName="active" onlyActiveOnIndex>All Users</MenuLink>
+        <MenuLink to="/admin/users" activeClassName="active" onlyActiveOnIndex>
+          All Users
+          <GetUserCount />
+        </MenuLink>
         <Separator />
         <MenuTitle>
           <h2>Groups</h2>
