@@ -12,6 +12,10 @@ import Icon from 'components/UI/Icon';
 import T from 'components/T';
 import GetUserCount from './GetUserCount';
 
+// i18n
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import messages from './messages';
+
 // Styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
@@ -104,12 +108,12 @@ export class GroupsListPanel extends React.PureComponent<InputProps & GetGroupsC
     return (
       <Panel className={this.props.className}>
         <MenuLink to="/admin/users" activeClassName="active" onlyActiveOnIndex>
-          All Users
+          <FormattedMessage {...messages.allUsers} />
           <GetUserCount />
         </MenuLink>
         <Separator />
         <MenuTitle>
-          <h2>Groups</h2>
+          <h2><FormattedMessage {...messages.groupsTitle}/></h2>
           <Button icon="plus-circle" iconTitle="Add a group" style="text" padding="0"/>
         </MenuTitle>
         <GroupsList>
