@@ -37,11 +37,11 @@ interface Props {
 
 export default class NoUsers extends React.PureComponent<Props> {
   render() {
-    if (this.props.type === 'normal') {
-      return (
-        <NoUsersPage>
-          <Icon name="blankPage" />
-          <FormattedMessage {...messages.emptyGroup} />
+    return (
+      <NoUsersPage>
+        <Icon name="blankPage" />
+        <FormattedMessage {...messages.emptyGroup} />
+        {this.props.type === 'normal' &&
           <SFormattedMessage>
             <FormattedMessage
               {...messages.goToAllUsers}
@@ -52,18 +52,9 @@ export default class NoUsers extends React.PureComponent<Props> {
                   </Link>),
               }}
             />
-        </SFormattedMessage>
-        </NoUsersPage>
-      );
-    } else {
-      return (
-        <NoUsersPage>
-          <FormattedMessage {...messages.emptySmartGroup} />
-          <SFormattedMessage>
-            <FormattedMessage {...messages.noUserMatching} />
           </SFormattedMessage>
-        </NoUsersPage>
-      );
-    }
+        }
+      </NoUsersPage>
+    );
   }
 }
