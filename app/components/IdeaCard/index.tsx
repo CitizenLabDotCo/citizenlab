@@ -14,7 +14,7 @@ import UserName from 'components/UI/UserName';
 import Avatar from 'components/Avatar';
 import LazyImage from 'components/LazyImage';
 
-// resrources
+// resources
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImage, { GetIdeaImageChildProps } from 'resources/GetIdeaImage';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
