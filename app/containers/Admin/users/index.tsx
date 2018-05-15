@@ -1,16 +1,35 @@
-import React, { SFC } from 'react';
+import React from 'react';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
-import TabbedResource from 'components/admin/TabbedResource';
+import GroupsListPanel from './GroupsListPanel';
 
 // resources
 import GetLocation, { GetLocationChildProps } from 'resources/GetLocation';
 
+// Global state
+import { globalState, IAdminNoPadding, IGlobalStateService } from 'services/globalState';
+
+// Styling
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  align-items: stretch;
+  display: flex;
+  flex-wrap: nowrap;
+`;
+
+const LeftPanel = styled(GroupsListPanel)`
+  flex: 0 0 320px;
+`;
+
+const ChildWrapper = styled.div`
+  background: white;
+  flex: 1;
+`;
+
 // i18n
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
 
 interface InputProps {}
 
@@ -20,42 +39,43 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const UsersPage: SFC<Props & InjectedIntlProps> = ({ location, children, intl }) => {
-  const { formatMessage } = intl;
+export class UsersPage extends React.Component<Props> {
+  globalState: IGlobalStateService<IAdminNoPadding>;
 
-  const tabs = [
-    { label: formatMessage(messages.tabRegisteredUsers), url: '/admin/users/registered' },
-    { label: formatMessage(messages.tabInviteByEmail), url: '/admin/users/invitations' },
-  ];
+  constructor(props) {
+    super(props);
 
-  const resource = {
-    title: formatMessage(messages.viewPublicResource)
-  };
+    this.globalState = globalState.init('AdminNoPadding', { enabled: true });
+  }
 
-  if (!location) return null;
+  componentDidMount() {
+    this.globalState.set({ enabled: true });
+  }
 
-  return (
-    <>
-      <TabbedResource
-        resource={resource}
-        messages={messages}
-        tabs={tabs}
-        location={location}
-      >
+  componentWillUnmount() {
+    this.globalState.set({ enabled: false });
+  }
+
+  render () {
+    if (!this.props.location) return null;
+
+    return (
+      <>
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        {children}
-      </TabbedResource>
-    </>
-  );
-};
-
-const UsersPageWithIntl = injectIntl(UsersPage);
+        <Wrapper>
+          <LeftPanel />
+          <ChildWrapper>{this.props.children}</ChildWrapper>
+        </Wrapper>
+      </>
+    );
+  }
+}
 
 export default (inputProps: InputProps) => (
   <GetLocation>
-    {location => <UsersPageWithIntl {...inputProps} location={location} />}
+    {location => <UsersPage {...inputProps} location={location} />}
   </GetLocation>
 );
