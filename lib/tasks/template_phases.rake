@@ -45,13 +45,11 @@ namespace :fix_templates do
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
         Project.all.each do |pj|
-          # pj.presentation_mode = 'card' ####
           overlapping_phases = {}
           phase_stack = pj.phases.sort_by(&:start_at).reverse
           prev_phase = nil
           while !phase_stack.empty?
             cur_phase = phase_stack.pop
-            # cur_phase.presentation_mode = 'card' ####
             if prev_phase && (prev_phase.end_at == cur_phase.start_at) && (cur_phase.end_at != cur_phase.start_at)
               prev_phase.end_at = prev_phase.end_at - 1.day
               if prev_phase.save
