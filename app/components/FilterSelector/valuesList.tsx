@@ -71,7 +71,7 @@ const Overlay: any = styled.div`
     }
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     width: ${(props: any) => props.mobileMaxWidth ? props.mobileMaxWidth : '200px'};
     right: auto;
     left: -10px;

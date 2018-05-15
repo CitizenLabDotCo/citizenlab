@@ -51,6 +51,7 @@
   "app.components.MoreActions.buttonLabel": "Weitere Aktionen",
   "app.components.PagesShowPage.notFoundDescription": "Entschuldigen Sie, die angeforderte Seite konnte leider nicht gefunden werden",
   "app.components.PagesShowPage.notFoundTitle": "Seite nicht gefunden",
+  "app.components.Project.projectModeratorIndicator": "",
   "app.components.ProjectCard.idea": "{orgName, select, München {Mangel} other {Idee}}",
   "app.components.ProjectCard.ideas": "{orgName, select, München {Mängel} other {Ideen}}",
   "app.components.ProjectCard.openProjectButton": "Mehr entdecken",

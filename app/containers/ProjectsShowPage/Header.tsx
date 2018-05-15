@@ -215,7 +215,7 @@ class ProjectsShowPage extends React.PureComponent<Props, State> {
       const hasEvents = (events && events.length > 0);
 
       return (
-        <Container className={`${className} ${projectType}`}>
+        <Container className={`${className ? className : ''} ${projectType}`}>
           <HeaderImage src={projectHeaderImageLarge} />
           <HeaderOverlay />
           <ContentContainer>
