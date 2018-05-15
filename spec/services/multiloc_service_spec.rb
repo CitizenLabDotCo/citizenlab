@@ -5,7 +5,7 @@ describe MultilocService do
 
   before do
     settings = Tenant.current.settings
-    settings['core']['locales'] = ['fr','en','nl']
+    settings['core']['locales'] = ['fr-FR','en','nl-BE']
     Tenant.current.update(settings: settings)
   end
 
@@ -13,8 +13,8 @@ describe MultilocService do
 
     let(:user) {create(:user, locale: 'en')}
     let(:translations) {{
-      'nl' => 'woord',
-      'fr' => 'mot',
+      'nl-BE' => 'woord',
+      'fr-FR' => 'mot',
       'en' => 'word'
     }}
 
@@ -27,19 +27,19 @@ describe MultilocService do
     end
 
     it "falls back to i18n locale when there's no user" do
-      I18n.with_locale(:fr) do
+      I18n.with_locale(:'fr-FR') do
         expect(service.t(translations)).to eq 'mot'
       end
     end
 
     it "falls back to the first available tenant locale when the translations don't contain the requested" do
-      user.update(locale: 'de')
+      user.update(locale: 'de-DE')
       expect(service.t(translations, user)).to eq "mot"
     end
 
     it "falls back to the first available translation when no tenant locale is available" do
       translations = {
-        de: 'wort',
+        'de-DE': 'wort',
         pt: 'worto'
       }
       expect(service.t(translations, user)).to eq "wort"

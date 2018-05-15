@@ -2,15 +2,15 @@ FactoryBot.define do
   factory :project do
     title_multiloc {{
       "en" => "Renew West Parc",
-      "nl" => "Westpark vernieuwen"
+      "nl-BE" => "Westpark vernieuwen"
     }}
     description_multiloc {{
       "en" => "<p>Let's renew the parc at the city border and make it an enjoyable place for young and old.</p>",
-      "nl" => "<p>Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.</p>"
+      "nl-BE" => "<p>Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.</p>"
     }}
     description_preview_multiloc {{
       "en" => "Let's renew the parc at the city border and make it an enjoyable place for young and old.",
-      "nl" => "Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud."
+      "nl-BE" => "Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud."
     }}
     publication_status 'published'
 

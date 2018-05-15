@@ -116,12 +116,12 @@ RSpec.describe User, type: :model do
     before do
       tenant = Tenant.current
       settings = tenant.settings
-      settings['core']['locales'] = ["en","nl","fr"]
+      settings['core']['locales'] = ["en","nl-BE","fr-FR"]
       tenant.update!(settings: settings)
     end
 
     it "is valid when it's one of the tenant locales" do
-      user = build(:user, locale: "nl")
+      user = build(:user, locale: "nl-BE")
       expect(user).to be_valid
     end
 

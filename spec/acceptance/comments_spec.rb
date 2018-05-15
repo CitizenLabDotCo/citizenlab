@@ -104,7 +104,7 @@ resource "Comments" do
       end
 
       describe do
-        let(:body_multiloc) { {"fr" => ""} }
+        let(:body_multiloc) { {"fr-FR" => ""} }
 
         example_request "[error] Create an invalid comment" do
           expect(response_status).to eq 422

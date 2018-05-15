@@ -5,7 +5,7 @@ FactoryBot.define do
     parent nil
     body_multiloc {{
       "en" => "<p>I think this is a very good idea!</p>",
-      "nl" => "<p>Geweldig idee!</p>"
+      "nl-BE" => "<p>Geweldig idee!</p>"
     }}
   end
 
@@ -15,7 +15,7 @@ FactoryBot.define do
     parent :comment
     body_multiloc {{
       "en" => "<p>After some more thinking, there are some issues actually ...!</p>",
-      "nl" => "<p>Na een nachtje slapen moet ik toegeven dat er toch nog wel problemen mee zijn</p>"
+      "nl-BE" => "<p>Na een nachtje slapen moet ik toegeven dat er toch nog wel problemen mee zijn</p>"
     }}
   end
 end

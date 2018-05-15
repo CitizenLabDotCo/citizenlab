@@ -28,11 +28,11 @@ describe TenantTemplateService do
             core: {
               allowed: true,
               enabled: true,
-              locales: ['en','nl','fr','de'],
+              locales: ['en','nl-BE','fr','de'],
               organization_type: 'medium_city',
               organization_name: {
                 "en" => Faker::Address.city,
-                "nl" => Faker::Address.city,
+                "nl-BE" => Faker::Address.city,
                 "fr" => Faker::Address.city,
                 "de" => Faker::Address.city
               },

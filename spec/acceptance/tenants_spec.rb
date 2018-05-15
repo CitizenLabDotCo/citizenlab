@@ -47,8 +47,8 @@ resource "Tenants" do
         "core" => {
           "organization_name" => {
             "en" => "TestTown",
-            "nl" => "TestTowm",
-            "fr" => "TestTown"
+            "nl-BE" => "TestTowm",
+            "fr-FR" => "TestTown"
           }
         }
       }
