@@ -522,6 +522,7 @@
   "app.containers.NotificationMenu.loading": "Laster inn varsler...",
   "app.containers.NotificationMenu.mentionInComment": "{name} nevnte deg i en kommentar",
   "app.containers.NotificationMenu.noNotifications": "Du har ingen varsler ennå",
+  "app.containers.NotificationMenu.projectModerationRightsReceived": "",
   "app.containers.NotificationMenu.statusChangedOfYourIdea": "'{ideaTitle}' statusen er endret til {status}",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} accepted your invitation",
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "{name} kommenterte på idéen din",
