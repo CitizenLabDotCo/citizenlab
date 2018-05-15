@@ -7,7 +7,7 @@ import { darken, rgba, readableColor } from 'polished';
 import { color } from 'utils/styleUtils';
 
 import Spinner from 'components/UI/Spinner';
-import Icon, { IconNames } from 'components/UI/Icon';
+import Icon, { Props as IconProps } from 'components/UI/Icon';
 
 const StyledButton = styled.button``;
 const StyledLink = styled(Link)``;
@@ -236,7 +236,8 @@ type Props = {
   height?: string | undefined;
   padding?: string | undefined;
   justify?: 'left' | 'center' | 'right' | undefined;
-  icon?: IconNames;
+  icon?: IconProps['name'];
+  iconTitle?: IconProps['title'];
   processing?: boolean;
   disabled?: boolean;
   fullWidth?: boolean;
