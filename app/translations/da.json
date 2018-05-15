@@ -51,6 +51,7 @@
   "app.components.MoreActions.buttonLabel": "Flere handlinger",
   "app.components.PagesShowPage.notFoundDescription": "Den anmodede side kunne ikke findes",
   "app.components.PagesShowPage.notFoundTitle": "Side ikke fundet",
+  "app.components.Project.projectModeratorIndicator": "",
   "app.components.ProjectCard.idea": "idé",
   "app.components.ProjectCard.ideas": "ideer",
   "app.components.ProjectCard.openProjectButton": "Opdag mere",

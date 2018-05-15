@@ -51,6 +51,7 @@
   "app.components.MoreActions.buttonLabel": "Plus d’options",
   "app.components.PagesShowPage.notFoundDescription": "La page demandée est introuvable",
   "app.components.PagesShowPage.notFoundTitle": "Page introuvable",
+  "app.components.Project.projectModeratorIndicator": "",
   "app.components.ProjectCard.idea": "idée",
   "app.components.ProjectCard.ideas": "idées",
   "app.components.ProjectCard.openProjectButton": "En savoir plus",

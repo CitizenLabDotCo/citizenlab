@@ -57,7 +57,7 @@ export const media = {
     }
   `,
   biggerThanMaxTablet: (style: any, ...args) => css`
-    @media (min-width: 1024px) {
+    @media (min-width: 1025px) {
       ${css(style, ...args)}
     }
   `,

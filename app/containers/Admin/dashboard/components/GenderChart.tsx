@@ -45,6 +45,10 @@ class GenderChart extends React.PureComponent<Props & InjectedIntlProps, State> 
     }
   }
 
+  componentWillUnmount() {
+    this.subscription.unsubscribe();
+  }
+
   convertToGraphFormat = (serie: {[key: string]: number}) => {
     return map(serie, (value, key) => ({
       value,
