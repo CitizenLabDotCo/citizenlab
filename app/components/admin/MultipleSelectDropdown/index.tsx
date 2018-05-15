@@ -152,7 +152,7 @@ interface Props {
   choices: choiceItem[];
   messages: {dropdownFooterMessage: Message};
   onSubmit: (ids: string[]) => void;
-  children?: JSX.Element;
+  children: JSX.Element;
 }
 
 interface State {
