@@ -402,7 +402,6 @@
   "app.containers.AdminPage.groups.create.buttonSave": "Gem",
   "app.containers.AdminPage.groups.create.buttonSuccess": "Succes",
   "app.containers.AdminPage.groups.create.creationFormTitle": "Opret en ny gruppe",
-  "app.containers.AdminPage.groups.create.dropdownFooterMessage": "",
   "app.containers.AdminPage.groups.create.messageError": "Der opstod en fejl ved oprettelse af din gruppe",
   "app.containers.AdminPage.groups.create.messageSuccess": "Din gruppe er blevet oprettet",
   "app.containers.AdminPage.groups.list.addGroupButton": "Tilføj en gruppe",

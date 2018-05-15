@@ -402,7 +402,6 @@
   "app.containers.AdminPage.groups.create.buttonSave": "Lagre",
   "app.containers.AdminPage.groups.create.buttonSuccess": "Suksess",
   "app.containers.AdminPage.groups.create.creationFormTitle": "Opprett en ny gruppe",
-  "app.containers.AdminPage.groups.create.dropdownFooterMessage": "",
   "app.containers.AdminPage.groups.create.messageError": "Det oppsto en feil ved oppretting av gruppen din",
   "app.containers.AdminPage.groups.create.messageSuccess": "Gruppen din har blitt opprettet",
   "app.containers.AdminPage.groups.list.addGroupButton": "Legg til en gruppe",
