@@ -1,5 +1,5 @@
 // Libraries
-import * as React from 'react';
+import React from 'react';
 import * as Rx from 'rxjs/Rx';
 import { isString, reject } from 'lodash';
 
@@ -138,7 +138,6 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
   }
 
   render() {
-    const { location } = this.props;
     const { projectId } = this.props.params;
     const { project, loaded } = this.state;
     const { formatMessage } = this.props.intl;
@@ -147,7 +146,6 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
       const { children } = this.props;
       const childrenWithExtraProps = React.cloneElement(children as React.ReactElement<any>, { project });
       const tabbedProps = {
-        location,
         resource: {
           title: project ? project.attributes.title_multiloc : formatMessage(messages.addNewProject),
           publicLink: project ? `/projects/${project.id}` : ''
