@@ -17,6 +17,7 @@ module.exports = {
     // vote
     browser
     .waitForElementVisible('#e2e-ideas-list')
+    .execute('var votecControls = document.getElementsByClassName("e2e-vote-controls");votecControls[0].scrollIntoView(true);')
     .click('#e2e-ideas-list .e2e-voting-enabled .downvote')
     .pause(1000)
     .waitForElementVisible('.e2e-vote-controls.down')
