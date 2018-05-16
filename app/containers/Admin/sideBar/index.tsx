@@ -73,13 +73,31 @@ const MenuItem: any = styled(Link)`
     ${Text} {
       color: #fff;
     };
+    .cl-icon {
+      .cl-icon-primary {
+        fill: ${colors.clIconAccent}
+      }
+      .cl-icon-accent {
+        fill: ${colors.clIconPrimary}
+      }
+    };
   }
+
 
   ${(props: any) => props.active && css`
     background: rgba(0, 0, 0, 0.2);
 
     ${Text} {
       color: #fff;
+    };
+
+    .cl-icon {
+      .cl-icon-primary {
+        fill: ${colors.clIconAccent}
+      }
+      .cl-icon-accent {
+        fill: ${colors.clIconPrimary}
+      }
     };
   `}
 `;
