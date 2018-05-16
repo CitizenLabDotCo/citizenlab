@@ -1,11 +1,9 @@
 import React from 'react';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
 import GroupsListPanel from './GroupsListPanel';
-
-// resources
-import GetLocation, { GetLocationChildProps } from 'resources/GetLocation';
 
 // Global state
 import { globalState, IAdminNoPadding, IGlobalStateService } from 'services/globalState';
@@ -32,20 +30,13 @@ const ChildWrapper = styled.div`
 // i18n
 import messages from './messages';
 
-interface InputProps {}
+interface Props {}
 
-interface DataProps {
-  location: GetLocationChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-export class UsersPage extends React.Component<Props> {
+class UsersPage extends React.Component<Props & WithRouterProps> {
   globalState: IGlobalStateService<IAdminNoPadding>;
 
-  constructor(props) {
+  constructor(props: Props & WithRouterProps) {
     super(props);
-
     this.globalState = globalState.init('AdminNoPadding', { enabled: true });
   }
 
@@ -75,8 +66,4 @@ export class UsersPage extends React.Component<Props> {
   }
 }
 
-export default (inputProps: InputProps) => (
-  <GetLocation>
-    {location => <UsersPage {...inputProps} location={location} />}
-  </GetLocation>
-);
+export default withRouter<Props>(UsersPage);
