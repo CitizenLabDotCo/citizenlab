@@ -129,6 +129,8 @@
   "app.components.admin.UserFilterConditions.predicate_not_is_checked": "is not checked",
   "app.components.admin.UserFilterConditions.predicate_not_is_empty": "is not empty",
   "app.components.admin.UserFilterConditions.predicate_not_is_equal": "is not",
+  "app.components.admin.pagination.back": "Back",
+  "app.components.admin.pagination.next": "Next",
   "app.containers.Admin.User.GroupsPanel.allUsers": "All users",
   "app.containers.Admin.User.GroupsPanel.groupsTitle": "Groups",
   "app.containers.Admin.User.admin": "Admin",
