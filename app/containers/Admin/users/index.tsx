@@ -4,6 +4,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 // components
 import HelmetIntl from 'components/HelmetIntl';
 import GroupsListPanel from './GroupsListPanel';
+import Modal from 'components/UI/Modal';
 
 // Global state
 import { globalState, IAdminNoPadding, IGlobalStateService } from 'services/globalState';
@@ -48,6 +49,10 @@ class UsersPage extends React.Component<Props & WithRouterProps> {
     this.globalState.set({ enabled: false });
   }
 
+  openGroupCreationModal() {
+
+  }
+
   render () {
     if (!this.props.location) return null;
 
@@ -58,7 +63,7 @@ class UsersPage extends React.Component<Props & WithRouterProps> {
           description={messages.helmetDescription}
         />
         <Wrapper>
-          <LeftPanel />
+          <LeftPanel onCreateGroup={this.openGroupCreationModal} />
           <ChildWrapper>{this.props.children}</ChildWrapper>
         </Wrapper>
       </>
