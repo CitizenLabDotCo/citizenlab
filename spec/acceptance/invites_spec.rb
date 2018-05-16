@@ -264,6 +264,7 @@ resource "Invites" do
         boulettos = json_response.dig(:included).select{|inc| inc[:id] == @invite.invitee.id}&.first
         expect(boulettos&.dig(:attributes,:last_name)).to eq('Boulettos')
         expect(boulettos&.dig(:attributes,:invite_status)).to eq('accepted')
+        expect(@invite.reload.invitee.registration_completed_at).to be_present  # when no custom fields
       end
 
       example "Accepting an invite with an invalid token" do
