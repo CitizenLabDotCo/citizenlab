@@ -17,14 +17,14 @@ export class HelmetIntl extends React.PureComponent<Props & InjectedIntlProps, S
     const { title, description } = this.props;
 
     return (
-      <div>
+      <>
         <Helmet
           title={formatMessage(title)}
           meta={[
             { name: 'description', content: formatMessage(description) },
           ]}
         />
-      </div>
+      </>
     );
   }
 }
