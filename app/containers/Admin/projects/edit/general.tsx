@@ -769,7 +769,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                   <Label>
                     <FormattedMessage {...messages.deleteProjectLabel} />
                   </Label>
-                  <SemButton color="red" onClick={this.deleteProject} disabled={projectData.attributes.internal_role === 'open_idea_box'}>
+                  <SemButton type="button" color="red" onClick={this.deleteProject} disabled={projectData.attributes.internal_role === 'open_idea_box'}>
                     <SemIcon name="trash" />
                     <FormattedMessage {...messages.deleteProjectButton} />
                   </SemButton>
@@ -781,7 +781,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
             <SubmitWrapper
               loading={processing}
               status={submitState}
-              onClick={this.onSubmit}
               messages={{
                 buttonSave: messages.saveProject,
                 buttonSuccess: messages.saveSuccess,
