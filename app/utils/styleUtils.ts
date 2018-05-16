@@ -91,7 +91,11 @@ export const colors = {
   clBlueLighter: '#80CFD8',
   clBlueLight: '#40B8C5',
   placeholderBg: '#CFD6DB',
-  clBlue2Darkest: '#044D6C'
+  clBlue2Darkest: '#044D6C',
+  clIconPrimary: '#00577C',
+  clIconSecondary:'#84939E',
+  clIconAccent:'#01A1B1',
+  clIconBackground:'rgba(1, 161, 177, 0.07)',
 };
 
 export function color(name: keyof typeof colors) {
