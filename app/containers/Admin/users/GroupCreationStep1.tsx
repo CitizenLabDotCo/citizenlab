@@ -67,18 +67,18 @@ export class GroupCreationStep1 extends React.PureComponent<Props, State> {
     return (
       <TypesWrapper>
         <GroupType>
-          <GroupIcon></GroupIcon>
+          <GroupIcon />
           <GroupName></GroupName>
           <GroupDescription></GroupDescription>
           <MoreInfoLink></MoreInfoLink>
-          <Step2Button></Step2Button>
+          <Step2Button />
         </GroupType>
         <GroupType>
-          <GroupIcon></GroupIcon>
+          <GroupIcon />
           <GroupName></GroupName>
           <GroupDescription></GroupDescription>
           <MoreInfoLink></MoreInfoLink>
-          <Step2Button></Step2Button>
+          <Step2Button />
         </GroupType>
       </TypesWrapper>
     );
