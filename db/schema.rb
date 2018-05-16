@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180423123634) do
+ActiveRecord::Schema.define(version: 20180516143348) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -312,7 +312,7 @@ ActiveRecord::Schema.define(version: 20180423123634) do
     t.integer "voting_limited_max", default: 10
     t.string "survey_embed_url"
     t.string "survey_service"
-    t.string "presentation_mode", default: "card", null: false
+    t.string "presentation_mode", default: "card"
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -344,7 +344,7 @@ ActiveRecord::Schema.define(version: 20180423123634) do
     t.integer "ideas_count", default: 0, null: false
     t.string "visible_to", default: "public", null: false
     t.jsonb "description_preview_multiloc", default: {}
-    t.string "presentation_mode", default: "card", null: false
+    t.string "presentation_mode", default: "card"
     t.string "participation_method", default: "ideation"
     t.boolean "posting_enabled", default: true
     t.boolean "commenting_enabled", default: true
