@@ -41,15 +41,6 @@ const IconWrapper = styled.div`
   justify-content: center;
 `;
 
-const StyledIcon = styled(Icon)`
-  height: 20px;
-  max-width: 30px;
-  fill: #fff;
-
-  &.idea {
-    height: 21px;
-  }
-`;
 
 const Text = styled.div`
   color: ${colors.adminLightText};
@@ -127,43 +118,35 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
       {
         id: 'dashboard',
         link: '/admin',
-        iconName: 'analytics',
+        iconName: 'stats',
         message: 'dashboard',
         isActive: (pathname) => (pathname === '/admin'),
       },
       {
         id: 'users',
         link: '/admin/users',
-        iconName: 'people',
+        iconName: 'users',
         message: 'users',
         isActive: (pathName) => (pathName.startsWith('/admin/users'))
       },
       {
-        id: 'groups',
-        link: '/admin/groups',
-        iconName: 'groups',
-        message: 'groups',
-        featureName: 'groups',
-        isActive: (pathName) => (pathName.startsWith('/admin/groups'))
-      },
-      {
-        id: 'ideas',
-        link: '/admin/ideas',
-        iconName: 'idea',
-        message: 'ideas',
-        isActive: (pathName) => (pathName.startsWith('/admin/ideas'))
-      },
-      {
         id: 'projects',
         link: '/admin/projects',
-        iconName: 'project',
+        iconName: 'folder',
         message: 'projects',
         isActive: (pathName) => (pathName.startsWith('/admin/projects'))
       },
       {
+        id: 'ideas',
+        link: '/admin/ideas',
+        iconName: 'ideas',
+        message: 'ideas',
+        isActive: (pathName) => (pathName.startsWith('/admin/ideas'))
+      },
+      {
         id: 'settings',
         link: '/admin/settings/general',
-        iconName: 'settings',
+        iconName: 'setting',
         message: 'settings',
         isActive: (pathName) => (pathName.startsWith('/admin/settings'))
       },
@@ -208,9 +191,9 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
             <FeatureFlag name={route.featureName} key={route.id}>
               <li>
                 <MenuItem active={route.isActive(pathname)} to={route.link}>
-                    <IconWrapper><StyledIcon name={route.iconName} /></IconWrapper>
+                    <IconWrapper><Icon name={route.iconName} /></IconWrapper>
                     <Text>{formatMessage({ ...messages[route.message] })}</Text>
-                  {route.isActive(pathname) && <StyledIcon name="arrowLeft" className="arrow" />}
+                  {route.isActive(pathname) && <Icon name="arrowLeft" />}
                 </MenuItem>
               </li>
             </FeatureFlag>
