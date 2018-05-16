@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { isFunction, isBoolean, isString } from 'lodash';
 import { browserHistory } from 'react-router';
@@ -137,8 +137,8 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   private el: HTMLDivElement;
   private ModalPortal = document.getElementById('modal-portal');
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props: Props & ITracks) {
+    super(props);
     this.unlisten = null;
     this.goBackUrl = null;
     this.el = document.createElement('div');

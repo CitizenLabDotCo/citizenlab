@@ -211,4 +211,12 @@ export default defineMessages({
     id: 'app.containers.Admin.User.unknownError',
     defaultMessage: 'Something went wrong. Please try again later.',
   },
+  allUsers: {
+    id: 'app.containers.Admin.User.GroupsPanel.allUsers',
+    defaultMessage: 'All users',
+  },
+  groupsTitle: {
+    id: 'app.containers.Admin.User.GroupsPanel.groupsTitle',
+    defaultMessage: 'Groups',
+  },
 });
