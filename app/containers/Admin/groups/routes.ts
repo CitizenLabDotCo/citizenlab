@@ -14,5 +14,9 @@ export default () => ({
       name: 'admin groups single group',
       getComponent: loadAndRender(import('./edit')),
     },
+    {
+      path: '/admin/groups/poc-conditions',
+      getComponent: loadAndRender(import('components/admin/UserFilterConditions/TestWrapper')),
+    },
   ],
 });
