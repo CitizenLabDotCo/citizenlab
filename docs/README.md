@@ -5,6 +5,7 @@
 ### Fixed
 - Phases are now correctly active during the day specified in their end date
 - On the new idea page, the continue button is now shown at all resolutions
+- On the idea list the order-by dropdown is now correctly displayed at all resolutions.
 
 ### Added
 - Project moderators can be specified in project permissions, giving them admin and moderation capabilities within that project only
