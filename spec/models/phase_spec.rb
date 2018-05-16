@@ -31,6 +31,20 @@ RSpec.describe Phase, type: :model do
     end
   end
 
+  describe "participation_mode" do
+    it "can be null for non-ideation phases" do 
+      p = create(:phase, participation_method: 'information')
+      p.presentation_mode = nil
+      expect(p.save).to eq true
+    end
+
+    it "cannot be null for ideation phases" do 
+      p = create(:phase, participation_method: 'ideation')
+      p.presentation_mode = nil
+      expect(p.save).to eq false
+    end
+  end
+
   describe "project validation" do
     it "succeeds when the associated project is a timeline project" do
       phase = build(:phase, project: build(:project, process_type: 'timeline'))
