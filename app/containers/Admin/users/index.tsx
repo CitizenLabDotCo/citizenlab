@@ -1,61 +1,68 @@
-import React, { SFC } from 'react';
+import React from 'react';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
-import TabbedResource from 'components/admin/TabbedResource';
+import GroupsListPanel from './GroupsListPanel';
 
-// resources
-import GetLocation, { GetLocationChildProps } from 'resources/GetLocation';
+// Global state
+import { globalState, IAdminNoPadding, IGlobalStateService } from 'services/globalState';
+
+// Styling
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  align-items: stretch;
+  display: flex;
+  flex-wrap: nowrap;
+`;
+
+const LeftPanel = styled(GroupsListPanel)`
+  flex: 0 0 320px;
+`;
+
+const ChildWrapper = styled.div`
+  background: white;
+  flex: 1;
+`;
 
 // i18n
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
 
-interface InputProps {}
+interface Props {}
 
-interface DataProps {
-  location: GetLocationChildProps;
-}
+class UsersPage extends React.Component<Props & WithRouterProps> {
+  globalState: IGlobalStateService<IAdminNoPadding>;
 
-interface Props extends InputProps, DataProps {}
+  constructor(props: Props & WithRouterProps) {
+    super(props);
+    this.globalState = globalState.init('AdminNoPadding', { enabled: true });
+  }
 
-const UsersPage: SFC<Props & InjectedIntlProps> = ({ location, children, intl }) => {
-  const { formatMessage } = intl;
+  componentDidMount() {
+    this.globalState.set({ enabled: true });
+  }
 
-  const tabs = [
-    { label: formatMessage(messages.tabRegisteredUsers), url: '/admin/users/registered' },
-    { label: formatMessage(messages.tabInviteByEmail), url: '/admin/users/invitations' },
-  ];
+  componentWillUnmount() {
+    this.globalState.set({ enabled: false });
+  }
 
-  const resource = {
-    title: formatMessage(messages.viewPublicResource)
-  };
+  render () {
+    if (!this.props.location) return null;
 
-  if (!location) return null;
-
-  return (
-    <>
-      <TabbedResource
-        resource={resource}
-        messages={messages}
-        tabs={tabs}
-        location={location}
-      >
+    return (
+      <>
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        {children}
-      </TabbedResource>
-    </>
-  );
-};
+        <Wrapper>
+          <LeftPanel />
+          <ChildWrapper>{this.props.children}</ChildWrapper>
+        </Wrapper>
+      </>
+    );
+  }
+}
 
-const UsersPageWithIntl = injectIntl(UsersPage);
-
-export default (inputProps: InputProps) => (
-  <GetLocation>
-    {location => <UsersPageWithIntl {...inputProps} location={location} />}
-  </GetLocation>
-);
+export default withRouter<Props>(UsersPage);

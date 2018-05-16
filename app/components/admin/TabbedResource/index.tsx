@@ -1,5 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { isString } from 'lodash';
+import { Link, withRouter, WithRouterProps } from 'react-router';
 
 // style
 import styled from 'styled-components';
@@ -13,7 +14,6 @@ import T from 'components/T';
 import { Message, Multiloc } from 'typings';
 
 // components
-import { Link } from 'react-router';
 import FeatureFlag from 'components/FeatureFlag';
 import Button from 'components/UI/Button';
 
@@ -99,9 +99,6 @@ export type TabProps = {
 };
 
 type Props = {
-  location?: {
-    pathname: string,
-  },
   resource: {
     title: string | Multiloc,
     publicLink?: string,
@@ -134,10 +131,7 @@ function showLabel(label: string | Multiloc | Message) {
   }
 }
 
-export default class TabbedResource extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props as any);
-  }
+class TabbedResource extends React.PureComponent<Props & WithRouterProps, State> {
 
   render() {
     const { children, resource, messages, tabs, location } = this.props;
@@ -181,3 +175,5 @@ export default class TabbedResource extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export default withRouter(TabbedResource);
