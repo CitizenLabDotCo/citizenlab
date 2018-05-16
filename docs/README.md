@@ -1,5 +1,27 @@
 # Changelog
 
+## 2018-05-16
+
+### Fixed
+- Phases are now correctly active during the day specified in their end date
+- On the new idea page, the continue button is now shown at all resolutions
+
+### Added
+- Project moderators can be specified in project permissions, giving them admin and moderation capabilities within that project only
+   - Moderators can access all admin settings of their projects
+   - Moderators can see they are moderating certain projects through icons
+   - Moderators can edit/delete ideas and delete comments in their projects
+- A correct meta description tag for SEO is now rendered
+- The platforms now render sitemaps at sitemap.xml
+- It is now possible to define the default view (map/cards) for every phase individually
+- The tenant can now be configured with an extra `lifecycle_stage` property, visible in Admin HQ.
+- Downloading ideas and comments xlsx from admin is now tracked with events
+- The fragment system, to experiment with custom content per tenant, now also covers custom project descriptions, pages and individual ideas
+
+### Changed
+- It is no longer possible to define phases with overlapping dates
+- Initial loading speed of the platform has improved
+
 ## 2018-04-30
 
 ### Fixed
