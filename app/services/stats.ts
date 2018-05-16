@@ -8,6 +8,10 @@ export interface IUsersByGender {
   [key: string]: number;
 }
 
+export interface IUsersCount {
+  count: number;
+}
+
 export interface IUsersByBirthyear{
   [key: string]: number;
 }
@@ -33,6 +37,10 @@ export interface IIdeasByTopic{
 
 export function usersByGenderStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsersByGender>({ apiEndpoint: `${apiEndpoint}/users_by_gender`, ...streamParams });
+}
+
+export function usersCount(streamParams: IStreamParams | null = null) {
+  return streams.get<IUsersCount>({ apiEndpoint: `${apiEndpoint}/users_count`, ...streamParams });
 }
 
 export function usersByBirthyearStream(streamParams: IStreamParams | null = null) {
