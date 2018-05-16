@@ -129,6 +129,8 @@
   "app.components.admin.UserFilterConditions.predicate_not_is_checked": "",
   "app.components.admin.UserFilterConditions.predicate_not_is_empty": "",
   "app.components.admin.UserFilterConditions.predicate_not_is_equal": "",
+  "app.containers.Admin.User.GroupsPanel.allUsers": "",
+  "app.containers.Admin.User.GroupsPanel.groupsTitle": "",
   "app.containers.Admin.User.admin": "Administrator",
   "app.containers.Admin.User.adminLabel": "Möchten Sie den eingeladenen Personen Administrator-Rechte geben?",
   "app.containers.Admin.User.confirmDelete": "Ja, ich bin mir sicher.",
