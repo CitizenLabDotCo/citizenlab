@@ -219,4 +219,12 @@ export default defineMessages({
     id: 'app.containers.Admin.User.GroupsPanel.groupsTitle',
     defaultMessage: 'Groups',
   },
+  emptyGroup: {
+    id: 'app.containers.AdminPage.Users.GroupsPanel.emptyGroup',
+    defaultMessage: 'There is no users in this group yet',
+  },
+  goToAllUsers: {
+    id: 'app.containers.AdminPage.Users.GroupsPanel.goToAllUsers',
+    defaultMessage: 'Go on the {allUsersLink} tab to move users manually.',
+  },
 });

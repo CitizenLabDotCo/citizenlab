@@ -423,6 +423,8 @@
   "app.containers.AdminPage.SideBar.users": "Brukere",
   "app.containers.AdminPage.User.tabInviteByEmail": "Invitations",
   "app.containers.AdminPage.User.tabRegisteredUsers": "Registered users",
+  "app.containers.AdminPage.Users.GroupsPanel.emptyGroup": "",
+  "app.containers.AdminPage.Users.GroupsPanel.goToAllUsers": "",
   "app.containers.AdminPage.group.edit.addUser": "Legg til bruker(e)",
   "app.containers.AdminPage.group.edit.deleteConfirmMessage": "Er du sikker på at du ønsker å fjerne dette medlemmet fra gruppen?",
   "app.containers.AdminPage.group.edit.deleteLabel": "Fjern",

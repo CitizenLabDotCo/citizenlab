@@ -423,6 +423,8 @@
   "app.containers.AdminPage.SideBar.users": "Benutzer",
   "app.containers.AdminPage.User.tabInviteByEmail": "Einladungen",
   "app.containers.AdminPage.User.tabRegisteredUsers": "Registrierte Nutzer",
+  "app.containers.AdminPage.Users.GroupsPanel.emptyGroup": "",
+  "app.containers.AdminPage.Users.GroupsPanel.goToAllUsers": "",
   "app.containers.AdminPage.group.edit.addUser": "Benutzer hinzufügen",
   "app.containers.AdminPage.group.edit.deleteConfirmMessage": "Sind Sie sicher, dass Sie dieses Mitglied aus der Gruppe entfernen möchten?",
   "app.containers.AdminPage.group.edit.deleteLabel": "Entfernen",

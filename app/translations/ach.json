@@ -423,6 +423,8 @@
   "app.containers.AdminPage.SideBar.users": "crwdns15695:0crwdne15695:0",
   "app.containers.AdminPage.User.tabInviteByEmail": "crwdns18558:0crwdne18558:0",
   "app.containers.AdminPage.User.tabRegisteredUsers": "crwdns18559:0crwdne18559:0",
+  "app.containers.AdminPage.Users.GroupsPanel.emptyGroup": "",
+  "app.containers.AdminPage.Users.GroupsPanel.goToAllUsers": "",
   "app.containers.AdminPage.group.edit.addUser": "crwdns17993:0crwdne17993:0",
   "app.containers.AdminPage.group.edit.deleteConfirmMessage": "crwdns17994:0crwdne17994:0",
   "app.containers.AdminPage.group.edit.deleteLabel": "crwdns17995:0crwdne17995:0",
