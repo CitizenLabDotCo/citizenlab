@@ -91,6 +91,12 @@ const MembersCount = styled.span`
   margin-left: 1rem;
 `;
 
+const LightningBolt = styled(Icon)`
+  .cl-icon-background {
+    fill: none;
+  }
+`;
+
 // Typings
 export interface InputProps {
   className?: string;
@@ -120,7 +126,7 @@ export class GroupsListPanel extends React.PureComponent<InputProps & GetGroupsC
         {!isNilOrError(this.props.groupsList) && this.props.groupsList.map((group) => (
           <li key={group.id}>
             <MenuLink to={`/admin/users/${group.id}`} activeClassName="active">
-              {group.attributes.membership_type === 'rules' && <Icon name="shield" />}
+              {group.attributes.membership_type === 'rules' && <LightningBolt name="lightingBolt" />}
               <GroupName><T value={group.attributes.title_multiloc} /></GroupName>
               <MembersCount>{group.attributes.memberships_count}</MembersCount>
             </MenuLink>
