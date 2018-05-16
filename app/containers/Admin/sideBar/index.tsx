@@ -140,7 +140,7 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
       },
       {
         id: 'users',
-        link: '/admin/users/registered',
+        link: '/admin/users',
         iconName: 'people',
         message: 'users',
         isActive: (pathName) => (pathName.startsWith('/admin/users'))
