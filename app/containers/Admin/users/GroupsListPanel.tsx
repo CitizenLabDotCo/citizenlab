@@ -92,6 +92,9 @@ const MembersCount = styled.span`
 `;
 
 const LightningBolt = styled(Icon)`
+  height: 2rem;
+  width: 2rem;
+
   .cl-icon-background {
     fill: none;
   }
