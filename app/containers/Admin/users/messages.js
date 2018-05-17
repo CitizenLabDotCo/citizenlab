@@ -231,4 +231,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupsPanel.goToAllUsers',
     defaultMessage: 'Go on the {allUsersLink} tab to move users manually.',
   },
+  selectAll: {
+    id: 'app.containers.AdminPage.Users.GroupsPanel.selectAll',
+    defaultMessage: 'Select all',
+  },
+  xUsers: {
+    id: 'app.containers.AdminPage.Users.GroupsPanel.xUsers',
+    defaultMessage: '',
+  },
 });
