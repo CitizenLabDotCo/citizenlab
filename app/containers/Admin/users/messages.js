@@ -227,4 +227,24 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupsPanel.goToAllUsers',
     defaultMessage: 'Go on the {allUsersLink} tab to move users manually.',
   },
+  step1TypeNameNormal: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeNameNormal',
+    defaultMessage: 'Normal group',
+  },
+  step1TypeNameSmart: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeNameSmart',
+    defaultMessage: 'Smart group',
+  },
+  step1TypeDescriptionNormal: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionNormal',
+    defaultMessage: 'You have to add users manually to the group.',
+  },
+  step1TypeDescriptionSmart: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionSmart',
+    defaultMessage: 'A smart group add continually and automatically users based on specific conditions you setup.',
+  },
+  step1ReadMore: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1ReadMore',
+    defaultMessage: 'Read More',
+  },
 });
