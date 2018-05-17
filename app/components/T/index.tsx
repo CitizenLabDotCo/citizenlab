@@ -8,9 +8,14 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 import { Map } from 'immutable';
 
+// utils
+import { truncate } from 'utils/textUtils';
+
 type Props = {
   value: Multiloc | Map<string,string>;
   as?: string;
+  truncate?: number;
+  className?: string;
 };
 
 type State = {
@@ -19,7 +24,7 @@ type State = {
 };
 
 export default class T extends React.PureComponent<Props, State> {
-  
+
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -54,14 +59,14 @@ export default class T extends React.PureComponent<Props, State> {
 
     if (locale && currentTenantLocales) {
       const { value } = this.props;
-      const localizedText = getLocalized(value, locale, currentTenantLocales);
+      const localizedText = truncate(getLocalized(value, locale, currentTenantLocales), this.props.truncate);
 
       if (this.props.as) {
-        return React.createElement(this.props.as, { dangerouslySetInnerHTML: { __html: localizedText } });
+        return React.createElement(this.props.as, { className: this.props.className, dangerouslySetInnerHTML: { __html: localizedText } });
       }
 
       return (
-        <span dangerouslySetInnerHTML={{ __html: localizedText }} />
+        <span className={this.props.className} dangerouslySetInnerHTML={{ __html: localizedText }} />
       );
     }
 
