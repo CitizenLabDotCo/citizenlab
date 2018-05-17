@@ -25,12 +25,12 @@ const GroupType = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding: 85px 65px;
+  padding: 85px 60px;
   align-items: center;
 
   .groupName {
     font-size: ${fontSize('xl')};
-    font-weight: 400;
+    font-weight: bold;
     text-align: center;
   }
 
@@ -38,11 +38,19 @@ const GroupType = styled.div`
     flex: 1;
     text-align: center;
   }
+
+  &.manual {
+    background: ${colors.lightGreyishBlue};
+  }
+  &.rules {
+    background: ${colors.background};
+  }
 `;
 
 const GroupIcon = styled(Icon)`
   width: 4.5rem;
   height: 4.5rem;
+  margin-bottom: 1rem;
 
   .cl-icon-primary {
     fill: ${colors.adminTextColor};
@@ -80,7 +88,7 @@ export class GroupCreationStep1 extends React.PureComponent<Props, State> {
   render() {
     return (
       <TypesWrapper>
-        <GroupType>
+        <GroupType className="manual">
           <GroupIcon name="database" />
           <p className="groupName">
             <FormattedMessage {...messages.step1TypeNameNormal} />
@@ -89,9 +97,11 @@ export class GroupCreationStep1 extends React.PureComponent<Props, State> {
             <FormattedMessage {...messages.step1TypeDescriptionNormal} />
           </p>
           <MoreInfoLink to=""><FormattedMessage {...messages.step1ReadMore} /></MoreInfoLink>
-          <Step2Button onClick={this.createStep2Handler('manual')} circularCorners={false} />
+          <Step2Button onClick={this.createStep2Handler('manual')} circularCorners={false}>
+            <FormattedMessage {...messages.step1CreateButtonNormal} />
+          </Step2Button>
         </GroupType>
-        <GroupType>
+        <GroupType className="rules">
           <GroupIcon name="lightingBolt" />
           <p className="groupName">
             <FormattedMessage {...messages.step1TypeNameSmart} />
@@ -100,7 +110,9 @@ export class GroupCreationStep1 extends React.PureComponent<Props, State> {
             <FormattedMessage {...messages.step1TypeDescriptionSmart} />
           </p>
           <MoreInfoLink to=""><FormattedMessage {...messages.step1ReadMore} /></MoreInfoLink>
-          <Step2Button onClick={this.createStep2Handler('rules')} circularCorners={false} />
+          <Step2Button onClick={this.createStep2Handler('rules')} circularCorners={false}>
+            <FormattedMessage {...messages.step1CreateButtonSmart} />
+          </Step2Button>
         </GroupType>
       </TypesWrapper>
     );

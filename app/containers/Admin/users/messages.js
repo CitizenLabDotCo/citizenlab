@@ -243,9 +243,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionSmart',
     defaultMessage: 'A smart group add continually and automatically users based on specific conditions you setup.',
   },
+  step1CreateButtonNormal: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1CreateButtonNormal',
+    defaultMessage: 'Create a normal group',
+  },
+  step1CreateButtonSmart: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1CreateButtonSmart',
+    defaultMessage: 'Create a smart group',
+  },
   step1ReadMore: {
     id: 'app.containers.AdminPage.Users.GroupCreation.step1ReadMore',
-    defaultMessage: 'Read More',
+    defaultMessage: 'Read More about it',
   },
   modalHeaderStep1: {
     id: 'app.containers.AdminPage.Users.GroupCreation.modalHeaderStep1',
