@@ -170,6 +170,7 @@
   "app.containers.Admin.User.saveErrorMessage": "Er trad(en) één (of meer) fout(en) op.       Er werden dus geen uitnodigingen verstuurd.       Corrigeer de hieronder vermelde fout(en) en probeer het opnieuw.",
   "app.containers.Admin.User.saveSuccess": "Opgeslagen!",
   "app.containers.Admin.User.saveSuccessMessage": "Uitnodiging succesvol verstuurd.",
+  "app.containers.Admin.User.since": "",
   "app.containers.Admin.User.supportPage": "Support-pagina",
   "app.containers.Admin.User.textTab": "Voer de e-mailadressen handmatig in",
   "app.containers.Admin.User.unknownError": "Er ging iets mis. Probeer het opnieuw.",
