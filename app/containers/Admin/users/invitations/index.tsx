@@ -447,9 +447,9 @@ class Invitations extends React.PureComponent<Props, State> {
     const dirty = ((isString(selectedEmails) && !isEmpty(selectedEmails)) || (isString(selectedFileBase64) && !isEmpty(selectedFileBase64)));
     let supportPageURL = 'http://support.citizenlab.co/eng-getting-started/invite-people-to-the-platform';
 
-    if (locale === 'nl') {
+    if (/^nl\-.*$/.test(locale || '')) {
       supportPageURL = 'http://support.citizenlab.co/nl-opstartgids/uitnodigingen-versturen';
-    } else if (locale === 'fr') {
+    } else if (/^fr\-.*$/.test(locale || '')) {
       supportPageURL = 'http://support.citizenlab.co/fr-demarrez-avec-votre-plateforme/inviter-des-utilisateurs-sur-la-plate-forme';
     }
 

@@ -146,7 +146,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
           }
         })),
         locale$.pipe(tap((locale) => {
-          moment.locale((locale === 'no' ? 'nb' : locale));
+          moment.locale(locale);
         })),
         tenant$.pipe(tap((tenant) => {
           moment.tz.setDefault(tenant.data.attributes.settings.core.timezone);
