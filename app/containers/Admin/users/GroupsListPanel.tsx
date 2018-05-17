@@ -114,7 +114,7 @@ export class GroupsListPanel extends React.PureComponent<InputProps & GetGroupsC
     this.state = {};
   }
 
-  handleCreateGroup(event) {
+  handleCreateGroup = (event) => {
     event.preventDefault();
     this.props.onCreateGroup();
   }
