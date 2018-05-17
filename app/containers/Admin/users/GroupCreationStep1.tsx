@@ -23,6 +23,7 @@ const TypesWrapper = styled.div`
 
 const GroupType = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
   padding: 85px 65px;
   align-items: center;
@@ -30,10 +31,12 @@ const GroupType = styled.div`
   .groupName {
     font-size: ${fontSize('xl')};
     font-weight: 400;
+    text-align: center;
   }
 
   .groupDescription {
     flex: 1;
+    text-align: center;
   }
 `;
 
@@ -57,7 +60,11 @@ const Step2Button = styled(Button)`
 `;
 
 // Typings
-export interface Props {}
+import { IGroupData } from 'services/groups';
+
+export interface Props {
+  onOpenStep2: (groupType: IGroupData['attributes']['membership_type']) => void;
+}
 export interface State {}
 
 export class GroupCreationStep1 extends React.PureComponent<Props, State> {
@@ -66,22 +73,34 @@ export class GroupCreationStep1 extends React.PureComponent<Props, State> {
     this.state = {};
   }
 
+  createStep2Handler = (groupType: IGroupData['attributes']['membership_type']) => () => {
+    this.props.onOpenStep2(groupType);
+  }
+
   render() {
     return (
       <TypesWrapper>
         <GroupType>
           <GroupIcon name="database" />
-          <FormattedMessage {...messages.step1TypeNameNormal} className="groupName" />
-          <FormattedMessage {...messages.step1TypeDescriptionNormal} className="groupDescription" />
+          <p className="groupName">
+            <FormattedMessage {...messages.step1TypeNameNormal} />
+          </p>
+          <p className="groupDescription">
+            <FormattedMessage {...messages.step1TypeDescriptionNormal} />
+          </p>
           <MoreInfoLink to=""><FormattedMessage {...messages.step1ReadMore} /></MoreInfoLink>
-          <Step2Button />
+          <Step2Button onClick={this.createStep2Handler('manual')} circularCorners={false} />
         </GroupType>
         <GroupType>
           <GroupIcon name="lightingBolt" />
-          <FormattedMessage {...messages.step1TypeNameSmart} className="groupName" />
-          <FormattedMessage {...messages.step1TypeDescriptionSmart} className="groupDescription" />
+          <p className="groupName">
+            <FormattedMessage {...messages.step1TypeNameSmart} />
+          </p>
+          <p className="groupDescription">
+            <FormattedMessage {...messages.step1TypeDescriptionSmart} />
+          </p>
           <MoreInfoLink to=""><FormattedMessage {...messages.step1ReadMore} /></MoreInfoLink>
-          <Step2Button />
+          <Step2Button onClick={this.createStep2Handler('rules')} circularCorners={false} />
         </GroupType>
       </TypesWrapper>
     );
