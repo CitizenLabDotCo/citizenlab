@@ -7,7 +7,7 @@ import { IOption } from 'typings';
 import Select from 'components/UI/Select';
 
 import { injectTFunc } from 'components/T/utils';
-
+import { isNilOrError } from 'utils/helperUtils';
 
 type Props = {
   rule: TRule;
@@ -22,7 +22,7 @@ type State = {};
 class CustomFieldOptionValueSelector extends React.PureComponent<Props, State> {
 
   generateOptions = (): IOption[] => {
-    if (this.props.options) {
+    if (!isNilOrError(this.props.options)) {
       return this.props.options.map((option) => (
         {
           value: option.id,
