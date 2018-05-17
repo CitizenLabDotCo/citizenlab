@@ -42,33 +42,48 @@ declare interface Message {
   defaultMessage: string;
 }
 
-declare type Locale = 'de' | 'en' | 'fr' | 'nl' | 'da' | 'no';
+declare type Locale = 'de-DE' | 'en' | 'en-GB' | 'en-CA' | 'fr-BE' | 'fr-FR' | 'nl-BE' | 'nl-NL' | 'da-DK' | 'nb-NO' | 'ach';
 
 declare interface Multiloc {
-  de?: string;
+  'de-DE'?: string;
   en?: string;
-  fr?: string;
-  nl?: string;
-  da?: string;
-  no?: string;
+  'en-GB'?: string;
+  'en-CA'?: string;
+  'fr-BE'?: string;
+  'fr-FR'?: string;
+  'nl-BE'?: string;
+  'nl-NL'?: string;
+  'da-DK'?: string;
+  'nb-NO'?: string;
+  ach?: string;
 }
 
 declare interface MultilocEditorState {
-  de?: EditorState;
+  'de-DE'?: EditorState;
   en?: EditorState;
-  fr?: EditorState;
-  nl?: EditorState;
-  da?: EditorState;
-  no?: EditorState;
+  'en-GB'?: EditorState;
+  'en-CA'?: EditorState;
+  'fr-BE'?: EditorState;
+  'fr-FR'?: EditorState;
+  'nl-BE'?: EditorState;
+  'nl-NL'?: EditorState;
+  'da-DK'?: EditorState;
+  'nb-NO'?: EditorState;
+  ach?: EditorState;
 }
 
 declare interface MultilocStringOrJSX {
-  de?: string | JSX.Element;
+  'de-DE'?: string | JSX.Element;
   en?: string | JSX.Element;
-  fr?: string | JSX.Element;
-  nl?: string | JSX.Element;
-  da?: string | JSX.Element;
-  no?: string | JSX.Element;
+  'en-GB'?: string | JSX.Element;
+  'en-CA'?: string | JSX.Element;
+  'fr-BE'?: string | JSX.Element;
+  'fr-FR'?: string | JSX.Element;
+  'nl-BE'?: string | JSX.Element;
+  'nl-NL'?: string | JSX.Element;
+  'da-DK'?: string | JSX.Element;
+  'nb-NO'?: string | JSX.Element;
+  ach?: string | JSX.Element;
 }
 
 declare namespace API {
