@@ -7,6 +7,7 @@ import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 import Select from 'components/UI/Select';
 
 import { injectTFunc } from 'components/T/utils';
+import { isNilOrError } from 'utils/helperUtils';
 
 
 type Props = {
@@ -22,7 +23,7 @@ type State = {};
 class AreaValueSelector extends React.PureComponent<Props, State> {
 
   generateOptions = (): IOption[] => {
-    if (this.props.areas) {
+    if (!isNilOrError(this.props.areas)) {
       return this.props.areas.map((area) => (
         {
           value: area.id,
