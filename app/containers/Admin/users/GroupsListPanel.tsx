@@ -128,7 +128,7 @@ export class GroupsListPanel extends React.PureComponent<InputProps & GetGroupsC
         </MenuLink>
         <Separator />
         <MenuTitle>
-          <h2><FormattedMessage {...messages.groupsTitle}/></h2>
+          <FormattedMessage tagName="h2" {...messages.groupsTitle} />
           <Button icon="plus-circle" iconTitle="Add a group" style="text" padding="0" onClick={this.handleCreateGroup} />
         </MenuTitle>
         <GroupsList>
