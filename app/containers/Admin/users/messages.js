@@ -247,4 +247,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupCreation.step1ReadMore',
     defaultMessage: 'Read More',
   },
+  fieldGroupName: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.fieldGroupName',
+    defaultMessage: 'Name of the group',
+  },
+  groupFormTitle: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.groupFormTitle',
+    defaultMessage: 'Define a group name',
+  },
 });
