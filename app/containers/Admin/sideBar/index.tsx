@@ -84,7 +84,7 @@ const MenuItem: any = styled(Link)`
   }
 
 
-  ${(props: any) => props.active && css`
+  &.active {
     background: rgba(0, 0, 0, 0.2);
 
     ${Text} {
@@ -99,7 +99,7 @@ const MenuItem: any = styled(Link)`
         fill: ${colors.clIconPrimary}
       }
     };
-  `}
+  }
 `;
 
 const Sul = styled.ul`
@@ -208,7 +208,7 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
           {navItems.map((route) => (
             <FeatureFlag name={route.featureName} key={route.id}>
               <li>
-                <MenuItem active={route.isActive(pathname)} to={route.link}>
+                <MenuItem className={route.isActive(pathname) && 'active'} to={route.link}>
                     <IconWrapper><Icon name={route.iconName} /></IconWrapper>
                     <Text>{formatMessage({ ...messages[route.message] })}</Text>
                   {route.isActive(pathname) && <Icon name="arrowLeft" />}
