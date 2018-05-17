@@ -263,8 +263,8 @@ class Invitations extends React.PureComponent<Props, State> {
   }
 
   getGroupOptions = (groups: GetGroupsChildProps, locale: GetLocaleChildProps, tenantLocales: GetTenantLocalesChildProps) => {
-    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(groups) && groups.length > 0) {
-      return groups.map((group) => ({
+    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(groups.groupsList) && groups.groupsList.length > 0) {
+      return groups.groupsList.map((group) => ({
         value: group.id,
         label: getLocalized(group.attributes.title_multiloc, locale, tenantLocales)
       }));
@@ -443,7 +443,7 @@ class Invitations extends React.PureComponent<Props, State> {
       filetypeError,
       unknownError
     } = this.state;
-    const groupOptions = this.getGroupOptions(groups.groupsList, locale, tenantLocales);
+    const groupOptions = this.getGroupOptions(groups, locale, tenantLocales);
     const dirty = ((isString(selectedEmails) && !isEmpty(selectedEmails)) || (isString(selectedFileBase64) && !isEmpty(selectedFileBase64)));
     let supportPageURL = 'http://support.citizenlab.co/eng-getting-started/invite-people-to-the-platform';
 
@@ -656,4 +656,8 @@ const Data = adopt<DataProps, {}>({
   groups: <GetGroups membershipType="manual" />
 });
 
-export default (inputProps: InputProps) => <Data>{dataProps => <Invitations {...inputProps} {...dataProps} />}</Data>;
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <Invitations {...inputProps} {...dataProps} />}
+  </Data>
+);

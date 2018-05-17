@@ -57,6 +57,10 @@ export default defineMessages({
     id: 'app.containers.Admin.User.email',
     defaultMessage: 'Email',
   },
+  since: {
+    id: 'app.containers.Admin.User.since',
+    defaultMessage: 'Since',
+  },
   member: {
     id: 'app.containers.Admin.User.member',
     defaultMessage: 'Member Since',

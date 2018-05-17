@@ -148,7 +148,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
         .filter(() => this.validate())
         .subscribe(() => {
           const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, presentationMode } = this.state;
-
+          
           this.props.onSubmit({
             participationMethod,
             postingEnabled: (participationMethod === 'ideation' ? postingEnabled : null),
