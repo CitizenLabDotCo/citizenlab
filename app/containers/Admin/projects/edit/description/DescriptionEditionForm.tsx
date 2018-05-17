@@ -29,7 +29,7 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
   }
 
   render() {
-    const { errors, isValid, isSubmitting, touched } = this.props;
+    const { errors, isValid, isSubmitting, touched, status } = this.props;
 
     return (
       <Form noValidate className="e2e-project-description-form">

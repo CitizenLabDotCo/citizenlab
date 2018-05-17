@@ -1,5 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -68,10 +69,9 @@ class Phase extends React.PureComponent<Props, State> {
     const className = this.props['className'];
     const { locale, tenantLocales, phase } = this.props;
 
-    if (locale && tenantLocales && phase) {
+    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(phase)) {
       const participationMethod = phase.attributes.participation_method;
       const description = getLocalized(phase.attributes.description_multiloc, locale, tenantLocales);
-
       return (
         <StyledContentContainer className={className}>
           {(description && description.length > 0) &&
@@ -93,7 +93,7 @@ class Phase extends React.PureComponent<Props, State> {
                 pageSize={12}
                 phaseId={phase.id}
                 showViewToggle={true}
-                defaultView={'card'}
+                defaultView={phase.attributes.presentation_mode}
               />
             </IdeasWrapper>
           }

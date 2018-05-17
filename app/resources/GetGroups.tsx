@@ -11,10 +11,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  groups: IGroupData[] | null;
+  groups: IGroupData[] | undefined | null;
 }
 
-export type GetGroupsChildProps = IGroupData[] | null;
+export type GetGroupsChildProps = IGroupData[] | undefined | null;
 
 export default class GetGroups extends React.Component<Props, State> {
   private subscriptions: Subscription[];
@@ -22,7 +22,7 @@ export default class GetGroups extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      groups: null,
+      groups: undefined
     };
   }
 

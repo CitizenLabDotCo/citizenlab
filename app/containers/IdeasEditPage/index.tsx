@@ -18,7 +18,6 @@ import { ideaByIdStream, updateIdea } from 'services/ideas';
 import { ideaImageStream, addIdeaImage, deleteIdeaImage } from 'services/ideaImages';
 import { projectByIdStream, IProject } from 'services/projects';
 import { topicByIdStream, ITopic } from 'services/topics';
-import { authUserStream } from 'services/auth';
 import { hasPermission } from 'services/permissions';
 
 // i18n
@@ -123,7 +122,6 @@ export default class IdeaEditPage extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     const { ideaId } = this.props.params;
-    const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
     const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
     const idea$ = ideaByIdStream(ideaId).observable;
@@ -148,13 +146,10 @@ export default class IdeaEditPage extends React.PureComponent<Props, State> {
         return Rx.Observable.of(null);
       }) : Rx.Observable.of(null));
 
-      const granted$ = authUser$.switchMap((authUser) => {
-        return hasPermission({
-          item: idea.data,
-          action: 'edit',
-          user: (authUser || undefined),
-          context: idea.data
-        });
+      const granted$ = hasPermission({
+        item: idea.data,
+        action: 'edit',
+        context: idea.data
       });
 
       let project$: Rx.Observable<null | IProject> = Rx.Observable.of(null);

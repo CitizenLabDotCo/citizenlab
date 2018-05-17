@@ -2,6 +2,7 @@ import React from 'react';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { IUser, IUserData, userBySlugStream, userByIdStream } from 'services/users';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   id?: string | null;
@@ -15,10 +16,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  user: IUserData | null;
+  user: IUserData | undefined | null | Error;
 }
 
-export type GetUserChildProps = IUserData | null;
+export type GetUserChildProps = IUserData | undefined | null | Error;
 
 export default class GetUser extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -27,7 +28,7 @@ export default class GetUser extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      user: null
+      user: undefined
     };
   }
 
@@ -50,7 +51,7 @@ export default class GetUser extends React.Component<Props, State> {
 
           return user$;
         }).subscribe((user) => {
-          this.setState({ user: (user ? user.data : null) });
+          this.setState({ user: (!isNilOrError(user) ? user.data : null) });
         })
     ];
   }

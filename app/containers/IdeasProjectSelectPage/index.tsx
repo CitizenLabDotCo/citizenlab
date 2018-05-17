@@ -1,22 +1,20 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-import { size, groupBy, isEmpty } from 'lodash';
-
-// routing
-import { browserHistory } from 'react-router';
-
-// components
-import Spinner from 'components/UI/Spinner';
+import React from 'react';
+import { isNilOrError } from 'utils/helperUtils';
+import { browserHistory, withRouter, WithRouterProps } from 'react-router';
+import { groupBy, isEmpty, isUndefined } from 'lodash';
 
 // services
-import { projectsStream, IProjectData } from 'services/projects';
-import { projectImagesStream } from 'services/projectImages';
+import { IProjectData } from 'services/projects';
+
+// resources
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // components
 import ContentContainer from 'components/ContentContainer';
 import ProjectCard from './ProjectCard';
 import Button from 'components/UI/Button';
 import ButtonBar from 'components/ButtonBar';
+import Spinner from 'components/UI/Spinner';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -185,66 +183,41 @@ const EmptyStateContainer = styled.div`
   padding-top: 15px;
 `;
 
-type Props = {
-  theme: any;
-  location: any;
-};
+interface InputProps {}
 
-type State = {
-  projects: IProjectData[] | null;
+interface DataProps {
+  projects: GetProjectsChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+interface State {
   selectedProjectId: string | null;
-  loaded: boolean;
-};
+}
 
-export default class IdeasProjectSelectPage extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+class IdeasProjectSelectPage extends React.PureComponent<Props & WithRouterProps, State> {
 
-  constructor(props: Props) {
+  constructor(props: Props & WithRouterProps) {
     super(props);
     this.state = {
-      projects: null,
       selectedProjectId: null,
-      loaded: false
     };
-    this.subscriptions = [];
   }
 
-  componentDidMount() {
-    const projects$ = projectsStream().observable;
-
-    this.subscriptions = [
-      projects$.switchMap((projects) => {
-        if (projects && projects.data && projects.data.length > 0) {
-          return Rx.Observable.combineLatest(
-            projects.data.map(project => projectImagesStream(project.id).observable)
-          ).map(() => projects);
-        }
-
-        return Rx.Observable.of(projects);
-      }).subscribe((projects) => {
-        this.setState({ projects: projects.data, loaded: true });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  handleProjectClick = (project) => () => {
+  handleProjectClick = (project: IProjectData) => () => {
     this.setState({ selectedProjectId: project.id });
   }
 
-  redirectTo = (projectSlug) => {
+  redirectTo = (projectSlug: string) => {
     const queryParams = (this.props.location && this.props.location.search) || '';
     browserHistory.push(`/projects/${projectSlug}/ideas/new${queryParams}`);
   }
 
   handleOnSubmitClick = () => {
-    const { projects } = this.state;
+    const { projectsList } = this.props.projects;
 
-    if (projects) {
-      const project = projects.find((project) => project.id === this.state.selectedProjectId);
+    if (!isNilOrError(projectsList)) {
+      const project = projectsList.find((project) => project.id === this.state.selectedProjectId);
 
       if (project) {
         this.redirectTo(project.attributes.slug);
@@ -253,18 +226,21 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
   }
 
   render() {
-    const { projects, selectedProjectId, loaded } = this.state;
+    const { projectsList } = this.props.projects;
+    const { selectedProjectId } = this.state;
 
-    if (!loaded) {
+    if (isUndefined(projectsList)) {
       return (
         <Loading>
           <Spinner size="32px" color="#666" />
         </Loading>
       );
-    } else {
-      const { open_idea_box: openProjects, null: cityProjects } = groupBy(projects, (project) => project.attributes.internal_role);
+    }
+
+    if (!isNilOrError(projectsList)) {
+      const { open_idea_box: openProjects, null: cityProjects } = groupBy(projectsList, (project) => project.attributes.internal_role);
       const openProject = openProjects && !isEmpty(openProjects) && openProjects[0];
-      const noProjects = (!projects || size(projects) === 0);
+      const noProjects = isEmpty(projectsList);
 
       return (
         <Container>
@@ -279,11 +255,11 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
               </EmptyStateContainer>
             }
 
-            {!noProjects && 
+            {!noProjects &&
               <Content>
                 <ColumnsContainer>
 
-                  {cityProjects && 
+                  {cityProjects &&
                     <LeftColumn className={!openProject ? 'fullWidth' : ''}>
                       <ColumnTitle>
                         <FormattedMessage {...messages.cityProjects} />
@@ -335,7 +311,7 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
 
                 <WithoutButtonBar>
                   <Button
-                    className="e2e-submit-project-select-form"
+                    className="e2e-submit-project-select-form-mobile"
                     size="2"
                     text={<FormattedMessage {...messages.continueButton} />}
                     onClick={this.handleOnSubmitClick}
@@ -360,5 +336,15 @@ export default class IdeasProjectSelectPage extends React.PureComponent<Props, S
         </Container>
       );
     }
+
+    return null;
   }
 }
+
+const IdeasProjectSelectPageWithHoCs = withRouter(IdeasProjectSelectPage);
+
+export default (inputProps: InputProps) => (
+  <GetProjects {...inputProps}>
+    {projects => <IdeasProjectSelectPageWithHoCs {...inputProps} projects={projects} />}
+  </GetProjects>
+);

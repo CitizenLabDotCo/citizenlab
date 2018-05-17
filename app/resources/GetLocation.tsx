@@ -11,18 +11,18 @@ interface Props extends InputProps {
 }
 
 interface State {
-  location: Location | null;
+  location: Location | undefined | null;
 }
 
-export type GetLocationChildProps = Location | null;
+export type GetLocationChildProps = Location | undefined | null;
 
 export default class GetLocation extends React.Component<Props, State> {
   private unlisten: Function;
 
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
-      location: null,
+      location: undefined
     };
   }
 

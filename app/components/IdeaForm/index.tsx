@@ -1,7 +1,10 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { Subscription } from 'rxjs/Subscription';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import { withRouter, WithRouterProps } from 'react-router';
-import { find, pick, isEqual } from 'lodash';
+import find from 'lodash/find';
+import pick from 'lodash/pick';
+import isEqual from 'lodash/isEqual';
 
 // libraries
 import scrollToComponent from 'react-scroll-to-component';
@@ -85,7 +88,7 @@ interface State {
 }
 
 class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
   titleInputElement: HTMLInputElement | null;
   descriptionElement: any | null;
 
@@ -126,17 +129,17 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     });
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      combineLatest(
         locale$,
         currentTenantLocales$,
-        topics$,
+        topics$
       ).subscribe(([locale, currentTenantLocales, topics]) => {
         this.setState({
           topics: this.getOptions(topics, locale, currentTenantLocales)
         });
       }),
 
-      Rx.Observable.combineLatest(
+      combineLatest(
         locale$,
         currentTenantLocales$,
         projects$,

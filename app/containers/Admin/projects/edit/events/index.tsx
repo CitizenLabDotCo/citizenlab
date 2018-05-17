@@ -1,24 +1,23 @@
 // Libraries
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
 import styled from 'styled-components';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-import * as _ from 'lodash';
+import { isNilOrError } from 'utils/helperUtils';
 import * as moment from 'moment';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // Services
-import { projectBySlugStream } from 'services/projects';
-import { eventsStream, IEventData, deleteEvent } from 'services/events';
+import { deleteEvent } from 'services/events';
+
+// Resources
+import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
 
 // Components
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
-
-// Utils
-import unsubscribe from 'utils/unsubscribe';
 
 // Styles
 const ListWrapper = styled.div`
@@ -34,80 +33,36 @@ const StyledList = styled(List)`
   margin-top: 30px;
 `;
 
-type Props = {
-  params: {
-    slug: string | null,
-  }
-};
+interface InputProps {}
 
-type State = {
-  events: IEventData[],
-  loading: boolean,
-};
+interface DataProps {
+  events: GetEventsChildProps;
+}
 
-class AdminProjectTimelineIndex extends React.PureComponent<Props & InjectedIntlProps, State> {
-  subscription: Rx.Subscription;
+interface Props extends InputProps, DataProps {}
 
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      events: [],
-      loading: false,
-    };
-  }
+interface State {}
 
-  componentDidMount () {
-    this.setState({ loading: true });
+class AdminProjectEventsIndex extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
+  createDeleteClickHandler = (eventId: string) => (event: React.FormEvent<any>) => {
+    event.preventDefault();
 
-    if (_.isString(this.props.params.slug)) {
-      this.subscription = projectBySlugStream(this.props.params.slug).observable.switchMap((project) => {
-        return eventsStream(project.data.id).observable.map((events) => (events.data));
-      }).subscribe((events) => {
-        this.setState({ events, loading: false });
-      });
-    }
-  }
-
-  componentWillUnmount() {
-    unsubscribe(this.subscription);
-  }
-
-  createDeleteClickHandler = (eventId) => {
-    return (event) => {
-      event.preventDefault();
-      if (window.confirm(this.props.intl.formatMessage(messages.deleteConfirmationModal))) {
-        deleteEvent(eventId).then(() => {
-          this.setState({ events: _.reject(this.state.events, { id: eventId }) });
-        });
-      }
-    };
-  }
-
-  eventTiming = ({ start_at, end_at }): 'past' | 'current' | 'future' => {
-    const start = new Date(start_at);
-    const end = new Date(end_at);
-    const now = new Date();
-
-    if (end < now) {
-      return 'past';
-    } else if (start > now) {
-      return 'future';
-    } else {
-      return 'current';
+    if (window.confirm(this.props.intl.formatMessage(messages.deleteConfirmationModal))) {
+      deleteEvent(eventId);
     }
   }
 
   render() {
-    const { events, loading } = this.state;
-    const { slug } = this.props.params;
+    const { events } = this.props;
+    const { projectId } = this.props.params;
 
     return (
       <ListWrapper className="e2e-projects-events">
-        <AddButton style="cl-blue" icon="plus-circle" circularCorners={false} linkTo={`/admin/projects/${slug}/events/new`}>
+        <AddButton style="cl-blue" icon="plus-circle" circularCorners={false} linkTo={`/admin/projects/${projectId}/events/new`}>
           <FormattedMessage {...messages.addEventButton} />
         </AddButton>
 
-        {!loading && events.length > 0 &&
+        {!isNilOrError(events) && events.length > 0 &&
           <StyledList>
             <HeadRow>
               <div className="expand"><FormattedMessage {...messages.titleColumnHeader} /></div>
@@ -132,7 +87,7 @@ class AdminProjectTimelineIndex extends React.PureComponent<Props & InjectedIntl
                   <Button style="text" icon="delete" onClick={this.createDeleteClickHandler(event.id)}>
                     <FormattedMessage {...messages.deleteButtonLabel} />
                   </Button>
-                  <Button style="secondary" icon="edit" linkTo={`/admin/projects/${slug}/events/${event.id}`}>
+                  <Button style="secondary" icon="edit" linkTo={`/admin/projects/${projectId}/events/${event.id}`}>
                     <FormattedMessage {...messages.editButtonLabel} />
                   </Button>
                 </Row>
@@ -145,4 +100,8 @@ class AdminProjectTimelineIndex extends React.PureComponent<Props & InjectedIntl
   }
 }
 
-export default injectIntl(AdminProjectTimelineIndex);
+export default withRouter(injectIntl((inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
+  <GetEvents projectId={inputProps.params.projectId}>
+    {events => <AdminProjectEventsIndex {...inputProps} events={events} />}
+  </GetEvents>
+)));

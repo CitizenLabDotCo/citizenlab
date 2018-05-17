@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 
 import { deletePage } from 'services/pages';
 
@@ -53,7 +54,7 @@ class Pages extends React.Component<Props & InjectedIntlProps, State> {
   render() {
     const pages = this.props.pages;
 
-    if (!pages) return null;
+    if (isNilOrError(pages)) return null;
 
     return (
       <>

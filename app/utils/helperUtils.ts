@@ -1,3 +1,3 @@
-export function isNullOrError(obj: any): obj is null | Error {
-  return (obj === null || obj instanceof Error);
+export function isNilOrError(obj: any): obj is undefined | null | Error {
+  return (obj === undefined || obj === null || obj instanceof Error);
 }

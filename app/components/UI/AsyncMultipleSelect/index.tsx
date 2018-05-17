@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { isBoolean } from 'lodash';
 import { AsyncCreatable as ReactSelect } from 'react-select';
 import { IOption } from 'typings';
 import styled from 'styled-components';
@@ -247,7 +247,7 @@ export default class AsyncMultipleSelect extends React.PureComponent<Props, Stat
     placeholder = (placeholder || '');
     asyncOptions = (asyncOptions || undefined);
     max = (max || undefined);
-    autoBlur = (_.isBoolean(autoBlur) ? autoBlur : false);
+    autoBlur = (isBoolean(autoBlur) ? autoBlur : false);
 
     return (
       <StyledMultipleSelect

@@ -35,10 +35,14 @@ class IdeasByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
 
   componentDidUpdate(prevProps: Props) {
     const { startAt, endAt, resolution } = this.props;
-  
+
     if (startAt !== prevProps.startAt || endAt !== prevProps.endAt || resolution !== prevProps.resolution) {
       this.resubscribe(startAt, endAt, resolution);
     }
+  }
+
+  componentWillUnmount() {
+    this.subscription.unsubscribe();
   }
 
   convertToGraphFormat = (serie: { [key: string]: number }) => {

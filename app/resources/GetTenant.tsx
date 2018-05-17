@@ -1,6 +1,7 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
 import { currentTenantStream, ITenantData } from 'services/tenant';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {}
 
@@ -11,18 +12,18 @@ interface Props extends InputProps {
 }
 
 interface State {
-  tenant: ITenantData | null;
+  tenant: ITenantData | undefined | null | Error;
 }
 
-export type GetTenantChildProps = ITenantData | null;
+export type GetTenantChildProps = ITenantData | undefined | null | Error;
 
 export default class GetTenant extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
-      tenant: null
+      tenant: undefined
     };
   }
 
@@ -32,7 +33,7 @@ export default class GetTenant extends React.Component<Props, State> {
     this.subscriptions = [
       currentTenant$.subscribe((currentTenant) => {
         this.setState({
-          tenant: currentTenant.data
+          tenant: (!isNilOrError(currentTenant) ? currentTenant.data : currentTenant)
         });
       })
     ];
