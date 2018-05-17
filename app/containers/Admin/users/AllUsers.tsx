@@ -2,6 +2,7 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'services/permissions/roles';
+import { isArray, includes } from 'lodash';
 import * as moment from 'moment';
 
 // Components
@@ -25,6 +26,12 @@ import messages from './messages';
 // Styling
 import styled from 'styled-components';
 
+const TableOptions = styled.div`
+  display: flex;
+  padding-bottom: 10px;
+  border-bottom: solid 1px #000;
+`;
+
 const StyledAvatar = styled(Avatar)`
   flex: 0 0 30px;
   height: 30px;
@@ -46,12 +53,16 @@ interface InputProps {}
 
 interface Props extends InputProps, GetUsersChildProps {}
 
-interface State {}
+interface State {
+  selectedUsers: string[] | 'none' | 'all';
+}
 
 class AllUsers extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = {};
+    this.state = {
+      selectedUsers: 'none',
+    };
   }
 
   isUserAdmin = (user: IUserData) => {
@@ -62,8 +73,26 @@ class AllUsers extends React.PureComponent<Props, State> {
     return;
   }
 
-  handleUserSelectedOnChange = () => {
-    return;
+  handleUserSelectedOnChange = (userId: string) => () => {
+    this.setState((state) => {
+      const { usersList } = this.props;
+      let newSelectedUsers: string[] | 'none' | 'all' = 'none';
+
+      if (isArray(state.selectedUsers)) {
+        if (includes(state.selectedUsers, userId)) {
+          const userIds = state.selectedUsers.filter(item => item !== userId);
+          newSelectedUsers = (userIds.length > 0 ? userIds : 'none');
+        } else {
+          newSelectedUsers = [...state.selectedUsers, userId];
+        }
+      } else if (state.selectedUsers === 'none') {
+        newSelectedUsers = [userId];
+      } else if (!isNilOrError(usersList)) {
+        newSelectedUsers = usersList.filter(user => user.id !== userId).map(user => user.id);
+      }
+
+      return { selectedUsers: newSelectedUsers };
+    });
   }
 
   handleSortingOnChange = (sortAttribute: SortAttribute) => () => {
@@ -71,15 +100,29 @@ class AllUsers extends React.PureComponent<Props, State> {
   }
 
   handlePaginationClick = (pageNumber: number) => {
+    this.setState(state => ({ selectedUsers: isArray(state.selectedUsers) ? 'none' : state.selectedUsers }));
     this.props.onChangePage(pageNumber);
+  }
+
+  toggleAllUsers = () => {
+    this.setState(state => ({ selectedUsers: (state.selectedUsers === 'all' ? 'none' : 'all') }));
   }
 
   render() {
     const { usersList, sortAttribute, sortDirection, currentPage, lastPage } = this.props;
+    const { selectedUsers } = this.state;
 
     if (!isNilOrError(usersList) && usersList.length > 0) {
       return (
         <>
+          <TableOptions>
+            <Checkbox
+              label={<FormattedMessage {...messages.selectAll} />}
+              value={(selectedUsers === 'all')}
+              onChange={this.toggleAllUsers}
+            />
+          </TableOptions>
+
           <Table>
             <thead>
               <tr>
@@ -118,12 +161,27 @@ class AllUsers extends React.PureComponent<Props, State> {
             <tbody>
               {usersList.map((user) => (
                 <tr key={user.id}>
-                  <td><Checkbox value={false} onChange={this.handleUserSelectedOnChange} /></td>
-                  <td><StyledAvatar userId={user.id} size="small" /></td>
+                  <td>
+                    <Checkbox
+                      value={(selectedUsers === 'all' || includes(selectedUsers, user.id))}
+                      onChange={this.handleUserSelectedOnChange(user.id)}
+                    />
+                  </td>
+                  <td>
+                    <StyledAvatar
+                      userId={user.id}
+                      size="small"
+                    />
+                  </td>
                   <td>{user.attributes.first_name} {user.attributes.last_name}</td>
                   <td>{user.attributes.email}</td>
                   <td>{moment(user.attributes.created_at).format('LL')}</td>
-                  <td><Toggle value={this.isUserAdmin(user)} onChange={this.handleAdminRoleOnChange} /></td>
+                  <td>
+                    <Toggle
+                      value={this.isUserAdmin(user)}
+                      onChange={this.handleAdminRoleOnChange}
+                    />
+                  </td>
                 </tr>
               ))}
             </tbody>

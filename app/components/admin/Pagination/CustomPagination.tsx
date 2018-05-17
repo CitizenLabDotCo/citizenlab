@@ -1,11 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-
 import Icon from 'components/UI/Icon';
-
 import { FormattedMessage } from 'utils/cl-intl';
-
-// i18n
 import messages from './messages';
 
 // Typing
@@ -106,7 +102,7 @@ class CustomPagination extends React.PureComponent<Props> {
     this.handleItemClick = this.handleItemClick.bind(this);
   }
 
-  calculateMenuItems(c, m) {
+  calculateMenuItems(c: number, m: number) {
     const current = c;
     const last = m;
     const delta = 2;
@@ -114,7 +110,7 @@ class CustomPagination extends React.PureComponent<Props> {
     const right = current + delta + 1;
     const range: number[] = [];
     const rangeWithDots: number[] = [];
-    let l;
+    let l: number;
 
     for (let i = 1; i <= last; i += 1) {
       if (i === 1 || i === last || (i >= left && i < right)) {
