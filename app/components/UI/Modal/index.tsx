@@ -33,7 +33,7 @@ const ModalContent: any = styled(clickOutside)`
   width: 100%;
 
   &.fixedHeight {
-    height: 78vh;
+    height: 600px;
   }
 
   ${media.smallerThanMaxTablet`

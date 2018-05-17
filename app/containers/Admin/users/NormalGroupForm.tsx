@@ -15,6 +15,7 @@ import messages from './messages';
 
 // Components
 import Error from 'components/UI/Error';
+import { SectionField } from 'components/admin/Section';
 
 // Typings
 import { Multiloc } from 'typings';
@@ -24,8 +25,8 @@ export interface NormalFormValues {
 }
 
 const Fill = styled.div`
-  flex: 1;
-  padding-left: 40;
+  height: 452px;
+  padding: 40px;
 `;
 
 const FooterContainer = styled.div`
@@ -36,6 +37,7 @@ const FooterContainer = styled.div`
   flex-direction: row;
   align-items: center;
   padding-left: 40px;
+  margin-top:
 `;
 
 export default class NormalGroupForm extends React.Component<InjectedFormikProps<Props, NormalFormValues>> {
@@ -54,15 +56,17 @@ export default class NormalGroupForm extends React.Component<InjectedFormikProps
     return (
       <Form>
         <Fill>
-          <Field
-            name="title_multiloc"
-            component={FormikInputMultiloc}
-            label={<FormattedMessage {...messages.fieldGroupName} />}
-          />
-          {touched.title_multiloc && <Error
-            fieldName="title_multiloc"
-            apiErrors={errors.title_multiloc}
-          />}
+          <SectionField>
+            <Field
+              name="title_multiloc"
+              component={FormikInputMultiloc}
+              label={<FormattedMessage {...messages.fieldGroupName} />}
+            />
+            {touched.title_multiloc && <Error
+              fieldName="title_multiloc"
+              apiErrors={errors.title_multiloc}
+            />}
+          </SectionField>
         </Fill>
 
         <FooterContainer>
