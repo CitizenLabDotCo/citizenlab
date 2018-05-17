@@ -1,5 +1,8 @@
 import React from 'react';
 
+// context
+import { PreviousPathnameContext } from 'context';
+
 // router
 import { browserHistory } from 'react-router';
 
@@ -71,9 +74,9 @@ type Props = {};
 
 type State = {};
 
-export default class SignInPage extends React.PureComponent<Props, State> {
-  onSuccess = () => {
-    browserHistory.push('/');
+class SignInPage extends React.PureComponent<Props, State> {
+  onSuccess = (previousPathname: string | null) => () => {
+    browserHistory.push(previousPathname || '/');
   }
 
   goToSignUpForm = () => {
@@ -88,10 +91,14 @@ export default class SignInPage extends React.PureComponent<Props, State> {
         </Left>
         <Right>
           <RightInner>
-            <SignIn onSignedIn={this.onSuccess} goToSignUpForm={this.goToSignUpForm} />
+            <PreviousPathnameContext.Consumer>
+              {previousPathName => <SignIn onSignedIn={this.onSuccess(previousPathName)} goToSignUpForm={this.goToSignUpForm} />}
+            </PreviousPathnameContext.Consumer>
           </RightInner>
         </Right>
       </Container>
     );
   }
 }
+
+export default SignInPage;

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as _ from 'lodash';
+import React from 'react';
+import { isBoolean } from 'lodash';
 import ReactSelect from 'react-select';
 import { IOption } from 'typings';
 import styled from 'styled-components';
@@ -215,10 +215,10 @@ export default class Select extends React.PureComponent<Props, State> {
     value = (value || undefined);
     placeholder = (placeholder || '');
     options = (options || this.emptyArray);
-    autoBlur = (_.isBoolean(autoBlur) ? autoBlur : true);
-    clearable = (_.isBoolean(clearable) ? clearable : true);
-    searchable = (_.isBoolean(searchable) ? searchable : false);
-    multi = (_.isBoolean(multi) ? multi : false);
+    autoBlur = (isBoolean(autoBlur) ? autoBlur : true);
+    clearable = (isBoolean(clearable) ? clearable : true);
+    searchable = (isBoolean(searchable) ? searchable : false);
+    multi = (isBoolean(multi) ? multi : false);
 
     return (
       <StyledSelect

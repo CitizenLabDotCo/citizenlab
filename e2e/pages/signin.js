@@ -1,11 +1,13 @@
 const signinCommands = {
   signin(email, password) {
-    return this
+    this
     .waitForElementVisible('@form')
     .setValue('@email', email)
-    .setValue('@password', password)
-    .click('@submit')
-    .waitForElementVisible('#e2e-landing-page');
+    .setValue('@password', password);
+    this.api.execute('var submit = document.getElementsByClassName("e2e-submit-signin");submit[0].scrollIntoView(true);');
+    this.api.pause(100);
+    return this.click('@submit')
+    .waitForElementNotPresent('@submit');
   },
 };
 
@@ -16,7 +18,7 @@ module.exports = {
     form: { selector: '#signin' },
     email: { selector: '#email' },
     password: { selector: '#password' },
-    submit: { selector: '#signin button' },
+    submit: { selector: '.e2e-submit-signin' },
   },
   commands: [signinCommands],
 };

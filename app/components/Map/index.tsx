@@ -2,6 +2,7 @@
 import React from 'react';
 import { compact, isEqual } from 'lodash';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { isNilOrError } from 'utils/helperUtils';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -127,18 +128,20 @@ class CLMap extends React.PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.points && !isEqual(prevProps.points, this.props.points) && !isEqual(prevProps.points, this.props.points)) {
-      this.convertPoints(this.props.points);
+    const { tenant, center, points } = this.props;
+
+    if (points && !isEqual(prevProps.points, points) && !isEqual(prevProps.points, points)) {
+      this.convertPoints(points);
     }
 
     // Update the center if the tenant is loaded after map init and there's no set center
-    if (this.props.tenant && !prevProps.tenant && !this.props.center && this.map && this.props.tenant.attributes.settings.maps) {
+    if (!isNilOrError(tenant) && !prevProps.tenant && !center && this.map && tenant.attributes.settings.maps) {
       this.map.setView(
         [
-          parseFloat(this.props.tenant.attributes.settings.maps.map_center.lat),
-          parseFloat(this.props.tenant.attributes.settings.maps.map_center.long),
+          parseFloat(tenant.attributes.settings.maps.map_center.lat),
+          parseFloat(tenant.attributes.settings.maps.map_center.long),
         ],
-        this.props.tenant.attributes.settings.maps.zoom_level
+        tenant.attributes.settings.maps.zoom_level
       );
     }
   }
@@ -149,20 +152,24 @@ class CLMap extends React.PureComponent<Props, State> {
   }
 
   bindMapContainer = (element) => {
+    const { tenant, center } = this.props;
+
     if (!this.map) {
-      let center: [number, number] = [0, 0];
-      if (this.props.center && this.props.center !== [0, 0]) {
-        center = [this.props.center[1], this.props.center[0]];
-      } else if (this.props.tenant && this.props.tenant.attributes.settings.maps) {
-        center = [
-          parseFloat(this.props.tenant.attributes.settings.maps.map_center.lat),
-          parseFloat(this.props.tenant.attributes.settings.maps.map_center.long),
+      let initCenter: [number, number] = [0, 0];
+
+      if (center && center !== [0, 0]) {
+        initCenter = [center[1], center[0]];
+      } else if (!isNilOrError(tenant) && tenant.attributes.settings.maps) {
+        initCenter = [
+          parseFloat(tenant.attributes.settings.maps.map_center.lat),
+          parseFloat(tenant.attributes.settings.maps.map_center.long),
         ];
       }
 
-      let zoom = 10;
-      if (this.props.tenant && this.props.tenant.attributes.settings.maps) {
-        zoom = this.props.tenant.attributes.settings.maps.zoom_level;
+      let initZoom = 10;
+
+      if (!isNilOrError(tenant) && tenant.attributes.settings.maps) {
+        initZoom = tenant.attributes.settings.maps.zoom_level;
       }
 
       // Bind the mapElement
@@ -170,9 +177,9 @@ class CLMap extends React.PureComponent<Props, State> {
 
       // Init the map
       this.map = Leaflet.map(element, {
-        center,
-        zoom,
-        maxZoom: 17,
+        center: initCenter,
+        zoom: initZoom,
+        maxZoom: 17
       });
 
       Leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

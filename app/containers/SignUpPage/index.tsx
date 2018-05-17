@@ -16,6 +16,9 @@ import eventEmitter from 'utils/eventEmitter';
 // analytics
 import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // style
 import styled from 'styled-components';
@@ -122,13 +125,10 @@ class SignUpPage extends React.PureComponent<Props & ITracks & WithRouterProps, 
   }
 
   render() {
-    const { authUser, location } = this.props;
+    const { location } = this.props;
     const isInvitation = (location.pathname === '/invite');
     const token: string | null = get(location.query, 'token', null);
-
-    if (authUser && authUser.attributes.registration_completed_at) {
-      this.onSignUpCompleted();
-    }
+    const title = (isInvitation ? <FormattedMessage {...messages.invitationTitle} /> : undefined);
 
     return (
       <Container>
@@ -138,6 +138,7 @@ class SignUpPage extends React.PureComponent<Props & ITracks & WithRouterProps, 
         <Right>
           <RightInner>
             <SignUp
+              step1Title={title}
               isInvitation={isInvitation}
               token={token}
               onSignUpCompleted={this.onSignUpCompleted}

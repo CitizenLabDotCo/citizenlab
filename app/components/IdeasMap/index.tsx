@@ -2,6 +2,7 @@
 import React from 'react';
 import Leaflet from 'leaflet';
 import { browserHistory, withRouter, WithRouterProps } from 'react-router';
+import { isNilOrError } from 'utils/helperUtils';
 
 // Services & utils
 import { trackEventByName } from 'utils/analytics';
@@ -91,10 +92,10 @@ class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
     };
   }
 
-  getPoints = (ideas: Partial<IIdeaData>[] | null) => {
+  getPoints = (ideas: Partial<IIdeaData>[] | null | undefined | Error) => {
     const ideaPoints: any[] = [];
 
-    if (ideas && ideas.length > 0) {      
+    if (!isNilOrError(ideas) && ideas.length > 0) {      
       ideas.forEach((idea) => {
         if (idea.attributes && idea.attributes.location_point_geojson) {
           ideaPoints.push({

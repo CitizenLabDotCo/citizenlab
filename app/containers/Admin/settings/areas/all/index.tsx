@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { InjectedIntlProps } from 'react-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 import { deleteArea } from 'services/areas';
@@ -37,34 +38,38 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps>{
 
   render() {
     const { areas } = this.props;
+
+    if (isNilOrError(areas)) return null;
+
     return (
       <Section>
         <SectionTitle>
           <FormattedMessage {...messages.titleAreas} />
         </SectionTitle>
         <List>
-          {areas && areas.map(area =>
-          <Row key={area.id}>
-            <TextCell className="expand">
-              <T value={area.attributes.title_multiloc}/>
-            </TextCell>
-            <Button
-              onClick={this.handleDeleteClick(area.id)}
-              style="text"
-              circularCorners={false}
-              icon="delete"
-            >
-              <FormattedMessage {...messages.deleteButtonLabel} />
-            </Button>
-            <Button
-              linkTo={`/admin/settings/areas/${area.id}`}
-              style="secondary"
-              circularCorners={false}
-              icon="edit"
-            >
-              <FormattedMessage {...messages.editButtonLabel} />
-            </Button>
-          </Row>)}
+          {areas.map((area, index) => (
+            <Row key={area.id} lastItem={(index === areas.length - 1)}>
+              <TextCell className="expand">
+                <T value={area.attributes.title_multiloc}/>
+              </TextCell>
+              <Button
+                onClick={this.handleDeleteClick(area.id)}
+                style="text"
+                circularCorners={false}
+                icon="delete"
+              >
+                <FormattedMessage {...messages.deleteButtonLabel} />
+              </Button>
+              <Button
+                linkTo={`/admin/settings/areas/${area.id}`}
+                style="secondary"
+                circularCorners={false}
+                icon="edit"
+              >
+                <FormattedMessage {...messages.editButtonLabel} />
+              </Button>
+          </Row>
+        ))}
         </List>
         <ButtonWrapper>
             <Button

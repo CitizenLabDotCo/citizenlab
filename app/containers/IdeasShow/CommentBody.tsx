@@ -3,6 +3,7 @@ import React from 'react';
 import linkifyHtml from 'linkifyjs/html';
 import { Form, Formik, FormikActions } from 'formik';
 import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // Utils & Loaders
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -70,6 +71,7 @@ import { IUpdatedComment } from 'services/comments';
 interface InputProps {
   commentBody: Multiloc;
   editionMode: boolean;
+  last?: boolean;
   onCommentSave: {(values: IUpdatedComment, formikActions: FormikActions<IUpdatedComment>): void};
   onCancelEdition: {(): void};
 }
@@ -111,19 +113,17 @@ class CommentBody extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { editionMode, commentBody, locale, tenantLocales } = this.props;
+    const { editionMode, commentBody, locale, tenantLocales, last } = this.props;
 
-    console.log(commentBody);
-
-    if (locale && tenantLocales && !editionMode) {
+    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !editionMode) {
       return (
-        <CommentWrapper className="e2e-comment-body">
+        <CommentWrapper className={`e2e-comment-body ${last ? 'last' : ''}`}>
           <div dangerouslySetInnerHTML={{ __html: this.getCommentText(locale, tenantLocales) }} />
         </CommentWrapper>
       );
     }
 
-    if (locale && tenantLocales && editionMode) {
+    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && editionMode) {
       return (
         <Formik
           initialValues={{ body_multiloc: { [locale]: getLocalized(commentBody, locale, tenantLocales) } }}

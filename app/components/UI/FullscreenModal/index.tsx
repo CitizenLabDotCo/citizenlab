@@ -1,10 +1,8 @@
-import * as React from 'react';
-import { isFunction } from 'lodash';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import isFunction from 'lodash/isFunction';
 
 // libraries
 import { browserHistory } from 'react-router';
-import * as bowser from 'bowser';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -14,7 +12,6 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-
 import messages from './messages';
 
 // analytics
@@ -98,10 +95,6 @@ const Content = styled.div`
 
 const ContentInner = styled.div`
   width: 100%;
-
-  &.ipad {
-    min-height: 101vh;
-  }
 `;
 
 const TopBar: any = styled.div`
@@ -242,17 +235,15 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   unlisten: Function | null;
   goBackUrl: string | null;
   ModalContentInnerElement: HTMLDivElement | null;
-  subscription: Rx.Subscription | null;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props: Props & ITracks) {
+    super(props);
     this.state = {
       scrolled: false
     };
     this.unlisten = null;
     this.goBackUrl = null;
     this.ModalContentInnerElement = null;
-    this.subscription = null;
   }
 
   componentWillUnmount() {
@@ -268,25 +259,16 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   }
 
   disableBodyScroll = () => {
-    if (!document.body.classList.contains('modal-active')) document.body.classList.add('modal-active');
-    // document.addEventListener('touchmove', this.freezeViewport, false);
-    document.documentElement.addEventListener('touchmove', this.freezeViewport, false);
-    document.body.addEventListener('touchmove', this.freezeViewport, false);
-
+    if (!document.body.classList.contains('modal-active')) {
+      document.body.classList.add('modal-active');
+    }
   }
 
   enableBodyScroll = () => {
     document.body.classList.remove('modal-active');
-    // document.removeEventListener('touchmove', this.freezeViewport, false);
-    document.documentElement.removeEventListener('touchmove', this.freezeViewport, false);
-    document.body.removeEventListener('touchmove', this.freezeViewport, false);
   }
 
-  freezeViewport = (event) => {
-    event.preventDefault();
-  }
-
-  openModal = (url: string| null) => {
+  openModal = (url: string | null) => {
     this.goBackUrl = window.location.href;
 
     window.addEventListener('popstate', this.handlePopstateEvent);
@@ -294,11 +276,9 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
 
     this.disableBodyScroll();
 
+    // on route change
     this.unlisten = browserHistory.listen(() => {
-      // on route change
-      setTimeout(() => {
-        this.props.close();
-      }, 250);
+      setTimeout(() => this.props.close(), 250);
     });
 
     if (url) {
@@ -350,11 +330,6 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     // reset state
     this.setState({ scrolled: false });
 
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      this.subscription = null;
-    }
-
     if (isFunction(this.unlisten)) {
       this.unlisten();
     }
@@ -394,7 +369,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
       >
         <Container id="e2e-fullscreenmodal-content" className={`${opened && 'opened'}`}>
           <Content innerRef={this.setRef}>
-            <ContentInner className={`${bowser.ipad && 'ipad'}`}>
+            <ContentInner>
               {children}
             </ContentInner>
           </Content>

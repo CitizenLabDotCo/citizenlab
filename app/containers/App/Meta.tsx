@@ -68,7 +68,7 @@ class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
       let metaTitle = getLocalized(metaTitleMultiLoc, locale, currentTenantLocales);
       const organizationName = getLocalized(organizationNameMultiLoc, locale, currentTenantLocales);
       let metaDescription = getLocalized(metaDescriptionMultiLoc, locale, currentTenantLocales);
-      const url = `http://${currentTenant.data.attributes.host}`;
+      const url = `https://${currentTenant.data.attributes.host}`;
       const fbAppId = currentTenant.data.attributes.settings.facebook_login && currentTenant.data.attributes.settings.facebook_login.app_id;
       const currentTenantName = getLocalized(organizationNameMultiLoc, locale, currentTenantLocales);
       const headerTitleMultiLoc = currentTenant.data.attributes.settings.core.header_title;
@@ -81,9 +81,14 @@ class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
       metaTitle = (metaTitle || helmetTitle);
       metaDescription = (metaDescription || helmetDescription);
 
+      const lifecycleStage = currentTenant.data.attributes.settings.core.lifecycle_stage;
+      const blockIndexing = lifecycleStage === 'demo' || lifecycleStage === 'not_applicable';
+
       return (
         <Helmet>
+          {blockIndexing && <meta name="robots" content="noindex" />}
           <title>{metaTitle}</title>
+          <meta name="description" content={metaDescription} />
           <meta property="og:title" content={metaTitle} />
           <meta property="og:description" content={metaDescription} />
           <meta property="og:image" content={image} />

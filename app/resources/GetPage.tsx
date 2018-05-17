@@ -1,11 +1,16 @@
 import React from 'react';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
-import { IPageData, pageByIdStream } from 'services/pages';
+import { IPageData, pageByIdStream, pageBySlugStream } from 'services/pages';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
-  id: string;
+  id?: string;
+  slug?: string;
+  resetOnChange?: boolean;
 }
+
+export type GetPageChildProps = IPageData | undefined | null | Error;
 
 type children = (renderProps: GetPageChildProps) => JSX.Element | null;
 
@@ -14,38 +19,51 @@ interface Props extends InputProps {
 }
 
 interface State {
-  page: IPageData | null;
+  page: GetPageChildProps;
 }
-
-export type GetPageChildProps = IPageData | null;
 
 export default class GetPage extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
+  public static defaultProps: Partial<Props> = {
+    resetOnChange: true
+  };
+
   constructor(props: Props) {
     super(props);
     this.state = {
-      page: null
+      page: undefined
     };
   }
 
   componentDidMount() {
-    const { id } = this.props;
+    const { id, slug, resetOnChange } = this.props;
 
-    this.inputProps$ = new BehaviorSubject({ id });
+    this.inputProps$ = new BehaviorSubject({ id, slug, resetOnChange });
 
     this.subscriptions = [
       this.inputProps$
         .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .switchMap(({ id }) => pageByIdStream(id).observable)
-        .subscribe((page) => this.setState({ page: page.data }))
-    ];
+        .do(() => resetOnChange && this.setState({ page: undefined }))
+        .switchMap(({ id, slug }) => {
+          if (id) {
+            return pageByIdStream(id).observable;
+          } else if (slug) {
+            return pageBySlugStream(slug).observable;
+          }
+
+          return Observable.of(null);
+        })
+        .subscribe((page) => {
+          this.setState({ page: !isNilOrError(page) ? page.data : page });
+        })
+      ];
   }
 
   componentDidUpdate() {
-    const { id } = this.props;
-    this.inputProps$.next({ id });
+    const { id, slug, resetOnChange } = this.props;
+    this.inputProps$.next({ id, slug, resetOnChange });
   }
 
   componentWillUnmount() {

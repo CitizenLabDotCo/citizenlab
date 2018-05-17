@@ -1,7 +1,7 @@
 // Libraries
 import React from 'react';
 import { isEmpty } from 'lodash';
-import { isNullOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { Formik } from 'formik';
 import { withRouter, WithRouterProps } from 'react-router';
 
@@ -32,14 +32,12 @@ class ProjectDescription extends React.PureComponent<Props> {
       setStatus(null);
 
       // Send the values to the API
-      updateProject(project.id, values)
-      .catch((errorResponse) => {
+      updateProject(project.id, values).catch((errorResponse) => {
         // Process errors from the API and push them to the Formik context
         const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
         setErrors(apiErrors);
         setSubmitting(false);
-      })
-      .then(() => {
+      }).then(() => {
         // Reset the Formik context for touched and errors tracking
         resetForm();
         setStatus('success');
@@ -67,7 +65,7 @@ class ProjectDescription extends React.PureComponent<Props> {
 }
 
 export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps) => (
-  <GetProject slug={inputProps.params.slug}>
-    {project => !isNullOrError(project) ? < ProjectDescription {...inputProps} project={project} /> : null}
+  <GetProject id={inputProps.params.projectId}>
+    {project => !isNilOrError(project) ? < ProjectDescription {...inputProps} project={project} /> : null}
   </GetProject>
 ));
