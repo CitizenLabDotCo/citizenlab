@@ -1,5 +1,5 @@
 // Libraries
-import * as React from 'react';
+import React from 'react';
 import { Subscription } from 'rxjs';
 
 // services

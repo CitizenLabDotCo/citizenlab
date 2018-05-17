@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 export interface Props {
   className?: string;
 }
+
 export interface State {}
 
 // Styling
