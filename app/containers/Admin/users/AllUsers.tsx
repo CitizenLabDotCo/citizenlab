@@ -20,6 +20,16 @@ import GetUsers, { GetUsersChildProps, SortAttribute } from 'resources/GetUsers'
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// Styling
+import styled from 'styled-components';
+
+const StyledAvatar = styled(Avatar) `
+  flex: 0 0 30px;
+  height: 30px;
+  margin-right: 15px;
+  margin-left: 20px;
+`;
+
 // Typings
 interface InputProps {}
 
@@ -93,7 +103,7 @@ class AllUsers extends React.PureComponent<Props, State> {
             {usersList.map((user) => (
               <tr key={user.id}>
                 <td><Checkbox value={false} onChange={this.handleUserSelectedOnChange} /></td>
-                <td><Avatar userId={user.id} size="small" /></td>
+                <td><StyledAvatar userId={user.id} size="small" /></td>
                 <td>{user.attributes.first_name} {user.attributes.last_name}</td>
                 <td>{user.attributes.email}</td>
                 <td>{user.attributes.created_at}</td>

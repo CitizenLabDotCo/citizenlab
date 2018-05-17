@@ -10,6 +10,9 @@ const StyledTable: any = styled.table`
   border-spacing: 0;
   border-collapse: collapse;
 
+  /* border-collapse: separate; 
+  border-spacing: 0 15px; */
+
   th, td {
     padding: 0;
     margin: 0;
@@ -21,13 +24,13 @@ const StyledTable: any = styled.table`
         fill: ${color('label')};
         color: ${color('label')};
         font-size: ${fontSize('small')};
-        font-weight: 400;
+        font-weight: 500;
+        text-transform: uppercase;
         line-height: 18px;
         margin-left: 20px;
         margin-right: 20px;
         padding-top: 0px;
         padding-bottom: 0px;
-        border: solid 1px red;
 
         &.sortable {
           cursor: pointer;
@@ -45,6 +48,8 @@ const StyledTable: any = styled.table`
   tbody {
     tr {
       border-radius: 5px;
+      padding-top: 50px;
+      padding-bottom: 50px;
 
       td {
         color: ${color('clBlue2Darkest')};
@@ -53,9 +58,8 @@ const StyledTable: any = styled.table`
         line-height: 18px;
         margin-left: 20px;
         margin-right: 20px;
-        padding-top: 0px;
-        padding-bottom: 0px;
-        border: solid 1px red;
+        padding-top: 12px;
+        padding-bottom: 12px;
 
         &.center {
           justify-content: center;
