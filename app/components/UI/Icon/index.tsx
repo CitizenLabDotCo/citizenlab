@@ -427,17 +427,13 @@ const icons = {
   notification_invitation_accepted: (className, title) => (
     <svg className={className} viewBox="0 0 24 24" version="1.1" fill="#6B6B6B">
       {injectTitle(title)}
-      <g id="surface1">
         <path d="M 9 4 C 6.789063 4 5 5.789063 5 8 C 5 10.210938 6.789063 12 9 12 C 11.210938 12 13 10.210938 13 8 C 13 5.789063 11.210938 4 9 4 Z M 22.28125 6.8125 L 17.6875 11.5625 L 15.59375 9.5 L 14.1875 10.90625 L 17.71875 14.4375 L 18.40625 13.6875 L 23.71875 8.1875 Z M 9 14 C 2.898438 14 1 18 1 18 L 1 20 L 17 20 L 17 18 C 17 18 15.101563 14 9 14 Z " />
-      </g>
     </svg>
   ),
   notification_status: (className, title) => (
     <svg className={className} viewBox="0 0 24 24" version="1.1" fill="#6B6B6B">
       {injectTitle(title)}
-      <g id="surface1">
         <path d="M 2 8 L 2 16 C 2 17.101563 2.898438 18 4 18 L 15.199219 18 C 15.699219 18 16.199219 17.800781 16.601563 17.398438 L 22 12 L 16.601563 6.601563 C 16.199219 6.199219 15.699219 6 15.199219 6 L 4 6 C 2.898438 6 2 6.898438 2 8 Z " />
-      </g>
     </svg>
   ),
   arrowLeft: (className, title) => (
@@ -452,10 +448,8 @@ const icons = {
 create: (className, title) => (
   <svg className={`cl-icon ${className ? className : ''}`} width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
   {injectTitle(title)}
-  <g id="Create-group-icon">
-    <circle className="cl-icon-background" id="Background-Plus-icon" cx="15.5" cy="15.5" r="15.5" fill="#01A1B1" fill-opacity="0.15" />
-    <path className="cl-icon-fill cl-icon-primary" id="Create-icon" d="M14.85 8.48571H8.48571V14.85H6.36429V8.48571H0V6.36429H6.36429V0H8.48571V6.36429H14.85V8.48571Z" transform="translate(8 8)" fill="#044D6C" />
-  </g>
+    <circle className="cl-icon-background Background-Create-icon" cx="15.5" cy="15.5" r="15.5" fill="#01A1B1" fill-opacity="0.15" />
+    <path className="cl-icon-fill cl-icon-primary Create-icon" d="M14.85 8.48571H8.48571V14.85H6.36429V8.48571H0V6.36429H6.36429V0H8.48571V6.36429H14.85V8.48571Z" transform="translate(8 8)" fill="#044D6C" />
 </svg>
 ),
 shield: (className, title) => (
@@ -479,13 +473,13 @@ blankPage: (className, title) => (
 remove: (className, title) => (
   <svg className={`cl-icon ${className ? className : ''}`} width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
   {injectTitle(title)}
-  <path id="Remove" d="M9 0C4.0275 0 0 4.0275 0 9C0 13.9725 4.0275 18 9 18C13.9725 18 18 13.9725 18 9C18 4.0275 13.9725 0 9 0ZM13.5 9.9H4.5V8.1H13.5V9.9Z" fill="#FC3C2D" />
+  <path d="M9 0C4.0275 0 0 4.0275 0 9C0 13.9725 4.0275 18 9 18C13.9725 18 18 13.9725 18 9C18 4.0275 13.9725 0 9 0ZM13.5 9.9H4.5V8.1H13.5V9.9Z" fill="#FC3C2D" />
 </svg>
 ),
 add: (className, title) => (
   <svg className={`cl-icon ${className ? className : ''}`} width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
   {injectTitle(title)}
-  <path id="Add-icon" d="M11.5 0C5.14625 0 0 5.14625 0 11.5C0 17.8538 5.14625 23 11.5 23C17.8538 23 23 17.8538 23 11.5C23 5.14625 17.8538 0 11.5 0ZM17.25 12.65H12.65V17.25H10.35V12.65H5.75V10.35H10.35V5.75H12.65V10.35H17.25V12.65Z" fill="#01A1B1" />
+  <path d="M11.5 0C5.14625 0 0 5.14625 0 11.5C0 17.8538 5.14625 23 11.5 23C17.8538 23 23 17.8538 23 11.5C23 5.14625 17.8538 0 11.5 0ZM17.25 12.65H12.65V17.25H10.35V12.65H5.75V10.35H10.35V5.75H12.65V10.35H17.25V12.65Z" fill="#01A1B1" />
 </svg>
 ),
 };
@@ -500,19 +494,17 @@ const clIcons = {
   database: (className, title, theme) => (
     <svg className={`cl-icon ${className ? className : ''}`} width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
       {injectTitle(title)}
-      <g id="Normal-Group-icon">
         <circle className="cl-icon-background" id="Background-Database-icon" cx="32" cy="32" r="32" fill={theme.clIconBackground} fill-opacity="0.07" />
         <path className="cl-icon-fill cl-icon-primary" id="Database-icon" d="M24.625 22C24.375 21.875 24.125 21.875 24 22C21.5 23.875 17.25 25 12.5 25C7.75 25 3.49998 23.875 0.999985 22C0.749985 21.875 0.499985 21.875 0.374985 22C0.124985 22.125 0 22.375 0 22.5V24.375C0 27.5 5.5 30 12.5 30C19.5 30 25 27.5 25 24.375V22.5C25 22.25 24.875 22 24.625 22ZM12.5 11.25C19.5 11.25 25 8.74998 25 5.62498C25 2.49998 19.5 -1.52588e-05 12.5 -1.52588e-05C5.5 -1.52588e-05 0 2.49998 0 5.62498C0 8.74998 5.5 11.25 12.5 11.25ZM24.625 9.37498C24.375 9.24998 24.125 9.24998 24 9.37498C21.5 11.25 17.25 12.375 12.5 12.375C7.75 12.375 3.49998 11.25 0.999985 9.37498C0.749985 9.24998 0.499985 9.24998 0.374985 9.37498C0.124985 9.49998 0 9.75002 0 9.87502V11.75C0 14.875 5.5 17.375 12.5 17.375C19.5 17.375 25 14.875 25 11.75V9.87502C25 9.75002 24.875 9.49998 24.625 9.37498ZM24.625 15.625C24.375 15.5 24.125 15.5 24 15.625C21.5 17.5 17.25 18.625 12.5 18.625C7.75 18.625 3.49998 17.5 0.999985 15.625C0.749985 15.5 0.499985 15.5 0.374985 15.625C0.124985 15.75 0 16 0 16.125V18C0 21.125 5.5 23.625 12.5 23.625C19.5 23.625 25 21.125 25 18V16.125C25 16 24.875 15.75 24.625 15.625Z" transform="translate(19 18)" fill={theme.clIconPrimary} />
-      </g>
     </svg>
   ),
   menu: (className, title, theme) => (
     <svg className={`cl-icon ${className ? className : ''}`} width="17" height="14" viewBox="0 0 17 14" fill="none" xmlns="http://www.w3.org/2000/svg">
       {injectTitle(title)}
-      <g id="menu-icon">
-        <path id="menu-1-icon" d="M0 14H4.70846V0H0V14Z" fill={theme.clIconPrimary} />
-        <path id="menu-2-icon" d="M4.70845 14H0V0H4.70845V14Z" transform="translate(6.14575)" fill={theme.clIconPrimary} />
-        <path id="menu-3-icon" d="M0 14V0H4.70845V14H0Z" transform="translate(12.2915)" fill={theme.clIconPrimary} />
+      <g className="menu-icon">
+        <path className="menu-1-icon" d="M0 14H4.70846V0H0V14Z" fill={theme.clIconPrimary} />
+        <path className="menu-2-icon" d="M4.70845 14H0V0H4.70845V14Z" transform="translate(6.14575)" fill={theme.clIconPrimary} />
+        <path className="menu-3-icon" d="M0 14V0H4.70845V14H0Z" transform="translate(12.2915)" fill={theme.clIconPrimary} />
       </g>
     </svg>
   ),
