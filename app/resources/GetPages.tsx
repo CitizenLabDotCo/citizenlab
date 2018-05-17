@@ -1,7 +1,11 @@
 import React from 'react';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs';
+import isEqual from 'lodash/isEqual';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
+import { of } from 'rxjs/observable/of';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { IPageData, listPages, pageByIdStream } from 'services/pages';
-import { isEqual } from 'lodash';
 
 interface InputProps {
   ids?: string[];
@@ -36,24 +40,25 @@ export default class GetPages extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ ids });
 
     this.subscriptions = [
-      this.inputProps$
-        .distinctUntilChanged((prev, next) => isEqual(prev, next))
-        .switchMap(({ ids }) => {
+      this.inputProps$.pipe(
+        distinctUntilChanged((prev, next) => isEqual(prev, next)),
+        switchMap(({ ids }) => {
           if (ids) {
             if (ids.length > 0) {
-              return Observable.combineLatest(
+              return combineLatest(
                 ids.map(id => pageByIdStream(id).observable.map(topic => topic.data))
               );
             }
 
-            return Observable.of(null);
+            return of(null);
           }
 
           return listPages().observable.map(pages => pages.data);
         })
-        .subscribe((pages) => {
-          this.setState({ pages });
-        })
+      )
+      .subscribe((pages) => {
+        this.setState({ pages });
+      })
     ];
   }
 

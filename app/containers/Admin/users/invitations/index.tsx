@@ -28,7 +28,7 @@ import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import { FormattedHTMLMessage } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import { appLocalePairs } from 'i18n.js';
+import { appLocalePairs } from 'i18n';
 import { getLocalized } from 'utils/i18n';
 
 // utils

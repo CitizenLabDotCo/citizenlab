@@ -1,5 +1,4 @@
 {
-  "app.components.Breadcrumbs.header": "Dies ist die Semmelbrösel-Komponente!",
   "app.components.CustomFieldsForm.requiredError": "Dieses Feld ist erforderlich",
   "app.components.ErrorBoundary.genericError": "Ein Fehler trat auf. Wir können diesen Inhalt nicht anzeigen. Bitte versuchen Sie es später noch einmal.",
   "app.components.FullscreenModal.closeButtonLabel": "Schließen",
@@ -27,7 +26,6 @@
   "app.components.IdeaForm.titlePlaceholder": "{orgName, select, München {Geben Sie eine Überschrift für den gemeldeten Mangel ein} other {Geben Sie eine Überschrift zu Ihrer Idee ein}}",
   "app.components.IdeaForm.topicsLabel": "Themen (optional, max. 2)",
   "app.components.IdeaForm.topicsPlaceholder": "Wählen Sie ein oder zwei Themen für Ihre Idee",
-  "app.components.IdeaTag.header": "Dies ist die IdeenTag-Komponente!",
   "app.components.IdeasMap.login": "Anmeldung",
   "app.components.IdeasMap.noIdeasWithLocation": "{orgName, select, München {Die Mängel in diesem Bezirk haben keine Standortinformationen.} other {Die Ideen in diesem Projekt haben keine Standortinformationen.}}",
   "app.components.IdeasMap.postIdeaHere": "{orgName, select, München {Melden Sie hier einen Mangel} other {Fügen Sie eine Idee hier hinzu}}",
@@ -74,8 +72,6 @@
   "app.components.VoteControl.votingDisabledNotInActiveContext": "{orgName, select, München {Diese Mängelmeldung in {projectName} wird nicht mehr oder noch nicht berücksichtigt} other {Diese Idee zu {projectName} wird nicht mehr oder noch nicht berücksichtigt}}",
   "app.components.VoteControl.votingDisabledPossibleLater": "{orgName, select, München {Bewertungen von Mängelmeldungen in {projectName} werden ab dem {enabledFromDate} möglich sein} other {Abstimmungen zu Ideen für {projectName} werden ab dem {enabledFromDate} möglich sein}}",
   "app.components.VoteControl.votingDisabledProjectInactive": "{orgName, select, München {Sie können nicht mehr Mängelmeldungen in {projectName} bewerten} other {Sie können nicht mehr zu Ideen für {projectName} abstimmen}}",
-  "app.components.admin.ExportLabel.downloadError": "Fehler beim Herunterladen. Bitte erneut versuchen",
-  "app.components.admin.ExportLabel.processingDownload": "Wird verarbeitet...",
   "app.components.admin.FormikSubmitWrapper.buttonError": "Fehler",
   "app.components.admin.FormikSubmitWrapper.buttonSave": "Speichern",
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "Gespeichert!",
