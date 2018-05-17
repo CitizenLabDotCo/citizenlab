@@ -170,6 +170,7 @@
   "app.containers.Admin.User.saveErrorMessage": "Une ou plusieurs erreurs se sont produites.\n      Aucune invitation n'a donc été envoyée pour le moment.\n      Veuillez corriger les erreurs ci-dessous et essayer à nouveau.",
   "app.containers.Admin.User.saveSuccess": "Envoyé !",
   "app.containers.Admin.User.saveSuccessMessage": "Les invitations ont été envoyées avec succès.",
+  "app.containers.Admin.User.since": "",
   "app.containers.Admin.User.supportPage": "page d'aide",
   "app.containers.Admin.User.textTab": "Entrer des adresses e-mail manuellement",
   "app.containers.Admin.User.unknownError": "Une erreur est survenue. Veuillez réessayer.",
