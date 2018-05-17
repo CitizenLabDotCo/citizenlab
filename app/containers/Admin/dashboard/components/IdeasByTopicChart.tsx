@@ -69,6 +69,10 @@ class IdeasByTimeChart extends React.PureComponent<Props & injectedLocalized, St
     }
   }
 
+  componentWillUnmount() {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
   convertToGraphFormat = (serie: IIdeasByTopic) => {
     if (serie) {
       const { data, topics } = serie;

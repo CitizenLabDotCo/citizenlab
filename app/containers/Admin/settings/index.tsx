@@ -18,7 +18,7 @@ interface State {}
 
 class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   render() {
-    const { location, children } = this.props;
+    const { children } = this.props;
     const { formatMessage } = this.props.intl;
 
     const tabs = [
@@ -34,20 +34,17 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithR
     };
 
     return (
-      <>
-        <TabbedResource
-          resource={resource}
-          messages={messages}
-          tabs={tabs}
-          location={location}
-        >
-          <HelmetIntl
-            title={messages.helmetTitle}
-            description={messages.helmetDescription}
-          />
-          {children}
-        </TabbedResource>
-      </>
+      <TabbedResource
+        resource={resource}
+        messages={messages}
+        tabs={tabs}
+      >
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
+        />
+        {children}
+      </TabbedResource>
     );
   }
 }

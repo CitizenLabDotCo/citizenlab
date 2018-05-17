@@ -21,6 +21,7 @@ export default (inputProps: InputProps) => (
       if (isNilOrError(user)) return null;
 
       return (
+        // To test invitation flow, we need the token, hence this className
         <Table.Row key={inputProps.invite.id} className={inputProps.invite.attributes.token}>
           <Table.Cell>
             {user.attributes.email}

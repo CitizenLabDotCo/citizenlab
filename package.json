@@ -102,8 +102,7 @@
     },
     "plugins": [
       "react",
-      "jsx-a11y",
-      "cl-custom"
+      "jsx-a11y"
     ],
     "parserOptions": {
       "ecmaVersion": 6,
@@ -165,8 +164,7 @@
       "react/no-unused-prop-types": 1,
       "react/self-closing-comp": 0,
       "require-yield": 0,
-      "import/no-webpack-loader-syntax": 0,
-      "cl-custom/no-vanilla-formatted-messages": 2
+      "import/no-webpack-loader-syntax": 0
     },
     "settings": {
       "import/resolver": {
@@ -314,7 +312,6 @@
     "eslint-config-airbnb": "13.0.0",
     "eslint-config-airbnb-base": "10.0.1",
     "eslint-import-resolver-webpack": "0.8.3",
-    "eslint-plugin-cl-custom": "file:internals/lint/eslint-plugin-cl-custom",
     "eslint-plugin-import": "2.2.0",
     "eslint-plugin-jsx-a11y": "2.2.3",
     "eslint-plugin-react": "6.7.1",

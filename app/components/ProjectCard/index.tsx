@@ -7,6 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import LazyImage, { Props as LazyImageProps } from 'components/LazyImage';
+import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
 
 // services
 import { IProjectData } from 'services/projects';
@@ -26,7 +27,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, color } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 const ProjectImageContainer =  styled.div`
   height: 190px;
@@ -51,7 +52,7 @@ const ProjectImagePlaceholder = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${color('placeholderBg')};
+  background: ${colors.placeholderBg};
 `;
 
 const ProjectImagePlaceholderIcon = styled(Icon) `
@@ -74,7 +75,8 @@ const Container = styled.div`
   margin-bottom: 25px;
   background: #fff;
   border-radius: 5px;
-  border: solid 1px #e4e4e4;
+  border: solid 1px ${colors.separation};
+  position: relative;
 
   ${media.biggerThanMaxTablet`
     min-height: 222px;
@@ -87,6 +89,14 @@ const Container = styled.div`
     padding: 15px;
   `}
 `;
+
+const Mod = styled(ProjectModeratorIndicator)`
+  position: absolute;
+  top: .5rem;
+  right: .5rem;
+  width: 1rem;
+`;
+
 
 const ProjectContent = styled.div`
   flex: 1;
@@ -254,6 +264,7 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
 
       return (
         <Container className={className}>
+          <Mod projectId={project.id} />
 
           <ProjectImageContainer>
             {imageUrl && <ProjectImage src={imageUrl} cover />}

@@ -47,8 +47,7 @@ const padding = 30;
 
 const ContainerInner = styled.div`
   width: 100%;
-  max-width: 1050px;
-  max-width: ${(props) => props.theme.maxPageWidth + (padding * 2)}px;
+  max-width: ${(props) => props.theme.maxPageWidth}px;
   display: flex;
   flex-direction: column;
   align-items: center;

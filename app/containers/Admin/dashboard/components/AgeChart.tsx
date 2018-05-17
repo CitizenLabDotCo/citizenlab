@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import { range, forOwn, get } from 'lodash';
-import * as moment from 'moment';
+import moment from 'moment';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { withTheme } from 'styled-components';
@@ -40,6 +40,10 @@ class AgeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
     if (this.props.startAt !== prevProps.startAt || this.props.endAt !== prevProps.endAt) {
       this.resubscribe(this.props.startAt, this.props.endAt);
     }
+  }
+
+  componentWillUnmount() {
+    this.subscription.unsubscribe();
   }
 
   convertToGraphFormat = (serie: IUsersByBirthyear) => {
