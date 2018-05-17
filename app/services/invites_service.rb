@@ -61,9 +61,16 @@ class InvitesService
   end
 
   def bulk_create_xlsx file, default_params={}, inviter=nil
-    hash_array = xlsx_to_hash_array(file).select do |invite_params|
+    map_rows = []
+    old_row = 0
+    hash_array = XlsxService.new.xlsx_to_hash_array(file).select do |invite_params|
+      if invite_params.present?
+        map_rows += [old_row]
+      end
+      old_row += 1
       invite_params.present?
     end
+    after_xlsx_to_hash_array hash_array
     invites = build_invites(hash_array, default_params, inviter)
     pre_check_invites(invites)
     if @errors.empty?
@@ -73,8 +80,8 @@ class InvitesService
     end
   rescue InvitesFailedError => e
     e.errors.each do |e|
-      e.row && (e.row += 2)
-      e.rows&.map!{|r| r+2}
+      e.row && (e.row = (map_rows[e.row]+2))
+      e.rows&.map!{|r| map_rows[r]+2}
     end
     raise e
   end
@@ -105,8 +112,8 @@ class InvitesService
 
   private
 
-  def xlsx_to_hash_array file
-    XlsxService.new.xlsx_to_hash_array(file).each.with_index do |hash, row_index|
+  def after_xlsx_to_hash_array hash_array
+    hash_array.each.with_index do |hash, row_index|
       if hash['groups']
         hash['group_ids'] = xlsx_groups_to_group_ids(hash['groups'], row_index)
       end
@@ -152,7 +159,7 @@ class InvitesService
 
   def build_invites hash_array, default_params={}, inviter=nil
     if hash_array.size > MAX_INVITES
-      add_error(:max_invites_limit_exceeded, row: hash_array.size, value: MAX_INVITES)
+      add_error(:max_invites_limit_exceeded, row: (hash_array.size-1), value: MAX_INVITES)
       fail_now
     elsif hash_array.size == 0
       add_error(:no_invites_specified)
