@@ -589,7 +589,7 @@ const clIcons = {
         <path className="cl-icon-accent" id="Segment-3-icon" fill-rule="evenodd" clip-rule="evenodd" d="M11.9495 0H0.568901C0.350394 0 0.150095 0.115402 0.0556365 0.29375C-0.0388223 0.482589 -0.0115086 0.692411 0.126197 0.849777L7.52358 9.29509C7.62259 9.41049 7.76826 9.48393 7.92645 9.49442H7.96628C8.10968 9.49442 8.24852 9.44197 8.35436 9.34755C11.0003 7.07098 12.5185 3.86071 12.5185 0.524554C12.5185 0.230804 12.2636 0 11.9495 0Z" transform="translate(14.4814 12.6067)" fill={theme.clIconAccent} />
         <g className="cl-icon-primary" id="Segment-1-icon" transform="translate(1 2.01292)" stroke={theme.clIconPrimary} fill={theme.clIconPrimary}>
           <path fill-rule="evenodd" clip-rule="evenodd" d="M17.0821 19.9883C15.1739 21.5493 13.7169 21.9871 11.0531 21.9871C4.94878 21.9871 0 17.065 0 10.9935C0 4.92211 4.55288 0 10.0483 0V10.9935L17.0821 19.9883Z" />
-          <path d="M17.0821 19.9883C15.1739 21.5493 13.7169 21.9871 11.0531 21.9871C4.94878 21.9871 0 17.065 0 10.9935C0 4.92211 4.55288 0 10.0483 0V10.9935L17.0821 19.9883Z" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M17.0821 19.9883C15.1739 21.5493 13.7169 21.9871 11.0531 21.9871C4.94878 21.9871 0 17.065 0 10.9935C0 4.92211 4.55288 0 10.0483 0V10.9935L17.0821 19.9883Z" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
         </g>
       </g>
     </svg>
