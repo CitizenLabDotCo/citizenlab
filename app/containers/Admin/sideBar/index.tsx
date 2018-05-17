@@ -18,12 +18,15 @@ import messages from './messages';
 import styled, { css } from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
 
-const Menu = styled.div`
+const Menu = styled.nav`
   background: ${ colors.adminMenuBackground };
-  flex: 0 0 240px;
+  flex: 0 0 320px;
   margin-top: 0px;
-  padding-top: 45px;
+  padding-top: 100px;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   ${media.smallerThanMinTablet`
     flex: 0 0 70px;
@@ -31,79 +34,78 @@ const Menu = styled.div`
 `;
 
 const IconWrapper = styled.div`
-  width: 49px;
-  height: 49px;
+  width: 45px;
+  height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-const StyledIcon = styled(Icon)`
-  height: 18px;
-  max-width: 30px;
-  fill: #fff;
-  opacity: 0.5;
-
-  &.idea {
-    height: 21px;
-  }
-`;
 
 const Text = styled.div`
-  color: #fff;
-  font-size: 17px;
+  color: ${colors.adminLightText};
+  font-size: 16px;
   font-weight: 400;
-  line-height: 21px;
-  margin-left: 15px;
-  opacity: 0.4;
+  line-height: 19px;
+  margin-left: 10px;
+  flex: 1;
 
   ${media.smallerThanMinTablet`
     display: none;
   `}
 `;
 
-const MenuLink = styled(Link)`
-  flex: 1;
-  height: 100%;
+const MenuItem: any = styled(Link)`
+  width: 210px;
+  border-radius: 5px;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
-  padding-left: 12px;
-`;
-
-const MenuItem: any = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  padding: 0;
+  padding-left: 5px;
+  padding-right: 15px;
   padding-bottom: 1px;
   margin: 0;
-  margin-bottom: 5px;
   cursor: pointer;
+  margin-bottom: 5px;
 
   &:hover {
-    ${StyledIcon} {
-      opacity: 1;
-    };
-
     ${Text} {
-      opacity: 1;
+      color: #fff;
+    };
+    .cl-icon {
+      .cl-icon-primary {
+        fill: ${colors.clIconAccent}
+      }
+      .cl-icon-accent {
+        fill: ${colors.clIconPrimary}
+      }
     };
   }
 
-  ${(props: any) => props.active && css`
-    background: #222;
 
-    ${StyledIcon} {
-      opacity: 1;
-    };
+  ${(props: any) => props.active && css`
+    background: rgba(0, 0, 0, 0.2);
 
     ${Text} {
-      opacity: 1;
+      color: #fff;
+    };
+
+    .cl-icon {
+      .cl-icon-primary {
+        fill: ${colors.clIconAccent}
+      }
+      .cl-icon-accent {
+        fill: ${colors.clIconPrimary}
+      }
     };
   `}
+`;
+
+const Sul = styled.ul`
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 `;
 
 type Props = {};
@@ -134,43 +136,35 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
       {
         id: 'dashboard',
         link: '/admin',
-        iconName: 'analytics',
+        iconName: 'stats',
         message: 'dashboard',
         isActive: (pathname) => (pathname === '/admin'),
       },
       {
         id: 'users',
         link: '/admin/users',
-        iconName: 'people',
+        iconName: 'users',
         message: 'users',
         isActive: (pathName) => (pathName.startsWith('/admin/users'))
       },
       {
-        id: 'groups',
-        link: '/admin/groups',
-        iconName: 'groups',
-        message: 'groups',
-        featureName: 'groups',
-        isActive: (pathName) => (pathName.startsWith('/admin/groups'))
-      },
-      {
-        id: 'ideas',
-        link: '/admin/ideas',
-        iconName: 'idea',
-        message: 'ideas',
-        isActive: (pathName) => (pathName.startsWith('/admin/ideas'))
-      },
-      {
         id: 'projects',
         link: '/admin/projects',
-        iconName: 'project',
+        iconName: 'folder',
         message: 'projects',
         isActive: (pathName) => (pathName.startsWith('/admin/projects'))
       },
       {
+        id: 'ideas',
+        link: '/admin/ideas',
+        iconName: 'ideas',
+        message: 'ideas',
+        isActive: (pathName) => (pathName.startsWith('/admin/ideas'))
+      },
+      {
         id: 'settings',
         link: '/admin/settings/general',
-        iconName: 'settings',
+        iconName: 'setting',
         message: 'settings',
         isActive: (pathName) => (pathName.startsWith('/admin/settings'))
       },
@@ -209,17 +203,20 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
     }
 
     return (
-      <Menu>
-        {navItems.map((route) => (
-          <FeatureFlag name={route.featureName} key={route.id}>
-            <MenuItem active={route.isActive(pathname)}>
-              <MenuLink to={route.link}>
-                <IconWrapper><StyledIcon name={route.iconName} /></IconWrapper>
-                <Text>{formatMessage({ ...messages[route.message] })}</Text>
-              </MenuLink>
-            </MenuItem>
-          </FeatureFlag>
-        ))}
+      <Menu role="navigation">
+        <Sul>
+          {navItems.map((route) => (
+            <FeatureFlag name={route.featureName} key={route.id}>
+              <li>
+                <MenuItem active={route.isActive(pathname)} to={route.link}>
+                    <IconWrapper><Icon name={route.iconName} /></IconWrapper>
+                    <Text>{formatMessage({ ...messages[route.message] })}</Text>
+                  {route.isActive(pathname) && <Icon name="arrowLeft" />}
+                </MenuItem>
+              </li>
+            </FeatureFlag>
+          ))}
+        </Sul>
       </Menu>
     );
   }
