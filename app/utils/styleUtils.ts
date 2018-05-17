@@ -57,7 +57,7 @@ export const media = {
     }
   `,
   biggerThanMaxTablet: (style: any, ...args) => css`
-    @media (min-width: 1024px) {
+    @media (min-width: 1025px) {
       ${css(style, ...args)}
     }
   `,
@@ -89,6 +89,7 @@ export const colors = {
   clBlueLighter: '#80CFD8',
   clBlueLight: '#40B8C5',
   placeholderBg: '#CFD6DB',
+  clBlue2Darkest: '#044D6C'
 };
 
 export function color(name: keyof typeof colors) {
