@@ -1,11 +1,7 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-
+import React from 'react';
+import { Subscription } from 'rxjs/Subscription';
 import { IntlProvider } from 'react-intl';
-
-// services
 import { localeStream } from 'services/locale';
-
 import { Locale } from 'typings';
 
 type Props = {
@@ -17,10 +13,10 @@ type State = {
 };
 
 export default class LanguageProvider extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
       locale: null
     };

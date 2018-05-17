@@ -4,8 +4,6 @@ import { globalState, IAdminFullWidth, IAdminNoPadding, IGlobalStateService } fr
 
 // components
 import Sidebar from './sideBar/';
-
-// style
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 

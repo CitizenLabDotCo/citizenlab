@@ -3,7 +3,7 @@ import * as withQuery from 'with-query';
 import qs from 'qs';
 import { getJwt } from 'utils/auth/jwt';
 
-export default async function request<T>(url, data, options, queryParameters): Promise<T> {
+export default function request<T>(url, data, options, queryParameters): Promise<T> {
   const urlParams = qs.stringify(queryParameters, { arrayFormat: 'brackets', addQueryPrefix: true });
   const urlWithParams = `${url}${urlParams}`;
   const jwt = getJwt();
@@ -38,7 +38,7 @@ export default async function request<T>(url, data, options, queryParameters): P
   //   throw { status, response, json };
   // }
 
-  return fetch(urlWithParams, Object.assign(defaultOptions, options)).then((response) => {
+  return fetch(urlWithParams, { ...defaultOptions, ...options }).then((response) => {
     return Promise.all([
       response,
       response.json().catch(() => {
