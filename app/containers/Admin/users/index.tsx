@@ -122,7 +122,7 @@ class UsersPage extends React.Component<Props & WithRouterProps, State> {
           <LeftPanel onCreateGroup={this.openGroupCreationModal} />
           <ChildWrapper>{this.props.children}</ChildWrapper>
         </Wrapper>
-        <Modal header={ModalHeader} fixedHeight={false} opened={groupCreationModal !== false} close={this.closeGroupCreationModal}>
+        <Modal header={ModalHeader} fixedHeight={true} opened={groupCreationModal !== false} close={this.closeGroupCreationModal}>
           <>
             {groupCreationModal === 'step1' && <GroupCreationStep1 onOpenStep2={this.openStep2} />}
             {groupCreationModal === 'manual' &&
