@@ -1,10 +1,16 @@
 import React from 'react';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs';
+import get from 'lodash/get';
+import isArray from 'lodash/isArray';
+import isEmpty from 'lodash/isEmpty';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
+import { of } from 'rxjs/observable/of';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { pageByIdStream } from 'services/pages';
 import { getPageLink, PageLink } from 'services/pageLink';
 import { isNilOrError } from 'utils/helperUtils';
-import { get, isArray, isEmpty } from 'lodash';
 
 interface InputProps {
   pageId: string | null;
@@ -39,27 +45,28 @@ export default class GetPage extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ pageId });
 
     this.subscriptions = [
-      this.inputProps$
-        .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .switchMap(({ pageId }) => pageId ? pageByIdStream(pageId).observable : Observable.of(null))
-        .switchMap((page) => {
+      this.inputProps$.pipe(
+        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+        switchMap(({ pageId }) => pageId ? pageByIdStream(pageId).observable : of(null)),
+        switchMap((page) => {
           if (!isNilOrError(page)) {
             const pageLinks = get(page.data.relationships.page_links, 'data');
 
             if (isArray(pageLinks) && !isEmpty(pageLinks)) {
-              return Observable.combineLatest(
+              return combineLatest(
                 pageLinks.map(link => getPageLink(link.id).observable)
               );
             }
 
-            return Observable.of([]);
+            return of([]);
           }
 
-          return Observable.of(page);
-        }).subscribe((pageLinks) => {
-          this.setState({ pageLinks: pageLinks && pageLinks.map(pageLink => !isNilOrError(pageLink) ? pageLink.data : pageLink) });
+          return of(page);
         })
-      ];
+      ).subscribe((pageLinks) => {
+        this.setState({ pageLinks: pageLinks && pageLinks.map(pageLink => !isNilOrError(pageLink) ? pageLink.data : pageLink) });
+      })
+    ];
   }
 
   componentDidUpdate() {

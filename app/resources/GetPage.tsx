@@ -1,5 +1,9 @@
 import React from 'react';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs';
+import isString from 'lodash/isString';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
+import { of } from 'rxjs/observable/of';
+import { distinctUntilChanged, tap, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { IPageData, pageByIdStream, pageBySlugStream } from 'services/pages';
 import { isNilOrError } from 'utils/helperUtils';
@@ -43,22 +47,23 @@ export default class GetPage extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ id, slug, resetOnChange });
 
     this.subscriptions = [
-      this.inputProps$
-        .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .do(() => resetOnChange && this.setState({ page: undefined }))
-        .switchMap(({ id, slug }) => {
-          if (id) {
+      this.inputProps$.pipe(
+        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+        tap(() => resetOnChange && this.setState({ page: undefined })),
+        switchMap(({ id, slug }) => {
+          if (isString(id)) {
             return pageByIdStream(id).observable;
-          } else if (slug) {
+          } else if (isString(slug)) {
             return pageBySlugStream(slug).observable;
           }
 
-          return Observable.of(null);
+          return of(null);
         })
-        .subscribe((page) => {
-          this.setState({ page: !isNilOrError(page) ? page.data : page });
-        })
-      ];
+      )
+      .subscribe((page) => {
+        this.setState({ page: !isNilOrError(page) ? page.data : page });
+      })
+    ];
   }
 
   componentDidUpdate() {

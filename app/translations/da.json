@@ -1,5 +1,4 @@
 {
-  "app.components.Breadcrumbs.header": "Dette er Breadcrumbs-komponenten!",
   "app.components.CustomFieldsForm.requiredError": "Dette felt er påkrævet",
   "app.components.ErrorBoundary.genericError": "Der opstod en fejl, og vi kan ikke vise dette indhold. Prøv venligst igen.",
   "app.components.FullscreenModal.closeButtonLabel": "Luk",
@@ -27,7 +26,6 @@
   "app.components.IdeaForm.titlePlaceholder": "Indtast titlen på din idé",
   "app.components.IdeaForm.topicsLabel": "Emner (valgfrit, maks. 2)",
   "app.components.IdeaForm.topicsPlaceholder": "Vælg et eller to emner for din idé",
-  "app.components.IdeaTag.header": "Dette er IdeaTag-komponenten !",
   "app.components.IdeasMap.login": "Log ind",
   "app.components.IdeasMap.noIdeasWithLocation": "Ideerne i dette projekt har ikke nogen lokalitetsinformation.",
   "app.components.IdeasMap.postIdeaHere": "Tilføj en idé her",
@@ -74,8 +72,6 @@
   "app.components.VoteControl.votingDisabledNotInActiveContext": "Ideen bliver ikke længere eller ikke endnu vurderet i {projectName}",
   "app.components.VoteControl.votingDisabledPossibleLater": "Afstemning på ideer i {projectName} vil være muligt fra {enabledFromDate}",
   "app.components.VoteControl.votingDisabledProjectInactive": "Du kan ikke længere stemme på ideer i {projectName}",
-  "app.components.admin.ExportLabel.downloadError": "Fejl ved download. Prøv venligst igen.",
-  "app.components.admin.ExportLabel.processingDownload": "Behandler...",
   "app.components.admin.FormikSubmitWrapper.buttonError": "Fejl",
   "app.components.admin.FormikSubmitWrapper.buttonSave": "Gem",
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "Succes",
