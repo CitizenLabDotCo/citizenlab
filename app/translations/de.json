@@ -170,6 +170,7 @@
   "app.containers.Admin.User.saveErrorMessage": "Einer oder mehrere Fehler sind aufgetreten.\n      Deshalb wurden keine Einladungen versandt.\n      Bitte korrigieren Sie die unten aufgelisteten Fehler und versuchen Sie es nochmal.",
   "app.containers.Admin.User.saveSuccess": "Fertig!",
   "app.containers.Admin.User.saveSuccessMessage": "Die Einladung wurde erfolgreich versandt.",
+  "app.containers.Admin.User.since": "",
   "app.containers.Admin.User.supportPage": "Support-Seite",
   "app.containers.Admin.User.textTab": "Geben Sie die E-Mail-Adressen händisch ein",
   "app.containers.Admin.User.unknownError": "Etwas ging schief. Bitte versuchen Sie es später nochmal.",

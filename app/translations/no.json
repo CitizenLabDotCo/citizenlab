@@ -170,6 +170,7 @@
   "app.containers.Admin.User.saveErrorMessage": "One or more errors occurred.       Therefore no invitations were sent out.       Please correct the error(s) listed below and try again.",
   "app.containers.Admin.User.saveSuccess": "Success!",
   "app.containers.Admin.User.saveSuccessMessage": "Invitations successfully sent out.",
+  "app.containers.Admin.User.since": "",
   "app.containers.Admin.User.supportPage": "support page",
   "app.containers.Admin.User.textTab": "Manually enter email addresses",
   "app.containers.Admin.User.unknownError": "Something went wrong. Please try again later.",
