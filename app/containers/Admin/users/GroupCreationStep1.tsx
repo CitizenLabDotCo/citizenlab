@@ -6,6 +6,10 @@ import { Link } from 'react-router';
 import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 
+// i18n
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import messages from './messages';
+
 // Styling
 import styled from 'styled-components';
 import { colors, fontSize } from 'utils/styleUtils';
@@ -22,6 +26,15 @@ const GroupType = styled.div`
   flex-direction: column;
   padding: 85px 65px;
   align-items: center;
+
+  .groupName {
+    font-size: ${fontSize('xl')};
+    font-weight: 400;
+  }
+
+  .groupDescription {
+    flex: 1;
+  }
 `;
 
 const GroupIcon = styled(Icon)`
@@ -37,17 +50,7 @@ const GroupIcon = styled(Icon)`
   }
 `;
 
-const GroupName = styled.p`
-  font-size: ${fontSize('xl')};
-  font-weight: 400;
-`;
-
-const GroupDescription = styled.div`
-  flex: 1;
-`;
-
-const MoreInfoLink = styled(Link)`
-`;
+const MoreInfoLink = styled(Link)``;
 
 const Step2Button = styled(Button)`
   margin-top: 60px;
@@ -68,16 +71,16 @@ export class GroupCreationStep1 extends React.PureComponent<Props, State> {
       <TypesWrapper>
         <GroupType>
           <GroupIcon />
-          <GroupName></GroupName>
-          <GroupDescription></GroupDescription>
-          <MoreInfoLink></MoreInfoLink>
+          <FormattedMessage {...messages.step1TypeNameNormal} className="groupName" />
+          <FormattedMessage {...messages.step1TypeDescriptionNormal} className="groupDescription" />
+          <MoreInfoLink to=""><FormattedMessage {...messages.step1ReadMore} /></MoreInfoLink>
           <Step2Button />
         </GroupType>
         <GroupType>
           <GroupIcon />
-          <GroupName></GroupName>
-          <GroupDescription></GroupDescription>
-          <MoreInfoLink></MoreInfoLink>
+          <FormattedMessage {...messages.step1TypeNameSmart} className="groupName" />
+          <FormattedMessage {...messages.step1TypeDescriptionSmart} className="groupDescription" />
+          <MoreInfoLink to=""><FormattedMessage {...messages.step1ReadMore} /></MoreInfoLink>
           <Step2Button />
         </GroupType>
       </TypesWrapper>
