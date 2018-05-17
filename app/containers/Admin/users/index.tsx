@@ -32,6 +32,7 @@ const ChildWrapper = styled.div`
 `;
 
 // i18n
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
 
 // Services
@@ -98,6 +99,19 @@ class UsersPage extends React.Component<Props & WithRouterProps, State> {
     if (!this.props.location) return null;
     const { groupCreationModal } = this.state;
 
+    let ModalHeader;
+    switch (groupCreationModal) {
+      case 'step1':
+        ModalHeader = <FormattedMessage {...messages.modalHeaderStep1} />;
+        break;
+      case 'manual':
+        ModalHeader = <FormattedMessage {...messages.modalHeaderManual} />;
+        break;
+      case 'rules':
+        ModalHeader = <FormattedMessage {...messages.modalHeaderRules} />;
+        break;
+    }
+
     return (
       <>
         <HelmetIntl
@@ -108,7 +122,7 @@ class UsersPage extends React.Component<Props & WithRouterProps, State> {
           <LeftPanel onCreateGroup={this.openGroupCreationModal} />
           <ChildWrapper>{this.props.children}</ChildWrapper>
         </Wrapper>
-        <Modal fixedHeight={false} opened={groupCreationModal !== false} close={this.closeGroupCreationModal}>
+        <Modal header={ModalHeader} fixedHeight={false} opened={groupCreationModal !== false} close={this.closeGroupCreationModal}>
           <>
             {groupCreationModal === 'step1' && <GroupCreationStep1 onOpenStep2={this.openStep2} />}
             {groupCreationModal === 'manual' &&

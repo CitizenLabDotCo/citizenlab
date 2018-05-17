@@ -247,6 +247,18 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupCreation.step1ReadMore',
     defaultMessage: 'Read More',
   },
+  modalHeaderStep1: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.modalHeaderStep1',
+    defaultMessage: 'Select the type of group',
+  },
+  modalHeaderManual: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.modalHeaderManual',
+    defaultMessage: 'Define a group name',
+  },
+  modalHeaderRules: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.modalHeaderRules',
+    defaultMessage: 'Define your smart group settings',
+  },
   fieldGroupName: {
     id: 'app.containers.AdminPage.Users.GroupCreation.fieldGroupName',
     defaultMessage: 'Name of the group',
