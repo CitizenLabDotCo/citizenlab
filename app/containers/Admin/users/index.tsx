@@ -102,13 +102,13 @@ class UsersPage extends React.Component<Props & WithRouterProps, State> {
     let ModalHeader;
     switch (groupCreationModal) {
       case 'step1':
-        ModalHeader = <FormattedMessage {...messages.modalHeaderStep1} />;
+        ModalHeader = <FormattedMessage tagName="h3" {...messages.modalHeaderStep1} />;
         break;
       case 'manual':
-        ModalHeader = <FormattedMessage {...messages.modalHeaderManual} />;
+        ModalHeader = <FormattedMessage tagName="h3" {...messages.modalHeaderManual} />;
         break;
       case 'rules':
-        ModalHeader = <FormattedMessage {...messages.modalHeaderRules} />;
+        ModalHeader = <FormattedMessage tagName="h3" {...messages.modalHeaderRules} />;
         break;
     }
 
@@ -122,7 +122,7 @@ class UsersPage extends React.Component<Props & WithRouterProps, State> {
           <LeftPanel onCreateGroup={this.openGroupCreationModal} />
           <ChildWrapper>{this.props.children}</ChildWrapper>
         </Wrapper>
-        <Modal header={ModalHeader} fixedHeight={true} opened={groupCreationModal !== false} close={this.closeGroupCreationModal}>
+        <Modal header={ModalHeader} fixedHeight={false} opened={groupCreationModal !== false} close={this.closeGroupCreationModal}>
           <>
             {groupCreationModal === 'step1' && <GroupCreationStep1 onOpenStep2={this.openStep2} />}
             {groupCreationModal === 'manual' &&
