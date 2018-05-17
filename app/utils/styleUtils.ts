@@ -81,7 +81,8 @@ export const colors = {
   separation: '#EAEAEA',
   background: '#F9F9FA',
   adminBackground: '#F0F3F4',
-  adminMenuBackground: '#3B3B3B',
+  adminMenuBackground: '#003349',
+  adminLightText: 'rgba(255, 255, 255, 0.8)',
   adminTextColor: '#044D6C',
   clBlueDarkest: '#02282D',
   clBlueDarker: '#0A5159',
@@ -90,7 +91,11 @@ export const colors = {
   clBlueLighter: '#80CFD8',
   clBlueLight: '#40B8C5',
   placeholderBg: '#CFD6DB',
-  clBlue2Darkest: '#044D6C'
+  clBlue2Darkest: '#044D6C',
+  clIconPrimary: '#00577C',
+  clIconSecondary:'#84939E',
+  clIconAccent:'#01A1B1',
+  clIconBackground:'rgba(1, 161, 177, 0.07)',
 };
 
 export function color(name: keyof typeof colors) {
