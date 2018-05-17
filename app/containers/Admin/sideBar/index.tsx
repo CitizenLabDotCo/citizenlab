@@ -15,7 +15,7 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
 
 const Menu = styled.nav`

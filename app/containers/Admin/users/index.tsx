@@ -1,11 +1,13 @@
 import React from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
+import { Formik } from 'formik';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
 import Modal from 'components/UI/Modal';
 import GroupsListPanel from './GroupsListPanel';
 import GroupCreationStep1 from './GroupCreationStep1';
+import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
 
 // Global state
 import { globalState, IAdminNoPadding, IGlobalStateService } from 'services/globalState';
@@ -31,7 +33,13 @@ const ChildWrapper = styled.div`
 
 // i18n
 import messages from './messages';
-import { IGroupData } from 'services/groups';
+
+// Services
+import { IGroupData, addGroup } from 'services/groups';
+
+
+// Typings
+import { API } from 'typings';
 
 export interface Props {}
 export interface State {
@@ -69,6 +77,22 @@ class UsersPage extends React.Component<Props & WithRouterProps, State> {
   openStep2 = (groupType: IGroupData['attributes']['membership_type']) => {
     this.setState({ groupCreationModal: groupType });
   }
+  renderNormalForm = (props) => {
+    return <NormalGroupForm {...props} />;
+  }
+  handleSubmitNormalForm = (values: NormalFormValues, { setErrors, setSubmitting }) => {
+    addGroup({
+      ...values
+    })
+      .then(() => {
+        this.closeGroupCreationModal();
+      })
+      .catch((errorResponse) => {
+        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+        setErrors(apiErrors);
+        setSubmitting(false);
+      });
+  }
 
   render () {
     if (!this.props.location) return null;
@@ -87,6 +111,13 @@ class UsersPage extends React.Component<Props & WithRouterProps, State> {
         <Modal fixedHeight={false} opened={groupCreationModal !== false} close={this.closeGroupCreationModal}>
           <>
             {groupCreationModal === 'step1' && <GroupCreationStep1 onOpenStep2={this.openStep2} />}
+            {groupCreationModal === 'manual' &&
+              <Formik
+                initialValues={{ title_multiloc: {} }}
+                validate={NormalGroupForm.validate}
+                render={this.renderNormalForm}
+                onSubmit={this.handleSubmitNormalForm}
+              />}
           </>
         </Modal>
       </>
