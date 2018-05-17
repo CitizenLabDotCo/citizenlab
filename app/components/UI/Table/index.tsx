@@ -10,9 +10,6 @@ const StyledTable: any = styled.table`
   border-spacing: 0;
   border-collapse: collapse;
 
-  /* border-collapse: separate; 
-  border-spacing: 0 15px; */
-
   th, td {
     padding: 0;
     margin: 0;
@@ -58,8 +55,8 @@ const StyledTable: any = styled.table`
         line-height: 18px;
         margin-left: 20px;
         margin-right: 20px;
-        padding-top: 12px;
-        padding-bottom: 12px;
+        padding-top: 11px;
+        padding-bottom: 11px;
 
         &.center {
           justify-content: center;
@@ -70,6 +67,18 @@ const StyledTable: any = styled.table`
         cursor: pointer;
         background: ${color('background')};
         color: #999;
+      }
+    }
+  }
+
+  tfoot {
+    display: flex;
+
+    tr {
+      display: flex;
+
+      td {
+        display: flex;
       }
     }
   }

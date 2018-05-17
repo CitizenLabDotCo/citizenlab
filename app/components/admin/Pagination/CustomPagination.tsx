@@ -9,7 +9,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Typing
-interface Props {
+export interface Props {
   currentPage: number;
   totalPages: number;
   loadPage: Function;
@@ -21,27 +21,36 @@ const Spagination = styled.div`
   align-items: baseline;
   justify-content: center;
 `;
+
 const Back = styled.button`
   color: #044D6C;
   margin-right: 30px;
   font-weight: bold;
   display: flex;
   align-items: baseline;
-  &:hover, &:focus {
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
     color: #01A1B1;
     outline: none;
   }
+
   & svg {
     transform: rotate(180deg);
   }
 `;
+
 const Next = styled.button`
   color: #044D6C;
   margin-left: 30px;
   font-weight: bold;
   display: flex;
   align-items: baseline;
-  &:hover, &:focus {
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
     color: #01A1B1;
     outline: none;
   }
@@ -55,24 +64,30 @@ const Item = styled.button`
   width: 36px;
   margin-left: 5px;
   font-weight: bold;
+  cursor: pointer;
 
   &>:first-child {
     margin-left: 0px;
   }
+
   &.active {
     background: #044D6C;
     color: #FFFFFF;
+
     &:focus, &:focus:hover {
       background: #044D6C;
       color: #01A1B1;
       outline: none;
     }
+
     &:hover {
       background: #044D6C;
       color: #FFFFFF;
     }
   }
-  &:hover, &:focus {
+
+  &:hover,
+  &:focus {
     background: rgba(132, 147, 158, 0.15);
     outline: none;
   }
@@ -83,7 +98,6 @@ const ChevronIcon = styled(Icon) `
   margin: 9px;
   fill: #01A1B1;
 `;
-
 
 class CustomPagination extends React.PureComponent<Props> {
 
@@ -133,8 +147,9 @@ class CustomPagination extends React.PureComponent<Props> {
   render() {
     const { currentPage, totalPages } = this.props;
     const pageItems = this.calculateMenuItems(currentPage, totalPages);
+
     return (
-      <Spagination>
+      <Spagination className={this.props['className']}>
         <Back onClick={this.goTo(currentPage - 1)}>
           <ChevronIcon name="chevron-right" />
           <FormattedMessage {...messages.back} />
