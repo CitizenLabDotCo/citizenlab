@@ -1,7 +1,9 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { browserHistory } from 'react-router';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { of } from 'rxjs/observable/of';
 import { isNilOrError } from 'utils/helperUtils';
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
@@ -265,13 +267,13 @@ class LandingPage extends React.PureComponent<Props, State> {
   componentDidMount() {
     const query = browserHistory.getCurrentLocation().query;
     const authUser$ = authUserStream().observable;
-    const ideaToPublish$ = (query && query.idea_to_publish ? ideaByIdStream(query.idea_to_publish).observable : Observable.of(null));
+    const ideaToPublish$ = (query && query.idea_to_publish ? ideaByIdStream(query.idea_to_publish).observable : of(null));
 
     this.subscriptions = [
       // if 'idea_to_publish' parameter is present in landingpage url,
       // find the draft idea previously created (before login/signup)
       // and update its status and author name
-      Observable.combineLatest(
+      combineLatest(
         authUser$,
         ideaToPublish$
       ).subscribe(async ([authUser, ideaToPublish]) => {

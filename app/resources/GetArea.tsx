@@ -1,8 +1,9 @@
 import React from 'react';
+import isString from 'lodash/isString';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { IAreaData, areaByIdStream } from 'services/areas';
-import { isString } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
@@ -38,11 +39,12 @@ export default class GetArea extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ id });
 
     this.subscriptions = [
-      this.inputProps$
-        .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .filter(({ id }) => isString(id))
-        .switchMap(({ id }) => areaByIdStream(id).observable)
-        .subscribe((area) => this.setState({ area: !isNilOrError(area) ? area.data : area }))
+      this.inputProps$.pipe(
+        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+        filter(({ id }) => isString(id)),
+        switchMap(({ id }) => areaByIdStream(id).observable)
+      )
+      .subscribe((area) => this.setState({ area: !isNilOrError(area) ? area.data : area }))
     ];
   }
 
