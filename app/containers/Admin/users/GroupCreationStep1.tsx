@@ -70,14 +70,14 @@ export class GroupCreationStep1 extends React.PureComponent<Props, State> {
     return (
       <TypesWrapper>
         <GroupType>
-          <GroupIcon />
+          <GroupIcon name="database" />
           <FormattedMessage {...messages.step1TypeNameNormal} className="groupName" />
           <FormattedMessage {...messages.step1TypeDescriptionNormal} className="groupDescription" />
           <MoreInfoLink to=""><FormattedMessage {...messages.step1ReadMore} /></MoreInfoLink>
           <Step2Button />
         </GroupType>
         <GroupType>
-          <GroupIcon />
+          <GroupIcon name="lightingBolt" />
           <FormattedMessage {...messages.step1TypeNameSmart} className="groupName" />
           <FormattedMessage {...messages.step1TypeDescriptionSmart} className="groupDescription" />
           <MoreInfoLink to=""><FormattedMessage {...messages.step1ReadMore} /></MoreInfoLink>
