@@ -5,6 +5,7 @@ class SideFxUserService
   def before_create user, current_user
     if User.admin.empty?
       user.add_role 'admin'
+      # event user has given/received admin rights?
     end
     if (CustomField.where(enabled: true).count == 0) && (user.invite_status != 'pending')
       user.registration_completed_at ||= Time.now
@@ -26,11 +27,39 @@ class SideFxUserService
     if user.registration_completed_at_previously_changed?
       LogActivityJob.perform_later(user, 'completed_registration', current_user, user.updated_at.to_i)
     end
+    if changed_to_admin? user
+      LogActivityJob.set(wait: 5.seconds).perform_later(user, 'admin_rights_given', current_user, Time.now.to_i)
+      log_admin_rights_received user, current_user
+    end
   end
 
   def after_destroy frozen_user, current_user
     serialized_user = clean_time_attributes(frozen_user.attributes)
     LogActivityJob.perform_later(encode_frozen_resource(frozen_user), 'deleted', current_user, Time.now.to_i, payload: {user: serialized_user})
+  end
+
+
+  private
+
+  def changed_to_admin? user
+    if user.roles_previously_changed?
+      user.admin? && !user.roles_previous_change.find{|r| r["type"] == "admin"}
+    else
+      false
+    end
+  end
+
+  def log_admin_rights_received user, current_user
+    current_user_serializer = "WebApi::V1::External::UserSerializer".constantize
+    serialized_current_user = ActiveModelSerializers::SerializableResource.new(current_user, {
+      serializer: current_user_serializer,
+      adapter: :json
+     }).serializable_hash
+    LogActivityJob.set(wait: 5.seconds).perform_later(
+      user, 'admin_rights_received', 
+      user, Time.now.to_i, 
+      payload: {initiator: serialized_current_user}
+      ) 
   end
 
 end
