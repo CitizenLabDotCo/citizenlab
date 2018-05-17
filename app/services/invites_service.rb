@@ -61,7 +61,9 @@ class InvitesService
   end
 
   def bulk_create_xlsx file, default_params={}, inviter=nil
-    hash_array = xlsx_to_hash_array(file)
+    hash_array = xlsx_to_hash_array(file).select do |invite_params|
+      invite_params.present?
+    end
     invites = build_invites(hash_array, default_params, inviter)
     pre_check_invites(invites)
     if @errors.empty?
