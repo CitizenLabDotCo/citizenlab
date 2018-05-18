@@ -32,7 +32,7 @@ const SFormattedMessage = styled.div`
 `;
 
 interface Props {
-  type: 'normal' | 'smart';
+  smartGroup?: boolean;
 }
 
 export default class NoUsers extends React.PureComponent<Props> {
@@ -41,13 +41,13 @@ export default class NoUsers extends React.PureComponent<Props> {
       <NoUsersPage>
         <Icon name="blankPage" />
         <FormattedMessage {...messages.emptyGroup} />
-        {this.props.type === 'normal' &&
+        {!this.props.smartGroup &&
           <SFormattedMessage>
             <FormattedMessage
               {...messages.goToAllUsers}
               values={{
                 allUsersLink: (
-                  <Link to="/users/">
+                  <Link to="/admin/users/">
                     <FormattedMessage {...messages.allUsers} />
                   </Link>),
               }}

@@ -13,7 +13,7 @@ import styled from 'styled-components';
 
 const gutter = '.5rem';
 
-const TitleWrapper = styled.div`
+export const TitleWrapper = styled.div`
   align-items: flex-start;
   display: flex;
   flex-wrap: nowrap;
@@ -33,7 +33,7 @@ const TitleIcon = styled(Icon)`
   flex: 0 0 calc(3rem + 2 * ${gutter});
 `;
 
-const TextAndButtons = styled.div`
+export const TextAndButtons = styled.div`
   margin: 0 0 .5rem 0;
 
   h1 {
@@ -46,13 +46,13 @@ const TextAndButtons = styled.div`
   }
 `;
 
-const StyledSearch = styled(SearchInput)`
+export const StyledSearch = styled(SearchInput)`
   align-self: flex-start;
   flex: 0 0 225px;
   justify-self: flex-end;
 `;
 
-const Spacer = styled.div`
+export const Spacer = styled.div`
   flex: 1 1 0;
 `;
 

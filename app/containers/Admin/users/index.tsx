@@ -20,7 +20,7 @@ const Wrapper = styled.div`
   align-items: stretch;
   display: flex;
   flex-wrap: nowrap;
-  heigth: 100%;
+  height: 100%;
 `;
 
 const LeftPanel = styled(GroupsListPanel)`
@@ -30,6 +30,7 @@ const LeftPanel = styled(GroupsListPanel)`
 const ChildWrapper = styled.div`
   background: white;
   flex: 1;
+  padding: 50px;
 `;
 
 // i18n
