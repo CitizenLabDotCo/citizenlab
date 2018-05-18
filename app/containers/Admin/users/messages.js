@@ -231,12 +231,60 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupsPanel.goToAllUsers',
     defaultMessage: 'Go on the {allUsersLink} tab to move users manually.',
   },
+  step1TypeNameNormal: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeNameNormal',
+    defaultMessage: 'Normal group',
+  },
+  step1TypeNameSmart: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeNameSmart',
+    defaultMessage: 'Smart group',
+  },
+  step1TypeDescriptionNormal: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionNormal',
+    defaultMessage: 'You have to add users manually to the group.',
+  },
+  step1TypeDescriptionSmart: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionSmart',
+    defaultMessage: 'A smart group add continually and automatically users based on specific conditions you setup.',
+  },
+  step1CreateButtonNormal: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1CreateButtonNormal',
+    defaultMessage: 'Create a normal group',
+  },
+  step1CreateButtonSmart: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1CreateButtonSmart',
+    defaultMessage: 'Create a smart group',
+  },
+  step1ReadMore: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1ReadMore',
+    defaultMessage: 'Read More about it',
+  },
+  modalHeaderStep1: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.modalHeaderStep1',
+    defaultMessage: 'Select the type of group',
+  },
+  modalHeaderManual: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.modalHeaderManual',
+    defaultMessage: 'Define a group name',
+  },
+  modalHeaderRules: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.modalHeaderRules',
+    defaultMessage: 'Define your smart group settings',
+  },
+  fieldGroupName: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.fieldGroupName',
+    defaultMessage: 'Name of the group',
+  },
+  groupFormTitle: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.groupFormTitle',
+    defaultMessage: 'Define a group name',
+  },
   selectAll: {
     id: 'app.containers.AdminPage.Users.GroupsPanel.selectAll',
     defaultMessage: 'Select all',
   },
   xUsers: {
     id: 'app.containers.AdminPage.Users.GroupsPanel.xUsers',
-    defaultMessage: '',
+    defaultMessage: 'x Users',
   },
 });

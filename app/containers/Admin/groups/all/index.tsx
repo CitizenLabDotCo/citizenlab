@@ -12,6 +12,9 @@ import PageWrapper from 'components/admin/PageWrapper';
 import GroupListTable from './GroupListTable';
 import GroupAdditionForm from './GroupAdditionForm';
 
+import NormalGroupForm from '../../users/NormalGroupForm';
+import { addGroup, GroupDiff } from 'services/groups';
+
 // Style
 import styled from 'styled-components';
 import { color, fontSize } from 'utils/styleUtils';
@@ -54,6 +57,10 @@ export default class GroupsList extends React.PureComponent<Props, State> {
     this.setState({ creationModalVisible: false });
   }
 
+  close = () => {
+    console.log('close');
+  }
+
   render() {
     const { creationModalVisible } = this.state;
 
@@ -78,6 +85,14 @@ export default class GroupsList extends React.PureComponent<Props, State> {
           >
             <GroupAdditionForm onSaveSuccess={this.closeCreationModal} />
           </Modal>
+
+          <NormalGroupForm
+            visible={true}
+            handleSubmit={addGroup}
+            initialValues={{ title_multiloc: {} }}
+            close={this.close}
+
+          />
         </PageWrapper>
       </div>
     );
