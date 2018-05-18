@@ -1,11 +1,19 @@
 // Libraries
 import React from 'react';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // Components
 import NoUsers from './NoUsers';
 
+// Resources
+import GetGroup, { GetGroupChildProps } from 'resources/GetGroup';
+
 // Typings
-export interface Props {}
+interface InputProps {}
+interface DataProps {
+  group: GetGroupChildProps;
+}
+interface Props extends InputProps, DataProps {}
 export interface State {}
 
 export class UsersGroup extends React.PureComponent<Props, State> {
@@ -21,4 +29,8 @@ export class UsersGroup extends React.PureComponent<Props, State> {
   }
 }
 
-export default UsersGroup;
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <GetGroup id={inputProps.params.groupId} >
+    {group => (<UsersGroup group={group} />)}
+  </GetGroup>
+));
