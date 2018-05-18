@@ -270,8 +270,8 @@ if Apartment::Tenant.current == 'localhost'
 
     Area.create({
       title_multiloc: {
-        "en": Faker::Lorem.sentence,
-        "nl-BE": Faker::Lorem.sentence
+        "en": "Westbrook",
+        "nl-BE": "Westbroek"
       },
       description_multiloc: {
         "en": "<p>The place to be these days</p>",
