@@ -12,6 +12,7 @@ import Avatar from 'components/Avatar';
 import Toggle from 'components/UI/Toggle';
 import Checkbox from 'components/UI/Checkbox';
 import CustomPagination from 'components/admin/Pagination/CustomPagination';
+import AllUsersHeader from './AllUsersHeader';
 
 // Services
 import { IUserData } from 'services/users';
@@ -107,6 +108,9 @@ class AllUsers extends React.PureComponent<Props, State> {
   toggleAllUsers = () => {
     this.setState(state => ({ selectedUsers: (state.selectedUsers === 'all' ? 'none' : 'all') }));
   }
+  searchUser = (val) => {
+    console.log(val);
+  }
 
   render() {
     const { usersList, sortAttribute, sortDirection, currentPage, lastPage } = this.props;
@@ -115,6 +119,9 @@ class AllUsers extends React.PureComponent<Props, State> {
     if (!isNilOrError(usersList) && usersList.length > 0) {
       return (
         <>
+          <AllUsersHeader
+            onSearch={this.searchUser}
+          />
           <TableOptions>
             <Checkbox
               label={<FormattedMessage {...messages.selectAll} />}
