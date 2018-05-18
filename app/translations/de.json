@@ -423,6 +423,7 @@
   "app.containers.AdminPage.User.tabInviteByEmail": "Einladungen",
   "app.containers.AdminPage.User.tabRegisteredUsers": "Registrierte Nutzer",
   "app.containers.AdminPage.Users.GroupCreation.fieldGroupName": "",
+  "app.containers.AdminPage.Users.GroupCreation.fieldRulesLabel": "",
   "app.containers.AdminPage.Users.GroupCreation.groupFormTitle": "",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderManual": "",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "",

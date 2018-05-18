@@ -423,6 +423,7 @@
   "app.containers.AdminPage.User.tabInviteByEmail": "crwdns18558:0crwdne18558:0",
   "app.containers.AdminPage.User.tabRegisteredUsers": "crwdns18559:0crwdne18559:0",
   "app.containers.AdminPage.Users.GroupCreation.fieldGroupName": "",
+  "app.containers.AdminPage.Users.GroupCreation.fieldRulesLabel": "",
   "app.containers.AdminPage.Users.GroupCreation.groupFormTitle": "",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderManual": "",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "",
