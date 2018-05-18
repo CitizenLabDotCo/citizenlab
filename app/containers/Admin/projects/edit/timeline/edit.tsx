@@ -3,8 +3,11 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
 // Libraries
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { Subscription } from 'rxjs/Subscription';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { of } from 'rxjs/observable/of';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as moment from 'moment';
 import { get, isEmpty, forOwn } from 'lodash';
 
@@ -24,7 +27,6 @@ import Label from 'components/UI/Label';
 import InputMultiloc from 'components/UI/InputMultiloc';
 import EditorMultiloc from 'components/UI/EditorMultiloc';
 import Error from 'components/UI/Error';
-// import Radio from 'components/UI/Radio';
 import { DateRangePicker } from 'react-dates';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
@@ -33,9 +35,7 @@ import ParticipationContext, { IParticipationContextConfig } from '../participat
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import { injectTFunc } from 'components/T/utils';
 import messages from './messages';
-// import projectSettingsMessages from '../../messages';
 
 // Styling
 import styled from 'styled-components';
@@ -54,7 +54,6 @@ const PhaseForm = styled.form`
     .DateInput,
     .DateInput_input {
       color: #333;
-      font-family: 'visuelt', sans-serif !important;
       font-size: 16px;
       font-weight: 400;
       background: transparent;
@@ -72,8 +71,7 @@ interface IParams {
 }
 
 type Props = {
-  params: IParams,
-  tFunc: Function,
+  params: IParams
 };
 
 interface State {
@@ -91,10 +89,10 @@ interface State {
 }
 
 class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps, State> {
-  params$: Rx.BehaviorSubject<IParams | null>;
-  subscriptions: Rx.Subscription[];
+  params$: BehaviorSubject<IParams | null>;
+  subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       locale: null as any,
@@ -110,7 +108,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
       loaded: false
     };
     this.subscriptions = [];
-    this.params$ = new Rx.BehaviorSubject(null);
+    this.params$ = new BehaviorSubject(null);
   }
 
   componentDidMount() {
@@ -124,9 +122,9 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
       .switchMap((params: IParams) => {
         const { projectId, id } = params;
         const locale$ = localeStream().observable;
-        const project$ = (projectId ? projectByIdStream(projectId).observable : Rx.Observable.of(null));
-        const phase$ = (id ? phaseStream(id).observable : Rx.Observable.of(null));
-        return Rx.Observable.combineLatest(locale$, project$, phase$);
+        const project$ = (projectId ? projectByIdStream(projectId).observable : of(null));
+        const phase$ = (id ? phaseStream(id).observable : of(null));
+        return combineLatest(locale$, project$, phase$);
       }).subscribe(([locale, project, phase]) => {
         let multilocEditorState: MultilocEditorState | null = null;
 
@@ -378,4 +376,4 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
   }
 }
 
-export default injectTFunc(injectIntl(AdminProjectTimelineEdit));
+export default injectIntl(AdminProjectTimelineEdit);

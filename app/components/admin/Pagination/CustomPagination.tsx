@@ -1,15 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-
 import Icon from 'components/UI/Icon';
-
 import { FormattedMessage } from 'utils/cl-intl';
-
-// i18n
 import messages from './messages';
 
 // Typing
-interface Props {
+export interface Props {
   currentPage: number;
   totalPages: number;
   loadPage: Function;
@@ -21,27 +17,36 @@ const Spagination = styled.div`
   align-items: baseline;
   justify-content: center;
 `;
+
 const Back = styled.button`
   color: #044D6C;
   margin-right: 30px;
   font-weight: bold;
   display: flex;
   align-items: baseline;
-  &:hover, &:focus {
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
     color: #01A1B1;
     outline: none;
   }
+
   & svg {
     transform: rotate(180deg);
   }
 `;
+
 const Next = styled.button`
   color: #044D6C;
   margin-left: 30px;
   font-weight: bold;
   display: flex;
   align-items: baseline;
-  &:hover, &:focus {
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
     color: #01A1B1;
     outline: none;
   }
@@ -55,24 +60,30 @@ const Item = styled.button`
   width: 36px;
   margin-left: 5px;
   font-weight: bold;
+  cursor: pointer;
 
   &>:first-child {
     margin-left: 0px;
   }
+
   &.active {
     background: #044D6C;
     color: #FFFFFF;
+
     &:focus, &:focus:hover {
       background: #044D6C;
       color: #01A1B1;
       outline: none;
     }
+
     &:hover {
       background: #044D6C;
       color: #FFFFFF;
     }
   }
-  &:hover, &:focus {
+
+  &:hover,
+  &:focus {
     background: rgba(132, 147, 158, 0.15);
     outline: none;
   }
@@ -84,7 +95,6 @@ const ChevronIcon = styled(Icon) `
   fill: #01A1B1;
 `;
 
-
 class CustomPagination extends React.PureComponent<Props> {
 
   constructor(props) {
@@ -92,7 +102,7 @@ class CustomPagination extends React.PureComponent<Props> {
     this.handleItemClick = this.handleItemClick.bind(this);
   }
 
-  calculateMenuItems(c, m) {
+  calculateMenuItems(c: number, m: number) {
     const current = c;
     const last = m;
     const delta = 2;
@@ -100,7 +110,7 @@ class CustomPagination extends React.PureComponent<Props> {
     const right = current + delta + 1;
     const range: number[] = [];
     const rangeWithDots: number[] = [];
-    let l;
+    let l: number;
 
     for (let i = 1; i <= last; i += 1) {
       if (i === 1 || i === last || (i >= left && i < right)) {
@@ -133,8 +143,9 @@ class CustomPagination extends React.PureComponent<Props> {
   render() {
     const { currentPage, totalPages } = this.props;
     const pageItems = this.calculateMenuItems(currentPage, totalPages);
+
     return (
-      <Spagination>
+      <Spagination className={this.props['className']}>
         <Back onClick={this.goTo(currentPage - 1)}>
           <ChevronIcon name="chevron-right" />
           <FormattedMessage {...messages.back} />

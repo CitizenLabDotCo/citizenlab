@@ -1,5 +1,6 @@
 import React from 'react';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 
 // router
 import { Link, withRouter, WithRouterProps } from 'react-router';
@@ -73,6 +74,7 @@ const MenuItem: any = styled(Link)`
     ${Text} {
       color: #fff;
     };
+
     .cl-icon {
       .cl-icon-primary {
         fill: ${colors.clIconAccent}
@@ -83,8 +85,7 @@ const MenuItem: any = styled(Link)`
     };
   }
 
-
-  &.active {
+  &.selected {
     background: rgba(0, 0, 0, 0.2);
 
     ${Text} {
@@ -174,7 +175,7 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
 
   componentDidMount() {
     this.subscriptions = [
-      Observable.combineLatest(
+      combineLatest(
         this.routes.map((route) => hasPermission({
           item: { type: 'route', path: route.link },
           action: 'access'
@@ -198,7 +199,7 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
     const { pathname } = this.props.location;
     const { navItems } = this.state;
 
-    if (navItems.length <= 1) {
+    if (!(navItems && navItems.length > 0)) {
       return null;
     }
 
@@ -208,9 +209,9 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
           {navItems.map((route) => (
             <FeatureFlag name={route.featureName} key={route.id}>
               <li>
-                <MenuItem className={route.isActive(pathname) && 'active'} to={route.link}>
-                    <IconWrapper><Icon name={route.iconName} /></IconWrapper>
-                    <Text>{formatMessage({ ...messages[route.message] })}</Text>
+                <MenuItem activeClassName="active" className={`${route.isActive(pathname) ? 'selected' : ''}`} to={route.link}>
+                  <IconWrapper><Icon name={route.iconName} /></IconWrapper>
+                  <Text>{formatMessage({ ...messages[route.message] })}</Text>
                   {route.isActive(pathname) && <Icon name="arrowLeft" />}
                 </MenuItem>
               </li>

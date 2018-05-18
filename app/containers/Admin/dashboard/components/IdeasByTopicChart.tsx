@@ -1,6 +1,9 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-import _ from 'lodash';
+import React from 'react';
+import { Subscription } from 'rxjs/Subscription';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import map from 'lodash/map';
+import sortBy from 'lodash/sortBy';
 import { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import localize, { injectedLocalized } from 'utils/localize';
@@ -20,9 +23,9 @@ type Props = {
 };
 
 class IdeasByTimeChart extends React.PureComponent<Props & injectedLocalized, State> {
-  startAt$: Rx.BehaviorSubject<string | null>;
-  endAt$: Rx.BehaviorSubject<string | null>;
-  subscriptions: Rx.Subscription[];
+  startAt$: BehaviorSubject<string | null>;
+  endAt$: BehaviorSubject<string | null>;
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -30,8 +33,8 @@ class IdeasByTimeChart extends React.PureComponent<Props & injectedLocalized, St
       serie: null,
     };
     this.subscriptions = [];
-    this.startAt$ = new Rx.BehaviorSubject(null);
-    this.endAt$ = new Rx.BehaviorSubject(null);
+    this.startAt$ = new BehaviorSubject(null);
+    this.endAt$ = new BehaviorSubject(null);
   }
 
   componentDidMount() {
@@ -39,7 +42,7 @@ class IdeasByTimeChart extends React.PureComponent<Props & injectedLocalized, St
     this.endAt$.next(this.props.endAt);
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      combineLatest(
         this.startAt$.filter(startAt => startAt !== null),
         this.endAt$.filter(endAt => endAt !== null),
       ).switchMap(([startAt, endAt]) => {
@@ -75,13 +78,13 @@ class IdeasByTimeChart extends React.PureComponent<Props & injectedLocalized, St
       const { data, topics } = serie;
       const { localize } = this.props;
 
-      const mapped = _.map(data, (count: number, topicId: string) => ({
+      const mapped = map(data, (count: number, topicId: string) => ({
         name: localize(topics[topicId].title_multiloc),
         value: count,
         code: topicId,
       }));
 
-      return _.sortBy(mapped, 'name');
+      return sortBy(mapped, 'name');
     }
 
     return null;

@@ -1,14 +1,10 @@
-import * as React from 'react';
-
+import React from 'react';
 import { TRule } from '../rules';
 import { IOption } from 'typings';
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
-
 import Select from 'components/UI/Select';
-
-import { injectTFunc } from 'components/T/utils';
+import localize, { injectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
-
 
 type Props = {
   rule: TRule;
@@ -20,14 +16,16 @@ type Props = {
 
 type State = {};
 
-class AreaValueSelector extends React.PureComponent<Props, State> {
+class AreaValueSelector extends React.PureComponent<Props & injectedLocalized, State> {
 
   generateOptions = (): IOption[] => {
-    if (!isNilOrError(this.props.areas)) {
-      return this.props.areas.map((area) => (
+    const { areas, localize } = this.props;
+
+    if (!isNilOrError(areas)) {
+      return areas.map((area) => (
         {
           value: area.id,
-          label: this.props.tFunc(area.attributes.title_multiloc),
+          label: localize(area.attributes.title_multiloc),
         }
       ));
     } else {
@@ -41,6 +39,7 @@ class AreaValueSelector extends React.PureComponent<Props, State> {
 
   render() {
     const { value } = this.props;
+
     return (
       <Select
         value={value}
@@ -52,7 +51,7 @@ class AreaValueSelector extends React.PureComponent<Props, State> {
   }
 }
 
-const AreaValueSelectorWithHOC = injectTFunc(AreaValueSelector);
+const AreaValueSelectorWithHOC = localize(AreaValueSelector);
 
 export default (inputProps) => (
   <GetAreas>

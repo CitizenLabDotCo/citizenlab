@@ -1,7 +1,11 @@
 import React from 'react';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs';
+import isString from 'lodash/isString';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
+import { of } from 'rxjs/observable/of';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { IUser, IUserData, userBySlugStream, userByIdStream } from 'services/users';
+import { IUserData, userBySlugStream, userByIdStream } from 'services/users';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
@@ -38,21 +42,20 @@ export default class GetUser extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ id, slug });
 
     this.subscriptions = [
-      this.inputProps$
-        .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .switchMap(({ id, slug }) => {
-          let user$: Observable<IUser | null> = Observable.of(null);
-
-          if (id) {
-            user$ = userByIdStream(id).observable;
-          } else if (slug) {
-            user$ = userBySlugStream(slug).observable;
+      this.inputProps$.pipe(
+        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+        switchMap(({ id, slug }) => {
+          if (isString(id)) {
+            return userByIdStream(id).observable;
+          } else if (isString(slug)) {
+            return userBySlugStream(slug).observable;
           }
 
-          return user$;
-        }).subscribe((user) => {
-          this.setState({ user: (!isNilOrError(user) ? user.data : null) });
+          return of(null);
         })
+      ).subscribe((user) => {
+        this.setState({ user: !isNilOrError(user) ? user.data : user });
+      })
     ];
   }
 

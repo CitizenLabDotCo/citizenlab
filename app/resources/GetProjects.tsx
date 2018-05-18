@@ -1,6 +1,12 @@
 import React from 'react';
-import { isEqual, get, isString, omitBy, isNil } from 'lodash';
-import { BehaviorSubject, Subscription } from 'rxjs/Rx';
+import isEqual from 'lodash/isEqual';
+import get from 'lodash/get';
+import isString from 'lodash/isString';
+import omitBy from 'lodash/omitBy';
+import isNil from 'lodash/isNil';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
+import { distinctUntilChanged, mergeScan, map } from 'rxjs/operators';
 import { projectsStream, IProjectData } from 'services/projects';
 import shallowCompare from 'utils/shallowCompare';
 
@@ -91,9 +97,9 @@ export default class GetProjects extends React.Component<Props, State> {
     const startAccumulatorValue: IAccumulator = { queryParameters, projects: null, hasMore: false };
 
     this.subscriptions = [
-      this.queryParameters$
-        .distinctUntilChanged((x, y) => shallowCompare(x, y))
-        .mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
+      this.queryParameters$.pipe(
+        distinctUntilChanged((x, y) => shallowCompare(x, y)),
+        mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
           const isLoadingMore = (acc.queryParameters['page[number]'] !== queryParameters['page[number]']);
           const pageNumber = (isLoadingMore ? queryParameters['page[number]'] : 1);
           const newQueryParameters: IQueryParameters = {
@@ -106,7 +112,7 @@ export default class GetProjects extends React.Component<Props, State> {
             loadingMore: isLoadingMore,
           });
 
-          return projectsStream({ queryParameters: newQueryParameters }).observable.map((projects) => {
+          return projectsStream({ queryParameters: newQueryParameters }).observable.pipe(map((projects) => {
             const selfLink = get(projects, 'links.self');
             const lastLink = get(projects, 'links.last');
             const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
@@ -116,10 +122,11 @@ export default class GetProjects extends React.Component<Props, State> {
               hasMore,
               projects: (!isLoadingMore ? projects.data : [...(acc.projects || []), ...projects.data])
             };
-          });
-        }, startAccumulatorValue).subscribe(({ projects, queryParameters, hasMore }) => {
-          this.setState({ queryParameters, hasMore, projectsList: projects, querying: false, loadingMore: false });
-        })
+          }));
+        }, startAccumulatorValue)
+      ).subscribe(({ projects, queryParameters, hasMore }) => {
+        this.setState({ queryParameters, hasMore, projectsList: projects, querying: false, loadingMore: false });
+      })
     ];
   }
 

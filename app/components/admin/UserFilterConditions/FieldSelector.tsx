@@ -9,9 +9,8 @@ import { ICustomFieldData } from 'services/userCustomFields';
 
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import { injectTFunc } from 'components/T/utils';
+import localize, { injectedLocalized } from 'utils/localize';
 import messages from './messages';
-
 
 export interface FieldDescriptor {
   ruleType?: TRule['ruleType'];
@@ -22,14 +21,15 @@ type Props = {
   field: FieldDescriptor;
   onChange: (FieldDescriptor: FieldDescriptor) => void;
   customFields: GetCustomFieldsChildProps;
-  tFunc: any;
 };
 
 type State = {};
 
-class FieldSelector extends React.PureComponent<Props & InjectedIntlProps, State> {
+class FieldSelector extends React.PureComponent<Props & InjectedIntlProps & injectedLocalized, State> {
 
   generateOptions = (): IOption[] => {
+    const { localize } = this.props;
+
     const staticOptions = keys(ruleTypeConstraints)
       .filter((ruleType) => !/^custom_field_.*$/.test(ruleType))
       .map((ruleType) => (
@@ -43,7 +43,7 @@ class FieldSelector extends React.PureComponent<Props & InjectedIntlProps, State
       .map((customField) => (
         {
           value: this.descriptorToOptionValue(this.customFieldToDescriptor(customField)),
-          label: this.props.tFunc(customField.attributes.title_multiloc),
+          label: localize(customField.attributes.title_multiloc),
         }
       ));
     return staticOptions.concat(customFieldOptions);
@@ -92,7 +92,7 @@ class FieldSelector extends React.PureComponent<Props & InjectedIntlProps, State
   }
 }
 
-const FieldSelectorWithHocs = injectTFunc(injectIntl(FieldSelector));
+const FieldSelectorWithHocs = injectIntl(localize(FieldSelector));
 
 export default (inputProps) => (
   <GetCustomFields>
