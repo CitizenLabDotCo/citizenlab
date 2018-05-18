@@ -103,6 +103,7 @@ const LightningBolt = styled(Icon)`
 // Typings
 export interface InputProps {
   className?: string;
+  onCreateGroup: () => void;
 }
 
 export interface State {}
@@ -111,6 +112,11 @@ export class GroupsListPanel extends React.PureComponent<InputProps & GetGroupsC
   constructor(props) {
     super(props);
     this.state = {};
+  }
+
+  handleCreateGroup = (event) => {
+    event.preventDefault();
+    this.props.onCreateGroup();
   }
 
   render() {
@@ -122,8 +128,8 @@ export class GroupsListPanel extends React.PureComponent<InputProps & GetGroupsC
         </MenuLink>
         <Separator />
         <MenuTitle>
-          <h2><FormattedMessage {...messages.groupsTitle}/></h2>
-          <Button icon="plus-circle" iconTitle="Add a group" style="text" padding="0"/>
+          <FormattedMessage tagName="h2" {...messages.groupsTitle} />
+          <Button icon="plus-circle" iconTitle="Add a group" style="text" padding="0" onClick={this.handleCreateGroup} />
         </MenuTitle>
         <GroupsList>
         {!isNilOrError(this.props.groupsList) && this.props.groupsList.map((group) => (
