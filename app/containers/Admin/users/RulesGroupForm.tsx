@@ -10,10 +10,19 @@ import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { FooterContainer } from './NormalGroupForm';
 import Error from 'components/UI/Error';
+import Label from 'components/UI/Label';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+
+// Styling
+import styled from 'styled-components';
+import {  } from 'utils/styleUtils';
+
+const CustomSection = styled(Section)`
+  padding: 40px;
+`;
 
 // Typings
 import { Multiloc } from 'typings';
@@ -45,12 +54,12 @@ export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Prop
 
     return (
       <Form>
-        <Section>
+        <CustomSection>
           <SectionField>
+            <Label><FormattedMessage {...messages.fieldRulesLabel} /></Label>
             <Field
               name="rules"
               component={FormikUserFilterConditions}
-              label={<FormattedMessage {...messages.fieldRulesLabel} />}
             />
           </SectionField>
           <SectionField>
@@ -64,7 +73,7 @@ export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Prop
               apiErrors={errors.title_multiloc}
             />}
           </SectionField>
-        </Section>
+        </CustomSection>
 
         <FooterContainer>
           <FormikSubmitWrapper
