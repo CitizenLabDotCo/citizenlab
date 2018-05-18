@@ -70,6 +70,10 @@ export function addGroup(object: GroupDiff) {
   return streams.add<IGroups>(`${API_PATH}/groups`, { group: object });
 }
 
+export function updateGroup(groupId: string, object: GroupDiff) {
+  return streams.update<IGroup>(`${API_PATH}/groups/${groupId}`, groupId, { group: object });
+}
+
 export function deleteGroup(groupId: string) {
   return streams.delete(`${API_PATH}/groups/${groupId}`, groupId);
 }

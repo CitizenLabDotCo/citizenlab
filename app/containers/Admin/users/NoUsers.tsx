@@ -14,10 +14,11 @@ const NoUsersPage = styled.div`
   color: #044D6C;
   font-weight: bold;
   line-height: 25px;
-  padding-top: 50px;
+  padding-top: 80px;
   svg {
     margin-bottom: 20px;
   }
+  border-top: 2px solid #EAEAEA;
 `;
 
 const SFormattedMessage = styled.div`

@@ -291,4 +291,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupsPanel.xUsers',
     defaultMessage: 'x Users',
   },
+  groupDeletionConfirmation: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.groupDeletionConfirmation',
+    defaultMessage: 'Are you sure?',
+  },
 });
