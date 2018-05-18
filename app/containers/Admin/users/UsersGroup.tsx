@@ -1,6 +1,9 @@
 // Libraries
 import React from 'react';
 
+// Components
+import NoUsers from './NoUsers';
+
 // Typings
 export interface Props {}
 export interface State {}
@@ -13,7 +16,7 @@ export class UsersGroup extends React.PureComponent<Props, State> {
 
   render() {
     return (
-      <p>UsersGroup</p>
+      <NoUsers/>
     );
   }
 }
