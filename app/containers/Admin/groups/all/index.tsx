@@ -58,7 +58,7 @@ export default class GroupsList extends React.PureComponent<Props, State> {
   }
 
   close = () => {
-    console.log("close");
+    console.log('close');
   }
 
   render() {
