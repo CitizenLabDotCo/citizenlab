@@ -14,7 +14,7 @@ const Container = styled.div`
 `;
 
 const IconCell = styled.div`
-  width: 60px;
+  flex: 0 0 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,6 +35,7 @@ type Props = {
   rule: TRule;
   onChange: (rule: TRule) => void;
   onRemove: () => void;
+  showLabels?: boolean;
 };
 
 type State = {};
@@ -61,10 +62,9 @@ class Rule extends React.Component<Props, State> {
   }
 
   render() {
-    const { rule, onRemove } = this.props;
+    const { rule, onRemove, showLabels } = this.props;
     return (
       <Container>
-
         <IconCell>
           <StyledRemoveButton
             onClick={onRemove}
