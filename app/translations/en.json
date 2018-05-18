@@ -439,6 +439,7 @@
   "app.containers.AdminPage.Users.GroupsPanel.goToAllUsers": "Go on the {allUsersLink} tab to move users manually.",
   "app.containers.AdminPage.Users.GroupsPanel.selectAll": "Select all",
   "app.containers.AdminPage.Users.GroupsPanel.xUsers": "x Users",
+  "app.containers.AdminPage.Users.UsersGroup.groupDeletionConfirmation": "Are you sure?",
   "app.containers.AdminPage.group.edit.addUser": "Add user(s)",
   "app.containers.AdminPage.group.edit.deleteConfirmMessage": "Are you sure you want to remove this member from the group?",
   "app.containers.AdminPage.group.edit.deleteLabel": "Remove",

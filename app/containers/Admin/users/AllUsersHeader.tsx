@@ -11,7 +11,7 @@ import messages from './messages';
 
 // Typings
 export interface Props {
-  onSearch: (string) => void;
+  onSearch: () => void;
 }
 export interface State {
   searchValue: string;
