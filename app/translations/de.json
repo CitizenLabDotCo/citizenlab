@@ -439,6 +439,7 @@
   "app.containers.AdminPage.Users.GroupsPanel.goToAllUsers": "",
   "app.containers.AdminPage.Users.GroupsPanel.selectAll": "",
   "app.containers.AdminPage.Users.GroupsPanel.xUsers": "",
+  "app.containers.AdminPage.Users.UsersGroup.groupDeletionConfirmation": "",
   "app.containers.AdminPage.group.edit.addUser": "Benutzer hinzufügen",
   "app.containers.AdminPage.group.edit.deleteConfirmMessage": "Sind Sie sicher, dass Sie dieses Mitglied aus der Gruppe entfernen möchten?",
   "app.containers.AdminPage.group.edit.deleteLabel": "Entfernen",
