@@ -17,7 +17,13 @@ docker-compose run --user "$(id -u):$(id -g)" web bundle exec rake db:create
 docker-compose run --user "$(id -u):$(id -g)" web bundle exec rake db:reset
 ```
 
-Omit the `--user "$(id -u):$(id -g)"` part on mac or windows.
+Mac or Windows:
+
+```
+docker-compose run web bundle exec rake db:create
+
+docker-compose run web bundle exec rake db:reset
+```
 
 
 ## Executing commands
@@ -28,8 +34,12 @@ Sometimes it's easier to just start a terminal in the rails container and work f
 ```
 docker-compose run --user "$(id -u):$(id -g)" --rm web /bin/bash
 ```
-Omit the `--user "$(id -u):$(id -g)"` part on mac or windows.
 
+Mac or Windows:
+
+```
+docker-compose run --rm web /bin/bash
+```
 
 ## Handling update
 
@@ -40,7 +50,14 @@ After a git pull, when there are changes in the application, some changes might 
 docker-compose run --rm --user "$(id -u):$(id -g)" web bash -c "sleep 5 && bundle exec rake db:reset RAILS_ENV=development"
 ```
 
+Mac or Windows:
+
+```
+docker-compose run --rm web bash -c "sleep 5 && bundle exec rake db:reset RAILS_ENV=development"
+```
+
 Afterwards you can run the normal `docker-compose up --build`
+
 
 ## Testing
 
@@ -50,8 +67,27 @@ Resetting the database, with the previous command, upsets the testing database a
 docker-compose run --rm --user "$(id -u):$(id -g)" -e RAILS_ENV=test web rake db:environment:set db:drop db:create db:schema:load
 ```
 
+Mac or Windows:
+
+```
+docker-compose run --rm -e RAILS_ENV=test web rake db:environment:set db:drop db:create db:schema:load
+```
+
 To actually run the tests:
 ```
 docker-compose run --rm --user "$(id -u):$(id -g)" web rspec
 
 ```
+
+Mac or Windows:
+
+```
+docker-compose run --rm web rspec
+
+```
+
+## Using Customized Tenants for Development
+
+Two environment variables can be used for this purpose: `SEED_SIZE` (e.g. small, medium, large, empty) and `DEFAULT_HOST` (e.g. empty.localhost, dendermonde.citizenlab.co). Set the desired values in the `.env` file and re-build the docker container.
+
+NOTE: Watch out that you don't accidently commit these changes!

@@ -31,6 +31,27 @@ resource "Notifications" do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
     end
+
+
+    describe do
+      before do
+        # Make sure that we can find all notification
+        # subclasses, but without enabling eager 
+        # loading for the other tests.
+        Cl2Back::Application.eager_load!
+      end
+      example "List all different types of notification" do
+        Notification.descendants.each do |notification_subclass|
+          if notification_subclass.descendants.empty?
+            create(notification_subclass.model_name.element.to_sym)
+          end
+        end
+        do_request
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to be > 0
+      end
+    end
+
   end
 
   get "web_api/v1/notifications/:id" do

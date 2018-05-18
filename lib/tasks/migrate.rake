@@ -15,7 +15,23 @@ namespace :migrate do
     platform = migration_settings['platform']
     password = migration_settings['password']
     db_user = migration_settings['db_user'] || 'citizenlab'
-    locales_mapping = { 'en' => 'en', 'nl' => 'nl-NL', 'nl-BE' => 'nl-BE', 'fr' => 'fr-FR' } 
+    locales_mapping = { 
+      'en' => 'en', 
+      'en-GB' => 'en-GB',
+      'en-US' => 'en-US',
+      'en-CA' => 'en-CA',
+      'nl' => 'nl-NL', 
+      'nl-BE' => 'nl-BE', 
+      'fr' => 'fr-FR', 
+      'fr-FR' => 'fr-FR',
+      'fr-BE' => 'fr-BE',
+      'de' => 'de-DE',  
+      'de-DE' => 'de-DE',
+      'da' => 'da-DK',
+      'da-DK' => 'da-DK',
+      'no' => 'nb-NO',
+      'nb-NO' => 'nb-NO'
+    } 
     topics_mapping = migration_settings['topics_mapping'] || {}
     idea_statuses_mapping = migration_settings['idea_statuses_mapping'] || {}
 
@@ -89,7 +105,10 @@ namespace :migrate do
 
   def connect(platform: nil, db_user: nil, password: nil)
     if platform && db_user && password
-      Mongo::Client.new("mongodb://lamppost.14.mongolayer.com:10323/#{platform}", auth_mech: :mongodb_cr, user: db_user, password: password)
+      Mongo::Client.new(
+        "mongodb://lamppost.14.mongolayer.com:10323/#{platform}", 
+        auth_mech: :mongodb_cr, user: db_user, password: password
+        )
     else
       Mongo::Client.new 'mongodb://docker.for.mac.localhost:27017/schiedam'
     end
@@ -146,19 +165,19 @@ namespace :migrate do
         timezone: migration_settings['timezone'],
         color_main: s['accentColor']
       },
-      demographic_fields: {
-        allowed: true,
-        enabled: true,
-        gender: true,
-        domicile: true,
-        birthyear: true,
-        education: true,
+      surveys: {
+       enabled: true,
+       allowed: true,
       },
       groups: {
         enabled: true,
         allowed:true
       },
       private_projects: {
+        enabled: true,
+        allowed: true
+      },
+      user_custom_fields: {
         enabled: true,
         allowed: true
       }
@@ -310,11 +329,11 @@ namespace :migrate do
     end
     # birthyear
     if u.dig('telescope', 'birthyear')
-      d[:birthyear] = u.dig('telescope', 'birthyear')
+      d[:birthyear] = u.dig('telescope', 'birthyear').to_s
     end
     # education
-    if u.dig('telescope', 'education')
-      d[:education] = u.dig('telescope', 'education')
+    if u.dig('telescope', 'education') && (u.dig('telescope', 'education') <= 8) && (u.dig('telescope', 'education') >= 2)
+      d[:education] = u.dig('telescope', 'education').to_s
     end
     # image
     if u.dig('profile', 'image')
@@ -323,6 +342,7 @@ namespace :migrate do
     # timestamps
     if u['createdAt']
       d[:created_at] = u['createdAt']
+      d[:registration_completed_at] = u['createdAt']
     end
     begin
       record = User.new d
@@ -403,6 +423,12 @@ namespace :migrate do
     else
       d[:visible_to] = 'public'
     end
+    # process_type
+    if p.dig('timeline', 'phases') && p.dig('timeline', 'phases').size >= 2
+      d[:process_type] = 'timeline'
+    else
+      d[:process_type] = 'continuous'
+    end
     begin
       record = Project.new d
       # slug
@@ -428,7 +454,7 @@ namespace :migrate do
         end
       end
       # phases
-      if p.dig('timeline', 'phases')
+      if p.dig('timeline', 'phases') && p.dig('timeline', 'phases').size >= 2
         p.dig('timeline', 'phases').each do |f|
           migrate_phase(f, record, phases_hash, locales_mapping)
         end
@@ -508,9 +534,22 @@ namespace :migrate do
       d[:end_at] = d[:start_at] + rand(12).hours
     end
     begin
-      phases_hash[p['_id']] = Phase.create! d
+      ph = Phase.new d
+      phases_hash[p['_id']] = ph
+      ph.save!
     rescue Exception => e
-      @log.concat [e.message]
+      caused_by_overlap = false
+      ts = TimelineService.new
+      ts.other_project_phases(ph).each do |other_phase|
+        if ts.overlaps? ph, other_phase
+          caused_by_overlap = true
+        end
+      end
+      if caused_by_overlap
+        @log.concat ["FATAL: Overlapping phase #{ph.title_multiloc.values.first} in project #{ph.project.title_multiloc.values.first} (from #{ph.start_at} to #{ph.end_at})"]
+      else
+        @log.concat [e.message]
+      end
     end
   end
 
@@ -534,7 +573,9 @@ namespace :migrate do
     end
     # title
     if p.dig('title_i18n')
-      d[:title_multiloc] = map_multiloc(p.dig('title_i18n'), locales_mapping)
+      d[:title_multiloc] = map_multiloc(p.dig('title_i18n'), locales_mapping).map do |locale, title|
+        [locale, title[0...80]]
+      end.to_h
     else
       @log.concat ["FATAL: Couldn't find a title for idea #{p.to_s}"]
       return
@@ -558,7 +599,7 @@ namespace :migrate do
     end
     IdeaStatus.find_by!(code: 'proposed')
     # project
-    if p.dig('projectId')
+    if p.dig('projectId') && projects_hash[p.dig('projectId')]
       d[:project] = projects_hash[p.dig('projectId')]
     else
       oip = Project.find_by(internal_role: 'open_idea_box')

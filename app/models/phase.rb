@@ -13,8 +13,13 @@ class Phase < ApplicationRecord
   validates :start_at, :end_at, presence: true
   validate :validate_start_at_before_end_at
   validate :validate_belongs_to_timeline_project
+  validate :validate_no_other_overlapping_phases
 
   before_validation :sanitize_description_multiloc
+  before_validation :strip_title
+
+
+  private
 
   def sanitize_description_multiloc
     self.description_multiloc = self.description_multiloc.map do |locale, description|
@@ -33,4 +38,20 @@ class Phase < ApplicationRecord
       errors.add(:project, :is_not_timeline_project, message: 'is not a timeline project')
     end
   end
+
+  def validate_no_other_overlapping_phases
+    ts = TimelineService.new
+    ts.other_project_phases(self).each do |other_phase|
+      if ts.overlaps? self, other_phase
+        errors.add(:project, :has_other_overlapping_phases, message: 'has other phases which overlap in start and end date')
+      end
+    end
+  end
+
+  def strip_title
+    self.title_multiloc.each do |key, value|
+      self.title_multiloc[key] = value.strip
+    end
+  end
+
 end

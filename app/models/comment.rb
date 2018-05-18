@@ -11,17 +11,26 @@ class Comment < ApplicationRecord
   
   counter_culture :idea
 
+  PUBLICATION_STATUSES = %w(published deleted)
+
   validates :body_multiloc, presence: true, multiloc: {presence: true}
   validates :author_name, presence: true
   validates :author, presence: true, on: :create
+  validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
 
-  before_validation :set_author_name, on: :create
+  before_validation :set_author_name, :set_publication_status, on: :create
 
+  scope :published, -> {where publication_status: 'published'}
+  
   def set_author_name
     self.author_name = self.author.display_name if self.author
   end
 
   def project
     self.idea&.project
+  end
+
+  def set_publication_status
+    self.publication_status ||= 'published'
   end
 end

@@ -6,12 +6,18 @@ class SideFxUserService
     if User.admin.empty?
       user.add_role 'admin'
     end
+    if (CustomField.where(enabled: true).count == 0) && (user.invite_status != 'pending')
+      user.registration_completed_at ||= Time.now
+    end
   end
 
   def after_create user, current_user
-    # UserMailer.welcome(@user).deliver_later
     IdentifyToSegmentJob.perform_later(user)
+    GenerateUserAvatarJob.perform_later(user)
     LogActivityJob.set(wait: 10.seconds).perform_later(user, 'created', user, user.created_at.to_i)
+    if user.registration_completed_at
+      LogActivityJob.perform_later(user, 'completed_registration', user, user.created_at.to_i)
+    end
   end
 
   def after_update user, current_user

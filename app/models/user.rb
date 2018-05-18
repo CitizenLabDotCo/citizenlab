@@ -15,25 +15,31 @@ class User < ApplicationRecord
   has_many :initiator_notifications, class_name: 'Notification', foreign_key: :initiating_user_id, dependent: :nullify
   has_many :memberships, dependent: :destroy
   has_many :groups, through: :memberships
+  has_many :invites, foreign_key: :inviter_id, dependent: :destroy
   has_many :identities, dependent: :destroy
   has_many :spam_reports, dependent: :nullify
   has_many :activities, dependent: :nullify
+  has_many :inviter_invites, class_name: 'Invite', foreign_key: :inviter_id, dependent: :nullify
+  has_one :invitee_invite, class_name: 'Invite', foreign_key: :invitee_id, dependent: :destroy
+  has_many :campaign_email_commands, class_name: 'EmailCampaigns::CampaignEmailCommand', foreign_key: :recipient_id, dependent: :destroy
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
-  validates :email, :slug, uniqueness: true
-  validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
-  validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
-  validates :first_name, :slug, :email, presence: true
-  validates :locale, presence: true, inclusion: { in: proc {Tenant.settings('core','locales')} }
+  validates :email, :first_name, :slug, :locale, presence: true, unless: :invite_pending?
+
+  validates :email, uniqueness: true, allow_nil: true
+  validates :slug, uniqueness: true, format: {with: SlugService.new.regex }, unless: :invite_pending?
+  validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, allow_nil: true
+  validates :locale, inclusion: { in: proc {Tenant.settings('core','locales')} }
   validates :bio_multiloc, multiloc: {presence: false}
-
-
   validates :gender, inclusion: {in: %w(male female unspecified)}, allow_nil: true
   validates :birthyear, numericality: {only_integer: true, greater_than: Time.now.year - 120, less_than: Time.now.year}, allow_nil: true
   validates :domicile, inclusion: {in: proc {['outside'] + Area.select(:id).map(&:id)}}, allow_nil: true
   # Follows ISCED2011 scale
   validates :education, numericality: {only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 8}, allow_nil: true
+
+  INVITE_STATUSES = %w(pending accepted)
+  validates :invite_status, inclusion: {in: INVITE_STATUSES}, allow_nil: true
 
   validates :custom_field_values, json: {
     schema: lambda { CustomFieldService.new.fields_to_json_schema(CustomField.fields_for(User)) },
@@ -42,16 +48,15 @@ class User < ApplicationRecord
 
   validates :password, length: { in: 5..72 }, allow_nil: true
   validate do |record|
-    record.errors.add(:last_name, :blank) unless record.last_name.present? or record.cl1_migrated
-    record.errors.add(:password, :blank) unless record.password_digest.present? or record.identities.any?
+    record.errors.add(:last_name, :blank) unless (record.last_name.present? or record.cl1_migrated or record.invite_pending?)
+    record.errors.add(:password, :blank) unless (record.password_digest.present? or record.identities.any? or record.invite_pending?)
   end
 
   ROLES_JSON_SCHEMA = Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
   validates :roles, json: { schema: ROLES_JSON_SCHEMA, message: ->(errors) { errors } }
 
-  before_validation :generate_slug, :set_cl1_migrated, on: :create
-  # For prepend: true, see https://github.com/carrierwaveuploader/carrierwave/wiki/Known-Issues#activerecord-callback-ordering
-  before_save :generate_avatar, on: :create, prepend: true
+  before_validation :set_cl1_migrated, on: :create
+  before_validation :generate_slug
 
   scope :order_role, -> (direction=:asc) {  
     subquery = User.select("jsonb_array_elements(roles) as ro, id")
@@ -63,8 +68,12 @@ class User < ApplicationRecord
     where("roles @> '[{\"type\":\"admin\"}]'")
   }
 
+  scope :project_moderators, -> (project_id) {
+    where("roles @> ?", JSON.generate([{type: 'project_moderator', project_id: project_id}]))
+  }
+
   scope :active, -> {
-    where("completed_signup_at IS NOT NULL")
+    where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'")
   } 
   
   def self.build_with_omniauth(auth)
@@ -81,6 +90,10 @@ class User < ApplicationRecord
     avatar.file.nil?
   end
 
+  def invite_pending?
+    invite_status == 'pending'
+  end
+
   def display_name
     [first_name, last_name].join(" ")
   end
@@ -95,10 +108,17 @@ class User < ApplicationRecord
 
   def add_role type, options={}
     self.roles << {"type" => type}.merge(options)
+    self.roles.uniq!
+  end
+
+  def delete_role type, options={}
+    self.roles.delete({"type" => type}.merge(options.stringify_keys))
   end
 
   def authenticate(unencrypted_password)
-    if cl1_authenticate(unencrypted_password)
+    if !password_digest
+      false
+    elsif cl1_authenticate(unencrypted_password)
       self.password_digest = BCrypt::Password.create(unencrypted_password)
       self
     else
@@ -111,7 +131,7 @@ class User < ApplicationRecord
   end
 
   def active?
-    self.registration_completed_at.present?
+    self.registration_completed_at.present? && !self.invite_pending?
   end
   
   private
@@ -124,13 +144,6 @@ class User < ApplicationRecord
 
   def set_cl1_migrated
     self.cl1_migrated ||= false
-  end
-
-  def generate_avatar
-    unless self.avatar?
-      hash = Digest::MD5.hexdigest(self.email)
-      self.remote_avatar_url = "https://www.gravatar.com/avatar/#{hash}?d=404&size=640"
-    end
   end
 
   def original_authenticate(unencrypted_password)

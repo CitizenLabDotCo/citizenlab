@@ -325,7 +325,7 @@ resource "Ideas" do
       example "Check for the automatic creation of an upvote by the author when an idea is created", :document => false do
 
         do_request
-
+        
         json_response = json_parse(response_body) 
         new_idea = Idea.find(json_response.dig(:data, :id))
         expect(new_idea.votes.size).to eq 1
@@ -336,6 +336,20 @@ resource "Ideas" do
       end
 
     end
+
+    describe do
+      let(:idea) { build(:idea) }
+      let(:project) { create(:continuous_project) }
+      let(:project_id) { project.id }
+      let(:title_multiloc) { {'en' => 'I have a fantastic Idea but with a superduper extremely long title so someone should do something about this or else it may look bad in the UI and no one would read it anyways'} } # { idea.title_multiloc }
+      let(:body_multiloc) { idea.body_multiloc }
+      example_request "Creating an idea with too long title" do
+        expect(response_status).to eq 422
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:errors, :title_multiloc)).to eq [{error: 'too_long'}]
+      end
+    end
+
 
     describe do
       let(:publication_status) { "fake_status" }
@@ -367,9 +381,8 @@ resource "Ideas" do
       end
 
       describe do
-        let (:active_phases) { create_list(:active_phase, 2, participation_method: 'ideation') }
-        let (:project) { create(:project, phases: active_phases) }
-        let (:phase_ids) { active_phases.map(&:id) }
+        let (:project) { create(:project_with_current_phase, phases_config: {sequence: "xxcx"}) }
+        let (:phase_ids) { project.phases.shuffle.take(2).map(&:id) }
         example_request "Creating an idea in specific phases" do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
@@ -504,6 +517,24 @@ resource "Ideas" do
           expect(status).to be 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match_array phase_ids
+        end
+      end
+    end
+
+    context "when moderator" do
+      before do
+        @moderator = create(:moderator, project: @idea.project)
+        token = Knock::AuthToken.new(payload: { sub: @moderator.id }).token
+        header 'Authorization', "Bearer #{token}"
+      end
+
+      describe do
+        let(:idea_status_id) { create(:idea_status).id }
+
+        example_request "Change the idea status (as a moderator)" do
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:relationships,:idea_status,:data,:id)).to eq idea_status_id
         end
       end
     end

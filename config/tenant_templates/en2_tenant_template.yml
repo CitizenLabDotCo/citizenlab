@@ -760,30 +760,30 @@ models:
         time to brainstorm and discuss around your ideas!</p>\n"
     project_ref: *6
     start_at: 2017-12-31
-    end_at: 2018-02-07
+    end_at: 2018-01-24
   - title_multiloc:
       en: Vote period
     description_multiloc:
       en: "<p>This period is dedicated to assessing which are the most popular proposals:
         like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
     project_ref: *6
-    start_at: 2018-02-07
-    end_at: 2018-05-17
+    start_at: 2018-01-25
+    end_at: 2018-02-11
   - title_multiloc:
       en: Presentation of most succesful ideas at the townhall
     description_multiloc:
       en: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
     project_ref: *6
-    start_at: 2018-05-17
-    end_at: 2018-08-29
+    start_at: 2018-02-12
+    end_at: 2018-03-02
   - title_multiloc:
       en: Implementation of ideas
     description_multiloc:
       en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
     project_ref: *6
-    start_at: 2018-08-29
-    end_at: 2018-12-01
+    start_at: 2018-03-03
+    end_at: 2018-03-09
   - title_multiloc:
       en: Collecting ideas
     description_multiloc:
@@ -791,30 +791,30 @@ models:
         to brainstorm and discuss around your ideas!</p>\n"
     project_ref: *7
     start_at: 2018-12-01
-    end_at: 2019-01-16
+    end_at: 2018-12-31
   - title_multiloc:
       en: Vote period
     description_multiloc:
       en: "<p>This period is dedicated to assessing which are the most popular proposals:
         like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
     project_ref: *7
-    start_at: 2019-01-16
-    end_at: 2019-01-24
+    start_at: 2019-01-01
+    end_at: 2019-01-27
   - title_multiloc:
       en: Presentation of most succesful ideas at the townhall
     description_multiloc:
       en: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
     project_ref: *7
-    start_at: 2019-01-24
-    end_at: 2019-02-24
+    start_at: 2019-01-28
+    end_at: 2019-01-29
   - title_multiloc:
       en: Implementation of ideas
     description_multiloc:
       en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
     project_ref: *7
-    start_at: 2019-02-24
-    end_at: 2019-06-15
+    start_at: 2019-01-30
+    end_at: 2019-02-17
   - title_multiloc:
       en: Collecting ideas
     description_multiloc:
@@ -822,30 +822,30 @@ models:
         time to brainstorm and discuss around your ideas!</p>\n"
     project_ref: *8
     start_at: 2019-06-15
-    end_at: 2019-07-07
+    end_at: 2019-06-30
   - title_multiloc:
       en: Vote period
     description_multiloc:
       en: "<p>This period is dedicated to assessing which are the most popular proposals:
         like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
     project_ref: *8
-    start_at: 2019-07-07
-    end_at: 2019-08-02
+    start_at: 2019-07-01
+    end_at: 2019-07-02
   - title_multiloc:
       en: Presentation of most succesful ideas at the townhall
     description_multiloc:
       en: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
     project_ref: *8
-    start_at: 2019-08-02
-    end_at: 2019-09-09
+    start_at: 2019-07-03
+    end_at: 2019-07-14
   - title_multiloc:
       en: Implementation of ideas
     description_multiloc:
       en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
     project_ref: *8
-    start_at: 2019-09-09
-    end_at: 2019-12-03
+    start_at: 2019-07-15
+    end_at: 2019-08-14
   - title_multiloc:
       en: Collecting ideas
     description_multiloc:
@@ -853,31 +853,31 @@ models:
         your time to brainstorm and discuss around your ideas!</p>\n"
     project_ref: *9
     start_at: 2019-12-03
-    end_at: 2020-02-17
+    end_at: 2019-12-19
   - title_multiloc:
       en: Vote period
     description_multiloc:
       en: "<p>This period is dedicated to assessing which are the most popular proposals:
         like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
     project_ref: *9
-    start_at: 2020-02-17
-    end_at: 2020-03-06
+    start_at: 2019-12-20
+    end_at: 2020-01-15
   - title_multiloc:
       en: Analysis period
     description_multiloc:
       en: "<p>The most voted ideas will be examined and included (or not) into the
         mapping of the new park</p>\n"
     project_ref: *9
-    start_at: 2020-03-06
-    end_at: 2020-03-14
+    start_at: 2020-01-16
+    end_at: 2020-02-03
   - title_multiloc:
       en: Start of the reshaping of the park
     description_multiloc:
       en: "<p>The selected ideas will be put into place and implemented in the new
         park</p>\n"
     project_ref: *9
-    start_at: 2020-03-14
-    end_at: 2020-04-15
+    start_at: 2020-02-04
+    end_at: 2020-02-26
   - title_multiloc:
       en: Collecting ideas
     description_multiloc:
@@ -885,27 +885,27 @@ models:
         time to brainstorm and discuss around your ideas!</p>\n"
     project_ref: *10
     start_at: 2020-04-15
-    end_at: 2020-08-10
+    end_at: 2020-05-06
   - title_multiloc:
       en: Vote period
     description_multiloc:
       en: "<p>This period is dedicated to assessing which are the most popular proposals:
         like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
     project_ref: *10
-    start_at: 2020-08-10
-    end_at: 2020-09-21
+    start_at: 2020-05-07
+    end_at: 2020-06-01
   - title_multiloc:
       en: Presentation of most succesful ideas at the townhall
     description_multiloc:
       en: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
     project_ref: *10
-    start_at: 2020-09-21
-    end_at: 2020-12-16
+    start_at: 2020-06-02
+    end_at: 2020-06-08
   - title_multiloc:
       en: Implementation of ideas
     description_multiloc:
       en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
     project_ref: *10
-    start_at: 2020-12-16
-    end_at: 2021-01-01
+    start_at: 2020-06-09
+    end_at: 2020-06-28

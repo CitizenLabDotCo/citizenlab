@@ -16,15 +16,22 @@ class SideFxCommentService
 
   def before_update comment, user
     if comment.body_multiloc_changed?
+      comment.body_updated_at = Time.now
       process_mentions(comment)
     end
   end
 
   def after_update comment, user
+    LogActivityJob.perform_later(comment, 'changed', user, comment.updated_at.to_i)
     if comment.body_multiloc_previously_changed?
-      LogActivityJob.perform_later(comment, 'changed', user, comment.updated_at.to_i)
+      LogActivityJob.perform_later(comment, 'changed_body', user, comment.body_updated_at.to_i, payload: {change: comment.body_multiloc_previous_change})
       notify_updated_mentioned_users(comment, user)
     end
+  end
+
+  def after_mark_as_deleted comment, user, reason_code, other_reason
+    LogActivityJob.perform_later(comment, 'marked_as_deleted', user, comment.updated_at.to_i, 
+      payload: {reason_code: reason_code, other_reason: other_reason})
   end
 
   def before_destroy comment, user

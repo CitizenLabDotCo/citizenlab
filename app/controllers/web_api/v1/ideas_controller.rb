@@ -79,6 +79,7 @@ class WebApi::V1::IdeasController < ApplicationController
     I18n.with_locale(current_user&.locale) do
       @ideas = policy_scope(Idea)
         .includes(:author, :topics, :areas, :project)
+        .where(publication_status: 'published')
       @ideas = @ideas.where(project_id: params[:project]) if params[:project].present?
       xlsx = XlsxService.new.generate_ideas_xlsx @ideas
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
@@ -120,9 +121,9 @@ class WebApi::V1::IdeasController < ApplicationController
     params[:idea][:topic_ids] ||= [] if params[:idea].has_key?(:topic_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].has_key?(:phase_ids)
     ActiveRecord::Base.transaction do
-      if @idea.update(permitted_attributes(Idea))
+      if @idea.update(permitted_attributes(@idea))
         SideFxIdeaService.new.after_update(@idea, current_user)
-        render json: @idea.reload, status: :ok, include: ['author','topics','areas','user_vote', 'idea_images']
+        render json: @idea.reload, status: :ok, include: ['author','topics','areas','user_vote','idea_images']
       else
         render json: { errors: @idea.errors.details }, status: :unprocessable_entity
       end
@@ -171,7 +172,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def user_not_authorized exception
     pcs = ParticipationContextService.new
-    if exception.query == "create?"
+    if exception.query == "create?" # TODO add case for update?
       reason = pcs.posting_disabled_reason(exception.record.project)
       if reason
         render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized

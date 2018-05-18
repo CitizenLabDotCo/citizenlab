@@ -1,29 +1,33 @@
 class Project < ApplicationRecord
   include ParticipationContext
+  acts_as_list column: :ordering, top_of_list: 0, add_new_at: :top
+  mount_base64_uploader :header_bg, ProjectHeaderBgUploader
+
 
   DESCRIPTION_PREVIEW_JSON_SCHEMA = ERB.new(File.read(Rails.root.join('config', 'schemas', 'project_description_preview.json_schema.erb'))).result(binding)
 
   @@sanitizer = Rails::Html::WhiteListSanitizer.new
 
-  mount_base64_uploader :header_bg, ProjectHeaderBgUploader
-
 
   has_many :ideas, dependent: :destroy
   has_many :votes, through: :ideas
-  has_and_belongs_to_many :topics
-  has_and_belongs_to_many :areas
+  
+  has_many :projects_topics, dependent: :destroy
+  has_many :topics, through: :projects_topics
+  has_many :areas_projects, dependent: :destroy
+  has_many :areas, through: :areas_projects
+  has_many :groups_projects, dependent: :destroy
+  has_many :groups, through: :groups_projects
+
   has_many :phases, -> { order(:start_at) }, dependent: :destroy
   has_many :events, -> { order(:start_at) }, dependent: :destroy
   has_many :pages, dependent: :destroy
   has_many :project_images, -> { order(:ordering) }, dependent: :destroy
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
-  has_many :groups_projects, dependent: :destroy
-  has_many :groups, through: :groups_projects
   has_many :notifications, foreign_key: :project_id, dependent: :nullify
 
   VISIBLE_TOS = %w(public groups admins)
   PROCESS_TYPES = %w(timeline continuous)
-  PRESENTATION_MODES = %w(card map)
   INTERNAL_ROLES = %w(open_idea_box)
   PUBLICATION_STATUSES = %w(draft published archived)
 
@@ -32,7 +36,6 @@ class Project < ApplicationRecord
   validates :description_preview_multiloc, multiloc: {presence: false}
   validates :slug, presence: true, uniqueness: true, format: {with: SlugService.new.regex }
   validates :visible_to, presence: true, inclusion: {in: VISIBLE_TOS}
-  validates :ordering, presence: true, uniqueness: true
   validates :description_preview_multiloc, json: { 
     schema: DESCRIPTION_PREVIEW_JSON_SCHEMA, 
     message: ->(errors) { errors.map{|e| {fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message]} } },
@@ -41,18 +44,16 @@ class Project < ApplicationRecord
     }
   }
   validates :process_type, presence: true, inclusion: {in: PROCESS_TYPES}
-  validates :presentation_mode, presence: true, inclusion: {in: PRESENTATION_MODES}
   validates :internal_role, inclusion: {in: INTERNAL_ROLES, allow_nil: true}
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
 
   before_validation :set_process_type, on: :create
   before_validation :generate_slug, on: :create
   before_validation :set_visible_to, on: :create
-  before_validation :set_ordering, on: :create
   before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
   before_validation :sanitize_description_multiloc, if: :description_multiloc
-  before_validation :set_presentation_mode, on: :create
   before_validation :set_publication_status, on: :create
+  before_validation :strip_title
 
 
   scope :with_all_areas, (Proc.new do |area_ids|
@@ -104,16 +105,14 @@ class Project < ApplicationRecord
     self.process_type ||= 'timeline'
   end
 
-  def set_presentation_mode
-    self.presentation_mode ||= 'card'
-  end
-
   def set_publication_status
     self.publication_status ||= 'published'
   end
 
-  def set_ordering
-    self.ordering ||= (Project.maximum(:ordering) || 0)+1
+  def strip_title
+    self.title_multiloc.each do |key, value|
+      self.title_multiloc[key] = value.strip
+    end
   end
 
 end

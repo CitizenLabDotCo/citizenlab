@@ -4,8 +4,8 @@ require 'rspec_api_documentation/dsl'
 
 
 def time_boundary_parameters s
-  s.parameter :start_at, "Date defining from where results should start", required: true
-  s.parameter :end_at, "Date defining till when results should go", required: true
+  s.parameter :start_at, "Date defining from where results should start", required: false
+  s.parameter :end_at, "Date defining till when results should go", required: false
 end
 
 def time_series_parameters s
@@ -33,7 +33,18 @@ resource "Stats" do
       create(:user, gender: 'male')
       create(:user, gender: 'female')
       create(:user, gender: 'unspecified')
+      create(:invited_user)
       create_list(:user_with_demographics, 10)
+    end
+
+    get "web_api/v1/stats/users_count" do
+      time_boundary_parameters self
+
+      example_request "Count all users" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response[:count]).to eq User.active.count
+      end
     end
 
 
@@ -129,6 +140,16 @@ resource "Stats" do
       create(:idea)
     end
 
+    get "web_api/v1/stats/ideas_count" do
+      time_boundary_parameters self
+
+      example_request "Count all ideas" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response[:count]).to eq Idea.published.count
+      end
+    end
+
     get "web_api/v1/stats/ideas_by_topic" do
 
       time_boundary_parameters self
@@ -183,40 +204,74 @@ resource "Stats" do
 
   end
 
-  get "web_api/v1/stats/comments_by_time" do
+  describe "comments" do
 
-    time_series_parameters self
+    get "web_api/v1/stats/comments_count" do
+      time_boundary_parameters self
 
-    let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-    let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
-    let(:interval) { 'day' }
+      example_request "Count all comments" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response[:count]).to eq Comment.published.count
+      end
+    end
 
-    example_request "Comments by time" do
-      expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response.size).to eq start_at.end_of_month.day
-      expect(json_response.values.map(&:class).uniq).to eq [Integer]
+    get "web_api/v1/stats/comments_by_time" do
+
+      time_series_parameters self
+
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+      let(:interval) { 'day' }
+
+      example_request "Comments by time" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.size).to eq start_at.end_of_month.day
+        expect(json_response.values.map(&:class).uniq).to eq [Integer]
+
+      end
 
     end
 
   end
 
-  get "web_api/v1/stats/votes_by_time" do
+  describe "votes" do
 
-    time_series_parameters self
-
-    let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_week }
-    let(:end_at) { Time.now.in_time_zone(@timezone).end_of_week }
-    let(:interval) { 'day' }
-
-    example_request "Votes by time" do
-      expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response.size).to eq 7
-      expect(json_response.values.map(&:class).uniq).to eq [Integer]
-
+    before do
+      create_list(:vote, 6)
+      create_list(:vote, 2, mode: 'down')
     end
 
+    get "web_api/v1/stats/votes_count" do
+      time_boundary_parameters self
+
+      example_request "Count all votes" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:up)).to eq 6
+        expect(json_response.dig(:down)).to eq 2
+        expect(json_response.dig(:count)).to eq 8
+      end
+    end
+
+    get "web_api/v1/stats/votes_by_time" do
+
+      time_series_parameters self
+
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_week }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_week }
+      let(:interval) { 'day' }
+
+      example_request "Votes by time" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.size).to eq 7
+        expect(json_response.values.map(&:class).uniq).to eq [Integer]
+
+      end
+
+    end
   end
 
 end
