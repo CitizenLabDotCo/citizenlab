@@ -6,7 +6,7 @@ resource "Phases" do
   before do
     header "Content-Type", "application/json"
     @project = create(:project)
-    @phases = create_list(:phase, 2, project: @project)
+    @phases = create_list(:phase_sequence, 2, project: @project)
   end
 
   get "web_api/v1/projects/:project_id/phases" do
@@ -50,6 +50,7 @@ resource "Phases" do
         parameter :voting_enabled, "Can citizens vote in this phase? Defaults to true", required: false
         parameter :voting_method, "How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
         parameter :voting_limited_max, "Number of votes a citizen can perform in this phase, only if the voting_method is limited. Defaults to 10", required: false
+        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}.", required: false
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
         parameter :survey_service, "The name of the service of the survey. Either #{ParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :start_at, "The start date of the phase", required: true
@@ -117,6 +118,7 @@ resource "Phases" do
         parameter :voting_enabled, "Can citizens vote in this phase? Defaults to true", required: false
         parameter :voting_method, "How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
         parameter :voting_limited_max, "Number of votes a citizen can perform in this phase, only if the voting_method is limited. Defaults to 10", required: false
+        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}.", required: false
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
         parameter :survey_service, "The name of the service of the survey. Either #{ParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :start_at, "The start date of the phase"
@@ -135,6 +137,7 @@ resource "Phases" do
       let(:voting_enabled) { true }
       let(:voting_method) { 'limited' }
       let(:voting_limited_max) { 6 }
+      let(:presentation_mode) { 'map' }
 
       example_request "Update a phase" do
         expect(response_status).to eq 200
@@ -146,6 +149,7 @@ resource "Phases" do
         expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq voting_enabled
         expect(json_response.dig(:data,:attributes,:voting_method)).to eq voting_method
         expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max
+        expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq presentation_mode
       end
     end
 

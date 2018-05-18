@@ -1,6 +1,5 @@
 class EmailCampaigns::TopCommentSerializer < ActiveModel::Serializer
   attributes :id, :body_multiloc, :children_count, :created_at, :updated_at, :author_first_name, :author_last_name, :author_locale, :author_avatar
-  # attributes :body_multiloc, :children_count, :created_at, :author_first_name, :author_last_name, :author_avatar
 
   def children_count
   	object.children.count

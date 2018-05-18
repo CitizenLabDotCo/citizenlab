@@ -38,4 +38,8 @@ class FrontendService
     "#{tenant.base_frontend_uri}/authentication-error"
   end
 
+  def invite_url token, tenant=Tenant.current
+    "#{tenant.base_frontend_uri}/invite?token=#{token}"
+  end
+
 end

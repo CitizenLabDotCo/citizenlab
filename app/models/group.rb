@@ -8,6 +8,7 @@ class Group < ApplicationRecord
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
 
   before_validation :generate_slug, on: :create
+  before_validation :strip_title
 
 
   def add_member user
@@ -24,5 +25,11 @@ class Group < ApplicationRecord
   def generate_slug
     slug_service = SlugService.new
     self.slug ||= slug_service.generate_slug self, self.title_multiloc.values.first
+  end
+
+  def strip_title
+    self.title_multiloc.each do |key, value|
+      self.title_multiloc[key] = value.strip
+    end
   end
 end

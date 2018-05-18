@@ -8,17 +8,6 @@ RSpec.describe Page, type: :model do
     end
   end
 
-  describe "body sanitizer" do
-
-    it "sanitizes script tags in the body" do
-      page = create(:page, body_multiloc: {
-        "en" => "<p>Test</p><script>This should be removed!</script>"
-      })
-      expect(page.body_multiloc).to eq({"en" => "<p>Test</p>This should be removed!"})
-    end
-    
-  end
-
   describe "slug" do
 
     it "is valid when it's only containing alphanumeric and hyphens" do

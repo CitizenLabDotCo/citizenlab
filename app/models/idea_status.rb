@@ -3,10 +3,14 @@ class IdeaStatus < ApplicationRecord
   CODES = %w(proposed under_consideration accepted implemented rejected custom)
 
   has_many :ideas, dependent: :nullify
+  has_many :notifications, foreign_key: :idea_status_id, dependent: :nullify
+
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :code, inclusion: {in: CODES}
   validates :code, uniqueness: true, unless: :custom?
   validates :description_multiloc, presence: true, multiloc: {presence: true}
+
+  before_validation :strip_title
 
 
   def self.create_defaults
@@ -31,6 +35,15 @@ class IdeaStatus < ApplicationRecord
 
   def custom?
     self.code == 'custom'
+  end
+
+
+  private
+
+  def strip_title
+    self.title_multiloc.each do |key, value|
+      self.title_multiloc[key] = value.strip
+    end
   end
 
 end

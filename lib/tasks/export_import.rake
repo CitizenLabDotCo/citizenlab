@@ -55,7 +55,6 @@ namespace :migrate do
       yml_project = { 'title_multiloc'               => p.title_multiloc,
                       'description_multiloc'         => p.description_multiloc,
                       'remote_header_bg_url'         => p.header_bg_url,
-                      # 'visible_to'                   => p.visible_to,
                       'description_preview_multiloc' => p.description_preview_multiloc,
                       'presentation_mode'            => p.presentation_mode,
                       'participation_method'         => p.participation_method,
@@ -63,8 +62,17 @@ namespace :migrate do
                       'internal_role'                => p.internal_role,
                       'publication_status'           => p.publication_status,
                       'created_at'                   => p.created_at,
-                      'updated_at'                   => p.updated_at
+                      'updated_at'                   => p.updated_at,
+                      'posting_enabled'              => p.posting_enabled,
+                      'commenting_enabled'           => p.commenting_enabled,
+                      'voting_enabled'               => p.voting_enabled,
+                      'voting_method'                => p.voting_method,
+                      'voting_limited_max'           => p.voting_limited_max
                    }
+      if yml_project['participation_method'] == 'survey'
+        yml_project['survey_embed_url'] = p.survey_embed_url
+        yml_project['survey_service']   = p.survey_service
+      end
       projects_hash[p.id] = yml_project
       yml_project
     end
@@ -112,8 +120,8 @@ namespace :migrate do
   def encode_comments_ei comments_hash, users_hash, ideas_hash
     Comment.all.map do |c|
       yml_comment = { 'body_multiloc' => c.body_multiloc,
-                      'author_ref'    => users_hash[c.author.id],
-                      'idea_ref'      => ideas_hash[c.idea.id],
+                      'author_ref'    => users_hash[c.author&.id],
+                      'idea_ref'      => ideas_hash[c.idea&.id],
                       'created_at'    => c.created_at,
                       'updated_at'    => c.updated_at
                    }
@@ -128,7 +136,7 @@ namespace :migrate do
   def encode_votes_ei users_hash, ideas_hash, comments_hash
     Vote.all.map do |v|
       yml_vote = { 'mode'         => v.mode,
-                   'user_ref'     => users_hash[v.user.id],
+                   'user_ref'     => users_hash[v.user&.id],
                    'votable_type' => v.votable_type,
                    'created_at'   => v.created_at,
                    'updated_at'   => v.updated_at
@@ -150,13 +158,22 @@ namespace :migrate do
     Phase.all.map do |p|
       yml_phase = { 'title_multiloc'       => p.title_multiloc,
                     'description_multiloc' => p.description_multiloc,
-                    'project_ref'          => projects_hash[p.project.id],
+                    'project_ref'          => projects_hash[p.project&.id],
                     'start_at'             => p.start_at,
                     'end_at'               => p.end_at,
                     'participation_method' => p.participation_method,
                     'created_at'           => p.created_at,
-                    'updated_at'           => p.updated_at
+                    'updated_at'           => p.updated_at,
+                    'posting_enabled'      => p.posting_enabled,
+                    'commenting_enabled'   => p.commenting_enabled,
+                    'voting_enabled'       => p.voting_enabled,
+                    'voting_method'        => p.voting_method,
+                    'voting_limited_max'   => p.voting_limited_max
                    }
+      if yml_phase['participation_method'] == 'survey'
+        yml_phase['survey_embed_url'] = p.survey_embed_url
+        yml_phase['survey_service']   = p.survey_service
+      end
       yml_phase
     end
   end
@@ -165,7 +182,7 @@ namespace :migrate do
     Event.all.map do |e|
       yml_event = { 'title_multiloc'       => e.title_multiloc,
                     'description_multiloc' => e.description_multiloc,
-                    'project_ref'          => projects_hash[e.project.id],
+                    'project_ref'          => projects_hash[e.project&.id],
                     'start_at'             => e.start_at,
                     'end_at'               => e.end_at,
                     'location_multiloc'    => e.location_multiloc,
