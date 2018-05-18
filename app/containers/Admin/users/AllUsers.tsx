@@ -108,8 +108,7 @@ class AllUsers extends React.PureComponent<Props, State> {
   toggleAllUsers = () => {
     this.setState(state => ({ selectedUsers: (state.selectedUsers === 'all' ? 'none' : 'all') }));
   }
-  searchUser = (val) => {
-    console.log(val);
+  searchUser = () => {
   }
 
   render() {

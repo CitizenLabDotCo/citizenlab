@@ -462,7 +462,7 @@ const icons = {
     <svg className={`cl-icon ${className ? className : ''}`} width="53" height="70" viewBox="0 0 53 70" fill="none" xmlns="http://www.w3.org/2000/svg">
       {injectTitle(title)}
       <g id="Blank-Page-icon">
-        <path id="Fillin-Paper-icon" d="M8.5 7.75L17 0H51V66H0V17.5L8.5 7.75Z" transform="translate(2 1)" fill="#01A1B1" />
+        <path id="Fillin-Paper-icon" d="M8.5 7.75L17 0H51V66H0V17.5L8.5 7.75Z" transform="translate(2 1)" fill="rgba(1, 161, 177, 0.2)" />
         <g id="Stroke-Paper-icon">
           <path d="M51.5278 70H1.47222C0.659556 70 0 69.3467 0 68.5417V18.9583C0 18.5704 0.156055 18.2 0.429889 17.9258L18.0966 0.425833C18.3733 0.154583 18.7473 0 19.1389 0H51.5278C52.3404 0 53 0.653333 53 1.45833V68.5417C53 69.3467 52.3404 70 51.5278 70ZM2.94444 67.0833H50.0556V2.91667H19.7484L2.94444 19.5621V67.0833Z" fill="#01A1B1" />
           <path d="M19.1389 20.4167H1.47222C0.659556 20.4167 0 19.7633 0 18.9583C0 18.1533 0.659556 17.5 1.47222 17.5H17.6667V1.45833C17.6667 0.653333 18.3262 0 19.1389 0C19.9516 0 20.6111 0.653333 20.6111 1.45833V18.9583C20.6111 19.7633 19.9516 20.4167 19.1389 20.4167Z" fill="#01A1B1" />
