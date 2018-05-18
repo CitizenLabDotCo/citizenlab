@@ -8,6 +8,7 @@ import Modal from 'components/UI/Modal';
 import GroupsListPanel from './GroupsListPanel';
 import GroupCreationStep1 from './GroupCreationStep1';
 import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
+import RulesGroupForm, { RulesFormValues } from './RulesGroupForm';
 
 // Global state
 import { globalState, IAdminNoPadding, IGlobalStateService } from 'services/globalState';
@@ -78,21 +79,23 @@ class UsersPage extends React.Component<Props & WithRouterProps, State> {
   openStep2 = (groupType: IGroupData['attributes']['membership_type']) => {
     this.setState({ groupCreationModal: groupType });
   }
-  renderNormalForm = (props) => {
-    return <NormalGroupForm {...props} />;
+
+  renderForm = (type: 'normal' | 'rules') => (props) => {
+    if (type === 'normal') return <NormalGroupForm {...props} />;
+    if (type === 'rules') return <RulesGroupForm {...props} />;
+    return null;
   }
-  handleSubmitNormalForm = (values: NormalFormValues, { setErrors, setSubmitting }) => {
-    addGroup({
-      ...values
+
+  handleSubmitForm = (values: NormalFormValues | RulesFormValues, { setErrors, setSubmitting }) => {
+    addGroup({ ...values })
+    .then(() => {
+      this.closeGroupCreationModal();
     })
-      .then(() => {
-        this.closeGroupCreationModal();
-      })
-      .catch((errorResponse) => {
-        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
-        setErrors(apiErrors);
-        setSubmitting(false);
-      });
+    .catch((errorResponse) => {
+      const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+      setErrors(apiErrors);
+      setSubmitting(false);
+    });
   }
 
   render () {
@@ -129,9 +132,18 @@ class UsersPage extends React.Component<Props & WithRouterProps, State> {
               <Formik
                 initialValues={{ title_multiloc: {} }}
                 validate={NormalGroupForm.validate}
-                render={this.renderNormalForm}
-                onSubmit={this.handleSubmitNormalForm}
-              />}
+                render={this.renderForm('normal')}
+                onSubmit={this.handleSubmitForm}
+              />
+            }
+            {groupCreationModal === 'rules' &&
+              <Formik
+                initialValues={{ title_multiloc: {}, rules: [], membership_type: 'rules' }}
+                validate={RulesGroupForm.validate}
+                render={this.renderForm('rules')}
+                onSubmit={this.handleSubmitForm}
+              />
+            }
           </>
         </Modal>
       </>

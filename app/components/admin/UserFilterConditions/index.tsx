@@ -81,3 +81,22 @@ class UserFilterConditions extends React.PureComponent<Props, State> {
 }
 
 export default UserFilterConditions;
+
+import { FieldProps } from 'formik';
+
+export class FormikUserFilterConditions extends React.Component<Props & FieldProps> {
+  handleOnChange = (newValue) => {
+    this.props.form.setFieldValue(this.props.field.name, newValue);
+  }
+
+  render() {
+    const { value } = this.props.field;
+    return (
+      <UserFilterConditions
+        {...this.props}
+        onChange={this.handleOnChange}
+        rules={value}
+      />
+    );
+  }
+}

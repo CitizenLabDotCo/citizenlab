@@ -275,6 +275,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupCreation.fieldGroupName',
     defaultMessage: 'Name of the group',
   },
+  fieldRulesLabel: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.fieldRulesLabel',
+    defaultMessage: 'Define who will be automatically added to the group',
+  },
   groupFormTitle: {
     id: 'app.containers.AdminPage.Users.GroupCreation.groupFormTitle',
     defaultMessage: 'Define a group name',

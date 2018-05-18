@@ -1,6 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc, API } from 'typings';
+import { TRule } from 'components/admin/UserFilterConditions/rules';
 
 export interface IGroupData {
   id: string;
@@ -10,11 +11,14 @@ export interface IGroupData {
     slug: string;
     memberships_count: number;
     membership_type: 'manual' | 'rules';
+    rules?: TRule[];
   };
 }
 
 export interface GroupDiff {
-  title_multiloc?: Multiloc;
+  title_multiloc?: IGroupData['attributes']['title_multiloc'];
+  rules?: IGroupData['attributes']['rules'];
+  membership_type?: IGroupData['attributes']['membership_type'];
 }
 
 export interface IGroups {
