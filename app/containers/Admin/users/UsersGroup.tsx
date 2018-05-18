@@ -11,6 +11,7 @@ import NoUsers from './NoUsers';
 import GroupHeader from './GroupHeader';
 import Modal from 'components/UI/Modal';
 import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
+import RulesGroupForm, { RulesFormValues } from './RulesGroupForm';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -47,8 +48,10 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
     this.setState({ groupEditionModal: false });
   }
 
-  renderNormalForm = (props) => {
-    return <NormalGroupForm {...props} />;
+  renderForm = (type: 'normal' | 'rules') => (props) => {
+    if (type === 'normal') return <NormalGroupForm {...props} />;
+    if (type === 'rules') return <RulesGroupForm {...props} />;
+    return null;
   }
 
   openGroupEditionModal = () => {
@@ -57,7 +60,7 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
       this.setState({ groupEditionModal: group.attributes.membership_type });
     }
   }
-  handleSubmitNormalForm = (id) => (values: NormalFormValues, { setErrors, setSubmitting }) => {
+  handleSubmitForm = (id) => (values: NormalFormValues | RulesFormValues, { setErrors, setSubmitting }) => {
     updateGroup(id, {
       ...values
     })
@@ -114,9 +117,17 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
                 <Formik
                   initialValues={group.attributes}
                   validate={NormalGroupForm.validate}
-                  render={this.renderNormalForm}
-                  onSubmit={this.handleSubmitNormalForm(group.id)}
+                  render={this.renderForm('normal')}
+                  onSubmit={this.handleSubmitForm(group.id)}
                 />}
+                {groupEditionModal === 'rules' &&
+                  <Formik
+                    initialValues={group.attributes}
+                    validate={RulesGroupForm.validate}
+                    render={this.renderForm('rules')}
+                    onSubmit={this.handleSubmitForm(group.id)}
+                  />
+                }
             </>
           </Modal>
         </>
