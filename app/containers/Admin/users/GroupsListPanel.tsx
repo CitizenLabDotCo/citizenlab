@@ -85,6 +85,7 @@ const GroupsList = styled.ul`
 const GroupName = styled.span`
   ${ellipsis('200px') as any}
   min-width: 0;
+  flex: 1;
 `;
 
 const MembersCount = styled.span`
@@ -94,6 +95,11 @@ const MembersCount = styled.span`
 const LightningBolt = styled(Icon)`
   height: 2rem;
   width: 2rem;
+  margin-left: -.7rem;
+
+  .cl-icon-primary {
+    fill: #FF672F;
+  }
 
   .cl-icon-background {
     fill: none;
