@@ -8,7 +8,7 @@ module EmailCampaigns
   
     def perform last_scheduled_at=(Time.now - 7.days).to_i
       last_scheduled_at = Time.at(last_scheduled_at)
-      User.all.select{|user| user.admin?}.each do |admin|
+      User.admin.each do |admin|
         days_interval = ((Time.now - last_scheduled_at) / 1.day).days
 
         statistics = admin_report_statistics days_interval
