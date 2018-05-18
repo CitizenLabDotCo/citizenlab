@@ -1,5 +1,10 @@
 import React from 'react';
-import { BehaviorSubject, Subject, Subscription, Observable } from 'rxjs/Rx';
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
+import { merge } from 'rxjs/observable/merge';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { map, startWith, distinctUntilChanged, switchMap, debounceTime } from 'rxjs/operators';
 import { IInviteData, invitesStream } from 'services/invites';
 import shallowCompare from 'utils/shallowCompare';
 import { isEqual, omitBy, isString, isEmpty, isNil } from 'lodash';
@@ -78,29 +83,42 @@ export default class GetInvites extends React.Component<Props, State> {
     this.queryParameters$ = new BehaviorSubject(queryParameters);
     this.search$ = new Subject();
 
-    const queryParameters$ = this.queryParameters$.distinctUntilChanged((x, y) => shallowCompare(x, y));
-    const queryParametersSearch$ = queryParameters$.map(queryParameters => queryParameters.search).distinctUntilChanged();
-    const search$ = Observable.merge(
-      this.search$.debounceTime(500),
+    const queryParameters$ = this.queryParameters$.pipe(
+      distinctUntilChanged((x, y) => shallowCompare(x, y))
+    );
+
+    const queryParametersSearch$ = queryParameters$.pipe(
+      map(queryParameters => queryParameters.search),
+      distinctUntilChanged()
+    );
+
+    const search$ = merge(
+      this.search$.pipe(
+        debounceTime(500)
+      ),
       queryParametersSearch$
-    )
-    .startWith(queryParameters.search)
-    .map(searchValue => ((isString(searchValue) && !isEmpty(searchValue)) ? searchValue : undefined))
-    .distinctUntilChanged();
+    ).pipe(
+      startWith(queryParameters.search),
+      map(searchValue => ((isString(searchValue) && !isEmpty(searchValue)) ? searchValue : undefined)),
+      distinctUntilChanged()
+    );
 
     this.subscriptions = [
-      Observable.combineLatest(
+      combineLatest(
         queryParameters$,
         search$
-      )
-      .map(([queryParameters, search]) => ({ ...queryParameters, search }))
-      .switchMap((queryParameters) => {
-        const oldPageNumber = this.state.queryParameters['page[number]'];
-        const newPageNumber = queryParameters['page[number]'];
-        queryParameters['page[number]'] = (newPageNumber !== oldPageNumber ? newPageNumber : 1);
+      ).pipe(
+        map(([queryParameters, search]) => ({ ...queryParameters, search })),
+        switchMap((queryParameters) => {
+          const oldPageNumber = this.state.queryParameters['page[number]'];
+          const newPageNumber = queryParameters['page[number]'];
+          queryParameters['page[number]'] = (newPageNumber !== oldPageNumber ? newPageNumber : 1);
 
-        return invitesStream({ queryParameters, cacheStream: false }).observable.map(invites => ({ invites, queryParameters }));
-      }).subscribe(({ invites, queryParameters }) => {
+          return invitesStream({ queryParameters, cacheStream: false }).observable.pipe(
+            map(invites => ({ invites, queryParameters }))
+          );
+        })
+      ).subscribe(({ invites, queryParameters }) => {
         this.setState({
           queryParameters,
           invitesList: (invites ? invites.data : null),

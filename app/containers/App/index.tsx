@@ -1,6 +1,8 @@
 import React from 'react';
-import { Subscription, Observable } from 'rxjs/Rx';
-import { get } from 'lodash';
+import { Subscription } from 'rxjs/Subscription';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { tap } from 'rxjs/operators';
+import get from 'lodash/get';
 import * as moment from 'moment';
 import 'moment-timezone';
 import 'moment/locale/de';
@@ -8,12 +10,17 @@ import 'moment/locale/fr';
 import 'moment/locale/nl';
 import 'moment/locale/da';
 import 'moment/locale/nb';
+import find from 'lodash/find';
+import { isNilOrError } from 'utils/helperUtils';
 
 // context
 import { PreviousPathnameContext } from 'context';
 
 // libraries
 import { RouterState, browserHistory } from 'react-router';
+
+// analytics
+import { trackPage, trackIdentification } from 'utils/analytics';
 
 // components
 import Meta from './Meta';
@@ -25,12 +32,6 @@ import VoteControl from 'components/VoteControl';
 
 // auth
 import HasPermission from 'components/HasPermission';
-
-// sagas
-import WatchSagas from 'containers/WatchSagas';
-import authSagas from 'utils/auth/sagas';
-import areasSagas from 'utils/areas/sagas';
-import tenantSaga from 'utils/tenant/sagas';
 
 // services
 import { localeStream } from 'services/locale';
@@ -44,11 +45,6 @@ import eventEmitter from 'utils/eventEmitter';
 // style
 import styled, { ThemeProvider } from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
-
-// legacy redux stuff
-import { store } from 'app';
-import { LOAD_CURRENT_TENANT_SUCCESS } from 'utils/tenant/constants';
-import { LOAD_CURRENT_USER_SUCCESS, DELETE_CURRENT_USER_LOCAL } from 'utils/auth/constants';
 
 // typings
 import ErrorBoundary from 'components/ErrorBoundary';
@@ -118,6 +114,8 @@ export default class App extends React.PureComponent<Props & RouterState, State>
       const previousPathname = get(previousLocation, 'pathname', null);
       this.setState({ previousPathname });
 
+      trackPage(newLocation.pathname);
+
       if (newLocation
           && newLocation.pathname !== '/complete-signup'
           && authUser
@@ -129,22 +127,30 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     });
 
     this.subscriptions = [
-      Observable.combineLatest(
-        authUser$.do((authUser) => {
-          if (!authUser) {
+      combineLatest(
+        authUser$.pipe(tap((authUser) => {
+          if (isNilOrError(authUser)) {
             signOut();
-            store.dispatch({ type: DELETE_CURRENT_USER_LOCAL });
           } else {
-            store.dispatch({ type: LOAD_CURRENT_USER_SUCCESS, payload: authUser });
+            trackIdentification(authUser.data.id, {
+              email: authUser.data.attributes.email,
+              firstName: authUser.data.attributes.first_name,
+              lastName: authUser.data.attributes.last_name,
+              createdAt: authUser.data.attributes.created_at,
+              avatar: authUser.data.attributes.avatar.large,
+              birthday: authUser.data.attributes.birthyear,
+              gender: authUser.data.attributes.gender,
+              locale: authUser.data.attributes.locale,
+              isAdmin: !!find(authUser.data.attributes.roles, { type: 'admin' })
+            });
           }
-        }),
-        locale$.do((locale) => {
+        })),
+        locale$.pipe(tap((locale) => {
           moment.locale((locale === 'no' ? 'nb' : locale));
-        }),
-        tenant$.do((tenant) => {
+        })),
+        tenant$.pipe(tap((tenant) => {
           moment.tz.setDefault(tenant.data.attributes.settings.core.timezone);
-          store.dispatch({ type: LOAD_CURRENT_TENANT_SUCCESS, payload: tenant });
-        })
+        }))
       ).subscribe(([authUser, _locale, tenant]) => {
         this.setState({ tenant, authUser });
       }),
@@ -198,10 +204,6 @@ export default class App extends React.PureComponent<Props & RouterState, State>
 
     return (
       <>
-        <WatchSagas sagas={authSagas} />
-        <WatchSagas sagas={areasSagas} />
-        <WatchSagas sagas={{ tenantSaga }} />
-
         {tenant && visible && (
           <PreviousPathnameContext.Provider value={previousPathname}>
             <ThemeProvider theme={theme}>

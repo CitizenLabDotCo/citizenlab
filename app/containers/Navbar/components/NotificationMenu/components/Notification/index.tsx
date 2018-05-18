@@ -8,6 +8,7 @@ import IdeaMarkedAsSpamNotification from '../IdeaMarkedAsSpamNotification';
 import InviteAcceptedNotification from '../InviteAcceptedNotification';
 import StatusChangeOfYourIdeaNotification from '../StatusChangeOfYourIdeaNotification';
 import CommentDeletedByAdminNotification from '../CommentDeletedByAdminNotification';
+import ProjectModerationRightsReceivedNotification from '../ProjectModerationRightsReceivedNotification';
 
 import {
   TNotificationData,
@@ -18,7 +19,8 @@ import {
   IMentionInCommentNotificationData,
   IInviteAcceptedNotificationData,
   IStatusChangeOfYourIdeaNotificationData,
-  ICommentDeletedByAdminNotificationData
+  ICommentDeletedByAdminNotificationData,
+  IProjectModerationRightsReceivedNotificationData
 } from 'services/notifications';
 
 
@@ -45,9 +47,11 @@ export default class Notification extends React.PureComponent<Props> {
       case 'invite_accepted':
         return <InviteAcceptedNotification notification={notification as IInviteAcceptedNotificationData} />;
       case 'status_change_of_your_idea':
-        return <StatusChangeOfYourIdeaNotification notification={notification as IStatusChangeOfYourIdeaNotificationData} />;      
+        return <StatusChangeOfYourIdeaNotification notification={notification as IStatusChangeOfYourIdeaNotificationData} />;
       case 'comment_deleted_by_admin':
         return <CommentDeletedByAdminNotification notification={notification as ICommentDeletedByAdminNotificationData} />;
+      case 'project_moderation_rights_received':
+        return <ProjectModerationRightsReceivedNotification notification={notification as IProjectModerationRightsReceivedNotificationData} />;
       default: return null;
     }
   }

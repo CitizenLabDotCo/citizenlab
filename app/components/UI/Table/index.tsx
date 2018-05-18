@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { fontSize, color } from 'utils/styleUtils';
 
 const StyledTable: any = styled.table`
-  width:100%;
+  width: 100%;
   padding: 0;
   margin: 0;
   border: none;
@@ -18,24 +18,25 @@ const StyledTable: any = styled.table`
   thead {
     tr {
       th {
+        fill: ${color('label')};
         color: ${color('label')};
         font-size: ${fontSize('small')};
-        font-weight: 400;
+        font-weight: 500;
+        text-transform: uppercase;
         line-height: 18px;
-        display: flex;
-        align-items: center;
         margin-left: 20px;
         margin-right: 20px;
-        padding-top: 10px;
-        padding-bottom: 10px;
+        padding-top: 0px;
+        padding-bottom: 0px;
 
-        &.center {
-          justify-content: center;
-        }
+        &.sortable {
+          cursor: pointer;
 
-        &:hover,
-        &.active {
-          color: ${color('text')};
+          &:hover,
+          &.active {
+            fill: ${color('text')};
+            color: ${color('text')};
+          }
         }
       }
     }
@@ -44,7 +45,8 @@ const StyledTable: any = styled.table`
   tbody {
     tr {
       border-radius: 5px;
-      border: solid1px red;
+      padding-top: 50px;
+      padding-bottom: 50px;
 
       td {
         color: ${color('clBlue2Darkest')};
@@ -53,8 +55,8 @@ const StyledTable: any = styled.table`
         line-height: 18px;
         margin-left: 20px;
         margin-right: 20px;
-        padding-top: 10px;
-        padding-bottom: 10px;
+        padding-top: 11px;
+        padding-bottom: 11px;
 
         &.center {
           justify-content: center;
@@ -68,13 +70,25 @@ const StyledTable: any = styled.table`
       }
     }
   }
+
+  tfoot {
+    display: flex;
+
+    tr {
+      display: flex;
+
+      td {
+        display: flex;
+      }
+    }
+  }
 `;
 
 interface Props {}
 
 interface State {}
 
-export default class Label extends React.PureComponent<Props, State> {
+export default class Tabel extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
   }

@@ -10,7 +10,7 @@ import LandingPage from 'containers/LandingPage';
 import IdeasShowPage from 'containers/IdeasShowPage';
 import ProjectShowPage from 'containers/ProjectsShowPage';
 
-export default function createRoutes(_store) {
+export default function createRoutes() {
   return [
     {
       path: '/',

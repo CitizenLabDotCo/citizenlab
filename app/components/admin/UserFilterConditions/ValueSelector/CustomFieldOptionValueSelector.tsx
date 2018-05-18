@@ -1,12 +1,9 @@
-import * as React from 'react';
-
+import React from 'react';
 import GetCustomFieldOptions, { GetCustomFieldOptionsChildProps } from 'resources/GetCustomFieldOptions';
 import { TRule } from '../rules';
 import { IOption } from 'typings';
-
 import Select from 'components/UI/Select';
-
-import { injectTFunc } from 'components/T/utils';
+import localize, { injectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 
 type Props = {
@@ -19,14 +16,16 @@ type Props = {
 
 type State = {};
 
-class CustomFieldOptionValueSelector extends React.PureComponent<Props, State> {
+class CustomFieldOptionValueSelector extends React.PureComponent<Props & injectedLocalized, State> {
 
   generateOptions = (): IOption[] => {
-    if (!isNilOrError(this.props.options)) {
-      return this.props.options.map((option) => (
+    const { options, localize } = this.props;
+
+    if (!isNilOrError(options)) {
+      return options.map((option) => (
         {
           value: option.id,
-          label: this.props.tFunc(option.attributes.title_multiloc),
+          label: localize(option.attributes.title_multiloc),
         }
       ));
     } else {
@@ -51,7 +50,7 @@ class CustomFieldOptionValueSelector extends React.PureComponent<Props, State> {
   }
 }
 
-const CustomFieldOptionValueSelectorWithHOC = injectTFunc(CustomFieldOptionValueSelector);
+const CustomFieldOptionValueSelectorWithHOC = localize(CustomFieldOptionValueSelector);
 
 export default (inputProps) => (
   <GetCustomFieldOptions customFieldId={inputProps.rule.customFieldId}>

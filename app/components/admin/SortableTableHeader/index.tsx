@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import { Icon } from 'semantic-ui-react';
 
 const SortableLink = styled.a`
@@ -8,22 +7,22 @@ const SortableLink = styled.a`
   cursor: pointer;
 `;
 
-const SortableTableHeader = (props) => {
+interface Props {
+  direction?: 'ascending' | 'descending' | null;
+  onToggle: () => void;
+}
+
+const SortableTableHeader: React.SFC<Props> = ({ children, ...props }) => {
   const { direction, onToggle } = props;
+
   return (
     <SortableLink onClick={onToggle}>
-      {props.children}
+      {children}
       {direction &&
-        <Icon name={direction === 'asc' ? 'caret up' : 'caret down'} />
+        <Icon name={direction === 'ascending' ? 'caret up' : 'caret down'} />
       }
     </SortableLink>
   );
-};
-
-SortableTableHeader.propTypes = {
-  direction: PropTypes.string,
-  onToggle: PropTypes.func,
-  children: PropTypes.element,
 };
 
 export default SortableTableHeader;

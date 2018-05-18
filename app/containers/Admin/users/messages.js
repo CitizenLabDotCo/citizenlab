@@ -57,6 +57,10 @@ export default defineMessages({
     id: 'app.containers.Admin.User.email',
     defaultMessage: 'Email',
   },
+  since: {
+    id: 'app.containers.Admin.User.since',
+    defaultMessage: 'Since',
+  },
   member: {
     id: 'app.containers.Admin.User.member',
     defaultMessage: 'Member Since',
@@ -274,5 +278,13 @@ export default defineMessages({
   groupFormTitle: {
     id: 'app.containers.AdminPage.Users.GroupCreation.groupFormTitle',
     defaultMessage: 'Define a group name',
+  },
+  selectAll: {
+    id: 'app.containers.AdminPage.Users.GroupsPanel.selectAll',
+    defaultMessage: 'Select all',
+  },
+  xUsers: {
+    id: 'app.containers.AdminPage.Users.GroupsPanel.xUsers',
+    defaultMessage: '',
   },
 });
