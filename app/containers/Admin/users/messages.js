@@ -285,6 +285,6 @@ export default defineMessages({
   },
   xUsers: {
     id: 'app.containers.AdminPage.Users.GroupsPanel.xUsers',
-    defaultMessage: '',
+    defaultMessage: 'x Users',
   },
 });
