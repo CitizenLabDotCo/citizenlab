@@ -274,18 +274,9 @@ if Apartment::Tenant.current == 'localhost'
         "nl-BE": Faker::Lorem.sentence
       },
       description_multiloc: {
-        "en" => "<p>Let's renew the parc at the city border and make it an enjoyable place for young and old.</p>",
-        "nl-BE" => "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.</p>"
-      },
-      description_preview_multiloc: {
-        "en" => "Let's renew the parc at the city border.",
-        "nl-BE" => "Laten we het park op de grend van de stad vernieuwen."
-      },
-      header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
-      visible_to: %w(admins groups public public public)[rand(5)],
-      presentation_mode: ['card', 'card', 'card', 'map', 'map'][rand(5)],
-      process_type: ['timeline','timeline','timeline','timeline','continuous'][rand(5)],
-      publication_status: ['published','published','published','published','published','draft','archived'][rand(7)]
+        "en": "<p>The place to be these days</p>",
+        "nl-BE": "<p>Moet je geweest zijn</p>"
+      }
     })
 
     num_projects.times do
