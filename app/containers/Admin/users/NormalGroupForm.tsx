@@ -1,0 +1,80 @@
+// Libraries
+import React from 'react';
+import { isEmpty, values as getValues, every } from 'lodash';
+import styled from 'styled-components';
+
+
+// Formik
+import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
+import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
+import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
+// Components
+import Error from 'components/UI/Error';
+import { SectionField } from 'components/admin/Section';
+
+// Typings
+import { Multiloc } from 'typings';
+export interface Props { }
+export interface NormalFormValues {
+  title_multiloc: Multiloc;
+}
+
+const Fill = styled.div`
+  height: 452px;
+  padding: 40px;
+`;
+
+const FooterContainer = styled.div`
+  width: 100%;
+  height: 74px;
+  border-top: 2px solid #EAEAEA;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 40px;
+  margin-top:
+`;
+
+export default class NormalGroupForm extends React.Component<InjectedFormikProps<Props, NormalFormValues>> {
+
+  public static validate = (values: NormalFormValues): FormikErrors<NormalFormValues> => {
+    const errors: FormikErrors<NormalFormValues> = {};
+
+    if (every(getValues(values.title_multiloc), isEmpty)) {
+      errors.title_multiloc = (errors.title_multiloc || []).concat({ error: 'blank' });
+    }
+    return errors;
+  }
+  render() {
+    const { isSubmitting, errors, isValid, touched } = this.props;
+
+    return (
+      <Form>
+        <Fill>
+          <SectionField>
+            <Field
+              name="title_multiloc"
+              component={FormikInputMultiloc}
+              label={<FormattedMessage {...messages.fieldGroupName} />}
+            />
+            {touched.title_multiloc && <Error
+              fieldName="title_multiloc"
+              apiErrors={errors.title_multiloc}
+            />}
+          </SectionField>
+        </Fill>
+
+        <FooterContainer>
+          <FormikSubmitWrapper
+            {...{ isValid, isSubmitting, status, touched }}
+          />
+        </FooterContainer>
+      </Form>
+    );
+  }
+}

@@ -28,12 +28,12 @@ const ModalContent: any = styled(clickOutside)`
   outline: none;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 40px;
+  padding: ${(props: any) => props.hasHeaderOrFooter ? 0 : '40px'};
   position: relative;
   width: 100%;
 
   &.fixedHeight {
-    height: 78vh;
+    height: 600px;
   }
 
   ${media.smallerThanMaxTablet`
@@ -114,6 +114,20 @@ const ModalContainer = styled.div`
   }
 `;
 
+const HeaderContainer = styled.div`
+  width: 100%;
+  height: 74px;
+  border-bottom: 2px solid #EAEAEA;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 40px;
+`;
+const FooterContainer = styled(HeaderContainer)`
+  border-bottom: none;
+  border-top: 2px solid #EAEAEA;
+`;
+
 interface ITracks {
   clickCloseButton: (arg: any) => void;
   clickOutsideModal: (arg: any) => void;
@@ -127,6 +141,8 @@ type Props = {
   width?: string | undefined;
   close: () => void;
   className?: string;
+  header?: JSX.Element;
+  footer?: JSX.Element;
 };
 
 type State = {};
@@ -230,7 +246,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
 
   render() {
     let { fixedHeight, width } = this.props;
-    const { children, opened } = this.props;
+    const { children, opened, header, footer } = this.props;
 
     fixedHeight = (isBoolean(fixedHeight) ? fixedHeight : true);
     width = (isString(width) ? width : '650px');
@@ -242,8 +258,15 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
             className={`${fixedHeight && 'fixedHeight'}`}
             width={width}
             onClickOutside={this.clickOutsideModal}
+            hasHeaderOrFooter={header !== undefined || footer !== undefined}
           >
+            {header &&
+              <HeaderContainer> {header} </HeaderContainer>
+            }
             {children}
+            {footer &&
+              <FooterContainer> {footer} </FooterContainer>
+            }
             <CloseButton onClick={this.clickCloseButton}>
               <CloseIcon name="close3" />
             </CloseButton>
