@@ -1,50 +1,38 @@
 // Libraries
 import React from 'react';
+import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
 import { isEmpty, values as getValues, every } from 'lodash';
 
-// Formik
-import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
+// Components
+import { FormikUserFilterConditions } from 'components/admin/UserFilterConditions';
+import { Section, SectionField } from 'components/admin/Section';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
+import { FooterContainer } from './NormalGroupForm';
+import Error from 'components/UI/Error';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// Components
-import Error from 'components/UI/Error';
-import { SectionField } from 'components/admin/Section';
-
 // Typings
 import { Multiloc } from 'typings';
-export interface Props { }
-export interface NormalFormValues {
+import { TRule } from 'components/admin/UserFilterConditions/rules';
+export interface Props {}
+export interface RulesFormValues {
+  rules: TRule[];
   title_multiloc: Multiloc;
+  membership_type: 'rules';
 }
 
-// Style
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Props, RulesFormValues>> {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
-const Fill = styled.div`
-  height: 452px;
-  padding: 40px;
-`;
-
-export const FooterContainer = styled.div`
-  width: 100%;
-  height: 74px;
-  border-top: 2px solid ${colors.separation};
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding-left: 40px;
-`;
-
-export default class NormalGroupForm extends React.Component<InjectedFormikProps<Props, NormalFormValues>> {
-
-  public static validate = (values: NormalFormValues): FormikErrors<NormalFormValues> => {
-    const errors: FormikErrors<NormalFormValues> = {};
+  public static validate = (values: RulesFormValues): FormikErrors<RulesFormValues> => {
+    const errors: FormikErrors<RulesFormValues> = {};
 
     if (every(getValues(values.title_multiloc), isEmpty)) {
       errors.title_multiloc = (errors.title_multiloc || []).concat({ error: 'blank' });
@@ -57,7 +45,14 @@ export default class NormalGroupForm extends React.Component<InjectedFormikProps
 
     return (
       <Form>
-        <Fill>
+        <Section>
+          <SectionField>
+            <Field
+              name="rules"
+              component={FormikUserFilterConditions}
+              label={<FormattedMessage {...messages.fieldRulesLabel} />}
+            />
+          </SectionField>
           <SectionField>
             <Field
               name="title_multiloc"
@@ -69,7 +64,7 @@ export default class NormalGroupForm extends React.Component<InjectedFormikProps
               apiErrors={errors.title_multiloc}
             />}
           </SectionField>
-        </Fill>
+        </Section>
 
         <FooterContainer>
           <FormikSubmitWrapper
@@ -80,3 +75,5 @@ export default class NormalGroupForm extends React.Component<InjectedFormikProps
     );
   }
 }
+
+export default RulesGroupForm;
