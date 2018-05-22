@@ -57,6 +57,10 @@ const MenuTitle = styled.div`
   .creationButton {
     /* Visual alignment */
     margin-right: -.5rem;
+
+    button {
+      display: flex;
+    }
   }
 `;
 
