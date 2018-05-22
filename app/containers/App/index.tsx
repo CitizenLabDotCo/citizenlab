@@ -223,7 +223,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
 
                 <Navbar />
 
-                <InnerContainer className={`${isAdminPage ? 'admin' : 'citizen'}`}>
+                <InnerContainer role="main" className={`${isAdminPage ? 'admin' : 'citizen'}`}>
                   <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
                     <ErrorBoundary>
                       {children}
