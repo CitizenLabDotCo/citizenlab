@@ -27,7 +27,7 @@ const Panel = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 70px 20px;
+  padding: 55px 20px;
 `;
 
 const Separator = styled.hr`
@@ -52,6 +52,11 @@ const MenuTitle = styled.div`
 
   h2 {
     margin: 0;
+  }
+
+  .creationButton {
+    /* Visual alignment */
+    margin-right: -.5rem;
   }
 `;
 
@@ -135,7 +140,7 @@ export class GroupsListPanel extends React.PureComponent<InputProps & GetGroupsC
         <Separator />
         <MenuTitle>
           <FormattedMessage tagName="h2" {...messages.groupsTitle} />
-          <Button icon="create" iconTitle="Add a group" size="4" style="text" padding="0" onClick={this.handleCreateGroup} />
+          <Button className="creationButton" icon="create" iconTitle="Add a group" size="4" style="text" padding="0" onClick={this.handleCreateGroup} />
         </MenuTitle>
         <GroupsList>
           {!isNilOrError(this.props.groupsList) && this.props.groupsList.map((group) => (
