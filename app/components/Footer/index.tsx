@@ -274,7 +274,7 @@ class Footer extends React.PureComponent<Props, State> {
       const poweredBy = <FormattedMessage {...messages.poweredBy} />;
 
       return (
-        <Container className={this.props['className']} id="hook-footer">
+        <Container role="contentinfo" className={this.props['className']} id="hook-footer">
           {showCityLogoSection &&
             <Fragment name="footer-city-logo">
               <FirstLine id="hook-footer-logo">
