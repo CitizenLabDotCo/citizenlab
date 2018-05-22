@@ -5,7 +5,7 @@ import { isEmpty, values as getValues, every } from 'lodash';
 
 // Components
 import { FormikUserFilterConditions } from 'components/admin/UserFilterConditions';
-import { Section, SectionField } from 'components/admin/Section';
+import { Section, SectionField, SectionTitle } from 'components/admin/Section';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { FooterContainer } from './NormalGroupForm';
@@ -18,10 +18,14 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import {  } from 'utils/styleUtils';
+import { fontSize } from 'utils/styleUtils';
 
 const CustomSection = styled(Section)`
   padding: 40px;
+
+  ${SectionTitle} {
+    font-size: ${fontSize('large')};
+  }
 `;
 
 // Typings
@@ -55,6 +59,9 @@ export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Prop
     return (
       <Form>
         <CustomSection>
+          <SectionTitle>
+            <FormattedMessage {...messages.rulesGroupHeader} />
+          </SectionTitle>
           <SectionField>
             <Label><FormattedMessage {...messages.fieldRulesLabel} /></Label>
             <Field
