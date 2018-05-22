@@ -84,6 +84,8 @@ export const colors = {
   adminMenuBackground: '#003349',
   adminLightText: 'rgba(255, 255, 255, 0.8)',
   adminTextColor: '#044D6C',
+  adminGreyText: '#84939E',
+  adminOrangeIcons: '#FF672F',
   clBlueDarkest: '#02282D',
   clBlueDarker: '#0A5159',
   clBlueDark: '#147985',

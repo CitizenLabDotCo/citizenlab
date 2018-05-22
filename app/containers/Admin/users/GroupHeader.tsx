@@ -11,6 +11,7 @@ import SearchInput from 'components/UI/SearchInput';
 // Styling
 import styled from 'styled-components';
 import rgba from 'polished/lib/color/rgba';
+import { colors } from 'utils/styleUtils';
 
 const gutter = '.5rem';
 
@@ -34,11 +35,11 @@ const TitleIcon = styled(Icon)`
   flex: 0 0 calc(3rem + 2 * ${gutter});
 
   .cl-icon-primary {
-    fill: #FF672F;
+    fill: ${colors.adminOrangeIcons};
   }
 
   .cl-icon-background {
-    fill ${rgba('#FF672F', .1)}
+    fill ${rgba(colors.adminOrangeIcons, .1)}
   }
 `;
 
