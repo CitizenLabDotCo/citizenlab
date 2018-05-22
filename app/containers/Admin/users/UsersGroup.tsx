@@ -81,8 +81,9 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
     }
   }
 
-  searchGroup = () => {
-
+  searchGroup = (searchTerm: string) => {
+    // TODO: wire up the search with the Users Table query
+    console.log(searchTerm);
   }
 
   render() {
