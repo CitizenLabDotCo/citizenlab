@@ -13,7 +13,7 @@ import messages from './messages';
 import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
 import MultipleSelect from 'components/UI/MultipleSelect';
-import GroupAvatar from 'containers/Admin/groups/all/GroupAvatar';
+import GroupAvatar from './GroupAvatar';
 import { List, Row } from 'components/admin/ResourceList';
 
 // Services
