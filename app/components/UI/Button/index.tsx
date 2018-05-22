@@ -4,7 +4,7 @@ import { isBoolean, isNil } from 'lodash';
 
 import styled, { withTheme } from 'styled-components';
 import { darken, rgba, readableColor } from 'polished';
-import { color } from 'utils/styleUtils';
+import { color, invisibleA11yText } from 'utils/styleUtils';
 
 import Spinner from 'components/UI/Spinner';
 import Icon, { Props as IconProps } from 'components/UI/Icon';
@@ -223,31 +223,37 @@ const SpinnerWrapper = styled.div`
   justify-content: center;
 `;
 
+const HiddenText = styled.span`
+  ${invisibleA11yText()}
+`;
+
+
 export type ButtonStyles = 'primary' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'error' | 'text' | 'cl-blue';
 
 type Props = {
+  children?: any;
+  circularCorners?: boolean;
+  className?: string;
+  disabled?: boolean;
+  fullWidth?: boolean;
+  height?: string | undefined;
+  hiddenText?: string | JSX.Element;
+  icon?: IconProps['name'];
+  iconTitle?: IconProps['title'];
+  id?: string;
+  justify?: 'left' | 'center' | 'right' | undefined;
+  linkTo?: string;
+  onClick?: (arg: React.FormEvent<HTMLButtonElement>) => void;
+  padding?: string | undefined;
+  processing?: boolean;
+  setSubmitButtonRef?: (value: HTMLInputElement) => void;
+  size?: '1' | '2' | '3' | '4';
+  style?: ButtonStyles;
   text?: string | JSX.Element;
   textColor?: string;
   textHoverColor?: string;
-  children?: any;
-  size?: '1' | '2' | '3' | '4';
-  style?: ButtonStyles;
-  width?: string | undefined;
-  height?: string | undefined;
-  padding?: string | undefined;
-  justify?: 'left' | 'center' | 'right' | undefined;
-  icon?: IconProps['name'];
-  iconTitle?: IconProps['title'];
-  processing?: boolean;
-  disabled?: boolean;
-  fullWidth?: boolean;
-  onClick?: (arg: React.FormEvent<HTMLButtonElement>) => void;
-  className?: string;
-  circularCorners?: boolean;
-  linkTo?: string;
-  id?: string;
   theme?: object | undefined;
-  setSubmitButtonRef?: (value: HTMLInputElement) => void;
+  width?: string | undefined;
 };
 
 type State = {};
@@ -313,8 +319,9 @@ class Button extends React.PureComponent<Props, State> {
 
     const childContent = (
       <ButtonContent>
-        {icon && <StyledIcon name={icon} />}
+        {icon && <StyledIcon name={icon} title={this.props.iconTitle} />}
         {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
+        {this.props.hiddenText && <HiddenText>{this.props.hiddenText}</HiddenText>}
         {processing && <SpinnerWrapper><Spinner size={spinnerSize} color={spinnerColor} /></SpinnerWrapper>}
       </ButtonContent>
     );

@@ -425,7 +425,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
           <MobileNavigation />
         }
 
-        <Container className={`${isAdminPage ? 'admin' : 'citizen'} ${'alwaysShowBorder'}`}>
+        <Container role="banner" className={`${isAdminPage ? 'admin' : 'citizen'} ${'alwaysShowBorder'}`}>
           <Left>
             {tenantLogo &&
               <LogoLink to="/">

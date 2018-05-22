@@ -144,7 +144,15 @@ export class GroupsListPanel extends React.PureComponent<InputProps & GetGroupsC
         <Separator />
         <MenuTitle>
           <FormattedMessage tagName="h2" {...messages.groupsTitle} />
-          <Button className="creationButton" icon="create" iconTitle="Add a group" size="4" style="text" padding="0" onClick={this.handleCreateGroup} />
+          <Button
+            className="creationButton"
+            hiddenText={<FormattedMessage {...messages.createGroupButton} />}
+            icon="create"
+            iconTitle={<FormattedMessage {...messages.createGroupButton} />}
+            onClick={this.handleCreateGroup}
+            padding="0"
+            style="text"
+          />
         </MenuTitle>
         <GroupsList>
           {!isNilOrError(this.props.groupsList) && this.props.groupsList.map((group) => (
