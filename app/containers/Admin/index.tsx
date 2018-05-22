@@ -11,10 +11,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+  background: ${colors.background};
 `;
 
 const RightColumn = styled.div`
-  background: ${colors.background};
   display: flex;
   flex-direction: column;
   flex: 1;

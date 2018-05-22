@@ -111,7 +111,7 @@ const LightningBolt = styled(Icon) `
     fill: none;
   }
   .cl-icon-primary {
-    fill: #FF672F;
+    fill: ${colors.adminOrangeIcons};
   }
 `;
 

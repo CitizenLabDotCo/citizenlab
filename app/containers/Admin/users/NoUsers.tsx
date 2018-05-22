@@ -5,28 +5,28 @@ import { Link } from 'react-router';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import Icon from 'components/UI/Icon';
+import { colors } from 'utils/styleUtils';
 
 const NoUsersPage = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   font-size: 21px;
-  color: #044D6C;
   font-weight: bold;
   line-height: 25px;
   padding-top: 80px;
   svg {
     margin-bottom: 20px;
   }
-  border-top: 2px solid #EAEAEA;
+  border-top: 2px solid ${colors.separation};
 `;
 
 const SFormattedMessage = styled.div`
-  color: #84939E;
+  color: ${colors.adminGreyText};
   font-weight: 400;
   font-size: 16px;
   a {
-    color: #84939E;
+    color: ${colors.adminGreyText};
     font-weight: bold;
     text-decoration: underline;
   }
