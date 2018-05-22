@@ -18,10 +18,12 @@ const RulesList = styled.div`
 `;
 
 const AddButton = styled(Button)`
-  margin: 5px 0 0 60px;
+  margin: 5px 0 0 0;
+
   button {
     padding-left: 0;
   }
+
   path:nth-child(2) {
     fill: ${props => props.theme.colors.clBlue};
   }
@@ -65,6 +67,7 @@ class UserFilterConditions extends React.PureComponent<Props, State> {
               rule={rule}
               onChange={this.handleOnChangeRule(index)}
               onRemove={this.handleOnRemoveRule(index)}
+              showLabels={index === 0}
             />
           ))}
         </RulesList>
@@ -81,3 +84,22 @@ class UserFilterConditions extends React.PureComponent<Props, State> {
 }
 
 export default UserFilterConditions;
+
+import { FieldProps } from 'formik';
+
+export class FormikUserFilterConditions extends React.Component<Props & FieldProps> {
+  handleOnChange = (newValue) => {
+    this.props.form.setFieldValue(this.props.field.name, newValue);
+  }
+
+  render() {
+    const { value } = this.props.field;
+    return (
+      <UserFilterConditions
+        {...this.props}
+        onChange={this.handleOnChange}
+        rules={value}
+      />
+    );
+  }
+}

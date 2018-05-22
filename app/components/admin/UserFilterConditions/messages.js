@@ -121,4 +121,16 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_not_is_admin',
     defaultMessage: 'is not an admin',
   },
+  rulesFormLabelField: {
+    id: 'app.components.admin.UserFilterConditions.rulesFormLabelField',
+    defaultMessage: 'Attribute',
+  },
+  rulesFormLabelPredicate: {
+    id: 'app.components.admin.UserFilterConditions.rulesFormLabelPredicate',
+    defaultMessage: 'Condition',
+  },
+  rulesFormLabelValue: {
+    id: 'app.components.admin.UserFilterConditions.rulesFormLabelValue',
+    defaultMessage: 'Value',
+  },
 });

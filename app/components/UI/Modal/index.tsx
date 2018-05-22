@@ -17,10 +17,10 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media, color } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 const ModalContent: any = styled(clickOutside)`
-  background: #fff;
+  background: ${(props: any) => props.hasHeaderOrFooter ? colors.background : 'white' };
   border-radius: 5px;
   display: flex;
   flex-direction: column;
@@ -47,7 +47,7 @@ const ModalContent: any = styled(clickOutside)`
 
 const CloseIcon = styled(Icon)`
   height: 20px;
-  fill: ${color('mediumGrey')};
+  fill: ${colors.mediumGrey};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -71,7 +71,7 @@ const CloseButton = styled.div`
 
   &:hover {
     svg {
-      fill: ${color('clBlue')};
+      fill: ${colors.clBlue};
     }
   }
 `;
@@ -115,17 +115,19 @@ const ModalContainer = styled.div`
 `;
 
 const HeaderContainer = styled.div`
+  background: white;
   width: 100%;
   height: 74px;
-  border-bottom: 2px solid #EAEAEA;
+  border-bottom: 2px solid ${colors.separation};
   display: flex;
   flex-direction: row;
   align-items: center;
   padding-left: 40px;
 `;
 const FooterContainer = styled(HeaderContainer)`
+  background: white;
   border-bottom: none;
-  border-top: 2px solid #EAEAEA;
+  border-top: 2px solid ${colors.separation};
 `;
 
 interface ITracks {
