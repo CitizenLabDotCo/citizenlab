@@ -1,8 +1,6 @@
 // Libraries
 import React from 'react';
 import { isEmpty, values as getValues, every } from 'lodash';
-import styled from 'styled-components';
-
 
 // Formik
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
@@ -24,20 +22,23 @@ export interface NormalFormValues {
   title_multiloc: Multiloc;
 }
 
+// Style
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+
 const Fill = styled.div`
   height: 452px;
   padding: 40px;
 `;
 
-const FooterContainer = styled.div`
+export const FooterContainer = styled.div`
   width: 100%;
   height: 74px;
-  border-top: 2px solid #EAEAEA;
+  border-top: 2px solid ${colors.separation};
   display: flex;
   flex-direction: row;
   align-items: center;
   padding-left: 40px;
-  margin-top:
 `;
 
 export default class NormalGroupForm extends React.Component<InjectedFormikProps<Props, NormalFormValues>> {
@@ -50,6 +51,7 @@ export default class NormalGroupForm extends React.Component<InjectedFormikProps
     }
     return errors;
   }
+
   render() {
     const { isSubmitting, errors, isValid, touched } = this.props;
 
