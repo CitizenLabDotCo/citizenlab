@@ -12,6 +12,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
+import Label from 'components/UI/Label';
 
 const SearchForm = styled.form`
   flex: 1 0 200px;
@@ -95,6 +96,7 @@ class SearchInput extends React.PureComponent<Props & InjectedIntlProps, State> 
 
     return (
       <SearchForm className={className} onSubmit={this.handleSubmit}>
+        <Label htmlFor="e2e-ideas-search" hidden value={placeholder} />
         <StyledInput
           id="e2e-ideas-search"
           value={value}
