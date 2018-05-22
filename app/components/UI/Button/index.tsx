@@ -223,31 +223,42 @@ const SpinnerWrapper = styled.div`
   justify-content: center;
 `;
 
+const HiddenText = styled.span`
+  /* See: https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+  clip: rect(1px, 1px, 1px, 1px);
+`;
+
+
 export type ButtonStyles = 'primary' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'error' | 'text' | 'cl-blue';
 
 type Props = {
+  children?: any;
+  circularCorners?: boolean;
+  className?: string;
+  disabled?: boolean;
+  fullWidth?: boolean;
+  height?: string | undefined;
+  hiddenText?: string | JSX.Element;
+  icon?: IconProps['name'];
+  iconTitle?: IconProps['title'];
+  id?: string;
+  justify?: 'left' | 'center' | 'right' | undefined;
+  linkTo?: string;
+  onClick?: (arg: React.FormEvent<HTMLButtonElement>) => void;
+  padding?: string | undefined;
+  processing?: boolean;
+  setSubmitButtonRef?: (value: HTMLInputElement) => void;
+  size?: '1' | '2' | '3' | '4';
+  style?: ButtonStyles;
   text?: string | JSX.Element;
   textColor?: string;
   textHoverColor?: string;
-  children?: any;
-  size?: '1' | '2' | '3' | '4';
-  style?: ButtonStyles;
-  width?: string | undefined;
-  height?: string | undefined;
-  padding?: string | undefined;
-  justify?: 'left' | 'center' | 'right' | undefined;
-  icon?: IconProps['name'];
-  iconTitle?: IconProps['title'];
-  processing?: boolean;
-  disabled?: boolean;
-  fullWidth?: boolean;
-  onClick?: (arg: React.FormEvent<HTMLButtonElement>) => void;
-  className?: string;
-  circularCorners?: boolean;
-  linkTo?: string;
-  id?: string;
   theme?: object | undefined;
-  setSubmitButtonRef?: (value: HTMLInputElement) => void;
+  width?: string | undefined;
 };
 
 type State = {};
@@ -313,8 +324,9 @@ class Button extends React.PureComponent<Props, State> {
 
     const childContent = (
       <ButtonContent>
-        {icon && <StyledIcon name={icon} />}
+        {icon && <StyledIcon name={icon} title={this.props.iconTitle} />}
         {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
+        {this.props.hiddenText && <HiddenText>{this.props.hiddenText}</HiddenText>}
         {processing && <SpinnerWrapper><Spinner size={spinnerSize} color={spinnerColor} /></SpinnerWrapper>}
       </ButtonContent>
     );
