@@ -55,7 +55,7 @@ const MenuTitle = styled.div`
   }
 `;
 
-const MenuLink = styled(Link)`
+const MenuLink = styled(Link) `
   ${PanelEntry}
   color: ${colors.adminTextColor};
   margin-bottom: .5rem;
@@ -91,12 +91,16 @@ const MembersCount = styled.span`
   margin-left: 1rem;
 `;
 
-const LightningBolt = styled(Icon)`
+const LightningBolt = styled(Icon) `
   height: 2rem;
   width: 2rem;
+  margin-left: -.5rem;
 
   .cl-icon-background {
     fill: none;
+  }
+  .cl-icon-primary {
+    fill: #FF672F;
   }
 `;
 
@@ -106,7 +110,7 @@ export interface InputProps {
   onCreateGroup: () => void;
 }
 
-export interface State {}
+export interface State { }
 
 export class GroupsListPanel extends React.PureComponent<InputProps & GetGroupsChildProps, State> {
   constructor(props) {
@@ -129,18 +133,20 @@ export class GroupsListPanel extends React.PureComponent<InputProps & GetGroupsC
         <Separator />
         <MenuTitle>
           <FormattedMessage tagName="h2" {...messages.groupsTitle} />
-          <Button icon="plus-circle" iconTitle="Add a group" style="text" padding="0" onClick={this.handleCreateGroup} />
+          <Button icon="create" iconTitle="Add a group" size="4" style="text" padding="0" onClick={this.handleCreateGroup} />
         </MenuTitle>
         <GroupsList>
-        {!isNilOrError(this.props.groupsList) && this.props.groupsList.map((group) => (
-          <li key={group.id}>
-            <MenuLink to={`/admin/users/${group.id}`} activeClassName="active">
-              {group.attributes.membership_type === 'rules' && <LightningBolt name="lightingBolt" />}
-              <GroupName><T value={group.attributes.title_multiloc} /></GroupName>
-              <MembersCount>{group.attributes.memberships_count}</MembersCount>
-            </MenuLink>
-          </li>
-        ))}
+          {!isNilOrError(this.props.groupsList) && this.props.groupsList.map((group) => (
+            <li key={group.id}>
+              <MenuLink to={`/admin/users/${group.id}`} activeClassName="active">
+                <GroupName>
+                  {group.attributes.membership_type === 'rules' && <LightningBolt name="lightingBolt" />}
+                  <T value={group.attributes.title_multiloc} />
+                </GroupName>
+                <MembersCount>{group.attributes.memberships_count}</MembersCount>
+              </MenuLink>
+            </li>
+          ))}
         </GroupsList>
       </Panel>
     );
@@ -154,4 +160,3 @@ export default (props: InputProps) => (
     )}
   </GetGroups>
 );
-
