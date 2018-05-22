@@ -2,7 +2,7 @@ import React from 'react';
 import { colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedDate } from 'react-intl';
-import messages from '../../messages';
+import messages from '../messages';
 import { IInviteData, deleteInvite } from 'services/invites';
 import GetUser from 'resources/GetUser';
 import { Table, Button as SemanticButton, Popup } from 'semantic-ui-react';
