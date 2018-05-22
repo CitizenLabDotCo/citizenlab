@@ -283,6 +283,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupCreation.groupFormTitle',
     defaultMessage: 'Define a group name',
   },
+  rulesGroupHeader: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.rulesGroupHeader',
+    defaultMessage: 'Make the user(s) matching ALL the following conditions part of the group:',
+  },
   selectAll: {
     id: 'app.containers.AdminPage.Users.GroupsPanel.selectAll',
     defaultMessage: 'Select all',

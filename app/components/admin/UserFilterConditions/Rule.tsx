@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { pick, clone, omit } from 'lodash';
-import styled from 'styled-components';
 
 import { TRule } from './rules';
 
@@ -8,6 +7,14 @@ import FieldSelector, { FieldDescriptor } from './FieldSelector';
 import PredicateSelector from './PredicateSelector';
 import ValueSelector from './ValueSelector';
 import Button from 'components/UI/Button';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
+// Styling
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -21,6 +28,7 @@ const IconCell = styled.div`
 `;
 
 const SelectorCell = styled.div`
+  color: ${colors.label};
   flex: 1;
   padding: 10px 5px;
 `;
@@ -73,6 +81,7 @@ class Rule extends React.Component<Props, State> {
           />
         </IconCell>
         <SelectorCell>
+          {showLabels && <FormattedMessage {...messages.rulesFormLabelField} />}
           <FieldSelector
             field={this.fieldDescriptorFromRule(rule)}
             onChange={this.handleChangeField}
@@ -80,20 +89,26 @@ class Rule extends React.Component<Props, State> {
         </SelectorCell>
         <SelectorCell>
           {rule.ruleType &&
-            <PredicateSelector
-              ruleType={rule.ruleType}
-              predicate={rule.predicate}
-              onChange={this.handleChangePredicate}
-            />
+            <>
+              {showLabels && <FormattedMessage {...messages.rulesFormLabelPredicate} />}
+              <PredicateSelector
+                ruleType={rule.ruleType}
+                predicate={rule.predicate}
+                onChange={this.handleChangePredicate}
+              />
+            </>
           }
         </SelectorCell>
         <SelectorCell>
           {rule.predicate &&
-            <ValueSelector
-              rule={rule}
-              value={rule.value}
-              onChange={this.handleChangeValue}
-            />
+            <>
+              {showLabels && <FormattedMessage {...messages.rulesFormLabelValue} />}
+              <ValueSelector
+                rule={rule}
+                value={rule.value}
+                onChange={this.handleChangeValue}
+              />
+            </>
           }
         </SelectorCell>
       </Container>
