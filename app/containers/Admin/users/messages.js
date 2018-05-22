@@ -81,6 +81,14 @@ export default defineMessages({
     id: 'app.containers.Admin.User.confirmDelete',
     defaultMessage: 'Yes, I\'m sure',
   },
+  editGroup: {
+    id: 'app.containers.Admin.User.GroupsHeader.editGroup',
+    defaultMessage: 'Edit Group',
+  },
+  deleteGroup: {
+    id: 'app.containers.Admin.User.GroupsHeader.deleteGroup',
+    defaultMessage: 'Delete Group',
+  },
   allUsers: {
     id: 'app.containers.Admin.User.GroupsPanel.allUsers',
     defaultMessage: 'All users',
@@ -96,6 +104,10 @@ export default defineMessages({
   goToAllUsers: {
     id: 'app.containers.AdminPage.Users.GroupsPanel.goToAllUsers',
     defaultMessage: 'Go on the {allUsersLink} tab to move users manually.',
+  },
+  createGroupButton: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.createGroupButton',
+    defaultMessage: 'Add a new group',
   },
   step1TypeNameNormal: {
     id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeNameNormal',

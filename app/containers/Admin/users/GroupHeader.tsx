@@ -8,6 +8,10 @@ import Button from 'components/UI/Button';
 import T from 'components/T';
 import SearchInput from 'components/UI/SearchInput';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
 // Styling
 import styled from 'styled-components';
 import rgba from 'polished/lib/color/rgba';
@@ -96,8 +100,8 @@ export class GroupHeader extends React.PureComponent<Props, State> {
         {this.props.smartGroup && <TitleIcon name="lightingBolt" />}
         <TextAndButtons>
           <T as="h1" value={this.props.title} />
-          <Button padding=".65em" icon="edit" style="secondary" circularCorners={false} onClick={this.props.onEdit} />
-          <Button padding=".65em" icon="delete" style="text" circularCorners={false} onClick={this.props.onDelete} />
+          <Button iconTitle={<FormattedMessage {...messages.editGroup} />} hiddenText={<FormattedMessage {...messages.editGroup} />} padding=".65em" icon="edit" style="secondary" circularCorners={false} onClick={this.props.onEdit} />
+          <Button iconTitle={<FormattedMessage {...messages.deleteGroup} />} hiddenText={<FormattedMessage {...messages.deleteGroup} />} padding=".65em" icon="delete" style="text" circularCorners={false} onClick={this.props.onDelete} />
         </TextAndButtons>
         <Spacer />
         <StyledSearch value={this.state.searchValue} onChange={this.handleSearchChange} />

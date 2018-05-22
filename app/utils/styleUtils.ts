@@ -117,3 +117,19 @@ export const fontSizes = {
 export function fontSize(name: keyof typeof fontSizes) {
   return `${fontSizes[name]}px`;
 }
+
+export function invisibleA11yText() {
+  /* See: https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
+  return `
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+  clip: rect(1px, 1px, 1px, 1px);
+`;
+}
+
+export function booleanClass(value: any, className: string) {
+  if (!!value) return ` ${className}`;
+  return '';
+}
