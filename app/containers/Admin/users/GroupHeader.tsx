@@ -1,6 +1,7 @@
 // Libraries
 import React from 'react';
 import { Multiloc } from 'typings';
+import { throttle } from 'lodash';
 
 // Components
 import Icon from 'components/UI/Icon';
@@ -76,22 +77,27 @@ export interface Props {
   smartGroup?: boolean;
   onEdit: () => void;
   onDelete: () => void;
-  onSearch: () => void;
+  onSearch: (newValue: string) => void;
 }
 export interface State {
   searchValue: string;
 }
 
 export class GroupHeader extends React.PureComponent<Props, State> {
+  debounceSearch: (newValue: string) => void;
+
   constructor(props) {
     super(props);
     this.state = {
       searchValue: '',
     };
+
+    this.debounceSearch = throttle(this.props.onSearch, 500);
   }
 
   handleSearchChange = (newValue) => {
     this.setState({ searchValue: newValue });
+    this.debounceSearch(newValue);
   }
 
   render() {
