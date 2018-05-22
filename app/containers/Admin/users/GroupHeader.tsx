@@ -10,6 +10,7 @@ import SearchInput from 'components/UI/SearchInput';
 
 // Styling
 import styled from 'styled-components';
+import rgba from 'polished/lib/color/rgba';
 
 const gutter = '.5rem';
 
@@ -31,10 +32,18 @@ export const TitleWrapper = styled.div`
 
 const TitleIcon = styled(Icon)`
   flex: 0 0 calc(3rem + 2 * ${gutter});
+
+  .cl-icon-primary {
+    fill: #FF672F;
+  }
+
+  .cl-icon-background {
+    fill ${rgba('#FF672F', .1)}
+  }
 `;
 
 export const TextAndButtons = styled.div`
-  margin: 0 0 .5rem 0;
+  margin: .5rem 0;
 
   h1 {
     display: inline;
