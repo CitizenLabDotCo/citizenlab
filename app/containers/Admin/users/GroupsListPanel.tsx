@@ -59,6 +59,7 @@ const MenuLink = styled(Link) `
   ${PanelEntry}
   color: ${colors.adminTextColor};
   margin-bottom: .5rem;
+  height: 3rem;
 
   &.active {
     background: ${rgba(colors.adminTextColor, .1)};
@@ -68,6 +69,12 @@ const MenuLink = styled(Link) `
   &:focus {
     background: ${rgba(colors.adminTextColor, .2)};
     color: ${colors.adminTextColor};
+  }
+
+  .groupName {
+    ${ellipsis('200px') as any}
+    min-width: 0;
+    flex: 1;
   }
 `;
 
@@ -82,12 +89,6 @@ const GroupsList = styled.ul`
   }
 `;
 
-const GroupName = styled.span`
-  ${ellipsis('200px') as any}
-  min-width: 0;
-  flex: 1;
-`;
-
 const MembersCount = styled.span`
   margin-left: 1rem;
 `;
@@ -96,10 +97,6 @@ const LightningBolt = styled(Icon) `
   height: 2rem;
   width: 2rem;
   margin-left: -.7rem;
-
-  .cl-icon-primary {
-    fill: #FF672F;
-  }
 
   .cl-icon-background {
     fill: none;
@@ -144,10 +141,8 @@ export class GroupsListPanel extends React.PureComponent<InputProps & GetGroupsC
           {!isNilOrError(this.props.groupsList) && this.props.groupsList.map((group) => (
             <li key={group.id}>
               <MenuLink to={`/admin/users/${group.id}`} activeClassName="active">
-                <GroupName>
-                  {group.attributes.membership_type === 'rules' && <LightningBolt name="lightingBolt" />}
-                  <T value={group.attributes.title_multiloc} />
-                </GroupName>
+                {group.attributes.membership_type === 'rules' && <LightningBolt name="lightingBolt" />}
+                <T className="groupName" value={group.attributes.title_multiloc} />
                 <MembersCount>{group.attributes.memberships_count}</MembersCount>
               </MenuLink>
             </li>
