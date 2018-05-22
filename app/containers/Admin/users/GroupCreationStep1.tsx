@@ -110,7 +110,7 @@ export class GroupCreationStep1 extends React.PureComponent<Props, State> {
             <FormattedMessage {...messages.step1TypeDescriptionSmart} />
           </p>
           <MoreInfoLink to=""><FormattedMessage {...messages.step1ReadMore} /></MoreInfoLink>
-          <Step2Button onClick={this.createStep2Handler('rules')} circularCorners={false}>
+          <Step2Button style="cl-blue" onClick={this.createStep2Handler('rules')} circularCorners={false}>
             <FormattedMessage {...messages.step1CreateButtonSmart} />
           </Step2Button>
         </GroupType>
