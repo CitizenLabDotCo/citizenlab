@@ -4,7 +4,7 @@ import { isBoolean, isNil } from 'lodash';
 
 import styled, { withTheme } from 'styled-components';
 import { darken, rgba, readableColor } from 'polished';
-import { color } from 'utils/styleUtils';
+import { color, invisibleA11yText } from 'utils/styleUtils';
 
 import Spinner from 'components/UI/Spinner';
 import Icon, { Props as IconProps } from 'components/UI/Icon';
@@ -224,12 +224,7 @@ const SpinnerWrapper = styled.div`
 `;
 
 const HiddenText = styled.span`
-  /* See: https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
-  position: absolute !important;
-  height: 1px; width: 1px;
-  overflow: hidden;
-  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
-  clip: rect(1px, 1px, 1px, 1px);
+  ${invisibleA11yText()}
 `;
 
 
