@@ -448,7 +448,7 @@ const icons = {
   create: (className, title) => (
     <svg className={`cl-icon ${className ? className : ''}`} width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
     {injectTitle(title)}
-      <circle className="cl-icon-background Background-Create-icon" cx="15.5" cy="15.5" r="15.5" fill="#01A1B1" />
+      <circle className="cl-icon-background Background-Create-icon" cx="15.5" cy="15.5" r="15.5" fill="rgba(1, 161, 177, 0.15)" />
       <path className="cl-icon-fill cl-icon-primary Create-icon" d="M14.85 8.48571H8.48571V14.85H6.36429V8.48571H0V6.36429H6.36429V0H8.48571V6.36429H14.85V8.48571Z" transform="translate(8 8)" fill="#044D6C" />
   </svg>
   ),
