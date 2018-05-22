@@ -19,7 +19,7 @@ import { API_PATH } from 'containers/App/constants';
 import { requestBlob } from 'utils/request';
 
 // i18n
-import messages from '../../messages';
+import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
