@@ -20,7 +20,7 @@ import tracks from '../tracks';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSize } from 'utils/styleUtils';
+import { fontSize } from 'utils/styleUtils';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -32,7 +32,6 @@ const HeaderContainer = styled.div`
 `;
 
 const HeaderTitle = styled.h1`
-  color: ${colors.adminTextColor};
   font-size: ${fontSize('xxxl')};
   line-height: 40px;
   font-weight: 600;
