@@ -1,6 +1,6 @@
 // Libraries
 import React from 'react';
-
+import { throttle } from 'lodash';
 
 // Styling
 import { TitleWrapper, TextAndButtons, StyledSearch, Spacer } from './GroupHeader';
@@ -11,22 +11,27 @@ import messages from './messages';
 
 // Typings
 export interface Props {
-  onSearch: () => void;
+  onSearch: (newValue: string) => void;
 }
 export interface State {
   searchValue: string;
 }
 
 export class AllUsersHeader extends React.PureComponent<Props, State> {
+  debounceSearch: (newValue: string) => void;
+
   constructor(props) {
     super(props);
     this.state = {
       searchValue: '',
     };
+
+    this.debounceSearch = throttle(this.props.onSearch, 500);
   }
 
   handleSearchChange = (newValue) => {
     this.setState({ searchValue: newValue });
+    this.debounceSearch(newValue);
   }
 
   render() {
