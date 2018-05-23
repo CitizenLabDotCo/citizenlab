@@ -7,12 +7,10 @@ import { color } from 'utils/styleUtils';
 
 const GoBackIcon = styled(Icon)`
   height: 22px;
-  fill: ${color('label')};
   margin-right: 5px;
 `;
 
 const GoBackText = styled.div`
-  color: ${color('label')};
   font-size: 18px;
   font-weight: 400;
 `;
@@ -21,15 +19,12 @@ const GoBack = styled.div`
   display: inline-flex;
   align-items: center;
   cursor: pointer;
+  color: ${color('label')};
+  fill: ${color('label')};
 
   &:hover {
-    ${GoBackIcon} {
-      fill: #000;
-    }
-
-    ${GoBackText} {
-      color: #000;
-    }
+    fill: inherit;
+    color: inherit;
   }
 `;
 
