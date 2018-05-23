@@ -68,7 +68,7 @@ namespace :tenant_template do
   			  			   'first_name'        => csv_user['First Name'],
   						     'last_name'         => csv_user['Last Name'],
   						     'locale'            => locales.first,
-  						     'bio_multiloc'      => {locale => md_to_html(csv_user['Biography (Optional)'])},
+  						     'bio_multiloc'      => make_multiloc(md_to_html(csv_user['Biography (Optional)']), locales),
   						     'gender'            => csv_user['Gender'],
   						     'birthyear'	       => rand(10) === 0 ? nil : (1925 + rand(80)).to_s,
   						     'domicile'          => rand(10) === 0 ? nil : generate_domicile(),
