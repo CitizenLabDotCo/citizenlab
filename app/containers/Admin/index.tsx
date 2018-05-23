@@ -16,6 +16,9 @@ const Container = styled.div`
   .ui, .ui.menu .item, .ui.table th, .ui a, .ui input {
     color: ${colors.adminTextColor} !important;
   }
+   .Select-control, .Select-value-label, .Select-value-icon, .Select-option {
+    color: ${colors.adminTextColor} !important;
+  }
 `;
 
 const RightColumn = styled.div`
