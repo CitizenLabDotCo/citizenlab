@@ -677,7 +677,7 @@ models:
         plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en-GB: Let's renew the parc at the city border.
-      nnl-BEl: Laten we het park op de grend van de stad vernieuwen.
+      nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: map
     participation_method: ideation
     process_type: continuous
