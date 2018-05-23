@@ -1,7 +1,7 @@
 ---
 models:
   idea_status:
-  - &19
+  - &20
     title_multiloc: statuses.proposed
     ordering: 100
     code: proposed
@@ -13,31 +13,32 @@ models:
     code: under_consideration
     color: "#29ABD0"
     description_multiloc: statuses.under_consideration_description
-  - &20
+  - &19
     title_multiloc: statuses.accepted
     ordering: 300
     code: accepted
     color: "#17C37B"
     description_multiloc: statuses.accepted_description
-  - &17
+  - &21
     title_multiloc: statuses.rejected
     ordering: 400
     code: rejected
     color: "#EF3E4A"
     description_multiloc: statuses.rejected_description
-  - title_multiloc: statuses.implemented
+  - &16
+    title_multiloc: statuses.implemented
     ordering: 500
     code: implemented
     color: "#B5DA23"
     description_multiloc: statuses.implemented_description
   topic:
-  - &35
+  - &36
     title_multiloc: topics.infrastructure
     description_multiloc: topics.infrastructure_description
-  - &34
+  - &35
     title_multiloc: topics.waste
     description_multiloc: topics.waste_description
-  - &33
+  - &34
     title_multiloc: topics.mobility
     description_multiloc: topics.mobility_description
   - title_multiloc: topics.technology
@@ -54,7 +55,7 @@ models:
     description_multiloc: topics.culture_description
   - title_multiloc: topics.citizenship
     description_multiloc: topics.citizenship_description
-  - &36
+  - &37
     title_multiloc: topics.social
     description_multiloc: topics.social_description
   - title_multiloc: topics.health
@@ -134,7 +135,6 @@ models:
     title_multiloc:
       en: Reducing air pollution in the city
       en-GB: Reducing air pollution in the city
-      en-US: Reducing air pollution in the city
       en-CA: Reducing air pollution in the city
     description_multiloc:
       en: |
@@ -144,12 +144,6 @@ models:
 
         <p><em>Let&#39;s do this!</em></p>
       en-GB: |
-        <p><a href="https://en.wikipedia.org/wiki/Global_warming">Global warming</a> is becoming an increasing concern of our society. Your city wants to <strong>fight</strong> the air pollution! </p>
-
-        <p>You can support this initiative by proposing your ideas on how to tackle this issue.</p>
-
-        <p><em>Let&#39;s do this!</em></p>
-      en-US: |
         <p><a href="https://en.wikipedia.org/wiki/Global_warming">Global warming</a> is becoming an increasing concern of our society. Your city wants to <strong>fight</strong> the air pollution! </p>
 
         <p>You can support this initiative by proposing your ideas on how to tackle this issue.</p>
@@ -166,14 +160,11 @@ models:
     title_multiloc:
       en: Make the city centre more lively
       en-GB: Make the city centre more lively
-      en-US: Make the city centre more lively
       en-CA: Make the city centre more lively
     description_multiloc:
       en: "<p>Unfortunately, less and less people visit the city centre to enjoy the
         shops and the park. You can share here your ideas to make it more lively!</p>\n"
       en-GB: "<p>Unfortunately, less and less people visit the city centre to enjoy
-        the shops and the park. You can share here your ideas to make it more lively!</p>\n"
-      en-US: "<p>Unfortunately, less and less people visit the city centre to enjoy
         the shops and the park. You can share here your ideas to make it more lively!</p>\n"
       en-CA: "<p>Unfortunately, less and less people visit the city centre to enjoy
         the shops and the park. You can share here your ideas to make it more lively!</p>\n"
@@ -182,7 +173,6 @@ models:
     title_multiloc:
       en: For a better waste management
       en-GB: For a better waste management
-      en-US: For a better waste management
       en-CA: For a better waste management
     description_multiloc:
       en: "<p>Every year, each inhabitant produce 354 kg of waste. And it goes up
@@ -190,10 +180,6 @@ models:
         Reducing the amount of waste is a challenge for the environment that also
         has a financial and societal impact.</p>\n"
       en-GB: "<p>Every year, each inhabitant produce 354 kg of waste. And it goes
-        up to 536 kg when you take into account the waste produced by the municipality.
-        Reducing the amount of waste is a challenge for the environment that also
-        has a financial and societal impact.</p>\n"
-      en-US: "<p>Every year, each inhabitant produce 354 kg of waste. And it goes
         up to 536 kg when you take into account the waste produced by the municipality.
         Reducing the amount of waste is a challenge for the environment that also
         has a financial and societal impact.</p>\n"
@@ -206,7 +192,6 @@ models:
     title_multiloc:
       en: Reshaping Abbey Park
       en-GB: Reshaping Abbey Park
-      en-US: Reshaping Abbey Park
       en-CA: Reshaping Abbey Park
     description_multiloc:
       en: "<p>The city takes green spaces very much at heart because they should be
@@ -216,12 +201,6 @@ models:
         you want to see in this park?\nShare your ideas below of what the park should
         look like.</p>\n"
       en-GB: "<p>The city takes green spaces very much at heart because they should
-        be the lively spaces of a neighbourghood. \nThat&#39;s why we are planning
-        to reorganize Abbey Park in order to make it a more welcoming and a meeting
-        point for inhabitants of all ages! \nWho better than you, the citizens, to
-        say what you want to see in this park?\nShare your ideas below of what the
-        park should look like.</p>\n"
-      en-US: "<p>The city takes green spaces very much at heart because they should
         be the lively spaces of a neighbourghood. \nThat&#39;s why we are planning
         to reorganize Abbey Park in order to make it a more welcoming and a meeting
         point for inhabitants of all ages! \nWho better than you, the citizens, to
@@ -238,16 +217,12 @@ models:
     title_multiloc:
       en: Make the city more digital
       en-GB: Make the city more digital
-      en-US: Make the city more digital
       en-CA: Make the city more digital
     description_multiloc:
       en: "<p>We should try to modernize the way the city works, including the administration,
         etc. Share here how digital installations could make our lives easier in the
         city.</p>\n"
       en-GB: "<p>We should try to modernize the way the city works, including the
-        administration, etc. Share here how digital installations could make our lives
-        easier in the city.</p>\n"
-      en-US: "<p>We should try to modernize the way the city works, including the
         administration, etc. Share here how digital installations could make our lives
         easier in the city.</p>\n"
       en-CA: "<p>We should try to modernize the way the city works, including the
@@ -344,7 +319,7 @@ models:
     title_multiloc: custom_field_options.education.ISCED8
     ordering: 6
   user:
-  - &16
+  - &17
     email: citizenlab+1@citizenlab.co
     first_name: Max
     last_name: Walker
@@ -352,11 +327,10 @@ models:
     bio_multiloc:
       en: 
       en-GB: 
-      en-US: 
       en-CA: 
     gender: male
-    birthyear: '1999'
-    domicile: 
+    birthyear: 
+    domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573977/man-388104_960_720_dfehjy.jpg
   - &13
@@ -367,10 +341,9 @@ models:
     bio_multiloc:
       en: 
       en-GB: 
-      en-US: 
       en-CA: 
     gender: female
-    birthyear: 
+    birthyear: '1944'
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573998/smiling-woman_kdsaal.jpg
@@ -382,11 +355,10 @@ models:
     bio_multiloc:
       en: 
       en-GB: 
-      en-US: 
       en-CA: 
     gender: female
-    birthyear: '1934'
-    domicile: 
+    birthyear: '1965'
+    domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515574018/tiamorrison-profile-photo-2-copy_pcnsxm.png
   - &15
@@ -397,19 +369,17 @@ models:
     bio_multiloc:
       en: 
       en-GB: 
-      en-US: 
       en-CA: 
     gender: male
-    birthyear: '1952'
+    birthyear: '1979'
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515574041/man-838636_960_720_f3i6ki.jpg
   idea:
-  - &21
+  - &22
     title_multiloc:
       en: More bicycle racks
       en-GB: More bicycle racks
-      en-US: More bicycle racks
       en-CA: More bicycle racks
     body_multiloc:
       en: "<p>A lot of people are aware of how beneficial for the environment it is
@@ -418,11 +388,6 @@ models:
         be nice to install more bicycle racks at the strategic points where they are
         always busy: city centre, in front of the cinema, etc.</p>\n"
       en-GB: "<p>A lot of people are aware of how beneficial for the environment it
-        is to use their bikes to go around town. However, most of them are discouraged
-        because they can&#39;t park them because the racks are often full. It would
-        be nice to install more bicycle racks at the strategic points where they are
-        always busy: city centre, in front of the cinema, etc.</p>\n"
-      en-US: "<p>A lot of people are aware of how beneficial for the environment it
         is to use their bikes to go around town. However, most of them are discouraged
         because they can&#39;t park them because the racks are often full. It would
         be nice to install more bicycle racks at the strategic points where they are
@@ -436,11 +401,10 @@ models:
     project_ref: *6
     idea_status_ref: *14
     publication_status: published
-  - &22
+  - &23
     title_multiloc:
       en: Organise one car-free day per month
       en-GB: Organise one car-free day per month
-      en-US: Organise one car-free day per month
       en-CA: Organise one car-free day per month
     body_multiloc:
       en: "<p>It would be nice once a month, to be able to curculate freely by foot
@@ -451,23 +415,18 @@ models:
         foot or by bike without worrying about cars or air pollution. It could be
         a great way to raise awareness around cleaner ways to move around the city.
         Ideally it would be on the weekends so that everyone can enjoy it!</p>\n"
-      en-US: "<p>It would be nice once a month, to be able to curculate freely by
-        foot or by bike without worrying about cars or air pollution. It could be
-        a great way to raise awareness around cleaner ways to move around the city.
-        Ideally it would be on the weekends so that everyone can enjoy it!</p>\n"
       en-CA: "<p>It would be nice once a month, to be able to curculate freely by
         foot or by bike without worrying about cars or air pollution. It could be
         a great way to raise awareness around cleaner ways to move around the city.
         Ideally it would be on the weekends so that everyone can enjoy it!</p>\n"
     author_ref: *15
     project_ref: *6
-    idea_status_ref: *14
+    idea_status_ref: *16
     publication_status: published
-  - &23
+  - &24
     title_multiloc:
       en: Add more night buses
       en-GB: Add more night buses
-      en-US: Add more night buses
       en-CA: Add more night buses
     body_multiloc:
       en: "<p>The service of buses to and from the city centre stops early at night
@@ -478,23 +437,18 @@ models:
         (last bus at 11PM). There should be more buses at night to encourage people
         to go to the restaurants and bars of the city centre. It would keep the neighbourhood
         more lively.</p>\n"
-      en-US: "<p>The service of buses to and from the city centre stops early at night
-        (last bus at 11PM). There should be more buses at night to encourage people
-        to go to the restaurants and bars of the city centre. It would keep the neighbourhood
-        more lively.</p>\n"
       en-CA: "<p>The service of buses to and from the city centre stops early at night
         (last bus at 11PM). There should be more buses at night to encourage people
         to go to the restaurants and bars of the city centre. It would keep the neighbourhood
         more lively.</p>\n"
-    author_ref: *16
+    author_ref: *17
     project_ref: *7
-    idea_status_ref: *17
+    idea_status_ref: *14
     publication_status: published
-  - &24
+  - &25
     title_multiloc:
       en: Make the city centre more accessible thanks to free shuttles
       en-GB: Make the city centre more accessible thanks to free shuttles
-      en-US: Make the city centre more accessible thanks to free shuttles
       en-CA: Make the city centre more accessible thanks to free shuttles
     body_multiloc:
       en: "<p>One of the reason why people are not visiting the city centre as much
@@ -503,11 +457,6 @@ models:
         a free shuttle to go from the biggest residential areas to the city centre.
         They can be electrical as well in order to remain an eco-friendly solution.</p>\n"
       en-GB: "<p>One of the reason why people are not visiting the city centre as
-        much as before could be because it&#39;s hard to reach (hard to park or expensive
-        parking, limited public transportation, etc.). I suggest that the city launches
-        a free shuttle to go from the biggest residential areas to the city centre.
-        They can be electrical as well in order to remain an eco-friendly solution.</p>\n"
-      en-US: "<p>One of the reason why people are not visiting the city centre as
         much as before could be because it&#39;s hard to reach (hard to park or expensive
         parking, limited public transportation, etc.). I suggest that the city launches
         a free shuttle to go from the biggest residential areas to the city centre.
@@ -521,11 +470,10 @@ models:
     project_ref: *7
     idea_status_ref: *19
     publication_status: published
-  - &25
+  - &26
     title_multiloc:
       en: Organise a crafts market in the city centre
       en-GB: Organise a crafts market in the city centre
-      en-US: Organise a crafts market in the city centre
       en-CA: Organise a crafts market in the city centre
     body_multiloc:
       en: "<p>The shops that we can find in the city centre are quite common and can
@@ -540,27 +488,20 @@ models:
         market there, gather all kind of stands such as food, accessories, etc. in
         order to promote local crafts and have the inhabitants discover new ways of
         doing their shopping. </p>\n"
-      en-US: "<p>The shops that we can find in the city centre are quite common and
-        can be found in other places in the city (shopping centre, etc.). So to make
-        the city centre shopping experience more original, we should organise a crafts
-        market there, gather all kind of stands such as food, accessories, etc. in
-        order to promote local crafts and have the inhabitants discover new ways of
-        doing their shopping. </p>\n"
       en-CA: "<p>The shops that we can find in the city centre are quite common and
         can be found in other places in the city (shopping centre, etc.). So to make
         the city centre shopping experience more original, we should organise a crafts
         market there, gather all kind of stands such as food, accessories, etc. in
         order to promote local crafts and have the inhabitants discover new ways of
         doing their shopping. </p>\n"
-    author_ref: *16
+    author_ref: *17
     project_ref: *7
     idea_status_ref: *14
     publication_status: published
-  - &26
+  - &27
     title_multiloc:
       en: Organise fun gatherings to raise awareness about waste sorting
       en-GB: Organise fun gatherings to raise awareness about waste sorting
-      en-US: Organise fun gatherings to raise awareness about waste sorting
       en-CA: Organise fun gatherings to raise awareness about waste sorting
     body_multiloc:
       en: "<p>I think if people sorted their waste better it would help waste management
@@ -575,12 +516,6 @@ models:
         fun social gatherings with activities to raise awareness on how important
         this is, it could be done through games, info sessions, activities for the
         family, etc. </p>\n"
-      en-US: "<p>I think if people sorted their waste better it would help waste management
-        a lot. The general feeling is that most people sometimes don&#39;t know how
-        to do it properly, so they don&#39;t do it at all. One idea would be to organise
-        fun social gatherings with activities to raise awareness on how important
-        this is, it could be done through games, info sessions, activities for the
-        family, etc. </p>\n"
       en-CA: "<p>I think if people sorted their waste better it would help waste management
         a lot. The general feeling is that most people sometimes don&#39;t know how
         to do it properly, so they don&#39;t do it at all. One idea would be to organise
@@ -589,13 +524,12 @@ models:
         family, etc. </p>\n"
     author_ref: *13
     project_ref: *8
-    idea_status_ref: *14
+    idea_status_ref: *20
     publication_status: published
-  - &27
+  - &28
     title_multiloc:
       en: Start an organic and food waste recovery
       en-GB: Start an organic and food waste recovery
-      en-US: Start an organic and food waste recovery
       en-CA: Start an organic and food waste recovery
     body_multiloc:
       en: "<p>We should encourage more people to sort their organic waste and food.
@@ -608,11 +542,6 @@ models:
         when they could be set aside and serve another purpose like organic fertilizer
         for instance. To do so, we should provide the citizens with special boxes
         or bags, then it could be collected with the usual garbage and sorted afterwards.</p>\n"
-      en-US: "<p>We should encourage more people to sort their organic waste and food.
-        Often, food leftovers, plants, etc. go in the ordinary household waste bin
-        when they could be set aside and serve another purpose like organic fertilizer
-        for instance. To do so, we should provide the citizens with special boxes
-        or bags, then it could be collected with the usual garbage and sorted afterwards.</p>\n"
       en-CA: "<p>We should encourage more people to sort their organic waste and food.
         Often, food leftovers, plants, etc. go in the ordinary household waste bin
         when they could be set aside and serve another purpose like organic fertilizer
@@ -620,13 +549,12 @@ models:
         or bags, then it could be collected with the usual garbage and sorted afterwards.</p>\n"
     author_ref: *18
     project_ref: *8
-    idea_status_ref: *14
+    idea_status_ref: *19
     publication_status: published
-  - &28
+  - &29
     title_multiloc:
       en: Create a dog area within the park
       en-GB: Create a dog area within the park
-      en-US: Create a dog area within the park
       en-CA: Create a dog area within the park
     body_multiloc:
       en: "<p>There are not many spaces dedicated to dogs in parks. This project would
@@ -641,12 +569,6 @@ models:
         the dogs to go around in this « free but controlled » area, and also it would
         encourage interactions with dog owners. In this space there could be benches,
         and games for dogs.</p>\n"
-      en-US: "<p>There are not many spaces dedicated to dogs in parks. This project
-        would aim at having specific spaces within the park where dogs can run freely,
-        leash-free, in a closed area dedicated to this purpose only. It would allow
-        the dogs to go around in this « free but controlled » area, and also it would
-        encourage interactions with dog owners. In this space there could be benches,
-        and games for dogs.</p>\n"
       en-CA: "<p>There are not many spaces dedicated to dogs in parks. This project
         would aim at having specific spaces within the park where dogs can run freely,
         leash-free, in a closed area dedicated to this purpose only. It would allow
@@ -655,13 +577,12 @@ models:
         and games for dogs.</p>\n"
     author_ref: *15
     project_ref: *9
-    idea_status_ref: *14
+    idea_status_ref: *21
     publication_status: published
-  - &29
+  - &30
     title_multiloc:
       en: Install a little coffee corner in the park
       en-GB: Install a little coffee corner in the park
-      en-US: Install a little coffee corner in the park
       en-CA: Install a little coffee corner in the park
     body_multiloc:
       en: "<p>What the park currently misses is an area where people can meet, get
@@ -678,13 +599,6 @@ models:
         few chairs and tables. It would really attract more people to the park and
         it would be a nice place to take a break during long park walks at the weekend.
         Maybe one of the local coffee shops in town could run this place?</p>\n"
-      en-US: "<p>What the park currently misses is an area where people can meet,
-        get some tea or coffee, and sit doing together. It would attract more people
-        of all ages because it could become a meeting point. There should be a little
-        cart, truck or corner selling hot beverages and maybe some snacks, with a
-        few chairs and tables. It would really attract more people to the park and
-        it would be a nice place to take a break during long park walks at the weekend.
-        Maybe one of the local coffee shops in town could run this place?</p>\n"
       en-CA: "<p>What the park currently misses is an area where people can meet,
         get some tea or coffee, and sit doing together. It would attract more people
         of all ages because it could become a meeting point. There should be a little
@@ -694,13 +608,12 @@ models:
         Maybe one of the local coffee shops in town could run this place?</p>\n"
     author_ref: *18
     project_ref: *9
-    idea_status_ref: *14
+    idea_status_ref: *21
     publication_status: published
-  - &30
+  - &31
     title_multiloc:
       en: Have more computers in the library
       en-GB: Have more computers in the library
-      en-US: Have more computers in the library
       en-CA: Have more computers in the library
     body_multiloc:
       en: "<p>To make technology more inclusive, and especially internet access, there
@@ -713,25 +626,19 @@ models:
         are only two and the spots they are often occupied. It could be nice to have
         more monitors, or even a room at the library with computers only. It could
         help people who dn&#39;t have internet at home to look for a job for example.</p>\n"
-      en-US: "<p>To make technology more inclusive, and especially internet access,
-        there should be more computers in the public library. Indeed, today there
-        are only two and the spots they are often occupied. It could be nice to have
-        more monitors, or even a room at the library with computers only. It could
-        help people who dn&#39;t have internet at home to look for a job for example.</p>\n"
       en-CA: "<p>To make technology more inclusive, and especially internet access,
         there should be more computers in the public library. Indeed, today there
         are only two and the spots they are often occupied. It could be nice to have
         more monitors, or even a room at the library with computers only. It could
         help people who dn&#39;t have internet at home to look for a job for example.</p>\n"
-    author_ref: *16
+    author_ref: *17
     project_ref: *10
-    idea_status_ref: *14
+    idea_status_ref: *20
     publication_status: published
-  - &31
+  - &32
     title_multiloc:
       en: Have internet trainings for elderly people
       en-GB: Have internet trainings for elderly people
-      en-US: Have internet trainings for elderly people
       en-CA: Have internet trainings for elderly people
     body_multiloc:
       en: "<p>It would be interesting to have a small course given to elderly people
@@ -740,11 +647,6 @@ models:
         I think if we want our city to be more modern and digital, we should make
         sure beforehand that all the citizens can understand these tools properly.</p>\n"
       en-GB: "<p>It would be interesting to have a small course given to elderly people
-        on how to use the internet. For instance, there could be a training that shows
-        how to send emails, read the news online, and other basic online activities.
-        I think if we want our city to be more modern and digital, we should make
-        sure beforehand that all the citizens can understand these tools properly.</p>\n"
-      en-US: "<p>It would be interesting to have a small course given to elderly people
         on how to use the internet. For instance, there could be a training that shows
         how to send emails, read the news online, and other basic online activities.
         I think if we want our city to be more modern and digital, we should make
@@ -758,11 +660,10 @@ models:
     project_ref: *10
     idea_status_ref: *20
     publication_status: published
-  - &32
+  - &33
     title_multiloc:
       en: Send a weekly agenda of the city by email
       en-GB: Send a weekly agenda of the city by email
-      en-US: Send a weekly agenda of the city by email
       en-CA: Send a weekly agenda of the city by email
     body_multiloc:
       en: "<p>Many events are organised throughout the week but we are not aware of
@@ -777,43 +678,25 @@ models:
         happening in the city during the week, right into their inbox: cultural events,
         towhalls, etc. to be able to access it all in one place from the comfort of
         your own house.</p>\n"
-      en-US: "<p>Many events are organised throughout the week but we are not aware
-        of it because we don&#39;t pass by the posters or go to the places where they
-        are advertised. Therefore it would be nice to receive an agenda of what&#39;s
-        happening in the city during the week, right into their inbox: cultural events,
-        towhalls, etc. to be able to access it all in one place from the comfort of
-        your own house.</p>\n"
       en-CA: "<p>Many events are organised throughout the week but we are not aware
         of it because we don&#39;t pass by the posters or go to the places where they
         are advertised. Therefore it would be nice to receive an agenda of what&#39;s
         happening in the city during the week, right into their inbox: cultural events,
         towhalls, etc. to be able to access it all in one place from the comfort of
         your own house.</p>\n"
-    author_ref: *16
+    author_ref: *17
     project_ref: *10
-    idea_status_ref: *17
+    idea_status_ref: *19
     publication_status: published
   vote:
   - mode: up
-    user_ref: *16
-    votable_ref: *21
-  - mode: up
-    user_ref: *13
-    votable_ref: *21
-  - mode: up
-    user_ref: *15
-    votable_ref: *21
-  - mode: up
-    user_ref: *18
-    votable_ref: *21
-  - mode: up
     user_ref: *15
     votable_ref: *22
   - mode: up
-    user_ref: *13
+    user_ref: *17
     votable_ref: *22
   - mode: up
-    user_ref: *16
+    user_ref: *13
     votable_ref: *22
   - mode: up
     user_ref: *18
@@ -822,58 +705,61 @@ models:
     user_ref: *13
     votable_ref: *23
   - mode: up
-    user_ref: *16
+    user_ref: *17
     votable_ref: *23
   - mode: up
     user_ref: *15
     votable_ref: *23
-  - mode: down
+  - mode: up
     user_ref: *18
     votable_ref: *23
   - mode: up
     user_ref: *15
     votable_ref: *24
   - mode: up
-    user_ref: *16
+    user_ref: *17
     votable_ref: *24
   - mode: up
     user_ref: *18
     votable_ref: *24
-  - mode: up
-    user_ref: *13
-    votable_ref: *24
-  - mode: up
-    user_ref: *13
-    votable_ref: *25
-  - mode: up
-    user_ref: *15
-    votable_ref: *25
-  - mode: up
-    user_ref: *16
-    votable_ref: *25
-  - mode: up
-    user_ref: *18
-    votable_ref: *25
-  - mode: up
-    user_ref: *18
-    votable_ref: *26
-  - mode: up
-    user_ref: *15
-    votable_ref: *26
-  - mode: up
-    user_ref: *16
-    votable_ref: *26
   - mode: down
     user_ref: *13
+    votable_ref: *24
+  - mode: up
+    user_ref: *15
+    votable_ref: *25
+  - mode: up
+    user_ref: *13
+    votable_ref: *25
+  - mode: up
+    user_ref: *18
+    votable_ref: *25
+  - mode: up
+    user_ref: *17
+    votable_ref: *25
+  - mode: up
+    user_ref: *18
+    votable_ref: *26
+  - mode: up
+    user_ref: *13
+    votable_ref: *26
+  - mode: up
+    user_ref: *17
     votable_ref: *26
   - mode: up
     user_ref: *15
-    votable_ref: *27
+    votable_ref: *26
   - mode: up
     user_ref: *18
     votable_ref: *27
+  - mode: up
+    user_ref: *17
+    votable_ref: *27
+  - mode: up
+    user_ref: *13
+    votable_ref: *27
   - mode: down
-    user_ref: *16
+    user_ref: *15
     votable_ref: *27
   - mode: up
     user_ref: *13
@@ -882,168 +768,165 @@ models:
     user_ref: *15
     votable_ref: *28
   - mode: down
-    user_ref: *18
+    user_ref: *17
     votable_ref: *28
   - mode: up
-    user_ref: *16
-    votable_ref: *29
-  - mode: up
-    user_ref: *15
+    user_ref: *18
     votable_ref: *29
   - mode: up
     user_ref: *13
     votable_ref: *29
-  - mode: up
-    user_ref: *18
+  - mode: down
+    user_ref: *17
     votable_ref: *29
   - mode: up
-    user_ref: *15
-    votable_ref: *30
-  - mode: up
     user_ref: *18
     votable_ref: *30
-  - mode: down
-    user_ref: *16
-    votable_ref: *30
-  - mode: down
+  - mode: up
     user_ref: *13
     votable_ref: *30
   - mode: up
-    user_ref: *16
-    votable_ref: *31
+    user_ref: *17
+    votable_ref: *30
+  - mode: up
+    user_ref: *15
+    votable_ref: *30
   - mode: up
     user_ref: *15
     votable_ref: *31
   - mode: up
     user_ref: *18
     votable_ref: *31
-  - mode: up
+  - mode: down
     user_ref: *13
     votable_ref: *31
-  - mode: up
-    user_ref: *16
-    votable_ref: *32
   - mode: down
+    user_ref: *17
+    votable_ref: *31
+  - mode: up
     user_ref: *18
     votable_ref: *32
+  - mode: up
+    user_ref: *13
+    votable_ref: *32
+  - mode: up
+    user_ref: *17
+    votable_ref: *32
+  - mode: up
+    user_ref: *15
+    votable_ref: *32
+  - mode: up
+    user_ref: *13
+    votable_ref: *33
+  - mode: down
+    user_ref: *18
+    votable_ref: *33
   ideas_topic:
-  - idea_ref: *21
-    topic_ref: *33
   - idea_ref: *22
-    topic_ref: *33
+    topic_ref: *34
   - idea_ref: *23
-    topic_ref: *33
+    topic_ref: *34
   - idea_ref: *24
-    topic_ref: *33
-  - idea_ref: *26
+    topic_ref: *34
+  - idea_ref: *25
     topic_ref: *34
   - idea_ref: *27
-    topic_ref: *34
+    topic_ref: *35
   - idea_ref: *28
     topic_ref: *35
   - idea_ref: *29
     topic_ref: *36
+  - idea_ref: *30
+    topic_ref: *37
   idea_image:
   - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515398/5.5.2_bike_garden_setting_4057_05152012_geoe3e.jpg
-    idea_ref: *21
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515416/empty_city_road_by_spooky_dream-d4avkt3_nhl6yf.jpg
     idea_ref: *22
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515437/night-bus_l5xc4n.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515416/empty_city_road_by_spooky_dream-d4avkt3_nhl6yf.jpg
     idea_ref: *23
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515453/Electric-Shuttle-Bus-SHT-T14-_ehqq6n.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515437/night-bus_l5xc4n.jpg
     idea_ref: *24
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515469/norwich-market-city-centre-street-scene-in-the-evening-norfolk-england-D0KXFH_bixl7v.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515453/Electric-Shuttle-Bus-SHT-T14-_ehqq6n.jpg
     idea_ref: *25
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515489/1200px-NEA_recycling_bins_2C_Orchard_Road_pwpncj.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515469/norwich-market-city-centre-street-scene-in-the-evening-norfolk-england-D0KXFH_bixl7v.jpg
     idea_ref: *26
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515509/organic-waste_g0nyf1.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515489/1200px-NEA_recycling_bins_2C_Orchard_Road_pwpncj.jpg
     idea_ref: *27
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515527/dans-un-premier-temps-il-s-agira-de-rappels-a-l-ordre_2245789_667x333_i86nvl.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515509/organic-waste_g0nyf1.jpg
     idea_ref: *28
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515547/4015932979_f495f4e5cf_z_o1cjo7.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515527/dans-un-premier-temps-il-s-agira-de-rappels-a-l-ordre_2245789_667x333_i86nvl.jpg
     idea_ref: *29
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515565/zzzfirstfloor_zffpzz.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515547/4015932979_f495f4e5cf_z_o1cjo7.jpg
     idea_ref: *30
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515588/hqdefault_rltrx8.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515565/zzzfirstfloor_zffpzz.jpg
     idea_ref: *31
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515609/emailing1_lv8sxz.jpg
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515588/hqdefault_rltrx8.jpg
     idea_ref: *32
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515609/emailing1_lv8sxz.jpg
+    idea_ref: *33
   comment:
   - body_multiloc:
       en: "<p>Great idea, we stand behind you!</p>\n"
       en-GB: "<p>Great idea, we stand behind you!</p>\n"
-      en-US: "<p>Great idea, we stand behind you!</p>\n"
       en-CA: "<p>Great idea, we stand behind you!</p>\n"
     author_ref: *13
-    idea_ref: *21
+    idea_ref: *22
     parent_ref: 
   - body_multiloc:
       en: "<p>I&#39;ve never seen you riding a bicycle...</p>\n"
       en-GB: "<p>I&#39;ve never seen you riding a bicycle...</p>\n"
-      en-US: "<p>I&#39;ve never seen you riding a bicycle...</p>\n"
       en-CA: "<p>I&#39;ve never seen you riding a bicycle...</p>\n"
-    author_ref: *16
-    idea_ref: *21
+    author_ref: *17
+    idea_ref: *22
     parent_ref: 
   - body_multiloc:
       en: "<p>Why stop there? The city also lacks bike stables. There should at least
         be one near the river.</p>\n"
       en-GB: "<p>Why stop there? The city also lacks bike stables. There should at
         least be one near the river.</p>\n"
-      en-US: "<p>Why stop there? The city also lacks bike stables. There should at
-        least be one near the river.</p>\n"
       en-CA: "<p>Why stop there? The city also lacks bike stables. There should at
         least be one near the river.</p>\n"
     author_ref: *15
-    idea_ref: *21
+    idea_ref: *22
     parent_ref: 
   - body_multiloc:
       en: "<p>What about those who work on weekends? There should be at least public
         transportation available...</p>\n"
       en-GB: "<p>What about those who work on weekends? There should be at least public
         transportation available...</p>\n"
-      en-US: "<p>What about those who work on weekends? There should be at least public
-        transportation available...</p>\n"
       en-CA: "<p>What about those who work on weekends? There should be at least public
         transportation available...</p>\n"
-    author_ref: *16
-    idea_ref: *22
+    author_ref: *17
+    idea_ref: *23
     parent_ref: 
   - body_multiloc:
       en: "<p>It would also be nice for the kids, it gives them more independance
         and us, parents, don&#39;t have to go pick them up at midnight after the cinema!</p>\n"
       en-GB: "<p>It would also be nice for the kids, it gives them more independance
         and us, parents, don&#39;t have to go pick them up at midnight after the cinema!</p>\n"
-      en-US: "<p>It would also be nice for the kids, it gives them more independance
-        and us, parents, don&#39;t have to go pick them up at midnight after the cinema!</p>\n"
       en-CA: "<p>It would also be nice for the kids, it gives them more independance
         and us, parents, don&#39;t have to go pick them up at midnight after the cinema!</p>\n"
     author_ref: *13
-    idea_ref: *23
+    idea_ref: *24
     parent_ref: 
   - body_multiloc:
       en: "<p>It would be a great way to promote local creators and make the city
         centre experience more fun I agree!</p>\n"
       en-GB: "<p>It would be a great way to promote local creators and make the city
         centre experience more fun I agree!</p>\n"
-      en-US: "<p>It would be a great way to promote local creators and make the city
-        centre experience more fun I agree!</p>\n"
       en-CA: "<p>It would be a great way to promote local creators and make the city
         centre experience more fun I agree!</p>\n"
     author_ref: *18
-    idea_ref: *25
+    idea_ref: *26
     parent_ref: 
   - body_multiloc:
       en: "<p>Cool idea but it would have to be a a kind of event that is really engaging,
         like a family day? Something people are excited to go to</p>\n"
       en-GB: "<p>Cool idea but it would have to be a a kind of event that is really
         engaging, like a family day? Something people are excited to go to</p>\n"
-      en-US: "<p>Cool idea but it would have to be a a kind of event that is really
-        engaging, like a family day? Something people are excited to go to</p>\n"
       en-CA: "<p>Cool idea but it would have to be a a kind of event that is really
         engaging, like a family day? Something people are excited to go to</p>\n"
     author_ref: *18
-    idea_ref: *26
+    idea_ref: *27
     parent_ref: 
   - body_multiloc:
       en: "<p>It&#39;s a very good idea. I have started to do this myself in my garden.
@@ -1054,16 +937,12 @@ models:
         garden. But I know that not everybody has this possibility or they don&#39;t
         even know it&#39;s possible. It would be a good thing to raise awareness around
         this also.</p>\n"
-      en-US: "<p>It&#39;s a very good idea. I have started to do this myself in my
-        garden. But I know that not everybody has this possibility or they don&#39;t
-        even know it&#39;s possible. It would be a good thing to raise awareness around
-        this also.</p>\n"
       en-CA: "<p>It&#39;s a very good idea. I have started to do this myself in my
         garden. But I know that not everybody has this possibility or they don&#39;t
         even know it&#39;s possible. It would be a good thing to raise awareness around
         this also.</p>\n"
     author_ref: *13
-    idea_ref: *27
+    idea_ref: *28
     parent_ref: 
   - body_multiloc:
       en: "<p>I really like the idea. I am not a dog owner myself but as a parent,
@@ -1074,22 +953,17 @@ models:
         it is sometimes scary to see dogs running around kids that are playing on
         the playground. Having this space for the dogs to run freely would also be
         a peace of mind for us!</p>\n"
-      en-US: "<p>I really like the idea. I am not a dog owner myself but as a parent,
-        it is sometimes scary to see dogs running around kids that are playing on
-        the playground. Having this space for the dogs to run freely would also be
-        a peace of mind for us!</p>\n"
       en-CA: "<p>I really like the idea. I am not a dog owner myself but as a parent,
         it is sometimes scary to see dogs running around kids that are playing on
         the playground. Having this space for the dogs to run freely would also be
         a peace of mind for us!</p>\n"
-    author_ref: *16
-    idea_ref: *28
+    author_ref: *17
+    idea_ref: *29
     parent_ref: 
   event:
   - title_multiloc:
       en: Pub Crawl
       en-GB: Pub Crawl
-      en-US: Pub Crawl
       en-CA: Pub Crawl
     description_multiloc:
       en: |
@@ -1100,10 +974,6 @@ models:
         <p>Grab your bicycle and go on a pub crawl with us. Subscription fee is 15€, all drinks are free!</p>
 
         <p>No animals allowed.</p>
-      en-US: |
-        <p>Grab your bicycle and go on a pub crawl with us. Subscription fee is 15€, all drinks are free!</p>
-
-        <p>No animals allowed.</p>
       en-CA: |
         <p>Grab your bicycle and go on a pub crawl with us. Subscription fee is 15€, all drinks are free!</p>
 
@@ -1111,37 +981,31 @@ models:
     location_multiloc:
       en: Many different pubs, we start from the central place.
       en-GB: Many different pubs, we start from the central place.
-      en-US: Many different pubs, we start from the central place.
       en-CA: Many different pubs, we start from the central place.
     project_ref: *6
-    start_at: 2017-12-03
-    end_at: 2017-12-04
+    start_at: 2018-08-01
+    end_at: 2018-08-02
   - title_multiloc:
       en: Sunday Brunch in the city centre
       en-GB: Sunday Brunch in the city centre
-      en-US: Sunday Brunch in the city centre
       en-CA: Sunday Brunch in the city centre
     description_multiloc:
       en: "<p>Let&#39;s all meet together at the coffee shop on the main square to
         discuss all the ideas we have to make the city centre more lively.</p>\n"
       en-GB: "<p>Let&#39;s all meet together at the coffee shop on the main square
         to discuss all the ideas we have to make the city centre more lively.</p>\n"
-      en-US: "<p>Let&#39;s all meet together at the coffee shop on the main square
-        to discuss all the ideas we have to make the city centre more lively.</p>\n"
       en-CA: "<p>Let&#39;s all meet together at the coffee shop on the main square
         to discuss all the ideas we have to make the city centre more lively.</p>\n"
     location_multiloc:
       en: The coffee shop on the main square
       en-GB: The coffee shop on the main square
-      en-US: The coffee shop on the main square
       en-CA: The coffee shop on the main square
     project_ref: *7
-    start_at: 2017-06-27
-    end_at: 2017-06-28
+    start_at: 2018-04-01
+    end_at: 2018-04-02
   - title_multiloc:
       en: Walk in Abbey Park
       en-GB: Walk in Abbey Park
-      en-US: Walk in Abbey Park
       en-CA: Walk in Abbey Park
     description_multiloc:
       en: "<p>What better way to imagine the future of the park than go through it
@@ -1150,42 +1014,34 @@ models:
       en-GB: "<p>What better way to imagine the future of the park than go through
         it togethe and share our ideas in a spacial manner? It is also a nice way
         to meet all the nature enthusiasts who are involved in this project!</p>\n"
-      en-US: "<p>What better way to imagine the future of the park than go through
-        it togethe and share our ideas in a spacial manner? It is also a nice way
-        to meet all the nature enthusiasts who are involved in this project!</p>\n"
       en-CA: "<p>What better way to imagine the future of the park than go through
         it togethe and share our ideas in a spacial manner? It is also a nice way
         to meet all the nature enthusiasts who are involved in this project!</p>\n"
     location_multiloc:
       en: Entrance of Abbey Park
       en-GB: Entrance of Abbey Park
-      en-US: Entrance of Abbey Park
       en-CA: Entrance of Abbey Park
     project_ref: *9
-    start_at: 2018-10-07
-    end_at: 2018-10-08
+    start_at: 2018-05-01
+    end_at: 2018-05-02
   phase:
   - title_multiloc:
       en: Collecting ideas
       en-GB: Collecting ideas
-      en-US: Collecting ideas
       en-CA: Collecting ideas
     description_multiloc:
       en: "<p>Share your ideas to fight global warming within the city, this is your
         time to brainstorm and discuss around your ideas!</p>\n"
       en-GB: "<p>Share your ideas to fight global warming within the city, this is
         your time to brainstorm and discuss around your ideas!</p>\n"
-      en-US: "<p>Share your ideas to fight global warming within the city, this is
-        your time to brainstorm and discuss around your ideas!</p>\n"
       en-CA: "<p>Share your ideas to fight global warming within the city, this is
         your time to brainstorm and discuss around your ideas!</p>\n"
     project_ref: *6
-    start_at: 2018-03-10
-    end_at: 2018-04-09
+    start_at: 2018-03-28
+    end_at: 2018-04-18
   - title_multiloc:
       en: Vote period
       en-GB: Vote period
-      en-US: Vote period
       en-CA: Vote period
     description_multiloc:
       en: "<p>This period is dedicated to assessing which are the most popular proposals:
@@ -1193,66 +1049,54 @@ models:
       en-GB: "<p>This period is dedicated to assessing which are the most popular
         proposals: like or dislike the ideas, in order to make the most successful
         ones emerge</p>\n"
-      en-US: "<p>This period is dedicated to assessing which are the most popular
-        proposals: like or dislike the ideas, in order to make the most successful
-        ones emerge</p>\n"
       en-CA: "<p>This period is dedicated to assessing which are the most popular
         proposals: like or dislike the ideas, in order to make the most successful
         ones emerge</p>\n"
     project_ref: *6
-    start_at: 2018-04-10
-    end_at: 2018-05-08
+    start_at: 2018-04-19
+    end_at: 2018-05-01
   - title_multiloc:
       en: Presentation of most succesful ideas at the townhall
       en-GB: Presentation of most succesful ideas at the townhall
-      en-US: Presentation of most succesful ideas at the townhall
       en-CA: Presentation of most succesful ideas at the townhall
     description_multiloc:
       en: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
       en-GB: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
-      en-US: "<p>The ideas who gathered the most positive votes will be added to the
-        city agenda and presented at the townhall by the citizen who launched it</p>\n"
       en-CA: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
     project_ref: *6
-    start_at: 2018-05-09
-    end_at: 2018-06-03
+    start_at: 2018-05-02
+    end_at: 2018-05-04
   - title_multiloc:
       en: Implementation of ideas
       en-GB: Implementation of ideas
-      en-US: Implementation of ideas
       en-CA: Implementation of ideas
     description_multiloc:
       en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
       en-GB: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
-      en-US: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
       en-CA: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
     project_ref: *6
-    start_at: 2018-06-04
-    end_at: 2018-06-17
+    start_at: 2018-05-05
+    end_at: 2018-06-01
   - title_multiloc:
       en: Collecting ideas
       en-GB: Collecting ideas
-      en-US: Collecting ideas
       en-CA: Collecting ideas
     description_multiloc:
       en: "<p>Share your ideas to make the city centre more lively, this is your time
         to brainstorm and discuss around your ideas!</p>\n"
       en-GB: "<p>Share your ideas to make the city centre more lively, this is your
         time to brainstorm and discuss around your ideas!</p>\n"
-      en-US: "<p>Share your ideas to make the city centre more lively, this is your
-        time to brainstorm and discuss around your ideas!</p>\n"
       en-CA: "<p>Share your ideas to make the city centre more lively, this is your
         time to brainstorm and discuss around your ideas!</p>\n"
     project_ref: *7
-    start_at: 2018-03-31
-    end_at: 2018-04-07
+    start_at: 2018-06-15
+    end_at: 2018-07-09
   - title_multiloc:
       en: Vote period
       en-GB: Vote period
-      en-US: Vote period
       en-CA: Vote period
     description_multiloc:
       en: "<p>This period is dedicated to assessing which are the most popular proposals:
@@ -1260,66 +1104,54 @@ models:
       en-GB: "<p>This period is dedicated to assessing which are the most popular
         proposals: like or dislike the ideas, in order to make the most successful
         ones emerge</p>\n"
-      en-US: "<p>This period is dedicated to assessing which are the most popular
-        proposals: like or dislike the ideas, in order to make the most successful
-        ones emerge</p>\n"
       en-CA: "<p>This period is dedicated to assessing which are the most popular
         proposals: like or dislike the ideas, in order to make the most successful
         ones emerge</p>\n"
     project_ref: *7
-    start_at: 2018-04-08
-    end_at: 2018-04-24
+    start_at: 2018-07-10
+    end_at: 2018-07-28
   - title_multiloc:
       en: Presentation of most succesful ideas at the townhall
       en-GB: Presentation of most succesful ideas at the townhall
-      en-US: Presentation of most succesful ideas at the townhall
       en-CA: Presentation of most succesful ideas at the townhall
     description_multiloc:
       en: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
       en-GB: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
-      en-US: "<p>The ideas who gathered the most positive votes will be added to the
-        city agenda and presented at the townhall by the citizen who launched it</p>\n"
       en-CA: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
     project_ref: *7
-    start_at: 2018-04-25
-    end_at: 2018-04-26
+    start_at: 2018-07-29
+    end_at: 2018-08-01
   - title_multiloc:
       en: Implementation of ideas
       en-GB: Implementation of ideas
-      en-US: Implementation of ideas
       en-CA: Implementation of ideas
     description_multiloc:
       en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
       en-GB: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
-      en-US: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
       en-CA: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
     project_ref: *7
-    start_at: 2018-04-27
-    end_at: 2018-05-11
+    start_at: 2018-08-02
+    end_at: 2018-08-14
   - title_multiloc:
       en: Collecting ideas
       en-GB: Collecting ideas
-      en-US: Collecting ideas
       en-CA: Collecting ideas
     description_multiloc:
       en: "<p>Share your ideas to improve the way we manage garbage, this is your
         time to brainstorm and discuss around your ideas!</p>\n"
       en-GB: "<p>Share your ideas to improve the way we manage garbage, this is your
         time to brainstorm and discuss around your ideas!</p>\n"
-      en-US: "<p>Share your ideas to improve the way we manage garbage, this is your
-        time to brainstorm and discuss around your ideas!</p>\n"
       en-CA: "<p>Share your ideas to improve the way we manage garbage, this is your
         time to brainstorm and discuss around your ideas!</p>\n"
     project_ref: *8
-    start_at: 2018-04-30
-    end_at: 2018-05-14
+    start_at: 2018-04-15
+    end_at: 2018-05-02
   - title_multiloc:
       en: Vote period
       en-GB: Vote period
-      en-US: Vote period
       en-CA: Vote period
     description_multiloc:
       en: "<p>This period is dedicated to assessing which are the most popular proposals:
@@ -1327,66 +1159,54 @@ models:
       en-GB: "<p>This period is dedicated to assessing which are the most popular
         proposals: like or dislike the ideas, in order to make the most successful
         ones emerge</p>\n"
-      en-US: "<p>This period is dedicated to assessing which are the most popular
-        proposals: like or dislike the ideas, in order to make the most successful
-        ones emerge</p>\n"
       en-CA: "<p>This period is dedicated to assessing which are the most popular
         proposals: like or dislike the ideas, in order to make the most successful
         ones emerge</p>\n"
     project_ref: *8
-    start_at: 2018-05-15
-    end_at: 2018-05-26
+    start_at: 2018-05-03
+    end_at: 2018-05-18
   - title_multiloc:
       en: Presentation of most succesful ideas at the townhall
       en-GB: Presentation of most succesful ideas at the townhall
-      en-US: Presentation of most succesful ideas at the townhall
       en-CA: Presentation of most succesful ideas at the townhall
     description_multiloc:
       en: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
       en-GB: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
-      en-US: "<p>The ideas who gathered the most positive votes will be added to the
-        city agenda and presented at the townhall by the citizen who launched it</p>\n"
       en-CA: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
     project_ref: *8
-    start_at: 2018-05-27
-    end_at: 2018-06-08
+    start_at: 2018-05-19
+    end_at: 2018-06-12
   - title_multiloc:
       en: Implementation of ideas
       en-GB: Implementation of ideas
-      en-US: Implementation of ideas
       en-CA: Implementation of ideas
     description_multiloc:
       en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
       en-GB: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
-      en-US: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
       en-CA: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
     project_ref: *8
-    start_at: 2018-06-09
-    end_at: 2018-06-17
+    start_at: 2018-06-13
+    end_at: 2018-07-12
   - title_multiloc:
       en: Collecting ideas
       en-GB: Collecting ideas
-      en-US: Collecting ideas
       en-CA: Collecting ideas
     description_multiloc:
       en: "<p>Share your ideas on how the Abbey Park should be reorganised, this is
         your time to brainstorm and discuss around your ideas!</p>\n"
       en-GB: "<p>Share your ideas on how the Abbey Park should be reorganised, this
         is your time to brainstorm and discuss around your ideas!</p>\n"
-      en-US: "<p>Share your ideas on how the Abbey Park should be reorganised, this
-        is your time to brainstorm and discuss around your ideas!</p>\n"
       en-CA: "<p>Share your ideas on how the Abbey Park should be reorganised, this
         is your time to brainstorm and discuss around your ideas!</p>\n"
     project_ref: *9
-    start_at: 2018-01-31
-    end_at: 2018-02-24
+    start_at: 2018-06-03
+    end_at: 2018-06-13
   - title_multiloc:
       en: Vote period
       en-GB: Vote period
-      en-US: Vote period
       en-CA: Vote period
     description_multiloc:
       en: "<p>This period is dedicated to assessing which are the most popular proposals:
@@ -1394,70 +1214,57 @@ models:
       en-GB: "<p>This period is dedicated to assessing which are the most popular
         proposals: like or dislike the ideas, in order to make the most successful
         ones emerge</p>\n"
-      en-US: "<p>This period is dedicated to assessing which are the most popular
-        proposals: like or dislike the ideas, in order to make the most successful
-        ones emerge</p>\n"
       en-CA: "<p>This period is dedicated to assessing which are the most popular
         proposals: like or dislike the ideas, in order to make the most successful
         ones emerge</p>\n"
     project_ref: *9
-    start_at: 2018-02-25
-    end_at: 2018-03-05
+    start_at: 2018-06-14
+    end_at: 2018-07-06
   - title_multiloc:
       en: Analysis period
       en-GB: Analysis period
-      en-US: Analysis period
       en-CA: Analysis period
     description_multiloc:
       en: "<p>The most voted ideas will be examined and included (or not) into the
         mapping of the new park</p>\n"
       en-GB: "<p>The most voted ideas will be examined and included (or not) into
         the mapping of the new park</p>\n"
-      en-US: "<p>The most voted ideas will be examined and included (or not) into
-        the mapping of the new park</p>\n"
       en-CA: "<p>The most voted ideas will be examined and included (or not) into
         the mapping of the new park</p>\n"
     project_ref: *9
-    start_at: 2018-03-06
-    end_at: 2018-04-01
+    start_at: 2018-07-07
+    end_at: 2018-08-06
   - title_multiloc:
       en: Start of the reshaping of the park
       en-GB: Start of the reshaping of the park
-      en-US: Start of the reshaping of the park
       en-CA: Start of the reshaping of the park
     description_multiloc:
       en: "<p>The selected ideas will be put into place and implemented in the new
         park</p>\n"
       en-GB: "<p>The selected ideas will be put into place and implemented in the
         new park</p>\n"
-      en-US: "<p>The selected ideas will be put into place and implemented in the
-        new park</p>\n"
       en-CA: "<p>The selected ideas will be put into place and implemented in the
         new park</p>\n"
     project_ref: *9
-    start_at: 2018-04-02
-    end_at: 2018-04-15
+    start_at: 2018-08-07
+    end_at: 2018-08-28
   - title_multiloc:
       en: Collecting ideas
       en-GB: Collecting ideas
-      en-US: Collecting ideas
       en-CA: Collecting ideas
     description_multiloc:
       en: "<p>Share your ideas to make the city more modern and digital, this is your
         time to brainstorm and discuss around your ideas!</p>\n"
       en-GB: "<p>Share your ideas to make the city more modern and digital, this is
         your time to brainstorm and discuss around your ideas!</p>\n"
-      en-US: "<p>Share your ideas to make the city more modern and digital, this is
-        your time to brainstorm and discuss around your ideas!</p>\n"
       en-CA: "<p>Share your ideas to make the city more modern and digital, this is
         your time to brainstorm and discuss around your ideas!</p>\n"
     project_ref: *10
-    start_at: 2018-06-24
-    end_at: 2018-07-17
+    start_at: 2018-04-16
+    end_at: 2018-04-22
   - title_multiloc:
       en: Vote period
       en-GB: Vote period
-      en-US: Vote period
       en-CA: Vote period
     description_multiloc:
       en: "<p>This period is dedicated to assessing which are the most popular proposals:
@@ -1465,42 +1272,34 @@ models:
       en-GB: "<p>This period is dedicated to assessing which are the most popular
         proposals: like or dislike the ideas, in order to make the most successful
         ones emerge</p>\n"
-      en-US: "<p>This period is dedicated to assessing which are the most popular
-        proposals: like or dislike the ideas, in order to make the most successful
-        ones emerge</p>\n"
       en-CA: "<p>This period is dedicated to assessing which are the most popular
         proposals: like or dislike the ideas, in order to make the most successful
         ones emerge</p>\n"
     project_ref: *10
-    start_at: 2018-07-18
-    end_at: 2018-08-04
+    start_at: 2018-04-23
+    end_at: 2018-05-12
   - title_multiloc:
       en: Presentation of most succesful ideas at the townhall
       en-GB: Presentation of most succesful ideas at the townhall
-      en-US: Presentation of most succesful ideas at the townhall
       en-CA: Presentation of most succesful ideas at the townhall
     description_multiloc:
       en: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
       en-GB: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
-      en-US: "<p>The ideas who gathered the most positive votes will be added to the
-        city agenda and presented at the townhall by the citizen who launched it</p>\n"
       en-CA: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
     project_ref: *10
-    start_at: 2018-08-05
-    end_at: 2018-08-09
+    start_at: 2018-05-13
+    end_at: 2018-06-12
   - title_multiloc:
       en: Implementation of ideas
       en-GB: Implementation of ideas
-      en-US: Implementation of ideas
       en-CA: Implementation of ideas
     description_multiloc:
       en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
       en-GB: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
-      en-US: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
       en-CA: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
     project_ref: *10
-    start_at: 2018-08-10
-    end_at: 2018-08-24
+    start_at: 2018-06-13
+    end_at: 2018-06-29
