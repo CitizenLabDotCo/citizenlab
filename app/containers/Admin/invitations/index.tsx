@@ -42,6 +42,8 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // styling
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+import { rgba } from 'polished';
 
 // typings
 import { Locale, IOption } from 'typings';
@@ -53,24 +55,27 @@ const ViewButtons = styled.div`
   margin-bottom: 40px;
 `;
 
-const ViewButton = styled.div`
+const ViewButton = styled.button`
   min-width: 85px;
   height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  background: #fff;
-  border: solid 1px #e4e4e4;
+  background: ${colors.adminContentBackground};
+  border: solid 1px ${colors.separation};
 
   &:hover,
+  &:focus {
+    background: ${rgba(colors.adminTextColor, .2)};
+    outline: none;
+  }
   &.active {
-    background: #f0f0f0;
+    background: ${rgba(colors.adminTextColor, .1)};
   }
 
   > span {
-    color: ${(props) => props.theme.colors.label};
-    color: #333;
+    color: ${colors.adminTextColor};
     font-size: 17px;
     font-weight: 400;
     line-height: 24px;
@@ -121,11 +126,11 @@ const Options: any = styled.div`
 
   &:hover {
     ${StyledLabel} {
-      color: #000;
+      color: ${colors.adminTextColor};
     }
 
     ${ArrowIcon} {
-      fill: #000;
+      fill: ${colors.adminTextColor};
     }
   }
 `;

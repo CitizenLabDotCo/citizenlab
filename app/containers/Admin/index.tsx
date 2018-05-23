@@ -12,6 +12,7 @@ const Container = styled.div`
   flex-direction: row;
   flex-wrap: nowrap;
   background: ${colors.background};
+  color: ${colors.adminTextColor}
 `;
 
 const RightColumn = styled.div`

@@ -12,6 +12,7 @@ import IdeasByTimeChart from './components/IdeasByTimeChart';
 import UsersByTimeChart from './components/UsersByTimeChart';
 import IdeasByTopicChart from './components/IdeasByTopicChart';
 import { Flex, Box } from 'grid-styled';
+import { colors } from 'utils/styleUtils';
 
 const ControlBar = styled.div`
   display: flex;
@@ -20,8 +21,8 @@ const ControlBar = styled.div`
 `;
 
 const GraphCard: any = styled.div`
-  background: #fff;
-  border: solid 1px #e4e4e4;
+  background: ${colors.adminContentBackground};
+  border: solid 1px ${colors.separation};
   border-radius: 5px;
   height: ${(props: any) => props.dynamicHeight ? 'auto' : '350px'};
   padding: 20px;
@@ -64,10 +65,10 @@ export default class DashboardPage extends React.PureComponent<Props, State> {
   chartTheme = (theme) => {
     return {
       ...theme,
-      chartStroke: '#01A1B1',
-      chartFill: '#01A1B1',
-      barFill: '#ffffff',
-      chartLabelColor: '#999999',
+      chartStroke: colors.clIconAccent,
+      chartFill: colors.clIconAccent,
+      barFill: colors.adminContentBackground,
+      chartLabelColor: colors.adminSecondaryTextColor,
       chartLabelSize: 13
     };
   }
