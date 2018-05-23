@@ -31,6 +31,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // Styling
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 const timeout = 350;
 
@@ -44,14 +45,14 @@ const EditorWrapper = styled.div`
 
 const DeployIcon = styled(Icon)`
   height: 12px;
-  fill: #999;
+  fill: ${colors.adminGreyText};
   margin-right: 12px;
   transition: transform 200ms ease-out;
   transform: rotate(0deg);
 `;
 
 const Toggle = styled.div`
-  color: #999;
+  color: ${colors.adminGreyText};
   font-size: 16px;
   font-weight: 500;
   display: flex;
@@ -61,10 +62,10 @@ const Toggle = styled.div`
 
   &:hover,
   &.deployed {
-    color: #000;
+    color: ${colors.adminTextColor};
 
     ${DeployIcon} {
-      fill: #000;
+      fill: ${colors.adminTextColor};
     }
   }
 
@@ -147,7 +148,7 @@ export default class PageEditor extends React.PureComponent<Props, State> {
         page$
       ).subscribe(([locale, page]) => {
         const pageBodyMultilocEditorState: MultilocEditorState = {};
- 
+
         forOwn(page.data.attributes.body_multiloc, (htmlValue, locale) => {
           pageBodyMultilocEditorState[locale] = getEditorStateFromHtmlString(htmlValue);
         });

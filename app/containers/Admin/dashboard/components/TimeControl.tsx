@@ -10,17 +10,19 @@ import { InjectedIntlProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+import { rgba } from 'polished';
 
 const Container = styled.div`
   display: flex;
-  background: #fff;
-  border: solid 1px #e4e4e4;
+  background: ${colors.adminContentBackground};
+  border: solid 1px ${colors.separation};
   border-radius: 5px;
 `;
 
 const StyledIcon = styled(Icon)`
   height: 15px;
-  fill: #999;
+  fill: ${colors.adminSecondaryTextColor};
 `;
 
 const PrevIcon = StyledIcon.extend``;
@@ -37,24 +39,23 @@ const TimeButton = styled.button`
   outline: none;
   padding: 1rem 1.5rem;
 
-  &:hover {
-    background: #f0f0f0;
+  &:hover, &:focus {
+    background: ${rgba(colors.adminTextColor, .2)};
 
     ${PrevIcon},
     ${NextIcon} {
-      fill: #000;
+      fill: ${colors.adminTextColor};
     }
   }
 `;
 
 const Separator = styled.div`
   width: 1px;
-  background-color: #EAEAEA;
+  background-color: ${colors.separation};
 `;
 
 const CurrentTime = styled.div`
   min-width: 160px;
-  color: #000;
   font-size: 16px;
   text-transform: capitalize;
   display: flex;
