@@ -28,6 +28,12 @@ import styled from 'styled-components';
 // Typings
 import { IOption, Locale } from 'typings';
 
+const SRow = styled(Row)`
+  &:first-child {
+    border-top: none;
+  }
+`;
+
 const Container = styled.div`
   width: 100%;
   margin-bottom: 20px;
@@ -218,7 +224,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
     const groupsList = ((!loading && projectGroups && projectGroups.length > 0) ? (
       <List>
         {projectGroups.map((projectGroup) => (
-          <Row key={projectGroup.group_project_id}>
+          <SRow key={projectGroup.group_project_id}>
             <GroupAvatar groupId={projectGroup.group_id} />
             <GroupTitle className="expand">
               {projectGroup.title}
@@ -229,10 +235,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
             <Button onClick={this.createDeleteGroupHandler(projectGroup.group_project_id)} style="text" circularCorners={false} icon="delete">
               <FormattedMessage {...messages.deleteButtonLabel} />
             </Button>
-            <Button linkTo={`/admin/groups/edit/${projectGroup.group_id}`} style="secondary" circularCorners={false} icon="edit">
-              <FormattedMessage {...messages.editButtonLabel} />
-            </Button>
-          </Row>
+          </SRow>
         ))}
       </List>
     ) : null);
