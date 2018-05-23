@@ -45,14 +45,14 @@ const EditorWrapper = styled.div`
 
 const DeployIcon = styled(Icon)`
   height: 12px;
-  fill: ${colors.adminGreyText};
+  fill: ${colors.adminSecondaryTextColor};
   margin-right: 12px;
   transition: transform 200ms ease-out;
   transform: rotate(0deg);
 `;
 
 const Toggle = styled.div`
-  color: ${colors.adminGreyText};
+  color: ${colors.adminSecondaryTextColor};
   font-size: 16px;
   font-weight: 500;
   display: flex;

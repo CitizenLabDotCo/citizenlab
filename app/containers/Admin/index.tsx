@@ -12,7 +12,10 @@ const Container = styled.div`
   flex-direction: row;
   flex-wrap: nowrap;
   background: ${colors.background};
-  color: ${colors.adminTextColor}
+  color: ${colors.adminTextColor};
+  .ui, .ui.menu .item, .ui.table th, .ui a {
+    color: ${colors.adminTextColor} !important;
+  }
 `;
 
 const RightColumn = styled.div`

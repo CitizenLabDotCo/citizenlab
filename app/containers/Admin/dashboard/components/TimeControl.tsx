@@ -16,7 +16,7 @@ import { rgba } from 'polished';
 const Container = styled.div`
   display: flex;
   background: ${colors.adminContentBackground};
-  border: solid 1px ${colors.separation};
+  border: solid 1px ${colors.adminBorder};
   border-radius: 5px;
 `;
 
@@ -51,7 +51,7 @@ const TimeButton = styled.button`
 
 const Separator = styled.div`
   width: 1px;
-  background-color: ${colors.separation};
+  background-color: ${colors.adminSeparation};
 `;
 
 const CurrentTime = styled.div`
