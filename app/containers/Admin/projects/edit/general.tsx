@@ -58,7 +58,6 @@ const StyledInputMultiloc = styled(InputMultiloc)`
 `;
 
 const ProjectType = styled.div`
-  color: #333;
   font-size: 16px;
   line-height: 20px;
   font-weight: 400;
