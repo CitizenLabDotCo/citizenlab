@@ -25,4 +25,24 @@ module.exports = {
 
     browser.end();
   },
+  newRulesGroup: (browser) => {
+    const signinPage = browser.page.signin();
+    const usersPage = browser.page.users();
+
+    const groupTitle = `Rules group ${hash}`;
+
+    signinPage
+      .navigate()
+      .signin('koen@citizenlab.co', 'testtest');
+
+    usersPage
+      .navigate()
+      .newRulesGroup(groupTitle);
+
+    usersPage
+      .waitForElementVisible('@groupsList')
+      .expect.element('@groupsList').text.to.contain(groupTitle);
+
+    browser.end();
+  },
 };
