@@ -4,7 +4,6 @@
 #
 version: 2
 jobs:
-
   lint:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
@@ -187,14 +186,10 @@ workflows:
                 - master
                 - production
       - deploy_demo:
-          requires:
-            - lint
           filters:
             branches:
               only: master
       - deploy_crowdin:
-          requires:
-            - lint
           filters:
             branches:
               only: master
@@ -211,8 +206,6 @@ workflows:
             branches:
               only: master
       - deploy_production:
-          requires:
-            - lint
           filters:
             branches:
               only: production
