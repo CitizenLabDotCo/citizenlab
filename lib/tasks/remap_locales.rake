@@ -21,6 +21,22 @@ namespace :fix_existing_tenants do
         tenant.settings['core']['locales'] = tenant.settings['core']['locales'].map do |old_locale|
           loc_map[old_locale]
         end
+        if tenant.settings['core']['organization_name']
+          tenant.settings['core']['organization_name'] = multiloc_transform(tenant.settings['core']['organization_name'], loc_map)
+        end
+        if tenant.settings['core']['header_title']
+          tenant.settings['core']['header_title'] = multiloc_transform(tenant.settings['core']['header_title'], loc_map)
+        end
+        if tenant.settings['core']['header_slogan']
+          tenant.settings['core']['header_slogan'] = multiloc_transform(tenant.settings['core']['header_slogan'], loc_map)
+        end
+        if tenant.settings['core']['meta_title']
+          tenant.settings['core']['meta_title'] = multiloc_transform(tenant.settings['core']['meta_title'], loc_map)
+        end
+        if tenant.settings['core']['meta_description']
+          tenant.settings['core']['meta_description'] = multiloc_transform(tenant.settings['core']['meta_description'], loc_map)
+        end
+
         tenant.save unless DRY_RUN
         puts "#{tenant.name} --- tenant locales changed to #{tenant.settings['core']['locales']}"
 
@@ -42,7 +58,7 @@ namespace :fix_existing_tenants do
           old_locale = user.locale
           new_locale = loc_map[user.locale]
           user.update_columns(locale: loc_map[user.locale]) unless DRY_RUN
-          puts "#{tenant.name} --- User #{user.id} locale changed from #{old_locale}to #{new_locale}"
+          puts "#{tenant.name} --- User #{user.id} locale changed from #{old_locale} to #{new_locale}"
         end
 
 
@@ -125,7 +141,7 @@ def locales_map_for_tenant generic_mapping, tenant
 end
 
 def multiloc_transform multiloc, mapping
-  multiloc.each_with_object({}) do |(old_locale, value), object|
+  multiloc&.each_with_object({}) do |(old_locale, value), object|
     object[mapping[old_locale]] = value
   end
 end
