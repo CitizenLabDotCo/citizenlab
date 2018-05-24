@@ -14,22 +14,20 @@ import nbLocaleData from 'react-intl/locale-data/nb';
 import achLocaleData from './utils/ach';
 
 
-// TODO: Import the correct translation files
 import { DEFAULT_LOCALE } from './containers/App/constants'; // eslint-disable-line
+
 import enTranslationMessages from './translations/en.json';
-const enGBTranslationMessages = enTranslationMessages;
-const enCATranslationMessages = enTranslationMessages;
-import frTranslationMessages from './translations/fr.json';
-const frBETranslationMessages = frTranslationMessages;
-const frFRTranslationMessages = frTranslationMessages;
-import nlTranslationMessages from './translations/nl.json';
-const nlBETranslationMessages = nlTranslationMessages;
-const nlNLTranslationMessages = nlTranslationMessages;
-import deDETranslationMessages from './translations/de.json';
-import daDKTranslationMessages from './translations/da.json';
-import nbNOTranslationMessages from './translations/no.json';
+import enGBTranslationMessages from './translations/en-GB.json';
+import enCATranslationMessages from './translations/en-CA.json';
+import frBETranslationMessages from './translations/fr-BE.json';
+import frFRTranslationMessages from './translations/fr-FR.json';
+import nlBETranslationMessages from './translations/nl-BE.json';
+import nlNLTranslationMessages from './translations/nl-NL.json';
+import deDETranslationMessages from './translations/de-DE.json';
+import daDKTranslationMessages from './translations/da-DK.json';
+import nbNOTranslationMessages from './translations/nb-NO.json';
 // This is a "fake" language that is used by the crowdin plugin
-import achTranslationMessages from './translations/ach.json';
+import achTranslationMessages from './translations/ach-UG.json';
 
 export const appLocalePairs = {
   en: 'English',
