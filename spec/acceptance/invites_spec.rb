@@ -114,7 +114,8 @@ resource "Invites" do
       describe do
         let(:emails) { 5.times.map{Faker::Internet.email}.concat([nil]) }
         let(:group_ids) { [create(:group).id] }
-        let(:roles) {[{"type" => "admin"}]}
+        let(:project) { create(:project) }
+        let(:roles) {[{"type" => "project_moderator", "project_id" => project.id}]}
         let(:locale) { "nl" }
         let(:invite_text) { "Welcome, my friend!" }
 
@@ -123,7 +124,7 @@ resource "Invites" do
           expect(Invite.count).to eq 6
           expect(Invite.all.map{|i| i.invitee.email}).to match emails
           expect(Invite.all.map{|i| i.invitee.groups.map(&:id)}.uniq).to match [group_ids]
-          expect(Invite.all.map{|i| i.invitee.admin?}.uniq).to eq [true]
+          expect(Invite.all.map{|i| i.invitee.project_moderator?(project.id)}.uniq).to eq [true]
           expect(Invite.all.map{|i| i.invitee.locale}.uniq).to eq [locale]
         end
       end
