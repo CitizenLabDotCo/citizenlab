@@ -6,7 +6,7 @@ describe TimelineService do
   describe "participants" do
 
     it "returns participants across the whole platform at any time" do
-      participants = create_list(:user, 4) # not to be confused with party pants
+      participants = create_list(:user, 4)
       pp1, pp2, pp3, pp4 = participants
       others = create_list(:user, 3)
       
@@ -25,7 +25,7 @@ describe TimelineService do
     end
 
     it "returns participants across the whole platform since a given date" do
-      participants = create_list(:user, 4) # not to be confused with party pants
+      participants = create_list(:user, 4)
       pp1, pp2, pp3, pp4 = participants
       others = create_list(:user, 3)
       
