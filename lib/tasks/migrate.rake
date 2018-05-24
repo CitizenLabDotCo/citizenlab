@@ -455,7 +455,7 @@ namespace :migrate do
       end
       # phases
       if p.dig('timeline', 'phases') && p.dig('timeline', 'phases').size >= 2
-        p.dig('timeline', 'phases').each do |f|
+        resolve_phase_overlaps(p.dig('timeline', 'phases')).each do |f|
           migrate_phase(f, record, phases_hash, locales_mapping)
         end
       end
@@ -502,6 +502,23 @@ namespace :migrate do
     rescue Exception => e
       @log.concat [e.message]
     end
+  end
+
+  def resolve_phase_overlaps ps
+    if !ps.empty?
+      ps = ps.sort_by{|p| p['startAt']}
+      t = (ps.first['startAt'] - 1.day)
+      ps.each do |p|
+        if t >= p['startAt'] 
+          p['startAt'] = t + 1.day
+        end
+        if p['startAt']  >= p['endAt']
+          p['endAt'] = p['startAt'] + 1.day
+        end
+        t = p['endAt']
+      end
+    end
+    ps
   end
 
   def migrate_phase p, project, phases_hash, locales_mapping
