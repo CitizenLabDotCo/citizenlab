@@ -43,6 +43,10 @@ module.exports = {
       .waitForElementVisible('@groupsList')
       .expect.element('@groupsList').text.to.contain(groupTitle);
 
+    // This assertion will break if the newly created group is not the last in the list anymore
+    // We are testing that the number of users is a positive integer
+    usersPage.expect.element('@lastGroupUserCount').text.to.match(/^[1-9]\d*$/);
+
     browser.end();
   },
 };
