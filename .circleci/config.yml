@@ -193,6 +193,12 @@ workflows:
           filters:
             branches:
               only: master
+      - test_a11y:
+          requires:
+            - deploy_demo
+          filters:
+            branches:
+              only: master
       - deploy_demo:
           requires:
             - lint
@@ -211,15 +217,3 @@ workflows:
           filters:
             branches:
               only: production
-
-  nightly-reports:
-    triggers:
-      # Schedule a build every day at midnight UTC
-      - schedule:
-          cron: "0 0 * * *"
-          filters:
-            branches:
-              only:
-                - master
-    jobs:
-      - test_a11y
