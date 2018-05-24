@@ -53,7 +53,7 @@ const PhaseForm = styled.form`
 
     .DateInput,
     .DateInput_input {
-      color: #333;
+      color: inherit;
       font-size: 16px;
       font-weight: 400;
       background: transparent;
@@ -62,6 +62,10 @@ const PhaseForm = styled.form`
 
   .DateRangePicker_picker {
     z-index: 2;
+  }
+
+  .CalendarMonth_caption {
+    color: inherit;
   }
 `;
 

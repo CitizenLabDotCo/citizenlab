@@ -46,7 +46,6 @@ const Checked = styled.div`
 `;
 
 const Text = styled.div`
-  color: #333;
   font-size: 16px;
   font-weight: 400;
   line-height: 20px;
