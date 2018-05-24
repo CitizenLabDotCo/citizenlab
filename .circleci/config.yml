@@ -168,7 +168,6 @@ jobs:
           key: v1-npm-cache-{{ checksum "package.json" }}
       - run: npm run test:pa11y --silent
 
-
 workflows:
   version: 2
   build-and-deploy:
@@ -187,18 +186,6 @@ workflows:
                 - crowdin_master
                 - master
                 - production
-      - test_e2e:
-          requires:
-            - deploy_demo
-          filters:
-            branches:
-              only: master
-      - test_a11y:
-          requires:
-            - deploy_demo
-          filters:
-            branches:
-              only: master
       - deploy_demo:
           requires:
             - lint
@@ -208,6 +195,18 @@ workflows:
       - deploy_crowdin:
           requires:
             - lint
+          filters:
+            branches:
+              only: master
+      - test_e2e:
+          requires:
+            - deploy_demo
+          filters:
+            branches:
+              only: master
+      - test_a11y:
+          requires:
+            - deploy_demo
           filters:
             branches:
               only: master
