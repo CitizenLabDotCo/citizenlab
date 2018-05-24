@@ -53,7 +53,7 @@
   "app.components.ProjectCard.idea": "{orgName, select, München {Mangel} other {Idee}}",
   "app.components.ProjectCard.ideas": "{orgName, select, München {Mängel} other {Ideen}}",
   "app.components.ProjectCard.openProjectButton": "Mehr entdecken",
-  "app.components.ProjectCard.xIdeas": "{orgName, select, München {{x, plural, =0 {keine Mängel} one {# Mangel} other {# Mängel}}} other {{x, plural, =0 {no ideas} one {# ideas} other {# ideas}}}}",
+  "app.components.ProjectCard.xIdeas": "{orgName, select, München {{ideasCount, plural, =0 {keine Mängel} one {# Mangel} other {# Mängel}}} other {{ideasCount, plural, =0 {no ideas} one {# ideas} other {# ideas}}}}",
   "app.components.ProjectCards.loadMore": "{orgName, select, München {Weitere Bezirke anzeigen} other {Weitere Projekte anzeigen}}",
   "app.components.ProjectCards.noProjects": "{orgName, select, München {Es wurden keine Bezirke gefunden} other {Es wurden keine Projekte gefunden}}",
   "app.components.SearchInput.searchPlaceholder": "Suche",

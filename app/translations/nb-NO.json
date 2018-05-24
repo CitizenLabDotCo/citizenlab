@@ -53,7 +53,7 @@
   "app.components.ProjectCard.idea": "idé",
   "app.components.ProjectCard.ideas": "idéer",
   "app.components.ProjectCard.openProjectButton": "Oppdag mer",
-  "app.components.ProjectCard.xIdeas": "(x, flertall, =0 {ingen ideer} en {# ideer} andre {# ideer}}",
+  "app.components.ProjectCard.xIdeas": "{ideasCount, plural, =0 {ingen ideer} one {# ideer} other {# ideer}}",
   "app.components.ProjectCards.loadMore": "Vis flere prosjekter",
   "app.components.ProjectCards.noProjects": "Ingen prosjekter ble funnet",
   "app.components.SearchInput.searchPlaceholder": "Søk",
