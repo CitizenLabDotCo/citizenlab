@@ -71,6 +71,7 @@ export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Prop
           </SectionField>
           <SectionField>
             <Field
+              id="group-title"
               name="title_multiloc"
               component={FormikInputMultiloc}
               label={<FormattedMessage {...messages.fieldGroupName} />}
