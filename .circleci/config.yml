@@ -151,6 +151,7 @@ jobs:
   test_a11y:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
+        user: pptruser
     working_directory: ~/cl2-front
     steps:
       - checkout
@@ -160,7 +161,7 @@ jobs:
           - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-npm-cache-
-      - run: npm ci
+      - run: npm install pa11y-ci
       - save_cache:
           paths:
             - /root/.npm
@@ -192,6 +193,12 @@ workflows:
           filters:
             branches:
               only: master
+      - test_a11y:
+          requires:
+            - deploy_demo
+          filters:
+            branches:
+              only: master
       - deploy_demo:
           requires:
             - lint
@@ -210,16 +217,3 @@ workflows:
           filters:
             branches:
               only: production
-
-  nightly-reports:
-    triggers:
-      # Schedule a build every day at midnight UTC
-      - schedule:
-          cron: "0 0 * * *"
-          filters:
-            branches:
-              only:
-                - master
-
-    jobs:
-      - test_a11y
