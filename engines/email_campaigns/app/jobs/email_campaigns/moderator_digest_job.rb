@@ -15,7 +15,7 @@ module EmailCampaigns
         top_ideas = moderator_digest_top_ideas project, days_interval
         has_new_ideas = (top_ideas.size > 0)
 
-        break if top_ideas.empty?
+        break if !has_new_ideas
 
         project_serializer = "EmailCampaigns::DiscoverProjectSerializer".constantize
         serialized_project = ActiveModelSerializers::SerializableResource.new(project, {
@@ -35,7 +35,7 @@ module EmailCampaigns
 	            	statistics: statistics,
 	              has_new_ideas: has_new_ideas,
 	              project: serialized_project,
-                top_ideas: top_ideas
+                top_ideas: top_ideas.take(N_TOP_IDEAS)
 	            },
 	            tenantId: tenant.id,
 	            tenantName: tenant.name,
@@ -55,6 +55,7 @@ module EmailCampaigns
 	        Analytics.track(trackingMessage)
 
 	        create_campaign_email_commands moderator, top_ideas
+
 	      end
       end
     end
@@ -92,7 +93,7 @@ module EmailCampaigns
             increase: participants_increase,
             past_increase: participants_past_increase
           },
-          total_participants: ps.participants(project: project)
+          total_participants: ps.participants(project: project).count
         } 
       }
     end
