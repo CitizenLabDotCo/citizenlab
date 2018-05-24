@@ -57,7 +57,7 @@ describe TimelineService do
       end
       travel_to Time.now - 6.days do
         create(:comment, idea: idea, author: pp2)
-        create(:idea, project: project, author: others.first)
+        other_idea = create(:idea, project: other_project, author: others.first)
       end
       travel_to Time.now - 2.days do
         create(:vote, votable: idea, mode: 'up', user: pp3)
