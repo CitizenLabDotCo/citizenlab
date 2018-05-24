@@ -115,7 +115,7 @@ class User < ApplicationRecord
     self.roles.delete({"type" => type}.merge(options.stringify_keys))
   end
 
-  def authenticate(unencrypted_password)
+  def authenticate unencrypted_password
     if !password_digest
       false
     elsif cl1_authenticate(unencrypted_password)
