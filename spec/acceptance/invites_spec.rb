@@ -115,7 +115,7 @@ resource "Invites" do
         let(:emails) { 5.times.map{Faker::Internet.email}.concat([nil]) }
         let(:group_ids) { [create(:group).id] }
         let(:roles) {[{"type" => "admin"}]}
-        let(:locale) { "nl" }
+        let(:locale) { "nl-NL" }
         let(:invite_text) { "Welcome, my friend!" }
 
         example_request("Bulk invite multiple users") do
@@ -172,7 +172,7 @@ resource "Invites" do
             email: rand(5) == 0 ? nil : user.email,
             first_name: rand(3) == 0 ? user.first_name : nil,
             last_name: rand(3) == 0 ? user.last_name : nil,
-            language: i == 0 ? 'nl' : nil,
+            language: i == 0 ? 'nl-NL' : nil,
             admin: i == 0 ? true : nil,
             groups: i == 0 ? create(:group).title_multiloc.values.first : nil
           }
@@ -188,7 +188,7 @@ resource "Invites" do
           expect(Invite.all.map{|i| i.invitee.email}).to match hash_array.map{|h| h[:email]}
           expect(Invite.all.map{|i| i.invitee.groups.map(&:id)}.flatten.uniq).to match Group.all.map(&:id)
           expect(Invite.all.map{|i| i.invitee.admin?}.uniq).to eq [true]
-          expect(Invite.all.map{|i| i.invitee.locale}.uniq).to match ['nl', locale]
+          expect(Invite.all.map{|i| i.invitee.locale}.uniq).to match ['nl-NL', locale]
         end
       end
 
@@ -256,7 +256,7 @@ resource "Invites" do
       let(:first_name) { 'Bart' }
       let(:last_name) { 'Boulettos' }
       let(:password) { 'I<3BouletteSpecial' }
-      let(:locale) { 'nl' }
+      let(:locale) { 'nl-NL' }
       example_request "Accept an invite with a valid token" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
