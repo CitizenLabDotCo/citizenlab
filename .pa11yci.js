@@ -3,6 +3,7 @@ const config = {
   defaults: {
     timeout: 10000
   },
+  standard: 'WCAG2A',
   urls: [
     'https://demo.stg.citizenlab.co/',
     'https://demo.stg.citizenlab.co/projects',
