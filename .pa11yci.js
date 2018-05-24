@@ -1,6 +1,5 @@
-const browser = await puppeteer.launch({args: ['--no-sandbox']});
-
 const config = {
+  chromeLaunchConfig: process.env.CI ? {args: ['--no-sandbox']} : {},
   defaults: {
     timeout: 10000
   },
@@ -16,10 +15,6 @@ const config = {
     'https://demo.stg.citizenlab.co/sign-up',
     'https://demo.stg.citizenlab.co/ideas/new'
   ]
-}
-
-if (process.env.CI) {
-  config.browser = browser;
 }
 
 module.exports = config;
