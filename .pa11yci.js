@@ -1,5 +1,5 @@
 const config = {
-  chromeLaunchConfig: process.env.CI ? {args: ['--no-sandbox']} : {},
+  chromeLaunchConfig: process.env.CI ? {args: ['--no-sandbox', '--disable-setuid-sandbox']} : {},
   defaults: {
     timeout: 10000
   },
