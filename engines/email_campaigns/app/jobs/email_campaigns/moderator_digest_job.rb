@@ -9,23 +9,21 @@ module EmailCampaigns
     def perform last_scheduled_at=(Time.now - 7.days).to_i
       last_scheduled_at = Time.at(last_scheduled_at)
       Project.all.each do |project|
+        days_interval = ((Time.now - last_scheduled_at) / 1.day).days
+
+        statistics = moderator_digest_statistics project, days_interval
+        top_ideas = moderator_digest_top_ideas project, days_interval
+        has_new_ideas = (top_ideas.size > 0)
+
+        break if top_ideas.empty?
+
+        project_serializer = "EmailCampaigns::DiscoverProjectSerializer".constantize
+        serialized_project = ActiveModelSerializers::SerializableResource.new(project, {
+          serializer: project_serializer,
+          adapter: :json
+         }).serializable_hash
+
       	User.project_moderators(project.id).select{|user| !user.admin?}.each do |moderator|
-	        days_interval = ((Time.now - last_scheduled_at) / 1.day).days
-
-	        statistics = moderator_digest_statistics project, days_interval
-	        top_ideas = moderator_digest_top_ideas project, days_interval
-	        has_new_ideas = (top_ideas.size > 0)
-
-	        if top_ideas.empty?
-	          return
-	        end
-
-	        project_serializer = "EmailCampaigns::DiscoverProjectSerializer".constantize
-	        serialized_project = ActiveModelSerializers::SerializableResource.new(project, {
-	          serializer: project_serializer,
-	          adapter: :json
-	         }).serializable_hash
-	  
 	        tenant = Tenant.current
 	        trackingMessage = {
 	          event: "Periodic email for #{CAMPAIGN.gsub '_', ' '}",
@@ -75,18 +73,26 @@ module EmailCampaigns
     end
 
     def moderator_digest_statistics project, days_interval
+      ps = ParticipantsService.new
+      participants_increase = ps.participants(project: project, since: (Time.now - days_interval)).size
+      participants_past_increase = ps.participants(project: project, since: (Time.now - days_interval * 2)).size - participants_increase
+      ideas = project.ideas
+      comments = Comment.where(idea_id: ideas.map(&:id))
+      votes = Vote.where(votable_id: (ideas.map(&:id) + comments.map(&:id)))
       {
         activities: {
-          new_ideas: increase_hash(project.ideas.map(&:published_at).compact, days_interval),
-          new_comments: increase_hash([], days_interval), # TODO
-          new_votes: increase_hash([], days_interval), # TODO
-          total_ideas: project.ideas.count,
-          total_users: 0 # TODO
+          new_ideas: increase_hash(ideas.map(&:published_at).compact, days_interval),
+          new_comments: increase_hash(comments.map(&:created_at).compact, days_interval), # TODO
+          new_votes: increase_hash(votes.map(&:created_at), days_interval), # TODO
+          total_ideas: ideas.count
         },
         users: {
           new_visitors: increase_hash([], days_interval), # TODO
-          new_participants: increase_hash([], days_interval), # TODO
-          active_users: increase_hash([], days_interval) # TODO
+          new_participants: {
+            increase: participants_increase,
+            past_increase: participants_past_increase
+          },
+          total_participants: ps.participants(project: project)
         } 
       }
     end

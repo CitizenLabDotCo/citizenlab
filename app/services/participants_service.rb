@@ -5,7 +5,7 @@ class ParticipantsService
     since = options[:since]
     if project
       ideas = Idea.where(project: project)
-      comments = Comment.all.where(idea_id: ideas.ids)
+      comments = Comment.where(idea_id: ideas.ids)
       votes = Vote.where(votable_id: (ideas.ids + comments.ids))
       if since
         ideas = ideas.where('created_at::date >= (?)::date', since)
