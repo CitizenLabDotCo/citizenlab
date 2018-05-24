@@ -165,7 +165,7 @@ jobs:
           paths:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "package.json" }}
-      - run: sudo npm run test:pa11y --silent
+      - run: npm run test:pa11y --silent
 
 
 workflows:
