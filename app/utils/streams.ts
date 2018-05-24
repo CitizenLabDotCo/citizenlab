@@ -19,7 +19,7 @@ export interface IStreamParams {
   queryParameters?: IObject | null;
   cacheStream?: boolean;
 }
-interface IInputStreamParams extends IStreamParams {
+export interface IInputStreamParams extends IStreamParams {
   apiEndpoint: string;
 }
 interface IExtendedStreamParams {

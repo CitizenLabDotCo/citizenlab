@@ -19,7 +19,7 @@ import { List, Row } from 'components/admin/ResourceList';
 // Services
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
-import { listGroups, IGroups, IGroupData } from 'services/groups';
+import { getGroups, IGroups, IGroupData } from 'services/groups';
 import { addGroupProject, deleteGroupProject, groupsProjectsByProjectIdStream, IGroupsProjects } from 'services/groupsProjects';
 
 // Style
@@ -100,7 +100,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
     const { projectId } = this.props;
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
-    const groups$ = listGroups().observable;
+    const groups$ = getGroups().observable;
     const groupsProjects$ = groupsProjectsByProjectIdStream(projectId).observable;
 
     this.subscriptions = [

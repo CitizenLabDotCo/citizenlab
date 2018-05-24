@@ -1,10 +1,14 @@
 // Libraries
-import * as React from 'react';
-import * as Rx from 'rxjs';
+import React from 'react';
+import { Subscription } from 'rxjs';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { switchMap } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 import { take } from 'lodash';
+import { isNilOrError } from 'utils/helperUtils';
 
 // Services
-import { listMembership } from 'services/groups';
+import { getGroupMemberships } from 'services/groupMemberships';
 import { userByIdStream, IUser } from 'services/users';
 
 // Components
@@ -70,10 +74,10 @@ interface State {
 }
 
 export default class GroupAvatar extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
       users: null
     };
@@ -81,18 +85,30 @@ export default class GroupAvatar extends React.PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    const memberships$ = listMembership(this.props.groupId, { queryParameters: { page: { size: 3, number: 1 } } }).observable;
+    const { groupId } = this.props;
+    const streamParams = {
+      queryParameters: {
+        page: {
+          size: 3,
+          number: 1
+        }
+      }
+    };
+
+    const memberships$ = getGroupMemberships(groupId, streamParams).observable;
 
     this.subscriptions = [
-      memberships$.switchMap((memberships) => {
-        if (memberships && memberships.data.length > 0) {
-          return Rx.Observable.combineLatest(
-            take(memberships.data, 3).map(membership => userByIdStream(membership.relationships.user.data.id).observable)
-          );
-        }
+      memberships$.pipe(
+        switchMap((memberships) => {
+          if (!isNilOrError(memberships) && memberships.data.length > 0) {
+            return combineLatest(
+              take(memberships.data, 3).map(membership => userByIdStream(membership.relationships.user.data.id).observable)
+            );
+          }
 
-        return Rx.Observable.of(null);
-      }).subscribe((users) => {
+          return of(null);
+        })
+      ).subscribe((users) => {
         this.setState({ users });
       })
     ];
@@ -105,15 +121,13 @@ export default class GroupAvatar extends React.PureComponent<Props, State> {
   render() {
     const { users } = this.state;
 
-    if (users && users.length > 0) {
+    if (!isNilOrError(users) && users.length > 0) {
       const className = this.props['className'];
       const count = users.length;
 
       return (
         <GroupAvatarWrapper className={className} count={count}>
-          {users.map((user) => (
-            <StyledAvatar key={user.data.id} userId={user.data.id} size="small" />
-          ))}
+          {users.map(user => <StyledAvatar key={user.data.id} userId={user.data.id} size="small" />)}
         </GroupAvatarWrapper>
       );
     }
