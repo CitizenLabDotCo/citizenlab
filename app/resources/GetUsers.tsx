@@ -23,6 +23,7 @@ export interface InputProps {
   pageSize?: number;
   sort?: Sort;
   search?: string;
+  groupId?: string;
 }
 
 interface IQueryParameters {
@@ -30,6 +31,7 @@ interface IQueryParameters {
   'page[size]': number;
   sort: Sort;
   search: string | undefined;
+  group?: string;
 }
 
 type children = (obj: GetUsersChildProps) => JSX.Element | null;
@@ -67,7 +69,8 @@ export default class GetInvites extends React.Component<Props, State> {
         'page[number]': 1,
         'page[size]': 20,
         sort: initialSort,
-        search: undefined
+        search: undefined,
+        group: undefined
       },
       usersList: undefined,
       sortAttribute: getSortAttribute<Sort, SortAttribute>(initialSort),
@@ -144,7 +147,8 @@ export default class GetInvites extends React.Component<Props, State> {
         'page[number]': props.pageNumber,
         'page[size]': props.pageSize,
         sort: props.sort,
-        search: props.search
+        search: props.search,
+        group: props.groupId
       }, isNil)
     };
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { isEqual, get, isString, omitBy, isNil, isError } from 'lodash';
 import { BehaviorSubject, Subscription } from 'rxjs/Rx';
-import { listGroups, IGroups, IGroupData } from 'services/groups';
+import { getGroups, IGroups, IGroupData } from 'services/groups';
 import shallowCompare from 'utils/shallowCompare';
 
 export type MembershipType = 'manual' | 'rules';
@@ -87,7 +87,7 @@ export default class GetGroups extends React.Component<Props, State> {
             loadingMore: isLoadingMore,
           });
 
-          return listGroups({ queryParameters: newQueryParameters }).observable.map((groups: IGroups | Error) => {
+          return getGroups({ queryParameters: newQueryParameters }).observable.map((groups: IGroups | Error) => {
             const selfLink = get(groups, 'links.self');
             const lastLink = get(groups, 'links.last');
             const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);

@@ -22,7 +22,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-wrap: nowrap;
   height: 100%;
-  color: ${colors.adminTextColor}
+  color: ${colors.adminTextColor};
 `;
 
 const LeftPanel = styled(GroupsListPanel)`
@@ -41,7 +41,6 @@ import messages from './messages';
 
 // Services
 import { IGroupData, addGroup } from 'services/groups';
-
 
 // Typings
 import { API } from 'typings';
