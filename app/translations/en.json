@@ -53,7 +53,7 @@
   "app.components.ProjectCard.idea": "idea",
   "app.components.ProjectCard.ideas": "ideas",
   "app.components.ProjectCard.openProjectButton": "Discover more",
-  "app.components.ProjectCard.xIdeas": "{x, plural, =0 {no ideas} one {# ideas} other {# ideas}}",
+  "app.components.ProjectCard.xIdeas": "{ideasCount, plural, =0 {no ideas} one {# ideas} other {# ideas}}",
   "app.components.ProjectCards.loadMore": "Show more projects",
   "app.components.ProjectCards.noProjects": "No projects were found",
   "app.components.SearchInput.searchPlaceholder": "Search",
