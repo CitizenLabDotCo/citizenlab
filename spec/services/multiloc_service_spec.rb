@@ -27,8 +27,8 @@ describe MultilocService do
     end
 
     it "falls back to i18n locale when there's no user" do
-      I18n.with_locale(:'fr-FR') do
-        expect(service.t(translations)).to eq 'mot'
+      I18n.with_locale(:'nl-BE') do
+        expect(service.t(translations)).to eq 'woord'
       end
     end
 
