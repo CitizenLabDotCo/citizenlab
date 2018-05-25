@@ -14,29 +14,12 @@ export default function request<T>(url, data, options, queryParameters): Promise
   };
 
   if (jwt) {
-    defaultOptions.headers['Authorization'] = `Bearer ${jwt}`; // eslint-disable-line
+    defaultOptions.headers['Authorization'] = `Bearer ${jwt}`;
   }
 
   if (data) {
     defaultOptions.body = JSON.stringify(data);
   }
-
-  // let response: Response = null as any;
-  // let json: Promise<any> = {} as any;
-
-  // try {
-  //   response = await fetch(urlWithParams, { ...defaultOptions, ...options });
-  //   json = await response.json();
-
-  //   if (response.ok !== true) {
-  //     throw new Error('fetch error');
-  //   }
-
-  //   return json;
-  // } catch {
-  //   const status = response.statusText || response.status.toString();
-  //   throw { status, response, json };
-  // }
 
   return fetch(urlWithParams, { ...defaultOptions, ...options }).then((response) => {
     return Promise.all([

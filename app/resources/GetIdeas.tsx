@@ -195,7 +195,7 @@ export default class GetIdeas extends React.Component<Props, State> {
             const newPageNumber = queryParameters['page[number]'];
             queryParameters['page[number]'] = (newPageNumber !== oldPageNumber ? newPageNumber : 1);
 
-            return ideasStream({ queryParameters, cacheStream: false }).observable.pipe(
+            return ideasStream({ queryParameters }).observable.pipe(
               map(ideas => ({ queryParameters, ideas }))
             );
           })
