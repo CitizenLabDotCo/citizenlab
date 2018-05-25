@@ -60,8 +60,8 @@ describe CustomFieldService do
            "field3"=>
             {:title=>"Did you attend",
              :description=>"Which councils are you attending in our city?",
-             :type=>["string", "null"],
-             :enum=>["option1", "option2", nil],
+             :type=>"string",
+             :enum=>["option1", "option2"],
              :enumNames=>["youth council", "youth council"]},
            "field4"=>
             {:title=>"Did you attend",
