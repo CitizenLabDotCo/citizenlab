@@ -48,7 +48,7 @@ namespace :fix_existing_tenants do
               original = instance.send(multiloc_column)
               transformed = multiloc_transform(original, loc_map)
               instance.update_columns(multiloc_column => transformed) unless DRY_RUN
-              puts "#{tenant.name} --- #{klass.name} #{instance.id} #{multiloc_column} converted to #{transformed.map{|k,v| [k, v.truncate(7)]}.to_h}"
+              puts "#{tenant.name} --- #{klass.name} #{instance.id} #{multiloc_column} converted to #{transformed.map{|k,v| [k, v&.truncate(7)]}.to_h}"
             end
           end
         end
@@ -96,7 +96,7 @@ def generate_generic_locale_mapping
     'en' => {
       'geo_mapping' => {
         geo_gb => 'en-GB',
-        geo_ca => 'nl-CA',
+        geo_ca => 'en-CA',
       },
       'fallback' => 'en'
     },
@@ -123,6 +123,33 @@ def generate_generic_locale_mapping
     'no' => {
       'fallback' => 'nb-NO'
     },
+    'en-GB' => {
+      'fallback' => 'en-GB'
+    },
+    'en-CA' => {
+      'fallback' => 'en-CA'
+    },
+    'nl-BE' => {
+      'fallback' => 'nl-BE'
+    },
+    'nl-NL' => {
+      'fallback' => 'nl-NL'
+    },
+    'fr-BE' => {
+      'fallback' => 'fr-BE'
+    },
+    'fr-FR' => {
+      'fallback' => 'fr-FR'
+    },
+    'de-DE' => {
+      'fallback' => 'de-DE'
+    },
+    'da-DK' => {
+      'fallback' => 'da-DK'
+    },
+    'nb-NO' => {
+      'fallback' => 'nb-NO'
+    }
   }
 end
 
