@@ -94,7 +94,7 @@ const FileInputWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
-const ArrowIcon = styled(Icon)`
+const ArrowIcon = styled(Icon) `
   fill: ${(props) => props.theme.colors.label};
   height: 11px;
   margin-right: 8px;
@@ -106,7 +106,7 @@ const ArrowIcon = styled(Icon)`
   }
 `;
 
-const StyledLabel = styled(Label)`
+const StyledLabel = styled(Label) `
   padding-bottom: 0px;
   transition: all 80ms ease-out;
   cursor: pointer;
@@ -197,11 +197,11 @@ const Processing = styled.div`
   margin-left: 15px;
 `;
 
-const Invites = styled.div`
+const SInvitesTable = styled(InvitesTable) `
   margin-top: 100px;
 `;
 
-interface InputProps {}
+interface InputProps { }
 
 interface DataProps {
   locale: GetLocaleChildProps;
@@ -209,7 +209,7 @@ interface DataProps {
   groups: GetGroupsChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 type State = {
   selectedEmails: string | null;
@@ -342,7 +342,7 @@ class Invitations extends React.PureComponent<Props, State> {
       selectedEmails: null,
       selectedFileBase64: null,
       hasAdminRights: false,
-      selectedLocale: (this.props.tenantLocales ? this.props.tenantLocales [0] : null),
+      selectedLocale: (this.props.tenantLocales ? this.props.tenantLocales[0] : null),
       selectedGroups: null,
       selectedInviteText: null,
       invitationOptionsOpened: false,
@@ -426,7 +426,7 @@ class Invitations extends React.PureComponent<Props, State> {
     }
   }
 
-  render () {
+  render() {
     const { locale, tenantLocales, groups } = this.props;
     const {
       selectedEmails,
@@ -642,9 +642,7 @@ class Invitations extends React.PureComponent<Props, State> {
           </Section>
         </form>
 
-        <Invites>
-          <InvitesTable />
-        </Invites>
+        <SInvitesTable />
       </>
     );
   }
