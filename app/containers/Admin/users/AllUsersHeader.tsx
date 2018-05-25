@@ -25,11 +25,10 @@ export class AllUsersHeader extends React.PureComponent<Props, State> {
     this.state = {
       searchValue: '',
     };
-
     this.debounceSearch = throttle(this.props.onSearch, 500);
   }
 
-  handleSearchChange = (newValue) => {
+  handleSearchChange = (newValue: string) => {
     this.setState({ searchValue: newValue });
     this.debounceSearch(newValue);
   }

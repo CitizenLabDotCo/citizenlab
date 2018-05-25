@@ -53,7 +53,7 @@ const WEBPACK_CONFIG = {
       {
         test: /\.(svg|jpg|png|gif|eot|ttf|woff|woff2)$/,
         use: [
-          'cache-loader',
+          // 'cache-loader',
           {
             loader: 'url-loader',
             options: {

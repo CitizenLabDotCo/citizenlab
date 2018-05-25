@@ -2,19 +2,18 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'services/permissions/roles';
-import { isArray, includes } from 'lodash';
-import * as moment from 'moment';
+import { isArray, includes, get } from 'lodash';
 
 // Components
 import Table from 'components/UI/Table';
 import SortableTableHeaderCell from 'components/UI/Table/SortableTableHeaderCell';
-import Avatar from 'components/Avatar';
-import Toggle from 'components/UI/Toggle';
-import Checkbox from 'components/UI/Checkbox';
 import CustomPagination from 'components/admin/Pagination/CustomPagination';
+import NoUsers from './NoUsers';
+import UserTableActions from './UserTableActions';
+import UserTableRow from './UserTableRow';
 
 // Services
-import { IUserData } from 'services/users';
+import { IUserData, IRole, updateUser } from 'services/users';
 
 // Resources
 import GetUsers, { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';
@@ -25,19 +24,6 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-
-const TableOptions = styled.div`
-  display: flex;
-  padding-bottom: 10px;
-  border-bottom: solid 1px #000;
-`;
-
-const StyledAvatar = styled(Avatar)`
-  flex: 0 0 30px;
-  height: 30px;
-  margin-right: 15px;
-  margin-left: 15px;
-`;
 
 const CustomPaginationWrapper = styled.div`
   flex: 1;
@@ -50,7 +36,8 @@ const CustomPaginationWrapper = styled.div`
 
 // Typings
 interface InputProps {
-  groupId?: string | null;
+  groupId?: string | undefined;
+  search?: string | undefined;
 }
 
 interface Props extends InputProps, GetUsersChildProps {}
@@ -71,8 +58,19 @@ class AllUsers extends React.PureComponent<Props, State> {
     return isAdmin({ data: user });
   }
 
-  handleAdminRoleOnChange = () => {
-    return;
+  handleAdminRoleOnChange = (user: IUserData) => () => {
+    let newRoles: IRole[] = [];
+
+    if (user.attributes.roles && isAdmin({ data: user })) {
+      newRoles = user.attributes.roles.filter(role => role.type !== 'admin');
+    } else {
+      newRoles = [
+        ...get(user, 'attributes.roles', []),
+        { type: 'admin' }
+      ];
+    }
+
+    updateUser(user.id, { roles: newRoles });
   }
 
   handleUserSelectedOnChange = (userId: string) => () => {
@@ -114,16 +112,17 @@ class AllUsers extends React.PureComponent<Props, State> {
     const { usersList, sortAttribute, sortDirection, currentPage, lastPage } = this.props;
     const { selectedUsers } = this.state;
 
+    if (!isNilOrError(usersList) && usersList.length === 0) {
+      return <NoUsers />;
+    }
+
     if (!isNilOrError(usersList) && usersList.length > 0) {
       return (
         <>
-          <TableOptions>
-            <Checkbox
-              label={<FormattedMessage {...messages.selectAll} />}
-              value={(selectedUsers === 'all')}
-              onChange={this.toggleAllUsers}
-            />
-          </TableOptions>
+          <UserTableActions
+            selectedUsers={selectedUsers}
+            toggleSelectAll={this.toggleAllUsers}
+          />
 
           <Table>
             <thead>
@@ -162,29 +161,12 @@ class AllUsers extends React.PureComponent<Props, State> {
             </thead>
             <tbody>
               {usersList.map((user) => (
-                <tr key={user.id}>
-                  <td>
-                    <Checkbox
-                      value={(selectedUsers === 'all' || includes(selectedUsers, user.id))}
-                      onChange={this.handleUserSelectedOnChange(user.id)}
-                    />
-                  </td>
-                  <td>
-                    <StyledAvatar
-                      userId={user.id}
-                      size="small"
-                    />
-                  </td>
-                  <td>{user.attributes.first_name} {user.attributes.last_name}</td>
-                  <td>{user.attributes.email}</td>
-                  <td>{moment(user.attributes.created_at).format('LL')}</td>
-                  <td>
-                    <Toggle
-                      value={this.isUserAdmin(user)}
-                      onChange={this.handleAdminRoleOnChange}
-                    />
-                  </td>
-                </tr>
+                <UserTableRow
+                  user={user}
+                  selected={false}
+                  toggleSelect={this.handleUserSelectedOnChange(user.id)}
+                  toggleAdmin={this.handleAdminRoleOnChange(user)}
+                />
               ))}
             </tbody>
           </Table>
@@ -207,7 +189,12 @@ class AllUsers extends React.PureComponent<Props, State> {
 }
 
 export default (inputProps: InputProps) => (
-  <GetUsers pageSize={5} groupId={inputProps.groupId || undefined}>
+  <GetUsers
+    pageSize={20}
+    groupId={inputProps.groupId}
+    search={inputProps.search}
+    cache={false}
+  >
     {users => <AllUsers {...inputProps} {...users} />}
   </GetUsers>
 );

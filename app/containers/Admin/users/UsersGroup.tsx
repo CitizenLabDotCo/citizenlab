@@ -7,11 +7,11 @@ import { Formik } from 'formik';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Components
-import NoUsers from './NoUsers';
 import GroupHeader from './GroupHeader';
 import Modal from 'components/UI/Modal';
 import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
 import RulesGroupForm, { RulesFormValues } from './RulesGroupForm';
+import UserTable from './UserTable';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -24,7 +24,6 @@ import GetGroup, { GetGroupChildProps } from 'resources/GetGroup';
 
 // Services
 import { IGroupData, deleteGroup, updateGroup } from 'services/groups';
-
 
 // Typings
 import { API } from 'typings';
@@ -44,6 +43,7 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
       groupEditionModal: false,
     };
   }
+
   closeGroupEditionModal = () => {
     this.setState({ groupEditionModal: false });
   }
@@ -56,23 +56,26 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
 
   openGroupEditionModal = () => {
     const { group } = this.props;
+
     if (!isNilOrError(group)) {
       this.setState({ groupEditionModal: group.attributes.membership_type });
     }
   }
+
   handleSubmitForm = (id) => (values: NormalFormValues | RulesFormValues, { setErrors, setSubmitting }) => {
     updateGroup(id, {
       ...values
     })
-      .then(() => {
-        this.closeGroupEditionModal();
-      })
-      .catch((errorResponse) => {
-        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
-        setErrors(apiErrors);
-        setSubmitting(false);
-      });
+    .then(() => {
+      this.closeGroupEditionModal();
+    })
+    .catch((errorResponse) => {
+      const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+      setErrors(apiErrors);
+      setSubmitting(false);
+    });
   }
+
   deleteGroup = (groupId: string) => () => {
     const deleteMessage = this.props.intl.formatMessage(messages.groupDeletionConfirmation);
 
@@ -89,8 +92,8 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
   render() {
     const { group } = this.props;
     const { groupEditionModal } = this.state;
-
     let ModalHeader;
+
     switch (groupEditionModal) {
       case 'manual':
         ModalHeader = <FormattedMessage tagName="h3" {...messages.modalHeaderManual} />;
@@ -99,7 +102,6 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
         ModalHeader = <FormattedMessage tagName="h3" {...messages.modalHeaderRules} />;
         break;
     }
-
 
     if (!isNilOrError(group)) {
       return (
@@ -111,8 +113,15 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
             onDelete={this.deleteGroup(group.id)}
             onSearch={this.searchGroup}
           />
-          <NoUsers />
-          <Modal header={ModalHeader} fixedHeight={false} opened={groupEditionModal !== false} close={this.closeGroupEditionModal}>
+
+          <UserTable groupId={group.id} />
+
+          <Modal
+            header={ModalHeader}
+            fixedHeight={false}
+            opened={groupEditionModal !== false}
+            close={this.closeGroupEditionModal}
+          >
             <>
               {groupEditionModal === 'manual' &&
                 <Formik
@@ -120,20 +129,23 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
                   validate={NormalGroupForm.validate}
                   render={this.renderForm('normal')}
                   onSubmit={this.handleSubmitForm(group.id)}
-                />}
-                {groupEditionModal === 'rules' &&
-                  <Formik
-                    initialValues={group.attributes}
-                    validate={RulesGroupForm.validate}
-                    render={this.renderForm('rules')}
-                    onSubmit={this.handleSubmitForm(group.id)}
-                  />
-                }
+                />
+              }
+
+              {groupEditionModal === 'rules' &&
+                <Formik
+                  initialValues={group.attributes}
+                  validate={RulesGroupForm.validate}
+                  render={this.renderForm('rules')}
+                  onSubmit={this.handleSubmitForm(group.id)}
+                />
+              }
             </>
           </Modal>
         </>
       );
     }
+
     return null;
   }
 }

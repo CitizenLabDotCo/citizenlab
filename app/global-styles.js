@@ -121,6 +121,7 @@ export const globalCss = `
   html,
   body {
     background-color: #fff;
+    font-family: 'visuelt', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: ${fontSize('small')};
     height: 100%;
     position: relative;
@@ -128,7 +129,7 @@ export const globalCss = `
   }
 
   html * {
-    font-family: 'visuelt', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+    font-family: 'visuelt', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
 
   body.modal-active {
@@ -145,6 +146,18 @@ export const globalCss = `
   .ui.message.warning,
   .ui.message.info {
     box-shadow: none;
+  }
+
+  /* remove shadow on input fields on iOS */
+  input[type=text] {   
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none; 
+  }
+
+  /* remove close button on input fields on IE/Edge */
+  input[type=text]::-ms-clear {
+    display: none;
   }
 `;
 
