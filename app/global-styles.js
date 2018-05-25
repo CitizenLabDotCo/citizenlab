@@ -121,14 +121,11 @@ export const globalCss = `
   html,
   body {
     background-color: #fff;
+    font-family: 'visuelt', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: ${fontSize('small')};
     height: 100%;
     position: relative;
     width: 100%;
-  }
-
-  html * {
-    font-family: 'visuelt', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   }
 
   body.modal-active {
@@ -145,6 +142,10 @@ export const globalCss = `
   .ui.message.warning,
   .ui.message.info {
     box-shadow: none;
+  }
+
+  .ui {
+    font-family: 'visuelt', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   }
 `;
 
