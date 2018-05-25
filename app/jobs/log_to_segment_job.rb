@@ -5,5 +5,5 @@ class LogToSegmentJob < ApplicationJob
     event = LogToSegmentService.new.tracking_message_for_activity activity
     Analytics.track(event) if event
   end
-  
+
 end
