@@ -42,11 +42,11 @@ module EmailCampaigns
 
     private
 
-    def idea_recent_votes idea, since ### COPY PASTED from admin_weekly_report_job ###
+    def idea_recent_votes idea, since
       idea.votes.select{|v| v.created_at > since}
     end
 
-    def idea_recent_comments idea, since ### COPY PASTED from admin_weekly_report_job ###
+    def idea_recent_comments idea, since
       idea.comments.select{|c| c.created_at > since}
     end
 
