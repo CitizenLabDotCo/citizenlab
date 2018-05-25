@@ -24,36 +24,17 @@ module EmailCampaigns
          }).serializable_hash
 
       	User.project_moderators(project.id).select{|user| !user.admin?}.each do |moderator|
-	        tenant = Tenant.current
-	        trackingMessage = {
-	          event: "Periodic email for #{CAMPAIGN.gsub '_', ' '}",
-	          user_id: moderator.id,
-	          timestamp: Time.now,
-	          properties: {
-	            source: 'cl2-back',
-	            payload: {
-	            	statistics: statistics,
-	              has_new_ideas: has_new_ideas,
-	              project: serialized_project,
+	        event = LogToSegmentService.new.tracking_message(
+            "Periodic email for #{CAMPAIGN.gsub '_', ' '}", 
+            user_id: moderator.id,
+            payload: {
+                statistics: statistics,
+                has_new_ideas: has_new_ideas,
+                project: serialized_project,
                 top_ideas: top_ideas.take(N_TOP_IDEAS)
-	            },
-	            tenantId: tenant.id,
-	            tenantName: tenant.name,
-	            tenantHost: tenant.host,
-	            tenantOrganizationType: tenant.settings.dig('core', 'organization_type')
-	            ## TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO ##
-	            #                                                                         #
-	            # I think it would be useful to include the lifecycle_stage here now too. #
-	            # I'm strongly considering a LogActivityService and PeriodicEventService  #
-	            # where the tenant part and such of the event is generated through helper #
-	            # functions.                                                              #
-	            #                                                                         #
-	            ## TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO ##
-	          }
-	        }
-	        
-	        Analytics.track(trackingMessage)
-
+              }
+            )
+	        Analytics.track(event)
 	        create_campaign_email_commands moderator, top_ideas
 
 	      end

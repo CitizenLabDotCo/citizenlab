@@ -18,28 +18,18 @@ module EmailCampaigns
 
         top_project_ideas = admin_report_top_project_ideas days_interval
         has_new_ideas = (top_project_ideas.size > 0)
-  
-        tenant = Tenant.current
-        trackingMessage = {
-          event: "Periodic email for #{CAMPAIGN.gsub '_', ' '}",
+
+        event = LogToSegmentService.new.tracking_message(
+          "Periodic email for #{CAMPAIGN.gsub '_', ' '}", 
           user_id: admin.id,
-          timestamp: Time.now,
-          properties: {
-            source: 'cl2-back',
-            payload: {
-            	statistics: statistics,
+          payload: {
+              statistics: statistics,
               has_new_ideas: has_new_ideas,
               top_project_ideas: top_project_ideas
-            },
-            tenantId: tenant.id,
-            tenantName: tenant.name,
-            tenantHost: tenant.host,
-            tenantOrganizationType: tenant.settings.dig('core', 'organization_type')
-          }
-        }
+            }
+          )
         
-        Analytics.track(trackingMessage)
-
+        Analytics.track(event)
         create_campaign_email_commands admin, top_project_ideas
       end
     end

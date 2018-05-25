@@ -38,27 +38,17 @@ module EmailCampaigns
             adapter: :json
           }).serializable_hash
         end
-  
-        tenant = Tenant.current
-        trackingMessage = {
-          event: "Periodic email for #{CAMPAIGN.gsub '_', ' '}",
+
+        event = LogToSegmentService.new.tracking_message(
+          "Periodic email for #{CAMPAIGN.gsub '_', ' '}", 
           user_id: user.id,
-          timestamp: Time.now,
-          properties: {
-            source: 'cl2-back',
-            payload: {
+          payload: {
               top_ideas: serialized_top_ideas,
               discover_projects: serialized_discover_projects
-            },
-            tenantId: tenant.id,
-            tenantName: tenant.name,
-            tenantHost: tenant.host,
-            tenantOrganizationType: tenant.settings.dig('core', 'organization_type')
-          }
-        }
+            }
+          )
         
-        Analytics.track(trackingMessage)
-
+        Analytics.track(event)
         create_campaign_email_commands user, top_ideas, discover_projects
       end
     end
