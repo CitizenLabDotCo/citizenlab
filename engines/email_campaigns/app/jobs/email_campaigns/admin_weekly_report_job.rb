@@ -29,7 +29,7 @@ module EmailCampaigns
             }
           )
         
-        Analytics.track(event)
+        Analytics.track event
         create_campaign_email_commands admin, top_project_ideas
       end
     end
@@ -53,23 +53,14 @@ module EmailCampaigns
       end.reverse
 
       # normally, the projects will be ordered by recentness of their most recent idea
-      serialized_top_project_ideas = project_order.map do |project_id|
-        ideas = top_project_ideas[project_id]
-        project_serializer = "EmailCampaigns::DiscoverProjectSerializer".constantize
-        serialized_project = ActiveModelSerializers::SerializableResource.new(Project.find(project_id), {
-          serializer: project_serializer,
-          adapter: :json
-         }).serializable_hash
-
+      project_order.map do |project_id|
         {
-          project: serialized_project,
-          top_ideas: ideas.map{ |idea|
+          project: LogToSegmentService.new.serialize("EmailCampaigns::DiscoverProjectSerializer", Project.find(project_id)),
+          top_ideas: top_project_ideas[project_id].map{ |idea|
             to_weekly_report_idea_hash(idea, since=since)
           } 
         }
       end
-
-      serialized_top_project_ideas
     end
 
     def admin_report_statistics days_interval
