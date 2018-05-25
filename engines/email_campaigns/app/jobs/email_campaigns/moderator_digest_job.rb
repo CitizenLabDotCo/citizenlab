@@ -17,12 +17,7 @@ module EmailCampaigns
 
         break if !has_new_ideas
 
-        project_serializer = "EmailCampaigns::DiscoverProjectSerializer".constantize
-        serialized_project = ActiveModelSerializers::SerializableResource.new(project, {
-          serializer: project_serializer,
-          adapter: :json
-         }).serializable_hash
-
+        serialized_project = LogToSegmentService.new.serialize "EmailCampaigns::DiscoverProjectSerializer", project
       	User.project_moderators(project.id).select{|user| !user.admin?}.each do |moderator|
 	        event = LogToSegmentService.new.tracking_message(
             "Periodic email for #{CAMPAIGN.gsub '_', ' '}", 
@@ -34,9 +29,8 @@ module EmailCampaigns
                 top_ideas: top_ideas.take(N_TOP_IDEAS)
               }
             )
-	        Analytics.track(event)
+	        Analytics.track event
 	        create_campaign_email_commands moderator, top_ideas
-
 	      end
       end
     end

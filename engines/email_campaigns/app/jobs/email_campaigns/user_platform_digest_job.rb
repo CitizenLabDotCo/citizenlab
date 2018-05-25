@@ -20,23 +20,15 @@ module EmailCampaigns
         top_ideas = top_ideas.where(publication_status: 'published').left_outer_joins(:idea_status)
         top_ideas = ti_service.sort_trending(ti_service.filter_trending(top_ideas))
         top_ideas = top_ideas.take N_TOP_IDEAS
-        serializer = "EmailCampaigns::UserPlatformDigestIdeaSerializer".constantize
         serialized_top_ideas = top_ideas.map do |idea|
-          ActiveModelSerializers::SerializableResource.new(idea, {
-            serializer: serializer,
-            adapter: :json
-          }).serializable_hash
+          LogToSegmentService.new.serialize "EmailCampaigns::UserPlatformDigestIdeaSerializer", idea
         end
 
         discover_projects = ProjectPolicy::Scope.new(user, Project).resolve
         discover_projects = discover_projects.where(publication_status: 'published').sort_by(&:created_at).reverse
         discover_projects = discover_projects.take N_DISCOVER_PROJECTS
-        serializer = "EmailCampaigns::DiscoverProjectSerializer".constantize
         serialized_discover_projects = discover_projects.map do |project|
-          ActiveModelSerializers::SerializableResource.new(project, {
-            serializer: serializer,
-            adapter: :json
-          }).serializable_hash
+          LogToSegmentService.new.serialize "EmailCampaigns::DiscoverProjectSerializer", project
         end
 
         event = LogToSegmentService.new.tracking_message(
@@ -48,7 +40,7 @@ module EmailCampaigns
             }
           )
         
-        Analytics.track(event)
+        Analytics.track event
         create_campaign_email_commands user, top_ideas, discover_projects
       end
     end
