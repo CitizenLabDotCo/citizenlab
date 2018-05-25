@@ -128,7 +128,7 @@ RSpec.describe Idea, type: :model do
 
   describe "idea search" do
     it "should return results with exact prefixes" do
-      create(:idea, title_multiloc: {'nl' => 'Bomen in het park'})
+      create(:idea, title_multiloc: {'nl-BE' => 'Bomen in het park'})
       srx_results = Idea.all.search_by_all 'Bomen'
       expect(srx_results.size).to be > 0
     end
