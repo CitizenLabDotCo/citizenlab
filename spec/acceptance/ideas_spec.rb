@@ -178,7 +178,7 @@ resource "Ideas" do
 
     example "Search for ideas should work with trending ordering", document: false do
       i1 = Idea.first
-      i1.title_multiloc['nl'] = 'Park met blauwe bomen'
+      i1.title_multiloc['nl-BE'] = 'Park met blauwe bomen'
       i1.title_multiloc['en'] = 'A park with orange grass'
       i1.save!
 
