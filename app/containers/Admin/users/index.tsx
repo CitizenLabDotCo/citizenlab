@@ -15,14 +15,12 @@ import { globalState, IAdminNoPadding, IGlobalStateService } from 'services/glob
 
 // Styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 const Wrapper = styled.div`
   align-items: stretch;
   display: flex;
   flex-wrap: nowrap;
   height: 100%;
-  color: ${colors.adminTextColor};
 `;
 
 const LeftPanel = styled(GroupsListPanel)`

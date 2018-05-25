@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Icon from 'components/UI/Icon';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { colors } from 'utils/styleUtils';
+import { rgba } from 'polished';
 
 // Typing
 export interface Props {
@@ -18,27 +20,7 @@ const Spagination = styled.div`
   justify-content: center;
 `;
 
-const Back = styled.button`
-  color: #044D6C;
-  margin-right: 30px;
-  font-weight: bold;
-  display: flex;
-  align-items: baseline;
-  cursor: pointer;
-
-  &:hover,
-  &:focus {
-    color: #01A1B1;
-    outline: none;
-  }
-
-  & svg {
-    transform: rotate(180deg);
-  }
-`;
-
 const Next = styled.button`
-  color: #044D6C;
   margin-left: 30px;
   font-weight: bold;
   display: flex;
@@ -47,14 +29,22 @@ const Next = styled.button`
 
   &:hover,
   &:focus {
-    color: #01A1B1;
+    color: ${colors.clIconAccent};
     outline: none;
   }
 `;
 
+const Back = styled(Next) `
+  margin-right: 30px;
+  margin-left: 0;
+
+  & svg {
+    transform: rotate(180deg);
+  }
+`;
+
 const Item = styled.button`
-  background: rgba(132, 147, 158, 0.07);
-  color: #044D6C;
+  background: ${colors.adminBackground};
   border-radius: 5px;
   height: 36px;
   width: 36px;
@@ -67,24 +57,24 @@ const Item = styled.button`
   }
 
   &.active {
-    background: #044D6C;
-    color: #FFFFFF;
+    background: ${colors.adminTextColor};
+    color: ${colors.adminLightText};
 
     &:focus, &:focus:hover {
-      background: #044D6C;
-      color: #01A1B1;
+      background: ${colors.adminTextColor};
+      color: ${colors.clIconAccent};
       outline: none;
     }
 
     &:hover {
-      background: #044D6C;
-      color: #FFFFFF;
+      background: ${colors.adminTextColor};
+      color: ${colors.adminLightText};
     }
   }
 
   &:hover,
   &:focus {
-    background: rgba(132, 147, 158, 0.15);
+    background: ${rgba(colors.adminTextColor, .2)};
     outline: none;
   }
 `;
@@ -92,7 +82,7 @@ const Item = styled.button`
 const ChevronIcon = styled(Icon) `
   height: 12px;
   margin: 9px;
-  fill: #01A1B1;
+  fill: ${colors.clIconAccent};
 `;
 
 class CustomPagination extends React.PureComponent<Props> {

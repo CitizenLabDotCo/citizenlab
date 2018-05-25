@@ -22,11 +22,11 @@ const NoUsersPage = styled.div`
 `;
 
 const SFormattedMessage = styled.div`
-  color: ${colors.adminGreyText};
+  color: ${colors.adminSecondaryTextColor};
   font-weight: 400;
   font-size: 16px;
   a {
-    color: ${colors.adminGreyText};
+    color: ${colors.adminSecondaryTextColor};
     font-weight: bold;
     text-decoration: underline;
   }

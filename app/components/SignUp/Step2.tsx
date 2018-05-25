@@ -170,7 +170,7 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
           <FormElement>
             <ButtonWrapper>
               <Button
-                id="e2e-signup-step2-button"
+                className="e2e-signup-step2-button"
                 size="1"
                 processing={processing}
                 text={formatMessage(messages.submit)}

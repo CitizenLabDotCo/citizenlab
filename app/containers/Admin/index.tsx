@@ -12,6 +12,18 @@ const Container = styled.div`
   flex-direction: row;
   flex-wrap: nowrap;
   background: ${colors.background};
+  color: ${colors.adminTextColor};
+  fill: ${colors.adminTextColor};
+  border-color: ${colors.adminTextColor};
+  .ui, .ui.menu .item, .ui.table th, .ui a, .ui input, .ui .active td {
+    color: ${colors.adminTextColor} !important;
+  }
+   .Select-control, .Select-value-label, .Select-value-icon, .Select-option {
+    color: ${colors.adminTextColor} !important;
+  }
+  .ui.red {
+    color: white !important;
+  }
 `;
 
 const RightColumn = styled.div`
