@@ -4,7 +4,6 @@
 #
 version: 2
 jobs:
-
   lint:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
@@ -155,19 +154,8 @@ jobs:
     working_directory: ~/cl2-front
     steps:
       - checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-npm-cache-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-npm-cache-
       - run: npm install pa11y-ci
-      - save_cache:
-          paths:
-            - /root/.npm
-          key: v1-npm-cache-{{ checksum "package.json" }}
       - run: npm run test:pa11y --silent
-
 
 workflows:
   version: 2
@@ -187,6 +175,14 @@ workflows:
                 - crowdin_master
                 - master
                 - production
+      - deploy_demo:
+          filters:
+            branches:
+              only: master
+      - deploy_crowdin:
+          filters:
+            branches:
+              only: master
       - test_e2e:
           requires:
             - deploy_demo
@@ -199,21 +195,7 @@ workflows:
           filters:
             branches:
               only: master
-      - deploy_demo:
-          requires:
-            - lint
-          filters:
-            branches:
-              only: master
-      - deploy_crowdin:
-          requires:
-            - lint
-          filters:
-            branches:
-              only: master
       - deploy_production:
-          requires:
-            - lint
           filters:
             branches:
               only: production
