@@ -72,6 +72,7 @@ class UserFilterConditions extends React.PureComponent<Props, State> {
           ))}
         </RulesList>
         <AddButton
+          className="e2e-add-condition-button"
           onClick={this.handleOnAddRule}
           icon="plus-circle"
           style="text"

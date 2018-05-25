@@ -37,7 +37,6 @@ const StyledSelectWrapper = styled.div`
 `;
 
 const StyledOption = styled.div`
-  color: black;
   display: flex;
   align-items: center;
   justify-content: space-between;

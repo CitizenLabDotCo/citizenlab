@@ -60,6 +60,7 @@ export default class NormalGroupForm extends React.Component<InjectedFormikProps
         <Fill>
           <SectionField>
             <Field
+              id="group-title-field"
               name="title_multiloc"
               component={FormikInputMultiloc}
               label={<FormattedMessage {...messages.fieldGroupName} />}

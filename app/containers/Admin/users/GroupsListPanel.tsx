@@ -145,7 +145,7 @@ export class GroupsListPanel extends React.PureComponent<InputProps & GetGroupsC
         <MenuTitle>
           <FormattedMessage tagName="h2" {...messages.groupsTitle} />
           <Button
-            className="creationButton"
+            className="creationButton e2e-create-group-button"
             hiddenText={<FormattedMessage {...messages.createGroupButton} />}
             icon="create"
             iconTitle={<FormattedMessage {...messages.createGroupButton} />}
@@ -154,7 +154,7 @@ export class GroupsListPanel extends React.PureComponent<InputProps & GetGroupsC
             style="text"
           />
         </MenuTitle>
-        <GroupsList>
+        <GroupsList className="e2e-groups-list">
           {!isNilOrError(this.props.groupsList) && this.props.groupsList.map((group) => (
             <li key={group.id}>
               <MenuLink to={`/admin/users/${group.id}`} activeClassName="active">

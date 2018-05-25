@@ -62,7 +62,7 @@ export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Prop
           <SectionTitle>
             <FormattedMessage {...messages.rulesGroupHeader} />
           </SectionTitle>
-          <SectionField>
+          <SectionField className="e2e-rules-field-section" >
             <Label><FormattedMessage {...messages.fieldRulesLabel} /></Label>
             <Field
               name="rules"
@@ -71,6 +71,7 @@ export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Prop
           </SectionField>
           <SectionField>
             <Field
+              id="group-title-field"
               name="title_multiloc"
               component={FormikInputMultiloc}
               label={<FormattedMessage {...messages.fieldGroupName} />}
