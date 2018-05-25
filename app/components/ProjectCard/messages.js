@@ -15,6 +15,6 @@ export default defineMessages({
   },
   xIdeas: {
     id: 'app.components.ProjectCard.xIdeas',
-    defaultMessage: '{ideasCount, plural, no {# {ideas}} one {# {idea}} other {# {ideas}}}',
+    defaultMessage: '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
   },
 });

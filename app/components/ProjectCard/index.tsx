@@ -21,8 +21,7 @@ import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProje
 // i18n
 import T from 'components/T';
 import { getLocalized } from 'utils/i18n';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -221,7 +220,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> {
+class ProjectCard extends React.PureComponent<Props, State> {
 
   getProjectUrl = (project: IProjectData) => {
     const projectType = project.attributes.process_type;
@@ -250,7 +249,6 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
 
   render() {
     const className = this.props['className'];
-    const { formatMessage } = this.props.intl;
     const { locale, tenantLocales, project, projectImages } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(project)) {
@@ -293,8 +291,6 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
                         {...messages.xIdeas}
                         values={{
                           ideasCount,
-                          ideas: formatMessage(messages.ideas),
-                          idea: formatMessage(messages.idea)
                         }}
                       />
                     </IdeaCountText>
@@ -322,8 +318,6 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 }
 
-const ProjectCardWithHoCs = injectIntl<Props>(ProjectCard);
-
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
@@ -333,6 +327,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectCardWithHoCs {...inputProps} {...dataProps} />}
+    {dataProps => <ProjectCard {...inputProps} {...dataProps} />}
   </Data>
 );
