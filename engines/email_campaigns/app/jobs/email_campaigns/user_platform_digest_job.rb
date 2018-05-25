@@ -11,7 +11,7 @@ module EmailCampaigns
       last_scheduled_at = Time.at(last_scheduled_at)
       ti_service = TrendingIdeaService.new
       if ti_service.filter_trending(IdeaPolicy::Scope.new(nil, Idea).resolve.where(publication_status: 'published')).count < N_TOP_IDEAS
-        # don't send any emails if there are fewer than N_TOP_IDEAS truly trending ideas
+        # don't send any emails if there are less than N_TOP_IDEAS truly trending ideas
         return
       end
       User.all.each do |user|
