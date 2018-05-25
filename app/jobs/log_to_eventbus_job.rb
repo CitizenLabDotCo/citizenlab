@@ -3,6 +3,7 @@ class LogToEventbusJob < ApplicationJob
 
   def perform(activity)
     event = LogToSegmentService.new.tracking_message_for_activity activity
+    return if !event
 
     channel = BUNNY_CON.create_channel
     exchange = channel.topic("cl2back")
