@@ -6,10 +6,6 @@ import request from 'utils/request';
 import streams from 'utils/streams';
 import { browserHistory } from 'react-router';
 
-// legacy redux stuff
-import { store } from 'app';
-import {  STORE_JWT } from 'utils/auth/constants';
-
 export const authApiEndpoint = `${API_PATH}/users/me`;
 
 export interface IUserToken {
@@ -26,7 +22,6 @@ export async function signIn(email: string, password: string) {
     const httpMethod: IHttpMethod = { method: 'POST' };
     const { jwt } = await request<IUserToken>(`${API_PATH}/user_token`, bodyData, httpMethod, null);
     setJwt(jwt);
-    store.dispatch({ type: STORE_JWT, payload: jwt });
     const authenticatedUser = await getAuthUserAsync();
     authUserStream().observer.next(authenticatedUser);
     streams.reset();

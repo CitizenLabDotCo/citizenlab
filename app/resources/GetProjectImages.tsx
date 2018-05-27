@@ -1,8 +1,10 @@
 import React from 'react';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import isString from 'lodash/isString';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
+import { distinctUntilChanged, switchMap, tap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { IProjectImageData, projectImagesStream } from 'services/projectImages';
-import { isString } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
@@ -43,14 +45,15 @@ export default class GetIdea extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ projectId });
 
     this.subscriptions = [
-      this.inputProps$
-        .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .do(() => resetOnChange && this.setState({ projectImages: undefined }))
-        .filter(({ projectId }) => isString(projectId))
-        .switchMap(({ projectId }: {projectId: string}) => projectImagesStream(projectId).observable)
-        .subscribe((projectImages) => {
-          this.setState({ projectImages: (!isNilOrError(projectImages) ? projectImages.data : projectImages) });
-        })
+      this.inputProps$.pipe(
+        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+        tap(() => resetOnChange && this.setState({ projectImages: undefined })),
+        filter(({ projectId }) => isString(projectId)),
+        switchMap(({ projectId }: { projectId: string }) => projectImagesStream(projectId).observable)
+      )
+      .subscribe((projectImages) => {
+        this.setState({ projectImages: (!isNilOrError(projectImages) ? projectImages.data : projectImages) });
+      })
     ];
   }
 
