@@ -1,0 +1,878 @@
+---
+models:
+  idea_status:
+  - &16
+    title_multiloc: statuses.proposed
+    ordering: 100
+    code: proposed
+    color: "#84939E"
+    description_multiloc: statuses.proposed_description
+  - &20
+    title_multiloc: statuses.under_consideration
+    ordering: 200
+    code: under_consideration
+    color: "#29ABD0"
+    description_multiloc: statuses.under_consideration_description
+  - &21
+    title_multiloc: statuses.accepted
+    ordering: 300
+    code: accepted
+    color: "#17C37B"
+    description_multiloc: statuses.accepted_description
+  - &14
+    title_multiloc: statuses.rejected
+    ordering: 400
+    code: rejected
+    color: "#EF3E4A"
+    description_multiloc: statuses.rejected_description
+  - &19
+    title_multiloc: statuses.implemented
+    ordering: 500
+    code: implemented
+    color: "#B5DA23"
+    description_multiloc: statuses.implemented_description
+  topic:
+  - &36
+    title_multiloc: topics.infrastructure
+    description_multiloc: topics.infrastructure_description
+  - &35
+    title_multiloc: topics.waste
+    description_multiloc: topics.waste_description
+  - &34
+    title_multiloc: topics.mobility
+    description_multiloc: topics.mobility_description
+  - title_multiloc: topics.technology
+    description_multiloc: topics.technology_description
+  - title_multiloc: topics.economy
+    description_multiloc: topics.economy_description
+  - title_multiloc: topics.nature
+    description_multiloc: topics.nature_description
+  - title_multiloc: topics.sustainability
+    description_multiloc: topics.sustainability_description
+  - title_multiloc: topics.housing
+    description_multiloc: topics.housing_description
+  - title_multiloc: topics.culture
+    description_multiloc: topics.culture_description
+  - title_multiloc: topics.citizenship
+    description_multiloc: topics.citizenship_description
+  - &37
+    title_multiloc: topics.social
+    description_multiloc: topics.social_description
+  - title_multiloc: topics.health
+    description_multiloc: topics.health_description
+  - title_multiloc: topics.sport
+    description_multiloc: topics.sport_description
+  - title_multiloc: topics.education
+    description_multiloc: topics.education_description
+  page:
+  - &1
+    title_multiloc: pages.infopage_title
+    body_multiloc: pages.infopage_body
+    slug: information
+  - &2
+    title_multiloc: pages.cookie_policy_title
+    body_multiloc: pages.cookie_policy_body
+    slug: cookie-policy
+  - &3
+    title_multiloc: pages.privacy_policy_title
+    body_multiloc: pages.privacy_policy_body
+    slug: privacy-policy
+  - &4
+    title_multiloc: pages.terms_and_conditions_title
+    body_multiloc: pages.terms_and_conditions_body
+    slug: terms-and-conditions
+  page_link:
+  - linking_page_ref: *1
+    linked_page_ref: *2
+    ordering: 1
+  - linking_page_ref: *1
+    linked_page_ref: *3
+    ordering: 2
+  - linking_page_ref: *1
+    linked_page_ref: *4
+    ordering: 3
+  - linking_page_ref: *2
+    linked_page_ref: *1
+    ordering: 1
+  - linking_page_ref: *2
+    linked_page_ref: *3
+    ordering: 2
+  - linking_page_ref: *2
+    linked_page_ref: *4
+    ordering: 3
+  - linking_page_ref: *3
+    linked_page_ref: *1
+    ordering: 1
+  - linking_page_ref: *3
+    linked_page_ref: *2
+    ordering: 2
+  - linking_page_ref: *3
+    linked_page_ref: *4
+    ordering: 3
+  - linking_page_ref: *4
+    linked_page_ref: *1
+    ordering: 1
+  - linking_page_ref: *4
+    linked_page_ref: *2
+    ordering: 2
+  - linking_page_ref: *4
+    linked_page_ref: *3
+    ordering: 3
+  project:
+  - &5
+    title_multiloc: projects.open_idea_project_title
+    description_multiloc: projects.open_idea_project_description
+    internal_role: open_idea_box
+    presentation_mode: card
+    process_type: continuous
+    participation_method: ideation
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    voting_method: unlimited
+    remote_header_bg_url: http://res.cloudinary.com/citizenlabco/image/upload/v1516809200/Idea_cover_qdrwa6.jpg
+  - &6
+    title_multiloc:
+      nl-BE: Luchtvervuiling aanpakken
+    description_multiloc:
+      nl-BE: |
+        <p><a href="https://en.wikipedia.org/wiki/Global_warming">Klimaatopwarming</a> wordt een groten en groter gevaar voor onze samenleving. De gemeente wil dit mee aanpakken door  luchtvervuiling tegen te gaan! </p>
+
+        <p>Je kan dit initiatief ondersteunen door hieronder je ideeën voor te stellen.</p>
+
+        <p><em>Let&#39;s do this!</em></p>
+    remote_header_bg_url: 
+  - &7
+    title_multiloc:
+      nl-BE: Laat het centrum heropleven
+    description_multiloc:
+      nl-BE: "<p>Helaas bezoeken steeds minder mensen het centrum om er hun boodschappen
+        te doen. Dit veroorzaakt heel wat leegstand. Je kunt hier je ideeën delen
+        om het centrum levendiger te maken!</p>\n"
+    remote_header_bg_url: 
+  - &8
+    title_multiloc:
+      nl-BE: Op naar een beter afvalbeheer
+    description_multiloc:
+      nl-BE: "<p>Elk jaar produceert elke bewoner enkele honderden kilo&#39;s afval.
+        Het verminderen van de hoeveelheid afval is een uitdaging voor het milieu
+        die ook een financiële en maatschappelijke impact heeft.</p>\n"
+    remote_header_bg_url: 
+  - &9
+    title_multiloc:
+      nl-BE: Heraanleg centrale park
+    description_multiloc:
+      nl-BE: |
+        <p>We leggen het centrale park aan om het een ontmoetingspunt te maken voor inwoners van alle leeftijden!
+        Wie beter dan jullie, de burgers, om te zeggen wat jullie willen zien in het park?
+        Deel je ideeën hieronder.</p>
+    remote_header_bg_url: 
+  - &10
+    title_multiloc:
+      nl-BE: De digitale kloof dichten
+    description_multiloc:
+      nl-BE: "<p>Het is een verantwoordelijkheid van ons allen om de niet digitaal
+        geletterde te helpen en ondersteunen. Weet jij hoe de gemeente of jijzelf
+        je steentje kan bijdragen? Laat het ons weten!</p>\n"
+    remote_header_bg_url: 
+  project_image:
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1516925813/open_idea_box_gaxtpy.png
+    project_ref: *5
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573730/rsz_fd6e28f288acfdc7a88b43f8bd3181af57f3cf8a_i7y6hj.png
+    project_ref: *6
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573758/Rugby_town_centre-2ay0y80_yza0pu.jpg
+    project_ref: *7
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573788/nature_parcdegerland_ldaniere_860_sdkqs1.jpg
+    project_ref: *8
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573806/IMG_1921_2_wrdghk.jpg
+    project_ref: *9
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573833/featured_lxse5u.jpg
+    project_ref: *10
+  custom_field:
+  - &11
+    resource_type: User
+    key: gender
+    title_multiloc: custom_fields.gender
+    input_type: select
+    required: false
+    ordering: 0
+    enabled: true
+    code: gender
+  - resource_type: User
+    key: birthyear
+    title_multiloc: custom_fields.birthyear
+    input_type: select
+    required: false
+    ordering: 1
+    enabled: true
+    code: birthyear
+  - resource_type: User
+    key: domicile
+    title_multiloc: custom_fields.domicile
+    input_type: select
+    required: false
+    ordering: 2
+    enabled: true
+    code: domicile
+  - &12
+    resource_type: User
+    key: education
+    title_multiloc: custom_fields.education
+    input_type: select
+    required: false
+    ordering: 3
+    enabled: false
+    code: education
+  custom_field_option:
+  - custom_field_ref: *11
+    key: male
+    title_multiloc: custom_field_options.gender.male
+    ordering: 0
+  - custom_field_ref: *11
+    key: female
+    title_multiloc: custom_field_options.gender.female
+    ordering: 1
+  - custom_field_ref: *11
+    key: unspecified
+    title_multiloc: custom_field_options.gender.unspecified
+    ordering: 2
+  - custom_field_ref: *12
+    key: '2'
+    title_multiloc: custom_field_options.education.ISCED2
+    ordering: 0
+  - custom_field_ref: *12
+    key: '3'
+    title_multiloc: custom_field_options.education.ISCED3
+    ordering: 1
+  - custom_field_ref: *12
+    key: '4'
+    title_multiloc: custom_field_options.education.ISCED4
+    ordering: 2
+  - custom_field_ref: *12
+    key: '5'
+    title_multiloc: custom_field_options.education.ISCED5
+    ordering: 3
+  - custom_field_ref: *12
+    key: '6'
+    title_multiloc: custom_field_options.education.ISCED6
+    ordering: 4
+  - custom_field_ref: *12
+    key: '7'
+    title_multiloc: custom_field_options.education.ISCED7
+    ordering: 5
+  - custom_field_ref: *12
+    key: '8'
+    title_multiloc: custom_field_options.education.ISCED8
+    ordering: 6
+  user:
+  - &17
+    email: citizenlab+1@citizenlab.co
+    first_name: Max
+    last_name: Van Vossem
+    locale: nl-BE
+    bio_multiloc:
+      nl-BE: 
+    gender: male
+    birthyear: '1952'
+    domicile: outside
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573977/man-388104_960_720_dfehjy.jpg
+  - &13
+    email: citizenlab+2@citizenlab.co
+    first_name: Annie
+    last_name: Janssens
+    locale: nl-BE
+    bio_multiloc:
+      nl-BE: 
+    gender: female
+    birthyear: '1962'
+    domicile: outside
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573998/smiling-woman_kdsaal.jpg
+  - &18
+    email: citizenlab+3@citizenlab.co
+    first_name: Emma
+    last_name: De Duycker
+    locale: nl-BE
+    bio_multiloc:
+      nl-BE: 
+    gender: female
+    birthyear: '1944'
+    domicile: outside
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515574018/tiamorrison-profile-photo-2-copy_pcnsxm.png
+  - &15
+    email: citizenlab+4@citizenlab.co
+    first_name: Luc
+    last_name: Vertongen
+    locale: nl-BE
+    bio_multiloc:
+      nl-BE: 
+    gender: male
+    birthyear: '1981'
+    domicile: outside
+    password: CitizenLab=123
+    remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515574041/man-838636_960_720_f3i6ki.jpg
+  idea:
+  - &22
+    title_multiloc:
+      nl-BE: Meer fietsenstallingen
+    body_multiloc:
+      nl-BE: "<p>Iedereen weet hoe milieuvriendelijk het is om de fiets te gebruiken
+        om korte afstanden af te leggen. Sommigen worden echter ontmoedigd door het
+        gebrek aan (veilige) fietsenstallingen. Het zou leuk zijn om meer fietsenstallingen
+        te installeren op strategische plekken waar het altijd druk is: het kerkplein,
+        aan het CC, enz.</p>\n"
+    author_ref: *13
+    project_ref: *6
+    idea_status_ref: *14
+    publication_status: published
+  - &23
+    title_multiloc:
+      nl-BE: Organiseer een autoloze zondag
+    body_multiloc:
+      nl-BE: "<p>Het zou mooi zijn om eens per jaar vrij te kunnen fietsen, te voet
+        of met de fiets, zonder je zorgen te maken over auto&#39;s of luchtvervuiling.
+        Het is een geweldige manier om het bewustzijn te vergroten over duurzaam vervoer.
+        Idealiter zou het in het weekend zijn, zodat iedereen ervan kan genieten!
+        In grotere steden zoals Brussel is het alvast steeds een geslaagde zondag.
+        Met de #mobielemaandag die nu opkomt zou het pas een gedurfde zet zijn om
+        dit in de week door te voeren.</p>\n"
+    author_ref: *15
+    project_ref: *6
+    idea_status_ref: *16
+    publication_status: published
+  - &24
+    title_multiloc:
+      nl-BE: Nachtbussen tijdens het weekend
+    body_multiloc:
+      nl-BE: "<p>De bussen van en naar het stadscentrum stoppen net voor middernacht
+        (laatste bus om 11 uur). Er zouden &#39;s nachts meer bussen moeten zijn om
+        mensen aan te moedigen naar de restaurants en bars in het centrum te komen.
+        Het zou de buurt levendiger houden.</p>\n"
+    author_ref: *17
+    project_ref: *7
+    idea_status_ref: *16
+    publication_status: published
+  - &25
+    title_multiloc:
+      nl-BE: "Regenboog zebrapaden \U0001F308"
+    body_multiloc:
+      nl-BE: "<p>Zebrapaden kleuren in de regenboogkleuren is een speelse manier om
+        de holebirechten in de kijker te zettten.</p>\n"
+    author_ref: *18
+    project_ref: *7
+    idea_status_ref: *19
+    publication_status: published
+  - &26
+    title_multiloc:
+      nl-BE: Organiseer een ambachtsmarkt in het weekend
+    body_multiloc:
+      nl-BE: "<p>De winkels die we in het centrum van de stad kunnen vinden zijn vrij
+        gebruikelijk. Om de winkelervaring in het centrum origineler te maken, kunnen
+        we een ambachtelijke markt organiseren met allerlei standjes zoals eten, accessoires,
+        enz. Op deze manier promoten we de lokale ambachten en laten we de inwoners
+        nieuwe manieren ontdekken om boodschappen te doen.</p>\n"
+    author_ref: *17
+    project_ref: *7
+    idea_status_ref: *14
+    publication_status: published
+  - &27
+    title_multiloc:
+      nl-BE: Organiseer leuke bijeenkomsten rond het sorteren van afval
+    body_multiloc:
+      nl-BE: "<p>Als mensen hun afval beter zouden sorteren, zou het afvalbeheer hier
+        veel mee geholpen zijn. Sommige mensen weten soms niet hoe ze het goed moeten
+        doen, dus doen ze het helemaal niet. Een idee zou zijn om leuke sociale bijeenkomsten
+        te organiseren om mensen bewust te maken van hoe belangrijk dit is. Ik denk
+        aan spelletjes, infosessies, activiteiten voor het gezin, enz.</p>\n"
+    author_ref: *13
+    project_ref: *8
+    idea_status_ref: *16
+    publication_status: published
+  - &28
+    title_multiloc:
+      nl-BE: 'Afvalrecuperatie van voedsel '
+    body_multiloc:
+      nl-BE: "<p>We moeten meer mensen aanmoedigen om hun organisch afval en voedsel
+        te sorteren. Vaak gaan etensresten, planten, enz. bij het gewone huishoudaf.
+        Zeker bij mensen die in een appartement leven. Wanneer het opzij zou worden
+        gezet, kan dit nog tot een ander doel dienen zoals bijv. organische meststoffen.
+        Het uitdelen van speciale dozen of tassen zou hierbij kunnen helpen.</p>\n"
+    author_ref: *18
+    project_ref: *8
+    idea_status_ref: *20
+    publication_status: published
+  - &29
+    title_multiloc:
+      nl-BE: Ontmoetingsplaats voor asielhonden
+    body_multiloc:
+      nl-BE: "<p>Dierenwelzijn ligt veel mensen nauw aan het hart. Dierenasiels zitten
+        vol met hondjes die op een baasje wachten maar niet iedereen kan zomaar eentje
+        bij zich in huis nemen. Nu zijn er al veel vrijwillgers die met de beestjes
+        gaan wandelen. Om dit verder aan te wakkeren, zou je in het park een plek
+        kunnen creëren waar de vrijwilligers elke week samen komen. Wanneer voorbijgangers
+        dit zien, zouden ze kunnen aansluiten.</p>\n"
+    author_ref: *15
+    project_ref: *9
+    idea_status_ref: *19
+    publication_status: published
+  - &30
+    title_multiloc:
+      nl-BE: Koffieplek in het park
+    body_multiloc:
+      nl-BE: "<p>Wat het park momenteel mist, is een plek waar mensen elkaar kunnen
+        ontmoeten, wat thee of koffie kunnen drinken en samen kunnen zitten. Het zou
+        meer mensen van alle leeftijden aantrekken, omdat het een ontmoetingsplaats
+        zou kunnen worden. Er zou een kleine foodtruck of chalet moeten zijn met warme
+        dranken en misschien wat snacks, met een paar stoelen en tafels. Misschien
+        kan een van de koffiebars in de buurt deze plek runnen?</p>\n"
+    author_ref: *18
+    project_ref: *9
+    idea_status_ref: *16
+    publication_status: published
+  - &31
+    title_multiloc:
+      nl-BE: Meer computers in de bibliotheek
+    body_multiloc:
+      nl-BE: "<p>Om technologie inclusiever te maken, zouden er meer computers in
+        de openbare bibliotheek moeten zijn. Vandaag zijn er maar twee computers en
+        de plekken zijn vaak bezet. Het zou leuk kunnen zijn om meer monitors of zelfs
+        een kamer in de bibliotheek met alleen computers te hebben. Het kan mensen
+        helpen die thuis geen internet hebben om bijvoorbeeld een baan te zoeken.</p>\n"
+    author_ref: *17
+    project_ref: *10
+    idea_status_ref: *20
+    publication_status: published
+  - &32
+    title_multiloc:
+      nl-BE: Internet trainingen voor senioren
+    body_multiloc:
+      nl-BE: "<p>Het zou interessant zijn om een kleine cursus te geven aan ouderen
+        over hoe ze het internet kunnen gebruiken. Er kan bijvoorbeeld een training
+        zijn voor het verzenden van e-mails, het nieuws online lezen en andere eenvoudige
+        online activiteiten. Als we willen dat onze gemeente moderner en digitaaler
+        wordt, moeten we er op letten dat alle burgers de technologie goed begrijpen.</p>\n"
+    author_ref: *13
+    project_ref: *10
+    idea_status_ref: *21
+    publication_status: published
+  - &33
+    title_multiloc:
+      nl-BE: Een gepersonaliseerde wekelijkse culturele nieuwsbrief
+    body_multiloc:
+      nl-BE: "<p>Er zijn heel wat evenementen maar we zijn ons er niet van bewust
+        omdat we de posters zien of de niet langs de culturele centra passeren. Daarom
+        zou het leuk zijn om een agenda te ontvangen in de inbox: culturele evenementen,
+        infoavonden, enz.</p>\n"
+    author_ref: *17
+    project_ref: *10
+    idea_status_ref: *14
+    publication_status: published
+  vote:
+  - mode: up
+    user_ref: *18
+    votable_ref: *22
+  - mode: up
+    user_ref: *13
+    votable_ref: *22
+  - mode: up
+    user_ref: *15
+    votable_ref: *22
+  - mode: up
+    user_ref: *17
+    votable_ref: *22
+  - mode: up
+    user_ref: *13
+    votable_ref: *23
+  - mode: up
+    user_ref: *18
+    votable_ref: *23
+  - mode: up
+    user_ref: *15
+    votable_ref: *23
+  - mode: up
+    user_ref: *17
+    votable_ref: *23
+  - mode: up
+    user_ref: *15
+    votable_ref: *24
+  - mode: up
+    user_ref: *13
+    votable_ref: *24
+  - mode: up
+    user_ref: *17
+    votable_ref: *24
+  - mode: down
+    user_ref: *18
+    votable_ref: *24
+  - mode: up
+    user_ref: *15
+    votable_ref: *25
+  - mode: up
+    user_ref: *13
+    votable_ref: *25
+  - mode: up
+    user_ref: *17
+    votable_ref: *25
+  - mode: up
+    user_ref: *18
+    votable_ref: *25
+  - mode: up
+    user_ref: *13
+    votable_ref: *26
+  - mode: up
+    user_ref: *15
+    votable_ref: *26
+  - mode: up
+    user_ref: *18
+    votable_ref: *26
+  - mode: up
+    user_ref: *17
+    votable_ref: *26
+  - mode: up
+    user_ref: *15
+    votable_ref: *27
+  - mode: up
+    user_ref: *18
+    votable_ref: *27
+  - mode: up
+    user_ref: *17
+    votable_ref: *27
+  - mode: down
+    user_ref: *13
+    votable_ref: *27
+  - mode: up
+    user_ref: *15
+    votable_ref: *28
+  - mode: up
+    user_ref: *17
+    votable_ref: *28
+  - mode: down
+    user_ref: *13
+    votable_ref: *28
+  - mode: up
+    user_ref: *18
+    votable_ref: *29
+  - mode: up
+    user_ref: *13
+    votable_ref: *29
+  - mode: down
+    user_ref: *17
+    votable_ref: *29
+  - mode: up
+    user_ref: *13
+    votable_ref: *30
+  - mode: up
+    user_ref: *18
+    votable_ref: *30
+  - mode: up
+    user_ref: *15
+    votable_ref: *30
+  - mode: up
+    user_ref: *17
+    votable_ref: *30
+  - mode: up
+    user_ref: *13
+    votable_ref: *31
+  - mode: up
+    user_ref: *18
+    votable_ref: *31
+  - mode: down
+    user_ref: *15
+    votable_ref: *31
+  - mode: down
+    user_ref: *17
+    votable_ref: *31
+  - mode: up
+    user_ref: *13
+    votable_ref: *32
+  - mode: up
+    user_ref: *18
+    votable_ref: *32
+  - mode: up
+    user_ref: *15
+    votable_ref: *32
+  - mode: up
+    user_ref: *17
+    votable_ref: *32
+  - mode: up
+    user_ref: *17
+    votable_ref: *33
+  - mode: down
+    user_ref: *15
+    votable_ref: *33
+  ideas_topic:
+  - idea_ref: *22
+    topic_ref: *34
+  - idea_ref: *23
+    topic_ref: *34
+  - idea_ref: *24
+    topic_ref: *34
+  - idea_ref: *25
+    topic_ref: *34
+  - idea_ref: *27
+    topic_ref: *35
+  - idea_ref: *28
+    topic_ref: *35
+  - idea_ref: *29
+    topic_ref: *36
+  - idea_ref: *30
+    topic_ref: *37
+  idea_image:
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515398/5.5.2_bike_garden_setting_4057_05152012_geoe3e.jpg
+    idea_ref: *22
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515416/empty_city_road_by_spooky_dream-d4avkt3_nhl6yf.jpg
+    idea_ref: *23
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515437/night-bus_l5xc4n.jpg
+    idea_ref: *24
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1526913588/DGsM8mIWsAAS3_T_ag0r14.jpg
+    idea_ref: *25
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515469/norwich-market-city-centre-street-scene-in-the-evening-norfolk-england-D0KXFH_bixl7v.jpg
+    idea_ref: *26
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515489/1200px-NEA_recycling_bins_2C_Orchard_Road_pwpncj.jpg
+    idea_ref: *27
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515509/organic-waste_g0nyf1.jpg
+    idea_ref: *28
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515527/dans-un-premier-temps-il-s-agira-de-rappels-a-l-ordre_2245789_667x333_i86nvl.jpg
+    idea_ref: *29
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515547/4015932979_f495f4e5cf_z_o1cjo7.jpg
+    idea_ref: *30
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515565/zzzfirstfloor_zffpzz.jpg
+    idea_ref: *31
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515588/hqdefault_rltrx8.jpg
+    idea_ref: *32
+  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515515609/emailing1_lv8sxz.jpg
+    idea_ref: *33
+  comment:
+  - body_multiloc:
+      nl-BE: "<p>Top idee, ben ik helemaal mee akkoord!</p>\n"
+    author_ref: *13
+    idea_ref: *22
+    parent_ref: 
+  - body_multiloc:
+      nl-BE: "<p>Ik heb je wel nog nooit op een fiets gezien ;-)</p>\n"
+    author_ref: *17
+    idea_ref: *22
+    parent_ref: 
+  - body_multiloc:
+      nl-BE: "<p>Goed idee maar het moet verder gaan dan dit. Ik vind ook dat er afsluitbare
+        fietsboxen moeten komen.</p>\n"
+    author_ref: *15
+    idea_ref: *22
+    parent_ref: 
+  - body_multiloc:
+      nl-BE: "<p>En wat met diegene die in het weekend werken?</p>\n"
+    author_ref: *17
+    idea_ref: *23
+    parent_ref: 
+  - body_multiloc:
+      nl-BE: "<p>Het is ook een goede oplossing voor ouders met tienerkinderen. Dan
+        hoeven we ze niet &#39;s avonds laat gaan oppikken.</p>\n"
+    author_ref: *13
+    idea_ref: *24
+    parent_ref: 
+  - body_multiloc:
+      nl-BE: "<p>Het is een heel goede manier om lokale ambachtslui in de kijker te
+        zetten!</p>\n"
+    author_ref: *18
+    idea_ref: *26
+    parent_ref: 
+  - body_multiloc:
+      nl-BE: "<p>Leuk idee, maar het zou een soort evenement moeten zijn dat echt
+        aanslaat, zoals een familiedag?</p>\n"
+    author_ref: *18
+    idea_ref: *27
+    parent_ref: 
+  - body_multiloc:
+      nl-BE: "<p>Het is een heel goed idee. Ik ben dit zelf beginnen doen in mijn
+        tuin. Maar ik weet dat niet iedereen dit kan of dat ze niet eens weten dat
+        het mogelijk is. Het zou een goede zaak zijn om hierrond bewustmaking te genereren.</p>\n"
+    author_ref: *13
+    idea_ref: *28
+    parent_ref: 
+  - body_multiloc:
+      nl-BE: "<p>Ik vind het een heel goed idee. Zal mensen inspireren om met asielhonden
+        te gaan wandelen of er misschien zelfs eentje te adopteren.</p>\n"
+    author_ref: *17
+    idea_ref: *29
+    parent_ref: 
+  event:
+  - title_multiloc:
+      nl-BE: Kroegentocht
+    description_multiloc:
+      nl-BE: |
+        <p>Pak je fiets en ga met ons op een kroegentocht. Inschrijving kost 15 €, alle drankjes zijn gratis!</p>
+
+        <p>Geen dieren toegelaten.</p>
+    location_multiloc:
+      nl-BE: Veel verschillende cafés, we vertrekken vanop het kerkplein.
+    project_ref: *6
+    start_at: 2017-06-29
+    end_at: 2017-06-30
+  - title_multiloc:
+      nl-BE: Brunch op zondag
+    description_multiloc:
+      nl-BE: "<p>Waarom niet wat ideeën te bespreken bij een zondagse brunch?</p>\n"
+    location_multiloc:
+      nl-BE: De brasserie op het centrale plein
+    project_ref: *7
+    start_at: 2018-04-14
+    end_at: 2018-04-15
+  - title_multiloc:
+      nl-BE: Wandeling door het park
+    description_multiloc:
+      nl-BE: "<p>Welke betere manier om de toekomst van het park te verbeelden dan
+        er door te wandelen? Het is ook een leuke manier om alle natuurliefhebbers
+        te ontmoeten die bij dit project betrokken zijn!</p>\n"
+    location_multiloc:
+      nl-BE: Toegangspoort van het park
+    project_ref: *9
+    start_at: 2019-01-08
+    end_at: 2019-01-09
+  phase:
+  - title_multiloc:
+      nl-BE: Ideeën verzamelen
+    description_multiloc:
+      nl-BE: "<p>Deel je ideeën om de luchtvervuiling aan te pakken!</p>\n"
+    project_ref: *6
+    start_at: 2018-05-02
+    end_at: 2018-05-26
+  - title_multiloc:
+      nl-BE: Stemmen maar!
+    description_multiloc:
+      nl-BE: "<p>Wat zijn de populairste voorstellen? Geef ze een stem voor of tegen.</p>\n"
+    project_ref: *6
+    start_at: 2018-05-27
+    end_at: 2018-06-17
+  - title_multiloc:
+      nl-BE: Presentatie van de voorstellen op de gemeenteraad
+    description_multiloc:
+      nl-BE: "<p>De populairste voorstellen worden ingepland op de gemeenteraad en
+        zullen gepresenteerd worden door de inwoners!</p>\n"
+    project_ref: *6
+    start_at: 2018-06-18
+    end_at: 2018-06-20
+  - title_multiloc:
+      nl-BE: Implementatie
+    description_multiloc:
+      nl-BE: "<p>Na deliberatie zullen de gekozen ideeën meteen worden geïmplementeerd.</p>\n"
+    project_ref: *6
+    start_at: 2018-06-21
+    end_at: 2018-07-01
+  - title_multiloc:
+      nl-BE: Ideeën verzamelen
+    description_multiloc:
+      nl-BE: "<p>Deel je ideeën om de leefbaarheid in het centrum aan te pakken!</p>\n"
+    project_ref: *7
+    start_at: 2018-03-06
+    end_at: 2018-03-25
+  - title_multiloc:
+      nl-BE: Stemmen maar!
+    description_multiloc:
+      nl-BE: "<p>Wat zijn de populairste voorstellen? Geef ze een stem voor of tegen.</p>\n"
+    project_ref: *7
+    start_at: 2018-03-26
+    end_at: 2018-04-06
+  - title_multiloc:
+      nl-BE: Presentatie van de voorstellen op de gemeenteraad
+    description_multiloc:
+      nl-BE: "<p>De populairste voorstellen worden ingepland op de gemeenteraad en
+        zullen gepresenteerd worden door de inwoners!</p>\n"
+    project_ref: *7
+    start_at: 2018-04-07
+    end_at: 2018-04-24
+  - title_multiloc:
+      nl-BE: Implementatie
+    description_multiloc:
+      nl-BE: "<p>Na deliberatie zullen de gekozen ideeën meteen worden geïmplementeerd.</p>\n"
+    project_ref: *7
+    start_at: 2018-04-25
+    end_at: 2018-05-04
+  - title_multiloc:
+      nl-BE: Ideeën verzamelen
+    description_multiloc:
+      nl-BE: "<p>Deel je ideeën om het afvalbeheer te verbeteren!</p>\n"
+    project_ref: *8
+    start_at: 2018-03-22
+    end_at: 2018-03-29
+  - title_multiloc:
+      nl-BE: Stemmen maar!
+    description_multiloc:
+      nl-BE: "<p>Wat zijn de populairste voorstellen? Geef ze een stem voor of tegen.</p>\n"
+    project_ref: *8
+    start_at: 2018-03-30
+    end_at: 2018-04-09
+  - title_multiloc:
+      nl-BE: Presentatie van de voorstellen op de gemeenteraad
+    description_multiloc:
+      nl-BE: "<p>De populairste voorstellen worden ingepland op de gemeenteraad en
+        zullen gepresenteerd worden door de inwoners!</p>\n"
+    project_ref: *8
+    start_at: 2018-04-10
+    end_at: 2018-04-11
+  - title_multiloc:
+      nl-BE: Implementatie
+    description_multiloc:
+      nl-BE: "<p>Na deliberatie zullen de gekozen ideeën meteen worden geïmplementeerd.</p>\n"
+    project_ref: *8
+    start_at: 2018-04-12
+    end_at: 2018-04-19
+  - title_multiloc:
+      nl-BE: Ideeën verzamelen
+    description_multiloc:
+      nl-BE: "<p>Deel je ideeën voor het park!</p>\n"
+    project_ref: *9
+    start_at: 2018-02-21
+    end_at: 2018-03-13
+  - title_multiloc:
+      nl-BE: Stemmen maar!
+    description_multiloc:
+      nl-BE: "<p>Wat zijn de populairste voorstellen? Geef ze een stem voor of tegen.</p>\n"
+    project_ref: *9
+    start_at: 2018-03-14
+    end_at: 2018-04-03
+  - title_multiloc:
+      nl-BE: Analyse
+    description_multiloc:
+      nl-BE: "<p>De populairste voorstellen worden geanalyseerd op basis van enkele
+        criteria.</p>\n"
+    project_ref: *9
+    start_at: 2018-04-04
+    end_at: 2018-04-11
+  - title_multiloc:
+      nl-BE: Start van de heraanleg
+    description_multiloc:
+      nl-BE: "<p>De populairste voorstellen worden opgenomen in de plannen.</p>\n"
+    project_ref: *9
+    start_at: 2018-04-12
+    end_at: 2018-05-01
+  - title_multiloc:
+      nl-BE: Ideeën verzamelen
+    description_multiloc:
+      nl-BE: "<p>Deel je ideeën om de digitale kloof te dichten!</p>\n"
+    project_ref: *10
+    start_at: 2018-03-19
+    end_at: 2018-04-09
+  - title_multiloc:
+      nl-BE: Stemmen maar!
+    description_multiloc:
+      nl-BE: "<p>Wat zijn de populairste voorstellen? Geef ze een stem voor of tegen.</p>\n"
+    project_ref: *10
+    start_at: 2018-04-10
+    end_at: 2018-04-17
+  - title_multiloc:
+      nl-BE: Presentatie van de voorstellen op de gemeenteraad
+    description_multiloc:
+      nl-BE: "<p>De populairste voorstellen worden ingepland op de gemeenteraad en
+        zullen gepresenteerd worden door de inwoners!</p>\n"
+    project_ref: *10
+    start_at: 2018-04-18
+    end_at: 2018-04-23
+  - title_multiloc:
+      nl-BE: Implementatie
+    description_multiloc:
+      nl-BE: "<p>Na deliberatie zullen de gekozen ideeën meteen worden geïmplementeerd.</p>\n"
+    project_ref: *10
+    start_at: 2018-04-24
+    end_at: 2018-04-29

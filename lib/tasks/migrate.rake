@@ -17,12 +17,20 @@ namespace :migrate do
     db_user = migration_settings['db_user'] || 'citizenlab'
     locales_mapping = { 
       'en' => 'en', 
-      'nl' => 'nl', 
-      'nl-BE' => 'nl', 
-      'fr' => 'fr', 
-      'de' => 'de',  
-      'da' => 'da',
-      'no' => 'no'
+      'en-GB' => 'en-GB',
+      'en-US' => 'en-US',
+      'en-CA' => 'en-CA',
+      'nl' => 'nl-NL', 
+      'nl-BE' => 'nl-BE', 
+      'fr' => 'fr-FR', 
+      'fr-FR' => 'fr-FR',
+      'fr-BE' => 'fr-BE',
+      'de' => 'de-DE',  
+      'de-DE' => 'de-DE',
+      'da' => 'da-DK',
+      'da-DK' => 'da-DK',
+      'no' => 'nb-NO',
+      'nb-NO' => 'nb-NO'
     } 
     topics_mapping = migration_settings['topics_mapping'] || {}
     idea_statuses_mapping = migration_settings['idea_statuses_mapping'] || {}

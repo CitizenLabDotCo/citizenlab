@@ -16,7 +16,7 @@ describe InvitesService do
     context do
       let!(:groups) { create_list(:group, 3) }
       let(:users) { build_list(:user, 10)}
-      let(:hash_array) { users.map do |user|
+      let(:hash_array) { (users.map do |user|
         {
           email: user.email,
           first_name: rand(3) == 0 ? user.first_name : nil,
@@ -25,7 +25,7 @@ describe InvitesService do
           admin: rand(5) == 0 ? true : nil,
           groups: rand(3) == 0 ? rand(3).times.map{Group.offset(rand(Group.count)).first.title_multiloc.values.first}.join(',') : nil
         }
-      end}
+      end + [{},{},{}]).shuffle }
       let(:inviter) { create(:user) }
 
       it "correctly creates invites when all is fine" do
@@ -34,7 +34,7 @@ describe InvitesService do
     end
 
     context "with file that exceeds maximum supported number of invites" do
-      let(:hash_array) { (InvitesService::MAX_INVITES+1).times.each.map{{}} }
+      let(:hash_array) { (InvitesService::MAX_INVITES+1).times.each.map{ {first_name: 'Jezus'} } }
 
       it "fails with max_invites_limit_exceeded error" do
         expect{ service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
