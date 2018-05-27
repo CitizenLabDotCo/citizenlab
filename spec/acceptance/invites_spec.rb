@@ -171,7 +171,7 @@ resource "Invites" do
         let(:users) { build_list(:user, 6)}
         let(:hash_array) { users.map.with_index do |user, i|
           {
-            email: rand(5) == 0 ? nil : user.email,
+            email: user.email,
             first_name: rand(3) == 0 ? user.first_name : nil,
             last_name: rand(3) == 0 ? user.last_name : nil,
             language: i == 0 ? 'nl-NL' : nil,
