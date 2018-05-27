@@ -1,6 +1,11 @@
 import React from 'react';
 import { get, isString, isEmpty, omitBy, isNil, isEqual } from 'lodash';
-import { BehaviorSubject, Subject, Subscription, Observable } from 'rxjs/Rx';
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
+import { merge } from 'rxjs/observable/merge';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { map, startWith, distinctUntilChanged, tap, debounceTime, mergeScan, switchMap } from 'rxjs/operators';
 import { ideasStream, IIdeaData, IdeaPublicationStatus } from 'services/ideas';
 import shallowCompare from 'utils/shallowCompare';
 import { getPageNumberFromUrl, getSortAttribute, getSortDirection, SortDirection } from 'utils/paginationUtils';
@@ -120,60 +125,81 @@ export default class GetIdeas extends React.Component<Props, State> {
   componentDidMount() {
     const queryParameters = this.getQueryParameters(this.state, this.props);
     const startAccumulatorValue: IAccumulator = { queryParameters, ideas: null, hasMore: false };
-    const queryParametersInput$ = this.queryParameters$.distinctUntilChanged((x, y) => shallowCompare(x, y));
-    const queryParametersSearch$ = queryParametersInput$.map(queryParameters => queryParameters.search).distinctUntilChanged();
-    const search$ = Observable.merge(
-      this.search$.do(searchValue => this.setState({ searchValue })).debounceTime(500),
-      queryParametersSearch$.do(searchValue => this.setState({ searchValue }))
-    )
-    .startWith(queryParameters.search)
-    .map(searchValue => ((isString(searchValue) && !isEmpty(searchValue)) ? searchValue : undefined))
-    .distinctUntilChanged();
+    const queryParametersInput$ = this.queryParameters$.pipe(
+      distinctUntilChanged((x, y) => shallowCompare(x, y))
+    );
+    const queryParametersSearch$ = queryParametersInput$.pipe(
+      map(queryParameters => queryParameters.search),
+      distinctUntilChanged()
+    );
+    const search$ = merge(
+      this.search$.pipe(
+        tap(searchValue => this.setState({ searchValue })),
+        debounceTime(500)
+      ),
+      queryParametersSearch$.pipe(
+        tap(searchValue => this.setState({ searchValue }))
+      )
+    ).pipe(
+      startWith(queryParameters.search),
+      map(searchValue => ((isString(searchValue) && !isEmpty(searchValue)) ? searchValue : undefined)),
+      distinctUntilChanged()
+    );
 
-    const queryParametersOutput$ = Observable.combineLatest(
+    const queryParametersOutput$ = combineLatest(
       queryParametersInput$,
       search$
-    ).map(([queryParameters, search]) => ({ ...queryParameters, search }));
+    ).pipe(
+      map(([queryParameters, search]) => ({ ...queryParameters, search }))
+    );
 
     if (!this.props.type || this.props.type === 'load-more') {
       this.subscriptions = [
-        queryParametersOutput$.mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
-          const isLoadingMore = (acc.queryParameters['page[number]'] !== queryParameters['page[number]']);
-          const pageNumber = (isLoadingMore ? queryParameters['page[number]'] : 1);
-          const newQueryParameters: IQueryParameters = {
-            ...queryParameters,
-            'page[number]': pageNumber
-          };
-
-          this.setState({
-            querying: !isLoadingMore,
-            loadingMore: isLoadingMore,
-          });
-
-          return ideasStream({ queryParameters: newQueryParameters }).observable.map((ideas) => {
-            const selfLink = get(ideas, 'links.self');
-            const lastLink = get(ideas, 'links.last');
-            const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
-
-            return {
-              queryParameters,
-              hasMore,
-              ideas: (!isLoadingMore ? ideas.data : [...(acc.ideas || []), ...ideas.data])
+        queryParametersOutput$.pipe(
+          mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
+            const isLoadingMore = (acc.queryParameters['page[number]'] !== queryParameters['page[number]']);
+            const pageNumber = (isLoadingMore ? queryParameters['page[number]'] : 1);
+            const newQueryParameters: IQueryParameters = {
+              ...queryParameters,
+              'page[number]': pageNumber
             };
-          });
-        }, startAccumulatorValue).subscribe(({ ideas, queryParameters, hasMore }) => {
+
+            this.setState({
+              querying: !isLoadingMore,
+              loadingMore: isLoadingMore,
+            });
+
+            return ideasStream({ queryParameters: newQueryParameters }).observable.pipe(
+              map((ideas) => {
+                const selfLink = get(ideas, 'links.self');
+                const lastLink = get(ideas, 'links.last');
+                const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
+
+                return {
+                  queryParameters,
+                  hasMore,
+                  ideas: (!isLoadingMore ? ideas.data : [...(acc.ideas || []), ...ideas.data])
+                };
+              })
+            );
+          }, startAccumulatorValue)
+        ).subscribe(({ ideas, queryParameters, hasMore }) => {
           this.setState({ queryParameters, hasMore, ideasList: ideas, querying: false, loadingMore: false });
         })
       ];
     } else {
       this.subscriptions = [
-        queryParametersOutput$.switchMap((queryParameters) => {
-          const oldPageNumber = this.state.queryParameters['page[number]'];
-          const newPageNumber = queryParameters['page[number]'];
-          queryParameters['page[number]'] = (newPageNumber !== oldPageNumber ? newPageNumber : 1);
+        queryParametersOutput$.pipe(
+          switchMap((queryParameters) => {
+            const oldPageNumber = this.state.queryParameters['page[number]'];
+            const newPageNumber = queryParameters['page[number]'];
+            queryParameters['page[number]'] = (newPageNumber !== oldPageNumber ? newPageNumber : 1);
 
-          return ideasStream({ queryParameters, cacheStream: false }).observable.map(ideas => ({ queryParameters, ideas }));
-        })
+            return ideasStream({ queryParameters, cacheStream: false }).observable.pipe(
+              map(ideas => ({ queryParameters, ideas }))
+            );
+          })
+        )
         .subscribe(({ ideas, queryParameters }) => {
           this.setState({
             queryParameters,

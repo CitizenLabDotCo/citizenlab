@@ -1,5 +1,9 @@
-import * as React from 'react';
-import { Subscription, BehaviorSubject, Observable } from 'rxjs/Rx';
+import React from 'react';
+import { isString } from 'lodash';
+import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 
 // router
 import { Link, browserHistory } from 'react-router';
@@ -81,7 +85,7 @@ class Author extends React.PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
       author: null
     };
@@ -95,14 +99,10 @@ class Author extends React.PureComponent<Props, State> {
     this.authorId$.next(authorId);
 
     this.subscriptions = [
-      this.authorId$
-        .distinctUntilChanged()
-        .filter(authorId => authorId !== null)
-        .switchMap((authorId: string | null) => {
-          if (authorId === null) return Observable.of(null);
-          const author$ = userByIdStream(authorId).observable;
-          return author$;
-        }).subscribe((author) => {
+      this.authorId$.pipe(
+        distinctUntilChanged(),
+        switchMap((authorId) => isString(authorId) ? userByIdStream(authorId).observable : of(null))
+      ).subscribe((author) => {
           this.setState({ author });
         })
     ];

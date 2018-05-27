@@ -1,8 +1,12 @@
 import React from 'react';
+import { isString } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
-import { Subscription, BehaviorSubject, Observable } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 import shallowCompare from 'utils/shallowCompare';
-import { IIdea, IIdeaData, ideaByIdStream, ideaBySlugStream } from 'services/ideas';
+import { IIdeaData, ideaByIdStream, ideaBySlugStream } from 'services/ideas';
 
 interface InputProps {
   id?: string | null;
@@ -43,23 +47,22 @@ export default class GetIdea extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ id, slug });
 
     this.subscriptions = [
-      this.inputProps$
-        .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .do(() => resetOnChange && this.setState({ idea: undefined }))
-        .switchMap(({ id, slug }) => {
-          let idea$: Observable<IIdea | null | Error> = Observable.of(null);
-
-          if (id) {
-            idea$ = ideaByIdStream(id).observable;
-          } else if (slug) {
-            idea$ = ideaBySlugStream(slug).observable;
+      this.inputProps$.pipe(
+        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+        tap(() => resetOnChange && this.setState({ idea: undefined })),
+        switchMap(({ id, slug }) => {
+          if (isString(id)) {
+            return ideaByIdStream(id).observable;
+          } else if (isString(slug)) {
+            return ideaBySlugStream(slug).observable;
           }
 
-          return idea$;
+          return of(null);
         })
-        .subscribe((idea) => {
-          this.setState({ idea: !isNilOrError(idea) ? idea.data : idea });
-        })
+      )
+      .subscribe((idea) => {
+        this.setState({ idea: !isNilOrError(idea) ? idea.data : idea });
+      })
     ];
   }
 

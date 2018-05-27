@@ -1,5 +1,6 @@
 import React from 'react';
-import { get, isUndefined } from 'lodash';
+import get from 'lodash/get';
+import isUndefined from 'lodash/isUndefined';
 import { isNilOrError } from 'utils/helperUtils';
 import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 import { adopt } from 'react-adopt';
