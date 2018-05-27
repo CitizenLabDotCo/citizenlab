@@ -3,7 +3,7 @@ require 'yaml'
 require 'securerandom'
 require 'redcarpet'
 
-### rake tenant_template:csv_to_yml['tmp','fr'] ###
+### rake tenant_template:csv_to_yml['tmp','fr-BE fr-FR'] ###
 
 
 namespace :tenant_template do
