@@ -5,7 +5,7 @@ describe TimelineService do
 
   before do
     settings = Tenant.current.settings
-    settings['core']['locales'] = ['fr','en','nl']
+    settings['core']['locales'] = ['fr','en','nl-BE']
     Tenant.current.update(settings: settings)
   end
 

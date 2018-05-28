@@ -5,6 +5,27 @@ describe CustomFieldService do
   let(:metaschema) { JSON::Validator.validator_for_name("draft4").metaschema }
   let(:locale) { "en" }
 
+  describe "fields_to_json_schema_multiloc" do
+
+    let (:title_multiloc) {{'en' => 'size', 'nl-NL' => 'grootte'}}
+    let (:description_multiloc) {{'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?'}}
+    let(:fields) {[
+      create(:custom_field, 
+        key: 'field1', 
+        input_type: 'text', 
+        title_multiloc: title_multiloc,
+        description_multiloc: description_multiloc
+      )
+    ]}
+    it "creates localized schemas with titles and descriptions for all languages" do
+      schema = service.fields_to_json_schema_multiloc(Tenant.current, fields)
+      expect(schema['en'][:properties]['field1'][:title]).to eq title_multiloc['en']
+      expect(schema['nl-NL'][:properties]['field1'][:title]).to eq title_multiloc['nl-NL']
+      expect(schema['en'][:properties]['field1'][:description]).to eq description_multiloc['en']
+      expect(schema['nl-NL'][:properties]['field1'][:description]).to eq description_multiloc['nl-NL']
+    end
+  end
+
   describe "fields_to_json_schema" do
 
     it "creates the valid empty schema on empty fields" do
