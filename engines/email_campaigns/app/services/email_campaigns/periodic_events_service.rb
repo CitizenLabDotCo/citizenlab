@@ -1,6 +1,20 @@
 module EmailCampaigns
   class PeriodicEventsService
 
+    def periodic_event campaign, user_id, payload
+      event = {
+        event: "Periodic email for #{campaign.gsub '_', ' '}",
+        user_id: user_id,
+        timestamp: Time.now,
+        properties: {
+          source: 'cl2-back'
+          payload: payload
+        }
+      }
+      add_tenant_properties event[:properties], Tenant.current
+      event
+    end
+
     def activity_score idea, since
       recent_activity = 1 + activity_count(idea, since=since)
       if idea.published_at
