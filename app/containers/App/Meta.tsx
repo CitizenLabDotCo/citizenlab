@@ -62,24 +62,20 @@ class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
       const { formatMessage } = this.props.intl;
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
       const image = currentTenant.data.attributes.header_bg.large || '';
-      const metaTitleMultiLoc = currentTenant.data.attributes.settings.core.meta_title;
       const organizationNameMultiLoc = currentTenant.data.attributes.settings.core.organization_name;
-      const metaDescriptionMultiLoc = currentTenant.data.attributes.settings.core.meta_description;
-      let metaTitle = getLocalized(metaTitleMultiLoc, locale, currentTenantLocales);
       const organizationName = getLocalized(organizationNameMultiLoc, locale, currentTenantLocales);
-      let metaDescription = getLocalized(metaDescriptionMultiLoc, locale, currentTenantLocales);
       const url = `https://${currentTenant.data.attributes.host}`;
       const fbAppId = currentTenant.data.attributes.settings.facebook_login && currentTenant.data.attributes.settings.facebook_login.app_id;
       const currentTenantName = getLocalized(organizationNameMultiLoc, locale, currentTenantLocales);
-      const headerTitleMultiLoc = currentTenant.data.attributes.settings.core.header_title;
-      const headerSloganMultiLoc = currentTenant.data.attributes.settings.core.header_slogan;
-      const currentTenantHeaderTitle = (headerTitleMultiLoc && headerTitleMultiLoc[locale]);
-      const currentTenantHeaderSlogan = (headerSloganMultiLoc && headerSloganMultiLoc[locale]);
-      const helmetTitle = (currentTenantHeaderTitle ? currentTenantHeaderTitle : formatMessage(messages.helmetTitle, { name: currentTenantName }));
-      const helmetDescription = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : formatMessage(messages.helmetDescription));
 
-      metaTitle = (metaTitle || helmetTitle);
-      metaDescription = (metaDescription || helmetDescription);
+
+      const metaTitleMultiLoc = currentTenant.data.attributes.settings.core.meta_title;
+      let metaTitle = getLocalized(metaTitleMultiLoc, locale, currentTenantLocales, 50);
+      metaTitle = (metaTitle || formatMessage(messages.helmetTitle, { name: currentTenantName }));
+
+      const metaDescriptionMultiLoc = currentTenant.data.attributes.settings.core.meta_description;
+      let metaDescription = getLocalized(metaDescriptionMultiLoc, locale, currentTenantLocales);
+      metaDescription = (metaDescription || formatMessage(messages.helmetDescription, { name: currentTenantName }));
 
       const lifecycleStage = currentTenant.data.attributes.settings.core.lifecycle_stage;
       const blockIndexing = lifecycleStage === 'demo' || lifecycleStage === 'not_applicable';
@@ -88,6 +84,7 @@ class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
         <Helmet>
           {blockIndexing && <meta name="robots" content="noindex" />}
           <title>{metaTitle}</title>
+          <meta name="title" content={metaTitle} />
           <meta name="description" content={metaDescription} />
           <meta property="og:title" content={metaTitle} />
           <meta property="og:description" content={metaDescription} />

@@ -6,6 +6,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  idea: {
+    id: 'app.containers.IdeasShow.idea',
+    defaultMessage: 'Idea',
+  },
   loadVotesError: {
     id: 'app.containers.IdeasShow.loadVotesError',
     defaultMessage: 'Voting is not currently available',

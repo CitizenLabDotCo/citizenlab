@@ -16,6 +16,9 @@ import { stripHtml } from 'utils/textUtils';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
+import messages from './messages';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 interface InputProps {
   projectSlug: string;
@@ -32,19 +35,21 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class Meta extends React.PureComponent<Props, State> {
+class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
   render() {
     const { locale, tenantLocales, project, projectImages } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(project)) {
-      const title = getLocalized(project.attributes.title_multiloc, locale, tenantLocales);
-      const description = stripHtml(getLocalized(project.attributes.description_multiloc, locale, tenantLocales));
+      const { formatMessage } = this.props.intl;
+      const title = `${formatMessage(messages.project)} • ${getLocalized(project.attributes.title_multiloc, locale, tenantLocales, 50)}`;
+      const description = stripHtml(getLocalized(project.attributes.description_multiloc, locale, tenantLocales), 250);
       const image = (!isNilOrError(projectImages) && projectImages && projectImages.length > 0 ? projectImages[0].attributes.versions.large : null);
       const url = window.location.href;
 
       return (
         <Helmet>
           <title>{title}</title>
+          <meta name="title" content={title}/>
           <meta name="description" content={description} />
           <meta property="og:title" content={title} />
           <meta property="og:description" content={description} />
@@ -66,8 +71,10 @@ const Data = adopt<DataProps, InputProps>({
   projectImages: ({ project, render }) => <GetProjectImages projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetProjectImages>
 });
 
+const MetaWithHoc = injectIntl<Props>(Meta);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <Meta {...inputProps} {...dataProps} />}
+    {dataProps => <MetaWithHoc {...inputProps} {...dataProps} />}
   </Data>
 );
