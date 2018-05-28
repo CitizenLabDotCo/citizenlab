@@ -144,7 +144,8 @@ export const globalCss = `
     box-shadow: none;
   }
 
-  .ui {
+  .ui,
+  h1, h2, h3, h4, h5, h6 {
     font-family: 'visuelt', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   }
 `;

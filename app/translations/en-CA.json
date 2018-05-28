@@ -95,6 +95,8 @@
   "app.components.admin.IdeaManager.title": "",
   "app.components.admin.IdeaManager.topicsTab": "",
   "app.components.admin.IdeaManager.up": "",
+  "app.components.avatar.avatarAltText": "",
+  "app.components.avatar.noAvatarAltText": "",
   "app.containers.Admin.User.admin": "",
   "app.containers.Admin.User.adminLabel": "",
   "app.containers.Admin.User.confirmDelete": "",
