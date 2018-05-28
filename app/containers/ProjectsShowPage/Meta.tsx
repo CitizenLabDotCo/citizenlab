@@ -10,6 +10,7 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // utils
 import { stripHtml } from 'utils/textUtils';
@@ -29,46 +30,49 @@ interface DataProps {
   tenantLocales: GetTenantLocalesChildProps;
   project: GetProjectChildProps;
   projectImages: GetProjectImagesChildProps;
+  authUser: GetAuthUserChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
-interface State {}
+const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales, project, projectImages, authUser, intl }) => {
 
-class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
-  render() {
-    const { locale, tenantLocales, project, projectImages } = this.props;
+  if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(project)) {
+    const { formatMessage } = intl;
+    const metaTitle = formatMessage(messages.metaTitle, { projectTitle: getLocalized(project.attributes.title_multiloc, locale, tenantLocales, 50) });
+    const description = stripHtml(getLocalized(project.attributes.description_multiloc, locale, tenantLocales), 250);
+    const image = (!isNilOrError(projectImages) && projectImages && projectImages.length > 0 ? projectImages[0].attributes.versions.large : null);
+    const url = window.location.href;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(project)) {
-      const { formatMessage } = this.props.intl;
-      const title = formatMessage(messages.helmetTitle, { projectTitle: getLocalized(project.attributes.title_multiloc, locale, tenantLocales, 50) });
-      const description = stripHtml(getLocalized(project.attributes.description_multiloc, locale, tenantLocales), 250);
-      const image = (!isNilOrError(projectImages) && projectImages && projectImages.length > 0 ? projectImages[0].attributes.versions.large : null);
-      const url = window.location.href;
-
-      return (
-        <Helmet>
-          <title>{title}</title>
-          <meta name="title" content={title}/>
-          <meta name="description" content={description} />
-          <meta property="og:title" content={title} />
-          <meta property="og:description" content={description} />
-          {image && <meta property="og:image" content={image} />}
-          <meta property="og:url" content={url} />
-          <meta name="twitter:card" content="summary_large_image" />
-        </Helmet>
-      );
-    }
-
-    return null;
+    return (
+      <Helmet>
+        <title>
+          {`
+              ${(authUser && authUser.attributes.unread_notifications) ? `(${authUser.attributes.unread_notifications}) ` : ''}
+              ${metaTitle}`
+          }
+        </title>
+        <meta name="title" content={metaTitle} />
+        <meta name="description" content={description} />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={description} />
+        {image && <meta property="og:image" content={image} />}
+        <meta property="og:url" content={url} />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
+    );
   }
-}
+
+  return null;
+
+};
 
 const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale/>,
-  tenantLocales: <GetTenantLocales/>,
+  locale: <GetLocale />,
+  tenantLocales: <GetTenantLocales />,
   project: ({ projectSlug, render }) => <GetProject slug={projectSlug}>{render}</GetProject>,
-  projectImages: ({ project, render }) => <GetProjectImages projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetProjectImages>
+  projectImages: ({ project, render }) => <GetProjectImages projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetProjectImages>,
+  authUser: <GetAuthUser />,
 });
 
 const MetaWithHoc = injectIntl<Props>(Meta);

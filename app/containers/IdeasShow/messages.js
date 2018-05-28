@@ -134,8 +134,8 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.adminCommentDeletionConfirmButton',
     defaultMessage: `Delete this comment`,
   },
-  helmetTitle: {
-    id: 'app.containers.IdeasShow.helmetTitle',
+  metaTitle: {
+    id: 'app.containers.IdeasShow.metaTitle',
     defaultMessage: 'Idea  • {ideaTitle}',
   },
   byAuthorName: {

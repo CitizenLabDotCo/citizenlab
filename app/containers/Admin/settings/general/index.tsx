@@ -13,7 +13,6 @@ import messages from '../messages';
 // components
 import InputMultiloc from 'components/UI/InputMultiloc';
 import Label from 'components/UI/Label';
-import TextAreaMultiloc from 'components/UI/TextAreaMultiloc';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
