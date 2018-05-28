@@ -1,6 +1,8 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { API, Multiloc, Locale } from 'typings';
+import { localeStream } from 'services/locale';
+import { getLocalized } from 'utils/i18n';
 
 export const currentTenantApiEndpoint = `${API_PATH}/tenants/current`;
 
@@ -94,4 +96,11 @@ export async function updateTenant(tenantId: string, object: IUpdatedTenantPrope
   const tenant = await streams.update<ITenant>(`${API_PATH}/tenants/${tenantId}`, tenantId, { tenant: object });
   await currentTenantStream().fetch();
   return tenant;
+}
+
+export async function getLocalizedTenantName(): Promise<string> {
+  const locale = await localeStream().observable.first().toPromise().then((locale) => locale);
+  const tenant = await currentTenantStream().observable.first().toPromise().then(tenant => tenant.data);
+
+  return getLocalized(tenant.attributes.settings.core.organization_name, locale, tenant.attributes.settings.core.locales);
 }
