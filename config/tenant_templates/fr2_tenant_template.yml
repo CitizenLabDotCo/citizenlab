@@ -220,7 +220,7 @@ models:
     domicile: outside
     education: '1'
     password_digest: "$2a$10$sN9Hz/ZLXSABIKcByMnrT.d8Hb2d76/AFJ3nKxo4tqmxZkS8pz6vm"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/7ca644b8-4ebf-4e74-a266-c8f9f945fc28/profile-1474295964-7c5694e2fc409f9ba430e094fee7f906.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/7ca644b8-4ebf-4e74-a266-c8f9f945fc28/profile-1474295964-7c5694e2fc409f9ba430e094fee7f906.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &1 2018-01-15 23:38:36.850061000 Z
@@ -267,7 +267,7 @@ models:
     domicile: 
     education: '4'
     password_digest: "$2a$10$1YvrW32PjbwTav9NTerMSeMexcTJwxsIIe1X3q6kQ5BVBh8HAyAYy"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/df27a317-8060-470b-b809-db5d65fafcab/Philippe-de-Belgique.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/df27a317-8060-470b-b809-db5d65fafcab/Philippe-de-Belgique.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &6 2018-01-15 23:38:38.531416000 Z
@@ -290,7 +290,7 @@ models:
     domicile: outside
     education: '3'
     password_digest: "$2a$10$yN4Q5dmD5nrA9n15lcnNQOiAxkUp7izfr764jJLbKJzJdGrFvTJH."
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/1ded0d3c-a50f-4b68-b7ff-f1ca23dc185a/Portrait-8.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/1ded0d3c-a50f-4b68-b7ff-f1ca23dc185a/Portrait-8.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &8 2018-01-15 23:38:39.979786000 Z
@@ -313,7 +313,7 @@ models:
     domicile: outside
     education: '7'
     password_digest: "$2a$10$rbHnRV2wJRo1cDOurctMcudoJv5Jj5NjrhFftZ/7d6JbGRVBf3l8G"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/c6896f8d-2128-403a-82f0-fa04647173c6/popin_2016.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/c6896f8d-2128-403a-82f0-fa04647173c6/popin_2016.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &10 2018-01-15 23:38:41.139805000 Z
@@ -336,7 +336,7 @@ models:
     domicile: outside
     education: '1'
     password_digest: "$2a$10$MoRW4uQfO267wYVxwE9npOIEH7NFhFl1TWcHvZhi717MuwchX0pam"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/ce774a9d-78dc-4ad8-9579-c4106045a39b/platon-photographer-putin-man-of-the-year-portrait.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/ce774a9d-78dc-4ad8-9579-c4106045a39b/platon-photographer-putin-man-of-the-year-portrait.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &12 2018-01-15 23:38:41.953670000 Z
@@ -359,7 +359,7 @@ models:
     domicile: outside
     education: '8'
     password_digest: "$2a$10$bIqZRPjChPrdwVhH5fQwrum4138jmB4kR6cd61ep/BiQBOl.iCOoy"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/7937ab55-2985-4d6e-a4ab-db25d605ef72/66c297f1dcd085d2304f63c5ed612c0a--beauty-portrait-male-portraits.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/7937ab55-2985-4d6e-a4ab-db25d605ef72/66c297f1dcd085d2304f63c5ed612c0a--beauty-portrait-male-portraits.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &14 2018-01-15 23:38:42.711980000 Z
@@ -382,7 +382,7 @@ models:
     domicile: outside
     education: '7'
     password_digest: "$2a$10$gU1bYY2jFLtCq7Dt4N1EJuJQgA3wHeYe5ek1BeAZMoQ2EgqTe2hDi"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/ffdc4756-2a6e-4f3d-b147-b259ea519e4c/89c81ca5da657d45d323eff5b8ad7c69.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/ffdc4756-2a6e-4f3d-b147-b259ea519e4c/89c81ca5da657d45d323eff5b8ad7c69.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &16 2018-01-15 23:38:45.294541000 Z
@@ -405,7 +405,7 @@ models:
     domicile: outside
     education: '1'
     password_digest: "$2a$10$G/wKDvEAltemxRMp2ViQMOIHpEaGiEMNNqASSqPqmP3etHHP86P9q"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/84184598-6aac-408a-a49b-26ec0176a94b/49cd4c44d562e92d90a3a4c81ced02dc.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/84184598-6aac-408a-a49b-26ec0176a94b/49cd4c44d562e92d90a3a4c81ced02dc.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &18 2018-01-15 23:38:46.873691000 Z
@@ -428,7 +428,7 @@ models:
     domicile: outside
     education: '4'
     password_digest: "$2a$10$OXH1Zrph0hUK/j/u.AaT6OJgVkidckR0W5Wm2KD6hbkeJZBLyJ10O"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/f34ad5d9-c337-4f12-a084-9027ee484cb6/16992834140_99815ee4ac_m.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/f34ad5d9-c337-4f12-a084-9027ee484cb6/16992834140_99815ee4ac_m.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &20 2018-01-15 23:38:48.205364000 Z
@@ -451,7 +451,7 @@ models:
     domicile: outside
     education: '5'
     password_digest: "$2a$10$tkrZiMkcBRxMiOiP4yadhe57wSw0f.nZwVr9kinAW7y/K2/EuBlLu"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/d6684b22-b759-4e3e-8793-5029ff27ba25/bryan_cranston_0095.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/d6684b22-b759-4e3e-8793-5029ff27ba25/bryan_cranston_0095.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &22 2018-01-15 23:38:49.915922000 Z
@@ -474,7 +474,7 @@ models:
     domicile: outside
     education: '1'
     password_digest: "$2a$10$mAy8Wksm3T4ivlx6RBAosOOPOPTZ7DEJ8UgAd/k/eDdmpUcMcD9jq"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/9327615c-0dcd-4b72-bc1d-d7d821bbcf89/5dcf2c739263eb1e32ca1ef35d2664a8.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/9327615c-0dcd-4b72-bc1d-d7d821bbcf89/5dcf2c739263eb1e32ca1ef35d2664a8.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &24 2018-01-15 23:38:50.681333000 Z
@@ -497,7 +497,7 @@ models:
     domicile: outside
     education: '4'
     password_digest: "$2a$10$vBWVYDVyYaX8JNZQjauxm.48DCdRL66eYm3A7IRC1tsY71GHvAclW"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/9eb7a4fa-b750-4d84-a10f-0a29f7b8cd59/juror-ford.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/9eb7a4fa-b750-4d84-a10f-0a29f7b8cd59/juror-ford.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &26 2018-01-15 23:38:51.280799000 Z
@@ -520,7 +520,7 @@ models:
     domicile: outside
     education: '4'
     password_digest: "$2a$10$SfF.2EEmtZe78YonmQpnoedtcxNyTB0T7GMgCVhJ6kPOCdmp0GcsG"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/851a2bdb-ef19-4d9a-a56b-75256cf855eb/BethanyR.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/851a2bdb-ef19-4d9a-a56b-75256cf855eb/BethanyR.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &28 2018-01-15 23:38:52.642033000 Z
@@ -543,7 +543,7 @@ models:
     domicile: outside
     education: '2'
     password_digest: "$2a$10$d6GdbwpdixbNzwM6BP9pnuLd3PUe5wxDqcT6AgpOGAZKFZk5KIAqS"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/90095a74-7993-4bff-b47f-154faf3efebe/dof2.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/90095a74-7993-4bff-b47f-154faf3efebe/dof2.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &30 2018-01-15 23:38:53.407689000 Z
@@ -566,7 +566,7 @@ models:
     domicile: outside
     education: '2'
     password_digest: "$2a$10$/xK7BKyvod6w1dygMI6zNOf.rGSI9g4aZXlYylCeXTD3SD9sh7VD2"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/4c7ab5ab-fc25-470a-81fa-c1c984759c3a/83857__portrait-tips2.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/4c7ab5ab-fc25-470a-81fa-c1c984759c3a/83857__portrait-tips2.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &32 2018-01-15 23:38:53.951162000 Z
@@ -589,7 +589,7 @@ models:
     domicile: outside
     education: '7'
     password_digest: "$2a$10$4pOXVooBhBuObJNwQwqYJ.38seOp3fw3oX6q4JW1YCP.N3r1BOB9a"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/5bd7a252-19bb-4645-8a1f-77de7bcd8706/sherlock-season-4-featured-image.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/5bd7a252-19bb-4645-8a1f-77de7bcd8706/sherlock-season-4-featured-image.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &34 2018-01-15 23:38:54.661523000 Z
@@ -612,7 +612,7 @@ models:
     domicile: outside
     education: '7'
     password_digest: "$2a$10$X6v1gkQuBBim3yi7pdeXmutqH96iW/qiqU6PlITmrvwW1Bll5h/52"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/fc984a52-9e03-4407-a87c-75c956535a99/51DLRByNOXL._UX250_.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/fc984a52-9e03-4407-a87c-75c956535a99/51DLRByNOXL._UX250_.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &36 2018-01-15 23:38:56.153744000 Z
@@ -635,7 +635,7 @@ models:
     domicile: outside
     education: '3'
     password_digest: "$2a$10$1LTppZm.U4lYO0QXDW35YOYnssix0wmGXHi//cErs/JbXUBk9B3MK"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/20e7c7a9-90ff-4c14-a6a1-8c6ed106b0b4/images.jpeg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/20e7c7a9-90ff-4c14-a6a1-8c6ed106b0b4/images.jpeg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &38 2018-01-15 23:38:56.777135000 Z
@@ -658,7 +658,7 @@ models:
     domicile: outside
     education: '2'
     password_digest: "$2a$10$TgmDMJbkf/wy87EGUCLEwOax3IAVzBzVto4cm/erMwbDFDe1zO8au"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/7550ac4f-fc07-4898-9e31-7e6ecb925d87/6c44f9503011a7dd186449bd25f49f4b--painting-portraits-portrait-art.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/7550ac4f-fc07-4898-9e31-7e6ecb925d87/6c44f9503011a7dd186449bd25f49f4b--painting-portraits-portrait-art.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &40 2018-01-15 23:38:57.570331000 Z
@@ -681,7 +681,7 @@ models:
     domicile: outside
     education: '6'
     password_digest: "$2a$10$xC9cPtn/rkjuPwVH6fDtE.S14oFsFCLCkk/eNTBjOZ0fHX.kdHlnO"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/e4a62fcc-498f-49d5-a374-f625a3075659/461482218-594x367.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/e4a62fcc-498f-49d5-a374-f625a3075659/461482218-594x367.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &42 2018-01-15 23:38:58.301227000 Z
@@ -704,7 +704,7 @@ models:
     domicile: outside
     education: '8'
     password_digest: "$2a$10$xc.4clD8ALe63wseQBxbv.Y0ThpbKwYBPzG6z.3Ef/uf9xL6vslBa"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/d1100534-2d07-41c8-b68c-f6b005e96ba8/leia-princess-leia-organa-solo-skywalker-9301321-576-1010.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/d1100534-2d07-41c8-b68c-f6b005e96ba8/leia-princess-leia-organa-solo-skywalker-9301321-576-1010.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &44 2018-01-15 23:38:36.147760000 Z
@@ -727,7 +727,7 @@ models:
     domicile: outside
     education: '3'
     password_digest: "$2a$10$Rt1PBV5ZwIW/NDvXDyAG7.o9wydxk/QfHetwKAjyFHFGiUf9t30GO"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/496fe56e-0f4f-4596-b0fe-f7d6709b481e/4164298-miranda-kerr-4.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/496fe56e-0f4f-4596-b0fe-f7d6709b481e/4164298-miranda-kerr-4.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &46 2018-01-15 23:38:59.144495000 Z
@@ -750,7 +750,7 @@ models:
     domicile: outside
     education: '5'
     password_digest: "$2a$10$CjhYzNCbJcv4BfPaZMn4WeIGHDgv.yK3Hv3OWCD/lzgNmw9kF6htC"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/31bf5bfa-9cb8-49e6-a067-6dff9d1231fe/Prof_Ertl-Portrait.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/31bf5bfa-9cb8-49e6-a067-6dff9d1231fe/Prof_Ertl-Portrait.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &48 2018-01-15 23:39:03.472795000 Z
@@ -773,7 +773,7 @@ models:
     domicile: outside
     education: 
     password_digest: "$2a$10$.CPIl90ExqxYf79Ved3SAeN27OoahkoDbTZaDVj5wCYifo1vneLHe"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/c969dc8b-a29a-4758-b38c-9c3a209aad50/500.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/c969dc8b-a29a-4758-b38c-9c3a209aad50/500.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &50 2018-01-15 23:39:04.143682000 Z
@@ -796,7 +796,7 @@ models:
     domicile: outside
     education: '8'
     password_digest: "$2a$10$f0img/0jVtFUDx51mCIsnODmLJCCHNqLF62QFnp14601HJUiMYgr."
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/241f271a-f5d5-47ec-a07f-17624e604e23/pexels-photo-247917.jpeg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/241f271a-f5d5-47ec-a07f-17624e604e23/pexels-photo-247917.jpeg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &52 2018-01-15 23:39:06.807891000 Z
@@ -819,7 +819,7 @@ models:
     domicile: outside
     education: '5'
     password_digest: "$2a$10$KWrq1tUeg3yUG1z2/A.kWuymcxY5FP.3HAPtICoebzQtQqCCJlz0a"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/3a0daa4e-25b3-4087-b0a0-74681741f468/00d6436d2d9283f7ce61f87b07ae378e--portrait-men-male-portrait-photography.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/3a0daa4e-25b3-4087-b0a0-74681741f468/00d6436d2d9283f7ce61f87b07ae378e--portrait-men-male-portrait-photography.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &54 2018-01-15 23:39:07.745006000 Z
@@ -842,7 +842,7 @@ models:
     domicile: outside
     education: '5'
     password_digest: "$2a$10$w8EFgLD5gBNoQmvPcI9ccelQX9/ZvmWK4TwgdO/yBwWlXjdoPFf6q"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/12831742-dc2c-4dd7-8896-d9ddb29a997a/017840b7be8c4a19c57fd213eb8377a0--portrait-photography-men-face-photography.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/12831742-dc2c-4dd7-8896-d9ddb29a997a/017840b7be8c4a19c57fd213eb8377a0--portrait-photography-men-face-photography.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &56 2018-01-15 23:39:08.676748000 Z
@@ -865,7 +865,7 @@ models:
     domicile: outside
     education: '4'
     password_digest: "$2a$10$7ZOIHTdMZeN.NPoVvwFI0.C.Pkt4zope1GI5xK25xmUZncpccqCeW"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/54245944-8135-462a-b98f-24a75ed7c9b8/3df459479af007fed226ae39b9464af8--portrait-photography-men-photography-photos.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/54245944-8135-462a-b98f-24a75ed7c9b8/3df459479af007fed226ae39b9464af8--portrait-photography-men-photography-photos.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &58 2018-01-15 23:39:09.627902000 Z
@@ -888,7 +888,7 @@ models:
     domicile: outside
     education: '6'
     password_digest: "$2a$10$UeXD3XWbI85shLBj5qbN2uIrKMrbOI0llPqVE3oTHkmAG/Vr4z15u"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/25f8652e-62d1-4651-9ed3-449ba3174be2/black-white-portrait2.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/25f8652e-62d1-4651-9ed3-449ba3174be2/black-white-portrait2.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &60 2018-01-15 23:39:11.445136000 Z
@@ -911,7 +911,7 @@ models:
     domicile: outside
     education: 
     password_digest: "$2a$10$a7niTMGhR2/br8yWjj5X3.NmiM7t5eci6ncAYqcIGGgZId9vLCVIO"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/75616256-0236-4f3e-9027-66a0d40f46f5/csm_Karakasoglu_Yasemin1_360cb6e01f.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/75616256-0236-4f3e-9027-66a0d40f46f5/csm_Karakasoglu_Yasemin1_360cb6e01f.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &62 2018-01-15 23:39:12.041398000 Z
@@ -934,7 +934,7 @@ models:
     domicile: 
     education: '5'
     password_digest: "$2a$10$B7ubEVrwaDRqUC81qefwZ.MePehqDlBn13lbk8uWugbm.qrM.BVXq"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/8c5928c1-89b6-4b48-92d5-d751c1c13643/5607404f-fb91-4e9f-9522-9e3363f404a6-mahmoud-benazzouk-dentiste-.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/8c5928c1-89b6-4b48-92d5-d751c1c13643/5607404f-fb91-4e9f-9522-9e3363f404a6-mahmoud-benazzouk-dentiste-.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &64 2018-01-15 23:39:12.629985000 Z
@@ -957,7 +957,7 @@ models:
     domicile: 
     education: '2'
     password_digest: "$2a$10$qylGLo.6k.2yc5VbQI4XeOOVfnOI6wTAXzd45zA.fYnWM5aA6dFee"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/0e52873d-26ac-4716-9654-3c4257b613d1/70971_portrait-benjamin-dhardemare.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/0e52873d-26ac-4716-9654-3c4257b613d1/70971_portrait-benjamin-dhardemare.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &66 2018-01-15 23:39:13.504570000 Z
@@ -980,7 +980,7 @@ models:
     domicile: outside
     education: '7'
     password_digest: "$2a$10$PpVJzCtxRW6qzMl/Q.JtzuTgYv53ZfJ/55OKCsdJH7oqlr6UitUOq"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/2de4f773-4f92-4aa6-a4ae-92f690bf111c/20170601183357-5506a2c2-cu_e355.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/2de4f773-4f92-4aa6-a4ae-92f690bf111c/20170601183357-5506a2c2-cu_e355.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &68 2018-01-15 23:39:14.276211000 Z
@@ -1002,7 +1002,7 @@ models:
     domicile: outside
     education: 
     password_digest: "$2a$10$F4MZkuWRT7095Js74SHHB.LFkQyWDmHTQCcQ5054Io9cBwNIU5fvi"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/e492cd63-a632-4525-b5a6-4dc1fb708475/b9a11a50ed3acb04d48eccd9e0395f3e.png
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/e492cd63-a632-4525-b5a6-4dc1fb708475/b9a11a50ed3acb04d48eccd9e0395f3e.png
     roles:
     - type: admin
     created_at: !ruby/object:ActiveSupport::TimeWithZone
@@ -1026,7 +1026,7 @@ models:
     domicile: outside
     education: '1'
     password_digest: "$2a$10$JllCIYkpv6CFriTtRKetB.2j9qd4t4kNMSl4Upobc6HW8xl6IKFg6"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/dfbd3eac-84eb-424f-8589-64f87b1c98a0/c644c101aad7a5b28f74526a50a2d7c1--rankin-photography-light-photography.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/dfbd3eac-84eb-424f-8589-64f87b1c98a0/c644c101aad7a5b28f74526a50a2d7c1--rankin-photography-light-photography.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &72 2018-01-15 23:38:55.497811000 Z
@@ -1049,7 +1049,7 @@ models:
     domicile: 
     education: '5'
     password_digest: "$2a$10$0SpEPKB7JdpbvYjUVRy2oeaDR9v/Bu5woIlET.5Ld96EerUI1b1xK"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/43b629dc-762d-4c28-9478-4a6145c7a0c1/simoneveil1.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/43b629dc-762d-4c28-9478-4a6145c7a0c1/simoneveil1.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &74 2018-01-15 23:38:37.824677000 Z
@@ -1072,7 +1072,7 @@ models:
     domicile: outside
     education: '4'
     password_digest: "$2a$10$PwbaOGAAS9ixdcnVitjixOJdgAEv8fYTWxXc4ZHzBCg2nBRtezazi"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/a10aac1b-9c2c-4a9e-a49f-657627fd9096/TrollFace.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/a10aac1b-9c2c-4a9e-a49f-657627fd9096/TrollFace.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &76 2018-01-15 23:38:34.687704000 Z
@@ -1118,7 +1118,7 @@ models:
     domicile: outside
     education: '5'
     password_digest: "$2a$10$g5K3cjeKAIvv9cXY.KbEfOBu7YcwTX5mOkbR4oQhFRf.BCrPTD7ei"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/6a2c3645-929f-45c0-aab5-02b196c18b56/1_JvrUroQL_0QkqBqlY7Wb0A.jpeg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/6a2c3645-929f-45c0-aab5-02b196c18b56/1_JvrUroQL_0QkqBqlY7Wb0A.jpeg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &80 2018-01-15 23:39:00.626133000 Z
@@ -1141,7 +1141,7 @@ models:
     domicile: outside
     education: '6'
     password_digest: "$2a$10$Pe7I8KUQ5lCEvAMtxVqt0ecE2aSxOKnSRrh8WZAb2AUxdivmYrXHC"
-    remote_avatar_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/user/avatar/1b9903c9-5bda-47ff-b085-e4f33a6dacb5/portrait-camera-mode-e.jpg
+    remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/1b9903c9-5bda-47ff-b085-e4f33a6dacb5/portrait-camera-mode-e.jpg
     roles: []
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &82 2018-01-15 23:39:01.695981000 Z
@@ -1157,7 +1157,7 @@ models:
       fr-BE: Boîte à idées
     description_multiloc:
       fr-BE: Ces idées ne sont pas liées à un projet.
-    remote_header_bg_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/project/header_bg/fed9493a-02e0-4390-9e4d-9bcfd5a4246c/Idea_cover_qdrwa6.jpg
+    remote_header_bg_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/project/header_bg/fed9493a-02e0-4390-9e4d-9bcfd5a4246c/Idea_cover_qdrwa6.jpg
     description_preview_multiloc: {}
     presentation_mode: card
     participation_method: ideation
@@ -1184,7 +1184,7 @@ models:
       fr-BE: "<p>Contribuez à création d'une ville durable où la mobilité est réfléchie
         et intermodale. Soyez créatifs afin de trouver des solutions innovantes pour
         s'adapter aux nouveaux modes de déplacements. </p>\n"
-    remote_header_bg_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/project/header_bg/aee07191-b0cd-44e5-accd-a6964c196024/header_bg.jpeg
+    remote_header_bg_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/project/header_bg/aee07191-b0cd-44e5-accd-a6964c196024/header_bg.jpeg
     description_preview_multiloc:
       fr-BE: 'Le nombre d''accidents corporels enregistré sur les routes wallonnes
         l''année dernière est de 11.240 l''année dernière. Quels sont selon vous les
@@ -1215,7 +1215,7 @@ models:
         <p>La problématique de l'aménagement du temps scolaire repose sur deux axes : le respect physiologique de l'enfant, de son rythme et de son développement, et la nécessité de répondre aux besoins des parents qui ne sont pas les mêmes que ceux de leurs enfants. </p>
         <p></p>
         <p>Choisissons ensemble les modalités du rythme éducatif à la fois à la maison et à l'école. L'enfant est davantage à la maison qu'à l'école, il convient ainsi de s'accorder sur les pratiques à adopter afin de respecter le temps d'apprentissage et de loisir nécessaire à l'enfant. </p>
-    remote_header_bg_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/project/header_bg/2c7b35ba-a8c6-4078-838d-14a2c15b50a9/header_bg.jpeg
+    remote_header_bg_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/project/header_bg/2c7b35ba-a8c6-4078-838d-14a2c15b50a9/header_bg.jpeg
     description_preview_multiloc:
       fr-BE: 'La problématique de l''aménagement du temps scolaire repose sur deux
         axes : le respect physiologique de l''enfant, de son rythme et de son développement,
@@ -1247,7 +1247,7 @@ models:
         prenant en compte la quantité de déchets municipaux par habitant, la quantité
         produite monte alors à 536 kg par an. Réduire la quantité de déchets est un
         enjeu environnemental, financier et sociétal. </p>\n"
-    remote_header_bg_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/project/header_bg/6af982e6-8f19-4199-ad2e-a1359503e963/header_bg.jpeg
+    remote_header_bg_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/project/header_bg/6af982e6-8f19-4199-ad2e-a1359503e963/header_bg.jpeg
     description_preview_multiloc:
       fr-BE: 'La gestion des immondices est une affaire de tous. Le coût pour la commune
         s''élève à 746.928€ par an. Ensemble, trouvons les solutions pour diminuer
@@ -1280,7 +1280,7 @@ models:
         <p>Le conseil municipal a décidé d'allouer 1% de son budget pour des projets et initiatives décidés collectivement. </p>
         <p></p>
         <p> Cette année la 3ème édition a eu lieu. Elle permet aux habitants de plus de 16 ans d'agir concrètement sur les choix budgétaires de la commune en proposant des projets d'intérêt général et en votant pour ceux qui seront réalisés. 800 000 € issus du budget d'investissement sont ainsi délégués aux citoyens. </p>
-    remote_header_bg_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/project/header_bg/d106f71a-ca8d-4421-b1eb-6e1f9416df77/header_bg.png
+    remote_header_bg_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/project/header_bg/d106f71a-ca8d-4421-b1eb-6e1f9416df77/header_bg.png
     description_preview_multiloc:
       fr-BE: Le budget participatif de la Commune vise à permettre aux citoyens de
         développer des initiatives au bénéfice de la collectivité, dans tous les villages
@@ -1333,7 +1333,7 @@ models:
           <li>des agents de la Ville.</li>
         </ul>
         <p></p>
-    remote_header_bg_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/project/header_bg/16cd2dce-dff0-42b5-81ef-888068db9d16/header_bg.jpeg
+    remote_header_bg_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/project/header_bg/16cd2dce-dff0-42b5-81ef-888068db9d16/header_bg.jpeg
     description_preview_multiloc:
       fr-BE: 'Cette plate-forme a pour vocation d''être l''espace d’échanges de proximité
         entre les citoyens et la municipalité. Suivez les compte-rendus des rencontres
@@ -1358,34 +1358,34 @@ models:
     voting_limited_max: 10
   project_image:
   - project_ref: *96
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/project_image/image/6b493484-3499-4c73-8e82-ad0516c6b2b0/open_idea_box_gaxtpy.png
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/project_image/image/6b493484-3499-4c73-8e82-ad0516c6b2b0/open_idea_box_gaxtpy.png
     ordering: 
   - project_ref: *97
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/project_image/image/299b6b35-2d06-489d-91fd-c8a634929fa8/rsz_fd6e28f288acfdc7a88b43f8bd3181af57f3cf8a.png
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/project_image/image/299b6b35-2d06-489d-91fd-c8a634929fa8/rsz_fd6e28f288acfdc7a88b43f8bd3181af57f3cf8a.png
     ordering: 
   - project_ref: *98
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/project_image/image/6dfc77c6-7ac5-4fe4-8ded-c8f343a03941/image.jpeg
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/project_image/image/6dfc77c6-7ac5-4fe4-8ded-c8f343a03941/image.jpeg
     ordering: 
   - project_ref: *99
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/project_image/image/7e2763bb-7591-4cce-9214-5f0effa31af7/20161206_idea19.jpg
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/project_image/image/7e2763bb-7591-4cce-9214-5f0effa31af7/20161206_idea19.jpg
     ordering: 
   - project_ref: *100
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/project_image/image/0e6ae38a-a9a2-4cf5-aa3c-ab2c654e24f2/image.jpeg
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/project_image/image/0e6ae38a-a9a2-4cf5-aa3c-ab2c654e24f2/image.jpeg
     ordering: 
   - project_ref: *101
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/project_image/image/f19efaae-633e-42d9-841a-1f173337aed6/image.jpeg
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/project_image/image/f19efaae-633e-42d9-841a-1f173337aed6/image.jpeg
     ordering: 
   - project_ref: *101
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/project_image/image/e2e7c0a3-1f2a-4294-86d0-7bf016005ad0/image.jpeg
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/project_image/image/e2e7c0a3-1f2a-4294-86d0-7bf016005ad0/image.jpeg
     ordering: 
   - project_ref: *101
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/project_image/image/e7f46c9b-2a68-41c9-bf0c-43c3b25abb6a/image.jpeg
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/project_image/image/e7f46c9b-2a68-41c9-bf0c-43c3b25abb6a/image.jpeg
     ordering: 
   - project_ref: *101
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/project_image/image/c5a48a87-31ea-4ab2-924a-127ee9168378/image.jpeg
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/project_image/image/c5a48a87-31ea-4ab2-924a-127ee9168378/image.jpeg
     ordering: 
   - project_ref: *101
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/project_image/image/a0efc203-48b3-4d1b-aa49-ad24ff7f3f74/image.png
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/project_image/image/a0efc203-48b3-4d1b-aa49-ad24ff7f3f74/image.png
     ordering: 
   idea:
   - &181
@@ -1897,64 +1897,64 @@ models:
       time: *180
   idea_image:
   - idea_ref: *181
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/idea_image/image/9ed6a480-f88c-422b-ae5f-382e40bc08ad/logo.png
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/idea_image/image/9ed6a480-f88c-422b-ae5f-382e40bc08ad/logo.png
     ordering: 
   - idea_ref: *182
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/idea_image/image/2af87953-cb2b-48ee-9162-9d7a40182359/Autoroutes_A41__26_A43.JPG
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/idea_image/image/2af87953-cb2b-48ee-9162-9d7a40182359/Autoroutes_A41__26_A43.JPG
     ordering: 
   - idea_ref: *183
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/idea_image/image/adc828e3-55f8-4844-a169-c4f0792745bc/200911060736.jpg
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/idea_image/image/adc828e3-55f8-4844-a169-c4f0792745bc/200911060736.jpg
     ordering: 
   - idea_ref: *184
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/idea_image/image/dfc7ec81-f0ea-4ccd-8f01-66413c97d68a/1200px-Montmartre_Funicular_2C_Paris_22_June_2014_002.jpg
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/idea_image/image/dfc7ec81-f0ea-4ccd-8f01-66413c97d68a/1200px-Montmartre_Funicular_2C_Paris_22_June_2014_002.jpg
     ordering: 
   - idea_ref: *185
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/idea_image/image/1b5f1d4a-ed37-45f4-90b9-05f464493f97/image.png
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/idea_image/image/1b5f1d4a-ed37-45f4-90b9-05f464493f97/image.png
     ordering: 0
   - idea_ref: *186
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/idea_image/image/ad0656ee-1bc1-4300-afaf-2b8467cb437f/image.jpeg
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/idea_image/image/ad0656ee-1bc1-4300-afaf-2b8467cb437f/image.jpeg
     ordering: 0
   - idea_ref: *187
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/idea_image/image/b6887f42-c6c4-460c-b462-da0ce3d6b2e0/1200px-MP_Train.JPG
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/idea_image/image/b6887f42-c6c4-460c-b462-da0ce3d6b2e0/1200px-MP_Train.JPG
     ordering: 
   - idea_ref: *188
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/idea_image/image/489e0e46-a748-493f-a2d1-8941ddee15f0/Quai-Navette-fluviale-Millenaire.jpg
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/idea_image/image/489e0e46-a748-493f-a2d1-8941ddee15f0/Quai-Navette-fluviale-Millenaire.jpg
     ordering: 
   - idea_ref: *189
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/idea_image/image/8b12f9db-e98a-45a1-944d-3950f0ece502/201310221553-full.jpg
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/idea_image/image/8b12f9db-e98a-45a1-944d-3950f0ece502/201310221553-full.jpg
     ordering: 
   - idea_ref: *190
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/idea_image/image/33be799f-def7-4770-b677-78854e09b43b/2014_piste-cyclable_x2-sens_04.jpg
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/idea_image/image/33be799f-def7-4770-b677-78854e09b43b/2014_piste-cyclable_x2-sens_04.jpg
     ordering: 
   - idea_ref: *191
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/idea_image/image/88e5a43c-fe2c-463f-ad96-fe1f4f27825e/1200px-VilloStationAlmostFull.jpg
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/idea_image/image/88e5a43c-fe2c-463f-ad96-fe1f4f27825e/1200px-VilloStationAlmostFull.jpg
     ordering: 
   - idea_ref: *192
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/idea_image/image/f0e7a89b-18d2-4a2d-992d-e04c8c06613a/420px-Ville_souterraine_de_Montreal_04.JPG
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/idea_image/image/f0e7a89b-18d2-4a2d-992d-e04c8c06613a/420px-Ville_souterraine_de_Montreal_04.JPG
     ordering: 
   - idea_ref: *193
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/idea_image/image/80be8b87-08ee-41d1-9198-2168b1e5e447/d10057.jpg
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/idea_image/image/80be8b87-08ee-41d1-9198-2168b1e5e447/d10057.jpg
     ordering: 
   - idea_ref: *194
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/idea_image/image/5c12e25e-895a-4ec5-b670-b9d68a5c717f/Quai-Navette-fluviale-Millenaire.jpg
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/idea_image/image/5c12e25e-895a-4ec5-b670-b9d68a5c717f/Quai-Navette-fluviale-Millenaire.jpg
     ordering: 
   - idea_ref: *195
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/idea_image/image/fb5f1fda-82b5-4454-a293-0b078178e692/Bikes-vs-cars-1-900x506.jpg
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/idea_image/image/fb5f1fda-82b5-4454-a293-0b078178e692/Bikes-vs-cars-1-900x506.jpg
     ordering: 
   - idea_ref: *196
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/idea_image/image/d605c050-22bd-4448-8268-4c53cf0d3448/870x489_fotolia-37009058-subscription-xxl.jpg
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/idea_image/image/d605c050-22bd-4448-8268-4c53cf0d3448/870x489_fotolia-37009058-subscription-xxl.jpg
     ordering: 
   - idea_ref: *197
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/idea_image/image/86d21ffd-a45d-48c4-89c2-2600f45ab074/picto-marquage-handicape-e1445681185643.jpg
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/idea_image/image/86d21ffd-a45d-48c4-89c2-2600f45ab074/picto-marquage-handicape-e1445681185643.jpg
     ordering: 
   - idea_ref: *198
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/idea_image/image/5cf151cf-6137-4da6-b1c6-ee43c9db9b05/Dr-Bouti-645x400.jpg
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/idea_image/image/5cf151cf-6137-4da6-b1c6-ee43c9db9b05/Dr-Bouti-645x400.jpg
     ordering: 
   - idea_ref: *199
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/idea_image/image/a9ec5fd3-a49a-4dc8-aafa-3bcbf11ea156/000018574_imageArticlePrincipaleLarge.png
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/idea_image/image/a9ec5fd3-a49a-4dc8-aafa-3bcbf11ea156/000018574_imageArticlePrincipaleLarge.png
     ordering: 
   - idea_ref: *200
-    remote_image_url: https://cl2-tenants-staging.s3.amazonaws.com/uploads/ed57f990-5c4a-4b88-b2e1-ae8f11ff3ba8/idea_image/image/61058656-d4b2-470f-ae10-7dd5de87e19d/covoiturage2.jpg
+    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/idea_image/image/61058656-d4b2-470f-ae10-7dd5de87e19d/covoiturage2.jpg
     ordering: 
   comment:
   - body_multiloc:
