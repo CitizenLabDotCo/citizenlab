@@ -1,5 +1,20 @@
 # Changelog
 
+## 2018-05-27
+
+### Fixed
+- Sitemap now has the correct date format
+- Empty invitation rows are no longer created when the given excel file contains empty rows
+- Hitting enter while editing a project no longer triggers the delete button
+- Registration fields on signup and profile editing are now always shown in the correct language
+- The dropdown menu for idea sorting no longer gets cut off by the edge of the screen on small screens
+- Saving a phase or continuous project no longer fails when participation method is not ideation
+### Added
+- Language selection now also has a regional component (e.g. Dutch (Belgium) instead of Dutch)
+- Added noindex tag on pages that should be shown in Google
+- A new 'user created' event is now being tracked from the frontend side
+- It's now possible to use HTML in the field description of custom fields (no editor, only for internal usage)
+
 ## 2018-05-16
 
 ### Fixed
