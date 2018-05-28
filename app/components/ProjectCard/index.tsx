@@ -10,15 +10,17 @@ import LazyImage, { Props as LazyImageProps } from 'components/LazyImage';
 import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
 
 // services
-import { IProjectData, getLocalizedProjectData } from 'services/projects';
-import { getLocalizedTenantName } from 'services/tenant';
+import { IProjectData } from 'services/projects';
 
-// resources
+// resrources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
 
 // i18n
 import T from 'components/T';
+import { getLocalized } from 'utils/i18n';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -208,42 +210,17 @@ export interface InputProps {
 }
 
 interface DataProps {
+  locale: GetLocaleChildProps;
+  tenantLocales: GetTenantLocalesChildProps;
   project: GetProjectChildProps;
   projectImages: GetProjectImagesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-interface State {
-  title: string | null;
-  preview: string | null;
-  tenantName: string | null;
-}
+interface State {}
 
 class ProjectCard extends React.PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      title: '',
-      preview: '',
-      tenantName: '',
-    };
-  }
-
-  getDerivedStateFromProps(nextProps: Props) {
-    if (nextProps.projectId === this.props.projectId) return null;
-    if (isNilOrError(nextProps.project)) return null;
-
-    return Promise.all([
-      getLocalizedProjectData(nextProps.project, 'title_multiloc'),
-      getLocalizedProjectData(nextProps.project, 'description_preview_multiloc'),
-      getLocalizedTenantName()
-    ])
-    .then(([title, preview, tenantName]) => ({
-      title, preview, tenantName
-    }));
-  }
 
   getProjectUrl = (project: IProjectData) => {
     const projectType = project.attributes.process_type;
@@ -272,11 +249,11 @@ class ProjectCard extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    const { project, projectImages } = this.props;
-    const { title, preview, tenantName } = this.state;
+    const { locale, tenantLocales, project, projectImages } = this.props;
 
-    if (!isNilOrError(project) && title && preview && tenantName) {
+    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(project)) {
       const titleMultiloc = project.attributes.title_multiloc;
+      const preview = getLocalized(project.attributes.description_preview_multiloc, locale, tenantLocales);
       const imageUrl = (!isNilOrError(projectImages) && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
       const projectUrl = this.getProjectUrl(project);
       const projectIdeasUrl = this.getProjectIdeasUrl(project);
@@ -288,7 +265,7 @@ class ProjectCard extends React.PureComponent<Props, State> {
           <Mod projectId={project.id} />
 
           <ProjectImageContainer>
-            {imageUrl && <ProjectImage src={imageUrl} alt={`${tenantName} - ${title}`} cover />}
+            {imageUrl && <ProjectImage src={imageUrl} cover />}
 
             {!imageUrl &&
               <ProjectImagePlaceholder>
@@ -342,6 +319,8 @@ class ProjectCard extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />,
+  tenantLocales: <GetTenantLocales />,
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
 });
