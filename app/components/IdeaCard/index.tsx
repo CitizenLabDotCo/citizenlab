@@ -18,6 +18,7 @@ import LazyImage from 'components/LazyImage';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImage, { GetIdeaImageChildProps } from 'resources/GetIdeaImage';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -213,6 +214,7 @@ interface DataProps {
   idea: GetIdeaChildProps;
   ideaImage: GetIdeaImageChildProps;
   ideaAuthor: GetUserChildProps;
+  tenant: GetTenantChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -264,10 +266,10 @@ class IdeaCard extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { idea, ideaImage, ideaAuthor } = this.props;
+    const { idea, ideaImage, ideaAuthor, tenant } = this.props;
     const { showVotingDisabled } = this.state;
 
-    if (!isNilOrError(idea)) {
+    if (!isNilOrError(idea) && !isNilOrError(tenant)) {
       const ideaImageUrl = (ideaImage ? ideaImage.attributes.versions.medium : null);
       const votingDescriptor = get(idea.relationships.action_descriptor.data, 'voting', null);
       const projectId = idea.relationships.project.data.id;
@@ -289,10 +291,14 @@ class IdeaCard extends React.PureComponent<Props, State> {
 
             {ideaImageUrl &&
               <IdeaImageContainer>
-                <T value={idea.attributes.title_multiloc}>
-                  {(title) => (<IdeaImage src={ideaImageUrl} alt={title} />)}
-                </T>
-                <IdeaImageOverlay />
+             <T value={tenant.attributes.settings.core.organization_name}>
+                {tenantName => (
+                  <T value={idea.attributes.title_multiloc}>
+                    {(title) => (<IdeaImage src={ideaImageUrl} alt={`${tenantName} - ${title}`} />)}
+                  </T>
+                )}
+              </T>
+              <IdeaImageOverlay />
               </IdeaImageContainer>
             }
 
@@ -354,7 +360,8 @@ class IdeaCard extends React.PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImage: ({ ideaId, idea, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={!isNilOrError(idea) ? get(idea.relationships.idea_images.data[0], 'id', null) : null}>{render}</GetIdeaImage>,
-  ideaAuthor: ({ idea, render }) => <GetUser id={!isNilOrError(idea) ? get(idea.relationships.author.data, 'id', null) : null}>{render}</GetUser>
+  ideaAuthor: ({ idea, render }) => <GetUser id={!isNilOrError(idea) ? get(idea.relationships.author.data, 'id', null) : null}>{render}</GetUser>,
+  tenant: <GetTenant />,
 });
 
 export default (inputProps: InputProps) => (
