@@ -31,14 +31,11 @@ module EmailCampaigns
           LogToSegmentService.new.serialize "EmailCampaigns::DiscoverProjectSerializer", project
         end
 
-        event = LogToSegmentService.new.tracking_message(
-          "Periodic email for #{CAMPAIGN.gsub '_', ' '}", 
-          user_id: user.id,
-          payload: {
-              top_ideas: serialized_top_ideas,
-              discover_projects: serialized_discover_projects
-            }
-          )
+        event = EmailCampaigns::PeriodicEventsService.new.periodic_event CAMPAIGN, user.id,
+          {
+            top_ideas: serialized_top_ideas,
+            discover_projects: serialized_discover_projects
+          }
         
         Analytics.track event
         create_campaign_email_commands user, top_ideas, discover_projects

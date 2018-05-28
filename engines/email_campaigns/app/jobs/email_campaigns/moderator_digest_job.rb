@@ -21,17 +21,15 @@ module EmailCampaigns
 
         serialized_project = LogToSegmentService.new.serialize "EmailCampaigns::DiscoverProjectSerializer", project
       	User.project_moderators(project.id).select{|user| !user.admin?}.each do |moderator|
-	        event = LogToSegmentService.new.tracking_message(
-            "Periodic email for #{CAMPAIGN.gsub '_', ' '}", 
-            user_id: moderator.id,
-            payload: {
-                statistics: statistics,
-                has_new_ideas: has_new_ideas,
-                project: serialized_project,
-                top_ideas: top_ideas.take(N_TOP_IDEAS)
-              }
-            )
-	        Analytics.track event
+          event = @service.periodic_event CAMPAIGN, moderator.id,
+            {
+              statistics: statistics,
+              has_new_ideas: has_new_ideas,
+              project: serialized_project,
+              top_ideas: top_ideas.take(N_TOP_IDEAS)
+            }
+
+          Analytics.track event
 	        create_campaign_email_commands moderator, top_ideas
 	      end
       end
