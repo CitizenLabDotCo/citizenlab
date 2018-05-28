@@ -15,11 +15,12 @@ import { IProjectData } from 'services/projects';
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // i18n
 import T from 'components/T';
+import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
+import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 
 // style
@@ -208,7 +209,6 @@ export interface InputProps {
 }
 
 interface DataProps {
-  tenant: GetTenantChildProps;
   project: GetProjectChildProps;
   projectImages: GetProjectImagesChildProps;
 }
@@ -217,7 +217,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class ProjectCard extends React.PureComponent<Props, State> {
+class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   getProjectUrl = (project: IProjectData) => {
     const projectType = project.attributes.process_type;
@@ -246,9 +246,9 @@ class ProjectCard extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    const { project, projectImages, tenant } = this.props;
+    const { project, projectImages, intl: { formatMessage } } = this.props;
 
-    if (!isNilOrError(project) && !isNilOrError(tenant)) {
+    if (!isNilOrError(project)) {
       const imageUrl = (!isNilOrError(projectImages) && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
       const projectUrl = this.getProjectUrl(project);
       const projectIdeasUrl = this.getProjectIdeasUrl(project);
@@ -261,12 +261,8 @@ class ProjectCard extends React.PureComponent<Props, State> {
 
           <ProjectImageContainer>
             {imageUrl &&
-              <T value={tenant.attributes.settings.core.organization_name}>
-                {tenantName => (
-                  <T value={project.attributes.title_multiloc}>
-                    {title => (<ProjectImage src={imageUrl} alt={`${tenantName} - ${title}`} cover />)}
-                  </T>
-                )}
+              <T value={project.attributes.title_multiloc}>
+                {projectTitle => (<ProjectImage src={imageUrl} alt={formatMessage(messages.imageAltText, { projectTitle })} cover />)}
               </T>
             }
 
@@ -322,13 +318,14 @@ class ProjectCard extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
 });
 
+const ProjectCardWithHoC = injectIntl(ProjectCard);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectCard {...inputProps} {...dataProps} />}
+    {dataProps => <ProjectCardWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

@@ -25,8 +25,9 @@ import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import T from 'components/T';
-import { FormattedRelative } from 'react-intl';
+import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
+import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 
 // styles
@@ -225,8 +226,8 @@ interface State {
 
 export const namespace = 'components/IdeaCard/index';
 
-class IdeaCard extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
+class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
+  constructor(props) {
     super(props);
     this.state = {
       showVotingDisabled: null,
@@ -266,7 +267,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { idea, ideaImage, ideaAuthor, tenant } = this.props;
+    const { idea, ideaImage, ideaAuthor, tenant, intl: { formatMessage } } = this.props;
     const { showVotingDisabled } = this.state;
 
     if (!isNilOrError(idea) && !isNilOrError(tenant)) {
@@ -291,12 +292,8 @@ class IdeaCard extends React.PureComponent<Props, State> {
 
             {ideaImageUrl &&
               <IdeaImageContainer>
-             <T value={tenant.attributes.settings.core.organization_name}>
-                {tenantName => (
-                  <T value={idea.attributes.title_multiloc}>
-                    {(title) => (<IdeaImage src={ideaImageUrl} alt={`${tenantName} - ${title}`} />)}
-                  </T>
-                )}
+              <T value={idea.attributes.title_multiloc}>
+                {(ideaTitle) => (<IdeaImage src={ideaImageUrl} alt={formatMessage(messages.imageAltText, { ideaTitle })} />)}
               </T>
               <IdeaImageOverlay />
               </IdeaImageContainer>
@@ -364,8 +361,10 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
 });
 
+const IdeaCardWithHoC = injectIntl(IdeaCard);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaCard {...inputProps} {...dataProps} />}
+    {dataProps => <IdeaCardWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );
