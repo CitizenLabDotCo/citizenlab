@@ -289,7 +289,9 @@ class IdeaCard extends React.PureComponent<Props, State> {
 
             {ideaImageUrl &&
               <IdeaImageContainer>
-                <IdeaImage src={ideaImageUrl} />
+                <T value={idea.attributes.title_multiloc}>
+                  {(title) => (<IdeaImage src={ideaImageUrl} alt={title} />)}
+                </T>
                 <IdeaImageOverlay />
               </IdeaImageContainer>
             }
