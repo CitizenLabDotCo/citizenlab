@@ -21,12 +21,8 @@ export default defineMessages({
     id: 'app.containers.Projects.events',
     defaultMessage: 'Events',
   },
-  helmetDescription: {
-    id: 'app.containers.Projects.helmetDescription',
-    defaultMessage: 'Project Show page listing',
-  },
-  helmetTitle: {
-    id: 'app.containers.Projects.helmetDescription',
+  metaTitle: {
+    id: 'app.containers.Projects.metaTitle',
     defaultMessage: 'Project  • {projectTitle}',
   },
   navInformation: {

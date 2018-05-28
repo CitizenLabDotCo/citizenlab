@@ -13,12 +13,12 @@ export default defineMessages({
     id: 'app.containers.IdeasIndexPage.loading',
     defaultMessage: 'Loading...',
   },
-  helmetTitle: {
-    id: 'app.containers.IdeasIndexPage.helmetTitle',
-    defaultMessage: 'All Ideas • {tenantName}',
+  metaTitle: {
+    id: 'app.containers.IdeasIndexPage.metaTitle',
+    defaultMessage: 'All Ideas • {orgName}',
   },
-  helmetDescription: {
-    id: 'app.containers.IdeasIndexPage.helmetDescription',
-    defaultMessage: 'Explore all ideas that have been posted on the CitizenLab platform of {tenantName}. \n Come leave your comments and cast your vote!',
+  metaDescription: {
+    id: 'app.containers.IdeasIndexPage.metaDescription',
+    defaultMessage: 'Explore all ideas that have been posted on the CitizenLab platform of {orgName}. \n Come leave your comments and cast your vote!',
   },
 });

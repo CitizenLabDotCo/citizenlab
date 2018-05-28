@@ -5,13 +5,13 @@ export default defineMessages({
     id: 'app.containers.App.loading',
     defaultMessage: 'Loading...',
   },
-  helmetTitle: {
-    id: 'app.containers.App.helmetTitle',
-    defaultMessage: 'Change the future of {name}',
+  metaTitle: {
+    id: 'app.containers.App.metaTitle',
+    defaultMessage: 'Citizen engagement platform of {orgName} | CitizenLab',
   },
-  helmetDescription: {
-    id: 'app.containers.App.helmetDescription',
-    defaultMessage: 'Start an idea!',
+  metaDescription: {
+    id: 'app.containers.App.metaDescription',
+    defaultMessage: 'Welcome to the online citizen engagement platform of {orgName}.\nExplore local projects and vote on your favourite ideas. Come participate in the discussions!',
   },
   unAuthorizedUser: {
     id: 'app.containers.App.unAuthorizedUser',

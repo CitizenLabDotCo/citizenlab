@@ -79,14 +79,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.headerSlogan',
     defaultMessage: 'Header slogan',
   },
-  metaTitle: {
-    id: 'app.containers.AdminPage.SettingsPage.metaTitle',
-    defaultMessage: 'Meta title',
-  },
-  metaDescription: {
-    id: 'app.containers.AdminPage.SettingsPage.metaDescription',
-    defaultMessage: 'Meta description',
-  },
   titleBasic: {
     id: 'app.containers.AdminPage.SettingsPage.titleBasic',
     defaultMessage: 'Basic information',
