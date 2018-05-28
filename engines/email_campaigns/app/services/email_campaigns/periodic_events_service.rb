@@ -7,18 +7,18 @@ module EmailCampaigns
         user_id: user_id,
         timestamp: Time.now,
         properties: {
-          source: 'cl2-back'
+          source: 'cl2-back',
           payload: payload
         }
       }
-      add_tenant_properties event[:properties], Tenant.current
+      LogToSegmentService.new.add_tenant_properties event[:properties], Tenant.current
       event
     end
 
     def activity_score idea, since
       recent_activity = 1 + activity_count(idea, since=since)
       if idea.published_at
-        (recent_activity**2) / (Time.now.to_i - idea.published_at.to_i)
+        (recent_activity**2) / [(Time.now.to_i - idea.published_at.to_i),1].max
       else
         0.0
       end
