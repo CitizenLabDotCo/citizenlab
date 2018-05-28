@@ -41,7 +41,7 @@ class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(project)) {
       const { formatMessage } = this.props.intl;
-      const title = `${formatMessage(messages.project)} • ${getLocalized(project.attributes.title_multiloc, locale, tenantLocales, 50)}`;
+      const title = formatMessage(messages.helmetTitle, { projectTitle: getLocalized(project.attributes.title_multiloc, locale, tenantLocales, 50) });
       const description = stripHtml(getLocalized(project.attributes.description_multiloc, locale, tenantLocales), 250);
       const image = (!isNilOrError(projectImages) && projectImages && projectImages.length > 0 ? projectImages[0].attributes.versions.large : null);
       const url = window.location.href;
