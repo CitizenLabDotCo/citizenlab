@@ -136,7 +136,7 @@ export default defineMessages({
   },
   helmetTitle: {
     id: 'app.containers.IdeasShow.helmetTitle',
-    defaultMessage: 'Show idea',
+    defaultMessage: 'Idea  • {ideaTitle}',
   },
   byAuthorName: {
     id: 'app.containers.IdeasShow.byAuthorName',
