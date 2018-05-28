@@ -2,7 +2,6 @@ import { IProject } from './projects';
 import { IRelationship, Multiloc, API } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { localeStream } from 'services/locale';
 
 const apiEndpoint = `${API_PATH}/projects`;
 
@@ -12,8 +11,6 @@ type PresentationMode = 'map' | 'card';
 type PublicationStatus = 'draft' | 'published' | 'archived';
 
 import { ParticipationMethod, SurveyServices } from './phases';
-import { currentTenantStream } from 'services/tenant';
-import { getLocalized } from 'utils/i18n';
 
 
 export interface IProjectData {
@@ -134,11 +131,4 @@ export function getProjectUrl(project: IProjectData) {
   }
 
   return `/projects/${project.attributes.slug}/${lastUrlSegment}`;
-}
-
-export async function getLocalizedProjectData(project: IProjectData, attribute: 'title_multiloc' | 'description_multiloc' | 'description_preview_multiloc'): Promise<string> {
-  const locale = await localeStream().observable.first().toPromise().then((locale) => locale);
-  const tenantLocales = await currentTenantStream().observable.first().toPromise().then((tenant) => tenant.data.attributes.settings.core.locales);
-
-  return getLocalized(project.attributes[attribute], locale, tenantLocales);
 }
