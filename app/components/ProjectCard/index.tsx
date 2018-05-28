@@ -12,11 +12,12 @@ import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
 // services
 import { IProjectData } from 'services/projects';
 
-// resrources
+// resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // i18n
 import T from 'components/T';
@@ -211,6 +212,7 @@ export interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
+  tenant: GetTenantChildProps;
   tenantLocales: GetTenantLocalesChildProps;
   project: GetProjectChildProps;
   projectImages: GetProjectImagesChildProps;
@@ -249,12 +251,14 @@ class ProjectCard extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    const { locale, tenantLocales, project, projectImages } = this.props;
+    const { locale, tenantLocales, project, projectImages, tenant } = this.props;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(project)) {
+    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(project) && !isNilOrError(tenant)) {
       const titleMultiloc = project.attributes.title_multiloc;
       const preview = getLocalized(project.attributes.description_preview_multiloc, locale, tenantLocales);
       const imageUrl = (!isNilOrError(projectImages) && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
+      const title = getLocalized(project.attributes.title_multiloc, locale, tenantLocales);
+      const tenantName = getLocalized(tenant.attributes.settings.core.organization_name, locale, tenantLocales);
       const projectUrl = this.getProjectUrl(project);
       const projectIdeasUrl = this.getProjectIdeasUrl(project);
       const ideasCount = project.attributes.ideas_count;
@@ -265,7 +269,7 @@ class ProjectCard extends React.PureComponent<Props, State> {
           <Mod projectId={project.id} />
 
           <ProjectImageContainer>
-            {imageUrl && <ProjectImage src={imageUrl} cover />}
+            {imageUrl && <ProjectImage src={imageUrl} alt={`${tenantName} - ${title}`} cover />}
 
             {!imageUrl &&
               <ProjectImagePlaceholder>
@@ -321,6 +325,7 @@ class ProjectCard extends React.PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
+  tenant: <GetTenant />,
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
 });
