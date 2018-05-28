@@ -8,7 +8,7 @@ class SideFxModeratorService
       current_user, Time.now.to_i,
       payload: {project_id: project.id}
       )
-    log_project_moderation_rights_given_email_requested moderator, project, current_user
+    log_project_moderation_rights_received moderator, project, current_user
   end
 
   def after_destroy moderator, project, current_user
@@ -21,8 +21,7 @@ class SideFxModeratorService
 
   private 
 
-  def log_project_moderation_rights_given_email_requested moderator, project, current_user
-    # not external serializer for project to also include images
+  def log_project_moderation_rights_received moderator, project, current_user
     project_serializer = "WebApi::V1::External::ProjectSerializer".constantize 
     serialized_project = ActiveModelSerializers::SerializableResource.new(project, {
       serializer: project_serializer,
@@ -34,7 +33,7 @@ class SideFxModeratorService
       adapter: :json
      }).serializable_hash
     LogActivityJob.set(wait: 5.seconds).perform_later(
-      moderator, 'project_moderation_rights_given_email_requested', 
+      moderator, 'project_moderation_rights_received', 
       moderator, Time.now.to_i, 
       payload: {project: serialized_project, initiator: serialized_current_user}
       ) 

@@ -79,6 +79,10 @@ class Tenant < ApplicationRecord
       "#{transport}://#{self.host}"
     end
   end
+
+  def location
+    RGeo::Geographic.spherical_factory(:srid => 4326).point(settings.dig('maps', 'map_center', 'long'), settings.dig('maps', 'map_center', 'lat'))
+  end
   
   private
 
