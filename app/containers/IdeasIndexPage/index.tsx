@@ -4,6 +4,7 @@ import * as React from 'react';
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import Footer from 'components/Footer';
+import IdeasIndexMeta from './IdeaIndexMeta';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -55,12 +56,14 @@ type State = {};
 export default class IdeasIndex extends React.PureComponent<Props, State> {
   render() {
     return (
+      <>
+      <IdeasIndexMeta />
       <Container>
         <StyledContentContainer>
           <PageTitle>
             <FormattedMessage {...messages.pageTitle} />
           </PageTitle>
-          <IdeaCards 
+          <IdeaCards
             type="load-more"
             sort="trending"
             pageSize={12}
@@ -68,6 +71,7 @@ export default class IdeasIndex extends React.PureComponent<Props, State> {
         </StyledContentContainer>
         <Footer />
       </Container>
+      </>
     );
   }
 }
