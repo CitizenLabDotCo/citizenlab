@@ -52,7 +52,7 @@ export interface IInviteError {
 
 export interface INewBulkInvite {
   locale?: string | null | undefined;
-  roles?: [{ type: 'admin'}] | null | undefined;
+  roles?: [{ type: 'admin' }] | [{ type: 'project_moderator' }] | null | undefined;
   group_ids?: string[] | null | undefined;
   invite_text?: string | null | undefined;
 }

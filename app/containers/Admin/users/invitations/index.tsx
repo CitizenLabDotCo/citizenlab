@@ -215,6 +215,7 @@ type State = {
   selectedEmails: string | null;
   selectedFileBase64: string | null;
   hasAdminRights: boolean;
+  hasModeratorRights: boolean;
   selectedLocale: Locale | null;
   selectedGroups: IOption[] | null;
   selectedInviteText: string | null;
@@ -237,6 +238,7 @@ class Invitations extends React.PureComponent<Props, State> {
       selectedEmails: null,
       selectedFileBase64: null,
       hasAdminRights: false,
+      hasModeratorRights: false,
       selectedLocale: null,
       selectedGroups: null,
       selectedInviteText: null,
@@ -305,6 +307,11 @@ class Invitations extends React.PureComponent<Props, State> {
     this.setState(state => ({ hasAdminRights: !state.hasAdminRights }));
   }
 
+  handleModeratorRightsOnToggle = () => {
+    this.resetErrorAndSuccessState();
+    this.setState(state => ({ hasModeratorRights: !state.hasModeratorRights }));
+  }
+
   handleLocaleOnChange = (selectedLocale: Locale) => {
     this.resetErrorAndSuccessState();
     this.setState({ selectedLocale });
@@ -342,6 +349,7 @@ class Invitations extends React.PureComponent<Props, State> {
       selectedEmails: null,
       selectedFileBase64: null,
       hasAdminRights: false,
+      hasModeratorRights: false,
       selectedLocale: (this.props.tenantLocales ? this.props.tenantLocales [0] : null),
       selectedGroups: null,
       selectedInviteText: null,
@@ -367,7 +375,7 @@ class Invitations extends React.PureComponent<Props, State> {
   handleOnSubmit = async (event) => {
     event.preventDefault();
 
-    const { selectedLocale, selectedView, selectedEmails, selectedFileBase64, hasAdminRights, selectedGroups, selectedInviteText } = this.state;
+    const { selectedLocale, selectedView, selectedEmails, selectedFileBase64, hasAdminRights, hasModeratorRights, selectedGroups, selectedInviteText } = this.state;
     const hasCorrectSelection = ((selectedView === 'import' && isString(selectedFileBase64) && !selectedEmails) || (selectedView === 'text' && !selectedFileBase64 && isString(selectedEmails)));
 
     if (selectedLocale && hasCorrectSelection) {
@@ -382,7 +390,7 @@ class Invitations extends React.PureComponent<Props, State> {
 
         const bulkInvite: INewBulkInvite = {
           locale: selectedLocale,
-          roles: (hasAdminRights ? [{ type: 'admin' }] : null),
+          roles: (hasAdminRights ? [{ type: 'admin' }] : hasModeratorRights ? [{ type: 'project_moderator', project_id: '' }] : null),
           group_ids: (selectedGroups && selectedGroups.length > 0 ? selectedGroups.map(group => group.value) : null),
           invite_text: selectedInviteText
         };
@@ -432,6 +440,7 @@ class Invitations extends React.PureComponent<Props, State> {
       selectedEmails,
       selectedFileBase64,
       hasAdminRights,
+      hasModeratorRights,
       selectedLocale,
       selectedGroups,
       selectedInviteText,
@@ -500,7 +509,7 @@ class Invitations extends React.PureComponent<Props, State> {
                 <Label>
                   <FormattedMessage {...messages.moderatorLabel} />
                 </Label>
-                <Toggle value={hasAdminRights} onChange={this.handleAdminRightsOnToggle} />
+                <Toggle value={hasModeratorRights} onChange={this.handleModeratorRightsOnToggle} />
               </SectionField>
 
               {!isNilOrError(tenantLocales) && tenantLocales.length > 1 &&
