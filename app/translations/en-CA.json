@@ -131,6 +131,7 @@
   "app.containers.Admin.User.invitedSince": "",
   "app.containers.Admin.User.localeLabel": "",
   "app.containers.Admin.User.member": "",
+  "app.containers.Admin.User.moderatorLabel": "",
   "app.containers.Admin.User.name": "",
   "app.containers.Admin.User.processing": "",
   "app.containers.Admin.User.publishButton": "",
