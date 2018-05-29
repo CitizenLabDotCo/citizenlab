@@ -2,7 +2,7 @@ import * as React from 'react';
 import { isEmpty, values as getValues, every } from 'lodash';
 import FormikInput from 'components/UI/FormikInput';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
-import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
+import FormikEditorMultiloc from 'components/UI/FormikEditorMultiloc';
 import Error from 'components/UI/Error';
 import { Section, SectionField } from 'components/admin/Section';
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
@@ -76,8 +76,8 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
           <SectionField>
             <Field
               name="body_multiloc"
-              component={FormikTextAreaMultiloc}
-              label={<FormattedMessage {...messages.editBodyAsHTMLLabel} />}
+              component={FormikEditorMultiloc}
+              label={<FormattedMessage {...messages.editContent} />}
               renderPerLocale={this.renderAdavancedEditorLink}
             />
             {touched.body_multiloc && <Error

@@ -39,9 +39,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.PagesPage.pageSlug',
     defaultMessage: 'Slug',
   },
-  editBodyAsHTMLLabel: {
+  editContent: {
     id: 'app.containers.AdminPage.PagesPage.editBodyAsHTMLLabel',
-    defaultMessage: 'Edit Body as HTML',
+    defaultMessage: 'Content',
   },
   advancedEditorLink: {
     id: 'app.containers.AdminPage.PagesPage.advancedEditorLink',
