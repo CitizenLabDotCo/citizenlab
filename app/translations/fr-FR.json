@@ -498,6 +498,7 @@
   "app.containers.IdeasShow.ideaNotFound": "Oups... il semble que cette idée ait été supprimée ou oubliée !",
   "app.containers.IdeasShow.ideaStatus": "Statut de l’idée",
   "app.containers.IdeasShow.ideaVoteSubmitError": "Le vote a échoué",
+  "app.containers.IdeasShow.imageAltText": "",
   "app.containers.IdeasShow.loadMoreComments": "Afficher plus de commentaires...",
   "app.containers.IdeasShow.loadVotesError": "Le vote est temporairement indisponible",
   "app.containers.IdeasShow.loadingComments": "Afficher les commentaires...",

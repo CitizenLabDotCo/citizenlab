@@ -498,6 +498,7 @@
   "app.containers.IdeasShow.ideaNotFound": "Oeps... dit idee is verwijderd of vergeten!",
   "app.containers.IdeasShow.ideaStatus": "De status van het idee",
   "app.containers.IdeasShow.ideaVoteSubmitError": "Stemmen is mislukt",
+  "app.containers.IdeasShow.imageAltText": "",
   "app.containers.IdeasShow.loadMoreComments": "Meer reacties laden...",
   "app.containers.IdeasShow.loadVotesError": "Stemmen is momenteel niet beschikbaar",
   "app.containers.IdeasShow.loadingComments": "Reacties laden...",

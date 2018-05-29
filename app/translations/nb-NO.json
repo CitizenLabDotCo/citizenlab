@@ -498,6 +498,7 @@
   "app.containers.IdeasShow.ideaNotFound": "Oops... det ser ut til at denne idéen har blitt fjernet eller glemt!",
   "app.containers.IdeasShow.ideaStatus": "Idéstatus",
   "app.containers.IdeasShow.ideaVoteSubmitError": "Stemmegivning mislyktes",
+  "app.containers.IdeasShow.imageAltText": "",
   "app.containers.IdeasShow.loadMoreComments": "Last inn flere kommentarer...",
   "app.containers.IdeasShow.loadVotesError": "Stemmegiving er ikke tilgjengelig for øyeblikket",
   "app.containers.IdeasShow.loadingComments": "Laster inn kommentarer...",
