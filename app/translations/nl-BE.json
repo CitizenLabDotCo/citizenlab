@@ -131,6 +131,7 @@
   "app.containers.Admin.User.invitedSince": "Uitgenodigd",
   "app.containers.Admin.User.localeLabel": "Selecteer de standaardtaal voor de uitgenodigde personen",
   "app.containers.Admin.User.member": "Lid sinds",
+  "app.containers.Admin.User.moderatorLabel": "",
   "app.containers.Admin.User.name": "Naam",
   "app.containers.Admin.User.processing": "De uitnodigingen worden verzonden. Even geduld aub...",
   "app.containers.Admin.User.publishButton": "Gebruiker publiceren",

@@ -131,6 +131,7 @@
   "app.containers.Admin.User.invitedSince": "Invited",
   "app.containers.Admin.User.localeLabel": "Select the default language for the invited people",
   "app.containers.Admin.User.member": "Member Since",
+  "app.containers.Admin.User.moderatorLabel": "Grant project moderator rights to the invited people?",
   "app.containers.Admin.User.name": "Name",
   "app.containers.Admin.User.processing": "Sending out invitations. Please wait...",
   "app.containers.Admin.User.publishButton": "Publish User",
