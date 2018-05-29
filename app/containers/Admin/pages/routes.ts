@@ -9,15 +9,15 @@ export default () => ({
   childRoutes: [
     {
       path: 'new',
-      getComponent: loadAndRender(import('./Edit')),
-    },
-    {
-      path: ':pageId/editor/:locale',
       getComponent: loadAndRender(import('./New')),
     },
     {
-      path: ':pageId',
+      path: ':pageId/editor/:locale',
       getComponent: loadAndRender(import('./BodyEditor')),
+    },
+    {
+      path: ':pageId',
+      getComponent: loadAndRender(import('./Edit')),
     },
   ],
 });
