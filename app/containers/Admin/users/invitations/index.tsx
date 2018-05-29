@@ -496,6 +496,13 @@ class Invitations extends React.PureComponent<Props, State> {
                 <Toggle value={hasAdminRights} onChange={this.handleAdminRightsOnToggle} />
               </SectionField>
 
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.moderatorLabel} />
+                </Label>
+                <Toggle value={hasAdminRights} onChange={this.handleAdminRightsOnToggle} />
+              </SectionField>
+
               {!isNilOrError(tenantLocales) && tenantLocales.length > 1 &&
                 <SectionField>
                   <Label>
