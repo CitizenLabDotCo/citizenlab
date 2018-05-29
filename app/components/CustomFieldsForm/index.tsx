@@ -275,7 +275,7 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
               }
 
               {description && description.props && description.props.description && description.props.description.length > 0 &&
-                <Description>{description}</Description>
+                <Description dangerouslySetInnerHTML={{ __html: description.props.description }} />
               }
             </>
           }

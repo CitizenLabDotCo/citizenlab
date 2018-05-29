@@ -13,6 +13,9 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // utils
 import eventEmitter from 'utils/eventEmitter';
 
+// analytics
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -80,20 +83,24 @@ const RightInner = styled.div`
   padding-right: 30px;
 `;
 
-interface InputProps{}
+interface InputProps {}
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
+}
+
+interface ITracks {
+  successfulSignUp: () => void;
 }
 
 interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class SignUpPage extends React.PureComponent<Props & WithRouterProps, State> {
+class SignUpPage extends React.PureComponent<Props & ITracks & WithRouterProps, State> {
   subscriptions: Subscription[];
 
-  constructor(props: Props & WithRouterProps) {
+  constructor(props: Props & ITracks & WithRouterProps) {
     super(props);
     this.state = {};
     this.subscriptions = [];
@@ -113,6 +120,8 @@ class SignUpPage extends React.PureComponent<Props & WithRouterProps, State> {
 
   onSignUpCompleted = () => {
     browserHistory.push('/');
+    // track signup for analytics
+    this.props.successfulSignUp();
   }
 
   render() {
@@ -141,10 +150,11 @@ class SignUpPage extends React.PureComponent<Props & WithRouterProps, State> {
   }
 }
 
-const SignUpPageWithHoCs = withRouter(SignUpPage);
+// Add router props and analytics (tracking) to the SignUpPage
+const SignUpPageWithHOCs = withRouter(injectTracks<Props>(tracks)(SignUpPage));
 
 export default (inputProps: InputProps) => (
   <GetAuthUser>
-    {authUser => <SignUpPageWithHoCs {...inputProps} authUser={authUser} />}
+    {authUser => <SignUpPageWithHOCs {...inputProps} authUser={authUser} />}
   </GetAuthUser>
 );
