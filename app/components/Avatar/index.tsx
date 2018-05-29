@@ -6,12 +6,17 @@ import * as Rx from 'rxjs/Rx';
 import Icon from 'components/UI/Icon';
 
 // services
-import { userByIdStream } from 'services/users';
+import { userByIdStream, getUserName } from 'services/users';
+
+// i18n
+import injectIntl from 'utils/cl-intl/injectIntl';
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 // styles
 import { darken, lighten } from 'polished';
 import styled, { css } from 'styled-components';
-// import { color } from 'utils/styleUtils';
 
 const AvatarImageContainer = styled.div`
   width: 100%;
@@ -81,15 +86,17 @@ type Props = {
 
 type State = {
   avatarSrc: string | null;
+  userName: string | null;
 };
 
-export default class Avatar extends React.PureComponent<Props, State> {
+export class Avatar extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      avatarSrc: null
+      avatarSrc: null,
+      userName: null,
     };
     this.subscriptions = [];
   }
@@ -101,7 +108,7 @@ export default class Avatar extends React.PureComponent<Props, State> {
       this.subscriptions = [
         user$.subscribe((user) => {
           const avatarSrc = (user ? user.data.attributes.avatar[this.props.size] : null);
-          this.setState({ avatarSrc });
+          this.setState({ avatarSrc, userName: getUserName(user.data) });
         })
       ];
     }
@@ -119,7 +126,7 @@ export default class Avatar extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    const { avatarSrc } = this.state;
+    const { avatarSrc, userName } = this.state;
     const isClickable = (this.props.onClick && isFunction(this.props.onClick));
 
     if (this.props.hideIfNoAvatar && !avatarSrc) {
@@ -131,12 +138,14 @@ export default class Avatar extends React.PureComponent<Props, State> {
         {avatarSrc ? (
           <AvatarImageContainer>
             <AvatarImageBackground />
-            <AvatarImage src={avatarSrc} />
+            <AvatarImage src={avatarSrc} alt={this.props.intl.formatMessage(messages.avatarAltText, { userName })} />
           </AvatarImageContainer>
         ) : (
-          <AvatarIcon name="user" />
+          <AvatarIcon name="user" title={<FormattedMessage {...messages.noAvatarAltText} />} />
         )}
       </Container>
     );
   }
 }
+
+export default injectIntl<Props>(Avatar);

@@ -50,6 +50,7 @@
     "e2e-setup": "selenium-standalone install",
     "test:e2e": "cross-env ROOT_URL='localhost:3000' nightwatch",
     "test:browserstack": "nightwatch -c nightwatch-bs.conf.js -e chrome,firefox,safari,edge,ie",
+    "test:bschrome": "nightwatch -c nightwatch-bs.conf.js -e chrome",
     "test:pa11y": "pa11y-ci"
   },
   "lint-staged": {

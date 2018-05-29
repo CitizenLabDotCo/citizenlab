@@ -132,6 +132,8 @@
   "app.components.admin.pagination.next": "",
   "app.containers.Admin.User.GroupsPanel.allUsers": "",
   "app.containers.Admin.User.GroupsPanel.groupsTitle": "",
+  "app.components.avatar.avatarAltText": "",
+  "app.components.avatar.noAvatarAltText": "",
   "app.containers.Admin.User.admin": "Administrator",
   "app.containers.Admin.User.adminLabel": "Grant administrator rights to the invited people?",
   "app.containers.Admin.User.confirmDelete": "Yes, I'm sure",
