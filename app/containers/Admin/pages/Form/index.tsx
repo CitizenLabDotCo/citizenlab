@@ -12,6 +12,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { Multiloc } from 'typings';
 import messages from '../messages';
 import Label from 'components/UI/Label';
+import Warning from 'components/UI/Warning';
 import { Link } from 'react-router';
 
 export interface FormValues {
@@ -60,21 +61,6 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
       <Form>
         <Section>
 
-          {mode === 'edit' &&
-            <SectionField>
-              <Label><FormattedMessage {...messages.pageSlug} /></Label>
-              <Field
-                name="slug"
-                component={FormikInput}
-                label={<FormattedMessage {...messages.pageSlug} />}
-              />
-              {touched.slug && <Error
-                fieldName="slug"
-                apiErrors={errors.slug}
-              />}
-            </SectionField>
-          }
-
           <SectionField>
             <Field
               name="title_multiloc"
@@ -87,12 +73,11 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
             />}
           </SectionField>
 
-
           <SectionField>
             <Field
               name="body_multiloc"
               component={FormikTextAreaMultiloc}
-              label={<FormattedMessage {...messages.pageBody} />}
+              label={<FormattedMessage {...messages.editBodyAsHTMLLabel} />}
               renderPerLocale={this.renderAdavancedEditorLink}
             />
             {touched.body_multiloc && <Error
@@ -100,6 +85,24 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
               apiErrors={errors.body_multiloc}
             />}
           </SectionField>
+
+          {mode === 'edit' &&
+            <SectionField>
+              <Label><FormattedMessage {...messages.pageSlug} /></Label>
+              <Field
+                name="slug"
+                component={FormikInput}
+                label={<FormattedMessage {...messages.pageSlug} />}
+              />
+              {touched.slug && <Error
+                fieldName="slug"
+                apiErrors={errors.slug}
+              />}
+              <Warning>
+                <FormattedMessage {...messages.dontChange} />
+              </Warning>
+            </SectionField>
+          }
 
         </Section>
 
