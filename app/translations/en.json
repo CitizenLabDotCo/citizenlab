@@ -498,6 +498,7 @@
   "app.containers.IdeasShow.ideaNotFound": "Oops... it seems that this idea has been removed or forgotten!",
   "app.containers.IdeasShow.ideaStatus": "Idea status",
   "app.containers.IdeasShow.ideaVoteSubmitError": "Voting failed",
+  "app.containers.IdeasShow.imageAltText": "{orgName} - main image for the ida {ideaTitle}",
   "app.containers.IdeasShow.loadMoreComments": "Load more comments...",
   "app.containers.IdeasShow.loadVotesError": "Voting is not currently available",
   "app.containers.IdeasShow.loadingComments": "Loading comments...",

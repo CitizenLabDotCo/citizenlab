@@ -498,6 +498,7 @@
   "app.containers.IdeasShow.ideaNotFound": "Hovsa... det ser ud til at denne idé er blevet fjernet eller glemt!",
   "app.containers.IdeasShow.ideaStatus": "Idéstatus",
   "app.containers.IdeasShow.ideaVoteSubmitError": "Afstemning fejlede",
+  "app.containers.IdeasShow.imageAltText": "",
   "app.containers.IdeasShow.loadMoreComments": "Indlæs flere kommentarer",
   "app.containers.IdeasShow.loadVotesError": "Afstemning er ikke tilgængelig i øjeblikket",
   "app.containers.IdeasShow.loadingComments": "Indlæser kommentarer...",

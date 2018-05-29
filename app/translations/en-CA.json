@@ -498,6 +498,7 @@
   "app.containers.IdeasShow.ideaNotFound": "",
   "app.containers.IdeasShow.ideaStatus": "",
   "app.containers.IdeasShow.ideaVoteSubmitError": "",
+  "app.containers.IdeasShow.imageAltText": "",
   "app.containers.IdeasShow.loadMoreComments": "",
   "app.containers.IdeasShow.loadVotesError": "",
   "app.containers.IdeasShow.loadingComments": "",

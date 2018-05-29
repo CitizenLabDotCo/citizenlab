@@ -498,6 +498,7 @@
   "app.containers.IdeasShow.ideaNotFound": "{orgName, select, München {Uuups... es scheint, dass diese Mängelmeldung entfernt oder vergessen wurde!} other {Uuups... es scheint, dass diese Idee entfernt oder vergessen wurde!}}",
   "app.containers.IdeasShow.ideaStatus": "{orgName, select, München {Anliegenstatus} other {Ideenstatus}}",
   "app.containers.IdeasShow.ideaVoteSubmitError": "{orgName, select, München {Bewertungs-Abgabe hat nicht funktioniert} other {Stimmabgabe hat nicht funktioniert}}",
+  "app.containers.IdeasShow.imageAltText": "",
   "app.containers.IdeasShow.loadMoreComments": "Laden Sie weitere Kommentare...",
   "app.containers.IdeasShow.loadVotesError": "{orgName, select, München {Abgabe von Bewertungen derzeit nicht möglich} other {Stimmabgabe ist derzeit nicht verfügbar}}",
   "app.containers.IdeasShow.loadingComments": "Kommentare werden geladen...",
