@@ -242,7 +242,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     const facebookCheckbox = (socialLoginClicked === 'facebook' && (
       <CSSTransition classNames="tac" timeout={timeout} exit={true}>
         <SocialSignInButtonInner>
-          <Checkbox 
+          <Checkbox
             value={socialLoginTaCAccepted}
             onChange={this.handleSocialLoginAcceptTaC('facebook')}
             disableLabelClick={true}
@@ -275,7 +275,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
             </SocialSignInText>
             <SocialSignInButtons>
               <FeatureFlag name="google_login">
-                <SocialSignInButton 
+                <SocialSignInButton
                   className={`google ${socialLoginClicked === 'google' && 'active'}`} 
                   onClick={this.handleOnSSOClick('google')}
                 >

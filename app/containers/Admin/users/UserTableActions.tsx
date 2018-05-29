@@ -16,6 +16,7 @@ const TableOptions = styled.div`
   padding-bottom: 12px;
   margin-bottom: 30px;
   border-bottom: solid 1px #eaeaea;
+  user-select: none;
 `;
 
 // Typings

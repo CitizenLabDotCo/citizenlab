@@ -162,8 +162,9 @@ class AllUsers extends React.PureComponent<Props, State> {
             <tbody>
               {usersList.map((user) => (
                 <UserTableRow
+                  key={user.id}
                   user={user}
-                  selected={false}
+                  selected={selectedUsers === 'all' || includes(selectedUsers, user.id)}
                   toggleSelect={this.handleUserSelectedOnChange(user.id)}
                   toggleAdmin={this.handleAdminRoleOnChange(user)}
                 />
@@ -190,7 +191,7 @@ class AllUsers extends React.PureComponent<Props, State> {
 
 export default (inputProps: InputProps) => (
   <GetUsers
-    pageSize={20}
+    pageSize={5}
     groupId={inputProps.groupId}
     search={inputProps.search}
     cache={false}

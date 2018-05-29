@@ -1,6 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 import { isEmpty, get } from 'lodash';
-import * as Rx from 'rxjs/Rx';
+import { Subscription } from 'rxjs';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 
 // components
 import Button from 'components/UI/Button';
@@ -71,10 +72,10 @@ type State = {
 };
 
 class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props: Props & InjectedIntlProps) {
+    super(props);
     this.state = {
       authUser: null,
       hasRequiredFields: true,
@@ -92,7 +93,7 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
     const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      combineLatest(
         authUser$,
         locale$,
         customFieldsSchemaForUsersStream$
