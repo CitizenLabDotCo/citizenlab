@@ -510,6 +510,19 @@ class Invitations extends React.PureComponent<Props, State> {
                   <FormattedMessage {...messages.moderatorLabel} />
                 </Label>
                 <Toggle value={hasModeratorRights} onChange={this.handleModeratorRightsOnToggle} />
+                { hasModeratorRights &&
+                  <SectionField>
+                    <Label>
+                      <FormattedMessage {...messages.groupsLabel} />
+                    </Label>
+                    <MultipleSelect
+                      value={selectedGroups}
+                      options={groupOptions}
+                      onChange={this.handleSelectedGroupsOnChange}
+                      placeholder={<FormattedMessage {...messages.groupsPlaceholder} />}
+                    />
+                  </SectionField>
+                }
               </SectionField>
 
               {!isNilOrError(tenantLocales) && tenantLocales.length > 1 &&
