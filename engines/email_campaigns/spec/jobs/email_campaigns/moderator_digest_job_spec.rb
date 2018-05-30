@@ -14,6 +14,7 @@ RSpec.describe EmailCampaigns::ModeratorDigestJob, type: :job do
     	create_list(:idea, 2, published_at: since - 3.days, project: project)
       new_ideas = create_list(:idea, 3, published_at: since + 1.day, project: project)
       other_idea = create(:idea, project: create(:project))
+      draft = create(:idea, project: project, publication_status: 'draft')
       create(:vote, votable: new_ideas.first)
       create(:vote, votable: other_idea)
       
@@ -32,9 +33,10 @@ RSpec.describe EmailCampaigns::ModeratorDigestJob, type: :job do
           )).to eq(1)
         expect(event.dig(:properties, :payload, :top_ideas).map{|ti| ti[:id]}).to include(new_ideas.first.id)
         expect(event.dig(:properties, :payload, :top_ideas).map{|ti| ti[:id]}).not_to include(other_idea.id)
+        expect(event.dig(:properties, :payload, :top_ideas).map{|ti| ti[:id]}).not_to include(draft.id)
       end
       job.perform since.to_i
     end
-    
+
   end
 end
