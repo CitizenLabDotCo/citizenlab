@@ -114,6 +114,10 @@ const StyledLabel = styled(Label)`
   cursor: pointer;
 `;
 
+const StyledToggle = styled(Toggle)`
+  margin-bottom: 10px;
+`;
+
 const Options: any = styled.div`
   display: inline-flex;
   align-items: center;
@@ -563,7 +567,7 @@ class Invitations extends React.PureComponent<Props, State> {
                 <Label>
                   <FormattedMessage {...messages.moderatorLabel} />
                 </Label>
-                <Toggle value={hasModeratorRights} onChange={this.handleModeratorRightsOnToggle} />
+                <StyledToggle value={hasModeratorRights} onChange={this.handleModeratorRightsOnToggle} />
                 { hasModeratorRights &&
                   <MultipleSelect
                     value={selectedProjects}
