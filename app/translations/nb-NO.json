@@ -134,6 +134,7 @@
   "app.containers.Admin.User.moderatorLabel": "",
   "app.containers.Admin.User.name": "Navn",
   "app.containers.Admin.User.processing": "Sending out invitations. Please wait...",
+  "app.containers.Admin.User.projectSelectorPlaceholder": "",
   "app.containers.Admin.User.publishButton": "Publiser bruker",
   "app.containers.Admin.User.save": "Send out invitations",
   "app.containers.Admin.User.saveErrorMessage": "One or more errors occurred.       Therefore no invitations were sent out.       Please correct the error(s) listed below and try again.",

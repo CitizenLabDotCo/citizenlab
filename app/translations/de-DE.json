@@ -134,6 +134,7 @@
   "app.containers.Admin.User.moderatorLabel": "",
   "app.containers.Admin.User.name": "Name",
   "app.containers.Admin.User.processing": "Einladungen werden versandt. Bitte warten...",
+  "app.containers.Admin.User.projectSelectorPlaceholder": "",
   "app.containers.Admin.User.publishButton": "Benutzer veröffentlichen",
   "app.containers.Admin.User.save": "Einladungen versenden",
   "app.containers.Admin.User.saveErrorMessage": "Einer oder mehrere Fehler sind aufgetreten.\n      Deshalb wurden keine Einladungen versandt.\n      Bitte korrigieren Sie die unten aufgelisteten Fehler und versuchen Sie es nochmal.",
