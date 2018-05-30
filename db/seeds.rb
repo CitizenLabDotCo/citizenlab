@@ -354,6 +354,11 @@ if Apartment::Tenant.current == 'localhost'
           end_at: start_at + rand(12).hours
         })
       end
+
+      User.all.shuffle.take(rand(5)).each do |moderator|
+        moderator.add_role 'project_moderator', project_id: project.id
+        moderator.save!
+       end
     end
 
 

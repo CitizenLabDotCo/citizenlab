@@ -48,6 +48,13 @@ pipeline {
       }
     }
 
+    stage('Test email campaigns') {
+      steps {
+        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e RAILS_ENV=test web bundle exec rspec engines/email_campaigns/spec/'
+
+      }
+    }
+
     stage('Test slow tests (tenant templates)') {
       when { branch 'master' }
       steps {
