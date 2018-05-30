@@ -23,6 +23,8 @@ import { bulkInviteXLSX, bulkInviteEmails, IInviteError, INewBulkInvite } from '
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+
 
 // i18n
 import { FormattedHTMLMessage } from 'react-intl';
@@ -204,6 +206,7 @@ const Invites = styled.div`
 interface InputProps {}
 
 interface DataProps {
+  projects: GetProjectsChildProps;
   locale: GetLocaleChildProps;
   tenantLocales: GetTenantLocalesChildProps;
   groups: GetGroupsChildProps;
@@ -259,6 +262,19 @@ class Invitations extends React.PureComponent<Props, State> {
       return {
         selectedLocale: nextProps.tenantLocales[0]
       };
+    }
+
+    return null;
+  }
+
+  getProjectOptions = (projects: GetProjectsChildProps, locale: GetLocaleChildProps, tenantLocales: GetTenantLocalesChildProps) => {
+    const { projectsList } = projects;
+
+    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(projectsList) && projectsList.length > 0) {
+      return projectsList.map((project) => ({
+        value: project.id,
+        label: getLocalized(project.attributes.title_multiloc, locale, tenantLocales)
+      }));
     }
 
     return null;
@@ -374,8 +390,16 @@ class Invitations extends React.PureComponent<Props, State> {
 
   handleOnSubmit = async (event) => {
     event.preventDefault();
-
-    const { selectedLocale, selectedView, selectedEmails, selectedFileBase64, hasAdminRights, hasModeratorRights, selectedGroups, selectedInviteText } = this.state;
+    const {
+      selectedLocale,
+      selectedView,
+      selectedEmails,
+      selectedFileBase64,
+      hasAdminRights,
+      hasModeratorRights,
+      selectedGroups,
+      selectedInviteText
+    } = this.state;
     const hasCorrectSelection = ((selectedView === 'import' && isString(selectedFileBase64) && !selectedEmails) || (selectedView === 'text' && !selectedFileBase64 && isString(selectedEmails)));
 
     if (selectedLocale && hasCorrectSelection) {
@@ -435,7 +459,7 @@ class Invitations extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { locale, tenantLocales, groups } = this.props;
+    const { projects, locale, tenantLocales, groups } = this.props;
     const {
       selectedEmails,
       selectedFileBase64,
@@ -452,6 +476,7 @@ class Invitations extends React.PureComponent<Props, State> {
       filetypeError,
       unknownError
     } = this.state;
+    const projectOptions = this.getProjectOptions(projects, locale, tenantLocales);
     const groupOptions = this.getGroupOptions(groups, locale, tenantLocales);
     const dirty = ((isString(selectedEmails) && !isEmpty(selectedEmails)) || (isString(selectedFileBase64) && !isEmpty(selectedFileBase64)));
     let supportPageURL = 'http://support.citizenlab.co/eng-getting-started/invite-people-to-the-platform';
@@ -511,17 +536,12 @@ class Invitations extends React.PureComponent<Props, State> {
                 </Label>
                 <Toggle value={hasModeratorRights} onChange={this.handleModeratorRightsOnToggle} />
                 { hasModeratorRights &&
-                  <SectionField>
-                    <Label>
-                      <FormattedMessage {...messages.groupsLabel} />
-                    </Label>
-                    <MultipleSelect
-                      value={selectedGroups}
-                      options={groupOptions}
-                      onChange={this.handleSelectedGroupsOnChange}
-                      placeholder={<FormattedMessage {...messages.groupsPlaceholder} />}
-                    />
-                  </SectionField>
+                  <MultipleSelect
+                    value={selectedGroups}
+                    options={projectOptions}
+                    onChange={this.handleSelectedGroupsOnChange}
+                    placeholder={<FormattedMessage {...messages.projectSelectorPlaceholder} />}
+                  />
                 }
               </SectionField>
 
@@ -680,6 +700,7 @@ class Invitations extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, {}>({
+  projects: <GetProjects />,
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
   groups: <GetGroups />
