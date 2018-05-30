@@ -10,13 +10,13 @@ class LogToSegmentJob < ApplicationJob
       event: service.activity_event_name(activity),
       timestamp: activity.acted_at,
       properties: {
-      	source: 'cl2-back'
+        source: 'cl2-back'
       }
     }
     if activity.user_id
-      event[:user_id] = activity.user_id
+      event[:userId] = activity.user_id
     else
-    	event[:anonymous_id] = SecureRandom.base64
+    	event[:anonymousId] = SecureRandom.base64
     end
     service.add_activity_properties event[:properties], activity
     service.add_tenant_properties event[:properties], tenant
