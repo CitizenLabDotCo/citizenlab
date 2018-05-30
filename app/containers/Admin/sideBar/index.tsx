@@ -189,9 +189,7 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
         }))
       ).subscribe((permissions) => {
         this.setState({
-          navItems: permissions.filter(permission => permission).map((_permission, index) => {
-            return this.routes[index];
-          })
+          navItems: this.routes.filter((_, index) => permissions[index])
         });
       })
     ];
@@ -206,7 +204,7 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
     const { pathname } = this.props.location;
     const { navItems } = this.state;
 
-    if (!(navItems && navItems.length > 0)) {
+    if (!(navItems && navItems.length > 1)) {
       return null;
     }
 
