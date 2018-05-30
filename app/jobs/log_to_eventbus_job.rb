@@ -15,7 +15,7 @@ class LogToEventbusJob < ApplicationJob
     service.add_tenant_properties event, tenant
     service.add_activity_item_content event, event, activity
 
-    publish_to_rabbit event
+    publish_to_rabbit event, activity
   end
 
 
