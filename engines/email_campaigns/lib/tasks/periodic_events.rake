@@ -1,10 +1,12 @@
 require 'ice_cube'
 
 
-USER_PLATFORM_DIGEST_DAY = ENV.fetch("USER_PLATFORM_DIGEST_DAY", :tuesday).to_sym
-USER_PLATFORM_DIGEST_HOUR = ENV.fetch("USER_PLATFORM_DIGEST_HOUR", 16).to_i
+USER_PLATFORM_DIGEST_DAY = ENV.fetch("USER_PLATFORM_DIGEST_DAY", :monday).to_sym
+USER_PLATFORM_DIGEST_HOUR = ENV.fetch("USER_PLATFORM_DIGEST_HOUR", 14).to_i
 ADMIN_WEEKLY_REPORT_DAY = ENV.fetch("ADMIN_WEEKLY_REPORT_DAY", :monday).to_sym
-ADMIN_WEEKLY_REPORT_HOUR = ENV.fetch("ADMIN_WEEKLY_REPORT_HOUR", 16).to_i
+ADMIN_WEEKLY_REPORT_HOUR = ENV.fetch("ADMIN_WEEKLY_REPORT_HOUR", 10).to_i
+MODERATOR_DIGEST_DAY = ENV.fetch("MODERATOR_DIGEST_DAY", :monday).to_sym
+MODERATOR_DIGEST_HOUR = ENV.fetch("MODERATOR_DIGEST_HOUR", 11).to_i
 
 
 
@@ -22,7 +24,7 @@ ADMIN_WEEKLY_REPORT_HOUR = ENV.fetch("ADMIN_WEEKLY_REPORT_HOUR", 16).to_i
 @never_schedule.add_recurrence_rule(
   IceCube::Rule.yearly(1000).month_of_year((Time.now.month - 2) % 12)
 )
-# user platform digests, every Monday at 10AM
+# user platform digests, every Monday at 14AM
 @user_platform_digest_schedule = IceCube::Schedule.new(now=Time.at(0))
 @user_platform_digest_schedule.add_recurrence_rule(
   IceCube::Rule.weekly(1).day(USER_PLATFORM_DIGEST_DAY).hour_of_day(USER_PLATFORM_DIGEST_HOUR) 
@@ -32,10 +34,15 @@ ADMIN_WEEKLY_REPORT_HOUR = ENV.fetch("ADMIN_WEEKLY_REPORT_HOUR", 16).to_i
 @admin_weekly_report_schedule.add_recurrence_rule(
   IceCube::Rule.weekly(1).day(ADMIN_WEEKLY_REPORT_DAY).hour_of_day(ADMIN_WEEKLY_REPORT_HOUR) 
 )
+# moderator digest report, every Monday at 11AM
+@moderator_digest_schedule = IceCube::Schedule.new(now=Time.at(0))
+@moderator_digest_schedule.add_recurrence_rule(
+  IceCube::Rule.weekly(1).day(MODERATOR_DIGEST_DAY).hour_of_day(MODERATOR_DIGEST_HOUR) 
+)
 @campaign_schedules = {
   'user_platform_digest'             => @user_platform_digest_schedule,
   'admin_weekly_report'              => @admin_weekly_report_schedule,
-  'moderator_digest'                 => @never_schedule,
+  'moderator_digest'                 => @moderator_digest_schedule,
   'user_activity_on_your_ideas'      => @never_schedule,
   'user_updates_on_supported_ideas'  => @never_schedule,
   'user_participation_opportunities' => @never_schedule
