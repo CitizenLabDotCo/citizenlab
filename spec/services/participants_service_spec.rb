@@ -21,7 +21,7 @@ describe TimelineService do
       end
       create(:activity, item: create(:comment), action: 'created', user: pp4)
 
-      expect(service.participants().map(&:id)).to match participants.map(&:id)
+      expect(service.participants().map(&:id)).to match_array participants.map(&:id)
     end
 
     it "returns participants across the whole platform since a given date" do
@@ -40,7 +40,7 @@ describe TimelineService do
       end
       create(:activity, item: create(:comment), action: 'created', user: pp4)
 
-      expect(service.participants(since: (Time.now-6.days)).map(&:id)).to match [pp2.id,pp3.id,pp4.id]
+      expect(service.participants(since: (Time.now-6.days)).map(&:id)).to match_array [pp2.id,pp3.id,pp4.id]
     end
 
     it "returns participants of a given project at any time" do
@@ -66,7 +66,7 @@ describe TimelineService do
       end
       create(:comment, idea: idea, author: pp4)
 
-      expect(service.participants(project: project).map(&:id)).to match participants.map(&:id)
+      expect(service.participants(project: project).map(&:id)).to match_array participants.map(&:id)
     end
 
     it "returns participants of a given project since a given date" do
