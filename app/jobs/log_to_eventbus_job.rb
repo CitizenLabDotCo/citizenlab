@@ -10,7 +10,7 @@ class LogToEventbusJob < ApplicationJob
       event: service.activity_event_name(activity),
       timestamp: activity.acted_at
     }
-    event[:user_id] = activity.user_id if activity.user_id
+    event[:userId] = activity.user_id if activity.user_id
     service.add_activity_properties event, activity
     service.add_tenant_properties event, tenant
     service.add_activity_item_content event, event, activity

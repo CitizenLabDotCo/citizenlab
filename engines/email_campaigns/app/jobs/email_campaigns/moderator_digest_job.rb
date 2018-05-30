@@ -38,7 +38,7 @@ module EmailCampaigns
     def moderator_digest_top_ideas project, days_interval
       since = Time.now - days_interval
 
-      top_ideas = Idea.where(publication_status: 'published').all
+      top_ideas = Idea.published.where project_id: project.id
       top_ideas = top_ideas.select do |idea| 
         (@service.activity_count(idea, since=since) > 0) || (idea.published_at > since)
       end
@@ -59,7 +59,7 @@ module EmailCampaigns
       ps = ParticipantsService.new
       participants_increase = ps.participants(project: project, since: (Time.now - days_interval)).size
       participants_past_increase = ps.participants(project: project, since: (Time.now - days_interval * 2)).size - participants_increase
-      ideas = project.ideas
+      ideas = Idea.published.where project_id: project.id
       comments = Comment.where(idea_id: ideas.map(&:id))
       votes = Vote.where(votable_id: (ideas.map(&:id) + comments.map(&:id)))
       {
