@@ -14,6 +14,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.postedIn',
     defaultMessage: 'Posted in {projectLink}',
   },
+  imageAltText: {
+    id: 'app.containers.IdeasShow.imageAltText',
+    defaultMessage: '{orgName} - main image for the ida {ideaTitle}',
+  },
   closeMap: {
     id: 'app.containers.IdeasShow.closeMap',
     defaultMessage: 'Close Map',
