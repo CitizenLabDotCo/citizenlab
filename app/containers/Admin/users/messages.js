@@ -17,10 +17,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.User.tabRegisteredUsers',
     defaultMessage: 'Registered users',
   },
-  exportUsers: {
-    id: 'app.containers.Admin.User.exportUsers',
-    defaultMessage: 'Export all users',
-  },
   deleteButton: {
     id: 'app.containers.Admin.User.deleteButton',
     defaultMessage: 'Delete',
@@ -171,10 +167,30 @@ export default defineMessages({
   },
   xUsers: {
     id: 'app.containers.AdminPage.Users.GroupsPanel.xUsers',
-    defaultMessage: 'x Users',
+    defaultMessage: '{count, plural, =0 {No users} one {1 user} other {{count} users}}',
   },
   groupDeletionConfirmation: {
     id: 'app.containers.AdminPage.Users.UsersGroup.groupDeletionConfirmation',
     defaultMessage: 'Are you sure?',
+  },
+  deleteSelectedUsersConfirmation: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.deleteSelectedUsersConfirmation',
+    defaultMessage: 'Are you sure you want to delete all selected users?',
+  },
+  moveUsers: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.moveUsers',
+    defaultMessage: 'Add selected users to group',
+  },
+  deleteUsers: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.deleteUsers',
+    defaultMessage: 'Delete selected users',
+  },
+  exportUsers: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.exportUsers',
+    defaultMessage: 'Export all users',
+  },
+  add: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.add',
+    defaultMessage: 'Add',
   },
 });

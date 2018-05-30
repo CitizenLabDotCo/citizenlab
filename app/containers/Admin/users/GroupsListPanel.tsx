@@ -1,16 +1,17 @@
 // Libraries
 import React from 'react';
+import { adopt } from 'react-adopt';
 import { Link } from 'react-router';
+import { isNilOrError } from 'utils/helperUtils';
 
 // Resources
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
-import { isNilOrError } from 'utils/helperUtils';
+import GetUserCount, { GetUserCountChildProps } from 'resources/GetUserCount';
 
 // Components
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 import T from 'components/T';
-import GetUserCount from './GetUserCount';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -121,9 +122,16 @@ export interface InputProps {
   onCreateGroup: () => void;
 }
 
+interface DataProps {
+  groups: GetGroupsChildProps;
+  usercount: GetUserCountChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
 export interface State { }
 
-export class GroupsListPanel extends React.PureComponent<InputProps & GetGroupsChildProps, State> {
+export class GroupsListPanel extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {};
@@ -135,11 +143,14 @@ export class GroupsListPanel extends React.PureComponent<InputProps & GetGroupsC
   }
 
   render() {
+    const { usercount } = this.props;
+    const { groupsList } = this.props.groups;
+
     return (
       <Panel className={this.props.className}>
         <MenuLink to="/admin/users" activeClassName="active" onlyActiveOnIndex>
           <FormattedMessage {...messages.allUsers} />
-          <GetUserCount />
+          {!isNilOrError(usercount) && usercount}
         </MenuLink>
         <Separator />
         <MenuTitle>
@@ -155,7 +166,7 @@ export class GroupsListPanel extends React.PureComponent<InputProps & GetGroupsC
           />
         </MenuTitle>
         <GroupsList className="e2e-groups-list">
-          {!isNilOrError(this.props.groupsList) && this.props.groupsList.map((group) => (
+          {!isNilOrError(groupsList) && groupsList.map((group) => (
             <li key={group.id}>
               <MenuLink to={`/admin/users/${group.id}`} activeClassName="active">
                 {group.attributes.membership_type === 'rules' && <LightningBolt name="lightingBolt" />}
@@ -170,10 +181,13 @@ export class GroupsListPanel extends React.PureComponent<InputProps & GetGroupsC
   }
 }
 
-export default (props: InputProps) => (
-  <GetGroups>
-    {(dataProps) => (
-      <GroupsListPanel {...dataProps} {...props} />
-    )}
-  </GetGroups>
+const Data = adopt<DataProps, InputProps>({
+  groups: <GetGroups />,
+  usercount: <GetUserCount />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <GroupsListPanel {...inputProps} {...dataProps} />}
+  </Data>
 );

@@ -227,7 +227,6 @@ const HiddenText = styled.span`
   ${invisibleA11yText()}
 `;
 
-
 export type ButtonStyles = 'primary' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'error' | 'text' | 'cl-blue';
 
 type Props = {

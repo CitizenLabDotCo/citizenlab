@@ -14,11 +14,15 @@ import { IUserData } from 'services/users';
 // Styling
 import styled from 'styled-components';
 
+const StyledCheckbox = styled(Checkbox)`
+  margin-left: 16px;
+`;
+
 const StyledAvatar = styled(Avatar)`
   flex: 0 0 30px;
   height: 30px;
-  margin-right: 15px;
-  margin-left: 15px;
+  margin-right: 10px;
+  margin-left: 0px;
 `;
 
 // Typings
@@ -51,7 +55,7 @@ class UserTableRow extends React.PureComponent<Props, State> {
     return (
       <tr key={user.id}>
         <td>
-          <Checkbox
+          <StyledCheckbox
             value={selected}
             onChange={this.handleUserSelectedOnChange}
           />
