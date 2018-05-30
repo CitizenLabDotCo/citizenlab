@@ -131,6 +131,7 @@
   "app.containers.Admin.User.invitedSince": "Eingeladen",
   "app.containers.Admin.User.localeLabel": "Wählen Sie die voreingestellte Sprache für die eingeladenen Personen aus",
   "app.containers.Admin.User.member": "Mitglied seit",
+  "app.containers.Admin.User.moderatorLabel": "",
   "app.containers.Admin.User.name": "Name",
   "app.containers.Admin.User.processing": "Einladungen werden versandt. Bitte warten...",
   "app.containers.Admin.User.publishButton": "Benutzer veröffentlichen",
