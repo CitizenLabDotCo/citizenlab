@@ -18,7 +18,6 @@ import LazyImage from 'components/LazyImage';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImage, { GetIdeaImageChildProps } from 'resources/GetIdeaImage';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -215,7 +214,6 @@ interface DataProps {
   idea: GetIdeaChildProps;
   ideaImage: GetIdeaImageChildProps;
   ideaAuthor: GetUserChildProps;
-  tenant: GetTenantChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -267,10 +265,10 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { idea, ideaImage, ideaAuthor, tenant, intl: { formatMessage } } = this.props;
+    const { idea, ideaImage, ideaAuthor, intl: { formatMessage } } = this.props;
     const { showVotingDisabled } = this.state;
 
-    if (!isNilOrError(idea) && !isNilOrError(tenant)) {
+    if (!isNilOrError(idea)) {
       const ideaImageUrl = (ideaImage ? ideaImage.attributes.versions.medium : null);
       const votingDescriptor = get(idea.relationships.action_descriptor.data, 'voting', null);
       const projectId = idea.relationships.project.data.id;
@@ -358,7 +356,6 @@ const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImage: ({ ideaId, idea, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={!isNilOrError(idea) ? get(idea.relationships.idea_images.data[0], 'id', null) : null}>{render}</GetIdeaImage>,
   ideaAuthor: ({ idea, render }) => <GetUser id={!isNilOrError(idea) ? get(idea.relationships.author.data, 'id', null) : null}>{render}</GetUser>,
-  tenant: <GetTenant />,
 });
 
 const IdeaCardWithHoC = injectIntl(IdeaCard);
