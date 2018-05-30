@@ -41,6 +41,7 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales,
     const ideaDescription = stripHtml(getLocalized(idea.attributes.body_multiloc, locale, tenantLocales), 250);
     const ideaImage = (ideaImages && ideaImages.length > 0 ? ideaImages[0].attributes.versions.large : null);
     const ideaUrl = window.location.href;
+    const ideaOgTitle = formatMessage(messages.metaOgTitle, { ideaTitle: getLocalized(idea.attributes.title_multiloc, locale, tenantLocales, 50) });
 
     return (
       <Helmet>
@@ -52,10 +53,13 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales,
         </title>
         <meta name="title" content={ideaTitle}/>
         <meta name="description" content={ideaDescription} />
-        <meta property="og:title" content={ideaTitle} />
-        <meta property="og:description" content={ideaDescription} />
+
+        <meta name="og:type" content="article" />
+        <meta property="og:title" content={ideaOgTitle} />
+        <meta property="og:description" content={formatMessage(messages.ideaOgDescription)} />
         {ideaImage && <meta property="og:image" content={ideaImage} />}
         <meta property="og:url" content={ideaUrl} />
+        <meta property="og:locale" content={locale} />
         <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
     );
