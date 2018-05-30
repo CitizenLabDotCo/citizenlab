@@ -2,8 +2,6 @@ class LogToEventbusJob < ApplicationJob
   queue_as :default
 
   def perform activity
-    tenant = Tenant.current
-    return if !tenant
     service = LogToSegmentService.new
 
     event = {
@@ -12,7 +10,12 @@ class LogToEventbusJob < ApplicationJob
     }
     event[:user_id] = activity.user_id if activity.user_id
     service.add_activity_properties event, activity
-    service.add_tenant_properties event, tenant
+    begin
+      tenant = Tenant.current
+      service.add_tenant_properties event, tenant
+    rescue  ActiveRecord::RecordNotFound => e
+      # Tenant can't be found, so we don't add anything
+    end
     service.add_activity_item_content event, event, activity
 
     publish_to_rabbit event, activity

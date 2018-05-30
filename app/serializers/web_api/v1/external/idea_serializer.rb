@@ -6,14 +6,14 @@ class WebApi::V1::External::IdeaSerializer < ActiveModel::Serializer
   has_many :idea_images, serializer: WebApi::V1::ImageSerializer
 
   def url
-      FrontendService.new.model_to_url object
+    FrontendService.new.model_to_url object
   end
 
   def latitude
-    RGeo::GeoJSON.encode(object.location_point).dig('coordinates',1)
+    RGeo::GeoJSON.encode(object.location_point)&.dig('coordinates',1)
   end
 
   def longitude
-    RGeo::GeoJSON.encode(object.location_point).dig('coordinates',0)
+    RGeo::GeoJSON.encode(object.location_point)&.dig('coordinates',0)
   end
 end

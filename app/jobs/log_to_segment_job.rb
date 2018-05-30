@@ -2,8 +2,6 @@ class LogToSegmentJob < ApplicationJob
   queue_as :default
 
   def perform activity
-  	tenant = Tenant.current
-    return if !tenant
     service = LogToSegmentService.new
 
     event = {
@@ -19,7 +17,12 @@ class LogToSegmentJob < ApplicationJob
     	event[:anonymous_id] = SecureRandom.base64
     end
     service.add_activity_properties event[:properties], activity
-    service.add_tenant_properties event[:properties], tenant
+    begin
+      tenant = Tenant.current
+      service.add_tenant_properties event[:properties], tenant
+    rescue  ActiveRecord::RecordNotFound => e
+      # Tenant can't be found, so we don't add anything
+    end
     service.add_activity_item_content event, event[:properties], activity
 
     Analytics.track event

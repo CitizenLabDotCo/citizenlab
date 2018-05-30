@@ -17,6 +17,8 @@ class SideFxIdeaService
     if idea.publication_status_previous_change == ['draft','published']
       add_autovote idea
       log_activity_jobs_after_published idea, user
+    elsif idea.published?
+      LogActivityJob.perform_later(idea, 'changed', user, idea.updated_at.to_i)
     end
 
     if idea.idea_status_id_previously_changed?
