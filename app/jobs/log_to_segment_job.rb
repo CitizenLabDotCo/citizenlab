@@ -19,7 +19,7 @@ class LogToSegmentJob < ApplicationJob
     service.add_activity_properties event[:properties], activity
     begin
       tenant = Tenant.current
-      service.add_tenant_properties event[:poperties], tenant
+      service.add_tenant_properties event[:properties], tenant
     rescue  ActiveRecord::RecordNotFound => e
       # Tenant can't be found, so we don't add anything
     end
