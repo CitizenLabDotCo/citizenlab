@@ -40,8 +40,9 @@ import { hasPermission } from 'services/permissions';
 
 // i18n
 import T from 'components/T';
-import { FormattedRelative } from 'react-intl';
+import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
+import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 
 // animations
@@ -565,7 +566,7 @@ type State = {
   moreActions: IAction[];
 };
 
-export default class IdeasShow extends React.PureComponent<Props, State> {
+export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
   initialState: State;
   ideaId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
@@ -721,7 +722,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { inModal } = this.props;
+    const { inModal, intl: { formatMessage } } = this.props;
     const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions } = this.state;
     let loader: JSX.Element | null = null;
     let content: JSX.Element | null = null;
@@ -790,7 +791,9 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                 }
 
                 {ideaImageLarge &&
-                  <IdeaImage src={ideaImageLarge} />
+                  <T value={titleMultiloc}>
+                    {(ideaTitle) => <IdeaImage src={ideaImageLarge} alt={formatMessage(messages.imageAltText, { ideaTitle })} />}
+                  </T>
                 }
 
                 <AuthorAndAdressWrapper>
@@ -948,3 +951,5 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export default injectIntl(IdeasShow);
