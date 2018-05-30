@@ -134,6 +134,7 @@
   "app.containers.Admin.User.moderatorLabel": "",
   "app.containers.Admin.User.name": "",
   "app.containers.Admin.User.processing": "",
+  "app.containers.Admin.User.projectSelectorPlaceholder": "",
   "app.containers.Admin.User.publishButton": "",
   "app.containers.Admin.User.save": "",
   "app.containers.Admin.User.saveErrorMessage": "",
