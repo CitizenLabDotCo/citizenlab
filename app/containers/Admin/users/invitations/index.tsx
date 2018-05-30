@@ -396,6 +396,28 @@ class Invitations extends React.PureComponent<Props, State> {
     this.fileInputElement = ref;
   }
 
+  getRoles = () => {
+    const {
+      hasAdminRights,
+      hasModeratorRights,
+      selectedProjects
+    } = this.state;
+
+    const roles: INewBulkInvite['roles'] = [];
+
+    if (hasAdminRights) {
+      roles.push({ type: 'admin' });
+    }
+
+    if (hasModeratorRights && selectedProjects && selectedProjects.length > 0) {
+      selectedProjects.forEach(project => {
+        roles.push({ type: 'project_moderator', project_id: project.value });
+      });
+    }
+
+    return roles;
+  }
+
   handleOnSubmit = async (event) => {
     event.preventDefault();
     const {
@@ -403,9 +425,6 @@ class Invitations extends React.PureComponent<Props, State> {
       selectedView,
       selectedEmails,
       selectedFileBase64,
-      hasAdminRights,
-      hasModeratorRights,
-      selectedProjects,
       selectedGroups,
       selectedInviteText
     } = this.state;
@@ -423,7 +442,7 @@ class Invitations extends React.PureComponent<Props, State> {
 
         const bulkInvite: INewBulkInvite = {
           locale: selectedLocale,
-          roles: (hasAdminRights ? [{ type: 'admin' }] : hasModeratorRights ? [{ type: 'project_moderator', project_id: '' }] : null),
+          roles: this.getRoles(),
           group_ids: (selectedGroups && selectedGroups.length > 0 ? selectedGroups.map(group => group.value) : null),
           invite_text: selectedInviteText
         };
