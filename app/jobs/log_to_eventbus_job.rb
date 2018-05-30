@@ -10,11 +10,18 @@ class LogToEventbusJob < ApplicationJob
       event: service.activity_event_name(activity),
       timestamp: activity.acted_at
     }
-    event[:userId] = activity.user_id if activity.user_id
+    event[:user_id] = activity.user_id if activity.user_id
     service.add_activity_properties event, activity
     service.add_tenant_properties event, tenant
     service.add_activity_item_content event, event, activity
 
+    publish_to_rabbit event
+  end
+
+
+  private
+
+  def publish_to_rabbit event
     channel = BUNNY_CON.create_channel
     exchange = channel.topic "cl2back"
 

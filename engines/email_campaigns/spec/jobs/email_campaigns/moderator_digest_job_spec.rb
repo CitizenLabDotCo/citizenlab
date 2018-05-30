@@ -6,7 +6,7 @@ RSpec.describe EmailCampaigns::ModeratorDigestJob, type: :job do
 
   describe '#perform' do
 
-    it "generates an event with properties and stuff" do
+    it "generates an event with the desired content" do
       since = (Time.now - 7.days)
 
     	project = create(:project)
@@ -35,5 +35,6 @@ RSpec.describe EmailCampaigns::ModeratorDigestJob, type: :job do
       end
       job.perform since.to_i
     end
+    
   end
 end
