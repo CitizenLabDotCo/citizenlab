@@ -4,7 +4,7 @@ module EmailCampaigns
     def periodic_event campaign, user_id, payload
       event = {
         event: "Periodic email for #{campaign.gsub '_', ' '}",
-        userId: user_id,
+        user_id: user_id,
         timestamp: Time.now,
         properties: {
           source: 'cl2-back',

@@ -14,9 +14,9 @@ class LogToSegmentJob < ApplicationJob
       }
     }
     if activity.user_id
-      event[:userId] = activity.user_id
+      event[:user_id] = activity.user_id
     else
-    	event[:anonymousId] = SecureRandom.base64
+    	event[:anonymous_id] = SecureRandom.base64
     end
     service.add_activity_properties event[:properties], activity
     service.add_tenant_properties event[:properties], tenant
