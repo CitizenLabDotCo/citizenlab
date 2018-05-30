@@ -138,6 +138,14 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.metaTitle',
     defaultMessage: 'Idea  • {ideaTitle}',
   },
+  metaOgTitle: {
+    id: 'app.containers.IdeasShow.metaOgTitle',
+    defaultMessage: 'Support this idea : {ideaTitle}',
+  },
+  ideaOgDescription: {
+    id: 'app.containers.IdeasShow.ideaOgDescription',
+    defaultMessage: 'What do you think of this idea? Join the discussion and vote to make your voice heard.',
+  },
   byAuthorName: {
     id: 'app.containers.IdeasShow.byAuthorName',
     defaultMessage: 'by {authorName}',
