@@ -29,6 +29,8 @@ import { getProjectUrl } from 'services/projects';
 import { FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages';
+import injectIntl from 'utils/cl-intl/injectIntl';
+import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled, { css, } from 'styled-components';
@@ -362,8 +364,8 @@ interface State {
   projectsDropdownOpened: boolean;
 }
 
-class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
-  constructor(props: Props & WithRouterProps) {
+class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
+  constructor(props) {
     super(props);
     this.state = {
       notificationPanelOpened: false,
@@ -371,7 +373,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
     };
   }
 
-  componentDidUpdate(prevProps: Props & WithRouterProps) {
+  componentDidUpdate(prevProps: Props & WithRouterProps & InjectedIntlProps) {
     if (prevProps.location !== this.props.location) {
       this.setState({ projectsDropdownOpened: false });
     }
@@ -409,12 +411,13 @@ class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
   }
 
   render() {
-    const { projects, location, locale, authUser, tenant } = this.props;
+    const { projects, location, locale, authUser, tenant, intl: { formatMessage } } = this.props;
     const { projectsList } = projects;
     const { projectsDropdownOpened } = this.state;
     const isAdminPage = (location && location.pathname.startsWith('/admin'));
-    const tenantLocales = (!isNilOrError(tenant) && tenant.attributes.settings.core.locales);
-    const tenantLogo = (!isNilOrError(tenant) && get(tenant.attributes.logo, 'medium'));
+    const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : [];
+    const tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
+    const tenantName = (!isNilOrError(tenant) && !isNilOrError(locale) && getLocalized(tenant.attributes.settings.core.organization_name, locale, tenantLocales));
 
     return (
       <>
@@ -426,7 +429,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
           <Left>
             {tenantLogo &&
               <LogoLink to="/">
-                <Logo src={tenantLogo} alt="logo" />
+                <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText, { tenantName })} />
               </LogoLink>
             }
 
@@ -518,7 +521,7 @@ const Data = adopt<DataProps, InputProps>({
   projects: <GetProjects pageSize={250} sort="new" />
 });
 
-const NavBarWithHoCs = withRouter(Navbar);
+const NavBarWithHoCs = withRouter(injectIntl(Navbar));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
