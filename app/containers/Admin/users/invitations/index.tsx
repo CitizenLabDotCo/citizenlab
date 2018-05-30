@@ -220,6 +220,7 @@ type State = {
   hasAdminRights: boolean;
   hasModeratorRights: boolean;
   selectedLocale: Locale | null;
+  selectedProjects: IOption[] | null;
   selectedGroups: IOption[] | null;
   selectedInviteText: string | null;
   invitationOptionsOpened: boolean;
@@ -243,6 +244,7 @@ class Invitations extends React.PureComponent<Props, State> {
       hasAdminRights: false,
       hasModeratorRights: false,
       selectedLocale: null,
+      selectedProjects: null,
       selectedGroups: null,
       selectedInviteText: null,
       invitationOptionsOpened: false,
@@ -333,6 +335,11 @@ class Invitations extends React.PureComponent<Props, State> {
     this.setState({ selectedLocale });
   }
 
+  handleSelectedProjectsOnChange = (selectedProjects: IOption[]) => {
+    this.resetErrorAndSuccessState();
+    this.setState({ selectedProjects: (selectedProjects.length > 0 ? selectedProjects : null) });
+  }
+
   handleSelectedGroupsOnChange = (selectedGroups: IOption[]) => {
     this.resetErrorAndSuccessState();
     this.setState({ selectedGroups: (selectedGroups.length > 0 ? selectedGroups : null) });
@@ -367,6 +374,7 @@ class Invitations extends React.PureComponent<Props, State> {
       hasAdminRights: false,
       hasModeratorRights: false,
       selectedLocale: (this.props.tenantLocales ? this.props.tenantLocales [0] : null),
+      selectedProjects: null,
       selectedGroups: null,
       selectedInviteText: null,
       invitationOptionsOpened: false,
@@ -397,6 +405,7 @@ class Invitations extends React.PureComponent<Props, State> {
       selectedFileBase64,
       hasAdminRights,
       hasModeratorRights,
+      selectedProjects,
       selectedGroups,
       selectedInviteText
     } = this.state;
@@ -466,6 +475,7 @@ class Invitations extends React.PureComponent<Props, State> {
       hasAdminRights,
       hasModeratorRights,
       selectedLocale,
+      selectedProjects,
       selectedGroups,
       selectedInviteText,
       invitationOptionsOpened,
@@ -537,9 +547,9 @@ class Invitations extends React.PureComponent<Props, State> {
                 <Toggle value={hasModeratorRights} onChange={this.handleModeratorRightsOnToggle} />
                 { hasModeratorRights &&
                   <MultipleSelect
-                    value={selectedGroups}
+                    value={selectedProjects}
                     options={projectOptions}
-                    onChange={this.handleSelectedGroupsOnChange}
+                    onChange={this.handleSelectedProjectsOnChange}
                     placeholder={<FormattedMessage {...messages.projectSelectorPlaceholder} />}
                   />
                 }
