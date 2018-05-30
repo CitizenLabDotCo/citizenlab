@@ -50,9 +50,20 @@ export interface IInviteError {
   value?: number | string | undefined;
 }
 
+type AdminRole = {
+  type: 'admin';
+};
+
+type ProjectModeratorRole = {
+  type: 'project_moderator';
+  project_id: string
+};
+
+type Roles = (AdminRole | ProjectModeratorRole)[] | null | undefined;
+
 export interface INewBulkInvite {
   locale?: string | null | undefined;
-  roles?: [{ type: 'admin' }] | [{ type: 'project_moderator' }] | null | undefined;
+  roles?: Roles;
   group_ids?: string[] | null | undefined;
   invite_text?: string | null | undefined;
 }
