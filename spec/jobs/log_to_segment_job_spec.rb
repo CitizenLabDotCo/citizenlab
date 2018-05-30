@@ -6,7 +6,7 @@ RSpec.describe LogToSegmentJob, type: :job do
 
   describe '#perform' do
 
-    it "generates an event with the desired content" do
+    it "generates an event with the desired content for (normal) activities" do
       user = create(:user)
       comment = create(:comment)
       activity = create(:activity, item: comment, action: 'created', user: user)
