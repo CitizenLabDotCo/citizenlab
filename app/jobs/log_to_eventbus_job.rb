@@ -21,7 +21,7 @@ class LogToEventbusJob < ApplicationJob
 
   private
 
-  def publish_to_rabbit event
+  def publish_to_rabbit event, activity
     channel = BUNNY_CON.create_channel
     exchange = channel.topic "cl2back"
 

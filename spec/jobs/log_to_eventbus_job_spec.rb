@@ -11,7 +11,7 @@ RSpec.describe LogToEventbusJob, type: :job do
       comment = create(:comment)
       activity = create(:activity, item: comment, action: 'created', user: user)
       
-      expect(job).to receive(:publish_to_rabbit) do |event|
+      expect(job).to receive(:publish_to_rabbit) do |event, activity|
         expect(event[:event]).to eq("Comment created")
         expect(event[:user_id]).to eq(user.id)
         expect(event[:tenantId]).to eq(Tenant.current.id)
