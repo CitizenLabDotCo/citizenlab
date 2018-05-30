@@ -18,7 +18,7 @@ RSpec.describe EmailCampaigns::UserPlatformDigestJob, type: :job do
       User.where.not(id: user.id).all.each{|u| u.destroy!}
       expect(Analytics).to receive(:track) do |event|
       	expect(event[:event]).to eq("Periodic email for user platform digest")
-        expect(event[:userId]).to eq(user.id)
+        expect(event[:user_id]).to eq(user.id)
         expect(event.dig(:properties, :source)).to eq("cl2-back")
         expect(event.dig(:properties, :tenantId)).to eq(Tenant.current.id)
         expect(event.dig(:properties, :payload, :discover_projects).map{|pj| pj.dig(:project, :id)}).to include(projects.first.id)

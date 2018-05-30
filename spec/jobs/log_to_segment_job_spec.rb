@@ -13,7 +13,7 @@ RSpec.describe LogToSegmentJob, type: :job do
       
       expect(Analytics).to receive(:track) do |event|
         expect(event[:event]).to eq("Comment created")
-        expect(event[:userId]).to eq(user.id)
+        expect(event[:user_id]).to eq(user.id)
         expect(event.dig(:properties, :source)).to eq("cl2-back")
         expect(event.dig(:properties, :tenantId)).to eq(Tenant.current.id)
         expect(event.dig(:properties, :action)).to eq("created")
@@ -31,7 +31,7 @@ RSpec.describe LogToSegmentJob, type: :job do
       
       expect(Analytics).to receive(:track) do |event|
         expect(event[:event]).to eq("Notification for Comment on your comment created")
-        expect(event[:userId]).to eq(user.id)
+        expect(event[:user_id]).to eq(user.id)
         expect(event.dig(:properties, :source)).to eq("cl2-back")
         expect(event.dig(:properties, :tenantId)).to eq(Tenant.current.id)
         expect(event.dig(:properties, :action)).to eq("created")

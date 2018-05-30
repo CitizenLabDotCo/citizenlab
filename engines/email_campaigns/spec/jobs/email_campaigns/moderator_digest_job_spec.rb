@@ -20,7 +20,7 @@ RSpec.describe EmailCampaigns::ModeratorDigestJob, type: :job do
       
       expect(Analytics).to receive(:track) do |event|
       	expect(event[:event]).to eq("Periodic email for moderator digest")
-        expect(event[:userId]).to eq(moderator.id)
+        expect(event[:user_id]).to eq(moderator.id)
         expect(event.dig(:properties, :source)).to eq("cl2-back")
         expect(event.dig(:properties, :tenantId)).to eq(Tenant.current.id)
         expect(event.dig(
