@@ -27,7 +27,7 @@ const StyledTable: any = styled.table`
         margin-left: 20px;
         margin-right: 20px;
         padding-top: 0px;
-        padding-bottom: 0px;
+        padding-bottom: 10px;
 
         &.sortable {
           cursor: pointer;
@@ -55,8 +55,8 @@ const StyledTable: any = styled.table`
         line-height: 18px;
         margin-left: 20px;
         margin-right: 20px;
-        padding-top: 11px;
-        padding-bottom: 11px;
+        padding-top: 10px;
+        padding-bottom: 10px;
 
         &.center {
           justify-content: center;

@@ -1,5 +1,6 @@
 // Libraries
 import React from 'react';
+import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
 import { Formik } from 'formik';
 
@@ -21,17 +22,22 @@ import { InjectedIntlProps } from 'react-intl';
 
 // Resources
 import GetGroup, { GetGroupChildProps } from 'resources/GetGroup';
+import GetUserCount, { GetUserCountChildProps } from 'resources/GetUserCount';
 
 // Services
 import { IGroupData, deleteGroup, updateGroup } from 'services/groups';
 
 // Typings
 import { API } from 'typings';
-interface InputProps { }
+interface InputProps {}
+
 interface DataProps {
   group: GetGroupChildProps;
+  usercount: GetUserCountChildProps;
 }
-interface Props extends InputProps, DataProps { }
+
+interface Props extends InputProps, DataProps {}
+
 export interface State {
   groupEditionModal: false | IGroupData['attributes']['membership_type'];
 }
@@ -90,7 +96,7 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
   }
 
   render() {
-    const { group } = this.props;
+    const { group, usercount } = this.props;
     const { groupEditionModal } = this.state;
     let ModalHeader;
 
@@ -103,7 +109,7 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
         break;
     }
 
-    if (!isNilOrError(group)) {
+    if (!isNilOrError(group) && !isNilOrError(usercount)) {
       return (
         <>
           <GroupHeader
@@ -114,7 +120,7 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
             onSearch={this.searchGroup}
           />
 
-          <UserTable groupId={group.id} />
+          <UserTable groupId={group.id} usercount={usercount} />
 
           <Modal
             header={ModalHeader}
@@ -152,8 +158,13 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
 
 const UsersGroupWithHoCs = injectIntl<Props>(UsersGroup);
 
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  group: ({ params, render }) => <GetGroup id={params.groupId}>{render}</GetGroup>,
+  usercount: <GetUserCount />
+});
+
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <GetGroup id={inputProps.params.groupId} >
-    {group => (<UsersGroupWithHoCs group={group} />)}
-  </GetGroup>
+  <Data {...inputProps}>
+    {dataProps => <UsersGroupWithHoCs {...inputProps} {...dataProps} />}
+  </Data>
 ));

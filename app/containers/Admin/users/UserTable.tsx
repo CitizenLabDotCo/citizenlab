@@ -38,6 +38,7 @@ const CustomPaginationWrapper = styled.div`
 interface InputProps {
   groupId?: string | undefined;
   search?: string | undefined;
+  usercount: number;
 }
 
 interface Props extends InputProps, GetUsersChildProps {}
@@ -46,7 +47,7 @@ interface State {
   selectedUsers: string[] | 'none' | 'all';
 }
 
-class AllUsers extends React.PureComponent<Props, State> {
+class Users extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -109,7 +110,7 @@ class AllUsers extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { usersList, sortAttribute, sortDirection, currentPage, lastPage } = this.props;
+    const { usercount, usersList, sortAttribute, sortDirection, currentPage, lastPage } = this.props;
     const { selectedUsers } = this.state;
 
     if (!isNilOrError(usersList) && usersList.length === 0) {
@@ -121,6 +122,7 @@ class AllUsers extends React.PureComponent<Props, State> {
         <>
           <UserTableActions
             selectedUsers={selectedUsers}
+            userCount={usercount}
             toggleSelectAll={this.toggleAllUsers}
           />
 
@@ -191,11 +193,11 @@ class AllUsers extends React.PureComponent<Props, State> {
 
 export default (inputProps: InputProps) => (
   <GetUsers
-    pageSize={5}
+    pageSize={15}
     groupId={inputProps.groupId}
     search={inputProps.search}
     cache={false}
   >
-    {users => <AllUsers {...inputProps} {...users} />}
+    {users => <Users {...inputProps} {...users} />}
   </GetUsers>
 );

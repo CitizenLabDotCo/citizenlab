@@ -54,9 +54,9 @@ export function searchGroupMemberships(groupId: string, search: string, streamPa
   };
 
   const streamInputParams: IInputStreamParams = {
-    apiEndpoint, 
-    ...mergedStreamParams, 
-    cacheStream: false 
+    apiEndpoint,
+    ...mergedStreamParams,
+    cacheStream: false
   };
 
   return streams.get<IGroupMembershipsFoundUsers>(streamInputParams);

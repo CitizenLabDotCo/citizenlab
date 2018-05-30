@@ -3,8 +3,6 @@ import React from 'react';
 import { get } from 'lodash';
 import { adopt } from 'react-adopt';
 import { Link, withRouter, WithRouterProps } from 'react-router';
-import CSSTransition from 'react-transition-group/CSSTransition';
-import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -13,6 +11,7 @@ import UserMenu from './components/UserMenu';
 import MobileNavigation from './components/MobileNavigation';
 import IdeaButton from 'components/IdeaButton';
 import Icon from 'components/UI/Icon';
+import Dropdown from 'components/UI/Dropdown';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -168,77 +167,7 @@ const NavigationDropdownItem = styled.div`
   }
 `;
 
-const NavigationDropdownMenu = styled(clickOutside)`
-  display: flex;
-  flex-direction: column;
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
-  border: solid 1px #e0e0e0;
-  position: absolute;
-  top: 35px;
-  left: -10px;
-  transform-origin: left top;
-  z-index: 5;
-
-  * {
-    user-select: none;
-  }
-
-  ::before,
-  ::after {
-    content: '';
-    display: block;
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-style: solid;
-  }
-
-  ::after {
-    top: -20px;
-    left: 20px;
-    border-color: transparent transparent #fff transparent;
-    border-width: 10px;
-  }
-
-  ::before {
-    top: -22px;
-    left: 19px;
-    border-color: transparent transparent #e0e0e0 transparent;
-    border-width: 11px;
-  }
-
-  &.dropdown-enter {
-    opacity: 0;
-    transform: scale(0.9);
-
-    &.dropdown-enter-active {
-      opacity: 1;
-      transform: scale(1);
-      transition: all 200ms cubic-bezier(0.19, 1, 0.22, 1);
-    }
-  }
-`;
-
-const NavigationDropdownMenuInner = styled.div`
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-`;
-
-const NavigationDropdownList = styled.div`
-  max-height: 410px;
-  width: 280px;
-  display: flex;
-  flex-direction: column;
-  margin: 10px;
-  margin-right: 5px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-`;
-
-const NavigationDropdownListItem = styled(Link)`
+const ProjectsListItem = styled(Link)`
   color: ${(props) => props.theme.colors.label};
   font-size: 16px;
   font-weight: 400;
@@ -256,7 +185,7 @@ const NavigationDropdownListItem = styled(Link)`
   }
 `;
 
-const NavigationDropdownFooter = styled(Link)`
+const ProjectsListFooter = styled(Link)`
   width: 100%;
   color: ${(props) => props.theme.colors.label};
   font-size: 18px;
@@ -402,7 +331,8 @@ class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
 
   handleProjectsDropdownToggle = (event: React.FormEvent<any>) => {
     event.preventDefault();
-    this.setState(state => ({ projectsDropdownOpened: !state.projectsDropdownOpened }));
+    event.stopPropagation();
+    this.setState(({ projectsDropdownOpened }) => ({ projectsDropdownOpened: !projectsDropdownOpened }));
   }
 
   handleProjectsDropdownOnClickOutside = (event: React.FormEvent<MouseEvent>) => {
@@ -438,7 +368,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
                 <FormattedMessage {...messages.pageOverview} />
               </NavigationItem>
 
-              {(projectsList === null || (projectsList && projectsList.length > 0)) &&
+              {tenantLocales && projectsList && projectsList.length > 0 &&
                 <NavigationDropdown>
                   <NavigationDropdownItem onClick={this.handleProjectsDropdownToggle}>
                     <NavigationDropdownItemText>
@@ -446,30 +376,25 @@ class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
                     </NavigationDropdownItemText>
                     <NavigationDropdownItemIcon name="dropdown" />
                   </NavigationDropdownItem>
-                  <CSSTransition
-                    in={projectsDropdownOpened}
-                    timeout={200}
-                    mountOnEnter={true}
-                    unmountOnExit={true}
-                    classNames="dropdown"
-                    exit={false}
-                  >
-                    <NavigationDropdownMenu onClickOutside={this.handleProjectsDropdownOnClickOutside}>
-                      <NavigationDropdownMenuInner>
-                        <NavigationDropdownList>
-                          {tenantLocales && projectsList && projectsList.length > 0 && projectsList.map((project) => (
-                            <NavigationDropdownListItem key={project.id} to={getProjectUrl(project)}>
-                              {!isNilOrError(locale) ? getLocalized(project.attributes.title_multiloc, locale, tenantLocales) : null}
-                            </NavigationDropdownListItem>
-                          ))}
-                        </NavigationDropdownList>
 
-                        <NavigationDropdownFooter to={`/projects`}>
-                          <FormattedMessage {...messages.allProjects} />
-                        </NavigationDropdownFooter>
-                      </NavigationDropdownMenuInner>
-                    </NavigationDropdownMenu>
-                  </CSSTransition>
+                  <Dropdown
+                    opened={projectsDropdownOpened}
+                    content={(
+                      <>
+                        {projectsList.map((project) => (
+                          <ProjectsListItem key={project.id} to={getProjectUrl(project)}>
+                            {!isNilOrError(locale) ? getLocalized(project.attributes.title_multiloc, locale, tenantLocales) : null}
+                          </ProjectsListItem>
+                        ))}
+                      </>
+                    )}
+                    footer={(
+                      <ProjectsListFooter to={`/projects`}>
+                        <FormattedMessage {...messages.allProjects} />
+                      </ProjectsListFooter>
+                    )}
+                    toggleOpened={this.handleProjectsDropdownToggle}
+                  />
                 </NavigationDropdown>
               }
 
