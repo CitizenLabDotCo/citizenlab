@@ -92,7 +92,7 @@ describe TimelineService do
       end
       create(:comment, idea: idea, author: pp4)
 
-      expect(service.participants(project: project, since: (Time.now-5.days)).map(&:id)).to match [pp2.id, pp3.id, pp4.id]
+      expect(service.participants(project: project, since: (Time.now-5.days)).map(&:id)).to match_array [pp2.id, pp3.id, pp4.id]
     end
 
   end
