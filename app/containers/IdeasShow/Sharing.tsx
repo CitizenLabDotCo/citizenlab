@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { adopt } from 'react-adopt';
 
 // libraries
 import { FacebookButton, TwitterButton } from 'react-social';
@@ -7,12 +7,16 @@ import { FacebookButton, TwitterButton } from 'react-social';
 // components
 import Icon from 'components/UI/Icon';
 
-// services
-import { currentTenantStream, ITenant } from 'services/tenant';
+// resources
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from './messages';
+import T from 'components/T';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 
 // analytics
 import { injectTracks } from 'utils/analytics';
@@ -22,6 +26,12 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import { lighten } from 'polished';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
+// typtings
+import { Multiloc } from 'typings';
 
 const facebookColor = '#3b5998';
 
@@ -126,55 +136,36 @@ interface ITracks {
   clickTwitterShare: () => void;
 }
 
-type Props = {
+type InputProps = {
   imageUrl: string | null;
+  ideaTitle: Multiloc | null;
+  className?: string;
 };
 
-type State = {
-  currentTenant: ITenant | null;
-};
+interface DataProps {
+  authUser: GetAuthUserChildProps;
+  tenant: GetTenantChildProps;
+}
 
-class Sharing extends React.PureComponent<Props & ITracks, State> {
-  subscriptions: Rx.Subscription[];
+interface Props extends InputProps, DataProps { }
 
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      currentTenant: null
-    };
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const currentTenant$ = currentTenantStream().observable;
-
-    this.subscriptions = [
-      currentTenant$.subscribe((currentTenant) => {
-        this.setState({ currentTenant });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
+class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
   render() {
-    const { currentTenant } = this.state;
-
-    if (currentTenant) {
-      const className = this.props['className'];
-      const { imageUrl, clickFbShare, clickTwitterShare } = this.props;
-      const facebookSettings = (currentTenant && currentTenant.data.attributes.settings.facebook_login ? currentTenant.data.attributes.settings.facebook_login : null);
+    const { clickFbShare, clickTwitterShare, imageUrl, authUser, tenant, className, ideaTitle, intl } = this.props;
+    if (!isNilOrError(tenant) && ideaTitle) {
+      const { formatMessage } = intl;
+      const facebookSettings = (tenant && tenant.attributes.settings.facebook_login ? tenant.attributes.settings.facebook_login : null);
       const facebookAppId = (facebookSettings ? facebookSettings.app_id : null);
       const href = window.location.href;
-      const facebookText = <FormattedMessage {...messages.shareOnFacebook} />;
-      const twitterText = <FormattedMessage {...messages.shareOnTwitter} />;
+      const facebookText = formatMessage(messages.shareOnFacebook);
+      const twitterText = formatMessage(messages.shareOnTwitter);
+      const fbURL = (!isNilOrError(authUser)) ? `${href}?recruiter=${authUser.id}&utm_source=share_idea&utm_medium=facebook&utm_campaign=autopublish&utm_term=share_idea` : href;
+      const twitterURL = (!isNilOrError(authUser)) ? `${href}?recruiter=${authUser.id}&utm_source=share_idea&utm_medium=twitter&utm_campaign=share_idea` : href;
 
       const facebook = (facebookAppId ? (
         <FacebookButton
           className="sharingButton facebook first"
-          url={href}
+          url={fbURL}
           appId={facebookAppId}
           sharer={true}
           media={imageUrl}
@@ -188,18 +179,23 @@ class Sharing extends React.PureComponent<Props & ITracks, State> {
       ) : null);
 
       const twitter = (
-        <TwitterButton
-          className="sharingButton twitter"
-          url={href}
-          sharer={true}
-          media={imageUrl}
-          onClick={clickTwitterShare}
-        >
-          <IconWrapper>
-            <Icon name="twitter" />
-          </IconWrapper>
-          <Text>{twitterText}</Text>
-        </TwitterButton>
+        <T value={ideaTitle} maxLength={50}>
+          {(title) =>
+            <TwitterButton
+              className="sharingButton twitter"
+              url={twitterURL}
+              sharer={true}
+              media={imageUrl}
+              onClick={clickTwitterShare}
+              message={formatMessage(messages.twitterMessage, { ideaTitle: title })}
+            >
+              <IconWrapper>
+                <Icon name="twitter" />
+              </IconWrapper>
+              <Text>{twitterText}</Text>
+            </TwitterButton>
+          }
+        </T>
       );
 
       return (
@@ -214,7 +210,18 @@ class Sharing extends React.PureComponent<Props & ITracks, State> {
   }
 }
 
-export default injectTracks<Props>({
+const SharingWithHocs = injectIntl<Props>(injectTracks<Props>({
   clickFbShare: tracks.clickFbShare,
   clickTwitterShare: tracks.clickTwitterShare,
-})(Sharing);
+})(Sharing));
+
+const Data = adopt<DataProps, InputProps>({
+  tenant: <GetTenant />,
+  authUser: <GetAuthUser />,
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <SharingWithHocs {...inputProps} {...dataProps} />}
+  </Data>
+);
