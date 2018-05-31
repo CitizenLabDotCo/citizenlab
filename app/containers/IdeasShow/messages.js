@@ -142,6 +142,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.metaTitle',
     defaultMessage: 'Idea  • {ideaTitle}',
   },
+  metaOgTitleAuthor: {
+    id: 'app.containers.IdeasShow.metaOgTitleAuthor',
+    defaultMessage: 'Support my idea : {ideaTitle}',
+  },
   metaOgTitle: {
     id: 'app.containers.IdeasShow.metaOgTitle',
     defaultMessage: 'Support this idea : {ideaTitle}',
@@ -185,6 +189,10 @@ export default defineMessages({
   shareOnTwitter: {
     id: 'app.containers.IdeasShow.shareOnTwitter',
     defaultMessage: 'Share on Twitter',
+  },
+  twitterMessage: {
+    id: 'app.containers.IdeasShow.twitterMessage',
+    defaultMessage: 'Vote for {ideaTitle} on',
   },
   commentsWithCount: {
     id: 'app.containers.IdeasShow.commentsWithCount',

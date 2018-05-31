@@ -44,6 +44,7 @@ import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
+import { getLocalized } from 'utils/i18n';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -895,7 +896,7 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
                     }
 
                     <SharingWrapper>
-                      <StyledSharing imageUrl={ideaImageLarge} />
+                      <StyledSharing imageUrl={ideaImageLarge} ideaTitle={titleMultiloc} />
                     </SharingWrapper>
 
                     {(moreActions && moreActions.length > 0) &&

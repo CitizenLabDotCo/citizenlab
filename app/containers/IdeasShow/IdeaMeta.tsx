@@ -2,7 +2,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import Helmet from 'react-helmet';
-import { isNilOrError } from 'utils/helperUtils';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -19,6 +18,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // utils
 import { stripHtml } from 'utils/textUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   ideaId: string;
@@ -32,7 +32,7 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales, idea, ideaImages, authUser, intl }) => {
   if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(idea)) {
@@ -41,7 +41,13 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales,
     const ideaDescription = stripHtml(getLocalized(idea.attributes.body_multiloc, locale, tenantLocales), 250);
     const ideaImage = (ideaImages && ideaImages.length > 0 ? ideaImages[0].attributes.versions.large : null);
     const ideaUrl = window.location.href;
-    const ideaOgTitle = formatMessage(messages.metaOgTitle, { ideaTitle: getLocalized(idea.attributes.title_multiloc, locale, tenantLocales, 50) });
+
+    let ideaOgTitle;
+    if (!isNilOrError(authUser) && idea.relationships.author.data && authUser.id === idea.relationships.author.data.id) {
+      ideaOgTitle = formatMessage(messages.metaOgTitleAuthor, { ideaTitle: getLocalized(idea.attributes.title_multiloc, locale, tenantLocales, 50) });
+    } else  {
+      ideaOgTitle = formatMessage(messages.metaOgTitle, { ideaTitle: getLocalized(idea.attributes.title_multiloc, locale, tenantLocales, 50) });
+    }
 
     return (
       <Helmet>
@@ -51,7 +57,7 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales,
             ${ideaTitle}`
           }
         </title>
-        <meta name="title" content={ideaTitle}/>
+        <meta name="title" content={ideaTitle} />
         <meta name="description" content={ideaDescription} />
 
         <meta name="og:type" content="article" />
