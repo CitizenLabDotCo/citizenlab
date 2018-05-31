@@ -896,7 +896,7 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
                     }
 
                     <SharingWrapper>
-                      <StyledSharing imageUrl={ideaImageLarge} ideaTitle={titleMultiloc} />
+                      <StyledSharing imageUrl={ideaImageLarge} ideaTitle={titleMultiloc} authorId={authorId} />
                     </SharingWrapper>
 
                     {(moreActions && moreActions.length > 0) &&
