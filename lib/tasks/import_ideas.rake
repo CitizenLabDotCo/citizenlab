@@ -20,13 +20,26 @@ namespace :cl2_back do
 
   def ii_convert_idea csv_idea
   	d = {}
-  	d[:title]         = csv_idea['Title']
-  	d[:body]          = csv_idea['Body']
-  	d[:topic_titles]  = (csv_idea['Topics'] || '').split(';').select{ |topic| topic }
-  	d[:project_title] = csv_idea['Project']
-  	d[:user_email]    = csv_idea['Email']
-    d[:image_url]     = csv_idea['Image URL']
-    d[:phase_rank]   = csv_idea['Phase']
+    title_multiloc = {}
+    body_multiloc  = {}
+    csv_idea.each do |key, value|
+      if key.include? '_'
+        field, locale = key.split '_'
+        if field == 'Title'
+          title_multiloc[locale] = value
+        elsif field == 'Body'
+          body_multiloc[locale] = value
+        end
+      end
+    end
+  	d[:title_multiloc] = title_multiloc
+  	d[:body_multiloc]  = body_multiloc
+  	d[:topic_titles]   = (csv_idea['Topics'] || '').split(';').map(&:strip).select{ |topic| topic }
+  	d[:project_title]  = csv_idea['Project']
+  	d[:user_email]     = csv_idea['Email']
+    d[:image_url]      = csv_idea['Image URL']
+    d[:phase_rank]     = csv_idea['Phase']
+    d[:published_at]   = csv_idea['Date (dd-mm-yyyy)']
   	d
   end
 
