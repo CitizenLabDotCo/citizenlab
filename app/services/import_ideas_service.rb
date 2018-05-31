@@ -26,14 +26,14 @@ class ImportIdeasService
 
 	def convert_idea idea_data
   	d = {}
-    if !idea_data[:title]
+    if idea_data[:title_multiloc].blank?
       raise "A title for the idea is mandatory!"
     end
-  	d[:title_multiloc] = multiloculate idea_data[:title]
-    if !idea_data[:body]
+  	d[:title_multiloc] = idea_data[:title_multiloc]
+    if idea_data[:body_multiloc].blank?
       raise "A body for the idea is mandatory!"
     end
-  	d[:body_multiloc] = multiloculate idea_data[:body]
+  	d[:body_multiloc] = idea_data[:body_multiloc]
   	d[:topics] = idea_data[:topic_titles].map do |topic_title|
   		topic_title = topic_title.downcase
   		Topic.all.select do |topic| 
@@ -60,6 +60,12 @@ class ImportIdeasService
   		  raise "No user with email #{idea_data[:user_email]} exists"
   	  end
   	end
+    if idea_data[:published_at]
+      begin
+        d[:published_at] = Date.parse idea_data[:published_at]
+      rescue Exception => e
+      end
+    end
   	d[:publication_status] = 'published'
   	idea = Idea.create! d
   	if idea_data[:image_url]
