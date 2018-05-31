@@ -44,7 +44,6 @@ import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
-import { getLocalized } from 'utils/i18n';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
