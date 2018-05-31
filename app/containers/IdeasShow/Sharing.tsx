@@ -139,6 +139,7 @@ interface ITracks {
 type InputProps = {
   imageUrl: string | null;
   ideaTitle: Multiloc | null;
+  authorId: string | null;
   className?: string;
 };
 
@@ -151,7 +152,7 @@ interface Props extends InputProps, DataProps { }
 
 class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
   render() {
-    const { clickFbShare, clickTwitterShare, imageUrl, authUser, tenant, className, ideaTitle, intl } = this.props;
+    const { clickFbShare, clickTwitterShare, imageUrl, authUser, tenant, className, ideaTitle, intl, authorId } = this.props;
     if (!isNilOrError(tenant) && ideaTitle) {
       const { formatMessage } = intl;
       const facebookSettings = (tenant && tenant.attributes.settings.facebook_login ? tenant.attributes.settings.facebook_login : null);
@@ -163,19 +164,29 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
       const twitterURL = (!isNilOrError(authUser)) ? `${href}?recruiter=${authUser.id}&utm_source=share_idea&utm_medium=twitter&utm_campaign=share_idea` : href;
 
       const facebook = (facebookAppId ? (
-        <FacebookButton
-          className="sharingButton facebook first"
-          url={fbURL}
-          appId={facebookAppId}
-          sharer={true}
-          media={imageUrl}
-          onClick={clickFbShare}
-        >
-          <IconWrapper>
-            <Icon name="facebook" />
-          </IconWrapper>
-          <Text>{facebookText}</Text>
-        </FacebookButton>
+        <T value={ideaTitle} maxLength={50}>
+          {(title) => {
+            const faceBookMessage = (!isNilOrError(authUser) && authorId && authUser.id === authorId) ?
+              formatMessage(messages.metaOgTitleAuthor, { ideaTitle: title }) :
+              formatMessage(messages.metaOgTitle, { ideaTitle: title });
+
+            return (
+              <FacebookButton
+                className="sharingButton facebook first"
+                url={fbURL}
+                appId={facebookAppId}
+                sharer={true}
+                media={imageUrl}
+                onClick={clickFbShare}
+                message={faceBookMessage}
+              >
+                <IconWrapper>
+                  <Icon name="facebook" />
+                </IconWrapper>
+                <Text>{facebookText}</Text>
+              </FacebookButton>);
+          }}
+        </T>
       ) : null);
 
       const twitter = (

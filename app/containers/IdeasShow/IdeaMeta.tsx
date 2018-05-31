@@ -42,12 +42,7 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales,
     const ideaImage = (ideaImages && ideaImages.length > 0 ? ideaImages[0].attributes.versions.large : null);
     const ideaUrl = window.location.href;
 
-    let ideaOgTitle;
-    if (!isNilOrError(authUser) && idea.relationships.author.data && authUser.id === idea.relationships.author.data.id) {
-      ideaOgTitle = formatMessage(messages.metaOgTitleAuthor, { ideaTitle: getLocalized(idea.attributes.title_multiloc, locale, tenantLocales, 50) });
-    } else  {
-      ideaOgTitle = formatMessage(messages.metaOgTitle, { ideaTitle: getLocalized(idea.attributes.title_multiloc, locale, tenantLocales, 50) });
-    }
+    const ideaOgTitle = formatMessage(messages.metaOgTitle, { ideaTitle: getLocalized(idea.attributes.title_multiloc, locale, tenantLocales, 50) });
 
     return (
       <Helmet>
