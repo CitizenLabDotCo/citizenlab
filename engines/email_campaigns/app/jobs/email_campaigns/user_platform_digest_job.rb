@@ -11,7 +11,7 @@ module EmailCampaigns
       last_scheduled_at = Time.at(last_scheduled_at)
       ti_service = TrendingIdeaService.new
       if ti_service.filter_trending(IdeaPolicy::Scope.new(nil, Idea).resolve.where(publication_status: 'published')).count < N_TOP_IDEAS
-        # don't send any emails if there are fewer than N_TOP_IDEAS truly trending ideas
+        # don't send any emails if there are less than N_TOP_IDEAS truly trending ideas
         return
       end
       User.all.each do |user|
@@ -20,45 +20,24 @@ module EmailCampaigns
         top_ideas = top_ideas.where(publication_status: 'published').left_outer_joins(:idea_status)
         top_ideas = ti_service.sort_trending(ti_service.filter_trending(top_ideas))
         top_ideas = top_ideas.take N_TOP_IDEAS
-        serializer = "EmailCampaigns::UserPlatformDigestIdeaSerializer".constantize
         serialized_top_ideas = top_ideas.map do |idea|
-          ActiveModelSerializers::SerializableResource.new(idea, {
-            serializer: serializer,
-            adapter: :json
-          }).serializable_hash
+          LogToSegmentService.new.serialize "EmailCampaigns::UserPlatformDigestIdeaSerializer", idea
         end
 
         discover_projects = ProjectPolicy::Scope.new(user, Project).resolve
         discover_projects = discover_projects.where(publication_status: 'published').sort_by(&:created_at).reverse
         discover_projects = discover_projects.take N_DISCOVER_PROJECTS
-        serializer = "EmailCampaigns::DiscoverProjectSerializer".constantize
         serialized_discover_projects = discover_projects.map do |project|
-          ActiveModelSerializers::SerializableResource.new(project, {
-            serializer: serializer,
-            adapter: :json
-          }).serializable_hash
+          LogToSegmentService.new.serialize "EmailCampaigns::DiscoverProjectSerializer", project
         end
-  
-        tenant = Tenant.current
-        trackingMessage = {
-          event: "Periodic email for #{CAMPAIGN.gsub '_', ' '}",
-          user_id: user.id,
-          timestamp: Time.now,
-          properties: {
-            source: 'cl2-back',
-            payload: {
-              top_ideas: serialized_top_ideas,
-              discover_projects: serialized_discover_projects
-            },
-            tenantId: tenant.id,
-            tenantName: tenant.name,
-            tenantHost: tenant.host,
-            tenantOrganizationType: tenant.settings.dig('core', 'organization_type')
-          }
-        }
-        
-        Analytics.track(trackingMessage)
 
+        event = EmailCampaigns::PeriodicEventsService.new.periodic_event CAMPAIGN, user.id,
+          {
+            top_ideas: serialized_top_ideas,
+            discover_projects: serialized_discover_projects
+          }
+        
+        Analytics.track event
         create_campaign_email_commands user, top_ideas, discover_projects
       end
     end

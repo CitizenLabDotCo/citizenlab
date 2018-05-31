@@ -1,56 +1,31 @@
 class LogToSegmentJob < ApplicationJob
   queue_as :default
 
-  def perform(activity)
+  def perform activity
+    service = LogToSegmentService.new
 
-    trackingMessage = {
-      event: "#{activity.item_type} #{activity.action}",
+    event = {
+      event: service.activity_event_name(activity),
       timestamp: activity.acted_at,
       properties: {
-        source: 'cl2-back',
-        item_type: activity.item_type,
-        item_id: activity.item_id,
-        action: activity.action,
-        payload: activity.payload
+        source: 'cl2-back'
       }
     }
-
-    # Segment requires us to send either a user_id or an anonymous_id
     if activity.user_id
-      trackingMessage[:user_id] = activity.user_id
+      event[:user_id] = activity.user_id
     else
-      trackingMessage[:anonymous_id] = SecureRandom.base64
+    	event[:anonymous_id] = SecureRandom.base64
     end
-
-    if activity.item
-      begin
-        serializer = "WebApi::V1::External::#{activity.item_type}Serializer".constantize
-        serialization = ActiveModelSerializers::SerializableResource.new(activity.item, {
-          serializer: serializer,
-          adapter: :json
-        })
-        item_content = serialization.serializable_hash
-        if activity.item.kind_of? Notification
-          trackingMessage[:event] = "Notification for #{activity.item.class::EVENT_NAME} created"
-          item_content = item_content.flatten.second
-        end
-        trackingMessage[:properties][:item_content] = item_content
-      rescue NameError => e
-        # There's no serializer, so we don't add anything
-      end
-    end
-
+    service.add_activity_properties event[:properties], activity
     begin
       tenant = Tenant.current
-      trackingMessage[:properties][:tenantId] = tenant.id
-      trackingMessage[:properties][:tenantName] = tenant.name
-      trackingMessage[:properties][:tenantHost] = tenant.host
-      trackingMessage[:properties][:tenantOrganizationType] = Tenant.settings('core', 'organization_type')
+      service.add_tenant_properties event[:properties], tenant
     rescue  ActiveRecord::RecordNotFound => e
       # Tenant can't be found, so we don't add anything
     end
+    service.add_activity_item_content event, event[:properties], activity
 
-    Analytics.track(trackingMessage)
+    Analytics.track event
   end
 
 end
