@@ -52,6 +52,7 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, authUser, 
 
     return (
       <Helmet>
+        <html lang={locale}/>
         {blockIndexing && <meta name="robots" content="noindex" />}
         <title>
           {`
