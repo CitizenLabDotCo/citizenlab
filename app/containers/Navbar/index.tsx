@@ -154,7 +154,7 @@ const NavigationDropdownItem = styled.button`
   color: #999;
   display: flex;
   fill: #999;
-  font-size: 16px;
+  font-size: ${fontSize('large')};
   font-weight: 400;
   transition: all 100ms ease-out;
 
