@@ -1,19 +1,18 @@
 // Libraries
 import React from 'react';
-import { isArray, includes } from 'lodash';
+import { isArray } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Components
 import Checkbox from 'components/UI/Checkbox';
-import Dropdown from 'components/UI/Dropdown';
-import T from 'components/T';
+import MultipleSelectDropdown from 'components/admin/MultipleSelectDropdown';
+import Icon from 'components/UI/Icon';
 
 // Services
-import { deleteUser } from 'services/users';
 import { addGroupMembership } from 'services/groupMemberships';
 
 // Resources
-import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
+import GetGroups, { GetGroupsChildProps, MembershipType } from 'resources/GetGroups';
 
 // I18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -23,20 +22,17 @@ import messages from './messages';
 // Styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { darken, rgba } from 'polished';
+import { rgba } from 'polished';
 
 const TableOptions = styled.div`
   display: flex;
-  padding-bottom: 12px;
+  align-items: center;
+  padding-bottom: 30px;
   padding-left: 16px;
   padding-right: 16px;
   margin-bottom: 30px;
   border-bottom: solid 1px #eaeaea;
   user-select: none;
-`;
-
-const SelectAllLabel = styled.span`
-  display: flex;
 `;
 
 const UserCount = styled.span`
@@ -45,55 +41,42 @@ const UserCount = styled.span`
   margin-left: 7px;
 `;
 
-const ActionButton = styled.div`
-  margin-left: 30px;
+const ActionButton = styled.button`
+  margin-right: 30px;
   position: relative;
-  cursor: pointer;
-`;
-
-const Group = styled.div`
-
-`;
-
-const AddToGroupButton = styled.div`
-  width: 100%;
-  color: ${(props) => props.theme.colors.label};
-  font-size: 18px;
-  font-weight: 400;
-  text-align: center;
-  text-decoration: none;
-  padding: 15px 15px;
-  cursor: pointer;
-  background: ${props => rgba(props.theme.colors.label, 0.12)};
+  padding: 5px;
   border-radius: 5px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  transition: all 80ms ease-out;
+  svg {
+    margin-right: 10px;
+  }
 
-  &:hover {
-    color: ${(props) => darken(0.2, props.theme.colors.label)};
-    background: ${props => rgba(props.theme.colors.label, 0.22)};
-    text-decoration: none;
+  &:hover,
+  &:focus {
+    background: ${rgba(colors.adminTextColor, .1)};
+    color: ${colors.adminTextColor};
+    outline: none;
   }
 `;
 
+
 // Typings
+import { IGroupData } from 'services/groups';
+
 interface InputProps {
+  groupType?: MembershipType;
   selectedUsers: string[] | 'none' | 'all';
-  userCount: number;
   toggleSelectAll: () => void;
+  allUsersIds: string[];
+  deleteUsersFromGroup?: () => void;
 }
 
 interface DataProps {
   groups: GetGroupsChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
-interface State {
-  addToGroupDropdownOpened: boolean;
-  selectedGroups: string[];
-}
+interface State { }
 
 class UserTableActions extends React.PureComponent<Props & InjectedIntlProps, State> {
 
@@ -109,48 +92,6 @@ class UserTableActions extends React.PureComponent<Props & InjectedIntlProps, St
     this.props.toggleSelectAll();
   }
 
-  toggleMoveDropdown = (event: React.FormEvent<any>) => {
-    event.preventDefault();
-    event.stopPropagation();
-    this.setState(({ addToGroupDropdownOpened }) => ({ addToGroupDropdownOpened: !addToGroupDropdownOpened }));
-  }
-
-  toggleGroup = (groupId: string) => (event: React.FormEvent<any>) => {
-    event.preventDefault();
-
-    this.setState(({ selectedGroups }) => ({
-      selectedGroups: includes(selectedGroups, groupId) ? selectedGroups.filter(item => item !== groupId) : [...selectedGroups, groupId]
-    }));
-  }
-
-  addUsersToGroups = (event: React.FormEvent<any>) => {
-    event.preventDefault();
-    const { selectedUsers } = this.props;
-    const { selectedGroups } = this.state;
-
-    if (isArray(selectedUsers)) {
-      selectedGroups.forEach((groupId) => {
-        selectedUsers.forEach((userId) => {
-          addGroupMembership(groupId, userId);
-        });
-      });
-    }
-  }
-
-  deleteUsers = (event: React.FormEvent<any>) => {
-    event.preventDefault();
-    const { selectedUsers } = this.props;
-
-    if (isArray(selectedUsers)) {
-      const message = this.props.intl.formatMessage(messages.deleteSelectedUsersConfirmation);
-
-      if (window.confirm(message)) {
-        selectedUsers.forEach((userId) => {
-          deleteUser(userId);
-        });
-      }
-    }
-  }
 
   exportUsers = (event: React.FormEvent<any>) => {
     event.preventDefault();
@@ -167,62 +108,71 @@ class UserTableActions extends React.PureComponent<Props & InjectedIntlProps, St
     // }
   }
 
+  getchoices = (groupsList: IGroupData[]) => {
+    return groupsList.map((group) => ({ text: group.attributes.title_multiloc, id: group.id }));
+  }
+
+  addUsersToGroups = (groupsIds) => {
+    const { allUsersIds, selectedUsers } = this.props;
+    const usersIds = (selectedUsers === 'all') ? allUsersIds : selectedUsers;
+
+    if (isArray(usersIds)) {
+      groupsIds.forEach((groupId) => {
+        usersIds.forEach((userId) => {
+          addGroupMembership(groupId, userId);
+        });
+      });
+    }
+  }
+
   render() {
-    const { selectedUsers, userCount } = this.props;
+    const { selectedUsers, deleteUsersFromGroup, groupType } = this.props;
     const { groupsList } = this.props.groups;
-    const { addToGroupDropdownOpened, selectedGroups } = this.state;
 
     return (
       <TableOptions>
-        <Checkbox
-          label={
-            <SelectAllLabel>
-              <FormattedMessage {...messages.selectAll} />
-              <UserCount>(<FormattedMessage {...messages.xUsers} values={{ count: userCount }} />)</UserCount>
-            </SelectAllLabel>
-          }
-          value={(selectedUsers === 'all')}
-          onChange={this.toggleAllUsers}
-        />
+        <ActionButton onClick={this.toggleAllUsers}>
+          <Checkbox
+            label={
+              <>
+                <FormattedMessage {...messages.selectAll} />
+                <UserCount>(<FormattedMessage
+                  {...messages.xUsers}
+                  values={{
+                    count: (!(selectedUsers === 'all') && !(selectedUsers === 'none')) ?
+                    selectedUsers.length :
+                    0
+                  }}
+                />)</UserCount>
+              </>
+            }
+            value={(selectedUsers === 'all')}
+            onChange={this.toggleAllUsers}
+          />
+        </ActionButton>
 
-        {selectedUsers && isArray(selectedUsers) && !isNilOrError(groupsList) &&
-          <ActionButton onClick={this.toggleMoveDropdown}>
-            <FormattedMessage {...messages.moveUsers} />
-
-            <Dropdown
-              opened={addToGroupDropdownOpened}
-              content={(
-                <>
-                  {groupsList.map((group) => (
-                    <Group key={group.id}>
-                      <T value={group.attributes.title_multiloc} />
-
-                      <Checkbox
-                        label={<T value={group.attributes.title_multiloc} />}
-                        value={includes(selectedGroups, group.id)}
-                        onChange={this.toggleGroup(group.id)}
-                      />
-                    </Group>
-                  ))}
-                </>
-              )}
-              footer={(
-                <AddToGroupButton onClick={this.addUsersToGroups}>
-                  <FormattedMessage {...messages.add} />
-                </AddToGroupButton>
-              )}
-              toggleOpened={this.toggleMoveDropdown}
-            />
-          </ActionButton>
+        {selectedUsers !== 'none' && !isNilOrError(groupsList) &&
+          <MultipleSelectDropdown
+            choices={this.getchoices(groupsList)}
+            messages={messages}
+            onSubmit={this.addUsersToGroups}
+          >
+            <ActionButton>
+              <Icon name="moveFolder"/>
+              <FormattedMessage {...messages.moveUsers} />
+            </ActionButton>
+          </MultipleSelectDropdown>
         }
 
-        {selectedUsers && isArray(selectedUsers) &&
-          <ActionButton onClick={this.deleteUsers}>
+        {groupType === 'manual' && selectedUsers !== 'none' &&
+          <ActionButton onClick={deleteUsersFromGroup}>
+            <Icon name="trash"/>
             <FormattedMessage {...messages.deleteButton} />
           </ActionButton>
         }
 
         <ActionButton onClick={this.exportUsers}>
+          <Icon name="userExport"/>
           <FormattedMessage {...messages.exportUsers} />
         </ActionButton>
       </TableOptions>

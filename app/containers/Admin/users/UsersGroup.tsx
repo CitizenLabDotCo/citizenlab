@@ -1,8 +1,8 @@
 // Libraries
 import React from 'react';
-import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
 import { Formik } from 'formik';
+import { isString, isEmpty } from 'lodash';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -12,7 +12,8 @@ import GroupHeader from './GroupHeader';
 import Modal from 'components/UI/Modal';
 import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
 import RulesGroupForm, { RulesFormValues } from './RulesGroupForm';
-import UserTable from './UserTable';
+import UserManager from './UserManager';
+
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -22,24 +23,23 @@ import { InjectedIntlProps } from 'react-intl';
 
 // Resources
 import GetGroup, { GetGroupChildProps } from 'resources/GetGroup';
-import GetUserCount, { GetUserCountChildProps } from 'resources/GetUserCount';
 
 // Services
-import { IGroupData, deleteGroup, updateGroup } from 'services/groups';
+import { deleteGroup, updateGroup, MembershipType } from 'services/groups';
 
 // Typings
 import { API } from 'typings';
-interface InputProps {}
+interface InputProps { }
 
 interface DataProps {
   group: GetGroupChildProps;
-  usercount: GetUserCountChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 export interface State {
-  groupEditionModal: false | IGroupData['attributes']['membership_type'];
+  groupEditionModal: false | MembershipType;
+  search: string | undefined;
 }
 
 export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -47,6 +47,7 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
     super(props);
     this.state = {
       groupEditionModal: false,
+      search: undefined,
     };
   }
 
@@ -72,14 +73,14 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
     updateGroup(id, {
       ...values
     })
-    .then(() => {
-      this.closeGroupEditionModal();
-    })
-    .catch((errorResponse) => {
-      const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
-      setErrors(apiErrors);
-      setSubmitting(false);
-    });
+      .then(() => {
+        this.closeGroupEditionModal();
+      })
+      .catch((errorResponse) => {
+        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+        setErrors(apiErrors);
+        setSubmitting(false);
+      });
   }
 
   deleteGroup = (groupId: string) => () => {
@@ -91,13 +92,14 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
   }
 
   searchGroup = (searchTerm: string) => {
-    // TODO: wire up the search with the Users Table query
-    console.log(searchTerm);
+    this.setState({
+      search: (isString(searchTerm) && !isEmpty(searchTerm) ? searchTerm : '')
+    });
   }
 
   render() {
-    const { group, usercount } = this.props;
-    const { groupEditionModal } = this.state;
+    const { group } = this.props;
+    const { groupEditionModal, search } = this.state;
     let ModalHeader;
 
     switch (groupEditionModal) {
@@ -109,7 +111,7 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
         break;
     }
 
-    if (!isNilOrError(group) && !isNilOrError(usercount)) {
+    if (!isNilOrError(group)) {
       return (
         <>
           <GroupHeader
@@ -120,7 +122,11 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
             onSearch={this.searchGroup}
           />
 
-          <UserTable groupId={group.id} usercount={usercount} />
+          <UserManager
+            search={search}
+            groupId={group.id}
+            groupType={group.attributes.membership_type}
+          />
 
           <Modal
             header={ModalHeader}
@@ -158,13 +164,8 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
 
 const UsersGroupWithHoCs = injectIntl<Props>(UsersGroup);
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  group: ({ params, render }) => <GetGroup id={params.groupId}>{render}</GetGroup>,
-  usercount: <GetUserCount />
-});
-
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {dataProps => <UsersGroupWithHoCs {...inputProps} {...dataProps} />}
-  </Data>
+export default withRouter((inputProps: WithRouterProps) => (
+  <GetGroup id={inputProps.params.groupId}>
+    {group => <UsersGroupWithHoCs {...inputProps} group={group} />}
+  </GetGroup>
 ));

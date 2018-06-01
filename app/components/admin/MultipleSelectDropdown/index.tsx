@@ -30,9 +30,7 @@ const DropdownMenu = styled(clickOutside)`
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
   border: solid 1px #e0e0e0;
   position: absolute;
-  top: 30px;
-  left: -95px;
-  transform-origin: left top;
+  top: 45px;
   z-index: 5;
   width: 250px;
   max-height: 240px;
@@ -120,7 +118,7 @@ const DropdownListItem = styled.button`
   }
 `;
 
-const DropdownFooter = styled.div`
+const DropdownFooter = styled.button`
   width: 100%;
   color: #fff;
   font-size: 18px;
