@@ -2,7 +2,7 @@ import * as React from 'react';
 
 type Props = {
   children?: any;
-  onClickOutside: (arg: React.FormEvent<MouseEvent>) => void;
+  onClickOutside: (arg: MouseEvent | KeyboardEvent) => void;
   className?: string;
   onClick?: () => void;
   id?: string;
@@ -21,16 +21,24 @@ export default class ClickOutside extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     document.addEventListener('click', this.handle, true);
+    document.addEventListener('keydown', this.handle, true);
   }
 
   componentWillUnmount() {
     document.removeEventListener('click', this.handle, true);
+    document.removeEventListener('keydonwn', this.handle, true);
   }
 
-  handle = (event) => {
+  handle = (event: MouseEvent | KeyboardEvent) => {
     const { onClickOutside } = this.props;
 
-    if (this.container && !this.container.contains(event.target)) {
+    // Escape key to close
+    if (event.type === 'keydown' && (event as KeyboardEvent).keyCode === 27) {
+      onClickOutside(event);
+    }
+
+    // Click outside to close
+    if (event.type === 'click' && this.container && !this.container.contains(event.target)) {
       onClickOutside(event);
     }
   }
