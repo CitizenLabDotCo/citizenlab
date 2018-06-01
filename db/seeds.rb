@@ -40,7 +40,7 @@ end
 def create_comment_tree(idea, parent, depth=0)
   amount = rand(5/(depth+1))
   amount.times do |i|
-    c = Comment.create({
+    c = Comment.create!({
       body_multiloc: {
         "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
         "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
@@ -70,9 +70,9 @@ end
 
 
 if Apartment::Tenant.current == 'public' || 'example_org'
-
+  Tenant.all.each {|tn| tn.destroy!}
   
-  t = Tenant.create({
+  t = Tenant.create!({
     name: 'local',
     host: 'localhost',
     logo: Rails.root.join("spec/fixtures/logo.png").open,
@@ -139,7 +139,7 @@ if Apartment::Tenant.current == 'public' || 'example_org'
     }
   })
 
-  Tenant.create({
+  Tenant.create!({
     name: 'empty',
     host: 'empty.localhost',
     logo: Rails.root.join("spec/fixtures/logo.png").open,
@@ -194,7 +194,7 @@ admin_koen = {
 if Apartment::Tenant.current == 'empty_localhost'
   TenantTemplateService.new.apply_template('base')
   
-  User.create(admin_koen)
+  User.create!(admin_koen)
 end
 
 tenant_template = TenantTemplateService.new.available_templates
@@ -206,13 +206,14 @@ TenantTemplateService.new.apply_template('base') if tenant_template
 
 if Apartment::Tenant.current == 'localhost'
 
-  PublicApi::ApiClient.create(
+  PublicApi::ApiClient.create!(
     id: '42cb419a-b1f8-4600-8c4e-fd45cca4bfd9',
     secret: "Hx7C27lxV7Qszw-zCg9UT-GFRQuxJNffllTpeU262CGabllbyTYwOmpizCygtPIZSwg",
   )
   
+  custom_field = nil
   if SEED_SIZE != 'empty'
-    custom_field = CustomField.create(
+    custom_field = CustomField.create!(
       resource_type: 'User',
       key: 'politician',
       input_type: 'select',
@@ -221,12 +222,12 @@ if Apartment::Tenant.current == 'localhost'
       required: false,
     )
 
-    CustomFieldOption.create(custom_field: custom_field, key: 'active_politician', title_multiloc: {'en' => 'Active politician'})
-    CustomFieldOption.create(custom_field: custom_field, key: 'retired_politician', title_multiloc: {'en' => 'Retired politician'})
-    CustomFieldOption.create(custom_field: custom_field, key: 'no', title_multiloc: {'en' => 'No'})
+    CustomFieldOption.create!(custom_field: custom_field, key: 'active_politician', title_multiloc: {'en' => 'Active politician'})
+    CustomFieldOption.create!(custom_field: custom_field, key: 'retired_politician', title_multiloc: {'en' => 'Retired politician'})
+    CustomFieldOption.create!(custom_field: custom_field, key: 'no', title_multiloc: {'en' => 'No'})
 
     12.times do 
-      Area.create({
+      Area.create!({
         title_multiloc: {
           "en": Faker::Address.city,
           "nl-BE": Faker::Address.city
@@ -239,18 +240,18 @@ if Apartment::Tenant.current == 'localhost'
     end
 
     admin_koen[:domicile] = (rand(2) == 0 ? nil : Area.offset(rand(Area.count)).first.id)
-    admin_koen[:custom_field_values] = ((rand(2) == 0) ? {} : {custom_field.key => CustomFieldOption.offset(rand(CustomFieldOption.count)).first.key})
+    admin_koen[:custom_field_values] = ((rand(2) == 0) ? {} : {custom_field.key => CustomFieldOption.where(custom_field_id: custom_field.id).all.shuffle.first.key})
   end
 
   TenantTemplateService.new.apply_template('base')
-  User.create(admin_koen)
+  User.create!(admin_koen)
 
   if SEED_SIZE != 'empty'
     num_users.times do 
       first_name = Faker::Name.first_name
       last_name = Faker::Name.last_name
       has_last_name = (rand(5) > 0)
-      User.create({
+      User.create!({
         first_name: first_name,
         last_name: has_last_name ? last_name : nil,
         cl1_migrated: !has_last_name,
@@ -263,12 +264,12 @@ if Apartment::Tenant.current == 'localhost'
         education: rand(2) === 0 ? nil : rand(9).to_s,
         avatar: nil, # (rand(3) > 0) ? generate_avatar : nil,
         domicile: rand(2) == 0 ? nil : Area.offset(rand(Area.count)).first.id,
-        custom_field_values: rand(2) == 0 ? {} : {custom_field.key => CustomFieldOption.offset(rand(CustomFieldOption.count)).first.key},
+        custom_field_values: rand(2) == 0 ? {} : {custom_field.key => CustomFieldOption.where(custom_field_id: custom_field.id).all.shuffle.first.key},
         registration_completed_at: Time.now
       })
     end
 
-    Area.create({
+    Area.create!({
       title_multiloc: {
         "en": "Westbrook",
         "nl-BE": "Westbroek"
@@ -306,47 +307,49 @@ if Apartment::Tenant.current == 'localhost'
           voting_enabled: rand(3) != 0,
           commenting_enabled: rand(4) != 0,
           voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
-          voting_limited_max: rand(15),
+          voting_limited_max: rand(15)+1,
         })
       end
-      project.save
+      project.save!
       [0,1,2,3,4][rand(5)].times do |i|
-        project.project_images.create(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
+        project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
       end
       if rand(5) == 0
-        project.project_files.create(file: Rails.root.join("spec/fixtures/afvalkalender.pdf").open)
+        project.project_files.create!(file: Rails.root.join("spec/fixtures/afvalkalender.pdf").open)
       end
 
-      start_at = Faker::Date.between(6.months.ago, 1.month.from_now)
-      rand(8).times do
-        start_at += 1.days
-        phase = project.phases.create({
-          title_multiloc: {
-            "en": Faker::Lorem.sentence,
-            "nl-BE": Faker::Lorem.sentence
-          },
-          description_multiloc: {
-            "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
-            "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
-          },
-          start_at: start_at,
-          end_at: (start_at += rand(150).days),
-          participation_method: (rand(5) == 0) ? 'information' : 'ideation'
-        })
-        if phase.ideation?
-          phase.update({
-            posting_enabled: rand(4) != 0,
-            voting_enabled: rand(3) != 0,
-            commenting_enabled: rand(4) != 0,
-            voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
-            voting_limited_max: rand(15),
+      if project.timeline?
+        start_at = Faker::Date.between(6.months.ago, 1.month.from_now)
+        rand(8).times do
+          start_at += 1.days
+          phase = project.phases.create!({
+            title_multiloc: {
+              "en": Faker::Lorem.sentence,
+              "nl-BE": Faker::Lorem.sentence
+            },
+            description_multiloc: {
+              "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
+              "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
+            },
+            start_at: start_at,
+            end_at: (start_at += rand(150).days),
+            participation_method: (rand(5) == 0) ? 'information' : 'ideation'
           })
+          if phase.ideation?
+            phase.update!({
+              posting_enabled: rand(4) != 0,
+              voting_enabled: rand(3) != 0,
+              commenting_enabled: rand(4) != 0,
+              voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
+              voting_limited_max: rand(15)+1,
+            })
+          end
         end
       end
 
       rand(5).times do
         start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
-        project.events.create({
+        project.events.create!({
           title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
           description_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
           location_multiloc: create_for_some_locales{Faker::Address.street_address},
@@ -368,8 +371,8 @@ if Apartment::Tenant.current == 'localhost'
     num_ideas.times do 
       created_at = Faker::Date.between(1.year.ago, Time.now)
       project = Project.offset(rand(Project.count)).first
-      idea = Idea.create({
-        title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
+      idea = Idea.create!({
+        title_multiloc: create_for_some_locales{Faker::Lorem.sentence[0...80]},
         body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
         idea_status: IdeaStatus.offset(rand(IdeaStatus.count)).first,
         topics: rand(3).times.map{rand(Topic.count)}.uniq.map{|offset| Topic.offset(offset).first },
@@ -385,18 +388,18 @@ if Apartment::Tenant.current == 'localhost'
       })
 
       [0,0,1,1,2][rand(5)].times do |i|
-        idea.idea_images.create(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
+        idea.idea_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
       end
       if rand(5) == 0
-        idea.idea_files.create(file: Rails.root.join("spec/fixtures/afvalkalender.pdf").open)
+        idea.idea_files.create!(file: Rails.root.join("spec/fixtures/afvalkalender.pdf").open)
       end
 
       User.all.each do |u|
         r = rand(5)
         if r == 0
-          Vote.create(votable: idea, user: u, mode: "down", created_at: Faker::Date.between(idea.published_at, Time.now))
+          Vote.create!(votable: idea, user: u, mode: "down", created_at: Faker::Date.between(idea.published_at, Time.now))
         elsif 0 < r && r < 3
-          Vote.create(votable: idea, user: u, mode: "up", created_at: Faker::Date.between(idea.published_at, Time.now))
+          Vote.create!(votable: idea, user: u, mode: "up", created_at: Faker::Date.between(idea.published_at, Time.now))
         end
       end
 
@@ -404,7 +407,7 @@ if Apartment::Tenant.current == 'localhost'
     end
 
     8.times do 
-      Page.create({
+      Page.create!({
         title_multiloc:create_for_some_locales{Faker::Lorem.sentence},
         body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
         project: rand(2) == 0 ? Project.offset(rand(Project.count)).first : nil,
@@ -412,7 +415,7 @@ if Apartment::Tenant.current == 'localhost'
     end
 
     3.times do
-      Group.create({
+      Group.create!({
         title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
         projects: Project.all.shuffle.take(rand(Project.count)),
         users: User.all.shuffle.take(rand(User.count))
@@ -420,8 +423,8 @@ if Apartment::Tenant.current == 'localhost'
     end
 
     5.times do
-      Invite.create(
-        invitee: User.create(email: Faker::Internet.email, locale: 'en', invite_status: 'pending', first_name: Faker::Name.first_name, last_name: Faker::Name.last_name)
+      Invite.create!(
+        invitee: User.create!(email: Faker::Internet.email, locale: 'en', invite_status: 'pending', first_name: Faker::Name.first_name, last_name: Faker::Name.last_name)
       )
     end
   end
