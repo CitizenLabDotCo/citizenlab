@@ -746,10 +746,12 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
       const projectTitleMultiloc = (project && project.data ? project.data.attributes.title_multiloc : null);
       const projectId = idea.data.relationships.project.data.id;
 
+      const ideaAuthorName = ideaAuthor && `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}`;
+
+
       content = (
         <>
-          <IdeaMeta ideaId={idea.data.id} />
-
+        <IdeaMeta ideaId={idea.data.id} ideaAuthorName={ideaAuthorName}/>
           <IdeaContainer id="e2e-idea-show">
             <HeaderWrapper>
               {project && projectTitleMultiloc &&
