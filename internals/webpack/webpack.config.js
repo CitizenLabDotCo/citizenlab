@@ -44,7 +44,6 @@ const WEBPACK_CONFIG = {
       },
       {
         test: /\.css$/,
-        include: /node_modules/,
         use: ExtractTextPlugin.extract({
           use: 'css-loader',
           fallback: 'style-loader',
