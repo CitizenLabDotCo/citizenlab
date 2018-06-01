@@ -14,7 +14,7 @@ const StyledLink = styled(Link)``;
 const StyledA = styled.a``;
 const StyledIcon = styled(Icon)``;
 
-const ButtonText = styled.div`
+const ButtonText = styled.span`
   margin: 0;
   margin-top: -1px;
   padding: 0;
@@ -23,14 +23,6 @@ const ButtonText = styled.div`
   ${StyledIcon} + & {
     margin-left: 10px;
   }
-`;
-
-const ButtonContent = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  padding: 0;
 `;
 
 function getFontSize(size) {
@@ -127,8 +119,13 @@ function buttonTheme(
 }
 
 const Container: any = styled.div`
-  user-select: none;
+  align-items: center;
+  display: flex;
   font-weight: 400;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  user-select: none;
 
   * {
     user-select: none;
@@ -151,7 +148,7 @@ const Container: any = styled.div`
     padding: ${(props: any) => props.padding || getPadding(props.size)};
     position: relative;
     transition: all 100ms ease-out;
-    width: ${(props: any) => props.width || 'auto'};
+    width: ${(props: any) => props.width || '100%'};
 
     &:not(.disabled) {
       cursor: pointer;
@@ -311,11 +308,11 @@ class Button extends React.PureComponent<Props, State> {
     const hasText = (!isNil(text) || !isNil(children));
 
     const childContent = (
-      <ButtonContent>
+      <>
         {icon && <StyledIcon name={icon} />}
         {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
         {processing && <SpinnerWrapper><Spinner size={spinnerSize} color={spinnerColor} /></SpinnerWrapper>}
-      </ButtonContent>
+      </>
     );
 
     return (
