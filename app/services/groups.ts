@@ -3,6 +3,8 @@ import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
 import { TRule } from 'components/admin/UserFilterConditions/rules';
 
+export type MembershipType = 'manual' | 'rules';
+
 export interface IGroupData {
   id: string;
   type: 'groups';
@@ -10,7 +12,7 @@ export interface IGroupData {
     title_multiloc: Multiloc;
     slug: string;
     memberships_count: number;
-    membership_type: 'manual' | 'rules';
+    membership_type: MembershipType;
     rules?: TRule[];
   };
 }

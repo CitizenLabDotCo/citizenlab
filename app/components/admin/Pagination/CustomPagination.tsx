@@ -18,6 +18,7 @@ const Spagination = styled.div`
   font-size: 16px;
   align-items: baseline;
   justify-content: center;
+  padding-top: 15px;
 `;
 
 const Next = styled.button`
@@ -134,28 +135,31 @@ class CustomPagination extends React.PureComponent<Props> {
     const { currentPage, totalPages } = this.props;
     const pageItems = this.calculateMenuItems(currentPage, totalPages);
 
-    return (
-      <Spagination className={this.props['className']}>
-        <Back onClick={this.goTo(currentPage - 1)}>
-          <ChevronIcon name="chevron-right" />
-          <FormattedMessage {...messages.back} />
-        </Back>
-        {pageItems.map((item) => (
-          <Item
-            key={item}
-            className={`${item === currentPage ? 'active' : ''}`}
-            onClick={this.handleItemClick(item)}
-            disabled={item < 0}
-          >
-            <span>{item < 0 ? '...' : item.toString()}</span>
-          </Item>
-        ))}
-        <Next onClick={this.goTo(currentPage + 1)}>
-          <FormattedMessage {...messages.next} />
-          <ChevronIcon name="chevron-right" />
-        </Next>
-      </Spagination>
-    );
+    if (totalPages > 1) {
+      return (
+        <Spagination className={this.props['className']}>
+          <Back onClick={this.goTo(currentPage - 1)}>
+            <ChevronIcon name="chevron-right" />
+            <FormattedMessage {...messages.back} />
+          </Back>
+          {pageItems.map((item) => (
+            <Item
+              key={item}
+              className={`${item === currentPage ? 'active' : ''}`}
+              onClick={this.handleItemClick(item)}
+              disabled={item < 0}
+            >
+              <span>{item < 0 ? '...' : item.toString()}</span>
+            </Item>
+          ))}
+          <Next onClick={this.goTo(currentPage + 1)}>
+            <FormattedMessage {...messages.next} />
+            <ChevronIcon name="chevron-right" />
+          </Next>
+        </Spagination>
+      );
+    }
+    return null;
   }
 }
 

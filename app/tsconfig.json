@@ -19,7 +19,7 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "target": "es6",
+    "target": "es7",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "plugins": [{

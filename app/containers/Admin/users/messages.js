@@ -193,4 +193,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.UsersGroup.add',
     defaultMessage: 'Add',
   },
+  dropdownFooterMessage: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.dropdownFooterMessage',
+    defaultMessage: 'Add',
+  },
 });

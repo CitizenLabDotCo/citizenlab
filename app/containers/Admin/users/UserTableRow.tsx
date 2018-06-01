@@ -13,6 +13,7 @@ import { IUserData } from 'services/users';
 
 // Styling
 import styled from 'styled-components';
+import { ellipsis } from 'polished';
 
 const StyledCheckbox = styled(Checkbox)`
   margin-left: 16px;
@@ -23,6 +24,10 @@ const StyledAvatar = styled(Avatar)`
   height: 30px;
   margin-right: 10px;
   margin-left: 0px;
+`;
+
+const SSpan = styled.span`
+  ${ellipsis('300px') as any}
 `;
 
 // Typings
@@ -66,8 +71,8 @@ class UserTableRow extends React.PureComponent<Props, State> {
             size="small"
           />
         </td>
-        <td>{user.attributes.first_name} {user.attributes.last_name}</td>
-        <td>{user.attributes.email}</td>
+        <td><SSpan>{user.attributes.first_name} {user.attributes.last_name}</SSpan></td>
+        <td><SSpan>{user.attributes.email}</SSpan></td>
         <td>{moment(user.attributes.created_at).format('LL')}</td>
         <td>
           <Toggle
