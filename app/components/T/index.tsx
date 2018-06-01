@@ -6,7 +6,7 @@ import { getLocalized } from 'utils/i18n';
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 
-type children = (localizedText: string) => JSX.Element | null | string;
+type children = (localizedText: string) => JSX.Element | null;
 
 type Props = {
   value: Multiloc;
