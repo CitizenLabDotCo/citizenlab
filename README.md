@@ -86,6 +86,13 @@ docker-compose run --rm web rspec
 
 ```
 
+For debugging random test failures, it's can be useful to run the tests multiple times, but stop as soon as on of the test runs fails (for Mac or Windows):
+
+```
+for i in `seq 50`; do docker-compose run --rm web rspec ./spec/acceptance/pages_spec.rb; [[ ! $? = 0 ]] && break ; done
+```
+
+
 ## Using Customized Tenants for Development
 
 Two environment variables can be used for this purpose: `SEED_SIZE` (e.g. small, medium, large, empty) and `DEFAULT_HOST` (e.g. empty.localhost, dendermonde.citizenlab.co). Set the desired values in the `.env` file and re-build the docker container.
