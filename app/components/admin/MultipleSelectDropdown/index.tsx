@@ -1,15 +1,13 @@
 // libraries
 import React from 'react';
-import CSSTransition from 'react-transition-group/CSSTransition';
-import clickOutside from 'utils/containers/clickOutside';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // Components
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
+import StatefulDropdown from './StatefulDropdown';
 
 // style
 import styled from 'styled-components';
@@ -17,67 +15,6 @@ import styled from 'styled-components';
 // typing
 import { Message, Multiloc } from 'typings';
 
-const Dropdown = styled.div`
-  position: relative;
-  &>:focus {
-    outline: none;
-  }
-`;
-
-const DropdownMenu = styled(clickOutside)`
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
-  border: solid 1px #e0e0e0;
-  position: absolute;
-  top: 45px;
-  z-index: 5;
-  width: 250px;
-  max-height: 240px;
-
-  * {
-    user-select: none;
-  }
-
-  ::before,
-  ::after {
-    content: '';
-    display: block;
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-style: solid;
-  }
-
-  ::after {
-    top: -20px;
-    left: 110px;
-    border-color: transparent transparent #fff transparent;
-    border-width: 10px;
-  }
-
-  ::before {
-    top: -22px;
-    left: 109px;
-    border-color: transparent transparent #e0e0e0 transparent;
-    border-width: 11px;
-  }
-
-  &.dropdown-enter {
-    opacity: 0;
-    transform: scale(0.9);
-
-    &.dropdown-enter-active {
-      opacity: 1;
-      transform: scale(1);
-      transition: all 200ms cubic-bezier(0.19, 1, 0.22, 1);
-    }
-  }
-  :focus {
-    outline: none;
-    border: 1px solid #044D6C;
-  }
-`;
 
 const DropdownMenuInner = styled.div`
   display: flex;
@@ -138,6 +75,9 @@ const DropdownFooter = styled.button`
     text-decoration: none;
     outline: none;
   }
+  &.success {
+    background: green;
+  }
 `;
 
 type choiceItem = {
@@ -154,36 +94,27 @@ interface Props {
 }
 
 interface State {
-  dropdownOpened: boolean;
   chosen: string[];
+  status: undefined | 'success' | 'error';
 }
 
-class MultipleSelectDropdown extends React.PureComponent<Props & InjectedIntlProps, State> {
+export default class MultipleSelectDropdown extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      dropdownOpened: false,
-      chosen: []
+      chosen: [],
+      status: undefined,
     };
-  }
-
-  handleDropdownOnClickOutside = (event: React.FormEvent<MouseEvent>) => {
-    event.preventDefault();
-    event.stopPropagation();
-    this.setState({ dropdownOpened: false });
-  }
-  handleDropdownToggle = () => {
-    this.setState(state => ({ dropdownOpened: !state.dropdownOpened }));
   }
 
   onClickRow = (id) => () => {
     const index = this.state.chosen.indexOf(id);
     if (index < 0) {
-      this.setState({ chosen: [...this.state.chosen, id] });
+      this.setState({ chosen: [...this.state.chosen, id], status: undefined });
     } else {
       this.setState({ chosen: this.state.chosen.filter((chosenId) => {
         return id !== chosenId;
-      })});
+      }), status: undefined});
     }
   }
 
@@ -191,52 +122,42 @@ class MultipleSelectDropdown extends React.PureComponent<Props & InjectedIntlPro
   submit = (chosen) => () => {
     if (this.state.chosen.length > 0) {
       this.props.onSubmit(chosen);
-      this.setState({ chosen: [], dropdownOpened: false });
+      this.setState({ chosen: [], status: 'success' });
     }
   }
 
-  render() {
-    const { choices } = this.props;
-    return (
-      <Dropdown>
-        <button onClick={this.handleDropdownToggle}>
-          {this.props.children}
-        </button>
-        <CSSTransition
-          in={this.state.dropdownOpened}
-          timeout={200}
-          mountOnEnter={true}
-          unmountOnExit={true}
-          classNames="dropdown"
-          exit={false}
-        >
-          <DropdownMenu onClickOutside={this.handleDropdownOnClickOutside}>
-            <DropdownMenuInner>
-              <DropdownList>
-                {choices.length > 0 && choices.map((choice) => {
-                  const id = choice.id;
-                  return (
-                    <DropdownListItem key={id} onClick={this.onClickRow(id)}>
-                      <T value={choice.text} truncate={21}/>
-                      <Checkbox
-                        onChange={this.onClickRow(id)}
-                        value={this.state.chosen.includes(id)}
-                        size="26px"
-                      />
-                    </DropdownListItem>
-                  );
-                })}
-              </DropdownList>
+  renderContent = () => (
+    <DropdownMenuInner>
+      <DropdownList>
+        {this.props.choices.length > 0 && this.props.choices.map((choice) => {
+          const id = choice.id;
+          return (
+            <DropdownListItem key={id} onClick={this.onClickRow(id)}>
+              <T value={choice.text} truncate={21}/>
+              <Checkbox
+                onChange={this.onClickRow(id)}
+                value={this.state.chosen.includes(id)}
+                size="26px"
+              />
+            </DropdownListItem>
+          );
+        })}
+      </DropdownList>
 
-              <DropdownFooter onClick={this.submit(this.state.chosen)}>
-                <FormattedMessage {...this.props.messages.dropdownFooterMessage} />
-              </DropdownFooter>
-            </DropdownMenuInner>
-          </DropdownMenu>
-        </CSSTransition>
-      </Dropdown>
+      <DropdownFooter onClick={this.submit(this.state.chosen)} className={(this.state.status) ? this.state.status : ''}>
+        <FormattedMessage {...this.props.messages.dropdownFooterMessage} />
+      </DropdownFooter>
+    </DropdownMenuInner>
+  )
+
+  render() {
+    return (
+      <StatefulDropdown
+        content={this.renderContent()}
+        top="45px"
+      >
+      {this.props.children}
+      </StatefulDropdown>
     );
   }
 }
-
-export default injectIntl(MultipleSelectDropdown);

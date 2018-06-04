@@ -35,8 +35,6 @@ export default class AllUsers extends React.PureComponent<Props, State> {
   render() {
     const { search } = this.state;
 
-    console.log(this.state);
-
     return (
       <>
         <AllUsersHeader onSearch={this.searchUser} />
