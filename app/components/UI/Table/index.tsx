@@ -29,6 +29,11 @@ const StyledTable: any = styled.table`
         padding-top: 0px;
         padding-bottom: 10px;
 
+        div {
+          display: flex;
+          align-items: center;
+        }
+
         &.sortable {
           cursor: pointer;
 

@@ -107,6 +107,9 @@ export default class Users extends React.PureComponent<Props, State> {
                     sorted={sortAttribute === 'role' ? sortDirection : null}
                   />
                 </th>
+                <th>
+                  <FormattedMessage tagName="div" {...messages.options} />
+                </th>
               </tr>
             </thead>
             <tbody>

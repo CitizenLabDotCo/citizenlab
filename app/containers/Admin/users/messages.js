@@ -17,9 +17,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.User.tabRegisteredUsers',
     defaultMessage: 'Registered users',
   },
-  deleteButton: {
-    id: 'app.containers.Admin.User.deleteButton',
-    defaultMessage: 'Delete',
+  deleteFromGroupButton: {
+    id: 'app.containers.Admin.User.deleteFromGroupButton',
+    defaultMessage: 'Delete users from group',
   },
   updateButton: {
     id: 'app.containers.Admin.User.updateButton',
@@ -60,6 +60,10 @@ export default defineMessages({
   admin: {
     id: 'app.containers.Admin.User.admin',
     defaultMessage: 'Admin',
+  },
+  options: {
+    id: 'app.containers.Admin.User.options',
+    defaultMessage: 'Options',
   },
   delete: {
     id: 'app.containers.Admin.User.delete',
@@ -167,15 +171,15 @@ export default defineMessages({
   },
   xUsers: {
     id: 'app.containers.AdminPage.Users.GroupsPanel.xUsers',
-    defaultMessage: '{count, plural, =0 {No users} one {1 user} other {{count} users}}',
+    defaultMessage: '{count, plural, zero {No users} one {1 user} other {{count} users}}',
   },
   groupDeletionConfirmation: {
     id: 'app.containers.AdminPage.Users.UsersGroup.groupDeletionConfirmation',
-    defaultMessage: 'Are you sure?',
+    defaultMessage: 'Are you sure you want to delete this group?',
   },
-  deleteSelectedUsersConfirmation: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.deleteSelectedUsersConfirmation',
-    defaultMessage: 'Are you sure you want to delete all selected users?',
+  deleteUserConfirmation: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.deleteUserConfirmation',
+    defaultMessage: 'Are you sure you want to delete this user?',
   },
   moveUsers: {
     id: 'app.containers.AdminPage.Users.UsersGroup.moveUsers',
@@ -183,7 +187,7 @@ export default defineMessages({
   },
   deleteUsers: {
     id: 'app.containers.AdminPage.Users.UsersGroup.deleteUsers',
-    defaultMessage: 'Delete selected users',
+    defaultMessage: 'Delete selected users from group',
   },
   exportUsers: {
     id: 'app.containers.AdminPage.Users.UsersGroup.exportUsers',

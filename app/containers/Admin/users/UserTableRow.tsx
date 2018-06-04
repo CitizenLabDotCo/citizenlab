@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import Avatar from 'components/Avatar';
 import Toggle from 'components/UI/Toggle';
 import Checkbox from 'components/UI/Checkbox';
+import Icon from 'components/UI/Icon';
 
 // Services
 import { IUserData } from 'services/users';
@@ -14,6 +15,7 @@ import { IUserData } from 'services/users';
 // Styling
 import styled from 'styled-components';
 import { ellipsis } from 'polished';
+import { colors } from 'utils/styleUtils';
 
 const StyledCheckbox = styled(Checkbox)`
   margin-left: 16px;
@@ -25,6 +27,13 @@ const StyledAvatar = styled(Avatar)`
   margin-right: 10px;
   margin-left: 0px;
 `;
+
+const SIcon = styled(Icon)`
+  width: 20px;
+  height: 30px;
+  fill: ${colors.label};
+`;
+
 
 const SSpan = styled.span`
   ${ellipsis('300px') as any}
@@ -79,6 +88,9 @@ class UserTableRow extends React.PureComponent<Props, State> {
             value={this.isUserAdmin(user)}
             onChange={this.handleAdminRoleOnChange}
           />
+        </td>
+        <td>
+            <SIcon name="more-options" />
         </td>
       </tr>
     );
