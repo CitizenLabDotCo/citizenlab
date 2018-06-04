@@ -91,6 +91,20 @@ resource "Users" do
           expect(json_response[:data].map{|u| u[:id]}).to match_array group_users.map(&:id)
 
         end
+
+        example "List all users in group, ordered by role" do
+          group = create(:group)
+          admin = create(:admin, manual_groups: [group])
+          moderator = create(:moderator, manual_groups: [group])
+          group_users = create_list(:user, 3, manual_groups: [group]) + [admin,moderator]
+
+          do_request(group: group.id, sort: '-role')
+          json_response = json_parse(response_body)
+
+          expect(json_response[:data].size).to eq 5
+          expect(json_response[:data].map{|u| u[:id]}).to match_array group_users.map(&:id)
+
+        end
       end
 
       get "web_api/v1/users/as_xlsx" do
