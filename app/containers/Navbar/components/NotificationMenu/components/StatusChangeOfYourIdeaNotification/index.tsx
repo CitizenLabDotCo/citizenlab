@@ -50,7 +50,7 @@ class StatusChangeOfYourIdeaNotification extends React.PureComponent<Props, Stat
 
 const Data = adopt<DataProps, { ideaId: string }>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  ideaStatus: ({ ideaId, render }) => <GetIdeaStatus id={ideaId}>{render}</GetIdeaStatus>,
+  ideaStatus: ({ render, idea }) => <GetIdeaStatus id={get(idea, 'relationships.idea_status.data.id')}>{render}</GetIdeaStatus>,
 });
 
 export default (inputProps: InputProps) => {
