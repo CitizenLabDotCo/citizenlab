@@ -17,12 +17,20 @@ namespace :migrate do
     db_user = migration_settings['db_user'] || 'citizenlab'
     locales_mapping = { 
       'en' => 'en', 
-      'nl' => 'nl', 
-      'nl-BE' => 'nl', 
-      'fr' => 'fr', 
-      'de' => 'de',  
-      'da' => 'da',
-      'no' => 'no'
+      'en-GB' => 'en-GB',
+      'en-US' => 'en-US',
+      'en-CA' => 'en-CA',
+      'nl' => 'nl-NL', 
+      'nl-BE' => 'nl-BE', 
+      'fr' => 'fr-FR', 
+      'fr-FR' => 'fr-FR',
+      'fr-BE' => 'fr-BE',
+      'de' => 'de-DE',  
+      'de-DE' => 'de-DE',
+      'da' => 'da-DK',
+      'da-DK' => 'da-DK',
+      'no' => 'nb-NO',
+      'nb-NO' => 'nb-NO'
     } 
     topics_mapping = migration_settings['topics_mapping'] || {}
     idea_statuses_mapping = migration_settings['idea_statuses_mapping'] || {}
@@ -447,7 +455,7 @@ namespace :migrate do
       end
       # phases
       if p.dig('timeline', 'phases') && p.dig('timeline', 'phases').size >= 2
-        p.dig('timeline', 'phases').each do |f|
+        resolve_phase_overlaps(p.dig('timeline', 'phases')).each do |f|
           migrate_phase(f, record, phases_hash, locales_mapping)
         end
       end
@@ -496,6 +504,23 @@ namespace :migrate do
     end
   end
 
+  def resolve_phase_overlaps ps
+    if !ps.empty?
+      ps = ps.sort_by{|p| p['startAt']}
+      t = (ps.first['startAt'] - 1.day)
+      ps.each do |p|
+        if t >= p['startAt'] 
+          p['startAt'] = t + 1.day
+        end
+        if p['startAt']  >= p['endAt']
+          p['endAt'] = p['startAt'] + 1.day
+        end
+        t = p['endAt']
+      end
+    end
+    ps
+  end
+
   def migrate_phase p, project, phases_hash, locales_mapping
     d = {participation_method: 'ideation'}
     # project
@@ -526,9 +551,22 @@ namespace :migrate do
       d[:end_at] = d[:start_at] + rand(12).hours
     end
     begin
-      phases_hash[p['_id']] = Phase.create! d
+      ph = Phase.new d
+      phases_hash[p['_id']] = ph
+      ph.save!
     rescue Exception => e
-      @log.concat [e.message]
+      caused_by_overlap = false
+      ts = TimelineService.new
+      ts.other_project_phases(ph).each do |other_phase|
+        if ts.overlaps? ph, other_phase
+          caused_by_overlap = true
+        end
+      end
+      if caused_by_overlap
+        @log.concat ["FATAL: Overlapping phase #{ph.title_multiloc.values.first} in project #{ph.project.title_multiloc.values.first} (from #{ph.start_at} to #{ph.end_at})"]
+      else
+        @log.concat [e.message]
+      end
     end
   end
 
@@ -552,7 +590,9 @@ namespace :migrate do
     end
     # title
     if p.dig('title_i18n')
-      d[:title_multiloc] = map_multiloc(p.dig('title_i18n'), locales_mapping)
+      d[:title_multiloc] = map_multiloc(p.dig('title_i18n'), locales_mapping).map do |locale, title|
+        [locale, title[0...80]]
+      end.to_h
     else
       @log.concat ["FATAL: Couldn't find a title for idea #{p.to_s}"]
       return

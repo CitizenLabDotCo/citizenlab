@@ -178,7 +178,7 @@ resource "Ideas" do
 
     example "Search for ideas should work with trending ordering", document: false do
       i1 = Idea.first
-      i1.title_multiloc['nl'] = 'Park met blauwe bomen'
+      i1.title_multiloc['nl-BE'] = 'Park met blauwe bomen'
       i1.title_multiloc['en'] = 'A park with orange grass'
       i1.save!
 
@@ -381,9 +381,8 @@ resource "Ideas" do
       end
 
       describe do
-        let (:active_phases) { create_list(:active_phase, 2, participation_method: 'ideation') }
-        let (:project) { create(:project, phases: active_phases) }
-        let (:phase_ids) { active_phases.map(&:id) }
+        let (:project) { create(:project_with_current_phase, phases_config: {sequence: "xxcx"}) }
+        let (:phase_ids) { project.phases.shuffle.take(2).map(&:id) }
         example_request "Creating an idea in specific phases" do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)

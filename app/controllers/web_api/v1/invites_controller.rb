@@ -109,15 +109,15 @@ class WebApi::V1::InvitesController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
         invitee.assign_attributes accept_params
+        SideFxInviteService.new.before_accept @invite
         invitee.invite_status = 'accepted'
         if !invitee.save
           raise ClErrors::TransactionError.new(error_key: :unprocessable_invitee)
         end
-        @invite.accepted_at = Time.now
         if !@invite.save
           raise ClErrors::TransactionError.new(error_key: :unprocessable_invite)
         end
-        SideFxInviteService.new.after_accept(@invite)
+        SideFxInviteService.new.after_accept @invite
         render json: @invite.reload, include: ['invitee'], status: :ok
       end
     rescue ClErrors::TransactionError => e

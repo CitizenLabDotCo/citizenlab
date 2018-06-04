@@ -73,4 +73,12 @@ RSpec.describe Project, type: :model do
       expect{ project.destroy }.not_to raise_error
     end
   end
+
+  describe "participation_mode" do
+    it "can be null for timeline projects" do 
+      p = create(:project_with_current_phase)
+      p.presentation_mode = nil
+      expect(p.save).to eq true
+    end
+  end
 end

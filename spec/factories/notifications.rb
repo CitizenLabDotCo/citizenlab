@@ -48,4 +48,13 @@ FactoryBot.define do
     initiating_user
     invite
   end
+
+  factory :project_moderation_rights_received, parent: :notification, class: 'Notifications::ProjectModerationRightsReceived' do
+    initiating_user
+    project
+  end
+
+  factory :admin_rights_received, parent: :notification, class: 'Notifications::AdminRightsReceived' do
+    initiating_user
+  end
 end

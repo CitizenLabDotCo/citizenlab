@@ -5,9 +5,8 @@ class CustomFieldService
   end
 
   def fields_to_json_schema_multiloc tenant, fields
-    tenant.settings.dig('core', 'locales').inject({}) do |memo, locale|
-      memo[locale] = fields_to_json_schema(fields, locale)
-      memo
+    tenant.settings.dig('core', 'locales').each_with_object({}) do |locale, obj|
+      obj[locale] = fields_to_json_schema(fields, locale)
     end
   end
 
