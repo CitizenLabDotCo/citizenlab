@@ -70,110 +70,112 @@ end
 
 
 if Apartment::Tenant.current == 'public' || 'example_org'
-  Tenant.all.each {|tn| tn.destroy!}
-  
-  t = Tenant.create!({
-    name: 'local',
-    host: 'localhost',
-    logo: Rails.root.join("spec/fixtures/logo.png").open,
-    header_bg: Rails.root.join("spec/fixtures/header.jpg").open,
-    settings: {
-      core: {
-        allowed: true,
-        enabled: true,
-        locales: ['en','nl-BE'],
-        organization_type: %w(small medium large).include?(SEED_SIZE) ? "#{SEED_SIZE}_city" : "generic",
-        organization_name: {
-          "en" => Faker::Address.city,
-          "nl-BE" => Faker::Address.city,
-          "fr-FR" => Faker::Address.city
+  if !Tenant.find_by host: 'localhost'
+    t = Tenant.create!({
+      name: 'local',
+      host: 'localhost',
+      logo: Rails.root.join("spec/fixtures/logo.png").open,
+      header_bg: Rails.root.join("spec/fixtures/header.jpg").open,
+      settings: {
+        core: {
+          allowed: true,
+          enabled: true,
+          locales: ['en','nl-BE'],
+          organization_type: %w(small medium large).include?(SEED_SIZE) ? "#{SEED_SIZE}_city" : "generic",
+          organization_name: {
+            "en" => Faker::Address.city,
+            "nl-BE" => Faker::Address.city,
+            "fr-FR" => Faker::Address.city
+          },
+          timezone: "Europe/Brussels",
+          color_main: Faker::Color.hex_color,
         },
-        timezone: "Europe/Brussels",
-        color_main: Faker::Color.hex_color,
-      },
-      facebook_login: {
-        allowed: true,
-        enabled: true,
-        app_id: '307796929633098',
-        app_secret: '28082a4c201d7cee136dbe35236e44cb'
-      },
-      google_login: {
-        allowed: true,
-        enabled: true,
-        client_id: '692484441813-98clbuerpm01bonc06htv95mec0pu1d3.apps.googleusercontent.com',
-        client_secret: 'ueqXBAfEy7j7D_2Ge8d16a6v'
-      },
-      # mydigipass_login: {
-      #   allowed: true,
-      #   enabled: true,
-      #   client_id: 'a76piarjfjbvwnukobjdzz07d',
-      #   client_secret: '65xg35xpa84p14cgntyg0279k',
-      #   require_eid: false
-      # },
-      groups: {
-        enabled: true,
-        allowed:true
-      },
-      private_projects: {
-        enabled: true,
-        allowed: true
-      },
-      surveys: {
-       enabled: true,
-       allowed: true,
-      },
-      maps: {
-        enabled: true,
-        allowed: true,
-        tile_provider: "https://free.tilehosting.com/styles/positron/style.json?key=DIZiuhfkZEQ5EgsaTk6D",
-        map_center: {
-          lat: "50.8503",
-          long: "4.3517"
+        facebook_login: {
+          allowed: true,
+          enabled: true,
+          app_id: '307796929633098',
+          app_secret: '28082a4c201d7cee136dbe35236e44cb'
         },
-        zoom_level: 12
-      },
-      user_custom_fields: {
-        enabled: true,
-        allowed: true
+        google_login: {
+          allowed: true,
+          enabled: true,
+          client_id: '692484441813-98clbuerpm01bonc06htv95mec0pu1d3.apps.googleusercontent.com',
+          client_secret: 'ueqXBAfEy7j7D_2Ge8d16a6v'
+        },
+        # mydigipass_login: {
+        #   allowed: true,
+        #   enabled: true,
+        #   client_id: 'a76piarjfjbvwnukobjdzz07d',
+        #   client_secret: '65xg35xpa84p14cgntyg0279k',
+        #   require_eid: false
+        # },
+        groups: {
+          enabled: true,
+          allowed:true
+        },
+        private_projects: {
+          enabled: true,
+          allowed: true
+        },
+        surveys: {
+         enabled: true,
+         allowed: true,
+        },
+        maps: {
+          enabled: true,
+          allowed: true,
+          tile_provider: "https://free.tilehosting.com/styles/positron/style.json?key=DIZiuhfkZEQ5EgsaTk6D",
+          map_center: {
+            lat: "50.8503",
+            long: "4.3517"
+          },
+          zoom_level: 12
+        },
+        user_custom_fields: {
+          enabled: true,
+          allowed: true
+        }
       }
-    }
-  })
+    })
+  end
 
-  Tenant.create!({
-    name: 'empty',
-    host: 'empty.localhost',
-    logo: Rails.root.join("spec/fixtures/logo.png").open,
-    header_bg: Rails.root.join("spec/fixtures/header.jpg").open,
-    settings: {
-      core: {
-        allowed: true,
-        enabled: true,
-        locales: ['en','nl-BE'],
-        organization_type: 'small_city',
-        organization_name: {
-          "en" => Faker::Address.city,
-          "nl-BE" => Faker::Address.city,
-          "fr-FR" => Faker::Address.city
+  if !Tenant.find_by host: 'empty.localhost'
+    Tenant.create!({
+      name: 'empty',
+      host: 'empty.localhost',
+      logo: Rails.root.join("spec/fixtures/logo.png").open,
+      header_bg: Rails.root.join("spec/fixtures/header.jpg").open,
+      settings: {
+        core: {
+          allowed: true,
+          enabled: true,
+          locales: ['en','nl-BE'],
+          organization_type: 'small_city',
+          organization_name: {
+            "en" => Faker::Address.city,
+            "nl-BE" => Faker::Address.city,
+            "fr-FR" => Faker::Address.city
+          },
+          timezone: "Europe/Brussels",
+          color_main: Faker::Color.hex_color,
         },
-        timezone: "Europe/Brussels",
-        color_main: Faker::Color.hex_color,
-      },
-      facebook_login: {
-        allowed: true,
-        enabled: true,
-        app_id: '307796929633098',
-        app_secret: '28082a4c201d7cee136dbe35236e44cb'
-      },
-      groups: {
-        enabled: true,
-        allowed:true
-      },
-      private_projects: {
-        enabled: true,
-        allowed: true
+        facebook_login: {
+          allowed: true,
+          enabled: true,
+          app_id: '307796929633098',
+          app_secret: '28082a4c201d7cee136dbe35236e44cb'
+        },
+        groups: {
+          enabled: true,
+          allowed:true
+        },
+        private_projects: {
+          enabled: true,
+          allowed: true
+        }
       }
-    }
-  })
+    })
+  end
 end
 
 admin_koen = {
