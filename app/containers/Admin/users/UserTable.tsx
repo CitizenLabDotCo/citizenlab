@@ -13,7 +13,7 @@ import NoUsers from './NoUsers';
 import UserTableRow from './UserTableRow';
 
 // Services
-import { IUserData, IRole, updateUser, deleteUser } from 'services/users';
+import { IUserData, IRole, updateUser } from 'services/users';
 
 // Resources
 import { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';

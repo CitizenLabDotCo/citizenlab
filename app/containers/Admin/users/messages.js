@@ -69,9 +69,17 @@ export default defineMessages({
     id: 'app.containers.Admin.User.delete',
     defaultMessage: 'Delete',
   },
+  seeProfile: {
+    id: 'app.containers.Admin.User.seeProfile',
+    defaultMessage: 'See profile',
+  },
   deleteUser: {
-    id: 'app.containers.Admin.User.deleteUser',
+    id: 'app.containers.Admin.Users.deleteUser',
     defaultMessage: 'Delete user',
+  },
+  userDeletionConfirmation: {
+    id: 'app.containers.Admin.Users.userDeletionConfirmation',
+    defaultMessage: 'Permanently remove this user?',
   },
   saveSuccess: {
     id: 'app.containers.Admin.User.saveSuccess',
