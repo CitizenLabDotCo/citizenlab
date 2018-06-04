@@ -81,7 +81,7 @@ FactoryBot.define do
       after(:create) do |project, evaluator|
         active_phase = create(:phase, 
           start_at: Faker::Date.between(6.months.ago, Time.now),
-          end_at: Faker::Date.between(Time.now, 6.months.from_now),
+          end_at: Faker::Date.between(Time.now+1.day, 6.months.from_now),
           project: project,
           **(evaluator.current_phase_attrs.merge((evaluator.phases_config[:c] || {})))
         )
