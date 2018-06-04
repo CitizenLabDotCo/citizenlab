@@ -96,13 +96,17 @@ resource "Users" do
           group = create(:group)
           admin = create(:admin, manual_groups: [group])
           moderator = create(:moderator, manual_groups: [group])
-          group_users = create_list(:user, 3, manual_groups: [group]) + [admin,moderator]
+          both = create(:moderator, manual_groups: [group])
+          both.add_role 'admin'
+          both.save!
+          group_users = [admin,both,moderator] + create_list(:user, 3, manual_groups: [group])
 
           do_request(group: group.id, sort: '-role')
           json_response = json_parse(response_body)
 
-          expect(json_response[:data].size).to eq 5
+          expect(json_response[:data].size).to eq 6
           expect(json_response[:data].map{|u| u[:id]}).to match_array group_users.map(&:id)
+          expect(json_response[:data].map{|u| u[:id]}.reverse.take(2)).to match_array [admin.id,both.id]
 
         end
       end
