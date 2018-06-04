@@ -64,6 +64,12 @@ describe SideFxUserService do
         to have_enqueued_job(LogActivityJob).with(user, 'completed_registration', current_user, user.updated_at.to_i)
     end
 
+    it "logs a 'admin_rights_given' action job when user has been made admin" do
+      user.update(roles: [{type: "admin"}])
+      expect {service.after_update(user, current_user)}.
+        to have_enqueued_job(LogActivityJob).with(user, 'admin_rights_given', current_user, user.updated_at.to_i)
+    end
+
     it "logs a UpdateMemberCountJob" do
       expect {service.after_update(user, current_user)}.to have_enqueued_job(UpdateMemberCountJob)
     end

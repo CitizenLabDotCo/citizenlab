@@ -7,9 +7,19 @@ class SideFxInviteService
     LogActivityJob.set(wait: 5.seconds).perform_later(invite, 'email_requested', invite.invitee, Time.now.to_i) 
   end
 
+  def before_accept invite 
+    invite.accepted_at = Time.now
+    if CustomField.where(enabled: true).count == 0
+      invite.invitee.registration_completed_at ||= invite.accepted_at
+    end
+  end
+
   def after_accept invite 
     IdentifyToSegmentJob.perform_later(invite.invitee)
     LogActivityJob.perform_later(invite, 'accepted', invite.invitee, invite.accepted_at.to_i)
+    if invite.invitee&.registration_completed_at
+      LogActivityJob.perform_later(invite.invitee, 'completed_registration', invite.invitee, invite.accepted_at.to_i)
+    end
   end
 
   def after_destroy frozen_invite, user

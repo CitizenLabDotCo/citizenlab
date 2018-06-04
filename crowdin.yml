@@ -1,4 +1,4 @@
 files:
   - source: /config/locales/en.yml
-    translation: /config/locales/%two_letters_code%.yml
+    translation: /config/locales/%locale%.yml
     update_option: update_without_changes
