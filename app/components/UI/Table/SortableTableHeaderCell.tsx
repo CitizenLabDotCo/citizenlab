@@ -49,7 +49,7 @@ export default class SortableTableHeaderCell extends React.PureComponent<Props, 
     const className = this.props['className'];
 
     return (
-      <Container className={`${className} ${sorted ? 'active' : ''}`} onClick={this.onClick}>
+      <Container className={`${className ? className : ''} ${sorted ? 'active' : ''}`} onClick={this.onClick}>
         {isString(value) ? <span>{value}</span> : value}
         {sorted && <StyledIcon name="dropdown" className={sorted} />}
       </Container>

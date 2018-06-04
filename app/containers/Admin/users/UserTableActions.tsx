@@ -15,8 +15,7 @@ import { addGroupMembership } from 'services/groupMemberships';
 import GetGroups, { GetGroupsChildProps, MembershipType } from 'resources/GetGroups';
 
 // I18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Styling
@@ -46,7 +45,7 @@ const ActionButton = styled.button`
   position: relative;
   padding: 5px;
   border-radius: 5px;
-  svg {
+  .cl-icon {
     margin-right: 10px;
   }
 
@@ -71,14 +70,14 @@ interface InputProps {
 }
 
 interface DataProps {
-  groups: GetGroupsChildProps;
+  manualGroups: GetGroupsChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
 
 interface State { }
 
-class UserTableActions extends React.PureComponent<Props & InjectedIntlProps, State> {
+class UserTableActions extends React.PureComponent<Props, State> {
 
   constructor(props) {
     super(props);
@@ -126,8 +125,16 @@ class UserTableActions extends React.PureComponent<Props & InjectedIntlProps, St
   }
 
   render() {
-    const { selectedUsers, deleteUsersFromGroup, groupType } = this.props;
-    const { groupsList } = this.props.groups;
+    const { selectedUsers, deleteUsersFromGroup, groupType, allUsersIds } = this.props;
+    const { groupsList } = this.props.manualGroups;
+    let selectedCount;
+    if (selectedUsers === 'all') {
+      selectedCount = allUsersIds.length;
+    } else if (selectedUsers === 'none') {
+      selectedCount = 0;
+    } else {
+      selectedCount = selectedUsers.length;
+    }
 
     return (
       <TableOptions>
@@ -139,9 +146,7 @@ class UserTableActions extends React.PureComponent<Props & InjectedIntlProps, St
                 <UserCount>(<FormattedMessage
                   {...messages.xUsers}
                   values={{
-                    count: (!(selectedUsers === 'all') && !(selectedUsers === 'none')) ?
-                    selectedUsers.length :
-                    0
+                    count: selectedCount,
                   }}
                 />)</UserCount>
               </>
@@ -167,7 +172,7 @@ class UserTableActions extends React.PureComponent<Props & InjectedIntlProps, St
         {groupType === 'manual' && selectedUsers !== 'none' &&
           <ActionButton onClick={deleteUsersFromGroup}>
             <Icon name="trash"/>
-            <FormattedMessage {...messages.deleteButton} />
+            <FormattedMessage {...messages.deleteFromGroupButton} />
           </ActionButton>
         }
 
@@ -180,10 +185,9 @@ class UserTableActions extends React.PureComponent<Props & InjectedIntlProps, St
   }
 }
 
-const UserTableActionsWithHoCs = injectIntl<Props>(UserTableActions);
 
 export default (inputProps: InputProps) => (
-  <GetGroups {...inputProps}>
-    {groups => <UserTableActionsWithHoCs {...inputProps} groups={groups} />}
+  <GetGroups membershipType="manual">
+    {manualGroups => <UserTableActions {...inputProps} manualGroups={manualGroups} />}
   </GetGroups>
 );

@@ -18,7 +18,6 @@ const NoUsersPage = styled.div`
   svg {
     margin-bottom: 20px;
   }
-  border-top: 2px solid ${colors.separation};
 `;
 
 const SFormattedMessage = styled.div`
