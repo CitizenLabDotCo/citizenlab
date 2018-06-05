@@ -3,6 +3,8 @@ require 'rspec_api_documentation/dsl'
 
 resource "Events" do
 
+  explanation "Events organized in the city, related to a project."
+
   before do
     header "Content-Type", "application/json"
     @project = create(:project)

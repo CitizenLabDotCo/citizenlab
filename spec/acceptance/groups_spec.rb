@@ -2,6 +2,9 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource "Groups" do
+
+  explanation "Collections of users can be given aditional permissions (i.e. access to certain projects) through groups."
+  
   before do
     header "Content-Type", "application/json"
     @groups = create_list(:group, 3)
@@ -25,7 +28,6 @@ resource "Groups" do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
       end
-    
     end
 
     get "web_api/v1/groups/:id" do
