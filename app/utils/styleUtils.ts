@@ -92,6 +92,7 @@ export const colors = {
   adminBackground: '#F0F3F4',
   adminContentBackground: '#fff',
   adminMenuBackground: '#003349',
+  adminDarkestBackground: 'rgba(0, 0, 0, 0.75)',
 
   adminTextColor: '#044D6C',
   adminLightText: 'rgba(255, 255, 255, 0.8)',

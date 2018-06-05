@@ -39,7 +39,7 @@ const StyledAvatar = styled(Avatar) `
 const SIcon = styled(Icon) `
   width: 20px;
   height: 30px;
-  fill: ${colors.label};
+  fill: ${colors.adminSecondaryTextColor};
 `;
 
 const DropdownList = styled.div`
@@ -48,30 +48,54 @@ const DropdownList = styled.div`
   display: flex;
   flex-direction: column;
   margin: 10px;
-  margin-right: 5px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 `;
 
-const DropdownListItem = styled.button`
+const DropdownListButton = styled.button`
   align-items: center;
-  color: #044D6C;
+  color: ${colors.adminLightText};
   font-size: 16px;
   font-weight: 400;
   padding: 10px;
-  padding-left: 15px;
-  margin-right: 5px;
-  background: #fff;
   border-radius: 5px;
-  cursor: pointer;
   display: flex;
   flex: 1 0;
   justify-content: space-between !important;
 
   &:hover, &:focus {
     outline: none;
-    color: #000;
-    background: #f6f6f6;
+    color: white;
+    background: rgba(0, 0, 0, 0.2);
+  }
+`;
+const IconWrapper = styled.div`
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .cl-icon {
+    height: 100%;
+  }
+  .cl-icon-primary, .cl-icon-secondary, .cl-icon-accent {
+  	fill: currentColor;
+  }
+`;
+
+const DropdownListLink = styled(Link) `
+  align-items: center;
+  color: ${colors.adminLightText};
+  font-size: 16px;
+  font-weight: 400;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex: 1 0;
+  justify-content: space-between !important;
+
+  &:hover, &:focus {
+    outline: none;
+    color: white;
+    background: rgba(0, 0, 0, 0.2);
   }
 `;
 
@@ -124,14 +148,18 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
 
   renderDropdown = () => (
     <DropdownList>
-      <Link to={`profile/${this.props.user.attributes.slug}`}>
-        <DropdownListItem>
-          <FormattedMessage {...messages.seeProfile} />
-        </DropdownListItem>
-      </Link>
-      <DropdownListItem onClick={this.handleDeleteClick(this.props.user.id)}>
+      <DropdownListLink to={`profile/${this.props.user.attributes.slug}`}>
+        <FormattedMessage {...messages.seeProfile} />
+        <IconWrapper>
+          <Icon name="eye" />
+        </IconWrapper>
+      </DropdownListLink>
+      <DropdownListButton onClick={this.handleDeleteClick(this.props.user.id)}>
         <FormattedMessage {...messages.deleteUser} />
-      </DropdownListItem>
+        <IconWrapper>
+          <Icon name="trash" />
+        </IconWrapper>
+      </DropdownListButton>
     </DropdownList>
   )
   toggleOpened = () => {
@@ -169,6 +197,7 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
             content={this.renderDropdown()}
             top="30px"
             left="-105px"
+            color={colors.adminMenuBackground}
           >
             <SIcon name="more-options" />
           </StatefulDropdown>

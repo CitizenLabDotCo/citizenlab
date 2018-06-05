@@ -155,6 +155,7 @@ export default class MultipleSelectDropdown extends React.PureComponent<Props, S
       <StatefulDropdown
         content={this.renderContent()}
         top="45px"
+        color="#fff"
       >
       {this.props.children}
       </StatefulDropdown>
