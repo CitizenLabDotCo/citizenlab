@@ -2,6 +2,9 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource "Idea Spam Reports" do
+
+  explanation "Reporting undesired content (i.e. an idea)."
+
   before do
     @user = create(:admin)
     token = Knock::AuthToken.new(payload: { sub: @user.id }).token

@@ -2,6 +2,9 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource "Comment Spam Reports" do
+
+  explanation "Reporting undesired content (i.e. a comment)."
+
   before do
     @user = create(:admin)
     token = Knock::AuthToken.new(payload: { sub: @user.id }).token
@@ -10,8 +13,6 @@ resource "Comment Spam Reports" do
     @comment = create(:comment)
     @spam_reports = create_list(:spam_report, 2, spam_reportable: @comment)
   end
-
-
 
   get "web_api/v1/comments/:comment_id/spam_reports" do
     let(:comment_id) { @comment.id }
