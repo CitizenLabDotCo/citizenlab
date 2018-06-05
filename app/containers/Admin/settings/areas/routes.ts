@@ -1,7 +1,7 @@
 import loadAndRender from 'utils/loadAndRender';
 
 export default () => ({
-  path: '/admin/settings/areas',
+  path: 'settings/areas',
   name: 'admin settings areas',
   getComponent: loadAndRender(import('../')),
   indexRoute: {
@@ -10,12 +10,12 @@ export default () => ({
   },
   childRoutes: [
     {
-      path: '/admin/settings/areas/new',
+      path: 'new',
       name: 'admin setting areas new',
       getComponent: loadAndRender(import('./New')),
     },
     {
-      path: '/admin/settings/areas/:areaId',
+      path: ':areaId',
       name: 'admin setting area edit',
       getComponent: loadAndRender(import('./Edit')),
     },

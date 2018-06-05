@@ -15,7 +15,7 @@ import customFieldRoutes from './settings/registration/CustomFields/routes';
 import pagesRoutes from './pages/routes';
 
 export default () => ({
-  path: '/admin',
+  path: 'admin',
   name: 'Admin page',
   getComponent: loadAndRender(import('containers/Admin')),
   indexRoute: dashboardRoutes(),
