@@ -2,6 +2,9 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource "Areas" do
+ 
+  explanation "Areas are geological regions. Each tenant has its own custom set of areas."
+
   before do
     header "Content-Type", "application/json"
     @areas = create_list(:area, 5)
@@ -47,7 +50,7 @@ resource "Areas" do
       let(:area) { build(:area) }
       let(:title_multiloc) { area.title_multiloc }
 
-      example_request "Create a comment to an idea" do
+      example_request "Create an area" do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
@@ -66,7 +69,7 @@ resource "Areas" do
       let(:title_multiloc) { {'en' => "Krypton"} }
       let(:description_multiloc) { {'en' => "Home planet of Superman"} }
 
-      example_request "Update a area" do
+      example_request "Update an area" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
@@ -77,7 +80,7 @@ resource "Areas" do
     delete "web_api/v1/areas/:id" do
       let!(:id) { create(:area).id }
 
-      example("Delete an area") do
+      example "Delete an area" do
         old_count = Area.count
         do_request
         expect(response_status).to eq 200
