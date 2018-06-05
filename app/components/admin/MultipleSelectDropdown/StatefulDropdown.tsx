@@ -16,9 +16,9 @@ const Dropdown = styled.div`
 
 const DropdownMenu = styled(clickOutside)`
   border-radius: 5px;
-  background-color: #fff;
+  background-color: ${(props: any) => props.color};
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
-  border: solid 1px #e0e0e0;
+  border: solid 1px ${(props: any) => props.color};
   position: absolute;
   top: ${(props: any) => props.top};
   left: ${(props: any) => props.left || 0};
@@ -43,14 +43,14 @@ const DropdownMenu = styled(clickOutside)`
   ::after {
     top: -20px;
     left: 110px;
-    border-color: transparent transparent #fff transparent;
+    border-color: transparent transparent ${(props: any) => props.color} transparent;
     border-width: 10px;
   }
 
   ::before {
     top: -22px;
     left: 109px;
-    border-color: transparent transparent #e0e0e0 transparent;
+    border-color: transparent transparent ${(props: any) => props.color} transparent;
     border-width: 11px;
   }
 
@@ -75,6 +75,7 @@ interface Props {
   content: JSX.Element;
   top: string;
   left?: string;
+  color: string;
 }
 
 interface State {
