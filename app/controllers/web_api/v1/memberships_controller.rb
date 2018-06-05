@@ -1,6 +1,7 @@
 class WebApi::V1::MembershipsController < ApplicationController
 
   before_action :set_membership, only: [:show, :destroy]
+  before_action :set_membership_from_group_and_user, only: [:destroy_by_user_id, :show_by_user_id]
   skip_after_action :verify_authorized, only: [:users_search]
 
   def index
@@ -14,6 +15,10 @@ class WebApi::V1::MembershipsController < ApplicationController
 
   def show
     render json: @membership, include: ['user'], serializer: WebApi::V1::MembershipSerializer
+  end
+
+  def show_by_user_id
+    show
   end
 
   # insert
@@ -38,6 +43,10 @@ class WebApi::V1::MembershipsController < ApplicationController
     end
   end
 
+  def destroy_by_user_id
+    destroy
+  end
+
   def users_search
     authorize Membership
     @users = policy_scope(User)
@@ -52,6 +61,11 @@ class WebApi::V1::MembershipsController < ApplicationController
 
   def set_membership
     @membership = Membership.find params[:id]
+    authorize @membership
+  end
+
+  def set_membership_from_group_and_user
+    @membership = Membership.find_by!(group: params[:group_id], user: params[:user_id])
     authorize @membership
   end
 
