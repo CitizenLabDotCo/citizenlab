@@ -51,7 +51,7 @@ resource "Groups" do
       with_options scope: :group do
         parameter :title_multiloc, "The title of the group in multiple locales", required: true
         parameter :membership_type, "Whether members are manually or automatically added. Either #{Group::MEMBERSHIP_TYPES.join(', ')}. Defaults to 'manual'"
-        parameter :rules, "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{SmartGroupsService.new.generate_rules_json_schema}"
+        parameter :rules, "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroupsService.new.generate_rules_json_schema)}"
       end
       ValidationErrorHelper.new.error_fields(self, Group)
 
@@ -88,7 +88,7 @@ resource "Groups" do
       with_options scope: :group do
         parameter :title_multiloc, "The title of the group in multiple locales"
         parameter :membership_type, "Whether members are manually or automatically added. Either #{Group::MEMBERSHIP_TYPES.join(', ')}"
-        parameter :rules, "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{SmartGroupsService.new.generate_rules_json_schema}"
+        parameter :rules, "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroupsService.new.generate_rules_json_schema)}"
       end
       ValidationErrorHelper.new.error_fields(self, Group)
 
