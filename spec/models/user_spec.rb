@@ -353,20 +353,20 @@ RSpec.describe User, type: :model do
 
     it "returns manual groups" do
       user = create(:user, manual_groups: [manual_group])
-      expect(user.groups).to match [manual_group]
-      expect(user.group_ids).to match [manual_group.id]
+      expect(user.groups).to match_array [manual_group]
+      expect(user.group_ids).to match_array [manual_group.id]
     end
 
     it "returns rule groups" do
       user = create(:user, email: 'user@test.com')
-      expect(user.groups).to match [rules_group]
-      expect(user.group_ids).to match [rules_group.id]
+      expect(user.groups).to match_array [rules_group]
+      expect(user.group_ids).to match_array [rules_group.id]
     end
 
     it "returns manual groups and rule groups" do
       user = create(:user, manual_groups: [manual_group], email: 'user@test.com')
-      expect(user.groups).to match [manual_group, rules_group]
-      expect(user.group_ids).to match [manual_group.id, rules_group.id]
+      expect(user.groups).to match_array [manual_group, rules_group]
+      expect(user.group_ids).to match_array [manual_group.id, rules_group.id]
     end
   end
 
@@ -375,7 +375,7 @@ RSpec.describe User, type: :model do
       group = create(:group)
       users = create_list(:user, 3, manual_groups: [group])
       create_list(:user, 2)
-      expect(User.in_group(group).pluck(:id)).to match users.map(&:id) 
+      expect(User.in_group(group).pluck(:id)).to match_array users.map(&:id) 
     end
 
     it "gets all users in a rules group" do
@@ -385,7 +385,7 @@ RSpec.describe User, type: :model do
       user3 = create(:user)
       user4 = create(:user, manual_groups: [create(:group)])
 
-      expect(User.in_group(group).pluck(:id)).to match [user1.id, user2.id]
+      expect(User.in_group(group).pluck(:id)).to match_array [user1.id, user2.id]
     end
   end
 
