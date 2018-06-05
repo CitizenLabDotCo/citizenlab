@@ -3,6 +3,8 @@ require 'rspec_api_documentation/dsl'
 
 resource "IdeaFile" do
 
+  explanation "File attachments."
+
   before do
     header "Content-Type", "application/json"
     @user = create(:user)
@@ -13,8 +15,8 @@ resource "IdeaFile" do
   end
 
   get "web_api/v1/ideas/:idea_id/files" do
-    
     let(:idea_id) { @idea.id }
+
     example_request "List all file attachments of an idea" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
@@ -23,9 +25,9 @@ resource "IdeaFile" do
   end
 
   get "web_api/v1/ideas/:idea_id/files/:file_id" do
-    
     let(:idea_id) { @idea.id }
     let(:file_id) { IdeaFile.first.id }
+
     example_request "Get one file attachment of an idea" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
@@ -39,10 +41,7 @@ resource "IdeaFile" do
       parameter :ordering, "An integer that is used to order the files within an idea", required: false
     end
     ValidationErrorHelper.new.error_fields(self, IdeaFile)
-
-
     let(:idea_id) { @idea.id }
-
     let(:file) { encode_file_as_base64("afvalkalender.pdf") }
     let(:ordering) { 1 }
 
@@ -61,11 +60,8 @@ resource "IdeaFile" do
       parameter :ordering, "An integer that is used to order the file attachments within an idea"
     end
     ValidationErrorHelper.new.error_fields(self, IdeaFile)
-
-
     let(:idea_id) { @idea.id }
     let(:file_id) { IdeaFile.first.id }
-
     let(:file) { encode_file_as_base64("afvalkalender.pdf") }
     let(:ordering) { 2 }
 
@@ -79,7 +75,6 @@ resource "IdeaFile" do
   end
 
   delete "web_api/v1/ideas/:idea_id/files/:file_id" do
-
     let(:idea_id) { @idea.id }
     let(:file_id) { IdeaFile.first.id }
 

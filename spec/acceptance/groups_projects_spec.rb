@@ -36,7 +36,7 @@ resource "GroupsProjects" do
       example "List all groups-projects sorted by new", document: false do
         gp1 = create(:groups_project, project: @project, group: create(:group))
 
-        do_request(sort: "new")
+        do_request sort: "new"
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0][:id]).to eq gp1.id

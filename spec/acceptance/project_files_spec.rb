@@ -3,6 +3,8 @@ require 'rspec_api_documentation/dsl'
 
 resource "ProjectFile" do
 
+  explanation "File attachments."
+
   before do
     header "Content-Type", "application/json"
     @user = create(:admin)
@@ -13,8 +15,8 @@ resource "ProjectFile" do
   end
 
   get "web_api/v1/projects/:project_id/files" do
-    
     let(:project_id) { @project.id }
+
     example_request "List all file attachments of a project" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
@@ -23,9 +25,9 @@ resource "ProjectFile" do
   end
 
   get "web_api/v1/projects/:project_id/files/:file_id" do
-    
     let(:project_id) { @project.id }
     let(:file_id) { ProjectFile.first.id }
+
     example_request "Get one file of a project" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
@@ -39,8 +41,6 @@ resource "ProjectFile" do
       parameter :ordering, "An integer that is used to order the file attachments within a project", required: false
     end
     ValidationErrorHelper.new.error_fields(self, ProjectFile)
-
-
     let(:project_id) { @project.id }
     let(:ordering) { 1 }
     let(:file) { encode_pdf_file_as_base64("afvalkalender.pdf") }
@@ -61,7 +61,6 @@ resource "ProjectFile" do
         expect(json_response.dig(:errors,:file)).to include({:error=>"extension_blacklist_error"})
       end
     end
-
   end
 
   patch "web_api/v1/projects/:project_id/files/:file_id" do
@@ -70,11 +69,8 @@ resource "ProjectFile" do
       parameter :ordering, "An integer that is used to order the file attachments within a project"
     end
     ValidationErrorHelper.new.error_fields(self, ProjectFile)
-
-
     let(:project_id) { @project.id }
     let(:file_id) { ProjectFile.first.id }
-
     let(:file) { encode_pdf_file_as_base64("afvalkalender.pdf") }
     let(:ordering) { 2 }
 
@@ -84,11 +80,9 @@ resource "ProjectFile" do
       expect(json_response.dig(:data,:attributes,:file)).to be_present
       expect(json_response.dig(:data,:attributes,:ordering)).to eq(2)
     end
-
   end
 
   delete "web_api/v1/projects/:project_id/files/:file_id" do
-
     let(:project_id) { @project.id }
     let(:file_id) { ProjectFile.first.id }
 
