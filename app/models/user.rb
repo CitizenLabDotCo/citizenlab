@@ -58,10 +58,10 @@ class User < ApplicationRecord
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
 
-  scope :order_role, -> (direction=:asc) {  
-    subquery = User.select("jsonb_array_elements(roles) as ro, id")
-    joins("LEFT OUTER JOIN (#{subquery.to_sql}) as r ON users.id = r.id")
-    .order("ro->>'type' #{direction}")
+  scope :order_role, -> (direction=:asc) {
+    joins("LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id")
+    .order("(roles @> '[{\"type\":\"admin\"}]')::integer #{direction}")
+    .reverse_order
   }
 
   scope :admin, -> { 

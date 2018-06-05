@@ -17,7 +17,7 @@ class TrendingIdeaService
                            AND (NOT ((ideas.upvotes_count - ideas.downvotes_count) < 0)) 
                            AND (ideas.created_at >= timestamp '#{Time.at(Time.now.to_i - IdeaTrendingInfo::TREND_SINCE_ACTIVITY)}')"
 
-    ideas.joins("LEFT OUTER JOIN (SELECT whaatevaa.id AS is_trending_b FROM (#{filter_trending_sql}) AS whaatevaa) AS whateva ON is_trending_b = ideas.id")
+    ideas.joins("LEFT OUTER JOIN (SELECT filtered.id AS is_trending_b FROM (#{filter_trending_sql}) AS filtered) AS trends ON is_trending_b = ideas.id")
          .group('ideas.id, idea_trending_infos.mean_activity_at')
          .select('ideas.*, count(is_trending_b) AS is_trending')
          .left_outer_joins(:idea_trending_info)
