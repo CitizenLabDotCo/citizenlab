@@ -114,14 +114,15 @@ class UserTableActions extends React.PureComponent<Props, State> {
   addUsersToGroups = (groupsIds) => {
     const { allUsersIds, selectedUsers } = this.props;
     const usersIds = (selectedUsers === 'all') ? allUsersIds : selectedUsers;
-
+    const array: Promise<any>[] = [];
     if (isArray(usersIds)) {
       groupsIds.forEach((groupId) => {
         usersIds.forEach((userId) => {
-          addGroupMembership(groupId, userId);
+          array.push(addGroupMembership(groupId, userId));
         });
       });
     }
+    return Promise.all(array);
   }
 
   render() {
