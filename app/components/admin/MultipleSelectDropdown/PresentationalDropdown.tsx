@@ -81,7 +81,7 @@ interface Props {
   dropdownOpened: boolean;
 }
 
-export default class StatefulDropdown extends React.PureComponent<Props> {
+export default class PresentationalDropdown extends React.PureComponent<Props> {
   render() {
     const { handleDropdownToggle, handleDropdownOnClickOutside, dropdownOpened, children, content } = this.props;
     return (
