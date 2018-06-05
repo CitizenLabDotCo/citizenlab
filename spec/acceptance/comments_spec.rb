@@ -3,6 +3,8 @@ require 'rspec_api_documentation/dsl'
 
 resource "Comments" do
 
+  explanation "Comments permit users to have discussions about content (i.e. ideas)."
+
   before do
     header "Content-Type", "application/json"
     @idea = create(:idea)
@@ -37,7 +39,6 @@ resource "Comments" do
       expect(status).to eq 200
     end
   end
-
 
   get "web_api/v1/comments/:id" do
     let(:id) { @comments.first.id }
@@ -185,7 +186,6 @@ resource "Comments" do
         expect(comment.reload.body_multiloc).not_to eq body_multiloc
       end
     end
-
 
     ## Currently not allowed by anyone, but works at the moment of writing (if permitted, that is)
     # delete "web_api/v1/comments/:id" do

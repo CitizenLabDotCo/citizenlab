@@ -2,6 +2,9 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource "GroupsProjects" do
+
+  explanation "Which groups can access which projects."
+
   before do
     header "Content-Type", "application/json"
     @project = create(:project)
@@ -30,7 +33,7 @@ resource "GroupsProjects" do
         expect(json_response[:data].size).to eq 4
       end
 
-      example "List all groups_projects sorted by new" do
+      example "List all groups-projects sorted by new", document: false do
         gp1 = create(:groups_project, project: @project, group: create(:group))
 
         do_request(sort: "new")
