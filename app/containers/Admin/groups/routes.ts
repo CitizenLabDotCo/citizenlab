@@ -1,7 +1,7 @@
 import loadAndRender from 'utils/loadAndRender';
 
 export default () => ({
-  path: '/admin/groups',
+  path: 'groups',
   name: 'admin groups',
   getComponent: loadAndRender(import('./')),
   indexRoute: {
@@ -10,7 +10,7 @@ export default () => ({
   },
   childRoutes: [
     {
-      path: '/admin/groups/edit/:groupId',
+      path: 'edit/:groupId',
       name: 'admin groups single group',
       getComponent: loadAndRender(import('./edit')),
     },
