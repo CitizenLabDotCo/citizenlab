@@ -41,6 +41,17 @@ resource "Memberships" do
       end
     end
 
+    get "web_api/v1/groups/:group_id/memberships/by_user_id/:user_id" do
+      let(:membership) { create(:membership)}
+      let(:group_id) { membership.group.id }
+      let(:user_id) { membership.user.id }
+      example_request "Get one membership by group id and user id" do
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :id)).to eq membership.id
+      end
+    end
+
     post "web_api/v1/groups/:group_id/memberships" do
       with_options scope: :membership do
         parameter :user_id, "The user id of the group member.", required: true
@@ -66,6 +77,17 @@ resource "Memberships" do
         expect{Membership.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
+
+    delete "web_api/v1/groups/:group_id/memberships/by_user_id/:user_id" do
+      let(:membership) { create(:membership)}
+      let(:group_id) { membership.group.id }
+      let(:user_id) { membership.user.id }
+      example_request "Delete a membership by group id and user id" do
+        expect(response_status).to eq 200
+        expect{Membership.find(membership.id)}.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
   end
 
   context "Users search" do
