@@ -1,6 +1,6 @@
 // Libraries
 import React from 'react';
-import { isArray } from 'lodash';
+import { isArray, filter } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Components
@@ -9,7 +9,11 @@ import MultipleSelectDropdown from 'components/admin/MultipleSelectDropdown';
 import Icon from 'components/UI/Icon';
 
 // Services
-import { addGroupMembership } from 'services/groupMemberships';
+import { addGroupMembership, IGroupMembership } from 'services/groupMemberships';
+
+// Events
+import eventEmitter from 'utils/eventEmitter';
+import events, { MembershipAdd } from './events';
 
 // Resources
 import GetGroups, { GetGroupsChildProps, MembershipType } from 'resources/GetGroups';
@@ -60,13 +64,14 @@ const ActionButton = styled.button`
 
 // Typings
 import { IGroupData } from 'services/groups';
+import { API } from 'typings';
 
 interface InputProps {
   groupType?: MembershipType;
   selectedUsers: string[] | 'none' | 'all';
   toggleSelectAll: () => void;
   allUsersIds: string[];
-  deleteUsersFromGroup?: () => void;
+  deleteUsersFromGroup?: (userIds: string[]) => void;
 }
 
 interface DataProps {
@@ -114,7 +119,9 @@ class UserTableActions extends React.PureComponent<Props, State> {
   addUsersToGroups = (groupsIds) => {
     const { allUsersIds, selectedUsers } = this.props;
     const usersIds = (selectedUsers === 'all') ? allUsersIds : selectedUsers;
-    const array: Promise<any>[] = [];
+
+    const array: Promise<IGroupMembership | API.ErrorResponse>[] = [];
+
     if (isArray(usersIds)) {
       groupsIds.forEach((groupId) => {
         usersIds.forEach((userId) => {
@@ -122,11 +129,30 @@ class UserTableActions extends React.PureComponent<Props, State> {
         });
       });
     }
-    return Promise.all(array);
+    return Promise.all(array)
+    .then((responses) => {
+      const errors = filter(responses, (response) => {
+        return !!(response as API.ErrorResponse).json;
+      });
+
+      if (errors.length === 0) {
+        eventEmitter.emit<MembershipAdd>('usersAdmin', events.membershipAdd, { groupsIds });
+      } else {
+        // TODO: handle errors when adding people to a group
+      }
+    });
+  }
+
+  handleGroupsDeleteClick = () => {
+    const { deleteUsersFromGroup, selectedUsers, allUsersIds } = this.props;
+    const usersIds = (selectedUsers === 'all') ? allUsersIds : selectedUsers;
+    if (isArray(usersIds) && deleteUsersFromGroup) {
+      deleteUsersFromGroup(usersIds);
+    }
   }
 
   render() {
-    const { selectedUsers, deleteUsersFromGroup, groupType, allUsersIds } = this.props;
+    const { selectedUsers, groupType, allUsersIds } = this.props;
     const { groupsList } = this.props.manualGroups;
     let selectedCount;
     if (selectedUsers === 'all') {
@@ -171,7 +197,7 @@ class UserTableActions extends React.PureComponent<Props, State> {
         }
 
         {groupType === 'manual' && selectedUsers !== 'none' &&
-          <ActionButton onClick={deleteUsersFromGroup}>
+          <ActionButton onClick={this.handleGroupsDeleteClick}>
             <Icon name="trash"/>
             <FormattedMessage {...messages.deleteFromGroupButton} />
           </ActionButton>

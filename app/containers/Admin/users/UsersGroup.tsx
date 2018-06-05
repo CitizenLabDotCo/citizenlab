@@ -25,7 +25,7 @@ import { InjectedIntlProps } from 'react-intl';
 import GetGroup, { GetGroupChildProps } from 'resources/GetGroup';
 
 // Services
-import { deleteGroup, updateGroup, MembershipType } from 'services/groups';
+import { deleteGroup, updateGroup, MembershipType, deleteUserFromGroup } from 'services/groups';
 
 // Typings
 import { API } from 'typings';
@@ -97,6 +97,15 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
     });
   }
 
+  deleteUsersFromGroup = (userIds: string[]) => {
+    if (!isNilOrError(this.props.group) && this.props.group.attributes.membership_type === 'manual') {
+      const groupId = this.props.group.id;
+      const promises: Promise<any>[] = [];
+      userIds.forEach(userId => promises.push(deleteUserFromGroup(groupId, userId)));
+      Promise.all(promises).then(res => console.log(res)).catch(err => console.log(err));
+    }
+  }
+
   render() {
     const { group } = this.props;
     const { groupEditionModal, search } = this.state;
@@ -126,6 +135,7 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
             search={search}
             groupId={group.id}
             groupType={group.attributes.membership_type}
+            deleteUsersFromGroup={this.deleteUsersFromGroup}
           />
 
           <Modal

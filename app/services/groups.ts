@@ -49,3 +49,7 @@ export function updateGroup(groupId: string, object: GroupDiff) {
 export function deleteGroup(groupId: string) {
   return streams.delete(`${API_PATH}/groups/${groupId}`, groupId);
 }
+
+export function deleteUserFromGroup(groupId: string, userId: string) {
+  return streams.delete(`${API_PATH}/groups/${groupId}/memberships/by-user-id/${userId}`, groupId);
+}
