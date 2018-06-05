@@ -128,7 +128,6 @@ export default class MultipleSelectDropdown extends React.PureComponent<Props, S
 
   submit = (chosen) => () => {
     if (this.state.chosen.length > 0) {
-      console.log(this.props.onSubmit(chosen));
       this.props.onSubmit(chosen).then(() =>
         this.setState({ chosen: [], dropdownOpened: false })
       ).catch(err => console.log(err));
