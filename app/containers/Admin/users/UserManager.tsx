@@ -40,6 +40,13 @@ export class UserManager extends React.PureComponent<Props, State> {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.groupId !== prevProps.groupId) {
+      this.setState({ selectedUsers: 'none' });
+    }
+  }
+
+
   toggleAllUsers = () => {
     this.setState(state => ({ selectedUsers: (state.selectedUsers === 'all' ? 'none' : 'all') }));
   }
