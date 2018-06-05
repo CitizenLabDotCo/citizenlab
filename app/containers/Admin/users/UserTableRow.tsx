@@ -9,7 +9,7 @@ import Avatar from 'components/Avatar';
 import Toggle from 'components/UI/Toggle';
 import Checkbox from 'components/UI/Checkbox';
 import Icon from 'components/UI/Icon';
-import StatefulDropdown from 'components/admin/MultipleSelectDropdown/StatefulDropdown';
+import PresentationalDropdown from 'components/admin/MultipleSelectDropdown/PresentationalDropdown';
 
 // translation
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -142,8 +142,20 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
     event.preventDefault();
 
     if (window.confirm(deleteMessage)) {
-      deleteUser(userId).then(res => console.log(res)).catch(err => console.log(err));
+      deleteUser(userId).then(res => {
+        console.log(res);
+      }).catch(err => console.log(err));
     }
+  }
+
+  handleDropdownOnClickOutside = (event: React.FormEvent<MouseEvent>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    this.setState({ optionsOpened: false });
+  }
+
+  toggleOpened = () => {
+    this.setState({ optionsOpened: !this.state.optionsOpened });
   }
 
   renderDropdown = () => (
@@ -162,9 +174,6 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
       </DropdownListButton>
     </DropdownList>
   )
-  toggleOpened = () => {
-    this.setState({ optionsOpened: !this.state.optionsOpened });
-  }
 
   render() {
     const { user, selected } = this.props;
@@ -193,14 +202,16 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
           />
         </td>
         <td onClick={this.toggleOpened}>
-          <StatefulDropdown
+          <PresentationalDropdown
             content={this.renderDropdown()}
             top="30px"
             left="-105px"
             color={colors.adminMenuBackground}
+            handleDropdownOnClickOutside={this.handleDropdownOnClickOutside}
+            dropdownOpened={this.state.optionsOpened}
           >
             <SIcon name="more-options" />
-          </StatefulDropdown>
+          </PresentationalDropdown>
         </td>
       </tr>
     );

@@ -159,16 +159,18 @@ export default class MultipleSelectDropdown extends React.PureComponent<Props, S
   )
 
   render() {
+    // Thanks for your concern a11y, but I'm wrapping a button, this not the best, but pretty accessible.
     return (
       <PresentationalDropdown
         content={this.renderContent()}
         top="45px"
         color="#fff"
-        handleDropdownToggle={this.handleDropdownToggle}
         handleDropdownOnClickOutside={this.handleDropdownOnClickOutside}
         dropdownOpened={this.state.dropdownOpened}
       >
-        {this.props.children}
+        <div onClick={this.handleDropdownToggle}>
+          {this.props.children}
+        </div>
       </PresentationalDropdown>
     );
   }
