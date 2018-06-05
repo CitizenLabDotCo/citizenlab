@@ -77,18 +77,15 @@ interface Props {
   left?: string;
   color: string;
   handleDropdownOnClickOutside: (Event) => void;
-  handleDropdownToggle: () => void;
   dropdownOpened: boolean;
 }
 
 export default class PresentationalDropdown extends React.PureComponent<Props> {
   render() {
-    const { handleDropdownToggle, handleDropdownOnClickOutside, dropdownOpened, children, content } = this.props;
+    const { handleDropdownOnClickOutside, dropdownOpened, children, content } = this.props;
     return (
       <Dropdown>
-        <button onClick={handleDropdownToggle}>
           {children}
-        </button>
         <CSSTransition
           in={dropdownOpened}
           timeout={200}
