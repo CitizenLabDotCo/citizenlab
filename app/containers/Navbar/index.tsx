@@ -20,6 +20,13 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
+// services
+import { updateLocale } from 'services/locale';
+
+// typings
+
+import { Locale } from 'typings';
+
 // utils
 import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
@@ -36,6 +43,7 @@ import { InjectedIntlProps } from 'react-intl';
 import styled, { css, } from 'styled-components';
 import { darken, rgba, ellipsis } from 'polished';
 import { colors, fontSize, media } from 'utils/styleUtils';
+import { Dropdown } from 'semantic-ui-react';
 
 const Container = styled.div`
   width: 100%;
@@ -348,6 +356,11 @@ const LoginLink = styled(Link)`
   }
 `;
 
+const LanguageSelectionWrapper = styled.div`
+
+`;
+
+
 interface InputProps {}
 
 interface DataProps {
@@ -362,6 +375,11 @@ interface Props extends InputProps, DataProps {}
 interface State {
   notificationPanelOpened: boolean;
   projectsDropdownOpened: boolean;
+  languageOptions: {
+    key: string;
+    value: Locale;
+    text: string;
+  }[];
 }
 
 class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
@@ -369,7 +387,8 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
     super(props);
     this.state = {
       notificationPanelOpened: false,
-      projectsDropdownOpened: false
+      projectsDropdownOpened: false,
+      languageOptions: []
     };
   }
 
@@ -410,10 +429,14 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
     this.setState({ projectsDropdownOpened: false });
   }
 
+  handleLanguageChange (_event, { value }) {
+    updateLocale(value);
+  }
+
   render() {
     const { projects, location, locale, authUser, tenant, intl: { formatMessage } } = this.props;
     const { projectsList } = projects;
-    const { projectsDropdownOpened } = this.state;
+    const { projectsDropdownOpened, languageOptions } = this.state;
     const isAdminPage = (location && location.pathname.startsWith('/admin'));
     const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : [];
     const tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
@@ -488,6 +511,14 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
               <StyledIdeaButton style="secondary-outlined" />
             </RightItem>
 
+            {!authUser &&
+              <RightItem>
+                <LoginLink to="/sign-in" id="e2e-login-link">
+                  <FormattedMessage {...messages.login} />
+                </LoginLink>
+              </RightItem>
+            }
+
             {authUser &&
               <RightItem className="notification">
                 <NotificationMenu />
@@ -500,13 +531,17 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
               </RightItem>
             }
 
-            {!authUser &&
-              <RightItem>
-                <LoginLink to="/sign-in" id="e2e-login-link">
-                  <FormattedMessage {...messages.login} />
-                </LoginLink>
-              </RightItem>
-            }
+            <RightItem>
+              <LanguageSelectionWrapper /*className={this.state.languageOptions.length > 1 ? 'show' : ''}*/>
+                <Dropdown
+                  onChange={this.handleLanguageChange}
+                  selection={true}
+                  value={locale}
+                  options={languageOptions}
+                />
+              </LanguageSelectionWrapper>
+            </RightItem>
+
           </Right>
         </Container>
       </>
