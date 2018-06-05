@@ -3,10 +3,16 @@ import React from 'react';
 import { adopt } from 'react-adopt';
 import { Link } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
+import { Subscription } from 'rxjs';
 
 // Resources
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetUserCount, { GetUserCountChildProps } from 'resources/GetUserCount';
+import { IGroupData } from 'services/groups';
+
+// Events
+import eventEmitter from 'utils/eventEmitter';
+import events, { MembershipAdd } from './events';
 
 // Components
 import Button from 'components/UI/Button';
@@ -71,6 +77,11 @@ const MenuLink = styled(Link) `
   margin-bottom: .5rem;
   height: 3rem;
 
+  &.highlight {
+    animation-name: highlight;
+    animation-duration: .7s;
+  }
+
   &.active {
     background: ${rgba(colors.adminTextColor, .1)};
   }
@@ -85,6 +96,20 @@ const MenuLink = styled(Link) `
     ${ellipsis('200px') as any}
     min-width: 0;
     flex: 1;
+  }
+
+  @keyframes highlight {
+    from {
+      background-color: ${rgba(colors.success, 0)};
+    }
+
+    30% {
+      background-color: ${rgba(colors.success, .5)};
+    }
+
+    to {
+      background-color: ${rgba(colors.success, 0)};
+    }
   }
 `;
 
@@ -129,12 +154,36 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-export interface State { }
+export interface State {
+  highlightedGroups: Set<IGroupData['id']>;
+}
 
 export class GroupsListPanel extends React.PureComponent<Props, State> {
+  subs: Subscription[] = [];
+
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      highlightedGroups: new Set([]),
+    };
+  }
+
+  componentDidMount() {
+    this.subs.push(
+      eventEmitter.observeEvent<MembershipAdd>(events.membershipAdd)
+      .subscribe(({ eventValue: { groupsIds } }) => {
+        this.setState({ highlightedGroups: new Set(groupsIds) });
+        setTimeout(this.removeHighlights, 3000);
+      })
+    );
+  }
+
+  componentWillUnmount() {
+    this.subs.forEach(sub => sub.unsubscribe());
+  }
+
+  removeHighlights = () => {
+    this.setState({ highlightedGroups: new Set([]) });
   }
 
   handleCreateGroup = (event) => {
@@ -143,8 +192,8 @@ export class GroupsListPanel extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { usercount } = this.props;
-    const { groupsList } = this.props.groups;
+    const { usercount, groups: { groupsList } } = this.props;
+    const { highlightedGroups } = this.state;
 
     return (
       <Panel className={this.props.className}>
@@ -168,7 +217,7 @@ export class GroupsListPanel extends React.PureComponent<Props, State> {
         <GroupsList className="e2e-groups-list">
           {!isNilOrError(groupsList) && groupsList.map((group) => (
             <li key={group.id}>
-              <MenuLink to={`/admin/users/${group.id}`} activeClassName="active">
+              <MenuLink to={`/admin/users/${group.id}`} activeClassName="active" className={highlightedGroups.has(group.id) ? 'highlight' : ''} >
                 {group.attributes.membership_type === 'rules' && <LightningBolt name="lightingBolt" />}
                 <T className="groupName" value={group.attributes.title_multiloc} />
                 <MembersCount>{group.attributes.memberships_count}</MembersCount>
