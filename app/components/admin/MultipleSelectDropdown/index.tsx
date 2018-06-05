@@ -7,7 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // Components
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
-import StatefulDropdown from './StatefulDropdown';
+import PresentationalDropdown from './PresentationalDropdown';
 
 // style
 import styled from 'styled-components';
@@ -75,9 +75,6 @@ const DropdownFooter = styled.button`
     text-decoration: none;
     outline: none;
   }
-  &.success {
-    background: green;
-  }
 `;
 
 type choiceItem = {
@@ -88,14 +85,14 @@ type choiceItem = {
 
 interface Props {
   choices: choiceItem[];
-  messages: {dropdownFooterMessage: Message};
-  onSubmit: (ids: string[]) => void;
+  messages: { dropdownFooterMessage: Message };
+  onSubmit: (ids: string[]) => Promise<any>;
   children: JSX.Element;
 }
 
 interface State {
   chosen: string[];
-  status: undefined | 'success' | 'error';
+  dropdownOpened: boolean;
 }
 
 export default class MultipleSelectDropdown extends React.PureComponent<Props, State> {
@@ -103,26 +100,38 @@ export default class MultipleSelectDropdown extends React.PureComponent<Props, S
     super(props);
     this.state = {
       chosen: [],
-      status: undefined,
+      dropdownOpened: false,
     };
+  }
+  handleDropdownOnClickOutside = (event: React.FormEvent<MouseEvent>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    this.setState({ dropdownOpened: false });
+  }
+  handleDropdownToggle = () => {
+    this.setState(state => ({ dropdownOpened: !state.dropdownOpened }));
   }
 
   onClickRow = (id) => () => {
     const index = this.state.chosen.indexOf(id);
     if (index < 0) {
-      this.setState({ chosen: [...this.state.chosen, id], status: undefined });
+      this.setState({ chosen: [...this.state.chosen, id] });
     } else {
-      this.setState({ chosen: this.state.chosen.filter((chosenId) => {
-        return id !== chosenId;
-      }), status: undefined});
+      this.setState({
+        chosen: this.state.chosen.filter((chosenId) => {
+          return id !== chosenId;
+        })
+      });
     }
   }
 
 
   submit = (chosen) => () => {
     if (this.state.chosen.length > 0) {
-      this.props.onSubmit(chosen);
-      this.setState({ chosen: [], status: 'success' });
+      console.log(this.props.onSubmit(chosen));
+      this.props.onSubmit(chosen).then(() =>
+        this.setState({ chosen: [], dropdownOpened: false })
+      ).catch(err => console.log(err));
     }
   }
 
@@ -133,7 +142,7 @@ export default class MultipleSelectDropdown extends React.PureComponent<Props, S
           const id = choice.id;
           return (
             <DropdownListItem key={id} onClick={this.onClickRow(id)}>
-              <T value={choice.text} truncate={21}/>
+              <T value={choice.text} truncate={21} />
               <Checkbox
                 onChange={this.onClickRow(id)}
                 value={this.state.chosen.includes(id)}
@@ -144,7 +153,7 @@ export default class MultipleSelectDropdown extends React.PureComponent<Props, S
         })}
       </DropdownList>
 
-      <DropdownFooter onClick={this.submit(this.state.chosen)} className={(this.state.status) ? this.state.status : ''}>
+      <DropdownFooter onClick={this.submit(this.state.chosen)}>
         <FormattedMessage {...this.props.messages.dropdownFooterMessage} />
       </DropdownFooter>
     </DropdownMenuInner>
@@ -152,13 +161,16 @@ export default class MultipleSelectDropdown extends React.PureComponent<Props, S
 
   render() {
     return (
-      <StatefulDropdown
+      <PresentationalDropdown
         content={this.renderContent()}
         top="45px"
         color="#fff"
+        handleDropdownToggle={this.handleDropdownToggle}
+        handleDropdownOnClickOutside={this.handleDropdownOnClickOutside}
+        dropdownOpened={this.state.dropdownOpened}
       >
-      {this.props.children}
-      </StatefulDropdown>
+        {this.props.children}
+      </PresentationalDropdown>
     );
   }
 }
