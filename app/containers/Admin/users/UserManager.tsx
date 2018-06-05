@@ -18,6 +18,7 @@ interface InputProps {
   search: string | undefined;
   groupId?: string;
   groupType?: MembershipType;
+  deleteUsersFromGroup?: (userIds: string[]) => void;
 }
 
 interface DataProps {
@@ -63,6 +64,7 @@ export class UserManager extends React.PureComponent<Props, State> {
       return { selectedUsers: newSelectedUsers };
     });
   }
+
   render() {
     const { users, groupType } = this.props;
     const { selectedUsers } = this.state;
@@ -76,6 +78,7 @@ export class UserManager extends React.PureComponent<Props, State> {
             selectedUsers={selectedUsers}
             allUsersIds={allUsersIds}
             toggleSelectAll={this.toggleAllUsers}
+            deleteUsersFromGroup={this.props.deleteUsersFromGroup}
           />
           <UserTable
             selectedUsers={selectedUsers}
