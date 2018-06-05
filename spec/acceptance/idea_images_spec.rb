@@ -3,6 +3,8 @@ require 'rspec_api_documentation/dsl'
 
 resource "IdeaImage" do
 
+  explanation "Ideas can have mutliple images."
+
   before do
     header "Content-Type", "application/json"
     @user = create(:user)
@@ -13,8 +15,8 @@ resource "IdeaImage" do
   end
 
   get "web_api/v1/ideas/:idea_id/images" do
-    
     let(:idea_id) { @idea.id }
+
     example_request "List all images of an idea" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
@@ -23,9 +25,9 @@ resource "IdeaImage" do
   end
 
   get "web_api/v1/ideas/:idea_id/images/:image_id" do
-    
     let(:idea_id) { @idea.id }
     let(:image_id) { IdeaImage.first.id }
+
     example_request "Get one image of an idea" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
@@ -39,10 +41,7 @@ resource "IdeaImage" do
       parameter :ordering, "An integer that is used to order the images within an idea", required: false
     end
     ValidationErrorHelper.new.error_fields(self, IdeaImage)
-
-
     let(:idea_id) { @idea.id }
-
     let(:image) { encode_image_as_base64("image13.png") }
     let(:ordering) { 1 }
 
@@ -61,11 +60,8 @@ resource "IdeaImage" do
       parameter :ordering, "An integer that is used to order the images within an idea"
     end
     ValidationErrorHelper.new.error_fields(self, IdeaImage)
-
-
     let(:idea_id) { @idea.id }
     let(:image_id) { IdeaImage.first.id }
-
     let(:image) { encode_image_as_base64("image14.png") }
     let(:ordering) { 2 }
 
@@ -79,7 +75,6 @@ resource "IdeaImage" do
   end
 
   delete "web_api/v1/ideas/:idea_id/images/:image_id" do
-
     let(:idea_id) { @idea.id }
     let(:image_id) { IdeaImage.first.id }
 
