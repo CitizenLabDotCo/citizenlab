@@ -3,9 +3,10 @@ require 'rspec_api_documentation/dsl'
 
 resource "Ideas" do
 
+  explanation "Proposals from citizens to the city."
+
   before do
     header "Content-Type", "application/json"
-    # @ideas = create_list(:idea, 5, publication_status: ['published','draft','published','published','spam']) #draft published closed spam
     @ideas = ['published','published','draft','published','spam','published','published'].map { |ps|  create(:idea, publication_status: ps)}
     @user = create(:user)
     token = Knock::AuthToken.new(payload: { sub: @user.id }).token
@@ -27,33 +28,33 @@ resource "Ideas" do
     parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status'", required: false
     parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
 
-    example_request "List only all published ideas by default" do
+    example_request "List all published ideas (default behaviour)" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
       expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }).to all(eq 'published')
     end
 
-    example "Doesn\'t list idea which have draft set as publication status", document: false do
-      do_request(publication_status: 'draft')
+    example "Don't list drafts (default behaviour)", document: false do
+      do_request publication_status: 'draft'
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 0
     end
 
-    example "List all ideas with a topic" do
+    example "List all ideas for a topic" do
       t1 = create(:topic)
 
       i1 = @ideas.first
       i1.topics << t1
       i1.save
 
-      do_request(topics: [t1.id])
+      do_request topics: [t1.id]
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
       expect(json_response[:data][0][:id]).to eq i1.id
     end
 
-    example "List all ideas which match one of the given topics" do
+    example "List all ideas which match one of the given topics", document: false do
       t1 = create(:topic)
       t2 = create(:topic)
 
@@ -64,10 +65,10 @@ resource "Ideas" do
       i2.topics = [t2]
       i2.save
 
-      do_request(topics: [t1.id, t2.id])
+      do_request topics: [t1.id, t2.id]
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map{|h| h[:id]}).to match [i1.id, i2.id]
+      expect(json_response[:data].map{|h| h[:id]}).to match_array [i1.id, i2.id]
     end
 
 
@@ -78,12 +79,12 @@ resource "Ideas" do
       i1.areas << a1
       i1.save
 
-      do_request(areas: [a1.id])
+      do_request areas: [a1.id]
       json_response = json_parse(response_body)
       expect(json_response[:data][0][:id]).to eq i1.id
     end
 
-    example "List all ideas which match one of the given areas" do
+    example "List all ideas which match one of the given areas", document: false do
       a1 = create(:area)
       a2 = create(:area)
 
@@ -94,10 +95,10 @@ resource "Ideas" do
       i2.areas = [a2]
       i2.save
 
-      do_request(areas: [a1.id, a2.id])
+      do_request areas: [a1.id, a2.id]
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map{|h| h[:id]}).to match [i1.id, i2.id]
+      expect(json_response[:data].map{|h| h[:id]}).to match_array [i1.id, i2.id]
     end
 
 
@@ -105,7 +106,7 @@ resource "Ideas" do
       l = create(:project)
       i = create(:idea, project: l)
 
-      do_request(project: l.id)
+      do_request project: l.id
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
       expect(json_response[:data][0][:id]).to eq i.id
@@ -119,17 +120,17 @@ resource "Ideas" do
       i2 = create(:idea, phases: [ph2], project: pr)
       i3 = create(:idea, phases: [ph1, ph2], project: pr)
 
-      do_request(phase: ph2.id)
+      do_request phase: ph2.id
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map{|d| d[:id]}).to match [i2.id, i3.id]
+      expect(json_response[:data].map{|d| d[:id]}).to match_array [i2.id, i3.id]
     end
 
-    example "List all ideas with a certain status" do
+    example "List all ideas for an idea status" do
       status = create(:idea_status)
       i = create(:idea, idea_status: status)
 
-      do_request(idea_status: status.id)
+      do_request idea_status: status.id
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
       expect(json_response[:data][0][:id]).to eq i.id
@@ -139,18 +140,18 @@ resource "Ideas" do
       u = create(:user)
       i = create(:idea, author: u)
 
-      do_request(author: u.id)
+      do_request author: u.id
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
       expect(json_response[:data][0][:id]).to eq i.id
     end
 
-    example "List all ideas with search string" do
+    example "Search for ideas" do
       u = create(:user)
       i1 = create(:idea, title_multiloc: {en: "This idea is uniqque"})
       i2 = create(:idea, title_multiloc: {en: "This one origiinal"})
 
-      do_request(search: "uniqque")
+      do_request search: "uniqque"
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
       expect(json_response[:data][0][:id]).to eq i1.id
@@ -160,13 +161,13 @@ resource "Ideas" do
       u = create(:user)
       i1 = create(:idea)
 
-      do_request(sort: "new")
+      do_request sort: "new"
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 6
       expect(json_response[:data][0][:id]).to eq i1.id
     end
 
-    example "List all ideas includes the user_vote" do
+    example "List all ideas includes the user_vote", document: false do
       vote = create(:vote, user: @user)
       idea = vote.votable
 
@@ -182,7 +183,7 @@ resource "Ideas" do
       i1.title_multiloc['en'] = 'A park with orange grass'
       i1.save!
 
-      do_request(search: 'Park', sort: 'trending')
+      do_request search: 'Park', sort: 'trending'
       expect(status).to eq(200)
     end
   end
@@ -230,10 +231,10 @@ resource "Ideas" do
       i2 = create(:idea, phases: [ph2], project: pr)
       i3 = create(:idea, phases: [ph1, ph2], project: pr)
 
-      do_request(phase: ph2.id)
+      do_request phase: ph2.id
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map{|d| d[:id]}).to match [i2.id, i3.id]
+      expect(json_response[:data].map{|d| d[:id]}).to match_array [i2.id, i3.id]
     end
   end
 
@@ -259,7 +260,7 @@ resource "Ideas" do
   get "web_api/v1/ideas/by_slug/:slug" do
     let(:slug) {@ideas.first.slug}
 
-    example_request "Get an idea by slug" do
+    example_request "Get one idea by slug" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @ideas.first.id
@@ -267,7 +268,7 @@ resource "Ideas" do
 
     describe do
       let(:slug) {"unexisting-idea"}
-      example "get an unexisting idea by slug triggers 404", document: false do
+      example "Get an unexisting idea by slug triggers 404", document: false do
         do_request
         expect(status).to eq 404
       end
@@ -350,7 +351,6 @@ resource "Ideas" do
       end
     end
 
-
     describe do
       let(:publication_status) { "fake_status" }
 
@@ -383,25 +383,25 @@ resource "Ideas" do
       describe do
         let (:project) { create(:project_with_current_phase, phases_config: {sequence: "xxcx"}) }
         let (:phase_ids) { project.phases.shuffle.take(2).map(&:id) }
-        example_request "Creating an idea in specific phases" do
+
+        example_request "Creating an idea in specific phases", document: false do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match_array phase_ids
         end
       end
 
-
       describe do
         let (:project) { create(:project_with_active_ideation_phase) }
         let (:other_project) { create(:project_with_active_ideation_phase) }
         let (:phase_ids) { [other_project.phases.first.id] }
+
         example_request "[error] Creating an idea linked to a phase from a different project" do
           expect(response_status).to eq 422
           json_response = json_parse(response_body)
           expect(json_response.dig(:errors, :ideas_phases)).to eq [{error: 'invalid'}]
         end
-      end
-      
+      end    
     end
   end
 
@@ -428,7 +428,6 @@ resource "Ideas" do
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
     response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
-
     let(:id) { @idea.id }
     let(:topic_ids) { create_list(:topic, 2).map(&:id) }
     let(:area_ids) { create_list(:area, 2).map(&:id) }
@@ -437,7 +436,7 @@ resource "Ideas" do
 
     describe do
       let(:title_multiloc) { {"en" => "Changed title" } }
-      example_request "Updating an idea" do
+      example_request "Update an idea" do
         expect(status).to be 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq "Changed title"
@@ -447,7 +446,7 @@ resource "Ideas" do
         expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
       end
 
-      example "Check for the automatic creation of an upvote by the author when the publication status of an idea is updated from draft to published", :document => false do
+      example "Check for the automatic creation of an upvote by the author when the publication status of an idea is updated from draft to published", document: false do
         @idea.update(publication_status: "draft")
 
         do_request(idea: { publication_status: "published" })
@@ -513,7 +512,7 @@ resource "Ideas" do
 
         let(:phase_ids) { @project.phases.last(2).map(&:id) }
 
-        example_request "Change the idea phases (as an admin)" do
+        example_request "Change the idea phases (as an admin or moderator)" do
           expect(status).to be 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match_array phase_ids
@@ -531,7 +530,7 @@ resource "Ideas" do
       describe do
         let(:idea_status_id) { create(:idea_status).id }
 
-        example_request "Change the idea status (as a moderator)" do
+        example_request "Change the idea status (as a moderator)", document: false do
           expect(status).to be 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:relationships,:idea_status,:data,:id)).to eq idea_status_id
@@ -540,18 +539,16 @@ resource "Ideas" do
     end
   end
 
-
   patch "web_api/v1/ideas/:id" do
     before do
       @idea =  create(:idea, author: @user, publication_status: 'draft')
     end
-
     parameter :publication_status, "Either #{Idea::PUBLICATION_STATUSES.join(', ')}", required: true, scope: :idea
 
     let(:id) { @idea.id }
     let(:publication_status) { 'published' }
 
-    example_request "Updating a draft to a published post" do
+    example_request "Change the publication status" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:publication_status)).to eq "published"
@@ -569,6 +566,5 @@ resource "Ideas" do
       expect(@idea.project.reload.ideas_count).to eq 0
     end
   end
-
 
 end
