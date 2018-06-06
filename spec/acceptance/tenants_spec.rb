@@ -2,6 +2,9 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource "Tenants" do
+
+  explanation "Tenants represent the different platforms (typically one for each city)."
+
   before do
     @current_user = create(:user, roles: [{type: 'admin'}])
     token = Knock::AuthToken.new(payload: { sub: @current_user.id }).token
@@ -17,9 +20,7 @@ resource "Tenants" do
     end
   end
 
-
   patch "web_api/v1/tenants/:id" do
-
     with_options scope: :tenant do   
       parameter :logo, "Base64 encoded logo"
       parameter :header_bg, "Base64 encoded header"
@@ -38,7 +39,6 @@ resource "Tenants" do
     end
     ValidationErrorHelper.new.error_fields(self, Tenant)
 
-
     let(:id) { Tenant.current.id }
     let(:logo) { base64_encoded_image("logo.png", "image/png")}
     let(:header_bg) { base64_encoded_image("header.jpg", "image/jpeg")}
@@ -54,7 +54,7 @@ resource "Tenants" do
       }
     }
 
-    example_request "Updating the tenant settings" do
+    example_request "Update the tenant settings" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:settings,:core,:organization_name,:en)).to eq "TestTown"
@@ -68,13 +68,13 @@ resource "Tenants" do
           }
         }
       }
+
       example "[error] Updating the tenant with unsupported features fails", document: false do
         do_request
         expect(response_status).to eq 422
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors,:settings)).to be_present
       end
-
     end
 
     describe do
@@ -91,13 +91,11 @@ resource "Tenants" do
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors,:settings)).to be_present
       end
-
     end
-
   end
 
-    private
-
+    
+  private
 
   def base64_encoded_image filename, mime
     "data:#{mime};base64,#{encode_image_as_base64(filename)}"
