@@ -13,6 +13,7 @@ import UserMenu from './components/UserMenu';
 import MobileNavigation from './components/MobileNavigation';
 import IdeaButton from 'components/IdeaButton';
 import Icon from 'components/UI/Icon';
+import { Dropdown } from 'semantic-ui-react';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -40,7 +41,6 @@ import { appLocalePairs } from 'i18n';
 import styled, { css, } from 'styled-components';
 import { darken, rgba, ellipsis } from 'polished';
 import { colors, fontSize, media } from 'utils/styleUtils';
-import { Dropdown } from 'semantic-ui-react';
 
 const Container = styled.div`
   width: 100%;
@@ -537,6 +537,10 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
                 <UserMenu />
               </RightItem>
             }
+
+            {/*<RightItem>
+              <LanguageSelector />
+            </RightItem>*/}
 
             {languageOptions.length > 1 && locale &&
               <RightItem>
