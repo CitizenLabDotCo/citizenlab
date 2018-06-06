@@ -15,7 +15,6 @@ import styled from 'styled-components';
 // typing
 import { Message, Multiloc } from 'typings';
 
-
 const DropdownMenuInner = styled.div`
   display: flex;
   flex-direction: column;
@@ -88,6 +87,8 @@ interface Props {
   messages: { dropdownFooterMessage: Message };
   onSubmit: (ids: string[]) => Promise<any>;
   children: JSX.Element;
+  emitSuccess: (ids: string) => void;
+  emitError: () => void;
 }
 
 interface State {
@@ -127,10 +128,14 @@ export default class MultipleSelectDropdown extends React.PureComponent<Props, S
 
 
   submit = (chosen) => () => {
-    if (this.state.chosen.length > 0) {
-      this.props.onSubmit(chosen).then(() =>
-        this.setState({ chosen: [], dropdownOpened: false })
-      ).catch(err => console.log(err));
+    if (chosen.length > 0) {
+      this.props.onSubmit(chosen).then(() => {
+        this.props.emitSuccess(chosen);
+        this.setState({ chosen: [], dropdownOpened: false });
+      }).catch(() => {
+        this.props.emitError();
+        this.setState({ dropdownOpened: false });
+      });
     }
   }
 

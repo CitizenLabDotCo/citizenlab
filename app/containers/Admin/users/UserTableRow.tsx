@@ -16,9 +16,15 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
+// Events --- For error handling
+import eventEmitter from 'utils/eventEmitter';
+import events from './events';
 
 // Services
 import { IUserData, deleteUser } from 'services/users';
+
+// Typings
+import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // Styling
 import styled from 'styled-components';
@@ -111,6 +117,7 @@ interface Props {
   selected: boolean;
   toggleSelect: () => void;
   toggleAdmin: () => void;
+  authUser: GetAuthUserChildProps;
 }
 
 interface State {
@@ -141,10 +148,15 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
     const deleteMessage = this.props.intl.formatMessage(messages.userDeletionConfirmation);
     event.preventDefault();
 
+    const { authUser } = this.props;
     if (window.confirm(deleteMessage)) {
-      deleteUser(userId).then(res => {
-        console.log(res);
-      }).catch(err => console.log(err));
+      if (authUser && authUser.id === userId) {
+        eventEmitter.emit<JSX.Element>('usersAdmin', events.userDeletionFailed, <FormattedMessage {...messages.youCantDeleteYourself} />);
+      } else {
+        deleteUser(userId).catch(() => {
+          eventEmitter.emit<JSX.Element>('usersAdmin', events.userDeletionFailed, <FormattedMessage {...messages.userDeletionFailed} />);
+        });
+      }
     }
   }
 
