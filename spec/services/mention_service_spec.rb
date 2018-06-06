@@ -105,13 +105,13 @@ describe MentionService do
     it "return the users from the idea that match the slug" do
       result = service.users_from_idea('ja', @idea, 5)
       expect(result.size).to eq 2
-      expect(result).to match([@u1, @u2])
+      expect(result).to match_array [@u1, @u2]
     end
 
     it "handles case gracefully" do
       result = service.users_from_idea('Ja', @idea, 5)
       expect(result.size).to eq 2
-      expect(result).to match([@u1, @u2])
+      expect(result).to match_array [@u1, @u2]
     end
   end
 

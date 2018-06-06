@@ -213,7 +213,7 @@ resource "Projects" do
             expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
             expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
             expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-            expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
+            expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
             expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'admins'
             expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'draft'
           end
@@ -246,7 +246,7 @@ resource "Projects" do
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
+        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
         expect(json_response.dig(:data,:attributes,:visible_to)).to eq visible_to
         expect(json_response.dig(:data,:attributes,:participation_method)).to eq participation_method 
         expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq presentation_mode
@@ -330,7 +330,7 @@ resource "Projects" do
         expect(json_response.dig(:data,:attributes,:description_multiloc,:en)).to eq "Changed body"
         expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
         expect(json_response.dig(:data,:attributes,:slug)).to eq "changed-title"
-        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
+        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
         expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'groups'
         expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'card'
         expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'archived'
@@ -426,7 +426,7 @@ resource "Projects" do
         expect(json_response.dig(:data,:attributes,:description_multiloc,:en)).to eq "Changed body"
         expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
         expect(json_response.dig(:data,:attributes,:slug)).to eq "changed-title"
-        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match area_ids
+        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
         expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'groups'
         expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'card'
         expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'archived'
