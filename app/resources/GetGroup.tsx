@@ -14,6 +14,7 @@ type children = (renderProps: GetGroupChildProps) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
+  noCache?: boolean;
 }
 
 interface State {
@@ -42,7 +43,7 @@ export default class GetGroup extends React.Component<Props, State> {
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
         filter(({ id }) => isString(id)),
-        switchMap(({ id }) => getGroup(id).observable)
+        switchMap(({ id }) => getGroup(id, { cacheStream: !this.props.noCache }).observable)
       )
       .subscribe((group) => this.setState({ group: !isNilOrError(group) ? group.data : group }))
     ];
