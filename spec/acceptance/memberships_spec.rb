@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "Memberships" do
 
   explanation "Memberships are associations between groups and users."
@@ -31,7 +32,6 @@ resource "Memberships" do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
       end
-    
     end
 
     get "web_api/v1/memberships/:id" do

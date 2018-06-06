@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "IdeaStatuses" do
 
   explanation "Idea statuses reflect the cities attitude towards an idea. Each tenant has its own custom set of idea statuses."
@@ -28,6 +29,4 @@ resource "IdeaStatuses" do
       expect(json_response.dig(:data, :id)).to eq @statuses.first.id
     end
   end
-
-
 end

@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "Activities" do
 
   explanation "Activities capture interactions throughout the platform, like posting ideas, voting or editing/deleting content."

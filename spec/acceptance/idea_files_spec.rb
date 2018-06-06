@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "IdeaFile" do
 
   explanation "File attachments."
@@ -51,7 +52,6 @@ resource "IdeaFile" do
       expect(json_response.dig(:data,:attributes,:file)).to be_present
       expect(json_response.dig(:data,:attributes,:ordering)).to eq(1)
     end
-
   end
 
   patch "web_api/v1/ideas/:idea_id/files/:file_id" do
@@ -71,7 +71,6 @@ resource "IdeaFile" do
       expect(json_response.dig(:data,:attributes,:file)).to be_present
       expect(json_response.dig(:data,:attributes,:ordering)).to eq(2)
     end
-
   end
 
   delete "web_api/v1/ideas/:idea_id/files/:file_id" do
@@ -83,6 +82,7 @@ resource "IdeaFile" do
       expect{IdeaFile.find(file_id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
+
 
   private
 

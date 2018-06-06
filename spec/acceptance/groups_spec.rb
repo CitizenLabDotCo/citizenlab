@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "Groups" do
 
   explanation "Collections of users can be given aditional permissions (i.e. access to certain projects) through groups."
@@ -85,6 +86,5 @@ resource "Groups" do
         expect{Group.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
-
   end
 end 

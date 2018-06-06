@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "Pages" do
 
   explanation "Pages with HTML content (e.g. privacy-policy, cookie-policy)."

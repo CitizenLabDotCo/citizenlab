@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "Users" do
 
   explanation "Users who forgot their password can request a password reset email."

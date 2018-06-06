@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "Idea Votes" do
 
   explanation "Votes are used to express agreement on content (i.e. ideas). Ideally, the city would accept the most voted ideas."
@@ -13,7 +14,6 @@ resource "Idea Votes" do
     @idea = create(:idea)
     @votes = create_list(:vote, 2, votable: @idea)
   end
-
 
   get "web_api/v1/ideas/:idea_id/votes" do
     let(:idea_id) { @idea.id }
@@ -98,7 +98,6 @@ resource "Idea Votes" do
         expect(@idea.reload.upvotes_count).to eq 2
         expect(@idea.reload.downvotes_count).to eq 0
       end
-
     end
 
     describe do
@@ -115,9 +114,7 @@ resource "Idea Votes" do
         expect(@idea.reload.upvotes_count).to eq 2
         expect(@idea.reload.downvotes_count).to eq 0
       end
-
     end
-
   end
 
   post "web_api/v1/ideas/:idea_id/votes/down" do
@@ -149,7 +146,6 @@ resource "Idea Votes" do
       expect(@idea.reload.upvotes_count).to eq 2
       expect(@idea.reload.downvotes_count).to eq 1
     end
-
   end
 
   delete "web_api/v1/votes/:id" do
@@ -160,5 +156,4 @@ resource "Idea Votes" do
       expect{Vote.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
-
 end

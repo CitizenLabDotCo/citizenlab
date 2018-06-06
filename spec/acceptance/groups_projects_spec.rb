@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "GroupsProjects" do
 
   explanation "Which groups can access which projects."
@@ -41,7 +42,6 @@ resource "GroupsProjects" do
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0][:id]).to eq gp1.id
       end
-    
     end
 
     get "web_api/v1/groups_projects/:id" do
@@ -82,6 +82,5 @@ resource "GroupsProjects" do
         expect{GroupsProject.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
-
   end
 end 

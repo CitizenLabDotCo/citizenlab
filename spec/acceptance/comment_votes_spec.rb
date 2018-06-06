@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "Comment Votes" do
 
   explanation "Votes are used to express agreement on content (i.e. comments)."
@@ -13,7 +14,6 @@ resource "Comment Votes" do
     @comment = create(:comment)
     @votes = create_list(:vote, 2, votable: @comment)
   end
-
 
   get "web_api/v1/comments/:comment_id/votes" do
     let(:comment_id) { @comment.id }
@@ -41,7 +41,6 @@ resource "Comment Votes" do
       parameter :mode, "one of [up, down]", required: true
     end
     ValidationErrorHelper.new.error_fields(self, Vote)
-
   
     let(:comment_id) { @comment.id }
     let(:mode) { "up" }
@@ -81,7 +80,6 @@ resource "Comment Votes" do
       expect(@comment.reload.upvotes_count).to eq 3
       expect(@comment.reload.downvotes_count).to eq 0
     end
-
   end
 
   post "web_api/v1/comments/:comment_id/votes/down" do
@@ -110,7 +108,6 @@ resource "Comment Votes" do
       expect(@comment.reload.upvotes_count).to eq 2
       expect(@comment.reload.downvotes_count).to eq 1
     end
-
   end
 
   delete "web_api/v1/votes/:id" do
@@ -121,5 +118,4 @@ resource "Comment Votes" do
       expect{Vote.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
-
 end

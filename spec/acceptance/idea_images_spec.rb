@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "IdeaImage" do
 
   explanation "Ideas can have mutliple images."
@@ -51,7 +52,6 @@ resource "IdeaImage" do
       expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)
       expect(json_response.dig(:data,:attributes,:ordering)).to eq(1)
     end
-
   end
 
   patch "web_api/v1/ideas/:idea_id/images/:image_id" do
@@ -71,7 +71,6 @@ resource "IdeaImage" do
       expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)
       expect(json_response.dig(:data,:attributes,:ordering)).to eq(2)
     end
-
   end
 
   delete "web_api/v1/ideas/:idea_id/images/:image_id" do
