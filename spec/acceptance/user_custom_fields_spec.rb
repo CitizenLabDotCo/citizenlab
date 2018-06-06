@@ -3,6 +3,8 @@ require 'rspec_api_documentation/dsl'
 
 resource "User Custom Fields" do
 
+  explanation "Fields in forms (e.g. registration) which are customized by the city."
+
   before do
     header "Content-Type", "application/json"
     @custom_fields = create_list(:custom_field, 3)
@@ -14,7 +16,7 @@ resource "User Custom Fields" do
       parameter :size, "Number of custom fields per page"
     end
     
-    example_request "List custom fields defined for users" do
+    example_request "List all custom fields" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
@@ -56,7 +58,6 @@ resource "User Custom Fields" do
         parameter :required, "Whether filling out the field is mandatory. Defaults to false", required: false
         parameter :enabled, "Whether the field is active or not. Defaults to true", required: false
       end
-
       ValidationErrorHelper.new.error_fields(self, CustomField)
 
       let(:custom_field) { build(:custom_field, enabled: false) }
@@ -69,7 +70,7 @@ resource "User Custom Fields" do
         let(:required) { custom_field.required }
         let(:enabled) { custom_field.enabled }
 
-        example_request "Create a custom field on users" do
+        example_request "Create a custom field" do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:key)).to match key
@@ -85,14 +86,13 @@ resource "User Custom Fields" do
         let(:key) { "No spaces allowed" }
         let(:title_multiloc) { {'en' => ""} }
 
-        example_request "[error] Create an invalid custom field" do
+        example_request "[error] Create an invalid custom field", document: false do
           expect(response_status).to eq 422
           json_response = json_parse(response_body)
           expect(json_response.dig(:errors, :key)).to eq [{error: 'invalid', value: key}]
           expect(json_response.dig(:errors, :title_multiloc)).to eq [{error: 'blank'}]
         end
       end
-
     end
 
     patch "web_api/v1/users/custom_fields/:id" do
@@ -137,7 +137,6 @@ resource "User Custom Fields" do
       end
     end
 
-
     delete "web_api/v1/users/custom_fields/:id" do
       let(:custom_field) { create(:custom_field) }
       let(:id) { custom_field.id }
@@ -147,7 +146,5 @@ resource "User Custom Fields" do
         expect{CustomField.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
-
   end
-
 end

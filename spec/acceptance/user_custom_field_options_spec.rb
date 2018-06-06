@@ -3,21 +3,21 @@ require 'rspec_api_documentation/dsl'
 
 resource "User Custom Field Options" do
 
+  explanation "Options to choose from in a custom field."
+
   before do
     header "Content-Type", "application/json"
     @custom_field = create(:custom_field_select)
     @custom_field_options = create_list(:custom_field_option, 3, custom_field: @custom_field)
   end
 
-
   get "web_api/v1/users/custom_fields/:custom_field_id/custom_field_options" do
-    let (:custom_field_id) { @custom_field.id }
-    
     with_options scope: :page do
       parameter :number, "Page number"
       parameter :size, "Number of custom fields per page"
     end
-    
+
+    let(:custom_field_id) { @custom_field.id }
     
     example_request "List custom field options for field" do
       expect(status).to eq(200)
@@ -48,7 +48,6 @@ resource "User Custom Field Options" do
         parameter :key, "A unique internal name for the option. Only letters, numbers and underscores allowed. Auto-generated from the title if not provided. Can't be changed afterwards", required: false
         parameter :title_multiloc, "The title of the field as shown to users, in multiple locales", required: true
       end
-
       ValidationErrorHelper.new.error_fields(self, CustomFieldOption)
 
       let(:custom_field_id) { @custom_field.id }
@@ -70,14 +69,13 @@ resource "User Custom Field Options" do
         let(:key) { "No spaces allowed" }
         let(:title_multiloc) { {'en' => ""} }
 
-        example_request "[error] Create an invalid custom field option" do
+        example_request "[error] Create an invalid custom field option", document: false do
           expect(response_status).to eq 422
           json_response = json_parse(response_body)
           expect(json_response.dig(:errors, :key)).to eq [{error: 'invalid', value: key}]
           expect(json_response.dig(:errors, :title_multiloc)).to eq [{error: 'blank'}]
         end
       end
-
     end
 
     patch "web_api/v1/users/custom_fields/:custom_field_id/custom_field_options/:id" do
@@ -113,7 +111,6 @@ resource "User Custom Field Options" do
       end
     end
 
-
     delete "web_api/v1/users/custom_fields/:custom_field_id/custom_field_options/:id" do
       let(:custom_field_option) { create(:custom_field_option, custom_field: @custom_field) }
       let(:id) { custom_field_option.id }
@@ -123,7 +120,5 @@ resource "User Custom Field Options" do
         expect{CustomFieldOption.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
-
   end
-
 end
