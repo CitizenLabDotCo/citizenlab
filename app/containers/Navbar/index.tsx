@@ -25,14 +25,16 @@ import tracks from './tracks';
 import { getProjectUrl } from 'services/projects';
 
 // i18n
-import { media } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages';
+import injectIntl from 'utils/cl-intl/injectIntl';
+import { InjectedIntlProps } from 'react-intl';
 
 // style
-import { darken, rgba } from 'polished';
 import styled, { css, } from 'styled-components';
+import { darken, rgba, ellipsis } from 'polished';
+import { colors, fontSize, media } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -110,9 +112,10 @@ const NavigationItems = styled.div`
 `;
 
 const NavigationItem = styled(Link) `
+  ${ellipsis('20rem') as any}
   height: 100%;
   color: #999;
-  font-size: 16px;
+  font-size: ${fontSize('large')};
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -125,7 +128,8 @@ const NavigationItem = styled(Link) `
   }
 
   &.active,
-  &:hover {
+  &:hover,
+  &:focus {
     color: #000;
   }
 `;
@@ -135,35 +139,28 @@ const NavigationDropdown = styled.div`
   margin-right: 40px;
 `;
 
-const NavigationDropdownItemText = styled.div`
-  color: #999;
-  font-size: 16px;
-  font-weight: 400;
-  transition: all 100ms ease-out;
-`;
-
 const NavigationDropdownItemIcon = styled(Icon)`
   height: 6px;
   width: 11px;
-  fill: #999;
+  fill: inherit;
   margin-left: 4px;
   margin-top: 3px;
   transition: all 100ms ease-out;
 `;
 
-const NavigationDropdownItem = styled.div`
-  display: flex;
+const NavigationDropdownItem = styled.button`
   align-items: center;
-  cursor: pointer;
+  color: #999;
+  display: flex;
+  fill: #999;
+  font-size: ${fontSize('large')};
+  font-weight: 400;
+  transition: all 100ms ease-out;
 
-  &:hover {
-    ${NavigationDropdownItemText} {
-      color: #000;
-    }
-
-    ${NavigationDropdownItemIcon} {
-      fill: #000;
-    }
+  &:hover,
+  &:focus {
+    color: #000;
+    fill: #000;
   }
 `;
 
@@ -176,9 +173,14 @@ const ProjectsListItem = styled(Link)`
   margin-right: 5px;
   background: #fff;
   border-radius: 5px;
-  cursor: pointer;
+  color: ${colors.label};
+  font-size: ${fontSize('large')};
+  font-weight: 400;
+  padding: 10px;
+  text-decoration: none;
 
-  &:hover {
+  &:hover,
+  &:focus {
     color: #000;
     text-decoration: none;
     background: #f6f6f6;
@@ -187,22 +189,23 @@ const ProjectsListItem = styled(Link)`
 
 const ProjectsListFooter = styled(Link)`
   width: 100%;
-  color: ${(props) => props.theme.colors.label};
+  color: ${colors.label};
   font-size: 18px;
   font-weight: 400;
   text-align: center;
   text-decoration: none;
   padding: 15px 15px;
   cursor: pointer;
-  background: ${props => rgba(props.theme.colors.label, 0.12)};
+  background: ${rgba(colors.label, 0.12)};
   border-radius: 5px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   transition: all 80ms ease-out;
 
-  &:hover {
-    color: ${(props) => darken(0.2, props.theme.colors.label)};
-    background: ${props => rgba(props.theme.colors.label, 0.22)};
+  &:hover,
+  &:focus {
+    color: ${darken(0.2, colors.label)};
+    background: ${rgba(colors.label, 0.22)};
     text-decoration: none;
   }
 `;
@@ -294,8 +297,8 @@ interface State {
   projectsDropdownOpened: boolean;
 }
 
-class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
-  constructor(props: Props & WithRouterProps) {
+class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
+  constructor(props) {
     super(props);
     this.state = {
       notificationPanelOpened: false,
@@ -303,7 +306,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
     };
   }
 
-  componentDidUpdate(prevProps: Props & WithRouterProps) {
+  componentDidUpdate(prevProps: Props & WithRouterProps & InjectedIntlProps) {
     if (prevProps.location !== this.props.location) {
       this.setState({ projectsDropdownOpened: false });
     }
@@ -335,19 +338,20 @@ class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
     this.setState(({ projectsDropdownOpened }) => ({ projectsDropdownOpened: !projectsDropdownOpened }));
   }
 
-  handleProjectsDropdownOnClickOutside = (event: React.FormEvent<MouseEvent>) => {
+  handleProjectsDropdownOnClickOutside = (event: MouseEvent | KeyboardEvent) => {
     event.preventDefault();
     event.stopPropagation();
     this.setState({ projectsDropdownOpened: false });
   }
 
   render() {
-    const { projects, location, locale, authUser, tenant } = this.props;
+    const { projects, location, locale, authUser, tenant, intl: { formatMessage } } = this.props;
     const { projectsList } = projects;
     const { projectsDropdownOpened } = this.state;
     const isAdminPage = (location && location.pathname.startsWith('/admin'));
-    const tenantLocales = (!isNilOrError(tenant) && tenant.attributes.settings.core.locales);
-    const tenantLogo = (!isNilOrError(tenant) && get(tenant.attributes.logo, 'medium'));
+    const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : [];
+    const tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
+    const tenantName = (!isNilOrError(tenant) && !isNilOrError(locale) && getLocalized(tenant.attributes.settings.core.organization_name, locale, tenantLocales));
 
     return (
       <>
@@ -359,7 +363,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
           <Left>
             {tenantLogo &&
               <LogoLink to="/">
-                <Logo src={tenantLogo} alt="logo" />
+                <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText, { tenantName })} />
               </LogoLink>
             }
 
@@ -370,10 +374,8 @@ class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
 
               {tenantLocales && projectsList && projectsList.length > 0 &&
                 <NavigationDropdown>
-                  <NavigationDropdownItem onClick={this.handleProjectsDropdownToggle}>
-                    <NavigationDropdownItemText>
-                      <FormattedMessage {...messages.pageProjects} />
-                    </NavigationDropdownItemText>
+                  <NavigationDropdownItem aria-haspopup="true" onClick={this.handleProjectsDropdownToggle}>
+                    <FormattedMessage {...messages.pageProjects} />
                     <NavigationDropdownItemIcon name="dropdown" />
                   </NavigationDropdownItem>
 
@@ -446,7 +448,7 @@ const Data = adopt<DataProps, InputProps>({
   projects: <GetProjects pageSize={250} sort="new" />
 });
 
-const NavBarWithHoCs = withRouter(Navbar);
+const NavBarWithHoCs = withRouter(injectIntl(Navbar));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

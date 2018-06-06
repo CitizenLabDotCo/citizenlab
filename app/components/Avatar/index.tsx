@@ -18,31 +18,12 @@ import messages from './messages';
 import { darken, lighten } from 'polished';
 import styled, { css } from 'styled-components';
 
-const AvatarImageContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 const AvatarImage = styled.img`
   height: 100%;
+  width: 100%;
   border-radius: 50%;
-  z-index: 2;
-`;
-
-const AvatarImageBackground = styled.div`
-  position: absolute;
-  top: -1px;
-  bottom: -1px;
-  left: -1px;
-  right: -1px;
-  z-index: 1;
-  border-radius: 50%;
-  background: #e4e4e4;
-  transition: all 100ms ease-out;
+  border: 1px solid #eaeaea;
+  background: #eaeaea;
 `;
 
 const AvatarIcon = styled(Icon)`
@@ -64,15 +45,16 @@ const Container: any = styled.div`
   display: flex;
   align-items: center;
   justify-content: Center;
-  cursor: ${(props: any) => props.isClickable ? 'pointer' : 'auto'};
+  cursor: ${(props: any) => props.isClickable ? 'pointer' : 'inherit'};
 
   ${(props: any) => props.isClickable && css`
     &:hover ${AvatarIcon} {
       fill: ${(props) => darken(0.2, props.theme.colors.label)};
     }
 
-    &:hover ${AvatarImageBackground} {
+    &:hover ${AvatarImage} {
       background: #ccc;
+      border-color: #ccc;
     }`
   }
 `;
@@ -136,10 +118,7 @@ export class Avatar extends React.PureComponent<Props & InjectedIntlProps, State
     return (
       <Container className={className} isClickable={isClickable} onClick={this.handleOnClick}>
         {avatarSrc ? (
-          <AvatarImageContainer>
-            <AvatarImageBackground />
-            <AvatarImage src={avatarSrc} alt={this.props.intl.formatMessage(messages.avatarAltText, { userName })} />
-          </AvatarImageContainer>
+          <AvatarImage src={avatarSrc} alt={this.props.intl.formatMessage(messages.avatarAltText, { userName })} />
         ) : (
           <AvatarIcon name="user" title={<FormattedMessage {...messages.noAvatarAltText} />} />
         )}

@@ -23,6 +23,8 @@ import { bulkInviteXLSX, bulkInviteEmails, IInviteError, INewBulkInvite } from '
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+
 
 // i18n
 import { FormattedHTMLMessage } from 'react-intl';
@@ -117,6 +119,10 @@ const StyledLabel = styled(Label)`
   cursor: pointer;
 `;
 
+const StyledToggle = styled(Toggle)`
+  margin-bottom: 10px;
+`;
+
 const Options: any = styled.div`
   display: inline-flex;
   align-items: center;
@@ -209,6 +215,7 @@ const Invites = styled.div`
 interface InputProps {}
 
 interface DataProps {
+  projects: GetProjectsChildProps;
   locale: GetLocaleChildProps;
   tenantLocales: GetTenantLocalesChildProps;
   groups: GetGroupsChildProps;
@@ -220,7 +227,9 @@ type State = {
   selectedEmails: string | null;
   selectedFileBase64: string | null;
   hasAdminRights: boolean;
+  hasModeratorRights: boolean;
   selectedLocale: Locale | null;
+  selectedProjects: IOption[] | null;
   selectedGroups: IOption[] | null;
   selectedInviteText: string | null;
   invitationOptionsOpened: boolean;
@@ -242,7 +251,9 @@ class Invitations extends React.PureComponent<Props, State> {
       selectedEmails: null,
       selectedFileBase64: null,
       hasAdminRights: false,
+      hasModeratorRights: false,
       selectedLocale: null,
+      selectedProjects: null,
       selectedGroups: null,
       selectedInviteText: null,
       invitationOptionsOpened: false,
@@ -262,6 +273,19 @@ class Invitations extends React.PureComponent<Props, State> {
       return {
         selectedLocale: nextProps.tenantLocales[0]
       };
+    }
+
+    return null;
+  }
+
+  getProjectOptions = (projects: GetProjectsChildProps, locale: GetLocaleChildProps, tenantLocales: GetTenantLocalesChildProps) => {
+    const { projectsList } = projects;
+
+    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(projectsList) && projectsList.length > 0) {
+      return projectsList.map((project) => ({
+        value: project.id,
+        label: getLocalized(project.attributes.title_multiloc, locale, tenantLocales)
+      }));
     }
 
     return null;
@@ -310,9 +334,19 @@ class Invitations extends React.PureComponent<Props, State> {
     this.setState(state => ({ hasAdminRights: !state.hasAdminRights }));
   }
 
+  handleModeratorRightsOnToggle = () => {
+    this.resetErrorAndSuccessState();
+    this.setState(state => ({ hasModeratorRights: !state.hasModeratorRights }));
+  }
+
   handleLocaleOnChange = (selectedLocale: Locale) => {
     this.resetErrorAndSuccessState();
     this.setState({ selectedLocale });
+  }
+
+  handleSelectedProjectsOnChange = (selectedProjects: IOption[]) => {
+    this.resetErrorAndSuccessState();
+    this.setState({ selectedProjects: (selectedProjects.length > 0 ? selectedProjects : null) });
   }
 
   handleSelectedGroupsOnChange = (selectedGroups: IOption[]) => {
@@ -347,7 +381,9 @@ class Invitations extends React.PureComponent<Props, State> {
       selectedEmails: null,
       selectedFileBase64: null,
       hasAdminRights: false,
+      hasModeratorRights: false,
       selectedLocale: (this.props.tenantLocales ? this.props.tenantLocales [0] : null),
+      selectedProjects: null,
       selectedGroups: null,
       selectedInviteText: null,
       invitationOptionsOpened: false,
@@ -369,10 +405,38 @@ class Invitations extends React.PureComponent<Props, State> {
     this.fileInputElement = ref;
   }
 
+  getRoles = () => {
+    const {
+      hasAdminRights,
+      hasModeratorRights,
+      selectedProjects
+    } = this.state;
+
+    const roles: INewBulkInvite['roles'] = [];
+
+    if (hasAdminRights) {
+      roles.push({ type: 'admin' });
+    }
+
+    if (hasModeratorRights && selectedProjects && selectedProjects.length > 0) {
+      selectedProjects.forEach(project => {
+        roles.push({ type: 'project_moderator', project_id: project.value });
+      });
+    }
+
+    return roles;
+  }
+
   handleOnSubmit = async (event) => {
     event.preventDefault();
-
-    const { selectedLocale, selectedView, selectedEmails, selectedFileBase64, hasAdminRights, selectedGroups, selectedInviteText } = this.state;
+    const {
+      selectedLocale,
+      selectedView,
+      selectedEmails,
+      selectedFileBase64,
+      selectedGroups,
+      selectedInviteText
+    } = this.state;
     const hasCorrectSelection = ((selectedView === 'import' && isString(selectedFileBase64) && !selectedEmails) || (selectedView === 'text' && !selectedFileBase64 && isString(selectedEmails)));
 
     if (selectedLocale && hasCorrectSelection) {
@@ -387,7 +451,7 @@ class Invitations extends React.PureComponent<Props, State> {
 
         const bulkInvite: INewBulkInvite = {
           locale: selectedLocale,
-          roles: (hasAdminRights ? [{ type: 'admin' }] : null),
+          roles: this.getRoles(),
           group_ids: (selectedGroups && selectedGroups.length > 0 ? selectedGroups.map(group => group.value) : null),
           invite_text: selectedInviteText
         };
@@ -432,12 +496,14 @@ class Invitations extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { locale, tenantLocales, groups } = this.props;
+    const { projects, locale, tenantLocales, groups } = this.props;
     const {
       selectedEmails,
       selectedFileBase64,
       hasAdminRights,
+      hasModeratorRights,
       selectedLocale,
+      selectedProjects,
       selectedGroups,
       selectedInviteText,
       invitationOptionsOpened,
@@ -448,6 +514,7 @@ class Invitations extends React.PureComponent<Props, State> {
       filetypeError,
       unknownError
     } = this.state;
+    const projectOptions = this.getProjectOptions(projects, locale, tenantLocales);
     const groupOptions = this.getGroupOptions(groups, locale, tenantLocales);
     const dirty = ((isString(selectedEmails) && !isEmpty(selectedEmails)) || (isString(selectedFileBase64) && !isEmpty(selectedFileBase64)));
     let supportPageURL = 'http://support.citizenlab.co/eng-getting-started/invite-people-to-the-platform';
@@ -499,6 +566,21 @@ class Invitations extends React.PureComponent<Props, State> {
                   <FormattedMessage {...messages.adminLabel} />
                 </Label>
                 <Toggle value={hasAdminRights} onChange={this.handleAdminRightsOnToggle} />
+              </SectionField>
+
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.moderatorLabel} />
+                </Label>
+                <StyledToggle value={hasModeratorRights} onChange={this.handleModeratorRightsOnToggle} />
+                { hasModeratorRights &&
+                  <MultipleSelect
+                    value={selectedProjects}
+                    options={projectOptions}
+                    onChange={this.handleSelectedProjectsOnChange}
+                    placeholder={<FormattedMessage {...messages.projectSelectorPlaceholder} />}
+                  />
+                }
               </SectionField>
 
               {!isNilOrError(tenantLocales) && tenantLocales.length > 1 &&
@@ -656,6 +738,7 @@ class Invitations extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, {}>({
+  projects: <GetProjects />,
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
   groups: <GetGroups membershipType="manual" />

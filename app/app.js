@@ -21,7 +21,7 @@ import { translationMessages } from './i18n';
 /* eslint-disable import/first */
 // Import CSS reset and Global Styles
 import 'sanitize.css/sanitize.css';
-import 'semantic-ui-css/semantic.min.css';
+import 'assets/semantic/semantic.min.css';
 import 'react-select/dist/react-select.min.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './global-styles';

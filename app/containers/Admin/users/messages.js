@@ -128,6 +128,17 @@ export default defineMessages({
   step1TypeDescriptionNormal: {
     id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionNormal',
     defaultMessage: 'You have to add users manually to the group.',
+  moderatorLabel: {
+    id: 'app.containers.Admin.User.moderatorLabel',
+    defaultMessage: `Grant project moderator rights to the invited people?`,
+  },
+  projectSelectorPlaceholder: {
+    id: 'app.containers.Admin.User.projectSelectorPlaceholder',
+    defaultMessage: `No project(s) selected`,
+  },
+  localeLabel: {
+    id: 'app.containers.Admin.User.localeLabel',
+    defaultMessage: 'Select the default language for the invited people',
   },
   step1TypeDescriptionSmart: {
     id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionSmart',
