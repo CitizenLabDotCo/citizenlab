@@ -355,7 +355,7 @@ resource "Ideas" do
     end
 
     describe do
-      let (:project) { create(:project_with_current_phase, current_phase_attrs: {
+      let(:project) { create(:project_with_current_phase, current_phase_attrs: {
         participation_method: 'information' 
       })}
 
@@ -374,8 +374,8 @@ resource "Ideas" do
       end
 
       describe do
-        let (:project) { create(:project_with_current_phase, phases_config: {sequence: "xxcx"}) }
-        let (:phase_ids) { project.phases.shuffle.take(2).map(&:id) }
+        let(:project) { create(:project_with_current_phase, phases_config: {sequence: "xxcx"}) }
+        let(:phase_ids) { project.phases.shuffle.take(2).map(&:id) }
 
         example_request "Creating an idea in specific phases", document: false do
           expect(response_status).to eq 201
@@ -385,9 +385,9 @@ resource "Ideas" do
       end
 
       describe do
-        let (:project) { create(:project_with_active_ideation_phase) }
-        let (:other_project) { create(:project_with_active_ideation_phase) }
-        let (:phase_ids) { [other_project.phases.first.id] }
+        let(:project) { create(:project_with_active_ideation_phase) }
+        let(:other_project) { create(:project_with_active_ideation_phase) }
+        let(:phase_ids) { [other_project.phases.first.id] }
 
         example_request "[error] Creating an idea linked to a phase from a different project" do
           expect(response_status).to eq 422
@@ -551,7 +551,7 @@ resource "Ideas" do
       @idea = create(:idea_with_topics, author: @user, publication_status: 'published')
     end
     let(:id) { @idea.id }
-    
+
     example_request "Delete an idea" do
       expect(response_status).to eq 200
       expect{Idea.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
