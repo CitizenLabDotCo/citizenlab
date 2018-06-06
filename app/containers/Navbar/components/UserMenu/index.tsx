@@ -1,11 +1,9 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
-// libraries
-import { browserHistory } from 'react-router';
-
 // components
 import Icon from 'components/UI/Icon';
+import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
 import Popover from 'components/Popover';
 import HasPermission from 'components/HasPermission';
@@ -17,7 +15,7 @@ import { IUser } from 'services/users';
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { color } from 'utils/styleUtils';
+import { colors, fontSize } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -35,36 +33,36 @@ const Container = styled.div`
   }
 `;
 
-const StyledAvatar = styled(Avatar)`
-  width: 25px;
-  height: 25px;
+const OpenMenuButton = styled.button`
+  background: none;
+  border-radius: 50%;
+  border: 0;
+  border: 1px solid transparent;
   cursor: pointer;
+  height: 27px;
+  padding: 0;
+  transition: all .2s;
+  width: 27px;
 
   svg {
-    fill: ${(props) => props.theme.colors.label};
+    fill: ${colors.label};
   }
 
-  &:hover svg {
-    fill: ${(props) => darken(0.2, props.theme.colors.label)};
-  }
-`;
+  &:hover,
+  &:focus {
+    border-color: ${darken(0.2, colors.label)};
 
-const IconWrapper = styled.div`
-  width: 26px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    svg {
+      fill: ${darken(0.2, colors.label)};
+    }
+  }
 `;
 
 const UserIcon = styled(Icon)`
-  height: 100%;
-  fill: ${color('label')};
+  width: 26px;
+  height: 24px;
+  fill: inherit;
   transition: all 150ms ease;
-
-  &:hover {
-    fill: ${(props) => darken(0.15, props.theme.colors.label)};
-  }
 `;
 
 const StyledPopover = styled(Popover)`
@@ -75,27 +73,32 @@ const StyledPopover = styled(Popover)`
 
 const PopoverIcon = styled(Icon)`
   height: 20px;
-  fill: ${color('label')};
+  fill: ${colors.label};
   transition: all 80ms ease-out;
 `;
 
-const PopoverItem = styled.div`
-  color: ${color('label')};
-  font-size: 17px;
+const PopoverItem = styled(Button)`
+  color: ${colors.label};
+  fill: ${colors.label};
+  font-size: ${fontSize('large')};
   font-weight: 400;
-  padding: 10px 15px;
-  background: #fff;
-  border-radius: 5px;
   transition: all 80ms ease-out;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 
-  &:hover {
-    color: #000;
-    background: #f6f6f6;
+  .buttonText {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
 
-    ${PopoverIcon} {
+  a.Button,
+  button.Button {
+    background: #fff;
+    border-radius: 5px;
+
+    &:hover,
+    &:focus {
+      color: #000;
+      background: #f6f6f6;
       fill: #000;
     }
   }
@@ -141,21 +144,8 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     this.setState({ PopoverOpened: false });
   }
 
-  navigateTo = (path) => () => {
-    this.closePopover();
-    browserHistory.push(path);
-  }
-
   signOut = () => {
     signOut();
-  }
-
-  goToUserProfile = () => {
-    const { authUser } = this.state;
-
-    if (authUser) {
-      browserHistory.push(`/profile/${authUser.data.attributes.slug}`);
-    }
   }
 
   render() {
@@ -167,51 +157,46 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     if (authUser && userId) {
       return (
         <Container id="e2e-user-menu-container">
-          {avatar ? <StyledAvatar userId={userId} size="small" onClick={this.togglePopover} /> : <UserIcon name="user" />}
-            <StyledPopover
-              id="e2e-user-menu-dropdown"
-              open={PopoverOpened}
-              onCloseRequest={this.closePopover}
-            >
-              <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
-                <PopoverItem id="admin-link" onClick={this.navigateTo('/admin')}>
-                  <FormattedMessage {...messages.admin} />
-                  <IconWrapper>
-                    <PopoverIcon name="admin" />
-                  </IconWrapper>
-                </PopoverItem>
+          <OpenMenuButton onClick={this.togglePopover}>
+            {avatar ?  <Avatar userId={userId} size="small" /> : <UserIcon name="user" />}
+          </OpenMenuButton>
+          <StyledPopover
+            id="e2e-user-menu-dropdown"
+            open={PopoverOpened}
+            onCloseRequest={this.closePopover}
+          >
+            <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
+              <PopoverItem id="admin-link" linkTo={'/admin'} onClick={this.closePopover} style="text">
+                <FormattedMessage {...messages.admin} />
+                <PopoverIcon name="admin" />
+              </PopoverItem>
 
-                <HasPermission.No>
-                  {/* Display the project moderation page for moderators, they don't have access to the dashboard */}
-                  <HasPermission item={{ type: 'route', path: '/admin/projects' }} action="access">
-                    <PopoverItem id="e2e-projects-admin-link" onClick={this.navigateTo('/admin/projects')}>
-                      <FormattedMessage {...messages.projectsModeration} />
-                      <IconWrapper>
-                        <PopoverIcon name="admin" />
-                      </IconWrapper>
-                    </PopoverItem>
-                  </HasPermission>
-                </HasPermission.No>
-              </HasPermission>
-              <PopoverItem id="e2e-profile-profile-link" onClick={this.navigateTo(`/profile/${userSlug}`)}>
-                <FormattedMessage {...messages.profilePage} />
-                <IconWrapper>
-                  <PopoverIcon name="user" />
-                </IconWrapper>
-              </PopoverItem>
-              <PopoverItem id="e2e-profile-edit-link" onClick={this.navigateTo('/profile/edit')}>
-                <FormattedMessage {...messages.editProfile} />
-                <IconWrapper>
-                  <PopoverIcon name="settings" />
-                </IconWrapper>
-              </PopoverItem>
-              <PopoverItem id="e2e-sign-out-link" onClick={this.signOut}>
-                <FormattedMessage {...messages.signOut} />
-                <IconWrapper>
-                  <PopoverIcon name="power" />
-                </IconWrapper>
-              </PopoverItem>
-            </StyledPopover>
+              <HasPermission.No>
+                {/* Display the project moderation page for moderators, they don't have access to the dashboard */}
+                <HasPermission item={{ type: 'route', path: '/admin/projects' }} action="access">
+                  <PopoverItem id="e2e-projects-admin-link" linkTo={'/admin/projects'} onClick={this.closePopover} style="text">
+                    <FormattedMessage {...messages.projectsModeration} />
+                    <PopoverIcon name="admin" />
+                  </PopoverItem>
+                </HasPermission>
+              </HasPermission.No>
+            </HasPermission>
+
+            <PopoverItem id="e2e-profile-profile-link" linkTo={`/profile/${userSlug}`} onClick={this.closePopover} style="text">
+              <FormattedMessage {...messages.profilePage} />
+              <PopoverIcon name="user" />
+            </PopoverItem>
+
+            <PopoverItem id="e2e-profile-edit-link" linkTo={'/profile/edit'} onClick={this.closePopover} style="text">
+              <FormattedMessage {...messages.editProfile} />
+              <PopoverIcon name="settings" />
+            </PopoverItem>
+
+            <PopoverItem id="e2e-sign-out-link" onClick={this.signOut} style="text">
+              <FormattedMessage {...messages.signOut} />
+              <PopoverIcon name="power" />
+            </PopoverItem>
+          </StyledPopover>
         </Container>
       );
     }

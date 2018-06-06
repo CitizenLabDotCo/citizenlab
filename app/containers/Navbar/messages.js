@@ -10,6 +10,10 @@ export default defineMessages({
     id: 'app.containers.app.navbar.search',
     defaultMessage: 'Search',
   },
+  logoAltText: {
+    id: 'app.containers.app.navbar.logoAltText',
+    defaultMessage: '{tenantName} - logo',
+  },
   startIdea: {
     id: 'app.containers.app.navbar.startIdea',
     defaultMessage: 'Start an idea',
