@@ -44,8 +44,8 @@ resource "Pages" do
   end
 
   get "web_api/v1/pages" do
-    example "Get all pages on the second page with fixed page size", document: false do
-      do_request {"page[number]" => 2, "page[size]" => 2}
+    example "Get all pages on the second page with fixed page size" do
+      do_request({"page[number]" => 2, "page[size]" => 2})
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
