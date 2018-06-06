@@ -2,6 +2,9 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource "Projects" do
+
+  explanation "Ideas have to be posted in a city project, or they can be posted in the open idea box."
+
   before do 
     header "Content-Type", "application/json"
   end
@@ -26,14 +29,14 @@ resource "Projects" do
       parameter :publication_statuses, "Return only ideas with the specified publication statuses (i.e. given an array of publication statuses); returns all pusblished ideas by default", required: false
       parameter :filter_can_moderate, "Filter out the projects the user is allowed to moderate. False by default", required: false
 
-      example_request "List only all published projects by default" do
+      example_request "List all published projects (default behaviour)" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 4
         expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }).to all(eq 'published')
       end
 
-      example "List all projects which have draft or archived set as publication status" do
+      example "List all draft or archived projects", document: false do
         do_request(publication_statuses: ['draft','archived'])
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
