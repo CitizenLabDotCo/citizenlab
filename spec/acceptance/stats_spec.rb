@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 
-
 def time_boundary_parameters s
   s.parameter :start_at, "Date defining from where results should start", required: false
   s.parameter :end_at, "Date defining till when results should go", required: false
@@ -15,8 +14,10 @@ end
 
 resource "Stats" do
 
+  explanation "The dashboard shows how certain properties of users/ideas/... are distributed."
+
   before do
-    @current_user = create(:user, roles: [{type: 'admin'}])
+    @current_user = create(:admin)
     token = Knock::AuthToken.new(payload: { sub: @current_user.id }).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
@@ -24,7 +25,6 @@ resource "Stats" do
   end
 
   describe "users" do
-
     before do
       # we need the built in custom fields first, so lets run the base tenant template
       TenantTemplateService.new.apply_template('base')
@@ -47,9 +47,7 @@ resource "Stats" do
       end
     end
 
-
     get "web_api/v1/stats/users_by_time" do
-
       time_series_parameters self
 
       let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
@@ -61,13 +59,10 @@ resource "Stats" do
         json_response = json_parse(response_body)
         expect(json_response.size).to eq start_at.end_of_month.day
         expect(json_response.values.map(&:class).uniq).to eq [Integer]
-
       end
-
     end
 
     get "web_api/v1/stats/users_by_gender" do
-
       time_boundary_parameters self
 
       let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
@@ -79,12 +74,10 @@ resource "Stats" do
         expect(json_response.stringify_keys.keys.uniq).to match_array ['male','female','unspecified','_blank']
         expect(json_response.values.map(&:class).uniq).to eq [Integer]
       end
-
     end
 
 
     get "web_api/v1/stats/users_by_birthyear" do
-
       time_boundary_parameters self
 
       let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_week }
@@ -95,11 +88,9 @@ resource "Stats" do
         json_response = json_parse(response_body)
         expect(json_response.values.map(&:class).uniq).to eq [Integer]
       end
-
     end
 
     get "web_api/v1/stats/users_by_domicile" do
-
       time_boundary_parameters self
 
       let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_week }
@@ -110,11 +101,9 @@ resource "Stats" do
         json_response = json_parse(response_body)
         expect(json_response[:data].values.map(&:class).uniq).to eq [Integer]
       end
-
     end
 
     get "web_api/v1/stats/users_by_education" do
-
       time_boundary_parameters self
 
       let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
@@ -127,9 +116,7 @@ resource "Stats" do
         expect(json_response.stringify_keys.keys.uniq - allowed_keys).to be_empty
         expect(json_response.values.map(&:class).uniq).to eq [Integer]
       end
-
     end
-
   end
 
   describe "ideas" do
@@ -151,7 +138,6 @@ resource "Stats" do
     end
 
     get "web_api/v1/stats/ideas_by_topic" do
-
       time_boundary_parameters self
 
       let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
@@ -164,11 +150,9 @@ resource "Stats" do
         expect(json_response[:data].keys.map(&:to_s).compact.uniq - expected_topics).to eq []
         expect(json_response[:data].values.map(&:class).uniq).to eq [Integer]
       end
-
     end
 
     get "web_api/v1/stats/ideas_by_area" do
-
       time_boundary_parameters self
 
       let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
@@ -181,11 +165,9 @@ resource "Stats" do
         expect(json_response[:data].keys.map(&:to_s).compact.uniq - expected_areas).to eq []
         expect(json_response[:data].values.map(&:class).uniq).to eq [Integer]
       end
-
     end
 
     get "web_api/v1/stats/ideas_by_time" do
-
       time_series_parameters self
 
       let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
@@ -197,11 +179,8 @@ resource "Stats" do
         json_response = json_parse(response_body)
         expect(json_response.size).to eq start_at.end_of_year.yday
         expect(json_response.values.map(&:class).uniq).to eq [Integer]
-
       end
-
     end
-
   end
 
   describe "comments" do
@@ -217,7 +196,6 @@ resource "Stats" do
     end
 
     get "web_api/v1/stats/comments_by_time" do
-
       time_series_parameters self
 
       let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
@@ -229,15 +207,11 @@ resource "Stats" do
         json_response = json_parse(response_body)
         expect(json_response.size).to eq start_at.end_of_month.day
         expect(json_response.values.map(&:class).uniq).to eq [Integer]
-
       end
-
     end
-
   end
 
   describe "votes" do
-
     before do
       create_list(:vote, 6)
       create_list(:vote, 2, mode: 'down')
@@ -256,7 +230,6 @@ resource "Stats" do
     end
 
     get "web_api/v1/stats/votes_by_time" do
-
       time_series_parameters self
 
       let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_week }
@@ -268,10 +241,7 @@ resource "Stats" do
         json_response = json_parse(response_body)
         expect(json_response.size).to eq 7
         expect(json_response.values.map(&:class).uniq).to eq [Integer]
-
       end
-
     end
   end
-
 end
