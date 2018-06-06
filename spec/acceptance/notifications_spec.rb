@@ -3,6 +3,8 @@ require 'rspec_api_documentation/dsl'
 
 resource "Notifications" do
 
+  explanation "Messages from the platform to the user to inform on activities that may be of interest to him/her."
+
   before do
     header "Content-Type", "application/json"
     @user = create(:user)
@@ -26,12 +28,11 @@ resource "Notifications" do
       expect(json_response[:data].size).to eq 4
     end
 
-    example "List al unread notifications" do
+    example "List all unread notifications" do
       do_request(only_unread: true)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
     end
-
 
     describe do
       before do
@@ -40,7 +41,7 @@ resource "Notifications" do
         # loading for the other tests.
         Cl2Back::Application.eager_load!
       end
-      example "List all different types of notification" do
+      example "List all different types of notification", document: false do
         Notification.descendants.each do |notification_subclass|
           if notification_subclass.descendants.empty?
             create(notification_subclass.model_name.element.to_sym)
@@ -51,7 +52,6 @@ resource "Notifications" do
         expect(json_response[:data].size).to be > 0
       end
     end
-
   end
 
   get "web_api/v1/notifications/:id" do
@@ -64,9 +64,7 @@ resource "Notifications" do
     end
   end
 
-
   post "web_api/v1/notifications/mark_all_read" do
-
     example_request "Mark all notifications as read" do
       explanation "Returns all the notifications that have been changed"
       expect(response_status).to eq 200
@@ -74,7 +72,6 @@ resource "Notifications" do
       expect(json_response[:data].size).to eq 2
       expect(json_response[:data].map{|d|d[:attributes][:read_at]}).not_to include nil
     end
-
   end
 
   post "web_api/v1/notifications/:id/mark_read" do
@@ -88,8 +85,5 @@ resource "Notifications" do
       expect(json_response.dig(:data, :id)).to eq notification.id
       expect(json_response.dig(:data, :attributes, :read_at)).not_to be_nil
     end
-
   end
-
-
 end

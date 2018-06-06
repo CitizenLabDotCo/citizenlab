@@ -14,8 +14,6 @@ resource "Idea Spam Reports" do
     @spam_reports = create_list(:spam_report, 2, spam_reportable: @idea)
   end
 
-
-
   get "web_api/v1/ideas/:idea_id/spam_reports" do
     let(:idea_id) { @idea.id }
 
@@ -44,7 +42,6 @@ resource "Idea Spam Reports" do
     end
     ValidationErrorHelper.new.error_fields(self, SpamReport)
 
-  
     let(:idea_id) { @idea.id }
     let(:reason_code) { "inappropriate" }
   
@@ -64,12 +61,11 @@ resource "Idea Spam Reports" do
     end
     ValidationErrorHelper.new.error_fields(self, SpamReport)
 
-
     let(:spam_report) { create(:spam_report, user: @user, spam_reportable: @idea, reason_code: 'other', other_reason: 'pagiarism') }
     let(:id) { spam_report.id }
     let(:reason_code) { "inappropriate" }
 
-    example_request "Updating a spam report" do
+    example_request "Update a spam report" do
       expect(status).to be 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:reason_code)).to eq "inappropriate"
@@ -84,5 +80,4 @@ resource "Idea Spam Reports" do
       expect{SpamReport.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
-
 end

@@ -3,6 +3,8 @@ require 'rspec_api_documentation/dsl'
 
 resource "Phases" do
 
+  explanation "Timeline projects constist of multiple phases through which ideas can transit."
+
   before do
     header "Content-Type", "application/json"
     @project = create(:project)
@@ -13,10 +15,10 @@ resource "Phases" do
     with_options scope: :page do
       parameter :number, "Page number"
       parameter :size, "Number of phases per page"
-    end
-    
+    end 
     let(:project_id) { @project.id }
-    example_request "List phases of a project" do
+
+    example_request "List all phases of a project" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
@@ -56,9 +58,8 @@ resource "Phases" do
         parameter :start_at, "The start date of the phase", required: true
         parameter :end_at, "The end date of the phase", required: true
       end
-    ValidationErrorHelper.new.error_fields(self, Phase)
-    response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
-
+      ValidationErrorHelper.new.error_fields(self, Phase)
+      response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
 
       let(:project_id) { @project.id }
       let(:phase) { build(:phase) }
@@ -85,8 +86,9 @@ resource "Phases" do
       end
 
       describe do
-        let (:start_at) { nil }
-        example_request "[error] Create an invalid phase" do
+        let(:start_at) { nil }
+
+        example_request "[error] Create an invalid phase", document: false do
           expect(response_status).to eq 422
           json_response = json_parse(response_body)
           expect(json_response.dig(:errors, :start_at)).to eq [{error: 'blank'}]
@@ -94,9 +96,10 @@ resource "Phases" do
       end
 
       describe do
-        let (:participation_method) { 'survey' }
-        let (:survey_embed_url) { 'https://citizenlabco.typeform.com/to/StrNJP' }
-        let (:survey_service) { 'typeform' }
+        let(:participation_method) { 'survey' }
+        let(:survey_embed_url) { 'https://citizenlabco.typeform.com/to/StrNJP' }
+        let(:survey_service) { 'typeform' }
+
         example_request "Create a survey phase", document: false do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
@@ -104,7 +107,6 @@ resource "Phases" do
           expect(json_response.dig(:data,:attributes,:survey_service)).to eq survey_service
         end
       end
-
     end
 
     patch "web_api/v1/phases/:id" do
@@ -124,9 +126,8 @@ resource "Phases" do
         parameter :start_at, "The start date of the phase"
         parameter :end_at, "The end date of the phase"
       end
-    ValidationErrorHelper.new.error_fields(self, Phase)
-    response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
-    
+      ValidationErrorHelper.new.error_fields(self, Phase)
+      response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
 
       let(:phase) { create(:phase, project: @project) }
       let(:id) { phase.id }
@@ -153,16 +154,14 @@ resource "Phases" do
       end
     end
 
-
     delete "web_api/v1/phases/:id" do
       let(:phase) { create(:phase, project: @project) }
       let(:id) { phase.id }
+
       example_request "Delete a phase" do
         expect(response_status).to eq 200
         expect{Comment.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
-
   end
-
 end
