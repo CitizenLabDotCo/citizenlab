@@ -84,7 +84,6 @@ resource "Events" do
           expect(json_response.dig(:errors, :start_at)).to eq [{error: 'after_end_at'}]
         end
       end
-
     end
 
     patch "web_api/v1/events/:id" do
@@ -103,13 +102,12 @@ resource "Events" do
       let(:id) { event.id }
       let(:location_multiloc) { build(:event).location_multiloc }
 
-      example_request "Update a event" do
+      example_request "Update an event" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:location_multiloc).stringify_keys).to match location_multiloc
       end
     end
-
 
     delete "web_api/v1/events/:id" do
       let(:event) { create(:event, project: @project) }
@@ -119,7 +117,5 @@ resource "Events" do
         expect{Event.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
-
   end
-
 end

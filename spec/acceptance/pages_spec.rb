@@ -2,6 +2,9 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource "Pages" do
+
+  explanation "Pages with HTML content (e.g. privacy-policy, cookie-policy)."
+
   before do
     @pages = create_list(:page, 5)
     @user = create(:user, roles: [{type: 'admin'}])
@@ -28,12 +31,11 @@ resource "Pages" do
       end
     end
 
-
     example "List all pages in a project" do
       project = create(:project)
       pages = create_list(:page, 3, project: project)
 
-      do_request(project: project.id)
+      do_request project: project.id
 
       expect(status).to eq(200)
       json_response = json_parse(response_body)
@@ -41,10 +43,9 @@ resource "Pages" do
     end
   end
 
-
   get "web_api/v1/pages" do
-    example "Get all pages on the second page with fixed page size" do
-      do_request({"page[number]" => 2, "page[size]" => 2})
+    example "Get all pages on the second page with fixed page size", document: false do
+      do_request {"page[number]" => 2, "page[size]" => 2}
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
@@ -52,9 +53,9 @@ resource "Pages" do
   end
 
   get "web_api/v1/pages/:id" do
-    let(:id) {@pages.first.id}
+    let(:id) { @pages.first.id }
 
-    example_request "Get a page by id" do
+    example_request "Get one page by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @pages.first.id
@@ -75,18 +76,17 @@ resource "Pages" do
   end
 
   get "web_api/v1/pages/by_slug/:slug" do
-    let(:slug) {@pages.first.slug}
+    let(:slug) { @pages.first.slug }
 
-    example_request "Get a page by slug" do
+    example_request "Get one page by slug" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @pages.first.id
     end
 
     describe do
-      let(:slug) {"unexisting-page"}
-      example "get an unexisting page by slug triggers 404", document: false do
-        do_request
+      let(:slug) { "unexisting-page" }
+      example_request "[error] Get an unexisting page by slug", document: false do
         expect(status).to eq 404
       end
     end
@@ -99,7 +99,6 @@ resource "Pages" do
       parameter :slug, "The unique slug of the page. If not given, it will be auto generated"
     end
     ValidationErrorHelper.new.error_fields(self, Page)
-
 
     let(:page) { build(:page) }
     let(:title_multiloc) { page.title_multiloc }
@@ -115,10 +114,9 @@ resource "Pages" do
     end
 
     describe do
-
       let (:title_multiloc) { {"en" => ""}}
       
-      example_request "[error] Create an invalid page" do
+      example_request "[error] Create an invalid page", document: false do
         expect(response_status).to eq 422
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors,:title_multiloc)).to eq [{error: 'blank'}]
@@ -138,19 +136,18 @@ resource "Pages" do
     end
     ValidationErrorHelper.new.error_fields(self, Page)
 
-
     let(:id) { @page.id }
     let(:title_multiloc) { {"en" => "Changed title" } }
     let(:body_multiloc) { {"en" => "Changed body" } }
     let(:slug) { "changed-title" }
-    example_request "Updating the page" do
+
+    example_request "Update a page" do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq "Changed title"
       expect(json_response.dig(:data,:attributes,:body_multiloc,:en)).to eq "Changed body"
       expect(json_response.dig(:data,:attributes,:slug)).to eq "changed-title"
     end
   end
-
 
   delete "web_api/v1/pages/:id" do
     let(:page) { create(:page) }

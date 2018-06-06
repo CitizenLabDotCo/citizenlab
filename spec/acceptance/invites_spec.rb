@@ -25,7 +25,6 @@ resource "Invites" do
       parameter :sort, "Either 'email', '-email', 'last_name', '-last_name', 'created_at', '-created_at', 'invite_status', '-invite_status'", required: false
       parameter :invite_status, "Filter by invite_status. Either 'pending' or 'accepted'"
 
-
       describe do
         let!(:invites) { create_list(:invite, 5) }
 
@@ -91,6 +90,7 @@ resource "Invites" do
     get "web_api/v1/invites/as_xlsx" do
       let!(:invites) { create_list(:invite, 2)}
       let!(:invite_with_group) { create(:invite, invitee: create(:admin, groups: create_list(:group, 2)))}
+
       example_request "XLSX export" do
         expect(status).to eq 200
       end
@@ -214,18 +214,15 @@ resource "Invites" do
           expect(json_response[:errors].map{|e| e[:error]}.uniq).to match_array ["unknown_group", "malformed_groups_value", "malformed_admin_value", "emails_duplicate", "invalid_email", "email_already_invited", "email_already_active", "unknown_locale"]
         end
       end
-
     end
 
     get "web_api/v1/invites/example_xlsx" do
-
       example_request "Get the example xlsx" do
         expect(response_status).to eq 200
       end
     end
 
     delete "web_api/v1/invites/:id" do
-
       let(:id) { create(:invite).id }
 
       example_request "Delete an invite" do
@@ -234,9 +231,7 @@ resource "Invites" do
         expect(Invite.count).to eq 0
       end
     end
-
   end
-
 
   context "When not authenticated" do
     before do
@@ -260,6 +255,7 @@ resource "Invites" do
       let(:last_name) { 'Boulettos' }
       let(:password) { 'I<3BouletteSpecial' }
       let(:locale) { 'nl-NL' }
+
       example_request "Accept an invite" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
@@ -281,7 +277,6 @@ resource "Invites" do
         do_request
         expect(response_status).to eq 401 # unauthorized
       end
-    
     end
   end
 end

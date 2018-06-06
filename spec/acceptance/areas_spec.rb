@@ -32,7 +32,6 @@ resource "Areas" do
     end
   end
 
-
   context "when admin" do
     before do
       @admin = create(:admin)
