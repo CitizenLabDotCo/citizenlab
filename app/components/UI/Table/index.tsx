@@ -93,7 +93,7 @@ interface Props {}
 
 interface State {}
 
-export default class Tabel extends React.PureComponent<Props, State> {
+export default class Table extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
   }

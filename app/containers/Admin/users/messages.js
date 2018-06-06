@@ -81,6 +81,18 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.userDeletionConfirmation',
     defaultMessage: 'Permanently remove this user?',
   },
+  userDeletionFailed: {
+    id: 'app.containers.Admin.Users.userDeletionFailed',
+    defaultMessage: 'An error occured while deleting this user, please try again.',
+  },
+  youCantDeleteYourself: {
+    id: 'app.containers.Admin.Users.youCantDeleteYourself',
+    defaultMessage: 'You cannot delete your own account via the user admin page',
+  },
+  youCantUnadminYourself: {
+    id: 'app.containers.Admin.Users.youCantUnadminYourself',
+    defaultMessage: 'You cannot give up your role as an admin now',
+  },
   saveSuccess: {
     id: 'app.containers.Admin.User.saveSuccess',
     defaultMessage: 'Success!',
@@ -193,9 +205,21 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.UsersGroup.moveUsers',
     defaultMessage: 'Add selected users to group',
   },
-  deleteUsers: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.deleteUsers',
+  membershipAddFailed: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.membershipAddFailed',
+    defaultMessage: 'An error occured while adding users to the groups, please try again.',
+  },
+  membershipDelete: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.membershipDelete',
     defaultMessage: 'Delete selected users from group',
+  },
+  membershipDeleteConfirmation: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.membershipDeleteConfirmation',
+    defaultMessage: 'Delete selected users from this group?',
+  },
+  membershipDeleteFailed: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.membershipDeleteFailed',
+    defaultMessage: 'An error occured while deleting users from the group, please try again.',
   },
   exportUsers: {
     id: 'app.containers.AdminPage.Users.UsersGroup.exportUsers',

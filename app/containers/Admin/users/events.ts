@@ -2,7 +2,10 @@ import { IGroupData } from 'services/groups';
 
 enum UsersEvents {
   membershipAdd = 'UserAddedToGroup',
-  membershipDelete = 'UserDeletedFromGroup',
+  membershipAddFailed = 'UserAddedToGroupFailed',
+  userDeletionFailed = 'UserDeleteFailed',
+  membershipDeleteFailed = 'UserDeletedFromGroupFailed',
+  userRoleChangeFailed = 'UserRoleChangedFailed'
 }
 
 export interface MembershipAdd {
