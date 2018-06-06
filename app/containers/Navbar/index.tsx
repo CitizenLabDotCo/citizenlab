@@ -538,9 +538,10 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
               </RightItem>
             }
 
-            {/*<RightItem>
-              <LanguageSelector />
-            </RightItem>*/}
+            {/*tenantLocales.length > 1 &&
+              <RightItem>
+                <LanguageSelector locales={tenantLocales} />
+              </RightItem>*/}
 
             {languageOptions.length > 1 && locale &&
               <RightItem>
