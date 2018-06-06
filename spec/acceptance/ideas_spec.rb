@@ -268,7 +268,7 @@ resource "Ideas" do
 
     describe do
       let(:slug) {"unexisting-idea"}
-      example "Get an unexisting idea by slug triggers 404", document: false do
+      example "[error] Get an unexisting idea", document: false do
         do_request
         expect(status).to eq 404
       end
