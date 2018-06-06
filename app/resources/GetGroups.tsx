@@ -10,6 +10,7 @@ export interface InputProps {
   pageNumber?: number;
   pageSize?: number;
   membershipType?: MembershipType;
+  noCache?: boolean;
 }
 
 interface IQueryParameters {
@@ -79,15 +80,14 @@ export default class GetGroups extends React.Component<Props, State> {
           const pageNumber = (isLoadingMore ? queryParameters['page[number]'] : 1);
           const newQueryParameters: IQueryParameters = {
             ...queryParameters,
-            'page[number]': pageNumber
+            'page[number]': pageNumber,
           };
 
           this.setState({
             querying: !isLoadingMore,
             loadingMore: isLoadingMore,
           });
-
-          return getGroups({ queryParameters: newQueryParameters }).observable.map((groups: IGroups | Error) => {
+          return getGroups({ queryParameters: newQueryParameters, cacheStream: !this.props.noCache }).observable.map((groups: IGroups | Error) => {
             const selfLink = get(groups, 'links.self');
             const lastLink = get(groups, 'links.last');
             const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);

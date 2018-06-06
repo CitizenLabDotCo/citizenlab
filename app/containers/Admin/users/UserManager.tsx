@@ -102,7 +102,7 @@ export class UserManager extends React.PureComponent<Props, State> {
 export default (inputProps: InputProps) => (
   <GetUsers
     pageSize={15}
-    cache={false}
+    noCache={true}
     {...inputProps}
   >
     {(users) => <UserManager {...inputProps} users={users} />}
