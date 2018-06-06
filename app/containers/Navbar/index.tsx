@@ -354,7 +354,6 @@ const LoginLink = styled(Link)`
 `;
 
 const LanguageSelectionWrapper = styled.div`
-
 `;
 
 
@@ -446,7 +445,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
       tenantLocales.forEach(locale => languageOptions.push({
         key: locale,
         value: locale,
-        text: appLocalePairs[locale],
+        text: locale.substr(0, 2).toUpperCase(),
       }));
     }
 
@@ -543,6 +542,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
               <RightItem>
                 <LanguageSelectionWrapper /*className={this.state.languageOptions.length > 1 ? 'show' : ''}*/>
                   <Dropdown
+                    compact={true}
                     onChange={this.handleLanguageChange}
                     selection={true}
                     value={locale}
