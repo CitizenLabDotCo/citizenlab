@@ -1,7 +1,8 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams, IInputStreamParams } from 'utils/streams';
 import { API } from 'typings';
-import { getGroups } from 'services/groups';
+import { getGroups, getGroup } from 'services/groups';
+import { usersStream } from 'services/users';
 
 export interface IGroupMembership {
   id: string;
@@ -71,5 +72,15 @@ export async function deleteGroupMembership(membershipId: string) {
 export async function addGroupMembership(groupId: string, user_id: string) {
   const response = await streams.add<IGroupMembership>(`${API_PATH}/groups/${groupId}/memberships`, { membership: { user_id } });
   await getGroups().fetch();
+  await getGroup(groupId).fetch();
+  await usersStream().fetch();
+  return response;
+}
+
+export async function deleteMembershipByUserId(groupId: string, userId: string) {
+  const response = await streams.delete(`${API_PATH}/groups/${groupId}/memberships/by_user_id/${userId}`, groupId);
+  await getGroups().fetch();
+  await getGroup(groupId).fetch();
+  await usersStream().fetch();
   return response;
 }
