@@ -276,7 +276,6 @@ resource "Ideas" do
   end
 
   post "web_api/v1/ideas" do
-
     before do
       IdeaStatus.create_defaults
     end
@@ -298,7 +297,6 @@ resource "Ideas" do
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
     response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
-
     let(:idea) { build(:idea) }
     let(:project) { create(:continuous_project) }
     let(:project_id) { project.id }
@@ -311,8 +309,7 @@ resource "Ideas" do
     let(:location_description) { "Stanley Road 4" }
 
     describe do
-
-      example_request "Creating a published idea" do
+      example_request "Create an idea" do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:project,:data, :id)).to eq project_id
@@ -323,19 +320,15 @@ resource "Ideas" do
         expect(project.reload.ideas_count).to eq 1
       end
 
-      example "Check for the automatic creation of an upvote by the author when an idea is created", :document => false do
-
+      example "Check for the automatic creation of an upvote by the author when an idea is created", document: false do
         do_request
-        
         json_response = json_parse(response_body) 
         new_idea = Idea.find(json_response.dig(:data, :id))
         expect(new_idea.votes.size).to eq 1
         expect(new_idea.votes[0].mode).to eq 'up'
         expect(new_idea.votes[0].user.id).to eq @user.id
         expect(json_response[:data][:attributes][:upvotes_count]).to eq 1
-
       end
-
     end
 
     describe do
@@ -344,7 +337,7 @@ resource "Ideas" do
       let(:project_id) { project.id }
       let(:title_multiloc) { {'en' => 'I have a fantastic Idea but with a superduper extremely long title so someone should do something about this or else it may look bad in the UI and no one would read it anyways'} } # { idea.title_multiloc }
       let(:body_multiloc) { idea.body_multiloc }
-      example_request "Creating an idea with too long title" do
+      example_request "[error] Create an idea with too long title", document: false do
         expect(response_status).to eq 422
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors, :title_multiloc)).to eq [{error: 'too_long'}]
@@ -354,7 +347,7 @@ resource "Ideas" do
     describe do
       let(:publication_status) { "fake_status" }
 
-      example_request "[error] Creating an invalid idea" do
+      example_request "[error] Creating an invalid idea", document: false do
         expect(response_status).to eq 422
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors, :publication_status)).to eq [{error: 'inclusion', value: 'fake_status'}]
@@ -404,7 +397,6 @@ resource "Ideas" do
       end    
     end
   end
-
 
   patch "web_api/v1/ideas/:id" do
     before do
@@ -463,7 +455,7 @@ resource "Ideas" do
       let(:topic_ids) { [] }
       let(:area_ids) { [] }
 
-      example "Remove the topics/areas" do
+      example "Remove the topics/areas", document: false do
         @idea.topics = create_list(:topic, 2)
         @idea.areas = create_list(:area, 2)
         do_request
@@ -509,7 +501,6 @@ resource "Ideas" do
           @idea.phases = [@project.phases.first]
           @idea.save
         end
-
         let(:phase_ids) { @project.phases.last(2).map(&:id) }
 
         example_request "Change the idea phases (as an admin or moderator)" do
@@ -548,7 +539,7 @@ resource "Ideas" do
     let(:id) { @idea.id }
     let(:publication_status) { 'published' }
 
-    example_request "Change the publication status" do
+    example_request "Change the publication status", document: false do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:publication_status)).to eq "published"
@@ -560,6 +551,7 @@ resource "Ideas" do
       @idea = create(:idea_with_topics, author: @user, publication_status: 'published')
     end
     let(:id) { @idea.id }
+    
     example_request "Delete an idea" do
       expect(response_status).to eq 200
       expect{Idea.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
