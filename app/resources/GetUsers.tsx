@@ -17,7 +17,7 @@ export interface InputProps {
   sort?: Sort;
   search?: string;
   groupId?: string;
-  cache?: boolean;
+  noCache?: boolean;
 }
 
 interface IQueryParameters {
@@ -49,7 +49,7 @@ export type GetUsersChildProps = State & {
   onChangePage: (pageNumber: number) => void;
 };
 
-export default class GetInvites extends React.Component<Props, State> {
+export default class GetUsers extends React.Component<Props, State> {
   queryParameters$: BehaviorSubject<IQueryParameters>;
   subscriptions: Subscription[];
 
@@ -88,7 +88,7 @@ export default class GetInvites extends React.Component<Props, State> {
 
           return usersStream({
             queryParameters,
-            cacheStream: (this.props.cache || true)
+            cacheStream: !this.props.noCache
           }).observable.pipe(map(users => ({ users, queryParameters })));
         })
       ).subscribe(({ users, queryParameters }) => {
