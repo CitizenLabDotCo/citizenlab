@@ -23,10 +23,6 @@ import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 // services
 import { updateLocale } from 'services/locale';
 
-// typings
-
-import { Locale } from 'typings';
-
 // utils
 import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
@@ -38,6 +34,7 @@ import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import { InjectedIntlProps } from 'react-intl';
+import { appLocalePairs } from 'i18n';
 
 // style
 import styled, { css, } from 'styled-components';
@@ -375,11 +372,6 @@ interface Props extends InputProps, DataProps {}
 interface State {
   notificationPanelOpened: boolean;
   projectsDropdownOpened: boolean;
-  languageOptions: {
-    key: string;
-    value: Locale;
-    text: string;
-  }[];
 }
 
 class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
@@ -387,8 +379,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
     super(props);
     this.state = {
       notificationPanelOpened: false,
-      projectsDropdownOpened: false,
-      languageOptions: []
+      projectsDropdownOpened: false
     };
   }
 
@@ -434,13 +425,30 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
   }
 
   render() {
-    const { projects, location, locale, authUser, tenant, intl: { formatMessage } } = this.props;
+    const {
+      projects,
+      location,
+      locale,
+      authUser,
+      tenant,
+      intl: { formatMessage }
+    } = this.props;
     const { projectsList } = projects;
-    const { projectsDropdownOpened, languageOptions } = this.state;
+    const { projectsDropdownOpened } = this.state;
     const isAdminPage = (location && location.pathname.startsWith('/admin'));
     const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : [];
     const tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
     const tenantName = (!isNilOrError(tenant) && !isNilOrError(locale) && getLocalized(tenant.attributes.settings.core.organization_name, locale, tenantLocales));
+
+    // We only need languageOptions for the language selector if there's more than 1 language
+    const languageOptions: any = [];
+    if (tenantLocales.length > 1) {
+      tenantLocales.forEach(locale => languageOptions.push({
+        key: locale,
+        value: locale,
+        text: appLocalePairs[locale],
+      }));
+    }
 
     return (
       <>
@@ -531,16 +539,18 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
               </RightItem>
             }
 
-            <RightItem>
-              <LanguageSelectionWrapper /*className={this.state.languageOptions.length > 1 ? 'show' : ''}*/>
-                <Dropdown
-                  onChange={this.handleLanguageChange}
-                  selection={true}
-                  value={locale}
-                  options={languageOptions}
-                />
-              </LanguageSelectionWrapper>
-            </RightItem>
+            {languageOptions.length > 1 && locale &&
+              <RightItem>
+                <LanguageSelectionWrapper /*className={this.state.languageOptions.length > 1 ? 'show' : ''}*/>
+                  <Dropdown
+                    onChange={this.handleLanguageChange}
+                    selection={true}
+                    value={locale}
+                    options={languageOptions}
+                  />
+                </LanguageSelectionWrapper>
+              </RightItem>
+            }
 
           </Right>
         </Container>
