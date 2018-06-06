@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "Projects" do
 
   explanation "Ideas have to be posted in a city project, or they can be posted in the open idea box."

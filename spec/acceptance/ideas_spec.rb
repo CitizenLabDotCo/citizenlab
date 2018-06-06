@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "Ideas" do
 
   explanation "Proposals from citizens to the city."
@@ -100,7 +101,6 @@ resource "Ideas" do
       expect(json_response[:data].size).to eq 2
       expect(json_response[:data].map{|h| h[:id]}).to match_array [i1.id, i2.id]
     end
-
 
     example "List all ideas in a project" do
       l = create(:project)

@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "Areas" do
  
   explanation "Areas are geological regions. Each tenant has its own custom set of areas."

@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "ProjectImage" do
 
   explanation "Projects can have mutliple images."

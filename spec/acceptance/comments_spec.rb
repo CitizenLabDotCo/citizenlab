@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "Comments" do
 
   explanation "Comments permit users to have discussions about content (i.e. ideas)."
@@ -29,7 +30,6 @@ resource "Comments" do
       expect(deleted_comment_data).to be_present
       expect(deleted_comment_data.dig(:attributes,:body_multiloc)).to be_blank
     end
-
   end
 
   get "web_api/v1/comments/as_xlsx" do
@@ -199,5 +199,4 @@ resource "Comments" do
     # end
 
   end
-
 end

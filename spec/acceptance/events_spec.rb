@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "Events" do
 
   explanation "Events organized in the city, related to a project."
