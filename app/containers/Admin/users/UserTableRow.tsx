@@ -173,7 +173,7 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
 
   renderDropdown = () => (
     <DropdownList>
-      <DropdownListLink to={`profile/${this.props.user.attributes.slug}`}>
+      <DropdownListLink to={`/profile/${this.props.user.attributes.slug}`}>
         <FormattedMessage {...messages.seeProfile} />
         <IconWrapper>
           <Icon name="eye" />
