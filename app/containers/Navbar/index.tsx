@@ -9,11 +9,11 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import NotificationMenu from './components/NotificationMenu';
-import UserMenu from './components/UserMenu';
+import LanguageSelector from './components/LanguageSelector';
 import MobileNavigation from './components/MobileNavigation';
+import UserMenu from './components/UserMenu';
 import IdeaButton from 'components/IdeaButton';
 import Icon from 'components/UI/Icon';
-import { Dropdown } from 'semantic-ui-react';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -35,7 +35,6 @@ import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import { InjectedIntlProps } from 'react-intl';
-import { appLocalePairs } from 'i18n';
 
 // style
 import styled, { css, } from 'styled-components';
@@ -353,10 +352,6 @@ const LoginLink = styled(Link)`
   }
 `;
 
-const LanguageSelectionWrapper = styled.div`
-`;
-
-
 interface InputProps {}
 
 interface DataProps {
@@ -438,16 +433,6 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
     const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : [];
     const tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
     const tenantName = (!isNilOrError(tenant) && !isNilOrError(locale) && getLocalized(tenant.attributes.settings.core.organization_name, locale, tenantLocales));
-
-    // We only need languageOptions for the language selector if there's more than 1 language
-    const languageOptions: any = [];
-    if (tenantLocales.length > 1) {
-      tenantLocales.forEach(locale => languageOptions.push({
-        key: locale,
-        value: locale,
-        text: locale.substr(0, 2).toUpperCase(),
-      }));
-    }
 
     return (
       <>
@@ -538,24 +523,10 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
               </RightItem>
             }
 
-            {/*tenantLocales.length > 1 &&
+            {tenantLocales.length > 1 && locale &&
               <RightItem>
-                <LanguageSelector locales={tenantLocales} />
-              </RightItem>*/}
-
-            {languageOptions.length > 1 && locale &&
-              <RightItem>
-                <LanguageSelectionWrapper /*className={this.state.languageOptions.length > 1 ? 'show' : ''}*/>
-                  <Dropdown
-                    compact={true}
-                    onChange={this.handleLanguageChange}
-                    selection={true}
-                    value={locale}
-                    options={languageOptions}
-                  />
-                </LanguageSelectionWrapper>
-              </RightItem>
-            }
+                <LanguageSelector localeOptions={tenantLocales} currentLocale={locale} />
+              </RightItem>}
 
           </Right>
         </Container>
