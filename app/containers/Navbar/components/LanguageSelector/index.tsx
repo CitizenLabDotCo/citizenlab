@@ -64,7 +64,6 @@ const PopoverItem = styled(Button)`
 
   &.active button.Button,
   &.active a.Button {
-    background-color: rgba(0,0,0,0.03);
     color: rgba(0,0,0,.95);
     font-weight: 700;
   }
