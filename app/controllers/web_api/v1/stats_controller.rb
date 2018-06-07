@@ -121,7 +121,7 @@ class WebApi::V1::StatsController < ApplicationController
   # *** votes ***
 
   def votes_count
-    count = Vote
+    count = votes_by_resource
       .where(created_at: @start_at..@end_at)
       .group(:mode)
       .count
@@ -132,8 +132,43 @@ class WebApi::V1::StatsController < ApplicationController
     }
   end
 
+  def votes_by_topic
+    serie = Vote
+      .where(votable_type: 'Idea')
+      .joins("LEFT OUTER JOIN ideas ON votes.votable_id = ideas.id")
+      .where(published_at: @start_at..@end_at)
+      .joins(:ideas_topics)
+      .group("ideas_topics.topic_id")
+      .order("ideas_topics.topic_id")
+      .count
+    topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
+    render json: {data: serie, topics: topics.map{|t| [t.id, t.attributes.except('id')]}.to_h}
+  end
+
+  def votes_by_area
+    serie = Idea
+      .where(published_at: @start_at..@end_at)
+      .joins(:areas_ideas)
+      .group("areas_ideas.area_id")
+      .order("areas_ideas.area_id")
+      .count
+    areas = Area.where(id: serie.keys).select(:id, :title_multiloc)
+    render json: {data: serie, areas: areas.map{|a| [a.id, a.attributes.except('id')]}.to_h}
+  end
+
+  def votes_by_idea
+    serie = Idea
+      .where(published_at: @start_at..@end_at)
+      .joins(:areas_ideas)
+      .group("areas_ideas.area_id")
+      .order("areas_ideas.area_id")
+      .count
+    areas = Area.where(id: serie.keys).select(:id, :title_multiloc)
+    render json: {data: serie, areas: areas.map{|a| [a.id, a.attributes.except('id')]}.to_h}
+  end
+
   def votes_by_time
-    serie = @@stats_service.group_by_time(Vote, 'created_at', @start_at, @end_at, params[:interval])
+    serie = @@stats_service.group_by_time(votes_by_resource, 'created_at', @start_at, @end_at, params[:interval])
     render json: serie
   end
 
@@ -144,6 +179,14 @@ class WebApi::V1::StatsController < ApplicationController
     @end_at = params[:end_at] || Float::INFINITY
   end
 
+  def votes_by_resource
+    serie = Vote
+    if ['Idea', 'Comment'].include? params[:resource]
+      serie = serie.where(votable_type: params[:resource])
+    end
+    serie
+  end
+
   def secure_controller?
     false
   end
@@ -151,4 +194,5 @@ class WebApi::V1::StatsController < ApplicationController
   def do_authorize
     authorize :stat
   end
+
 end
