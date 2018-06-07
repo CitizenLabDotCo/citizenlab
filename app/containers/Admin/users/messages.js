@@ -117,6 +117,10 @@ export default defineMessages({
     id: 'app.containers.Admin.User.GroupsPanel.groupsTitle',
     defaultMessage: 'Groups',
   },
+  noUserMatchesYourSearch: {
+    id: 'app.containers.AdminPage.Users.GroupsPanel.noUserMatchesYourSearch',
+    defaultMessage: 'No user matches your search',
+  },
   emptyGroup: {
     id: 'app.containers.AdminPage.Users.GroupsPanel.emptyGroup',
     defaultMessage: 'There is no users in this group yet',
