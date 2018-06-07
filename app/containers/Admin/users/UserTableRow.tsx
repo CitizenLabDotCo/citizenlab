@@ -118,6 +118,7 @@ interface Props {
   toggleSelect: () => void;
   toggleAdmin: () => void;
   authUser: GetAuthUserChildProps;
+  up?: boolean;
 }
 
 interface State {
@@ -188,7 +189,7 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
   )
 
   render() {
-    const { user, selected } = this.props;
+    const { user, selected, up } = this.props;
 
     return (
       <tr key={user.id}>
@@ -216,11 +217,12 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
         <td onClick={this.toggleOpened}>
           <PresentationalDropdown
             content={this.renderDropdown()}
-            top="30px"
+            top={up ? '-120px' : '30px'}
             left="-105px"
             color={colors.adminMenuBackground}
             handleDropdownOnClickOutside={this.handleDropdownOnClickOutside}
             dropdownOpened={this.state.optionsOpened}
+            up={up}
           >
             <SIcon name="more-options" />
           </PresentationalDropdown>
