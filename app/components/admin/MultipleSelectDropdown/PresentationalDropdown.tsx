@@ -14,32 +14,49 @@ const Dropdown = styled.div`
   }
 `;
 
-const DropdownMenu = styled(clickOutside) `
-  border-radius: 5px;
-  background-color: ${(props: any) => props.color};
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
-  border: solid 1px ${(props: any) => props.color};
+const Menu = styled(clickOutside) `
+box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
+border-radius: 5px;
+background-color: ${(props: any) => props.color};
+border: solid 1px ${(props: any) => props.color};
+top: ${(props: any) => props.top};
+left: ${(props: any) => props.left || 0};
+position: absolute;
+z-index: 5;
+width: 250px;
+max-height: 240px;
+
+* {
+  user-select: none;
+}
+
+::before,
+::after {
+  content: '';
+  display: block;
   position: absolute;
-  top: ${(props: any) => props.top};
-  left: ${(props: any) => props.left || 0};
-  z-index: 5;
-  width: 250px;
-  max-height: 240px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
 
-  * {
-    user-select: none;
+&.dropdown-enter {
+  opacity: 0;
+  transform: scale(0.9);
+
+  &.dropdown-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: all 200ms cubic-bezier(0.19, 1, 0.22, 1);
   }
+}
+:focus {
+  outline: none;
+  border: 1px solid #044D6C;
+}
+`;
 
-  ::before,
-  ::after {
-    content: '';
-    display: block;
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-style: solid;
-  }
-
+const DropdownMenu = Menu.extend`
   ::after {
     top: -20px;
     left: 110px;
@@ -53,20 +70,21 @@ const DropdownMenu = styled(clickOutside) `
     border-color: transparent transparent ${(props: any) => props.color} transparent;
     border-width: 11px;
   }
+`;
 
-  &.dropdown-enter {
-    opacity: 0;
-    transform: scale(0.9);
-
-    &.dropdown-enter-active {
-      opacity: 1;
-      transform: scale(1);
-      transition: all 200ms cubic-bezier(0.19, 1, 0.22, 1);
-    }
+const DropdownMenuUp = Menu.extend`
+  ::after {
+    bottom: -20px;
+    left: 110px;
+    border-color: ${(props: any) => props.color} transparent transparent transparent;
+    border-width: 10px;
   }
-  :focus {
-    outline: none;
-    border: 1px solid #044D6C;
+
+  ::before {
+    top: 22px;
+    left: 109px;
+    border-color: ${(props: any) => props.color} transparent transparent transparent;
+    border-width: 11px;
   }
 `;
 
@@ -78,14 +96,15 @@ interface Props {
   color: string;
   handleDropdownOnClickOutside: (Event) => void;
   dropdownOpened: boolean;
+  up?: boolean;
 }
 
 export default class PresentationalDropdown extends React.PureComponent<Props> {
   render() {
-    const { handleDropdownOnClickOutside, dropdownOpened, children, content } = this.props;
+    const { handleDropdownOnClickOutside, dropdownOpened, children, content, up } = this.props;
     return (
       <Dropdown>
-          {children}
+        {children}
         <CSSTransition
           in={dropdownOpened}
           timeout={200}
@@ -94,12 +113,20 @@ export default class PresentationalDropdown extends React.PureComponent<Props> {
           classNames="dropdown"
           exit={false}
         >
-          <DropdownMenu
-            onClickOutside={handleDropdownOnClickOutside}
-            {...this.props}
-          >
-            {content}
-          </DropdownMenu>
+          {up ? (
+            <DropdownMenuUp
+              onClickOutside={handleDropdownOnClickOutside}
+              {...this.props}
+            >
+              {content}
+            </DropdownMenuUp>) : (
+              <DropdownMenu
+                onClickOutside={handleDropdownOnClickOutside}
+                {...this.props}
+              >
+                {content}
+              </DropdownMenu>)
+          }
         </CSSTransition>
       </Dropdown>
     );

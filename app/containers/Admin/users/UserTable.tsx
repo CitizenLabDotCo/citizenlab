@@ -1,6 +1,5 @@
 // Libraries
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'services/permissions/roles';
 import { includes, get } from 'lodash';
 
@@ -8,7 +7,6 @@ import { includes, get } from 'lodash';
 import Table from 'components/UI/Table';
 import SortableTableHeaderCell from 'components/UI/Table/SortableTableHeaderCell';
 import CustomPagination from 'components/admin/Pagination/CustomPagination';
-import NoUsers from './NoUsers';
 
 import UserTableRow from './UserTableRow';
 
@@ -80,12 +78,9 @@ export default class UsersTable extends React.PureComponent<Props, State> {
 
   render() {
     const { usersList, sortAttribute, sortDirection, currentPage, lastPage, selectedUsers } = this.props;
+    const usersCount = Array.isArray(usersList) && usersList.length;
 
-    if (!isNilOrError(usersList) && usersList.length === 0) {
-      return <NoUsers />;
-    }
-
-    if (!isNilOrError(usersList) && usersList.length > 0) {
+    if (Array.isArray(usersList) && usersCount && usersCount > 0) {
       return (
         <>
           <STable>
@@ -127,7 +122,7 @@ export default class UsersTable extends React.PureComponent<Props, State> {
               </tr>
             </thead>
             <tbody>
-              {usersList.map((user) => (
+              {usersList.map((user, index) => (
                 <UserTableRow
                   key={user.id}
                   user={user}
@@ -135,6 +130,7 @@ export default class UsersTable extends React.PureComponent<Props, State> {
                   toggleSelect={this.props.handleSelect(user.id)}
                   toggleAdmin={this.handleAdminRoleOnChange(user)}
                   authUser={this.props.authUser}
+                  up={(usersCount > 8) ? (index > usersCount - 3) : false}
                 />
               ))}
             </tbody>
