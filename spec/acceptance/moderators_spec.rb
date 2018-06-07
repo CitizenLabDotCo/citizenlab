@@ -1,11 +1,11 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "Moderators" do
   before do
     header "Content-Type", "application/json"
   end
-
 
   get "web_api/v1/projects/:project_id/moderators" do
     with_options scope: :page do

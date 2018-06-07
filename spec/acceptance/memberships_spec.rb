@@ -1,7 +1,11 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "Memberships" do
+
+  explanation "Memberships are associations between groups and users."
+
   before do
     header "Content-Type", "application/json"
   end
@@ -21,14 +25,13 @@ resource "Memberships" do
         parameter :number, "Page number"
         parameter :size, "Number of members per page"
       end
-
       let(:group_id) { @group.id }
+
       example_request "List all members of a group" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
       end
-    
     end
 
     get "web_api/v1/memberships/:id" do
@@ -46,7 +49,6 @@ resource "Memberships" do
         parameter :user_id, "The user id of the group member.", required: true
       end
       ValidationErrorHelper.new.error_fields(self, Membership)
-
       let(:group_id) { @group.id }
       let(:user_id) { create(:user).id }
 
@@ -61,6 +63,7 @@ resource "Memberships" do
     delete "web_api/v1/memberships/:id" do
       let(:membership) { create(:membership) }
       let(:id) { membership.id }
+
       example_request "Delete a membership" do
         expect(response_status).to eq 200
         expect{Membership.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
@@ -76,12 +79,10 @@ resource "Memberships" do
     end
 
     get "web_api/v1/groups/:group_id/memberships/users_search" do
-
       with_options scope: :page do
         parameter :number, "Page number"
         parameter :size, "Number of members per page"
       end
-
       parameter :search, "The query used for searching users", required: true
 
       let(:g1) { create(:group) }
@@ -93,7 +94,8 @@ resource "Memberships" do
       let!(:u3) { create(:user, first_name: 'Jonny', last_name: 'Johnson', email: 'freddy2@zmail.com', groups: []) }
       let!(:u4) { create(:user, first_name: 'Freddy', last_name: 'Johnson', email: 'freddy3@zmail.com', groups: [g1, g2]) }
       let!(:u5) { create(:user, first_name: 'Freddy', last_name: 'Smith', email: 'freddy4@zmail.com', groups: [g1]) }
-      example_request "Search for users and whether or not they are member of the group" do
+
+      example_request "Search for users and see whether or not they are member of the group" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to be >= 4
@@ -103,9 +105,7 @@ resource "Memberships" do
         expect(json_response[:data].select{ |d| d[:id] == u4.id }.first.dig(:attributes, :is_member)).to be true
         expect(json_response[:data].select{ |d| d[:id] == u5.id }.empty?).to be true
       end
-    
     end
-
   end
 
   post "web_api/v1/groups/:group_id/memberships" do
@@ -122,16 +122,14 @@ resource "Memberships" do
         parameter :user_id, "The user id of the group member.", required: true
       end
       ValidationErrorHelper.new.error_fields(self, Membership)
-
       let(:group_id) { @group.id }
       let(:user_id) { create(:invited_user).id }
 
-      example_request "Add an (already) invited user as a group member" do
+      example_request "Add an invitee as a group member", document: false do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq user_id
       end
     end
   end
-  
 end 
