@@ -1,5 +1,6 @@
 import * as Dropzone from 'react-dropzone';
 import { EditorState } from 'draft-js';
+import PlatformLocales from 'platformLocales';
 
 declare module '*.png';
 
@@ -42,48 +43,18 @@ declare interface Message {
   defaultMessage: string;
 }
 
-declare type Locale = 'de-DE' | 'en' | 'en-GB' | 'en-CA' | 'fr-BE' | 'fr-FR' | 'nl-BE' | 'nl-NL' | 'da-DK' | 'nb-NO' | 'ach';
+declare type Locale = keyof typeof PlatformLocales;
 
-declare interface Multiloc {
-  'de-DE'?: string;
-  en?: string;
-  'en-GB'?: string;
-  'en-CA'?: string;
-  'fr-BE'?: string;
-  'fr-FR'?: string;
-  'nl-BE'?: string;
-  'nl-NL'?: string;
-  'da-DK'?: string;
-  'nb-NO'?: string;
-  ach?: string;
+declare type Multiloc = {
+  [key in Locale]?: string
 }
 
-declare interface MultilocEditorState {
-  'de-DE'?: EditorState;
-  en?: EditorState;
-  'en-GB'?: EditorState;
-  'en-CA'?: EditorState;
-  'fr-BE'?: EditorState;
-  'fr-FR'?: EditorState;
-  'nl-BE'?: EditorState;
-  'nl-NL'?: EditorState;
-  'da-DK'?: EditorState;
-  'nb-NO'?: EditorState;
-  ach?: EditorState;
+declare type MultilocEditorState = {
+  [key in Locale]?: EditorState;
 }
 
-declare interface MultilocStringOrJSX {
-  'de-DE'?: string | JSX.Element;
-  en?: string | JSX.Element;
-  'en-GB'?: string | JSX.Element;
-  'en-CA'?: string | JSX.Element;
-  'fr-BE'?: string | JSX.Element;
-  'fr-FR'?: string | JSX.Element;
-  'nl-BE'?: string | JSX.Element;
-  'nl-NL'?: string | JSX.Element;
-  'da-DK'?: string | JSX.Element;
-  'nb-NO'?: string | JSX.Element;
-  ach?: string | JSX.Element;
+declare type MultilocStringOrJSX = {
+  [key in Locale]?: string | JSX.Element;
 }
 
 declare namespace API {
