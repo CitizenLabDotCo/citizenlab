@@ -110,6 +110,9 @@ Rails.application.routes.draw do
         get 'comments_count'
         get 'comments_by_time'
         get 'votes_count'
+        get 'votes_by_topic'
+        get 'votes_by_area'
+        get 'votes_by_idea'
         get 'votes_by_time'
       end
 
