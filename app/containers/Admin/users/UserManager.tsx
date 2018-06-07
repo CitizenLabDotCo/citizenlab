@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import UserTable from './UserTable';
 import UserTableActions from './UserTableActions';
 import Error from 'components/UI/Error';
+import NoUsers from './NoUsers';
 
 // Events
 import eventEmitter from 'utils/eventEmitter';
@@ -137,6 +138,28 @@ export class UserManager extends React.PureComponent<Props, State> {
     });
   }
 
+  renderUserTable = (allUsersIds, selectedUsers) => {
+    const { groupType, users, search } = this.props;
+    if (Array.isArray(users.usersList) && users.usersList.length === 0) {
+      if (search) {
+        return <NoUsers noSuchSearchResult={true} />;
+      }
+      return <NoUsers smartGroup={groupType === 'rules'}/>;
+    }
+    return (
+      <GetAuthUser>
+        {(authUser) => (
+          <UserTable
+            selectedUsers={selectedUsers}
+            handleSelect={this.handleUserSelectedOnChange(allUsersIds)}
+            authUser={authUser}
+            {...users}
+          />
+        )}
+      </GetAuthUser>
+    );
+  }
+
   render() {
     const { users, groupType } = this.props;
     const { selectedUsers } = this.state;
@@ -152,16 +175,7 @@ export class UserManager extends React.PureComponent<Props, State> {
             deleteUsersFromGroup={this.props.deleteUsersFromGroup}
           />
           {this.renderErrors()}
-          <GetAuthUser>
-            {(authUser) => (
-              <UserTable
-                selectedUsers={selectedUsers}
-                handleSelect={this.handleUserSelectedOnChange(allUsersIds)}
-                authUser={authUser}
-                {...users}
-              />
-            )}
-          </GetAuthUser>
+          {this.renderUserTable(allUsersIds, selectedUsers)}
         </>
       );
     }
