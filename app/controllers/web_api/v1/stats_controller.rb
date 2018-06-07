@@ -132,39 +132,20 @@ class WebApi::V1::StatsController < ApplicationController
     }
   end
 
-  def votes_by_topic
-    serie = Vote
-      .where(votable_type: 'Idea')
-      .joins("LEFT OUTER JOIN ideas ON votes.votable_id = ideas.id")
-      .where(published_at: @start_at..@end_at)
-      .joins(:ideas_topics)
-      .group("ideas_topics.topic_id")
-      .order("ideas_topics.topic_id")
-      .count
-    topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: {data: serie, topics: topics.map{|t| [t.id, t.attributes.except('id')]}.to_h}
+  def votes_by_birthyear
+    render json: votes_by_custom_field('birthyear')
   end
 
-  def votes_by_area
-    serie = Idea
-      .where(published_at: @start_at..@end_at)
-      .joins(:areas_ideas)
-      .group("areas_ideas.area_id")
-      .order("areas_ideas.area_id")
-      .count
-    areas = Area.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: {data: serie, areas: areas.map{|a| [a.id, a.attributes.except('id')]}.to_h}
+  def votes_by_domicile
+    render json: votes_by_custom_field('domicile')
   end
 
-  def votes_by_idea
-    serie = Idea
-      .where(published_at: @start_at..@end_at)
-      .joins(:areas_ideas)
-      .group("areas_ideas.area_id")
-      .order("areas_ideas.area_id")
-      .count
-    areas = Area.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: {data: serie, areas: areas.map{|a| [a.id, a.attributes.except('id')]}.to_h}
+  def votes_by_education
+    render json: votes_by_custom_field('education')
+  end
+
+  def votes_by_gender
+    render json: votes_by_custom_field('gender')
   end
 
   def votes_by_time
@@ -180,11 +161,59 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def votes_by_resource
-    serie = Vote
+    votes = Vote
     if ['Idea', 'Comment'].include? params[:resource]
-      serie = serie.where(votable_type: params[:resource])
+      votes = votes.where(votable_type: params[:resource])
     end
-    serie
+    votes
+  end
+
+  def apply_idea_filters ideas
+    ideas = ideas.where(id: params[:ideas]) if params[:ideas].present?
+    ideas = ideas.with_some_topics(params[:topics]) if params[:topics].present?
+    ideas = ideas.with_some_areas(params[:areas]) if params[:areas].present?
+    ideas = ideas.in_phase(params[:phase]) if params[:phase].present?
+    ideas = ideas.where(project_id: params[:project]) if params[:project].present?
+    ideas = ideas.where(author_id: params[:author]) if params[:author].present?
+    ideas = ideas.where(idea_status_id: params[:idea_status]) if params[:idea_status].present?
+    ideas = ideas.search_by_all(params[:search]) if params[:search].present?
+    if params[:publication_status].present?
+      ideas = ideas.where(publication_status: params[:publication_status])
+    else
+      ideas = ideas.where(publication_status: 'published')
+    end
+    if (params[:filter_trending] == 'true') && !params[:search].present?
+      ideas = trending_idea_service.filter_trending ideas
+    end
+    ideas
+  end
+
+  def votes_by_custom_field key
+    serie = Vote
+      .where(votable_type: 'Idea')
+      .where(created_at: @start_at..@end_at)
+      .where(votable_id: apply_idea_filters(policy_scope(Idea)))
+      .left_outer_joins(:user)
+      .group("mode","users.custom_field_values->>'#{key}'")
+      .order("users.custom_field_values->>'#{key}'")
+      .count
+    data = %w(up down).map do |mode|
+      [
+        mode,
+        serie.keys.select do |key_mode, _|
+          key_mode == mode 
+        end.map do |_, value|
+          [value, serie[[mode,value]]]
+        end.to_h
+      ]
+    end.to_h
+    data['total'] = (data['up'].keys+data['down'].keys).uniq.map do |key|
+      [
+        key,
+        (data.dig('up',key) || 0) + (data.dig('down',key) || 0)
+      ]
+    end.to_h
+    data
   end
 
   def secure_controller?
