@@ -10,10 +10,10 @@ class SingleSignOnService
     user_attrs = {
       locale: Tenant.current.closest_locale_to(auth.extra.raw_info.locale)
     }
-    begin
-      gender = auth.extra.raw_info.gender
+    gender = auth.extra.raw_info&.gender
+    if gender
       user_attrs[:gender] = gender
-    rescue Exception => e # don't add gender
+    else # don't add gender
       Rails.logger.info "Gender was not provided by facebook, auth instance was #{auth}"
     end
 
