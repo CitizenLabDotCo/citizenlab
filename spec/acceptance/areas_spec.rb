@@ -4,7 +4,7 @@ require 'rspec_api_documentation/dsl'
 
 resource "Areas" do
  
-  explanation "Areas are geological regions. Each tenant has its own custom set of areas."
+  explanation "Areas are geographical regions. Each tenant has its own custom set of areas."
 
   before do
     header "Content-Type", "application/json"
