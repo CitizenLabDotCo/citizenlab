@@ -213,24 +213,86 @@ resource "Stats" do
 
   describe "votes" do
     before do
-      create_list(:vote, 6)
-      create_list(:vote, 2, mode: 'down')
+      TenantTemplateService.new.apply_template('base')
+      CustomField.find_by(code: 'education').update(enabled: true)
+      @ideas_with_topics = create_list(:idea_with_topics, 5)
+      @ideas_with_areas = create_list(:idea_with_areas, 5)
+      @users = create_list(:user_with_demographics, 10)
+      @votes = ['up','up','up','up','up','up','down','down'].each do |mode| 
+        create(:vote, mode: mode, user: User.all.shuffle.first) 
+      end
     end
 
     get "web_api/v1/stats/votes_count" do
       time_boundary_parameters self
+      parameter :resource, "Either Idea or Comment. If not provided, all votes are taken.", required: false
 
-      example_request "Count all votes" do
+      example "Count all votes" do
+        create(:vote, votable: create(:comment))
+        do_request resource: 'Idea'
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:up)).to eq 6
         expect(json_response.dig(:down)).to eq 2
-        expect(json_response.dig(:count)).to eq 8
+        expect(json_response.dig(:count)).to eq Vote.count-1
+      end
+    end
+
+    get "web_api/v1/stats/votes_by_birthyear" do
+      time_boundary_parameters self
+      parameter :ideas, "Array of idea ids to get the stats for.", required: false
+
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+
+      example_request "Votes by birthyear" do
+        expect(response_status).to eq 200
+        # TODO
+      end
+    end
+
+    get "web_api/v1/stats/votes_by_domicile" do
+      time_boundary_parameters self
+      parameter :ideas, "Array of idea ids to get the stats for.", required: false
+
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+
+      example_request "Votes by domicile" do
+        expect(response_status).to eq 200
+        # TODO
+      end
+    end
+
+    get "web_api/v1/stats/votes_by_education" do
+      time_boundary_parameters self
+      parameter :ideas, "Array of idea ids to get the stats for.", required: false
+
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+
+      example_request "Votes by education" do
+        expect(response_status).to eq 200
+        # TODO
+      end
+    end
+
+    get "web_api/v1/stats/votes_by_gender" do
+      time_boundary_parameters self
+      parameter :ideas, "Array of idea ids to get the stats for.", required: false
+
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+
+      example_request "Votes by gender" do
+        expect(response_status).to eq 200
+        # TODO
       end
     end
 
     get "web_api/v1/stats/votes_by_time" do
       time_series_parameters self
+      parameter :resource, "Either Idea or Comment. If not provided, all votes are taken.", required: false
 
       let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_week }
       let(:end_at) { Time.now.in_time_zone(@timezone).end_of_week }

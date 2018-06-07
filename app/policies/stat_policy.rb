@@ -56,6 +56,22 @@ class StatPolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
+  def votes_by_birthyear?
+    user&.active? && user.admin?
+  end
+
+  def votes_by_domicile?
+    user&.active? && user.admin?
+  end
+
+  def votes_by_education?
+    user&.active? && user.admin?
+  end
+
+  def votes_by_gender?
+    user&.active? && user.admin?
+  end
+
   def votes_by_time?
     user&.active? && user.admin?
   end
