@@ -14,7 +14,7 @@ end
 
 resource "Stats" do
 
-  explanation "The dashboard shows how certain properties of users/ideas/... are distributed."
+  explanation "The various stats endpoints can be used to show how certain properties of users/ideas/... are distributed."
 
   before do
     @current_user = create(:admin)

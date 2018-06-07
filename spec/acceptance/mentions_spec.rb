@@ -4,7 +4,7 @@ require 'rspec_api_documentation/dsl'
 
 resource "Mentions" do
 
-  explanation "Part of a text that explicitly references to a user."
+  explanation "Part of a text that explicitly references a user."
 
   before do
     @current_user = create(:user)
