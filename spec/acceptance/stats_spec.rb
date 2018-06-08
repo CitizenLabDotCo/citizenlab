@@ -295,6 +295,7 @@ resource "Stats" do
       parameter :ideas, "Array of idea ids to get the stats for.", required: false
       parameter :custom_field, "The custom field id which should serve as dimensions of the stats.", required: true
 
+      let(:custom_field) { create(:custom_field).id }
       let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
       let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
 
