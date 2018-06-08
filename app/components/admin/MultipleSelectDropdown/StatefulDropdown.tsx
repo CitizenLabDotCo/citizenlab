@@ -6,7 +6,6 @@ import clickOutside from 'utils/containers/clickOutside';
 // style
 import styled from 'styled-components';
 
-
 const Dropdown = styled.div`
   position: relative;
   &>:focus {

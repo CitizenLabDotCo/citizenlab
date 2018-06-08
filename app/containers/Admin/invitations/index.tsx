@@ -25,7 +25,6 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
-
 // i18n
 import { FormattedHTMLMessage } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';

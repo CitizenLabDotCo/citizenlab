@@ -43,7 +43,6 @@ class FilterSidebarPhasesItem extends React.Component<Props> {
   }
 }
 
-
 const phaseTarget = {
   drop(props) {
     return {

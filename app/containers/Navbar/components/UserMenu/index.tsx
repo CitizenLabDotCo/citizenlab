@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { Subscription } from 'rxjs/Subscription';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -85,9 +85,11 @@ const PopoverItem = styled(Button)`
   transition: all 80ms ease-out;
 
   .buttonText {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
+    width: 100% !important;
+    flex: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
   }
 
   a.Button,
@@ -112,8 +114,7 @@ type State = {
 };
 
 export default class UserMenu extends React.PureComponent<Props, State> {
-
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -166,7 +167,13 @@ export default class UserMenu extends React.PureComponent<Props, State> {
             onCloseRequest={this.closePopover}
           >
             <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
-              <PopoverItem id="admin-link" linkTo={'/admin'} onClick={this.closePopover} style="text">
+              <PopoverItem
+                fullWidth={true}
+                id="admin-link"
+                linkTo={'/admin'}
+                onClick={this.closePopover}
+                style="text"
+              >
                 <FormattedMessage {...messages.admin} />
                 <PopoverIcon name="admin" />
               </PopoverItem>
@@ -174,7 +181,13 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               <HasPermission.No>
                 {/* Display the project moderation page for moderators, they don't have access to the dashboard */}
                 <HasPermission item={{ type: 'route', path: '/admin/projects' }} action="access">
-                  <PopoverItem id="e2e-projects-admin-link" linkTo={'/admin/projects'} onClick={this.closePopover} style="text">
+                  <PopoverItem
+                    fullWidth={true}
+                    id="e2e-projects-admin-link"
+                    linkTo={'/admin/projects'}
+                    onClick={this.closePopover}
+                    style="text"
+                  >
                     <FormattedMessage {...messages.projectsModeration} />
                     <PopoverIcon name="admin" />
                   </PopoverItem>
@@ -182,17 +195,34 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               </HasPermission.No>
             </HasPermission>
 
-            <PopoverItem id="e2e-profile-profile-link" linkTo={`/profile/${userSlug}`} onClick={this.closePopover} style="text">
+            <PopoverItem
+              fullWidth={true}
+              id="e2e-profile-profile-link"
+              linkTo={`/profile/${userSlug}`}
+              onClick={this.closePopover}
+              style="text"
+            >
               <FormattedMessage {...messages.profilePage} />
               <PopoverIcon name="user" />
             </PopoverItem>
 
-            <PopoverItem id="e2e-profile-edit-link" linkTo={'/profile/edit'} onClick={this.closePopover} style="text">
+            <PopoverItem
+              fullWidth={true}
+              id="e2e-profile-edit-link"
+              linkTo={'/profile/edit'}
+              onClick={this.closePopover}
+              style="text"
+            >
               <FormattedMessage {...messages.editProfile} />
               <PopoverIcon name="settings" />
             </PopoverItem>
 
-            <PopoverItem id="e2e-sign-out-link" onClick={this.signOut} style="text">
+            <PopoverItem
+              fullWidth={true}
+              id="e2e-sign-out-link"
+              onClick={this.signOut}
+              style="text"
+            >
               <FormattedMessage {...messages.signOut} />
               <PopoverIcon name="power" />
             </PopoverItem>
