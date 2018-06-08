@@ -1,6 +1,5 @@
 // Libraries
 import React from 'react';
-import { isArray, filter } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Components
@@ -33,7 +32,7 @@ const TableOptions = styled.div`
   padding-bottom: 30px;
   padding-left: 16px;
   padding-right: 16px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   border-bottom: solid 1px #eaeaea;
   user-select: none;
 `;
@@ -118,36 +117,46 @@ class UserTableActions extends React.PureComponent<Props, State> {
     const { allUsersIds, selectedUsers } = this.props;
     const usersIds = (selectedUsers === 'all') ? allUsersIds : selectedUsers;
 
-    const array: Promise<IGroupMembership | API.ErrorResponse>[] = [];
 
-    if (isArray(usersIds)) {
-      groupsIds.forEach((groupId) => {
-        usersIds.forEach((userId) => {
-          array.push(addGroupMembership(groupId, userId));
+    return new Promise((resolve, reject) => {
+      const array: Promise<IGroupMembership | API.ErrorResponse>[] = [];
+
+      if (Array.isArray(usersIds)) {
+        groupsIds.forEach((groupId) => {
+          usersIds.forEach((userId) => {
+            array.push(addGroupMembership(groupId, userId));
+          });
         });
-      });
-    }
-    return Promise.all(array)
-    .then((responses) => {
-      const errors = filter(responses, (response) => {
-        return !!(response as API.ErrorResponse).json;
-      });
-
-      if (errors.length === 0) {
-        eventEmitter.emit<MembershipAdd>('usersAdmin', events.membershipAdd, { groupsIds });
-      } else {
-        // TODO: handle errors when adding people to a group
       }
+      Promise.all(array)
+        .then(() => {
+          resolve();
+        })
+        .catch((err: API.ErrorResponse) => {
+          if (err && err.json && err.json.errors.user.filter(val => val.error !== 'taken').length === 0 && !err.json.errors.group) {
+            resolve();
+          }
+          else reject();
+        });
     });
   }
 
   handleGroupsDeleteClick = () => {
     const { deleteUsersFromGroup, selectedUsers, allUsersIds } = this.props;
     const usersIds = (selectedUsers === 'all') ? allUsersIds : selectedUsers;
-    if (isArray(usersIds) && deleteUsersFromGroup) {
+    if (Array.isArray(usersIds) && deleteUsersFromGroup) {
       deleteUsersFromGroup(usersIds);
     }
   }
+
+  emitMembershipAddSuccess = (groupsIds) => (
+    eventEmitter.emit<MembershipAdd>('usersAdmin', events.membershipAdd, { groupsIds })
+  )
+
+  emitMembershipAddError = () => (
+    eventEmitter.emit<JSX.Element>('usersAdmin', events.membershipAddFailed, <FormattedMessage {...messages.membershipAddFailed} />)
+  )
+
 
   render() {
     const { selectedUsers, groupType, allUsersIds } = this.props;
@@ -186,9 +195,11 @@ class UserTableActions extends React.PureComponent<Props, State> {
             choices={this.getchoices(groupsList)}
             messages={messages}
             onSubmit={this.addUsersToGroups}
+            emitSuccess={this.emitMembershipAddSuccess}
+            emitError={this.emitMembershipAddError}
           >
             <ActionButton>
-              <Icon name="moveFolder"/>
+              <Icon name="moveFolder" />
               <FormattedMessage {...messages.moveUsers} />
             </ActionButton>
           </MultipleSelectDropdown>
@@ -196,13 +207,13 @@ class UserTableActions extends React.PureComponent<Props, State> {
 
         {groupType === 'manual' && selectedUsers !== 'none' &&
           <ActionButton onClick={this.handleGroupsDeleteClick}>
-            <Icon name="trash"/>
-            <FormattedMessage {...messages.deleteFromGroupButton} />
+            <Icon name="trash" />
+            <FormattedMessage {...messages.membershipDelete} />
           </ActionButton>
         }
 
         <ActionButton onClick={this.exportUsers}>
-          <Icon name="userExport"/>
+          <Icon name="userExport" />
           <FormattedMessage {...messages.exportUsers} />
         </ActionButton>
       </TableOptions>

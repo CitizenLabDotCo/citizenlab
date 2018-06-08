@@ -14,6 +14,9 @@ import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
 import RulesGroupForm, { RulesFormValues } from './RulesGroupForm';
 import UserManager from './UserManager';
 
+// Events
+import eventEmitter from 'utils/eventEmitter';
+import events from './events';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -100,12 +103,16 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
 
   deleteUsersFromGroup = (userIds: string[]) => {
     if (!isNilOrError(this.props.group) && this.props.group.attributes.membership_type === 'manual') {
-      const groupId = this.props.group.id;
-      const promises: Promise<any>[] = [];
-      userIds.forEach(userId => promises.push(deleteMembershipByUserId(groupId, userId)));
-      Promise.all(promises).then(res => {
-        console.log(res);
-      }).catch(err => console.log(err));
+      const deleteMessage = this.props.intl.formatMessage(messages.membershipDeleteConfirmation);
+      if (window.confirm(deleteMessage)) {
+        const groupId = this.props.group.id;
+        const promises: Promise<any>[] = [];
+        userIds.forEach(userId => promises.push(deleteMembershipByUserId(groupId, userId)));
+        Promise.all(promises)
+          .catch(() =>
+            eventEmitter.emit<JSX.Element>('usersAdmin', events.membershipDeleteFailed, <FormattedMessage {...messages.membershipDeleteFailed} />)
+          );
+      }
     }
   }
 

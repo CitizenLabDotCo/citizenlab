@@ -16,9 +16,15 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
+// Events --- For error handling
+import eventEmitter from 'utils/eventEmitter';
+import events from './events';
 
 // Services
 import { IUserData, deleteUser } from 'services/users';
+
+// Typings
+import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // Styling
 import styled from 'styled-components';
@@ -111,6 +117,8 @@ interface Props {
   selected: boolean;
   toggleSelect: () => void;
   toggleAdmin: () => void;
+  authUser: GetAuthUserChildProps;
+  up?: boolean;
 }
 
 interface State {
@@ -141,10 +149,15 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
     const deleteMessage = this.props.intl.formatMessage(messages.userDeletionConfirmation);
     event.preventDefault();
 
+    const { authUser } = this.props;
     if (window.confirm(deleteMessage)) {
-      deleteUser(userId).then(res => {
-        console.log(res);
-      }).catch(err => console.log(err));
+      if (authUser && authUser.id === userId) {
+        eventEmitter.emit<JSX.Element>('usersAdmin', events.userDeletionFailed, <FormattedMessage {...messages.youCantDeleteYourself} />);
+      } else {
+        deleteUser(userId).catch(() => {
+          eventEmitter.emit<JSX.Element>('usersAdmin', events.userDeletionFailed, <FormattedMessage {...messages.userDeletionFailed} />);
+        });
+      }
     }
   }
 
@@ -160,7 +173,7 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
 
   renderDropdown = () => (
     <DropdownList>
-      <DropdownListLink to={`profile/${this.props.user.attributes.slug}`}>
+      <DropdownListLink to={`/profile/${this.props.user.attributes.slug}`}>
         <FormattedMessage {...messages.seeProfile} />
         <IconWrapper>
           <Icon name="eye" />
@@ -176,7 +189,7 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
   )
 
   render() {
-    const { user, selected } = this.props;
+    const { user, selected, up } = this.props;
 
     return (
       <tr key={user.id}>
@@ -204,11 +217,12 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
         <td onClick={this.toggleOpened}>
           <PresentationalDropdown
             content={this.renderDropdown()}
-            top="30px"
+            top={up ? '-120px' : '30px'}
             left="-105px"
             color={colors.adminMenuBackground}
             handleDropdownOnClickOutside={this.handleDropdownOnClickOutside}
             dropdownOpened={this.state.optionsOpened}
+            up={up}
           >
             <SIcon name="more-options" />
           </PresentationalDropdown>
