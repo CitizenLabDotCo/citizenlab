@@ -169,7 +169,7 @@
 .ui.card > .content > .header {
   display: block;
   margin: '';
-  font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-family: 'visuelt', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   color: rgba(0, 0, 0, 0.85);
 }
 
@@ -983,12 +983,6 @@ a.ui.card:hover,
 .ui.cards > .card {
   font-size: 1em;
 }
-
-
-/*******************************
-         Theme Overrides
-*******************************/
-
 
 
 /*******************************
