@@ -293,7 +293,7 @@ resource "Stats" do
     get "web_api/v1/stats/votes_by_custom_field" do
       time_boundary_parameters self
       parameter :ideas, "Array of idea ids to get the stats for.", required: false
-      parameter :custom_field, "The custom field which should serve as dimensions of the stats.", required: true
+      parameter :custom_field, "The custom field id which should serve as dimensions of the stats.", required: true
 
       let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
       let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }

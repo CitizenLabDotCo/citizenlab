@@ -133,24 +133,25 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def votes_by_birthyear
-    render json: votes_by_custom_field('birthyear')
+    render json: votes_by_custom_field_key('birthyear')
   end
 
   def votes_by_domicile
-    render json: votes_by_custom_field('domicile')
+    render json: votes_by_custom_field_key('domicile')
   end
 
   def votes_by_education
-    render json: votes_by_custom_field('education')
+    render json: votes_by_custom_field_key('education')
   end
 
   def votes_by_gender
-    render json: votes_by_custom_field('gender')
+    render json: votes_by_custom_field_key('gender')
   end
 
   def votes_by_custom_field
-    if params[:custom_field]
-      render json: votes_by_custom_field(params[:custom_field])
+    custom_field = CustomField.find params[:custom_field]
+    if custom_field
+      render json: votes_by_custom_field_key(custom_field.key)
     else
       render json: {422 => :custom_field_blank} # TODO
     end
@@ -196,7 +197,7 @@ class WebApi::V1::StatsController < ApplicationController
     ideas
   end
 
-  def votes_by_custom_field key
+  def votes_by_custom_field_key key
     serie = Vote
       .where(votable_type: 'Idea')
       .where(created_at: @start_at..@end_at)
