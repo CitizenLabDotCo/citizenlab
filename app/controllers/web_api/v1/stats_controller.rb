@@ -150,11 +150,7 @@ class WebApi::V1::StatsController < ApplicationController
 
   def votes_by_custom_field
     custom_field = CustomField.find params[:custom_field]
-    if custom_field
-      render json: votes_by_custom_field_key(custom_field.key)
-    else
-      render json: {422 => :custom_field_blank} # TODO
-    end
+    render json: votes_by_custom_field_key(custom_field.key)
   end
 
   def votes_by_time
