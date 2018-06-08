@@ -217,12 +217,6 @@ resource "Stats" do
       CustomField.find_by(code: 'education').update(enabled: true)
       create_list(:vote, 6)
       create_list(:vote, 2, mode: 'down')
-      # @ideas_with_topics = create_list(:idea_with_topics, 5)
-      # @ideas_with_areas = create_list(:idea_with_areas, 5)
-      # @users = create_list(:user_with_demographics, 10)
-      # @votes = ['up','up','up','up','up','up','down','down'].each do |mode| 
-      #   create(:vote, mode: mode, user: User.all.shuffle.first) 
-      # end
     end
 
     get "web_api/v1/stats/votes_count" do
