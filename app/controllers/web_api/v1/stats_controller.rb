@@ -153,6 +153,7 @@ class WebApi::V1::StatsController < ApplicationController
       render json: votes_by_custom_field(params[:custom_field])
     else
       render json: {422 => :custom_field_blank} # TODO
+    end
   end
 
   def votes_by_time
