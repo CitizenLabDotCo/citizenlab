@@ -208,7 +208,7 @@ class WebApi::V1::StatsController < ApplicationController
         serie.keys.select do |key_mode, _|
           key_mode == mode 
         end.map do |_, value|
-          [value, serie[[mode,value]]]
+          [(value || "_blank"), serie[[mode,value]]]
         end.to_h
       ]
     end.to_h

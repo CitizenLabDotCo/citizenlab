@@ -215,12 +215,14 @@ resource "Stats" do
     before do
       TenantTemplateService.new.apply_template('base')
       CustomField.find_by(code: 'education').update(enabled: true)
-      @ideas_with_topics = create_list(:idea_with_topics, 5)
-      @ideas_with_areas = create_list(:idea_with_areas, 5)
-      @users = create_list(:user_with_demographics, 10)
-      @votes = ['up','up','up','up','up','up','down','down'].each do |mode| 
-        create(:vote, mode: mode, user: User.all.shuffle.first) 
-      end
+      create_list(:vote, 6)
+      create_list(:vote, 2, mode: 'down')
+      # @ideas_with_topics = create_list(:idea_with_topics, 5)
+      # @ideas_with_areas = create_list(:idea_with_areas, 5)
+      # @users = create_list(:user_with_demographics, 10)
+      # @votes = ['up','up','up','up','up','up','down','down'].each do |mode| 
+      #   create(:vote, mode: mode, user: User.all.shuffle.first) 
+      # end
     end
 
     get "web_api/v1/stats/votes_count" do
@@ -239,15 +241,31 @@ resource "Stats" do
     end
 
     get "web_api/v1/stats/votes_by_birthyear" do
+      before do
+        @ideas = create_list(:idea, 5)
+        @someone = create(:user, birthyear: '1984')
+        create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
+        create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
+        [['up','1984'],['up','1992'],['down','1992'],['up',nil]].each do |mode, birthyear|
+          create(:vote, mode: mode, votable: @ideas.shuffle.first,
+            user: (if birthyear then create(:user, birthyear: birthyear) else create(:user) end))
+        end
+      end
       time_boundary_parameters self
       parameter :ideas, "Array of idea ids to get the stats for.", required: false
 
       let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
       let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      let(:ideas) { @ideas.map(&:id) }
 
       example_request "Votes by birthyear" do
         expect(response_status).to eq 200
-        # TODO
+        json_response = json_parse(response_body)
+        expect(json_response).to match({
+          up: {:"1984" => 2, :"1992" => 1, :"_blank" => 1}, 
+          down: {:"1984" => 1, :"1992" => 1}, 
+          total: {:"1984" => 3, :"1992" => 2, :"_blank" => 1}
+        })
       end
     end
 
@@ -260,6 +278,7 @@ resource "Stats" do
 
       example_request "Votes by domicile" do
         expect(response_status).to eq 200
+        json_response = json_parse(response_body)
         # TODO
       end
     end
@@ -273,6 +292,7 @@ resource "Stats" do
 
       example_request "Votes by education" do
         expect(response_status).to eq 200
+        json_response = json_parse(response_body)
         # TODO
       end
     end
@@ -286,21 +306,26 @@ resource "Stats" do
 
       example_request "Votes by gender" do
         expect(response_status).to eq 200
+        json_response = json_parse(response_body)
         # TODO
       end
     end
 
     get "web_api/v1/stats/votes_by_custom_field" do
+      before do
+        @custom_field = create(:custom_field)
+      end
       time_boundary_parameters self
       parameter :ideas, "Array of idea ids to get the stats for.", required: false
       parameter :custom_field, "The custom field id which should serve as dimensions of the stats.", required: true
 
-      let(:custom_field) { create(:custom_field).id }
+      let(:custom_field) { @custom_field.id }
       let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
       let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
 
       example_request "Votes by custom field" do
         expect(response_status).to eq 200
+        json_response = json_parse(response_body)
         # TODO
       end
     end
