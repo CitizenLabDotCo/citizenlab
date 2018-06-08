@@ -1,37 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { isBoolean, isNil } from 'lodash';
-
 import styled, { withTheme } from 'styled-components';
 import { darken, rgba, readableColor } from 'polished';
 import { color, invisibleA11yText } from 'utils/styleUtils';
-
 import Spinner from 'components/UI/Spinner';
 import Icon, { Props as IconProps } from 'components/UI/Icon';
-
-const StyledButton = styled.button``;
-const StyledLink = styled(Link)``;
-const StyledA = styled.a``;
-const StyledIcon = styled(Icon)``;
-
-const ButtonText = styled.div`
-  margin: 0;
-  margin-top: -1px;
-  padding: 0;
-  white-space: nowrap;
-
-  ${StyledIcon} + & {
-    margin-left: 10px;
-  }
-`;
-
-const ButtonContent = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  padding: 0;
-`;
 
 function getFontSize(size) {
   switch (size) {
@@ -126,9 +100,26 @@ function buttonTheme(
   `;
 }
 
+const StyledButton = styled.button``;
+const StyledLink = styled(Link)``;
+const StyledA = styled.a``;
+const StyledIcon = styled(Icon)``;
+
+const ButtonText = styled.div`
+  margin: 0;
+  margin-top: -1px;
+  padding: 0;
+  white-space: nowrap;
+
+  ${StyledIcon} + & {
+    margin-left: 10px;
+  }
+`;
+
 const Container: any = styled.div`
   user-select: none;
   font-weight: 400;
+  display: flex;
 
   * {
     user-select: none;
@@ -240,7 +231,7 @@ type Props = {
   icon?: IconProps['name'];
   iconTitle?: IconProps['title'];
   id?: string;
-  justify?: 'left' | 'center' | 'right' | undefined;
+  justify?: 'left' | 'center' | 'right' | 'space-between' | undefined;
   linkTo?: string;
   onClick?: (arg: React.FormEvent<HTMLButtonElement>) => void;
   padding?: string | undefined;
@@ -317,12 +308,12 @@ class Button extends React.PureComponent<Props, State> {
     const hasText = (!isNil(text) || !isNil(children));
 
     const childContent = (
-      <ButtonContent>
+      <>
         {icon && <StyledIcon name={icon} title={this.props.iconTitle} />}
         {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
         {this.props.hiddenText && <HiddenText>{this.props.hiddenText}</HiddenText>}
         {processing && <SpinnerWrapper><Spinner size={spinnerSize} color={spinnerColor} /></SpinnerWrapper>}
-      </ButtonContent>
+      </>
     );
 
     return (

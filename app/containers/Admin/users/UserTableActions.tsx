@@ -61,7 +61,6 @@ const ActionButton = styled.button`
   }
 `;
 
-
 // Typings
 import { IGroupData } from 'services/groups';
 import { API } from 'typings';
@@ -95,7 +94,6 @@ class UserTableActions extends React.PureComponent<Props, State> {
   toggleAllUsers = () => {
     this.props.toggleSelectAll();
   }
-
 
   exportUsers = (event: React.FormEvent<any>) => {
     event.preventDefault();
@@ -211,7 +209,6 @@ class UserTableActions extends React.PureComponent<Props, State> {
     );
   }
 }
-
 
 export default (inputProps: InputProps) => (
   <GetGroups membershipType="manual">

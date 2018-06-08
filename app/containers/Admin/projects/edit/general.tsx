@@ -448,12 +448,14 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     const projectAttrs = { ...(projectData ? projectData.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
     const noTitleError = {} as Multiloc;
 
-    forOwn(projectAttrs.title_multiloc, (title, locale) => {
-      if (!title || (title && title.length < 1)) {
-        noTitleError[locale] = formatMessage(messages.noTitleErrorMessage);
-        hasErrors = true;
-      }
-    });
+    if (projectAttrs.title_multiloc) {
+      forOwn(projectAttrs.title_multiloc, (title, locale) => {
+        if (!title || (title && title.length < 1)) {
+          noTitleError[locale] = formatMessage(messages.noTitleErrorMessage);
+          hasErrors = true;
+        }
+      });
+    }
 
     this.setState({
       noTitleError: (!noTitleError || isEmpty(noTitleError) ? null : noTitleError)

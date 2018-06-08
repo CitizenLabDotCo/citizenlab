@@ -128,6 +128,7 @@ export default defineMessages({
   step1TypeDescriptionNormal: {
     id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionNormal',
     defaultMessage: 'You have to add users manually to the group.',
+  },
   moderatorLabel: {
     id: 'app.containers.Admin.User.moderatorLabel',
     defaultMessage: `Grant project moderator rights to the invited people?`,

@@ -15,7 +15,6 @@ import styled from 'styled-components';
 // typing
 import { Message, Multiloc } from 'typings';
 
-
 const DropdownMenuInner = styled.div`
   display: flex;
   flex-direction: column;

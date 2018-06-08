@@ -145,7 +145,6 @@ const NavigationDropdownItemIcon = styled(Icon)`
   fill: inherit;
   margin-left: 4px;
   margin-top: 3px;
-  transition: all 100ms ease-out;
 `;
 
 const NavigationDropdownItem = styled.button`
@@ -156,6 +155,7 @@ const NavigationDropdownItem = styled.button`
   font-size: ${fontSize('large')};
   font-weight: 400;
   transition: all 100ms ease-out;
+  cursor: pointer;
 
   &:hover,
   &:focus {
