@@ -270,16 +270,33 @@ resource "Stats" do
     end
 
     get "web_api/v1/stats/votes_by_domicile" do
+      before do
+       eversem = Area.create!(title_multiloc: {'en' => 'Eversem'}).id
+       wolvertem = Area.create!(title_multiloc: {'en' => 'Wolvertem'}).id
+        @ideas = create_list(:idea, 5)
+        @someone = create(:user, domicile: eversem)
+        create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
+        create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
+        [['up',eversem],['up',wolvertem],['down',wolvertem],['up',nil]].each do |mode, domicile|
+          create(:vote, mode: mode, votable: @ideas.shuffle.first,
+            user: (if domicile then create(:user, domicile: domicile) else create(:user) end))
+        end
+      end
       time_boundary_parameters self
       parameter :ideas, "Array of idea ids to get the stats for.", required: false
 
       let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
       let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      let(:ideas) { @ideas.map(&:id) }
 
       example_request "Votes by domicile" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        # TODO
+        expect(json_response).to match({
+          up: {eversem => 2, wolvertem => 1, :"_blank" => 1}, 
+          down: {eversem => 1, wolvertem => 1}, 
+          total: {eversem => 3, wolvertem => 2, :"_blank" => 1}
+        })
       end
     end
 
