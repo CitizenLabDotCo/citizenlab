@@ -4,8 +4,8 @@ require 'rspec_api_documentation/dsl'
 
 resource "Users" do
 
-  header "Content-Type", "application/json"
   before do
+    header "Content-Type", "application/json"
     @user = create(:user)
   end
 
