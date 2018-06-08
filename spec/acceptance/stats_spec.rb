@@ -301,16 +301,31 @@ resource "Stats" do
     end
 
     get "web_api/v1/stats/votes_by_education" do
+      before do
+        @ideas = create_list(:idea, 5)
+        @someone = create(:user, education: '2')
+        create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
+        create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
+        [['up','2'],['up','7'],['down','7'],['up',nil]].each do |mode, education|
+          create(:vote, mode: mode, votable: @ideas.shuffle.first,
+            user: (if education then create(:user, education: education) else create(:user) end))
+        end
+      end
       time_boundary_parameters self
       parameter :ideas, "Array of idea ids to get the stats for.", required: false
 
       let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
       let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      let(:ideas) { @ideas.map(&:id) }
 
       example_request "Votes by education" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        # TODO
+        expect(json_response).to match({
+          up: {'2'.to_sym => 2, '7'.to_sym => 1, :"_blank" => 1}, 
+          down: {'2'.to_sym => 1, '7'.to_sym => 1}, 
+          total: {'2'.to_sym => 3, '7'.to_sym => 2, :"_blank" => 1}
+        })
       end
     end
 
