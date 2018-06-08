@@ -86,6 +86,7 @@ resource "Tenants" do
           }
         }
       }
+      
       example "[error] Updating the tenant with unsupported settings fails", document: false do
         do_request
         expect(response_status).to eq 422

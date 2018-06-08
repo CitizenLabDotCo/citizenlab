@@ -76,6 +76,7 @@ resource "Idea Spam Reports" do
   delete "web_api/v1/spam_reports/:id" do
     let(:spam_report) { create(:spam_report, user: @user, spam_reportable: @idea) }
     let(:id) { spam_report.id }
+    
     example_request "Delete a spam report" do
       expect(response_status).to eq 200
       expect{SpamReport.find(id)}.to raise_error(ActiveRecord::RecordNotFound)

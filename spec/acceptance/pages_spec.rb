@@ -66,7 +66,8 @@ resource "Pages" do
       before do
         @pages.drop(1).each_with_index{|p,i| create(:page_link, linking_page: @pages.first, linked_page: p, ordering: i+1)}
       end
-      example_request "Get linked pages of a linking page", document: false do 
+
+      example_request "Get all linked pages of a linking page", document: false do 
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:included).size).to eq (@pages.size - 1) # links to all other pages
@@ -87,6 +88,7 @@ resource "Pages" do
 
     describe do
       let(:slug) { "unexisting-page" }
+
       example_request "[error] Get an unexisting page by slug", document: false do
         expect(status).to eq 404
       end
@@ -153,6 +155,7 @@ resource "Pages" do
   delete "web_api/v1/pages/:id" do
     let(:page) { create(:page) }
     let(:id) { page.id }
+    
     example_request "Delete a page" do
       expect(response_status).to eq 200
       expect{Page.find(id)}.to raise_error(ActiveRecord::RecordNotFound)

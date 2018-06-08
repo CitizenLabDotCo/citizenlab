@@ -65,7 +65,7 @@ resource "IdeaImage" do
     let(:image) { encode_image_as_base64("image14.png") }
     let(:ordering) { 2 }
 
-    example_request "Edit an image for an idea" do
+    example_request "Update an image for an idea" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)

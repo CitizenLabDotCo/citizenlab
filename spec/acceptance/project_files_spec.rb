@@ -93,6 +93,7 @@ resource "ProjectFile" do
     end
   end
 
+
   private
 
   def encode_pdf_file_as_base64 filename

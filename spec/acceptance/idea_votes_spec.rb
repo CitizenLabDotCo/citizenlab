@@ -18,7 +18,7 @@ resource "Idea Votes" do
   get "web_api/v1/ideas/:idea_id/votes" do
     let(:idea_id) { @idea.id }
 
-    example_request "List votes of an idea" do
+    example_request "List all votes of an idea" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
@@ -151,6 +151,7 @@ resource "Idea Votes" do
   delete "web_api/v1/votes/:id" do
     let(:vote) { create(:vote, user: @user, votable: @idea) }
     let(:id) { vote.id }
+    
     example_request "Delete a vote" do
       expect(response_status).to eq 200
       expect{Vote.find(id)}.to raise_error(ActiveRecord::RecordNotFound)

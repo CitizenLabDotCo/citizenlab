@@ -19,7 +19,8 @@ resource "Events" do
     end
     
     let(:project_id) { @project.id }
-    example_request "List events of a project" do
+
+    example_request "List all events of a project" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
@@ -97,7 +98,6 @@ resource "Events" do
         parameter :end_at, "The end datetime of the event"
       end
       ValidationErrorHelper.new.error_fields(self, Event)
-
 
       let(:event) { create(:event, project: @project) }
       let(:id) { event.id }

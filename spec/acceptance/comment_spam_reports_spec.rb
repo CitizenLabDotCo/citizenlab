@@ -18,7 +18,7 @@ resource "Comment Spam Reports" do
   get "web_api/v1/comments/:comment_id/spam_reports" do
     let(:comment_id) { @comment.id }
 
-    example_request "List spam reports on a comment" do
+    example_request "List all spam reports on a comment" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
@@ -43,7 +43,6 @@ resource "Comment Spam Reports" do
     end
     ValidationErrorHelper.new.error_fields(self, SpamReport)
 
-  
     let(:comment_id) { @comment.id }
     let(:reason_code) { "other" }
     let(:other_reason) { "plagiarism" }
@@ -58,7 +57,6 @@ resource "Comment Spam Reports" do
   end
 
   patch "web_api/v1/spam_reports/:id" do
-
     with_options scope: :spam_report do
       parameter :reason_code, "one of [wrong_content, inappropriate, other]", required: true
       parameter :other_reason, "the reason for the spam report, if none of the reason codes is applicable, in which case 'other' must be chosen", required: false
