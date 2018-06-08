@@ -1,6 +1,5 @@
 // Libraries
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'services/permissions/roles';
 import { includes, get } from 'lodash';
 
@@ -8,7 +7,6 @@ import { includes, get } from 'lodash';
 import Table from 'components/UI/Table';
 import SortableTableHeaderCell from 'components/UI/Table/SortableTableHeaderCell';
 import CustomPagination from 'components/admin/Pagination/CustomPagination';
-import NoUsers from './NoUsers';
 
 import UserTableRow from './UserTableRow';
 
@@ -17,24 +15,34 @@ import { IUserData, IRole, updateUser } from 'services/users';
 
 // Resources
 import { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';
+import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
+// Events --- For error handling
+import eventEmitter from 'utils/eventEmitter';
+import events from './events';
 
 // I18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// Styles
+import styled from 'styled-components';
+const STable = styled(Table)`
+  margin-top: 20px;
+`;
 
 // Typings
 interface InputProps {
   selectedUsers: string[] | 'none' | 'all';
   handleSelect: (userId: string) => () => void;
+  authUser: GetAuthUserChildProps;
 }
 
 interface Props extends InputProps, GetUsersChildProps { }
 
 interface State { }
 
-export default class Users extends React.PureComponent<Props, State> {
+export default class UsersTable extends React.PureComponent<Props, State> {
 
   isUserAdmin = (user: IUserData) => {
     return isAdmin({ data: user });
@@ -43,17 +51,22 @@ export default class Users extends React.PureComponent<Props, State> {
   handleAdminRoleOnChange = (user: IUserData) => () => {
     let newRoles: IRole[] = [];
 
-    if (user.attributes.roles && isAdmin({ data: user })) {
-      newRoles = user.attributes.roles.filter(role => role.type !== 'admin');
+    const { authUser } = this.props;
+    if (authUser && authUser.id === user.id) {
+      eventEmitter.emit<JSX.Element>('usersAdmin', events.userRoleChangeFailed, <FormattedMessage {...messages.youCantUnadminYourself} />);
     } else {
-      newRoles = [
-        ...get(user, 'attributes.roles', []),
-        { type: 'admin' }
-      ];
+      if (user.attributes.roles && isAdmin({ data: user })) {
+        newRoles = user.attributes.roles.filter(role => role.type !== 'admin');
+      } else {
+        newRoles = [
+          ...get(user, 'attributes.roles', []),
+          { type: 'admin' }
+        ];
+      }
+      updateUser(user.id, { roles: newRoles });
     }
-
-    updateUser(user.id, { roles: newRoles });
   }
+
   handleSortingOnChange = (sortAttribute: SortAttribute) => () => {
     this.props.onChangeSorting(sortAttribute);
   }
@@ -65,16 +78,12 @@ export default class Users extends React.PureComponent<Props, State> {
 
   render() {
     const { usersList, sortAttribute, sortDirection, currentPage, lastPage, selectedUsers } = this.props;
+    const usersCount = Array.isArray(usersList) && usersList.length;
 
-    if (!isNilOrError(usersList) && usersList.length === 0) {
-      return <NoUsers />;
-    }
-
-    if (!isNilOrError(usersList) && usersList.length > 0) {
+    if (Array.isArray(usersList) && usersCount && usersCount > 0) {
       return (
         <>
-
-          <Table>
+          <STable>
             <thead>
               <tr>
                 <th />
@@ -113,17 +122,19 @@ export default class Users extends React.PureComponent<Props, State> {
               </tr>
             </thead>
             <tbody>
-              {usersList.map((user) => (
+              {usersList.map((user, index) => (
                 <UserTableRow
                   key={user.id}
                   user={user}
                   selected={selectedUsers === 'all' || includes(selectedUsers, user.id)}
                   toggleSelect={this.props.handleSelect(user.id)}
                   toggleAdmin={this.handleAdminRoleOnChange(user)}
+                  authUser={this.props.authUser}
+                  up={(usersCount > 8) ? (index > usersCount - 3) : false}
                 />
               ))}
             </tbody>
-          </Table>
+          </STable>
 
           <CustomPagination
             currentPage={currentPage || 1}
