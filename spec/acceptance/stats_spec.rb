@@ -76,7 +76,6 @@ resource "Stats" do
       end
     end
 
-
     get "web_api/v1/stats/users_by_birthyear" do
       time_boundary_parameters self
 
