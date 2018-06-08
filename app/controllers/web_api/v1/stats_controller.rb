@@ -148,6 +148,13 @@ class WebApi::V1::StatsController < ApplicationController
     render json: votes_by_custom_field('gender')
   end
 
+  def votes_by_custom_field
+    if params[:custom_field]
+      render json: votes_by_custom_field(params[:custom_field])
+    else
+      render json: {422 => :custom_field_blank} # TODO
+  end
+
   def votes_by_time
     serie = @@stats_service.group_by_time(votes_by_resource, 'created_at', @start_at, @end_at, params[:interval])
     render json: serie

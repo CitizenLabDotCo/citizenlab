@@ -72,6 +72,10 @@ class StatPolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
+  def votes_by_custom_field?
+    user&.active? && user.admin?
+  end
+
   def votes_by_time?
     user&.active? && user.admin?
   end
