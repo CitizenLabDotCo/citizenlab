@@ -8,7 +8,7 @@ import ClusterCircle from './ClusterCircle';
 import IdeaDetails from './IdeaDetails';
 import ClusterDetails from './ClusterDetails';
 import GenderChart from './GenderChart';
-import AgeChart from './AgeChart';
+// import AgeChart from './AgeChart';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 
 const TwoColumns = styled.div`
@@ -43,10 +43,9 @@ class Browser extends Component<Props, State> {
 
   componentDidMount() {
     const svgRef: any = this.svgRef;
-    debugger;
     const ideasById: any = keyBy(this.props.ideas.ideasList, 'id');
     const root = d3.hierarchy(this.props.clusters)
-      .sum((d) => ideasById[d.id] ? ideasById[d.id].attributes.upvotes_count : 1);
+      .sum((d) => ideasById[d.id] ? (ideasById[d.id].attributes.upvotes_count + ideasById[d.id].attributes.downvotes_count) : 1);
 
     const pack = d3.pack()
       .size([svgRef.width.baseVal.value - 2, svgRef.height.baseVal.value - 2])
@@ -97,6 +96,17 @@ class Browser extends Component<Props, State> {
     }
   }
 
+  selectedIdeas = () => {
+    const { selectedItem } = this.state;
+    if (this.isIdea(selectedItem)) {
+      return [selectedItem];
+    } else if (this.isCluster(selectedItem)) {
+      return this.clusterIdeas(selectedItem);
+    } else {
+      return [];
+    }
+  }
+
   render() {
     const { nodes, selectedItem } = this.state;
     return (
@@ -131,10 +141,10 @@ class Browser extends Component<Props, State> {
             </svg>
           </div>
           <div>
+            <GenderChart ideaIds={this.selectedIdeas()} />
+            {/* <AgeChart ideaIds={this.selectedIdeas()} /> */}
             {this.isIdea(selectedItem) && <IdeaDetails ideaId={selectedItem} />}
             {this.isCluster(selectedItem) && <ClusterDetails node={selectedItem} ideaIds={this.clusterIdeas(selectedItem)} />}
-            <GenderChart />
-            <AgeChart />
           </div>
         </TwoColumns>
       </div>
