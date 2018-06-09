@@ -4,6 +4,7 @@ import { map, flatten, uniq } from 'lodash';
 import { Node, ParentNode, ideasUnder } from '../clusters';
 import GenderChart from './GenderChart';
 import AgeChart from './AgeChart';
+import DomicileChart from './DomicileChart';
 import IdeaDetails from './IdeaDetails';
 import ClusterDetails from './ClusterDetails';
 
@@ -28,6 +29,7 @@ class InfoPane extends React.Component<Props, State> {
       <div>
         <GenderChart ideaIds={this.selectedIdeas()} />
         <AgeChart ideaIds={this.selectedIdeas()} />
+        <DomicileChart ideaIds={this.selectedIdeas()} />
         {selectedNodes.length === 1 && selectedNodes[0].type === 'idea' &&
           <IdeaDetails ideaId={selectedNodes[0].id} />}
         {selectedNodes.length === 1 && selectedNodes[0].type !== 'idea' &&
