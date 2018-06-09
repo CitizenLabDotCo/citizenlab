@@ -16,6 +16,7 @@ type Props = {
   cluster: ParentNode;
   selectedNodes: Node[];
   onClickNode: (Node) => void;
+  onShiftClickNode: (Node) => void;
 };
 
 type State = {
@@ -55,8 +56,12 @@ class Circles extends Component<Props, State> {
     this.svgRef = r;
   }
 
-  handleOnClickNode = (node) => () => {
-    this.props.onClickNode(node.data);
+  handleOnClickNode = (node) => (event) => {
+    if (event.shiftKey) {
+      this.props.onShiftClickNode(node.data);
+    } else {
+      this.props.onClickNode(node.data);
+    }
   }
 
   handleOnMouseEnterIdea = (node) => () => {

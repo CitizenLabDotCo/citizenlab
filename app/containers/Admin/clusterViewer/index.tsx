@@ -33,6 +33,12 @@ class ClusterViewer extends Component<Props, State> {
     });
   }
 
+  handleOnShiftClickNode = (node: Node) => {
+    this.setState({
+      selectedNodes: [...this.state.selectedNodes, node]
+    });
+  }
+
   render() {
     return (
       <TwoColumns>
@@ -40,6 +46,7 @@ class ClusterViewer extends Component<Props, State> {
           cluster={this.state.cluster}
           selectedNodes={this.state.selectedNodes}
           onClickNode={this.handleOnClickNode}
+          onShiftClickNode={this.handleOnShiftClickNode}
         />
         <InfoPane
           selectedNodes={this.state.selectedNodes}

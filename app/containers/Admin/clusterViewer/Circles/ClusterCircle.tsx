@@ -25,7 +25,7 @@ type Props = {
   node: any;
   selected: boolean;
   hovered?: boolean;
-  onClick?: () => void;
+  onClick?: (any) => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 };
