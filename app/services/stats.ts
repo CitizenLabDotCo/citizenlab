@@ -43,6 +43,12 @@ export interface IVotesByGender {
   total: IGenderCounts;
 }
 
+export interface IVotesByBirthyear {
+  up: { [key: number]: number };
+  down: { [key: number]: number };
+  total: { [key: number]: number };
+}
+
 export function usersByGenderStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsersByGender>({ apiEndpoint: `${apiEndpoint}/users_by_gender`, ...streamParams });
 }
@@ -65,4 +71,8 @@ export function ideasByTopicStream(streamParams: IStreamParams | null = null) {
 
 export function votesByGenderStream(streamParams: IStreamParams | null = null) {
   return streams.get<IVotesByGender>({ apiEndpoint: `${apiEndpoint}/votes_by_gender`, ...streamParams });
+}
+
+export function votesByBirthyearStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IVotesByBirthyear>({ apiEndpoint: `${apiEndpoint}/votes_by_birthyear`, ...streamParams });
 }
