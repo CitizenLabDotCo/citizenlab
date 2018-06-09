@@ -36,7 +36,7 @@ type Props = {
   idea: GetIdeaChildProps;
   selected: boolean;
   hovered: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
 };

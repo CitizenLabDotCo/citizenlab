@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import T from 'components/T';
 import GetIdea from 'resources/GetIdea';
 import { isNilOrError } from 'utils/helperUtils';
-import { Node } from '../clusters';
+import { ParentNode } from '../clusters';
 
 type Props = {
   ideaIds: string[];
-  node: Node;
+  node: ParentNode;
 };
 
 class ClusterDetails extends Component<Props> {
@@ -18,7 +18,7 @@ class ClusterDetails extends Component<Props> {
     return (
       <div>
         <h3>
-          {node.title}
+          {node.type === 'custom' && node.title}
         </h3>
         <ul>
           {ideaIds.map((id) => (

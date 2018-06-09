@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { Node, ideasUnder } from '../clusters';
+import { map, flatten, uniq } from 'lodash';
+import { Node, ParentNode, ideasUnder } from '../clusters';
 import GenderChart from './GenderChart';
 import IdeaDetails from './IdeaDetails';
 import ClusterDetails from './ClusterDetails';
@@ -17,11 +18,7 @@ class InfoPane extends React.Component<Props, State> {
 
   selectedIdeas = () => {
     const { selectedNodes } = this.props;
-    if (selectedNodes.length === 1) {
-      return ideasUnder(selectedNodes[0]);
-    } else {
-      return [];
-    }
+    return uniq(flatten(map(selectedNodes, (node) => ideasUnder(node))));
   }
 
   render() {
@@ -29,16 +26,10 @@ class InfoPane extends React.Component<Props, State> {
     return (
       <div>
         <GenderChart ideaIds={this.selectedIdeas()} />
-        {selectedNodes.map((node) => {
-          switch (node.type) {
-            case 'idea':
-              return <IdeaDetails ideaId={node.id} />;
-            case 'custom':
-              return <ClusterDetails node={node} ideaIds={this.selectedIdeas()} />;
-            default:
-              return null;
-          }
-        })}
+        {selectedNodes.length === 1 && selectedNodes[0].type === 'idea' &&
+          <IdeaDetails ideaId={selectedNodes[0].id} />}
+        {selectedNodes.length === 1 && selectedNodes[0].type !== 'idea' &&
+          <ClusterDetails node={selectedNodes[0] as ParentNode} ideaIds={this.selectedIdeas()} />}
       </div>
     );
   }

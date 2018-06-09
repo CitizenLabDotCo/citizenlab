@@ -4,23 +4,23 @@ interface BaseNode {
   id: string;
 }
 
-interface ProjectNode extends BaseNode {
+export interface ProjectNode extends BaseNode {
   type: 'project';
   children: Node[];
 }
 
-interface TopicNode extends BaseNode {
+export interface TopicNode extends BaseNode {
   type: 'topic';
   children: Node[];
 }
 
-interface CustomNode extends BaseNode {
+export interface CustomNode extends BaseNode {
   type: 'custom';
   title?: string;
   children: Node[];
 }
 
-interface IdeaNode extends BaseNode {
+export interface IdeaNode extends BaseNode {
   type: 'idea';
 }
 
