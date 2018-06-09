@@ -18,7 +18,7 @@ const StyledCircle: any = styled.circle`
 `;
 
 const StyledText: any = styled.text`
-  font-size: 12px;
+  font-size: ${props => (props as any).size}px;
 `;
 
 type Props = {
@@ -49,6 +49,7 @@ class ClusterCircle extends Component<Props> {
           textAnchor="middle"
           alignmentBaseline="central"
           show={selected || hovered}
+          size={12 + (2 * node.height)}
         >
           {node.data.label}
         </StyledText>
