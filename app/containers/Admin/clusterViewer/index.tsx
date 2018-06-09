@@ -1,23 +1,50 @@
 import React, { Component } from 'react';
-import Browser from './Browser';
+import Circles from './Circles';
+import { Node, ParentNode } from './clusters';
+import InfoPane from './InfoPane';
+import styled from 'styled-components';
 const anzegemCluster =  require('./anzegem.json');
 
+const TwoColumns = styled.div`
+  display: flex;
+`;
 
-class ClusterViewer extends Component {
+interface Props {
+}
 
-  convertToD3Hierarchy = (data) => {
-    const children = data.topics || data.clusters || data.ideas;
-    return {
-      ...data,
-      children: children && children.map(this.convertToD3Hierarchy)
+interface State {
+  cluster?: ParentNode;
+  selectedNodes: Node[];
+}
+
+class ClusterViewer extends Component<Props, State> {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      cluster: anzegemCluster,
+      selectedNodes: [],
     };
+  }
+
+  handleOnClickNode = (node: Node) => {
+    this.setState({
+      selectedNodes: [node],
+    });
   }
 
   render() {
     return (
-      <Browser
-        clusters={this.convertToD3Hierarchy(anzegemCluster)}
-      />
+      <TwoColumns>
+        <Circles
+          cluster={this.state.cluster}
+          selectedNodes={this.state.selectedNodes}
+          onClickNode={this.handleOnClickNode}
+        />
+        <InfoPane
+          selectedNodes={this.state.selectedNodes}
+        />
+      </TwoColumns>
     );
   }
 }

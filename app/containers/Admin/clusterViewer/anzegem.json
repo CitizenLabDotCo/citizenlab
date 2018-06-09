@@ -1,221 +1,269 @@
 {
     "number_of_ideas": 98,
-    "topics": [
+    "type": "custom",
+    "id": "2b8efe27-eafb-462d-9a8c-3f6fc3d385ef",
+    "title": "all",
+    "children": [
         {
-            "label": "Mobiliteit en verkeer",
+            "type": "custom",
+            "id": "5e22350b-4113-4b80-bbe1-63e25dc573f5",
+            "title": "Mobiliteit en verkeer",
             "typical_ideas": [
                 {
+                    "type": "idea",
                     "id": "75eb178c-1a1d-4eb9-8852-3a98feb0cce3",
                     "title": "Fietsveilige doorgang onder viaduct langs N36 in Vichte",
                     "body": "Als fietser voel ik me niet veilig om onder de viaduct (ter hoogte van het kerkhof) door te rijden.  Vrachtwagens en auto's zoeven langs mij aan 70 km/u, en soms ook over het fietspad. Nu ligt er een voetpad (niet zo vaak gebruikt, denk ik) en een fietspad naast elkaar. Stel dat het fietspad en het voetpad als gemeenschappelijk gebruikte strook wordt verhoogd, dan voelen de fietsers en voetgangers zich veiliger door het verhoogd fiets/voetpad.  Misschien wordt hierdoor de snelheid van het wegverkeer afgeremd.\n"
                 },
                 {
+                    "type": "idea",
                     "id": "4d88e1b7-8d69-483f-8f3b-ebb73a098d76",
                     "title": "Sluipverkeer door parkeerstroken in de Kerkstraat",
                     "body": "Door de drukte in de Kerkstraat krijg de Kalkstraat - Borreberg en ook de Buyckstraat, \u00a0heel wat sluipverkeer over zich heen. Het is niet alleen de drukte maar ook de snelheid waarmee door deze smalle straten gereden wordt. Door de afschaffing van de parkeerstroken in de Kerkstraat zou het verkeer vlotter kunnen doorrijden. Er zijn parkeerhavens genoeg om de nodige boodschappen te doen en je wagen daar te parkeren. \u00a0En de reden dat deze parkeerstroken de snelheid doet afnemen is helaas een fabeltje. Moesten er verschillende flitspalen staan of traject controle zijn, zou er inderdaad trager gereden worden. \u00a0De \u00a0traject controle van in Kaster tot het einde van de Grote Leiestraat. En hopelijk komt de ring er ooit! Dan kan Anzegem terug een rustiger en groener dorp worden."
                 },
                 {
+                    "type": "idea",
                     "id": "7c92e318-6664-499b-9143-8a861ea91c61",
                     "title": "Schaagstraat Heirweg: Doorlopend fiets- en voetpad",
                     "body": "Doorlopend fiets- en voetpad aan beide zijden van de Schaagstraat, zodat de zwakke weggebruikers afgescheiden worden van het autoverkeer en veilig naar school of het werk kunnen."
                 },
                 {
+                    "type": "idea",
                     "id": "3587a78f-64d9-4afa-bcbc-d8f5ca68153c",
                     "title": "Plaatselijk verkeer",
                     "body": "Er zijn heel wat wegen waar enkel plaatselijk verkeer wordt toegelaten...echter zijn dit de wegen waar het meeste sluipverkeer zijn weg vindt... Heel jammer, op die manier mist het bord aan het begin en einde van de straat zijn doel. Om nog niet te spreken over de snelheid waarmee de voertuigen door die straten \"snorren\"."
                 },
                 {
+                    "type": "idea",
                     "id": "97f900bf-4d10-4d18-bcd2-6ed2351f5ca2",
                     "title": "Verkeersremmende maatregelen Vichtsesteenweg",
                     "body": "Om de snelheid van het doorgaand verkeer op de Vichtsesteenweg te remmen, misschien verkeersremmers voorzien of een andere verkeersremmende maatregel. Ook zwaar verkeer houdt zich niet aan de snelheid."
                 }
             ],
-            "clusters": [
+            "children": [
                 {
-                    "id": 0,
-                    "label": "veilige verkeer plaatselijk",
-                    "ideas": [
+                    "type": "custom",
+                    "id": "e150c43b-388c-4405-a616-973e8ee11abf",
+                    "title": "veilige verkeer plaatselijk",
+                    "children": [
                         {
+                            "type": "idea",
                             "id": "75eb178c-1a1d-4eb9-8852-3a98feb0cce3",
                             "title": "Fietsveilige doorgang onder viaduct langs N36 in Vichte",
                             "body": "Als fietser voel ik me niet veilig om onder de viaduct (ter hoogte van het kerkhof) door te rijden.  Vrachtwagens en auto's zoeven langs mij aan 70 km/u, en soms ook over het fietspad. Nu ligt er een voetpad (niet zo vaak gebruikt, denk ik) en een fietspad naast elkaar. Stel dat het fietspad en het voetpad als gemeenschappelijk gebruikte strook wordt verhoogd, dan voelen de fietsers en voetgangers zich veiliger door het verhoogd fiets/voetpad.  Misschien wordt hierdoor de snelheid van het wegverkeer afgeremd.\n"
                         },
                         {
+                            "type": "idea",
                             "id": "4d88e1b7-8d69-483f-8f3b-ebb73a098d76",
                             "title": "Sluipverkeer door parkeerstroken in de Kerkstraat",
                             "body": "Door de drukte in de Kerkstraat krijg de Kalkstraat - Borreberg en ook de Buyckstraat, \u00a0heel wat sluipverkeer over zich heen. Het is niet alleen de drukte maar ook de snelheid waarmee door deze smalle straten gereden wordt. Door de afschaffing van de parkeerstroken in de Kerkstraat zou het verkeer vlotter kunnen doorrijden. Er zijn parkeerhavens genoeg om de nodige boodschappen te doen en je wagen daar te parkeren. \u00a0En de reden dat deze parkeerstroken de snelheid doet afnemen is helaas een fabeltje. Moesten er verschillende flitspalen staan of traject controle zijn, zou er inderdaad trager gereden worden. \u00a0De \u00a0traject controle van in Kaster tot het einde van de Grote Leiestraat. En hopelijk komt de ring er ooit! Dan kan Anzegem terug een rustiger en groener dorp worden."
                         },
                         {
+                            "type": "idea",
                             "id": "3587a78f-64d9-4afa-bcbc-d8f5ca68153c",
                             "title": "Plaatselijk verkeer",
                             "body": "Er zijn heel wat wegen waar enkel plaatselijk verkeer wordt toegelaten...echter zijn dit de wegen waar het meeste sluipverkeer zijn weg vindt... Heel jammer, op die manier mist het bord aan het begin en einde van de straat zijn doel. Om nog niet te spreken over de snelheid waarmee de voertuigen door die straten \"snorren\"."
                         },
                         {
+                            "type": "idea",
                             "id": "97f900bf-4d10-4d18-bcd2-6ed2351f5ca2",
                             "title": "Verkeersremmende maatregelen Vichtsesteenweg",
                             "body": "Om de snelheid van het doorgaand verkeer op de Vichtsesteenweg te remmen, misschien verkeersremmers voorzien of een andere verkeersremmende maatregel. Ook zwaar verkeer houdt zich niet aan de snelheid."
                         },
                         {
+                            "type": "idea",
                             "id": "770cf7c4-37c7-4a17-abfc-1127902773a0",
                             "title": "Uitsluitend plaatselijk verkeer in de Kerkdreef (en Vichteplaats)",
                             "body": "In de Kerkdreef is er veel sluikverkeer door mensen die rijden tussen Ingooigem en Sint Lodewijk en de lichten in het centrum van Vichte willen vermijden. Zij rijden dan langs de Vichteplaats en Kerkdreef.\nVooral tijdens de piekuren is er overlast. Doordat er veelal \u00a0te snel gereden wordt in de Kerkdreef geeft dit gevaarlijke situaties. Bovendien verstoort dit de rust van de vele wandelaars die komen \u00a0genieten van de natuur in deze straat en aansluitend Beukenhof.\nIk stel voor om de volledige Vichteplaats en de Kerkdreef een zone voor uitsluitend plaatselijk verkeer te maken.\u00a0\nBijkomende maatregel kan zijn om van deze zone ook een zone 30 te maken.\u00a0\nOm automobilisten die toch de verkeersregels aan hun laarzen lappen te ontmoedigen kan er bijkomend een verkeersdrempel in de Kerkdreef komen.\nDe nodige investering is minimaal. Gewoon enkele verkeersborden plaatsen.\u00a0\nNoot: Door het omvormen van de Vichteplaats en Kerkdreef naar een zone voor uitsluitend plaatselijk verkeer is er ook geen probleem voor de mobiliteit tijdens de wekelijkse markt omdat bezoekers aan de markt nog altijd langs de Kerkdreef kunnen wegrijden."
                         },
                         {
+                            "type": "idea",
                             "id": "200a3c8c-9dd1-4fff-a2f4-d68ae3d681c6",
                             "title": "Verkeersremmers Kerkdreef",
                             "body": "Om de snelheid van het doorgaand verkeer in de Kerkdreef te remmen, zouden er verkeersremmers moeten komen.\n--&gt; ingestuurd via facebook (Christiaene Lanneau)"
                         },
                         {
+                            "type": "idea",
                             "id": "8c3296f8-750b-4add-89c3-e2ca07db5a87",
                             "title": "Dorpskern Heirweg.",
                             "body": "Er wordt veel te snel gereden bij het binnenrijden van de dorpskern op de Heirweg vanuit richting voetbalvelden. Een wegversmalling zoals aan het binnenrijden aan kant Vichte zou een oplossing zijn. Verkeersdrempels aan Roterijstraat zouden ook een oplossing kunnen zijn zeker voor de veiligheid van de kinderen die er school gaan."
                         },
                         {
+                            "type": "idea",
                             "id": "2955fad6-4d0b-453f-85d6-f1cdf1104649",
                             "title": "Verkeersremmers in de Steenbruggestraat",
                             "body": "Verkeersremmers in de Steenbruggestraat zouden de verkeersveiligheid z\u00e9\u00e9r ten goede komen. Het zou de snelheid van het doorgaand verkeer afremmen. Momenteel is dit echt een racebaan; bijgevolg zeer onveilig voor fietsers, voetgangers en automobilisten! Het constant optrekken en afremmen van auto's zorgt enkel voor verkeersonveilige situaties.\u00a0"
                         },
                         {
+                            "type": "idea",
                             "id": "67a31f03-91c2-4938-a493-ad8e5b771168",
                             "title": "Fietsers Oudenaardestraat naar Peter Benoistraat",
                             "body": "\u00a0Een \u00a0veilige manier voor de fietsers die van de oudernaardseweg naar de peter benoitstraat moeten. Fietspad in het midden is zo gevaarlijk. Als het ligt op groen springt en jij ben net op het fietspad aan het rijden zijn er heel veel die hun spiegels vergeten\n gebruiken en naar rechts rijden voor je neus. Plus als er een auto \nstaat te wachten die links moet en het verkeer van de andere richting door laat zijn er heel veel die graag vlug rechts langs de auto willen passeren om rechtdoor te gaan. Ik heb daar al veel de remmen mogen toegooien.\u00a0\n\ningezonden door Cindy Van Herpe"
                         },
                         {
+                            "type": "idea",
                             "id": "9ef3812b-42ae-4071-8b52-3fc4520b3016",
                             "title": "Nuttige veiligheidstip kruispunt Zonnestraat met N36",
                             "body": "Bij het oversteken van het kruispunt richting Ingooigem kan je pas laat zien als er een auto of vrachtwagen uit de bocht vanuit Tiegem komt aangereden.  Het zicht wordt beperkt door de struiken en bomen langs de weg aan de overkant.\nHet zou een stuk veiliger zijn indien je de wagens reeds een stuk vroeger ziet afkomen.  Dit kan bijvoorbeeld door de struiken en bomen te verwijderen.\nIk spreek uit mijn eigen ervaring als bestuurder van een vrachtwagen(traag acceleratievermogen) en constateer dat ik af en toe te weinig tijd heb om het kruispunt te oversteken.\n"
                         },
                         {
+                            "type": "idea",
                             "id": "64f64b95-13d9-4986-87ca-8c493bec9d62",
                             "title": "pareelstraat oversteken ingooigemstraat (n36) afrit parking molecule",
                             "body": "zeer gevaarlijk om N36 op te rijden ook omdat dit een hellend vlak is rijden auto s tot boven om N36 op te komen met als gevolg er reeds veel fietsongevallen zijn gebeurd. mogelijke oplossing is lichten plaatsen juist voor de helling of rond punt zo verminderd de snelheid op iedere richting"
                         },
                         {
+                            "type": "idea",
                             "id": "c423ac60-05d5-4baa-8540-58242e814282",
                             "title": "Snelheidsduivels intomen",
                             "body": "Mijn idee/bemerking is voor de holstraat maar is zeker van toepassing voor vele andere straten in ons dorp. De holstraat is een straat waar de auto's echt snelheid nemen... Levensgevaarlijk voor de vele kinderen in de straat en niet aangenaam... Een ideale oplossing lijkt ons om op enkele punten een \u00a0'verkeersremmer' te plaatsen... Voorbeeld een 'slalom' dat verkeer uit een bepaalde richting voorrang heeft... Ik denk dat dit reeds een groot deel van de chauffeurs zal doen nadenken..."
                         },
                         {
+                            "type": "idea",
                             "id": "9613cae6-e7fb-478f-a5a3-021897c070af",
                             "title": "wegversmalling Vichtsesteenweg",
                             "body": "Wegversmalling in de Vichtsesteenweg ter \u00a0hoogte van onze afrit! Enorm gevaarlijk! Chauffeurs maken er een sport van om de slalom zo snel mogelijk te nemen!\u00a0\n\ningezonden door Ann Verbeke"
                         },
                         {
+                            "type": "idea",
                             "id": "a6dca128-bfa2-48ee-96c2-1fd3e71b9a38",
                             "title": "Bevrijdingslaan Kaster snelheid en veiligheid",
                             "body": "Flitspaal voorzien! Bredere en kindvriendelijke fietspaden richting station en richting school."
                         },
                         {
+                            "type": "idea",
                             "id": "472b8ddb-2a5d-45f0-8467-7aa2407a1ce1",
                             "title": "Veilige oversteekplaats Harelbeekstraat ter hoogte van paadje De Stringe",
                             "body": "Auto's stoppen niet altijd aan het zebrapad \u00a0als er voetgangers/fietsers staan. Soms zien ze ze niet of ze rijden te snel waardoor ze niet kunnen stoppen. \u00a0Ik zou verkeerslichten willen die altijd op groen staan, tenzij er voetgangers/fietsers op de knop duwen om over te steken. Dan is het zeker veilig om over te steken en kunnen ook kinderen alleen deze overweg gebruiken. Dit zou ook een stuk veiliger zijn dan oversteken aan het kruispunt. \u00a0Een eind verderop (aan de Hoekstraat) staat er op de schooluren altijd een politie om de kinderen over te steken, maar aan de kant van De Stringe niet. \u00a0Zeker als het zwembad er komt zal deze oversteekplaats nog meer gebruikt worden."
                         },
                         {
+                            "type": "idea",
                             "id": "d034ca17-ad16-4565-bf79-8793121752d9",
                             "title": "post",
                             "body": "meer nazicht op postbedeling met auto of bromfiets. als je tegenwoordig met de fiets op weg bent moet je opletten voor postauto s die over het voet of fietspad rijden."
                         },
                         {
+                            "type": "idea",
                             "id": "58ab295b-9fee-48f5-af65-a1c9d4130aa3",
                             "title": "Knokstraat plaatselijk verkeer",
                             "body": "Momenteel is de knokstraat in Vichte voor plaatselijk verkeer. Nu in praktijk klopt dit niet. Vele vlammen echt in de straat. Als wij eens wandelen in de straat is de kans meestal groot dat wij in de dijk moeten springen om niet aangereden te worden. Auto's vertragen zelfs niet om fietsers in te halen. Geen haar die er aan denkt mijn kinderen later alleen met de fiets naar school te laten gaan. Mss meer controle op Franse voertuigen. Of hindernissen op de weg zodat de wagens meer moeten vertragen. In de straat een fietspad aanleggen die naar een naastliggende wijk ligt is ook een optie!"
                         },
                         {
+                            "type": "idea",
                             "id": "ff5ecd10-c1b1-4f47-8465-d00daab4245a",
                             "title": "Middenberm/vluchtheuvel Oostdorp",
                             "body": "De middenberm/ vluchtheuvel in Oostdorp is gevaarlijker dan dat het nut heeft!! \nEen heeeeel gevaarlijke situatie voor de kinderen / volwassenen die met de fiets passeren! \nElke dag rij ik met de auto, bibberend uit onze garage ! Zo dicht moeten ze nu rijden! \nWij nodigen jullie allen uit om dit even te komen aanschouwen ! \nIk geef het op een blaadje , hier komen brokken van\u00a0\n\ningezonden door Sybille Demeulemeester"
                         },
                         {
+                            "type": "idea",
                             "id": "6e01932e-3bd1-4aeb-a2e1-adfbcd76ad27",
                             "title": "Statiestraat: veilige oversteekplaatsen",
                             "body": "Enkele veilige oversteekplaatsen op de Statiestraat en aan het station\n--&gt; ingestuurd via facebook (Katrijn Adriaens)"
                         },
                         {
+                            "type": "idea",
                             "id": "e62bb6e8-8b39-4658-add1-c5326ea34f55",
                             "title": "hellestraat",
                             "body": "deze landelijke weg is een druk bereden baantje. vooral smorgens ts 6 uur en 8 uur en savonds tussen 16 uur en20 uur. beter enkel plaatslijk verkeer. ook vrachtwagens gebruiken dit baantje. dit is een landbouwweg waar slechts een voertuig door kan . voor de bewoners is de lawaaihinder vooral overdag maar ook snachts zeer vervelend.trouwens er zijn reeds tientallen accidenten gebeurd zowel op tiegemberg (schernaai-hellestraat tigemberg) als in de hellestraat en zeer gevaarlijk aan de grote baan ingooigem tiegem avelgem otegem."
                         },
                         {
+                            "type": "idea",
                             "id": "36c6eec5-8b49-4d96-b88f-242e0ff837b5",
                             "title": "Trac\u00e9 2: start aan Grote Leiestraat",
                             "body": "Het nieuwe traject start aan de Grote Leiestraat (N382). Na het kruisen van de Vichtsesteenweg verandert de loop. De weg gaat naar de hoek van de Dompel- en Korte en Lange Winterstraat en loopt zo verder naar de Landergemstraat, nabij de Kouterstraat. Daarna gaat het dwars over de Kouterstraat en de hoek met de Koningskouter tot aan de Berglaan, vlakbij de spoorweg tussen Kortrijk en Oudenaarde.\u00a0"
                         },
                         {
+                            "type": "idea",
                             "id": "94f7f0fc-21c3-4814-b938-1bff735b4e68",
                             "title": "Trac\u00e9 1: tussen Lange Winter- en Nieuwpoortstraat",
                             "body": "Het nieuwe traject start aan de Grote Leiestraat (N382). Na het kruisen van de Vichtsesteenweg verandert de loop. De weg gaat naar de hoek van de Dompel- en Korte en Lange Winterstraat en loopt zo verder naar de Landergemstraat, nabij de Kouterstraat. Daarna gaat het dwars over de Kouterstraat en de hoek met de Koningskouter tot aan de Berglaan, vlakbij de spoorweg tussen Kortrijk en Oudenaarde.\u00a0"
                         },
                         {
+                            "type": "idea",
                             "id": "2c455517-a33e-4ef5-804f-11a03d4d2825",
                             "title": "Zebrapad kruispunt bevrijdingslaan",
                             "body": "Een zebrapad op het kruispunt in kaster tussen bevrijdingslaan/varent/Tiegemstraat/Scheldestraat zou zeer handig zijn. Als men bv uit de varentstraat of tiegemstraat over moet steken kan je daar enorm lang staan wachten vooraleer iemand je over laat + het zou de snelheid ook minderen richting kaster dorpskern."
                         },
                         {
+                            "type": "idea",
                             "id": "b70e6de3-7ad7-44c8-a673-e4d190a2a402",
                             "title": "Kindvriendelijk fietspad doorheen dorpskern",
                             "body": "Een afgescheiden, kindvriendelijk fietspad in een bij voorkeur autoluwe dorpskern. Voorbeeld van waar het beter kan: Statiestraat - Dorpsplein - begin Kerkstraat in Anzegem"
                         },
                         {
+                            "type": "idea",
                             "id": "72f4406b-1b74-4404-8c9d-ca1214526de9",
                             "title": "beter openbaar vervoer",
                             "body": "wat jammer dat de trein die elk uur voorbijkomt in ons dorp in het w-end niet stopt... Zwakke mogelijkheid om ons te verplaatsen met openbaar vervoer...\n--&gt; ingezonden door Francine Destoop, per mail"
                         },
                         {
+                            "type": "idea",
                             "id": "4461958e-98b3-4b7a-b1bc-28b5ccaf763e",
                             "title": "Veilige weg voor de Verrekijkerkinderen",
                             "body": "Kinderen die schoollopen in de Verrekijker en uit Anzegem komen veilig laten oversteken aan het station. Verschillende kinderen uit de Statiestraat en zijstraten lopen school in De Verrekijker deze is echter niet veilig te bereiken voor de schoolgaande kinderen. In de Statiestraat is er geen veilig fietspad en voetpad voorhanden. Eenmaal aangekomen aan de overweg van het station moeten de kinderen geluk hebben dat er een auto stopt want zebrapaden en een goed zicht om over te steken is er niet. Kleine moeite om de gemeente het voorstel te laten doen aan de provincie om hier toch wel een prioriteit van te maken (geen 10 jarenplan) want de kinderen van vandaag zijn onze toekomst."
                         },
                         {
+                            "type": "idea",
                             "id": "56399464-8b4a-4894-a753-0d60dd83af6d",
                             "title": "te hoge snelheden ",
                             "body": "Beste,\u00a0\nIn de Sint-Antonuisstraat ter hoogte van huisnummer 91.\nis het zone 30!\nDit is echter niet te merken vele chauffers rijden hier veel te rap. Zou het eventueel mogelijk om wegversperingen of meer flitscontroles te doen?\u00a0\nIk zou graag hebben dat mijn kinderen zich veilig kunnen verplaatsen\u00a0\nMVG"
                         },
                         {
+                            "type": "idea",
                             "id": "4f8b29bf-dbaa-4f03-8aff-5bde1f0ec1e3",
                             "title": "Straatverlichting doven na bepaald uur (waar het kan)",
                             "body": "We moeten alsmaar groener leven en denken maar de straatverlichtingen blijven een grote bron van electricteitsverbruik + lichtvervuiling + verstoring van natuur en biodiversiteit. Het vervangen van de oude straatverlichting door LED verlichting is \u00e9\u00e9n stap, maar de volgende stap zou het dynamisch dimmen van de lichten moeten zijn. Zeker in onze landelijke gemeente zijn er heel veel straten waar 's nachts nauwelijks een auto langs komt (enkel en alleen al de doodlopende straten) maar waar de straatverlichting wel blijft branden. Gevaarlijke kruispunten zouden steeds verlicht kunnen blijven, alsook oversteekplaatsen voor fietsers en voetgangers.\u00a0"
                         },
                         {
+                            "type": "idea",
                             "id": "58c11d39-38fe-4362-b707-0d505afe4421",
                             "title": "degelijk onderhoud en vernieuwen bestaande stapwegeltjes",
                             "body": "Waarom altijd nieuw routes en zaken \"uitvinden\" ? \u00a0De zachte ring om Anzegem waar voetgangers en fietser voorrang krijgen maar waar Koning auto blijft razen. \u00a0Het zou fijn en aangenaam zijn moest er wat meer aandacht zijn voor onderhoud en vernieuwing van reeds bestaande stapwegeltjes. \u00a0\u00a0Zo kunnen kinderen vaak veiliger naar school dan op snelweg van de \"zachte ring\". \u00a0Tot op heden is het veelal gevaarlijk om stapwegeltjes te nemen (toch alvast in Grijsloke) daar er veel stenen los en scheef liggen, en dit vaak omdat ze door aanpalende landbouwers respectloos behandeld worden of beschadigd. \u00a0Vandaar de warme oproep om de oude smalle versleten stapwegeltjes te vernieuwen naar nieuwe van 1 meter zodat als het kruid weelderig groeit je nog altijd droog en veilig naar school of op wandeling kan. alvast bedankt"
                         },
                         {
+                            "type": "idea",
                             "id": "d5c5d75a-1408-4771-ba5e-5383989bdaf0",
                             "title": "Fiets krijgt prioriteit",
                             "body": "De fiets als vervoersmiddel moet absolute prioriteit krijgen."
                         },
                         {
+                            "type": "idea",
                             "id": "ac707a56-8ef8-4815-8b09-5888444aef29",
                             "title": "Korte Winterstraat \u00e9\u00e9nrichtingsverkeer",
                             "body": "E\u00e9nrichtingsverkeer maken van de Korte Winterstraat. \u00a0Wagens kunnen elkaar nauwelijks kruisen. \u00a0Leidt vaak tot verkeersagressie\u00a0\n\ningezonden door Sven Vandeputte"
                         },
                         {
+                            "type": "idea",
                             "id": "43addba3-e54f-4a2f-91de-882fbf955be7",
                             "title": "Parkeerbeleid",
                             "body": "Vaste borden met uurregeling en parkeerverbod wanneer de markt doorgaat op Vichteplaats. Nu staan er naders en plakkaten \u00a0en daarna liggen ze op de openbare weg, of een brave burger zet alles langs de kant.\nOvertollige plakkaten op Vichteplaats verwijderen."
                         },
                         {
+                            "type": "idea",
                             "id": "a10c8936-2ec1-4e7f-a60e-f256f53fc909",
                             "title": "Te hoge snelheid Bevrijdingslaan",
                             "body": "Problematische situatie van hardrijders over de GANSE bevrijdingslaan valt eens te bekijken...\u00a0"
                         },
                         {
+                            "type": "idea",
                             "id": "d03b05b6-2825-4b92-937b-a915abbd3f52",
                             "title": "elektrische fietsen",
                             "body": "een groepsaankoop organiseren om elektrische (bak)fietsen te kopen. om verkeer te minderen"
                         },
                         {
+                            "type": "idea",
                             "id": "e9f2f227-056a-43db-bf4f-2db9203aa573",
                             "title": "Vrachtverkeer.",
                             "body": "Dagelijks probleem met vrachtwagens die elkaar geen duimbreed \u00a0geven in de Kerkstraat. \u00a0Dit probleem moest al jaren geleden opgelost zijn, In Wortegem kon het."
                         },
                         {
+                            "type": "idea",
                             "id": "ffadfab6-7cf5-477f-aa59-ecdc910e3b74",
                             "title": "Veilige en opvallende oversteekplaatsen aan scholen",
                             "body": "Aan de scholen een gekleurd zebrapad aanleggen over de ganse lengte van de straat met eventueel een oplichtende streep aan de buitenste lijn zodat wanneer het in de winterkant donker is dat ze lijnen reflecteren door de lichten van de auto.\n"
                         },
                         {
+                            "type": "idea",
                             "id": "08b597fe-96d8-47dd-884f-d1a6ff1caecc",
                             "title": "Een degelijk fietspad tussen de Korte Winterstraat en de Landergemstraat.",
                             "body": "Een verbindingsweg tussen de Korte Winterstraat naar de Landergemstraat toe.* Nu is er een pad dat kan gebruikt worden, maar dat is nogal vuil bij slecht weer. (wel geliefd bij mountainbikers) Mocht dat nu eens een verhard pad worden. \u00a0Dan kunnen jonge kinderen makkelijker veiliger en properder naar de Landergemstraat fietsen."
@@ -223,40 +271,48 @@
                     ]
                 },
                 {
-                    "id": 1,
-                    "label": "voetpad voetpaden wielant",
-                    "ideas": [
+                    "type": "custom",
+                    "id": "c5021ce4-7dcd-42a3-b475-fc47980b3ae3",
+                    "title": "voetpad voetpaden wielant",
+                    "children": [
                         {
+                            "type": "idea",
                             "id": "7c92e318-6664-499b-9143-8a861ea91c61",
                             "title": "Schaagstraat Heirweg: Doorlopend fiets- en voetpad",
                             "body": "Doorlopend fiets- en voetpad aan beide zijden van de Schaagstraat, zodat de zwakke weggebruikers afgescheiden worden van het autoverkeer en veilig naar school of het werk kunnen."
                         },
                         {
+                            "type": "idea",
                             "id": "5aae7504-5f18-407d-bdaa-da0963b7fa53",
                             "title": "Voetpad Statiestraat",
                             "body": "Een voetpad over de gehele lengte van de Statiestraat t.e.m., en zelfs verder, het station\n--&gt; idee ingestuurd via facebook (Katrijn Andriaens)"
                         },
                         {
+                            "type": "idea",
                             "id": "dc75e08c-a575-4b3e-8ae7-442fd8187a19",
                             "title": "Voetpaden Cardijnstraat",
                             "body": "Als inwoner van de woonwijk Cottereel verplaats ik mij vaak te voet naar het Ommerheimsplein (bib, Stringe, ...). Het ontbreken van een voetpad in de Cardijnstraat (richting Molendreef) zorgt ervoor dat ik vaak in de grasberm moet stappen door het auto -en vrachtwagenverkeer. \u00a0 Voetpaden i.p.v. de grasberm zorgt voor meer wandelcomfort en veiligheid voor de voetgangers. \u00a0"
                         },
                         {
+                            "type": "idea",
                             "id": "fc394ca1-0c96-4791-a190-ec8cad39dcb5",
                             "title": "voetpad in de Waregemstraat Vichte",
                             "body": "Onlangs moest ik te voet in de Waregemstraat vanuit de Domien Veysstraat naar de Priester Daensstraat. \u00a0Het is er levensgevaarlijk. \u00a0Je moet op bepaalde plaatsen op de rijweg lopen omdat er ofwel een zachte berm is, ofwel struiken staan ofwel zelfs drempels liggen. \u00a0Vooral ter hoogte van de bocht aan de Domien Veysstraat is er een probleem. \u00a0De enige optie is om over te steken en op het fietspad te lopen.\nIk stel voor om een voetpad aan te leggen in de Waregemstraat \u00a0tussen de Domien Veysstraat en de Priester Daensstraat. \u00a0\nTrouwens, ook door de recente verkaveling in de Priester Daensstraat zullen in de toekomst veel jonge gezinnen met kinderen dit traject doen als ze naar het centrum of school gaan.\u00a0"
                         },
                         {
+                            "type": "idea",
                             "id": "059b48c2-07cf-4f59-b01a-f34e1d816fde",
                             "title": "Meer en betere voetpaden",
                             "body": "Wandel eens met een kinderwagen of als minder mobiele persoon in Anzegem en deelgemeenten rond\u2026 Eigenlijkhetzelfde met fietspaden.\u00a0\u00a0\ningezonden door Christophe Warnez"
                         },
                         {
+                            "type": "idea",
                             "id": "b88955c3-7c81-45b8-957c-3c069b815565",
                             "title": "Veilige voetpaden",
                             "body": "Binnen de bebouwde kom zijn er overal veilige voetpaden."
                         },
                         {
+                            "type": "idea",
                             "id": "d6d6b166-b1dd-4265-919e-86671d281593",
                             "title": "Voetpad Wielant",
                             "body": "\u00a0een voetpad ter hoogte rvt Wielant richting Schellebellestraat\n\ningezonden door Annick Devogelaere\u00a0"
@@ -264,15 +320,18 @@
                     ]
                 },
                 {
-                    "id": 2,
-                    "label": "lijn nmbs",
-                    "ideas": [
+                    "type": "custom",
+                    "id": "f77b9677-94ce-4729-bd65-4e2aeb464326",
+                    "title": "lijn nmbs",
+                    "children": [
                         {
+                            "type": "idea",
                             "id": "4c521b0f-35db-48d3-8ee0-22cbad5f433a",
                             "title": "De lijn en NMBS",
                             "body": "Verbinding met Zwevegem en Waregem met de bus kan beter vanuit Vichte. Het zou \u00a0zoveel beter zijn voor het milieu dat je de auto kan laten staan als je daarheen wil. \u00a0De trein terug laten stoppen op zaterdag en zondag! Als je de auto zoveel mogelijk wil laten staan, is dit wel een must.Jonge mensen die in de stad wonen, vb. Gent en zich enkel verplaatsen met het openbaar vervoer kunnen dan tenminste op bezoek komen tijdens het weekend."
                         },
                         {
+                            "type": "idea",
                             "id": "28f5ca26-7b0a-4e91-8da9-7976a495841a",
                             "title": "De lijn",
                             "body": "Beste, \u00a0al ben ik geen groot gebruiker van de lijn wens ik u toch mee te delen dat ik het erg vind dat het wachten op de bus (vb Kerkstraat) geen enkel comfort biedt. Ouderen kunnen \u00a0niet zitten (geen zitplaatsen) en worden niet beschermd tegen wind en regen. \u00a0Jongeren \u00a0kunnen niet anders dan op de grond te zitten.... \u00a0\u00a0Wachten is op zich al niet plezant. \u00a0Waarom voor de busreiziger het niet aangenaam maken. Is dit niet een gedeelde verantwoordelijk ts gemeente en de lijn?Mvg Patricia Quatannens \u00a0P.s. Een bushalte hoeft niet saai te zijn."
@@ -280,15 +339,18 @@
                     ]
                 },
                 {
-                    "id": 3,
-                    "label": "flitspaal",
-                    "ideas": [
+                    "type": "custom",
+                    "id": "3ce1b62e-3838-4f8d-89c2-bd1df710314d",
+                    "title": "flitspaal",
+                    "children": [
                         {
+                            "type": "idea",
                             "id": "2af45ee6-2e86-4b36-bcd0-94214fa021b4",
                             "title": "Flitspaal !",
                             "body": "Het verkeer in de Zonnestraat in Tiegem is levensgevaarlijk. Er is een hoog verkeersaantal van auto's, vrachtwagens en moto's. De snelheid is beperkt tot 70 km/uur maar men raast er ongelooflijk door. Een flitspaal is het enigste wat de hoge snelheid zou kunnen minderen !\nKristel"
                         },
                         {
+                            "type": "idea",
                             "id": "f0abb19f-6c38-4f72-b196-0615b2def465",
                             "title": "Flitspaal in Vichtsesteenweg",
                             "body": "Ze rijden te snel in de Vichtsesteenweg , zou er nu al sprake zijn van het plaatsen van snelheidsremmers en/of een flitspaal voor de veiligheid van de bewoners en kinderen ?"
@@ -298,45 +360,55 @@
             ]
         },
         {
-            "label": "Milieu",
+            "type": "custom",
+            "id": "e1452ba8-4ecc-4942-a6c7-a214c90dd905",
+            "title": "Milieu",
             "typical_ideas": [
                 {
+                    "type": "idea",
                     "id": "d4fc884a-9b85-4054-8aba-8f89b5be6f7d",
                     "title": "Containerpark",
                     "body": "Beste,\nIedereen wil/moet sorteren tvv ons milieu. Goeie zaak. Waar ik me aan stoor is dat je je zetels van je personenwagen niet mag platleggen als je naar het containerpark gaat bv in vichte. Zo mag je als inwoner 2x of meer op en af rijden om je afval (tuin of ander) weg te krijgen. Is dit dan zo milieuvriendelijk?\u00a0"
                 },
                 {
+                    "type": "idea",
                     "id": "6bb289bd-15ca-4965-a24c-97a3e9c2f727",
                     "title": "Propere middenbermen aub",
                     "body": "Het valt me op bij alle middenbermen van de gemeente (en het is ook het eerste wat we zien als we de gemeente binnenrijden), maar aan alle middenbermen ligt een hoop aarde en afval, overgroeid met onkruid... dus het is zeker meer dan een jaar dat daar nog eens iemand is gepasseerd met een schoffel en een borstel"
                 },
                 {
+                    "type": "idea",
                     "id": "1263da64-f513-4593-9837-1d0fae599dcf",
                     "title": "Luchtvervuiling door houtverwarming.",
                     "body": "\nSinds 2006 is er de verplichte plaatsing van ventilatiesystemen in een nieuwe woning.\u00a0\nIn de herfst en wintermaanden is in onze straat en regio de buitenlucht zodanig vervuild met de uitwasemingen van de houtkachels dat we verplicht zijn het systeem uit te zetten met alle gevolgen van dien. Op de foto zijn een nieuwe luchtfilter en een gebruikte filter (een week) afgebeeld. Deze smurrie ademen we ieder van ons in tot we ziek worden. Hoe lang nog? Sinds 2006 is er niets veranderd.\n\nEr is een dringende en noodzakelijke reglementering nodig (afraden) voor het gebruik en verbranden van hout \u00a0voor verwarming.\u00a0\nDe Vlaamse overheid is nochtans duidelijk:\nAls de luchtkwaliteit slecht is omdat er te veel fijn stof in de lucht zit, dan is het aangeraden om maatregelen te nemen om het fijn stof te beperken. Een van die maatregelen is het beperken van houtverbrandingen (kachel, open haard, sfeerverwarming....)\nHoutverbranding is verantwoordelijk voor 35% van de totale uitstoot van fijn stof. Het beperken van houtverbranding bij slechte luchtkwaliteit kan het fijn stof verminderen en heeft een positieve impact op de gezondheid. Naast 35% fijnstof uitstoot is houtverbranding ook verantwoordelijk voor 40% van de totale dioxine uitstoot en 87% van de totale PAK-uitstoot.\n'PAK' zijn de polycyclische aromatische koolwaterstoffen, ze veroorzaken DNA schade en zijn kankerverwekkend.\n\nGemeentebestuur, dringend zorg a.u.b. voor bescherming van de gezondheid van alle inwoners.\n\n\u00a0\u00a0\u00a0\u00a0\n\n\n\u00a0\u00a0"
                 },
                 {
+                    "type": "idea",
                     "id": "473d605c-7ee3-491a-a680-d9630fa87fbe",
                     "title": "vermijden van lichtvervuiling",
                     "body": "Stimuleer lokale handelaars om hun buitenverlichting / reclameborden 's nachts te doven. \u00a0\u00a0\u00a0Zo vermijden we lichtvervuiling. Probeer ook als gemeente de lichtvervuiling te beperken."
                 },
                 {
+                    "type": "idea",
                     "id": "c0110027-6169-4030-8a27-2c7404a630de",
                     "title": "Aanpakken zwerfvuil",
                     "body": "Kunnen we met z'n allen iets doen tegen al het zwerfvuil? \u00a0Hoeveel tientallen blikjes en andere rommel vind je niet langs onze wegen?\nOpruimacties en sensibilisering!"
                 }
             ],
-            "clusters": [
+            "children": [
                 {
-                    "id": 0,
-                    "label": "vermijden luchtvervuiling lichtvervuiling",
-                    "ideas": [
+                    "type": "custom",
+                    "id": "a2a0dbfb-a673-4840-90e2-e0840ee7cd8b",
+                    "title": "vermijden luchtvervuiling lichtvervuiling",
+                    "children": [
                         {
+                            "type": "idea",
                             "id": "1263da64-f513-4593-9837-1d0fae599dcf",
                             "title": "Luchtvervuiling door houtverwarming.",
                             "body": "\nSinds 2006 is er de verplichte plaatsing van ventilatiesystemen in een nieuwe woning.\u00a0\nIn de herfst en wintermaanden is in onze straat en regio de buitenlucht zodanig vervuild met de uitwasemingen van de houtkachels dat we verplicht zijn het systeem uit te zetten met alle gevolgen van dien. Op de foto zijn een nieuwe luchtfilter en een gebruikte filter (een week) afgebeeld. Deze smurrie ademen we ieder van ons in tot we ziek worden. Hoe lang nog? Sinds 2006 is er niets veranderd.\n\nEr is een dringende en noodzakelijke reglementering nodig (afraden) voor het gebruik en verbranden van hout \u00a0voor verwarming.\u00a0\nDe Vlaamse overheid is nochtans duidelijk:\nAls de luchtkwaliteit slecht is omdat er te veel fijn stof in de lucht zit, dan is het aangeraden om maatregelen te nemen om het fijn stof te beperken. Een van die maatregelen is het beperken van houtverbrandingen (kachel, open haard, sfeerverwarming....)\nHoutverbranding is verantwoordelijk voor 35% van de totale uitstoot van fijn stof. Het beperken van houtverbranding bij slechte luchtkwaliteit kan het fijn stof verminderen en heeft een positieve impact op de gezondheid. Naast 35% fijnstof uitstoot is houtverbranding ook verantwoordelijk voor 40% van de totale dioxine uitstoot en 87% van de totale PAK-uitstoot.\n'PAK' zijn de polycyclische aromatische koolwaterstoffen, ze veroorzaken DNA schade en zijn kankerverwekkend.\n\nGemeentebestuur, dringend zorg a.u.b. voor bescherming van de gezondheid van alle inwoners.\n\n\u00a0\u00a0\u00a0\u00a0\n\n\n\u00a0\u00a0"
                         },
                         {
+                            "type": "idea",
                             "id": "473d605c-7ee3-491a-a680-d9630fa87fbe",
                             "title": "vermijden van lichtvervuiling",
                             "body": "Stimuleer lokale handelaars om hun buitenverlichting / reclameborden 's nachts te doven. \u00a0\u00a0\u00a0Zo vermijden we lichtvervuiling. Probeer ook als gemeente de lichtvervuiling te beperken."
@@ -344,50 +416,60 @@
                     ]
                 },
                 {
-                    "id": 1,
-                    "label": "zwerfvuil zijpte wegeltjes",
-                    "ideas": [
+                    "type": "custom",
+                    "id": "f4fc5cdd-739c-4b1e-942c-bb64ac174788",
+                    "title": "zwerfvuil zijpte wegeltjes",
+                    "children": [
                         {
+                            "type": "idea",
                             "id": "6bb289bd-15ca-4965-a24c-97a3e9c2f727",
                             "title": "Propere middenbermen aub",
                             "body": "Het valt me op bij alle middenbermen van de gemeente (en het is ook het eerste wat we zien als we de gemeente binnenrijden), maar aan alle middenbermen ligt een hoop aarde en afval, overgroeid met onkruid... dus het is zeker meer dan een jaar dat daar nog eens iemand is gepasseerd met een schoffel en een borstel"
                         },
                         {
+                            "type": "idea",
                             "id": "c0110027-6169-4030-8a27-2c7404a630de",
                             "title": "Aanpakken zwerfvuil",
                             "body": "Kunnen we met z'n allen iets doen tegen al het zwerfvuil? \u00a0Hoeveel tientallen blikjes en andere rommel vind je niet langs onze wegen?\nOpruimacties en sensibilisering!"
                         },
                         {
+                            "type": "idea",
                             "id": "f008a4b7-4343-4f42-a03a-c631f5ff6034",
                             "title": "Ophaling compost",
                             "body": "Na 2 jaar in Gent te verblijven, werd ik het heel gewoon om standaard te composteren. Daar kon men een GFT-bak aanvragen en dit werd dan opgehaald om te composteren tegen een bedrag goedkoper dan een restafvalzak. Nu ik terug in Vichte woon en geen tuin heb, mis ik het om te kunnen composteren. Ik zie het ook niet zitten om een wormenbak aan te schaffen. Dit vraagt wel wat ervaring en onderhoud en is iets vuiler. \nIk weet niet of er interesse zou zijn vanuit de Anzegemse bevolking. Maar aangezien ik zie dat er veel appartementen worden gebouwd, is het misschien wel nuttig dat ook in Anzegem mensen kans krijgen om hun GFT te laten ophalen. Volgend jaar verhuis ik en heb ik wel een tuin, maar indien anderen mij hierin volgen, kan dit idee misschien wel zonder veel moeite uitgevoerd worden. Momenteel is er wel kans om tuinafval te laten ophalen, maar geen fruit-, groentenafval en andere composteerbare materialen. Ik heb de cursus composteren in Harelbeke gevolgd, maar misschien ook voor mensen uit Anzegem leuk als ze die kans krijgen via Imog. Ik wil gerust ook een cursus geven rond composteren ;)"
                         },
                         {
+                            "type": "idea",
                             "id": "373adb56-3606-44b1-b4f7-eca27e1ba6ce",
                             "title": "Gemeentelijke groenaanplantingen met fruitbomen en struiken",
                             "body": "Als er iets aangeplant zou worden in de toekomst zou het misschien fijn zijn om fruitbomen/struiken aan te planten. Is goed voor de bijen en het lijkt me wel fijn om tijdens een wandeling wat van het rijpe fruit te snoepen. :)\u00a0"
                         },
                         {
+                            "type": "idea",
                             "id": "ce89e6b3-db75-402e-a118-be5a0b29182a",
                             "title": "Meer plukbomen",
                             "body": "Op openbaar domein (parken en straten) zouden er bijvoorbeeld appel- en perenbomen kunnen aangeplant worden. De oogst is voor de inwoners!"
                         },
                         {
+                            "type": "idea",
                             "id": "a239e23e-d87f-4e87-adc8-3c6525566f75",
                             "title": "Landwegel Zijpte",
                             "body": "Vroeger lag er een landwegel aan de Zijptestraat die naar de Zijpte liep en waar je kon genieten van een mooi stukje natuur aan beek en waterplasjes. Hoe komt het de deze verdwenen is met nog verscheidene landwegels zoals die van de Oudepontstraat naar de Doornstraat waar je door het mooie landschap naar Tiegem kon gaan. Jammer dat dit allemaal zomaar kon verdwijnen !!!"
                         },
                         {
+                            "type": "idea",
                             "id": "0085c515-c755-41cf-8cf4-745420fd5752",
                             "title": "wegeltjes met steentjes",
                             "body": "De \u00a0wegeltjes waar geen tegels liggen, voorzien van gravier. In Elsbroek is \u00a0het een modderpoel geworden. Wandelaars klagen dat hun schoenen en broekspijpen vol modder hangen\u00a0\ningezonden door Stefaan Devogelaere"
                         },
                         {
+                            "type": "idea",
                             "id": "463d6b50-8aa7-466d-bdf2-f798b4da1176",
                             "title": "Meer vuilnisbakken",
                             "body": "Meer vuilnisbakken, vooral langs het Kasselrijbeekpak\n(ingezonden door Marieke Desplenter)\u00a0"
                         },
                         {
+                            "type": "idea",
                             "id": "ed82cb08-1aa0-46f8-9e3d-ac80b517447c",
                             "title": "korfmanden voor gevallen bladeren",
                             "body": "Op geregelde plaatsen een korf plaatsen zodat \u00a0we de gevallen bladeren zouden kunnen verzamelen op 1 punt en dan door de gemeente geregeld word leeggemaakt."
@@ -395,55 +477,66 @@
                     ]
                 },
                 {
-                    "id": 2,
-                    "label": "wandelpaden vichte verhaeghe",
-                    "ideas": [
+                    "type": "custom",
+                    "id": "4ae00603-fada-413f-bb05-af5660077955",
+                    "title": "wandelpaden vichte verhaeghe",
+                    "children": [
                         {
+                            "type": "idea",
                             "id": "d4fc884a-9b85-4054-8aba-8f89b5be6f7d",
                             "title": "Containerpark",
                             "body": "Beste,\nIedereen wil/moet sorteren tvv ons milieu. Goeie zaak. Waar ik me aan stoor is dat je je zetels van je personenwagen niet mag platleggen als je naar het containerpark gaat bv in vichte. Zo mag je als inwoner 2x of meer op en af rijden om je afval (tuin of ander) weg te krijgen. Is dit dan zo milieuvriendelijk?\u00a0"
                         },
                         {
+                            "type": "idea",
                             "id": "855a42bf-e5f8-4af6-8bb7-d7f184c86099",
                             "title": "Samentuin project Grijsloke",
                             "body": "Ontwikkelen van ecologische en biologische samentuin in Grijsloke\nInwoners staan in voor de aanleg en het onderhoud.\u00a0\n- eigen perceel om te bewerken\n- gemeenschappelijk perceel met courgette, pompoen,...\n- gemeenschappelijke serre\n- laagstam fruitbomen\n- compostbakken\n- bijenkorven\n- ...\nKan in samenwerking met Velt vzw ontwikkeld worden."
                         },
                         {
+                            "type": "idea",
                             "id": "4f8b29bf-dbaa-4f03-8aff-5bde1f0ec1e3",
                             "title": "Straatverlichting doven na bepaald uur (waar het kan)",
                             "body": "We moeten alsmaar groener leven en denken maar de straatverlichtingen blijven een grote bron van electricteitsverbruik + lichtvervuiling + verstoring van natuur en biodiversiteit. Het vervangen van de oude straatverlichting door LED verlichting is \u00e9\u00e9n stap, maar de volgende stap zou het dynamisch dimmen van de lichten moeten zijn. Zeker in onze landelijke gemeente zijn er heel veel straten waar 's nachts nauwelijks een auto langs komt (enkel en alleen al de doodlopende straten) maar waar de straatverlichting wel blijft branden. Gevaarlijke kruispunten zouden steeds verlicht kunnen blijven, alsook oversteekplaatsen voor fietsers en voetgangers.\u00a0"
                         },
                         {
+                            "type": "idea",
                             "id": "9aee3045-f921-4960-ae02-bc843b61c8fb",
                             "title": "Onderhouden wandelpaden",
                             "body": "IK zou graag meer onderhouden wandelpaden hebben in groot Anzegem, momenteel is het een ramp aangaande \u00a0onderhoud\n\ningezonden door Jaak Catteeuw"
                         },
                         {
+                            "type": "idea",
                             "id": "28017542-aa08-48ab-873f-948496c32620",
                             "title": "Natuurdomein Beukenhof-Kasteel Verhaeghe.",
                             "body": "De weiden tussen Het Beukenhof en Kasteel Verhaeghe worden een natuurdomein ."
                         },
                         {
+                            "type": "idea",
                             "id": "e3b86bea-013c-4d72-bf24-3ec4c7b2f24f",
                             "title": "Speeltuin voor de kleinsten in het Beukenhof park",
                             "body": "In de buurt van het Beukenhof in Vichte zijn er veel gezinnen die met hun kindjes komen wandelen. \u00a0Het zou goed zijn om in het Beukenhof park een paar speeltuigen voor deze kleinsten te plaatsen zoals een zandbak, glijbaan, ... \u00a0Een geschikte plaats voor deze speeltuigen kan bijvoorbeeld in een hoek van het grasveld naast de vlindertuin zijn. \u00a0Met een zitbank erbij zou dit een ideale plek zijn om even te verpozen of met andere bezoekers te socializen. \u00a0Vroeger was er trouwens een speeltuin in het Beukenhof park."
                         },
                         {
+                            "type": "idea",
                             "id": "dc504048-a271-462f-85ae-492b29336dfc",
                             "title": "Een dorpspark in iedere deelgemeente",
                             "body": "Groen is belangrijk in een gemeente. Een plaats waar mensen kunnen wandelen, onder een boom zitten, genieten van de buitenlucht,... \u00a0Een dorpspark (bv. Beukenhof) zou in iedere dorpskern moeten aanwezig zijn."
                         },
                         {
+                            "type": "idea",
                             "id": "e62bb6e8-8b39-4658-add1-c5326ea34f55",
                             "title": "hellestraat",
                             "body": "deze landelijke weg is een druk bereden baantje. vooral smorgens ts 6 uur en 8 uur en savonds tussen 16 uur en20 uur. beter enkel plaatslijk verkeer. ook vrachtwagens gebruiken dit baantje. dit is een landbouwweg waar slechts een voertuig door kan . voor de bewoners is de lawaaihinder vooral overdag maar ook snachts zeer vervelend.trouwens er zijn reeds tientallen accidenten gebeurd zowel op tiegemberg (schernaai-hellestraat tigemberg) als in de hellestraat en zeer gevaarlijk aan de grote baan ingooigem tiegem avelgem otegem."
                         },
                         {
+                            "type": "idea",
                             "id": "699f857d-78ef-466a-99c2-67ac244d2e50",
                             "title": "Een Repair Caf\u00e9",
                             "body": "Een Repair Caf\u00e9 is een repareer bijeenkomst, georganiseerd op buurtniveau. Men kan er meegebrachte kapotte spullen repareren met hulp van vrijwilligers. Doelstellingen zijn het verkleinen van de afvalberg, het behouden van kennis over repareren en het versterken van de sociale cohesie\n--&gt; voorstel via Twitter ingediend door Robbie Dewit"
                         },
                         {
+                            "type": "idea",
                             "id": "42607d8e-12f9-4b15-9f9c-5b03bc58e39e",
                             "title": "Brandweerkazerne  te Vichte",
                             "body": "Door de goede samenwerking met de gemeente Deerlijk komt er een nieuwe brandweerkazerne aan de Belgiek. Wat zal er gebeuren met de huidige brandweerkazerne in Vichte die vermoedelijk leeg komt te staan? \u00a0\u00a0\u00a0\u00a0\u00a0Geef inwoners de mogelijkheid om hierover voorstellen te doen (cf. gemeente Deerlijk dit deed voor het domein van de brandweerkazerne Deerlijk) Bijvoorbeeld: de ploeterput verdwijnt bij de aanleg van het zwembad. \u00a0Kan dit stukje groen / speelplein 'verhuizen' naar de locatie van de brandweerkazerne?"
@@ -451,15 +544,18 @@
                     ]
                 },
                 {
-                    "id": 3,
-                    "label": "anzegem eetbaar bijen",
-                    "ideas": [
+                    "type": "custom",
+                    "id": "cedfd06e-db2f-43aa-86cd-8072453f7551",
+                    "title": "anzegem eetbaar bijen",
+                    "children": [
                         {
+                            "type": "idea",
                             "id": "abca9261-6572-418c-99ca-b4b4d31a64cd",
                             "title": "Eetbaar Anzegem ",
                             "body": "Waarom onze gemeente niet aansluiten bij het 'Incredible Edible' project als kleine stap in de richting van een meer duurzame en sociale samenleving? \u00a0Op verschillende (vaak onverwachte) plaatsen kleine tuintjes met eetbare planten (bijvoorbeeld bessen, kruiden...) inrichten om mensen samen te brengen.\n(Incredible Edible - local food revolution - food to share)\nMeer informatie via deze links:\n\nIncredible Edible Network\u00a0\n\nYoutube video \u00a0"
                         },
                         {
+                            "type": "idea",
                             "id": "e35aa338-1ff1-4ae0-b064-962647547ce8",
                             "title": "Meer bijen in Anzegem",
                             "body": "Campagne en sensibilisering voor meer bijen. Wat kunnen mensen doen om meer bijen aan te trekken? Goedkoop aanbod bijenkorven of -hotels voor in de tuin."
@@ -469,45 +565,55 @@
             ]
         },
         {
-            "label": "Sport",
+            "type": "custom",
+            "id": "db7b1a76-2a95-43cd-b53c-49240aea8635",
+            "title": "Sport",
             "typical_ideas": [
                 {
+                    "type": "idea",
                     "id": "403ff4d4-16e5-4eee-9b78-ee3ae7c61a7a",
                     "title": "Skatepark Anzegem",
                     "body": "Voor tieners in Anzegem zou een skatepark meer dan welkom zijn. Nu gaan we nog steeds naar andere skateparken in de buurt (bv. Waregem, Kortrijk, Izegem...), maar afspreken met vrienden in onze eigen gemeente zou natuurlijk veel leuker zijn. Een terrein dat zowel voor skaters, steppers, BMX-ers.... toegankelijk is: daar dromen we van! Via DoeK\u00e9Zot is er vermoedelijk budget voorzien. Nu nog werk maken van de concrete uitvoering. En als jullie nog een testpanel zoeken om de \u00a0ramps, rails, grindboxes en de snakerun te helpen uitkiezen... daar kunnen we bij helpen ;-)"
                 },
                 {
+                    "type": "idea",
                     "id": "2bf4e84e-67e1-4bcb-a87e-b2d956346f11",
                     "title": "Zwembad Vichte",
                     "body": "Iedere dag kan je baantjes zwemmen van 7u tot 8u en van 12u tot 13u."
                 },
                 {
+                    "type": "idea",
                     "id": "0085c515-c755-41cf-8cf4-745420fd5752",
                     "title": "wegeltjes met steentjes",
                     "body": "De \u00a0wegeltjes waar geen tegels liggen, voorzien van gravier. In Elsbroek is \u00a0het een modderpoel geworden. Wandelaars klagen dat hun schoenen en broekspijpen vol modder hangen\u00a0\ningezonden door Stefaan Devogelaere"
                 },
                 {
+                    "type": "idea",
                     "id": "0b02de9a-fc5d-4439-a8a7-6e15a8ca43c7",
                     "title": "Hondenweide",
                     "body": "Dagdagelijks kom ik zeer veel mede hondeneigenaars tegen op wandel met hun beste vriend en dit is dan ook de input van mijn idee om een hondenweide te voorzien. Er zijn tal van kleine stukjes 'verwilderd' groen/grasveld waar een weide kan gemaakt worden voor onze beste viervoeters.\nDe dichtstbijzijnde hondenweide in de streek is aan de Gavers in Deerlijk. Wat voor veel mensen in het bijzonder ouderen een behoorlijke afstand is.\nMvg Angelo Seys"
                 },
                 {
+                    "type": "idea",
                     "id": "08b597fe-96d8-47dd-884f-d1a6ff1caecc",
                     "title": "Een degelijk fietspad tussen de Korte Winterstraat en de Landergemstraat.",
                     "body": "Een verbindingsweg tussen de Korte Winterstraat naar de Landergemstraat toe.* Nu is er een pad dat kan gebruikt worden, maar dat is nogal vuil bij slecht weer. (wel geliefd bij mountainbikers) Mocht dat nu eens een verhard pad worden. \u00a0Dan kunnen jonge kinderen makkelijker veiliger en properder naar de Landergemstraat fietsen."
                 }
             ],
-            "clusters": [
+            "children": [
                 {
-                    "id": 0,
-                    "label": "hondenweide hondenspeelweide",
-                    "ideas": [
+                    "type": "custom",
+                    "id": "1486e505-d8a3-4b09-b96b-7adc01bc663e",
+                    "title": "hondenweide hondenspeelweide",
+                    "children": [
                         {
+                            "type": "idea",
                             "id": "0b02de9a-fc5d-4439-a8a7-6e15a8ca43c7",
                             "title": "Hondenweide",
                             "body": "Dagdagelijks kom ik zeer veel mede hondeneigenaars tegen op wandel met hun beste vriend en dit is dan ook de input van mijn idee om een hondenweide te voorzien. Er zijn tal van kleine stukjes 'verwilderd' groen/grasveld waar een weide kan gemaakt worden voor onze beste viervoeters.\nDe dichtstbijzijnde hondenweide in de streek is aan de Gavers in Deerlijk. Wat voor veel mensen in het bijzonder ouderen een behoorlijke afstand is.\nMvg Angelo Seys"
                         },
                         {
+                            "type": "idea",
                             "id": "f82acd8c-aa8a-49a7-b2d7-c80049a11236",
                             "title": "Een hondenspeelweide",
                             "body": "Een hondenspeelweide\n(ingezonden door Marieke Desplenter)"
@@ -515,45 +621,54 @@
                     ]
                 },
                 {
-                    "id": 1,
-                    "label": "zwembad wegeltjes wandelpaden",
-                    "ideas": [
+                    "type": "custom",
+                    "id": "a90e59f7-49f1-43c4-a57e-99c83e74690c",
+                    "title": "zwembad wegeltjes wandelpaden",
+                    "children": [
                         {
+                            "type": "idea",
                             "id": "403ff4d4-16e5-4eee-9b78-ee3ae7c61a7a",
                             "title": "Skatepark Anzegem",
                             "body": "Voor tieners in Anzegem zou een skatepark meer dan welkom zijn. Nu gaan we nog steeds naar andere skateparken in de buurt (bv. Waregem, Kortrijk, Izegem...), maar afspreken met vrienden in onze eigen gemeente zou natuurlijk veel leuker zijn. Een terrein dat zowel voor skaters, steppers, BMX-ers.... toegankelijk is: daar dromen we van! Via DoeK\u00e9Zot is er vermoedelijk budget voorzien. Nu nog werk maken van de concrete uitvoering. En als jullie nog een testpanel zoeken om de \u00a0ramps, rails, grindboxes en de snakerun te helpen uitkiezen... daar kunnen we bij helpen ;-)"
                         },
                         {
+                            "type": "idea",
                             "id": "2bf4e84e-67e1-4bcb-a87e-b2d956346f11",
                             "title": "Zwembad Vichte",
                             "body": "Iedere dag kan je baantjes zwemmen van 7u tot 8u en van 12u tot 13u."
                         },
                         {
+                            "type": "idea",
                             "id": "0085c515-c755-41cf-8cf4-745420fd5752",
                             "title": "wegeltjes met steentjes",
                             "body": "De \u00a0wegeltjes waar geen tegels liggen, voorzien van gravier. In Elsbroek is \u00a0het een modderpoel geworden. Wandelaars klagen dat hun schoenen en broekspijpen vol modder hangen\u00a0\ningezonden door Stefaan Devogelaere"
                         },
                         {
+                            "type": "idea",
                             "id": "08b597fe-96d8-47dd-884f-d1a6ff1caecc",
                             "title": "Een degelijk fietspad tussen de Korte Winterstraat en de Landergemstraat.",
                             "body": "Een verbindingsweg tussen de Korte Winterstraat naar de Landergemstraat toe.* Nu is er een pad dat kan gebruikt worden, maar dat is nogal vuil bij slecht weer. (wel geliefd bij mountainbikers) Mocht dat nu eens een verhard pad worden. \u00a0Dan kunnen jonge kinderen makkelijker veiliger en properder naar de Landergemstraat fietsen."
                         },
                         {
+                            "type": "idea",
                             "id": "9aee3045-f921-4960-ae02-bc843b61c8fb",
                             "title": "Onderhouden wandelpaden",
                             "body": "IK zou graag meer onderhouden wandelpaden hebben in groot Anzegem, momenteel is het een ramp aangaande \u00a0onderhoud\n\ningezonden door Jaak Catteeuw"
                         },
                         {
+                            "type": "idea",
                             "id": "28017542-aa08-48ab-873f-948496c32620",
                             "title": "Natuurdomein Beukenhof-Kasteel Verhaeghe.",
                             "body": "De weiden tussen Het Beukenhof en Kasteel Verhaeghe worden een natuurdomein ."
                         },
                         {
+                            "type": "idea",
                             "id": "96e333c2-4e9f-47f8-ab98-daf14e42be1e",
                             "title": "Gevaarlijke bocht Waregemstraat - Domien Veysstraat",
                             "body": "Bij het verlaten van de Domien Veysstraat naar de Waregemstraat is de zichtbaarheid erg beperkt waardoor het uitrijden gevaarlijk is. \u00a0Struiken snoeien om het zichtbaarheid te vergroten is \u00e9\u00e9n van de mogelijke oplossingen ..."
                         },
                         {
+                            "type": "idea",
                             "id": "d03b05b6-2825-4b92-937b-a915abbd3f52",
                             "title": "elektrische fietsen",
                             "body": "een groepsaankoop organiseren om elektrische (bak)fietsen te kopen. om verkeer te minderen"
@@ -561,10 +676,12 @@
                     ]
                 },
                 {
-                    "id": 2,
-                    "label": "krantenwinkel",
-                    "ideas": [
+                    "type": "custom",
+                    "id": "1f3e2261-80e5-4e97-b22e-00c59617ed5a",
+                    "title": "krantenwinkel",
+                    "children": [
                         {
+                            "type": "idea",
                             "id": "9cfcc87e-c3ca-4790-8fca-71378ad77df6",
                             "title": "krantenwinkel",
                             "body": "Een krantenwinkel met Lotto ! Vichte sluit ,en liefst Ingooigem!\u00a0\n\ningezonden door Renate Adams"
@@ -574,50 +691,61 @@
             ]
         },
         {
-            "label": "Kunst en cultuur",
+            "type": "custom",
+            "id": "bd793507-6680-4fcd-a655-74593e46e949",
+            "title": "Kunst en cultuur",
             "typical_ideas": [
                 {
+                    "type": "idea",
                     "id": "e3b86bea-013c-4d72-bf24-3ec4c7b2f24f",
                     "title": "Speeltuin voor de kleinsten in het Beukenhof park",
                     "body": "In de buurt van het Beukenhof in Vichte zijn er veel gezinnen die met hun kindjes komen wandelen. \u00a0Het zou goed zijn om in het Beukenhof park een paar speeltuigen voor deze kleinsten te plaatsen zoals een zandbak, glijbaan, ... \u00a0Een geschikte plaats voor deze speeltuigen kan bijvoorbeeld in een hoek van het grasveld naast de vlindertuin zijn. \u00a0Met een zitbank erbij zou dit een ideale plek zijn om even te verpozen of met andere bezoekers te socializen. \u00a0Vroeger was er trouwens een speeltuin in het Beukenhof park."
                 },
                 {
+                    "type": "idea",
                     "id": "6c2ad723-b16c-48e8-abf1-5cc84e8ed353",
                     "title": "Vuurwerk feestweekend",
                     "body": "Het vuurwerk tijdens het feestweekend op zaterdag i.p.v. op zondag (dan kunnen ook de kleuters ervan genieten)\n--&gt; ingestuurd via facebook (Katrijn Adriaens)"
                 },
                 {
+                    "type": "idea",
                     "id": "b91ba25b-c556-49eb-bb7a-6985ccdb097e",
                     "title": "Lokale boerenmarkt",
                     "body": "Op een lokale boerenmarkt vind je heerlijke streekproducten van onze lokale ondernemers. Maar het zou ook een plaats vol ontmoetingen kunnen zijn. Ontmoetingen met de boeren, vrienden, familie en kennissen. Een plaats waar men samenkomt, ontmoet."
                 },
                 {
+                    "type": "idea",
                     "id": "a6349731-75a2-4455-9a28-93060c6289fe",
                     "title": "Kerk Anzegem",
                     "body": "Is het wel een goed idee een kerk te maken van de kerk van Anzegem? Er komt ongetwijfeld een toeristische dienst in Anzegem met wandelingen etc.\nIn plaats van een liturgische ruimte maak er een tentoonstelling van over Anzegem als startpunt van wandelingen etc.\u00a0\nSteek daar de balie met brochures en wandelkaarten en maak een tentoonstelling. Over de befaamde Sint-Arnoldusverering in Tiegem (die tentoonstelling in de kerk van Tiegem n.a.v. erfgoeddag was een schot in de roos!). Voorts over alle dorpskernen en hun bezienswaardigheden: alle kerken, molens, ... geschiedkundige wist-je-datjes, belangrijke personen zoals Stijn Streuvels, Juliaan Claerhout en een algemene geschiedenis van Anzegem over de WO\u2019en etc. Niet zo lang, beknopt, maar interessant. Vooral veel foto\u2019s. Zeker over de Arnoldusverering want dat was een fenomeen in Vlaanderen. Wat kost dat? Laat de heemkundige verenigingen en liefhebbers zelf bondige teksten maken over de voor genoemde onderwerpen. Zij en/of het gemeentearchief hebben sowieso veel foto\u2019s en bv oude soutanes van uit diezelfde Arnoldusverering. Et Voila. In plaats van stoelen etc te kopen gewoon borden laten maken, kan toch zo duur niet zijn. Maar de kerk krijgt een veel meer hedendaagse invulling voor quasi geen geld.\nAls je \u00e9cht zot wil doen kan er op het grasveld achter de kerk, dat zuidelijk gericht is, een terras geplaatst worden zoals deze zomer in Tiegembos. Maakt de ervaring compleet. (En doe die lelijke appartementen weg)"
                 },
                 {
+                    "type": "idea",
                     "id": "f82acd8c-aa8a-49a7-b2d7-c80049a11236",
                     "title": "Een hondenspeelweide",
                     "body": "Een hondenspeelweide\n(ingezonden door Marieke Desplenter)"
                 }
             ],
-            "clusters": [
+            "children": [
                 {
-                    "id": 0,
-                    "label": "anzegem verhaeghe natuurdomein",
-                    "ideas": [
+                    "type": "custom",
+                    "id": "c781bf2c-0144-40ce-b317-892721ea38ce",
+                    "title": "anzegem verhaeghe natuurdomein",
+                    "children": [
                         {
+                            "type": "idea",
                             "id": "a6349731-75a2-4455-9a28-93060c6289fe",
                             "title": "Kerk Anzegem",
                             "body": "Is het wel een goed idee een kerk te maken van de kerk van Anzegem? Er komt ongetwijfeld een toeristische dienst in Anzegem met wandelingen etc.\nIn plaats van een liturgische ruimte maak er een tentoonstelling van over Anzegem als startpunt van wandelingen etc.\u00a0\nSteek daar de balie met brochures en wandelkaarten en maak een tentoonstelling. Over de befaamde Sint-Arnoldusverering in Tiegem (die tentoonstelling in de kerk van Tiegem n.a.v. erfgoeddag was een schot in de roos!). Voorts over alle dorpskernen en hun bezienswaardigheden: alle kerken, molens, ... geschiedkundige wist-je-datjes, belangrijke personen zoals Stijn Streuvels, Juliaan Claerhout en een algemene geschiedenis van Anzegem over de WO\u2019en etc. Niet zo lang, beknopt, maar interessant. Vooral veel foto\u2019s. Zeker over de Arnoldusverering want dat was een fenomeen in Vlaanderen. Wat kost dat? Laat de heemkundige verenigingen en liefhebbers zelf bondige teksten maken over de voor genoemde onderwerpen. Zij en/of het gemeentearchief hebben sowieso veel foto\u2019s en bv oude soutanes van uit diezelfde Arnoldusverering. Et Voila. In plaats van stoelen etc te kopen gewoon borden laten maken, kan toch zo duur niet zijn. Maar de kerk krijgt een veel meer hedendaagse invulling voor quasi geen geld.\nAls je \u00e9cht zot wil doen kan er op het grasveld achter de kerk, dat zuidelijk gericht is, een terras geplaatst worden zoals deze zomer in Tiegembos. Maakt de ervaring compleet. (En doe die lelijke appartementen weg)"
                         },
                         {
+                            "type": "idea",
                             "id": "28017542-aa08-48ab-873f-948496c32620",
                             "title": "Natuurdomein Beukenhof-Kasteel Verhaeghe.",
                             "body": "De weiden tussen Het Beukenhof en Kasteel Verhaeghe worden een natuurdomein ."
                         },
                         {
+                            "type": "idea",
                             "id": "abca9261-6572-418c-99ca-b4b4d31a64cd",
                             "title": "Eetbaar Anzegem ",
                             "body": "Waarom onze gemeente niet aansluiten bij het 'Incredible Edible' project als kleine stap in de richting van een meer duurzame en sociale samenleving? \u00a0Op verschillende (vaak onverwachte) plaatsen kleine tuintjes met eetbare planten (bijvoorbeeld bessen, kruiden...) inrichten om mensen samen te brengen.\n(Incredible Edible - local food revolution - food to share)\nMeer informatie via deze links:\n\nIncredible Edible Network\u00a0\n\nYoutube video \u00a0"
@@ -625,30 +753,36 @@
                     ]
                 },
                 {
-                    "id": 1,
-                    "label": "vuurwerk speeltuin park",
-                    "ideas": [
+                    "type": "custom",
+                    "id": "29c294fd-1d1b-44d4-8957-1f4d9afa7e66",
+                    "title": "vuurwerk speeltuin park",
+                    "children": [
                         {
+                            "type": "idea",
                             "id": "e3b86bea-013c-4d72-bf24-3ec4c7b2f24f",
                             "title": "Speeltuin voor de kleinsten in het Beukenhof park",
                             "body": "In de buurt van het Beukenhof in Vichte zijn er veel gezinnen die met hun kindjes komen wandelen. \u00a0Het zou goed zijn om in het Beukenhof park een paar speeltuigen voor deze kleinsten te plaatsen zoals een zandbak, glijbaan, ... \u00a0Een geschikte plaats voor deze speeltuigen kan bijvoorbeeld in een hoek van het grasveld naast de vlindertuin zijn. \u00a0Met een zitbank erbij zou dit een ideale plek zijn om even te verpozen of met andere bezoekers te socializen. \u00a0Vroeger was er trouwens een speeltuin in het Beukenhof park."
                         },
                         {
+                            "type": "idea",
                             "id": "6c2ad723-b16c-48e8-abf1-5cc84e8ed353",
                             "title": "Vuurwerk feestweekend",
                             "body": "Het vuurwerk tijdens het feestweekend op zaterdag i.p.v. op zondag (dan kunnen ook de kleuters ervan genieten)\n--&gt; ingestuurd via facebook (Katrijn Adriaens)"
                         },
                         {
+                            "type": "idea",
                             "id": "b91ba25b-c556-49eb-bb7a-6985ccdb097e",
                             "title": "Lokale boerenmarkt",
                             "body": "Op een lokale boerenmarkt vind je heerlijke streekproducten van onze lokale ondernemers. Maar het zou ook een plaats vol ontmoetingen kunnen zijn. Ontmoetingen met de boeren, vrienden, familie en kennissen. Een plaats waar men samenkomt, ontmoet."
                         },
                         {
+                            "type": "idea",
                             "id": "f82acd8c-aa8a-49a7-b2d7-c80049a11236",
                             "title": "Een hondenspeelweide",
                             "body": "Een hondenspeelweide\n(ingezonden door Marieke Desplenter)"
                         },
                         {
+                            "type": "idea",
                             "id": "9cfcc87e-c3ca-4790-8fca-71378ad77df6",
                             "title": "krantenwinkel",
                             "body": "Een krantenwinkel met Lotto ! Vichte sluit ,en liefst Ingooigem!\u00a0\n\ningezonden door Renate Adams"
@@ -658,55 +792,67 @@
             ]
         },
         {
-            "label": "Algemeen bestuur",
+            "type": "custom",
+            "id": "5ca8fd48-1385-452c-bcf0-cb2a08c3bb7e",
+            "title": "Algemeen bestuur",
             "typical_ideas": [
                 {
+                    "type": "idea",
                     "id": "6476e51a-7d15-4145-802e-6bd873b3284f",
                     "title": "Groene energie voor iedereen",
                     "body": "Energie is een duur iets geworden,met dit idee zou ik willen iedereen de kans geven om in een co\u00f6peratieve te stappen,concreet betekent dit dat er op eigendom van de gemeente(gronden of gebouwen)een zonnepaneelpark gebouwd wordt waar iedereen naar eigen budget kan in meestappen en jaarlijks zijn opbrengst kan genieten,indien dit project groot genoeg uitvalt kan dit ondersteund worden door de Vlaamse overheid,zo werken we ook aan een \u201cgroen imago\u201c voor onze gemeente,een uniek initiatief waarmee we Anzegem in de kijker zetten in gans Vlaanderen en waarmee we een trendsetter kunnen zijn voor andere gemeenten of steden in Vlaanderen,"
                 },
                 {
+                    "type": "idea",
                     "id": "43addba3-e54f-4a2f-91de-882fbf955be7",
                     "title": "Parkeerbeleid",
                     "body": "Vaste borden met uurregeling en parkeerverbod wanneer de markt doorgaat op Vichteplaats. Nu staan er naders en plakkaten \u00a0en daarna liggen ze op de openbare weg, of een brave burger zet alles langs de kant.\nOvertollige plakkaten op Vichteplaats verwijderen."
                 },
                 {
+                    "type": "idea",
                     "id": "42607d8e-12f9-4b15-9f9c-5b03bc58e39e",
                     "title": "Brandweerkazerne  te Vichte",
                     "body": "Door de goede samenwerking met de gemeente Deerlijk komt er een nieuwe brandweerkazerne aan de Belgiek. Wat zal er gebeuren met de huidige brandweerkazerne in Vichte die vermoedelijk leeg komt te staan? \u00a0\u00a0\u00a0\u00a0\u00a0Geef inwoners de mogelijkheid om hierover voorstellen te doen (cf. gemeente Deerlijk dit deed voor het domein van de brandweerkazerne Deerlijk) Bijvoorbeeld: de ploeterput verdwijnt bij de aanleg van het zwembad. \u00a0Kan dit stukje groen / speelplein 'verhuizen' naar de locatie van de brandweerkazerne?"
                 },
                 {
+                    "type": "idea",
                     "id": "dc504048-a271-462f-85ae-492b29336dfc",
                     "title": "Een dorpspark in iedere deelgemeente",
                     "body": "Groen is belangrijk in een gemeente. Een plaats waar mensen kunnen wandelen, onder een boom zitten, genieten van de buitenlucht,... \u00a0Een dorpspark (bv. Beukenhof) zou in iedere dorpskern moeten aanwezig zijn."
                 },
                 {
+                    "type": "idea",
                     "id": "956eb498-f116-4790-ac93-a152f39296f9",
                     "title": "Whatsapp buurtnetwerk",
                     "body": "Een Whatsapp buurtnetwerk. Via dit platform kunnen de inwoners elkaar direct op de hoogte stellen van verdachte of gevaarlijke situaties.\nOp dit moment is dit al van kracht in industriezone waregem en bewijst zeker zijn nut. Want dit is aangegeven door borden en dit alleen al werkt afschrikkend."
                 }
             ],
-            "clusters": [
+            "children": [
                 {
-                    "id": 0,
-                    "label": "whatsapp wagen parkeerbeleid",
-                    "ideas": [
+                    "type": "custom",
+                    "id": "255cb3cd-6627-4e64-82e6-c30306bfe3a7",
+                    "title": "whatsapp wagen parkeerbeleid",
+                    "children": [
                         {
+                            "type": "idea",
                             "id": "6476e51a-7d15-4145-802e-6bd873b3284f",
                             "title": "Groene energie voor iedereen",
                             "body": "Energie is een duur iets geworden,met dit idee zou ik willen iedereen de kans geven om in een co\u00f6peratieve te stappen,concreet betekent dit dat er op eigendom van de gemeente(gronden of gebouwen)een zonnepaneelpark gebouwd wordt waar iedereen naar eigen budget kan in meestappen en jaarlijks zijn opbrengst kan genieten,indien dit project groot genoeg uitvalt kan dit ondersteund worden door de Vlaamse overheid,zo werken we ook aan een \u201cgroen imago\u201c voor onze gemeente,een uniek initiatief waarmee we Anzegem in de kijker zetten in gans Vlaanderen en waarmee we een trendsetter kunnen zijn voor andere gemeenten of steden in Vlaanderen,"
                         },
                         {
+                            "type": "idea",
                             "id": "43addba3-e54f-4a2f-91de-882fbf955be7",
                             "title": "Parkeerbeleid",
                             "body": "Vaste borden met uurregeling en parkeerverbod wanneer de markt doorgaat op Vichteplaats. Nu staan er naders en plakkaten \u00a0en daarna liggen ze op de openbare weg, of een brave burger zet alles langs de kant.\nOvertollige plakkaten op Vichteplaats verwijderen."
                         },
                         {
+                            "type": "idea",
                             "id": "956eb498-f116-4790-ac93-a152f39296f9",
                             "title": "Whatsapp buurtnetwerk",
                             "body": "Een Whatsapp buurtnetwerk. Via dit platform kunnen de inwoners elkaar direct op de hoogte stellen van verdachte of gevaarlijke situaties.\nOp dit moment is dit al van kracht in industriezone waregem en bewijst zeker zijn nut. Want dit is aangegeven door borden en dit alleen al werkt afschrikkend."
                         },
                         {
+                            "type": "idea",
                             "id": "ba2f1f87-d6d1-4811-9432-c3f5ff1cdcfd",
                             "title": "Gemeentelijke dienstwagens laten gebruiken door wie geen wagen heeft.",
                             "body": "Dienstwagens van de gemeente zouden in het weekend of 's avonds ter beschikking kunnen gesteld worden van mensen zonder wagen."
@@ -714,15 +860,18 @@
                     ]
                 },
                 {
-                    "id": 1,
-                    "label": "vichte iedere dorpspark",
-                    "ideas": [
+                    "type": "custom",
+                    "id": "35a1a9b3-9586-40b4-9202-46ece87fef08",
+                    "title": "vichte iedere dorpspark",
+                    "children": [
                         {
+                            "type": "idea",
                             "id": "42607d8e-12f9-4b15-9f9c-5b03bc58e39e",
                             "title": "Brandweerkazerne  te Vichte",
                             "body": "Door de goede samenwerking met de gemeente Deerlijk komt er een nieuwe brandweerkazerne aan de Belgiek. Wat zal er gebeuren met de huidige brandweerkazerne in Vichte die vermoedelijk leeg komt te staan? \u00a0\u00a0\u00a0\u00a0\u00a0Geef inwoners de mogelijkheid om hierover voorstellen te doen (cf. gemeente Deerlijk dit deed voor het domein van de brandweerkazerne Deerlijk) Bijvoorbeeld: de ploeterput verdwijnt bij de aanleg van het zwembad. \u00a0Kan dit stukje groen / speelplein 'verhuizen' naar de locatie van de brandweerkazerne?"
                         },
                         {
+                            "type": "idea",
                             "id": "dc504048-a271-462f-85ae-492b29336dfc",
                             "title": "Een dorpspark in iedere deelgemeente",
                             "body": "Groen is belangrijk in een gemeente. Een plaats waar mensen kunnen wandelen, onder een boom zitten, genieten van de buitenlucht,... \u00a0Een dorpspark (bv. Beukenhof) zou in iedere dorpskern moeten aanwezig zijn."

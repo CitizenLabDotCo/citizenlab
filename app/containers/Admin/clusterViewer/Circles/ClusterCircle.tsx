@@ -51,7 +51,7 @@ class ClusterCircle extends Component<Props> {
           show={selected || hovered}
           size={12 + (2 * node.height)}
         >
-          {node.data.label}
+          {node.data.title}
         </StyledText>
       </>
     );
