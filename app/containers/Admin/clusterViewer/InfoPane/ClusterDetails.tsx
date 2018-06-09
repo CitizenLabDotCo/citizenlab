@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import T from 'components/T';
 import GetIdea from 'resources/GetIdea';
 import { isNilOrError } from 'utils/helperUtils';
+import { Node } from '../clusters';
 
 type Props = {
   ideaIds: string[];
-  node: any;
+  node: Node;
 };
 
 class ClusterDetails extends Component<Props> {
@@ -17,7 +18,7 @@ class ClusterDetails extends Component<Props> {
     return (
       <div>
         <h3>
-          {node.data.label || node.data.title}
+          {node.title}
         </h3>
         <ul>
           {ideaIds.map((id) => (
