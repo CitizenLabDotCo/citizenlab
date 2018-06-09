@@ -5,6 +5,10 @@ import InfoPane from './InfoPane';
 import styled from 'styled-components';
 const anzegemCluster =  require('./anzegem.json');
 
+const Container = styled.div`
+  margin: 20px;
+`;
+
 const TwoColumns = styled.div`
   display: flex;
 `;
@@ -41,17 +45,19 @@ class ClusterViewer extends Component<Props, State> {
 
   render() {
     return (
-      <TwoColumns>
-        <Circles
-          cluster={this.state.cluster}
-          selectedNodes={this.state.selectedNodes}
-          onClickNode={this.handleOnClickNode}
-          onShiftClickNode={this.handleOnShiftClickNode}
-        />
-        <InfoPane
-          selectedNodes={this.state.selectedNodes}
-        />
-      </TwoColumns>
+      <Container>
+        <TwoColumns>
+          <Circles
+            cluster={this.state.cluster}
+            selectedNodes={this.state.selectedNodes}
+            onClickNode={this.handleOnClickNode}
+            onShiftClickNode={this.handleOnShiftClickNode}
+          />
+          <InfoPane
+            selectedNodes={this.state.selectedNodes}
+          />
+        </TwoColumns>
+      </Container>
     );
   }
 }

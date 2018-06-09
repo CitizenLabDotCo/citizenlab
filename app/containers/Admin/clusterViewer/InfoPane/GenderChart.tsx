@@ -67,7 +67,6 @@ class GenderChart extends Component<Props, State> {
           width={400}
           height={250}
           data={this.state.serie}
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
           stackOffset="sign"
         >
           <XAxis dataKey="label" />
