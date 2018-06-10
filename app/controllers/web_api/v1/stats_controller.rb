@@ -150,7 +150,7 @@ class WebApi::V1::StatsController < ApplicationController
 
   def votes_by_custom_field
     custom_field = CustomField.find params[:custom_field]
-    render json: votes_by_custom_field_key(custom_field.key)
+    render json: votes_by_custom_field_key(custom_field.key, params, params[:normalization] || 'absolute')
   end
 
   def votes_by_time
