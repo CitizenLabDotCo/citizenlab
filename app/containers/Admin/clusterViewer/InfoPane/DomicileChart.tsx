@@ -7,9 +7,11 @@ import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 import { isNilOrError } from 'utils/helperUtils';
 import localize, { injectedLocalized } from 'utils/localize';
 import { get } from 'lodash';
+import { colors } from 'utils/styleUtils';
 
 type Props = {
   ideaIds: string[];
+  normalization: 'absolute' | 'relative';
   areas: GetAreasChildProps;
 };
 
@@ -33,7 +35,7 @@ class DomicileChart extends Component<Props & injectedLocalized, State> {
   }
 
   componentDidUpdate(prevProps) {
-    if (!isEqual(this.props.ideaIds, prevProps.ideaIds)) {
+    if (!isEqual(this.props.ideaIds, prevProps.ideaIds) || !isEqual(this.props.normalization, prevProps.normalization)) {
       this.resubscribe();
     }
   }
@@ -69,6 +71,7 @@ class DomicileChart extends Component<Props & injectedLocalized, State> {
     this.subscription = votesByDomicileStream({
       queryParameters: {
         ideas: this.props.ideaIds,
+        normalization: this.props.normalization,
       },
     }).observable.subscribe((serie) => {
       this.setState({ serie: this.convertToGraphFormat(serie) });
@@ -91,8 +94,8 @@ class DomicileChart extends Component<Props & injectedLocalized, State> {
           <Tooltip />
           <Legend />
           <ReferenceLine y={0} stroke="#000" />
-          <Bar dataKey="upvotes" fill="green" stackId="votes" maxBarSize={20} />
-          <Bar dataKey="downvotes" fill="red" stackId="votes" maxBarSize={20} />
+          <Bar dataKey="upvotes" fill={colors.success} stackId="votes" maxBarSize={20} />
+          <Bar dataKey="downvotes" fill={colors.error} stackId="votes" maxBarSize={20} />
           {/* <Bar dataKey="sum" fill="grey" stackId="total" maxBarSize={20} /> */}
         </BarChart>
       </div>

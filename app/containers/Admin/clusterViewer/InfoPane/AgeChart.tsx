@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
-import { isEqual, range, forOwn, get } from 'lodash';
+import { isEqual, forOwn, get } from 'lodash';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ReferenceLine } from 'recharts';
 import { votesByBirthyearStream, IVotesByBirthyear } from 'services/stats';
+import { colors } from 'utils/styleUtils';
 
 type Props = {
   ideaIds: string[];
+  normalization: 'absolute' | 'relative';
 };
 
 type State = {
@@ -29,7 +31,7 @@ class AgeChart extends Component<Props, State> {
   }
 
   componentDidUpdate(prevProps) {
-    if (!isEqual(this.props.ideaIds, prevProps.ideaIds)) {
+    if (!isEqual(this.props.ideaIds, prevProps.ideaIds) || !isEqual(this.props.normalization, prevProps.normalization)) {
       this.resubscribe();
     }
   }
@@ -75,6 +77,7 @@ class AgeChart extends Component<Props, State> {
     this.subscription = votesByBirthyearStream({
       queryParameters: {
         ideas: this.props.ideaIds,
+        normalization: this.props.normalization,
       },
     }).observable.subscribe((serie) => {
       this.setState({ serie: this.convertToGraphFormat(serie) });
@@ -97,8 +100,8 @@ class AgeChart extends Component<Props, State> {
           <Tooltip />
           <Legend />
           <ReferenceLine y={0} stroke="#000" />
-          <Bar dataKey="upvotes" fill="green" stackId="votes" maxBarSize={20} />
-          <Bar dataKey="downvotes" fill="red" stackId="votes" maxBarSize={20} />
+          <Bar dataKey="upvotes" fill={colors.success} stackId="votes" maxBarSize={20} />
+          <Bar dataKey="downvotes" fill={colors.error} stackId="votes" maxBarSize={20} />
           {/* <Bar dataKey="sum" fill="grey" stackId="total" maxBarSize={20} /> */}
         </BarChart>
       </div>
