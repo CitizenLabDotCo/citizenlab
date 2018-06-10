@@ -3,9 +3,11 @@ import { Subscription } from 'rxjs';
 import isEqual from 'lodash/isEqual';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ReferenceLine } from 'recharts';
 import { votesByGenderStream, IVotesByGender } from 'services/stats';
+import { colors } from 'utils/styleUtils';
 
 type Props = {
   ideaIds: string[];
+  normalization: 'absolute' | 'relative';
 };
 
 type State = {
@@ -28,7 +30,7 @@ class GenderChart extends Component<Props, State> {
   }
 
   componentDidUpdate(prevProps) {
-    if (!isEqual(this.props.ideaIds, prevProps.ideaIds)) {
+    if (!isEqual(this.props.ideaIds, prevProps.ideaIds) || !isEqual(this.props.normalization, prevProps.normalization)) {
       this.resubscribe();
     }
   }
@@ -37,12 +39,13 @@ class GenderChart extends Component<Props, State> {
     this.subscription.unsubscribe();
   }
 
-  convertToGraphFormat = (serie: IVotesByGender) => {
+  convertToGraphFormat = (votesByGender: IVotesByGender) => {
     return ['male', 'female', 'unspecified', '_blank'].map((gender) => ({
+      gender,
       label: gender,
-      upvotes: serie.up[gender] || 0,
-      downvotes: -serie.down[gender] || 0,
-      sum: serie.up[gender] - serie.down[gender] || 0,
+      upvotes: (votesByGender.up[gender] || 0),
+      downvotes: (-votesByGender.down[gender] || 0),
+      sum: votesByGender.up[gender] - votesByGender.down[gender] || 0,
     }));
   }
 
@@ -52,6 +55,7 @@ class GenderChart extends Component<Props, State> {
     this.subscription = votesByGenderStream({
       queryParameters: {
         ideas: this.props.ideaIds,
+        normalization: this.props.normalization,
       },
     }).observable.subscribe((serie) => {
       this.setState({ serie: this.convertToGraphFormat(serie) });
@@ -74,8 +78,8 @@ class GenderChart extends Component<Props, State> {
           <Tooltip />
           <Legend />
           <ReferenceLine y={0} stroke="#000" />
-          <Bar dataKey="upvotes" fill="green" stackId="votes" maxBarSize={20} />
-          <Bar dataKey="downvotes" fill="red" stackId="votes" maxBarSize={20} />
+          <Bar dataKey="upvotes" fill={colors.success} stackId="votes" maxBarSize={20} />
+          <Bar dataKey="downvotes" fill={colors.error} stackId="votes" maxBarSize={20} />
           {/* <Bar dataKey="sum" fill="grey" stackId="total" maxBarSize={20} /> */}
         </BarChart>
       </div>
