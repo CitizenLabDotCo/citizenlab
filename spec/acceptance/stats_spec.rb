@@ -271,13 +271,13 @@ resource "Stats" do
 
     get "web_api/v1/stats/votes_by_domicile" do
       before do
-       eversem = Area.create!(title_multiloc: {'en' => 'Eversem'}).id
-       wolvertem = Area.create!(title_multiloc: {'en' => 'Wolvertem'}).id
+       @eversem = Area.create!(title_multiloc: {'en' => 'Eversem'}).id
+       @wolvertem = Area.create!(title_multiloc: {'en' => 'Wolvertem'}).id
         @ideas = create_list(:idea, 5)
-        @someone = create(:user, domicile: eversem)
+        @someone = create(:user, domicile: @eversem)
         create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
-        [['up',eversem],['up',wolvertem],['down',wolvertem],['up',nil]].each do |mode, domicile|
+        [['up',@eversem],['up',@wolvertem],['down',@wolvertem],['up',nil]].each do |mode, domicile|
           create(:vote, mode: mode, votable: @ideas.shuffle.first,
             user: (if domicile then create(:user, domicile: domicile) else create(:user) end))
         end
@@ -293,9 +293,9 @@ resource "Stats" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response).to match({
-          up: {eversem => 2, wolvertem => 1, :"_blank" => 1}, 
-          down: {eversem => 1, wolvertem => 1}, 
-          total: {eversem => 3, wolvertem => 2, :"_blank" => 1}
+          up: {@eversem.to_sym => 2, @wolvertem.to_sym => 1, :"_blank" => 1}, 
+          down: {@eversem.to_sym => 1, @wolvertem.to_sym => 1}, 
+          total: {@eversem.to_sym => 3, @wolvertem.to_sym => 2, :"_blank" => 1}
         })
       end
     end

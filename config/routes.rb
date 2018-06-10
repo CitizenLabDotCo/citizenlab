@@ -122,7 +122,10 @@ Rails.application.routes.draw do
         get 'users'
       end
 
+      resources :clusterings
+      
     end
+
 
   end
 
