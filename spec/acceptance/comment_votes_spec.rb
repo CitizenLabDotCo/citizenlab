@@ -28,7 +28,7 @@ resource "Comment Votes" do
   get "web_api/v1/votes/:id" do
     let(:id) { @votes.first.id }
 
-    example_request "Get one vote by id" do
+    example_request "Get one vote on a comment by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @votes.first.id
@@ -45,7 +45,7 @@ resource "Comment Votes" do
     let(:comment_id) { @comment.id }
     let(:mode) { "up" }
   
-    example_request "Create a vote to a comment" do
+    example_request "Create a vote on a comment" do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
@@ -114,7 +114,7 @@ resource "Comment Votes" do
     let(:vote) { create(:vote, user: @user, votable: @comment) }
     let(:id) { vote.id }
     
-    example_request "Delete a vote" do
+    example_request "Delete a vote from a comment" do
       expect(response_status).to eq 200
       expect{Vote.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
     end

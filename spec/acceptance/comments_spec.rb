@@ -84,7 +84,7 @@ resource "Comments" do
       let(:comment) { build(:comment) }
       let(:body_multiloc) { comment.body_multiloc }
 
-      example_request "Create a comment to an idea" do
+      example_request "Create a comment on an idea" do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:author,:data,:id)).to eq @user.id
@@ -97,7 +97,7 @@ resource "Comments" do
       describe do
         let(:parent_id) { @comments.first.id }
 
-        example_request "Create a comment to a comment" do
+        example_request "Create a comment on a comment" do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:relationships,:author,:data,:id)).to eq @user.id

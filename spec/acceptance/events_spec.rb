@@ -63,7 +63,7 @@ resource "Events" do
         let(:start_at) { event.start_at }
         let(:end_at) { event.end_at }
 
-        example_request "Create an event in a project" do
+        example_request "Create an event for a project" do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
