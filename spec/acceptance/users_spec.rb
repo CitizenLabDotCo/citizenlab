@@ -114,8 +114,64 @@ resource "Users" do
       end
 
       get "web_api/v1/users/as_xlsx" do
+        parameter :group, "Filter by group_id", required: false
+        parameter :users, "Filter out only users with the provided user ids", required: false
+
         example_request "XLSX export" do
           expect(status).to eq 200
+        end
+
+        describe do
+          before do
+            @users = create_list(:user, 10)
+            @group = create(:group)
+            @members = @users.shuffle.take(4)
+            @members.each do |usr|
+              create(:membership, user: usr, group: @group)
+            end
+          end
+          let(:group) { @group.id }
+
+          example_request "XLSX export all users from a group" do
+            expect(status).to eq 200
+            xlsx_hash = XlsxService.new.xlsx_to_hash_array  RubyXL::Parser.parse_buffer(response_body).stream
+            expect(xlsx_hash.map{|r| r['id']}).to match_array @members.map(&:id)
+          end
+        end
+
+        describe do
+          before do
+            @users = create_list(:user, 10)
+            @group = create(:group)
+            @selected = @users.shuffle.take(4)
+          end
+          let(:users) { @selected.map(&:id) }
+
+          example_request "XLSX export all users given a list of user ids" do
+            expect(status).to eq 200
+            xlsx_hash = XlsxService.new.xlsx_to_hash_array  RubyXL::Parser.parse_buffer(response_body).stream
+            expect(xlsx_hash.map{|r| r['id']}).to match_array @selected.map(&:id)
+          end
+        end
+
+        describe do
+          before do
+            @users = create_list(:user, 10)
+            @group = create(:group)
+            @members = @users.shuffle.take(4)
+            @selected = @users.shuffle.take(4)
+            @members.each do |usr|
+              create(:membership, user: usr, group: @group)
+            end
+          end
+          let(:group) { @group.id }
+          let(:users) { @selected.map(&:id) }
+
+          example_request "XLSX export all users by filtering on both group and user ids", document: false do
+            expect(status).to eq 200
+            xlsx_hash = XlsxService.new.xlsx_to_hash_array  RubyXL::Parser.parse_buffer(response_body).stream
+            expect(xlsx_hash.map{|r| r['id']}).to match_array (@members.map(&:id) & @selected.map(&:id))
+          end
         end
       end
     end
