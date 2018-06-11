@@ -1,7 +1,11 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "Groups" do
+
+  explanation "Collections of users can be given aditional permissions (i.e. access to certain projects) through groups."
+  
   before do
     header "Content-Type", "application/json"
     @groups = create_list(:group, 3)
@@ -27,7 +31,6 @@ resource "Groups" do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 4
       end
-
     
       example "List all groups with membership_type 'rules'" do
         do_request(membership_type: 'rules')
@@ -112,6 +115,5 @@ resource "Groups" do
         expect{Group.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
-
   end
 end 
