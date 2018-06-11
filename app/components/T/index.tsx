@@ -6,9 +6,12 @@ import { getLocalized } from 'utils/i18n';
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 
+type children = (localizedText: string) => JSX.Element | null;
+
 type Props = {
   value: Multiloc;
   as?: string;
+  children?: children;
 };
 
 type State = {
@@ -50,11 +53,15 @@ export default class T extends React.PureComponent<Props, State> {
     const { locale, currentTenantLocales } = this.state;
 
     if (locale && currentTenantLocales) {
-      const { value } = this.props;
+      const { value, as, children } = this.props;
       const localizedText = getLocalized(value, locale, currentTenantLocales);
 
-      if (this.props.as) {
-        return React.createElement(this.props.as, { dangerouslySetInnerHTML: { __html: localizedText } });
+      if (children) {
+        return ((children as children)(localizedText));
+      }
+
+      if (as) {
+        return React.createElement(as, { dangerouslySetInnerHTML: { __html: localizedText } });
       }
 
       return (

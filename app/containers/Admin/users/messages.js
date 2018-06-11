@@ -123,6 +123,14 @@ export default defineMessages({
     id: 'app.containers.Admin.User.adminLabel',
     defaultMessage: `Grant administrator rights to the invited people?`,
   },
+  moderatorLabel: {
+    id: 'app.containers.Admin.User.moderatorLabel',
+    defaultMessage: `Grant project moderator rights to the invited people?`,
+  },
+  projectSelectorPlaceholder: {
+    id: 'app.containers.Admin.User.projectSelectorPlaceholder',
+    defaultMessage: `No project(s) selected`,
+  },
   localeLabel: {
     id: 'app.containers.Admin.User.localeLabel',
     defaultMessage: 'Select the default language for the invited people',

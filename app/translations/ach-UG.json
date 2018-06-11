@@ -53,7 +53,7 @@
   "app.components.ProjectCard.idea": "crwdns18420:0crwdne18420:0",
   "app.components.ProjectCard.ideas": "crwdns18421:0crwdne18421:0",
   "app.components.ProjectCard.openProjectButton": "crwdns15568:0crwdne15568:0",
-  "app.components.ProjectCard.xIdeas": "crwdns15569:0x={x}crwdne15569:0",
+  "app.components.ProjectCard.xIdeas": "crwdns15569:0ideasCount={ideasCount}crwdne15569:0",
   "app.components.ProjectCards.loadMore": "crwdns18153:0crwdne18153:0",
   "app.components.ProjectCards.noProjects": "crwdns17100:0crwdne17100:0",
   "app.components.SearchInput.searchPlaceholder": "crwdns17101:0crwdne17101:0",
