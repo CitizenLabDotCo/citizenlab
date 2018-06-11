@@ -155,6 +155,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                 style="text"
                 icon="admin"
                 size="2"
+                justify="left"
               >
                 <FormattedMessage {...messages.admin} />
               </PopoverItem>
@@ -169,6 +170,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                     style="text"
                     icon="admin"
                     size="2"
+                    justify="left"
                   >
                     <FormattedMessage {...messages.projectsModeration} />
                   </PopoverItem>
@@ -183,6 +185,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               style="text"
               icon="user"
               size="2"
+              justify="left"
             >
               <FormattedMessage {...messages.profilePage} />
             </PopoverItem>
@@ -194,6 +197,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               style="text"
               icon="settings"
               size="2"
+              justify="left"
             >
               <FormattedMessage {...messages.editProfile} />
             </PopoverItem>
@@ -204,6 +208,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               style="text"
               icon="power"
               size="2"
+              justify="left"
             >
               <FormattedMessage {...messages.signOut} />
             </PopoverItem>
