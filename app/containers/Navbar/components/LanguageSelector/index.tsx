@@ -13,7 +13,7 @@ import styled from 'styled-components';
 import { colors, fontSize } from 'utils/styleUtils';
 
 // i18n
-import { appLocalePairs } from 'i18n';
+import { shortenedAppLocalePairs } from 'i18n';
 
 // typings
 import { Locale } from 'typings';
@@ -138,7 +138,7 @@ export default class LanguageSelector extends React.PureComponent<Props, State> 
               onClick={this.handleLanguageSelect(locale)}
               className={locale === currentLocale ? 'active' : ''}
             >
-              {appLocalePairs[locale]}
+              {shortenedAppLocalePairs[locale]}
             </PopoverItem>
           ))
         }
