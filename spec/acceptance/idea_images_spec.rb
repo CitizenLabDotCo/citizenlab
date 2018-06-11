@@ -29,7 +29,7 @@ resource "IdeaImage" do
     let(:idea_id) { @idea.id }
     let(:image_id) { IdeaImage.first.id }
 
-    example_request "Get one image of an idea" do
+    example_request "Get one image of an idea by id" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)
@@ -77,7 +77,7 @@ resource "IdeaImage" do
     let(:idea_id) { @idea.id }
     let(:image_id) { IdeaImage.first.id }
 
-    example_request "Delete an image on an idea" do
+    example_request "Delete an image from an idea" do
       expect(response_status).to eq 200
       expect{IdeaImage.find(image_id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
