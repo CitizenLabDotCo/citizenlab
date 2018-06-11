@@ -14,14 +14,14 @@ class ClusteringService
       Project.all.pluck(:id).map do |project_id|
         {
           **project_to_cluster(project_id),
-          "children" => create_children(levels.shift, idea_scope.where(project: project_id))
+          "children" => create_children(levels.drop(1), idea_scope.where(project: project_id))
         }
       end
     when 'topic'
       Topic.all.pluck(:id).map do |topic_id|
         {
           **topic_to_cluster(topic_id),
-          "children" => create_children(levels.shift, idea_scope.with_some_topics([topic_id]))
+          "children" => create_children(levels.drop(1), idea_scope.with_some_topics([topic_id]))
         }
       end
     when nil
@@ -33,22 +33,22 @@ class ClusteringService
 
   def project_to_cluster project_id
     {
-      "type" => "project",
-      "id" => project_id
+      type: "project",
+      id: project_id
     }
   end
 
   def topic_to_cluster topic_id
     {
-      "type" => "topic",
-      "id" => topic_id
+      type: "topic",
+      id: topic_id
     }
   end
 
   def idea_to_cluster idea_id
     {
-      "type" => "idea",
-      "id" => idea_id
+      type: "idea",
+      id: idea_id
     }
   end
 end
