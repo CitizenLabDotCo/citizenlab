@@ -12,16 +12,15 @@ import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
 // services
 import { IProjectData } from 'services/projects';
 
-// resrources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+// resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
 
 // i18n
 import T from 'components/T';
-import { getLocalized } from 'utils/i18n';
+import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
+import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 
 // style
@@ -210,8 +209,6 @@ export interface InputProps {
 }
 
 interface DataProps {
-  locale: GetLocaleChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
   project: GetProjectChildProps;
   projectImages: GetProjectImagesChildProps;
 }
@@ -220,7 +217,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class ProjectCard extends React.PureComponent<Props, State> {
+class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   getProjectUrl = (project: IProjectData) => {
     const projectType = project.attributes.process_type;
@@ -249,11 +246,9 @@ class ProjectCard extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    const { locale, tenantLocales, project, projectImages } = this.props;
+    const { project, projectImages, intl: { formatMessage } } = this.props;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(project)) {
-      const titleMultiloc = project.attributes.title_multiloc;
-      const preview = getLocalized(project.attributes.description_preview_multiloc, locale, tenantLocales);
+    if (!isNilOrError(project)) {
       const imageUrl = (!isNilOrError(projectImages) && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
       const projectUrl = this.getProjectUrl(project);
       const projectIdeasUrl = this.getProjectIdeasUrl(project);
@@ -265,7 +260,11 @@ class ProjectCard extends React.PureComponent<Props, State> {
           <Mod projectId={project.id} />
 
           <ProjectImageContainer>
-            {imageUrl && <ProjectImage src={imageUrl} cover />}
+            {imageUrl &&
+              <T value={project.attributes.title_multiloc}>
+                {projectTitle => (<ProjectImage src={imageUrl} alt={formatMessage(messages.imageAltText, { projectTitle })} cover />)}
+              </T>
+            }
 
             {!imageUrl &&
               <ProjectImagePlaceholder>
@@ -277,10 +276,10 @@ class ProjectCard extends React.PureComponent<Props, State> {
           <ProjectContent>
             <ProjectContentInner>
               <ProjectTitle>
-                <T value={titleMultiloc} />
+                <T value={project.attributes.title_multiloc} />
               </ProjectTitle>
               <ProjectDescription>
-                {preview}
+                <T value={project.attributes.description_preview_multiloc} />
               </ProjectDescription>
               <ProjectMetaItems>
                 {showIdeasCount &&
@@ -319,14 +318,14 @@ class ProjectCard extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  tenantLocales: <GetTenantLocales />,
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
 });
 
+const ProjectCardWithHoC = injectIntl(ProjectCard);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectCard {...inputProps} {...dataProps} />}
+    {dataProps => <ProjectCardWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

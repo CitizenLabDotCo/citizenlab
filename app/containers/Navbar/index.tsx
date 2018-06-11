@@ -9,8 +9,9 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import NotificationMenu from './components/NotificationMenu';
-import UserMenu from './components/UserMenu';
+import LanguageSelector from './components/LanguageSelector';
 import MobileNavigation from './components/MobileNavigation';
+import UserMenu from './components/UserMenu';
 import IdeaButton from 'components/IdeaButton';
 import Icon from 'components/UI/Icon';
 
@@ -20,20 +21,25 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
+// services
+import { updateLocale } from 'services/locale';
+
 // utils
 import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
 import { getProjectUrl } from 'services/projects';
 
 // i18n
-import { media } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages';
+import injectIntl from 'utils/cl-intl/injectIntl';
+import { InjectedIntlProps } from 'react-intl';
 
 // style
-import { darken, rgba } from 'polished';
 import styled, { css, } from 'styled-components';
+import { darken, rgba, ellipsis } from 'polished';
+import { colors, fontSize, media } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -111,9 +117,10 @@ const NavigationItems = styled.div`
 `;
 
 const NavigationItem = styled(Link) `
+  ${ellipsis('20rem') as any}
   height: 100%;
   color: #999;
-  font-size: 16px;
+  font-size: ${fontSize('large')};
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -126,7 +133,8 @@ const NavigationItem = styled(Link) `
   }
 
   &.active,
-  &:hover {
+  &:hover,
+  &:focus {
     color: #000;
   }
 `;
@@ -136,35 +144,28 @@ const NavigationDropdown = styled.div`
   margin-right: 40px;
 `;
 
-const NavigationDropdownItemText = styled.div`
-  color: #999;
-  font-size: 16px;
-  font-weight: 400;
-  transition: all 100ms ease-out;
-`;
-
 const NavigationDropdownItemIcon = styled(Icon)`
   height: 6px;
   width: 11px;
-  fill: #999;
+  fill: inherit;
   margin-left: 4px;
   margin-top: 3px;
   transition: all 100ms ease-out;
 `;
 
-const NavigationDropdownItem = styled.div`
-  display: flex;
+const NavigationDropdownItem = styled.button`
   align-items: center;
-  cursor: pointer;
+  color: #999;
+  display: flex;
+  fill: #999;
+  font-size: ${fontSize('large')};
+  font-weight: 400;
+  transition: all 100ms ease-out;
 
-  &:hover {
-    ${NavigationDropdownItemText} {
-      color: #000;
-    }
-
-    ${NavigationDropdownItemIcon} {
-      fill: #000;
-    }
+  &:hover,
+  &:focus {
+    color: #000;
+    fill: #000;
   }
 `;
 
@@ -227,29 +228,30 @@ const NavigationDropdownMenuInner = styled.div`
   overflow: hidden;
 `;
 
-const NavigationDropdownList = styled.div`
-  max-height: 410px;
-  width: 280px;
+const NavigationDropdownList = styled.ul`
+  -webkit-overflow-scrolling: touch;
   display: flex;
   flex-direction: column;
-  margin: 10px;
-  margin-right: 5px;
+  list-style: none;
+  margin: 10px 5px 10px 10px;
+  max-height: 30rem;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  padding: 0;
+  width: 20rem;
 `;
 
 const NavigationDropdownListItem = styled(Link)`
-  color: ${(props) => props.theme.colors.label};
-  font-size: 16px;
-  font-weight: 400;
-  text-decoration: none;
-  padding: 10px;
-  margin-right: 5px;
+  ${ellipsis('20rem') as any}
   background: #fff;
   border-radius: 5px;
-  cursor: pointer;
+  color: ${colors.label};
+  font-size: ${fontSize('large')};
+  font-weight: 400;
+  padding: 10px;
+  text-decoration: none;
 
-  &:hover {
+  &:hover,
+  &:focus {
     color: #000;
     text-decoration: none;
     background: #f6f6f6;
@@ -258,22 +260,23 @@ const NavigationDropdownListItem = styled(Link)`
 
 const NavigationDropdownFooter = styled(Link)`
   width: 100%;
-  color: ${(props) => props.theme.colors.label};
+  color: ${colors.label};
   font-size: 18px;
   font-weight: 400;
   text-align: center;
   text-decoration: none;
   padding: 15px 15px;
   cursor: pointer;
-  background: ${props => rgba(props.theme.colors.label, 0.12)};
+  background: ${rgba(colors.label, 0.12)};
   border-radius: 5px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   transition: all 80ms ease-out;
 
-  &:hover {
-    color: ${(props) => darken(0.2, props.theme.colors.label)};
-    background: ${props => rgba(props.theme.colors.label, 0.22)};
+  &:hover,
+  &:focus {
+    color: ${darken(0.2, colors.label)};
+    background: ${rgba(colors.label, 0.22)};
     text-decoration: none;
   }
 `;
@@ -365,8 +368,8 @@ interface State {
   projectsDropdownOpened: boolean;
 }
 
-class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
-  constructor(props: Props & WithRouterProps) {
+class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
+  constructor(props) {
     super(props);
     this.state = {
       notificationPanelOpened: false,
@@ -374,7 +377,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
     };
   }
 
-  componentDidUpdate(prevProps: Props & WithRouterProps) {
+  componentDidUpdate(prevProps: Props & WithRouterProps & InjectedIntlProps) {
     if (prevProps.location !== this.props.location) {
       this.setState({ projectsDropdownOpened: false });
     }
@@ -405,19 +408,31 @@ class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
     this.setState(state => ({ projectsDropdownOpened: !state.projectsDropdownOpened }));
   }
 
-  handleProjectsDropdownOnClickOutside = (event: React.FormEvent<MouseEvent>) => {
+  handleProjectsDropdownOnClickOutside = (event: MouseEvent | KeyboardEvent) => {
     event.preventDefault();
     event.stopPropagation();
     this.setState({ projectsDropdownOpened: false });
   }
 
+  handleLanguageChange (_event, { value }) {
+    updateLocale(value);
+  }
+
   render() {
-    const { projects, location, locale, authUser, tenant } = this.props;
+    const {
+      projects,
+      location,
+      locale,
+      authUser,
+      tenant,
+      intl: { formatMessage }
+    } = this.props;
     const { projectsList } = projects;
     const { projectsDropdownOpened } = this.state;
     const isAdminPage = (location && location.pathname.startsWith('/admin'));
-    const tenantLocales = (!isNilOrError(tenant) && tenant.attributes.settings.core.locales);
-    const tenantLogo = (!isNilOrError(tenant) && get(tenant.attributes.logo, 'medium'));
+    const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : [];
+    const tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
+    const tenantName = (!isNilOrError(tenant) && !isNilOrError(locale) && getLocalized(tenant.attributes.settings.core.organization_name, locale, tenantLocales));
 
     return (
       <>
@@ -429,7 +444,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
           <Left>
             {tenantLogo &&
               <LogoLink to="/">
-                <Logo src={tenantLogo} alt="logo" />
+                <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText, { tenantName })} />
               </LogoLink>
             }
 
@@ -440,10 +455,8 @@ class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
 
               {(projectsList === null || (projectsList && projectsList.length > 0)) &&
                 <NavigationDropdown>
-                  <NavigationDropdownItem onClick={this.handleProjectsDropdownToggle}>
-                    <NavigationDropdownItemText>
-                      <FormattedMessage {...messages.pageProjects} />
-                    </NavigationDropdownItemText>
+                  <NavigationDropdownItem aria-haspopup="true" onClick={this.handleProjectsDropdownToggle}>
+                    <FormattedMessage {...messages.pageProjects} />
                     <NavigationDropdownItemIcon name="dropdown" />
                   </NavigationDropdownItem>
                   <CSSTransition
@@ -456,11 +469,13 @@ class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
                   >
                     <NavigationDropdownMenu onClickOutside={this.handleProjectsDropdownOnClickOutside}>
                       <NavigationDropdownMenuInner>
-                        <NavigationDropdownList>
+                        <NavigationDropdownList aria-label="submenu">
                           {tenantLocales && projectsList && projectsList.length > 0 && projectsList.map((project) => (
-                            <NavigationDropdownListItem key={project.id} to={getProjectUrl(project)}>
-                              {!isNilOrError(locale) ? getLocalized(project.attributes.title_multiloc, locale, tenantLocales) : null}
-                            </NavigationDropdownListItem>
+                            <li key={project.id}>
+                              <NavigationDropdownListItem to={getProjectUrl(project)}>
+                                {!isNilOrError(locale) ? getLocalized(project.attributes.title_multiloc, locale, tenantLocales) : null}
+                              </NavigationDropdownListItem>
+                            </li>
                           ))}
                         </NavigationDropdownList>
 
@@ -488,6 +503,14 @@ class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
               <StyledIdeaButton style="secondary-outlined" />
             </RightItem>
 
+            {!authUser &&
+              <RightItem>
+                <LoginLink to="/sign-in" id="e2e-login-link">
+                  <FormattedMessage {...messages.login} />
+                </LoginLink>
+              </RightItem>
+            }
+
             {authUser &&
               <RightItem className="notification">
                 <NotificationMenu />
@@ -500,13 +523,11 @@ class Navbar extends React.PureComponent<Props & WithRouterProps, State> {
               </RightItem>
             }
 
-            {!authUser &&
+            {tenantLocales.length > 1 && locale &&
               <RightItem>
-                <LoginLink to="/sign-in" id="e2e-login-link">
-                  <FormattedMessage {...messages.login} />
-                </LoginLink>
-              </RightItem>
-            }
+                <LanguageSelector localeOptions={tenantLocales} currentLocale={locale} />
+              </RightItem>}
+
           </Right>
         </Container>
       </>
@@ -521,7 +542,7 @@ const Data = adopt<DataProps, InputProps>({
   projects: <GetProjects pageSize={250} sort="new" />
 });
 
-const NavBarWithHoCs = withRouter(Navbar);
+const NavBarWithHoCs = withRouter(injectIntl(Navbar));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
