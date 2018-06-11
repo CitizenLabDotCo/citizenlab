@@ -42,6 +42,7 @@ export type Props = {
   placeholder?: string | JSX.Element | null | undefined;
   errorMultiloc?: MultilocStringOrJSX | null;
   toolbarConfig?: {} | null | undefined;
+  renderPerLocale?: (locale: string) => JSX.Element;
 };
 
 type State = {
@@ -97,7 +98,7 @@ export default class EditorMultiloc extends React.PureComponent<Props, State> {
       return (
         <Container id={this.props.id} className={`${this.props['className']} e2e-multiloc-editor`} >
           {currentTenantLocales.map((currentTenantLocale, index) => {
-            const { label, valueMultiloc, placeholder, errorMultiloc } = this.props;
+            const { label, valueMultiloc, placeholder, errorMultiloc, renderPerLocale } = this.props;
             const value = get(valueMultiloc, [currentTenantLocale], null);
             const error = get(errorMultiloc, [currentTenantLocale], null);
             const id = this.props.id && `${this.props.id}-${currentTenantLocale}`;
@@ -112,6 +113,8 @@ export default class EditorMultiloc extends React.PureComponent<Props, State> {
                     }
                   </LabelWrapper>
                 }
+
+                {renderPerLocale && renderPerLocale(currentTenantLocale)}
 
                 <Editor
                   id={id}

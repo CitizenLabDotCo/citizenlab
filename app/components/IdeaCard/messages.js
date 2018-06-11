@@ -18,6 +18,10 @@ export default defineMessages({
     id: 'app.components.IdeaCard.deletedUser',
     defaultMessage: 'deleted user',
   },
+  imageAltText: {
+    id: 'app.components.IdeaCard.imageAltText',
+    defaultMessage: '{orgName} - main image for the idea {ideaTitle}',
+  },
   login: {
     id: 'app.components.IdeaCard.login',
     defaultMessage: 'Login',

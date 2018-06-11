@@ -144,7 +144,7 @@ jobs:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
-          command: npm run test:browserstack --silent -e chrome
+          command: npm run test:bschrome --silent
           no_output_timeout: '1h'
 
   test_a11y:
