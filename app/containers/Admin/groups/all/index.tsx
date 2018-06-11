@@ -8,7 +8,7 @@ import messages from './messages';
 // Components
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
-import PageWrapper from 'components/admin/PageWrapper';
+import PageWrapper, { ButtonWrapper } from 'components/admin/PageWrapper';
 import GroupListTable from './GroupListTable';
 import GroupAdditionForm from './GroupAdditionForm';
 
@@ -24,12 +24,6 @@ const PageTitle = styled.h1`
   padding: 0;
   margin: 0;
   margin-bottom: 30px;
-`;
-
-const ButtonWrapper = styled.div`
-  /* border-bottom: 1px solid ${color('separation')}; */
-  margin-bottom: 0;
-  padding-bottom: 2rem;
 `;
 
 interface Props {}

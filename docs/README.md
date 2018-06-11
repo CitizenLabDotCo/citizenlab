@@ -1,5 +1,43 @@
 # Changelog
 
+## 2018-05-27
+
+### Fixed
+- Sitemap now has the correct date format
+- Empty invitation rows are no longer created when the given excel file contains empty rows
+- Hitting enter while editing a project no longer triggers the delete button
+- Registration fields on signup and profile editing are now always shown in the correct language
+- The dropdown menu for idea sorting no longer gets cut off by the edge of the screen on small screens
+- Saving a phase or continuous project no longer fails when participation method is not ideation
+### Added
+- Language selection now also has a regional component (e.g. Dutch (Belgium) instead of Dutch)
+- Added noindex tag on pages that should be shown in Google
+- A new 'user created' event is now being tracked from the frontend side
+- It's now possible to use HTML in the field description of custom fields (no editor, only for internal usage)
+
+## 2018-05-16
+
+### Fixed
+- Phases are now correctly active during the day specified in their end date
+- On the new idea page, the continue button is now shown at all resolutions
+- On the idea list the order-by dropdown is now correctly displayed at all resolutions.
+
+### Added
+- Project moderators can be specified in project permissions, giving them admin and moderation capabilities within that project only
+   - Moderators can access all admin settings of their projects
+   - Moderators can see they are moderating certain projects through icons
+   - Moderators can edit/delete ideas and delete comments in their projects
+- A correct meta description tag for SEO is now rendered
+- The platforms now render sitemaps at sitemap.xml
+- It is now possible to define the default view (map/cards) for every phase individually
+- The tenant can now be configured with an extra `lifecycle_stage` property, visible in Admin HQ.
+- Downloading ideas and comments xlsx from admin is now tracked with events
+- The fragment system, to experiment with custom content per tenant, now also covers custom project descriptions, pages and individual ideas
+
+### Changed
+- It is no longer possible to define phases with overlapping dates
+- Initial loading speed of the platform has improved
+
 ## 2018-04-30
 
 ### Fixed

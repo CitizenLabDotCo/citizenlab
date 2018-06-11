@@ -24,8 +24,9 @@ import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import T from 'components/T';
-import { FormattedRelative } from 'react-intl';
+import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
+import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 
 // styles
@@ -223,8 +224,8 @@ interface State {
 
 export const namespace = 'components/IdeaCard/index';
 
-class IdeaCard extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
+class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
+  constructor(props) {
     super(props);
     this.state = {
       showVotingDisabled: null,
@@ -264,7 +265,7 @@ class IdeaCard extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { idea, ideaImage, ideaAuthor } = this.props;
+    const { idea, ideaImage, ideaAuthor, intl: { formatMessage } } = this.props;
     const { showVotingDisabled } = this.state;
 
     if (!isNilOrError(idea)) {
@@ -289,8 +290,10 @@ class IdeaCard extends React.PureComponent<Props, State> {
 
             {ideaImageUrl &&
               <IdeaImageContainer>
-                <IdeaImage src={ideaImageUrl} />
-                <IdeaImageOverlay />
+              <T value={idea.attributes.title_multiloc}>
+                {(ideaTitle) => (<IdeaImage src={ideaImageUrl} alt={formatMessage(messages.imageAltText, { ideaTitle })} />)}
+              </T>
+              <IdeaImageOverlay />
               </IdeaImageContainer>
             }
 
@@ -352,11 +355,13 @@ class IdeaCard extends React.PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImage: ({ ideaId, idea, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={!isNilOrError(idea) ? get(idea.relationships.idea_images.data[0], 'id', null) : null}>{render}</GetIdeaImage>,
-  ideaAuthor: ({ idea, render }) => <GetUser id={!isNilOrError(idea) ? get(idea.relationships.author.data, 'id', null) : null}>{render}</GetUser>
+  ideaAuthor: ({ idea, render }) => <GetUser id={!isNilOrError(idea) ? get(idea.relationships.author.data, 'id', null) : null}>{render}</GetUser>,
 });
+
+const IdeaCardWithHoC = injectIntl(IdeaCard);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaCard {...inputProps} {...dataProps} />}
+    {dataProps => <IdeaCardWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

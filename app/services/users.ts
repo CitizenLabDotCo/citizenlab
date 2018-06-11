@@ -108,3 +108,8 @@ export function mapUserToDiff(user: IUserData): IUserUpdate {
     custom_field_values: undefined
   };
 }
+
+export function getUserName(user: IUserData): string {
+  // This might be locale-dependant in the future
+  return `${user.attributes.first_name} ${user.attributes.last_name}`;
+}

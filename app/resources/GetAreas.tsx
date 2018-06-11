@@ -29,7 +29,7 @@ export default class GetAreas extends React.Component<Props, State> {
 
   componentDidMount() {
     this.subscriptions = [
-        areasStream().observable.subscribe(areas => this.setState({ areas: !isNilOrError(areas) ? areas.data : areas }))
+      areasStream().observable.subscribe(areas => this.setState({ areas: !isNilOrError(areas) ? areas.data : areas }))
     ];
   }
 

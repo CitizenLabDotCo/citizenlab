@@ -15,6 +15,10 @@ export default defineMessages({
   },
   xIdeas: {
     id: 'app.components.ProjectCard.xIdeas',
-    defaultMessage: '{ideasCount, plural, no {# {ideas}} one {# {idea}} other {# {ideas}}}',
+    defaultMessage: '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
+  },
+  imageAltText: {
+    id: 'app.components.ProjectCard.imageAltText',
+    defaultMessage: '{orgName} - main image for the project {projectTitle}',
   },
 });

@@ -1,9 +1,9 @@
 import React from 'react';
-import { mapValues } from 'lodash';
-import * as Rx from 'rxjs';
+import { Subject } from 'rxjs/Subject';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import mapValues from 'lodash/mapValues';
 import { currentTenantStream, ITenantData } from 'services/tenant';
 import { authUserStream } from 'services/auth';
-import { watchEvents, watchPageChanges, watchIdentification } from 'utils/analytics/sagas';
 import snippet from '@segment/snippet';
 import { CL_SEGMENT_API_KEY } from 'containers/App/constants';
 import { isAdmin } from 'services/permissions/roles';
@@ -31,11 +31,11 @@ interface IPageChange {
 
 const tenant$ = currentTenantStream().observable;
 const authUser$ = authUserStream().observable;
-const events$ = new Rx.Subject<IEvent>();
-const identifications$ = new Rx.Subject<IIdentification>();
-const pageChanges$ = new Rx.Subject<IPageChange>();
+const events$ = new Subject<IEvent>();
+const identifications$ = new Subject<IIdentification>();
+const pageChanges$ = new Subject<IPageChange>();
 
-Rx.Observable.combineLatest(tenant$, events$).subscribe(([tenant, event]) => {
+combineLatest(tenant$, events$).subscribe(([tenant, event]) => {
   if (window && window['analytics']) {
     window['analytics'].track(
       event.name,
@@ -44,7 +44,7 @@ Rx.Observable.combineLatest(tenant$, events$).subscribe(([tenant, event]) => {
   }
 });
 
-Rx.Observable.combineLatest(tenant$, pageChanges$).subscribe(([tenant, pageChange]) => {
+combineLatest(tenant$, pageChanges$).subscribe(([tenant, pageChange]) => {
   if (window && window['analytics']) {
     window['analytics'].page(
       pageChange.name,
@@ -53,7 +53,7 @@ Rx.Observable.combineLatest(tenant$, pageChanges$).subscribe(([tenant, pageChang
   }
 });
 
-Rx.Observable.combineLatest(tenant$, identifications$).subscribe(([tenant, identification]) => {
+combineLatest(tenant$, identifications$).subscribe(([tenant, identification]) => {
   if (window && window['analytics']) {
     window['analytics'].identify(
       identification.userId,
@@ -125,6 +125,7 @@ export const injectTracks = <P>(events: {[key: string]: IEvent}) => (component: 
         trackEventByName(event.name, { ...event.properties, ...extraProps });
       }
     ));
+
     const propsWithEvents = {
       ...eventFunctions,
       ...props as any,
@@ -136,7 +137,7 @@ export const injectTracks = <P>(events: {[key: string]: IEvent}) => (component: 
   };
 };
 
-export const initializeAnalytics = (store) => {
+export const initializeAnalytics = () => {
   // Initialize segments window.analytics object
   const contents = snippet.min({
     host: 'cdn.segment.com',
@@ -145,8 +146,4 @@ export const initializeAnalytics = (store) => {
 
   // tslint:disable-next-line:no-eval
   eval(contents);
-
-  store.runSaga(watchEvents);
-  store.runSaga(watchPageChanges);
-  store.runSaga(watchIdentification);
 };

@@ -6,7 +6,7 @@
 const fs = require('fs');
 const nodeGlob = require('glob');
 const transform = require('babel-core').transform;
-const _ = require('lodash');
+const keys = require('lodash.keys');
 
 const animateProgress = require('./helpers/progress');
 const addCheckmark = require('./helpers/checkmark');
@@ -23,7 +23,7 @@ require('shelljs/global');
 // Glob to match all js files except test files
 const FILES_TO_PARSE = 'app/**/!(*.test).js';
 
-const locales = _.keys(i18n.appLocalePairs);
+const locales = keys(i18n.appLocalePairs);
 
 const newLine = () => process.stdout.write('\n');
 

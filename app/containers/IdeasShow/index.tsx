@@ -3,7 +3,8 @@ import has from 'lodash/has';
 import isString from 'lodash/isString';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { of } from 'rxjs/observable/of';
 
 // router
 import { Link, browserHistory } from 'react-router';
@@ -39,8 +40,9 @@ import { hasPermission } from 'services/permissions';
 
 // i18n
 import T from 'components/T';
-import { FormattedRelative } from 'react-intl';
+import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
+import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 
 // animations
@@ -564,7 +566,7 @@ type State = {
   moreActions: IAction[];
 };
 
-export default class IdeasShow extends React.PureComponent<Props, State> {
+export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
   initialState: State;
   ideaId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
@@ -612,12 +614,12 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
         const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
         const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
         const ideaStatusId = (idea.data.relationships.idea_status ? idea.data.relationships.idea_status.data.id : null);
-        const ideaImage$ = (ideaImageId ? ideaImageStream(idea.data.id, ideaImageId).observable : Observable.of(null));
-        const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : Observable.of(null);
-        const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : Observable.of(null));
-        const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : Observable.of(null));
+        const ideaImage$ = (ideaImageId ? ideaImageStream(idea.data.id, ideaImageId).observable : of(null));
+        const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : of(null);
+        const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : of(null));
+        const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : of(null));
 
-        return Observable.combineLatest(
+        return combineLatest(
           authUser$,
           ideaImage$,
           ideaAuthor$,
@@ -635,7 +637,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
         this.setState({ ideaComments });
       }),
 
-      Observable.combineLatest(
+      combineLatest(
         ideaId$.switchMap((ideaId: string) => ideaByIdStream(ideaId).observable),
         authUser$
       ).switchMap(([idea, authUser]) => {
@@ -720,7 +722,7 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { inModal } = this.props;
+    const { inModal, intl: { formatMessage } } = this.props;
     const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions } = this.state;
     let loader: JSX.Element | null = null;
     let content: JSX.Element | null = null;
@@ -789,7 +791,9 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
                 }
 
                 {ideaImageLarge &&
-                  <IdeaImage src={ideaImageLarge} />
+                  <T value={titleMultiloc}>
+                    {(ideaTitle) => <IdeaImage src={ideaImageLarge} alt={formatMessage(messages.imageAltText, { ideaTitle })} />}
+                  </T>
                 }
 
                 <AuthorAndAdressWrapper>
@@ -947,3 +951,5 @@ export default class IdeasShow extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export default injectIntl(IdeasShow);

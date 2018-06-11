@@ -360,6 +360,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                   processing={processing}
                   text={formatMessage(messages.submit)}
                   circularCorners={true}
+                  className="e2e-submit-signin"
                 />
                 {createAccount}
               </ButtonWrapper>

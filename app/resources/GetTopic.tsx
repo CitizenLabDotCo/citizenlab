@@ -1,8 +1,10 @@
 import React from 'react';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import isString from 'lodash/isString';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
+import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { ITopicData, topicByIdStream } from 'services/topics';
-import { isString } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
@@ -38,11 +40,12 @@ export default class GetTopic extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ id });
 
     this.subscriptions = [
-      this.inputProps$
-        .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .filter(({ id }) => isString(id))
-        .switchMap(({ id }) => topicByIdStream(id).observable)
-        .subscribe((topic) => this.setState({ topic: (!isNilOrError(topic) ? topic.data : topic) }))
+      this.inputProps$.pipe(
+        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+        filter(({ id }) => isString(id)),
+        switchMap(({ id }) => topicByIdStream(id).observable)
+      )
+      .subscribe((topic) => this.setState({ topic: (!isNilOrError(topic) ? topic.data : topic) }))
     ];
   }
 

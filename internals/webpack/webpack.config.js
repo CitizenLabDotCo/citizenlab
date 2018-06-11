@@ -17,7 +17,11 @@ const BabelLoaderConfig = {
 };
 
 const WEBPACK_CONFIG = {
-  entry: path.join(process.cwd(), 'app/app.js'),
+  entry: [
+    // 'core-js',
+    // 'babel-polyfill',
+    path.join(process.cwd(), 'app/app.js'),
+  ],
 
   output: {
     path: path.resolve(process.cwd(), 'build'),
@@ -40,28 +44,15 @@ const WEBPACK_CONFIG = {
       },
       {
         test: /\.css$/,
-        include: /node_modules/,
         use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
           use: 'css-loader',
+          fallback: 'style-loader',
         }),
       },
       {
-        test: /\.(svg|jpg|png|gif)$/,
+        test: /\.(svg|jpg|png|gif|eot|ttf|woff|woff2)$/,
         use: [
           'cache-loader',
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192,
-            },
-          },
-        ],
-      },
-      {
-        test: /\.(eot|ttf|woff|woff2)$/,
-        use: [
-          // 'cache-loader',
           {
             loader: 'url-loader',
             options: {
@@ -150,7 +141,7 @@ const WEBPACK_CONFIG = {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       children: true,
-      minChunks: 2,
+      minChunks: 3,
       async: true,
     }),
 
