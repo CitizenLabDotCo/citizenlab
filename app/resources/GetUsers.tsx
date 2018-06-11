@@ -1,6 +1,7 @@
 import React from 'react';
 import isNil from 'lodash/isNil';
 import omitBy from 'lodash/omitBy';
+import isBoolean from 'lodash/isBoolean';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { usersStream, IUserData } from 'services/users';
@@ -17,7 +18,7 @@ export interface InputProps {
   sort?: Sort;
   search?: string;
   groupId?: string;
-  noCache?: boolean;
+  cache?: boolean;
 }
 
 interface IQueryParameters {
@@ -82,13 +83,14 @@ export default class GetUsers extends React.Component<Props, State> {
       this.queryParameters$.pipe(
         distinctUntilChanged((x, y) => shallowCompare(x, y)),
         switchMap((queryParameters) => {
+          const cacheStream = (isBoolean(this.props.cache) ? this.props.cache : true);
           const oldPageNumber = this.state.queryParameters['page[number]'];
           const newPageNumber = queryParameters['page[number]'];
           queryParameters['page[number]'] = (newPageNumber !== oldPageNumber ? newPageNumber : 1);
 
           return usersStream({
             queryParameters,
-            cacheStream: !this.props.noCache
+            cacheStream
           }).observable.pipe(map(users => ({ users, queryParameters })));
         })
       ).subscribe(({ users, queryParameters }) => {
@@ -119,20 +121,6 @@ export default class GetUsers extends React.Component<Props, State> {
   }
 
   getQueryParameters = (state: State, props: Props) => {
-    // const pageNumber = (!isNil(props.pageNumber) ? props.pageNumber : state.queryParameters['page[number]']);
-    // const pageSize = (!isNil(props.pageSize) ? props.pageSize : state.queryParameters['page[size]']);
-    // const sort = (!isNil(props.sort) ? props.sort : state.queryParameters.sort);
-    // const search = (!isNil(props.search) ? props.search : state.queryParameters.search);
-    // const group = (!isNil(props.groupId) ? props.groupId : state.queryParameters.group);
-
-    // return {
-    //   sort,
-    //   search,
-    //   group,
-    //   'page[number]': pageNumber,
-    //   'page[size]': pageSize,
-    // };
-
     return {
       ...state.queryParameters,
       ...omitBy({

@@ -81,7 +81,6 @@ type choiceItem = {
   id: string;
 };
 
-
 interface Props {
   choices: choiceItem[];
   messages: { dropdownFooterMessage: Message };
@@ -125,7 +124,6 @@ export default class MultipleSelectDropdown extends React.PureComponent<Props, S
       });
     }
   }
-
 
   submit = (chosen) => () => {
     if (chosen.length > 0) {
@@ -173,7 +171,7 @@ export default class MultipleSelectDropdown extends React.PureComponent<Props, S
         handleDropdownOnClickOutside={this.handleDropdownOnClickOutside}
         dropdownOpened={this.state.dropdownOpened}
       >
-        <div onClick={this.handleDropdownToggle}>
+        <div role="button" onClick={this.handleDropdownToggle}>
           {this.props.children}
         </div>
       </PresentationalDropdown>

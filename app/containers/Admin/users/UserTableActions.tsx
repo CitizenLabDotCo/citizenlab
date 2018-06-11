@@ -1,6 +1,7 @@
 // Libraries
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { isArray } from 'lodash';
 
 // Components
 import Checkbox from 'components/UI/Checkbox';
@@ -8,7 +9,12 @@ import MultipleSelectDropdown from 'components/admin/MultipleSelectDropdown';
 import Icon from 'components/UI/Icon';
 
 // Services
+import { IGroupData } from 'services/groups';
 import { addGroupMembership, IGroupMembership } from 'services/groupMemberships';
+
+// Utils
+import { API_PATH } from 'containers/App/constants';
+import streams from 'utils/streams';
 
 // Events
 import eventEmitter from 'utils/eventEmitter';
@@ -61,7 +67,6 @@ const ActionButton = styled.button`
 `;
 
 // Typings
-import { IGroupData } from 'services/groups';
 import { API } from 'typings';
 
 interface InputProps {
@@ -117,11 +122,10 @@ class UserTableActions extends React.PureComponent<Props, State> {
     const { allUsersIds, selectedUsers } = this.props;
     const usersIds = (selectedUsers === 'all') ? allUsersIds : selectedUsers;
 
-
     return new Promise((resolve, reject) => {
       const array: Promise<IGroupMembership | API.ErrorResponse>[] = [];
 
-      if (Array.isArray(usersIds)) {
+      if (isArray(usersIds)) {
         groupsIds.forEach((groupId) => {
           usersIds.forEach((userId) => {
             array.push(addGroupMembership(groupId, userId));
@@ -130,10 +134,12 @@ class UserTableActions extends React.PureComponent<Props, State> {
       }
       Promise.all(array)
         .then(() => {
+          streams.fetchAllStreamsWithEndpoint(`${API_PATH}/groups`);
           resolve();
         })
         .catch((err: API.ErrorResponse) => {
           if (err && err.json && err.json.errors.user.filter(val => val.error !== 'taken').length === 0 && !err.json.errors.group) {
+            streams.fetchAllStreamsWithEndpoint(`${API_PATH}/groups`);
             resolve();
           }
           else reject();
@@ -157,11 +163,12 @@ class UserTableActions extends React.PureComponent<Props, State> {
     eventEmitter.emit<JSX.Element>('usersAdmin', events.membershipAddFailed, <FormattedMessage {...messages.membershipAddFailed} />)
   )
 
-
   render() {
     const { selectedUsers, groupType, allUsersIds } = this.props;
     const { groupsList } = this.props.manualGroups;
+
     let selectedCount;
+
     if (selectedUsers === 'all') {
       selectedCount = allUsersIds.length;
     } else if (selectedUsers === 'none') {
@@ -178,7 +185,7 @@ class UserTableActions extends React.PureComponent<Props, State> {
               <>
                 <FormattedMessage {...messages.selectAll} />
                 <UserCount>(<FormattedMessage
-                  {...messages.xUsers}
+                  {...messages.userCount}
                   values={{
                     count: selectedCount,
                   }}

@@ -205,8 +205,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupsPanel.selectAll',
     defaultMessage: 'Select all',
   },
-  xUsers: {
-    id: 'app.containers.AdminPage.Users.GroupsPanel.xUsers',
+  userCount: {
+    id: 'app.containers.AdminPage.Users.GroupsPanel.userCount',
     defaultMessage: '{count, plural, zero {No users} one {1 user} other {{count} users}}',
   },
   groupDeletionConfirmation: {
