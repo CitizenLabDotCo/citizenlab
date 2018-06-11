@@ -145,6 +145,8 @@ ActiveRecord::Schema.define(version: 20180610165230) do
     t.integer "memberships_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "membership_type"
+    t.jsonb "rules", default: []
     t.index ["slug"], name: "index_groups_on_slug"
   end
 
