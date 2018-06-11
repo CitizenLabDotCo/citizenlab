@@ -153,8 +153,8 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
     });
 
     requiredFieldNames.filter((requiredFieldName) => {
-      return (isNil(formData[requiredFieldName]) 
-              || (!isBoolean(formData[requiredFieldName]) && isEmpty(formData[requiredFieldName])) 
+      return (isNil(formData[requiredFieldName])
+              || (!isBoolean(formData[requiredFieldName]) && isEmpty(formData[requiredFieldName]))
               || (isBoolean(formData[requiredFieldName]) && formData[requiredFieldName] === false)
       );
     }).forEach((requiredFieldName) => {
@@ -275,7 +275,7 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
               }
 
               {description && description.props && description.props.description && description.props.description.length > 0 &&
-                <Description>{description}</Description>
+                <Description dangerouslySetInnerHTML={{ __html: description.props.description }} />
               }
             </>
           }

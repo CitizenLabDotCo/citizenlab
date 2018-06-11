@@ -273,10 +273,12 @@ class Footer extends React.PureComponent<Props, State> {
       const slogan = currentTenantName ? <FormattedMessage {...messages.slogan} values={{ name: currentTenantName, type: organizationType }} /> : '';
       const poweredBy = <FormattedMessage {...messages.poweredBy} />;
 
+      const footerLocale = `footer-city-logo-${locale}`;
+
       return (
         <Container className={this.props['className']} id="hook-footer">
           {showCityLogoSection &&
-            <Fragment name="footer-city-logo">
+            <Fragment name={footerLocale}>
               <FirstLine id="hook-footer-logo">
                 {currentTenantLogo && <TenantLogo src={currentTenantLogo} />}
                 <TenantSlogan>{slogan}</TenantSlogan>

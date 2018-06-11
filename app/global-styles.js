@@ -136,17 +136,6 @@ export const globalCss = `
   label {
     line-height: 1.5em;
   }
-
-  /* Semantic UI Overrides */
-  .ui.message,
-  .ui.message.warning,
-  .ui.message.info {
-    box-shadow: none;
-  }
-
-  .ui {
-    font-family: 'visuelt', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-  }
 `;
 
 injectGlobal`${globalCss}`;
