@@ -1,5 +1,5 @@
 import React from 'react';
-import { isEqual, get, isString, omitBy, isNil, isError } from 'lodash';
+import { isEqual, get, isString, omitBy, isNil, isError, isBoolean } from 'lodash';
 import { BehaviorSubject, Subscription } from 'rxjs/Rx';
 import { getGroups, IGroups, IGroupData } from 'services/groups';
 import shallowCompare from 'utils/shallowCompare';
@@ -10,7 +10,7 @@ export interface InputProps {
   pageNumber?: number;
   pageSize?: number;
   membershipType?: MembershipType;
-  noCache?: boolean;
+  cache?: boolean;
 }
 
 interface IQueryParameters {
@@ -54,7 +54,7 @@ export default class GetGroups extends React.Component<Props, State> {
       // defaults
       queryParameters: {
         'page[number]': 1,
-        'page[size]': this.props.pageSize,
+        'page[size]': 250,
         membership_type: undefined,
       },
       groupsList: null,
@@ -76,18 +76,19 @@ export default class GetGroups extends React.Component<Props, State> {
       this.queryParameters$
         .distinctUntilChanged((x, y) => shallowCompare(x, y))
         .mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
+          const cacheStream = (isBoolean(this.props.cache) ? this.props.cache : true);
           const isLoadingMore = (acc.queryParameters['page[number]'] !== queryParameters['page[number]']);
-          const pageNumber = (isLoadingMore ? queryParameters['page[number]'] : 1);
-          const newQueryParameters: IQueryParameters = {
-            ...queryParameters,
-            'page[number]': pageNumber,
-          };
+          queryParameters['page[number]'] = (isLoadingMore ? queryParameters['page[number]'] : 1);
 
           this.setState({
             querying: !isLoadingMore,
             loadingMore: isLoadingMore,
           });
-          return getGroups({ queryParameters: newQueryParameters, cacheStream: !this.props.noCache }).observable.map((groups: IGroups | Error) => {
+
+          return getGroups({
+            queryParameters,
+            cacheStream
+          }).observable.map((groups: IGroups | Error) => {
             const selfLink = get(groups, 'links.self');
             const lastLink = get(groups, 'links.last');
             const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);

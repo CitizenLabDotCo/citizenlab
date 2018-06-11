@@ -7,11 +7,14 @@ import { includes, get } from 'lodash';
 import Table from 'components/UI/Table';
 import SortableTableHeaderCell from 'components/UI/Table/SortableTableHeaderCell';
 import CustomPagination from 'components/admin/Pagination/CustomPagination';
-
 import UserTableRow from './UserTableRow';
 
 // Services
 import { IUserData, IRole, updateUser } from 'services/users';
+
+// Utils
+import { API_PATH } from 'containers/App/constants';
+import streams from 'utils/streams';
 
 // Resources
 import { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';
@@ -63,7 +66,9 @@ export default class UsersTable extends React.PureComponent<Props, State> {
           { type: 'admin' }
         ];
       }
-      updateUser(user.id, { roles: newRoles });
+      updateUser(user.id, { roles: newRoles }).then(() => {
+        setTimeout(() => streams.fetchAllStreamsWithEndpoint(`${API_PATH}/groups`), 1000);
+      });
     }
   }
 
@@ -74,7 +79,6 @@ export default class UsersTable extends React.PureComponent<Props, State> {
   handlePaginationClick = (pageNumber: number) => {
     this.props.onChangePage(pageNumber);
   }
-
 
   render() {
     const { usersList, sortAttribute, sortDirection, currentPage, lastPage, selectedUsers } = this.props;

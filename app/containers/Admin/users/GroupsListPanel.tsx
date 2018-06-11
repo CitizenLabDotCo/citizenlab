@@ -231,7 +231,7 @@ export class GroupsListPanel extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  groups: <GetGroups noCache={true} />,
+  groups: <GetGroups />,
   usercount: <GetUserCount />
 });
 

@@ -54,14 +54,13 @@ const initialState: State = {
 export class UserManager extends React.PureComponent<Props, State> {
   subs: Subscription[] = [];
 
-
   constructor(props) {
     super(props);
     this.state = initialState;
   }
 
   // When changing group, the user changes views and expects to have a clean state
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (this.props.groupId !== prevProps.groupId) {
       this.setState(initialState);
     }
@@ -112,7 +111,6 @@ export class UserManager extends React.PureComponent<Props, State> {
     ))
   )
 
-
   toggleAllUsers = () => {
     this.setState(state => ({ selectedUsers: (state.selectedUsers === 'all' ? 'none' : 'all') }));
   }
@@ -140,12 +138,14 @@ export class UserManager extends React.PureComponent<Props, State> {
 
   renderUserTable = (allUsersIds, selectedUsers) => {
     const { groupType, users, search } = this.props;
-    if (Array.isArray(users.usersList) && users.usersList.length === 0) {
+
+    if (isArray(users.usersList) && users.usersList.length === 0) {
       if (search) {
         return <NoUsers noSuchSearchResult={true} />;
       }
       return <NoUsers smartGroup={groupType === 'rules'}/>;
     }
+
     return (
       <GetAuthUser>
         {(authUser) => (
@@ -186,7 +186,7 @@ export class UserManager extends React.PureComponent<Props, State> {
 export default (inputProps: InputProps) => (
   <GetUsers
     pageSize={15}
-    noCache={true}
+    cache={false}
     {...inputProps}
   >
     {(users) => <UserManager {...inputProps} users={users} />}

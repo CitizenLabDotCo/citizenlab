@@ -105,8 +105,6 @@ const DropdownListLink = styled(Link) `
   }
 `;
 
-
-
 const SSpan = styled.span`
   ${ellipsis('300px') as any}
 `;
