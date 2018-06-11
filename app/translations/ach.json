@@ -149,6 +149,8 @@
   "app.containers.Admin.User.userLoadingError": "",
   "app.containers.Admin.User.userLoadingMessage": "",
   "app.containers.Admin.User.viewPublicResource": "",
+  "app.containers.Admin.clusterViewer.absolute": "",
+  "app.containers.Admin.clusterViewer.relative": "",
   "app.containers.AdminPage.DashboardPage._blank": "",
   "app.containers.AdminPage.DashboardPage.day": "",
   "app.containers.AdminPage.DashboardPage.female": "",

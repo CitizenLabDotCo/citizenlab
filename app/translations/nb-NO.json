@@ -149,6 +149,8 @@
   "app.containers.Admin.User.userLoadingError": "Bruker ikke funnet!",
   "app.containers.Admin.User.userLoadingMessage": "Laster inn bruker...",
   "app.containers.Admin.User.viewPublicResource": "Users",
+  "app.containers.Admin.clusterViewer.absolute": "",
+  "app.containers.Admin.clusterViewer.relative": "",
   "app.containers.AdminPage.DashboardPage._blank": "ukjent",
   "app.containers.AdminPage.DashboardPage.day": "Dag",
   "app.containers.AdminPage.DashboardPage.female": "kvinne",
