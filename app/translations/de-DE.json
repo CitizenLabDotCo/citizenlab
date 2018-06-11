@@ -149,6 +149,8 @@
   "app.containers.Admin.User.userLoadingError": "Benutzer wurde nicht gefunden!",
   "app.containers.Admin.User.userLoadingMessage": "Benutzer wird geladen...",
   "app.containers.Admin.User.viewPublicResource": "Nutzer",
+  "app.containers.Admin.clusterViewer.absolute": "",
+  "app.containers.Admin.clusterViewer.relative": "",
   "app.containers.AdminPage.DashboardPage._blank": "unbekannt",
   "app.containers.AdminPage.DashboardPage.day": "Tag",
   "app.containers.AdminPage.DashboardPage.female": "weiblich",

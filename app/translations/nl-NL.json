@@ -149,6 +149,8 @@
   "app.containers.Admin.User.userLoadingError": "Gebruiker niet gevonden!",
   "app.containers.Admin.User.userLoadingMessage": "Gebruiker wordt geladen...",
   "app.containers.Admin.User.viewPublicResource": "Gebruikers",
+  "app.containers.Admin.clusterViewer.absolute": "",
+  "app.containers.Admin.clusterViewer.relative": "",
   "app.containers.AdminPage.DashboardPage._blank": "onbekend",
   "app.containers.AdminPage.DashboardPage.day": "Dag",
   "app.containers.AdminPage.DashboardPage.female": "vrouw",

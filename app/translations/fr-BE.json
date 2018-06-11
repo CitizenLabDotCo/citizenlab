@@ -149,6 +149,8 @@
   "app.containers.Admin.User.userLoadingError": "Utilisateur introuvable !",
   "app.containers.Admin.User.userLoadingMessage": "Chargement de l'utilisateur...",
   "app.containers.Admin.User.viewPublicResource": "Utilisateurs",
+  "app.containers.Admin.clusterViewer.absolute": "",
+  "app.containers.Admin.clusterViewer.relative": "",
   "app.containers.AdminPage.DashboardPage._blank": "inconnu",
   "app.containers.AdminPage.DashboardPage.day": "Jour",
   "app.containers.AdminPage.DashboardPage.female": "Féminin",
