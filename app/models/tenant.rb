@@ -18,6 +18,13 @@ class Tenant < ApplicationRecord
     }
   }
 
+  validate do |record|
+    missing_locales = User.where.not(locale: settings.dig('core', 'locales')).pluck(&:locale).uniq
+    if missing_locales.present?
+      record.errors.add(:settings, "is missing locales that are still in use by some users: #{missing_locales}")
+    end
+  end
+
   after_create :create_apartment_tenant
   after_destroy :delete_apartment_tenant
   after_update :update_tenant_schema, if: :saved_change_to_host?
