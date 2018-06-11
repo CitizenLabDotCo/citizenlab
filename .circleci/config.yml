@@ -4,7 +4,6 @@
 #
 version: 2
 jobs:
-
   lint:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
@@ -14,14 +13,14 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-      - run: npm install
+          - v1-npm-cache-
+      - run: npm ci
       - save_cache:
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+            - /root/.npm
+          key: v1-npm-cache-{{ checksum "package.json" }}
       - run: npm run lint:js --silent
       - run: npm run lint:ts --silent
 
@@ -34,14 +33,14 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-      - run: npm install --no-save # Avoid diffs in package-lock.json
+          - v1-npm-cache-
+      - run: npm ci
       - save_cache:
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+            - /root/.npm
+          key: v1-npm-cache-{{ checksum "package.json" }}
       - run: npm run extract-intl
       - run: git add app/translations/*.json
       - run: git config --global user.email "hello@citizenlab.co"
@@ -52,27 +51,6 @@ jobs:
       - run: git diff --quiet && git diff --staged --quiet || git commit -m "Translations updated by CI (extract-intl)"
       - run: git push origin $CIRCLE_BRANCH
 
-  build:
-    docker:
-      - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: ~/cl2-front
-    steps:
-      - checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-      - run: npm install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-      - run:
-          command: npm run build
-          no_output_timeout: '30m'
-
   deploy_demo:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
@@ -82,14 +60,14 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-      - run: npm install
+          - v1-npm-cache-
+      - run: npm ci
       - save_cache:
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+            - /root/.npm
+          key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
           command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING npm run build:staging
           no_output_timeout: '30m'
@@ -106,14 +84,14 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-      - run: npm install
+          - v1-npm-cache-
+      - run: npm ci
       - save_cache:
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+            - /root/.npm
+          key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
           command: CROWDIN_PLUGIN_ENABLED=true SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING npm run build:staging
           no_output_timeout: '30m'
@@ -130,14 +108,14 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-      - run: npm install
+          - v1-npm-cache-
+      - run: npm ci
       - save_cache:
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+            - /root/.npm
+          key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
           command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION npm run build
           no_output_timeout: '30m'
@@ -157,37 +135,27 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-npm-cache-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-      - run: npm install
+          - v1-npm-cache-
+      - run: npm ci
       - save_cache:
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+            - /root/.npm
+          key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
-          command: npm run test:browserstack --silent
+          command: npm run test:bschrome --silent
           no_output_timeout: '1h'
 
   test_a11y:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
+        user: pptruser
     working_directory: ~/cl2-front
     steps:
       - checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-      - run: npm install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: npm install pa11y-ci
       - run: npm run test:pa11y --silent
-
 
 workflows:
   version: 2
@@ -196,18 +164,11 @@ workflows:
       - lint:
           filters:
             branches:
-              ignore: crowdin_master
-      - build:
-          requires:
-            - lint
-          filters:
-            branches:
-              only:
+              ignore:
+                - crowdin_master
                 - master
                 - production
       - extract_intl:
-          requires:
-            - lint
           filters:
             branches:
               ignore:
@@ -215,37 +176,26 @@ workflows:
                 - master
                 - production
       - deploy_demo:
-          requires:
-            - lint
-            - build
           filters:
             branches:
               only: master
       - deploy_crowdin:
+          filters:
+            branches:
+              only: master
+      - test_e2e:
           requires:
-            - lint
-            - build
+            - deploy_demo
+          filters:
+            branches:
+              only: master
+      - test_a11y:
+          requires:
+            - deploy_demo
           filters:
             branches:
               only: master
       - deploy_production:
-          requires:
-            - lint
-            - build
           filters:
             branches:
               only: production
-
-  nightly-reports:
-    triggers:
-      # Schedule a build every day at midnight UTC
-      - schedule:
-          cron: "0 0 * * *"
-          filters:
-            branches:
-              only:
-                - master
-
-    jobs:
-      - test_e2e
-      - test_a11y

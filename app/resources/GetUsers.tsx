@@ -1,8 +1,17 @@
 import React from 'react';
-import { BehaviorSubject, Subject, Subscription, Observable } from 'rxjs/Rx';
+import isEqual from 'lodash/isEqual';
+import isEmpty from 'lodash/isEmpty';
+import isString from 'lodash/isString';
+import omitBy from 'lodash/omitBy';
+import isNil from 'lodash/isNil';
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
+import { distinctUntilChanged, switchMap, map, startWith, debounceTime } from 'rxjs/operators';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { merge } from 'rxjs/observable/merge';
 import { usersStream, IUserData } from 'services/users';
 import shallowCompare from 'utils/shallowCompare';
-import { isEqual, omitBy, isNil, isString, isEmpty } from 'lodash';
 import { getPageNumberFromUrl, getSortAttribute, getSortDirection, SortDirection } from 'utils/paginationUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -74,29 +83,34 @@ export default class GetInvites extends React.Component<Props, State> {
     this.queryParameters$ = new BehaviorSubject(queryParameters);
     this.search$ = new Subject();
 
-    const queryParameters$ = this.queryParameters$.distinctUntilChanged((x, y) => shallowCompare(x, y));
-    const queryParametersSearch$ = queryParameters$.map(queryParameters => queryParameters.search).distinctUntilChanged();
-    const search$ = Observable.merge(
-      this.search$.debounceTime(500),
+    const queryParameters$ = this.queryParameters$.pipe(distinctUntilChanged((x, y) => shallowCompare(x, y)));
+    const queryParametersSearch$ = queryParameters$.pipe(
+      map(queryParameters => queryParameters.search),
+      distinctUntilChanged()
+    );
+    const search$ = merge(
+      this.search$.pipe(debounceTime(500)),
       queryParametersSearch$
-    )
-    .startWith(queryParameters.search)
-    .map(searchValue => ((isString(searchValue) && !isEmpty(searchValue)) ? searchValue : undefined))
-    .distinctUntilChanged();
+    ).pipe(
+      startWith(queryParameters.search),
+      map(searchValue => ((isString(searchValue) && !isEmpty(searchValue)) ? searchValue : undefined)),
+      distinctUntilChanged()
+    );
 
     this.subscriptions = [
-      Observable.combineLatest(
+      combineLatest(
         queryParameters$,
         search$
-      )
-      .map(([queryParameters, search]) => ({ ...queryParameters, search }))
-      .switchMap((queryParameters) => {
-        const oldPageNumber = this.state.queryParameters['page[number]'];
-        const newPageNumber = queryParameters['page[number]'];
-        queryParameters['page[number]'] = (newPageNumber !== oldPageNumber ? newPageNumber : 1);
+      ).pipe(
+        map(([queryParameters, search]) => ({ ...queryParameters, search })),
+        switchMap((queryParameters) => {
+          const oldPageNumber = this.state.queryParameters['page[number]'];
+          const newPageNumber = queryParameters['page[number]'];
+          queryParameters['page[number]'] = (newPageNumber !== oldPageNumber ? newPageNumber : 1);
 
-        return usersStream({ queryParameters, cacheStream: false }).observable.map(users => ({ users, queryParameters }));
-      }).subscribe(({ users, queryParameters }) => {
+          return usersStream({ queryParameters, cacheStream: false }).observable.pipe(map(users => ({ users, queryParameters })));
+        })
+      ).subscribe(({ users, queryParameters }) => {
         this.setState({
           queryParameters,
           usersList: (!isNilOrError(users) ? users.data : users),

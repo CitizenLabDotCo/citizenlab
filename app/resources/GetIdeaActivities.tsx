@@ -1,5 +1,10 @@
 import React from 'react';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs';
+import { isString } from 'lodash';
+import { isNilOrError } from 'utils/helperUtils';
+import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 import shallowCompare from 'utils/shallowCompare';
 import { ideaActivities, IdeaActivity } from 'services/ideas';
 
@@ -36,10 +41,13 @@ export default class GetIdeaActivities extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ ideaId });
 
     this.subscriptions = [
-      this.inputProps$
-        .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .switchMap(({ ideaId }) => ideaId ? ideaActivities(ideaId).observable : Observable.of(null))
-        .subscribe((ideaActivities) => this.setState({ ideaActivities: (ideaActivities ? ideaActivities.data : null) }))
+      this.inputProps$.pipe(
+        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+        switchMap(({ ideaId }) => isString(ideaId) ? ideaActivities(ideaId).observable : of(null))
+      )
+      .subscribe((ideaActivities) => {
+        this.setState({ ideaActivities: !isNilOrError(ideaActivities) ? ideaActivities.data : ideaActivities });
+      })
     ];
   }
 

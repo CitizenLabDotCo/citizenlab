@@ -7,7 +7,7 @@ import { API, Multiloc, IOption } from 'typings';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import { appLocalePairs } from 'i18n.js';
+import { appLocalePairs } from 'i18n';
 import messages from '../messages';
 
 // components

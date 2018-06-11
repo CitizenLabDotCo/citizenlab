@@ -1,16 +1,17 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { Subscription } from 'rxjs/Subscription';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import { Multiloc, Locale } from 'typings';
-
-// services
 import { getLocalized } from 'utils/i18n';
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
-import { Map } from 'immutable';
+
+type children = (localizedText: string) => JSX.Element | null;
 
 type Props = {
-  value: Multiloc | Map<string,string>;
+  value: Multiloc;
   as?: string;
+  children?: children;
 };
 
 type State = {
@@ -19,11 +20,10 @@ type State = {
 };
 
 export default class T extends React.PureComponent<Props, State> {
-  
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
       locale: null,
       currentTenantLocales: null
@@ -36,7 +36,7 @@ export default class T extends React.PureComponent<Props, State> {
     const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      combineLatest(
         locale$,
         currentTenantLocales$
       ).subscribe(([locale, currentTenantLocales]) => {
@@ -53,11 +53,15 @@ export default class T extends React.PureComponent<Props, State> {
     const { locale, currentTenantLocales } = this.state;
 
     if (locale && currentTenantLocales) {
-      const { value } = this.props;
+      const { value, as, children } = this.props;
       const localizedText = getLocalized(value, locale, currentTenantLocales);
 
-      if (this.props.as) {
-        return React.createElement(this.props.as, { dangerouslySetInnerHTML: { __html: localizedText } });
+      if (children) {
+        return ((children as children)(localizedText));
+      }
+
+      if (as) {
+        return React.createElement(as, { dangerouslySetInnerHTML: { __html: localizedText } });
       }
 
       return (

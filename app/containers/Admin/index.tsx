@@ -1,11 +1,8 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { Subscription } from 'rxjs/Subscription';
 import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
-
-// components
 import Sidebar from './sideBar/';
-
-// style
+import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
@@ -36,7 +33,7 @@ type State = {
 
 export default class AdminPage extends React.PureComponent<Props, State> {
   globalState: IGlobalStateService<IAdminFullWidth>;
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props);
@@ -65,6 +62,9 @@ export default class AdminPage extends React.PureComponent<Props, State> {
 
     return (
       <>
+        <Helmet>
+          <meta name="robots" content="noindex" />
+        </Helmet>
         <Container className={className}>
           <Sidebar />
           <RightColumn>

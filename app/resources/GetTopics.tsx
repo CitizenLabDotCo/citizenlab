@@ -1,7 +1,11 @@
 import React from 'react';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs';
+import isEqual from 'lodash/isEqual';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
+import { of } from 'rxjs/observable/of';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { ITopicData, topicByIdStream, topicsStream } from 'services/topics';
-import { isEqual } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
@@ -37,24 +41,25 @@ export default class GetTopics extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ ids });
 
     this.subscriptions = [
-      this.inputProps$
-        .distinctUntilChanged((prev, next) => isEqual(prev, next))
-        .switchMap(({ ids }) => {
+      this.inputProps$.pipe(
+        distinctUntilChanged((prev, next) => isEqual(prev, next)),
+        switchMap(({ ids }) => {
           if (ids) {
             if (ids.length > 0) {
-              return Observable.combineLatest(
-                ids.map(id => topicByIdStream(id).observable.map(topic => (!isNilOrError(topic) ? topic.data : topic)))
+              return combineLatest(
+                ids.map(id => topicByIdStream(id).observable.pipe(map(topic => (!isNilOrError(topic) ? topic.data : topic))))
               );
             }
 
-            return Observable.of(null);
+            return of(null);
           }
 
           return topicsStream().observable.map(topics => topics.data);
         })
-        .subscribe((topics) => {
-          this.setState({ topics });
-        })
+      )
+      .subscribe((topics) => {
+        this.setState({ topics });
+      })
     ];
   }
 
