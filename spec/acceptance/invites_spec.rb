@@ -2,6 +2,9 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource "Invites" do
+
+  explanation "Admins can invite people to join the platform."
+
   before do
     header "Content-Type", "application/json"
   end
@@ -22,11 +25,10 @@ resource "Invites" do
       parameter :sort, "Either 'email', '-email', 'last_name', '-last_name', 'created_at', '-created_at', 'invite_status', '-invite_status'", required: false
       parameter :invite_status, "Filter by invite_status. Either 'pending' or 'accepted'"
 
-
       describe do
         let!(:invites) { create_list(:invite, 5) }
 
-        example_request("List all invites") do
+        example_request "List all invites" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data).size).to eq invites.size
@@ -38,7 +40,7 @@ resource "Invites" do
         let(:invite) { create(:invite, invitee: create(:user, last_name: 'abcdefg1234')) }
         let(:search) { invite.invitee.last_name[0..6] }
 
-        example_request "List all invites with search string" do
+        example_request "Search for invites" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data).size).to eq 1
@@ -63,11 +65,11 @@ resource "Invites" do
         let!(:invite2) { create(:invite, invitee: create(:user, email: 'b@domain.com')) }
         let(:sort) { 'email' }
 
-        example_request "List all invites ordered by email" do
+        example_request "List all invites sorted by email" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data).size).to eq 3
-          expect(json_response.dig(:data).map{|d| d[:id]}).to match [invite1.id, invite2.id, invite3.id]
+          expect(json_response.dig(:data).map{|d| d[:id]}).to match_array [invite1.id, invite2.id, invite3.id]
         end
       end
 
@@ -83,17 +85,16 @@ resource "Invites" do
           expect(json_response.dig(:data).map{|d| d[:id]}).to match_array accepted_invites.map(&:id)
         end
       end
-
     end
 
     get "web_api/v1/invites/as_xlsx" do
-      let!(:invites) { create_list(:invite, 2)}
-      let!(:invite_with_group) { create(:invite, invitee: create(:admin, manual_groups: create_list(:group, 2)))}
+      let!(:invites) { create_list(:invite, 2) }
+      let!(:invite_with_group) { create(:invite, invitee: create(:admin, manual_groups: create_list(:group, 2))) }
+
       example_request "XLSX export" do
         expect(status).to eq 200
       end
     end
-
 
     post "web_api/v1/invites/bulk_create" do
       with_options scope: :invites do
@@ -115,15 +116,15 @@ resource "Invites" do
         let(:emails) { 5.times.map{Faker::Internet.email}.concat([nil]) }
         let(:group_ids) { [create(:group).id] }
         let(:project) { create(:project) }
-        let(:roles) {[{"type" => "project_moderator", "project_id" => project.id}, {"type" => "admin"}]}
+        let(:roles) { [{"type" => "project_moderator", "project_id" => project.id}, {"type" => "admin"}] }
         let(:locale) { "nl-NL" }
         let(:invite_text) { "Welcome, my friend!" }
 
-        example_request("Bulk invite multiple users") do
+        example_request "Bulk invite multiple users" do
           expect(response_status).to eq 200
           expect(Invite.count).to eq 6
-          expect(Invite.all.map{|i| i.invitee.email}).to match emails
-          expect(Invite.all.map{|i| i.invitee.groups.map(&:id)}.uniq).to match [group_ids]
+          expect(Invite.all.map{|i| i.invitee.email}).to match_array emails
+          expect(Invite.all.map{|i| i.invitee.groups.map(&:id)}.uniq).to match_array [group_ids]
           expect(Invite.all.map{|i| i.invitee.admin?}.uniq).to eq [true]
           expect(Invite.all.map{|i| i.invitee.project_moderator?(project.id)}.uniq).to eq [true]
           expect(Invite.all.map{|i| i.invitee.locale}.uniq).to eq [locale]
@@ -139,7 +140,7 @@ resource "Invites" do
           create(:invite).invitee.email,
         ]}
 
-        example_request("[error] Bulk invite multiple users") do
+        example_request "[error] Bulk invite multiple users" do
           expect(response_status).to eq 422
           json_response = json_parse(response_body)
           expect(json_response[:errors].map{|e| e[:error]}.uniq).to match_array ["emails_duplicate", "invalid_email", "email_already_invited", "email_already_active"]
@@ -184,13 +185,13 @@ resource "Invites" do
         let(:locale) { "en" }
         let(:invite_text) { "Welcome, my friend!" }
 
-        example_request("Bulk invite multiple users with xlsx file") do
+        example_request "Bulk invite multiple users with xlsx file" do
           expect(response_status).to eq 200
           expect(Invite.count).to eq 6
-          expect(Invite.all.map{|i| i.invitee.email}).to match hash_array.map{|h| h[:email]}
-          expect(Invite.all.map{|i| i.invitee.groups.map(&:id)}.flatten.uniq).to match Group.all.map(&:id)
+          expect(Invite.all.map{|i| i.invitee.email}).to match_array hash_array.map{|h| h[:email]}
+          expect(Invite.all.map{|i| i.invitee.groups.map(&:id)}.flatten.uniq).to match_array Group.all.map(&:id)
           expect(Invite.all.map{|i| i.invitee.admin?}.uniq).to eq [true]
-          expect(Invite.all.map{|i| i.invitee.locale}.uniq).to match ['nl-NL', locale]
+          expect(Invite.all.map{|i| i.invitee.locale}.uniq).to match_array ['nl-NL', locale]
         end
       end
 
@@ -207,35 +208,30 @@ resource "Invites" do
           {admin: 'nope'},
         ]}
 
-        example_request("[error] Bulk invite users with xlsx file") do
+        example_request "[error] Bulk invite users with xlsx file" do
           expect(response_status).to eq 422
           json_response = json_parse(response_body)
           expect(json_response[:errors].map{|e| e[:error]}.uniq).to match_array ["unknown_group", "malformed_groups_value", "malformed_admin_value", "emails_duplicate", "invalid_email", "email_already_invited", "email_already_active", "unknown_locale"]
         end
       end
-
     end
 
     get "web_api/v1/invites/example_xlsx" do
-
-      example_request("Get example xlsx") do
+      example_request "Get the example xlsx" do
         expect(response_status).to eq 200
       end
     end
 
     delete "web_api/v1/invites/:id" do
-
       let(:id) { create(:invite).id }
 
-      example_request("Delete an invite") do
+      example_request "Delete an invite" do
         expect(response_status).to eq 200
         expect{Invite.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
         expect(Invite.count).to eq 0
       end
     end
-
   end
-
 
   context "When not authenticated" do
     before do
@@ -259,7 +255,8 @@ resource "Invites" do
       let(:last_name) { 'Boulettos' }
       let(:password) { 'I<3BouletteSpecial' }
       let(:locale) { 'nl-NL' }
-      example_request "Accept an invite with a valid token" do
+
+      example_request "Accept an invite" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:accepted_at)).to be_present
@@ -269,20 +266,17 @@ resource "Invites" do
         expect(@invite.reload.invitee.registration_completed_at).to be_present  # when no custom fields
       end
 
-      example "Accepting an invite with an invalid token" do
+      example "[error] Accept an invite with an invalid token", document: false do
         @invite.destroy!
-
         do_request
         expect(response_status).to eq 401 # unauthorized
       end
 
-      example "Accepting an invitation twice" do
+      example "[error] Accept an invitation twice", document: false do
         do_request
         do_request
-
         expect(response_status).to eq 401 # unauthorized
       end
-    
     end
   end
 end

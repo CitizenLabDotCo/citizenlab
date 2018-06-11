@@ -1,9 +1,10 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource "Idea Activities" do
 
-  explanation "Idea activities show what has happened to the idea"
+resource "Activities" do
+
+  explanation "Activities capture interactions throughout the platform, like posting ideas, voting or editing/deleting content."
 
   get "web_api/v1/ideas/:idea_id/activities" do
     with_options scope: :page do

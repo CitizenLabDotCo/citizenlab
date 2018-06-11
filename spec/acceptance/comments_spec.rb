@@ -1,7 +1,10 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "Comments" do
+
+  explanation "Comments permit users to have discussions about content (i.e. ideas)."
 
   before do
     header "Content-Type", "application/json"
@@ -27,7 +30,6 @@ resource "Comments" do
       expect(deleted_comment_data).to be_present
       expect(deleted_comment_data.dig(:attributes,:body_multiloc)).to be_blank
     end
-
   end
 
   get "web_api/v1/comments/as_xlsx" do
@@ -37,7 +39,6 @@ resource "Comments" do
       expect(status).to eq 200
     end
   end
-
 
   get "web_api/v1/comments/:id" do
     let(:id) { @comments.first.id }
@@ -186,7 +187,6 @@ resource "Comments" do
       end
     end
 
-
     ## Currently not allowed by anyone, but works at the moment of writing (if permitted, that is)
     # delete "web_api/v1/comments/:id" do
     #   let(:comment) { create(:comment, author: @user, idea: @idea) }
@@ -199,5 +199,4 @@ resource "Comments" do
     # end
 
   end
-
 end
