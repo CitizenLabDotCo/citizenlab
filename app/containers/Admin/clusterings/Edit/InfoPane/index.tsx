@@ -2,7 +2,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { map, flatten, uniq } from 'lodash';
-import { Node, ParentNode, ideasUnder } from '../clusters';
+import { Node, ParentNode, ideasUnder } from 'services/clusterings';
 import GenderChart from './GenderChart';
 import AgeChart from './AgeChart';
 import DomicileChart from './DomicileChart';
@@ -10,7 +10,7 @@ import IdeaDetails from './IdeaDetails';
 import ClusterDetails from './ClusterDetails';
 import Toggle from 'components/UI/Toggle';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 
 const ToggleContainer = styled.div`
   display: flex;

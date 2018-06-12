@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import T from 'components/T';
 import GetIdea from 'resources/GetIdea';
 import { isNilOrError } from 'utils/helperUtils';
-import { ParentNode } from '../clusters';
+import { ParentNode } from 'services/clusterings';
 
 type Props = {
   ideaIds: string[];

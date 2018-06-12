@@ -65,24 +65,28 @@ class IdeaCircle extends Component<Props, State> {
           hovered={hovered}
           upvoteRatio={this.upvoteRatio(idea.attributes.upvotes_count, idea.attributes.downvotes_count)}
         />
-        <TextBackground
-          width={node.data.title.length * 9}
-          height={20}
-          y={-35}
-          x={-node.data.title.length * 9 / 2}
-          show={hovered}
-        />
-        <StyledText
-          x={0}
-          y={-25}
-          textAnchor="middle"
-          alignmentBaseline="central"
-          show={hovered}
-        >
-          <T value={idea.attributes.title_multiloc}>
-            {(val) => <>{val}</>}
-          </T>
-        </StyledText>
+        <T value={idea.attributes.title_multiloc}>
+          {(localizedTitle) => (
+            <>
+              <TextBackground
+                width={localizedTitle.length * 9}
+                height={20}
+                y={-35}
+                x={-localizedTitle.length * 9 / 2}
+                show={hovered}
+              />
+              <StyledText
+                x={0}
+                y={-25}
+                textAnchor="middle"
+                alignmentBaseline="central"
+                show={hovered}
+              >
+                {localizedTitle}
+              </StyledText>
+            </>
+          )}
+        </T>
       </>
     );
   }

@@ -13,6 +13,7 @@ import settingsRoutes from './settings/routes';
 import settingsAreasRoutes from './settings/areas/routes';
 import customFieldRoutes from './settings/registration/CustomFields/routes';
 import pagesRoutes from './pages/routes';
+import clusteringsRoutes from './clusterings/routes';
 
 export default () => ({
   path: '/admin',
@@ -31,5 +32,6 @@ export default () => ({
     settingsAreasRoutes(),
     groupsRoutes(),
     pagesRoutes(),
+    clusteringsRoutes(),
   ],
 });

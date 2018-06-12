@@ -140,10 +140,6 @@ export default function createRoutes() {
       getComponent: loadAndRender(import('containers/PasswordReset')),
     },
     {
-      path: '/poc/cluster-viewer',
-      getComponent: loadAndRender(import('containers/Admin/clusterViewer')),
-    },
-    {
       path: '*',
       name: 'notfound',
       getComponent: loadAndRender(import('containers/PagesShowPage')),
