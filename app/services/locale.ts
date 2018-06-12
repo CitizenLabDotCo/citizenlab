@@ -9,10 +9,13 @@ import { Locale } from 'typings';
 import platformLocales from 'platformLocales';
 
 // Get locale from URL
-const localeRegexp = /^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)\//;
-const matches = localeRegexp.exec(location.pathname);
-const urlLocale = (matches && includes(Object.keys(platformLocales), matches[1])) ? matches[1] : null;
+export function getUrlLocale(pathname: string): string | null {
+  const localeRegexp = /^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)\//;
+  const matches = localeRegexp.exec(pathname);
+  return (matches && includes(Object.keys(platformLocales), matches[1])) ? matches[1] : null;
+}
 
+const urlLocale = getUrlLocale(location.pathname);
 const LocaleSubject = new BehaviorSubject((urlLocale ? urlLocale : 'en') as Locale);
 
 LocaleSubject.subscribe((locale) => {
