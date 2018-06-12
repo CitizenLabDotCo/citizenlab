@@ -31,6 +31,8 @@ const SelectorCell = styled.div`
   color: ${colors.label};
   flex: 1;
   padding: 10px 5px;
+  display: flex;
+  flex-direction: column;
 `;
 
 const StyledRemoveButton = styled(Button)`
