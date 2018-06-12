@@ -7,8 +7,9 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import NotificationMenu from './components/NotificationMenu';
-import UserMenu from './components/UserMenu';
+import LanguageSelector from './components/LanguageSelector';
 import MobileNavigation from './components/MobileNavigation';
+import UserMenu from './components/UserMenu';
 import IdeaButton from 'components/IdeaButton';
 import Icon from 'components/UI/Icon';
 import Dropdown from 'components/UI/Dropdown';
@@ -18,6 +19,9 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+
+// services
+import { updateLocale } from 'services/locale';
 
 // utils
 import { trackEvent } from 'utils/analytics';
@@ -344,8 +348,19 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
     this.setState({ projectsDropdownOpened: false });
   }
 
+  handleLanguageChange (_event, { value }) {
+    updateLocale(value);
+  }
+
   render() {
-    const { projects, location, locale, authUser, tenant, intl: { formatMessage } } = this.props;
+    const {
+      projects,
+      location,
+      locale,
+      authUser,
+      tenant,
+      intl: { formatMessage }
+    } = this.props;
     const { projectsList } = projects;
     const { projectsDropdownOpened } = this.state;
     const isAdminPage = (location && location.pathname.startsWith('/admin'));
@@ -415,6 +430,14 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
               <StyledIdeaButton style="secondary-outlined" />
             </RightItem>
 
+            {!authUser &&
+              <RightItem>
+                <LoginLink to="/sign-in" id="e2e-login-link">
+                  <FormattedMessage {...messages.login} />
+                </LoginLink>
+              </RightItem>
+            }
+
             {authUser &&
               <RightItem className="notification">
                 <NotificationMenu />
@@ -427,13 +450,11 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
               </RightItem>
             }
 
-            {!authUser &&
+            {tenantLocales.length > 1 && locale &&
               <RightItem>
-                <LoginLink to="/sign-in" id="e2e-login-link">
-                  <FormattedMessage {...messages.login} />
-                </LoginLink>
-              </RightItem>
-            }
+                <LanguageSelector localeOptions={tenantLocales} currentLocale={locale} />
+              </RightItem>}
+
           </Right>
         </Container>
       </>

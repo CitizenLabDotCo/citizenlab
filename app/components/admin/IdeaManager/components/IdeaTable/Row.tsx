@@ -11,13 +11,14 @@ import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 
 // components
-import { Table, Icon, Checkbox } from 'semantic-ui-react';
+import { Table, Icon } from 'semantic-ui-react';
 import WrappedRow from './WrappedRow';
 import T from 'components/T';
 import PhasesSelector from './PhasesSelector';
 import TopicsSelector from './TopicsSelector';
 import ProjectSelector from './ProjectSelector';
 import StatusSelector from './StatusSelector';
+import Checkbox from 'components/UI/Checkbox';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -126,7 +127,7 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & injectedLocali
       <React.Fragment>
         <WrappedRow as={StyledRow} active={selected} onClick={this.onClickRow} ref={(instance) => {instance && connectDragSource(findDOMNode(instance));}}>
           <Table.Cell collapsing={true}>
-            <Checkbox checked={selected} onChange={this.onClickCheckbox} />
+            <Checkbox value={!!selected} onChange={this.onClickCheckbox} size="17px"/>
           </Table.Cell>
           <Table.Cell>
             <TitleLink onClick={this.handleClickTitle}>

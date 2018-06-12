@@ -62,7 +62,7 @@ class Pagination extends React.PureComponent<Props> {
             name={item < 0 ? '...' : item.toString()}
             active={item === currentPage}
             onClick={this.handleItemClick}
-            disabled={item < 0}
+            disabled={(item < 0) || item === currentPage}
           />
         ))}
       </Menu>

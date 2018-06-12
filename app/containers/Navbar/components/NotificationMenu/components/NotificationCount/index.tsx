@@ -7,26 +7,30 @@ import Icon from 'components/UI/Icon';
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
+import { colors } from 'utils/styleUtils';
 
-const Container = styled.div`
-  width: 23px;
-  height: 23px;
-  position: relative;
-  display: flex;
+const Container = styled.button`
   align-items: center;
-  justify-content: center;
   cursor: pointer;
+  display: flex;
+  fill: ${colors.label};
+  height: 23px;
+  justify-content: center;
+  padding: 0;
+  position: relative;
+  width: 23px;
+
+  &:hover,
+  &:focus {
+    fill: ${darken(.2, colors.label)};
+  }
 `;
 
 const NotificationIcon = styled(Icon)`
   height: 23px;
-  fill: #84939E;
-  transition: all 150ms ease;
-
-  &:hover {
-    fill: ${(props) => darken(0.2, props.theme.colors.label)};
-  }
-`;
+  fill: inherit;
+  transition: all 150ms ease;`
+;
 
 const NewNotificationsIndicator = styled.div`
   width: 14px;
