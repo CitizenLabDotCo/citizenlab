@@ -389,6 +389,7 @@
   "app.containers.AdminPage.SettingsPage.titleRegistrationFields": "Registration fields",
   "app.containers.AdminPage.SettingsPage.uploadPlaceholder": "Drop your files here",
   "app.containers.AdminPage.SettingsPage.viewPublicResource": "Settings",
+  "app.containers.AdminPage.SideBar.clustering": "Clustering",
   "app.containers.AdminPage.SideBar.dashboard": "Dashboard",
   "app.containers.AdminPage.SideBar.groups": "Groups",
   "app.containers.AdminPage.SideBar.ideas": "Ideas",

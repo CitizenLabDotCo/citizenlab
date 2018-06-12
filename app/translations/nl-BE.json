@@ -389,6 +389,7 @@
   "app.containers.AdminPage.SettingsPage.titleRegistrationFields": "Registratievelden",
   "app.containers.AdminPage.SettingsPage.uploadPlaceholder": "Plaats je afbeelding hier",
   "app.containers.AdminPage.SettingsPage.viewPublicResource": "Instellingen",
+  "app.containers.AdminPage.SideBar.clustering": "",
   "app.containers.AdminPage.SideBar.dashboard": "Dashboard",
   "app.containers.AdminPage.SideBar.groups": "Groepen",
   "app.containers.AdminPage.SideBar.ideas": "Ideeën",
