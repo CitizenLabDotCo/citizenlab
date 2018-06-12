@@ -7,11 +7,15 @@ class SingleSignOnService
   end
 
   def facebook_profile_to_user_attrs auth
-    
     user_attrs = {
-      gender: auth.extra.raw_info.gender,
       locale: Tenant.current.closest_locale_to(auth.extra.raw_info.locale)
     }
+    gender = auth.extra.raw_info&.gender
+    if gender
+      user_attrs[:gender] = gender
+    else # don't add gender
+      Rails.logger.info "Gender was not provided by facebook, auth instance was #{auth}"
+    end
 
     picture = auth&.extra&.raw_info&.picture&.data
 
@@ -25,7 +29,6 @@ class SingleSignOnService
   end
 
   def google_profile_to_user_attrs auth
-    
     user_attrs = {
       gender: auth.extra.raw_info.gender,
       locale: Tenant.current.closest_locale_to(auth.extra.raw_info.locale)
