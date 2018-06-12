@@ -26,10 +26,13 @@ resource "Groups" do
       end
       parameter :membership_type, "If set, only return groups of given membership_type. Either #{Group::MEMBERSHIP_TYPES.join(" or ")}", required: false
 
-      example_request "List all groups" do
+      example "List all groups" do
+        g1 = create(:group)
+        do_request
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 4
+        expect(json_response[:data].size).to eq 5
+        expect(json_response[:data][0][:id]).to eq g1.id
       end
     
       example "List all groups with membership_type 'rules'" do
