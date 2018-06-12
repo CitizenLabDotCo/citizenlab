@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.settings',
     defaultMessage: 'Settings',
   },
+  clustering: {
+    id: 'app.containers.AdminPage.SideBar.clustering',
+    defaultMessage: 'Clustering',
+  },
   newPage: {
     id: 'app.containers.AdminPage.SideBar.newPage',
     defaultMessage: 'Create page',
