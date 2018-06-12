@@ -8,6 +8,7 @@ class WebApi::V1::GroupsController < ApplicationController
       .per(params.dig(:page, :size))
 
     @groups = @groups.where(membership_type: params[:membership_type]) if params[:membership_type]
+    @groups = @groups.order_new
     
   	render json: @groups
   end
