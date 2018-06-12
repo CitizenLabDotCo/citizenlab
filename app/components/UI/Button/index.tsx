@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import Link, { Props as LinkProps } from 'utils/cl-router/Link';
 import { isBoolean, isNil } from 'lodash';
 
 import styled, { withTheme } from 'styled-components';
@@ -240,7 +240,7 @@ type Props = {
   onClick?: (arg: React.FormEvent<HTMLButtonElement>) => void;
   className?: string;
   circularCorners?: boolean;
-  linkTo?: string;
+  linkTo?: LinkProps['to'];
   id?: string;
   theme?: object | undefined;
   setSubmitButtonRef?: (value: HTMLInputElement) => void;
@@ -332,8 +332,8 @@ class Button extends React.PureComponent<Props, State> {
         textHoverColor={textHoverColor}
       >
         {linkTo ? (
-          (linkTo.startsWith('http')) ? (
-            <StyledA innerRef={this.props.setSubmitButtonRef} href={linkTo} className={buttonClassnames}>{childContent}</StyledA>
+          (typeof(linkTo === 'string') && (linkTo as string).startsWith('http')) ? (
+            <StyledA innerRef={this.props.setSubmitButtonRef} href={(linkTo as string)} className={buttonClassnames}>{childContent}</StyledA>
           ) : (
             <StyledLink innerRef={this.props.setSubmitButtonRef} to={linkTo} className={buttonClassnames}>{childContent}</StyledLink>
           )

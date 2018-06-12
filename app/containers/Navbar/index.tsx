@@ -2,7 +2,7 @@
 import React from 'react';
 import { get } from 'lodash';
 import { adopt } from 'react-adopt';
-import { Link, withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError } from 'utils/helperUtils';
@@ -13,6 +13,7 @@ import UserMenu from './components/UserMenu';
 import MobileNavigation from './components/MobileNavigation';
 import IdeaButton from 'components/IdeaButton';
 import Icon from 'components/UI/Icon';
+import Link from 'utils/cl-router/Link';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
