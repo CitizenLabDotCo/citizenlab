@@ -61,6 +61,11 @@ export const media = {
       ${css(style, ...args)}
     }
   `,
+  smallerThan1280px: (style: any, ...args) => css`
+    @media (max-width: 1280px) {
+      ${css(style, ...args)}
+    }
+  `,
 };
 
 export function remCalc(desiredSize: number) {

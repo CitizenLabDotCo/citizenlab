@@ -28,24 +28,35 @@ import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // Styling
 import styled from 'styled-components';
-import { ellipsis } from 'polished';
 import { colors } from 'utils/styleUtils';
 
 const StyledCheckbox = styled(Checkbox) `
-  margin-left: 16px;
+  margin-left: 10px;
 `;
 
 const StyledAvatar = styled(Avatar) `
-  flex: 0 0 30px;
-  height: 30px;
-  margin-right: 10px;
-  margin-left: 0px;
+  flex: 0 0 28px;
+  height: 28px;
 `;
 
 const SIcon = styled(Icon) `
   width: 20px;
   height: 30px;
   fill: ${colors.adminSecondaryTextColor};
+  cursor: pointer;
+
+  &:hover {
+    fill: #000;
+  }
+`;
+
+const CreatedAt = styled.td`
+  white-space: nowrap;
+`;
+
+const Options = styled.td`
+  display: flex;
+  justify-content: center;
 `;
 
 const DropdownList = styled.div`
@@ -66,22 +77,27 @@ const DropdownListButton = styled.button`
   display: flex;
   flex: 1 0;
   justify-content: space-between !important;
+  cursor: pointer;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     outline: none;
     color: white;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.25);
   }
 `;
+
 const IconWrapper = styled.div`
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
+
   .cl-icon {
     height: 100%;
   }
+
   .cl-icon-primary, .cl-icon-secondary, .cl-icon-accent {
   	fill: currentColor;
   }
@@ -90,7 +106,7 @@ const IconWrapper = styled.div`
 const DropdownListLink = styled(Link) `
   align-items: center;
   color: ${colors.adminLightText};
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 400;
   padding: 10px;
   border-radius: 5px;
@@ -105,10 +121,6 @@ const DropdownListLink = styled(Link) `
   }
 `;
 
-const SSpan = styled.span`
-  ${ellipsis('300px') as any}
-`;
-
 // Typings
 interface Props {
   user: IUserData;
@@ -121,18 +133,26 @@ interface Props {
 
 interface State {
   optionsOpened: boolean;
+  isAdmin: boolean;
 }
 
 class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props) {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       optionsOpened: false,
+      isAdmin: isAdmin({ data: this.props.user })
     };
   }
 
-  isUserAdmin = (user: IUserData) => {
-    return isAdmin({ data: user });
+  static getDerivedStateFromProps(nextProps: Props, _prevState: State) {
+    return {
+      isAdmin: isAdmin({ data: nextProps.user })
+    };
+  }
+
+  isUserAdmin = () => {
+    return isAdmin({ data: this.props.user });
   }
 
   handleUserSelectedOnChange = () => {
@@ -143,16 +163,16 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
     this.props.toggleAdmin();
   }
 
-  handleDeleteClick = (userId: string) => (event: React.FormEvent<any>) => {
+  handleDeleteClick = (event: React.FormEvent<any>) => {
     const deleteMessage = this.props.intl.formatMessage(messages.userDeletionConfirmation);
     event.preventDefault();
 
     const { authUser } = this.props;
     if (window.confirm(deleteMessage)) {
-      if (authUser && authUser.id === userId) {
+      if (authUser && authUser.id === this.props.user.id) {
         eventEmitter.emit<JSX.Element>('usersAdmin', events.userDeletionFailed, <FormattedMessage {...messages.youCantDeleteYourself} />);
       } else {
-        deleteUser(userId).catch(() => {
+        deleteUser(this.props.user.id).catch(() => {
           eventEmitter.emit<JSX.Element>('usersAdmin', events.userDeletionFailed, <FormattedMessage {...messages.userDeletionFailed} />);
         });
       }
@@ -169,25 +189,9 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
     this.setState({ optionsOpened: !this.state.optionsOpened });
   }
 
-  renderDropdown = () => (
-    <DropdownList>
-      <DropdownListLink to={`/profile/${this.props.user.attributes.slug}`}>
-        <FormattedMessage {...messages.seeProfile} />
-        <IconWrapper>
-          <Icon name="eye" />
-        </IconWrapper>
-      </DropdownListLink>
-      <DropdownListButton onClick={this.handleDeleteClick(this.props.user.id)}>
-        <FormattedMessage {...messages.deleteUser} />
-        <IconWrapper>
-          <Icon name="trash" />
-        </IconWrapper>
-      </DropdownListButton>
-    </DropdownList>
-  )
-
   render() {
     const { user, selected, up } = this.props;
+    const { optionsOpened, isAdmin } = this.state;
 
     return (
       <tr key={user.id}>
@@ -203,28 +207,43 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
             size="small"
           />
         </td>
-        <td><SSpan>{user.attributes.first_name} {user.attributes.last_name}</SSpan></td>
-        <td><SSpan>{user.attributes.email}</SSpan></td>
-        <td>{moment(user.attributes.created_at).format('LL')}</td>
+        <td>{user.attributes.first_name} {user.attributes.last_name}</td>
+        <td>{user.attributes.email}</td>
+        <CreatedAt>{moment(user.attributes.created_at).format('LL')}</CreatedAt>
         <td>
           <Toggle
-            value={this.isUserAdmin(user)}
+            value={isAdmin}
             onChange={this.handleAdminRoleOnChange}
           />
         </td>
-        <td onClick={this.toggleOpened}>
+        <Options onClick={this.toggleOpened}>
           <PresentationalDropdown
-            content={this.renderDropdown()}
+            content={
+              <DropdownList>
+                <DropdownListLink to={`/profile/${this.props.user.attributes.slug}`}>
+                  <FormattedMessage {...messages.seeProfile} />
+                  <IconWrapper>
+                    <Icon name="eye" />
+                  </IconWrapper>
+                </DropdownListLink>
+                <DropdownListButton onClick={this.handleDeleteClick}>
+                  <FormattedMessage {...messages.deleteUser} />
+                  <IconWrapper>
+                    <Icon name="trash" />
+                  </IconWrapper>
+                </DropdownListButton>
+              </DropdownList>
+            }
             top={up ? '-120px' : '30px'}
-            left="-105px"
+            left="-100px"
             color={colors.adminMenuBackground}
             handleDropdownOnClickOutside={this.handleDropdownOnClickOutside}
-            dropdownOpened={this.state.optionsOpened}
+            dropdownOpened={optionsOpened}
             up={up}
           >
             <SIcon name="more-options" />
           </PresentationalDropdown>
-        </td>
+        </Options>
       </tr>
     );
   }

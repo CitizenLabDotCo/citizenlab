@@ -35,10 +35,10 @@ import { rgba } from 'polished';
 const TableOptions = styled.div`
   display: flex;
   align-items: center;
-  padding-bottom: 30px;
-  padding-left: 16px;
-  padding-right: 16px;
-  margin-bottom: 20px;
+  padding-bottom: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 15px;
   border-bottom: solid 1px #eaeaea;
   user-select: none;
 `;
@@ -54,6 +54,7 @@ const ActionButton = styled.button`
   position: relative;
   padding: 5px;
   border-radius: 5px;
+
   .cl-icon {
     margin-right: 10px;
   }

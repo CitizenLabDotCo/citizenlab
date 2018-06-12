@@ -208,7 +208,8 @@ const Processing = styled.div`
 `;
 
 const SInvitesTable = styled(InvitesTable) `
-  margin-top: 100px;
+  margin-top: 80px;
+  margin-bottom: 80px;
 `;
 
 interface InputProps { }
