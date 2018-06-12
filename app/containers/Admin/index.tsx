@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { Subscription } from 'rxjs/Rx';
 import { globalState, IAdminFullWidth, IAdminNoPadding, IGlobalStateService } from 'services/globalState';
 
 // components
@@ -9,27 +9,29 @@ import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
   background: ${colors.background};
   color: ${colors.adminTextColor};
   fill: ${colors.adminTextColor};
   border-color: ${colors.adminTextColor};
+  /* border: solid 2px green; */
+
   .ui, .ui.menu .item, .ui.table th, .ui a, .ui input, .ui .active td {
     color: ${colors.adminTextColor} !important;
   }
-   .Select-control, .Select-value-label, .Select-value-icon, .Select-option {
+
+  .Select-control, .Select-value-label, .Select-value-icon, .Select-option {
     color: ${colors.adminTextColor} !important;
   }
+
   .ui.red {
     color: white !important;
   }
 `;
 
 const RightColumn = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
-  flex: 1;
   max-width: 1200px;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   padding: 45px 51px 0px 51px;
@@ -54,9 +56,9 @@ type State = {
 export default class AdminPage extends React.PureComponent<Props, State> {
   FullWidth: IGlobalStateService<IAdminFullWidth>;
   NoPadding: IGlobalStateService<IAdminNoPadding>;
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {
       adminFullWidth: false,
@@ -82,17 +84,13 @@ export default class AdminPage extends React.PureComponent<Props, State> {
 
   render() {
     const { children } = this.props;
-
-    // Merging classes
-    const classes: string[] = [];
-    if (this.state.adminFullWidth) classes.push('fullWidth');
-    if (this.state.adminNoPadding) classes.push('noPadding');
+    const { adminFullWidth, adminNoPadding } = this.state;
 
     return (
       <>
         <Container className={this.props['className']}>
           <Sidebar />
-          <RightColumn className={classes.join(' ')}>
+          <RightColumn className={`${adminFullWidth && 'fullWidth'} ${adminNoPadding && 'noPadding'}`}>
             {children}
           </RightColumn>
         </Container>

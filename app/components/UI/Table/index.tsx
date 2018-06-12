@@ -23,9 +23,7 @@ const StyledTable: any = styled.table`
         font-size: ${fontSize('small')};
         font-weight: 500;
         text-transform: uppercase;
-        line-height: 18px;
-        margin-left: 20px;
-        margin-right: 20px;
+        line-height: 17px;
         padding-top: 0px;
         padding-bottom: 10px;
 
@@ -39,8 +37,8 @@ const StyledTable: any = styled.table`
 
           &:hover,
           &.active {
-            fill: ${color('text')};
-            color: ${color('text')};
+            fill: #000;
+            color: #000;
           }
         }
       }
@@ -58,8 +56,6 @@ const StyledTable: any = styled.table`
         font-size: ${fontSize('small')};
         font-weight: 400;
         line-height: 18px;
-        margin-left: 20px;
-        margin-right: 20px;
         padding-top: 10px;
         padding-bottom: 10px;
 
@@ -69,7 +65,6 @@ const StyledTable: any = styled.table`
       }
 
       &:hover {
-        cursor: pointer;
         background: ${color('background')};
         color: #999;
       }

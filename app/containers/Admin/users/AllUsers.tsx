@@ -6,16 +6,16 @@ import { isString, isEmpty } from 'lodash';
 import UserManager from './UserManager';
 import AllUsersHeader from './AllUsersHeader';
 
+// Styles
+import styled from 'styled-components';
 
-interface InputProps { }
+const Container = styled.div``;
 
-
-interface Props extends InputProps { }
+interface Props {}
 
 interface State {
   search: string | undefined;
 }
-
 
 export default class AllUsers extends React.PureComponent<Props, State> {
 
@@ -36,13 +36,10 @@ export default class AllUsers extends React.PureComponent<Props, State> {
     const { search } = this.state;
 
     return (
-      <>
+      <Container>
         <AllUsersHeader onSearch={this.searchUser} />
-
-          <UserManager
-            search={search}
-          />
-      </>
+        <UserManager search={search} />
+      </Container>
     );
   }
 }

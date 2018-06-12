@@ -15,22 +15,28 @@ import { globalState, IAdminNoPadding, IGlobalStateService } from 'services/glob
 
 // Styling
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const Wrapper = styled.div`
-  align-items: stretch;
+  flex: 1;
   display: flex;
-  flex-wrap: nowrap;
-  height: 100%;
+  background: #fff;
 `;
 
 const LeftPanel = styled(GroupsListPanel)`
-  flex: 0 0 320px;
+  width: 300px;
+  flex: 0 0 300px;
+
+  ${media.smallerThan1280px`
+    width: 260px;
+    flex: 0 0 260px;
+  `}
 `;
 
 const ChildWrapper = styled.div`
-  background: white;
   flex: 1;
   padding: 50px;
+  background: white;
 `;
 
 // i18n
@@ -44,6 +50,7 @@ import { IGroupData, addGroup } from 'services/groups';
 import { API } from 'typings';
 
 export interface Props {}
+
 export interface State {
   groupCreationModal: false | 'step1' | IGroupData['attributes']['membership_type'];
 }
