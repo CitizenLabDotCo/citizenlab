@@ -10,6 +10,9 @@ import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// tracking
+import { injectTracks } from 'utils/analytics';
+import tracks from 'containers/Admin/users/tracks';
 
 const Container = styled.div``;
 
@@ -36,7 +39,11 @@ type Props = {
 
 type State = {};
 
-class UserFilterConditions extends React.PureComponent<Props, State> {
+interface Tracks {
+  trackConditionAdd: Function;
+}
+
+class UserFilterConditions extends React.PureComponent<Props & Tracks, State> {
 
   handleOnChangeRule = (index) => (rule: TRule) => {
     const newRules = clone(this.props.rules);
@@ -51,6 +58,7 @@ class UserFilterConditions extends React.PureComponent<Props, State> {
   }
 
   handleOnAddRule = () => {
+    this.props.trackConditionAdd();
     const newRules = clone(this.props.rules);
     newRules.push({});
     this.props.onChange(newRules);
@@ -84,7 +92,11 @@ class UserFilterConditions extends React.PureComponent<Props, State> {
   }
 }
 
-export default UserFilterConditions;
+const UserFilterConditionsWithHoc = injectTracks<Props>({
+  trackConditionAdd: tracks.conditionAdd,
+})(UserFilterConditions);
+
+export default UserFilterConditionsWithHoc;
 
 import { FieldProps } from 'formik';
 
@@ -96,7 +108,7 @@ export class FormikUserFilterConditions extends React.Component<Props & FieldPro
   render() {
     const { value } = this.props.field;
     return (
-      <UserFilterConditions
+      <UserFilterConditionsWithHoc
         {...this.props}
         onChange={this.handleOnChange}
         rules={value}
