@@ -34,8 +34,22 @@ import messages from './messages';
 
 // Styles
 import styled from 'styled-components';
-const STable = styled(Table)`
+
+const Container = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`;
+
+const StyledTable = styled(Table)`
   margin-top: 20px;
+
+  th,
+  td {
+    padding-left: 10px;
+    padding-right: 10px;
+    overflow-wrap: break-word;
+  }
 `;
 
 // Typings
@@ -80,7 +94,7 @@ class UsersTable extends React.PureComponent<Props & Tracks, State> {
         ];
       }
       updateUser(user.id, { roles: newRoles }).then(() => {
-        setTimeout(() => streams.fetchAllStreamsWithEndpoint(`${API_PATH}/groups`), 1000);
+        setTimeout(() => streams.fetchAllStreamsWithEndpoint(`${API_PATH}/groups`), 2000);
       });
     }
   }
@@ -110,8 +124,8 @@ class UsersTable extends React.PureComponent<Props & Tracks, State> {
 
     if (Array.isArray(usersList) && usersCount && usersCount > 0) {
       return (
-        <>
-          <STable>
+        <Container>
+          <StyledTable>
             <thead>
               <tr>
                 <th />
@@ -162,14 +176,14 @@ class UsersTable extends React.PureComponent<Props & Tracks, State> {
                 />
               ))}
             </tbody>
-          </STable>
+          </StyledTable>
 
           <CustomPagination
             currentPage={currentPage || 1}
             totalPages={lastPage || 1}
             loadPage={this.handlePaginationClick}
           />
-        </>
+        </Container>
       );
     }
 
