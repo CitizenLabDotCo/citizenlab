@@ -26,7 +26,7 @@ const ModalContent: any = styled(clickOutside)`
   flex-direction: column;
   max-width: ${(props: any) => props.width};
   outline: none;
-  overflow-y: auto;
+  overflow-y: ${(props: any) => props.hasHeaderOrFooter ? 'hidden' : 'auto'};
   -webkit-overflow-scrolling: touch;
   padding: ${(props: any) => props.hasHeaderOrFooter ? 0 : '40px'};
   position: relative;
@@ -37,7 +37,7 @@ const ModalContent: any = styled(clickOutside)`
   }
 
   ${media.smallerThanMaxTablet`
-    padding: 25px;
+    padding: ${(props: any) => props.hasHeaderOrFooter ? 0 : '25px'};
 
     &.fixedHeight {
       height: 75vh;

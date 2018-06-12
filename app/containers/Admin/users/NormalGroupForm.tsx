@@ -26,9 +26,11 @@ export interface NormalFormValues {
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const Fill = styled.div`
+export const Fill = styled.div`
   height: 452px;
-  padding: 40px;
+  padding-top: 40px;
+  padding-left: 40px;
+  overflow-y: auto;
 `;
 
 export const FooterContainer = styled.div`
