@@ -175,6 +175,14 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
         message: 'settings',
         isActive: (pathName) => (pathName.startsWith('/admin/settings'))
       },
+      {
+        id: 'clusterings',
+        link: '/admin/clusterings',
+        iconName: 'analytics',
+        message: 'clustering',
+        featureName: 'clustering',
+        isActive: (pathName) => (pathName.startsWith('/admin/clusterings'))
+      },
     ];
     this.subscriptions = [];
   }
