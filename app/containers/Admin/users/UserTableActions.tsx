@@ -20,6 +20,10 @@ import streams from 'utils/streams';
 import eventEmitter from 'utils/eventEmitter';
 import events, { MembershipAdd } from './events';
 
+// tracking
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
+
 // Resources
 import GetGroups, { GetGroupsChildProps, MembershipType } from 'resources/GetGroups';
 
@@ -85,7 +89,13 @@ interface Props extends InputProps, DataProps { }
 
 interface State { }
 
-class UserTableActions extends React.PureComponent<Props, State> {
+interface Tracks {
+  trackToggleAllUsers: Function;
+  trackAddUsersToGroups: Function;
+  trackAddedRedundantUserToGroup: Function;
+}
+
+class UserTableActions extends React.PureComponent<Props & Tracks, State> {
 
   constructor(props) {
     super(props);
@@ -96,6 +106,7 @@ class UserTableActions extends React.PureComponent<Props, State> {
   }
 
   toggleAllUsers = () => {
+    this.props.trackToggleAllUsers();
     this.props.toggleSelectAll();
   }
 
@@ -119,8 +130,15 @@ class UserTableActions extends React.PureComponent<Props, State> {
   }
 
   addUsersToGroups = (groupsIds) => {
-    const { allUsersIds, selectedUsers } = this.props;
+    const { allUsersIds, selectedUsers, trackAddUsersToGroups, trackAddedRedundantUserToGroup } = this.props;
     const usersIds = (selectedUsers === 'all') ? allUsersIds : selectedUsers;
+
+    trackAddUsersToGroups({
+      extra: {
+        usersIds,
+        groupsIds,
+      }
+    });
 
     return new Promise((resolve, reject) => {
       const array: Promise<IGroupMembership | API.ErrorResponse>[] = [];
@@ -138,6 +156,11 @@ class UserTableActions extends React.PureComponent<Props, State> {
           resolve();
         })
         .catch((err: API.ErrorResponse) => {
+          trackAddedRedundantUserToGroup({
+            extra: {
+              errorResponse: err
+            }
+          });
           if (err && err.json && err.json.errors.user.filter(val => val.error !== 'taken').length === 0 && !err.json.errors.group) {
             streams.fetchAllStreamsWithEndpoint(`${API_PATH}/groups`);
             resolve();
@@ -228,8 +251,14 @@ class UserTableActions extends React.PureComponent<Props, State> {
   }
 }
 
+const UserTableActionsWithHocs = injectTracks<Props>({
+  trackToggleAllUsers: tracks.toggleAllUsers,
+  trackAddUsersToGroups: tracks.addUsersToGroup,
+  trackAddedRedundantUserToGroup: tracks.addedRedundantUserToGroup,
+})(UserTableActions);
+
 export default (inputProps: InputProps) => (
   <GetGroups membershipType="manual">
-    {manualGroups => <UserTableActions {...inputProps} manualGroups={manualGroups} />}
+    {manualGroups => <UserTableActionsWithHocs {...inputProps} manualGroups={manualGroups} />}
   </GetGroups>
 );

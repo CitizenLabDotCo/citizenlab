@@ -4,7 +4,7 @@ import { isString, isEmpty } from 'lodash';
 
 // Components
 import UserManager from './UserManager';
-import AllUsersHeader from './AllUsersHeader';
+import UsersHeader from './UsersHeader';
 
 
 interface InputProps { }
@@ -37,7 +37,7 @@ export default class AllUsers extends React.PureComponent<Props, State> {
 
     return (
       <>
-        <AllUsersHeader onSearch={this.searchUser} />
+        <UsersHeader onSearch={this.searchUser} />
 
           <UserManager
             search={search}

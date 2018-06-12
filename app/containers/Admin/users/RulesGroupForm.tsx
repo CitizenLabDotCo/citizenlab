@@ -53,6 +53,7 @@ export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Prop
     return errors;
   }
 
+
   render() {
     const { isSubmitting, errors, isValid, touched } = this.props;
 
