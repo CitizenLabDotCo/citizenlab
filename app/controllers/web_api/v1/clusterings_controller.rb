@@ -14,7 +14,16 @@ class WebApi::V1::ClusteringsController < ApplicationController
 
   def create
     @clustering = Clustering.new(clustering_params)
-    @clustering.structure = ClusteringService.new.create_structure(params[:clustering][:levels])
+
+    options = {}
+    options[:drop_empty] = params[:clustering][:drop_empty] != 'false'
+
+    @clustering.structure = ClusteringService.new.build_structure(
+      params[:clustering][:levels],
+      policy_scope(Idea),
+      options
+    )
+
     authorize @clustering
 
     if @clustering.save
