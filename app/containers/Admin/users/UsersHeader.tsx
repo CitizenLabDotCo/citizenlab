@@ -13,6 +13,10 @@ import SearchInput from 'components/UI/SearchInput';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// tracking
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
+
 // Styling
 import styled from 'styled-components';
 import rgba from 'polished/lib/color/rgba';
@@ -20,7 +24,7 @@ import { colors } from 'utils/styleUtils';
 
 const gutter = '.5rem';
 
-export const TitleWrapper = styled.div`
+const TitleWrapper = styled.div`
   align-items: flex-start;
   display: flex;
   flex-wrap: nowrap;
@@ -48,7 +52,7 @@ const TitleIcon = styled(Icon)`
   }
 `;
 
-export const TextAndButtons = styled.div`
+const TextAndButtons = styled.div`
   margin: .5rem 0;
 
   h1 {
@@ -61,29 +65,33 @@ export const TextAndButtons = styled.div`
   }
 `;
 
-export const StyledSearch = styled(SearchInput)`
+const StyledSearch = styled(SearchInput)`
   align-self: flex-start;
   flex: 0 0 225px;
   justify-self: flex-end;
 `;
 
-export const Spacer = styled.div`
+const Spacer = styled.div`
   flex: 1 1 0;
 `;
 
 // Typings
-export interface Props {
-  title: Multiloc;
+interface Props {
+  title?: Multiloc;
   smartGroup?: boolean;
-  onEdit: () => void;
-  onDelete: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
   onSearch: (newValue: string) => void;
 }
-export interface State {
+interface State {
   searchValue: string;
 }
 
-export class GroupHeader extends React.PureComponent<Props, State> {
+interface Tracks {
+  trackSearchInput: Function;
+}
+
+class UsersHeader extends React.PureComponent<Props & Tracks, State> {
   debounceSearch: (newValue: string) => void;
 
   constructor(props) {
@@ -100,14 +108,29 @@ export class GroupHeader extends React.PureComponent<Props, State> {
     this.debounceSearch(newValue);
   }
 
+  focusSearch = () => {
+    this.props.trackSearchInput();
+  }
+
   render() {
+    if (this.props.title) {
+    return (
+        <TitleWrapper>
+          {this.props.smartGroup && <TitleIcon name="lightingBolt" />}
+          <TextAndButtons>
+            <T as="h1" value={this.props.title} />
+            <Button iconTitle={<FormattedMessage {...messages.editGroup} />} hiddenText={<FormattedMessage {...messages.editGroup} />} padding=".65em" icon="edit" style="secondary" circularCorners={false} onClick={this.props.onEdit} />
+            <Button iconTitle={<FormattedMessage {...messages.deleteGroup} />} hiddenText={<FormattedMessage {...messages.deleteGroup} />} padding=".65em" icon="delete" style="text" circularCorners={false} onClick={this.props.onDelete} />
+          </TextAndButtons>
+          <Spacer />
+          <StyledSearch value={this.state.searchValue} onChange={this.handleSearchChange} onFocus={this.focusSearch} />
+        </TitleWrapper>
+      );
+    }
     return (
       <TitleWrapper>
-        {this.props.smartGroup && <TitleIcon name="lightingBolt" />}
         <TextAndButtons>
-          <T as="h1" value={this.props.title} />
-          <Button iconTitle={<FormattedMessage {...messages.editGroup} />} hiddenText={<FormattedMessage {...messages.editGroup} />} padding=".65em" icon="edit" style="secondary" circularCorners={false} onClick={this.props.onEdit} />
-          <Button iconTitle={<FormattedMessage {...messages.deleteGroup} />} hiddenText={<FormattedMessage {...messages.deleteGroup} />} padding=".65em" icon="delete" style="text" circularCorners={false} onClick={this.props.onDelete} />
+          <FormattedMessage tagName="h1" {...messages.allUsers} />
         </TextAndButtons>
         <Spacer />
         <StyledSearch value={this.state.searchValue} onChange={this.handleSearchChange} />
@@ -116,4 +139,6 @@ export class GroupHeader extends React.PureComponent<Props, State> {
   }
 }
 
-export default GroupHeader;
+export default injectTracks<Props>({
+  trackSearchInput: tracks.searchInput,
+})(UsersHeader);

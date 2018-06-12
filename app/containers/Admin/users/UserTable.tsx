@@ -24,6 +24,10 @@ import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import eventEmitter from 'utils/eventEmitter';
 import events from './events';
 
+// tracking
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
+
 // I18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -51,7 +55,7 @@ const StyledTable = styled(Table)`
 // Typings
 interface InputProps {
   selectedUsers: string[] | 'none' | 'all';
-  handleSelect: (userId: string) => () => void;
+  handleSelect: (userId: string) => void;
   authUser: GetAuthUserChildProps;
 }
 
@@ -59,7 +63,14 @@ interface Props extends InputProps, GetUsersChildProps { }
 
 interface State { }
 
-export default class UsersTable extends React.PureComponent<Props, State> {
+interface Tracks {
+  trackPagination: Function;
+  trackToggleOneUser: Function;
+  trackAdminToggle: Function;
+  trackSortChange: Function;
+}
+
+class UsersTable extends React.PureComponent<Props & Tracks, State> {
 
   isUserAdmin = (user: IUserData) => {
     return isAdmin({ data: user });
@@ -67,8 +78,10 @@ export default class UsersTable extends React.PureComponent<Props, State> {
 
   handleAdminRoleOnChange = (user: IUserData) => () => {
     let newRoles: IRole[] = [];
+    const { authUser, trackAdminToggle } = this.props;
 
-    const { authUser } = this.props;
+    trackAdminToggle();
+
     if (authUser && authUser.id === user.id) {
       eventEmitter.emit<JSX.Element>('usersAdmin', events.userRoleChangeFailed, <FormattedMessage {...messages.youCantUnadminYourself} />);
     } else {
@@ -87,11 +100,22 @@ export default class UsersTable extends React.PureComponent<Props, State> {
   }
 
   handleSortingOnChange = (sortAttribute: SortAttribute) => () => {
+    this.props.trackSortChange({
+      extra: {
+        sortAttribute,
+      }
+    });
     this.props.onChangeSorting(sortAttribute);
   }
 
   handlePaginationClick = (pageNumber: number) => {
+    this.props.trackPagination();
     this.props.onChangePage(pageNumber);
+  }
+
+  handleUserToggle = (userId) => () => {
+      this.props.trackToggleOneUser();
+      this.props.handleSelect(userId);
   }
 
   render() {
@@ -145,7 +169,7 @@ export default class UsersTable extends React.PureComponent<Props, State> {
                   key={user.id}
                   user={user}
                   selected={selectedUsers === 'all' || includes(selectedUsers, user.id)}
-                  toggleSelect={this.props.handleSelect(user.id)}
+                  toggleSelect={this.handleUserToggle(user.id)}
                   toggleAdmin={this.handleAdminRoleOnChange(user)}
                   authUser={this.props.authUser}
                   up={(usersCount > 8) ? (index > usersCount - 3) : false}
@@ -166,3 +190,10 @@ export default class UsersTable extends React.PureComponent<Props, State> {
     return null;
   }
 }
+
+export default injectTracks<Props>({
+  trackPagination: tracks.pagination,
+  trackToggleOneUser: tracks.toggleOneUser,
+  trackAdminToggle: tracks.adminToggle,
+  trackSortChange: tracks.sortChange,
+})(UsersTable);
