@@ -8,13 +8,12 @@ import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import PageForm, { FormValues } from '../Form';
 import { Formik } from 'formik';
 import PageWrapper from 'components/admin/PageWrapper';
-import { color, fontSize } from 'utils/styleUtils';
+import { fontSize } from 'utils/styleUtils';
 import GoBackButton from 'components/UI/GoBackButton';
 import T from 'components/T';
 import { isNilOrError } from 'utils/helperUtils';
 
 const Title = styled.h1`
-  color: ${color('title')};
   font-size: ${fontSize('xxxl')};
   padding: 0;
   width: 100%;

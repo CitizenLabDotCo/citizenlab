@@ -63,6 +63,11 @@ const UserIcon = styled(Icon)`
   height: 24px;
   fill: inherit;
   transition: all 150ms ease;
+  cursor: pointer;
+`;
+
+const StyledAvatar = styled(Avatar)`
+  cursor: pointer;
 `;
 
 const StyledPopover = styled(Popover)`
@@ -70,12 +75,6 @@ const StyledPopover = styled(Popover)`
   flex-direction: column;
   z-index: 5;
 `;
-
-// const PopoverIcon = styled(Icon)`
-//   height: 20px;
-//   fill: ${colors.label};
-//   transition: all 80ms ease-out;
-// `;
 
 const PopoverItem = styled(Button)`
   background: #fff;
@@ -141,7 +140,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
       return (
         <Container id="e2e-user-menu-container">
           <OpenMenuButton onClick={this.togglePopover}>
-            {avatar ?  <Avatar userId={userId} size="small" /> : <UserIcon name="user" />}
+            {avatar ?  <StyledAvatar userId={userId} size="small" /> : <UserIcon name="user" />}
           </OpenMenuButton>
           <StyledPopover
             id="e2e-user-menu-dropdown"
@@ -155,6 +154,8 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                 onClick={this.closePopover}
                 style="text"
                 icon="admin"
+                size="2"
+                justify="left"
               >
                 <FormattedMessage {...messages.admin} />
               </PopoverItem>
@@ -168,6 +169,8 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                     onClick={this.closePopover}
                     style="text"
                     icon="admin"
+                    size="2"
+                    justify="left"
                   >
                     <FormattedMessage {...messages.projectsModeration} />
                   </PopoverItem>
@@ -181,6 +184,8 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               onClick={this.closePopover}
               style="text"
               icon="user"
+              size="2"
+              justify="left"
             >
               <FormattedMessage {...messages.profilePage} />
             </PopoverItem>
@@ -191,6 +196,8 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               onClick={this.closePopover}
               style="text"
               icon="settings"
+              size="2"
+              justify="left"
             >
               <FormattedMessage {...messages.editProfile} />
             </PopoverItem>
@@ -200,6 +207,8 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               onClick={this.signOut}
               style="text"
               icon="power"
+              size="2"
+              justify="left"
             >
               <FormattedMessage {...messages.signOut} />
             </PopoverItem>

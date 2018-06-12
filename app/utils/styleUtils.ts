@@ -74,7 +74,7 @@ export const colors = {
   darkClGreen: '#004949',
   success: '#32B67A',
   error: '#FC3C2D',
-  label: '#84939E',
+  label: '#5C6E7D',
   draftYellow: '#D1AD52',
   mediumGrey: '#BDBDBD',
   lightGreyishBlue: '#EBEDEF',
