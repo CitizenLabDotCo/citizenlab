@@ -94,7 +94,7 @@ class InvitesTable extends React.PureComponent<Props, State> {
 
     if (!isNilOrError(invitesList)) {
       return (
-        <Container>
+        <Container className={this.props['className']}>
           <HeaderContainer>
             <Input icon="search" onChange={this.handleChangeSearchTerm} size="large" />
 

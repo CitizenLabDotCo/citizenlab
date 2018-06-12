@@ -20,18 +20,25 @@ import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
 
 const Menu = styled.nav`
+  flex: 0 0 260px;
   background: ${ colors.adminMenuBackground };
-  flex: 0 0 320px;
-  margin-top: 0px;
-  padding-top: 100px;
   z-index: 1;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-items: stretch;
 
   ${media.smallerThanMinTablet`
     flex: 0 0 70px;
   `}
+`;
+
+const MenuInner = styled.div`
+  width: 100%;
+  position: sticky;
+  top: 119px;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 `;
 
 const IconWrapper = styled.div`
@@ -41,7 +48,6 @@ const IconWrapper = styled.div`
   align-items: center;
   justify-content: center;
 `;
-
 
 const Text = styled.div`
   color: ${colors.adminLightText};
@@ -57,18 +63,16 @@ const Text = styled.div`
 `;
 
 const MenuItem: any = styled(Link)`
-  width: 210px;
   border-radius: 5px;
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
   align-items: center;
   padding-left: 5px;
   padding-right: 15px;
   padding-bottom: 1px;
-  margin: 0;
-  cursor: pointer;
   margin-bottom: 5px;
+  margin-left: 25px;
+  margin-right: 25px;
+  cursor: pointer;
 
   &:hover {
     ${Text} {
@@ -86,7 +90,7 @@ const MenuItem: any = styled(Link)`
   }
 
   &.selected {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.25);
 
     ${Text} {
       color: #fff;
@@ -101,12 +105,6 @@ const MenuItem: any = styled(Link)`
       }
     };
   }
-`;
-
-const Sul = styled.ul`
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
 `;
 
 type Props = {};
@@ -210,19 +208,17 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
 
     return (
       <Menu role="navigation">
-        <Sul>
+        <MenuInner>
           {navItems.map((route) => (
             <FeatureFlag name={route.featureName} key={route.id}>
-              <li>
-                <MenuItem activeClassName="active" className={`${route.isActive(pathname) ? 'selected' : ''}`} to={route.link}>
-                  <IconWrapper><Icon name={route.iconName} /></IconWrapper>
-                  <Text>{formatMessage({ ...messages[route.message] })}</Text>
-                  {route.isActive(pathname) && <Icon name="arrowLeft" />}
-                </MenuItem>
-              </li>
+              <MenuItem activeClassName="active" className={`${route.isActive(pathname) ? 'selected' : ''}`} to={route.link}>
+                <IconWrapper><Icon name={route.iconName} /></IconWrapper>
+                <Text>{formatMessage({ ...messages[route.message] })}</Text>
+                {route.isActive(pathname) && <Icon name="arrowLeft" />}
+              </MenuItem>
             </FeatureFlag>
           ))}
-        </Sul>
+        </MenuInner>
       </Menu>
     );
   }

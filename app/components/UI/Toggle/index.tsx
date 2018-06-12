@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled, { css } from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const size = 22;
+const size = 21;
 const padding = 4;
 
 const Container = styled.div`
@@ -73,6 +73,7 @@ export type Props = {
   value: boolean;
   disabled?: boolean | undefined;
   label?: string | JSX.Element | null | undefined;
+  size?: 'small' | 'normal' | 'large';
   onChange: (event: React.FormEvent<any>) => void;
 };
 
