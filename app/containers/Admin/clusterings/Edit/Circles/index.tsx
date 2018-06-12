@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import * as d3 from 'd3-hierarchy';
 import { keyBy, find } from 'lodash';
 import IdeaCircle from './IdeaCircle';
-import ClusterCircle from './ClusterCircle';
+import CustomCircle from './CustomCircle';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
-import { Node } from '../clusters';
+import { Node } from 'services/clusterings';
+import ProjectCircle from './ProjectCircle';
+import TopicCircle from './TopicCircle';
 
 type D3Node = {
   data: Node;
@@ -13,7 +15,7 @@ type D3Node = {
 
 type Props = {
   ideas: GetIdeasChildProps;
-  cluster: ParentNode;
+  structure: ParentNode;
   selectedNodes: Node[];
   onClickNode: (Node) => void;
   onShiftClickNode: (Node) => void;
@@ -39,7 +41,7 @@ class Circles extends Component<Props, State> {
   componentDidMount() {
     const svgRef: any = this.svgRef;
     const ideasById: any = keyBy(this.props.ideas.ideasList, 'id');
-    const root = d3.hierarchy(this.props.cluster)
+    const root = d3.hierarchy(this.props.structure)
       .sum((d) => ideasById[d.id] ? (ideasById[d.id].attributes.upvotes_count + ideasById[d.id].attributes.downvotes_count) : 1);
 
     const pack = d3.pack()
@@ -86,7 +88,7 @@ class Circles extends Component<Props, State> {
               key={index}
               transform={`translate(${node.x},${node.y})`}
             >
-              {node.data.type === 'idea' ?
+              {node.data.type === 'idea' &&
                 <IdeaCircle
                   node={node}
                   ideaId={node.data.id}
@@ -96,9 +98,26 @@ class Circles extends Component<Props, State> {
                   selected={this.isSelected(node)}
                   hovered={node.data.id === this.state.hoveredIdea}
                 />
-              :
-                <ClusterCircle
+              }
+              {node.data.type === 'custom' &&
+                <CustomCircle
                   node={node}
+                  onClick={this.handleOnClickNode(node)}
+                  selected={this.isSelected(node)}
+                />
+              }
+              {node.data.type === 'project' &&
+                <ProjectCircle
+                  node={node}
+                  projectId={node.data.id}
+                  onClick={this.handleOnClickNode(node)}
+                  selected={this.isSelected(node)}
+                />
+              }
+              {node.data.type === 'topic' &&
+                <TopicCircle
+                  node={node}
+                  topicId={node.data.id}
                   onClick={this.handleOnClickNode(node)}
                   selected={this.isSelected(node)}
                 />

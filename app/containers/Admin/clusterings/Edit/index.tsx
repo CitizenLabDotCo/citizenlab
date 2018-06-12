@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import Circles from './Circles';
-import { Node, ParentNode } from './clusters';
+import { Node, ParentNode } from 'services/clusterings';
 import InfoPane from './InfoPane';
 import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
+import GetClustering, { GetClusteringChildProps } from 'resources/GetClustering';
+import { withRouter } from 'react-router';
 const anzegemCluster =  require('./anzegem.json');
 
 const Container = styled.div`
@@ -14,10 +17,11 @@ const TwoColumns = styled.div`
 `;
 
 interface Props {
+  clustering: GetClusteringChildProps;
 }
 
 interface State {
-  cluster?: ParentNode;
+  clustering?: ParentNode;
   selectedNodes: Node[];
 }
 
@@ -26,7 +30,7 @@ class ClusterViewer extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      cluster: anzegemCluster,
+      clustering: anzegemCluster,
       selectedNodes: [],
     };
   }
@@ -44,11 +48,14 @@ class ClusterViewer extends Component<Props, State> {
   }
 
   render() {
+    const { clustering } = this.props;
+    if (isNilOrError(clustering)) return null;
+
     return (
       <Container>
         <TwoColumns>
           <Circles
-            cluster={this.state.cluster}
+            structure={clustering.attributes.structure}
             selectedNodes={this.state.selectedNodes}
             onClickNode={this.handleOnClickNode}
             onShiftClickNode={this.handleOnShiftClickNode}
@@ -62,4 +69,8 @@ class ClusterViewer extends Component<Props, State> {
   }
 }
 
-export default ClusterViewer;
+export default withRouter((inputProps) => (
+  <GetClustering id={inputProps.params.clusteringId}>
+    {(clustering) => <ClusterViewer {...inputProps} clustering={clustering} />}
+  </GetClustering>
+));
