@@ -1,6 +1,5 @@
 import React from 'react';
 import { clone, isEqual } from 'lodash';
-import styled from 'styled-components';
 import { deleteCustomField, ICustomFieldData, updateCustomFieldForUsers, reorderCustomFieldForUsers } from 'services/userCustomFields';
 import GetCustomFields, { GetCustomFieldsChildProps } from 'resources/GetCustomFields';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -14,11 +13,7 @@ import Button from 'components/UI/Button';
 import Toggle from 'components/UI/Toggle';
 import messages from '../messages';
 import FeatureFlag from 'components/FeatureFlag';
-
-const ButtonWrapper = styled.div`
-  margin-top: 2rem;
-`;
-
+import { ButtonWrapper } from 'components/admin/PageWrapper';
 
 interface InputProps {}
 

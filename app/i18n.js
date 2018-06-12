@@ -43,6 +43,20 @@ export const appLocalePairs = {
   ach: 'Acholi',
 };
 
+export const shortenedAppLocalePairs = {
+  en: 'English',
+  'en-GB': 'English',
+  'en-CA': 'English',
+  'fr-BE': 'Français',
+  'fr-FR': 'Français',
+  'nl-BE': 'Nederlands',
+  'nl-NL': 'Nederlands',
+  'de-DE': 'Deutsch',
+  'da-DK': 'Dansk',
+  'nb-NO': 'Norsk',
+  ach: 'Acholi',
+};
+
 if (process.env.CROWDIN_PLUGIN_ENABLED) {
   addLocaleData(achLocaleData);
 } else {
