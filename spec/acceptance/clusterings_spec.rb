@@ -40,6 +40,7 @@ resource "Clusterings" do
     with_options scope: :clustering do
       parameter :title_multiloc, "The title of the clustering, as a multiloc string", required: true
       parameter :levels, "An array composed of keywords 'project' and 'topic' that defines how to cluster initially", required: true
+      parameter :drop_empty, "A boolean that indicates whether to include empty clusters or not. Defaults to true", required: false
     end
     ValidationErrorHelper.new.error_fields(self, Clustering)
 
