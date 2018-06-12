@@ -15,7 +15,6 @@ import 'moment/locale/da';
 import 'moment/locale/nb';
 import find from 'lodash/find';
 import { isNilOrError } from 'utils/helperUtils';
-// import FontFaceObserver from 'fontfaceobserver';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -111,15 +110,6 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
     const tenant$ = currentTenantStream().observable;
-
-    // const font = new FontFaceObserver('visuelt');
-
-    // font.load().then(() => {
-    //   console.log('visuelt has loaded');
-    // }).catch((error) => {
-    //   console.log('error while trying to load visuelt:');
-    //   console.log(error);
-    // });
 
     this.unlisten = browserHistory.listenBefore((newLocation) => {
       const { authUser } = this.state;
