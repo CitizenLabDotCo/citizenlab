@@ -420,6 +420,13 @@ if Apartment::Tenant.current == 'localhost'
         members: User.all.shuffle.take(rand(User.count))
       })
     end
+    Group.create!({
+      membership_type: 'rules',
+        title_multiloc: create_for_some_locales{'Citizenlab Heroes'},
+        rules: [
+        {ruleType: 'email', predicate: 'ends_on', value: '@citizenlab.co'}
+      ]
+    })
 
     5.times do
       Invite.create!(
