@@ -389,6 +389,7 @@
   "app.containers.AdminPage.SettingsPage.titleRegistrationFields": "Registrierungsfeld",
   "app.containers.AdminPage.SettingsPage.uploadPlaceholder": "Legen Sie Ihre Dateien hier ab",
   "app.containers.AdminPage.SettingsPage.viewPublicResource": "Einstellungen",
+  "app.containers.AdminPage.SideBar.clustering": "",
   "app.containers.AdminPage.SideBar.dashboard": "Dashboard",
   "app.containers.AdminPage.SideBar.groups": "Gruppen",
   "app.containers.AdminPage.SideBar.ideas": "{orgName, select, München {Mängel} other {Ideen}}",

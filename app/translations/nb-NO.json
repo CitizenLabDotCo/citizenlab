@@ -389,6 +389,7 @@
   "app.containers.AdminPage.SettingsPage.titleRegistrationFields": "Registreringsfelter",
   "app.containers.AdminPage.SettingsPage.uploadPlaceholder": "Slipp filene dine her",
   "app.containers.AdminPage.SettingsPage.viewPublicResource": "Innstillinger",
+  "app.containers.AdminPage.SideBar.clustering": "",
   "app.containers.AdminPage.SideBar.dashboard": "Kontrollpanel",
   "app.containers.AdminPage.SideBar.groups": "Grupper",
   "app.containers.AdminPage.SideBar.ideas": "Idéer",
