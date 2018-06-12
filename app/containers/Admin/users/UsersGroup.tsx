@@ -8,7 +8,7 @@ import { isString, isEmpty } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Components
-import GroupHeader from './GroupHeader';
+import UsersHeader from './UsersHeader';
 import Modal from 'components/UI/Modal';
 import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
 import RulesGroupForm, { RulesFormValues } from './RulesGroupForm';
@@ -31,6 +31,10 @@ import GetGroup, { GetGroupChildProps } from 'resources/GetGroup';
 import { deleteGroup, updateGroup, MembershipType } from 'services/groups';
 import { deleteMembershipByUserId } from 'services/groupMemberships';
 
+// tracking
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
+
 // Typings
 import { API } from 'typings';
 interface InputProps { }
@@ -46,7 +50,11 @@ export interface State {
   search: string | undefined;
 }
 
-export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, State> {
+interface Tracks {
+  trackEditGroup: Function;
+}
+
+export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & Tracks, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -66,10 +74,17 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
   }
 
   openGroupEditionModal = () => {
-    const { group } = this.props;
+    const { group, trackEditGroup } = this.props;
+
 
     if (!isNilOrError(group)) {
-      this.setState({ groupEditionModal: group.attributes.membership_type });
+      const groupType =  group.attributes.membership_type;
+      trackEditGroup({
+        extra: {
+          groupType,
+        }
+      });
+      this.setState({ groupEditionModal: groupType });
     }
   }
 
@@ -133,7 +148,7 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
     if (!isNilOrError(group)) {
       return (
         <>
-          <GroupHeader
+          <UsersHeader
             title={group.attributes.title_multiloc}
             smartGroup={group.attributes.membership_type === 'rules'}
             onEdit={this.openGroupEditionModal}
@@ -182,7 +197,9 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps, S
   }
 }
 
-const UsersGroupWithHoCs = injectIntl<Props>(UsersGroup);
+const UsersGroupWithHoCs = injectTracks<Props>({
+  trackEditGroup: tracks.editGroup,
+})(injectIntl<Props>(UsersGroup));
 
 export default withRouter((inputProps: WithRouterProps) => (
   <GetGroup id={inputProps.params.groupId}>

@@ -23,6 +23,10 @@ import T from 'components/T';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
 
+// tracking
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
+
 // Styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
@@ -158,7 +162,11 @@ export interface State {
   highlightedGroups: Set<IGroupData['id']>;
 }
 
-export class GroupsListPanel extends React.PureComponent<Props, State> {
+interface Tracks {
+  trackCreateGroup: Function;
+}
+
+export class GroupsListPanel extends React.PureComponent<Props & Tracks, State> {
   subs: Subscription[] = [];
 
   constructor(props) {
@@ -188,6 +196,7 @@ export class GroupsListPanel extends React.PureComponent<Props, State> {
 
   handleCreateGroup = (event) => {
     event.preventDefault();
+    this.props.trackCreateGroup();
     this.props.onCreateGroup();
   }
 
@@ -235,8 +244,12 @@ const Data = adopt<DataProps, InputProps>({
   usercount: <GetUserCount />
 });
 
+const GroupsListPanelWithHoc = injectTracks<Props>({
+  trackCreateGroup: tracks.createGroup,
+})(GroupsListPanel);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <GroupsListPanel {...inputProps} {...dataProps} />}
+    {dataProps => <GroupsListPanelWithHoc {...inputProps} {...dataProps} />}
   </Data>
 );

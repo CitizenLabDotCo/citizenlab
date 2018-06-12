@@ -63,6 +63,7 @@ const IconWrapper = styled.div`
 interface Props {
   value: string;
   onChange: (arg: string) => void;
+  onFocus?: () => void;
 }
 
 type State = {};
@@ -88,7 +89,7 @@ class SearchInput extends React.PureComponent<Props & InjectedIntlProps, State> 
 
   render() {
     const className = this.props['className'];
-    const { value } = this.props;
+    const { value, onFocus } = this.props;
     const { formatMessage } = this.props.intl;
     const iconName = (isString(value) && !isEmpty(value) ? 'close2' : 'search');
     const canClear = (isString(value) && !isEmpty(value));
@@ -103,6 +104,7 @@ class SearchInput extends React.PureComponent<Props & InjectedIntlProps, State> 
           type="text"
           placeholder={placeholder}
           onChange={this.handleOnChange}
+          onFocus={onFocus}
         />
         <IconWrapper onClick={this.handleOnClick} className={canClear ? 'clear' : ''}>
           <StyledIcon name={iconName} />

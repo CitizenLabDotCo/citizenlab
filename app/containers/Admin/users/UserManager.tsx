@@ -115,7 +115,7 @@ export class UserManager extends React.PureComponent<Props, State> {
     this.setState(state => ({ selectedUsers: (state.selectedUsers === 'all' ? 'none' : 'all') }));
   }
 
-  handleUserSelectedOnChange = (allUsersIds: string[]) => (userId: string) => () => {
+  handleUserSelectedOnChange = (allUsersIds: string[]) => (userId: string) => {
     this.setState((state) => {
       let newSelectedUsers: string[] | 'none' | 'all' = 'none';
 
