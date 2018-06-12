@@ -5,10 +5,10 @@ import { isEmpty, values as getValues, every } from 'lodash';
 
 // Components
 import { FormikUserFilterConditions } from 'components/admin/UserFilterConditions';
-import { Section, SectionField, SectionTitle } from 'components/admin/Section';
+import { SectionField } from 'components/admin/Section';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
-import { FooterContainer } from './NormalGroupForm';
+import { FooterContainer, Fill } from './NormalGroupForm';
 import Error from 'components/UI/Error';
 import Label from 'components/UI/Label';
 
@@ -18,14 +18,18 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { fontSize } from 'utils/styleUtils';
+import { fontSize, colors } from 'utils/styleUtils';
 
-const CustomSection = styled(Section)`
-  padding: 40px;
+const ExplainCondition = styled.div`
+  color: ${colors.clIconAccent};
+  font-weight: bold;
+  font-size: ${fontSize('large')};
+  padding-bottom: 40px;
+  width: 560px;
+`;
 
-  ${SectionTitle} {
-    font-size: ${fontSize('large')};
-  }
+const SSectionField = styled(SectionField)`
+  max-width: 570px;
 `;
 
 // Typings
@@ -59,10 +63,10 @@ export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Prop
 
     return (
       <Form>
-        <CustomSection>
-          <SectionTitle>
+        <Fill>
+          <ExplainCondition>
             <FormattedMessage {...messages.rulesGroupHeader} />
-          </SectionTitle>
+          </ExplainCondition>
           <SectionField className="e2e-rules-field-section" >
             <Label><FormattedMessage {...messages.fieldRulesLabel} /></Label>
             <Field
@@ -70,7 +74,7 @@ export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Prop
               component={FormikUserFilterConditions}
             />
           </SectionField>
-          <SectionField>
+          <SSectionField>
             <Field
               id="group-title-field"
               name="title_multiloc"
@@ -81,8 +85,8 @@ export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Prop
               fieldName="title_multiloc"
               apiErrors={errors.title_multiloc}
             />}
-          </SectionField>
-        </CustomSection>
+          </SSectionField>
+        </Fill>
 
         <FooterContainer>
           <FormikSubmitWrapper
