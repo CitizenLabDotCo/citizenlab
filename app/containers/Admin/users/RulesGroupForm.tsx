@@ -67,17 +67,16 @@ export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Prop
           <ExplainCondition>
             <FormattedMessage {...messages.rulesGroupHeader} />
           </ExplainCondition>
-          <SectionField className="e2e-rules-field-section" >
+          <SSectionField className="e2e-rules-field-section" >
             <Label><FormattedMessage {...messages.fieldRulesLabel} /></Label>
             <Field
               name="rules"
               component={FormikUserFilterConditions}
             />
-          </SectionField>
-          {touched.rules && <Error
-            fieldName="rules"
-            apiErrors={errors.rules}
-          />}
+            {touched.rules && errors.rules && <Error
+              text={<FormattedMessage {...messages.rulesError}/>}
+            />}
+          </SSectionField>
           <SSectionField>
             <Field
               id="group-title-field"
