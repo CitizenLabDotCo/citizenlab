@@ -6,7 +6,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import NotificationWrapper from '../NotificationWrapper';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import { Link } from 'react-router';
+import Link from 'utils/cl-router/Link';
 
 interface InputProps {
   notification: IProjectModerationRightsReceivedNotificationData;

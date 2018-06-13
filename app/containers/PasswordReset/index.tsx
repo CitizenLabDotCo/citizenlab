@@ -2,7 +2,7 @@ import * as React from 'react';
 import { isString } from 'lodash';
 
 // router
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import Input from 'components/UI/Input';
@@ -81,7 +81,7 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
   constructor(props: Props) {
     super(props as any);
 
-    const query = browserHistory.getCurrentLocation().query;
+    const query = clHistory.getCurrentLocation().query;
     const token = (query.token ? query.token : null);
 
     this.state = {
@@ -100,7 +100,7 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
     const { token } = this.state;
 
     if (!isString(token)) {
-      browserHistory.push('/');
+      clHistory.push('/');
     } else if (this.passwordInputElement) {
       this.passwordInputElement.focus();
     }

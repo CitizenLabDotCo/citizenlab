@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // router
-import { Link } from 'react-router';
+import Link from 'utils/cl-router/Link';
 
 // components
 import Icon from 'components/UI/Icon';

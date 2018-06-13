@@ -1,5 +1,5 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -22,7 +22,7 @@ export default class New extends React.Component<Props> {
       ...values
     })
       .then(() => {
-        browserHistory.push('/admin/settings/areas');
+        clHistory.push('/admin/settings/areas');
       })
       .catch((errorResponse) => {
         const apiErrors = (errorResponse as API.ErrorResponse).json.errors;

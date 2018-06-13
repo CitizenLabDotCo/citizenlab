@@ -6,7 +6,7 @@ import { of } from 'rxjs/observable/of';
 import { isNilOrError } from 'utils/helperUtils';
 
 // libraries
-import { Link } from 'react-router';
+import Link from 'utils/cl-router/Link';
 
 // components
 import Label from 'components/UI/Label';

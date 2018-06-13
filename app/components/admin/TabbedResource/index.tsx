@@ -1,6 +1,7 @@
 import React from 'react';
 import { isString } from 'lodash';
-import { Link, withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
+import Link from 'utils/cl-router/Link';
 
 // style
 import styled from 'styled-components';

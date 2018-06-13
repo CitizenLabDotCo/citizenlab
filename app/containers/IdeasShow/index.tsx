@@ -7,7 +7,8 @@ import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
 
 // router
-import { Link, browserHistory } from 'react-router';
+import Link from 'utils/cl-router/Link';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import Avatar from 'components/Avatar';
@@ -688,7 +689,7 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
     const { ideaAuthor } = this.state;
 
     if (ideaAuthor) {
-      browserHistory.push(`/profile/${ideaAuthor.data.attributes.slug}`);
+      clHistory.push(`/profile/${ideaAuthor.data.attributes.slug}`);
     }
   }
 
@@ -714,11 +715,11 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
   }
 
   editIdea = () => {
-    browserHistory.push(`/ideas/edit/${this.props.ideaId}`);
+    clHistory.push(`/ideas/edit/${this.props.ideaId}`);
   }
 
   unauthenticatedVoteClick = () => {
-    browserHistory.push('/sign-in');
+    clHistory.push('/sign-in');
   }
 
   render() {

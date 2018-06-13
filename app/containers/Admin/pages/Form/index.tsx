@@ -12,7 +12,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { Multiloc } from 'typings';
 import messages from '../messages';
 import Label from 'components/UI/Label';
-import { Link } from 'react-router';
+import Link from 'utils/cl-router/Link';
 
 export interface FormValues {
   slug?: string;

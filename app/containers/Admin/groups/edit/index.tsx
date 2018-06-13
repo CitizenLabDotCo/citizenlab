@@ -2,7 +2,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // Services
 import { getGroup, IGroupData, findMembership, addMembership } from 'services/groups';
@@ -65,7 +65,7 @@ class GroupsEdit extends React.Component<Props & injectedLocalized, State> {
   }
 
   goBack = () => {
-    browserHistory.push('/admin/groups');
+    clHistory.push('/admin/groups');
   }
 
   render() {

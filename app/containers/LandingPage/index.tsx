@@ -1,6 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 import { Subscription } from 'rxjs/Subscription';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
@@ -265,7 +265,7 @@ class LandingPage extends React.PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    const query = browserHistory.getCurrentLocation().query;
+    const query = clHistory.getCurrentLocation().query;
     const authUser$ = authUserStream().observable;
     const ideaToPublish$ = (query && query.idea_to_publish ? ideaByIdStream(query.idea_to_publish).observable : of(null));
 
@@ -291,15 +291,15 @@ class LandingPage extends React.PureComponent<Props, State> {
   }
 
   goToIdeasPage = () => {
-    browserHistory.push('/ideas');
+    clHistory.push('/ideas');
   }
 
   goToProjectsPage = () => {
-    browserHistory.push('/projects');
+    clHistory.push('/projects');
   }
 
   goToAddIdeaPage = () => {
-    browserHistory.push('/ideas/new');
+    clHistory.push('/ideas/new');
   }
 
   render() {

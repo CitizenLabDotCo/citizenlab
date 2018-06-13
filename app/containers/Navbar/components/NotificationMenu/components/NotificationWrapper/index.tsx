@@ -6,7 +6,7 @@ import { injectTracks } from 'utils/analytics';
 import { FormattedRelative } from 'react-intl';
 import Icon from 'components/UI/Icon';
 
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 import tracks from '../../../../tracks';
 
@@ -73,7 +73,7 @@ class NotifcationWrapper extends React.PureComponent<Props & ITracks> {
         this.props.clickNotification({extra: {
           linkTo: this.props.linkTo,
         }});
-        browserHistory.push(this.props.linkTo);
+        clHistory.push(this.props.linkTo);
       }
     }
 

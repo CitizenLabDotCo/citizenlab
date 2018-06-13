@@ -1,7 +1,8 @@
 import React from 'react';
 import { get } from 'lodash';
 import { Subscription } from 'rxjs/Rx';
-import { browserHistory, withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import SignUp from 'components/SignUp';
@@ -119,7 +120,7 @@ class SignUpPage extends React.PureComponent<Props & ITracks & WithRouterProps, 
   }
 
   onSignUpCompleted = () => {
-    browserHistory.push('/');
+    clHistory.push('/');
     // track signup for analytics
     this.props.successfulSignUp();
   }
