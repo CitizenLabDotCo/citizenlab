@@ -39,12 +39,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.PagesPage.pageSlug',
     defaultMessage: 'Slug',
   },
-  pageBody: {
-    id: 'app.containers.AdminPage.PagesPage.pageBody',
-    defaultMessage: 'Body (supports HTML)',
+  editContent: {
+    id: 'app.containers.AdminPage.PagesPage.editBodyAsHTMLLabel',
+    defaultMessage: 'Content',
   },
   advancedEditorLink: {
     id: 'app.containers.AdminPage.PagesPage.advancedEditorLink',
     defaultMessage: 'Advanced editor',
+  },
+  dontChange: {
+    id: 'app.containers.AdminPage.PagesPage.dontChange',
+    defaultMessage: 'Don\'t change this! (unless you really know what you\'re doing)',
   },
 });

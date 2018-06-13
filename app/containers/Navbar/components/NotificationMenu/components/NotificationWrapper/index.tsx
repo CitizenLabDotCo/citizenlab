@@ -1,15 +1,18 @@
-import * as React from 'react';
-
-import styled from 'styled-components';
-import { injectTracks } from 'utils/analytics';
-
-import { FormattedRelative } from 'react-intl';
-import Icon from 'components/UI/Icon';
-
+import React from 'react';
+import Link from 'utils/cl-router/Link';
 import clHistory from 'utils/cl-router/history';
 
-import tracks from '../../../../tracks';
+import { FormattedRelative } from 'react-intl';
 
+import styled from 'styled-components';
+import { darken } from 'polished';
+import { colors, fontSize } from 'utils/styleUtils';
+
+import Icon from 'components/UI/Icon';
+
+
+import { injectTracks } from 'utils/analytics';
+import tracks from '../../../../tracks';
 
 const Container = styled.div`
   padding: 10px 0px;
@@ -44,14 +47,31 @@ const Message = styled.div`
   flex-grow: 1;
   font-weight: ${(props) => (props as any).isRead ? 'normal' : '500'};
   color: ${(props) => (props as any).isRead ? '#84939E' : '#000000'};
+
   a {
     color: ${(props) => props.theme.colors.clBlue}
+
+    :hover,
+    :focus {
+      color: ${colors.clBlueDarker}
+    }
   }
+
 ` as any;
 
-const Timing = styled.div`
+const Timing = styled.span`
   font-size: 12px;
   color: #A7A7A7;
+`;
+
+const LinkTiming = styled(Link)`
+  font-size: ${fontSize('xs')};
+  color: #A7A7A7;
+
+  &:hover,
+  &:focus {
+    color: ${darken(.2, '#A7A7A7')};
+  }
 `;
 
 interface ITracks {
@@ -77,8 +97,15 @@ class NotifcationWrapper extends React.PureComponent<Props & ITracks> {
       }
     }
 
+    track = () => {
+      const { linkTo } = this.props;
+      if (linkTo) this.props.clickNotification({ extra: { linkTo } });
+    }
+
     render() {
-      const { icon, children, timing, isRead } = this.props;
+      const { icon, children, timing, isRead, linkTo } = this.props;
+
+
       return (
         <Container onClick={this.onClick}>
           <IconContainer>
@@ -86,7 +113,8 @@ class NotifcationWrapper extends React.PureComponent<Props & ITracks> {
           </IconContainer>
           <Body>
             <Message isRead={isRead}>{children}</Message>
-            {timing && <Timing><FormattedRelative value={timing} /></Timing>}
+            {timing && linkTo && <LinkTiming to={linkTo} onClick={this.track} ><FormattedRelative value={timing} /></LinkTiming>}
+            {timing && !linkTo && <Timing><FormattedRelative value={timing} /></Timing>}
           </Body>
         </Container>
       );

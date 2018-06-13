@@ -148,7 +148,7 @@ const HeaderSubtitle: any = styled.h2`
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
   font-size: 22px;
   line-height: 26px;
-  font-weight: 100;
+  font-weight: 300;
   white-space: normal;
   word-break: normal;
   word-wrap: normal;

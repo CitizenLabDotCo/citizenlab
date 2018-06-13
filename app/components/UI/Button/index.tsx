@@ -170,8 +170,8 @@ const Container: any = styled.div`
     }
 
     ${StyledIcon} {
-      height: ${(props: any) => getIconHeight(props.size)};
-      width: ${(props: any) => getIconHeight(props.size)};
+      height: ${(props: any) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
+      width: ${(props: any) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
       opacity: ${(props: any) => props.processing ? 0 : 1};
     }
 
@@ -229,11 +229,13 @@ type Props = {
   children?: any;
   size?: '1' | '2' | '3' | '4';
   style?: ButtonStyles;
-  width?: string | undefined;
-  height?: string | undefined;
-  padding?: string | undefined;
-  justify?: 'left' | 'center' | 'right' | undefined;
+  width?: string;
+  height?: string;
+  padding?: string;
+  justify?: 'left' | 'center' | 'right' | 'space-between';
   icon?: IconNames;
+  iconPos?: 'left' | 'right';
+  iconSize?: string;
   processing?: boolean;
   disabled?: boolean;
   fullWidth?: boolean;
@@ -242,18 +244,13 @@ type Props = {
   circularCorners?: boolean;
   linkTo?: LinkProps['to'];
   id?: string;
-  theme?: object | undefined;
+  theme?: object;
   setSubmitButtonRef?: (value: HTMLInputElement) => void;
 };
 
 type State = {};
 
 class Button extends React.PureComponent<Props, State> {
-
-  constructor(props: Props) {
-    super(props);
-
-  }
 
   handleOnClick = (event: React.FormEvent<HTMLButtonElement>) => {
     if (this.props.onClick && !this.props.disabled && !this.props.processing) {
@@ -290,8 +287,8 @@ class Button extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { text, textColor, textHoverColor, width, height, padding, justify, icon, children, linkTo } = this.props;
-    let { id, size, style, processing, disabled, fullWidth, circularCorners, className } = this.props;
+    const { text, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, children, linkTo } = this.props;
+    let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
 
     id = (id || '');
     size = (size || '1');
@@ -300,6 +297,7 @@ class Button extends React.PureComponent<Props, State> {
     disabled = (isBoolean(disabled) ? disabled : false);
     fullWidth = (isBoolean(fullWidth) ? fullWidth : false);
     circularCorners = (isBoolean(circularCorners) ? circularCorners : true);
+    iconPos = (iconPos || 'left');
     className = `${className ? className : ''}`;
 
     const spinnerSize = this.getSpinnerSize(size);
@@ -309,8 +307,9 @@ class Button extends React.PureComponent<Props, State> {
 
     const childContent = (
       <>
-        {icon && <StyledIcon name={icon} />}
+        {icon && iconPos === 'left' && <StyledIcon name={icon} />}
         {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
+        {icon && iconPos === 'right' && <StyledIcon name={icon} />}
         {processing && <SpinnerWrapper><Spinner size={spinnerSize} color={spinnerColor} /></SpinnerWrapper>}
       </>
     );
@@ -323,6 +322,7 @@ class Button extends React.PureComponent<Props, State> {
         height={height}
         padding={padding}
         justify={justify}
+        iconSize={iconSize}
         processing={processing}
         onClick={this.handleOnClick}
         disabled={disabled}

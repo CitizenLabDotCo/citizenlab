@@ -22,6 +22,15 @@ export default class PageWrapper extends React.PureComponent{
 }
 
 export const ButtonWrapper = styled.div`
-  margin-bottom: 0;
-  padding-bottom: 2rem;
+  display: flex;
+  margin: 2em 0;
+  padding: 0;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 `;
