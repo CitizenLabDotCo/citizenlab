@@ -18,6 +18,8 @@ type Props = {
   projectId?: string | undefined;
   phaseId?: string | undefined;
   style?: ButtonStyles;
+  size?: '1' | '2' | '3' | '4';
+  padding?: string;
 };
 
 type State = {
@@ -82,17 +84,20 @@ class IdeaButton extends React.PureComponent<Props & InjectedIntlProps, State> {
     const { show, enabled } = postingButtonState({ project, phase });
 
     if (show) {
-      let { style } = this.props;
+      let { style, size } = this.props;
+      const { padding } = this.props;
       const startAnIdeaText = this.props.intl.formatMessage(messages.startAnIdea);
-  
+
       style = (style || 'primary');
+      size = (size || '1');
 
       return (
         <Button
           className={this.props['className']}
           linkTo={(project ? `/projects/${project.attributes.slug}/ideas/new` : '/ideas/new')}
           style={style}
-          size="1"
+          size={size}
+          padding={padding}
           text={startAnIdeaText}
           circularCorners={false}
           disabled={!enabled}
