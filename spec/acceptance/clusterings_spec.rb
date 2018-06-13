@@ -51,6 +51,8 @@ resource "Clusterings" do
     parameter :search, 'Filter by searching in title, body and author name', required: false
     parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
     parameter :minimal_total_votes, "Minimal amount of votes", request: false
+    parameter :minimal_upvotes, "Minimal amount of upvotes", request: false
+    parameter :minimal_downvotes, "Minimal amount of downvotes", request: false
     ValidationErrorHelper.new.error_fields(self, Clustering)
     before do
       @project = create(:project)
