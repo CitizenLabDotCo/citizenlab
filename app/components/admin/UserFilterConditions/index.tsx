@@ -86,6 +86,7 @@ class UserFilterConditions extends React.PureComponent<Props & Tracks, State> {
           onClick={this.handleOnAddRule}
           icon="plus-circle"
           style="text"
+          justify="left"
         >
           <FormattedMessage {...messages.addCondition} />
         </AddButton>
