@@ -47,11 +47,11 @@ const TableOptions = styled.div`
   user-select: none;
 `;
 
-const UserCount = styled.span`
-  color: ${colors.label};
-  font-weight: 300;
-  margin-left: 7px;
-`;
+// const UserCount = styled.span`
+//   color: ${colors.label};
+//   font-weight: 300;
+//   margin-left: 7px;
+// `;
 
 const ActionButton = styled.button`
   margin-right: 30px;
@@ -191,15 +191,15 @@ class UserTableActions extends React.PureComponent<Props & Tracks, State> {
     const { selectedUsers, groupType, allUsersIds } = this.props;
     const { groupsList } = this.props.manualGroups;
 
-    let selectedCount;
+    // let selectedCount;
 
-    if (selectedUsers === 'all') {
-      selectedCount = allUsersIds.length;
-    } else if (selectedUsers === 'none') {
-      selectedCount = 0;
-    } else {
-      selectedCount = selectedUsers.length;
-    }
+    // if (selectedUsers === 'all') {
+    //   selectedCount = allUsersIds.length;
+    // } else if (selectedUsers === 'none') {
+    //   selectedCount = 0;
+    // } else {
+    //   selectedCount = selectedUsers.length;
+    // }
 
     return (
       <TableOptions>
@@ -208,12 +208,17 @@ class UserTableActions extends React.PureComponent<Props & Tracks, State> {
             label={
               <>
                 <FormattedMessage {...messages.selectAll} />
-                <UserCount>(<FormattedMessage
-                  {...messages.userCount}
-                  values={{
-                    count: selectedCount,
-                  }}
-                />)</UserCount>
+
+                {/*
+                <UserCount>
+                  (<FormattedMessage
+                    {...messages.userCount}
+                    values={{
+                      count: selectedCount,
+                    }}
+                  />)
+                </UserCount>
+                */}
               </>
             }
             value={(selectedUsers === 'all')}
@@ -243,7 +248,7 @@ class UserTableActions extends React.PureComponent<Props & Tracks, State> {
           </ActionButton>
         }
 
-        <ActionButton onClick={this.exportUsers}>
+        <ActionButton onClick={this.exportUsers} className="export">
           <Icon name="userExport" />
           <FormattedMessage {...messages.exportUsers} />
         </ActionButton>

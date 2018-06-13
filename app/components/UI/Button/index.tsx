@@ -117,18 +117,19 @@ const ButtonText = styled.div`
 `;
 
 const Container: any = styled.div`
-  user-select: none;
-  font-weight: 400;
+  align-items: center;
   display: flex;
-
+  font-weight: 400;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  user-select: none;
   * {
     user-select: none;
   }
-
   &.fullWidth {
     width: 100%;
   }
-
   button,
   a {
     align-items: center;
@@ -142,61 +143,48 @@ const Container: any = styled.div`
     padding: ${(props: any) => props.padding || getPadding(props.size)};
     position: relative;
     transition: all 100ms ease-out;
-    width: ${(props: any) => props.width || 'auto'};
-
+    width: ${(props: any) => props.width || '100%'};
     &:not(.disabled) {
       cursor: pointer;
     }
-
     &.disabled {
       pointer-events: none;
     }
-
     &.fullWidth {
       width: 100%;
       flex: 1;
     }
-
     ${ButtonText} {
       opacity: ${(props: any) => props.processing ? 0 : 1};
       font-size: ${(props: any) => getFontSize(props.size)};
       line-height: ${(props: any) => getLineHeight(props.size)};
     }
-
     ${StyledIcon} {
-      height: ${(props: any) => getIconHeight(props.size)};
-      width: ${(props: any) => getIconHeight(props.size)};
+      height: ${(props: any) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
+      width: ${(props: any) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
       opacity: ${(props: any) => props.processing ? 0 : 1};
     }
-
     &.primary {
       ${(props: any) => buttonTheme((props.theme.colorMain || 'e0e0e0'), '#fff')}
     }
-
     &.secondary {
       ${buttonTheme(color('lightGreyishBlue'), color('label'), 'transparent', darken(0.05, color('lightGreyishBlue')))}
     }
-
     &.primary-outlined {
       ${(props: any) => buttonTheme('transparent', props.theme.colorMain || 'e0e0e0', props.theme.colorMain || 'e0e0e0')}
     }
-
     &.secondary-outlined {
       ${buttonTheme('transparent', color('label'), color('label'))}
     }
-
     &.text {
       ${(props: any) => buttonTheme('transparent', props.textColor || color('label'), undefined, undefined, props.textHoverColor)}
     }
-
     &.success {
       ${buttonTheme(rgba(color('success'), .15), color('success'))}
     }
-
     &.error {
       ${buttonTheme(rgba(color('error'), .15), color('error'))}
     }
-
     &.cl-blue {
       ${buttonTheme(color('clBlue'), 'white')}
     }
@@ -224,36 +212,33 @@ type Props = {
   children?: any;
   circularCorners?: boolean;
   className?: string;
-  disabled?: boolean;
-  fullWidth?: boolean;
-  height?: string | undefined;
-  hiddenText?: string | JSX.Element;
-  icon?: IconProps['name'];
-  iconTitle?: IconProps['title'];
-  id?: string;
-  justify?: 'left' | 'center' | 'right' | 'space-between' | undefined;
-  linkTo?: string;
-  onClick?: (arg: React.FormEvent<HTMLButtonElement>) => void;
-  padding?: string | undefined;
-  processing?: boolean;
-  setSubmitButtonRef?: (value: HTMLInputElement) => void;
   size?: '1' | '2' | '3' | '4';
   style?: ButtonStyles;
+  width?: string;
+  height?: string;
+  padding?: string;
+  justify?: 'left' | 'center' | 'right' | 'space-between';
+  icon?: IconProps['name'];
+  iconPos?: 'left' | 'right';
+  iconSize?: string;
+  processing?: boolean;
+  disabled?: boolean;
+  fullWidth?: boolean;
+  hiddenText?: string | JSX.Element;
+  iconTitle?: IconProps['title'];
+  id?: string;
+  linkTo?: string;
+  onClick?: (arg: React.FormEvent<HTMLButtonElement>) => void;
+  setSubmitButtonRef?: (value: HTMLInputElement) => void;
   text?: string | JSX.Element;
   textColor?: string;
   textHoverColor?: string;
   theme?: object | undefined;
-  width?: string | undefined;
 };
 
 type State = {};
 
 class Button extends React.PureComponent<Props, State> {
-
-  constructor(props: Props) {
-    super(props);
-
-  }
 
   handleOnClick = (event: React.FormEvent<HTMLButtonElement>) => {
     if (this.props.onClick && !this.props.disabled && !this.props.processing) {
@@ -290,8 +275,8 @@ class Button extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { text, textColor, textHoverColor, width, height, padding, justify, icon, children, linkTo } = this.props;
-    let { id, size, style, processing, disabled, fullWidth, circularCorners, className } = this.props;
+    const { text, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, children, linkTo } = this.props;
+    let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
 
     id = (id || '');
     size = (size || '1');
@@ -300,6 +285,7 @@ class Button extends React.PureComponent<Props, State> {
     disabled = (isBoolean(disabled) ? disabled : false);
     fullWidth = (isBoolean(fullWidth) ? fullWidth : false);
     circularCorners = (isBoolean(circularCorners) ? circularCorners : true);
+    iconPos = (iconPos || 'left');
     className = `${className ? className : ''}`;
 
     const spinnerSize = this.getSpinnerSize(size);
@@ -309,9 +295,10 @@ class Button extends React.PureComponent<Props, State> {
 
     const childContent = (
       <>
-        {icon && <StyledIcon name={icon} title={this.props.iconTitle} />}
+        {icon && iconPos === 'left' && <StyledIcon name={icon} title={this.props.iconTitle} />}
         {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
         {this.props.hiddenText && <HiddenText>{this.props.hiddenText}</HiddenText>}
+        {icon && iconPos === 'right' && <StyledIcon name={icon} title={this.props.iconTitle} />}
         {processing && <SpinnerWrapper><Spinner size={spinnerSize} color={spinnerColor} /></SpinnerWrapper>}
       </>
     );
@@ -324,6 +311,7 @@ class Button extends React.PureComponent<Props, State> {
         height={height}
         padding={padding}
         justify={justify}
+        iconSize={iconSize}
         processing={processing}
         onClick={this.handleOnClick}
         disabled={disabled}
