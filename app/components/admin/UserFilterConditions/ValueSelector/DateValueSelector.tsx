@@ -21,7 +21,7 @@ class DateValueSelector extends React.PureComponent<Props, State> {
 
     return (
       <DateInput
-        value={moment(value)}
+        value={moment(value) || null}
         onChange={this.handleOnChange}
         openOnLeft={true}
       />

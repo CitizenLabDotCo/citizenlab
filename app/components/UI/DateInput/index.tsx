@@ -71,7 +71,7 @@ export default class DateInput extends React.PureComponent<Props, State> {
     super(props);
     this.state = {
       focused: false,
-      selectedDate: null,
+      selectedDate: this.props.value,
     };
   }
 
