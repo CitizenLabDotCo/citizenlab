@@ -76,7 +76,6 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & 
   openGroupEditionModal = () => {
     const { group, trackEditGroup } = this.props;
 
-
     if (!isNilOrError(group)) {
       const groupType =  group.attributes.membership_type;
       trackEditGroup({
@@ -123,10 +122,9 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & 
         const groupId = this.props.group.id;
         const promises: Promise<any>[] = [];
         userIds.forEach(userId => promises.push(deleteMembershipByUserId(groupId, userId)));
-        Promise.all(promises)
-          .catch(() =>
-            eventEmitter.emit<JSX.Element>('usersAdmin', events.membershipDeleteFailed, <FormattedMessage {...messages.membershipDeleteFailed} />)
-          );
+        Promise.all(promises).catch(() => {
+          eventEmitter.emit<JSX.Element>('usersAdmin', events.membershipDeleteFailed, <FormattedMessage {...messages.membershipDeleteFailed} />)
+        });
       }
     }
   }
