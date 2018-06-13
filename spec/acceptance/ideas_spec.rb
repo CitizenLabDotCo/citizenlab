@@ -367,6 +367,13 @@ resource "Ideas" do
         expect(json_response.dig(:errors, :base).first[:error]).to eq 'not_ideation'
       end
     end
+
+    describe do
+      let(:project_id) { nil }
+      example_request "[error] Create an idea without a project", document: false do
+        expect(response_status).to eq 422
+      end
+    end
     
     context "when admin" do
       before do

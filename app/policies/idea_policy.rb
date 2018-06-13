@@ -38,16 +38,16 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def create?
-    pcs = ParticipationContextService.new
-    disabled_reason = pcs.posting_disabled_reason(record.project)
+    pcs = ParticipationContextService.new 
 
     record.draft? ||
     (user&.active? && (user.admin? || user.project_moderator?(record.project_id))) ||
     (
       user&.active? && (
         record.author_id == user.id &&
-        !disabled_reason &&
-        ProjectPolicy.new(user, record.project).show?
+        (record.project.blank? ||
+        (!pcs.posting_disabled_reason(record.project) &&
+        ProjectPolicy.new(user, record.project).show?))
       )
     )
   end
