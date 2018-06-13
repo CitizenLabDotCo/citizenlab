@@ -18,8 +18,6 @@ const BabelLoaderConfig = {
 
 const WEBPACK_CONFIG = {
   entry: [
-    // 'core-js',
-    // 'babel-polyfill',
     path.join(process.cwd(), 'app/app.js'),
   ],
 
@@ -44,14 +42,13 @@ const WEBPACK_CONFIG = {
       },
       {
         test: /\.css$/,
-        include: /node_modules/,
         use: ExtractTextPlugin.extract({
           use: 'css-loader',
           fallback: 'style-loader',
         }),
       },
       {
-        test: /\.(svg|jpg|png|gif|eot|ttf|woff|woff2)$/,
+        test: /\.(svg|jpg|png|gif)$/,
         use: [
           'cache-loader',
           {
@@ -61,6 +58,10 @@ const WEBPACK_CONFIG = {
             },
           },
         ],
+      },
+      {
+        test: /\.(eot|ttf|woff|woff2)$/,
+        loader: 'file-loader',
       },
       {
         test: /manifest\.json$|\.htaccess/,

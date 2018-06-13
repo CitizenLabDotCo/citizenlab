@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { InjectedIntlProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -13,10 +12,8 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { Section, SectionTitle } from 'components/admin/Section';
 import { List, Row, TextCell } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
+import { ButtonWrapper } from 'components/admin/PageWrapper';
 
-const ButtonWrapper = styled.div`
-  margin-top: 2rem;
-`;
 
 interface InputProps {}
 
