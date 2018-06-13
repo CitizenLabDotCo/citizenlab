@@ -14,7 +14,7 @@ resource "Groups" do
 
   context "when authenticated" do
     before do
-      @user = create(:admin)
+      @user = create(:admin, email: 'hello@citizenlab.co')
       token = Knock::AuthToken.new(payload: { sub: @user.id }).token
       header 'Authorization', "Bearer #{token}"
     end
@@ -85,6 +85,24 @@ resource "Groups" do
           expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
           expect(json_response.dig(:data,:attributes,:membership_type)).to eq 'rules'
           expect(json_response.dig(:data,:attributes,:rules)).to match rules
+        end
+      end
+
+      describe do
+        before do 
+          member = create(:user, email: 'k@k.com', registration_completed_at: Time.now)
+          not_really_member = create(:user, email: 'kk@kk.com', registration_completed_at: nil)
+        end
+
+        let(:title_multiloc) { build(:group).title_multiloc }
+        let(:membership_type) { 'rules' }
+        let(:rules) { [{ ruleType: 'email', predicate: 'contains', value: 'k' }] }
+
+        example_request "Membership count should only count active users", document: false do
+          expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          group = Group.find json_response.dig(:data,:id)
+          expect(group.members.count).to eq 1
         end
       end
     end
