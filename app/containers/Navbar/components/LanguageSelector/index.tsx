@@ -134,6 +134,7 @@ export default class LanguageSelector extends React.PureComponent<Props, State> 
         {
           localeOptions.map(locale => (
             <PopoverItem
+              key={locale}
               style="text"
               onClick={this.handleLanguageSelect(locale)}
               className={locale === currentLocale ? 'active' : ''}

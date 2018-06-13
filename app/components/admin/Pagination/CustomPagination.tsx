@@ -23,7 +23,7 @@ const Spagination = styled.div`
 
 const Next = styled.button`
   margin-left: 30px;
-  font-weight: bold;
+  font-weight: 500;
   display: flex;
   align-items: baseline;
   cursor: pointer;
@@ -47,10 +47,10 @@ const Back = styled(Next) `
 const Item = styled.button`
   background: ${colors.adminBackground};
   border-radius: 5px;
-  height: 36px;
-  width: 36px;
+  height: 34px;
+  width: 34px;
   margin-left: 5px;
-  font-weight: bold;
+  font-weight: 500;
   cursor: pointer;
 
   &>:first-child {
@@ -59,17 +59,18 @@ const Item = styled.button`
 
   &.active {
     background: ${colors.adminTextColor};
-    color: ${colors.adminLightText};
+    color: #fff;
 
-    &:focus, &:focus:hover {
+    &:focus,
+    &:focus:hover {
       background: ${colors.adminTextColor};
-      color: ${colors.clIconAccent};
+      color: #fff;
       outline: none;
     }
 
     &:hover {
       background: ${colors.adminTextColor};
-      color: ${colors.adminLightText};
+      color: #fff;
     }
   }
 
