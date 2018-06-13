@@ -19,9 +19,9 @@ class Tenant < ApplicationRecord
   }
 
   validate do |record|
-    missing_locales = User.where.not(locale: settings.dig('core', 'locales')).pluck(&:locale).uniq
+    missing_locales = User.where.not(locale: settings.dig('core', 'locales')).pluck(&:locale)
     if missing_locales.present?
-      record.errors.add(:settings, "is missing locales that are still in use by some users: #{missing_locales}")
+      record.errors.add(:settings, "is missing locales that are still in use by some users: #{missing_locales.uniq}")
     end
   end
 
