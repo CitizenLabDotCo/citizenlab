@@ -14,7 +14,24 @@ const Container = styled.div`
 `;
 
 const TwoColumns = styled.div`
+  width: 100%;
   display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+`;
+
+const StyledCircles = styled(Circles)`
+  flex: 1;
+  background: #fff;
+  border: solid 1px #eee;
+  border-radius: 5px;
+  padding: 30px;
+`;
+
+const StyledInfoPane = styled(InfoPane)`
+  width: 100%;
+  max-width: 350px;
+  margin-left: 20px;
 `;
 
 interface Props {
@@ -97,13 +114,13 @@ class ClusterViewer extends Component<Props, State> {
       <Container>
         <ThemeProvider theme={this.theme()}>
           <TwoColumns>
-            <Circles
+            <StyledCircles
               structure={clustering.attributes.structure}
               selectedNodes={this.comparisonSet()}
               onClickNode={this.handleOnClickNode}
               onShiftClickNode={this.handleOnShiftClickNode}
             />
-            <InfoPane
+            <StyledInfoPane
               activeComparison={activeComparison}
               selectedNodes={selectedNodes}
               onAddComparison={this.handleOnAddComparison}
