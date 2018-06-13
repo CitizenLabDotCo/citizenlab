@@ -100,7 +100,7 @@ class Group < ApplicationRecord
 
   def update_memberships_count!
     if rules?
-      self.update(memberships_count: members.count) # members.active.count)
+      self.update(memberships_count: members.active.count)
     end
     # The manual? case is covered by counter_culture in membership.rb
   end
