@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { Subscription } from 'rxjs/Subscription';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -15,7 +15,7 @@ import { IUser } from 'services/users';
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { colors, fontSize } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -63,6 +63,11 @@ const UserIcon = styled(Icon)`
   height: 24px;
   fill: inherit;
   transition: all 150ms ease;
+  cursor: pointer;
+`;
+
+const StyledAvatar = styled(Avatar)`
+  cursor: pointer;
 `;
 
 const StyledPopover = styled(Popover)`
@@ -71,36 +76,14 @@ const StyledPopover = styled(Popover)`
   z-index: 5;
 `;
 
-const PopoverIcon = styled(Icon)`
-  height: 20px;
-  fill: ${colors.label};
-  transition: all 80ms ease-out;
-`;
-
 const PopoverItem = styled(Button)`
-  color: ${colors.label};
-  fill: ${colors.label};
-  font-size: ${fontSize('large')};
-  font-weight: 400;
+  background: #fff;
+  border-radius: 5px;
   transition: all 80ms ease-out;
 
-  .buttonText {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  a.Button,
-  button.Button {
-    background: #fff;
-    border-radius: 5px;
-
-    &:hover,
-    &:focus {
-      color: #000;
-      background: #f6f6f6;
-      fill: #000;
-    }
+  &:hover,
+  &:focus {
+    background: #f6f6f6;
   }
 `;
 
@@ -112,8 +95,7 @@ type State = {
 };
 
 export default class UserMenu extends React.PureComponent<Props, State> {
-
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -158,7 +140,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
       return (
         <Container id="e2e-user-menu-container">
           <OpenMenuButton onClick={this.togglePopover}>
-            {avatar ?  <Avatar userId={userId} size="small" /> : <UserIcon name="user" />}
+            {avatar ?  <StyledAvatar userId={userId} size="small" /> : <UserIcon name="user" />}
           </OpenMenuButton>
           <StyledPopover
             id="e2e-user-menu-dropdown"
@@ -166,35 +148,79 @@ export default class UserMenu extends React.PureComponent<Props, State> {
             onCloseRequest={this.closePopover}
           >
             <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
-              <PopoverItem id="admin-link" linkTo={'/admin'} onClick={this.closePopover} style="text">
+              <PopoverItem
+                id="admin-link"
+                linkTo={'/admin'}
+                onClick={this.closePopover}
+                style="text"
+                icon="admin"
+                iconPos="right"
+                iconSize="19px"
+                size="1"
+                justify="space-between"
+              >
                 <FormattedMessage {...messages.admin} />
-                <PopoverIcon name="admin" />
               </PopoverItem>
 
               <HasPermission.No>
                 {/* Display the project moderation page for moderators, they don't have access to the dashboard */}
                 <HasPermission item={{ type: 'route', path: '/admin/projects' }} action="access">
-                  <PopoverItem id="e2e-projects-admin-link" linkTo={'/admin/projects'} onClick={this.closePopover} style="text">
+                  <PopoverItem
+                    id="e2e-projects-admin-link"
+                    linkTo={'/admin/projects'}
+                    onClick={this.closePopover}
+                    style="text"
+                    icon="admin"
+                    iconPos="right"
+                    iconSize="19px"
+                    size="1"
+                    justify="space-between"
+                  >
                     <FormattedMessage {...messages.projectsModeration} />
-                    <PopoverIcon name="admin" />
                   </PopoverItem>
                 </HasPermission>
               </HasPermission.No>
             </HasPermission>
 
-            <PopoverItem id="e2e-profile-profile-link" linkTo={`/profile/${userSlug}`} onClick={this.closePopover} style="text">
+            <PopoverItem
+              id="e2e-profile-profile-link"
+              linkTo={`/profile/${userSlug}`}
+              onClick={this.closePopover}
+              style="text"
+              icon="user"
+              iconPos="right"
+              iconSize="19px"
+              size="1"
+              justify="space-between"
+            >
               <FormattedMessage {...messages.profilePage} />
-              <PopoverIcon name="user" />
             </PopoverItem>
 
-            <PopoverItem id="e2e-profile-edit-link" linkTo={'/profile/edit'} onClick={this.closePopover} style="text">
+            <PopoverItem
+              id="e2e-profile-edit-link"
+              linkTo={'/profile/edit'}
+              onClick={this.closePopover}
+              style="text"
+              icon="settings"
+              iconPos="right"
+              iconSize="19px"
+              size="1"
+              justify="space-between"
+            >
               <FormattedMessage {...messages.editProfile} />
-              <PopoverIcon name="settings" />
             </PopoverItem>
 
-            <PopoverItem id="e2e-sign-out-link" onClick={this.signOut} style="text">
+            <PopoverItem
+              id="e2e-sign-out-link"
+              onClick={this.signOut}
+              style="text"
+              icon="power"
+              iconPos="right"
+              iconSize="19px"
+              size="1"
+              justify="space-between"
+            >
               <FormattedMessage {...messages.signOut} />
-              <PopoverIcon name="power" />
             </PopoverItem>
           </StyledPopover>
         </Container>
