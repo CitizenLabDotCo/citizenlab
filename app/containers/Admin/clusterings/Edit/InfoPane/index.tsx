@@ -11,6 +11,7 @@ import ClusterDetails from './ClusterDetails';
 import Toggle from 'components/UI/Toggle';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
+import ComparisonSwitcher from './ComparisonSwitcher';
 
 const ToggleContainer = styled.div`
   display: flex;
@@ -23,7 +24,11 @@ const ToggleContainer = styled.div`
 `;
 
 type Props = {
-  selectedNodes: Node[];
+  selectedNodes: Node[][];
+  activeComparison: number;
+  onAddComparison: () => void;
+  onChangeActiveComparison: (index: number) => void;
+  onDeleteComparison: (index: number) => void;
 };
 
 type State = {
@@ -40,8 +45,13 @@ class InfoPane extends React.Component<Props, State> {
   }
 
   selectedIdeas = () => {
-    const { selectedNodes } = this.props;
-    return uniq(flatten(map(selectedNodes, (node) => ideasUnder(node))));
+    return uniq(flatten(map(this.comparisonSet(), ideasUnder)));
+  }
+
+  comparisonIdeas = () => {
+    return this.props.selectedNodes.map((sn) => {
+      return uniq(flatten(map(sn, ideasUnder)));
+    });
   }
 
   handleOnChangeNormalization = () => {
@@ -50,9 +60,14 @@ class InfoPane extends React.Component<Props, State> {
     });
   }
 
+  comparisonSet = () => {
+    return this.props.selectedNodes[this.props.activeComparison];
+  }
+
   render() {
-    const { selectedNodes } = this.props;
+    const { activeComparison, onAddComparison, onChangeActiveComparison, onDeleteComparison, selectedNodes } = this.props;
     const { normalization } = this.state;
+    const comparisonSet = this.comparisonSet();
     return (
       <div>
         <ToggleContainer>
@@ -63,13 +78,20 @@ class InfoPane extends React.Component<Props, State> {
           />
           <FormattedMessage {...messages.relative} />
         </ToggleContainer>
-        <GenderChart ideaIds={this.selectedIdeas()} normalization={normalization} />
-        <AgeChart ideaIds={this.selectedIdeas()} normalization={normalization} />
-        <DomicileChart ideaIds={this.selectedIdeas()} normalization={normalization} />
-        {selectedNodes.length === 1 && selectedNodes[0].type === 'idea' &&
-          <IdeaDetails ideaId={selectedNodes[0].id} />}
-        {selectedNodes.length === 1 && selectedNodes[0].type !== 'idea' &&
-          <ClusterDetails node={selectedNodes[0] as ParentNode} ideaIds={this.selectedIdeas()} />}
+        <ComparisonSwitcher
+          activeComparison={activeComparison}
+          comparisonCount={selectedNodes.length}
+          onAddComparison={onAddComparison}
+          onDeleteComparison={onDeleteComparison}
+          onChangeActiveComparison={onChangeActiveComparison}
+        />
+        <GenderChart ideaIdsComparisons={this.comparisonIdeas()} normalization={normalization} />
+        <AgeChart ideaIdsComparisons={this.comparisonIdeas()} normalization={normalization} />
+        <DomicileChart ideaIdsComparisons={this.comparisonIdeas()} normalization={normalization} />
+        {comparisonSet.length === 1 && comparisonSet[0].type === 'idea' &&
+          <IdeaDetails ideaId={comparisonSet[0].id} />}
+        {comparisonSet.length === 1 && comparisonSet[0].type !== 'idea' &&
+          <ClusterDetails node={comparisonSet[0] as ParentNode} ideaIds={this.selectedIdeas()} />}
       </div>
     );
   }

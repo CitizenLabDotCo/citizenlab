@@ -6,17 +6,19 @@ import { votesByDomicileStream, IVotesByDomicile } from 'services/stats';
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 import { isNilOrError } from 'utils/helperUtils';
 import localize, { injectedLocalized } from 'utils/localize';
-import { get } from 'lodash';
-import { colors } from 'utils/styleUtils';
+import { isEmpty } from 'lodash';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { withTheme } from 'styled-components';
 
 type Props = {
-  ideaIds: string[];
+  ideaIdsComparisons: string[][];
   normalization: 'absolute' | 'relative';
   areas: GetAreasChildProps;
+  theme: any;
 };
 
 type State = {
-  serie: any;
+  series: any[];
 };
 
 class DomicileChart extends Component<Props & injectedLocalized, State> {
@@ -26,7 +28,7 @@ class DomicileChart extends Component<Props & injectedLocalized, State> {
   constructor(props) {
     super(props);
     this.state = {
-      serie: null,
+      series: [],
     };
   }
 
@@ -35,7 +37,7 @@ class DomicileChart extends Component<Props & injectedLocalized, State> {
   }
 
   componentDidUpdate(prevProps) {
-    if (!isEqual(this.props.ideaIds, prevProps.ideaIds) || !isEqual(this.props.normalization, prevProps.normalization)) {
+    if (!isEqual(this.props.ideaIdsComparisons, prevProps.ideaIdsComparisons) || !isEqual(this.props.normalization, prevProps.normalization)) {
       this.resubscribe();
     }
   }
@@ -44,22 +46,33 @@ class DomicileChart extends Component<Props & injectedLocalized, State> {
     this.subscription.unsubscribe();
   }
 
-  convertToGraphFormat = (serie: IVotesByDomicile) => {
+  convertToGraphFormat = (series: IVotesByDomicile[]) => {
     if (!isNilOrError(this.props.areas)) {
-      return [
-        ...this.props.areas.map((area) => ({
+
+      const areaBucketsRecord = this.props.areas.map((area) => {
+        const record = {
           label: this.props.localize(area.attributes.title_multiloc),
-          upvotes: serie.up[area.id] || 0,
-          downvotes: -serie.down[area.id] || 0,
-          sum: serie.total[area.id] - serie.down[area.id] || 0,
-        })),
-        {
-          label: '_blank',
-          upvotes: get(serie, 'up._blank', 0),
-          downvotes: -get(serie, 'down._blank', 0),
-          sum: get(serie, 'total._blank', 0),
-        }
-      ];
+        };
+
+        series.forEach((serie, serieIndex) => {
+          record[`up ${serieIndex + 1}`] = serie.up[area.id] || 0;
+          record[`down ${serieIndex + 1}`] = -serie.down[area.id] || 0;
+          record[`total ${serieIndex + 1}`] = serie.total[area.id] || 0;
+        });
+
+        return record;
+      });
+
+      const blankRecord = {
+        label: '_blank',
+      };
+      series.forEach((serie, serieIndex) => {
+        blankRecord[`up ${serieIndex + 1}`] = serie.up['_blank'] || 0;
+        blankRecord[`down ${serieIndex + 1}`] = -serie.down['_blank'] || 0;
+        blankRecord[`total ${serieIndex + 1}`] = serie.total['_blank'] || 0;
+      });
+
+      return [...areaBucketsRecord, blankRecord];
     } else {
       return [];
     }
@@ -67,43 +80,51 @@ class DomicileChart extends Component<Props & injectedLocalized, State> {
 
   resubscribe() {
     if (this.subscription) this.subscription.unsubscribe();
-
-    this.subscription = votesByDomicileStream({
-      queryParameters: {
-        ideas: this.props.ideaIds,
-        normalization: this.props.normalization,
-      },
-    }).observable.subscribe((serie) => {
-      this.setState({ serie: this.convertToGraphFormat(serie) });
+    this.subscription = combineLatest(
+      this.props.ideaIdsComparisons.map((ideaIds) => (
+        votesByDomicileStream({
+          queryParameters: { ideas: ideaIds, normalization: this.props.normalization }
+        }).observable
+      ))
+    ).subscribe((series) => {
+      this.setState({ series: this.convertToGraphFormat(series) });
     });
   }
 
   render() {
-    const { serie } = this.state;
-    if (!serie) return null;
+    const { series } = this.state;
+    const { ideaIdsComparisons, theme } = this.props;
+    if (isEmpty(series)) return null;
+
     return (
       <div>
         <BarChart
           width={400}
           height={250}
-          data={this.state.serie}
+          data={series}
           stackOffset="sign"
         >
           <XAxis dataKey="label" />
           <YAxis />
           <Tooltip />
-          <Legend />
           <ReferenceLine y={0} stroke="#000" />
-          <Bar dataKey="upvotes" fill={colors.success} stackId="votes" maxBarSize={20} />
-          <Bar dataKey="downvotes" fill={colors.error} stackId="votes" maxBarSize={20} />
-          {/* <Bar dataKey="sum" fill="grey" stackId="total" maxBarSize={20} /> */}
+          {ideaIdsComparisons.length > 1 && ideaIdsComparisons.map((_, index) => (
+            <Bar dataKey={`up ${index + 1}`} fill={theme.comparisonColors[index]} stackId={`votes ${index}`} maxBarSize={20} />
+          ))}
+          {ideaIdsComparisons.length > 1 && ideaIdsComparisons.map((_, index) => (
+            <Bar dataKey={`down ${index + 1}`} fill={theme.comparisonColors[index]} stackId={`votes ${index}`} maxBarSize={20} />
+          ))}
+          {ideaIdsComparisons.length === 1 &&
+            <Bar dataKey="up 1" fill={theme.upvotes} stackId="votes 1" maxBarSize={20} />}
+          {ideaIdsComparisons.length === 1 &&
+            <Bar dataKey="down 1" fill={theme.downvotes} stackId="votes 1" maxBarSize={20} />}
         </BarChart>
       </div>
     );
   }
 }
 
-const DomicileChartWithHOCs = localize(DomicileChart);
+const DomicileChartWithHOCs = withTheme(localize(DomicileChart));
 
 export default (inputProps) => (
   <GetAreas>
