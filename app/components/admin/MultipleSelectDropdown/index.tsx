@@ -149,7 +149,7 @@ export default class MultipleSelectDropdown extends React.PureComponent<Props, S
         {this.props.choices.length > 0 && this.props.choices.map((choice) => {
           const id = choice.id;
           return (
-            <DropdownListItem key={id} onClick={this.onClickRow(id)}>
+            <DropdownListItem key={id} onClick={this.onClickRow(id)} className="e2e-dropdown-item">
               <T value={choice.text} />
               <Checkbox
                 onChange={this.onClickRow(id)}
@@ -161,7 +161,7 @@ export default class MultipleSelectDropdown extends React.PureComponent<Props, S
         })}
       </DropdownList>
 
-      <DropdownFooter onClick={this.submit(this.state.chosen)}>
+      <DropdownFooter onClick={this.submit(this.state.chosen)} className="e2e-dropdown-submit">
         <FormattedMessage {...this.props.messages.dropdownFooterMessage} />
       </DropdownFooter>
     </DropdownMenuInner>

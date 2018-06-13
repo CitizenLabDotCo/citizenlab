@@ -46,7 +46,7 @@ module.exports = {
     createNormalGroupButton: { selector: '.e2e-create-normal-group-button' },
     createRulesGroupButton: { selector: '.e2e-create-rules-group-button' },
     groupsList: { selector: '.e2e-groups-list' },
-    lastGroupUserCount: { selector: '.e2e-groups-list li:last-child span:last-child' },
+    firstGroupUserCount: { selector: '.e2e-groups-list .e2e-group-user-count' },
     groupNameField: { selector: '#group-title-field' },
     addConditionButton: { selector: '.e2e-add-condition-button' },
     submit: { selector: '.e2e-submit-wrapper-button button' },

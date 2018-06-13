@@ -234,7 +234,7 @@ class UserTableActions extends React.PureComponent<Props & Tracks, State> {
             emitSuccess={this.emitMembershipAddSuccess}
             emitError={this.emitMembershipAddError}
           >
-            <ActionButton>
+            <ActionButton className="e2e-move-users">
               <Icon name="moveFolder" />
               <FormattedMessage {...messages.moveUsers} />
             </ActionButton>

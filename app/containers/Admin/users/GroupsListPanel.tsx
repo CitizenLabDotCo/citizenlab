@@ -230,7 +230,7 @@ export class GroupsListPanel extends React.PureComponent<Props & Tracks, State> 
               <MenuLink to={`/admin/users/${group.id}`} activeClassName="active" className={highlightedGroups.has(group.id) ? 'highlight' : ''} >
                 {group.attributes.membership_type === 'rules' && <LightningBolt name="lightingBolt" />}
                 <T className="groupName" value={group.attributes.title_multiloc} />
-                <MembersCount>{group.attributes.memberships_count}</MembersCount>
+                <MembersCount className="e2e-group-user-count">{group.attributes.memberships_count}</MembersCount>
               </MenuLink>
             </li>
           ))}
