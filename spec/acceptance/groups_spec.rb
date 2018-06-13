@@ -102,7 +102,7 @@ resource "Groups" do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
           group = Group.find json_response.dig(:data,:id)
-          expect(group.members.count).to eq 1
+          expect(group.memberships_count).to eq 1
         end
       end
     end
