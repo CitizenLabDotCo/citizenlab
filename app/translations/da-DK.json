@@ -389,6 +389,7 @@
   "app.containers.AdminPage.SettingsPage.titleRegistrationFields": "Registreringsfelter",
   "app.containers.AdminPage.SettingsPage.uploadPlaceholder": "Træk dine filer hertil",
   "app.containers.AdminPage.SettingsPage.viewPublicResource": "Indstillinger",
+  "app.containers.AdminPage.SideBar.clustering": "",
   "app.containers.AdminPage.SideBar.dashboard": "Dashboard",
   "app.containers.AdminPage.SideBar.groups": "Grupper",
   "app.containers.AdminPage.SideBar.ideas": "Ideer",

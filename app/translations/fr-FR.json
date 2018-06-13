@@ -389,6 +389,7 @@
   "app.containers.AdminPage.SettingsPage.titleRegistrationFields": "Champs d'inscription",
   "app.containers.AdminPage.SettingsPage.uploadPlaceholder": "Déposez votre image ici",
   "app.containers.AdminPage.SettingsPage.viewPublicResource": "Paramètres",
+  "app.containers.AdminPage.SideBar.clustering": "",
   "app.containers.AdminPage.SideBar.dashboard": "Tableau de bord",
   "app.containers.AdminPage.SideBar.groups": "Groupes",
   "app.containers.AdminPage.SideBar.ideas": "Idées",
