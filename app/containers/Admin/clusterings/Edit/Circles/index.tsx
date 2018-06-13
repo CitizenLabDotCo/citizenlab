@@ -7,6 +7,7 @@ import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import { Node } from 'services/clusterings';
 import ProjectCircle from './ProjectCircle';
 import TopicCircle from './TopicCircle';
+// import styled from 'styled-components';
 
 type D3Node = {
   data: Node;
@@ -26,8 +27,15 @@ type State = {
   hoveredIdea: string | null;
 };
 
-class Circles extends Component<Props, State> {
+// const Container = styled.div``;
 
+// const StyledSVG = styled.svg`
+//   width: 100%;
+//   max-width: 500px;
+//   border: solid 1px red;
+// `;
+
+class Circles extends Component<Props, State> {
   svgRef: SVGElement | null;
 
   constructor(props) {
@@ -80,56 +88,54 @@ class Circles extends Component<Props, State> {
 
   render() {
     const { nodes } = this.state;
+
     return (
-      <div>
-        <svg ref={this.setSVGRef} width={800} height={800}>
-          {nodes.map((node, index) => (
-            <g
-              key={index}
-              transform={`translate(${node.x},${node.y})`}
-            >
-              {node.data.type === 'idea' &&
-                <IdeaCircle
-                  node={node}
-                  ideaId={node.data.id}
-                  onClick={this.handleOnClickNode(node)}
-                  onMouseEnter={this.handleOnMouseEnterIdea(node)}
-                  onMouseLeave={this.handleOnMouseLeaveIdea()}
-                  selected={this.isSelected(node)}
-                  hovered={node.data.id === this.state.hoveredIdea}
-                />
-              }
-              {node.data.type === 'custom' &&
-                <CustomCircle
-                  node={node}
-                  onClick={this.handleOnClickNode(node)}
-                  selected={this.isSelected(node)}
-                />
-              }
-              {node.data.type === 'project' &&
-                <ProjectCircle
-                  node={node}
-                  projectId={node.data.id}
-                  onClick={this.handleOnClickNode(node)}
-                  selected={this.isSelected(node)}
-                />
-              }
-              {node.data.type === 'topic' &&
-                <TopicCircle
-                  node={node}
-                  topicId={node.data.id}
-                  onClick={this.handleOnClickNode(node)}
-                  selected={this.isSelected(node)}
-                />
-              }
-            </g>
-          ))}
-        </svg>
-      </div>
+      <svg className={this.props['className']} ref={this.setSVGRef} width={500} height={500} viewBox="0 0 500 500">
+        {nodes.map((node, index) => (
+          <g
+            key={index}
+            transform={`translate(${node.x},${node.y})`}
+          >
+            {node.data.type === 'idea' &&
+              <IdeaCircle
+                node={node}
+                ideaId={node.data.id}
+                onClick={this.handleOnClickNode(node)}
+                onMouseEnter={this.handleOnMouseEnterIdea(node)}
+                onMouseLeave={this.handleOnMouseLeaveIdea()}
+                selected={this.isSelected(node)}
+                hovered={node.data.id === this.state.hoveredIdea}
+              />
+            }
+            {node.data.type === 'custom' &&
+              <CustomCircle
+                node={node}
+                onClick={this.handleOnClickNode(node)}
+                selected={this.isSelected(node)}
+              />
+            }
+            {node.data.type === 'project' &&
+              <ProjectCircle
+                node={node}
+                projectId={node.data.id}
+                onClick={this.handleOnClickNode(node)}
+                selected={this.isSelected(node)}
+              />
+            }
+            {node.data.type === 'topic' &&
+              <TopicCircle
+                node={node}
+                topicId={node.data.id}
+                onClick={this.handleOnClickNode(node)}
+                selected={this.isSelected(node)}
+              />
+            }
+          </g>
+        ))}
+      </svg>
     );
   }
 }
-
 
 export default (inputProps) => (
   <GetIdeas type="load-more" pageSize={250} sort="new">

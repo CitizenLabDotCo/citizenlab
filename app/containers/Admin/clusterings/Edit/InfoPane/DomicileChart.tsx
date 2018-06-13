@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Subscription } from 'rxjs';
 import isEqual from 'lodash/isEqual';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer } from 'recharts';
 import { votesByDomicileStream, IVotesByDomicile } from 'services/stats';
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 import { isNilOrError } from 'utils/helperUtils';
 import localize, { injectedLocalized } from 'utils/localize';
 import { isEmpty } from 'lodash';
 import { combineLatest } from 'rxjs/observable/combineLatest';
-import { withTheme } from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 
 type Props = {
   ideaIdsComparisons: string[][];
@@ -20,6 +20,8 @@ type Props = {
 type State = {
   series: any[];
 };
+
+const Container = styled.div``;
 
 class DomicileChart extends Component<Props & injectedLocalized, State> {
 
@@ -97,29 +99,29 @@ class DomicileChart extends Component<Props & injectedLocalized, State> {
     if (isEmpty(series)) return null;
 
     return (
-      <div>
-        <BarChart
-          width={400}
-          height={250}
-          data={series}
-          stackOffset="sign"
-        >
-          <XAxis dataKey="label" />
-          <YAxis />
-          <Tooltip />
-          <ReferenceLine y={0} stroke="#000" />
-          {ideaIdsComparisons.length > 1 && ideaIdsComparisons.map((_, index) => (
-            <Bar dataKey={`up ${index + 1}`} fill={theme.comparisonColors[index]} stackId={`votes ${index}`} maxBarSize={20} />
-          ))}
-          {ideaIdsComparisons.length > 1 && ideaIdsComparisons.map((_, index) => (
-            <Bar dataKey={`down ${index + 1}`} fill={theme.comparisonColors[index]} stackId={`votes ${index}`} maxBarSize={20} />
-          ))}
-          {ideaIdsComparisons.length === 1 &&
-            <Bar dataKey="up 1" fill={theme.upvotes} stackId="votes 1" maxBarSize={20} />}
-          {ideaIdsComparisons.length === 1 &&
-            <Bar dataKey="down 1" fill={theme.downvotes} stackId="votes 1" maxBarSize={20} />}
-        </BarChart>
-      </div>
+      <Container className={this.props['className']}>
+        <ResponsiveContainer width="100%" aspect={400 / 250}>
+          <BarChart
+            data={series}
+            stackOffset="sign"
+          >
+            <XAxis dataKey="label" />
+            <YAxis />
+            <Tooltip />
+            <ReferenceLine y={0} stroke="#000" />
+            {ideaIdsComparisons.length > 1 && ideaIdsComparisons.map((_, index) => (
+              <Bar dataKey={`up ${index + 1}`} fill={theme.comparisonColors[index]} stackId={`votes ${index}`} maxBarSize={20} />
+            ))}
+            {ideaIdsComparisons.length > 1 && ideaIdsComparisons.map((_, index) => (
+              <Bar dataKey={`down ${index + 1}`} fill={theme.comparisonColors[index]} stackId={`votes ${index}`} maxBarSize={20} />
+            ))}
+            {ideaIdsComparisons.length === 1 &&
+              <Bar dataKey="up 1" fill={theme.upvotes} stackId="votes 1" maxBarSize={20} />}
+            {ideaIdsComparisons.length === 1 &&
+              <Bar dataKey="down 1" fill={theme.downvotes} stackId="votes 1" maxBarSize={20} />}
+          </BarChart>
+        </ResponsiveContainer>
+      </Container>
     );
   }
 }
