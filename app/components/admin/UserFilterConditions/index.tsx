@@ -14,7 +14,9 @@ import messages from './messages';
 import { injectTracks } from 'utils/analytics';
 import tracks from 'containers/Admin/users/tracks';
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 560px;
+`;
 
 const RulesList = styled.div`
   margin: 0 -5px;
