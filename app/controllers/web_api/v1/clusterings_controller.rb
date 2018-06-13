@@ -18,9 +18,11 @@ class WebApi::V1::ClusteringsController < ApplicationController
     options = {}
     options[:drop_empty] = params[:clustering][:drop_empty] != 'false'
 
+    ideas = policy_scope(Idea)
+
     @clustering.structure = ClusteringService.new.build_structure(
       params[:clustering][:levels],
-      policy_scope(Idea),
+      ideas,
       options
     )
 

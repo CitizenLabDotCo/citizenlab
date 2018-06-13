@@ -43,6 +43,11 @@ resource "Clusterings" do
       parameter :drop_empty, "A boolean that indicates whether to include empty clusters or not. Defaults to true", required: false
     end
     ValidationErrorHelper.new.error_fields(self, Clustering)
+    before do
+      p1 = create(:project)
+      t1 = create(:topic)
+      i1 = create(:idea, project: p1, topics: [t1])
+    end
 
     let(:clustering) { build(:clustering) }
     let(:title_multiloc) { clustering.title_multiloc }
