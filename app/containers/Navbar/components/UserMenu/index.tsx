@@ -154,8 +154,10 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                 onClick={this.closePopover}
                 style="text"
                 icon="admin"
-                size="2"
-                justify="left"
+                iconPos="right"
+                iconSize="19px"
+                size="1"
+                justify="space-between"
               >
                 <FormattedMessage {...messages.admin} />
               </PopoverItem>
@@ -169,8 +171,10 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                     onClick={this.closePopover}
                     style="text"
                     icon="admin"
-                    size="2"
-                    justify="left"
+                    iconPos="right"
+                    iconSize="19px"
+                    size="1"
+                    justify="space-between"
                   >
                     <FormattedMessage {...messages.projectsModeration} />
                   </PopoverItem>
@@ -184,8 +188,10 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               onClick={this.closePopover}
               style="text"
               icon="user"
-              size="2"
-              justify="left"
+              iconPos="right"
+              iconSize="19px"
+              size="1"
+              justify="space-between"
             >
               <FormattedMessage {...messages.profilePage} />
             </PopoverItem>
@@ -196,8 +202,10 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               onClick={this.closePopover}
               style="text"
               icon="settings"
-              size="2"
-              justify="left"
+              iconPos="right"
+              iconSize="19px"
+              size="1"
+              justify="space-between"
             >
               <FormattedMessage {...messages.editProfile} />
             </PopoverItem>
@@ -207,8 +215,10 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               onClick={this.signOut}
               style="text"
               icon="power"
-              size="2"
-              justify="left"
+              iconPos="right"
+              iconSize="19px"
+              size="1"
+              justify="space-between"
             >
               <FormattedMessage {...messages.signOut} />
             </PopoverItem>
