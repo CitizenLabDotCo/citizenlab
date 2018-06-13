@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Subscription } from 'rxjs';
 import isEqual from 'lodash/isEqual';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ReferenceLine } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
 import { votesByDomicileStream, IVotesByDomicile } from 'services/stats';
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 import { isNilOrError } from 'utils/helperUtils';
