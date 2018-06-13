@@ -53,16 +53,16 @@ const TitleIcon = styled(Icon)`
 `;
 
 const TextAndButtons = styled.div`
-  margin: .5rem 0;
-
   h1 {
+    margin-right: 10px;
     display: inline;
   }
+`;
 
-  > .Button {
-    display: inline-block;
-    margin-left: 1rem;
-  }
+const Buttons = styled.div`
+  display: inline-flex;
+  align-items: center;
+  margin-top: 5px;
 `;
 
 const StyledSearch = styled(SearchInput)`
@@ -119,8 +119,10 @@ class UsersHeader extends React.PureComponent<Props & Tracks, State> {
           {this.props.smartGroup && <TitleIcon name="lightingBolt" />}
           <TextAndButtons>
             <T as="h1" value={this.props.title} />
-            <Button iconTitle={<FormattedMessage {...messages.editGroup} />} hiddenText={<FormattedMessage {...messages.editGroup} />} padding=".65em" icon="edit" style="secondary" circularCorners={false} onClick={this.props.onEdit} />
-            <Button iconTitle={<FormattedMessage {...messages.deleteGroup} />} hiddenText={<FormattedMessage {...messages.deleteGroup} />} padding=".65em" icon="delete" style="text" circularCorners={false} onClick={this.props.onDelete} />
+            <Buttons>
+              <Button iconTitle={<FormattedMessage {...messages.editGroup} />} hiddenText={<FormattedMessage {...messages.editGroup} />} padding=".65em" icon="edit" style="secondary" circularCorners={false} onClick={this.props.onEdit} />
+              <Button iconTitle={<FormattedMessage {...messages.deleteGroup} />} hiddenText={<FormattedMessage {...messages.deleteGroup} />} padding=".65em" icon="delete" style="text" circularCorners={false} onClick={this.props.onDelete} />
+            </Buttons>
           </TextAndButtons>
           <Spacer />
           <StyledSearch value={this.state.searchValue} onChange={this.handleSearchChange} onFocus={this.focusSearch} />

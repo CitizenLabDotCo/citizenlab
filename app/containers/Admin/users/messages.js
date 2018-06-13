@@ -205,6 +205,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupsPanel.selectAll',
     defaultMessage: 'Select all',
   },
+  select: {
+    id: 'app.containers.AdminPage.Users.GroupsPanel.select',
+    defaultMessage: 'Select',
+  },
   userCount: {
     id: 'app.containers.AdminPage.Users.GroupsPanel.userCount',
     defaultMessage: '{count, plural, zero {No users} one {1 user} other {{count} users}}',
@@ -240,6 +244,14 @@ export default defineMessages({
   exportUsers: {
     id: 'app.containers.AdminPage.Users.UsersGroup.exportUsers',
     defaultMessage: 'Export all users',
+  },
+  exportAll: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.exportAll',
+    defaultMessage: 'Export all',
+  },
+  exportSelected: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.exportSelected',
+    defaultMessage: 'Export selected',
   },
   add: {
     id: 'app.containers.AdminPage.Users.UsersGroup.add',
