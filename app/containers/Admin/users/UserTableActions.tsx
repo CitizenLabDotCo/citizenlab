@@ -39,6 +39,7 @@ import { colors } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 const TableOptions = styled.div`
+  min-height: 60px;
   display: flex;
   align-items: center;
   padding-bottom: 15px;
@@ -53,6 +54,7 @@ const UserCount = styled.span`
   color: ${colors.label};
   font-weight: 300;
   margin-left: 7px;
+  white-space: nowrap;
 `;
 
 const ActionButton = styled.button`
@@ -61,9 +63,15 @@ const ActionButton = styled.button`
   padding: 5px;
   border-radius: 5px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  span {
+    text-align: left;
+  }
 
   .cl-icon {
-    margin-right: 6px;
+    margin-right: 8px;
   }
 
   &:hover,
@@ -72,6 +80,11 @@ const ActionButton = styled.button`
     color: ${colors.adminTextColor};
     outline: none;
   }
+`;
+
+const StyledIcon = styled(Icon)`
+  flex: 0 0 20px;
+  height: 20px;
 `;
 
 // Typings
@@ -199,7 +212,7 @@ class UserTableActions extends React.PureComponent<Props & Tracks, State> {
   )
 
   render() {
-    const { selectedUsers, groupType, allUsersIds } = this.props;
+    const { selectedUsers, groupType, groupId, allUsersIds } = this.props;
     const { groupsList } = this.props.manualGroups;
 
     let selectedCount;
@@ -243,7 +256,7 @@ class UserTableActions extends React.PureComponent<Props & Tracks, State> {
             emitError={this.emitMembershipAddError}
           >
             <ActionButton className="e2e-move-users">
-              <Icon name="moveFolder" />
+              <StyledIcon name="moveFolder" />
               <FormattedMessage {...messages.moveUsers} />
             </ActionButton>
           </MultipleSelectDropdown>
@@ -251,14 +264,16 @@ class UserTableActions extends React.PureComponent<Props & Tracks, State> {
 
         {groupType === 'manual' && selectedUsers !== 'none' &&
           <ActionButton onClick={this.handleGroupsDeleteClick}>
-            <Icon name="trash" />
+            <StyledIcon name="trash" />
             <FormattedMessage {...messages.membershipDelete} />
           </ActionButton>
         }
 
         <ActionButton onClick={this.exportUsers} className="export">
-          <Icon name="userExport" />
-          {selectedUsers === 'none' ? <FormattedMessage {...messages.exportAll} /> : <FormattedMessage {...messages.exportSelected} />}
+          <StyledIcon name="userExport" />
+          {selectedUsers === 'none' && !groupId && <FormattedMessage {...messages.exportAllUsers} />}
+          {selectedUsers === 'none' && groupId && <FormattedMessage {...messages.exportGroup} />}
+          {selectedUsers !== 'none' && <FormattedMessage {...messages.exportSelectedUsers} />}
         </ActionButton>
       </TableOptions>
     );

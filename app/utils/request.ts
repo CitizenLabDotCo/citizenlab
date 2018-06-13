@@ -45,7 +45,6 @@ export default function request<T>(url, data, options, queryParameters): Promise
 export function requestBlob(url, type, queryParameters?) {
   const urlParams = qs.stringify(queryParameters, { arrayFormat: 'brackets', addQueryPrefix: true });
   const urlWithParams = `${url}${urlParams}`;
-  console.log(urlWithParams);
 
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();

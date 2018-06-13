@@ -245,13 +245,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.UsersGroup.exportUsers',
     defaultMessage: 'Export all users',
   },
-  exportAll: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.exportAll',
-    defaultMessage: 'Export all',
+  exportAllUsers: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.exportAllUsers',
+    defaultMessage: 'Export all users',
   },
-  exportSelected: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.exportSelected',
-    defaultMessage: 'Export selected',
+  exportGroup: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.exportGroup',
+    defaultMessage: 'Export group',
+  },
+  exportSelectedUsers: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.exportSelectedUsers',
+    defaultMessage: 'Export selected users',
   },
   add: {
     id: 'app.containers.AdminPage.Users.UsersGroup.add',
