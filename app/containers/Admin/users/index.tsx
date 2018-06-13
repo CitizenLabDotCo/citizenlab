@@ -107,6 +107,7 @@ class UsersPage extends React.Component<Props & WithRouterProps, State> {
 
   render () {
     if (!this.props.location) return null;
+
     const { groupCreationModal } = this.state;
 
     let ModalHeader;
@@ -128,13 +129,23 @@ class UsersPage extends React.Component<Props & WithRouterProps, State> {
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
+
         <Wrapper>
           <LeftPanel onCreateGroup={this.openGroupCreationModal} />
           <ChildWrapper>{this.props.children}</ChildWrapper>
         </Wrapper>
-        <Modal header={ModalHeader} fixedHeight={false} opened={groupCreationModal !== false} close={this.closeGroupCreationModal}>
+
+        <Modal
+          header={ModalHeader}
+          fixedHeight={false}
+          opened={groupCreationModal !== false}
+          close={this.closeGroupCreationModal}
+        >
           <>
-            {groupCreationModal === 'step1' && <GroupCreationStep1 onOpenStep2={this.openStep2} />}
+            {groupCreationModal === 'step1' &&
+              <GroupCreationStep1 onOpenStep2={this.openStep2} />
+            }
+
             {groupCreationModal === 'manual' &&
               <Formik
                 initialValues={{ title_multiloc: {} }}
@@ -143,6 +154,7 @@ class UsersPage extends React.Component<Props & WithRouterProps, State> {
                 onSubmit={this.handleSubmitForm}
               />
             }
+
             {groupCreationModal === 'rules' &&
               <Formik
                 initialValues={{ title_multiloc: {}, rules: [], membership_type: 'rules' }}

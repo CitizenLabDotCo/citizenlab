@@ -11,10 +11,14 @@ import Checkbox from 'components/UI/Checkbox';
 import Icon from 'components/UI/Icon';
 import PresentationalDropdown from 'components/admin/MultipleSelectDropdown/PresentationalDropdown';
 
-// translation
+// Translation
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+
+// Utils
+import { API_PATH } from 'containers/App/constants';
+import streams from 'utils/streams';
 
 // Events --- For error handling
 import eventEmitter from 'utils/eventEmitter';
@@ -164,15 +168,18 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
   }
 
   handleDeleteClick = (event: React.FormEvent<any>) => {
+    const { authUser, user } = this.props;
     const deleteMessage = this.props.intl.formatMessage(messages.userDeletionConfirmation);
+
     event.preventDefault();
 
-    const { authUser } = this.props;
     if (window.confirm(deleteMessage)) {
-      if (authUser && authUser.id === this.props.user.id) {
+      if (authUser && authUser.id === user.id) {
         eventEmitter.emit<JSX.Element>('usersAdmin', events.userDeletionFailed, <FormattedMessage {...messages.youCantDeleteYourself} />);
       } else {
-        deleteUser(this.props.user.id).catch(() => {
+        deleteUser(user.id).then(() => {
+          setTimeout(() => streams.fetchAllStreamsWithEndpoint(`${API_PATH}/groups`), 2000);
+        }).catch(() => {
           eventEmitter.emit<JSX.Element>('usersAdmin', events.userDeletionFailed, <FormattedMessage {...messages.userDeletionFailed} />);
         });
       }
