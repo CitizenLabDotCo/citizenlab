@@ -123,7 +123,7 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & 
         const promises: Promise<any>[] = [];
         userIds.forEach(userId => promises.push(deleteMembershipByUserId(groupId, userId)));
         Promise.all(promises).catch(() => {
-          eventEmitter.emit<JSX.Element>('usersAdmin', events.membershipDeleteFailed, <FormattedMessage {...messages.membershipDeleteFailed} />)
+          eventEmitter.emit<JSX.Element>('usersAdmin', events.membershipDeleteFailed, <FormattedMessage {...messages.membershipDeleteFailed} />);
         });
       }
     }
