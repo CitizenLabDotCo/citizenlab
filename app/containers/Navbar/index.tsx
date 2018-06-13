@@ -170,16 +170,15 @@ const NavigationDropdownItem = styled.button`
 
 const ProjectsListItem = styled(Link)`
   color: ${(props) => props.theme.colors.label};
-  font-size: 16px;
+  font-size: ${fontSize('large')};
   font-weight: 400;
+  line-height: 22px;
   text-decoration: none;
   padding: 10px;
   margin-right: 5px;
   background: #fff;
   border-radius: 5px;
   color: ${colors.label};
-  font-size: ${fontSize('large')};
-  font-weight: 400;
   padding: 10px;
   text-decoration: none;
 
@@ -427,7 +426,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
 
           <Right>
             <RightItem className="addIdea" loggedIn={authUser !== null}>
-              <StyledIdeaButton style="secondary-outlined" />
+              <StyledIdeaButton style="secondary-outlined" size="2" padding=".65em 1.45em" />
             </RightItem>
 
             {!authUser &&

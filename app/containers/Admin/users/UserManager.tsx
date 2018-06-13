@@ -3,7 +3,7 @@ import React from 'react';
 import { isArray, includes } from 'lodash';
 import { Subscription } from 'rxjs';
 
-// components
+// Components
 import UserTable from './UserTable';
 import UserTableActions from './UserTableActions';
 import Error from 'components/UI/Error';
@@ -20,7 +20,7 @@ import GetAuthUser from 'resources/GetAuthUser';
 // Services
 import { MembershipType } from 'services/groups';
 
-// typings
+// Typings
 interface InputProps {
   search: string | undefined;
   groupId?: string;
@@ -52,7 +52,7 @@ const initialState: State = {
 };
 
 export class UserManager extends React.PureComponent<Props, State> {
-  subs: Subscription[] = [];
+  subscriptions: Subscription[] = [];
 
   constructor(props) {
     super(props);
@@ -68,48 +68,31 @@ export class UserManager extends React.PureComponent<Props, State> {
 
   // Listening to events coming from the different actions to print messages in case of errors
   componentDidMount() {
-    this.subs.push(
-      eventEmitter.observeEvent<JSX.Element>(events.userDeletionFailed)
-        .subscribe(({ eventName, eventValue }) => {
-          this.handleError(eventName, eventValue);
-        })
-    );
-    this.subs.push(
-      eventEmitter.observeEvent<JSX.Element>(events.membershipDeleteFailed)
-        .subscribe(({ eventName, eventValue }) => {
-          this.handleError(eventName, eventValue);
-        })
-    );
-    this.subs.push(
-      eventEmitter.observeEvent<JSX.Element>(events.membershipAddFailed)
-        .subscribe(({ eventName, eventValue }) => {
-          this.handleError(eventName, eventValue);
-        })
-    );
-    this.subs.push(
-      eventEmitter.observeEvent<JSX.Element>(events.userRoleChangeFailed)
-        .subscribe(({ eventName, eventValue }) => {
-          this.handleError(eventName, eventValue);
-        })
-    );
+    this.subscriptions = [
+      eventEmitter.observeEvent<JSX.Element>(events.userDeletionFailed).subscribe(({ eventName, eventValue }) => {
+        this.handleError(eventName, eventValue);
+      }),
+      eventEmitter.observeEvent<JSX.Element>(events.membershipDeleteFailed).subscribe(({ eventName, eventValue }) => {
+        this.handleError(eventName, eventValue);
+      }),
+      eventEmitter.observeEvent<JSX.Element>(events.membershipAddFailed).subscribe(({ eventName, eventValue }) => {
+        this.handleError(eventName, eventValue);
+      }),
+      eventEmitter.observeEvent<JSX.Element>(events.userRoleChangeFailed).subscribe(({ eventName, eventValue }) => {
+        this.handleError(eventName, eventValue);
+      })
+    ];
   }
 
   componentWillUnmount() {
-    this.subs.forEach(sub => sub.unsubscribe());
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   // When an error occurs, print it for 4 seconds then remove the message from the component state
   handleError = (errorName, errorElement) => {
     this.setState({ errors: [...this.state.errors, { errorName, errorElement }] });
-    setTimeout(() => this.setState({ errors: this.state.errors.filter(err => err.errorName !== errorName) }),
-      4000);
+    setTimeout(() => this.setState({ errors: this.state.errors.filter(err => err.errorName !== errorName) }), 4000);
   }
-
-  renderErrors = () => (
-    this.state.errors.length > 0 && this.state.errors.map(err => (
-      <Error text={err.errorElement} key={err.errorName} />
-    ))
-  )
 
   toggleAllUsers = () => {
     this.setState(state => ({ selectedUsers: (state.selectedUsers === 'all' ? 'none' : 'all') }));
@@ -136,49 +119,46 @@ export class UserManager extends React.PureComponent<Props, State> {
     });
   }
 
-  renderUserTable = (allUsersIds, selectedUsers) => {
-    const { groupType, users, search } = this.props;
+  render() {
+    const { users, groupType, groupId, search } = this.props;
+    const { selectedUsers, errors } = this.state;
 
     if (isArray(users.usersList) && users.usersList.length === 0) {
-      if (search) {
-        return <NoUsers noSuchSearchResult={true} />;
-      }
-      return <NoUsers smartGroup={groupType === 'rules'}/>;
+      return (search ? <NoUsers noSuchSearchResult={true} /> : <NoUsers smartGroup={groupType === 'rules'}/>);
     }
 
-    return (
-      <GetAuthUser>
-        {(authUser) => (
-          <UserTable
-            selectedUsers={selectedUsers}
-            handleSelect={this.handleUserSelectedOnChange(allUsersIds)}
-            authUser={authUser}
-            {...users}
-          />
-        )}
-      </GetAuthUser>
-    );
-  }
-
-  render() {
-    const { users, groupType } = this.props;
-    const { selectedUsers } = this.state;
-    if (isArray(users.usersList)) {
+    if (isArray(users.usersList) && users.usersList.length > 0) {
       const allUsersIds = users.usersList.map(user => user.id);
+
       return (
         <>
           <UserTableActions
             groupType={groupType}
+            groupId={groupId}
             selectedUsers={selectedUsers}
             allUsersIds={allUsersIds}
             toggleSelectAll={this.toggleAllUsers}
             deleteUsersFromGroup={this.props.deleteUsersFromGroup}
           />
-          {this.renderErrors()}
-          {this.renderUserTable(allUsersIds, selectedUsers)}
+
+          {errors && errors.length > 0 && errors.map((err) => (
+            <Error text={err.errorElement} key={err.errorName} />
+          ))}
+
+          <GetAuthUser>
+            {(authUser) => (
+              <UserTable
+                selectedUsers={selectedUsers}
+                handleSelect={this.handleUserSelectedOnChange(allUsersIds)}
+                authUser={authUser}
+                {...users}
+              />
+            )}
+          </GetAuthUser>
         </>
       );
     }
+
     return null;
   }
 }

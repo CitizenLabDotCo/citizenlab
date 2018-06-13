@@ -1,5 +1,4 @@
 import 'whatwg-fetch';
-import * as withQuery from 'with-query';
 import qs from 'qs';
 import { getJwt } from 'utils/auth/jwt';
 
@@ -44,7 +43,9 @@ export default function request<T>(url, data, options, queryParameters): Promise
 
 // we use xhr rather than fetch API, to enforce response type
 export function requestBlob(url, type, queryParameters?) {
-  const urlWithParams = (queryParameters ? withQuery(url, queryParameters) : url);
+  const urlParams = qs.stringify(queryParameters, { arrayFormat: 'brackets', addQueryPrefix: true });
+  const urlWithParams = `${url}${urlParams}`;
+  console.log(urlWithParams);
 
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();

@@ -1,7 +1,8 @@
 // Libraries
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isArray } from 'lodash';
+import { isArray, isNil, omitBy } from 'lodash';
+import FileSaver from 'file-saver';
 
 // Components
 import Checkbox from 'components/UI/Checkbox';
@@ -13,6 +14,7 @@ import { IGroupData } from 'services/groups';
 import { addGroupMembership, IGroupMembership } from 'services/groupMemberships';
 
 // Utils
+import { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 
@@ -47,20 +49,21 @@ const TableOptions = styled.div`
   user-select: none;
 `;
 
-// const UserCount = styled.span`
-//   color: ${colors.label};
-//   font-weight: 300;
-//   margin-left: 7px;
-// `;
+const UserCount = styled.span`
+  color: ${colors.label};
+  font-weight: 300;
+  margin-left: 7px;
+`;
 
 const ActionButton = styled.button`
-  margin-right: 30px;
+  margin-right: 40px;
   position: relative;
   padding: 5px;
   border-radius: 5px;
+  cursor: pointer;
 
   .cl-icon {
-    margin-right: 10px;
+    margin-right: 6px;
   }
 
   &:hover,
@@ -79,6 +82,7 @@ interface InputProps {
   selectedUsers: string[] | 'none' | 'all';
   toggleSelectAll: () => void;
   allUsersIds: string[];
+  groupId?: string;
   deleteUsersFromGroup?: (userIds: string[]) => void;
 }
 
@@ -111,19 +115,25 @@ class UserTableActions extends React.PureComponent<Props & Tracks, State> {
     this.props.toggleSelectAll();
   }
 
-  exportUsers = (event: React.FormEvent<any>) => {
+  exportUsers = async (event: React.FormEvent<any>) => {
     event.preventDefault();
 
-    // const { selectedUsers } = this.props;
+    try {
+      const { allUsersIds, selectedUsers, groupId } = this.props;
+      const usersIds = (selectedUsers === 'all' ? allUsersIds : selectedUsers);
+      const apiPath = `${API_PATH}/users/as_xlsx`;
+      const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+      const group = groupId;
+      const users = (isArray(usersIds) ? usersIds : null);
+      const queryParameters = omitBy({ group, users }, isNil);
+      const blob = await requestBlob(apiPath, fileType, queryParameters);
 
-    // try {
-    //   this.setState({ exporting: true });
-    //   const blob = await requestBlob(`${API_PATH}/users/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    //   FileSaver.saveAs(blob, 'users-export.xlsx');
-    //   this.setState({ exporting: false });
-    // } catch (error) {
-    //   this.setState({ exporting: false });
-    // }
+      this.setState({ exporting: true });
+      FileSaver.saveAs(blob, 'users-export.xlsx');
+      this.setState({ exporting: false });
+    } catch (error) {
+      this.setState({ exporting: false });
+    }
   }
 
   getchoices = (groupsList: IGroupData[]) => {
@@ -151,23 +161,24 @@ class UserTableActions extends React.PureComponent<Props & Tracks, State> {
           });
         });
       }
-      Promise.all(array)
-        .then(() => {
+
+      Promise.all(array).then(() => {
+        streams.fetchAllStreamsWithEndpoint(`${API_PATH}/groups`);
+        resolve();
+      }).catch((err: API.ErrorResponse) => {
+        trackAddedRedundantUserToGroup({
+          extra: {
+            errorResponse: err
+          }
+        });
+
+        if (err && err.json && err.json.errors.user.filter(val => val.error !== 'taken').length === 0 && !err.json.errors.group) {
           streams.fetchAllStreamsWithEndpoint(`${API_PATH}/groups`);
           resolve();
-        })
-        .catch((err: API.ErrorResponse) => {
-          trackAddedRedundantUserToGroup({
-            extra: {
-              errorResponse: err
-            }
-          });
-          if (err && err.json && err.json.errors.user.filter(val => val.error !== 'taken').length === 0 && !err.json.errors.group) {
-            streams.fetchAllStreamsWithEndpoint(`${API_PATH}/groups`);
-            resolve();
-          }
-          else reject();
-        });
+        } else {
+          reject();
+        }
+      });
     });
   }
 
@@ -191,15 +202,15 @@ class UserTableActions extends React.PureComponent<Props & Tracks, State> {
     const { selectedUsers, groupType, allUsersIds } = this.props;
     const { groupsList } = this.props.manualGroups;
 
-    // let selectedCount;
+    let selectedCount;
 
-    // if (selectedUsers === 'all') {
-    //   selectedCount = allUsersIds.length;
-    // } else if (selectedUsers === 'none') {
-    //   selectedCount = 0;
-    // } else {
-    //   selectedCount = selectedUsers.length;
-    // }
+    if (selectedUsers === 'all') {
+      selectedCount = allUsersIds.length;
+    } else if (selectedUsers === 'none') {
+      selectedCount = 0;
+    } else {
+      selectedCount = selectedUsers.length;
+    }
 
     return (
       <TableOptions>
@@ -207,9 +218,7 @@ class UserTableActions extends React.PureComponent<Props & Tracks, State> {
           <Checkbox
             label={
               <>
-                <FormattedMessage {...messages.selectAll} />
-
-                {/*
+                <FormattedMessage {...messages.select} />
                 <UserCount>
                   (<FormattedMessage
                     {...messages.userCount}
@@ -218,7 +227,6 @@ class UserTableActions extends React.PureComponent<Props & Tracks, State> {
                     }}
                   />)
                 </UserCount>
-                */}
               </>
             }
             value={(selectedUsers === 'all')}
@@ -250,7 +258,7 @@ class UserTableActions extends React.PureComponent<Props & Tracks, State> {
 
         <ActionButton onClick={this.exportUsers} className="export">
           <Icon name="userExport" />
-          <FormattedMessage {...messages.exportUsers} />
+          {selectedUsers === 'none' ? <FormattedMessage {...messages.exportAll} /> : <FormattedMessage {...messages.exportSelected} />}
         </ActionButton>
       </TableOptions>
     );

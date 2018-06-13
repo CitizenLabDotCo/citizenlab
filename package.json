@@ -260,8 +260,7 @@
     "semantic-ui-react": "0.81.1",
     "uuid": "3.2.1",
     "warning": "3.0.0",
-    "whatwg-fetch": "2.0.4",
-    "with-query": "1.0.2"
+    "whatwg-fetch": "2.0.4"
   },
   "devDependencies": {
     "@types/bowser": "1.1.1",
@@ -272,7 +271,7 @@
     "@types/leaflet": "1.2.7",
     "@types/leaflet.markercluster": "1.0.3",
     "@types/lodash": "4.14.109",
-    "@types/moment-timezone": "0.5.5",
+    "@types/moment-timezone": "0.5.6",
     "@types/node-uuid": "0.0.28",
     "@types/react": "16.3.17",
     "@types/react-dates": "16.0.8",
@@ -291,7 +290,7 @@
     "babel-eslint": "8.2.3",
     "babel-loader": "7.1.4",
     "babel-plugin-dynamic-import-node": "1.2.0",
-    "babel-plugin-lodash": "3.3.3",
+    "babel-plugin-lodash": "3.3.4",
     "babel-plugin-react-intl": "2.4.0",
     "babel-plugin-react-transform": "3.0.0",
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.2",
