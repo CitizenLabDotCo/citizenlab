@@ -20,7 +20,7 @@ resource "User Custom Field Options" do
 
     let(:custom_field_id) { @custom_field.id }
     
-    example_request "List custom field options for field" do
+    example_request "List all custom field options for a field" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
@@ -103,7 +103,7 @@ resource "User Custom Field Options" do
       let(:id) { create(:custom_field_option, custom_field: @custom_field).id }
       let(:ordering) { 1 } 
 
-      example_request "Reorder an option" do
+      example_request "Reorder a custom field option" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
