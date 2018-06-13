@@ -163,7 +163,7 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & 
 
           <Modal
             header={ModalHeader}
-            fixedHeight={false}
+            fixedHeight={true}
             opened={groupEditionModal !== false}
             close={this.closeGroupEditionModal}
           >
