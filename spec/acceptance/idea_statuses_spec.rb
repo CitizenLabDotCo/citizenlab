@@ -23,7 +23,7 @@ resource "IdeaStatuses" do
   get "web_api/v1/idea_statuses/:id" do
     let(:id) { @statuses.first.id }
 
-    example_request "Get one idea status" do
+    example_request "Get one idea status by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @statuses.first.id

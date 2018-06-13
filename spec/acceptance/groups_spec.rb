@@ -47,9 +47,8 @@ resource "Groups" do
       end
       ValidationErrorHelper.new.error_fields(self, Group)
 
-      let(:group) { build(:group) }
-
       describe do
+        let(:group) { build(:group) }
         let(:title_multiloc) { group.title_multiloc }
 
         example_request "Create a group" do
@@ -66,7 +65,6 @@ resource "Groups" do
       end
       ValidationErrorHelper.new.error_fields(self, Group)
 
-
       let(:group) { create(:group) }
       let(:id) { group.id }
       let(:title_multiloc) { build(:group).title_multiloc }
@@ -81,6 +79,7 @@ resource "Groups" do
     delete "web_api/v1/groups/:id" do
       let(:group) { create(:group) }
       let(:id) { group.id }
+      
       example_request "Delete a group" do
         expect(response_status).to eq 200
         expect{Group.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
