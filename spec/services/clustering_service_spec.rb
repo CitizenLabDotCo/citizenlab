@@ -75,4 +75,175 @@ describe ClusteringService do
     end
   end
 
+  describe "build_structure" do
+    it "successfully builds cluster structures by project level" do
+      p1, p2 = create_list(:project,2)
+      i1 = create(:idea, project: p1)
+      i2 = create(:idea, project: p1)
+      i3 = create(:idea, project: p2)
+      
+      expect(order_children_rec(service.build_structure(['project'])[:children])).to match(order_children_rec([
+        {
+          type: "project",
+          id: p1.id,
+          children: [
+            {
+              type: "idea",
+              id: i1.id
+            },
+            {
+              type: "idea",
+              id: i2.id
+            }
+          ]
+        },
+        {
+          type: "project",
+          id: p2.id,
+          children: [
+            {
+              type: "idea",
+              id: i3.id
+            }
+          ]
+        }
+      ]))
+    end
+
+    it "successfully builds cluster structures by topic level" do
+      t1, t2 = create_list(:topic, 2)
+      i1 = create(:idea, topics: [t1])
+      i2 = create(:idea, topics: [t2])
+      i3 = create(:idea, topics: [t2])
+      
+      expect(order_children_rec(service.build_structure(['topic'])[:children])).to match(order_children_rec([
+        {
+          type: "topic",
+          id: t1.id,
+          children: [
+            {
+              type: "idea",
+              id: i1.id
+            }
+          ]
+        },
+        {
+          type: "topic",
+          id: t2.id,
+          children: [
+            {
+              type: "idea",
+              id: i2.id
+            },
+            {
+              type: "idea",
+              id: i3.id
+            }
+          ]
+        }
+      ]))
+    end
+
+    it "successfully builds cluster structures by area level" do
+      a1, a2 = create_list(:area, 2)
+      i1 = create(:idea, areas: [a1])
+      i2 = create(:idea, areas: [a2])
+      i3 = create(:idea, areas: [a2])
+      
+      expect(order_children_rec(service.build_structure(['area'])[:children])).to match(order_children_rec([
+        {
+          type: "area",
+          id: a1.id,
+          children: [
+            {
+              type: "idea",
+              id: i1.id
+            }
+          ]
+        },
+        {
+          type: "area",
+          id: a2.id,
+          children: [
+            {
+              type: "idea",
+              id: i2.id
+            },
+            {
+              type: "idea",
+              id: i3.id
+            }
+          ]
+        }
+      ]))
+    end
+
+    it "successfully builds cluster structures for 2 or more levels" do
+      p1, p2 = create_list(:project,2)
+      t1, t2 = create_list(:topic, 2)
+      i1 = create(:idea, project: p1, topics: [t1])
+      i2 = create(:idea, project: p1, topics: [t1])
+      i3 = create(:idea, project: p2, topics: [t1])
+      i4 = create(:idea, project: p2, topics: [t2])
+      
+      expect(order_children_rec(service.build_structure(['project', 'topic'])[:children])).to match(order_children_rec([
+        {
+          type: "project",
+          id: p1.id,
+          children: [
+            {
+              type: "topic",
+              id: t1.id,
+              children: [
+                {
+                  type: "idea",
+                  id: i1.id
+                },
+                {
+                  type: "idea",
+                  id: i2.id
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: "project",
+          id: p2.id,
+          children: [
+            {
+              type: "topic",
+              id: t1.id,
+              children: [
+                {
+                  type: "idea",
+                  id: i3.id
+                }
+              ]
+            },
+            {
+              type: "topic",
+              id: t2.id,
+              children: [
+                {
+                  type: "idea",
+                  id: i4.id
+                }
+              ]
+            }
+          ]
+        }
+      ]))
+    end
+  end
+
+  def order_children_rec children # because match_unordered_json from rspec-json_expectations doesn't work :(
+    children.each do |struc|
+      if struc[:children]
+        struc[:children] = order_children_rec struc[:children]
+      end
+    end
+    children.sort_by{|child| child[:id]}
+  end
+
 end
