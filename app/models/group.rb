@@ -40,6 +40,8 @@ class Group < ApplicationRecord
       .distinct
   }
 
+  scope :order_new, -> (direction=:desc) {order(created_at: direction)}
+
   def add_member user
     if manual?
       users << user
