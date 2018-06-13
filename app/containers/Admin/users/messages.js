@@ -249,4 +249,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.UsersGroup.dropdownFooterMessage',
     defaultMessage: 'Add',
   },
+  rulesError: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.rulesError',
+    defaultMessage: 'Some conditions are incomplete',
+  },
 });
