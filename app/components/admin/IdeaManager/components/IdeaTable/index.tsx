@@ -2,11 +2,12 @@ import React from 'react';
 import { clone, omit, every, fromPairs, isEmpty, isFunction } from 'lodash';
 
 // components
-import { Table, Checkbox } from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
 import { FormattedMessage } from 'utils/cl-intl';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
 import Row from './Row';
 import Pagination from 'components/admin/Pagination';
+import Checkbox from 'components/UI/Checkbox';
 
 // services
 import { IIdeaData } from 'services/ideas';
@@ -99,7 +100,7 @@ export default class IdeaTable extends React.Component<Props, State> {
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell width={1}>
-              <Checkbox checked={this.allSelected()} onChange={this.toggleSelectAll}/>
+              <Checkbox value={this.allSelected()} onChange={this.toggleSelectAll} size="17px"/>
             </Table.HeaderCell>
             <Table.HeaderCell width={4}>
               <FormattedMessage {...messages.title} />
