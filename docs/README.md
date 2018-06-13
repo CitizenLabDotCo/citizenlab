@@ -1,5 +1,25 @@
 # Changelog
 
+## 2018-06-11
+
+### Fixed
+- Notifications that indicate a status change now show the correct status name
+- The admin pages editors support changing content and creating new pages again
+- When searching in the invites, filters still work as expected
+- The font has changed again to Visuelt
+
+### Added
+- Accessibility improvements:
+  - All images have an 'alt' attributes
+  - The whole navbar is now usable with a keyboard
+  - Modals can be closed with the escape key
+  - The contrast of labels on white backgrounds has increased
+- New ideas will now immediately be scraped by facebook
+- When inviting a user, you can now pick projects for which the user becomes a moderator
+
+### Changed
+- The language switcher is now shown on the top right in the navbar
+
 ## 2018-05-27
 
 ### Fixed
