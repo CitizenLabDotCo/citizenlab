@@ -1,8 +1,9 @@
 // Libs
 import React from 'react';
 import Leaflet from 'leaflet';
-import { browserHistory, withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 // Services & utils
 import { trackEventByName } from 'utils/analytics';
@@ -95,7 +96,7 @@ class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
   getPoints = (ideas: Partial<IIdeaData>[] | null | undefined | Error) => {
     const ideaPoints: any[] = [];
 
-    if (!isNilOrError(ideas) && ideas.length > 0) {      
+    if (!isNilOrError(ideas) && ideas.length > 0) {
       ideas.forEach((idea) => {
         if (idea.attributes && idea.attributes.location_point_geojson) {
           ideaPoints.push({
@@ -133,7 +134,7 @@ class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
   redirectToIdeaCreation = () => {
     if (this.savedPosition && this.props.params && this.props.params.slug) {
       trackEventByName(tracks.createIdeaFromMap, { position: this.savedPosition, projectSlug: this.props.params.slug });
-      browserHistory.push(`/projects/${this.props.params.slug}/ideas/new?position=[${this.savedPosition.lat},${this.savedPosition.lng}]`);
+      clHistory.push(`/projects/${this.props.params.slug}/ideas/new?position=[${this.savedPosition.lat},${this.savedPosition.lng}]`);
     }
   }
 

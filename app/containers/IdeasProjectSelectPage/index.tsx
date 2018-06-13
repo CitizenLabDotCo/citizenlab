@@ -1,6 +1,7 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { browserHistory, withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 import { groupBy, isEmpty, isUndefined } from 'lodash';
 
 // services
@@ -210,7 +211,7 @@ class IdeasProjectSelectPage extends React.PureComponent<Props & WithRouterProps
 
   redirectTo = (projectSlug: string) => {
     const queryParams = (this.props.location && this.props.location.search) || '';
-    browserHistory.push(`/projects/${projectSlug}/ideas/new${queryParams}`);
+    clHistory.push(`/projects/${projectSlug}/ideas/new${queryParams}`);
   }
 
   handleOnSubmitClick = () => {

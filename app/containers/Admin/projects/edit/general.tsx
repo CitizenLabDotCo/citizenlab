@@ -3,7 +3,7 @@ import * as Rx from 'rxjs/Rx';
 import { isEmpty, get, forOwn } from 'lodash';
 
 // router
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import InputMultiloc from 'components/UI/InputMultiloc';
@@ -449,7 +449,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     const projectAttrs = { ...(projectData ? projectData.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
     const noTitleError = {} as Multiloc;
 
-    forOwn(projectAttrs.title_multiloc, (title, locale) => {
+    forOwn(projectAttrs.title_multiloc, (title: string, locale) => {
       if (!title || (title && title.length < 1)) {
         noTitleError[locale] = formatMessage(messages.noTitleErrorMessage);
         hasErrors = true;
@@ -533,7 +533,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         }
 
         if (redirect) {
-          browserHistory.push(`/admin/projects`);
+          clHistory.push(`/admin/projects`);
         } else {
           this.setState({ saved: true, submitState: 'success' });
           this.processing$.next(false);
@@ -560,7 +560,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     if (projectData && window.confirm(formatMessage(messages.deleteProjectConfirmation))) {
       try {
         await deleteProject(projectData.id);
-        browserHistory.push('/admin/projects');
+        clHistory.push('/admin/projects');
       } catch {
         this.setState({ deleteError: formatMessage(messages.deleteProjectError) });
       }

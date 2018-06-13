@@ -1,6 +1,7 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { browserHistory, withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import Header from '../Header';
@@ -64,12 +65,12 @@ class ProjectTimelinePage extends React.PureComponent<Props & WithRouterProps, S
     // const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
 
     // if (lastUrlSegment === 'timeline') {
-    //   browserHistory.push(`/projects/${this.props.params.slug}/process`);
+    //   history.push(`/projects/${this.props.params.slug}/process`);
     // }
 
     if (!isNilOrError(project)) {
       if (project.attributes.process_type !== 'timeline') {
-        browserHistory.push(`/projects/${slug}/info`);
+        clHistory.push(`/projects/${slug}/info`);
       }
 
       return (

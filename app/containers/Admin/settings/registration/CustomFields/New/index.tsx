@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { addCustomFieldForUsers } from 'services/userCustomFields';
 import { API } from 'typings';
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
 import PageWrapper from 'components/admin/PageWrapper';
@@ -29,9 +29,9 @@ class New extends React.Component<Props> {
     })
       .then((response) => {
         if (this.hasOptions(values.input_type)) {
-          browserHistory.push(`/admin/settings/registration/custom_fields/${response.data.id}/options`);
+          clHistory.push(`/admin/settings/registration/custom_fields/${response.data.id}/options`);
         } else {
-          browserHistory.push('/admin/settings/registration');
+          clHistory.push('/admin/settings/registration');
         }
       })
       .catch((errorResponse) => {
@@ -43,7 +43,7 @@ class New extends React.Component<Props> {
 
   initialValues = () => {
     return {
-      input_type: 'text', 
+      input_type: 'text',
       title_multiloc: {},
       description_multiloc: {},
       required: false,
@@ -63,7 +63,7 @@ class New extends React.Component<Props> {
   }
 
   goBack = () => {
-    browserHistory.push('/admin/settings/registration');
+    clHistory.push('/admin/settings/registration');
   }
 
   render() {

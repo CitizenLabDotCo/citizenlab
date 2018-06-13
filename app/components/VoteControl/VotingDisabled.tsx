@@ -8,7 +8,7 @@ import T from 'components/T';
 import { IIdeaData } from 'services/ideas';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import messages from './messages';
-import browserHistory from 'react-router/lib/browserHistory';
+import clHistory from 'utils/cl-router/history';
 
 const Container = styled.div`
   color: ${(props) => props.theme.colors.label};
@@ -66,7 +66,7 @@ class VotingDisabled extends React.PureComponent<Props, State> {
     const { project } = this.props;
 
     if (!isNilOrError(project)) {
-      browserHistory.push(`/projects/${project.attributes.slug}`);
+      clHistory.push(`/projects/${project.attributes.slug}`);
     }
   }
 

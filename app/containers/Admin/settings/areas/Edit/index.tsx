@@ -1,6 +1,7 @@
 import React from 'react';
-import { withRouter, WithRouterProps, browserHistory } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -33,7 +34,7 @@ class Edit extends React.PureComponent<Props> {
       ...values
     })
       .then(() => {
-        browserHistory.push('/admin/settings/areas');
+        clHistory.push('/admin/settings/areas');
       })
       .catch((errorResponse) => {
         const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
@@ -48,7 +49,7 @@ class Edit extends React.PureComponent<Props> {
 
   initialValues = () => {
     const { area } = this.props;
-    
+
     return !isNilOrError(area) && ({
       title_multiloc: area.attributes.title_multiloc,
       description_multiloc: area.attributes.description_multiloc

@@ -3,7 +3,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 
 // router
-import { Link, withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
+import Link from 'utils/cl-router/Link';
 
 // components
 import Icon, { IconNames } from 'components/UI/Icon';

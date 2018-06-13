@@ -2,7 +2,7 @@ import React from 'react';
 import isFunction from 'lodash/isFunction';
 
 // libraries
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -277,7 +277,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     this.disableBodyScroll();
 
     // on route change
-    this.unlisten = browserHistory.listen(() => {
+    this.unlisten = clHistory.listen(() => {
       setTimeout(() => this.props.close(), 250);
     });
 
