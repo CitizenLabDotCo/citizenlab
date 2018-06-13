@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { mix } from 'polished';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
@@ -17,7 +17,7 @@ const StyledCircle: any = styled.circle`
   ${props => (props as any).selected && `
     stroke: black;
     stroke-width: 2px;
-    fill: yellow;
+    fill: ${props.theme.selectionColor};
   `}
 `;
 
@@ -45,7 +45,7 @@ type State = {
 
 };
 
-class IdeaCircle extends Component<Props, State> {
+class IdeaCircle extends PureComponent<Props, State> {
 
   upvoteRatio = (up, down) => {
     return up / (up + down);

@@ -42,7 +42,7 @@ class Circles extends Component<Props, State> {
     const svgRef: any = this.svgRef;
     const ideasById: any = keyBy(this.props.ideas.ideasList, 'id');
     const root = d3.hierarchy(this.props.structure)
-      .sum((d) => ideasById[d.id] ? (ideasById[d.id].attributes.upvotes_count + ideasById[d.id].attributes.downvotes_count) : 1);
+      .sum((d) => ideasById[d.id] ? (ideasById[d.id].attributes.upvotes_count + ideasById[d.id].attributes.downvotes_count + 1) : 1);
 
     const pack = d3.pack()
       .size([svgRef.width.baseVal.value - 2, svgRef.height.baseVal.value - 2])

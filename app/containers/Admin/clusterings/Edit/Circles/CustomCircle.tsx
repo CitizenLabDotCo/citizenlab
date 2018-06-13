@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 const StyledCircle: any = styled.circle`
@@ -12,7 +12,7 @@ const StyledCircle: any = styled.circle`
   ${props => (props as any).selected && `
     stroke: black;
     stroke-width: 3px;
-    fill: yellow;
+    fill: ${props.theme.selectionColor};
     opacity: 0.4;
   `}
 `;
@@ -30,7 +30,7 @@ type Props = {
   onMouseLeave?: () => void;
 };
 
-class ClusterCircle extends Component<Props> {
+class ClusterCircle extends PureComponent<Props> {
 
   render() {
     const { node, selected, hovered } = this.props;

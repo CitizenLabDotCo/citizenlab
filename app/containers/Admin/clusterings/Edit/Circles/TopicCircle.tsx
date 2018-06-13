@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import GetTopic, { GetTopicChildProps } from 'resources/GetTopic';
 import T from 'components/T';
@@ -15,7 +15,7 @@ const StyledCircle: any = styled.circle`
   ${props => (props as any).selected && `
     stroke: black;
     stroke-width: 3px;
-    fill: yellow;
+    fill: ${props.theme.selectionColor};
     opacity: 0.4;
   `}
 `;
@@ -34,7 +34,7 @@ type Props = {
   onMouseLeave?: () => void;
 };
 
-class TopicCircle extends Component<Props> {
+class TopicCircle extends PureComponent<Props> {
 
   render() {
     const { topic, node, selected, hovered } = this.props;
