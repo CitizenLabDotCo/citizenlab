@@ -11,6 +11,7 @@ import PresentationalDropdown from './PresentationalDropdown';
 
 // style
 import styled from 'styled-components';
+import { ellipsis } from 'polished';
 
 // typing
 import { Message, Multiloc } from 'typings';
@@ -47,11 +48,16 @@ const DropdownListItem = styled.button`
   flex: 1 0;
   justify-content: space-between !important;
 
+  & span {
+    ${ellipsis('144px') as any}
+  }
+
   &:hover, &:focus {
     outline: none;
     color: #000;
     background: #f6f6f6;
   }
+
 `;
 
 const DropdownFooter = styled.button`
@@ -143,8 +149,8 @@ export default class MultipleSelectDropdown extends React.PureComponent<Props, S
         {this.props.choices.length > 0 && this.props.choices.map((choice) => {
           const id = choice.id;
           return (
-            <DropdownListItem key={id} onClick={this.onClickRow(id)}>
-              <T value={choice.text} truncate={21} />
+            <DropdownListItem key={id} onClick={this.onClickRow(id)} className="e2e-dropdown-item">
+              <T value={choice.text} />
               <Checkbox
                 onChange={this.onClickRow(id)}
                 value={this.state.chosen.includes(id)}
@@ -155,7 +161,7 @@ export default class MultipleSelectDropdown extends React.PureComponent<Props, S
         })}
       </DropdownList>
 
-      <DropdownFooter onClick={this.submit(this.state.chosen)}>
+      <DropdownFooter onClick={this.submit(this.state.chosen)} className="e2e-dropdown-submit">
         <FormattedMessage {...this.props.messages.dropdownFooterMessage} />
       </DropdownFooter>
     </DropdownMenuInner>
