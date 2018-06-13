@@ -20,7 +20,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 const facebookColor = '#3b5998';
@@ -69,21 +69,15 @@ const Container = styled.div`
     cursor: pointer;
     transition: all 100ms ease-out;
 
-    ${media.smallerThanMaxTablet`
-      /* margin: 0;
-      margin-top: 10px;
-      margin-bottom: 10px; */
-    `}
-
     &.twitter {
       ${Text} {
         color: ${lighten(0.1, twitterColor)};
-        color: #84939E;
+        color: ${colors.label};
       }
 
       ${IconWrapper} svg {
         fill: ${lighten(0.1, twitterColor)};
-        fill: #84939E;
+        fill: ${colors.label};
       }
 
       &:hover {
@@ -100,12 +94,12 @@ const Container = styled.div`
     &.facebook {
       ${Text} {
         color: ${lighten(0.1, facebookColor)};
-        color: #84939E;
+        color: ${colors.label};
       }
 
       ${IconWrapper} svg {
         fill: ${lighten(0.1, facebookColor)};
-        fill: #84939E;
+        fill: ${colors.label};
       }
 
       &:hover {

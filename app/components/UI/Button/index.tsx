@@ -103,7 +103,15 @@ function buttonTheme(
 const StyledButton = styled.button``;
 const StyledLink = styled(Link)``;
 const StyledA = styled.a``;
-const StyledIcon = styled(Icon)``;
+const StyledIcon = styled(Icon)`
+  &.hasText.left {
+    margin-right: 10px;
+  }
+
+  &.hasText.right {
+    margin-left: 10px;
+  }
+`;
 
 const ButtonText = styled.div`
   margin: 0;
@@ -275,7 +283,7 @@ class Button extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { text, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, children, linkTo } = this.props;
+    const { text, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, iconTitle, hiddenText, children, linkTo } = this.props;
     let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
 
     id = (id || '');
@@ -295,10 +303,10 @@ class Button extends React.PureComponent<Props, State> {
 
     const childContent = (
       <>
-        {icon && iconPos === 'left' && <StyledIcon name={icon} title={this.props.iconTitle} />}
+        {icon && iconPos === 'left' && <StyledIcon name={icon} className={`${iconPos} ${hasText && 'hasText'}`} title={iconTitle} />}
         {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
-        {this.props.hiddenText && <HiddenText>{this.props.hiddenText}</HiddenText>}
-        {icon && iconPos === 'right' && <StyledIcon name={icon} title={this.props.iconTitle} />}
+        {hiddenText && <HiddenText>{hiddenText}</HiddenText>}
+        {icon && iconPos === 'right' && <StyledIcon name={icon} className={`${iconPos} ${hasText && 'hasText'}`} title={iconTitle} />}
         {processing && <SpinnerWrapper><Spinner size={spinnerSize} color={spinnerColor} /></SpinnerWrapper>}
       </>
     );
