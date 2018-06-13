@@ -121,7 +121,7 @@ class WebApi::V1::StatsController < ApplicationController
   # *** votes ***
 
   def votes_count
-    count = Vote
+    count = votes_by_resource
       .where(created_at: @start_at..@end_at)
       .group(:mode)
       .count
@@ -132,8 +132,29 @@ class WebApi::V1::StatsController < ApplicationController
     }
   end
 
+  def votes_by_birthyear
+    render json: votes_by_custom_field_key('birthyear')
+  end
+
+  def votes_by_domicile
+    render json: votes_by_custom_field_key('domicile')
+  end
+
+  def votes_by_education
+    render json: votes_by_custom_field_key('education')
+  end
+
+  def votes_by_gender
+    render json: votes_by_custom_field_key('gender')
+  end
+
+  def votes_by_custom_field
+    custom_field = CustomField.find params[:custom_field]
+    render json: votes_by_custom_field_key(custom_field.key)
+  end
+
   def votes_by_time
-    serie = @@stats_service.group_by_time(Vote, 'created_at', @start_at, @end_at, params[:interval])
+    serie = @@stats_service.group_by_time(votes_by_resource, 'created_at', @start_at, @end_at, params[:interval])
     render json: serie
   end
 
@@ -144,6 +165,62 @@ class WebApi::V1::StatsController < ApplicationController
     @end_at = params[:end_at] || Float::INFINITY
   end
 
+  def votes_by_resource
+    votes = Vote
+    if ['Idea', 'Comment'].include? params[:resource]
+      votes = votes.where(votable_type: params[:resource])
+    end
+    votes
+  end
+
+  def apply_idea_filters ideas
+    ideas = ideas.where(id: params[:ideas]) if params[:ideas].present?
+    ideas = ideas.with_some_topics(params[:topics]) if params[:topics].present?
+    ideas = ideas.with_some_areas(params[:areas]) if params[:areas].present?
+    ideas = ideas.in_phase(params[:phase]) if params[:phase].present?
+    ideas = ideas.where(project_id: params[:project]) if params[:project].present?
+    ideas = ideas.where(author_id: params[:author]) if params[:author].present?
+    ideas = ideas.where(idea_status_id: params[:idea_status]) if params[:idea_status].present?
+    ideas = ideas.search_by_all(params[:search]) if params[:search].present?
+    if params[:publication_status].present?
+      ideas = ideas.where(publication_status: params[:publication_status])
+    else
+      ideas = ideas.where(publication_status: 'published')
+    end
+    if (params[:filter_trending] == 'true') && !params[:search].present?
+      ideas = trending_idea_service.filter_trending ideas
+    end
+    ideas
+  end
+
+  def votes_by_custom_field_key key
+    serie = Vote
+      .where(votable_type: 'Idea')
+      .where(created_at: @start_at..@end_at)
+      .where(votable_id: apply_idea_filters(policy_scope(Idea)))
+      .left_outer_joins(:user)
+      .group("mode","users.custom_field_values->>'#{key}'")
+      .order("users.custom_field_values->>'#{key}'")
+      .count
+    data = %w(up down).map do |mode|
+      [
+        mode,
+        serie.keys.select do |key_mode, _|
+          key_mode == mode 
+        end.map do |_, value|
+          [(value || "_blank"), serie[[mode,value]]]
+        end.to_h
+      ]
+    end.to_h
+    data['total'] = (data['up'].keys+data['down'].keys).uniq.map do |key|
+      [
+        key,
+        (data.dig('up',key) || 0) + (data.dig('down',key) || 0)
+      ]
+    end.to_h
+    data
+  end
+
   def secure_controller?
     false
   end
@@ -151,4 +228,5 @@ class WebApi::V1::StatsController < ApplicationController
   def do_authorize
     authorize :stat
   end
+
 end
