@@ -124,7 +124,7 @@ class UsersTable extends React.PureComponent<Props & Tracks, State> {
 
     if (Array.isArray(usersList) && usersCount && usersCount > 0) {
       return (
-        <Container>
+        <Container className="e2e-user-table">
           <StyledTable>
             <thead>
               <tr>

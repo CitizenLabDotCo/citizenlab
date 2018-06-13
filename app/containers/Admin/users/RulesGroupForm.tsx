@@ -74,6 +74,10 @@ export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Prop
               component={FormikUserFilterConditions}
             />
           </SectionField>
+          {touched.rules && <Error
+            fieldName="rules"
+            apiErrors={errors.rules}
+          />}
           <SSectionField>
             <Field
               id="group-title-field"
