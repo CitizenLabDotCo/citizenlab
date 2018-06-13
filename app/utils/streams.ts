@@ -331,7 +331,10 @@ class Streams {
               }
 
               if (has(data, 'included')) {
-                data.included.filter(item => item.id).forEach(item => this.resourcesByDataId[item.id] = { data: item });
+                data.included.filter(item => item.id).forEach((item) => {
+                  this.resourcesByDataId[item.id] = this.deepFreeze({ data: item });
+                });
+
                 data = omit(data, 'included');
               }
             }
