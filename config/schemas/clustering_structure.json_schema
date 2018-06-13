@@ -26,6 +26,16 @@
         "children": {"$ref": "#/definitions/children"}
       }
     },
+    "areaNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "children"],
+      "properties": {
+        "id": {"type": "string"},
+        "type": {"type": "string", "enum": ["area"]},
+        "children": {"$ref": "#/definitions/children"}
+      }
+    },
     "projectNode": {
       "type": "object",
       "additionalProperties": false,
