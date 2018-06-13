@@ -87,11 +87,12 @@ resource "ProjectFile" do
     let(:project_id) { @project.id }
     let(:file_id) { ProjectFile.first.id }
 
-    example_request "Delete a file attachment of a project" do
+    example_request "Delete a file attachment from a project" do
       expect(response_status).to eq 200
       expect{ProjectFile.find(file_id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
+
 
   private
 

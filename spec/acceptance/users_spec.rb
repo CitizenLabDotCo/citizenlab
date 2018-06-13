@@ -3,14 +3,17 @@ require 'rspec_api_documentation/dsl'
 
 
 resource "Users" do
-  header "Content-Type", "application/json"
+
+  explanation "Citizens and city administrators."
+
+  before do
+    header "Content-Type", "application/json"
+  end
 
   context "when not authenticated" do
 
-    explanation "Citizens and city administrators."
-
     get "web_api/v1/users/me" do
-      example_request "Get the authenticated user" do
+      example_request "[error] Get the authenticated user" do
         expect(status).to eq(404)
       end
     end
@@ -192,7 +195,7 @@ resource "Users" do
     get "web_api/v1/users/:id" do
       let(:id) { @user.id }
 
-      example_request "Get a user by id" do
+      example_request "Get one user by id" do
         do_request
         expect(status).to eq 200
       end
@@ -201,7 +204,7 @@ resource "Users" do
     get "web_api/v1/users/:id" do
       let(:id) { @user.id }
 
-      example_request "Get the authenticated user exposes the email field" do
+      example_request "Get the authenticated user exposes the email field", document: false do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :email)).to eq @user.email
       end
@@ -210,7 +213,7 @@ resource "Users" do
     get "web_api/v1/users/by_slug/:slug" do
       let(:slug) { @users.first.slug }
 
-      example_request "Get a user by slug" do
+      example_request "Get one user by slug" do
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq @users.first.id
@@ -238,7 +241,8 @@ resource "Users" do
 
       describe do
         let(:token) { "n0ns3ns3" }
-        example "get an unexisting user by invite token triggers 404", document: false do
+
+        example "[error] Get an unexisting user by invite token", document: false do
           do_request
           expect(status).to eq 404
         end

@@ -28,6 +28,7 @@ resource "GroupsProjects" do
       parameter :sort, "Either 'new', '-new'", required: false
 
       let(:project_id) { @project.id }
+
       example_request "List all groups-projects of a project" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
@@ -36,7 +37,6 @@ resource "GroupsProjects" do
 
       example "List all groups-projects sorted by new", document: false do
         gp1 = create(:groups_project, project: @project, group: create(:group))
-
         do_request sort: "new"
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
@@ -77,6 +77,7 @@ resource "GroupsProjects" do
     delete "web_api/v1/groups_projects/:id" do
       let(:groups_project) { create(:groups_project) }
       let(:id) { groups_project.id }
+      
       example_request "Delete a groups-project" do
         expect(response_status).to eq 200
         expect{GroupsProject.find(id)}.to raise_error(ActiveRecord::RecordNotFound)

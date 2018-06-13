@@ -18,7 +18,7 @@ resource "Comment Spam Reports" do
   get "web_api/v1/comments/:comment_id/spam_reports" do
     let(:comment_id) { @comment.id }
 
-    example_request "List spam reports on a comment" do
+    example_request "List all spam reports of a comment" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
@@ -28,7 +28,7 @@ resource "Comment Spam Reports" do
   get "web_api/v1/spam_reports/:id" do
     let(:id) { @spam_reports.first.id }
 
-    example_request "Get one spam report by id" do
+    example_request "Get one spam report of a comment by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @spam_reports.first.id
@@ -43,12 +43,11 @@ resource "Comment Spam Reports" do
     end
     ValidationErrorHelper.new.error_fields(self, SpamReport)
 
-  
     let(:comment_id) { @comment.id }
     let(:reason_code) { "other" }
     let(:other_reason) { "plagiarism" }
   
-    example_request "Create a spam report on a comment" do
+    example_request "Create a spam report for a comment" do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
@@ -58,7 +57,6 @@ resource "Comment Spam Reports" do
   end
 
   patch "web_api/v1/spam_reports/:id" do
-
     with_options scope: :spam_report do
       parameter :reason_code, "one of [wrong_content, inappropriate, other]", required: true
       parameter :other_reason, "the reason for the spam report, if none of the reason codes is applicable, in which case 'other' must be chosen", required: false
@@ -69,7 +67,7 @@ resource "Comment Spam Reports" do
     let(:id) { spam_report.id }
     let(:reason_code) { "inappropriate" }
 
-    example_request "Update a spam report" do
+    example_request "Update a spam report for a comment" do
       expect(status).to be 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:reason_code)).to eq "inappropriate"
@@ -79,7 +77,8 @@ resource "Comment Spam Reports" do
   delete "web_api/v1/spam_reports/:id" do
     let(:spam_report) { create(:spam_report, user: @user, spam_reportable: @comment) }
     let(:id) { spam_report.id }
-    example_request "Delete a spam report" do
+
+    example_request "Delete a spam report from a comment" do
       expect(response_status).to eq 200
       expect{SpamReport.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
     end

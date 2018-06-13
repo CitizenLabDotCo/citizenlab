@@ -29,7 +29,7 @@ resource "IdeaFile" do
     let(:idea_id) { @idea.id }
     let(:file_id) { IdeaFile.first.id }
 
-    example_request "Get one file attachment of an idea" do
+    example_request "Get one file attachment of an idea by id" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:file)).to be_present
@@ -46,7 +46,7 @@ resource "IdeaFile" do
     let(:file) { encode_file_as_base64("afvalkalender.pdf") }
     let(:ordering) { 1 }
 
-    example_request "Add a file to an idea" do
+    example_request "Add a file attachment to an idea" do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:file)).to be_present
@@ -65,7 +65,7 @@ resource "IdeaFile" do
     let(:file) { encode_file_as_base64("afvalkalender.pdf") }
     let(:ordering) { 2 }
 
-    example_request "Edit a file attachment for an idea" do
+    example_request "Update a file attachment for an idea" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:file)).to be_present
@@ -77,7 +77,7 @@ resource "IdeaFile" do
     let(:idea_id) { @idea.id }
     let(:file_id) { IdeaFile.first.id }
 
-    example_request "Delete a file attachment on an idea" do
+    example_request "Delete a file attachment from an idea" do
       expect(response_status).to eq 200
       expect{IdeaFile.find(file_id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
