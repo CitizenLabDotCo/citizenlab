@@ -309,23 +309,6 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
                 />
               </SectionField>
 
-              {/* <SectionField>
-                <Label>
-                  <FormattedMessage {...projectSettingsMessages.defaultDisplay} />
-                </Label>
-                {['card', 'map'].map((key) => (
-                  <Radio
-                    key={key}
-                    onChange={this.handleIdeasDisplayChange}
-                    currentValue={presentationMode}
-                    value={key}
-                    name="presentation_mode"
-                    id={`presentation_mode-${key}`}
-                    label={<FormattedMessage {...projectSettingsMessages[`${key}Display`]} />}
-                  />
-                ))}
-              </SectionField> */}
-
               <SectionField>
                 <Label><FormattedMessage {...messages.datesLabel} /></Label>
                 <DateRangePicker
@@ -355,6 +338,17 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
                 />
                 <Error apiErrors={errors && errors.description_multiloc} />
               </SectionField>
+
+              {errors && errors.project &&
+                <SectionField>
+                  <Error apiErrors={errors.project} />
+                </SectionField>
+              }
+              {errors && errors.base &&
+                <SectionField>
+                  <Error apiErrors={errors.base} />
+                </SectionField>
+              }
             </Section>
 
             <SubmitWrapper
