@@ -6,8 +6,6 @@ import Helmet from 'react-helmet';
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetIdeaImages, { GetIdeaImagesChildProps } from 'resources/GetIdeaImages';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
@@ -20,64 +18,103 @@ import { InjectedIntlProps } from 'react-intl';
 import { stripHtml } from 'utils/textUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
+// Typings
+import { Multiloc } from 'typings';
+import { IIdeaImage } from 'services/ideaImages';
+
 interface InputProps {
   ideaId: string;
+  titleMultiloc: Multiloc;
+  bodyMultiloc: Multiloc;
   ideaAuthorName: string | null;
+  ideaImages: IIdeaImage | null;
+  publishedAt: string;
+  projectTitle: Multiloc | null;
+  projectSlug: string | null;
 }
 
 interface DataProps {
   locale: GetLocaleChildProps;
   tenant: GetTenantChildProps;
-  idea: GetIdeaChildProps;
-  ideaImages: GetIdeaImagesChildProps;
   authUser: GetAuthUserChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
 
-const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, idea, ideaImages, authUser, intl, ideaAuthorName }) => {
-  if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(idea)) {
+const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({
+  locale,
+  tenant,
+  authUser,
+  titleMultiloc,
+  bodyMultiloc,
+  ideaImages,
+  ideaAuthorName,
+  publishedAt,
+  projectTitle,
+  projectSlug,
+  intl,
+}) => {
+  if (!isNilOrError(locale) && !isNilOrError(tenant)) {
     const { formatMessage } = intl;
     const tenantLocales = tenant.attributes.settings.core.locales;
-    const ideaTitle = formatMessage(messages.metaTitle, { ideaTitle: getLocalized(idea.attributes.title_multiloc, locale, tenantLocales, 50) });
-    const ideaDescription = stripHtml(getLocalized(idea.attributes.body_multiloc, locale, tenantLocales), 250);
-    const ideaImage = (ideaImages && ideaImages.length > 0 ? (ideaImages[0].attributes.versions.large || ideaImages[0].attributes.versions.medium) : null);
+    const ideaTitle = formatMessage(messages.metaTitle, { ideaTitle: getLocalized(titleMultiloc, locale, tenantLocales, 50) });
+    const ideaDescription = stripHtml(getLocalized(bodyMultiloc, locale, tenantLocales), 250);
+    const ideaImage = ideaImages ? (ideaImages.data.attributes.versions.large || ideaImages.data.attributes.versions.medium) : null;
     const ideaUrl = window.location.href;
+    const project = getLocalized(projectTitle, locale, tenantLocales, 20);
 
-    const ideaOgTitle = formatMessage(messages.metaOgTitle, { ideaTitle: getLocalized(idea.attributes.title_multiloc, locale, tenantLocales, 50) });
+    const ideaOgTitle = formatMessage(messages.metaOgTitle, { ideaTitle: getLocalized(titleMultiloc, locale, tenantLocales, 50) });
 
-    const json = (ideaImage) ? {
-      '@context': 'http://schema.org',
+
+    const articleJson = {
       '@type': 'Article',
-      author: ideaAuthorName,
+      image: ideaImage,
       headline: ideaTitle,
-      publisher: {
-        '@type': 'Organization',
-        name: tenant.attributes.name,
-        logo: tenant.attributes.logo.large
-      },
+      author: ideaAuthorName,
       mainEntityOfPage: {
         '@type': 'WebPage',
         '@id': ideaUrl
       },
-      datePublished: idea.attributes.published_at,
-      image: ideaImage,
-    } : {
-        '@context': 'http://schema.org',
-        '@type': 'Article',
-        author: ideaAuthorName,
-        headline: ideaTitle,
-        publisher: {
-          '@type': 'Organization',
+      datePublished: publishedAt,
+    };
+
+    const json = {
+      '@context': 'http://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [{
+        '@type': 'ListItem',
+        position: 1,
+        item: {
+          '@id': tenant.attributes.host,
           name: tenant.attributes.name,
-          logo: tenant.attributes.logo.large
-        },
-        mainEntityOfPage: {
-          '@type': 'WebPage',
-          '@id': ideaUrl
-        },
-        datePublished: idea.attributes.published_at,
-      };
+          image: tenant.attributes.logo.large
+        }
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        item: {
+          '@id': `${tenant.attributes.host}/projects`,
+          name: 'Projects',
+        }
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        item: {
+          '@id': `${tenant.attributes.host}/projects/${projectSlug}`,
+          name: project,
+        }
+      },
+      {
+        '@type': 'ListItem',
+        position: 4,
+        item: {
+          '@id': `${tenant.attributes.host}/ideas`,
+          name: 'Ideas',
+        }
+      }]
+    };
 
     return (
       <Helmet>
@@ -93,13 +130,22 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, idea, 
         <meta name="og:type" content="article" />
         <meta property="og:title" content={ideaOgTitle} />
         <meta property="og:description" content={formatMessage(messages.ideaOgDescription)} />
-        {ideaImage && <meta property="og:image" content={ideaImage} />}
-        <meta property="og:url" content={ideaUrl} />
-        <meta property="og:locale" content={locale} />
-        <meta name="twitter:card" content="summary_large_image" />
+        {ideaImage &&
+          <meta property="og:image" content={ideaImage} />
+        }
+        {ideaImage &&
+          <script type="application/ld+json">
+            {JSON.stringify(articleJson)}
+          </script>
+        }
         <script type="application/ld+json">
           {JSON.stringify(json)}
         </script>
+
+
+        <meta property="og:url" content={ideaUrl} />
+        <meta property="og:locale" content={locale} />
+        <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
     );
   }
@@ -110,8 +156,6 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, idea, 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
   authUser: <GetAuthUser />,
 });
 
