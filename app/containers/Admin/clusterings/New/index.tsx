@@ -1,28 +1,31 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
-import { Section, SectionTitle } from 'components/admin/Section';
-
 import { addClustering } from 'services/clusterings';
 
-import { Formik } from 'formik';
+import { Formik, FormikErrors } from 'formik';
 import ClusteringForm, { FormValues } from './ClusteringForm';
 
 
 import { API } from 'typings';
+import { isEmpty, values as getValues, every } from 'lodash';
 type Props = {};
 
 export default class New extends React.Component<Props> {
 
+  validate = (values: FormValues): FormikErrors<FormValues> => {
+    const errors: FormikErrors<FormValues> = {};
+
+    if (every(getValues(values.title_multiloc), isEmpty)) {
+      errors.title_multiloc = (errors.title_multiloc || []).concat({ error: 'blank' });
+    }
+    return errors;
+  }
   handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
     addClustering({
       ...values
     })
-      .then(() => {
-        browserHistory.push('/admin/clusterings');
+      .then((clustering) => {
+        browserHistory.push(`/admin/clusterings/${clustering.data.id}`);
       })
       .catch((errorResponse) => {
         const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
@@ -36,24 +39,24 @@ export default class New extends React.Component<Props> {
     return <ClusteringForm {...props} />;
   }
 
-  initialValues = () => ({
+  initialValues = (): FormValues => ({
     title_multiloc: {},
     levels: ['project', 'topic'],
+    drop_empty: true,
+    projects: [],
+    topics: [],
+    areas: [],
+    idea_statuses: [],
   })
 
   render() {
     return (
-      <Section>
-        <SectionTitle>
-          <FormattedMessage {...messages.addClusteringButton} />
-        </SectionTitle>
-        <Formik
-          initialValues={this.initialValues()}
-          render={this.renderFn}
-          onSubmit={this.handleSubmit}
-          validate={ClusteringForm.validate}
-        />
-      </Section>
+      <Formik
+        initialValues={this.initialValues()}
+        render={this.renderFn}
+        onSubmit={this.handleSubmit}
+        validate={this.validate}
+      />
     );
   }
 }

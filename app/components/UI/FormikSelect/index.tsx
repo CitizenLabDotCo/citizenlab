@@ -9,6 +9,7 @@ type State = {};
 class FormikInput extends React.Component<FieldProps & VanillaInputProps, State> {
 
   handleOnChange = (newOption: IOption) => {
+    debugger;
     this.props.form.setFieldValue(this.props.field.name, newOption.value);
   }
 

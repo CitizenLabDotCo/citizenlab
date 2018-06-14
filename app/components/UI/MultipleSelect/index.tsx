@@ -218,7 +218,7 @@ const StyledMultipleSelect = styled(ReactSelect)`
   }
 `;
 
-type Props = {
+export type Props = {
   value: IOption[] | null | undefined;
   placeholder?: string | JSX.Element | undefined;
   options: IOption[] | null | undefined;
