@@ -46,10 +46,16 @@ const StyledTable = styled(Table)`
 
   th,
   td {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
     overflow-wrap: break-word;
   }
+`;
+
+const OptionsTH = styled.th`
+  text-align: center;
+  display: flex;
+  justify-content: center;
 `;
 
 // Typings
@@ -158,9 +164,9 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
                     sorted={sortAttribute === 'role' ? sortDirection : null}
                   />
                 </th>
-                <th>
+                <OptionsTH>
                   <FormattedMessage tagName="div" {...messages.options} />
-                </th>
+                </OptionsTH>
               </tr>
             </thead>
             <tbody>

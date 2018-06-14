@@ -61,6 +61,7 @@ const CreatedAt = styled.td`
 const Options = styled.td`
   display: flex;
   justify-content: center;
+  align-items: center;
 `;
 
 const DropdownList = styled.div`

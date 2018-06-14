@@ -43,8 +43,8 @@ const TableOptions = styled.div`
   display: flex;
   align-items: center;
   padding-bottom: 15px;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
   margin-bottom: 15px;
   border-bottom: solid 1px #eaeaea;
   user-select: none;
