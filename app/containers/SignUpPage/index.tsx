@@ -1,6 +1,6 @@
 import React from 'react';
 import { get } from 'lodash';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs';
 import { browserHistory, withRouter, WithRouterProps } from 'react-router';
 
 // components

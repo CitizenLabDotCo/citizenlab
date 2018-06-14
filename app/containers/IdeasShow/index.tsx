@@ -1,8 +1,6 @@
 import React from 'react';
-import has from 'lodash/has';
-import isString from 'lodash/isString';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { has, isString } from 'lodash';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
 

@@ -1,7 +1,5 @@
 import 'whatwg-fetch';
-import { Observer } from 'rxjs/Observer';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs';
+import { Observer, Observable, Subscription } from 'rxjs';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
 import { retry, catchError, startWith, scan, filter, distinctUntilChanged, refCount, publishReplay } from 'rxjs/operators';
