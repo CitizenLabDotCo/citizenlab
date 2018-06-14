@@ -4,7 +4,8 @@
   "oneOf": [
     {"$ref": "#/definitions/customNode"},
     {"$ref": "#/definitions/projectNode"},
-    {"$ref": "#/definitions/topicNode"}
+    {"$ref": "#/definitions/topicNode"},
+    {"$ref": "#/definitions/areaNode"}
   ],
   "definitions": {
     "ideaNode": {
@@ -64,6 +65,7 @@
           {"$ref": "#/definitions/customNode"},
           {"$ref": "#/definitions/projectNode"},
           {"$ref": "#/definitions/topicNode"},
+          {"$ref": "#/definitions/areaNode"},
           {"$ref": "#/definitions/ideaNode"}
         ]
       }
