@@ -1,5 +1,5 @@
 import React from 'react';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs';
 import { globalState, IAdminFullWidth, IAdminNoPadding, IGlobalStateService } from 'services/globalState';
 
 // components

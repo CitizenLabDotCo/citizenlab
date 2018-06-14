@@ -1,7 +1,6 @@
 import React from 'react';
 import { indexOf, isString, forEach } from 'lodash';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import * as moment from 'moment';
 

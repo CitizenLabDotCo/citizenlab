@@ -1,7 +1,5 @@
 import React from 'react';
-import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, Subject, BehaviorSubject } from 'rxjs';
 import { merge } from 'rxjs/observable/merge';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { map, startWith, distinctUntilChanged, switchMap, debounceTime } from 'rxjs/operators';

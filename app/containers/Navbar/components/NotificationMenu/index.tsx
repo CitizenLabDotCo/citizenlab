@@ -1,6 +1,6 @@
 
 import React from 'react';
-import Rx from 'rxjs/Rx';
+import { Subscription } from 'rxjs';
 
 import styled from 'styled-components';
 import { injectTracks } from 'utils/analytics';
@@ -47,7 +47,6 @@ const EmptyStateContainer = styled.div`
   font-size: 18px;
 `;
 
-
 type Props = {};
 
 interface ITracks {
@@ -63,7 +62,7 @@ type State = {
 };
 
 class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
   dropdownElement: HTMLElement | null;
 
   constructor(props: Props) {
