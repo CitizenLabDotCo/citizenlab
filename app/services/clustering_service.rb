@@ -31,6 +31,13 @@ class ClusteringService
           children: create_children(levels.drop(1), idea_scope.with_some_topics([topic_id]), options)
         }
       end
+    when 'area'
+      Area.all.pluck(:id).map do |area_id|
+        {
+          **area_to_cluster(area_id),
+          children: create_children(levels.drop(1), idea_scope.with_some_areas([area_id]), options)
+        }
+      end
     when nil
       idea_scope.all.pluck(:id).map{|idea_id| idea_to_cluster(idea_id)}
     else
@@ -67,6 +74,13 @@ class ClusteringService
     {
       type: "topic",
       id: topic_id
+    }
+  end
+
+  def area_to_cluster area_id
+    {
+      type: "area",
+      id: area_id
     }
   end
 
