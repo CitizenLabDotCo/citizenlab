@@ -7,6 +7,7 @@ import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import { Node } from 'services/clusterings';
 import ProjectCircle from './ProjectCircle';
 import TopicCircle from './TopicCircle';
+import styled from 'styled-components';
 // import styled from 'styled-components';
 
 type D3Node = {
@@ -20,6 +21,7 @@ type Props = {
   selectedNodes: Node[];
   onClickNode: (Node) => void;
   onShiftClickNode: (Node) => void;
+  className?: string;
 };
 
 type State = {
@@ -29,11 +31,9 @@ type State = {
 
 // const Container = styled.div``;
 
-// const StyledSVG = styled.svg`
-//   width: 100%;
-//   max-width: 500px;
-//   border: solid 1px red;
-// `;
+const StyledSvg = styled.svg`
+  width: 100%;
+`;
 
 class Circles extends Component<Props, State> {
   svgRef: SVGElement | null;
@@ -47,13 +47,14 @@ class Circles extends Component<Props, State> {
   }
 
   componentDidMount() {
-    const svgRef: any = this.svgRef;
+    // const svgRef: any = this.svgRef;
     const ideasById: any = keyBy(this.props.ideas.ideasList, 'id');
     const root = d3.hierarchy(this.props.structure)
       .sum((d) => ideasById[d.id] ? (ideasById[d.id].attributes.upvotes_count + ideasById[d.id].attributes.downvotes_count + 1) : 1);
 
     const pack = d3.pack()
-      .size([svgRef.width.baseVal.value - 2, svgRef.height.baseVal.value - 2])
+      // .size([svgRef.width.baseVal.value - 2, svgRef.height.baseVal.value - 2])
+      .size([750, 750])
       .padding(10);
     pack(root);
 
@@ -90,49 +91,51 @@ class Circles extends Component<Props, State> {
     const { nodes } = this.state;
 
     return (
-      <svg className={this.props['className']} ref={this.setSVGRef} width={500} height={500} viewBox="0 0 500 500">
-        {nodes.map((node, index) => (
-          <g
-            key={index}
-            transform={`translate(${node.x},${node.y})`}
-          >
-            {node.data.type === 'idea' &&
-              <IdeaCircle
-                node={node}
-                ideaId={node.data.id}
-                onClick={this.handleOnClickNode(node)}
-                onMouseEnter={this.handleOnMouseEnterIdea(node)}
-                onMouseLeave={this.handleOnMouseLeaveIdea()}
-                selected={this.isSelected(node)}
-                hovered={node.data.id === this.state.hoveredIdea}
-              />
-            }
-            {node.data.type === 'custom' &&
-              <CustomCircle
-                node={node}
-                onClick={this.handleOnClickNode(node)}
-                selected={this.isSelected(node)}
-              />
-            }
-            {node.data.type === 'project' &&
-              <ProjectCircle
-                node={node}
-                projectId={node.data.id}
-                onClick={this.handleOnClickNode(node)}
-                selected={this.isSelected(node)}
-              />
-            }
-            {node.data.type === 'topic' &&
-              <TopicCircle
-                node={node}
-                topicId={node.data.id}
-                onClick={this.handleOnClickNode(node)}
-                selected={this.isSelected(node)}
-              />
-            }
-          </g>
-        ))}
-      </svg>
+      <div className={this.props.className}>
+        <StyledSvg innerRef={this.setSVGRef} viewBox="0 0 750 750">
+          {nodes.map((node, index) => (
+            <g
+              key={index}
+              transform={`translate(${node.x},${node.y})`}
+            >
+              {node.data.type === 'idea' &&
+                <IdeaCircle
+                  node={node}
+                  ideaId={node.data.id}
+                  onClick={this.handleOnClickNode(node)}
+                  onMouseEnter={this.handleOnMouseEnterIdea(node)}
+                  onMouseLeave={this.handleOnMouseLeaveIdea()}
+                  selected={this.isSelected(node)}
+                  hovered={node.data.id === this.state.hoveredIdea}
+                />
+              }
+              {node.data.type === 'custom' &&
+                <CustomCircle
+                  node={node}
+                  onClick={this.handleOnClickNode(node)}
+                  selected={this.isSelected(node)}
+                />
+              }
+              {node.data.type === 'project' &&
+                <ProjectCircle
+                  node={node}
+                  projectId={node.data.id}
+                  onClick={this.handleOnClickNode(node)}
+                  selected={this.isSelected(node)}
+                />
+              }
+              {node.data.type === 'topic' &&
+                <TopicCircle
+                  node={node}
+                  topicId={node.data.id}
+                  onClick={this.handleOnClickNode(node)}
+                  selected={this.isSelected(node)}
+                />
+              }
+            </g>
+          ))}
+        </svg>
+      </div>
     );
   }
 }
