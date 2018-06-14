@@ -519,6 +519,7 @@
   "app.containers.IdeasShow.shareCTA": "Deel dit idee",
   "app.containers.IdeasShow.shareOnFacebook": "Delen op Facebook",
   "app.containers.IdeasShow.shareOnTwitter": "Delen op Twitter",
+  "app.containers.IdeasShow.shareViaMessenger": "",
   "app.containers.IdeasShow.signInLinkText": "Inloggen",
   "app.containers.IdeasShow.signInToComment": "{signInLink} en deel je kennis.",
   "app.containers.IdeasShow.submittingComment": "Publiceren...",

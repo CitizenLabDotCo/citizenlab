@@ -519,6 +519,7 @@
   "app.containers.IdeasShow.shareCTA": "{orgName, select, München {Teilen Sie diese Meldung mit anderen} other {Teilen Sie diese Idee}}",
   "app.containers.IdeasShow.shareOnFacebook": "Auf Facebook teilen",
   "app.containers.IdeasShow.shareOnTwitter": "Auf Twitter teilen",
+  "app.containers.IdeasShow.shareViaMessenger": "",
   "app.containers.IdeasShow.signInLinkText": "anmelden",
   "app.containers.IdeasShow.signInToComment": "{orgName, select, München {Bitte {signInLink} um Ihre Meldung zu teilen.} other {Bitte {signInLink} um Ihre Ideen zu teilen.}}",
   "app.containers.IdeasShow.submittingComment": "Wird veröffentlicht...",
