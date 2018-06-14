@@ -4,10 +4,9 @@ import 'react-dates/lib/css/_datepicker.css';
 
 // Libraries
 import React from 'react';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as moment from 'moment';
 import { get, isEmpty, forOwn } from 'lodash';
 

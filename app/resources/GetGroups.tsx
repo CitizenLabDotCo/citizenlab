@@ -1,6 +1,6 @@
 import React from 'react';
 import { isEqual, get, isString, omitBy, isNil, isError, isBoolean } from 'lodash';
-import { BehaviorSubject, Subscription } from 'rxjs/Rx';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { getGroups, IGroups, IGroupData } from 'services/groups';
 import shallowCompare from 'utils/shallowCompare';
 

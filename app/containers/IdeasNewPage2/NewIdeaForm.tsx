@@ -1,5 +1,5 @@
 import React from 'react';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 // components
 import Button from 'components/UI/Button';

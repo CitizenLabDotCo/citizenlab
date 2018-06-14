@@ -1,5 +1,5 @@
 import React from 'react';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs';
 import { get } from 'lodash';
 import { Link } from 'react-router';
 import CSSTransition from 'react-transition-group/CSSTransition';

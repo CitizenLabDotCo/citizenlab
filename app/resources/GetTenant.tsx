@@ -1,5 +1,5 @@
 import React from 'react';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { currentTenantStream, ITenantData } from 'services/tenant';
 import { isNilOrError } from 'utils/helperUtils';
 
