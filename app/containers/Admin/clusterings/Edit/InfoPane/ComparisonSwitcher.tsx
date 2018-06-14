@@ -25,7 +25,9 @@ class ComparisonSwitcher extends React.Component<Props, State> {
     this.props.onAddComparison();
   }
 
-  handleDeleteComparison = (i) => () => {
+  handleDeleteComparison = (i) => (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     this.props.onDeleteComparison(i);
   }
 
