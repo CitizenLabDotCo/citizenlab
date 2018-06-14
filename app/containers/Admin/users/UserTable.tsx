@@ -1,7 +1,7 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { isAdmin } from 'services/permissions/roles';
-import { includes, get } from 'lodash';
+import { includes, get, isArray } from 'lodash';
 
 // Components
 import Table from 'components/UI/Table';
@@ -70,7 +70,7 @@ interface Tracks {
   trackSortChange: Function;
 }
 
-class UsersTable extends React.PureComponent<Props & Tracks, State> {
+class UsersTable extends PureComponent<Props & Tracks, State> {
 
   isUserAdmin = (user: IUserData) => {
     return isAdmin({ data: user });
@@ -114,15 +114,15 @@ class UsersTable extends React.PureComponent<Props & Tracks, State> {
   }
 
   handleUserToggle = (userId) => () => {
-      this.props.trackToggleOneUser();
-      this.props.handleSelect(userId);
+    this.props.trackToggleOneUser();
+    this.props.handleSelect(userId);
   }
 
   render() {
     const { usersList, sortAttribute, sortDirection, currentPage, lastPage, selectedUsers } = this.props;
-    const usersCount = Array.isArray(usersList) && usersList.length;
+    const usersCount = isArray(usersList) && usersList.length;
 
-    if (Array.isArray(usersList) && usersCount && usersCount > 0) {
+    if (isArray(usersList) && usersCount && usersCount > 0) {
       return (
         <Container className="e2e-user-table">
           <StyledTable>

@@ -6,6 +6,8 @@ import { isString, isEmpty } from 'lodash';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { API_PATH } from 'containers/App/constants';
+import streams from 'utils/streams';
 
 // Components
 import UsersHeader from './UsersHeader';
@@ -88,17 +90,14 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & 
   }
 
   handleSubmitForm = (id) => (values: NormalFormValues | RulesFormValues, { setErrors, setSubmitting }) => {
-    updateGroup(id, {
-      ...values
-    })
-      .then(() => {
-        this.closeGroupEditionModal();
-      })
-      .catch((errorResponse) => {
-        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
-        setErrors(apiErrors);
-        setSubmitting(false);
-      });
+    updateGroup(id, { ...values }).then(() => {
+      streams.fetchAllActiveStreamsWithEndpoint(`${API_PATH}/users`);
+      this.closeGroupEditionModal();
+    }).catch((errorResponse) => {
+      const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+      setErrors(apiErrors);
+      setSubmitting(false);
+    });
   }
 
   deleteGroup = (groupId: string) => () => {
