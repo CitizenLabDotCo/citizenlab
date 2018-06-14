@@ -37,6 +37,8 @@ const facebookColor = '#3b5998';
 
 const twitterColor = '#1ea4f2';
 
+const messengerColor = '#0084ff';
+
 const IconWrapper = styled.div`
   width: 30px;
   height: 38px;
@@ -128,6 +130,18 @@ const Container = styled.div`
         }
       }
     }
+    &.messenger {
+      fill: #84939E;
+      color: #84939E;
+
+      &:hover {
+        fill: ${messengerColor};
+        color: ${messengerColor};
+      }
+      ${media.biggerThanMaxTablet`
+        display: none;
+      `}
+    }
   }
 `;
 
@@ -159,6 +173,7 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
       const facebookAppId = (facebookSettings ? facebookSettings.app_id : null);
       const href = window.location.href;
       const facebookText = formatMessage(messages.shareOnFacebook);
+      const messengerText = formatMessage(messages.shareViaMessenger);
       const twitterText = formatMessage(messages.shareOnTwitter);
       const fbURL = (!isNilOrError(authUser)) ? `${href}?recruiter=${authUser.id}&utm_source=share_idea&utm_medium=facebook&utm_campaign=autopublish&utm_term=share_idea` : href;
       const twitterURL = (!isNilOrError(authUser)) ? `${href}?recruiter=${authUser.id}&utm_source=share_idea&utm_medium=twitter&utm_campaign=share_idea` : href;
@@ -188,6 +203,14 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
           }}
         </T>
       ) : null);
+      const messenger = (facebookAppId ? (
+        <a className="sharingButton messenger" href={`fb-messenger://share/?link=${encodeURIComponent(fbURL)}&app_id=${facebookAppId}`}>
+          <IconWrapper>
+            <Icon name="messenger" />
+          </IconWrapper>
+          <Text>{messengerText}</Text>
+        </a>
+      ) : null);
 
       const twitter = (
         <T value={ideaTitle} maxLength={50}>
@@ -212,6 +235,7 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
       return (
         <Container className={className}>
           {facebook}
+          {messenger}
           {twitter}
         </Container>
       );
