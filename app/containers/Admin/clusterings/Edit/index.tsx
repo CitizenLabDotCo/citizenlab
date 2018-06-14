@@ -59,9 +59,6 @@ class ClusterViewer extends Component<Props, State> {
     return this.state.selectedNodes[this.state.activeComparison];
   }
 
-  handleOnChangeActiveComparison = (activeComparison) => {
-    this.setState({ activeComparison });
-  }
 
   theme = () => (theme) => {
     const comparisonColors = ['#fbbd08', '#a333c8', '#f2711c', '#00b5ad'];
@@ -74,6 +71,10 @@ class ClusterViewer extends Component<Props, State> {
     };
   }
 
+  handleOnChangeActiveComparison = (activeComparison) => {
+    this.setState({ activeComparison });
+  }
+
   handleOnAddComparison = () => {
     this.setState({
       selectedNodes: [...this.state.selectedNodes, []],
@@ -83,8 +84,9 @@ class ClusterViewer extends Component<Props, State> {
 
   handleOnDeleteComparison = (index) => {
     const { activeComparison, selectedNodes } = this.state;
-    const newSelectedNodes = selectedNodes.slice(index, 1);
-    const newActiveComparison = activeComparison >= index ? newSelectedNodes.length : activeComparison;
+    const newSelectedNodes = clone(selectedNodes);
+    newSelectedNodes.splice(index, 1);
+    const newActiveComparison = activeComparison >= index ? newSelectedNodes.length - 1 : activeComparison;
     this.setState({
       selectedNodes: newSelectedNodes,
       activeComparison: newActiveComparison,

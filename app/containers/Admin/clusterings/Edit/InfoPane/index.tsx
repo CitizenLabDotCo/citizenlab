@@ -87,7 +87,7 @@ class InfoPane extends React.Component<Props, State> {
   }
 
   comparisonSet = () => {
-    return this.props.selectedNodes[this.props.activeComparison];
+    return this.props.selectedNodes[this.props.activeComparison] || [];
   }
 
   render() {
