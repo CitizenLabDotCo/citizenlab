@@ -75,6 +75,7 @@ resource "Groups" do
       end
 
       describe do
+        let(:group) { build(:group) }
         let(:title_multiloc) { group.title_multiloc }
         let(:membership_type) { 'rules' }
         let(:rules) { [{ ruleType: 'role', predicate: 'is_admin' }] }
