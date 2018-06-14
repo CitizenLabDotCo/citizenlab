@@ -519,6 +519,7 @@
   "app.containers.IdeasShow.shareCTA": "Share this idea",
   "app.containers.IdeasShow.shareOnFacebook": "Share on Facebook",
   "app.containers.IdeasShow.shareOnTwitter": "Share on Twitter",
+  "app.containers.IdeasShow.shareViaMessenger": "Share via Messenger",
   "app.containers.IdeasShow.signInLinkText": "log in",
   "app.containers.IdeasShow.signInToComment": "Please {signInLink} to spread your wisdom.",
   "app.containers.IdeasShow.submittingComment": "Publishing...",

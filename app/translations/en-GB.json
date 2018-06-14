@@ -519,6 +519,7 @@
   "app.containers.IdeasShow.shareCTA": "",
   "app.containers.IdeasShow.shareOnFacebook": "",
   "app.containers.IdeasShow.shareOnTwitter": "",
+  "app.containers.IdeasShow.shareViaMessenger": "",
   "app.containers.IdeasShow.signInLinkText": "",
   "app.containers.IdeasShow.signInToComment": "",
   "app.containers.IdeasShow.submittingComment": "",

@@ -519,6 +519,7 @@
   "app.containers.IdeasShow.shareCTA": "Del denne idé",
   "app.containers.IdeasShow.shareOnFacebook": "Del på Facebook",
   "app.containers.IdeasShow.shareOnTwitter": "Del på Twitter",
+  "app.containers.IdeasShow.shareViaMessenger": "",
   "app.containers.IdeasShow.signInLinkText": "log ind",
   "app.containers.IdeasShow.signInToComment": "Brug venligst {signInLink} til at sprede din visdom.",
   "app.containers.IdeasShow.submittingComment": "Publicerer...",
