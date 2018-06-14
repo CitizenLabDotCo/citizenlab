@@ -7,6 +7,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 import GetClustering, { GetClusteringChildProps } from 'resources/GetClustering';
 import { withRouter } from 'react-router';
+import { globalState, IGlobalStateService, IAdminFullWidth } from 'services/globalState';
 const anzegemCluster =  require('./anzegem.json');
 
 const Container = styled.div`
@@ -25,7 +26,7 @@ const StyledCircles = styled(Circles)`
   background: #fff;
   border: solid 1px #eee;
   border-radius: 5px;
-  padding: 30px;
+  padding: 10px;
 `;
 
 const StyledInfoPane = styled(InfoPane)`
@@ -45,6 +46,7 @@ interface State {
 }
 
 class ClusterViewer extends Component<Props, State> {
+  globalState: IGlobalStateService<IAdminFullWidth>;
 
   constructor(props) {
     super(props);
@@ -53,6 +55,15 @@ class ClusterViewer extends Component<Props, State> {
       activeComparison: 0,
       selectedNodes: [[]],
     };
+    this.globalState = globalState.init('AdminFullWidth');
+  }
+
+  componentDidMount() {
+    this.globalState.set({ enabled: true });
+  }
+
+  componentWillUnmount() {
+    this.globalState.set({ enabled: false });
   }
 
   comparisonSet = () => {

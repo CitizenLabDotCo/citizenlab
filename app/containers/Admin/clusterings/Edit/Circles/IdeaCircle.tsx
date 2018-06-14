@@ -69,10 +69,10 @@ class IdeaCircle extends PureComponent<Props, State> {
           {(localizedTitle) => (
             <>
               <TextBackground
-                width={localizedTitle.length * 9}
+                width={(localizedTitle.length * 7) + 10}
                 height={20}
                 y={-35}
-                x={-localizedTitle.length * 9 / 2}
+                x={-(localizedTitle.length * 7 + 10) / 2}
                 show={hovered}
               />
               <StyledText
