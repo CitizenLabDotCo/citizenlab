@@ -123,11 +123,11 @@ export default defineMessages({
   },
   emptyGroup: {
     id: 'app.containers.AdminPage.Users.GroupsPanel.emptyGroup',
-    defaultMessage: 'There is no users in this group yet',
+    defaultMessage: 'There is no one in this group yet',
   },
   goToAllUsers: {
     id: 'app.containers.AdminPage.Users.GroupsPanel.goToAllUsers',
-    defaultMessage: 'Go on the {allUsersLink} tab to move users manually.',
+    defaultMessage: 'Go to {allUsersLink} to manually add some users.',
   },
   createGroupButton: {
     id: 'app.containers.AdminPage.Users.GroupCreation.createGroupButton',
@@ -143,7 +143,7 @@ export default defineMessages({
   },
   step1TypeDescriptionNormal: {
     id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionNormal',
-    defaultMessage: 'You have to add users manually to the group.',
+    defaultMessage: 'You manually specify which users are part of this group.',
   },
   moderatorLabel: {
     id: 'app.containers.Admin.User.moderatorLabel',
@@ -159,7 +159,7 @@ export default defineMessages({
   },
   step1TypeDescriptionSmart: {
     id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionSmart',
-    defaultMessage: 'A smart group add continually and automatically users based on specific conditions you setup.',
+    defaultMessage: 'You specify conditions that automatically and continuously make people part of this group.',
   },
   step1CreateButtonNormal: {
     id: 'app.containers.AdminPage.Users.GroupCreation.step1CreateButtonNormal',
@@ -223,7 +223,7 @@ export default defineMessages({
   },
   moveUsers: {
     id: 'app.containers.AdminPage.Users.UsersGroup.moveUsers',
-    defaultMessage: 'Add selected users to group',
+    defaultMessage: 'Add to group',
   },
   membershipAddFailed: {
     id: 'app.containers.AdminPage.Users.UsersGroup.membershipAddFailed',
@@ -231,7 +231,7 @@ export default defineMessages({
   },
   membershipDelete: {
     id: 'app.containers.AdminPage.Users.UsersGroup.membershipDelete',
-    defaultMessage: 'Delete selected users from group',
+    defaultMessage: 'Remove from group',
   },
   membershipDeleteConfirmation: {
     id: 'app.containers.AdminPage.Users.UsersGroup.membershipDeleteConfirmation',
