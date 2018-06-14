@@ -269,6 +269,7 @@ const StyledIdeaButton = styled(IdeaButton)`
   }
 
   .buttonText {
+    font-size: 18px !important;
     color: ${(props) => props.theme.colorMain};
   }
 `;
@@ -426,7 +427,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
 
           <Right>
             <RightItem className="addIdea" loggedIn={authUser !== null}>
-              <StyledIdeaButton style="secondary-outlined" size="2" padding=".65em 1.45em" />
+              <StyledIdeaButton style="secondary-outlined" size="1" />
             </RightItem>
 
             {!authUser &&
