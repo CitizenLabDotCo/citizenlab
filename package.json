@@ -37,7 +37,7 @@
     "clean:all": "npm run analyze:clean && npm run test:clean && npm run build:clean",
     "generate": "plop --plopfile internals/generators/index.js",
     "lint": "npm run lint:js",
-    "lint:eslint": "eslint --ignore-path .gitignore --ignore-pattern internals/scripts --ignore-pattern app/components/Foundation --ignore-pattern local_tests",
+    "lint:eslint": "eslint --ignore-path .gitignore --ignore-pattern internals/scripts --ignore-pattern internals/lint --ignore-pattern app/components/Foundation --ignore-pattern local_tests",
     "lint:js": "npm run lint:eslint -- . ",
     "lint:staged": "lint-staged",
     "lint:ts": "tslint -p ./app/tsconfig.json -t stylish",

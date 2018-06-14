@@ -1,6 +1,7 @@
 import { LocationDescriptor } from 'history';
 import { localeStream } from 'services/locale';
 import updateLocationDescriptor from './updateLocationDescriptor';
+// tslint:disable-next-line:no-vanilla-routing
 import { browserHistory } from 'react-router';
 
 function historyMethod(method: 'push' | 'replace', location: LocationDescriptor): void {
