@@ -7,7 +7,7 @@ export default {
     name: 'Tried to add again one or more existing group member(s)',
   },
   toggleAllUsers: {
-    name: 'Select or Unselect all users',
+    name: 'Selected or Unselected all users',
   },
   // GroupsListPanel
   createGroup: {
@@ -15,7 +15,7 @@ export default {
   },
   // UsersGroup
   editGroup: {
-    name: 'Opened edit groups modal',
+    name: 'Opened edit group modal',
   },
   // app/components/admin/UserFilterConditions/index.tsx
   conditionAdd: {
