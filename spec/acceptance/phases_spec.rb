@@ -61,6 +61,7 @@ resource "Phases" do
       end
       ValidationErrorHelper.new.error_fields(self, Phase)
       response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
+      response_field :base, "Array containing objects with signature {error: 'has_other_overlapping_phases'}", scope: :errors
 
       let(:project_id) { @project.id }
       let(:phase) { build(:phase) }
@@ -129,6 +130,7 @@ resource "Phases" do
       end
       ValidationErrorHelper.new.error_fields(self, Phase)
       response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
+      response_field :base, "Array containing objects with signature {error: 'has_other_overlapping_phases'}", scope: :errors
 
       let(:phase) { create(:phase, project: @project) }
       let(:id) { phase.id }
