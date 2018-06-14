@@ -852,7 +852,7 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
 
                 <SeparatorRow />
 
-                <StyledSharingMobile imageUrl={ideaImageMedium} />
+                <StyledSharingMobile imageUrl={ideaImageMedium} ideaTitle={titleMultiloc} authorId={authorId} />
 
                 <CommentsTitle>
                   <FormattedMessage {...messages.commentsTitle} />
