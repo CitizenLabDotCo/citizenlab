@@ -46,6 +46,11 @@
             "description": "The name of the city or organization, used throughout the platform",
             "$ref": "#/definitions/multiloc_string"
           },
+          "organization_site": {
+            "description": "The URL to the website of the orginization",
+            "type": "string",
+            "pattern": "^((http:\/\/.+)|(https:\/\/.+))"
+          },
           "header_title": {
             "description": "The main title shown on the homepage (max 45 characters)",
             "type": "object",
