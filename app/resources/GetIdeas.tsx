@@ -1,8 +1,6 @@
 import React from 'react';
 import { get, isString, isEmpty, omitBy, isNil, isEqual } from 'lodash';
-import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, Subject, BehaviorSubject } from 'rxjs';
 import { merge } from 'rxjs/observable/merge';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { map, startWith, distinctUntilChanged, tap, debounceTime, mergeScan, switchMap } from 'rxjs/operators';

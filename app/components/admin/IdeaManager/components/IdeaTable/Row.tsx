@@ -1,5 +1,6 @@
 import React from 'react';
 import { combineLatest } from 'rxjs/observable/combineLatest';
+import { take } from 'rxjs/operators';
 import { uniq, keys, isEmpty } from 'lodash';
 import { findDOMNode } from 'react-dom';
 import { IModalInfo } from 'containers/App';
@@ -201,7 +202,7 @@ const ideaSource = {
 
       const observables = ids.map((id) => ideaByIdStream(id).observable);
 
-      combineLatest(observables).take(1).subscribe((ideas) => {
+      combineLatest(observables).pipe(take(1)).subscribe((ideas) => {
         ideas.map((idea) => {
           const currentTopics = idea.data.relationships.topics.data.map((d) => d.id);
           const newTopics = uniq(currentTopics.concat(dropResult.id));
@@ -221,7 +222,7 @@ const ideaSource = {
 
       const observables = ids.map((id) => ideaByIdStream(id).observable);
 
-      combineLatest(observables).take(1).subscribe((ideas) => {
+      combineLatest(observables).pipe(take(1)).subscribe((ideas) => {
         ideas.map((idea) => {
           const currentPhases = idea.data.relationships.phases.data.map((d) => d.id);
           const newPhases = uniq(currentPhases.concat(dropResult.id));
@@ -241,7 +242,7 @@ const ideaSource = {
 
       const observables = ids.map((id) => ideaByIdStream(id).observable);
 
-      combineLatest(observables).take(1).subscribe((ideas) => {
+      combineLatest(observables).pipe(take(1)).subscribe((ideas) => {
         ideas.map((idea) => {
           const newProject = dropResult.id;
           const hasPhases = !isEmpty(idea.data.relationships.phases.data);

@@ -1,6 +1,5 @@
 import React from 'react';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import isString from 'lodash/isString';
 import isEmpty from 'lodash/isEmpty';
