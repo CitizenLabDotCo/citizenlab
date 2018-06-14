@@ -40,7 +40,7 @@ const ModalContent: any = styled(clickOutside)`
     padding: ${(props: any) => props.hasHeaderOrFooter ? 0 : '25px'};
 
     &.fixedHeight {
-      height: 75vh;
+      height: 80vh;
     }
   `}
 `;

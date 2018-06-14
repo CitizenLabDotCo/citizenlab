@@ -71,6 +71,10 @@ const MenuTitle = styled.div`
 
     button {
       display: flex;
+
+      &:hover {
+        background: ${colors.clBlueLightest};
+      }
     }
   }
 `;
@@ -217,8 +221,8 @@ export class GroupsListPanel extends React.PureComponent<Props & Tracks, State> 
             className="creationButton e2e-create-group-button"
             hiddenText={<FormattedMessage {...messages.createGroupButton} />}
             icon="create"
-            size="4"
             iconTitle={<FormattedMessage {...messages.createGroupButton} />}
+            iconSize="26px"
             onClick={this.handleCreateGroup}
             padding="0"
             style="text"
