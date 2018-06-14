@@ -2,10 +2,15 @@ class ClusteringService
 
   def build_structure levels, idea_scope=Idea, options={}
     drop_empty = options[:drop_empty] == false ? false : true
+    options = {drop_empty: drop_empty}
     output = {
       type: "custom",
       id: SecureRandom.uuid,
-      children: create_children(levels, idea_scope, {drop_empty: drop_empty})
+      children: create_children(
+        levels, idea_scope, 
+        create_levels_to_ids(levels, idea_scope, options), 
+        options
+        )
     }
 
     output = drop_empty_clusters(output) if drop_empty
@@ -13,35 +18,46 @@ class ClusteringService
     output
   end
 
+
   private
 
-  def create_children levels, idea_scope, options
-    case levels&.first
-    when 'project'
-      Project.all.pluck(:id).map do |project_id|
-        {
-          **project_to_cluster(project_id),
-          children: create_children(levels.drop(1), idea_scope.where(project: project_id), options)
-        }
+  def create_levels_to_ids levels, idea_scope, options
+    levels.map do |level|
+      level_ids_to_idea_ids = case level
+      when 'project'
+        Project.all.pluck(:id).map do |project_id|
+          [project_id, idea_scope.where(project: project_id).pluck(:id)]
+        end.to_h
+      when 'topic'
+        Topic.all.pluck(:id).map do |topic_id|
+          [topic_id, idea_scope.with_some_topics([topic_id]).pluck(:id)]
+        end.to_h 
+      when 'area'
+        Area.all.pluck(:id).map do |area_id|
+          [area_id, idea_scope.with_some_areas([area_id]).pluck(:id)]
+        end.to_h      
+      else
+        raise "Unknown level #{levels.first}"
       end
-    when 'topic'
-      Topic.all.pluck(:id).map do |topic_id|
-        {
-          **topic_to_cluster(topic_id),
-          children: create_children(levels.drop(1), idea_scope.with_some_topics([topic_id]), options)
-        }
+      [level, level_ids_to_idea_ids] 
+    end.to_h
+  end
+
+  def create_children levels, idea_scope, levels_to_ids, options
+    if levels.present?
+      level = levels.first
+      levels_to_ids[level].map do |level_id, idea_ids|
+        clustering = nil
+        begin
+          clustering = self.send "#{level}_to_cluster",level_id
+        rescue NoMethodError => e
+          raise "Unknown level #{level}"
+        end
+        clustering[:children] = create_children levels.drop(1), idea_scope.where(id: idea_ids), levels_to_ids, options
+        clustering
       end
-    when 'area'
-      Area.all.pluck(:id).map do |area_id|
-        {
-          **area_to_cluster(area_id),
-          children: create_children(levels.drop(1), idea_scope.with_some_areas([area_id]), options)
-        }
-      end
-    when nil
-      idea_scope.all.pluck(:id).map{|idea_id| idea_to_cluster(idea_id)}
     else
-      raise "Unknown level #{levels.first}"
+      idea_scope.all.pluck(:id).map{|idea_id| idea_to_cluster(idea_id)}
     end
   end
 
