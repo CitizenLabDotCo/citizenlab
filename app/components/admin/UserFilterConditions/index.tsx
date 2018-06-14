@@ -29,7 +29,7 @@ const AddButton = styled(Button)`
   display: inline-flex;
   align-items: center;
   margin: 0;
-  margin-top: 5px;
+  margin-top: 15px;
   padding: 0;
 
   &:hover {
