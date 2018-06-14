@@ -63,6 +63,7 @@ const Buttons = styled.div`
   display: inline-flex;
   align-items: center;
   margin-top: 5px;
+  transform: scale(0.9);
 `;
 
 const StyledSearch = styled(SearchInput)`

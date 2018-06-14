@@ -1,12 +1,10 @@
-import * as React from 'react';
+import React, { PureComponent } from 'react';
 import { pick, clone, omit } from 'lodash';
-
-import { TRule } from './rules';
-
 import FieldSelector, { FieldDescriptor } from './FieldSelector';
 import PredicateSelector from './PredicateSelector';
 import ValueSelector from './ValueSelector';
 import Button from 'components/UI/Button';
+import { TRule, ruleTypeConstraints } from './rules';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -25,6 +23,10 @@ const IconCell = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  &.showLabels {
+    margin-top: 15px;
+  }
 `;
 
 const SelectorCell = styled.div`
@@ -50,7 +52,7 @@ type Props = {
 
 type State = {};
 
-class Rule extends React.Component<Props, State> {
+class Rule extends PureComponent<Props, State> {
 
   handleChangeField = (fieldDescriptor: FieldDescriptor) => {
     const newRule = clone(fieldDescriptor) as TRule;
@@ -71,11 +73,23 @@ class Rule extends React.Component<Props, State> {
     this.props.onChange(newRule);
   }
 
+  ruleToValueSelector = (rule: TRule) => {
+    if (rule.ruleType) {
+      const ruleType = rule.ruleType;
+
+      if (rule.predicate) {
+        return ruleTypeConstraints[ruleType][rule.predicate];
+      }
+    }
+  }
+
   render() {
     const { rule, onRemove, showLabels } = this.props;
+    const hasValue = (rule.ruleType && rule.predicate ? ruleTypeConstraints[rule.ruleType as any][rule.predicate] : true);
+
     return (
       <Container>
-        <IconCell>
+        <IconCell className={`${showLabels && 'showLabels'}`}>
           <StyledRemoveButton
             onClick={onRemove}
             icon="minus-circle"
@@ -104,7 +118,7 @@ class Rule extends React.Component<Props, State> {
         <SelectorCell>
           {rule.predicate &&
             <>
-              {showLabels && <FormattedMessage {...messages.rulesFormLabelValue} />}
+              {showLabels && hasValue && <FormattedMessage {...messages.rulesFormLabelValue} />}
               <ValueSelector
                 rule={rule}
                 value={rule.value}

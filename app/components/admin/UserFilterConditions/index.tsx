@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { clone } from 'lodash';
 import styled from 'styled-components';
 
@@ -14,6 +14,9 @@ import messages from './messages';
 import { injectTracks } from 'utils/analytics';
 import tracks from 'containers/Admin/users/tracks';
 
+// styling
+import { colors } from 'utils/styleUtils';
+
 const Container = styled.div`
   width: 560px;
 `;
@@ -23,14 +26,28 @@ const RulesList = styled.div`
 `;
 
 const AddButton = styled(Button)`
-  margin: 5px 0 0 0;
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  margin-top: 5px;
+  padding: 0;
 
-  button {
-    padding-left: 0;
+  &:hover {
+    .buttonIcon {
+      fill: ${colors.clBlue2Darkest};
+    }
   }
 
-  path:nth-child(2) {
-    fill: ${props => props.theme.colors.clBlue};
+  .button {
+    padding: 0;
+  }
+
+  .buttonIcon {
+    fill: ${colors.clBlue};
+  }
+
+  .buttonText {
+    color: ${colors.clBlue2Darkest};
   }
 `;
 

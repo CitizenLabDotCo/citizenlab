@@ -18,14 +18,9 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { fontSize, colors } from 'utils/styleUtils';
 
-const ExplainCondition = styled.div`
-  color: ${colors.clIconAccent};
-  font-weight: bold;
-  font-size: ${fontSize('large')};
-  padding-bottom: 40px;
-  width: 560px;
+const StyledFill = styled(Fill)`
+  padding-bottom: 20px;
 `;
 
 const SSectionField = styled(SectionField)`
@@ -57,26 +52,12 @@ export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Prop
     return errors;
   }
 
-
   render() {
     const { isSubmitting, errors, isValid, touched } = this.props;
 
     return (
       <Form>
-        <Fill>
-          <ExplainCondition>
-            <FormattedMessage {...messages.rulesGroupHeader} />
-          </ExplainCondition>
-          <SSectionField className="e2e-rules-field-section" >
-            <Label><FormattedMessage {...messages.fieldRulesLabel} /></Label>
-            <Field
-              name="rules"
-              component={FormikUserFilterConditions}
-            />
-            {touched.rules && errors.rules && <Error
-              text={<FormattedMessage {...messages.rulesError}/>}
-            />}
-          </SSectionField>
+        <StyledFill>
           <SSectionField>
             <Field
               id="group-title-field"
@@ -89,7 +70,17 @@ export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Prop
               apiErrors={errors.title_multiloc}
             />}
           </SSectionField>
-        </Fill>
+          <SSectionField className="e2e-rules-field-section">
+            <Label><FormattedMessage {...messages.rulesExplanation} /></Label>
+            <Field
+              name="rules"
+              component={FormikUserFilterConditions}
+            />
+            {touched.rules && errors.rules && <Error
+              text={<FormattedMessage {...messages.rulesError} />}
+            />}
+          </SSectionField>
+        </StyledFill>
 
         <FooterContainer>
           <FormikSubmitWrapper

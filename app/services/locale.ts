@@ -10,8 +10,6 @@ import { Locale } from 'typings';
 const savedLocale = localStorage.getItem('cl2-locale') as Locale;
 const LocaleSubject = new BehaviorSubject((savedLocale || 'en') as Locale);
 
-console.log('zolg');
-
 LocaleSubject.subscribe((locale) => {
   // Save the selection in localStorage as an override
   localStorage.setItem('cl2-locale', locale);

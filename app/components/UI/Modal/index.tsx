@@ -91,6 +91,7 @@ const ModalContainer = styled.div`
   padding: 30px;
   overflow: hidden;
   z-index: 10002;
+  will-change: opacity, transform;
 
   &.modal-enter {
     opacity: 0;

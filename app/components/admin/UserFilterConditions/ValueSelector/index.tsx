@@ -1,7 +1,5 @@
-import * as React from 'react';
-
+import React, { PureComponent } from 'react';
 import { TRule, ruleTypeConstraints } from '../rules';
-
 
 type Props = {
   rule: TRule,
@@ -11,11 +9,12 @@ type Props = {
 
 type State = {};
 
-class ValueSelector extends React.Component<Props, State> {
+class ValueSelector extends PureComponent<Props, State> {
 
   ruleToValueSelector = (rule: TRule) => {
     if (rule.ruleType) {
       const ruleType = rule.ruleType;
+
       if (rule.predicate) {
         return ruleTypeConstraints[ruleType][rule.predicate];
       }
@@ -24,6 +23,7 @@ class ValueSelector extends React.Component<Props, State> {
 
   render() {
     const ValueComponent = this.ruleToValueSelector(this.props.rule);
+
     return ValueComponent && (
       <ValueComponent
         {...this.props}

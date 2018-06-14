@@ -1,7 +1,5 @@
 import React from 'react';
-import isNil from 'lodash/isNil';
-import omitBy from 'lodash/omitBy';
-import isBoolean from 'lodash/isBoolean';
+import { isNil, omitBy, isBoolean, get } from 'lodash';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { usersStream, IUserData } from 'services/users';
@@ -99,8 +97,8 @@ export default class GetUsers extends React.Component<Props, State> {
           usersList: (!isNilOrError(users) ? users.data : users),
           sortAttribute: getSortAttribute<Sort, SortAttribute>(queryParameters.sort),
           sortDirection: getSortDirection<Sort>(queryParameters.sort),
-          currentPage: getPageNumberFromUrl(users.links.self) || 1,
-          lastPage: getPageNumberFromUrl(users.links.last) || 1
+          currentPage: getPageNumberFromUrl(get(users.links, 'self', null)) || 1,
+          lastPage: getPageNumberFromUrl(get(users.links, 'last', null)) || 1
         });
       })
     ];

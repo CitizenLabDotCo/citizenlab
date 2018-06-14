@@ -165,7 +165,7 @@ export class UserManager extends React.PureComponent<Props, State> {
 
 export default (inputProps: InputProps) => (
   <GetUsers
-    pageSize={15}
+    pageSize={20}
     cache={false}
     {...inputProps}
   >
