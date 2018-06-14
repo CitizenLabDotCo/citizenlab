@@ -197,9 +197,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupCreation.groupFormTitle',
     defaultMessage: 'Define a group name',
   },
-  rulesGroupHeader: {
-    id: 'app.containers.AdminPage.Users.GroupCreation.rulesGroupHeader',
-    defaultMessage: 'Make the user(s) matching ALL the following conditions part of the group:',
+  rulesExplanation: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.rulesExplanation',
+    defaultMessage: 'Users matching all of the following conditions will be automatically added to the group:',
   },
   selectAll: {
     id: 'app.containers.AdminPage.Users.GroupsPanel.selectAll',

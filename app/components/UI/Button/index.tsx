@@ -118,10 +118,6 @@ const ButtonText = styled.div`
   margin-top: -1px;
   padding: 0;
   white-space: nowrap;
-
-  ${StyledIcon} + & {
-    margin-left: 10px;
-  }
 `;
 
 const Container: any = styled.div`
@@ -298,15 +294,15 @@ class Button extends React.PureComponent<Props, State> {
 
     const spinnerSize = this.getSpinnerSize(size);
     const spinnerColor = this.getSpinnerColor(style);
-    const buttonClassnames = `Button ${disabled ? 'disabled' : ''} ${processing ? 'processing' : ''} ${fullWidth ? 'fullWidth' : ''} ${style}`;
+    const buttonClassnames = `Button button ${disabled ? 'disabled' : ''} ${processing ? 'processing' : ''} ${fullWidth ? 'fullWidth' : ''} ${style}`;
     const hasText = (!isNil(text) || !isNil(children));
 
     const childContent = (
       <>
-        {icon && iconPos === 'left' && <StyledIcon name={icon} className={`${iconPos} ${hasText && 'hasText'}`} title={iconTitle} />}
+        {icon && iconPos === 'left' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} />}
         {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
         {hiddenText && <HiddenText>{hiddenText}</HiddenText>}
-        {icon && iconPos === 'right' && <StyledIcon name={icon} className={`${iconPos} ${hasText && 'hasText'}`} title={iconTitle} />}
+        {icon && iconPos === 'right' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} />}
         {processing && <SpinnerWrapper><Spinner size={spinnerSize} color={spinnerColor} /></SpinnerWrapper>}
       </>
     );
