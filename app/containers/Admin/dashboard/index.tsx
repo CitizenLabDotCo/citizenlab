@@ -68,7 +68,7 @@ export default class DashboardPage extends React.PureComponent<Props, State> {
       chartFill: '#01A1B1',
       barFill: '#ffffff',
       chartLabelColor: '#999999',
-      chartLabelSize: 13
+      chartLabelSize: 11
     };
   }
 

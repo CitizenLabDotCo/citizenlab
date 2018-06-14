@@ -134,7 +134,7 @@ class Circles extends Component<Props, State> {
               }
             </g>
           ))}
-        </svg>
+        </StyledSvg>
       </div>
     );
   }

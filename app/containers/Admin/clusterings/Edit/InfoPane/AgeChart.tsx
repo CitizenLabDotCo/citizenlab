@@ -104,6 +104,7 @@ class AgeChart extends Component<Props, State> {
           <BarChart
             data={series}
             stackOffset="sign"
+            margin={{ right: 20, top: 10 }}
           >
             <XAxis dataKey="label" />
             <YAxis />

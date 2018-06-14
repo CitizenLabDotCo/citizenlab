@@ -79,6 +79,8 @@ class ClusterViewer extends Component<Props, State> {
       selectionColor: comparisonColors[this.state.activeComparison],
       upvotes: theme.colors.success,
       downvotes: theme.colors.error,
+      chartLabelColor: '#999999',
+      chartLabelSize: 13
     };
   }
 

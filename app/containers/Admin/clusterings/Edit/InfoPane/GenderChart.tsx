@@ -79,7 +79,11 @@ class GenderChart extends Component<Props, State> {
     return (
       <Container className={this.props['className']}>
         <ResponsiveContainer width="100%" aspect={400 / 250}>
-          <BarChart data={series} stackOffset="sign">
+          <BarChart
+            data={series}
+            stackOffset="sign"
+            margin={{ right: 20, top: 10 }}
+          >
             <XAxis dataKey="label" />
             <YAxis />
             <Tooltip />

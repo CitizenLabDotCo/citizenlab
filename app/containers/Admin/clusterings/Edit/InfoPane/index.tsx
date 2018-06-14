@@ -30,7 +30,7 @@ const StyledGenderChart = styled(GenderChart)`
   background: #fff;
   border: solid 1px #eee;
   border-radius: 5px;
-  padding: 30px;
+  padding: 10px;
   margin-bottom: 15px;
 `;
 
@@ -38,7 +38,7 @@ const StyledAgeChart = styled(AgeChart)`
   background: #fff;
   border: solid 1px #eee;
   border-radius: 5px;
-  padding: 30px;
+  padding: 10px;
   margin-bottom: 15px;
 `;
 
@@ -46,7 +46,7 @@ const StyledDomicileChart = styled(DomicileChart)`
   background: #fff;
   border: solid 1px #eee;
   border-radius: 5px;
-  padding: 30px;
+  padding: 10px;
 `;
 
 type Props = {
