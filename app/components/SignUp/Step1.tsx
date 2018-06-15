@@ -413,8 +413,11 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
               disableLabelClick={true}
               label={
                 <FormattedMessage
-                  {...messages.acceptTermsAndConditions}
-                  values={{ tacLink: <Link to="pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link> }}
+                  {...messages.gdprApproval}
+                  values={{
+                    tacLink: <Link to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>,
+                    ppLink: <Link to="/pages/privacy-policy"><FormattedMessage {...messages.privacyPolicy} /></Link>,
+                  }}
                 />
               }
             />
