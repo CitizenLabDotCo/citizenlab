@@ -201,7 +201,7 @@ models:
   - resource_type: User
     key: birthyear
     title_multiloc: custom_fields.birthyear
-    input_type: select
+    input_type: number
     required: false
     ordering: 1
     enabled: true
@@ -273,7 +273,7 @@ models:
     bio_multiloc:
       nl-BE: 
     gender: male
-    birthyear: '1952'
+    birthyear: 1952
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573977/man-388104_960_720_dfehjy.jpg
@@ -285,7 +285,7 @@ models:
     bio_multiloc:
       nl-BE: 
     gender: female
-    birthyear: '1962'
+    birthyear: 1962
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515573998/smiling-woman_kdsaal.jpg
@@ -297,7 +297,7 @@ models:
     bio_multiloc:
       nl-BE: 
     gender: female
-    birthyear: '1944'
+    birthyear: 1944
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515574018/tiamorrison-profile-photo-2-copy_pcnsxm.png
@@ -309,7 +309,7 @@ models:
     bio_multiloc:
       nl-BE: 
     gender: male
-    birthyear: '1981'
+    birthyear: 1981
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515574041/man-838636_960_720_f3i6ki.jpg

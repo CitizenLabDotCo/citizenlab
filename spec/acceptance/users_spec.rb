@@ -51,6 +51,7 @@ resource "Users" do
         end
         parameter :search, 'Filter by searching in first_name, last_name and email', required: false
         parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'", required: false
+        parameter :group, "Filter by group_id", required: false
 
         example_request "List all users" do
           expect(status).to eq 200
@@ -83,11 +84,97 @@ resource "Users" do
           correctly_sorted = User.all.sort_by{|u| u.last_name}
           expect(json_response[:data].map{|u| u[:id]}).to eq correctly_sorted.map(&:id)
         end
+
+        example "List all users in group" do
+          group = create(:group)
+          group_users = create_list(:user, 3, manual_groups: [group])
+
+          do_request(group: group.id)
+          json_response = json_parse(response_body)
+
+          expect(json_response[:data].size).to eq 3
+          expect(json_response[:data].map{|u| u[:id]}).to match_array group_users.map(&:id)
+
+        end
+
+        example "List all users in group, ordered by role" do
+          group = create(:group)
+          admin = create(:admin, manual_groups: [group])
+          moderator = create(:moderator, manual_groups: [group])
+          both = create(:moderator, manual_groups: [group])
+          both.add_role 'admin'
+          both.save!
+          group_users = [admin,both,moderator] + create_list(:user, 3, manual_groups: [group])
+
+          do_request(group: group.id, sort: '-role')
+          json_response = json_parse(response_body)
+
+          expect(json_response[:data].size).to eq 6
+          expect(json_response[:data].map{|u| u[:id]}).to match_array group_users.map(&:id)
+          expect(json_response[:data].map{|u| u[:id]}.reverse.take(2)).to match_array [admin.id,both.id]
+
+        end
       end
 
       get "web_api/v1/users/as_xlsx" do
+        parameter :group, "Filter by group_id", required: false
+        parameter :users, "Filter out only users with the provided user ids", required: false
+
         example_request "XLSX export" do
           expect(status).to eq 200
+        end
+
+        describe do
+          before do
+            @users = create_list(:user, 10)
+            @group = create(:group)
+            @members = @users.shuffle.take(4)
+            @members.each do |usr|
+              create(:membership, user: usr, group: @group)
+            end
+          end
+          let(:group) { @group.id }
+
+          example_request "XLSX export all users from a group" do
+            expect(status).to eq 200
+            xlsx_hash = XlsxService.new.xlsx_to_hash_array  RubyXL::Parser.parse_buffer(response_body).stream
+            expect(xlsx_hash.map{|r| r['id']}).to match_array @members.map(&:id)
+          end
+        end
+
+        describe do
+          before do
+            @users = create_list(:user, 10)
+            @group = create(:group)
+            @selected = @users.shuffle.take(4)
+          end
+          let(:users) { @selected.map(&:id) }
+
+          example_request "XLSX export all users given a list of user ids" do
+            expect(status).to eq 200
+            xlsx_hash = XlsxService.new.xlsx_to_hash_array  RubyXL::Parser.parse_buffer(response_body).stream
+            expect(xlsx_hash.map{|r| r['id']}).to match_array @selected.map(&:id)
+          end
+        end
+
+        describe do
+          before do
+            @users = create_list(:user, 10)
+            @group = create(:group)
+            @members = @users.shuffle.take(4)
+            @selected = @users.shuffle.take(4)
+            @members.each do |usr|
+              create(:membership, user: usr, group: @group)
+            end
+          end
+          let(:group) { @group.id }
+          let(:users) { @selected.map(&:id) }
+
+          example_request "XLSX export all users by filtering on both group and user ids", document: false do
+            expect(status).to eq 200
+            xlsx_hash = XlsxService.new.xlsx_to_hash_array  RubyXL::Parser.parse_buffer(response_body).stream
+            expect(xlsx_hash.map{|r| r['id']}).to match_array (@members.map(&:id) & @selected.map(&:id))
+          end
         end
       end
     end
