@@ -231,7 +231,6 @@ const addBlocks = (editor: any, opt: any = {}) => {
   });
 };
 
-
 export default (editor, opts = {}) => {
   const config = {
     blocks: ['column1', 'column2', 'column3', 'column3-7', 'text', 'link', 'image', 'video', 'map'],

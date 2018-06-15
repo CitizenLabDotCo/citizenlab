@@ -60,7 +60,6 @@ const DeleteReason = styled.div`
   }
 `;
 
-
 // Typings
 export interface Props {
   onDeleteComment: {(values): void};

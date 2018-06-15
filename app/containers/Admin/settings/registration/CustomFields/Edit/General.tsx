@@ -8,7 +8,6 @@ import { ICustomFieldData, updateCustomFieldForUsers } from 'services/userCustom
 import CustomFieldForm, { FormValues } from '../CustomFieldForm';
 import { Formik } from 'formik';
 
-
 type Props = {
   customField: ICustomFieldData;
 };

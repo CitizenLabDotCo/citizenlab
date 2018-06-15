@@ -14,7 +14,6 @@ import { List, Row, TextCell } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 
-
 interface InputProps {}
 
 interface DataProps {

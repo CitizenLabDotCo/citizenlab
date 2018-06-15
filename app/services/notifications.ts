@@ -322,7 +322,6 @@ export type TNotificationData =
   ICommentDeletedByAdminNotificationData |
   IProjectModerationRightsReceivedNotificationData;
 
-
 export interface INotificationLinks {
   self: string;
   first: string;

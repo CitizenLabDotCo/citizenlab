@@ -90,7 +90,7 @@ export default (inputProps: InputProps) => (
               </Events>
             </ContentContainer>
           </Container>
-        );      
+        );
       }
 
       return null;

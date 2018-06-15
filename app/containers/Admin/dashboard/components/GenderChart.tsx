@@ -9,7 +9,6 @@ import { usersByGenderStream } from 'services/stats';
 import messages from '../messages';
 import { colors } from 'utils/styleUtils';
 
-
 type State = {
   serie: {name: string, value: number, code: string}[] | null;
 };
@@ -70,7 +69,6 @@ class GenderChart extends React.PureComponent<Props & InjectedIntlProps, State> 
       this.setState({ serie: this.convertToGraphFormat(serie) });
     });
   }
-
 
   render() {
     const theme = this.props['theme'];
