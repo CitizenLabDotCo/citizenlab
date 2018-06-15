@@ -557,6 +557,7 @@
   "app.containers.PasswordReset.title": "Nulstil din adgangskode",
   "app.containers.PasswordReset.updatePassword": "Bekræft ny adgangskode",
   "app.containers.ProjectCards.areasTitle": "Områder",
+  "app.containers.ProjectInfo.twitterMessage": "",
   "app.containers.Projects.aboutThisPhase": "Om denne fase",
   "app.containers.Projects.allEvents": "Alle begivenheder",
   "app.containers.Projects.displayCards": "Tabel",
