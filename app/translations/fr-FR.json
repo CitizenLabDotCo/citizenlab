@@ -557,6 +557,7 @@
   "app.containers.PasswordReset.title": "Réinitialisez votre mot de passe",
   "app.containers.PasswordReset.updatePassword": "Confirmer le nouveau mot de passe",
   "app.containers.ProjectCards.areasTitle": "Lieux",
+  "app.containers.ProjectInfo.twitterMessage": "",
   "app.containers.Projects.aboutThisPhase": "A propos de cette phase",
   "app.containers.Projects.allEvents": "Tous les événements",
   "app.containers.Projects.displayCards": "Idées",
