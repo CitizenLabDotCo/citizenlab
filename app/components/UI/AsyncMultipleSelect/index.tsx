@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { isBoolean } from 'lodash';
 import { AsyncCreatable as ReactSelect } from 'react-select';
 import { IOption } from 'typings';

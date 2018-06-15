@@ -1,4 +1,4 @@
-import { Observer, Observable } from 'rxjs/Rx';
+import { Observer, Observable } from 'rxjs';
 import { isObject, isEmpty, has } from 'lodash';
 
 // utils
@@ -26,12 +26,16 @@ export interface IIdeasNewPageGlobalState {
 export interface IAdminFullWidth {
   enabled: boolean;
 }
+export interface IAdminNoPadding {
+  enabled: boolean;
+}
 
 type valueof<T> = T[keyof T];
 
 type State = {
   IdeasNewPage?: IIdeasNewPageGlobalState;
   AdminFullWidth?: IAdminFullWidth;
+  AdminNoPadding?: IAdminNoPadding;
 };
 
 interface IStateInput {

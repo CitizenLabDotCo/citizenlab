@@ -22,7 +22,6 @@ const timeout = 200;
 export const StyledRow = styled.div`
   align-items: center !important;
   border-top: 1px solid ${colors.separation};
-  color: ${colors.label};
   display: flex !important;
   font-size: ${fontSize('small')};
   font-weight: 300;
@@ -35,7 +34,6 @@ export const StyledRow = styled.div`
   }
 
   h1, h2, h3, h4, h5 {
-    color: ${colors.text};
     font-weight: 500;
     margin-bottom: ${remCalc(10)};
   }
@@ -73,7 +71,6 @@ export const StyledRow = styled.div`
   }
 
   > .primary {
-    color: ${colors.text};
     font-size: ${fontSize('base')}
     font-weight: 400;
     line-height: 20px;
@@ -108,7 +105,6 @@ export const StyledRow = styled.div`
 `;
 
 export const TextCell = styled.div`
-  color: #333;
   font-size: 16px;
   font-weight: 400;
   line-height: 20px;

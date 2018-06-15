@@ -81,7 +81,6 @@ class Fragment extends React.Component<Props, State> {
   }
 }
 
-
 export default (inputProps) => (
   <GetTenant>
     {(tenant) => !isNilOrError(tenant) ? <Fragment {...inputProps} tenantId={tenant.id} /> : null}

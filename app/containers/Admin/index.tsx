@@ -1,53 +1,80 @@
 import React from 'react';
-import { Subscription } from 'rxjs/Subscription';
-import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
+import { Subscription } from 'rxjs';
+import { globalState, IAdminFullWidth, IAdminNoPadding, IGlobalStateService } from 'services/globalState';
+
+// components
 import Sidebar from './sideBar/';
-import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  background: ${colors.background};
+  color: ${colors.adminTextColor};
+  fill: ${colors.adminTextColor};
+  border-color: ${colors.adminTextColor};
+  /* border: solid 2px green; */
+
+  .ui, .ui.menu .item, .ui.table th, .ui a, .ui input, .ui .active td {
+    color: ${colors.adminTextColor} !important;
+  }
+
+  .Select-control, .Select-value-label, .Select-value-icon, .Select-option {
+    color: ${colors.adminTextColor} !important;
+  }
+
+  .ui.red {
+    color: white !important;
+  }
 `;
 
 const RightColumn = styled.div`
   flex: 1;
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  background: ${colors.background};
-`;
-
-const AdminContainerStyled = styled<any, 'div'>('div')`
   display: flex;
   flex-direction: column;
-  ${(props) => props.adminFullWidth ? '' : 'max-width: 1200px;'}
+  max-width: 1200px;
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   padding: 45px 51px 0px 51px;
+
+  &.fullWidth {
+    max-width: none;
+  }
+
+  &.noPadding {
+    padding: 0;
+    max-width: none;
+  }
 `;
 
 type Props = {};
 
 type State = {
   adminFullWidth: boolean;
+  adminNoPadding: boolean;
 };
 
 export default class AdminPage extends React.PureComponent<Props, State> {
-  globalState: IGlobalStateService<IAdminFullWidth>;
+  FullWidth: IGlobalStateService<IAdminFullWidth>;
+  NoPadding: IGlobalStateService<IAdminNoPadding>;
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {
       adminFullWidth: false,
+      adminNoPadding: false,
     };
-    this.globalState = globalState.init('AdminFullWidth', { enabled: false });
+    this.FullWidth = globalState.init('AdminFullWidth', { enabled: false });
+    this.NoPadding = globalState.init('AdminNoPadding', { enabled: false });
   }
 
   componentDidMount() {
-    const globalState$ = this.globalState.observable;
+    const FullWidth$ = this.FullWidth.observable;
+    const NoPadding$ = this.NoPadding.observable;
 
     this.subscriptions = [
-      globalState$.subscribe(({ enabled }) => this.setState({ adminFullWidth: enabled }))
+      FullWidth$.subscribe(({ enabled }) => this.setState({ adminFullWidth: enabled })),
+      NoPadding$.subscribe(({ enabled }) => this.setState({ adminNoPadding: enabled })),
     ];
   }
 
@@ -56,21 +83,15 @@ export default class AdminPage extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const className = this.props['className'];
     const { children } = this.props;
-    const { adminFullWidth } = this.state;
+    const { adminFullWidth, adminNoPadding } = this.state;
 
     return (
       <>
-        <Helmet>
-          <meta name="robots" content="noindex" />
-        </Helmet>
-        <Container className={className}>
+        <Container className={this.props['className']}>
           <Sidebar />
-          <RightColumn>
-            <AdminContainerStyled adminFullWidth={adminFullWidth}>
-              {children}
-            </AdminContainerStyled>
+          <RightColumn className={`${adminFullWidth && 'fullWidth'} ${adminNoPadding && 'noPadding'}`}>
+            {children}
           </RightColumn>
         </Container>
       </>

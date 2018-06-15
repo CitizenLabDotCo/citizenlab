@@ -13,13 +13,12 @@ type State = {};
 class SettingsRegistrationTab extends React.Component<Props, State> {
 
   render() {
-    const Acf = AllCustomFields as any;
     return (
       <Section key={'signup_fields'}>
         <SectionTitle>
           <FormattedMessage {...messages.titleRegistrationFields} />
         </SectionTitle>
-        <Acf />
+        <AllCustomFields />
       </Section>
     );
   }

@@ -18,7 +18,6 @@ const Container: any = styled.div`
 
   .textarea {
     width: 100%;
-    color: #333;
     font-size: 17px;
     line-height: 24px;
     font-weight: 400;
@@ -38,15 +37,15 @@ const Container: any = styled.div`
     }
 
     &:focus {
-      border-color: #333;
+      border-color: #666;
     }
 
     &.error {
-      border-color: #fc3c2d !important;
+      border-color: ${color('error')} !important;
 
       &:hover,
       &:focus {
-        border-color: #fc3c2d !important;
+        border-color: ${color('error')} !important;
       }
     }
   }

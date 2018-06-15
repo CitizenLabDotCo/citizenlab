@@ -111,7 +111,7 @@ class SpamReportForm extends React.PureComponent<Props & InjectedIntlProps, Stat
         <TransitionGroup>
           {(this.props.diff && this.props.diff.reason_code === 'other') ? (
             <CSSTransition
-              classNames="reason" 
+              classNames="reason"
               timeout={timeout}
               enter={true}
               exit={true}

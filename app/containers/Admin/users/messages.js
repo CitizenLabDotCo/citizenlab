@@ -2,221 +2,191 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   helmetTitle: {
-    id: 'app.containers.Admin.User.helmetTitle',
+    id: 'app.containers.Admin.Users.helmetTitle',
     defaultMessage: 'Admin - users dashboard',
   },
   helmetDescription: {
-    id: 'app.containers.Admin.User.helmetDescription',
+    id: 'app.containers.Admin.Users.helmetDescription',
     defaultMessage: 'User list in admin backoffice',
   },
-  viewPublicResource: {
-    id: 'app.containers.Admin.User.viewPublicResource',
-    defaultMessage: 'Users',
-  },
-  tabRegisteredUsers: {
-    id: 'app.containers.AdminPage.User.tabRegisteredUsers',
-    defaultMessage: 'Registered users',
-  },
-  tabInviteByEmail: {
-    id: 'app.containers.AdminPage.User.tabInviteByEmail',
-    defaultMessage: 'Invitations',
-  },
-  exportUsers: {
-    id: 'app.containers.Admin.User.exportUsers',
-    defaultMessage: 'Export all users',
-  },
-  deleteButton: {
-    id: 'app.containers.Admin.User.deleteButton',
-    defaultMessage: 'Delete',
-  },
-  updateButton: {
-    id: 'app.containers.Admin.User.updateButton',
-    defaultMessage: 'Edit',
-  },
-  createButton: {
-    id: 'app.containers.Admin.User.createButton',
-    defaultMessage: 'New User',
-  },
-  publishButton: {
-    id: 'app.containers.Admin.User.publishButton',
-    defaultMessage: 'Publish User',
-  },
-  userLoadingMessage: {
-    id: 'app.containers.Admin.User.userLoadingMessage',
-    defaultMessage: 'Loading User...',
-  },
-  userLoadingError: {
-    id: 'app.containers.Admin.User.userLoadingError',
-    defaultMessage: 'User not found!',
-  },
   name: {
-    id: 'app.containers.Admin.User.name',
+    id: 'app.containers.Admin.Users.name',
     defaultMessage: 'Name',
   },
   email: {
-    id: 'app.containers.Admin.User.email',
+    id: 'app.containers.Admin.Users.email',
     defaultMessage: 'Email',
   },
-  member: {
-    id: 'app.containers.Admin.User.member',
-    defaultMessage: 'Member Since',
+  since: {
+    id: 'app.containers.Admin.Users.since',
+    defaultMessage: 'Since',
   },
   admin: {
-    id: 'app.containers.Admin.User.admin',
+    id: 'app.containers.Admin.Users.admin',
     defaultMessage: 'Admin',
   },
-  delete: {
-    id: 'app.containers.Admin.User.delete',
-    defaultMessage: 'Delete',
+  options: {
+    id: 'app.containers.Admin.Users.options',
+    defaultMessage: 'Options',
+  },
+  seeProfile: {
+    id: 'app.containers.Admin.Users.seeProfile',
+    defaultMessage: 'See profile',
   },
   deleteUser: {
-    id: 'app.containers.Admin.User.deleteUser',
+    id: 'app.containers.Admin.Users.deleteUser',
     defaultMessage: 'Delete user',
   },
-  invitePeople: {
-    id: 'app.containers.Admin.User.invitePeople',
-    defaultMessage: 'Invite people via email',
+  userDeletionConfirmation: {
+    id: 'app.containers.Admin.Users.userDeletionConfirmation',
+    defaultMessage: 'Permanently remove this user?',
   },
-  importTab: {
-    id: 'app.containers.Admin.User.importTab',
-    defaultMessage: 'Import email addresses',
+  userDeletionFailed: {
+    id: 'app.containers.Admin.Users.userDeletionFailed',
+    defaultMessage: 'An error occured while deleting this user, please try again.',
   },
-  textTab: {
-    id: 'app.containers.Admin.User.textTab',
-    defaultMessage: 'Manually enter email addresses',
+  youCantDeleteYourself: {
+    id: 'app.containers.Admin.Users.youCantDeleteYourself',
+    defaultMessage: 'You cannot delete your own account via the user admin page',
   },
-  emailListLabel: {
-    id: 'app.containers.Admin.User.emailListLabel',
-    defaultMessage: 'Manually enter the email addresses of the people you want to invite. Seperate each address by a comma.',
+  youCantUnadminYourself: {
+    id: 'app.containers.Admin.Users.youCantUnadminYourself',
+    defaultMessage: 'You cannot give up your role as an admin now',
   },
-  importLabel: {
-    id: 'app.containers.Admin.User.importLabel',
-    defaultMessage: 'Select an Excel file (.xlsx)',
+  editGroup: {
+    id: 'app.containers.Admin.Users.GroupsHeader.editGroup',
+    defaultMessage: 'Edit Group',
   },
-  importInfo: {
-    id: 'app.containers.Admin.User.importInfo',
-    defaultMessage: `
-      Note: The column in your Excel file that contains the email addresses should be named {emailColumnName}.
-      Download this {downloadLink} and visit this {supportPageLink} for more information about all the supported columns.
-    `,
+  deleteGroup: {
+    id: 'app.containers.Admin.Users.GroupsHeader.deleteGroup',
+    defaultMessage: 'Delete Group',
   },
-  emailColumnName: {
-    id: 'app.containers.Admin.User.emailColumnName',
-    defaultMessage: `email`,
+  allUsers: {
+    id: 'app.containers.Admin.Users.GroupsPanel.allUsers',
+    defaultMessage: 'All users',
   },
-  exampleFile: {
-    id: 'app.containers.Admin.User.exampleFile',
-    defaultMessage: `example file`,
+  groupsTitle: {
+    id: 'app.containers.Admin.Users.GroupsPanel.groupsTitle',
+    defaultMessage: 'Groups',
   },
-  supportPage: {
-    id: 'app.containers.Admin.User.supportPage',
-    defaultMessage: `support page`,
+  noUserMatchesYourSearch: {
+    id: 'app.containers.AdminPage.Users.GroupsPanel.noUserMatchesYourSearch',
+    defaultMessage: 'No user matches your search',
   },
-  importOptionsInfo: {
-    id: 'app.containers.Admin.User.importOptionsInfo',
-    defaultMessage: `
-      These options will only be taken into account when they are not defined in the Excel file.
-      Please visit the {supportPageLink} for more information.
-    `,
+  emptyGroup: {
+    id: 'app.containers.AdminPage.Users.GroupsPanel.emptyGroup',
+    defaultMessage: 'There is no one in this group yet',
   },
-  adminLabel: {
-    id: 'app.containers.Admin.User.adminLabel',
-    defaultMessage: `Grant administrator rights to the invited people?`,
+  goToAllUsers: {
+    id: 'app.containers.AdminPage.Users.GroupsPanel.goToAllUsers',
+    defaultMessage: 'Go to {allUsersLink} to manually add some users.',
   },
-  moderatorLabel: {
-    id: 'app.containers.Admin.User.moderatorLabel',
-    defaultMessage: `Grant project moderator rights to the invited people?`,
+  createGroupButton: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.createGroupButton',
+    defaultMessage: 'Add a new group',
   },
-  projectSelectorPlaceholder: {
-    id: 'app.containers.Admin.User.projectSelectorPlaceholder',
-    defaultMessage: `No project(s) selected`,
+  step1TypeNameNormal: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeNameNormal',
+    defaultMessage: 'Normal group',
   },
-  localeLabel: {
-    id: 'app.containers.Admin.User.localeLabel',
-    defaultMessage: 'Select the default language for the invited people',
+  step1TypeNameSmart: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeNameSmart',
+    defaultMessage: 'Smart group',
   },
-  invitationOptions: {
-    id: 'app.containers.Admin.User.invitationOptions',
-    defaultMessage: 'Invitation options',
+  step1TypeDescriptionNormal: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionNormal',
+    defaultMessage: 'You manually specify which users are part of this group.',
   },
-  groupsLabel: {
-    id: 'app.containers.Admin.User.groupsLabel',
-    defaultMessage: 'Optionally select one or more groups that will be assigned to the invited people upon registration',
+  step1TypeDescriptionSmart: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionSmart',
+    defaultMessage: 'You specify conditions that automatically and continuously make people part of this group.',
   },
-  inviteTextLabel: {
-    id: 'app.containers.Admin.User.inviteTextLabel',
-    defaultMessage: 'Optionally type a message that will be added to the invitation mail.',
+  step1CreateButtonNormal: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1CreateButtonNormal',
+    defaultMessage: 'Create a normal group',
   },
-  groupsPlaceholder: {
-    id: 'app.containers.Admin.User.groupsPlaceholder',
-    defaultMessage: 'No group selected',
+  step1CreateButtonSmart: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1CreateButtonSmart',
+    defaultMessage: 'Create a smart group',
   },
-  processing: {
-    id: 'app.containers.Admin.User.processing',
-    defaultMessage: 'Sending out invitations. Please wait...',
+  step1ReadMore: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1ReadMore',
+    defaultMessage: 'Read More about it',
   },
-  save: {
-    id: 'app.containers.Admin.User.save',
-    defaultMessage: 'Send out invitations',
+  modalHeaderStep1: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.modalHeaderStep1',
+    defaultMessage: 'Select the type of group',
   },
-  saveSuccess: {
-    id: 'app.containers.Admin.User.saveSuccess',
-    defaultMessage: 'Success!',
+  modalHeaderManual: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.modalHeaderManual',
+    defaultMessage: 'Define a group name',
   },
-  saveErrorMessage: {
-    id: 'app.containers.Admin.User.saveErrorMessage',
-    defaultMessage: `
-      One or more errors occured.
-      Therefore no invitations were sent out.
-      Please correct the error(s) listed below and try again.
-    `,
+  modalHeaderRules: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.modalHeaderRules',
+    defaultMessage: 'Define your smart group settings',
   },
-  saveSuccessMessage: {
-    id: 'app.containers.Admin.User.saveSuccessMessage',
-    defaultMessage: 'Invitation successfully sent out.',
+  fieldGroupName: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.fieldGroupName',
+    defaultMessage: 'Name of the group',
   },
-  inviteStatus: {
-    id: 'app.containers.Admin.User.inviteStatus',
-    defaultMessage: 'Status',
+  rulesExplanation: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.rulesExplanation',
+    defaultMessage: 'Users matching all of the following conditions will be automatically added to the group:',
   },
-  invitedSince: {
-    id: 'app.containers.Admin.User.invitedSince',
-    defaultMessage: 'Invited',
+  select: {
+    id: 'app.containers.AdminPage.Users.GroupsPanel.select',
+    defaultMessage: 'Select',
   },
-  deleteInvite: {
-    id: 'app.containers.Admin.User.deleteInvite',
-    defaultMessage: 'Delete',
+  userCount: {
+    id: 'app.containers.AdminPage.Users.GroupsPanel.userCount',
+    defaultMessage: '{count, plural, zero {No users} one {1 user} other {{count} users}}',
   },
-  exportInvites: {
-    id: 'app.containers.Admin.User.exportInvites',
-    defaultMessage: 'Export all invitations',
+  groupDeletionConfirmation: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.groupDeletionConfirmation',
+    defaultMessage: 'Are you sure you want to delete this group?',
   },
-  inviteStatusPending: {
-    id: 'app.containers.Admin.User.inviteStatusPending',
-    defaultMessage: 'Pending',
+  moveUsers: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.moveUsers',
+    defaultMessage: 'Add to group',
   },
-  inviteStatusAccepted: {
-    id: 'app.containers.Admin.User.inviteStatusAccepted',
-    defaultMessage: 'Accepted',
+  membershipAddFailed: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.membershipAddFailed',
+    defaultMessage: 'An error occured while adding users to the groups, please try again.',
   },
-  confirmDelete: {
-    id: 'app.containers.Admin.User.confirmDelete',
-    defaultMessage: 'Yes, I\'m sure',
+  membershipDelete: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.membershipDelete',
+    defaultMessage: 'Remove from group',
   },
-  currentlyNoInvites: {
-    id: 'app.containers.Admin.User.currentlyNoInvites',
-    defaultMessage: 'There currently are no invites yet',
+  membershipDeleteConfirmation: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.membershipDeleteConfirmation',
+    defaultMessage: 'Delete selected users from this group?',
   },
-  currentlyNoInvitesThatMatchSearch: {
-    id: 'app.containers.Admin.User.currentlyNoInvitesThatMatchSearch',
-    defaultMessage: 'There are no invites that match your search',
+  membershipDeleteFailed: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.membershipDeleteFailed',
+    defaultMessage: 'An error occured while deleting users from the group, please try again.',
   },
-  filetypeError: {
-    id: 'app.containers.Admin.User.filetypeError',
-    defaultMessage: 'Incorrect file type. Only XLSX files are supported.',
+  exportUsers: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.exportUsers',
+    defaultMessage: 'Export all users',
   },
-  unknownError: {
-    id: 'app.containers.Admin.User.unknownError',
-    defaultMessage: 'Something went wrong. Please try again later.',
+  exportAllUsers: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.exportAllUsers',
+    defaultMessage: 'Export all users',
+  },
+  exportGroup: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.exportGroup',
+    defaultMessage: 'Export group',
+  },
+  exportSelectedUsers: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.exportSelectedUsers',
+    defaultMessage: 'Export selected users',
+  },
+  dropdownFooterMessage: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.dropdownFooterMessage',
+    defaultMessage: 'Add',
+  },
+  rulesError: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.rulesError',
+    defaultMessage: 'Some conditions are incomplete',
   },
 });

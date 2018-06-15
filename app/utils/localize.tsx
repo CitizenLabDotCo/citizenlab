@@ -1,6 +1,6 @@
 // Libraries
 import React from 'react';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 
 // Services
