@@ -25,8 +25,11 @@ class ClusteringService
     levels.map do |level|
       level_ids_to_idea_ids = case level
       when 'project'
-        Project.all.pluck(:id).map do |project_id|
-          [project_id, idea_scope.where(project: project_id).pluck(:id)]
+        sql = "  SELECT project_id, json_agg(id) AS idea_ids" 
+        sql += " FROM ideas"
+        sql += " GROUP BY project_id;"
+        ActiveRecord::Base.connection.execute(sql).map do |hash|
+          [hash["project_id"], eval(hash["idea_ids"])]
         end.to_h
       when 'topic'
         Topic.all.pluck(:id).map do |topic_id|
