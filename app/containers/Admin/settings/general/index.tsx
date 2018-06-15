@@ -12,6 +12,7 @@ import messages from '../messages';
 
 // components
 import InputMultiloc from 'components/UI/InputMultiloc';
+import Input from 'components/UI/Input';
 import Label from 'components/UI/Label';
 import TextAreaMultiloc from 'components/UI/TextAreaMultiloc';
 import MultipleSelect from 'components/UI/MultipleSelect';
@@ -39,6 +40,7 @@ interface State {
   errors: {
     [fieldName: string]: API.Error[]
   };
+  hasUrlError: boolean;
 }
 
 export default class SettingsGeneralTab extends React.PureComponent<Props, State> {
@@ -51,6 +53,7 @@ export default class SettingsGeneralTab extends React.PureComponent<Props, State
       tenant: null,
       loading: false,
       errors: {},
+      hasUrlError: false,
       saved: false,
     };
   }
@@ -99,6 +102,21 @@ export default class SettingsGeneralTab extends React.PureComponent<Props, State
     }));
   }
 
+  handleUrlOnChange = (url) => {
+    this.setState((state) => ({
+      attributesDiff: {
+        ...state.attributesDiff,
+        settings: {
+          ...get(state.attributesDiff, 'settings', {}),
+          core: {
+            ...get(state.attributesDiff, 'settings.core', {}),
+            organization_site: url
+          }
+        }
+      }
+    }));
+  }
+
   save = (event: React.FormEvent<any>) => {
     event.preventDefault();
 
@@ -110,7 +128,13 @@ export default class SettingsGeneralTab extends React.PureComponent<Props, State
       updateTenant(tenant.id, attributesDiff).then(() => {
         this.setState({ saved: true, attributesDiff: {}, loading: false });
       }).catch((e) => {
-        this.setState({ errors: e.json.errors, loading: false });
+        const settingsErrors = e.json.errors;
+        this.setState({ errors: settingsErrors, loading: false });
+
+        // const foundUrlError = !!settingsErrors.find((setting) => setting.error.fragment === "#/core/organization_site" );
+        if (foundUrlError) {
+          this.setState({ hasUrlError: true });
+        }
       });
     }
   }
@@ -130,8 +154,8 @@ export default class SettingsGeneralTab extends React.PureComponent<Props, State
   }
 
   render() {
-    const { tenant } = this.state;
-
+    const { tenant, errors } = this.state;
+    console.log(errors);
     if (tenant) {
       const { errors, saved, attributesDiff } = this.state;
       const updatedLocales = get(attributesDiff, 'settings.core.locales');
@@ -145,6 +169,7 @@ export default class SettingsGeneralTab extends React.PureComponent<Props, State
 
       const tenantLocales: string[] | null = get(tenantAttrs, 'settings.core.locales', null);
       const organizationType: string | null = get(tenantAttrs, 'settings.core.organization_type', null);
+      const tenantSite: string | null = get(tenantAttrs, 'settings.core.organization_site', null);
       const organizationNameMultiloc: Multiloc | null = get(tenantAttrs, 'settings.core.organization_name', null);
       const metaTitleMultiloc: Multiloc | null = get(tenantAttrs, 'settings.core.meta_title', null);
       const metaDescriptionMultiloc: Multiloc | null = get(tenantAttrs, 'settings.core.meta_description', null);
@@ -197,6 +222,19 @@ export default class SettingsGeneralTab extends React.PureComponent<Props, State
                 rows={5}
                 valueMultiloc={metaDescriptionMultiloc}
                 onChange={this.handleCoreMultilocSettingOnChange('meta_description')}
+              />
+            </SectionField>
+
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.urlTitle} />
+              </Label>
+              <Input
+                type="text"
+                placeholder="https://..."
+                onChange={this.handleUrlOnChange}
+                value={tenantSite}
+                error={'test'}
               />
             </SectionField>
 
