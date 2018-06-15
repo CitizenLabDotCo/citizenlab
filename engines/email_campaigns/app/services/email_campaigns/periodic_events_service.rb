@@ -37,11 +37,11 @@ module EmailCampaigns
       }
     end
 
-    def to_periodic_report_idea_hash idea, since
+    def to_periodic_report_idea_hash idea, since, options={}
       {
         id: idea.id,
         title_multiloc: idea.title_multiloc,
-        url: FrontendService.new.model_to_url(idea),
+        url: FrontendService.new.model_to_url(idea, options),
         published_at: idea.published_at,
         author_name: idea.author_name,
         upvotes_count: idea.upvotes_count,

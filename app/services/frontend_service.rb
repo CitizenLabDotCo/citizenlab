@@ -26,20 +26,34 @@ class FrontendService
     subroute && slug && "#{tenant.base_frontend_uri}/#{subroute}/#{slug}"
   end
 
-  def signin_success_url tenant=Tenant.current
-    "#{tenant.base_frontend_uri}/"
+  def landing_url options={}
+    tenant = options[:tenant] || Tenant.current
+    locale = options[:locale]
+    url = tenant.base_frontend_uri
+    if locale
+      "#{url}/#{locale}"
+    else
+      url
+    end
   end
 
-  def signup_success_url tenant=Tenant.current
-    "#{tenant.base_frontend_uri}/complete-signup"
+  def signin_success_url options={}
+    landing_url options
   end
 
-  def signin_failure_url tenant=Tenant.current
-    "#{tenant.base_frontend_uri}/authentication-error"
+  def signup_success_url options={}
+    "#{landing_url(options)}/complete-signup"
   end
 
-  def invite_url token, tenant=Tenant.current
-    "#{tenant.base_frontend_uri}/invite?token=#{token}"
+  def signin_failure_url options={}
+    "#{landing_url(options)}/authentication-error"
   end
+
+  def invite_url token, options={}
+    "#{landing_url(options)}/invite?token=#{token}"
+  end
+
+  def reset_password_url token, options={}
+    "#{landing_url(options)}/reset-password?token=#{token}"
 
 end

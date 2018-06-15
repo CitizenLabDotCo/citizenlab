@@ -51,7 +51,7 @@ module EmailCampaigns
       end.reverse
 
       top_ideas.map do |idea|
-        @service.to_periodic_report_idea_hash(idea, since=since)
+        @service.to_periodic_report_idea_hash(idea, since)
       end
     end
 
