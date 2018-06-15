@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { clone } from 'lodash';
 import Circles from './Circles';
-import { Node /*, ParentNode*/ } from 'services/clusterings';
+import { Node /*,ParentNode*/ } from 'services/clusterings';
 import InfoPane from './InfoPane';
 import styled, { ThemeProvider } from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';

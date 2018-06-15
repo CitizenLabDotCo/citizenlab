@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
 import { isEqual, forOwn, get, isEmpty } from 'lodash';
@@ -19,11 +19,11 @@ type State = {
 
 const Container = styled.div``;
 
-class AgeChart extends Component<Props, State> {
+class AgeChart extends PureComponent<Props, State> {
 
   subscription: Subscription;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       series: [],
