@@ -157,7 +157,7 @@ class UsersPage extends React.Component<Props & WithRouterProps, State> {
 
             {groupCreationModal === 'rules' &&
               <Formik
-                initialValues={{ title_multiloc: {}, rules: [], membership_type: 'rules' }}
+                initialValues={{ title_multiloc: {}, rules: [{}], membership_type: 'rules' }}
                 validate={RulesGroupForm.validate}
                 render={this.renderForm('rules')}
                 onSubmit={this.handleSubmitForm}

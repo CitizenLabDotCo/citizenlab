@@ -200,8 +200,6 @@ export const ruleTypeConstraints = {
     not_begins_with: TextValueSelector,
     ends_on: TextValueSelector,
     not_ends_on: TextValueSelector,
-    is_empty: null,
-    not_is_empty: null,
   },
   lives_in: {
     has_value: AreaValueSelector,
