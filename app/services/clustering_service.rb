@@ -34,7 +34,7 @@ class ClusteringService
       when 'topic'
         sql = "  SELECT topic_id, json_agg(ideas.id) AS idea_ids" 
         sql += " FROM ideas"
-        sql += " FULL OUTER JOIN ideas_topics"
+        sql += " RIGHT OUTER JOIN ideas_topics"
         sql += " ON ideas.id = idea_id"
         sql += " GROUP BY topic_id;"
         ActiveRecord::Base.connection.execute(sql).map do |hash|
@@ -43,7 +43,7 @@ class ClusteringService
       when 'area'
         sql = "  SELECT area_id, json_agg(ideas.id) AS idea_ids" 
         sql += " FROM ideas"
-        sql += " FULL OUTER JOIN areas_ideas"
+        sql += " RIGHT OUTER JOIN areas_ideas"
         sql += " ON ideas.id = idea_id"
         sql += " GROUP BY area_id;"
         ActiveRecord::Base.connection.execute(sql).map do |hash|
