@@ -55,5 +55,6 @@ class FrontendService
 
   def reset_password_url token, options={}
     "#{landing_url(options)}/reset-password?token=#{token}"
+  end
 
 end
