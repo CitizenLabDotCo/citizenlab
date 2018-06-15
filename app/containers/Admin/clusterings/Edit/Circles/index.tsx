@@ -8,7 +8,6 @@ import { Node } from 'services/clusterings';
 import ProjectCircle from './ProjectCircle';
 import TopicCircle from './TopicCircle';
 import styled from 'styled-components';
-// import styled from 'styled-components';
 
 type D3Node = {
   data: Node;
@@ -27,16 +26,23 @@ type Props = {
 type State = {
   nodes: D3Node[];
   hoveredIdea: string | null;
+  svgSize?: number;
 };
 
-// const Container = styled.div``;
+const Container = styled.div`
+  max-width: 1200px;
+  display: flex;
+  align-items: stretch;
+  padding: 0;
+  margin: 0;
+`;
 
 const StyledSvg = styled.svg`
   width: 100%;
 `;
 
 class Circles extends Component<Props, State> {
-  svgRef: SVGElement | null;
+  svgContainerRef: SVGElement | null;
 
   constructor(props) {
     super(props);
@@ -47,24 +53,36 @@ class Circles extends Component<Props, State> {
   }
 
   componentDidMount() {
-    // const svgRef: any = this.svgRef;
+    window.addEventListener('resize', this.calculateNodePositions);
+    this.calculateNodePositions();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.calculateNodePositions);
+  }
+
+  calculateNodePositions = () => {
+    const svgContainerRef: any = this.svgContainerRef;
     const ideasById: any = keyBy(this.props.ideas.ideasList, 'id');
     const root = d3.hierarchy(this.props.structure)
-      .sum((d) => ideasById[d.id] ? (ideasById[d.id].attributes.upvotes_count + ideasById[d.id].attributes.downvotes_count + 1) : 1);
+    .sum((d) => ideasById[d.id] ? (ideasById[d.id].attributes.upvotes_count + ideasById[d.id].attributes.downvotes_count + 1) : 1);
+
+    const svgSize = svgContainerRef.offsetWidth;
 
     const pack = d3.pack()
-      // .size([svgRef.width.baseVal.value - 2, svgRef.height.baseVal.value - 2])
-      .size([750, 750])
+      .size([svgSize, svgSize])
       .padding(10);
+
     pack(root);
 
     this.setState({
+      svgSize,
       nodes: root.descendants(),
     });
   }
 
-  setSVGRef = (r) => {
-    this.svgRef = r;
+  setSVGContainerRef = (r) => {
+    this.svgContainerRef = r;
   }
 
   handleOnClickNode = (node) => (event) => {
@@ -88,54 +106,56 @@ class Circles extends Component<Props, State> {
   }
 
   render() {
-    const { nodes } = this.state;
+    const { nodes, svgSize } = this.state;
 
     return (
-      <div className={this.props.className}>
-        <StyledSvg innerRef={this.setSVGRef} viewBox="0 0 750 750">
-          {nodes.map((node, index) => (
-            <g
-              key={index}
-              transform={`translate(${node.x},${node.y})`}
-            >
-              {node.data.type === 'idea' &&
-                <IdeaCircle
-                  node={node}
-                  ideaId={node.data.id}
-                  onClick={this.handleOnClickNode(node)}
-                  onMouseEnter={this.handleOnMouseEnterIdea(node)}
-                  onMouseLeave={this.handleOnMouseLeaveIdea()}
-                  selected={this.isSelected(node)}
-                  hovered={node.data.id === this.state.hoveredIdea}
-                />
-              }
-              {node.data.type === 'custom' &&
-                <CustomCircle
-                  node={node}
-                  onClick={this.handleOnClickNode(node)}
-                  selected={this.isSelected(node)}
-                />
-              }
-              {node.data.type === 'project' &&
-                <ProjectCircle
-                  node={node}
-                  projectId={node.data.id}
-                  onClick={this.handleOnClickNode(node)}
-                  selected={this.isSelected(node)}
-                />
-              }
-              {node.data.type === 'topic' &&
-                <TopicCircle
-                  node={node}
-                  topicId={node.data.id}
-                  onClick={this.handleOnClickNode(node)}
-                  selected={this.isSelected(node)}
-                />
-              }
-            </g>
-          ))}
-        </StyledSvg>
-      </div>
+      <Container innerRef={this.setSVGContainerRef}>
+        {svgSize &&
+          <StyledSvg width={svgSize} height={svgSize}>
+            {nodes.map((node, index) => (
+              <g
+                key={index}
+                transform={`translate(${node.x},${node.y})`}
+              >
+                {node.data.type === 'idea' &&
+                  <IdeaCircle
+                    node={node}
+                    ideaId={node.data.id}
+                    onClick={this.handleOnClickNode(node)}
+                    onMouseEnter={this.handleOnMouseEnterIdea(node)}
+                    onMouseLeave={this.handleOnMouseLeaveIdea()}
+                    selected={this.isSelected(node)}
+                    hovered={node.data.id === this.state.hoveredIdea}
+                  />
+                }
+                {node.data.type === 'custom' &&
+                  <CustomCircle
+                    node={node}
+                    onClick={this.handleOnClickNode(node)}
+                    selected={this.isSelected(node)}
+                  />
+                }
+                {node.data.type === 'project' &&
+                  <ProjectCircle
+                    node={node}
+                    projectId={node.data.id}
+                    onClick={this.handleOnClickNode(node)}
+                    selected={this.isSelected(node)}
+                  />
+                }
+                {node.data.type === 'topic' &&
+                  <TopicCircle
+                    node={node}
+                    topicId={node.data.id}
+                    onClick={this.handleOnClickNode(node)}
+                    selected={this.isSelected(node)}
+                  />
+                }
+              </g>
+            ))}
+          </StyledSvg>
+        }
+      </Container>
     );
   }
 }
