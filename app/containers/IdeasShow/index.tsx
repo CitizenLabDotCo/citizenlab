@@ -14,7 +14,7 @@ import Avatar from 'components/Avatar';
 import StatusBadge from 'components/StatusBadge';
 import Icon from 'components/UI/Icon';
 import Comments from './CommentsContainer';
-import Sharing from './Sharing';
+import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import IdeaMap from './IdeaMap';
 import Activities from './Activities';
@@ -723,7 +723,7 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
 
   render() {
     const { inModal, intl: { formatMessage } } = this.props;
-    const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions } = this.state;
+    const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions, authUser } = this.state;
     let loader: JSX.Element | null = null;
     let content: JSX.Element | null = null;
 
@@ -852,7 +852,20 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
 
                 <SeparatorRow />
 
-                <StyledSharingMobile imageUrl={ideaImageMedium} ideaTitle={titleMultiloc} authorId={authorId} />
+
+                <T value={titleMultiloc} maxLength={50} >
+                  {(title) => {
+                    const faceBookMessage = (authUser && authorId && authUser.data.id === authorId) ?
+                      formatMessage(messages.metaOgTitleAuthor, { ideaTitle: title }) :
+                      formatMessage(messages.metaOgTitle, { ideaTitle: title });
+                    return (
+                      <StyledSharingMobile
+                        imageUrl={ideaImageMedium}
+                        fbMessage={faceBookMessage}
+                        twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
+                      />);
+                  }}
+                </T>
 
                 <CommentsTitle>
                   <FormattedMessage {...messages.commentsTitle} />
@@ -906,7 +919,19 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
                     }
 
                     <SharingWrapper>
-                      <StyledSharing imageUrl={ideaImageLarge} ideaTitle={titleMultiloc} authorId={authorId} />
+                      <T value={titleMultiloc} maxLength={50} >
+                        {(title) => {
+                          const faceBookMessage = (authUser && authorId && authUser.data.id === authorId) ?
+                            formatMessage(messages.metaOgTitleAuthor, { ideaTitle: title }) :
+                            formatMessage(messages.metaOgTitle, { ideaTitle: title });
+                          return (
+                            <StyledSharing
+                              imageUrl={ideaImageMedium}
+                              fbMessage={faceBookMessage}
+                              twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
+                            />);
+                        }}
+                      </T>
                     </SharingWrapper>
 
                     {(moreActions && moreActions.length > 0) &&
