@@ -8,7 +8,7 @@ class ClusteringService
       id: SecureRandom.uuid,
       children: create_children(
         levels, idea_scope, 
-        create_levels_to_ids(levels, idea_scope, options), 
+        create_levels_to_ids(levels, idea_scope.pluck(:id), options), 
         options
         )
     }
@@ -43,21 +43,21 @@ class ClusteringService
     end.to_h
   end
 
-  def create_children levels, idea_scope, levels_to_ids, options
+  def create_children levels, idea_ids, levels_to_ids, options
     if levels.present?
       level = levels.first
-      levels_to_ids[level].map do |level_id, idea_ids|
+      levels_to_ids[level].map do |level_id, filter_idea_ids|
         clustering = nil
         begin
           clustering = self.send "#{level}_to_cluster",level_id
         rescue NoMethodError => e
           raise "Unknown level #{level}"
         end
-        clustering[:children] = create_children levels.drop(1), idea_scope.where(id: idea_ids), levels_to_ids, options
+        clustering[:children] = create_children levels.drop(1), (idea_ids & filter_idea_ids), levels_to_ids, options
         clustering
       end
     else
-      idea_scope.all.pluck(:id).map{|idea_id| idea_to_cluster(idea_id)}
+      idea_ids.map{|idea_id| idea_to_cluster(idea_id)}
     end
   end
 
