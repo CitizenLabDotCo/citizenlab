@@ -3,6 +3,9 @@ require 'rspec_api_documentation/dsl'
 
 
 resource "Moderators" do
+
+  explanation "Moderators can manage (e.g. changing phases, ideas) only certain projects."
+
   before do
     header "Content-Type", "application/json"
   end
@@ -25,13 +28,14 @@ resource "Moderators" do
       let!(:same_project_moderators) { create_list(:moderator, 5, project: @project) }
       let!(:other_project) { create(:project) }
       let!(:other_project_moderators) { create_list(:moderator, 2, project: other_project) }
+
       example_request "List all moderators of a project" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq same_project_moderators.size + 1
       end
 
-      example "[error] Listing moderators of a project you don't moderate" do
+      example "[error] List all moderators of a project you don't moderate" do
         do_request project_id: other_project.id
         expect(status).to eq(401)
       end
@@ -47,7 +51,8 @@ resource "Moderators" do
 
       let(:project_id) { @project.id }
       let!(:same_project_moderators) { create_list(:moderator, 2, project: @project) }
-      example_request "List all moderators of a project" do
+
+      example_request "List all moderators of a project", document: false do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq same_project_moderators.size
@@ -171,7 +176,7 @@ resource "Moderators" do
           roles: [{'type' => 'project_moderator', 'project_id' => @project.id}]) 
       }
 
-      example_request "Search for users and whether or not they are member of the group" do
+      example_request "Search for users and whether or not they are moderator of the project" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to be >= 4
