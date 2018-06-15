@@ -6,7 +6,6 @@ import { Menu, Label } from 'semantic-ui-react';
 import { DropTarget } from 'react-dnd';
 import T from 'components/T';
 
-
 interface Props {
   phase: IPhaseData;
   active: boolean;
@@ -16,7 +15,6 @@ interface Props {
   phaseNumber: number;
   connectDropTarget: any;
 }
-
 
 class FilterSidebarPhasesItem extends React.Component<Props> {
   render() {

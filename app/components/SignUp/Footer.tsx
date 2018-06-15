@@ -210,19 +210,19 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     const { formatMessage } = this.props.intl;
     const { socialLoginClicked, socialLoginTaCAccepted } = this.state;
     const googleLoginEnabled = (!isNilOrError(tenant) ? get(tenant.attributes.settings.google_login, 'enabled', false) : false);
-    const facebookLoginEnabled = (!isNilOrError(tenant) ? get(tenant.attributes.settings.facebook_login, 'enabled', false) : false); 
+    const facebookLoginEnabled = (!isNilOrError(tenant) ? get(tenant.attributes.settings.facebook_login, 'enabled', false) : false);
     const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
 
     const googleCheckbox = (socialLoginClicked === 'google' && (
       <CSSTransition classNames="tac" timeout={timeout} exit={true}>
         <SocialSignInButtonInner>
-          <Checkbox 
+          <Checkbox
             value={socialLoginTaCAccepted}
             onChange={this.handleSocialLoginAcceptTaC('google')}
             disableLabelClick={true}
             label={
               <FormattedMessage
-                {...messages.acceptTermsAndConditionsGoogle} 
+                {...messages.acceptTermsAndConditionsGoogle}
                 values={{ tacLink: <Link to="pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link> }}
               />
             }
@@ -248,7 +248,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
             disableLabelClick={true}
             label={
               <FormattedMessage
-                {...messages.acceptTermsAndConditionsFacebook} 
+                {...messages.acceptTermsAndConditionsFacebook}
                 values={{ tacLink: <Link to="pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link> }}
               />
             }
@@ -276,7 +276,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
             <SocialSignInButtons>
               <FeatureFlag name="google_login">
                 <SocialSignInButton
-                  className={`google ${socialLoginClicked === 'google' && 'active'}`} 
+                  className={`google ${socialLoginClicked === 'google' && 'active'}`}
                   onClick={this.handleOnSSOClick('google')}
                 >
                   <TransitionGroup>

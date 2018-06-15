@@ -8,7 +8,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import NotificationWrapper from '../NotificationWrapper';
 import { Link } from 'react-router';
 
-
 type Props = {
   notification: IInviteAcceptedNotificationData;
 };

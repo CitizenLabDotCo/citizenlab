@@ -56,7 +56,6 @@ const TitleLink = styled.a`
   color: black;
 `;
 
-
 type Props = {
   idea: IIdeaData,
   phases: IPhaseData[],
@@ -126,7 +125,7 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & injectedLocali
     const attrs = idea.attributes;
     return (
       <React.Fragment>
-        <WrappedRow as={StyledRow} active={selected} onClick={this.onClickRow} ref={(instance) => {instance && connectDragSource(findDOMNode(instance));}}>
+        <WrappedRow as={StyledRow} active={selected} onClick={this.onClickRow} ref={(instance) => { instance && connectDragSource(findDOMNode(instance)); }}>
           <Table.Cell collapsing={true}>
             <Checkbox value={!!selected} onChange={this.onClickCheckbox} size="17px"/>
           </Table.Cell>

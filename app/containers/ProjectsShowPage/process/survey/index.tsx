@@ -33,7 +33,7 @@ class Survey extends React.PureComponent<Props, State> {
       const email = (authUser ? authUser.attributes.email : null);
 
       return (
-        <Container className={this.props['className']}>          
+        <Container className={this.props['className']}>
           {surveyService === 'typeform' &&
             <TypeformSurvey
               typeformUrl={surveyEmbedUrl}

@@ -31,7 +31,6 @@ class TestWrapper extends React.Component<Props, State> {
     this.setState({ rules: JSON.parse(rulesJson) });
   }, 1000, { leading: false, trailing: true });
 
-
   handleOnChangeReal = (rules) => {
     this.setState({ rules, rulesJson: JSON.stringify(rules) });
   }

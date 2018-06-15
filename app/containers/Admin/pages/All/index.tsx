@@ -26,7 +26,6 @@ const ButtonWrapper = styled.div`
   margin-top: 2rem;
 `;
 
-
 interface InputProps {}
 
 interface DataProps {

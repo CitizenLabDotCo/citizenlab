@@ -60,7 +60,7 @@ export default class IdeasIndex extends React.PureComponent<Props, State> {
           <PageTitle>
             <FormattedMessage {...messages.pageTitle} />
           </PageTitle>
-          <IdeaCards 
+          <IdeaCards
             type="load-more"
             sort="trending"
             pageSize={12}

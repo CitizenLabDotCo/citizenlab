@@ -495,7 +495,6 @@ class Invitations extends React.PureComponent<Props, State> {
     }
   }
 
-
   render () {
     const { projects, locale, tenantLocales, groups } = this.props;
     const {

@@ -13,7 +13,6 @@ import { Section, SectionTitle } from 'components/admin/Section';
 import { Formik } from 'formik';
 import AreaForm, { FormValues } from '../AreaForm';
 
-
 import { API } from 'typings';
 interface InputProps {}
 interface DataProps {
@@ -48,7 +47,7 @@ class Edit extends React.PureComponent<Props> {
 
   initialValues = () => {
     const { area } = this.props;
-    
+
     return !isNilOrError(area) && ({
       title_multiloc: area.attributes.title_multiloc,
       description_multiloc: area.attributes.description_multiloc

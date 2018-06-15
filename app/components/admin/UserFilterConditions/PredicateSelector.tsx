@@ -10,7 +10,6 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
-
 type Props = {
   ruleType: TRule['ruleType'];
   predicate: TRule['predicate'];
