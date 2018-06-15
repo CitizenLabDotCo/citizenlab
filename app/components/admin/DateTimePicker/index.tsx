@@ -20,7 +20,6 @@ const Wrapper = styled.div`
   border: solid 1px #ccc;
 
   input {
-    color: #333;
     font-size: 16px;
     font-weight: 400;
     outline: none;
@@ -53,11 +52,17 @@ const Wrapper = styled.div`
         }
       }
     }
+    .DateInput_input {
+      color: inherit;
+    }
   }
 
   .SingleDatePicker_picker {
     top: 69px !important;
     left: -1px !important;
+  }
+  .CalendarMonth_caption {
+    color: inherit;
   }
 `;
 

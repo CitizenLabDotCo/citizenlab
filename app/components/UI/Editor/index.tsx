@@ -127,6 +127,9 @@ const DraftEditorContainer: any = styled.div`
       cursor: pointer;
     }
   }
+  a {
+    color: inherit;
+  }
 `;
 
 export type Props = {

@@ -1,10 +1,10 @@
-import * as React from 'react';
+import React, { PureComponent } from 'react';
 
 type Props = {};
 
 type State = {};
 
-export default class ClusteringDashboard extends React.PureComponent<Props, State> {
+export default class ClusteringDashboard extends PureComponent<Props, State> {
   render() {
     return (
       <>

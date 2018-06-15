@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { PureComponent } from 'react';
 import { range } from 'lodash';
 import Button from 'components/UI/Button';
 import { Label, Icon } from 'semantic-ui-react';
@@ -13,9 +13,9 @@ type Props = {
 
 type State = {};
 
-const colors = ['yellow','purple','orange','teal'];
+const colors: ['yellow', 'purple', 'orange', 'teal'] = ['yellow', 'purple', 'orange', 'teal'];
 
-class ComparisonSwitcher extends React.Component<Props, State> {
+class ComparisonSwitcher extends PureComponent<Props, State> {
 
   handleSelectComparison = (i) => () => {
     this.props.onChangeActiveComparison(i);

@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import { Subscription } from 'rxjs';
 import { IClusteringData, clusteringsStream } from 'services/clusterings';
 import { isNilOrError } from 'utils/helperUtils';
@@ -17,7 +17,7 @@ interface State {
 
 export type GetClusteringsChildProps = IClusteringData[] | undefined | null | Error;
 
-export default class GetAreas extends React.Component<Props, State> {
+export default class GetAreas extends Component<Props, State> {
   private subscriptions: Subscription[];
 
   constructor(props: Props) {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 import { isEqual, isEmpty } from 'lodash';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer } from 'recharts';
@@ -18,10 +18,10 @@ type State = {
 
 const Container = styled.div``;
 
-class GenderChart extends Component<Props, State> {
+class GenderChart extends PureComponent<Props, State> {
   subscription: Subscription;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       series: [],

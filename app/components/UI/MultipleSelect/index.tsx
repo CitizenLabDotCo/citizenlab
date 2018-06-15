@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { isBoolean } from 'lodash';
 import ReactSelect from 'react-select';
 import { IOption } from 'typings';
