@@ -25,7 +25,6 @@ const ResourceHeader = styled.div`
 `;
 
 const Title = styled.h1`
-  color: ${color('title')};
   font-size: ${fontSize('xxxl')};
   line-height: 40px;
   font-weight: 600;
@@ -70,11 +69,11 @@ const Tab = styled.li`
   }
 
   &:hover a {
-    color: ${color('text')};
+    color: ${color('adminTextColor')};
   }
 
   &.active a {
-    color: ${color('text')};
+    color: ${color('adminTextColor')};
     border-color: ${color('clBlue')};
   }
 
@@ -85,7 +84,7 @@ const Tab = styled.li`
 
 const ChildWrapper = styled.div`
   border: 1px solid ${color('separation')};
-  background: #fff;
+  background: ${color('adminContentBackground')};
   margin-bottom: 2rem;
   padding: 3rem;
 `;

@@ -276,7 +276,7 @@ class Footer extends React.PureComponent<Props, State> {
       const footerLocale = `footer-city-logo-${locale}`;
 
       return (
-        <Container className={this.props['className']} id="hook-footer">
+        <Container role="contentinfo" className={this.props['className']} id="hook-footer">
           {showCityLogoSection &&
             <Fragment name={footerLocale}>
               <FirstLine id="hook-footer-logo">

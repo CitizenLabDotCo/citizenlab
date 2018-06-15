@@ -1,29 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { isBoolean, isNil } from 'lodash';
-
 import styled, { withTheme } from 'styled-components';
 import { darken, rgba, readableColor } from 'polished';
-import { color } from 'utils/styleUtils';
-
+import { color, invisibleA11yText } from 'utils/styleUtils';
 import Spinner from 'components/UI/Spinner';
-import Icon, { IconNames } from 'components/UI/Icon';
-
-const StyledButton = styled.button``;
-const StyledLink = styled(Link)``;
-const StyledA = styled.a``;
-const StyledIcon = styled(Icon)``;
-
-const ButtonText = styled.span`
-  margin: 0;
-  margin-top: -1px;
-  padding: 0;
-  white-space: nowrap;
-
-  ${StyledIcon} + & {
-    margin-left: 10px;
-  }
-`;
+import Icon, { Props as IconProps } from 'components/UI/Icon';
 
 function getFontSize(size) {
   switch (size) {
@@ -118,6 +100,26 @@ function buttonTheme(
   `;
 }
 
+const StyledButton = styled.button``;
+const StyledLink = styled(Link)``;
+const StyledA = styled.a``;
+const StyledIcon = styled(Icon)`
+  &.hasText.left {
+    margin-right: 10px;
+  }
+
+  &.hasText.right {
+    margin-left: 10px;
+  }
+`;
+
+const ButtonText = styled.div`
+  margin: 0;
+  margin-top: -1px;
+  padding: 0;
+  white-space: nowrap;
+`;
+
 const Container: any = styled.div`
   align-items: center;
   display: flex;
@@ -126,15 +128,12 @@ const Container: any = styled.div`
   margin: 0;
   padding: 0;
   user-select: none;
-
   * {
     user-select: none;
   }
-
   &.fullWidth {
     width: 100%;
   }
-
   button,
   a {
     align-items: center;
@@ -149,60 +148,47 @@ const Container: any = styled.div`
     position: relative;
     transition: all 100ms ease-out;
     width: ${(props: any) => props.width || '100%'};
-
     &:not(.disabled) {
       cursor: pointer;
     }
-
     &.disabled {
       pointer-events: none;
     }
-
     &.fullWidth {
       width: 100%;
       flex: 1;
     }
-
     ${ButtonText} {
       opacity: ${(props: any) => props.processing ? 0 : 1};
       font-size: ${(props: any) => getFontSize(props.size)};
       line-height: ${(props: any) => getLineHeight(props.size)};
     }
-
     ${StyledIcon} {
       height: ${(props: any) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
       width: ${(props: any) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
       opacity: ${(props: any) => props.processing ? 0 : 1};
     }
-
     &.primary {
       ${(props: any) => buttonTheme((props.theme.colorMain || 'e0e0e0'), '#fff')}
     }
-
     &.secondary {
       ${buttonTheme(color('lightGreyishBlue'), color('label'), 'transparent', darken(0.05, color('lightGreyishBlue')))}
     }
-
     &.primary-outlined {
       ${(props: any) => buttonTheme('transparent', props.theme.colorMain || 'e0e0e0', props.theme.colorMain || 'e0e0e0')}
     }
-
     &.secondary-outlined {
       ${buttonTheme('transparent', color('label'), color('label'))}
     }
-
     &.text {
       ${(props: any) => buttonTheme('transparent', props.textColor || color('label'), undefined, undefined, props.textHoverColor)}
     }
-
     &.success {
       ${buttonTheme(rgba(color('success'), .15), color('success'))}
     }
-
     &.error {
       ${buttonTheme(rgba(color('error'), .15), color('error'))}
     }
-
     &.cl-blue {
       ${buttonTheme(color('clBlue'), 'white')}
     }
@@ -220,32 +206,38 @@ const SpinnerWrapper = styled.div`
   justify-content: center;
 `;
 
+const HiddenText = styled.span`
+  ${invisibleA11yText()}
+`;
+
 export type ButtonStyles = 'primary' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'error' | 'text' | 'cl-blue';
 
 type Props = {
-  text?: string | JSX.Element;
-  textColor?: string;
-  textHoverColor?: string;
   children?: any;
+  circularCorners?: boolean;
+  className?: string;
   size?: '1' | '2' | '3' | '4';
   style?: ButtonStyles;
   width?: string;
   height?: string;
   padding?: string;
   justify?: 'left' | 'center' | 'right' | 'space-between';
-  icon?: IconNames;
+  icon?: IconProps['name'];
   iconPos?: 'left' | 'right';
   iconSize?: string;
   processing?: boolean;
   disabled?: boolean;
   fullWidth?: boolean;
-  onClick?: (arg: React.FormEvent<HTMLButtonElement>) => void;
-  className?: string;
-  circularCorners?: boolean;
-  linkTo?: string;
+  hiddenText?: string | JSX.Element;
+  iconTitle?: IconProps['title'];
   id?: string;
-  theme?: object;
+  linkTo?: string;
+  onClick?: (arg: React.FormEvent<HTMLButtonElement>) => void;
   setSubmitButtonRef?: (value: HTMLInputElement) => void;
+  text?: string | JSX.Element;
+  textColor?: string;
+  textHoverColor?: string;
+  theme?: object | undefined;
 };
 
 type State = {};
@@ -287,7 +279,7 @@ class Button extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { text, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, children, linkTo } = this.props;
+    const { text, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, iconTitle, hiddenText, children, linkTo } = this.props;
     let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
 
     id = (id || '');
@@ -302,14 +294,15 @@ class Button extends React.PureComponent<Props, State> {
 
     const spinnerSize = this.getSpinnerSize(size);
     const spinnerColor = this.getSpinnerColor(style);
-    const buttonClassnames = `Button ${disabled ? 'disabled' : ''} ${processing ? 'processing' : ''} ${fullWidth ? 'fullWidth' : ''} ${style}`;
+    const buttonClassnames = `Button button ${disabled ? 'disabled' : ''} ${processing ? 'processing' : ''} ${fullWidth ? 'fullWidth' : ''} ${style}`;
     const hasText = (!isNil(text) || !isNil(children));
 
     const childContent = (
       <>
-        {icon && iconPos === 'left' && <StyledIcon name={icon} />}
+        {icon && iconPos === 'left' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} />}
         {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
-        {icon && iconPos === 'right' && <StyledIcon name={icon} />}
+        {hiddenText && <HiddenText>{hiddenText}</HiddenText>}
+        {icon && iconPos === 'right' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} />}
         {processing && <SpinnerWrapper><Spinner size={spinnerSize} color={spinnerColor} /></SpinnerWrapper>}
       </>
     );

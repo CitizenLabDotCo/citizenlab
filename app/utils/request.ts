@@ -1,5 +1,4 @@
 import 'whatwg-fetch';
-import * as withQuery from 'with-query';
 import qs from 'qs';
 import { getJwt } from 'utils/auth/jwt';
 
@@ -14,29 +13,12 @@ export default function request<T>(url, data, options, queryParameters): Promise
   };
 
   if (jwt) {
-    defaultOptions.headers['Authorization'] = `Bearer ${jwt}`; // eslint-disable-line
+    defaultOptions.headers['Authorization'] = `Bearer ${jwt}`;
   }
 
   if (data) {
     defaultOptions.body = JSON.stringify(data);
   }
-
-  // let response: Response = null as any;
-  // let json: Promise<any> = {} as any;
-
-  // try {
-  //   response = await fetch(urlWithParams, { ...defaultOptions, ...options });
-  //   json = await response.json();
-
-  //   if (response.ok !== true) {
-  //     throw new Error('fetch error');
-  //   }
-
-  //   return json;
-  // } catch {
-  //   const status = response.statusText || response.status.toString();
-  //   throw { status, response, json };
-  // }
 
   return fetch(urlWithParams, { ...defaultOptions, ...options }).then((response) => {
     return Promise.all([
@@ -61,7 +43,8 @@ export default function request<T>(url, data, options, queryParameters): Promise
 
 // we use xhr rather than fetch API, to enforce response type
 export function requestBlob(url, type, queryParameters?) {
-  const urlWithParams = (queryParameters ? withQuery(url, queryParameters) : url);
+  const urlParams = qs.stringify(queryParameters, { arrayFormat: 'brackets', addQueryPrefix: true });
+  const urlWithParams = `${url}${urlParams}`;
 
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();

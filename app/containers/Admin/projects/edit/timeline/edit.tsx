@@ -4,10 +4,9 @@ import 'react-dates/lib/css/_datepicker.css';
 
 // Libraries
 import React from 'react';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as moment from 'moment';
 import { get, isEmpty, forOwn } from 'lodash';
 
@@ -53,7 +52,7 @@ const PhaseForm = styled.form`
 
     .DateInput,
     .DateInput_input {
-      color: #333;
+      color: inherit;
       font-size: 16px;
       font-weight: 400;
       background: transparent;
@@ -62,6 +61,10 @@ const PhaseForm = styled.form`
 
   .DateRangePicker_picker {
     z-index: 2;
+  }
+
+  .CalendarMonth_caption {
+    color: inherit;
   }
 `;
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Icon from 'components/UI/Icon';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
@@ -243,7 +243,7 @@ export default class Error extends React.PureComponent<Props, State> {
 
                       return (
                         <ErrorListItem key={error.value} className={`${apiErrors.length > 1 && 'isList'}`}>
-                          <FormattedMessage 
+                          <FormattedMessage
                             {...errorMessage}
                             values={{
                               row: <strong>{row}</strong>,

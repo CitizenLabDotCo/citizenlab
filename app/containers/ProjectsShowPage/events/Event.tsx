@@ -68,7 +68,7 @@ const EventDates = styled.div`
   }
 
   ${media.smallerThanMaxTablet`
-    
+
   `}
 `;
 

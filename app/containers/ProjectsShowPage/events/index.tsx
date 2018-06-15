@@ -53,8 +53,6 @@ const Mod = styled(ProjectModeratorIndicator)`
   max-width: ${props => props.theme.maxPageWidth}px;
 `;
 
-
-
 interface InputProps {}
 
 interface DataProps {

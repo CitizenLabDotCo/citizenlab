@@ -3,8 +3,6 @@ import React from 'react';
 import { get } from 'lodash';
 import { adopt } from 'react-adopt';
 import { Link, withRouter, WithRouterProps } from 'react-router';
-import CSSTransition from 'react-transition-group/CSSTransition';
-import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -14,6 +12,7 @@ import MobileNavigation from './components/MobileNavigation';
 import UserMenu from './components/UserMenu';
 import IdeaButton from 'components/IdeaButton';
 import Icon from 'components/UI/Icon';
+import Dropdown from 'components/UI/Dropdown';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -150,7 +149,6 @@ const NavigationDropdownItemIcon = styled(Icon)`
   fill: inherit;
   margin-left: 4px;
   margin-top: 3px;
-  transition: all 100ms ease-out;
 `;
 
 const NavigationDropdownItem = styled.button`
@@ -161,6 +159,7 @@ const NavigationDropdownItem = styled.button`
   font-size: ${fontSize('large')};
   font-weight: 400;
   transition: all 100ms ease-out;
+  cursor: pointer;
 
   &:hover,
   &:focus {
@@ -169,84 +168,17 @@ const NavigationDropdownItem = styled.button`
   }
 `;
 
-const NavigationDropdownMenu = styled(clickOutside)`
-  display: flex;
-  flex-direction: column;
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
-  border: solid 1px #e0e0e0;
-  position: absolute;
-  top: 35px;
-  left: -10px;
-  transform-origin: left top;
-  z-index: 5;
-
-  * {
-    user-select: none;
-  }
-
-  ::before,
-  ::after {
-    content: '';
-    display: block;
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-style: solid;
-  }
-
-  ::after {
-    top: -20px;
-    left: 20px;
-    border-color: transparent transparent #fff transparent;
-    border-width: 10px;
-  }
-
-  ::before {
-    top: -22px;
-    left: 19px;
-    border-color: transparent transparent #e0e0e0 transparent;
-    border-width: 11px;
-  }
-
-  &.dropdown-enter {
-    opacity: 0;
-    transform: scale(0.9);
-
-    &.dropdown-enter-active {
-      opacity: 1;
-      transform: scale(1);
-      transition: all 200ms cubic-bezier(0.19, 1, 0.22, 1);
-    }
-  }
-`;
-
-const NavigationDropdownMenuInner = styled.div`
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-`;
-
-const NavigationDropdownList = styled.ul`
-  -webkit-overflow-scrolling: touch;
-  display: flex;
-  flex-direction: column;
-  list-style: none;
-  margin: 10px 5px 10px 10px;
-  max-height: 30rem;
-  overflow-y: auto;
-  padding: 0;
-  width: 20rem;
-`;
-
-const NavigationDropdownListItem = styled(Link)`
-  ${ellipsis('20rem') as any}
+const ProjectsListItem = styled(Link)`
+  color: ${(props) => props.theme.colors.label};
+  font-size: ${fontSize('large')};
+  font-weight: 400;
+  line-height: 22px;
+  text-decoration: none;
+  padding: 10px;
+  margin-right: 5px;
   background: #fff;
   border-radius: 5px;
   color: ${colors.label};
-  font-size: ${fontSize('large')};
-  font-weight: 400;
   padding: 10px;
   text-decoration: none;
 
@@ -258,7 +190,7 @@ const NavigationDropdownListItem = styled(Link)`
   }
 `;
 
-const NavigationDropdownFooter = styled(Link)`
+const ProjectsListFooter = styled(Link)`
   width: 100%;
   color: ${colors.label};
   font-size: 18px;
@@ -337,6 +269,7 @@ const StyledIdeaButton = styled(IdeaButton)`
   }
 
   .buttonText {
+    font-size: 18px !important;
     color: ${(props) => props.theme.colorMain};
   }
 `;
@@ -405,7 +338,8 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
 
   handleProjectsDropdownToggle = (event: React.FormEvent<any>) => {
     event.preventDefault();
-    this.setState(state => ({ projectsDropdownOpened: !state.projectsDropdownOpened }));
+    event.stopPropagation();
+    this.setState(({ projectsDropdownOpened }) => ({ projectsDropdownOpened: !projectsDropdownOpened }));
   }
 
   handleProjectsDropdownOnClickOutside = (event: MouseEvent | KeyboardEvent) => {
@@ -440,7 +374,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
           <MobileNavigation />
         }
 
-        <Container className={`${isAdminPage ? 'admin' : 'citizen'} ${'alwaysShowBorder'}`}>
+        <Container role="banner" className={`${isAdminPage ? 'admin' : 'citizen'} ${'alwaysShowBorder'}`}>
           <Left>
             {tenantLogo &&
               <LogoLink to="/">
@@ -453,38 +387,31 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
                 <FormattedMessage {...messages.pageOverview} />
               </NavigationItem>
 
-              {(projectsList === null || (projectsList && projectsList.length > 0)) &&
+              {tenantLocales && projectsList && projectsList.length > 0 &&
                 <NavigationDropdown>
                   <NavigationDropdownItem aria-haspopup="true" onClick={this.handleProjectsDropdownToggle}>
                     <FormattedMessage {...messages.pageProjects} />
                     <NavigationDropdownItemIcon name="dropdown" />
                   </NavigationDropdownItem>
-                  <CSSTransition
-                    in={projectsDropdownOpened}
-                    timeout={200}
-                    mountOnEnter={true}
-                    unmountOnExit={true}
-                    classNames="dropdown"
-                    exit={false}
-                  >
-                    <NavigationDropdownMenu onClickOutside={this.handleProjectsDropdownOnClickOutside}>
-                      <NavigationDropdownMenuInner>
-                        <NavigationDropdownList aria-label="submenu">
-                          {tenantLocales && projectsList && projectsList.length > 0 && projectsList.map((project) => (
-                            <li key={project.id}>
-                              <NavigationDropdownListItem to={getProjectUrl(project)}>
-                                {!isNilOrError(locale) ? getLocalized(project.attributes.title_multiloc, locale, tenantLocales) : null}
-                              </NavigationDropdownListItem>
-                            </li>
-                          ))}
-                        </NavigationDropdownList>
 
-                        <NavigationDropdownFooter to={`/projects`}>
-                          <FormattedMessage {...messages.allProjects} />
-                        </NavigationDropdownFooter>
-                      </NavigationDropdownMenuInner>
-                    </NavigationDropdownMenu>
-                  </CSSTransition>
+                  <Dropdown
+                    opened={projectsDropdownOpened}
+                    content={(
+                      <>
+                        {projectsList.map((project) => (
+                          <ProjectsListItem key={project.id} to={getProjectUrl(project)}>
+                            {!isNilOrError(locale) ? getLocalized(project.attributes.title_multiloc, locale, tenantLocales) : null}
+                          </ProjectsListItem>
+                        ))}
+                      </>
+                    )}
+                    footer={(
+                      <ProjectsListFooter to={`/projects`}>
+                        <FormattedMessage {...messages.allProjects} />
+                      </ProjectsListFooter>
+                    )}
+                    toggleOpened={this.handleProjectsDropdownToggle}
+                  />
                 </NavigationDropdown>
               }
 
@@ -500,7 +427,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
 
           <Right>
             <RightItem className="addIdea" loggedIn={authUser !== null}>
-              <StyledIdeaButton style="secondary-outlined" />
+              <StyledIdeaButton style="secondary-outlined" size="1" />
             </RightItem>
 
             {!authUser &&
@@ -526,7 +453,8 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
             {tenantLocales.length > 1 && locale &&
               <RightItem>
                 <LanguageSelector localeOptions={tenantLocales} currentLocale={locale} />
-              </RightItem>}
+              </RightItem>
+            }
 
           </Right>
         </Container>

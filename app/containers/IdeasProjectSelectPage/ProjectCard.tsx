@@ -224,8 +224,8 @@ class ProjectCard extends React.PureComponent<Props, State> {
       const formattedFutureEnabledDate = (futureEnabledDate ? moment(futureEnabledDate, 'YYYY-MM-DD').format('LL') : null);
 
       return (
-        <Container 
-          onClick={this.handleOnClick} 
+        <Container
+          onClick={this.handleOnClick}
           className={`${className} ${selected && 'selected'} ${enabled && 'enabled'}`}
         >
           <ContainerInner>

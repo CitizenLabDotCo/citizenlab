@@ -6,20 +6,11 @@ module.exports = {
   '@tags': ['citizen', 'auth', 'register'],
   afterEach,
   register: (browser) => {
+    const signupPage = browser.page.signup();
+    signupPage
+    .navigate()
+    .signup(`Test ${hash}`, `Account ${hash}`, `test+${hash}@citizenlab.co`, '123456789');
     browser
-    .url(`http://${process.env.ROOT_URL}/sign-up`)
-    .waitForElementVisible('#e2e-signup-step1')
-    .setValue('#firstName', `Test ${hash}`)
-    .setValue('#lastName', `Account ${hash}`)
-    .setValue('#email', `test+${hash}@citizenlab.co`)
-    .setValue('#password', '123456789')
-    .execute('window.scrollTo(0,document.body.scrollHeight);')
-    .click('.e2e-terms-and-conditions > :first-child')
-    .click('#e2e-signup-step1-button')
-    .waitForElementVisible('#e2e-signup-step2-button')
-    .execute('window.scrollTo(0,document.body.scrollHeight);')
-    .pause(500)
-    .click('#e2e-signup-step2-button')
     .waitForElementVisible('#e2e-landing-page')
     .click('#e2e-user-menu-container')
     .waitForElementVisible('#e2e-user-menu-dropdown')
