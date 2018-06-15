@@ -76,7 +76,6 @@ resource "Stats" do
       end
     end
 
-
     get "web_api/v1/stats/users_by_birthyear" do
       time_boundary_parameters self
 
@@ -217,12 +216,6 @@ resource "Stats" do
       CustomField.find_by(code: 'education').update(enabled: true)
       create_list(:vote, 6)
       create_list(:vote, 2, mode: 'down')
-      # @ideas_with_topics = create_list(:idea_with_topics, 5)
-      # @ideas_with_areas = create_list(:idea_with_areas, 5)
-      # @users = create_list(:user_with_demographics, 10)
-      # @votes = ['up','up','up','up','up','up','down','down'].each do |mode| 
-      #   create(:vote, mode: mode, user: User.all.shuffle.first) 
-      # end
     end
 
     get "web_api/v1/stats/votes_count" do
@@ -271,8 +264,8 @@ resource "Stats" do
 
     get "web_api/v1/stats/votes_by_domicile" do
       before do
-       @eversem = Area.create!(title_multiloc: {'en' => 'Eversem'}).id
-       @wolvertem = Area.create!(title_multiloc: {'en' => 'Wolvertem'}).id
+       @eversem = create(:area, title_multiloc: {'en' => 'Eversem'}).id
+       @wolvertem = create(:area, title_multiloc: {'en' => 'Wolvertem'}).id
         @ideas = create_list(:idea, 5)
         @someone = create(:user, domicile: @eversem)
         create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
@@ -301,36 +294,77 @@ resource "Stats" do
     end
 
     get "web_api/v1/stats/votes_by_education" do
+      before do
+        @ideas = create_list(:idea, 5)
+        @someone = create(:user, education: '2')
+        create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
+        create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
+        [['up','2'],['up','7'],['down','7'],['up',nil]].each do |mode, education|
+          create(:vote, mode: mode, votable: @ideas.shuffle.first,
+            user: (if education then create(:user, education: education) else create(:user) end))
+        end
+      end
       time_boundary_parameters self
       parameter :ideas, "Array of idea ids to get the stats for.", required: false
 
       let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
       let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      let(:ideas) { @ideas.map(&:id) }
 
       example_request "Votes by education" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        # TODO
+        expect(json_response).to match({
+          up: {:"2" => 2, :"7" => 1, :"_blank" => 1}, 
+          down: {:"2" => 1, :"7" => 1}, 
+          total: {:"2" => 3, :"7" => 2, :"_blank" => 1}
+        })
       end
     end
 
     get "web_api/v1/stats/votes_by_gender" do
+      before do
+        @ideas = create_list(:idea, 5)
+        @someone = create(:user, gender: 'female')
+        create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
+        create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
+        [['up','female'],['up','male'],['down','male'],['up',nil]].each do |mode, gender|
+          create(:vote, mode: mode, votable: @ideas.shuffle.first,
+            user: (if gender then create(:user, gender: gender) else create(:user) end))
+        end
+      end
       time_boundary_parameters self
       parameter :ideas, "Array of idea ids to get the stats for.", required: false
 
       let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
       let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      let(:ideas) { @ideas.map(&:id) }
 
       example_request "Votes by gender" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        # TODO
+        expect(json_response).to match({
+          up: {:"female" => 2, :"male" => 1, :"_blank" => 1}, 
+          down: {:"female" => 1, :"male" => 1}, 
+          total: {:"female" => 3, :"male" => 2, :"_blank" => 1}
+        })
       end
     end
 
     get "web_api/v1/stats/votes_by_custom_field" do
       before do
-        @custom_field = create(:custom_field)
+        @custom_field = create(:custom_field_select, key: 'politician')
+        @opt1 = create(:custom_field_option, custom_field: @custom_field, key: 'passive_politician')
+        @opt2 = create(:custom_field_option, custom_field: @custom_field, key: 'retarded_politician')
+        @opt3 = create(:custom_field_option, custom_field: @custom_field, key: 'no')
+        @ideas = create_list(:idea, 5)
+        @someone = create(:user, custom_field_values: {@custom_field.key => @opt1.key})
+        create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
+        create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
+        [['up',@opt1],['up',@opt2],['down',@opt2],['down',@opt3],['up',nil]].each do |mode, opt|
+          create(:vote, mode: mode, votable: @ideas.shuffle.first,
+            user: (if opt then create(:user, custom_field_values: {@custom_field.key => opt.key}) else create(:user) end))
+        end
       end
       time_boundary_parameters self
       parameter :ideas, "Array of idea ids to get the stats for.", required: false
@@ -339,11 +373,16 @@ resource "Stats" do
       let(:custom_field) { @custom_field.id }
       let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
       let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      let(:ideas) { @ideas.map(&:id) }
 
       example_request "Votes by custom field" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        # TODO
+        expect(json_response).to match({
+          up: {@opt1.key.to_sym => 2, @opt2.key.to_sym => 1, :"_blank" => 1}, 
+          down: {@opt1.key.to_sym => 1, @opt2.key.to_sym => 1, @opt3.key.to_sym => 1}, 
+          total: {@opt1.key.to_sym => 3, @opt2.key.to_sym => 2, @opt3.key.to_sym => 1, :"_blank" => 1}
+        })
       end
     end
 

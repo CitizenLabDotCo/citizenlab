@@ -268,6 +268,7 @@ resource "Ideas" do
 
     describe do
       let(:slug) {"unexisting-idea"}
+
       example "[error] Get an unexisting idea", document: false do
         do_request
         expect(status).to eq 404
@@ -337,6 +338,7 @@ resource "Ideas" do
       let(:project_id) { project.id }
       let(:title_multiloc) { {'en' => 'I have a fantastic Idea but with a superduper extremely long title so someone should do something about this or else it may look bad in the UI and no one would read it anyways'} } # { idea.title_multiloc }
       let(:body_multiloc) { idea.body_multiloc }
+
       example_request "[error] Create an idea with too long title", document: false do
         expect(response_status).to eq 422
         json_response = json_parse(response_body)
@@ -363,6 +365,13 @@ resource "Ideas" do
         expect(response_status).to eq 401
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors, :base).first[:error]).to eq 'not_ideation'
+      end
+    end
+
+    describe do
+      let(:project_id) { nil }
+      example_request "[error] Create an idea without a project", document: false do
+        expect(response_status).to eq 422
       end
     end
     
@@ -428,6 +437,7 @@ resource "Ideas" do
 
     describe do
       let(:title_multiloc) { {"en" => "Changed title" } }
+
       example_request "Update an idea" do
         expect(status).to be 200
         json_response = json_parse(response_body)
@@ -440,7 +450,6 @@ resource "Ideas" do
 
       example "Check for the automatic creation of an upvote by the author when the publication status of an idea is updated from draft to published", document: false do
         @idea.update(publication_status: "draft")
-
         do_request idea: { publication_status: "published" }
         json_response = json_parse(response_body) 
         new_idea = Idea.find(json_response.dig(:data, :id))
@@ -535,7 +544,7 @@ resource "Ideas" do
       @idea =  create(:idea, author: @user, publication_status: 'draft')
     end
     parameter :publication_status, "Either #{Idea::PUBLICATION_STATUSES.join(', ')}", required: true, scope: :idea
-
+    
     let(:id) { @idea.id }
     let(:publication_status) { 'published' }
 

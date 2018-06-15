@@ -92,18 +92,18 @@ resource "ProjectImage" do
       expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)
       expect(json_response.dig(:data,:attributes,:ordering)).to eq(2)
     end
-
   end
 
   delete "web_api/v1/projects/:project_id/images/:image_id" do
     let(:project_id) { @project.id }
     let(:image_id) { ProjectImage.first.id }
 
-    example_request "Delete an image on a project" do
+    example_request "Delete an image from a project" do
       expect(response_status).to eq 200
       expect{ProjectImage.find(image_id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
+
 
   private
 
