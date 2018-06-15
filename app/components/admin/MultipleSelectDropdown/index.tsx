@@ -89,7 +89,7 @@ type choiceItem = {
 
 interface Props {
   choices: choiceItem[];
-  messages: { dropdownFooterMessage: Message };
+  dropdownFooterMessage: Message;
   onSubmit: (ids: string[]) => Promise<any>;
   children: JSX.Element;
   emitSuccess: (ids: string) => void;
@@ -162,7 +162,7 @@ export default class MultipleSelectDropdown extends React.PureComponent<Props, S
       </DropdownList>
 
       <DropdownFooter onClick={this.submit(this.state.chosen)} className="e2e-dropdown-submit">
-        <FormattedMessage {...this.props.messages.dropdownFooterMessage} />
+        <FormattedMessage {...this.props.dropdownFooterMessage} />
       </DropdownFooter>
     </DropdownMenuInner>
   )
