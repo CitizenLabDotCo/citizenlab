@@ -88,8 +88,8 @@ resource "Invites" do
     end
 
     get "web_api/v1/invites/as_xlsx" do
-      let!(:invites) { create_list(:invite, 2)}
-      let!(:invite_with_group) { create(:invite, invitee: create(:admin, groups: create_list(:group, 2)))}
+      let!(:invites) { create_list(:invite, 2) }
+      let!(:invite_with_group) { create(:invite, invitee: create(:admin, manual_groups: create_list(:group, 2))) }
 
       example_request "XLSX export" do
         expect(status).to eq 200
@@ -116,7 +116,7 @@ resource "Invites" do
         let(:emails) { 5.times.map{Faker::Internet.email}.concat([nil]) }
         let(:group_ids) { [create(:group).id] }
         let(:project) { create(:project) }
-        let(:roles) {[{"type" => "project_moderator", "project_id" => project.id}, {"type" => "admin"}]}
+        let(:roles) { [{"type" => "project_moderator", "project_id" => project.id}, {"type" => "admin"}] }
         let(:locale) { "nl-NL" }
         let(:invite_text) { "Welcome, my friend!" }
 

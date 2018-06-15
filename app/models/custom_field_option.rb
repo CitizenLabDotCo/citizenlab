@@ -10,6 +10,10 @@ class CustomFieldOption < ApplicationRecord
   validate :belongs_to_select_field
 
   before_validation :generate_key, on: :create
+  before_destroy :check_group_references, prepend: true
+
+
+  private
 
   def belongs_to_select_field
     if custom_field && !custom_field.support_options?
@@ -26,6 +30,13 @@ class CustomFieldOption < ApplicationRecord
       self.key = CustomFieldService.new.generate_key(self, title_multiloc.values.first) do |key_proposal|
         self.class.find_by(key: key_proposal, custom_field: self.custom_field)
       end
+    end
+  end
+
+  def check_group_references
+    if Group.using_custom_field_option(self).exists?
+      self.errors.add(:base, :dangling_group_references, message: Group.using_custom_field_option(self).all.map(&:id).join(","))
+      throw :abort
     end
   end
 end

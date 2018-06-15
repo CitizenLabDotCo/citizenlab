@@ -24,8 +24,16 @@ class MembershipPolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
+  def show_by_user_id?
+    show?
+  end
+
   def destroy?
     user&.active? && user.admin?
+  end
+
+  def destroy_by_user_id?
+    destroy?
   end
 
   def users_search?

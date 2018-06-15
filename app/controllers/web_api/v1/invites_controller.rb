@@ -49,7 +49,7 @@ class WebApi::V1::InvitesController < ApplicationController
     authorize :invite
 
     I18n.with_locale(current_user&.locale) do
-      @invites = policy_scope(Invite).includes(invitee: [:groups])
+      @invites = policy_scope(Invite).includes(invitee: [:manual_groups])
       xlsx = XlsxService.new.generate_invites_xlsx @invites
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'invites.xlsx'
     end

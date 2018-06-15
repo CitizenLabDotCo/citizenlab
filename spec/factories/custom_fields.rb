@@ -23,6 +23,41 @@ FactoryBot.define do
       enabled true
     end
 
+    factory :custom_field_multiselect do
+      title_multiloc {{
+        "en" => "What languages do you speak?"
+      }}
+      required false
+      input_type "multiselect"
+      enabled true
+    end
+
+    factory :custom_field_checkbox do
+      title_multiloc {{
+        "en" => "I want to join the army"
+      }}
+      required true # default should be false, right?
+      input_type "checkbox"
+      enabled true
+    end
+
+    factory :custom_field_date do
+      title_multiloc {{
+        "en" => "When did you last see a mermaid?"
+      }}
+      required false
+      input_type "date"
+      enabled true
+    end
+
+    factory :custom_field_number do
+      title_multiloc {{
+        "en" => "How many cheese burgers can you put in your mouth without swallowing?"
+      }}
+      required false
+      input_type "number"
+      enabled true
+    end
 
   end
 end

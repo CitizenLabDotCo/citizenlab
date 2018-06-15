@@ -236,10 +236,10 @@ resource "Stats" do
     get "web_api/v1/stats/votes_by_birthyear" do
       before do
         @ideas = create_list(:idea, 5)
-        @someone = create(:user, birthyear: '1984')
+        @someone = create(:user, birthyear: 1984)
         create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
-        [['up','1984'],['up','1992'],['down','1992'],['up',nil]].each do |mode, birthyear|
+        [['up',1984],['up',1992],['down',1992],['up',nil]].each do |mode, birthyear|
           create(:vote, mode: mode, votable: @ideas.shuffle.first,
             user: (if birthyear then create(:user, birthyear: birthyear) else create(:user) end))
         end

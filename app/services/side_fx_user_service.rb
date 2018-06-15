@@ -15,6 +15,7 @@ class SideFxUserService
     IdentifyToSegmentJob.perform_later(user)
     GenerateUserAvatarJob.perform_later(user)
     LogActivityJob.set(wait: 10.seconds).perform_later(user, 'created', user, user.created_at.to_i)
+    UpdateMemberCountJob.perform_later
     if user.registration_completed_at
       LogActivityJob.perform_later(user, 'completed_registration', user, user.created_at.to_i)
     end
@@ -29,6 +30,7 @@ class SideFxUserService
     if user.registration_completed_at_previously_changed?
       LogActivityJob.perform_later(user, 'completed_registration', current_user, user.updated_at.to_i)
     end
+    UpdateMemberCountJob.perform_later
     if changed_to_admin? user
       LogActivityJob.set(wait: 5.seconds).perform_later(user, 'admin_rights_given', current_user, user.updated_at.to_i)
       current_user_serializer = "WebApi::V1::External::UserSerializer".constantize
@@ -47,6 +49,7 @@ class SideFxUserService
   def after_destroy frozen_user, current_user
     serialized_user = clean_time_attributes(frozen_user.attributes)
     LogActivityJob.perform_later(encode_frozen_resource(frozen_user), 'deleted', current_user, Time.now.to_i, payload: {user: serialized_user})
+    UpdateMemberCountJob.perform_later
   end
 
 
