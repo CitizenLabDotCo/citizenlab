@@ -1,11 +1,11 @@
 // Libraries
 import React from 'react';
+import { get } from 'lodash';
 
 import { IStreamParams, IStream } from 'utils/streams';
 
 // Services
-import { FoundUser as GroupsFoundUser } from 'services/groups';
-import { FoundUser as ModeratorsFoundUser } from 'services/moderators';
+import { IGroupMembershipsFoundUsers, IGroupMembershipsFoundUserData } from 'services/groupMemberships';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -37,7 +37,6 @@ const StyledSelectWrapper = styled.div`
 `;
 
 const StyledOption = styled.div`
-  color: black;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -82,14 +81,10 @@ const OptionIcon = styled(Icon)`
 // Typing
 import { IOption, Message } from 'typings';
 
-type FoundResponse = {
-  data: GroupsFoundUser[] | ModeratorsFoundUser[];
-};
-
 interface Props {
   resourceId: string;
   messages: {addUser: Message};
-  searchFunction: (resourceId: string, streamParams: IStreamParams) => IStream<FoundResponse>;
+  searchFunction: (resourceId: string, streamParams: IStreamParams) => IStream<IGroupMembershipsFoundUsers>;
   addFunction: (resourceId: string, userId: string) => Promise<{}>;
 }
 
@@ -99,14 +94,13 @@ interface State {
   loading: boolean;
 }
 
-function isGroupUser(user: GroupsFoundUser | ModeratorsFoundUser): user is GroupsFoundUser {
-  return (user as GroupsFoundUser).attributes.is_member !== undefined;
+function isModerator(user: IGroupMembershipsFoundUserData) {
+  return get(user.attributes, 'is_moderator') !== undefined;
 }
 
-
 class MembersAdd extends React.Component<Props & injectedLocalized, State> {
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props: Props & injectedLocalized) {
+    super(props);
 
     this.state = {
       selectVisible: false,
@@ -151,13 +145,13 @@ class MembersAdd extends React.Component<Props & injectedLocalized, State> {
     }
   }
 
-  getOptions = (users: any[]) => {
-    return users.map((user: GroupsFoundUser | ModeratorsFoundUser) => {
+  getOptions = (users: IGroupMembershipsFoundUserData[]) => {
+    return users.map((user) => {
       return {
         value: user.id,
         label: `${user.attributes.first_name} ${user.attributes.last_name}`,
         email: `${user.attributes.email}`,
-        disabled: isGroupUser(user) ? user.attributes.is_member : user.attributes.is_moderator,
+        disabled: isModerator(user) ? get(user.attributes, 'is_moderator') : get(user.attributes, 'is_member'),
       };
     });
   }

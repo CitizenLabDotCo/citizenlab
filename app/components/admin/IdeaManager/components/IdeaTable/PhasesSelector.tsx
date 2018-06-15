@@ -57,4 +57,3 @@ class PhasesSelector extends React.PureComponent<Props> {
 }
 
 export default PhasesSelector;
-

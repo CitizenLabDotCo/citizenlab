@@ -61,6 +61,11 @@ export const media = {
       ${css(style, ...args)}
     }
   `,
+  smallerThan1280px: (style: any, ...args) => css`
+    @media (max-width: 1280px) {
+      ${css(style, ...args)}
+    }
+  `,
 };
 
 export function remCalc(desiredSize: number) {
@@ -80,8 +85,6 @@ export const colors = {
   lightGreyishBlue: '#EBEDEF',
   separation: '#EAEAEA',
   background: '#F9F9FA',
-  adminBackground: '#F0F3F4',
-  adminMenuBackground: '#3B3B3B',
   clBlueDarkest: '#02282D',
   clBlueDarker: '#0A5159',
   clBlueDark: '#147985',
@@ -89,7 +92,24 @@ export const colors = {
   clBlueLighter: '#80CFD8',
   clBlueLight: '#40B8C5',
   placeholderBg: '#CFD6DB',
-  clBlue2Darkest: '#044D6C'
+  clBlue2Darkest: '#044D6C',
+
+  adminBackground: '#F0F3F4',
+  adminContentBackground: '#fff',
+  adminMenuBackground: '#003349',
+  adminDarkestBackground: 'rgba(0, 0, 0, 0.75)',
+
+  adminTextColor: '#044D6C',
+  adminLightText: 'rgba(255, 255, 255, 0.8)',
+  adminSecondaryTextColor: '#84939E',
+  adminBorder: '#EAEAEA',
+  adminSeparation: '#EAEAEA',
+
+  adminOrangeIcons: '#FF672F',
+  clIconPrimary: '#00577C',
+  clIconSecondary:'#84939E',
+  clIconAccent:'#01A1B1',
+  clIconBackground:'rgba(1, 161, 177, 0.07)',
 };
 
 export function color(name: keyof typeof colors) {
@@ -108,4 +128,20 @@ export const fontSizes = {
 
 export function fontSize(name: keyof typeof fontSizes) {
   return `${fontSizes[name]}px`;
+}
+
+export function invisibleA11yText() {
+  /* See: https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
+  return `
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+  clip: rect(1px, 1px, 1px, 1px);
+`;
+}
+
+export function booleanClass(value: any, className: string) {
+  if (!!value) return ` ${className}`;
+  return '';
 }

@@ -1,8 +1,6 @@
 import React from 'react';
-import has from 'lodash/has';
-import isString from 'lodash/isString';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { has, isString } from 'lodash';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
 
@@ -50,7 +48,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, color } from 'utils/styleUtils';
+import { media, color, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const loadingTimeout = 400;
@@ -144,7 +142,7 @@ const HeaderWrapper = styled.div`
 
 const BelongsToProject = styled.p`
   width: 100%;
-  color: ${props => props.theme.colors.label};
+  color: ${colors.label};
   font-weight: 300;
   font-size: 16px;
   line-height: 21px;
@@ -161,7 +159,7 @@ const ProjectLink = styled(Link)`
   margin-left: 4px;
 
   &:hover {
-    color: ${(props) => darken(0.2, props.theme.colors.label)};
+    color: ${darken(0.2, colors.label)};
     text-decoration: underline;
   }
 `;
@@ -243,7 +241,7 @@ const MetaButtons = styled.div`
 `;
 
 const LocationLabel = styled.div`
-  color: ${(props) => props.theme.colors.label};
+  color: ${colors.label};
   font-size: 15px;
   font-weight: 400;
   margin-right: 6px;
@@ -273,7 +271,7 @@ const LocationIconWrapper = styled.div`
 
 const LocationIcon = styled(Icon)`
   width: 18px;
-  fill: ${(props) => props.theme.colors.label};
+  fill: ${colors.label};
 `;
 
 const LocationButton = styled.div`
@@ -283,11 +281,11 @@ const LocationButton = styled.div`
 
   &:hover {
     ${LocationLabel} {
-      color: ${(props) => darken(0.2, props.theme.colors.label)};
+      color: ${darken(0.2, colors.label)};
     }
 
     ${LocationIcon} {
-      fill: ${(props) => darken(0.2, props.theme.colors.label)};
+      fill: ${darken(0.2, colors.label)};
     }
   }
 `;
@@ -469,7 +467,7 @@ const MetaContent = styled.div`
 `;
 
 const VoteLabel = styled.div`
-  color: ${(props) => props.theme.colors.label};
+  color: ${colors.label};
   font-size: 15px;
   font-weight: 400;
   margin-bottom: 12px;
@@ -496,7 +494,7 @@ const StatusContainerMobile = styled(StatusContainer)`
 `;
 
 const StatusTitle = styled.h4`
-  color: ${(props) => props.theme.colors.label};
+  color: ${colors.label};
   font-size: 16px;
   font-weight: 400;
   margin: 0;

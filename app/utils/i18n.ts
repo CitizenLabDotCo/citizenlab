@@ -3,7 +3,7 @@ import keys from 'lodash/keys';
 import { isNilOrError } from 'utils/helperUtils';
 
 export function getLocalized(
-  multiloc: Multiloc | null | undefined, 
+  multiloc: Multiloc | null | undefined,
   locale: Locale,
   currentTenantLocales: Locale[]
 ): string {
