@@ -13,7 +13,7 @@ type Props = {
 
 type State = {};
 
-const colors = ['yellow','purple','orange','teal'];
+const colors: ['yellow', 'purple', 'orange', 'teal'] = ['yellow', 'purple', 'orange', 'teal'];
 
 class ComparisonSwitcher extends React.Component<Props, State> {
 
