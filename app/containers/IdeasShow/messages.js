@@ -154,6 +154,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.ideaOgDescription',
     defaultMessage: 'What do you think of this idea? Join the discussion and vote to make your voice heard.',
   },
+  twitterMessage: {
+    id: 'app.containers.IdeasShow.twitterMessage',
+    defaultMessage: 'Vote for {ideaTitle} on',
+  },
   byAuthorName: {
     id: 'app.containers.IdeasShow.byAuthorName',
     defaultMessage: 'by {authorName}',
@@ -181,22 +185,6 @@ export default defineMessages({
   shareCTA: {
     id: 'app.containers.IdeasShow.shareCTA',
     defaultMessage: 'Share this idea',
-  },
-  shareOnFacebook: {
-    id: 'app.containers.IdeasShow.shareOnFacebook',
-    defaultMessage: 'Share on Facebook',
-  },
-  shareViaMessenger: {
-    id: 'app.containers.IdeasShow.shareViaMessenger',
-    defaultMessage: 'Share via Messenger',
-  },
-  shareOnTwitter: {
-    id: 'app.containers.IdeasShow.shareOnTwitter',
-    defaultMessage: 'Share on Twitter',
-  },
-  twitterMessage: {
-    id: 'app.containers.IdeasShow.twitterMessage',
-    defaultMessage: 'Vote for {ideaTitle} on',
   },
   commentsWithCount: {
     id: 'app.containers.IdeasShow.commentsWithCount',
