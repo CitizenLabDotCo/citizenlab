@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { map, flatten, uniq } from 'lodash';
 import { Node, ParentNode, ideasUnder } from 'services/clusterings';
@@ -61,9 +61,9 @@ type State = {
   normalization: 'absolute' | 'relative';
 };
 
-class InfoPane extends React.Component<Props, State> {
+class InfoPane extends PureComponent<Props, State> {
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       normalization: 'absolute',

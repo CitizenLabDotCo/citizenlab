@@ -4,7 +4,7 @@ import { keyBy, find } from 'lodash';
 import IdeaCircle from './IdeaCircle';
 import CustomCircle from './CustomCircle';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
-import { Node } from 'services/clusterings';
+import { Node, ParentNode } from 'services/clusterings';
 import ProjectCircle from './ProjectCircle';
 import TopicCircle from './TopicCircle';
 import styled from 'styled-components';
@@ -27,15 +27,6 @@ interface DataProps {
 }
 
 interface Props extends InputProps, DataProps {}
-
-// type Props = {
-//   ideas: GetIdeasChildProps;
-//   structure: ParentNode;
-//   selectedNodes: Node[];
-//   onClickNode: (Node) => void;
-//   onShiftClickNode: (Node) => void;
-//   className?: string;
-// };
 
 type State = {
   nodes: D3Node[];
