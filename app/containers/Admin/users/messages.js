@@ -2,75 +2,35 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   helmetTitle: {
-    id: 'app.containers.Admin.User.helmetTitle',
+    id: 'app.containers.Admin.Users.helmetTitle',
     defaultMessage: 'Admin - users dashboard',
   },
   helmetDescription: {
-    id: 'app.containers.Admin.User.helmetDescription',
+    id: 'app.containers.Admin.Users.helmetDescription',
     defaultMessage: 'User list in admin backoffice',
   },
-  viewPublicResource: {
-    id: 'app.containers.Admin.User.viewPublicResource',
-    defaultMessage: 'Users',
-  },
-  tabRegisteredUsers: {
-    id: 'app.containers.AdminPage.User.tabRegisteredUsers',
-    defaultMessage: 'Registered users',
-  },
-  deleteFromGroupButton: {
-    id: 'app.containers.Admin.User.deleteFromGroupButton',
-    defaultMessage: 'Delete users from group',
-  },
-  updateButton: {
-    id: 'app.containers.Admin.User.updateButton',
-    defaultMessage: 'Edit',
-  },
-  createButton: {
-    id: 'app.containers.Admin.User.createButton',
-    defaultMessage: 'New User',
-  },
-  publishButton: {
-    id: 'app.containers.Admin.User.publishButton',
-    defaultMessage: 'Publish User',
-  },
-  userLoadingMessage: {
-    id: 'app.containers.Admin.User.userLoadingMessage',
-    defaultMessage: 'Loading User...',
-  },
-  userLoadingError: {
-    id: 'app.containers.Admin.User.userLoadingError',
-    defaultMessage: 'User not found!',
-  },
   name: {
-    id: 'app.containers.Admin.User.name',
+    id: 'app.containers.Admin.Users.name',
     defaultMessage: 'Name',
   },
   email: {
-    id: 'app.containers.Admin.User.email',
+    id: 'app.containers.Admin.Users.email',
     defaultMessage: 'Email',
   },
   since: {
-    id: 'app.containers.Admin.User.since',
+    id: 'app.containers.Admin.Users.since',
     defaultMessage: 'Since',
   },
-  member: {
-    id: 'app.containers.Admin.User.member',
-    defaultMessage: 'Member Since',
-  },
   admin: {
-    id: 'app.containers.Admin.User.admin',
+    id: 'app.containers.Admin.Users.admin',
     defaultMessage: 'Admin',
   },
   options: {
-    id: 'app.containers.Admin.User.options',
+    id: 'app.containers.Admin.Users.options',
     defaultMessage: 'Options',
   },
-  delete: {
-    id: 'app.containers.Admin.User.delete',
-    defaultMessage: 'Delete',
-  },
   seeProfile: {
-    id: 'app.containers.Admin.User.seeProfile',
+    id: 'app.containers.Admin.Users.seeProfile',
     defaultMessage: 'See profile',
   },
   deleteUser: {
@@ -93,28 +53,20 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.youCantUnadminYourself',
     defaultMessage: 'You cannot give up your role as an admin now',
   },
-  saveSuccess: {
-    id: 'app.containers.Admin.User.saveSuccess',
-    defaultMessage: 'Success!',
-  },
-  confirmDelete: {
-    id: 'app.containers.Admin.User.confirmDelete',
-    defaultMessage: 'Yes, I\'m sure',
-  },
   editGroup: {
-    id: 'app.containers.Admin.User.GroupsHeader.editGroup',
+    id: 'app.containers.Admin.Users.GroupsHeader.editGroup',
     defaultMessage: 'Edit Group',
   },
   deleteGroup: {
-    id: 'app.containers.Admin.User.GroupsHeader.deleteGroup',
+    id: 'app.containers.Admin.Users.GroupsHeader.deleteGroup',
     defaultMessage: 'Delete Group',
   },
   allUsers: {
-    id: 'app.containers.Admin.User.GroupsPanel.allUsers',
+    id: 'app.containers.Admin.Users.GroupsPanel.allUsers',
     defaultMessage: 'All users',
   },
   groupsTitle: {
-    id: 'app.containers.Admin.User.GroupsPanel.groupsTitle',
+    id: 'app.containers.Admin.Users.GroupsPanel.groupsTitle',
     defaultMessage: 'Groups',
   },
   noUserMatchesYourSearch: {
@@ -144,18 +96,6 @@ export default defineMessages({
   step1TypeDescriptionNormal: {
     id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionNormal',
     defaultMessage: 'You manually specify which users are part of this group.',
-  },
-  moderatorLabel: {
-    id: 'app.containers.Admin.User.moderatorLabel',
-    defaultMessage: `Grant project moderator rights to the invited people?`,
-  },
-  projectSelectorPlaceholder: {
-    id: 'app.containers.Admin.User.projectSelectorPlaceholder',
-    defaultMessage: `No project(s) selected`,
-  },
-  localeLabel: {
-    id: 'app.containers.Admin.User.localeLabel',
-    defaultMessage: 'Select the default language for the invited people',
   },
   step1TypeDescriptionSmart: {
     id: 'app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionSmart',
@@ -189,21 +129,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupCreation.fieldGroupName',
     defaultMessage: 'Name of the group',
   },
-  fieldRulesLabel: {
-    id: 'app.containers.AdminPage.Users.GroupCreation.fieldRulesLabel',
-    defaultMessage: 'Define who will be automatically added to the group',
-  },
-  groupFormTitle: {
-    id: 'app.containers.AdminPage.Users.GroupCreation.groupFormTitle',
-    defaultMessage: 'Define a group name',
-  },
   rulesExplanation: {
     id: 'app.containers.AdminPage.Users.GroupCreation.rulesExplanation',
     defaultMessage: 'Users matching all of the following conditions will be automatically added to the group:',
-  },
-  selectAll: {
-    id: 'app.containers.AdminPage.Users.GroupsPanel.selectAll',
-    defaultMessage: 'Select all',
   },
   select: {
     id: 'app.containers.AdminPage.Users.GroupsPanel.select',
@@ -216,10 +144,6 @@ export default defineMessages({
   groupDeletionConfirmation: {
     id: 'app.containers.AdminPage.Users.UsersGroup.groupDeletionConfirmation',
     defaultMessage: 'Are you sure you want to delete this group?',
-  },
-  deleteUserConfirmation: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.deleteUserConfirmation',
-    defaultMessage: 'Are you sure you want to delete this user?',
   },
   moveUsers: {
     id: 'app.containers.AdminPage.Users.UsersGroup.moveUsers',
@@ -256,10 +180,6 @@ export default defineMessages({
   exportSelectedUsers: {
     id: 'app.containers.AdminPage.Users.UsersGroup.exportSelectedUsers',
     defaultMessage: 'Export selected users',
-  },
-  add: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.add',
-    defaultMessage: 'Add',
   },
   dropdownFooterMessage: {
     id: 'app.containers.AdminPage.Users.UsersGroup.dropdownFooterMessage',

@@ -250,7 +250,7 @@ class UserTableActions extends React.PureComponent<Props & Tracks, State> {
         {selectedUsers !== 'none' && !isNilOrError(groupsList) &&
           <MultipleSelectDropdown
             choices={this.getchoices(groupsList)}
-            messages={messages}
+            dropdownFooterMessage={messages.dropdownFooterMessage}
             onSubmit={this.addUsersToGroups}
             emitSuccess={this.emitMembershipAddSuccess}
             emitError={this.emitMembershipAddError}
