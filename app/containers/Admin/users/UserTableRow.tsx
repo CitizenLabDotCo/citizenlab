@@ -39,8 +39,8 @@ const StyledCheckbox = styled(Checkbox) `
 `;
 
 const StyledAvatar = styled(Avatar) `
-  flex: 0 0 28px;
   height: 28px;
+  width: 28px;
 `;
 
 const SIcon = styled(Icon) `
