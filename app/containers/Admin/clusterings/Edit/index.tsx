@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { clone } from 'lodash';
 import Circles from './Circles';
-import { Node, ParentNode } from 'services/clusterings';
+import { Node } from 'services/clusterings';
 import InfoPane from './InfoPane';
 import styled, { ThemeProvider } from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 import GetClustering, { GetClusteringChildProps } from 'resources/GetClustering';
-import { withRouter } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
 import { globalState, IGlobalStateService, IAdminFullWidth } from 'services/globalState';
-const anzegemCluster =  require('./anzegem.json');
+// import anzegemCluster from './anzegem.json';
 
 const Container = styled.div`
   margin: 20px;
@@ -37,23 +37,27 @@ const StyledInfoPane = styled(InfoPane)`
   margin-left: 20px;
 `;
 
-interface Props {
+interface InputProps {}
+
+interface DataProps {
   clustering: GetClusteringChildProps;
 }
 
+interface Props extends InputProps, DataProps {}
+
 interface State {
-  clustering?: ParentNode;
+  // clustering?: ParentNode;
   activeComparison: number;
   selectedNodes: Node[][];
 }
 
-class ClusterViewer extends Component<Props, State> {
+class ClusterViewer extends PureComponent<Props & WithRouterProps, State> {
   globalState: IGlobalStateService<IAdminFullWidth>;
 
-  constructor(props) {
+  constructor(props: Props & WithRouterProps) {
     super(props);
     this.state = {
-      clustering: anzegemCluster,
+      // clustering: anzegemCluster,
       activeComparison: 0,
       selectedNodes: [[]],
     };
@@ -71,7 +75,6 @@ class ClusterViewer extends Component<Props, State> {
   comparisonSet = () => {
     return this.state.selectedNodes[this.state.activeComparison];
   }
-
 
   theme = () => (theme) => {
     const comparisonColors = ['#fbbd08', '#a333c8', '#f2711c', '#00b5ad'];
@@ -97,7 +100,7 @@ class ClusterViewer extends Component<Props, State> {
     });
   }
 
-  handleOnDeleteComparison = (index) => {
+  handleOnDeleteComparison = (index: number) => {
     const { activeComparison, selectedNodes } = this.state;
     const newSelectedNodes = clone(selectedNodes);
     newSelectedNodes.splice(index, 1);
@@ -120,11 +123,10 @@ class ClusterViewer extends Component<Props, State> {
     this.setState({ selectedNodes });
   }
 
-
-
   render() {
     const { clustering } = this.props;
     const { activeComparison, selectedNodes } = this.state;
+
     if (isNilOrError(clustering)) return null;
 
     return (
@@ -153,7 +155,7 @@ class ClusterViewer extends Component<Props, State> {
   }
 }
 
-export default withRouter((inputProps) => (
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <GetClustering id={inputProps.params.clusteringId}>
     {(clustering) => <ClusterViewer {...inputProps} clustering={clustering} />}
   </GetClustering>

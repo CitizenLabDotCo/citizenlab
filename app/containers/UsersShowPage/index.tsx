@@ -124,7 +124,7 @@ class UsersShowPage extends React.PureComponent<Props, State> {
           </UserInfo>
 
           <UserIdeas>
-            <IdeaCards 
+            <IdeaCards
               type="load-more"
               sort="trending"
               pageSize={12}

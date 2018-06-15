@@ -1,6 +1,7 @@
 // Libraries
 import React, { FormEvent } from 'react';
 import { combineLatest } from 'rxjs/observable/combineLatest';
+import { map, first } from 'rxjs/operators';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -98,23 +99,25 @@ export default class CommentsMoreActions extends React.Component<Props, State> {
     this.setState({ modalVisible_spam: false });
   }
 
-  getActions = async (): Promise<IAction[]> => {
+  getActions = async () => {
     return combineLatest([
       hasPermission({ item: this.props.comment, action: 'markAsSpam', context: { projectId: this.props.projectId } }),
       hasPermission({ item: this.props.comment, action: 'delete', context: { projectId: this.props.projectId } }),
       hasPermission({ item: this.props.comment, action: 'edit', context: { projectId: this.props.projectId } }),
     ])
-    .map(([canReport, canDelete, canEdit]) => {
-      const actions: IAction[] = [];
+    .pipe(
+      map(([canReport, canDelete, canEdit]) => {
+        const actions: IAction[] = [];
 
-      // Actions based on permissions
-      if (canReport) actions.push({ label: <FormattedMessage {...messages.reportAsSpam} />, handler: this.openSpamModal });
-      if (canDelete) actions.push({ label: <FormattedMessage {...messages.deleteComment} />, handler: this.openDeleteModal });
-      if (canEdit) actions.push({ label: <FormattedMessage {...messages.editComment} />, handler: this.props.onCommentEdit });
+        // Actions based on permissions
+        if (canReport) actions.push({ label: <FormattedMessage {...messages.reportAsSpam} />, handler: this.openSpamModal });
+        if (canDelete) actions.push({ label: <FormattedMessage {...messages.deleteComment} />, handler: this.openDeleteModal });
+        if (canEdit) actions.push({ label: <FormattedMessage {...messages.editComment} />, handler: this.props.onCommentEdit });
 
-      return actions;
-    })
-    .first()
+        return actions;
+      }),
+      first()
+    )
     .toPromise();
   }
 

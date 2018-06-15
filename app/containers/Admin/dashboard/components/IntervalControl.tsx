@@ -2,6 +2,8 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import { colors } from 'utils/styleUtils';
+import { rgba } from 'polished';
 
 const Container = styled.div`
   display: flex;
@@ -11,14 +13,13 @@ const Container = styled.div`
 const IntervalButton = styled.button`
   font-size: 16px;
   padding: 1rem 1.5rem;
-  color: #000000;
-  background: #fff;
+  background: ${colors.adminContentBackground};
   border: solid 1px #e4e4e4;
   cursor: pointer;
   outline: none;
 
   &.active {
-    background: #f0f0f0;
+    background: ${rgba(colors.adminTextColor, .1)};
   }
 
   &:first-child {
@@ -30,8 +31,8 @@ const IntervalButton = styled.button`
     margin-right: 0;
   }
 
-  &:hover {
-    background: #f0f0f0;
+  &:hover, &:focus {
+    background: ${rgba(colors.adminTextColor, .2)};
   }
 `;
 

@@ -10,7 +10,7 @@ import { SingleDatePicker } from 'react-dates';
 // styling
 import styled from 'styled-components';
 
-const Container = styled.div`
+const Container: any = styled.div`
   display: inline-flex;
   position: relative;
   border-radius: 5px;
@@ -51,13 +51,14 @@ const Container = styled.div`
 
   .SingleDatePicker_picker {
     top: 69px !important;
-    left: -1px !important;
+    left: ${(props: any) => props.openOnLeft ? '-150px' : '-1px'} !important;
   }
 `;
 
 interface Props {
   value: moment.Moment | null;
   onChange: (arg: moment.Moment | null) => void;
+  openOnLeft?: boolean;
 }
 
 interface State {
@@ -70,7 +71,7 @@ export default class DateInput extends React.PureComponent<Props, State> {
     super(props);
     this.state = {
       focused: false,
-      selectedDate: null,
+      selectedDate: this.props.value,
     };
   }
 
@@ -107,7 +108,7 @@ export default class DateInput extends React.PureComponent<Props, State> {
     const { selectedDate, focused } = this.state;
 
     return (
-      <Container className={className}>
+      <Container className={className} openOnLeft={this.props.openOnLeft}>
         <SingleDatePicker
           id="singledatepicker"
           date={selectedDate}

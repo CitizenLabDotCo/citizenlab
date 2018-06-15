@@ -12,7 +12,6 @@ import T from 'components/T';
 import NotificationWrapper from '../NotificationWrapper';
 import { Link } from 'react-router';
 
-
 type Props = {
   notification: IIdeaMarkedAsSpamNotificationData;
 };

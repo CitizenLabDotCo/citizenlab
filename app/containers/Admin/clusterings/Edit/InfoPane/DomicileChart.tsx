@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 import isEqual from 'lodash/isEqual';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer } from 'recharts';
@@ -10,24 +10,30 @@ import { isEmpty } from 'lodash';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import styled, { withTheme } from 'styled-components';
 
-type Props = {
+interface InputProps {
   ideaIdsComparisons: string[][];
   normalization: 'absolute' | 'relative';
-  areas: GetAreasChildProps;
-  theme: any;
-};
+}
 
-type State = {
+interface DataProps {
+  areas: GetAreasChildProps;
+}
+
+interface Props extends InputProps, DataProps {
+  theme: any;
+}
+
+interface State {
   series: any[];
-};
+}
 
 const Container = styled.div``;
 
-class DomicileChart extends Component<Props & injectedLocalized, State> {
+class DomicileChart extends PureComponent<Props & injectedLocalized, State> {
 
   subscription: Subscription;
 
-  constructor(props) {
+  constructor(props: Props & injectedLocalized) {
     super(props);
     this.state = {
       series: [],
@@ -127,9 +133,9 @@ class DomicileChart extends Component<Props & injectedLocalized, State> {
   }
 }
 
-const DomicileChartWithHOCs = withTheme(localize(DomicileChart));
+const DomicileChartWithHOCs = withTheme<Props, State>(localize(DomicileChart));
 
-export default (inputProps) => (
+export default (inputProps: InputProps) => (
   <GetAreas>
     {(areas) => areas ? <DomicileChartWithHOCs {...inputProps} areas={areas} /> : null}
   </GetAreas>

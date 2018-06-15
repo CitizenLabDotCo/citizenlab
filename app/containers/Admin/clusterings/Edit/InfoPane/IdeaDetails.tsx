@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
@@ -7,7 +7,7 @@ type Props = {
   idea: GetIdeaChildProps;
 };
 
-class IdeaDetails extends Component<Props> {
+class IdeaDetails extends PureComponent<Props> {
 
   render() {
     const { idea } = this.props;

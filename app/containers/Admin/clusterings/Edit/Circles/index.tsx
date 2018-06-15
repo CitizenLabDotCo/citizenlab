@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import * as d3 from 'd3-hierarchy';
 import { keyBy, find } from 'lodash';
 import IdeaCircle from './IdeaCircle';
 import CustomCircle from './CustomCircle';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
-import { Node } from 'services/clusterings';
+import { Node, ParentNode } from 'services/clusterings';
 import ProjectCircle from './ProjectCircle';
 import TopicCircle from './TopicCircle';
 import styled from 'styled-components';
@@ -14,14 +14,19 @@ type D3Node = {
   [key: string]: any;
 };
 
-type Props = {
+interface InputProps = {
   ideas: GetIdeasChildProps;
   structure: ParentNode;
   selectedNodes: Node[];
   onClickNode: (Node) => void;
   onShiftClickNode: (Node) => void;
-  className?: string;
-};
+}
+
+interface DataProps {
+  ideas: GetIdeasChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 type State = {
   nodes: D3Node[];
@@ -41,7 +46,7 @@ const StyledSvg = styled.svg`
   width: 100%;
 `;
 
-class Circles extends Component<Props, State> {
+class Circles extends PureComponent<Props, State> {
   svgContainerRef: SVGElement | null;
 
   constructor(props) {
@@ -160,7 +165,7 @@ class Circles extends Component<Props, State> {
   }
 }
 
-export default (inputProps) => (
+export default (inputProps: InputProps) => (
   <GetIdeas type="load-more" pageSize={250} sort="new">
     {(ideasProps) => ideasProps.ideasList ? <Circles {...inputProps} ideas={ideasProps} /> : null}
   </GetIdeas>

@@ -52,7 +52,12 @@ export default class Moderators extends React.PureComponent<Props>{
           <Icon name="info" />
           <FormattedMessage {...messages.moderatorsRoleExplanation} />
         </InfoText>
-        <UserSearch resourceId={projectId} messages={messages} searchFunction={findMembership} addFunction={addMembership} />
+        <UserSearch
+          resourceId={projectId}
+          messages={messages}
+          searchFunction={findMembership}
+          addFunction={addMembership}
+        />
         <ModeratorList moderators={moderators} projectId={projectId}/>
       </Container>
     );

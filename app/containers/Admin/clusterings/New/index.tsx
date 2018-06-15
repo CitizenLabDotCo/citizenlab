@@ -1,16 +1,14 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { browserHistory } from 'react-router';
 import { addClustering } from 'services/clusterings';
-
 import { Formik, FormikErrors } from 'formik';
 import ClusteringForm, { FormValues } from './ClusteringForm';
-
-
 import { API } from 'typings';
 import { isEmpty, values as getValues, every } from 'lodash';
+
 type Props = {};
 
-export default class New extends React.Component<Props> {
+export default class New extends PureComponent<Props> {
 
   validate = (values: FormValues): FormikErrors<FormValues> => {
     const errors: FormikErrors<FormValues> = {};
