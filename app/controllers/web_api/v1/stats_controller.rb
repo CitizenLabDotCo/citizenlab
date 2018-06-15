@@ -232,7 +232,7 @@ class WebApi::V1::StatsController < ApplicationController
       [
         mode,
         buckets.map do |value, number|
-          denominator = (normalizing_data.dig(mode, value) || 0) + 1
+          denominator = (normalizing_data.dig('total', value) || 0) + 1
           [value, number.to_f*100/denominator.to_f]
         end.to_h
       ]
