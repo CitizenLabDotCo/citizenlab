@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { InjectedIntlProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -23,7 +23,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-class AreaList extends React.PureComponent<Props & InjectedIntlProps>{
+class AreaList extends PureComponent<Props & InjectedIntlProps>{
   handleDeleteClick = (areaId: string) => (event: React.FormEvent<any>) => {
     const deleteMessage = this.props.intl.formatMessage(messages.clusteringDeletionConfirmation);
     event.preventDefault();

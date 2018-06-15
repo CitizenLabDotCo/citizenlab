@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import T from 'components/T';
 import GetIdea from 'resources/GetIdea';
 import { isNilOrError } from 'utils/helperUtils';
@@ -9,7 +9,7 @@ type Props = {
   node: ParentNode;
 };
 
-class ClusterDetails extends Component<Props> {
+class ClusterDetails extends PureComponent<Props> {
 
   render() {
     const { ideaIds, node } = this.props;

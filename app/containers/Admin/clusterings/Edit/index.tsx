@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 import { clone } from 'lodash';
 import Circles from './Circles';
-import { Node /*,ParentNode*/ } from 'services/clusterings';
+import { Node } from 'services/clusterings';
 import InfoPane from './InfoPane';
 import styled, { ThemeProvider } from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 import GetClustering, { GetClusteringChildProps } from 'resources/GetClustering';
-import { withRouter } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
 import { globalState, IGlobalStateService, IAdminFullWidth } from 'services/globalState';
 // import anzegemCluster from './anzegem.json';
 
@@ -23,10 +23,10 @@ const TwoColumns = styled.div`
 
 const StyledCircles = styled(Circles)`
   flex: 1;
-  background: #fff;
+  /* background: #fff;
   border: solid 1px #eee;
   border-radius: 5px;
-  padding: 10px;
+  padding: 10px; */
 `;
 
 const StyledInfoPane = styled(InfoPane)`
@@ -35,9 +35,13 @@ const StyledInfoPane = styled(InfoPane)`
   margin-left: 20px;
 `;
 
-interface Props {
+interface InputProps {}
+
+interface DataProps {
   clustering: GetClusteringChildProps;
 }
+
+interface Props extends InputProps, DataProps {}
 
 interface State {
   // clustering?: ParentNode;
@@ -45,10 +49,10 @@ interface State {
   selectedNodes: Node[][];
 }
 
-class ClusterViewer extends PureComponent<Props, State> {
+class ClusterViewer extends PureComponent<Props & WithRouterProps, State> {
   globalState: IGlobalStateService<IAdminFullWidth>;
 
-  constructor(props) {
+  constructor(props: Props & WithRouterProps) {
     super(props);
     this.state = {
       // clustering: anzegemCluster,
@@ -94,7 +98,7 @@ class ClusterViewer extends PureComponent<Props, State> {
     });
   }
 
-  handleOnDeleteComparison = (index) => {
+  handleOnDeleteComparison = (index: number) => {
     const { activeComparison, selectedNodes } = this.state;
     const newSelectedNodes = clone(selectedNodes);
     newSelectedNodes.splice(index, 1);
@@ -147,7 +151,7 @@ class ClusterViewer extends PureComponent<Props, State> {
   }
 }
 
-export default withRouter((inputProps) => (
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <GetClustering id={inputProps.params.clusteringId}>
     {(clustering) => <ClusterViewer {...inputProps} clustering={clustering} />}
   </GetClustering>
