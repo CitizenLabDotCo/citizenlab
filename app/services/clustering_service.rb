@@ -41,9 +41,14 @@ class ClusteringService
           [hash["topic_id"], eval(hash["idea_ids"])]
         end.to_h 
       when 'area'
-        Area.all.pluck(:id).map do |area_id|
-          [area_id, idea_scope.with_some_areas([area_id]).pluck(:id)]
-        end.to_h      
+        sql = "  SELECT area_id, json_agg(ideas.id) AS idea_ids" 
+        sql += " FROM ideas"
+        sql += " FULL OUTER JOIN areas_ideas"
+        sql += " ON ideas.id = idea_id"
+        sql += " GROUP BY area_id;"
+        ActiveRecord::Base.connection.execute(sql).map do |hash|
+          [hash["area_id"], eval(hash["idea_ids"])]
+        end.to_h       
       else
         raise "Unknown level #{levels.first}"
       end
