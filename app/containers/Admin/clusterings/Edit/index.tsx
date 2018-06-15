@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { clone } from 'lodash';
 import Circles from './Circles';
-import { Node, ParentNode } from 'services/clusterings';
+import { Node /*, ParentNode*/ } from 'services/clusterings';
 import InfoPane from './InfoPane';
 import styled, { ThemeProvider } from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 import GetClustering, { GetClusteringChildProps } from 'resources/GetClustering';
 import { withRouter } from 'react-router';
 import { globalState, IGlobalStateService, IAdminFullWidth } from 'services/globalState';
-const anzegemCluster =  require('./anzegem.json');
+// import anzegemCluster from './anzegem.json';
 
 const Container = styled.div`
   margin: 20px;
@@ -40,18 +40,18 @@ interface Props {
 }
 
 interface State {
-  clustering?: ParentNode;
+  // clustering?: ParentNode;
   activeComparison: number;
   selectedNodes: Node[][];
 }
 
-class ClusterViewer extends Component<Props, State> {
+class ClusterViewer extends PureComponent<Props, State> {
   globalState: IGlobalStateService<IAdminFullWidth>;
 
   constructor(props) {
     super(props);
     this.state = {
-      clustering: anzegemCluster,
+      // clustering: anzegemCluster,
       activeComparison: 0,
       selectedNodes: [[]],
     };
@@ -69,7 +69,6 @@ class ClusterViewer extends Component<Props, State> {
   comparisonSet = () => {
     return this.state.selectedNodes[this.state.activeComparison];
   }
-
 
   theme = () => (theme) => {
     const comparisonColors = ['#fbbd08', '#a333c8', '#f2711c', '#00b5ad'];
@@ -118,11 +117,10 @@ class ClusterViewer extends Component<Props, State> {
     this.setState({ selectedNodes });
   }
 
-
-
   render() {
     const { clustering } = this.props;
     const { activeComparison, selectedNodes } = this.state;
+
     if (isNilOrError(clustering)) return null;
 
     return (

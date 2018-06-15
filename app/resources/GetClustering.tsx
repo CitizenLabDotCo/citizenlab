@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import isString from 'lodash/isString';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
@@ -22,7 +22,7 @@ interface State {
 
 export type GetClusteringChildProps = IClusteringData | undefined | null | Error;
 
-export default class GetClustering extends React.Component<Props, State> {
+export default class GetClustering extends Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
@@ -44,7 +44,7 @@ export default class GetClustering extends React.Component<Props, State> {
         filter(({ id }) => isString(id)),
         switchMap(({ id }) => clusteringByIdStream(id).observable)
       )
-        .subscribe((clustering) => this.setState({ clustering: !isNilOrError(clustering) ? clustering.data : clustering }))
+      .subscribe((clustering) => this.setState({ clustering: !isNilOrError(clustering) ? clustering.data : clustering }))
     ];
   }
 
