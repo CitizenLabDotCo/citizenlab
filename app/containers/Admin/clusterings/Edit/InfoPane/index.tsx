@@ -75,15 +75,15 @@ class InfoPane extends PureComponent<Props, State> {
   }
 
   comparisonIdeas = () => {
-    return this.props.selectedNodes.map((sn) => {
-      return uniq(flatten(map(sn, ideasUnder)));
+    return this.props.selectedNodes.map((selectedNode) => {
+      return uniq(flatten(map(selectedNode, ideasUnder)));
     });
   }
 
   handleOnChangeNormalization = () => {
-    this.setState({
-      normalization: this.state.normalization === 'absolute' ? 'relative' : 'absolute',
-    });
+    this.setState(({ normalization }) => ({
+      normalization: (normalization === 'absolute' ? 'relative' : 'absolute')
+    }));
   }
 
   comparisonSet = () => {

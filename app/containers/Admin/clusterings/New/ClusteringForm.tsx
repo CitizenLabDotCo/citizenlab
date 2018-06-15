@@ -1,31 +1,34 @@
-import React from 'react';
-
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
+import React, { PureComponent } from 'react';
 import { Form, Field, InjectedFormikProps } from 'formik';
+
+// Components
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikMultipleSelect from 'components/UI/FormikMultipleSelect';
 import FormikToggle from 'components/UI/FormikToggle';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
-
 import { Section, SectionField, SectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
+import FormikInput from 'components/UI/FormikInput';
+import Label from 'components/UI/Label';
+
+// I18n
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import localize, { injectedLocalized } from 'utils/localize';
+import messages from '../messages';
+
+// Resources
+import GetTopics from 'resources/GetTopics';
+import GetIdeaStatuses from 'resources/GetIdeaStatuses';
+import GetProjects from 'resources/GetProjects';
+
+// Utils
+import { isNilOrError } from 'utils/helperUtils';
 
 // Typings
 import { Multiloc } from 'typings';
-import GetProjects from 'resources/GetProjects';
-import { isNilOrError } from 'utils/helperUtils';
-import localize, { injectedLocalized } from 'utils/localize';
-import Label from 'components/UI/Label';
-import GetTopics from 'resources/GetTopics';
-import GetIdeaStatuses from 'resources/GetIdeaStatuses';
-import FormikInput from 'components/UI/FormikInput';
-import { InjectedIntlProps } from 'react-intl';
 
-
-export interface Props {
-}
+export interface Props {}
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -41,7 +44,7 @@ export interface FormValues {
   search?: string;
 }
 
-class AreaForm extends React.Component<InjectedFormikProps<Props & injectedLocalized & InjectedIntlProps, FormValues>> {
+class AreaForm extends PureComponent<InjectedFormikProps<Props & injectedLocalized & InjectedIntlProps, FormValues>> {
 
   levelsOptionList = () => (
     ['project', 'topic', 'area'].map(level => ({
@@ -50,8 +53,8 @@ class AreaForm extends React.Component<InjectedFormikProps<Props & injectedLocal
     }))
   )
 
-  resourcesToOptionList = (resources: any) => {
-    return resources && resources.map((resource: any) => ({
+  resourcesToOptionList = (resources) => {
+    return resources && resources.map((resource) => ({
       label: this.props.localize(resource.attributes.title_multiloc),
       value: resource.id,
     }));
@@ -64,7 +67,6 @@ class AreaForm extends React.Component<InjectedFormikProps<Props & injectedLocal
       <Form>
 
         <Section>
-
           <SectionTitle>
             <FormattedMessage {...messages.titleClusterInformation} />
           </SectionTitle>
@@ -98,11 +100,9 @@ class AreaForm extends React.Component<InjectedFormikProps<Props & injectedLocal
               label={<FormattedMessage {...messages.fieldDropEmpty} />}
             />
           </SectionField>
-
         </Section>
 
         <Section>
-
           <SectionTitle>
             <FormattedMessage {...messages.titleFilters} />
           </SectionTitle>
@@ -185,7 +185,6 @@ class AreaForm extends React.Component<InjectedFormikProps<Props & injectedLocal
             />
           </SectionField>
 
-
           <SectionField>
             <Label>
               <FormattedMessage {...messages.fieldMinimalDownvotes} />
@@ -196,7 +195,6 @@ class AreaForm extends React.Component<InjectedFormikProps<Props & injectedLocal
               type="number"
             />
           </SectionField>
-
         </Section>
 
         <FormikSubmitWrapper
