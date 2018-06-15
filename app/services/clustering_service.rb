@@ -7,8 +7,8 @@ class ClusteringService
       type: "custom",
       id: SecureRandom.uuid,
       children: create_children(
-        levels, idea_scope, 
-        create_levels_to_ids(levels, idea_scope.pluck(:id), options), 
+        levels, idea_scope.pluck(:id), 
+        create_levels_to_ids(levels, idea_scope, options), 
         options
         )
     }
