@@ -2,7 +2,6 @@ import React from 'react';
 import Input, { Props as VanillaInputProps } from 'components/UI/Input';
 import { FieldProps } from 'formik';
 
-
 type State = {};
 
 class FormikInput extends React.Component<FieldProps & VanillaInputProps, State> {

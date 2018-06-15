@@ -13,13 +13,13 @@ import messages from './messages';
 import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
 import MultipleSelect from 'components/UI/MultipleSelect';
-import GroupAvatar from 'containers/Admin/groups/all/GroupAvatar';
+import GroupAvatar from './GroupAvatar';
 import { List, Row } from 'components/admin/ResourceList';
 
 // Services
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
-import { listGroups, IGroups, IGroupData } from 'services/groups';
+import { getGroups, IGroups, IGroupData } from 'services/groups';
 import { addGroupProject, deleteGroupProject, groupsProjectsByProjectIdStream, IGroupsProjects } from 'services/groupsProjects';
 
 // Style
@@ -27,6 +27,12 @@ import styled from 'styled-components';
 
 // Typings
 import { IOption, Locale } from 'typings';
+
+const SRow = styled(Row)`
+  &:first-child {
+    border-top: none;
+  }
+`;
 
 const Container = styled.div`
   width: 100%;
@@ -100,7 +106,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
     const { projectId } = this.props;
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
-    const groups$ = listGroups().observable;
+    const groups$ = getGroups().observable;
     const groupsProjects$ = groupsProjectsByProjectIdStream(projectId).observable;
 
     this.subscriptions = [
@@ -218,7 +224,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
     const groupsList = ((!loading && projectGroups && projectGroups.length > 0) ? (
       <List>
         {projectGroups.map((projectGroup) => (
-          <Row key={projectGroup.group_project_id}>
+          <SRow key={projectGroup.group_project_id}>
             <GroupAvatar groupId={projectGroup.group_id} />
             <GroupTitle className="expand">
               {projectGroup.title}
@@ -229,10 +235,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
             <Button onClick={this.createDeleteGroupHandler(projectGroup.group_project_id)} style="text" circularCorners={false} icon="delete">
               <FormattedMessage {...messages.deleteButtonLabel} />
             </Button>
-            <Button linkTo={`/admin/groups/edit/${projectGroup.group_id}`} style="secondary" circularCorners={false} icon="edit">
-              <FormattedMessage {...messages.editButtonLabel} />
-            </Button>
-          </Row>
+          </SRow>
         ))}
       </List>
     ) : null);

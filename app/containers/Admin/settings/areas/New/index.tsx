@@ -11,7 +11,6 @@ import { addArea } from 'services/areas';
 import { Formik } from 'formik';
 import AreaForm, { FormValues } from '../AreaForm';
 
-
 import { API } from 'typings';
 type Props = {};
 
@@ -30,7 +29,6 @@ export default class New extends React.Component<Props> {
         setSubmitting(false);
       });
   }
-
 
   renderFn = (props) => {
     return <AreaForm {...props} />;

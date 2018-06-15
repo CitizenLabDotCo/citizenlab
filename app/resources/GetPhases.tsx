@@ -1,6 +1,5 @@
 import React from 'react';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { of } from 'rxjs/observable/of';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';

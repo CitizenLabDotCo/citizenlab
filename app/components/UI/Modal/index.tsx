@@ -17,37 +17,37 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media, color } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 const ModalContent: any = styled(clickOutside)`
-  background: #fff;
+  background: ${(props: any) => props.hasHeaderOrFooter ? colors.background : 'white' };
   border-radius: 5px;
   display: flex;
   flex-direction: column;
   max-width: ${(props: any) => props.width};
   outline: none;
-  overflow-y: auto;
+  overflow-y: ${(props: any) => props.hasHeaderOrFooter ? 'hidden' : 'auto'};
   -webkit-overflow-scrolling: touch;
-  padding: 40px;
+  padding: ${(props: any) => props.hasHeaderOrFooter ? 0 : '40px'};
   position: relative;
   width: 100%;
 
   &.fixedHeight {
-    height: 78vh;
+    height: 600px;
   }
 
   ${media.smallerThanMaxTablet`
-    padding: 25px;
+    padding: ${(props: any) => props.hasHeaderOrFooter ? 0 : '25px'};
 
     &.fixedHeight {
-      height: 75vh;
+      height: 80vh;
     }
   `}
 `;
 
 const CloseIcon = styled(Icon)`
   height: 20px;
-  fill: ${color('mediumGrey')};
+  fill: ${colors.mediumGrey};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -71,7 +71,7 @@ const CloseButton = styled.div`
 
   &:hover {
     svg {
-      fill: ${color('clBlue')};
+      fill: ${colors.clBlue};
     }
   }
 `;
@@ -91,6 +91,7 @@ const ModalContainer = styled.div`
   padding: 30px;
   overflow: hidden;
   z-index: 10002;
+  will-change: opacity, transform;
 
   &.modal-enter {
     opacity: 0;
@@ -114,6 +115,22 @@ const ModalContainer = styled.div`
   }
 `;
 
+const HeaderContainer = styled.div`
+  background: white;
+  width: 100%;
+  height: 74px;
+  border-bottom: 2px solid ${colors.separation};
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 40px;
+`;
+const FooterContainer = styled(HeaderContainer)`
+  background: white;
+  border-bottom: none;
+  border-top: 2px solid ${colors.separation};
+`;
+
 interface ITracks {
   clickCloseButton: (arg: any) => void;
   clickOutsideModal: (arg: any) => void;
@@ -127,6 +144,8 @@ type Props = {
   width?: string | undefined;
   close: () => void;
   className?: string;
+  header?: JSX.Element;
+  footer?: JSX.Element;
 };
 
 type State = {};
@@ -230,7 +249,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
 
   render() {
     let { fixedHeight, width } = this.props;
-    const { children, opened } = this.props;
+    const { children, opened, header, footer } = this.props;
 
     fixedHeight = (isBoolean(fixedHeight) ? fixedHeight : true);
     width = (isString(width) ? width : '650px');
@@ -242,8 +261,15 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
             className={`${fixedHeight && 'fixedHeight'}`}
             width={width}
             onClickOutside={this.clickOutsideModal}
+            hasHeaderOrFooter={header !== undefined || footer !== undefined}
           >
+            {header &&
+              <HeaderContainer> {header} </HeaderContainer>
+            }
             {children}
+            {footer &&
+              <FooterContainer> {footer} </FooterContainer>
+            }
             <CloseButton onClick={this.clickCloseButton}>
               <CloseIcon name="close3" />
             </CloseButton>
