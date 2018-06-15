@@ -78,7 +78,7 @@ class User < ApplicationRecord
 
   scope :in_group, -> (group) {
     if group.rules?
-      SmartGroupsService.new.filter(self, group.rules)
+      SmartGroupsService.new.filter(self.all, group.rules)
     elsif group.manual?
       joins(:memberships).where(memberships: {group_id: group.id})
     end
