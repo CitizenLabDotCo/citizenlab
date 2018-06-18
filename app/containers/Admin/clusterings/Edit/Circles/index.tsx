@@ -14,8 +14,7 @@ type D3Node = {
   [key: string]: any;
 };
 
-interface InputProps = {
-  ideas: GetIdeasChildProps;
+interface InputProps {
   structure: ParentNode;
   selectedNodes: Node[];
   onClickNode: (Node) => void;
