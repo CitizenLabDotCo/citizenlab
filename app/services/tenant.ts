@@ -16,7 +16,7 @@ export interface ITenantSettings {
     locales: Locale[];
     timezone: string;
     organization_name: Multiloc;
-    organization_site: string;
+    organization_site?: string;
     organization_type: 'small_city' | 'medium_city' | 'large_city' | 'generic';
     lifecycle_stage?: 'demo' | 'active' | 'churned' | 'not_applicable';
     header_title: Multiloc | null;
