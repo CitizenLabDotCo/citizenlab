@@ -381,6 +381,8 @@
   "app.containers.AdminPage.SettingsPage.titleMaxCharError": "Den oppgitte tittelen overskrider denmaksimale bokstavgrensen på 35",
   "app.containers.AdminPage.SettingsPage.titleRegistrationFields": "Registreringsfelter",
   "app.containers.AdminPage.SettingsPage.uploadPlaceholder": "Slipp filene dine her",
+  "app.containers.AdminPage.SettingsPage.urlError": "",
+  "app.containers.AdminPage.SettingsPage.urlTitle": "",
   "app.containers.AdminPage.SettingsPage.viewPublicResource": "Innstillinger",
   "app.containers.AdminPage.SideBar.dashboard": "Kontrollpanel",
   "app.containers.AdminPage.SideBar.groups": "Grupper",
