@@ -95,7 +95,7 @@ class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
   getPoints = (ideas: Partial<IIdeaData>[] | null | undefined | Error) => {
     const ideaPoints: any[] = [];
 
-    if (!isNilOrError(ideas) && ideas.length > 0) {      
+    if (!isNilOrError(ideas) && ideas.length > 0) {
       ideas.forEach((idea) => {
         if (idea.attributes && idea.attributes.location_point_geojson) {
           ideaPoints.push({

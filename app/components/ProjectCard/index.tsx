@@ -95,7 +95,6 @@ const Mod = styled(ProjectModeratorIndicator)`
   width: 1rem;
 `;
 
-
 const ProjectContent = styled.div`
   flex: 1;
   display: flex;

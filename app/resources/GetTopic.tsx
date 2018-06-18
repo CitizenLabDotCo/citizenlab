@@ -1,7 +1,6 @@
 import React from 'react';
 import isString from 'lodash/isString';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { ITopicData, topicByIdStream } from 'services/topics';

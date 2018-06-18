@@ -44,8 +44,7 @@ export default class GetIdeaMarkers extends React.Component<Props, State> {
             queryParameters: {
               project: projectId,
               phase: phaseId
-            },
-            cacheStream: false,
+            }
           }).observable;
         }).subscribe((ideaMarkers) => {
           this.setState({

@@ -20,10 +20,11 @@ import { Locale } from 'typings';
 
 const Container = styled.div`
   display: flex;
-  margin-left: 0px;
   position: relative;
   cursor: pointer;
   outline: none;
+  margin: 0;
+  padding: 0;
 
   * {
     user-select: none;
@@ -40,14 +41,22 @@ const DropdownItemIcon = styled(Icon)`
   height: 6px;
   width: 11px;
   fill: inherit;
-  margin-top: -2px;
-  margin-left: 4px;
+  margin-top: -1px;
+  margin-left: 3px;
   transition: all 100ms ease-out;
 `;
 
 const OpenMenuButton = styled.button`
   color: ${colors.label};
+  font-size: ${fontSize('base')};
+  font-weight: 400;
   cursor: pointer;
+  margin: 0;
+  padding: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: flex;
+  align-items: center;
 
   &:hover,
   &:focus {
@@ -134,6 +143,7 @@ export default class LanguageSelector extends React.PureComponent<Props, State> 
         {
           localeOptions.map(locale => (
             <PopoverItem
+              key={locale}
               style="text"
               onClick={this.handleLanguageSelect(locale)}
               className={locale === currentLocale ? 'active' : ''}
