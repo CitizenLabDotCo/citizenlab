@@ -381,6 +381,8 @@
   "app.containers.AdminPage.SettingsPage.titleMaxCharError": "The provided title exceeds the maximum allowed character limit of 35",
   "app.containers.AdminPage.SettingsPage.titleRegistrationFields": "Registration fields",
   "app.containers.AdminPage.SettingsPage.uploadPlaceholder": "Drop your files here",
+  "app.containers.AdminPage.SettingsPage.urlError": "The URL is not valid.",
+  "app.containers.AdminPage.SettingsPage.urlTitle": "Website (URL)",
   "app.containers.AdminPage.SettingsPage.viewPublicResource": "Settings",
   "app.containers.AdminPage.SideBar.dashboard": "Dashboard",
   "app.containers.AdminPage.SideBar.groups": "Groups",

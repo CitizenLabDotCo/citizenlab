@@ -161,7 +161,7 @@ export default defineMessages({
   },
   urlError: {
     id: 'app.containers.AdminPage.SettingsPage.urlError',
-    defaultMessage: 'The URL has to start with "http://" or "https://".'
+    defaultMessage: 'The URL needs to start with "http://" or "https://".'
   },
   urlTitle: {
     id: 'app.containers.AdminPage.SettingsPage.urlTitle',
