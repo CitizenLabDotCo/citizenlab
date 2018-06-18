@@ -160,8 +160,8 @@ export default class SettingsGeneralTab extends React.PureComponent<Props, State
   }
 
   render() {
-    const { tenant, errors } = this.state;
-    console.log(errors);
+    const { tenant } = this.state;
+
     if (tenant) {
       const { errors, saved, attributesDiff, hasUrlError } = this.state;
       const updatedLocales = get(attributesDiff, 'settings.core.locales');
