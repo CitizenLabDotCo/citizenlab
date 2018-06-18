@@ -133,7 +133,6 @@ export default class SettingsGeneralTab extends React.PureComponent<Props, State
         this.setState({ errors, loading: false });
         // This error check uses an undocumented API from the backend.
         // Needs to be reimplemented to use frontend validation when converted to a Formik form.
-        // errors.settings[0].error.fragment
         if (errors.settings && errors.settings.length > 0) {
           const foundUrlError = !!errors.settings.find((error) => error.error.fragment === '#/core/organization_site');
           if (foundUrlError) {
