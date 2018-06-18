@@ -1,5 +1,5 @@
 import React from 'react';
-import * as typeformEmbed from '@typeform/embed';
+import { makeWidget } from '@typeform/embed';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -27,7 +27,7 @@ class TypeformSurvey extends React.PureComponent<Props, State> {
     const surveyUrl = (email ? `${typeformUrl}?email=${email}` : typeformUrl);
 
     if (this.typeformElement) {
-      typeformEmbed.makeWidget(this.typeformElement, surveyUrl, {
+      makeWidget(this.typeformElement, surveyUrl, {
         hideFooter: true,
         hideScrollbars: false,
         hideHeaders: true,

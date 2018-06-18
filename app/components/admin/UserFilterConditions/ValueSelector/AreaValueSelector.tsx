@@ -1,0 +1,60 @@
+import React from 'react';
+import { TRule } from '../rules';
+import { IOption } from 'typings';
+import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
+import Select from 'components/UI/Select';
+import localize, { injectedLocalized } from 'utils/localize';
+import { isNilOrError } from 'utils/helperUtils';
+
+type Props = {
+  rule: TRule;
+  value: string;
+  onChange: (string) => void;
+  areas: GetAreasChildProps;
+  tFunc: any;
+};
+
+type State = {};
+
+class AreaValueSelector extends React.PureComponent<Props & injectedLocalized, State> {
+
+  generateOptions = (): IOption[] => {
+    const { areas, localize } = this.props;
+
+    if (!isNilOrError(areas)) {
+      return areas.map((area) => (
+        {
+          value: area.id,
+          label: localize(area.attributes.title_multiloc),
+        }
+      ));
+    } else {
+      return [];
+    }
+  }
+
+  handleOnChange = (option: IOption) => {
+    this.props.onChange(option.value);
+  }
+
+  render() {
+    const { value } = this.props;
+
+    return (
+      <Select
+        value={value}
+        options={this.generateOptions()}
+        onChange={this.handleOnChange}
+        clearable={false}
+      />
+    );
+  }
+}
+
+const AreaValueSelectorWithHOC = localize(AreaValueSelector);
+
+export default (inputProps) => (
+  <GetAreas>
+    {(areas) => <AreaValueSelectorWithHOC {...inputProps} areas={areas} />}
+  </GetAreas>
+);

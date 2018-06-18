@@ -7,8 +7,8 @@ import loadAndRender from 'utils/loadAndRender';
 import dashboardRoutes from './dashboard/routes';
 import ideasRoutes from './ideas/routes';
 import usersRoutes from './users/routes';
+import invitationsRoutes from './invitations/routes';
 import projectsRoutes from './projects/routes';
-import groupsRoutes from './groups/routes';
 import settingsRoutes from './settings/routes';
 import settingsAreasRoutes from './settings/areas/routes';
 import customFieldRoutes from './settings/registration/CustomFields/routes';
@@ -29,7 +29,7 @@ export default () => ({
     },
     settingsRoutes(),
     settingsAreasRoutes(),
-    groupsRoutes(),
     pagesRoutes(),
+    invitationsRoutes(),
   ],
 });
