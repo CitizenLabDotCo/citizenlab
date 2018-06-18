@@ -395,7 +395,7 @@
   "app.containers.AdminPage.SettingsPage.noHeader": "Please upload a header image",
   "app.containers.AdminPage.SettingsPage.noLogo": "Please upload a logo",
   "app.containers.AdminPage.SettingsPage.organizationName": "{type, select, generic {Organisation} other {City or municipality}} name",
-  "app.containers.AdminPage.SettingsPage.save": "Saved",
+  "app.containers.AdminPage.SettingsPage.save": "Save",
   "app.containers.AdminPage.SettingsPage.saveErrorMessage": "Something went wrong, please try again later.",
   "app.containers.AdminPage.SettingsPage.saveSuccess": "Saved!",
   "app.containers.AdminPage.SettingsPage.saveSuccessMessage": "Your changes have been saved.",
