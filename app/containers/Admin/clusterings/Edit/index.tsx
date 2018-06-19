@@ -4,33 +4,41 @@ import Circles from './Circles';
 import { Node } from 'services/clusterings';
 import InfoPane from './InfoPane';
 import styled, { ThemeProvider } from 'styled-components';
-import { colors } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import GetClustering, { GetClusteringChildProps } from 'resources/GetClustering';
 import { withRouter, WithRouterProps } from 'react-router';
 import { globalState, IGlobalStateService, IAdminFullWidth } from 'services/globalState';
-
-const Container = styled.div``;
+import { colors, media } from 'utils/styleUtils';
 
 const TwoColumns = styled.div`
+  flex: 1;
   width: 100%;
+  height: calc(100vh - ${props => props.theme.menuHeight}px - 85px);
   display: flex;
   flex-wrap: nowrap;
   align-items: stretch;
+  margin-bottom: 35px;
 `;
 
 const StyledCircles = styled(Circles)`
   flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: #fff;
-  border: solid 1px ${colors.adminBorder};
+  border: solid 1px ${colors.separation};
   border-radius: 5px;
-  padding: 20px;
+  padding: 25px;
+  overflow: hidden;
 `;
 
 const StyledInfoPane = styled(InfoPane)`
-  width: 100%;
-  max-width: 400px;
+  flex:  0 0 350px;
   margin-left: 20px;
+
+  ${media.smallerThan1280px`
+    flex:  0 0 300px;
+  `}
 `;
 
 interface InputProps {}
@@ -52,7 +60,6 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps, State> {
   constructor(props: Props & WithRouterProps) {
     super(props);
     this.state = {
-      // clustering: anzegemCluster,
       activeComparison: 0,
       selectedNodes: [[]],
     };
@@ -73,6 +80,7 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps, State> {
 
   theme = () => (theme) => {
     const comparisonColors = ['#fbbd08', '#a333c8', '#f2711c', '#00b5ad'];
+
     return {
       ...theme,
       comparisonColors,
@@ -125,7 +133,7 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps, State> {
     if (isNilOrError(clustering)) return null;
 
     return (
-      <Container>
+      <>
         <ThemeProvider theme={this.theme()}>
           <TwoColumns>
             <StyledCircles
@@ -143,7 +151,7 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps, State> {
             />
           </TwoColumns>
         </ThemeProvider>
-      </Container>
+      </>
     );
   }
 }

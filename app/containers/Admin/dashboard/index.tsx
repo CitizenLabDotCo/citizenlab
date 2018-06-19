@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import * as moment from 'moment';
 import HelmetIntl from 'components/HelmetIntl';
 import styled, { ThemeProvider } from 'styled-components';
@@ -45,9 +45,9 @@ interface State {
   intervalIndex: number;
 }
 
-export default class DashboardPage extends React.PureComponent<Props, State> {
+export default class DashboardPage extends PureComponent<Props, State> {
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
       interval: 'months',
       intervalIndex: 0
