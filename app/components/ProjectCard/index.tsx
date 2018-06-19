@@ -96,7 +96,7 @@ const Mod = styled(ProjectModeratorIndicator)`
 `;
 
 const ProjectContent = styled.div`
-  flex: 1;
+  flex: 1 1 0%;
   display: flex;
   align-items: center;
   padding-top: 10px;
@@ -110,6 +110,7 @@ const ProjectContent = styled.div`
     margin: 0;
     padding: 15px;
     padding-top: 0px;
+    flex: 1 1 auto;
   `}
 `;
 
