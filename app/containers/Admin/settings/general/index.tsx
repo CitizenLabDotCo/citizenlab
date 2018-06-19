@@ -12,6 +12,7 @@ import messages from '../messages';
 
 // components
 import InputMultiloc from 'components/UI/InputMultiloc';
+import Input from 'components/UI/Input';
 import Label from 'components/UI/Label';
 import TextAreaMultiloc from 'components/UI/TextAreaMultiloc';
 import MultipleSelect from 'components/UI/MultipleSelect';
@@ -39,6 +40,7 @@ interface State {
   errors: {
     [fieldName: string]: API.Error[]
   };
+  hasUrlError: boolean;
 }
 
 export default class SettingsGeneralTab extends React.PureComponent<Props, State> {
@@ -51,6 +53,7 @@ export default class SettingsGeneralTab extends React.PureComponent<Props, State
       tenant: null,
       loading: false,
       errors: {},
+      hasUrlError: false,
       saved: false,
     };
   }
@@ -99,18 +102,44 @@ export default class SettingsGeneralTab extends React.PureComponent<Props, State
     }));
   }
 
+  handleUrlOnChange = (url) => {
+    this.setState((state) => ({
+      hasUrlError: false,
+      attributesDiff: {
+        ...state.attributesDiff,
+        settings: {
+          ...get(state.attributesDiff, 'settings', {}),
+          core: {
+            ...get(state.attributesDiff, 'settings.core', {}),
+            organization_site: url
+          }
+        }
+      }
+    }));
+  }
+
   save = (event: React.FormEvent<any>) => {
     event.preventDefault();
 
     const { tenant, attributesDiff } = this.state;
 
     if (tenant) {
-      this.setState({ loading: true, saved: false });
+      this.setState({ loading: true, saved: false, hasUrlError: false, errors: {} });
 
       updateTenant(tenant.id, attributesDiff).then(() => {
         this.setState({ saved: true, attributesDiff: {}, loading: false });
       }).catch((e) => {
-        this.setState({ errors: e.json.errors, loading: false });
+        const errors = e.json.errors;
+        this.setState({ errors, loading: false });
+        // This error check uses an undocumented API from the backend.
+        // Needs to be reimplemented to use frontend validation when converted to a Formik form.
+        if (errors.settings && errors.settings.length > 0) {
+          const foundUrlError = !!errors.settings.find((error) => error.error.fragment === '#/core/organization_site');
+          if (foundUrlError) {
+            this.setState({ hasUrlError: true });
+          }
+        }
+
       });
     }
   }
@@ -133,7 +162,7 @@ export default class SettingsGeneralTab extends React.PureComponent<Props, State
     const { tenant } = this.state;
 
     if (tenant) {
-      const { errors, saved, attributesDiff } = this.state;
+      const { errors, saved, attributesDiff, hasUrlError } = this.state;
       const updatedLocales = get(attributesDiff, 'settings.core.locales');
 
       let tenantAttrs = (tenant ? merge({}, tenant.attributes, attributesDiff) : merge({}, attributesDiff));
@@ -145,6 +174,7 @@ export default class SettingsGeneralTab extends React.PureComponent<Props, State
 
       const tenantLocales: string[] | null = get(tenantAttrs, 'settings.core.locales', null);
       const organizationType: string | null = get(tenantAttrs, 'settings.core.organization_type', null);
+      const tenantSite: string | null = get(tenantAttrs, 'settings.core.organization_site', null);
       const organizationNameMultiloc: Multiloc | null = get(tenantAttrs, 'settings.core.organization_name', null);
       const metaTitleMultiloc: Multiloc | null = get(tenantAttrs, 'settings.core.meta_title', null);
       const metaDescriptionMultiloc: Multiloc | null = get(tenantAttrs, 'settings.core.meta_description', null);
@@ -197,6 +227,19 @@ export default class SettingsGeneralTab extends React.PureComponent<Props, State
                 rows={5}
                 valueMultiloc={metaDescriptionMultiloc}
                 onChange={this.handleCoreMultilocSettingOnChange('meta_description')}
+              />
+            </SectionField>
+
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.urlTitle} />
+              </Label>
+              <Input
+                type="text"
+                placeholder="https://..."
+                onChange={this.handleUrlOnChange}
+                value={tenantSite}
+                error={hasUrlError ? <FormattedMessage {...messages.urlError} /> : null}
               />
             </SectionField>
 

@@ -414,6 +414,8 @@
   "app.containers.AdminPage.SettingsPage.titleMaxCharError": "Den angivne titel overstiger den maksimale tegngrænse på 35",
   "app.containers.AdminPage.SettingsPage.titleRegistrationFields": "Registreringsfelter",
   "app.containers.AdminPage.SettingsPage.uploadPlaceholder": "Træk dine filer hertil",
+  "app.containers.AdminPage.SettingsPage.urlError": "",
+  "app.containers.AdminPage.SettingsPage.urlTitle": "",
   "app.containers.AdminPage.SettingsPage.viewPublicResource": "Indstillinger",
   "app.containers.AdminPage.SideBar.dashboard": "Dashboard",
   "app.containers.AdminPage.SideBar.groups": "Grupper",

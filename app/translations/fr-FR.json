@@ -414,6 +414,8 @@
   "app.containers.AdminPage.SettingsPage.titleMaxCharError": "Le texte dépasse la limite des 35 caractères autorisés",
   "app.containers.AdminPage.SettingsPage.titleRegistrationFields": "Champs d'inscription",
   "app.containers.AdminPage.SettingsPage.uploadPlaceholder": "Déposez votre image ici",
+  "app.containers.AdminPage.SettingsPage.urlError": "",
+  "app.containers.AdminPage.SettingsPage.urlTitle": "",
   "app.containers.AdminPage.SettingsPage.viewPublicResource": "Paramètres",
   "app.containers.AdminPage.SideBar.dashboard": "Tableau de bord",
   "app.containers.AdminPage.SideBar.groups": "Groupes",

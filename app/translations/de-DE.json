@@ -414,6 +414,8 @@
   "app.containers.AdminPage.SettingsPage.titleMaxCharError": "Die angegebene Überschrift überschreitet die erlaubte maximale Zeichenanzahl von 35 Zeichen",
   "app.containers.AdminPage.SettingsPage.titleRegistrationFields": "Registrierungsfeld",
   "app.containers.AdminPage.SettingsPage.uploadPlaceholder": "Legen Sie Ihre Dateien hier ab",
+  "app.containers.AdminPage.SettingsPage.urlError": "",
+  "app.containers.AdminPage.SettingsPage.urlTitle": "",
   "app.containers.AdminPage.SettingsPage.viewPublicResource": "Einstellungen",
   "app.containers.AdminPage.SideBar.dashboard": "Dashboard",
   "app.containers.AdminPage.SideBar.groups": "Gruppen",
