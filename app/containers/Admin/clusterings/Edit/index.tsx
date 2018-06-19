@@ -4,15 +4,13 @@ import Circles from './Circles';
 import { Node } from 'services/clusterings';
 import InfoPane from './InfoPane';
 import styled, { ThemeProvider } from 'styled-components';
+import { colors } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import GetClustering, { GetClusteringChildProps } from 'resources/GetClustering';
 import { withRouter, WithRouterProps } from 'react-router';
 import { globalState, IGlobalStateService, IAdminFullWidth } from 'services/globalState';
-// import anzegemCluster from './anzegem.json';
 
-const Container = styled.div`
-  margin: 20px;
-`;
+const Container = styled.div``;
 
 const TwoColumns = styled.div`
   width: 100%;
@@ -23,15 +21,15 @@ const TwoColumns = styled.div`
 
 const StyledCircles = styled(Circles)`
   flex: 1;
-  /* background: #fff;
-  border: solid 1px #eee;
+  background: #fff;
+  border: solid 1px ${colors.adminBorder};
   border-radius: 5px;
-  padding: 10px; */
+  padding: 20px;
 `;
 
 const StyledInfoPane = styled(InfoPane)`
   width: 100%;
-  max-width: 350px;
+  max-width: 400px;
   margin-left: 20px;
 `;
 
@@ -44,7 +42,6 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  // clustering?: ParentNode;
   activeComparison: number;
   selectedNodes: Node[][];
 }
@@ -92,10 +89,10 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps, State> {
   }
 
   handleOnAddComparison = () => {
-    this.setState({
-      selectedNodes: [...this.state.selectedNodes, []],
-      activeComparison: this.state.selectedNodes.length,
-    });
+    this.setState(({ selectedNodes }) => ({
+      selectedNodes: [...selectedNodes, []],
+      activeComparison: selectedNodes.length
+    }));
   }
 
   handleOnDeleteComparison = (index: number) => {

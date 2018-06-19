@@ -42,7 +42,7 @@ const StyledSvg = styled.svg`
 class Circles extends PureComponent<Props, State> {
   svgRef: SVGElement | null;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       nodes: [],

@@ -1,6 +1,7 @@
 
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { colors } from 'utils/styleUtils';
 import { map, flatten, uniq } from 'lodash';
 import { Node, ParentNode, ideasUnder } from 'services/clusterings';
 import GenderChart from './GenderChart';
@@ -15,38 +16,41 @@ import ComparisonSwitcher from './ComparisonSwitcher';
 
 const Container = styled.div``;
 
+const bleh = css`
+  background: #fff;
+  border: solid 1px ${colors.adminBorder};
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 15px;
+`;
+
 const ToggleContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
 
+  ${bleh}
+
   & > * {
     padding: 5px;
   }
 `;
 
+const StyledComparisonSwitcher = styled(ComparisonSwitcher)`
+  ${bleh}
+`;
+
 const StyledGenderChart = styled(GenderChart)`
-  background: #fff;
-  border: solid 1px #eee;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 15px;
+  ${bleh}
 `;
 
 const StyledAgeChart = styled(AgeChart)`
-  background: #fff;
-  border: solid 1px #eee;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 15px;
+  ${bleh}
 `;
 
 const StyledDomicileChart = styled(DomicileChart)`
-  background: #fff;
-  border: solid 1px #eee;
-  border-radius: 5px;
-  padding: 10px;
+  ${bleh}
 `;
 
 type Props = {
@@ -105,7 +109,7 @@ class InfoPane extends PureComponent<Props, State> {
           />
           <FormattedMessage {...messages.relative} />
         </ToggleContainer>
-        <ComparisonSwitcher
+        <StyledComparisonSwitcher
           activeComparison={activeComparison}
           comparisonCount={selectedNodes.length}
           onAddComparison={onAddComparison}
