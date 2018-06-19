@@ -432,6 +432,7 @@
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderManual": "Choisissez un nom pour le groupe",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Définissez les paramètres de votre groupe intelligent",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderStep1": "Choisissez le type de groupe",
+  "app.containers.AdminPage.Users.GroupCreation.readMoreLink": "",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Les utilisateurs correspondant à toutes les conditions suivantes seront automatiquement ajoutés à ce groupe :",
   "app.containers.AdminPage.Users.GroupCreation.step1CreateButtonNormal": "Créer un groupe simple",
   "app.containers.AdminPage.Users.GroupCreation.step1CreateButtonSmart": "Créer un groupe intelligent",

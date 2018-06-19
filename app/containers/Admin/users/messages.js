@@ -113,6 +113,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupCreation.step1ReadMore',
     defaultMessage: 'Read More about it',
   },
+  readMoreLink: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.readMoreLink',
+    defaultMessage: 'http://support.citizenlab.co/nl-opstartgids/stap-2-configureer-de-belangrijkste-settings/maak-eventueel-verschillende-gebruikersgroepen-aan',
+  },
   modalHeaderStep1: {
     id: 'app.containers.AdminPage.Users.GroupCreation.modalHeaderStep1',
     defaultMessage: 'Select the type of group',

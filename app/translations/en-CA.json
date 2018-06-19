@@ -432,6 +432,7 @@
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderManual": "",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderStep1": "",
+  "app.containers.AdminPage.Users.GroupCreation.readMoreLink": "",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "",
   "app.containers.AdminPage.Users.GroupCreation.step1CreateButtonNormal": "",
   "app.containers.AdminPage.Users.GroupCreation.step1CreateButtonSmart": "",
