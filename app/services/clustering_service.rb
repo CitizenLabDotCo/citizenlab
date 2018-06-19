@@ -25,27 +25,33 @@ class ClusteringService
     levels.map do |level|
       level_ids_to_idea_ids = case level
       when 'project'
-        sql = "  SELECT project_id, json_agg(id) AS idea_ids" 
-        sql += " FROM ideas"
-        sql += " GROUP BY project_id;"
+        sql = %q(
+        SELECT project_id, json_agg(id) AS idea_ids
+        FROM ideas
+        GROUP BY project_id;
+        )
         ActiveRecord::Base.connection.execute(sql).map do |hash|
           [hash["project_id"], eval(hash["idea_ids"])]
         end.to_h
       when 'topic'
-        sql = "  SELECT topic_id, json_agg(ideas.id) AS idea_ids" 
-        sql += " FROM ideas"
-        sql += " RIGHT OUTER JOIN ideas_topics"
-        sql += " ON ideas.id = idea_id"
-        sql += " GROUP BY topic_id;"
+        sql = %q(
+        SELECT topic_id, json_agg(ideas.id) AS idea_ids
+        FROM ideas
+        RIGHT OUTER JOIN ideas_topics
+        ON ideas.id = idea_id
+        GROUP BY topic_id;
+        )
         ActiveRecord::Base.connection.execute(sql).map do |hash|
           [hash["topic_id"], eval(hash["idea_ids"])]
         end.to_h 
       when 'area'
-        sql = "  SELECT area_id, json_agg(ideas.id) AS idea_ids" 
-        sql += " FROM ideas"
-        sql += " RIGHT OUTER JOIN areas_ideas"
-        sql += " ON ideas.id = idea_id"
-        sql += " GROUP BY area_id;"
+        sql = %q(
+        SELECT area_id, json_agg(ideas.id) AS idea_ids
+        FROM ideas
+        RIGHT OUTER JOIN areas_ideas
+        ON ideas.id = idea_id
+        GROUP BY area_id;
+        )
         ActiveRecord::Base.connection.execute(sql).map do |hash|
           [hash["area_id"], eval(hash["idea_ids"])]
         end.to_h       
