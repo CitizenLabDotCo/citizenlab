@@ -115,6 +115,7 @@ const ProjectContent = styled.div`
 const ProjectContentInner = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 const ProjectTitle = styled.h3`
@@ -136,6 +137,7 @@ const ProjectDescription = styled.div`
   line-height: 24px;
   font-weight: 400;
   margin-top: 20px;
+  width: 100%;
 `;
 
 const ProjectMetaItems = styled.div`
