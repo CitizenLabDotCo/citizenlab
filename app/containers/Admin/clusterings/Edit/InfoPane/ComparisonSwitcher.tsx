@@ -31,20 +31,18 @@ class ComparisonSwitcher extends PureComponent<Props, State> {
     this.props.onDeleteComparison(i);
   }
 
-  compareLink = () => (
-    <div>
-      <Button style="text" onClick={this.handleAddComparison}>Compare</Button>
-    </div>
-  )
-
   render() {
     const { comparisonCount, activeComparison } = this.props;
 
     if (comparisonCount === 1) {
-      return this.compareLink();
+      return (
+        <div className={this.props['className']}>
+          <Button style="text" onClick={this.handleAddComparison}>Compare</Button>
+        </div>
+      );
     } else {
       return (
-        <div>
+        <div className={this.props['className']}>
           {range(comparisonCount).map((i) => (
             <Label
               as="a"
