@@ -144,10 +144,10 @@ export default class GetUsers extends React.Component<Props, State> {
     });
   }
 
-  handleChangeSearchTerm = (searchTerm: string) => {
+  handleChangeSearchTerm = (search: string) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      search: searchTerm
+      search
     });
   }
 

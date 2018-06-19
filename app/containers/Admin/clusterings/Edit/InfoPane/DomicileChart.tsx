@@ -106,7 +106,7 @@ class DomicileChart extends PureComponent<Props & injectedLocalized, State> {
 
     return (
       <Container className={this.props['className']}>
-        <ResponsiveContainer width="100%" aspect={400 / 250}>
+        <ResponsiveContainer width="100%" aspect={2}>
           <BarChart
             data={series}
             stackOffset="sign"
