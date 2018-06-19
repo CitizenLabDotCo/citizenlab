@@ -103,7 +103,7 @@ const MenuLink = styled(Link) `
   .groupName {
     ${ellipsis('200px') as any}
     min-width: 0;
-    flex: 1;
+    flex-basis: auto;
   }
 
   @keyframes highlight {
