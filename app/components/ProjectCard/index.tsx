@@ -103,6 +103,7 @@ const ProjectContent = styled.div`
   padding-bottom: 15px;
   margin-right: 40px;
   margin-left: 30px;
+  width: 100%;
 
   ${media.smallerThanMaxTablet`
     align-items: flex-start;
@@ -115,6 +116,7 @@ const ProjectContent = styled.div`
 const ProjectContentInner = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 const ProjectTitle = styled.h3`
