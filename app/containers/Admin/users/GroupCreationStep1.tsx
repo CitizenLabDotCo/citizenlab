@@ -1,6 +1,5 @@
 // Libraries
 import React from 'react';
-import { Link } from 'react-router';
 
 // Components
 import Icon from 'components/UI/Icon';
