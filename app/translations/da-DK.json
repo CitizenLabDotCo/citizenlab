@@ -432,7 +432,7 @@
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderManual": "Definer et gruppenavn",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Definer dine indstillinger for smarte grupper",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderStep1": "Vælg gruppetype",
-  "app.containers.AdminPage.Users.GroupCreation.readMoreLink": "http://support.citizenlab.co/nl-opstartgids/stap-2-configureer-de-belangrijkste-settings/maak-eventueel-verschillende-gebruikersgroepen-aan",
+  "app.containers.AdminPage.Users.GroupCreation.readMoreLink": "http://support.citizenlab.co/eng-getting-started/how-to-use-smart-groups",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Brugere der opfylder alle de følgende betingelser vil automatisk blive tilføjet til gruppen:",
   "app.containers.AdminPage.Users.GroupCreation.step1CreateButtonNormal": "Opret en normal gruppe",
   "app.containers.AdminPage.Users.GroupCreation.step1CreateButtonSmart": "Opret en smart gruppe",
