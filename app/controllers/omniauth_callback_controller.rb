@@ -30,7 +30,8 @@ class OmniauthCallbackController < ApplicationController
         redirect_to(add_uri_params(FrontendService.new.signup_success_url, omniauth_params))
 
       rescue ActiveRecord::RecordInvalid => e
-        redirect_to(add_uri_params(FrontendService.new.signin_failure_url, omniauth_params))
+        ## Commented out to see what goes wrong
+        # redirect_to(add_uri_params(FrontendService.new.signin_failure_url, omniauth_params))
       end
     end
 
