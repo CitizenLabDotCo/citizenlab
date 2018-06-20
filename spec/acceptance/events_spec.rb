@@ -1,7 +1,10 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "Events" do
+
+  explanation "Events organized in the city, related to a project."
 
   before do
     header "Content-Type", "application/json"
@@ -16,7 +19,8 @@ resource "Events" do
     end
     
     let(:project_id) { @project.id }
-    example_request "List events of a project" do
+
+    example_request "List all events of a project" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
@@ -59,7 +63,7 @@ resource "Events" do
         let(:start_at) { event.start_at }
         let(:end_at) { event.end_at }
 
-        example_request "Create an event in a project" do
+        example_request "Create an event for a project" do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
@@ -82,7 +86,6 @@ resource "Events" do
           expect(json_response.dig(:errors, :start_at)).to eq [{error: 'after_end_at'}]
         end
       end
-
     end
 
     patch "web_api/v1/events/:id" do
@@ -96,18 +99,16 @@ resource "Events" do
       end
       ValidationErrorHelper.new.error_fields(self, Event)
 
-
       let(:event) { create(:event, project: @project) }
       let(:id) { event.id }
       let(:location_multiloc) { build(:event).location_multiloc }
 
-      example_request "Update a event" do
+      example_request "Update an event" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:location_multiloc).stringify_keys).to match location_multiloc
       end
     end
-
 
     delete "web_api/v1/events/:id" do
       let(:event) { create(:event, project: @project) }
@@ -117,7 +118,5 @@ resource "Events" do
         expect{Event.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
-
   end
-
 end

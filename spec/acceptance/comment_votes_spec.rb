@@ -1,7 +1,11 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "Comment Votes" do
+
+  explanation "Votes are used to express agreement on content (i.e. comments)."
+
   before do
     @user = create(:admin)
     token = Knock::AuthToken.new(payload: { sub: @user.id }).token
@@ -11,12 +15,10 @@ resource "Comment Votes" do
     @votes = create_list(:vote, 2, votable: @comment)
   end
 
-
-
   get "web_api/v1/comments/:comment_id/votes" do
     let(:comment_id) { @comment.id }
 
-    example_request "List votes of a comment" do
+    example_request "List all votes of a comment" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
@@ -26,7 +28,7 @@ resource "Comment Votes" do
   get "web_api/v1/votes/:id" do
     let(:id) { @votes.first.id }
 
-    example_request "Get one vote by id" do
+    example_request "Get one vote on a comment by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @votes.first.id
@@ -39,12 +41,11 @@ resource "Comment Votes" do
       parameter :mode, "one of [up, down]", required: true
     end
     ValidationErrorHelper.new.error_fields(self, Vote)
-
   
     let(:comment_id) { @comment.id }
     let(:mode) { "up" }
   
-    example_request "Create a vote to a comment" do
+    example_request "Create a vote on a comment" do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
@@ -79,19 +80,18 @@ resource "Comment Votes" do
       expect(@comment.reload.upvotes_count).to eq 3
       expect(@comment.reload.downvotes_count).to eq 0
     end
-
   end
 
   post "web_api/v1/comments/:comment_id/votes/down" do
     let(:comment_id) { @comment.id }
 
-    example_request "downvote a comment that doesn't have your vote yet" do
+    example_request "Downvote a comment that doesn't have your vote yet" do
       expect(status).to eq 201
       expect(@comment.reload.upvotes_count).to eq 2
       expect(@comment.reload.downvotes_count).to eq 1
     end
 
-    example "downvote a comment that you upvoted before" do
+    example "Downvote a comment that you upvoted before" do
       @comment.votes.create(user: @user, mode: 'up')
       do_request
       expect(status).to eq 201
@@ -108,16 +108,15 @@ resource "Comment Votes" do
       expect(@comment.reload.upvotes_count).to eq 2
       expect(@comment.reload.downvotes_count).to eq 1
     end
-
   end
 
   delete "web_api/v1/votes/:id" do
     let(:vote) { create(:vote, user: @user, votable: @comment) }
     let(:id) { vote.id }
-    example_request "Delete a vote" do
+    
+    example_request "Delete a vote from a comment" do
       expect(response_status).to eq 200
       expect{Vote.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
-
 end

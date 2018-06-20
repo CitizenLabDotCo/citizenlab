@@ -329,7 +329,7 @@ namespace :migrate do
     end
     # birthyear
     if u.dig('telescope', 'birthyear')
-      d[:birthyear] = u.dig('telescope', 'birthyear').to_s
+      d[:birthyear] = u.dig('telescope', 'birthyear')
     end
     # education
     if u.dig('telescope', 'education') && (u.dig('telescope', 'education') <= 8) && (u.dig('telescope', 'education') >= 2)

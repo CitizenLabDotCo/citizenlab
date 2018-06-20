@@ -1,7 +1,10 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "Comments" do
+
+  explanation "Comments permit users to have discussions about content (i.e. ideas)."
 
   before do
     header "Content-Type", "application/json"
@@ -14,9 +17,10 @@ resource "Comments" do
       parameter :number, "Page number"
       parameter :size, "Number of comments per page"
     end
-    
+
     let(:idea_id) { @idea.id }
-    example_request "List comments of an idea" do
+
+    example_request "List all comments of an idea" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
@@ -27,7 +31,6 @@ resource "Comments" do
       expect(deleted_comment_data).to be_present
       expect(deleted_comment_data.dig(:attributes,:body_multiloc)).to be_blank
     end
-
   end
 
   get "web_api/v1/comments/as_xlsx" do
@@ -37,7 +40,6 @@ resource "Comments" do
       expect(status).to eq 200
     end
   end
-
 
   get "web_api/v1/comments/:id" do
     let(:id) { @comments.first.id }
@@ -57,13 +59,11 @@ resource "Comments" do
     end
 
     get "web_api/v1/ideas/:idea_id/comments" do
-
       let(:idea_id) { @idea.id }
 
       example "List all comments includes the user_vote when authenticated" do
         comment = create(:comment, idea: @idea)
         vote = create(:vote, user: @user, votable: comment)
-
         do_request
         json_response = json_parse(response_body)
         expect(json_response[:data].map{|d| d[:relationships][:user_vote][:data]}.compact.first[:id]).to eq vote.id
@@ -80,12 +80,11 @@ resource "Comments" do
       ValidationErrorHelper.new.error_fields(self, Comment)
       response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::COMMENTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
-
       let(:idea_id) { @idea.id }
       let(:comment) { build(:comment) }
       let(:body_multiloc) { comment.body_multiloc }
 
-      example_request "Create a comment to an idea" do
+      example_request "Create a comment on an idea" do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:author,:data,:id)).to eq @user.id
@@ -98,7 +97,7 @@ resource "Comments" do
       describe do
         let(:parent_id) { @comments.first.id }
 
-        example_request "Create a comment to a comment" do
+        example_request "Create a comment on a comment" do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:relationships,:author,:data,:id)).to eq @user.id
@@ -186,7 +185,6 @@ resource "Comments" do
       end
     end
 
-
     ## Currently not allowed by anyone, but works at the moment of writing (if permitted, that is)
     # delete "web_api/v1/comments/:id" do
     #   let(:comment) { create(:comment, author: @user, idea: @idea) }
@@ -199,5 +197,4 @@ resource "Comments" do
     # end
 
   end
-
 end

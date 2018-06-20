@@ -1,7 +1,11 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "Idea Spam Reports" do
+
+  explanation "Reporting undesired content (i.e. an idea)."
+
   before do
     @user = create(:admin)
     token = Knock::AuthToken.new(payload: { sub: @user.id }).token
@@ -11,12 +15,10 @@ resource "Idea Spam Reports" do
     @spam_reports = create_list(:spam_report, 2, spam_reportable: @idea)
   end
 
-
-
   get "web_api/v1/ideas/:idea_id/spam_reports" do
     let(:idea_id) { @idea.id }
 
-    example_request "List spam reports of an idea" do
+    example_request "List all spam reports of an idea" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
@@ -26,7 +28,7 @@ resource "Idea Spam Reports" do
   get "web_api/v1/spam_reports/:id" do
     let(:id) { @spam_reports.first.id }
 
-    example_request "Get one spam report by id" do
+    example_request "Get one spam report of an idea by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @spam_reports.first.id
@@ -41,11 +43,10 @@ resource "Idea Spam Reports" do
     end
     ValidationErrorHelper.new.error_fields(self, SpamReport)
 
-  
     let(:idea_id) { @idea.id }
     let(:reason_code) { "inappropriate" }
   
-    example_request "Create a spam report on an idea" do
+    example_request "Create a spam report for an idea" do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
@@ -61,12 +62,11 @@ resource "Idea Spam Reports" do
     end
     ValidationErrorHelper.new.error_fields(self, SpamReport)
 
-
     let(:spam_report) { create(:spam_report, user: @user, spam_reportable: @idea, reason_code: 'other', other_reason: 'pagiarism') }
     let(:id) { spam_report.id }
     let(:reason_code) { "inappropriate" }
 
-    example_request "Updating a spam report" do
+    example_request "Update a spam report for an idea" do
       expect(status).to be 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:reason_code)).to eq "inappropriate"
@@ -76,10 +76,10 @@ resource "Idea Spam Reports" do
   delete "web_api/v1/spam_reports/:id" do
     let(:spam_report) { create(:spam_report, user: @user, spam_reportable: @idea) }
     let(:id) { spam_report.id }
-    example_request "Delete a spam report" do
+    
+    example_request "Delete a spam report from an idea" do
       expect(response_status).to eq 200
       expect{SpamReport.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
-
 end
