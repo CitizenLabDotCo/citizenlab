@@ -43,6 +43,10 @@ const FirstLine = styled.div`
   background: #fff;
 `;
 
+const LogoLink = styled.a`
+  cursor: pointer;
+`;
+
 const TenantLogo = styled.img`
   height: 50px;
   margin-bottom: 20px;
@@ -267,20 +271,25 @@ class Footer extends React.PureComponent<Props, State> {
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
       const currentTenantLogo = currentTenant.data.attributes.logo.medium;
+      const tenantSite = currentTenant.data.attributes.settings.core.organization_site;
       const organizationNameMulitiLoc = currentTenant.data.attributes.settings.core.organization_name;
       const currentTenantName = getLocalized(organizationNameMulitiLoc, locale, currentTenantLocales);
       const organizationType = currentTenant.data.attributes.settings.core.organization_type;
       const slogan = currentTenantName ? <FormattedMessage {...messages.slogan} values={{ name: currentTenantName, type: organizationType }} /> : '';
       const poweredBy = <FormattedMessage {...messages.poweredBy} />;
-
       const footerLocale = `footer-city-logo-${locale}`;
 
       return (
-        <Container className={this.props['className']} id="hook-footer">
+        <Container role="contentinfo" className={this.props['className']} id="hook-footer">
           {showCityLogoSection &&
             <Fragment name={footerLocale}>
               <FirstLine id="hook-footer-logo">
-                {currentTenantLogo && <TenantLogo src={currentTenantLogo} />}
+                {currentTenantLogo && tenantSite &&
+                  <LogoLink href={tenantSite} target="_blank">
+                    <TenantLogo src={currentTenantLogo} />
+                  </LogoLink>}
+                {currentTenantLogo && !tenantSite &&
+                  <TenantLogo src={currentTenantLogo} />}
                 <TenantSlogan>{slogan}</TenantSlogan>
               </FirstLine>
             </Fragment>

@@ -113,5 +113,4 @@ class OptionForm extends React.Component<InjectedFormikProps<Props, FormValues>>
   }
 }
 
-
 export default OptionForm;

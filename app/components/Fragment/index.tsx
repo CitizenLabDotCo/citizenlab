@@ -57,7 +57,7 @@ class Fragment extends React.Component<Props, State> {
   setIframeHeight = () => {
     if (this.iframeNode && this.iframeNode.contentWindow) {
       this.setState({
-        iframeHeight: this.iframeNode.contentWindow.document.body.scrollHeight,
+        iframeHeight: this.iframeNode.contentWindow.document.body.scrollHeight * 1.1,
       });
     }
   }
@@ -80,7 +80,6 @@ class Fragment extends React.Component<Props, State> {
     } else return null;
   }
 }
-
 
 export default (inputProps) => (
   <GetTenant>

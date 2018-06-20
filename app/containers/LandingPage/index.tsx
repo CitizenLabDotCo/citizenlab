@@ -1,7 +1,7 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { browserHistory } from 'react-router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
 import { isNilOrError } from 'utils/helperUtils';
@@ -148,7 +148,7 @@ const HeaderSubtitle: any = styled.h2`
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
   font-size: 22px;
   line-height: 26px;
-  font-weight: 100;
+  font-weight: 300;
   white-space: normal;
   word-break: normal;
   word-wrap: normal;
@@ -337,7 +337,6 @@ class LandingPage extends React.PureComponent<Props, State> {
                 </HeaderSubtitle>
               </HeaderContent>
             </Header>
-
 
             <Content>
               <ProjectsStyledContentContainer>

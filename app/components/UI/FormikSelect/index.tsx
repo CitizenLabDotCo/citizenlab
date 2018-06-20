@@ -3,7 +3,6 @@ import Select, { Props as VanillaInputProps } from 'components/UI/Select';
 import { FieldProps } from 'formik';
 import { IOption } from 'typings';
 
-
 type State = {};
 
 class FormikInput extends React.Component<FieldProps & VanillaInputProps, State> {

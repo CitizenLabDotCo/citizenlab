@@ -169,9 +169,9 @@ export default defineMessages({
     id: 'app.containers.SignUp.logIn',
     defaultMessage: 'Log in',
   },
-  acceptTermsAndConditions: {
-    id: 'app.containers.SignUp.acceptTermsAndConditions',
-    defaultMessage: 'By signing up, you agree to our {tacLink}',
+  gdprApproval: {
+    id: 'app.containers.SignUp.gdprApproval',
+    defaultMessage: 'Check here to confirm that you have read and agree to our {tacLink} and {ppLink}',
   },
   acceptTermsAndConditionsGoogle: {
     id: 'app.containers.SignUp.acceptTermsAndConditionsGoogle',
@@ -184,6 +184,10 @@ export default defineMessages({
   termsAndConditions: {
     id: 'app.containers.SignUp.termsAndConditions',
     defaultMessage: 'terms and conditions',
+  },
+  privacyPolicy: {
+    id: 'app.containers.SignUp.privacyPolicy',
+    defaultMessage: 'privacy policy',
   },
   tacError: {
     id: 'app.containers.SignUp.tacError',

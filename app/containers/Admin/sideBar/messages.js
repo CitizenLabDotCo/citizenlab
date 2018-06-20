@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.users',
     defaultMessage: 'Users',
   },
+  invitations: {
+    id: 'app.containers.AdminPage.SideBar.invitations',
+    defaultMessage: 'Invitations',
+  },
   groups: {
     id: 'app.containers.AdminPage.SideBar.groups',
     defaultMessage: 'Groups',

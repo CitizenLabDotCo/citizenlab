@@ -48,7 +48,6 @@ const ToggleRow = Row.extend`
 const ToggleLabel = styled(Label)`
   width: 100%;
   max-width: 200px;
-  color: #333;
   font-size: 16px;
   font-weight: 400;
 `;

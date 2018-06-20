@@ -1,7 +1,6 @@
 import React from 'react';
 import isEqual from 'lodash/isEqual';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { of } from 'rxjs/observable/of';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';

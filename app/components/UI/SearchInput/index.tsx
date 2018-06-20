@@ -12,6 +12,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
+import Label from 'components/UI/Label';
 
 const SearchForm = styled.form`
   flex: 1 0 200px;
@@ -62,6 +63,7 @@ const IconWrapper = styled.div`
 interface Props {
   value: string;
   onChange: (arg: string) => void;
+  onFocus?: () => void;
 }
 
 type State = {};
@@ -87,7 +89,7 @@ class SearchInput extends React.PureComponent<Props & InjectedIntlProps, State> 
 
   render() {
     const className = this.props['className'];
-    const { value } = this.props;
+    const { value, onFocus } = this.props;
     const { formatMessage } = this.props.intl;
     const iconName = (isString(value) && !isEmpty(value) ? 'close2' : 'search');
     const canClear = (isString(value) && !isEmpty(value));
@@ -95,12 +97,14 @@ class SearchInput extends React.PureComponent<Props & InjectedIntlProps, State> 
 
     return (
       <SearchForm className={className} onSubmit={this.handleSubmit}>
+        <Label htmlFor="e2e-ideas-search" hidden value={placeholder} />
         <StyledInput
           id="e2e-ideas-search"
           value={value}
           type="text"
           placeholder={placeholder}
           onChange={this.handleOnChange}
+          onFocus={onFocus}
         />
         <IconWrapper onClick={this.handleOnClick} className={canClear ? 'clear' : ''}>
           <StyledIcon name={iconName} />
