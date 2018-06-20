@@ -432,7 +432,7 @@
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderManual": "Bepaalde de groepsnaam",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Bepaal de instellingen voor de smart group",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderStep1": "Kies een type groep",
-  "app.containers.AdminPage.Users.GroupCreation.readMoreLink": "http://support.citizenlab.co/nl-opstartgids/stap-2-configureer-de-belangrijkste-settings/maak-eventueel-verschillende-gebruikersgroepen-aan",
+  "app.containers.AdminPage.Users.GroupCreation.readMoreLink": "http://support.citizenlab.co/nl-veelgestelde-vragen/hoe-smart-groups-gebruiken",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Gebruikers die voldoen aan al deze voorwaarden zullen automatisch aan de groep worden toegevoegd:",
   "app.containers.AdminPage.Users.GroupCreation.step1CreateButtonNormal": "Maak een gewone groep aan",
   "app.containers.AdminPage.Users.GroupCreation.step1CreateButtonSmart": "Maak een smart group aan",
