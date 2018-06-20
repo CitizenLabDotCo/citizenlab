@@ -439,7 +439,7 @@
   "app.containers.AdminPage.Users.GroupCreation.step1ReadMore": "Weiterlesen",
   "app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionNormal": "Sie legen manuell fest, welche Benutzer zu dieser Gruppe gehören.",
   "app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionSmart": "Sie stellen Bedingungen, die automatisch und kontinuierlich Menschen einen Teil dieser Gruppe werden lassen.",
-  "app.containers.AdminPage.Users.GroupCreation.step1TypeNameNormal": "Reguläre Gruppe",
+  "app.containers.AdminPage.Users.GroupCreation.step1TypeNameNormal": "Manuelle Gruppe",
   "app.containers.AdminPage.Users.GroupCreation.step1TypeNameSmart": "Automatische Gruppe",
   "app.containers.AdminPage.Users.GroupsPanel.emptyGroup": "Es ist noch niemand in dieser Gruppe",
   "app.containers.AdminPage.Users.GroupsPanel.goToAllUsers": "Gehen Sie auf {allUsersLink}, um Benutzer manuell hinzuzufügen.",
