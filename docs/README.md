@@ -20,7 +20,7 @@
 
 ### Changed
 - The checkbox copy at signup has changed and now links to both privacy policy and terms and conditions
-- Invitations have moved to an individual menu entry in the main admin navbar
+- Improved styling of usermenu dropdown (the menu that opens when you click on the avatar in the navigation bar)
 
 ### Removed
 - The groups page is no longer a separate page, but the functionality is part of the user manager
