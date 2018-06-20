@@ -26,7 +26,7 @@ const GroupType = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding: 85px 60px;
+  padding: 85px 20px;
   align-items: center;
 
   .groupName {
