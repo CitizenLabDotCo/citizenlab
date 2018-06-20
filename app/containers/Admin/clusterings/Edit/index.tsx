@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { clone } from 'lodash';
-import Circles from './Circles';
+// import Circles from './Circles';
+import Circles2 from './Circles2';
 import { Node } from 'services/clusterings';
 import InfoPane from './InfoPane';
 import styled, { ThemeProvider } from 'styled-components';
@@ -20,7 +21,19 @@ const TwoColumns = styled.div`
   margin-bottom: 35px;
 `;
 
-const StyledCircles = styled(Circles)`
+// const StyledCircles = styled(Circles)`
+//   flex: 1;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   background: #fff;
+//   border: solid 1px ${colors.separation};
+//   border-radius: 5px;
+//   padding: 25px;
+//   overflow: hidden;
+// `;
+
+const StyledCircles2 = styled(Circles2)`
   flex: 1;
   display: flex;
   justify-content: center;
@@ -136,12 +149,13 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps, State> {
       <>
         <ThemeProvider theme={this.theme()}>
           <TwoColumns>
-            <StyledCircles
+            <StyledCircles2 />
+            {/* <StyledCircles
               structure={clustering.attributes.structure}
               selectedNodes={this.comparisonSet()}
               onClickNode={this.handleOnClickNode}
               onShiftClickNode={this.handleOnShiftClickNode}
-            />
+            /> */}
             <StyledInfoPane
               activeComparison={activeComparison}
               selectedNodes={selectedNodes}

@@ -67,7 +67,7 @@ class Circles extends PureComponent<Props, State> {
       const root = d3.hierarchy(this.props.structure).sum((d) => ideasById[d.id] ? (ideasById[d.id].attributes.upvotes_count + ideasById[d.id].attributes.downvotes_count + 1) : 1);
       const svgWidth = svgContainerRef.offsetWidth;
       const svgHeight = svgContainerRef.offsetHeight;
-      const svgSize = (svgWidth >= svgHeight ? svgHeight : svgWidth) - 50;
+      const svgSize = (svgWidth >= svgHeight ? svgHeight : svgWidth) - 30;
       const pack = d3.pack().size([svgSize, svgSize]).padding(10);
 
       pack(root);
