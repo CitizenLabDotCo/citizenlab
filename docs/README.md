@@ -1,5 +1,28 @@
 # Changelog
 
+## 2018-06-20
+
+### Fixed
+- Various visual fixes for IE11 (more to come)
+- When trying to add a timeline phase that overlaps with another phase, a more descriptive error is shown
+
+### Added
+- Smart groups allow admins to automatically and continuously make users part of groups based on conditions
+- New user manager allows
+  - Navigating through users by group
+  - Moving, adding and removing users from/to (manual) groups
+  - Editing the group details from within the user manager
+  - Creating groups from within the user manager
+  - Exporting users to excel by group or by selection
+- Custom registration fields now support the new type "number"
+- The city website url can now be specified in admin settings, which is used as a link in the footer logo
+
+### Changed
+- The checkbox copy at signup has changed and now linkts to both privacy policy and terms and conditions
+
+### Removed
+- The groups page is no longer a separate page, but the functionality is part of the user manager
+
 ## 2018-06-11
 
 ### Fixed
