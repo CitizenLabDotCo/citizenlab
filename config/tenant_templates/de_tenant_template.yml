@@ -208,7 +208,7 @@ models:
   - resource_type: User
     key: birthyear
     title_multiloc: custom_fields.birthyear
-    input_type: select
+    input_type: number
     required: false
     ordering: 1
     enabled: true
@@ -280,7 +280,7 @@ models:
     bio_multiloc:
       de-DE: 
     gender: male
-    birthyear: '2003'
+    birthyear: 2003
     domicile: outside
     password: 5Yd-8VaDoV4
     remote_avatar_url: 
@@ -292,7 +292,7 @@ models:
     bio_multiloc:
       de-DE: 
     gender: male
-    birthyear: '1953'
+    birthyear: 1953
     domicile: outside
     password: nDFPStNOi8I
     remote_avatar_url: 
@@ -304,7 +304,7 @@ models:
     bio_multiloc:
       de-DE: 
     gender: female
-    birthyear: '1940'
+    birthyear: 1940
     domicile: outside
     password: t5qqFh0SfXk
     remote_avatar_url: 
@@ -316,7 +316,7 @@ models:
     bio_multiloc:
       de-DE: 
     gender: male
-    birthyear: '1990'
+    birthyear: 1990
     domicile: outside
     password: QaxsW5Llh4M
     remote_avatar_url: 
@@ -340,7 +340,7 @@ models:
     bio_multiloc:
       de-DE: 
     gender: female
-    birthyear: '2001'
+    birthyear: 2001
     domicile: outside
     password: ww5P2xLJ98M
     remote_avatar_url: 
@@ -364,7 +364,7 @@ models:
     bio_multiloc:
       de-DE: 
     gender: female
-    birthyear: '1996'
+    birthyear: 1996
     domicile: outside
     password: ca27Mn0oa3A
     remote_avatar_url: 
@@ -376,7 +376,7 @@ models:
     bio_multiloc:
       de-DE: 
     gender: male
-    birthyear: '1961'
+    birthyear: 1961
     domicile: outside
     password: gEN4dwcJOk8
     remote_avatar_url: 
@@ -388,7 +388,7 @@ models:
     bio_multiloc:
       de-DE: 
     gender: male
-    birthyear: '1990'
+    birthyear: 1990
     domicile: 
     password: xBSV-lxsIH8
     remote_avatar_url: 
@@ -400,7 +400,7 @@ models:
     bio_multiloc:
       de-DE: 
     gender: female
-    birthyear: '1938'
+    birthyear: 1938
     domicile: 
     password: Pg66W4Ttbco
     remote_avatar_url: 
@@ -412,7 +412,7 @@ models:
     bio_multiloc:
       de-DE: 
     gender: male
-    birthyear: '1925'
+    birthyear: 1925
     domicile: outside
     password: qvZK_1JRmxg
     remote_avatar_url: 
@@ -424,7 +424,7 @@ models:
     bio_multiloc:
       de-DE: 
     gender: male
-    birthyear: '1997'
+    birthyear: 1997
     domicile: outside
     password: kURgaui_p8M
     remote_avatar_url: 
@@ -436,7 +436,7 @@ models:
     bio_multiloc:
       de-DE: 
     gender: female
-    birthyear: '1950'
+    birthyear: 1950
     domicile: outside
     password: WnTW1hg0DaI
     remote_avatar_url: 

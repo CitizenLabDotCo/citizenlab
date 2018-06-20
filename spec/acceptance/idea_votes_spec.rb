@@ -1,7 +1,11 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "Idea Votes" do
+
+  explanation "Votes are used to express agreement on content (i.e. ideas). Ideally, the city would accept the most voted ideas."
+
   before do
     @user = create(:admin)
     token = Knock::AuthToken.new(payload: { sub: @user.id }).token
@@ -11,12 +15,10 @@ resource "Idea Votes" do
     @votes = create_list(:vote, 2, votable: @idea)
   end
 
-
-
   get "web_api/v1/ideas/:idea_id/votes" do
     let(:idea_id) { @idea.id }
 
-    example_request "List votes of an idea" do
+    example_request "List all votes of an idea" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
@@ -26,7 +28,7 @@ resource "Idea Votes" do
   get "web_api/v1/votes/:id" do
     let(:id) { @votes.first.id }
 
-    example_request "Get one vote by id" do
+    example_request "Get one vote on a comment by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @votes.first.id
@@ -41,7 +43,6 @@ resource "Idea Votes" do
     ValidationErrorHelper.new.error_fields(self, Vote)
     response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::VOTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
-  
     let(:idea_id) { @idea.id }
     let(:mode) { "up" }
   
@@ -97,7 +98,6 @@ resource "Idea Votes" do
         expect(@idea.reload.upvotes_count).to eq 2
         expect(@idea.reload.downvotes_count).to eq 0
       end
-
     end
 
     describe do
@@ -114,9 +114,7 @@ resource "Idea Votes" do
         expect(@idea.reload.upvotes_count).to eq 2
         expect(@idea.reload.downvotes_count).to eq 0
       end
-
     end
-
   end
 
   post "web_api/v1/ideas/:idea_id/votes/down" do
@@ -125,13 +123,13 @@ resource "Idea Votes" do
 
     let(:idea_id) { @idea.id }
 
-    example_request "downvote an idea that doesn't have your vote yet" do
+    example_request "Downvote an idea that doesn't have your vote yet" do
       expect(status).to eq 201
       expect(@idea.reload.upvotes_count).to eq 2
       expect(@idea.reload.downvotes_count).to eq 1
     end
 
-    example "downvote an idea that you upvoted before" do
+    example "Downvote an idea that you upvoted before" do
       @idea.votes.create(user: @user, mode: 'up')
       do_request
       expect(status).to eq 201
@@ -148,16 +146,15 @@ resource "Idea Votes" do
       expect(@idea.reload.upvotes_count).to eq 2
       expect(@idea.reload.downvotes_count).to eq 1
     end
-
   end
 
   delete "web_api/v1/votes/:id" do
     let(:vote) { create(:vote, user: @user, votable: @idea) }
     let(:id) { vote.id }
-    example_request "Delete a vote" do
+    
+    example_request "Delete a vote from an idea" do
       expect(response_status).to eq 200
       expect{Vote.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
-
 end

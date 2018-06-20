@@ -1,7 +1,10 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "User Custom Field Options" do
+
+  explanation "Options to choose from in a custom field."
 
   before do
     header "Content-Type", "application/json"
@@ -9,17 +12,15 @@ resource "User Custom Field Options" do
     @custom_field_options = create_list(:custom_field_option, 3, custom_field: @custom_field)
   end
 
-
   get "web_api/v1/users/custom_fields/:custom_field_id/custom_field_options" do
-    let (:custom_field_id) { @custom_field.id }
-    
     with_options scope: :page do
       parameter :number, "Page number"
       parameter :size, "Number of custom fields per page"
     end
+
+    let(:custom_field_id) { @custom_field.id }
     
-    
-    example_request "List custom field options for field" do
+    example_request "List all custom field options for a field" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
@@ -48,7 +49,6 @@ resource "User Custom Field Options" do
         parameter :key, "A unique internal name for the option. Only letters, numbers and underscores allowed. Auto-generated from the title if not provided. Can't be changed afterwards", required: false
         parameter :title_multiloc, "The title of the field as shown to users, in multiple locales", required: true
       end
-
       ValidationErrorHelper.new.error_fields(self, CustomFieldOption)
 
       let(:custom_field_id) { @custom_field.id }
@@ -70,14 +70,13 @@ resource "User Custom Field Options" do
         let(:key) { "No spaces allowed" }
         let(:title_multiloc) { {'en' => ""} }
 
-        example_request "[error] Create an invalid custom field option" do
+        example_request "[error] Create an invalid custom field option", document: false do
           expect(response_status).to eq 422
           json_response = json_parse(response_body)
           expect(json_response.dig(:errors, :key)).to eq [{error: 'invalid', value: key}]
           expect(json_response.dig(:errors, :title_multiloc)).to eq [{error: 'blank'}]
         end
       end
-
     end
 
     patch "web_api/v1/users/custom_fields/:custom_field_id/custom_field_options/:id" do
@@ -104,7 +103,7 @@ resource "User Custom Field Options" do
       let(:id) { create(:custom_field_option, custom_field: @custom_field).id }
       let(:ordering) { 1 } 
 
-      example_request "Reorder an option" do
+      example_request "Reorder a custom field option" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
@@ -112,7 +111,6 @@ resource "User Custom Field Options" do
         expect(@custom_field.custom_field_options.order(:ordering).map(&:ordering)).to eq (0..3).to_a
       end
     end
-
 
     delete "web_api/v1/users/custom_fields/:custom_field_id/custom_field_options/:id" do
       let(:custom_field_option) { create(:custom_field_option, custom_field: @custom_field) }
@@ -122,8 +120,15 @@ resource "User Custom Field Options" do
         expect(response_status).to eq 200
         expect{CustomFieldOption.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
       end
+
+      example "[error] Delete a custom field option that's still referenced in a rules group" do
+        group = create(:smart_group, rules: [
+          {ruleType: 'custom_field_select', customFieldId: @custom_field.id, predicate: 'has_value', value: id}
+        ])
+        do_request
+        expect(response_status).to eq 422
+        expect(CustomFieldOption.find(id)).to be_present
+      end
     end
-
   end
-
 end

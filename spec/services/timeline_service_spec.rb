@@ -23,6 +23,12 @@ describe TimelineService do
       phase = create(:phase, start_at: Time.now.to_date - 1.week, end_at: Time.now.to_date, project: project)
       expect(service.current_phase(project)&.id).to eq (phase.id)
     end
+
+    it "returns the active phase when we're in the first day of the phase" do
+      project = create(:project)
+      phase = create(:phase, start_at: Time.now.to_date, end_at: Time.now.to_date + 1.week, project: project)
+      expect(service.current_phase(project)&.id).to eq (phase.id)
+    end
   end
 
   describe "is_in_active_phase?" do

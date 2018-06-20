@@ -1,7 +1,11 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
 resource "GroupsProjects" do
+
+  explanation "Which groups can access which projects."
+
   before do
     header "Content-Type", "application/json"
     @project = create(:project)
@@ -24,21 +28,20 @@ resource "GroupsProjects" do
       parameter :sort, "Either 'new', '-new'", required: false
 
       let(:project_id) { @project.id }
+
       example_request "List all groups-projects of a project" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 4
       end
 
-      example "List all groups_projects sorted by new" do
+      example "List all groups-projects sorted by new", document: false do
         gp1 = create(:groups_project, project: @project, group: create(:group))
-
-        do_request(sort: "new")
+        do_request sort: "new"
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0][:id]).to eq gp1.id
       end
-    
     end
 
     get "web_api/v1/groups_projects/:id" do
@@ -74,11 +77,11 @@ resource "GroupsProjects" do
     delete "web_api/v1/groups_projects/:id" do
       let(:groups_project) { create(:groups_project) }
       let(:id) { groups_project.id }
+      
       example_request "Delete a groups-project" do
         expect(response_status).to eq 200
         expect{GroupsProject.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
-
   end
 end 

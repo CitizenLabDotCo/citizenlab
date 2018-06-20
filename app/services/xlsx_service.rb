@@ -128,7 +128,7 @@ class XlsxService
       first_name: -> (i) {i.invitee.first_name },
       last_name: -> (i) {i.invitee.last_name },
       locale: -> (i) {i.invitee.locale},
-      groups: -> (i) {i.invitee.groups.map{|g| @@multiloc_service.t(g.title_multiloc)}.join(',')},
+      groups: -> (i) {i.invitee.manual_groups.map{|g| @@multiloc_service.t(g.title_multiloc)}.join(',')},
       admin: -> (i) {i.invitee.admin?}
     }
   end
