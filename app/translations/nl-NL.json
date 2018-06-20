@@ -408,7 +408,7 @@
   "app.containers.AdminPage.SettingsPage.tabPages": "Pagina's",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registratie",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Instellingen",
-  "app.containers.AdminPage.SettingsPage.titleAreas": "Bewerken van de gebieden",
+  "app.containers.AdminPage.SettingsPage.titleAreas": "Set up geographical areas",
   "app.containers.AdminPage.SettingsPage.titleBasic": "Basisinformatie",
   "app.containers.AdminPage.SettingsPage.titleBranding": "Branding",
   "app.containers.AdminPage.SettingsPage.titleMaxCharError": "De ondertitel overschrijdt het maximaal aantal toegestane 35 karakters",
