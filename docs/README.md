@@ -3,9 +3,12 @@
 ## 2018-06-20
 
 ### Fixed
-- Various visual fixes for IE11 (more to come)
+- Visual fixes for IE11 (more to come)
+  - The text on the homepage doesn't fall outside the text box anymore
+  - The buttons on the project page are now in the right place
+  - In the projects pages, the footer is no longer behaving like a header
 - When trying to add a timeline phase that overlaps with another phase, a more descriptive error is shown
-- Fix for Visuelt font not being loaded
+- Visuelt font is now always being loaded
 
 ### Added
 - Smart groups allow admins to automatically and continuously make users part of groups based on conditions
