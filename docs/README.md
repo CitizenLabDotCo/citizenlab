@@ -18,7 +18,8 @@
 - The city website url can now be specified in admin settings, which is used as a link in the footer logo
 
 ### Changed
-- The checkbox copy at signup has changed and now linkts to both privacy policy and terms and conditions
+- The checkbox copy at signup has changed and now links to both privacy policy and terms and conditions
+- Invitations have moved to an individual menu entry in the main admin navbar
 
 ### Removed
 - The groups page is no longer a separate page, but the functionality is part of the user manager
