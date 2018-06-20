@@ -408,7 +408,7 @@
   "app.containers.AdminPage.SettingsPage.tabPages": "Pages",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registration",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Settings",
-  "app.containers.AdminPage.SettingsPage.titleAreas": "Areas configuration",
+  "app.containers.AdminPage.SettingsPage.titleAreas": "Set up geographical areas",
   "app.containers.AdminPage.SettingsPage.titleBasic": "Basic information",
   "app.containers.AdminPage.SettingsPage.titleBranding": "Branding",
   "app.containers.AdminPage.SettingsPage.titleMaxCharError": "The provided title exceeds the maximum allowed character limit of 35",
