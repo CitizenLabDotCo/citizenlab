@@ -12,7 +12,6 @@ import NotificationWrapper from '../NotificationWrapper';
 import { Link } from 'react-router';
 import { Multiloc } from 'typings';
 
-
 type Props = {
   notification: ICommentMarkedAsSpamNotificationData;
 };

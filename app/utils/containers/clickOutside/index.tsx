@@ -2,7 +2,7 @@ import * as React from 'react';
 
 type Props = {
   children?: any;
-  onClickOutside: (arg: MouseEvent | KeyboardEvent) => void;
+  onClickOutside: (arg: any) => void;
   className?: string;
   onClick?: () => void;
   id?: string;
@@ -29,7 +29,7 @@ export default class ClickOutside extends React.PureComponent<Props, State> {
     document.removeEventListener('keydonwn', this.handle, true);
   }
 
-  handle = (event: MouseEvent | KeyboardEvent) => {
+  handle = (event: any) => {
     const { onClickOutside } = this.props;
 
     // Escape key to close

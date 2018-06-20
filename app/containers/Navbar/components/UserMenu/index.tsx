@@ -1,5 +1,5 @@
 import React from 'react';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -154,8 +154,11 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                 onClick={this.closePopover}
                 style="text"
                 icon="admin"
+                iconPos="right"
+                iconSize="20px"
+                padding="11px 11px"
                 size="2"
-                justify="left"
+                justify="space-between"
               >
                 <FormattedMessage {...messages.admin} />
               </PopoverItem>
@@ -169,8 +172,11 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                     onClick={this.closePopover}
                     style="text"
                     icon="admin"
+                    iconPos="right"
+                    iconSize="20px"
+                    padding="11px 11px"
                     size="2"
-                    justify="left"
+                    justify="space-between"
                   >
                     <FormattedMessage {...messages.projectsModeration} />
                   </PopoverItem>
@@ -184,8 +190,11 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               onClick={this.closePopover}
               style="text"
               icon="user"
+              iconPos="right"
+              iconSize="20px"
+              padding="11px 11px"
               size="2"
-              justify="left"
+              justify="space-between"
             >
               <FormattedMessage {...messages.profilePage} />
             </PopoverItem>
@@ -196,8 +205,11 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               onClick={this.closePopover}
               style="text"
               icon="settings"
+              iconPos="right"
+              iconSize="20px"
+              padding="11px 11px"
               size="2"
-              justify="left"
+              justify="space-between"
             >
               <FormattedMessage {...messages.editProfile} />
             </PopoverItem>
@@ -207,8 +219,11 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               onClick={this.signOut}
               style="text"
               icon="power"
+              iconPos="right"
+              iconSize="20px"
+              padding="11px 11px"
               size="2"
-              justify="left"
+              justify="space-between"
             >
               <FormattedMessage {...messages.signOut} />
             </PopoverItem>

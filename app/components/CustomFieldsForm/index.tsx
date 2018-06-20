@@ -191,7 +191,7 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
   }
 
   CustomSelect = (props: FieldProps) => {
-    if (props.schema.type === 'string') {
+    if (props.schema.type === 'string' || props.schema.type === 'number') {
       const selectedOption: IOption | null = (props.value ? {
         value: props.value,
         label: (props.value ? props.options.enumOptions.find(enumOption => enumOption.value === props.value).label : null)

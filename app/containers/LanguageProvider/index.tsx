@@ -1,5 +1,5 @@
 import React from 'react';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { IntlProvider } from 'react-intl';
 import { localeStream } from 'services/locale';
 import { Locale } from 'typings';

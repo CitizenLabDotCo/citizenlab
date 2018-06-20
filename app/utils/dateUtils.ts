@@ -17,13 +17,13 @@ export function pastPresentOrFuture(input: string | [string, string]) {
     const startIsoDate = moment(input[0]).format('YYYY-MM-DD');
     const endIsoDate = moment(input[1]).format('YYYY-MM-DD');
     const currentIsoDate = moment().format('YYYY-MM-DD');
-  
+
     if (moment(currentIsoDate).isBetween(startIsoDate, endIsoDate, 'days', '[]')) {
       return 'present';
     } else if (moment(currentIsoDate).isAfter(endIsoDate)) {
       return 'past';
     }
-  
+
     return 'future';
   }
 }
