@@ -18,7 +18,6 @@ const commands = {
     .click('@createRulesGroupButton')
     .waitForElementVisible('@groupNameField')
     .fillMultiloc('@groupNameField', title)
-    .click('@addConditionButton')
     // From here the command is pretty hacky. It should select Role > is admin by...
     // Clicking the fist Select element in the rules fild section
     .click('.e2e-rules-field-section .Select')
