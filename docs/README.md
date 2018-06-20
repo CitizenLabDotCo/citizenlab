@@ -5,6 +5,7 @@
 ### Fixed
 - Various visual fixes for IE11 (more to come)
 - When trying to add a timeline phase that overlaps with another phase, a more descriptive error is shown
+- Fix for Visuelt font not being loaded
 
 ### Added
 - Smart groups allow admins to automatically and continuously make users part of groups based on conditions
