@@ -1,6 +1,8 @@
 // Libraries
 import React from 'react';
 
+import QuillEditor from 'components/QuillEditor';
+
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
@@ -45,6 +47,9 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
             />
             <Error fieldName="description_preview_multiloc" apiErrors={errors.description_preview_multiloc} />
           </SectionField>
+
+          <QuillEditor/>
+
           <SectionField>
             <Field
               component={FormikEditorMultiloc}
