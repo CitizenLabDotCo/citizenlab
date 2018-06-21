@@ -1,11 +1,14 @@
 import React from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { ImageDrop } from 'quill-image-drop-module';
 
+// Image drop/copy-paste module
+import { ImageDrop } from 'quill-image-drop-module';
 Quill.register('modules/imageDrop', ImageDrop);
 
-interface Props {}
+interface Props {
+  noToolbar?: boolean;
+}
 interface State {
   editorHtml: string;
 }
@@ -27,6 +30,8 @@ export default class QuillEditor extends React.Component<Props, State> {
   }
 
   render() {
+    const { noToolbar } = this.props;
+
     return (
       <div>
         <ReactQuill
@@ -34,7 +39,7 @@ export default class QuillEditor extends React.Component<Props, State> {
           value={this.state.editorHtml}
           modules={{
             imageDrop: true,
-            toolbar: completeToolbarConfig,
+            toolbar: noToolbar ? false : completeToolbarConfig,
           }}
         />
       </div>
