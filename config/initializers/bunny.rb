@@ -2,7 +2,7 @@ require "bunny"
 
 connection = nil
 
-if (ENV.fetch("RABBITMQ_URI"))
+if (ENV.fetch("RABBITMQ_URI", false))
   begin
     retries ||= 0
     connection = Bunny.new(ENV.fetch("RABBITMQ_URI"), automatically_recover: true, continuation_timeout: 20000)
