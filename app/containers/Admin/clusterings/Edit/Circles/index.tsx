@@ -72,6 +72,15 @@ class Circles extends PureComponent<Props, State> {
 
       pack(root);
 
+      // console.log('this.props.ideas.ideasList:');
+      // console.log(this.props.ideas.ideasList);
+      // console.log('ideasById:');
+      // console.log(ideasById);
+      // console.log('root:');
+      // console.log(root);
+      // console.log('root.descendants()');
+      // console.log(root.descendants());
+
       this.setState({
         svgSize,
         nodes: root.descendants(),

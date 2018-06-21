@@ -1,13 +1,17 @@
 import React, { PureComponent } from 'react';
 import * as d3 from 'd3';
-// import { createElement } from 'react-faux-dom';
+import { keyBy, get } from 'lodash';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import styled from 'styled-components';
-// import { ParentNode, Node } from 'services/clusterings';
+import { ParentNode, Node } from 'services/clusterings';
 import flares from './flares.json';
-import { get } from 'lodash';
 
-interface InputProps {}
+interface InputProps {
+  structure: ParentNode;
+  selectedNodes: Node[];
+  onClickNode: (Node) => void;
+  onShiftClickNode: (Node) => void;
+}
 
 interface DataProps {
   ideas: GetIdeasChildProps;
@@ -61,7 +65,7 @@ class Circles2 extends PureComponent<Props, State> {
 
   componentDidMount() {
     if (this.ref !== null) {
-      const svgElementReact = this.ref;
+      // const svgElementReact = this.ref;
       const svgElementD3 = d3.select(this.ref);
       const margin = 20;
       const diameter = +svgElementD3.attr('width');
@@ -76,9 +80,19 @@ class Circles2 extends PureComponent<Props, State> {
         .size([diameter - margin, diameter - margin])
         .padding(2);
 
-      const root: any = d3.hierarchy(flares)
-        .sum((d: any) => { return d.size; })
-        .sort((a: any, b: any) => { return b.value - a.value; });
+      // const root: any = d3.hierarchy(flares)
+      //   .sum((d: any) => { return d.size; })
+      //   .sort((a: any, b: any) => { return b.value - a.value; });
+
+      const ideasById = keyBy(this.props.ideas.ideasList, 'id');
+      const root = d3.hierarchy(this.props.structure)
+        .sum((d) => {
+          if (ideasById[d.id]) {
+            return ideasById[d.id].attributes.upvotes_count + ideasById[d.id].attributes.downvotes_count + 1;
+          }
+
+          return 1;
+        });
 
       const focus = root;
       const nodes = pack(root).descendants();
@@ -90,7 +104,12 @@ class Circles2 extends PureComponent<Props, State> {
         // .filter((d: any) => d)
         .attr('class', (d: any) => { return get(d, 'parent') ? get(d, 'children') ? 'node' : 'node node--leaf' : 'node node--root'; })
         .style('fill', (d: any) => { return get(d, 'children') ? color(d.depth) : null; })
-        .on('click', (d: any) => { if (focus !== d) zoom(d), d3.event.stopPropagation(); });
+        .on('click', (d: any) => {
+          if (focus !== d) {
+            zoom(d);
+            d3.event.stopPropagation();
+          }
+        });
 
       const text = g.selectAll('text')
         .data(nodes)
