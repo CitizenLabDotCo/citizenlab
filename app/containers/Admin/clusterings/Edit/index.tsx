@@ -145,11 +145,18 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps, State> {
 
     if (isNilOrError(clustering)) return null;
 
+    console.log(clustering);
+
     return (
       <>
         <ThemeProvider theme={this.theme()}>
           <TwoColumns>
-            <StyledCircles2 />
+            <StyledCircles2
+              structure={clustering.attributes.structure}
+              selectedNodes={this.comparisonSet()}
+              onClickNode={this.handleOnClickNode}
+              onShiftClickNode={this.handleOnShiftClickNode}
+            />
             {/* <StyledCircles
               structure={clustering.attributes.structure}
               selectedNodes={this.comparisonSet()}
