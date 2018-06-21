@@ -1,8 +1,13 @@
 namespace :cl2_back do
   desc "Create a tenant with given host and optional template"
   task :create_tenant, [:host,:template] => [:environment] do |t, args|
-    host = args[:host] || raise "Please provide the 'host' arg"
+    host = args[:host] || raise("Please provide the 'host' arg")
     tenant_template = args[:template] || 'en_tenant_template'
+
+    tenant = Tenant.find_by(host: host)
+    if tenant
+      tenant.destroy!
+    end
 
     tenant = Tenant.create!({
       name: host,
@@ -42,7 +47,7 @@ namespace :cl2_back do
     })
 
     Apartment::Tenant.switch tenant.schema_name do
-      TenantTemplateService.apply_template('en_tenant_template')
+      TenantTemplateService.new.apply_template('en_tenant_template')
     end
 
   end
