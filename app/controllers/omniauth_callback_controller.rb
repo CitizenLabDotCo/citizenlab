@@ -23,16 +23,16 @@ class OmniauthCallbackController < ApplicationController
       @user = User.build_with_omniauth(auth)
       SideFxUserService.new.before_create(@user, nil)
       @user.identities << @identity
-      begin
+      # begin
         @user.save!
         SideFxUserService.new.after_create(@user, nil)
         set_auth_cookie
         redirect_to(add_uri_params(FrontendService.new.signup_success_url, omniauth_params))
 
-      rescue ActiveRecord::RecordInvalid => e
+      # rescue ActiveRecord::RecordInvalid => e
         ## Commented out to see what goes wrong
         # redirect_to(add_uri_params(FrontendService.new.signin_failure_url, omniauth_params))
-      end
+      # end
     end
 
   end
