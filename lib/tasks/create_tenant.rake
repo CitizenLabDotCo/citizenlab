@@ -1,6 +1,6 @@
 namespace :cl2_back do
   desc "Create a tenant with given host and optional template"
-  task :create_tenant => [:environment] do |t, args|
+  task :create_tenant, [:host,:template] => [:environment] do |t, args|
     host = args[:host] || raise "Please provide the 'host' arg"
     tenant_template = args[:template] || 'en_tenant_template'
 
