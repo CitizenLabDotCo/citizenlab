@@ -10,6 +10,11 @@ interface State {
   editorHtml: string;
 }
 
+const completeToolbarConfig = [
+  ['bold', 'italic'],
+  ['link', 'image', 'video'],
+];
+
 export default class QuillEditor extends React.Component<Props, State> {
   constructor(props) {
     super(props);
@@ -27,7 +32,10 @@ export default class QuillEditor extends React.Component<Props, State> {
         <ReactQuill
           onChange={this.handleChange}
           value={this.state.editorHtml}
-          modules={{ imageDrop: true }}
+          modules={{
+            imageDrop: true,
+            toolbar: completeToolbarConfig,
+          }}
         />
       </div>
     );
