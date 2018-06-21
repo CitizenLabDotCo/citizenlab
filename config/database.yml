@@ -29,7 +29,7 @@ default: &default
 
 development:
   <<: *default
-  database: cl2_back_development
+  database: <%= ENV.fetch("POSTGRES_DB") { 'cl2_back_development' } %>
   schema_search_path: public,shared_extensions
 
   # The specified database role being used to connect to postgres.
@@ -64,7 +64,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: cl2_back_test
+  database: <%= ENV.fetch("POSTGRES_DB") { 'cl2_back_test' } %>
   schema_search_path: public,shared_extensions
   
 
@@ -90,9 +90,9 @@ test:
 
 staging:
   <<: *default
-  database: cl2_back_staging
+  database: <%= ENV.fetch("POSTGRES_DB") { 'cl2_back_staging' } %>
 
 production:
   <<: *default
-  database: cl2_back_production
+  database: <%= ENV.fetch("POSTGRES_DB") { 'cl2_back_production' } %>
 
