@@ -52,6 +52,7 @@ class IdeaCircle extends PureComponent<Props, State> {
   }
   render() {
     const { node, selected, hovered, idea } = this.props;
+
     if (isNilOrError(idea)) return null;
 
     return (
@@ -91,7 +92,6 @@ class IdeaCircle extends PureComponent<Props, State> {
     );
   }
 }
-
 
 export default (inputProps) => (
   <GetIdea id={inputProps.ideaId}>

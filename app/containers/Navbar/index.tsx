@@ -3,7 +3,6 @@ import React from 'react';
 import { get } from 'lodash';
 import { adopt } from 'react-adopt';
 import { Link, withRouter, WithRouterProps } from 'react-router';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import NotificationMenu from './components/NotificationMenu';
@@ -22,11 +21,13 @@ import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // services
 import { updateLocale } from 'services/locale';
+import { isAdmin } from 'services/permissions/roles';
 
 // utils
 import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
 import { getProjectUrl } from 'services/projects';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -365,8 +366,9 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
     const { projectsDropdownOpened } = this.state;
     const isAdminPage = (location && location.pathname.startsWith('/admin'));
     const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : [];
-    const tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
     const tenantName = (!isNilOrError(tenant) && !isNilOrError(locale) && getLocalized(tenant.attributes.settings.core.organization_name, locale, tenantLocales));
+    let tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
+    tenantLogo = isAdmin(!isNilOrError(authUser) ? { data: authUser } : null) && tenantLogo ? `${tenantLogo}?${Date.now()}` : tenantLogo;
 
     return (
       <>
