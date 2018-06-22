@@ -38,7 +38,9 @@ class TopicCircle extends PureComponent<Props> {
 
   render() {
     const { topic, node, selected, hovered } = this.props;
+
     if (isNilOrError(topic)) return null;
+
     return (
       <>
         <StyledCircle

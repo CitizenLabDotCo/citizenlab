@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
-import * as d3 from 'd3-hierarchy';
-import { keyBy, find } from 'lodash';
+import * as d3 from 'd3';
+import * as d3Hierarchy from 'd3-hierarchy';
+import { keyBy, find, get } from 'lodash';
 import IdeaCircle from './IdeaCircle';
 import CustomCircle from './CustomCircle';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
@@ -28,9 +29,11 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 type State = {
+  svgSize: number | null;
   nodes: D3Node[];
+  rootNode: D3Node | null;
+  selectedNode: D3Node | null;
   hoveredIdea: string | null;
-  svgSize?: number;
 };
 
 const Container = styled.div`
@@ -45,7 +48,10 @@ class Circles extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
+      svgSize: null,
       nodes: [],
+      rootNode: null,
+      selectedNode: null,
       hoveredIdea: null,
     };
     this.svgContainerRef = null;
@@ -62,28 +68,22 @@ class Circles extends PureComponent<Props, State> {
 
   calculateNodePositions = () => {
     if (this.svgContainerRef) {
-      const svgContainerRef = this.svgContainerRef;
       const ideasById = keyBy(this.props.ideas.ideasList, 'id');
-      const root = d3.hierarchy(this.props.structure).sum((d) => ideasById[d.id] ? (ideasById[d.id].attributes.upvotes_count + ideasById[d.id].attributes.downvotes_count + 1) : 1);
-      const svgWidth = svgContainerRef.offsetWidth;
-      const svgHeight = svgContainerRef.offsetHeight;
+      const rootNode = d3Hierarchy.hierarchy(this.props.structure).sum((d) => ideasById[d.id] ? (ideasById[d.id].attributes.upvotes_count + ideasById[d.id].attributes.downvotes_count + 1) : 1);
+      const svgWidth = this.svgContainerRef.offsetWidth;
+      const svgHeight = this.svgContainerRef.offsetHeight;
       const svgSize = (svgWidth >= svgHeight ? svgHeight : svgWidth) - 30;
-      const pack = d3.pack().size([svgSize, svgSize]).padding(10);
+      const pack = d3Hierarchy.pack().size([svgSize, svgSize]).padding(10);
 
-      pack(root);
+      pack(rootNode);
 
-      // console.log('this.props.ideas.ideasList:');
-      // console.log(this.props.ideas.ideasList);
-      // console.log('ideasById:');
-      // console.log(ideasById);
-      // console.log('root:');
-      // console.log(root);
-      // console.log('root.descendants()');
-      // console.log(root.descendants());
+      console.log(d3);
 
       this.setState({
         svgSize,
-        nodes: root.descendants(),
+        rootNode,
+        nodes: rootNode.descendants(),
+        selectedNode: rootNode
       });
     }
   }
@@ -92,15 +92,46 @@ class Circles extends PureComponent<Props, State> {
     this.svgContainerRef = ref;
   }
 
-  handleOnClickNode = (node) => (event) => {
+  zoom = (selectedNode: D3Node) => {
+    d3.transition()
+      .duration(get(d3.event, 'altKey') ? 5000 : 500)
+      .tween('zoom', () => {
+        const margin = 20;
+        const i = d3.interpolateZoom([0, 0, 0], [selectedNode.x, selectedNode.y, selectedNode.r * 2 + margin]);
+
+        return (t) => {
+          this.zoomTo(i(t));
+        };
+      });
+  }
+
+  zoomTo = (view: [number, number, number]) => {
+    const { rootNode } = this.state;
+    const diameter = (this.svgContainerRef ? this.svgContainerRef.offsetWidth : 0);
+    const k = diameter / view[2];
+
+    if (rootNode) {
+      rootNode.attr('transform', (d: D3Node) => {
+        return 'translate(' + (d.x - view[0]) * k + ',' + (d.y - view[1]) * k + ')';
+      });
+    }
+
+    // circle.attr('r', (d: any) => {
+    //   return d.r * k;
+    // });
+  }
+
+  handleOnClickNode = (node: D3Node) => (event: MouseEvent) => {
     if (event.shiftKey) {
       this.props.onShiftClickNode(node.data);
     } else {
+      this.zoom(node);
       this.props.onClickNode(node.data);
+      d3.event.stopPropagation();
     }
   }
 
-  handleOnMouseEnterIdea = (node) => () => {
+  handleOnMouseEnterIdea = (node: D3Node) => () => {
     this.setState({ hoveredIdea: node.data.id });
   }
 

@@ -4,7 +4,6 @@ import { keyBy, get } from 'lodash';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import styled from 'styled-components';
 import { ParentNode, Node } from 'services/clusterings';
-import flares from './flares.json';
 
 interface InputProps {
   structure: ParentNode;
@@ -55,17 +54,16 @@ const Container = styled.div`
 `;
 
 class Circles2 extends PureComponent<Props, State> {
-  ref: SVGElement;
+  ref: SVGElement | null;
 
   constructor(props: Props) {
     super(props);
     this.state = {};
-    this.ref = null as any;
+    this.ref = null;
   }
 
   componentDidMount() {
     if (this.ref !== null) {
-      // const svgElementReact = this.ref;
       const svgElementD3 = d3.select(this.ref);
       const margin = 20;
       const diameter = +svgElementD3.attr('width');
@@ -80,19 +78,23 @@ class Circles2 extends PureComponent<Props, State> {
         .size([diameter - margin, diameter - margin])
         .padding(2);
 
-      // const root: any = d3.hierarchy(flares)
-      //   .sum((d: any) => { return d.size; })
-      //   .sort((a: any, b: any) => { return b.value - a.value; });
-
       const ideasById = keyBy(this.props.ideas.ideasList, 'id');
-      const root = d3.hierarchy(this.props.structure)
-        .sum((d) => {
-          if (ideasById[d.id]) {
-            return ideasById[d.id].attributes.upvotes_count + ideasById[d.id].attributes.downvotes_count + 1;
-          }
+      const root: any = d3.hierarchy(this.props.structure).sum((d) => {
+        if (ideasById[d.id]) {
+          return ideasById[d.id].attributes.upvotes_count + ideasById[d.id].attributes.downvotes_count + 1;
+        }
 
-          return 1;
-        });
+        return 1;
+      });
+
+      console.log('this.props.ideas.ideasList:');
+      console.log(this.props.ideas.ideasList);
+      console.log('ideasById:');
+      console.log(ideasById);
+      console.log('this.props.structure:');
+      console.log(this.props.structure);
+      console.log('root:');
+      console.log(root);
 
       const focus = root;
       const nodes = pack(root).descendants();
@@ -100,10 +102,15 @@ class Circles2 extends PureComponent<Props, State> {
 
       const circle = g.selectAll('circle')
         .data(nodes)
-        .enter().append('circle')
+        .enter()
+        .append('circle')
         // .filter((d: any) => d)
-        .attr('class', (d: any) => { return get(d, 'parent') ? get(d, 'children') ? 'node' : 'node node--leaf' : 'node node--root'; })
-        .style('fill', (d: any) => { return get(d, 'children') ? color(d.depth) : null; })
+        .attr('class', (d: any) => {
+          return get(d, 'parent') ? get(d, 'children') ? 'node' : 'node node--leaf' : 'node node--root';
+        })
+        .style('fill', (d: any) => {
+          return get(d, 'children') ? color(d.depth) : null;
+        })
         .on('click', (d: any) => {
           if (focus !== d) {
             zoom(d);
@@ -113,14 +120,21 @@ class Circles2 extends PureComponent<Props, State> {
 
       const text = g.selectAll('text')
         .data(nodes)
-        .enter().append('text')
+        .enter()
+        .append('text')
         .attr('class', 'label')
         // .filter((d: any) => d)
-        .style('fill-opacity', (d: any) => { return get(d, 'parent') === root ? 1 : 1; })
-        .style('display', (d: any) => { return get(d, 'parent') === root ? 'inline' : 'inline'; })
-        .text((d: any) => { return d.data.name; });
+        .style('fill-opacity', (d: any) => {
+          return get(d, 'parent') === root ? 1 : 1;
+        })
+        .style('display', (d: any) => {
+          return get(d, 'parent') === root ? 'inline' : 'none';
+        })
+        .text((d: any) => {
+          return d.data.id;
+        });
 
-      const node = g.selectAll('circle,text');
+      const node = g.selectAll('circle, text');
 
       svgElementD3.style('background', color(-1)).on('click', () => { zoom(root); });
 
@@ -153,7 +167,6 @@ class Circles2 extends PureComponent<Props, State> {
   }
 
   setRef = (ref) => {
-    console.log(ref);
     this.ref = ref;
   }
 
@@ -167,7 +180,7 @@ class Circles2 extends PureComponent<Props, State> {
 }
 
 export default (inputProps: InputProps) => (
-  <GetIdeas type="load-more" pageSize={250} sort="new">
+  <GetIdeas type="load-more" pageSize={10000} sort="new" cache={false}>
     {(ideasProps) => ideasProps.ideasList ? <Circles2 {...inputProps} ideas={ideasProps} /> : null}
   </GetIdeas>
 );
