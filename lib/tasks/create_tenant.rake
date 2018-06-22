@@ -4,10 +4,7 @@ namespace :cl2_back do
     host = args[:host] || raise("Please provide the 'host' arg")
     tenant_template = args[:template] || 'en_tenant_template'
 
-    tenant = Tenant.find_by(host: host)
-    if tenant
-      tenant.destroy!
-    end
+    Tenant.find_by(host: host)&.destroy!
 
     tenant = Tenant.create!({
       name: host,
