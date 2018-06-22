@@ -89,8 +89,8 @@ Rails.application.config.middleware.use Apartment::Elevators::Generic, (Proc.new
   if request.path =~ /^\/admin_api\/.*/ || request.path =~ /^\/okcomputer.*/
     nil
   else
-    if Rails.env.development?
-      ENV.fetch('DEFAULT_HOST', 'localhost').gsub(/\./, "_")
+    if Rails.env.development? || Rails.env.staging?
+      ENV.fetch('OVERRIDE_HOST', request.host).gsub(/\./, "_")
     else
       request.host.gsub(/\./, "_")
     end

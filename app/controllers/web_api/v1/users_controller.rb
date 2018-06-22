@@ -15,6 +15,8 @@ class WebApi::V1::UsersController < ::ApplicationController
     @users = @users.search_by_all(params[:search]) if params[:search].present?
 
     @users = @users.active unless params[:include_inactive]
+    @users = @users.in_group(Group.find(params[:group])) if params[:group]
+
 
     @users = case params[:sort]
       when "created_at"
@@ -44,6 +46,8 @@ class WebApi::V1::UsersController < ::ApplicationController
 
   def index_xlsx
     @users = policy_scope(User).all
+    @users = @users.in_group(Group.find(params[:group])) if params[:group]
+    @users = @users.where(id: params[:users]) if params[:users]
     xlsx = XlsxService.new.generate_users_xlsx @users
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users.xlsx'
   end

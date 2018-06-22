@@ -13,14 +13,14 @@ class User < ApplicationRecord
   has_many :votes, dependent: :nullify
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
   has_many :initiator_notifications, class_name: 'Notification', foreign_key: :initiating_user_id, dependent: :nullify
-  has_many :memberships, dependent: :destroy
-  has_many :groups, through: :memberships
   has_many :invites, foreign_key: :inviter_id, dependent: :destroy
   has_many :identities, dependent: :destroy
   has_many :spam_reports, dependent: :nullify
   has_many :activities, dependent: :nullify
   has_many :inviter_invites, class_name: 'Invite', foreign_key: :inviter_id, dependent: :nullify
   has_one :invitee_invite, class_name: 'Invite', foreign_key: :invitee_id, dependent: :destroy
+  has_many :memberships, dependent: :destroy
+  has_many :manual_groups, class_name: 'Group', source: 'group', through: :memberships
   has_many :campaign_email_commands, class_name: 'EmailCampaigns::CampaignEmailCommand', foreign_key: :recipient_id, dependent: :destroy
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
@@ -58,10 +58,10 @@ class User < ApplicationRecord
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
 
-  scope :order_role, -> (direction=:asc) {  
-    subquery = User.select("jsonb_array_elements(roles) as ro, id")
-    joins("LEFT OUTER JOIN (#{subquery.to_sql}) as r ON users.id = r.id")
-    .order("ro->>'type' #{direction}")
+  scope :order_role, -> (direction=:asc) {
+    joins("LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id")
+    .order("(roles @> '[{\"type\":\"admin\"}]')::integer #{direction}")
+    .reverse_order
   }
 
   scope :admin, -> { 
@@ -74,7 +74,15 @@ class User < ApplicationRecord
 
   scope :active, -> {
     where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'")
-  } 
+  }
+
+  scope :in_group, -> (group) {
+    if group.rules?
+      SmartGroupsService.new.filter(self.all, group.rules)
+    elsif group.manual?
+      joins(:memberships).where(memberships: {group_id: group.id})
+    end
+  }
   
   def self.build_with_omniauth(auth)
     extra_user_attrs = SingleSignOnService.new.profile_to_user_attrs(auth.provider, auth)
@@ -132,6 +140,14 @@ class User < ApplicationRecord
 
   def active?
     self.registration_completed_at.present? && !self.invite_pending?
+  end
+
+  def groups
+    manual_groups + SmartGroupsService.new.groups_for_user(self)
+  end
+
+  def group_ids
+    manual_group_ids + SmartGroupsService.new.groups_for_user(self).pluck(:id)
   end
   
   private
