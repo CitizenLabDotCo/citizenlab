@@ -26,9 +26,9 @@ class ProjectPolicy < ApplicationPolicy
         elsif user
           normal_user_result
             .distinct
-            .left_outer_joins(groups: :memberships)
+            .left_outer_joins(:groups_projects)
             .where("projects.visible_to = 'public' OR \
-              (projects.visible_to = 'groups' AND memberships.user_id = ?)", user&.id)
+              (projects.visible_to = 'groups' AND groups_projects.group_id = ?)", user.group_ids)
         else
           normal_user_result.where(visible_to: 'public')
         end
@@ -66,8 +66,9 @@ class ProjectPolicy < ApplicationPolicy
     user&.admin? || user&.project_moderator?(record.id) || (
       %w(published archived).include?(record.publication_status) && (
         record.visible_to == 'public' || (
-          record.visible_to == 'groups' && 
-          record.groups.includes(:memberships).flat_map(&:memberships).any?{|m| m.user_id == user.id}
+          user &&
+          record.visible_to == 'groups' &&
+          (record.groups.pluck(:id) & user.group_ids).any?
         )
       )
     )

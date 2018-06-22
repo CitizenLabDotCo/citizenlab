@@ -209,7 +209,7 @@ models:
   - resource_type: User
     key: birthyear
     title_multiloc: custom_fields.birthyear
-    input_type: select
+    input_type: number
     required: false
     ordering: 1
     enabled: true
@@ -282,7 +282,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1982'
+    birthyear: 1982
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515512914/TrollFace_zxtg0y.jpg
@@ -295,7 +295,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: female
-    birthyear: '1968'
+    birthyear: 1968
     domicile: outside
     password: helpmeOB1
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515512946/leia-princess-leia-organa-solo-skywalker-9301321-576-1010_wkiyc5.jpg
@@ -308,7 +308,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1942'
+    birthyear: 1942
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515512973/profile-1474295964-7c5694e2fc409f9ba430e094fee7f906_lgsoly.jpg
@@ -321,7 +321,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: female
-    birthyear: '1983'
+    birthyear: 1983
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513004/simoneveil1_banhcd.jpg
@@ -334,7 +334,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1960'
+    birthyear: 1960
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: 
@@ -360,7 +360,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: female
-    birthyear: '1946'
+    birthyear: 1946
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513072/Portrait-8_irl86h.jpg
@@ -373,7 +373,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: female
-    birthyear: '1964'
+    birthyear: 1964
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513113/popin_2016_n2ubuf.jpg
@@ -386,7 +386,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1984'
+    birthyear: 1984
     domicile: 
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513141/platon-photographer-putin-man-of-the-year-portrait_i89wfw.jpg
@@ -412,7 +412,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: female
-    birthyear: '1957'
+    birthyear: 1957
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513204/89c81ca5da657d45d323eff5b8ad7c69_iyaj7q.jpg
@@ -438,7 +438,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1944'
+    birthyear: 1944
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513264/16992834140_99815ee4ac_m_i4sl14.jpg
@@ -451,7 +451,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1943'
+    birthyear: 1943
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513301/bryan_cranston_0095_j8anml.jpg
@@ -464,7 +464,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: female
-    birthyear: '1954'
+    birthyear: 1954
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513348/5dcf2c739263eb1e32ca1ef35d2664a8_j7m6et.jpg
@@ -490,7 +490,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: female
-    birthyear: '1926'
+    birthyear: 1926
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513515/BethanyR_phbshm.jpg
@@ -503,7 +503,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1943'
+    birthyear: 1943
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513541/dof2_apuqv8.jpg
@@ -516,7 +516,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: female
-    birthyear: '1994'
+    birthyear: 1994
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513566/83857__portrait-tips2_a6mq61.jpg
@@ -529,7 +529,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '2002'
+    birthyear: 2002
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513597/sherlock-season-4-featured-image_lho7jm.jpg
@@ -555,7 +555,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1985'
+    birthyear: 1985
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513649/51DLRByNOXL._UX250__g4ehve.jpg
@@ -568,7 +568,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1949'
+    birthyear: 1949
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513675/images_k3trq4.jpg
@@ -581,7 +581,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: female
-    birthyear: '1985'
+    birthyear: 1985
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513706/6c44f9503011a7dd186449bd25f49f4b--painting-portraits-portrait-art_jd39dv.jpg
@@ -594,7 +594,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1998'
+    birthyear: 1998
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513733/461482218-594x367_cuok3t.jpg
@@ -607,7 +607,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1950'
+    birthyear: 1950
     domicile: 
     password: CitizenLab=123
     remote_avatar_url: 
@@ -620,7 +620,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1977'
+    birthyear: 1977
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513841/4164298-miranda-kerr-4_dtozwg.jpg
@@ -633,7 +633,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1967'
+    birthyear: 1967
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513899/1_JvrUroQL_0QkqBqlY7Wb0A_c0m2wv.jpg
@@ -646,7 +646,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1944'
+    birthyear: 1944
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515513938/portrait-camera-mode-e_vgrjur.jpg
@@ -672,7 +672,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1972'
+    birthyear: 1972
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514015/500_flddap.jpg
@@ -685,7 +685,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1974'
+    birthyear: 1974
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514041/pexels-photo-247917_eacbhh.jpg
@@ -698,7 +698,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1946'
+    birthyear: 1946
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514066/00d6436d2d9283f7ce61f87b07ae378e--portrait-men-male-portrait-photography_zmmcof.jpg
@@ -724,7 +724,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1983'
+    birthyear: 1983
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514120/3df459479af007fed226ae39b9464af8--portrait-photography-men-photography-photos_pchsgx.jpg
@@ -737,7 +737,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1979'
+    birthyear: 1979
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514148/black-white-portrait2_uutdfg.jpg
@@ -750,7 +750,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: female
-    birthyear: '1978'
+    birthyear: 1978
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514176/csm_Karakasoglu_Yasemin1_360cb6e01f_wgwl4a.jpg
@@ -763,7 +763,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1972'
+    birthyear: 1972
     domicile: 
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514203/5607404f-fb91-4e9f-9522-9e3363f404a6-mahmoud-benazzouk-dentiste-_k5cjti.jpg
@@ -776,7 +776,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1945'
+    birthyear: 1945
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514242/70971_portrait-benjamin-dhardemare_pcmftc.jpg
@@ -789,7 +789,7 @@ models:
       fr-BE: 
       fr-FR: 
     gender: male
-    birthyear: '1980'
+    birthyear: 1980
     domicile: outside
     password: CitizenLab=123
     remote_avatar_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515514260/20170601183357-5506a2c2-cu_e355_sxpaba.jpg

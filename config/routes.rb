@@ -84,6 +84,8 @@ Rails.application.routes.draw do
       resources :groups do
         resources :memberships, shallow: true, except: [:update] do
           get :users_search, on: :collection
+          get 'by_user_id/:user_id', on: :collection, to: 'memberships#show_by_user_id'
+          delete 'by_user_id/:user_id', on: :collection, to: 'memberships#destroy_by_user_id'
         end
         get 'by_slug/:slug', on: :collection, to: 'groups#by_slug'
       end
