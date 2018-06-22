@@ -5,7 +5,7 @@ import { ImageDrop } from 'quill-image-drop-module';
 
 Quill.register('modules/imageDrop', ImageDrop);
 
-interface Props {}
+interface Props { }
 interface State {
   editorHtml: string;
 }
@@ -28,7 +28,6 @@ export default class QuillEditor extends React.Component<Props, State> {
 
   render() {
     return (
-      <div>
         <ReactQuill
           onChange={this.handleChange}
           value={this.state.editorHtml}
@@ -37,7 +36,6 @@ export default class QuillEditor extends React.Component<Props, State> {
             toolbar: completeToolbarConfig,
           }}
         />
-      </div>
     );
   }
 }
