@@ -48,7 +48,9 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
             <Error fieldName="description_preview_multiloc" apiErrors={errors.description_preview_multiloc} />
           </SectionField>
 
-          <QuillEditor/>
+          <QuillEditor
+            id="1"
+          />
 
           <SectionField>
             <Field

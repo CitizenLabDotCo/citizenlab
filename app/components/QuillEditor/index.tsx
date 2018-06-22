@@ -12,14 +12,13 @@ import messages from './messages';
 
 Quill.register('modules/imageDrop', ImageDrop);
 
-interface Props { }
+interface Props {
+  id: string;
+}
+
 interface State {
   editorHtml: string;
 }
-
-const completeToolbarConfig = {
-  container: '#toolbar'
-};
 
 const change = e => e.persist();
 
@@ -36,13 +35,15 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
 
   render() {
     const { formatMessage } = this.props.intl;
+    const { id } = this.props;
+    const toolbarId = `ql-editor-toolbar-${id}`;
     return (
-      <>
-      <div id="toolbar">
+      <div className="text-editor">
+      <div id={toolbarId} >
         <select className="ql-header" defaultValue={''} onChange={change} >
-          <option value="1">{formatMessage(messages.bigTitle)}</option>
-          <option value="2">{formatMessage(messages.littleTitle)}</option>
-          <option value="">{formatMessage(messages.normalText)}</option>
+          <option value="1" aria-selected={false}>{formatMessage(messages.bigTitle)}</option>
+          <option value="2" aria-selected={false}>{formatMessage(messages.littleTitle)}</option>
+          <option value="" aria-selected>{formatMessage(messages.normalText)}</option>
         </select>
         <button className="ql-bold" />
         <button className="ql-italic" />
@@ -55,10 +56,12 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
           value={this.state.editorHtml}
           modules={{
             imageDrop: true,
-            toolbar: completeToolbarConfig,
+            toolbar: {
+              container: `#${toolbarId}`,
+            },
           }}
         />
-      </>
+      </div>
     );
   }
 }
