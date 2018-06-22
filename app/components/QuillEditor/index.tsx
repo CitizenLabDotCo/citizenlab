@@ -1,4 +1,6 @@
 import React from 'react';
+
+// Quill editor & modules
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -6,27 +8,31 @@ import 'react-quill/dist/quill.snow.css';
 import { ImageDrop } from 'quill-image-drop-module';
 Quill.register('modules/imageDrop', ImageDrop);
 
+// Localization
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
+
 // Typings
 interface Props {
   noToolbar?: boolean;
   noMentions?: boolean;
   noImages?: boolean;
+  id: string;
 }
+
 interface State {
   editorHtml: string;
 }
 
 interface ModulesConfig {
   imageDrop?: boolean;
-  toolbar?: boolean | string[] | string[][];
+  toolbar?: any;
 }
 
-const completeToolbarConfig = [
-  ['bold', 'italic'],
-  ['link', 'image', 'video'],
-];
+const change = e => e.persist();
 
-export default class QuillEditor extends React.Component<Props, State> {
+class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = { editorHtml: '' };
@@ -38,14 +44,31 @@ export default class QuillEditor extends React.Component<Props, State> {
   }
 
   render() {
-    const { noToolbar } = this.props;
+    const { id, noToolbar, intl: { formatMessage } } = this.props;
+
+    const toolbarId = `ql-editor-toolbar-${id}`;
+
     const modules: ModulesConfig = {
       imageDrop: true,
-      toolbar: noToolbar ? false : completeToolbarConfig,
+      toolbar: noToolbar ? false : {
+        container: `#${toolbarId}`,
+      },
     };
 
     return (
-      <div>
+      <div className="text-editor">
+      <div id={toolbarId} >
+        <select className="ql-header" defaultValue={''} onChange={change} >
+          <option value="1" aria-selected={false}>{formatMessage(messages.bigTitle)}</option>
+          <option value="2" aria-selected={false}>{formatMessage(messages.littleTitle)}</option>
+          <option value="" aria-selected>{formatMessage(messages.normalText)}</option>
+        </select>
+        <button className="ql-bold" />
+        <button className="ql-italic" />
+        <button className="ql-link" />
+        <button className="ql-image" />
+        <button className="ql-video" />
+      </div>
         <ReactQuill
           onChange={this.handleChange}
           value={this.state.editorHtml}
@@ -55,3 +78,5 @@ export default class QuillEditor extends React.Component<Props, State> {
     );
   }
 }
+
+export default injectIntl<Props>(QuillEditor);
