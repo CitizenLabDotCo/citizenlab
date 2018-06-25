@@ -32,6 +32,12 @@ interface ModulesConfig {
 
 const change = e => e.persist();
 
+function imageHandler() {
+  const range = this.quill.getSelection();
+  const value = prompt('What is the image URL');
+  this.quill.insertEmbed(range.index, 'image', value, 'user');
+}
+
 class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
@@ -56,25 +62,26 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
     };
 
     return (
-      <div className="text-editor">
-      <div id={toolbarId} >
-        <select className="ql-header" defaultValue={''} onChange={change} >
-          <option value="1" aria-selected={false}>{formatMessage(messages.bigTitle)}</option>
-          <option value="2" aria-selected={false}>{formatMessage(messages.littleTitle)}</option>
-          <option value="" aria-selected>{formatMessage(messages.normalText)}</option>
-        </select>
-        <button className="ql-bold" />
-        <button className="ql-italic" />
-        <button className="ql-link" />
-        <button className="ql-image" />
-        <button className="ql-video" />
-      </div>
+      <>
+        <div id={toolbarId} >
+          <select className="ql-header" defaultValue={''} onChange={change} >
+            <option value="1" aria-selected={false}>{formatMessage(messages.bigTitle)}</option>
+            <option value="2" aria-selected={false}>{formatMessage(messages.littleTitle)}</option>
+            <option value="" aria-selected>{formatMessage(messages.normalText)}</option>
+          </select>
+          <button className="ql-bold" />
+          <button className="ql-italic" />
+          <button className="ql-link" />
+          <button className="ql-image" />
+          <button className="ql-imageURL" >URL</button>
+          <button className="ql-video" />
+        </div>
         <ReactQuill
           onChange={this.handleChange}
           value={this.state.editorHtml}
           modules={modules}
         />
-      </div>
+      </>
     );
   }
 }
