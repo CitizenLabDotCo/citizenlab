@@ -63,7 +63,7 @@ const Text = styled.div`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 30px;
+  margin-top: 25px;
 
   * {
     outline: none;
@@ -73,7 +73,7 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 5px;
+    margin: 5px 0;
     padding: 5px;
     border-radius: 5px;
     cursor: pointer;
