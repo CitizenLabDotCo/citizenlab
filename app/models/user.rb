@@ -114,6 +114,12 @@ class User < ApplicationRecord
     !!self.roles.find{|r| r["type"] == "project_moderator" && r["project_id"] == project_id}
   end
 
+  def moderatable_project_ids
+    self.roles
+      .select{|role| role['type'] == 'project_moderator'}
+      .map{|role| role['project_id']}.compact
+  end
+
   def add_role type, options={}
     self.roles << {"type" => type}.merge(options)
     self.roles.uniq!
