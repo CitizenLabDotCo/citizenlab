@@ -1,6 +1,9 @@
 // Libraries
 import React from 'react';
 
+// styles
+import { ProjectDescriptionStyled } from 'containers/ProjectsShowPage/info/ProjectInfo';
+
 import QuillEditor from 'components/QuillEditor';
 
 // i18n
@@ -17,14 +20,17 @@ import FormikEditorMultiloc from 'components/UI/FormikEditorMultiloc';
 
 // Typings
 import { Multiloc } from 'typings';
-export interface Props {}
-export interface State {}
+export interface Props { }
+export interface State { }
 export interface Values {
   description_multiloc: Multiloc;
   description_preview_multiloc: Multiloc;
 }
 
-class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, Values> , State> {
+const ProjectDesc = ProjectDescriptionStyled.extend``;
+// Wrapping the editor with the styles from the page where it will be rendered should ensure that styling is consistent.
+
+class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, Values>, State> {
   constructor(props) {
     super(props);
     this.state = {};
@@ -48,9 +54,11 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
             <Error fieldName="description_preview_multiloc" apiErrors={errors.description_preview_multiloc} />
           </SectionField>
 
-          <QuillEditor
-            id="1"
-          />
+          <ProjectDesc>
+            <QuillEditor
+              id="1"
+            />
+          </ProjectDesc>
 
           <SectionField>
             <Field
