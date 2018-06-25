@@ -42,7 +42,6 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({ intl, authUser }) => {
   );
 };
 
-
 const IdeaMetaWithHoc = injectIntl<Props>(IdeaMeta);
 
 export default (inputProps: InputProps) => (

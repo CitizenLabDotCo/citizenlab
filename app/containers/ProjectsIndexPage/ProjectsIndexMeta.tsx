@@ -23,7 +23,6 @@ const ProjectsMeta: React.SFC<Props & InjectedIntlProps> = ({ intl, authUser }) 
   const { formatMessage } = intl;
   const projectsIndexUrl = window.location.href;
 
-
   const projectsIndexTitle = formatMessage(messages.metaTitle);
   const projectsIndexDescription = formatMessage(messages.metaDescription);
 

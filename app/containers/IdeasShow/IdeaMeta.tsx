@@ -65,7 +65,6 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({
 
     const ideaOgTitle = formatMessage(messages.metaOgTitle, { ideaTitle: getLocalized(titleMultiloc, locale, tenantLocales, 50) });
 
-
     const articleJson = {
       '@type': 'Article',
       image: ideaImage,
@@ -141,7 +140,6 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({
         <script type="application/ld+json">
           {JSON.stringify(json)}
         </script>
-
 
         <meta property="og:url" content={ideaUrl} />
         <meta property="og:locale" content={locale} />
