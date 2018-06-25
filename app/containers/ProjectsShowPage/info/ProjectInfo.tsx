@@ -56,7 +56,7 @@ const Right = styled.aside`
   `}
 `;
 
-const ProjectDescriptionStyled = styled.div`
+export const ProjectDescriptionStyled = styled.div`
   color: #333;
   font-size: 18px;
   line-height: 26px;
