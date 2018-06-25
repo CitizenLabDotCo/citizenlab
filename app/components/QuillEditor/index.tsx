@@ -50,7 +50,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { id, noToolbar, intl: { formatMessage } } = this.props;
+    const { id, noToolbar, noImages, intl: { formatMessage } } = this.props;
 
     const toolbarId = `ql-editor-toolbar-${id}`;
 
@@ -58,23 +58,37 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
       imageDrop: true,
       toolbar: noToolbar ? false : {
         container: `#${toolbarId}`,
+        handlers: noImages ? false : {
+          imageURL: imageHandler,
+        }
       },
     };
 
     return (
       <>
         <div id={toolbarId} >
-          <select className="ql-header" defaultValue={''} onChange={change} >
-            <option value="1" aria-selected={false}>{formatMessage(messages.bigTitle)}</option>
-            <option value="2" aria-selected={false}>{formatMessage(messages.littleTitle)}</option>
-            <option value="" aria-selected>{formatMessage(messages.normalText)}</option>
-          </select>
-          <button className="ql-bold" />
-          <button className="ql-italic" />
-          <button className="ql-link" />
-          <button className="ql-image" />
-          <button className="ql-imageURL" >URL</button>
-          <button className="ql-video" />
+          <span className="ql-formats">
+            <select className="ql-header" defaultValue={''} onChange={change} >
+              <option value="1" aria-selected={false}>{formatMessage(messages.bigTitle)}</option>
+              <option value="2" aria-selected={false}>{formatMessage(messages.littleTitle)}</option>
+              <option value="" aria-selected>{formatMessage(messages.normalText)}</option>
+            </select>
+          </span>
+          <span className="ql-formats">
+            <button className="ql-bold" />
+            <button className="ql-italic" />
+            <button className="ql-link" />
+          </span>
+
+          <span className="ql-formats">
+            {!noImages &&
+              <>
+                <button className="ql-image" />
+                <button className="ql-imageURL" >URL</button>
+              </>
+            }
+            <button className="ql-video" />
+          </span>
         </div>
         <ReactQuill
           onChange={this.handleChange}
