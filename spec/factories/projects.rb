@@ -174,13 +174,16 @@ FactoryBot.define do
     factory :private_groups_project do
       visible_to 'groups'
       transient do
+        groups_count 1
         user nil
       end
       after(:create) do |project, evaluator|
-        group = create(:group)
-        project.groups << group
-        if evaluator&.user
-          group.members << evaluator&.user
+        evaluator.groups_count.times do |i|
+          group = create(:group)
+          project.groups << group
+          if evaluator&.user
+            group.members << evaluator&.user
+          end
         end
       end
     end
