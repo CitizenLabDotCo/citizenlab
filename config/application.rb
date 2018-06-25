@@ -37,7 +37,7 @@ module Cl2Back
       g.orm :active_record, primary_key_type: :uuid
     end
 
-    config.active_job.queue_adapter = :sidekiq
+    config.active_job.queue_adapter = ENV.fetch('ACTIVE_JOB_QUEUE_ADAPTER', 'sidekiq').to_sym
 
     config.autoload_paths << "#{Rails.root}/lib"
 
