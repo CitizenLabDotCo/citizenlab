@@ -1,11 +1,9 @@
 import 'whatwg-fetch';
-import { Observer } from 'rxjs/Observer';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Observer, Observable, Subscription } from 'rxjs';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
 import { retry, catchError, startWith, scan, filter, distinctUntilChanged, refCount, publishReplay } from 'rxjs/operators';
-import { some, forOwn, isError, isNil, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union } from 'lodash';
+import { includes, forOwn, isError, isNil, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union } from 'lodash';
 import request from 'utils/request';
 import { authApiEndpoint } from 'services/auth';
 
@@ -19,7 +17,7 @@ export interface IStreamParams {
   queryParameters?: IObject | null;
   cacheStream?: boolean;
 }
-interface IInputStreamParams extends IStreamParams {
+export interface IInputStreamParams extends IStreamParams {
   apiEndpoint: string;
 }
 interface IExtendedStreamParams {
@@ -46,7 +44,6 @@ export interface IStream<T> {
 class Streams {
   public streams: { [key: string]: IStream<any>};
   public resourcesByDataId: { [key: string]: any };
-  public resourcesByStreamId: { [key: string]: any };
   public streamIdsByApiEndPointWithQuery: { [key: string]: string[] };
   public streamIdsByApiEndPointWithoutQuery: { [key: string]: string[] };
   public streamIdsByDataIdWithoutQuery: { [key: string]: string[] };
@@ -55,7 +52,6 @@ class Streams {
   constructor() {
     this.streams = {};
     this.resourcesByDataId = {};
-    this.resourcesByStreamId = {};
     this.streamIdsByApiEndPointWithQuery = {};
     this.streamIdsByApiEndPointWithoutQuery = {};
     this.streamIdsByDataIdWithoutQuery = {};
@@ -64,7 +60,6 @@ class Streams {
 
   reset() {
     this.resourcesByDataId = {};
-    this.resourcesByStreamId = {};
     this.streamIdsByApiEndPointWithQuery = {};
     this.streamIdsByApiEndPointWithoutQuery = {};
     this.streamIdsByDataIdWithoutQuery = {};
@@ -118,13 +113,13 @@ class Streams {
   }
 
   deleteStream(streamId: string, apiEndpoint: string) {
-    if (some(this.streamIdsByApiEndPointWithQuery[apiEndpoint], value => value === streamId)) {
+    if (includes(this.streamIdsByApiEndPointWithQuery[apiEndpoint], streamId)) {
       this.streamIdsByApiEndPointWithQuery[apiEndpoint] = this.streamIdsByApiEndPointWithQuery[apiEndpoint].filter((value) => {
         return value !== streamId;
       });
     }
 
-    if (some(this.streamIdsByApiEndPointWithoutQuery[apiEndpoint], value => value === streamId)) {
+    if (includes(this.streamIdsByApiEndPointWithoutQuery[apiEndpoint], streamId)) {
       this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] = this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].filter((value) => {
         return value !== streamId;
       });
@@ -132,13 +127,13 @@ class Streams {
 
     if (streamId && this.streams[streamId]) {
       Object.keys(this.streams[streamId].dataIds).forEach((dataId) => {
-        if (some(this.streamIdsByDataIdWithQuery[dataId], value => value === streamId)) {
+        if (includes(this.streamIdsByDataIdWithQuery[dataId], streamId)) {
           this.streamIdsByDataIdWithQuery[dataId] =  this.streamIdsByDataIdWithQuery[dataId].filter((value) => {
             return value !== streamId;
           });
         }
 
-        if (some(this.streamIdsByDataIdWithoutQuery[dataId], value => value === streamId)) {
+        if (includes(this.streamIdsByDataIdWithoutQuery[dataId], streamId)) {
           this.streamIdsByDataIdWithoutQuery[dataId] = this.streamIdsByDataIdWithoutQuery[dataId].filter((value) => {
             return value !== streamId;
           });
@@ -202,7 +197,7 @@ class Streams {
 
   addStreamIdByDataIdIndex(streamId: string, isQueryStream: boolean, dataId: string) {
     if (isQueryStream) {
-      if (this.streamIdsByDataIdWithQuery[dataId] && !some(this.streamIdsByDataIdWithQuery[dataId], streamId)) {
+      if (this.streamIdsByDataIdWithQuery[dataId] && !includes(this.streamIdsByDataIdWithQuery[dataId], streamId)) {
         this.streamIdsByDataIdWithQuery[dataId].push(streamId);
       } else if (!this.streamIdsByDataIdWithQuery[dataId]) {
         this.streamIdsByDataIdWithQuery[dataId] = [streamId];
@@ -210,7 +205,7 @@ class Streams {
     }
 
     if (!isQueryStream) {
-      if (this.streamIdsByDataIdWithoutQuery[dataId] && !some(this.streamIdsByDataIdWithoutQuery[dataId], streamId)) {
+      if (this.streamIdsByDataIdWithoutQuery[dataId] && !includes(this.streamIdsByDataIdWithoutQuery[dataId], streamId)) {
         this.streamIdsByDataIdWithoutQuery[dataId].push(streamId);
       } else if (!this.streamIdsByDataIdWithoutQuery[dataId]) {
         this.streamIdsByDataIdWithoutQuery[dataId] = [streamId];
@@ -287,17 +282,11 @@ class Streams {
 
         if (cacheStream && isSingleItemStream && has(this.resourcesByDataId, dataId)) {
           observer.next(this.resourcesByDataId[dataId]);
-        } else if (cacheStream && has(this.resourcesByStreamId, streamId)) {
-          observer.next(this.resourcesByStreamId[streamId]);
         } else {
           fetch();
         }
 
         return () => {
-          // if (process.env.NODE_ENV === 'development') {
-          //   console.log(`stream for stream ${streamId} completed`);
-          // }
-
           this.deleteStream(streamId, apiEndpoint);
         };
       }).pipe(
@@ -331,14 +320,12 @@ class Streams {
               }
 
               if (has(data, 'included')) {
-                data.included.filter(item => item.id).forEach(item => this.resourcesByDataId[item.id] = { data: item });
+                data.included.filter(item => item.id).forEach((item) => {
+                  this.resourcesByDataId[item.id] = this.deepFreeze({ data: item });
+                });
+
                 data = omit(data, 'included');
               }
-            }
-
-            if (!isSingleItemStream) {
-              data = this.deepFreeze(data);
-              this.resourcesByStreamId[streamId] = data;
             }
           }
 

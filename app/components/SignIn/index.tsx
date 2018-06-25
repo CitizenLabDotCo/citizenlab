@@ -1,6 +1,6 @@
 import React from 'react';
 import { get, isFunction } from 'lodash';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs';
 
 // libraries
 import { browserHistory, Link } from 'react-router';

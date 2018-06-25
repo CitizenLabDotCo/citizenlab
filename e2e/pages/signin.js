@@ -2,6 +2,7 @@ const signinCommands = {
   signin(email, password) {
     this
     .waitForElementVisible('@form')
+    .waitForElementVisible('@email')
     .setValue('@email', email)
     .setValue('@password', password);
     this.api.execute('var submit = document.getElementsByClassName("e2e-submit-signin");submit[0].scrollIntoView(true);');

@@ -5,11 +5,9 @@ import loadBasicBlocks from './basic_blocks';
 
 import Button from 'components/UI/Button';
 
-
 const ButtonWrapper = styled.div`
   margin: 2rem 0;
 `;
-
 
 type Props = {
   initialValue: string;

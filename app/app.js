@@ -20,7 +20,6 @@ import { translationMessages } from './i18n';
 
 /* eslint-disable import/first */
 // Import CSS reset and Global Styles
-// import '../vendor/foundation/main.scss';
 import 'sanitize.css/sanitize.css';
 import 'assets/semantic/semantic.min.css';
 import 'react-select/dist/react-select.min.css';
@@ -60,8 +59,7 @@ const render = (messages) => {
         history={browserHistory}
         routes={rootRoute}
         render={
-          // Scroll to top when going to a new page, imitating default browser
-          // behaviour
+          // Scroll to top when going to a new page, imitating default browser behaviour
           applyRouterMiddleware(useScroll())
         }
       />
@@ -72,11 +70,8 @@ const render = (messages) => {
 
 // Hot reloadable translation json files
 if (module.hot) {
-  // modules.hot.accept does not accept dynamic dependencies,
-  // have to be constants at compile-time
-  module.hot.accept('./i18n', () => {
-    render(translationMessages);
-  });
+  // modules.hot.accept does not accept dynamic dependencies, have to be constants at compile-time
+  module.hot.accept('./i18n', () => render(translationMessages));
 }
 
 render(translationMessages);

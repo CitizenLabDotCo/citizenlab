@@ -7,7 +7,7 @@ import { withTheme } from 'styled-components';
 import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 import { usersByGenderStream } from 'services/stats';
 import messages from '../messages';
-
+import { colors } from 'utils/styleUtils';
 
 type State = {
   serie: {name: string, value: number, code: string}[] | null;
@@ -18,7 +18,7 @@ type Props = {
   endAt: string
 };
 
-const colors = {
+const labelColors = {
   male: '#5D99C6 ',
   female: '#C37281 ',
   unspecified: '#B0CDC4 ',
@@ -70,7 +70,6 @@ class GenderChart extends React.PureComponent<Props & InjectedIntlProps, State> 
     });
   }
 
-
   render() {
     const theme = this.props['theme'];
 
@@ -84,10 +83,10 @@ class GenderChart extends React.PureComponent<Props & InjectedIntlProps, State> 
             dataKey="value"
             innerRadius={60}
             fill={theme.colorMain}
-            label={{ fill: '#333', fontSize: '14px' }}
+            label={{ fill: colors.adminTextColor, fontSize: '14px' }}
           >
             {this.state.serie && this.state.serie.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={colors[entry.code]} />
+              <Cell key={`cell-${index}`} fill={labelColors[entry.code]} />
             ))}
           </Pie>
           <Tooltip isAnimationActive={false} />

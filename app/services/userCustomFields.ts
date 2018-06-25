@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 
-export type IInputType = 'text' | 'multiline_text' | 'select' | 'multiselect' | 'checkbox' | 'date';
+export type IInputType = 'text' | 'number' | 'multiline_text' | 'select' | 'multiselect' | 'checkbox' | 'date';
 
 export interface ICustomFieldData {
   id: string;

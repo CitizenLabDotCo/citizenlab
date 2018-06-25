@@ -1,5 +1,5 @@
 import React from 'react';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import mapValues from 'lodash/mapValues';
 import { currentTenantStream, ITenantData } from 'services/tenant';

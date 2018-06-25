@@ -1,4 +1,4 @@
-import { Observer, Observable } from 'rxjs/Rx';
+import { Observer, Observable } from 'rxjs';
 import { isObject, isEmpty } from 'lodash';
 import shallowCompare from 'utils/shallowCompare';
 

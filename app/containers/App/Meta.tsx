@@ -28,7 +28,6 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-
 const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, authUser, intl }) => {
   if (!isNilOrError(locale) && !isNilOrError(tenant)) {
     const { formatMessage } = intl;
