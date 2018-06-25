@@ -163,7 +163,7 @@ describe ProjectPolicy do
 
   context "for a user on a private groups project where she's a member of a manual group with access" do
     let!(:user) { create(:user) }
-    let!(:project) { create(:private_groups_project, user: user)}
+    let!(:project) { create(:private_groups_project, user: user, groups_count: 2)}
 
     it { should permit(:show)    }
     it { should_not permit(:create)  }
