@@ -17,6 +17,11 @@ const StyledAvatar = styled(Avatar)`
   width: 2rem;
   height: 2rem;
 `;
+const SRow = styled(Row)`
+  &:first-child {
+    border-top: none !important
+  }
+`;
 
 import { GetModeratorsChildProps } from 'resources/GetModerators';
 import { InjectedIntlProps } from 'react-intl';
@@ -43,7 +48,7 @@ class ModeratorList extends React.PureComponent<Props & InjectedIntlProps>{
     return (
       <List>
         { authUser && !isNilOrError(moderators) && moderators.map(moderator =>
-          <Row key={moderator.id}>
+          <SRow key={moderator.id}>
             <StyledAvatar userId={moderator.id} size="small" />
             <p className="expand">{`${moderator.attributes.first_name} ${moderator.attributes.last_name}`}</p>
             <p className="expand">{moderator.attributes.email}</p>
@@ -56,7 +61,7 @@ class ModeratorList extends React.PureComponent<Props & InjectedIntlProps>{
             >
               <FormattedMessage {...messages.deleteModeratorLabel} />
             </Button>
-          </Row>
+          </SRow>
         )
       }
       {isError(moderators) &&

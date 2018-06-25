@@ -1,7 +1,7 @@
 import React from 'react';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { switchMap } from 'rxjs/operators';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 import { withTheme } from 'styled-components';
@@ -45,14 +45,16 @@ class IdeasByTimeChart extends React.PureComponent<Props & injectedLocalized, St
       combineLatest(
         this.startAt$.filter(startAt => startAt !== null),
         this.endAt$.filter(endAt => endAt !== null),
-      ).switchMap(([startAt, endAt]) => {
-        return ideasByTopicStream({
-          queryParameters: {
-            start_at: startAt,
-            end_at: endAt,
-          },
-        }).observable;
-      }).subscribe((serie) => {
+      ).pipe(
+        switchMap(([startAt, endAt]) => {
+          return ideasByTopicStream({
+            queryParameters: {
+              start_at: startAt,
+              end_at: endAt,
+            },
+          }).observable;
+        })
+      ).subscribe((serie) => {
         const convertedSerie = this.convertToGraphFormat(serie);
         this.setState({ serie: convertedSerie });
       })

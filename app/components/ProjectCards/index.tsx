@@ -159,13 +159,13 @@ class ProjectCards extends React.PureComponent<Props, State> {
           </FiltersArea>
         }
 
-        {querying && 
+        {querying &&
           <Loading id="projects-loading">
             <Spinner size="32px" color="#666" />
           </Loading>
         }
 
-        {!querying && !hasProjects && 
+        {!querying && !hasProjects &&
           <EmptyContainer id="projects-empty">
             <ProjectIcon name="idea" />
             <EmptyMessage>

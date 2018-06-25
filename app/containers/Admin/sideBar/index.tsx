@@ -1,5 +1,5 @@
 import React from 'react';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 
 // router
@@ -16,95 +16,95 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
 
-const Menu = styled.div`
+const Menu = styled.nav`
+  flex: 0 0 260px;
   background: ${ colors.adminMenuBackground };
-  flex: 0 0 240px;
-  margin-top: 0px;
-  padding-top: 45px;
   z-index: 1;
+  display: flex;
+  align-items: stretch;
 
   ${media.smallerThanMinTablet`
     flex: 0 0 70px;
   `}
 `;
 
+const MenuInner = styled.div`
+  width: 100%;
+  position: sticky;
+  top: 119px;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+`;
+
 const IconWrapper = styled.div`
-  width: 49px;
-  height: 49px;
+  width: 45px;
+  height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-const StyledIcon = styled(Icon)`
-  height: 18px;
-  max-width: 30px;
-  fill: #fff;
-  opacity: 0.5;
-
-  &.idea {
-    height: 21px;
-  }
-`;
-
 const Text = styled.div`
-  color: #fff;
-  font-size: 17px;
+  color: ${colors.adminLightText};
+  font-size: 16px;
   font-weight: 400;
-  line-height: 21px;
-  margin-left: 15px;
-  opacity: 0.4;
+  line-height: 19px;
+  margin-left: 10px;
+  flex: 1;
 
   ${media.smallerThanMinTablet`
     display: none;
   `}
 `;
 
-const MenuLink = styled(Link)`
-  flex: 1;
-  height: 100%;
+const MenuItem: any = styled(Link)`
+  border-radius: 5px;
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
   align-items: center;
-  padding-left: 12px;
-`;
-
-const MenuItem: any = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  padding: 0;
+  padding-left: 5px;
+  padding-right: 15px;
   padding-bottom: 1px;
-  margin: 0;
   margin-bottom: 5px;
+  margin-left: 25px;
+  margin-right: 25px;
   cursor: pointer;
 
   &:hover {
-    ${StyledIcon} {
-      opacity: 1;
+    ${Text} {
+      color: #fff;
     };
 
-    ${Text} {
-      opacity: 1;
+    .cl-icon {
+      .cl-icon-primary {
+        fill: ${colors.clIconAccent}
+      }
+      .cl-icon-accent {
+        fill: ${colors.clIconPrimary}
+      }
     };
   }
 
-  ${(props: any) => props.active && css`
-    background: #222;
-
-    ${StyledIcon} {
-      opacity: 1;
-    };
+  &.selected {
+    background: rgba(0, 0, 0, 0.25);
 
     ${Text} {
-      opacity: 1;
+      color: #fff;
     };
-  `}
+
+    .cl-icon {
+      .cl-icon-primary {
+        fill: ${colors.clIconAccent}
+      }
+      .cl-icon-accent {
+        fill: ${colors.clIconPrimary}
+      }
+    };
+  }
 `;
 
 type Props = {};
@@ -135,43 +135,42 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
       {
         id: 'dashboard',
         link: '/admin',
-        iconName: 'analytics',
+        iconName: 'stats',
         message: 'dashboard',
         isActive: (pathname) => (pathname === '/admin'),
       },
       {
         id: 'users',
-        link: '/admin/users/registered',
-        iconName: 'people',
+        link: '/admin/users',
+        iconName: 'users',
         message: 'users',
         isActive: (pathName) => (pathName.startsWith('/admin/users'))
       },
       {
-        id: 'groups',
-        link: '/admin/groups',
-        iconName: 'groups',
-        message: 'groups',
-        featureName: 'groups',
-        isActive: (pathName) => (pathName.startsWith('/admin/groups'))
-      },
-      {
-        id: 'ideas',
-        link: '/admin/ideas',
-        iconName: 'idea',
-        message: 'ideas',
-        isActive: (pathName) => (pathName.startsWith('/admin/ideas'))
+        id: 'invitations',
+        link: '/admin/invitations',
+        iconName: 'invitations',
+        message: 'invitations',
+        isActive: (pathName) => (pathName.startsWith('/admin/invitations'))
       },
       {
         id: 'projects',
         link: '/admin/projects',
-        iconName: 'project',
+        iconName: 'folder',
         message: 'projects',
         isActive: (pathName) => (pathName.startsWith('/admin/projects'))
       },
       {
+        id: 'ideas',
+        link: '/admin/ideas',
+        iconName: 'ideas',
+        message: 'ideas',
+        isActive: (pathName) => (pathName.startsWith('/admin/ideas'))
+      },
+      {
         id: 'settings',
         link: '/admin/settings/general',
-        iconName: 'settings',
+        iconName: 'setting',
         message: 'settings',
         isActive: (pathName) => (pathName.startsWith('/admin/settings'))
       },
@@ -188,9 +187,7 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
         }))
       ).subscribe((permissions) => {
         this.setState({
-          navItems: permissions.filter(permission => permission).map((_permission, index) => {
-            return this.routes[index];
-          })
+          navItems: this.routes.filter((_, index) => permissions[index])
         });
       })
     ];
@@ -205,22 +202,23 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
     const { pathname } = this.props.location;
     const { navItems } = this.state;
 
-    if (navItems.length <= 1) {
+    if (!(navItems && navItems.length > 1)) {
       return null;
     }
 
     return (
-      <Menu>
-        {navItems.map((route) => (
-          <FeatureFlag name={route.featureName} key={route.id}>
-            <MenuItem active={route.isActive(pathname)}>
-              <MenuLink to={route.link}>
-                <IconWrapper><StyledIcon name={route.iconName} /></IconWrapper>
+      <Menu role="navigation">
+        <MenuInner>
+          {navItems.map((route) => (
+            <FeatureFlag name={route.featureName} key={route.id}>
+              <MenuItem activeClassName="active" className={`${route.isActive(pathname) ? 'selected' : ''}`} to={route.link}>
+                <IconWrapper><Icon name={route.iconName} /></IconWrapper>
                 <Text>{formatMessage({ ...messages[route.message] })}</Text>
-              </MenuLink>
-            </MenuItem>
-          </FeatureFlag>
-        ))}
+                {route.isActive(pathname) && <Icon name="arrowLeft" />}
+              </MenuItem>
+            </FeatureFlag>
+          ))}
+        </MenuInner>
       </Menu>
     );
   }

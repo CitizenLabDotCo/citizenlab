@@ -32,7 +32,7 @@ type State = {
 };
 
 export default class StatusBadge extends React.PureComponent<Props, State> {
-  
+
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {

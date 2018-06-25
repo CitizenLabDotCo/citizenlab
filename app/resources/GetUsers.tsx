@@ -1,15 +1,7 @@
 import React from 'react';
-import isEqual from 'lodash/isEqual';
-import isEmpty from 'lodash/isEmpty';
-import isString from 'lodash/isString';
-import omitBy from 'lodash/omitBy';
-import isNil from 'lodash/isNil';
-import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
-import { distinctUntilChanged, switchMap, map, startWith, debounceTime } from 'rxjs/operators';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { merge } from 'rxjs/observable/merge';
+import { isNil, omitBy, isBoolean, get } from 'lodash';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { usersStream, IUserData } from 'services/users';
 import shallowCompare from 'utils/shallowCompare';
 import { getPageNumberFromUrl, getSortAttribute, getSortDirection, SortDirection } from 'utils/paginationUtils';
@@ -23,13 +15,16 @@ export interface InputProps {
   pageSize?: number;
   sort?: Sort;
   search?: string;
+  groupId?: string;
+  cache?: boolean;
 }
 
 interface IQueryParameters {
   'page[number]': number;
   'page[size]': number;
   sort: Sort;
-  search: string | undefined;
+  search?: string;
+  group?: string;
 }
 
 type children = (obj: GetUsersChildProps) => JSX.Element | null;
@@ -53,9 +48,8 @@ export type GetUsersChildProps = State & {
   onChangePage: (pageNumber: number) => void;
 };
 
-export default class GetInvites extends React.Component<Props, State> {
+export default class GetUsers extends React.Component<Props, State> {
   queryParameters$: BehaviorSubject<IQueryParameters>;
-  search$: Subject<string | undefined>;
   subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -67,7 +61,8 @@ export default class GetInvites extends React.Component<Props, State> {
         'page[number]': 1,
         'page[size]': 20,
         sort: initialSort,
-        search: undefined
+        search: undefined,
+        group: undefined
       },
       usersList: undefined,
       sortAttribute: getSortAttribute<Sort, SortAttribute>(initialSort),
@@ -81,34 +76,20 @@ export default class GetInvites extends React.Component<Props, State> {
     const queryParameters = this.getQueryParameters(this.state, this.props);
 
     this.queryParameters$ = new BehaviorSubject(queryParameters);
-    this.search$ = new Subject();
-
-    const queryParameters$ = this.queryParameters$.pipe(distinctUntilChanged((x, y) => shallowCompare(x, y)));
-    const queryParametersSearch$ = queryParameters$.pipe(
-      map(queryParameters => queryParameters.search),
-      distinctUntilChanged()
-    );
-    const search$ = merge(
-      this.search$.pipe(debounceTime(500)),
-      queryParametersSearch$
-    ).pipe(
-      startWith(queryParameters.search),
-      map(searchValue => ((isString(searchValue) && !isEmpty(searchValue)) ? searchValue : undefined)),
-      distinctUntilChanged()
-    );
 
     this.subscriptions = [
-      combineLatest(
-        queryParameters$,
-        search$
-      ).pipe(
-        map(([queryParameters, search]) => ({ ...queryParameters, search })),
+      this.queryParameters$.pipe(
+        distinctUntilChanged((x, y) => shallowCompare(x, y)),
         switchMap((queryParameters) => {
+          const cacheStream = (isBoolean(this.props.cache) ? this.props.cache : true);
           const oldPageNumber = this.state.queryParameters['page[number]'];
           const newPageNumber = queryParameters['page[number]'];
           queryParameters['page[number]'] = (newPageNumber !== oldPageNumber ? newPageNumber : 1);
 
-          return usersStream({ queryParameters, cacheStream: false }).observable.pipe(map(users => ({ users, queryParameters })));
+          return usersStream({
+            queryParameters,
+            cacheStream
+          }).observable.pipe(map(users => ({ users, queryParameters })));
         })
       ).subscribe(({ users, queryParameters }) => {
         this.setState({
@@ -116,8 +97,8 @@ export default class GetInvites extends React.Component<Props, State> {
           usersList: (!isNilOrError(users) ? users.data : users),
           sortAttribute: getSortAttribute<Sort, SortAttribute>(queryParameters.sort),
           sortDirection: getSortDirection<Sort>(queryParameters.sort),
-          currentPage: getPageNumberFromUrl(users.links.self) || 1,
-          lastPage: getPageNumberFromUrl(users.links.last) || 1
+          currentPage: getPageNumberFromUrl(get(users.links, 'self', null)) || 1,
+          lastPage: getPageNumberFromUrl(get(users.links, 'last', null)) || 1
         });
       })
     ];
@@ -127,7 +108,7 @@ export default class GetInvites extends React.Component<Props, State> {
     const { children: prevChildren, ...prevPropsWithoutChildren } = prevProps;
     const { children: nextChildren, ...nextPropsWithoutChildren } = this.props;
 
-    if (!isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren)) {
+    if (!shallowCompare(prevPropsWithoutChildren, nextPropsWithoutChildren)) {
       const queryParameters = this.getQueryParameters(this.state, this.props);
       this.queryParameters$.next(queryParameters);
     }
@@ -144,7 +125,8 @@ export default class GetInvites extends React.Component<Props, State> {
         'page[number]': props.pageNumber,
         'page[size]': props.pageSize,
         sort: props.sort,
-        search: props.search
+        search: props.search,
+        group: props.groupId
       }, isNil)
     };
   }
@@ -162,8 +144,11 @@ export default class GetInvites extends React.Component<Props, State> {
     });
   }
 
-  handleChangeSearchTerm = (searchTerm) => {
-    this.search$.next(searchTerm);
+  handleChangeSearchTerm = (searchTerm: string) => {
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      search: searchTerm
+    });
   }
 
   handleChangePage = (pageNumber: number) => {

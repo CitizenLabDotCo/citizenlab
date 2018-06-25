@@ -28,7 +28,6 @@ import { lighten } from 'polished';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-
 const facebookColor = '#3b5998';
 
 const twitterColor = '#1ea4f2';
@@ -46,14 +45,14 @@ const IconWrapper = styled.div`
   justify-content: flex-start;
 
   svg {
-    width: 18px;
+    width: 20px;
     transition: all 100ms ease-out;
   }
 `;
 
 const Text = styled.div`
   max-width: 200px;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 19px;
   text-align: left;
   font-weight: 400;
@@ -72,67 +71,40 @@ const Container = styled.div`
   .sharingButton {
     display: flex;
     align-items: center;
-    margin: 0;
-    padding: 0;
+    justify-content: center;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
     cursor: pointer;
     transition: all 100ms ease-out;
-
-    ${media.smallerThanMaxTablet`
-      /* margin: 0;
-      margin-top: 10px;
-      margin-bottom: 10px; */
-    `}
+    width: 100%;
 
     &.twitter {
-      ${Text} {
-        color: ${lighten(0.1, twitterColor)};
-        color: #84939E;
-      }
-
-      ${IconWrapper} svg {
-        fill: ${lighten(0.1, twitterColor)};
-        fill: #84939E;
-      }
+      background: ${twitterColor};
+      fill: #fff;
+      color: #fff;
 
       &:hover {
-        ${Text} {
-          color: ${twitterColor};
-        }
-
-        ${IconWrapper} svg {
-          fill: ${twitterColor};
-        }
+        background: ${lighten(0.25, twitterColor)};
       }
     }
-
     &.facebook {
-      ${Text} {
-        color: ${lighten(0.1, facebookColor)};
-        color: #84939E;
-      }
-
-      ${IconWrapper} svg {
-        fill: ${lighten(0.1, facebookColor)};
-        fill: #84939E;
-      }
+      background: ${facebookColor};
+      fill: #fff;
+      color: #fff;
 
       &:hover {
-        ${Text} {
-          color: ${facebookColor};
-        }
-
-        ${IconWrapper} svg {
-          fill: ${facebookColor};
-        }
+        background: ${lighten(0.2, facebookColor)};
       }
     }
+
     &.messenger {
-      fill: #84939E;
-      color: #84939E;
+      background: ${messengerColor};
+      fill: #fff;
+      color: #fff;
 
       &:hover {
-        fill: ${messengerColor};
-        color: ${messengerColor};
+        background: ${(lighten(0.2, messengerColor))};
       }
       ${media.biggerThanMaxTablet`
         display: none;
@@ -175,7 +147,6 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
       const fbURL = (!isNilOrError(userId)) ? `${href}?recruiter=${userId}&utm_source=share_idea&utm_medium=facebook&utm_campaign=autopublish&utm_term=share_idea` : href;
       const twitterURL = (!isNilOrError(userId)) ? `${href}?recruiter=${userId}&utm_source=share_idea&utm_medium=twitter&utm_campaign=share_idea` : href;
 
-
       const facebook = (facebookAppId ? (
         <FacebookButton
           className="sharingButton facebook first"
@@ -203,19 +174,19 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
       ) : null);
 
       const twitter = (
-            <TwitterButton
-              className="sharingButton twitter"
-              url={twitterURL}
-              sharer={true}
-              media={imageUrl}
-              onClick={clickTwitterShare}
-              message={twitterMessage}
-            >
-              <IconWrapper>
-                <Icon name="twitter" />
-              </IconWrapper>
-              <Text>{twitterText}</Text>
-            </TwitterButton>
+        <TwitterButton
+          className="sharingButton twitter"
+          url={twitterURL}
+          sharer={true}
+          media={imageUrl}
+          onClick={clickTwitterShare}
+          message={twitterMessage}
+        >
+          <IconWrapper>
+            <Icon name="twitter" />
+          </IconWrapper>
+          <Text>{twitterText}</Text>
+        </TwitterButton>
       );
 
       return (

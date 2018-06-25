@@ -184,7 +184,7 @@ class CLMap extends React.PureComponent<Props, State> {
 
       Leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        subdomains: ['a','b','c']
+        subdomains: ['a', 'b', 'c']
       }).addTo(this.map);
 
       if (this.props.onMapClick) this.map.on('click', this.handleMapClick);

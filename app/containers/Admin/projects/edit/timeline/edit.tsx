@@ -4,10 +4,9 @@ import 'react-dates/lib/css/_datepicker.css';
 
 // Libraries
 import React from 'react';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as moment from 'moment';
 import { get, isEmpty, forOwn } from 'lodash';
 
@@ -53,7 +52,7 @@ const PhaseForm = styled.form`
 
     .DateInput,
     .DateInput_input {
-      color: #333;
+      color: inherit;
       font-size: 16px;
       font-weight: 400;
       background: transparent;
@@ -62,6 +61,10 @@ const PhaseForm = styled.form`
 
   .DateRangePicker_picker {
     z-index: 2;
+  }
+
+  .CalendarMonth_caption {
+    color: inherit;
   }
 `;
 
@@ -309,23 +312,6 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
                 />
               </SectionField>
 
-              {/* <SectionField>
-                <Label>
-                  <FormattedMessage {...projectSettingsMessages.defaultDisplay} />
-                </Label>
-                {['card', 'map'].map((key) => (
-                  <Radio
-                    key={key}
-                    onChange={this.handleIdeasDisplayChange}
-                    currentValue={presentationMode}
-                    value={key}
-                    name="presentation_mode"
-                    id={`presentation_mode-${key}`}
-                    label={<FormattedMessage {...projectSettingsMessages[`${key}Display`]} />}
-                  />
-                ))}
-              </SectionField> */}
-
               <SectionField>
                 <Label><FormattedMessage {...messages.datesLabel} /></Label>
                 <DateRangePicker
@@ -355,6 +341,17 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
                 />
                 <Error apiErrors={errors && errors.description_multiloc} />
               </SectionField>
+
+              {errors && errors.project &&
+                <SectionField>
+                  <Error apiErrors={errors.project} />
+                </SectionField>
+              }
+              {errors && errors.base &&
+                <SectionField>
+                  <Error apiErrors={errors.base} />
+                </SectionField>
+              }
             </Section>
 
             <SubmitWrapper

@@ -7,7 +7,6 @@ import Unauthenticated from './Unauthenticated';
 
 import { IIdeaData } from 'services/ideas';
 
-
 type Props = {
   ideaId?: string;
   votingDescriptor: IIdeaData['relationships']['action_descriptor']['data']['voting'];
