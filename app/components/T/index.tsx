@@ -11,7 +11,6 @@ type children = (localizedText: string) => JSX.Element | null;
 type Props = {
   value: Multiloc;
   as?: string;
-  truncate?: number;
   className?: string;
   children?: children;
   maxLength?: number;
