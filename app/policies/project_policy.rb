@@ -28,7 +28,7 @@ class ProjectPolicy < ApplicationPolicy
             .distinct
             .left_outer_joins(:groups_projects)
             .where("projects.visible_to = 'public' OR \
-              (projects.visible_to = 'groups' AND groups_projects.group_id = ?)", user.group_ids)
+              (projects.visible_to = 'groups' AND groups_projects.group_id IN (?))", user.group_ids)
         else
           normal_user_result.where(visible_to: 'public')
         end
