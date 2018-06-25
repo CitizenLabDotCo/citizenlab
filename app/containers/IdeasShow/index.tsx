@@ -746,7 +746,6 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
 
       const ideaAuthorName = ideaAuthor && `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}`;
 
-
       content = (
         <>
         <IdeaMeta
@@ -849,7 +848,6 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
                 </Fragment>
 
                 <SeparatorRow />
-
 
                 <T value={titleMultiloc} maxLength={50} >
                   {(title) => {
