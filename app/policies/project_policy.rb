@@ -13,24 +13,11 @@ class ProjectPolicy < ApplicationPolicy
       else
         normal_user_result = scope.where(publication_status: ['published', 'archived'])
         if user && user.roles.select{|role| role['type'] == 'project_moderator'}.present?
-          moderatable_project_ids = user.roles
-            .select{|role| role['type'] == 'project_moderator'}
-            .map{|role| role['project_id']}.compact
-          normal_access_project_ids = normal_user_result
-            .distinct
-            .left_outer_joins(groups: :memberships)
-            .where("projects.visible_to = 'public' OR \
-              (projects.visible_to = 'groups' AND memberships.user_id = ?)", user&.id)
-            .map(&:id)
-          Project.where(id: moderatable_project_ids + normal_access_project_ids)
+          Project.where(id: user.moderatable_project_ids + filter_for_normal_user(normal_user_result, user))
         elsif user
-          normal_user_result
-            .distinct
-            .left_outer_joins(:groups_projects)
-            .where("projects.visible_to = 'public' OR \
-              (projects.visible_to = 'groups' AND groups_projects.group_id IN (?))", user.group_ids)
+          filter_for_normal_user normal_user_result, user
         else
-          normal_user_result.where(visible_to: 'public')
+          normal_user_result.where visible_to: 'public'
         end
       end
     end
@@ -39,13 +26,20 @@ class ProjectPolicy < ApplicationPolicy
       if user&.admin?
         scope.all
       elsif user
-        moderatable_project_ids = user.roles
-          .select{|role| role['type'] == 'project_moderator'}
-          .map{|role| role['project_id']}.compact
-        scope.where(id: moderatable_project_ids)
+        scope.where(id: user.moderatable_project_ids)
       else
         []
       end
+    end
+
+
+    private
+
+    def filter_for_normal_user scope, user
+      scope.distinct
+        .left_outer_joins(:groups_projects)
+        .where("projects.visible_to = 'public' OR \
+          (projects.visible_to = 'groups' AND groups_projects.group_id IN (?))", user.group_ids)
     end
   end
 
