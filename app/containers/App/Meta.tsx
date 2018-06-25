@@ -1,107 +1,90 @@
 import React from 'react';
-import { Subscription } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { adopt } from 'react-adopt';
 
 // libraries
 import Helmet from 'react-helmet';
 
-// services
-import { currentTenantStream, ITenant } from 'services/tenant';
-import { localeStream } from 'services/locale';
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
 import messages from './messages';
 import { getLocalized } from 'utils/i18n';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { Locale } from 'typings';
 
-type Props = {};
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
-type State = {
-  locale: Locale | null,
-  currentTenant: ITenant | null;
-};
+interface InputProps { }
 
-class Meta extends React.PureComponent<Props & InjectedIntlProps, State> {
-  subscriptions: Subscription[];
-  emailInputElement: HTMLInputElement | null;
-
-  constructor(props: Props & InjectedIntlProps) {
-    super(props);
-    this.state = {
-      locale: null,
-      currentTenant: null
-    };
-    this.subscriptions = [];
-    this.emailInputElement = null;
-  }
-
-  componentDidMount() {
-    const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
-
-    this.subscriptions = [
-      combineLatest(
-        locale$,
-        currentTenant$
-      ).subscribe(([locale, currentTenant]) => {
-        this.setState({ locale, currentTenant });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  render() {
-    const { locale, currentTenant } = this.state;
-
-    if (locale && currentTenant) {
-      const { formatMessage } = this.props.intl;
-      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-      const image = currentTenant.data.attributes.header_bg.large || '';
-      const metaTitleMultiLoc = currentTenant.data.attributes.settings.core.meta_title;
-      const organizationNameMultiLoc = currentTenant.data.attributes.settings.core.organization_name;
-      const metaDescriptionMultiLoc = currentTenant.data.attributes.settings.core.meta_description;
-      let metaTitle = getLocalized(metaTitleMultiLoc, locale, currentTenantLocales);
-      const organizationName = getLocalized(organizationNameMultiLoc, locale, currentTenantLocales);
-      let metaDescription = getLocalized(metaDescriptionMultiLoc, locale, currentTenantLocales);
-      const url = `https://${currentTenant.data.attributes.host}`;
-      const fbAppId = currentTenant.data.attributes.settings.facebook_login && currentTenant.data.attributes.settings.facebook_login.app_id;
-      const currentTenantName = getLocalized(organizationNameMultiLoc, locale, currentTenantLocales);
-      const headerTitleMultiLoc = currentTenant.data.attributes.settings.core.header_title;
-      const headerSloganMultiLoc = currentTenant.data.attributes.settings.core.header_slogan;
-      const currentTenantHeaderTitle = (headerTitleMultiLoc && headerTitleMultiLoc[locale]);
-      const currentTenantHeaderSlogan = (headerSloganMultiLoc && headerSloganMultiLoc[locale]);
-      const helmetTitle = (currentTenantHeaderTitle ? currentTenantHeaderTitle : formatMessage(messages.helmetTitle, { name: currentTenantName }));
-      const helmetDescription = (currentTenantHeaderSlogan ? currentTenantHeaderSlogan : formatMessage(messages.helmetDescription));
-
-      metaTitle = (metaTitle || helmetTitle);
-      metaDescription = (metaDescription || helmetDescription);
-
-      const lifecycleStage = currentTenant.data.attributes.settings.core.lifecycle_stage;
-      const blockIndexing = lifecycleStage === 'demo' || lifecycleStage === 'not_applicable';
-
-      return (
-        <Helmet>
-          {blockIndexing && <meta name="robots" content="noindex" />}
-          <title>{metaTitle}</title>
-          <meta name="description" content={metaDescription} />
-          <meta property="og:title" content={metaTitle} />
-          <meta property="og:description" content={metaDescription} />
-          <meta property="og:image" content={image} />
-          <meta property="og:url" content={url} />
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta property="fb:app_id" content={fbAppId} />
-          <meta property="og:site_name" content={organizationName} />
-        </Helmet>
-      );
-    }
-
-    return null;
-  }
+interface DataProps {
+  locale: GetLocaleChildProps;
+  tenant: GetTenantChildProps;
+  authUser: GetAuthUserChildProps;
 }
 
-export default injectIntl<Props>(Meta);
+interface Props extends InputProps, DataProps { }
+
+const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, authUser, intl }) => {
+  if (!isNilOrError(locale) && !isNilOrError(tenant)) {
+    const { formatMessage } = intl;
+    const tenantLocales = tenant.attributes.settings.core.locales;
+    const image = tenant.attributes.header_bg.large || '';
+    const organizationNameMultiLoc = tenant.attributes.settings.core.organization_name;
+    const organizationName = getLocalized(organizationNameMultiLoc, locale, tenantLocales);
+    const url = `https://${tenant.attributes.host}`;
+    const fbAppId = tenant.attributes.settings.facebook_login && tenant.attributes.settings.facebook_login.app_id;
+
+    const metaTitleMultiLoc = tenant.attributes.settings.core.meta_title;
+    let metaTitle = getLocalized(metaTitleMultiLoc, locale, tenantLocales, 50);
+    metaTitle = (metaTitle || formatMessage(messages.metaTitle));
+
+    const metaDescriptionMultiLoc = tenant.attributes.settings.core.meta_description;
+    let metaDescription = getLocalized(metaDescriptionMultiLoc, locale, tenantLocales);
+    metaDescription = (metaDescription || formatMessage(messages.metaDescription));
+
+    const lifecycleStage = tenant.attributes.settings.core.lifecycle_stage;
+    const blockIndexing = lifecycleStage === 'demo' || lifecycleStage === 'not_applicable';
+
+    return (
+      <Helmet>
+        <html lang={locale}/>
+        {blockIndexing && <meta name="robots" content="noindex" />}
+        <title>
+          {`
+            ${(authUser && authUser.attributes.unread_notifications) ? `(${authUser.attributes.unread_notifications}) ` : ''}
+            ${metaTitle}`
+          }
+        </title>
+        <meta name="title" content={metaTitle} />
+        <meta name="description" content={metaDescription} />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:image" content={image} />
+        <meta property="og:url" content={url} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="fb:app_id" content={fbAppId} />
+        <meta property="og:site_name" content={organizationName} />
+      </Helmet>
+    );
+  }
+
+  return null;
+};
+
+const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />,
+  tenant: <GetTenant />,
+  authUser: <GetAuthUser />,
+});
+
+const MetaWithHoc = injectIntl<Props>(Meta);
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <MetaWithHoc {...inputProps} {...dataProps} />}
+  </Data>
+);

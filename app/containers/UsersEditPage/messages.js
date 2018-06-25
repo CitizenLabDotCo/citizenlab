@@ -6,14 +6,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  helmetTitle: {
-    id: 'app.containers.UsersEditPage.helmetTitle',
-    defaultMessage: 'User edit page',
-  },
-  helmetDescription: {
-    id: 'app.containers.UsersEditPage.helmetDescription',
-    defaultMessage: 'Edit user profile',
-  },
   loading: {
     id: 'app.containers.UsersEditPage.loading',
     defaultMessage: 'Loading...',
