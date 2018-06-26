@@ -139,12 +139,12 @@ namespace :migrate do
   def create_topics_code_hash
     locale = Tenant.current.settings.dig('core', 'locales').first
     topics_code_hash = {}
-    YAML.load_file(Rails.root.join('config', 'locales', "#{locale}.yml"))
-        .dig(locale, 'topics').each do |code, title|
-          unless code.end_with? '_description'
-            topics_code_hash[code] = Topic.where({ title_multiloc: { locale => title } }).first
-          end
-        end
+    translations = YAML.load_file(Rails.root.join('config', 'locales', "#{locale}.yml"))
+    translations.dig(translations.keys.first, 'topics').each do |code, title|
+      unless code.end_with? '_description'
+        topics_code_hash[code] = Topic.where({ title_multiloc: { locale => title } }).first
+      end
+    end
     topics_code_hash
   end
 
