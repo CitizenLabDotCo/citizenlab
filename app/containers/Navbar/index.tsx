@@ -378,13 +378,13 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
         <Container role="banner" className={`${isAdminPage ? 'admin' : 'citizen'} ${'alwaysShowBorder'}`}>
           <Left>
             {tenantLogo &&
-              <LogoLink to="/">
+              <LogoLink to="/" onlyActiveOnIndex={true}>
                 <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText, { tenantName })} />
               </LogoLink>
             }
 
             <NavigationItems>
-              <NavigationItem to="/" activeClassName="active">
+              <NavigationItem to="/" activeClassName="active" onlyActiveOnIndex={true}>
                 <FormattedMessage {...messages.pageOverview} />
               </NavigationItem>
 
