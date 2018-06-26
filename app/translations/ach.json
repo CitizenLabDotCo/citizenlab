@@ -146,6 +146,8 @@
   "app.containers.Admin.Invitations.filetypeError": "",
   "app.containers.Admin.Invitations.groupsLabel": "",
   "app.containers.Admin.Invitations.groupsPlaceholder": "",
+  "app.containers.Admin.Invitations.helmetDescription": "",
+  "app.containers.Admin.Invitations.helmetTitle": "",
   "app.containers.Admin.Invitations.importInfo": "",
   "app.containers.Admin.Invitations.importLabel": "",
   "app.containers.Admin.Invitations.importOptionsInfo": "",
