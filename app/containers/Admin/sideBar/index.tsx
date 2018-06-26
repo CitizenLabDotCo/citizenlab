@@ -5,6 +5,7 @@ import { combineLatest } from 'rxjs/observable/combineLatest';
 // router
 import { withRouter, WithRouterProps } from 'react-router';
 import Link from 'utils/cl-router/Link';
+import { getUrlLocale } from 'services/locale';
 
 // components
 import Icon, { IconNames } from 'components/UI/Icon';
@@ -138,42 +139,42 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
         link: '/admin',
         iconName: 'stats',
         message: 'dashboard',
-        isActive: (pathname) => (pathname === '/admin'),
+        isActive: (pathName) => (pathName === `${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}admin`),
       },
       {
         id: 'users',
         link: '/admin/users',
         iconName: 'users',
         message: 'users',
-        isActive: (pathName) => (pathName.startsWith('/admin/users'))
+        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/users`))
       },
       {
         id: 'invitations',
         link: '/admin/invitations',
         iconName: 'invitations',
         message: 'invitations',
-        isActive: (pathName) => (pathName.startsWith('/admin/invitations'))
+        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/invitations`))
       },
       {
         id: 'projects',
         link: '/admin/projects',
         iconName: 'folder',
         message: 'projects',
-        isActive: (pathName) => (pathName.startsWith('/admin/projects'))
+        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/projects`))
       },
       {
         id: 'ideas',
         link: '/admin/ideas',
         iconName: 'ideas',
         message: 'ideas',
-        isActive: (pathName) => (pathName.startsWith('/admin/ideas'))
+        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/ideas`))
       },
       {
         id: 'settings',
         link: '/admin/settings/general',
         iconName: 'setting',
         message: 'settings',
-        isActive: (pathName) => (pathName.startsWith('/admin/settings'))
+        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/settings`))
       },
     ];
     this.subscriptions = [];
