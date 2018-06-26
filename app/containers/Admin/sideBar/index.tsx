@@ -139,7 +139,7 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
         link: '/admin',
         iconName: 'stats',
         message: 'dashboard',
-        isActive: (pathName) => (pathName === `${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}admin`),
+        isActive: (pathName) => (pathName === `${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin`),
       },
       {
         id: 'users',
