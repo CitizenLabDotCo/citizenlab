@@ -146,6 +146,8 @@
   "app.containers.Admin.Invitations.filetypeError": "Incorrect file type. Only XLSX files are supported.",
   "app.containers.Admin.Invitations.groupsLabel": "Optionally select one or more groups that will be assigned to the invited people upon registration",
   "app.containers.Admin.Invitations.groupsPlaceholder": "No group selected",
+  "app.containers.Admin.Invitations.helmetDescription": "Invite users to the platform",
+  "app.containers.Admin.Invitations.helmetTitle": "Admin invitation dashboard",
   "app.containers.Admin.Invitations.importInfo": "Note: The column in your Excel file that contains the email addresses should be named {emailColumnName}.\n      Download this {downloadLink} and visit this {supportPageLink} for more information about all the supported columns.",
   "app.containers.Admin.Invitations.importLabel": "Select an Excel file (.xlsx)",
   "app.containers.Admin.Invitations.importOptionsInfo": "These options will only be taken into account when they are not defined in the Excel file.\n      Please visit the {supportPageLink} for more information.",
