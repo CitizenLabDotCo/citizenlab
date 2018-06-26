@@ -571,6 +571,7 @@
   "app.containers.IdeasShow.submittingComment": "Publicerer...",
   "app.containers.IdeasShow.twitterMessage": "",
   "app.containers.IdeasShow.voteOnThisIdea": "Stem på denne idé",
+  "app.containers.NotificationMenu.adminRightsReceived": "",
   "app.containers.NotificationMenu.clearAll": "Ryd alle",
   "app.containers.NotificationMenu.commentDeletedByAdmin": "Din kommentar på '{ideaTitle}' er blevet slettet af en administrator fordi {reasonCode, select, irrelevant {det er irrelevant} inappropriate {dens indhold er upassende} other {{otherReason}}}",
   "app.containers.NotificationMenu.error": "Kunne ikke indlæse notifikationer",
