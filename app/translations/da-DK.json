@@ -146,8 +146,6 @@
   "app.containers.Admin.Invitations.filetypeError": "Forkert filtype. Kun XLSX-filer er understøttet.",
   "app.containers.Admin.Invitations.groupsLabel": "Vælg efter eget valg en eller flere grupper, som vil blive tildelt de inviterede personer ved registrering.",
   "app.containers.Admin.Invitations.groupsPlaceholder": "Ingen gruppe valgt",
-  "app.containers.Admin.Invitations.helmetDescription": "",
-  "app.containers.Admin.Invitations.helmetTitle": "",
   "app.containers.Admin.Invitations.importInfo": "Bemærk: kolonnen i din Excel-fil, som indeholder e-mailadresserne bør navngives {emailColumnName}.\n      Hent dette {downloadLink} og besøg denne {supportPageLink} for mere information om alle de understøttede kolonner.",
   "app.containers.Admin.Invitations.importLabel": "Vælg en Excel-fil (.xlsx)",
   "app.containers.Admin.Invitations.importOptionsInfo": "Disse valgmuligheder vil kun blive taget med i betragtning, når de ikke er defineret i Excel-filen.\n      Besøg venligst {supportPageLink} for mere information.",
