@@ -1,5 +1,5 @@
 import React from 'react';
-import Link, { Props as LinkProps } from 'utils/cl-router/Link';
+import Link from 'utils/cl-router/Link';
 import { isBoolean, isNil } from 'lodash';
 import styled, { withTheme } from 'styled-components';
 import { darken, rgba, readableColor } from 'polished';
