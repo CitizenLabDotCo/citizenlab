@@ -17,7 +17,6 @@ import { injectIntl } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { imageSizes } from 'utils/imageTools';
 
 interface InputProps { }
 
@@ -33,7 +32,7 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, authUser, 
   if (!isNilOrError(locale) && !isNilOrError(tenant)) {
     const { formatMessage } = intl;
     const tenantLocales = tenant.attributes.settings.core.locales;
-    const headerBg = tenant.attributes.header_bg.large || '';
+    const image = tenant.attributes.header_bg.large || '';
     const organizationNameMultiLoc = tenant.attributes.settings.core.organization_name;
     const organizationName = getLocalized(organizationNameMultiLoc, locale, tenantLocales);
     const url = `https://${tenant.attributes.host}`;
@@ -63,11 +62,8 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, authUser, 
         <meta name="title" content={metaTitle} />
         <meta name="description" content={metaDescription} />
         <meta property="og:title" content={metaTitle} />
-        <meta property="og:type" content="website" />
         <meta property="og:description" content={metaDescription} />
-        <meta property="og:image" content={headerBg} />
-        <meta property="og:image:width" content={`${imageSizes.headerBg.large[0]}`} />
-        <meta property="og:image:height" content={`${imageSizes.headerBg.large[1]}`} />
+        <meta property="og:image" content={image} />
         <meta property="og:url" content={url} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="fb:app_id" content={fbAppId} />

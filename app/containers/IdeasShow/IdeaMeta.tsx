@@ -17,7 +17,6 @@ import { InjectedIntlProps } from 'react-intl';
 // utils
 import { stripHtml } from 'utils/textUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { imageSizes } from 'utils/imageTools';
 
 // Typings
 import { Multiloc } from 'typings';
@@ -60,7 +59,7 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({
     const tenantLocales = tenant.attributes.settings.core.locales;
     const ideaTitle = formatMessage(messages.metaTitle, { ideaTitle: getLocalized(titleMultiloc, locale, tenantLocales, 50) });
     const ideaDescription = stripHtml(getLocalized(bodyMultiloc, locale, tenantLocales), 250);
-    const ideaImage = ideaImages ? ideaImages.data.attributes.versions.medium : null;
+    const ideaImage = ideaImages ? (ideaImages.data.attributes.versions.large || ideaImages.data.attributes.versions.medium) : null;
     const ideaUrl = window.location.href;
     const project = getLocalized(projectTitle, locale, tenantLocales, 20);
 
@@ -127,15 +126,11 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({
         <meta name="title" content={ideaTitle} />
         <meta name="description" content={ideaDescription} />
 
-        <meta property="og:type" content="article" />
+        <meta name="og:type" content="article" />
         <meta property="og:title" content={ideaOgTitle} />
         <meta property="og:description" content={formatMessage(messages.ideaOgDescription)} />
         {ideaImage &&
-          <>
-            <meta property="og:image" content={ideaImage} />
-            <meta property="og:image:width" content={`${imageSizes.ideaImg.medium[0]}`} />
-            <meta property="og:image:height" content={`${imageSizes.ideaImg.medium[1]}`} />
-          </>
+          <meta property="og:image" content={ideaImage} />
         }
         {ideaImage &&
           <script type="application/ld+json">
