@@ -126,7 +126,7 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({
         <meta name="title" content={ideaTitle} />
         <meta name="description" content={ideaDescription} />
 
-        <meta name="og:type" content="article" />
+        <meta property="og:type" content="article" />
         <meta property="og:title" content={ideaOgTitle} />
         <meta property="og:description" content={formatMessage(messages.ideaOgDescription)} />
         {ideaImage &&
