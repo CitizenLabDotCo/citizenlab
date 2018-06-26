@@ -1,0 +1,208 @@
+{
+  "type": "custom",
+  "title": "Top",
+  "id": "b8e14f8d-479f-415d-8bec-4858523df716",
+  "children": [{
+    "type": "custom",
+    "id": "a07c4926-0a79-4d51-b0a0-943e25090ce5",
+    "title": "COOPS",
+    "children": [{
+      "type": "idea",
+      "id": "6c016d00-edec-48cc-992e-572a3f217b5a"
+    }, {
+      "type": "idea",
+      "id": "e7a69ae7-cf10-4e11-a476-73a76f22787a"
+    }]
+  }, {
+    "type": "custom",
+    "id": "75420aa8-04e4-429a-97fd-014c4b21d92a",
+    "title": "HOMELESS",
+    "children": [{
+      "type": "idea",
+      "id": "ebf3f6a0-fceb-40d8-850e-53121c06d163"
+    }, {
+      "type": "idea",
+      "id": "fc86e195-6d7c-4ef8-97b7-227912d81140"
+    }, {
+      "type": "idea",
+      "id": "d424b274-1876-43a3-9f66-2b439ee66fd5"
+    }, {
+      "type": "idea",
+      "id": "0622b46d-30b0-4722-8821-45b8212cdf72"
+    }, {
+      "type": "idea",
+      "id": "86ccd0f1-32ef-4c26-90e9-84e316609993"
+    }, {
+      "type": "idea",
+      "id": "a1e9174f-bb71-4af1-b36b-679473a91782"
+    }, {
+      "type": "idea",
+      "id": "39ec2995-9383-4c7b-b89d-506233f52c07"
+    }, {
+      "type": "idea",
+      "id": "896498b7-8747-488c-bd1c-f2c00d061623"
+    }, {
+      "type": "idea",
+      "id": "cca9f21f-4bea-406c-9a97-186df7df28bb"
+    }]
+  }, {
+    "type": "custom",
+    "id": "148b032b-b4a3-4895-9a60-5ace24cf48b5",
+    "title": "CO-LIVING ARRANAGEMENTS",
+    "children": [{
+      "type": "idea",
+      "id": "57f37e5c-9a91-48c5-962f-596f09a2c7f2"
+    }, {
+      "type": "idea",
+      "id": "0267b0c6-46b5-4471-8ec4-030a324b8634"
+    }]
+  }, {
+    "type": "custom",
+    "id": "be997584-7b13-4a9f-b8e3-b8b9d0839cd3",
+    "title": "PROVIDE LAND",
+    "children": [{
+      "type": "idea",
+      "id": "36757700-c218-46f7-b1e4-7fd7795a1b9c"
+    }]
+  }, {
+    "type": "custom",
+    "id": "9389887f-c633-4c61-9ba8-0b93101fa8a4",
+    "title": "BUILD PURPOSE BUILT RENTALS",
+    "children": [{
+      "type": "idea",
+      "id": "8716cb5a-7b77-4198-9b73-67b2392d75ab"
+    }]
+  }, {
+    "type": "custom",
+    "id": "80596882-da02-451c-9b38-551e542792c6",
+    "title": "SROS",
+    "children": [{
+      "type": "idea",
+      "id": "1604620c-b658-4e58-a770-e92575ed19db"
+    }]
+  }, {
+    "type": "custom",
+    "id": "e6734ca5-de44-4e5f-a0a7-7f1c16b37ca0",
+    "title": "TENANT ADVOCACY/PROTECTION",
+    "children": [{
+      "type": "idea",
+      "id": "13910eca-b9f6-4a8a-be3b-d0862cb74e06"
+    }, {
+      "type": "idea",
+      "id": "780e21be-e5fa-47eb-ae88-bbaf644d4813"
+    }, {
+      "type": "idea",
+      "id": "45bc6887-0b7b-48cd-a5a8-7c1914ab368d"
+    }, {
+      "type": "idea",
+      "id": "4d282534-0664-42d4-9abc-feb6ed9ef5ac"
+    }]
+  }, {
+    "type": "custom",
+    "id": "6d0d76bb-134d-4793-8969-ab28d27a86f7",
+    "title": "UPCYCLE EXISTING BUILDINGS",
+    "children": [{
+      "type": "idea",
+      "id": "f83976c3-b84e-4447-b38e-fe2b03c5ba99"
+    }]
+  }, {
+    "type": "custom",
+    "id": "07f24072-24ce-4930-bf1c-225f00c9551b",
+    "title": "INCENTIVE TO DEVELOP MORE AFFORDABLE HOUSING",
+    "children": [{
+      "type": "idea",
+      "id": "15dbae90-5b33-4a28-98af-ee4b5c67cb72"
+    }, {
+      "type": "idea",
+      "id": "574f68df-013c-4963-9438-a7e52f73087c"
+    }]
+  }, {
+    "type": "custom",
+    "id": "f185828d-13b4-4411-8b5f-d61f1829d7ea",
+    "title": "ENFORCE STR",
+    "children": [{
+      "type": "idea",
+      "id": "e516fdc8-755f-4646-a997-7d890ab2e173"
+    }, {
+      "type": "idea",
+      "id": "b5c6ba81-dbee-43af-9edc-62ef95242da8"
+    }]
+  }, {
+    "type": "custom",
+    "id": "5d21d108-2615-43b6-8440-4cac5bd6bb86",
+    "title": "SUPPORT NON-PROFITS OR CO-OPS IN CREATING 100 NEW AFFORDABLE HOUSING UNITS",
+    "children": [{
+      "type": "idea",
+      "id": "4257def6-539a-43f8-9daf-4dfeae538229"
+    }]
+  }, {
+    "type": "custom",
+    "id": "5fe28308-8164-4577-9605-3cc032a9f5b3",
+    "title": "SUPPORT NON PROFITS OR COOPS",
+    "children": [{
+      "type": "idea",
+      "id": "4257def6-539a-43f8-9daf-4dfeae538229"
+    }]
+  }, {
+    "type": "custom",
+    "id": "bd77f28f-2542-4040-acaa-118f5babc2b9",
+    "title": "STRATA RENTAL RESTRICTIONS",
+    "children": [{
+      "type": "idea",
+      "id": "bcb72cde-2256-46ac-b2ef-8efc0835e29a"
+    }, {
+      "type": "idea",
+      "id": "daf9b254-8ba3-48dc-b532-82033468145e"
+    }]
+  }, {
+    "type": "custom",
+    "id": "9d218039-ccd8-40d4-9151-1a559083fb89",
+    "title": "PROTECT HERITAGE BUILDINGS AND RETROFIT TO MAKE THEM LIVEABLE.",
+    "children": [{
+      "type": "idea",
+      "id": "fb752d24-c111-40e2-b6b5-e681f8aa1ef9"
+    }]
+  }, {
+    "type": "custom",
+    "id": "e0aa54c0-38d5-42c7-a302-31fbffd6bacc",
+    "title": "ALTERNATIVE HOMES",
+    "children": [{
+      "type": "idea",
+      "id": "4d851786-a371-4949-a210-0cfcf1729e4a"
+    }, {
+      "type": "idea",
+      "id": "8271726b-a16f-460d-ab05-b9dcd80fc6c0"
+    }, {
+      "type": "idea",
+      "id": "ecad892b-79f4-4462-b0e0-971999fe66e7"
+    }]
+  }, {
+    "type": "custom",
+    "id": "55e9944c-e81d-4ea3-abba-871ff37831f7",
+    "title": "PROPERTY TAX RELIEF",
+    "children": [{
+      "type": "idea",
+      "id": "e97a119e-4c64-4c18-8747-6f49e36ecde6"
+    }, {
+      "type": "idea",
+      "id": "e40a7b71-1a12-486e-b059-f8602ed9fc66"
+    }, {
+      "type": "idea",
+      "id": "7a79399e-d2af-42d0-83cb-6e3d1b566fc4"
+    }, {
+      "type": "idea",
+      "id": "6dd21efc-1c50-4102-9817-6e7cdc03cdc2"
+    }, {
+      "type": "idea",
+      "id": "6b6082fb-5419-4271-87b5-c1e6c108f1ce"
+    }]
+  }, {
+    "type": "custom",
+    "id": "9c31512d-7716-473b-b8b4-eb5ff4f0858f",
+    "title": "RENTERS REBATE",
+    "children": [{
+      "type": "idea",
+      "id": "562ffc1a-6fd4-4e2b-af1a-87cb0a431de5"
+    }]
+  }]
+}
