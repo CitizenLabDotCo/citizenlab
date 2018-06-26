@@ -571,6 +571,7 @@
   "app.containers.IdeasShow.submittingComment": "Publiceren...",
   "app.containers.IdeasShow.twitterMessage": "",
   "app.containers.IdeasShow.voteOnThisIdea": "Stem voor of tegen dit idee",
+  "app.containers.NotificationMenu.adminRightsReceived": "",
   "app.containers.NotificationMenu.clearAll": "Alles gelezen",
   "app.containers.NotificationMenu.commentDeletedByAdmin": "Je reactie op '{ideaTitle}' werd verwijderd door een beheerder omdat\n      {reasonCode, select, irrelevant {ze irrelevant is} inappropriate {ze ongepast is} other {{otherReason}}}",
   "app.containers.NotificationMenu.error": "Kan meldingen niet laden",

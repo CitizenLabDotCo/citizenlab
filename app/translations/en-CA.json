@@ -571,6 +571,7 @@
   "app.containers.IdeasShow.submittingComment": "",
   "app.containers.IdeasShow.twitterMessage": "",
   "app.containers.IdeasShow.voteOnThisIdea": "",
+  "app.containers.NotificationMenu.adminRightsReceived": "",
   "app.containers.NotificationMenu.clearAll": "",
   "app.containers.NotificationMenu.commentDeletedByAdmin": "",
   "app.containers.NotificationMenu.error": "",
