@@ -12,7 +12,6 @@ import { Formik } from 'formik';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-
 const PageTitle = styled.h1`
   width: 100%;
   font-size: 2rem;

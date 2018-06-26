@@ -58,7 +58,6 @@ const StyledInputMultiloc = styled(InputMultiloc)`
 `;
 
 const ProjectType = styled.div`
-  color: #333;
   font-size: 16px;
   line-height: 20px;
   font-weight: 400;
@@ -449,12 +448,14 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     const projectAttrs = { ...(projectData ? projectData.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
     const noTitleError = {} as Multiloc;
 
-    forOwn(projectAttrs.title_multiloc, (title: string, locale) => {
-      if (!title || (title && title.length < 1)) {
-        noTitleError[locale] = formatMessage(messages.noTitleErrorMessage);
-        hasErrors = true;
-      }
-    });
+    if (projectAttrs.title_multiloc) {
+      forOwn(projectAttrs.title_multiloc, (title, locale) => {
+        if (!title || (title && title.length < 1)) {
+          noTitleError[locale] = formatMessage(messages.noTitleErrorMessage);
+          hasErrors = true;
+        }
+      });
+    }
 
     this.setState({
       noTitleError: (!noTitleError || isEmpty(noTitleError) ? null : noTitleError)

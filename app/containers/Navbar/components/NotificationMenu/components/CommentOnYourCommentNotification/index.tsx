@@ -10,7 +10,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import NotificationWrapper from '../NotificationWrapper';
 import Link from 'utils/cl-router/Link';
 
-
 type Props = {
   notification: ICommentOnYourCommentNotificationData;
 };

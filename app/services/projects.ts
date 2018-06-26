@@ -12,7 +12,6 @@ type PublicationStatus = 'draft' | 'published' | 'archived';
 
 import { ParticipationMethod, SurveyServices } from './phases';
 
-
 export interface IProjectData {
   id: string;
   type: 'projects';
@@ -110,7 +109,6 @@ export function updateProject(projectId, projectData: IUpdatedProjectProperties)
 export function reorderProject(projectId: IProjectData['id'], newOrder: number) {
   return streams.update<IProject>(`${apiEndpoint}/${projectId}/reorder`, projectId, { project: { ordering: newOrder } });
 }
-
 
 export function deleteProject(projectId: string) {
   return streams.delete(`${apiEndpoint}/${projectId}`, projectId);

@@ -205,7 +205,6 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
     this.setState({ attributesDiff: newDiff });
   }
 
-
   validate = (currentTenant: ITenant, attributesDiff: IAttributesDiff) => {
     const { formatMessage } = this.props.intl;
 

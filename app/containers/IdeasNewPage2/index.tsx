@@ -1,6 +1,6 @@
 import React from 'react';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, BehaviorSubject } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 import isString from 'lodash/isString';
 import isEmpty from 'lodash/isEmpty';
 import isError from 'lodash/isError';
@@ -217,11 +217,16 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
     this.subscriptions = [
       localState$.subscribe(({ showIdeaForm, locale, publishing }) => {
-        const newState: State = { showIdeaForm, locale, publishing };
-        this.setState(newState);
+        this.setState({ showIdeaForm, locale, publishing });
       }),
-      locale$.subscribe(locale => this.localState.set({ locale })),
-      this.projectId$.distinctUntilChanged().subscribe((projectId) => {
+
+      locale$.subscribe((locale) => {
+        this.localState.set({ locale });
+      }),
+
+      this.projectId$.pipe(
+        distinctUntilChanged()
+      ).subscribe((projectId) => {
         globalState.set('IdeasNewPage', { selectedProject: { value: projectId } });
       })
     ];

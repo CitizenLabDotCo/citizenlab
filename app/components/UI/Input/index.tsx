@@ -16,7 +16,6 @@ const Container: any = styled.div`
   input {
     width: 100%;
     height: 100%;
-    color: ${color('text')};
     font-size: ${fontSize('base')};
     line-height: 24px;
     font-weight: 400;

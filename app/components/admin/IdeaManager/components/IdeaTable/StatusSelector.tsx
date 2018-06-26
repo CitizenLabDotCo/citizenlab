@@ -61,4 +61,3 @@ class StatusSelector extends React.PureComponent<Props> {
 }
 
 export default StatusSelector;
-

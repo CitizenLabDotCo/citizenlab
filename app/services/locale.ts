@@ -1,4 +1,4 @@
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { switchMap, first, map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import includes from 'lodash/includes';

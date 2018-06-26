@@ -1,7 +1,6 @@
 import React from 'react';
 import { isString } from 'lodash';
-import { Subscription } from 'rxjs/Subscription';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 

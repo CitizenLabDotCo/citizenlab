@@ -12,7 +12,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { createPage } from 'services/pages';
 
-
 const PageTitle = styled.h1`
   width: 100%;
   font-size: 2rem;

@@ -43,10 +43,6 @@ const CheckmarkIcon = styled(Icon)`
 `;
 
 const Text = styled.div`
-  color: #333;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 20px;
   padding-left: 10px;
   cursor: pointer;
 `;

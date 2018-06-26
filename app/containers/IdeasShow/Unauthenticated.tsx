@@ -6,7 +6,6 @@ import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-
 const VerticalContainer = styled.div`
   display: flex;
   flex-direction: column;

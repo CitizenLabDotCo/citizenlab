@@ -6,6 +6,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  idea: {
+    id: 'app.containers.IdeasShow.idea',
+    defaultMessage: 'Idea',
+  },
   loadVotesError: {
     id: 'app.containers.IdeasShow.loadVotesError',
     defaultMessage: 'Voting is not currently available',
@@ -134,9 +138,25 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.adminCommentDeletionConfirmButton',
     defaultMessage: `Delete this comment`,
   },
-  helmetTitle: {
-    id: 'app.containers.IdeasShow.helmetTitle',
-    defaultMessage: 'Show idea',
+  metaTitle: {
+    id: 'app.containers.IdeasShow.metaTitle',
+    defaultMessage: 'Idea  • {ideaTitle}',
+  },
+  metaOgTitleAuthor: {
+    id: 'app.containers.IdeasShow.metaOgTitleAuthor',
+    defaultMessage: 'Support my idea : {ideaTitle}',
+  },
+  metaOgTitle: {
+    id: 'app.containers.IdeasShow.metaOgTitle',
+    defaultMessage: 'Support this idea : {ideaTitle}',
+  },
+  ideaOgDescription: {
+    id: 'app.containers.IdeasShow.ideaOgDescription',
+    defaultMessage: 'What do you think of this idea? Join the discussion and vote to make your voice heard.',
+  },
+  twitterMessage: {
+    id: 'app.containers.IdeasShow.twitterMessage',
+    defaultMessage: 'Vote for {ideaTitle} on',
   },
   byAuthorName: {
     id: 'app.containers.IdeasShow.byAuthorName',
@@ -165,14 +185,6 @@ export default defineMessages({
   shareCTA: {
     id: 'app.containers.IdeasShow.shareCTA',
     defaultMessage: 'Share this idea',
-  },
-  shareOnFacebook: {
-    id: 'app.containers.IdeasShow.shareOnFacebook',
-    defaultMessage: 'Share on Facebook',
-  },
-  shareOnTwitter: {
-    id: 'app.containers.IdeasShow.shareOnTwitter',
-    defaultMessage: 'Share on Twitter',
   },
   commentsWithCount: {
     id: 'app.containers.IdeasShow.commentsWithCount',
