@@ -62,6 +62,7 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, authUser, 
         <meta name="title" content={metaTitle} />
         <meta name="description" content={metaDescription} />
         <meta property="og:title" content={metaTitle} />
+        <meta property="og:type" content="website" />
         <meta property="og:description" content={metaDescription} />
         <meta property="og:image" content={image} />
         <meta property="og:url" content={url} />
