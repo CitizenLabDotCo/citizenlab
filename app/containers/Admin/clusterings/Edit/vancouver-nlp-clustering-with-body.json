@@ -1,0 +1,608 @@
+{
+    "type": "custom",
+    "id": "ccce9c46-dcde-494f-a73b-0ab947e9ab67",
+    "children": [
+        {
+            "title": "tax income property",
+            "type": "custom",
+            "id": "eacda5d1-90b9-4a12-9f18-37accdda70f5",
+            "children": [
+                {
+                    "type": "idea",
+                    "id": "e97a119e-4c64-4c18-8747-6f49e36ecde6",
+                },
+                {
+                    "type": "idea",
+                    "id": "0cb5adb4-aedf-44a6-b7ce-a1fc34b17b62",
+                },
+                {
+                    "type": "idea",
+                    "id": "562ffc1a-6fd4-4e2b-af1a-87cb0a431de5",
+                },
+                {
+                    "type": "idea",
+                    "id": "a780487f-d68b-4d34-b88f-912c17845103",
+                },
+                {
+                    "type": "idea",
+                    "id": "e40a7b71-1a12-486e-b059-f8602ed9fc66",
+                },
+                {
+                    "type": "idea",
+                    "id": "fecabe52-93b7-4207-b17c-df11a7e4e283",
+                },
+                {
+                    "type": "idea",
+                    "id": "d4df265c-7c28-4d95-83b9-7fab7de95e86",
+                },
+                {
+                    "type": "idea",
+                    "id": "ab789288-c018-4c27-bb43-e439e6eb1c7c",
+                },
+                {
+                    "type": "idea",
+                    "id": "6aded0a5-5849-4da7-bb6c-857c78a4341e",
+                },
+                {
+                    "type": "idea",
+                    "id": "2636874e-8ebe-4419-806d-578f60e22ff9",
+                },
+                {
+                    "type": "idea",
+                    "id": "b3378092-8768-440e-9ffe-3439f9560e4c",
+                }
+            ]
+        },
+        {
+            "title": "housing city rental",
+            "type": "custom",
+            "id": "43b834e4-c2d8-427a-9395-dcf72913bbd8",
+            "children": [
+                {
+                    "type": "idea",
+                    "id": "e516fdc8-755f-4646-a997-7d890ab2e173",
+                },
+                {
+                    "type": "idea",
+                    "id": "f83976c3-b84e-4447-b38e-fe2b03c5ba99",
+                },
+                {
+                    "type": "idea",
+                    "id": "6a372a09-6c5e-4b02-888a-33d3bd53252d",
+                },
+                {
+                    "type": "idea",
+                    "id": "2ec23d9d-2112-4ed5-bc6d-efae589dfb92",
+                },
+                {
+                    "type": "idea",
+                    "id": "e44f5501-8d16-4798-a580-7bc690c554d5",
+                },
+                {
+                    "type": "idea",
+                    "id": "be847ccc-0346-4505-83d9-fb9ea314e16e",
+                },
+                {
+                    "type": "idea",
+                    "id": "1456d716-413a-4fb3-83cf-1116c913e783",
+                },
+                {
+                    "type": "idea",
+                    "id": "b622e80a-88f7-40b7-b8e5-007f0fac913c",
+                },
+                {
+                    "type": "idea",
+                    "id": "5d8b0205-d5cf-4a03-b974-e4d1996b4660",
+                },
+                {
+                    "type": "idea",
+                    "id": "0267b0c6-46b5-4471-8ec4-030a324b8634",
+                },
+                {
+                    "type": "idea",
+                    "id": "149afafa-4695-4a19-9ce5-4f6949b631ab",
+                },
+                {
+                    "type": "idea",
+                    "id": "a03c616e-ac08-43cf-893b-e21a0596572d",
+                },
+                {
+                    "type": "idea",
+                    "id": "ef826727-67c4-4a98-9604-67cf1698149f",
+                },
+                {
+                    "type": "idea",
+                    "id": "b8c29c73-eac5-4349-bf52-3a37b71aa33e",
+                },
+                {
+                    "type": "idea",
+                    "id": "76643709-aa97-4286-8931-f51ba5fee6d6",
+                },
+                {
+                    "type": "idea",
+                    "id": "889485a2-eae9-4edf-8dc0-c2501258cba3",
+                },
+                {
+                    "type": "idea",
+                    "id": "2d21f01b-f19c-4134-adbf-a8d0b9e53370",
+                },
+                {
+                    "type": "idea",
+                    "id": "9b35bc7c-5012-4d10-83b4-9c4c2d4d19e3",
+                },
+                {
+                    "type": "idea",
+                    "id": "cabc597f-2ed2-46ef-a3b9-6fc06d299381",
+                },
+                {
+                    "type": "idea",
+                    "id": "8716cb5a-7b77-4198-9b73-67b2392d75ab",
+                },
+                {
+                    "type": "idea",
+                    "id": "80b5a88e-f830-4eee-a4ab-ec98edb540e9",
+                },
+                {
+                    "type": "idea",
+                    "id": "651587b6-f962-47fa-bd81-c4cce8a73ddb",
+                },
+                {
+                    "type": "idea",
+                    "id": "2e7ffa80-a16b-4cc0-ad1c-515a70700e7e",
+                },
+                {
+                    "type": "idea",
+                    "id": "6c016d00-edec-48cc-992e-572a3f217b5a",
+                },
+                {
+                    "type": "idea",
+                    "id": "24706b70-828a-4d63-8184-ed2d65262aa7",
+                },
+                {
+                    "type": "idea",
+                    "id": "b0b1a46d-4bc0-4b50-8c63-ac201c125e6c",
+                },
+                {
+                    "type": "idea",
+                    "id": "e7a69ae7-cf10-4e11-a476-73a76f22787a",
+                },
+                {
+                    "type": "idea",
+                    "id": "6b6082fb-5419-4271-87b5-c1e6c108f1ce",
+                },
+                {
+                    "type": "idea",
+                    "id": "c240fed5-bfc3-46c3-b299-9cc2b1cdd258",
+                },
+                {
+                    "type": "idea",
+                    "id": "61d67c1c-90c8-4dad-9ede-67056a96de74",
+                },
+                {
+                    "type": "idea",
+                    "id": "1604620c-b658-4e58-a770-e92575ed19db",
+                },
+                {
+                    "type": "idea",
+                    "id": "cd0137f9-07e3-4094-a548-e48606a92c73",
+                },
+                {
+                    "type": "idea",
+                    "id": "4257def6-539a-43f8-9daf-4dfeae538229",
+                },
+                {
+                    "type": "idea",
+                    "id": "cca9f21f-4bea-406c-9a97-186df7df28bb",
+                },
+                {
+                    "type": "idea",
+                    "id": "36757700-c218-46f7-b1e4-7fd7795a1b9c",
+                },
+                {
+                    "type": "idea",
+                    "id": "2c435b6b-2c1e-4642-9aad-dc3ebd036549",
+                },
+                {
+                    "type": "idea",
+                    "id": "536125b8-0e0d-495b-8f18-6c475c231fda",
+                },
+                {
+                    "type": "idea",
+                    "id": "6698b82b-1a70-4d06-9223-7b0ee303d77a",
+                },
+                {
+                    "type": "idea",
+                    "id": "b9bd9122-cd22-437f-975b-8fe6d15a16de",
+                },
+                {
+                    "type": "idea",
+                    "id": "ffd36c2c-5833-4aac-a480-f5c965762963",
+                },
+                {
+                    "type": "idea",
+                    "id": "daf9b254-8ba3-48dc-b532-82033468145e",
+                },
+                {
+                    "type": "idea",
+                    "id": "726f13b0-6e0c-4e1d-a1c4-5b8806ffb0b6",
+                }
+            ]
+        },
+        {
+            "title": "tax support need",
+            "type": "custom",
+            "id": "5eda7c7f-b574-4bc8-a5ac-8290cb70da0e",
+            "children": [
+                {
+                    "type": "idea",
+                    "id": "13910eca-b9f6-4a8a-be3b-d0862cb74e06",
+                },
+                {
+                    "type": "idea",
+                    "id": "780e21be-e5fa-47eb-ae88-bbaf644d4813",
+                },
+                {
+                    "type": "idea",
+                    "id": "ebf3f6a0-fceb-40d8-850e-53121c06d163",
+                },
+                {
+                    "type": "idea",
+                    "id": "ea6a1e9f-29db-4e4c-84a1-2b7b30803300",
+                },
+                {
+                    "type": "idea",
+                    "id": "21ad2202-dec8-490a-9ec5-aaf9ad3f12fa",
+                },
+                {
+                    "type": "idea",
+                    "id": "7fcd1fb6-8046-4bcb-a66d-bec9cb095428",
+                },
+                {
+                    "type": "idea",
+                    "id": "edb391cb-3308-472b-8c69-9afc22ecc1d4",
+                },
+                {
+                    "type": "idea",
+                    "id": "d424b274-1876-43a3-9f66-2b439ee66fd5",
+                },
+                {
+                    "type": "idea",
+                    "id": "0622b46d-30b0-4722-8821-45b8212cdf72",
+                },
+                {
+                    "type": "idea",
+                    "id": "45bc6887-0b7b-48cd-a5a8-7c1914ab368d",
+                },
+                {
+                    "type": "idea",
+                    "id": "23fedd30-38c3-41b8-9739-5c9c1582acc3",
+                },
+                {
+                    "type": "idea",
+                    "id": "85439f41-f265-4a7a-83a1-732325140d1f",
+                },
+                {
+                    "type": "idea",
+                    "id": "171f92c8-79dd-4ecc-8f44-e2d4652a2b61",
+                },
+                {
+                    "type": "idea",
+                    "id": "fc8a35cd-7bd9-4369-8f6e-5e4c391ed590",
+                },
+                {
+                    "type": "idea",
+                    "id": "780bb6e1-a57c-4be3-a9a5-1de385c43625",
+                },
+                {
+                    "type": "idea",
+                    "id": "b106ca37-7317-4517-a270-a548034e9ae0",
+                },
+                {
+                    "type": "idea",
+                    "id": "697777bb-c275-40e9-a2dc-dee6f57585a9",
+                },
+                {
+                    "type": "idea",
+                    "id": "fff48faa-f4ff-4c96-a247-facdc69a0401",
+                },
+                {
+                    "type": "idea",
+                    "id": "132990e4-d3d8-4955-b282-60854ba465e3",
+                },
+                {
+                    "type": "idea",
+                    "id": "c27c0102-519b-4f11-9dce-1719dbb2473c",
+                },
+                {
+                    "type": "idea",
+                    "id": "4d282534-0664-42d4-9abc-feb6ed9ef5ac",
+                }
+            ]
+        },
+        {
+            "title": "city housing affordable",
+            "type": "custom",
+            "id": "0487e6ae-6bb7-4e81-b102-1d7fe8dcde94",
+            "children": [
+                {
+                    "type": "idea",
+                    "id": "46c7f7bd-c73f-41cc-92a4-1b65c893190c",
+                },
+                {
+                    "type": "idea",
+                    "id": "3324374c-7359-4fad-b522-86dca33978b1",
+                },
+                {
+                    "type": "idea",
+                    "id": "15dbae90-5b33-4a28-98af-ee4b5c67cb72",
+                },
+                {
+                    "type": "idea",
+                    "id": "57f37e5c-9a91-48c5-962f-596f09a2c7f2",
+                },
+                {
+                    "type": "idea",
+                    "id": "cdafe0da-c385-4b78-977b-d5315f6bad30",
+                },
+                {
+                    "type": "idea",
+                    "id": "fc86e195-6d7c-4ef8-97b7-227912d81140",
+                },
+                {
+                    "type": "idea",
+                    "id": "65d3cd87-1947-414c-847a-74b9ba66f510",
+                },
+                {
+                    "type": "idea",
+                    "id": "86ccd0f1-32ef-4c26-90e9-84e316609993",
+                },
+                {
+                    "type": "idea",
+                    "id": "eadac46b-c053-48c3-8513-8770ee69b5d9",
+                },
+                {
+                    "type": "idea",
+                    "id": "e06f3a0e-6451-4715-ab81-af333e4076c7",
+                },
+                {
+                    "type": "idea",
+                    "id": "fd262e9c-48b1-46b6-b85f-d68dcc94e084",
+                },
+                {
+                    "type": "idea",
+                    "id": "6d1e3802-4e3b-445f-b5e5-970a17f50e82",
+                },
+                {
+                    "type": "idea",
+                    "id": "59f72af6-e10a-44a7-b202-39e790a34032",
+                },
+                {
+                    "type": "idea",
+                    "id": "fcc9cb45-e132-4cb6-ae4c-755ae08f5bc0",
+                },
+                {
+                    "type": "idea",
+                    "id": "b5c6ba81-dbee-43af-9edc-62ef95242da8",
+                },
+                {
+                    "type": "idea",
+                    "id": "d17ceae0-32a2-4720-b51a-cbda46820ccf",
+                },
+                {
+                    "type": "idea",
+                    "id": "a939fa43-563e-4798-8243-b098286d0812",
+                },
+                {
+                    "type": "idea",
+                    "id": "a1e9174f-bb71-4af1-b36b-679473a91782",
+                },
+                {
+                    "type": "idea",
+                    "id": "ec34953d-c073-4af4-a010-f4fe5a73373c",
+                },
+                {
+                    "type": "idea",
+                    "id": "8996a893-497e-452e-89ad-4e1ce2728cc3",
+                },
+                {
+                    "type": "idea",
+                    "id": "55d0c815-be07-4a88-a69f-4410aa5eb7c2",
+                },
+                {
+                    "type": "idea",
+                    "id": "816e7359-38b5-4f5d-b8d3-8129f2a911fd",
+                },
+                {
+                    "type": "idea",
+                    "id": "c3f59919-e8ce-45d0-81d4-4810ff028073",
+                },
+                {
+                    "type": "idea",
+                    "id": "1aa66a96-d87c-409f-92aa-887f4e008f5b",
+                },
+                {
+                    "type": "idea",
+                    "id": "920e0e3b-760e-49c3-82db-85dc5695459f",
+                },
+                {
+                    "type": "idea",
+                    "id": "39ec2995-9383-4c7b-b89d-506233f52c07",
+                },
+                {
+                    "type": "idea",
+                    "id": "896498b7-8747-488c-bd1c-f2c00d061623",
+                },
+                {
+                    "type": "idea",
+                    "id": "2aeb0ffa-56d8-4a0d-a7bb-ae6f6eda3f1a",
+                },
+                {
+                    "type": "idea",
+                    "id": "8fd3c96a-b4e3-4c6f-82b3-5637fb9e4975",
+                },
+                {
+                    "type": "idea",
+                    "id": "be2f1531-3404-4f5d-aa78-f7396360dfb0",
+                },
+                {
+                    "type": "idea",
+                    "id": "1691ac99-8119-4c39-89a8-549cf21c4e87",
+                },
+                {
+                    "type": "idea",
+                    "id": "2f51b60e-d173-48ba-b23e-bfff14b0931c",
+                },
+                {
+                    "type": "idea",
+                    "id": "16eeb69c-f9c7-472d-97ac-68d5035789b1",
+                },
+                {
+                    "type": "idea",
+                    "id": "6b4bdd82-a7c8-4596-9c6c-f74796aed59d",
+                },
+                {
+                    "type": "idea",
+                    "id": "07128a19-0194-4c51-858a-7e8ac37b9593",
+                },
+                {
+                    "type": "idea",
+                    "id": "63342a63-c8f1-4bd2-9706-e2935de0daee",
+                },
+                {
+                    "type": "idea",
+                    "id": "9e6b3618-f8d6-4825-99f5-65d8768a0eed",
+                },
+                {
+                    "type": "idea",
+                    "id": "b79e18c7-1f5e-4940-9876-a87214536d1d",
+                },
+                {
+                    "type": "idea",
+                    "id": "aca0531c-c95f-4935-9bbe-708d34ccbe76",
+                },
+                {
+                    "type": "idea",
+                    "id": "debad51c-b7f9-4e88-875b-7ec82a0e8a8e",
+                },
+                {
+                    "type": "idea",
+                    "id": "4439cc81-db6e-4005-a28d-39a9deef3566",
+                }
+            ]
+        },
+        {
+            "title": "reduce taxes tax",
+            "type": "custom",
+            "id": "74110d2a-4773-4db9-b66f-7ffc35328051",
+            "children": [
+                {
+                    "type": "idea",
+                    "id": "7a79399e-d2af-42d0-83cb-6e3d1b566fc4",
+                },
+                {
+                    "type": "idea",
+                    "id": "6dd21efc-1c50-4102-9817-6e7cdc03cdc2",
+                }
+            ]
+        },
+        {
+            "title": "homes housing rental",
+            "type": "custom",
+            "id": "26ed77b4-8b9f-4541-b960-250debc97122",
+            "children": [
+                {
+                    "type": "idea",
+                    "id": "14499605-c0a3-4ac0-a617-32a8ed2bd1a2",
+                },
+                {
+                    "type": "idea",
+                    "id": "c8c60235-ff99-4086-b217-2e18a077a363",
+                },
+                {
+                    "type": "idea",
+                    "id": "bcb72cde-2256-46ac-b2ef-8efc0835e29a",
+                },
+                {
+                    "type": "idea",
+                    "id": "814367a7-d7dc-49c8-b247-e22d2e22d8b8",
+                },
+                {
+                    "type": "idea",
+                    "id": "b8029911-0df9-4098-8ec1-649e252a0402",
+                },
+                {
+                    "type": "idea",
+                    "id": "b8f04245-2c66-41f4-aa54-82ac2eb765f6",
+                },
+                {
+                    "type": "idea",
+                    "id": "0e14a085-6cd0-47a4-bd1c-2d23b6741a12",
+                },
+                {
+                    "type": "idea",
+                    "id": "574f68df-013c-4963-9438-a7e52f73087c",
+                },
+                {
+                    "type": "idea",
+                    "id": "3fb2aa93-a494-409f-93cc-92bc0ed7f578",
+                },
+                {
+                    "type": "idea",
+                    "id": "780e06bc-c397-461a-aa35-386e04974f76",
+                },
+                {
+                    "type": "idea",
+                    "id": "3076b6f3-e76e-48c6-94dc-de89acd4ab53",
+                },
+                {
+                    "type": "idea",
+                    "id": "75377cbd-cb57-4825-924a-bcf0bc2489b1",
+                },
+                {
+                    "type": "idea",
+                    "id": "aa38b9e9-1f3f-49e6-987c-c8dc82f09889",
+                },
+                {
+                    "type": "idea",
+                    "id": "8ceabadc-453a-402c-b799-310f7a68f073",
+                },
+                {
+                    "type": "idea",
+                    "id": "b83dcbbd-dbcd-49d1-8e47-8b32da7de178",
+                },
+                {
+                    "type": "idea",
+                    "id": "fb752d24-c111-40e2-b6b5-e681f8aa1ef9",
+                },
+                {
+                    "type": "idea",
+                    "id": "4efa0941-fca7-4569-be41-6449259f61f6",
+                },
+                {
+                    "type": "idea",
+                    "id": "a1502e6b-8dea-4efc-81d1-36c85fbd235b",
+                },
+                {
+                    "type": "idea",
+                    "id": "4d851786-a371-4949-a210-0cfcf1729e4a",
+                },
+                {
+                    "type": "idea",
+                    "id": "1e5ecfd8-3a62-4e74-968c-0df5ddb15743",
+                },
+                {
+                    "type": "idea",
+                    "id": "8271726b-a16f-460d-ab05-b9dcd80fc6c0",
+                },
+                {
+                    "type": "idea",
+                    "id": "ecad892b-79f4-4462-b0e0-971999fe66e7",
+                },
+                {
+                    "type": "idea",
+                    "id": "e850c270-bcd2-4f40-88cb-8f0b88ab1783",
+                }
+            ]
+        }
+    ]
+}
