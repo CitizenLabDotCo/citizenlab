@@ -571,6 +571,7 @@
   "app.containers.IdeasShow.submittingComment": "Publication...",
   "app.containers.IdeasShow.twitterMessage": "",
   "app.containers.IdeasShow.voteOnThisIdea": "Votez pour ou contre cette idée",
+  "app.containers.NotificationMenu.adminRightsReceived": "",
   "app.containers.NotificationMenu.clearAll": "Effacer toutes les notifications",
   "app.containers.NotificationMenu.commentDeletedByAdmin": "Votre commentaire sur '{ideaTitle}' a été supprimé par un administrateur car {reasonCode, select, irrelevant {il a été considéré hors sujet} inappropriate {son contenu a été considéré inapproprié} other {{otherReason}}}",
   "app.containers.NotificationMenu.error": "Les notifications n'ont pas pu être chargées",
