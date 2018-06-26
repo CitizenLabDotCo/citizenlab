@@ -31,18 +31,16 @@ const localeDetector = (nextState, replace, callback) => {
     if (tenant) {
       const localesSet = new Set(tenant.attributes.settings.core.locales);
 
-      if (urlLocale !== locale) {
+      // Try to add a locale if the param is not a supported locale
+      if (!includes(Object.keys(PlatformLocales), urlLocale)) {
+        replace(`/${locale}${location.pathname}${location.search}`);
+      } else if (urlLocale !== locale) {
         // Update the URL in case the locale in the URL doesn't match the one in the service
         const matchRegexp = new RegExp(`^\/(${urlLocale})\/`);
         replace(`${location.pathname.replace(matchRegexp, `/${locale}/`)}${location.search}`);
       } else if (localesSet.has(urlLocale)) {
         // Update locale in the app if it belongs to the TenantLocales
         updateLocale(urlLocale);
-      }
-
-      // Try to add a locale if the param is not a supported locale
-      if (!includes(Object.keys(PlatformLocales), urlLocale)) {
-        replace(`/${locale}${location.pathname}${location.search}`);
       }
 
       callback();
