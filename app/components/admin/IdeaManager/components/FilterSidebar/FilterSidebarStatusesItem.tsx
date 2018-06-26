@@ -11,7 +11,7 @@ const ItemWrapper = styled.div`
   text-transform: capitalize;
 `;
 
-const ColorIndicator = styled<any,'div'>('div')`
+const ColorIndicator = styled<any, 'div'>('div')`
   width: 1rem;
   height: 1rem;
   background-color: ${props => props.color};
@@ -47,7 +47,6 @@ class FilterSidebarStatusesItem extends React.Component<Props> {
     );
   }
 }
-
 
 const statusTarget = {
   drop(props) {

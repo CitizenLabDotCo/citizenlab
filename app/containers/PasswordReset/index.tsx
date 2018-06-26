@@ -18,7 +18,6 @@ import { resetPassword } from 'services/auth';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-
 // style
 import styled from 'styled-components';
 import messages from './messages';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { Multiloc, Locale } from 'typings';
 import { getLocalized } from 'utils/i18n';
@@ -11,7 +11,9 @@ type children = (localizedText: string) => JSX.Element | null;
 type Props = {
   value: Multiloc;
   as?: string;
+  className?: string;
   children?: children;
+  maxLength?: number;
 };
 
 type State = {
@@ -53,19 +55,19 @@ export default class T extends React.PureComponent<Props, State> {
     const { locale, currentTenantLocales } = this.state;
 
     if (locale && currentTenantLocales) {
-      const { value, as, children } = this.props;
-      const localizedText = getLocalized(value, locale, currentTenantLocales);
+      const { value, as, children, maxLength, className } = this.props;
+      const localizedText = getLocalized(value, locale, currentTenantLocales, maxLength);
 
       if (children) {
         return ((children as children)(localizedText));
       }
 
       if (as) {
-        return React.createElement(as, { dangerouslySetInnerHTML: { __html: localizedText } });
+        return React.createElement(as, { className, dangerouslySetInnerHTML: { __html: localizedText } });
       }
 
       return (
-        <span dangerouslySetInnerHTML={{ __html: localizedText }} />
+        <span className={className} dangerouslySetInnerHTML={{ __html: localizedText }} />
       );
     }
 

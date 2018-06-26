@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { fontSize, color } from 'utils/styleUtils';
 
 const StyledTable: any = styled.table`
-  width:100%;
+  width: 100%;
   padding: 0;
   margin: 0;
   border: none;
@@ -18,24 +18,28 @@ const StyledTable: any = styled.table`
   thead {
     tr {
       th {
+        fill: ${color('label')};
         color: ${color('label')};
         font-size: ${fontSize('small')};
-        font-weight: 400;
-        line-height: 18px;
-        display: flex;
-        align-items: center;
-        margin-left: 20px;
-        margin-right: 20px;
-        padding-top: 10px;
+        font-weight: 500;
+        text-transform: uppercase;
+        line-height: 17px;
+        padding-top: 0px;
         padding-bottom: 10px;
 
-        &.center {
-          justify-content: center;
+        div {
+          display: flex;
+          align-items: center;
         }
 
-        &:hover,
-        &.active {
-          color: ${color('text')};
+        &.sortable {
+          cursor: pointer;
+
+          &:hover,
+          &.active {
+            fill: #000;
+            color: #000;
+          }
         }
       }
     }
@@ -44,15 +48,14 @@ const StyledTable: any = styled.table`
   tbody {
     tr {
       border-radius: 5px;
-      border: solid1px red;
+      padding-top: 50px;
+      padding-bottom: 50px;
 
       td {
         color: ${color('clBlue2Darkest')};
         font-size: ${fontSize('small')};
         font-weight: 400;
         line-height: 18px;
-        margin-left: 20px;
-        margin-right: 20px;
         padding-top: 10px;
         padding-bottom: 10px;
 
@@ -62,9 +65,20 @@ const StyledTable: any = styled.table`
       }
 
       &:hover {
-        cursor: pointer;
         background: ${color('background')};
         color: #999;
+      }
+    }
+  }
+
+  tfoot {
+    display: flex;
+
+    tr {
+      display: flex;
+
+      td {
+        display: flex;
       }
     }
   }
@@ -74,7 +88,7 @@ interface Props {}
 
 interface State {}
 
-export default class Label extends React.PureComponent<Props, State> {
+export default class Table extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
   }

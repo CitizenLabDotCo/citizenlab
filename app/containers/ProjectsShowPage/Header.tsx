@@ -61,7 +61,7 @@ const HeaderContent = styled.div`
 `;
 
 const HeaderContentLeft = styled.div`
-  flex: 1;
+  width: 100%;
   margin-right: 30px;
   max-width: 500px;
 

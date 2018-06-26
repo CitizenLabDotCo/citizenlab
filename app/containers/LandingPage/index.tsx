@@ -338,7 +338,6 @@ class LandingPage extends React.PureComponent<Props, State> {
               </HeaderContent>
             </Header>
 
-
             <Content>
               <ProjectsStyledContentContainer>
                 {hasProjects &&

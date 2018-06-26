@@ -1,6 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 import { isFunction } from 'lodash';
-import * as Rx from 'rxjs/Rx';
+import { Subscription } from 'rxjs';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -72,10 +73,10 @@ type State = {
 };
 
 export class Avatar extends React.PureComponent<Props & InjectedIntlProps, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       avatarSrc: null,
       userName: null,
@@ -84,13 +85,20 @@ export class Avatar extends React.PureComponent<Props & InjectedIntlProps, State
   }
 
   componentDidMount() {
-    if (this.props.userId) {
-      const user$ = userByIdStream(this.props.userId).observable;
+    const { userId, size } = this.props;
+
+    if (userId) {
+      const user$ = userByIdStream(userId).observable;
 
       this.subscriptions = [
         user$.subscribe((user) => {
-          const avatarSrc = (user ? user.data.attributes.avatar[this.props.size] : null);
-          this.setState({ avatarSrc, userName: getUserName(user.data) });
+          const avatarSrc = (!isNilOrError(user) ? user.data.attributes.avatar[size] : null);
+          const userName = (!isNilOrError(user) ? getUserName(user.data) : null);
+
+          this.setState({
+            avatarSrc,
+            userName
+          });
         })
       ];
     }

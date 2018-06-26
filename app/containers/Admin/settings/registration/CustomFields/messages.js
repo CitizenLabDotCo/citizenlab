@@ -35,6 +35,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_text',
     defaultMessage: 'Text',
   },
+  inputType_number: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_number',
+    defaultMessage: 'Number',
+  },
   inputType_multiline_text: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_multiline_text',
     defaultMessage: 'Multiline text',

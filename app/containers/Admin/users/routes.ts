@@ -5,16 +5,12 @@ export default () => ({
   name: 'admin users',
   getComponent: loadAndRender(import('containers/Admin/users')),
   indexRoute: {
-    getComponent: loadAndRender(import('containers/Admin/users/registered')),
+    getComponent: loadAndRender(import('containers/Admin/users/AllUsers')),
   },
   childRoutes: [
     {
-      path: 'registered',
-      getComponent: loadAndRender(import('containers/Admin/users/registered')),
-    },
-    {
-      path: 'invitations',
-      getComponent: loadAndRender(import('containers/Admin/users/invitations')),
+      path: '/admin/users/:groupId',
+      getComponent: loadAndRender(import('containers/Admin/users/UsersGroup')),
     },
   ],
 });

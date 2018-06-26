@@ -105,7 +105,6 @@ class NotifcationWrapper extends React.PureComponent<Props & ITracks> {
     render() {
       const { icon, children, timing, isRead, linkTo } = this.props;
 
-
       return (
         <Container onClick={this.onClick}>
           <IconContainer>

@@ -1,4 +1,4 @@
-import * as Dropzone from 'react-dropzone';
+import { ImageFile } from 'react-dropzone';
 import { EditorState } from 'draft-js';
 import PlatformLocales from 'platformLocales';
 
@@ -27,7 +27,7 @@ export interface ITheme {
   };
 }
 
-export interface ImageFile extends Dropzone.ImageFile {
+export interface ImageFile extends ImageFile {
   base64?: string;
   objectUrl?: string;
 }

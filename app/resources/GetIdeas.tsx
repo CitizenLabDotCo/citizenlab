@@ -1,8 +1,6 @@
 import React from 'react';
 import { get, isString, isEmpty, omitBy, isNil, isEqual } from 'lodash';
-import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, Subject, BehaviorSubject } from 'rxjs';
 import { merge } from 'rxjs/observable/merge';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { map, startWith, distinctUntilChanged, tap, debounceTime, mergeScan, switchMap } from 'rxjs/operators';
@@ -195,7 +193,7 @@ export default class GetIdeas extends React.Component<Props, State> {
             const newPageNumber = queryParameters['page[number]'];
             queryParameters['page[number]'] = (newPageNumber !== oldPageNumber ? newPageNumber : 1);
 
-            return ideasStream({ queryParameters, cacheStream: false }).observable.pipe(
+            return ideasStream({ queryParameters }).observable.pipe(
               map(ideas => ({ queryParameters, ideas }))
             );
           })

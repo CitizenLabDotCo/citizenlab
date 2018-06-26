@@ -101,7 +101,6 @@ const dropTarget = {
   }
 };
 
-
 export default
   DropTarget('ROW', dropTarget, (connect) => ({
     connectDropTarget: connect.dropTarget(),

@@ -12,7 +12,6 @@ import NotificationWrapper from '../NotificationWrapper';
 import Link from 'utils/cl-router/Link';
 import { Multiloc } from 'typings';
 
-
 type Props = {
   notification: ICommentMarkedAsSpamNotificationData;
 };

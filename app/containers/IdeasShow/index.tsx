@@ -1,8 +1,6 @@
 import React from 'react';
-import has from 'lodash/has';
-import isString from 'lodash/isString';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { has, isString } from 'lodash';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
 
@@ -15,7 +13,7 @@ import Avatar from 'components/Avatar';
 import StatusBadge from 'components/StatusBadge';
 import Icon from 'components/UI/Icon';
 import Comments from './CommentsContainer';
-import Sharing from './Sharing';
+import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import IdeaMap from './IdeaMap';
 import Activities from './Activities';
@@ -51,7 +49,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, color } from 'utils/styleUtils';
+import { media, color, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const loadingTimeout = 400;
@@ -145,7 +143,7 @@ const HeaderWrapper = styled.div`
 
 const BelongsToProject = styled.p`
   width: 100%;
-  color: ${props => props.theme.colors.label};
+  color: ${colors.label};
   font-weight: 300;
   font-size: 16px;
   line-height: 21px;
@@ -162,7 +160,7 @@ const ProjectLink = styled(Link)`
   margin-left: 4px;
 
   &:hover {
-    color: ${(props) => darken(0.2, props.theme.colors.label)};
+    color: ${darken(0.2, colors.label)};
     text-decoration: underline;
   }
 `;
@@ -244,7 +242,7 @@ const MetaButtons = styled.div`
 `;
 
 const LocationLabel = styled.div`
-  color: ${(props) => props.theme.colors.label};
+  color: ${colors.label};
   font-size: 15px;
   font-weight: 400;
   margin-right: 6px;
@@ -274,7 +272,7 @@ const LocationIconWrapper = styled.div`
 
 const LocationIcon = styled(Icon)`
   width: 18px;
-  fill: ${(props) => props.theme.colors.label};
+  fill: ${colors.label};
 `;
 
 const LocationButton = styled.div`
@@ -284,11 +282,11 @@ const LocationButton = styled.div`
 
   &:hover {
     ${LocationLabel} {
-      color: ${(props) => darken(0.2, props.theme.colors.label)};
+      color: ${darken(0.2, colors.label)};
     }
 
     ${LocationIcon} {
-      fill: ${(props) => darken(0.2, props.theme.colors.label)};
+      fill: ${darken(0.2, colors.label)};
     }
   }
 `;
@@ -470,7 +468,7 @@ const MetaContent = styled.div`
 `;
 
 const VoteLabel = styled.div`
-  color: ${(props) => props.theme.colors.label};
+  color: ${colors.label};
   font-size: 15px;
   font-weight: 400;
   margin-bottom: 12px;
@@ -497,7 +495,7 @@ const StatusContainerMobile = styled(StatusContainer)`
 `;
 
 const StatusTitle = styled.h4`
-  color: ${(props) => props.theme.colors.label};
+  color: ${colors.label};
   font-size: 16px;
   font-weight: 400;
   margin: 0;
@@ -724,7 +722,7 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
 
   render() {
     const { inModal, intl: { formatMessage } } = this.props;
-    const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions } = this.state;
+    const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions, authUser } = this.state;
     let loader: JSX.Element | null = null;
     let content: JSX.Element | null = null;
 
@@ -747,10 +745,20 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
       const projectTitleMultiloc = (project && project.data ? project.data.attributes.title_multiloc : null);
       const projectId = idea.data.relationships.project.data.id;
 
+      const ideaAuthorName = ideaAuthor && `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}`;
+
       content = (
         <>
-          <IdeaMeta ideaId={idea.data.id} />
-
+        <IdeaMeta
+          ideaId={idea.data.id}
+          titleMultiloc={titleMultiloc}
+          bodyMultiloc={idea.data.attributes.body_multiloc}
+          ideaAuthorName={ideaAuthorName}
+          ideaImages={ideaImage}
+          publishedAt={idea.data.attributes.published_at}
+          projectTitle={projectTitleMultiloc}
+          projectSlug={project && project.data.attributes.slug}
+        />
           <IdeaContainer id="e2e-idea-show">
             <HeaderWrapper>
               {project && projectTitleMultiloc &&
@@ -842,7 +850,19 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
 
                 <SeparatorRow />
 
-                <StyledSharingMobile imageUrl={ideaImageMedium} />
+                <T value={titleMultiloc} maxLength={50} >
+                  {(title) => {
+                    const faceBookMessage = (authUser && authorId && authUser.data.id === authorId) ?
+                      formatMessage(messages.metaOgTitleAuthor, { ideaTitle: title }) :
+                      formatMessage(messages.metaOgTitle, { ideaTitle: title });
+                    return (
+                      <StyledSharingMobile
+                        imageUrl={ideaImageMedium}
+                        fbMessage={faceBookMessage}
+                        twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
+                      />);
+                  }}
+                </T>
 
                 <CommentsTitle>
                   <FormattedMessage {...messages.commentsTitle} />
@@ -896,7 +916,19 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
                     }
 
                     <SharingWrapper>
-                      <StyledSharing imageUrl={ideaImageLarge} />
+                      <T value={titleMultiloc} maxLength={50} >
+                        {(title) => {
+                          const faceBookMessage = (authUser && authorId && authUser.data.id === authorId) ?
+                            formatMessage(messages.metaOgTitleAuthor, { ideaTitle: title }) :
+                            formatMessage(messages.metaOgTitle, { ideaTitle: title });
+                          return (
+                            <StyledSharing
+                              imageUrl={ideaImageMedium}
+                              fbMessage={faceBookMessage}
+                              twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
+                            />);
+                        }}
+                      </T>
                     </SharingWrapper>
 
                     {(moreActions && moreActions.length > 0) &&

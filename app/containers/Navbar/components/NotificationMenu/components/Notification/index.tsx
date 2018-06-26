@@ -23,7 +23,6 @@ import {
   IProjectModerationRightsReceivedNotificationData
 } from 'services/notifications';
 
-
 type Props = {
   notification: TNotificationData,
 };

@@ -14,7 +14,6 @@ import { Section, SectionTitle } from 'components/admin/Section';
 import { Formik } from 'formik';
 import AreaForm, { FormValues } from '../AreaForm';
 
-
 import { API } from 'typings';
 interface InputProps {}
 interface DataProps {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { tap } from 'rxjs/operators';
 import moment from 'moment';
@@ -225,7 +225,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
 
                 <Navbar />
 
-                <InnerContainer className={`${isAdminPage ? 'admin' : 'citizen'}`}>
+                <InnerContainer role="main" className={`${isAdminPage ? 'admin' : 'citizen'}`}>
                   <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
                     <ErrorBoundary>
                       {children}

@@ -97,11 +97,11 @@ const StyledDropzone = styled(Dropzone)`
 
     ${DropzonePlaceholderText},
     ${DropzoneImagesRemaining} {
-      color: #000;
+      color: inherit;
     }
 
     ${DropzonePlaceholderIcon} {
-      fill: #000;
+      fill: inherit;
     }
   }
 
@@ -133,15 +133,15 @@ const StyledDropzone = styled(Dropzone)`
     }
   ` : css`
     &:hover {
-      border-color: #000;
+      border-color: inherit;
 
       ${DropzonePlaceholderText},
       ${DropzoneImagesRemaining} {
-        color: #000;
+        color: inherit;
       }
 
       ${DropzonePlaceholderIcon} {
-        fill: #000;
+        fill: inherit;
       }
     }
   `}
