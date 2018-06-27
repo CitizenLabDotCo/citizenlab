@@ -28,10 +28,10 @@ interface InputProps {
   node: D3Node;
   topicId: string;
   selected: boolean;
-  hovered?: boolean;
-  onClick?: (node: D3Node, event: MouseEvent) => void;
-  onMouseEnter?: (node: D3Node, event: MouseEvent) => void;
-  onMouseLeave?: (node: D3Node, event: MouseEvent) => void;
+  hovered: boolean;
+  onClick: (node: D3Node, event: MouseEvent) => void;
+  onMouseEnter: (node: D3Node, event: MouseEvent) => void;
+  onMouseLeave: (node: D3Node, event: MouseEvent) => void;
 }
 
 interface DataProps {
@@ -124,83 +124,3 @@ export default (inputProps: InputProps) => (
     {(topic) => <TopicCircle {...inputProps} topic={topic} />}
   </GetTopic>
 );
-
-/*
-import React, { PureComponent } from 'react';
-import styled from 'styled-components';
-import GetTopic, { GetTopicChildProps } from 'resources/GetTopic';
-import T from 'components/T';
-import { isNilOrError } from 'utils/helperUtils';
-
-const StyledCircle: any = styled.circle`
-  position: relative;
-  fill: green;
-  fill-opacity: 0.2;
-  cursor: pointer;
-
-  &:hover {
-    stroke: purple;
-    stroke-width: 2px;
-  }
-
-  ${props => (props as any).selected && `
-    stroke: black;
-    stroke-width: 2px;
-    fill: ${props.theme.selectionColor};
-  `}
-`;
-
-const StyledText: any = styled.text`
-  font-size: ${props => (props as any).size}px;
-  display: none;
-`;
-
-type Props = {
-  node: any;
-  topic: GetTopicChildProps;
-  selected: boolean;
-  hovered?: boolean;
-  onClick?: (any) => void;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
-};
-
-class TopicCircle extends PureComponent<Props> {
-
-  render() {
-    const { topic, node, selected, hovered } = this.props;
-
-    if (isNilOrError(topic)) return null;
-
-    return (
-      <>
-        <StyledCircle
-          r={node.r}
-          onClick={this.props.onClick}
-          onMouseEnter={this.props.onMouseEnter}
-          onMouseLeave={this.props.onMouseLeave}
-          selected={selected}
-        />
-        <StyledText
-          x={0}
-          y={-node.r}
-          textAnchor="middle"
-          alignmentBaseline="central"
-          show={selected || hovered}
-          size={12 + (2 * node.height)}
-        >
-          <T value={topic.attributes.title_multiloc}>
-            {(v) => <>{v}</>}
-          </T>
-        </StyledText>
-      </>
-    );
-  }
-}
-
-export default (inputProps) => (
-  <GetTopic id={inputProps.topicId}>
-    {(topic) => <TopicCircle {...inputProps} topic={topic} />}
-  </GetTopic>
-);
-*/

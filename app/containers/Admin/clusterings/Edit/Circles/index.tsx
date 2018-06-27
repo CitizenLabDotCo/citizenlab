@@ -87,9 +87,6 @@ class Circles extends PureComponent<Props, State> {
   }
 
   handleOnClickNode = (node: D3Node, event: MouseEvent) => {
-    console.log(node);
-    console.log(event);
-
     if (event.shiftKey) {
       this.props.onShiftClickNode(node.data);
     } else {
@@ -97,16 +94,12 @@ class Circles extends PureComponent<Props, State> {
     }
   }
 
-  handleOnMouseEnterIdea = (node: D3Node, event: MouseEvent) => () => {
-    this.setState({
-      hoveredNode: node
-    });
+  handleOnMouseEnter = (hoveredNode: D3Node, _event: MouseEvent) => {
+    this.setState({ hoveredNode });
   }
 
-  handleOnMouseLeaveIdea = (node: D3Node, event: MouseEvent) => {
-    this.setState({
-      hoveredNode: null
-    });
+  handleOnMouseLeave = (_node: D3Node, _event: MouseEvent) => {
+    this.setState({ hoveredNode: null });
   }
 
   isSelected = (node: D3Node) => {
@@ -134,11 +127,11 @@ class Circles extends PureComponent<Props, State> {
                   <IdeaCircle
                     node={node}
                     ideaId={node.data.id}
-                    onClick={this.handleOnClickNode}
-                    onMouseEnter={this.handleOnMouseEnterIdea}
-                    onMouseLeave={this.handleOnMouseLeaveIdea}
-                    selected={this.isSelected(node)}
                     hovered={node === this.state.hoveredNode}
+                    selected={this.isSelected(node)}
+                    onClick={this.handleOnClickNode}
+                    onMouseEnter={this.handleOnMouseEnter}
+                    onMouseLeave={this.handleOnMouseLeave}
                   />
                 }
                 {node.data.type === 'custom' &&
@@ -152,16 +145,22 @@ class Circles extends PureComponent<Props, State> {
                   <ProjectCircle
                     node={node}
                     projectId={node.data.id}
-                    onClick={this.handleOnClickNode}
+                    hovered={node === this.state.hoveredNode}
                     selected={this.isSelected(node)}
+                    onClick={this.handleOnClickNode}
+                    onMouseEnter={this.handleOnMouseEnter}
+                    onMouseLeave={this.handleOnMouseLeave}
                   />
                 }
                 {node.data.type === 'topic' &&
                   <TopicCircle
                     node={node}
                     topicId={node.data.id}
-                    onClick={this.handleOnClickNode}
+                    hovered={node === this.state.hoveredNode}
                     selected={this.isSelected(node)}
+                    onClick={this.handleOnClickNode}
+                    onMouseEnter={this.handleOnMouseEnter}
+                    onMouseLeave={this.handleOnMouseLeave}
                   />
                 }
               </g>

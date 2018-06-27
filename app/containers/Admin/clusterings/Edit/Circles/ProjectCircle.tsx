@@ -28,10 +28,10 @@ interface InputProps {
   node: D3Node;
   projectId: string;
   selected: boolean;
-  hovered?: boolean;
-  onClick?: (node: D3Node, event: MouseEvent) => void;
-  onMouseEnter?: (node: D3Node, event: MouseEvent) => void;
-  onMouseLeave?: (node: D3Node, event: MouseEvent) => void;
+  hovered: boolean;
+  onClick: (node: D3Node, event: MouseEvent) => void;
+  onMouseEnter: (node: D3Node, event: MouseEvent) => void;
+  onMouseLeave: (node: D3Node, event: MouseEvent) => void;
 }
 
 interface DataProps {

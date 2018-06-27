@@ -29,10 +29,10 @@ interface InputProps {
   node: D3Node;
   ideaId: string;
   selected: boolean;
-  hovered?: boolean;
-  onClick?: (node: D3Node, event: MouseEvent) => void;
-  onMouseEnter?: (node: D3Node, event: MouseEvent) => void;
-  onMouseLeave?: (node: D3Node, event: MouseEvent) => void;
+  hovered: boolean;
+  onClick: (node: D3Node, event: MouseEvent) => void;
+  onMouseEnter: (node: D3Node, event: MouseEvent) => void;
+  onMouseLeave: (node: D3Node, event: MouseEvent) => void;
 }
 
 interface DataProps {
@@ -45,29 +45,33 @@ interface State {}
 
 class IdeaCircle extends PureComponent<Props, State> {
 
-  upvoteRatio = (up, down) => {
+  upvoteRatio = (up: number, down: number) => {
     return up / (up + down);
   }
 
   handleOnClick = (event: MouseEvent) => {
     const { node } = this.props;
-    this.props.onClick && this.props.onClick(node, event);
+    this.props.onClick(node, event);
   }
 
   handleOnMouseEnter = (event: MouseEvent) => {
     const { node } = this.props;
-    this.props.onMouseEnter && this.props.onMouseEnter(node, event);
+    this.props.onMouseEnter(node, event);
   }
 
   handleOnMouseLeave = (event: MouseEvent) => {
     const { node } = this.props;
-    this.props.onMouseLeave && this.props.onMouseLeave(node, event);
+    this.props.onMouseLeave(node, event);
   }
 
   render() {
     const { node, selected, hovered, idea } = this.props;
 
     if (isNilOrError(idea)) return null;
+
+    if (hovered) {
+      console.log(idea.id);
+    }
 
     return (
       <>
