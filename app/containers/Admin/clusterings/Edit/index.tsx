@@ -11,7 +11,9 @@ import { globalState, IGlobalStateService, IAdminFullWidth } from 'services/glob
 import { colors, media } from 'utils/styleUtils';
 
 const TwoColumns = styled.div`
-  flex: 1;
+  flex-shrink: 0;
+  flex-grow: 1;
+  flex-basis: auto;
   width: 100%;
   height: calc(100vh - ${props => props.theme.menuHeight}px - 85px);
   display: flex;
@@ -21,7 +23,9 @@ const TwoColumns = styled.div`
 `;
 
 const StyledCircles = styled(Circles)`
-  flex: 1;
+  flex-shrink: 1;
+  flex-grow: 1;
+  flex-basis: auto;
   display: flex;
   justify-content: center;
   align-items: center;
