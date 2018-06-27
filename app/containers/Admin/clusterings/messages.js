@@ -16,7 +16,7 @@ export default defineMessages({
   },
   addClusteringButton: {
     id: 'app.containers.Admin.clusterViewer.addClusteringButton',
-    defaultMessage: 'Generate new clustering',
+    defaultMessage: 'Generate new insight graph',
   },
   fieldTitle: {
     id: 'app.containers.Admin.clusterViewer.fieldTitle',
@@ -28,15 +28,15 @@ export default defineMessages({
   },
   titleClusterings: {
     id: 'app.containers.Admin.clusterViewer.titleClusterings',
-    defaultMessage: 'Clusterings',
+    defaultMessage: 'Voting insights',
   },
   deleteButtonLabel: {
     id: 'app.containers.Admin.clusterViewer.deleteButtonLabel',
     defaultMessage: 'Delete',
   },
-  editButtonLabel: {
-    id: 'app.containers.Admin.clusterViewer.editButtonLabel',
-    defaultMessage: 'Edit',
+  viewButtonLabel: {
+    id: 'app.containers.Admin.clusterViewer.viewButtonLabel',
+    defaultMessage: 'View',
   },
   titleClusterInformation: {
     id: 'app.containers.Admin.clusterViewer.titleClusterInformation',

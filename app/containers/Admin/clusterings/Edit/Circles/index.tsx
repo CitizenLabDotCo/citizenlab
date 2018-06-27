@@ -115,7 +115,7 @@ class Circles extends PureComponent<Props, State> {
   }
 
   render() {
-    const { nodes, svgSize } = this.state;
+    const { nodes, svgSize, hoveredNode } = this.state;
 
     return (
       <Container innerRef={this.setContainerRef} className={this.props['className']}>
@@ -135,7 +135,7 @@ class Circles extends PureComponent<Props, State> {
                   <IdeaCircle
                     node={node}
                     ideaId={node.data.id}
-                    hovered={node === this.state.hoveredNode}
+                    hovered={node === hoveredNode}
                     selectionIndex={this.selectionIndex(node)}
                     onClick={this.handleOnClickNode}
                     onMouseEnter={this.handleOnMouseEnter}
@@ -147,13 +147,15 @@ class Circles extends PureComponent<Props, State> {
                     node={node}
                     onClick={this.handleOnClickNode}
                     selectionIndex={this.selectionIndex(node)}
+                    onMouseEnter={this.handleOnMouseEnter}
+                    onMouseLeave={this.handleOnMouseLeave}
                   />
                 }
                 {node.data.type === 'project' &&
                   <ProjectCircle
                     node={node}
                     projectId={node.data.id}
-                    hovered={node === this.state.hoveredNode}
+                    hovered={node === hoveredNode}
                     selectionIndex={this.selectionIndex(node)}
                     onClick={this.handleOnClickNode}
                     onMouseEnter={this.handleOnMouseEnter}
@@ -164,7 +166,7 @@ class Circles extends PureComponent<Props, State> {
                   <TopicCircle
                     node={node}
                     topicId={node.data.id}
-                    hovered={node === this.state.hoveredNode}
+                    hovered={node === hoveredNode}
                     selectionIndex={this.selectionIndex(node)}
                     onClick={this.handleOnClickNode}
                     onMouseEnter={this.handleOnMouseEnter}

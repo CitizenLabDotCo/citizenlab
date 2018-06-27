@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { transparentize, darken } from 'polished';
+import { darken } from 'polished';
 import Icon from 'components/UI/Icon';
 import { color } from 'utils/styleUtils';
 
