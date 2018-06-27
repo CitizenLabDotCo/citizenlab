@@ -141,8 +141,9 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps, State> {
         <ThemeProvider theme={this.theme()}>
           <TwoColumns>
             <StyledCircles
+              activeComparison={activeComparison}
+              selectedNodes={selectedNodes}
               structure={clustering.attributes.structure}
-              selectedNodes={this.comparisonSet()}
               onClickNode={this.handleOnClickNode}
               onShiftClickNode={this.handleOnShiftClickNode}
             />

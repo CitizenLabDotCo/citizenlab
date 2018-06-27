@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { isNil } from 'lodash';
 import styled from 'styled-components';
 import { D3Node } from './';
 
@@ -13,10 +14,10 @@ const StyledCircle: any = styled.circle`
     stroke-width: 2px;
   }
 
-  ${props => (props as any).selected && `
+  ${props => !isNil((props as any).selectionIndex) && `
     stroke: black;
     stroke-width: 2px;
-    fill: ${props.theme.selectionColor};
+    fill: ${props.theme.comparisonColors[(props as any).selectionIndex]};
   `}
 `;
 
@@ -26,7 +27,7 @@ const StyledText: any = styled.text`
 
 interface InputProps {
   node: D3Node;
-  selected: boolean;
+  selectionIndex: number | null;
   hovered?: boolean;
   onClick?: (node: D3Node, event: MouseEvent) => void;
   onMouseEnter?: (node: D3Node, event: MouseEvent) => void;
@@ -57,7 +58,7 @@ class ClusterCircle extends PureComponent<Props, State> {
   }
 
   render() {
-    const { node, selected, hovered } = this.props;
+    const { node, selectionIndex, hovered } = this.props;
     return (
       <>
         <StyledCircle
@@ -65,14 +66,14 @@ class ClusterCircle extends PureComponent<Props, State> {
           onClick={this.handleOnClick}
           onMouseEnter={this.handleOnMouseEnter}
           onMouseLeave={this.handleOnMouseLeave}
-          selected={selected}
+          selectionIndex={selectionIndex}
         />
         <StyledText
           x={0}
           y={-node.r}
           textAnchor="middle"
           alignmentBaseline="central"
-          show={selected || hovered}
+          show={!isNil(selectionIndex) || hovered}
           size={12 + (2 * node.height)}
         >
           {node.data['title']}
