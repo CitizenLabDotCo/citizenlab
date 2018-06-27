@@ -61,9 +61,9 @@ class AreaList extends PureComponent<Props & InjectedIntlProps>{
                 linkTo={`/admin/clusterings/${area.id}`}
                 style="secondary"
                 circularCorners={false}
-                icon="edit"
+                icon="eye"
               >
-                <FormattedMessage {...messages.editButtonLabel} />
+                <FormattedMessage {...messages.viewButtonLabel} />
               </Button>
             </Row>
           ))}
