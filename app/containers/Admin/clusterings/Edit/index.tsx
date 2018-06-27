@@ -33,7 +33,7 @@ const StyledCircles = styled(Circles)`
   border: solid 1px ${colors.separation};
   border-radius: 5px;
   padding: 25px;
-  overflow: hidden;
+  /* overflow: hidden; */
 `;
 
 const StyledInfoPane = styled(InfoPane)`
