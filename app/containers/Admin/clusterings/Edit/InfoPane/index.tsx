@@ -13,6 +13,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import ComparisonSwitcher from './ComparisonSwitcher';
 import Radio from 'components/UI/Radio';
+import ComparisonLegend from './ComparisonLegend';
 
 const Container = styled.div`
   width: 100%;
@@ -123,7 +124,7 @@ type Props = {
 
 type State = {
   normalization: 'absolute' | 'relative';
-  selectedTab: 'graphs' | 'details' | 'options';
+  selectedTab: 'votes' | 'details' | 'options';
 };
 
 class InfoPane extends PureComponent<Props, State> {
@@ -132,7 +133,7 @@ class InfoPane extends PureComponent<Props, State> {
     super(props);
     this.state = {
       normalization: 'absolute',
-      selectedTab: 'graphs'
+      selectedTab: 'votes'
     };
   }
 
@@ -167,14 +168,11 @@ class InfoPane extends PureComponent<Props, State> {
     return (
       <Container className={this.props['className']}>
         <TabbedNav>
-          <Tab onClick={this.handleTabOnClick} data-tab="graphs" className={`${selectedTab === 'graphs' && 'active'}`}>
-            Charts
+          <Tab onClick={this.handleTabOnClick} data-tab="votes" className={`${selectedTab === 'votes' && 'active'}`}>
+            Votes
           </Tab>
           <Tab onClick={this.handleTabOnClick} data-tab="details" className={`${selectedTab === 'details' && 'active'}`}>
             Details
-          </Tab>
-          <Tab onClick={this.handleTabOnClick} data-tab="options" className={`${selectedTab === 'options' && 'active'}`}>
-            Compare
           </Tab>
         </TabbedNav>
 
@@ -202,9 +200,11 @@ class InfoPane extends PureComponent<Props, State> {
             </Details>
           )}
 
-          {selectedTab === 'graphs' &&
+          {selectedTab === 'votes' &&
             <>
-              <ChartTitle>Show chart values as</ChartTitle>
+              <ComparisonLegend
+                selectedNodes={this.props.selectedNodes}
+              />
               <RadioButtons>
                 <StyledRadio
                   key="absolute"
