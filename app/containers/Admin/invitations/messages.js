@@ -1,14 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  helmetTitle: {
-    id: 'app.containers.Admin.Invitations.helmetTitle',
-    defaultMessage: 'Admin invitation dashboard',
-  },
-  helmetDescription: {
-    id: 'app.containers.Admin.Invitations.helmetDescription',
-    defaultMessage: 'Invite users to the platform',
-  },
   name: {
     id: 'app.containers.Admin.Invitations.name',
     defaultMessage: 'Name',

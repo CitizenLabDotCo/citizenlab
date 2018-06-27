@@ -146,8 +146,6 @@
   "app.containers.Admin.Invitations.filetypeError": "Onjuist bestandstype. Alleen xlsx.-bestanden worden ondersteund.",
   "app.containers.Admin.Invitations.groupsLabel": "Selecteer eventueel een of meer groepen die zullen worden toegewezen aan de uitgenodigde personen bij registratie",
   "app.containers.Admin.Invitations.groupsPlaceholder": "Geen groep geselecteerd",
-  "app.containers.Admin.Invitations.helmetDescription": "",
-  "app.containers.Admin.Invitations.helmetTitle": "",
   "app.containers.Admin.Invitations.importInfo": "Opmerking: De kolom in uw Excel-bestand die de e-mailadressen bevat, moet deze naam hebben: {emailColumnName}.       Download dit {downloadLink} en bezoek deze {supportPageLink} voor meer informatie over alle ondersteunde kolommen.",
   "app.containers.Admin.Invitations.importLabel": "Selecteer een Excel-bestand (.xlsx)",
   "app.containers.Admin.Invitations.importOptionsInfo": "Deze opties zullen alleen in rekening worden gebracht wanneer ze niet zijn gedefinieerd in het Excel-bestand.\nBezoek de {supportPageLink} voor meer informatie.",
