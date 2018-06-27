@@ -82,13 +82,12 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps, State> {
     return this.state.selectedNodes[this.state.activeComparison];
   }
 
-  theme = () => (theme) => {
+  theme = (theme) => {
     const comparisonColors = ['#fbbd08', '#a333c8', '#f2711c', '#00b5ad'];
 
     return {
       ...theme,
       comparisonColors,
-      selectionColor: comparisonColors[this.state.activeComparison],
       upvotes: theme.colors.success,
       downvotes: theme.colors.error,
       chartLabelColor: '#999999',
@@ -119,15 +118,22 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps, State> {
   }
 
   handleOnClickNode = (node: Node) => {
-    const selectedNodes = clone(this.state.selectedNodes);
-    selectedNodes[this.state.activeComparison] = [node];
-    this.setState({ selectedNodes });
+    this.setState({ selectedNodes: [[node]] });
   }
 
   handleOnShiftClickNode = (node: Node) => {
     const selectedNodes = clone(this.state.selectedNodes);
     selectedNodes[this.state.activeComparison] = [...this.comparisonSet(), node];
     this.setState({ selectedNodes });
+  }
+
+  handleOnCtrlClickNode = (node: Node) => {
+    if (this.state.selectedNodes.length < 4) {
+      this.setState(({ selectedNodes }) => ({
+        selectedNodes: [...selectedNodes, [node]],
+        activeComparison: selectedNodes.length
+      }));
+    }
   }
 
   render() {
@@ -137,25 +143,25 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps, State> {
     if (isNilOrError(clustering)) return null;
 
     return (
-      <>
-        <ThemeProvider theme={this.theme()}>
-          <TwoColumns>
-            <StyledCircles
-              structure={clustering.attributes.structure}
-              selectedNodes={this.comparisonSet()}
-              onClickNode={this.handleOnClickNode}
-              onShiftClickNode={this.handleOnShiftClickNode}
-            />
-            <StyledInfoPane
-              activeComparison={activeComparison}
-              selectedNodes={selectedNodes}
-              onAddComparison={this.handleOnAddComparison}
-              onChangeActiveComparison={this.handleOnChangeActiveComparison}
-              onDeleteComparison={this.handleOnDeleteComparison}
-            />
-          </TwoColumns>
-        </ThemeProvider>
-      </>
+      <ThemeProvider theme={this.theme}>
+        <TwoColumns>
+          <StyledCircles
+            activeComparison={activeComparison}
+            selectedNodes={selectedNodes}
+            structure={clustering.attributes.structure}
+            onClickNode={this.handleOnClickNode}
+            onShiftClickNode={this.handleOnShiftClickNode}
+            onCtrlCickNode={this.handleOnCtrlClickNode}
+          />
+          <StyledInfoPane
+            activeComparison={activeComparison}
+            selectedNodes={selectedNodes}
+            onAddComparison={this.handleOnAddComparison}
+            onChangeActiveComparison={this.handleOnChangeActiveComparison}
+            onDeleteComparison={this.handleOnDeleteComparison}
+          />
+        </TwoColumns>
+      </ThemeProvider>
     );
   }
 }
