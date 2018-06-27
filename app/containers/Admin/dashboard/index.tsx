@@ -95,7 +95,7 @@ export default class DashboardPage extends PureComponent<Props, State> {
           description={messages.helmetDescription}
         />
 
-        {/* <FeatureFlag name={'clustering'}> */}
+        <FeatureFlag name={'clustering'}>
           <StyledWarning
             text={
               <FormattedMessage
@@ -106,7 +106,7 @@ export default class DashboardPage extends PureComponent<Props, State> {
               />
             }
           />
-        {/* </FeatureFlag> */}
+        </FeatureFlag>
 
         <ControlBar>
           <TimeControl
