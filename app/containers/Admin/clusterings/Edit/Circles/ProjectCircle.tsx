@@ -6,6 +6,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import { round, isNil } from 'lodash';
 import { D3Node } from './';
 
+const borderColor = '#003348';
+
 const StyledCircle: any = styled.circle`
   position: relative;
   fill: green;
@@ -13,7 +15,7 @@ const StyledCircle: any = styled.circle`
   cursor: pointer;
 
   &:hover {
-    stroke: red;
+    stroke: ${borderColor};
     stroke-width: 2px;
   }
 
@@ -76,10 +78,10 @@ class ProjectCircle extends PureComponent<Props, State> {
         />
         <T value={project.attributes.title_multiloc}>
           {(localizedTitle) => {
-            const width = (localizedTitle.length * 6) + 50;
-            const height = 30;
+            const width = (localizedTitle.length * 7) + 50;
+            const height = 60;
             const xPos = (-width) / 2;
-            const yPos = -round(node.r + height + 4);
+            const yPos = -round(node.r + height + 2);
             const borderRadius = 5;
 
             return (
@@ -97,18 +99,32 @@ class ProjectCircle extends PureComponent<Props, State> {
                   height={height}
                   rx={borderRadius}
                   ry={borderRadius}
-                  stroke="black"
+                  stroke={borderColor}
                   strokeWidth="2"
                   fill="#fff"
                 />
                 <text
-                  x={width / 2}
-                  y={height / 2}
-                  fill="#333"
-                  alignment-baseline="middle"
-                  text-anchor="middle"
+                  fill={borderColor}
+                  fontSize="16"
                 >
-                  {localizedTitle}
+                  <tspan
+                    x={width / 2}
+                    y={(height / 2) - 10}
+                    fontWeight="bold"
+                    textAnchor="middle"
+                    alignmentBaseline="central"
+                  >
+                    Project
+                  </tspan>
+                  <tspan
+                    x={width / 2}
+                    y={(height / 2) + 10}
+                    fontWeight="normal"
+                    textAnchor="middle"
+                    alignmentBaseline="central"
+                  >
+                    {localizedTitle}
+                  </tspan>
                 </text>
               </svg>
             );
