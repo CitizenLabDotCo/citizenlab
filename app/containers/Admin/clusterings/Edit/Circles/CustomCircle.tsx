@@ -1,19 +1,22 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import { D3Node } from './';
 
 const StyledCircle: any = styled.circle`
+  position: relative;
   fill: green;
-  opacity: 0.2;
+  fill-opacity: 0.2;
+  cursor: pointer;
 
   &:hover {
-    stroke: grey;
-    stroke-width: 3px;
+    stroke: blue;
+    stroke-width: 2px;
   }
+
   ${props => (props as any).selected && `
     stroke: black;
-    stroke-width: 3px;
+    stroke-width: 2px;
     fill: ${props.theme.selectionColor};
-    opacity: 0.4;
   `}
 `;
 
@@ -21,16 +24,37 @@ const StyledText: any = styled.text`
   font-size: ${props => (props as any).size}px;
 `;
 
-type Props = {
-  node: any;
+interface InputProps {
+  node: D3Node;
   selected: boolean;
   hovered?: boolean;
-  onClick?: (any) => void;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
-};
+  onClick?: (node: D3Node, event: MouseEvent) => void;
+  onMouseEnter?: (node: D3Node, event: MouseEvent) => void;
+  onMouseLeave?: (node: D3Node, event: MouseEvent) => void;
+}
 
-class ClusterCircle extends PureComponent<Props> {
+interface DataProps {}
+
+interface Props extends InputProps, DataProps {}
+
+interface State {}
+
+class ClusterCircle extends PureComponent<Props, State> {
+
+  handleOnClick = (event: MouseEvent) => {
+    const { node } = this.props;
+    this.props.onClick && this.props.onClick(node, event);
+  }
+
+  handleOnMouseEnter = (event: MouseEvent) => {
+    const { node } = this.props;
+    this.props.onMouseEnter && this.props.onMouseEnter(node, event);
+  }
+
+  handleOnMouseLeave = (event: MouseEvent) => {
+    const { node } = this.props;
+    this.props.onMouseLeave && this.props.onMouseLeave(node, event);
+  }
 
   render() {
     const { node, selected, hovered } = this.props;
@@ -38,9 +62,9 @@ class ClusterCircle extends PureComponent<Props> {
       <>
         <StyledCircle
           r={node.r}
-          onClick={this.props.onClick}
-          onMouseEnter={this.props.onMouseEnter}
-          onMouseLeave={this.props.onMouseLeave}
+          onClick={this.handleOnClick}
+          onMouseEnter={this.handleOnMouseEnter}
+          onMouseLeave={this.handleOnMouseLeave}
           selected={selected}
         />
         <StyledText
@@ -51,7 +75,7 @@ class ClusterCircle extends PureComponent<Props> {
           show={selected || hovered}
           size={12 + (2 * node.height)}
         >
-          {node.data.title}
+          {node.data['title']}
         </StyledText>
       </>
     );

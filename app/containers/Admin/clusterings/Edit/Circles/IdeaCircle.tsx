@@ -4,14 +4,18 @@ import { mix } from 'polished';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import T from 'components/T';
 import { isNilOrError } from 'utils/helperUtils';
+import { round } from 'lodash';
+import { D3Node } from './';
 
 const StyledCircle: any = styled.circle`
+  position: relative;
   fill: ${props => mix((props as any).upvoteRatio, 'green', 'red')};
-  opacity: 0.75;
+  fill-opacity: 0.75;
+  cursor: pointer;
 
   ${props => (props as any).hovered && `
-    stroke: grey;
-    stroke-width: 3px;
+    stroke: black;
+    stroke-width: 2px;
   `}
 
   ${props => (props as any).selected && `
@@ -21,35 +25,45 @@ const StyledCircle: any = styled.circle`
   `}
 `;
 
-const StyledText: any = styled.text`
-  display: ${props => (props as any).show ? 'inline' : 'none' };
-`;
-
-const TextBackground: any = styled.rect`
-  fill: #ffffff;
-  opacity: 0.4;
-  display: ${props => (props as any).show ? 'inline' : 'none' };
-`;
-
-type Props = {
-  node: any;
-  idea: GetIdeaChildProps;
+interface InputProps {
+  node: D3Node;
+  ideaId: string;
   selected: boolean;
-  hovered: boolean;
-  onClick?: () => void;
-  onMouseEnter: () => void;
-  onMouseLeave: () => void;
-};
+  hovered?: boolean;
+  onClick?: (node: D3Node, event: MouseEvent) => void;
+  onMouseEnter?: (node: D3Node, event: MouseEvent) => void;
+  onMouseLeave?: (node: D3Node, event: MouseEvent) => void;
+}
 
-type State = {
+interface DataProps {
+  idea: GetIdeaChildProps;
+}
 
-};
+interface Props extends InputProps, DataProps {}
+
+interface State {}
 
 class IdeaCircle extends PureComponent<Props, State> {
 
   upvoteRatio = (up, down) => {
     return up / (up + down);
   }
+
+  handleOnClick = (event: MouseEvent) => {
+    const { node } = this.props;
+    this.props.onClick && this.props.onClick(node, event);
+  }
+
+  handleOnMouseEnter = (event: MouseEvent) => {
+    const { node } = this.props;
+    this.props.onMouseEnter && this.props.onMouseEnter(node, event);
+  }
+
+  handleOnMouseLeave = (event: MouseEvent) => {
+    const { node } = this.props;
+    this.props.onMouseLeave && this.props.onMouseLeave(node, event);
+  }
+
   render() {
     const { node, selected, hovered, idea } = this.props;
 
@@ -59,41 +73,59 @@ class IdeaCircle extends PureComponent<Props, State> {
       <>
         <StyledCircle
           r={node.r}
-          onClick={this.props.onClick}
-          onMouseEnter={this.props.onMouseEnter}
-          onMouseLeave={this.props.onMouseLeave}
+          onClick={this.handleOnClick}
+          onMouseEnter={this.handleOnMouseEnter}
+          onMouseLeave={this.handleOnMouseLeave}
           selected={selected}
           hovered={hovered}
           upvoteRatio={this.upvoteRatio(idea.attributes.upvotes_count, idea.attributes.downvotes_count)}
         />
         <T value={idea.attributes.title_multiloc}>
-          {(localizedTitle) => (
-            <>
-              <TextBackground
-                width={(localizedTitle.length * 7) + 10}
-                height={20}
-                y={-35}
-                x={-(localizedTitle.length * 7 + 10) / 2}
-                show={hovered}
-              />
-              <StyledText
-                x={0}
-                y={-25}
-                textAnchor="middle"
-                alignmentBaseline="central"
-                show={hovered}
+          {(localizedTitle) => {
+            const width = (localizedTitle.length * 6) + 50;
+            const height = 30;
+            const xPos = (-width) / 2;
+            const yPos = -round(node.r + height + 4);
+            const borderRadius = 5;
+
+            return (
+              <svg
+                x={xPos}
+                y={yPos}
+                width={width}
+                height={height}
+                style={{ display: `${hovered ? 'block' : 'none'}` }}
               >
-                {localizedTitle}
-              </StyledText>
-            </>
-          )}
+                <rect
+                  x="0"
+                  y="0"
+                  width={width}
+                  height={height}
+                  rx={borderRadius}
+                  ry={borderRadius}
+                  stroke="black"
+                  strokeWidth="2"
+                  fill="#fff"
+                />
+                <text
+                  x={width / 2}
+                  y={height / 2}
+                  fill="#333"
+                  alignment-baseline="middle"
+                  text-anchor="middle"
+                >
+                  {localizedTitle}
+                </text>
+              </svg>
+            );
+          }}
         </T>
       </>
     );
   }
 }
 
-export default (inputProps) => (
+export default (inputProps: InputProps) => (
   <GetIdea id={inputProps.ideaId}>
     {(idea) => <IdeaCircle {...inputProps} idea={idea} />}
   </GetIdea>

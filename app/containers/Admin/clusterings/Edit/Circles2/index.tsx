@@ -87,15 +87,6 @@ class Circles2 extends PureComponent<Props, State> {
         return 1;
       });
 
-      console.log('this.props.ideas.ideasList:');
-      console.log(this.props.ideas.ideasList);
-      console.log('ideasById:');
-      console.log(ideasById);
-      console.log('this.props.structure:');
-      console.log(this.props.structure);
-      console.log('root:');
-      console.log(root);
-
       const focus = root;
       const nodes = pack(root).descendants();
       let view;
@@ -118,21 +109,21 @@ class Circles2 extends PureComponent<Props, State> {
           }
         });
 
-      const text = g.selectAll('text')
-        .data(nodes)
-        .enter()
-        .append('text')
-        .attr('class', 'label')
-        // .filter((d: any) => d)
-        .style('fill-opacity', (d: any) => {
-          return get(d, 'parent') === root ? 1 : 1;
-        })
-        .style('display', (d: any) => {
-          return get(d, 'parent') === root ? 'inline' : 'none';
-        })
-        .text((d: any) => {
-          return d.data.id;
-        });
+      // const text = g.selectAll('text')
+      //   .data(nodes)
+      //   .enter()
+      //   .append('text')
+      //   .attr('class', 'label')
+      //   // .filter((d: any) => d)
+      //   .style('fill-opacity', (d: any) => {
+      //     return get(d, 'parent') === root ? 1 : 1;
+      //   })
+      //   .style('display', (d: any) => {
+      //     return get(d, 'parent') === root ? 'inline' : 'none';
+      //   })
+      //   .text((d: any) => {
+      //     return d.data.id;
+      //   });
 
       const node = g.selectAll('circle, text');
 
@@ -145,7 +136,7 @@ class Circles2 extends PureComponent<Props, State> {
 
         d3.transition()
           .duration(d3.event.altKey ? 5000 : 500)
-          .tween('zoom', (d: any) => {
+          .tween('zoom', () => {
             const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2 + margin]);
             return (t) => { zoomTo(i(t)); };
           });
