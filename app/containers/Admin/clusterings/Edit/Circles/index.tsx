@@ -20,6 +20,7 @@ interface InputProps {
   activeComparison: number;
   onClickNode: (Node) => void;
   onShiftClickNode: (Node) => void;
+  onCtrlCickNode: (Node) => void;
 }
 
 interface DataProps {
@@ -94,6 +95,8 @@ class Circles extends PureComponent<Props, State> {
 
     if (event.shiftKey) {
       this.props.onShiftClickNode(node.data);
+    } else if (event.ctrlKey) {
+      this.props.onCtrlCickNode(node.data);
     } else {
       this.props.onClickNode(node.data);
     }
