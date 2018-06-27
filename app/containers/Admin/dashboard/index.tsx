@@ -2,8 +2,11 @@ import React, { PureComponent } from 'react';
 import * as moment from 'moment';
 import HelmetIntl from 'components/HelmetIntl';
 import styled, { ThemeProvider } from 'styled-components';
+import { Link } from 'react-router';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import FeatureFlag from 'components/FeatureFlag';
+import Warning from 'components/UI/Warning';
 import TimeControl from './components/TimeControl';
 import IntervalControl from './components/IntervalControl';
 import GenderChart from './components/GenderChart';
@@ -13,6 +16,10 @@ import UsersByTimeChart from './components/UsersByTimeChart';
 import IdeasByTopicChart from './components/IdeasByTopicChart';
 import { Flex, Box } from 'grid-styled';
 import { colors } from 'utils/styleUtils';
+
+const StyledWarning = styled(Warning)`
+  margin-bottom: 30px;
+`;
 
 const ControlBar = styled.div`
   display: flex;
@@ -87,6 +94,20 @@ export default class DashboardPage extends PureComponent<Props, State> {
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
+
+        {/* <FeatureFlag name={'clustering'}> */}
+          <StyledWarning
+            text={
+              <FormattedMessage
+                {...messages.tryOutInsights}
+                values={{
+                  insightsLink: <Link to={`/admin/clusterings`}><FormattedMessage {...messages.insightsLinkText} /></Link>
+                }}
+              />
+            }
+          />
+        {/* </FeatureFlag> */}
+
         <ControlBar>
           <TimeControl
             value={intervalIndex}
