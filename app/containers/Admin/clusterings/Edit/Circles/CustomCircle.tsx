@@ -9,11 +9,6 @@ const StyledCircle: any = styled.circle`
   fill-opacity: 0.2;
   cursor: pointer;
 
-  &:hover {
-    stroke: blue;
-    stroke-width: 2px;
-  }
-
   ${props => !isNil((props as any).selectionIndex) && `
     stroke: black;
     stroke-width: 2px;
