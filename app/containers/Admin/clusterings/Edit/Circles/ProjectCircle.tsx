@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import T from 'components/T';
 import { isNilOrError } from 'utils/helperUtils';
-import { round } from 'lodash';
+import { round, isNil } from 'lodash';
 import { D3Node } from './';
 
 const StyledCircle: any = styled.circle`
@@ -17,17 +17,17 @@ const StyledCircle: any = styled.circle`
     stroke-width: 2px;
   }
 
-  ${props => (props as any).selected && `
+  ${props => !isNil((props as any).selectionIndex) && `
     stroke: black;
     stroke-width: 2px;
-    fill: ${props.theme.selectionColor};
+    fill: ${props.theme.comparisonColors[(props as any).selectionIndex]};
   `}
 `;
 
 interface InputProps {
   node: D3Node;
   projectId: string;
-  selected: boolean;
+  selectionIndex: number | null;
   hovered: boolean;
   onClick: (node: D3Node, event: MouseEvent) => void;
   onMouseEnter: (node: D3Node, event: MouseEvent) => void;
@@ -60,7 +60,7 @@ class ProjectCircle extends PureComponent<Props, State> {
   }
 
   render() {
-    const { node, selected, hovered, project } = this.props;
+    const { node, selectionIndex, hovered, project } = this.props;
 
     if (isNilOrError(project)) return null;
 
@@ -71,7 +71,7 @@ class ProjectCircle extends PureComponent<Props, State> {
           onClick={this.handleOnClick}
           onMouseEnter={this.handleOnMouseEnter}
           onMouseLeave={this.handleOnMouseLeave}
-          selected={selected}
+          selectionIndex={selectionIndex}
           hovered={hovered}
         />
         <T value={project.attributes.title_multiloc}>
