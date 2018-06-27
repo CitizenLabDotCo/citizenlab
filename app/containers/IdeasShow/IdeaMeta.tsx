@@ -130,13 +130,9 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({
         <meta property="og:type" content="article" />
         <meta property="og:title" content={ideaOgTitle} />
         <meta property="og:description" content={formatMessage(messages.ideaOgDescription)} />
-        {ideaImage &&
-          <>
-            <meta property="og:image" content={ideaImage} />
-            <meta property="og:image:width" content={`${imageSizes.ideaImg.medium[0]}`} />
-            <meta property="og:image:height" content={`${imageSizes.ideaImg.medium[1]}`} />
-          </>
-        }
+        {ideaImage && <meta property="og:image" content={ideaImage} />}
+        <meta property="og:image:width" content={`${imageSizes.ideaImg.medium[0]}`} />
+        <meta property="og:image:height" content={`${imageSizes.ideaImg.medium[1]}`} />
         {ideaImage &&
           <script type="application/ld+json">
             {JSON.stringify(articleJson)}
