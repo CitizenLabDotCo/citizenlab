@@ -118,7 +118,10 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps, State> {
   }
 
   handleOnClickNode = (node: Node) => {
-    this.setState({ selectedNodes: [[node]] });
+    this.setState({
+      selectedNodes: [[node]],
+      activeComparison: 0
+    });
   }
 
   handleOnShiftClickNode = (node: Node) => {
