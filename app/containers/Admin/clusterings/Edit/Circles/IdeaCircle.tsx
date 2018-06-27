@@ -4,7 +4,7 @@ import { mix } from 'polished';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import T from 'components/T';
 import { isNilOrError } from 'utils/helperUtils';
-import { round } from 'lodash';
+import { round, isNil } from 'lodash';
 import { D3Node } from './';
 
 const StyledCircle: any = styled.circle`
@@ -18,17 +18,17 @@ const StyledCircle: any = styled.circle`
     stroke-width: 2px;
   `}
 
-  ${props => (props as any).selected && `
+  ${props => !isNil((props as any).selectionIndex) && `
     stroke: black;
     stroke-width: 2px;
-    fill: ${props.theme.selectionColor};
+    fill: ${props.theme.comparisonColors[(props as any).selectionIndex]};
   `}
 `;
 
 interface InputProps {
   node: D3Node;
   ideaId: string;
-  selected: boolean;
+  selectionIndex: number | null;
   hovered?: boolean;
   onClick?: (node: D3Node, event: MouseEvent) => void;
   onMouseEnter?: (node: D3Node, event: MouseEvent) => void;
@@ -65,7 +65,7 @@ class IdeaCircle extends PureComponent<Props, State> {
   }
 
   render() {
-    const { node, selected, hovered, idea } = this.props;
+    const { node, selectionIndex, hovered, idea } = this.props;
 
     if (isNilOrError(idea)) return null;
 
@@ -76,7 +76,7 @@ class IdeaCircle extends PureComponent<Props, State> {
           onClick={this.handleOnClick}
           onMouseEnter={this.handleOnMouseEnter}
           onMouseLeave={this.handleOnMouseLeave}
-          selected={selected}
+          selectionIndex={selectionIndex}
           hovered={hovered}
           upvoteRatio={this.upvoteRatio(idea.attributes.upvotes_count, idea.attributes.downvotes_count)}
         />

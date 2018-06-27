@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import * as d3Hierarchy from 'd3-hierarchy';
-import { keyBy, find } from 'lodash';
+import { keyBy, find, findIndex } from 'lodash';
 import IdeaCircle from './IdeaCircle';
 import CustomCircle from './CustomCircle';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
@@ -16,7 +16,8 @@ export type D3Node = {
 
 interface InputProps {
   structure: ParentNode;
-  selectedNodes: Node[];
+  selectedNodes: Node[][];
+  activeComparison: number;
   onClickNode: (Node) => void;
   onShiftClickNode: (Node) => void;
 }
@@ -31,7 +32,6 @@ type State = {
   svgSize: number | null;
   nodes: D3Node[];
   hoveredNode: D3Node | null;
-  selectedNode: D3Node | null;
 };
 
 const Container = styled.div`
@@ -49,7 +49,6 @@ class Circles extends PureComponent<Props, State> {
       svgSize: null,
       nodes: [],
       hoveredNode: null,
-      selectedNode: null,
     };
     this.containerRef = null;
   }
@@ -77,9 +76,12 @@ class Circles extends PureComponent<Props, State> {
       this.setState({
         svgSize,
         nodes: rootNode.descendants(),
-        selectedNode: rootNode
       });
     }
+  }
+
+  comparisonSet = () => {
+    return this.props.selectedNodes[this.props.activeComparison];
   }
 
   setContainerRef = (ref: HTMLDivElement) => {
@@ -109,8 +111,11 @@ class Circles extends PureComponent<Props, State> {
     });
   }
 
-  isSelected = (node: D3Node) => {
-    return !!find(this.props.selectedNodes, { id: node.data.id });
+  selectionIndex = (node: D3Node) => {
+    const index = findIndex(this.props.selectedNodes, (nodes) => (
+      !!find(nodes, { id: node.data.id })
+    ));
+    return index === -1 ? null : index;
   }
 
   render() {
@@ -137,7 +142,7 @@ class Circles extends PureComponent<Props, State> {
                     onClick={this.handleOnClickNode}
                     onMouseEnter={this.handleOnMouseEnterIdea}
                     onMouseLeave={this.handleOnMouseLeaveIdea}
-                    selected={this.isSelected(node)}
+                    selectionIndex={this.selectionIndex(node)}
                     hovered={node === this.state.hoveredNode}
                   />
                 }
@@ -145,7 +150,7 @@ class Circles extends PureComponent<Props, State> {
                   <CustomCircle
                     node={node}
                     onClick={this.handleOnClickNode}
-                    selected={this.isSelected(node)}
+                    selectionIndex={this.selectionIndex(node)}
                   />
                 }
                 {node.data.type === 'project' &&
@@ -153,7 +158,7 @@ class Circles extends PureComponent<Props, State> {
                     node={node}
                     projectId={node.data.id}
                     onClick={this.handleOnClickNode}
-                    selected={this.isSelected(node)}
+                    selectionIndex={this.selectionIndex(node)}
                   />
                 }
                 {node.data.type === 'topic' &&
@@ -161,7 +166,7 @@ class Circles extends PureComponent<Props, State> {
                     node={node}
                     topicId={node.data.id}
                     onClick={this.handleOnClickNode}
-                    selected={this.isSelected(node)}
+                    selectionIndex={this.selectionIndex(node)}
                   />
                 }
               </g>
