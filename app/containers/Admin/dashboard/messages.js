@@ -96,10 +96,10 @@ export default defineMessages({
   },
   tryOutInsights: {
     id: 'app.containers.AdminPage.DashboardPage.tryOutInsights',
-    defaultMessage: 'Try out insights, {insightsLink}',
+    defaultMessage: 'Try out {insightsLink}, our new beta feature',
   },
   insightsLinkText: {
     id: 'app.containers.AdminPage.DashboardPage.insightsLinkText',
-    defaultMessage: 'our new product update',
+    defaultMessage: 'insights',
   },
 });
