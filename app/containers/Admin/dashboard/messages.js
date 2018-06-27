@@ -94,4 +94,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.numberOfIdeas',
     defaultMessage: '#ideas',
   },
+  tryOutInsights: {
+    id: 'app.containers.AdminPage.DashboardPage.tryOutInsights',
+    defaultMessage: 'Try out insights, {insightsLink}',
+  },
+  insightsLinkText: {
+    id: 'app.containers.AdminPage.DashboardPage.insightsLinkText',
+    defaultMessage: 'our new product update',
+  },
 });
