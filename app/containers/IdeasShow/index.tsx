@@ -860,6 +860,7 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
                         fbMessage={faceBookMessage}
                         twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
                         sharedContent="idea"
+                        userId={authUser && authUser.data.id}
                       />);
                   }}
                 </T>
@@ -927,6 +928,7 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
                               fbMessage={faceBookMessage}
                               twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
                               sharedContent="idea"
+                              userId={authUser && authUser.data.id}
                             />);
                         }}
                       </T>
