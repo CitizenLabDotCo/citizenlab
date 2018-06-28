@@ -79,14 +79,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.headerSlogan',
     defaultMessage: 'Header slogan',
   },
-  metaTitle: {
-    id: 'app.containers.AdminPage.SettingsPage.metaTitle',
-    defaultMessage: 'Meta title',
-  },
-  metaDescription: {
-    id: 'app.containers.AdminPage.SettingsPage.metaDescription',
-    defaultMessage: 'Meta description',
-  },
   titleBasic: {
     id: 'app.containers.AdminPage.SettingsPage.titleBasic',
     defaultMessage: 'Basic information',
@@ -158,5 +150,13 @@ export default defineMessages({
   tabAreas: {
     id: 'app.containers.AdminPage.SettingsPage.tabAreas',
     defaultMessage: 'Areas',
+  },
+  urlError: {
+    id: 'app.containers.AdminPage.SettingsPage.urlError',
+    defaultMessage: 'The URL needs to start with "http://" or "https://".',
+  },
+  urlTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.urlTitle',
+    defaultMessage: 'Website (URL)',
   },
 });

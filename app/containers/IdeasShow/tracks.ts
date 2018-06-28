@@ -1,16 +1,4 @@
 export default {
-  clickFbShare: {
-    name: 'Idea share clicked',
-    properties: {
-      network: 'facebook',
-    },
-  },
-  clickTwitterShare: {
-    name: 'Idea share clicked',
-    properties: {
-      network: 'twitter',
-    },
-  },
   clickUpvote: {
     name: 'Idea upvote clicked',
   },
