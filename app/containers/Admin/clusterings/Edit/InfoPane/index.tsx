@@ -14,6 +14,8 @@ import messages from '../../messages';
 import ComparisonSwitcher from './ComparisonSwitcher';
 import Radio from 'components/UI/Radio';
 import ComparisonLegend from './ComparisonLegend';
+import { injectTracks } from 'utils/analytics';
+import tracks from '../../tracks';
 
 const Container = styled.div`
   width: 100%;
@@ -127,9 +129,14 @@ type State = {
   selectedTab: 'votes' | 'details' | 'options';
 };
 
-class InfoPane extends PureComponent<Props, State> {
+interface TrackProps {
+  trackSwitchNormalization: Function;
+  trackChangeTab: Function;
+}
 
-  constructor(props: Props) {
+class InfoPane extends PureComponent<Props & TrackProps, State> {
+
+  constructor(props) {
     super(props);
     this.state = {
       normalization: 'absolute',
@@ -148,6 +155,7 @@ class InfoPane extends PureComponent<Props, State> {
   }
 
   handleOnChangeNormalization = (normalization: 'absolute' | 'relative') => {
+    this.props.trackSwitchNormalization({ extra: { normalization } });
     this.setState({ normalization });
   }
 
@@ -157,7 +165,9 @@ class InfoPane extends PureComponent<Props, State> {
 
   handleTabOnClick = (event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
-    this.setState({ selectedTab: event.target['dataset']['tab'] });
+    const targetTab = event.target['dataset']['tab'];
+    this.props.trackChangeTab({ extra: { tab: targetTab } });
+    this.setState({ selectedTab: targetTab });
   }
 
   render() {
@@ -235,4 +245,7 @@ class InfoPane extends PureComponent<Props, State> {
   }
 }
 
-export default InfoPane;
+export default injectTracks<Props>({
+  trackSwitchNormalization: tracks.switchNormalization,
+  trackChangeTab: tracks.changeTab,
+})(InfoPane);

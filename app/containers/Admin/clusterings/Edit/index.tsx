@@ -9,6 +9,8 @@ import GetClustering, { GetClusteringChildProps } from 'resources/GetClustering'
 import { withRouter, WithRouterProps } from 'react-router';
 import { globalState, IGlobalStateService, IAdminFullWidth } from 'services/globalState';
 import { colors, media } from 'utils/styleUtils';
+import { injectTracks } from 'utils/analytics';
+import tracks from '../tracks';
 
 const TwoColumns = styled.div`
   flex-shrink: 0;
@@ -51,6 +53,15 @@ interface DataProps {
   clustering: GetClusteringChildProps;
 }
 
+interface TrackProps {
+  trackClickCluster: Function;
+  trackCtrlClickCluster: Function;
+  trackShiftClickCluster: Function;
+  trackClickIdea: Function;
+  trackCtrlClickIdea: Function;
+  trackShiftClickIdea: Function;
+}
+
 interface Props extends InputProps, DataProps {}
 
 interface State {
@@ -58,10 +69,10 @@ interface State {
   selectedNodes: Node[][];
 }
 
-class ClusterViewer extends PureComponent<Props & WithRouterProps, State> {
+class ClusterViewer extends PureComponent<Props & WithRouterProps & TrackProps, State> {
   globalState: IGlobalStateService<IAdminFullWidth>;
 
-  constructor(props: Props & WithRouterProps) {
+  constructor(props) {
     super(props);
     this.state = {
       activeComparison: 0,
@@ -118,6 +129,11 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps, State> {
   }
 
   handleOnClickNode = (node: Node) => {
+    if (node.type === 'idea') {
+      this.props.trackClickIdea({ extra: { id: node.id } });
+    } else {
+      this.props.trackClickCluster({ extra: { type: node.type, id: node.id } });
+    }
     this.setState({
       selectedNodes: [[node]],
       activeComparison: 0
@@ -125,12 +141,22 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps, State> {
   }
 
   handleOnShiftClickNode = (node: Node) => {
+    if (node.type === 'idea') {
+      this.props.trackShiftClickIdea({ extra: { id: node.id } });
+    } else {
+      this.props.trackShiftClickCluster({ extra: { type: node.type, id: node.id } });
+    }
     const selectedNodes = clone(this.state.selectedNodes);
     selectedNodes[this.state.activeComparison] = [...this.comparisonSet(), node];
     this.setState({ selectedNodes });
   }
 
   handleOnCtrlClickNode = (node: Node) => {
+    if (node.type === 'idea') {
+      this.props.trackCtrlClickIdea({ extra: { id: node.id } });
+    } else {
+      this.props.trackCtrlClickCluster({ extra: { type: node.type, id: node.id } });
+    }
     if (this.state.selectedNodes.length < 4) {
       this.setState(({ selectedNodes }) => ({
         selectedNodes: [...selectedNodes, [node]],
@@ -169,8 +195,17 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps, State> {
   }
 }
 
+const ClusterViewerWithHocs = injectTracks<Props>({
+  trackClickCluster: tracks.clickCluster,
+  trackCtrlClickCluster: tracks.ctrlClickCluster,
+  trackShiftClickCluster: tracks.shiftClickCluster,
+  trackClickIdea: tracks.clickIdea,
+  trackCtrlClickIdea: tracks.ctrlClickIdea,
+  trackShiftClickIdea: tracks.shiftClickIdea,
+})(ClusterViewer);
+
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <GetClustering id={inputProps.params.clusteringId}>
-    {(clustering) => <ClusterViewer {...inputProps} clustering={clustering} />}
+    {(clustering) => <ClusterViewerWithHocs {...inputProps} clustering={clustering} />}
   </GetClustering>
 ));
