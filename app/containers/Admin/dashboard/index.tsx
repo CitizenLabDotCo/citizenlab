@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import * as moment from 'moment';
 import HelmetIntl from 'components/HelmetIntl';
 import styled, { ThemeProvider } from 'styled-components';
+import { Link } from 'react-router';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import FeatureFlag from 'components/FeatureFlag';
+import Warning from 'components/UI/Warning';
 import TimeControl from './components/TimeControl';
 import IntervalControl from './components/IntervalControl';
 import GenderChart from './components/GenderChart';
@@ -13,6 +16,10 @@ import UsersByTimeChart from './components/UsersByTimeChart';
 import IdeasByTopicChart from './components/IdeasByTopicChart';
 import { Flex, Box } from 'grid-styled';
 import { colors } from 'utils/styleUtils';
+
+const StyledWarning = styled(Warning)`
+  margin-bottom: 30px;
+`;
 
 const ControlBar = styled.div`
   display: flex;
@@ -45,9 +52,9 @@ interface State {
   intervalIndex: number;
 }
 
-export default class DashboardPage extends React.PureComponent<Props, State> {
+export default class DashboardPage extends PureComponent<Props, State> {
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
       interval: 'months',
       intervalIndex: 0
@@ -87,6 +94,20 @@ export default class DashboardPage extends React.PureComponent<Props, State> {
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
+
+        <FeatureFlag name={'clustering'}>
+          <StyledWarning
+            text={
+              <FormattedMessage
+                {...messages.tryOutInsights}
+                values={{
+                  insightsLink: <Link to={`/admin/clusterings`}><FormattedMessage {...messages.insightsLinkText} /></Link>
+                }}
+              />
+            }
+          />
+        </FeatureFlag>
+
         <ControlBar>
           <TimeControl
             value={intervalIndex}
