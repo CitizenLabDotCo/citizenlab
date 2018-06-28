@@ -3,7 +3,6 @@ import MultipleSelect, { Props as VanillaInputProps } from 'components/UI/Multip
 import { FieldProps } from 'formik';
 import { IOption } from 'typings';
 
-
 type State = {};
 
 class FormikMultipleSelect extends React.Component<FieldProps & VanillaInputProps, State> {

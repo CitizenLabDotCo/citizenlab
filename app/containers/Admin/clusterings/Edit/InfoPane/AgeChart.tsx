@@ -47,13 +47,13 @@ class AgeChart extends PureComponent<Props, State> {
   convertToGraphFormat = (series: IVotesByBirthyear[]) => {
     const currentYear = moment().year();
 
-    const ageBucketRecords = [[0,20],[20,30],[30,40],[40,50],[50,60],[60,100]].map(([minAge, maxAge]) => {
+    const ageBucketRecords = [[0,  20], [20, 30], [30, 40], [40, 50], [50, 60], [60, 100]].map(([minAge, maxAge]) => {
       const record = {
         label: `${minAge}-${maxAge}`,
       };
 
       series.forEach((serie, serieIndex) => {
-        ['up','down','total'].forEach((mode) => {
+        ['up', 'down', 'total'].forEach((mode) => {
           forOwn(serie[mode], (voteCount, birthYear) => {
             const age = currentYear - parseInt(birthYear, 10);
             if (age >= minAge && age < maxAge) {
