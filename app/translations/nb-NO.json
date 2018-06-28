@@ -439,7 +439,6 @@
   "app.containers.AdminPage.SettingsPage.urlError": "The URL is not valid.",
   "app.containers.AdminPage.SettingsPage.urlTitle": "Website (URL)",
   "app.containers.AdminPage.SettingsPage.viewPublicResource": "Innstillinger",
-  "app.containers.AdminPage.SideBar.clustering": "",
   "app.containers.AdminPage.SideBar.dashboard": "Kontrollpanel",
   "app.containers.AdminPage.SideBar.groups": "Grupper",
   "app.containers.AdminPage.SideBar.ideas": "Idéer",
