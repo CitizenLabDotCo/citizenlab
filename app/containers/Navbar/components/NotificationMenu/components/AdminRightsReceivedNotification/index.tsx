@@ -12,10 +12,6 @@ type State = {};
 
 export default class AdminRightsReceivedNotification extends React.PureComponent<Props, State> {
 
-  handleOnClickProject = (event) => {
-    event.stopPropagation();
-  }
-
   render() {
     const { notification } = this.props;
 
