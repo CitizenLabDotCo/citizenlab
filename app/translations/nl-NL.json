@@ -439,7 +439,6 @@
   "app.containers.AdminPage.SettingsPage.urlError": "De URL is niet geldig.",
   "app.containers.AdminPage.SettingsPage.urlTitle": "Website (URL)",
   "app.containers.AdminPage.SettingsPage.viewPublicResource": "Instellingen",
-  "app.containers.AdminPage.SideBar.clustering": "",
   "app.containers.AdminPage.SideBar.dashboard": "Dashboard",
   "app.containers.AdminPage.SideBar.groups": "Groepen",
   "app.containers.AdminPage.SideBar.ideas": "Ideeën",
