@@ -4,6 +4,11 @@
     "tslint-react",
     "tslint-eslint-rules"
   ],
+  "linterOptions": {
+    "exclude": [
+      "app/translations/*.json"
+    ]
+  },
   "rules": {
     "align": [
       true,
