@@ -126,6 +126,7 @@ type InputProps = {
   fbMessage?: string;
   twitterMessage: string;
   userId?: string | null;
+  sharedContent: string;
 };
 
 interface DataProps {
@@ -136,7 +137,7 @@ interface Props extends InputProps, DataProps { }
 
 class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
   render() {
-    const { clickFbShare, clickTwitterShare, clickMessengerShare, imageUrl, userId, tenant, fbMessage, twitterMessage, className, intl } = this.props;
+    const { clickFbShare, clickTwitterShare, clickMessengerShare, imageUrl, userId, tenant, fbMessage, twitterMessage, sharedContent, className, intl } = this.props;
     if (!isNilOrError(tenant)) {
       const { formatMessage } = intl;
       const facebookSettings = (tenant && tenant.attributes.settings.facebook_login ? tenant.attributes.settings.facebook_login : null);
@@ -145,8 +146,8 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
       const facebookText = formatMessage(messages.shareOnFacebook);
       const messengerText = formatMessage(messages.shareViaMessenger);
       const twitterText = formatMessage(messages.shareOnTwitter);
-      const fbURL = (!isNilOrError(userId)) ? `${href}?recruiter=${userId}&utm_source=share_idea&utm_medium=facebook&utm_campaign=autopublish&utm_term=share_idea` : href;
-      const twitterURL = (!isNilOrError(userId)) ? `${href}?recruiter=${userId}&utm_source=share_idea&utm_medium=twitter&utm_campaign=share_idea` : href;
+      const fbURL = (!isNilOrError(userId)) ? `${href}?recruiter=${userId}&utm_source=share_${sharedContent}&utm_medium=facebook&utm_campaign=autopublish&utm_term=share_${sharedContent}` : href;
+      const twitterURL = (!isNilOrError(userId)) ? `${href}?recruiter=${userId}&utm_source=share_${sharedContent}&utm_medium=twitter&utm_campaign=share_idea${sharedContent}` : href;
 
       const facebook = (facebookAppId ? (
         <FacebookButton

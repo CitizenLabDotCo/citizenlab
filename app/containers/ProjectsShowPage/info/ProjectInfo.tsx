@@ -181,6 +181,7 @@ const ProjectInfo = ({ project, projectImages, authUser, intl }) => {
                     imageUrl={projectImages[0].attributes.versions.large}
                     twitterMessage={intl.formatMessage(messages.twitterMessage, { title })}
                     userId={authUser && authUser.id}
+                    sharedContent="project"
                   />);
               }}
             </T>

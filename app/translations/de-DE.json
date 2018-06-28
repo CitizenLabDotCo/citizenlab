@@ -146,6 +146,8 @@
   "app.containers.Admin.Invitations.filetypeError": "Ungültiges Dateiformat. Nur Excel-Dateien (.xslx) werden unterstützt.",
   "app.containers.Admin.Invitations.groupsLabel": "Wenn nötig, wählen Sie eine oder mehrere Gruppen aus, die den eingeladenen Personen bei deren Registrierung zugewiesen werden.",
   "app.containers.Admin.Invitations.groupsPlaceholder": "Keine Gruppe ausgewählt",
+  "app.containers.Admin.Invitations.helmetDescription": "",
+  "app.containers.Admin.Invitations.helmetTitle": "",
   "app.containers.Admin.Invitations.importInfo": "Anmerkung: Die Spalte in Ihrer Excel-Datei, die die E-Mail-Adressen beinhaltet, sollte {emailColumnName} heißen.\n       Laden Sie das hier {downloadLink} herunter und besuchen Sie {supportPageLink} für mehr Informationen zu den unterstützten Spalten-Namen.",
   "app.containers.Admin.Invitations.importLabel": "Wählen Sie eine Excel-Datei (.xlsx) aus",
   "app.containers.Admin.Invitations.importOptionsInfo": "Diese Optionen werden nur berücksichtigt, wenn sie nicht in der Excel-Datei definiert sind.       Bitte besuchen Sie {supportPageLink} für mehr Informationen.",
