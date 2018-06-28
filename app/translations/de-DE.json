@@ -578,7 +578,6 @@
   "app.containers.IdeasShow.loadingComments": "Kommentare werden geladen...",
   "app.containers.IdeasShow.loadingIdea": "{orgName, select, München {Mängelmeldung wird geladen...} other {Idee wird geladen...}}",
   "app.containers.IdeasShow.metaOgTitle": "",
-  "app.containers.IdeasShow.metaOgTitleAuthor": "",
   "app.containers.IdeasShow.metaTitle": "",
   "app.containers.IdeasShow.oneSecond": "Einen Moment bitte...",
   "app.containers.IdeasShow.openMap": "{orgName, select, München {Die Meldung auf einer geografischen Karte anzeigen} other {Die Idee auf einer geografischen Karte anzeigen}}",
