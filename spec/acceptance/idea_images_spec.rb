@@ -32,7 +32,7 @@ resource "IdeaImage" do
     example_request "Get one image of an idea by id" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)
+      expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large fb)
     end
   end
 
@@ -49,7 +49,7 @@ resource "IdeaImage" do
     example_request "Add an image to an idea" do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)
+      expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large fb)
       expect(json_response.dig(:data,:attributes,:ordering)).to eq(1)
     end
   end
@@ -68,7 +68,7 @@ resource "IdeaImage" do
     example_request "Update an image for an idea" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)
+      expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large fb)
       expect(json_response.dig(:data,:attributes,:ordering)).to eq(2)
     end
   end
