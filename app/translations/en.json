@@ -578,7 +578,6 @@
   "app.containers.IdeasShow.loadingComments": "Loading comments...",
   "app.containers.IdeasShow.loadingIdea": "Loading idea...",
   "app.containers.IdeasShow.metaOgTitle": "Support this idea : {ideaTitle}",
-  "app.containers.IdeasShow.metaOgTitleAuthor": "Support my idea : {ideaTitle}",
   "app.containers.IdeasShow.metaTitle": "Idea  • {ideaTitle}",
   "app.containers.IdeasShow.oneSecond": "Just one second...",
   "app.containers.IdeasShow.openMap": "Show idea on map",

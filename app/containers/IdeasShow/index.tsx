@@ -851,13 +851,8 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
 
                 <T value={titleMultiloc} maxLength={50} >
                   {(title) => {
-                    const faceBookMessage = (authUser && authorId && authUser.data.id === authorId) ?
-                      formatMessage(messages.metaOgTitleAuthor, { ideaTitle: title }) :
-                      formatMessage(messages.metaOgTitle, { ideaTitle: title });
                     return (
                       <StyledSharingMobile
-                        imageUrl={ideaImageMedium}
-                        fbMessage={faceBookMessage}
                         twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
                         sharedContent="idea"
                         userId={authUser && authUser.data.id}
@@ -919,13 +914,8 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
                     <SharingWrapper>
                       <T value={titleMultiloc} maxLength={50} >
                         {(title) => {
-                          const faceBookMessage = (authUser && authorId && authUser.data.id === authorId) ?
-                            formatMessage(messages.metaOgTitleAuthor, { ideaTitle: title }) :
-                            formatMessage(messages.metaOgTitle, { ideaTitle: title });
                           return (
                             <StyledSharing
-                              imageUrl={ideaImageMedium}
-                              fbMessage={faceBookMessage}
                               twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
                               sharedContent="idea"
                               userId={authUser && authUser.data.id}

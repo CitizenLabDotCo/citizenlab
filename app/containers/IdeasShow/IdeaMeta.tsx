@@ -60,7 +60,7 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({
     const tenantLocales = tenant.attributes.settings.core.locales;
     const ideaTitle = formatMessage(messages.metaTitle, { ideaTitle: getLocalized(titleMultiloc, locale, tenantLocales, 50) });
     const ideaDescription = stripHtml(getLocalized(bodyMultiloc, locale, tenantLocales), 250);
-    const ideaImage = ideaImages ? ideaImages.data.attributes.versions.medium : null;
+    const ideaImage = ideaImages ? ideaImages.data.attributes.versions.fb : null;
     const ideaUrl = window.location.href;
     const project = getLocalized(projectTitle, locale, tenantLocales, 20);
 
@@ -131,8 +131,8 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({
         <meta property="og:title" content={ideaOgTitle} />
         <meta property="og:description" content={formatMessage(messages.ideaOgDescription)} />
         {ideaImage && <meta property="og:image" content={ideaImage} />}
-        <meta property="og:image:width" content={`${imageSizes.ideaImg.medium[0]}`} />
-        <meta property="og:image:height" content={`${imageSizes.ideaImg.medium[1]}`} />
+        <meta property="og:image:width" content={`${imageSizes.ideaImg.fb[0]}`} />
+        <meta property="og:image:height" content={`${imageSizes.ideaImg.fb[1]}`} />
         {ideaImage &&
           <script type="application/ld+json">
             {JSON.stringify(articleJson)}
