@@ -5,7 +5,6 @@ import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/clusterings`;
 
-
 interface BaseNode {
   id: string;
 }
@@ -34,7 +33,6 @@ export type ParentNode = ProjectNode | TopicNode | CustomNode;
 
 export type Node = ParentNode | IdeaNode;
 
-
 export const ideasUnder = (node: Node): string[] => {
   if (node.type === 'idea') {
     return [node.id];
@@ -42,7 +40,6 @@ export const ideasUnder = (node: Node): string[] => {
     return flatten(node.children.map((c) => ideasUnder(c)));
   }
 };
-
 
 export interface IClusteringData {
   id: string;

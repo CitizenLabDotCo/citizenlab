@@ -32,7 +32,6 @@ export default class New extends PureComponent<Props> {
       });
   }
 
-
   renderFn = (props) => {
     return <ClusteringForm {...props} />;
   }
