@@ -12,7 +12,7 @@ import Avatar from 'components/Avatar';
 import StatusBadge from 'components/StatusBadge';
 import Icon from 'components/UI/Icon';
 import Comments from './CommentsContainer';
-import Sharing from './Sharing';
+import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import IdeaMap from './IdeaMap';
 import Activities from './Activities';
@@ -721,7 +721,7 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
 
   render() {
     const { inModal, intl: { formatMessage } } = this.props;
-    const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions } = this.state;
+    const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions, authUser } = this.state;
     let loader: JSX.Element | null = null;
     let content: JSX.Element | null = null;
 
@@ -744,10 +744,20 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
       const projectTitleMultiloc = (project && project.data ? project.data.attributes.title_multiloc : null);
       const projectId = idea.data.relationships.project.data.id;
 
+      const ideaAuthorName = ideaAuthor && `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}`;
+
       content = (
         <>
-          <IdeaMeta ideaId={idea.data.id} />
-
+        <IdeaMeta
+          ideaId={idea.data.id}
+          titleMultiloc={titleMultiloc}
+          bodyMultiloc={idea.data.attributes.body_multiloc}
+          ideaAuthorName={ideaAuthorName}
+          ideaImages={ideaImage}
+          publishedAt={idea.data.attributes.published_at}
+          projectTitle={projectTitleMultiloc}
+          projectSlug={project && project.data.attributes.slug}
+        />
           <IdeaContainer id="e2e-idea-show">
             <HeaderWrapper>
               {project && projectTitleMultiloc &&
@@ -839,7 +849,19 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
 
                 <SeparatorRow />
 
-                <StyledSharingMobile imageUrl={ideaImageMedium} />
+                <T value={titleMultiloc} maxLength={50} >
+                  {(title) => {
+                    const faceBookMessage = (authUser && authorId && authUser.data.id === authorId) ?
+                      formatMessage(messages.metaOgTitleAuthor, { ideaTitle: title }) :
+                      formatMessage(messages.metaOgTitle, { ideaTitle: title });
+                    return (
+                      <StyledSharingMobile
+                        imageUrl={ideaImageMedium}
+                        fbMessage={faceBookMessage}
+                        twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
+                      />);
+                  }}
+                </T>
 
                 <CommentsTitle>
                   <FormattedMessage {...messages.commentsTitle} />
@@ -893,7 +915,19 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
                     }
 
                     <SharingWrapper>
-                      <StyledSharing imageUrl={ideaImageLarge} />
+                      <T value={titleMultiloc} maxLength={50} >
+                        {(title) => {
+                          const faceBookMessage = (authUser && authorId && authUser.data.id === authorId) ?
+                            formatMessage(messages.metaOgTitleAuthor, { ideaTitle: title }) :
+                            formatMessage(messages.metaOgTitle, { ideaTitle: title });
+                          return (
+                            <StyledSharing
+                              imageUrl={ideaImageMedium}
+                              fbMessage={faceBookMessage}
+                              twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
+                            />);
+                        }}
+                      </T>
                     </SharingWrapper>
 
                     {(moreActions && moreActions.length > 0) &&

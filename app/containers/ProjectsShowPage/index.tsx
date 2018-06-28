@@ -61,7 +61,7 @@ const ProjectNotFoundWrapper = styled.div`
   color: ${colors.label};
 `;
 
-interface InputProps {}
+interface InputProps { }
 
 interface DataProps {
   locale: GetLocaleChildProps;
@@ -71,7 +71,7 @@ interface DataProps {
   events: GetEventsChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 interface State {
   hasEvents: boolean;
@@ -99,19 +99,19 @@ class ProjectsShowPage extends React.PureComponent<Props & WithRouterProps, Stat
               />
             </ProjectNotFoundWrapper>
           ) : (
-            loading ? (
-              <Loading>
-                <Spinner size="32px" color="#666" />
-              </Loading>
-            ) : (
-              <>
-                <Content>
-                  {children}
-                </Content>
-                <Footer showCityLogoSection={false} />
-              </>
-            )
-          )}
+              loading ? (
+                <Loading>
+                  <Spinner size="32px" color="#666" />
+                </Loading>
+              ) : (
+                  <>
+                    <Content>
+                      {children}
+                      <Footer showCityLogoSection={false} />
+                    </Content>
+                  </>
+                )
+            )}
         </Container>
       </>
     );
@@ -119,8 +119,8 @@ class ProjectsShowPage extends React.PureComponent<Props & WithRouterProps, Stat
 }
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  locale: <GetLocale/>,
-  tenant: <GetTenant/>,
+  locale: <GetLocale />,
+  tenant: <GetTenant />,
   project: ({ params, render }) => <GetProject slug={params.slug}>{render}</GetProject>,
   phases: ({ project, render }) => <GetPhases projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetPhases>,
   events: ({ project, render }) => <GetEvents projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetEvents>

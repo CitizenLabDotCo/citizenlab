@@ -6,13 +6,17 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import ImageZoom from 'react-medium-image-zoom';
 import Fragment from 'components/Fragment';
+import Sharing from 'components/Sharing';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
 import T from 'components/T';
+import messages from './messages';
+import { injectIntl } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
@@ -127,6 +131,10 @@ const ProjectImages = styled.div`
   }
 `;
 
+const StyledSharing = styled(Sharing)`
+  margin-top: 40px;
+`;
+
 interface InputProps {
   projectId: string;
 }
@@ -134,42 +142,67 @@ interface InputProps {
 interface DataProps {
   project: GetProjectChildProps;
   projectImages: GetProjectImagesChildProps;
+  authUser: GetAuthUserChildProps;
 }
 
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
+  authUser: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
 });
+
+const ProjectInfo = ({ project, projectImages, authUser, intl }) => {
+  if (isNilOrError(project)) return null;
+
+  return (
+    <Container>
+      <Fragment name={`projects/${project.id}/info`}>
+        <Left>
+          <ProjectDescriptionStyled>
+            <T value={project.attributes.description_multiloc} />
+          </ProjectDescriptionStyled>
+        </Left>
+
+        {!isNilOrError(projectImages) && projectImages.length > 0 &&
+          <Right>
+            <ProjectImages>
+              {projectImages.filter(projectImage => projectImage).map((projectImage) => (
+                <ImageZoom
+                  key={projectImage.id}
+                  image={{ src: projectImage.attributes.versions.large }}
+                  zoomImage={{ src: projectImage.attributes.versions.large }}
+                />
+              ))}
+            </ProjectImages>
+            <T value={project.attributes.title_multiloc} maxLength={50} >
+              {(title) => {
+                return (
+                  <StyledSharing
+                    imageUrl={projectImages[0].attributes.versions.large}
+                    twitterMessage={intl.formatMessage(messages.twitterMessage, { title })}
+                    userId={authUser && authUser.id}
+                  />);
+              }}
+            </T>
+          </Right>
+        }
+      </Fragment>
+    </Container>
+  );
+};
+
+const ProjectInfoWhithHoc = injectIntl<DataProps & InputProps>(ProjectInfo);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {({ project, projectImages }) => {
-      if (isNilOrError(project)) return null;
+    {(dataProps) => {
+      if (isNilOrError(dataProps.project)) return null;
 
       return (
-        <Container>
-          <Fragment name={`projects/${project.id}/info`}>
-            <Left>
-              <ProjectDescriptionStyled>
-                <T value={project.attributes.description_multiloc} />
-              </ProjectDescriptionStyled>
-            </Left>
-
-            {!isNilOrError(projectImages) && projectImages.length > 0 &&
-              <Right>
-                <ProjectImages>
-                  {projectImages.filter(projectImage => projectImage).map((projectImage) => (
-                    <ImageZoom
-                      key={projectImage.id}
-                      image={{ src: projectImage.attributes.versions.large }}
-                      zoomImage={{ src: projectImage.attributes.versions.large }}
-                    />
-                  ))}
-                </ProjectImages>
-              </Right>
-            }
-          </Fragment>
-        </Container>
+        <ProjectInfoWhithHoc
+          {...inputProps}
+          {...dataProps}
+        />
       );
     }}
   </Data>
