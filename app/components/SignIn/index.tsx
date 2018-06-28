@@ -107,11 +107,11 @@ const CreateAnAccountStyle = css`
   }
 `;
 
-const CreateAnAccountDiv = styled.div`
+const CreateAnAccountDiv: any = styled.div`
   ${CreateAnAccountStyle}
 `;
 
-const CreateAnAccountLink = styled(Link)`
+const CreateAnAccountLink: any = styled(Link)`
   ${CreateAnAccountStyle}
 `;
 

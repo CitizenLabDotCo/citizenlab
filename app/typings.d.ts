@@ -72,13 +72,14 @@ declare namespace API {
   interface ErrorResponse {
     json: {
       errors: Errors
-    }
+    };
   }
 
   interface ImageSizes {
     small: string | null;
     medium: string | null;
     large: string | null;
+    fb?: string | null;
   }
 }
 

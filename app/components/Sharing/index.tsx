@@ -121,11 +121,10 @@ interface ITracks {
 }
 
 type InputProps = {
-  imageUrl: string | null;
   className?: string;
-  fbMessage?: string;
   twitterMessage: string;
-  userId?: string | null;
+  userId: string | null;
+  sharedContent: string;
 };
 
 interface DataProps {
@@ -136,17 +135,16 @@ interface Props extends InputProps, DataProps { }
 
 class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
   render() {
-    const { clickFbShare, clickTwitterShare, clickMessengerShare, imageUrl, userId, tenant, fbMessage, twitterMessage, className, intl } = this.props;
+    const { clickFbShare, clickTwitterShare, clickMessengerShare, userId, tenant, twitterMessage, sharedContent, className, intl: { formatMessage } } = this.props;
     if (!isNilOrError(tenant)) {
-      const { formatMessage } = intl;
       const facebookSettings = (tenant && tenant.attributes.settings.facebook_login ? tenant.attributes.settings.facebook_login : null);
       const facebookAppId = (facebookSettings ? facebookSettings.app_id : null);
       const href = window.location.href;
       const facebookText = formatMessage(messages.shareOnFacebook);
       const messengerText = formatMessage(messages.shareViaMessenger);
       const twitterText = formatMessage(messages.shareOnTwitter);
-      const fbURL = (!isNilOrError(userId)) ? `${href}?recruiter=${userId}&utm_source=share_idea&utm_medium=facebook&utm_campaign=autopublish&utm_term=share_idea` : href;
-      const twitterURL = (!isNilOrError(userId)) ? `${href}?recruiter=${userId}&utm_source=share_idea&utm_medium=twitter&utm_campaign=share_idea` : href;
+      const fbURL = userId ? `${href}?recruiter=${userId}&utm_source=share_${sharedContent}&utm_medium=facebook&utm_campaign=autopublish&utm_term=share_${sharedContent}` : href;
+      const twitterURL = userId ? `${href}?recruiter=${userId}&utm_source=share_${sharedContent}&utm_medium=twitter&utm_campaign=share_${sharedContent}` : href;
 
       const facebook = (facebookAppId ? (
         <FacebookButton
@@ -154,9 +152,7 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
           url={fbURL}
           appId={facebookAppId}
           sharer={true}
-          media={imageUrl}
           onClick={clickFbShare}
-          message={fbMessage}
         >
           <IconWrapper>
             <Icon name="facebook" />
@@ -179,7 +175,6 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
           className="sharingButton twitter"
           url={twitterURL}
           sharer={true}
-          media={imageUrl}
           onClick={clickTwitterShare}
           message={twitterMessage}
         >
