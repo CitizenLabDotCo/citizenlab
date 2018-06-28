@@ -14,6 +14,7 @@ export const imageSizes = {
     small: [520, 250],
   },
   ideaImg: {
+    fb: [1200, 630],
     medium: [298, 135],
     small: [96, 96],
   },
