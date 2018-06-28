@@ -48,7 +48,9 @@ class WebApi::V1::ClusteringsController < ApplicationController
 
     authorize @clustering
 
+    SideFxClusteringService.new.before_create(@clustering, current_user)
     if @clustering.save
+      SideFxClusteringService.new.after_create(@clustering, current_user)
       render json: @clustering, status: :created
     else
       render json: { errors: @clustering.errors.details }, status: :unprocessable_entity
@@ -57,7 +59,10 @@ class WebApi::V1::ClusteringsController < ApplicationController
 
   def update
     @clustering.assign_attributes clustering_params
+
+    SideFxClusteringService.new.before_update(@clustering, current_user)
     if @clustering.save
+      SideFxClusteringService.new.after_update(@clustering, current_user)
       render json: @clustering, status: :ok
     else
       render json: { errors: @clustering.errors.details }, status: :unprocessable_entity
@@ -65,8 +70,10 @@ class WebApi::V1::ClusteringsController < ApplicationController
   end
 
   def destroy
+    SideFxClusteringService.new.before_destroy(@clustering, current_user)
     clustering = @clustering.destroy
     if clustering.destroyed?
+      SideFxClusteringService.new.after_destroy(clustering, current_user)
       head :ok
     else
       head 500
