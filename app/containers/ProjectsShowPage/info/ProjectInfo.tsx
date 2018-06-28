@@ -17,6 +17,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import T from 'components/T';
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
@@ -131,7 +132,7 @@ const ProjectImages = styled.div`
   }
 `;
 
-const StyledSharing = styled(Sharing)`
+const StyledSharing = styled(Sharing) `
   margin-top: 40px;
 `;
 
@@ -144,6 +145,7 @@ interface DataProps {
   projectImages: GetProjectImagesChildProps;
   authUser: GetAuthUserChildProps;
 }
+interface Props extends InputProps, DataProps { }
 
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
@@ -151,8 +153,10 @@ const Data = adopt<DataProps, InputProps>({
   authUser: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
 });
 
-const ProjectInfo = ({ project, projectImages, authUser, intl }) => {
+const ProjectInfo = (props: Props & InjectedIntlProps) => {
+  const { project, projectImages, authUser, intl: { formatMessage } } = props;
   if (isNilOrError(project)) return null;
+  const userId = !isNilOrError(authUser) ? authUser.id : null;
 
   return (
     <Container>
@@ -163,8 +167,8 @@ const ProjectInfo = ({ project, projectImages, authUser, intl }) => {
           </ProjectDescriptionStyled>
         </Left>
 
-        {!isNilOrError(projectImages) && projectImages.length > 0 &&
-          <Right>
+        <Right>
+          {!isNilOrError(projectImages) && projectImages.length > 0 &&
             <ProjectImages>
               {projectImages.filter(projectImage => projectImage).map((projectImage) => (
                 <ImageZoom
@@ -174,18 +178,18 @@ const ProjectInfo = ({ project, projectImages, authUser, intl }) => {
                 />
               ))}
             </ProjectImages>
-            <T value={project.attributes.title_multiloc} maxLength={50} >
-              {(title) => {
-                return (
-                  <StyledSharing
-                    imageUrl={projectImages[0].attributes.versions.large}
-                    twitterMessage={intl.formatMessage(messages.twitterMessage, { title })}
-                    userId={authUser && authUser.id}
-                  />);
-              }}
-            </T>
-          </Right>
-        }
+          }
+          <T value={project.attributes.title_multiloc} maxLength={50} >
+            {(title) => {
+              return (
+                <StyledSharing
+                  twitterMessage={formatMessage(messages.twitterMessage, { title })}
+                  userId={userId}
+                  sharedContent="project"
+                />);
+            }}
+          </T>
+        </Right>
       </Fragment>
     </Container>
   );

@@ -35,6 +35,30 @@ export interface IIdeasByTopic{
   };
 }
 
+interface IGenderCounts {
+  male: number;
+  female: number;
+  unspecified: number;
+  _blank: number;
+}
+export interface IVotesByGender {
+  up: IGenderCounts;
+  down: IGenderCounts;
+  total: IGenderCounts;
+}
+
+export interface IVotesByBirthyear {
+  up: { [key: number]: number };
+  down: { [key: number]: number };
+  total: { [key: number]: number };
+}
+
+export interface IVotesByDomicile {
+  up: { [key: string]: number };
+  down: { [key: string]: number };
+  total: { [key: string]: number };
+}
+
 export function usersByGenderStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsersByGender>({ apiEndpoint: `${apiEndpoint}/users_by_gender`, ...streamParams });
 }
@@ -57,4 +81,16 @@ export function usersByTimeStream(streamParams: IStreamParams | null = null) {
 
 export function ideasByTopicStream(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeasByTopic>({ apiEndpoint: `${apiEndpoint}/ideas_by_topic`, ...streamParams });
+}
+
+export function votesByGenderStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IVotesByGender>({ apiEndpoint: `${apiEndpoint}/votes_by_gender`, ...streamParams });
+}
+
+export function votesByBirthyearStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IVotesByBirthyear>({ apiEndpoint: `${apiEndpoint}/votes_by_birthyear`, ...streamParams });
+}
+
+export function votesByDomicileStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IVotesByDomicile>({ apiEndpoint: `${apiEndpoint}/votes_by_domicile`, ...streamParams });
 }

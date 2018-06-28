@@ -142,10 +142,6 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.metaTitle',
     defaultMessage: 'Idea  • {ideaTitle}',
   },
-  metaOgTitleAuthor: {
-    id: 'app.containers.IdeasShow.metaOgTitleAuthor',
-    defaultMessage: 'Support my idea : {ideaTitle}',
-  },
   metaOgTitle: {
     id: 'app.containers.IdeasShow.metaOgTitle',
     defaultMessage: 'Support this idea : {ideaTitle}',
