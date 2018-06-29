@@ -5,6 +5,7 @@ class WebApi::V1::AreasController < ApplicationController
     @areas = policy_scope(Area)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
+    @areas = @areas.order(created_at: :desc)
     render json: @areas
   end
 
@@ -26,8 +27,8 @@ class WebApi::V1::AreasController < ApplicationController
   end
 
   def update
-    SideFxAreaService.new.before_update(@area, current_user)
     @area.assign_attributes area_params
+    SideFxAreaService.new.before_update(@area, current_user)
     if @area.save
       SideFxAreaService.new.after_update(@area, current_user)
       render json: @area, status: :ok

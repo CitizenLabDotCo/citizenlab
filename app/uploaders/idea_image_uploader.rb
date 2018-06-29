@@ -49,6 +49,10 @@ class IdeaImageUploader < CarrierWave::Uploader::Base
     # process optimize: [{ quality: 90, quiet: true }]
   end
 
+  version :fb do
+    process resize_to_fill: [1200, 630]
+  end
+
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
   def extension_whitelist

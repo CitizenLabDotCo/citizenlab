@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe SideFxCommentService do
+describe SideFxAreaService do
   let(:service) { SideFxAreaService.new }
   let(:user) { create(:user) }
   let(:area) { create(:area) }
