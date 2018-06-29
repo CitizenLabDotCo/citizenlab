@@ -5,6 +5,7 @@ class WebApi::V1::AreasController < ApplicationController
     @areas = policy_scope(Area)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
+    @areas = @areas.order(created_at: :desc)
     render json: @areas
   end
 
