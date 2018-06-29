@@ -86,7 +86,7 @@ export function addTenantInfo(properties, tenant: ITenantData) {
     tenantName: tenant && tenant.attributes.name,
     tenantHost: tenant && tenant.attributes.host,
     tenantOrganizationType: tenant && tenant.attributes.settings.core.organization_type,
-    tenantLifecyleStage: tenant && tenant.attributes.settings.core.lifecycle_stage,
+    tenantLifecycleStage: tenant && tenant.attributes.settings.core.lifecycle_stage,
   };
 }
 
