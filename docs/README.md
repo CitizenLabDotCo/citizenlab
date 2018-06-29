@@ -23,6 +23,10 @@
 - When you receive admin rights, a notification is shown
 - `tenantLifecycleStage` property is now present in all tracked events to segment
 
+### Changed
+ - Meta tags can't be changed through the admin panel anymore
+ - Social sharing buttons changed aspect to be more visible
+
 ## 2018-06-20
 
 ### Fixed
