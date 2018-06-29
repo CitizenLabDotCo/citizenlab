@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import * as moment from 'moment';
 import HelmetIntl from 'components/HelmetIntl';
 import styled, { ThemeProvider } from 'styled-components';
-import { Link } from 'react-router';
+import Link from 'utils/cl-router/Link';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import FeatureFlag from 'components/FeatureFlag';
