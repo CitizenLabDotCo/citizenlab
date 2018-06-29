@@ -55,13 +55,9 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales, pro
         <meta name="description" content={description} />
         <meta property="og:title" content={metaTitle} />
         <meta property="og:description" content={description} />
-        {image &&
-          <>
-            <meta property="og:image" content={image} />
-            <meta property="og:image:width" content={`${imageSizes.projectBg.large[0]}`} />
-            <meta property="og:image:height" content={`${imageSizes.projectBg.large[1]}`} />
-          </>
-        }
+        {image && <meta property="og:image" content={image} />}
+        <meta property="og:image:width" content={`${imageSizes.projectBg.large[0]}`} />
+        <meta property="og:image:height" content={`${imageSizes.projectBg.large[1]}`} />
         <meta property="og:url" content={url} />
         <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
