@@ -4,8 +4,6 @@ import React from 'react';
 // styles
 import { ProjectDescriptionStyled } from 'containers/ProjectsShowPage/info/ProjectInfo';
 
-import QuillEditor from 'components/QuillEditor';
-
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
@@ -16,7 +14,7 @@ import Error from 'components/UI/Error';
 import { Section, SectionField } from 'components/admin/Section';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
-import FormikEditorMultiloc from 'components/UI/FormikEditorMultiloc';
+import FormikQuillMultiloc from 'components/QuillEditor/FormikQuillMultiloc';
 
 // Typings
 import { Multiloc } from 'typings';
@@ -54,35 +52,31 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
             <Error fieldName="description_preview_multiloc" apiErrors={errors.description_preview_multiloc} />
           </SectionField>
 
-          <ProjectDesc>
-            <QuillEditor
-              id="1"
-            />
-          </ProjectDesc>
-
           <SectionField>
-            <Field
-              component={FormikEditorMultiloc}
-              id="project-description"
-              name="description_multiloc"
-              label={<FormattedMessage {...messages.descriptionLabel} />}
-              toolbarConfig={{
-                options: ['inline', 'list', 'link', 'blockType'],
-                inline: {
-                  options: ['bold', 'italic'],
-                },
-                list: {
-                  options: ['unordered', 'ordered'],
-                },
-                blockType: {
-                  inDropdown: false,
-                  options: ['Normal', 'H1'],
-                  className: undefined,
-                  component: undefined,
-                  dropdownClassName: undefined,
-                }
-              }}
-            />
+            <ProjectDesc>
+              <Field
+                component={FormikQuillMultiloc}
+                id="project-description"
+                name="description_multiloc"
+                label={<FormattedMessage {...messages.descriptionLabel} />}
+                toolbarConfig={{
+                  options: ['inline', 'list', 'link', 'blockType'],
+                  inline: {
+                    options: ['bold', 'italic'],
+                  },
+                  list: {
+                    options: ['unordered', 'ordered'],
+                  },
+                  blockType: {
+                    inDropdown: false,
+                    options: ['Normal', 'H1'],
+                    className: undefined,
+                    component: undefined,
+                    dropdownClassName: undefined,
+                  }
+                }}
+              />
+            </ProjectDesc>
             <Error fieldName="description_multiloc" apiErrors={errors.description_multiloc} />
           </SectionField>
         </Section>

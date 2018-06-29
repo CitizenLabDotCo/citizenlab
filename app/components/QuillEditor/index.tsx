@@ -14,12 +14,32 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // Typings
-interface Props {
+export interface InputProps {
   noToolbar?: boolean;
   noMentions?: boolean;
   noImages?: boolean;
   id: string;
 }
+export interface QuillProps {
+  onChange?: (string) => void;
+  value?: string;
+  className?: string;
+  theme?: string;
+  style?: React.CSSProperties;
+  readOnly?: boolean;
+  defaultValue?: string;
+  placeholder?: string;
+  tabIndex?: number;
+  bounds?: string | HTMLElement;
+  onFocus?: () => void;
+  onBlur?: () => void;
+  onKeyPress?: React.EventHandler<any>;
+  onKeyDown?: React.EventHandler<any>;
+  onKeyUp?: React.EventHandler<any>;
+  children?: React.ReactElement<any>;
+}
+
+export interface Props extends InputProps, QuillProps {}
 
 interface State {
   editorHtml: string;
@@ -50,7 +70,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { id, noToolbar, noImages, intl: { formatMessage } } = this.props;
+    const { id, noToolbar, noImages, intl: { formatMessage }, ...quillProps } = this.props;
 
     const toolbarId = `ql-editor-toolbar-${id}`;
 
@@ -91,9 +111,8 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
           </span>
         </div>
         <ReactQuill
-          onChange={this.handleChange}
-          value={this.state.editorHtml}
           modules={modules}
+          {... quillProps}
         />
       </>
     );
