@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 // components
@@ -70,7 +70,7 @@ type Props = {
   setRef?: (arg: HTMLElement) => void;
 };
 
-export default class Popover extends React.PureComponent<Props> {
+export default class Popover extends PureComponent<Props> {
 
   clickOutside = (event) => {
     event.stopPropagation();

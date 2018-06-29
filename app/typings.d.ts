@@ -108,6 +108,7 @@ declare namespace API {
     small: string | null;
     medium: string | null;
     large: string | null;
+    fb?: string | null;
   }
 }
 

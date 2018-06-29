@@ -91,17 +91,17 @@ type Props = {};
 
 type State = {
   authUser: IUser | null;
-  PopoverOpened: boolean;
+  opened: boolean;
 };
 
 export default class UserMenu extends React.PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
       authUser: null,
-      PopoverOpened: false
+      opened: false
     };
     this.subscriptions = [];
   }
@@ -118,12 +118,13 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  togglePopover = () => {
-    this.setState(state => ({ PopoverOpened: !state.PopoverOpened }));
+  togglePopover = (event: React.FormEvent) => {
+    event.preventDefault();
+    this.setState(({ opened }) => ({ opened: !opened }));
   }
 
   closePopover = () => {
-    this.setState({ PopoverOpened: false });
+    this.setState({ opened: false });
   }
 
   signOut = () => {
@@ -131,7 +132,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { authUser, PopoverOpened } = this.state;
+    const { authUser, opened } = this.state;
     const avatar = (authUser ? authUser.data.attributes.avatar : null);
     const userId = (authUser ? authUser.data.id : null);
     const userSlug = (authUser ? authUser.data.attributes.slug : null);
@@ -144,7 +145,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
           </OpenMenuButton>
           <StyledPopover
             id="e2e-user-menu-dropdown"
-            open={PopoverOpened}
+            open={opened}
             onCloseRequest={this.closePopover}
           >
             <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
