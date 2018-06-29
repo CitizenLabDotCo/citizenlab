@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { transparentize, darken } from 'polished';
+import { darken } from 'polished';
 import Icon from 'components/UI/Icon';
 import { color } from 'utils/styleUtils';
 
@@ -9,32 +9,32 @@ const Container = styled.div`
   align-items: center;
   padding: 16px;
   border-radius: 5px;
-  background: ${props => transparentize(0.94, props.theme.colors.clBlue)};
+  background: #d3ecef;
 `;
 
 const StyledIcon = styled(Icon)`
   flex: 0 0 24px;
   width: 24px;
   height: 24px;
-  fill: ${color('clBlue')};
+  fill: ${color('clBlueDark')};
   padding: 0px;
   margin: 0px;
   margin-right: 12px;
 `;
 
 const Text = styled.div`
-  color: ${color('clBlue')};
+  color: ${color('clBlueDark')};
   font-size: 16px;
   line-height: 21px;
   font-weight: 400;
 
   a {
-    color: ${color('clBlue')};
+    color: ${color('clBlueDark')};
     font-weight: 400;
     text-decoration: underline;
 
     &:hover {
-      color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
+      color: ${darken(0.15, color('clBlueDark'))};
     }
   }
 

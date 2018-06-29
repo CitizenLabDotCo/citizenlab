@@ -4,6 +4,7 @@ import React from 'react';
 import ContentContainer from 'components/ContentContainer';
 import ProjectCards from 'components/ProjectCards';
 import Footer from 'components/Footer';
+import ProjectsIndexMeta from './ProjectsIndexMeta';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -26,7 +27,7 @@ const Container = styled.div`
   `}
 `;
 
-const StyledContentContainer = styled(ContentContainer)`
+const StyledContentContainer = styled(ContentContainer) `
   flex: 1 1 auto;
   padding-top: 60px;
   padding-bottom: 100px;
@@ -49,13 +50,16 @@ const PageTitle = styled.h1`
 `;
 
 export default () => (
-  <Container>
-    <StyledContentContainer>
-      <PageTitle>
-        <FormattedMessage {...messages.pageTitle} />
-      </PageTitle>
-      <ProjectCards pageSize={50} sort="new" />
-    </StyledContentContainer>
-    <Footer />
-  </Container>
+  <>
+    <ProjectsIndexMeta />
+    <Container>
+      <StyledContentContainer>
+        <PageTitle>
+          <FormattedMessage {...messages.pageTitle} />
+        </PageTitle>
+        <ProjectCards pageSize={50} sort="new" />
+      </StyledContentContainer>
+      <Footer />
+    </Container>
+  </>
 );
