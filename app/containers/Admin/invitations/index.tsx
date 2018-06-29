@@ -15,6 +15,7 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import InvitesTable from './all';
+import HelmetIntl from 'components/HelmetIntl';
 
 // services
 import { bulkInviteXLSX, bulkInviteEmails, IInviteError, INewBulkInvite } from 'services/invites';
@@ -630,6 +631,10 @@ class Invitations extends React.PureComponent<Props, State> {
 
     return (
       <>
+      <HelmetIntl
+        title={messages.helmetTitle}
+        description={messages.helmetDescription}
+      />
         <form onSubmit={this.handleOnSubmit} id="e2e-invitations">
           <Section>
             <SectionTitle>

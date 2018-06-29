@@ -1,5 +1,32 @@
 # Changelog
 
+## 2018-06-29
+
+### Fixed
+- Facebook now correctly shows the idea image on the very first share
+- Signing up with a google account that has no avatar configured now works again
+- Listing the projects and ideas for projects that have more than 1 group linked to them now works again
+
+### Added
+- Voting Insights [beta]: Get inisghts into who's voting for which content
+  - Feature flagged as 'clustering', disabled by default
+  - Admin dashboard shows a link to the prototype
+- Social sharing buttons on the project info page
+- Usage of `utm_` parameters on social sharing to track sharing performance
+- Various improvements to meta tags throughout the platform
+  - Page title shows the unread notification count
+  - More descriptive page titles on home/projects/ideas
+  - Engaging generic default texts when no meta title/description are provided
+  - Search engines now understand what language and region the platform is targeting
+- Optimized idea image size for facebook sharing
+- Sharing button for facebook messenger on mobile
+- When you receive admin rights, a notification is shown
+- `tenantLifecycleStage` property is now present in all tracked events to segment
+
+### Changed
+ - Meta tags can't be changed through the admin panel anymore
+ - Social sharing buttons changed aspect to be more visible
+
 ## 2018-06-20
 
 ### Fixed

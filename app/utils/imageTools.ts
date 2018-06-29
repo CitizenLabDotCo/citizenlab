@@ -2,6 +2,24 @@ import * as Rx from 'rxjs/Rx';
 import 'whatwg-fetch';
 import { ImageFile } from 'typings';
 
+export const imageSizes = {
+  headerBg: {
+    large: [1440, 480],
+    medium: [720, 152],
+    small: [520, 250],
+  },
+  projectBg: {
+    large: [1440, 360],
+    medium: [720, 180],
+    small: [520, 250],
+  },
+  ideaImg: {
+    fb: [1200, 630],
+    medium: [298, 135],
+    small: [96, 96],
+  },
+};
+
 export async function getBase64FromFile(file: File | ImageFile) {
   return new Promise<string>((resolve, reject) => {
     const reader = new FileReader();

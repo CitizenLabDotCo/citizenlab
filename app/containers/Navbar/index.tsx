@@ -3,7 +3,6 @@ import React from 'react';
 import { get } from 'lodash';
 import { adopt } from 'react-adopt';
 import { Link, withRouter, WithRouterProps } from 'react-router';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import NotificationMenu from './components/NotificationMenu';
@@ -22,11 +21,13 @@ import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // services
 import { updateLocale } from 'services/locale';
+import { isAdmin } from 'services/permissions/roles';
 
 // utils
 import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
 import { getProjectUrl } from 'services/projects';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -38,7 +39,7 @@ import { InjectedIntlProps } from 'react-intl';
 // style
 import styled, { css, } from 'styled-components';
 import { darken, rgba, ellipsis } from 'polished';
-import { colors, fontSize, media } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -119,7 +120,7 @@ const NavigationItem = styled(Link) `
   ${ellipsis('20rem') as any}
   height: 100%;
   color: #999;
-  font-size: ${fontSize('large')};
+  font-size: 17px;
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -156,7 +157,7 @@ const NavigationDropdownItem = styled.button`
   color: #999;
   display: flex;
   fill: #999;
-  font-size: ${fontSize('large')};
+  font-size: 17px;
   font-weight: 400;
   transition: all 100ms ease-out;
   cursor: pointer;
@@ -170,7 +171,7 @@ const NavigationDropdownItem = styled.button`
 
 const ProjectsListItem = styled(Link)`
   color: ${(props) => props.theme.colors.label};
-  font-size: ${fontSize('large')};
+  font-size: 17px;
   font-weight: 400;
   line-height: 22px;
   text-decoration: none;
@@ -193,7 +194,7 @@ const ProjectsListItem = styled(Link)`
 const ProjectsListFooter = styled(Link)`
   width: 100%;
   color: ${colors.label};
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 400;
   text-align: center;
   text-decoration: none;
@@ -269,14 +270,14 @@ const StyledIdeaButton = styled(IdeaButton)`
   }
 
   .buttonText {
-    font-size: 18px !important;
+    font-size: 17px !important;
     color: ${(props) => props.theme.colorMain};
   }
 `;
 
 const LoginLink = styled(Link)`
   color: ${(props) => props.theme.colors.label};
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 400;
   padding: 0;
 
@@ -365,8 +366,9 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
     const { projectsDropdownOpened } = this.state;
     const isAdminPage = (location && location.pathname.startsWith('/admin'));
     const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : [];
-    const tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
     const tenantName = (!isNilOrError(tenant) && !isNilOrError(locale) && getLocalized(tenant.attributes.settings.core.organization_name, locale, tenantLocales));
+    let tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
+    tenantLogo = isAdmin(!isNilOrError(authUser) ? { data: authUser } : null) && tenantLogo ? `${tenantLogo}?${Date.now()}` : tenantLogo;
 
     return (
       <>
