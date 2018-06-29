@@ -594,6 +594,7 @@
   "app.containers.IdeasShow.submittingComment": "Wird veröffentlicht...",
   "app.containers.IdeasShow.twitterMessage": "",
   "app.containers.IdeasShow.voteOnThisIdea": "{orgName, select, München {Bewerten Sie diesen Mangel} other {Stimmen Sie zu dieser Idee ab}}",
+  "app.containers.NotificationMenu.adminRightsReceived": "",
   "app.containers.NotificationMenu.clearAll": "Alle Benachrichtigungen löschen",
   "app.containers.NotificationMenu.commentDeletedByAdmin": "Ihr Kommentar zu '{ideaTitle}' wurde von einem Administrator gelöscht, weil\n      {reasonCode, select, irrelevant {er sachfremd war} inappropriate {sein Inhalt unangemessen war} other {{otherReason}}}",
   "app.containers.NotificationMenu.error": "Benachrichtigungen konnten nicht geladen werden",
