@@ -17,7 +17,7 @@ namespace :migrate do
         yml_models['models']['idea'] = encode_ideas_ei ideas_hash, users_hash, projects_hash
         yml_models['models']['idea_image'] = encode_idea_images_ei ideas_hash
         yml_models['models']['comment'] = encode_comments_ei comments_hash, users_hash, ideas_hash
-        yml_models['models']['votes'] = encode_votes_ei users_hash, ideas_hash, comments_hash
+        yml_models['models']['vote'] = encode_votes_ei users_hash, ideas_hash, comments_hash
         yml_models['models']['phase'] = encode_phases_ei projects_hash
         yml_models['models']['event'] = encode_events_ei projects_hash
     end

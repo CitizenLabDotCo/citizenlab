@@ -133,24 +133,24 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def votes_by_birthyear
-    render json: votes_by_custom_field_key('birthyear')
+    render json: votes_by_custom_field_key('birthyear', params, params[:normalization] || 'absolute')
   end
 
   def votes_by_domicile
-    render json: votes_by_custom_field_key('domicile')
+    render json: votes_by_custom_field_key('domicile', params, params[:normalization] || 'absolute')
   end
 
   def votes_by_education
-    render json: votes_by_custom_field_key('education')
+    render json: votes_by_custom_field_key('education', params, params[:normalization] || 'absolute')
   end
 
   def votes_by_gender
-    render json: votes_by_custom_field_key('gender')
+    render json: votes_by_custom_field_key('gender', params, params[:normalization] || 'absolute')
   end
 
   def votes_by_custom_field
     custom_field = CustomField.find params[:custom_field]
-    render json: votes_by_custom_field_key(custom_field.key)
+    render json: votes_by_custom_field_key(custom_field.key, params, params[:normalization] || 'absolute')
   end
 
   def votes_by_time
@@ -173,31 +173,31 @@ class WebApi::V1::StatsController < ApplicationController
     votes
   end
 
-  def apply_idea_filters ideas
-    ideas = ideas.where(id: params[:ideas]) if params[:ideas].present?
-    ideas = ideas.with_some_topics(params[:topics]) if params[:topics].present?
-    ideas = ideas.with_some_areas(params[:areas]) if params[:areas].present?
-    ideas = ideas.in_phase(params[:phase]) if params[:phase].present?
-    ideas = ideas.where(project_id: params[:project]) if params[:project].present?
-    ideas = ideas.where(author_id: params[:author]) if params[:author].present?
-    ideas = ideas.where(idea_status_id: params[:idea_status]) if params[:idea_status].present?
-    ideas = ideas.search_by_all(params[:search]) if params[:search].present?
-    if params[:publication_status].present?
-      ideas = ideas.where(publication_status: params[:publication_status])
+  def apply_idea_filters ideas, filter_params
+    ideas = ideas.where(id: filter_params[:ideas]) if filter_params[:ideas].present?
+    ideas = ideas.with_some_topics(filter_params[:topics]) if filter_params[:topics].present?
+    ideas = ideas.with_some_areas(filter_params[:areas]) if filter_params[:areas].present?
+    ideas = ideas.in_phase(filter_params[:phase]) if filter_params[:phase].present?
+    ideas = ideas.where(project_id: filter_params[:project]) if filter_params[:project].present?
+    ideas = ideas.where(author_id: filter_params[:author]) if filter_params[:author].present?
+    ideas = ideas.where(idea_status_id: filter_params[:idea_status]) if filter_params[:idea_status].present?
+    ideas = ideas.search_by_all(filter_params[:search]) if filter_params[:search].present?
+    if filter_params[:publication_status].present?
+      ideas = ideas.where(publication_status: filter_params[:publication_status])
     else
       ideas = ideas.where(publication_status: 'published')
     end
-    if (params[:filter_trending] == 'true') && !params[:search].present?
+    if (filter_params[:filter_trending] == 'true') && !filter_params[:search].present?
       ideas = trending_idea_service.filter_trending ideas
     end
     ideas
   end
 
-  def votes_by_custom_field_key key
+  def votes_by_custom_field_key key, filter_params, normalization='absolute'
     serie = Vote
       .where(votable_type: 'Idea')
       .where(created_at: @start_at..@end_at)
-      .where(votable_id: apply_idea_filters(policy_scope(Idea)))
+      .where(votable_id: apply_idea_filters(policy_scope(Idea), filter_params))
       .left_outer_joins(:user)
       .group("mode","users.custom_field_values->>'#{key}'")
       .order("users.custom_field_values->>'#{key}'")
@@ -218,7 +218,25 @@ class WebApi::V1::StatsController < ApplicationController
         (data.dig('up',key) || 0) + (data.dig('down',key) || 0)
       ]
     end.to_h
-    data
+
+    if normalization == 'relative'
+      normalize_votes(data, key)
+    else
+      data
+    end
+  end
+
+  def normalize_votes data, key
+    normalizing_data = votes_by_custom_field_key(key, {}, 'absolute')
+    data.map do |mode, buckets|
+      [
+        mode,
+        buckets.map do |value, number|
+          denominator = (normalizing_data.dig('total', value) || 0) + 1
+          [value, number.to_f*100/denominator.to_f]
+        end.to_h
+      ]
+    end.to_h
   end
 
   def secure_controller?

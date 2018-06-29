@@ -334,6 +334,16 @@
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false}
         }
+      },
+      "clustering": {
+        "type": "object",
+        "description":  "Allows admins to analyze ideas by creating clustered visualizations",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
       }
     },
   "dependencies": {
