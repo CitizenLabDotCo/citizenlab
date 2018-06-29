@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as Rx from 'rxjs';
 
 // router
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // Services
 import { authUserStream } from 'services/auth';
@@ -60,7 +60,7 @@ export default class ProfileEditor extends React.PureComponent<Props, State> {
     const { currentTenant, authUser, areas, loaded } = this.state;
 
     if (loaded && !authUser) {
-      browserHistory.push('/');
+      clHistory.push('/');
     }
 
     if (loaded && currentTenant && authUser && areas) {

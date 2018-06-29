@@ -1,5 +1,5 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 import { Location } from 'history';
 
 interface InputProps {}
@@ -27,9 +27,9 @@ export default class GetLocation extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    this.setState({ location: browserHistory.getCurrentLocation() });
+    this.setState({ location: clHistory.getCurrentLocation() });
 
-    this.unlisten = browserHistory.listen((location) => {
+    this.unlisten = clHistory.listen((location) => {
       this.setState({ location });
     });
   }

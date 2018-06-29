@@ -1,6 +1,7 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { Link, withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
+import Link from 'utils/cl-router/Link';
 import { isUndefined } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
 

@@ -13,7 +13,7 @@ import { Multiloc } from 'typings';
 import messages from '../messages';
 import Label from 'components/UI/Label';
 import Warning from 'components/UI/Warning';
-import { Link } from 'react-router';
+import Link from 'utils/cl-router/Link';
 
 export interface FormValues {
   slug?: string;

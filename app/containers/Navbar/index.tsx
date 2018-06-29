@@ -2,7 +2,7 @@
 import React from 'react';
 import { get } from 'lodash';
 import { adopt } from 'react-adopt';
-import { Link, withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import NotificationMenu from './components/NotificationMenu';
@@ -11,6 +11,7 @@ import MobileNavigation from './components/MobileNavigation';
 import UserMenu from './components/UserMenu';
 import IdeaButton from 'components/IdeaButton';
 import Icon from 'components/UI/Icon';
+import Link from 'utils/cl-router/Link';
 import Dropdown from 'components/UI/Dropdown';
 
 // resources
@@ -368,7 +369,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
     const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : [];
     const tenantName = (!isNilOrError(tenant) && !isNilOrError(locale) && getLocalized(tenant.attributes.settings.core.organization_name, locale, tenantLocales));
     let tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
-    tenantLogo = isAdmin(!isNilOrError(authUser) ? { data: authUser } : null) && tenantLogo ? `${tenantLogo}?${Date.now()}` : tenantLogo;
+    tenantLogo = isAdmin(!isNilOrError(authUser) ? { data: authUser } : undefined) && tenantLogo ? `${tenantLogo}?${Date.now()}` : tenantLogo;
 
     return (
       <>
@@ -379,13 +380,13 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
         <Container role="banner" className={`${isAdminPage ? 'admin' : 'citizen'} ${'alwaysShowBorder'}`}>
           <Left>
             {tenantLogo &&
-              <LogoLink to="/">
+              <LogoLink to="/" onlyActiveOnIndex={true}>
                 <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText, { tenantName })} />
               </LogoLink>
             }
 
             <NavigationItems>
-              <NavigationItem to="/" activeClassName="active">
+              <NavigationItem to="/" activeClassName="active" onlyActiveOnIndex={true}>
                 <FormattedMessage {...messages.pageOverview} />
               </NavigationItem>
 

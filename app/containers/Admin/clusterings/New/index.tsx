@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 import { addClustering } from 'services/clusterings';
 import { Formik, FormikErrors } from 'formik';
 import ClusteringForm, { FormValues } from './ClusteringForm';
@@ -23,7 +23,7 @@ export default class New extends PureComponent<Props> {
       ...values
     })
       .then((clustering) => {
-        browserHistory.push(`/admin/clusterings/${clustering.data.id}`);
+        clHistory.push(`/admin/clusterings/${clustering.data.id}`);
       })
       .catch((errorResponse) => {
         const apiErrors = (errorResponse as API.ErrorResponse).json.errors;

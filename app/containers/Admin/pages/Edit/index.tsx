@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { keys, pick, isEqual } from 'lodash';
 import { API } from 'typings';
-import { browserHistory, withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
 import { updatePage } from 'services/pages';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import PageForm, { FormValues } from '../Form';
@@ -12,6 +12,7 @@ import { fontSize } from 'utils/styleUtils';
 import GoBackButton from 'components/UI/GoBackButton';
 import T from 'components/T';
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 const Title = styled.h1`
   font-size: ${fontSize('xxxl')};
@@ -55,7 +56,7 @@ class EditPage extends React.Component<Props & WithRouterProps, State> {
     if (isNilOrError(page)) return;
 
     updatePage(page.id, { ...this.changedValues(this.initialValues(), values) }).then(() => {
-      browserHistory.push('/admin/pages');
+      clHistory.push('/admin/pages');
     }).catch((errorResponse) => {
       const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
       setErrors(apiErrors);
@@ -64,7 +65,7 @@ class EditPage extends React.Component<Props & WithRouterProps, State> {
   }
 
   handleGoBack = () => {
-    browserHistory.push('/admin/pages');
+    clHistory.push('/admin/pages');
   }
 
   renderFn = (props) => (

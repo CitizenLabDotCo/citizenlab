@@ -4,7 +4,7 @@ import React from 'react';
 import { PreviousPathnameContext } from 'context';
 
 // router
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import SignIn from 'components/SignIn';
@@ -76,11 +76,11 @@ type State = {};
 
 class SignInPage extends React.PureComponent<Props, State> {
   onSuccess = (previousPathname: string | null) => () => {
-    browserHistory.push(previousPathname || '/');
+    clHistory.push(previousPathname || '/');
   }
 
   goToSignUpForm = () => {
-    browserHistory.push('/sign-up');
+    clHistory.push('/sign-up');
   }
 
   render() {
