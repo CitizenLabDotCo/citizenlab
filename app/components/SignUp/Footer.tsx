@@ -1,7 +1,7 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
 import { get } from 'lodash';
-import { Link } from 'react-router';
+import Link from 'utils/cl-router/Link';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import { isNilOrError } from 'utils/helperUtils';

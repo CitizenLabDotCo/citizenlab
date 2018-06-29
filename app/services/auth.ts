@@ -4,7 +4,7 @@ import { API_PATH } from 'containers/App/constants';
 import { getJwt, setJwt, removeJwt } from 'utils/auth/jwt';
 import request from 'utils/request';
 import streams from 'utils/streams';
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 export const authApiEndpoint = `${API_PATH}/users/me`;
 
@@ -72,10 +72,8 @@ export function signOut() {
     authUserStream().observer.next(null);
     streams.reset();
 
-    const currentLocation = browserHistory.getCurrentLocation();
-
-    if (currentLocation.pathname.startsWith('/admin')) {
-      browserHistory.push('/');
+    if (location.pathname.startsWith('/admin')) {
+      clHistory.push('/');
     }
   }
 }

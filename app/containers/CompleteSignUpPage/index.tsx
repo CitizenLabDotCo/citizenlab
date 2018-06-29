@@ -2,7 +2,8 @@ import React from 'react';
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
 import { isNilOrError } from 'utils/helperUtils';
-import { browserHistory, withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
 
 // components
@@ -106,7 +107,7 @@ interface State {}
 class CompleteSignUpPage extends React.PureComponent<Props & WithRouterProps, State> {
 
   redirectToLandingPage = (ideaToPublishId: string | null) => () => {
-    browserHistory.push({
+    clHistory.push({
       pathname: '/',
       search:(ideaToPublishId ? `?idea_to_publish=${ideaToPublishId}` : undefined),
     });

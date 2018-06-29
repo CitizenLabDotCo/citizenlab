@@ -5,7 +5,8 @@ import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 
 // router
-import { Link, browserHistory } from 'react-router';
+import Link from 'utils/cl-router/Link';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import Avatar from 'components/Avatar';
@@ -119,7 +120,7 @@ class Author extends React.PureComponent<Props, State> {
     const { author } = this.state;
 
     if (author) {
-      browserHistory.push(`/profile/${author.data.attributes.slug}`);
+      clHistory.push(`/profile/${author.data.attributes.slug}`);
     }
   }
 

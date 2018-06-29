@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { isFunction, isBoolean, isString } from 'lodash';
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -193,7 +193,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
 
     window.addEventListener('popstate', this.handlePopstateEvent);
 
-    this.unlisten = browserHistory.listen(this.props.close);
+    this.unlisten = clHistory.listen(this.props.close);
 
     if (!document.body.classList.contains('modal-active')) {
       document.body.classList.add('modal-active');
@@ -211,7 +211,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
 
   manuallyCloseModal = () => {
     if (this.props.url && this.goBackUrl) {
-      window.history.pushState({ path: this.goBackUrl }, '', this.goBackUrl);
+      clHistory.push(this.goBackUrl);
     }
 
     this.props.close();

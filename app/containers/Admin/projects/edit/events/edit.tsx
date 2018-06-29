@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import { get, isEmpty, forOwn } from 'lodash';
 
 // libraries
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import Label from 'components/UI/Label';
@@ -158,7 +158,7 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
         savingPromise = updateEvent(this.state.event.data.id, this.state.attributeDiff);
       } else if (this.props.project) {
         savingPromise = addEvent(this.props.project.id, this.state.attributeDiff).then((response) => {
-          browserHistory.push(`/admin/projects/${this.props.params.projectId}/events/${response.data.id}`);
+          clHistory.push(`/admin/projects/${this.props.params.projectId}/events/${response.data.id}`);
           return response;
         });
       }
