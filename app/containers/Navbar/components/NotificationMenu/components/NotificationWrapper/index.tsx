@@ -10,7 +10,6 @@ import { colors, fontSize } from 'utils/styleUtils';
 
 import Icon from 'components/UI/Icon';
 
-
 import { injectTracks } from 'utils/analytics';
 import tracks from '../../../../tracks';
 
