@@ -1,6 +1,8 @@
 import * as Rx from 'rxjs/Rx';
 import 'whatwg-fetch';
 import { ImageFile } from 'typings';
+import { IIdeaImage } from 'services/ideaImages';
+import { IProjectImage } from 'services/projectImages';
 
 export async function getBase64FromFile(file: File | ImageFile) {
   return new Promise<string>((resolve, reject) => {
@@ -58,4 +60,26 @@ export async function convertUrlToFile(imageUrl: string | null): Promise<File | 
 
 export function convertUrlToFileObservable(imageUrl: string | null) {
   return Rx.Observable.fromPromise(convertUrlToFile(imageUrl));
+}
+
+const regExpBase64 = /src=\"data:image\/([a-zA-Z]*);base64,([^\"]*)\"/g;
+
+type IImage = IIdeaImage | IProjectImage;
+
+export function uploadAndReplaceBase64(html: string, id: string, uploadFunction: (id: string, base64: string) => Promise<IImage>) {
+  let htmlResult = html;
+  const matches = html.match(regExpBase64);
+  const promiseArray: Promise<IImage>[] = [];
+  matches && matches.map(match => {
+    promiseArray.push(uploadFunction(id, match.slice(5)));
+  });
+  return new Promise<string>((resolve, reject) => {
+    Promise.all(promiseArray).then(res => {
+      console.log(res);
+      res.forEach(imageData => {
+        htmlResult = htmlResult.replace(regExpBase64, `src="${imageData.data.attributes.versions.large}"`);
+      });
+      resolve(htmlResult);
+    }).catch(() => reject());
+  });
 }
