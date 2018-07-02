@@ -598,7 +598,7 @@ namespace :migrate do
       return
     end
     # description
-    if p.dig('htmlBody_i18n') || p.dig('body_i18n')
+    if p.dig('htmlBody_i18n').present? || p.dig('body_i18n').present?
       d[:body_multiloc] = map_multiloc(p.dig('htmlBody_i18n') || md_to_html(p.dig('body_i18n')), locales_mapping)
     else
       @log.concat ["Couldn't find a body for idea #{p.to_s}"]
