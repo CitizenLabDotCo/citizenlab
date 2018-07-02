@@ -59,7 +59,7 @@ const change = e => e.persist();
 function imageHandler() {
   const range = this.quill.getSelection();
   const value = prompt('What is the image URL');
-  this.quill.insertEmbed(range.index, 'image', value, 'user');
+  this.quill.insertEmbed(range.index, 'image', value);
 }
 
 class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
