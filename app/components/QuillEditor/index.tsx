@@ -8,6 +8,10 @@ import 'react-quill/dist/quill.snow.css';
 import { ImageDrop } from 'quill-image-drop-module';
 Quill.register('modules/imageDrop', ImageDrop);
 
+// Image & video resize modules
+import BlotFormatter from 'quill-blot-formatter';
+Quill.register('modules/blotFormatter', BlotFormatter);
+
 // Localization
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -46,6 +50,7 @@ interface State {
 interface ModulesConfig {
   imageDrop?: boolean;
   toolbar?: any;
+  blotFormatter?: any;
 }
 export interface Props extends InputProps, QuillProps { }
 
@@ -75,6 +80,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
 
     const modules: ModulesConfig = {
       imageDrop: true,
+      blotFormatter: {},
       toolbar: noToolbar ? false : {
         container: `#${toolbarId}`,
         handlers: noImages ? false : {
