@@ -39,8 +39,6 @@ export interface QuillProps {
   children?: React.ReactElement<any>;
 }
 
-export interface Props extends InputProps, QuillProps {}
-
 interface State {
   editorHtml: string;
 }
@@ -49,6 +47,7 @@ interface ModulesConfig {
   imageDrop?: boolean;
   toolbar?: any;
 }
+export interface Props extends InputProps, QuillProps { }
 
 const change = e => e.persist();
 
@@ -99,20 +98,25 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
             <button className="ql-italic" />
             <button className="ql-link" />
           </span>
-
           <span className="ql-formats">
-            {!noImages &&
-              <>
-                <button className="ql-image" />
-                <button className="ql-imageURL" >URL</button>
-              </>
-            }
-            <button className="ql-video" />
+            <select className="ql-align" defaultValue={'0'} onChange={change}>
+                <option value="" aria-selected/>
+                <option value="center" aria-selected/>
+                <option value="right" aria-selected/>
+            </select>
           </span>
+
+          {!noImages &&
+            <span className="ql-formats">
+              <button className="ql-image" />
+              <button className="ql-imageURL" >URL</button>
+              <button className="ql-video" />
+            </span>
+          }
         </div>
         <ReactQuill
           modules={modules}
-          {... quillProps}
+          {...quillProps}
         />
       </>
     );
