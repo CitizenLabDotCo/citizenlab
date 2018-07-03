@@ -1,5 +1,5 @@
 // Libraries
-import * as React from 'react';
+import React from 'react';
 
 // Components
 import Tooltip from '../Tooltip';
@@ -8,6 +8,7 @@ import Icon, { IconNames } from '../Icon';
 
 // Styling
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 const MoreOptionsIcon = styled(Icon)`
   fill: ${(props) => props.theme.colors.label};
@@ -25,7 +26,7 @@ const MoreOptionsIconWrapper = styled.div`
 `;
 
 const MoreOptionsLabel = styled.div`
-  color: ${(props) => props.theme.colors.label};
+  color: ${colors.label};
   font-size: 15px;
   font-weight: 400;
   white-space: nowrap;

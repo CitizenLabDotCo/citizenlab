@@ -74,7 +74,7 @@ const OptionName = styled.div`
 const OptionIcon = styled(Icon)`
   flex: 0 0 1rem;
   height: 1rem;
-  fill: ${color('clBlue')};
+  fill: ${color('clBlueDark')};
   margin-left: 1rem;
 `;
 

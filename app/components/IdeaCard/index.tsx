@@ -32,7 +32,7 @@ import messages from './messages';
 
 // styles
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 // typings
 import { IModalInfo } from 'containers/App';
@@ -100,7 +100,7 @@ const IdeaAuthorAvatar = styled(Avatar)`
 `;
 
 const IdeaAuthorText = styled.div`
-  color: ${(props) => props.theme.colors.label};
+  color: ${colors.label};
   font-size: 14px;
   font-weight: 400;
   line-height: 18px;
@@ -131,14 +131,14 @@ const Footer = styled.div`
 const StyledVoteControl = styled(VoteControl)``;
 
 const CommentIcon = styled(Icon)`
-  fill: ${(props) => props.theme.colors.label};
+  fill: ${colors.label};
   height: 21px;
   margin-right: 7px;
   width: 30px;
 `;
 
 const CommentCount = styled.div`
-  color: ${(props) => props.theme.colors.label};
+  color: ${colors.label};
   font-size: 16px;
   font-weight: 400;
 `;

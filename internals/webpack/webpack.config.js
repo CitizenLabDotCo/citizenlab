@@ -184,7 +184,7 @@ if (isDev) {
     historyApiFallback: true,
     proxy: {
       '/web_api': `http://${API_HOST}:${API_PORT}`,
-      '/auth': `http://${API_HOST}:${API_PORT}`,
+      '/auth/': `http://${API_HOST}:${API_PORT}`,
     },
     stats: {
       chunks: false,

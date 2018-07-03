@@ -1,5 +1,5 @@
 // Libraries
-import React, { FormEvent } from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { map, first } from 'rxjs/operators';
 
@@ -49,7 +49,7 @@ export type State = {
   actions: IAction[] | null;
 };
 
-export default class CommentsMoreActions extends React.Component<Props, State> {
+export default class CommentsMoreActions extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -70,7 +70,7 @@ export default class CommentsMoreActions extends React.Component<Props, State> {
     this.setState({ modalVisible_delete: true });
   }
 
-  closeDeleteModal = (event?) => {
+  closeDeleteModal = (event?: FormEvent) => {
     event && event.preventDefault();
     this.setState({ modalVisible_delete: false });
   }

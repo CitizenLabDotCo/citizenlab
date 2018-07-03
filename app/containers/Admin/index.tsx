@@ -13,7 +13,6 @@ const Container = styled.div`
   color: ${colors.adminTextColor};
   fill: ${colors.adminTextColor};
   border-color: ${colors.adminTextColor};
-  /* border: solid 2px green; */
 
   .ui, .ui.menu .item, .ui.table th, .ui a, .ui input, .ui .active td {
     color: ${colors.adminTextColor} !important;
@@ -29,7 +28,9 @@ const Container = styled.div`
 `;
 
 const RightColumn = styled.div`
-  flex: 1;
+  flex-grow : 1;
+  flex-shrink : 1;
+  flex-basis : 0;
   display: flex;
   flex-direction: column;
   max-width: 1200px;

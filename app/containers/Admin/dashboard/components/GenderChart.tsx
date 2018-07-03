@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React, { PureComponent } from 'react';
+import { Subscription } from 'rxjs';
 import { map } from 'lodash';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -25,11 +25,11 @@ const labelColors = {
   _blank: '#C0C2CE',
 };
 
-class GenderChart extends React.PureComponent<Props & InjectedIntlProps, State> {
-  subscription: Rx.Subscription;
+class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
+  subscription: Subscription;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props: Props & InjectedIntlProps) {
+    super(props);
     this.state = {
       serie: null,
     };
@@ -74,7 +74,7 @@ class GenderChart extends React.PureComponent<Props & InjectedIntlProps, State> 
     const theme = this.props['theme'];
 
     return (
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer>
         <PieChart>
           <Pie
             isAnimationActive={true}

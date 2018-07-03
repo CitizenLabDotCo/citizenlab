@@ -101,8 +101,8 @@ class UsersByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
     const { serie } = this.state;
 
     return (
-      <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={serie} margin={{ right: 40 }}>
+      <ResponsiveContainer>
+        <AreaChart data={serie}>
           <Area
             type="monotone"
             dataKey="value"

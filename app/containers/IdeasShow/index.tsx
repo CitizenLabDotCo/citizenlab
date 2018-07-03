@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { has, isString } from 'lodash';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
+import linkifyHtml from 'linkifyjs/html';
 
 // router
 import Link from 'utils/cl-router/Link';
@@ -41,6 +42,7 @@ import { hasPermission } from 'services/permissions';
 import T from 'components/T';
 import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
+import localize, { injectedLocalized } from 'utils/localize';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 
@@ -112,7 +114,7 @@ const Container = styled.div`
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: 840px;
+  max-width: 820px;
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -400,6 +402,16 @@ const IdeaBody = styled.div`
     }
   }
 
+  a {
+    color: ${colors.clBlueDark};
+    text-decoration: none;
+
+    &:hover {
+      color: ${darken(0.15, colors.clBlueDark)};
+      text-decoration: underline;
+    }
+  }
+
   ul {
     list-style-type: disc;
     list-style-position: outside;
@@ -422,7 +434,7 @@ const IdeaBody = styled.div`
 `;
 
 const CommentsTitle = styled.h2`
-  color: #333;
+  color: ${colors.text};
   font-size: 24px;
   line-height: 38px;
   font-weight: 500;
@@ -565,13 +577,13 @@ type State = {
   moreActions: IAction[];
 };
 
-export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
+export class IdeasShow extends PureComponent<Props & InjectedIntlProps & injectedLocalized, State> {
   initialState: State;
   ideaId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props: Props & InjectedIntlProps & injectedLocalized) {
+    super(props);
     const initialState = {
       authUser: null,
       idea: null,
@@ -736,7 +748,7 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
       const createdAt = idea.data.attributes.created_at;
       const titleMultiloc = idea.data.attributes.title_multiloc;
-      const bodyMultiloc = idea.data.attributes.body_multiloc;
+      const ideaBody = linkifyHtml(this.props.localize(idea.data.attributes.body_multiloc));
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
       const ideaImageLarge = (ideaImage && has(ideaImage, 'data.attributes.versions.large') ? ideaImage.data.attributes.versions.large : null);
       const ideaLocation = (idea.data.attributes.location_point_geojson || null);
@@ -843,7 +855,7 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
 
                 <Fragment name={`ideas/${idea.data.id}/body`}>
                   <IdeaBody className={`${!ideaImageLarge && 'noImage'}`}>
-                    <T value={bodyMultiloc} />
+                    <span dangerouslySetInnerHTML={{ __html: ideaBody }} />
                   </IdeaBody>
                 </Fragment>
 
@@ -978,4 +990,4 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
   }
 }
 
-export default injectIntl(IdeasShow);
+export default injectIntl(localize(IdeasShow));
