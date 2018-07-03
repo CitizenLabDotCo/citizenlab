@@ -7,7 +7,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // Services / Data loading
 import { updateProject, IProjectData } from 'services/projects';
-import { addProjectImage, IProjectImage } from 'services/projectImages';
 import GetProject from 'resources/GetProject';
 
 // Components
@@ -18,9 +17,6 @@ import QuillMultiloc from 'components/QuillEditor/QuillMultiloc';
 import { ProjectDescriptionStyled } from 'containers/ProjectsShowPage/info/ProjectInfo';
 
 const ProjectDesc = ProjectDescriptionStyled.extend``;
-
-// utils
-import { uploadAndReplaceBase64 } from 'utils/imageTools';
 
 // Typing
 import { API } from 'typings';
@@ -42,28 +38,16 @@ class ProjectDescription extends React.PureComponent<Props> {
       setSubmitting(true);
       setStatus(null);
 
-      const promiseArray: Promise<any>[] = Object.keys(values.description_multiloc).map((locale) => {
-        return uploadAndReplaceBase64(values.description_multiloc[locale], this.props.project.id, addProjectImage);
-      });
-
-      Promise.all(promiseArray).then((res) => {
-        console.log(res);
-        res.forEach((html, index) => {
-          const currentLocale = Object.keys(values.description_multiloc)[index];
-          values.description_multiloc[currentLocale] = html;
-        });
-        console.log(values);
-        // Send the values to the API
-        updateProject(project.id, values).catch((errorResponse) => {
-          // Process errors from the API and push them to the Formik context
-          const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
-          setErrors(apiErrors);
-          setSubmitting(false);
-        }).then(() => {
-          // Reset the Formik context for touched and errors tracking
-          resetForm();
-          setStatus('success');
-        });
+      // Send the values to the API
+      updateProject(project.id, values).catch((errorResponse) => {
+        // Process errors from the API and push them to the Formik context
+        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+        setErrors(apiErrors);
+        setSubmitting(false);
+      }).then(() => {
+        // Reset the Formik context for touched and errors tracking
+        resetForm();
+        setStatus('success');
       });
     }
   }

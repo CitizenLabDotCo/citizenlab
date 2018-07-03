@@ -26,6 +26,7 @@ export interface Values {
 }
 
 const ProjectDesc = ProjectDescriptionStyled.extend``;
+
 // Wrapping the editor with the styles from the page where it will be rendered should ensure that styling is consistent.
 
 class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, Values>, State> {
@@ -59,22 +60,6 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
                 id="project-description"
                 name="description_multiloc"
                 label={<FormattedMessage {...messages.descriptionLabel} />}
-                toolbarConfig={{
-                  options: ['inline', 'list', 'link', 'blockType'],
-                  inline: {
-                    options: ['bold', 'italic'],
-                  },
-                  list: {
-                    options: ['unordered', 'ordered'],
-                  },
-                  blockType: {
-                    inDropdown: false,
-                    options: ['Normal', 'H1'],
-                    className: undefined,
-                    component: undefined,
-                    dropdownClassName: undefined,
-                  }
-                }}
               />
             </ProjectDesc>
             <Error fieldName="description_multiloc" apiErrors={errors.description_multiloc} />

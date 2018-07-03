@@ -1,30 +1,25 @@
 // Libraries
 import React from 'react';
+import { FieldProps } from 'formik';
 
 import QuillEditor, { Props as VanillaProps } from 'components/QuillEditor';
 
-// Typings
-export interface Props {
-  name: string;
-}
-export interface State {}
-
-class FormikEditor extends React.Component<Props & VanillaProps, State> {
+class FormikEditor extends React.Component<FieldProps & VanillaProps> {
   handleOnChange(html: string) {
-    this.context.formik.setFieldValue(this.props.name, html);
+    this.props.form.setFieldValue(this.props.field.name, html);
   }
 
   handleOnBlur = () => {
-    this.context.formik.setFieldTouched(this.props.name);
+    this.props.form.setFieldTouched(this.props.field.name);
   }
 
   render() {
-    const { name, ...otherProps } = this.props;
+        const { value } = this.props.field;
     return (
       <QuillEditor
-        {... otherProps}
+        {... this.props}
         onChange={this.handleOnChange}
-        value={this.context.formik.values[name] || ''}
+        value={value || ''}
         onBlur={this.handleOnBlur}
       />
     );
