@@ -20,7 +20,8 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
+import { lighten } from 'polished';
 import { getUrlLocale } from 'services/locale';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
@@ -126,7 +127,7 @@ const TopBarInner = styled.div`
 
 const GoBackIcon = styled(Icon)`
   height: 22px;
-  fill: #666;
+  fill: ${colors.label};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -144,7 +145,7 @@ const GoBackButton = styled.div`
   cursor: pointer;
   background: #fff;
   border-radius: 50%;
-  border: solid 1px #e0e0e0;
+  border: solid 1px ${lighten(0.4, colors.label)};
   transition: all 100ms ease-out;
 
   &:hover {
@@ -157,7 +158,7 @@ const GoBackButton = styled.div`
 `;
 
 const GoBackLabel = styled.div`
-  color: #666;
+  color: ${colors.label};
   font-size: 15px;
   font-weight: 400;
   transition: fill 100ms ease-out;
@@ -183,7 +184,7 @@ const HeaderChildWrapper = styled.div`
 
 const CloseIcon = styled(Icon)`
   height: 13px;
-  fill: #666;
+  fill: ${colors.label};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -201,7 +202,7 @@ const CloseButton = styled.div`
   top: 20px;
   right: 33px;
   border-radius: 50%;
-  border: solid 1px #ccc;
+  border: solid 1px ${lighten(0.4, colors.label)};
   z-index: 10002;
   transition: border-color 100ms ease-out;
 

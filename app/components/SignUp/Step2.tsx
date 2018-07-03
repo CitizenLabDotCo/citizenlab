@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import { isEmpty, get } from 'lodash';
 import { Subscription } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
@@ -71,7 +71,7 @@ type State = {
   apiErrors: API.ErrorResponse | null;
 };
 
-class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
+class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props & InjectedIntlProps) {
@@ -111,7 +111,7 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleOnSubmitButtonClick = (event: React.FormEvent<any>) => {
+  handleOnSubmitButtonClick = (event: FormEvent) => {
     event.preventDefault();
     eventEmitter.emit('SignUpStep2', 'customFieldsSubmitEvent', null);
   }
@@ -142,7 +142,7 @@ class Step2 extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
-  skipStep = (event: React.FormEvent<any>) => {
+  skipStep = (event: FormEvent) => {
     event.preventDefault();
     completeRegistration({});
     this.props.onCompleted();

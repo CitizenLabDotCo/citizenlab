@@ -32,10 +32,17 @@ import messages from './messages';
 // styling
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
-  background: #f9f9fa;
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  display: flex;
+  flex-direction: column;
+  background: ${colors.background};
+
+  ${media.smallerThanMaxTablet`
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+  `}
 `;
 
 const Loading = styled.div`
@@ -57,6 +64,8 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 const PageContent = styled.div`
+  flex-shrink: 0;
+  flex-grow: 1;
   background: #fff;
   padding-top: 60px;
   padding-bottom: 60px;
@@ -118,11 +127,11 @@ const PageDescription = styled.div`
   }
 
   a {
-    color: ${(props) => props.theme.colors.clBlue};
+    color: ${colors.clBlueDark};
     text-decoration: underline;
 
     &:hover {
-      color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
+      color: ${darken(0.15, colors.clBlueDark)};
     }
   }
 `;

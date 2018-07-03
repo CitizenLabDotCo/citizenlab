@@ -48,7 +48,7 @@ const Message = styled.div`
   color: ${(props) => (props as any).isRead ? '#84939E' : '#000000'};
 
   a {
-    color: ${(props) => props.theme.colors.clBlue}
+    color: ${(props) => props.theme.colors.clBlueDark}
 
     :hover,
     :focus {

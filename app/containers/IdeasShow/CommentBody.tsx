@@ -18,9 +18,10 @@ import Error from 'components/UI/Error';
 // Styling
 import styled from 'styled-components';
 import { transparentize, darken } from 'polished';
+import { colors } from 'utils/styleUtils';
 
 const CommentWrapper = styled.div`
-  color: #333;
+  color: ${colors.text};
   font-size: 17px;
   line-height: 25px;
   font-weight: 300;
@@ -29,22 +30,22 @@ const CommentWrapper = styled.div`
 
   span,
   p {
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 
     &:last-child {
-      margin-bottom: 0px;
+      margin-bottom: 10px;
     }
   }
 
   a {
-    color: ${(props) => props.theme.colors.clBlue};
+    color: ${colors.clBlueDark};
 
     &.mention {
-      background: ${props => transparentize(0.92, props.theme.colors.clBlue)};
+      background: ${transparentize(0.92, colors.clBlueDark)};
     }
 
     &:hover {
-      color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
+      color: ${darken(0.15, colors.clBlueDark)};
       text-decoration: underline;
     }
   }
