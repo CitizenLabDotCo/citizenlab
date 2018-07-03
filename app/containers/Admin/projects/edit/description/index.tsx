@@ -7,17 +7,11 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // Services / Data loading
 import { updateProject, IProjectData } from 'services/projects';
-import { addProjectImage, IProjectImage } from 'services/projectImages';
+import { addProjectImage } from 'services/projectImages';
 import GetProject from 'resources/GetProject';
 
 // Components
 import DescriptionEditionForm, { Values } from './DescriptionEditionForm';
-import QuillMultiloc from 'components/QuillEditor/QuillMultiloc';
-
-// styles
-import { ProjectDescriptionStyled } from 'containers/ProjectsShowPage/info/ProjectInfo';
-
-const ProjectDesc = ProjectDescriptionStyled.extend``;
 
 // utils
 import { uploadAndReplaceBase64 } from 'utils/imageTools';
@@ -84,13 +78,6 @@ class ProjectDescription extends React.PureComponent<Props> {
             <DescriptionEditionForm {...formikProps} />
           )}
         </Formik>
-        <ProjectDesc>
-          <QuillMultiloc
-            id="1"
-            valueMultiloc={this.props.project.attributes.description_multiloc}
-            label="description"
-          />
-        </ProjectDesc>
       </>
     );
   }
