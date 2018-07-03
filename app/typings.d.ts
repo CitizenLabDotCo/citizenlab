@@ -101,7 +101,7 @@ declare namespace API {
   interface ErrorResponse {
     json: {
       errors: Errors
-    }
+    };
   }
 
   interface ImageSizes {
