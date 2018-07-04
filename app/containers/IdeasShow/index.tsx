@@ -384,40 +384,46 @@ const TimeAgo = styled.div`
   `}
 `;
 
-const IdeaBody = styled.div`
-  color: #474747;
-  font-size: 19px;
-  font-weight: 300;
-  line-height: 32px;
-  word-break: break-word;
+export function ideaBodyStyle() {
+  return `
+    color: #474747;
+    font-size: 19px;
+    font-weight: 300;
+    line-height: 32px;
+    word-break: break-word;
 
-  p {
-    margin-bottom: 32px;
+    p {
+      margin-bottom: 32px;
 
-    &:last-child {
-      margin-bottom: 0px;
+      &:last-child {
+        margin-bottom: 0px;
+      }
     }
-  }
 
-  ul {
-    list-style-type: disc;
-    list-style-position: outside;
-    padding: 0;
-    padding-left: 30px;
-    margin: 0;
-    margin-bottom: 25px;
-
-    li {
+    ul {
+      list-style-type: disc;
+      list-style-position: outside;
       padding: 0;
-      padding-top: 2px;
-      padding-bottom: 2px;
+      padding-left: 30px;
       margin: 0;
-    }
-  }
+      margin-bottom: 25px;
 
-  strong {
-    font-weight: 500;
-  }
+      li {
+        padding: 0;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        margin: 0;
+      }
+    }
+
+    strong {
+      font-weight: 500;
+    }
+  `;
+}
+
+const IdeaBody = styled.div`
+  ${ideaBodyStyle()}
 `;
 
 const CommentsTitle = styled.h2`
