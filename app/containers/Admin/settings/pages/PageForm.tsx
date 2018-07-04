@@ -67,7 +67,7 @@ const Toggle = styled.div`
   }
 `;
 
-const EditionForm = styled(PageForm) `
+const EditionForm = styled.div`
   overflow: hidden;
   transition: all 350ms cubic-bezier(0.165, 0.84, 0.44, 1);
   margin-top: 15px;
@@ -126,14 +126,14 @@ class PageEditor extends React.PureComponent<Props, State>{
       };
     } else {
       return {
-        title_multiloc: {},
+        title_multiloc: { en: this.props.slug },
         body_multiloc: {},
       };
     }
   }
 
   handleSubmit = (values: FormValues, { setSubmitting, setErrors, setStatus, resetForm }) => {
-    const { page, slug } = this.props;
+    const { page } = this.props;
 
     let savePromise: Promise<IPage> | null = null;
 
@@ -143,7 +143,6 @@ class PageEditor extends React.PureComponent<Props, State>{
       setSubmitting(true);
       setStatus(null);
       if (isNilOrError(page)) {
-        values.slug = slug;
         savePromise = createPage(values);
       } else {
         savePromise = updatePage(page.id, values);
@@ -159,11 +158,18 @@ class PageEditor extends React.PureComponent<Props, State>{
     });
   }
 
+  renderForm = (props) => (
+    <PageForm
+      {...props}
+      mode="simple"
+      hideTitle={this.props.slug !== 'information'}
+    />
+  )
+
   render() {
     const { deployed } = this.state;
     const { className, slug } = this.props;
     const { page } = this.props;
-    console.log(slug);
 
     return (
       <EditorWrapper className={`${className} e2e-page-editor editor-${slug}`}>
@@ -172,27 +178,28 @@ class PageEditor extends React.PureComponent<Props, State>{
           {messages[slug] ? <FormattedMessage {...messages[slug]} /> : slug}
         </Toggle>
 
-        <CSSTransition
-          in={deployed}
-          timeout={timeout}
-          mountOnEnter={true}
-          unmountOnExit={true}
-          enter={true}
-          exit={true}
-          classNames="page"
-        >
-          {page !== undefined &&
-            <Formik
-              initialValues={this.initialValues(page)}
-              onSubmit={this.handleSubmit}
-              component={EditionForm}
-              validate={PageForm.validate}
-              mode="new"
-              hideTitle={slug !== 'information'}
-              slug={slug}
-            />
-          }
-        </CSSTransition>
+        {page !== undefined &&
+          <CSSTransition
+            in={deployed}
+            timeout={timeout}
+            mountOnEnter={true}
+            unmountOnExit={true}
+            enter={true}
+            exit={true}
+            classNames="page"
+          >
+            <EditionForm>
+              <Formik
+                initialValues={this.initialValues(page)}
+                onSubmit={this.handleSubmit}
+                render={this.renderForm}
+                validate={PageForm.validate}
+                mode="new"
+                slug={slug}
+              />
+            </EditionForm>
+          </CSSTransition>
+        }
       </EditorWrapper>
     );
   }
