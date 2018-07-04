@@ -57,7 +57,7 @@ interface Tracks {
 }
 
 export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & Tracks, State> {
-  constructor(props) {
+  constructor(props: Props & InjectedIntlProps & Tracks) {
     super(props);
     this.state = {
       groupEditionModal: false,

@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Multiloc } from 'typings';
 import { throttle } from 'lodash';
 
@@ -92,7 +92,7 @@ interface Tracks {
   trackSearchInput: Function;
 }
 
-class UsersHeader extends React.PureComponent<Props & Tracks, State> {
+class UsersHeader extends PureComponent<Props & Tracks, State> {
   debounceSearch: (newValue: string) => void;
 
   constructor(props) {

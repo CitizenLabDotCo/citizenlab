@@ -173,7 +173,7 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
             hasMore={hasMore}
             threshold={50}
             loader={<LoadingContainer>
-                <Spinner color="#84939E" />
+                <Spinner size="28px" />
               </LoadingContainer>}
           >
             {notifications && notifications.map((notification) => (

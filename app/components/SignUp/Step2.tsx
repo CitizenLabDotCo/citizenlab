@@ -155,7 +155,7 @@ class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
     if (loading) {
       return (
         <Loading id="ideas-loading">
-          <Spinner size="28px" color="#666" />
+          <Spinner size="28px" />
         </Loading>
       );
     }

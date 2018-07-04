@@ -233,7 +233,7 @@ class IdeasProjectSelectPage extends React.PureComponent<Props & WithRouterProps
     if (isUndefined(projectsList)) {
       return (
         <Loading>
-          <Spinner size="32px" color="#666" />
+          <Spinner size="32px" />
         </Loading>
       );
     }

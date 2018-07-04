@@ -322,7 +322,7 @@ class IdeaCards extends React.PureComponent<Props, State> {
 
         {showCardView && querying &&
           <Loading id="ideas-loading">
-            <Spinner size="32px" color="#666" />
+            <Spinner size="32px" />
           </Loading>
         }
 

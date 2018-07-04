@@ -1,5 +1,5 @@
 // libraries
-import React from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -7,11 +7,13 @@ import { FormattedMessage } from 'utils/cl-intl';
 // Components
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
-import PresentationalDropdown from './PresentationalDropdown';
+import Popover from 'components/UI/Popover';
+import Spinner from 'components/UI/Spinner';
 
 // style
 import styled from 'styled-components';
-import { ellipsis } from 'polished';
+import { colors } from 'utils/styleUtils';
+import { lighten, ellipsis } from 'polished';
 
 // typing
 import { Message, Multiloc } from 'typings';
@@ -48,8 +50,10 @@ const DropdownListItem = styled.button`
   flex: 1 0;
   justify-content: space-between !important;
 
-  & span {
-    ${ellipsis('144px') as any}
+  & > span {
+    white-space: nowrap;
+    margin-right: 10px;
+    ${ellipsis('250px') as any}
   }
 
   &:hover, &:focus {
@@ -60,25 +64,35 @@ const DropdownListItem = styled.button`
 
 `;
 
-const DropdownFooter = styled.button`
+const DropdownFooter = styled.div`
   width: 100%;
+`;
+
+const DropdownFooterButton = styled.button`
+  width: 100%;
+  height: 50px;
   color: #fff;
   font-size: 18px;
   font-weight: 400;
   text-align: center;
-  padding: 15px 15px;
-  cursor: pointer;
-  background: #044D6C;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${colors.adminMenuBackground};
   border-radius: 5px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  transition: all 80ms ease-out;
+  transition: all 100ms ease-out;
 
-  &:hover, &:focus {
-    color: #000;
-    background: #044D6C;
-    text-decoration: none;
-    outline: none;
+  &:not(.processing) {
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      background: ${lighten(0.1, colors.adminMenuBackground)};
+      text-decoration: none;
+      outline: none;
+    }
   }
 `;
 
@@ -94,6 +108,7 @@ interface Props {
   children: JSX.Element;
   emitSuccess: (ids: string) => void;
   emitError: () => void;
+  processing?: boolean;
 }
 
 interface State {
@@ -101,7 +116,7 @@ interface State {
   dropdownOpened: boolean;
 }
 
-export default class MultipleSelectDropdown extends React.PureComponent<Props, State> {
+export default class MultipleSelectDropdown extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -109,11 +124,13 @@ export default class MultipleSelectDropdown extends React.PureComponent<Props, S
       dropdownOpened: false,
     };
   }
-  handleDropdownOnClickOutside = (event: React.FormEvent<MouseEvent>) => {
+
+  handleDropdownOnClickOutside = (event: FormEvent<MouseEvent>) => {
     event.preventDefault();
     event.stopPropagation();
     this.setState({ dropdownOpened: false });
   }
+
   handleDropdownToggle = () => {
     this.setState(state => ({ dropdownOpened: !state.dropdownOpened }));
   }
@@ -143,44 +160,54 @@ export default class MultipleSelectDropdown extends React.PureComponent<Props, S
     }
   }
 
-  renderContent = () => (
-    <DropdownMenuInner>
-      <DropdownList>
-        {this.props.choices.length > 0 && this.props.choices.map((choice) => {
-          const id = choice.id;
-          return (
-            <DropdownListItem key={id} onClick={this.onClickRow(id)} className="e2e-dropdown-item">
-              <T value={choice.text} />
-              <Checkbox
-                onChange={this.onClickRow(id)}
-                value={this.state.chosen.includes(id)}
-                size="26px"
-              />
-            </DropdownListItem>
-          );
-        })}
-      </DropdownList>
-
-      <DropdownFooter onClick={this.submit(this.state.chosen)} className="e2e-dropdown-submit">
-        <FormattedMessage {...this.props.dropdownFooterMessage} />
-      </DropdownFooter>
-    </DropdownMenuInner>
-  )
-
   render() {
-    // Thanks for your concern a11y, but I'm wrapping a button, this not the best, but pretty accessible.
+    const { processing, dropdownFooterMessage } = this.props;
+
     return (
-      <PresentationalDropdown
-        content={this.renderContent()}
-        top="45px"
-        color="#fff"
+      <Popover
+        className={this.props['className']}
+        content={
+          <>
+            <DropdownMenuInner>
+              <DropdownList>
+                {this.props.choices.length > 0 && this.props.choices.map((choice) => {
+                  const id = choice.id;
+                  return (
+                    <DropdownListItem key={id} onClick={this.onClickRow(id)} className="e2e-dropdown-item">
+                      <T value={choice.text} />
+                      <Checkbox
+                        onChange={this.onClickRow(id)}
+                        value={this.state.chosen.includes(id)}
+                        size="26px"
+                      />
+                    </DropdownListItem>
+                  );
+                })}
+              </DropdownList>
+              <DropdownFooter>
+                <DropdownFooterButton
+                  className={`e2e-dropdown-submit ${processing === true && 'processing'}`}
+                  onClick={this.submit(this.state.chosen)}
+                >
+                  {processing !== true ? (
+                    <FormattedMessage {...dropdownFooterMessage} />
+                  ) : (
+                    <Spinner size="28px" color="#fff" />
+                  )}
+                </DropdownFooterButton>
+              </DropdownFooter>
+            </DropdownMenuInner>
+          </>
+        }
+        top="40px"
+        backgroundColor="#fff"
         handleDropdownOnClickOutside={this.handleDropdownOnClickOutside}
         dropdownOpened={this.state.dropdownOpened}
       >
         <div role="button" onClick={this.handleDropdownToggle}>
           {this.props.children}
         </div>
-      </PresentationalDropdown>
+      </Popover>
     );
   }
 }

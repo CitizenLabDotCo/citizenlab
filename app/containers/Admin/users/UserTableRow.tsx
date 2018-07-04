@@ -9,7 +9,7 @@ import Avatar from 'components/Avatar';
 import Toggle from 'components/UI/Toggle';
 import Checkbox from 'components/UI/Checkbox';
 import Icon from 'components/UI/Icon';
-import PresentationalDropdown from 'components/admin/MultipleSelectDropdown/PresentationalDropdown';
+import Popover from 'components/UI/Popover';
 
 // Translation
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -83,6 +83,11 @@ const DropdownListButton = styled.button`
   flex: 1 0;
   justify-content: space-between !important;
   cursor: pointer;
+  white-space: nowrap;
+
+  & > span {
+    margin-right: 10px;
+  }
 
   &:hover,
   &:focus {
@@ -133,7 +138,6 @@ interface Props {
   toggleSelect: () => void;
   toggleAdmin: () => void;
   authUser: GetAuthUserChildProps;
-  up?: boolean;
 }
 
 interface State {
@@ -198,7 +202,7 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
   }
 
   render() {
-    const { user, selected, up } = this.props;
+    const { user, selected } = this.props;
     const { optionsOpened, isAdmin } = this.state;
 
     return (
@@ -225,7 +229,7 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
           />
         </td>
         <Options onClick={this.toggleOpened}>
-          <PresentationalDropdown
+          <Popover
             content={
               <DropdownList>
                 <DropdownListLink to={`/profile/${this.props.user.attributes.slug}`}>
@@ -242,15 +246,14 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
                 </DropdownListButton>
               </DropdownList>
             }
-            top={up ? '-120px' : '30px'}
-            left="-100px"
-            color={colors.adminMenuBackground}
+            top="35px"
+            backgroundColor={colors.adminMenuBackground}
+            borderColor={colors.adminMenuBackground}
             handleDropdownOnClickOutside={this.handleDropdownOnClickOutside}
             dropdownOpened={optionsOpened}
-            up={up}
           >
             <SIcon name="more-options" />
-          </PresentationalDropdown>
+          </Popover>
         </Options>
       </tr>
     );

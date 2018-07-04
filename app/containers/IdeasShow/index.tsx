@@ -740,7 +740,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & injecte
 
     if (opened && !loaded) {
       loader = (
-        <StyledSpinner size="32px" color="#666" />
+        <StyledSpinner size="32px" />
       );
     }
 
