@@ -1,8 +1,6 @@
 import * as Rx from 'rxjs/Rx';
 import 'whatwg-fetch';
 import { ImageFile } from 'typings';
-import { IIdeaImage } from 'services/ideaImages';
-import { IProjectImage } from 'services/projectImages';
 
 export async function getBase64FromFile(file: File | ImageFile) {
   return new Promise<string>((resolve, reject) => {
