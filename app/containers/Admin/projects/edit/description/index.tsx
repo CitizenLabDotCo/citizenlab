@@ -11,12 +11,6 @@ import GetProject from 'resources/GetProject';
 
 // Components
 import DescriptionEditionForm, { Values } from './DescriptionEditionForm';
-import QuillMultiloc from 'components/QuillEditor/QuillMultiloc';
-
-// styles
-import { ProjectDescriptionStyled } from 'containers/ProjectsShowPage/info/ProjectInfo';
-
-const ProjectDesc = ProjectDescriptionStyled.extend``;
 
 // Typing
 import { API } from 'typings';
@@ -56,7 +50,6 @@ class ProjectDescription extends React.PureComponent<Props> {
     const { description_preview_multiloc, description_multiloc }: Values = this.props.project.attributes;
 
     return (
-      <>
         <Formik
           onSubmit={this.saveProject}
           initialValues={{
@@ -68,14 +61,6 @@ class ProjectDescription extends React.PureComponent<Props> {
             <DescriptionEditionForm {...formikProps} />
           )}
         </Formik>
-        <ProjectDesc>
-          <QuillMultiloc
-            id="1"
-            valueMultiloc={this.props.project.attributes.description_multiloc}
-            label="description"
-          />
-        </ProjectDesc>
-      </>
     );
   }
 }

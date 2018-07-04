@@ -21,6 +21,7 @@ export default class FormikQuillMultiloc extends React.Component<FieldProps & Mu
     return (
       <QuillMultiloc
         {...this.props}
+        id={this.props.field.name}
         valueMultiloc={value}
         onChangeMultiloc={this.handleOnChange}
         onBlur={this.handleOnBlur}
