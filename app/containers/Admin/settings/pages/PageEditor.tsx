@@ -117,7 +117,8 @@ class PageEditor extends React.PureComponent<Props, State>{
     this.setState({ deployed: !this.state.deployed });
   }
 
-  initialValues = (page) => {
+  initialValues = () => {
+    const { page } = this.props;
     if (!isNilOrError(page)) {
       return {
         title_multiloc: page.attributes.title_multiloc,
@@ -178,7 +179,6 @@ class PageEditor extends React.PureComponent<Props, State>{
           {messages[slug] ? <FormattedMessage {...messages[slug]} /> : slug}
         </Toggle>
 
-        {page !== undefined &&
           <CSSTransition
             in={deployed}
             timeout={timeout}
@@ -189,17 +189,18 @@ class PageEditor extends React.PureComponent<Props, State>{
             classNames="page"
           >
             <EditionForm>
+              {page !== undefined &&
               <Formik
-                initialValues={this.initialValues(page)}
+                initialValues={this.initialValues()}
                 onSubmit={this.handleSubmit}
                 render={this.renderForm}
                 validate={PageForm.validate}
                 mode="new"
                 slug={slug}
               />
+            }
             </EditionForm>
           </CSSTransition>
-        }
       </EditorWrapper>
     );
   }
