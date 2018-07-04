@@ -63,6 +63,14 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
     }
   }
 
+  renderQuill = (props) => {
+    return (
+      <DescriptionEditor
+        {...props}
+      />
+    );
+  }
+
   render() {
     const { isSubmitting, errors, isValid, touched, mode, hideTitle } = this.props;
 
@@ -88,7 +96,7 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
           >
             <Field
               name="body_multiloc"
-              component={DescriptionEditor}
+              render={this.renderQuill}
               label={<FormattedMessage {...messages.editContent} />}
               renderPerLocale={this.renderAdavancedEditorLink}
             />

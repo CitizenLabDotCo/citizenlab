@@ -12,6 +12,40 @@ Quill.register('modules/imageDrop', ImageDrop);
 import BlotFormatter from 'quill-blot-formatter';
 Quill.register('modules/blotFormatter', BlotFormatter);
 
+// BEGIN allow image alignment styles
+const ImageFormatAttributesList = [
+  'alt',
+  'height',
+  'width',
+  'style',
+];
+
+const BaseImageFormat = Quill.import('formats/image');
+class ImageFormat extends BaseImageFormat {
+  static formats(domNode) {
+    return ImageFormatAttributesList.reduce((formats, attribute) => {
+      if (domNode.hasAttribute(attribute)) {
+        formats[attribute] = domNode.getAttribute(attribute);
+      }
+      return formats;
+    }, {});
+  }
+  format(name, value) {
+    if (ImageFormatAttributesList.indexOf(name) > -1) {
+      if (value) {
+        this.domNode.setAttribute(name, value);
+      } else {
+        this.domNode.removeAttribute(name);
+      }
+    } else {
+      super.format(name, value);
+    }
+  }
+}
+
+Quill.register(ImageFormat, true);
+// END allow image alignment styles
+
 // Localization
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -106,9 +140,9 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
           </span>
           <span className="ql-formats">
             <select className="ql-align" defaultValue={'0'} onChange={change}>
-                <option value="" aria-selected/>
-                <option value="center" aria-selected/>
-                <option value="right" aria-selected/>
+              <option value="" aria-selected />
+              <option value="center" aria-selected />
+              <option value="right" aria-selected />
             </select>
           </span>
 
