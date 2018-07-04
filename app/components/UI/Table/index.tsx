@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { fontSize, color } from 'utils/styleUtils';
+import { fontSize, colors } from 'utils/styleUtils';
 
 const StyledTable: any = styled.table`
   width: 100%;
@@ -18,8 +18,8 @@ const StyledTable: any = styled.table`
   thead {
     tr {
       th {
-        fill: ${color('label')};
-        color: ${color('label')};
+        fill: ${colors.label};
+        color: ${colors.label};
         font-size: ${fontSize('small')};
         font-weight: 500;
         text-transform: uppercase;
@@ -52,7 +52,7 @@ const StyledTable: any = styled.table`
       padding-bottom: 50px;
 
       td {
-        color: ${color('clBlue2Darkest')};
+        color: ${colors.adminTextColor};
         font-size: ${fontSize('small')};
         font-weight: 400;
         line-height: 18px;
@@ -65,7 +65,7 @@ const StyledTable: any = styled.table`
       }
 
       &:hover {
-        background: ${color('background')};
+        background: ${colors.background};
         color: #999;
       }
     }

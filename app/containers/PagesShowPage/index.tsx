@@ -197,7 +197,7 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
     if (isUndefined(locale) || isUndefined(tenantLocales) || isUndefined(page)) {
       return (
         <Loading>
-          <Spinner size="32px" color="#666" />
+          <Spinner size="32px" />
         </Loading>
       );
     }
