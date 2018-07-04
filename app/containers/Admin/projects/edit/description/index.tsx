@@ -50,7 +50,6 @@ class ProjectDescription extends React.PureComponent<Props> {
     const { description_preview_multiloc, description_multiloc }: Values = this.props.project.attributes;
 
     return (
-      <>
         <Formik
           onSubmit={this.saveProject}
           initialValues={{
@@ -62,7 +61,6 @@ class ProjectDescription extends React.PureComponent<Props> {
             <DescriptionEditionForm {...formikProps} />
           )}
         </Formik>
-      </>
     );
   }
 }

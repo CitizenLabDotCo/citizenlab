@@ -38,7 +38,7 @@ export type InputProps = {
   id: string;
   valueMultiloc?: Multiloc | null;
   label?: string | JSX.Element | null;
-  onChangeMultiloc?: (value: Multiloc, locale: Locale) => void;
+  onChangeMultiloc?: (value: Multiloc) => void;
   renderPerLocale?: (locale: string) => JSX.Element;
 };
 
@@ -58,7 +58,7 @@ class EditorMultiloc extends React.PureComponent<Props & VanillaProps, State> {
       this.props.onChangeMultiloc({
         ...this.props.valueMultiloc,
         [locale]: html
-      }, locale);
+      });
     }
   }
 
