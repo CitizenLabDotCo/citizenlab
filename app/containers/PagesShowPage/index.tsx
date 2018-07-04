@@ -49,7 +49,7 @@ const Loading = styled.div`
   `}
 `;
 
-const StyledContentContainer = styled(ContentContainer)`
+const StyledContentContainer = styled(ContentContainer) `
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
   margin-left: auto;
   margin-right: auto;
@@ -78,7 +78,8 @@ const PageTitle = styled.h1`
   `}
 `;
 
-const PageDescription = styled.div`
+  export function pageBodyStyle() {
+  return `
   color: #333;
   font-size: 18px;
   font-weight: 300;
@@ -124,6 +125,15 @@ const PageDescription = styled.div`
       color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
     }
   }
+
+  img {
+    max-width: 100%;
+  }
+`;
+}
+
+const PageDescription = styled.div`
+  ${pageBodyStyle()}
 `;
 
 const PagesNavWrapper = styled.div`
@@ -142,7 +152,7 @@ const PagesNav = styled.nav`
   padding-bottom: 80px;
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = styled(Link) `
   color: #666;
   font-size: 18px;
   font-weight: 400;
@@ -162,11 +172,11 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const LinkIcon = styled(Icon)`
+const LinkIcon = styled(Icon) `
   height: 1em;
 `;
 
-interface InputProps {}
+interface InputProps { }
 
 interface DataProps {
   locale: GetLocaleChildProps;
@@ -175,9 +185,9 @@ interface DataProps {
   pageLinks: GetPageLinksChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
-interface State {}
+interface State { }
 
 class PagesShowPage extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
   render() {
@@ -197,7 +207,7 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
       let seoDescription = formatMessage(messages.notFoundDescription);
       let blockIndexing = true;
       let pageTitle = <FormattedMessage {...messages.notFoundTitle} />;
-      let pageDescription =  <FormattedMessage {...messages.notFoundDescription} />;
+      let pageDescription = <FormattedMessage {...messages.notFoundDescription} />;
 
       if (!isNilOrError(page)) {
         seoTitle = getLocalized(page.attributes.title_multiloc, locale, tenantLocales);

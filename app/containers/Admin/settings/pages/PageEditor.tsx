@@ -71,6 +71,7 @@ const EditionForm = styled.div`
   overflow: hidden;
   transition: all 350ms cubic-bezier(0.165, 0.84, 0.44, 1);
   margin-top: 15px;
+  max-width: 830px;
 
   &.page-enter {
     max-height: 0px;
