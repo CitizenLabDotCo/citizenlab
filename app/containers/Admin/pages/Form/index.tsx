@@ -22,9 +22,9 @@ export interface FormValues {
 }
 
 export interface Props {
-  mode: 'new' | 'edit';
+  mode: 'simple' | 'edit';
   hideTitle?: boolean;
-  pageId: string;
+  pageId?: string;
 }
 
 class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
@@ -61,8 +61,7 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
     return (
       <Form>
         <Section>
-
-          {hideTitle &&
+          {!hideTitle &&
             <SectionField>
             <Field
               name="title_multiloc"
