@@ -62,7 +62,7 @@ const Content = styled.div`
 `;
 
 const ColumnsContainer = styled.div`
-  flex: 1;
+  flex: 1 1 0;
   display: flex;
 
   ${media.biggerThanMaxTablet`
@@ -101,13 +101,17 @@ const PageTitle = styled.h1`
 
 const Column = styled.div`
   flex: 0 0 46%;
+  display: flex;
+  flex-direction: column;
 
   &.fullWidth {
-    flex: 1;
+    min-width: 0;
+    flex: 1 1 0;
   }
 
   ${media.smallerThanMaxTablet`
-    flex: 1;
+    min-width: 0;
+    flex: 1 1 0;
   `}
 `;
 
@@ -140,9 +144,17 @@ const ColumnExplanation = styled.div`
   line-height: 24px;
   font-weight: 300;
   min-height: 7rem;
+
+  ${media.smallerThanMaxTablet`
+    margin-bottom: 15px;
+    min-height: auto;
+  `}
 `;
 
-const ProjectsList = styled.div``;
+const ProjectsList = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const ProjectCardWrapper = styled.div`
   margin-bottom: 20px;
@@ -168,7 +180,7 @@ const ButtonBarInner = styled.div`
 `;
 
 const WithoutButtonBar = styled.div`
-  flex: 1;
+  flex: 1 1 0;
   display: flex;
 
   ${media.biggerThanMaxTablet`

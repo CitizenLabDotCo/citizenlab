@@ -112,7 +112,7 @@ const ProjectImagePlaceholderIcon = styled(Icon) `
 `;
 
 const ProjectContent = styled.div`
-  flex: 1;
+  flex: 1 1 0;
   height: 100%;
   display: flex;
   flex-direction: column;
