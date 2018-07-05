@@ -23,6 +23,7 @@ class Project < ApplicationRecord
   has_many :events, -> { order(:start_at) }, dependent: :destroy
   has_many :pages, dependent: :destroy
   has_many :project_images, -> { order(:ordering) }, dependent: :destroy
+  has_many :text_images, as: :imageable, dependent: :destroy
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :notifications, foreign_key: :project_id, dependent: :nullify
 

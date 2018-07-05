@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180610165230) do
+ActiveRecord::Schema.define(version: 20180705085133) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -409,6 +409,15 @@ ActiveRecord::Schema.define(version: 20180610165230) do
     t.string "logo"
     t.string "header_bg"
     t.index ["host"], name: "index_tenants_on_host"
+  end
+
+  create_table "text_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "imageable_type", null: false
+    t.uuid "imageable_id", null: false
+    t.string "imageable_field"
+    t.string "image"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

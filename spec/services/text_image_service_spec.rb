@@ -5,9 +5,45 @@ describe TextImageService do
 
   describe "swap_data_images" do
 
+    it "returns exactly the same input languages" do
+      imageable = build(:project)
+      output = service.swap_data_images(imageable, :description_multiloc)
+      expect(output.keys).to eq imageable.description_multiloc.keys
+    end
+
+    it "processes all language texts with swap_data_images_text" do
+      imageable = build(:project)
+      field = :description_multiloc
+      imageable.send(field).values.each do |text|
+        expect(service).to receive(:swap_data_images_text).with(text)
+      end
+      service.swap_data_images(imageable, field)
+    end
+
+    it "creates TextImage objects" do
+      project = build(:project)
+      field = :description_multiloc
+      project.description_multiloc = {
+        'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />',
+        'nl-NL' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />',
+        'fr-FR' => '<div>no image here</div>',
+      }
+      expect { service.swap_data_images(project, field) }.to change{TextImage.count}.from(0).to(2)
+      expect(TextImage.first).to have_attributes(
+        imageable: project,
+        imageable_field: field.to_s
+      )
+    end
+
+  end
+
+  describe "swap_data_images_text" do
+
+    let(:image_url_builder) { -> (base64) { 'https://some.url' }}
+
     it "does not modify the empty string" do
       input = ""
-      expect(service.swap_data_images(input)).to eq input
+      expect(service.swap_data_images_text(input, &image_url_builder)).to eq input
     end
 
     it "does not modify HTML that contains no images" do
@@ -17,7 +53,7 @@ describe TextImageService do
           <hr>
         </div>
       HTML
-      expect(service.swap_data_images(input)).to eq input
+      expect(service.swap_data_images_text(input, &image_url_builder)).to eq input
     end
 
     it "does not modify invalid HTML" do
@@ -27,14 +63,14 @@ describe TextImageService do
           <hr>
         </div>
       HTML
-      expect(service.swap_data_images(input)).to eq input
+      expect(service.swap_data_images_text(input, &image_url_builder)).to eq input
     end
 
     it "does not modify an img tag that has a URL as a src" do
       input = <<~HTML
         <img src="https://imageserver.com/image.jpg">
       HTML
-      expect(service.swap_data_images(input)).to eq input
+      expect(service.swap_data_images_text(input, &image_url_builder)).to eq input
     end
 
     it "replaces a base64 PNG data src on an img with a URL" do
@@ -44,7 +80,7 @@ describe TextImageService do
       output = <<~HTML
         <img src="https://some.url">
       HTML
-      expect(service.swap_data_images(input)).to eq output
+      expect(service.swap_data_images_text(input, &image_url_builder)).to eq output
     end
 
     it "replaces a base64 GIF data src on an img with a URL" do
@@ -54,7 +90,7 @@ describe TextImageService do
       output = <<~HTML
         <img src="https://some.url">
       HTML
-      expect(service.swap_data_images(input)).to eq output
+      expect(service.swap_data_images_text(input, &image_url_builder)).to eq output
     end
 
     it "replaces a base64 JPEG data src on an img with a URL" do
@@ -64,7 +100,7 @@ describe TextImageService do
       output = <<~HTML
         <img src="https://some.url">
       HTML
-      expect(service.swap_data_images(input)).to eq output
+      expect(service.swap_data_images_text(input, &image_url_builder)).to eq output
     end
 
     it "replaces multiple img tags in one text" do
@@ -76,7 +112,7 @@ describe TextImageService do
         <img src="https://some.url">
         <img src="https://some.url">
       HTML
-      expect(service.swap_data_images(input)).to eq output
+      expect(service.swap_data_images_text(input, &image_url_builder)).to eq output
     end
 
     it "retains all other attributes on the img tag" do
@@ -86,7 +122,7 @@ describe TextImageService do
       output = <<~HTML
         <img src="https://some.url" data-something="1" class="right" target="_blank">
       HTML
-      expect(service.swap_data_images(input)).to eq output
+      expect(service.swap_data_images_text(input, &image_url_builder)).to eq output
     end
 
   end
