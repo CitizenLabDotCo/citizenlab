@@ -2,8 +2,16 @@ class SideFxProjectService
 
   include SideFxHelper
 
+  def before_create project, user
+    project.description_multiloc = TextImageService.new.swap_data_images(project, :description_multiloc)
+  end
+
   def after_create project, user
     LogActivityJob.perform_later(project, 'created', user, project.created_at.to_i)
+  end
+
+  def before_update project, user
+    project.description_multiloc = TextImageService.new.swap_data_images(project, :description_multiloc)
   end
 
   def after_update project, user

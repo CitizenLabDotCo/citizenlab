@@ -25,8 +25,12 @@ class WebApi::V1::PagesController < ::ApplicationController
 
   def create
     @page = Page.new(page_params)
+
+    SideFxPageService.new.before_create(@page, current_user)
+
     authorize @page
     if @page.save
+      SideFxPageService.new.after_create(@page, current_user)
       render json: @page, status: :created, include: ['page_links']
     else
       render json: {errors: @page.errors.details}, status: :unprocessable_entity
@@ -34,7 +38,12 @@ class WebApi::V1::PagesController < ::ApplicationController
   end
 
   def update
+    @page.assign_attributes(page_params)
+
+    SideFxPageService.new.before_update(@page, current_user)
+
     if @page.update(page_params)
+      SideFxPageService.new.after_update(@page, current_user)
       render json: @page, status: :ok, include: ['page_links']
     else
       render json: {errors: @page.errors.details}, status: :unprocessable_entity
@@ -42,8 +51,13 @@ class WebApi::V1::PagesController < ::ApplicationController
   end
 
   def destroy
-    @page.destroy
-    head :ok
+    page = @page.destroy
+    if page.destroyed?
+      SideFxPageService.new.after_destroy(@page, current_user)
+      head :ok
+    else
+      head 500
+    end
   end
 
   private
