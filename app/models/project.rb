@@ -49,6 +49,7 @@ class Project < ApplicationRecord
   before_validation :set_process_type, on: :create
   before_validation :generate_slug, on: :create
   before_validation :set_visible_to, on: :create
+  before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
   before_validation :set_publication_status, on: :create
   before_validation :strip_title
@@ -81,6 +82,14 @@ class Project < ApplicationRecord
   def generate_slug
     slug_service = SlugService.new
     self.slug ||= slug_service.generate_slug self, self.title_multiloc.values.first
+  end
+
+  def sanitize_description_multiloc
+    self.description_multiloc = self.description_multiloc.map do |locale, description|
+      scrubber = Rails::Html::TargetScrubber.new
+      scrubber.tags = ['script']
+      [locale, @@sanitizer.sanitize(description, scrubber: scrubber)]
+    end.to_h
   end
 
   def sanitize_description_preview_multiloc
