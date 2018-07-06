@@ -100,12 +100,6 @@ export interface Props extends InputProps, QuillProps { }
 
 const change = e => e.persist();
 
-function imageHandler() {
-  const range = (this.quill as Quill).getSelection();
-  const value = prompt('What is the image URL');
-  (this.quill as Quill).insertEmbed(range.index, 'image', value, 'user');
-}
-
 class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
@@ -127,9 +121,6 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
       blotFormatter: noImages ? false : {},
       toolbar: noToolbar ? false : {
         container: `#${toolbarId}`,
-        handlers: noImages ? false : {
-          imageURL: imageHandler,
-        }
       },
     };
 
@@ -163,7 +154,6 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
           {!noImages &&
             <span className="ql-formats">
               <button className="ql-image" />
-              <button className="ql-imageURL" >URL</button>
               <button className="ql-video" />
             </span>
           }
