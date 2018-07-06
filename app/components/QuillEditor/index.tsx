@@ -101,9 +101,9 @@ export interface Props extends InputProps, QuillProps { }
 const change = e => e.persist();
 
 function imageHandler() {
-  const range = this.quill.getSelection();
+  const range = (this.quill as Quill).getSelection();
   const value = prompt('What is the image URL');
-  this.quill.insertEmbed(range.index, 'image', value);
+  (this.quill as Quill).insertEmbed(range.index, 'image', value, 'user');
 }
 
 class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
