@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 // Quill editor & modules
 import ReactQuill, { Quill } from 'react-quill';
@@ -19,6 +20,15 @@ const ImageFormatAttributesList = [
   'width',
   'style',
 ];
+
+const Container = styled.div`
+  .ql-toolbar {
+    border-radius: 5px 5px 0 0;
+  }
+  .ql-container {
+    border-radius: 0 0 5px 5px;
+  }
+`;
 
 const BaseImageFormat = Quill.import('formats/image');
 class ImageFormat extends BaseImageFormat {
@@ -124,7 +134,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
     };
 
     return (
-      <>
+      <Container>
         <div id={toolbarId} >
           <span className="ql-formats">
             <button className="ql-bold" />
@@ -162,7 +172,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
           modules={modules}
           {...quillProps}
         />
-      </>
+      </Container>
     );
   }
 }
