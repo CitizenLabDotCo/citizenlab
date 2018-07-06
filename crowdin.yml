@@ -4,4 +4,5 @@ files:
     languages_mapping:
       locale:
         en: en
+        no: nb-NO
     update_option: update_without_changes
