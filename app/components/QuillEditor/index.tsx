@@ -53,9 +53,9 @@ import messages from './messages';
 
 // Typings
 export interface InputProps {
-  noToolbar?: boolean;
-  noMentions?: boolean;
   noImages?: boolean;
+  limitedTextFormatting?: boolean;
+  noToolbar?: boolean;
   id: string;
 }
 export interface QuillProps {
@@ -108,13 +108,13 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { id, noToolbar, noImages, intl: { formatMessage }, ...quillProps } = this.props;
+    const { id, noToolbar, noImages, limitedTextFormatting, intl: { formatMessage }, ...quillProps } = this.props;
 
     const toolbarId = `ql-editor-toolbar-${id}`;
 
     const modules: ModulesConfig = {
-      imageDrop: true,
-      blotFormatter: {},
+      imageDrop: !noImages,
+      blotFormatter: noImages ? false : {},
       toolbar: noToolbar ? false : {
         container: `#${toolbarId}`,
         handlers: noImages ? false : {
@@ -127,24 +127,28 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
       <>
         <div id={toolbarId} >
           <span className="ql-formats">
-            <select className="ql-header" defaultValue={''} onChange={change} >
-              <option value="1" aria-selected={false}>{formatMessage(messages.bigTitle)}</option>
-              <option value="2" aria-selected={false}>{formatMessage(messages.littleTitle)}</option>
-              <option value="" aria-selected>{formatMessage(messages.normalText)}</option>
-            </select>
-          </span>
-          <span className="ql-formats">
             <button className="ql-bold" />
             <button className="ql-italic" />
             <button className="ql-link" />
           </span>
-          <span className="ql-formats">
-            <select className="ql-align" defaultValue={'0'} onChange={change}>
-              <option value="" aria-selected />
-              <option value="center" aria-selected />
-              <option value="right" aria-selected />
-            </select>
-          </span>
+          {!limitedTextFormatting &&
+            <>
+              <span className="ql-formats">
+                <select className="ql-header" defaultValue={''} onChange={change} >
+                  <option value="1" aria-selected={false}>{formatMessage(messages.bigTitle)}</option>
+                  <option value="2" aria-selected={false}>{formatMessage(messages.littleTitle)}</option>
+                  <option value="" aria-selected>{formatMessage(messages.normalText)}</option>
+                </select>
+              </span>
+              <span className="ql-formats">
+                <select className="ql-align" defaultValue={'0'} onChange={change}>
+                  <option value="" aria-selected />
+                  <option value="center" aria-selected />
+                  <option value="right" aria-selected />
+                </select>
+              </span>
+            </>
+          }
 
           {!noImages &&
             <span className="ql-formats">
