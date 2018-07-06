@@ -8,7 +8,7 @@ import { Subscription, BehaviorSubject } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
 import * as moment from 'moment';
-import { get, isEmpty, forOwn } from 'lodash';
+import { get, isEmpty } from 'lodash';
 
 // Services
 import { localeStream } from 'services/locale';
@@ -18,13 +18,12 @@ import eventEmitter from 'utils/eventEmitter';
 
 // Utils
 import getSubmitState from 'utils/getSubmitState';
-import { getEditorStateFromHtmlString, getHtmlStringFromEditorState } from 'utils/editorTools';
 import shallowCompare from 'utils/shallowCompare';
 
 // Components
 import Label from 'components/UI/Label';
 import InputMultiloc from 'components/UI/InputMultiloc';
-import EditorMultiloc from 'components/UI/EditorMultiloc';
+import QuillMultiloc from 'components/QuillEditor/QuillMultiloc';
 import Error from 'components/UI/Error';
 import { DateRangePicker } from 'react-dates';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -40,7 +39,7 @@ import messages from './messages';
 import styled from 'styled-components';
 
 // Typings
-import { API, Locale, MultilocEditorState } from 'typings';
+import { API, Locale } from 'typings';
 
 const PhaseForm = styled.form`
   .DateRangePickerInput {
@@ -86,7 +85,6 @@ interface State {
   errors: { [fieldName: string]: API.Error[] } | null;
   saving: boolean;
   focusedInput: 'startDate' | 'endDate' | null;
-  multilocEditorState: MultilocEditorState | null;
   saved: boolean;
   loaded: boolean;
 }
@@ -106,7 +104,6 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
       errors: null,
       saving: false,
       focusedInput: null,
-      multilocEditorState: null,
       saved: false,
       loaded: false
     };
@@ -129,21 +126,10 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
         const phase$ = (id ? phaseStream(id).observable : of(null));
         return combineLatest(locale$, project$, phase$);
       }).subscribe(([locale, project, phase]) => {
-        let multilocEditorState: MultilocEditorState | null = null;
-
-        if (phase) {
-          multilocEditorState = {};
-
-          forOwn(phase.data.attributes.description_multiloc, (htmlValue, locale) => {
-            (multilocEditorState as MultilocEditorState)[locale] = getEditorStateFromHtmlString(htmlValue);
-          });
-        }
-
         this.setState({
           locale,
           project,
           phase,
-          multilocEditorState,
           loaded: true
         });
       })
@@ -168,15 +154,14 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
     }));
   }
 
-  handleEditorOnChange = (multilocEditorState: MultilocEditorState, locale: Locale) => {
+  handleEditorOnChange = (valueMultiloc) => {
     this.setState((state) => ({
-      multilocEditorState,
       attributeDiff: {
         ...state.attributeDiff,
         description_multiloc: {
           ...get(state, 'phase.data.attributes.description_multiloc', {}),
           ...get(state.attributeDiff, 'description_multiloc', {}),
-          [locale]: getHtmlStringFromEditorState(multilocEditorState[locale])
+          ...valueMultiloc,
         }
       }
     }));
@@ -278,7 +263,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
   render() {
     if (this.state.loaded) {
       const { formatMessage } = this.props.intl;
-      const { errors, saved, phase, /* presentationMode, */ attributeDiff, saving, multilocEditorState } = this.state;
+      const { errors, saved, phase, attributeDiff, saving } = this.state;
       const phaseAttrs = (phase ? { ...phase.data.attributes, ...attributeDiff } : { ...attributeDiff });
       const submitState = getSubmitState({ errors, saved, diff: attributeDiff });
       const startDate = (phaseAttrs.start_at ? moment(phaseAttrs.start_at) : null);
@@ -333,11 +318,11 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
               </SectionField>
 
               <SectionField>
-                <EditorMultiloc
+                <QuillMultiloc
                   id="description"
                   label={<FormattedMessage {...messages.descriptionLabel} />}
-                  valueMultiloc={multilocEditorState}
-                  onChange={this.handleEditorOnChange}
+                  valueMultiloc={phaseAttrs.description_multiloc}
+                  onChangeMultiloc={this.handleEditorOnChange}
                 />
                 <Error apiErrors={errors && errors.description_multiloc} />
               </SectionField>
