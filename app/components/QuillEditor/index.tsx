@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 // Quill editor & modules
 import ReactQuill, { Quill } from 'react-quill';
@@ -19,6 +20,15 @@ const ImageFormatAttributesList = [
   'width',
   'style',
 ];
+
+const Container = styled.div`
+  .ql-toolbar {
+    border-radius: 5px 5px 0 0;
+  }
+  .ql-container {
+    border-radius: 0 0 5px 5px;
+  }
+`;
 
 const BaseImageFormat = Quill.import('formats/image');
 class ImageFormat extends BaseImageFormat {
@@ -53,9 +63,9 @@ import messages from './messages';
 
 // Typings
 export interface InputProps {
-  noToolbar?: boolean;
-  noMentions?: boolean;
   noImages?: boolean;
+  limitedTextFormatting?: boolean;
+  noToolbar?: boolean;
   id: string;
 }
 export interface QuillProps {
@@ -90,12 +100,6 @@ export interface Props extends InputProps, QuillProps { }
 
 const change = e => e.persist();
 
-function imageHandler() {
-  const range = (this.quill as Quill).getSelection();
-  const value = prompt('What is the image URL');
-  (this.quill as Quill).insertEmbed(range.index, 'image', value, 'user');
-}
-
 class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
@@ -108,48 +112,48 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { id, noToolbar, noImages, intl: { formatMessage }, ...quillProps } = this.props;
+    const { id, noToolbar, noImages, limitedTextFormatting, intl: { formatMessage }, ...quillProps } = this.props;
 
     const toolbarId = `ql-editor-toolbar-${id}`;
 
     const modules: ModulesConfig = {
-      imageDrop: true,
-      blotFormatter: {},
+      imageDrop: !noImages,
+      blotFormatter: noImages ? false : {},
       toolbar: noToolbar ? false : {
         container: `#${toolbarId}`,
-        handlers: noImages ? false : {
-          imageURL: imageHandler,
-        }
       },
     };
 
     return (
-      <>
+      <Container>
         <div id={toolbarId} >
-          <span className="ql-formats">
-            <select className="ql-header" defaultValue={''} onChange={change} >
-              <option value="1" aria-selected={false}>{formatMessage(messages.bigTitle)}</option>
-              <option value="2" aria-selected={false}>{formatMessage(messages.littleTitle)}</option>
-              <option value="" aria-selected>{formatMessage(messages.normalText)}</option>
-            </select>
-          </span>
           <span className="ql-formats">
             <button className="ql-bold" />
             <button className="ql-italic" />
             <button className="ql-link" />
           </span>
-          <span className="ql-formats">
-            <select className="ql-align" defaultValue={'0'} onChange={change}>
-              <option value="" aria-selected />
-              <option value="center" aria-selected />
-              <option value="right" aria-selected />
-            </select>
-          </span>
+          {!limitedTextFormatting &&
+            <>
+              <span className="ql-formats">
+                <select className="ql-header" defaultValue={''} onChange={change} >
+                  <option value="1" aria-selected={false}>{formatMessage(messages.bigTitle)}</option>
+                  <option value="2" aria-selected={false}>{formatMessage(messages.littleTitle)}</option>
+                  <option value="" aria-selected>{formatMessage(messages.normalText)}</option>
+                </select>
+              </span>
+              <span className="ql-formats">
+                <select className="ql-align" defaultValue={'0'} onChange={change}>
+                  <option value="" aria-selected />
+                  <option value="center" aria-selected />
+                  <option value="right" aria-selected />
+                </select>
+              </span>
+            </>
+          }
 
           {!noImages &&
             <span className="ql-formats">
               <button className="ql-image" />
-              <button className="ql-imageURL" >URL</button>
               <button className="ql-video" />
             </span>
           }
@@ -158,7 +162,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
           modules={modules}
           {...quillProps}
         />
-      </>
+      </Container>
     );
   }
 }

@@ -56,52 +56,62 @@ const Right = styled.aside`
   `}
 `;
 
-export const ProjectDescriptionStyled = styled.div`
-  color: #333;
-  font-size: 18px;
-  line-height: 26px;
-  font-weight: 300;
-
-  h1 {
-    font-size: 29px;
-    line-height: 35px;
-    font-weight: 600;
-  }
-
-  h2 {
-    font-size: 24px;
-    line-height: 29px;
-    font-weight: 600;
-  }
-
-  h3 {
-    font-size: 21px;
-    line-height: 26px;
-    font-weight: 600;
-  }
-
-  h4 {
+export const ProjectDescriptionStyle = () => {
+  return `
+    color: #333;
     font-size: 18px;
     line-height: 26px;
-    font-weight: 600;
-  }
+    font-weight: 300;
 
-  p {
-    margin-bottom: 35px;
-  }
-
-  strong {
-    font-weight: 500;
-  }
-
-  a {
-    color: ${(props) => props.theme.colors.clBlue};
-    text-decoration: underline;
-
-    &:hover {
-      color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
+    img {
+      max-width: 100%;
     }
-  }
+
+    h1 {
+      font-size: 29px;
+      line-height: 35px;
+      font-weight: 600;
+    }
+
+    h2 {
+      font-size: 24px;
+      line-height: 29px;
+      font-weight: 600;
+    }
+
+    h3 {
+      font-size: 21px;
+      line-height: 26px;
+      font-weight: 600;
+    }
+
+    h4 {
+      font-size: 18px;
+      line-height: 26px;
+      font-weight: 600;
+    }
+
+    p {
+      margin-bottom: 35px;
+    }
+
+    strong {
+      font-weight: 500;
+    }
+
+    a {
+      color: ${(props) => props.theme.colors.clBlue};
+      text-decoration: underline;
+
+      &:hover {
+        color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
+      }
+    }
+  `;
+};
+
+const ProjectDescriptionStyled = styled.div`
+  ${ProjectDescriptionStyle()}
 `;
 
 const ProjectImages = styled.div`

@@ -309,6 +309,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
           <Label value={<FormattedMessage {...messages.descriptionLabel} />} htmlFor="editor" />
           <DescriptionEditor
             id="editor"
+            noImages
             value={description}
             placeholder={formatMessage(messages.descriptionPlaceholder)}
             onChange={this.handleDescriptionOnChange}

@@ -21,7 +21,7 @@ import messages from './messages';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const StyledContentContainer = styled(ContentContainer)`
+const StyledContentContainer = styled(ContentContainer) `
   padding-top: 40px;
   padding-bottom: 100px;
   background: #f9f9fa;
@@ -39,7 +39,7 @@ const UserAvatar = styled.div`
   margin-bottom: 40px;
 `;
 
-const StyledAvatar = styled(Avatar)`
+const StyledAvatar = styled(Avatar) `
   width: 160px;
   height: 160px;
 `;
@@ -72,14 +72,20 @@ const JoinedAt = styled.div`
   color: #7e7e7e;
 `;
 
+export const bioStyle = () => {
+  return (`
+    font-size: 20px;
+    line-height: 1.25;
+    color: #6b6b6b;
+  `);
+};
+
 const Bio = styled.div`
   max-width: 600px;
-  margin: 23px auto;
-  font-size: 20px;
-  font-weight: 300;
-  line-height: 1.25;
   text-align: center;
-  color: #6b6b6b;
+  font-weight: 300;
+  margin: 23px auto;
+  ${bioStyle()}
 `;
 
 const UserIdeas = styled.div`
@@ -88,15 +94,15 @@ const UserIdeas = styled.div`
   justify-content: center;
 `;
 
-interface InputProps {}
+interface InputProps { }
 
 interface DataProps {
   user: GetUserChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
-interface State {}
+interface State { }
 
 class UsersShowPage extends React.PureComponent<Props, State> {
   render() {
