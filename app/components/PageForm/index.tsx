@@ -1,5 +1,4 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import { isEmpty, values as getValues, every } from 'lodash';
 import FormikInput from 'components/UI/FormikInput';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
@@ -16,8 +15,6 @@ import Label from 'components/UI/Label';
 import Warning from 'components/UI/Warning';
 import { Link } from 'react-router';
 
-import { pageBodyStyle } from 'containers/PagesShowPage';
-
 export interface FormValues {
   slug?: string;
   title_multiloc: Multiloc;
@@ -29,11 +26,6 @@ export interface Props {
   hideTitle?: boolean;
   pageId?: string;
 }
-const DescriptionEditor = styled(FormikQuillMultiloc)`
-  .ql-editor {
-    ${pageBodyStyle()}
-  }
-`;
 
 class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
 
@@ -65,7 +57,8 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
 
   renderQuill = (props) => {
     return (
-      <DescriptionEditor
+      <FormikQuillMultiloc
+        inAdmin
         {...props}
       />
     );

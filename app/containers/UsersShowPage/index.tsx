@@ -72,20 +72,14 @@ const JoinedAt = styled.div`
   color: #7e7e7e;
 `;
 
-export const bioStyle = () => {
-  return (`
-    font-size: 20px;
-    line-height: 1.25;
-    color: #6b6b6b;
-  `);
-};
-
 const Bio = styled.div`
+  font-size: 20px;
+  line-height: 1.25;
+  color: #6b6b6b;
   max-width: 600px;
   text-align: center;
   font-weight: 300;
   margin: 23px auto;
-  ${bioStyle()}
 `;
 
 const UserIdeas = styled.div`

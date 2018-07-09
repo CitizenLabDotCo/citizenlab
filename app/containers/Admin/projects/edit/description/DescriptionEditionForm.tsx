@@ -1,10 +1,6 @@
 // Libraries
 import React from 'react';
 
-// styles
-import styled from 'styled-components';
-import { ProjectDescriptionStyle } from 'containers/ProjectsShowPage/info/ProjectInfo';
-
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
@@ -25,13 +21,6 @@ export interface Values {
   description_multiloc: Multiloc;
   description_preview_multiloc: Multiloc;
 }
-
-const ProjectDesc = styled(FormikQuillMultiloc) `
-  max-width: 560px;
-  .ql-editor {
-    ${ProjectDescriptionStyle()}
-  }
-`;
 
 // Wrapping the editor with the styles from the page where it will be rendered should ensure that styling is consistent.
 
@@ -61,7 +50,8 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
 
           <SectionField className="fullWidth">
             <Field
-              component={ProjectDesc}
+              component={FormikQuillMultiloc}
+              inAdmin
               id="project-description"
               name="description_multiloc"
               label={<FormattedMessage {...messages.descriptionLabel} />}

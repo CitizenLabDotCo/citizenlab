@@ -51,19 +51,20 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
+// Styling
 import styled from 'styled-components';
-import { fontSize } from 'utils/styleUtils';
+import { fontSize, colors } from 'utils/styleUtils';
 
 const Container: any = styled.div`
   background: #fff;
   .ql-snow.ql-toolbar button:hover .ql-stroke, .ql-snow .ql-toolbar button:hover .ql-stroke, .ql-snow.ql-toolbar button:focus .ql-stroke, .ql-snow .ql-toolbar button:focus .ql-stroke, .ql-snow.ql-toolbar button.ql-active .ql-stroke, .ql-snow .ql-toolbar button.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow.ql-toolbar button:hover .ql-stroke-miter, .ql-snow .ql-toolbar button:hover .ql-stroke-miter, .ql-snow.ql-toolbar button:focus .ql-stroke-miter, .ql-snow .ql-toolbar button:focus .ql-stroke-miter, .ql-snow.ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-picker-label:focus .ql-stroke, .ql-picker-item:focus .ql-stroke {
-    stroke: ${(props: any) => props.theme.colorMain};
+    stroke: ${(props: any) => props.inAdmin ? colors.clBlue : props.theme.colorMain};
   }
   .ql-snow.ql-toolbar button:hover .ql-fill, .ql-snow .ql-toolbar button:hover .ql-fill, .ql-snow.ql-toolbar button:focus .ql-fill, .ql-snow .ql-toolbar button:focus .ql-fill, .ql-snow.ql-toolbar button.ql-active .ql-fill, .ql-snow .ql-toolbar button.ql-active .ql-fill, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-fill, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-fill, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-fill, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-fill, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-fill, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-fill, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-fill, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-fill, .ql-snow.ql-toolbar button:hover .ql-stroke.ql-fill, .ql-snow .ql-toolbar button:hover .ql-stroke.ql-fill, .ql-snow.ql-toolbar button:focus .ql-stroke.ql-fill, .ql-snow .ql-toolbar button:focus .ql-stroke.ql-fill, .ql-snow.ql-toolbar button.ql-active .ql-stroke.ql-fill, .ql-snow .ql-toolbar button.ql-active .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-label:focus .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-item:focus .ql-stroke.ql-fill {
-    fill: ${(props: any) => props.theme.colorMain};
+    fill:  ${(props: any) => props.inAdmin ? colors.clBlue : props.theme.colorMain};
   }
   .ql-snow.ql-toolbar button:hover, .ql-snow .ql-toolbar button:hover, .ql-snow.ql-toolbar button:focus, .ql-snow .ql-toolbar button:focus, .ql-snow.ql-toolbar button.ql-active, .ql-snow .ql-toolbar button.ql-active, .ql-snow.ql-toolbar .ql-picker-label:hover,  .ql-snow.ql-toolbar .ql-picker-label:focus, .ql-snow .ql-toolbar .ql-picker-label:hover, .ql-snow.ql-toolbar .ql-picker-label.ql-active, .ql-snow .ql-toolbar .ql-picker-label.ql-active,  .ql-snow .ql-toolbar .ql-picker-label:focus, .ql-snow.ql-toolbar .ql-picker-item:hover, .ql-snow .ql-toolbar .ql-picker-item:hover, .ql-snow.ql-toolbar .ql-picker-item.ql-selected, .ql-snow.ql-toolbar .ql-picker-item:focus, .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
-    color: ${(props: any) => props.theme.colorMain};
+    color:  ${(props: any) => props.inAdmin ? colors.clBlue : props.theme.colorMain};
   }
   .ql-toolbar.ql-snow {
     font-family: 'visuelt','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
@@ -71,6 +72,7 @@ const Container: any = styled.div`
   .ql-toolbar {
     box-shadow: inset 0 0 2px rgba(0,0,0,0.1);
     border-radius: 5px 5px 0 0;
+    border-bottom: 0 !important;
     & *:focus {
       outline: none;
     }
@@ -78,7 +80,6 @@ const Container: any = styled.div`
   .ql-container {
     font-family: 'visuelt','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
     border-radius: 0 0 5px 5px;
-    border-top: 0 !important;
     width: 100%;
     height: 100%;
     font-size: ${fontSize('base')};
@@ -88,6 +89,9 @@ const Container: any = styled.div`
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     -webkit-appearance: none;
 
+    .ql-editor {
+      min-height: 300px;
+    }
     .ql-editor.ql-blank::before {
       color: #aaa;
       font-style: normal;
@@ -110,6 +114,7 @@ export interface InputProps {
   limitedTextFormatting?: boolean;
   noToolbar?: boolean;
   id: string;
+  inAdmin?: boolean;
 }
 export interface QuillProps {
   onChange?: (string) => void;
@@ -166,7 +171,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { id, noToolbar, noImages, limitedTextFormatting, intl: { formatMessage }, ...quillProps } = this.props;
+    const { id, noToolbar, noImages, limitedTextFormatting, inAdmin, intl: { formatMessage }, ...quillProps } = this.props;
 
     const toolbarId = `ql-editor-toolbar-${id}`;
 
@@ -181,19 +186,15 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
       },
     };
 
-    const formats = ['bold', 'italic', 'link'];
-    if (!noImages) { formats.push('images', 'video'); }
-    if (!limitedTextFormatting) { formats.push('list', 'header', 'align'); }
-
     return (
-      <Container id="boundaries">
+      <Container id="boundaries" inAdmin={inAdmin}>
         <div id={toolbarId} >
           {!limitedTextFormatting &&
             <>
               <span className="ql-formats">
                 <select className="ql-header" defaultValue={''} onChange={change} >
-                  <option value="1" aria-selected={false}>{formatMessage(messages.bigTitle)}</option>
-                  <option value="2" aria-selected={false}>{formatMessage(messages.littleTitle)}</option>
+                  <option value="1" aria-selected={false}>{formatMessage(messages.title)}</option>
+                  <option value="2" aria-selected={false}>{formatMessage(messages.subtitle)}</option>
                   <option value="" aria-selected>{formatMessage(messages.normalText)}</option>
                 </select>
               </span>
@@ -225,7 +226,6 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
           modules={modules}
           bounds="#boundaries"
           theme="snow"
-          formats={formats}
           {...quillProps}
         />
       </Container>
