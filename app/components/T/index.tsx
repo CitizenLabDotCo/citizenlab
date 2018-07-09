@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { createElement, PureComponent } from 'react';
 import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { Multiloc, Locale } from 'typings';
 import { getLocalized } from 'utils/i18n';
@@ -21,7 +22,7 @@ type State = {
   currentTenantLocales: Locale[] | null;
 };
 
-export default class T extends React.PureComponent<Props, State> {
+export default class T extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -35,7 +36,9 @@ export default class T extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
+    const currentTenantLocales$ = currentTenantStream().observable.pipe(
+      map(currentTenant => currentTenant.data.attributes.settings.core.locales)
+    );
 
     this.subscriptions = [
       combineLatest(
@@ -63,7 +66,7 @@ export default class T extends React.PureComponent<Props, State> {
       }
 
       if (as) {
-        return React.createElement(as, { className, dangerouslySetInnerHTML: { __html: localizedText } });
+        return createElement(as, { className, dangerouslySetInnerHTML: { __html: localizedText } });
       }
 
       return (

@@ -1,6 +1,7 @@
 // Libraries
-import * as React from 'react';
-import * as Rx from 'rxjs';
+import React, { PureComponent } from 'react';
+import { Subscription } from 'rxjs';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import { get, includes, without, forOwn, isEmpty } from 'lodash';
 
 // Services
@@ -44,6 +45,7 @@ const EditorWrapper = styled.div`
 `;
 
 const DeployIcon = styled(Icon)`
+  width: 12px;
   height: 12px;
   fill: ${colors.adminSecondaryTextColor};
   margin-right: 12px;
@@ -55,7 +57,7 @@ const Toggle = styled.div`
   color: ${colors.adminSecondaryTextColor};
   font-size: 16px;
   font-weight: 500;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   cursor: pointer;
   user-select: none;
@@ -117,8 +119,8 @@ interface State {
   deployed: boolean;
 }
 
-export default class PageEditor extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+export default class PageEditor extends PureComponent<Props, State> {
+  subscriptions: Subscription[];
   legalPages = without(LEGAL_PAGES, 'information');
 
   constructor(props: Props) {
@@ -143,7 +145,7 @@ export default class PageEditor extends React.PureComponent<Props, State> {
     const page$ = pageBySlugStream(slug).observable;
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      combineLatest(
         locale$,
         page$
       ).subscribe(([locale, page]) => {

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import { indexOf, isString, forEach } from 'lodash';
 import { Subscription, BehaviorSubject } from 'rxjs';
+import { tap, filter, switchMap } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import * as moment from 'moment';
 
@@ -24,7 +25,7 @@ import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled, { css } from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
@@ -43,6 +44,7 @@ const Container = styled.div`
 `;
 
 const padding = 30;
+const mobilePadding = 20;
 
 const ContainerInner = styled.div`
   width: 100%;
@@ -61,7 +63,7 @@ const ContainerInner = styled.div`
 
 const Header = styled.div`
   width: 100%;
-  min-height: 80px;
+  min-height: 70px;
   padding: 0px;
   padding-left: ${padding}px;
   padding-right: ${padding}px;
@@ -74,7 +76,9 @@ const Header = styled.div`
   border-bottom: solid 1px #e4e4e4;
 
   ${media.smallerThanMaxTablet`
-    min-height: 120px;
+    min-height: 100px;
+    padding-left: ${mobilePadding}px;
+    padding-right: ${mobilePadding}px;
   `}
 `;
 
@@ -93,9 +97,9 @@ const HeaderRightSection = HeaderSection.extend`
 `;
 
 const PhaseNumberWrapper = styled.div`
-  flex: 0 0 30px;
-  width: 30px;
-  height: 30px;
+  flex: 0 0 auto;
+  width: 31px;
+  height: 31px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -128,7 +132,7 @@ const HeaderTitleWrapper = styled.div`
 `;
 
 const HeaderTitle = styled.div`
-  color: #222;
+  color: ${colors.text};
   font-size: 21px;
   line-height: 25px;
   font-weight: 400;
@@ -154,7 +158,7 @@ const MobileDate = styled.div`
 `;
 
 const HeaderSubtitle = styled.div`
-  color: ${(props) => props.theme.colors.label};
+  color: ${colors.label};
   font-size: 15px;
   line-height: 20px;
   font-weight: 400;
@@ -182,8 +186,8 @@ const MobileTimelineContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-left: ${padding}px;
-  padding-right: ${padding}px;
+  padding-left: ${mobilePadding}px;
+  padding-right: ${mobilePadding}px;
   padding-top: 30px;
   padding-bottom: 30px;
 
@@ -223,10 +227,12 @@ const PhaseBar: any = styled.div`
   justify-content: center;
   background: ${greyTransparent};
   transition: background 60ms ease-out;
+  position: relative;
   user-select: none;
 `;
 
 const PhaseArrow = styled(Icon)`
+  width: 20px;
   height: ${phaseBarHeight};
   fill: #fff;
   position: absolute;
@@ -321,7 +327,7 @@ type State = {
   loaded: boolean;
 };
 
-export default class Timeline extends React.PureComponent<Props, State> {
+export default class Timeline extends PureComponent<Props, State> {
   initialState: State;
   projectId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
@@ -351,17 +357,19 @@ export default class Timeline extends React.PureComponent<Props, State> {
 
     this.subscriptions = [
       projectId$
-        .do(() => this.setState(this.initialState))
-        .filter(projectId => isString(projectId))
-        .switchMap((projectId: string) => {
-          const phases$ = phasesStream(projectId).observable;
+        .pipe(
+          tap(() => this.setState(this.initialState)),
+          filter(projectId => isString(projectId)),
+          switchMap((projectId: string) => {
+            const phases$ = phasesStream(projectId).observable;
 
-          return combineLatest(
-            locale$,
-            currentTenant$,
-            phases$
-          );
-        })
+            return combineLatest(
+              locale$,
+              currentTenant$,
+              phases$
+            );
+          })
+        )
         .subscribe(([locale, currentTenant, phases]) => {
           const currentPhaseId = this.getCurrentPhaseId(phases);
           const selectedPhaseId = this.getDefaultSelectedPhaseId(currentPhaseId, phases);
@@ -426,7 +434,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
     this.setState({ selectedPhaseId });
   }
 
-  handleOnPhaseSelection = (phaseId: string) => (event: React.FormEvent<MouseEvent>) => {
+  handleOnPhaseSelection = (phaseId: string) => (event: FormEvent<MouseEvent>) => {
     event.preventDefault();
     this.setSelectedPhaseId(phaseId);
   }
@@ -503,6 +511,7 @@ export default class Timeline extends React.PureComponent<Props, State> {
                 </HeaderDate>
 
                 <StyledIdeaButton
+                  size="2"
                   projectId={this.props.projectId}
                   phaseId={selectedPhaseId}
                 />

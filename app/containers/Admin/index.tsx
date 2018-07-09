@@ -35,7 +35,10 @@ const RightColumn = styled.div`
   flex-direction: column;
   max-width: 1200px;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  padding: 45px 51px 0px 51px;
+  padding-top: 45px;
+  padding-right: 51px;
+  padding-bottom: 0px;
+  padding-left: 51px;
 
   &.fullWidth {
     max-width: none;

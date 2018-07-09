@@ -39,6 +39,7 @@ const Container = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  margin-bottom: 30px;
 `;
 
 const StyledTable = styled(Table)`

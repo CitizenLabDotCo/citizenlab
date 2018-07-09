@@ -171,18 +171,15 @@ const NavigationDropdownItem = styled.button`
 `;
 
 const ProjectsListItem = styled(Link)`
-  color: ${(props) => props.theme.colors.label};
+  color: ${colors.label};
   font-size: 17px;
   font-weight: 400;
   line-height: 22px;
   text-decoration: none;
-  padding: 10px;
   margin-right: 5px;
+  padding: 10px;
   background: #fff;
   border-radius: 5px;
-  color: ${colors.label};
-  padding: 10px;
-  text-decoration: none;
 
   &:hover,
   &:focus {
@@ -414,6 +411,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
                       </ProjectsListFooter>
                     )}
                     toggleOpened={this.handleProjectsDropdownToggle}
+                    maxHeight="180px"
                   />
                 </NavigationDropdown>
               }

@@ -2,7 +2,6 @@ import React from 'react';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
 import Link from 'utils/cl-router/Link';
-import { isUndefined } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -173,6 +172,7 @@ const StyledLink = styled(Link)`
 `;
 
 const LinkIcon = styled(Icon)`
+  width: 11px;
   height: 1em;
 `;
 
@@ -194,7 +194,7 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
     const { formatMessage } = this.props.intl;
     const { locale, tenantLocales, page, pageLinks } = this.props;
 
-    if (isUndefined(locale) || isUndefined(tenantLocales) || isUndefined(page)) {
+    if (isNilOrError(locale) || isNilOrError(tenantLocales) || isNilOrError(page)) {
       return (
         <Loading>
           <Spinner size="32px" />
@@ -202,7 +202,7 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
       );
     }
 
-    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isUndefined(page)) {
+    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(page)) {
       let seoTitle = formatMessage(messages.notFoundTitle);
       let seoDescription = formatMessage(messages.notFoundDescription);
       let blockIndexing = true;

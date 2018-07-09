@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 // Components
 import Tooltip from '../Tooltip';
@@ -10,19 +10,21 @@ import Icon, { IconNames } from '../Icon';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const MoreOptionsIcon = styled(Icon)`
-  fill: ${(props) => props.theme.colors.label};
-  transition: all 100ms ease-out;
-`;
-
-const StyledTooltip = styled(Tooltip)`
-  position: absolute;
-  top: 150%;
-  left: -12px;
-`;
-
-const MoreOptionsIconWrapper = styled.div`
+const Container = styled.div`
   position: relative;
+  display: inline-block;
+
+  * {
+    user-select: none;
+    outline: none;
+  }
+`;
+
+const MoreOptionsIcon = styled(Icon)`
+  width: 20px;
+  height: 5px;
+  fill: ${colors.label};
+  transition: all 100ms ease-out;
 `;
 
 const MoreOptionsLabel = styled.div`
@@ -34,19 +36,14 @@ const MoreOptionsLabel = styled.div`
   transition: all 100ms ease-out;
 `;
 
-const Container: any = styled.div`
+const MoreOptions = styled.div`
+  height: 25px;
   display: flex;
   align-items: center;
   cursor: pointer;
-  position: relative;
-  user-select: none;
 
   * {
     user-select: none;
-  }
-
-  ${MoreOptionsIcon} {
-    height: ${(props: any) => props.height};
   }
 
   &:hover {
@@ -60,6 +57,12 @@ const Container: any = styled.div`
   }
 `;
 
+const MoreOptionsDropdown = styled(Tooltip)`
+  position: absolute;
+  top: 30px;
+  left: -15px;
+`;
+
 const Action = styled(Button)``;
 
 export interface IAction {
@@ -69,7 +72,6 @@ export interface IAction {
 }
 
 export interface Props {
-  height: string;
   actions: IAction[];
   label?: string | JSX.Element | undefined;
   className?: string;
@@ -79,7 +81,7 @@ interface State {
   visible: boolean;
 }
 
-export default class MoreActionsMenu extends React.PureComponent<Props, State> {
+export default class MoreActionsMenu extends PureComponent<Props, State> {
   constructor (props: Props) {
     super(props);
     this.state = {
@@ -97,7 +99,7 @@ export default class MoreActionsMenu extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { height, label, actions } = this.props;
+    const { label, actions } = this.props;
     const className = this.props.className;
 
     if (!actions || actions.length === 0) {
@@ -105,41 +107,33 @@ export default class MoreActionsMenu extends React.PureComponent<Props, State> {
     }
 
     return (
-      <Container
-        className={className}
-        onClick={this.toggleMenu}
-        height={height}
-      >
-        <MoreOptionsIconWrapper>
+      <Container className={className}>
+        <MoreOptions onClick={this.toggleMenu}>
           <MoreOptionsIcon name="more-options" />
-          <StyledTooltip
-            visible={this.state.visible}
-            hideTooltip={this.hideMenu}
-            theme="dark"
-            position="bottom"
-          >
-            {actions.map((action, index) => (
-              <Action
-                style="text"
-                width="100%"
-                justify="left"
-                size="1"
-                key={index}
-                onClick={action.handler}
-                icon={action.icon}
-                text={action.label}
-                textHoverColor="#fff"
-                circularCorners={false}
-              />
-            ))}
-          </StyledTooltip>
-        </MoreOptionsIconWrapper>
+          {label && <MoreOptionsLabel>{label}</MoreOptionsLabel>}
+        </MoreOptions>
 
-        {label &&
-          <MoreOptionsLabel>
-            {label}
-          </MoreOptionsLabel>
-        }
+        <MoreOptionsDropdown
+          visible={this.state.visible}
+          hideTooltip={this.hideMenu}
+          theme="dark"
+          position="bottom"
+        >
+          {actions.map((action, index) => (
+            <Action
+              style="text"
+              width="100%"
+              justify="left"
+              size="1"
+              key={index}
+              onClick={action.handler}
+              icon={action.icon}
+              text={action.label}
+              textHoverColor="#fff"
+              circularCorners={false}
+            />
+          ))}
+        </MoreOptionsDropdown>
       </Container>
     );
   }
