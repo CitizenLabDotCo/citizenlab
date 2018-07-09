@@ -39,13 +39,6 @@ import { IOption, ImageFile, Locale } from 'typings';
 
 // style
 import styled from 'styled-components';
-import { ideaBodyStyle } from 'containers/IdeasShow';
-
-const DescriptionEditor = styled(QuillEditor)`
-  .ql-editor {
-    ${ideaBodyStyle()}
-  }
-`;
 
 const Form = styled.form`
   width: 100%;
@@ -307,7 +300,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
 
         <FormElement name="descriptionInput">
           <Label value={<FormattedMessage {...messages.descriptionLabel} />} htmlFor="editor" />
-          <DescriptionEditor
+          <QuillEditor
             id="editor"
             noImages
             value={description}
