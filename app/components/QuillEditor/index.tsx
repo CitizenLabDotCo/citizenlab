@@ -53,10 +53,11 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { fontSize, colors } from 'utils/styleUtils';
+import { fontSize, colors, media } from 'utils/styleUtils';
 
 const Container: any = styled.div`
   background: #fff;
+
   .ql-snow.ql-toolbar button:hover .ql-stroke, .ql-snow .ql-toolbar button:hover .ql-stroke, .ql-snow.ql-toolbar button:focus .ql-stroke, .ql-snow .ql-toolbar button:focus .ql-stroke, .ql-snow.ql-toolbar button.ql-active .ql-stroke, .ql-snow .ql-toolbar button.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow.ql-toolbar button:hover .ql-stroke-miter, .ql-snow .ql-toolbar button:hover .ql-stroke-miter, .ql-snow.ql-toolbar button:focus .ql-stroke-miter, .ql-snow .ql-toolbar button:focus .ql-stroke-miter, .ql-snow.ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-picker-label:focus .ql-stroke, .ql-picker-item:focus .ql-stroke {
     stroke: ${(props: any) => props.inAdmin ? colors.clBlue : props.theme.colorMain};
   }
@@ -70,12 +71,19 @@ const Container: any = styled.div`
     font-family: 'visuelt','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
   }
   .ql-toolbar {
+    background: white;
+    z-index: 5;
     box-shadow: inset 0 0 2px rgba(0,0,0,0.1);
     border-radius: 5px 5px 0 0;
     border-bottom: 0 !important;
     & *:focus {
       outline: none;
     }
+    position: sticky;
+    top: 0px;
+    ${media.biggerThanMaxTablet`
+      top:74px;
+    `}
   }
   .ql-container {
     font-family: 'visuelt','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
@@ -88,7 +96,6 @@ const Container: any = styled.div`
     border-color: ${(props: any) => props.error ? props.theme.colors.error : '#ccc'};
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     -webkit-appearance: none;
-
     .ql-editor {
       min-height: 300px;
     }
@@ -222,12 +229,14 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
             </span>
           }
         </div>
-        <ReactQuill
-          modules={modules}
-          bounds="#boundaries"
-          theme="snow"
-          {...quillProps}
-        />
+        <div id="scrollingContainer">
+          <ReactQuill
+            modules={modules}
+            bounds="#boundaries"
+            theme="snow"
+            {...quillProps}
+          />
+        </div>
       </Container>
     );
   }
