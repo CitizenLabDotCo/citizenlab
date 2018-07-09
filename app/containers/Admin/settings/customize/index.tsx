@@ -1,5 +1,7 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React, { PureComponent } from 'react';
+import { Subscription } from 'rxjs/Rx';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { map, switchMap } from 'rxjs/operators';
 import { merge, cloneDeep, forOwn, get, set, size, has, trim, isEmpty, omitBy } from 'lodash';
 
 // components
@@ -63,10 +65,10 @@ type State  = {
   subtitleError: Multiloc;
 };
 
-class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps, State> {
+class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, State> {
   titleMaxCharCount: number;
   subtitleMaxCharCount: number;
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props) {
     super(props);
@@ -95,20 +97,20 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
     const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      combineLatest(
         locale$,
         currentTenant$
-      ).switchMap(([locale, currentTenant]) => {
-        return Rx.Observable.combineLatest(
+      ).pipe(switchMap(([locale, currentTenant]) => {
+        return combineLatest(
           convertUrlToFileObservable(currentTenant.data.attributes.logo.large),
           convertUrlToFileObservable(currentTenant.data.attributes.header_bg.large),
-        ).map(([currentTenantLogo, currentTenantHeaderBg]) => ({
+        ).pipe(map(([currentTenantLogo, currentTenantHeaderBg]) => ({
           locale,
           currentTenant,
           currentTenantLogo,
           currentTenantHeaderBg
-        }));
-      }).subscribe(({ locale, currentTenant, currentTenantLogo, currentTenantHeaderBg }) => {
+        })));
+      })).subscribe(({ locale, currentTenant, currentTenantLogo, currentTenantHeaderBg }) => {
         const { attributesDiff } = this.state;
         let logo: ImageFile[] | null = null;
         let header_bg: ImageFile[] | null = null;
@@ -269,6 +271,7 @@ class SettingsCustomizeTab extends React.PureComponent<Props & InjectedIntlProps
       const { formatMessage } = this.props.intl;
       const { logo, header_bg, attributesDiff, logoError, headerError } = this.state;
       const tenantAttrs = merge(cloneDeep(currentTenant.data.attributes), attributesDiff);
+
       return (
         <form onSubmit={this.save}>
 

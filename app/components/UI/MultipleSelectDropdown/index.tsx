@@ -13,7 +13,7 @@ import Spinner from 'components/UI/Spinner';
 // style
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { lighten, ellipsis } from 'polished';
+import { lighten } from 'polished';
 
 // typing
 import { Message, Multiloc } from 'typings';
@@ -21,47 +21,56 @@ import { Message, Multiloc } from 'typings';
 const DropdownMenuInner = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: stretch;
   overflow: hidden;
+
+  * {
+    outline: none;
+  }
 `;
 
 const DropdownList = styled.div`
   max-height: 210px;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
   margin: 10px;
   margin-right: 5px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 `;
 
+const DropdownListItemName = styled(T)`
+  max-width: 280px;
+  color: ${colors.adminTextColor};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 10px;
+`;
+
 const DropdownListItem = styled.button`
-  align-items: center;
-  color: #044D6C;
+  color: ${colors.adminTextColor};
   font-size: 16px;
   font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 10px;
   padding-left: 15px;
   margin-right: 5px;
   background: #fff;
   border-radius: 5px;
   cursor: pointer;
-  display: flex;
-  flex: 1 0;
-  justify-content: space-between !important;
 
-  & > span {
-    white-space: nowrap;
-    margin-right: 10px;
-    ${ellipsis('250px') as any}
-  }
-
-  &:hover, &:focus {
-    outline: none;
-    color: #000;
+  &:hover,
+  &:focus {
     background: #f6f6f6;
-  }
 
+    ${DropdownListItemName} {
+      color: #000;
+    }
+  }
 `;
 
 const DropdownFooter = styled.div`
@@ -174,7 +183,7 @@ export default class MultipleSelectDropdown extends PureComponent<Props, State> 
                   const id = choice.id;
                   return (
                     <DropdownListItem key={id} onClick={this.onClickRow(id)} className="e2e-dropdown-item">
-                      <T value={choice.text} />
+                      <DropdownListItemName value={choice.text} />
                       <Checkbox
                         onChange={this.onClickRow(id)}
                         value={this.state.chosen.includes(id)}

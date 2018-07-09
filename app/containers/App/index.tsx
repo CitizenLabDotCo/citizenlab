@@ -59,6 +59,14 @@ const Container = styled.div`
 
 const InnerContainer = styled.div`
   padding-top: ${props => props.theme.menuHeight}px;
+  min-width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  ${media.smallerThanMaxTablet`
+    min-height: calc(100vh - ${props => props.theme.mobileTopBarHeight}px - 1px);
+  `}
 
   &.citizen {
     ${media.smallerThanMaxTablet`

@@ -133,7 +133,6 @@ export default class CommentsMoreActions extends PureComponent<Props, State> {
     return (
       <>
         <MoreActionsMenu
-          height="5px"
           className={this.props.className}
           actions={this.state.actions}
         />

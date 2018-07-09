@@ -77,7 +77,7 @@ const Content: any = styled.div`
 `;
 
 const Footer = styled.div`
-  flex: 1;
+  flex: 1 0 auto;
   width: 100%;
   display: flex;
 `;

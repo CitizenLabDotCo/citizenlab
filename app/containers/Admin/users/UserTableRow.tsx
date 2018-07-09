@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import { isAdmin } from 'services/permissions/roles';
 import * as moment from 'moment';
 import Link from 'utils/cl-router/Link';
@@ -32,10 +32,10 @@ import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // Styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const StyledCheckbox = styled(Checkbox) `
-  margin-left: 10px;
+  margin-left: 5px;
 `;
 
 const StyledAvatar = styled(Avatar) `
@@ -43,7 +43,7 @@ const StyledAvatar = styled(Avatar) `
   width: 28px;
 `;
 
-const SIcon = styled(Icon) `
+const StyledIcon = styled(Icon) `
   width: 20px;
   height: 30px;
   fill: ${colors.adminSecondaryTextColor};
@@ -69,37 +69,40 @@ const DropdownList = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
   margin: 10px;
 `;
 
 const DropdownListButton = styled.button`
+  flex: 1 0 auto;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   color: ${colors.adminLightText};
-  font-size: 16px;
+  font-size: ${fontSizes.small}px;
   font-weight: 400;
+  white-space: nowrap;
   padding: 10px;
   border-radius: 5px;
-  display: flex;
-  flex: 1 0;
-  justify-content: space-between !important;
+  border: solid 1px red;
   cursor: pointer;
   white-space: nowrap;
 
   & > span {
-    margin-right: 10px;
+    margin-right: 5px;
   }
 
   &:hover,
   &:focus {
     outline: none;
     color: white;
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.3);
   }
 `;
 
 const IconWrapper = styled.div`
-  width: 26px;
-  height: 26px;
+  width: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -113,21 +116,25 @@ const IconWrapper = styled.div`
   }
 `;
 
-const DropdownListLink = styled(Link) `
+const DropdownListLink = styled(Link)`
+  flex: 1 0 auto;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   color: ${colors.adminLightText};
-  font-size: 15px;
+  font-size: ${fontSizes.small}px;
   font-weight: 400;
+  white-space: nowrap;
   padding: 10px;
   border-radius: 5px;
-  display: flex;
-  flex: 1 0;
-  justify-content: space-between !important;
+  border: solid 1px red;
+  cursor: pointer;
+  white-space: nowrap;
 
   &:hover, &:focus {
     outline: none;
     color: white;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.3);
   }
 `;
 
@@ -143,20 +150,23 @@ interface Props {
 interface State {
   optionsOpened: boolean;
   isAdmin: boolean;
+  createdAt: string;
 }
 
-class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State> {
+class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       optionsOpened: false,
-      isAdmin: isAdmin({ data: this.props.user })
+      isAdmin: isAdmin({ data: this.props.user }),
+      createdAt: moment(this.props.user.attributes.created_at).format('LL')
     };
   }
 
   static getDerivedStateFromProps(nextProps: Props, _prevState: State) {
     return {
-      isAdmin: isAdmin({ data: nextProps.user })
+      isAdmin: isAdmin({ data: nextProps.user }),
+      createdAt: moment(nextProps.user.attributes.created_at).format('LL')
     };
   }
 
@@ -172,7 +182,7 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
     this.props.toggleAdmin();
   }
 
-  handleDeleteClick = (event: React.FormEvent<any>) => {
+  handleDeleteClick = (event: FormEvent) => {
     const { authUser, user } = this.props;
     const deleteMessage = this.props.intl.formatMessage(messages.userDeletionConfirmation);
 
@@ -191,7 +201,7 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
     }
   }
 
-  handleDropdownOnClickOutside = (event: React.FormEvent<MouseEvent>) => {
+  handleDropdownOnClickOutside = (event: FormEvent) => {
     event.preventDefault();
     event.stopPropagation();
     this.setState({ optionsOpened: false });
@@ -221,7 +231,7 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
         </td>
         <td>{user.attributes.first_name} {user.attributes.last_name}</td>
         <td>{user.attributes.email}</td>
-        <CreatedAt>{moment(user.attributes.created_at).format('LL')}</CreatedAt>
+        <CreatedAt>{this.state.createdAt}</CreatedAt>
         <td>
           <Toggle
             value={isAdmin}
@@ -252,7 +262,7 @@ class UserTableRow extends React.PureComponent<Props & InjectedIntlProps, State>
             handleDropdownOnClickOutside={this.handleDropdownOnClickOutside}
             dropdownOpened={optionsOpened}
           >
-            <SIcon name="more-options" />
+            <StyledIcon name="more-options" />
           </Popover>
         </Options>
       </tr>

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { fontSize, colors } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 const StyledTable: any = styled.table`
   width: 100%;
@@ -20,10 +20,10 @@ const StyledTable: any = styled.table`
       th {
         fill: ${colors.label};
         color: ${colors.label};
-        font-size: ${fontSize('small')};
+        font-size: ${fontSizes.small}px;
         font-weight: 500;
         text-transform: uppercase;
-        line-height: 17px;
+        line-height: 20px;
         padding-top: 0px;
         padding-bottom: 10px;
 
@@ -53,9 +53,9 @@ const StyledTable: any = styled.table`
 
       td {
         color: ${colors.adminTextColor};
-        font-size: ${fontSize('small')};
+        font-size: ${fontSizes.small}px;
         font-weight: 400;
-        line-height: 18px;
+        line-height: 20px;
         padding-top: 10px;
         padding-bottom: 10px;
 

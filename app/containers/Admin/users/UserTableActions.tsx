@@ -6,7 +6,7 @@ import FileSaver from 'file-saver';
 
 // Components
 import Checkbox from 'components/UI/Checkbox';
-import MultipleSelectDropdown from 'components/admin/MultipleSelectDropdown';
+import MultipleSelectDropdown from 'components/UI/MultipleSelectDropdown';
 import Icon from 'components/UI/Icon';
 
 // Services
@@ -43,8 +43,8 @@ const TableOptions = styled.div`
   display: flex;
   align-items: center;
   padding-bottom: 15px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
   margin-bottom: 15px;
   border-bottom: solid 1px #eaeaea;
   user-select: none;
