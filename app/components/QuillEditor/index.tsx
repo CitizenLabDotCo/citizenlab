@@ -100,14 +100,25 @@ export interface Props extends InputProps, QuillProps { }
 
 const change = e => e.persist();
 
+function handleLink(value)  {
+  if (value) {
+    const range = (this.quill as Quill).getSelection();
+    if (range && range.length !== 0) {
+      const tooltip = (this.quill as any).theme.tooltip;
+      tooltip.edit('link', 'https://');
+    } else {
+      (this.quill as Quill).format('link', false);
+    }
+  }
+}
+
 class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = { editorHtml: '' };
-    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(html) {
+  handleChange = (html) => {
     this.setState({ editorHtml: html });
   }
 
@@ -121,6 +132,9 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
       blotFormatter: noImages ? false : {},
       toolbar: noToolbar ? false : {
         container: `#${toolbarId}`,
+        handlers: {
+          link: handleLink,
+        }
       },
     };
 
@@ -161,6 +175,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
         <ReactQuill
           modules={modules}
           bounds="#boundaries"
+          theme="snow"
           {...quillProps}
         />
       </Container>
