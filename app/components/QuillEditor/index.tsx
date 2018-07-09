@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 
 // Quill editor & modules
 import ReactQuill, { Quill } from 'react-quill';
@@ -20,15 +19,6 @@ const ImageFormatAttributesList = [
   'width',
   'style',
 ];
-
-const Container = styled.div`
-  .ql-toolbar {
-    border-radius: 5px 5px 0 0;
-  }
-  .ql-container {
-    border-radius: 0 0 5px 5px;
-  }
-`;
 
 const BaseImageFormat = Quill.import('formats/image');
 class ImageFormat extends BaseImageFormat {
@@ -60,6 +50,59 @@ Quill.register(ImageFormat, true);
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+
+import styled from 'styled-components';
+import { fontSize } from 'utils/styleUtils';
+
+const Container: any = styled.div`
+  background: #fff;
+  .ql-snow.ql-toolbar button:hover .ql-stroke, .ql-snow .ql-toolbar button:hover .ql-stroke, .ql-snow.ql-toolbar button:focus .ql-stroke, .ql-snow .ql-toolbar button:focus .ql-stroke, .ql-snow.ql-toolbar button.ql-active .ql-stroke, .ql-snow .ql-toolbar button.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow.ql-toolbar button:hover .ql-stroke-miter, .ql-snow .ql-toolbar button:hover .ql-stroke-miter, .ql-snow.ql-toolbar button:focus .ql-stroke-miter, .ql-snow .ql-toolbar button:focus .ql-stroke-miter, .ql-snow.ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-picker-label:focus .ql-stroke, .ql-picker-item:focus .ql-stroke {
+    stroke: ${(props: any) => props.theme.colorMain};
+  }
+  .ql-snow.ql-toolbar button:hover .ql-fill, .ql-snow .ql-toolbar button:hover .ql-fill, .ql-snow.ql-toolbar button:focus .ql-fill, .ql-snow .ql-toolbar button:focus .ql-fill, .ql-snow.ql-toolbar button.ql-active .ql-fill, .ql-snow .ql-toolbar button.ql-active .ql-fill, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-fill, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-fill, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-fill, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-fill, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-fill, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-fill, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-fill, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-fill, .ql-snow.ql-toolbar button:hover .ql-stroke.ql-fill, .ql-snow .ql-toolbar button:hover .ql-stroke.ql-fill, .ql-snow.ql-toolbar button:focus .ql-stroke.ql-fill, .ql-snow .ql-toolbar button:focus .ql-stroke.ql-fill, .ql-snow.ql-toolbar button.ql-active .ql-stroke.ql-fill, .ql-snow .ql-toolbar button.ql-active .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-label:focus .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-item:focus .ql-stroke.ql-fill {
+    fill: ${(props: any) => props.theme.colorMain};
+  }
+  .ql-snow.ql-toolbar button:hover, .ql-snow .ql-toolbar button:hover, .ql-snow.ql-toolbar button:focus, .ql-snow .ql-toolbar button:focus, .ql-snow.ql-toolbar button.ql-active, .ql-snow .ql-toolbar button.ql-active, .ql-snow.ql-toolbar .ql-picker-label:hover,  .ql-snow.ql-toolbar .ql-picker-label:focus, .ql-snow .ql-toolbar .ql-picker-label:hover, .ql-snow.ql-toolbar .ql-picker-label.ql-active, .ql-snow .ql-toolbar .ql-picker-label.ql-active,  .ql-snow .ql-toolbar .ql-picker-label:focus, .ql-snow.ql-toolbar .ql-picker-item:hover, .ql-snow .ql-toolbar .ql-picker-item:hover, .ql-snow.ql-toolbar .ql-picker-item.ql-selected, .ql-snow.ql-toolbar .ql-picker-item:focus, .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
+    color: ${(props: any) => props.theme.colorMain};
+  }
+  .ql-toolbar.ql-snow {
+    font-family: 'visuelt','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
+  }
+  .ql-toolbar {
+    box-shadow: inset 0 0 2px rgba(0,0,0,0.1);
+    border-radius: 5px 5px 0 0;
+    & *:focus {
+      outline: none;
+    }
+  }
+  .ql-container {
+    font-family: 'visuelt','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
+    border-radius: 0 0 5px 5px;
+    border-top: 0 !important;
+    width: 100%;
+    height: 100%;
+    font-size: ${fontSize('base')};
+    line-height: 24px;
+    font-weight: 400;
+    border-color: ${(props: any) => props.error ? props.theme.colors.error : '#ccc'};
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
+    -webkit-appearance: none;
+
+    .ql-editor.ql-blank::before {
+      color: #aaa;
+      font-style: normal;
+      opacity: 1;
+    }
+
+    &:focus {
+      border-color: ${(props: any) => props.error ? props.theme.colors.error : '#999'};
+    }
+
+    .ql-align .ql-picker-label svg {
+      top: -3px;
+    }
+  }
+`;
 
 // Typings
 export interface InputProps {
@@ -100,7 +143,7 @@ export interface Props extends InputProps, QuillProps { }
 
 const change = e => e.persist();
 
-function handleLink(value)  {
+function handleLink(value) {
   if (value) {
     const range = (this.quill as Quill).getSelection();
     if (range && range.length !== 0) {
@@ -138,14 +181,13 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
       },
     };
 
+    const formats = ['bold', 'italic', 'link'];
+    if (!noImages) { formats.push('images', 'video'); }
+    if (!limitedTextFormatting) { formats.push('list', 'header', 'align'); }
+
     return (
       <Container id="boundaries">
         <div id={toolbarId} >
-          <span className="ql-formats">
-            <button className="ql-bold" />
-            <button className="ql-italic" />
-            <button className="ql-link" />
-          </span>
           {!limitedTextFormatting &&
             <>
               <span className="ql-formats">
@@ -156,14 +198,21 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
                 </select>
               </span>
               <span className="ql-formats">
-                <select className="ql-align" defaultValue={'0'} onChange={change}>
-                  <option value="" aria-selected />
-                  <option value="center" aria-selected />
-                  <option value="right" aria-selected />
-                </select>
+                <button className="ql-align" value="" />
+                <button className="ql-align" value="center" />
+                <button className="ql-align" value="right" />
+              </span>
+              <span className="ql-formats">
+                <button className="ql-list" value="ordered" />
+                <button className="ql-list" value="bullet" />
               </span>
             </>
           }
+          <span className="ql-formats">
+            <button className="ql-bold" />
+            <button className="ql-italic" />
+            <button className="ql-link" />
+          </span>
 
           {!noImages &&
             <span className="ql-formats">
@@ -176,11 +225,11 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
           modules={modules}
           bounds="#boundaries"
           theme="snow"
+          formats={formats}
           {...quillProps}
         />
       </Container>
     );
   }
 }
-
 export default injectIntl<Props>(QuillEditor);
