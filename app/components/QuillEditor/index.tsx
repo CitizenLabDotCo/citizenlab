@@ -125,7 +125,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
     };
 
     return (
-      <Container>
+      <Container id="boundaries">
         <div id={toolbarId} >
           <span className="ql-formats">
             <button className="ql-bold" />
@@ -160,6 +160,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
         </div>
         <ReactQuill
           modules={modules}
+          bounds="#boundaries"
           {...quillProps}
         />
       </Container>
