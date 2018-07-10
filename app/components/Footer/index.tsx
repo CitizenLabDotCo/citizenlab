@@ -27,6 +27,7 @@ import { media, color } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
+import { hideVisually } from 'polished';
 
 const Container = styled.div`
   width: 100%;
@@ -203,6 +204,10 @@ const LanguageSelectionWrapper = styled.div`
   `}
 `;
 
+const HiddenLabel = styled.span`
+  ${hideVisually() as any}
+`;
+
 type Props = {
   showCityLogoSection?: boolean | undefined;
 };
@@ -319,7 +324,10 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
             </PoweredBy>
 
             <LanguageSelectionWrapper className={this.state.languageOptions.length > 1 ? 'show' : ''}>
-              <Dropdown onChange={this.handleLanguageChange} upward={true} search={true} selection={true} value={locale} options={this.state.languageOptions} />
+              <label htmlFor="e2e-footer-language-switch">
+                <HiddenLabel><FormattedMessage {...messages.selectLanguage} /></HiddenLabel>
+                <Dropdown id="e2e-footer-language-switch" onChange={this.handleLanguageChange} upward={true} search={true} selection={true} value={locale} options={this.state.languageOptions} />
+              </label>
             </LanguageSelectionWrapper>
           </SecondLine>
         </Container>
