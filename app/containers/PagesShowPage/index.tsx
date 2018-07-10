@@ -31,7 +31,7 @@ import messages from './messages';
 // styling
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { media } from 'utils/styleUtils';
+import { media, quillEditedContent } from 'utils/styleUtils';
 
 const Container = styled.div`
   background: #f9f9fa;
@@ -78,8 +78,7 @@ const PageTitle = styled.h1`
   `}
 `;
 
-  export function pageBodyStyle() {
-  return `
+const PageDescription = styled.div`
   color: #333;
   font-size: 18px;
   font-weight: 300;
@@ -129,11 +128,8 @@ const PageTitle = styled.h1`
   img {
     max-width: 100%;
   }
-`;
-}
 
-const PageDescription = styled.div`
-  ${pageBodyStyle()}
+  ${quillEditedContent()}
 `;
 
 const PagesNavWrapper = styled.div`

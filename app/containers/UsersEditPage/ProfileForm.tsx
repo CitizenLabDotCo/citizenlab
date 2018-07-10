@@ -48,14 +48,6 @@ const StyledContentContainer = styled(ContentContainer)`
   padding-bottom: 40px;
 `;
 
-import { bioStyle } from 'containers/UsersShowPage';
-
-const DescriptionEditor = styled(QuillEditor)`
-  .ql-editor {
-    ${bioStyle()}
-  }
-`;
-
 // Types
 interface InputProps {
   user: IUserData;
@@ -308,7 +300,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
 
                     <SectionField>
                       <LabelWithTooltip id="bio" />
-                      <DescriptionEditor
+                      <QuillEditor
                         id="bio_multiloc"
                         noImages
                         limitedTextFormatting

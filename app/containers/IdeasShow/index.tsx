@@ -48,7 +48,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, color, colors } from 'utils/styleUtils';
+import { media, color, colors, quillEditedContent } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const loadingTimeout = 400;
@@ -60,7 +60,7 @@ const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
 const contentDelay = 600;
 const contentTranslateDistance = '30px';
 
-const StyledSpinner = styled(Spinner)`
+const StyledSpinner = styled(Spinner) `
   transition: all ${loadingTimeout}ms ${loadingEasing} ${loadingDelay}ms;
 `;
 
@@ -149,7 +149,7 @@ const BelongsToProject = styled.p`
   margin-bottom: 15px;
 `;
 
-const ProjectLink = styled(Link)`
+const ProjectLink = styled(Link) `
   color: inherit;
   font-weight: 400;
   font-size: inherit;
@@ -269,7 +269,7 @@ const LocationIconWrapper = styled.div`
   justify-content: flex-start;
 `;
 
-const LocationIcon = styled(Icon)`
+const LocationIcon = styled(Icon) `
   width: 18px;
   fill: ${colors.label};
 `;
@@ -341,7 +341,7 @@ const AddressWrapper = styled.div`
   z-index: 1000;
 `;
 
-const AuthorAvatar = styled(Avatar)`
+const AuthorAvatar = styled(Avatar) `
   width: 35px;
   height: 35px;
   margin-right: 8px;
@@ -384,46 +384,42 @@ const TimeAgo = styled.div`
   `}
 `;
 
-export function ideaBodyStyle() {
-  return `
-    color: #474747;
-    font-size: 19px;
-    font-weight: 300;
-    line-height: 32px;
-    word-break: break-word;
-
-    p {
-      margin-bottom: 32px;
-
-      &:last-child {
-        margin-bottom: 0px;
-      }
-    }
-
-    ul {
-      list-style-type: disc;
-      list-style-position: outside;
-      padding: 0;
-      padding-left: 30px;
-      margin: 0;
-      margin-bottom: 25px;
-
-      li {
-        padding: 0;
-        padding-top: 2px;
-        padding-bottom: 2px;
-        margin: 0;
-      }
-    }
-
-    strong {
-      font-weight: 500;
-    }
-  `;
-}
-
 const IdeaBody = styled.div`
-  ${ideaBodyStyle()}
+  color: #474747;
+  font-size: 19px;
+  font-weight: 300;
+  line-height: 32px;
+  word-break: break-word;
+
+  p {
+    margin-bottom: 32px;
+
+    &:last-child {
+      margin-bottom: 0px;
+    }
+  }
+
+  ul {
+    list-style-type: disc;
+    list-style-position: outside;
+    padding: 0;
+    padding-left: 30px;
+    margin: 0;
+    margin-bottom: 25px;
+
+    li {
+      padding: 0;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      margin: 0;
+    }
+  }
+
+  strong {
+    font-weight: 500;
+  }
+
+  ${quillEditedContent()}
 `;
 
 const CommentsTitle = styled.h2`
@@ -488,7 +484,7 @@ const StatusContainer = styled.div`
   margin-top: 35px;
 `;
 
-const StatusContainerMobile = styled(StatusContainer)`
+const StatusContainerMobile = styled(StatusContainer) `
   margin-top: -20px;
   margin-bottom: 35px;
   transform-origin: top left;
@@ -526,9 +522,9 @@ const SharingWrapper = styled.div`
   flex-direction: column;
 `;
 
-const StyledSharing: any = styled(Sharing)``;
+const StyledSharing: any = styled(Sharing) ``;
 
-const StyledSharingMobile = styled(StyledSharing)`
+const StyledSharingMobile = styled(StyledSharing) `
   margin: 0;
   margin-bottom: 25px;
   padding: 0;
@@ -604,36 +600,36 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
 
     this.subscriptions = [
       this.ideaId$
-      .distinctUntilChanged()
-      .filter(ideaId => !ideaId)
-      .subscribe(() => {
-        this.setState(this.initialState);
-      }),
+        .distinctUntilChanged()
+        .filter(ideaId => !ideaId)
+        .subscribe(() => {
+          this.setState(this.initialState);
+        }),
 
       ideaId$
-      .do(() => this.setState({ opened: true }))
-      .switchMap((ideaId: string) => ideaByIdStream(ideaId).observable)
-      .switchMap((idea) => {
-        const ideaImages = idea.data.relationships.idea_images.data;
-        const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
-        const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
-        const ideaStatusId = (idea.data.relationships.idea_status ? idea.data.relationships.idea_status.data.id : null);
-        const ideaImage$ = (ideaImageId ? ideaImageStream(idea.data.id, ideaImageId).observable : of(null));
-        const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : of(null);
-        const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : of(null));
-        const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : of(null));
+        .do(() => this.setState({ opened: true }))
+        .switchMap((ideaId: string) => ideaByIdStream(ideaId).observable)
+        .switchMap((idea) => {
+          const ideaImages = idea.data.relationships.idea_images.data;
+          const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
+          const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
+          const ideaStatusId = (idea.data.relationships.idea_status ? idea.data.relationships.idea_status.data.id : null);
+          const ideaImage$ = (ideaImageId ? ideaImageStream(idea.data.id, ideaImageId).observable : of(null));
+          const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : of(null);
+          const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : of(null));
+          const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : of(null));
 
-        return combineLatest(
-          authUser$,
-          ideaImage$,
-          ideaAuthor$,
-          ideaStatus$,
-          project$,
-        ).map(([authUser, ideaImage, ideaAuthor, _ideaStatus, project]) => ({ authUser, idea, ideaImage, ideaAuthor, project }));
-      })
-      .subscribe(({ authUser, idea, ideaImage, ideaAuthor, project }) => {
-        this.setState({ authUser, idea, ideaImage, ideaAuthor, project, loaded: true });
-      }),
+          return combineLatest(
+            authUser$,
+            ideaImage$,
+            ideaAuthor$,
+            ideaStatus$,
+            project$,
+          ).map(([authUser, ideaImage, ideaAuthor, _ideaStatus, project]) => ({ authUser, idea, ideaImage, ideaAuthor, project }));
+        })
+        .subscribe(({ authUser, idea, ideaImage, ideaAuthor, project }) => {
+          this.setState({ authUser, idea, ideaImage, ideaAuthor, project, loaded: true });
+        }),
 
       ideaId$.switchMap((ideaId) => {
         return commentsForIdeaStream(ideaId as string).observable;
@@ -646,7 +642,7 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
         authUser$
       ).switchMap(([idea, authUser]) => {
         return hasPermission({
-          item: idea  && idea.data ? idea.data : null,
+          item: idea && idea.data ? idea.data : null,
           action: 'edit',
           context: idea && idea.data ? idea.data : null,
         }).map((granted) => ({ authUser, granted }));
@@ -760,10 +756,11 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
                 <BelongsToProject>
                   <FormattedMessage
                     {...messages.postedIn}
-                    values={{ projectLink:
-                      <ProjectLink to={`/projects/${project.data.attributes.slug}`}>
-                        <T value={projectTitleMultiloc} />
-                      </ProjectLink>
+                    values={{
+                      projectLink:
+                        <ProjectLink to={`/projects/${project.data.attributes.slug}`}>
+                          <T value={projectTitleMultiloc} />
+                        </ProjectLink>
                     }}
                   />
                 </BelongsToProject>
@@ -802,9 +799,9 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
 
                 <AuthorAndAdressWrapper>
                   <AuthorContainer>
-                    <AuthorAvatar userId={authorId} size="small" onClick={authorId ? this.goToUserProfile : () => {}} />
+                    <AuthorAvatar userId={authorId} size="small" onClick={authorId ? this.goToUserProfile : () => { }} />
                     <AuthorMeta>
-                      <AuthorName to={ideaAuthor ?  `/profile/${ideaAuthor.data.attributes.slug}` :  ''}>
+                      <AuthorName to={ideaAuthor ? `/profile/${ideaAuthor.data.attributes.slug}` : ''}>
                         <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={(ideaAuthor ? ideaAuthor.data : null)} /> }} />
                       </AuthorName>
                       {createdAt &&
