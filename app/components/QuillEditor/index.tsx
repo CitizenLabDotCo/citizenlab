@@ -60,8 +60,6 @@ import styled from 'styled-components';
 import { fontSize, colors } from 'utils/styleUtils';
 
 const Container: any = styled.div`
-  background: #fff;
-
   .ql-snow.ql-toolbar button:hover .ql-stroke, .ql-snow .ql-toolbar button:hover .ql-stroke, .ql-snow.ql-toolbar button:focus .ql-stroke, .ql-snow .ql-toolbar button:focus .ql-stroke, .ql-snow.ql-toolbar button.ql-active .ql-stroke, .ql-snow .ql-toolbar button.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow.ql-toolbar button:hover .ql-stroke-miter, .ql-snow .ql-toolbar button:hover .ql-stroke-miter, .ql-snow.ql-toolbar button:focus .ql-stroke-miter, .ql-snow .ql-toolbar button:focus .ql-stroke-miter, .ql-snow.ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-picker-label:focus .ql-stroke, .ql-picker-item:focus .ql-stroke {
     stroke: ${(props: any) => props.inAdmin ? colors.clBlue : props.theme.colorMain};
   }
@@ -74,6 +72,8 @@ const Container: any = styled.div`
   .ql-toolbar.ql-snow {
     font-family: 'visuelt','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
   }
+
+  background: #fff;
   .ql-toolbar {
     background: white;
     box-shadow: inset 0 0 2px rgba(0,0,0,0.1);
@@ -159,6 +159,7 @@ interface Tracks {
 
 export interface Props extends InputProps, QuillProps { }
 
+// Quill override link handler
 function handleLink(value) {
   if (value) {
     const range = (this.quill as Quill).getSelection();
@@ -179,9 +180,9 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
 
   handleChange = html => this.setState({ editorHtml: html });
 
+  // Begin event tracking functions
   trackAdvanced = (type, option) => {
-    return (e) => {
-      console.log(e.target);
+    return () => {
       this.props.trackAdvancedEditing({
         extra: {
           type,
@@ -224,10 +225,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
   trackVideo = () => {
     return this.props.trackVideoEditing();
   }
-
-  change(event) {
-    console.log(event);
-  }
+  // End event tracking functions
 
   render() {
     const {
