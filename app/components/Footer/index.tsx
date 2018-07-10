@@ -10,7 +10,8 @@ import Fragment from 'components/Fragment';
 import { Dropdown } from 'semantic-ui-react';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages.js';
 import { appLocalePairs } from 'i18n';
@@ -217,7 +218,7 @@ type State = {
   }[]
 };
 
-class Footer extends React.PureComponent<Props, State> {
+class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Rx.Subscription[];
 
   public static defaultProps: Partial<Props> = {
@@ -267,6 +268,7 @@ class Footer extends React.PureComponent<Props, State> {
 
   render() {
     const { locale, currentTenant, showCityLogoSection } = this.state;
+    const { formatMessage } = this.props.intl;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -282,7 +284,7 @@ class Footer extends React.PureComponent<Props, State> {
       return (
         <Container role="contentinfo" className={this.props['className']} id="hook-footer">
           {showCityLogoSection &&
-            <Fragment name={footerLocale}>
+            <Fragment title={formatMessage(messages.iframeTitle)} name={footerLocale}>
               <FirstLine id="hook-footer-logo">
                 {currentTenantLogo && tenantSite &&
                   <LogoLink href={tenantSite} target="_blank">
@@ -328,4 +330,6 @@ class Footer extends React.PureComponent<Props, State> {
   }
 }
 
-export default Footer;
+const FooterWithInjectedIntl = injectIntl<Props>(Footer);
+
+export default FooterWithInjectedIntl;

@@ -9,6 +9,7 @@ const StyledIframe = styled.iframe`
 `;
 
 type Props = {
+  title: string;
   name: string;
   tenantId: string;
   children?: JSX.Element | null;
@@ -63,12 +64,13 @@ class Fragment extends React.Component<Props, State> {
   }
 
   render() {
-    const { children } = this.props;
+    const { children, title } = this.props;
     const { fragmentExists, iframeHeight } = this.state;
 
     if (fragmentExists) {
       return (
         <StyledIframe
+          title={title}
           innerRef={this.setIframeRef}
           src={this.fragmentUrl()}
           height={iframeHeight}
