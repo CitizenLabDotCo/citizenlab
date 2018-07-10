@@ -145,24 +145,20 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleTitleMultilocOnChange = (titleMultiloc) => {
+  handleTitleMultilocOnChange = (title_multiloc) => {
     this.setState((state) => ({
       attributeDiff: {
         ...state.attributeDiff,
-        title_multiloc: titleMultiloc
+        title_multiloc,
       }
     }));
   }
 
-  handleEditorOnChange = (valueMultiloc) => {
+  handleEditorOnChange = (description_multiloc) => {
     this.setState((state) => ({
       attributeDiff: {
         ...state.attributeDiff,
-        description_multiloc: {
-          ...get(state, 'phase.data.attributes.description_multiloc', {}),
-          ...get(state.attributeDiff, 'description_multiloc', {}),
-          ...valueMultiloc,
-        }
+        description_multiloc,
       }
     }));
   }
