@@ -823,6 +823,7 @@
   "app.containers.app.navbar.signOut": "Log ud",
   "app.containers.app.navbar.startIdea": "Del din ide",
   "app.containers.footer.cookies-policy": "Cookie-politik",
+  "app.containers.footer.iframeTitle": "",
   "app.containers.footer.information": "Om",
   "app.containers.footer.poweredBy": "Drevet af",
   "app.containers.footer.privacy-policy": "Privatlivspolitik",

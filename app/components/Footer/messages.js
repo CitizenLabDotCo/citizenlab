@@ -29,6 +29,10 @@ export default defineMessages({
     id: 'app.containers.footer.cookies-policy',
     defaultMessage: 'Cookie Policy',
   },
+  iframeTitle: {
+    id: 'app.containers.footer.iframeTitle',
+    defaultMessage: 'More information about {orgName}'
+  },
   selectLanguage: {
     id: 'app.containers.footer.selectLanguage',
     defaultMessage: 'Select a Language',
