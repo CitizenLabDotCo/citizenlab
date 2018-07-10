@@ -627,6 +627,7 @@
   "app.containers.PasswordReset.title": "Tilbakestill passordet ditt",
   "app.containers.PasswordReset.updatePassword": "Bekreft nytt passord",
   "app.containers.ProjectCards.areasTitle": "Områder",
+  "app.containers.ProjectInfo.imageAltText": "",
   "app.containers.ProjectInfo.twitterMessage": "{title} : share your ideas on",
   "app.containers.Projects.aboutThisPhase": "Om denne fasen",
   "app.containers.Projects.allEvents": "Alle hendelser",
