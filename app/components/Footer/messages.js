@@ -29,4 +29,8 @@ export default defineMessages({
     id: 'app.containers.footer.cookies-policy',
     defaultMessage: 'Cookie Policy',
   },
+  selectLanguage: {
+    id: 'app.containers.footer.selectLanguage',
+    defaultMessage: 'Select a Language',
+  },
 });
