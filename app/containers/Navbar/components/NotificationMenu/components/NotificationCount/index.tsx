@@ -55,7 +55,7 @@ export default class NotificationCount extends React.PureComponent<Props, State>
     const { count } = this.props;
 
     return (
-      <Container onClick={this.props.onClick}>
+      <Container aria-label="Notifications" onClick={this.props.onClick}>
         <NotificationIcon name="notification" />
         {(isNumber(count) && count > 0) ? <NewNotificationsIndicator /> : null}
       </Container>
