@@ -823,6 +823,7 @@
   "app.containers.app.navbar.signOut": "",
   "app.containers.app.navbar.startIdea": "",
   "app.containers.footer.cookies-policy": "",
+  "app.containers.footer.iframeTitle": "",
   "app.containers.footer.information": "",
   "app.containers.footer.poweredBy": "",
   "app.containers.footer.privacy-policy": "",
