@@ -826,6 +826,7 @@
   "app.containers.footer.information": "Om",
   "app.containers.footer.poweredBy": "Drevet af",
   "app.containers.footer.privacy-policy": "Privatlivspolitik",
+  "app.containers.footer.selectLanguage": "",
   "app.containers.footer.slogan": "{type, select, generic {Dette er et initiativ fra {name}} other {Dette er et initiativ fra {name}}}",
   "app.containers.footer.terms-and-conditions": "Betingelser og vilkår",
   "app.containers.footer.termsLink": "Betingelser for brug",
