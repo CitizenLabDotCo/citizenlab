@@ -51,9 +51,13 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
+// tracking
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
+
 // Styling
 import styled from 'styled-components';
-import { fontSize, colors, media } from 'utils/styleUtils';
+import { fontSize, colors } from 'utils/styleUtils';
 
 const Container: any = styled.div`
   background: #fff;
@@ -72,18 +76,12 @@ const Container: any = styled.div`
   }
   .ql-toolbar {
     background: white;
-    z-index: 5;
     box-shadow: inset 0 0 2px rgba(0,0,0,0.1);
     border-radius: 5px 5px 0 0;
     border-bottom: 0 !important;
     & *:focus {
       outline: none;
     }
-    position: sticky;
-    top: 0px;
-    ${media.biggerThanMaxTablet`
-      top:74px;
-    `}
   }
   .ql-container {
     font-family: 'visuelt','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
@@ -151,9 +149,15 @@ interface ModulesConfig {
   toolbar?: any;
   blotFormatter?: any;
 }
-export interface Props extends InputProps, QuillProps { }
 
-const change = e => e.persist();
+interface Tracks {
+  trackImageEditing: Function;
+  trackBasicEditing: Function;
+  trackVideoEditing: Function;
+  trackAdvancedEditing: Function;
+}
+
+export interface Props extends InputProps, QuillProps { }
 
 function handleLink(value) {
   if (value) {
@@ -167,18 +171,78 @@ function handleLink(value) {
   }
 }
 
-class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
+class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, State> {
   constructor(props) {
     super(props);
     this.state = { editorHtml: '' };
   }
 
-  handleChange = (html) => {
-    this.setState({ editorHtml: html });
+  handleChange = html => this.setState({ editorHtml: html });
+
+  trackAdvanced = (type, option) => {
+    return (e) => {
+      console.log(e.target);
+      this.props.trackAdvancedEditing({
+        extra: {
+          type,
+          option,
+        },
+      });
+    };
+  }
+  trackClickDropdown = () => {
+    return (e) => {
+      if (e.target && e.target.classList.contains('ql-picker-item')) {
+        const value = e.target.getAttribute('data-value');
+        let option;
+        if (value === '1') {
+          option = 'title';
+        } else if (value === '2') {
+          option = 'subtitle';
+        } else {
+          option = 'normal';
+        }
+        this.props.trackAdvancedEditing({
+          extra: {
+            option,
+            type : 'heading',
+          },
+        });
+      }
+    };
+  }
+  trackBasic = (type) => {
+    return () => this.props.trackBasicEditing({
+      extra: {
+        type,
+      },
+    });
+  }
+  trackImage = () => {
+    return this.props.trackImageEditing();
+  }
+  trackVideo = () => {
+    return this.props.trackVideoEditing();
+  }
+
+  change(event) {
+    console.log(event);
   }
 
   render() {
-    const { id, noToolbar, noImages, limitedTextFormatting, inAdmin, intl: { formatMessage }, ...quillProps } = this.props;
+    const {
+      id,
+      noToolbar,
+      noImages,
+      limitedTextFormatting,
+      inAdmin,
+      trackBasicEditing,
+      trackImageEditing,
+      trackVideoEditing,
+      trackAdvancedEditing,
+      intl: { formatMessage },
+      ...quillProps
+    } = this.props;
 
     const toolbarId = `ql-editor-toolbar-${id}`;
 
@@ -198,47 +262,76 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps, State> {
         <div id={toolbarId} >
           {!limitedTextFormatting &&
             <>
-              <span className="ql-formats">
-                <select className="ql-header" defaultValue={''} onChange={change} >
-                  <option value="1" aria-selected={false}>{formatMessage(messages.title)}</option>
-                  <option value="2" aria-selected={false}>{formatMessage(messages.subtitle)}</option>
-                  <option value="" aria-selected>{formatMessage(messages.normalText)}</option>
+              <span className="ql-formats" role="button" onClick={this.trackClickDropdown()}>
+                <select className="ql-header" defaultValue={''}>
+                  <option
+                    value="1"
+                    aria-selected={false}
+                  >{formatMessage(messages.title)}
+                  </option>
+                  <option
+                    value="2"
+                    aria-selected={false}
+                  >{formatMessage(messages.subtitle)}
+                  </option>
+                  <option
+                    value=""
+                    aria-selected
+                  >{formatMessage(messages.normalText)}
+                  </option>
                 </select>
               </span>
               <span className="ql-formats">
-                <button className="ql-align" value="" />
-                <button className="ql-align" value="center" />
-                <button className="ql-align" value="right" />
+                <button
+                  className="ql-align"
+                  value=""
+                  onClick={this.trackAdvanced('align', 'left')}
+                />
+                <button
+                  className="ql-align"
+                  value="center"
+                  onClick={this.trackAdvanced('align', 'center')}
+                />
+                <button
+                  className="ql-align"
+                  value="right"
+                  onClick={this.trackAdvanced('align', 'right')}
+                />
               </span>
               <span className="ql-formats">
-                <button className="ql-list" value="ordered" />
-                <button className="ql-list" value="bullet" />
+                <button className="ql-list" value="ordered" onClick={this.trackAdvanced('list', 'ordered')} />
+                <button className="ql-list" value="bullet" onClick={this.trackAdvanced('list', 'bullet')} />
               </span>
             </>
           }
           <span className="ql-formats">
-            <button className="ql-bold" />
-            <button className="ql-italic" />
-            <button className="ql-link" />
+            <button className="ql-bold" onClick={this.trackBasic('bold')} />
+            <button className="ql-italic" onClick={this.trackBasic('italic')} />
+            <button className="ql-link" onClick={this.trackBasic('link')} />
           </span>
 
           {!noImages &&
             <span className="ql-formats">
-              <button className="ql-image" />
-              <button className="ql-video" />
+              <button className="ql-image" onClick={this.trackImage} />
+              <button className="ql-video" onClick={this.trackVideo} />
             </span>
           }
         </div>
-        <div id="scrollingContainer">
-          <ReactQuill
-            modules={modules}
-            bounds="#boundaries"
-            theme="snow"
-            {...quillProps}
-          />
-        </div>
+        <ReactQuill
+          modules={modules}
+          bounds="#boundaries"
+          theme="snow"
+          {...quillProps}
+        />
       </Container>
     );
   }
 }
-export default injectIntl<Props>(QuillEditor);
+
+const QuillEditorWithHoc = injectTracks<Props>({
+  trackBasicEditing: tracks.basicEditing,
+  trackImageEditing: tracks.imageEditing,
+  trackVideoEditing: tracks.videoEditing,
+  trackAdvancedEditing: tracks.advancedEditing,
+})(QuillEditor);
+export default injectIntl<Props>(QuillEditorWithHoc);
