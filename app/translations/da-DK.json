@@ -627,6 +627,7 @@
   "app.containers.PasswordReset.title": "Nulstil din adgangskode",
   "app.containers.PasswordReset.updatePassword": "Bekræft ny adgangskode",
   "app.containers.ProjectCards.areasTitle": "Områder",
+  "app.containers.ProjectInfo.imageAltText": "",
   "app.containers.ProjectInfo.twitterMessage": "{title} : share your ideas on",
   "app.containers.Projects.aboutThisPhase": "Om denne fase",
   "app.containers.Projects.allEvents": "Alle begivenheder",

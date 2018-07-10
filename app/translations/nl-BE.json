@@ -627,6 +627,7 @@
   "app.containers.PasswordReset.title": "Je wachtwoord opnieuw instellen",
   "app.containers.PasswordReset.updatePassword": "Bevestig wachtwoord",
   "app.containers.ProjectCards.areasTitle": "Gebieden",
+  "app.containers.ProjectInfo.imageAltText": "",
   "app.containers.ProjectInfo.twitterMessage": "{title} : deel je ideeën op",
   "app.containers.Projects.aboutThisPhase": "Over deze fase",
   "app.containers.Projects.allEvents": "Alle activiteiten",
