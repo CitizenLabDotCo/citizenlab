@@ -84,10 +84,13 @@ const SecondLine = styled.div`
 const PagesNav = styled.nav`
   color: #999;
   flex: 1;
-  list-style: none;
-  margin: 0;
-  padding: 0;
   text-align: left;
+
+  ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
 
   li {
     display: inline-block;
@@ -302,18 +305,18 @@ class Footer extends React.PureComponent<Props, State> {
 
           <SecondLine>
             <PagesNav>
-              {LEGAL_PAGES.map((slug, index) => (
-                <span key={slug}>
-                  {index !== 0  &&
-                    <Separator>•</Separator>
-                  }
-                  <li>
+              <ul>
+                {LEGAL_PAGES.map((slug, index) => (
+                  <li key={slug}>
+                    {index !== 0  &&
+                      <Separator>•</Separator>
+                    }
                     <StyledLink to={`/pages/${slug}`}>
                       <FormattedMessage {...messages[slug]} />
                     </StyledLink>
                   </li>
-                </span>
-              ))}
+                ))}
+              </ul>
             </PagesNav>
 
             <PoweredBy href="https://www.citizenlab.co/">
