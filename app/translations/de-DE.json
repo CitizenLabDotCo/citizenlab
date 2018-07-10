@@ -823,6 +823,7 @@
   "app.containers.app.navbar.signOut": "Abmelden",
   "app.containers.app.navbar.startIdea": "{orgName, select, München {Melden Sie einen Mangel} other {Starten Sie eine Idee}}",
   "app.containers.footer.cookies-policy": "Cookie-Richtlinie",
+  "app.containers.footer.iframeTitle": "",
   "app.containers.footer.information": "Impressum",
   "app.containers.footer.poweredBy": "Ermöglicht durch",
   "app.containers.footer.privacy-policy": "Datenschutzrichtlinie",
