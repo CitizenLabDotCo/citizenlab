@@ -823,6 +823,7 @@
   "app.containers.app.navbar.signOut": "Afmelden",
   "app.containers.app.navbar.startIdea": "Lanceer je idee",
   "app.containers.footer.cookies-policy": "Cookiebeleid",
+  "app.containers.footer.iframeTitle": "",
   "app.containers.footer.information": "Over",
   "app.containers.footer.poweredBy": "Powered by",
   "app.containers.footer.privacy-policy": "Privacybeleid",

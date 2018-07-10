@@ -823,6 +823,7 @@
   "app.containers.app.navbar.signOut": "Logg av",
   "app.containers.app.navbar.startIdea": "Start en idé",
   "app.containers.footer.cookies-policy": "Retningslinjer for informasjonskapsler",
+  "app.containers.footer.iframeTitle": "",
   "app.containers.footer.information": "Om",
   "app.containers.footer.poweredBy": "Drevet av",
   "app.containers.footer.privacy-policy": "Retningslinjer for personvern",
