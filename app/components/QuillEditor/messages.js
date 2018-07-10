@@ -1,13 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  bigTitle: {
-    id: 'app.components.QuillEditor.bigTitle',
-    defaultMessage: 'Big Title',
+  title: {
+    id: 'app.components.QuillEditor.title',
+    defaultMessage: 'Title',
   },
-  littleTitle: {
-    id: 'app.components.QuillEditor.LittleTitle',
-    defaultMessage: 'Little Title',
+  subtitle: {
+    id: 'app.components.QuillEditor.subtitle',
+    defaultMessage: 'Subtitle',
   },
   normalText: {
     id: 'app.components.QuillEditor.normalText',

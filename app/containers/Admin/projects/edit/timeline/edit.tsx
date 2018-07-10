@@ -316,6 +316,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
               <SectionField>
                 <QuillMultiloc
                   id="description"
+                  inAdmin
                   label={<FormattedMessage {...messages.descriptionLabel} />}
                   valueMultiloc={phaseAttrs.description_multiloc}
                   onChangeMultiloc={this.handleEditorOnChange}
