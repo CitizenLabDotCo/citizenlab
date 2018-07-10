@@ -826,6 +826,7 @@
   "app.containers.footer.information": "Impressum",
   "app.containers.footer.poweredBy": "Ermöglicht durch",
   "app.containers.footer.privacy-policy": "Datenschutzrichtlinie",
+  "app.containers.footer.selectLanguage": "",
   "app.containers.footer.slogan": "{type, select, generic {Dies ist eine Initiative von {name}} other {Dies ist eine Initiative von {name}}}",
   "app.containers.footer.terms-and-conditions": "Geschäftsbedingungen",
   "app.containers.footer.termsLink": "Nutzungsbedingungen",

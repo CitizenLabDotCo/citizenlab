@@ -826,6 +826,7 @@
   "app.containers.footer.information": "Over",
   "app.containers.footer.poweredBy": "Powered by",
   "app.containers.footer.privacy-policy": "Privacybeleid",
+  "app.containers.footer.selectLanguage": "",
   "app.containers.footer.slogan": "{type, select, generic {Deze website is een initiatief van {name}} other {Deze website is een initiatief van {name}}}",
   "app.containers.footer.terms-and-conditions": "Gebruiksvoorwaarden",
   "app.containers.footer.termsLink": "Gebruikersvoorwaarden",

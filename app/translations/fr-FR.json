@@ -826,6 +826,7 @@
   "app.containers.footer.information": "A propos",
   "app.containers.footer.poweredBy": "Généré par",
   "app.containers.footer.privacy-policy": "Politique de confidentialité",
+  "app.containers.footer.selectLanguage": "",
   "app.containers.footer.slogan": "{type, select, generic {Cette initiative vous est proposée par {name}} other {Cette initiative vous est proposée par {name}}}",
   "app.containers.footer.terms-and-conditions": "Termes et conditions",
   "app.containers.footer.termsLink": "Charte de conduite",
