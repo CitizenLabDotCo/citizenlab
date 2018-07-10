@@ -291,7 +291,7 @@ class Footer extends React.PureComponent<Props, State> {
               <FirstLine id="hook-footer-logo">
                 {currentTenantLogo && tenantSite &&
                   <LogoLink href={tenantSite} target="_blank">
-                    <TenantLogo src={currentTenantLogo} />
+                    <TenantLogo src={currentTenantLogo} alt="Organization logo" />
                   </LogoLink>}
                 {currentTenantLogo && !tenantSite &&
                   <TenantLogo src={currentTenantLogo} />}
