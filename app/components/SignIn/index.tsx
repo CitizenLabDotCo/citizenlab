@@ -328,6 +328,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
           <Form id="signin" onSubmit={this.handleOnSubmit} noValidate={true}>
             <FormElement>
               <Input
+                ariaLabel={formatMessage(messages.emailPlaceholder)}
                 type="email"
                 id="email"
                 value={email}
@@ -340,6 +341,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
 
             <FormElement>
               <PasswordInput
+                ariaLabel={formatMessage(messages.passwordPlaceholder)}
                 type="password"
                 id="password"
                 value={password}

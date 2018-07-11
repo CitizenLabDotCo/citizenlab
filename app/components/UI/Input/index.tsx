@@ -66,6 +66,7 @@ const CharCount = styled.div`
 `;
 
 export type Props = {
+  ariaLabel?: string;
   id?: string | undefined;
   value?: string | null | undefined;
   type: 'text' | 'email' | 'password' | 'number';
@@ -124,6 +125,7 @@ export default class Input extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const { ariaLabel } = this.props;
     let { value, placeholder, error } = this.props;
     const className = this.props['className'];
     const { formik } = this.context;
@@ -151,6 +153,7 @@ export default class Input extends React.PureComponent<Props, State> {
         }
 
         <input
+          aria-label={ariaLabel}
           id={id}
           className={`CLInputComponent ${maxCharCount && 'hasMaxCharCount'}`}
           name={name}

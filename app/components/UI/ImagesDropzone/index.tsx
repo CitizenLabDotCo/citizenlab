@@ -250,6 +250,7 @@ const RemoveButton: any = styled.div`
 `;
 
 type Props = {
+  id?: string | undefined;
   images: ImageFile[] | null;
   acceptedFileTypes?: string | null | undefined;
   imagePreviewRatio?: number
@@ -411,7 +412,11 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     let { acceptedFileTypes, placeholder, objectFit } = this.props;
     let { images } = this.state;
     const className = this.props['className'];
-    const { maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio, imageRadius } = this.props;
+    const { maxImageFileSize,
+            maxNumberOfImages,
+            maxImagePreviewWidth,
+            imagePreviewRatio,
+            imageRadius } = this.props;
     const { formatMessage } = this.props.intl;
     const { errorMessage, processing, canAnimate } = this.state;
     const remainingImages = (maxNumberOfImages && maxNumberOfImages !== 1 ? `(${maxNumberOfImages - size(images)} ${formatMessage(messages.remaining)})` : null);

@@ -181,6 +181,7 @@ const StyledSelect = styled(ReactSelect)`
 `;
 
 export type Props = {
+  id?: string | undefined;
   value?: IOption | string | null | undefined;
   placeholder?: string | JSX.Element | null | undefined;
   options: IOption[] | null;
@@ -209,6 +210,7 @@ export default class Select extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
+    const { id } = this.props;
     let { value, placeholder, options, autoBlur, clearable, searchable, multi } = this.props;
     const { disabled } = this.props;
 
@@ -222,6 +224,7 @@ export default class Select extends React.PureComponent<Props, State> {
 
     return (
       <StyledSelect
+        id={id}
         className={className}
         openOnFocus={false}
         clearable={clearable}
