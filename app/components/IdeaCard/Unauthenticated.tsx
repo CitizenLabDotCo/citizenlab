@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 import { darken } from 'polished';
 import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -28,13 +28,13 @@ export default class Unauthenticated extends React.PureComponent {
   goToLogin = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    browserHistory.push('/sign-in');
+    clHistory.push('/sign-in');
   }
 
   goToRegister = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    browserHistory.push('/sign-up');
+    clHistory.push('/sign-up');
   }
 
   render() {

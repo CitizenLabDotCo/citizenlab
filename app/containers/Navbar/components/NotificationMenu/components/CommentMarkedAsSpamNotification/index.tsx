@@ -9,7 +9,7 @@ import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import NotificationWrapper from '../NotificationWrapper';
-import { Link } from 'react-router';
+import Link from 'utils/cl-router/Link';
 import { Multiloc } from 'typings';
 
 type Props = {

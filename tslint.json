@@ -4,6 +4,11 @@
     "tslint-react",
     "tslint-eslint-rules"
   ],
+  "linterOptions": {
+    "exclude": [
+      "app/translations/*.json"
+    ]
+  },
   "rules": {
     "align": [
       true,
@@ -43,7 +48,6 @@
     "react-a11y-anchors": 1,
     "react-a11y-aria-unsupported-elements": 2,
     "react-a11y-event-has-role": 2,
-    "react-a11y-image-button-has-alt": 2,
     "react-a11y-img-has-alt": 2,
     "react-a11y-props": 2,
     "react-a11y-role": 2,
@@ -57,7 +61,8 @@
       "check-format",
       "allow-leading-underscore"
     ],
-    "no-vanilla-formatted-messages": true
+    "no-vanilla-formatted-messages": true,
+    "no-vanilla-routing": true
   },
   "rulesDirectory": ["internals/lint/tslint-plugin-cl-custom"]
 }

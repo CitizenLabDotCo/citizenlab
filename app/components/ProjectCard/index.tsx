@@ -1,7 +1,8 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { Link, browserHistory } from 'react-router';
+import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -243,7 +244,7 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
 
     if (!isNilOrError(project)) {
       const projectUrl = this.getProjectUrl(project);
-      browserHistory.push(projectUrl);
+      clHistory.push(projectUrl);
     }
   }
 

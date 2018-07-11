@@ -1,5 +1,5 @@
 import React from 'react';
-import { get, isString, isEmpty, omitBy, isNil, isEqual } from 'lodash';
+import { get, isString, isEmpty, omitBy, isNil, isEqual, isBoolean } from 'lodash';
 import { Subscription, Subject, BehaviorSubject } from 'rxjs';
 import { merge } from 'rxjs/observable/merge';
 import { combineLatest } from 'rxjs/observable/combineLatest';
@@ -26,6 +26,7 @@ export interface InputProps {
   ideaStatusId?: string;
   publicationStatus?: PublicationStatus;
   boundingBox?: number[];
+  cache?: boolean;
 }
 
 interface IQueryParameters {
@@ -169,12 +170,14 @@ export default class GetIdeas extends React.Component<Props, State> {
 
             return ideasStream({ queryParameters: newQueryParameters }).observable.pipe(
               map((ideas) => {
+                const cacheStream = (isBoolean(this.props.cache) ? this.props.cache : true);
                 const selfLink = get(ideas, 'links.self');
                 const lastLink = get(ideas, 'links.last');
                 const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
 
                 return {
                   queryParameters,
+                  cacheStream,
                   hasMore,
                   ideas: (!isLoadingMore ? ideas.data : [...(acc.ideas || []), ...ideas.data])
                 };
@@ -189,11 +192,15 @@ export default class GetIdeas extends React.Component<Props, State> {
       this.subscriptions = [
         queryParametersOutput$.pipe(
           switchMap((queryParameters) => {
+            const cacheStream = (isBoolean(this.props.cache) ? this.props.cache : true);
             const oldPageNumber = this.state.queryParameters['page[number]'];
             const newPageNumber = queryParameters['page[number]'];
             queryParameters['page[number]'] = (newPageNumber !== oldPageNumber ? newPageNumber : 1);
 
-            return ideasStream({ queryParameters }).observable.pipe(
+            return ideasStream({
+              queryParameters,
+              cacheStream
+            }).observable.pipe(
               map(ideas => ({ queryParameters, ideas }))
             );
           })

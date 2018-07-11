@@ -1,6 +1,7 @@
 import React from 'react';
 import { isString } from 'lodash';
-import { Link, withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
+import Link from 'utils/cl-router/Link';
 
 // style
 import styled from 'styled-components';
@@ -155,10 +156,11 @@ class TabbedResource extends React.PureComponent<Props & WithRouterProps, State>
         {(tabs && tabs.length > 0) &&
           <TabbedNav className="e2e-resource-tabs">
             {tabs.map((tab) => {
+              const urlMatch = new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tab.url})`);
 
               return (
                 <FeatureFlag key={tab.url} name={tab.feature}>
-                  <Tab className={`${tab.className} ${location && location.pathname && location.pathname.startsWith(tab.url) ? 'active' : ''}`}>
+                  <Tab className={`${tab.className} ${location && location.pathname && urlMatch.test(location.pathname) ? 'active' : ''}`}>
                     <Link to={tab.url}>{showLabel(tab.label)}</Link>
                   </Tab>
                 </FeatureFlag>

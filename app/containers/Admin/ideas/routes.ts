@@ -1,7 +1,7 @@
 import loadAndRender from 'utils/loadAndRender';
 
 export default () => ({
-  path: '/admin/ideas',
+  path: 'ideas',
   name: 'admin Ideas',
   getComponent: loadAndRender(import('containers/Admin/ideas')),
   indexRoute: {

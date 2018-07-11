@@ -1,9 +1,9 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 export default class ForbiddenRoute extends React.PureComponent {
   componentDidMount() {
-    browserHistory.push('/sign-in');
+    clHistory.push('/sign-in');
   }
 
   render() {

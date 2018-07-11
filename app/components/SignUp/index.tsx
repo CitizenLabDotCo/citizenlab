@@ -4,7 +4,7 @@ import { adopt } from 'react-adopt';
 // libraries
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import Step1 from './Step1';
@@ -149,7 +149,7 @@ class SignUp extends React.PureComponent<Props, State> {
   }
 
   goToSignIn = () => {
-    browserHistory.push('/sign-in');
+    clHistory.push('/sign-in');
   }
 
   render() {

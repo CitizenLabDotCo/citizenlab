@@ -2,7 +2,7 @@
 import React from 'react';
 import { isAdmin } from 'services/permissions/roles';
 import * as moment from 'moment';
-import { Link } from 'react-router';
+import Link from 'utils/cl-router/Link';
 
 // Components
 import Avatar from 'components/Avatar';
