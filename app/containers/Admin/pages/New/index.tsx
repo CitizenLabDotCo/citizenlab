@@ -5,7 +5,7 @@ import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
 import PageWrapper from 'components/admin/PageWrapper';
-import PageForm, { FormValues } from '../Form';
+import PageForm, { FormValues } from 'components/PageForm';
 import { Formik } from 'formik';
 
 import { FormattedMessage } from 'utils/cl-intl';
