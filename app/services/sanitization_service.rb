@@ -27,12 +27,12 @@ class SanitizationService
       attributes: %w(href target),
     },
     image: {
-      tags: %w(),
-      attributes: %w(),
+      tags: %w(img),
+      attributes: %w(src style width height data-align),
     },
     video: {
-      tags: %w(),
-      attributes: %w(),
+      tags: %w(iframe),
+      attributes: %w(class frameborder allowfullscreen src data-blot-formatter-unclickable-bound),
     },
   }
 
