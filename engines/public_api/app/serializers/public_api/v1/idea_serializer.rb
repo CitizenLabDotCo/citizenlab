@@ -38,7 +38,7 @@ class PublicApi::V1::IdeaSerializer < ActiveModel::Serializer
   end
 
   def href
-    "#{Tenant.current.base_frontend_uri}/ideas/#{object.slug}"
+    FrontendService.new.model_to_url object
   end
 
 end
