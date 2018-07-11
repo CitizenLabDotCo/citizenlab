@@ -6,11 +6,10 @@ export default class AdminSettingsPages extends PureComponent {
   render() {
     return (
       <>
-        {LEGAL_PAGES.map((slug, index) => (
+        {LEGAL_PAGES.map((slug) => (
           <PageEditor
             key={slug}
             slug={slug}
-            isLast={(index === LEGAL_PAGES.length - 1)}
           />
         ))}
       </>

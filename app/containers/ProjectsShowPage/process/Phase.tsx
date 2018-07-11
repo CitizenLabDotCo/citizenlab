@@ -19,6 +19,7 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
+import { quillEditedContent } from 'utils/styleUtils';
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-bottom: 70px;
@@ -44,6 +45,8 @@ const InformationBody = styled.div`
   strong {
     font-weight: 500;
   }
+
+  ${quillEditedContent()}
 `;
 
 const IdeasWrapper = styled.div`

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { isEmpty, values as getValues, every } from 'lodash';
 import FormikInput from 'components/UI/FormikInput';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
-import FormikEditorMultiloc from 'components/UI/FormikEditorMultiloc';
+import FormikQuillMultiloc from 'components/QuillEditor/FormikQuillMultiloc';
 import Error from 'components/UI/Error';
 import { Section, SectionField } from 'components/admin/Section';
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
@@ -10,7 +10,7 @@ import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { Multiloc } from 'typings';
-import messages from '../messages';
+import messages from './messages';
 import Label from 'components/UI/Label';
 import Warning from 'components/UI/Warning';
 import Link from 'utils/cl-router/Link';
@@ -22,8 +22,9 @@ export interface FormValues {
 }
 
 export interface Props {
-  mode: 'new' | 'edit';
-  pageId: string;
+  mode: 'simple' | 'edit';
+  hideTitle?: boolean;
+  pageId?: string;
 }
 
 class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
@@ -54,14 +55,23 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
     }
   }
 
+  renderQuill = (props) => {
+    return (
+      <FormikQuillMultiloc
+        inAdmin
+        {...props}
+      />
+    );
+  }
+
   render() {
-    const { isSubmitting, errors, isValid, touched, mode } = this.props;
+    const { isSubmitting, errors, isValid, touched, mode, hideTitle } = this.props;
 
     return (
       <Form>
         <Section>
-
-          <SectionField>
+          {!hideTitle &&
+            <SectionField>
             <Field
               name="title_multiloc"
               component={FormikInputMultiloc}
@@ -72,11 +82,14 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
               apiErrors={errors.title_multiloc}
             />}
           </SectionField>
+        }
 
-          <SectionField>
+          <SectionField
+            className="fullWidth"
+          >
             <Field
               name="body_multiloc"
-              component={FormikEditorMultiloc}
+              render={this.renderQuill}
               label={<FormattedMessage {...messages.editContent} />}
               renderPerLocale={this.renderAdavancedEditorLink}
             />

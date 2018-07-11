@@ -145,3 +145,14 @@ export function booleanClass(value: any, className: string) {
   if (!!value) return ` ${className}`;
   return '';
 }
+
+export function quillEditedContent() {
+  return `
+    .ql-align-right {
+      text-align: right;
+    }
+    .ql-align-center {
+      text-align: center;
+    }
+  `;
+}
