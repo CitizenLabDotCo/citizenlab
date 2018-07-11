@@ -1,4 +1,4 @@
-import React, { PureComponent, SFC, Fragment } from 'react';
+import React, { PureComponent, SFC } from 'react';
 import { Subscription } from 'rxjs';
 import { IUser } from 'services/users';
 import { TPermissionItem, hasPermission } from 'services/permissions';
