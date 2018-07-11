@@ -141,12 +141,6 @@ RSpec.describe Idea, type: :model do
       })
       expect(idea.body_multiloc).to eq({"en" => "<p>Test</p>This should be removed!"})
     end
-
-    it "retains all supported tags and attributes by the editor" do
-      output = '<h1>Title</h1><h2>Subtitle</h2><p>left align</p><p class="ql-align-center">center align</p><p class="ql-align-right">right align</p><ol><li>numered</li><li>list</li></ol><p><br></p><ul><li>Bullet</li><li>List</li></ul><p><br></p><p><strong>bold text</strong></p><p><em>cursive text</em></p><p><a href="https://www.google.com" target="_blank">Link</a></p>'
-      idea = create(:idea, body_multiloc: {"en" => output})
-      expect(idea.body_multiloc["en"].remove("\n")).to eq(output)
-    end
   end
 
   describe "delete an idea" do
