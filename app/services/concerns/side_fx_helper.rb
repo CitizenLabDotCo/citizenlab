@@ -2,7 +2,13 @@ module SideFxHelper
   
   def clean_time_attributes hash
     hash.map do |_,v|
-      [_ ,v.kind_of?(Time) ? v.to_i : v]
+      if v.kind_of?(Time)
+        [_ , v.to_i]
+      elsif v.kind_of?(Date)
+        [_ , v.to_time.to_i]
+      else
+        [_ , v]
+      end
     end.to_h
   end
 
