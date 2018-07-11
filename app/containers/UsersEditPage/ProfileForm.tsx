@@ -26,9 +26,9 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToFileObservable } from 'utils/imageTools';
 import { SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Section';
 import CustomFieldsForm from 'components/CustomFieldsForm';
-import TextArea from 'components/UI/TextArea';
 import Input from 'components/UI/Input';
 import Select from 'components/UI/Select';
+import QuillEditor from 'components/QuillEditor';
 
 // i18n
 import { appLocalePairs } from 'i18n';
@@ -303,13 +303,14 @@ class ProfileForm extends PureComponent<Props, State> {
 
                     <SectionField>
                       <LabelWithTooltip id="bio" />
-                      <TextArea
-                        name="bio_multiloc"
+                      <QuillEditor
+                        id="bio_multiloc"
+                        noImages
+                        limitedTextFormatting
+                        value={values.bio_multiloc ? this.props.localize(values.bio_multiloc) : ''}
+                        placeholder={this.props.intl.formatMessage({ ...messages.bio_placeholder })}
                         onChange={createChangeHandler('bio_multiloc')}
                         onBlur={createBlurHandler('bio_multiloc')}
-                        rows={6}
-                        placeholder={this.props.intl.formatMessage({ ...messages.bio_placeholder })}
-                        value={values.bio_multiloc ? this.props.localize(values.bio_multiloc) : ''}
                       />
                       <Error apiErrors={errors.bio_multiloc} />
                     </SectionField>

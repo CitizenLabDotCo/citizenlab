@@ -6,7 +6,7 @@ import messages from '../messages';
 
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
-import FormikEditorMultiloc from 'components/UI/FormikEditorMultiloc';
+import FormikQuillMultiloc from 'components/QuillEditor/FormikQuillMultiloc';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 
 import { Section, SectionField } from 'components/admin/Section';
@@ -50,26 +50,10 @@ export default class AreaForm extends React.Component<InjectedFormikProps<Props,
           </SectionField>
           <SectionField>
             <Field
-              component={FormikEditorMultiloc}
-              id="project-description"
+              component={FormikQuillMultiloc}
+              inAdmin
               name="description_multiloc"
               label={<FormattedMessage {...messages.fieldDescription} />}
-              toolbarConfig={{
-                options: ['inline', 'list', 'link', 'blockType'],
-                inline: {
-                  options: ['bold', 'italic'],
-                },
-                list: {
-                  options: ['unordered', 'ordered'],
-                },
-                blockType: {
-                  inDropdown: false,
-                  options: ['Normal', 'H1'],
-                  className: undefined,
-                  component: undefined,
-                  dropdownClassName: undefined,
-                }
-              }}
             />
             {touched.description_multiloc && <Error
               fieldName="description_multiloc"

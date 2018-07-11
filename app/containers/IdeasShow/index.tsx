@@ -52,7 +52,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, color, colors } from 'utils/styleUtils';
+import { media, color, colors, quillEditedContent } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const loadingTimeout = 400;
@@ -64,7 +64,7 @@ const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
 const contentDelay = 600;
 const contentTranslateDistance = '30px';
 
-const StyledSpinner = styled(Spinner)`
+const StyledSpinner = styled(Spinner) `
   transition: all ${loadingTimeout}ms ${loadingEasing} ${loadingDelay}ms;
 `;
 
@@ -153,7 +153,7 @@ const BelongsToProject = styled.p`
   margin-bottom: 15px;
 `;
 
-const ProjectLink = styled(Link)`
+const ProjectLink = styled(Link) `
   color: inherit;
   font-weight: 400;
   font-size: inherit;
@@ -275,7 +275,7 @@ const LocationIconWrapper = styled.div`
   justify-content: flex-start;
 `;
 
-const LocationIcon = styled(Icon)`
+const LocationIcon = styled(Icon) `
   width: 18px;
   fill: ${colors.label};
 `;
@@ -347,7 +347,7 @@ const AddressWrapper = styled.div`
   z-index: 1000;
 `;
 
-const AuthorAvatar = styled(Avatar)`
+const AuthorAvatar = styled(Avatar) `
   width: 35px;
   height: 35px;
   margin-right: 8px;
@@ -434,6 +434,8 @@ const IdeaBody = styled.div`
   strong {
     font-weight: 500;
   }
+
+  ${quillEditedContent()}
 `;
 
 const CommentsTitle = styled.h2`
@@ -499,7 +501,7 @@ const StatusContainer = styled.div`
   margin-top: 35px;
 `;
 
-const StatusContainerMobile = styled(StatusContainer)`
+const StatusContainerMobile = styled(StatusContainer) `
   margin-top: -20px;
   margin-bottom: 35px;
   transform-origin: top left;
@@ -537,9 +539,9 @@ const SharingWrapper = styled.div`
   flex-direction: column;
 `;
 
-const StyledSharing: any = styled(Sharing)``;
+const StyledSharing: any = styled(Sharing) ``;
 
-const StyledSharingMobile = styled(StyledSharing)`
+const StyledSharingMobile = styled(StyledSharing) `
   margin: 0;
   margin-bottom: 25px;
   padding: 0;
@@ -791,10 +793,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & injecte
                 <BelongsToProject>
                   <FormattedMessage
                     {...messages.postedIn}
-                    values={{ projectLink:
-                      <ProjectLink to={`/projects/${project.data.attributes.slug}`}>
-                        <T value={projectTitleMultiloc} />
-                      </ProjectLink>
+                    values={{
+                      projectLink:
+                        <ProjectLink to={`/projects/${project.data.attributes.slug}`}>
+                          <T value={projectTitleMultiloc} />
+                        </ProjectLink>
                     }}
                   />
                 </BelongsToProject>
@@ -833,9 +836,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & injecte
 
                 <AuthorAndAdressWrapper>
                   <AuthorContainer>
-                    <AuthorAvatar userId={authorId} size="small" onClick={authorId ? this.goToUserProfile : () => {}} />
+                    <AuthorAvatar userId={authorId} size="small" onClick={authorId ? this.goToUserProfile : () => { }} />
                     <AuthorMeta>
-                      <AuthorName to={ideaAuthor ?  `/profile/${ideaAuthor.data.attributes.slug}` :  ''}>
+                      <AuthorName to={ideaAuthor ? `/profile/${ideaAuthor.data.attributes.slug}` : ''}>
                         <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={(ideaAuthor ? ideaAuthor.data : null)} /> }} />
                       </AuthorName>
                       {createdAt &&

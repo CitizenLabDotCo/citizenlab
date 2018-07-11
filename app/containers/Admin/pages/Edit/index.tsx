@@ -5,7 +5,7 @@ import { API } from 'typings';
 import { withRouter, WithRouterProps } from 'react-router';
 import { updatePage } from 'services/pages';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
-import PageForm, { FormValues } from '../Form';
+import PageForm, { FormValues } from 'components/PageForm';
 import { Formik } from 'formik';
 import PageWrapper from 'components/admin/PageWrapper';
 import { fontSize } from 'utils/styleUtils';

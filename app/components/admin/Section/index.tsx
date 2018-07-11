@@ -29,7 +29,7 @@ export const SectionField = styled.div`
   max-width: 500px;
 
   &.fullWidth {
-    max-width: auto;
+    max-width: 100%;
   }
 
   .editor {
