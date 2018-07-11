@@ -1,5 +1,6 @@
-import * as React from 'react';
-import * as Rx from 'rxjs';
+import React, { PureComponent } from 'react';
+import { Subscription } from 'rxjs';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import * as moment from 'moment';
 import { isBoolean, forOwn, get, uniq, isNil, isEmpty } from 'lodash';
 
@@ -63,9 +64,9 @@ interface State {
   uiSchema: object | null;
 }
 
-class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, State> {
+class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
   submitbuttonElement: HTMLButtonElement | null;
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -83,7 +84,7 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
     const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      combineLatest(
         locale$,
         customFieldsSchemaForUsersStream$
       ).subscribe(([locale, customFields]) => {

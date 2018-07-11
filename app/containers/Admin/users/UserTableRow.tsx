@@ -84,7 +84,6 @@ const DropdownListButton = styled.button`
   white-space: nowrap;
   padding: 10px;
   border-radius: 5px;
-  border: solid 1px red;
   cursor: pointer;
   white-space: nowrap;
 
@@ -127,7 +126,6 @@ const DropdownListLink = styled(Link)`
   white-space: nowrap;
   padding: 10px;
   border-radius: 5px;
-  border: solid 1px red;
   cursor: pointer;
   white-space: nowrap;
 
