@@ -270,7 +270,7 @@ export default class ValuesList extends PureComponent<Props, State> {
           <ListWrapper
             onKeyDown={this.keypressHandler}
             role="listbox"
-            tabIndex={0}
+            // tabIndex={0}
             innerRef={this.setRef}
             className="e2e-filter-selector-dropdown-list"
             aria-labelledby={`${baseID}-label`}

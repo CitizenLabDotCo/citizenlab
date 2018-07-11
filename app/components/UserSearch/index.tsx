@@ -38,8 +38,8 @@ const StyledSelectWrapper = styled.div`
 
 const StyledOption = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  /* align-items: center; */
+  /* justify-content: space-between; */
   max-width: 100%;
 
   &.disabled {
@@ -175,7 +175,12 @@ class MembersAdd extends React.Component<Props & injectedLocalized, State> {
     return (
       <AddUserRow>
         {!this.state.selectVisible &&
-          <AddUserButton onClick={this.toggleSelectVisible} icon="plus-circle" style="text">
+          <AddUserButton
+            onClick={this.toggleSelectVisible}
+            icon="plus-circle"
+            style="text"
+            circularCorners={false}
+          >
             <FormattedMessage {...this.props.messages.addUser} />
           </AddUserButton>
         }
