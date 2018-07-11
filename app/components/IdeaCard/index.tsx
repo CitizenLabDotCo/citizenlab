@@ -69,7 +69,7 @@ const IdeaContent = styled.div`
   padding-top: 15px;
 `;
 
-const IdeaTitle: any = styled.h4`
+const IdeaTitle: any = styled.h3`
   color: #333;
   display: block;
   display: -webkit-box;
