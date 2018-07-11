@@ -15,6 +15,12 @@ RSpec.describe Phase, type: :model do
       })
       expect(phase.description_multiloc).to eq({"en" => "<p>Test</p>This should be removed!"})
     end
+
+    it "retains all supported tags and attributes by the editor" do
+      output = '<h1>Title</h1><h2>Subtitle</h2><p>left align</p><p class="ql-align-center">center align</p><p class="ql-align-right">right align</p><ol><li>numered</li><li>list</li></ol><p><br></p><ul><li>Bullet</li><li>List</li></ul><p><br></p><p><strong>bold text</strong></p><p><em>cursive text</em></p><p><a href="https://www.google.com" target="_blank">Link</a></p><p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="display: block;margin:auto;" width="313" height="160.33516960470087" data-align="center"></p><iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/dQw4w9WgXcQ?showinfo=0" data-blot-formatter-unclickable-bound="true"></iframe><p><br></p>'
+      phase = create(:phase, description_multiloc: {"en" => output})
+      expect(phase.description_multiloc["en"].remove("\n")).to eq output
+    end
     
   end
 
