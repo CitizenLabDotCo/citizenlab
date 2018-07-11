@@ -3,8 +3,6 @@ class Project < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, add_new_at: :top
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
-  @@sanitizer = Rails::Html::WhiteListSanitizer.new
-
   DESCRIPTION_PREVIEW_JSON_SCHEMA = ERB.new(File.read(Rails.root.join('config', 'schemas', 'project_description_preview.json_schema.erb'))).result(binding)
 
   has_many :ideas, dependent: :destroy
@@ -85,17 +83,17 @@ class Project < ApplicationRecord
   end
 
   def sanitize_description_multiloc
-    self.description_multiloc = self.description_multiloc.map do |locale, description|
-      scrubber = Rails::Html::TargetScrubber.new
-      scrubber.tags = ['script']
-      [locale, @@sanitizer.sanitize(description, scrubber: scrubber)]
-    end.to_h
+    self.description_multiloc = SanitizationService.new.sanitize_multiloc(
+      self.description_multiloc,
+      %i{title alignment list decoration link image video}
+    )
   end
 
   def sanitize_description_preview_multiloc
-    self.description_preview_multiloc = self.description_preview_multiloc.map do |locale, description_preview|
-      [locale, @@sanitizer.sanitize(description_preview, tags: %w(), attributes: %w())]
-    end.to_h
+    self.description_preview_multiloc = SanitizationService.new.sanitize_multiloc(
+      self.description_preview_multiloc,
+      %i{decoration link}
+    )
   end
 
   def set_visible_to

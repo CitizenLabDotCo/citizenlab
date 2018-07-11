@@ -16,7 +16,7 @@ class SanitizationService
     },
     list: {
       tags: %w(ol ul li),
-      attributes: %w(),
+      attributes: %w(type),
     },
     decoration: {
       tags: %w(b u i em strong),
