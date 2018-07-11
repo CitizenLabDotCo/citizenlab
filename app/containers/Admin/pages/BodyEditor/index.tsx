@@ -2,8 +2,9 @@ import React from 'react';
 import { updatePage } from 'services/pages';
 import Grapes from 'components/admin/Grapes';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
-import { browserHistory, withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 interface InputProps {}
 
@@ -27,7 +28,7 @@ class BodyEditor extends React.Component<Props & WithRouterProps, State> {
       };
 
       updatePage(page.id, { body_multiloc: newBody }).then(() => {
-        browserHistory.push(`/admin/pages/${page.id}`);
+        clHistory.push(`/admin/pages/${page.id}`);
       });
     }
   }

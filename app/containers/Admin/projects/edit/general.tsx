@@ -3,7 +3,7 @@ import * as Rx from 'rxjs/Rx';
 import { isEmpty, get, forOwn } from 'lodash';
 
 // router
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import InputMultiloc from 'components/UI/InputMultiloc';
@@ -44,6 +44,8 @@ import eventEmitter from 'utils/eventEmitter';
 
 // utils
 import { convertUrlToFileObservable } from 'utils/imageTools';
+import { API_PATH } from 'containers/App/constants';
+import streams from 'utils/streams';
 
 // style
 import styled from 'styled-components';
@@ -492,9 +494,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         this.processing$.next(true);
 
         let redirect = false;
-        let projectId: string | null = (projectData ? projectData.id : null);
-        let imagesToAdd: ImageFile[] | null = newProjectImages;
-        let imagesToRemove: ImageFile[] | null = oldProjectImages;
+        let projectId = (projectData ? projectData.id : null);
+        let imagesToAdd = newProjectImages;
+        let imagesToRemove = oldProjectImages;
         let imagesToAddPromises: Promise<any>[] = [];
         let imagesToRemovePromises: Promise<any>[] = [];
 
@@ -511,8 +513,10 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         if (!isEmpty(projectAttributesDiff)) {
           if (projectData) {
             await updateProject(projectData.id, projectAttributesDiff);
+            streams.fetchAllStreamsWithEndpoint(`${API_PATH}/projects`);
           } else {
             const project = await addProject(projectAttributesDiff);
+            streams.fetchAllStreamsWithEndpoint(`${API_PATH}/projects`);
             projectId = project.data.id;
             redirect = true;
           }
@@ -534,7 +538,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         }
 
         if (redirect) {
-          browserHistory.push(`/admin/projects`);
+          clHistory.push(`/admin/projects`);
         } else {
           this.setState({ saved: true, submitState: 'success' });
           this.processing$.next(false);
@@ -561,7 +565,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     if (projectData && window.confirm(formatMessage(messages.deleteProjectConfirmation))) {
       try {
         await deleteProject(projectData.id);
-        browserHistory.push('/admin/projects');
+        clHistory.push('/admin/projects');
       } catch {
         this.setState({ deleteError: formatMessage(messages.deleteProjectError) });
       }

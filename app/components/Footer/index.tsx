@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 
 // libraries
-import { Link } from 'react-router';
+import Link from 'utils/cl-router/Link';
 
 // components
 import Icon from 'components/UI/Icon';

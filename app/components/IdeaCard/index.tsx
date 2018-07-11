@@ -2,7 +2,8 @@ import React from 'react';
 import { get } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { Link, browserHistory } from 'react-router';
+import Link from 'utils/cl-router/Link';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -252,7 +253,7 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
     if (!isNilOrError(ideaAuthor)) {
       event.stopPropagation();
       event.preventDefault();
-      browserHistory.push(`/profile/${ideaAuthor.attributes.slug}`);
+      clHistory.push(`/profile/${ideaAuthor.attributes.slug}`);
     }
   }
 

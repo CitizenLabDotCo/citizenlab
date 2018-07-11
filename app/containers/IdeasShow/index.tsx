@@ -5,14 +5,15 @@ import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
 
 // router
-import { Link, browserHistory } from 'react-router';
+import Link from 'utils/cl-router/Link';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import Avatar from 'components/Avatar';
 import StatusBadge from 'components/StatusBadge';
 import Icon from 'components/UI/Icon';
 import Comments from './CommentsContainer';
-import Sharing from './Sharing';
+import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import IdeaMap from './IdeaMap';
 import Activities from './Activities';
@@ -688,7 +689,7 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
     const { ideaAuthor } = this.state;
 
     if (ideaAuthor) {
-      browserHistory.push(`/profile/${ideaAuthor.data.attributes.slug}`);
+      clHistory.push(`/profile/${ideaAuthor.data.attributes.slug}`);
     }
   }
 
@@ -714,16 +715,16 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
   }
 
   editIdea = () => {
-    browserHistory.push(`/ideas/edit/${this.props.ideaId}`);
+    clHistory.push(`/ideas/edit/${this.props.ideaId}`);
   }
 
   unauthenticatedVoteClick = () => {
-    browserHistory.push('/sign-in');
+    clHistory.push('/sign-in');
   }
 
   render() {
     const { inModal, intl: { formatMessage } } = this.props;
-    const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions } = this.state;
+    const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions, authUser } = this.state;
     let loader: JSX.Element | null = null;
     let content: JSX.Element | null = null;
 
@@ -739,17 +740,26 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
       const titleMultiloc = idea.data.attributes.title_multiloc;
       const bodyMultiloc = idea.data.attributes.body_multiloc;
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
-      const ideaImageMedium = (ideaImage && has(ideaImage, 'data.attributes.versions.medium') ? ideaImage.data.attributes.versions.medium : null);
       const ideaImageLarge = (ideaImage && has(ideaImage, 'data.attributes.versions.large') ? ideaImage.data.attributes.versions.large : null);
       const ideaLocation = (idea.data.attributes.location_point_geojson || null);
       const ideaAdress = (idea.data.attributes.location_description || null);
       const projectTitleMultiloc = (project && project.data ? project.data.attributes.title_multiloc : null);
       const projectId = idea.data.relationships.project.data.id;
 
+      const ideaAuthorName = ideaAuthor && `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}`;
+
       content = (
         <>
-          <IdeaMeta ideaId={idea.data.id} />
-
+        <IdeaMeta
+          ideaId={idea.data.id}
+          titleMultiloc={titleMultiloc}
+          bodyMultiloc={idea.data.attributes.body_multiloc}
+          ideaAuthorName={ideaAuthorName}
+          ideaImages={ideaImage}
+          publishedAt={idea.data.attributes.published_at}
+          projectTitle={projectTitleMultiloc}
+          projectSlug={project && project.data.attributes.slug}
+        />
           <IdeaContainer id="e2e-idea-show">
             <HeaderWrapper>
               {project && projectTitleMultiloc &&
@@ -842,7 +852,16 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
 
                 <SeparatorRow />
 
-                <StyledSharingMobile imageUrl={ideaImageMedium} />
+                <T value={titleMultiloc} maxLength={50} >
+                  {(title) => {
+                    return (
+                      <StyledSharingMobile
+                        twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
+                        sharedContent="idea"
+                        userId={authUser && authUser.data.id}
+                      />);
+                  }}
+                </T>
 
                 <CommentsTitle>
                   <FormattedMessage {...messages.commentsTitle} />
@@ -896,7 +915,16 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
                     }
 
                     <SharingWrapper>
-                      <StyledSharing imageUrl={ideaImageLarge} />
+                      <T value={titleMultiloc} maxLength={50} >
+                        {(title) => {
+                          return (
+                            <StyledSharing
+                              twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
+                              sharedContent="idea"
+                              userId={authUser && authUser.data.id}
+                            />);
+                        }}
+                      </T>
                     </SharingWrapper>
 
                     {(moreActions && moreActions.length > 0) &&
