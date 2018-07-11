@@ -10,5 +10,5 @@ export default defineMessages({
   imageAltText: {
     id: 'app.containers.ProjectInfo.imageAltText',
     defaultMessage: 'Project image {index}',
-  }
+  },
 });
