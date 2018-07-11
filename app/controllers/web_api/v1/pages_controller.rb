@@ -42,7 +42,7 @@ class WebApi::V1::PagesController < ::ApplicationController
 
     SideFxPageService.new.before_update(@page, current_user)
 
-    if @page.update(page_params)
+    if @page.save
       SideFxPageService.new.after_update(@page, current_user)
       render json: @page, status: :ok, include: ['page_links']
     else
