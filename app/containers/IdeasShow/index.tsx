@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { has, isString } from 'lodash';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
+import { tap, filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
+import linkifyHtml from 'linkifyjs/html';
 
 // router
 import Link from 'utils/cl-router/Link';
@@ -41,6 +43,7 @@ import { hasPermission } from 'services/permissions';
 import T from 'components/T';
 import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
+import localize, { injectedLocalized } from 'utils/localize';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 
@@ -112,7 +115,7 @@ const Container = styled.div`
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: 840px;
+  max-width: 820px;
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -202,6 +205,8 @@ const Content = styled.div`
 
 const LeftColumn = styled.div`
   flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: 0;
   margin: 0;
   padding: 0;
   padding-right: 55px;
@@ -400,6 +405,16 @@ const IdeaBody = styled.div`
     }
   }
 
+  a {
+    color: ${colors.clBlueDark};
+    text-decoration: none;
+
+    &:hover {
+      color: ${darken(0.15, colors.clBlueDark)};
+      text-decoration: underline;
+    }
+  }
+
   ul {
     list-style-type: disc;
     list-style-position: outside;
@@ -424,7 +439,7 @@ const IdeaBody = styled.div`
 `;
 
 const CommentsTitle = styled.h2`
-  color: #333;
+  color: ${colors.text};
   font-size: 24px;
   line-height: 38px;
   font-weight: 500;
@@ -447,7 +462,8 @@ const SeparatorRow = styled.div`
 `;
 
 const RightColumn = styled.div`
-  flex: 0 0 140px;
+  flex: 0 0 auto;
+  width: 200px;
   margin: 0;
   padding: 0;
 `;
@@ -464,7 +480,7 @@ const RightColumnDesktop = RightColumn.extend`
 `;
 
 const MetaContent = styled.div`
-  width: 200px;
+  width: 100%;
   display: flex;
   flex-direction: column;
 `;
@@ -567,13 +583,13 @@ type State = {
   moreActions: IAction[];
 };
 
-export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, State> {
+export class IdeasShow extends PureComponent<Props & InjectedIntlProps & injectedLocalized, State> {
   initialState: State;
   ideaId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props: Props & InjectedIntlProps & injectedLocalized) {
+    super(props);
     const initialState = {
       authUser: null,
       idea: null,
@@ -596,21 +612,24 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
   componentDidMount() {
     this.ideaId$.next(this.props.ideaId);
 
-    const ideaId$ = this.ideaId$.distinctUntilChanged().filter(ideaId => isString(ideaId));
+    const ideaId$ = this.ideaId$.pipe(
+      distinctUntilChanged(),
+      filter<string>(ideaId => isString(ideaId))
+    );
     const authUser$ = authUserStream().observable;
 
     this.subscriptions = [
-      this.ideaId$
-        .distinctUntilChanged()
-        .filter(ideaId => !ideaId)
-        .subscribe(() => {
-          this.setState(this.initialState);
-        }),
+      this.ideaId$.pipe(
+        distinctUntilChanged(),
+        filter(ideaId => !ideaId)
+      ).subscribe(() => {
+        this.setState(this.initialState);
+      }),
 
-      ideaId$
-        .do(() => this.setState({ opened: true }))
-        .switchMap((ideaId: string) => ideaByIdStream(ideaId).observable)
-        .switchMap((idea) => {
+      ideaId$.pipe(
+        tap(() => this.setState({ opened: true })),
+        switchMap((ideaId) => ideaByIdStream(ideaId).observable),
+        switchMap((idea) => {
           const ideaImages = idea.data.relationships.idea_images.data;
           const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
           const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
@@ -626,28 +645,36 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
             ideaAuthor$,
             ideaStatus$,
             project$,
-          ).map(([authUser, ideaImage, ideaAuthor, _ideaStatus, project]) => ({ authUser, idea, ideaImage, ideaAuthor, project }));
+          ).pipe(
+            map(([authUser, ideaImage, ideaAuthor, _ideaStatus, project]) => ({ authUser, idea, ideaImage, ideaAuthor, project }))
+          );
         })
-        .subscribe(({ authUser, idea, ideaImage, ideaAuthor, project }) => {
-          this.setState({ authUser, idea, ideaImage, ideaAuthor, project, loaded: true });
-        }),
+      ).subscribe(({ authUser, idea, ideaImage, ideaAuthor, project }) => {
+        this.setState({ authUser, idea, ideaImage, ideaAuthor, project, loaded: true });
+      }),
 
-      ideaId$.switchMap((ideaId) => {
-        return commentsForIdeaStream(ideaId as string).observable;
-      }).subscribe((ideaComments) => {
+      ideaId$.pipe(
+        switchMap((ideaId) => commentsForIdeaStream(ideaId).observable)
+      ).subscribe((ideaComments) => {
         this.setState({ ideaComments });
       }),
 
       combineLatest(
-        ideaId$.switchMap((ideaId: string) => ideaByIdStream(ideaId).observable),
+        ideaId$.pipe(
+          switchMap((ideaId) => ideaByIdStream(ideaId).observable)
+        ),
         authUser$
-      ).switchMap(([idea, authUser]) => {
-        return hasPermission({
-          item: idea && idea.data ? idea.data : null,
-          action: 'edit',
-          context: idea && idea.data ? idea.data : null,
-        }).map((granted) => ({ authUser, granted }));
-      }).subscribe(({ authUser, granted }) => {
+      ).pipe(
+        switchMap(([idea, authUser]) => {
+          return hasPermission({
+            item: idea  && idea.data ? idea.data : null,
+            action: 'edit',
+            context: idea && idea.data ? idea.data : null,
+          }).pipe(
+            map((granted) => ({ authUser, granted }))
+          );
+        })
+      ).subscribe(({ authUser, granted }) => {
         this.setState(() => {
           let moreActions: IAction[] = [];
 
@@ -730,7 +757,7 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
 
     if (opened && !loaded) {
       loader = (
-        <StyledSpinner size="32px" color="#666" />
+        <StyledSpinner size="32px" />
       );
     }
 
@@ -738,7 +765,7 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
       const createdAt = idea.data.attributes.created_at;
       const titleMultiloc = idea.data.attributes.title_multiloc;
-      const bodyMultiloc = idea.data.attributes.body_multiloc;
+      const ideaBody = linkifyHtml(this.props.localize(idea.data.attributes.body_multiloc));
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
       const ideaImageLarge = (ideaImage && has(ideaImage, 'data.attributes.versions.large') ? ideaImage.data.attributes.versions.large : null);
       const ideaLocation = (idea.data.attributes.location_point_geojson || null);
@@ -750,16 +777,16 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
 
       content = (
         <>
-        <IdeaMeta
-          ideaId={idea.data.id}
-          titleMultiloc={titleMultiloc}
-          bodyMultiloc={idea.data.attributes.body_multiloc}
-          ideaAuthorName={ideaAuthorName}
-          ideaImages={ideaImage}
-          publishedAt={idea.data.attributes.published_at}
-          projectTitle={projectTitleMultiloc}
-          projectSlug={project && project.data.attributes.slug}
-        />
+          <IdeaMeta
+            ideaId={idea.data.id}
+            titleMultiloc={titleMultiloc}
+            bodyMultiloc={idea.data.attributes.body_multiloc}
+            ideaAuthorName={ideaAuthorName}
+            ideaImages={ideaImage}
+            publishedAt={idea.data.attributes.published_at}
+            projectTitle={projectTitleMultiloc}
+            projectSlug={project && project.data.attributes.slug}
+          />
           <IdeaContainer id="e2e-idea-show">
             <HeaderWrapper>
               {project && projectTitleMultiloc &&
@@ -846,7 +873,7 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
 
                 <Fragment name={`ideas/${idea.data.id}/body`}>
                   <IdeaBody className={`${!ideaImageLarge && 'noImage'}`}>
-                    <T value={bodyMultiloc} />
+                    <span dangerouslySetInnerHTML={{ __html: ideaBody }} />
                   </IdeaBody>
                 </Fragment>
 
@@ -930,7 +957,6 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
                     {(moreActions && moreActions.length > 0) &&
                       <MoreActionsMenuWrapper>
                         <MoreActionsMenu
-                          height="5px"
                           actions={moreActions}
                           label={<FormattedMessage {...messages.moreOptions} />}
                         />
@@ -981,4 +1007,4 @@ export class IdeasShow extends React.PureComponent<Props & InjectedIntlProps, St
   }
 }
 
-export default injectIntl(IdeasShow);
+export default injectIntl(localize(IdeasShow));

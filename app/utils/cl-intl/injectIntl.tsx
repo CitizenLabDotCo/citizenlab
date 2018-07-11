@@ -1,5 +1,6 @@
-import * as React from 'react';
-import * as Rx from 'rxjs';
+import React, { PureComponent, ComponentClass } from 'react';
+import { Subscription } from 'rxjs';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import { currentTenantStream } from 'services/tenant';
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import { injectIntl as originalInjectIntl, ComponentConstructor, InjectedIntlProps, InjectIntlConfig } from 'react-intl';
@@ -13,8 +14,8 @@ type State = {
 };
 
 function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps>) {
-  return class NewFormatMessageComponent extends React.PureComponent<P & InjectedIntlProps, State> {
-    subscriptions: Rx.Subscription[];
+  return class NewFormatMessageComponent extends PureComponent<P & InjectedIntlProps, State> {
+    subscriptions: Subscription[];
 
     constructor(props: P) {
       super(props as any);
@@ -31,7 +32,7 @@ function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps
       const currentTenant$ = currentTenantStream().observable;
 
       this.subscriptions = [
-        Rx.Observable.combineLatest(
+        combineLatest(
           locale$,
           currentTenant$
         ).subscribe(([locale, tenant]) => {
@@ -71,6 +72,6 @@ function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps
 }
 
 export default function injectIntl<P>(component: ComponentConstructor<P & InjectedIntlProps>, options?: InjectIntlConfig):
-  React.ComponentClass<P> & { WrappedComponent: ComponentConstructor<P & InjectedIntlProps> } {
+  ComponentClass<P> & { WrappedComponent: ComponentConstructor<P & InjectedIntlProps> } {
   return originalInjectIntl(buildComponent<P>(component), options);
 }

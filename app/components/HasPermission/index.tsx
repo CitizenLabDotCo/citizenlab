@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs';
+import React, { PureComponent, SFC } from 'react';
+import { Subscription } from 'rxjs';
 import { IUser } from 'services/users';
 import { TPermissionItem, hasPermission } from 'services/permissions';
 
@@ -15,9 +15,9 @@ type State = {
   granted: boolean | null;
 };
 
-export default class HasPermission extends React.PureComponent<Props, State> {
-  subscription: Rx.Subscription;
-  static No: React.SFC<any> = (props) => <React.Fragment>{props.children}</React.Fragment>;
+export default class HasPermission extends PureComponent<Props, State> {
+  subscription: Subscription;
+  static No: SFC<any> = (props) => <>{props.children}</>;
 
   constructor(props: Props) {
     super(props);
@@ -54,9 +54,9 @@ export default class HasPermission extends React.PureComponent<Props, State> {
     if (granted === null) {
       return null;
     } else if (granted) {
-      return <React.Fragment>{React.Children.map(children, (c: any) => c.type === HasPermission.No ? null : c)}</React.Fragment>;
+      return <>{React.Children.map(children, (c: any) => c.type === HasPermission.No ? null : c)}</>;
     } else {
-      return <React.Fragment>{React.Children.map(children, (c: any) => c.type === HasPermission.No ? c : null)}</React.Fragment>;
+      return <>{React.Children.map(children, (c: any) => c.type === HasPermission.No ? c : null)}</>;
     }
   }
 

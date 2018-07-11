@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { PureComponent } from 'react';
 import { isArray, find, isEmpty, isString, cloneDeep, includes, without } from 'lodash';
 
 // components
@@ -53,7 +53,7 @@ interface State {
   deployed: boolean;
 }
 
-export default class FilterSelector extends React.PureComponent<Props, State> {
+export default class FilterSelector extends PureComponent<Props, State> {
   baseID: string;
 
   constructor(props: Props) {

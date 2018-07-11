@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { isString, isEmpty } from 'lodash';
 
 // Components
@@ -17,7 +17,7 @@ interface State {
   search: string | undefined;
 }
 
-export default class AllUsers extends React.PureComponent<Props, State> {
+export default class AllUsers extends PureComponent<Props, State> {
 
   constructor(props) {
     super(props);

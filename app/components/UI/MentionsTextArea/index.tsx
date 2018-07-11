@@ -115,7 +115,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
     };
 
     const mentionStyle = {
-      backgroundColor: transparentize(0.9, color('clBlue'))
+      backgroundColor: transparentize(0.9, color('clBlueDark'))
     };
 
     this.setState({ style, mentionStyle });

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { PureComponent } from 'react';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -15,6 +15,7 @@ const Text = styled.span`
 `;
 
 const DropdownIcon = styled(Icon)`
+  width: 11px;
   height: 7px;
   fill: ${(props) => props.theme.colors.label};
   margin-left: 4px;
@@ -54,7 +55,7 @@ type Props = {
 
 type State = {};
 
-export default class Title extends React.PureComponent<Props, State> {
+export default class Title extends PureComponent<Props, State> {
   handleClick = (event) => {
     this.props.onClick(event);
   }

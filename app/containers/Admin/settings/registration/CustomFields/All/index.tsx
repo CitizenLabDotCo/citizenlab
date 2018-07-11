@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { clone, isEqual } from 'lodash';
 import { deleteCustomField, ICustomFieldData, updateCustomFieldForUsers, reorderCustomFieldForUsers } from 'services/userCustomFields';
 import GetCustomFields, { GetCustomFieldsChildProps } from 'resources/GetCustomFields';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import T from 'components/T';
-
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -14,6 +13,12 @@ import Toggle from 'components/UI/Toggle';
 import messages from '../messages';
 import FeatureFlag from 'components/FeatureFlag';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
+import styled from 'styled-components';
+
+const Buttons = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 interface InputProps {}
 
@@ -27,7 +32,7 @@ interface State {
   itemsWhileDragging: ICustomFieldData[] | null;
 }
 
-class CustomFields extends React.Component<Props & InjectedIntlProps, State> {
+class CustomFields extends Component<Props & InjectedIntlProps, State> {
 
   constructor(props) {
     super(props);
@@ -127,14 +132,14 @@ class CustomFields extends React.Component<Props & InjectedIntlProps, State> {
                     <T value={field.attributes.title_multiloc} />
                   </TextCell>
                   {!this.isBuiltInField(field) &&
-                    <>
+                    <Buttons>
                       <Button disabled={this.isBuiltInField(field)} onClick={this.handleOnDeleteClick(field.id)} style="text" circularCorners={false} icon="delete">
                         <FormattedMessage {...messages.deleteButtonLabel} />
                       </Button>
                       <Button disabled={this.isBuiltInField(field)} linkTo={`/admin/settings/registration/custom_fields/${field.id}/general`} style="secondary" circularCorners={false} icon="edit">
                         <FormattedMessage {...messages.editButtonLabel} />
                       </Button>
-                    </>
+                    </Buttons>
                   }
                   {this.isBuiltInField(field) &&
                     <div><FormattedMessage {...messages.systemField} /></div>

@@ -498,6 +498,11 @@ const clIcons = {
       <path className="cl-icon-fill cl-icon-primary SmartFlash-icon" d="M 0 0L 0 12.1172L 3.525 12.1172L 3.525 22.0312L 11.75 8.8125L 7.05 8.8125L 11.75 0L 0 0Z" transform="translate(17.625 13.2188)" fill={theme.clIconPrimary} />
     </svg>
   ),
+  lightingBolt2: (className) => (
+    <svg className={`${className}`} height="100%" viewBox="0 0 15 30" fill="none">
+      <path d="M0 0v16.5h4.5V30L15 12H9l6-12H0z" />
+    </svg>
+  ),
   database: (className, title, theme) => (
     <svg className={`cl-icon ${className ? className : ''}`} width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
       {injectTitle(title)}

@@ -71,7 +71,7 @@ const CloseButton = styled.div`
 
   &:hover {
     svg {
-      fill: ${colors.clBlue};
+      fill: ${colors.clBlueDark};
     }
   }
 `;

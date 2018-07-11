@@ -190,7 +190,7 @@ const Container: any = styled.div`
       ${buttonTheme(rgba(color('error'), .15), color('error'))}
     }
     &.cl-blue {
-      ${buttonTheme(color('clBlue'), 'white')}
+      ${buttonTheme(color('clBlueDark'), 'white')}
     }
   }
 `;

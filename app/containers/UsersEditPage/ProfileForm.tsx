@@ -1,5 +1,8 @@
-import * as React from 'react';
-import * as Rx from 'rxjs';
+import React, { PureComponent } from 'react';
+import { Subscription, BehaviorSubject } from 'rxjs';
+import { switchMap, map, distinctUntilChanged } from 'rxjs/operators';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { of } from 'rxjs/observable/of';
 import { isEqual, isEmpty, get } from 'lodash';
 
 // services
@@ -65,10 +68,10 @@ interface State {
 
 type Props = InputProps & InjectedIntlProps & injectedLocalized;
 
-class ProfileForm extends React.PureComponent<Props, State> {
+class ProfileForm extends PureComponent<Props, State> {
   localeOptions: IOption[] = [];
-  user$: Rx.BehaviorSubject<IUserData>;
-  subscriptions: Rx.Subscription[];
+  user$: BehaviorSubject<IUserData>;
+  subscriptions: Subscription[];
 
   constructor(props: InputProps) {
     super(props as any);
@@ -79,26 +82,26 @@ class ProfileForm extends React.PureComponent<Props, State> {
       localeOptions: [],
       customFieldsFormData: null
     };
-    this.user$ = new Rx.BehaviorSubject(null as any);
+    this.user$ = new BehaviorSubject(null as any);
     this.subscriptions = [];
   }
 
   componentDidMount() {
-    const user$ = this.user$.filter(user => user !== null).distinctUntilChanged((x, y) => isEqual(x, y));
+    const user$ = this.user$.filter(user => user !== null).pipe(distinctUntilChanged((x, y) => isEqual(x, y)));
     const locale$ = localeStream().observable;
     const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
 
     this.user$.next(this.props.user);
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      combineLatest(
         user$,
         locale$,
         customFieldsSchemaForUsersStream$
-      ).switchMap(([user, locale, customFieldsSchema]) => {
+      ).pipe(switchMap(([user, locale, customFieldsSchema]) => {
         const avatarUrl = get(user, 'attributes.avatar.medium', null) as string | null;
-        return (avatarUrl ? convertUrlToFileObservable(avatarUrl) : Rx.Observable.of(null)).map(avatar => ({ user, avatar, locale, customFieldsSchema }));
-      }).subscribe(({ user, avatar, locale, customFieldsSchema }) => {
+        return (avatarUrl ? convertUrlToFileObservable(avatarUrl) : of(null)).pipe(map(avatar => ({ user, avatar, locale, customFieldsSchema })));
+      })).subscribe(({ user, avatar, locale, customFieldsSchema }) => {
         this.setState({
           hasCustomFields: hasCustomFields(customFieldsSchema, locale),
           avatar: (avatar ? [avatar] : null),

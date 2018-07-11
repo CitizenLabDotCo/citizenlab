@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { PureComponent } from 'react';
 import * as moment from 'moment';
 
 // components
@@ -18,9 +18,11 @@ const Container = styled.div`
   background: ${colors.adminContentBackground};
   border: solid 1px ${colors.adminBorder};
   border-radius: 5px;
+  overflow: hidden;
 `;
 
 const StyledIcon = styled(Icon)`
+  width: 15px;
   height: 15px;
   fill: ${colors.adminSecondaryTextColor};
 `;
@@ -71,53 +73,61 @@ type Props  = {
   onChange: (arg: number) => void;
 };
 
-type State  = {};
+type State  = {
+  currentTime: string | undefined;
+};
 
-class TimeControl extends React.PureComponent<Props & InjectedIntlProps, State> {
+class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
+  static getDerivedStateFromProps(nextProps: Props & InjectedIntlProps, _prevState: State) {
+    const getCurrentTime = () => {
+      const { currentTime, interval } = nextProps;
+      const { formatDate } = nextProps.intl;
+
+      if (currentTime) {
+        const fromTime = currentTime;
+        const toTime = fromTime.clone().add(1, interval);
+
+        switch (interval) {
+          case 'weeks':
+            const from = formatDate(fromTime.toDate(), {
+              day: '2-digit',
+              weekday: 'short'
+            });
+            const to = formatDate(toTime.toDate(), {
+              day: '2-digit',
+              weekday: 'short',
+              year: 'numeric',
+              month: 'short',
+            });
+            return `${from} - ${to}`;
+          case 'months':
+            return formatDate(fromTime.toDate(), {
+              month: 'long',
+              year: 'numeric',
+            });
+          case 'years':
+            return formatDate(fromTime.toDate(), {
+              year: 'numeric',
+            });
+          default:
+            break;
+        }
+      }
+
+      return;
+    };
+
+    return {
+      currentTime: getCurrentTime()
+    };
+  }
+
   handlePrevious = () => {
     this.props.onChange(this.props.value - 1);
   }
 
   handleNext = () => {
     this.props.onChange(this.props.value + 1);
-  }
-
-  currentTime() {
-    const { currentTime, interval } = this.props;
-    const { formatDate } = this.props.intl;
-
-    if (currentTime) {
-      const fromTime = currentTime;
-      const toTime = fromTime.clone().add(1, interval);
-
-      switch (interval) {
-        case 'weeks':
-          const from = formatDate(fromTime.toDate(), {
-            day: '2-digit',
-            weekday: 'short'
-          });
-          const to = formatDate(toTime.toDate(), {
-            day: '2-digit',
-            weekday: 'short',
-            year: 'numeric',
-            month: 'short',
-          });
-          return `${from} - ${to}`;
-        case 'months':
-          return formatDate(fromTime.toDate(), {
-            month: 'long',
-            year: 'numeric',
-          });
-        case 'years':
-          return formatDate(fromTime.toDate(), {
-            year: 'numeric',
-          });
-        default:
-          break;
-      }
-    }
-
-    return;
   }
 
   render() {
@@ -128,7 +138,7 @@ class TimeControl extends React.PureComponent<Props & InjectedIntlProps, State> 
         </TimeButton>
         <Separator />
         <CurrentTime>
-          {this.currentTime()}
+          {this.state.currentTime}
         </CurrentTime>
         <Separator />
         <TimeButton onClick={this.handleNext}>
