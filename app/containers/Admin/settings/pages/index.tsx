@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { LEGAL_PAGES } from 'services/pages';
 import PageEditor from './PageEditor';
 
-export default class AdminSettingsPages extends React.PureComponent {
+export default class AdminSettingsPages extends PureComponent {
   render() {
     return (
       <>

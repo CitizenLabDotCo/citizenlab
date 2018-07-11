@@ -9,7 +9,7 @@ export default () => ({
   },
   childRoutes: [
     {
-      path: '/admin/users/:groupId',
+      path: '/:locale/admin/users/:groupId',
       getComponent: loadAndRender(import('containers/Admin/users/UsersGroup')),
     },
   ],

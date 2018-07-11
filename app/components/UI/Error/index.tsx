@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import Icon from 'components/UI/Icon';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
@@ -21,6 +21,7 @@ interface IStyledErrorMessage {
 }
 
 const ErrorMessageText = styled.div`
+  flex: 1 0 auto;
   color: ${(props) => props.theme.colors.error};
   font-weight: 400;
 
@@ -51,13 +52,10 @@ const IconWrapper = styled.div`
 const StyledErrorMessageInner = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   border-radius: 5px;
   background: rgba(252, 60, 45, 0.1);
   background: ${(props: IStyledErrorMessageInner) => (props.showBackground ? 'rgba(252, 60, 45, 0.1)' : 'transparent')};
-
-  &.isList {
-    /* align-items: flex-start; */
-  }
 `;
 
 const StyledErrorMessage: any = styled.div`
@@ -97,6 +95,18 @@ const StyledErrorMessage: any = styled.div`
   }
 
   ${IconWrapper} {
+    width: ${(props: IStyledErrorMessage) => {
+      switch (props.size) {
+        case '2':
+          return '23px';
+        case '3':
+          return '24px';
+        case '4':
+          return '25px';
+        default:
+          return '22px';
+      }
+    }};
     height: ${(props: IStyledErrorMessage) => {
       switch (props.size) {
         case '2':
@@ -187,7 +197,7 @@ function findMessage(fieldName: string | undefined, error: string) {
   return null;
 }
 
-export default class Error extends React.PureComponent<Props, State> {
+export default class Error extends PureComponent<Props, State> {
   render() {
     const { text, errors, apiErrors, fieldName, } = this.props;
     const timeout = { enter: 400, exit: 350 };

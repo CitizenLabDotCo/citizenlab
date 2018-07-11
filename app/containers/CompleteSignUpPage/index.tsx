@@ -1,6 +1,5 @@
 import React from 'react';
-import get from 'lodash/get';
-import isUndefined from 'lodash/isUndefined';
+import { get, isString, isObject, isUndefined, includes } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
@@ -106,47 +105,50 @@ interface State {}
 
 class CompleteSignUpPage extends React.PureComponent<Props & WithRouterProps, State> {
 
-  redirectToLandingPage = (ideaToPublishId: string | null) => () => {
-    clHistory.push({
-      pathname: '/',
-      search:(ideaToPublishId ? `?idea_to_publish=${ideaToPublishId}` : undefined),
-    });
+  redirectToLandingPage = () => {
+    const { location, authUser, idea } = this.props;
+    const authError = includes(location.pathname, 'authentication-error');
+    const ideaToPublishId = ((!authError && !isNilOrError(authUser) && !isNilOrError(idea) && idea.attributes.publication_status === 'draft') ? idea.id : null);
+    const search = (ideaToPublishId ? `?idea_to_publish=${ideaToPublishId}` : undefined);
+    const pathname = '/';
+
+    clHistory.push({ search, pathname });
   }
 
   render() {
-    const { location, locale, authUser, idea } = this.props;
+    const { location, authUser, idea } = this.props;
 
-    if (!isNilOrError(locale) && !isUndefined(authUser) && !isUndefined(idea)) {
-      const authError = (location.pathname === '/authentication-error');
+    if (!isUndefined(authUser) && !isUndefined(idea)) {
+      const authError = includes(location.pathname, 'authentication-error');
       const registrationCompletedAt = (authUser ? authUser.attributes.registration_completed_at : null);
-      const ideaToPublishId = ((!authError && !isNilOrError(authUser) && !isNilOrError(idea) && idea.attributes.publication_status === 'draft') ? idea.id : null);
 
-      if (!authError && registrationCompletedAt) {
-        this.redirectToLandingPage(ideaToPublishId);
-      } else {
-        return (
-          <Container>
-            <Left>
-              <SignInUpBanner />
-            </Left>
-            <Right>
-              <RightInner>
-                {!authError ? (
-                  <>
-                    <Title><FormattedMessage {...messages.title} /></Title>
-                    <Step2 onCompleted={this.redirectToLandingPage(ideaToPublishId)} />
-                  </>
-                ) : (
-                  <>
-                    <Title><FormattedMessage {...messages.somethingWentWrong} /></Title>
-                    <Error text={<FormattedMessage {...messages.notSignedIn} />} />
-                  </>
-                )}
-              </RightInner>
-            </Right>
-          </Container>
-        );
+      if (!authError && (!isObject(authUser) || (isObject(authUser) && isString(registrationCompletedAt)))) {
+        this.redirectToLandingPage();
+        return null;
       }
+
+      return (
+        <Container>
+          <Left>
+            <SignInUpBanner />
+          </Left>
+          <Right>
+            <RightInner>
+              {!authError ? (
+                <>
+                  <Title><FormattedMessage {...messages.title} /></Title>
+                  <Step2 onCompleted={this.redirectToLandingPage} />
+                </>
+              ) : (
+                <>
+                  <Title><FormattedMessage {...messages.somethingWentWrong} /></Title>
+                  <Error text={<FormattedMessage {...messages.notSignedIn} />} />
+                </>
+              )}
+            </RightInner>
+          </Right>
+        </Container>
+      );
     }
 
     return null;

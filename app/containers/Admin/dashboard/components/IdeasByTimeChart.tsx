@@ -96,7 +96,7 @@ class IdeasByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
     const { formatMessage } = this.props.intl;
 
     return (
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer>
         <AreaChart data={this.state.serie} margin={{ right: 40 }}>
           <Area
             type="monotone"
@@ -123,7 +123,6 @@ class IdeasByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
             isAnimationActive={false}
             labelFormatter={this.formatLabel}
           />
-
         </AreaChart>
       </ResponsiveContainer>
     );
