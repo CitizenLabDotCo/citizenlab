@@ -22,7 +22,7 @@ import { InjectedIntlProps } from 'react-intl';
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { media } from 'utils/styleUtils';
+import { media, quillEditedContent } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -67,6 +67,10 @@ const ProjectDescriptionStyled = styled.div`
   line-height: 26px;
   font-weight: 300;
 
+  img {
+    max-width: 100%;
+  }
+
   h1 {
     font-size: 29px;
     line-height: 35px;
@@ -107,6 +111,8 @@ const ProjectDescriptionStyled = styled.div`
       color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
     }
   }
+
+  ${quillEditedContent()}
 `;
 
 const ProjectImages = styled.div`
