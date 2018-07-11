@@ -1,7 +1,5 @@
 class Page < ApplicationRecord
 
-  @@sanitizer = Rails::Html::WhiteListSanitizer.new
-
   belongs_to :project, optional: true
 
   has_many :page_links, -> { order(:ordering) }, foreign_key: :linking_page_id, dependent: :destroy
