@@ -24,7 +24,7 @@ class PublicApi::V1::ProjectSerializer < ActiveModel::Serializer
 
 
   def href
-    "#{Tenant.current.base_frontend_uri}/projects/#{object.slug}"
+    FrontendService.new.model_to_url object
   end
 
 end
