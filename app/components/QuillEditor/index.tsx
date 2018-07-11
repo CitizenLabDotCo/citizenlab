@@ -4,10 +4,6 @@ import React from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-// Image drop/copy-paste module
-import { ImageDrop } from 'quill-image-drop-module';
-Quill.register('modules/imageDrop', ImageDrop);
-
 // Image & video resize modules
 import BlotFormatter from 'quill-blot-formatter';
 Quill.register('modules/blotFormatter', BlotFormatter);
@@ -206,7 +202,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
         this.props.trackAdvancedEditing({
           extra: {
             option,
-            type : 'heading',
+            type: 'heading',
           },
         });
       }
@@ -245,7 +241,6 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
     const toolbarId = `ql-editor-toolbar-${id}`;
 
     const modules: ModulesConfig = {
-      imageDrop: !noImages,
       blotFormatter: noImages ? false : {},
       toolbar: noToolbar ? false : {
         container: `#${toolbarId}`,
@@ -259,48 +254,50 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
       <Container id="boundaries" inAdmin={inAdmin}>
         <div id={toolbarId} >
           {!limitedTextFormatting &&
-            <>
-              <span className="ql-formats" role="button" onClick={this.trackClickDropdown()}>
-                <select className="ql-header" defaultValue={''}>
-                  <option
-                    value="1"
-                    aria-selected={false}
-                  >{formatMessage(messages.title)}
-                  </option>
-                  <option
-                    value="2"
-                    aria-selected={false}
-                  >{formatMessage(messages.subtitle)}
-                  </option>
-                  <option
-                    value=""
-                    aria-selected
-                  >{formatMessage(messages.normalText)}
-                  </option>
-                </select>
-              </span>
-              <span className="ql-formats">
-                <button
-                  className="ql-align"
+            <span className="ql-formats" role="button" onClick={this.trackClickDropdown()}>
+              <select className="ql-header" defaultValue={''}>
+                <option
+                  value="1"
+                  aria-selected={false}
+                >{formatMessage(messages.title)}
+                </option>
+                <option
+                  value="2"
+                  aria-selected={false}
+                >{formatMessage(messages.subtitle)}
+                </option>
+                <option
                   value=""
-                  onClick={this.trackAdvanced('align', 'left')}
-                />
-                <button
-                  className="ql-align"
-                  value="center"
-                  onClick={this.trackAdvanced('align', 'center')}
-                />
-                <button
-                  className="ql-align"
-                  value="right"
-                  onClick={this.trackAdvanced('align', 'right')}
-                />
-              </span>
-              <span className="ql-formats">
-                <button className="ql-list" value="ordered" onClick={this.trackAdvanced('list', 'ordered')} />
-                <button className="ql-list" value="bullet" onClick={this.trackAdvanced('list', 'bullet')} />
-              </span>
-            </>
+                  aria-selected
+                >{formatMessage(messages.normalText)}
+                </option>
+              </select>
+            </span>
+          }
+          {!limitedTextFormatting &&
+            <span className="ql-formats">
+              <button
+                className="ql-align"
+                value=""
+                onClick={this.trackAdvanced('align', 'left')}
+              />
+              <button
+                className="ql-align"
+                value="center"
+                onClick={this.trackAdvanced('align', 'center')}
+              />
+              <button
+                className="ql-align"
+                value="right"
+                onClick={this.trackAdvanced('align', 'right')}
+              />
+            </span>
+          }
+          {!limitedTextFormatting &&
+            <span className="ql-formats">
+              <button className="ql-list" value="ordered" onClick={this.trackAdvanced('list', 'ordered')} />
+              <button className="ql-list" value="bullet" onClick={this.trackAdvanced('list', 'bullet')} />
+            </span>
           }
           <span className="ql-formats">
             <button className="ql-bold" onClick={this.trackBasic('bold')} />
