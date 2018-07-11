@@ -143,8 +143,8 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
       const facebookText = formatMessage(messages.shareOnFacebook);
       const messengerText = formatMessage(messages.shareViaMessenger);
       const twitterText = formatMessage(messages.shareOnTwitter);
-      const fbURL = userId ? `${href}?recruiter=${userId}&utm_source=share_${sharedContent}&utm_medium=facebook&utm_campaign=autopublish&utm_term=share_${sharedContent}` : href;
-      const twitterURL = userId ? `${href}?recruiter=${userId}&utm_source=share_${sharedContent}&utm_medium=twitter&utm_campaign=share_${sharedContent}` : href;
+      const fbURL = userId ? `${href}?utm_source=share_${sharedContent}&utm_medium=facebook&utm_campaign=autopublish&utm_content=${userId}` : href;
+      const twitterURL = userId ? `${href}?utm_source=share_${sharedContent}&utm_medium=twitter&utm_campaign=autopublish&utm_content=${userId}` : href;
 
       const facebook = (facebookAppId ? (
         <FacebookButton
