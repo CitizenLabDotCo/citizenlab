@@ -1,0 +1,55 @@
+class SanitizationService
+
+  @@sanitizer = Rails::Html::WhiteListSanitizer.new
+  @@editor_features = {
+    default: {
+      tags: %w(p br),
+      attributes: %w(),
+    },
+    title: {
+      tags: %w(h1 h2),
+      attributes: %w(),
+    },
+    alignment: {
+      tags: %w(),
+      attributes: %w(class),
+    },
+    list: {
+      tags: %w(ol ul li),
+      attributes: %w(),
+    },
+    decoration: {
+      tags: %w(b u i em strong),
+      attributes: %w(),
+    },
+    link: {
+      tags: %w(a),
+      attributes: %w(href target),
+    },
+    image: {
+      tags: %w(),
+      attributes: %w(),
+    },
+    video: {
+      tags: %w(),
+      attributes: %w(),
+    },
+  }
+
+
+  def sanitize text, features
+    features_w_default = features.concat([:default])
+    @@sanitizer.sanitize(
+      text, 
+      tags: features_w_default.flat_map{|f| @@editor_features[f][:tags]}.uniq,
+      attributes: features_w_default.flat_map{|f| @@editor_features[f][:attributes]}.uniq,
+    )
+  end
+
+  def sanitize_multiloc multiloc, features
+    multiloc.each_with_object({}) do |(locale, text), output|
+      output[locale] = sanitize(text, features)
+    end
+  end
+
+end
