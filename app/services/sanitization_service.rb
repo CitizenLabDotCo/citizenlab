@@ -32,7 +32,7 @@ class SanitizationService
     },
     video: {
       tags: %w(iframe),
-      attributes: %w(class frameborder allowfullscreen src data-blot-formatter-unclickable-bound),
+      attributes: %w(class frameborder allowfullscreen src data-blot-formatter-unclickable-bound width height data-align style),
     },
   }
 
