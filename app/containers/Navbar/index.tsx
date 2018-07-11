@@ -260,8 +260,9 @@ const RightItem: any = styled.div`
 `;
 
 const StyledIdeaButton = styled(IdeaButton)`
-  &:hover {
-    .Button {
+  a, button {
+    &:hover,
+    &:focus {
       border-color: ${darken(0.2, '#e0e0e0')} !important;
     }
   }
