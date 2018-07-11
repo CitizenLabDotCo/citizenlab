@@ -219,6 +219,7 @@ const StyledMultipleSelect = styled(ReactSelect)`
 `;
 
 export type Props = {
+  id?: string | undefined;
   value: IOption[] | null | undefined;
   placeholder?: string | JSX.Element | undefined;
   options: IOption[] | null | undefined;
@@ -246,6 +247,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
+    const { id } = this.props;
     let { value, placeholder, options, max, autoBlur } = this.props;
 
     value = (value || this.emptyArray);
@@ -256,6 +258,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
 
     return (
       <StyledMultipleSelect
+        id={id}
         className={className}
         multi={true}
         searchable={true}

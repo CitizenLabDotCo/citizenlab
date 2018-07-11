@@ -177,6 +177,7 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
 
           <Form onSubmit={this.handleOnSubmit}>
             <StyledInput
+              ariaLabel={passwordPlaceholder}
               type="password"
               id="password"
               value={password}

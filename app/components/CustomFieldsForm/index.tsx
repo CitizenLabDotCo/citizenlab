@@ -173,6 +173,7 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
         value={props.value}
         onChange={onChange}
         key={props.id}
+        id={props.id}
       />
     );
   }
@@ -186,6 +187,7 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
         rows={6}
         value={props.value}
         key={props.id}
+        id={props.id}
       />
     );
   }
@@ -209,6 +211,7 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
           options={props.options.enumOptions}
           onChange={onChange}
           key={props.id}
+          id={props.id}
         />
       );
     }
@@ -228,6 +231,7 @@ class CustomFieldsForm extends React.PureComponent<Props & InjectedIntlProps, St
           value={selectedOptions}
           options={props.options.enumOptions}
           onChange={onChange}
+          id={props.id}
         />
       );
     }

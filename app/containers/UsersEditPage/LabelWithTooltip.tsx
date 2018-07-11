@@ -10,15 +10,16 @@ const Container = styled.div`
 `;
 
 interface Props {
+  htmlFor?: string;
   className?: string;
   id: string;
   hasTooltip?: boolean;
 }
 
-const LabelWithTooltip = ({ className, id, hasTooltip }: Props) => (
+const LabelWithTooltip = ({ htmlFor, className, id, hasTooltip }: Props) => (
   <Container className={className}>
 
-    <Label>
+    <Label htmlFor={htmlFor}>
       <FormattedMessage {...messages[id]} />
     </Label>
 
