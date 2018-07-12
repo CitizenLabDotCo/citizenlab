@@ -12,7 +12,9 @@
 - The group count in the smart groups now always shows the correct number
 - The admin dashboard is no longer too wide on smaller screens
 - The home button on mobile is no longer always active
-- 
+- Fix for page crash when trying to navigate away from 2nd signup step when one or more required fields are present
+- Admin dashboard page now properly resizes on smaller screens
+
 ### Added
 - The language is now shown in the URL at all times (e.g. `/en/ideas`)
 - The new text editor enables following extras:
