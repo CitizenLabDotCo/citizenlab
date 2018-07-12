@@ -1,5 +1,30 @@
 # Changelog
 
+## 2018-07-12
+
+### Fixed
+- New text editor fixes various bugs present in old editor:
+  - Typing idea texts on Android phones now works as expected
+  - Adding a link to a text field now opens the link in a new window
+  - Resizing images now works as expected
+  - When saving, the editor no longer causes extra whitespace to appear
+- A (too) long list of IE11 fixes: The platform is now fully usable on IE11
+- The group count in the smart groups now always shows the correct number
+- The admin dashboard is no longer too wide on smaller screens
+- The home button on mobile is no longer always active
+- 
+### Added
+- The language is now shown in the URL at all times (e.g. `/en/ideas`)
+- The new text editor enables following extras:
+  - It's now possible to upload images through the text editor
+  - It's now possible to add youtube videos through the text editor
+- `recruiter` has been added to the UTM campaign parameters
+
+### Know issues
+- The controls of the text editor are not yet translated
+- Posting images through a URL is no longer possible
+
+
 ## 2018-06-29
 
 ### Fixed
