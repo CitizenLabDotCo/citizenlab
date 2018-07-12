@@ -141,13 +141,6 @@ RSpec.describe Idea, type: :model do
       })
       expect(idea.body_multiloc).to eq({"en" => "<p>Test</p>This should be removed!"})
     end
-
-    it "retains link tags with target and href attributes" do
-      idea = create(:idea, body_multiloc: {
-        "en" => "This is a <a href=\"https://someurl\" target=\"_blank\">Click here</a>"
-      })
-      expect(idea.body_multiloc).to eq({"en" => "This is a <a href=\"https://someurl\" target=\"_blank\">Click here</a>"})
-    end
   end
 
   describe "delete an idea" do
