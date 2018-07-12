@@ -6,6 +6,7 @@ class Phase < ApplicationRecord
   has_many :ideas_phases, dependent: :destroy
   has_many :ideas, through: :ideas_phases
   has_many :votes, through: :ideas
+  has_many :text_images, as: :imageable, dependent: :destroy
 
   validates :project, presence: true
   validates :title_multiloc, presence: true, multiloc: {presence: true}
@@ -22,9 +23,10 @@ class Phase < ApplicationRecord
   private
 
   def sanitize_description_multiloc
-    self.description_multiloc = self.description_multiloc.map do |locale, description|
-      [locale, Rails::Html::WhiteListSanitizer.new.sanitize(description, tags: %w(p b u i em strong a ul li ol), attributes: %w(href type style))]
-    end.to_h
+    self.description_multiloc = SanitizationService.new.sanitize_multiloc(
+      self.description_multiloc,
+      %i{title alignment list decoration link image video}
+    )
   end
 
   def validate_start_at_before_end_at

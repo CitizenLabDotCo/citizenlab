@@ -3,9 +3,6 @@ class Idea < ApplicationRecord
 
   MAX_TITLE_LEN = 80
 
-
-  @@sanitizer = Rails::Html::WhiteListSanitizer.new
-
   pg_search_scope :search_by_all, 
     :against => [:title_multiloc, :body_multiloc, :author_name],
     :using => { :tsearch => {:prefix => true} }
@@ -140,9 +137,10 @@ class Idea < ApplicationRecord
   end
 
   def sanitize_body_multiloc
-    self.body_multiloc = self.body_multiloc.map do |locale, description|
-      [locale, @@sanitizer.sanitize(description, tags: %w(p b u i em strong a h1 h2 h3 h4 h5 h6 ul li ol), attributes: %w(href type style target))]
-    end.to_h
+    self.body_multiloc = SanitizationService.new.sanitize_multiloc(
+      self.body_multiloc,
+      %i{title alignment list decoration link}
+    )
   end
 
   def strip_title
