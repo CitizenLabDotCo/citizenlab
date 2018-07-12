@@ -17,6 +17,10 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
+// tracking
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
+
 // style
 import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
@@ -172,11 +176,15 @@ type NavItem = {
   isActive: (pathname: string) => boolean,
 };
 
-class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
+type Tracks = {
+  trackFakeDoor: Function;
+};
+
+class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps & Tracks, State> {
   routes: NavItem[];
   subscriptions: Subscription[];
 
-  constructor(props: Props & InjectedIntlProps & WithRouterProps) {
+  constructor(props: Props & InjectedIntlProps & WithRouterProps & Tracks) {
     super(props);
     this.state = {
       navItems: [],
@@ -254,6 +262,10 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps,
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  track = () => {
+    this.props.trackFakeDoor();
+  }
+
   render() {
     const { formatMessage } = this.props.intl;
     const { pathname } = this.props.location;
@@ -271,7 +283,7 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps,
               if (pathname.match(/^\/nl-/)) {
                 return (
                   <FeatureFlag name={route.featureName} key={route.id}>
-                    <FakeDoor href={route.link} target="blank">
+                    <FakeDoor href={route.link} target="blank" onClick={this.track}>
                       <IconWrapper><Icon name={route.iconName} /></IconWrapper>
                       <Text>{route.message}</Text>
                     </FakeDoor>
@@ -295,5 +307,6 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps,
     );
   }
 }
-
-export default withRouter<Props>(injectIntl(Sidebar));
+export default injectTracks<Props>({
+  trackFakeDoor: tracks.fakeDoor,
+})(withRouter<Props>(injectIntl(Sidebar)));
