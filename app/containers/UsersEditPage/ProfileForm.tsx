@@ -273,7 +273,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
                     </SectionField>
 
                     <SectionField>
-                      <LabelWithTooltip htmlFor="firstName" id="firstName" />
+                      <LabelWithTooltip htmlFor="firstName" translateId="firstName" />
                       <Input
                         type="text"
                         name="first_name"
@@ -286,7 +286,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
                     </SectionField>
 
                     <SectionField>
-                      <LabelWithTooltip htmlFor="lastName" id="lastName" />
+                      <LabelWithTooltip htmlFor="lastName" translateId="lastName" />
                       <Input
                         type="text"
                         name="last_name"
@@ -299,7 +299,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
                     </SectionField>
 
                     <SectionField>
-                      <LabelWithTooltip htmlFor="email" id="email" />
+                      <LabelWithTooltip htmlFor="email" translateId="email" />
                       <Input
                         type="email"
                         name="email"
@@ -312,7 +312,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
                     </SectionField>
 
                     <SectionField>
-                      <LabelWithTooltip htmlFor="bio" id="bio" />
+                      <LabelWithTooltip htmlFor="bio" translateId="bio" />
                       <TextArea
                         id="bio"
                         name="bio_multiloc"
@@ -326,7 +326,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
                     </SectionField>
 
                     <SectionField>
-                      <LabelWithTooltip htmlFor="password" id="password" />
+                      <LabelWithTooltip htmlFor="password" translateId="password" />
                       <Input
                         type="password"
                         name="password"
@@ -339,7 +339,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
                     </SectionField>
 
                     <SectionField>
-                      <LabelWithTooltip id="language" />
+                      <LabelWithTooltip translateId="language" />
                       <Select
                         onChange={createChangeHandler('locale')}
                         onBlur={createBlurHandler('locale')}
