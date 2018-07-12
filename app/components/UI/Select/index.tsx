@@ -3,181 +3,34 @@ import { isBoolean } from 'lodash';
 import ReactSelect from 'react-select';
 import { IOption } from 'typings';
 import styled from 'styled-components';
+import { rgba } from 'polished';
+
+export function customSelectStyles(props) {
+  return `
+    .rs__control {
+      &.rs__control--is-focused,
+      &:hover {
+        border-color: ${props.theme.colorMain};
+        box-shadow: 0 0 0 1px ${props.theme.colorMain};
+      }
+    }
+
+    .rs__option {
+      &.rs__option--is-focused,
+      &:hover {
+        background: ${rgba(props.theme.colorMain, .1)};
+      }
+
+      &.rs__option--is-selected {
+        color: black;
+        background: ${rgba(props.theme.colorMain, .5)};
+      }
+    }
+  `;
+}
 
 const StyledSelect = styled(ReactSelect)`
-  &.Select--single {
-    margin: 0;
-    padding: 0;
-
-    &:not(.is-disabled):not(.is-open):hover {
-      .Select-control {
-        border-color: #999;
-      }
-    }
-
-    &.is-open {
-      .Select-control {
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
-
-        .Select-arrow-zone {
-          .Select-arrow {
-            margin-top: -1px;
-            border-width: 0 5px 5px;
-          }
-        }
-      }
-    }
-
-    &.is-open,
-    &.is-focused {
-      .Select-control {
-        border-color: #000;
-      }
-    }
-
-    &.has-value {
-      .Select-control {
-        padding-bottom: 0px;
-      }
-    }
-
-    &.is-disabled {
-      .Select-control {
-        border-color: #ccc;
-        cursor: not-allowed;
-      }
-    }
-
-    .Select-control {
-      min-height: 48px;
-      margin: 0px;
-      padding: 0px;
-      display: flex;
-      cursor: pointer;
-      border-color: #ccc;
-      border-radius: 5px;
-      position: relative;
-      box-shadow: none !important;
-      outline: none !important;
-
-      .Select-arrow-zone {
-        width: 35px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0px;
-        margin: 0px;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 0;
-
-        .Select-arrow {
-          margin-top: 1px;
-          height: auto;
-          border-width: 5px 5px 2.5px;
-        }
-      }
-
-      .Select-clear-zone {
-        width: 20px;
-        height: auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0px;
-        padding-bottom: 0px;
-        margin: 0px;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 30px;
-
-        &:hover {
-          .Select-clear {
-            color: #000;
-          }
-        }
-
-        .Select-clear {
-          font-size: 30px;
-        }
-      }
-
-      .Select-multi-value-wrapper {
-        width: calc(100% - 50px);
-        height: auto;
-        margin: 0px;
-        padding: 0px;
-        position: relative;
-
-        .Select-placeholder {
-          color: #aaa;
-        }
-
-        .Select-placeholder,
-        .Select-input,
-        .Select-value {
-          height: 100%;
-          font-size: 17px;
-          font-weight: 400;
-          line-height: 32px;
-          padding: 0px;
-          padding-bottom: 1px;
-          margin: 0px;
-          margin-left: 12px;
-          display: flex;
-          align-items: center;
-
-          > input {
-            display: flex;
-            align-items: center;
-            height: 100%;
-            padding: 0px;
-            margin: 0px;
-          }
-        }
-      }
-    }
-
-    .Select-menu-outer {
-      max-height: 214px;
-      border-color: #000;
-      border-top: solid 1px #ccc;
-      border-radius: 0;
-      border-bottom-left-radius: 5px;
-      border-bottom-right-radius: 5px;
-      overflow: hidden;
-      z-index: 2;
-
-      .Select-menu {
-        max-height: 212px;
-
-        .Select-option {
-          color: #333;
-          font-size: 17px;
-          font-weight: 400;
-          padding-top: 12px;
-          padding-bottom: 12px;
-
-          &:hover,
-          &:focus,
-          &:active,
-          &.is-focused {
-            background: #eee;
-          }
-        }
-
-        .Select-noresults {
-          color: #cc0000;
-          font-size: 17px;
-          font-weight: 500;
-          padding: 14px 12px;
-        }
-      }
-    }
-  }
+  ${props => customSelectStyles(props)}
 `;
 
 export type Props = {
@@ -226,6 +79,7 @@ export default class Select extends React.PureComponent<Props, State> {
       <StyledSelect
         id={id}
         className={className}
+        classNamePrefix="rs"
         openOnFocus={false}
         clearable={clearable}
         searchable={searchable}
@@ -236,7 +90,7 @@ export default class Select extends React.PureComponent<Props, State> {
         options={options}
         onChange={this.handleOnChange}
         onBlur={this.props.onBlur}
-        multi={multi}
+        isMulti={multi}
         disabled={disabled}
       />
     );

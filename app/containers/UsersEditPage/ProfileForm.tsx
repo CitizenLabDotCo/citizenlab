@@ -345,6 +345,7 @@ class ProfileForm extends React.PureComponent<Props, State> {
                         onBlur={createBlurHandler('locale')}
                         value={values.locale}
                         options={this.state.localeOptions}
+                        clearable={false}
                       />
                       <Error apiErrors={errors.locale} />
                     </SectionField>
