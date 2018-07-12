@@ -338,16 +338,21 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
 
         <FormElement>
           <Label value={<FormattedMessage {...messages.locationLabel} />} htmlFor="location" />
-          <LocationInput
-            id="location"
-            value={position}
-            placeholder={formatMessage(messages.locationPlaceholder)}
-            onChange={this.handleLocationOnChange}
-          />
+          <label htmlFor="location">
+            <HiddenLabel>
+              <FormattedMessage {...messages.locationLabel} />
+            </HiddenLabel>
+            <LocationInput
+              id="location"
+              value={position}
+              placeholder={formatMessage(messages.locationPlaceholder)}
+              onChange={this.handleLocationOnChange}
+            />
+          </label>
         </FormElement>
 
         <FormElement>
-          <Label value={<FormattedMessage {...messages.imageUploadLabel} />} htmlFor="idea_img_dropzone" />
+          <Label value={<FormattedMessage {...messages.imageUploadLabel} />} />
           {/* Wrapping image dropzone with a label for accesibility */}
           <label htmlFor="idea-img-dropzone">
             <HiddenLabel>
