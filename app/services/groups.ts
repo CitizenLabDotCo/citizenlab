@@ -31,11 +31,11 @@ export interface IGroup {
 }
 
 export function getGroups(streamParams: IStreamParams | null = null) {
-  return streams.get<IGroups>({ apiEndpoint: `${API_PATH}/groups`, ...streamParams });
+  return streams.get<IGroups>({ apiEndpoint: `${API_PATH}/groups`, ...streamParams, cacheStream: false });
 }
 
 export function getGroup(groupId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IGroup>({ apiEndpoint: `${API_PATH}/groups/${groupId}`, ...streamParams });
+  return streams.get<IGroup>({ apiEndpoint: `${API_PATH}/groups/${groupId}`, ...streamParams, cacheStream: false });
 }
 
 export function addGroup(object: GroupDiff) {

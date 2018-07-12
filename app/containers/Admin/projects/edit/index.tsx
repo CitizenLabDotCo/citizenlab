@@ -9,7 +9,7 @@ import { projectByIdStream, IProjectData } from 'services/projects';
 // Components
 import GoBackButton from 'components/UI/GoBackButton';
 import TabbedResource, { TabProps } from 'components/admin/TabbedResource';
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // Localisation
 import { InjectedIntlProps } from 'react-intl';
@@ -124,16 +124,15 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
   }
 
   goBack = () => {
-    const currentLocation = browserHistory.getCurrentLocation();
-    const currentPath = currentLocation.pathname;
+    const currentPath = location.pathname;
     const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
     const newPath = currentPath.replace(lastUrlSegment, '').replace(/\/$/, '');
     const newLastUrlSegment = newPath.substr(newPath.lastIndexOf('/') + 1);
 
     if (newLastUrlSegment === this.props.params.projectId) {
-      browserHistory.push('/admin/projects');
+      clHistory.push('/admin/projects');
     } else {
-      browserHistory.push(newPath);
+      clHistory.push(newPath);
     }
   }
 

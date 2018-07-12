@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import { get } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { Link, browserHistory } from 'react-router';
+import Link from 'utils/cl-router/Link';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -31,7 +32,7 @@ import messages from './messages';
 
 // styles
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 // typings
 import { IModalInfo } from 'containers/App';
@@ -48,18 +49,6 @@ const IdeaImageContainer: any = styled.div`
 
 const IdeaImage: any = styled(LazyImage)`
   width: 100%;
-`;
-
-const IdeaImageOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #fff;
-  opacity: 0.1;
-  transition: all 250ms ease-out;
-  will-change: opacity;
 `;
 
 const IdeaContent = styled.div`
@@ -99,7 +88,7 @@ const IdeaAuthorAvatar = styled(Avatar)`
 `;
 
 const IdeaAuthorText = styled.div`
-  color: ${(props) => props.theme.colors.label};
+  color: ${colors.label};
   font-size: 14px;
   font-weight: 400;
   line-height: 18px;
@@ -130,14 +119,14 @@ const Footer = styled.div`
 const StyledVoteControl = styled(VoteControl)``;
 
 const CommentIcon = styled(Icon)`
-  fill: ${(props) => props.theme.colors.label};
+  fill: ${colors.label};
   height: 21px;
   margin-right: 7px;
   width: 30px;
 `;
 
 const CommentCount = styled.div`
-  color: ${(props) => props.theme.colors.label};
+  color: ${colors.label};
   font-size: 16px;
   font-weight: 400;
 `;
@@ -175,14 +164,8 @@ const IdeaContainer = styled(Link)`
       will-change: opacity;
     }
 
-    &:hover {
-      ${IdeaImageOverlay} {
-        opacity: 0;
-      }
-
-      &::after {
-        opacity: 1;
-      }
+    &:hover::after {
+      opacity: 1;
     }
   `};
 `;
@@ -224,7 +207,7 @@ interface State {
 
 export const namespace = 'components/IdeaCard/index';
 
-class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
+class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -232,7 +215,7 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
     };
   }
 
-  onCardClick = (event: React.FormEvent<MouseEvent>) => {
+  onCardClick = (event: FormEvent<MouseEvent>) => {
     event.preventDefault();
 
     const { idea } = this.props;
@@ -246,13 +229,13 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
-  onAuthorClick = (event: React.FormEvent<MouseEvent>) => {
+  onAuthorClick = (event: FormEvent<MouseEvent>) => {
     const { ideaAuthor } = this.props;
 
     if (!isNilOrError(ideaAuthor)) {
       event.stopPropagation();
       event.preventDefault();
-      browserHistory.push(`/profile/${ideaAuthor.attributes.slug}`);
+      clHistory.push(`/profile/${ideaAuthor.attributes.slug}`);
     }
   }
 
@@ -293,7 +276,6 @@ class IdeaCard extends React.PureComponent<Props & InjectedIntlProps, State> {
               <T value={idea.attributes.title_multiloc}>
                 {(ideaTitle) => (<IdeaImage src={ideaImageUrl} alt={formatMessage(messages.imageAltText, { ideaTitle })} />)}
               </T>
-              <IdeaImageOverlay />
               </IdeaImageContainer>
             }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
-import { switchMap } from 'rxjs/operators';
+import { filter, switchMap } from 'rxjs/operators';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 import { withTheme } from 'styled-components';
@@ -43,8 +43,12 @@ class IdeasByTimeChart extends React.PureComponent<Props & injectedLocalized, St
 
     this.subscriptions = [
       combineLatest(
-        this.startAt$.filter(startAt => startAt !== null),
-        this.endAt$.filter(endAt => endAt !== null),
+        this.startAt$.pipe(
+          filter(startAt => startAt !== null)
+        ),
+        this.endAt$.pipe(
+          filter(endAt => endAt !== null)
+        )
       ).pipe(
         switchMap(([startAt, endAt]) => {
           return ideasByTopicStream({
@@ -94,10 +98,11 @@ class IdeasByTimeChart extends React.PureComponent<Props & injectedLocalized, St
 
   render() {
     const theme = this.props['theme'];
+    const { serie } = this.state;
 
     return (
-      <ResponsiveContainer width="100%" height={this.state.serie && (this.state.serie.length * 50)}>
-        <BarChart data={this.state.serie} layout="vertical">
+      <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
+        <BarChart data={serie} layout="vertical">
           <Bar
             dataKey="value"
             name="name"

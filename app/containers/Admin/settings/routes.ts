@@ -1,7 +1,7 @@
 import loadAndRender from 'utils/loadAndRender';
 
 export default () => ({
-  path: '/admin/settings',
+  path: 'settings',
   name: 'admin settings',
   getComponent: loadAndRender(import('containers/Admin/settings')),
   indexRoute: {

@@ -9,7 +9,8 @@ import { isNilOrError } from 'utils/helperUtils';
 // libraries
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import { browserHistory, withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import IdeasNewButtonBar from './IdeasNewButtonBar';
@@ -306,7 +307,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     try {
       const authUser = await getAuthUserAsync();
       await this.postIdeaAndIdeaImage('published', authUser.data.id);
-      browserHistory.push('/ideas');
+      clHistory.push('/ideas');
     } catch (error) {
       if (isError(error) && error.message === 'not_authenticated') {
         try {
@@ -335,7 +336,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
       await updateIdea(ideaId, { author_id: userId, publication_status: 'published' });
     }
 
-    browserHistory.push('/ideas');
+    clHistory.push('/ideas');
   }
 
   render() {

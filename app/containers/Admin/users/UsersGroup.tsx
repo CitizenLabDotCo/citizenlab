@@ -57,7 +57,7 @@ interface Tracks {
 }
 
 export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & Tracks, State> {
-  constructor(props) {
+  constructor(props: Props & InjectedIntlProps & Tracks) {
     super(props);
     this.state = {
       groupEditionModal: false,
@@ -114,16 +114,22 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & 
     });
   }
 
-  deleteUsersFromGroup = (userIds: string[]) => {
+  deleteUsersFromGroup = async (userIds: string[]) => {
     if (!isNilOrError(this.props.group) && this.props.group.attributes.membership_type === 'manual') {
       const deleteMessage = this.props.intl.formatMessage(messages.membershipDeleteConfirmation);
+
       if (window.confirm(deleteMessage)) {
         const groupId = this.props.group.id;
         const promises: Promise<any>[] = [];
+
         userIds.forEach(userId => promises.push(deleteMembershipByUserId(groupId, userId)));
-        Promise.all(promises).catch(() => {
+
+        try {
+          await Promise.all(promises);
+          await streams.fetchAllStreamsWithEndpoint(`${API_PATH}/groups`);
+        } catch (error) {
           eventEmitter.emit<JSX.Element>('usersAdmin', events.membershipDeleteFailed, <FormattedMessage {...messages.membershipDeleteFailed} />);
-        });
+        }
       }
     }
   }

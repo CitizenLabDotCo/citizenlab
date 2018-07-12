@@ -15,7 +15,7 @@ import pagesRoutes from './pages/routes';
 import clusteringsRoutes from './clusterings/routes';
 
 export default () => ({
-  path: '/admin',
+  path: 'admin',
   name: 'Admin page',
   getComponent: loadAndRender(import('containers/Admin')),
   indexRoute: dashboardRoutes(),

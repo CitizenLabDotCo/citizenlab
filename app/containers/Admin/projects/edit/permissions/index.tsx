@@ -1,5 +1,6 @@
-import React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React, { PureComponent } from 'react';
+import { Subscription } from 'rxjs';
+import { switchMap, map as rxMap } from 'rxjs/operators';
 import { map, isEmpty, isEqual, difference } from 'lodash';
 
 // i18n
@@ -56,9 +57,8 @@ type State  = {
   status: 'disabled' | 'enabled' | 'error' | 'success';
 };
 
-class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, State> {
-
-  subscriptions: Rx.Subscription[];
+class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State> {
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -86,12 +86,12 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
       });
 
       this.subscriptions = [
-        project$.switchMap((project) => {
-          return groupsProjectsByProjectIdStream(project.data.id).observable.map((groupsProjects) => ({
+        project$.pipe(switchMap((project) => {
+          return groupsProjectsByProjectIdStream(project.data.id).observable.pipe(rxMap((groupsProjects) => ({
             project,
             groupsProjects
-          }));
-        }).subscribe(({ project, groupsProjects }) => {
+          })));
+        })).subscribe(({ project, groupsProjects }) => {
           this.setState((state) => {
             const oldGroupsProjects = (state.loading ? groupsProjects : state.oldGroupsProjects);
             const newGroupsProjects = groupsProjects;
@@ -225,10 +225,12 @@ class ProjectPermissions extends React.PureComponent<Props & InjectedIntlProps, 
               }}
             />
           </SectionField>
+
           {project &&
             <GetModerators projectId={project.data.id}>
               {moderators => <Moderators moderators={moderators} projectId={project.data.id} />}
-            </GetModerators>}
+            </GetModerators>
+          }
         </Section>
       );
     }

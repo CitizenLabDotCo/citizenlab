@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import isEqual from 'lodash/isEqual';
 import get from 'lodash/get';
 import isString from 'lodash/isString';
@@ -63,7 +63,7 @@ interface State {
   loadingMore: boolean;
 }
 
-export default class GetProjects extends React.Component<Props, State> {
+export default class GetProjects extends Component<Props, State> {
   private queryParameters$: BehaviorSubject<IQueryParameters>;
   private subscriptions: Subscription[];
 

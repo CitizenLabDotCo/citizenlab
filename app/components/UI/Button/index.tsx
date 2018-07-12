@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import Link from 'utils/cl-router/Link';
 import { isBoolean, isNil } from 'lodash';
 import styled, { withTheme } from 'styled-components';
 import { darken, rgba, readableColor } from 'polished';
@@ -190,7 +190,7 @@ const Container: any = styled.div`
       ${buttonTheme(rgba(color('error'), .15), color('error'))}
     }
     &.cl-blue {
-      ${buttonTheme(color('clBlue'), 'white')}
+      ${buttonTheme(color('clBlueDark'), 'white')}
     }
   }
 `;
@@ -216,28 +216,28 @@ type Props = {
   children?: any;
   circularCorners?: boolean;
   className?: string;
-  size?: '1' | '2' | '3' | '4';
-  style?: ButtonStyles;
-  width?: string;
+  disabled?: boolean;
+  fullWidth?: boolean;
   height?: string;
-  padding?: string;
-  justify?: 'left' | 'center' | 'right' | 'space-between';
+  hiddenText?: string | JSX.Element;
   icon?: IconProps['name'];
   iconPos?: 'left' | 'right';
   iconSize?: string;
-  processing?: boolean;
-  disabled?: boolean;
-  fullWidth?: boolean;
-  hiddenText?: string | JSX.Element;
   iconTitle?: IconProps['title'];
   id?: string;
+  justify?: 'left' | 'center' | 'right' | 'space-between';
   linkTo?: string;
   onClick?: (arg: React.FormEvent<HTMLButtonElement>) => void;
+  padding?: string;
+  processing?: boolean;
   setSubmitButtonRef?: (value: HTMLInputElement) => void;
+  size?: '1' | '2' | '3' | '4';
+  style?: ButtonStyles;
   text?: string | JSX.Element;
   textColor?: string;
   textHoverColor?: string;
   theme?: object | undefined;
+  width?: string;
 };
 
 type State = {};
@@ -325,8 +325,8 @@ class Button extends React.PureComponent<Props, State> {
         textHoverColor={textHoverColor}
       >
         {linkTo ? (
-          (linkTo.startsWith('http')) ? (
-            <StyledA innerRef={this.props.setSubmitButtonRef} href={linkTo} className={buttonClassnames}>{childContent}</StyledA>
+          (typeof(linkTo === 'string') && (linkTo as string).startsWith('http')) ? (
+            <StyledA innerRef={this.props.setSubmitButtonRef} href={(linkTo as string)} className={buttonClassnames}>{childContent}</StyledA>
           ) : (
             <StyledLink innerRef={this.props.setSubmitButtonRef} to={linkTo} className={buttonClassnames}>{childContent}</StyledLink>
           )
