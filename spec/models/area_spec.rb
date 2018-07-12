@@ -7,6 +7,17 @@ RSpec.describe Area, type: :model do
     end
   end
 
+  describe "description sanitizer" do
+
+    it "sanitizes script tags in the description" do
+      area = create(:area, description_multiloc: {
+        "en" => "<p>Test</p><script>This should be removed!</script>"
+      })
+      expect(area.description_multiloc).to eq({"en" => "<p>Test</p>This should be removed!"})
+    end
+    
+  end
+
   describe "delete an area" do
     it "with an ideas associated to it should succeed" do
       area = create(:area)

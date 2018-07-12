@@ -2,11 +2,7 @@ class FrontendService
   # The main purpose of this service is to decouple all assumptions the backend
   # makes about the frontend into a common location.
 
-  def home_url tenant=Tenant.current
-    tenant.base_frontend_uri
-  end
-
-  def model_to_url model_instance, tenant=Tenant.current
+  def model_to_url model_instance, options={}
     subroute = nil
     slug = nil
     if model_instance.kind_of? Project
@@ -23,23 +19,38 @@ class FrontendService
       slug = model_instance.slug
     end
 
-    subroute && slug && "#{tenant.base_frontend_uri}/#{subroute}/#{slug}"
+    subroute && slug && "#{home_url(options)}/#{subroute}/#{slug}"
   end
 
-  def signin_success_url tenant=Tenant.current
-    "#{tenant.base_frontend_uri}/"
+  def home_url options={}
+    tenant = options[:tenant] || Tenant.current
+    locale = options[:locale]
+    url = tenant.base_frontend_uri
+    if locale
+      "#{url}/#{locale}"
+    else
+      url
+    end
   end
 
-  def signup_success_url tenant=Tenant.current
-    "#{tenant.base_frontend_uri}/complete-signup"
+  def signin_success_url options={}
+    home_url options
   end
 
-  def signin_failure_url tenant=Tenant.current
-    "#{tenant.base_frontend_uri}/authentication-error"
+  def signup_success_url options={}
+    "#{home_url(options)}/complete-signup"
   end
 
-  def invite_url token, tenant=Tenant.current
-    "#{tenant.base_frontend_uri}/invite?token=#{token}"
+  def signin_failure_url options={}
+    "#{home_url(options)}/authentication-error"
+  end
+
+  def invite_url token, options={}
+    "#{home_url(options)}/invite?token=#{token}"
+  end
+
+  def reset_password_url token, options={}
+    "#{home_url(options)}/reset-password?token=#{token}"
   end
 
 end
