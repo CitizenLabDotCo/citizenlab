@@ -12,6 +12,11 @@ module AdminApi
       def facebook_login_app_secret
         object.dig('facebook_login', 'app_secret')
       end
+
+      field :core_locales, [String], null: false
+      def core_locales
+        object.dig('core', 'locales')
+      end
     end
 
     field :id, ID, null: false

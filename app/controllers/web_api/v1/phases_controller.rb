@@ -17,9 +17,13 @@ class WebApi::V1::PhasesController < ApplicationController
   def create
     @phase = Phase.new(phase_params)
     @phase.project_id = params[:project_id]
+
+    SideFxPhaseService.new.before_create(@phase, current_user)
+
     authorize @phase
 
     if @phase.save
+      SideFxPhaseService.new.after_create(@phase, current_user)
       render json: @phase, status: :created
     else
       render json: { errors: @phase.errors.details }, status: :unprocessable_entity
@@ -27,7 +31,12 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def update
-    if @phase.update(phase_params)
+    @phase.assign_attributes(phase_params)
+
+    SideFxPhaseService.new.before_update(@phase, current_user)
+
+    if @phase.save
+      SideFxPhaseService.new.after_update(@phase, current_user)
       render json: @phase, status: :ok
     else
       render json: { errors: @phase.errors.details }, status: :unprocessable_entity
@@ -35,8 +44,13 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def destroy
-    @phase.destroy
-    head :ok
+    phase = @phase.destroy
+    if phase.destroyed?
+      SideFxPhaseService.new.after_destroy(@phase, current_user)
+      head :ok
+    else
+      head 500
+    end
   end
 
   private

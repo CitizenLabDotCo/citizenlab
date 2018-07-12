@@ -15,7 +15,7 @@ RSpec.describe Phase, type: :model do
       })
       expect(phase.description_multiloc).to eq({"en" => "<p>Test</p>This should be removed!"})
     end
-    
+
   end
 
   describe "timing validation" do
