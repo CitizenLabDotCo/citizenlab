@@ -13,7 +13,6 @@
 - The admin dashboard is no longer too wide on smaller screens
 - The home button on mobile is no longer always active
 - Fix for page crash when trying to navigate away from 2nd signup step when one or more required fields are present
-- Admin dashboard page now properly resizes on smaller screens
 
 ### Added
 - The language is now shown in the URL at all times (e.g. `/en/ideas`)
@@ -24,8 +23,8 @@
 
 ### Know issues
 - The controls of the text editor are not yet translated
-- Posting images through a URL is no longer possible
-
+- Posting images through a URL in the text editor is no longer possible
+- Images that have been resized by IE11 in the text editor, can subsequently no longer be resized by other browsers
 
 ## 2018-06-29
 
