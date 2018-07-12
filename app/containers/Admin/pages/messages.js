@@ -31,24 +31,4 @@ export default defineMessages({
     id: 'app.containers.AdminPage.PagesPage.addPageButton',
     defaultMessage: 'Add page',
   },
-  pageTitle: {
-    id: 'app.containers.AdminPage.PagesPage.pageTitle',
-    defaultMessage: 'Title',
-  },
-  pageSlug: {
-    id: 'app.containers.AdminPage.PagesPage.pageSlug',
-    defaultMessage: 'Slug',
-  },
-  editContent: {
-    id: 'app.containers.AdminPage.PagesPage.editBodyAsHTMLLabel',
-    defaultMessage: 'Content',
-  },
-  advancedEditorLink: {
-    id: 'app.containers.AdminPage.PagesPage.advancedEditorLink',
-    defaultMessage: 'Advanced editor',
-  },
-  dontChange: {
-    id: 'app.containers.AdminPage.PagesPage.dontChange',
-    defaultMessage: 'Don\'t change this! (unless you really know what you\'re doing)',
-  },
 });

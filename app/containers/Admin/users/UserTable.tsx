@@ -39,6 +39,7 @@ const Container = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  margin-bottom: 30px;
 `;
 
 const StyledTable = styled(Table)`
@@ -170,7 +171,7 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
               </tr>
             </thead>
             <tbody>
-              {usersList.map((user, index) => (
+              {usersList.map((user) => (
                 <UserTableRow
                   key={user.id}
                   user={user}
@@ -178,7 +179,6 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
                   toggleSelect={this.handleUserToggle(user.id)}
                   toggleAdmin={this.handleAdminRoleOnChange(user)}
                   authUser={this.props.authUser}
-                  up={(usersCount > 8) ? (index > usersCount - 3) : false}
                 />
               ))}
             </tbody>

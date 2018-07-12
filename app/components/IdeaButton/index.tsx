@@ -1,9 +1,12 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React, { PureComponent } from 'react';
+import { Subscription, BehaviorSubject, Observable } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { of } from 'rxjs/observable/of';
 
 // services
-import { IProjectData, projectByIdStream } from 'services/projects';
-import { IPhaseData, phaseStream } from 'services/phases';
+import { IProjectData, projectByIdStream, IProject } from 'services/projects';
+import { IPhase, IPhaseData, phaseStream } from 'services/phases';
 import { postingButtonState } from 'services/ideaPostingRules';
 
 // components
@@ -27,10 +30,10 @@ type State = {
   phase?: IPhaseData | undefined;
 };
 
-class IdeaButton extends React.PureComponent<Props & InjectedIntlProps, State> {
-  projectId$: Rx.BehaviorSubject<string | undefined>;
-  phaseId$: Rx.BehaviorSubject<string | undefined>;
-  subscriptions: Rx.Subscription[];
+class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
+  projectId$: BehaviorSubject<string | undefined>;
+  phaseId$: BehaviorSubject<string | undefined>;
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -38,8 +41,8 @@ class IdeaButton extends React.PureComponent<Props & InjectedIntlProps, State> {
       project: undefined,
       phase: undefined
     };
-    this.projectId$ = new Rx.BehaviorSubject(undefined);
-    this.phaseId$ = new Rx.BehaviorSubject(undefined);
+    this.projectId$ = new BehaviorSubject(undefined);
+    this.phaseId$ = new BehaviorSubject(undefined);
     this.subscriptions = [];
   }
 
@@ -51,17 +54,28 @@ class IdeaButton extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.phaseId$.next(this.props.phaseId);
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      combineLatest(
         projectId$,
         phaseId$
-      ).switchMap(([projectId, phaseId]) => {
-        return (phaseId ? phaseStream(phaseId).observable : Rx.Observable.of(undefined)).map((phase) => ({
-          phase,
-          projectId: (phase ? phase.data.relationships.project.data.id : projectId)
-        }));
-      }).switchMap(({ projectId, phase }) => {
-        return (projectId ? projectByIdStream(projectId).observable : Rx.Observable.of(undefined)).map(project => ({ project, phase }));
-      }).subscribe(({ project, phase }) => {
+      ).pipe(
+        switchMap(([projectId, phaseId]) => {
+          const phaseObservable: Observable<IPhase | undefined> = (phaseId ? phaseStream(phaseId).observable : of(undefined));
+
+          return phaseObservable.pipe(
+            map((phase) => ({
+              phase,
+              projectId: (phase ? phase.data.relationships.project.data.id : projectId)
+            })),
+            switchMap(({ projectId, phase }) => {
+              const projectObservable: Observable<IProject | undefined> = (projectId ? projectByIdStream(projectId).observable : of(undefined));
+
+              return projectObservable.pipe(
+                map(project => ({ project, phase }))
+              );
+            })
+          );
+        })
+      ).subscribe(({ project, phase }) => {
         this.setState({
           project: (project ? project.data : undefined),
           phase: (phase ? phase.data : undefined)

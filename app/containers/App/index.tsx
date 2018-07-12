@@ -2,8 +2,7 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { tap } from 'rxjs/operators';
-import get from 'lodash/get';
-import * as moment from 'moment';
+import moment from 'moment';
 import 'moment-timezone';
 import 'moment/locale/en-gb';
 import 'moment/locale/en-ca';
@@ -13,14 +12,15 @@ import 'moment/locale/fr';
 import 'moment/locale/de';
 import 'moment/locale/da';
 import 'moment/locale/nb';
-import find from 'lodash/find';
+import { find, isString, isObject } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
 
 // context
 import { PreviousPathnameContext } from 'context';
 
 // libraries
-import { RouterState, browserHistory } from 'react-router';
+import { RouterState } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // analytics
 import { trackPage, trackIdentification } from 'utils/analytics';
@@ -59,6 +59,14 @@ const Container = styled.div`
 
 const InnerContainer = styled.div`
   padding-top: ${props => props.theme.menuHeight}px;
+  min-width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  ${media.smallerThanMaxTablet`
+    min-height: calc(100vh - ${props => props.theme.mobileTopBarHeight}px - 1px);
+  `}
 
   &.citizen {
     ${media.smallerThanMaxTablet`
@@ -111,21 +119,18 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     const locale$ = localeStream().observable;
     const tenant$ = currentTenantStream().observable;
 
-    this.unlisten = browserHistory.listenBefore((newLocation) => {
+    this.unlisten = clHistory.listenBefore((newLocation) => {
       const { authUser } = this.state;
-      const previousLocation = browserHistory.getCurrentLocation();
-      const previousPathname = get(previousLocation, 'pathname', null);
+      const previousPathname = location.pathname;
+      const nextPathname = newLocation.pathname;
+      const registrationCompletedAt = (authUser ? authUser.data.attributes.registration_completed_at : null);
+
       this.setState({ previousPathname });
 
       trackPage(newLocation.pathname);
 
-      if (newLocation
-          && newLocation.pathname !== '/complete-signup'
-          && authUser
-          && authUser.data.attributes.registration_completed_at === null
-      ) {
-        // redirect to second signup step
-        browserHistory.replace('/complete-signup');
+      if (isObject(authUser) && !isString(registrationCompletedAt) && !nextPathname.replace(/\/$/, '').endsWith('complete-signup')) {
+        clHistory.replace('/complete-signup');
       }
     });
 
@@ -179,7 +184,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
   }
 
   unauthenticatedVoteClick = () => {
-    browserHistory.push('/sign-in');
+    clHistory.push('/sign-in');
   }
 
   render() {

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { PureComponent } from 'react';
 import { isString, isEmpty } from 'lodash';
 
 // components
@@ -15,7 +15,8 @@ import styled from 'styled-components';
 import Label from 'components/UI/Label';
 
 const SearchForm = styled.form`
-  flex: 1 0 200px;
+  flex: 1 0 auto;
+  width: 200px;
   display: flex;
   align-items: center;
   align-self: stretch;
@@ -68,7 +69,7 @@ interface Props {
 
 type State = {};
 
-class SearchInput extends React.PureComponent<Props & InjectedIntlProps, State> {
+class SearchInput extends PureComponent<Props & InjectedIntlProps, State> {
   handleOnChange = (value: string) => {
     this.props.onChange(value);
   }

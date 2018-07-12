@@ -311,6 +311,22 @@ export interface IProjectModerationRightsReceivedNotificationData extends IBaseN
   };
 }
 
+export interface IAdminRightsReceivedNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'admin_rights_received';
+    read_at: string;
+    created_at: string;
+  };
+  relationships: {
+    initiating_user: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
 export type TNotificationData =
   ICommentOnYourCommentNotificationData |
   ICommentOnYourIdeaNotificationData |
@@ -320,7 +336,8 @@ export type TNotificationData =
   IInviteAcceptedNotificationData |
   IStatusChangeOfYourIdeaNotificationData |
   ICommentDeletedByAdminNotificationData |
-  IProjectModerationRightsReceivedNotificationData;
+  IProjectModerationRightsReceivedNotificationData |
+  IAdminRightsReceivedNotificationData;
 
 export interface INotificationLinks {
   self: string;

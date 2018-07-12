@@ -1,7 +1,7 @@
 import loadAndRender from 'utils/loadAndRender';
 
 export default () => ({
-  path: '/admin/users',
+  path: 'users',
   name: 'admin users',
   getComponent: loadAndRender(import('containers/Admin/users')),
   indexRoute: {
@@ -9,7 +9,7 @@ export default () => ({
   },
   childRoutes: [
     {
-      path: '/admin/users/:groupId',
+      path: '/:locale/admin/users/:groupId',
       getComponent: loadAndRender(import('containers/Admin/users/UsersGroup')),
     },
   ],

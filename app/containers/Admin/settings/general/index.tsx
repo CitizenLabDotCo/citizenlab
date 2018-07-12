@@ -14,7 +14,6 @@ import messages from '../messages';
 import InputMultiloc from 'components/UI/InputMultiloc';
 import Input from 'components/UI/Input';
 import Label from 'components/UI/Label';
-import TextAreaMultiloc from 'components/UI/TextAreaMultiloc';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
@@ -176,8 +175,6 @@ export default class SettingsGeneralTab extends React.PureComponent<Props, State
       const organizationType: string | null = get(tenantAttrs, 'settings.core.organization_type', null);
       const tenantSite: string | null = get(tenantAttrs, 'settings.core.organization_site', null);
       const organizationNameMultiloc: Multiloc | null = get(tenantAttrs, 'settings.core.organization_name', null);
-      const metaTitleMultiloc: Multiloc | null = get(tenantAttrs, 'settings.core.meta_title', null);
-      const metaDescriptionMultiloc: Multiloc | null = get(tenantAttrs, 'settings.core.meta_description', null);
       const localeOptions = this.localeOptions();
       const selectedLocaleOptions = this.localesToOptions(tenantLocales);
 
@@ -207,26 +204,6 @@ export default class SettingsGeneralTab extends React.PureComponent<Props, State
                 value={selectedLocaleOptions}
                 onChange={this.handleLocalesOnChange}
                 options={localeOptions}
-              />
-            </SectionField>
-
-            <SectionField>
-              <InputMultiloc
-                type="text"
-                id="meta_title"
-                label={<FormattedMessage {...messages.metaTitle} />}
-                valueMultiloc={metaTitleMultiloc}
-                onChange={this.handleCoreMultilocSettingOnChange('meta_title')}
-              />
-            </SectionField>
-
-            <SectionField>
-              <TextAreaMultiloc
-                label={<FormattedMessage {...messages.metaDescription} />}
-                name="meta_description"
-                rows={5}
-                valueMultiloc={metaDescriptionMultiloc}
-                onChange={this.handleCoreMultilocSettingOnChange('meta_description')}
               />
             </SectionField>
 

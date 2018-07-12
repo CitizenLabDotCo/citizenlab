@@ -9,7 +9,7 @@ import Author from './Author';
 import ChildCommentForm from './ChildCommentForm';
 import CommentsMoreActions from './CommentsMoreActions';
 import CommentBody from './CommentBody';
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 import Icon from 'components/UI/Icon';
 
 // services
@@ -128,7 +128,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
     if (event.target.classList.contains('mention')) {
       event.preventDefault();
       const link = event.target.getAttribute('data-link');
-      browserHistory.push(link);
+      clHistory.push(link);
     }
   }
 

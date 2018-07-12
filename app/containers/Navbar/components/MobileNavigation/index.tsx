@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
-import { Link } from 'react-router';
+import Link from 'utils/cl-router/Link';
 import Icon from 'components/UI/Icon';
 import messages from '../../messages';
 
@@ -73,12 +73,12 @@ const NavigationItem = styled(Link)`
   }
 `;
 
-export default class MobileNavigation extends React.PureComponent<{}, {}> {
+export default class MobileNavigation extends PureComponent {
   render() {
     return (
       <Container className={this.props['className']}>
 
-        <NavigationItem to="/" activeClassName="active">
+        <NavigationItem to="/" activeClassName="active" onlyActiveOnIndex>
           <NavigationIconWrapper>
             <NavigationIcon name="home" />
           </NavigationIconWrapper>

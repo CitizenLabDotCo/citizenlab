@@ -1,6 +1,24 @@
-import * as Rx from 'rxjs/Rx';
 import 'whatwg-fetch';
+import { fromPromise } from 'rxjs/observable/fromPromise';
 import { ImageFile } from 'typings';
+
+export const imageSizes = {
+  headerBg: {
+    large: [1440, 480],
+    medium: [720, 152],
+    small: [520, 250],
+  },
+  projectBg: {
+    large: [1440, 360],
+    medium: [720, 180],
+    small: [520, 250],
+  },
+  ideaImg: {
+    fb: [1200, 630],
+    medium: [298, 135],
+    small: [96, 96],
+  },
+};
 
 export async function getBase64FromFile(file: File | ImageFile) {
   return new Promise<string>((resolve, reject) => {
@@ -35,8 +53,11 @@ export function convertUrlToBlob(url: string) {
   return new Blob([url], { type: 'file' });
 }
 
-export function convertBlobToFile(blob: Blob, filename: string) {
-  return new File([blob], filename, { lastModified: Date.now() });
+export function convertBlobToFile(blob: Blob, fileName: string) {
+  const b: any = blob;
+  b.lastModifiedDate = new Date();
+  b.name = fileName;
+  return <File>b;
 }
 
 export async function convertUrlToFile(imageUrl: string | null): Promise<File | null> {
@@ -57,5 +78,5 @@ export async function convertUrlToFile(imageUrl: string | null): Promise<File | 
 }
 
 export function convertUrlToFileObservable(imageUrl: string | null) {
-  return Rx.Observable.fromPromise(convertUrlToFile(imageUrl));
+  return fromPromise(convertUrlToFile(imageUrl));
 }

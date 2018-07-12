@@ -1,14 +1,12 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { get } from 'lodash';
-import { Subscription } from 'rxjs';
-import { browserHistory, withRouter, WithRouterProps } from 'react-router';
+import { Subscription } from 'rxjs/Rx';
+import { withRouter, WithRouterProps } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import SignUp from 'components/SignUp';
 import SignInUpBanner from 'components/SignInUpBanner';
-
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -83,21 +81,15 @@ const RightInner = styled.div`
   padding-right: 30px;
 `;
 
-interface InputProps {}
-
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-}
+interface Props {}
 
 interface ITracks {
   successfulSignUp: () => void;
 }
 
-interface Props extends InputProps, DataProps {}
-
 interface State {}
 
-class SignUpPage extends React.PureComponent<Props & ITracks & WithRouterProps, State> {
+class SignUpPage extends PureComponent<Props & ITracks & WithRouterProps, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props & ITracks & WithRouterProps) {
@@ -119,14 +111,14 @@ class SignUpPage extends React.PureComponent<Props & ITracks & WithRouterProps, 
   }
 
   onSignUpCompleted = () => {
-    browserHistory.push('/');
+    clHistory.push('/');
     // track signup for analytics
     this.props.successfulSignUp();
   }
 
   render() {
     const { location } = this.props;
-    const isInvitation = (location.pathname === '/invite');
+    const isInvitation = location.pathname.replace(/\/$/, '').endsWith('invite');
     const token: string | null = get(location.query, 'token', null);
     const title = (isInvitation ? <FormattedMessage {...messages.invitationTitle} /> : undefined);
 
@@ -151,10 +143,4 @@ class SignUpPage extends React.PureComponent<Props & ITracks & WithRouterProps, 
 }
 
 // Add router props and analytics (tracking) to the SignUpPage
-const SignUpPageWithHOCs = withRouter(injectTracks<Props>(tracks)(SignUpPage));
-
-export default (inputProps: InputProps) => (
-  <GetAuthUser>
-    {authUser => <SignUpPageWithHOCs {...inputProps} authUser={authUser} />}
-  </GetAuthUser>
-);
+export default withRouter(injectTracks<Props>(tracks)(SignUpPage));

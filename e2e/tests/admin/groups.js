@@ -43,9 +43,10 @@ module.exports = {
             .click('.e2e-move-users')
             .click('.e2e-dropdown-item:first-child')
             .click('.e2e-dropdown-submit')
-            .pause(500);
+            .waitForElementNotPresent('.e2e-dropdown-submit');
           usersPage
             .getText('@firstGroupUserCount', (newCount) => {
+              browser.pause(300);
               browser.expect(newCount.value).to.equal("1");
               usersPage.click('@firstGroupUserCount');
               browser.expect.element('.e2e-user-table').text.to.contain(nom.value);

@@ -211,6 +211,12 @@ const icons = {
       <path d="M248.082 4.588H18.812c-7.856 0-14.224 6.367-14.224 14.224v229.27c0 7.855 6.366 14.226 14.224 14.226h123.432v-99.803H108.66V123.61h33.584V94.924c0-33.287 20.33-51.413 50.024-51.413 14.225 0 26.45 1.06 30.012 1.533v34.788l-20.596.01c-16.147 0-19.274 7.673-19.274 18.934v24.832h38.515l-5.016 38.895h-33.5v99.803h65.673c7.854 0 14.223-6.37 14.223-14.225V18.813c0-7.858-6.37-14.225-14.224-14.225z" />
     </svg>
   ),
+  messenger: (className, title) => (
+    <svg className={className} version="1.1" id="Messenger_Mark" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="1000px" height="1000px" viewBox="0 0 1000 1000">
+      {injectTitle(title)}
+      <path id="Bubble_Shape" d="M499.5,103.503c-217.049,0-393.002,164.533-393.002,367.496	c0,115.46,56.945,218.482,146.002,285.854V897.5l134.118-74.394c35.754,10.009,73.646,15.389,112.882,15.389	c217.049,0,393.002-164.534,393.002-367.497S716.549,103.503,499.5,103.503z M540.891,596.308L439.247,490.714L243.5,598.967	l214.609-227.741L559.754,476.82L755.5,368.567L540.891,596.308z" />
+    </svg>
+  ),
   'facebook-blue': (className, title) => (
     <svg className={className} height="100%" viewBox="4.588 4.588 257.717 257.719">
       {injectTitle(title)}
@@ -490,6 +496,11 @@ const clIcons = {
       {injectTitle(title)}
       <circle className="cl-icon-background Background-SmartFlash-icon" cx="23.5" cy="23.5" r="23.5" fill={theme.clIconBackground} />
       <path className="cl-icon-fill cl-icon-primary SmartFlash-icon" d="M 0 0L 0 12.1172L 3.525 12.1172L 3.525 22.0312L 11.75 8.8125L 7.05 8.8125L 11.75 0L 0 0Z" transform="translate(17.625 13.2188)" fill={theme.clIconPrimary} />
+    </svg>
+  ),
+  lightingBolt2: (className) => (
+    <svg className={`${className}`} height="100%" viewBox="0 0 15 30" fill="none">
+      <path d="M0 0v16.5h4.5V30L15 12H9l6-12H0z" />
     </svg>
   ),
   database: (className, title, theme) => (

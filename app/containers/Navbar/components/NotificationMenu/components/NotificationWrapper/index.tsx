@@ -1,5 +1,6 @@
 import React from 'react';
-import { browserHistory, Link } from 'react-router';
+import Link from 'utils/cl-router/Link';
+import clHistory from 'utils/cl-router/history';
 
 import { FormattedRelative } from 'react-intl';
 
@@ -47,7 +48,7 @@ const Message = styled.div`
   color: ${(props) => (props as any).isRead ? '#84939E' : '#000000'};
 
   a {
-    color: ${(props) => props.theme.colors.clBlue}
+    color: ${(props) => props.theme.colors.clBlueDark}
 
     :hover,
     :focus {
@@ -91,7 +92,7 @@ class NotifcationWrapper extends React.PureComponent<Props & ITracks> {
         this.props.clickNotification({extra: {
           linkTo: this.props.linkTo,
         }});
-        browserHistory.push(this.props.linkTo);
+        clHistory.push(this.props.linkTo);
       }
     }
 

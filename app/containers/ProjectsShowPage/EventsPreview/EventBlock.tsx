@@ -7,7 +7,7 @@ import { IEventData } from 'services/events';
 // Components
 import T from 'components/T';
 import Icon from 'components/UI/Icon';
-import { Link } from 'react-router';
+import Link from 'utils/cl-router/Link';
 
 // Utils
 import { getIsoDate } from 'utils/dateUtils';

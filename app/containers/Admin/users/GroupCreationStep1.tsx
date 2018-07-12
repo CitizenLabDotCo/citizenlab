@@ -1,6 +1,5 @@
 // Libraries
 import React from 'react';
-import { Link } from 'react-router';
 
 // Components
 import Icon from 'components/UI/Icon';
@@ -8,6 +7,8 @@ import Button from 'components/UI/Button';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // Styling
@@ -25,7 +26,7 @@ const GroupType = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding: 85px 60px;
+  padding: 85px 20px;
   align-items: center;
 
   .groupName {
@@ -61,7 +62,7 @@ const GroupIcon = styled(Icon)`
   }
 `;
 
-const MoreInfoLink = styled(Link)``;
+const MoreInfoLink = styled.a``;
 
 const Step2Button = styled(Button)`
   margin-top: 60px;
@@ -75,7 +76,7 @@ export interface Props {
 }
 export interface State {}
 
-export class GroupCreationStep1 extends React.PureComponent<Props, State> {
+export class GroupCreationStep1 extends React.PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {};
@@ -86,6 +87,7 @@ export class GroupCreationStep1 extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const formattedLink = this.props.intl.formatMessage(messages.readMoreLink);
     return (
       <TypesWrapper>
         <GroupType className="manual">
@@ -96,7 +98,7 @@ export class GroupCreationStep1 extends React.PureComponent<Props, State> {
           <p className="groupDescription">
             <FormattedMessage {...messages.step1TypeDescriptionNormal} />
           </p>
-          <MoreInfoLink to=""><FormattedMessage {...messages.step1ReadMore} /></MoreInfoLink>
+          <MoreInfoLink href={formattedLink} target="_blank" ><FormattedMessage {...messages.step1ReadMore} /></MoreInfoLink>
           <Step2Button className="e2e-create-normal-group-button" style="cl-blue" onClick={this.createStep2Handler('manual')} circularCorners={false}>
             <FormattedMessage {...messages.step1CreateButtonNormal} />
           </Step2Button>
@@ -109,7 +111,7 @@ export class GroupCreationStep1 extends React.PureComponent<Props, State> {
           <p className="groupDescription">
             <FormattedMessage {...messages.step1TypeDescriptionSmart} />
           </p>
-          <MoreInfoLink to=""><FormattedMessage {...messages.step1ReadMore} /></MoreInfoLink>
+          <MoreInfoLink href={formattedLink} target="_blank" ><FormattedMessage {...messages.step1ReadMore} /></MoreInfoLink>
           <Step2Button className="e2e-create-rules-group-button" style="cl-blue" onClick={this.createStep2Handler('rules')} circularCorners={false}>
             <FormattedMessage {...messages.step1CreateButtonSmart} />
           </Step2Button>
@@ -119,4 +121,4 @@ export class GroupCreationStep1 extends React.PureComponent<Props, State> {
   }
 }
 
-export default GroupCreationStep1;
+export default injectIntl<Props>(GroupCreationStep1);
