@@ -83,7 +83,7 @@ const SecondLine = styled.div`
 `;
 
 const PagesNav = styled.nav`
-  color: #999;
+  color: #767676;
   flex: 1;
   text-align: left;
 
@@ -107,7 +107,7 @@ const PagesNav = styled.nav`
 `;
 
 const StyledLink = styled(Link) `
-  color: #999;
+  color: #767676;
   font-weight: 400;
   font-size: 14px;
   line-height: 19px;
@@ -124,7 +124,7 @@ const StyledLink = styled(Link) `
 `;
 
 const Separator = styled.span`
-  color: #999;
+  color: #767676;
   font-weight: 400;
   font-size: 16px;
   line-height: 19px;
@@ -139,14 +139,14 @@ const Separator = styled.span`
 
 const CitizenLabLogo = styled(Icon) `
   height: 22px;
-  fill: #999;
+  fill: #767676;
   margin-left: 8px;
   transition: all 150ms ease-out;
   flex: 1 1 100px;
 `;
 
 const PoweredBy = styled.a`
-  color: #999;
+  color: #767676;
   font-weight: 300;
   font-size: 14px;
   line-height: 19px;
@@ -159,7 +159,7 @@ const PoweredBy = styled.a`
 
   ${media.biggerThanMaxTablet`
     &:hover {
-      color: #999;
+      color: #767676;
 
       ${CitizenLabLogo} {
         fill: #000;
