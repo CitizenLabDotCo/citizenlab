@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 // context
 import { PreviousPathnameContext } from 'context';
 
 // router
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import SignIn from 'components/SignIn';
@@ -70,17 +70,13 @@ const RightInner = styled.div`
   padding-right: 30px;
 `;
 
-type Props = {};
-
-type State = {};
-
-class SignInPage extends React.PureComponent<Props, State> {
+export default class SignInPage extends PureComponent {
   onSuccess = (previousPathname: string | null) => () => {
-    browserHistory.push(previousPathname || '/');
+    clHistory.push(previousPathname || '/');
   }
 
   goToSignUpForm = () => {
-    browserHistory.push('/sign-up');
+    clHistory.push('/sign-up');
   }
 
   render() {
@@ -100,5 +96,3 @@ class SignInPage extends React.PureComponent<Props, State> {
     );
   }
 }
-
-export default SignInPage;

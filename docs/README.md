@@ -1,5 +1,60 @@
 # Changelog
 
+## 2018-06-29
+
+### Fixed
+- Facebook now correctly shows the idea image on the very first share
+- Signing up with a google account that has no avatar configured now works again
+- Listing the projects and ideas for projects that have more than 1 group linked to them now works again
+
+### Added
+- Voting Insights [beta]: Get inisghts into who's voting for which content
+  - Feature flagged as 'clustering', disabled by default
+  - Admin dashboard shows a link to the prototype
+- Social sharing buttons on the project info page
+- Usage of `utm_` parameters on social sharing to track sharing performance
+- Various improvements to meta tags throughout the platform
+  - Page title shows the unread notification count
+  - More descriptive page titles on home/projects/ideas
+  - Engaging generic default texts when no meta title/description are provided
+  - Search engines now understand what language and region the platform is targeting
+- Optimized idea image size for facebook sharing
+- Sharing button for facebook messenger on mobile
+- When you receive admin rights, a notification is shown
+- `tenantLifecycleStage` property is now present in all tracked events to segment
+
+### Changed
+ - Meta tags can't be changed through the admin panel anymore
+ - Social sharing buttons changed aspect to be more visible
+
+## 2018-06-20
+
+### Fixed
+- Visual fixes for IE11 (more to come)
+  - The text on the homepage doesn't fall outside the text box anymore
+  - The buttons on the project page are now in the right place
+  - In the projects pages, the footer is no longer behaving like a header
+- When trying to add a timeline phase that overlaps with another phase, a more descriptive error is shown
+- Visuelt font is now always being loaded
+
+### Added
+- Smart groups allow admins to automatically and continuously make users part of groups based on conditions
+- New user manager allows
+  - Navigating through users by group
+  - Moving, adding and removing users from/to (manual) groups
+  - Editing the group details from within the user manager
+  - Creating groups from within the user manager
+  - Exporting users to excel by group or by selection
+- Custom registration fields now support the new type "number"
+- The city website url can now be specified in admin settings, which is used as a link in the footer logo
+
+### Changed
+- The checkbox copy at signup has changed and now links to both privacy policy and terms and conditions
+- Improved styling of usermenu dropdown (the menu that opens when you click on the avatar in the navigation bar)
+
+### Removed
+- The groups page is no longer a separate page, but the functionality is part of the user manager
+
 ## 2018-06-11
 
 ### Fixed

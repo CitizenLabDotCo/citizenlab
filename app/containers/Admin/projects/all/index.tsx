@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
@@ -17,14 +17,25 @@ import Button from 'components/UI/Button';
 import Title from 'components/admin/PageTitle';
 import StatusLabel from 'components/UI/StatusLabel';
 import HasPermission from 'components/HasPermission';
+import { fontSizes } from 'utils/styleUtils';
 
 // style
 import styled from 'styled-components';
 
-const SRow = styled(Row)`
+const StyledRow = styled(Row)`
   &:first-child {
     border-top: none !important
   }
+`;
+
+const RowContent = styled.div`
+  font-size: ${fontSizes.large}px;
+  font-weight: 400;
+  line-height: 22px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 interface InputProps {}
@@ -37,7 +48,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class AdminProjectsList extends React.PureComponent<Props, State> {
+class AdminProjectsList extends PureComponent<Props, State> {
 
   handleReorder = (projectId, newOrder) => {
     reorderProject(projectId, newOrder);
@@ -45,7 +56,7 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
 
   renderRow = (project : IProjectData) => {
     return (
-      <>
+      <RowContent>
         <div className="expand primary">
           <T value={project.attributes.title_multiloc} />
           {project.attributes.publication_status !== 'published' &&
@@ -63,7 +74,7 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
         >
           <FormattedMessage {...messages.editButtonLabel} />
         </Button>
-      </>
+      </RowContent>
     );
   }
 
@@ -104,11 +115,11 @@ class AdminProjectsList extends React.PureComponent<Props, State> {
               <HasPermission.No>
                 <List>
                   {projectsList.map((project: IProjectData) => (
-                    <SRow
+                    <StyledRow
                       key={project.id}
                     >
                       {this.renderRow(project)}
-                    </SRow>
+                    </StyledRow>
                   ))
                 }
               </List>

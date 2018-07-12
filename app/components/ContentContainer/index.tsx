@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { SFC } from 'react';
 import styled from 'styled-components';
 
 const Outer = styled.div`
@@ -22,7 +22,7 @@ interface IContentContainer {
   className?: string;
 }
 
-const ContentContainer: React.SFC<IContentContainer> = ({ children, className }) => {
+const ContentContainer: SFC<IContentContainer> = ({ children, className }) => {
   return (
     <Outer className={className}>
       <Inner>

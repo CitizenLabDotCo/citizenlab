@@ -1,6 +1,7 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { browserHistory, withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import Header from '../Header';
@@ -46,7 +47,7 @@ export default withRouter<InputProps>((props: WithRouterProps) => (
 
         if (project.attributes.process_type !== 'continuous') {
           // redirect
-          browserHistory.push(`/projects/${props.params.slug}`);
+          clHistory.push(`/projects/${props.params.slug}`);
         }
 
         return (

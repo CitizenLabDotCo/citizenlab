@@ -1,7 +1,7 @@
 // libraries
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -65,7 +65,7 @@ class ChildComment extends React.PureComponent<Props, State> {
     if (event.target.classList.contains('mention')) {
       event.preventDefault();
       const link = event.target.getAttribute('data-link');
-      browserHistory.push(link);
+      clHistory.push(link);
     }
   }
 

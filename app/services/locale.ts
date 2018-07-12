@@ -6,9 +6,17 @@ import { currentTenantStream } from 'services/tenant';
 import { authUserStream } from 'services/auth';
 import { updateUser } from 'services/users';
 import { Locale } from 'typings';
+import platformLocales from 'platformLocales';
 
-const savedLocale = localStorage.getItem('cl2-locale') as Locale;
-const LocaleSubject = new BehaviorSubject((savedLocale || 'en') as Locale);
+// Get locale from URL
+export function getUrlLocale(pathname: string): string | null {
+  const localeRegexp = /^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)\//;
+  const matches = localeRegexp.exec(pathname);
+  return (matches && includes(Object.keys(platformLocales), matches[1])) ? matches[1] : null;
+}
+
+const urlLocale = getUrlLocale(location.pathname);
+const LocaleSubject = new BehaviorSubject((urlLocale ? urlLocale : 'en') as Locale);
 
 LocaleSubject.subscribe((locale) => {
   // Save the selection in localStorage as an override
@@ -34,8 +42,6 @@ combineLatest(
 ).subscribe(([user, tenantLocales]) => {
   if (user && user.data.attributes.locale && includes(tenantLocales, user.data.attributes.locale)) {
     LocaleSubject.next(user.data.attributes.locale);
-  } else if (savedLocale && includes(tenantLocales, savedLocale)) {
-    LocaleSubject.next(savedLocale);
   } else if (tenantLocales && tenantLocales.length > 0) {
     LocaleSubject.next(tenantLocales[0]);
   }

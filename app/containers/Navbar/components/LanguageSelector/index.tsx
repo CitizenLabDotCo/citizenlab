@@ -35,26 +35,26 @@ const StyledPopover = styled(Popover)`
   display: flex;
   flex-direction: column;
   z-index: 5;
+  top: 35px;
 `;
 
 const DropdownItemIcon = styled(Icon)`
   height: 6px;
   width: 11px;
   fill: inherit;
-  margin-top: -1px;
-  margin-left: 3px;
+  margin-top: 1px;
+  margin-left: 4px;
   transition: all 100ms ease-out;
 `;
 
 const OpenMenuButton = styled.button`
   color: ${colors.label};
-  font-size: ${fontSize('base')};
+  font-size: 17px;
   font-weight: 400;
+  line-height: 17px;
   cursor: pointer;
   margin: 0;
   padding: 0;
-  padding-top: 5px;
-  padding-bottom: 5px;
   display: flex;
   align-items: center;
 
@@ -69,11 +69,11 @@ const PopoverItem = styled(Button)`
   fill: ${colors.label};
   font-size: ${fontSize('large')};
   font-weight: 400;
-  transition: all 80ms ease-out;
+  transition: all 100ms ease-out;
 
   &.active button.Button,
   &.active a.Button {
-    color: rgba(0,0,0,.95);
+    color: rgba(0, 0, 0, 0.95);
     font-weight: 700;
   }
 
@@ -87,12 +87,13 @@ const PopoverItem = styled(Button)`
   button.Button {
     background: #fff;
     border-radius: 5px;
+    padding: 10px;
 
     &:hover,
     &:focus {
       color: #000;
-      background: #f6f6f6;
       fill: #000;
+      background: #f6f6f6;
     }
   }
 `;

@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import * as moment from 'moment';
 import HelmetIntl from 'components/HelmetIntl';
 import styled, { ThemeProvider } from 'styled-components';
+import Link from 'utils/cl-router/Link';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import FeatureFlag from 'components/FeatureFlag';
+import Warning from 'components/UI/Warning';
 import TimeControl from './components/TimeControl';
 import IntervalControl from './components/IntervalControl';
 import GenderChart from './components/GenderChart';
@@ -11,24 +14,71 @@ import AgeChart from './components/AgeChart';
 import IdeasByTimeChart from './components/IdeasByTimeChart';
 import UsersByTimeChart from './components/UsersByTimeChart';
 import IdeasByTopicChart from './components/IdeasByTopicChart';
-import { Flex, Box } from 'grid-styled';
 import { colors } from 'utils/styleUtils';
+
+const Container = styled.div``;
+
+const StyledWarning = styled(Warning)`
+  margin-bottom: 30px;
+`;
 
 const ControlBar = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 100%;
 `;
 
-const GraphCard: any = styled.div`
-  background: ${colors.adminContentBackground};
+const GraphsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  margin-bottom: 30px;
+`;
+
+const Line = styled.div`
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+
+  &.last {
+    margin-bottom: 0px;
+  }
+`;
+
+const GraphCardInner = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+`;
+
+const GraphCard = styled.div`
+  width: 100%;
+  height: 350px;
+  display: flex;
+  position: relative;
   border: solid 1px ${colors.adminBorder};
   border-radius: 5px;
-  height: ${(props: any) => props.dynamicHeight ? 'auto' : '350px'};
-  padding: 20px;
-  flex-direction: column;
-  display: flex;
-  align-items: center;
+  background: ${colors.adminContentBackground};
+
+  &.dynamicHeight {
+    height: auto;
+
+    ${GraphCardInner} {
+      position: relative;
+    }
+  }
+
+  &.first {
+    margin-right: 20px;
+  }
+
+  &.halfWidth {
+    width: 50%;
+  }
 `;
 
 const GraphCardTitle = styled.h3`
@@ -45,9 +95,9 @@ interface State {
   intervalIndex: number;
 }
 
-export default class DashboardPage extends React.PureComponent<Props, State> {
+export default class DashboardPage extends PureComponent<Props, State> {
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
       interval: 'months',
       intervalIndex: 0
@@ -82,11 +132,25 @@ export default class DashboardPage extends React.PureComponent<Props, State> {
     const resolution = (interval === 'years' ? 'month' : 'day');
 
     return (
-      <>
+      <Container>
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
+
+        <FeatureFlag name={'clustering'}>
+          <StyledWarning
+            text={
+              <FormattedMessage
+                {...messages.tryOutInsights}
+                values={{
+                  insightsLink: <Link to={`/admin/clusterings`}><FormattedMessage {...messages.insightsLinkText} /></Link>
+                }}
+              />
+            }
+          />
+        </FeatureFlag>
+
         <ControlBar>
           <TimeControl
             value={intervalIndex}
@@ -99,51 +163,60 @@ export default class DashboardPage extends React.PureComponent<Props, State> {
             onChange={this.changeInterval}
           />
         </ControlBar>
+
         <ThemeProvider theme={this.chartTheme}>
-          <Flex mx={-10} my={20} flexWrap="wrap">
-            <Box width={[1, 1, 1 / 2]} p={10}>
-              <GraphCard >
-                <GraphCardTitle>
-                  <FormattedMessage {...messages.usersByGenderTitle} />
-                </GraphCardTitle>
-                <GenderChart startAt={startAt} endAt={endAt} />
+          <GraphsContainer>
+            <Line>
+              <GraphCard className="first halfWidth">
+                <GraphCardInner>
+                  <GraphCardTitle>
+                    <FormattedMessage {...messages.usersByGenderTitle} />
+                  </GraphCardTitle>
+                  <GenderChart startAt={startAt} endAt={endAt} />
+                </GraphCardInner>
               </GraphCard>
-            </Box>
-            <Box width={[1, 1, 1 / 2]} p={10}>
+              <GraphCard className="halfWidth">
+                <GraphCardInner>
+                  <GraphCardTitle>
+                    <FormattedMessage {...messages.usersByAgeTitle} />
+                  </GraphCardTitle>
+                  <AgeChart startAt={startAt} endAt={endAt} />
+                </GraphCardInner>
+              </GraphCard>
+            </Line>
+
+            <Line>
               <GraphCard>
-                <GraphCardTitle>
-                  <FormattedMessage {...messages.usersByAgeTitle} />
-                </GraphCardTitle>
-                <AgeChart startAt={startAt} endAt={endAt} />
+                <GraphCardInner>
+                  <GraphCardTitle>
+                    <FormattedMessage {...messages.usersByTimeTitle} />
+                  </GraphCardTitle>
+                  <UsersByTimeChart startAt={startAt} endAt={endAt} resolution={resolution} />
+                </GraphCardInner>
               </GraphCard>
-            </Box>
-            <Box width={1} p={10}>
-              <GraphCard>
-                <GraphCardTitle>
-                  <FormattedMessage {...messages.usersByTimeTitle} />
-                </GraphCardTitle>
-                <UsersByTimeChart startAt={startAt} endAt={endAt} resolution={resolution} />
+            </Line>
+
+            <Line className="last">
+              <GraphCard className="first halfWidth">
+                <GraphCardInner>
+                  <GraphCardTitle>
+                    <FormattedMessage {...messages.ideasByTimeTitle} />
+                  </GraphCardTitle>
+                  <IdeasByTimeChart startAt={startAt} endAt={endAt} resolution={resolution} />
+                </GraphCardInner>
               </GraphCard>
-            </Box>
-            <Box width={[1, 1, 1 / 2]} p={10}>
-              <GraphCard>
-                <GraphCardTitle>
-                  <FormattedMessage {...messages.ideasByTimeTitle} />
-                </GraphCardTitle>
-                <IdeasByTimeChart startAt={startAt} endAt={endAt} resolution={resolution} />
+              <GraphCard className="halfWidth dynamicHeight">
+                <GraphCardInner>
+                  <GraphCardTitle>
+                    <FormattedMessage {...messages.ideasByTopicTitle} />
+                  </GraphCardTitle>
+                  <IdeasByTopicChart startAt={startAt} endAt={endAt} />
+                </GraphCardInner>
               </GraphCard>
-            </Box>
-            <Box width={[1, 1, 1 / 2]} p={10}>
-              <GraphCard dynamicHeight>
-                <GraphCardTitle>
-                  <FormattedMessage {...messages.ideasByTopicTitle} />
-                </GraphCardTitle>
-                <IdeasByTopicChart startAt={startAt} endAt={endAt} />
-              </GraphCard>
-            </Box>
-          </Flex>
+            </Line>
+          </GraphsContainer>
         </ThemeProvider>
-      </>
+      </Container>
     );
   }
 }

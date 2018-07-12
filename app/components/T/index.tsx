@@ -1,22 +1,20 @@
-import React from 'react';
+import React, { createElement, PureComponent } from 'react';
 import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { Multiloc, Locale } from 'typings';
 import { getLocalized } from 'utils/i18n';
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 
-// utils
-import { truncate } from 'utils/textUtils';
-
 type children = (localizedText: string) => JSX.Element | null;
 
 type Props = {
   value: Multiloc;
   as?: string;
-  truncate?: number;
   className?: string;
   children?: children;
+  maxLength?: number;
 };
 
 type State = {
@@ -24,7 +22,7 @@ type State = {
   currentTenantLocales: Locale[] | null;
 };
 
-export default class T extends React.PureComponent<Props, State> {
+export default class T extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -38,7 +36,9 @@ export default class T extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
+    const currentTenantLocales$ = currentTenantStream().observable.pipe(
+      map(currentTenant => currentTenant.data.attributes.settings.core.locales)
+    );
 
     this.subscriptions = [
       combineLatest(
@@ -58,15 +58,15 @@ export default class T extends React.PureComponent<Props, State> {
     const { locale, currentTenantLocales } = this.state;
 
     if (locale && currentTenantLocales) {
-      const { value, as, children, className } = this.props;
-      const localizedText = truncate(getLocalized(value, locale, currentTenantLocales), this.props.truncate);
+      const { value, as, children, maxLength, className } = this.props;
+      const localizedText = getLocalized(value, locale, currentTenantLocales, maxLength);
 
       if (children) {
         return ((children as children)(localizedText));
       }
 
       if (as) {
-        return React.createElement(as, { className, dangerouslySetInnerHTML: { __html: localizedText } });
+        return createElement(as, { className, dangerouslySetInnerHTML: { __html: localizedText } });
       }
 
       return (

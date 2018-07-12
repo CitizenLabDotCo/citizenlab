@@ -13,4 +13,12 @@ export default defineMessages({
     id: 'app.containers.IdeasIndexPage.loading',
     defaultMessage: 'Loading...',
   },
+  metaTitle: {
+    id: 'app.containers.IdeasIndexPage.metaTitle',
+    defaultMessage: 'All Ideas • {orgName}',
+  },
+  metaDescription: {
+    id: 'app.containers.IdeasIndexPage.metaDescription',
+    defaultMessage: 'Explore all ideas that have been posted on the CitizenLab platform of {orgName}. \n Come leave your comments and cast your vote!',
+  },
 });

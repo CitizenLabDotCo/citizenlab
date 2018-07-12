@@ -40,7 +40,7 @@ export default class Spinner extends React.PureComponent<Props, {}> {
 
     size = (size || '28px');
     thickness = (thickness || '3px');
-    color = (color || '#fff');
+    color = (color || '#666');
 
     return (
       <StyledSpinner className={className} size={size} thickness={thickness} color={color} />

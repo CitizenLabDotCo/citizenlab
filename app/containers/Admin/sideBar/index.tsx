@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 
 // router
-import { Link, withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
+import Link from 'utils/cl-router/Link';
+import { getUrlLocale } from 'services/locale';
 
 // components
 import Icon, { IconNames } from 'components/UI/Icon';
@@ -20,28 +22,33 @@ import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
 
 const Menu = styled.nav`
-  flex: 0 0 260px;
-  background: ${ colors.adminMenuBackground };
-  z-index: 1;
-  display: flex;
-  align-items: stretch;
+  flex: 0 0 auto;
+  width: 260px;
 
   ${media.smallerThanMinTablet`
-    flex: 0 0 70px;
+    width: 70px;
   `}
 `;
 
-const MenuInner = styled.div`
-  width: 100%;
-  position: sticky;
-  top: 119px;
-  align-self: flex-start;
+const MenuInner = styled.nav`
+  flex: 0 0 auto;
+  width: 260px;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  padding-top: 119px;
+  background: ${ colors.adminMenuBackground };
+
+  ${media.smallerThanMinTablet`
+    width: 70px;
+  `}
 `;
 
 const IconWrapper = styled.div`
+  flex: 0 0 auto;
   width: 45px;
   height: 45px;
   display: flex;
@@ -50,12 +57,12 @@ const IconWrapper = styled.div`
 `;
 
 const Text = styled.div`
+  flex: 1;
   color: ${colors.adminLightText};
   font-size: 16px;
   font-weight: 400;
   line-height: 19px;
   margin-left: 10px;
-  flex: 1;
 
   ${media.smallerThanMinTablet`
     display: none;
@@ -63,16 +70,23 @@ const Text = styled.div`
 `;
 
 const MenuItem: any = styled(Link)`
-  border-radius: 5px;
+  flex: 0 0 auto;
+  width: 210px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding-left: 5px;
   padding-right: 15px;
   padding-bottom: 1px;
-  margin-bottom: 5px;
-  margin-left: 25px;
-  margin-right: 25px;
+  margin-bottom: 8px;
   cursor: pointer;
+  border-radius: 5px;
+
+  ${media.smallerThanMinTablet`
+    width: 50px;
+    padding: 0;
+    justify-content: center;
+  `}
 
   &:hover {
     ${Text} {
@@ -122,7 +136,7 @@ type NavItem = {
   isActive: (pathname: string) => boolean,
 };
 
-class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
+class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   routes: NavItem[];
   subscriptions: Subscription[];
 
@@ -137,42 +151,42 @@ class Sidebar extends React.PureComponent<Props & InjectedIntlProps & WithRouter
         link: '/admin',
         iconName: 'stats',
         message: 'dashboard',
-        isActive: (pathname) => (pathname === '/admin'),
+        isActive: (pathName) => (pathName === `${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin`),
       },
       {
         id: 'users',
         link: '/admin/users',
         iconName: 'users',
         message: 'users',
-        isActive: (pathName) => (pathName.startsWith('/admin/users'))
+        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/users`))
       },
       {
         id: 'invitations',
         link: '/admin/invitations',
         iconName: 'invitations',
         message: 'invitations',
-        isActive: (pathName) => (pathName.startsWith('/admin/invitations'))
+        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/invitations`))
       },
       {
         id: 'projects',
         link: '/admin/projects',
         iconName: 'folder',
         message: 'projects',
-        isActive: (pathName) => (pathName.startsWith('/admin/projects'))
+        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/projects`))
       },
       {
         id: 'ideas',
         link: '/admin/ideas',
         iconName: 'ideas',
         message: 'ideas',
-        isActive: (pathName) => (pathName.startsWith('/admin/ideas'))
+        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/ideas`))
       },
       {
         id: 'settings',
         link: '/admin/settings/general',
         iconName: 'setting',
         message: 'settings',
-        isActive: (pathName) => (pathName.startsWith('/admin/settings'))
+        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/settings`))
       },
     ];
     this.subscriptions = [];

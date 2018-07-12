@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // Services / Data loading
-import { updateProject,  IProjectData } from 'services/projects';
+import { updateProject, IProjectData } from 'services/projects';
 import GetProject from 'resources/GetProject';
 
 // Components
@@ -15,15 +15,16 @@ import DescriptionEditionForm, { Values } from './DescriptionEditionForm';
 // Typing
 import { API } from 'typings';
 
-interface InputProps {}
+interface InputProps { }
 
 interface DataProps {
   project: IProjectData;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 class ProjectDescription extends React.PureComponent<Props> {
+
   saveProject = (values, { setSubmitting, setErrors, setStatus, resetForm }) => {
     const { project } = this.props;
 
@@ -45,21 +46,21 @@ class ProjectDescription extends React.PureComponent<Props> {
     }
   }
 
-  render () {
+  render() {
     const { description_preview_multiloc, description_multiloc }: Values = this.props.project.attributes;
 
     return (
-      <Formik
-        onSubmit={this.saveProject}
-        initialValues={{
-          description_preview_multiloc,
-          description_multiloc,
-        }}
-      >
-        {(formikProps) => (
-          <DescriptionEditionForm {...formikProps} />
-        )}
-      </Formik>
+        <Formik
+          onSubmit={this.saveProject}
+          initialValues={{
+            description_preview_multiloc,
+            description_multiloc,
+          }}
+        >
+          {(formikProps) => (
+            <DescriptionEditionForm {...formikProps} />
+          )}
+        </Formik>
     );
   }
 }

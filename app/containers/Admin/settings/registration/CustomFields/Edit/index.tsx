@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { withRouter, WithRouterProps, browserHistory } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import { ICustomFieldData } from 'services/userCustomFields';
 import GetCustomField, { GetCustomFieldChildProps } from 'resources/GetCustomField';
@@ -29,7 +30,7 @@ class Edit extends React.Component<Props & WithRouterProps & InjectedIntlProps> 
   }
 
   goBack = () => {
-    browserHistory.push('/admin/settings/registration');
+    clHistory.push('/admin/settings/registration');
   }
 
   getTabs = (customField: ICustomFieldData) => {

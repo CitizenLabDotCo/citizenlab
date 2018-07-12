@@ -35,7 +35,7 @@ const AvatarIcon = styled(Icon)`
 
   ${(props: any) => props.isClickable && css`
     &:hover {
-      fill: ${(props) => darken(0.2, props.theme.colors.label)};
+      fill: ${(props: any) => darken(0.2, props.theme.colors.label)};
     }`
   }
 `;

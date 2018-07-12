@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { keys, pick, isEqual } from 'lodash';
 import { API } from 'typings';
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 import { ICustomFieldData, updateCustomFieldForUsers } from 'services/userCustomFields';
 
@@ -42,7 +42,7 @@ class General extends React.Component<Props, State> {
       ...this.changedValues(this.initialValues(), values)
     })
       .then(() => {
-        browserHistory.push('/admin/settings/registration');
+        clHistory.push('/admin/settings/registration');
       })
       .catch((errorResponse) => {
         const apiErrors = (errorResponse as API.ErrorResponse).json.errors;

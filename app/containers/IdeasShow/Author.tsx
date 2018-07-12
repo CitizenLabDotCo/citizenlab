@@ -5,7 +5,8 @@ import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 
 // router
-import { Link, browserHistory } from 'react-router';
+import Link from 'utils/cl-router/Link';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import Avatar from 'components/Avatar';
@@ -51,12 +52,12 @@ const AuthorNameContainer = styled.div `
 `;
 
 const AuthorName = styled(Link)`
-  color: ${(props) => props.theme.colors.clBlue};
+  color: ${(props) => props.theme.colors.clBlueDark};
   text-decoration: none;
   cursor: pointer;
 
   &:hover {
-    color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
+    color: ${(props) => darken(0.15, props.theme.colors.clBlueDark)};
     text-decoration: underline;
   }
 `;
@@ -119,7 +120,7 @@ class Author extends React.PureComponent<Props, State> {
     const { author } = this.state;
 
     if (author) {
-      browserHistory.push(`/profile/${author.data.attributes.slug}`);
+      clHistory.push(`/profile/${author.data.attributes.slug}`);
     }
   }
 

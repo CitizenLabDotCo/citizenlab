@@ -25,34 +25,36 @@ import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 
-const Loading = styled.div`
-  flex: 1;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 const Container = styled.div`
-  width: 100%;
+  flex: 1 0 auto;
+  height: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background: #f9f9fa;
+  background: ${colors.background};
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
   `}
 `;
 
+const Loading = styled.div`
+  flex: 1 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const Content = styled.div`
-  flex: 1;
-  width: 100%;
+  flex: 1 0 auto;
+  height: 100%;
+  background: ${colors.background};
 `;
 
 const ProjectNotFoundWrapper = styled.div`
-  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  flex: 1 0 auto;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -101,16 +103,14 @@ class ProjectsShowPage extends React.PureComponent<Props & WithRouterProps, Stat
           ) : (
               loading ? (
                 <Loading>
-                  <Spinner size="32px" color="#666" />
+                  <Spinner size="32px" />
                 </Loading>
               ) : (
-                  <>
-                    <Content>
-                      {children}
-                      <Footer showCityLogoSection={false} />
-                    </Content>
-                  </>
-                )
+                <>
+                  <Content>{children}</Content>
+                  <Footer showCityLogoSection={false} />
+                </>
+              )
             )}
         </Container>
       </>

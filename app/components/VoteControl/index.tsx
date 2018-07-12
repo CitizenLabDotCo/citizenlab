@@ -1,6 +1,9 @@
-import * as React from 'react';
+import React, { PureComponent } from 'react';
 import { isString, has } from 'lodash';
-import * as Rx from 'rxjs/Rx';
+import { BehaviorSubject, Subscription, Observable } from 'rxjs';
+import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { of } from 'rxjs/observable/of';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -12,11 +15,9 @@ import { IUser } from 'services/users';
 import { voteStream, addVote, deleteVote } from 'services/ideaVotes';
 
 // style
-// import { lighten } from 'polished';
 import styled, { css, keyframes } from 'styled-components';
-
-const green = '#32B67A';
-const red = '#FC3C2D';
+import { colors } from 'utils/styleUtils';
+import { lighten } from 'polished';
 
 const vote = keyframes`
   from {
@@ -47,7 +48,7 @@ const VoteIconContainer: any = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: solid 1px #e0e0e0;
+  border: solid 1px ${lighten(0.4, colors.label)};
   background: #fff;
   transition: all 100ms ease-out;
   will-change: transform;
@@ -70,7 +71,7 @@ const VoteIconContainer: any = styled.div`
 
 const VoteIcon: any = styled(Icon) `
   height: 19px;
-  fill: #84939d;
+  fill: ${colors.label};
   transition: all 100ms ease-out;
 
   ${(props: any) => props.size === '1' ? css`
@@ -89,7 +90,7 @@ const VoteIcon: any = styled(Icon) `
 `;
 
 const VoteCount = styled.div`
-  color: #84939d;
+  color: ${colors.label};
   font-size: 16px;
   font-weight: 400;
   margin-left: 5px;
@@ -133,60 +134,60 @@ const Upvote = Vote.extend`
   }
 
   ${VoteIconContainer} {
-    ${props => props.active && `border-color: ${green}; background: ${green};`}
+    ${props => props.active && `border-color: ${colors.success}; background: ${colors.success};`}
   }
 
   ${VoteIcon} {
     margin-bottom: 4px;
-    ${props => props.active && (props.enabled ? `fill: #fff;` : `fill: ${green}`)}
+    ${props => props.active && (props.enabled ? `fill: #fff;` : `fill: ${colors.success}`)}
   }
 
   ${VoteCount} {
     min-width: 15px;
     margin-right: 5px;
-    ${props => props.active && `color: ${green};`}
+    ${props => props.active && `color: ${colors.success};`}
   }
 
   &:hover.enabled {
     ${VoteIconContainer} {
-      ${props => !props.active && `border-color: ${green};`}
+      ${props => !props.active && `border-color: ${colors.success};`}
     }
 
     ${VoteIcon} {
-      ${props => !props.active && `fill: ${green};`}
+      ${props => !props.active && `fill: ${colors.success};`}
     }
 
     ${VoteCount} {
-      ${props => !props.active && `color: ${green};`}
+      ${props => !props.active && `color: ${colors.success};`}
     }
   }
 `;
 
 const Downvote = Vote.extend`
   ${VoteIconContainer} {
-    ${props => props.active && `border-color: ${red}; background: ${red};`}
+    ${props => props.active && `border-color: ${colors.error}; background: ${colors.error};`}
   }
 
   ${VoteIcon} {
     margin-top: 5px;
-    ${props => props.active && (props.enabled ? `fill: #fff;` : `fill: ${red}`)}
+    ${props => props.active && (props.enabled ? `fill: #fff;` : `fill: ${colors.error}`)}
   }
 
   ${VoteCount} {
-    ${props => props.active && `color: ${red};`}
+    ${props => props.active && `color: ${colors.error};`}
   }
 
   &:hover.enabled {
     ${VoteIconContainer} {
-      ${props => !props.active && `border-color: ${red};`}
+      ${props => !props.active && `border-color: ${colors.error};`}
     }
 
     ${VoteIcon} {
-      ${props => !props.active && `fill: ${red};`}
+      ${props => !props.active && `fill: ${colors.error};`}
     }
 
     ${VoteCount} {
-      ${props => !props.active && `color: ${red};`}
+      ${props => !props.active && `color: ${colors.error};`}
     }
   }
 `;
@@ -212,10 +213,10 @@ type State = {
   votingDisabledReason: string | null;
 };
 
-export default class VoteControl extends React.PureComponent<Props, State> {
-  voting$: Rx.BehaviorSubject<'up' | 'down' | null>;
-  id$: Rx.BehaviorSubject<string | null>;
-  subscriptions: Rx.Subscription[];
+export default class VoteControl extends PureComponent<Props, State> {
+  voting$: BehaviorSubject<'up' | 'down' | null>;
+  id$: BehaviorSubject<string | null>;
+  subscriptions: Subscription[];
   upvoteElement: HTMLDivElement | null;
   downvoteElement: HTMLDivElement | null;
 
@@ -234,8 +235,8 @@ export default class VoteControl extends React.PureComponent<Props, State> {
       votingFutureEnabled: null,
       votingDisabledReason: null,
     };
-    this.voting$ = new Rx.BehaviorSubject(null);
-    this.id$ = new Rx.BehaviorSubject(null);
+    this.voting$ = new BehaviorSubject(null);
+    this.id$ = new BehaviorSubject(null);
     this.subscriptions = [];
     this.upvoteElement = null;
     this.downvoteElement = null;
@@ -243,8 +244,11 @@ export default class VoteControl extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     const authUser$ = authUserStream().observable;
-    const voting$ = this.voting$.distinctUntilChanged();
-    const id$ = this.id$.filter(ideaId => isString(ideaId)).distinctUntilChanged() as Rx.Observable<string>;
+    const voting$ = this.voting$.pipe(distinctUntilChanged());
+    const id$ = this.id$.pipe(
+      filter(ideaId => isString(ideaId)),
+      distinctUntilChanged()
+    ) as Observable<string>;
 
     this.id$.next(this.props.ideaId);
 
@@ -256,39 +260,48 @@ export default class VoteControl extends React.PureComponent<Props, State> {
       this.downvoteElement.addEventListener('animationend', this.votingAnimationDone);
     }
 
-    const idea$ = id$.switchMap((ideaId: string) => {
-      const idea$ = ideaByIdStream(ideaId).observable;
+    const idea$ = id$.pipe(
+      switchMap((ideaId: string) => {
+        const idea$ = ideaByIdStream(ideaId).observable;
 
-      return Rx.Observable.combineLatest(
-        idea$,
-        voting$
-      );
-    }).filter(([_idea, voting]) => {
-      return voting === null;
-    }).map(([idea, _voting]) => {
-      return idea;
-    });
+        return combineLatest(
+          idea$,
+          voting$
+        );
+      }),
+      filter(([_idea, voting]) => {
+        return voting === null;
+      }),
+      map(([idea, _voting]) => {
+        return idea;
+      })
+    );
 
-    const myVote$ = Rx.Observable.combineLatest(
+    const myVote$ = combineLatest(
       authUser$,
       idea$
-    ).switchMap(([authUser, idea]) => {
-      if (authUser && idea && has(idea, 'data.relationships.user_vote.data') && idea.data.relationships.user_vote.data !== null) {
-        const voteId = idea.data.relationships.user_vote.data.id;
-        const vote$ = voteStream(voteId).observable;
+    ).pipe(
+      switchMap(([authUser, idea]) => {
+        if (authUser && idea && has(idea, 'data.relationships.user_vote.data') && idea.data.relationships.user_vote.data !== null) {
+          const voteId = idea.data.relationships.user_vote.data.id;
+          const vote$ = voteStream(voteId).observable;
 
-        return Rx.Observable.combineLatest(
-          vote$,
-          voting$
-        ).filter(([_vote, voting]) => {
-          return voting === null;
-        }).map(([vote, _voting]) => {
-          return vote;
-        });
-      }
+          return combineLatest(
+            vote$,
+            voting$
+          ).pipe(
+            filter(([_vote, voting]) => {
+              return voting === null;
+            }),
+            map(([vote, _voting]) => {
+              return vote;
+            })
+          );
+        }
 
-      return Rx.Observable.of(null);
-    });
+        return of(null);
+      })
+    );
 
     this.subscriptions = [
       voting$.subscribe((voting) => {

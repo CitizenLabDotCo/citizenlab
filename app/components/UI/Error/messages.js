@@ -109,4 +109,12 @@ export default defineMessages({
     id: 'app.errors.emails_duplicate',
     defaultMessage: 'One or more duplicate values for the email address {value} were found in the following row(s): {rows}',
   },
+  is_not_timeline_project: {
+    id: 'app.errors.is_not_timeline_project',
+    defaultMessage: 'The current project does not support phases.',
+  },
+  has_other_overlapping_phases: {
+    id: 'app.errors.has_other_overlapping_phases',
+    defaultMessage: 'Projects cannot have overlapping phases.',
+  },
 });
