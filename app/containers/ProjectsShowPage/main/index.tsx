@@ -1,6 +1,7 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { browserHistory, withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // services
 import {  getProjectUrl } from 'services/projects';
@@ -15,7 +16,7 @@ export default withRouter((props: WithRouterProps) => (
         const redirectUrl = getProjectUrl(project);
 
         if (window.location.pathname !== redirectUrl) {
-          browserHistory.replace(redirectUrl);
+          clHistory.replace(redirectUrl);
         }
       }
 

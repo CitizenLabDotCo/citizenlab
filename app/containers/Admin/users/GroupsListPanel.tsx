@@ -1,7 +1,7 @@
 // Libraries
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { Link } from 'react-router';
+import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 import { Subscription } from 'rxjs';
 
@@ -29,8 +29,8 @@ import tracks from './tracks';
 
 // Styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { rgba, ellipsis } from 'polished';
+import { colors, fontSizes } from 'utils/styleUtils';
+import { rgba } from 'polished';
 
 const Panel = styled.div`
   align-items: stretch;
@@ -48,42 +48,56 @@ const Separator = styled.hr`
   margin: 1rem 0 3rem 0;
 `;
 
-const PanelEntry = `
+const MenuTitle = styled.div`
   align-items: center;
   border-radius: 5px;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
-  padding: 1rem 1.5rem;
-`;
-
-const MenuTitle = styled.div`
-  ${PanelEntry}
+  padding-left: 10px;
+  margin-bottom: 20px;
 
   h2 {
     margin: 0;
+    padding: 0;
   }
+`;
 
-  .creationButton {
-    /* Visual alignment */
-    margin-right: -.5rem;
+const ButtonWrapper = styled.div`
+  flex: 0 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0px;
+`;
 
-    button {
-      display: flex;
-
-      &:hover {
-        background: ${colors.clBlueLightest};
-      }
+const StyledButton = styled(Button)`
+  &:hover {
+    circle {
+      fill: ${colors.clBlueLightest}; !important;
     }
   }
 `;
 
-const MenuLink = styled(Link) `
-  ${PanelEntry}
+const GroupsList = styled.div`
+  max-height: 500px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+`;
+
+const MenuLink = styled(Link)`
   color: ${colors.adminTextColor};
-  margin-bottom: .5rem;
-  height: 3rem;
+  font-size: ${fontSizes.base}px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  padding-right: 0px;
+  margin-bottom: 6px;
+  border-radius: 5px;
 
   &.highlight {
     animation-name: highlight;
@@ -91,19 +105,13 @@ const MenuLink = styled(Link) `
   }
 
   &.active {
-    background: ${rgba(colors.adminTextColor, .1)};
+    background: ${rgba(colors.adminTextColor, .09)};
   }
 
   &:hover,
   &:focus {
     background: ${rgba(colors.adminTextColor, .2)};
     color: ${colors.adminTextColor};
-  }
-
-  .groupName {
-    ${ellipsis('200px') as any}
-    min-width: 0;
-    flex: 1;
   }
 
   @keyframes highlight {
@@ -121,32 +129,35 @@ const MenuLink = styled(Link) `
   }
 `;
 
-const GroupsList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
+const LightningBolt = styled(Icon)`
+  flex: 0 0 18px;
+  height: 18px;
+  fill: ${colors.adminOrangeIcons};
+  margin-right: 4px;
+`;
 
-  li {
-    margin: 0;
-    padding: 0;
+const GroupName = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  span {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;
 
 const MembersCount = styled.span`
-  margin-left: 1rem;
-`;
-
-const LightningBolt = styled(Icon) `
-  height: 2rem;
-  width: 2rem;
-  margin-left: -.7rem;
-
-  .cl-icon-background {
-    fill: none;
-  }
-  .cl-icon-primary {
-    fill: ${colors.adminOrangeIcons};
-  }
+  flex: 0 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 12px;
 `;
 
 // Typings
@@ -182,8 +193,7 @@ export class GroupsListPanel extends React.PureComponent<Props & Tracks, State> 
 
   componentDidMount() {
     this.subs.push(
-      eventEmitter.observeEvent<MembershipAdd>(events.membershipAdd)
-      .subscribe(({ eventValue: { groupsIds } }) => {
+      eventEmitter.observeEvent<MembershipAdd>(events.membershipAdd).subscribe(({ eventValue: { groupsIds } }) => {
         this.setState({ highlightedGroups: new Set(groupsIds) });
         setTimeout(this.removeHighlights, 3000);
       })
@@ -211,32 +221,32 @@ export class GroupsListPanel extends React.PureComponent<Props & Tracks, State> 
     return (
       <Panel className={this.props.className}>
         <MenuLink to="/admin/users" activeClassName="active" onlyActiveOnIndex>
-          <FormattedMessage {...messages.allUsers} />
-          {!isNilOrError(usercount) && usercount}
+          <GroupName><FormattedMessage {...messages.allUsers} /></GroupName>
+          {!isNilOrError(usercount) && <MembersCount>{usercount}</MembersCount>}
         </MenuLink>
         <Separator />
         <MenuTitle>
           <FormattedMessage tagName="h2" {...messages.groupsTitle} />
-          <Button
-            className="creationButton e2e-create-group-button"
-            hiddenText={<FormattedMessage {...messages.createGroupButton} />}
-            icon="create"
-            iconTitle={<FormattedMessage {...messages.createGroupButton} />}
-            iconSize="26px"
-            onClick={this.handleCreateGroup}
-            padding="0"
-            style="text"
-          />
+          <ButtonWrapper>
+            <StyledButton
+              className="e2e-create-group-button"
+              hiddenText={<FormattedMessage {...messages.createGroupButton} />}
+              icon="create"
+              iconTitle={<FormattedMessage {...messages.createGroupButton} />}
+              iconSize="26px"
+              onClick={this.handleCreateGroup}
+              padding="0"
+              style="text"
+            />
+          </ButtonWrapper>
         </MenuTitle>
         <GroupsList className="e2e-groups-list">
           {!isNilOrError(groupsList) && groupsList.map((group) => (
-            <li key={group.id}>
-              <MenuLink to={`/admin/users/${group.id}`} activeClassName="active" className={highlightedGroups.has(group.id) ? 'highlight' : ''} >
-                {group.attributes.membership_type === 'rules' && <LightningBolt name="lightingBolt" />}
-                <T className="groupName" value={group.attributes.title_multiloc} />
-                <MembersCount className="e2e-group-user-count">{group.attributes.memberships_count}</MembersCount>
-              </MenuLink>
-            </li>
+            <MenuLink to={`/admin/users/${group.id}`} activeClassName="active" className={highlightedGroups.has(group.id) ? 'highlight' : ''} >
+              {group.attributes.membership_type === 'rules' && <LightningBolt name="lightingBolt2" />}
+              <GroupName><T value={group.attributes.title_multiloc} /></GroupName>
+              <MembersCount className="e2e-group-user-count">{group.attributes.memberships_count}</MembersCount>
+            </MenuLink>
           ))}
         </GroupsList>
       </Panel>

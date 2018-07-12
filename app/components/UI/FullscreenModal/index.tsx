@@ -2,7 +2,7 @@ import React from 'react';
 import isFunction from 'lodash/isFunction';
 
 // libraries
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -20,7 +20,10 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
+import { lighten } from 'polished';
+import { getUrlLocale } from 'services/locale';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 const timeout = 300;
 const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
@@ -124,7 +127,7 @@ const TopBarInner = styled.div`
 
 const GoBackIcon = styled(Icon)`
   height: 22px;
-  fill: #666;
+  fill: ${colors.label};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -142,7 +145,7 @@ const GoBackButton = styled.div`
   cursor: pointer;
   background: #fff;
   border-radius: 50%;
-  border: solid 1px #e0e0e0;
+  border: solid 1px ${lighten(0.4, colors.label)};
   transition: all 100ms ease-out;
 
   &:hover {
@@ -155,7 +158,7 @@ const GoBackButton = styled.div`
 `;
 
 const GoBackLabel = styled.div`
-  color: #666;
+  color: ${colors.label};
   font-size: 15px;
   font-weight: 400;
   transition: fill 100ms ease-out;
@@ -181,7 +184,7 @@ const HeaderChildWrapper = styled.div`
 
 const CloseIcon = styled(Icon)`
   height: 13px;
-  fill: #666;
+  fill: ${colors.label};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -199,7 +202,7 @@ const CloseButton = styled.div`
   top: 20px;
   right: 33px;
   border-radius: 50%;
-  border: solid 1px #ccc;
+  border: solid 1px ${lighten(0.4, colors.label)};
   z-index: 10002;
   transition: border-color 100ms ease-out;
 
@@ -231,12 +234,12 @@ type Props = {
 
 type State = {};
 
-class Modal extends React.PureComponent<Props & ITracks, State> {
+class Modal extends React.PureComponent<Props & ITracks & {currentLocale: GetLocaleChildProps}, State> {
   unlisten: Function | null;
   goBackUrl: string | null;
   ModalContentInnerElement: HTMLDivElement | null;
 
-  constructor(props: Props & ITracks) {
+  constructor(props: Props & ITracks & {currentLocale: GetLocaleChildProps}) {
     super(props);
     this.state = {
       scrolled: false
@@ -277,13 +280,20 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     this.disableBodyScroll();
 
     // on route change
-    this.unlisten = browserHistory.listen(() => {
+    this.unlisten = clHistory.listen(() => {
       setTimeout(() => this.props.close(), 250);
     });
 
-    if (url) {
-      window.history.pushState({ path: url }, '', url);
-      trackPage(url, { modal: true });
+    // Add locale to the URL if it's not present yet
+    let localizedUrl = url;
+    const urlLocale = url && getUrlLocale(url);
+    if (!urlLocale) {
+      localizedUrl = `/${this.props.currentLocale}${url}`;
+    }
+
+    if (localizedUrl) {
+      window.history.pushState({ path: localizedUrl }, '', localizedUrl);
+      trackPage(localizedUrl, { modal: true });
     }
   }
 
@@ -397,4 +407,12 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   }
 }
 
-export default injectTracks<Props>(tracks)(Modal);
+const WithHoC = injectTracks<Props>(tracks)(Modal);
+
+export default (props) => (
+  <GetLocale>
+    {(locale) => (
+      <WithHoC {...props} currentLocale={locale} />
+    )}
+  </GetLocale>
+);

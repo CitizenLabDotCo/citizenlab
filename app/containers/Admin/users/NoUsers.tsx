@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router';
+import Link from 'utils/cl-router/Link';
 
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import Icon from 'components/UI/Icon';
 import { colors } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 const NoUsersPage = styled.div`
   display: flex;
@@ -26,10 +27,15 @@ const SFormattedMessage = styled.div`
   color: ${colors.adminSecondaryTextColor};
   font-weight: 400;
   font-size: 16px;
+
   a {
     color: ${colors.adminSecondaryTextColor};
     font-weight: bold;
     text-decoration: underline;
+
+    &:hover {
+      color: ${darken(0.2, colors.adminSecondaryTextColor)};
+    }
   }
 `;
 

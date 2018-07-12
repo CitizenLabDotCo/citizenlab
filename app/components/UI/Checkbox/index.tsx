@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import Icon from 'components/UI/Icon';
 import styled from 'styled-components';
 
@@ -49,7 +49,7 @@ const Text = styled.div`
 
 type Props = {
   value: boolean;
-  onChange: (event: React.FormEvent<any>) => void;
+  onChange: (event: FormEvent) => void;
   label?: string | JSX.Element | null | undefined;
   size?: string | undefined;
   disableLabelClick?: boolean;
@@ -58,14 +58,14 @@ type Props = {
 
 type State = {};
 
-export default class Checkbox extends React.PureComponent<Props, State> {
-  toggleCheckbox = (event: React.FormEvent<any>) => {
+export default class Checkbox extends PureComponent<Props, State> {
+  toggleCheckbox = (event: FormEvent) => {
     event.preventDefault();
     event.stopPropagation();
     this.props.onChange(event);
   }
 
-  handleLabelOnClick = (event: React.FormEvent<any>) => {
+  handleLabelOnClick = (event: FormEvent) => {
     if (this.props.disableLabelClick !== true) {
       this.toggleCheckbox(event);
     }

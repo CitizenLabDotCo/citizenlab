@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Multiloc } from 'typings';
 import { throttle } from 'lodash';
 
@@ -25,12 +25,12 @@ import { colors } from 'utils/styleUtils';
 const gutter = '.5rem';
 
 const TitleWrapper = styled.div`
+  min-height: 95px;
   align-items: flex-start;
   display: flex;
   flex-wrap: nowrap;
-  justify-content: flex-start;
-  margin-bottom: 5rem;
-
+  justify-content: space-between;
+  margin-bottom: 10px;
   margin-left: -${gutter};
   margin-right: -${gutter};
 
@@ -54,6 +54,7 @@ const TitleIcon = styled(Icon)`
 
 const TextAndButtons = styled.div`
   h1 {
+    margin-left: 10px;
     margin-right: 10px;
     display: inline;
   }
@@ -67,13 +68,14 @@ const Buttons = styled.div`
 `;
 
 const StyledSearch = styled(SearchInput)`
+  margin-top: -10px;
   align-self: flex-start;
   flex: 0 0 225px;
   justify-self: flex-end;
 `;
 
 const Spacer = styled.div`
-  flex: 1 1 0;
+  flex: 1 0 auto;
 `;
 
 // Typings
@@ -92,7 +94,7 @@ interface Tracks {
   trackSearchInput: Function;
 }
 
-class UsersHeader extends React.PureComponent<Props & Tracks, State> {
+class UsersHeader extends PureComponent<Props & Tracks, State> {
   debounceSearch: (newValue: string) => void;
 
   constructor(props) {

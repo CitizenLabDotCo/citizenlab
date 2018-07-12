@@ -51,7 +51,7 @@ const Tab = styled.li`
 
   &.active {
     color: ${colors.adminTextColor};
-    border-color: ${colors.clBlue};
+    border-color: ${colors.clBlueDark};
   }
 
   &:not(.active):hover {

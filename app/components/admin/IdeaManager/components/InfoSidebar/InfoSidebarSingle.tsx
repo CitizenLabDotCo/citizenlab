@@ -2,7 +2,7 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { deleteIdea } from 'services/ideas';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
 import { IModalInfo } from 'containers/App';
 import T from 'components/T';
@@ -36,7 +36,7 @@ class InfoSidebarSingle extends React.PureComponent<Props & InjectedIntlProps> {
     const { idea } = this.props;
 
     if (!isNilOrError(idea)) {
-      browserHistory.push(`/ideas/edit/${idea.id}`);
+      clHistory.push(`/ideas/edit/${idea.id}`);
     }
   }
 

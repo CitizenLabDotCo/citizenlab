@@ -1,11 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { API } from 'typings';
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
 import PageWrapper from 'components/admin/PageWrapper';
-import PageForm, { FormValues } from '../Form';
+import PageForm, { FormValues } from 'components/PageForm';
 import { Formik } from 'formik';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -27,7 +27,7 @@ class New extends React.Component<Props> {
       ...values
     })
       .then(() => {
-        browserHistory.push('/admin/pages');
+        clHistory.push('/admin/pages');
       })
       .catch((errorResponse) => {
         const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
@@ -51,7 +51,7 @@ class New extends React.Component<Props> {
   )
 
   goBack = () => {
-    browserHistory.push('/admin/pages');
+    clHistory.push('/admin/pages');
   }
 
   render() {

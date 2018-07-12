@@ -3,7 +3,8 @@ import { get, isFunction } from 'lodash';
 import { Subscription } from 'rxjs';
 
 // libraries
-import { browserHistory, Link } from 'react-router';
+import Link from 'utils/cl-router/Link';
+import clHistory from 'utils/cl-router/history';
 import { Location } from 'history';
 
 // components
@@ -196,7 +197,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      location: browserHistory.getCurrentLocation(),
+      location: clHistory.getCurrentLocation(),
       currentTenant: null,
       email: null,
       password: null,
@@ -309,7 +310,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     const facebookLoginEnabled = !!get(currentTenant, `data.attributes.settings.facebook_login.enabled`);
     const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
 
-    const createAccount = ((location && location.pathname.endsWith('/ideas/new')) ? (
+    const createAccount = ((location && location.pathname.replace(/\/$/, '').endsWith('ideas/new')) ? (
       <CreateAnAccountDiv onClick={this.goToSignUpForm}>
         <FormattedMessage {...messages.createAnAccount} />
       </CreateAnAccountDiv>

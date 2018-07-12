@@ -3,7 +3,7 @@ import { isString, isEmpty, get } from 'lodash';
 import * as Rx from 'rxjs/Rx';
 
 // router
-import { browserHistory } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import Button from 'components/UI/Button';
@@ -215,7 +215,7 @@ export default class IdeaEditPage extends React.PureComponent<Props, State> {
             imageId: (ideaImage && ideaImage.id ? ideaImage.id : null)
           });
         } else {
-          browserHistory.push(`/`);
+          clHistory.push(`/`);
         }
       })
     ];
@@ -267,7 +267,7 @@ export default class IdeaEditPage extends React.PureComponent<Props, State> {
         location_description: locationDescription
       });
 
-      browserHistory.push(`/ideas/${ideaSlug}`);
+      clHistory.push(`/ideas/${ideaSlug}`);
     } catch {
       this.setState({ processing: false, submitError: true });
     }
