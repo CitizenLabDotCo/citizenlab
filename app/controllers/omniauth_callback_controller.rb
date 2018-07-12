@@ -18,7 +18,7 @@ class OmniauthCallbackController < ApplicationController
     if @user
       @identity.update(user: @user) unless @identity.user
       set_auth_cookie
-      redirect_to(add_uri_params(FrontendService.new.signin_success_url, omniauth_params))
+      redirect_to(add_uri_params(FrontendService.new.signin_success_url(locale: @user.locale), omniauth_params))
     else
       @user = User.build_with_omniauth(auth)
       SideFxUserService.new.before_create(@user, nil)
@@ -27,7 +27,7 @@ class OmniauthCallbackController < ApplicationController
         @user.save!
         SideFxUserService.new.after_create(@user, nil)
         set_auth_cookie
-        redirect_to(add_uri_params(FrontendService.new.signup_success_url, omniauth_params))
+        redirect_to(add_uri_params(FrontendService.new.signup_success_url(locale: @user.locale), omniauth_params))
 
       rescue ActiveRecord::RecordInvalid => e
         Rails.logger.info "Social signup failed: #{e.message}"

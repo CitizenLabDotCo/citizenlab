@@ -38,6 +38,9 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
   def create
     @project = Project.new(permitted_attributes(Project))
+
+    SideFxProjectService.new.before_create(@project, current_user)
+    
     authorize @project
     if @project.save
       SideFxProjectService.new.after_create(@project, current_user)
@@ -50,7 +53,12 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   def update
     params[:project][:area_ids] ||= [] if params[:project].has_key?(:area_ids)
     params[:project][:topic_ids] ||= [] if params[:project].has_key?(:topic_ids)
-    if @project.update(permitted_attributes(Project))
+    
+    @project.assign_attributes(permitted_attributes(Project))
+
+    SideFxProjectService.new.before_update(@project, current_user)
+
+    if @project.save
       SideFxProjectService.new.after_update(@project, current_user)
       render json: @project, status: :ok
     else

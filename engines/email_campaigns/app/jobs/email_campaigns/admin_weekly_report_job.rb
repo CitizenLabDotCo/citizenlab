@@ -18,7 +18,7 @@ module EmailCampaigns
           return
         end
 
-        top_project_ideas = admin_report_top_project_ideas days_interval
+        top_project_ideas = admin_report_top_project_ideas days_interval, admin.locale
         has_new_ideas = (top_project_ideas.size > 0)
 
         event = @service.periodic_event CAMPAIGN, admin.id,
@@ -33,7 +33,7 @@ module EmailCampaigns
       end
     end
 
-    def admin_report_top_project_ideas days_interval
+    def admin_report_top_project_ideas days_interval, locale
       since = Time.now - days_interval
 
       top_ideas = Idea.where(publication_status: 'published').all
@@ -63,7 +63,7 @@ module EmailCampaigns
         {
           project: LogToSegmentService.new.serialize("EmailCampaigns::DiscoverProjectSerializer", Project.find(project_id)),
           top_ideas: top_project_ideas[project_id].map{ |idea|
-            @service.to_periodic_report_idea_hash(idea, since=since)
+            @service.to_periodic_report_idea_hash(idea, since, locale: locale)
           } 
         }
       end
