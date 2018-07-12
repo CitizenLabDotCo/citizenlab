@@ -211,7 +211,7 @@ if (isDev) {
   WEBPACK_CONFIG.plugins.push(
     new UglifyJSPlugin({
       cache: true,
-      sourceMap: true,
+      sourceMap: false,
       parallel: true,
       uglifyOptions: {
         compress: {
