@@ -299,7 +299,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                     <TenantLogo src={currentTenantLogo} alt="Organization logo" />
                   </LogoLink>}
                 {currentTenantLogo && !tenantSite &&
-                  <TenantLogo src={currentTenantLogo} />}
+                  <TenantLogo src={currentTenantLogo} alt="Organization logo" />}
                 <TenantSlogan>{slogan}</TenantSlogan>
               </FirstLine>
             </Fragment>
