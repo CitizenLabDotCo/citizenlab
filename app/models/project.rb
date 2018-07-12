@@ -3,11 +3,7 @@ class Project < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, add_new_at: :top
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
-
   DESCRIPTION_PREVIEW_JSON_SCHEMA = ERB.new(File.read(Rails.root.join('config', 'schemas', 'project_description_preview.json_schema.erb'))).result(binding)
-
-  @@sanitizer = Rails::Html::WhiteListSanitizer.new
-
 
   has_many :ideas, dependent: :destroy
   has_many :votes, through: :ideas
@@ -23,6 +19,7 @@ class Project < ApplicationRecord
   has_many :events, -> { order(:start_at) }, dependent: :destroy
   has_many :pages, dependent: :destroy
   has_many :project_images, -> { order(:ordering) }, dependent: :destroy
+  has_many :text_images, as: :imageable, dependent: :destroy
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :notifications, foreign_key: :project_id, dependent: :nullify
 
@@ -50,8 +47,8 @@ class Project < ApplicationRecord
   before_validation :set_process_type, on: :create
   before_validation :generate_slug, on: :create
   before_validation :set_visible_to, on: :create
-  before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
   before_validation :sanitize_description_multiloc, if: :description_multiloc
+  before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
   before_validation :set_publication_status, on: :create
   before_validation :strip_title
 
@@ -86,15 +83,17 @@ class Project < ApplicationRecord
   end
 
   def sanitize_description_multiloc
-    self.description_multiloc = self.description_multiloc.map do |locale, description|
-      [locale, @@sanitizer.sanitize(description, tags: %w(p b u i em strong a h1 h2 h3 h4 h5 h6 ul li ol), attributes: %w(href type style target))]
-    end.to_h
+    self.description_multiloc = SanitizationService.new.sanitize_multiloc(
+      self.description_multiloc,
+      %i{title alignment list decoration link image video}
+    )
   end
 
   def sanitize_description_preview_multiloc
-    self.description_preview_multiloc = self.description_preview_multiloc.map do |locale, description_preview|
-      [locale, @@sanitizer.sanitize(description_preview, tags: %w(), attributes: %w())]
-    end.to_h
+    self.description_preview_multiloc = SanitizationService.new.sanitize_multiloc(
+      self.description_preview_multiloc,
+      %i{decoration link}
+    )
   end
 
   def set_visible_to
