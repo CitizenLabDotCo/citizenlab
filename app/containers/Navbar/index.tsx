@@ -120,7 +120,7 @@ const NavigationItems = styled.div`
 const NavigationItem = styled(Link) `
   ${ellipsis('20rem') as any}
   height: 100%;
-  color: #999;
+  color: #767676;
   font-size: 17px;
   font-weight: 400;
   display: flex;
@@ -155,9 +155,9 @@ const NavigationDropdownItemIcon = styled(Icon)`
 
 const NavigationDropdownItem = styled.button`
   align-items: center;
-  color: #999;
+  color: #767676;;
   display: flex;
-  fill: #999;
+  fill: #767676;;
   font-size: 17px;
   font-weight: 400;
   transition: all 100ms ease-out;
