@@ -13,6 +13,16 @@ module AdminApi
         object.dig('facebook_login', 'app_secret')
       end
 
+      field :integration_onze_stad_app_allowed, Boolean, null: true
+      def integration_onze_stad_app_allowed
+        object.dig('integration_onze_stad_app', 'allowed')
+      end
+
+      field :integration_onze_stad_app_enabled, Boolean, null: true
+      def integration_onze_stad_app_enabled
+        object.dig('integration_onze_stad_app', 'enabled')
+      end
+
       field :integration_onze_stad_app_app_id, String, null: true
       def integration_onze_stad_app_app_id
         object.dig('integration_onze_stad_app', 'app_id')
