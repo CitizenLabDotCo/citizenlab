@@ -2,9 +2,9 @@ import React from 'react';
 import { isBoolean } from 'lodash';
 import { AsyncCreatable as ReactSelect } from 'react-select';
 import { IOption } from 'typings';
-import styled from 'styled-components';
-
-const StyledMultipleSelect = styled(ReactSelect)``;
+import GetTenant from 'resources/GetTenant';
+import { isNilOrError } from 'utils/helperUtils';
+import selectStyles from 'components/UI/Select/styles';
 
 type Props = {
   value: IOption[] | null;
@@ -18,12 +18,20 @@ type Props = {
 
 type State = {};
 
-export default class AsyncMultipleSelect extends React.PureComponent<Props, State> {
+export class AsyncMultipleSelect extends React.PureComponent<Props & {tenantColor: string | null}, State> {
   private emptyArray: never[];
+  private customStyle: any = {};
 
   constructor(props) {
     super(props);
     this.emptyArray = [];
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.tenantColor && !prevProps.tenantColor) {
+      const { tenantColor } = this.props;
+      this.customStyle = selectStyles(tenantColor);
+    }
   }
 
   handleOnChange = (newValue: IOption[]) => {
@@ -42,7 +50,7 @@ export default class AsyncMultipleSelect extends React.PureComponent<Props, Stat
     autoBlur = (isBoolean(autoBlur) ? autoBlur : false);
 
     return (
-      <StyledMultipleSelect
+      <ReactSelect
         multi={true}
         searchable={true}
         openOnFocus={false}
@@ -55,7 +63,16 @@ export default class AsyncMultipleSelect extends React.PureComponent<Props, Stat
         loadOptions={this.props.asyncOptions}
         onChange={this.handleOnChange}
         disabled={this.props.disabled}
+        style={this.customStyle}
       />
     );
   }
 }
+
+export default (props: Props) => (
+  <GetTenant>
+    {(tenant) => (
+      <AsyncMultipleSelect tenantColor={isNilOrError(tenant) ? null : tenant.attributes.settings.core.color_main} {...props} />
+    )}
+  </GetTenant>
+);
