@@ -60,7 +60,8 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, authUser, 
             ${metaTitle}`
           }
         </title>
-        {tenantLocales.map(loc => (<link rel="alternate" hrefLang={loc} href={`${url}/${loc}`} key={loc} />))}
+        {// https://github.com/nfl/react-helmet/issues/279 href comes first!
+          tenantLocales.map(loc => (<link href={`${url}/${loc}`} rel="alternate" hrefLang={loc} key={loc} />))}
         <meta name="title" content={metaTitle} />
         <meta name="description" content={metaDescription} />
         <meta property="og:title" content={metaTitle} />
