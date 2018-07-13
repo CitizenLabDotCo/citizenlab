@@ -3,6 +3,9 @@ import { isBoolean } from 'lodash';
 import ReactSelect from 'react-select';
 import { IOption } from 'typings';
 import styled from 'styled-components';
+import GetTenant from 'resources/GetTenant';
+import { isNilOrError } from 'utils/helperUtils';
+import selectStyles from 'components/UI/Select/styles';
 
 const StyledMultipleSelect = styled(ReactSelect)`
   max-width: calc(100% - 30px);
@@ -21,12 +24,20 @@ export type Props = {
 
 type State = {};
 
-export default class MultipleSelect extends React.PureComponent<Props, State> {
+export class MultipleSelect extends React.PureComponent<Props & {tenantColor: string | null}, State> {
   private emptyArray: never[];
+  private customStyle: any = {};
 
   constructor(props: Props) {
     super(props as any);
     this.emptyArray = [];
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.tenantColor && !prevProps.tenantColor) {
+      const { tenantColor } = this.props;
+      this.customStyle = selectStyles(tenantColor);
+    }
   }
 
   handleOnChange = (newValue: IOption[]) => {
@@ -62,7 +73,16 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
         options={options}
         onChange={this.handleOnChange}
         disabled={this.props.disabled}
+        styles={this.customStyle}
       />
     );
   }
 }
+
+export default (props: Props) => (
+  <GetTenant>
+    {(tenant) => (
+      <MultipleSelect tenantColor={isNilOrError(tenant) ? null : tenant.attributes.settings.core.color_main} {...props} />
+    )}
+  </GetTenant>
+);

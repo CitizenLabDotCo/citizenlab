@@ -2,36 +2,9 @@ import React from 'react';
 import { isBoolean } from 'lodash';
 import ReactSelect from 'react-select';
 import { IOption } from 'typings';
-import styled from 'styled-components';
-import { rgba } from 'polished';
-
-export function customSelectStyles(props) {
-  return `
-    .rs__control {
-      &.rs__control--is-focused,
-      &:hover {
-        border-color: ${props.theme.colorMain};
-        box-shadow: 0 0 0 1px ${props.theme.colorMain};
-      }
-    }
-
-    .rs__option {
-      &.rs__option--is-focused,
-      &:hover {
-        background: ${rgba(props.theme.colorMain, .1)};
-      }
-
-      &.rs__option--is-selected {
-        color: black;
-        background: ${rgba(props.theme.colorMain, .5)};
-      }
-    }
-  `;
-}
-
-const StyledSelect = styled(ReactSelect)`
-  ${props => customSelectStyles(props)}
-`;
+import GetTenant from 'resources/GetTenant';
+import { isNilOrError } from 'utils/helperUtils';
+import selectStyles from 'components/UI/Select/styles';
 
 export type Props = {
   id?: string | undefined;
@@ -49,12 +22,20 @@ export type Props = {
 
 type State = {};
 
-export default class Select extends React.PureComponent<Props, State> {
+export class Select extends React.PureComponent<Props & {tenantColor: string | null}, State> {
   private emptyArray: never[];
+  private customStyle: any = {};
 
-  constructor(props: Props) {
+  constructor(props: Props & {tenantColor: string | null}) {
     super(props as any);
     this.emptyArray = [];
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.tenantColor && !prevProps.tenantColor) {
+      const { tenantColor } = this.props;
+      this.customStyle = selectStyles(tenantColor);
+    }
   }
 
   handleOnChange = (newValue: IOption) => {
@@ -76,10 +57,9 @@ export default class Select extends React.PureComponent<Props, State> {
     multi = (isBoolean(multi) ? multi : false);
 
     return (
-      <StyledSelect
+      <ReactSelect
         id={id}
         className={className}
-        classNamePrefix="rs"
         openOnFocus={false}
         clearable={clearable}
         searchable={searchable}
@@ -92,7 +72,16 @@ export default class Select extends React.PureComponent<Props, State> {
         onBlur={this.props.onBlur}
         isMulti={multi}
         disabled={disabled}
+        styles={this.customStyle}
       />
     );
   }
 }
+
+export default (props: Props) => (
+  <GetTenant>
+    {(tenant) => (
+      <Select tenantColor={isNilOrError(tenant) ? null : tenant.attributes.settings.core.color_main} {...props} />
+    )}
+  </GetTenant>
+);
