@@ -39,7 +39,7 @@ const ErrorWrapper = styled.div`
 `;
 
 const DropzonePlaceholderText = styled.div`
-  color: #aaa;
+  color: #767676;
   font-size: 16px;
   line-height: 20px;
   font-weight: 400;
@@ -49,13 +49,13 @@ const DropzonePlaceholderText = styled.div`
 
 const DropzonePlaceholderIcon = styled(Icon)`
   height: 32px;
-  fill: #aaa;
+  fill: #767676;
   margin-bottom: 5px;
   transition: all 100ms ease-out;
 `;
 
 const DropzoneImagesRemaining = styled.div`
-  color: #aaa;
+  color: #767676;
   font-size: 14px;
   line-height: 18px;
   font-weight: 400;
