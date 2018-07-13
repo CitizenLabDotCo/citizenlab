@@ -21,6 +21,7 @@ module AdminApi
       field :integration_onze_stad_app_api_key, String, null: true
       def integration_onze_stad_app_api_key
         object.dig('integration_onze_stad_app', 'api_key')
+      end
 
       field :core_locales, [String], null: false
       def core_locales
