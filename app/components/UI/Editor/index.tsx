@@ -85,7 +85,7 @@ const DraftEditorContainer: any = styled.div`
 
   .rdw-editor-main {
     min-height: 250px;
-    font-size: 17px;
+    font-size: 16px;
     line-height: 23px;
     font-weight: 400;
     cursor: text;
