@@ -66,14 +66,14 @@ const TermsAndConditionsWrapper: any = styled.div`
   }
 
   span {
-    color: #707075 !important;
+    color: #6e6e6f !important;
     font-size: 16px;
     font-weight: 400;
     line-height: 21px;
   }
 
   a > span {
-    color: #707075 !important;
+    color: #6e6e6f !important;
     text-decoration: underline;
   }
 
