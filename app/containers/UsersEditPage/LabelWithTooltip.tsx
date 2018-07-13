@@ -12,20 +12,20 @@ const Container = styled.div`
 interface Props {
   htmlFor?: string;
   className?: string;
-  id: string;
+  translateId: string;
   hasTooltip?: boolean;
 }
 
-const LabelWithTooltip = ({ htmlFor, className, id, hasTooltip }: Props) => (
+const LabelWithTooltip = ({ htmlFor, className, translateId, hasTooltip }: Props) => (
   <Container className={className}>
 
     <Label htmlFor={htmlFor}>
-      <FormattedMessage {...messages[id]} />
+      <FormattedMessage {...messages[translateId]} />
     </Label>
 
     {hasTooltip && <Popup
       trigger={<Icon name="question circle outline" />}
-      content={<FormattedMessage {...messages[`${id}_tooltip`]} />}
+      content={<FormattedMessage {...messages[`${translateId}_tooltip`]} />}
     />}
 
   </Container>
