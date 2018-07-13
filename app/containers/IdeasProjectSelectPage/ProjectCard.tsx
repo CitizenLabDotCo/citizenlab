@@ -137,7 +137,7 @@ const PostingDisabledReason = styled.div`
 `;
 
 const PostingEnabledReason = styled.div`
-  color: #84939E;
+  color: #767676;
   font-size: 15px;
   line-height: 21px;
   font-weight: 300;
