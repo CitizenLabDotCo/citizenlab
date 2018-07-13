@@ -46,7 +46,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const SkipButton = styled.div`
-  color: #999;
+  color: #737373;
   font-size: 16px;
   font-weight: 400;
   line-height: 20px;
