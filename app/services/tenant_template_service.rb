@@ -10,7 +10,7 @@ class TenantTemplateService
 
   def apply_template template_name, is_path=false
     template = resolve_template(template_name, is_path)
-    obj_to_id = {}
+    obj_to_id_and_class = {}
     template['models'].each do |model_name, fields|
 
       model_class = model_name.classify.constantize
@@ -24,8 +24,11 @@ class TenantTemplateService
               [locale, translation]
             end.to_h
             model.send("#{field_name}=", multiloc_value)
-          elsif field_name.end_with? '_ref'
-            model.send("#{field_name.chomp '_ref'}_id=", obj_to_id[field_value])
+          elsif field_name.end_with?('_ref')
+            if field_value
+              id, ref_class = obj_to_id_and_class[field_value]
+              model.send("#{field_name.chomp '_ref'}=", ref_class.find(id))
+            end
           else
             model.send("#{field_name}=", field_value)
           end
@@ -38,7 +41,7 @@ class TenantTemplateService
           end
           raise e
         end
-        obj_to_id[attributes] = model.id
+        obj_to_id_and_class[attributes] = [model.id, model_class]
       end
     end
   end
