@@ -1,9 +1,3 @@
-/*
- * AdminPage.ProjectDashboard Messages
- *
- * This contains all the text for the AdminPage.ProjectDashboard component.
- */
-
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
@@ -62,6 +56,14 @@ export default defineMessages({
   addNewProject: {
     id: 'app.containers.AdminPage.ProjectEdit.addNewProject',
     defaultMessage: 'Add a project',
+  },
+  activeProjects: {
+    id: 'app.containers.AdminPage.ProjectEdit.activeProjects',
+    defaultMessage: 'Active',
+  },
+  archivedProjects: {
+    id: 'app.containers.AdminPage.ProjectEdit.archivedProjects',
+    defaultMessage: 'Archived',
   },
   goBack: {
     id: 'app.containers.AdminPage.ProjectEdit.goBack',
@@ -282,5 +284,13 @@ export default defineMessages({
   addUser: {
     id: 'app.containers.AdminPage.ProjectEdit.addUser',
     defaultMessage: 'Add moderator',
+  },
+  xGroupsHaveAccess: {
+    id: 'app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess',
+    defaultMessage: '{groupCount, plural, no {# groups can view} one {# group can view} other {# groups can view}}',
+  },
+  onlyAdminsCanView: {
+    id: 'app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess',
+    defaultMessage: 'Only admins can view',
   },
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
 import { isNilOrError } from 'utils/helperUtils';

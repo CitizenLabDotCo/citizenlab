@@ -16,7 +16,7 @@ type State = {
   selectedValue: string[];
 };
 
-class SelectSort extends PureComponent<Props, State> {
+class SelectPublicationStatus extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
@@ -32,17 +32,15 @@ class SelectSort extends PureComponent<Props, State> {
   render() {
     const { selectedValue } = this.state;
     const options = [
-      { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
-      { text: <FormattedMessage {...messages.popular} />, value: 'popular' },
-      { text: <FormattedMessage {...messages.newest} />, value: 'new' },
-      { text: <FormattedMessage {...messages.oldest} />, value: '-new' },
+      { text: <FormattedMessage {...messages.allProjects} />, value: 'all' },
+      { text: <FormattedMessage {...messages.activeProjects} />, value: 'active' },
+      { text: <FormattedMessage {...messages.archivedProjects} />, value: 'archived' },
     ];
 
     return (
       <FilterSelector
-        id="e2e-ideas-sort-filter"
-        title={<FormattedMessage {...messages.sortTitle} />}
-        name="sort"
+        title={<FormattedMessage {...messages.publicationStatus} />}
+        name="publicationstatus"
         selected={selectedValue}
         values={options}
         onChange={this.handleOnChange}
@@ -54,4 +52,4 @@ class SelectSort extends PureComponent<Props, State> {
   }
 }
 
-export default SelectSort;
+export default SelectPublicationStatus;

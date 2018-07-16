@@ -19,7 +19,7 @@ export interface InputProps {
   sort?: Sort;
   areas?: string[];
   topics?: string[];
-  publicationStatus?: PublicationStatus;
+  // publicationStatus?: PublicationStatus;
   publicationStatuses?: PublicationStatus[];
   hideAllFilters?: boolean;
   filterCanModerate?: boolean;
@@ -31,7 +31,7 @@ interface IQueryParameters {
   sort?: Sort;
   areas?: string[];
   topics?: string[];
-  publication_status?: PublicationStatus;
+  // publication_status?: PublicationStatus;
   publication_statuses?: PublicationStatus[];
   filter_can_moderate?: boolean;
 }
@@ -53,6 +53,7 @@ export type GetProjectsChildProps = State & {
   onChangeSorting: (sort: Sort) => void;
   onChangeAreas: (areas: string[]) => void;
   onChangeTopics: (topics: string[]) => void;
+  onChangePublicationStatus: (publicationStatus: PublicationStatus) => void;
 };
 
 interface State {
@@ -77,7 +78,7 @@ export default class GetProjects extends Component<Props, State> {
         sort: this.props.sort,
         areas: undefined,
         topics: undefined,
-        publication_status: undefined,
+        // publication_status: undefined,
         publication_statuses: undefined
       },
       projectsList: undefined,
@@ -152,7 +153,7 @@ export default class GetProjects extends Component<Props, State> {
         sort: props.sort,
         areas: props.areas,
         topics: props.topics,
-        publication_status: props.publicationStatus,
+        // publication_status: props.publicationStatus,
         publication_statuses: props.publicationStatuses,
         filter_can_moderate: props.filterCanModerate,
       }, isNil)
@@ -189,6 +190,13 @@ export default class GetProjects extends Component<Props, State> {
     });
   }
 
+  handlePublicationStatusOnChange = (publicationStatus: PublicationStatus) => {
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      publication_statuses: [publicationStatus]
+    });
+  }
+
   render() {
     const { children } = this.props;
     return (children as children)({
@@ -196,7 +204,8 @@ export default class GetProjects extends Component<Props, State> {
       onLoadMore: this.loadMore,
       onChangeSorting: this.handleSortOnChange,
       onChangeAreas: this.handleAreasOnChange,
-      onChangeTopics: this.handleTopicsOnChange
+      onChangeTopics: this.handleTopicsOnChange,
+      onChangePublicationStatus: this.handlePublicationStatusOnChange
     });
   }
 }
