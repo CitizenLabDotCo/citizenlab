@@ -20,7 +20,7 @@ const Container = styled.div`
   text-transform: uppercase;
   text-align: center;
   font-weight: 600;
-  background-color: ${(props: any) => props.color}
+  background-color: ${(props: any) => props.color};
 `;
 
 type Props = {

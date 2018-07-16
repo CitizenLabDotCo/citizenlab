@@ -1,23 +1,25 @@
-import React from 'react';
-
+import React, { SFC } from 'react';
 import styled from 'styled-components';
-import { fontSize, colors } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
-export interface Props {
+interface Props {
   color: keyof typeof colors;
 }
 
-const StatusLabel = styled.span`
+const StyledStatusLabel = styled.span`
   background: ${(props: Props) => rgba(colors[props.color], .15)};
   border-radius: 5px;
   color: ${(props: Props) => colors[props.color]};
-  display: inline-block;
-  font-size: ${fontSize('xs')};
-  line-height: 1;
-  margin: .5em;
-  padding: calc(1em/3) .75em;
+  display: inline-flex;
+  align-items: center;
+  font-size: ${fontSizes.xs}px;
+  line-height: ${fontSizes.xs}px;
+  padding: 5px;
+  margin-left: 10px;
   text-transform: uppercase;
 `;
 
-export default (props: Props) => <StatusLabel {...props} />;
+const StatusLabel: SFC<Props>  = (props: Props) => <StyledStatusLabel {...props} />;
+
+export default StatusLabel;

@@ -6,9 +6,10 @@ import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
 import Button from 'components/UI/Button';
 import SelectAreas from './SelectAreas';
+import SelectPublicationStatus from './SelectPublicationStatus';
 
 // resources
-import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps } from 'resources/GetProjects';
+import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps, PublicationStatus } from 'resources/GetProjects';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -39,7 +40,7 @@ const FiltersArea = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-bottom: 20px;
 
   ${media.smallerThanMaxTablet`
@@ -144,6 +145,10 @@ class ProjectCards extends React.PureComponent<Props, State> {
     this.props.onChangeAreas(areas);
   }
 
+  handlePublicationStatusOnChange = (status: PublicationStatus) => {
+    this.props.onChangePublicationStatus(status);
+  }
+
   render() {
     const { queryParameters, projectsList, hasMore, querying, loadingMore } = this.props;
     const hasProjects = (projectsList && projectsList.length > 0);
@@ -153,6 +158,10 @@ class ProjectCards extends React.PureComponent<Props, State> {
       <Container id="e2e-projects-container">
         {this.props.hideAllFilters !== true &&
           <FiltersArea id="e2e-projects-filters">
+            <FilterArea>
+              <SelectPublicationStatus onChange={this.handlePublicationStatusOnChange} />
+            </FilterArea>
+
             <FilterArea>
               <SelectAreas selectedAreas={selectedAreas} onChange={this.handleAreasOnChange} />
             </FilterArea>

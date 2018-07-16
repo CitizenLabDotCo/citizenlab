@@ -3,7 +3,7 @@ import isString from 'lodash/isString';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { IProjectImageData, projectImagesStream } from 'services/projectImages';
+import { IGroupsProjectsData, groupsProjectsByProjectIdStream } from 'services/groupsProjects';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
@@ -11,19 +11,19 @@ interface InputProps {
   resetOnChange?: boolean;
 }
 
-type children = (renderProps: GetProjectImagesChildProps) => JSX.Element | null;
+type children = (renderProps: GetProjectGroupsChildProps) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
 }
 
 interface State {
-  projectImages: IProjectImageData[] | undefined | null | Error;
+  projectGroups: IGroupsProjectsData[] | undefined | null | Error;
 }
 
-export type GetProjectImagesChildProps = IProjectImageData[] | undefined | null | Error;
+export type GetProjectGroupsChildProps = IGroupsProjectsData[] | undefined | null | Error;
 
-export default class GetProjectImages extends React.Component<Props, State> {
+export default class GetProjectGroups extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
@@ -34,7 +34,7 @@ export default class GetProjectImages extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      projectImages: undefined
+      projectGroups: undefined
     };
   }
 
@@ -46,12 +46,12 @@ export default class GetProjectImages extends React.Component<Props, State> {
     this.subscriptions = [
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        tap(() => resetOnChange && this.setState({ projectImages: undefined })),
+        tap(() => resetOnChange && this.setState({ projectGroups: undefined })),
         filter(({ projectId }) => isString(projectId)),
-        switchMap(({ projectId }: { projectId: string }) => projectImagesStream(projectId).observable)
+        switchMap(({ projectId }: { projectId: string }) => groupsProjectsByProjectIdStream(projectId).observable)
       )
-      .subscribe((projectImages) => {
-        this.setState({ projectImages: (!isNilOrError(projectImages) ? projectImages.data : projectImages) });
+      .subscribe((projectGroups) => {
+        this.setState({ projectGroups: (!isNilOrError(projectGroups) ? projectGroups.data : projectGroups) });
       })
     ];
   }
@@ -67,7 +67,7 @@ export default class GetProjectImages extends React.Component<Props, State> {
 
   render() {
     const { children } = this.props;
-    const { projectImages } = this.state;
-    return (children as children)(projectImages);
+    const { projectGroups } = this.state;
+    return (children as children)(projectGroups);
   }
 }
