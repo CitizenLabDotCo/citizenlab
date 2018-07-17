@@ -111,6 +111,7 @@ RSpec.configure do |config|
 
   # from https://github.com/influitive/apartment/wiki/Testing-Your-Application
   config.before(:suite) do
+    require './engines/email_campaigns/spec/factories/campaigns.rb'
     # Clean all tables to start
     DatabaseCleaner.clean_with :truncation, {:except => %w[spatial_ref_sys]}
     # Use transactions for tests
