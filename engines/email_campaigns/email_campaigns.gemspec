@@ -20,9 +20,9 @@ Gem::Specification.new do |s|
   # s.add_dependency "knock", "~> 2.1.1"
   s.add_dependency "apartment", "~> 2.1.0"
   s.add_dependency "apartment-sidekiq"
+  s.add_dependency 'ice_cube'
 
   s.add_development_dependency "rspec_api_documentation"
   s.add_development_dependency "rspec-rails"
 
-  s.add_dependency 'ice_cube'
 end

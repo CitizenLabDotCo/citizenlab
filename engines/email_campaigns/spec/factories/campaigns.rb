@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :campaign, :class => EmailCampaigns::Campaign do
-    sent_at "2018-07-17 09:50:57"
+    sent_at nil
     author
     sender "author"
     reply_to "author"
