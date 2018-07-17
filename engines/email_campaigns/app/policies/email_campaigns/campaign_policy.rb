@@ -29,6 +29,10 @@ module EmailCampaigns
       !record.sent? && user&.active? && user.admin?
     end
 
+    def send?
+      !record.sent? && user&.active? && user.admin?
+    end
+
     def destroy?
       update?
     end
