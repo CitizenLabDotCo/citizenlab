@@ -5,6 +5,8 @@ module EmailCampaigns
     REPLY_TOS = %w(organization author)
     MAX_SUBJECT_LEN = 80
 
+    belongs_to :author, class_name: 'User'
+    
     validates :sender, presence: true, inclusion: { in: SENDERS}
     validates :reply_to, presence: true, inclusion: {in: REPLY_TOS }
 
