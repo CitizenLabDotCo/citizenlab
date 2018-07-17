@@ -16,5 +16,9 @@ module EmailCampaigns
     def sent?
       self.sent_at
     end
+
+    def recipients
+      User.all
+    end
   end
 end

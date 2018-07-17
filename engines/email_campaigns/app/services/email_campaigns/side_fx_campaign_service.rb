@@ -18,6 +18,14 @@ module EmailCampaigns
       LogActivityJob.perform_later(campaign, 'changed', user, campaign.updated_at.to_i)
     end
 
+    def before_send campaign, user
+      
+    end
+
+    def after_send campaign, user
+      LogActivityJob.perform_later(campaign, 'sent', user, campaign.updated_at.to_i)
+    end
+
     def before_destroy campaign, user
 
     end

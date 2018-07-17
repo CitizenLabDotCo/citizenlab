@@ -1,7 +1,7 @@
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
 
-    before_action :set_campaign, only: [:show, :update, :destroy]
+    before_action :set_campaign, only: [:show, :update, :send, :destroy]
     def index
       @campaigns = policy_scope(Campaign)
         .page(params.dig(:page, :number))
@@ -51,6 +51,11 @@ module EmailCampaigns
       else
         head 500
       end
+    end
+
+    def do_send
+      SendCampaignJob.perform_later(@campaign)
+      render json: @campaign
     end
 
     private
