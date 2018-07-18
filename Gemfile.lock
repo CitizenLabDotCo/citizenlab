@@ -26,6 +26,7 @@ PATH
       apartment-sidekiq
       ice_cube
       kaminari (~> 1.1.1)
+      liquid (~> 4.0)
       mailgun-ruby (~> 1.1.6)
       pundit (~> 1.1.0)
       rails (~> 5.1.5)
