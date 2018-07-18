@@ -194,6 +194,26 @@
         }
       }, */
 
+      "integration_onze_stad_app": {
+        "type": "object",
+        "description":  "Allow posting ideas to Onze StadApp as news.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["app_id", "api_key"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "app_id": {
+            "type": "string",
+            "private": true
+          },
+          "api_key": {
+            "type": "string",
+            "private": true
+          }
+        }
+      },
+
       "projects": {
         "type": "object",
         "description":	"",
