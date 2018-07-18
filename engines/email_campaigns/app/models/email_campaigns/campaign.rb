@@ -18,7 +18,7 @@ module EmailCampaigns
     end
 
     def recipients
-      User.all
+      User.active
     end
   end
 end
