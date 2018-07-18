@@ -26,8 +26,8 @@ class New extends React.Component<Props> {
     createCampaign({
       ...values
     })
-      .then(() => {
-        clHistory.push('/admin/campaigns');
+      .then((response) => {
+        clHistory.push(`/admin/campaigns/${response.data.id}`);
       })
       .catch((errorResponse) => {
         const apiErrors = (errorResponse as API.ErrorResponse).json.errors;

@@ -135,12 +135,6 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
 
         </Section>
 
-        <Section>
-          <SectionTitle>
-            3. <FormattedMessage {...messages.formTitleWhen} />
-          </SectionTitle>
-        </Section>
-
         <FormikSubmitWrapper
           {...{ isValid, isSubmitting, status, touched }}
         />

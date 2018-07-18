@@ -36,7 +36,7 @@ class Edit extends React.Component<Props> {
       ...values
     })
       .then(() => {
-        clHistory.push('/admin/campaigns');
+        clHistory.push(`/admin/campaigns/${this.props.campaign.id}`);
       })
       .catch((errorResponse) => {
         const apiErrors = (errorResponse as API.ErrorResponse).json.errors;

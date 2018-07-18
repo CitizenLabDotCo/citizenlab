@@ -2,8 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { deleteCampaign } from 'services/campaigns';
-
 import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -39,14 +37,6 @@ interface State { }
 
 class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
 
-  handleOnDeleteClick = (campaignId) => (event) => {
-    const deleteMessage = this.props.intl.formatMessage(messages.campaignDeletionConfirmation);
-    event.preventDefault();
-    if (window.confirm(deleteMessage)) {
-      deleteCampaign(campaignId);
-    }
-  }
-
   render() {
     const campaigns = this.props.campaigns;
 
@@ -74,9 +64,9 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
           <List key={campaigns.length}>
             {campaigns.map((campaign) => (
               campaign.attributes.sent_at ?
-                <SentCampaignRow key={campaign.id} campaign={campaign}/>
+                <SentCampaignRow key={campaign.id} campaign={campaign} />
               :
-                <DraftCampaignRow key={campaign.id} campaign={campaign} onDeleteClick={this.handleOnDeleteClick(campaign.id)}/>
+                <DraftCampaignRow key={campaign.id} campaign={campaign} />
             ))}
           </List>
         </PageWrapper>

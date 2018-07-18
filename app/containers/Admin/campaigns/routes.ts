@@ -15,9 +15,9 @@ export default () => ({
       path: ':campaignId/edit',
       getComponent: loadAndRender(import('./Edit')),
     },
-    // {
-    //   path: ':campaignId',
-    //   getComponent: loadAndRender(import('./Show')),
-    // },
+    {
+      path: ':campaignId',
+      getComponent: loadAndRender(import('./Show')),
+    },
   ],
 });

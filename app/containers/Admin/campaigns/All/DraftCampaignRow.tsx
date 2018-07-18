@@ -9,10 +9,9 @@ import StatusLabel from 'components/UI/StatusLabel';
 
 interface Props {
   campaign: ICampaignData;
-  onDeleteClick: (event: any) => void;
 }
 
-const DraftCampaignRow = ({ campaign, onDeleteClick }: Props) => (
+const DraftCampaignRow = ({ campaign }: Props) => (
   <Row
     key={campaign.id}
     id={campaign.id}
@@ -23,11 +22,9 @@ const DraftCampaignRow = ({ campaign, onDeleteClick }: Props) => (
     <StatusLabel color={'draftYellow'}>
       <FormattedMessage {...messages.draft} />
     </StatusLabel>
-    <Button onClick={onDeleteClick} style="text" circularCorners={false} icon="delete">
-      <FormattedMessage {...messages.deleteButtonLabel} />
-    </Button>
-    <Button linkTo={`/admin/campaigns/${campaign.id}/edit`} style="secondary" circularCorners={false} icon="edit">
-      <FormattedMessage {...messages.editButtonLabel} />
+
+    <Button linkTo={`/admin/campaigns/${campaign.id}`} style="secondary" circularCorners={false} icon="edit">
+      <FormattedMessage {...messages.manageButtonLabel} />
     </Button>
   </Row>
 );
