@@ -13,6 +13,7 @@ import settingsAreasRoutes from './settings/areas/routes';
 import customFieldRoutes from './settings/registration/CustomFields/routes';
 import pagesRoutes from './pages/routes';
 import clusteringsRoutes from './clusterings/routes';
+import campaignsRoutes from './campaigns/routes';
 
 export default () => ({
   path: 'admin',
@@ -32,5 +33,6 @@ export default () => ({
     pagesRoutes(),
     clusteringsRoutes(),
     invitationsRoutes(),
+    campaignsRoutes(),
   ],
 });
