@@ -7,7 +7,7 @@ module EmailCampaigns
       multiloc_service = MultilocService.new
 
       message = mail(
-        from: "#{from_name(campaign.sender, campaign.author, recipient)} <#{ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')}>"
+        from: "#{from_name(campaign.sender, campaign.author, recipient)} <#{ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')}>",
         to: recipient.email,
         subject: multiloc_service.t(campaign.subject_multiloc, recipient),
         body: multiloc_service.t(campaign.body_multiloc, recipient)
