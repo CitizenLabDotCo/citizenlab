@@ -29,7 +29,7 @@ module EmailCampaigns
       !record.sent? && user&.active? && user.admin?
     end
 
-    def send?
+    def do_send?
       !record.sent? && user&.active? && user.admin?
     end
 
