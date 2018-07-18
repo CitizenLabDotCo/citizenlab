@@ -200,6 +200,7 @@
   "app.containers.Admin.campaigns.addCampaignTitle": "New campaign",
   "app.containers.Admin.campaigns.campaignDeletionConfirmation": "Are you sure?",
   "app.containers.Admin.campaigns.deleteButtonLabel": "Delete",
+  "app.containers.Admin.campaigns.draft": "Draft",
   "app.containers.Admin.campaigns.editButtonLabel": "Edit",
   "app.containers.Admin.campaigns.editCampaignTitle": "Edit campaign",
   "app.containers.Admin.campaigns.fieldBody": "Email Message",
