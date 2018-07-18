@@ -1,7 +1,7 @@
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
 
-    before_action :set_campaign, only: [:show, :update, :do_send, :destroy]
+    before_action :set_campaign, only: [:show, :update, :do_send, :send_preview, :destroy]
     def index
       @campaigns = policy_scope(Campaign)
         .order(sent_at: :desc)
@@ -58,6 +58,11 @@ module EmailCampaigns
       SendCampaignJob.perform_later(@campaign)
       @campaign.update(sent_at: Time.now)
       render json: @campaign
+    end
+
+    def send_preview
+      CampaignMailer.campaign_mail(@campaign, current_user).deliver_later
+      head :ok
     end
 
     private
