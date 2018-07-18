@@ -16,7 +16,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import localize, { injectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
-import FormikEditorMultiloc from 'components/UI/FormikEditorMultiloc';
+import FormikQuillMultiloc from 'components/QuillEditor/FormikQuillMultiloc';
 
 export interface FormValues {
   sender: 'author' | 'organization';
@@ -124,7 +124,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
           <SectionField>
             <Field
               name="body_multiloc"
-              component={FormikEditorMultiloc}
+              component={FormikQuillMultiloc}
               label={<FormattedMessage {...messages.fieldBody} />}
             />
             {touched.body_multiloc && <Error

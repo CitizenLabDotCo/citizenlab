@@ -67,5 +67,8 @@ export default defineMessages({
     id: 'app.containers.Admin.campaigns.editCampaignTitle',
     defaultMessage: 'Edit campaign',
   },
-
+  draft: {
+    id: 'app.containers.Admin.campaigns.draft',
+    defaultMessage: 'Draft',
+  },
 });

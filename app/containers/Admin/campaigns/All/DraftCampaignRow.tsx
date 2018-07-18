@@ -5,6 +5,7 @@ import T from 'components/T';
 import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import StatusLabel from 'components/UI/StatusLabel';
 
 interface Props {
   campaign: ICampaignData;
@@ -19,6 +20,9 @@ const DraftCampaignRow = ({ campaign, onDeleteClick }: Props) => (
     <TextCell className="expand">
       <T value={campaign.attributes.subject_multiloc} />
     </TextCell>
+    <StatusLabel color={'draftYellow'}>
+      <FormattedMessage {...messages.draft} />
+    </StatusLabel>
     <Button onClick={onDeleteClick} style="text" circularCorners={false} icon="delete">
       <FormattedMessage {...messages.deleteButtonLabel} />
     </Button>
