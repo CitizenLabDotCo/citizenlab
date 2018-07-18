@@ -200,6 +200,7 @@
   "app.containers.Admin.campaigns.addCampaignTitle": "",
   "app.containers.Admin.campaigns.campaignDeletionConfirmation": "",
   "app.containers.Admin.campaigns.deleteButtonLabel": "",
+  "app.containers.Admin.campaigns.draft": "",
   "app.containers.Admin.campaigns.editButtonLabel": "",
   "app.containers.Admin.campaigns.editCampaignTitle": "",
   "app.containers.Admin.campaigns.fieldBody": "",
