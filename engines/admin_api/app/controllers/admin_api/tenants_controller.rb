@@ -5,7 +5,7 @@ module AdminApi
     skip_around_action :switch_tenant
 
     def index
-      @tenants = Tenant.all
+      @tenants = Tenant.all.order(name: :asc)
       @tenants = @tenants.where("name LIKE ?", params[:search] + '%') if params[:search]
       render json: @tenants
     end
