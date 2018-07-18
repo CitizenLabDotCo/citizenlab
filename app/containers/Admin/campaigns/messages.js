@@ -31,6 +31,10 @@ export default defineMessages({
     id: 'app.containers.Admin.campaigns.editButtonLabel',
     defaultMessage: 'Edit',
   },
+  manageButtonLabel: {
+    id: 'app.containers.Admin.campaigns.manageButtonLabel',
+    defaultMessage: 'Manage',
+  },
   fieldSender: {
     id: 'app.containers.Admin.campaigns.fieldSender',
     defaultMessage: 'From',
@@ -70,5 +74,17 @@ export default defineMessages({
   draft: {
     id: 'app.containers.Admin.campaigns.draft',
     defaultMessage: 'Draft',
+  },
+  sendNowButton: {
+    id: 'app.containers.Admin.campaigns.sendNowButton',
+    defaultMessage: 'Send now',
+  },
+  sendPreviewButton: {
+    id: 'app.containers.Admin.campaigns.sendPreviewButton',
+    defaultMessage: 'Send me a preview',
+  },
+  previewSentConfirmation: {
+    id: 'app.containers.Admin.campaigns.previewSentConfirmation',
+    defaultMessage: 'A preview email has been sent to your email address',
   },
 });

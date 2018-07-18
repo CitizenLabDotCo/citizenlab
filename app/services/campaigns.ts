@@ -46,6 +46,14 @@ export function updateCampaign(campaignId: string, campaignData: CampaignUpdate)
   return streams.update<ICampaign>(`${apiEndpoint}/${campaignId}`, campaignId, campaignData);
 }
 
+export function sendCampaign(campaignId: string) {
+  return streams.add<ICampaign>(`${apiEndpoint}/${campaignId}/send`, {});
+}
+
+export function sendCampaignPreview(campaignId: string) {
+  return streams.add<ICampaign>(`${apiEndpoint}/${campaignId}/send_preview`, {});
+}
+
 export function deleteCampaign(campaignId: string) {
   return streams.delete(`${apiEndpoint}/${campaignId}`, campaignId);
 }
