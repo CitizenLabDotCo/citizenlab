@@ -36,12 +36,12 @@ class CustomFieldOptionPolicy < ApplicationPolicy
   def permitted_attributes_for_create
     [
       :key,
-      title_multiloc: I18n.available_locales,
+      title_multiloc: CL2_SUPPORTED_LOCALES,
     ]
   end
 
   def permitted_attributes_for_update
-    [title_multiloc: I18n.available_locales]
+    [title_multiloc: CL2_SUPPORTED_LOCALES]
   end
 
   def permitted_attributes_for_reorder

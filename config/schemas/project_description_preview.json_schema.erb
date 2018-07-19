@@ -3,6 +3,6 @@
     "type": "object",
     "additionalProperties": false,
     "properties": {
-     <%= I18n.available_locales.map{|l| "\"#{l.to_s}\": {\"type\": \"string\", \"maxLength\": 280}" }.join(",") %>
+     <%= CL2_SUPPORTED_LOCALES.map{|l| "\"#{l.to_s}\": {\"type\": \"string\", \"maxLength\": 280}" }.join(",") %>
      } 
  }

@@ -36,7 +36,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": [<%= I18n.available_locales.map{|l| "\"#{l}\""}.join(",") %>]
+              "enum": [<%= CL2_SUPPORTED_LOCALES.map{|l| "\"#{l}\""}.join(",") %>]
             },
             "uniqueItems": true,
             "minItems": 1,
@@ -56,7 +56,7 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              <%= I18n.available_locales.map{|l| "\"#{l.to_s}\": {\"type\": \"string\", \"maxLength\": 45}" }.join(",") %>
+              <%= CL2_SUPPORTED_LOCALES.map{|l| "\"#{l.to_s}\": {\"type\": \"string\", \"maxLength\": 45}" }.join(",") %>
             }
           },
           "header_slogan": {
@@ -64,7 +64,7 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              <%= I18n.available_locales.map{|l| "\"#{l.to_s}\": {\"type\": \"string\", \"maxLength\": 90}" }.join(",") %>
+              <%= CL2_SUPPORTED_LOCALES.map{|l| "\"#{l.to_s}\": {\"type\": \"string\", \"maxLength\": 90}" }.join(",") %>
             } 
           },
           "meta_title": {
@@ -378,7 +378,7 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        <%= I18n.available_locales.map{|l| "\"#{l.to_s}\": {\"type\": \"string\"}"}.join(",") %>
+        <%= CL2_SUPPORTED_LOCALES.map{|l| "\"#{l.to_s}\": {\"type\": \"string\"}"}.join(",") %>
       }
     }
   }
