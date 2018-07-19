@@ -108,6 +108,7 @@
   "app.components.admin.UserFilterConditions.addCondition": "",
   "app.components.admin.UserFilterConditions.field_email": "",
   "app.components.admin.UserFilterConditions.field_lives_in": "",
+  "app.components.admin.UserFilterConditions.field_participated_in_project": "",
   "app.components.admin.UserFilterConditions.field_registration_completed_at": "",
   "app.components.admin.UserFilterConditions.field_role": "",
   "app.components.admin.UserFilterConditions.predicate_begins_with": "",
