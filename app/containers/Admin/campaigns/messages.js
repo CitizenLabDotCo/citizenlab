@@ -43,6 +43,10 @@ export default defineMessages({
     id: 'app.containers.Admin.campaigns.fieldReplyTo',
     defaultMessage: 'Replies should go to',
   },
+  fieldTo: {
+    id: 'app.containers.Admin.campaigns.fieldTo',
+    defaultMessage: 'To',
+  },
   fieldSubject: {
     id: 'app.containers.Admin.campaigns.fieldSubject',
     defaultMessage: 'Email Subject',

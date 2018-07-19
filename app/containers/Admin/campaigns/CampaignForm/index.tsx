@@ -17,12 +17,15 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import localize, { injectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 import FormikQuillMultiloc from 'components/QuillEditor/FormikQuillMultiloc';
+import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
+import FormikMultipleSelect from 'components/UI/FormikMultipleSelect';
 
 export interface FormValues {
   sender: 'author' | 'organization';
   reply_to: 'author' | 'organization';
   subject_multiloc: Multiloc;
   body_multiloc: Multiloc;
+  group_ids: string[];
 }
 
 interface InputProps {
@@ -60,6 +63,13 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
         label: !isNilOrError(tenant) && localize(tenant.attributes.settings.core.organization_name),
       }
     ];
+  }
+
+  groupsOptions = (groups: GetGroupsChildProps) => {
+    return !isNilOrError(groups.groupsList) && groups.groupsList.map((group) => ({
+      label: this.props.localize(group.attributes.title_multiloc),
+      value: group.id,
+    }));
   }
 
   render() {
@@ -101,6 +111,21 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
               fieldName="reply_to"
               apiErrors={errors.reply_to}
             />}
+          </SectionField>
+
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.fieldTo} />
+            </Label>
+            <GetGroups>
+              {(groups) => (isNilOrError(groups)) ? null : (
+                <Field
+                  name="group_ids"
+                  component={FormikMultipleSelect}
+                  options={this.groupsOptions(groups)}
+                />
+              )}
+            </GetGroups>
           </SectionField>
         </Section>
 
@@ -146,7 +171,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
 
 const Data = adopt<DataProps, InputProps>({
   user: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
-  tenant: ({ render }) => <GetTenant>{render}</GetTenant> ,
+  tenant: ({ render }) => <GetTenant>{render}</GetTenant>,
 });
 
 const CampaignFormWithHOCs = localize(CampaignForm);

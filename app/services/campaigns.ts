@@ -18,8 +18,11 @@ export interface ICampaignData {
   };
   relationships: {
     author: {
-      data: IRelationship[];
+      data: IRelationship;
     };
+    groups: {
+      data: IRelationship[];
+    }
   };
 }
 
@@ -28,6 +31,7 @@ export interface CampaignUpdate {
   body_multiloc?: Multiloc;
   sender?: string;
   reply_to?: string;
+  group_ids?: string[];
 }
 
 export interface ICampaign {
@@ -39,11 +43,11 @@ export function listCampaigns(streamParams: IStreamParams | null = null) {
 }
 
 export function createCampaign(campaignData: CampaignUpdate) {
-  return streams.add<ICampaign>(`${apiEndpoint}`, campaignData);
+  return streams.add<ICampaign>(`${apiEndpoint}`, { campaign: campaignData });
 }
 
 export function updateCampaign(campaignId: string, campaignData: CampaignUpdate) {
-  return streams.update<ICampaign>(`${apiEndpoint}/${campaignId}`, campaignId, campaignData);
+  return streams.update<ICampaign>(`${apiEndpoint}/${campaignId}`, campaignId, { campaign: campaignData });
 }
 
 export function sendCampaign(campaignId: string) {
