@@ -51,9 +51,9 @@ class WebApi::V1::EventsController < ApplicationController
       :project_id,
       :start_at,
       :end_at,
-      location_multiloc: I18n.available_locales,
-      title_multiloc: I18n.available_locales,
-      description_multiloc: I18n.available_locales
+      location_multiloc: CL2_SUPPORTED_LOCALES,
+      title_multiloc: CL2_SUPPORTED_LOCALES,
+      description_multiloc: CL2_SUPPORTED_LOCALES
     )
   end
 
