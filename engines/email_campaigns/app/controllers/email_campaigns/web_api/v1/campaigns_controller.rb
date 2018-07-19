@@ -31,6 +31,8 @@ module EmailCampaigns
     end
 
     def update
+      params[:campaign][:group_ids] ||= [] if params[:campaign].has_key?(:group_ids)
+
       @campaign.assign_attributes(campaign_params)
 
       SideFxCampaignService.new.before_update(@campaign, current_user)
@@ -76,6 +78,7 @@ module EmailCampaigns
       params.require(:campaign).permit(
         :sender,
         :reply_to,
+        group_ids: [],
         subject_multiloc: I18n.available_locales,
         body_multiloc: I18n.available_locales,
       )
