@@ -233,19 +233,19 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
         isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/ideas`))
       },
       {
+        id: 'emails',
+        link: '/admin/campaigns',
+        iconName: 'emails',
+        message: 'emails',
+        featureName: 'segmented_emailing',
+        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/campaigns`))
+      },
+      {
         id: 'settings',
         link: '/admin/settings/general',
         iconName: 'setting',
         message: 'settings',
         isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/settings`))
-      },
-      {
-        id: 'campaigns',
-        link: '/admin/campaigns',
-        iconName: 'setting',
-        message: 'campaigns',
-        featureName: 'segmented_emailing',
-        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/campaigns`))
       },
     ];
     this.subscriptions = [];
