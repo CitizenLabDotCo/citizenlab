@@ -1,7 +1,7 @@
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
 
-    before_action :set_campaign, only: [:show, :update, :do_send, :send_preview, :destroy]
+    before_action :set_campaign, only: [:show, :update, :do_send, :send_preview, :preview, :destroy]
     def index
       @campaigns = policy_scope(Campaign)
         .order(sent_at: :desc)
@@ -74,6 +74,11 @@ module EmailCampaigns
     def send_preview
       CampaignMailer.campaign_mail(@campaign, current_user).deliver_later
       head :ok
+    end
+
+    def preview
+      html = CampaignMailer.new.campaign_mail_html(@campaign, current_user)
+      render json: {html: html}
     end
 
     private

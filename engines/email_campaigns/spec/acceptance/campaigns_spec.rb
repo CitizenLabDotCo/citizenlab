@@ -37,6 +37,16 @@ resource "Campaigns" do
     end
   end
 
+  get "/web_api/v1/campaigns/:id/preview" do
+    let(:id) {@campaigns.first.id}
+
+    example_request "Get a campaign HTML preview" do
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response[:html]).to be_present 
+    end
+  end
+
   post "web_api/v1/campaigns" do
     with_options scope: :campaign do
       parameter :sender, "Who is shown as the sender towards the recipients, either #{EmailCampaigns::Campaign::SENDERS.join(' or ')}", required: true
