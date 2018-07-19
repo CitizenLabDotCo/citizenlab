@@ -32,10 +32,10 @@ describe SmartGroupRules::ParticipatedInProject do
       @user1 = create(:user)
       @user2 = create(:user)
       @user3 = create(:user)
-      @idea1 = create(:idea, project: @projects[0], author: @user1)
-      @vote = create(:vote, voteable: @idea, user: @user2)
-      @comment = create(:comment, idea: @idea, author: @user3)
-      @idea2 = create(:idea, project: @projects[1], author: @user3)
+      @idea1 = create(:idea, project: @project1, author: @user1)
+      @vote = create(:vote, votable: @idea1, user: @user2)
+      @comment = create(:comment, idea: @idea1, author: @user3)
+      @idea2 = create(:idea, project: @project2, author: @user3)
 
     end
 
