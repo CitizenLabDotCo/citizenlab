@@ -6,7 +6,12 @@ module EmailCampaigns
     MAX_SUBJECT_LEN = 80
 
     belongs_to :author, class_name: 'User'
-    
+    has_many :campaigns_groups, dependent: :destroy
+    has_many :groups, through: :campaigns_groups
+
+    has_many :campaigns_recipients, dependent: :destroy
+    has_many :recipients, source: :user, through: :campaigns_recipients
+
     validates :sender, presence: true, inclusion: { in: SENDERS}
     validates :reply_to, presence: true, inclusion: {in: REPLY_TOS }
 
@@ -17,8 +22,8 @@ module EmailCampaigns
       self.sent_at
     end
 
-    def recipients
-      User.active
+    def calculated_recipients
+      groups.map(&:members).inject(:+).uniq
     end
   end
 end
