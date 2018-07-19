@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180717144120) do
+ActiveRecord::Schema.define(version: 20180719131553) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -127,6 +127,27 @@ ActiveRecord::Schema.define(version: 20180717144120) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_email_campaigns_campaigns_on_author_id"
+  end
+
+  create_table "email_campaigns_campaigns_groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "campaign_id"
+    t.uuid "group_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["campaign_id", "group_id"], name: "index_campaigns_groups", unique: true
+    t.index ["campaign_id"], name: "index_email_campaigns_campaigns_groups_on_campaign_id"
+    t.index ["group_id"], name: "index_email_campaigns_campaigns_groups_on_group_id"
+  end
+
+  create_table "email_campaigns_campaigns_recipients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "campaign_id"
+    t.uuid "user_id"
+    t.string "delivery_status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["campaign_id", "user_id"], name: "index_campaigns_users", unique: true
+    t.index ["campaign_id"], name: "index_email_campaigns_campaigns_recipients_on_campaign_id"
+    t.index ["user_id"], name: "index_email_campaigns_campaigns_recipients_on_user_id"
   end
 
   create_table "email_snippets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -483,6 +504,8 @@ ActiveRecord::Schema.define(version: 20180717144120) do
   add_foreign_key "custom_field_options", "custom_fields"
   add_foreign_key "email_campaigns_campaign_email_commands", "users", column: "recipient_id"
   add_foreign_key "email_campaigns_campaigns", "users", column: "author_id"
+  add_foreign_key "email_campaigns_campaigns_groups", "email_campaigns_campaigns", column: "campaign_id"
+  add_foreign_key "email_campaigns_campaigns_recipients", "email_campaigns_campaigns", column: "campaign_id"
   add_foreign_key "events", "projects"
   add_foreign_key "groups_projects", "groups"
   add_foreign_key "groups_projects", "projects"
