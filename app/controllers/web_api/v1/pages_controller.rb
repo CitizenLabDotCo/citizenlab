@@ -69,8 +69,8 @@ class WebApi::V1::PagesController < ::ApplicationController
   def page_params
     params.require(:page).permit(
       :slug, 
-      title_multiloc: I18n.available_locales, 
-      body_multiloc: I18n.available_locales
+      title_multiloc: CL2_SUPPORTED_LOCALES, 
+      body_multiloc: CL2_SUPPORTED_LOCALES
     )
   end
 

@@ -91,7 +91,7 @@ class WebApi::V1::ClusteringsController < ApplicationController
   def clustering_params
     all_structures = params.require(:clustering).fetch(:structure, nil).try(:permit!)
     params.require(:clustering).permit(
-      title_multiloc: I18n.available_locales,
+      title_multiloc: CL2_SUPPORTED_LOCALES,
     ).merge(:structure => all_structures)
   end
 

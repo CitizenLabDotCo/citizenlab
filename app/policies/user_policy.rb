@@ -51,7 +51,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    shared = [:first_name, :last_name, :email, :password, :avatar, :locale, custom_field_values: {}, bio_multiloc: I18n.available_locales]
+    shared = [:first_name, :last_name, :email, :password, :avatar, :locale, custom_field_values: {}, bio_multiloc: CL2_SUPPORTED_LOCALES]
     if user && user.admin?
       shared + [roles: [:type, :project_id]]
     else
