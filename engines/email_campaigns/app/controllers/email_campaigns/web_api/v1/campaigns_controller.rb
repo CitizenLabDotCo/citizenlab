@@ -77,7 +77,8 @@ module EmailCampaigns
     end
 
     def preview
-      html = CampaignMailer.new.campaign_mail_html(@campaign, current_user)
+      mail = CampaignMailer.campaign_mail(@campaign, current_user)
+      html = mail.parts[1].body.to_s
       render json: {html: html}
     end
 

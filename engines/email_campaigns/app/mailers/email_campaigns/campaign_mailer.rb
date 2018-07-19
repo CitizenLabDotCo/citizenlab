@@ -3,7 +3,11 @@ module EmailCampaigns
     default from: ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')
 
     def campaign_mail campaign, recipient
-      @body_html = campaign_mail_html(campaign, recipient)
+      multiloc_service = MultilocService.new
+
+      body_html_with_liquid = multiloc_service.t(campaign.body_multiloc, recipient)
+      template = Liquid::Template.parse(body_html_with_liquid)
+      @body_html = template.render(liquid_params(recipient))
       @body_text = ActionView::Base.full_sanitizer.sanitize(@body_html)
 
       @tenant_logo_url = Tenant.current.logo.versions[:medium].url
@@ -19,12 +23,6 @@ module EmailCampaigns
       # }
     end
 
-    def campaign_mail_html campaign, recipient
-      multiloc_service = MultilocService.new
-      body_html_with_liquid = multiloc_service.t(campaign.body_multiloc, recipient)
-      template = Liquid::Template.parse(body_html_with_liquid)
-      template.render(liquid_params(recipient))
-    end
 
     
     private
