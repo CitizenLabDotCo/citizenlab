@@ -75,8 +75,8 @@ class IdeaPolicy < ApplicationPolicy
       :author_id,
       :location_description,
       location_point_geojson: [:type, coordinates: []],
-      title_multiloc: I18n.available_locales,
-      body_multiloc: I18n.available_locales,
+      title_multiloc: CL2_SUPPORTED_LOCALES,
+      body_multiloc: CL2_SUPPORTED_LOCALES,
       topic_ids: [],
       area_ids: []
     ]
