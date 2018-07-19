@@ -45,13 +45,14 @@ class Edit extends React.Component<Props> {
       });
   }
 
-  initialValues = () => {
+  initialValues = () : FormValues => {
     const { campaign } = this.props;
     return {
       sender: campaign.attributes.sender,
       reply_to: campaign.attributes.reply_to,
       subject_multiloc: campaign.attributes.subject_multiloc,
       body_multiloc: campaign.attributes.body_multiloc,
+      group_ids: campaign.relationships.groups.data.map(d => d.id),
     };
   }
 

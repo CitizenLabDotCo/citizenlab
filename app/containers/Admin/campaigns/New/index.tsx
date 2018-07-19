@@ -36,12 +36,13 @@ class New extends React.Component<Props> {
       });
   }
 
-  initialValues = () => {
+  initialValues = () : FormValues => {
     return {
       sender: 'author',
       reply_to: 'author',
       subject_multiloc: {},
       body_multiloc: {},
+      group_ids: [],
     };
   }
 
