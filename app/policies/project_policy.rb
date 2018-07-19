@@ -99,9 +99,9 @@ class ProjectPolicy < ApplicationPolicy
       :survey_service,
       :presentation_mode,
       :publication_status,
-      title_multiloc: I18n.available_locales, 
-      description_multiloc: I18n.available_locales,
-      description_preview_multiloc: I18n.available_locales,
+      title_multiloc: CL2_SUPPORTED_LOCALES, 
+      description_multiloc: CL2_SUPPORTED_LOCALES,
+      description_preview_multiloc: CL2_SUPPORTED_LOCALES,
       area_ids: [],
       topic_ids: []
     ]

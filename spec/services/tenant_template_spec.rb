@@ -28,9 +28,9 @@ describe TenantTemplateService do
             core: {
               allowed: true,
               enabled: true,
-              locales: I18n.available_locales,
+              locales: CL2_SUPPORTED_LOCALES,
               organization_type: 'medium_city',
-              organization_name: I18n.available_locales.map { |locale|
+              organization_name: CL2_SUPPORTED_LOCALES.map { |locale|
                 [locale,Faker::Address.city]
               }.to_h,
               timezone: "Europe/Brussels",

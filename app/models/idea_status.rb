@@ -15,11 +15,11 @@ class IdeaStatus < ApplicationRecord
 
   def self.create_defaults
     (CODES - ['custom']).each.with_index do |code, i|
-      title_multiloc = I18n.available_locales.map do |locale|
+      title_multiloc = CL2_SUPPORTED_LOCALES.map do |locale|
         translation = I18n.with_locale(locale){ I18n.t("statuses.#{code}") }
         [locale, translation]
       end.to_h
-      description_multiloc = I18n.available_locales.map do |locale|
+      description_multiloc = CL2_SUPPORTED_LOCALES.map do |locale|
         translation = I18n.with_locale(locale){ I18n.t("statuses.#{code}_description") }
         [locale, translation]
       end.to_h
