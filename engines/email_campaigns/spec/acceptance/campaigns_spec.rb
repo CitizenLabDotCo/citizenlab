@@ -43,6 +43,7 @@ resource "Campaigns" do
       parameter :reply_to, "Who is shown as the reply-to receiver, either #{EmailCampaigns::Campaign::REPLY_TOS.join(' or ')}", required: true
       parameter :subject_multiloc, "The of the email, as a multiloc string, maximal #{EmailCampaigns::Campaign::MAX_SUBJECT_LEN}", required: true
       parameter :body_multiloc, "The body of the email campaign, as a multiloc string. Supports basic HTML", required: true
+      parameter :group_ids, "Array of group ids to whom the email should be sent", required: false
     end
     ValidationErrorHelper.new.error_fields(self, EmailCampaigns::Campaign)
     let(:campaign) { build(:campaign) }
@@ -50,6 +51,7 @@ resource "Campaigns" do
     let(:body_multiloc) { campaign.body_multiloc }
     let(:sender) { 'author' }
     let(:reply_to) { 'author' }
+    let(:group_ids) { [create(:group).id] }
 
     example_request "Create a campaign" do
       expect(response_status).to eq 201
@@ -59,6 +61,7 @@ resource "Campaigns" do
       expect(json_response.dig(:data,:attributes,:sender)).to match sender
       expect(json_response.dig(:data,:attributes,:reply_to)).to match reply_to
       expect(json_response.dig(:data,:relationships,:author,:data,:id)).to eq @user.id
+      expect(json_response.dig(:data,:relationships,:groups,:data).map{|d| d[:id]}).to eq group_ids
     end
   end
 
@@ -68,6 +71,7 @@ resource "Campaigns" do
       parameter :reply_to, "Who is shown as the reply-to receiver, either #{EmailCampaigns::Campaign::REPLY_TOS.join(' or ')}", required: true
       parameter :subject_multiloc, "The of the email, as a multiloc string, maximal #{EmailCampaigns::Campaign::MAX_SUBJECT_LEN}", required: true
       parameter :body_multiloc, "The body of the email campaign, as a multiloc string. Supports basic HTML", required: true
+      parameter :group_ids, "Array of group ids to whom the email should be sent", required: false
     end
     ValidationErrorHelper.new.error_fields(self, EmailCampaigns::Campaign)
 
@@ -77,6 +81,7 @@ resource "Campaigns" do
     let(:body_multiloc) { {"en" => "New body"} }
     let(:sender) { 'organization' }
     let(:reply_to) { 'organization' }
+    let(:group_ids) { [create(:group).id] }
 
     example_request "Update a campaign" do
       expect(response_status).to eq 200
@@ -86,6 +91,7 @@ resource "Campaigns" do
       expect(json_response.dig(:data,:attributes,:sender)).to match sender
       expect(json_response.dig(:data,:attributes,:reply_to)).to match reply_to
       expect(json_response.dig(:data,:relationships,:author,:data,:id)).to eq campaign.author_id
+      expect(json_response.dig(:data,:relationships,:groups,:data).map{|d| d[:id]}).to eq group_ids
     end
   end
 
