@@ -17,6 +17,7 @@ import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 import { InjectedIntlProps } from 'react-intl';
 import StatusLabel from 'components/UI/StatusLabel';
+import PreviewFrame from './PreviewFrame';
 
 const PageTitle = styled.h1`
   width: 100%;
@@ -86,7 +87,7 @@ class Show extends React.Component<Props> {
             <Button linkTo={`/admin/campaigns/${campaign.id}/edit`} style="secondary" circularCorners={false} icon="edit">
               <FormattedMessage {...messages.editButtonLabel} />
             </Button>
-
+            <PreviewFrame campaignId={campaign.id} />
           </div>
           <div>
             <Button
