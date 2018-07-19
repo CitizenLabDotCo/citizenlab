@@ -208,6 +208,7 @@
   "app.containers.Admin.campaigns.fieldReplyTo": "Replies should go to",
   "app.containers.Admin.campaigns.fieldSender": "From",
   "app.containers.Admin.campaigns.fieldSubject": "Email Subject",
+  "app.containers.Admin.campaigns.fieldTo": "To",
   "app.containers.Admin.campaigns.formTitleWhat": "What",
   "app.containers.Admin.campaigns.formTitleWhen": "When",
   "app.containers.Admin.campaigns.formTitleWho": "Who",
