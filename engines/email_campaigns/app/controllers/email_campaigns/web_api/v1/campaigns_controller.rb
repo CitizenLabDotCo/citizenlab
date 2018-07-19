@@ -57,8 +57,17 @@ module EmailCampaigns
     end
 
     def do_send
+      @campaign.update(
+        sent_at: Time.now,
+        campaigns_recipients: @campaign.calculated_recipients.map do |recipient|
+          CampaignsRecipient.new(
+            delivery_status: 'sent',
+            user_id: recipient.id,
+            campaign_id: @campaign.id
+          )
+        end
+      )
       SendCampaignJob.perform_later(@campaign)
-      @campaign.update(sent_at: Time.now)
       render json: @campaign
     end
 
