@@ -29,9 +29,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.settings',
     defaultMessage: 'Settings',
   },
-  campaigns: {
-    id: 'app.containers.AdminPage.SideBar.campaigns',
-    defaultMessage: 'Email campaigns',
+  emails: {
+    id: 'app.containers.AdminPage.SideBar.emails',
+    defaultMessage: 'Emails',
   },
   newPage: {
     id: 'app.containers.AdminPage.SideBar.newPage',
