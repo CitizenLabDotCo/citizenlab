@@ -117,4 +117,22 @@ resource "Campaigns" do
     end
   end
 
+  get "web_api/v1/campaigns/:id/recipients" do
+    with_options scope: :page do
+      parameter :number, "Page number"
+      parameter :size, "Number of recipients per page"
+    end
+
+    let(:campaign) { create(:campaign) }
+    let!(:id) { campaign.id}
+    let!(:recipients) { create_list(:campaigns_recipient, 5, campaign: campaign)}
+
+    example_request "Get the recipients of a sent campaign" do
+      expect(response_status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq recipients.size
+      expect(json_response[:included].size).to eq recipients.size
+    end
+  end
+
 end

@@ -1,7 +1,7 @@
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
 
-    before_action :set_campaign, only: [:show, :update, :do_send, :send_preview, :preview, :destroy]
+    before_action :set_campaign, only: [:show, :update, :do_send, :send_preview, :preview, :recipients, :destroy]
     def index
       @campaigns = policy_scope(Campaign)
         .order(sent_at: :desc)
@@ -80,6 +80,13 @@ module EmailCampaigns
       mail = CampaignMailer.campaign_mail(@campaign, current_user)
       html = mail.parts[1].body.to_s
       render json: {html: html}
+    end
+
+    def recipients
+      @recipients = @campaign.campaigns_recipients
+        .includes(:user)
+        .page(params.dig(:page, :number))
+      render json: @recipients, include: [:user]
     end
 
     private
