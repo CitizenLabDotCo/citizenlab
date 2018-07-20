@@ -96,23 +96,59 @@ export default defineMessages({
     defaultMessage: 'A preview email has been sent to your email address',
   },
   formSaveButton: {
-    id: 'app.acontainers.Admin.campaigns.formSaveButton',
+    id: 'app.containers.Admin.campaigns.formSaveButton',
     defaultMessage: 'Continue',
   },
   formErrorButton: {
-    id: 'app.acontainers.Admin.campaigns.formErrorButton',
+    id: 'app.containers.Admin.campaigns.formErrorButton',
     defaultMessage: 'Continue',
   },
   formSuccessButton: {
-    id: 'app.acontainers.Admin.campaigns.formSuccessButton',
+    id: 'app.containers.Admin.campaigns.formSuccessButton',
     defaultMessage: 'Continue',
   },
   formSuccessMessage: {
-    id: 'app.acontainers.Admin.campaigns.formSuccessMessage',
+    id: 'app.containers.Admin.campaigns.formSuccessMessage',
     defaultMessage: 'formSuccessMessage',
   },
   formErrorMessage: {
-    id: 'app.acontainers.Admin.campaigns.formErrorMessage',
+    id: 'app.containers.Admin.campaigns.formErrorMessage',
     defaultMessage: 'Please correct the errors above to continue',
+  },
+  previewTitle: {
+    id: 'app.containers.Admin.campaigns.previewTitle',
+    defaultMessage: 'Preview',
+  },
+  recipientsTitle: {
+    id: 'app.containers.Admin.campaigns.recipientsTitle',
+    defaultMessage: 'Recipients',
+  },
+  deliveryStatus_sent: {
+    id: 'app.containers.Admin.Campaigns.deliveryStatus_sent',
+    defaultMessage: 'Sent',
+  },
+  deliveryStatus_bounced: {
+    id: 'app.containers.Admin.Campaigns.deliveryStatus_bounced',
+    defaultMessage: 'Bounced',
+  },
+  deliveryStatus_failed: {
+    id: 'app.containers.Admin.Campaigns.deliveryStatus_failed',
+    defaultMessage: 'Failed',
+  },
+  deliveryStatus_accepted: {
+    id: 'app.containers.Admin.Campaigns.deliveryStatus_accepted',
+    defaultMessage: 'Accepted',
+  },
+  deliveryStatus_delivered: {
+    id: 'app.containers.Admin.Campaigns.deliveryStatus_delivered',
+    defaultMessage: 'Delivered',
+  },
+  deliveryStatus_opened: {
+    id: 'app.containers.Admin.Campaigns.deliveryStatus_opened',
+    defaultMessage: 'Opened',
+  },
+  deliveryStatus_clicked: {
+    id: 'app.containers.Admin.Campaigns.deliveryStatus_clicked',
+    defaultMessage: 'Clicked',
   },
 });

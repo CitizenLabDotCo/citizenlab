@@ -40,7 +40,7 @@ class DraftCampaignDetails extends React.Component<Props> {
     sendCampaign(this.props.campaign.id)
       .then(() => {
         streams.fetchAllStreamsWithEndpoint(`${API_PATH}/campaigns`);
-        clHistory.push('/admin/campaigns');
+        streams.fetchAllStreamsWithEndpoint(`${API_PATH}/campaigns/${this.props.campaign.id}`);
       })
       .catch(() => {
       });
