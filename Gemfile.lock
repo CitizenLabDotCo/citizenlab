@@ -448,6 +448,7 @@ DEPENDENCIES
   knock (~> 2.1.1)!
   liquid (~> 4.0)
   listen (>= 3.0.5, < 3.2)
+  mailgun-ruby
   mini_magick
   mongo (~> 2.5)
   okcomputer
