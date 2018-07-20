@@ -208,6 +208,7 @@
   "app.containers.Admin.campaigns.fieldReplyTo": "",
   "app.containers.Admin.campaigns.fieldSender": "",
   "app.containers.Admin.campaigns.fieldSubject": "",
+  "app.containers.Admin.campaigns.fieldTo": "",
   "app.containers.Admin.campaigns.formTitleWhat": "",
   "app.containers.Admin.campaigns.formTitleWhen": "",
   "app.containers.Admin.campaigns.formTitleWho": "",
