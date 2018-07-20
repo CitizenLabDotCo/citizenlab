@@ -4,7 +4,6 @@ import { sendCampaign, sendCampaignPreview, ICampaignData, deleteCampaign } from
 import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
-import PageWrapper from 'components/admin/PageWrapper';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
@@ -12,12 +11,12 @@ import { withRouter, WithRouterProps } from 'react-router';
 import GetCampaign from 'resources/GetCampaign';
 import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
-import Button from 'components/UI/Button';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 import { InjectedIntlProps } from 'react-intl';
 import StatusLabel from 'components/UI/StatusLabel';
-import PreviewFrame from './PreviewFrame';
+import DraftCampaignDetails from './DraftCampaignDetails';
+import SentCampaignDetails from './SentCampaignDetails';
 
 const PageTitle = styled.h1`
   width: 100%;
@@ -78,44 +77,21 @@ class Show extends React.Component<Props> {
         <GoBackButton onClick={this.goBack} />
         <PageTitle>
           <T value={campaign.attributes.subject_multiloc} />
-          <StatusLabel color={'draftYellow'}>
-            <FormattedMessage {...messages.draft} />
-          </StatusLabel>
+          {campaign.attributes.sent_at ?
+            <StatusLabel color="success">
+              <FormattedMessage {...messages.sent} />
+            </StatusLabel>
+          :
+            <StatusLabel color={'draftYellow'}>
+              <FormattedMessage {...messages.draft} />
+            </StatusLabel>
+          }
         </PageTitle>
-        <PageWrapper>
-          <div>
-            <Button linkTo={`/admin/campaigns/${campaign.id}/edit`} style="secondary" circularCorners={false} icon="edit">
-              <FormattedMessage {...messages.editButtonLabel} />
-            </Button>
-            <PreviewFrame campaignId={campaign.id} />
-          </div>
-          <div>
-            <Button
-              style="primary"
-              size="4"
-              icon="send"
-              onClick={this.handleSendNow}
-            >
-              <FormattedMessage {...messages.sendNowButton} />
-            </Button>
-          </div>
-
-          <div>
-            <Button
-              style="primary-outlined"
-              onClick={this.handleSendPreview}
-            >
-              <FormattedMessage {...messages.sendPreviewButton} />
-            </Button>
-          </div>
-
-          <div>
-            <Button onClick={this.handleDelete} style="text" circularCorners={false} icon="delete">
-              <FormattedMessage {...messages.deleteButtonLabel} />
-            </Button>
-          </div>
-
-        </PageWrapper>
+        {campaign.attributes.sent_at ?
+          <SentCampaignDetails campaignId={campaign.id} />
+        :
+          <DraftCampaignDetails campaignId={campaign.id} />
+        }
       </div>
     );
   }

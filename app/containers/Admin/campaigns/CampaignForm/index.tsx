@@ -162,6 +162,13 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
 
         <FormikSubmitWrapper
           {...{ isValid, isSubmitting, status, touched }}
+          messages={{
+            buttonSave: messages.formSaveButton,
+            buttonError: messages.formErrorButton,
+            buttonSuccess: messages.formSuccessButton,
+            messageSuccess: messages.formSuccessMessage,
+            messageError: messages.formErrorMessage,
+          }}
         />
 
       </Form>

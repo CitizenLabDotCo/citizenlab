@@ -28,8 +28,8 @@ const SentCampaignRow = ({ campaign }: Props) => (
     <StatusLabel color="success">
       <FormattedMessage {...messages.sent} />
     </StatusLabel>
-    <Button linkTo={`/admin/campaigns/${campaign.id}`} style="text" circularCorners={false} icon="search">
-      <FormattedMessage {...messages.showButtonLabel} />
+    <Button linkTo={`/admin/campaigns/${campaign.id}`} circularCorners={false} icon="analytics" style="secondary">
+      <FormattedMessage {...messages.statsButton} />
     </Button>
   </Row>
 );

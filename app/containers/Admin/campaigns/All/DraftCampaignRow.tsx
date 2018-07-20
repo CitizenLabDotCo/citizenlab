@@ -23,7 +23,7 @@ const DraftCampaignRow = ({ campaign }: Props) => (
       <FormattedMessage {...messages.draft} />
     </StatusLabel>
 
-    <Button linkTo={`/admin/campaigns/${campaign.id}`} style="secondary" circularCorners={false} icon="edit">
+    <Button linkTo={`/admin/campaigns/${campaign.id}`} style="secondary-outlined" circularCorners={false} icon="edit">
       <FormattedMessage {...messages.manageButtonLabel} />
     </Button>
   </Row>

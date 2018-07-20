@@ -23,9 +23,9 @@ export default defineMessages({
     id: 'app.containers.Admin.campaigns.deleteButtonLabel',
     defaultMessage: 'Delete',
   },
-  showButtonLabel: {
-    id: 'app.containers.Admin.campaigns.showButtonLabel',
-    defaultMessage: 'Details',
+  statsButton: {
+    id: 'app.containers.Admin.campaigns.statsButton',
+    defaultMessage: 'Statistics',
   },
   editButtonLabel: {
     id: 'app.containers.Admin.campaigns.editButtonLabel',
@@ -94,5 +94,25 @@ export default defineMessages({
   previewSentConfirmation: {
     id: 'app.containers.Admin.campaigns.previewSentConfirmation',
     defaultMessage: 'A preview email has been sent to your email address',
+  },
+  formSaveButton: {
+    id: 'app.acontainers.Admin.campaigns.formSaveButton',
+    defaultMessage: 'Continue',
+  },
+  formErrorButton: {
+    id: 'app.acontainers.Admin.campaigns.formErrorButton',
+    defaultMessage: 'Continue',
+  },
+  formSuccessButton: {
+    id: 'app.acontainers.Admin.campaigns.formSuccessButton',
+    defaultMessage: 'Continue',
+  },
+  formSuccessMessage: {
+    id: 'app.acontainers.Admin.campaigns.formSuccessMessage',
+    defaultMessage: 'formSuccessMessage',
+  },
+  formErrorMessage: {
+    id: 'app.acontainers.Admin.campaigns.formErrorMessage',
+    defaultMessage: 'Please correct the errors above to continue',
   },
 });
