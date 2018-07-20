@@ -9,4 +9,8 @@ EmailCampaigns::Engine.routes.draw do
       end
     end
   end
+
+  namespace :hooks, defaults: {format: :json} do
+    resources :mailgun_events, only: [:create]
+  end
 end
