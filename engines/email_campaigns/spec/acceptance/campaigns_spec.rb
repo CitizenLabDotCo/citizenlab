@@ -135,4 +135,28 @@ resource "Campaigns" do
     end
   end
 
+  get "web_api/v1/campaigns/:id/stats" do
+    let(:campaign) { create(:campaign) }
+    let!(:id) { campaign.id}
+    let!(:recipients) { create_list(:campaigns_recipient, 20, 
+      campaign: campaign,
+      delivery_status: 'accepted'
+    )}
+
+    example_request "Get the delivery statistics of a sent campaing" do
+      expect(response_status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response).to match({
+        sent: 20,
+        bounced: 0,
+        failed: 0,
+        accepted: 20,
+        delivered: 0,
+        opened: 0,
+        clicked: 0,
+        total: 20
+      })
+    end
+  end
+
 end

@@ -45,6 +45,10 @@ module EmailCampaigns
       user&.active? && user.admin?
     end
 
+    def stats?
+      user&.active? && user.admin?
+    end
+
     def destroy?
       update?
     end

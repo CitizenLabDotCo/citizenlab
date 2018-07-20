@@ -1,7 +1,7 @@
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
 
-    before_action :set_campaign, only: [:show, :update, :do_send, :send_preview, :preview, :recipients, :destroy]
+    before_action :set_campaign, only: [:show, :update, :do_send, :send_preview, :preview, :recipients, :stats, :destroy]
     def index
       @campaigns = policy_scope(Campaign)
         .order(sent_at: :desc)
@@ -88,6 +88,10 @@ module EmailCampaigns
         .page(params.dig(:page, :number))
       render json: @recipients, include: [:user]
     end
+
+    def stats
+      render json: EmailCampaigns::CampaignsRecipient.status_counts(@campaign.id)
+    end 
 
     private
 
