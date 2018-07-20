@@ -6,6 +6,7 @@ import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { FormattedDate, FormattedTime } from 'react-intl';
+import StatusLabel from 'components/UI/StatusLabel';
 
 interface Props {
   campaign: ICampaignData;
@@ -24,6 +25,9 @@ const SentCampaignRow = ({ campaign }: Props) => (
       &nbsp;
       <FormattedTime value={campaign.attributes.sent_at} />
     </div>
+    <StatusLabel color="success">
+      <FormattedMessage {...messages.sent} />
+    </StatusLabel>
     <Button linkTo={`/admin/campaigns/${campaign.id}`} style="text" circularCorners={false} icon="search">
       <FormattedMessage {...messages.showButtonLabel} />
     </Button>

@@ -79,6 +79,10 @@ export default defineMessages({
     id: 'app.containers.Admin.campaigns.draft',
     defaultMessage: 'Draft',
   },
+  sent: {
+    id: 'app.containers.Admin.campaigns.sent',
+    defaultMessage: 'Sent',
+  },
   sendNowButton: {
     id: 'app.containers.Admin.campaigns.sendNowButton',
     defaultMessage: 'Send now',
