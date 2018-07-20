@@ -1,4 +1,9 @@
 {
+  "app.acontainers.Admin.campaigns.formErrorButton": "Continue",
+  "app.acontainers.Admin.campaigns.formErrorMessage": "Please correct the errors above to continue",
+  "app.acontainers.Admin.campaigns.formSaveButton": "Continue",
+  "app.acontainers.Admin.campaigns.formSuccessButton": "Continue",
+  "app.acontainers.Admin.campaigns.formSuccessMessage": "formSuccessMessage",
   "app.components.CustomFieldsForm.requiredError": "This field is required",
   "app.components.ErrorBoundary.genericError": "An error occured and we cannot display this content. Please try again.",
   "app.components.FullscreenModal.closeButtonLabel": "Close",
@@ -218,7 +223,7 @@
   "app.containers.Admin.campaigns.sendNowButton": "Send now",
   "app.containers.Admin.campaigns.sendPreviewButton": "Send me a preview",
   "app.containers.Admin.campaigns.sent": "Sent",
-  "app.containers.Admin.campaigns.showButtonLabel": "Details",
+  "app.containers.Admin.campaigns.statsButton": "Statistics",
   "app.containers.Admin.clusterViewer.absolute": "Absolute",
   "app.containers.Admin.clusterViewer.addClusteringButton": "Generate new insight graph",
   "app.containers.Admin.clusterViewer.clusteringDeletionConfirmation": "Are you sure?",
