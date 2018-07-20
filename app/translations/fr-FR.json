@@ -1,4 +1,9 @@
 {
+  "app.acontainers.Admin.campaigns.formErrorButton": "",
+  "app.acontainers.Admin.campaigns.formErrorMessage": "",
+  "app.acontainers.Admin.campaigns.formSaveButton": "",
+  "app.acontainers.Admin.campaigns.formSuccessButton": "",
+  "app.acontainers.Admin.campaigns.formSuccessMessage": "",
   "app.components.CustomFieldsForm.requiredError": "Ce champ est requis",
   "app.components.ErrorBoundary.genericError": "Une erreur s'est produite et le contenu n'a pas pu être affiché. Veuillez essayer à nouveau",
   "app.components.FullscreenModal.closeButtonLabel": "Fermer",
@@ -218,7 +223,7 @@
   "app.containers.Admin.campaigns.sendNowButton": "",
   "app.containers.Admin.campaigns.sendPreviewButton": "",
   "app.containers.Admin.campaigns.sent": "",
-  "app.containers.Admin.campaigns.showButtonLabel": "",
+  "app.containers.Admin.campaigns.statsButton": "",
   "app.containers.Admin.clusterViewer.absolute": "Absolu",
   "app.containers.Admin.clusterViewer.addClusteringButton": "Générer un nouveau graphique",
   "app.containers.Admin.clusterViewer.clusteringDeletionConfirmation": "Êtes-vous sûr(e) ?",
