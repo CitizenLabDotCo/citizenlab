@@ -12,17 +12,13 @@ import Button from 'components/UI/Button';
 
 import messages from '../messages';
 import FeatureFlag from 'components/FeatureFlag';
-import PageWrapper from 'components/admin/PageWrapper';
+import PageWrapper, { ButtonWrapper } from 'components/admin/PageWrapper';
 import DraftCampaignRow from './DraftCampaignRow';
 import SentCampaignRow from './SentCampaignRow';
 
 const CampaignTitle = styled.h1`
   font-size: 2.5rem;
   margin-bottom: 3rem;
-`;
-
-const ButtonWrapper = styled.div`
-  margin-top: 2rem;
 `;
 
 interface InputProps { }
