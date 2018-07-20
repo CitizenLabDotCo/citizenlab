@@ -38,8 +38,27 @@ export interface ICampaign {
   data: ICampaignData;
 }
 
+export interface IRecipientData {
+  id: string;
+  type: string;
+  attributes: {
+    delivery_status: 'sent' | 'bounced' | 'failed' | 'accepted' | 'delivered' | 'opened' | 'clicked';
+    created_at: string;
+    updated_at: string;
+  };
+  relationships: {
+    user: {
+      data: IRelationship;
+    };
+  };
+}
+
+export interface IRecipient {
+  data: IRecipientData[];
+}
+
 export function listCampaigns(streamParams: IStreamParams | null = null) {
-  return streams.get<{ data: ICampaignData[] }>({ apiEndpoint: `${apiEndpoint}`, ...streamParams });
+  return streams.get<{data: ICampaignData[]}>({ apiEndpoint: `${apiEndpoint}`, ...streamParams });
 }
 
 export function createCampaign(campaignData: CampaignUpdate) {
@@ -64,4 +83,8 @@ export function deleteCampaign(campaignId: string) {
 
 export function campaignByIdStream(campaignId: string, streamParams: IStreamParams | null = null) {
   return streams.get<ICampaign>({ apiEndpoint: `${apiEndpoint}/${campaignId}`, ...streamParams });
+}
+
+export function listCampaignRecipients(campaignId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<{ data: IRecipientData[] }>({ apiEndpoint: `${apiEndpoint}/${campaignId}/recipients`, ...streamParams });
 }
