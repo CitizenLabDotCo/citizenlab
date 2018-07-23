@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as moment from 'moment';
-import { get, isEmpty, forOwn } from 'lodash';
+import { isEmpty } from 'lodash';
 
 // libraries
 import clHistory from 'utils/cl-router/history';
@@ -9,7 +9,7 @@ import clHistory from 'utils/cl-router/history';
 // components
 import Label from 'components/UI/Label';
 import InputMultiloc from 'components/UI/InputMultiloc';
-import EditorMultiloc from 'components/UI/EditorMultiloc';
+import QuillMultiloc from 'components/QuillEditor/QuillMultiloc';
 import Error from 'components/UI/Error';
 import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -18,7 +18,6 @@ import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 // utils
 import unsubscribe from 'utils/unsubscribe';
 import getSubmitState from 'utils/getSubmitState';
-import { getHtmlStringFromEditorState, getEditorStateFromHtmlString } from 'utils/editorTools';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -31,7 +30,7 @@ import { IProjectData } from 'services/projects';
 import { eventStream, updateEvent, addEvent, IEvent, IUpdatedEventProperties } from 'services/events';
 
 // typings
-import { Multiloc, MultilocEditorState, API, Locale } from 'typings';
+import { Multiloc, API, Locale } from 'typings';
 
 type Props = {
   params: {
@@ -51,7 +50,6 @@ interface State {
   };
   saving: boolean;
   focusedInput: 'startDate' | 'endDate' | null;
-  descriptionMultilocEditorState: MultilocEditorState | null;
   saved: boolean;
   loaded: boolean;
 }
@@ -69,7 +67,6 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
       errors: {},
       saving: false,
       focusedInput: null,
-      descriptionMultilocEditorState: null,
       saved: false,
       loaded: false
     };
@@ -87,17 +84,7 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
         currentTenant$,
         event$
       ).subscribe(([locale, currentTenant, event]) => {
-        let descriptionMultilocEditorState: MultilocEditorState | null = null;
-
-        if (event) {
-          descriptionMultilocEditorState = {};
-
-          forOwn(event.data.attributes.description_multiloc, (htmlValue, locale) => {
-            (descriptionMultilocEditorState as MultilocEditorState)[locale] = getEditorStateFromHtmlString(htmlValue);
-          });
-        }
-
-        this.setState({ locale, currentTenant, event, descriptionMultilocEditorState, loaded: true });
+        this.setState({ locale, currentTenant, event, loaded: true });
       })
     ];
   }
@@ -124,16 +111,11 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
     }));
   }
 
-  handleDescriptionMultilocEditorStateOnChange = (descriptionMultilocEditorState: MultilocEditorState, locale: Locale) => {
+  handleDescriptionMultilocOnChange = (descriptionMultiloc: Multiloc) => {
     this.setState((state) => ({
-      descriptionMultilocEditorState,
       attributeDiff: {
         ...state.attributeDiff,
-        description_multiloc: {
-          ...get(state, 'event.data.attributes.description_multiloc', {}),
-          ...get(state.attributeDiff, 'description_multiloc', {}),
-          [locale]: getHtmlStringFromEditorState(descriptionMultilocEditorState[locale])
-        }
+        description_multiloc: descriptionMultiloc
       }
     }));
   }
@@ -179,7 +161,7 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
     const { locale, currentTenant, loaded } = this.state;
 
     if (locale && currentTenant && loaded) {
-      const { errors, saved, event, attributeDiff, descriptionMultilocEditorState, saving } = this.state;
+      const { errors, saved, event, attributeDiff, saving } = this.state;
       const eventAttrs = event ?  { ...event.data.attributes, ...attributeDiff } : { ...attributeDiff };
       const submitState = getSubmitState({ errors, saved, diff: attributeDiff });
 
@@ -227,11 +209,14 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
               </SectionField>
 
               <SectionField>
-                <EditorMultiloc
+                <QuillMultiloc
                   id="description"
+                  inAdmin
+                  noImages
+                  limitedTextFormatting
                   label={<FormattedMessage {...messages.descriptionLabel} />}
-                  valueMultiloc={descriptionMultilocEditorState}
-                  onChange={this.handleDescriptionMultilocEditorStateOnChange}
+                  valueMultiloc={eventAttrs.description_multiloc}
+                  onChangeMultiloc={this.handleDescriptionMultilocOnChange}
                 />
                 <Error apiErrors={errors.description_multiloc} />
               </SectionField>
