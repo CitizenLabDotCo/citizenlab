@@ -259,6 +259,10 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
       },
     };
 
+    const formats = ['bold', 'italic', 'link'];
+    if (!noImages) { formats.push('image', 'video'); }
+    if (!limitedTextFormatting) { formats.push('list', 'align', 'header'); }
+
     return (
       <Container
         id="boundaries"
@@ -331,6 +335,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
           modules={modules}
           bounds="#boundaries"
           theme="snow"
+          formats={formats}
           {...quillProps}
         />
       </Container>
