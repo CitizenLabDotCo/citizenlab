@@ -13,6 +13,7 @@ import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 
 // utils
 import { stripHtml } from 'utils/textUtils';
@@ -124,6 +125,7 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({
             ${ideaTitle}`
           }
         </title>
+        {getAlternateLinks(tenantLocales, location)}
         <meta name="title" content={ideaTitle} />
         <meta name="description" content={ideaDescription} />
 

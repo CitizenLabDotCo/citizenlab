@@ -17,6 +17,10 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
+// tracking
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
+
 // style
 import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
@@ -40,7 +44,7 @@ const MenuInner = styled.nav`
   top: 0;
   bottom: 0;
   padding-top: 119px;
-  background: ${ colors.adminMenuBackground };
+  background: ${ colors.adminMenuBackground};
 
   ${media.smallerThanMinTablet`
     width: 70px;
@@ -69,7 +73,7 @@ const Text = styled.div`
   `}
 `;
 
-const MenuItem: any = styled(Link)`
+const MenuItem: any = styled(Link) `
   flex: 0 0 auto;
   width: 210px;
   display: flex;
@@ -121,26 +125,66 @@ const MenuItem: any = styled(Link)`
   }
 `;
 
+const FakeDoor = styled.a`
+  flex: 0 0 auto;
+  width: 210px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 5px;
+  padding-right: 15px;
+  padding-bottom: 1px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  border-radius: 5px;
+
+  ${media.smallerThanMinTablet`
+    width: 50px;
+    padding: 0;
+    justify-content: center;
+  `}
+
+  &:hover {
+    ${Text} {
+      color: #fff;
+    };
+
+    .cl-icon {
+      .cl-icon-primary {
+        fill: ${colors.clIconAccent}
+      }
+      .cl-icon-accent {
+        fill: ${colors.clIconPrimary}
+      }
+    };
+  }
+`;
+
 type Props = {};
 
 type State = {
   navItems: NavItem[];
 };
 
+// message: keyof typeof messages
 type NavItem = {
   id: string,
   link: string,
   iconName: IconNames,
-  message: keyof typeof messages,
+  message: string,
   featureName?: string,
   isActive: (pathname: string) => boolean,
 };
 
-class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
+type Tracks = {
+  trackFakeDoor: Function;
+};
+
+class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps & Tracks, State> {
   routes: NavItem[];
   subscriptions: Subscription[];
 
-  constructor(props: Props & InjectedIntlProps & WithRouterProps) {
+  constructor(props: Props & InjectedIntlProps & WithRouterProps & Tracks) {
     super(props);
     this.state = {
       navItems: [],
@@ -173,6 +217,13 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps,
         iconName: 'folder',
         message: 'projects',
         isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/projects`))
+      },
+      {
+        id: 'initiatieven',
+        link: ' https://www.citizenlab.co/nl/continuous-participation',
+        iconName: 'initiatieven',
+        message: 'Burger-initiatieven',
+        isActive: () => false,
       },
       {
         id: 'ideas',
@@ -211,6 +262,10 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps,
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  track = () => {
+    this.props.trackFakeDoor();
+  }
+
   render() {
     const { formatMessage } = this.props.intl;
     const { pathname } = this.props.location;
@@ -223,19 +278,35 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps,
     return (
       <Menu role="navigation">
         <MenuInner>
-          {navItems.map((route) => (
-            <FeatureFlag name={route.featureName} key={route.id}>
-              <MenuItem activeClassName="active" className={`${route.isActive(pathname) ? 'selected' : ''}`} to={route.link}>
-                <IconWrapper><Icon name={route.iconName} /></IconWrapper>
-                <Text>{formatMessage({ ...messages[route.message] })}</Text>
-                {route.isActive(pathname) && <Icon name="arrowLeft" />}
-              </MenuItem>
-            </FeatureFlag>
-          ))}
+          {navItems.map((route) => {
+            if (route.id === 'initiatieven') {
+              if (pathname.match(/^\/nl-/)) {
+                return (
+                  <FeatureFlag name={route.featureName} key={route.id}>
+                    <FakeDoor href={route.link} target="blank" onClick={this.track}>
+                      <IconWrapper><Icon name={route.iconName} /></IconWrapper>
+                      <Text>{route.message}</Text>
+                    </FakeDoor>
+                  </FeatureFlag>
+                );
+              } else { return null; }
+            } else {
+              return (
+                <FeatureFlag name={route.featureName} key={route.id}>
+                  <MenuItem activeClassName="active" className={`${route.isActive(pathname) ? 'selected' : ''}`} to={route.link}>
+                    <IconWrapper><Icon name={route.iconName} /></IconWrapper>
+                    <Text>{formatMessage({ ...messages[route.message] })}</Text>
+                    {route.isActive(pathname) && <Icon name="arrowLeft" />}
+                  </MenuItem>
+                </FeatureFlag>
+              );
+            }
+          })}
         </MenuInner>
       </Menu>
     );
   }
 }
-
-export default withRouter<Props>(injectIntl(Sidebar));
+export default injectTracks<Props>({
+  trackFakeDoor: tracks.fakeDoor,
+})(withRouter<Props>(injectIntl(Sidebar)));
