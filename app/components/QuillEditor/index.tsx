@@ -85,8 +85,17 @@ const Container: any = styled.div`
   .ql-snow .ql-tooltip[data-mode="video"]::before {
     content: ${(props: any) => `"${props.videoPrompt}"`};
   }
+  .ql-snow .ql-tooltip::before {
+    content: ${(props: any) => `"${props.visitPrompt}"`};
+  }
   .ql-snow .ql-tooltip.ql-editing a.ql-action::after {
     content: ${(props: any) => `"${props.save}"`};
+  }
+  .ql-snow .ql-tooltip a.ql-action::after {
+    content: ${(props: any) => `"${props.edit}"`};
+  }
+  .ql-snow .ql-tooltip a.ql-remove::before {
+    content: ${(props: any) => `"${props.remove}"`};
   }
   .ql-container {
     font-family: 'visuelt','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
@@ -269,7 +278,10 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
         inAdmin={inAdmin}
         videoPrompt={formatMessage(messages.videoPrompt)}
         linkPrompt={formatMessage(messages.linkPrompt)}
+        visitPrompt={formatMessage(messages.visitPrompt)}
         save={formatMessage(messages.save)}
+        edit={formatMessage(messages.edit)}
+        remove={formatMessage(messages.remove)}
       >
         <div id={toolbarId} >
           {!limitedTextFormatting &&
