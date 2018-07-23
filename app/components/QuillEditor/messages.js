@@ -13,4 +13,16 @@ export default defineMessages({
     id: 'app.components.QuillEditor.normalText',
     defaultMessage: 'Normal',
   },
+  linkPrompt: {
+    id: 'app.components.QuillEditor.linkPrompt',
+    defaultMessage: 'Enter link:',
+  },
+  videoPrompt: {
+    id: 'app.components.QuillEditor.videoPrompt',
+    defaultMessage: 'Enter video:',
+  },
+  save: {
+    id: 'app.components.QuillEditor.save',
+    defaultMessage: 'Save',
+  },
 });

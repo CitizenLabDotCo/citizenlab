@@ -79,6 +79,15 @@ const Container: any = styled.div`
       outline: none;
     }
   }
+  .ql-snow .ql-tooltip[data-mode="link"]::before {
+    content: ${(props: any) => `"${props.linkPrompt}"`};
+  }
+  .ql-snow .ql-tooltip[data-mode="video"]::before {
+    content: ${(props: any) => `"${props.videoPrompt}"`};
+  }
+  .ql-snow .ql-tooltip.ql-editing a.ql-action::after {
+    content: ${(props: any) => `"${props.save}"`};
+  }
   .ql-container {
     font-family: 'visuelt','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
     border-radius: 0 0 5px 5px;
@@ -251,7 +260,13 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
     };
 
     return (
-      <Container id="boundaries" inAdmin={inAdmin}>
+      <Container
+        id="boundaries"
+        inAdmin={inAdmin}
+        videoPrompt={formatMessage(messages.videoPrompt)}
+        linkPrompt={formatMessage(messages.linkPrompt)}
+        save={formatMessage(messages.save)}
+      >
         <div id={toolbarId} >
           {!limitedTextFormatting &&
             <span className="ql-formats" role="button" onClick={this.trackClickDropdown()}>
