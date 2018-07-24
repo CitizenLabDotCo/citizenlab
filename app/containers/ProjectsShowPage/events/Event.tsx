@@ -24,7 +24,7 @@ import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -64,7 +64,7 @@ const EventDates = styled.div`
   background: #DF3300;
 
   &.past {
-    background: #cfcfcf;
+    background: #939393;
   }
 
   ${media.smallerThanMaxTablet`
@@ -107,7 +107,7 @@ const EventYear = styled.div`
   background: #373737;
 
   &.past {
-    background: #a7a7a7;
+    background: ${colors.clGrey};
   }
 `;
 
@@ -148,7 +148,7 @@ const EventTitle = styled.div`
 `;
 
 const EventDescription = styled.div`
-  color: #939393;
+  color: ${colors.clGrey};
   font-size: 16px;
   font-weight: 300;
   line-height: 21px;
