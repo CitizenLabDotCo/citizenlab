@@ -45,15 +45,15 @@ const OpenMenuButton = styled.button`
   width: 27px;
 
   svg {
-    fill: ${colors.label};
+    fill: ${colors.clGrey};
   }
 
   &:hover,
   &:focus {
-    border-color: ${darken(0.2, colors.label)};
+    border-color: ${darken(0.2, colors.clGrey)};
 
     svg {
-      fill: ${darken(0.2, colors.label)};
+      fill: ${darken(0.2, colors.clGrey)};
     }
   }
 `;

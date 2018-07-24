@@ -47,7 +47,7 @@ const DropdownItemIcon = styled(Icon)`
 `;
 
 const OpenMenuButton = styled.button`
-  color: ${colors.label};
+  color: ${colors.clGrey};
   font-size: 17px;
   font-weight: 400;
   line-height: 17px;
@@ -59,20 +59,20 @@ const OpenMenuButton = styled.button`
 
   &:hover,
   &:focus {
-    color: rgba(0,0,0,.87);
+    color: ${colors.clGreyHover};
   }
 `;
 
 const PopoverItem = styled(Button)`
-  color: ${colors.label};
-  fill: ${colors.label};
+  color: ${colors.clGrey};
+  fill: ${colors.clGrey};
   font-size: ${fontSize('large')};
   font-weight: 400;
   transition: all 80ms ease-out;
 
   &.active button.Button,
   &.active a.Button {
-    color: rgba(0,0,0,.95);
+    color: ${colors.clGreyHover};
     font-weight: 700;
   }
 
@@ -89,9 +89,9 @@ const PopoverItem = styled(Button)`
 
     &:hover,
     &:focus {
-      color: #000;
+      color: ${colors.clGreyHover};
       background: #f6f6f6;
-      fill: #000;
+      fill: ${colors.clGreyHover};
     }
   }
 `;
