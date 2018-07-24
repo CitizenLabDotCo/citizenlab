@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { has, isString } from 'lodash';
+import { has, isString, get } from 'lodash';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
@@ -633,7 +633,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & injecte
           const ideaImages = idea.data.relationships.idea_images.data;
           const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
           const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
-          const ideaStatusId = (idea.data.relationships.idea_status ? idea.data.relationships.idea_status.data.id : null);
+          const ideaStatusId : string | null = get(idea, 'data.relationships.idea_status.data.id', null);
           const ideaImage$ = (ideaImageId ? ideaImageStream(idea.data.id, ideaImageId).observable : of(null));
           const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : of(null);
           const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : of(null));
