@@ -131,14 +131,14 @@ const Footer = styled.div`
 const StyledVoteControl = styled(VoteControl)``;
 
 const CommentIcon = styled(Icon)`
-  fill: ${(props) => props.theme.colors.label};
+  fill: ${(props) => props.theme.colors.clGrey};
   height: 21px;
   margin-right: 7px;
   width: 30px;
 `;
 
 const CommentCount = styled.div`
-  color: ${(props) => props.theme.colors.label};
+  color: ${(props) => props.theme.colors.clGrey};
   font-size: 16px;
   font-weight: 400;
 `;
