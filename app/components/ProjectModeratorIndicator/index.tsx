@@ -20,7 +20,7 @@ import { rgba } from 'polished';
 
 const ModeratorInfo = styled.p`
   align-items: center;
-  background: ${rgba(colors.draftYellow, .1)};
+  background: ${rgba(colors.draftYellow, .05)};
   border-radius: 5px;
   color: ${colors.draftYellow};
   display: flex;
