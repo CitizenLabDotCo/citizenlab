@@ -18,11 +18,11 @@ import { userByIdStream, IUser } from 'services/users';
 // i18n
 import { FormattedRelative } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
+import { colors } from 'utils/styleUtils';
 
 const AuthorContainer = styled.div`
   display: flex;
@@ -31,49 +31,48 @@ const AuthorContainer = styled.div`
   padding: 0;
 `;
 
-const AuthorAvatar = styled(Avatar)`
-  width: 35px;
-  height: 35px;
-  margin-right: 8px;
-  margin-top: 0px;
-`;
-
 const AuthorMeta = styled.div`
   display: flex;
   flex-direction: column;
+  margin-left: .5em;
 `;
 
-const AuthorNameContainer = styled.div `
-  color: #333;
-  font-size: 16px;
+const AuthorNameContainer: any = styled.div `
+  color: ${colors.text};
+  font-size: ${(props: any) => props.fontSize};
   line-height: 19px;
   font-weight: 400;
   text-decoration: none;
 `;
 
-const AuthorName = styled(Link)`
-  color: ${(props) => props.theme.colors.clBlueDark};
+const AuthorNameLink = styled(Link)`
+  color: ${colors.clBlueDark};
   text-decoration: none;
   cursor: pointer;
 
   &:hover {
-    color: ${(props) => darken(0.15, props.theme.colors.clBlueDark)};
+    color: ${darken(0.15, colors.clBlueDark)};
     text-decoration: underline;
   }
 `;
 
 const TimeAgo = styled.div`
-  color: #999;
-  font-size: 13px;
-  line-height: 17px;
+  color: ${colors.label};
   font-weight: 300;
   margin-top: 1px;
+  font-size: 13px;
+  line-height: 17px;
 `;
+
+// typings
+import { Message } from 'typings';
 
 type Props = {
   authorId: string | null;
+  message: Message;
   createdAt?: string | undefined;
-  message?: string | undefined;
+  size: 'medium' | 'small';
+  notALink?: boolean;
 };
 
 type State = {
@@ -126,25 +125,28 @@ class Author extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    let { message } = this.props;
-    const { authorId, createdAt } = this.props;
+    const { authorId, createdAt, message, size, notALink } = this.props;
     const { author } = this.state;
 
-    message = (message ? message : 'author');
-
-    const authorNameComponent = (
-      <AuthorName to={author ? `/profile/${author.data.attributes.slug}` : ''}>
+    const authorNameComponent = notALink ? (
+      <UserName user={(author ? author.data : null)} />
+    ) : (
+      <AuthorNameLink to={author ? `/profile/${author.data.attributes.slug}` : ''}>
         <UserName user={(author ? author.data : null)} />
-      </AuthorName>
+      </AuthorNameLink>
     );
 
     return (
       <AuthorContainer className={className}>
-        <AuthorAvatar userId={authorId} size="small" onClick={author ? this.goToUserProfile : () => {}} />
+        <Avatar
+          userId={authorId}
+          size={size}
+          onClick={author ? this.goToUserProfile : () => {}}
+        />
         <AuthorMeta>
-          <AuthorNameContainer>
+          <AuthorNameContainer fontSize={(size === 'medium') ? '16px' : '14px'}>
             <FormattedMessage
-              {...messages[`${message}`]}
+              {...message}
               values={{ authorNameComponent }}
             />
           </AuthorNameContainer>

@@ -11,7 +11,7 @@ import Unauthenticated from 'components/IdeaCard/Unauthenticated';
 import BottomBounceUp from './BottomBounceUp';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';
-import UserName from 'components/UI/UserName';
+import Author from 'components/Author';
 import Avatar from 'components/Avatar';
 import LazyImage from 'components/LazyImage';
 
@@ -73,37 +73,7 @@ const IdeaTitle: any = styled.h4`
   -webkit-line-clamp: 3;
   line-height: 26px;
   max-height: 78px;
-`;
-
-const IdeaAuthor = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-`;
-
-const IdeaAuthorAvatar = styled(Avatar)`
-  width: 28px;
-  height: 28px;
-  margin-right: 6px;
-`;
-
-const IdeaAuthorText = styled.div`
-  color: ${colors.label};
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 18px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin-top: -1px;
-
-  > span:not(last-child) {
-    margin-right: 4px;
-  }
-
-  span > span {
-    font-weight: 400;
-  }
+  margin-bottom: .5em;
 `;
 
 const Footer = styled.div`
@@ -266,7 +236,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
         ${idea.attributes.comments_count > 0 ? 'e2e-has-comments' : ''}
         ${votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled'}
       `;
-
+      console.log(ideaAuthorId);
       return (
         <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.attributes.slug}`} className={className}>
           <IdeaContainerInner>
@@ -283,13 +253,13 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
               <IdeaTitle>
                 <T value={idea.attributes.title_multiloc} />
               </IdeaTitle>
-              <IdeaAuthor>
-                {ideaAuthorId && <IdeaAuthorAvatar userId={ideaAuthorId} size="small" hideIfNoAvatar={false} />}
-                <IdeaAuthorText>
-                  <FormattedRelative value={idea.attributes.published_at} />
-                  <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={!isNilOrError(ideaAuthor) ? ideaAuthor : null} /> }} />
-                </IdeaAuthorText>
-              </IdeaAuthor>
+              <Author
+                authorId={ideaAuthorId}
+                createdAt={idea.attributes.published_at}
+                size="small"
+                message={messages.byAuthorNameComponent}
+                notALink
+              />
             </IdeaContent>
 
             {!showVotingDisabled &&
