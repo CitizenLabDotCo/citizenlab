@@ -13,7 +13,7 @@ const Container = styled.button`
   align-items: center;
   cursor: pointer;
   display: flex;
-  fill: ${colors.label};
+  fill: ${colors.clGrey};
   height: 23px;
   justify-content: center;
   padding: 0;
@@ -22,7 +22,7 @@ const Container = styled.button`
 
   &:hover,
   &:focus {
-    fill: ${darken(.2, colors.label)};
+    fill: ${darken(.2, colors.clGrey)};
   }
 `;
 

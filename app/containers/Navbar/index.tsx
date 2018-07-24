@@ -3,6 +3,7 @@ import React from 'react';
 import { get } from 'lodash';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import NotificationMenu from './components/NotificationMenu';
@@ -120,7 +121,7 @@ const NavigationItems = styled.div`
 const NavigationItem = styled(Link) `
   ${ellipsis('20rem') as any}
   height: 100%;
-  color: #767676;
+  color: ${colors.clGrey};
   font-size: 17px;
   font-weight: 400;
   display: flex;
@@ -133,10 +134,13 @@ const NavigationItem = styled(Link) `
     margin-right: 40px;
   }
 
-  &.active,
-  &:hover,
-  &:focus {
-    color: #000;
+  &.active {
+    color: ${(props) => props.theme.colorMain};
+    margin-bottom: 4px solid ${(props) => props.theme.colorMain};
+  }
+  &:focus,
+  &:hover {
+    color: ${colors.clGreyHover};
   }
 `;
 
@@ -171,7 +175,7 @@ const NavigationDropdownItem = styled.button`
 `;
 
 const ProjectsListItem = styled(Link)`
-  color: ${(props) => props.theme.colors.label};
+  color: ${colors.clGrey};
   font-size: 17px;
   font-weight: 400;
   line-height: 22px;
@@ -180,13 +184,12 @@ const ProjectsListItem = styled(Link)`
   margin-right: 5px;
   background: #fff;
   border-radius: 5px;
-  color: ${colors.label};
   padding: 10px;
   text-decoration: none;
 
   &:hover,
   &:focus {
-    color: #000;
+    color: ${colors.clGreyHover};
     text-decoration: none;
     background: #f6f6f6;
   }
@@ -194,14 +197,14 @@ const ProjectsListItem = styled(Link)`
 
 const ProjectsListFooter = styled(Link)`
   width: 100%;
-  color: ${colors.label};
+  color: ${colors.clGrey};
   font-size: 17px;
   font-weight: 400;
   text-align: center;
   text-decoration: none;
   padding: 15px 15px;
   cursor: pointer;
-  background: ${rgba(colors.label, 0.12)};
+  background: ${rgba(colors.clGrey, 0.12)};
   border-radius: 5px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -209,8 +212,8 @@ const ProjectsListFooter = styled(Link)`
 
   &:hover,
   &:focus {
-    color: ${darken(0.2, colors.label)};
-    background: ${rgba(colors.label, 0.22)};
+    color: ${colors.clGreyHover};
+    background: ${rgba(colors.clGrey, 0.22)};
     text-decoration: none;
   }
 `;
@@ -278,13 +281,13 @@ const StyledIdeaButton = styled(IdeaButton)`
 `;
 
 const LoginLink = styled(Link)`
-  color: ${(props) => props.theme.colors.label};
+  color: ${colors.clGrey};
   font-size: 17px;
   font-weight: 400;
   padding: 0;
 
   &:hover {
-    color: ${(props) => darken(0.2, props.theme.colors.label)};
+    color: ${colors.clGreyHover};
   }
 `;
 
@@ -305,12 +308,23 @@ interface State {
 }
 
 class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
+  homeLink: HTMLAnchorElement | null;
+  unlisten: Function;
+
   constructor(props) {
     super(props);
     this.state = {
       notificationPanelOpened: false,
       projectsDropdownOpened: false
     };
+
+    this.homeLink = null;
+
+  }
+
+  componentDidMount() {
+    this.unlisten = clHistory.listen(location => {
+    });
   }
 
   componentDidUpdate(prevProps: Props & WithRouterProps & InjectedIntlProps) {
@@ -355,6 +369,12 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
     updateLocale(value);
   }
 
+  setRef = (el: HTMLAnchorElement) => {
+    if (el) {
+      this.homeLink = el;
+    }
+  }
+
   render() {
     const {
       projects,
@@ -387,7 +407,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
             }
 
             <NavigationItems>
-              <NavigationItem to="/" activeClassName="active" onlyActiveOnIndex={true}>
+              <NavigationItem innerRef={this.setRef} to="/" activeClassName="active" onlyActiveOnIndex={true}>
                 <FormattedMessage {...messages.pageOverview} />
               </NavigationItem>
 
