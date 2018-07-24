@@ -113,7 +113,7 @@ export const TextCell = styled.div`
   line-height: 20px;
 `;
 
-export const List: SFC = ({ children, ...props }) => (
+export const List: SFC<{ className?: string, id?: string }> = ({ children, ...props }) => (
   <StyledList className="e2e-admin-list" {...props}>
     <TransitionGroup>
       {children}
@@ -121,7 +121,7 @@ export const List: SFC = ({ children, ...props }) => (
   </StyledList>
 );
 
-export const Row: SFC<{ lastItem?: boolean }> = ({ children, ...props }) => (
+export const Row: SFC<{ className?: string, id?: string, lastItem?: boolean }> = ({ children, ...props }) => (
   <CSSTransition classNames="list-item" timeout={timeout} {...props}>
     <StyledRow className={`e2e-admin-list-row ${props['className']} ${props.lastItem && 'last-item'}`}>
       {children}
