@@ -24,15 +24,15 @@ import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled, { css } from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
 
 const greyTransparent = css`rgba(121, 137, 147, 0.3)`;
 const greyOpaque = css`rgba(121, 137, 147, 1)`;
-const greenTransparent = css`rgba(29, 170, 99, 0.3)`;
-const greenOpaque = css`rgba(29, 170, 99, 1)`;
+const greenTransparent = css`rgba(${colors.clGreen}, 0.3)`;
+const greenOpaque = `${colors.clGreen}`;
 
 const Container = styled.div`
   width: 100%;
