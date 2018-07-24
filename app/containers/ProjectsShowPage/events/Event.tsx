@@ -61,7 +61,7 @@ const EventDates = styled.div`
   border-radius: 5px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  background: #f64a00;
+  background: #DF3300;
 
   &.past {
     background: #cfcfcf;
