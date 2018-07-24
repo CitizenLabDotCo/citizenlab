@@ -212,7 +212,7 @@ models:
     first_name: Loïc
     last_name: Didier
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -236,7 +236,7 @@ models:
     first_name: Jamie
     last_name: Oliver
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -259,7 +259,7 @@ models:
     first_name: 'Philippe '
     last_name: De Belgique
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -282,7 +282,7 @@ models:
     first_name: Jamila
     last_name: Kaidi
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: female
@@ -305,7 +305,7 @@ models:
     first_name: Feline
     last_name: Esmé
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: female
@@ -328,7 +328,7 @@ models:
     first_name: Jan
     last_name: Modestine
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -351,7 +351,7 @@ models:
     first_name: Heino
     last_name: Georgina
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -374,7 +374,7 @@ models:
     first_name: Eve
     last_name: Gerd
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: female
@@ -397,7 +397,7 @@ models:
     first_name: Léonard
     last_name: Octave
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -420,7 +420,7 @@ models:
     first_name: Julien
     last_name: Gabay
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -443,7 +443,7 @@ models:
     first_name: Koen
     last_name: Martin
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -466,7 +466,7 @@ models:
     first_name: Rosanne
     last_name: Yvette
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: female
@@ -489,7 +489,7 @@ models:
     first_name: Christine
     last_name: Rémy
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: female
@@ -512,7 +512,7 @@ models:
     first_name: Katelijne
     last_name: Bénédicte
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: female
@@ -535,7 +535,7 @@ models:
     first_name: Nabil
     last_name: Zacharie
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -558,7 +558,7 @@ models:
     first_name: Khalida
     last_name: Adrienne
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: female
@@ -581,7 +581,7 @@ models:
     first_name: Jules
     last_name: Christiaens
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -604,7 +604,7 @@ models:
     first_name: Timothée
     last_name: Fabrice
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -627,7 +627,7 @@ models:
     first_name: Bente
     last_name: Ludo
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -650,7 +650,7 @@ models:
     first_name: Géraldine
     last_name: Hieronymus
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: female
@@ -673,7 +673,7 @@ models:
     first_name: Ghassan
     last_name: Muhsina
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -696,7 +696,7 @@ models:
     first_name: Lea
     last_name: Skywalker
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: female
@@ -719,7 +719,7 @@ models:
     first_name: Claude
     last_name: Loane
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -742,7 +742,7 @@ models:
     first_name: Tim
     last_name: Lucas
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -765,7 +765,7 @@ models:
     first_name: Julien
     last_name: Gabay
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -788,7 +788,7 @@ models:
     first_name: Olivier
     last_name: Chaput
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -811,7 +811,7 @@ models:
     first_name: William
     last_name: Robert
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -834,7 +834,7 @@ models:
     first_name: Olivier
     last_name: Deleuze
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -857,7 +857,7 @@ models:
     first_name: Steve
     last_name: Grinnaert
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -880,7 +880,7 @@ models:
     first_name: Mathieu
     last_name: Levoir
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -903,7 +903,7 @@ models:
     first_name: Déodat
     last_name: Diana
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: female
@@ -926,7 +926,7 @@ models:
     first_name: Godfried
     last_name: Katelijne
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -949,7 +949,7 @@ models:
     first_name: Wietse
     last_name: Champion
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -972,7 +972,7 @@ models:
     first_name: Julien
     last_name: Joxe
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -995,7 +995,7 @@ models:
     first_name: Mathieu
     last_name: Levoir
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc: {}
     gender: male
     birthyear: 2005
@@ -1018,7 +1018,7 @@ models:
     first_name: Alphonsine
     last_name: Maël
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: female
@@ -1041,7 +1041,7 @@ models:
     first_name: Simone
     last_name: Weil
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: female
@@ -1064,7 +1064,7 @@ models:
     first_name: Jean
     last_name: Demarest
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -1087,7 +1087,7 @@ models:
     first_name: Bartholomeus
     last_name: Mailys
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -1110,7 +1110,7 @@ models:
     first_name: Joséphine
     last_name: Heintje
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
@@ -1133,7 +1133,7 @@ models:
     first_name: Alidéa
     last_name: Lafolle
     cl1_migrated: false
-    locale: fr-BE
+    locale: fr-FR
     bio_multiloc:
       fr-BE: 
     gender: male
