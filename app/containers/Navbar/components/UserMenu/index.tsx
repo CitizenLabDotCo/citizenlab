@@ -2,7 +2,6 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 
 // components
-import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
 import Popover from 'components/Popover';
@@ -56,14 +55,6 @@ const OpenMenuButton = styled.button`
       fill: ${darken(0.2, colors.label)};
     }
   }
-`;
-
-const UserIcon = styled(Icon)`
-  width: 26px;
-  height: 24px;
-  fill: inherit;
-  transition: all 150ms ease;
-  cursor: pointer;
 `;
 
 const StyledPopover = styled(Popover)`

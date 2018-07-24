@@ -12,7 +12,6 @@ import BottomBounceUp from './BottomBounceUp';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';
 import Author from 'components/Author';
-import Avatar from 'components/Avatar';
 import LazyImage from 'components/LazyImage';
 
 // resources
@@ -25,8 +24,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import T from 'components/T';
-import { FormattedRelative, InjectedIntlProps } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 
