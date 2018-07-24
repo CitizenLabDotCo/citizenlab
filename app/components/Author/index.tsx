@@ -141,7 +141,7 @@ class Author extends React.PureComponent<Props, State> {
         <Avatar
           userId={authorId}
           size={size}
-          onClick={author ? this.goToUserProfile : () => {}}
+          onClick={notALink ? undefined : this.goToUserProfile}
         />
         <AuthorMeta>
           <AuthorNameContainer fontSize={(size === 'medium') ? '16px' : '14px'}>
