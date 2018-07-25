@@ -45,7 +45,7 @@ const Message = styled.div`
   font-size: 15px;
   flex-grow: 1;
   font-weight: ${(props) => (props as any).isRead ? 'normal' : '500'};
-  color: ${(props) => (props as any).isRead ? '#84939E' : '#000000'};
+  color: ${(props) => (props as any).isRead ? `${colors.clGrey}` : '#000000'};
 
   a {
     color: ${(props) => props.theme.colors.clBlue}
@@ -60,16 +60,16 @@ const Message = styled.div`
 
 const Timing = styled.span`
   font-size: 12px;
-  color: #A7A7A7;
+  color: ${colors.clGrey};
 `;
 
 const LinkTiming = styled(Link)`
   font-size: ${fontSize('xs')};
-  color: #A7A7A7;
+  color: ${colors.clGrey};
 
   &:hover,
   &:focus {
-    color: ${darken(.2, '#A7A7A7')};
+    color: ${darken(.2, `${colors.clGrey}`)};
   }
 `;
 
