@@ -9,6 +9,7 @@ import selectStyles from 'components/UI/Select/styles';
 
 const StyledMultipleSelect = styled(ReactSelect)`
   max-width: calc(100% - 30px);
+  font-size: 16px;
 `;
 
 export type Props = {

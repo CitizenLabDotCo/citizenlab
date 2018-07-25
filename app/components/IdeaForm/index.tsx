@@ -56,6 +56,12 @@ const FormElement: any = styled.div`
   margin-bottom: 40px;
 `;
 
+const StyledMultipleSelect = styled(MultipleSelect)`
+  max-width: 100%;
+  padding: 2.5px 0;
+  cursor: pointer;
+`;
+
 const HiddenLabel = styled.span`
   ${hideVisually() as any}
 `;
@@ -325,7 +331,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
         {topics && topics.length > 0 &&
           <FormElement>
             <Label value={<FormattedMessage {...messages.topicsLabel} />} htmlFor="topics" />
-            <MultipleSelect
+            <StyledMultipleSelect
               id="topics"
               value={selectedTopics}
               placeholder={<FormattedMessage {...messages.topicsPlaceholder} />}
