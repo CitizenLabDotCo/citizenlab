@@ -163,6 +163,7 @@ interface ModulesConfig {
   imageDrop?: boolean;
   toolbar?: any;
   blotFormatter?: any;
+  keyboard: any;
 }
 
 interface Tracks {
@@ -185,6 +186,16 @@ function handleLink(value) {
       (this.quill as Quill).format('link', false);
     }
   }
+}
+
+function handlerTab() {
+  // do nothing
+  return true;
+}
+
+function handlerRemoveTab() {
+  // do nothing
+  return true;
 }
 
 class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, State> {
@@ -261,6 +272,22 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
 
     const modules: ModulesConfig = {
       blotFormatter: noImages ? false : {},
+      keyboard: {
+        // This will overwrite the default binding also named 'tab'
+        bindings: {
+          tab: {
+            key: 9,
+            handler: handlerTab
+          },
+          'remove tab': {
+            key: 9,
+            shiftKey: true,
+            collapsed: true,
+            prefix: /\t$/,
+            handler: handlerRemoveTab
+          }
+        }
+      },
       toolbar: noToolbar ? false : {
         container: `#${toolbarId}`,
         handlers: {
@@ -351,7 +378,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
           formats={formats}
           {...quillProps}
         />
-      </Container>
+      </Container >
     );
   }
 }
