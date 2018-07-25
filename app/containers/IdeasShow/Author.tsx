@@ -23,6 +23,7 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
+import { colors } from 'utils/styleUtils';
 
 const AuthorContainer = styled.div`
   display: flex;
@@ -63,7 +64,7 @@ const AuthorName = styled(Link)`
 `;
 
 const TimeAgo = styled.div`
-  color: #767676;
+  color: ${colors.clGrey};
   font-size: 13px;
   line-height: 17px;
   font-weight: 300;
