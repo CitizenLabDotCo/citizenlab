@@ -158,5 +158,9 @@ export function quillEditedContent() {
       margin: 0;
       margin-bottom: 1rem;
     }
+    img {
+      max-width: 100%;
+      height: auto;
+    }
   `;
 }
