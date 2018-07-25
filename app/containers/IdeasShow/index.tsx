@@ -11,23 +11,21 @@ import Link from 'utils/cl-router/Link';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import Avatar from 'components/Avatar';
 import StatusBadge from 'components/StatusBadge';
 import Icon from 'components/UI/Icon';
 import Comments from './CommentsContainer';
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import IdeaMap from './IdeaMap';
-import Activities from './Activities';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import SpamReportForm from 'containers/SpamReport';
 import Modal from 'components/UI/Modal';
-import UserName from 'components/UI/UserName';
 import VoteWrapper from './VoteWrapper';
 import ParentCommentForm from './ParentCommentForm';
 import Spinner from 'components/UI/Spinner';
 import VoteControl from 'components/VoteControl';
 import Fragment from 'components/Fragment';
+import Author from 'components/Author';
 
 // services
 import { ideaByIdStream, IIdea } from 'services/ideas';
@@ -225,21 +223,6 @@ const IdeaImage = styled.img`
   border: 1px solid ${color('separation')};
 `;
 
-const AuthorContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-`;
-
-const AuthorAndAdressWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 25px;
-`;
-
 const MetaButtons = styled.div`
   display: flex;
   flex-direction: column;
@@ -347,42 +330,9 @@ const AddressWrapper = styled.div`
   z-index: 1000;
 `;
 
-const AuthorMeta = styled.div`
-  margin-left: 8px;
-  display: flex;
-  flex-direction: column;
-  flex: 0 0 calc(100% - 39px);
-  min-width: 0;
-`;
-
-const AuthorName = styled(Link) `
-  color: #333;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 20px;
-
-  &:hover {
-    color: #333;
-    text-decoration: underline;
-  }
-
-  ${media.smallerThanMaxTablet`
-    font-size: 14px;
-    line-height: 18px;
-  `}
-`;
-
-const TimeAgo = styled.div`
-  color: #999;
-  font-size: 13px;
-  line-height: 17px;
-  font-weight: 300;
-  margin-top: 2px;
-
-  ${media.smallerThanMaxTablet`
-    margin-top: 0px;
-  `}
-`;
+ const StyledAuthor = styled(Author)`
+  margin-bottom: 25px;
+ `;
 
 const IdeaBody = styled.div`
   color: #474747;
@@ -828,22 +778,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & injecte
                   </T>
                 }
 
-                <AuthorAndAdressWrapper>
-                  <AuthorContainer>
-                    <Avatar userId={authorId} size="medium" onClick={authorId ? this.goToUserProfile : () => { }} />
-                    <AuthorMeta>
-                      <AuthorName to={ideaAuthor ? `/profile/${ideaAuthor.data.attributes.slug}` : ''}>
-                        <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={(ideaAuthor ? ideaAuthor.data : null)} /> }} />
-                      </AuthorName>
-                      {createdAt &&
-                        <TimeAgo>
-                          <FormattedRelative value={createdAt} />
-                          <Activities ideaId={idea.data.id} />
-                        </TimeAgo>
-                      }
-                    </AuthorMeta>
-                  </AuthorContainer>
-                </AuthorAndAdressWrapper>
+                  <StyledAuthor
+                    size="medium"
+                    authorId={authorId}
+                    message={messages.byAuthorNameComponent}
+                    createdAt={createdAt}
+                    activitiesForIdeaId={idea.data.id}
+                  />
 
                 {ideaLocation &&
                   <CSSTransition
