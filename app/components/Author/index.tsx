@@ -11,7 +11,6 @@ import clHistory from 'utils/cl-router/history';
 // components
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
-import Activities from 'containers/IdeasShow/Activities';
 
 // services
 import { userByIdStream, IUser } from 'services/users';
@@ -74,7 +73,6 @@ type Props = {
   createdAt?: string | undefined;
   size: 'medium' | 'small';
   notALink?: boolean;
-  activitiesForIdeaId?: string;
 };
 
 type State = {
@@ -127,7 +125,7 @@ class Author extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    const { authorId, createdAt, message, size, notALink, activitiesForIdeaId } = this.props;
+    const { authorId, createdAt, message, size, notALink } = this.props;
     const { author } = this.state;
 
     const authorNameComponent = notALink ? (
@@ -155,7 +153,6 @@ class Author extends React.PureComponent<Props, State> {
           {createdAt &&
             <TimeAgo>
               <FormattedRelative value={createdAt} />
-              {activitiesForIdeaId && <Activities ideaId={activitiesForIdeaId} />}
             </TimeAgo>
           }
         </AuthorMeta>
