@@ -832,6 +832,7 @@
   "app.containers.footer.terms-and-conditions": "Geschäftsbedingungen",
   "app.containers.footer.termsLink": "Nutzungsbedingungen",
   "app.containers.landing.cityProjects": "{orgName, select, München {Bezirke} other {Projekte}}",
+  "app.containers.landing.createAccount": "",
   "app.containers.landing.explore": "Entdecken",
   "app.containers.landing.exploreAllIdeas": "{orgName, select, München {Alle Meldungen} other {Alle Ideen}}",
   "app.containers.landing.exploreAllProjects": "{orgName, select, München {Alle Bezirke oder Projekte} other {Alle Projekte}}",
