@@ -100,7 +100,7 @@ const IdeaAuthorAvatar = styled(Avatar)`
 `;
 
 const IdeaAuthorText = styled.div`
-  color: ${(props) => props.theme.colors.label};
+  color: ${(props) => props.theme.colors.clGrey};
   font-size: 14px;
   font-weight: 400;
   line-height: 18px;
