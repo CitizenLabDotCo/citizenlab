@@ -24,7 +24,7 @@ import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, quillEditedContent } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -156,6 +156,8 @@ const EventDescription = styled.div`
   strong {
     font-weight: 600;
   }
+
+  ${quillEditedContent()}
 `;
 
 const EventLocationWrapper = styled.div`
