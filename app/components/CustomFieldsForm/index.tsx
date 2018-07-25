@@ -31,6 +31,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 // typings
 import { Locale, IOption } from 'typings';
@@ -43,7 +44,7 @@ const InvisibleSubmitButton = styled.button`
 
 const Description = styled.div`
   width: 100%;
-  color: #333;
+  color: ${colors.clGreyOnGreyBackground};
   font-size: 14px;
   line-height: 20px;
   margin: 0;
