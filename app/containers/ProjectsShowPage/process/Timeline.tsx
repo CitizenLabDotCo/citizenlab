@@ -29,9 +29,9 @@ import { media, colors } from 'utils/styleUtils';
 // typings
 import { Locale } from 'typings';
 
-const greyTransparent = css`rgba(121, 137, 147, 0.3)`;
-const greyOpaque = css`rgba(121, 137, 147, 1)`;
-const greenTransparent = css`rgba(${colors.clGreen}, 0.3)`;
+const greyTransparent = css`rgba(116, 116, 116, 0.3)`;
+const greyOpaque = `${colors.clGrey}`;
+const greenTransparent = css`rgba(4, 136, 76, 0.3)`;
 const greenOpaque = `${colors.clGreen}`;
 
 const Container = styled.div`
