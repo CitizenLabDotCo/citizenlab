@@ -19,7 +19,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-top: 40px;
@@ -69,7 +69,7 @@ const JoinedAt = styled.div`
   font-size: 18px;
   font-weight: 400;
   text-align: center;
-  color: #7e7e7e;
+  color: ${colors.clGreyOnGreyBackground};
 `;
 
 const Bio = styled.div`
