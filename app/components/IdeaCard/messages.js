@@ -11,7 +11,7 @@ export default defineMessages({
     defaultMessage: 'by {authorName}',
   },
   byAuthorNameComponent: {
-    id: 'app.components.IdeaCard.byAuthorName',
+    id: 'app.components.IdeaCard.byAuthorNameComponent',
     defaultMessage: 'by {authorNameComponent}',
   },
   byDeletedUser: {
