@@ -181,7 +181,7 @@ const Container: any = styled.div`
       ${buttonTheme('transparent', color('clGrey'), color('clGrey'))}
     }
     &.text {
-      ${(props: any) => buttonTheme('transparent', props.textColor || color('label'), undefined, undefined, props.textHoverColor)}
+      ${(props: any) => buttonTheme('transparent', props.textColor || color('clGrey'), undefined, undefined, props.textHoverColor)}
     }
     &.success {
       ${buttonTheme(rgba(color('success'), .15), color('success'))}
