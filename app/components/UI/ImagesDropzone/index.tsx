@@ -21,6 +21,7 @@ import styled, { css } from 'styled-components';
 import { ImageFile } from 'typings';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
+import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -39,7 +40,7 @@ const ErrorWrapper = styled.div`
 `;
 
 const DropzonePlaceholderText = styled.div`
-  color: #767676;
+  color: ${colors.clGrey};
   font-size: 16px;
   line-height: 20px;
   font-weight: 400;
@@ -49,13 +50,13 @@ const DropzonePlaceholderText = styled.div`
 
 const DropzonePlaceholderIcon = styled(Icon)`
   height: 32px;
-  fill: #767676;
+  fill: ${colors.clGrey};
   margin-bottom: 5px;
   transition: all 100ms ease-out;
 `;
 
 const DropzoneImagesRemaining = styled.div`
-  color: #767676;
+  color: ${colors.clGrey};
   font-size: 14px;
   line-height: 18px;
   font-weight: 400;
