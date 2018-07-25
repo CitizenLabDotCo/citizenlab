@@ -73,11 +73,12 @@ export function remCalc(desiredSize: number) {
 }
 
 export const colors = {
-  clBlue: '#01A1B1',
+  clBlue: '#008292',
   clGrey: '#767676',
   clGreyOnGreyBackground: '#737373',
   clGreyHover: '#222',
   clGreen: '#04884C',
+  clRed: '#E52516',
   darkClGreen: '#004949',
   success: '#32B67A',
   error: '#FC3C2D',

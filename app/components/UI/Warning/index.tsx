@@ -16,25 +16,25 @@ const StyledIcon = styled(Icon)`
   flex: 0 0 24px;
   width: 24px;
   height: 24px;
-  fill: ${color('clBlueDark')};
+  fill: ${color('clBlueDarker')};
   padding: 0px;
   margin: 0px;
   margin-right: 12px;
 `;
 
 const Text = styled.div`
-  color: ${color('clBlueDark')};
+  color: ${color('clBlueDarker')};
   font-size: 16px;
   line-height: 21px;
   font-weight: 400;
 
   a {
-    color: ${color('clBlueDark')};
+    color: ${color('clBlueDarker')};
     font-weight: 400;
     text-decoration: underline;
 
     &:hover {
-      color: ${darken(0.15, color('clBlueDark'))};
+      color: ${darken(0.15, color('clBlueDarker'))};
     }
   }
 
