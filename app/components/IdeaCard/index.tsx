@@ -234,7 +234,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
         ${idea.attributes.comments_count > 0 ? 'e2e-has-comments' : ''}
         ${votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled'}
       `;
-      console.log(ideaAuthorId);
+
       return (
         <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.attributes.slug}`} className={className}>
           <IdeaContainerInner>
