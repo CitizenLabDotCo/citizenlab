@@ -108,7 +108,7 @@ const Logo = styled.img`
 `;
 
 const NavigationItems = styled.div`
-  height: 100%;
+  height: 76px;
   display: flex;
   align-items: center;
   margin-left: 35px;
@@ -136,7 +136,8 @@ const NavigationItem = styled(Link) `
 
   &.active {
     color: ${(props) => props.theme.colorMain};
-    margin-bottom: 4px solid ${(props) => props.theme.colorMain};
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid ${(props) => props.theme.colorMain};
   }
   &:focus,
   &:hover {
@@ -159,6 +160,7 @@ const NavigationDropdownItemIcon = styled(Icon)`
 
 const NavigationDropdownItem = styled.button`
   align-items: center;
+  height: 76px;
   color: ${colors.clGrey};
   display: flex;
   fill: ${colors.clGrey};
@@ -168,8 +170,8 @@ const NavigationDropdownItem = styled.button`
   cursor: pointer;
 
   &.active {
+    border-bottom: 4px solid ${(props) => props.theme.colorMain};
     color: ${(props) => props.theme.colorMain};
-    margin-bottom: 4px solid ${(props) => props.theme.colorMain};
   }
 
   &:hover,
@@ -313,7 +315,7 @@ interface State {
 }
 
 class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
-  homeLink: HTMLAnchorElement | null;
+  homeLink: any;
   unlisten: Function;
 
   constructor(props) {
@@ -323,12 +325,15 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
       projectsDropdownOpened: false
     };
 
-    this.homeLink = null;
+    this.homeLink = React.createRef();
 
   }
 
   componentDidMount() {
     this.unlisten = clHistory.listen(location => {
+      if (this.homeLink.current) {
+        console.log(this.homeLink.current);
+      }
     });
   }
 
@@ -375,6 +380,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
   }
 
   setRef = (el: HTMLAnchorElement) => {
+    console.log(el);
     if (el) {
       this.homeLink = el;
     }
