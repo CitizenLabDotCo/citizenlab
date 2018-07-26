@@ -288,7 +288,7 @@ class Button extends React.PureComponent<Props, State> {
     processing = (isBoolean(processing) ? processing : false);
     disabled = (isBoolean(disabled) ? disabled : false);
     fullWidth = (isBoolean(fullWidth) ? fullWidth : false);
-    circularCorners = (isBoolean(circularCorners) ? circularCorners : true);
+    circularCorners = (isBoolean(circularCorners) ? circularCorners : false);
     iconPos = (iconPos || 'left');
     className = `${className ? className : ''}`;
 
