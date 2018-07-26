@@ -1,4 +1,5 @@
 import React from 'react';
+import { every, isEmpty } from 'lodash';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -8,18 +9,16 @@ import Survey from './survey';
 import IdeaCards from 'components/IdeaCards';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // i18n
-import { getLocalized } from 'utils/i18n';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // style
 import styled from 'styled-components';
 import { quillEditedContent } from 'utils/styleUtils';
+import T from 'components/T';
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-bottom: 70px;
@@ -58,8 +57,6 @@ interface InputProps {
 }
 
 interface DataProps {
-  locale: GetLocaleChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
   phase: GetPhaseChildProps;
 }
 
@@ -70,20 +67,20 @@ interface State {}
 class Phase extends React.PureComponent<Props, State> {
   render() {
     const className = this.props['className'];
-    const { locale, tenantLocales, phase } = this.props;
+    const { phase } = this.props;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(phase)) {
+    if (!isNilOrError(phase)) {
       const participationMethod = phase.attributes.participation_method;
-      const description = getLocalized(phase.attributes.description_multiloc, locale, tenantLocales);
+      const hasDescription = !every(phase.attributes.description_multiloc, isEmpty);
       return (
         <StyledContentContainer className={className}>
-          {(description && description.length > 0) &&
+          {hasDescription &&
             <Information>
               <InformationTitle>
                 <FormattedMessage {...messages.aboutThisPhase} />
               </InformationTitle>
               <InformationBody>
-                <span dangerouslySetInnerHTML={{ __html: description }} />
+                <T value={phase.attributes.description_multiloc} supportHtml={true} />
               </InformationBody>
             </Information>
           }
@@ -116,8 +113,6 @@ class Phase extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale/>,
-  tenantLocales: <GetTenantLocales/>,
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
 });
 
