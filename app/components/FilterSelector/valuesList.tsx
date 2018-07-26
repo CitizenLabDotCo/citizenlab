@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import { includes } from 'lodash';
 
 // components
@@ -156,7 +156,7 @@ type State = {
   currentFocus: number;
 };
 
-export default class ValuesList extends React.PureComponent<Props, State> {
+export default class ValuesList extends PureComponent<Props, State> {
   dropdownElement: HTMLElement | null;
 
   constructor(props: Props) {
@@ -250,7 +250,7 @@ export default class ValuesList extends React.PureComponent<Props, State> {
     }
   }
 
-  handleOnToggle = (entry, index) => (event: React.FormEvent<MouseEvent>) => {
+  handleOnToggle = (entry, index) => (event: FormEvent) => {
     event.preventDefault();
     this.setState({ currentFocus: index });
     this.props.onChange(entry.value);
@@ -270,7 +270,7 @@ export default class ValuesList extends React.PureComponent<Props, State> {
           <ListWrapper
             onKeyDown={this.keypressHandler}
             role="listbox"
-            tabIndex={0}
+            // tabIndex={0}
             innerRef={this.setRef}
             className="e2e-filter-selector-dropdown-list"
             aria-labelledby={`${baseID}-label`}

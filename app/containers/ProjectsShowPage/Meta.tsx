@@ -20,6 +20,7 @@ import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 
 interface InputProps {
   projectSlug: string;
@@ -41,7 +42,7 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales, pro
     const metaTitle = formatMessage(messages.metaTitle, { projectTitle: getLocalized(project.attributes.title_multiloc, locale, tenantLocales, 50) });
     const description = stripHtml(getLocalized(project.attributes.description_multiloc, locale, tenantLocales), 250);
     const image = project.attributes.header_bg.large;
-    const url = window.location.href;
+    const { location } = window;
 
     return (
       <Helmet>
@@ -51,6 +52,7 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales, pro
               ${metaTitle}`
           }
         </title>
+        {getAlternateLinks(tenantLocales, location)}
         <meta name="title" content={metaTitle} />
         <meta name="description" content={description} />
         <meta property="og:title" content={metaTitle} />
@@ -58,7 +60,7 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales, pro
         {image && <meta property="og:image" content={image} />}
         <meta property="og:image:width" content={`${imageSizes.projectBg.large[0]}`} />
         <meta property="og:image:height" content={`${imageSizes.projectBg.large[1]}`} />
-        <meta property="og:url" content={url} />
+        <meta property="og:url" content={location.href} />
         <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
     );

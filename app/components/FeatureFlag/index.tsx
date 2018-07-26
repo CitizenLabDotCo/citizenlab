@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React, { PureComponent } from 'react';
 import { get } from 'lodash';
-import * as Rx from 'rxjs';
+import { Subscription } from 'rxjs';
 
 // services
 import { currentTenantStream, ITenant } from 'services/tenant';
@@ -13,11 +13,11 @@ interface State {
   currentTenant: ITenant | null;
 }
 
-export default class FeatureFlag extends React.PureComponent<Props, State> {
-  subscription: Rx.Subscription | null;
+export default class FeatureFlag extends PureComponent<Props, State> {
+  subscription: Subscription | null;
 
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = { currentTenant: null };
     this.subscription = null;
   }

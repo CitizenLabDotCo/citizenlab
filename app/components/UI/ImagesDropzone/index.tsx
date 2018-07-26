@@ -484,7 +484,7 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
               </DropzoneContent>
             ) : (
               <DropzoneContent>
-                <Spinner color="#666" size="32px" />
+                <Spinner size="32px" />
               </DropzoneContent>
             )}
           </StyledDropzone>

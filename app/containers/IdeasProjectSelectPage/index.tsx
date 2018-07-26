@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
@@ -38,6 +38,7 @@ const Loading = styled.div`
 `;
 
 const Container = styled.div`
+  width: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   background: #f9f9fa;
 
@@ -53,26 +54,6 @@ const StyledContentContainer = styled(ContentContainer)`
 
   ${media.smallerThanMaxTablet`
     padding-bottom: 60px;
-  `}
-`;
-
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const ColumnsContainer = styled.div`
-  flex: 1;
-  display: flex;
-
-  ${media.biggerThanMaxTablet`
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-  `}
-
-  ${media.smallerThanMaxTablet`
-    flex-direction: column;
   `}
 `;
 
@@ -99,15 +80,34 @@ const PageTitle = styled.h1`
   }
 `;
 
+const ColumnsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  ${media.smallerThanMaxTablet`
+    flex-direction: column;
+    justify-content: flex-start;
+  `}
+`;
+
 const Column = styled.div`
-  flex: 0 0 46%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: auto;
+  width: 46%;
+  display: flex;
+  flex-direction: column;
 
   &.fullWidth {
-    flex: 1;
+    flex-grow: 1;
+    width: 100%;
   }
 
   ${media.smallerThanMaxTablet`
-    flex: 1;
+    flex-grow: 1;
+    flex-shrink: 1;
+    width: 100%;
   `}
 `;
 
@@ -140,9 +140,18 @@ const ColumnExplanation = styled.div`
   line-height: 24px;
   font-weight: 300;
   min-height: 7rem;
+
+  ${media.smallerThanMaxTablet`
+    margin-bottom: 15px;
+    min-height: auto;
+  `}
 `;
 
-const ProjectsList = styled.div``;
+const ProjectsList = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+`;
 
 const ProjectCardWrapper = styled.div`
   margin-bottom: 20px;
@@ -153,7 +162,9 @@ const ProjectCardWrapper = styled.div`
 `;
 
 const ButtonBarInner = styled.div`
-  width: 100%;
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: 100%;
   max-width: ${props => props.theme.maxPageWidth}px;
   display: flex;
   align-items: center;
@@ -168,7 +179,9 @@ const ButtonBarInner = styled.div`
 `;
 
 const WithoutButtonBar = styled.div`
-  flex: 1;
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: 100%;
   display: flex;
 
   ${media.biggerThanMaxTablet`
@@ -196,7 +209,7 @@ interface State {
   selectedProjectId: string | null;
 }
 
-class IdeasProjectSelectPage extends React.PureComponent<Props & WithRouterProps, State> {
+class IdeasProjectSelectPage extends PureComponent<Props & WithRouterProps, State> {
 
   constructor(props: Props & WithRouterProps) {
     super(props);
@@ -233,7 +246,7 @@ class IdeasProjectSelectPage extends React.PureComponent<Props & WithRouterProps
     if (isUndefined(projectsList)) {
       return (
         <Loading>
-          <Spinner size="32px" color="#666" />
+          <Spinner size="32px" />
         </Loading>
       );
     }
@@ -257,7 +270,7 @@ class IdeasProjectSelectPage extends React.PureComponent<Props & WithRouterProps
             }
 
             {!noProjects &&
-              <Content>
+              <>
                 <ColumnsContainer>
 
                   {cityProjects &&
@@ -331,7 +344,7 @@ class IdeasProjectSelectPage extends React.PureComponent<Props & WithRouterProps
                     />
                   </ButtonBarInner>
                 </ButtonBar>
-              </Content>
+              </>
             }
           </StyledContentContainer>
         </Container>

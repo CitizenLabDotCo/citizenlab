@@ -96,7 +96,7 @@ class AgeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
     const theme = this.props['theme'];
 
     return (
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer>
         <BarChart data={this.state.serie} margin={{ right: 40 }}>
           <Bar
             dataKey="value"

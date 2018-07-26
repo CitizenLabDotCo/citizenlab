@@ -322,7 +322,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     const facebookLoginEnabled = !!get(currentTenant, `data.attributes.settings.facebook_login.enabled`);
     const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
 
-    const createAccount = ((location && location.pathname.endsWith('/ideas/new')) ? (
+    const createAccount = ((location && location.pathname.replace(/\/$/, '').endsWith('ideas/new')) ? (
       <CreateAnAccountDiv onClick={this.goToSignUpForm}>
         <FormattedMessage {...messages.createAnAccount} />
       </CreateAnAccountDiv>

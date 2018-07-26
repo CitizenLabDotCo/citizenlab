@@ -1,5 +1,5 @@
-import * as Rx from 'rxjs/Rx';
 import 'whatwg-fetch';
+import { fromPromise } from 'rxjs/observable/fromPromise';
 import { ImageFile } from 'typings';
 
 export const imageSizes = {
@@ -53,8 +53,11 @@ export function convertUrlToBlob(url: string) {
   return new Blob([url], { type: 'file' });
 }
 
-export function convertBlobToFile(blob: Blob, filename: string) {
-  return new File([blob], filename, { lastModified: Date.now() });
+export function convertBlobToFile(blob: Blob, fileName: string) {
+  const b: any = blob;
+  b.lastModifiedDate = new Date();
+  b.name = fileName;
+  return <File>b;
 }
 
 export async function convertUrlToFile(imageUrl: string | null): Promise<File | null> {
@@ -75,5 +78,5 @@ export async function convertUrlToFile(imageUrl: string | null): Promise<File | 
 }
 
 export function convertUrlToFileObservable(imageUrl: string | null) {
-  return Rx.Observable.fromPromise(convertUrlToFile(imageUrl));
+  return fromPromise(convertUrlToFile(imageUrl));
 }

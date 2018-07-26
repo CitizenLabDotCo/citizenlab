@@ -1,23 +1,24 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 // tslint:disable-next-line:no-vanilla-routing
 import { Link as RouterLink, LinkProps } from 'react-router';
 import { LocationDescriptor } from 'history';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import updateLocationDescriptor from './updateLocationDescriptor';
 
-// Typings
-export interface Props extends LinkProps {
+interface InputProps extends LinkProps {
   to: LocationDescriptor;
 }
-export interface State {}
 
-export class Link extends React.PureComponent<Props & {locale: GetLocaleChildProps}, State> {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+interface DataProps {
+  locale: GetLocaleChildProps;
+}
 
+interface Props extends InputProps, DataProps {}
+
+interface State {}
+
+export class Link extends PureComponent<Props, State> {
   render() {
     const { to, locale, ...otherProps } = this.props;
     const descriptor = updateLocationDescriptor(to, locale);
@@ -25,6 +26,8 @@ export class Link extends React.PureComponent<Props & {locale: GetLocaleChildPro
   }
 }
 
-export default (props: Props) => (
-  <GetLocale>{(locale) => (<Link {...props} locale={locale} />)}</GetLocale>
+export default (inputProps: InputProps) => (
+  <GetLocale>
+    {locale => <Link {...inputProps} locale={locale} />}
+  </GetLocale>
 );

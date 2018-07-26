@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import * as moment from 'moment';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
@@ -23,7 +23,11 @@ import styled from 'styled-components';
 import { media, color, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
-  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
   position: relative;
   border-radius: 5px;
   background: #fff;
@@ -41,32 +45,16 @@ const Container = styled.div`
   }
 
   &.selected {
-    border-color: ${props => props.theme.colors.success};
+    border-color: ${colors.success};
   }
 
   &.enabled:hover {
     border-color: #ccc;
 
     &.selected {
-      border-color: ${props => props.theme.colors.success};
+      border-color: ${colors.success};
     }
   }
-`;
-
-const ContainerInner = styled.div`
-  width: 100%;
-  display: flex;
-`;
-
-const Card = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px;
-  border-radius: 5px;
-  position: relative;
 
   ${media.smallerThanMinTablet`
     padding-top: 12px;
@@ -74,19 +62,16 @@ const Card = styled.div`
   `}
 `;
 
-const StyledRadio = styled(Radio)`
-  margin: 0;
-  margin-left: 6px;
-  padding: 0;
-`;
-
 const ImageWrapper = styled.div`
+  flex: 0 0 auto;
+  width: 80px;
+  height: 80px;
   margin-right: 20px;
 
   img {
+    width: 100%;
+    height: 100%;
     border-radius: 5px;
-    width: 80px;
-    height: 80px;
     object-fit: cover;
   }
 
@@ -96,8 +81,8 @@ const ImageWrapper = styled.div`
 `;
 
 const ProjectImagePlaceholder = styled.div`
-  width: 80px;
-  height: 80px;
+  width: 100%;
+  height: 100%;
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -112,8 +97,9 @@ const ProjectImagePlaceholderIcon = styled(Icon) `
 `;
 
 const ProjectContent = styled.div`
-  flex: 1;
-  height: 100%;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -156,6 +142,15 @@ const AdminIconWrapper = styled.div`
   justify-content: center;
 `;
 
+const StyledRadio = styled(Radio)`
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  margin-left: 6px;
+  padding: 0;
+`;
+
 interface InputProps {
   projectId: string;
   onClick: () => void;
@@ -173,18 +168,18 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class ProjectCard extends React.PureComponent<Props, State> {
+class ProjectCard extends PureComponent<Props, State> {
   disabledMessage = () => {
     const { project } = this.props;
 
     if (!isNilOrError(project)) {
-      const { enabled, future_enabled: futureEnabled } = project.relationships.action_descriptor.data.posting;
+      const { future_enabled } = project.relationships.action_descriptor.data.posting;
 
-      if (enabled) {
-        return null;
-      } else if (futureEnabled) {
+      if (future_enabled) {
         return messages.postingPossibleFuture;
       }
+
+      return null;
     }
 
     return messages.postingNotPossible;
@@ -228,52 +223,47 @@ class ProjectCard extends React.PureComponent<Props, State> {
           onClick={this.handleOnClick}
           className={`${className} ${selected && 'selected'} ${enabled && 'enabled'}`}
         >
-          <ContainerInner>
-            <Card className={`${selected && 'selected'} ${enabled && 'enabled'}`}>
+          <ImageWrapper>
+            {smallImage ? (
+              <img src={smallImage} alt="project image" />
+            ) : (
+              <ProjectImagePlaceholder>
+                <ProjectImagePlaceholderIcon name="project" />
+              </ProjectImagePlaceholder>
+            )}
+          </ImageWrapper>
 
-              <ImageWrapper>
-                {smallImage ? (
-                  <img src={smallImage} alt="project image" />
-                ) : (
-                  <ProjectImagePlaceholder>
-                    <ProjectImagePlaceholderIcon name="project" />
-                  </ProjectImagePlaceholder>
-                )}
-              </ImageWrapper>
+          <ProjectContent>
+            <ProjectTitle className={`${selected && 'selected'} ${enabled && 'enabled'}`}>
+              <T value={titleMultiloc} />
+            </ProjectTitle>
 
-              <ProjectContent>
-                <ProjectTitle className={`${selected && 'selected'} ${enabled && 'enabled'}`}>
-                  <T value={titleMultiloc} />
-                </ProjectTitle>
+            {cardState === 'disabled' && disabledMessage &&
+              <PostingDisabledReason>
+                <FormattedMessage {...disabledMessage} values={{ date: formattedFutureEnabledDate }} />
+              </PostingDisabledReason>
+            }
 
-                {cardState === 'disabled' && disabledMessage &&
-                  <PostingDisabledReason>
-                    <FormattedMessage {...disabledMessage} values={{ date: formattedFutureEnabledDate }} />
-                  </PostingDisabledReason>
-                }
+            {cardState === 'enabledBecauseAdmin' &&
+              <PostingEnabledReason>
+                <AdminIconWrapper>
+                  <Icon name="admin" />
+                </AdminIconWrapper>
+                <FormattedMessage {...messages.postingPossibleBecauseAdmin} />
+              </PostingEnabledReason>
+            }
+          </ProjectContent>
 
-                {cardState === 'enabledBecauseAdmin' &&
-                  <PostingEnabledReason>
-                    <AdminIconWrapper>
-                      <Icon name="admin" />
-                    </AdminIconWrapper>
-                    <FormattedMessage {...messages.postingPossibleBecauseAdmin} />
-                  </PostingEnabledReason>
-                }
-              </ProjectContent>
-
-              <StyledRadio
-                onChange={this.handleOnClick}
-                currentValue={selected ? projectId : null}
-                value={projectId}
-                name="project"
-                id={projectId}
-                label=""
-                disabled={!enabled}
-                buttonColor={color('success')}
-              />
-            </Card>
-          </ContainerInner>
+          <StyledRadio
+            onChange={this.handleOnClick}
+            currentValue={selected ? projectId : null}
+            value={projectId}
+            name="project"
+            id={projectId}
+            label=""
+            disabled={!enabled}
+            buttonColor={colors.success}
+          />
         </Container>
       );
     }

@@ -1,6 +1,7 @@
 // Libraries
-import * as React from 'react';
-import * as Rx from 'rxjs';
+import React, { PureComponent } from 'react';
+import { Subscription } from 'rxjs';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -23,8 +24,8 @@ interface State {
   loaded: boolean;
 }
 
-export default class ProfileEditor extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+export default class ProfileEditor extends PureComponent<Props, State> {
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props);
@@ -42,7 +43,7 @@ export default class ProfileEditor extends React.PureComponent<Props, State> {
     const areas$ = areasStream().observable;
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      combineLatest(
         currentTenant$,
         authUser$,
         areas$
