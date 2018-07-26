@@ -90,7 +90,7 @@ const PopoverItem = styled(Button)`
     &:hover,
     &:focus {
       color: ${colors.clGreyHover};
-      background: #f6f6f6;
+      background: ${colors.clDropdownHoverBackground};
       fill: ${colors.clGreyHover};
     }
   }

@@ -77,6 +77,7 @@ export const colors = {
   clGrey: '#767676',
   clGreyOnGreyBackground: '#737373',
   clGreyHover: '#222',
+  clDropdownHoverBackground: '#e9e9e9',
   clGreen: '#04884C',
   clRed: '#E52516',
   darkClGreen: '#004949',
