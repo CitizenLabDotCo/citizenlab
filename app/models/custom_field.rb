@@ -21,8 +21,8 @@ class CustomField < ApplicationRecord
 
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
+  before_validation :sanitize_description_multiloc
   before_destroy :check_group_references, prepend: true
-
 
   scope :fields_for, -> (claz) { where(resource_type: claz.name.to_s) }
   scope :enabled, -> { where(enabled: true) }
@@ -50,5 +50,12 @@ class CustomField < ApplicationRecord
       self.errors.add(:base, :dangling_group_references, message: Group.using_custom_field(self).all.map(&:id).join(","))
       throw :abort
     end
+  end
+
+  def sanitize_description_multiloc
+    self.description_multiloc = SanitizationService.new.sanitize_multiloc(
+      self.description_multiloc,
+      %i{decoration link}
+    )
   end
 end

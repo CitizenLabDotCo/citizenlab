@@ -34,6 +34,10 @@ class SanitizationService
       tags: %w(iframe),
       attributes: %w(class frameborder allowfullscreen src data-blot-formatter-unclickable-bound width height data-align style),
     },
+    mention: {
+      tags: %w(span),
+      attributes: %w(class data-user-id data-user-slug)
+    }
   }
 
 
