@@ -549,7 +549,6 @@
   "app.containers.IdeasShow.adminCommentDeletionConfirmButton": "Supprimer ce commentaire",
   "app.containers.IdeasShow.author": "{authorNameComponent}",
   "app.containers.IdeasShow.byAuthorName": "par {authorName}",
-  "app.containers.IdeasShow.byAuthorNameComponent": "",
   "app.containers.IdeasShow.childCommentAuthor": "{authorNameComponent} a répondu",
   "app.containers.IdeasShow.childCommentBodyPlaceholder": "Ecrire une réponse...",
   "app.containers.IdeasShow.closeMap": "Fermer la carte",

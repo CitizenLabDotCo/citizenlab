@@ -549,7 +549,6 @@
   "app.containers.IdeasShow.adminCommentDeletionConfirmButton": "Verwijder deze reactie",
   "app.containers.IdeasShow.author": "{authorNameComponent}",
   "app.containers.IdeasShow.byAuthorName": "door {authorName}",
-  "app.containers.IdeasShow.byAuthorNameComponent": "",
   "app.containers.IdeasShow.childCommentAuthor": "{authorNameComponent} antwoordde:",
   "app.containers.IdeasShow.childCommentBodyPlaceholder": "Reageer ...",
   "app.containers.IdeasShow.closeMap": "Sluit kaart",
