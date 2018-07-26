@@ -12,7 +12,7 @@ import 'moment/locale/fr';
 import 'moment/locale/de';
 import 'moment/locale/da';
 import 'moment/locale/nb';
-import find from 'lodash/find';
+import { find, isString, isObject } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
 
 // context
@@ -59,6 +59,14 @@ const Container = styled.div`
 
 const InnerContainer = styled.div`
   padding-top: ${props => props.theme.menuHeight}px;
+  min-width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  ${media.smallerThanMaxTablet`
+    min-height: calc(100vh - ${props => props.theme.mobileTopBarHeight}px - 1px);
+  `}
 
   &.citizen {
     ${media.smallerThanMaxTablet`
@@ -114,16 +122,14 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     this.unlisten = clHistory.listenBefore((newLocation) => {
       const { authUser } = this.state;
       const previousPathname = location.pathname;
+      const nextPathname = newLocation.pathname;
+      const registrationCompletedAt = (authUser ? authUser.data.attributes.registration_completed_at : null);
+
       this.setState({ previousPathname });
 
       trackPage(newLocation.pathname);
 
-      if (newLocation
-          && newLocation.pathname !== '/complete-signup'
-          && authUser
-          && authUser.data.attributes.registration_completed_at === null
-      ) {
-        // redirect to second signup step
+      if (isObject(authUser) && !isString(registrationCompletedAt) && !nextPathname.replace(/\/$/, '').endsWith('complete-signup')) {
         clHistory.replace('/complete-signup');
       }
     });

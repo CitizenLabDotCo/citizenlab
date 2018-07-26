@@ -53,12 +53,12 @@ const AuthorNameContainer = styled.div `
 `;
 
 const AuthorName = styled(Link)`
-  color: ${(props) => props.theme.colors.clBlue};
+  color: ${(props) => props.theme.colors.clBlueDark};
   text-decoration: none;
   cursor: pointer;
 
   &:hover {
-    color: ${(props) => darken(0.15, props.theme.colors.clBlue)};
+    color: ${(props) => darken(0.15, props.theme.colors.clBlueDark)};
     text-decoration: underline;
   }
 `;

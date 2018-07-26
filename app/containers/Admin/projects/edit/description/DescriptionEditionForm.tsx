@@ -11,18 +11,20 @@ import Error from 'components/UI/Error';
 import { Section, SectionField } from 'components/admin/Section';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
-import FormikEditorMultiloc from 'components/UI/FormikEditorMultiloc';
+import FormikQuillMultiloc from 'components/QuillEditor/FormikQuillMultiloc';
 
 // Typings
 import { Multiloc } from 'typings';
-export interface Props {}
-export interface State {}
+export interface Props { }
+export interface State { }
 export interface Values {
   description_multiloc: Multiloc;
   description_preview_multiloc: Multiloc;
 }
 
-class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, Values> , State> {
+// Wrapping the editor with the styles from the page where it will be rendered should ensure that styling is consistent.
+
+class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, Values>, State> {
   constructor(props) {
     super(props);
     this.state = {};
@@ -45,28 +47,14 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
             />
             <Error fieldName="description_preview_multiloc" apiErrors={errors.description_preview_multiloc} />
           </SectionField>
-          <SectionField>
+
+          <SectionField className="fullWidth">
             <Field
-              component={FormikEditorMultiloc}
+              component={FormikQuillMultiloc}
+              inAdmin
               id="project-description"
               name="description_multiloc"
               label={<FormattedMessage {...messages.descriptionLabel} />}
-              toolbarConfig={{
-                options: ['inline', 'list', 'link', 'blockType'],
-                inline: {
-                  options: ['bold', 'italic'],
-                },
-                list: {
-                  options: ['unordered', 'ordered'],
-                },
-                blockType: {
-                  inDropdown: false,
-                  options: ['Normal', 'H1'],
-                  className: undefined,
-                  component: undefined,
-                  dropdownClassName: undefined,
-                }
-              }}
             />
             <Error fieldName="description_multiloc" apiErrors={errors.description_multiloc} />
           </SectionField>

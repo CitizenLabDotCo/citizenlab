@@ -185,8 +185,8 @@ const ProjectsListItem = styled(Link)`
   font-weight: 400;
   line-height: 22px;
   text-decoration: none;
-  padding: 10px;
   margin-right: 5px;
+  padding: 10px;
   background: #fff;
   border-radius: 5px;
   padding: 10px;
@@ -441,6 +441,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
                       </ProjectsListFooter>
                     )}
                     toggleOpened={this.handleProjectsDropdownToggle}
+                    maxHeight="180px"
                   />
                 </NavigationDropdown>
               }

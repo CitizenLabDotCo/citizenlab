@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import clickOutside from 'utils/containers/clickOutside';
 import styled from 'styled-components';
@@ -77,7 +77,7 @@ const Content: any = styled.div`
 `;
 
 const Footer = styled.div`
-  flex: 1;
+  flex: 1 0 auto;
   width: 100%;
   display: flex;
 `;
@@ -88,13 +88,13 @@ interface Props {
   content: JSX.Element;
   footer?: JSX.Element;
   maxHeight?: string;
-  toggleOpened: (event: React.FormEvent<any>) => void;
+  toggleOpened: (event: FormEvent) => void;
 }
 
 interface State {}
 
-export default class Dropdown extends React.PureComponent<Props, State> {
-  close = (event: React.FormEvent<any>) => {
+export default class Dropdown extends PureComponent<Props, State> {
+  close = (event: FormEvent) => {
     this.props.toggleOpened(event);
   }
 

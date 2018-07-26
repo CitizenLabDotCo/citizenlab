@@ -1,27 +1,31 @@
 // libraries
 import React from 'react';
 import Helmet from 'react-helmet';
+import { adopt } from 'react-adopt';
 
 // i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 
 interface InputProps { }
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
+  tenantLocales: GetTenantLocalesChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
 
-const ProjectsMeta: React.SFC<Props & InjectedIntlProps> = ({ intl, authUser }) => {
+const ProjectsMeta: React.SFC<Props & InjectedIntlProps> = ({ intl, authUser, tenantLocales }) => {
 
   const { formatMessage } = intl;
-  const projectsIndexUrl = window.location.href;
+  const { location } = window;
 
   const projectsIndexTitle = formatMessage(messages.metaTitle);
   const projectsIndexDescription = formatMessage(messages.metaDescription);
@@ -34,19 +38,25 @@ const ProjectsMeta: React.SFC<Props & InjectedIntlProps> = ({ intl, authUser }) 
           ${projectsIndexTitle}`
         }
       </title>
+      {getAlternateLinks(tenantLocales, location)}
       <meta name="title" content={projectsIndexTitle} />
       <meta name="description" content={projectsIndexDescription} />
       <meta property="og:title" content={projectsIndexTitle} />
       <meta property="og:description" content={projectsIndexDescription} />
-      <meta property="og:url" content={projectsIndexUrl} />
+      <meta property="og:url" content={location.href} />
     </Helmet>
   );
 };
 
 const ProjectsMetaWithHoc = injectIntl<Props>(ProjectsMeta);
 
+const Data = adopt<DataProps, InputProps>({
+  tenantLocales: <GetTenantLocales />,
+  authUser: <GetAuthUser />,
+});
+
 export default (inputProps: InputProps) => (
-  <GetAuthUser {...inputProps}>
-    {authUser => <ProjectsMetaWithHoc {...inputProps} authUser={authUser} />}
-  </GetAuthUser>
+  <Data {...inputProps}>
+    {dataprops => <ProjectsMetaWithHoc {...inputProps} {...dataprops} />}
+  </Data>
 );

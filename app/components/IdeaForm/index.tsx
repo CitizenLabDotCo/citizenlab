@@ -10,16 +10,14 @@ import isEqual from 'lodash/isEqual';
 import scrollToComponent from 'react-scroll-to-component';
 import bowser from 'bowser';
 
-// draft-js
-import { EditorState } from 'draft-js';
-
 // components
 import MultipleSelect from 'components/UI/MultipleSelect';
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import LocationInput from 'components/UI/LocationInput';
-import Editor from 'components/UI/Editor';
+import QuillEditor from 'components/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
+import Error from 'components/UI/Error';
 
 // services
 import { localeStream } from 'services/locale';
@@ -30,7 +28,6 @@ import { projectsStream, IProjects, IProjectData } from 'services/projects';
 // utils
 import eventEmitter from 'utils/eventEmitter';
 import { getLocalized } from 'utils/i18n';
-import { getEditorStateFromHtmlString, getHtmlStringFromEditorState } from 'utils/editorTools';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -89,7 +86,7 @@ interface State {
   topics: IOption[] | null;
   projects: IOption[] | null;
   title: string;
-  description: EditorState;
+  description: string;
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
   position: string;
@@ -109,7 +106,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
       topics: null,
       projects: null,
       title: '',
-      description: EditorState.createEmpty(),
+      description: '',
       selectedTopics: null,
       selectedProject: null,
       position: '',
@@ -136,7 +133,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
       position,
       imageFile,
       title: (title || ''),
-      description: getEditorStateFromHtmlString(description),
+      description: description || '',
     });
 
     this.subscriptions = [
@@ -189,7 +186,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     }
 
     if (this.props.description !== prevProps.description) {
-      this.setState({ description: getEditorStateFromHtmlString(this.props.description) });
+      this.setState({ description: this.props.description || '' });
     }
 
     if (
@@ -220,8 +217,8 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     this.setState({ title, titleError: null });
   }
 
-  handleDescriptionOnChange = async (description: EditorState) => {
-    const isDescriptionEmpty = (!description || !description.getCurrentContent().hasText());
+  handleDescriptionOnChange = async (description: string) => {
+    const isDescriptionEmpty = (!description || description === '');
     this.setState((state) => ({
       description,
       descriptionError: (isDescriptionEmpty ?  state.descriptionError : null) })
@@ -256,14 +253,10 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     this.titleInputElement = element;
   }
 
-  handleDescriptionInputSetRef = (element) => {
-    this.descriptionElement = element;
-  }
-
-  validate = (title: string | null, description: EditorState) => {
+  validate = (title: string | null, description: string) => {
     const titleError = (!title ? <FormattedMessage {...messages.titleEmptyError} /> : null);
-    const hasDescriptionError = (!description || !description.getCurrentContent().hasText());
-    const descriptionError = (hasDescriptionError ? <FormattedMessage {...messages.descriptionEmptyError} /> : null);
+    const hasDescriptionError = (!description || description === '');
+    const descriptionError = (hasDescriptionError ? this.props.intl.formatMessage(messages.descriptionEmptyError) : null);
 
     this.setState({ titleError, descriptionError });
 
@@ -288,7 +281,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
         selectedProject,
         position,
         imageFile,
-        description: getHtmlStringFromEditorState(description)
+        description,
       };
 
       this.props.onSubmit(output);
@@ -318,14 +311,14 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
 
         <FormElement name="descriptionInput">
           <Label value={<FormattedMessage {...messages.descriptionLabel} />} htmlFor="editor" />
-          <Editor
+          <QuillEditor
             id="editor"
+            noImages
             value={description}
-            placeholder={<FormattedMessage {...messages.descriptionPlaceholder} />}
-            error={descriptionError}
+            placeholder={formatMessage(messages.descriptionPlaceholder)}
             onChange={this.handleDescriptionOnChange}
-            setRef={this.handleDescriptionInputSetRef}
           />
+          {descriptionError && <Error text={descriptionError} />}
         </FormElement>
 
         {topics && topics.length > 0 &&

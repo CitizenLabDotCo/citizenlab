@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -70,11 +70,7 @@ const RightInner = styled.div`
   padding-right: 30px;
 `;
 
-type Props = {};
-
-type State = {};
-
-class SignInPage extends React.PureComponent<Props, State> {
+export default class SignInPage extends PureComponent {
   onSuccess = (previousPathname: string | null) => () => {
     clHistory.push(previousPathname || '/');
   }
@@ -100,5 +96,3 @@ class SignInPage extends React.PureComponent<Props, State> {
     );
   }
 }
-
-export default SignInPage;

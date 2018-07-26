@@ -80,6 +80,7 @@ class IdeaCircle extends PureComponent<Props, State> {
           onMouseLeave={this.handleOnMouseLeave}
           selectionIndex={selectionIndex}
           hovered={hovered}
+          upvoteRatio={this.upvoteRatio(idea.attributes.upvotes_count, idea.attributes.downvotes_count)}
         />
         <T value={idea.attributes.title_multiloc}>
           {(localizedTitle) => {
