@@ -1323,7 +1323,7 @@ models:
     project_ref: *10
     start_at: 2018-06-13
     end_at: 2018-06-29
-  idea_phase:
+  ideas_phase:
   - idea_ref: *22
     phase_ref: *38
   - idea_ref: *22
