@@ -167,6 +167,11 @@ const NavigationDropdownItem = styled.button`
   transition: all 100ms ease-out;
   cursor: pointer;
 
+  &.active {
+    color: ${(props) => props.theme.colorMain};
+    margin-bottom: 4px solid ${(props) => props.theme.colorMain};
+  }
+
   &:hover,
   &:focus {
     color: #000;
@@ -391,6 +396,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
     const tenantName = (!isNilOrError(tenant) && !isNilOrError(locale) && getLocalized(tenant.attributes.settings.core.organization_name, locale, tenantLocales));
     let tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
     tenantLogo = isAdmin(!isNilOrError(authUser) ? { data: authUser } : undefined) && tenantLogo ? `${tenantLogo}?${Date.now()}` : tenantLogo;
+    const secondUrlSegment = location.pathname.replace(/^\/+/g, '').split('/')[1];
 
     return (
       <>
@@ -413,7 +419,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
 
               {tenantLocales && projectsList && projectsList.length > 0 &&
                 <NavigationDropdown>
-                  <NavigationDropdownItem aria-haspopup="true" onClick={this.handleProjectsDropdownToggle}>
+                  <NavigationDropdownItem className={secondUrlSegment === 'projects' ? 'active' : ''} aria-haspopup="true" onClick={this.handleProjectsDropdownToggle}>
                     <FormattedMessage {...messages.pageProjects} />
                     <NavigationDropdownItemIcon name="dropdown" />
                   </NavigationDropdownItem>
