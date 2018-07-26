@@ -77,14 +77,11 @@ const StyledPopover = styled(Popover)`
 `;
 
 const PopoverItem = styled(Button)`
-  background: #fff;
-  border-radius: 5px;
-  transition: all 80ms ease-out;
-
-  &:hover,
-  &:focus {
-    color: ${colors.clGreyHover};
-    background: #f6f6f6;
+  a:not(.processing):focus,
+  button:not(.processing):focus,
+  a:not(.processing):hover,
+  button:not(.processing):hover {
+    background: ${colors.clDropdownHoverBackground};
   }
 `;
 
