@@ -549,7 +549,6 @@
   "app.containers.IdeasShow.adminCommentDeletionConfirmButton": "Delete this comment",
   "app.containers.IdeasShow.author": "{authorNameComponent}",
   "app.containers.IdeasShow.byAuthorName": "by {authorName}",
-  "app.containers.IdeasShow.byAuthorNameComponent": "by {authorNameComponent}",
   "app.containers.IdeasShow.childCommentAuthor": "{authorNameComponent} replied",
   "app.containers.IdeasShow.childCommentBodyPlaceholder": "Write a reply...",
   "app.containers.IdeasShow.closeMap": "Close Map",

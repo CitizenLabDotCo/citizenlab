@@ -549,7 +549,6 @@
   "app.containers.IdeasShow.adminCommentDeletionConfirmButton": "Slette denne kommentar",
   "app.containers.IdeasShow.author": "{authorNameComponent}",
   "app.containers.IdeasShow.byAuthorName": "af {authorName}",
-  "app.containers.IdeasShow.byAuthorNameComponent": "",
   "app.containers.IdeasShow.childCommentAuthor": "{authorNameComponent} svarede",
   "app.containers.IdeasShow.childCommentBodyPlaceholder": "Skriv et svar...",
   "app.containers.IdeasShow.closeMap": "Luk kort",

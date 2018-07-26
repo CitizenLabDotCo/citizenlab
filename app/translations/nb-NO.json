@@ -549,7 +549,6 @@
   "app.containers.IdeasShow.adminCommentDeletionConfirmButton": "Slett denne kommentaren",
   "app.containers.IdeasShow.author": "{authorNameComponent}",
   "app.containers.IdeasShow.byAuthorName": "av {authorName}",
-  "app.containers.IdeasShow.byAuthorNameComponent": "",
   "app.containers.IdeasShow.childCommentAuthor": "{authorNameComponent} svarte",
   "app.containers.IdeasShow.childCommentBodyPlaceholder": "Skriv et svar...",
   "app.containers.IdeasShow.closeMap": "Lukk kart",

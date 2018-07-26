@@ -549,7 +549,6 @@
   "app.containers.IdeasShow.adminCommentDeletionConfirmButton": "Diesen Kommentar löschen",
   "app.containers.IdeasShow.author": "{authorNameComponent}",
   "app.containers.IdeasShow.byAuthorName": "von {authorName}",
-  "app.containers.IdeasShow.byAuthorNameComponent": "",
   "app.containers.IdeasShow.childCommentAuthor": "{authorNameComponent} antwortete",
   "app.containers.IdeasShow.childCommentBodyPlaceholder": "Reagieren...",
   "app.containers.IdeasShow.closeMap": "Karte schließen",
