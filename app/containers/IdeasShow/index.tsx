@@ -656,6 +656,14 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & injecte
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  goToUserProfile = () => {
+    const { ideaAuthor } = this.state;
+
+    if (ideaAuthor) {
+      clHistory.push(`/profile/${ideaAuthor.data.attributes.slug}`);
+    }
+  }
+
   handleMapToggle = () => {
     this.setState((state) => {
       const showMap = !state.showMap;
