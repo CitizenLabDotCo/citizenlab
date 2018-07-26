@@ -1025,7 +1025,8 @@ models:
     start_at: 2018-05-01
     end_at: 2018-05-02
   phase:
-  - title_multiloc:
+  - &38
+    title_multiloc:
       en: Collecting ideas
       en-GB: Collecting ideas
       en-CA: Collecting ideas
@@ -1039,7 +1040,8 @@ models:
     project_ref: *6
     start_at: 2018-03-28
     end_at: 2018-04-18
-  - title_multiloc:
+  - &39
+    title_multiloc:
       en: Vote period
       en-GB: Vote period
       en-CA: Vote period
@@ -1055,7 +1057,8 @@ models:
     project_ref: *6
     start_at: 2018-04-19
     end_at: 2018-05-01
-  - title_multiloc:
+  - &40
+    title_multiloc:
       en: Presentation of most succesful ideas at the townhall
       en-GB: Presentation of most succesful ideas at the townhall
       en-CA: Presentation of most succesful ideas at the townhall
@@ -1069,7 +1072,8 @@ models:
     project_ref: *6
     start_at: 2018-05-02
     end_at: 2018-05-04
-  - title_multiloc:
+  - &41
+    title_multiloc:
       en: Implementation of ideas
       en-GB: Implementation of ideas
       en-CA: Implementation of ideas
@@ -1080,7 +1084,8 @@ models:
     project_ref: *6
     start_at: 2018-05-05
     end_at: 2018-06-01
-  - title_multiloc:
+  - &42
+    title_multiloc:
       en: Collecting ideas
       en-GB: Collecting ideas
       en-CA: Collecting ideas
@@ -1094,7 +1099,8 @@ models:
     project_ref: *7
     start_at: 2018-06-15
     end_at: 2018-07-09
-  - title_multiloc:
+  - &43
+    title_multiloc:
       en: Vote period
       en-GB: Vote period
       en-CA: Vote period
@@ -1110,7 +1116,8 @@ models:
     project_ref: *7
     start_at: 2018-07-10
     end_at: 2018-07-28
-  - title_multiloc:
+  - &44
+    title_multiloc:
       en: Presentation of most succesful ideas at the townhall
       en-GB: Presentation of most succesful ideas at the townhall
       en-CA: Presentation of most succesful ideas at the townhall
@@ -1124,7 +1131,8 @@ models:
     project_ref: *7
     start_at: 2018-07-29
     end_at: 2018-08-01
-  - title_multiloc:
+  - &45
+    title_multiloc:
       en: Implementation of ideas
       en-GB: Implementation of ideas
       en-CA: Implementation of ideas
@@ -1135,7 +1143,8 @@ models:
     project_ref: *7
     start_at: 2018-08-02
     end_at: 2018-08-14
-  - title_multiloc:
+  - &46
+    title_multiloc:
       en: Collecting ideas
       en-GB: Collecting ideas
       en-CA: Collecting ideas
@@ -1149,7 +1158,8 @@ models:
     project_ref: *8
     start_at: 2018-04-15
     end_at: 2018-05-02
-  - title_multiloc:
+  - &47
+    title_multiloc:
       en: Vote period
       en-GB: Vote period
       en-CA: Vote period
@@ -1165,7 +1175,8 @@ models:
     project_ref: *8
     start_at: 2018-05-03
     end_at: 2018-05-18
-  - title_multiloc:
+  - &48
+    title_multiloc:
       en: Presentation of most succesful ideas at the townhall
       en-GB: Presentation of most succesful ideas at the townhall
       en-CA: Presentation of most succesful ideas at the townhall
@@ -1179,7 +1190,8 @@ models:
     project_ref: *8
     start_at: 2018-05-19
     end_at: 2018-06-12
-  - title_multiloc:
+  - &49
+    title_multiloc:
       en: Implementation of ideas
       en-GB: Implementation of ideas
       en-CA: Implementation of ideas
@@ -1190,7 +1202,8 @@ models:
     project_ref: *8
     start_at: 2018-06-13
     end_at: 2018-07-12
-  - title_multiloc:
+  - &50
+    title_multiloc:
       en: Collecting ideas
       en-GB: Collecting ideas
       en-CA: Collecting ideas
@@ -1204,7 +1217,8 @@ models:
     project_ref: *9
     start_at: 2018-06-03
     end_at: 2018-06-13
-  - title_multiloc:
+  - &51
+    title_multiloc:
       en: Vote period
       en-GB: Vote period
       en-CA: Vote period
@@ -1220,7 +1234,8 @@ models:
     project_ref: *9
     start_at: 2018-06-14
     end_at: 2018-07-06
-  - title_multiloc:
+  - &52
+    title_multiloc:
       en: Analysis period
       en-GB: Analysis period
       en-CA: Analysis period
@@ -1234,7 +1249,8 @@ models:
     project_ref: *9
     start_at: 2018-07-07
     end_at: 2018-08-06
-  - title_multiloc:
+  - &53
+    title_multiloc:
       en: Start of the reshaping of the park
       en-GB: Start of the reshaping of the park
       en-CA: Start of the reshaping of the park
@@ -1248,7 +1264,8 @@ models:
     project_ref: *9
     start_at: 2018-08-07
     end_at: 2018-08-28
-  - title_multiloc:
+  - &54
+    title_multiloc:
       en: Collecting ideas
       en-GB: Collecting ideas
       en-CA: Collecting ideas
@@ -1262,7 +1279,8 @@ models:
     project_ref: *10
     start_at: 2018-04-16
     end_at: 2018-04-22
-  - title_multiloc:
+  - &55
+    title_multiloc:
       en: Vote period
       en-GB: Vote period
       en-CA: Vote period
@@ -1278,7 +1296,8 @@ models:
     project_ref: *10
     start_at: 2018-04-23
     end_at: 2018-05-12
-  - title_multiloc:
+  - &56
+    title_multiloc:
       en: Presentation of most succesful ideas at the townhall
       en-GB: Presentation of most succesful ideas at the townhall
       en-CA: Presentation of most succesful ideas at the townhall
@@ -1292,7 +1311,8 @@ models:
     project_ref: *10
     start_at: 2018-05-13
     end_at: 2018-06-12
-  - title_multiloc:
+  - &57
+    title_multiloc:
       en: Implementation of ideas
       en-GB: Implementation of ideas
       en-CA: Implementation of ideas
@@ -1303,3 +1323,100 @@ models:
     project_ref: *10
     start_at: 2018-06-13
     end_at: 2018-06-29
+  ideas_phase:
+  - idea_ref: *22
+    phase_ref: *38
+  - idea_ref: *22
+    phase_ref: *39
+  - idea_ref: *22
+    phase_ref: *40
+  - idea_ref: *22
+    phase_ref: *41
+  - idea_ref: *23
+    phase_ref: *38
+  - idea_ref: *23
+    phase_ref: *39
+  - idea_ref: *23
+    phase_ref: *40
+  - idea_ref: *23
+    phase_ref: *41
+  - idea_ref: *24
+    phase_ref: *42
+  - idea_ref: *24
+    phase_ref: *43
+  - idea_ref: *24
+    phase_ref: *44
+  - idea_ref: *24
+    phase_ref: *45
+  - idea_ref: *25
+    phase_ref: *42
+  - idea_ref: *25
+    phase_ref: *43
+  - idea_ref: *25
+    phase_ref: *44
+  - idea_ref: *25
+    phase_ref: *45
+  - idea_ref: *26
+    phase_ref: *42
+  - idea_ref: *26
+    phase_ref: *43
+  - idea_ref: *26
+    phase_ref: *44
+  - idea_ref: *26
+    phase_ref: *45
+  - idea_ref: *27
+    phase_ref: *46
+  - idea_ref: *27
+    phase_ref: *47
+  - idea_ref: *27
+    phase_ref: *48
+  - idea_ref: *27
+    phase_ref: *49
+  - idea_ref: *28
+    phase_ref: *46
+  - idea_ref: *28
+    phase_ref: *47
+  - idea_ref: *28
+    phase_ref: *48
+  - idea_ref: *28
+    phase_ref: *49
+  - idea_ref: *29
+    phase_ref: *50
+  - idea_ref: *29
+    phase_ref: *51
+  - idea_ref: *29
+    phase_ref: *52
+  - idea_ref: *29
+    phase_ref: *53
+  - idea_ref: *30
+    phase_ref: *50
+  - idea_ref: *30
+    phase_ref: *51
+  - idea_ref: *30
+    phase_ref: *52
+  - idea_ref: *30
+    phase_ref: *53
+  - idea_ref: *31
+    phase_ref: *54
+  - idea_ref: *31
+    phase_ref: *55
+  - idea_ref: *31
+    phase_ref: *56
+  - idea_ref: *31
+    phase_ref: *57
+  - idea_ref: *32
+    phase_ref: *54
+  - idea_ref: *32
+    phase_ref: *55
+  - idea_ref: *32
+    phase_ref: *56
+  - idea_ref: *32
+    phase_ref: *57
+  - idea_ref: *33
+    phase_ref: *54
+  - idea_ref: *33
+    phase_ref: *55
+  - idea_ref: *33
+    phase_ref: *56
+  - idea_ref: *33
+    phase_ref: *57
