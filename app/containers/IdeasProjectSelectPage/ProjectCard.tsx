@@ -20,7 +20,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, color } from 'utils/styleUtils';
+import { media, color, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -137,7 +137,7 @@ const PostingDisabledReason = styled.div`
 `;
 
 const PostingEnabledReason = styled.div`
-  color: #767676;
+  color: ${colors.clGrey};
   font-size: 15px;
   line-height: 21px;
   font-weight: 300;

@@ -159,9 +159,9 @@ const NavigationDropdownItemIcon = styled(Icon)`
 
 const NavigationDropdownItem = styled.button`
   align-items: center;
-  color: #767676;;
+  color: ${colors.clGrey};
   display: flex;
-  fill: #767676;;
+  fill: ${colors.clGrey};
   font-size: 17px;
   font-weight: 400;
   transition: all 100ms ease-out;
