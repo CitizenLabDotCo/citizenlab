@@ -1,10 +1,5 @@
-/*
- * IdeaCard Messages
- *
- * This contains all the text for the IdeaCard component.
- */
-import { defineMessages } from 'react-intl';
 
+import { defineMessages } from 'react-intl';
 export default defineMessages({
   votingDisabledProjectInactive: {
     id: 'app.components.VoteControl.votingDisabledProjectInactive',
