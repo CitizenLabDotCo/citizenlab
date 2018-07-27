@@ -445,6 +445,8 @@
   "app.containers.AdminPage.SettingsPage.urlTitle": "Link naar jullie website (URL) in de footer",
   "app.containers.AdminPage.SettingsPage.viewPublicResource": "Instellingen",
   "app.containers.AdminPage.SideBar.dashboard": "Dashboard",
+  "app.containers.AdminPage.SideBar.gettingStarted": "",
+  "app.containers.AdminPage.SideBar.gettingStartedLink": "",
   "app.containers.AdminPage.SideBar.groups": "Groepen",
   "app.containers.AdminPage.SideBar.ideas": "Ideeën",
   "app.containers.AdminPage.SideBar.invitations": "Uitnodigingen",

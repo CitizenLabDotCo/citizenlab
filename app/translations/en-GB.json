@@ -445,6 +445,8 @@
   "app.containers.AdminPage.SettingsPage.urlTitle": "",
   "app.containers.AdminPage.SettingsPage.viewPublicResource": "",
   "app.containers.AdminPage.SideBar.dashboard": "",
+  "app.containers.AdminPage.SideBar.gettingStarted": "",
+  "app.containers.AdminPage.SideBar.gettingStartedLink": "",
   "app.containers.AdminPage.SideBar.groups": "",
   "app.containers.AdminPage.SideBar.ideas": "",
   "app.containers.AdminPage.SideBar.invitations": "",
