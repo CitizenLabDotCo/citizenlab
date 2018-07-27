@@ -72,6 +72,23 @@ export function remCalc(desiredSize: number) {
   return `${(desiredSize / fontSizes.small).toString().substring(0, 6).trim()}rem`;
 }
 
+function luminanace(r, g, b) {
+  const a: any = [r, g, b].map((val: number) => {
+    let v = val;
+    v /= 255;
+      return v <= 0.03928
+          ? v / 12.92
+          : Math.pow((v + 0.055) / 1.055, 2.4);
+  });
+  return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+}
+
+export function calculateContrastRatio(rgb1, rgb2) {
+  // rgb1 is background, rgb2 is foreground/text color
+  return (luminanace(rgb1[0], rgb1[1], rgb1[2]) + 0.05)
+       / (luminanace(rgb2[0], rgb2[1], rgb2[2]) + 0.05);
+}
+
 export const colors = {
   clBlue: '#008292',
   clGrey: '#767676',
