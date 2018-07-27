@@ -32,7 +32,6 @@ import { currentTenantStream, updateTenant, IUpdatedTenantProperties, ITenant, I
 import { API, ImageFile, Locale, Multiloc } from 'typings';
 
 const ColorPickerSectionField = styled(SectionField)`
-  max-width: 150px;
 `;
 
 const StyledSectionField = styled(SectionField)`
