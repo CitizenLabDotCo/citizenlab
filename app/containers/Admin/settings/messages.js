@@ -159,4 +159,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.urlTitle',
     defaultMessage: 'Website (URL)',
   },
+  contrastRatioTooLow: {
+    id: 'app.components.AdminPage.SettingsPage.contrastRatioTooLow',
+    defaultMessage: 'We recommend picking a darker color to ensure all users will be able to optimally use the platform.',
+  },
 });

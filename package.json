@@ -279,6 +279,7 @@
     "@types/node-uuid": "0.0.28",
     "@types/qs": "6.5.1",
     "@types/react": "16.4.6",
+    "@types/react-color": "2.13.5",
     "@types/react-dates": "16.7.0",
     "@types/react-dnd": "2.0.36",
     "@types/react-dnd-html5-backend": "2.1.9",
