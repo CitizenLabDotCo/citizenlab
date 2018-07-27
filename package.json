@@ -288,7 +288,6 @@
     "@types/react-jsonschema-form": "1.0.6",
     "@types/react-router": "3.x",
     "@types/react-scroll": "1.5.3",
-    "@types/react-select": "1.2.8",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.3",
     "babel-eslint": "8.2.5",
