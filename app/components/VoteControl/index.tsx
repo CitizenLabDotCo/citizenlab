@@ -18,9 +18,6 @@ import { voteStream, addVote, deleteVote } from 'services/ideaVotes';
 import styled, { css, keyframes } from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const green = '#04884C';
-const red = '#E52516';
-
 const vote = keyframes`
   from {
     transform: scale3d(1, 1, 1);

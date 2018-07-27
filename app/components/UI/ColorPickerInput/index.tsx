@@ -2,6 +2,10 @@ import * as React from 'react';
 import styled from 'styled-components';
 import Input, { Props as InputProps } from 'components/UI/Input';
 import { ChromePicker } from 'react-color';
+import { calculateContrastRatio } from 'utils/styleUtils';
+import Warning from 'components/UI/Warning';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const Container = styled.div`
   position: relative;
@@ -54,6 +58,8 @@ interface Props extends InputProps {}
 
 interface State {
   opened: boolean;
+  contrastRatio: number | null;
+  contrastRatioTooLow: boolean;
 }
 
 class ColorPickerInput extends React.Component<Props, State> {
@@ -61,6 +67,8 @@ class ColorPickerInput extends React.Component<Props, State> {
     super(props as any);
     this.state = {
       opened: false,
+      contrastRatio: null,
+      contrastRatioTooLow: false
     };
   }
 
@@ -75,11 +83,17 @@ class ColorPickerInput extends React.Component<Props, State> {
   }
 
   change = (colorDescriptor) => {
+    const { r, g, b } = colorDescriptor.rgb;
+    const contrastRatio = calculateContrastRatio([255, 255, 255], [r, g, b]);
+    const contrastRatioTooLow = contrastRatio < 4.50 ? true : false;
+    this.setState({ contrastRatio, contrastRatioTooLow });
+
     if (this.props.onChange) this.props.onChange(colorDescriptor.hex);
   }
 
   render() {
-    const { opened } = this.state;
+    const { opened, contrastRatio, contrastRatioTooLow } = this.state;
+    const formattedContrastRatio = contrastRatio && contrastRatio.toFixed(2);
 
     return (
       <Container>
@@ -104,6 +118,15 @@ class ColorPickerInput extends React.Component<Props, State> {
             onFocus={this.open}
           />
         </InputWrapper>
+        {contrastRatioTooLow &&
+          <Warning
+            text={
+              <FormattedMessage
+                {...messages.contrastRatioTooLow}
+                values={{ contrastRatio: formattedContrastRatio }}
+              />
+        } />
+        }
       </Container>
     );
   }
