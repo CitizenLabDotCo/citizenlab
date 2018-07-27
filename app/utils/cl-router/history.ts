@@ -1,3 +1,4 @@
+import { first } from 'rxjs/operators';
 import { LocationDescriptor } from 'history';
 import { localeStream } from 'services/locale';
 import updateLocationDescriptor from './updateLocationDescriptor';
@@ -6,10 +7,11 @@ import { browserHistory } from 'react-router';
 
 function historyMethod(method: 'push' | 'replace', location: LocationDescriptor): void {
   localeStream().observable
-  .first()
-  .toPromise()
-  .then((locale) => {
-    browserHistory[method](updateLocationDescriptor(location, locale));
+  .pipe(
+    first()
+  ).subscribe((locale) => {
+    console.log('historyMethod: ' + updateLocationDescriptor(location, locale));
+    // browserHistory[method](updateLocationDescriptor(location, locale));
   });
 }
 
