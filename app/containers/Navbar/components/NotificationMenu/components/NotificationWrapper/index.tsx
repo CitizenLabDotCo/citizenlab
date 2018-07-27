@@ -1,25 +1,26 @@
 import React from 'react';
 import Link from 'utils/cl-router/Link';
-import clHistory from 'utils/cl-router/history';
 
 import { FormattedRelative } from 'react-intl';
 
 import styled from 'styled-components';
-import { darken } from 'polished';
-import { colors, fontSize } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 import Icon from 'components/UI/Icon';
 
 import { injectTracks } from 'utils/analytics';
 import tracks from '../../../../tracks';
 
-const Container = styled.div`
+const Container = styled(Link)`
   padding: 10px 0px;
   display: flex;
   flex-direction: row;
   cursor: pointer;
-  &:hover,&:focus {
-    background-color: ${(props) => props.theme.colors.background};
+  color: ${colors.clGrey};
+  &:hover,
+  &:focus {
+    color: ${colors.clGreyHover};
+    background-color: ${colors.clDropdownHoverBackground};
   }
 `;
 
@@ -42,35 +43,25 @@ const Body = styled.div`
 `;
 
 const Message = styled.div`
-  font-size: 15px;
+  font-size: ${fontSizes.base}px;
   flex-grow: 1;
   font-weight: ${(props) => (props as any).isRead ? 'normal' : '500'};
-  color: ${(props) => (props as any).isRead ? `${colors.clGrey}` : '#000000'};
+  padding-bottom: 3px;
 
-  a {
-    color: ${(props) => props.theme.colors.clBlueDark}
+    a {
+      color: ${(props) => props.theme.colors.clBlueDark}
 
-    :hover,
-    :focus {
-      color: ${colors.clBlueDarker}
+      :hover,
+      :focus {
+        color: ${colors.clBlueDarker};
+        text-decoration: underline;
+      }
     }
-  }
 
 ` as any;
 
 const Timing = styled.span`
-  font-size: 12px;
-  color: ${colors.clGrey};
-`;
-
-const LinkTiming = styled(Link)`
-  font-size: ${fontSize('xs')};
-  color: ${colors.clGrey};
-
-  &:hover,
-  &:focus {
-    color: ${darken(.2, `${colors.clGrey}`)};
-  }
+  font-size: ${fontSizes.small}px;
 `;
 
 interface ITracks {
@@ -81,7 +72,7 @@ type Props = {
   icon?: string,
   timing?: string,
   children: any,
-  linkTo?: string,
+  linkTo: string,
   isRead: boolean,
 };
 
@@ -92,7 +83,6 @@ class NotifcationWrapper extends React.PureComponent<Props & ITracks> {
         this.props.clickNotification({extra: {
           linkTo: this.props.linkTo,
         }});
-        clHistory.push(this.props.linkTo);
       }
     }
 
@@ -105,14 +95,13 @@ class NotifcationWrapper extends React.PureComponent<Props & ITracks> {
       const { icon, children, timing, isRead, linkTo } = this.props;
 
       return (
-        <Container onClick={this.onClick}>
+        <Container to={linkTo} onClick={this.onClick}>
           <IconContainer>
             {icon && <StyledIcon name={icon} isRead={isRead} />}
           </IconContainer>
           <Body>
             <Message isRead={isRead}>{children}</Message>
-            {timing && linkTo && <LinkTiming to={linkTo} onClick={this.track} ><FormattedRelative value={timing} /></LinkTiming>}
-            {timing && !linkTo && <Timing><FormattedRelative value={timing} /></Timing>}
+            {timing && <Timing><FormattedRelative value={timing} /></Timing>}
           </Body>
         </Container>
       );
