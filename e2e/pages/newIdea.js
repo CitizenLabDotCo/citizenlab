@@ -23,7 +23,7 @@ module.exports = {
   elements: {
     form: { selector: '#e2e-new-idea-form' },
     title: { selector: '#title' },
-    content: { selector: '.public-DraftEditor-content' },
+    content: { selector: '.ql-editor' },
     submit: { selector: '.e2e-submit-idea-form' },
   },
   commands: [newIdeaCommands],
