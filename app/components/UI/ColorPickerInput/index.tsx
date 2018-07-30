@@ -60,6 +60,8 @@ interface Props {
 
 interface State {
   opened: boolean;
+  contrastRatio: number | null;
+  contrastRatioTooLow: boolean;
 }
 
 class ColorPickerInput extends React.Component<Props, State> {
@@ -67,6 +69,8 @@ class ColorPickerInput extends React.Component<Props, State> {
     super(props as any);
     this.state = {
       opened: false,
+      contrastRatio: null,
+      contrastRatioTooLow: false
     };
   }
 
@@ -81,7 +85,8 @@ class ColorPickerInput extends React.Component<Props, State> {
   }
 
   change = (ColorDescription: ColorResult) => {
-    if (this.props.onChange) this.props.onChange(ColorDescription.hex);
+    const hexColor = ColorDescription.hex;
+    if (this.props.onChange) this.props.onChange(hexColor);
   }
 
   handleChange = (event) => {
@@ -114,7 +119,7 @@ class ColorPickerInput extends React.Component<Props, State> {
             type="text"
             value={this.props.value}
             onFocus={this.open}
-            onChange={this.handleChange}
+            spellCheck={false}
           />
         </InputWrapper>
       </Container>

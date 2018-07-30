@@ -2,21 +2,13 @@ import React from 'react';
 import { isBoolean } from 'lodash';
 import ReactSelect from 'react-select';
 import { IOption } from 'typings';
-import styled from 'styled-components';
-import GetTenant from 'resources/GetTenant';
-import { isNilOrError } from 'utils/helperUtils';
 import selectStyles from 'components/UI/Select/styles';
-
-const StyledMultipleSelect = styled(ReactSelect)`
-  max-width: calc(100% - 30px);
-  font-size: 16px;
-`;
 
 export type Props = {
   id?: string | undefined;
   value: IOption[] | null | undefined;
   placeholder?: string | JSX.Element | undefined;
-  options: IOption[] | null | undefined;
+  options: IOption[] | null;
   max?: number;
   autoBlur?: boolean;
   onChange: (arg: IOption[]) => void;
@@ -25,20 +17,12 @@ export type Props = {
 
 type State = {};
 
-export class MultipleSelect extends React.PureComponent<Props & {tenantColor: string | null}, State> {
+export default class MultipleSelect extends React.PureComponent<Props, State> {
   private emptyArray: never[];
-  private customStyle: any = {};
 
   constructor(props: Props) {
     super(props as any);
     this.emptyArray = [];
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.tenantColor && !prevProps.tenantColor) {
-      const { tenantColor } = this.props;
-      this.customStyle = selectStyles(tenantColor);
-    }
   }
 
   handleOnChange = (newValue: IOption[]) => {
@@ -47,43 +31,54 @@ export class MultipleSelect extends React.PureComponent<Props & {tenantColor: st
     this.props.onChange((nextValue || this.emptyArray));
   }
 
+  //  Needed to keep our API compatible with react-select v1
+  //  For a native react-select solution, follow this issue:
+  //  https://github.com/JedWatson/react-select/issues/2669
+  findFullOptionValue = (value) => {
+    if (typeof value === 'string') {
+      return this.props.options && this.props.options.find((option) => option.value === value);
+    } else {
+      return value;
+    }
+  }
+
+  findFullOptionValues = () => {
+    const { value } = this.props;
+    if (value instanceof Array) {
+      return value.map(this.findFullOptionValue);
+    } else {
+      return value;
+    }
+  }
+
   render() {
     const className = this.props['className'];
     const { id } = this.props;
     let { value, placeholder, options, max, autoBlur } = this.props;
 
-    value = (value || this.emptyArray);
+    value = this.findFullOptionValues();
     placeholder = (placeholder || '');
     options = (options || this.emptyArray);
     max = (max || undefined);
     autoBlur = (isBoolean(autoBlur) ? autoBlur : false);
 
     return (
-      <StyledMultipleSelect
+      <ReactSelect
         id={id}
         className={className}
         isMulti
-        searchable
-        openOnFocus={false}
-        autoBlur={autoBlur}
-        backspaceRemoves={false}
-        scrollMenuIntoView={false}
-        clearable={false}
+        isSearchable
+        blurInputOnSelect={autoBlur}
+        backspaceRemovesValue={false}
+        menuShouldScrollIntoView={false}
+        isClearable={false}
         value={value}
         placeholder={<span>{placeholder}</span>}
         options={options}
         onChange={this.handleOnChange}
-        disabled={this.props.disabled}
-        styles={this.customStyle}
+        isDisabled={this.props.disabled}
+        styles={selectStyles}
       />
     );
   }
 }
-
-export default (props: Props) => (
-  <GetTenant>
-    {(tenant) => (
-      <MultipleSelect tenantColor={isNilOrError(tenant) ? null : tenant.attributes.settings.core.color_main} {...props} />
-    )}
-  </GetTenant>
-);
