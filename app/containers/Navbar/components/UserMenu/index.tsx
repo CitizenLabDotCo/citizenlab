@@ -61,11 +61,11 @@ const OpenMenuButton = styled.button`
 `;
 
 const StyledAvatar = styled(Avatar) `
-  height: 27px;
-  width: 27px;
+  height: 28px;
+  width: 28px;
   svg, img {
-    height: 27px;
-    width: 27px;
+    height: 28px;
+    width: 28px;
     border: 0;
     border: 1px solid transparent;
     border-radius: 50%;
