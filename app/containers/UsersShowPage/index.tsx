@@ -39,11 +39,6 @@ const UserAvatar = styled.div`
   margin-bottom: 40px;
 `;
 
-const StyledAvatar = styled(Avatar) `
-  width: 160px;
-  height: 160px;
-`;
-
 const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
@@ -108,7 +103,7 @@ class UsersShowPage extends React.PureComponent<Props, State> {
       return (
         <StyledContentContainer>
           <UserAvatar>
-            <StyledAvatar userId={user.id} size="large" />
+            <Avatar userId={user.id} size="large" />
           </UserAvatar>
 
           <UserInfo>
@@ -118,7 +113,7 @@ class UsersShowPage extends React.PureComponent<Props, State> {
             </JoinedAt>
             {!isEmpty(user.attributes.bio_multiloc) &&
               <Bio>
-                {user.attributes.bio_multiloc && <T value={user.attributes.bio_multiloc} />}
+                {user.attributes.bio_multiloc && <T value={user.attributes.bio_multiloc} supportHtml={true} />}
               </Bio>
             }
           </UserInfo>
