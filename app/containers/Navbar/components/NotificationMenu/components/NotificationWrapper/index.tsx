@@ -78,14 +78,6 @@ type Props = {
 
 class NotificationWrapper extends React.PureComponent<Props & ITracks> {
 
-    onClick = () => {
-      if (this.props.linkTo) {
-        this.props.clickNotification({extra: {
-          linkTo: this.props.linkTo,
-        }});
-      }
-    }
-
     track = () => {
       const { linkTo } = this.props;
       if (linkTo) this.props.clickNotification({ extra: { linkTo } });
@@ -95,7 +87,7 @@ class NotificationWrapper extends React.PureComponent<Props & ITracks> {
       const { icon, children, timing, isRead, linkTo } = this.props;
 
       return (
-        <Container to={linkTo} onClick={this.onClick}>
+        <Container to={linkTo} onClick={this.track}>
           <IconContainer>
             {icon && <StyledIcon name={icon} isRead={isRead} />}
           </IconContainer>
