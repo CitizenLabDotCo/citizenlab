@@ -72,19 +72,19 @@ export function remCalc(desiredSize: number) {
   return `${(desiredSize / fontSizes.small).toString().substring(0, 6).trim()}rem`;
 }
 
-function luminanace(r, g, b) {
-  const a: any = [r, g, b].map((val: number) => {
-    let v = val;
-    v /= 255;
-
-    return v <= 0.03928
-        ? v / 12.92
-        : Math.pow((v + 0.055) / 1.055, 2.4);
-  });
-  return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
-}
-
 export function calculateContrastRatio(backgroundColor, textColor) {
+  function luminanace(r, g, b) {
+    const a: any = [r, g, b].map((val: number) => {
+      let v = val;
+      v /= 255;
+
+      return v <= 0.03928
+          ? v / 12.92
+          : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+  }
+
   const contrastRatio = (luminanace(backgroundColor[0], backgroundColor[1], backgroundColor[2]) + 0.05)
   / (luminanace(textColor[0], textColor[1], textColor[2]) + 0.05);
 

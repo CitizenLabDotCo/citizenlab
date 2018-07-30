@@ -1,23 +1,33 @@
-import { rgba } from 'polished';
+import { colors } from 'utils/styleUtils';
 
-export default function customSelectStyles(tenantColor: string) {
-  return ({
-    control: (base, state) => ({
+const SelectStyles = {
+    container: (base) => ({
       ...base,
+    }),
+    control: (base, { isFocused }) => ({
+      ...base,
+      fontSize: '16px',
       borderWidth: '1px',
-      borderColor: state.isFocused ? tenantColor : '#ccc',
-      boxShadow: state.isFocused ? `0 0 0 1px ${tenantColor}` : 'none',
-      ':hover': {
-        borderColor: tenantColor,
+      borderColor: isFocused ? '#000' : '#ccc',
+      borderRadius: '5px',
+      minHeight: '48px',
+      backgroundColor: '#FFF',
+      boxShadow: 'none',
+      '&:hover': {
+        borderColor: isFocused ? '#000' : '#aaa'
       },
     }),
-
-    option: (base, state) => ({
+    option: (base, { isFocused }) => ({
       ...base,
-      backgroundColor: state.isFocused ? rgba(tenantColor as string, .2) : state.isSelected ? rgba(tenantColor as string, .6) : 'transparent',
-      ':active': {
-        backgroundColor: rgba(tenantColor as string, .4),
-      },
+      ':active': null,
+      fontSize: '16px',
+      color: isFocused ? colors.clGreyHover : colors.clGrey,
+      backgroundColor: isFocused ? colors.clDropdownHoverBackground : '#fff',
     }),
-  });
-}
+    multiValueLabel: () => ({
+      fontSize: '16px',
+      padding: '6px',
+    }),
+  };
+
+export default SelectStyles;
