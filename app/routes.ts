@@ -19,7 +19,7 @@ import { combineLatest } from 'rxjs/observable/combineLatest';
 import { first } from 'rxjs/operators';
 
 // Tries to detect the locale passed in the URL to update the internal state
-const localeDetector = (nextState, replace, callback) => {
+const localeDetector = (_nextState, replace, callback) => {
   combineLatest(
     currentTenantStream().observable,
     localeStream().observable
@@ -33,14 +33,14 @@ const localeDetector = (nextState, replace, callback) => {
       const urlLocaleIsValid = includes(Object.keys(PlatformLocales), urlLocale);
       const urlLocaleIsSupported = localesSet.has(urlLocale);
 
-      console.log('-----');
-      console.log('onEnter');
-      console.log('locale: ' + locale);
-      console.log('urlLocale: ' + urlLocale);
-      console.log('url: ' + location.pathname);
-      console.log('urlLocaleIsValid: ' + urlLocaleIsValid);
-      console.log('urlLocaleIsSupported: ' + urlLocaleIsSupported);
-      console.log('-----');
+      // console.log('-----');
+      // console.log('onEnter');
+      // console.log('locale: ' + locale);
+      // console.log('urlLocale: ' + urlLocale);
+      // console.log('url: ' + location.pathname);
+      // console.log('urlLocaleIsValid: ' + urlLocaleIsValid);
+      // console.log('urlLocaleIsSupported: ' + urlLocaleIsSupported);
+      // console.log('-----');
 
       if (!urlLocale || !urlLocaleIsValid) {
         replace(`/${locale}${location.pathname}${location.search}`);

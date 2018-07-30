@@ -7,13 +7,10 @@ import { authUserStream } from 'services/auth';
 import { updateUser } from 'services/users';
 import { Locale } from 'typings';
 import platformLocales from 'platformLocales';
-// tslint:disable-next-line:no-vanilla-routing
-// import { browserHistory } from 'react-router';
-// import updateLocationDescriptor from 'utils/cl-router/updateLocationDescriptor';
-import clHistory from 'utils/cl-router/history';
 
+const savedLocale = localStorage.getItem('cl2-locale');
 const urlLocale = getUrlLocale(location.pathname);
-const LocaleSubject = new BehaviorSubject((urlLocale ? urlLocale : 'en') as Locale);
+const LocaleSubject = new BehaviorSubject((urlLocale ? urlLocale : (savedLocale ? savedLocale : 'en')) as Locale);
 const $locale = LocaleSubject.pipe(distinctUntilChanged());
 const $tenant = currentTenantStream().observable;
 const $authUser = authUserStream().observable;
@@ -32,13 +29,13 @@ $locale.subscribe((locale) => {
   const urlLocale = location.pathname && getUrlLocale(location.pathname);
   const urlLocaleIsValid = includes(Object.keys(platformLocales), urlLocale);
 
-  console.log('-----');
-  console.log('locale.ts');
-  console.log('locale: ' + locale);
-  console.log('urlLocale: ' + urlLocale);
-  console.log('url: ' + location.pathname);
-  console.log('urlLocaleIsValid: ' + urlLocaleIsValid);
-  console.log('-----');
+  // console.log('-----');
+  // console.log('locale.ts');
+  // console.log('locale: ' + locale);
+  // console.log('urlLocale: ' + urlLocale);
+  // console.log('url: ' + location.pathname);
+  // console.log('urlLocaleIsValid: ' + urlLocaleIsValid);
+  // console.log('-----');
 
   if (!urlLocale || !urlLocaleIsValid || urlLocale !== locale) {
     let localizedUrl = `/${locale}${location.pathname}${location.search}`;
