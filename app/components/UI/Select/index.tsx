@@ -6,6 +6,7 @@ import selectStyles from 'components/UI/Select/styles';
 
 export type Props = {
   id?: string | undefined;
+  inputId?: string;
   value?: IOption | string | null | undefined;
   placeholder?: string | JSX.Element | null | undefined;
   options: IOption[] | null;
@@ -47,6 +48,7 @@ export default class Select extends React.PureComponent<Props, State> {
     const className = this.props['className'];
     const { id } = this.props;
     let { value, placeholder, options, autoBlur, clearable, searchable } = this.props;
+    const { inputId } = this.props;
     const { disabled } = this.props;
 
     value = this.findFullOptionValue();
@@ -59,6 +61,7 @@ export default class Select extends React.PureComponent<Props, State> {
     return (
       <ReactSelect
         id={id}
+        inputId={inputId}
         className={className}
         isClearable={clearable}
         isSearchable={searchable}
