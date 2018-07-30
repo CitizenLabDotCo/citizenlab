@@ -44,19 +44,23 @@ const ListHeaderTitle = styled.h3`
 `;
 
 const RowContent = styled.div`
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: 22px;
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
 
+const RowTitle = styled(T)`
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: 24px;
+  margin-right: 12px;
+`;
+
 const LockIcon = styled(Icon)`
   width: 15px;
   height: 15px;
-  margin-right: 5px;
+  margin-right: 6px;
 `;
 
 interface InputProps {}
@@ -97,7 +101,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
     return (
       <RowContent>
         <div className="expand primary">
-          <T value={project.attributes.title_multiloc} />
+          <RowTitle value={project.attributes.title_multiloc} />
           {project.attributes.visible_to === 'groups' &&
             <GetProjectGroups projectId={project.id}>
               {(projectGroups) => {

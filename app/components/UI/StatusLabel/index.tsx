@@ -15,8 +15,10 @@ const StyledStatusLabel = styled.span`
   align-items: center;
   font-size: ${fontSizes.xs}px;
   line-height: ${fontSizes.xs}px;
-  padding: 5px;
-  margin-left: 10px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  font-weight: 500;
+  padding: 6px 10px;
   text-transform: uppercase;
 `;
 

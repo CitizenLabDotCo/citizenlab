@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 // components
 import ProjectCard from 'components/ProjectCard';
@@ -9,7 +9,7 @@ import SelectAreas from './SelectAreas';
 import SelectPublicationStatus from './SelectPublicationStatus';
 
 // resources
-import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps, PublicationStatus } from 'resources/GetProjects';
+import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps, SelectedPublicationStatus } from 'resources/GetProjects';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -131,7 +131,7 @@ interface Props extends InputProps, GetProjectsChildProps {}
 
 interface State {}
 
-class ProjectCards extends React.PureComponent<Props, State> {
+class ProjectCards extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {};
@@ -145,7 +145,7 @@ class ProjectCards extends React.PureComponent<Props, State> {
     this.props.onChangeAreas(areas);
   }
 
-  handlePublicationStatusOnChange = (status: PublicationStatus) => {
+  handlePublicationStatusOnChange = (status: SelectedPublicationStatus) => {
     this.props.onChangePublicationStatus(status);
   }
 
