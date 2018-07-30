@@ -6,6 +6,7 @@ import selectStyles from 'components/UI/Select/styles';
 
 export type Props = {
   id?: string | undefined;
+  inputId?: string;
   value: IOption[] | null | undefined;
   placeholder?: string | JSX.Element | undefined;
   options: IOption[] | null;
@@ -55,6 +56,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
     const className = this.props['className'];
     const { id } = this.props;
     let { value, placeholder, options, max, autoBlur } = this.props;
+    const { inputId } = this.props;
 
     value = this.findFullOptionValues();
     placeholder = (placeholder || '');
@@ -65,6 +67,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
     return (
       <ReactSelect
         id={id}
+        inputId={inputId}
         className={className}
         isMulti
         isSearchable

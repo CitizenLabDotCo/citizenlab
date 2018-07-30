@@ -325,7 +325,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
           <FormElement>
             <Label value={<FormattedMessage {...messages.topicsLabel} />} htmlFor="topics" />
             <StyledMultipleSelect
-              id="topics"
+              inputId="topics"
               value={selectedTopics}
               placeholder={<FormattedMessage {...messages.topicsPlaceholder} />}
               options={topics}
