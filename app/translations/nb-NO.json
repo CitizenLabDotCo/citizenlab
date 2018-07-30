@@ -109,6 +109,7 @@
   "app.components.admin.UserFilterConditions.addCondition": "Add condition",
   "app.components.admin.UserFilterConditions.field_email": "Email",
   "app.components.admin.UserFilterConditions.field_lives_in": "Lives in",
+  "app.components.admin.UserFilterConditions.field_participated_in_project": "",
   "app.components.admin.UserFilterConditions.field_registration_completed_at": "Registration date",
   "app.components.admin.UserFilterConditions.field_role": "Role",
   "app.components.admin.UserFilterConditions.predicate_begins_with": "begins with",
