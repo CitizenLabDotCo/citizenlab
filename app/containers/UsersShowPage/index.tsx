@@ -113,7 +113,7 @@ class UsersShowPage extends React.PureComponent<Props, State> {
             </JoinedAt>
             {!isEmpty(user.attributes.bio_multiloc) &&
               <Bio>
-                {user.attributes.bio_multiloc && <T value={user.attributes.bio_multiloc} />}
+                {user.attributes.bio_multiloc && <T value={user.attributes.bio_multiloc} supportHtml={true} />}
               </Bio>
             }
           </UserInfo>
