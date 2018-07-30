@@ -55,12 +55,12 @@ const OpenMenuButton = styled.button`
   }
   span {
     margin-top: 2px;
-    margin-left: 5px;
-    text-align: left
+    margin-right: 5px;
+    text-align: right;
   }
 `;
 
-const StyledAvatar = styled(Avatar)`
+const StyledAvatar = styled(Avatar) `
   height: 27px;
   width: 27px;
   svg, img {
@@ -147,8 +147,8 @@ export default class UserMenu extends React.PureComponent<Props, State> {
           <OpenMenuButton onClick={this.togglePopover}>
             {
               <>
-                <StyledAvatar userId={userId} size="small" />
                 <UserName user={authUser.data} />
+                <StyledAvatar userId={userId} size="small" />
               </>
             }
           </OpenMenuButton>
