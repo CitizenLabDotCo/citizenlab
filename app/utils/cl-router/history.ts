@@ -10,8 +10,7 @@ function historyMethod(method: 'push' | 'replace', location: LocationDescriptor)
   .pipe(
     first()
   ).subscribe((locale) => {
-    console.log('historyMethod: ' + updateLocationDescriptor(location, locale));
-    // browserHistory[method](updateLocationDescriptor(location, locale));
+    browserHistory[method](updateLocationDescriptor(location, locale));
   });
 }
 
