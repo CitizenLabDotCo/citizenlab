@@ -36,6 +36,10 @@ import { API, ImageFile, Locale, Multiloc } from 'typings';
 const ColorPickerSectionField = styled(SectionField)`
 `;
 
+const ContrastWarning = styled(Warning)`
+  margin-top: 10px;
+`;
+
 const StyledSectionField = styled(SectionField)`
   max-width: 500px;
 `;
@@ -308,7 +312,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 onChange={this.handleColorPickerOnChange}
               />
               {contrastRatioWarning &&
-                <Warning
+                <ContrastWarning
                   text={
                     <FormattedMessage
                       {...messages.contrastRatioTooLow}

@@ -161,6 +161,6 @@ export default defineMessages({
   },
   contrastRatioTooLow: {
     id: 'app.components.AdminPage.SettingsPage.contrastRatioTooLow',
-    defaultMessage: 'We recommend picking a darker color to ensure all users will be able to optimally use the platform.',
+    defaultMessage: 'Warning: the color you selected doesn\'t have a high enough contrast. This may result in text that\'s hard to read. Choose a darker color to optimize readability.',
   },
 });
