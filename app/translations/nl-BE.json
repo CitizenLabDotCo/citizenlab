@@ -5,6 +5,7 @@
   "app.components.FullscreenModal.goBack": "Ga terug",
   "app.components.GoBackButton.group.edit.goBack": "Ga terug",
   "app.components.IdeaCard.byAuthorName": "door {authorName}",
+  "app.components.IdeaCard.byAuthorNameComponent": "",
   "app.components.IdeaCard.byDeletedUser": "door {deletedUser}",
   "app.components.IdeaCard.deletedUser": "verwijderde gebruiker",
   "app.components.IdeaCard.imageAltText": "{orgName} - hoofdafbeelding voor het idee {ideaTitle}",

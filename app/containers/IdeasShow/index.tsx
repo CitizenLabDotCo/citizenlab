@@ -347,14 +347,8 @@ const AddressWrapper = styled.div`
   z-index: 1000;
 `;
 
-const AuthorAvatar = styled(Avatar) `
-  width: 35px;
-  height: 35px;
-  margin-right: 8px;
-  margin-top: 0px;
-`;
-
 const AuthorMeta = styled.div`
+  margin-left: 8px;
   display: flex;
   flex-direction: column;
   flex: 0 0 calc(100% - 39px);
@@ -836,7 +830,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & injecte
 
                 <AuthorAndAdressWrapper>
                   <AuthorContainer>
-                    <AuthorAvatar userId={authorId} size="small" onClick={authorId ? this.goToUserProfile : () => { }} />
+                    <Avatar userId={authorId} size="medium" onClick={authorId ? this.goToUserProfile : () => { }} />
                     <AuthorMeta>
                       <AuthorName to={ideaAuthor ? `/profile/${ideaAuthor.data.attributes.slug}` : ''}>
                         <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={(ideaAuthor ? ideaAuthor.data : null)} /> }} />

@@ -5,6 +5,7 @@
   "app.components.FullscreenModal.goBack": "Go back",
   "app.components.GoBackButton.group.edit.goBack": "Go back",
   "app.components.IdeaCard.byAuthorName": "by {authorName}",
+  "app.components.IdeaCard.byAuthorNameComponent": "by {authorNameComponent}",
   "app.components.IdeaCard.byDeletedUser": "by {deletedUser}",
   "app.components.IdeaCard.deletedUser": "deleted user",
   "app.components.IdeaCard.imageAltText": "{orgName} - main image for the idea '{ideaTitle}'",

@@ -12,11 +12,6 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { GetModeratorsChildProps } from 'resources/GetModerators';
 import { InjectedIntlProps } from 'react-intl';
 
-const StyledAvatar = styled(Avatar)`
-  width: 2rem;
-  height: 2rem;
-`;
-
 const StyledRow = styled(Row)`
   &:first-child {
     border-top: none !important
@@ -50,7 +45,7 @@ class ModeratorList extends PureComponent<Props & InjectedIntlProps>{
       <List>
         { authUser && !isNilOrError(moderators) && moderators.map(moderator =>
           <StyledRow key={moderator.id}>
-            <StyledAvatar userId={moderator.id} size="small" />
+            <Avatar userId={moderator.id} size="small" />
             <p className="expand">{`${moderator.attributes.first_name} ${moderator.attributes.last_name}`}</p>
             <p className="expand">{moderator.attributes.email}</p>
             <Button
