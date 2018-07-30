@@ -8,6 +8,7 @@ import Error from 'components/UI/Error';
 // style
 import styled from 'styled-components';
 import { media, color, fontSize } from 'utils/styleUtils';
+import { isBoolean } from 'util';
 
 const Container: any = styled.div`
   width: 100%;
@@ -81,6 +82,7 @@ export type Props = {
   name?: string | undefined;
   maxCharCount?: number | undefined;
   disabled?: boolean;
+  spellCheck?: boolean;
 };
 
 type State = {};
@@ -129,9 +131,9 @@ export default class Input extends React.PureComponent<Props, State> {
     let { value, placeholder, error } = this.props;
     const className = this.props['className'];
     const { formik } = this.context;
-    const { id, type, name, maxCharCount, min, autoFocus, onFocus, disabled } = this.props;
+    const { id, type, name, maxCharCount, min, autoFocus, onFocus, disabled, spellCheck } = this.props;
     const hasError = (!isNil(error) && !isEmpty(error));
-
+    const optionalProps = isBoolean(spellCheck) ? { spellCheck } : null;
     if (name && formik && formik.values[name]) {
       value = (value || formik.values[name]);
     }
@@ -167,6 +169,7 @@ export default class Input extends React.PureComponent<Props, State> {
           min={min}
           autoFocus={autoFocus}
           disabled={disabled}
+          {...optionalProps}
         />
 
         <div>
