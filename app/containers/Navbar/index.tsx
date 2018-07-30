@@ -3,7 +3,6 @@ import React from 'react';
 import { get } from 'lodash';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
-import clHistory from 'utils/cl-router/history';
 
 // components
 import NotificationMenu from './components/NotificationMenu';
@@ -118,7 +117,15 @@ const NavigationItems = styled.div`
   `}
 `;
 
-const NavigationItem = styled(Link) `
+const NavigationDropdownItemIcon = styled(Icon)`
+  height: 6px;
+  width: 11px;
+  fill: inherit;
+  margin-left: 4px;
+  margin-top: 3px;
+`;
+
+const NavigationItem = styled(Link)`
   ${ellipsis('20rem') as any}
   height: 100%;
   color: ${colors.clGrey};
@@ -141,21 +148,13 @@ const NavigationItem = styled(Link) `
   }
   &:focus,
   &:hover {
-    color: ${colors.clGreyHover};
+    color: ${(props) => props.theme.colorMain};
   }
 `;
 
 const NavigationDropdown = styled.div`
   position: relative;
   margin-right: 40px;
-`;
-
-const NavigationDropdownItemIcon = styled(Icon)`
-  height: 6px;
-  width: 11px;
-  fill: inherit;
-  margin-left: 4px;
-  margin-top: 3px;
 `;
 
 const NavigationDropdownItem = styled.button`
@@ -171,13 +170,15 @@ const NavigationDropdownItem = styled.button`
 
   &.active {
     border-bottom: 4px solid ${(props) => props.theme.colorMain};
+    border-top: 4px solid transparent;
     color: ${(props) => props.theme.colorMain};
+    fill: ${(props) => props.theme.colorMain};
   }
 
   &:hover,
   &:focus {
-    color: #000;
-    fill: #000;
+    color: ${(props) => props.theme.colorMain};
+    fill: ${(props) => props.theme.colorMain};
   }
 `;
 
@@ -298,6 +299,10 @@ const LoginLink = styled(Link)`
   }
 `;
 
+const StyledDropdown = styled(Dropdown)`
+  top: 68px;
+`;
+
 interface InputProps {}
 
 interface DataProps {
@@ -315,7 +320,6 @@ interface State {
 }
 
 class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
-  homeLink: any;
   unlisten: Function;
 
   constructor(props) {
@@ -324,17 +328,6 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
       notificationPanelOpened: false,
       projectsDropdownOpened: false
     };
-
-    this.homeLink = React.createRef();
-
-  }
-
-  componentDidMount() {
-    this.unlisten = clHistory.listen(location => {
-      if (this.homeLink.current) {
-        console.log(this.homeLink.current);
-      }
-    });
   }
 
   componentDidUpdate(prevProps: Props & WithRouterProps & InjectedIntlProps) {
@@ -379,13 +372,6 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
     updateLocale(value);
   }
 
-  setRef = (el: HTMLAnchorElement) => {
-    console.log(el);
-    if (el) {
-      this.homeLink = el;
-    }
-  }
-
   render() {
     const {
       projects,
@@ -419,7 +405,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
             }
 
             <NavigationItems>
-              <NavigationItem innerRef={this.setRef} to="/" activeClassName="active" onlyActiveOnIndex={true}>
+              <NavigationItem to="/" activeClassName="active" onlyActiveOnIndex={true}>
                 <FormattedMessage {...messages.pageOverview} />
               </NavigationItem>
 
@@ -430,7 +416,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
                     <NavigationDropdownItemIcon name="dropdown" />
                   </NavigationDropdownItem>
 
-                  <Dropdown
+                  <StyledDropdown
                     opened={projectsDropdownOpened}
                     content={(
                       <>
