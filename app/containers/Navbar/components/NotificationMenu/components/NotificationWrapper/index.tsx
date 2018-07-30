@@ -76,7 +76,7 @@ type Props = {
   isRead: boolean,
 };
 
-class NotifcationWrapper extends React.PureComponent<Props & ITracks> {
+class NotificationWrapper extends React.PureComponent<Props & ITracks> {
 
     onClick = () => {
       if (this.props.linkTo) {
@@ -108,4 +108,4 @@ class NotifcationWrapper extends React.PureComponent<Props & ITracks> {
     }
 }
 
-export default injectTracks<Props>(tracks)(NotifcationWrapper);
+export default injectTracks<Props>(tracks)(NotificationWrapper);
