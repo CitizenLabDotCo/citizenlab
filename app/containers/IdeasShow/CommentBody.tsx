@@ -21,7 +21,7 @@ import { transparentize, darken } from 'polished';
 import { colors } from 'utils/styleUtils';
 
 const CommentWrapper = styled.div`
-  color: ${colors.text};
+  color: ${colors.clGrey};
   font-size: 17px;
   line-height: 25px;
   font-weight: 300;
