@@ -46,7 +46,7 @@ class IdentifyToSegmentJob < ApplicationJob
     }
     LogToSegmentService.new.add_tenant_properties(traits, tenant)
 
-    Analytics && tenant&& Analytics.group(
+    Analytics && tenant && Analytics.group(
       user_id: user.id,
       group_id: tenant.id,
       traits: traits
