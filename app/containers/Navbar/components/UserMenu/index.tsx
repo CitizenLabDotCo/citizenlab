@@ -2,7 +2,6 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 
 // components
-import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
 import Popover from 'components/Popover';
@@ -56,18 +55,6 @@ const OpenMenuButton = styled.button`
       fill: ${darken(0.2, colors.label)};
     }
   }
-`;
-
-const UserIcon = styled(Icon)`
-  width: 26px;
-  height: 24px;
-  fill: inherit;
-  transition: all 150ms ease;
-  cursor: pointer;
-`;
-
-const StyledAvatar = styled(Avatar)`
-  cursor: pointer;
 `;
 
 const StyledPopover = styled(Popover)`
@@ -133,7 +120,6 @@ export default class UserMenu extends React.PureComponent<Props, State> {
 
   render() {
     const { authUser, opened } = this.state;
-    const avatar = (authUser ? authUser.data.attributes.avatar : null);
     const userId = (authUser ? authUser.data.id : null);
     const userSlug = (authUser ? authUser.data.attributes.slug : null);
 
@@ -141,7 +127,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
       return (
         <Container id="e2e-user-menu-container">
           <OpenMenuButton onClick={this.togglePopover}>
-            {avatar ?  <StyledAvatar userId={userId} size="small" /> : <UserIcon name="user" />}
+            <Avatar userId={userId} size="small" />
           </OpenMenuButton>
           <StyledPopover
             id="e2e-user-menu-dropdown"

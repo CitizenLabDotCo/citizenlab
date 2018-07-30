@@ -5,6 +5,7 @@
   "app.components.FullscreenModal.goBack": "",
   "app.components.GoBackButton.group.edit.goBack": "",
   "app.components.IdeaCard.byAuthorName": "",
+  "app.components.IdeaCard.byAuthorNameComponent": "",
   "app.components.IdeaCard.byDeletedUser": "",
   "app.components.IdeaCard.deletedUser": "",
   "app.components.IdeaCard.imageAltText": "",
