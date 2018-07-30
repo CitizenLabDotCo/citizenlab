@@ -18,7 +18,7 @@ type State = {
 
 class SelectSort extends PureComponent<Props, State> {
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
       selectedValue: ['trending']
     };

@@ -7,33 +7,39 @@ import FilterSelector from 'components/FilterSelector';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// typings
+import { SelectedPublicationStatus } from 'resources/GetProjects';
+
 type Props = {
   id?: string | undefined;
-  onChange: (value: string) => void;
+  onChange: (value: SelectedPublicationStatus) => void;
 };
 
 type State = {
-  selectedValue: string[];
+  selectedValue: [SelectedPublicationStatus];
 };
 
 class SelectPublicationStatus extends PureComponent<Props, State> {
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
-      selectedValue: ['trending']
+      selectedValue: ['all']
     };
   }
 
-  handleOnChange = (selectedValue: string[]) => {
+  handleOnChange = (selectedValue: [SelectedPublicationStatus]) => {
     this.setState({ selectedValue });
     this.props.onChange(selectedValue[0]);
   }
 
   render() {
     const { selectedValue } = this.state;
-    const options = [
+    const options: {
+      text: JSX.Element,
+      value: SelectedPublicationStatus
+    }[] = [
       { text: <FormattedMessage {...messages.allProjects} />, value: 'all' },
-      { text: <FormattedMessage {...messages.activeProjects} />, value: 'active' },
+      { text: <FormattedMessage {...messages.activeProjects} />, value: 'published' },
       { text: <FormattedMessage {...messages.archivedProjects} />, value: 'archived' },
     ];
 
