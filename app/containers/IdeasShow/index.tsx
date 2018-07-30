@@ -439,7 +439,7 @@ const IdeaBody = styled.div`
 `;
 
 const CommentsTitle = styled.h2`
-  color: ${colors.text};
+  color: ${colors.clGrey};
   font-size: 24px;
   line-height: 38px;
   font-weight: 500;
