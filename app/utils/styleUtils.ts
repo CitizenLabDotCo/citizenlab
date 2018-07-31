@@ -102,6 +102,7 @@ export function hexToRgb(hex) {
 
 export const colors = {
   text: '#222',
+  placeholder: '#aaa',
   clBlue: '#008292',
   clGrey: '#767676',
   clGreyOnGreyBackground: '#737373',
