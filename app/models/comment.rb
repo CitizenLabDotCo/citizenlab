@@ -19,6 +19,7 @@ class Comment < ApplicationRecord
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
 
   before_validation :set_author_name, :set_publication_status, on: :create
+  before_validation :sanitize_body_multiloc
 
   scope :published, -> {where publication_status: 'published'}
   
@@ -30,7 +31,16 @@ class Comment < ApplicationRecord
     self.idea&.project
   end
 
+  private
+
   def set_publication_status
     self.publication_status ||= 'published'
+  end
+
+  def sanitize_body_multiloc
+    self.body_multiloc = SanitizationService.new.sanitize_multiloc(
+      self.body_multiloc,
+      %i{mention}
+    )
   end
 end
