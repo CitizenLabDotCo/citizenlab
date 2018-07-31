@@ -263,4 +263,12 @@ export default defineMessages({
     id: 'app.components.IdeasShow.goBack',
     defaultMessage: 'Go back',
   },
+  yourComment: {
+    id: 'app.components.IdeasShow.yourComment',
+    defaultMessage: 'Your comment'
+  },
+  replyToComment: {
+    id: 'app.components.IdeasShow.replyToComment',
+    defaultMessage: 'Reply to comment'
+  },
 });
