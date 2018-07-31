@@ -169,7 +169,7 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
       <Fragment name={`projects/${project.id}/info`}>
         <Left>
           <ProjectDescriptionStyled>
-            <T value={project.attributes.description_multiloc} />
+            <T value={project.attributes.description_multiloc} supportHtml={true}/>
           </ProjectDescriptionStyled>
         </Left>
 

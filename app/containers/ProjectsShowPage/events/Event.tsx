@@ -1,6 +1,6 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
 import * as moment from 'moment';
+import { isEmpty, every } from 'lodash';
 import 'moment-timezone';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -10,12 +10,7 @@ import Icon from 'components/UI/Icon';
 // services
 import { IEventData } from 'services/events';
 
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-
 // i18n
-import { getLocalized } from 'utils/i18n';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
@@ -25,6 +20,7 @@ import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 // style
 import styled from 'styled-components';
 import { media, quillEditedContent } from 'utils/styleUtils';
+import T from 'components/T';
 
 const Container = styled.div`
   width: 100%;
@@ -226,27 +222,17 @@ const EventLocationAddress = styled.div`
 
 interface InputProps {
   event: IEventData;
+  className?: string;
 }
-
-interface DataProps {
-  locale: GetLocaleChildProps;
-  tenant: GetTenantChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps {}
 
 interface State {}
 
-class Event extends React.PureComponent<Props, State> {
+export default class Event extends React.PureComponent<Props, State> {
   render() {
-    const className = this.props['className'];
-    const { locale, tenant, event } = this.props;
+    const { event, className } = this.props;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(event)) {
-      const tenantLocales = tenant.attributes.settings.core.locales;
-      const eventTitle = getLocalized(event.attributes.title_multiloc, locale, tenantLocales);
-      const eventDescription = getLocalized(event.attributes.description_multiloc, locale, tenantLocales);
-      const eventLocationAddress = getLocalized(event.attributes.location_multiloc, locale, tenantLocales);
+    if (!isNilOrError(event)) {
       const startAtMoment = moment(event.attributes.start_at);
       const endAtMoment = moment(event.attributes.end_at);
       const startAtIsoDate = getIsoDate(event.attributes.start_at);
@@ -260,6 +246,7 @@ class Event extends React.PureComponent<Props, State> {
       const startAtTime = (isMultiDayEvent ? startAtMoment.format('D MMM LT') : startAtMoment.format('LT'));
       const endAtTime = (isMultiDayEvent ? endAtMoment.format('D MMM LT') : endAtMoment.format('LT'));
       const eventStatus = pastPresentOrFuture([event.attributes.start_at, event.attributes.end_at]);
+      const hasLocation = !every(event.attributes.location_multiloc, isEmpty);
 
       return (
         <Container className={`${className} ${eventStatus}`}>
@@ -294,15 +281,15 @@ class Event extends React.PureComponent<Props, State> {
             </EventTime>
 
             <EventTitle>
-              {eventTitle}
+              <T value={event.attributes.title_multiloc} />
             </EventTitle>
 
             <EventDescription>
-              <span dangerouslySetInnerHTML={{ __html: eventDescription }} />
+              <T value={event.attributes.description_multiloc} supportHtml={true} />
             </EventDescription>
           </EventInformation>
 
-          {eventLocationAddress &&
+          {hasLocation &&
             <EventLocationWrapper className={eventStatus}>
               <EventLocation>
                 <MapIcon name="mapmarker" />
@@ -312,7 +299,7 @@ class Event extends React.PureComponent<Props, State> {
                     <FormattedMessage {...messages.location} />
                   </EventLocationLabel>
                   <EventLocationAddress>
-                    {eventLocationAddress}
+                    <T value={event.attributes.location_multiloc} />
                   </EventLocationAddress>
                 </EventLocationInner>
               </EventLocation>
@@ -325,14 +312,3 @@ class Event extends React.PureComponent<Props, State> {
     return null;
   }
 }
-
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  tenant: <GetTenant />
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <Event {...inputProps} {...dataProps} />}
-  </Data>
-);

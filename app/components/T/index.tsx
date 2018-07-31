@@ -15,6 +15,7 @@ type Props = {
   className?: string;
   children?: children;
   maxLength?: number;
+  supportHtml?: boolean;
 };
 
 type State = {
@@ -29,7 +30,7 @@ export default class T extends PureComponent<Props, State> {
     super(props);
     this.state = {
       locale: null,
-      currentTenantLocales: null
+      currentTenantLocales: null,
     };
     this.subscriptions = [];
   }
@@ -58,20 +59,18 @@ export default class T extends PureComponent<Props, State> {
     const { locale, currentTenantLocales } = this.state;
 
     if (locale && currentTenantLocales) {
-      const { value, as, children, maxLength, className } = this.props;
+      const { value, as, children, maxLength, className, supportHtml } = this.props;
       const localizedText = getLocalized(value, locale, currentTenantLocales, maxLength);
 
       if (children) {
         return ((children as children)(localizedText));
       }
 
-      if (as) {
-        return createElement(as, { className, dangerouslySetInnerHTML: { __html: localizedText } });
+      if (supportHtml) {
+          return createElement(as || 'span', { className, dangerouslySetInnerHTML: { __html: localizedText } });
+      } else {
+          return createElement(as || 'span', { className, children: localizedText });
       }
-
-      return (
-        <span className={className} dangerouslySetInnerHTML={{ __html: localizedText }} />
-      );
     }
 
     return null;
