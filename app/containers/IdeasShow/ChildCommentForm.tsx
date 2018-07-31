@@ -218,7 +218,7 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
               onFocus={this.handleTextareaOnFocus}
               onBlur={this.handleTextareaOnBlur}
             >
-              <SendIconWrapper aria-label="Send" onClick={this.handleSubmit} disabled={!canSubmit}>
+              <SendIconWrapper aria-label={this.props.intl.formatMessage(messages.send)} onClick={this.handleSubmit} disabled={!canSubmit}>
                 <SendIcon name="send" />
               </SendIconWrapper>
             </StyledTextArea>

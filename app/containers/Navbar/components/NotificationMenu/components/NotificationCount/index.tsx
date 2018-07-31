@@ -1,6 +1,10 @@
 import React from 'react';
 import { isNumber } from 'lodash';
 
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+
 // components
 import Icon from 'components/UI/Icon';
 
@@ -8,6 +12,7 @@ import Icon from 'components/UI/Icon';
 import styled from 'styled-components';
 import { darken } from 'polished';
 import { colors } from 'utils/styleUtils';
+import messages from '../../messages';
 
 const Container = styled.button`
   align-items: center;
@@ -50,15 +55,17 @@ type Props = {
 
 type State = {};
 
-export default class NotificationCount extends React.PureComponent<Props, State> {
+class NotificationCount extends React.PureComponent<Props & InjectedIntlProps, State> {
   render() {
     const { count } = this.props;
 
     return (
-      <Container aria-label="Notifications" onClick={this.props.onClick}>
+      <Container aria-label={this.props.intl.formatMessage(messages.notificationsLabel)} onClick={this.props.onClick}>
         <NotificationIcon name="notification" />
         {(isNumber(count) && count > 0) ? <NewNotificationsIndicator /> : null}
       </Container>
     );
   }
 }
+
+export default injectIntl<Props>(NotificationCount);
