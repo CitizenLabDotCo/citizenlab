@@ -263,6 +263,10 @@ export default defineMessages({
     id: 'app.components.IdeasShow.goBack',
     defaultMessage: 'Go back',
   },
+  send: {
+    id: 'app.components.IdeasShow.send',
+    defaultMessage: 'Send'
+  },
   yourComment: {
     id: 'app.components.IdeasShow.yourComment',
     defaultMessage: 'Your comment'
