@@ -16,7 +16,7 @@ class Event < ApplicationRecord
   def sanitize_description_multiloc
     self.description_multiloc = SanitizationService.new.sanitize_multiloc(
       self.description_multiloc,
-      %i{list decoration link}
+      %i{title alignment list decoration link image video}
     )
   end
 
