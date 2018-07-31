@@ -41,4 +41,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.readGuide',
     defaultMessage: 'Read our guide',
   },
+  gettingStarted: {
+    id: 'app.containers.AdminPage.SideBar.gettingStarted',
+    defaultMessage: 'Get Started',
+  },
+  gettingStartedLink: {
+    id: 'app.containers.AdminPage.SideBar.gettingStartedLink',
+    defaultMessage: 'http://support.citizenlab.co/eng-getting-started',
+  },
 });

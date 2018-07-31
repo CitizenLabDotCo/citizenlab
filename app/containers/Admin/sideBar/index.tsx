@@ -24,14 +24,11 @@ import tracks from './tracks';
 // style
 import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
+import { lighten } from 'polished';
 
-const Menu = styled.nav`
+const Menu = styled.div`
   flex: 0 0 auto;
   width: 260px;
-
-  ${media.smallerThanMinTablet`
-    width: 70px;
-  `}
 `;
 
 const MenuInner = styled.nav`
@@ -44,11 +41,7 @@ const MenuInner = styled.nav`
   top: 0;
   bottom: 0;
   padding-top: 119px;
-  background: ${ colors.adminMenuBackground};
-
-  ${media.smallerThanMinTablet`
-    width: 70px;
-  `}
+  background: ${colors.adminMenuBackground};
 `;
 
 const IconWrapper = styled.div`
@@ -85,12 +78,6 @@ const MenuItem: any = styled(Link) `
   margin-bottom: 8px;
   cursor: pointer;
   border-radius: 5px;
-
-  ${media.smallerThanMinTablet`
-    width: 50px;
-    padding: 0;
-    justify-content: center;
-  `}
 
   &:hover {
     ${Text} {
@@ -138,12 +125,6 @@ const FakeDoor = styled.a`
   cursor: pointer;
   border-radius: 5px;
 
-  ${media.smallerThanMinTablet`
-    width: 50px;
-    padding: 0;
-    justify-content: center;
-  `}
-
   &:hover {
     ${Text} {
       color: #fff;
@@ -156,6 +137,32 @@ const FakeDoor = styled.a`
       .cl-icon-accent {
         fill: ${colors.clIconPrimary}
       }
+    };
+  }
+`;
+const Spacer = styled.div`
+  flex-grow: 1;
+`;
+
+const GetStartedLink = styled.a`
+  flex: 0 0 auto;
+  width: 230px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 10px;
+  padding-right: 15px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  margin-bottom: 25px;
+  cursor: pointer;
+  border-radius: 5px;
+  background: ${lighten(.05, colors.adminMenuBackground)};
+
+  &:hover {
+    background: ${lighten(.1, colors.adminMenuBackground)};
+    ${Text} {
+      color: #fff;
     };
   }
 `;
@@ -276,8 +283,8 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
     }
 
     return (
-      <Menu role="navigation">
-        <MenuInner>
+      <Menu>
+        <MenuInner role="navigation">
           {navItems.map((route) => {
             if (route.id === 'initiatieven') {
               if (pathname.match(/^\/nl-/)) {
@@ -302,6 +309,11 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
               );
             }
           })}
+          <Spacer />
+          <GetStartedLink href={formatMessage({ ...messages.gettingStartedLink })} target="blank">
+            <IconWrapper><Icon name="circleInfo" /></IconWrapper>
+            <Text><b>{formatMessage({ ...messages.gettingStarted })}</b></Text>
+          </GetStartedLink>
         </MenuInner>
       </Menu>
     );

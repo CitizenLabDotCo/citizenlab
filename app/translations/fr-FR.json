@@ -447,6 +447,8 @@
   "app.containers.AdminPage.SettingsPage.urlTitle": "Lien vers votre site internet (URL)",
   "app.containers.AdminPage.SettingsPage.viewPublicResource": "Paramètres",
   "app.containers.AdminPage.SideBar.dashboard": "Tableau de bord",
+  "app.containers.AdminPage.SideBar.gettingStarted": "",
+  "app.containers.AdminPage.SideBar.gettingStartedLink": "",
   "app.containers.AdminPage.SideBar.groups": "Groupes",
   "app.containers.AdminPage.SideBar.ideas": "Idées",
   "app.containers.AdminPage.SideBar.invitations": "Invitations",
