@@ -64,8 +64,6 @@ const localeDetector = (_nextState, replace, callback) => {
 
 // Force the presence of a locale if it wasn't present
 const forceLocale = (_nextState, replace, callback) => {
-  console.log('forceLocale');
-
   localeStream().observable.pipe(
     first()
   ).subscribe((locale) => {
