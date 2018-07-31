@@ -154,5 +154,13 @@ export function quillEditedContent() {
     .ql-align-center {
       text-align: center;
     }
+    p, h1, h2, ul, ol {
+      margin: 0;
+      margin-bottom: 1rem;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+    }
   `;
 }

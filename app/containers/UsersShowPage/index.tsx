@@ -19,7 +19,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, quillEditedContent } from 'utils/styleUtils';
 
 const StyledContentContainer = styled(ContentContainer) `
   padding-top: 40px;
@@ -37,11 +37,6 @@ const UserAvatar = styled.div`
   justify-content: center;
   margin-top: 40px;
   margin-bottom: 40px;
-`;
-
-const StyledAvatar = styled(Avatar) `
-  width: 160px;
-  height: 160px;
 `;
 
 const UserInfo = styled.div`
@@ -80,6 +75,7 @@ const Bio = styled.div`
   text-align: center;
   font-weight: 300;
   margin: 23px auto;
+  ${quillEditedContent()}
 `;
 
 const UserIdeas = styled.div`
@@ -108,7 +104,7 @@ class UsersShowPage extends React.PureComponent<Props, State> {
       return (
         <StyledContentContainer>
           <UserAvatar>
-            <StyledAvatar userId={user.id} size="large" />
+            <Avatar userId={user.id} size="large" />
           </UserAvatar>
 
           <UserInfo>
@@ -118,7 +114,7 @@ class UsersShowPage extends React.PureComponent<Props, State> {
             </JoinedAt>
             {!isEmpty(user.attributes.bio_multiloc) &&
               <Bio>
-                {user.attributes.bio_multiloc && <T value={user.attributes.bio_multiloc} />}
+                {user.attributes.bio_multiloc && <T value={user.attributes.bio_multiloc} supportHtml={true} />}
               </Bio>
             }
           </UserInfo>

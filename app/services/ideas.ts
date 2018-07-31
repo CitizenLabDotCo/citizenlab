@@ -42,7 +42,7 @@ export interface IIdeaData {
       data: IRelationship;
     };
     idea_status?: {
-      data: IRelationship;
+      data: IRelationship | null;
     },
     user_vote: {
       data: IRelationship;

@@ -13,6 +13,7 @@ import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import ProjectCards from 'components/ProjectCards';
 import Footer from 'components/Footer';
+import Button from 'components/UI/Button';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -22,6 +23,7 @@ import { ideaByIdStream, updateIdea } from 'services/ideas';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -159,7 +161,7 @@ const HeaderSubtitle: any = styled.h2`
   text-decoration: none;
   padding: 0;
   padding-bottom: 0px;
-  margin: 0;
+  margin-bottom: 40px;
   margin-top: 25px;
   border-bottom: solid 1px transparent;
 
@@ -250,6 +252,7 @@ interface DataProps {
   locale: GetLocaleChildProps;
   tenant: GetTenantChildProps;
   projects: GetProjectsChildProps;
+  authUser: GetAuthUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -303,7 +306,7 @@ class LandingPage extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, tenant, projects } = this.props;
+    const { locale, tenant, projects, authUser } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
@@ -335,6 +338,13 @@ class LandingPage extends React.PureComponent<Props, State> {
                 <HeaderSubtitle hasHeader={hasHeaderImage}>
                   {subtitle}
                 </HeaderSubtitle>
+                {!authUser && <Button
+                  style="primary-inverse"
+                  size="2"
+                  linkTo="/sign-up"
+                  text={<FormattedMessage {...messages.createAccount} />}
+                  circularCorners={false}
+                />}
               </HeaderContent>
             </Header>
 
@@ -384,7 +394,8 @@ class LandingPage extends React.PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
-  projects: <GetProjects pageSize={250} sort="new" />
+  projects: <GetProjects pageSize={250} sort="new" />,
+  authUser: <GetAuthUser />
 });
 
 export default (inputProps: InputProps) => (
