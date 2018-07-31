@@ -17,9 +17,9 @@
 - The rich text editor
   - Now support copy/paste and drag & drop of images
 - Event descriptions now also support rich text
-- When not signed in, the head bar shows a CTA to create an account
+- When not signed in, the header shows a CTA to create an account
 - A new smart group rule allows you to specify members than have participated (vote, comment, idea) in a certain project
-- The admin now show a "Get started" link to the knowledge base on the bottom left
+- The admin now shows a "Get started" link to the knowledge base on the bottom left
 - The Dutch platforms show a "fake door" to Agenda Setting in the admin navigation
 
 ### Changed
