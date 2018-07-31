@@ -72,8 +72,8 @@ export function remCalc(desiredSize: number) {
   return `${(desiredSize / fontSizes.small).toString().substring(0, 6).trim()}rem`;
 }
 
-export function calculateContrastRatio(backgroundColor, textColor) {
-  function luminanace(r, g, b) {
+export function calculateContrastRatio(backgroundColor: number[], textColor: number[]) {
+  function luminanace(r: number, g: number, b: number) {
     const a: any = [r, g, b].map((val: number) => {
       let v = val;
       v /= 255;
