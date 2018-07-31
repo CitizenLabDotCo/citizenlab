@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
@@ -9,24 +9,28 @@ import Timeline from './Timeline';
 import Phase from './Phase';
 import EventsPreview from '../EventsPreview';
 import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
+import Warning from 'components/UI/Warning';
+import ContentContainer from 'components/ContentContainer';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+
 // style
 import styled from 'styled-components';
+import messages from '../../Admin/pages/messages';
 
 const Container = styled.div``;
-
-const StyledHeader = styled(Header)``;
 
 const StyledTimeline = styled(Timeline)`
   margin-top: -40px;
   position: relative;
 `;
 
-const Mod = styled(ProjectModeratorIndicator)`
-  max-width: ${props => props.theme.maxPageWidth}px;
+const StyledContentContainer = styled(ContentContainer)`
+  margin-top: 15px;
 `;
 
 interface InputProps {}
@@ -41,7 +45,7 @@ interface State {
   selectedPhaseId: string | null;
 }
 
-class ProjectTimelinePage extends React.PureComponent<Props & WithRouterProps, State> {
+class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> {
 
   constructor(props: Props) {
     super(props as any);
@@ -60,14 +64,6 @@ class ProjectTimelinePage extends React.PureComponent<Props & WithRouterProps, S
     const { slug } = this.props.params;
     const { selectedPhaseId } = this.state;
 
-    // const currentLocation = browserHistory.getCurrentLocation();
-    // const currentPath = currentLocation.pathname;
-    // const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
-
-    // if (lastUrlSegment === 'timeline') {
-    //   history.push(`/projects/${this.props.params.slug}/process`);
-    // }
-
     if (!isNilOrError(project)) {
       if (project.attributes.process_type !== 'timeline') {
         clHistory.push(`/projects/${slug}/info`);
@@ -75,11 +71,17 @@ class ProjectTimelinePage extends React.PureComponent<Props & WithRouterProps, S
 
       return (
         <Container className={className}>
-          <StyledHeader projectSlug={slug} />
+          <Header projectSlug={slug} />
 
           <StyledTimeline projectId={project.id} onPhaseSelected={this.handleOnPhaseSelected} />
 
-          <Mod projectId={project.id} displayType="message" />
+          <ProjectModeratorIndicator projectId={project.id} />
+
+          {project.attributes.publication_status === 'archived' &&
+            <StyledContentContainer>
+              <Warning text={<FormattedMessage {...messages.archivedProject} />} />
+            </StyledContentContainer>
+          }
 
           {selectedPhaseId &&
             <Phase phaseId={selectedPhaseId} />

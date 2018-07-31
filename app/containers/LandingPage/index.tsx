@@ -346,6 +346,7 @@ class LandingPage extends React.PureComponent<Props, State> {
                       <ProjectCards
                         pageSize={3}
                         sort="new"
+                        publicationStatuses={['published']}
                         hideAllFilters={true}
                       />
                     </SectionContainer>

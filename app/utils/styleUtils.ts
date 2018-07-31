@@ -79,7 +79,7 @@ export const colors = {
   success: '#32B67A',
   error: '#FC3C2D',
   label: '#5C6E7D',
-  draftYellow: '#D1AD52',
+  draftYellow: '#c3a14d',
   mediumGrey: '#BDBDBD',
   lightGreyishBlue: '#EBEDEF',
   separation: '#EAEAEA',

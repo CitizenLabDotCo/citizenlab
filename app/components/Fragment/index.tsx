@@ -6,6 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 const StyledIframe = styled.iframe`
   border: 0;
   height: ${props => props.height ? `${props.height}px` : 'auto'};
+  width: 100%;
 `;
 
 type Props = {

@@ -20,7 +20,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -69,6 +69,7 @@ const HeaderContentLeft = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: flex-start;
   `}
 `;
 
@@ -82,6 +83,21 @@ const HeaderContentRight = styled.div`
   ${media.smallerThanMinTablet`
     margin-top: 20px;
   `}
+`;
+
+const ArchivedLabel = styled.span`
+  flex-grow: 0;
+  flex-shrink: 1;
+  display: flex;
+  color: #fff;
+  font-size: ${fontSizes.small}px;
+  font-weight: 500;
+  text-transform: uppercase;
+  border-radius: 5px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, .4);
+  /* margin-top: -30px; */
+  margin-bottom: 5px;
 `;
 
 const HeaderTitle = styled.div`
@@ -212,6 +228,7 @@ class ProjectsShowPage extends React.PureComponent<Props, State> {
       const projectSlug = project.attributes.slug;
       const projectHeaderImageLarge = (project.attributes.header_bg.large || null);
       const projectType = project.attributes.process_type;
+      const projectPublicationStatus = project.attributes.publication_status;
       const hasEvents = (events && events.length > 0);
 
       return (
@@ -221,6 +238,11 @@ class ProjectsShowPage extends React.PureComponent<Props, State> {
           <ContentContainer>
             <HeaderContent className={projectType}>
               <HeaderContentLeft>
+                {projectPublicationStatus === 'archived' &&
+                  <ArchivedLabel>
+                    <FormattedMessage {...messages.archived} />
+                  </ArchivedLabel>
+                }
                 <HeaderTitle>
                   <T value={project.attributes.title_multiloc} />
                 </HeaderTitle>
