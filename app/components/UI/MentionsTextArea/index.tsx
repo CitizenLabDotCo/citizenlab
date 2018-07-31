@@ -34,6 +34,7 @@ const Container = styled.div`
 `;
 
 type Props = {
+  id?: string;
   name: string;
   value: string;
   placeholder?: string | undefined;
@@ -179,13 +180,14 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
 
   render() {
     const { style, mentionStyle } = this.state;
-    const { name, placeholder, value, error, children, rows } = this.props;
+    const { name, placeholder, value, error, children, rows, id } = this.props;
     const className = this.props['className'];
 
     if (style) {
       return (
         <Container className={className}>
           <MentionsInput
+            id={id}
             style={style}
             className="textareaWrapper"
             name={name || ''}
