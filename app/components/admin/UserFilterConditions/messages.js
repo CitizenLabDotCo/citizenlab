@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.field_role',
     defaultMessage: 'Role',
   },
+  field_participated_in_project: {
+    id: 'app.components.admin.UserFilterConditions.field_participated_in_project',
+    defaultMessage: 'Participated in project',
+  },
   predicate_is: {
     id: 'app.components.admin.UserFilterConditions.predicate_is',
     defaultMessage: 'is',

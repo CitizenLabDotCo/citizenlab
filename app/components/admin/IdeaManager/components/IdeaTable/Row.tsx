@@ -1,7 +1,7 @@
 import React from 'react';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { take } from 'rxjs/operators';
-import { uniq, keys, isEmpty } from 'lodash';
+import { uniq, keys, isEmpty, get } from 'lodash';
 import { findDOMNode } from 'react-dom';
 import { IModalInfo } from 'containers/App';
 import { DragSource } from 'react-dnd';
@@ -121,7 +121,7 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & injectedLocali
 
   render() {
     const { idea, selected, connectDragSource, activeFilterMenu, phases, statuses } = this.props;
-    const selectedStatus = idea.relationships.idea_status && idea.relationships.idea_status.data.id;
+    const selectedStatus: string | undefined = get(idea, 'relationships.idea_status.id');
     const attrs = idea.attributes;
     return (
       <React.Fragment>

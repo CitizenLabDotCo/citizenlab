@@ -38,11 +38,6 @@ const StyledCheckbox = styled(Checkbox) `
   margin-left: 5px;
 `;
 
-const StyledAvatar = styled(Avatar) `
-  height: 28px;
-  width: 28px;
-`;
-
 const StyledIcon = styled(Icon) `
   width: 20px;
   height: 30px;
@@ -222,7 +217,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
           />
         </td>
         <td>
-          <StyledAvatar
+          <Avatar
             userId={user.id}
             size="small"
           />

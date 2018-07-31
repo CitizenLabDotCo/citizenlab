@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { has, isString } from 'lodash';
+import { has, isString, get } from 'lodash';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
@@ -347,14 +347,8 @@ const AddressWrapper = styled.div`
   z-index: 1000;
 `;
 
-const AuthorAvatar = styled(Avatar) `
-  width: 35px;
-  height: 35px;
-  margin-right: 8px;
-  margin-top: 0px;
-`;
-
 const AuthorMeta = styled.div`
+  margin-left: 8px;
   display: flex;
   flex-direction: column;
   flex: 0 0 calc(100% - 39px);
@@ -633,7 +627,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & injecte
           const ideaImages = idea.data.relationships.idea_images.data;
           const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
           const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
-          const ideaStatusId = (idea.data.relationships.idea_status ? idea.data.relationships.idea_status.data.id : null);
+          const ideaStatusId : string | null = get(idea, 'data.relationships.idea_status.data.id', null);
           const ideaImage$ = (ideaImageId ? ideaImageStream(idea.data.id, ideaImageId).observable : of(null));
           const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : of(null);
           const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : of(null));
@@ -836,7 +830,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & injecte
 
                 <AuthorAndAdressWrapper>
                   <AuthorContainer>
-                    <AuthorAvatar userId={authorId} size="small" onClick={authorId ? this.goToUserProfile : () => { }} />
+                    <Avatar userId={authorId} size="medium" onClick={authorId ? this.goToUserProfile : () => { }} />
                     <AuthorMeta>
                       <AuthorName to={ideaAuthor ? `/profile/${ideaAuthor.data.attributes.slug}` : ''}>
                         <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={(ideaAuthor ? ideaAuthor.data : null)} /> }} />

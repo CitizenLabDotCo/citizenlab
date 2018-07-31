@@ -16,30 +16,44 @@ import { currentTenantStream } from 'services/tenant';
 import { localeStream, updateLocale } from 'services/locale';
 import PlatformLocales from 'platformLocales';
 import { combineLatest } from 'rxjs/observable/combineLatest';
+import { first } from 'rxjs/operators';
 
 // Tries to detect the locale passed in the URL to update the internal state
-const localeDetector = (nextState, replace, callback) => {
-  const urlLocale = nextState.params.locale;
-
-  combineLatest([
+const localeDetector = (_nextState, replace, callback) => {
+  combineLatest(
     currentTenantStream().observable,
-    localeStream().observable,
-  ])
-  .first()
-  .toPromise()
-  .then(([{ data: tenant }, locale]) => {
+    localeStream().observable
+  ).pipe(
+    first()
+  ).subscribe(([{ data: tenant }, locale]) => {
     if (tenant) {
       const localesSet = new Set(tenant.attributes.settings.core.locales);
+      const urlLocale: any = location.pathname.replace(/^\/+/g, '').split('/')[0];
+      // const urlLocale = nextState.params.locale;
+      const urlLocaleIsValid = includes(Object.keys(PlatformLocales), urlLocale);
+      const urlLocaleIsSupported = localesSet.has(urlLocale);
 
-      // Try to add a locale if the param is not a supported locale
-      if (!includes(Object.keys(PlatformLocales), urlLocale)) {
+      // console.log('-----');
+      // console.log('onEnter');
+      // console.log('locale: ' + locale);
+      // console.log('urlLocale: ' + urlLocale);
+      // console.log('url: ' + location.pathname);
+      // console.log('urlLocaleIsValid: ' + urlLocaleIsValid);
+      // console.log('urlLocaleIsSupported: ' + urlLocaleIsSupported);
+      // console.log('-----');
+
+      if (!urlLocale || !urlLocaleIsValid) {
         replace(`/${locale}${location.pathname}${location.search}`);
-      } else if (urlLocale !== locale) {
-        // Update the URL in case the locale in the URL doesn't match the one in the service
+      }
+
+      if (urlLocaleIsValid && !urlLocaleIsSupported) {
         const matchRegexp = new RegExp(`^\/(${urlLocale})\/`);
         replace(`${location.pathname.replace(matchRegexp, `/${locale}/`)}${location.search}`);
-      } else if (localesSet.has(urlLocale)) {
-        // Update locale in the app if it belongs to the TenantLocales
+      }
+
+      if (urlLocaleIsValid && !urlLocaleIsSupported && urlLocale !== locale) {
+        const matchRegexp = new RegExp(`^\/(${locale})\/`);
+        replace(`${location.pathname.replace(matchRegexp, `/${urlLocale}/`)}${location.search}`);
         updateLocale(urlLocale);
       }
 
@@ -50,12 +64,10 @@ const localeDetector = (nextState, replace, callback) => {
 
 // Force the presence of a locale if it wasn't present
 const forceLocale = (_nextState, replace, callback) => {
-  localeStream().observable
-  .first()
-  .toPromise()
-  .then((locale) => {
+  localeStream().observable.pipe(
+    first()
+  ).subscribe((locale) => {
     replace(`/${locale}${location.pathname}${location.search}`);
-
     callback();
   });
 };
