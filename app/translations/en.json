@@ -464,7 +464,7 @@
   "app.containers.AdminPage.SettingsPage.viewPublicResource": "Settings",
   "app.containers.AdminPage.SideBar.dashboard": "Dashboard",
   "app.containers.AdminPage.SideBar.gettingStarted": "Get Started",
-  "app.containers.AdminPage.SideBar.gettingStartedLink": "http://support.citizenlab.co/eng-getting-started",
+  "app.containers.AdminPage.SideBar.gettingStartedLink": "http://support.citizenlab.co/english",
   "app.containers.AdminPage.SideBar.groups": "Groups",
   "app.containers.AdminPage.SideBar.ideas": "Ideas",
   "app.containers.AdminPage.SideBar.invitations": "Invitations",
