@@ -171,6 +171,9 @@ const Container: any = styled.div`
     &.primary {
       ${(props: any) => buttonTheme((props.theme.colorMain || 'e0e0e0'), '#fff')}
     }
+    &.primary-inverse {
+      ${(props: any) => buttonTheme('#fff', (props.theme.colorMain || 'e0e0e0'))}
+    }
     &.secondary {
       ${buttonTheme(color('lightGreyishBlue'), color('label'), 'transparent', darken(0.05, color('lightGreyishBlue')))}
     }
@@ -210,7 +213,7 @@ const HiddenText = styled.span`
   ${invisibleA11yText()}
 `;
 
-export type ButtonStyles = 'primary' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'error' | 'text' | 'cl-blue';
+export type ButtonStyles = 'primary' | 'primary-inverse' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'error' | 'text' | 'cl-blue';
 
 type Props = {
   children?: any;
