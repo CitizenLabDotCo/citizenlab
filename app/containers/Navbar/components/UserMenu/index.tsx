@@ -2,9 +2,9 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 
 // components
-import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
+// import UserName from 'components/UI/UserName';
 import Popover from 'components/Popover';
 import HasPermission from 'components/HasPermission';
 
@@ -44,39 +44,59 @@ const OpenMenuButton = styled.button`
   padding: 0;
   transition: all .2s;
 
+  /*
+  padding: 0;
+  transition: all .2s;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: ${colors.label};
+  max-width: 150px;
+  */
+
   svg {
     fill: ${colors.label};
   }
 
   &:hover,
   &:focus {
-    border-color: ${darken(0.2, colors.label)};
-
+    color: ${darken(0.2, colors.label)};
+    svg, img {
+      border-color: ${darken(0.2, colors.label)};
+    }
     svg {
       fill: ${darken(0.2, colors.label)};
     }
   }
+  span {
+    margin-top: 2px;
+    margin-right: 5px;
+    text-align: right;
+  }
 `;
 
-const UserIcon = styled(Icon)`
-  width: 26px;
-  height: 24px;
-  fill: inherit;
-  transition: all 150ms ease;
-  cursor: pointer;
+const StyledAvatar = styled(Avatar) `
+  height: 28px;
+  width: 28px;
+  svg, img {
+    height: 28px;
+    width: 28px;
+    border: 0;
+    border: 1px solid transparent;
+    border-radius: 50%;
+  }
+  svg {
+    fill: ${colors.label};
+  }
 `;
 
-const StyledAvatar = styled(Avatar)`
-  cursor: pointer;
-`;
-
-const StyledPopover = styled(Popover)`
+const StyledPopover = styled(Popover) `
   display: flex;
   flex-direction: column;
   z-index: 5;
 `;
 
-const PopoverItem = styled(Button)`
+const PopoverItem = styled(Button) `
   background: #fff;
   border-radius: 5px;
   transition: all 80ms ease-out;
@@ -133,7 +153,6 @@ export default class UserMenu extends React.PureComponent<Props, State> {
 
   render() {
     const { authUser, opened } = this.state;
-    const avatar = (authUser ? authUser.data.attributes.avatar : null);
     const userId = (authUser ? authUser.data.id : null);
     const userSlug = (authUser ? authUser.data.attributes.slug : null);
 
@@ -141,7 +160,12 @@ export default class UserMenu extends React.PureComponent<Props, State> {
       return (
         <Container id="e2e-user-menu-container">
           <OpenMenuButton onClick={this.togglePopover}>
-            {avatar ?  <StyledAvatar userId={userId} size="small" /> : <UserIcon name="user" />}
+            {
+              <>
+                {/* <UserName user={authUser.data} /> */}
+                <StyledAvatar userId={userId} size="small" />
+              </>
+            }
           </OpenMenuButton>
           <StyledPopover
             id="e2e-user-menu-dropdown"

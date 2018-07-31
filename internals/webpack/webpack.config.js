@@ -38,7 +38,12 @@ const WEBPACK_CONFIG = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        use: [BabelLoaderConfig, 'cache-loader', { loader: 'ts-loader', options: { transpileOnly: true } }],
+        use: [BabelLoaderConfig, 'cache-loader', {
+          loader: 'ts-loader',
+          options: {
+            transpileOnly: true,
+          },
+        }],
       },
       {
         test: /\.css$/,
@@ -209,7 +214,9 @@ if (isDev) {
       sourceMap: false,
       parallel: true,
       uglifyOptions: {
-
+        compress: {
+          conditionals: false,
+        },
       },
     })
   );

@@ -60,6 +60,8 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, authUser, 
             ${metaTitle}`
           }
         </title>
+        {// https://github.com/nfl/react-helmet/issues/279 href comes first!
+          tenantLocales.map(loc => (<link href={`${url}/${loc}`} rel="alternate" hrefLang={loc} key={loc} />))}
         <meta name="title" content={metaTitle} />
         <meta name="description" content={metaDescription} />
         <meta property="og:title" content={metaTitle} />
@@ -68,7 +70,7 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, authUser, 
         <meta property="og:image" content={headerBg} />
         <meta property="og:image:width" content={`${imageSizes.headerBg.large[0]}`} />
         <meta property="og:image:height" content={`${imageSizes.headerBg.large[1]}`} />
-        <meta property="og:url" content={url} />
+        <meta property="og:url" content={`${url}/${locale}`} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="fb:app_id" content={fbAppId} />
         <meta property="og:site_name" content={organizationName} />

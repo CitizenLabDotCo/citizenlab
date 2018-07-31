@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ChildComment from './ChildComment';
-import Author from './Author';
+import Author from 'components/Author';
 import ChildCommentForm from './ChildCommentForm';
 import CommentsMoreActions from './CommentsMoreActions';
 import CommentBody from './CommentBody';
@@ -187,7 +187,12 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
                 {!commentDeleted &&
                   <>
                     <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
-                    <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
+                    <StyledAuthor
+                      authorId={authorId}
+                      createdAt={createdAt}
+                      size="medium"
+                      message={messages.parentCommentAuthor}
+                    />
                     <CommentBody commentBody={commentBodyMultiloc} editionMode={this.state.editionMode} onCommentSave={this.onCommentSave} onCancelEdition={this.onCancelEdition} last={this.props.last} />
                   </>
                 }

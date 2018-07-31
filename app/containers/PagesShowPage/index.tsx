@@ -220,7 +220,7 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
         seoDescription = '';
         blockIndexing = false;
         pageTitle = <T value={page.attributes.title_multiloc} />;
-        pageDescription = <T value={page.attributes.body_multiloc} />;
+        pageDescription = <T value={page.attributes.body_multiloc} supportHtml={true} />;
       }
 
       return (
