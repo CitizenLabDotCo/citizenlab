@@ -27,6 +27,7 @@
 ### Changed
 - The idea card now shows name and date on 2 lines
 - The navbar now shows the user name next to the avatar
+- The user menu now shows "My ideas" instead of "Profile page"
 
 ## 2018-07-12
 
