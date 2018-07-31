@@ -464,7 +464,7 @@
   "app.containers.AdminPage.SettingsPage.viewPublicResource": "Einstellungen",
   "app.containers.AdminPage.SideBar.dashboard": "Dashboard",
   "app.containers.AdminPage.SideBar.gettingStarted": "Get Started",
-  "app.containers.AdminPage.SideBar.gettingStartedLink": "http://support.citizenlab.co/eng-getting-started",
+  "app.containers.AdminPage.SideBar.gettingStartedLink": "http://support.citizenlab.co/english",
   "app.containers.AdminPage.SideBar.groups": "Gruppen",
   "app.containers.AdminPage.SideBar.ideas": "{orgName, select, München {Mängel} other {Ideen}}",
   "app.containers.AdminPage.SideBar.invitations": "Einladungen",
