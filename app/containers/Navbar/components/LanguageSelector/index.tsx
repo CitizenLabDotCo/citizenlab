@@ -67,9 +67,12 @@ const OpenMenuButton = styled.button`
 const PopoverItem = styled(Button)`
   color: ${colors.clGrey};
   fill: ${colors.clGrey};
-  font-size: ${fontSize('large')};
   font-weight: 400;
   transition: all 100ms ease-out;
+
+  &.button.Button {
+    font-size: 17px;
+  }
 
   &.active button.Button,
   &.active a.Button {

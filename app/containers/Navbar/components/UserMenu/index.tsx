@@ -77,6 +77,9 @@ const StyledPopover = styled(Popover)`
 `;
 
 const PopoverItem = styled(Button)`
+  &.Button.button {
+    font-size: 17px;
+  }
   a:not(.processing):focus,
   button:not(.processing):focus,
   a:not(.processing):hover,
