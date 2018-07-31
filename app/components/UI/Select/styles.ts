@@ -1,4 +1,5 @@
 import { colors } from 'utils/styleUtils';
+import { basename } from 'path';
 
 const SelectStyles = {
     container: (base) => ({
@@ -16,6 +17,9 @@ const SelectStyles = {
       '&:hover': {
         borderColor: isFocused ? '#000' : '#aaa'
       },
+    }),
+    placeholder: () => ({
+      color: colors.placeholder,
     }),
     option: (base, { isFocused }) => ({
       ...base,
