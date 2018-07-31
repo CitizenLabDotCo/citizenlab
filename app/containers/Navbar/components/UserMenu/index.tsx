@@ -206,7 +206,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               size="2"
               justify="space-between"
             >
-              <FormattedMessage {...messages.profilePage} />
+              <FormattedMessage {...messages.myIdeas} />
             </PopoverItem>
 
             <PopoverItem
