@@ -94,6 +94,12 @@ const StyledPopover = styled(Popover) `
   display: flex;
   flex-direction: column;
   z-index: 5;
+  .Ideas-icon .cl-icon-primary, .Ideas-icon .cl-icon-secondary {
+    fill: ${colors.label} !important;
+  }
+  .Ideas-icon .cl-icon-accent {
+    fill: transparent !important;
+  }
 `;
 
 const PopoverItem = styled(Button) `
@@ -214,14 +220,14 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               linkTo={`/profile/${userSlug}`}
               onClick={this.closePopover}
               style="text"
-              icon="user"
+              icon="ideas"
               iconPos="right"
               iconSize="20px"
               padding="11px 11px"
               size="2"
               justify="space-between"
             >
-              <FormattedMessage {...messages.profilePage} />
+              <FormattedMessage {...messages.myIdeas} />
             </PopoverItem>
 
             <PopoverItem

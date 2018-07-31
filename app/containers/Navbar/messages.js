@@ -26,9 +26,9 @@ export default defineMessages({
     id: 'app.containers.app.navbar.register',
     defaultMessage: 'Register',
   },
-  profilePage: {
-    id: 'app.containers.app.navbar.profilePage',
-    defaultMessage: 'Profile page',
+  myIdeas: {
+    id: 'app.containers.app.navbar.myIdeas',
+    defaultMessage: 'My ideas',
   },
   editProfile: {
     id: 'app.containers.app.navbar.editProfile',
