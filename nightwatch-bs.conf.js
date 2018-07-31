@@ -54,6 +54,11 @@ const nwConfig = {
         os: 'Windows',
         os_version: '10',
         browserName: 'chrome',
+        chromeOptions: {
+          args: [
+            "window-size=1280,800",
+          ],
+        },
       },
     },
     firefox: {
