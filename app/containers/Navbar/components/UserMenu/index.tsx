@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 // components
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
+import UserName from 'components/UI/UserName';
 import Popover from 'components/Popover';
 import HasPermission from 'components/HasPermission';
 
@@ -34,36 +35,53 @@ const Container = styled.div`
 
 const OpenMenuButton = styled.button`
   background: none;
-  border-radius: 50%;
-  border: 0;
-  border: 1px solid transparent;
-  cursor: pointer;
-  height: 27px;
   padding: 0;
   transition: all .2s;
-  width: 27px;
-
-  svg {
-    fill: ${colors.label};
-  }
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: ${colors.label};
+  max-width: 150px;
 
   &:hover,
   &:focus {
-    border-color: ${darken(0.2, colors.label)};
-
+    color: ${darken(0.2, colors.label)};
+    svg, img {
+      border-color: ${darken(0.2, colors.label)};
+    }
     svg {
       fill: ${darken(0.2, colors.label)};
     }
   }
+  span {
+    margin-top: 2px;
+    margin-right: 5px;
+    text-align: right;
+  }
 `;
 
-const StyledPopover = styled(Popover)`
+const StyledAvatar = styled(Avatar) `
+  height: 28px;
+  width: 28px;
+  svg, img {
+    height: 28px;
+    width: 28px;
+    border: 0;
+    border: 1px solid transparent;
+    border-radius: 50%;
+  }
+  svg {
+    fill: ${colors.label};
+  }
+`;
+
+const StyledPopover = styled(Popover) `
   display: flex;
   flex-direction: column;
   z-index: 5;
 `;
 
-const PopoverItem = styled(Button)`
+const PopoverItem = styled(Button) `
   background: #fff;
   border-radius: 5px;
   transition: all 80ms ease-out;
@@ -127,7 +145,12 @@ export default class UserMenu extends React.PureComponent<Props, State> {
       return (
         <Container id="e2e-user-menu-container">
           <OpenMenuButton onClick={this.togglePopover}>
-            <Avatar userId={userId} size="small" />
+            {
+              <>
+                <UserName user={authUser.data} />
+                <StyledAvatar userId={userId} size="small" />
+              </>
+            }
           </OpenMenuButton>
           <StyledPopover
             id="e2e-user-menu-dropdown"
