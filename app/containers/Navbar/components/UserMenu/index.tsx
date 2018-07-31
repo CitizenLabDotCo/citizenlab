@@ -34,15 +34,15 @@ const Container = styled.div`
 `;
 
 const OpenMenuButton = styled.button`
+  width: 28px;
+  height: 28px;
   background: none;
   border-radius: 50%;
   border: 0;
   border: 1px solid transparent;
   cursor: pointer;
-  height: 27px;
   padding: 0;
   transition: all .2s;
-  width: 27px;
 
   svg {
     fill: ${colors.label};
