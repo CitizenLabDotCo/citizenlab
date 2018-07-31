@@ -1,4 +1,4 @@
-import React, { createElement, PureComponent } from 'react';
+import React, { createElement } from 'react';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/observable/combineLatest';
@@ -23,7 +23,7 @@ type State = {
   currentTenantLocales: Locale[] | null;
 };
 
-export default class T extends PureComponent<Props, State> {
+export default class T extends React.PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
