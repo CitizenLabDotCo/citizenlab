@@ -213,7 +213,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
           options={props.options.enumOptions}
           onChange={onChange}
           key={props.id}
-          id={props.id}
+          inputId={props.id}
         />
       );
     }
@@ -233,7 +233,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
           value={selectedOptions}
           options={props.options.enumOptions}
           onChange={onChange}
-          id={props.id}
+          inputId={props.id}
         />
       );
     }

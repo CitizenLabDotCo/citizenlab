@@ -342,8 +342,9 @@ class ProfileForm extends PureComponent<Props, State> {
                     </SectionField>
 
                     <SectionField>
-                      <LabelWithTooltip translateId="language" />
+                      <LabelWithTooltip htmlFor="language" translateId="language" />
                       <Select
+                        inputId="language"
                         onChange={createChangeHandler('locale')}
                         onBlur={createBlurHandler('locale')}
                         value={values.locale}
