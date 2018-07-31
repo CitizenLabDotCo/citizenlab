@@ -339,35 +339,48 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
                 className="ql-align"
                 value=""
                 onClick={this.trackAdvanced('align', 'left')}
+                aria-label={formatMessage(messages.alignLeft)}
               />
               <button
                 className="ql-align"
                 value="center"
                 onClick={this.trackAdvanced('align', 'center')}
+                aria-label={formatMessage(messages.alignCenter)}
               />
               <button
                 className="ql-align"
                 value="right"
                 onClick={this.trackAdvanced('align', 'right')}
+                aria-label={formatMessage(messages.alignRight)}
               />
             </span>
           }
           {!limitedTextFormatting &&
             <span className="ql-formats">
-              <button className="ql-list" value="ordered" onClick={this.trackAdvanced('list', 'ordered')} />
-              <button className="ql-list" value="bullet" onClick={this.trackAdvanced('list', 'bullet')} />
+              <button
+                className="ql-list"
+                value="ordered"
+                onClick={this.trackAdvanced('list', 'ordered')}
+                aria-label={formatMessage(messages.orderedList)}
+              />
+              <button
+                className="ql-list"
+                value="bullet"
+                onClick={this.trackAdvanced('list', 'bullet')}
+                aria-label={formatMessage(messages.unorderedList)}
+              />
             </span>
           }
           <span className="ql-formats">
-            <button className="ql-bold" onClick={this.trackBasic('bold')} />
-            <button className="ql-italic" onClick={this.trackBasic('italic')} />
-            <button className="ql-link" onClick={this.trackBasic('link')} />
+            <button className="ql-bold" onClick={this.trackBasic('bold')} aria-label={formatMessage(messages.bold)} />
+            <button className="ql-italic" onClick={this.trackBasic('italic')} aria-label={formatMessage(messages.italic)} />
+            <button className="ql-link" onClick={this.trackBasic('link')} aria-label={formatMessage(messages.link)} />
           </span>
 
           {!noImages &&
             <span className="ql-formats">
-              <button className="ql-image" onClick={this.trackImage} />
-              <button className="ql-video" onClick={this.trackVideo} />
+              <button className="ql-image" onClick={this.trackImage} aria-label={formatMessage(messages.image)}/>
+              <button className="ql-video" onClick={this.trackVideo} aria-label={formatMessage(messages.video)}/>
             </span>
           }
         </div>
