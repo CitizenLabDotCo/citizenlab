@@ -1,5 +1,4 @@
 import { colors } from 'utils/styleUtils';
-import { basename } from 'path';
 
 const SelectStyles = {
     container: (base) => ({
