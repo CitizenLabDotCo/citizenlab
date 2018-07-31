@@ -447,6 +447,8 @@
   "app.containers.AdminPage.SettingsPage.urlTitle": "Website (URL)",
   "app.containers.AdminPage.SettingsPage.viewPublicResource": "Indstillinger",
   "app.containers.AdminPage.SideBar.dashboard": "Dashboard",
+  "app.containers.AdminPage.SideBar.gettingStarted": "",
+  "app.containers.AdminPage.SideBar.gettingStartedLink": "",
   "app.containers.AdminPage.SideBar.groups": "Grupper",
   "app.containers.AdminPage.SideBar.ideas": "Ideer",
   "app.containers.AdminPage.SideBar.invitations": "Invitationer",
