@@ -208,12 +208,10 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
                 <Error apiErrors={errors.end_at} />
               </SectionField>
 
-              <SectionField>
+              <SectionField className="fullWidth">
                 <QuillMultiloc
                   id="description"
                   inAdmin
-                  noImages
-                  limitedTextFormatting
                   label={<FormattedMessage {...messages.descriptionLabel} />}
                   valueMultiloc={eventAttrs.description_multiloc}
                   onChangeMultiloc={this.handleDescriptionMultilocOnChange}
