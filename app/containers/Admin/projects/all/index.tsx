@@ -63,6 +63,8 @@ const LockIcon = styled(Icon)`
   margin-right: 6px;
 `;
 
+const StyledButton = styled(Button)``;
+
 interface InputProps {}
 
 interface DataProps {
@@ -130,7 +132,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
             </StatusLabel>
           }
         </div>
-        <Button
+        <StyledButton
           className={`e2e-admin-edit-project ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
           linkTo={`/admin/projects/${project.id}/edit`}
           style="secondary"
@@ -138,7 +140,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
           icon="edit"
         >
           <FormattedMessage {...messages.editButtonLabel} />
-        </Button>
+        </StyledButton>
       </RowContent>
     );
   }

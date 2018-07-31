@@ -61,6 +61,6 @@ export function requestBlob(url, type, queryParameters?) {
         reject(error);
       }
     };
-    xhr.send(null);
+    xhr.send(undefined);
   });
 }
