@@ -132,7 +132,7 @@ const HeaderTitleWrapper = styled.div`
 `;
 
 const HeaderTitle = styled.div`
-  color: ${colors.clGrey};
+  color: ${colors.text};
   font-size: 21px;
   line-height: 25px;
   font-weight: 400;
