@@ -53,7 +53,7 @@ import tracks from './tracks';
 
 // Styling
 import styled from 'styled-components';
-import { fontSize, colors } from 'utils/styleUtils';
+import { fontSize, colors, quillEditedContent } from 'utils/styleUtils';
 
 const Container: any = styled.div`
   .ql-snow.ql-toolbar button:hover .ql-stroke, .ql-snow .ql-toolbar button:hover .ql-stroke, .ql-snow.ql-toolbar button:focus .ql-stroke, .ql-snow .ql-toolbar button:focus .ql-stroke, .ql-snow.ql-toolbar button.ql-active .ql-stroke, .ql-snow .ql-toolbar button.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow.ql-toolbar button:hover .ql-stroke-miter, .ql-snow .ql-toolbar button:hover .ql-stroke-miter, .ql-snow.ql-toolbar button:focus .ql-stroke-miter, .ql-snow .ql-toolbar button:focus .ql-stroke-miter, .ql-snow.ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-picker-label:focus .ql-stroke, .ql-picker-item:focus .ql-stroke {
@@ -79,6 +79,24 @@ const Container: any = styled.div`
       outline: none;
     }
   }
+  .ql-snow .ql-tooltip[data-mode="link"]::before {
+    content: ${(props: any) => `"${props.linkPrompt}"`};
+  }
+  .ql-snow .ql-tooltip[data-mode="video"]::before {
+    content: ${(props: any) => `"${props.videoPrompt}"`};
+  }
+  .ql-snow .ql-tooltip::before {
+    content: ${(props: any) => `"${props.visitPrompt}"`};
+  }
+  .ql-snow .ql-tooltip.ql-editing a.ql-action::after {
+    content: ${(props: any) => `"${props.save}"`};
+  }
+  .ql-snow .ql-tooltip a.ql-action::after {
+    content: ${(props: any) => `"${props.edit}"`};
+  }
+  .ql-snow .ql-tooltip a.ql-remove::before {
+    content: ${(props: any) => `"${props.remove}"`};
+  }
   .ql-container {
     font-family: 'visuelt','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
     border-radius: 0 0 5px 5px;
@@ -98,6 +116,7 @@ const Container: any = styled.div`
       font-style: normal;
       opacity: 1;
     }
+    ${quillEditedContent()}
 
     &:focus {
       border-color: ${(props: any) => props.error ? props.theme.colors.error : '#999'};
@@ -144,6 +163,7 @@ interface ModulesConfig {
   imageDrop?: boolean;
   toolbar?: any;
   blotFormatter?: any;
+  keyboard: any;
 }
 
 interface Tracks {
@@ -166,6 +186,16 @@ function handleLink(value) {
       (this.quill as Quill).format('link', false);
     }
   }
+}
+
+function handlerTab() {
+  // do nothing
+  return true;
+}
+
+function handlerRemoveTab() {
+  // do nothing
+  return true;
 }
 
 class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, State> {
@@ -242,6 +272,22 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
 
     const modules: ModulesConfig = {
       blotFormatter: noImages ? false : {},
+      keyboard: {
+        // This will overwrite the default binding also named 'tab'
+        bindings: {
+          tab: {
+            key: 9,
+            handler: handlerTab
+          },
+          'remove tab': {
+            key: 9,
+            shiftKey: true,
+            collapsed: true,
+            prefix: /\t$/,
+            handler: handlerRemoveTab
+          }
+        }
+      },
       toolbar: noToolbar ? false : {
         container: `#${toolbarId}`,
         handlers: {
@@ -250,8 +296,21 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
       },
     };
 
+    const formats = ['bold', 'italic', 'link'];
+    if (!noImages) { formats.push('image', 'video'); }
+    if (!limitedTextFormatting) { formats.push('list', 'align', 'header'); }
+
     return (
-      <Container id="boundaries" inAdmin={inAdmin}>
+      <Container
+        id="boundaries"
+        inAdmin={inAdmin}
+        videoPrompt={formatMessage(messages.videoPrompt)}
+        linkPrompt={formatMessage(messages.linkPrompt)}
+        visitPrompt={formatMessage(messages.visitPrompt)}
+        save={formatMessage(messages.save)}
+        edit={formatMessage(messages.edit)}
+        remove={formatMessage(messages.remove)}
+      >
         <div id={toolbarId} >
           {!limitedTextFormatting &&
             <span className="ql-formats" role="button" onClick={this.trackClickDropdown()}>
@@ -280,35 +339,48 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
                 className="ql-align"
                 value=""
                 onClick={this.trackAdvanced('align', 'left')}
+                aria-label={formatMessage(messages.alignLeft)}
               />
               <button
                 className="ql-align"
                 value="center"
                 onClick={this.trackAdvanced('align', 'center')}
+                aria-label={formatMessage(messages.alignCenter)}
               />
               <button
                 className="ql-align"
                 value="right"
                 onClick={this.trackAdvanced('align', 'right')}
+                aria-label={formatMessage(messages.alignRight)}
               />
             </span>
           }
           {!limitedTextFormatting &&
             <span className="ql-formats">
-              <button className="ql-list" value="ordered" onClick={this.trackAdvanced('list', 'ordered')} />
-              <button className="ql-list" value="bullet" onClick={this.trackAdvanced('list', 'bullet')} />
+              <button
+                className="ql-list"
+                value="ordered"
+                onClick={this.trackAdvanced('list', 'ordered')}
+                aria-label={formatMessage(messages.orderedList)}
+              />
+              <button
+                className="ql-list"
+                value="bullet"
+                onClick={this.trackAdvanced('list', 'bullet')}
+                aria-label={formatMessage(messages.unorderedList)}
+              />
             </span>
           }
           <span className="ql-formats">
-            <button className="ql-bold" onClick={this.trackBasic('bold')} />
-            <button className="ql-italic" onClick={this.trackBasic('italic')} />
-            <button className="ql-link" onClick={this.trackBasic('link')} />
+            <button className="ql-bold" onClick={this.trackBasic('bold')} aria-label={formatMessage(messages.bold)} />
+            <button className="ql-italic" onClick={this.trackBasic('italic')} aria-label={formatMessage(messages.italic)} />
+            <button className="ql-link" onClick={this.trackBasic('link')} aria-label={formatMessage(messages.link)} />
           </span>
 
           {!noImages &&
             <span className="ql-formats">
-              <button className="ql-image" onClick={this.trackImage} />
-              <button className="ql-video" onClick={this.trackVideo} />
+              <button className="ql-image" onClick={this.trackImage} aria-label={formatMessage(messages.image)}/>
+              <button className="ql-video" onClick={this.trackVideo} aria-label={formatMessage(messages.video)}/>
             </span>
           }
         </div>
@@ -316,9 +388,10 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
           modules={modules}
           bounds="#boundaries"
           theme="snow"
+          formats={formats}
           {...quillProps}
         />
-      </Container>
+      </Container >
     );
   }
 }

@@ -3,7 +3,7 @@ const hash = crypto.randomBytes(5).toString('hex');
 const afterEach = require('../../updateBSStatus');
 
 module.exports = {
-  '@tags': ['city', 'projects', 'projects-basics'],
+  '@tags': ['city', 'projects', 'projects-basics', 'hey'],
   afterEach,
   projectsList: (browser) => {
     const signinPage = browser.page.signin();
@@ -39,6 +39,8 @@ module.exports = {
 
     browser.fillMultiloc('#project-title', `Test Project ${hash}`);
 
+    browser
+    .execute('window.scrollTo(0,document.body.scrollHeight);');
     adminProjectsPage
     .click('@submitButton')
 
@@ -46,7 +48,7 @@ module.exports = {
     .waitForElementVisible('.e2e-admin-projects-list .e2e-admin-list-row');
 
     // Wait for stream updates
-    browser.pause(10000);
+    browser.pause(1000);
 
     adminProjectsPage
     .assert.containsText('.e2e-admin-projects-list', `Test Project ${hash}`)
@@ -58,7 +60,7 @@ module.exports = {
     .waitForElementVisible('.e2e-project-description-form');
 
     browser.fillMultiloc('#description-preview', 'Test Description Preview');
-    browser.fillMultiloc('#project-description', 'Test Description please ignore');
+    browser.fillMultiloc('#description_multiloc', 'Test Description please ignore');
 
     adminProjectsPage
     .click('@submitButton')

@@ -34,7 +34,10 @@ module.exports = {
     .fillMultiloc('#title', title)
     .fillMultiloc('#description', 'Lorem Ipsum dolor sit amet')
     .setValue('#startDate', startDate)
-    .setValue('#endDate', endDate)
+    .setValue('#endDate', endDate);
+    browser
+    .execute('window.scrollTo(0,document.body.scrollHeight);');
+    adminProjectsPage
     .click('@submitButton')
     .waitForElementVisible('@submitSuccess');
 

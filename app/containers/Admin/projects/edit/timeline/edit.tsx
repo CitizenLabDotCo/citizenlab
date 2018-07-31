@@ -313,7 +313,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
                 <Error apiErrors={errors && errors.end_at} />
               </SectionField>
 
-              <SectionField>
+              <SectionField className="fullWidth">
                 <QuillMultiloc
                   id="description"
                   inAdmin

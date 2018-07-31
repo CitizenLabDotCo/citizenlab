@@ -19,7 +19,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, quillEditedContent } from 'utils/styleUtils';
 
 const StyledContentContainer = styled(ContentContainer) `
   padding-top: 40px;
@@ -75,6 +75,7 @@ const Bio = styled.div`
   text-align: center;
   font-weight: 300;
   margin: 23px auto;
+  ${quillEditedContent()}
 `;
 
 const UserIdeas = styled.div`
