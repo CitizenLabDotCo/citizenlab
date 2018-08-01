@@ -115,13 +115,15 @@ class AdminProjectsList extends PureComponent<Props, State> {
               {(projectGroups) => {
                 if (!isNilOrError(projectGroups)) {
                   return (
-                    <StyledStatusLabel color="clBlue" icon="lock">
-                      {projectGroups.length > 0 ? (
+                    <StyledStatusLabel
+                      text={projectGroups.length > 0 ? (
                         <FormattedMessage {...messages.xGroupsHaveAccess} values={{ groupCount: projectGroups.length }} />
                       ) : (
                         <FormattedMessage {...messages.onlyAdminsCanView} />
                       )}
-                    </StyledStatusLabel>
+                      color="clBlue"
+                      icon="lock"
+                    />
                   );
                 }
 
@@ -131,15 +133,18 @@ class AdminProjectsList extends PureComponent<Props, State> {
           }
 
           {project.attributes.visible_to === 'admins' &&
-            <StyledStatusLabel color="clBlue" icon="lock">
-              <FormattedMessage {...messages.onlyAdminsCanView} />
-            </StyledStatusLabel>
+            <StyledStatusLabel
+              text={<FormattedMessage {...messages.onlyAdminsCanView} />}
+              color="clBlue"
+              icon="lock"
+            />
           }
 
           {project.attributes.publication_status === 'draft' &&
-            <StyledStatusLabel color="draftYellow">
-              <FormattedMessage {...messages.draft} />
-            </StyledStatusLabel>
+            <StyledStatusLabel
+              text={<FormattedMessage {...messages.draft} />}
+              color="draftYellow"
+            />
           }
         </RowContentInner>
         <StyledButton
