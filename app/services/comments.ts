@@ -36,8 +36,8 @@ export interface IComments {
 }
 
 export interface IUpdatedComment {
-  author_id: string;
-  parent_id: string;
+  author_id?: string;
+  parent_id?: string;
   body_multiloc: { [key: string]: string };
 }
 
