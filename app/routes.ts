@@ -13,61 +13,30 @@ import IdeasShowPage from 'containers/IdeasShowPage';
 import ProjectShowPage from 'containers/ProjectsShowPage';
 
 import { currentTenantStream } from 'services/tenant';
-import { localeStream, updateLocale } from 'services/locale';
-import PlatformLocales from 'platformLocales';
+import { updateLocale, getUrlLocale } from 'services/locale';
+import { authUserStream } from 'services/auth';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { first } from 'rxjs/operators';
+import { Locale } from 'typings';
 
-// Tries to detect the locale passed in the URL to update the internal state
-const localeDetector = (_nextState, replace, callback) => {
+const onRouteEnter = (_nextState, _replace, callback) => {
   combineLatest(
     currentTenantStream().observable,
-    localeStream().observable
+    authUserStream().observable
   ).pipe(
     first()
-  ).subscribe(([{ data: tenant }, locale]) => {
-    if (tenant) {
-      const localesSet = new Set(tenant.attributes.settings.core.locales);
-      const urlLocale: any = location.pathname.replace(/^\/+/g, '').split('/')[0];
-      // const urlLocale = nextState.params.locale;
-      const urlLocaleIsValid = includes(Object.keys(PlatformLocales), urlLocale);
-      const urlLocaleIsSupported = localesSet.has(urlLocale);
+  ).subscribe(([tenant, authUser]) => {
+    const tenantLocales = tenant.data.attributes.settings.core.locales;
+    const urlLocale = getUrlLocale(location.pathname);
 
-      // console.log('-----');
-      // console.log('onEnter');
-      // console.log('locale: ' + locale);
-      // console.log('urlLocale: ' + urlLocale);
-      // console.log('url: ' + location.pathname);
-      // console.log('urlLocaleIsValid: ' + urlLocaleIsValid);
-      // console.log('urlLocaleIsSupported: ' + urlLocaleIsSupported);
-      // console.log('-----');
-
-      if (!urlLocale || !urlLocaleIsValid) {
-        replace(`/${locale}${location.pathname}${location.search}`);
-      }
-
-      if (urlLocaleIsValid && !urlLocaleIsSupported) {
-        const matchRegexp = new RegExp(`^\/(${urlLocale})\/`);
-        replace(`${location.pathname.replace(matchRegexp, `/${locale}/`)}${location.search}`);
-      }
-
-      if (urlLocaleIsValid && !urlLocaleIsSupported && urlLocale !== locale) {
-        const matchRegexp = new RegExp(`^\/(${locale})\/`);
-        replace(`${location.pathname.replace(matchRegexp, `/${urlLocale}/`)}${location.search}`);
-        updateLocale(urlLocale);
-      }
-
-      callback();
+    if (includes(tenantLocales, urlLocale)) {
+      updateLocale(urlLocale as Locale);
+    } else if (authUser && authUser.data.attributes.locale && includes(tenantLocales, authUser.data.attributes.locale)) {
+      updateLocale(authUser.data.attributes.locale);
+    } else if (tenantLocales && tenantLocales.length > 0) {
+      updateLocale(tenantLocales[0]);
     }
-  });
-};
 
-// Force the presence of a locale if it wasn't present
-const forceLocale = (_nextState, replace, callback) => {
-  localeStream().observable.pipe(
-    first()
-  ).subscribe((locale) => {
-    replace(`/${locale}${location.pathname}${location.search}`);
     callback();
   });
 };
@@ -77,7 +46,7 @@ export default function createRoutes() {
     {
       path: '/:locale',
       name: 'LocaleWrapper',
-      onEnter: localeDetector,
+      onEnter: onRouteEnter,
       indexRoute: {
         name: 'home',
         component: LandingPage,
@@ -215,7 +184,7 @@ export default function createRoutes() {
     {
       path: '*',
       name: 'NoLocalePath',
-      onEnter: forceLocale,
+      onEnter: onRouteEnter
     }
   ];
 }

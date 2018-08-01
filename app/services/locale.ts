@@ -1,58 +1,33 @@
 import { BehaviorSubject } from 'rxjs';
-import { Observable } from 'rxjs';
-import { switchMap, first, map, distinctUntilChanged, filter } from 'rxjs/operators';
+import { first, map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import includes from 'lodash/includes';
 import { currentTenantStream } from 'services/tenant';
 import { authUserStream } from 'services/auth';
 import { updateUser } from 'services/users';
-import { Locale } from 'typings';
 import platformLocales from 'platformLocales';
+import { Locale } from 'typings';
 
-const LocaleSubject = new BehaviorSubject(null as any);
+const LocaleSubject: BehaviorSubject<Locale> = new BehaviorSubject(null as any);
 const $tenant = currentTenantStream().observable;
 const $authUser = authUserStream().observable;
-const $locale: Observable<Locale> = LocaleSubject.pipe(
+const $locale = LocaleSubject.pipe(
   distinctUntilChanged(),
   filter((locale) => locale !== null)
 );
 
-// Get locale from URL
-export function getUrlLocale(pathname: string): string | null {
-  const localeRegexp = /^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)\//;
-  const matches = localeRegexp.exec(pathname);
-  return (matches && includes(Object.keys(platformLocales), matches[1])) ? matches[1] : null;
-}
-
 $locale.subscribe((locale) => {
-  const urlLocale = location.pathname && getUrlLocale(location.pathname);
-  const urlLocaleIsValid = includes(Object.keys(platformLocales), urlLocale);
+  const urlLocale = getUrlLocale(location.pathname);
+  let newLocalizedUrl = `/${locale}${location.pathname}${location.search}`;
 
-  if (!urlLocale || !urlLocaleIsValid || urlLocale !== locale) {
-    let localizedUrl = `/${locale}${location.pathname}${location.search}`;
-
-    if (urlLocale) {
-      const matchRegexp = new RegExp(`^\/(${urlLocale})\/`);
-      localizedUrl = `${location.pathname.replace(matchRegexp, `/${locale}/`)}${location.search}`;
-    }
-
-    window.history.replaceState({ path: localizedUrl }, '', localizedUrl);
+  if (urlLocale) {
+    const matchRegexp = new RegExp(`^\/(${urlLocale})\/`);
+    newLocalizedUrl = `${location.pathname.replace(matchRegexp, `/${locale}/`)}${location.search}`;
   }
+
+  window.history.replaceState({ path: newLocalizedUrl }, '', newLocalizedUrl);
 });
 
-// Update the current user preferred locale if there's one logged in
-$locale.pipe(
-  switchMap((locale) => $authUser.pipe(
-    first(),
-    map(user => ({ user, locale }))
-  ))
-).subscribe(({ user, locale }) => {
-  if (user && user.data.id && locale !== user.data.attributes.locale) {
-    updateUser(user.data.id, { locale });
-  }
-});
-
-// Push either the url, user-selected or the first tenant locale
 combineLatest(
   $authUser,
   $tenant.pipe(
@@ -61,27 +36,42 @@ combineLatest(
 ).subscribe(([user, tenantLocales]) => {
   const urlLocale = getUrlLocale(location.pathname);
 
-  if (includes(tenantLocales, urlLocale)) {
-    LocaleSubject.next(tenantLocales[0]);
-  } else if (user && user.data.attributes.locale && includes(tenantLocales, user.data.attributes.locale)) {
+  if (user && user.data.attributes.locale && includes(tenantLocales, user.data.attributes.locale)) {
     LocaleSubject.next(user.data.attributes.locale);
+  } else if (includes(tenantLocales, urlLocale)) {
+    LocaleSubject.next(urlLocale as Locale);
   } else if (tenantLocales && tenantLocales.length > 0) {
     LocaleSubject.next(tenantLocales[0]);
   }
 });
 
-// Push a new value down the stream if it belongs in the Tenant Locales
-export function updateLocale(value: Locale) {
-  $tenant.pipe(first()).subscribe((tenant) => {
-    const tenantLocales = tenant.data.attributes.settings.core.locales;
+export function getUrlLocale(pathname: string): string | null {
+  const localeRegexp = /^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)\//;
+  const matches = localeRegexp.exec(pathname);
+  return (matches && includes(Object.keys(platformLocales), matches[1])) ? matches[1] : null;
+}
 
-    if (includes(tenantLocales, value)) {
-      // Only update the value with a locale accepted by the tenant
-      LocaleSubject.next(value);
+export function updateLocale(newUserLocale: Locale) {
+  combineLatest(
+    $authUser,
+    $tenant.pipe(
+      map(tenant => tenant.data.attributes.settings.core.locales)
+    )
+  ).pipe(
+    first()
+  ).subscribe(([authUser, tenantLocales]) => {
+    if (includes(tenantLocales, newUserLocale)) {
+      if (authUser) {
+        updateUser(authUser.data.id, { locale: newUserLocale });
+      }
+
+      LocaleSubject.next(newUserLocale);
     }
   });
 }
 
 export function localeStream() {
-  return { observable: $locale };
+  return {
+    observable: $locale
+  };
 }
