@@ -14,7 +14,6 @@ import messages from '../messages';
 // components
 import { SortableList, SortableRow, List, Row } from 'components/admin/ResourceList';
 import PageWrapper from 'components/admin/PageWrapper';
-import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import Title from 'components/admin/PageTitle';
 import StatusLabel from 'components/UI/StatusLabel';
@@ -50,17 +49,24 @@ const RowContent = styled.div`
   justify-content: space-between;
 `;
 
+const RowContentInner = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-right: 20px;
+`;
+
 const RowTitle = styled(T)`
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 24px;
-  margin-right: 12px;
+  margin-right: 10px;
 `;
 
-const LockIcon = styled(Icon)`
-  width: 15px;
-  height: 15px;
-  margin-right: 6px;
+const StyledStatusLabel = styled(StatusLabel)`
+  margin-right: 5px;
+  margin-top: 4px;
+  margin-bottom: 4px;
 `;
 
 const StyledButton = styled(Button)``;
@@ -102,21 +108,20 @@ class AdminProjectsList extends PureComponent<Props, State> {
   renderRow = (project : IProjectData) => {
     return (
       <RowContent>
-        <div className="expand primary">
+        <RowContentInner className="expand primary">
           <RowTitle value={project.attributes.title_multiloc} />
           {project.attributes.visible_to === 'groups' &&
             <GetProjectGroups projectId={project.id}>
               {(projectGroups) => {
                 if (!isNilOrError(projectGroups)) {
                   return (
-                    <StatusLabel color={'clBlue'}>
-                      <LockIcon name="lock" />
+                    <StyledStatusLabel color="clBlue" icon="lock">
                       {projectGroups.length > 0 ? (
                         <FormattedMessage {...messages.xGroupsHaveAccess} values={{ groupCount: projectGroups.length }} />
                       ) : (
                         <FormattedMessage {...messages.onlyAdminsCanView} />
                       )}
-                    </StatusLabel>
+                    </StyledStatusLabel>
                   );
                 }
 
@@ -126,12 +131,17 @@ class AdminProjectsList extends PureComponent<Props, State> {
           }
 
           {project.attributes.visible_to === 'admins' &&
-            <StatusLabel color={'clBlue'}>
-              <LockIcon name="lock" />
+            <StyledStatusLabel color="clBlue" icon="lock">
               <FormattedMessage {...messages.onlyAdminsCanView} />
-            </StatusLabel>
+            </StyledStatusLabel>
           }
-        </div>
+
+          {project.attributes.publication_status === 'draft' &&
+            <StyledStatusLabel color="draftYellow">
+              <FormattedMessage {...messages.draft} />
+            </StyledStatusLabel>
+          }
+        </RowContentInner>
         <StyledButton
           className={`e2e-admin-edit-project ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
           linkTo={`/admin/projects/${project.id}/edit`}

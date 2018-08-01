@@ -2,26 +2,44 @@ import React, { SFC } from 'react';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 import { rgba } from 'polished';
+import Icon, { Props as IconProps } from 'components/UI/Icon';
 
 interface Props {
   color: keyof typeof colors;
+  icon?: IconProps['name'];
+  children?: any;
 }
 
 const StyledStatusLabel = styled.span`
-  background: ${(props: Props) => rgba(colors[props.color], .15)};
-  border-radius: 5px;
+  min-height: 28px;
   color: ${(props: Props) => colors[props.color]};
+  font-size: ${fontSizes.xs}px;
+  font-weight: 500;
+  line-height: ${fontSizes.xs}px;
+  text-transform: uppercase;
+  white-space: nowrap;
   display: inline-flex;
   align-items: center;
-  font-size: ${fontSizes.xs}px;
-  line-height: ${fontSizes.xs}px;
-  margin-top: 4px;
-  margin-bottom: 4px;
-  font-weight: 500;
-  padding: 6px 10px;
-  text-transform: uppercase;
+  justify-content: center;
+  border-radius: 5px;
+  background: ${(props: Props) => rgba(colors[props.color], .15)};
+  padding-left: 10px;
+  padding-right: 10px;
 `;
 
-const StatusLabel: SFC<Props>  = (props: Props) => <StyledStatusLabel {...props} />;
+const StyledIcon = styled(Icon)`
+  width: 15px;
+  height: 15px;
+  margin-right: 6px;
+`;
+
+const StatusLabel: SFC<Props>  = (props: Props) => {
+  return (
+    <StyledStatusLabel color={props.color} className={props['className']}>
+      {props.icon && <StyledIcon name={props.icon} />}
+      {props.children}
+    </StyledStatusLabel>
+  );
+};
 
 export default StatusLabel;
