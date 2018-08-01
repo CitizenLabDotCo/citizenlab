@@ -104,9 +104,13 @@ export const colors = {
   text: '#222',
   placeholder: '#aaa',
   clBlue: '#008292',
+  // first grey to pass the 4.50 contrast ratio on a white background
   clGrey: '#767676',
+  // this is the first grey to get 4.5 on the light greyish background we often use (#f9f9fa)
   clGreyOnGreyBackground: '#737373',
+  // hover color used for clGrey (e.g. in the navbar)
   clGreyHover: '#222',
+  // background color of dropdown items (e.g. in the navbar)
   clDropdownHoverBackground: '#e9e9e9',
   clGreen: '#04884C',
   clRed: '#E52516',
