@@ -1,5 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
-import { switchMap, first, map, distinctUntilChanged } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { switchMap, first, map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import includes from 'lodash/includes';
 import { currentTenantStream } from 'services/tenant';
@@ -8,12 +9,13 @@ import { updateUser } from 'services/users';
 import { Locale } from 'typings';
 import platformLocales from 'platformLocales';
 
-const savedLocale = localStorage.getItem('cl2-locale');
-const urlLocale = getUrlLocale(location.pathname);
-const LocaleSubject = new BehaviorSubject((urlLocale ? urlLocale : (savedLocale ? savedLocale : 'en')) as Locale);
-const $locale = LocaleSubject.pipe(distinctUntilChanged());
+const LocaleSubject = new BehaviorSubject(null as any);
 const $tenant = currentTenantStream().observable;
 const $authUser = authUserStream().observable;
+const $locale: Observable<Locale> = LocaleSubject.pipe(
+  distinctUntilChanged(),
+  filter((locale) => locale !== null)
+);
 
 // Get locale from URL
 export function getUrlLocale(pathname: string): string | null {
@@ -23,19 +25,8 @@ export function getUrlLocale(pathname: string): string | null {
 }
 
 $locale.subscribe((locale) => {
-  // Save the selection in localStorage as an override
-  localStorage.setItem('cl2-locale', locale);
-
   const urlLocale = location.pathname && getUrlLocale(location.pathname);
   const urlLocaleIsValid = includes(Object.keys(platformLocales), urlLocale);
-
-  // console.log('-----');
-  // console.log('locale.ts');
-  // console.log('locale: ' + locale);
-  // console.log('urlLocale: ' + urlLocale);
-  // console.log('url: ' + location.pathname);
-  // console.log('urlLocaleIsValid: ' + urlLocaleIsValid);
-  // console.log('-----');
 
   if (!urlLocale || !urlLocaleIsValid || urlLocale !== locale) {
     let localizedUrl = `/${locale}${location.pathname}${location.search}`;
@@ -61,12 +52,18 @@ $locale.pipe(
   }
 });
 
-// Push either the user-selected or the first tenant locale
+// Push either the url, user-selected or the first tenant locale
 combineLatest(
   $authUser,
-  $tenant.pipe(map(tenant => tenant.data.attributes.settings.core.locales))
+  $tenant.pipe(
+    map(tenant => tenant.data.attributes.settings.core.locales)
+  )
 ).subscribe(([user, tenantLocales]) => {
-  if (user && user.data.attributes.locale && includes(tenantLocales, user.data.attributes.locale)) {
+  const urlLocale = getUrlLocale(location.pathname);
+
+  if (includes(tenantLocales, urlLocale)) {
+    LocaleSubject.next(tenantLocales[0]);
+  } else if (user && user.data.attributes.locale && includes(tenantLocales, user.data.attributes.locale)) {
     LocaleSubject.next(user.data.attributes.locale);
   } else if (tenantLocales && tenantLocales.length > 0) {
     LocaleSubject.next(tenantLocales[0]);
