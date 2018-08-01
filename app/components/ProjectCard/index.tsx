@@ -101,6 +101,11 @@ const ProjectModeratorIcon = styled(Icon)`
   position: absolute;
   top: 12px;
   right: 12px;
+
+  ${media.smallerThanMaxTablet`
+    top: 24px;
+    right: 24px;
+  `}
 `;
 
 const ProjectContent = styled.div`
@@ -117,7 +122,7 @@ const ProjectContent = styled.div`
     align-items: flex-start;
     margin: 0;
     padding: 15px;
-    padding-top: 0px;
+    padding-top: 20px;
     flex: 1 1 auto;
   `}
 `;
@@ -127,6 +132,10 @@ const ProjectContentInner = styled.div`
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
+
+  ${media.smallerThanMaxTablet`
+    align-items: center;
+  `};
 `;
 
 const ArchivedLabel = styled.span`
@@ -151,10 +160,6 @@ const ProjectTitle = styled.h3`
   font-weight: 500;
   margin: 0;
   padding: 0;
-
-  ${media.smallerThanMaxTablet`
-    padding-top: 20px;
-  `}
 `;
 
 const ProjectDescription = styled.div`
@@ -286,10 +291,6 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
 
       return (
         <Container className={`${className} ${isArchived ? 'archived' : ''}`}>
-          {authUser && project && project.id && isProjectModerator({ data: authUser }, project.id) && (
-            <ProjectModeratorIcon name="shield" />
-          )}
-
           <ProjectImageContainer>
             {imageUrl &&
               <T value={project.attributes.title_multiloc}>
@@ -346,6 +347,9 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
             />
           </ProjectButtonWrapper>
 
+          {authUser && project && project.id && isProjectModerator({ data: authUser }, project.id) && (
+            <ProjectModeratorIcon name="shield" />
+          )}
         </Container>
       );
     }

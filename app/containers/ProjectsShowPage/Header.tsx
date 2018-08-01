@@ -62,15 +62,12 @@ const HeaderContent = styled.div`
 
 const HeaderContentLeft = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
   margin-right: 30px;
   max-width: 500px;
-
-  ${media.biggerThanMinTablet`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-  `}
 `;
 
 const HeaderContentRight = styled.div`
@@ -95,7 +92,7 @@ const ArchivedLabel = styled.span`
   text-transform: uppercase;
   border-radius: 5px;
   padding: 6px 12px;
-  background: rgba(255, 255, 255, .4);
+  background: rgba(255, 255, 255, .45);
   /* margin-top: -30px; */
   margin-bottom: 5px;
 `;
