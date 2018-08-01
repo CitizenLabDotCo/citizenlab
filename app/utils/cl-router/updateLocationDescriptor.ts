@@ -13,6 +13,7 @@ export default function updateLocationDescriptor(location: LocationDescriptor, l
   }
 
   const pathLocale = descriptor.pathname && getUrlLocale(descriptor.pathname);
+
   if (!pathLocale) {
     descriptor.pathname = `/${locale}${descriptor.pathname}`;
   }
