@@ -5,12 +5,12 @@ import { rgba } from 'polished';
 import Icon, { Props as IconProps } from 'components/UI/Icon';
 
 interface Props {
+  text: JSX.Element | string;
   color: keyof typeof colors;
   icon?: IconProps['name'];
-  children?: any;
 }
 
-const StyledStatusLabel = styled.span`
+const Container: any = styled.div`
   min-height: 28px;
   color: ${(props: Props) => colors[props.color]};
   font-size: ${fontSizes.xs}px;
@@ -35,10 +35,10 @@ const StyledIcon = styled(Icon)`
 
 const StatusLabel: SFC<Props>  = (props: Props) => {
   return (
-    <StyledStatusLabel color={props.color} className={props['className']}>
+    <Container color={props.color} className={props['className']}>
       {props.icon && <StyledIcon name={props.icon} />}
-      {props.children}
-    </StyledStatusLabel>
+      {props.text}
+    </Container>
   );
 };
 
