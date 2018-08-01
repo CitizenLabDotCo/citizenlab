@@ -20,7 +20,7 @@ export interface InputProps {
   sort?: Sort;
   areas?: string[];
   topics?: string[];
-  publicationStatuses?: PublicationStatus[];
+  publicationStatuses: PublicationStatus[];
   hideAllFilters?: boolean;
   filterCanModerate?: boolean;
 }
@@ -77,7 +77,7 @@ export default class GetProjects extends Component<Props, State> {
         sort: props.sort,
         areas: props.areas,
         topics: props.topics,
-        publication_statuses: (props.publicationStatuses || ['published', 'archived'])
+        publication_statuses: props.publicationStatuses
       },
       projectsList: undefined,
       hasMore: false,

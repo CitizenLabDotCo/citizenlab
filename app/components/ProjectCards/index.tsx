@@ -53,6 +53,10 @@ const FilterArea = styled.div`
   display: flex;
   align-items: center;
 
+  &.publicationstatus {
+    margin-right: 30px;
+  }
+
   ${media.smallerThanMaxTablet`
     height: 30px;
   `}
@@ -132,6 +136,8 @@ interface Props extends InputProps, GetProjectsChildProps {}
 interface State {}
 
 class ProjectCards extends PureComponent<Props, State> {
+  emptyArray: string[] = [];
+
   constructor(props: Props) {
     super(props);
     this.state = {};
@@ -150,15 +156,15 @@ class ProjectCards extends PureComponent<Props, State> {
   }
 
   render() {
-    const { queryParameters, projectsList, hasMore, querying, loadingMore } = this.props;
+    const { queryParameters, projectsList, hasMore, querying, loadingMore, hideAllFilters } = this.props;
     const hasProjects = (projectsList && projectsList.length > 0);
-    const selectedAreas = (queryParameters.areas || []);
+    const selectedAreas = (queryParameters.areas || this.emptyArray);
 
     return (
       <Container id="e2e-projects-container">
-        {this.props.hideAllFilters !== true &&
+        {hideAllFilters !== true &&
           <FiltersArea id="e2e-projects-filters">
-            <FilterArea>
+            <FilterArea className="publicationstatus">
               <SelectPublicationStatus onChange={this.handlePublicationStatusOnChange} />
             </FilterArea>
 

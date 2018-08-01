@@ -395,8 +395,8 @@ class LandingPage extends React.PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
-  projects: <GetProjects pageSize={250} sort="new" />,
-  authUser: <GetAuthUser />
+  authUser: <GetAuthUser />,
+  projects: <GetProjects pageSize={250} publicationStatuses={['published']} sort="new" />
 });
 
 export default (inputProps: InputProps) => (
