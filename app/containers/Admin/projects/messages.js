@@ -290,7 +290,11 @@ export default defineMessages({
     defaultMessage: '{groupCount, plural, no {# groups can view} one {# group can view} other {# groups can view}}',
   },
   onlyAdminsCanView: {
-    id: 'app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess',
+    id: 'app.containers.AdminPage.ProjectEdit.onlyAdminsCanView',
     defaultMessage: 'Only admins can view',
+  },
+  draft: {
+    id: 'app.containers.AdminPage.ProjectEdit.draft',
+    defaultMessage: 'Draft',
   },
 });
