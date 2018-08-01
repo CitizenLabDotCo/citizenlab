@@ -312,6 +312,7 @@
   "app.containers.AdminPage.ProjectEdit.deleteProjectLabel": "Verwijder dit project",
   "app.containers.AdminPage.ProjectEdit.descriptionLabel": "Beschrijving",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Beschrijving",
+  "app.containers.AdminPage.ProjectEdit.draft": "",
   "app.containers.AdminPage.ProjectEdit.draftStatus": "Draft",
   "app.containers.AdminPage.ProjectEdit.editButtonLabel": "Beheren",
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Activiteiten",
