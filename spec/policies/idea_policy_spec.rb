@@ -139,7 +139,7 @@ describe IdeaPolicy do
       it { should permit(:update)  }
       it { should permit(:destroy) }
 
-      it "should index the project"  do
+      it "should index the idea"  do
         expect(scope.resolve.size).to eq 1
       end
     end
