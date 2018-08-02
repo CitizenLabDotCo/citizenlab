@@ -113,7 +113,13 @@ export const colors = {
   // background color of dropdown items (e.g. in the navbar)
   clDropdownHoverBackground: '#e9e9e9',
   clGreen: '#04884C',
+  // darker green than clGreen for when we have a light green background (clGreenSuccessBackground)
+  clGreenSuccess: '#008040',
+  clGreenSuccessBackground: 'ccffe6',
   clRed: '#E52516',
+  // darker red than clRed for when we have a light red background (clRedSuccessBackground)
+  clRedError: '#fde9e8',
+  clRedErrorBackground: '#fde9e8',
   darkClGreen: '#004949',
   success: '#32B67A',
   error: '#FC3C2D',

@@ -2,6 +2,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
+// styles
+import { colors } from 'utils/styleUtils';
+
 // Components
 import { FormattedMessage } from 'utils/cl-intl';
 import Button, { ButtonStyles } from 'components/UI/Button';
@@ -15,11 +18,11 @@ const Message = styled.p`
   margin-left: 2rem;
 
   &.error {
-    color: #FC3C2D;
+  color: ${colors.clRed};
   }
 
   &.success {
-    color: #32B67A;
+    color: ${colors.clGreen};
   }
 `;
 
