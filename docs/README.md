@@ -1,5 +1,11 @@
 # Changelog
 
+## 2018-08-02
+
+## Fixed
+- The browser no longer goes blank when editing a comment
+- Redirect to the correct locale in the URL no longer goes incorrectly to `en`
+
 ## 2018-07-31
 
 ### Fixed
