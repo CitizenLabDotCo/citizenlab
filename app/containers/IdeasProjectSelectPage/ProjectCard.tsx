@@ -262,7 +262,7 @@ class ProjectCard extends PureComponent<Props, State> {
             id={projectId}
             label=""
             disabled={!enabled}
-            buttonColor={colors.success}
+            buttonColor={colors.clGreen}
           />
         </Container>
       );
