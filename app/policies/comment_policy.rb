@@ -8,8 +8,8 @@ class CommentPolicy < ApplicationPolicy
     end
 
     def resolve
-      # idea_ids = Pundit.policy_scope(user, Idea).pluck(:id)
-      scope.all
+      idea_ids = Pundit.policy_scope(user, Idea).pluck(:id)
+      scope.where(idea: idea_ids)
     end
   end
 
@@ -18,7 +18,7 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    IdeaPolicy.new(user, record.idea).show?
   end
 
   def update?
