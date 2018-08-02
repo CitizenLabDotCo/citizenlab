@@ -10,6 +10,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     else 
       policy_scope(Project)
     end.includes(:project_images, :phases)
+      .publication_status_ordered
       .order(:ordering)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
