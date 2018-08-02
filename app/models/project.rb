@@ -67,6 +67,10 @@ class Project < ApplicationRecord
     .group(:id).having("COUNT(*) = ?", uniq_topic_ids.size)
   end)
 
+  scope :publication_status_ordered, -> {
+    order("CASE publication_status WHEN 'draft' then 1 WHEN 'published' then 2 WHEN 'archived' THEN 3 ELSE 5 END")
+  }
+
   def continuous?
     self.process_type == 'continuous'
   end

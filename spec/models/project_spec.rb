@@ -81,4 +81,13 @@ RSpec.describe Project, type: :model do
       expect(p.save).to eq true
     end
   end
+
+  describe "publication_status_ordered" do
+    it "return draft, published and archived projects in that order" do
+      10.times do
+        create(:project, publication_status: %w(draft published archived)[rand(3)])
+      end
+      expect(Project.publication_status_ordered.map(&:publication_status).chunk(&:itself).map(&:first)).to eq %w(draft published archived)
+    end
+  end
 end
