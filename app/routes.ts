@@ -1,52 +1,14 @@
-import { includes } from 'lodash';
-
-// These are the pages you can go to.
-// They are all wrapped in the App component, which should contain the navbar etc
-
 import adminRoutes from 'containers/Admin/routes';
 import loadAndRender from 'utils/loadAndRender';
-
-// Static import of all critical containers
-// Those will be included in the main.js file
 import LandingPage from 'containers/LandingPage';
 import IdeasShowPage from 'containers/IdeasShowPage';
 import ProjectShowPage from 'containers/ProjectsShowPage';
-
-import { currentTenantStream } from 'services/tenant';
-import { updateLocale, getUrlLocale } from 'services/locale';
-import { authUserStream } from 'services/auth';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { first } from 'rxjs/operators';
-import { Locale } from 'typings';
-
-const onRouteEnter = (_nextState, _replace, callback) => {
-  combineLatest(
-    currentTenantStream().observable,
-    authUserStream().observable
-  ).pipe(
-    first()
-  ).subscribe(([tenant, authUser]) => {
-    const tenantLocales = tenant.data.attributes.settings.core.locales;
-    const urlLocale = getUrlLocale(location.pathname);
-
-    if (includes(tenantLocales, urlLocale)) {
-      updateLocale(urlLocale as Locale);
-    } else if (authUser && authUser.data.attributes.locale && includes(tenantLocales, authUser.data.attributes.locale)) {
-      updateLocale(authUser.data.attributes.locale);
-    } else if (tenantLocales && tenantLocales.length > 0) {
-      updateLocale(tenantLocales[0]);
-    }
-
-    callback();
-  });
-};
 
 export default function createRoutes() {
   return [
     {
       path: '/:locale',
       name: 'LocaleWrapper',
-      onEnter: onRouteEnter,
       indexRoute: {
         name: 'home',
         component: LandingPage,
@@ -183,8 +145,7 @@ export default function createRoutes() {
     },
     {
       path: '*',
-      name: 'NoLocalePath',
-      onEnter: onRouteEnter
+      name: 'NoLocalePath'
     }
   ];
 }

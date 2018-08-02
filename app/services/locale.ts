@@ -4,7 +4,6 @@ import { combineLatest } from 'rxjs/observable/combineLatest';
 import includes from 'lodash/includes';
 import { currentTenantStream } from 'services/tenant';
 import { authUserStream } from 'services/auth';
-import { updateUser } from 'services/users';
 import platformLocales from 'platformLocales';
 import { Locale } from 'typings';
 
@@ -36,36 +35,27 @@ combineLatest(
 ).subscribe(([user, tenantLocales]) => {
   const urlLocale = getUrlLocale(location.pathname);
 
-  if (user && user.data.attributes.locale && includes(tenantLocales, user.data.attributes.locale)) {
-    LocaleSubject.next(user.data.attributes.locale);
-  } else if (includes(tenantLocales, urlLocale)) {
+  if (includes(tenantLocales, urlLocale)) {
     LocaleSubject.next(urlLocale as Locale);
+  } else if (user && user.data.attributes.locale && includes(tenantLocales, user.data.attributes.locale)) {
+    LocaleSubject.next(user.data.attributes.locale);
   } else if (tenantLocales && tenantLocales.length > 0) {
     LocaleSubject.next(tenantLocales[0]);
   }
 });
 
-export function getUrlLocale(pathname: string): string | null {
+export function getUrlLocale(pathname: string) {
   const localeRegexp = /^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)\//;
   const matches = localeRegexp.exec(pathname);
-  return (matches && includes(Object.keys(platformLocales), matches[1])) ? matches[1] : null;
+  return ((matches && includes(Object.keys(platformLocales), matches[1])) ? matches[1] : null);
 }
 
-export function updateLocale(newUserLocale: Locale) {
-  combineLatest(
-    $authUser,
-    $tenant.pipe(
-      map(tenant => tenant.data.attributes.settings.core.locales)
-    )
-  ).pipe(
+export function updateLocale(locale: Locale) {
+  $tenant.pipe(
     first()
-  ).subscribe(([authUser, tenantLocales]) => {
-    if (includes(tenantLocales, newUserLocale)) {
-      if (authUser) {
-        updateUser(authUser.data.id, { locale: newUserLocale });
-      }
-
-      LocaleSubject.next(newUserLocale);
+  ).subscribe((tenant) => {
+    if (includes(tenant.data.attributes.settings.core.locales, locale)) {
+      LocaleSubject.next(locale);
     }
   });
 }
