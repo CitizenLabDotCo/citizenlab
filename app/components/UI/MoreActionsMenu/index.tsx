@@ -23,12 +23,12 @@ const Container = styled.div`
 const MoreOptionsIcon = styled(Icon)`
   width: 20px;
   height: 5px;
-  fill: ${colors.label};
+  fill: ${colors.clGrey};
   transition: all 100ms ease-out;
 `;
 
 const MoreOptionsLabel = styled.div`
-  color: ${colors.label};
+  color: ${colors.clGrey};
   font-size: 15px;
   font-weight: 400;
   white-space: nowrap;
@@ -129,6 +129,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
               onClick={action.handler}
               icon={action.icon}
               text={action.label}
+              textColor="#fff"
               textHoverColor="#fff"
               circularCorners={false}
             />
