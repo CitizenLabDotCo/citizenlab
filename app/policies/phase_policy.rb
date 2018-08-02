@@ -8,24 +8,25 @@ class PhasePolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.all
+      project_ids = Pundit.policy_scope(user, Project).pluck(:id)
+      scope.where(project: project_ids)
     end
   end
 
   def create?
-    user&.active? && (user.admin? || user.project_moderator?(record.project_id))
+    ProjectPolicy.new(user, record.project).update?
   end
 
   def show?
-    true
+    ProjectPolicy.new(user, record.project).show?
   end
 
   def update?
-    user&.active? && (user.admin? || user.project_moderator?(record.project_id))
+    ProjectPolicy.new(user, record.project).update?
   end
 
   def destroy?
-    update?
+    ProjectPolicy.new(user, record.project).update?
   end
 
 end
