@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe IdeaPolicy do
   subject { IdeaPolicy.new(user, idea) }
-  let(:scope) { IdeaPolicy::Scope.new(user, Idea) }
+  let(:scope) { IdeaPolicy::Scope.new(user, project.ideas) }
 
   context "on idea in a public project" do 
     let(:project) { create(:continuous_project) }
