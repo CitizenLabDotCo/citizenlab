@@ -9,9 +9,8 @@ import { isEqual, isEmpty, get } from 'lodash';
 import { IAreaData } from 'services/areas';
 import { updateUser, IUserData/*, IUserUpdate,*/, mapUserToDiff } from 'services/users';
 import { ITenantData } from 'services/tenant';
-import { localeStream } from 'services/locale';
+import { localeStream, updateLocale } from 'services/locale';
 import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
-import { updateLocale } from 'services/locale';
 
 // utils
 import { Formik } from 'formik';
