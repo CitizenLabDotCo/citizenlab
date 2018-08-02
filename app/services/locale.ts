@@ -1,15 +1,20 @@
 import { BehaviorSubject } from 'rxjs';
 import { first, map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/observable/combineLatest';
-import includes from 'lodash/includes';
+import { includes, isEqual } from 'lodash';
 import { currentTenantStream } from 'services/tenant';
 import { authUserStream } from 'services/auth';
 import platformLocales from 'platformLocales';
 import { Locale } from 'typings';
 
 const LocaleSubject: BehaviorSubject<Locale> = new BehaviorSubject(null as any);
-const $tenant = currentTenantStream().observable;
-const $authUser = authUserStream().observable;
+const $tenantLocales = currentTenantStream().observable.pipe(
+  map(tenant => tenant.data.attributes.settings.core.locales),
+  distinctUntilChanged((prev, next) => !isEqual(prev, next))
+);
+const $authUser = authUserStream().observable.pipe(
+  distinctUntilChanged()
+);
 const $locale = LocaleSubject.pipe(
   distinctUntilChanged(),
   filter((locale) => locale !== null)
@@ -29,16 +34,19 @@ $locale.subscribe((locale) => {
 
 combineLatest(
   $authUser,
-  $tenant.pipe(
-    map(tenant => tenant.data.attributes.settings.core.locales)
-  )
+  $tenantLocales
 ).subscribe(([user, tenantLocales]) => {
   const urlLocale = getUrlLocale(location.pathname);
+  const urlSegments = location.pathname.replace(/^\/|\/$/g, '').split('/');
+  const lastUrlSegment = urlSegments[urlSegments.length - 1];
+  const userLocale = (user && user.data.attributes.locale && includes(tenantLocales, user.data.attributes.locale) ? user.data.attributes.locale : null);
 
-  if (includes(tenantLocales, urlLocale)) {
+  if (lastUrlSegment === 'sign-in' && userLocale) {
+    LocaleSubject.next(userLocale);
+  } else if (includes(tenantLocales, urlLocale)) {
     LocaleSubject.next(urlLocale as Locale);
-  } else if (user && user.data.attributes.locale && includes(tenantLocales, user.data.attributes.locale)) {
-    LocaleSubject.next(user.data.attributes.locale);
+  } else if (userLocale) {
+    LocaleSubject.next(userLocale);
   } else if (tenantLocales && tenantLocales.length > 0) {
     LocaleSubject.next(tenantLocales[0]);
   }
@@ -51,10 +59,10 @@ export function getUrlLocale(pathname: string) {
 }
 
 export function updateLocale(locale: Locale) {
-  $tenant.pipe(
+  $tenantLocales.pipe(
     first()
-  ).subscribe((tenant) => {
-    if (includes(tenant.data.attributes.settings.core.locales, locale)) {
+  ).subscribe((tenantLocales) => {
+    if (includes(tenantLocales, locale)) {
       LocaleSubject.next(locale);
     }
   });
