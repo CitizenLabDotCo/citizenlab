@@ -20,15 +20,14 @@ import { darken, lighten } from 'polished';
 import styled, { css } from 'styled-components';
 
 const AvatarImage = styled.img`
-  height: 100%;
-  width: 100%;
+  flex: 0 0 100%;
   border-radius: 50%;
   border: 1px solid #eaeaea;
   background: #eaeaea;
 `;
 
 const AvatarIcon = styled(Icon)`
-  height: 100%;
+  flex: 0 0 100%;
   fill: ${(props) => props.theme.colors.label};
   fill: ${(props) => lighten(0.2, props.theme.colors.label)};
   transition: all 100ms ease-out;
