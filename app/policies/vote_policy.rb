@@ -1,4 +1,7 @@
 class VotePolicy < ApplicationPolicy
+  # Business-related policies are covered
+  # by the controller.
+
   class Scope
     attr_reader :user, :scope
 
@@ -8,7 +11,9 @@ class VotePolicy < ApplicationPolicy
     end
 
     def resolve
-      if user
+      if user&.admin?
+        scope.all
+      elsif user
         scope.where(user: user)
       else
         scope.none

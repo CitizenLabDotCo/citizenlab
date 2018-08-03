@@ -57,7 +57,7 @@ describe VotePolicy do
     it { should_not permit(:destroy) }
 
     it "should index the vote" do
-      expect(scope.resolve.size).to eq 0
+      expect(scope.resolve.size).to eq 1
     end
   end
 
