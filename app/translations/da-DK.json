@@ -312,6 +312,7 @@
   "app.containers.AdminPage.ProjectEdit.deleteProjectLabel": "Fjern dette projekt",
   "app.containers.AdminPage.ProjectEdit.descriptionLabel": "Beskrivelse",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Beskrivelse",
+  "app.containers.AdminPage.ProjectEdit.draft": "",
   "app.containers.AdminPage.ProjectEdit.draftStatus": "Udkast",
   "app.containers.AdminPage.ProjectEdit.editButtonLabel": "Rediger",
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Begivenheder",
