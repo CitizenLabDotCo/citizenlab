@@ -61,8 +61,8 @@ const Header = styled.div`
   position: relative;
 
   ${media.smallerThanMinTablet`
-    height: 320px;
-    flex: 0 0 320px;
+    height: 400px;
+    flex: 0 0 400px;
   `}
 `;
 
@@ -169,7 +169,8 @@ const HeaderSubtitle: any = styled.h2`
     font-size: 20px;
     font-weight: 300;
     line-height: 26px;
-    margin-top: 20px;
+    margin-top: 15px;
+    margin-bottom: 20px;
   `}
 `;
 
