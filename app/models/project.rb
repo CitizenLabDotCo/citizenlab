@@ -68,7 +68,11 @@ class Project < ApplicationRecord
   end)
 
   scope :publication_status_ordered, -> {
-    order("CASE publication_status WHEN 'draft' then 1 WHEN 'published' then 2 WHEN 'archived' THEN 3 ELSE 5 END")
+    # Triggering a subquery instead of building on the scope, in order to make
+    # the order by play nicely with previous distinct operations
+    where(id: all)
+    .distinct(false)
+    .order("CASE projects.publication_status WHEN 'draft' then 1 WHEN 'published' then 2 WHEN 'archived' THEN 3 ELSE 5 END")
   }
 
   def continuous?
@@ -78,7 +82,7 @@ class Project < ApplicationRecord
   def timeline?
     self.process_type == 'timeline'
   end
-  
+
   private
 
   def generate_slug
