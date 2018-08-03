@@ -1,6 +1,6 @@
 # Changelog
 
-## 2018-08-02
+## 2018-08-03
 
 ### Fixed
 - The landingpage header layout is no longer broken on mobile devices 
