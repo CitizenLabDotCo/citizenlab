@@ -4,7 +4,6 @@ import { combineLatest } from 'rxjs/observable/combineLatest';
 import { includes, isEqual } from 'lodash';
 import { currentTenantStream } from 'services/tenant';
 import { authUserStream } from 'services/auth';
-import platformLocales from 'platformLocales';
 import { Locale } from 'typings';
 
 const LocaleSubject: BehaviorSubject<Locale> = new BehaviorSubject(null as any);
@@ -53,9 +52,10 @@ combineLatest(
 });
 
 export function getUrlLocale(pathname: string) {
-  const localeRegexp = /^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)\//;
-  const matches = localeRegexp.exec(pathname);
-  return ((matches && includes(Object.keys(platformLocales), matches[1])) ? matches[1] : null);
+  const localesToCheckFor = ['en', 'fr', 'de', 'nl', 'nb', 'nb', 'da', 'de-DE', 'en-GB', 'en-CA','fr-BE', 'fr-FR', 'nl-BE', 'nl-NL', 'da-DK', 'nb-NO'];
+  const firstUrlSegment = pathname.replace(/^\/|\/$/g, '').split('/')[0];
+  const isLocale = (includes(localesToCheckFor, firstUrlSegment));
+  return (isLocale ? firstUrlSegment : null);
 }
 
 export function updateLocale(locale: Locale) {
