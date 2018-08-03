@@ -169,7 +169,8 @@ const HeaderSubtitle: any = styled.h2`
     font-size: 20px;
     font-weight: 300;
     line-height: 26px;
-    margin-top: 20px;
+    margin-top: 15px;
+    margin-bottom: 20px;
   `}
 `;
 
