@@ -21,14 +21,17 @@ const $locale = LocaleSubject.pipe(
 
 $locale.subscribe((locale) => {
   const urlLocale = getUrlLocale(location.pathname);
-  let newLocalizedUrl = `/${locale}${location.pathname}${location.search}`;
 
-  if (urlLocale) {
-    const matchRegexp = new RegExp(`^\/(${urlLocale})\/`);
-    newLocalizedUrl = `${location.pathname.replace(matchRegexp, `/${locale}/`)}${location.search}`;
+  if (!urlLocale) {
+    const newLocalizedUrl = `/${locale}${location.pathname}${location.search}`;
+    window.history.replaceState({ path: newLocalizedUrl }, '', newLocalizedUrl);
+  } else if (urlLocale && urlLocale !== locale) {
+    const urlSegments = location.pathname.replace(/^\/|\/$/g, '').split('/');
+    urlSegments[0] = locale;
+    const newPathname = urlSegments.join('/');
+    const newLocalizedUrl = `/${newPathname}${location.search}`;
+    window.history.replaceState({ path: newLocalizedUrl }, '', newLocalizedUrl);
   }
-
-  window.history.replaceState({ path: newLocalizedUrl }, '', newLocalizedUrl);
 });
 
 combineLatest(
