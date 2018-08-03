@@ -2,7 +2,17 @@
 
 ## 2018-08-02
 
-## Fixed
+### Fixed
+- The landingpage header layout is no longer broken on mobile devices 
+- Yet another bug related to the landingpage not correctly redirecting the user to the correct locale
+- The Page not found page was not found when a page was not found
+
+### Added
+- The 'Create an account' call to action button on the landing page now gets tracked
+
+## 2018-08-02
+
+### Fixed
 - The browser no longer goes blank when editing a comment
 - Redirect to the correct locale in the URL no longer goes incorrectly to `en`
 
