@@ -22,10 +22,6 @@ class IdeaPolicy < ApplicationPolicy
     end
   end
 
-  def images_index?
-    show?
-  end
-
   def files_index?
     show?
   end
