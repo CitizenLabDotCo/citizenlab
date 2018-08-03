@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe ProjectImagePolicy do
   subject { ProjectImagePolicy.new(user, image) }
-  let(:scope) { ProjectImagePolicy::Scope.new(user, idea.idea_images) }
+  let(:scope) { ProjectImagePolicy::Scope.new(user, project.project_images) }
 
   context "on an image in a public project" do 
     let(:project) { create(:continuous_project) }
@@ -21,26 +21,13 @@ describe ProjectImagePolicy do
 	    end
 	  end
 
-	  context "for a user who is not the idea author" do
+	  context "for a mortal user" do
       let(:user) { create(:user) }
 
       it { should     permit(:show)    }
       it { should_not permit(:create)  }
       it { should_not permit(:update)  }
       it { should_not permit(:destroy) }
-
-      it "should index the image" do
-        expect(scope.resolve.size).to eq 1
-      end
-    end
-
-    context "for a user who is the idea author" do
-      let(:user) { idea.author }
-
-      it { should     permit(:show)    }
-      it { should     permit(:create)  }
-      it { should     permit(:update)  }
-      it { should     permit(:destroy) }
 
       it "should index the image" do
         expect(scope.resolve.size).to eq 1
