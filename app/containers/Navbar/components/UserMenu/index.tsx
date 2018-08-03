@@ -15,7 +15,7 @@ import { IUser } from 'services/users';
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { colors } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -46,30 +46,32 @@ const OpenMenuButton = styled.button`
   &:hover,
   &:focus {
     color: ${darken(0.2, colors.label)};
-    svg, img {
+
+    svg,
+    img {
       border-color: ${darken(0.2, colors.label)};
     }
+
     svg {
       fill: ${darken(0.2, colors.label)};
     }
   }
-  span {
-    margin-top: 2px;
-    margin-right: 5px;
-    text-align: right;
-  }
 `;
 
-const StyledAvatar = styled(Avatar) `
-  height: 28px;
+const StyledUserName = styled(UserName)`
+  margin-right: 6px;
+  white-space: nowrap;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
+`;
+
+const StyledAvatar = styled(Avatar)`
   width: 28px;
-  svg, img {
-    height: 28px;
-    width: 28px;
-    border: 0;
-    border: 1px solid transparent;
-    border-radius: 50%;
-  }
+  height: 28px;
+  cursor: pointer;
+
   svg {
     fill: ${colors.label};
   }
@@ -153,7 +155,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
           <OpenMenuButton onClick={this.togglePopover}>
             {
               <>
-                <UserName user={authUser.data} />
+                <StyledUserName user={authUser.data} />
                 <StyledAvatar userId={userId} size="small" />
               </>
             }

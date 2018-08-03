@@ -10,10 +10,24 @@ const User = styled.span`
   }
 `;
 
-export default ({ user }: { user: IUserData | null }) => {
-  if (!user) {
-    return (<User className="deleted-user"><FormattedMessage {...messages.deletedUser} /></User>);
-  }
+interface Props {
+  user: IUserData | null;
+  hideLastName?: boolean;
+  className?: string;
+}
 
-  return (<User>{`${user.attributes.first_name} ${user.attributes.last_name || ''}`}</User>);
+export default (props: Props) => {
+  const { user, className, hideLastName } = props;
+  const firstName = (user ? user.attributes.first_name : null);
+  const lastName = (user && !hideLastName ? user.attributes.last_name : null);
+
+  return (
+    <User className={`${className} ${!user ? 'deleted-user' : ''}`}>
+      {user ? (
+        `${firstName} ${lastName}`
+      ) : (
+        <FormattedMessage {...messages.deletedUser} />
+      )}
+    </User>
+  );
 };
