@@ -50,7 +50,7 @@ describe VotePolicy do
   context "for an admin" do 
   	let(:user) { create(:admin) }
 
-    it { should_not permit(:show) }
+    it { should     permit(:show) }
     it { should_not permit(:create) }
     it { should_not permit(:up) }
     it { should_not permit(:down) }
