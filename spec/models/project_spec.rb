@@ -83,11 +83,22 @@ RSpec.describe Project, type: :model do
   end
 
   describe "publication_status_ordered" do
-    it "return draft, published and archived projects in that order" do
-      10.times do
-        create(:project, publication_status: %w(draft published archived)[rand(3)])
+    before do
+      6.times do |i|
+        create(:project, publication_status: %w(draft published archived)[i%3])
       end
+    end
+
+    it "return draft, published and archived projects in that order" do
       expect(Project.publication_status_ordered.map(&:publication_status).chunk(&:itself).map(&:first)).to eq %w(draft published archived)
     end
+
+    it "succeeds when applied to a scope that used distinct" do
+      projects = Project
+        .distinct
+        .publication_status_ordered
+      expect(projects.map(&:publication_status).chunk(&:itself).map(&:first)).to eq %w(draft published archived)
+    end
+
   end
 end
