@@ -8,7 +8,7 @@ class WebApi::V1::ImagesController < ApplicationController
     container = params['container_class'].find(container_id)
     @images = container.send("#{container_association}_images").order(:ordering)
     policy_scope_class = "#{params['image_class'].name}Policy::Scope".constantize
-    @images = policy_scope_class.new(user, @images).resolve
+    @images = policy_scope_class.new(current_user, @images).resolve
     render json: @images, each_serializer: WebApi::V1::ImageSerializer
   end
 
