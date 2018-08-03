@@ -142,10 +142,6 @@ export default function createRoutes() {
           getComponent: loadAndRender(import('containers/PagesShowPage')),
         },
       ],
-    },
-    {
-      path: '*',
-      name: 'NoLocalePath'
     }
   ];
 }
