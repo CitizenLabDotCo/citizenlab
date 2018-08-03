@@ -62,8 +62,4 @@ class VotePolicy < ApplicationPolicy
     idea && !pcs.cancelling_votes_disabled_reason(idea, user)
   end
 
-  def votable_type vote
-    vote.votable_type.underscore
-  end
-
 end
