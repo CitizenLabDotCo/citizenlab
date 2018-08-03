@@ -61,8 +61,8 @@ const Header = styled.div`
   position: relative;
 
   ${media.smallerThanMinTablet`
-    height: 320px;
-    flex: 0 0 320px;
+    height: 400px;
+    flex: 0 0 400px;
   `}
 `;
 
