@@ -312,6 +312,7 @@
   "app.containers.AdminPage.ProjectEdit.deleteProjectLabel": "Dieses Projekt entfernen",
   "app.containers.AdminPage.ProjectEdit.descriptionLabel": "Beschreibung",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Beschreibung",
+  "app.containers.AdminPage.ProjectEdit.draft": "",
   "app.containers.AdminPage.ProjectEdit.draftStatus": "Entwurf",
   "app.containers.AdminPage.ProjectEdit.editButtonLabel": "Bearbeiten",
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Veranstaltungen",

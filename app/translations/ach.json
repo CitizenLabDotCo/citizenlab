@@ -312,6 +312,7 @@
   "app.containers.AdminPage.ProjectEdit.deleteProjectLabel": "",
   "app.containers.AdminPage.ProjectEdit.descriptionLabel": "",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "",
+  "app.containers.AdminPage.ProjectEdit.draft": "",
   "app.containers.AdminPage.ProjectEdit.draftStatus": "",
   "app.containers.AdminPage.ProjectEdit.editButtonLabel": "",
   "app.containers.AdminPage.ProjectEdit.eventsTab": "",
