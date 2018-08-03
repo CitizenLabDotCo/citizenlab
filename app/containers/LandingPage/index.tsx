@@ -25,6 +25,10 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
+// utils
+import { trackEvent } from 'utils/analytics';
+import tracks from './tracks';
+
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -306,6 +310,11 @@ class LandingPage extends React.PureComponent<Props, State> {
     clHistory.push('/ideas/new');
   }
 
+  goToSignUpPage = () => {
+    trackEvent(tracks.clickCreateAccountCTA);
+    clHistory.push('/sign-up');
+  }
+
   render() {
     const { locale, tenant, projects, authUser } = this.props;
 
@@ -342,7 +351,7 @@ class LandingPage extends React.PureComponent<Props, State> {
                 {!authUser && <Button
                   style="primary-inverse"
                   size="2"
-                  linkTo="/sign-up"
+                  onClick={this.goToSignUpPage}
                   text={<FormattedMessage {...messages.createAccount} />}
                   circularCorners={false}
                 />}
