@@ -20,7 +20,7 @@ describe VotePolicy do
   end
 
   context "for a mortal user" do 
-  	let(:user) { create(:admin) }
+  	let(:user) { create(:user) }
 
     it { should_not permit(:show) }
     it { should_not permit(:create) }
