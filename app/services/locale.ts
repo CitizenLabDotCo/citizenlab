@@ -4,7 +4,6 @@ import { combineLatest } from 'rxjs/observable/combineLatest';
 import { includes, isEqual } from 'lodash';
 import { currentTenantStream } from 'services/tenant';
 import { authUserStream } from 'services/auth';
-import platformLocales from 'platformLocales';
 import { Locale } from 'typings';
 
 const LocaleSubject: BehaviorSubject<Locale> = new BehaviorSubject(null as any);
@@ -22,14 +21,17 @@ const $locale = LocaleSubject.pipe(
 
 $locale.subscribe((locale) => {
   const urlLocale = getUrlLocale(location.pathname);
-  let newLocalizedUrl = `/${locale}${location.pathname}${location.search}`;
 
-  if (urlLocale) {
-    const matchRegexp = new RegExp(`^\/(${urlLocale})\/`);
-    newLocalizedUrl = `${location.pathname.replace(matchRegexp, `/${locale}/`)}${location.search}`;
+  if (!urlLocale) {
+    const newLocalizedUrl = `/${locale}${location.pathname}${location.search}`;
+    window.history.replaceState({ path: newLocalizedUrl }, '', newLocalizedUrl);
+  } else if (urlLocale && urlLocale !== locale) {
+    const urlSegments = location.pathname.replace(/^\/|\/$/g, '').split('/');
+    urlSegments[0] = locale;
+    const newPathname = urlSegments.join('/');
+    const newLocalizedUrl = `/${newPathname}${location.search}`;
+    window.history.replaceState({ path: newLocalizedUrl }, '', newLocalizedUrl);
   }
-
-  window.history.replaceState({ path: newLocalizedUrl }, '', newLocalizedUrl);
 });
 
 combineLatest(
@@ -53,9 +55,10 @@ combineLatest(
 });
 
 export function getUrlLocale(pathname: string) {
-  const localeRegexp = /^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)\//;
-  const matches = localeRegexp.exec(pathname);
-  return ((matches && includes(Object.keys(platformLocales), matches[1])) ? matches[1] : null);
+  const localesToCheckFor = ['en', 'fr', 'de', 'nl', 'nb', 'nb', 'da', 'de-DE', 'en-GB', 'en-CA','fr-BE', 'fr-FR', 'nl-BE', 'nl-NL', 'da-DK', 'nb-NO'];
+  const firstUrlSegment = pathname.replace(/^\/|\/$/g, '').split('/')[0];
+  const isLocale = (includes(localesToCheckFor, firstUrlSegment));
+  return (isLocale ? firstUrlSegment : null);
 }
 
 export function updateLocale(locale: Locale) {
