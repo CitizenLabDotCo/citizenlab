@@ -55,7 +55,7 @@ combineLatest(
 });
 
 export function getUrlLocale(pathname: string) {
-  const localesToCheckFor = ['en', 'fr', 'de', 'nl', 'nb', 'nb', 'da', 'de-DE', 'en-GB', 'en-CA','fr-BE', 'fr-FR', 'nl-BE', 'nl-NL', 'da-DK', 'nb-NO'];
+  const localesToCheckFor = ['en', 'fr', 'de', 'nl', 'nb', 'nb', 'da', 'de-DE', 'en-GB', 'en-CA', 'fr-BE', 'fr-FR', 'nl-BE', 'nl-NL', 'da-DK', 'nb-NO'];
   const firstUrlSegment = pathname.replace(/^\/|\/$/g, '').split('/')[0];
   const isLocale = (includes(localesToCheckFor, firstUrlSegment));
   return (isLocale ? firstUrlSegment : null);
