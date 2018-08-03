@@ -8,25 +8,25 @@ class IdeaImagePolicy < ApplicationPolicy
     end
 
     def resolve
-      project_ids = Pundit.policy_scope(user, Project).pluck(:id)
-      scope.where(project_id: project_ids)
+      idea_ids = Pundit.policy_scope(user, Idea).pluck(:id)
+      scope.where(idea_id: idea_ids)
     end
   end
 
   def create?
-    ProjectPolicy.new(user, record.project).update?
+    IdeaPolicy.new(user, record.idea).update?
   end
 
   def show?
-    ProjectPolicy.new(user, record.project).show?
+    IdeaPolicy.new(user, record.idea).show?
   end
 
   def update?
-    ProjectPolicy.new(user, record.project).update?
+    IdeaPolicy.new(user, record.idea).update?
   end
 
   def destroy?
-    ProjectPolicy.new(user, record.project).update?
+    IdeaPolicy.new(user, record.idea).update?
   end
 
 end
