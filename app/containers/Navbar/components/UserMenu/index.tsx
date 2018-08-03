@@ -15,7 +15,7 @@ import { IUser } from 'services/users';
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { colors, media } from 'utils/styleUtils';
+import { colors, media, fontSizes } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -61,6 +61,7 @@ const OpenMenuButton = styled.button`
 const StyledUserName = styled(UserName)`
   margin-right: 6px;
   white-space: nowrap;
+  font-size: ${fontSizes.base}px;
 
   ${media.smallerThanMinTablet`
     display: none;
@@ -68,8 +69,8 @@ const StyledUserName = styled(UserName)`
 `;
 
 const StyledAvatar = styled(Avatar)`
-  width: 28px;
-  height: 28px;
+  width: 29px;
+  height: 29px;
   cursor: pointer;
 
   svg {
@@ -155,7 +156,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
           <OpenMenuButton onClick={this.togglePopover}>
             {
               <>
-                <StyledUserName user={authUser.data} />
+                <StyledUserName user={authUser.data} hideLastName={true} />
                 <StyledAvatar userId={userId} size="small" />
               </>
             }
