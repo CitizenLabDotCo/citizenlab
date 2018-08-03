@@ -97,7 +97,9 @@ class CommentBody extends React.PureComponent<Props, State> {
   }
 
   onSaveComment = (values, formikActions) => {
-    return this.props.onCommentSave(values, formikActions);
+    if (this.props.locale) {
+      return this.props.onCommentSave({ body_multiloc: { [this.props.locale]: values.body } }, formikActions);
+    }
   }
 
   createFieldChange = (name, setFieldValue) => (value) => {
@@ -127,17 +129,17 @@ class CommentBody extends React.PureComponent<Props, State> {
     if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && editionMode) {
       return (
         <Formik
-          initialValues={{ body_multiloc: { [locale]: getLocalized(commentBody, locale, tenantLocales) } }}
+          initialValues={{ body: getLocalized(commentBody, locale, tenantLocales) }}
           onSubmit={this.onSaveComment}
         >
           {({ values, errors, handleSubmit, isSubmitting, setFieldValue, setFieldTouched }) => (
             <StyledForm onSubmit={handleSubmit}>
               <MentionsTextArea
-                name={`body_multiloc.${locale}`}
-                value={values.body_multiloc[locale]}
+                name="body"
+                value={values.body}
                 rows={1}
-                onBlur={this.createFieldTouched(`body_multiloc.${locale}`, setFieldTouched)}
-                onChange={this.createFieldChange(`body_multiloc.${locale}`, setFieldValue)}
+                onBlur={this.createFieldTouched('body', setFieldTouched)}
+                onChange={this.createFieldChange('body', setFieldValue)}
                 padding="1rem"
               />
               <ButtonsWrapper>
