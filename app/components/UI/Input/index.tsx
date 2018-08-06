@@ -23,7 +23,7 @@ const Container: any = styled.div`
     padding: 12px;
     border-radius: 5px;
     border: solid 1px;
-    border-color: ${(props: any) => props.error ? props.theme.colors.error : '#ccc'};
+    border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#ccc'};
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     background: #fff;
     outline: none;
@@ -39,7 +39,7 @@ const Container: any = styled.div`
     }
 
     &:focus {
-      border-color: ${(props: any) => props.error ? props.theme.colors.error : '#999'};
+      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#999'};
     }
 
     &:disabled {

@@ -20,11 +20,11 @@ const Container = styled.div`
 
   textarea {
     &:hover {
-      border-color: ${(props: any) => props.error ? props.theme.colors.error : '#999'} !important;
+      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#999'} !important;
     }
 
     &:focus {
-      border-color: ${(props: any) => props.error ? props.theme.colors.error : '#666'} !important;
+      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#666'} !important;
     }
   }
 

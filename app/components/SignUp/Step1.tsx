@@ -62,7 +62,7 @@ const TermsAndConditionsWrapper: any = styled.div`
   border: solid 1px transparent;
 
   &.error {
-    border-color: ${(props: any) => props.theme.colors.error};
+    border-color: ${(props: any) => props.theme.colors.clRedError};
   }
 
   span {

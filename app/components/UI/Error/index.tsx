@@ -23,16 +23,16 @@ interface IStyledErrorMessage {
 
 const ErrorMessageText = styled.div`
   flex: 1 0 auto;
-  color: ${(props) => props.theme.colors.clRed};
+  color: ${(props) => props.theme.colors.clRedError};
   font-weight: 400;
 
   a {
-    color: ${(props) => props.theme.colors.clRed};
+    color: ${(props) => props.theme.colors.clRedError};
     font-weight: 500;
     text-decoration: underline;
 
     &:hover {
-      color: ${(props) => darken(0.2, props.theme.colors.clRed)};
+      color: ${(props) => darken(0.2, props.theme.colors.clRedError)};
       text-decoration: underline;
     }
   }
@@ -46,7 +46,7 @@ const IconWrapper = styled.div`
   margin-right: 8px;
 
   svg {
-    fill: ${(props) => props.theme.colors.clRed};
+    fill: ${(props) => props.theme.colors.clRedError};
   }
 `;
 
