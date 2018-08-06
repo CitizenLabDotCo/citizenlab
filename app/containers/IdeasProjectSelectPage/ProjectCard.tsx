@@ -20,7 +20,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, color, colors } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
