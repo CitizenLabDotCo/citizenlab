@@ -63,7 +63,7 @@ describe ProjectFilePolicy do
 
 	 context "on a file in a private admins project" do 
 	 	let(:project) { create(:private_admins_project) }
-    let!(:file) { create(:project_image, project: project)}
+    let!(:file) { create(:project_file, project: project)}
 
     context "for a user" do
       let(:user) { create(:user) }
