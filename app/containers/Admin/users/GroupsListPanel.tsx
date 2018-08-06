@@ -116,15 +116,15 @@ const MenuLink = styled(Link)`
 
   @keyframes highlight {
     from {
-      background-color: ${rgba(colors.success, 0)};
+      background-color: ${rgba(colors.clGreen, 0)};
     }
 
     30% {
-      background-color: ${rgba(colors.success, .5)};
+      background-color: ${rgba(colors.clGreen, .5)};
     }
 
     to {
-      background-color: ${rgba(colors.success, 0)};
+      background-color: ${rgba(colors.clGreen, 0)};
     }
   }
 `;
