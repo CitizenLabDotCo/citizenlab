@@ -45,14 +45,14 @@ const Container = styled.div`
   }
 
   &.selected {
-    border-color: ${colors.success};
+    border-color: ${colors.clGreen};
   }
 
   &.enabled:hover {
     border-color: #ccc;
 
     &.selected {
-      border-color: ${colors.success};
+      border-color: ${colors.clGreen};
     }
   }
 
