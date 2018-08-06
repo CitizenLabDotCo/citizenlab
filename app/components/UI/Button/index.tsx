@@ -184,7 +184,7 @@ const Container: any = styled.div`
       ${(props: any) => buttonTheme('transparent', props.textColor || color('clGrey'), undefined, undefined, props.textHoverColor)}
     }
     &.success {
-      ${buttonTheme(rgba(color('clGreenSuccessBackground')), color('clGreenSuccess'))}
+      ${buttonTheme(color('clGreenSuccessBackground'), color('clGreenSuccess'))}
     }
     &.error {
       ${buttonTheme(rgba(color('error'), .15), color('error'))}
