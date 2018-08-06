@@ -22,10 +22,6 @@ class IdeaPolicy < ApplicationPolicy
     end
   end
 
-  def files_index?
-    show?
-  end
-
   def create?
     pcs = ParticipationContextService.new 
 
