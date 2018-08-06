@@ -48,10 +48,6 @@ class ProjectPolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
-  def files_index?
-    show?
-  end
-
   def show?
     user&.admin? || user&.project_moderator?(record.id) || (
       %w(published archived).include?(record.publication_status) && (

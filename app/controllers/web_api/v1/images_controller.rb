@@ -42,6 +42,7 @@ class WebApi::V1::ImagesController < ApplicationController
     end
   end
 
+
   private
 
   def secure_controller?
