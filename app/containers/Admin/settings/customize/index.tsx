@@ -43,7 +43,6 @@ interface IAttributesDiff {
   settings?: Partial<ITenantSettings>;
   logo?: ImageFile | undefined;
   header_bg?: ImageFile | undefined;
-  favicon?: ImageFile | undefined;
 }
 
 type Props  = {
@@ -56,14 +55,12 @@ type State  = {
   currentTenant: ITenant | null;
   logo: ImageFile[] | null;
   header_bg: ImageFile[] | null;
-  favicon: ImageFile[] | null;
   colorPickerOpened: boolean;
   loading: boolean;
   errors: { [fieldName: string]: API.Error[] };
   saved: boolean;
   logoError: string | null;
   headerError: string | null;
-  faviconError: string | null;
   titleError: Multiloc;
   subtitleError: Multiloc;
 };
@@ -81,14 +78,12 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
       currentTenant: null,
       logo: null,
       header_bg: null,
-      favicon: null,
       colorPickerOpened: false,
       loading: false,
       errors: {},
       saved: false,
       logoError: null,
       headerError: null,
-      faviconError: null,
       titleError: {},
       subtitleError: {}
     };
@@ -109,19 +104,16 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
         return combineLatest(
           convertUrlToFileObservable(currentTenant.data.attributes.logo.large),
           convertUrlToFileObservable(currentTenant.data.attributes.header_bg.large),
-          convertUrlToFileObservable(currentTenant.data.attributes.favicon.large),
-        ).pipe(map(([currentTenantLogo, currentTenantHeaderBg, currentTenantFavicon]) => ({
+        ).pipe(map(([currentTenantLogo, currentTenantHeaderBg]) => ({
           locale,
           currentTenant,
           currentTenantLogo,
           currentTenantHeaderBg,
-          currentTenantFavicon,
         })));
-      })).subscribe(({ locale, currentTenant, currentTenantLogo, currentTenantHeaderBg, currentTenantFavicon }) => {
+      })).subscribe(({ locale, currentTenant, currentTenantLogo, currentTenantHeaderBg }) => {
         const { attributesDiff } = this.state;
         let logo: ImageFile[] | null = null;
         let header_bg: ImageFile[] | null = null;
-        let favicon: ImageFile[] | null = null;
 
         if (currentTenantLogo !== null && !has(attributesDiff, 'logo')) {
           logo = [currentTenantLogo];
@@ -135,13 +127,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
           header_bg = (attributesDiff.header_bg && attributesDiff.header_bg !== null ? [attributesDiff.header_bg] : null);
         }
 
-        if (currentTenantFavicon !== null && !has(attributesDiff, 'favicon')) {
-          favicon = [currentTenantFavicon];
-        } else if (has(attributesDiff, 'favicon')) {
-          favicon = (attributesDiff.favicon && attributesDiff.favicon !== null ? [attributesDiff.favicon] : null);
-        }
-
-        this.setState({ locale, currentTenant, logo, header_bg, favicon });
+        this.setState({ locale, currentTenant, logo, header_bg });
       })
     ];
   }
@@ -161,14 +147,14 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     }));
   }
 
-  handleUploadOnUpdate = (name: 'logo' | 'header_bg' | 'favicon') => (updatedImages: ImageFile[]) => {
+  handleUploadOnUpdate = (name: 'logo' | 'header_bg') => (updatedImages: ImageFile[]) => {
     this.setState((state) => ({
       ...state,
       [name]: updatedImages
     }));
   }
 
-  handleUploadOnRemove = (name: 'logo' | 'header_bg' | 'favicon') => () => {
+  handleUploadOnRemove = (name: 'logo' | 'header_bg') => () => {
     this.setState((state) => ({
       ...state,
       [name]: null,
@@ -283,7 +269,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
 
     if (locale && currentTenant) {
       const { formatMessage } = this.props.intl;
-      const { logo, header_bg, favicon, attributesDiff, logoError, headerError, faviconError } = this.state;
+      const { logo, header_bg, attributesDiff, logoError, headerError } = this.state;
       const tenantAttrs = merge(cloneDeep(currentTenant.data.attributes), attributesDiff);
 
       return (
@@ -320,24 +306,6 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 onRemove={this.handleUploadOnRemove('logo')}
                 placeholder={formatMessage(messages.uploadPlaceholder)}
                 errorMessage={logoError}
-              />
-            </SectionField>
-
-            <SectionField key={'favicon'}>
-              <Label><FormattedMessage {...messages['favicon']} /></Label>
-              <ImagesDropzone
-                acceptedFileTypes="image/png"
-                maxNumberOfImages={1}
-                maxImageFileSize={5000000}
-                images={favicon}
-                imagePreviewRatio={1}
-                maxImagePreviewWidth="150px"
-                objectFit="contain"
-                onAdd={this.handleUploadOnAdd('favicon')}
-                onUpdate={this.handleUploadOnUpdate('favicon')}
-                onRemove={this.handleUploadOnRemove('favicon')}
-                placeholder={formatMessage(messages.uploadPlaceholder)}
-                errorMessage={faviconError}
               />
             </SectionField>
           </Section>
