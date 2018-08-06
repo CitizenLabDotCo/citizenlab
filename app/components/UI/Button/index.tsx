@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'utils/cl-router/Link';
 import { isBoolean, isNil } from 'lodash';
 import styled, { withTheme } from 'styled-components';
-import { darken, rgba, readableColor } from 'polished';
+import { darken, readableColor } from 'polished';
 import { color, invisibleA11yText } from 'utils/styleUtils';
 import Spinner from 'components/UI/Spinner';
 import Icon, { Props as IconProps } from 'components/UI/Icon';
@@ -186,9 +186,6 @@ const Container: any = styled.div`
     &.success {
       ${buttonTheme(color('clGreenSuccessBackground'), color('clGreenSuccess'))}
     }
-    &.error {
-      ${buttonTheme(rgba(color('error'), .15), color('error'))}
-    }
     &.cl-blue {
       ${buttonTheme(color('clBlueDark'), 'white')}
     }
@@ -210,7 +207,7 @@ const HiddenText = styled.span`
   ${invisibleA11yText()}
 `;
 
-export type ButtonStyles = 'primary' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'error' | 'text' | 'cl-blue';
+export type ButtonStyles = 'primary' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'text' | 'cl-blue';
 
 type Props = {
   children?: any;

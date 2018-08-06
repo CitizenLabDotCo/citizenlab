@@ -87,7 +87,7 @@ const Container: any = styled.div`
     font-size: ${fontSize('base')};
     line-height: 24px;
     font-weight: 400;
-    border-color: ${(props: any) => props.error ? props.theme.colors.error : '#ccc'};
+    border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#ccc'};
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     -webkit-appearance: none;
     .ql-editor {
@@ -100,7 +100,7 @@ const Container: any = styled.div`
     }
 
     &:focus {
-      border-color: ${(props: any) => props.error ? props.theme.colors.error : '#999'};
+      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#999'};
     }
 
     .ql-align .ql-picker-label svg {
