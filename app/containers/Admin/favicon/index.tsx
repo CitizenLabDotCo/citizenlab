@@ -16,14 +16,19 @@ import { updateTenant, IUpdatedTenantProperties } from 'services/tenant';
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
+// intl
 import messages from './messages';
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 // styling
 import styled from 'styled-components';
 
-const StyledImagesDropzone = styled(ImagesDropzone)`
+const MainDropzone = styled(ImagesDropzone)`
+  margin-top : 20px;
+`;
+const Preview = styled(ImagesDropzone)`
   margin-top : 20px;
   .remove-button {
     display: none;
@@ -120,8 +125,8 @@ class Favicon extends PureComponent<Props, State> {
           <Section>
             <SectionField key={'favicon'}>
               <Label>Favicon</Label>
-              <span>It has to be a simple enough image to be seen in very little. It should be a square PNG. It can use transparency. <br/><br/></span>
-              <ImagesDropzone
+              <FormattedMessage  {...messages.faviconExplaination}/>
+              <MainDropzone
                 acceptedFileTypes="image/png"
                 maxNumberOfImages={1}
                 maxImageFileSize={5000000}
@@ -135,7 +140,7 @@ class Favicon extends PureComponent<Props, State> {
                 placeholder="Drop file here"
                 errorMessage={faviconError}
               />
-              <StyledImagesDropzone
+              <Preview
                 acceptedFileTypes="image/png"
                 maxNumberOfImages={1}
                 maxImageFileSize={5000000}
@@ -149,7 +154,7 @@ class Favicon extends PureComponent<Props, State> {
                 placeholder=" "
                 errorMessage={faviconError}
               />
-              <StyledImagesDropzone
+              <Preview
                 acceptedFileTypes="image/png"
                 maxNumberOfImages={1}
                 maxImageFileSize={5000000}
