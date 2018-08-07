@@ -10,15 +10,15 @@ import { darken } from 'polished';
 import { colors } from 'utils/styleUtils';
 
 const Container = styled.button`
+  width: 24px;
+  height: 24px;
   align-items: center;
   cursor: pointer;
   display: flex;
   fill: ${colors.label};
-  height: 23px;
   justify-content: center;
   padding: 0;
   position: relative;
-  width: 23px;
 
   &:hover,
   &:focus {
@@ -27,7 +27,7 @@ const Container = styled.button`
 `;
 
 const NotificationIcon = styled(Icon)`
-  height: 23px;
+  height: 24px;
   fill: inherit;
   transition: all 150ms ease;`
 ;

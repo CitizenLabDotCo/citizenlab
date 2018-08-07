@@ -348,28 +348,32 @@ const AddressWrapper = styled.div`
 `;
 
 const AuthorMeta = styled.div`
-  margin-left: 8px;
   display: flex;
   flex-direction: column;
-  flex: 0 0 calc(100% - 39px);
-  min-width: 0;
+  margin-left: 8px;
 `;
 
-const AuthorName = styled(Link) `
+const AuthorNameWrapper = styled.div`
   color: #333;
   font-size: 16px;
   font-weight: 400;
   line-height: 20px;
 
-  &:hover {
-    color: #333;
-    text-decoration: underline;
-  }
-
   ${media.smallerThanMaxTablet`
     font-size: 14px;
     line-height: 18px;
   `}
+`;
+
+const AuthorName = styled(Link)`
+  color: ${colors.clBlueDark};
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    color: ${darken(0.15, colors.clBlueDark)};
+    text-decoration: underline;
+  }
 `;
 
 const TimeAgo = styled.div`
@@ -830,11 +834,24 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & injecte
 
                 <AuthorAndAdressWrapper>
                   <AuthorContainer>
-                    <Avatar userId={authorId} size="medium" onClick={authorId ? this.goToUserProfile : () => { }} />
+                    <Avatar
+                      userId={authorId}
+                      size="medium"
+                      onClick={authorId ? this.goToUserProfile : () => { }}
+                    />
                     <AuthorMeta>
-                      <AuthorName to={ideaAuthor ? `/profile/${ideaAuthor.data.attributes.slug}` : ''}>
-                        <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={(ideaAuthor ? ideaAuthor.data : null)} /> }} />
-                      </AuthorName>
+                      <AuthorNameWrapper>
+                        <FormattedMessage
+                          {...messages.byAuthorName}
+                          values={{
+                            authorName: (
+                              <AuthorName to={ideaAuthor ? `/profile/${ideaAuthor.data.attributes.slug}` : ''}>
+                                <UserName user={(ideaAuthor ? ideaAuthor.data : null)} />
+                              </AuthorName>
+                            )
+                          }}
+                        />
+                      </AuthorNameWrapper>
                       {createdAt &&
                         <TimeAgo>
                           <FormattedRelative value={createdAt} />
