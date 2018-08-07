@@ -656,6 +656,7 @@
   "app.containers.PasswordReset.title": "Setzen Sie ihr Passwort zurück",
   "app.containers.PasswordReset.updatePassword": "Neues Kennwort bestätigen",
   "app.containers.ProjectCards.areasTitle": "Gebiete",
+  "app.containers.ProjectInfo.imageAltText": "",
   "app.containers.ProjectInfo.twitterMessage": "{title} : Teilen Sie Ihre Ideen auf",
   "app.containers.Projects.aboutThisPhase": "Über diese Phase",
   "app.containers.Projects.allEvents": "Alle Veranstaltungen",
