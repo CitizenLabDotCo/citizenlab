@@ -75,5 +75,5 @@ export default defineMessages({
   notificationsLabel: {
     id: 'app.containers.NotificationMenu.notificationsLabel',
     defaultMessage: 'Notifications',
-  }
+  },
 });

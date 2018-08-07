@@ -265,14 +265,14 @@ export default defineMessages({
   },
   send: {
     id: 'app.components.IdeasShow.send',
-    defaultMessage: 'Send'
+    defaultMessage: 'Send',
   },
   yourComment: {
     id: 'app.components.IdeasShow.yourComment',
-    defaultMessage: 'Your comment'
+    defaultMessage: 'Your comment',
   },
   replyToComment: {
     id: 'app.components.IdeasShow.replyToComment',
-    defaultMessage: 'Reply to comment'
+    defaultMessage: 'Reply to comment',
   },
 });
