@@ -48,7 +48,7 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
             <Error fieldName="description_preview_multiloc" apiErrors={errors.description_preview_multiloc} />
           </SectionField>
 
-          <SectionField className="fullWidth">
+          <SectionField>
             <Field
               component={FormikQuillMultiloc}
               inAdmin

@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Author from './Author';
+import Author from 'components/Author';
 import CommentingDisabled from './CommentingDisabled';
 
 // tracking
@@ -168,7 +168,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
         />
         {(authUser && canComment) &&
           <CommentContainer className="e2e-comment-form ideaCommentForm">
-            <StyledAuthor authorId={authUser.id} />
+            <StyledAuthor authorId={authUser.id} message={messages.author} size="medium"/>
 
             <label htmlFor="submit-comment">
               <HiddenLabel>

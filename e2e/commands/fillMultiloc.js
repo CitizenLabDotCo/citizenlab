@@ -9,7 +9,7 @@ util.inherits(FillMultiloc, events.EventEmitter);
 
 FillMultiloc.prototype.command = function fillCommand(wrapperSelector, value) {
   this.api.waitForElementVisible(wrapperSelector)
-  .elements('css selector', `${wrapperSelector} input, ${wrapperSelector} textarea, ${wrapperSelector} .public-DraftEditor-content`, (result) => {
+  .elements('css selector', `${wrapperSelector} input, ${wrapperSelector} textarea, ${wrapperSelector} .ql-editor`, (result) => {
     result.value.forEach((elementId) => {
       this.api.elementIdValue(elementId.ELEMENT, value);
     });

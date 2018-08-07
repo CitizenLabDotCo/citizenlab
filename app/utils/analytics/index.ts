@@ -143,8 +143,11 @@ export const initializeAnalytics = () => {
   const contents = snippet.min({
     host: 'cdn.segment.com',
     apiKey: CL_SEGMENT_API_KEY,
+    page: false,
   });
 
   // tslint:disable-next-line:no-eval
   eval(contents);
+
+  trackPage(window.location.href);
 };

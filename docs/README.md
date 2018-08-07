@@ -1,5 +1,34 @@
 # Changelog
 
+## 2018-07-31
+
+### Fixed
+- The locale in the URL no longer gets added twice in certain conditions
+- Various fixes to the rich text editor
+  - The controls are now translated
+  - Line breaks in the editor and the resulting page are now consistent
+  - The editor no longer breaks form keyboard accessibility
+  - The images can no longer have inconsistent widht/height ratio wich used to happen in some cases
+  - The toolbar buttons have a label for accessibility
+- A new tenant created in French no longer contains some untranslated content
+- The tenant lifecycle stage is now properly included in `group()` calls to segment
+- Comment body and various dynamic titles are secured against XSS attacks
+
+### Added
+- Ideas published on CitizenLab can now also be pushed to Onze Stad App news stream
+- The rich text editor
+  - Now support copy/paste of images
+- Event descriptions now also support rich text
+- When not signed in, the header shows a CTA to create an account
+- A new smart group rule allows you to specify members than have participated (vote, comment, idea) in a certain project
+- The admin now shows a "Get started" link to the knowledge base on the bottom left
+- The Dutch platforms show a "fake door" to Agenda Setting in the admin navigation
+
+### Changed
+- The idea card now shows name and date on 2 lines
+- The navbar now shows the user name next to the avatar
+- The user menu now shows "My ideas" instead of "Profile page"
+
 ## 2018-07-12
 
 ### Fixed
