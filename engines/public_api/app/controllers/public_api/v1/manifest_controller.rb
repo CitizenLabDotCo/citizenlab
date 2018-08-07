@@ -5,7 +5,18 @@ module PublicApi
 
     def show
       render json: { 
-        test: 'prrt'
+        short_name: Tenant.settings('core', 'organization_name').values.first,
+        icons: [
+          {
+            src: Tenant.current.favicon.versions[:large].url,
+            type: 'image/png',
+            sizes: '152x152'
+          }
+        ],
+        start_url: FrontendService.new.manifest_start_url,
+        background_color: '#FFFFFF',
+        display: 'standalone',
+        theme_color: Tenant.settings('core', 'color_main')
       }, status: :ok
     end
 
