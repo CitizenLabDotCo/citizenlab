@@ -4,8 +4,9 @@ module PublicApi
     skip_before_action :check_api_token
 
     def show
+      locale = params['locale'] || Tenant.settings('core', 'locales').first
       render json: { 
-        short_name: Tenant.settings('core', 'organization_name').values.first,
+        short_name: Tenant.settings('core', 'organization_name')[locale],
         icons: [
           {
             src: Tenant.current.favicon.versions[:large].url,
