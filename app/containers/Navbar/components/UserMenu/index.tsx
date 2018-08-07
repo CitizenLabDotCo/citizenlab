@@ -37,7 +37,12 @@ const OpenMenuButton = styled.button`
   background: none;
   padding: 0;
   transition: all .2s;
-  width: 27px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: ${colors.clGrey};
+  max-width: 150px;
+  cursor: pointer;
 
   svg {
     fill: ${colors.clGrey};
@@ -45,10 +50,10 @@ const OpenMenuButton = styled.button`
 
   &:hover,
   &:focus {
-    border-color: ${darken(0.2, colors.clGrey)};
+    border-color: ${colors.clGreyHover};
 
     svg {
-      fill: ${darken(0.2, colors.clGrey)};
+      fill: ${colors.clGreyHover};
     }
   }
   span {
@@ -69,7 +74,7 @@ const StyledAvatar = styled(Avatar) `
     border-radius: 50%;
   }
   svg {
-    fill: ${colors.label};
+    fill: ${colors.clGrey};
   }
 `;
 
@@ -78,7 +83,7 @@ const StyledPopover = styled(Popover) `
   flex-direction: column;
   z-index: 5;
   .Ideas-icon .cl-icon-primary, .Ideas-icon .cl-icon-secondary {
-    fill: ${colors.label} !important;
+    fill: ${colors.clGrey};
   }
   .Ideas-icon .cl-icon-accent {
     fill: transparent !important;
