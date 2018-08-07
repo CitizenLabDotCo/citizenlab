@@ -51,7 +51,7 @@
     "test:e2e": "cross-env ROOT_URL='localhost:3000/en' nightwatch",
     "test:browserstack": "nightwatch -c nightwatch-bs.conf.js -e chrome,firefox,safari,edge,ie",
     "test:bschrome": "nightwatch -c nightwatch-bs.conf.js -e chrome",
-    "test:pa11y": "pa11y-ci"
+    "test:pa11y": "cross-env NODE_ENV=development pa11y-ci"
   },
   "lint-staged": {
     "*.js": "lint:eslint"
