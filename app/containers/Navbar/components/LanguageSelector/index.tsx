@@ -70,10 +70,6 @@ const PopoverItem = styled(Button)`
   font-weight: 400;
   transition: all 100ms ease-out;
 
-  &.button.Button {
-    font-size: 17px;
-  }
-
   &.active button.Button,
   &.active a.Button {
     color: ${colors.clGreyHover};
@@ -147,6 +143,7 @@ export default class LanguageSelector extends React.PureComponent<Props, State> 
         {
           localeOptions.map(locale => (
             <PopoverItem
+              size="1"
               key={locale}
               style="text"
               onClick={this.handleLanguageSelect(locale)}
