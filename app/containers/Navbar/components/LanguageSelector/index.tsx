@@ -10,7 +10,7 @@ import { updateLocale } from 'services/locale';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSize } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 // i18n
 import { shortenedAppLocalePairs } from 'i18n';
