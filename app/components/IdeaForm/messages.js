@@ -58,7 +58,7 @@ export default defineMessages({
     defaultMessage: 'Select an image for your idea.<br /> This will increase the visibility of your idea!',
   },
   imageDropzonePlaceholder: {
-    id: 'app.containers.UsersEditPage.imageDropzonePlaceholder',
+    id: 'app.container.IdeaForm.imageDropzonePlaceholder',
     defaultMessage: 'Drop your image here',
   },
 });
