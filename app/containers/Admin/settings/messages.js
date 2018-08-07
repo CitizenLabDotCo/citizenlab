@@ -67,10 +67,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.header',
     defaultMessage: 'Homepage header',
   },
-  favicon: {
-    id: 'app.containers.AdminPage.SettingsPage.favicon',
-    defaultMessage: 'Favicon',
-  },
   headerDescription: {
     id: 'app.containers.AdminPage.SettingsPage.headerDescription',
     defaultMessage: 'Customize the header image and copy being shown on the homepage',
@@ -130,10 +126,6 @@ export default defineMessages({
   noHeader: {
     id: 'app.containers.AdminPage.SettingsPage.noHeader',
     defaultMessage: 'Please upload a header image',
-  },
-  noFavicon: {
-    id: 'app.containers.AdminPage.SettingsPage.noFavicon',
-    defaultMessage: 'Please upload a favicon image',
   },
   save: {
     id: 'app.containers.AdminPage.SettingsPage.save',
