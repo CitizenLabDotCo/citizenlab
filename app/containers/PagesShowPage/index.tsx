@@ -200,15 +200,13 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
     const { formatMessage } = this.props.intl;
     const { locale, tenantLocales, page, pageLinks } = this.props;
 
-    if (isNilOrError(locale) || isNilOrError(tenantLocales) || isNilOrError(page)) {
+    if (isNilOrError(locale) || isNilOrError(tenantLocales) || page === undefined) {
       return (
         <Loading>
           <Spinner size="32px" />
         </Loading>
       );
-    }
-
-    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(page)) {
+    } else {
       let seoTitle = formatMessage(messages.notFoundTitle);
       let seoDescription = formatMessage(messages.notFoundDescription);
       let blockIndexing = true;
@@ -220,7 +218,7 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
         seoDescription = '';
         blockIndexing = false;
         pageTitle = <T value={page.attributes.title_multiloc} />;
-        pageDescription = <T value={page.attributes.body_multiloc} />;
+        pageDescription = <T value={page.attributes.body_multiloc} supportHtml={true} />;
       }
 
       return (

@@ -1,4 +1,7 @@
-import * as React from 'react';
+// Be careful when using this component, you have to use onChangeMultiloc and not onChange
+// onChange will override the behaviour of this components and without any error from TS not work as intended
+
+import React from 'react';
 import { get } from 'lodash';
 
 // components
@@ -38,7 +41,7 @@ export type InputProps = {
   id: string;
   valueMultiloc?: Multiloc | null;
   label?: string | JSX.Element | null;
-  onChangeMultiloc?: (value: Multiloc) => void;
+  onChangeMultiloc?: (value: Multiloc, locale: Locale) => void;
   renderPerLocale?: (locale: string) => JSX.Element;
 };
 
@@ -58,7 +61,7 @@ class EditorMultiloc extends React.PureComponent<Props & VanillaProps, State> {
       this.props.onChangeMultiloc({
         ...this.props.valueMultiloc,
         [locale]: html
-      });
+      }, locale);
     }
   }
 

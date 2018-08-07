@@ -9,7 +9,7 @@ import { isEqual, isEmpty, get } from 'lodash';
 import { IAreaData } from 'services/areas';
 import { updateUser, IUserData/*, IUserUpdate,*/, mapUserToDiff } from 'services/users';
 import { ITenantData } from 'services/tenant';
-import { localeStream } from 'services/locale';
+import { localeStream, updateLocale } from 'services/locale';
 import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
 
 // utils
@@ -156,9 +156,10 @@ class ProfileForm extends PureComponent<Props, State> {
 
     setStatus('');
 
-    updateUser(this.props.user.id, newValues).then(() => {
+    updateUser(this.props.user.id, newValues).then((user) => {
       resetForm();
       setStatus('success');
+      updateLocale(user.data.attributes.locale);
     }).catch((errorResponse) => {
       if (errorResponse.json) {
         const apiErrors = (errorResponse as API.ErrorResponse).json.errors;

@@ -1,6 +1,7 @@
 import TextValueSelector from './ValueSelector/TextValueSelector';
 import DateValueSelector from './ValueSelector/DateValueSelector';
 import AreaValueSelector from './ValueSelector/AreaValueSelector';
+import ProjectValueSelector from './ValueSelector/ProjectValueSelector';
 import NumberValueSelector from './ValueSelector/NumberValueSelector';
 import CustomFieldOptionValueSelector from './ValueSelector/CustomFieldOptionValueSelector';
 
@@ -149,6 +150,11 @@ export type TRule = (
     ruleType?: 'registration_completed_at';
     predicate?: 'is_empty' | 'not_is_empty';
     value?: undefined;
+  }
+  | {
+    ruleType?: 'participated_in_project';
+    predicate?: 'is' | 'not_is';
+    value?: string;
   });
 
 export const ruleTypeConstraints = {
@@ -218,4 +224,8 @@ export const ruleTypeConstraints = {
     is_admin: null,
     not_is_admin: null,
   },
+  participated_in_project: {
+    is: ProjectValueSelector,
+    not_is: ProjectValueSelector,
+  }
 };
