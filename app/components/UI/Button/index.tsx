@@ -9,6 +9,8 @@ import Icon, { Props as IconProps } from 'components/UI/Icon';
 
 function getFontSize(size) {
   switch (size) {
+    case '1':
+      return `17px`;
     case '2':
       return `18px`;
     case '3':
