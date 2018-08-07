@@ -18,6 +18,7 @@ import { injectIntl } from 'utils/cl-intl';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { imageSizes } from 'utils/imageTools';
+import { PUBLIC_API_PATH, API_HOST, API_PORT } from 'containers/App/constants';
 
 interface InputProps { }
 
@@ -50,7 +51,6 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, authUser, 
     const lifecycleStage = tenant.attributes.settings.core.lifecycle_stage;
     const blockIndexing = lifecycleStage === 'demo' || lifecycleStage === 'not_applicable';
 
-    console.log(tenant.attributes.favicon);
     return (
       <Helmet>
         <html lang={locale} />
@@ -77,6 +77,7 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, authUser, 
         {tenant.attributes.favicon.medium && <link rel="icon" sizes="32x32" href={tenant.attributes.favicon.medium} />}
         {tenant.attributes.favicon.small && <link rel="icon" sizes="16x16" href={tenant.attributes.favicon.small} />}
         {tenant.attributes.favicon.large && <link rel="apple-touch-icon" sizes="152x152" href={tenant.attributes.favicon.large} />}
+        {tenant.attributes.favicon.large && <link rel="manifest" href={`http://${API_HOST}:${API_PORT}${PUBLIC_API_PATH}/manifest.json`} />}
       </Helmet>
     );
   }

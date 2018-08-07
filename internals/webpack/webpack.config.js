@@ -69,7 +69,7 @@ const WEBPACK_CONFIG = {
         loader: 'file-loader',
       },
       {
-        test: /manifest\.json$|\.htaccess/,
+        test: /\.htaccess/,
         include: path.resolve(process.cwd(), 'app'),
         use: {
           loader: 'file-loader',
