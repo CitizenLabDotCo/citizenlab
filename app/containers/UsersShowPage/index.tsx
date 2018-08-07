@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import IdeaCards from 'components/IdeaCards';
 import ContentContainer from 'components/ContentContainer';
 import Avatar from 'components/Avatar';
+import Footer from 'components/Footer';
 
 // resources
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
@@ -21,7 +22,21 @@ import messages from './messages';
 import styled from 'styled-components';
 import { media, quillEditedContent } from 'utils/styleUtils';
 
-const StyledContentContainer = styled(ContentContainer) `
+const Container = styled.div`
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  background: #f9f9fa;
+
+  ${media.smallerThanMaxTablet`
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+  `}
+`;
+
+const StyledContentContainer = styled(ContentContainer)`
+  flex: 1 1 auto;
   padding-top: 40px;
   padding-bottom: 100px;
   background: #f9f9fa;
@@ -102,32 +117,36 @@ class UsersShowPage extends React.PureComponent<Props, State> {
       const memberSince = moment(user.attributes.created_at).format('LL');
 
       return (
-        <StyledContentContainer>
-          <UserAvatar>
-            <Avatar userId={user.id} size="large" />
-          </UserAvatar>
+        <Container className={this.props['className']}>
+          <StyledContentContainer>
+            <UserAvatar>
+              <Avatar userId={user.id} size="large" />
+            </UserAvatar>
 
-          <UserInfo>
-            <FullName>{user.attributes.first_name} {user.attributes.last_name}</FullName>
-            <JoinedAt>
-              <FormattedMessage {...messages.memberSince} values={{ date: memberSince }} />
-            </JoinedAt>
-            {!isEmpty(user.attributes.bio_multiloc) &&
-              <Bio>
-                {user.attributes.bio_multiloc && <T value={user.attributes.bio_multiloc} supportHtml={true} />}
-              </Bio>
-            }
-          </UserInfo>
+            <UserInfo>
+              <FullName>{user.attributes.first_name} {user.attributes.last_name}</FullName>
+              <JoinedAt>
+                <FormattedMessage {...messages.memberSince} values={{ date: memberSince }} />
+              </JoinedAt>
+              {!isEmpty(user.attributes.bio_multiloc) &&
+                <Bio>
+                  {user.attributes.bio_multiloc && <T value={user.attributes.bio_multiloc} supportHtml={true} />}
+                </Bio>
+              }
+            </UserInfo>
 
-          <UserIdeas>
-            <IdeaCards
-              type="load-more"
-              sort="trending"
-              pageSize={12}
-              authorId={user.id}
-            />
-          </UserIdeas>
-        </StyledContentContainer>
+            <UserIdeas>
+              <IdeaCards
+                type="load-more"
+                sort="trending"
+                pageSize={12}
+                authorId={user.id}
+              />
+            </UserIdeas>
+          </StyledContentContainer>
+
+          <Footer showCityLogoSection={false} />
+        </Container>
       );
     }
 
