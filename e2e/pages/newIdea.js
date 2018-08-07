@@ -6,8 +6,7 @@ const newIdeaCommands = {
     .waitForElementVisible('.e2e-project-card.e2e-open-project')
     .click('.e2e-project-card.e2e-open-project');
     this.api.execute('window.scrollTo(0,document.body.scrollHeight);')
-    .click('.e2e-submit-project-select-form')
-    .click('.e2e-submit-project-select-form-mobile');
+    .click('.e2e-submit-project-select-form');
     this.waitForElementPresent('@form')
 
     // Fill in the form
