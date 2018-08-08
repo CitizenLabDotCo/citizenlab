@@ -60,8 +60,6 @@ interface Props {
 
 interface State {
   opened: boolean;
-  contrastRatio: number | null;
-  contrastRatioTooLow: boolean;
 }
 
 class ColorPickerInput extends React.Component<Props, State> {
@@ -69,8 +67,6 @@ class ColorPickerInput extends React.Component<Props, State> {
     super(props as any);
     this.state = {
       opened: false,
-      contrastRatio: null,
-      contrastRatioTooLow: false
     };
   }
 
