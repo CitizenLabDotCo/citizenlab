@@ -47,15 +47,15 @@ declare type Locale = keyof typeof PlatformLocales;
 
 declare type Multiloc = {
   [key in Locale]?: string
-}
+};
 
 declare type MultilocEditorState = {
   [key in Locale]?: EditorState;
-}
+};
 
 declare type MultilocStringOrJSX = {
   [key in Locale]?: string | JSX.Element;
-}
+};
 
 declare namespace API {
   interface Error {

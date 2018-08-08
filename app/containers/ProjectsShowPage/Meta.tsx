@@ -47,10 +47,8 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales, pro
     return (
       <Helmet>
         <title>
-          {`
-              ${(authUser && authUser.attributes.unread_notifications) ? `(${authUser.attributes.unread_notifications}) ` : ''}
-              ${metaTitle}`
-          }
+          {`${(authUser && authUser.attributes.unread_notifications) ? `(${authUser.attributes.unread_notifications}) ` : ''}
+            ${metaTitle}`}
         </title>
         {getAlternateLinks(tenantLocales, location)}
         <meta name="title" content={metaTitle} />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { isEmpty } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -21,10 +21,11 @@ import messages from './messages';
 import styled from 'styled-components';
 import { media, colors, quillEditedContent } from 'utils/styleUtils';
 
-const StyledContentContainer = styled(ContentContainer) `
+const StyledContentContainer = styled(ContentContainer)`
+  flex: 1;
   padding-top: 40px;
   padding-bottom: 100px;
-  background: #f9f9fa;
+  background: ${colors.background};
 
   ${media.phone`
     padding-top: 0px;
@@ -84,17 +85,17 @@ const UserIdeas = styled.div`
   justify-content: center;
 `;
 
-interface InputProps { }
+interface InputProps {}
 
 interface DataProps {
   user: GetUserChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
-class UsersShowPage extends React.PureComponent<Props, State> {
+class UsersShowPage extends PureComponent<Props, State> {
   render() {
     const { user } = this.props;
 

@@ -12,10 +12,11 @@ const isIdeaProjectModerator = (idea: IIdeaData, user?: IUser) => {
   return user && isProjectModerator(user, idea.relationships.project.data.id);
 };
 
-definePermissionRule('ideas', 'create', (_idea: IIdeaData, user: IUser, { project = null }: { project: IProjectData }) => {
+definePermissionRule('ideas', 'create', (_idea: IIdeaData, user: IUser, { project = null }: { project: IProjectData | null }) => {
   if (project) {
     return project.relationships.action_descriptor.data.posting.enabled || isAdmin(user);
   }
+
   return true;
 });
 

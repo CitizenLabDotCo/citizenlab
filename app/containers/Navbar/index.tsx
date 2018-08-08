@@ -490,7 +490,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
-  projects: <GetProjects pageSize={250} sort="new" />
+  projects: <GetProjects pageSize={250} publicationStatuses={['published', 'archived']} sort="new" />
 });
 
 const NavBarWithHoCs = withRouter(injectIntl(Navbar));

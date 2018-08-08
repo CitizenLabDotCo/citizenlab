@@ -1,18 +1,13 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-
-import Label from 'components/UI/Label';
-import Icon from 'components/UI/Icon';
-
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-
 import ModeratorList from './ModeratorList';
 import UserSearch from 'components/UserSearch';
-
+import Warning from 'components/UI/Warning';
 import { GetModeratorsChildProps } from 'resources/GetModerators';
 import { findMembership, addMembership } from 'services/moderators';
-import { fontSize } from 'utils/styleUtils';
+import { SectionTitle } from 'components/admin/Section';
 
 interface InputProps {
   projectId: string;
@@ -24,34 +19,22 @@ interface Props extends InputProps {
 
 const Container = styled.div`
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 `;
 
-const InfoText = styled.p`
-  align-items: center;
-  display: flex;
-  font-size: ${fontSize('xs')};
-  margin-bottom: 1rem;
-  max-width: 650px;
-
-  svg {
-    flex: 0 0 1rem;
-    margin-right: .5rem;
-  }
+const StyledWarning = styled(Warning)`
+  margin-bottom: 15px;
 `;
 
-export default class Moderators extends React.PureComponent<Props>{
+export default class Moderators extends PureComponent<Props>{
   render() {
     const { moderators, projectId } = this.props;
     return (
       <Container>
-        <Label>
+        <SectionTitle>
           <FormattedMessage {...messages.moderatorsSectionTitle} />
-        </Label>
-        <InfoText>
-          <Icon name="info" />
-          <FormattedMessage {...messages.moderatorsRoleExplanation} />
-        </InfoText>
+        </SectionTitle>
+        <StyledWarning text={<FormattedMessage {...messages.moderatorsRoleExplanation} />} />
         <UserSearch
           resourceId={projectId}
           messages={messages}
