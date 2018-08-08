@@ -5,31 +5,31 @@ models:
     title_multiloc: statuses.proposed
     ordering: 100
     code: proposed
-    color: "#84939E"
+    color: "#687782"
     description_multiloc: statuses.proposed_description
   - &15
     title_multiloc: statuses.under_consideration
     ordering: 200
     code: under_consideration
-    color: "#29ABD0"
+    color: "#0080A5"
     description_multiloc: statuses.under_consideration_description
   - &20
     title_multiloc: statuses.accepted
     ordering: 300
     code: accepted
-    color: "#17C37B"
+    color: "#04884C"
     description_multiloc: statuses.accepted_description
   - &13
     title_multiloc: statuses.rejected
     ordering: 400
     code: rejected
-    color: "#EF3E4A"
+    color: "#E52516"
     description_multiloc: statuses.rejected_description
   - &26
     title_multiloc: statuses.implemented
     ordering: 500
     code: implemented
-    color: "#B5DA23"
+    color: "#04884C"
     description_multiloc: statuses.implemented_description
   topic:
   - title_multiloc: topics.infrastructure
