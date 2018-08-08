@@ -2,7 +2,18 @@ class IdentifyToSegmentJob < ApplicationJob
   queue_as :default
 
   def perform(user)
+    tenant = nil
 
+    begin
+      tenant = Tenant.current
+    rescue ActiveRecord::RecordNotFound => e
+    end
+
+    call_identify(user, tenant)
+    call_group(user, tenant) if tenant
+  end
+
+  def call_identify user, tenant
     traits = {
       id: user.id,
       email: user.email,
@@ -12,38 +23,33 @@ class IdentifyToSegmentJob < ApplicationJob
       locale: user.locale,
       birthday: user.birthyear,
       gender: user.gender,
-      is_admin: user.admin?
+      is_admin: user.admin?,
+      timezone: tenant.settings.dig('core', 'timezone')
     }
-
-    tenant_id = nil
-
-    begin
-      tenant = Tenant.current
-      tenant_id = tenant.id
-      traits[:tenantId] = tenant.id
-      traits[:tenantName] = tenant.name
-      traits[:tenantHost] = tenant.host
-      traits[:tenantOrganizationType] = Tenant.settings('core', 'organization_type')
+    if tenant
+      LogToSegmentService.new.add_tenant_properties(traits, tenant)
       traits[:timezone] = Tenant.settings('core', 'timezone')
-    rescue  ActiveRecord::RecordNotFound => e
-      # Tenant can't be found, so we don't add anything
     end
 
-    Rails.logger.info "Identify to segment request: #{{user_id: user.id, traits: traits}}"
-    identify_response = Analytics && Analytics.identify(
+    Analytics && Analytics.identify(
       user_id: user.id,
       traits: traits
     )
-    Rails.logger.info "Identify to segment response: #{identify_response&.body}"
+  end
 
-    Analytics && Analytics.group(
+  def call_group user, tenant
+    traits = {
+      name: tenant.name,
+      website: "https://#{tenant.host}",
+      avatar: tenant&.logo&.medium&.url,
+      createdAt: tenant.created_at,
+    }
+    LogToSegmentService.new.add_tenant_properties(traits, tenant)
+
+    Analytics && tenant && Analytics.group(
       user_id: user.id,
-      group_id: tenant_id,
-      traits: {
-        name: traits[:tenantName],
-        host: traits[:tenantHost],
-        type: traits[:tenantOrganizationType]
-      }
+      group_id: tenant.id,
+      traits: traits
     )
   end
 

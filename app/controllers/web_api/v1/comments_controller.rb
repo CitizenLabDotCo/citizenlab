@@ -109,7 +109,7 @@ class WebApi::V1::CommentsController < ApplicationController
     params.require(:comment).permit(
       :parent_id,
       # :author_id
-      body_multiloc: I18n.available_locales
+      body_multiloc: CL2_SUPPORTED_LOCALES
     )
   end
 

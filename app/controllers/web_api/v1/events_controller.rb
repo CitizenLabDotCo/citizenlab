@@ -17,9 +17,13 @@ class WebApi::V1::EventsController < ApplicationController
   def create
     @event = Event.new(event_params)
     @event.project_id = params[:project_id]
+
+    SideFxEventService.new.before_create(@event, current_user)
+
     authorize @event
 
     if @event.save
+      SideFxEventService.new.after_create(@event, current_user)
       render json: @event, status: :created
     else
       render json: { errors: @event.errors.details }, status: :unprocessable_entity
@@ -27,7 +31,12 @@ class WebApi::V1::EventsController < ApplicationController
   end
 
   def update
-    if @event.update(event_params)
+    @event.assign_attributes(event_params)
+
+    SideFxEventService.new.before_update(@event, current_user)
+
+    if @event.save
+      SideFxEventService.new.after_update(@event, current_user)
       render json: @event, status: :ok
     else
       render json: { errors: @event.errors.details }, status: :unprocessable_entity
@@ -35,8 +44,13 @@ class WebApi::V1::EventsController < ApplicationController
   end
 
   def destroy
-    @event.destroy
-    head :ok
+    event = @event.destroy
+    if event.destroyed?
+      SideFxEventService.new.after_destroy(@event, current_user)
+      head :ok
+    else
+      head 500
+    end
   end
 
   private
@@ -51,9 +65,9 @@ class WebApi::V1::EventsController < ApplicationController
       :project_id,
       :start_at,
       :end_at,
-      location_multiloc: I18n.available_locales,
-      title_multiloc: I18n.available_locales,
-      description_multiloc: I18n.available_locales
+      location_multiloc: CL2_SUPPORTED_LOCALES,
+      title_multiloc: CL2_SUPPORTED_LOCALES,
+      description_multiloc: CL2_SUPPORTED_LOCALES
     )
   end
 
