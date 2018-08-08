@@ -741,7 +741,7 @@ class Invitations extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, {}>({
-  projects: <GetProjects />,
+  projects: <GetProjects publicationStatuses={['draft', 'published', 'archived']} />,
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
   groups: <GetGroups membershipType="manual" />
