@@ -117,4 +117,8 @@ export default defineMessages({
     id: 'app.containers.Projects.goBackToList',
     defaultMessage: 'Go to the projects overview',
   },
+  archived: {
+    id: 'app.containers.Projects.archived',
+    defaultMessage: 'Archived',
+  },
 });
