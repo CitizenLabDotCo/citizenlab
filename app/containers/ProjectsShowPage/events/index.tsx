@@ -8,10 +8,12 @@ import Header from '../Header';
 import Event from './Event';
 import ContentContainer from 'components/ContentContainer';
 import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
+import Warning from 'components/UI/Warning';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import adminMessages from '../../Admin/pages/messages';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -50,8 +52,8 @@ const NoEvents = styled.div`
   line-height: 26px;
 `;
 
-const Mod = styled(ProjectModeratorIndicator)`
-  max-width: ${props => props.theme.maxPageWidth}px;
+const StyledContentContainer = styled(ContentContainer)`
+  margin-top: 15px;
 `;
 
 interface InputProps {}
@@ -87,7 +89,17 @@ export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps)
         return (
           <>
             <Header projectSlug={slug} />
-            {!isNilOrError(project) && <Mod projectId={project.id} displayType="message" />}
+
+            {!isNilOrError(project) &&
+              <ProjectModeratorIndicator projectId={project.id} />
+            }
+
+            {!isNilOrError(project) && project.attributes.publication_status === 'archived' &&
+              <StyledContentContainer>
+                <Warning text={<FormattedMessage {...adminMessages.archivedProject} />} />
+              </StyledContentContainer>
+            }
+
             <EventsContainer>
               <Events>
                 <Title>

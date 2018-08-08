@@ -8,14 +8,15 @@ import clHistory from 'utils/cl-router/history';
 import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import LazyImage, { Props as LazyImageProps } from 'components/LazyImage';
-import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
 
 // services
 import { IProjectData } from 'services/projects';
+import { isProjectModerator } from 'services/permissions/roles';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
 import T from 'components/T';
@@ -26,7 +27,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const ProjectImageContainer =  styled.div`
   height: 190px;
@@ -77,6 +78,10 @@ const Container = styled.div`
   border: solid 1px ${colors.separation};
   position: relative;
 
+  &.archived {
+    background: #f6f6f6;
+  }
+
   ${media.biggerThanMaxTablet`
     min-height: 222px;
   `}
@@ -89,11 +94,18 @@ const Container = styled.div`
   `}
 `;
 
-const Mod = styled(ProjectModeratorIndicator)`
+const ProjectModeratorIcon = styled(Icon)`
+  width: 24px;
+  height: 24px;
+  fill: ${colors.draftYellow};
   position: absolute;
-  top: .5rem;
-  right: .5rem;
-  width: 1rem;
+  top: 12px;
+  right: 12px;
+
+  ${media.smallerThanMaxTablet`
+    top: 24px;
+    right: 24px;
+  `}
 `;
 
 const ProjectContent = styled.div`
@@ -110,7 +122,7 @@ const ProjectContent = styled.div`
     align-items: flex-start;
     margin: 0;
     padding: 15px;
-    padding-top: 0px;
+    padding-top: 20px;
     flex: 1 1 auto;
   `}
 `;
@@ -118,7 +130,27 @@ const ProjectContent = styled.div`
 const ProjectContentInner = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   width: 100%;
+
+  ${media.smallerThanMaxTablet`
+    align-items: center;
+  `};
+`;
+
+const ArchivedLabel = styled.span`
+  flex-grow: 0;
+  flex-shrink: 1;
+  display: flex;
+  color: #798894;
+  font-size: ${fontSizes.small}px;
+  font-weight: 500;
+  text-transform: uppercase;
+  border-radius: 5px;
+  padding: 6px 12px;
+  background: #e1e3e7;
+  /* margin-top: -30px; */
+  margin-bottom: 5px;
 `;
 
 const ProjectTitle = styled.h3`
@@ -128,10 +160,6 @@ const ProjectTitle = styled.h3`
   font-weight: 500;
   margin: 0;
   padding: 0;
-
-  ${media.smallerThanMaxTablet`
-    padding-top: 20px;
-  `}
 `;
 
 const ProjectDescription = styled.div`
@@ -215,6 +243,7 @@ export interface InputProps {
 interface DataProps {
   project: GetProjectChildProps;
   projectImages: GetProjectImagesChildProps;
+  authUser: GetAuthUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -250,19 +279,18 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
 
   render() {
     const className = this.props['className'];
-    const { project, projectImages, intl: { formatMessage } } = this.props;
+    const { authUser, project, projectImages, intl: { formatMessage } } = this.props;
 
     if (!isNilOrError(project)) {
       const imageUrl = (!isNilOrError(projectImages) && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
       const projectUrl = this.getProjectUrl(project);
       const projectIdeasUrl = this.getProjectIdeasUrl(project);
+      const isArchived  = (project.attributes.publication_status === 'archived');
       const ideasCount = project.attributes.ideas_count;
       const showIdeasCount = !(project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation');
 
       return (
-        <Container className={className}>
-          <Mod projectId={project.id} />
-
+        <Container className={`${className} ${isArchived ? 'archived' : ''}`}>
           <ProjectImageContainer>
             {imageUrl &&
               <T value={project.attributes.title_multiloc}>
@@ -279,6 +307,12 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
 
           <ProjectContent>
             <ProjectContentInner>
+              {isArchived &&
+                <ArchivedLabel>
+                  <FormattedMessage {...messages.archived} />
+                </ArchivedLabel>
+              }
+
               <ProjectTitle>
                 <T value={project.attributes.title_multiloc} />
               </ProjectTitle>
@@ -313,6 +347,9 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
             />
           </ProjectButtonWrapper>
 
+          {authUser && project && project.id && isProjectModerator({ data: authUser }, project.id) && (
+            <ProjectModeratorIcon name="shield" />
+          )}
         </Container>
       );
     }
@@ -324,6 +361,7 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
+  authUser: <GetAuthUser />
 });
 
 const ProjectCardWithHoC = injectIntl(ProjectCard);

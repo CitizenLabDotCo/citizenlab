@@ -115,7 +115,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
           locale,
           currentTenant,
           currentTenantLogo,
-          currentTenantHeaderBg
+          currentTenantHeaderBg,
         })));
       })).subscribe(({ locale, currentTenant, currentTenantLogo, currentTenantHeaderBg }) => {
         const { attributesDiff } = this.state;
@@ -143,7 +143,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     this.subscriptions.forEach(subsription => subsription.unsubscribe());
   }
 
-  handleUploadOnAdd = (name: 'logo' | 'header_bg') => (newImage: ImageFile) => {
+  handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (newImage: ImageFile) => {
     this.setState((state) => ({
       ...state,
       [name]: [newImage],
