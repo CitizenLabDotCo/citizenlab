@@ -6,8 +6,7 @@ import updateLocationDescriptor from './updateLocationDescriptor';
 import { browserHistory } from 'react-router';
 
 function historyMethod(method: 'push' | 'replace', location: LocationDescriptor): void {
-  localeStream().observable
-  .pipe(
+  localeStream().observable.pipe(
     first()
   ).subscribe((locale) => {
     browserHistory[method](updateLocationDescriptor(location, locale));

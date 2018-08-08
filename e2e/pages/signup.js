@@ -8,13 +8,11 @@ const signupCommands = {
     .setValue('@email', email)
     .setValue('@password', password);
     this.api.execute('window.scrollTo(0,document.body.scrollHeight);');
-    this.api.pause(100);
+    this.api.pause(500);
     this.click('@termsAndConditions');
     this.click('@submit1')
     .waitForElementPresent('@submit2');
-    this.api.pause(100);
-    this.api.execute('window.scrollTo(0,document.body.scrollHeight);');
-    this.api.pause(100);
+    this.api.pause(500);
     this.click('@submit2');
     return this.waitForElementNotPresent('@submit2');
   },

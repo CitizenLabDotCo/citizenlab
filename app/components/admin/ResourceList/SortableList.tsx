@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { clone, find } from 'lodash';
 
 import { DragDropContext } from 'react-dnd';
@@ -21,7 +21,7 @@ export interface SortableListState {
   itemsWhileDragging: any[] | null;
 }
 
-export class SortableList extends React.Component<InputProps, SortableListState> {
+export class SortableList extends Component<InputProps, SortableListState> {
   constructor(props) {
     super(props);
     this.state = {

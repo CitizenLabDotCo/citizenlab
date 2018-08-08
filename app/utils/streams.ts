@@ -6,6 +6,7 @@ import { retry, catchError, startWith, scan, filter, distinctUntilChanged, refCo
 import { includes, forOwn, isError, isNil, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union } from 'lodash';
 import request from 'utils/request';
 import { authApiEndpoint } from 'services/auth';
+import { currentTenantApiEndpoint } from 'services/tenant';
 
 export type pureFn<T> = (arg: T) => T;
 type fetchFn = () => Promise<{}>;
@@ -66,7 +67,7 @@ class Streams {
     this.streamIdsByDataIdWithQuery = {};
 
     Object.keys(this.streams)
-      .filter(streamId => streamId !== authApiEndpoint)
+      .filter(streamId => streamId !== authApiEndpoint && streamId !== currentTenantApiEndpoint)
       .forEach((streamId) => {
         if (this.isActiveStream(streamId)) {
           this.streams[streamId].fetch();

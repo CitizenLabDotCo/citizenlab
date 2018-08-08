@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 // components
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
-import UserName from 'components/UI/UserName';
+// import UserName from 'components/UI/UserName';
 import Popover from 'components/Popover';
 import HasPermission from 'components/HasPermission';
 
@@ -34,7 +34,17 @@ const Container = styled.div`
 `;
 
 const OpenMenuButton = styled.button`
+  width: 28px;
+  height: 28px;
   background: none;
+  border-radius: 50%;
+  border: 0;
+  border: 1px solid transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: all .2s;
+
+  /*
   padding: 0;
   transition: all .2s;
   display: flex;
@@ -42,6 +52,11 @@ const OpenMenuButton = styled.button`
   align-items: center;
   color: ${colors.label};
   max-width: 150px;
+  */
+
+  svg {
+    fill: ${colors.label};
+  }
 
   &:hover,
   &:focus {
@@ -153,7 +168,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
           <OpenMenuButton onClick={this.togglePopover}>
             {
               <>
-                <UserName user={authUser.data} />
+                {/* <UserName user={authUser.data} /> */}
                 <StyledAvatar userId={userId} size="small" />
               </>
             }

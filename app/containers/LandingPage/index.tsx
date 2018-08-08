@@ -1,7 +1,7 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
 import { isNilOrError } from 'utils/helperUtils';
@@ -24,6 +24,10 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+
+// utils
+import { trackEvent } from 'utils/analytics';
+import tracks from './tracks';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -61,8 +65,8 @@ const Header = styled.div`
   position: relative;
 
   ${media.smallerThanMinTablet`
-    height: 320px;
-    flex: 0 0 320px;
+    height: 400px;
+    flex: 0 0 400px;
   `}
 `;
 
@@ -169,7 +173,8 @@ const HeaderSubtitle: any = styled.h2`
     font-size: 20px;
     font-weight: 300;
     line-height: 26px;
-    margin-top: 20px;
+    margin-top: 15px;
+    margin-bottom: 20px;
   `}
 `;
 
@@ -305,6 +310,11 @@ class LandingPage extends React.PureComponent<Props, State> {
     clHistory.push('/ideas/new');
   }
 
+  goToSignUpPage = () => {
+    trackEvent(tracks.clickCreateAccountCTA);
+    clHistory.push('/sign-up');
+  }
+
   render() {
     const { locale, tenant, projects, authUser } = this.props;
 
@@ -341,7 +351,7 @@ class LandingPage extends React.PureComponent<Props, State> {
                 {!authUser && <Button
                   style="primary-inverse"
                   size="2"
-                  linkTo="/sign-up"
+                  onClick={this.goToSignUpPage}
                   text={<FormattedMessage {...messages.createAccount} />}
                   circularCorners={false}
                 />}
@@ -356,6 +366,7 @@ class LandingPage extends React.PureComponent<Props, State> {
                       <ProjectCards
                         pageSize={3}
                         sort="new"
+                        publicationStatuses={['published']}
                         hideAllFilters={true}
                       />
                     </SectionContainer>
@@ -394,8 +405,8 @@ class LandingPage extends React.PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
-  projects: <GetProjects pageSize={250} sort="new" />,
-  authUser: <GetAuthUser />
+  authUser: <GetAuthUser />,
+  projects: <GetProjects pageSize={250} publicationStatuses={['published']} sort="new" />
 });
 
 export default (inputProps: InputProps) => (

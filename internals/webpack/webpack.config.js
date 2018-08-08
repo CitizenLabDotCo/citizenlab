@@ -207,6 +207,7 @@ if (isDev) {
   WEBPACK_CONFIG.plugins.push(new webpack.HotModuleReplacementPlugin());
   WEBPACK_CONFIG.plugins.push(new webpack.NamedModulesPlugin());
 } else {
+  // WEBPACK_CONFIG.devtool = 'inline-source-map';
   // Optimization of the output
   WEBPACK_CONFIG.plugins.push(
     new UglifyJSPlugin({
