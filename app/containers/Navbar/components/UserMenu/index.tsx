@@ -207,7 +207,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               linkTo={`/profile/${userSlug}`}
               onClick={this.closePopover}
               style="text"
-              icon="ideas"
+              icon="ideas2"
               iconPos="right"
               iconSize="20px"
               padding="11px 11px"

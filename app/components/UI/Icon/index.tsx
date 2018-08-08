@@ -579,6 +579,12 @@ const clIcons = {
       </g>
     </svg>
   ),
+  ideas2: (className, title, _theme) => (
+    <svg className={`cl-icon ${className ? className : ''}`} height="100%" viewBox="0.305 0 17.391 24">
+      {injectTitle(title)}
+      <path d="M9.001 0l-.14.001c-2.283.035-4.52 1.016-6.137 2.688-1.62 1.675-2.5 3.92-2.413 6.16.09 2.354 1.195 4.591 3.031 6.134a.544.544 0 0 1 .196.314c.291 1.544.975 5.158 3.145 5.158h4.638c2.17 0 2.877-3.75 3.145-5.16a.527.527 0 0 1 .193-.311c1.931-1.624 3.037-3.979 3.037-6.462C17.697 3.824 13.797 0 9.001 0zM11.752 22.203H6.249c-.38 0-.688.402-.688.899 0 .496.307.898.688.898h5.503c.379 0 .688-.402.688-.897-.001-.498-.309-.9-.688-.9z"/>
+    </svg>
+  ),
   folder: (className, title, theme) => (
     <svg className={`cl-icon ${className ? className : ''}`} width="26" height="20" viewBox="0 0 26 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       {injectTitle(title)}
