@@ -10,7 +10,6 @@ import Icon from 'components/UI/Icon';
 
 // style
 import styled from 'styled-components';
-import { darken } from 'polished';
 import { colors } from 'utils/styleUtils';
 import messages from '../../messages';
 
@@ -27,7 +26,7 @@ const Container = styled.button`
 
   &:hover,
   &:focus {
-    fill: ${darken(.2, colors.clGrey)};
+    fill: ${colors.clGreyHover};
   }
 `;
 
