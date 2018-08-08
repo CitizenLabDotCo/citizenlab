@@ -111,7 +111,7 @@ class AreaForm extends PureComponent<InjectedFormikProps<Props & injectedLocaliz
             <Label>
               <FormattedMessage {...messages.fieldProjects} />
             </Label>
-            <GetProjects>
+            <GetProjects publicationStatuses={['published', 'archived']}>
               {(projects) => (projects && isNilOrError(projects)) ? null : (
                 <Field
                   name="projects"

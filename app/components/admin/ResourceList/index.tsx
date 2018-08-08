@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { SFC } from 'react';
 
 // Style
 import styled from 'styled-components';
@@ -27,6 +27,8 @@ export const StyledRow = styled.div`
   font-weight: 300;
   justify-content: space-between !important;
   line-height: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
 
   &.last-item {
@@ -55,7 +57,8 @@ export const StyledRow = styled.div`
   }
 
   > * {
-    margin: 1rem;
+    margin-left: 10px;
+    margin-right: 10px;
 
     &:first-child {
       margin-left: 0;
@@ -110,7 +113,7 @@ export const TextCell = styled.div`
   line-height: 20px;
 `;
 
-export const List = ({ children, ...props }) => (
+export const List: SFC<{ className?: string, id?: string }> = ({ children, ...props }) => (
   <StyledList className="e2e-admin-list" {...props}>
     <TransitionGroup>
       {children}
@@ -118,7 +121,7 @@ export const List = ({ children, ...props }) => (
   </StyledList>
 );
 
-export const Row = ({ children, ...props }) => (
+export const Row: SFC<{ className?: string, id?: string, lastItem?: boolean }> = ({ children, ...props }) => (
   <CSSTransition classNames="list-item" timeout={timeout} {...props}>
     <StyledRow className={`e2e-admin-list-row ${props['className']} ${props.lastItem && 'last-item'}`}>
       {children}
@@ -126,7 +129,7 @@ export const Row = ({ children, ...props }) => (
   </CSSTransition>
 );
 
-export const HeadRow = ({ children, ...props }) => (
+export const HeadRow: SFC = ({ children, ...props }) => (
   <StyledRow className={`e2e-admin-list-head-row ${props['className']}`}>
     {children}
   </StyledRow>
