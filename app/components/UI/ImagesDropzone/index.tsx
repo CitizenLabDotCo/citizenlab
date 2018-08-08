@@ -438,7 +438,7 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
               className={`${hasSpacing} ${animate}`}
             >
               <Image imageRadius={imageRadius} src={image.objectUrl} objectFit={objectFit}>
-                <RemoveButton onClick={this.removeImage(image)}>
+                <RemoveButton onClick={this.removeImage(image)} className="remove-button">
                   <RemoveIcon name="close2" />
                 </RemoveButton>
               </Image>

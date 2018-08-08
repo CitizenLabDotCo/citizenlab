@@ -18,6 +18,7 @@ import { injectIntl } from 'utils/cl-intl';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { imageSizes } from 'utils/imageTools';
+import { API_PATH } from 'containers/App/constants';
 
 interface InputProps { }
 
@@ -52,13 +53,11 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, authUser, 
 
     return (
       <Helmet>
-        <html lang={locale}/>
+        <html lang={locale} />
         {blockIndexing && <meta name="robots" content="noindex" />}
         <title>
-          {`
-            ${(authUser && authUser.attributes.unread_notifications) ? `(${authUser.attributes.unread_notifications}) ` : ''}
-            ${metaTitle}`
-          }
+          {`${(authUser && authUser.attributes.unread_notifications) ? `(${authUser.attributes.unread_notifications}) ` : ''}
+            ${metaTitle}`}
         </title>
         {// https://github.com/nfl/react-helmet/issues/279 href comes first!
           tenantLocales.map(loc => (<link href={`${url}/${loc}`} rel="alternate" hrefLang={loc} key={loc} />))}
@@ -74,6 +73,11 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, authUser, 
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="fb:app_id" content={fbAppId} />
         <meta property="og:site_name" content={organizationName} />
+        <meta name="application-name" content={organizationName} />
+        {tenant.attributes.favicon.medium && <link rel="icon" sizes="32x32" href={tenant.attributes.favicon.medium} />}
+        {tenant.attributes.favicon.small && <link rel="icon" sizes="16x16" href={tenant.attributes.favicon.small} />}
+        {tenant.attributes.favicon.large && <link rel="apple-touch-icon" sizes="152x152" href={tenant.attributes.favicon.large} />}
+        {tenant.attributes.favicon.large && <link rel="manifest" href={`${API_PATH}/manifest.json`} />}
       </Helmet>
     );
   }
