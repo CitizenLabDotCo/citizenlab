@@ -115,7 +115,7 @@ export const colors = {
   clGreen: '#04884C',
   // darker green than clGreen for when we have a light green background (clGreenSuccessBackground)
   clGreenSuccess: '#008040',
-  clGreenSuccessBackground: '#ccffe6',
+  clGreenSuccessBackground: '#e4f7ef',
   clRed: '#E52516',
   // darker red than clRed for when we have a light red background (clRedSuccessBackground)
   clRedError: '#D61607',

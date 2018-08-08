@@ -18,11 +18,11 @@ const Message = styled.p`
   margin-left: 2rem;
 
   &.error {
-  color: ${colors.clRed};
+  color: ${colors.clRedError};
   }
 
   &.success {
-    color: ${colors.clGreen};
+    color: ${colors.clGreenSuccess};
   }
 `;
 
