@@ -33,7 +33,6 @@ const Container = styled.div`
 `;
 
 const OpenMenuButton = styled.button`
-  background: none;
   padding: 0;
   transition: all .2s;
   display: flex;
