@@ -14,7 +14,6 @@ import { IUser } from 'services/users';
 
 // style
 import styled from 'styled-components';
-import { darken } from 'polished';
 import { colors } from 'utils/styleUtils';
 
 // i18n
@@ -44,8 +43,10 @@ const OpenMenuButton = styled.button`
   max-width: 150px;
   cursor: pointer;
 
-  svg {
-    fill: ${colors.clGrey};
+  span {
+    margin-top: 2px;
+    margin-right: 5px;
+    text-align: right;
   }
 
   &:hover,
@@ -55,15 +56,14 @@ const OpenMenuButton = styled.button`
     svg {
       fill: ${colors.clGreyHover};
     }
-  }
-  span {
-    margin-top: 2px;
-    margin-right: 5px;
-    text-align: right;
+
+    span {
+      color: ${colors.clGreyHover};
+    }
   }
 `;
 
-const StyledAvatar = styled(Avatar) `
+const StyledAvatar = styled(Avatar)`
   height: 28px;
   width: 28px;
   svg, img {
