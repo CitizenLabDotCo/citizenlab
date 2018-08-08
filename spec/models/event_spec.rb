@@ -15,6 +15,13 @@ RSpec.describe Event, type: :model do
       })
       expect(event.description_multiloc).to eq({"en" => "<p>Test</p>This should be removed!"})
     end
+
+    it "retains paragraphs and line breaks in the description" do
+      event = create(:event, description_multiloc: {
+        "en" => "<p>Test<br><br>One<br>Two</p><p>Three</p>"
+      })
+      expect(event.description_multiloc).to eq({"en" => "<p>Test<br><br>One<br>Two</p><p>Three</p>"})
+    end
     
   end
 

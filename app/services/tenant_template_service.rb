@@ -10,7 +10,7 @@ class TenantTemplateService
 
   def apply_template template_name, is_path=false
     template = resolve_template(template_name, is_path)
-    obj_to_inst = {}
+    obj_to_id_and_class = {}
     template['models'].each do |model_name, fields|
 
       model_class = model_name.classify.constantize
@@ -19,13 +19,16 @@ class TenantTemplateService
         model = model_class.new
         attributes.each do |field_name, field_value|
           if (field_name =~ /_multiloc$/) && (field_value.is_a? String)
-            multiloc_value = I18n.available_locales.map do |locale|
+            multiloc_value = CL2_SUPPORTED_LOCALES.map do |locale|
               translation = I18n.with_locale(locale) { I18n.t!(field_value) }
               [locale, translation]
             end.to_h
             model.send("#{field_name}=", multiloc_value)
-          elsif field_name.end_with? '_ref'
-            model.send("#{field_name.chomp '_ref'}=", obj_to_inst[field_value])
+          elsif field_name.end_with?('_ref')
+            if field_value
+              id, ref_class = obj_to_id_and_class[field_value]
+              model.send("#{field_name.chomp '_ref'}=", ref_class.find(id))
+            end
           else
             model.send("#{field_name}=", field_value)
           end
@@ -38,7 +41,7 @@ class TenantTemplateService
           end
           raise e
         end
-        obj_to_inst[attributes] = model
+        obj_to_id_and_class[attributes] = [model.id, model_class]
       end
     end
   end

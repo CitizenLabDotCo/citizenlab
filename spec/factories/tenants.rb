@@ -38,6 +38,7 @@ FactoryBot.define do
             "nl-NL" => "Luik",
             "fr-FR" => "Liege"
           },
+          "lifecycle_stage": "active",
           "locales" => ["en","fr-FR","nl-NL"],
           "timezone" => "Europe/Brussels",
           "color_main" => "#335533"

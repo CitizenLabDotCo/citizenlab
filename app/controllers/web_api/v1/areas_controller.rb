@@ -58,8 +58,8 @@ class WebApi::V1::AreasController < ApplicationController
 
   def area_params
     params.require(:area).permit(
-      title_multiloc: I18n.available_locales,
-      description_multiloc: I18n.available_locales
+      title_multiloc: CL2_SUPPORTED_LOCALES,
+      description_multiloc: CL2_SUPPORTED_LOCALES
     )
   end
 
