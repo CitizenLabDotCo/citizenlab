@@ -22,7 +22,6 @@
     "target": "es6",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
     "plugins": [{
       "name": "typescript-styled-plugin"
     }]
