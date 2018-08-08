@@ -4,6 +4,7 @@ class Tenant < ApplicationRecord
 
   mount_base64_uploader :logo, LogoUploader
   mount_base64_uploader :header_bg, HeaderBgUploader
+  mount_base64_uploader :favicon, FaviconUploader
 
   validates :name, :host, presence: true
   validates :host, uniqueness: true
