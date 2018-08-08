@@ -1,5 +1,22 @@
 # Changelog
 
+## 2018-08-08
+
+### Fixed
+- The idea sidepane on the map correctly displays HTML again
+
+### Added
+- Archived projects are visible by citizens
+  - Citizens can filter to see all, active or archived projects
+  - Projects and project cards show a badge indicating a project is archived
+  - In the admin, active and archived projects are shown separately
+- A favicon can now be configured at the hidden location `/admin/favicon`
+  - On android in Chrome, the platform can be added to the Android homescreen and will use the favicon as an icon
+- Visitors coming through Onze Stad App now are trackable in analytics
+
+### Changed
+
+
 ## 2018-08-03
 
 ### Fixed
