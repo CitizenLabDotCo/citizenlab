@@ -125,6 +125,8 @@ Rails.application.routes.draw do
       end
 
       resources :clusterings
+
+      match 'manifest.json', to: 'manifest#show', via: :get
       
     end
 
