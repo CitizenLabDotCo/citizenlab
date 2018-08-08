@@ -14,9 +14,10 @@ class Event < ApplicationRecord
   private
   
   def sanitize_description_multiloc
-    self.description_multiloc = self.description_multiloc.map do |locale, description|
-      [locale, Rails::Html::WhiteListSanitizer.new.sanitize(description, tags: %w(p b u i em strong a ul li ol), attributes: %w(href type style))]
-    end.to_h
+    self.description_multiloc = SanitizationService.new.sanitize_multiloc(
+      self.description_multiloc,
+      %i{title alignment list decoration link image video}
+    )
   end
 
   def validate_start_at_before_end_at

@@ -60,6 +60,7 @@ resource "Events" do
       describe do
         let(:project_id) { @project.id }
         let(:title_multiloc) { event.title_multiloc }
+        let(:description_multiloc) { event.description_multiloc }
         let(:start_at) { event.start_at }
         let(:end_at) { event.end_at }
 
@@ -67,6 +68,7 @@ resource "Events" do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+          expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
           expect(json_response.dig(:data,:attributes,:start_at)).to eq start_at.iso8601(3)
           expect(json_response.dig(:data,:attributes,:end_at)).to eq end_at.iso8601(3)
           expect(json_response.dig(:data,:relationships,:project,:data,:id)).to eq project_id

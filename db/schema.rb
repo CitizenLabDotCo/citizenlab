@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180719131553) do
+ActiveRecord::Schema.define(version: 20180801130039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -441,6 +441,7 @@ ActiveRecord::Schema.define(version: 20180719131553) do
     t.datetime "updated_at", null: false
     t.string "logo"
     t.string "header_bg"
+    t.string "favicon"
     t.index ["host"], name: "index_tenants_on_host"
   end
 
