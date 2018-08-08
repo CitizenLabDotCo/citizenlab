@@ -25,6 +25,7 @@ resource "Tenants" do
     with_options scope: :tenant do   
       parameter :logo, "Base64 encoded logo"
       parameter :header_bg, "Base64 encoded header"
+      parameter :favicon, "Base64 encoded favicon"
       parameter :settings, "The changes to the\
       settings object. This will me merged with the existing settings. Arrays\
       will not be merged, but override their values.", extra: ""
@@ -41,8 +42,9 @@ resource "Tenants" do
     ValidationErrorHelper.new.error_fields(self, Tenant)
 
     let(:id) { Tenant.current.id }
-    let(:logo) { base64_encoded_image("logo.png", "image/png")}
-    let(:header_bg) { base64_encoded_image("header.jpg", "image/jpeg")}
+    let(:logo) { base64_encoded_image("logo.png", "image/png") }
+    let(:header_bg) { base64_encoded_image("header.jpg", "image/jpeg") }
+    let(:favicon) { base64_encoded_image("favicon.png", "image/png") }
     let(:settings) {
       {
         "core" => {
@@ -59,6 +61,7 @@ resource "Tenants" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:settings,:core,:organization_name,:en)).to eq "TestTown"
+      expect(json_response.dig(:data,:attributes,:favicon)).to be_present
     end
 
     describe do

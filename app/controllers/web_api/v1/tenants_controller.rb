@@ -11,6 +11,7 @@ class WebApi::V1::TenantsController < ApplicationController
     params = {settings: updated_settings}
     params[:logo] = tenant_params[:logo] if tenant_params[:logo]
     params[:header_bg] = tenant_params[:header_bg] if tenant_params[:header_bg]
+    params[:favicon] = tenant_params[:favicon] if tenant_params[:favicon]
     SideFxTenantService.new.before_update @tenant, current_user
     if @tenant.update(params)
       SideFxTenantService.new.after_update @tenant, current_user
@@ -37,7 +38,7 @@ class WebApi::V1::TenantsController < ApplicationController
     # schema validation, however, should be covering all settings that are not
     # allowed
     all_settings = params.require(:tenant).fetch(:settings, nil).try(:permit!)
-    params.require(:tenant).permit(:logo, :header_bg).merge(:settings => all_settings)
+    params.require(:tenant).permit(:logo, :header_bg, :favicon).merge(:settings => all_settings)
   end
 
 end
