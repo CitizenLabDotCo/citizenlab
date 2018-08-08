@@ -12,6 +12,7 @@ import shallowCompare from 'utils/shallowCompare';
 export type SortAttribute = 'new' | 'trending' | 'popular';
 export type Sort =  'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular';
 export type PublicationStatus = 'draft' | 'published' | 'archived';
+export type SelectedPublicationStatus = 'all' | 'published' | 'archived';
 
 export interface InputProps {
   pageNumber?: number;
@@ -19,8 +20,7 @@ export interface InputProps {
   sort?: Sort;
   areas?: string[];
   topics?: string[];
-  publicationStatus?: PublicationStatus;
-  publicationStatuses?: PublicationStatus[];
+  publicationStatuses: PublicationStatus[];
   hideAllFilters?: boolean;
   filterCanModerate?: boolean;
 }
@@ -31,7 +31,6 @@ interface IQueryParameters {
   sort?: Sort;
   areas?: string[];
   topics?: string[];
-  publication_status?: PublicationStatus;
   publication_statuses?: PublicationStatus[];
   filter_can_moderate?: boolean;
 }
@@ -53,6 +52,7 @@ export type GetProjectsChildProps = State & {
   onChangeSorting: (sort: Sort) => void;
   onChangeAreas: (areas: string[]) => void;
   onChangeTopics: (topics: string[]) => void;
+  onChangePublicationStatus: (publicationStatus: SelectedPublicationStatus) => void;
 };
 
 interface State {
@@ -72,13 +72,12 @@ export default class GetProjects extends Component<Props, State> {
     this.state = {
       // defaults
       queryParameters: {
-        'page[number]': 1,
-        'page[size]': this.props.pageSize,
-        sort: this.props.sort,
-        areas: undefined,
-        topics: undefined,
-        publication_status: undefined,
-        publication_statuses: undefined
+        'page[number]': (props.pageNumber || 1),
+        'page[size]': (props.pageSize || 250),
+        sort: props.sort,
+        areas: props.areas,
+        topics: props.topics,
+        publication_statuses: props.publicationStatuses
       },
       projectsList: undefined,
       hasMore: false,
@@ -124,7 +123,13 @@ export default class GetProjects extends Component<Props, State> {
           }));
         }, startAccumulatorValue)
       ).subscribe(({ projects, queryParameters, hasMore }) => {
-        this.setState({ queryParameters, hasMore, projectsList: projects, querying: false, loadingMore: false });
+        this.setState({
+          queryParameters,
+          hasMore,
+          projectsList: projects,
+          querying: false,
+          loadingMore: false
+        });
       })
     ];
   }
@@ -152,7 +157,6 @@ export default class GetProjects extends Component<Props, State> {
         sort: props.sort,
         areas: props.areas,
         topics: props.topics,
-        publication_status: props.publicationStatus,
         publication_statuses: props.publicationStatuses,
         filter_can_moderate: props.filterCanModerate,
       }, isNil)
@@ -189,6 +193,13 @@ export default class GetProjects extends Component<Props, State> {
     });
   }
 
+  handlePublicationStatusOnChange = (publicationStatus: SelectedPublicationStatus) => {
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      publication_statuses: (publicationStatus === 'all' ? ['published', 'archived'] : [publicationStatus])
+    });
+  }
+
   render() {
     const { children } = this.props;
     return (children as children)({
@@ -196,7 +207,8 @@ export default class GetProjects extends Component<Props, State> {
       onLoadMore: this.loadMore,
       onChangeSorting: this.handleSortOnChange,
       onChangeAreas: this.handleAreasOnChange,
-      onChangeTopics: this.handleTopicsOnChange
+      onChangeTopics: this.handleTopicsOnChange,
+      onChangePublicationStatus: this.handlePublicationStatusOnChange
     });
   }
 }

@@ -358,7 +358,7 @@ class IdeasProjectSelectPage extends PureComponent<Props & WithRouterProps, Stat
 const IdeasProjectSelectPageWithHoCs = withRouter(IdeasProjectSelectPage);
 
 export default (inputProps: InputProps) => (
-  <GetProjects {...inputProps}>
+  <GetProjects publicationStatuses={['published']}>
     {projects => <IdeasProjectSelectPageWithHoCs {...inputProps} projects={projects} />}
   </GetProjects>
 );
