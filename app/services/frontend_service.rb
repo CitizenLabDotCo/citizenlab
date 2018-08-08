@@ -53,4 +53,9 @@ class FrontendService
     "#{home_url(options)}/reset-password?token=#{token}"
   end
 
+  def manifest_start_url options={}
+    tenant = options[:tenant] || Tenant.current
+    "#{tenant.base_frontend_uri}/?utm_source=manifest"
+  end
+
 end
