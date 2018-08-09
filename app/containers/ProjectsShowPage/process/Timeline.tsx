@@ -146,7 +146,7 @@ const HeaderTitle = styled.div`
 
 const MobileDate = styled.div`
   color: #999;
-  font-size: 15px;
+  font-size: ${fontSizes.base};
   line-height: 21px;
   font-weight: 400;
   margin-top: 4px;
@@ -159,7 +159,7 @@ const MobileDate = styled.div`
 
 const HeaderSubtitle = styled.div`
   color: ${colors.label};
-  font-size: 15px;
+  font-size: ${fontSizes.base};
   line-height: 20px;
   font-weight: 400;
   margin-top: 3px;
@@ -243,7 +243,7 @@ const PhaseArrow = styled(Icon)`
 
 const PhaseText: any = styled.div`
   color: ${greyTransparent};
-  font-size: 15px;
+  font-size: ${fontSizes.base};
   font-weight: 400;
   text-align: center;
   overflow: hidden;

@@ -248,11 +248,11 @@ const MetaButtons = styled.div`
 
 const LocationLabel = styled.div`
   color: ${colors.label};
-  font-size: 15px;
+  font-size: ${fontSizes.base};
   font-weight: 400;
   margin-right: 6px;
   max-width: 200px;
-  font-size: 15px;
+  font-size: ${fontSizes.base};
   line-height: 19px;
   text-align: left;
   font-weight: 400;
@@ -481,7 +481,7 @@ const MetaContent = styled.div`
 
 const VoteLabel = styled.div`
   color: ${colors.label};
-  font-size: 15px;
+  font-size: ${fontSizes.base};
   font-weight: 400;
   margin-bottom: 12px;
   display: none;

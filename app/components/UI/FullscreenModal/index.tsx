@@ -20,7 +20,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 import { getUrlLocale } from 'services/locale';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -159,7 +159,7 @@ const GoBackButton = styled.div`
 
 const GoBackLabel = styled.div`
   color: ${colors.label};
-  font-size: 15px;
+  font-size: ${fontSizes.base};
   font-weight: 400;
   transition: fill 100ms ease-out;
 
