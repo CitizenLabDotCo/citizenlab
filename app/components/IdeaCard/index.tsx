@@ -62,7 +62,7 @@ const IdeaTitle: any = styled.h3`
   max-width: 400px;
   max-height: 60px;
   margin: 0;
-  font-size: 22px;
+  font-size: ${fontSizes.xl}px;
   font-weight: 500;
   overflow: hidden;
   text-overflow: ellipsis;
