@@ -23,7 +23,7 @@ import { LEGAL_PAGES } from 'services/pages';
 
 // style
 import styled from 'styled-components';
-import { media, color } from 'utils/styleUtils';
+import { media, color, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
@@ -118,7 +118,7 @@ const StyledLink = styled(Link) `
   }
 
   ${media.smallerThanMaxTablet`
-    font-size: 13px;
+    font-size: ${fontSizes.small};
     line-height: 16px;
   `}
 `;
