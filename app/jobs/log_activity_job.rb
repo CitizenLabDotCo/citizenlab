@@ -9,10 +9,10 @@ class LogActivityJob < ApplicationJob
       # encoding and decoding to a string
       claz, id = decode_frozen_resource(item)
       Activity.new(item_type: claz.name, item_id: id)
-    elsif item.kind_of? Notification
-      Activity.new(item: item, item_type: item.type) # .split('::').last)
     else
-      Activity.new(item: item)
+      # item.class.name is needed for polymorphic subclasses like Notification
+      # descendants
+      Activity.new(item: item, item_type: item.class.name)
     end
 
     activity.action = action
