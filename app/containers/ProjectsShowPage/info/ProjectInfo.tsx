@@ -84,7 +84,7 @@ const ProjectDescriptionStyled = styled.div`
   }
 
   h3 {
-    font-size: 21px;
+    font-size: ${fontSizes.xl}px;
     line-height: 26px;
     font-weight: 600;
   }
