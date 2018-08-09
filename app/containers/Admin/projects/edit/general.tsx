@@ -49,6 +49,7 @@ import streams from 'utils/streams';
 
 // style
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 // typings
 import { API, IOption, ImageFile, Locale, Multiloc } from 'typings';
@@ -60,7 +61,7 @@ const StyledInputMultiloc = styled(InputMultiloc)`
 `;
 
 const ProjectType = styled.div`
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   line-height: 20px;
   font-weight: 400;
   text-transform: capitalize;

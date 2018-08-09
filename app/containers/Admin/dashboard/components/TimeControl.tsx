@@ -10,7 +10,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 const Container = styled.div`
@@ -58,7 +58,7 @@ const Separator = styled.div`
 
 const CurrentTime = styled.div`
   min-width: 160px;
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   text-transform: capitalize;
   display: flex;
   align-items: center;

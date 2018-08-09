@@ -54,7 +54,7 @@ const DateWrapper = styled.div`
 const Date = styled.div`
   width: 100%;
   color: #fff;;
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   font-weight: 500;
   display: flex;
   flex-direction: column;
@@ -91,7 +91,7 @@ const Time = styled.div`
 
 const Title = styled.div`
   color: #333;
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   font-weight: 400;
   line-height: 20px;
 `;

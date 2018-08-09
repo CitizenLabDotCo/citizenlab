@@ -114,7 +114,7 @@ const PhaseNumberWrapper = styled.div`
 
 const PhaseNumber = styled.div`
   color: #fff;
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   line-height: 16px;
   font-weight: 400;
   margin: 0;

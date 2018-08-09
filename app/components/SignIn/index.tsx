@@ -107,7 +107,7 @@ const ButtonWrapper = styled.div`
 
 const CreateAnAccountStyle = css`
   color: ${(props) => props.theme.colorMain};
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   line-height: 20px;
   font-weight: 400;
   text-decoration: none;
@@ -144,7 +144,7 @@ const Footer = styled.div`
 
 const SocialLoginText = styled.div`
   color: ${(props) => props.theme.colors.label};
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   font-weight: 300;
   line-height: 20px;
   margin-left: 4px;

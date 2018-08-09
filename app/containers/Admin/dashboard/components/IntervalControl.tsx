@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 const Container = styled.div`
@@ -11,7 +11,7 @@ const Container = styled.div`
 `;
 
 const IntervalButton = styled.button`
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   padding: 1rem 1.5rem;
   background: ${colors.adminContentBackground};
   border: solid 1px #e4e4e4;
