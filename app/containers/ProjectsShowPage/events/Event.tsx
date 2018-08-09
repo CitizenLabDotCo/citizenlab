@@ -130,7 +130,7 @@ const EventInformation = styled.div`
 
 const EventTime = styled.div`
   color: #666;
-  font-size: 17px;
+  font-size: ${fontSizes.medium}px;
   font-weight: 300;
 `;
 

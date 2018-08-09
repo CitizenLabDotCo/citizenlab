@@ -18,7 +18,7 @@ import Error from 'components/UI/Error';
 // Styling
 import styled from 'styled-components';
 import { transparentize, darken } from 'polished';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const CommentWrapper = styled.div`
   color: ${colors.text};

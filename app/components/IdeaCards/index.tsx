@@ -151,7 +151,7 @@ const ViewButton = styled.div`
   > span {
     color: ${(props) => props.theme.colors.label};
     color: #333;
-    font-size: 17px;
+    font-size: ${fontSizes.medium}px;
     font-weight: 400;
     line-height: 24px;
     padding-left: 15px;

@@ -23,7 +23,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 
 const Loading = styled.div`
   width: 100%;
@@ -136,7 +136,7 @@ const ColumnTitle = styled.h2`
 
 const ColumnExplanation = styled.div`
   color: #666;
-  font-size: 17px;
+  font-size: ${fontSizes.medium}px;
   line-height: 24px;
   font-weight: 300;
   min-height: 7rem;
