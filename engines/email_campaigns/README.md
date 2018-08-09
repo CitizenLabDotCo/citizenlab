@@ -1,28 +1,23 @@
 # EmailCampaigns
-Short description and motivation.
 
-## Usage
-How to use my plugin.
+## Models
 
-## Installation
-Add this line to your application's Gemfile:
+There are 3 types of e-mail campaigns:
 
-```ruby
-gem 'email_campaigns'
-```
+### 1. Triggered
 
-And then execute:
-```bash
-$ bundle
-```
+Sending out an email in a triggered campaign is initiated by a user action. 
+The receiver is typically one or just a few users.
+The content is related to that action and specified by us.
 
-Or install it yourself as:
-```bash
-$ gem install email_campaigns
-```
+### 2. Recurring
 
-## Contributing
-Contribution directions go here.
+Sending out an email in a recurring campaign is initiated on a fixed recurring time schedule by the backend.
+The receiver is typically a larger amount of users.
+The content is some kind of digest or curation and is specified by us.
 
-## License
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+### 3. Manual
+
+Sending out an email in a manual campaign is done when admins or moderators click the send button.
+The receiver is a group of users, chosen by the author.
+The content is provided by the author.
