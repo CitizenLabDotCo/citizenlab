@@ -50,7 +50,7 @@ const StyledMultipleSelect = styled(MultipleSelect)`
 const AddGroupButton = styled(Button)`
   flex-grow: 0;
   flex-shrink: 0;
-  margin-left: 40px;
+  margin-left: 30px;
 `;
 
 const GroupTitle = styled.p``;
@@ -66,6 +66,7 @@ interface IProjectGroup {
 
 interface Props {
   projectId: string;
+  onAddButtonClicked: () => void;
 }
 
 interface State {
@@ -117,8 +118,7 @@ class ProjectGroupsList extends PureComponent<Props & InjectedIntlProps, State> 
             title: getLocalized(group.attributes.title_multiloc, locale, currentTenantLocales),
             membership_count: group.attributes.memberships_count
           };
-        })
-        .reverse();
+        }).reverse();
         const groupsOptions = this.getOptions(groups, groupsProjects, locale, currentTenantLocales);
         const loading = false;
 
@@ -151,6 +151,7 @@ class ProjectGroupsList extends PureComponent<Props & InjectedIntlProps, State> 
       try {
         await Promise.all(promises);
         this.setState({ selectedGroups: null });
+        this.props.onAddButtonClicked();
       } catch (error) {
         console.log(error);
       }
@@ -197,7 +198,7 @@ class ProjectGroupsList extends PureComponent<Props & InjectedIntlProps, State> 
         />
 
         <AddGroupButton
-          text={formatMessage(messages.addGroup)}
+          text={formatMessage(messages.add)}
           style="cl-blue"
           size="1"
           icon="plus-circle"

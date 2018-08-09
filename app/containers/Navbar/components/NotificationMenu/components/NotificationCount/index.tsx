@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { isNumber } from 'lodash';
 
 // i18n
@@ -14,15 +14,15 @@ import { colors } from 'utils/styleUtils';
 import messages from '../../messages';
 
 const Container = styled.button`
+  width: 24px;
+  height: 24px;
   align-items: center;
   cursor: pointer;
   display: flex;
-  fill: ${colors.clGrey};
-  height: 23px;
+  fill: ${colors.label};
   justify-content: center;
   padding: 0;
   position: relative;
-  width: 23px;
 
   &:hover,
   &:focus {
@@ -31,7 +31,7 @@ const Container = styled.button`
 `;
 
 const NotificationIcon = styled(Icon)`
-  height: 23px;
+  height: 24px;
   fill: inherit;
   transition: all 150ms ease;`
 ;
@@ -54,7 +54,7 @@ type Props = {
 
 type State = {};
 
-class NotificationCount extends React.PureComponent<Props & InjectedIntlProps, State> {
+class NotificationCount extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
     const { count } = this.props;
 

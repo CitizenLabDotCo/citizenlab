@@ -13,12 +13,14 @@ const SelectStyles = {
       minHeight: '48px',
       backgroundColor: '#FFF',
       boxShadow: 'none',
+      cursor: 'pointer',
       '&:hover': {
         borderColor: isFocused ? '#000' : '#aaa'
       },
     }),
-    placeholder: () => ({
-      color: colors.placeholder,
+    placeholder: (base) => ({
+      ...base,
+      color: colors.placeholder
     }),
     option: (base, { isFocused }) => ({
       ...base,

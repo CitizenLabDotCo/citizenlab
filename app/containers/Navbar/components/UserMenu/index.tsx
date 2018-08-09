@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 // components
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
-// import UserName from 'components/UI/UserName';
+import UserName from 'components/UI/UserName';
 import Popover from 'components/Popover';
 import HasPermission from 'components/HasPermission';
 
@@ -14,7 +14,8 @@ import { IUser } from 'services/users';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, media, fontSizes } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -22,9 +23,7 @@ import messages from '../../messages';
 
 const Container = styled.div`
   display: flex;
-  margin-left: 0px;
   position: relative;
-  cursor: pointer;
   outline: none;
 
   * {
@@ -32,52 +31,44 @@ const Container = styled.div`
   }
 `;
 
-const OpenMenuButton = styled.button`
-  padding: 0;
-  transition: all .2s;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  color: ${colors.clGrey};
-  max-width: 150px;
-  cursor: pointer;
+const StyledUserName = styled(UserName)`
+  color: ${colors.label};
+  margin-right: 5px;
+  white-space: nowrap;
+  font-size: ${fontSizes.base}px;
+  transition: all 100ms ease-out;
 
-  svg {
-    fill: ${colors.clGrey};
-  }
-
-  span {
-    margin-top: 2px;
-    margin-right: 5px;
-    text-align: right;
-  }
-
-  &:hover,
-  &:focus {
-    border-color: ${colors.clGreyHover};
-
-    svg {
-      fill: ${colors.clGreyHover};
-    }
-
-    span {
-      color: ${colors.clGreyHover};
-    }
-  }
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const StyledAvatar = styled(Avatar)`
-  height: 28px;
-  width: 28px;
-  svg, img {
-    height: 28px;
-    width: 28px;
-    border: 0;
-    border: 1px solid transparent;
-    border-radius: 50%;
-  }
   svg {
-    fill: ${colors.clGrey};
+    fill: ${colors.label};
+  }
+`;
+
+const OpenMenuButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    ${StyledUserName} {
+      color: #000;
+    }
+
+    ${StyledAvatar} {
+      img {
+        border-color: #000;
+      }
+
+      svg {
+        fill: ${darken(0.2, colors.label)};
+      }
+    }
   }
 `;
 
@@ -85,9 +76,11 @@ const StyledPopover = styled(Popover) `
   display: flex;
   flex-direction: column;
   z-index: 5;
+
   .Ideas-icon .cl-icon-primary, .Ideas-icon .cl-icon-secondary {
     fill: ${colors.clGrey};
   }
+
   .Ideas-icon .cl-icon-accent {
     fill: transparent !important;
   }
@@ -158,12 +151,14 @@ export default class UserMenu extends React.PureComponent<Props, State> {
       return (
         <Container id="e2e-user-menu-container">
           <OpenMenuButton onClick={this.togglePopover}>
-            {
-              <>
-                {/* <UserName user={authUser.data} /> */}
-                <StyledAvatar userId={userId} size="small" />
-              </>
-            }
+            <StyledUserName
+              user={authUser.data}
+              hideLastName={true}
+            />
+            <StyledAvatar
+              userId={userId}
+              size="small"
+            />
           </OpenMenuButton>
           <StyledPopover
             id="e2e-user-menu-dropdown"
