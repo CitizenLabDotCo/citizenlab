@@ -49,7 +49,7 @@ const ToggleRow = Row.extend`
 const ToggleLabel = styled(Label)`
   width: 100%;
   max-width: 200px;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
 `;
 

@@ -23,7 +23,7 @@ const Container = styled(clickOutside)`
   border-radius: 5px;
   border-color: white;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-  font-size: ${fontSizes.small};
+  font-size: ${fontSizes.small}px;
   font-weight: 300;
   line-height: 18px;
   opacity: 1;

@@ -15,7 +15,7 @@ import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   color: #fff;
-  font-size: ${fontSizes.xs};
+  font-size: ${fontSizes.xs}px;
   line-height: 16px;
   border-radius: 5px;
   padding: 6px 12px;

@@ -116,7 +116,7 @@ const ProjectTitle = styled.h3`
 
 const PostingDisabledReason = styled.div`
   color: black;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   line-height: 21px;
   font-weight: 300;
   margin-top: 10px;
@@ -124,7 +124,7 @@ const PostingDisabledReason = styled.div`
 
 const PostingEnabledReason = styled.div`
   color: ${colors.clGrey};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   line-height: 21px;
   font-weight: 300;
   overflow: hidden;

@@ -47,7 +47,7 @@ const Checked = styled.div`
 `;
 
 const Text = styled.div`
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 20px;
 `;

@@ -60,7 +60,7 @@ const TimeAgo = styled.div`
   color: ${colors.clGrey};
   font-weight: 300;
   margin-top: 1px;
-  font-size: ${fontSizes.small};
+  font-size: ${fontSizes.small}px;
   line-height: 17px;
 `;
 

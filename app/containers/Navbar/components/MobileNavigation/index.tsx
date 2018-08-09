@@ -43,7 +43,7 @@ const NavigationLabel = styled.div`
   width: 100%;
   height: 16px;
   color: #999;
-  font-size: ${fontSizes.small};
+  font-size: ${fontSizes.small}px;
   font-weight: 400;
   text-align: center;
   flex: 1;

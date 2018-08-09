@@ -62,7 +62,7 @@ const ToggleContainer: any = styled.div`
 
 const Text = styled.div`
   color: #333;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 20px;
   padding-left: 10px;

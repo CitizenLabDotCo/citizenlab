@@ -114,7 +114,7 @@ const PhaseNumberWrapper = styled.div`
 
 const PhaseNumber = styled.div`
   color: #fff;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   line-height: 16px;
   font-weight: 400;
   margin: 0;
@@ -146,7 +146,7 @@ const HeaderTitle = styled.div`
 
 const MobileDate = styled.div`
   color: #999;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   line-height: 21px;
   font-weight: 400;
   margin-top: 4px;
@@ -159,7 +159,7 @@ const MobileDate = styled.div`
 
 const HeaderSubtitle = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   line-height: 20px;
   font-weight: 400;
   margin-top: 3px;
@@ -167,7 +167,7 @@ const HeaderSubtitle = styled.div`
 
 const HeaderDate = styled.div`
   color: #000;
-  font-size: ${fontSizes.small};
+  font-size: ${fontSizes.small}px;
   font-weight: 400;
   line-height: 16px;
   white-space: nowrap;
@@ -220,7 +220,7 @@ const PhaseBar: any = styled.div`
   width: 100%;
   height: calc( ${phaseBarHeight} - 1px );
   color: #fff;
-  font-size: ${fontSizes.small};
+  font-size: ${fontSizes.small}px;
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -243,7 +243,7 @@ const PhaseArrow = styled(Icon)`
 
 const PhaseText: any = styled.div`
   color: ${greyTransparent};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   text-align: center;
   overflow: hidden;

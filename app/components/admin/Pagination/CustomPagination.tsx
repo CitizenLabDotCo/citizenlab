@@ -15,7 +15,7 @@ export interface Props {
 
 const Spagination = styled.div`
   display: flex;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   align-items: baseline;
   justify-content: center;
   padding-top: 15px;

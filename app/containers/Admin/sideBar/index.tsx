@@ -56,7 +56,7 @@ const IconWrapper = styled.div`
 const Text = styled.div`
   flex: 1;
   color: ${colors.adminLightText};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 19px;
   margin-left: 10px;

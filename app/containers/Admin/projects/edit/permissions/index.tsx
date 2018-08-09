@@ -38,7 +38,7 @@ const StyledRadio = styled(Radio)`
   cursor: pointer;
 
   .text {
-    font-size: ${fontSizes.base};
+    font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 22px;
   }

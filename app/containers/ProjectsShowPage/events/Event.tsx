@@ -91,7 +91,7 @@ const EventDatesSeparator = styled.div`
 
 const EventYear = styled.div`
   color: #fff;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
   display: flex;
   align-items: center;
@@ -145,7 +145,7 @@ const EventTitle = styled.div`
 
 const EventDescription = styled.div`
   color: ${colors.clGrey};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: 21px;
 
@@ -205,7 +205,7 @@ const EventLocationInner = styled.div`
 
 const EventLocationLabel = styled.div`
   color: #666;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: 21px;
   margin-bottom: 2px;
@@ -213,7 +213,7 @@ const EventLocationLabel = styled.div`
 
 const EventLocationAddress = styled.div`
   color: #666;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 21px;
   display: flex;

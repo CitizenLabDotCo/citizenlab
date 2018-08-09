@@ -44,7 +44,7 @@ const DeployIcon = styled(Icon) `
 
 const Toggle = styled.div`
   color: ${colors.adminSecondaryTextColor};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 500;
   display: flex;
   align-items: center;

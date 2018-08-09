@@ -41,7 +41,7 @@ const ErrorWrapper = styled.div`
 
 const DropzonePlaceholderText = styled.div`
   color: ${colors.clGrey};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   line-height: 20px;
   font-weight: 400;
   text-align: center;
@@ -57,7 +57,7 @@ const DropzonePlaceholderIcon = styled(Icon)`
 
 const DropzoneImagesRemaining = styled.div`
   color: ${colors.clGrey};
-  font-size: ${fontSizes.small};
+  font-size: ${fontSizes.small}px;
   line-height: 18px;
   font-weight: 400;
   text-align: center;

@@ -29,7 +29,7 @@ const MoreOptionsIcon = styled(Icon)`
 
 const MoreOptionsLabel = styled.div`
   color: ${colors.clGrey};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   white-space: nowrap;
   margin-left: 10px;

@@ -90,7 +90,7 @@ const VoteIcon: any = styled(Icon) `
 
 const VoteCount = styled.div`
   color: ${colors.clGrey};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   margin-left: 5px;
   transition: all 100ms ease-out;
