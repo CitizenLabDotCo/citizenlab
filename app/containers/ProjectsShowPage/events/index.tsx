@@ -37,7 +37,7 @@ const Events = styled.div`
 
 const Title = styled.h1`
   color: #333;
-  font-size: 29px;
+  font-size: ${fontSizes.xxxl}px;
   line-height: 35px;
   font-weight: 600;
   margin-bottom: 15px;

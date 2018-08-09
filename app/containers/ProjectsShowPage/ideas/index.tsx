@@ -29,7 +29,7 @@ const IdeasContainer = styled.div`
 
 const IdeasTitle = styled.h1`
   color: #333;
-  font-size: 29px;
+  font-size: ${fontSizes.xxxl}px;
   line-height: 35px;
   font-weight: 600;
   margin-top: 40px;
