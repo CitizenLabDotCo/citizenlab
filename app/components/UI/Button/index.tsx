@@ -2,13 +2,15 @@ import React from 'react';
 import Link from 'utils/cl-router/Link';
 import { isBoolean, isNil } from 'lodash';
 import styled, { withTheme } from 'styled-components';
-import { darken, rgba, readableColor } from 'polished';
+import { darken, readableColor } from 'polished';
 import { color, invisibleA11yText } from 'utils/styleUtils';
 import Spinner from 'components/UI/Spinner';
 import Icon, { Props as IconProps } from 'components/UI/Icon';
 
 function getFontSize(size) {
   switch (size) {
+    case '1':
+      return `17px`;
     case '2':
       return `18px`;
     case '3':
@@ -181,16 +183,13 @@ const Container: any = styled.div`
       ${(props: any) => buttonTheme('transparent', props.theme.colorMain || 'e0e0e0', props.theme.colorMain || 'e0e0e0')}
     }
     &.secondary-outlined {
-      ${buttonTheme('transparent', color('label'), color('label'))}
+      ${buttonTheme('transparent', color('clGrey'), color('clGrey'))}
     }
     &.text {
-      ${(props: any) => buttonTheme('transparent', props.textColor || color('label'), undefined, undefined, props.textHoverColor)}
+      ${(props: any) => buttonTheme('transparent', props.textColor || color('clGrey'), undefined, undefined, props.textHoverColor)}
     }
     &.success {
-      ${buttonTheme(rgba(color('success'), .15), color('success'))}
-    }
-    &.error {
-      ${buttonTheme(rgba(color('error'), .15), color('error'))}
+      ${buttonTheme(color('clGreenSuccessBackground'), color('clGreenSuccess'))}
     }
     &.cl-blue {
       ${buttonTheme(color('clBlueDark'), 'white')}
@@ -213,7 +212,7 @@ const HiddenText = styled.span`
   ${invisibleA11yText()}
 `;
 
-export type ButtonStyles = 'primary' | 'primary-inverse' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'error' | 'text' | 'cl-blue';
+export type ButtonStyles = 'primary' | 'primary-inverse' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'text' | 'cl-blue';
 
 type Props = {
   children?: any;
@@ -291,7 +290,7 @@ class Button extends React.PureComponent<Props, State> {
     processing = (isBoolean(processing) ? processing : false);
     disabled = (isBoolean(disabled) ? disabled : false);
     fullWidth = (isBoolean(fullWidth) ? fullWidth : false);
-    circularCorners = (isBoolean(circularCorners) ? circularCorners : true);
+    circularCorners = (isBoolean(circularCorners) ? circularCorners : false);
     iconPos = (iconPos || 'left');
     className = `${className ? className : ''}`;
 

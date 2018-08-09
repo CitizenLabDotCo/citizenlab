@@ -10,13 +10,12 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 const timeout = 200;
 const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
 
 const Overlay: any = styled.div`
-  /* width: 100%; */
   width: ${(props: any) => props.maxWidth ? props.maxWidth : '300px'};
   border-radius: 5px;
   background-color: #fff;
@@ -71,6 +70,23 @@ const Overlay: any = styled.div`
     }
   }
 
+  &.left {
+    width: ${(props: any) => props.mobileMaxWidth ? props.mobileMaxWidth : '200px'};
+    right: auto;
+    left: -10px;
+    transform-origin: left top;
+
+    ::after {
+      right: auto;
+      left: 20px;
+    }
+
+    ::before {
+      right: auto;
+      left: 19px;
+    }
+  }
+
   ${media.smallerThanMaxTablet`
     width: ${(props: any) => props.mobileMaxWidth ? props.mobileMaxWidth : '200px'};
     right: auto;
@@ -104,7 +120,7 @@ const ListWrapper = styled.ul`
 `;
 
 const StyledOption: any = styled.li`
-  color: ${(props) => props.theme.colors.label};
+  color: ${colors.clGrey};
   font-size: 17px;
   font-weight: 400;
   padding: 10px 15px;
@@ -125,8 +141,8 @@ const StyledOption: any = styled.li`
 
   &.focused,
   &:hover {
-    color: #000;
-    background: #f6f6f6;
+    color: ${colors.clGreyHover};
+    background: ${colors.clDropdownHoverBackground};
   }
 `;
 
@@ -150,6 +166,7 @@ type Props = {
   baseID: string;
   maxWidth?: string | null | undefined;
   mobileMaxWidth?: string | null | undefined;
+  enterFrom?: 'left' | 'right';
 };
 
 type State = {
@@ -266,7 +283,11 @@ export default class ValuesList extends PureComponent<Props, State> {
         timeout={timeout}
         exit={false}
       >
-        <Overlay className="deployed" maxWidth={maxWidth} mobileMaxWidth={mobileMaxWidth}>
+        <Overlay
+          className={`deployed`}
+          maxWidth={maxWidth}
+          mobileMaxWidth={mobileMaxWidth}
+        >
           <ListWrapper
             onKeyDown={this.keypressHandler}
             role="listbox"

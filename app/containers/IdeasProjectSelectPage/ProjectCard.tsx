@@ -45,14 +45,14 @@ const Container = styled.div`
   }
 
   &.selected {
-    border-color: ${colors.success};
+    border-color: ${colors.clGreen};
   }
 
   &.enabled:hover {
     border-color: #ccc;
 
     &.selected {
-      border-color: ${colors.success};
+      border-color: ${colors.clGreen};
     }
   }
 
@@ -123,7 +123,7 @@ const PostingDisabledReason = styled.div`
 `;
 
 const PostingEnabledReason = styled.div`
-  color: #84939E;
+  color: ${colors.clGrey};
   font-size: 15px;
   line-height: 21px;
   font-weight: 300;
@@ -262,7 +262,7 @@ class ProjectCard extends PureComponent<Props, State> {
             id={projectId}
             label=""
             disabled={!enabled}
-            buttonColor={colors.success}
+            buttonColor={colors.clGreen}
           />
         </Container>
       );

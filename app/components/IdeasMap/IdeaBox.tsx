@@ -136,7 +136,7 @@ export default class IdeaBox extends React.PureComponent<Props, State> {
               {this.props.onClose && <CloseButton onClick={this.props.onClose} icon="close" circular basic />}
               <Title><T value={idea.attributes.title_multiloc} /></Title>
               <Description>
-                <T as="div" value={idea.attributes.body_multiloc} />
+                <T as="div" value={idea.attributes.body_multiloc} supportHtml />
               </Description>
               <VoteComments>
                 {!showFooter &&

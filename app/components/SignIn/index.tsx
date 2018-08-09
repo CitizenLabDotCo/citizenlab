@@ -62,7 +62,19 @@ const FormElement = styled.div`
   position: relative;
 `;
 
-const PasswordInput = styled(Input)`
+const StyledInput = styled(Input)`
+  input {
+    &::placeholder {
+      color: ${color('clGrey')}
+    }
+
+    &:focus::placeholder {
+      color #aaa
+    }
+  }
+`;
+
+const PasswordInput = styled(StyledInput)`
   input {
     padding-right: 100px;
   }
@@ -327,7 +339,8 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
 
           <Form id="signin" onSubmit={this.handleOnSubmit} noValidate={true}>
             <FormElement>
-              <Input
+              <StyledInput
+                ariaLabel={formatMessage(messages.emailPlaceholder)}
                 type="email"
                 id="email"
                 value={email}
@@ -340,6 +353,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
 
             <FormElement>
               <PasswordInput
+                ariaLabel={formatMessage(messages.passwordPlaceholder)}
                 type="password"
                 id="password"
                 value={password}

@@ -1,13 +1,15 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 
-// Services & Resources
-import { IProjectData } from 'services/projects';
+// Services
 import { isProjectModerator } from 'services/permissions/roles';
+
+// Resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // Components
 import Icon from 'components/UI/Icon';
+import ContentContainer from 'components/ContentContainer';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -16,75 +18,83 @@ import messages from './messages';
 // Style
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { rgba } from 'polished';
+import { rgba, darken } from 'polished';
 
-const ModeratorInfo = styled.p`
-  align-items: center;
-  background: ${rgba(colors.draftYellow, .1)};
-  border-radius: 5px;
-  color: ${colors.draftYellow};
+const Container = styled.div`
   display: flex;
-  justify-content: center;
-  margin: .5rem auto 1rem auto;
-  padding: 1rem;
+  align-items: center;
+  background: ${rgba(colors.draftYellow, .05)};
+  padding: 16px;
+  border-radius: 5px;
+  margin-top: 15px;
+`;
 
-  svg {
-    width: 1.5rem;
-    margin: 0 1rem;
+const StyledIcon = styled(Icon)`
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  fill: ${colors.draftYellow};
+  padding: 0px;
+  margin: 0px;
+  margin-right: 12px;
+`;
+
+const Text = styled.div`
+  color: ${colors.draftYellow};
+  font-size: 16px;
+  line-height: 21px;
+  font-weight: 400;
+
+  a {
+    color: ${colors.draftYellow};
+    font-weight: 400;
+    text-decoration: underline;
+
+    &:hover {
+      color: ${darken(0.15, colors.draftYellow)};
+    }
+  }
+
+  strong {
+    font-weight: 600;
   }
 `;
 
-// Typings
-export interface InputProps {
-  projectId: IProjectData['id'];
-  displayType?: 'icon' | 'message';
-  className?: string;
+interface InputProps {
+  projectId: string;
 }
+
 interface DataProps {
-  user: GetAuthUserChildProps;
+  authUser: GetAuthUserChildProps;
 }
 
-export interface State {}
+interface Props extends InputProps, DataProps {}
 
-export class ProjectModIndicator extends React.PureComponent<InputProps & DataProps, State> {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+interface State {}
 
+class ProjectModeratorIndicator extends PureComponent<Props, State> {
   render() {
-    const { user, projectId, displayType, className } = this.props;
+    const { authUser, projectId } = this.props;
 
-    if (user && projectId && isProjectModerator({ data: user }, projectId)) {
-      let component;
-
-      switch (displayType) {
-        case 'message':
-          component = (
-            <ModeratorInfo className={className}>
-              <Icon name="shield" />
+    if (authUser && projectId && isProjectModerator({ data: authUser }, projectId)) {
+      return (
+        <ContentContainer className={this.props['className']}>
+          <Container>
+            <StyledIcon name="shield" />
+            <Text>
               <FormattedMessage {...messages.projectModeratorIndicator} />
-            </ModeratorInfo>
-          );
-          break;
-
-        case 'icon':
-        default:
-          component = (
-            <Icon name="shield" className={className} title={<FormattedMessage {...messages.projectModeratorIndicator} />} />
-          );
-          break;
-      }
-
-      return component;
+            </Text>
+          </Container>
+        </ContentContainer>
+      );
     }
 
     return null;
   }
 }
 
-export default (props: InputProps) => (
-  <GetAuthUser {...props}>
-    {user => <ProjectModIndicator user={user} {...props}/>}
+export default ({ projectId }: InputProps) => (
+  <GetAuthUser>
+    {authUser => <ProjectModeratorIndicator authUser={authUser} projectId={projectId} />}
   </GetAuthUser>
 );

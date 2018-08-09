@@ -30,7 +30,7 @@ const PhaseWrapper = styled.p`
   margin: 0;
 
   &.current {
-    color: ${color('success')};
+    color: ${color('clGreen')};
   }
 `;
 
