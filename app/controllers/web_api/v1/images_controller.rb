@@ -1,12 +1,13 @@
 class WebApi::V1::ImagesController < ApplicationController
 
-  before_action :set_container
+  before_action :set_container, only: [:index, :create]
   before_action :set_image, only: [:show, :update, :destroy]
   skip_after_action :verify_policy_scoped
 
   def index
-    authorize @container, :images_index?
     @images = @container.send("#{container_association}_images").order(:ordering)
+    policy_scope_class = "#{params['image_class'].name}Policy::Scope".constantize
+    @images = policy_scope_class.new(current_user, @images).resolve
     render json: @images, each_serializer: WebApi::V1::ImageSerializer
   end
 
@@ -15,8 +16,8 @@ class WebApi::V1::ImagesController < ApplicationController
   end
 
   def create
-    authorize @container
     @image = @container.send("#{container_association}_images").create(image_params)
+    authorize @image
     if @image.save
       render json: @image, status: :created, serializer: WebApi::V1::ImageSerializer
     else
@@ -41,6 +42,7 @@ class WebApi::V1::ImagesController < ApplicationController
     end
   end
 
+
   private
 
   def secure_controller?
@@ -50,14 +52,13 @@ class WebApi::V1::ImagesController < ApplicationController
   def image_params
     params.require(:image).permit(
       :image,
-      :ordering,
-      "#{container_association}_id".to_sym
+      :ordering
     )
   end
 
   def set_image
     @image = params['image_class'].find(params[:id])
-    authorize @container
+    authorize @image
   end
 
   def set_container

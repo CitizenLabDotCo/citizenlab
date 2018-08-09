@@ -2,6 +2,8 @@ class WebApi::V1::VotesController < ApplicationController
   before_action :set_vote, only: [:show, :destroy]
   before_action :set_votable_type_and_id, only: [:index, :create, :up, :down]
 
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   def index
     @votes = policy_scope(Vote)
       .where(votable_type: @votable_type, votable_id: @votable_id)
@@ -111,4 +113,15 @@ class WebApi::V1::VotesController < ApplicationController
   def secure_controller?
     false
   end
+
+  def user_not_authorized exception
+    pcs = ParticipationContextService.new
+    reason = pcs.voting_disabled_reason(exception.record.votable, exception.record.user) || pcs.cancelling_votes_disabled_reason(exception.record.votable, exception.record.user)
+    if reason
+      render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized
+      return
+    end
+    render json: { errors: { base: [{ error: 'Unauthorized!' }] } }, status: :unauthorized
+  end
+
 end
