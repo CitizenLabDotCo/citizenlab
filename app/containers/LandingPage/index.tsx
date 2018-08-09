@@ -239,7 +239,7 @@ const SectionTitle = styled.h2`
 
   ${media.smallerThanMaxTablet`
     width: 100%;
-    font-size: 26px;
+    font-size: ${fontSizes.xxl}px;
     line-height: 30px;
   `}
 `;
