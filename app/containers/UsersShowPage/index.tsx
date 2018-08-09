@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { isEmpty } from 'lodash';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -20,7 +20,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, quillEditedContent } from 'utils/styleUtils';
+import { media, colors, quillEditedContent } from 'utils/styleUtils';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
@@ -39,7 +39,7 @@ const StyledContentContainer = styled(ContentContainer)`
   flex: 1 1 auto;
   padding-top: 40px;
   padding-bottom: 100px;
-  background: #f9f9fa;
+  background: ${colors.background};
 
   ${media.phone`
     padding-top: 0px;
@@ -79,7 +79,7 @@ const JoinedAt = styled.div`
   font-size: 18px;
   font-weight: 400;
   text-align: center;
-  color: #7e7e7e;
+  color: ${colors.clGreyOnGreyBackground};
 `;
 
 const Bio = styled.div`
@@ -99,17 +99,17 @@ const UserIdeas = styled.div`
   justify-content: center;
 `;
 
-interface InputProps { }
+interface InputProps {}
 
 interface DataProps {
   user: GetUserChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
-class UsersShowPage extends React.PureComponent<Props, State> {
+class UsersShowPage extends PureComponent<Props, State> {
   render() {
     const { user } = this.props;
 

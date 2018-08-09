@@ -78,7 +78,7 @@ const StyledPopover = styled(Popover) `
   z-index: 5;
 
   .Ideas-icon .cl-icon-primary, .Ideas-icon .cl-icon-secondary {
-    fill: ${colors.label} !important;
+    fill: ${colors.clGrey};
   }
 
   .Ideas-icon .cl-icon-accent {
@@ -86,14 +86,15 @@ const StyledPopover = styled(Popover) `
   }
 `;
 
-const PopoverItem = styled(Button) `
-  background: #fff;
-  border-radius: 5px;
-  transition: all 80ms ease-out;
-
-  &:hover,
-  &:focus {
-    background: #f6f6f6;
+const PopoverItem = styled(Button)`
+  &.Button.button {
+    font-size: 17px;
+  }
+  a:not(.processing):focus,
+  button:not(.processing):focus,
+  a:not(.processing):hover,
+  button:not(.processing):hover {
+    background: ${colors.clDropdownHoverBackground};
   }
 `;
 
@@ -174,7 +175,6 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                 iconPos="right"
                 iconSize="20px"
                 padding="11px 11px"
-                size="2"
                 justify="space-between"
               >
                 <FormattedMessage {...messages.admin} />
@@ -192,7 +192,6 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                     iconPos="right"
                     iconSize="20px"
                     padding="11px 11px"
-                    size="2"
                     justify="space-between"
                   >
                     <FormattedMessage {...messages.projectsModeration} />
@@ -206,11 +205,10 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               linkTo={`/profile/${userSlug}`}
               onClick={this.closePopover}
               style="text"
-              icon="ideas"
+              icon="ideas2"
               iconPos="right"
               iconSize="20px"
               padding="11px 11px"
-              size="2"
               justify="space-between"
             >
               <FormattedMessage {...messages.myIdeas} />
@@ -225,7 +223,6 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               iconPos="right"
               iconSize="20px"
               padding="11px 11px"
-              size="2"
               justify="space-between"
             >
               <FormattedMessage {...messages.editProfile} />
@@ -239,7 +236,6 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               iconPos="right"
               iconSize="20px"
               padding="11px 11px"
-              size="2"
               justify="space-between"
             >
               <FormattedMessage {...messages.signOut} />

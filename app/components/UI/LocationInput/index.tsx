@@ -8,7 +8,7 @@ const LocationInputWrapper = styled.div`
   input {
     width: 100%;
     color: #333;
-    font-size: 17px;
+    font-size: 16px;
     line-height: 26px;
     font-weight: 400;
     padding: 12px;

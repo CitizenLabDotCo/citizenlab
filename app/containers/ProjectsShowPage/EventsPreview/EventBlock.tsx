@@ -62,7 +62,7 @@ const Date = styled.div`
   padding-top: 10px;
   padding-bottom: 10px;
   border-radius: 5px 5px 0 0;
-  background: #F64A00;
+  background: #DF3300;
 `;
 
 const Year = styled.div`

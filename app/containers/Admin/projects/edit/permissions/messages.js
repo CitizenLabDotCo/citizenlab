@@ -29,13 +29,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.noSelectedGroupsMessage',
     defaultMessage: `Select one or more groups that can access this project`,
   },
-  addGroup: {
-    id: 'app.containers.AdminPage.groups.permissions.addGroup',
-    defaultMessage: 'Add group(s)',
+  add: {
+    id: 'app.containers.AdminPage.groups.permissions.add',
+    defaultMessage: 'Add',
   },
   groupsMultipleSelectPlaceholder: {
     id: 'app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder',
-    defaultMessage: 'Select group(s)',
+    defaultMessage: 'Select one or more groups',
   },
   members: {
     id: 'app.containers.AdminPage.groups.permissions.members',

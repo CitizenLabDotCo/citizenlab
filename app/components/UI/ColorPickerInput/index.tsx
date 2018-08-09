@@ -1,7 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import Input, { Props as InputProps } from 'components/UI/Input';
-import { ChromePicker } from 'react-color';
+
+// components
+import { ChromePicker, ColorResult } from 'react-color';
+import Input from 'components/UI/Input';
 
 const Container = styled.div`
   position: relative;
@@ -50,7 +52,11 @@ const Cover = styled.div`
   left: 0px;
 `;
 
-interface Props extends InputProps {}
+interface Props {
+  type: 'text';
+  value: string;
+  onChange: (arg: string) => void;
+}
 
 interface State {
   opened: boolean;
@@ -74,8 +80,9 @@ class ColorPickerInput extends React.Component<Props, State> {
     this.setState({ opened: false });
   }
 
-  change = (colorDescriptor) => {
-    if (this.props.onChange) this.props.onChange(colorDescriptor.hex);
+  change = (ColorDescription: ColorResult) => {
+    const hexColor = ColorDescription.hex;
+    if (this.props.onChange) this.props.onChange(hexColor);
   }
 
   render() {
@@ -88,7 +95,7 @@ class ColorPickerInput extends React.Component<Props, State> {
             <Cover onClick={this.close} />
             <ChromePicker
               disableAlpha={true}
-              color={this.props.value}
+              color={this.props.value || undefined}
               onChange={this.change}
               onChangeComplete={this.change}
             />
@@ -100,8 +107,10 @@ class ColorPickerInput extends React.Component<Props, State> {
             color={this.props.value}
           />
           <StyledInput
-            {...this.props}
+            type="text"
+            value={this.props.value}
             onFocus={this.open}
+            spellCheck={false}
           />
         </InputWrapper>
       </Container>
