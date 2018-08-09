@@ -26,6 +26,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // style
 import styled from 'styled-components';
 import { darken, hideVisually } from 'polished';
+import { fontSizes } from 'utils/styleUtils';
 
 const CommentContainer = styled.form`
   padding-left: 0px;

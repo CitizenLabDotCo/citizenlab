@@ -29,6 +29,7 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 // style
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
+import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   padding: 0;

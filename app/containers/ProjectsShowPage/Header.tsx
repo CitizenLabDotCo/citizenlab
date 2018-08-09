@@ -133,7 +133,7 @@ const HeaderButtonIcon = styled(Icon)`
 
 const HeaderButtonText = styled.div`
   color: rgba(255, 255, 255, 0.6);
-  font-size: 17px;
+  font-size: ${fontSizes.medium}px;
   font-weight: 400;
   text-decoration: none;
   white-space: nowrap;
