@@ -26,6 +26,7 @@ import { AUTH_PATH } from 'containers/App/constants';
 
 // style
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 // logos
 const googleLogo = require('./google.svg') as string;
@@ -84,7 +85,7 @@ const SocialSignInButton = styled.div`
 
   span {
     color: #707075 !important;
-    font-size: 15px;
+    font-size: ${fontSizes.base};
     font-weight: 400;
     line-height: 18px;
   }

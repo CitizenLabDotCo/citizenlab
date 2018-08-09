@@ -14,7 +14,7 @@ import { getIsoDate } from 'utils/dateUtils';
 
 // Styling
 import styled from 'styled-components';
-import { color, fontSize, media } from 'utils/styleUtils';
+import { color, fontSize, fontSizes, media } from 'utils/styleUtils';
 
 const Container = styled(Link)`
   width: calc(100% * (1/3) - 26px);
@@ -68,7 +68,7 @@ const Date = styled.div`
 const Year = styled.div`
   width: 100%;
   color: #fff;
-  font-size: 15px;
+  font-size: ${fontSizes.base};
   font-weight: 300;
   text-align: center;
   padding-top: 10px;

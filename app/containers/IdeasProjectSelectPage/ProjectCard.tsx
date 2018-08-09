@@ -20,7 +20,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -116,7 +116,7 @@ const ProjectTitle = styled.h3`
 
 const PostingDisabledReason = styled.div`
   color: black;
-  font-size: 15px;
+  font-size: ${fontSizes.base};
   line-height: 21px;
   font-weight: 300;
   margin-top: 10px;
@@ -124,7 +124,7 @@ const PostingDisabledReason = styled.div`
 
 const PostingEnabledReason = styled.div`
   color: ${colors.clGrey};
-  font-size: 15px;
+  font-size: ${fontSizes.base};
   line-height: 21px;
   font-weight: 300;
   overflow: hidden;
