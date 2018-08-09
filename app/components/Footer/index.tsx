@@ -109,7 +109,7 @@ const PagesNav = styled.nav`
 const StyledLink = styled(Link) `
   color: ${color('clGrey')};
   font-weight: 400;
-  font-size: 14px;
+  font-size: ${fontSizes.small};
   line-height: 19px;
   text-decoration: none;
 
@@ -148,7 +148,7 @@ const CitizenLabLogo = styled(Icon) `
 const PoweredBy = styled.a`
   color: ${color('clGrey')};
   font-weight: 300;
-  font-size: 14px;
+  font-size: ${fontSizes.small};
   line-height: 19px;
   text-decoration: none;
   display: flex;

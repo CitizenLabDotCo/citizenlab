@@ -367,7 +367,7 @@ const AuthorName = styled(Link) `
   }
 
   ${media.smallerThanMaxTablet`
-    font-size: 14px;
+    font-size: ${fontSizes.small};
     line-height: 18px;
   `}
 `;
