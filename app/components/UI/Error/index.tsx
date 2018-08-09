@@ -9,7 +9,7 @@ import { darken } from 'polished';
 import { API, Message } from 'typings';
 import { IInviteError } from 'services/invites';
 import messages from './messages';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 interface IStyledErrorMessageInner {
   showBackground: boolean;
@@ -163,7 +163,7 @@ const ErrorListItem = styled.li`
 
     :before {
       content: '•';
-      font-size: 24px;
+      font-size: ${fontSizes.xxl}px;
       font-weight: 500;
       margin-right: 10px;
     }

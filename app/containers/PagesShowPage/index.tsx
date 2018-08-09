@@ -106,7 +106,7 @@ const PageDescription = styled.div`
   }
 
   h3 {
-    font-size: 24px;
+    font-size: ${fontSizes.xxl}px;
     line-height: 30px;
     font-weight: 600;
   }

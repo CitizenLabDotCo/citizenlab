@@ -78,7 +78,7 @@ const ProjectDescriptionStyled = styled.div`
   }
 
   h2 {
-    font-size: 24px;
+    font-size: ${fontSizes.xxl}px;
     line-height: 29px;
     font-weight: 600;
   }

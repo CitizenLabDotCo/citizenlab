@@ -434,7 +434,7 @@ const IdeaBody = styled.div`
 
 const CommentsTitle = styled.h2`
   color: ${colors.text};
-  font-size: 24px;
+  font-size: ${fontSizes.xxl}px;
   line-height: 38px;
   font-weight: 500;
   margin: 0;
