@@ -164,6 +164,7 @@ export const fontSizes = {
   xs: 12,
   small: 14,
   base: 16,
+  medium: 17,
   large: 18,
   xl: 21,
   xxl: 25,
