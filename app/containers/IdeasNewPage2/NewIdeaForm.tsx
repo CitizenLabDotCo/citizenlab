@@ -20,7 +20,7 @@ import messages from './messages';
 import { IOption, ImageFile } from 'typings';
 
 // style
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -52,7 +52,7 @@ const Title = styled.h2`
   padding-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
-    font-size: 28px;
+    font-size: ${fontSizes.xxxl}px;
     line-height: 34px;
   `}
 `;

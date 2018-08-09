@@ -188,7 +188,7 @@ const IdeaTitle = styled.h1`
   padding: 0;
 
   ${media.smallerThanMaxTablet`
-    font-size: 28px;
+    font-size: ${fontSizes.xxxl}px;
     line-height: 34px;
     margin-right: 12px;
   `}

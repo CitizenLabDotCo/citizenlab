@@ -82,7 +82,7 @@ const PageTitle = styled.h1`
   padding-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
-    font-size: 28px;
+    font-size: ${fontSizes.xxxl};
     line-height: 34px;
   `}
 `;

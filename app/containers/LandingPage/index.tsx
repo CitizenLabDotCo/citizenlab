@@ -228,7 +228,7 @@ const SectionHeader = styled.div`
 
 const SectionTitle = styled.h2`
   color: #333;
-  font-size: 28px;
+  font-size: ${fontSizes.xxxl}px;
   line-height: 32px;
   font-weight: 500;
   white-space: normal;
