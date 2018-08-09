@@ -200,6 +200,7 @@
   "dependencies": {
     "@segment/snippet": "^4.0.1",
     "@typeform/embed": "0.4.2",
+    "@types/react-select": "^2.0.2",
     "ajv": "^6.5.1",
     "babel-polyfill": "6.26.0",
     "bowser": "1.9.4",
