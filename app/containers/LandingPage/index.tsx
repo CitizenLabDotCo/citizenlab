@@ -143,7 +143,7 @@ const HeaderTitle: any = styled.h1`
   `}
 
   ${media.smallerThanMinTablet`
-    font-size: 34px;
+    font-size: ${fontSizes.xxxxl}px;
     line-height: 39px;
   `}
 `;

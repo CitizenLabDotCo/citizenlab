@@ -181,7 +181,7 @@ const Header = styled.div`
 const IdeaTitle = styled.h1`
   width: 100%;
   color: #444;
-  font-size: 32px;
+  font-size: ${fontSizes.xxxxl}px;
   font-weight: 500;
   line-height: 38px;
   margin: 0;
