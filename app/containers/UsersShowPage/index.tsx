@@ -69,7 +69,7 @@ const JoinedAt = styled.div`
 `;
 
 const Bio = styled.div`
-  font-size: 20px;
+  font-size: ${fontSizes.xl}px;
   line-height: 1.25;
   color: #6b6b6b;
   max-width: 600px;

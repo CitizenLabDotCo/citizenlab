@@ -139,7 +139,7 @@ const HeaderTitle = styled.div`
   margin-right: 20px;
 
   ${media.smallerThanMaxTablet`
-    font-size: 20px;
+    font-size: ${fontSizes.xl}px;
     line-height: 24px;
   `}
 `;
