@@ -6,6 +6,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -21,7 +22,7 @@ const Slogan = styled.div`
   width: 100%;
   max-width: 400px;
   color: ${props => props.theme.colorMain || '#333'};
-  font-size: 34px;
+  font-size: ${fontSizes.xxxxl}px;
   line-height: 44px;
   font-weight: 600;
   position: sticky;

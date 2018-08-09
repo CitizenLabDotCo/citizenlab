@@ -40,9 +40,9 @@ const Container = styled.div`
   `}
 `;
 
-const Title = styled.h2`
+const Title = styled.h1`
   color: #333;
-  font-size: 34px;
+  font-size: ${fontSizes.xxxxl}px;
   line-height: 40px;
   font-weight: 500;
   text-align: center;
