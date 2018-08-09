@@ -23,9 +23,9 @@ import { rgba, darken } from 'polished';
 const Container = styled.div`
   display: flex;
   align-items: center;
+  background: ${rgba(colors.draftYellow, .05)};
   padding: 16px;
   border-radius: 5px;
-  background: ${rgba(colors.draftYellow, .15)};
   margin-top: 15px;
 `;
 

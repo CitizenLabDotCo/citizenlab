@@ -14,7 +14,6 @@ import { IUser } from 'services/users';
 
 // style
 import styled from 'styled-components';
-import { darken } from 'polished';
 import { colors } from 'utils/styleUtils';
 
 // i18n
@@ -34,48 +33,40 @@ const Container = styled.div`
 `;
 
 const OpenMenuButton = styled.button`
-  width: 28px;
-  height: 28px;
-  background: none;
-  border-radius: 50%;
-  border: 0;
-  border: 1px solid transparent;
-  cursor: pointer;
-  padding: 0;
-  transition: all .2s;
-
-  /*
   padding: 0;
   transition: all .2s;
   display: flex;
   flex-direction: row;
   align-items: center;
-  color: ${colors.label};
+  color: ${colors.clGrey};
   max-width: 150px;
-  */
+  cursor: pointer;
 
   svg {
-    fill: ${colors.label};
+    fill: ${colors.clGrey};
   }
 
-  &:hover,
-  &:focus {
-    color: ${darken(0.2, colors.label)};
-    svg, img {
-      border-color: ${darken(0.2, colors.label)};
-    }
-    svg {
-      fill: ${darken(0.2, colors.label)};
-    }
-  }
   span {
     margin-top: 2px;
     margin-right: 5px;
     text-align: right;
   }
+
+  &:hover,
+  &:focus {
+    border-color: ${colors.clGreyHover};
+
+    svg {
+      fill: ${colors.clGreyHover};
+    }
+
+    span {
+      color: ${colors.clGreyHover};
+    }
+  }
 `;
 
-const StyledAvatar = styled(Avatar) `
+const StyledAvatar = styled(Avatar)`
   height: 28px;
   width: 28px;
   svg, img {
@@ -86,7 +77,7 @@ const StyledAvatar = styled(Avatar) `
     border-radius: 50%;
   }
   svg {
-    fill: ${colors.label};
+    fill: ${colors.clGrey};
   }
 `;
 
@@ -95,21 +86,22 @@ const StyledPopover = styled(Popover) `
   flex-direction: column;
   z-index: 5;
   .Ideas-icon .cl-icon-primary, .Ideas-icon .cl-icon-secondary {
-    fill: ${colors.label} !important;
+    fill: ${colors.clGrey};
   }
   .Ideas-icon .cl-icon-accent {
     fill: transparent !important;
   }
 `;
 
-const PopoverItem = styled(Button) `
-  background: #fff;
-  border-radius: 5px;
-  transition: all 80ms ease-out;
-
-  &:hover,
-  &:focus {
-    background: #f6f6f6;
+const PopoverItem = styled(Button)`
+  &.Button.button {
+    font-size: 17px;
+  }
+  a:not(.processing):focus,
+  button:not(.processing):focus,
+  a:not(.processing):hover,
+  button:not(.processing):hover {
+    background: ${colors.clDropdownHoverBackground};
   }
 `;
 
@@ -188,7 +180,6 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                 iconPos="right"
                 iconSize="20px"
                 padding="11px 11px"
-                size="2"
                 justify="space-between"
               >
                 <FormattedMessage {...messages.admin} />
@@ -206,7 +197,6 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                     iconPos="right"
                     iconSize="20px"
                     padding="11px 11px"
-                    size="2"
                     justify="space-between"
                   >
                     <FormattedMessage {...messages.projectsModeration} />
@@ -220,11 +210,10 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               linkTo={`/profile/${userSlug}`}
               onClick={this.closePopover}
               style="text"
-              icon="ideas"
+              icon="ideas2"
               iconPos="right"
               iconSize="20px"
               padding="11px 11px"
-              size="2"
               justify="space-between"
             >
               <FormattedMessage {...messages.myIdeas} />
@@ -239,7 +228,6 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               iconPos="right"
               iconSize="20px"
               padding="11px 11px"
-              size="2"
               justify="space-between"
             >
               <FormattedMessage {...messages.editProfile} />
@@ -253,7 +241,6 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               iconPos="right"
               iconSize="20px"
               padding="11px 11px"
-              size="2"
               justify="space-between"
             >
               <FormattedMessage {...messages.signOut} />

@@ -29,13 +29,13 @@ const AvatarImage = styled.img`
 
 const AvatarIcon = styled(Icon)`
   height: 100%;
-  fill: ${(props) => props.theme.colors.label};
-  fill: ${(props) => lighten(0.2, props.theme.colors.label)};
+  fill: ${(props) => props.theme.colors.clGrey};
+  fill: ${(props) => lighten(0.2, props.theme.colors.clGrey)};
   transition: all 100ms ease-out;
 
   ${(props: any) => props.isClickable && css`
     &:hover {
-      fill: ${(props: any) => darken(0.2, props.theme.colors.label)};
+      fill: ${(props: any) => darken(0.2, props.theme.colors.clGrey)};
     }`
   }
 `;
@@ -50,7 +50,7 @@ const Container: any = styled.div`
 
   ${(props: any) => props.isClickable && css`
     &:hover ${AvatarIcon} {
-      fill: ${(props) => darken(0.2, props.theme.colors.label)};
+      fill: ${(props) => darken(0.2, props.theme.colors.clGrey)};
     }
 
     &:hover ${AvatarImage} {

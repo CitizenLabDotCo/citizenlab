@@ -30,7 +30,7 @@ import messages from './messages';
 
 // styles
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
 
 // typings
 import { IModalInfo } from 'containers/App';
@@ -55,7 +55,7 @@ const IdeaContent = styled.div`
   padding-top: 15px;
 `;
 
-const IdeaTitle: any = styled.h4`
+const IdeaTitle: any = styled.h3`
   color: #333;
   display: block;
   display: -webkit-box;
@@ -87,14 +87,14 @@ const Footer = styled.div`
 const StyledVoteControl = styled(VoteControl)``;
 
 const CommentIcon = styled(Icon)`
-  fill: ${colors.label};
+  fill: ${(props) => props.theme.colors.clGrey};
   height: 21px;
   margin-right: 7px;
   width: 30px;
 `;
 
 const CommentCount = styled.div`
-  color: ${colors.label};
+  color: ${(props) => props.theme.colors.clGrey};
   font-size: 16px;
   font-weight: 400;
 `;

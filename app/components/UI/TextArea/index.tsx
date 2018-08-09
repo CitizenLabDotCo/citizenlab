@@ -41,11 +41,11 @@ const Container: any = styled.div`
     }
 
     &.error {
-      border-color: ${color('error')} !important;
+      border-color: ${color('clRedError')} !important;
 
       &:hover,
       &:focus {
-        border-color: ${color('error')} !important;
+        border-color: ${color('clRedError')} !important;
       }
     }
   }
@@ -60,7 +60,7 @@ const CharacterCount = styled.p`
   right: 0;
 
   &.error {
-    color: ${color('error')};
+    color: ${color('clRedError')};
   }
 `;
 

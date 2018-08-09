@@ -16,25 +16,25 @@ const StyledIcon = styled(Icon)`
   flex: 0 0 24px;
   width: 24px;
   height: 24px;
-  fill: ${colors.clBlueDark};
+  fill: ${colors.clBlueDarker};
   padding: 0px;
   margin: 0px;
   margin-right: 12px;
 `;
 
 const Text = styled.div`
-  color: ${colors.clBlueDark};
+  color: ${colors.clBlueDarker};
   font-size: 16px;
   line-height: 21px;
   font-weight: 400;
 
   a {
-    color: ${colors.clBlueDark};
+    color: ${colors.clBlueDarker};
     font-weight: 400;
     text-decoration: underline;
 
     &:hover {
-      color: ${darken(0.15, colors.clBlueDark)};
+      color: ${darken(0.15, colors.clBlueDarker)};
     }
   }
 

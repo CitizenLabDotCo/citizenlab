@@ -72,19 +72,63 @@ export function remCalc(desiredSize: number) {
   return `${(desiredSize / fontSizes.small).toString().substring(0, 6).trim()}rem`;
 }
 
+export function calculateContrastRatio(backgroundColor: number[], textColor: number[]) {
+  function luminanace(r: number, g: number, b: number) {
+    const a: any = [r, g, b].map((val: number) => {
+      let v = val;
+      v /= 255;
+
+      return v <= 0.03928
+          ? v / 12.92
+          : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+  }
+
+  const contrastRatio = (luminanace(backgroundColor[0], backgroundColor[1], backgroundColor[2]) + 0.05)
+  / (luminanace(textColor[0], textColor[1], textColor[2]) + 0.05);
+
+  return contrastRatio;
+}
+
+export function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+  } : null;
+}
+
 export const colors = {
-  text: '#333',
-  title: '#0E0E0E',
+  text: '#222',
+  placeholder: '#aaa',
+  clBlue: '#008292',
+  // first grey to pass the 4.50 contrast ratio on a white background
+  clGrey: '#767676',
+  // this is the first grey to get 4.5 on the light greyish background we often use (#f9f9fa)
+  clGreyOnGreyBackground: '#737373',
+  // hover color used for clGrey (e.g. in the navbar)
+  clGreyHover: '#222',
+  // background color of dropdown items (e.g. in the navbar)
+  clDropdownHoverBackground: '#e9e9e9',
+  clGreen: '#04884C',
+  // darker green than clGreen for when we have a light green background (clGreenSuccessBackground)
+  clGreenSuccess: '#008040',
+  clGreenSuccessBackground: '#e4f7ef',
+  clRed: '#E52516',
+  // darker red than clRed for when we have a light red background (clRedSuccessBackground)
+  clRedError: '#D61607',
+  clRedErrorBackground: '#fde9e8',
   darkClGreen: '#004949',
   success: '#32B67A',
   error: '#FC3C2D',
-  label: '#5C6E7D',
-  draftYellow: '#c3a14d',
+  label: '#596B7A',
+  draftYellow: '#8C680D',
   mediumGrey: '#BDBDBD',
   lightGreyishBlue: '#EBEDEF',
   separation: '#EAEAEA',
   background: '#F9F9FA',
-  clBlue: '#01A1B1',
   clBlueDark: '#147985',
   clBlueDarkBg: '#d3ecf0',
   clBlueDarker: '#0A5159',
