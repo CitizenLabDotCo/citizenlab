@@ -81,7 +81,7 @@ const DropdownFooterButton = styled.button`
   width: 100%;
   height: 50px;
   color: #fff;
-  font-size: 18px;
+  font-size: ${fontSizes.large}px;
   font-weight: 400;
   text-align: center;
   display: flex;

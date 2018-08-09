@@ -223,7 +223,7 @@ const EmptyMessage = styled.div`
 
 const EmptyMessageLine = styled.div`
   color: #999;
-  font-size: 18px;
+  font-size: ${fontSizes.large}px;
   font-weight: 400;
   line-height: 22px;
   text-align: center;
