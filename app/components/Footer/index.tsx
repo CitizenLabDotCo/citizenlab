@@ -58,7 +58,7 @@ const TenantSlogan = styled.div`
   width: 100%;
   max-width: 340px;
   color: #444;
-  font-size: 20px;
+  font-size: ${fontSizes.xl}px;
   font-weight: 500;
   line-height: 28px;
   text-align: center;

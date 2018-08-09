@@ -136,7 +136,7 @@ const EventTime = styled.div`
 
 const EventTitle = styled.div`
   color: #333;
-  font-size: 20px;
+  font-size: ${fontSizes.xl}px;
   line-height: 23px;
   margin-top: 10px;
   margin-bottom: 20px;

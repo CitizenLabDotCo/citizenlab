@@ -108,7 +108,7 @@ const ProjectContent = styled.div`
 
 const ProjectTitle = styled.h3`
   color: #333;
-  font-size: 20px;
+  font-size: ${fontSizes.xl}px;
   line-height: 25px;
   font-weight: 400;
   margin: 0;

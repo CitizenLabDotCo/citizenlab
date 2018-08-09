@@ -36,7 +36,7 @@ import { getLocalized } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 
 const Container: any = styled.div`
   height: 100%;
@@ -170,7 +170,7 @@ const HeaderSubtitle: any = styled.h2`
   border-bottom: solid 1px transparent;
 
   ${media.smallerThanMinTablet`
-    font-size: 20px;
+    font-size: ${fontSizes.xl}px;
     font-weight: 300;
     line-height: 26px;
     margin-top: 15px;
