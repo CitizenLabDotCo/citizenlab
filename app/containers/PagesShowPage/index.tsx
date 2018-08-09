@@ -112,7 +112,7 @@ const PageDescription = styled.div`
   }
 
   h4 {
-    font-size: 21px;
+    font-size: ${fontSizes.xl}px;
     line-height: 27px;
     font-weight: 600;
   }

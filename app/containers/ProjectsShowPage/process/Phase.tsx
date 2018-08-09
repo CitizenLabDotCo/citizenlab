@@ -31,7 +31,7 @@ const Information = styled.div`
 
 const InformationTitle = styled.h2`
   color: #333;
-  font-size: 21px;
+  font-size: ${fontSizes.xl}px;
   font-weight: 600;
 `;
 

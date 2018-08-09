@@ -127,7 +127,7 @@ const RightColumn = Column.extend`
 
 const ColumnTitle = styled.h2`
   color: #333;
-  font-size: 21px;
+  font-size: ${fontSizes.xl}px;
   font-weight: 500;
   line-height: 26px;
   margin: 0;
