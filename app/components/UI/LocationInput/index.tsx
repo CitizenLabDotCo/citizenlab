@@ -37,7 +37,7 @@ const LocationInputWrapper = styled.div`
 const StyledAutocompleteItem = styled.div`
   width: 100%;
   color: #999;
-  font-size: 17px;
+  font-size: ${fontSizes.base}px;
   line-height: 17px;
   font-weight: 400;
   padding: 12px;

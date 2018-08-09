@@ -26,7 +26,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -112,7 +112,7 @@ const StyledSearchInput = styled(SearchInput)`
   width: 300px;
 
   input {
-    font-size: 18px;
+    font-size: ${fontSizes.base}px;
     font-weight: 400;
   }
 

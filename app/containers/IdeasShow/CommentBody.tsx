@@ -22,7 +22,7 @@ import { colors } from 'utils/styleUtils';
 
 const CommentWrapper = styled.div`
   color: ${colors.text};
-  font-size: 17px;
+  font-size: ${fontSizes.base}px;
   line-height: 25px;
   font-weight: 300;
   word-break: break-word;

@@ -41,7 +41,7 @@ const HiddenLabel = styled.span`
 const StyledTextArea = styled(MentionsTextArea)`
   .textareaWrapper__highlighter,
   textarea {
-    font-size: 17px !important;
+    font-size: ${fontSizes.base}px !important;
     line-height: 25px !important;
     font-weight: 300 !important;
     padding: 12px 20px !important;
