@@ -70,7 +70,7 @@ const EventDates = styled.div`
 
 const EventDate = styled.div`
   color: #fff;
-  font-size: 24px;
+  font-size: 25px;
   line-height: 27px;
   font-weight: 500;
   display: flex;
@@ -81,7 +81,7 @@ const EventDate = styled.div`
 
 const EventDatesSeparator = styled.div`
   color: #fff;
-  font-size: 23px;
+  font-size: ${fontSizes.xxl}px;
   line-height: 27px;
   font-weight: 500;
   text-align: center;

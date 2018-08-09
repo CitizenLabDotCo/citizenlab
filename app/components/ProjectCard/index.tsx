@@ -155,7 +155,7 @@ const ArchivedLabel = styled.span`
 
 const ProjectTitle = styled.h3`
   color: #333;
-  font-size: 23px;
+  font-size: ${fontSizes.xxl}px;
   line-height: 29px;
   font-weight: 500;
   margin: 0;
