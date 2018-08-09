@@ -70,7 +70,7 @@ const EventDates = styled.div`
 
 const EventDate = styled.div`
   color: #fff;
-  font-size: 25px;
+  font-size: ${fontSizes.xxl}px;
   line-height: 27px;
   font-weight: 500;
   display: flex;
