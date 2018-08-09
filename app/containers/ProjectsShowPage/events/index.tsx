@@ -24,7 +24,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const EventsContainer = styled(ContentContainer)`
   background: #f9f9fa;
@@ -47,7 +47,7 @@ const EventList = styled.div``;
 
 const NoEvents = styled.div`
   color: ${colors.clGreyOnGreyBackground};
-  font-size: 18px;
+  font-size: ${fontSizes.large}px;
   font-weight: 300;
   line-height: 26px;
 `;

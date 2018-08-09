@@ -19,7 +19,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, colors, quillEditedContent } from 'utils/styleUtils';
+import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
 
 const StyledContentContainer = styled(ContentContainer)`
   flex: 1;
@@ -62,7 +62,7 @@ const FullName = styled.div`
 const JoinedAt = styled.div`
   width: 100%;
   margin-top: 15px;
-  font-size: 18px;
+  font-size: ${fontSizes.large}px;
   font-weight: 400;
   text-align: center;
   color: ${colors.clGreyOnGreyBackground};

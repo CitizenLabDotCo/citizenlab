@@ -31,7 +31,7 @@ import messages from './messages';
 // styling
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { media, colors, quillEditedContent } from 'utils/styleUtils';
+import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
@@ -89,7 +89,7 @@ const PageTitle = styled.h1`
 
 const PageDescription = styled.div`
   color: #333;
-  font-size: 18px;
+  font-size: ${fontSizes.large}px;
   font-weight: 300;
   line-height: 26px;
 
@@ -159,7 +159,7 @@ const PagesNav = styled.nav`
 
 const StyledLink = styled(Link) `
   color: #666;
-  font-size: 18px;
+  font-size: ${fontSizes.large}px;
   font-weight: 400;
   display: flex;
   align-items: center;

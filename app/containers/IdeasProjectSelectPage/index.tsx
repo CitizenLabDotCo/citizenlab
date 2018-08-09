@@ -191,7 +191,7 @@ const WithoutButtonBar = styled.div`
 
 const EmptyStateContainer = styled.div`
   color: #474747;
-  font-size: 18px;
+  font-size: ${fontSizes.large}px;
   line-height: 24px;
   text-align: center;
   padding-top: 15px;
