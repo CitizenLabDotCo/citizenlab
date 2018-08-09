@@ -22,7 +22,7 @@ import { fontSizes } from 'utils/styleUtils';
 
 const DisabledText = styled.div`
   color: rgba(121, 137, 147, 1);
-  font-size: ${fontSizes.small};
+  font-size: ${fontSizes.small}px;
   font-weight: 400;
   display: flex;
   align-items: center;

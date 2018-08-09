@@ -109,7 +109,7 @@ const PagesNav = styled.nav`
 const StyledLink = styled(Link) `
   color: ${color('clGrey')};
   font-weight: 400;
-  font-size: ${fontSizes.small};
+  font-size: ${fontSizes.small}px;
   line-height: 19px;
   text-decoration: none;
 
@@ -118,7 +118,7 @@ const StyledLink = styled(Link) `
   }
 
   ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.small};
+    font-size: ${fontSizes.small}px;
     line-height: 16px;
   `}
 `;
@@ -126,7 +126,7 @@ const StyledLink = styled(Link) `
 const Separator = styled.span`
   color: ${color('clGrey')};
   font-weight: 400;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   line-height: 19px;
   padding-left: 10px;
   padding-right: 10px;
@@ -148,7 +148,7 @@ const CitizenLabLogo = styled(Icon) `
 const PoweredBy = styled.a`
   color: ${color('clGrey')};
   font-weight: 300;
-  font-size: ${fontSizes.small};
+  font-size: ${fontSizes.small}px;
   line-height: 19px;
   text-decoration: none;
   display: flex;

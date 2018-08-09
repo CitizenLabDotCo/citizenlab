@@ -54,7 +54,7 @@ const DateWrapper = styled.div`
 const Date = styled.div`
   width: 100%;
   color: #fff;;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 500;
   display: flex;
   flex-direction: column;
@@ -68,7 +68,7 @@ const Date = styled.div`
 const Year = styled.div`
   width: 100%;
   color: #fff;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
   text-align: center;
   padding-top: 10px;
@@ -91,7 +91,7 @@ const Time = styled.div`
 
 const Title = styled.div`
   color: #333;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 20px;
 `;

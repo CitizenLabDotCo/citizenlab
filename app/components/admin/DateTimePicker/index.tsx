@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   border: solid 1px #ccc;
 
   input {
-    font-size: ${fontSizes.base};
+    font-size: ${fontSizes.base}px;
     font-weight: 400;
     outline: none;
     box-shadow: none;

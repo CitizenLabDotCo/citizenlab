@@ -46,7 +46,7 @@ const InvisibleSubmitButton = styled.button`
 const Description = styled.div`
   width: 100%;
   color: ${colors.text};
-  font-size: ${fontSizes.small};
+  font-size: ${fontSizes.small}px;
   line-height: 20px;
   margin: 0;
   margin-bottom: 10px;

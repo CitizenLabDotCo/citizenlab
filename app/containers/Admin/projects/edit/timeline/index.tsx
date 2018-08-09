@@ -45,7 +45,7 @@ const OrderLabel = styled.div`
   border-radius: 50%;
   color: white;
   height: 3rem;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 3rem;
   text-align: center;

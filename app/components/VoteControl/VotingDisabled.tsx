@@ -13,7 +13,7 @@ import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   color: ${(props) => props.theme.colors.label};
-  font-size: ${fontSizes.small};
+  font-size: ${fontSizes.small}px;
   font-weight: 300;
   line-height: 20px;
 `;

@@ -58,7 +58,7 @@ const Separator = styled.div`
 
 const CurrentTime = styled.div`
   min-width: 160px;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   text-transform: capitalize;
   display: flex;
   align-items: center;

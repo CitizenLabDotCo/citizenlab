@@ -34,7 +34,7 @@ const Container: any = styled.div`
 
       input {
         color: #333;
-        font-size: ${fontSizes.base};
+        font-size: ${fontSizes.base}px;
         font-weight: 400;
         outline: none;
         box-shadow: none;

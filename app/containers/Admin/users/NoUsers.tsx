@@ -26,7 +26,7 @@ const NoUsersPage = styled.div`
 const SFormattedMessage = styled.div`
   color: ${colors.adminSecondaryTextColor};
   font-weight: 400;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
 
   a {
     color: ${colors.adminSecondaryTextColor};

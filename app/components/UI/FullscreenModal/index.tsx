@@ -159,7 +159,7 @@ const GoBackButton = styled.div`
 
 const GoBackLabel = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   transition: fill 100ms ease-out;
 

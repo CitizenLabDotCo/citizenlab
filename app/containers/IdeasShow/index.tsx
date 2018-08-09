@@ -148,7 +148,7 @@ const BelongsToProject = styled.p`
   width: 100%;
   color: ${colors.label};
   font-weight: 300;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   line-height: 21px;
   margin-bottom: 15px;
 `;
@@ -248,11 +248,11 @@ const MetaButtons = styled.div`
 
 const LocationLabel = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   margin-right: 6px;
   max-width: 200px;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   line-height: 19px;
   text-align: left;
   font-weight: 400;
@@ -334,7 +334,7 @@ const MapPaddingBottom = styled.div`
 
 const AddressWrapper = styled.div`
   color: #fff;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
   background: rgba(0, 0, 0, 0.4);
   border-top: 1px solid #eaeaea;
@@ -357,7 +357,7 @@ const AuthorMeta = styled.div`
 
 const AuthorName = styled(Link) `
   color: #333;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 20px;
 
@@ -367,14 +367,14 @@ const AuthorName = styled(Link) `
   }
 
   ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.small};
+    font-size: ${fontSizes.small}px;
     line-height: 18px;
   `}
 `;
 
 const TimeAgo = styled.div`
   color: ${colors.clGrey};
-  font-size: ${fontSizes.small};
+  font-size: ${fontSizes.small}px;
   line-height: 17px;
   font-weight: 300;
   margin-top: 2px;
@@ -481,7 +481,7 @@ const MetaContent = styled.div`
 
 const VoteLabel = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   margin-bottom: 12px;
   display: none;
@@ -508,7 +508,7 @@ const StatusContainerMobile = styled(StatusContainer) `
 
 const StatusTitle = styled.h4`
   color: ${colors.label};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   margin: 0;
   margin-bottom: 8px;

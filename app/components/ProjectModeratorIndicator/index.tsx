@@ -41,7 +41,7 @@ const StyledIcon = styled(Icon)`
 
 const Text = styled.div`
   color: ${colors.draftYellow};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   line-height: 21px;
   font-weight: 400;
 

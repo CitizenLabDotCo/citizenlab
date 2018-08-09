@@ -52,7 +52,7 @@ const IconWrapper = styled.div`
 
 const Text = styled.div`
   max-width: 200px;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   line-height: 19px;
   text-align: left;
   font-weight: 400;

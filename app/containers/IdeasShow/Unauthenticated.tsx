@@ -20,13 +20,13 @@ const StyledButton = styled(Button)`
 
 const Separator = styled.div`
   color: #999;
-  font-size: ${fontSizes.small};
+  font-size: ${fontSizes.small}px;
   font-weight: 300;
 `;
 
 const RegisterLink = styled.span`
   color: ${(props) => props.theme.colorMain};
-  font-size: ${fontSizes.small};
+  font-size: ${fontSizes.small}px;
   font-weight: 400;
   line-height: 18px;
   text-align: center;

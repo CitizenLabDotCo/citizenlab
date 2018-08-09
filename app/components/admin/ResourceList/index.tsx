@@ -50,7 +50,7 @@ export const StyledRow = styled.div`
 
   p {
     color: ${colors.label};
-    font-size: ${fontSizes.base};
+    font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 20px;
     margin-bottom: 5px;
@@ -108,7 +108,7 @@ export const StyledRow = styled.div`
 `;
 
 export const TextCell = styled.div`
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 20px;
 `;

@@ -16,7 +16,7 @@ const Container = styled.div`
 
 const RegisterLink = styled.span`
   color: ${(props) => props.theme.colorMain};
-  font-size: ${fontSizes.small};
+  font-size: ${fontSizes.small}px;
   font-weight: 500;
   cursor: pointer;
 

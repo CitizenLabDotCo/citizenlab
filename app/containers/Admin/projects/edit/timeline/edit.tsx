@@ -53,7 +53,7 @@ const PhaseForm = styled.form`
     .DateInput,
     .DateInput_input {
       color: inherit;
-      font-size: ${fontSizes.base};
+      font-size: ${fontSizes.base}px;
       font-weight: 400;
       background: transparent;
     }

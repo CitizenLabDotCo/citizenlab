@@ -68,7 +68,7 @@ const TermsAndConditionsWrapper: any = styled.div`
 
   span {
     color: #6e6e6f !important;
-    font-size: ${fontSizes.base};
+    font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 21px;
   }
@@ -86,7 +86,7 @@ const TermsAndConditionsWrapper: any = styled.div`
 
 const AlreadyHaveAnAccount = styled(Link)`
   color: ${(props) => props.theme.colorMain};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   line-height: 20px;
   font-weight: 400;
   text-decoration: none;

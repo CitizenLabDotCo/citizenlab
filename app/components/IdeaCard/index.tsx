@@ -95,7 +95,7 @@ const CommentIcon = styled(Icon)`
 
 const CommentCount = styled.div`
   color: ${(props) => props.theme.colors.clGrey};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
 `;
 

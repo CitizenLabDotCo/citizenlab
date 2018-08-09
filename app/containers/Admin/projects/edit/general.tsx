@@ -61,7 +61,7 @@ const StyledInputMultiloc = styled(InputMultiloc)`
 `;
 
 const ProjectType = styled.div`
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   line-height: 20px;
   font-weight: 400;
   text-transform: capitalize;

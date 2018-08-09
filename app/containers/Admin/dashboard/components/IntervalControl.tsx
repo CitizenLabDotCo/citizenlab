@@ -11,7 +11,7 @@ const Container = styled.div`
 `;
 
 const IntervalButton = styled.button`
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   padding: 1rem 1.5rem;
   background: ${colors.adminContentBackground};
   border: solid 1px #e4e4e4;

@@ -51,7 +51,7 @@ const DropdownListItemName = styled(T)`
 
 const DropdownListItem = styled.button`
   color: ${colors.adminTextColor};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   display: flex;
   align-items: center;

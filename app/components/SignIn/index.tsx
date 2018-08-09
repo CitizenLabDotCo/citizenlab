@@ -83,7 +83,7 @@ const PasswordInput = styled(StyledInput)`
 const ForgotPassword = styled(Link)`
   color: ${color('label')};
   color: #999;
-  font-size: ${fontSizes.small};
+  font-size: ${fontSizes.small}px;
   line-height: 18px;
   font-weight: 300;
   text-decoration: none;
@@ -107,7 +107,7 @@ const ButtonWrapper = styled.div`
 
 const CreateAnAccountStyle = css`
   color: ${(props) => props.theme.colorMain};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   line-height: 20px;
   font-weight: 400;
   text-decoration: none;
@@ -144,7 +144,7 @@ const Footer = styled.div`
 
 const SocialLoginText = styled.div`
   color: ${(props) => props.theme.colors.label};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: 20px;
   margin-left: 4px;
