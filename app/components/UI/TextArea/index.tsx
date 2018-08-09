@@ -18,7 +18,7 @@ const Container: any = styled.div`
 
   .textarea {
     width: 100%;
-    font-size: 17px;
+    font-size: ${fontSizes.base}px;
     line-height: 24px;
     font-weight: 400;
     padding: 12px;
