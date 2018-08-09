@@ -9,10 +9,11 @@ import { IIdeaData } from 'services/ideas';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import messages from './messages';
 import clHistory from 'utils/cl-router/history';
+import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   color: ${(props) => props.theme.colors.label};
-  font-size: 14px;
+  font-size: ${fontSizes.small};
   font-weight: 300;
   line-height: 20px;
 `;

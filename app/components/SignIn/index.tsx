@@ -30,7 +30,7 @@ import { AUTH_PATH } from 'containers/App/constants';
 // style
 import { darken } from 'polished';
 import styled, { css } from 'styled-components';
-import { color } from 'utils/styleUtils';
+import { color, fontSizes } from 'utils/styleUtils';
 
 // logos
 const googleLogo = require('components/SignUp/google.svg') as string;
@@ -83,7 +83,7 @@ const PasswordInput = styled(StyledInput)`
 const ForgotPassword = styled(Link)`
   color: ${color('label')};
   color: #999;
-  font-size: 14px;
+  font-size: ${fontSizes.small};
   line-height: 18px;
   font-weight: 300;
   text-decoration: none;

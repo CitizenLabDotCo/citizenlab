@@ -25,7 +25,7 @@ import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled, { css } from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
@@ -167,7 +167,7 @@ const HeaderSubtitle = styled.div`
 
 const HeaderDate = styled.div`
   color: #000;
-  font-size: 14px;
+  font-size: ${fontSizes.small};
   font-weight: 400;
   line-height: 16px;
   white-space: nowrap;
@@ -220,7 +220,7 @@ const PhaseBar: any = styled.div`
   width: 100%;
   height: calc( ${phaseBarHeight} - 1px );
   color: #fff;
-  font-size: 14px;
+  font-size: ${fontSizes.small};
   font-weight: 400;
   display: flex;
   align-items: center;
