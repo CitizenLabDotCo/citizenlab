@@ -72,7 +72,7 @@ const ProjectDescriptionStyled = styled.div`
   }
 
   h1 {
-    font-size: 29px;
+    font-size: ${fontSizes.xxxl}px;
     line-height: 35px;
     font-weight: 600;
   }

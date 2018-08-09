@@ -53,7 +53,7 @@ const UserInfo = styled.div`
 const FullName = styled.div`
   width: 100%;
   padding-top: 0px;
-  font-size: 29px;
+  font-size: ${fontSizes.xxxl}px;
   font-weight: 500;
   text-align: center;
   color: #333;
