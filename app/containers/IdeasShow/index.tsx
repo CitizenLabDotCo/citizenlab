@@ -52,7 +52,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, color, colors, quillEditedContent } from 'utils/styleUtils';
+import { media, color, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const loadingTimeout = 400;
@@ -374,7 +374,7 @@ const AuthorName = styled(Link) `
 
 const TimeAgo = styled.div`
   color: ${colors.clGrey};
-  font-size: 13px;
+  font-size: ${fontSizes.small};
   line-height: 17px;
   font-weight: 300;
   margin-top: 2px;

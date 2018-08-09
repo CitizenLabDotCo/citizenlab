@@ -22,7 +22,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const AuthorContainer = styled.div`
   display: flex;
@@ -60,7 +60,7 @@ const TimeAgo = styled.div`
   color: ${colors.clGrey};
   font-weight: 300;
   margin-top: 1px;
-  font-size: 13px;
+  font-size: ${fontSizes.small};
   line-height: 17px;
 `;
 
