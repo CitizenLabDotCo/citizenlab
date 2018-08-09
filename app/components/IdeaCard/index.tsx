@@ -30,7 +30,7 @@ import messages from './messages';
 
 // styles
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { IModalInfo } from 'containers/App';
@@ -95,7 +95,7 @@ const CommentIcon = styled(Icon)`
 
 const CommentCount = styled.div`
   color: ${(props) => props.theme.colors.clGrey};
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   font-weight: 400;
 `;
 

@@ -126,7 +126,7 @@ const StyledLink = styled(Link) `
 const Separator = styled.span`
   color: ${color('clGrey')};
   font-weight: 400;
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   line-height: 19px;
   padding-left: 10px;
   padding-right: 10px;

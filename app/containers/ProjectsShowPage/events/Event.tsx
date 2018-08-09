@@ -19,7 +19,7 @@ import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled from 'styled-components';
-import { media, colors, quillEditedContent } from 'utils/styleUtils';
+import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
 import T from 'components/T';
 
 const Container = styled.div`
@@ -91,7 +91,7 @@ const EventDatesSeparator = styled.div`
 
 const EventYear = styled.div`
   color: #fff;
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   font-weight: 300;
   display: flex;
   align-items: center;
@@ -145,7 +145,7 @@ const EventTitle = styled.div`
 
 const EventDescription = styled.div`
   color: ${colors.clGrey};
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   font-weight: 300;
   line-height: 21px;
 
@@ -205,7 +205,7 @@ const EventLocationInner = styled.div`
 
 const EventLocationLabel = styled.div`
   color: #666;
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   font-weight: 300;
   line-height: 21px;
   margin-bottom: 2px;
@@ -213,7 +213,7 @@ const EventLocationLabel = styled.div`
 
 const EventLocationAddress = styled.div`
   color: #666;
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   font-weight: 400;
   line-height: 21px;
   display: flex;

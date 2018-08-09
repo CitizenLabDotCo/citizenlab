@@ -16,7 +16,7 @@ import { voteStream, addVote, deleteVote } from 'services/ideaVotes';
 
 // style
 import styled, { css, keyframes } from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const vote = keyframes`
   from {
@@ -90,7 +90,7 @@ const VoteIcon: any = styled(Icon) `
 
 const VoteCount = styled.div`
   color: ${colors.clGrey};
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   font-weight: 400;
   margin-left: 5px;
   transition: all 100ms ease-out;

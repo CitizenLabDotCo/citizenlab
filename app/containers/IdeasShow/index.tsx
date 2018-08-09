@@ -148,7 +148,7 @@ const BelongsToProject = styled.p`
   width: 100%;
   color: ${colors.label};
   font-weight: 300;
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   line-height: 21px;
   margin-bottom: 15px;
 `;
@@ -334,7 +334,7 @@ const MapPaddingBottom = styled.div`
 
 const AddressWrapper = styled.div`
   color: #fff;
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   font-weight: 300;
   background: rgba(0, 0, 0, 0.4);
   border-top: 1px solid #eaeaea;
@@ -357,7 +357,7 @@ const AuthorMeta = styled.div`
 
 const AuthorName = styled(Link) `
   color: #333;
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   font-weight: 400;
   line-height: 20px;
 
@@ -508,7 +508,7 @@ const StatusContainerMobile = styled(StatusContainer) `
 
 const StatusTitle = styled.h4`
   color: ${colors.label};
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   font-weight: 400;
   margin: 0;
   margin-bottom: 8px;

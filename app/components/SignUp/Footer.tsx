@@ -139,7 +139,7 @@ const SocialSignInButtonInner = styled.div`
 
 const SocialSignInText = styled.div`
   color: ${(props) => props.theme.colors.label};
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   font-weight: 300;
   line-height: 20px;
   margin-left: 4px;

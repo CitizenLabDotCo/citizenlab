@@ -5,7 +5,7 @@ import Link from 'utils/cl-router/Link';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import Icon from 'components/UI/Icon';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const NoUsersPage = styled.div`
@@ -26,7 +26,7 @@ const NoUsersPage = styled.div`
 const SFormattedMessage = styled.div`
   color: ${colors.adminSecondaryTextColor};
   font-weight: 400;
-  font-size: 16px;
+  font-size: ${fontSizes.base};
 
   a {
     color: ${colors.adminSecondaryTextColor};

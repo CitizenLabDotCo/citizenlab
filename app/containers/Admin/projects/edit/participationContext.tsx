@@ -22,6 +22,7 @@ import messages from '../messages';
 // style
 import styled from 'styled-components';
 import FeatureFlag from 'components/FeatureFlag';
+import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
@@ -48,7 +49,7 @@ const ToggleRow = Row.extend`
 const ToggleLabel = styled(Label)`
   width: 100%;
   max-width: 200px;
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   font-weight: 400;
 `;
 

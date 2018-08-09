@@ -23,7 +23,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 const Menu = styled.div`
@@ -56,7 +56,7 @@ const IconWrapper = styled.div`
 const Text = styled.div`
   flex: 1;
   color: ${colors.adminLightText};
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   font-weight: 400;
   line-height: 19px;
   margin-left: 10px;

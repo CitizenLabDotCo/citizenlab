@@ -108,7 +108,7 @@ export const StyledRow = styled.div`
 `;
 
 export const TextCell = styled.div`
-  font-size: 16px;
+  font-size: ${fontSizes.base};
   font-weight: 400;
   line-height: 20px;
 `;
