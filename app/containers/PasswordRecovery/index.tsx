@@ -183,6 +183,7 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
 
           <Form onSubmit={this.handleOnSubmit}>
             <StyledInput
+              ariaLabel={emailPlaceholder}
               id="email"
               type="text"
               value={email}

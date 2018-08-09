@@ -176,11 +176,17 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
         <Right>
           {!isNilOrError(projectImages) && projectImages.length > 0 &&
             <ProjectImages>
-              {projectImages.filter(projectImage => projectImage).map((projectImage) => (
+              {projectImages.filter(projectImage => projectImage).map((projectImage, index) => (
                 <ImageZoom
                   key={projectImage.id}
-                  image={{ src: projectImage.attributes.versions.large }}
-                  zoomImage={{ src: projectImage.attributes.versions.large }}
+                  image={{
+                    src: projectImage.attributes.versions.large,
+                    alt: formatMessage(messages.imageAltText, { index: index + 1 })
+                  }}
+                  zoomImage={{
+                    src: projectImage.attributes.versions.large,
+                    alt: formatMessage(messages.imageAltText, { index: index + 1 })
+                  }}
                 />
               ))}
             </ProjectImages>

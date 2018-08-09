@@ -155,7 +155,7 @@ jobs:
     steps:
       - checkout
       - run: npm install pa11y-ci
-      - run: npm run test:pa11y --silent
+      - run: NODE_ENV=staging npm run test:pa11y --silent
 
 workflows:
   version: 2

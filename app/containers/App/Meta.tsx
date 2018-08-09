@@ -74,10 +74,10 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, authUser, 
         <meta property="fb:app_id" content={fbAppId} />
         <meta property="og:site_name" content={organizationName} />
         <meta name="application-name" content={organizationName} />
-        {tenant.attributes.favicon.medium && <link rel="icon" sizes="32x32" href={tenant.attributes.favicon.medium} />}
-        {tenant.attributes.favicon.small && <link rel="icon" sizes="16x16" href={tenant.attributes.favicon.small} />}
-        {tenant.attributes.favicon.large && <link rel="apple-touch-icon" sizes="152x152" href={tenant.attributes.favicon.large} />}
-        {tenant.attributes.favicon.large && <link rel="manifest" href={`${API_PATH}/manifest.json`} />}
+        {tenant.attributes.favicon && tenant.attributes.favicon.medium && <link rel="icon" sizes="32x32" href={tenant.attributes.favicon.medium} />}
+        {tenant.attributes.favicon && tenant.attributes.favicon.small && <link rel="icon" sizes="16x16" href={tenant.attributes.favicon.small} />}
+        {tenant.attributes.favicon && tenant.attributes.favicon.large && <link rel="apple-touch-icon" sizes="152x152" href={tenant.attributes.favicon.large} />}
+        {tenant.attributes.favicon && tenant.attributes.favicon.large && <link rel="manifest" href={`${API_PATH}/manifest.json`} />}
       </Helmet>
     );
   }

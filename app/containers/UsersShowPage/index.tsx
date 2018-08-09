@@ -65,7 +65,7 @@ const JoinedAt = styled.div`
   font-size: 18px;
   font-weight: 400;
   text-align: center;
-  color: #7e7e7e;
+  color: ${colors.clGreyOnGreyBackground};
 `;
 
 const Bio = styled.div`

@@ -74,7 +74,7 @@ export interface ITenantData {
     settings: ITenantSettings;
     logo: API.ImageSizes;
     header_bg: API.ImageSizes;
-    favicon: API.ImageSizes;
+    favicon?: API.ImageSizes;
   };
 }
 

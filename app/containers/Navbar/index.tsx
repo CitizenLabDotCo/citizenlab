@@ -107,7 +107,7 @@ const Logo = styled.img`
 `;
 
 const NavigationItems = styled.div`
-  height: 100%;
+  height: 76px;
   display: flex;
   align-items: center;
   margin-left: 35px;
@@ -117,10 +117,18 @@ const NavigationItems = styled.div`
   `}
 `;
 
-const NavigationItem = styled(Link) `
+const NavigationDropdownItemIcon = styled(Icon)`
+  height: 6px;
+  width: 11px;
+  fill: inherit;
+  margin-left: 4px;
+  margin-top: 3px;
+`;
+
+const NavigationItem = styled(Link)`
   ${ellipsis('20rem') as any}
   height: 100%;
-  color: #999;
+  color: ${colors.clGrey};
   font-size: 17px;
   font-weight: 400;
   display: flex;
@@ -133,10 +141,14 @@ const NavigationItem = styled(Link) `
     margin-right: 40px;
   }
 
-  &.active,
-  &:hover,
-  &:focus {
-    color: #000;
+  &.active {
+    color: ${(props) => props.theme.colorMain};
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid ${(props) => props.theme.colorMain};
+  }
+  &:focus,
+  &:hover {
+    color: ${(props) => props.theme.colorMain};
   }
 `;
 
@@ -145,33 +157,33 @@ const NavigationDropdown = styled.div`
   margin-right: 40px;
 `;
 
-const NavigationDropdownItemIcon = styled(Icon)`
-  height: 6px;
-  width: 11px;
-  fill: inherit;
-  margin-left: 4px;
-  margin-top: 3px;
-`;
-
 const NavigationDropdownItem = styled.button`
   align-items: center;
-  color: #999;
+  height: 76px;
+  color: ${colors.clGrey};
   display: flex;
-  fill: #999;
+  fill: ${colors.clGrey};
   font-size: 17px;
   font-weight: 400;
   transition: all 100ms ease-out;
   cursor: pointer;
 
+  &.active {
+    border-bottom: 4px solid ${(props) => props.theme.colorMain};
+    border-top: 4px solid transparent;
+    color: ${(props) => props.theme.colorMain};
+    fill: ${(props) => props.theme.colorMain};
+  }
+
   &:hover,
   &:focus {
-    color: #000;
-    fill: #000;
+    color: ${(props) => props.theme.colorMain};
+    fill: ${(props) => props.theme.colorMain};
   }
 `;
 
 const ProjectsListItem = styled(Link)`
-  color: ${colors.label};
+  color: ${colors.clGrey};
   font-size: 17px;
   font-weight: 400;
   line-height: 22px;
@@ -180,10 +192,12 @@ const ProjectsListItem = styled(Link)`
   padding: 10px;
   background: #fff;
   border-radius: 5px;
+  padding: 10px;
+  text-decoration: none;
 
   &:hover,
   &:focus {
-    color: #000;
+    color: ${colors.clGreyHover};
     text-decoration: none;
     background: #f6f6f6;
   }
@@ -191,14 +205,14 @@ const ProjectsListItem = styled(Link)`
 
 const ProjectsListFooter = styled(Link)`
   width: 100%;
-  color: ${colors.label};
+  color: ${colors.clGrey};
   font-size: 17px;
   font-weight: 400;
   text-align: center;
   text-decoration: none;
   padding: 15px 15px;
   cursor: pointer;
-  background: ${rgba(colors.label, 0.12)};
+  background: ${rgba(colors.clGrey, 0.12)};
   border-radius: 5px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -206,8 +220,8 @@ const ProjectsListFooter = styled(Link)`
 
   &:hover,
   &:focus {
-    color: ${darken(0.2, colors.label)};
-    background: ${rgba(colors.label, 0.22)};
+    color: ${colors.clGreyHover};
+    background: ${rgba(colors.clGrey, 0.22)};
     text-decoration: none;
   }
 `;
@@ -257,8 +271,9 @@ const RightItem: any = styled.div`
 `;
 
 const StyledIdeaButton = styled(IdeaButton)`
-  &:hover {
-    .Button {
+  a, button {
+    &:hover,
+    &:focus {
       border-color: ${darken(0.2, '#e0e0e0')} !important;
     }
   }
@@ -274,14 +289,18 @@ const StyledIdeaButton = styled(IdeaButton)`
 `;
 
 const LoginLink = styled(Link)`
-  color: ${(props) => props.theme.colors.label};
+  color: ${colors.clGrey};
   font-size: 17px;
   font-weight: 400;
   padding: 0;
 
   &:hover {
-    color: ${(props) => darken(0.2, props.theme.colors.label)};
+    color: ${colors.clGreyHover};
   }
+`;
+
+const StyledDropdown = styled(Dropdown)`
+  top: 68px;
 `;
 
 interface InputProps {}
@@ -301,6 +320,8 @@ interface State {
 }
 
 class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
+  unlisten: Function;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -367,6 +388,7 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
     const tenantName = (!isNilOrError(tenant) && !isNilOrError(locale) && getLocalized(tenant.attributes.settings.core.organization_name, locale, tenantLocales));
     let tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
     tenantLogo = isAdmin(!isNilOrError(authUser) ? { data: authUser } : undefined) && tenantLogo ? `${tenantLogo}?${Date.now()}` : tenantLogo;
+    const secondUrlSegment = location.pathname.replace(/^\/+/g, '').split('/')[1];
 
     return (
       <>
@@ -389,12 +411,12 @@ class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlP
 
               {tenantLocales && projectsList && projectsList.length > 0 &&
                 <NavigationDropdown>
-                  <NavigationDropdownItem aria-haspopup="true" onClick={this.handleProjectsDropdownToggle}>
+                  <NavigationDropdownItem className={secondUrlSegment === 'projects' ? 'active' : ''} aria-haspopup="true" onClick={this.handleProjectsDropdownToggle}>
                     <FormattedMessage {...messages.pageProjects} />
                     <NavigationDropdownItemIcon name="dropdown" />
                   </NavigationDropdownItem>
 
-                  <Dropdown
+                  <StyledDropdown
                     opened={projectsDropdownOpened}
                     content={(
                       <>

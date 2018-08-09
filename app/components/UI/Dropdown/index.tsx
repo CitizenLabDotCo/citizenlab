@@ -107,7 +107,7 @@ export default class Dropdown extends PureComponent<Props, State> {
         timeout={timeout}
         mountOnEnter={true}
         unmountOnExit={true}
-        classNames="dropdown"
+        classNames={`${this.props['className']} dropdown`}
         exit={false}
       >
         <Container
