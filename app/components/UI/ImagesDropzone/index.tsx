@@ -28,7 +28,7 @@ const Container = styled.div`
   display: column;
 `;
 
-const ContentWrapper = styled(TransitionGroup)`
+const ContentWrapper: any = styled(TransitionGroup)`
   width: 100%;
   display: flex;
   flex-wrap: wrap;

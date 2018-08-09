@@ -5,10 +5,10 @@ import { IOption } from 'typings';
 import selectStyles from 'components/UI/Select/styles';
 
 export type Props = {
-  id?: string | undefined;
+  id?: string;
   inputId?: string;
-  value: IOption[] | null | undefined;
-  placeholder?: string | JSX.Element | undefined;
+  value: IOption[] | null;
+  placeholder?: string | JSX.Element;
   options: IOption[] | null;
   max?: number;
   autoBlur?: boolean;
@@ -76,7 +76,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
         menuShouldScrollIntoView={false}
         isClearable={false}
         value={value}
-        placeholder={<span>{placeholder}</span>}
+        placeholder={placeholder as string}
         options={options}
         onChange={this.handleOnChange}
         isDisabled={this.props.disabled}

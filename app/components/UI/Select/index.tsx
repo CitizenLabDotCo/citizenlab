@@ -5,14 +5,14 @@ import { IOption } from 'typings';
 import selectStyles from 'components/UI/Select/styles';
 
 export type Props = {
-  id?: string | undefined;
+  id?: string;
   inputId?: string;
-  value?: IOption | string | null | undefined;
-  placeholder?: string | JSX.Element | null | undefined;
+  value?: IOption | string | null;
+  placeholder?: string | JSX.Element | null;
   options: IOption[] | null;
-  autoBlur?: boolean | undefined;
-  clearable?: boolean | undefined;
-  searchable?: boolean | undefined;
+  autoBlur?: boolean;
+  clearable?: boolean;
+  searchable?: boolean;
   onChange: (arg: IOption) => void;
   onBlur?: () => void;
   disabled?: boolean;
@@ -68,7 +68,7 @@ export default class Select extends React.PureComponent<Props, State> {
         menuShouldScrollIntoView={false}
         blurInputOnSelect={autoBlur}
         value={value}
-        placeholder={placeholder}
+        placeholder={placeholder as string}
         options={options}
         onChange={this.handleOnChange}
         onBlur={this.props.onBlur}

@@ -1,5 +1,5 @@
 // libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { get } from 'lodash';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -319,7 +319,7 @@ interface State {
   projectsDropdownOpened: boolean;
 }
 
-class Navbar extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
+class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
   unlisten: Function;
 
   constructor(props) {

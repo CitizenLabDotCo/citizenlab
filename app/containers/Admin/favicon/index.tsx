@@ -73,9 +73,9 @@ class Favicon extends PureComponent<Props, State> {
 
   componentDidUpdate(prevProps) {
     const { tenant } = this.props;
+
     if (prevProps.tenant !== tenant && !isNilOrError(tenant)) {
-      console.log(tenant, prevProps);
-      if (tenant.attributes.favicon.large) {
+      if (tenant.attributes.favicon && tenant.attributes.favicon.large) {
         convertUrlToFile(tenant.attributes.favicon.large)
           .then((res) => {
             if (res) this.setState({ favicon: [res] });
