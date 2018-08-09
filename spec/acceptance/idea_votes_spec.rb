@@ -92,7 +92,7 @@ resource "Idea Votes" do
       end
 
       example_request "[error] Upvote an idea in a project where voting is disabled" do
-        expect(status).to eq 422
+        expect(status).to eq 401
         json_response = json_parse(response_body)
         expect(json_response[:errors][:base][0][:error]).to eq ParticipationContextService::VOTING_DISABLED_REASONS[:voting_disabled]
         expect(@idea.reload.upvotes_count).to eq 2
@@ -108,7 +108,7 @@ resource "Idea Votes" do
       end
 
       example_request "[error] Upvote an idea in a project where you can vote only once" do
-        expect(status).to eq 422
+        expect(status).to eq 401
         json_response = json_parse(response_body)
         expect(json_response[:errors][:base][0][:error]).to eq ParticipationContextService::VOTING_DISABLED_REASONS[:voting_limited_max_reached]
         expect(@idea.reload.upvotes_count).to eq 2
