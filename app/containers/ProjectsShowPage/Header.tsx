@@ -108,7 +108,7 @@ const HeaderTitle = styled.div`
 
   ${media.smallerThanMinTablet`
     font-weight: 600;
-    font-size: 31px;
+    font-size: ${fontSizes.xxxl}px;
     line-height: 36px;
   `}
 `;

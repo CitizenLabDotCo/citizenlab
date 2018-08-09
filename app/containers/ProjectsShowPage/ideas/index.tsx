@@ -21,6 +21,7 @@ import adminMessages from '../../Admin/pages/messages';
 
 // style
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 const IdeasContainer = styled.div`
   padding-top: 70px;
