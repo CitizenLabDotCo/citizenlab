@@ -94,13 +94,13 @@ const PageDescription = styled.div`
   line-height: 26px;
 
   h1 {
-    font-size: 30px;
+    font-size: ${fontSizes.xxxl}px;
     line-height: 35px;
     font-weight: 600;
   }
 
   h2 {
-    font-size: 27px;
+    font-size: ${fontSizes.xxl}px;
     line-height: 33px;
     font-weight: 600;
   }
