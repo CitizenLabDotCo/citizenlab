@@ -105,18 +105,6 @@ const PageDescription = styled.div`
     font-weight: 600;
   }
 
-  h3 {
-    font-size: ${fontSizes.xxl}px;
-    line-height: 30px;
-    font-weight: 600;
-  }
-
-  h4 {
-    font-size: ${fontSizes.xl}px;
-    line-height: 27px;
-    font-weight: 600;
-  }
-
   p {
     margin-bottom: 35px;
   }
