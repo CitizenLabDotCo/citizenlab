@@ -59,10 +59,11 @@ describe CustomFieldService do
         create(:custom_field, key: 'field6', input_type: 'date', enabled: false, required: true),
         create(:custom_field, key: 'field7', input_type: 'number')
       ]
-      create(:custom_field_option, key: 'option1', custom_field: fields[2])
-      create(:custom_field_option, key: 'option2', custom_field: fields[2])
-      create(:custom_field_option, key: 'option3', custom_field: fields[3])
-      create(:custom_field_option, key: 'option4', custom_field: fields[3])
+      create(:custom_field_option, key: 'option_1', custom_field: fields[2], ordering: 1) 
+      create(:custom_field_option, key: 'option_3', custom_field: fields[2], ordering: 3) 
+      create(:custom_field_option, key: 'option_2', custom_field: fields[2], ordering: 2)
+      create(:custom_field_option, key: 'option_a', custom_field: fields[3], ordering: 1)
+      create(:custom_field_option, key: 'option_b', custom_field: fields[3], ordering: 2)
 
       schema = service.fields_to_json_schema(fields, locale)
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
@@ -82,8 +83,8 @@ describe CustomFieldService do
             {:title=>"Did you attend",
              :description=>"Which councils are you attending in our city?",
              :type=>"string",
-             :enum=>["option1", "option2"],
-             :enumNames=>["youth council", "youth council"]},
+             :enum=>["option_1", "option_2", "option_3"],
+             :enumNames=>["youth council", "youth council", "youth council"]},
            "field4"=>
             {:title=>"Did you attend",
              :description=>"Which councils are you attending in our city?",
@@ -91,7 +92,7 @@ describe CustomFieldService do
              :uniqueItems=>true,
              :items=>
               {:type=>"string",
-               :enum=>["option3", "option4"],
+               :enum=>["option_a", "option_b"],
                :enumNames=>["youth council", "youth council"]},
              :minItems=>0},
            "field5"=>
