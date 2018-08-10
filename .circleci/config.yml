@@ -156,9 +156,9 @@ jobs:
       - checkout
       - run: npm install pa11y-ci
       - run:
-        command: npm run test:pa11y --silent
-        environment:
-          NODE_ENV: staging
+          command: npm run test:pa11y --silent
+          environment:
+            NODE_ENV: staging
 
 workflows:
   version: 2
