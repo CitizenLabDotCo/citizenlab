@@ -120,9 +120,6 @@ export const colors = {
   // darker red than clRed for when we have a light red background (clRedSuccessBackground)
   clRedError: '#D61607',
   clRedErrorBackground: '#fde9e8',
-  darkClGreen: '#004949',
-  success: '#32B67A',
-  error: '#FC3C2D',
   label: '#596B7A',
   draftYellow: '#8C680D',
   mediumGrey: '#BDBDBD',
