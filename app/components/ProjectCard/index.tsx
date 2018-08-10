@@ -164,7 +164,7 @@ const ProjectTitle = styled.h3`
 
 const ProjectDescription = styled.div`
   color: ${(props) => props.theme.colors.label};
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.medium}px;
   line-height: 24px;
   font-weight: 400;
   margin-top: 20px;
