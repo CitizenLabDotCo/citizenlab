@@ -26,14 +26,14 @@ class WebApi::V1::CustomFieldsController < ApplicationController
 
 
   def create
-    @custom_field = CustomField.new(permitted_attributes(CustomField))
+    @custom_field = CustomField.new permitted_attributes(CustomField)
     @custom_field.resource_type = @resource_type
     authorize @custom_field
 
-    SideFxCustomFieldService.new.before_create(@custom_field, current_user)
+    SideFxCustomFieldService.new.before_create @custom_field, current_user
 
     if @custom_field.save
-      SideFxCustomFieldService.new.after_create(@custom_field, current_user)
+      SideFxCustomFieldService.new.after_create @custom_field, current_user
       render json: @custom_field, status: :created
     else
       render json: { errors: @custom_field.errors.details }, status: :unprocessable_entity
