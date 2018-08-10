@@ -329,7 +329,15 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
             <LanguageSelectionWrapper className={this.state.languageOptions.length > 1 ? 'show' : ''}>
               <label htmlFor="e2e-footer-language-switch">
                 <HiddenLabel><FormattedMessage {...messages.selectLanguage} /></HiddenLabel>
-                <Dropdown id="e2e-footer-language-switch" onChange={this.handleLanguageChange} upward={true} search={true} selection={true} value={locale} options={this.state.languageOptions} />
+                <Dropdown
+                  id="e2e-footer-language-switch"
+                  onChange={this.handleLanguageChange}
+                  upward={true}
+                  search={true}
+                  selection={true}
+                  value={locale}
+                  options={this.state.languageOptions}
+                />
               </label>
             </LanguageSelectionWrapper>
           </SecondLine>
