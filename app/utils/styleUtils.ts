@@ -135,6 +135,7 @@ export const colors = {
   clBlueLight: '#40B8C5',
   placeholderBg: '#CFD6DB',
 
+  // Admin colors
   adminBackground: '#F0F3F4',
   adminContentBackground: '#fff',
   adminMenuBackground: '#003349',
@@ -143,10 +144,12 @@ export const colors = {
   adminTextColor: '#044D6C',
   adminLightText: 'rgba(255, 255, 255, 0.8)',
   adminSecondaryTextColor: '#84939E',
+
   adminBorder: '#EAEAEA',
   adminSeparation: '#EAEAEA',
-
   adminOrangeIcons: '#FF672F',
+
+  // Icon colors
   clIconPrimary: '#00577C',
   clIconSecondary:'#84939E',
   clIconAccent:'#01A1B1',
