@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180801130039) do
+ActiveRecord::Schema.define(version: 20180809134021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -125,6 +125,15 @@ ActiveRecord::Schema.define(version: 20180801130039) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email", "snippet", "locale"], name: "index_email_snippets_on_email_and_snippet_and_locale"
+  end
+
+  create_table "event_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "event_id"
+    t.string "file"
+    t.integer "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_event_files_on_event_id"
   end
 
   create_table "events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -305,6 +314,15 @@ ActiveRecord::Schema.define(version: 20180801130039) do
     t.index ["slug"], name: "index_pages_on_slug", unique: true
   end
 
+  create_table "phase_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "phase_id"
+    t.string "file"
+    t.integer "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["phase_id"], name: "index_phase_files_on_phase_id"
+  end
+
   create_table "phases", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "project_id"
     t.jsonb "title_multiloc", default: {}
@@ -471,6 +489,7 @@ ActiveRecord::Schema.define(version: 20180801130039) do
   add_foreign_key "comments", "users", column: "author_id"
   add_foreign_key "custom_field_options", "custom_fields"
   add_foreign_key "email_campaigns_campaign_email_commands", "users", column: "recipient_id"
+  add_foreign_key "event_files", "events"
   add_foreign_key "events", "projects"
   add_foreign_key "groups_projects", "groups"
   add_foreign_key "groups_projects", "projects"
@@ -499,6 +518,7 @@ ActiveRecord::Schema.define(version: 20180801130039) do
   add_foreign_key "page_links", "pages", column: "linked_page_id"
   add_foreign_key "page_links", "pages", column: "linking_page_id"
   add_foreign_key "pages", "projects"
+  add_foreign_key "phase_files", "phases"
   add_foreign_key "phases", "projects"
   add_foreign_key "project_files", "projects"
   add_foreign_key "project_images", "projects"

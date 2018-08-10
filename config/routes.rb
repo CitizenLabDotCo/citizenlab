@@ -64,8 +64,12 @@ Rails.application.routes.draw do
       end
 
       resources :projects do
-        resources :phases, shallow: true
-        resources :events, shallow: true
+        resources :phases, shallow: true do
+          resources :files, defaults: {container_class: Project, file_class: PhaseFile}
+        end
+        resources :events, shallow: true do
+          resources :files, defaults: {container_class: Project, file_class: EventFile}
+        end
         resources :images, defaults: {container_class: Project, image_class: ProjectImage}
         resources :files, defaults: {container_class: Project, file_class: ProjectFile}
         resources :groups_projects, shallow: true, except: [:update]

@@ -44,13 +44,17 @@ resource "ProjectFile" do
     ValidationErrorHelper.new.error_fields(self, ProjectFile)
     let(:project_id) { @project.id }
     let(:ordering) { 1 }
-    let(:file) { encode_pdf_file_as_base64("afvalkalender.pdf") }
+    let(:filename) { "afvalkalender.pdf" }
+    let(:file) { encode_pdf_file_as_base64(filename) }
 
     example_request "Add a file attachment to a project" do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
+      byebug
       expect(json_response.dig(:data,:attributes,:file)).to be_present
       expect(json_response.dig(:data,:attributes,:ordering)).to eq(1)
+      expect(json_response.dig(:data,:attributes,:file_name)).to eq(filename)
+      expect(json_response.dig(:data,:attributes,:file_size)).to be_present
     end
 
     describe do
@@ -59,7 +63,7 @@ resource "ProjectFile" do
       example_request "[error] Add an unsupported file extension as attachment to a project" do
         expect(response_status).to eq 422
         json_response = json_parse(response_body)
-        expect(json_response.dig(:errors,:file)).to include({:error=>"extension_blacklist_error"})
+        expect(json_response.dig(:errors,:file)).to include({:error=>"extension_whitelist_error"})
       end
     end
   end
