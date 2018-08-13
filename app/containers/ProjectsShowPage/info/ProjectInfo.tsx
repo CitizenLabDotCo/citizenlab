@@ -22,7 +22,7 @@ import { InjectedIntlProps } from 'react-intl';
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { media, quillEditedContent } from 'utils/styleUtils';
+import { media, quillEditedContent, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -63,7 +63,7 @@ const Right = styled.aside`
 
 const ProjectDescriptionStyled = styled.div`
   color: #333;
-  font-size: 18px;
+  font-size: ${fontSizes.large}px;
   line-height: 26px;
   font-weight: 300;
 
@@ -72,25 +72,25 @@ const ProjectDescriptionStyled = styled.div`
   }
 
   h1 {
-    font-size: 29px;
+    font-size: ${fontSizes.xxxl}px;
     line-height: 35px;
     font-weight: 600;
   }
 
   h2 {
-    font-size: 24px;
+    font-size: ${fontSizes.xxl}px;
     line-height: 29px;
     font-weight: 600;
   }
 
   h3 {
-    font-size: 21px;
+    font-size: ${fontSizes.xl}px;
     line-height: 26px;
     font-weight: 600;
   }
 
   h4 {
-    font-size: 18px;
+    font-size: ${fontSizes.large}px;
     line-height: 26px;
     font-weight: 600;
   }

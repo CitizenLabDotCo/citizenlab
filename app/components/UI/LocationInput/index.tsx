@@ -1,6 +1,7 @@
 import * as React from 'react';
 import PlacesAutocomplete, { geocodeByPlaceId } from 'react-places-autocomplete';
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 const LocationInputWrapper = styled.div`
   width: 100%;
@@ -8,7 +9,7 @@ const LocationInputWrapper = styled.div`
   input {
     width: 100%;
     color: #333;
-    font-size: 16px;
+    font-size: ${fontSizes.base}px;
     line-height: 26px;
     font-weight: 400;
     padding: 12px;
@@ -36,7 +37,7 @@ const LocationInputWrapper = styled.div`
 const StyledAutocompleteItem = styled.div`
   width: 100%;
   color: #999;
-  font-size: 17px;
+  font-size: ${fontSizes.base}px;
   line-height: 17px;
   font-weight: 400;
   padding: 12px;

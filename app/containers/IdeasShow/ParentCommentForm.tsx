@@ -29,6 +29,7 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 // style
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
+import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   padding: 0;
@@ -44,7 +45,7 @@ const HiddenLabel = styled.span`
 const StyledTextArea = styled(MentionsTextArea)`
   .textareaWrapper__highlighter,
   textarea {
-    font-size: 17px !important;
+    font-size: ${fontSizes.base}px !important;
     line-height: 25px !important;
     font-weight: 300 !important;
     padding-right: 20px !important;

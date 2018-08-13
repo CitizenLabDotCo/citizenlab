@@ -5,7 +5,7 @@ import React, { SFC } from 'react';
 import styled from 'styled-components';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import { remCalc, fontSize, colors } from 'utils/styleUtils';
+import { remCalc, fontSize, fontSizes, colors } from 'utils/styleUtils';
 
 // Components
 export { default as SortableList } from './SortableList';
@@ -50,7 +50,7 @@ export const StyledRow = styled.div`
 
   p {
     color: ${colors.label};
-    font-size: 15px;
+    font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 20px;
     margin-bottom: 5px;
@@ -108,7 +108,7 @@ export const StyledRow = styled.div`
 `;
 
 export const TextCell = styled.div`
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 20px;
 `;

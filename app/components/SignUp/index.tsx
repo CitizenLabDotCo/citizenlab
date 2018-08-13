@@ -25,6 +25,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 const timeout = 900;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
@@ -88,10 +89,10 @@ const StepContainer = styled.div`
   }
 `;
 
-const Title = styled.h2`
+const Title = styled.h1`
   width: 100%;
   color: #333;
-  font-size: 34px;
+  font-size: ${fontSizes.xxxxl}px;
   line-height: 42px;
   font-weight: 500;
   text-align: left;

@@ -34,7 +34,7 @@ import { convertToGeoJson } from 'utils/locationTools';
 import { IOption, ImageFile, Multiloc, Locale } from 'typings';
 
 // style
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -58,10 +58,10 @@ const FormContainer = styled.div`
   `}
 `;
 
-const Title = styled.h2`
+const Title = styled.h1`
   width: 100%;
   color: #333;
-  font-size: 36px;
+  font-size: ${fontSizes.xxxxl}px;
   line-height: 42px;
   font-weight: 500;
   text-align: center;

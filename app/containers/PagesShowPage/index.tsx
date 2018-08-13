@@ -31,7 +31,7 @@ import messages from './messages';
 // styling
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { media, colors, quillEditedContent } from 'utils/styleUtils';
+import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
@@ -72,7 +72,7 @@ const PageContent = styled.div`
 
 const PageTitle = styled.h1`
   color: #333;
-  font-size: 34px;
+  font-size: ${fontSizes.xxxxl}px;
   line-height: 40px;
   font-weight: 500;
   text-align: left;
@@ -82,38 +82,26 @@ const PageTitle = styled.h1`
   padding-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
-    font-size: 28px;
+    font-size: ${fontSizes.xxxl};
     line-height: 34px;
   `}
 `;
 
 const PageDescription = styled.div`
   color: #333;
-  font-size: 18px;
+  font-size: ${fontSizes.large}px;
   font-weight: 300;
   line-height: 26px;
 
   h1 {
-    font-size: 30px;
+    font-size: ${fontSizes.xxxl}px;
     line-height: 35px;
     font-weight: 600;
   }
 
   h2 {
-    font-size: 27px;
+    font-size: ${fontSizes.xxl}px;
     line-height: 33px;
-    font-weight: 600;
-  }
-
-  h3 {
-    font-size: 24px;
-    line-height: 30px;
-    font-weight: 600;
-  }
-
-  h4 {
-    font-size: 21px;
-    line-height: 27px;
     font-weight: 600;
   }
 
@@ -159,7 +147,7 @@ const PagesNav = styled.nav`
 
 const StyledLink = styled(Link) `
   color: #666;
-  font-size: 18px;
+  font-size: ${fontSizes.large}px;
   font-weight: 400;
   display: flex;
   align-items: center;

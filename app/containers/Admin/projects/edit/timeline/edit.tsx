@@ -37,6 +37,7 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 // Typings
 import { API, Locale } from 'typings';
@@ -52,7 +53,7 @@ const PhaseForm = styled.form`
     .DateInput,
     .DateInput_input {
       color: inherit;
-      font-size: 16px;
+      font-size: ${fontSizes.base}px;
       font-weight: 400;
       background: transparent;
     }

@@ -5,10 +5,11 @@ import Icon from 'components/UI/Icon';
 
 // style
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 const Text = styled.span`
   color: ${(props) => props.theme.colors.label};
-  font-size: 17px;
+  font-size: ${fontSizes.medium}px;
   font-weight: 400;
   line-height: 26px;
   transition: all 100ms ease-out;
