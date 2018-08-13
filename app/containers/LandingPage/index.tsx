@@ -36,7 +36,7 @@ import { getLocalized } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 
 const Container: any = styled.div`
   height: 100%;
@@ -143,7 +143,7 @@ const HeaderTitle: any = styled.h1`
   `}
 
   ${media.smallerThanMinTablet`
-    font-size: 34px;
+    font-size: ${fontSizes.xxxxl}px;
     line-height: 39px;
   `}
 `;
@@ -152,7 +152,7 @@ const HeaderSubtitle: any = styled.h2`
   width: 100%;
   max-width: 580px;
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
-  font-size: 22px;
+  font-size: ${fontSizes.xxl}px;
   line-height: 26px;
   font-weight: 300;
   white-space: normal;
@@ -170,7 +170,7 @@ const HeaderSubtitle: any = styled.h2`
   border-bottom: solid 1px transparent;
 
   ${media.smallerThanMinTablet`
-    font-size: 20px;
+    font-size: ${fontSizes.xl}px;
     font-weight: 300;
     line-height: 26px;
     margin-top: 15px;
@@ -228,7 +228,7 @@ const SectionHeader = styled.div`
 
 const SectionTitle = styled.h2`
   color: #333;
-  font-size: 28px;
+  font-size: ${fontSizes.xxxl}px;
   line-height: 32px;
   font-weight: 500;
   white-space: normal;
@@ -239,7 +239,7 @@ const SectionTitle = styled.h2`
 
   ${media.smallerThanMaxTablet`
     width: 100%;
-    font-size: 26px;
+    font-size: ${fontSizes.xxl}px;
     line-height: 30px;
   `}
 `;

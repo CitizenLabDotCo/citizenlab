@@ -12,7 +12,7 @@ import Spinner from 'components/UI/Spinner';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 // typing
@@ -51,7 +51,7 @@ const DropdownListItemName = styled(T)`
 
 const DropdownListItem = styled.button`
   color: ${colors.adminTextColor};
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -81,7 +81,7 @@ const DropdownFooterButton = styled.button`
   width: 100%;
   height: 50px;
   color: #fff;
-  font-size: 18px;
+  font-size: ${fontSizes.large}px;
   font-weight: 400;
   text-align: center;
   display: flex;

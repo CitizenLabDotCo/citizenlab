@@ -30,7 +30,7 @@ import messages from './messages';
 
 // styles
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { IModalInfo } from 'containers/App';
@@ -62,7 +62,7 @@ const IdeaTitle: any = styled.h3`
   max-width: 400px;
   max-height: 60px;
   margin: 0;
-  font-size: 22px;
+  font-size: ${fontSizes.xl}px;
   font-weight: 500;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -95,7 +95,7 @@ const CommentIcon = styled(Icon)`
 
 const CommentCount = styled.div`
   color: ${(props) => props.theme.colors.clGrey};
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
 `;
 

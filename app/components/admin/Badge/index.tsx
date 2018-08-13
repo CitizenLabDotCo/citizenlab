@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 export default styled.div`
   color: ${(props: any) => props.color || colors.mediumGrey};
-  font-size: 12px;
+  font-size: ${fontSizes.xs}px;
   line-height: 16px;
   border-radius: 5px;
   padding: 6px 10px;

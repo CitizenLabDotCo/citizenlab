@@ -20,7 +20,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, colors, quillEditedContent } from 'utils/styleUtils';
+import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
@@ -67,7 +67,7 @@ const UserInfo = styled.div`
 const FullName = styled.div`
   width: 100%;
   padding-top: 0px;
-  font-size: 29px;
+  font-size: ${fontSizes.xxxl}px;
   font-weight: 500;
   text-align: center;
   color: #333;
@@ -76,14 +76,14 @@ const FullName = styled.div`
 const JoinedAt = styled.div`
   width: 100%;
   margin-top: 15px;
-  font-size: 18px;
+  font-size: ${fontSizes.large}px;
   font-weight: 400;
   text-align: center;
   color: ${colors.clGreyOnGreyBackground};
 `;
 
 const Bio = styled.div`
-  font-size: 20px;
+  font-size: ${fontSizes.xl}px;
   line-height: 1.25;
   color: #6b6b6b;
   max-width: 600px;
