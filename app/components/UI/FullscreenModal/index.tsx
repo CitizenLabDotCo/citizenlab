@@ -37,7 +37,6 @@ const Container: any = styled.div`
   display: flex;
   justify-content: center;
   overflow: hidden;
-  outline: none;
   background: #fff;
   z-index: -10000;
   transform: none;

@@ -170,6 +170,10 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
     }));
   }
 
+  handleGroupsAdded = () => {
+    this.saveChanges();
+  }
+
   render() {
     const { formatMessage } = this.props.intl;
     const { project, unsavedVisibleTo, loading, saving, status } = this.state;
@@ -212,20 +216,22 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
             </SectionField>
 
             {unsavedVisibleTo === 'groups' && project &&
-              <ProjectGroupsList projectId={project.data.id} />
+              <ProjectGroupsList projectId={project.data.id} onAddButtonClicked={this.handleGroupsAdded} />
             }
 
-            <SubmitWrapper
-              loading={saving}
-              status={status}
-              onClick={this.saveChanges}
-              messages={{
-                buttonSave: messages.save,
-                buttonSuccess: messages.saveSuccess,
-                messageError: messages.saveErrorMessage,
-                messageSuccess: messages.saveSuccessMessage,
-              }}
-            />
+            {unsavedVisibleTo !== 'groups' &&
+              <SubmitWrapper
+                loading={saving}
+                status={status}
+                onClick={this.saveChanges}
+                messages={{
+                  buttonSave: messages.save,
+                  buttonSuccess: messages.saveSuccess,
+                  messageError: messages.saveErrorMessage,
+                  messageSuccess: messages.saveSuccessMessage,
+                }}
+              />
+            }
           </StyledSection>
 
           <Section>

@@ -22,6 +22,7 @@ import messages from './messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
+import { colors } from 'utils/styleUtils';
 
 // style
 import styled from 'styled-components';
@@ -46,7 +47,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const SkipButton = styled.div`
-  color: #999;
+  color: ${colors.clGreyOnGreyBackground};
   font-size: 16px;
   font-weight: 400;
   line-height: 20px;

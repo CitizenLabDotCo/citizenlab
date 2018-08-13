@@ -10,7 +10,7 @@ import { updateLocale } from 'services/locale';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSize } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 // i18n
 import { shortenedAppLocalePairs } from 'i18n';
@@ -22,7 +22,6 @@ const Container = styled.div`
   display: flex;
   position: relative;
   cursor: pointer;
-  outline: none;
   margin: 0;
   padding: 0;
 
@@ -57,23 +56,23 @@ const OpenMenuButton = styled.button`
   padding: 0;
   display: flex;
   align-items: center;
+  outline: none;
 
   &:hover,
   &:focus {
-    color: rgba(0,0,0,.87);
+    color: ${colors.clGreyHover};
   }
 `;
 
 const PopoverItem = styled(Button)`
   color: ${colors.label};
   fill: ${colors.label};
-  font-size: ${fontSize('large')};
   font-weight: 400;
   transition: all 100ms ease-out;
 
   &.active button.Button,
   &.active a.Button {
-    color: rgba(0, 0, 0, 0.95);
+    color: ${colors.clGreyHover};
     font-weight: 700;
   }
 
@@ -91,9 +90,9 @@ const PopoverItem = styled(Button)`
 
     &:hover,
     &:focus {
-      color: #000;
-      fill: #000;
-      background: #f6f6f6;
+      color: ${colors.clGreyHover};
+      background: ${colors.clDropdownHoverBackground};
+      fill: ${colors.clGreyHover};
     }
   }
 `;
@@ -144,6 +143,7 @@ export default class LanguageSelector extends React.PureComponent<Props, State> 
         {
           localeOptions.map(locale => (
             <PopoverItem
+              size="1"
               key={locale}
               style="text"
               onClick={this.handleLanguageSelect(locale)}

@@ -11,6 +11,7 @@ import ColorPickerInput from 'components/UI/ColorPickerInput';
 import InputMultiloc from 'components/UI/InputMultiloc';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import Warning from 'components/UI/Warning';
 
 // style
 import styled from 'styled-components';
@@ -18,6 +19,7 @@ import styled from 'styled-components';
 // utils
 import { convertUrlToFileObservable } from 'utils/imageTools';
 import getSubmitState from 'utils/getSubmitState';
+import { calculateContrastRatio, hexToRgb } from 'utils/styleUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -32,7 +34,10 @@ import { currentTenantStream, updateTenant, IUpdatedTenantProperties, ITenant, I
 import { API, ImageFile, Locale, Multiloc } from 'typings';
 
 const ColorPickerSectionField = styled(SectionField)`
-  max-width: 150px;
+`;
+
+const ContrastWarning = styled(Warning)`
+  margin-top: 10px;
 `;
 
 const StyledSectionField = styled(SectionField)`
@@ -63,6 +68,7 @@ type State  = {
   headerError: string | null;
   titleError: Multiloc;
   subtitleError: Multiloc;
+  contrastRatioWarning: boolean;
 };
 
 class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, State> {
@@ -85,7 +91,8 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
       logoError: null,
       headerError: null,
       titleError: {},
-      subtitleError: {}
+      subtitleError: {},
+      contrastRatioWarning: false,
     };
     this.titleMaxCharCount = 45;
     this.subtitleMaxCharCount = 90;
@@ -108,7 +115,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
           locale,
           currentTenant,
           currentTenantLogo,
-          currentTenantHeaderBg
+          currentTenantHeaderBg,
         })));
       })).subscribe(({ locale, currentTenant, currentTenantLogo, currentTenantHeaderBg }) => {
         const { attributesDiff } = this.state;
@@ -136,7 +143,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     this.subscriptions.forEach(subsription => subsription.unsubscribe());
   }
 
-  handleUploadOnAdd = (name: 'logo' | 'header_bg') => (newImage: ImageFile) => {
+  handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (newImage: ImageFile) => {
     this.setState((state) => ({
       ...state,
       [name]: [newImage],
@@ -201,10 +208,19 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     });
   }
 
-  handleColorPickerOnChange = (color: string) => {
+  handleColorPickerOnChange = (hexColor: string) => {
+    const rgbColor = hexToRgb(hexColor);
+    if (rgbColor) {
+      const { r, g, b } = rgbColor;
+      const contrastRatio = calculateContrastRatio([255, 255, 255], [r, g, b]);
+      const contrastRatioWarning = contrastRatio < 4.50 ? true : false;
+      this.setState({ contrastRatioWarning });
+    }
+
     let newDiff = cloneDeep(this.state.attributesDiff);
-    newDiff = set(newDiff, 'settings.core.color_main', color);
+    newDiff = set(newDiff, 'settings.core.color_main', hexColor);
     this.setState({ attributesDiff: newDiff });
+
   }
 
   validate = (currentTenant: ITenant, attributesDiff: IAttributesDiff) => {
@@ -265,7 +281,13 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
   }
 
   render() {
-    const { locale, currentTenant, titleError, subtitleError, errors, saved } = this.state;
+    const { locale,
+      currentTenant,
+      titleError,
+      subtitleError,
+      errors,
+      contrastRatioWarning,
+      saved } = this.state;
 
     if (locale && currentTenant) {
       const { formatMessage } = this.props.intl;
@@ -289,6 +311,15 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 value={get(tenantAttrs, 'settings.core.color_main')}
                 onChange={this.handleColorPickerOnChange}
               />
+              {contrastRatioWarning &&
+                <ContrastWarning
+                  text={
+                    <FormattedMessage
+                      {...messages.contrastRatioTooLow}
+                    />
+                  }
+                />
+              }
             </ColorPickerSectionField>
 
             <SectionField key={'logo'}>

@@ -65,10 +65,6 @@ const Container = styled.div`
   flex-direction: column;
   margin-top: 25px;
 
-  * {
-    outline: none;
-  }
-
   .sharingButton {
     display: flex;
     align-items: center;

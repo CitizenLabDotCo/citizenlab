@@ -13,7 +13,6 @@ import daLocaleData from 'react-intl/locale-data/da';
 import nbLocaleData from 'react-intl/locale-data/nb';
 import achLocaleData from './utils/ach';
 
-
 import { DEFAULT_LOCALE } from './containers/App/constants'; // eslint-disable-line
 
 import enTranslationMessages from './translations/en.json';

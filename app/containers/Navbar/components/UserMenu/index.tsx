@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 // components
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
-// import UserName from 'components/UI/UserName';
+import UserName from 'components/UI/UserName';
 import Popover from 'components/Popover';
 import HasPermission from 'components/HasPermission';
 
@@ -14,8 +14,8 @@ import { IUser } from 'services/users';
 
 // style
 import styled from 'styled-components';
+import { colors, media, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
-import { colors } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -23,70 +23,51 @@ import messages from '../../messages';
 
 const Container = styled.div`
   display: flex;
-  margin-left: 0px;
   position: relative;
-  cursor: pointer;
-  outline: none;
 
   * {
     user-select: none;
   }
 `;
 
-const OpenMenuButton = styled.button`
-  width: 28px;
-  height: 28px;
-  background: none;
-  border-radius: 50%;
-  border: 0;
-  border: 1px solid transparent;
-  cursor: pointer;
-  padding: 0;
-  transition: all .2s;
-
-  /*
-  padding: 0;
-  transition: all .2s;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+const StyledUserName = styled(UserName)`
   color: ${colors.label};
-  max-width: 150px;
-  */
+  margin-right: 5px;
+  white-space: nowrap;
+  font-size: ${fontSizes.base}px;
+  transition: all 100ms ease-out;
 
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
+`;
+
+const StyledAvatar = styled(Avatar)`
   svg {
     fill: ${colors.label};
-  }
-
-  &:hover,
-  &:focus {
-    color: ${darken(0.2, colors.label)};
-    svg, img {
-      border-color: ${darken(0.2, colors.label)};
-    }
-    svg {
-      fill: ${darken(0.2, colors.label)};
-    }
-  }
-  span {
-    margin-top: 2px;
-    margin-right: 5px;
-    text-align: right;
   }
 `;
 
-const StyledAvatar = styled(Avatar) `
-  height: 28px;
-  width: 28px;
-  svg, img {
-    height: 28px;
-    width: 28px;
-    border: 0;
-    border: 1px solid transparent;
-    border-radius: 50%;
-  }
-  svg {
-    fill: ${colors.label};
+const OpenMenuButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    ${StyledUserName} {
+      color: #000;
+    }
+
+    ${StyledAvatar} {
+      img {
+        border-color: #000;
+      }
+
+      svg {
+        fill: ${darken(0.2, colors.label)};
+      }
+    }
   }
 `;
 
@@ -94,22 +75,25 @@ const StyledPopover = styled(Popover) `
   display: flex;
   flex-direction: column;
   z-index: 5;
+
   .Ideas-icon .cl-icon-primary, .Ideas-icon .cl-icon-secondary {
-    fill: ${colors.label} !important;
+    fill: ${colors.label};
   }
+
   .Ideas-icon .cl-icon-accent {
     fill: transparent !important;
   }
 `;
 
-const PopoverItem = styled(Button) `
-  background: #fff;
-  border-radius: 5px;
-  transition: all 80ms ease-out;
-
-  &:hover,
-  &:focus {
-    background: #f6f6f6;
+const PopoverItem = styled(Button)`
+  &.Button.button {
+    font-size: 17px;
+  }
+  a:not(.processing):focus,
+  button:not(.processing):focus,
+  a:not(.processing):hover,
+  button:not(.processing):hover {
+    background: ${colors.clDropdownHoverBackground};
   }
 `;
 
@@ -166,12 +150,14 @@ export default class UserMenu extends React.PureComponent<Props, State> {
       return (
         <Container id="e2e-user-menu-container">
           <OpenMenuButton onClick={this.togglePopover}>
-            {
-              <>
-                {/* <UserName user={authUser.data} /> */}
-                <StyledAvatar userId={userId} size="small" />
-              </>
-            }
+            <StyledUserName
+              user={authUser.data}
+              hideLastName={true}
+            />
+            <StyledAvatar
+              userId={userId}
+              size="small"
+            />
           </OpenMenuButton>
           <StyledPopover
             id="e2e-user-menu-dropdown"
@@ -188,7 +174,6 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                 iconPos="right"
                 iconSize="20px"
                 padding="11px 11px"
-                size="2"
                 justify="space-between"
               >
                 <FormattedMessage {...messages.admin} />
@@ -206,7 +191,6 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                     iconPos="right"
                     iconSize="20px"
                     padding="11px 11px"
-                    size="2"
                     justify="space-between"
                   >
                     <FormattedMessage {...messages.projectsModeration} />
@@ -220,11 +204,10 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               linkTo={`/profile/${userSlug}`}
               onClick={this.closePopover}
               style="text"
-              icon="ideas"
+              icon="ideas2"
               iconPos="right"
               iconSize="20px"
               padding="11px 11px"
-              size="2"
               justify="space-between"
             >
               <FormattedMessage {...messages.myIdeas} />
@@ -239,7 +222,6 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               iconPos="right"
               iconSize="20px"
               padding="11px 11px"
-              size="2"
               justify="space-between"
             >
               <FormattedMessage {...messages.editProfile} />
@@ -253,7 +235,6 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               iconPos="right"
               iconSize="20px"
               padding="11px 11px"
-              size="2"
               justify="space-between"
             >
               <FormattedMessage {...messages.signOut} />

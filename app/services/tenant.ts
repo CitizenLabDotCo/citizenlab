@@ -74,6 +74,7 @@ export interface ITenantData {
     settings: ITenantSettings;
     logo: API.ImageSizes;
     header_bg: API.ImageSizes;
+    favicon?: API.ImageSizes;
   };
 }
 
@@ -85,6 +86,7 @@ export interface IUpdatedTenantProperties {
   settings?: Partial<ITenantSettings>;
   logo?: string;
   header_bg?: string;
+  favicon?: string;
 }
 
 export function currentTenantStream() {

@@ -3,6 +3,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import styled from 'styled-components';
 import { IUserData } from 'services/users';
+import { get } from 'lodash';
 
 const User = styled.span`
   &.deleted-user {
@@ -10,10 +11,24 @@ const User = styled.span`
   }
 `;
 
-export default ({ user }: { user: IUserData | null }) => {
-  if (!user) {
-    return (<User className="deleted-user"><FormattedMessage {...messages.deletedUser} /></User>);
-  }
+interface Props {
+  user: IUserData | null;
+  hideLastName?: boolean;
+  className?: string;
+}
 
-  return (<User>{`${user.attributes.first_name} ${user.attributes.last_name || ''}`}</User>);
+export default (props: Props) => {
+  const { user, className, hideLastName } = props;
+  const firstName = get(user, 'attributes.first_name', '');
+  const lastName = get(user, 'attributes.last_name', '');
+
+  return (
+    <User className={`${className} ${!user ? 'deleted-user' : ''}`}>
+      {user ? (
+        `${firstName} ${!hideLastName ? lastName : ''}`
+      ) : (
+        <FormattedMessage {...messages.deletedUser} />
+      )}
+    </User>
+  );
 };

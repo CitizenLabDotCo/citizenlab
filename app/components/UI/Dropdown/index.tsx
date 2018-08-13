@@ -10,50 +10,26 @@ const Container: any = styled(clickOutside)`
   flex-direction: column;
   border-radius: 5px;
   background-color: #fff;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
-  border: solid 1px #e0e0e0;
-  position: absolute;
-  top: 35px;
-  left: -10px;
-  transform-origin: ${(props: any) => props.transformOriginXOffset} top;
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.2);
   z-index: 5;
+  position: absolute;
+  top: ${(props: Props) => props.top};
+  left: ${(props: Props) => props.left};
+  right: ${(props: Props) => props.right};
+  outline: none;
 
   * {
     user-select: none;
   }
 
-  ::before,
-  ::after {
-    content: '';
-    display: block;
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-style: solid;
-  }
-
-  ::after {
-    top: -20px;
-    left: 20px;
-    border-color: transparent transparent #fff transparent;
-    border-width: 10px;
-  }
-
-  ::before {
-    top: -22px;
-    left: 19px;
-    border-color: transparent transparent #e0e0e0 transparent;
-    border-width: 11px;
-  }
-
   &.dropdown-enter {
     opacity: 0;
-    transform: scale(0.9);
+    transform: translateY(-10px);
 
     &.dropdown-enter-active {
       opacity: 1;
-      transform: scale(1);
-      transition: all ${timeout}ms cubic-bezier(0.19, 1, 0.22, 1);
+      transform: translateY(0px);
+      transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
     }
   }
 `;
@@ -66,12 +42,16 @@ const ContainerInner = styled.div`
 `;
 
 const Content: any = styled.div`
+  width: ${(props: Props) => props.width};
   max-height: ${(props: any) => props.maxHeight};
-  width: 280px;
   display: flex;
   flex-direction: column;
-  margin: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 5px;
   margin-right: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 `;
@@ -84,7 +64,10 @@ const Footer = styled.div`
 
 interface Props {
   opened: boolean;
-  transformOriginXOffset?: string;
+  width?: string;
+  top?: string;
+  left? : string;
+  right?: string;
   content: JSX.Element;
   footer?: JSX.Element;
   maxHeight?: string;
@@ -94,12 +77,20 @@ interface Props {
 interface State {}
 
 export default class Dropdown extends PureComponent<Props, State> {
+  static defaultProps: Partial<Props> = {
+    width: '280px',
+    top: 'auto',
+    left: 'auto',
+    right: 'auto',
+    maxHeight: '410px'
+  };
+
   close = (event: FormEvent) => {
     this.props.toggleOpened(event);
   }
 
   render() {
-    const { opened, maxHeight, transformOriginXOffset, content, footer } = this.props;
+    const { opened, width, top, left, right, maxHeight, content, footer } = this.props;
 
     return (
       <CSSTransition
@@ -107,15 +98,20 @@ export default class Dropdown extends PureComponent<Props, State> {
         timeout={timeout}
         mountOnEnter={true}
         unmountOnExit={true}
-        classNames="dropdown"
         exit={false}
+        classNames={`${this.props['className']} dropdown`}
       >
         <Container
+          top={top}
+          left={left}
+          right={right}
           onClickOutside={this.close}
-          transformOriginXOffset={transformOriginXOffset || 'left'}
         >
           <ContainerInner>
-            <Content maxHeight={maxHeight || '410px'}>
+            <Content
+              width={width}
+              maxHeight={maxHeight}
+            >
               {content}
             </Content>
 

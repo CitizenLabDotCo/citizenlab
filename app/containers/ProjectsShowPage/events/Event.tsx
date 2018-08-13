@@ -19,7 +19,7 @@ import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled from 'styled-components';
-import { media, quillEditedContent } from 'utils/styleUtils';
+import { media, colors, quillEditedContent } from 'utils/styleUtils';
 import T from 'components/T';
 
 const Container = styled.div`
@@ -57,10 +57,10 @@ const EventDates = styled.div`
   border-radius: 5px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  background: #f64a00;
+  background: #DF3300;
 
   &.past {
-    background: #cfcfcf;
+    background: #939393;
   }
 
   ${media.smallerThanMaxTablet`
@@ -70,7 +70,7 @@ const EventDates = styled.div`
 
 const EventDate = styled.div`
   color: #fff;
-  font-size: 23px;
+  font-size: 24px;
   line-height: 27px;
   font-weight: 500;
   display: flex;
@@ -103,7 +103,7 @@ const EventYear = styled.div`
   background: #373737;
 
   &.past {
-    background: #a7a7a7;
+    background: ${colors.label};
   }
 `;
 
@@ -144,7 +144,7 @@ const EventTitle = styled.div`
 `;
 
 const EventDescription = styled.div`
-  color: #939393;
+  color: ${colors.label};
   font-size: 16px;
   font-weight: 300;
   line-height: 21px;

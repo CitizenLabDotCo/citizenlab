@@ -8,14 +8,15 @@ import styled from 'styled-components';
 
 const Dropdown = styled.div`
   position: relative;
+  outline: none;
 
   * {
-    outline: none;
+    outline: 0;
     user-select: none;
   }
 `;
 
-const DropdownMenuContainer = styled(clickOutside)`
+const DropdownMenuContainer: any = styled(clickOutside)`
   position: absolute;
   top: ${(props: any) => props.top || '0px'};
   left: 50%;
@@ -34,7 +35,7 @@ const DropdownMenuContainer = styled(clickOutside)`
   }
 `;
 
-const DropdownMenu = styled.div`
+const DropdownMenu: any = styled.div`
   position: relative;
   left: -50%;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
