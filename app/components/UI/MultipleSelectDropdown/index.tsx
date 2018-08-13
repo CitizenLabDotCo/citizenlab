@@ -23,10 +23,6 @@ const DropdownMenuInner = styled.div`
   flex-direction: column;
   align-items: stretch;
   overflow: hidden;
-
-  * {
-    outline: none;
-  }
 `;
 
 const DropdownList = styled.div`
@@ -75,6 +71,7 @@ const DropdownListItem = styled.button`
 
 const DropdownFooter = styled.div`
   width: 100%;
+  display: none;
 `;
 
 const DropdownFooterButton = styled.button`

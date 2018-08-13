@@ -16,7 +16,6 @@ const Container = styled.div`
 
   * {
     user-select: none;
-    outline: none;
   }
 `;
 
@@ -129,6 +128,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
               onClick={action.handler}
               icon={action.icon}
               text={action.label}
+              textColor="#fff"
               textHoverColor="#fff"
               circularCorners={false}
             />

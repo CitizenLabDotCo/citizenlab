@@ -1,33 +1,38 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { isNumber } from 'lodash';
+
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // components
 import Icon from 'components/UI/Icon';
 
 // style
 import styled from 'styled-components';
-import { darken } from 'polished';
 import { colors } from 'utils/styleUtils';
+import messages from '../../messages';
 
 const Container = styled.button`
+  width: 24px;
+  height: 24px;
   align-items: center;
   cursor: pointer;
   display: flex;
   fill: ${colors.label};
-  height: 23px;
   justify-content: center;
   padding: 0;
   position: relative;
-  width: 23px;
+  outline: none;
 
   &:hover,
   &:focus {
-    fill: ${darken(.2, colors.label)};
+    fill: ${colors.clGreyHover};
   }
 `;
 
 const NotificationIcon = styled(Icon)`
-  height: 23px;
+  height: 24px;
   fill: inherit;
   transition: all 150ms ease;`
 ;
@@ -50,15 +55,17 @@ type Props = {
 
 type State = {};
 
-export default class NotificationCount extends React.PureComponent<Props, State> {
+class NotificationCount extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
     const { count } = this.props;
 
     return (
-      <Container onClick={this.props.onClick}>
+      <Container aria-label={this.props.intl.formatMessage(messages.notificationsLabel)} onClick={this.props.onClick}>
         <NotificationIcon name="notification" />
         {(isNumber(count) && count > 0) ? <NewNotificationsIndicator /> : null}
       </Container>
     );
   }
 }
+
+export default injectIntl<Props>(NotificationCount);

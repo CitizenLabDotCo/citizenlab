@@ -13,7 +13,7 @@ import tracks from './tracks';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
@@ -25,13 +25,17 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // style
 import styled from 'styled-components';
-import { darken } from 'polished';
+import { darken, hideVisually } from 'polished';
 
 const CommentContainer = styled.form`
   padding-left: 0px;
   padding-right: 0px;
   padding-top: 0px;
   padding-bottom: 0px;
+`;
+
+const HiddenLabel = styled.span`
+  ${hideVisually() as any}
 `;
 
 const StyledTextArea = styled(MentionsTextArea)`
@@ -197,22 +201,28 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
 
       return (
         <CommentContainer>
-          <StyledTextArea
-            name="comment"
-            placeholder={placeholder}
-            rows={1}
-            padding="12px 30px"
-            value={inputValue}
-            error={errorMessage}
-            ideaId={ideaId}
-            onChange={this.handleTextareaOnChange}
-            onFocus={this.handleTextareaOnFocus}
-            onBlur={this.handleTextareaOnBlur}
-          >
-            <SendIconWrapper onClick={this.handleSubmit} disabled={!canSubmit}>
-              <SendIcon name="send" />
-            </SendIconWrapper>
-          </StyledTextArea>
+          <label htmlFor="reply-to-comment">
+            <HiddenLabel>
+              <FormattedMessage {...messages.replyToComment} />
+            </HiddenLabel>
+            <StyledTextArea
+              id="reply-to-comment"
+              name="comment"
+              placeholder={placeholder}
+              rows={1}
+              padding="12px 30px"
+              value={inputValue}
+              error={errorMessage}
+              ideaId={ideaId}
+              onChange={this.handleTextareaOnChange}
+              onFocus={this.handleTextareaOnFocus}
+              onBlur={this.handleTextareaOnBlur}
+            >
+              <SendIconWrapper aria-label={this.props.intl.formatMessage(messages.send)} onClick={this.handleSubmit} disabled={!canSubmit}>
+                <SendIcon name="send" />
+              </SendIconWrapper>
+            </StyledTextArea>
+          </label>
         </CommentContainer>
       );
     }

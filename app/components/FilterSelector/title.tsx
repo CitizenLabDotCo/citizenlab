@@ -32,7 +32,6 @@ const Container = styled.div`
   padding: 0;
   margin: 0;
   position: relative;
-  outline: none;
 
   &:hover,
   &.deployed {

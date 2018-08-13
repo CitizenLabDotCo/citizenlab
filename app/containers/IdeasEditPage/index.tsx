@@ -44,7 +44,7 @@ const Container = styled.div`
 const FormContainer = styled.div`
   width: 100%;
   max-width: 600px;
-  display: 'flex';
+  display: flex;
   flex-direction: column;
   align-items: center;
   padding-bottom: 100px;

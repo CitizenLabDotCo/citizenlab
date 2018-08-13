@@ -37,7 +37,7 @@ export default (inputProps: InputProps) => (
             ?
               <Badge><FormattedMessage {...messages.inviteStatusPending} /></Badge>
             :
-              <Badge color={colors.success}><FormattedMessage {...messages.inviteStatusAccepted} /></Badge>
+              <Badge color={colors.clGreen}><FormattedMessage {...messages.inviteStatusAccepted} /></Badge>
             }
           </Table.Cell>
           <Table.Cell textAlign="center">

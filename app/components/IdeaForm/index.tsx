@@ -39,6 +39,7 @@ import { IOption, ImageFile, Locale } from 'typings';
 
 // style
 import styled from 'styled-components';
+import { hideVisually } from 'polished';
 
 const Form = styled.form`
   width: 100%;
@@ -50,6 +51,16 @@ const Form = styled.form`
 const FormElement: any = styled.div`
   width: 100%;
   margin-bottom: 40px;
+`;
+
+const StyledMultipleSelect = styled(MultipleSelect)`
+  max-width: 100%;
+  padding: 2.5px 0;
+  cursor: pointer;
+`;
+
+const HiddenLabel = styled.span`
+  ${hideVisually() as any}
 `;
 
 export interface IIdeaFormOutput {
@@ -313,7 +324,8 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
         {topics && topics.length > 0 &&
           <FormElement>
             <Label value={<FormattedMessage {...messages.topicsLabel} />} htmlFor="topics" />
-            <MultipleSelect
+            <StyledMultipleSelect
+              inputId="topics"
               value={selectedTopics}
               placeholder={<FormattedMessage {...messages.topicsPlaceholder} />}
               options={topics}
@@ -325,27 +337,39 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
 
         <FormElement>
           <Label value={<FormattedMessage {...messages.locationLabel} />} htmlFor="location" />
-          <LocationInput
-            id="location"
-            value={position}
-            placeholder={formatMessage(messages.locationPlaceholder)}
-            onChange={this.handleLocationOnChange}
-          />
+          <label htmlFor="location">
+            <HiddenLabel>
+              <FormattedMessage {...messages.locationLabel} />
+            </HiddenLabel>
+            <LocationInput
+              id="location"
+              value={position}
+              placeholder={formatMessage(messages.locationPlaceholder)}
+              onChange={this.handleLocationOnChange}
+            />
+          </label>
         </FormElement>
 
         <FormElement>
           <Label value={<FormattedMessage {...messages.imageUploadLabel} />} />
-          <ImagesDropzone
-            images={imageFile}
-            imagePreviewRatio={135 / 298}
-            acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-            maxImageFileSize={5000000}
-            maxNumberOfImages={1}
-            placeholder={<FormattedMessage {...messages.imageUploadPlaceholder} />}
-            onAdd={this.handleUploadOnAdd}
-            onUpdate={this.handleUploadOnUpdate}
-            onRemove={this.handleUploadOnRemove}
-          />
+          {/* Wrapping image dropzone with a label for accesibility */}
+          <label htmlFor="idea-img-dropzone">
+            <HiddenLabel>
+              <FormattedMessage {...messages.imageDropzonePlaceholder} />
+            </HiddenLabel>
+            <ImagesDropzone
+              id="idea-img-dropzone"
+              images={imageFile}
+              imagePreviewRatio={135 / 298}
+              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+              maxImageFileSize={5000000}
+              maxNumberOfImages={1}
+              placeholder={<FormattedMessage {...messages.imageUploadPlaceholder} />}
+              onAdd={this.handleUploadOnAdd}
+              onUpdate={this.handleUploadOnUpdate}
+              onRemove={this.handleUploadOnRemove}
+            />
+          </label>
         </FormElement>
       </Form>
     );
