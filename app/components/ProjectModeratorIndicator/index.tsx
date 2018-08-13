@@ -17,7 +17,7 @@ import messages from './messages';
 
 // Style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba, darken } from 'polished';
 
 const Container = styled.div`
@@ -41,7 +41,7 @@ const StyledIcon = styled(Icon)`
 
 const Text = styled.div`
   color: ${colors.draftYellow};
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   line-height: 21px;
   font-weight: 400;
 

@@ -5,6 +5,7 @@ import { EditorState } from 'draft-js';
 import { Editor as DraftEditor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
@@ -85,7 +86,7 @@ const DraftEditorContainer: any = styled.div`
 
   .rdw-editor-main {
     min-height: 250px;
-    font-size: 16px;
+    font-size: ${fontSizes.base}px;
     line-height: 23px;
     font-weight: 400;
     cursor: text;

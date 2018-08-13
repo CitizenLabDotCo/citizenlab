@@ -10,7 +10,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const timeout = 200;
 const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
@@ -121,7 +121,7 @@ const ListWrapper = styled.ul`
 
 const StyledOption: any = styled.li`
   color: ${colors.clGrey};
-  font-size: 17px;
+  font-size: ${fontSizes.medium}px;
   font-weight: 400;
   padding: 10px 15px;
   background: #fff;

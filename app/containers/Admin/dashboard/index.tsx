@@ -14,7 +14,7 @@ import AgeChart from './components/AgeChart';
 import IdeasByTimeChart from './components/IdeasByTimeChart';
 import UsersByTimeChart from './components/UsersByTimeChart';
 import IdeasByTopicChart from './components/IdeasByTopicChart';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
@@ -82,7 +82,7 @@ const GraphCard = styled.div`
 `;
 
 const GraphCardTitle = styled.h3`
-  font-size: 20px;
+  font-size: ${fontSizes.xl}px;
   font-weight: 400;
   align-self: flex-start;
   padding-bottom: 20px;

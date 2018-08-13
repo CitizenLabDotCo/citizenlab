@@ -3,6 +3,8 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
+
 import { injectTracks } from 'utils/analytics';
 
 import NotificationCount from './components/NotificationCount';
@@ -44,7 +46,7 @@ const EmptyStateContainer = styled.div`
   align-items: center;
   height: 200px;
   color: #A6A6A6;
-  font-size: 18px;
+  font-size: ${fontSizes.large}px;
 `;
 
 type Props = {};

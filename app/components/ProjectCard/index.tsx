@@ -155,7 +155,7 @@ const ArchivedLabel = styled.span`
 
 const ProjectTitle = styled.h3`
   color: #333;
-  font-size: 23px;
+  font-size: ${fontSizes.xxl}px;
   line-height: 29px;
   font-weight: 500;
   margin: 0;
@@ -164,7 +164,7 @@ const ProjectTitle = styled.h3`
 
 const ProjectDescription = styled.div`
   color: ${(props) => props.theme.colors.label};
-  font-size: 16px;
+  font-size: ${fontSizes.medium}px;
   line-height: 24px;
   font-weight: 400;
   margin-top: 20px;
@@ -173,7 +173,7 @@ const ProjectDescription = styled.div`
 
 const ProjectMetaItems = styled.div`
   color: ${(props) => props.theme.colors.label};
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 20px;
   display: flex;
@@ -195,7 +195,7 @@ const IdeaCountIcon = styled(Icon)`
 
 const IdeaCountText = styled.div`
   color: ${(props) => props.theme.colors.label};
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 21px;
   transition: all 100ms ease-out;

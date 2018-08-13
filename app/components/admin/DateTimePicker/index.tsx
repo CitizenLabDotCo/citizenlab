@@ -9,6 +9,7 @@ import { SingleDatePicker } from 'react-dates';
 
 // styling
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 // i18n
 import localize, { injectedLocalized } from 'utils/localize';
@@ -20,7 +21,7 @@ const Wrapper = styled.div`
   border: solid 1px #ccc;
 
   input {
-    font-size: 16px;
+    font-size: ${fontSizes.base}px;
     font-weight: 400;
     outline: none;
     box-shadow: none;

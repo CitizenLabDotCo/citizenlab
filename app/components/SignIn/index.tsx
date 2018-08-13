@@ -30,7 +30,7 @@ import { AUTH_PATH } from 'containers/App/constants';
 // style
 import { darken } from 'polished';
 import styled, { css } from 'styled-components';
-import { color } from 'utils/styleUtils';
+import { color, fontSizes } from 'utils/styleUtils';
 
 // logos
 const googleLogo = require('components/SignUp/google.svg') as string;
@@ -42,10 +42,10 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Title = styled.h2`
+const Title = styled.h1`
   width: 100%;
   color: #333;
-  font-size: 34px;
+  font-size: ${fontSizes.xxxxl}px;
   line-height: 42px;
   font-weight: 500;
   text-align: left;
@@ -83,7 +83,7 @@ const PasswordInput = styled(StyledInput)`
 const ForgotPassword = styled(Link)`
   color: ${color('label')};
   color: #999;
-  font-size: 14px;
+  font-size: ${fontSizes.small}px;
   line-height: 18px;
   font-weight: 300;
   text-decoration: none;
@@ -107,7 +107,7 @@ const ButtonWrapper = styled.div`
 
 const CreateAnAccountStyle = css`
   color: ${(props) => props.theme.colorMain};
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   line-height: 20px;
   font-weight: 400;
   text-decoration: none;
@@ -144,7 +144,7 @@ const Footer = styled.div`
 
 const SocialLoginText = styled.div`
   color: ${(props) => props.theme.colors.label};
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: 20px;
   margin-left: 4px;
