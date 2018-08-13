@@ -16,8 +16,7 @@ resource "EventFile" do
     create_list(:event_file, 2, event: @event)
   end
 
-  get "web_api/v1/projects/:project_id/events/:event_id/files" do
-    let(:project_id) { @project.id }
+  get "web_api/v1/events/:event_id/files" do
     let(:event_id) { @event.id }
 
     example_request "List all file attachments of an event" do
@@ -27,8 +26,7 @@ resource "EventFile" do
     end
   end
 
-  get "web_api/v1/projects/:project_id/events/:event_id/files/:file_id" do
-    let(:project_id) { @project.id }
+  get "web_api/v1/events/:event_id/files/:file_id" do
     let(:event_id) { @event.id }
     let(:file_id) { EventFile.first.id }
 
@@ -39,14 +37,13 @@ resource "EventFile" do
     end
   end
 
-  post "web_api/v1/projects/:project_id/events/:event_id/files" do
+  post "web_api/v1/events/:event_id/files" do
     with_options scope: :file do
       parameter :file, "The base64 encoded file", required: true
       parameter :ordering, "An integer that is used to order the file attachments within a event", required: false
       parameter :name, "The name of the file, including the file extension", required: true
     end
     ValidationErrorHelper.new.error_fields(self, EventFile)
-    let(:project_id) { @project.id }
     let(:event_id) { @event.id }
     let(:ordering) { 1 }
     let(:name) { "afvalkalender.pdf" }
@@ -72,14 +69,13 @@ resource "EventFile" do
     end
   end
 
-  patch "web_api/v1/projects/:project_id/events/:event_id/files/:file_id" do
+  patch "web_api/v1/events/:event_id/files/:file_id" do
     with_options scope: :file do
       parameter :file, "The base64 encoded file"
       parameter :ordering, "An integer that is used to order the file attachments within an event"
       parameter :name, "The name of the file, including the file extension"
     end
     ValidationErrorHelper.new.error_fields(self, EventFile)
-    let(:project_id) { @project.id }
     let(:event_id) { @event.id }
     let(:file_id) { EventFile.first.id }
     let(:name) { 'ophaalkalender.pdf' }
@@ -93,8 +89,7 @@ resource "EventFile" do
     end
   end
 
-  delete "web_api/v1/projects/:project_id/events/:event_id/files/:file_id" do
-    let(:project_id) { @project.id }
+  delete "web_api/v1/events/:event_id/files/:file_id" do
     let(:event_id) { @event.id }
     let(:file_id) { EventFile.first.id }
 
