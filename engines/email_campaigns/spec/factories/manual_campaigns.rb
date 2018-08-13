@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :campaign, :class => EmailCampaigns::Campaign do
+  factory :manual_campaign, :class => EmailCampaigns::ManualCampaign do
     sent_at nil
     author
     sender "author"
