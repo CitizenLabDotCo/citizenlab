@@ -112,7 +112,7 @@ const StyledSearchInput = styled(SearchInput)`
   width: 300px;
 
   input {
-    font-size: ${fontSizes.base}px;
+    font-size: ${fontSizes.medium}px;
     font-weight: 400;
   }
 
