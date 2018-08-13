@@ -23,7 +23,7 @@ import { LEGAL_PAGES } from 'services/pages';
 
 // style
 import styled from 'styled-components';
-import { media, color } from 'utils/styleUtils';
+import { media, color, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
@@ -58,7 +58,7 @@ const TenantSlogan = styled.div`
   width: 100%;
   max-width: 340px;
   color: #444;
-  font-size: 20px;
+  font-size: ${fontSizes.xl}px;
   font-weight: 500;
   line-height: 28px;
   text-align: center;
@@ -109,7 +109,7 @@ const PagesNav = styled.nav`
 const StyledLink = styled(Link) `
   color: ${color('clGrey')};
   font-weight: 400;
-  font-size: 14px;
+  font-size: ${fontSizes.small}px;
   line-height: 19px;
   text-decoration: none;
 
@@ -118,7 +118,7 @@ const StyledLink = styled(Link) `
   }
 
   ${media.smallerThanMaxTablet`
-    font-size: 13px;
+    font-size: ${fontSizes.small}px;
     line-height: 16px;
   `}
 `;
@@ -126,7 +126,7 @@ const StyledLink = styled(Link) `
 const Separator = styled.span`
   color: ${color('clGrey')};
   font-weight: 400;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   line-height: 19px;
   padding-left: 10px;
   padding-right: 10px;
@@ -148,7 +148,7 @@ const CitizenLabLogo = styled(Icon) `
 const PoweredBy = styled.a`
   color: ${color('clGrey')};
   font-weight: 300;
-  font-size: 14px;
+  font-size: ${fontSizes.small}px;
   line-height: 19px;
   text-decoration: none;
   display: flex;

@@ -18,11 +18,11 @@ import Error from 'components/UI/Error';
 // Styling
 import styled from 'styled-components';
 import { transparentize, darken } from 'polished';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const CommentWrapper = styled.div`
   color: ${colors.text};
-  font-size: 17px;
+  font-size: ${fontSizes.base}px;
   line-height: 25px;
   font-weight: 300;
   word-break: break-word;

@@ -121,9 +121,6 @@ export const colors = {
   // darker red than clRed for when we have a light red background (clRedSuccessBackground)
   clRedError: '#D61607',
   clRedErrorBackground: '#fde9e8',
-  darkClGreen: '#004949',
-  success: '#32B67A',
-  error: '#FC3C2D',
   label: '#596B7A',
   draftYellow: '#8C680D',
   mediumGrey: '#BDBDBD',
@@ -139,6 +136,7 @@ export const colors = {
   clBlueLight: '#40B8C5',
   placeholderBg: '#CFD6DB',
 
+  // Admin colors
   adminBackground: '#F0F3F4',
   adminContentBackground: '#fff',
   adminMenuBackground: '#003349',
@@ -147,10 +145,12 @@ export const colors = {
   adminTextColor: '#044D6C',
   adminLightText: 'rgba(255, 255, 255, 0.8)',
   adminSecondaryTextColor: '#84939E',
+
   adminBorder: '#EAEAEA',
   adminSeparation: '#EAEAEA',
-
   adminOrangeIcons: '#FF672F',
+
+  // Icon colors
   clIconPrimary: '#00577C',
   clIconSecondary:'#84939E',
   clIconAccent:'#01A1B1',
@@ -165,10 +165,12 @@ export const fontSizes = {
   xs: 12,
   small: 14,
   base: 16,
+  medium: 17,
   large: 18,
   xl: 21,
   xxl: 25,
   xxxl: 30,
+  xxxxl: 34
 };
 
 export function fontSize(name: keyof typeof fontSizes) {

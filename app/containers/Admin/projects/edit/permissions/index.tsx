@@ -22,6 +22,7 @@ import GetModerators from 'resources/GetModerators';
 
 // style
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 const StyledSection = styled(Section)`
   margin-bottom: 110px;
@@ -37,7 +38,7 @@ const StyledRadio = styled(Radio)`
   cursor: pointer;
 
   .text {
-    font-size: 16px;
+    font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 22px;
   }

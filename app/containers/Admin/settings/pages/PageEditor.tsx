@@ -22,7 +22,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // Styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const timeout = 350;
 
@@ -44,7 +44,7 @@ const DeployIcon = styled(Icon) `
 
 const Toggle = styled.div`
   color: ${colors.adminSecondaryTextColor};
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 500;
   display: flex;
   align-items: center;

@@ -87,9 +87,7 @@ const StyledPopover = styled(Popover) `
 `;
 
 const PopoverItem = styled(Button)`
-  &.Button.button {
-    font-size: 17px;
-  }
+
   a:not(.processing):focus,
   button:not(.processing):focus,
   a:not(.processing):hover,
@@ -167,6 +165,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
           >
             <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
               <PopoverItem
+                size="1"
                 id="admin-link"
                 linkTo={'/admin'}
                 onClick={this.closePopover}
@@ -184,6 +183,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                 {/* Display the project moderation page for moderators, they don't have access to the dashboard */}
                 <HasPermission item={{ type: 'route', path: '/admin/projects' }} action="access">
                   <PopoverItem
+                    size="1"
                     id="e2e-projects-admin-link"
                     linkTo={'/admin/projects'}
                     onClick={this.closePopover}
@@ -201,6 +201,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
             </HasPermission>
 
             <PopoverItem
+              size="1"
               id="e2e-profile-profile-link"
               linkTo={`/profile/${userSlug}`}
               onClick={this.closePopover}
@@ -215,6 +216,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
             </PopoverItem>
 
             <PopoverItem
+              size="1"
               id="e2e-profile-edit-link"
               linkTo={'/profile/edit'}
               onClick={this.closePopover}
@@ -229,6 +231,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
             </PopoverItem>
 
             <PopoverItem
+              size="1"
               id="e2e-sign-out-link"
               onClick={this.signOut}
               style="text"

@@ -12,7 +12,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
@@ -35,7 +35,7 @@ const StyledContentContainer = styled(ContentContainer)`
 
 const PageTitle = styled.h1`
   color: #333;
-  font-size: 34px;
+  font-size: ${fontSizes.xxxxl}px;
   line-height: 40px;
   font-weight: 500;
   text-align: center;
