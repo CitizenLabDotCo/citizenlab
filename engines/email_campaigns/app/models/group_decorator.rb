@@ -1,6 +1,6 @@
 Group.class_eval do
 
-  has_many :campaigns_groups, class_name: 'EmailCampaigns::CampaignsGroup', dependent: :destroy
-  has_many :campaigns, class_name: 'EmailCampaigns::Campaign', through: :campaigns_groups
+  has_many :manual_campaigns_groups, class_name: 'EmailCampaigns::ManualCampaignsGroup', dependent: :destroy
+  has_many :manual_campaigns, class_name: 'EmailCampaigns::ManualCampaign', through: :manual_campaigns_groups
 
 end
