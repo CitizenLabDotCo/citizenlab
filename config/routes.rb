@@ -65,10 +65,10 @@ Rails.application.routes.draw do
 
       resources :projects do
         resources :phases, shallow: true do
-          resources :files, defaults: {container_class: Project, file_class: PhaseFile}
+          resources :files, defaults: {container_class: Phase, file_class: PhaseFile}
         end
         resources :events, shallow: true do
-          resources :files, defaults: {container_class: Project, file_class: EventFile}
+          resources :files, defaults: {container_class: Event, file_class: EventFile}
         end
         resources :images, defaults: {container_class: Project, image_class: ProjectImage}
         resources :files, defaults: {container_class: Project, file_class: ProjectFile}
