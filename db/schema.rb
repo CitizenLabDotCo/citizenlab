@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180809134021) do
+ActiveRecord::Schema.define(version: 20180813093429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,6 +133,7 @@ ActiveRecord::Schema.define(version: 20180809134021) do
     t.integer "ordering"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
     t.index ["event_id"], name: "index_event_files_on_event_id"
   end
 
@@ -175,6 +176,7 @@ ActiveRecord::Schema.define(version: 20180809134021) do
     t.integer "ordering"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
     t.index ["idea_id"], name: "index_idea_files_on_idea_id"
   end
 
@@ -320,6 +322,7 @@ ActiveRecord::Schema.define(version: 20180809134021) do
     t.integer "ordering"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
     t.index ["phase_id"], name: "index_phase_files_on_phase_id"
   end
 
@@ -349,6 +352,7 @@ ActiveRecord::Schema.define(version: 20180809134021) do
     t.integer "ordering"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
     t.index ["project_id"], name: "index_project_files_on_project_id"
   end
 

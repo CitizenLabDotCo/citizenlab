@@ -40,21 +40,21 @@ resource "ProjectFile" do
     with_options scope: :file do
       parameter :file, "The base64 encoded file", required: true
       parameter :ordering, "An integer that is used to order the file attachments within a project", required: false
+      parameter :name, "The name of the file, including the file extension", required: true
     end
     ValidationErrorHelper.new.error_fields(self, ProjectFile)
     let(:project_id) { @project.id }
     let(:ordering) { 1 }
-    let(:filename) { "afvalkalender.pdf" }
-    let(:file) { encode_pdf_file_as_base64(filename) }
+    let(:name) { "afvalkalender.pdf" }
+    let(:file) { encode_pdf_file_as_base64(name) }
 
     example_request "Add a file attachment to a project" do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
-      byebug
       expect(json_response.dig(:data,:attributes,:file)).to be_present
       expect(json_response.dig(:data,:attributes,:ordering)).to eq(1)
-      expect(json_response.dig(:data,:attributes,:file_name)).to eq(filename)
-      expect(json_response.dig(:data,:attributes,:file_size)).to be_present
+      expect(json_response.dig(:data,:attributes,:name)).to eq(name)
+      expect(json_response.dig(:data,:attributes,:size)).to be_present
     end
 
     describe do
