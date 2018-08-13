@@ -68,6 +68,13 @@ def generate_avatar
   Rails.root.join("spec/fixtures/avatar#{i}.#{(i > 1) ? 'jpg' : 'png'}").open
 end
 
+def generate_file_attributes
+  {
+    name: Faker::File.file_name('', nil, ProjectFileUploader.new.extension_whitelist.shuffle.first, ''),
+    file: Rails.root.join("spec/fixtures/afvalkalender.pdf").open
+  }
+end
+
 
 if ['public','example_org'].include? Apartment::Tenant.current
   t = Tenant.create!({
@@ -312,8 +319,10 @@ if Apartment::Tenant.current == 'localhost'
       [0,1,2,3,4][rand(5)].times do |i|
         project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
       end
-      if rand(5) == 0
-        project.project_files.create!(file: Rails.root.join("spec/fixtures/afvalkalender.pdf").open)
+      if project.continuous? && rand(5) == 0
+        (rand(3)+1).times do
+          project.project_files.create!(generate_file_attributes)
+        end
       end
 
       if project.timeline?
@@ -333,6 +342,11 @@ if Apartment::Tenant.current == 'localhost'
             end_at: (start_at += rand(150).days),
             participation_method: (rand(5) == 0) ? 'information' : 'ideation'
           })
+          if rand(5) == 0
+            (rand(3)+1).times do
+              phase.phase_files.create!(generate_file_attributes)
+            end
+          end
           if phase.ideation?
             phase.update!({
               posting_enabled: rand(4) != 0,
@@ -347,13 +361,18 @@ if Apartment::Tenant.current == 'localhost'
 
       rand(5).times do
         start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
-        project.events.create!({
+        event = project.events.create!({
           title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
           description_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
           location_multiloc: create_for_some_locales{Faker::Address.street_address},
           start_at: start_at,
           end_at: start_at + rand(12).hours
         })
+        if rand(5) == 0
+          (rand(3)+1).times do
+            event.event_files.create!(generate_file_attributes)
+          end
+        end
       end
 
       User.all.shuffle.take(rand(5)).each do |moderator|
@@ -389,7 +408,9 @@ if Apartment::Tenant.current == 'localhost'
         idea.idea_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
       end
       if rand(5) == 0
-        idea.idea_files.create!(file: Rails.root.join("spec/fixtures/afvalkalender.pdf").open)
+        (rand(3)+1).times do
+          idea.idea_files.create!(generate_file_attributes)
+        end
       end
 
       User.all.each do |u|

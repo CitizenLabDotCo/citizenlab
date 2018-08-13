@@ -1,6 +1,6 @@
 class PhaseFile < ApplicationRecord
-	mount_base64_uploader :file, ProjectFileUploader
+	mount_base64_uploader :file, PhaseFileUploader
   belongs_to :phase
 
-  validates :phase, :file, presence: true
+  validates :phase, :file, :name, presence: true
 end
