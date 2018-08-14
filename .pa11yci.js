@@ -1,6 +1,7 @@
 const config = {
   defaults: {
-    timeout: 30000,
+    timeout: 10000,
+    threshold: 1,
     wait: 5000,
     chromeLaunchConfig: {
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -36,7 +37,7 @@ const config = {
         'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
       ]
     }, {
-      url: 'http://localhost:3000/en/profile/koen-gremmelprez',
+      url: 'https://demo.stg.citizenlab.co/en/profile/koen-gremmelprez',
       ignore: [
         'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
       ]
@@ -46,13 +47,12 @@ const config = {
     'https://demo.stg.citizenlab.co/en/ideas/more-box-parking-for-bikes-in-the-centrum',
     'https://demo.stg.citizenlab.co/en/sign-in',
     'https://demo.stg.citizenlab.co/en/sign-up',
-    'https://demo.stg.citizenlab.co/en/profile/koen-gremmelprez',
     'https://demo.stg.citizenlab.co/en/ideas/new',
     'https://demo.stg.citizenlab.co/en/projects/open-idea-project/ideas/new',
     'https://demo.stg.citizenlab.co/en/pages/information'
   ] : [
-    'http://localhost:3000/',
-    'http://localhost:3000/projects',
+    'http://localhost:3000/en/',
+    'http://localhost:3000/en/projects',
     'http://localhost:3000/en/projects/ratione-rerum-minus-quisquam-aperiam/process',
     'http://localhost:3000/en/projects/ratione-rerum-minus-quisquam-aperiam/info',
     'http://localhost:3000/en/projects/ratione-rerum-minus-quisquam-aperiam/events',
