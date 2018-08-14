@@ -1,6 +1,6 @@
 const config = {
   defaults: {
-    timeout: 10000,
+    timeout: 30000,
     threshold: 1,
     wait: 5000,
     chromeLaunchConfig: {
