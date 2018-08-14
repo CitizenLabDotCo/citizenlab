@@ -1,7 +1,8 @@
 const config = {
   chromeLaunchConfig: {args: ['--no-sandbox', '--disable-setuid-sandbox']},
   defaults: {
-    timeout: 10000
+    timeout: 10000,
+    threshold: 4
   },
   standard: 'WCAG2A',
   urls: process.env.NODE_ENV === 'staging' ? [
