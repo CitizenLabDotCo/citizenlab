@@ -102,6 +102,7 @@ export function hexToRgb(hex) {
 
 export const colors = {
   text: '#222',
+  text2: '#767676',
   placeholder: '#aaa',
   clBlue: '#008292',
   // first grey to pass the 4.50 contrast ratio on a white background

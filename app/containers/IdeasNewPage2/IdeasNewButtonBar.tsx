@@ -38,6 +38,7 @@ const ButtonBarInner = styled.div`
 
 interface Props {
   onSubmit: () => void;
+  form?: string;
 }
 
 interface GlobalState {
@@ -81,12 +82,16 @@ export default class IdeasNewButtonBar extends React.PureComponent<Props, State>
 
   render() {
     const { processing, submitError } = this.state;
+    let { form } = this.props;
     const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
+
+    form = (form || '');
 
     return (
       <ButtonBar>
         <ButtonBarInner>
           <Button
+            form={form}
             className="e2e-submit-idea-form"
             size="1"
             processing={processing}
