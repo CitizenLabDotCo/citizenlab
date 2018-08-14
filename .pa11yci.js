@@ -42,10 +42,10 @@ const config = {
       ]
     }, {
       url: 'https://demo.stg.citizenlab.co/en/projects/open-idea-project/ideas/new',
-      threshold: 12
+      threshold: 12,
     }, {
       url: 'https://demo.stg.citizenlab.co/en/ideas/new',
-      threshold: 1
+      threshold: 1,
     },
     'https://demo.stg.citizenlab.co/en/projects',
     'https://demo.stg.citizenlab.co/en/projects/renewing-westbrook-parc/events',,
@@ -84,7 +84,7 @@ const config = {
       threshold: 12,
     }, {
       url: 'http://localhost:3000/en/ideas/new',
-      threshold: 0,
+      threshold: 1,
     },
     'http://localhost:3000/en/projects',
     'http://localhost:3000/en/projects/ratione-rerum-minus-quisquam-aperiam/events',
