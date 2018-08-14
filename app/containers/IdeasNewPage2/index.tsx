@@ -346,19 +346,20 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
       <Container>
         <ContainerInner className={`${publishing && 'hidden'}`}>
           <TransitionGroup>
-            {showIdeaForm &&
-              <CSSTransition classNames="buttonbar" timeout={timeout}>
-                <ButtonBarContainer>
-                  <IdeasNewButtonBar form="idea-form" onSubmit={this.handleOnIdeaSubmit} />
-                </ButtonBarContainer>
-              </CSSTransition>
-            }
 
             {showIdeaForm &&
               <CSSTransition classNames="page" timeout={timeout}>
                 <PageContainer className="ideaForm">
                   <NewIdeaForm onSubmit={this.handleOnIdeaSubmit} />
                 </PageContainer>
+              </CSSTransition>
+            }
+
+            {showIdeaForm &&
+              <CSSTransition classNames="buttonbar" timeout={timeout}>
+                <ButtonBarContainer>
+                  <IdeasNewButtonBar form="idea-form" onSubmit={this.handleOnIdeaSubmit} />
+                </ButtonBarContainer>
               </CSSTransition>
             }
 
