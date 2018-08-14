@@ -1,7 +1,6 @@
 const config = {
   defaults: {
     timeout: 30000,
-    threshold: 1,
     wait: 5000,
     chromeLaunchConfig: {
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -41,28 +40,58 @@ const config = {
       ignore: [
         'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
       ]
+    }, {
+      url: 'https://demo.stg.citizenlab.co/en/projects/open-idea-project/ideas/new',
+      threshold: 12
+    }, {
+      url: 'https://demo.stg.citizenlab.co/en/ideas/new',
+      threshold: 1
     },
     'https://demo.stg.citizenlab.co/en/projects',
     'https://demo.stg.citizenlab.co/en/projects/renewing-westbrook-parc/events',,
     'https://demo.stg.citizenlab.co/en/ideas/more-box-parking-for-bikes-in-the-centrum',
     'https://demo.stg.citizenlab.co/en/sign-in',
     'https://demo.stg.citizenlab.co/en/sign-up',
-    'https://demo.stg.citizenlab.co/en/ideas/new',
-    'https://demo.stg.citizenlab.co/en/projects/open-idea-project/ideas/new',
     'https://demo.stg.citizenlab.co/en/pages/information'
   ] : [
-    'http://localhost:3000/en/',
+    {
+      url: 'http://localhost:3000/en/',
+      ignore: [
+        'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
+      ]
+    }, {
+      url: 'http://localhost:3000/en/ideas',
+      ignore: [
+        'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
+      ]
+    }, {
+      url: 'http://localhost:3000/en/projects/ratione-rerum-minus-quisquam-aperiam/process',
+      ignore: [
+        'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
+      ]
+    }, {
+      url: 'http://localhost:3000/en/projects/ratione-rerum-minus-quisquam-aperiam/info',
+      ignore: [
+        'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
+      ]
+    }, {
+      url: 'http://localhost:3000/en/profile/koen-gremmelprez',
+      ignore: [
+        'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
+      ]
+    }, {
+      url: 'http://localhost:3000/en/projects/open-idea-project/ideas/new',
+      threshold: 12,
+    }, {
+      url: 'http://localhost:3000/en/ideas/new',
+      threshold: 0,
+    },
     'http://localhost:3000/en/projects',
-    'http://localhost:3000/en/projects/ratione-rerum-minus-quisquam-aperiam/process',
-    'http://localhost:3000/en/projects/ratione-rerum-minus-quisquam-aperiam/info',
     'http://localhost:3000/en/projects/ratione-rerum-minus-quisquam-aperiam/events',
-    'http://localhost:3000/en/ideas',
     'http://localhost:3000/en/ideas/ut-maiores-dolorem-optio-aut-quas',
     'http://localhost:3000/en/sign-in',
-    'http://localhost:3000/en/sign-up',,
-    'http://localhost:3000/en/ideas/new',
-    'http://localhost:3000/en/projects/open-idea-project/ideas/new',
-    'http://localhost:3000/en/pages/information',
+    'http://localhost:3000/en/sign-up',
+    'http://localhost:3000/en/pages/information'
   ]
 }
 
