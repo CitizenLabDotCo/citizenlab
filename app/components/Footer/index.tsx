@@ -13,7 +13,6 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages.js';
-import { appLocalePairs } from 'i18n';
 
 // services
 import { localeStream } from 'services/locale';
