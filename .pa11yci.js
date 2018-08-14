@@ -1,7 +1,14 @@
 const config = {
-  chromeLaunchConfig: {args: ['--no-sandbox', '--disable-setuid-sandbox']},
   defaults: {
-    timeout: 10000
+    timeout: 30000,
+    wait: 5000,
+    chromeLaunchConfig: {
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      // headless: false,
+    },
+    headers: {
+      Accept: 'text/html'
+    }
   },
   standard: 'WCAG2A',
   urls: process.env.NODE_ENV === 'staging' ? [
@@ -44,8 +51,8 @@ const config = {
     'https://demo.stg.citizenlab.co/en/projects/open-idea-project/ideas/new',
     'https://demo.stg.citizenlab.co/en/pages/information'
   ] : [
-    'http://localhost:3000/en/',
-    'http://localhost:3000/en/projects',
+    'http://localhost:3000/',
+    'http://localhost:3000/projects',
     'http://localhost:3000/en/projects/ratione-rerum-minus-quisquam-aperiam/process',
     'http://localhost:3000/en/projects/ratione-rerum-minus-quisquam-aperiam/info',
     'http://localhost:3000/en/projects/ratione-rerum-minus-quisquam-aperiam/events',
