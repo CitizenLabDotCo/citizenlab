@@ -142,7 +142,7 @@ const ArchivedLabel = styled.span`
   flex-grow: 0;
   flex-shrink: 1;
   display: flex;
-  color: #798894;
+  color: ${colors.text};
   font-size: ${fontSizes.small}px;
   font-weight: 500;
   text-transform: uppercase;

@@ -23,6 +23,7 @@ import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
+  background-color: #767676;
   width: 100%;
   height: 350px;
   display: flex;

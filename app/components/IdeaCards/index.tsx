@@ -26,7 +26,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -222,7 +222,7 @@ const EmptyMessage = styled.div`
 `;
 
 const EmptyMessageLine = styled.div`
-  color: #999;
+  color: ${colors.text2};
   font-size: ${fontSizes.large}px;
   font-weight: 400;
   line-height: 22px;
@@ -267,6 +267,7 @@ class IdeaCards extends React.PureComponent<Props, State> {
   }
 
   handleSearchOnChange = (search: string) => {
+    // track
     this.props.onChangeSearchTerm(search);
   }
 
