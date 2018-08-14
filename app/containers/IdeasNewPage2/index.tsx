@@ -349,7 +349,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
             {showIdeaForm &&
               <CSSTransition classNames="buttonbar" timeout={timeout}>
                 <ButtonBarContainer>
-                  <IdeasNewButtonBar onSubmit={this.handleOnIdeaSubmit} />
+                  <IdeasNewButtonBar form="idea-form" onSubmit={this.handleOnIdeaSubmit} />
                 </ButtonBarContainer>
               </CSSTransition>
             }

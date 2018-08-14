@@ -294,7 +294,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     const { topics, title, description, selectedTopics, position, imageFile, titleError, descriptionError } = this.state;
 
     return (
-      <Form className={className}>
+      <Form id="form-idea" className={className}>
         <FormElement name="titleInput">
           <Label value={<FormattedMessage {...messages.titleLabel} />} htmlFor="title" />
           <Input
