@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :campaigns_group, :class => EmailCampaigns::CampaignsGroup do
-    campaign
+    association :campaign, factory: :manual_campaign
     group
   end
 end
