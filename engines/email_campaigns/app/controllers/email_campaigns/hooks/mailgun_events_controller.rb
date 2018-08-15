@@ -18,7 +18,7 @@ module EmailCampaigns
     }
 
     def create
-      campaigns_recipient = CampaignsRecipient.find_by(
+      campaigns_recipient = Delivery.find_by(
         user_id: params[:'event-data'][:'user-variables'][:'cl_user_id'],
         campaign_id: params[:'event-data'][:'user-variables'][:'cl_campaign_id'],
       )

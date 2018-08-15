@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :campaigns_recipient, :class => EmailCampaigns::CampaignsRecipient do
+  factory :delivery, :class => EmailCampaigns::Delivery do
     campaign
     user
     delivery_status 'sent'

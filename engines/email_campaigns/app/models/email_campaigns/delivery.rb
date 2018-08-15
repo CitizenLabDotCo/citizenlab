@@ -1,11 +1,14 @@
 module EmailCampaigns
-  class CampaignsRecipient < ApplicationRecord
+  class Delivery < ApplicationRecord
 
     belongs_to :campaign, class_name: 'EmailCampaigns::Campaign'
     belongs_to :user
 
     DELIVERY_STATUSES = %w(sent bounced failed accepted delivered opened clicked)
     validates :delivery_status, presence: true, inclusion: {in: DELIVERY_STATUSES}
+    validates :sent_at, presence: true
+
+    before_validation :set_sent_at
 
     STATUS_SUMMATION = {
       sent: [:sent, :bounced, :failed, :accepted, :delivered, :opened, :clicked],
@@ -42,5 +45,10 @@ module EmailCampaigns
         total: total_count
       }
     end
+
+    def set_sent_at
+      self.sent_at ||= Time.now
+    end
+
   end
 end
