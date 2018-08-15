@@ -3,7 +3,7 @@ module EmailCampaigns
     extend ActiveSupport::Concern
 
     included do
-      has_many :deliveries, dependent: :destroy
+      has_many :deliveries, class_name: 'EmailCampaigns::Delivery', foreign_key: :campaign_id, dependent: :destroy
       has_many :recipients, source: :user, through: :deliveries
     end
 
