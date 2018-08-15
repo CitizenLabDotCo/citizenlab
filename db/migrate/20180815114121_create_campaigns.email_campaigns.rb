@@ -1,3 +1,4 @@
+# This migration comes from email_campaigns (originally 20180717095057)
 class CreateCampaigns < ActiveRecord::Migration[5.1]
   def change
     create_table :email_campaigns_campaigns, id: :uuid do |t|
