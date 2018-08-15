@@ -1,29 +1,39 @@
 module EmailCampaigns
   class Campaign < ApplicationRecord
 
-    SENDERS = %w(organization author)
-    REPLY_TOS = %w(organization author)
-    MAX_SUBJECT_LEN = 80
+    belongs_to :author, class_name: 'User', optional: true
 
-    belongs_to :author, class_name: 'User'
-    has_many :campaigns_groups, dependent: :destroy
-    has_many :groups, through: :campaigns_groups
+    @@send_filters = []
+    @@recipient_filter = []
 
-    has_many :campaigns_recipients, dependent: :destroy
-    has_many :recipients, source: :user, through: :campaigns_recipients
-
-    validates :sender, presence: true, inclusion: { in: SENDERS}
-    validates :reply_to, presence: true, inclusion: {in: REPLY_TOS }
-
-    validates :subject_multiloc, presence: true, multiloc: {presence: true, length: {maximum: MAX_SUBJECT_LEN}}
-    validates :body_multiloc, presence: true, multiloc: {presence: true}
-
-    def sent?
-      self.sent_at
+    def self.add_send_filter action_symbol
+      @@send_filters << action_symbol
     end
 
-    def calculated_recipients
-      groups.map(&:members).inject(:+).uniq
+    def self.add_recipient_filter action_symbol
+      @@recipient_filters << action_symbol
+    end
+
+    protected
+
+    def apply_send_filters activity: nil, time: nil
+      @@send_filters.all? do |action_symbol|
+        self.send(action_symbol, {activity: activity, time: time})
+      end
+    end
+
+    def apply_recipient_filters activity: nil, time: nil
+      @@recipient_filters.each_with_object(User.all) do |action_symbol, users_scope|
+        self.send(action_symbol, users_scope, {activity: activity, time: time})
+      end
+    end
+
+    def serialize_campaign item
+      serializer = "EmailCampaigns::#{self.class.name}CommandSerializer".constantize
+      ActiveModelSerializers::SerializableResource.new(object, {
+        serializer: serializer,
+        adapter: :json
+        }).serializable_hash
     end
   end
 end
