@@ -1,7 +1,7 @@
 module EmailCampaigns
-  class ManualCampaignsRecipient < ApplicationRecord
+  class CampaignsRecipient < ApplicationRecord
 
-    belongs_to :manual_campaign, class_name: 'EmailCampaigns::ManualCampaign'
+    belongs_to :campaign, class_name: 'EmailCampaigns::Campaign'
     belongs_to :user
 
     DELIVERY_STATUSES = %w(sent bounced failed accepted delivered opened clicked)
@@ -28,9 +28,9 @@ module EmailCampaigns
         end
     end
 
-    def self.status_counts manual_campaign_id
-      counts = where(manual_campaign_id: manual_campaign_id).group(:delivery_status).count
-      total_count = where(manual_campaign_id: manual_campaign_id).count
+    def self.status_counts campaign_id
+      counts = where(campaign_id: campaign_id).group(:delivery_status).count
+      total_count = where(campaign_id: campaign_id).count
       {
         sent: STATUS_SUMMATION[:sent].map{|s| counts[s.to_s] || 0}.inject(:+),
         bounced: STATUS_SUMMATION[:bounced].map{|s| counts[s.to_s] || 0}.inject(:+),

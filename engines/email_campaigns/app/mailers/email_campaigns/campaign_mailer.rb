@@ -1,11 +1,11 @@
 module EmailCampaigns
-  class ManualCampaignMailer < ActionMailer::Base
+  class CampaignMailer < ActionMailer::Base
     default from: ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')
 
-    def campaign_mail manual_campaign, recipient
+    def campaign_mail campaign, recipient
       multiloc_service = MultilocService.new
 
-      body_html_with_liquid = multiloc_service.t(manual_campaign.body_multiloc, recipient)
+      body_html_with_liquid = multiloc_service.t(campaign.body_multiloc, recipient)
       template = Liquid::Template.parse(body_html_with_liquid)
       @body_html = template.render(liquid_params(recipient))
       @body_text = ActionView::Base.full_sanitizer.sanitize(@body_html)
@@ -13,16 +13,16 @@ module EmailCampaigns
       @tenant_logo_url = Tenant.current.logo.versions[:medium].url
 
       message = mail(
-        from: "#{from_name(manual_campaign.sender, manual_campaign.author, recipient)} <#{ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')}>",
+        from: "#{from_name(campaign.sender, campaign.author, recipient)} <#{ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')}>",
         to: recipient.email,
-        reply_to: "#{from_name(manual_campaign.reply_to, manual_campaign.author, recipient)} <#{ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')}>",
-        subject: multiloc_service.t(manual_campaign.subject_multiloc, recipient),
+        reply_to: "#{from_name(campaign.reply_to, campaign.author, recipient)} <#{ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')}>",
+        subject: multiloc_service.t(campaign.subject_multiloc, recipient),
       )
 
       if (ActionMailer::Base.delivery_method == :mailgun)    
         message.mailgun_headers = {
           'X-Mailgun-Variables' => {
-            'cl_campaign_id' => manual_campaign.id,
+            'cl_campaign_id' => campaign.id,
             'cl_user_id' => recipient.id,     
           }.to_json,
         }

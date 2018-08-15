@@ -1,5 +1,5 @@
 module EmailCampaigns
-  class ManualCampaignPolicy < EmailCampaignsPolicy
+  class CampaignPolicy < EmailCampaignsPolicy
     class Scope
       attr_reader :user, :scope
 

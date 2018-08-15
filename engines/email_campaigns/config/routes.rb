@@ -2,7 +2,7 @@ EmailCampaigns::Engine.routes.draw do
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
-      resources :manual_campaigns do
+      resources :campaigns do
         post :send, action: :do_send, on: :member
         post :send_preview, on: :member
         get :preview, on: :member
