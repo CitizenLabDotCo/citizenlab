@@ -3,7 +3,7 @@ require 'rspec_api_documentation/dsl'
 
 resource "Mailgun Events" do
 
-  explanation "Endpoint that eceives webhook events from Mailgun"
+  explanation "Endpoint that receives webhook events from Mailgun"
 
   before do
     header "Content-Type", "application/json"
@@ -11,7 +11,7 @@ resource "Mailgun Events" do
 
   post "hooks/mailgun_events" do
 
-    let(:campaigns_recipient) { create(:campaigns_recipient) }
+    let(:delivery) { create(:delivery) }
     let(:mailgun_event) {{
       signature: {
         "timestamp"=>"1532087464", 
@@ -21,8 +21,8 @@ resource "Mailgun Events" do
       :'event-data' => {
         event: 'opened',
         :'user-variables' => {
-          cl_campaign_id: campaigns_recipient.campaign_id,
-          cl_user_id: campaigns_recipient.user_id
+          cl_campaign_id: delivery.campaign_id,
+          cl_user_id: delivery.user_id
         }
       }
     }}
@@ -30,7 +30,7 @@ resource "Mailgun Events" do
     example "Receive a malgun event webhook" do
       do_request(mailgun_event)
       expect(response_status).to eq 200
-      expect(campaigns_recipient.reload.delivery_status).to eq 'opened'
+      expect(delivery.reload.delivery_status).to eq 'opened'
     end
   end
 
