@@ -17,6 +17,7 @@ module EmailCampaigns
     end
 
     def generate_command recipient:, time: nil
+      last_delivery = last_delivery_for_recipient(recipient)
       {
         event_payload: {},
         tracked_content: {}
@@ -25,7 +26,7 @@ module EmailCampaigns
 
     private
 
-    def user_filter_admin_only users_scope
+    def user_filter_admin_only users_scope, options={}
       users_scope.admin
     end
 

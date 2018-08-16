@@ -3,7 +3,7 @@ module EmailCampaigns
     extend ActiveSupport::Concern
 
     included do
-      add_send_filter :filter_activity_triggered
+      before_send :filter_activity_triggered
     end
 
     def filter_activity_triggered activity:, time: nil

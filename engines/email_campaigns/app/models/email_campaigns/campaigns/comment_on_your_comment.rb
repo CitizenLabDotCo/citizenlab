@@ -5,10 +5,14 @@ module EmailCampaigns
     include ActivityTriggerable
     include RecipientConfigurable
 
+    add_recipient_filter :filter_notification_recipient
+
     def activity_triggers
-      [
-        {'Notification for Comment on your comment' => {'created' => true}}
-      ]
+      {'Notifications::CommentOnYourComment' => {'created' => true}}
+    end
+
+    def filter_notification_recipient users_scope, activity:, time: nil
+      users_scope.where(id: activity.item.recipient.id)
     end
 
     def generate_command recipient:, activity:
@@ -17,6 +21,7 @@ module EmailCampaigns
         event_payload: serialize_campaign(notification),
       }
     end
+
 
   end
 end

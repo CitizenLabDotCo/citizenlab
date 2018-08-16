@@ -35,4 +35,20 @@ RSpec.describe EmailCampaigns::Trackable, type: :model do
     end
   end
 
+  describe "run_after_send_hooks" do
+    it "creates a delivery" do
+      command = {
+        event_payload: {},
+        recipient: create(:user),
+        tracked_content: {},
+      }
+      @campaign.run_after_send_hooks(command)
+      expect(EmailCampaigns::Delivery.first).to have_attributes({
+        campaign_id: @campaign.id,
+        user_id: command[:recipient].id,
+        delivery_status: 'sent'
+      })
+    end
+  end
+
 end

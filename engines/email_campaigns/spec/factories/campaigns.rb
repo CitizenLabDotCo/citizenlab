@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :manual_campaign, class: EmailCampaigns::Campaigns::Manual do
+    enabled true
     author
     sender "author"
     reply_to "someguy@somecity.com"
@@ -18,7 +19,7 @@ FactoryBot.define do
   factory :admin_digest_campaign, class: EmailCampaigns::Campaigns::AdminDigest do
     enabled true
     schedule {
-      IceCube::Schedule.new do |s|
+      IceCube::Schedule.new(Time.find_zone('Europe/Brussels').local(2018,8,13,10,0)) do |s|
         s.add_recurrence_rule(
           IceCube::Rule.weekly(1).day(:monday).hour_of_day(10)
         )

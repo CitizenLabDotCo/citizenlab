@@ -3,6 +3,9 @@ module EmailCampaigns
     extend ActiveSupport::Concern
 
     included do
+
+      after_send :save_delivery
+
       has_many :deliveries, class_name: 'EmailCampaigns::Delivery', foreign_key: :campaign_id, dependent: :destroy
       has_many :recipients, source: :user, through: :deliveries
     end
@@ -18,5 +21,14 @@ module EmailCampaigns
         .first
         &.sent_at
     end
+
+    def save_delivery command
+      deliveries.create(
+        delivery_status: 'sent',
+        user: command[:recipient],
+        tracked_content: command[:tracked_content]
+      )
+    end
+
   end
 end

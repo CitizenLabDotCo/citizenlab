@@ -3,13 +3,22 @@ module EmailCampaigns
 
     belongs_to :author, class_name: 'User', optional: true
 
-    def self.add_send_filter action_symbol
-      @send_filters ||= []
-      @send_filters << action_symbol
+    def self.before_send action_symbol
+      @before_send_hooks ||= []
+      @before_send_hooks << action_symbol
     end
 
-    def self.send_filters
-      @send_filters
+    def self.before_send_hooks
+      @before_send_hooks || []
+    end
+
+    def self.after_send action_symbol
+      @after_send_hooks ||= []
+      @after_send_hooks << action_symbol
+    end
+
+    def self.after_send_hooks
+      @after_send_hooks || []
     end
 
     def self.add_recipient_filter action_symbol
@@ -18,13 +27,7 @@ module EmailCampaigns
     end
 
     def self.recipient_filters
-      @recipient_filters
-    end
-
-    def apply_send_filters activity: nil, time: nil
-      self.class.send_filters.all? do |action_symbol|
-        self.send(action_symbol, {activity: activity, time: time})
-      end
+      @recipient_filters || []
     end
 
     def apply_recipient_filters activity: nil, time: nil
@@ -33,14 +36,26 @@ module EmailCampaigns
       end
     end
 
+    def run_before_send_hooks activity: nil, time: nil
+      self.class.before_send_hooks.all? do |action_symbol|
+        self.send(action_symbol, {activity: activity, time: time})
+      end
+    end
+
+    def run_after_send_hooks command
+      self.class.after_send_hooks.each do |action_symbol|
+        self.send(action_symbol, command)
+      end
+    end
+
     protected
 
     def serialize_campaign item
-      serializer = "EmailCampaigns::#{self.class.name}CommandSerializer".constantize
-      ActiveModelSerializers::SerializableResource.new(object, {
+      serializer = "#{self.class.name}Serializer".constantize
+      ActiveModelSerializers::SerializableResource.new(item, {
         serializer: serializer,
         adapter: :json
-        }).serializable_hash
+      }).serializable_hash
     end
   end
 end
