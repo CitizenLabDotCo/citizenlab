@@ -2,6 +2,7 @@ import React, { PureComponent, FormEvent } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import clickOutside from 'utils/containers/clickOutside';
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const timeout = 200;
 
@@ -17,14 +18,20 @@ const Container: any = styled(clickOutside)`
   left: ${(props: Props) => props.left};
   right: ${(props: Props) => props.right};
   outline: none;
+  transition: none;
 
   * {
     user-select: none;
   }
 
+  ${media.smallerThanMaxTablet`
+    left: ${(props: Props) => props.mobileLeft};
+    right: ${(props: Props) => props.mobileRight};
+  `}
+
   &.dropdown-enter {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-8px);
 
     &.dropdown-enter-active {
       opacity: 1;
@@ -54,6 +61,11 @@ const Content: any = styled.div`
   padding-right: 5px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+
+  ${media.smallerThanMaxTablet`
+    width: ${(props: Props) => props.mobileWidth};
+    max-height: ${(props: any) => props.mobileMaxHeight};
+  `}
 `;
 
 const Footer = styled.div`
@@ -65,32 +77,79 @@ const Footer = styled.div`
 interface Props {
   opened: boolean;
   width?: string;
+  mobileWidth?: string;
+  maxHeight?: string;
+  mobileMaxHeight?: string;
   top?: string;
   left? : string;
+  mobileLeft?: string;
   right?: string;
+  mobileRight?: string;
   content: JSX.Element;
   footer?: JSX.Element;
-  maxHeight?: string;
   toggleOpened: (event: FormEvent) => void;
 }
 
 interface State {}
 
 export default class Dropdown extends PureComponent<Props, State> {
+  dropdownElement: HTMLElement | null = null;
+
   static defaultProps: Partial<Props> = {
-    width: '280px',
+    width: '260px',
+    mobileWidth: '190px',
+    maxHeight: '300px',
+    mobileMaxHeight: '300px',
     top: 'auto',
     left: 'auto',
+    mobileLeft: 'auto',
     right: 'auto',
-    maxHeight: '410px'
+    mobileRight: 'auto'
   };
+
+  componentWillUnmount() {
+    if (this.dropdownElement) {
+      this.dropdownElement.removeEventListener('wheel', this.scrolling, false);
+    }
+  }
+
+  scrolling = (event: WheelEvent) => {
+    if (this.dropdownElement) {
+      const deltaY = (event.deltaMode === 1 ? event.deltaY * 20 : event.deltaY);
+      this.dropdownElement.scrollTop += deltaY;
+      event.preventDefault();
+    }
+  }
+
+  setRef = (element: HTMLElement) => {
+    if (element) {
+      this.dropdownElement = element;
+
+      if (this.dropdownElement) {
+        this.dropdownElement.addEventListener('wheel', this.scrolling, false);
+      }
+    }
+  }
 
   close = (event: FormEvent) => {
     this.props.toggleOpened(event);
   }
 
   render() {
-    const { opened, width, top, left, right, maxHeight, content, footer } = this.props;
+    const {
+      opened,
+      width,
+      mobileWidth,
+      maxHeight,
+      mobileMaxHeight,
+      top,
+      left,
+      mobileLeft,
+      right,
+      mobileRight,
+      content,
+      footer
+    } = this.props;
 
     return (
       <CSSTransition
@@ -102,15 +161,22 @@ export default class Dropdown extends PureComponent<Props, State> {
         classNames={`${this.props['className']} dropdown`}
       >
         <Container
+          width={width}
+          mobileWidth={mobileWidth}
           top={top}
           left={left}
+          mobileLeft={mobileLeft}
           right={right}
+          mobileRight={mobileRight}
           onClickOutside={this.close}
         >
           <ContainerInner>
             <Content
               width={width}
+              mobileWidth={mobileWidth}
               maxHeight={maxHeight}
+              mobileMaxHeight={mobileMaxHeight}
+              innerRef={this.setRef}
             >
               {content}
             </Content>

@@ -39,7 +39,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled, { css, } from 'styled-components';
-import { darken, rgba, ellipsis } from 'polished';
+import { darken, ellipsis } from 'polished';
 import { colors, media } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -193,7 +193,7 @@ const ProjectsListItem = styled(Link)`
 
   &:hover,
   &:focus {
-    color: ${colors.clGreyHover};
+    color: #000;
     background: ${colors.clDropdownHoverBackground};
     text-decoration: none;
   }
@@ -404,9 +404,9 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                   </NavigationDropdownItem>
 
                   <Dropdown
-                    width="400px"
                     top="62px"
                     opened={projectsDropdownOpened}
+                    toggleOpened={this.handleProjectsDropdownToggle}
                     content={(
                       <>
                         {projectsList.map((project) => (
@@ -421,8 +421,6 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                         <FormattedMessage {...messages.allProjects} />
                       </ProjectsListFooter>
                     )}
-                    toggleOpened={this.handleProjectsDropdownToggle}
-                    maxHeight="2100px"
                   />
                 </NavigationDropdown>
               }
