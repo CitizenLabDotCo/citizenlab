@@ -12,13 +12,13 @@ RSpec.describe EmailCampaigns::ActivityTriggerable, type: :model do
     @activity = create(:idea_published_activity)
   end
   
-  describe "apply_send_filters" do
+  describe "run_before_send_hooks" do
     it "returns true when the activity is part of the returned activity_triggers" do
       @campaign.activity_triggers = {
         "Idea" => {"published" => true},
         "Comment" => {"created" => true}
       }
-      expect(@campaign.apply_send_filters(activity: @activity)).to be_truthy
+      expect(@campaign.run_before_send_hooks(activity: @activity)).to be_truthy
     end
 
     it "returns false when the activity is not part of the returned activity_triggers" do
@@ -26,7 +26,7 @@ RSpec.describe EmailCampaigns::ActivityTriggerable, type: :model do
         "Comment" => {"created" => true}
       }
 
-      expect(@campaign.apply_send_filters(activity: @activity)).to be_falsy
+      expect(@campaign.run_before_send_hooks(activity: @activity)).to be_falsy
     end
 
   end

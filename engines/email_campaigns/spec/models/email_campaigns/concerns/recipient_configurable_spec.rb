@@ -22,6 +22,12 @@ RSpec.describe EmailCampaigns::RecipientConfigurable, type: :model do
 
       expect(@campaign.apply_recipient_filters.all).to match_array [u1, u2, u3]
     end
+
+    it "returns all users when there are no associated groups" do
+      users = create_list(:user, 3)
+      @campaign.update(groups: [])
+      expect(@campaign.apply_recipient_filters.count).to eq User.all.count
+    end
   end
 
 end

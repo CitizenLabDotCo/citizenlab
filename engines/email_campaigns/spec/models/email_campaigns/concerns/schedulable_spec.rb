@@ -17,14 +17,14 @@ RSpec.describe EmailCampaigns::Schedulable, type: :model do
     @campaign = SchedulableCampaign.create(ic_schedule: @schedule)
   end
   
-  describe "apply_send_filters" do
+  describe "run_before_send_hooks" do
     it "allows sending when and only when the passed time is within half an hour of the scheduled target" do
       time = Time.find_zone(@tenant_zone).local(2018,8,13,10)
-      expect(@campaign.apply_send_filters(time: time)).to be_truthy
-      expect(@campaign.apply_send_filters(time: time-30.minutes)).to be_truthy
-      expect(@campaign.apply_send_filters(time: time+30.minutes)).to be_truthy
-      expect(@campaign.apply_send_filters(time: time-31.minutes)).to be_falsey
-      expect(@campaign.apply_send_filters(time: time+31.minutes)).to be_falsey
+      expect(@campaign.run_before_send_hooks(time: time)).to be_truthy
+      expect(@campaign.run_before_send_hooks(time: time-30.minutes)).to be_truthy
+      expect(@campaign.run_before_send_hooks(time: time+30.minutes)).to be_truthy
+      expect(@campaign.run_before_send_hooks(time: time-31.minutes)).to be_falsey
+      expect(@campaign.run_before_send_hooks(time: time+31.minutes)).to be_falsey
     end
   end
 
