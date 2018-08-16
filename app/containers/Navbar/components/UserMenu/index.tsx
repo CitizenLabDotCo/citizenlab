@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
-import Popover from 'components/Popover';
+import Dropdown from 'components/UI/Dropdown';
 import HasPermission from 'components/HasPermission';
 
 // services
@@ -71,19 +71,19 @@ const OpenMenuButton = styled.div`
   }
 `;
 
-const StyledPopover = styled(Popover) `
-  display: flex;
-  flex-direction: column;
-  z-index: 5;
+// const StyledPopover = styled(Popover) `
+//   display: flex;
+//   flex-direction: column;
+//   z-index: 5;
 
-  .Ideas-icon .cl-icon-primary, .Ideas-icon .cl-icon-secondary {
-    fill: ${colors.label};
-  }
+//   .Ideas-icon .cl-icon-primary, .Ideas-icon .cl-icon-secondary {
+//     fill: ${colors.label};
+//   }
 
-  .Ideas-icon .cl-icon-accent {
-    fill: transparent !important;
-  }
-`;
+//   .Ideas-icon .cl-icon-accent {
+//     fill: transparent !important;
+//   }
+// `;
 
 const PopoverItem = styled(Button)`
   &.Button.button {
@@ -128,12 +128,13 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  togglePopover = (event: React.FormEvent) => {
+  toggleDropdown = (event: React.FormEvent) => {
     event.preventDefault();
+    event.stopPropagation();
     this.setState(({ opened }) => ({ opened: !opened }));
   }
 
-  closePopover = () => {
+  closeDropdown = () => {
     this.setState({ opened: false });
   }
 
@@ -149,7 +150,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     if (authUser && userId) {
       return (
         <Container id="e2e-user-menu-container">
-          <OpenMenuButton onClick={this.togglePopover}>
+          <OpenMenuButton onClick={this.toggleDropdown}>
             <StyledUserName
               user={authUser.data}
               hideLastName={true}
@@ -159,6 +160,102 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               size="small"
             />
           </OpenMenuButton>
+
+          <Dropdown
+            width="180px"
+            top="35px"
+            right="-5px"
+            opened={opened}
+            toggleOpened={this.toggleDropdown}
+            content={(
+              <>
+                <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
+                  <PopoverItem
+                    id="admin-link"
+                    linkTo={'/admin'}
+                    onClick={this.closeDropdown}
+                    style="text"
+                    icon="admin"
+                    iconPos="right"
+                    iconSize="20px"
+                    padding="11px 11px"
+                    justify="space-between"
+                  >
+                    <FormattedMessage {...messages.admin} />
+                  </PopoverItem>
+
+                  <HasPermission.No>
+                    <HasPermission item={{ type: 'route', path: '/admin/projects' }} action="access">
+                      <PopoverItem
+                        id="e2e-projects-admin-link"
+                        linkTo={'/admin/projects'}
+                        onClick={this.closeDropdown}
+                        style="text"
+                        icon="admin"
+                        iconPos="right"
+                        iconSize="20px"
+                        padding="11px 11px"
+                        justify="space-between"
+                      >
+                        <FormattedMessage {...messages.projectsModeration} />
+                      </PopoverItem>
+                    </HasPermission>
+                  </HasPermission.No>
+                </HasPermission>
+
+                <PopoverItem
+                  id="e2e-profile-profile-link"
+                  linkTo={`/profile/${userSlug}`}
+                  onClick={this.closeDropdown}
+                  style="text"
+                  icon="ideas2"
+                  iconPos="right"
+                  iconSize="20px"
+                  padding="11px 11px"
+                  justify="space-between"
+                >
+                  <FormattedMessage {...messages.myIdeas} />
+                </PopoverItem>
+
+                <PopoverItem
+                  id="e2e-profile-edit-link"
+                  linkTo={'/profile/edit'}
+                  onClick={this.closeDropdown}
+                  style="text"
+                  icon="settings"
+                  iconPos="right"
+                  iconSize="20px"
+                  padding="11px 11px"
+                  justify="space-between"
+                >
+                  <FormattedMessage {...messages.editProfile} />
+                </PopoverItem>
+
+                <PopoverItem
+                  id="e2e-sign-out-link"
+                  onClick={this.signOut}
+                  style="text"
+                  icon="power"
+                  iconPos="right"
+                  iconSize="20px"
+                  padding="11px 11px"
+                  justify="space-between"
+                >
+                  <FormattedMessage {...messages.signOut} />
+                </PopoverItem>
+              </>
+            )}
+          />
+        </Container>
+      );
+    }
+
+    return null;
+  }
+}
+
+/*
+
           <StyledPopover
             id="e2e-user-menu-dropdown"
             open={opened}
@@ -180,7 +277,6 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               </PopoverItem>
 
               <HasPermission.No>
-                {/* Display the project moderation page for moderators, they don't have access to the dashboard */}
                 <HasPermission item={{ type: 'route', path: '/admin/projects' }} action="access">
                   <PopoverItem
                     id="e2e-projects-admin-link"
@@ -240,10 +336,4 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               <FormattedMessage {...messages.signOut} />
             </PopoverItem>
           </StyledPopover>
-        </Container>
-      );
-    }
-
-    return null;
-  }
-}
+*/
