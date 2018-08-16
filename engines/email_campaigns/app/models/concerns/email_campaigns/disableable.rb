@@ -8,7 +8,7 @@ module EmailCampaigns
       add_send_filter :filter_enabled
     end
 
-    def filter_enabled
+    def filter_enabled options={}
       self.enabled == false ? false : true
     end
 

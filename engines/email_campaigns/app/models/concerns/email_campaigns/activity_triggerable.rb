@@ -2,10 +2,12 @@ module EmailCampaigns
   module ActivityTriggerable
     extend ActiveSupport::Concern
 
-    class_methods do
-      def triggered_by? activity
-        self.activity_triggers.dig(activity.item_type, activity.action)
-      end
+    included do
+      add_send_filter :filter_activity_triggered
+    end
+
+    def filter_activity_triggered activity:, time: nil
+      activity_triggers.dig(activity.item_type, activity.action)
     end
 
   end

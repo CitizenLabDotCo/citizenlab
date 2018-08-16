@@ -6,10 +6,9 @@ module EmailCampaigns
       add_recipient_filter :filter_users_with_consent
     end
 
-    def filter_users_with_consent users_scope
+    def filter_users_with_consent users_scope, options={}
       users_scope
-        .joins(:email_campaigns_consents)
-        .where(email_campaigns_consents: {consented: true, campaign_type: type})
+      .where.not(id: Consent.where(campaign_type: type, consented: false).pluck(:user_id))
     end
   end
 end
