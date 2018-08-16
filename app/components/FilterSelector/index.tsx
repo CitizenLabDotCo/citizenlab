@@ -44,9 +44,15 @@ interface Props {
   onChange?: (value: any) => void;
   multiple: boolean;
   selected: string[];
-  maxWidth?: string | null | undefined;
-  mobileMaxWidth?: string | null | undefined;
-  enterFrom?: 'left' | 'right';
+  width?: string;
+  mobileWidth?: string;
+  maxHeight?: string;
+  mobileMaxHeight?: string;
+  top?: string;
+  left? : string;
+  mobileLeft?: string;
+  right?: string;
+  mobileRight?: string;
 }
 
 interface State {
@@ -56,8 +62,16 @@ interface State {
 export default class FilterSelector extends PureComponent<Props, State> {
   baseID: string;
 
-  static defaultProps = {
-    enterFrom: 'right'
+  static defaultProps: Partial<Props> = {
+    width: undefined,
+    mobileWidth: undefined,
+    maxHeight: undefined,
+    mobileMaxHeight: undefined,
+    top: undefined,
+    left: undefined,
+    mobileLeft: undefined,
+    right: undefined,
+    mobileRight:undefined
   };
 
   constructor(props: Props) {
@@ -126,7 +140,7 @@ export default class FilterSelector extends PureComponent<Props, State> {
   render() {
     const className = this.props['className'];
     const { deployed } = this.state;
-    const { id, values, multiple, selected, title, maxWidth, mobileMaxWidth, enterFrom } = this.props;
+    const { id, values, multiple, selected, title, width, mobileWidth, maxHeight, mobileMaxHeight, top, left, mobileLeft, right, mobileRight } = this.props;
     const currentTitle = this.getTitle(selected, values, multiple, title);
 
     return (
@@ -149,9 +163,15 @@ export default class FilterSelector extends PureComponent<Props, State> {
           onChange={this.selectionChange}
           multiple={multiple}
           baseID={this.baseID}
-          maxWidth={maxWidth}
-          mobileMaxWidth={mobileMaxWidth}
-          enterFrom={enterFrom}
+          width={width}
+          mobileWidth={mobileWidth}
+          maxHeight={maxHeight}
+          mobileMaxHeight={mobileMaxHeight}
+          top={top}
+          left={left}
+          mobileLeft={mobileLeft}
+          right={right}
+          mobileRight={mobileRight}
         />
       </Container>
     );

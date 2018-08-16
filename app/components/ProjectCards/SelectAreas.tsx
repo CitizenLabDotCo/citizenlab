@@ -95,6 +95,8 @@ class SelectAreas extends PureComponent<Props, State> {
             values={options}
             onChange={this.handleOnChange}
             multiple={true}
+            right="-5px"
+            mobileLeft="-5px"
           />
         );
       }

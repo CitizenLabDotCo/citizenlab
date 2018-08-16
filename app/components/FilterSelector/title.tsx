@@ -5,9 +5,10 @@ import Icon from 'components/UI/Icon';
 
 // style
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 const Text = styled.span`
-  color: ${(props) => props.theme.colors.label};
+  color: ${colors.label};
   font-size: 17px;
   font-weight: 400;
   line-height: 26px;
@@ -17,7 +18,7 @@ const Text = styled.span`
 const DropdownIcon = styled(Icon)`
   width: 11px;
   height: 7px;
-  fill: ${(props) => props.theme.colors.label};
+  fill: ${colors.label};
   margin-left: 4px;
   margin-top: 2px;
   transition: all 100ms ease-out;

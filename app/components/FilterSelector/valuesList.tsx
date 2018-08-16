@@ -7,91 +7,52 @@ import Dropdown from 'components/UI/Dropdown';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 const List = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+`;
+
+const ListItemText = styled.div`
+  color: ${colors.label};
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 21px;
+  text-align: left;
 `;
 
 const ListItem = styled.button`
-  color: ${colors.label};
-  font-size: 17px;
-  font-weight: 400;
-  line-height: 22px;
-  text-decoration: none;
-  padding: 10px;
-  background: #fff;
-  border-radius: 5px;
-  padding: 10px;
-  text-decoration: none;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  transition: all 80ms ease-out;
-
-  &:hover,
-  &:focus {
-    color: ${colors.clGreyHover};
-    background: ${colors.clDropdownHoverBackground};
-  }
-`;
-
-const OptionText = styled.span`
-  flex: 1;
-  margin-right: 10px;
-`;
-
-/*
-  color: ${colors.label};
-  font-size: 17px;
-  font-weight: 400;
-  padding: 10px 15px;
+  margin: 0px;
+  margin-bottom: 4px;
+  padding: 10px;
   background: #fff;
   border-radius: 5px;
+  outline: none;
   cursor: pointer;
-  margin-bottom: 5px;
-  margin-left: 5px;
-  margin-right: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   transition: all 80ms ease-out;
 
-  &:last {
+  &.last {
     margin-bottom: 0px;
   }
 
-  &.focused,
-  &:hover {
-    color: ${colors.clGreyHover};
-    background: ${colors.clDropdownHoverBackground};
-  }
-*/
-
-/*
-const ProjectsListItem = styled(Link)`
-  color: ${colors.label};
-  font-size: 17px;
-  font-weight: 400;
-  line-height: 22px;
-  text-decoration: none;
-  padding: 10px;
-  background: #fff;
-  border-radius: 5px;
-  padding: 10px;
-  text-decoration: none;
-
   &:hover,
-  &:focus {
-    color: ${colors.clGreyHover};
+  &:focus,
+  &.selected {
     background: ${colors.clDropdownHoverBackground};
-    text-decoration: none;
+
+    ${ListItemText} {
+      color: #000;
+    }
   }
 `;
-*/
+
+const StyledCheckbox = styled(Checkbox)`
+  margin-left: 10px;
+`;
 
 type Value = {
   text: string | JSX.Element;
@@ -103,17 +64,35 @@ type Props = {
   values: Value[];
   onChange: (arg: string) => void;
   selected: any[];
+  width?: string;
+  mobileWidth?: string;
+  maxHeight?: string;
+  mobileMaxHeight?: string;
+  top?: string;
+  left? : string;
+  mobileLeft?: string;
+  right?: string;
+  mobileRight?: string;
   multiple?: boolean;
   deployed: boolean;
   baseID: string;
-  maxWidth?: string | null | undefined;
-  mobileMaxWidth?: string | null | undefined;
-  enterFrom?: 'left' | 'right';
 };
 
 type State = {};
 
 export default class ValuesList extends PureComponent<Props, State> {
+  static defaultProps: Partial<Props> = {
+    width: undefined,
+    mobileWidth: undefined,
+    maxHeight: undefined,
+    mobileMaxHeight: undefined,
+    top: '34px',
+    left: undefined,
+    mobileLeft: undefined,
+    right: undefined,
+    mobileRight:undefined
+  };
+
   handleOnToggle = (entry, index) => (event: FormEvent) => {
     event.preventDefault();
     this.setState({ currentFocus: index });
@@ -121,17 +100,25 @@ export default class ValuesList extends PureComponent<Props, State> {
   }
 
   render() {
-    const { values, multiple, deployed, baseID } = this.props;
+    const { values, selected, multiple, deployed, baseID, width, mobileWidth, maxHeight, mobileMaxHeight, top, left, mobileLeft, right, mobileRight } = this.props;
 
     return (
       <Dropdown
-        top="30px"
-        right="-10px"
+        width={width}
+        mobileWidth={mobileWidth}
+        maxHeight={maxHeight}
+        mobileMaxHeight={mobileMaxHeight}
+        top={top}
+        left={left}
+        mobileLeft={mobileLeft}
+        right={right}
+        mobileRight={mobileRight}
         opened={deployed}
         content={(
           <List className="e2e-filter-selector-dropdown-list">
             {values && values.map((entry, index) => {
-              const checked = includes(this.props.selected, entry.value);
+              const checked = includes(selected, entry.value);
+              const last = (index === values.length - 1);
 
               return (
                 <ListItem
@@ -141,11 +128,14 @@ export default class ValuesList extends PureComponent<Props, State> {
                   aria-selected={checked}
                   key={entry.value}
                   onClick={this.handleOnToggle(entry, index)}
+                  className={`
+                    ${!multiple && checked ? 'selected' : ''} ${last ? 'last' : ''}
+                  `}
                 >
-                  <OptionText>{entry.text}</OptionText>
+                  <ListItemText>{entry.text}</ListItemText>
 
                   {multiple &&
-                    <Checkbox value={checked} onChange={this.handleOnToggle(entry, index)} />
+                    <StyledCheckbox value={checked} onChange={this.handleOnToggle(entry, index)} />
                   }
                 </ListItem>
               );
