@@ -5,7 +5,7 @@ module EmailCampaigns
     include ActivityTriggerable
     include RecipientConfigurable
 
-    def self.activity_triggers
+    def activity_triggers
       [
         {'Notification for Comment on your comment' => {'created' => true}}
       ]

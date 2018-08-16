@@ -5,7 +5,7 @@ module EmailCampaigns
     belongs_to :user
 
     DELIVERY_STATUSES = %w(sent bounced failed accepted delivered opened clicked)
-    validates :consented, presence: true, inclusion: {in: [true, false]}
+    validates :consented, inclusion: {in: [true, false]}
 
   end
 end

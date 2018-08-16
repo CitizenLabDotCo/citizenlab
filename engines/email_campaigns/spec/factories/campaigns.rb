@@ -1,9 +1,8 @@
-
 FactoryBot.define do
   factory :manual_campaign, class: EmailCampaigns::Campaigns::Manual do
     author
     sender "author"
-    reply_to "author"
+    reply_to "someguy@somecity.com"
     subject_multiloc {{
       "en" => "We're almost done with your feedback"  
     }}
