@@ -17,6 +17,7 @@ import { Section, SectionField } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from './participationContext';
 import { Button as SemButton, Icon as SemIcon } from 'semantic-ui-react';
 import HasPermission from 'components/HasPermission';
+import FileInput from 'components/UI/FileInput';
 
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -52,11 +53,11 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // typings
-import { API, IOption, ImageFile, Locale, Multiloc } from 'typings';
+import { API, IOption, ImageFile, Locale, Multiloc, UploadFile } from 'typings';
 
 const timeout = 350;
 
-const StyledInputMultiloc = styled(InputMultiloc)`
+const StyledInputMultiloc = styled(InputMultiloc) `
   width: 497px;
 `;
 
@@ -67,11 +68,11 @@ const ProjectType = styled.div`
   text-transform: capitalize;
 `;
 
-const StyledSectionField = styled(SectionField)`
+const StyledSectionField = styled(SectionField) `
   max-width: 100%;
 `;
 
-const StyledImagesDropzone = styled(ImagesDropzone)`
+const StyledImagesDropzone = styled(ImagesDropzone) `
   margin-top: 2px;
   padding-right: 100px;
 `;
@@ -147,6 +148,8 @@ interface State {
   presentationMode: 'map' | 'card';
   oldProjectImages: ImageFile[] | null;
   newProjectImages: ImageFile[] | null;
+  oldFiles: UploadFile[] | null;
+  newFiles: UploadFile[] | null;
   noTitleError: Multiloc | null;
   apiErrors: { [fieldName: string]: API.Error[] };
   saved: boolean;
@@ -177,6 +180,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       presentationMode: 'card',
       oldProjectImages: null,
       newProjectImages: null,
+      oldFiles: null,
+      newFiles: null,
       noTitleError: null,
       apiErrors: {},
       saved: false,
@@ -249,7 +254,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         this.setState((state) => {
           const publicationStatus = (projectData ? projectData.attributes.publication_status : state.publicationStatus);
           const projectType = (projectData ? projectData.attributes.process_type : state.projectType);
-          const areaType =  ((projectData && projectData.relationships.areas.data.length > 0) ? 'selection' : 'all');
+          const areaType = ((projectData && projectData.relationships.areas.data.length > 0) ? 'selection' : 'all');
           const areasOptions = areas.data.map((area) => ({
             value: area.id,
             label: getLocalized(area.attributes.title_multiloc, locale, currentTenant.data.attributes.settings.core.locales)
@@ -371,6 +376,16 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         newProjectImage
       ]
     }));
+  }
+  handleFileOnAdd = (newFile: File) => {
+    this.setState((state) => ({
+      submitState: 'enabled',
+      newFiles: [
+        ...(state.newFiles || []),
+        newFile
+      ]
+    }));
+    console.log(this.state.newFiles);
   }
 
   handleProjectImagesOnUpdate = (newProjectImages: ImageFile[]) => {
@@ -604,6 +619,13 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       return (
         <form className="e2e-project-general-form" onSubmit={this.onSubmit}>
           <Section>
+
+            <SectionField>
+              <FileInput
+                onAdd={this.handleFileOnAdd}
+              />
+            </SectionField>
+
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.statusLabel} />
@@ -670,10 +692,10 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                   />
                 </>
               ) : (
-                <>
-                  <ProjectType>{projectType}</ProjectType>
-                </>
-              )}
+                  <>
+                    <ProjectType>{projectType}</ProjectType>
+                  </>
+                )}
 
               {!projectData &&
                 <CSSTransition
