@@ -35,6 +35,7 @@ export interface ImageFile extends ImageFile {
 export interface UploadFile extends File {
   base64?: string;
   objectUrl?: string;
+  id?: string;
 }
 
 declare interface IOption {
