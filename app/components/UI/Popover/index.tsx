@@ -21,11 +21,11 @@ const Content: any = styled(clickOutside)`
   top: ${(props: any) => props.top || '0px'};
   left: 50%;
   transform-origin: top left;
-  z-index: 5;
+  z-index: 2;
 
   &.dropdown-enter {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.92);
 
     &.dropdown-enter-active {
       opacity: 1;

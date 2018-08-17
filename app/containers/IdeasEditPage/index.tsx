@@ -46,7 +46,7 @@ const FormContainer = styled.div`
   max-width: 600px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   padding-bottom: 100px;
   padding-right: 30px;
   padding-left: 30px;
@@ -71,6 +71,7 @@ const Title = styled.h1`
 
 const ButtonWrapper = styled.div`
   display: flex;
+  justify-content: flex-start;
 `;
 
 const SaveButton = styled(Button)`
