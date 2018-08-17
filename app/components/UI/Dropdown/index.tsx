@@ -114,6 +114,7 @@ export default class Dropdown extends PureComponent<Props, State> {
   }
 
   scrolling = (event: WheelEvent) => {
+    // prevent body from scrolling
     if (this.dropdownElement) {
       const deltaY = (event.deltaMode === 1 ? event.deltaY * 20 : event.deltaY);
       this.dropdownElement.scrollTop += deltaY;

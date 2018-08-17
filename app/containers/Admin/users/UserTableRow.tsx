@@ -194,7 +194,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
-  handleDropdownOnClickOutside = (event: FormEvent) => {
+  handePopoverOnClickOutside = (event: FormEvent) => {
     event.preventDefault();
     event.stopPropagation();
     this.setState({ optionsOpened: false });
@@ -252,7 +252,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
             top="35px"
             backgroundColor={colors.adminMenuBackground}
             borderColor={colors.adminMenuBackground}
-            handleDropdownOnClickOutside={this.handleDropdownOnClickOutside}
+            onClickOutside={this.handePopoverOnClickOutside}
             dropdownOpened={optionsOpened}
           >
             <StyledIcon name="more-options" />

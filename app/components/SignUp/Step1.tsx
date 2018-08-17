@@ -434,7 +434,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
               processing={processing}
               text={buttonText}
               onClick={this.handleOnSubmit}
-              circularCorners={true}
+              circularCorners={false}
             />
             {!isInvitation &&
               <AlreadyHaveAnAccount to="/sign-in">
