@@ -1,22 +1,17 @@
 
 import React from 'react';
 import { Subscription } from 'rxjs';
-
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
-
 import { injectTracks } from 'utils/analytics';
-
 import NotificationCount from './components/NotificationCount';
 import Dropdown from 'components/UI/Dropdown';
 import Notification from './components/Notification';
 import Spinner from 'components/UI/Spinner';
 import { FormattedMessage } from 'utils/cl-intl';
 import InfiniteScroll from 'react-infinite-scroller';
-
 import { notificationsStream, TNotificationData, markAllAsRead } from 'services/notifications';
 import { authUserStream } from 'services/auth';
-
 import messages from './messages';
 import tracks from '../../tracks';
 
@@ -59,8 +54,8 @@ type State = {
 class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       unreadCount: 0,
       dropdownOpened: false,
@@ -129,6 +124,7 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
           mobileWidth="300px"
           top="40px"
           right="-5px"
+          mobileRight="-5px"
           opened={dropdownOpened}
           onClickOutside={this.toggleDropdown}
           content={(
