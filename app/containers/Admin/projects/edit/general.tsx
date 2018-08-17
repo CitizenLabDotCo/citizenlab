@@ -45,7 +45,6 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 import eventEmitter from 'utils/eventEmitter';
 
 import GetProjectFiles, { GetProjectFilesChildProps } from 'resources/GetProjectFiles';
-import { isNilOrError } from 'utils/helperUtils';
 
 // utils
 import { convertUrlToFileObservable } from 'utils/imageTools';
@@ -438,7 +437,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 
   onSubmit = (event: React.FormEvent<any>) => {
-    console.log('hi');
     event.preventDefault();
 
     const { projectType } = this.state;
@@ -493,7 +491,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     if (this.validate()) {
       const { formatMessage } = this.props.intl;
       let { projectAttributesDiff } = this.state;
-      const { projectData, oldProjectImages, newProjectImages } = this.state;
+      const { projectData, oldProjectImages, newProjectImages, newProjectFiles } = this.state;
+      const { oldProjectFiles } = this.props;
 
       if (participationContextConfig) {
         const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, presentationMode, survey_service, survey_embed_url } = participationContextConfig;
@@ -532,6 +531,20 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
             return !newProjectImages.some(newProjectImage => newProjectImage.base64 === oldProjectImage.base64);
           });
         }
+        let filesToAdd = newProjectFiles;
+        let filesToRemove = oldProjectFiles;
+        let filesToAddPromises: Promise<any>[] = [];
+        let filesToRemovePromises: Promise<any>[] = [];
+
+        if (newProjectFiles && Array.isArray(oldProjectFiles)) {
+          filesToAdd = newProjectFiles.filter((newProjectFile) => {
+            return !oldProjectFiles.some(oldProjectFile => oldProjectFile.attributes.name === newProjectFile.name);
+          });
+
+          filesToRemove = oldProjectFiles.filter((oldProjectFile) => {
+            return !newProjectFiles.some(newProjectFile => newProjectFile.name === oldProjectFile.attributes.name);
+          });
+        }
 
         if (!isEmpty(projectAttributesDiff)) {
           if (projectData) {
@@ -557,6 +570,20 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
           await Promise.all([
             ...imagesToAddPromises,
             ...imagesToRemovePromises
+          ]);
+        }
+        if (projectId && filesToAdd && filesToAdd.length > 0) {
+          filesToAddPromises = filesToAdd.map((fileToAdd: any) => addProjectFile(projectId as string, fileToAdd.base64, fileToAdd.name));
+        }
+
+        if (projectId && Array.isArray(filesToRemove) && filesToRemove.length > 0) {
+          filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deleteProjectFile(projectId as string, fileToRemove.id));
+        }
+
+        if (filesToAddPromises.length > 0 || filesToRemovePromises.length > 0) {
+          await Promise.all([
+            ...filesToAddPromises,
+            ...filesToRemovePromises
           ]);
         }
 
@@ -632,7 +659,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 onAdd={this.handleFileOnAdd}
               />
               <div>{this.state.newProjectFiles && this.state.newProjectFiles.map(file => file.name)}</div>
-              <div>{!isNilOrError(this.props.oldProjectFiles) && this.props.oldProjectFiles.map(file => file.attributes.name)}</div>
             </SectionField>
 
             <SectionField>
