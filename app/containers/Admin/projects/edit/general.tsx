@@ -38,13 +38,11 @@ import {
   deleteProject,
 } from 'services/projects';
 import { projectImagesStream, addProjectImage, deleteProjectImage } from 'services/projectImages';
-import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
+import { projectFilesStream, addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { areasStream, IAreaData } from 'services/areas';
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import eventEmitter from 'utils/eventEmitter';
-
-import GetProjectFiles, { GetProjectFilesChildProps } from 'resources/GetProjectFiles';
 
 // utils
 import { convertUrlToFileObservable } from 'utils/imageTools';
@@ -133,16 +131,12 @@ const ParticipationContextWrapper = styled.div`
   }
 `;
 
-type InputProps = {
+type Props = {
   lang: string,
   params: {
     projectId: string,
   }
 };
-
-interface Props extends InputProps {
-  oldProjectFiles: GetProjectFilesChildProps;
-}
 
 interface State {
   loading: boolean;
@@ -155,6 +149,7 @@ interface State {
   presentationMode: 'map' | 'card';
   oldProjectImages: ImageFile[] | null;
   newProjectImages: ImageFile[] | null;
+  oldProjectFiles: UploadFile[] | null;
   newProjectFiles: UploadFile[] | null;
   noTitleError: Multiloc | null;
   apiErrors: { [fieldName: string]: API.Error[] };
@@ -186,6 +181,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       presentationMode: 'card',
       oldProjectImages: null,
       newProjectImages: null,
+      oldProjectFiles: null,
       newProjectFiles: null,
       noTitleError: null,
       apiErrors: {},
@@ -220,12 +216,26 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         }).switchMap((project) => {
           if (project) {
             const projectImages$ = (project ? projectImagesStream(project.data.id).observable : Rx.Observable.of(null));
+            const projectFiles$ = (project ? projectFilesStream(project.data.id).observable : Rx.Observable.of(null));
             const headerUrl = get(project, 'data.attributes.header_bg.large');
             const headerImageFileObservable = (headerUrl ? convertUrlToFileObservable(headerUrl) : Rx.Observable.of(null));
 
             return Rx.Observable.combineLatest(
               this.processing$,
               headerImageFileObservable,
+              projectFiles$.switchMap((projectFiles) => {
+                if (projectFiles && projectFiles.data && projectFiles.data.length > 0) {
+                  return Rx.Observable.of(projectFiles.data.map((projectFile) => ({
+                      name: projectFile.attributes.name,
+                      id: projectFile.id,
+                      objectUrl: projectFile.attributes.file.url,
+                      ordering: projectFile.attributes.ordering,
+                    })
+                  ));
+                }
+
+                return Rx.Observable.of(null);
+              }),
               projectImages$.switchMap((projectImages) => {
                 if (projectImages && projectImages.data && projectImages.data.length > 0) {
                   return Rx.Observable.combineLatest(
@@ -242,8 +252,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               }),
             ).filter(([processing]) => {
               return !processing;
-            }).map(([_processing, headerBg, projectImages]) => ({
+            }).map(([_processing, headerBg, projectFiles, projectImages]) => ({
               headerBg,
+              oldProjectFiles: projectFiles,
               oldProjectImages: projectImages,
               projectData: (project ? project.data : null)
             }));
@@ -251,11 +262,12 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
 
           return Rx.Observable.of({
             headerBg: null,
+            oldProjectFiles: null,
             oldProjectImages: null,
             projectData: null
           });
         })
-      ).subscribe(([locale, currentTenant, areas, { headerBg, oldProjectImages, projectData }]) => {
+      ).subscribe(([locale, currentTenant, areas, { headerBg, oldProjectFiles, oldProjectImages, projectData }]) => {
         this.setState((state) => {
           const publicationStatus = (projectData ? projectData.attributes.publication_status : state.publicationStatus);
           const projectType = (projectData ? projectData.attributes.process_type : state.projectType);
@@ -275,6 +287,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
             areasOptions,
             oldProjectImages: (oldProjectImages as ImageFile[] | null),
             newProjectImages: (oldProjectImages as ImageFile[] | null),
+            oldProjectFiles: (oldProjectFiles as UploadFile[] | null),
+            newProjectFiles: (oldProjectFiles as UploadFile[] | null),
             headerBg: (headerBg ? [headerBg] : null),
             presentationMode: (projectData && projectData.attributes.presentation_mode || state.presentationMode),
             areas: areas.data,
@@ -390,7 +404,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         newFile
       ]
     }));
-    console.log(this.state.newProjectFiles);
   }
 
   handleProjectImagesOnUpdate = (newProjectImages: ImageFile[]) => {
@@ -491,8 +504,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     if (this.validate()) {
       const { formatMessage } = this.props.intl;
       let { projectAttributesDiff } = this.state;
-      const { projectData, oldProjectImages, newProjectImages, newProjectFiles } = this.state;
-      const { oldProjectFiles } = this.props;
+      const { projectData, oldProjectImages, newProjectImages, newProjectFiles, oldProjectFiles } = this.state;
 
       if (participationContextConfig) {
         const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, presentationMode, survey_service, survey_embed_url } = participationContextConfig;
@@ -538,11 +550,11 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
 
         if (newProjectFiles && Array.isArray(oldProjectFiles)) {
           filesToAdd = newProjectFiles.filter((newProjectFile) => {
-            return !oldProjectFiles.some(oldProjectFile => oldProjectFile.attributes.name === newProjectFile.name);
+            return !oldProjectFiles.some(oldProjectFile => oldProjectFile.name === newProjectFile.name);
           });
 
           filesToRemove = oldProjectFiles.filter((oldProjectFile) => {
-            return !newProjectFiles.some(newProjectFile => newProjectFile.name === oldProjectFile.attributes.name);
+            return !newProjectFiles.some(newProjectFile => newProjectFile.id === oldProjectFile.id);
           });
         }
 
@@ -632,6 +644,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       projectData,
       headerBg,
       newProjectImages,
+      newProjectFiles,
       loading,
       processing,
       projectAttributesDiff,
@@ -649,7 +662,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       }).map((id) => {
         return areasOptions.find(areaOption => areaOption.value === id) as IOption;
       });
-
+      console.log(newProjectFiles);
       return (
         <form className="e2e-project-general-form" onSubmit={this.onSubmit}>
           <Section>
@@ -658,7 +671,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               <FileInput
                 onAdd={this.handleFileOnAdd}
               />
-              <div>{this.state.newProjectFiles && this.state.newProjectFiles.map(file => file.name)}</div>
             </SectionField>
 
             <SectionField>
@@ -860,9 +872,4 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 }
 
-const AdminProjectEditGeneralWithHoc = injectIntl<Props>(AdminProjectEditGeneral);
-
-export default (inputProps: InputProps) => (
-  <GetProjectFiles projectId={inputProps.params.projectId}>
-    {projectFiles => <AdminProjectEditGeneralWithHoc {... inputProps} oldProjectFiles={projectFiles} />}
-  </GetProjectFiles>);
+export default injectIntl<Props>(AdminProjectEditGeneral);
