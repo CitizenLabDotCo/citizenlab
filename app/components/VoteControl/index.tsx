@@ -16,6 +16,7 @@ import { voteStream, addVote, deleteVote } from 'services/ideaVotes';
 
 // style
 import styled, { css, keyframes } from 'styled-components';
+import { lighten } from 'polished';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 const vote = keyframes`
@@ -47,7 +48,7 @@ const VoteIconContainer: any = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: solid 1px ${colors.clGrey};
+  border: solid 1px ${lighten(0.4, colors.label)};
   background: #fff;
   transition: all 100ms ease-out;
   will-change: transform;
@@ -70,7 +71,7 @@ const VoteIconContainer: any = styled.div`
 
 const VoteIcon: any = styled(Icon) `
   height: 19px;
-  fill: ${colors.clGrey};
+  fill: ${colors.label};
   transition: all 100ms ease-out;
 
   ${(props: any) => props.size === '1' ? css`
@@ -89,7 +90,7 @@ const VoteIcon: any = styled(Icon) `
 `;
 
 const VoteCount = styled.div`
-  color: ${colors.clGrey};
+  color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   margin-left: 5px;

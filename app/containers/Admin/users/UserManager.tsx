@@ -98,6 +98,10 @@ export class UserManager extends React.PureComponent<Props, State> {
     this.setState(state => ({ selectedUsers: (state.selectedUsers === 'all' ? 'none' : 'all') }));
   }
 
+  unselectAllUsers = () => {
+    this.setState({ selectedUsers: 'none' });
+  }
+
   handleUserSelectedOnChange = (allUsersIds: string[]) => (userId: string) => {
     this.setState((state) => {
       let newSelectedUsers: string[] | 'none' | 'all' = 'none';
@@ -138,6 +142,7 @@ export class UserManager extends React.PureComponent<Props, State> {
             selectedUsers={selectedUsers}
             allUsersIds={allUsersIds}
             toggleSelectAll={this.toggleAllUsers}
+            unselectAll={this.unselectAllUsers}
             deleteUsersFromGroup={this.props.deleteUsersFromGroup}
           />
 

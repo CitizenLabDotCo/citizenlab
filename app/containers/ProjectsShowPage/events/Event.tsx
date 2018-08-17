@@ -103,7 +103,7 @@ const EventYear = styled.div`
   background: #373737;
 
   &.past {
-    background: ${colors.clGrey};
+    background: ${colors.label};
   }
 `;
 
@@ -144,7 +144,7 @@ const EventTitle = styled.div`
 `;
 
 const EventDescription = styled.div`
-  color: ${colors.clGrey};
+  color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: 21px;

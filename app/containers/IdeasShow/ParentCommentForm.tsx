@@ -62,7 +62,6 @@ const SubmitButton = styled(Button)`
   position: absolute;
   bottom: 18px;
   right: 18px;
-  z-index: 2;
 `;
 
 interface InputProps {
