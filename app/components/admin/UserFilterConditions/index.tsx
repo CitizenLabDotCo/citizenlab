@@ -91,6 +91,7 @@ class UserFilterConditions extends React.PureComponent<Props & Tracks, State> {
           {rules.map((rule, index) => (
             <Rule
               key={index}
+              ruleName={`e2e-rule-${index}`}
               rule={rule}
               onChange={this.handleOnChangeRule(index)}
               onRemove={this.handleOnRemoveRule(index)}

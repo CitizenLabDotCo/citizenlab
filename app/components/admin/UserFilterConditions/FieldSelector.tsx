@@ -21,6 +21,7 @@ type Props = {
   field: FieldDescriptor;
   onChange: (FieldDescriptor: FieldDescriptor) => void;
   customFields: GetCustomFieldsChildProps;
+  fieldName?: string;
 };
 
 type State = {};
@@ -80,13 +81,14 @@ class FieldSelector extends React.PureComponent<Props & InjectedIntlProps & inje
   }
 
   render() {
-    const { field } = this.props;
+    const { field, fieldName } = this.props;
     return (
       <Select
         options={this.generateOptions()}
         onChange={this.handleOnChange}
         value={this.descriptorToOptionValue(field)}
         clearable={false}
+        id={`${fieldName}-e2e`}
       />
     );
   }
