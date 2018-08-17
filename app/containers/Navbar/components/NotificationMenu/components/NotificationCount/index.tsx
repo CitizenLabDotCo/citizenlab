@@ -50,7 +50,7 @@ const NewNotificationsIndicator = styled.div`
 
 type Props = {
   count?: number;
-  onClick?: () => void;
+  onClick?: (event: React.FormEvent<any>) => void;
 };
 
 type State = {};

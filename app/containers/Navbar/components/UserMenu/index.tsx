@@ -48,7 +48,7 @@ const StyledAvatar = styled(Avatar)`
   }
 `;
 
-const OpenMenuButton = styled.div`
+const OpenDropdownButton = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -71,21 +71,7 @@ const OpenMenuButton = styled.div`
   }
 `;
 
-// const StyledPopover = styled(Popover) `
-//   display: flex;
-//   flex-direction: column;
-//   z-index: 5;
-
-//   .Ideas-icon .cl-icon-primary, .Ideas-icon .cl-icon-secondary {
-//     fill: ${colors.label};
-//   }
-
-//   .Ideas-icon .cl-icon-accent {
-//     fill: transparent !important;
-//   }
-// `;
-
-const PopoverItem = styled(Button)`
+const DropdownListItem = styled(Button)`
   &.Button.button {
     font-size: 17px;
   }
@@ -130,7 +116,6 @@ export default class UserMenu extends React.PureComponent<Props, State> {
 
   toggleDropdown = (event: React.FormEvent) => {
     event.preventDefault();
-    event.stopPropagation();
     this.setState(({ opened }) => ({ opened: !opened }));
   }
 
@@ -150,7 +135,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     if (authUser && userId) {
       return (
         <Container id="e2e-user-menu-container">
-          <OpenMenuButton onClick={this.toggleDropdown}>
+          <OpenDropdownButton onClick={this.toggleDropdown}>
             <StyledUserName
               user={authUser.data}
               hideLastName={true}
@@ -159,18 +144,18 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               userId={userId}
               size="small"
             />
-          </OpenMenuButton>
+          </OpenDropdownButton>
 
           <Dropdown
             width="180px"
-            top="35px"
+            top="42px"
             right="-5px"
             opened={opened}
-            toggleOpened={this.toggleDropdown}
+            onClickOutside={this.toggleDropdown}
             content={(
               <>
                 <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
-                  <PopoverItem
+                  <DropdownListItem
                     id="admin-link"
                     linkTo={'/admin'}
                     onClick={this.closeDropdown}
@@ -182,11 +167,11 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                     justify="space-between"
                   >
                     <FormattedMessage {...messages.admin} />
-                  </PopoverItem>
+                  </DropdownListItem>
 
                   <HasPermission.No>
                     <HasPermission item={{ type: 'route', path: '/admin/projects' }} action="access">
-                      <PopoverItem
+                      <DropdownListItem
                         id="e2e-projects-admin-link"
                         linkTo={'/admin/projects'}
                         onClick={this.closeDropdown}
@@ -198,12 +183,12 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                         justify="space-between"
                       >
                         <FormattedMessage {...messages.projectsModeration} />
-                      </PopoverItem>
+                      </DropdownListItem>
                     </HasPermission>
                   </HasPermission.No>
                 </HasPermission>
 
-                <PopoverItem
+                <DropdownListItem
                   id="e2e-profile-profile-link"
                   linkTo={`/profile/${userSlug}`}
                   onClick={this.closeDropdown}
@@ -215,9 +200,9 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                   justify="space-between"
                 >
                   <FormattedMessage {...messages.myIdeas} />
-                </PopoverItem>
+                </DropdownListItem>
 
-                <PopoverItem
+                <DropdownListItem
                   id="e2e-profile-edit-link"
                   linkTo={'/profile/edit'}
                   onClick={this.closeDropdown}
@@ -229,9 +214,9 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                   justify="space-between"
                 >
                   <FormattedMessage {...messages.editProfile} />
-                </PopoverItem>
+                </DropdownListItem>
 
-                <PopoverItem
+                <DropdownListItem
                   id="e2e-sign-out-link"
                   onClick={this.signOut}
                   style="text"
@@ -242,7 +227,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                   justify="space-between"
                 >
                   <FormattedMessage {...messages.signOut} />
-                </PopoverItem>
+                </DropdownListItem>
               </>
             )}
           />
@@ -253,87 +238,3 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     return null;
   }
 }
-
-/*
-
-          <StyledPopover
-            id="e2e-user-menu-dropdown"
-            open={opened}
-            onCloseRequest={this.closePopover}
-          >
-            <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
-              <PopoverItem
-                id="admin-link"
-                linkTo={'/admin'}
-                onClick={this.closePopover}
-                style="text"
-                icon="admin"
-                iconPos="right"
-                iconSize="20px"
-                padding="11px 11px"
-                justify="space-between"
-              >
-                <FormattedMessage {...messages.admin} />
-              </PopoverItem>
-
-              <HasPermission.No>
-                <HasPermission item={{ type: 'route', path: '/admin/projects' }} action="access">
-                  <PopoverItem
-                    id="e2e-projects-admin-link"
-                    linkTo={'/admin/projects'}
-                    onClick={this.closePopover}
-                    style="text"
-                    icon="admin"
-                    iconPos="right"
-                    iconSize="20px"
-                    padding="11px 11px"
-                    justify="space-between"
-                  >
-                    <FormattedMessage {...messages.projectsModeration} />
-                  </PopoverItem>
-                </HasPermission>
-              </HasPermission.No>
-            </HasPermission>
-
-            <PopoverItem
-              id="e2e-profile-profile-link"
-              linkTo={`/profile/${userSlug}`}
-              onClick={this.closePopover}
-              style="text"
-              icon="ideas2"
-              iconPos="right"
-              iconSize="20px"
-              padding="11px 11px"
-              justify="space-between"
-            >
-              <FormattedMessage {...messages.myIdeas} />
-            </PopoverItem>
-
-            <PopoverItem
-              id="e2e-profile-edit-link"
-              linkTo={'/profile/edit'}
-              onClick={this.closePopover}
-              style="text"
-              icon="settings"
-              iconPos="right"
-              iconSize="20px"
-              padding="11px 11px"
-              justify="space-between"
-            >
-              <FormattedMessage {...messages.editProfile} />
-            </PopoverItem>
-
-            <PopoverItem
-              id="e2e-sign-out-link"
-              onClick={this.signOut}
-              style="text"
-              icon="power"
-              iconPos="right"
-              iconSize="20px"
-              padding="11px 11px"
-              justify="space-between"
-            >
-              <FormattedMessage {...messages.signOut} />
-            </PopoverItem>
-          </StyledPopover>
-*/

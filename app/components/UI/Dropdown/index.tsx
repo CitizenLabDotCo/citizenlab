@@ -87,7 +87,7 @@ interface Props {
   mobileRight?: string;
   content: JSX.Element;
   footer?: JSX.Element;
-  toggleOpened: (event: FormEvent) => void;
+  onClickOutside?: (event: FormEvent) => void;
 }
 
 interface State {}
@@ -132,7 +132,11 @@ export default class Dropdown extends PureComponent<Props, State> {
   }
 
   close = (event: FormEvent) => {
-    this.props.toggleOpened(event);
+    event.preventDefault();
+
+    if (this.props.opened && this.props.onClickOutside) {
+      this.props.onClickOutside(event);
+    }
   }
 
   render() {

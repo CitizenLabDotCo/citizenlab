@@ -35,7 +35,7 @@ const Container = styled.div`
   position: relative;
 
   &:hover,
-  &.deployed {
+  &.opened {
     ${Text} {
       color: #000;
     }
@@ -48,7 +48,7 @@ const Container = styled.div`
 
 type Props = {
   title: string | JSX.Element,
-  deployed: boolean,
+  opened: boolean,
   onClick: Function,
   baseID: string,
 };
@@ -62,14 +62,14 @@ export default class Title extends PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    const { title, deployed, baseID } = this.props;
+    const { title, opened, baseID } = this.props;
 
     return (
       <Container
         onClick={this.handleClick}
-        aria-expanded={deployed}
+        aria-expanded={opened}
         id={`${baseID}-label`}
-        className={`e2e-filter-selector-button FilterSelectorTitle ${deployed ? 'deployed' : ''} ${className}`}
+        className={`e2e-filter-selector-button FilterSelectorTitle ${opened ? 'opened' : ''} ${className}`}
       >
         <Text className="FilterSelectorTitleText">{title}</Text>
         <DropdownIcon className="FilterSelectorTitleIcon" name="dropdown" />

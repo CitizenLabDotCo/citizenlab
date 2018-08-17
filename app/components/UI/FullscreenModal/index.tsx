@@ -355,7 +355,6 @@ class Modal extends React.PureComponent<Props & ITracks & {currentLocale: GetLoc
 
   clickCloseButton = (event) => {
     event.preventDefault();
-    event.stopPropagation();
     this.props.clickCloseButton({ extra: { url: this.props.url } });
     this.manuallyCloseModal();
   }

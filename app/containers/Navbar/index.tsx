@@ -21,12 +21,9 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // services
-import { updateLocale } from 'services/locale';
 import { isAdmin } from 'services/permissions/roles';
 
 // utils
-import { trackEvent } from 'utils/analytics';
-import tracks from './tracks';
 import { getProjectUrl } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -262,7 +259,8 @@ const RightItem: any = styled.div`
 `;
 
 const StyledIdeaButton = styled(IdeaButton)`
-  a, button {
+  a,
+  button {
     &:hover,
     &:focus {
       border-color: ${darken(0.2, '#e0e0e0')} !important;
@@ -302,17 +300,13 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  notificationPanelOpened: boolean;
   projectsDropdownOpened: boolean;
 }
 
 class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
-  unlisten: Function;
-
   constructor(props) {
     super(props);
     this.state = {
-      notificationPanelOpened: false,
       projectsDropdownOpened: false
     };
   }
@@ -323,40 +317,9 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     }
   }
 
-  toggleNotificationPanel = () => {
-    if (this.state.notificationPanelOpened) {
-      trackEvent(tracks.clickCloseNotifications);
-    } else {
-      trackEvent(tracks.clickOpenNotifications);
-    }
-
-    this.setState(state => ({ notificationPanelOpened: !state.notificationPanelOpened }));
-  }
-
-  closeNotificationPanel = () => {
-    // There seem to be some false closing triggers on initializing,
-    // so we check whether it's actually open
-    if (this.state.notificationPanelOpened) {
-      trackEvent(tracks.clickCloseNotifications);
-    }
-
-    this.setState({ notificationPanelOpened: false });
-  }
-
-  handleProjectsDropdownToggle = (event: React.FormEvent<any>) => {
+  toggleProjectsDropdown = (event: React.FormEvent<any>) => {
     event.preventDefault();
-    event.stopPropagation();
     this.setState(({ projectsDropdownOpened }) => ({ projectsDropdownOpened: !projectsDropdownOpened }));
-  }
-
-  handleProjectsDropdownOnClickOutside = (event: MouseEvent | KeyboardEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-    this.setState({ projectsDropdownOpened: false });
-  }
-
-  handleLanguageChange (_event, { value }) {
-    updateLocale(value);
   }
 
   render() {
@@ -398,7 +361,11 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
 
               {tenantLocales && projectsList && projectsList.length > 0 &&
                 <NavigationDropdown>
-                  <NavigationDropdownItem className={secondUrlSegment === 'projects' ? 'active' : ''} aria-haspopup="true" onClick={this.handleProjectsDropdownToggle}>
+                  <NavigationDropdownItem
+                    className={secondUrlSegment === 'projects' ? 'active' : ''}
+                    aria-haspopup="true"
+                    onClick={this.toggleProjectsDropdown}
+                  >
                     <FormattedMessage {...messages.pageProjects} />
                     <NavigationDropdownItemIcon name="dropdown" />
                   </NavigationDropdownItem>
@@ -406,7 +373,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                   <Dropdown
                     top="62px"
                     opened={projectsDropdownOpened}
-                    toggleOpened={this.handleProjectsDropdownToggle}
+                    onClickOutside={this.toggleProjectsDropdown}
                     content={(
                       <>
                         {projectsList.map((project) => (
