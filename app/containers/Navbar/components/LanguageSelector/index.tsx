@@ -113,7 +113,6 @@ export default class LanguageSelector extends React.PureComponent<Props, State> 
 
   toggleDropdown = (event: React.FormEvent<any>) => {
     event.preventDefault();
-    event.stopPropagation();
     this.setState(({ dropdownOpened }) => ({ dropdownOpened: !dropdownOpened }));
   }
 
@@ -136,9 +135,9 @@ export default class LanguageSelector extends React.PureComponent<Props, State> 
         <Dropdown
           width="180px"
           top="35px"
-          right="-5px"
+          right="-10px"
           opened={dropdownOpened}
-          toggleOpened={this.toggleDropdown}
+          onClickOutside={this.toggleDropdown}
           content={(
             <>
               {localeOptions.map((locale, index) => {

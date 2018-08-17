@@ -74,7 +74,7 @@ type Props = {
   right?: string;
   mobileRight?: string;
   multiple?: boolean;
-  deployed: boolean;
+  opened: boolean;
   baseID: string;
 };
 
@@ -100,7 +100,7 @@ export default class ValuesList extends PureComponent<Props, State> {
   }
 
   render() {
-    const { values, selected, multiple, deployed, baseID, width, mobileWidth, maxHeight, mobileMaxHeight, top, left, mobileLeft, right, mobileRight } = this.props;
+    const { values, selected, multiple, opened, baseID, width, mobileWidth, maxHeight, mobileMaxHeight, top, left, mobileLeft, right, mobileRight } = this.props;
 
     return (
       <Dropdown
@@ -113,7 +113,7 @@ export default class ValuesList extends PureComponent<Props, State> {
         mobileLeft={mobileLeft}
         right={right}
         mobileRight={mobileRight}
-        opened={deployed}
+        opened={opened}
         content={(
           <List className="e2e-filter-selector-dropdown-list">
             {values && values.map((entry, index) => {

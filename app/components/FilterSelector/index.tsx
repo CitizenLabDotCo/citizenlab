@@ -56,7 +56,7 @@ interface Props {
 }
 
 interface State {
-  deployed: boolean;
+  opened: boolean;
 }
 
 export default class FilterSelector extends PureComponent<Props, State> {
@@ -77,7 +77,7 @@ export default class FilterSelector extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      deployed: false
+      opened: false
     };
     this.baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
   }
@@ -106,11 +106,11 @@ export default class FilterSelector extends PureComponent<Props, State> {
   }
 
   toggleExpanded = () => {
-    this.setState(state => ({ deployed: !state.deployed }));
+    this.setState(state => ({ opened: !state.opened }));
   }
 
   closeExpanded = () => {
-    this.setState({ deployed: false });
+    this.setState({ opened: false });
   }
 
   selectionChange = (value: string) => {
@@ -139,7 +139,7 @@ export default class FilterSelector extends PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    const { deployed } = this.state;
+    const { opened } = this.state;
     const { id, values, multiple, selected, title, width, mobileWidth, maxHeight, mobileMaxHeight, top, left, mobileLeft, right, mobileRight } = this.props;
     const currentTitle = this.getTitle(selected, values, multiple, title);
 
@@ -151,13 +151,13 @@ export default class FilterSelector extends PureComponent<Props, State> {
       >
         <Title
           title={currentTitle}
-          deployed={deployed}
+          opened={opened}
           onClick={this.toggleExpanded}
           baseID={this.baseID}
         />
         <ValuesList
           title={currentTitle}
-          deployed={deployed}
+          opened={opened}
           values={values}
           selected={selected}
           onChange={this.selectionChange}

@@ -108,10 +108,6 @@ const DropdownWrapper = styled.div`
   justify-content: center;
 `;
 
-const StyledDropdown = styled(Dropdown)`
-  top: 10px;
-`;
-
 const DropdownListItemText = styled.div`
   color: ${colors.label};
   font-size: 17px;
@@ -366,9 +362,10 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
             </ActionButton>
 
             <DropdownWrapper>
-              <StyledDropdown
+              <Dropdown
+                top="10px"
                 opened={dropdownOpened}
-                toggleOpened={this.toggleDropdown}
+                onClickOutside={this.toggleDropdown}
                 content={(
                   <>
                     {groupsList.map((group) => (
@@ -404,7 +401,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                   <StyledIcon name="moveFolder" />
                   <FormattedMessage {...messages.moveUsers} />
                 </ActionButton>
-              </StyledDropdown>
+              </Dropdown>
             </DropdownWrapper>
           </ActionButtonWrapper>
         }
