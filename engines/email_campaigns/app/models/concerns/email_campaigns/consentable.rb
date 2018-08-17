@@ -3,7 +3,7 @@ module EmailCampaigns
     extend ActiveSupport::Concern
 
     included do
-      add_recipient_filter :filter_users_with_consent
+      recipient_filter :filter_users_with_consent
     end
 
     def filter_users_with_consent users_scope, options={}

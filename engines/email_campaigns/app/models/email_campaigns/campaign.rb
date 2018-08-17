@@ -21,7 +21,7 @@ module EmailCampaigns
       @after_send_hooks || []
     end
 
-    def self.add_recipient_filter action_symbol
+    def self.recipient_filter action_symbol
       @recipient_filters ||= []
       @recipient_filters << action_symbol
     end
