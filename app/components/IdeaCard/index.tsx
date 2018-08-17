@@ -30,7 +30,7 @@ import messages from './messages';
 
 // styles
 import styled from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { IModalInfo } from 'containers/App';
@@ -87,14 +87,14 @@ const Footer = styled.div`
 const StyledVoteControl = styled(VoteControl)``;
 
 const CommentIcon = styled(Icon)`
-  fill: ${(props) => props.theme.colors.clGrey};
+  fill: ${colors.label};
   height: 21px;
   margin-right: 7px;
   width: 30px;
 `;
 
 const CommentCount = styled.div`
-  color: ${(props) => props.theme.colors.clGrey};
+  color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
 `;

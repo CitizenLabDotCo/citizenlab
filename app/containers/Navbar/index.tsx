@@ -21,12 +21,9 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // services
-import { updateLocale } from 'services/locale';
 import { isAdmin } from 'services/permissions/roles';
 
 // utils
-import { trackEvent } from 'utils/analytics';
-import tracks from './tracks';
 import { getProjectUrl } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -39,7 +36,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled, { css, } from 'styled-components';
-import { darken, rgba, ellipsis } from 'polished';
+import { darken, ellipsis } from 'polished';
 import { colors, media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -55,11 +52,6 @@ const Container = styled.div`
   background: #fff;
   box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.12);
   z-index: 999;
-
-  * {
-    user-select: none;
-    outline: none;
-  }
 
   &.citizen {
     ${media.smallerThanMaxTablet`
@@ -128,7 +120,7 @@ const NavigationDropdownItemIcon = styled(Icon)`
 const NavigationItem = styled(Link)`
   ${ellipsis('20rem') as any}
   height: 100%;
-  color: ${colors.clGrey};
+  color: ${colors.label};
   font-size: ${fontSizes.medium}px;
   font-weight: 400;
   display: flex;
@@ -146,6 +138,7 @@ const NavigationItem = styled(Link)`
     border-top: 4px solid transparent;
     border-bottom: 4px solid ${(props) => props.theme.colorMain};
   }
+
   &:focus,
   &:hover {
     color: ${(props) => props.theme.colorMain};
@@ -160,13 +153,14 @@ const NavigationDropdown = styled.div`
 const NavigationDropdownItem = styled.button`
   align-items: center;
   height: 76px;
-  color: ${colors.clGrey};
+  color: ${colors.label};
   display: flex;
-  fill: ${colors.clGrey};
+  fill: ${colors.label};
   font-size: ${fontSizes.medium}px;
   font-weight: 400;
   transition: all 100ms ease-out;
   cursor: pointer;
+  outline: none;
 
   &.active {
     border-bottom: 4px solid ${(props) => props.theme.colorMain};
@@ -183,36 +177,40 @@ const NavigationDropdownItem = styled.button`
 `;
 
 const ProjectsListItem = styled(Link)`
-  color: ${colors.clGrey};
+  color: ${colors.label};
   font-size: ${fontSizes.medium}px;
   font-weight: 400;
   line-height: 22px;
   text-decoration: none;
-  margin-right: 5px;
   padding: 10px;
+  margin-bottom: 3px;
   background: #fff;
   border-radius: 5px;
   padding: 10px;
   text-decoration: none;
 
+  &.last {
+    margin-bottom: 0px;
+  }
+
   &:hover,
   &:focus {
-    color: ${colors.clGreyHover};
+    color: #000;
+    background: ${colors.clDropdownHoverBackground};
     text-decoration: none;
-    background: #f6f6f6;
   }
 `;
 
 const ProjectsListFooter = styled(Link)`
   width: 100%;
-  color: ${colors.clGrey};
+  color: #fff;
   font-size: ${fontSizes.medium}px;
   font-weight: 400;
   text-align: center;
   text-decoration: none;
   padding: 15px 15px;
   cursor: pointer;
-  background: ${rgba(colors.clGrey, 0.12)};
+  background: ${(props) => props.theme.colorMain};
   border-radius: 5px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -220,8 +218,8 @@ const ProjectsListFooter = styled(Link)`
 
   &:hover,
   &:focus {
-    color: ${colors.clGreyHover};
-    background: ${rgba(colors.clGrey, 0.22)};
+    color: #fff;
+    background: ${(props) => darken(0.15, props.theme.colorMain)};
     text-decoration: none;
   }
 `;
@@ -237,11 +235,6 @@ const RightItem: any = styled.div`
   justify-content: center;
   height: 100%;
   padding-left: 30px;
-  outline: none;
-
-  * {
-    outline: none;
-  }
 
   &.notification {
     ${media.smallerThanMinTablet`
@@ -271,7 +264,8 @@ const RightItem: any = styled.div`
 `;
 
 const StyledIdeaButton = styled(IdeaButton)`
-  a, button {
+  a,
+  button {
     &:hover,
     &:focus {
       border-color: ${darken(0.2, '#e0e0e0')} !important;
@@ -289,7 +283,7 @@ const StyledIdeaButton = styled(IdeaButton)`
 `;
 
 const LoginLink = styled(Link)`
-  color: ${colors.clGrey};
+  color: ${colors.label};
   font-size: ${fontSizes.medium}px;
   font-weight: 400;
   padding: 0;
@@ -297,10 +291,6 @@ const LoginLink = styled(Link)`
   &:hover {
     color: ${colors.clGreyHover};
   }
-`;
-
-const StyledDropdown = styled(Dropdown)`
-  top: 68px;
 `;
 
 interface InputProps {}
@@ -315,17 +305,13 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  notificationPanelOpened: boolean;
   projectsDropdownOpened: boolean;
 }
 
 class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
-  unlisten: Function;
-
   constructor(props) {
     super(props);
     this.state = {
-      notificationPanelOpened: false,
       projectsDropdownOpened: false
     };
   }
@@ -336,40 +322,9 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     }
   }
 
-  toggleNotificationPanel = () => {
-    if (this.state.notificationPanelOpened) {
-      trackEvent(tracks.clickCloseNotifications);
-    } else {
-      trackEvent(tracks.clickOpenNotifications);
-    }
-
-    this.setState(state => ({ notificationPanelOpened: !state.notificationPanelOpened }));
-  }
-
-  closeNotificationPanel = () => {
-    // There seem to be some false closing triggers on initializing,
-    // so we check whether it's actually open
-    if (this.state.notificationPanelOpened) {
-      trackEvent(tracks.clickCloseNotifications);
-    }
-
-    this.setState({ notificationPanelOpened: false });
-  }
-
-  handleProjectsDropdownToggle = (event: React.FormEvent<any>) => {
+  toggleProjectsDropdown = (event: React.FormEvent<any>) => {
     event.preventDefault();
-    event.stopPropagation();
     this.setState(({ projectsDropdownOpened }) => ({ projectsDropdownOpened: !projectsDropdownOpened }));
-  }
-
-  handleProjectsDropdownOnClickOutside = (event: MouseEvent | KeyboardEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-    this.setState({ projectsDropdownOpened: false });
-  }
-
-  handleLanguageChange (_event, { value }) {
-    updateLocale(value);
   }
 
   render() {
@@ -411,17 +366,27 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
 
               {tenantLocales && projectsList && projectsList.length > 0 &&
                 <NavigationDropdown>
-                  <NavigationDropdownItem className={secondUrlSegment === 'projects' ? 'active' : ''} aria-haspopup="true" onClick={this.handleProjectsDropdownToggle}>
+                  <NavigationDropdownItem
+                    className={secondUrlSegment === 'projects' ? 'active' : ''}
+                    aria-haspopup="true"
+                    onClick={this.toggleProjectsDropdown}
+                  >
                     <FormattedMessage {...messages.pageProjects} />
                     <NavigationDropdownItemIcon name="dropdown" />
                   </NavigationDropdownItem>
 
-                  <StyledDropdown
+                  <Dropdown
+                    top="62px"
                     opened={projectsDropdownOpened}
+                    onClickOutside={this.toggleProjectsDropdown}
                     content={(
                       <>
-                        {projectsList.map((project) => (
-                          <ProjectsListItem key={project.id} to={getProjectUrl(project)}>
+                        {projectsList.map((project, index) => (
+                          <ProjectsListItem
+                            key={project.id}
+                            to={getProjectUrl(project)}
+                            className={`${index === projectsList.length - 1} ? 'last' : ''`}
+                          >
                             {!isNilOrError(locale) ? getLocalized(project.attributes.title_multiloc, locale, tenantLocales) : null}
                           </ProjectsListItem>
                         ))}
@@ -432,8 +397,6 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                         <FormattedMessage {...messages.allProjects} />
                       </ProjectsListFooter>
                     )}
-                    toggleOpened={this.handleProjectsDropdownToggle}
-                    maxHeight="180px"
                   />
                 </NavigationDropdown>
               }

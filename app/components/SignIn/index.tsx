@@ -65,7 +65,7 @@ const FormElement = styled.div`
 const StyledInput = styled(Input)`
   input {
     &::placeholder {
-      color: ${color('clGrey')}
+      color: ${color('label')}
     }
 
     &:focus::placeholder {
@@ -374,7 +374,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                   size="1"
                   processing={processing}
                   text={formatMessage(messages.submit)}
-                  circularCorners={true}
+                  circularCorners={false}
                   className="e2e-submit-signin"
                 />
                 {createAccount}

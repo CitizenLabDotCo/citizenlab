@@ -6,8 +6,9 @@ import clickOutside from 'utils/containers/clickOutside';
 // style
 import styled from 'styled-components';
 
-const Dropdown = styled.div`
+const Container = styled.div`
   position: relative;
+  outline: none;
 
   * {
     outline: none;
@@ -15,16 +16,16 @@ const Dropdown = styled.div`
   }
 `;
 
-const DropdownMenuContainer: any = styled(clickOutside)`
+const Content: any = styled(clickOutside)`
   position: absolute;
   top: ${(props: any) => props.top || '0px'};
   left: 50%;
   transform-origin: top left;
-  z-index: 5;
+  z-index: 2;
 
   &.dropdown-enter {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.92);
 
     &.dropdown-enter-active {
       opacity: 1;
@@ -34,7 +35,7 @@ const DropdownMenuContainer: any = styled(clickOutside)`
   }
 `;
 
-const DropdownMenu: any = styled.div`
+const ContentInner: any = styled.div`
   position: relative;
   left: -50%;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
@@ -77,17 +78,17 @@ interface Props {
   top: string;
   backgroundColor: string;
   borderColor?: string;
-  handleDropdownOnClickOutside: (Event) => void;
+  onClickOutside: (Event) => void;
   dropdownOpened: boolean;
   className?: string;
 }
 
 export default class Popover extends PureComponent<Props> {
   render() {
-    const { handleDropdownOnClickOutside, dropdownOpened, children, content, backgroundColor, borderColor, top } = this.props;
+    const { onClickOutside, dropdownOpened, children, content, backgroundColor, borderColor, top } = this.props;
 
     return (
-      <Dropdown className={this.props['className']}>
+      <Container className={this.props['className']}>
         {children}
 
         <CSSTransition
@@ -98,13 +99,13 @@ export default class Popover extends PureComponent<Props> {
           classNames="dropdown"
           exit={false}
         >
-          <DropdownMenuContainer onClickOutside={handleDropdownOnClickOutside} top={top}>
-            <DropdownMenu backgroundColor={backgroundColor} borderColor={borderColor}>
+          <Content onClickOutside={onClickOutside} top={top}>
+            <ContentInner backgroundColor={backgroundColor} borderColor={borderColor}>
               {content}
-            </DropdownMenu>
-          </DropdownMenuContainer>
+            </ContentInner>
+          </Content>
         </CSSTransition>
-      </Dropdown>
+      </Container>
     );
   }
 }

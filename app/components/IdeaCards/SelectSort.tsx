@@ -47,8 +47,9 @@ class SelectSort extends PureComponent<Props, State> {
         values={options}
         onChange={this.handleOnChange}
         multiple={false}
-        maxWidth={'250px'}
-        mobileMaxWidth={'180px'}
+        width="180px"
+        right="-10px"
+        mobileLeft="-5px"
       />
     );
   }

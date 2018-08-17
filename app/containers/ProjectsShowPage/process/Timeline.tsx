@@ -31,7 +31,7 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { Locale } from 'typings';
 
 const greyTransparent = css`rgba(116, 116, 116, 0.3)`;
-const greyOpaque = `${colors.clGrey}`;
+const greyOpaque = `${colors.label}`;
 const greenTransparent = css`rgba(4, 136, 76, 0.3)`;
 const greenOpaque = `${colors.clGreen}`;
 

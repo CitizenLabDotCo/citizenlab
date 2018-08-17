@@ -23,6 +23,7 @@ const Container = styled.button`
   justify-content: center;
   padding: 0;
   position: relative;
+  outline: none;
 
   &:hover,
   &:focus {
@@ -49,7 +50,7 @@ const NewNotificationsIndicator = styled.div`
 
 type Props = {
   count?: number;
-  onClick?: () => void;
+  onClick?: (event: React.FormEvent<any>) => void;
 };
 
 type State = {};

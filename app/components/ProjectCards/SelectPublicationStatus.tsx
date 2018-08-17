@@ -51,8 +51,8 @@ class SelectPublicationStatus extends PureComponent<Props, State> {
         values={options}
         onChange={this.handleOnChange}
         multiple={false}
-        maxWidth={'250px'}
-        mobileMaxWidth={'180px'}
+        left="-5px"
+        mobileLeft="-5px"
       />
     );
   }

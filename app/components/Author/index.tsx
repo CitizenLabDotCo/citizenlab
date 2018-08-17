@@ -57,7 +57,7 @@ const AuthorNameLink = styled(Link)`
 `;
 
 const TimeAgo = styled.div`
-  color: ${colors.clGrey};
+  color: ${colors.label};
   font-weight: 300;
   margin-top: 1px;
   font-size: ${fontSizes.small}px;
