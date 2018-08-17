@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import * as Rx from 'rxjs/Rx';
 import { isEmpty, get, forOwn } from 'lodash';
 
@@ -12,12 +12,12 @@ import Error from 'components/UI/Error';
 import Radio from 'components/UI/Radio';
 import Label from 'components/UI/Label';
 import MultipleSelect from 'components/UI/MultipleSelect';
+import FileInput from 'components/UI/FileInput';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from './participationContext';
 import { Button as SemButton, Icon as SemIcon } from 'semantic-ui-react';
 import HasPermission from 'components/HasPermission';
-import FileInput from 'components/UI/FileInput';
 
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -38,10 +38,14 @@ import {
   deleteProject,
 } from 'services/projects';
 import { projectImagesStream, addProjectImage, deleteProjectImage } from 'services/projectImages';
+import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { areasStream, IAreaData } from 'services/areas';
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import eventEmitter from 'utils/eventEmitter';
+
+import GetProjectFiles, { GetProjectFilesChildProps } from 'resources/GetProjectFiles';
+import { isNilOrError } from 'utils/helperUtils';
 
 // utils
 import { convertUrlToFileObservable } from 'utils/imageTools';
@@ -130,12 +134,16 @@ const ParticipationContextWrapper = styled.div`
   }
 `;
 
-type Props = {
+type InputProps = {
   lang: string,
   params: {
     projectId: string,
   }
 };
+
+interface Props extends InputProps {
+  oldProjectFiles: GetProjectFilesChildProps;
+}
 
 interface State {
   loading: boolean;
@@ -148,8 +156,7 @@ interface State {
   presentationMode: 'map' | 'card';
   oldProjectImages: ImageFile[] | null;
   newProjectImages: ImageFile[] | null;
-  oldFiles: UploadFile[] | null;
-  newFiles: UploadFile[] | null;
+  newProjectFiles: UploadFile[] | null;
   noTitleError: Multiloc | null;
   apiErrors: { [fieldName: string]: API.Error[] };
   saved: boolean;
@@ -180,8 +187,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       presentationMode: 'card',
       oldProjectImages: null,
       newProjectImages: null,
-      oldFiles: null,
-      newFiles: null,
+      newProjectFiles: null,
       noTitleError: null,
       apiErrors: {},
       saved: false,
@@ -380,12 +386,12 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   handleFileOnAdd = (newFile: File) => {
     this.setState((state) => ({
       submitState: 'enabled',
-      newFiles: [
-        ...(state.newFiles || []),
+      newProjectFiles: [
+        ...(state.newProjectFiles || []),
         newFile
       ]
     }));
-    console.log(this.state.newFiles);
+    console.log(this.state.newProjectFiles);
   }
 
   handleProjectImagesOnUpdate = (newProjectImages: ImageFile[]) => {
@@ -432,6 +438,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 
   onSubmit = (event: React.FormEvent<any>) => {
+    console.log('hi');
     event.preventDefault();
 
     const { projectType } = this.state;
@@ -624,6 +631,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               <FileInput
                 onAdd={this.handleFileOnAdd}
               />
+              <div>{this.state.newProjectFiles && this.state.newProjectFiles.map(file => file.name)}</div>
+              <div>{!isNilOrError(this.props.oldProjectFiles) && this.props.oldProjectFiles.map(file => file.attributes.name)}</div>
             </SectionField>
 
             <SectionField>
@@ -825,4 +834,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 }
 
-export default injectIntl<Props>(AdminProjectEditGeneral);
+const AdminProjectEditGeneralWithHoc = injectIntl<Props>(AdminProjectEditGeneral);
+
+export default (inputProps: InputProps) => (
+  <GetProjectFiles projectId={inputProps.params.projectId}>
+    {projectFiles => <AdminProjectEditGeneralWithHoc {... inputProps} oldProjectFiles={projectFiles} />}
+  </GetProjectFiles>);
