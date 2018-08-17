@@ -2,13 +2,13 @@
 import React, { PureComponent } from 'react';
 
 // Components
-import Tooltip from '../Tooltip';
-import Button from '../Button';
-import Icon, { IconNames } from '../Icon';
+import Popover from 'components/UI/Popover';
+import Icon, { IconNames } from 'components/UI/Icon';
 
 // Styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+import { lighten } from 'polished';
 
 const Container = styled.div`
   position: relative;
@@ -21,7 +21,7 @@ const Container = styled.div`
 
 const MoreOptionsIcon = styled(Icon)`
   width: 20px;
-  height: 5px;
+  height: 6px;
   fill: ${colors.label};
   transition: all 100ms ease-out;
 `;
@@ -29,6 +29,7 @@ const MoreOptionsIcon = styled(Icon)`
 const MoreOptionsLabel = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
+  line-height: ${fontSizes.base}px;
   font-weight: 400;
   white-space: nowrap;
   margin-left: 10px;
@@ -36,7 +37,7 @@ const MoreOptionsLabel = styled.div`
 `;
 
 const MoreOptions = styled.div`
-  height: 25px;
+  height: 20px;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -56,13 +57,45 @@ const MoreOptions = styled.div`
   }
 `;
 
-const MoreOptionsDropdown = styled(Tooltip)`
-  position: absolute;
-  top: 30px;
-  left: -15px;
+const List = styled.div`
+  max-height: 210px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 10px;
 `;
 
-const Action = styled(Button)``;
+const ListItem = styled.button`
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: ${colors.adminLightText};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  white-space: nowrap;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  white-space: nowrap;
+
+  & > span {
+    margin-right: 5px;
+  }
+
+  &:hover,
+  &:focus {
+    outline: none;
+    color: white;
+    background: ${lighten(.1, colors.adminMenuBackground)};
+  }
+`;
+
+const StyledIcon  = styled(Icon)`
+  width: 20px;
+  height: 20px;
+`;
 
 export interface IAction {
   label: string | JSX.Element;
@@ -81,7 +114,7 @@ interface State {
 }
 
 export default class MoreActionsMenu extends PureComponent<Props, State> {
-  constructor (props: Props) {
+  constructor (props) {
     super(props);
     this.state = {
       visible: false,
@@ -89,16 +122,18 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
   }
 
   hideMenu = (event) => {
-    event.stopPropagation();
+    event.preventDefault();
     this.setState({ visible: false });
   }
 
-  toggleMenu = () => {
-    this.setState(state => ({ visible: !state.visible }));
+  toggleMenu = (event) => {
+    event.preventDefault();
+    this.setState(({ visible }) => ({ visible: !visible }));
   }
 
   render () {
-    const { label, actions } = this.props;
+    const { actions } = this.props;
+    const { visible } = this.state;
     const className = this.props.className;
 
     if (!actions || actions.length === 0) {
@@ -107,33 +142,36 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
 
     return (
       <Container className={className}>
-        <MoreOptions onClick={this.toggleMenu}>
-          <MoreOptionsIcon name="more-options" />
-          {label && <MoreOptionsLabel>{label}</MoreOptionsLabel>}
-        </MoreOptions>
+        <Popover
+          content={
+            <List>
+              {actions.map((action, index) => {
+                const { handler, label, icon } = action;
+                const onClick = () => {
+                  this.setState({ visible: false });
+                  handler();
+                };
 
-        <MoreOptionsDropdown
-          visible={this.state.visible}
-          hideTooltip={this.hideMenu}
-          theme="dark"
-          position="bottom"
+                return (
+                  <ListItem key={index} onClick={onClick}>
+                    {label}
+                    {icon && <StyledIcon name={icon} />}
+                  </ListItem>
+                );
+              })}
+            </List>
+          }
+          top="32px"
+          backgroundColor={colors.adminMenuBackground}
+          borderColor={colors.adminMenuBackground}
+          onClickOutside={this.hideMenu}
+          dropdownOpened={visible}
         >
-          {actions.map((action, index) => (
-            <Action
-              style="text"
-              width="100%"
-              justify="left"
-              size="1"
-              key={index}
-              onClick={action.handler}
-              icon={action.icon}
-              text={action.label}
-              textColor="#fff"
-              textHoverColor="#fff"
-              circularCorners={false}
-            />
-          ))}
-        </MoreOptionsDropdown>
+          <MoreOptions onClick={this.toggleMenu}>
+            <MoreOptionsIcon name="more-options" />
+            {this.props.label && <MoreOptionsLabel>{this.props.label}</MoreOptionsLabel>}
+          </MoreOptions>
+        </Popover>
       </Container>
     );
   }

@@ -55,7 +55,6 @@ const StyledTextArea = styled(MentionsTextArea)`
 
 const SendIcon = styled(Icon)`
   height: 21px;
-  z-index: 3;
   transition: all 100ms ease-out;
 `;
 
@@ -70,7 +69,6 @@ const SendIconWrapper: any = styled.button`
   justify-content: center;
   bottom: 12px;
   right: 15px;
-  z-index: 2;
   cursor: ${(props: any) => props.disabled ? 'auto' : 'pointer'};
 
   ${SendIcon} {

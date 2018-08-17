@@ -177,7 +177,12 @@ const Container: any = styled.div`
       ${(props: any) => buttonTheme('#fff', (props.theme.colorMain || 'e0e0e0'))}
     }
     &.secondary {
-      ${buttonTheme(color('lightGreyishBlue'), color('label'), 'transparent', darken(0.05, color('lightGreyishBlue')))}
+      ${buttonTheme(
+        color('lightGreyishBlue'),
+        color('label'),
+        'transparent',
+        darken(0.05, color('lightGreyishBlue'))
+      )}
     }
     &.primary-outlined {
       ${(props: any) => buttonTheme('transparent', props.theme.colorMain || 'e0e0e0', props.theme.colorMain || 'e0e0e0')}
