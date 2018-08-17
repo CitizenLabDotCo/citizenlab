@@ -183,10 +183,15 @@ const ProjectsListItem = styled(Link)`
   line-height: 22px;
   text-decoration: none;
   padding: 10px;
+  margin-bottom: 3px;
   background: #fff;
   border-radius: 5px;
   padding: 10px;
   text-decoration: none;
+
+  &.last {
+    margin-bottom: 0px;
+  }
 
   &:hover,
   &:focus {
@@ -376,8 +381,12 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                     onClickOutside={this.toggleProjectsDropdown}
                     content={(
                       <>
-                        {projectsList.map((project) => (
-                          <ProjectsListItem key={project.id} to={getProjectUrl(project)}>
+                        {projectsList.map((project, index) => (
+                          <ProjectsListItem
+                            key={project.id}
+                            to={getProjectUrl(project)}
+                            className={`${index === projectsList.length - 1} ? 'last' : ''`}
+                          >
                             {!isNilOrError(locale) ? getLocalized(project.attributes.title_multiloc, locale, tenantLocales) : null}
                           </ProjectsListItem>
                         ))}

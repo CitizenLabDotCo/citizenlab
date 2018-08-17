@@ -150,6 +150,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
             width="180px"
             top="42px"
             right="-5px"
+            mobileRight="-5px"
             opened={opened}
             onClickOutside={this.toggleDropdown}
             content={(

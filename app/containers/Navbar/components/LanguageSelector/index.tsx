@@ -134,8 +134,9 @@ export default class LanguageSelector extends React.PureComponent<Props, State> 
 
         <Dropdown
           width="180px"
-          top="35px"
-          right="-10px"
+          top="36px"
+          right="-5px"
+          mobileRight="-5px"
           opened={dropdownOpened}
           onClickOutside={this.toggleDropdown}
           content={(
