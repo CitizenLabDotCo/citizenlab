@@ -219,6 +219,7 @@ type Props = {
   circularCorners?: boolean;
   className?: string;
   disabled?: boolean;
+  form?: string;
   fullWidth?: boolean;
   height?: string;
   hiddenText?: string | JSX.Element;
@@ -282,11 +283,12 @@ class Button extends React.PureComponent<Props, State> {
 
   render() {
     const { text, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, iconTitle, hiddenText, children, linkTo } = this.props;
-    let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
+    let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className, form } = this.props;
 
     id = (id || '');
     size = (size || '1');
     style = (style || 'primary');
+    form = (form || '');
     processing = (isBoolean(processing) ? processing : false);
     disabled = (isBoolean(disabled) ? disabled : false);
     fullWidth = (isBoolean(fullWidth) ? fullWidth : false);
@@ -333,7 +335,7 @@ class Button extends React.PureComponent<Props, State> {
             <StyledLink innerRef={this.props.setSubmitButtonRef} to={linkTo} className={buttonClassnames}>{childContent}</StyledLink>
           )
         ) : (
-          <StyledButton innerRef={this.props.setSubmitButtonRef} className={buttonClassnames}>{childContent}</StyledButton>
+          <StyledButton innerRef={this.props.setSubmitButtonRef} className={buttonClassnames} form={form}>{childContent}</StyledButton>
         )}
       </Container>
     );

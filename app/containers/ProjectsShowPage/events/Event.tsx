@@ -19,7 +19,7 @@ import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled from 'styled-components';
-import { media, colors, quillEditedContent } from 'utils/styleUtils';
+import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
 import T from 'components/T';
 
 const Container = styled.div`
@@ -70,7 +70,7 @@ const EventDates = styled.div`
 
 const EventDate = styled.div`
   color: #fff;
-  font-size: 24px;
+  font-size: ${fontSizes.xxl}px;
   line-height: 27px;
   font-weight: 500;
   display: flex;
@@ -81,7 +81,7 @@ const EventDate = styled.div`
 
 const EventDatesSeparator = styled.div`
   color: #fff;
-  font-size: 23px;
+  font-size: ${fontSizes.xxl}px;
   line-height: 27px;
   font-weight: 500;
   text-align: center;
@@ -91,7 +91,7 @@ const EventDatesSeparator = styled.div`
 
 const EventYear = styled.div`
   color: #fff;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
   display: flex;
   align-items: center;
@@ -130,13 +130,13 @@ const EventInformation = styled.div`
 
 const EventTime = styled.div`
   color: #666;
-  font-size: 17px;
+  font-size: ${fontSizes.medium}px;
   font-weight: 300;
 `;
 
 const EventTitle = styled.div`
   color: #333;
-  font-size: 20px;
+  font-size: ${fontSizes.xl}px;
   line-height: 23px;
   margin-top: 10px;
   margin-bottom: 20px;
@@ -145,7 +145,7 @@ const EventTitle = styled.div`
 
 const EventDescription = styled.div`
   color: ${colors.label};
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: 21px;
 
@@ -205,7 +205,7 @@ const EventLocationInner = styled.div`
 
 const EventLocationLabel = styled.div`
   color: #666;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: 21px;
   margin-bottom: 2px;
@@ -213,7 +213,7 @@ const EventLocationLabel = styled.div`
 
 const EventLocationAddress = styled.div`
   color: #666;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 21px;
   display: flex;

@@ -5,14 +5,14 @@ import Link from 'utils/cl-router/Link';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import Icon from 'components/UI/Icon';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const NoUsersPage = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 21px;
+  font-size: ${fontSizes.xl}px;
   font-weight: bold;
   line-height: 25px;
   padding-top: 80px;
@@ -26,7 +26,7 @@ const NoUsersPage = styled.div`
 const SFormattedMessage = styled.div`
   color: ${colors.adminSecondaryTextColor};
   font-weight: 400;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
 
   a {
     color: ${colors.adminSecondaryTextColor};

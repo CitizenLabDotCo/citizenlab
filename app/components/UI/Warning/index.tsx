@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { darken } from 'polished';
 import Icon from 'components/UI/Icon';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -24,7 +24,7 @@ const StyledIcon = styled(Icon)`
 
 const Text = styled.div`
   color: ${colors.clBlueDarker};
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   line-height: 21px;
   font-weight: 400;
 

@@ -37,7 +37,7 @@ import { InjectedIntlProps } from 'react-intl';
 // style
 import styled, { css, } from 'styled-components';
 import { darken, ellipsis } from 'polished';
-import { colors, media } from 'utils/styleUtils';
+import { colors, media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -121,7 +121,7 @@ const NavigationItem = styled(Link)`
   ${ellipsis('20rem') as any}
   height: 100%;
   color: ${colors.label};
-  font-size: 17px;
+  font-size: ${fontSizes.medium}px;
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -156,7 +156,7 @@ const NavigationDropdownItem = styled.button`
   color: ${colors.label};
   display: flex;
   fill: ${colors.label};
-  font-size: 17px;
+  font-size: ${fontSizes.medium}px;
   font-weight: 400;
   transition: all 100ms ease-out;
   cursor: pointer;
@@ -178,7 +178,7 @@ const NavigationDropdownItem = styled.button`
 
 const ProjectsListItem = styled(Link)`
   color: ${colors.label};
-  font-size: 17px;
+  font-size: ${fontSizes.medium}px;
   font-weight: 400;
   line-height: 22px;
   text-decoration: none;
@@ -199,7 +199,7 @@ const ProjectsListItem = styled(Link)`
 const ProjectsListFooter = styled(Link)`
   width: 100%;
   color: #fff;
-  font-size: 17px;
+  font-size: ${fontSizes.medium}px;
   font-weight: 400;
   text-align: center;
   text-decoration: none;
@@ -272,14 +272,14 @@ const StyledIdeaButton = styled(IdeaButton)`
   }
 
   .buttonText {
-    font-size: 17px !important;
+    font-size: ${fontSizes.medium}px !important;
     color: ${(props) => props.theme.colorMain};
   }
 `;
 
 const LoginLink = styled(Link)`
   color: ${colors.label};
-  font-size: 17px;
+  font-size: ${fontSizes.medium}px;
   font-weight: 400;
   padding: 0;
 

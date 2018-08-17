@@ -7,27 +7,24 @@ import Link from 'utils/cl-router/Link';
 // components
 import Icon from 'components/UI/Icon';
 import Fragment from 'components/Fragment';
-import { Dropdown } from 'semantic-ui-react';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages.js';
-import { appLocalePairs } from 'i18n';
 
 // services
-import { localeStream, updateLocale } from 'services/locale';
+import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { LEGAL_PAGES } from 'services/pages';
 
 // style
 import styled from 'styled-components';
-import { media, color } from 'utils/styleUtils';
+import { media, color, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
-import { hideVisually } from 'polished';
 
 const Container = styled.div`
   width: 100%;
@@ -58,7 +55,7 @@ const TenantSlogan = styled.div`
   width: 100%;
   max-width: 340px;
   color: #444;
-  font-size: 20px;
+  font-size: ${fontSizes.xl}px;
   font-weight: 500;
   line-height: 28px;
   text-align: center;
@@ -109,7 +106,7 @@ const PagesNav = styled.nav`
 const StyledLink = styled(Link) `
   color: ${color('label')};
   font-weight: 400;
-  font-size: 14px;
+  font-size: ${fontSizes.small}px;
   line-height: 19px;
   text-decoration: none;
 
@@ -118,7 +115,7 @@ const StyledLink = styled(Link) `
   }
 
   ${media.smallerThanMaxTablet`
-    font-size: 13px;
+    font-size: ${fontSizes.small}px;
     line-height: 16px;
   `}
 `;
@@ -126,7 +123,7 @@ const StyledLink = styled(Link) `
 const Separator = styled.span`
   color: ${color('label')};
   font-weight: 400;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   line-height: 19px;
   padding-left: 10px;
   padding-right: 10px;
@@ -148,7 +145,7 @@ const CitizenLabLogo = styled(Icon) `
 const PoweredBy = styled.a`
   color: ${color('label')};
   font-weight: 300;
-  font-size: 14px;
+  font-size: ${fontSizes.small}px;
   line-height: 19px;
   text-decoration: none;
   display: flex;
@@ -182,35 +179,6 @@ const PoweredBy = styled.a`
   `}
 `;
 
-const LanguageSelectionWrapper = styled.div`
-  padding-left: 1rem;
-  margin-left: 1rem;
-  text-align: right;
-
-  .ui.selection.dropdown {
-    color: ${color('label')};
-    display: none;
-  }
-
-  &.show {
-    .ui.selection.dropdown {
-      display: block;
-    }
-  }
-
-  ${media.smallerThanMaxTablet`
-    border-left: 0;
-    margin-left: 0;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    padding-left: 0;
-  `}
-`;
-
-const HiddenLabel = styled.span`
-  ${hideVisually() as any}
-`;
-
 type Props = {
   showCityLogoSection?: boolean | undefined;
 };
@@ -219,11 +187,6 @@ type State = {
   locale: Locale | null;
   currentTenant: ITenant | null;
   showCityLogoSection: boolean;
-  languageOptions: {
-    key: string;
-    value: Locale;
-    text: string;
-  }[]
 };
 
 class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -238,8 +201,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.state = {
       locale: null,
       currentTenant: null,
-      showCityLogoSection: false,
-      languageOptions: [],
+      showCityLogoSection: false
     };
     this.subscriptions = [];
   }
@@ -255,23 +217,13 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
         locale$,
         currentTenant$
       ).subscribe(([locale, currentTenant]) => {
-        const languageOptions = currentTenant.data.attributes.settings.core.locales.map((locale) => ({
-          key: locale,
-          value: locale,
-          text: appLocalePairs[locale],
-        }));
-
-        this.setState({ locale, currentTenant, languageOptions });
+        this.setState({ locale, currentTenant });
       })
     ];
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  handleLanguageChange (_event, { value }) {
-    updateLocale(value);
   }
 
   render() {
@@ -326,12 +278,6 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
               <CitizenLabLogo name="logo" />
             </PoweredBy>
 
-            <LanguageSelectionWrapper className={this.state.languageOptions.length > 1 ? 'show' : ''}>
-              <label htmlFor="e2e-footer-language-switch">
-                <HiddenLabel><FormattedMessage {...messages.selectLanguage} /></HiddenLabel>
-                <Dropdown id="e2e-footer-language-switch" onChange={this.handleLanguageChange} upward={true} search={true} selection={true} value={locale} options={this.state.languageOptions} />
-              </label>
-            </LanguageSelectionWrapper>
           </SecondLine>
         </Container>
       );

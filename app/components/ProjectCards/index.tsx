@@ -17,7 +17,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -115,7 +115,7 @@ const EmptyMessage = styled.div`
 
 const EmptyMessageLine = styled.div`
   color: #999;
-  font-size: 18px;
+  font-size: ${fontSizes.large}px;
   font-weight: 400;
   line-height: 25px;
   text-align: center;

@@ -5,6 +5,7 @@ import { darken } from 'polished';
 import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -15,7 +16,7 @@ const Container = styled.div`
 
 const RegisterLink = styled.span`
   color: ${(props) => props.theme.colorMain};
-  font-size: 14px;
+  font-size: ${fontSizes.small}px;
   font-weight: 500;
   cursor: pointer;
 
