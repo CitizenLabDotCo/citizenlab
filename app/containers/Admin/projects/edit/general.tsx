@@ -686,6 +686,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                   {file.name}
                   filesize : {returnFileSize(file.size)}
                   <button onClick={this.handleProjectFileOnRemove(file)} key={file.id || file.name}>delete</button>
+                  <a href={file.objectUrl || file.base64} download={file.name} target="blank">Download</a>
                 </div>
               ))}
             </SectionField>
