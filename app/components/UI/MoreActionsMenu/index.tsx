@@ -8,7 +8,7 @@ import Icon, { IconNames } from '../Icon';
 
 // Styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   position: relative;
@@ -28,7 +28,7 @@ const MoreOptionsIcon = styled(Icon)`
 
 const MoreOptionsLabel = styled.div`
   color: ${colors.label};
-  font-size: 15px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   white-space: nowrap;
   margin-left: 10px;

@@ -12,7 +12,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -98,7 +98,7 @@ const GoBackContainer = styled.div`
 
   span {
     color: #999;
-    font-size: 18px;
+    font-size: ${fontSizes.large}px;
     font-weight: 400;
     padding-left: 1px;
   }

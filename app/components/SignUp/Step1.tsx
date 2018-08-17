@@ -34,6 +34,7 @@ import messages from './messages';
 // style
 import { darken } from 'polished';
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 // typings
 import { API, Locale } from 'typings';
@@ -67,7 +68,7 @@ const TermsAndConditionsWrapper: any = styled.div`
 
   span {
     color: #6e6e6f !important;
-    font-size: 16px;
+    font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 21px;
   }
@@ -85,7 +86,7 @@ const TermsAndConditionsWrapper: any = styled.div`
 
 const AlreadyHaveAnAccount = styled(Link)`
   color: ${(props) => props.theme.colorMain};
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   line-height: 20px;
   font-weight: 400;
   text-decoration: none;

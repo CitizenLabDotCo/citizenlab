@@ -52,7 +52,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, color, colors, quillEditedContent } from 'utils/styleUtils';
+import { media, color, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const loadingTimeout = 400;
@@ -148,7 +148,7 @@ const BelongsToProject = styled.p`
   width: 100%;
   color: ${colors.label};
   font-weight: 300;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   line-height: 21px;
   margin-bottom: 15px;
 `;
@@ -181,14 +181,14 @@ const Header = styled.div`
 const IdeaTitle = styled.h1`
   width: 100%;
   color: #444;
-  font-size: 32px;
+  font-size: ${fontSizes.xxxxl}px;
   font-weight: 500;
   line-height: 38px;
   margin: 0;
   padding: 0;
 
   ${media.smallerThanMaxTablet`
-    font-size: 28px;
+    font-size: ${fontSizes.xxxl}px;
     line-height: 34px;
     margin-right: 12px;
   `}
@@ -248,11 +248,11 @@ const MetaButtons = styled.div`
 
 const LocationLabel = styled.div`
   color: ${colors.label};
-  font-size: 15px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   margin-right: 6px;
   max-width: 200px;
-  font-size: 15px;
+  font-size: ${fontSizes.base}px;
   line-height: 19px;
   text-align: left;
   font-weight: 400;
@@ -334,7 +334,7 @@ const MapPaddingBottom = styled.div`
 
 const AddressWrapper = styled.div`
   color: #fff;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
   background: rgba(0, 0, 0, 0.4);
   border-top: 1px solid #eaeaea;
@@ -355,12 +355,12 @@ const AuthorMeta = styled.div`
 
 const AuthorNameWrapper = styled.div`
   color: #333;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 20px;
 
   ${media.smallerThanMaxTablet`
-    font-size: 14px;
+    font-size: ${fontSizes.small}px;
     line-height: 18px;
   `}
 `;
@@ -378,7 +378,7 @@ const AuthorName = styled(Link)`
 
 const TimeAgo = styled.div`
   color: ${colors.label};
-  font-size: 13px;
+  font-size: ${fontSizes.small}px;
   line-height: 17px;
   font-weight: 300;
   margin-top: 2px;
@@ -390,7 +390,7 @@ const TimeAgo = styled.div`
 
 const IdeaBody = styled.div`
   color: #474747;
-  font-size: 19px;
+  font-size: ${fontSizes.large}px;
   font-weight: 300;
   line-height: 32px;
   word-break: break-word;
@@ -438,7 +438,7 @@ const IdeaBody = styled.div`
 
 const CommentsTitle = styled.h2`
   color: ${colors.text};
-  font-size: 24px;
+  font-size: ${fontSizes.xxl}px;
   line-height: 38px;
   font-weight: 500;
   margin: 0;
@@ -485,7 +485,7 @@ const MetaContent = styled.div`
 
 const VoteLabel = styled.div`
   color: ${colors.label};
-  font-size: 15px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   margin-bottom: 12px;
   display: none;
@@ -512,7 +512,7 @@ const StatusContainerMobile = styled(StatusContainer) `
 
 const StatusTitle = styled.h4`
   color: ${colors.label};
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   margin: 0;
   margin-bottom: 8px;

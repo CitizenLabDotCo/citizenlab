@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Icon from 'components/UI/Icon';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 // Typing
@@ -15,7 +15,7 @@ export interface Props {
 
 const Spagination = styled.div`
   display: flex;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   align-items: baseline;
   justify-content: center;
   padding-top: 15px;

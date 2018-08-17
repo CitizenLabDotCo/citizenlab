@@ -9,7 +9,7 @@ import { updateLocale } from 'services/locale';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // i18n
 import { shortenedAppLocalePairs } from 'i18n';
@@ -37,7 +37,7 @@ const DropdownItemIcon = styled(Icon)`
 
 const OpenMenuButton = styled.button`
   color: ${colors.label};
-  font-size: 17px;
+  font-size: ${fontSizes.medium}px;
   font-weight: 400;
   line-height: 17px;
   cursor: pointer;

@@ -7,7 +7,7 @@ import TextareaAutosize from 'react-autosize-textarea';
 
 // style
 import styled from 'styled-components';
-import { color } from 'utils/styleUtils';
+import { color, fontSizes } from 'utils/styleUtils';
 
 const Container: any = styled.div`
   position: relative;
@@ -18,7 +18,7 @@ const Container: any = styled.div`
 
   .textarea {
     width: 100%;
-    font-size: 17px;
+    font-size: ${fontSizes.base}px;
     line-height: 24px;
     font-weight: 400;
     padding: 12px;

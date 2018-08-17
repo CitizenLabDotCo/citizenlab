@@ -24,6 +24,7 @@ const Container: any = styled.div`
   width: ${(props: any) => props.pxSize}px;
   height: ${(props: any) => props.pxSize}px;
   cursor: inherit;
+  color: #000;
 
   &.clickable {
     cursor: pointer;

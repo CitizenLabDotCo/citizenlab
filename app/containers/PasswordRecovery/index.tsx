@@ -20,6 +20,7 @@ import { injectIntl } from 'utils/cl-intl';
 // style
 import styled from 'styled-components';
 import messages from './messages';
+import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -31,10 +32,10 @@ const StyledContentContainer = styled(ContentContainer)`
   padding-bottom: 100px;
 `;
 
-const Title = styled.h2`
+const Title = styled.h1`
   width: 100%;
   color: #333;
-  font-size: 36px;
+  font-size: ${fontSizes.xxxxl}px;
   line-height: 40px;
   font-weight: 500;
   text-align: center;

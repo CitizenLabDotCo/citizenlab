@@ -73,7 +73,7 @@ const OpenDropdownButton = styled.div`
 
 const DropdownListItem = styled(Button)`
   &.Button.button {
-    font-size: 17px;
+    font-size: ${fontSizes.medium}px;
   }
   a:not(.processing):focus,
   button:not(.processing):focus,

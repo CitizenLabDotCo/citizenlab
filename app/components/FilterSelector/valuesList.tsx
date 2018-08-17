@@ -7,7 +7,7 @@ import Dropdown from 'components/UI/Dropdown';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const List = styled.div`
   width: 100%;
@@ -15,7 +15,7 @@ const List = styled.div`
 
 const ListItemText = styled.div`
   color: ${colors.label};
-  font-size: 17px;
+  font-size: ${fontSizes.medium}px;
   font-weight: 400;
   line-height: 21px;
   text-align: left;
