@@ -48,6 +48,7 @@ import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToFileObservable } from 'utils/imageTools';
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
+import { returnFileSize } from 'utils/helperUtils';
 
 // style
 import styled from 'styled-components';
@@ -226,11 +227,12 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               projectFiles$.switchMap((projectFiles) => {
                 if (projectFiles && projectFiles.data && projectFiles.data.length > 0) {
                   return Rx.Observable.of(projectFiles.data.map((projectFile) => ({
-                      name: projectFile.attributes.name,
-                      id: projectFile.id,
-                      objectUrl: projectFile.attributes.file.url,
-                      ordering: projectFile.attributes.ordering,
-                    })
+                    name: projectFile.attributes.name,
+                    id: projectFile.id,
+                    objectUrl: projectFile.attributes.file.url,
+                    ordering: projectFile.attributes.ordering,
+                    size: projectFile.attributes.size,
+                  })
                   ));
                 }
 
@@ -387,21 +389,29 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     }));
   }
 
-  handleProjectImageOnAdd = (newProjectImage: ImageFile) => {
-    this.setState((state) => ({
-      submitState: 'enabled',
-      newProjectImages: [
-        ...(state.newProjectImages || []),
-        newProjectImage
-      ]
-    }));
-  }
   handleFileOnAdd = (newFile: File) => {
     this.setState((state) => ({
       submitState: 'enabled',
       newProjectFiles: [
         ...(state.newProjectFiles || []),
         newFile
+      ]
+    }));
+  }
+
+  handleProjectFileOnRemove = (removedFile: UploadFile) => () => {
+    this.setState((state) => ({
+      submitState: 'enabled',
+      newProjectFiles: (state.newProjectFiles ? state.newProjectFiles.filter(projectFile => projectFile.id !== removedFile.id) : null)
+    }));
+  }
+
+  handleProjectImageOnAdd = (newProjectImage: ImageFile) => {
+    this.setState((state) => ({
+      submitState: 'enabled',
+      newProjectImages: [
+        ...(state.newProjectImages || []),
+        newProjectImage
       ]
     }));
   }
@@ -671,6 +681,13 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               <FileInput
                 onAdd={this.handleFileOnAdd}
               />
+              {Array.isArray(newProjectFiles) && newProjectFiles.map(file => (
+                <div>
+                  {file.name}
+                  filesize : {returnFileSize(file.size)}
+                  <button onClick={this.handleProjectFileOnRemove(file)} key={file.id || file.name}>delete</button>
+                </div>
+              ))}
             </SectionField>
 
             <SectionField>
