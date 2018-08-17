@@ -6,7 +6,7 @@ module EmailCampaigns
     include RecipientConfigurable
     include Trackable
 
-    add_recipient_filter :user_filter_admin_only
+    recipient_filter :user_filter_admin_only
 
     def self.default_schedule
       IceCube::Schedule.new(Time.find_zone(Tenant.settings('core','timezone')).local(2018)) do |s|

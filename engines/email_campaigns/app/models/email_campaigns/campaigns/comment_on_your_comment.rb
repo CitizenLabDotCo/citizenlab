@@ -5,7 +5,7 @@ module EmailCampaigns
     include ActivityTriggerable
     include RecipientConfigurable
 
-    add_recipient_filter :filter_notification_recipient
+    recipient_filter :filter_notification_recipient
 
     def activity_triggers
       {'Notifications::CommentOnYourComment' => {'created' => true}}
