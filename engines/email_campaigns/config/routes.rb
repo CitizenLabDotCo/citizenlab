@@ -9,6 +9,10 @@ EmailCampaigns::Engine.routes.draw do
         get :recipients, on: :member
         get :stats, on: :member
       end
+
+      resources :users, only: [] do
+        resources :consents, only: [:index, :update], shallow: true
+      end
     end
   end
 
