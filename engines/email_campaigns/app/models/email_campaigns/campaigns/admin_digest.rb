@@ -92,6 +92,7 @@ module EmailCampaigns
 
     def days_ago
       t_1, t_2 = ic_schedule.first 2
+      t_2 ||= t_1 + 7.days
       ((t_2 - t_1) / 1.day).days
     end
 
@@ -150,7 +151,7 @@ module EmailCampaigns
               id: idea.id,
               title_multiloc: idea.title_multiloc,
               url: FrontendService.new.model_to_url(idea),
-              published_at: idea.published_at,
+              published_at: idea.published_at.to_s,
               author_name: idea.author_name,
               upvotes_count: idea.upvotes_count,
               upvotes_increment: new_votes.where(mode: 'up').count,
