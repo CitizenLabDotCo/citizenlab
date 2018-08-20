@@ -33,6 +33,7 @@ import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // Styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+import { lighten } from 'polished';
 
 const StyledCheckbox = styled(Checkbox) `
   margin-left: 5px;
@@ -82,15 +83,11 @@ const DropdownListButton = styled.button`
   cursor: pointer;
   white-space: nowrap;
 
-  & > span {
-    margin-right: 5px;
-  }
-
   &:hover,
   &:focus {
     outline: none;
     color: white;
-    background: rgba(0, 0, 0, 0.3);
+    background: ${lighten(.1, colors.adminMenuBackground)};
   }
 `;
 
@@ -100,12 +97,15 @@ const IconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 10px;
 
   .cl-icon {
     height: 100%;
   }
 
-  .cl-icon-primary, .cl-icon-secondary, .cl-icon-accent {
+  .cl-icon-primary,
+  .cl-icon-secondary,
+  .cl-icon-accent {
   	fill: currentColor;
   }
 `;
@@ -127,7 +127,7 @@ const DropdownListLink = styled(Link)`
   &:hover, &:focus {
     outline: none;
     color: white;
-    background: rgba(0, 0, 0, 0.3);
+    background: ${lighten(.1, colors.adminMenuBackground)};
   }
 `;
 
@@ -194,7 +194,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
-  handleDropdownOnClickOutside = (event: FormEvent) => {
+  handePopoverOnClickOutside = (event: FormEvent) => {
     event.preventDefault();
     event.stopPropagation();
     this.setState({ optionsOpened: false });
@@ -252,7 +252,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
             top="35px"
             backgroundColor={colors.adminMenuBackground}
             borderColor={colors.adminMenuBackground}
-            handleDropdownOnClickOutside={this.handleDropdownOnClickOutside}
+            onClickOutside={this.handePopoverOnClickOutside}
             dropdownOpened={optionsOpened}
           >
             <StyledIcon name="more-options" />

@@ -80,7 +80,7 @@ const SecondLine = styled.div`
 `;
 
 const PagesNav = styled.nav`
-  color: ${color('clGrey')};
+  color: ${color('label')};
   flex: 1;
   text-align: left;
 
@@ -104,7 +104,7 @@ const PagesNav = styled.nav`
 `;
 
 const StyledLink = styled(Link) `
-  color: ${color('clGrey')};
+  color: ${color('label')};
   font-weight: 400;
   font-size: ${fontSizes.small}px;
   line-height: 19px;
@@ -121,7 +121,7 @@ const StyledLink = styled(Link) `
 `;
 
 const Separator = styled.span`
-  color: ${color('clGrey')};
+  color: ${color('label')};
   font-weight: 400;
   font-size: ${fontSizes.base}px;
   line-height: 19px;
@@ -136,14 +136,14 @@ const Separator = styled.span`
 
 const CitizenLabLogo = styled(Icon) `
   height: 22px;
-  fill: ${color('clGrey')};
+  fill: ${color('label')};
   margin-left: 8px;
   transition: all 150ms ease-out;
   flex: 1 1 100px;
 `;
 
 const PoweredBy = styled.a`
-  color: ${color('clGrey')};
+  color: ${color('label')};
   font-weight: 300;
   font-size: ${fontSizes.small}px;
   line-height: 19px;
@@ -156,7 +156,7 @@ const PoweredBy = styled.a`
 
   ${media.biggerThanMaxTablet`
     &:hover {
-      color: ${color('clGrey')};
+      color: ${color('label')};
 
       ${CitizenLabLogo} {
         fill: #000;

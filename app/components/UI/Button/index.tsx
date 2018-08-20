@@ -145,11 +145,11 @@ const Container: any = styled.div`
     height: ${(props: any) => props.height || 'auto'};
     justify-content: ${(props: any) => props.justify || 'center'};
     margin: 0;
-    outline: none;
     padding: ${(props: any) => props.padding || getPadding(props.size)};
     position: relative;
     transition: all 100ms ease-out;
     width: ${(props: any) => props.width || '100%'};
+    outline: none;
     &:not(.disabled) {
       cursor: pointer;
     }
@@ -177,16 +177,21 @@ const Container: any = styled.div`
       ${(props: any) => buttonTheme('#fff', (props.theme.colorMain || 'e0e0e0'))}
     }
     &.secondary {
-      ${buttonTheme(color('lightGreyishBlue'), color('label'), 'transparent', darken(0.05, color('lightGreyishBlue')))}
+      ${buttonTheme(
+        color('lightGreyishBlue'),
+        color('label'),
+        'transparent',
+        darken(0.05, color('lightGreyishBlue'))
+      )}
     }
     &.primary-outlined {
       ${(props: any) => buttonTheme('transparent', props.theme.colorMain || 'e0e0e0', props.theme.colorMain || 'e0e0e0')}
     }
     &.secondary-outlined {
-      ${buttonTheme('transparent', color('clGrey'), color('clGrey'))}
+      ${buttonTheme('transparent', color('label'), color('label'))}
     }
     &.text {
-      ${(props: any) => buttonTheme('transparent', props.textColor || color('clGrey'), undefined, undefined, props.textHoverColor)}
+      ${(props: any) => buttonTheme('transparent', props.textColor || color('label'), undefined, undefined, props.textHoverColor)}
     }
     &.success {
       ${buttonTheme(color('clGreenSuccessBackground'), color('clGreenSuccess'))}

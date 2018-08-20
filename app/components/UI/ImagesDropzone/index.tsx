@@ -40,7 +40,7 @@ const ErrorWrapper = styled.div`
 `;
 
 const DropzonePlaceholderText = styled.div`
-  color: ${colors.clGrey};
+  color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: 20px;
   font-weight: 400;
@@ -50,13 +50,13 @@ const DropzonePlaceholderText = styled.div`
 
 const DropzonePlaceholderIcon = styled(Icon)`
   height: 32px;
-  fill: ${colors.clGrey};
+  fill: ${colors.label};
   margin-bottom: 5px;
   transition: all 100ms ease-out;
 `;
 
 const DropzoneImagesRemaining = styled.div`
-  color: ${colors.clGrey};
+  color: ${colors.label};
   font-size: ${fontSizes.small}px;
   line-height: 18px;
   font-weight: 400;

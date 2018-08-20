@@ -105,8 +105,6 @@ export const colors = {
   text2: '#767676',
   placeholder: '#aaa',
   clBlue: '#008292',
-  // first grey to pass the 4.50 contrast ratio on a white background
-  clGrey: '#767676',
   // this is the first grey to get 4.5 on the light greyish background we often use (#f9f9fa)
   clGreyOnGreyBackground: '#737373',
   // hover color used for clGrey (e.g. in the navbar)

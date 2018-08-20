@@ -104,8 +104,7 @@ export default class CommentsMoreActions extends PureComponent<Props, State> {
       hasPermission({ item: this.props.comment, action: 'markAsSpam', context: { projectId: this.props.projectId } }),
       hasPermission({ item: this.props.comment, action: 'delete', context: { projectId: this.props.projectId } }),
       hasPermission({ item: this.props.comment, action: 'edit', context: { projectId: this.props.projectId } }),
-    ])
-    .pipe(
+    ]).pipe(
       map(([canReport, canDelete, canEdit]) => {
         const actions: IAction[] = [];
 

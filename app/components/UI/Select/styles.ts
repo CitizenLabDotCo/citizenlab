@@ -26,7 +26,7 @@ const SelectStyles = {
       ...base,
       ':active': null,
       fontSize: '16px',
-      color: isFocused ? colors.clGreyHover : colors.clGrey,
+      color: isFocused ? colors.clGreyHover : colors.label,
       backgroundColor: isFocused ? colors.clDropdownHoverBackground : '#fff',
     }),
     multiValueLabel: () => ({
