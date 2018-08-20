@@ -25,6 +25,7 @@ module EmailCampaigns
     end
 
     def generate_command recipient:, time: nil
+      @statistics ||= statistics
       @top_project_ideas ||= top_project_ideas
       @idea_ids ||= top_project_ideas.flat_map do |tpi|
         tpi[:top_ideas].map{|idea_h| idea_h[:id]}
@@ -36,7 +37,7 @@ module EmailCampaigns
           has_new_ideas: (@top_project_ideas.size > 0)
         },
         tracked_content: {
-          idea_ids: idea_ids
+          idea_ids: @idea_ids
         }
       }
     end
@@ -48,7 +49,7 @@ module EmailCampaigns
       users_scope.admin
     end
 
-    def is_content_worth_sending?
+    def is_content_worth_sending? _
       @statistics ||= statistics
       !( (@statistics.dig(:activities,:new_ideas,:increase) == 0) &&
          (@statistics.dig(:activities,:new_ideas,:increase) == 0) &&
@@ -65,6 +66,9 @@ module EmailCampaigns
         activities: {
           new_ideas: stat_increase(
             Idea.all.map(&:published_at).compact
+            ),
+          new_votes: stat_increase(
+            Vote.all.map(&:created_at).compact
             ),
           new_comments: stat_increase(
             Comment.all.map(&:created_at).compact
@@ -132,7 +136,7 @@ module EmailCampaigns
               title_multiloc: project.title_multiloc,
               url: FrontendService.new.model_to_url(project)
             },
-            current_phase: {
+            current_phase: phase && {
               id: phase.id,
               title_multiloc: phase.title_multiloc,
               participation_method: phase.participation_method,
