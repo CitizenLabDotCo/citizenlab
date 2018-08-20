@@ -85,16 +85,14 @@ describe EmailCampaigns::DeliveryService do
       end
       class ConsentableCampaign < EmailCampaigns::Campaign
         include EmailCampaigns::Consentable
+
+        def self.consentable_roles
+          []
+        end
       end
 
-      NonConsentableCampaign.create!
-      ConsentableCampaign.create!
-
+      stub_const("EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES", [NonConsentableCampaign, ConsentableCampaign])
       user = create(:user)
-
-      expect(service)
-        .to receive(:campaign_types)
-        .and_return(['NonConsentableCampaign', 'ConsentableCampaign'])
 
       expect(service.consentable_campaign_types_for(user)).to eq ["ConsentableCampaign"]
     end

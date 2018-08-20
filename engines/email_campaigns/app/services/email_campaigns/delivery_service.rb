@@ -12,10 +12,9 @@ module EmailCampaigns
     end
 
     def consentable_campaign_types_for user
-      Campaign
-        .where(type: campaign_types)
-        .select{|c| c.respond_to?(:consentable_for?) && c.consentable_for?(user)}
-        .map{|c| c.type}
+      consentable_classes = CAMPAIGN_CLASSES
+        .select{|claz| claz.respond_to?(:consentable_for?) && claz.consentable_for?(user)}
+        .map(&:name)
         .uniq
     end
 
