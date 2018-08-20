@@ -6,10 +6,12 @@ module EmailCampaigns
       recipient_filter :filter_users_with_consent
     end
 
-    def consentable_for? user
-      roles = respond_to?(:consentable_roles) ? consentable_roles : []
-      roles.all? do |role|
-        user.send("#{role}?")
+    class_methods do
+      def consentable_for? user
+        roles = respond_to?(:consentable_roles) ? consentable_roles : []
+        roles.all? do |role|
+          user.send("#{role}?")
+        end
       end
     end
 
