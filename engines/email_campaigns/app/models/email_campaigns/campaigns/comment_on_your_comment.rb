@@ -22,6 +22,5 @@ module EmailCampaigns
       }
     end
 
-
   end
 end

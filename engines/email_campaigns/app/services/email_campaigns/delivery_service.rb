@@ -11,6 +11,14 @@ module EmailCampaigns
       CAMPAIGN_CLASSES.map(&:name).uniq
     end
 
+    def consentable_campaign_types_for user
+      Campaign
+        .where(type: campaign_types)
+        .select{|c| c.respond_to?(:consentable_for?) && c.consentable_for?(user)}
+        .map{|c| c.type}
+        .uniq
+    end
+
     # called every hour
     def send_on_schedule time=Time.now
       campaign_candidates = Campaign.where(type: campaign_types)
