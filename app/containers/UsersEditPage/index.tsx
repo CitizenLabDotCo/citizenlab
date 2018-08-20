@@ -14,6 +14,7 @@ import { IUser } from 'services/users';
 
 // Components
 import ProfileForm from './ProfileForm';
+import CampaignsConsentForm from './CampaignsConsentForm';
 
 interface Props {}
 
@@ -66,11 +67,14 @@ export default class ProfileEditor extends PureComponent<Props, State> {
 
     if (loaded && currentTenant && authUser && areas) {
       return (
-        <ProfileForm
-          user={authUser.data}
-          areas={areas.data}
-          tenant={currentTenant.data}
-        />
+        <>
+          <ProfileForm
+            user={authUser.data}
+            areas={areas.data}
+            tenant={currentTenant.data}
+          />
+          <CampaignsConsentForm />
+        </>
       );
     }
 

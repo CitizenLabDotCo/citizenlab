@@ -1,9 +1,10 @@
 import React from 'react';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { IConsentData, consentsStream, IConsents } from 'services/campaignConsents';
 import { isNilOrError } from 'utils/helperUtils';
 import { authUserStream } from 'services/auth';
 import { switchMap } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 
 interface InputProps { }
 
@@ -36,7 +37,7 @@ export default class GetConsents extends React.Component<Props, State> {
           if (!isNilOrError(user)) {
             return consentsStream(user.data.id).observable;
           } else {
-            return Observable.empty();
+            return of(null);
           }
         }))
         .subscribe((consents: IConsents) => {
