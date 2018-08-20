@@ -147,6 +147,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
           </OpenDropdownButton>
 
           <Dropdown
+            id="e2e-user-menu-dropdown"
             width="180px"
             top="42px"
             right="-5px"
