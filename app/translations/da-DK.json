@@ -825,6 +825,8 @@
   "app.containers.UsersEditPage.male": "Mand",
   "app.containers.UsersEditPage.messageError": "Der opstod en fejl ved lagring af din profil.",
   "app.containers.UsersEditPage.messageSuccess": "Din profil er blevet gemt.",
+  "app.containers.UsersEditPage.notificationsSubTitle": "",
+  "app.containers.UsersEditPage.notificationsTitle": "",
   "app.containers.UsersEditPage.notifications_all_app": "ALLE APP-NOTIFIKATIONER",
   "app.containers.UsersEditPage.notifications_all_email": "ALLE E-MAILNOTIFIKATIONER",
   "app.containers.UsersEditPage.notifications_comment_on_comment": "Nogen kommenterede din kommentar",

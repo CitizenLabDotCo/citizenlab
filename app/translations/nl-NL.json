@@ -825,6 +825,8 @@
   "app.containers.UsersEditPage.male": "Man",
   "app.containers.UsersEditPage.messageError": "Er ging iets fout bij het opslaan van je profiel.",
   "app.containers.UsersEditPage.messageSuccess": "Je profielgegevens zijn opgeslagen.",
+  "app.containers.UsersEditPage.notificationsSubTitle": "",
+  "app.containers.UsersEditPage.notificationsTitle": "",
   "app.containers.UsersEditPage.notifications_all_app": "ALLE APP-MELDINGEN",
   "app.containers.UsersEditPage.notifications_all_email": "ALLE EMAIL-MELDINGEN",
   "app.containers.UsersEditPage.notifications_comment_on_comment": "Iemand reageerde op je reactie",
