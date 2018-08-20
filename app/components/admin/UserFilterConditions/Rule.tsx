@@ -48,6 +48,7 @@ type Props = {
   onChange: (rule: TRule) => void;
   onRemove: () => void;
   showLabels?: boolean;
+  ruleName?: string;
 };
 
 type State = {};
@@ -84,7 +85,7 @@ class Rule extends PureComponent<Props, State> {
   }
 
   render() {
-    const { rule, onRemove, showLabels } = this.props;
+    const { rule, onRemove, showLabels, ruleName } = this.props;
     const hasValue = (rule.ruleType && rule.predicate ? ruleTypeConstraints[rule.ruleType as any][rule.predicate] : true);
 
     return (
@@ -101,6 +102,7 @@ class Rule extends PureComponent<Props, State> {
           <FieldSelector
             field={this.fieldDescriptorFromRule(rule)}
             onChange={this.handleChangeField}
+            fieldName={`${ruleName}-field-e2e`}
           />
         </SelectorCell>
         <SelectorCell>
