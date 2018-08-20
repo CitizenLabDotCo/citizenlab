@@ -4,7 +4,7 @@ module EmailCampaigns
 
 
     included do
-      add_recipient_filter :filter_users_in_groups
+      recipient_filter :filter_users_in_groups
 
       has_many :campaigns_groups, class_name: 'EmailCampaigns::CampaignsGroup', foreign_key: :campaign_id, dependent: :destroy
       has_many :groups, through: :campaigns_groups
