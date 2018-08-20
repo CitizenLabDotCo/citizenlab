@@ -2,6 +2,12 @@ module EmailCampaigns
   module Consentable
     extend ActiveSupport::Concern
 
+    def self.consentable_campaign_types classes, user
+      DeliveryService::CAMPAIGN_CLASSES
+        .select{|claz| claz.respond_to?(:consentable_for?) && claz.consentable_for?(user)}
+        .map(&:name)
+    end
+
     included do
       recipient_filter :filter_users_with_consent
     end

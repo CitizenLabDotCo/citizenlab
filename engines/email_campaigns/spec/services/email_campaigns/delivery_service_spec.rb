@@ -88,7 +88,7 @@ describe EmailCampaigns::DeliveryService do
   end
 
   describe "consentable_campaign_types_for" do
-    it "returns all campaign types that return true to #consentable_for?, for the given user" do
+    it "returns all campaign types that return true to #consentable_for?, for the given user and have an enabled campaign" do
       class NonConsentableCampaign < EmailCampaigns::Campaign
       end
       class ConsentableCampaign < EmailCampaigns::Campaign
@@ -98,11 +98,34 @@ describe EmailCampaigns::DeliveryService do
           []
         end
       end
+      class ConsentableDisableableCampaignA < EmailCampaigns::Campaign
+        include EmailCampaigns::Consentable
+        include EmailCampaigns::Disableable
 
-      stub_const("EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES", [NonConsentableCampaign, ConsentableCampaign])
+        def self.consentable_roles
+          []
+        end
+      end
+      class ConsentableDisableableCampaignB < EmailCampaigns::Campaign
+        include EmailCampaigns::Consentable
+        include EmailCampaigns::Disableable
+
+        def self.consentable_roles
+          []
+        end
+      end
+      NonConsentableCampaign.create!
+      ConsentableCampaign.create!
+      ConsentableDisableableCampaignA.create!(enabled: false)
+      ConsentableDisableableCampaignB.create!(enabled: false)
+      ConsentableDisableableCampaignB.create!(enabled: true)
+      stub_const(
+        "EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES", 
+        [NonConsentableCampaign, ConsentableDisableableCampaignA, ConsentableDisableableCampaignB, ConsentableCampaign]
+      )
       user = create(:user)
 
-      expect(service.consentable_campaign_types_for(user)).to eq ["ConsentableCampaign"]
+      expect(service.consentable_campaign_types_for(user)).to match_array ["ConsentableCampaign", "ConsentableDisableableCampaignB"]
     end
   end
 
