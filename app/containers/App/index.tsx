@@ -224,7 +224,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
                   url={modalUrl}
                   headerChild={fullscreenModalHeaderChild}
                 >
-                  <IdeasShow ideaId={modalId} inModal={true} />
+                  {modalId && <IdeasShow ideaId={modalId} inModal={true} />}
                 </FullscreenModal>
 
                 <div id="modal-portal" />

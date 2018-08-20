@@ -61,7 +61,7 @@ class OptionForm extends React.Component<InjectedFormikProps<Props, FormValues>>
             {touched.key &&
               <Error
                 fieldName="key"
-                apiErrors={errors.key}
+                apiErrors={errors.key as any}
               />
             }
           </SectionField>
@@ -75,7 +75,7 @@ class OptionForm extends React.Component<InjectedFormikProps<Props, FormValues>>
             {touched.title_multiloc &&
               <Error
                 fieldName="title_multiloc"
-                apiErrors={errors.title_multiloc}
+                apiErrors={errors.title_multiloc as any}
               />
             }
           </SectionField>
