@@ -387,6 +387,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                 )}
                 footer={(
                   <DropdownFooterButton
+                    className="e2e-dropdown-submit"
                     style="cl-blue"
                     onClick={this.addUsersToGroups}
                     processing={processing}
