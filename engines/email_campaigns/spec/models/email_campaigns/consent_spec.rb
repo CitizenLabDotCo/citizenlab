@@ -15,4 +15,20 @@ RSpec.describe EmailCampaigns::Consent, type: :model do
     end
   end
 
+  describe "create_all_for_user!" do
+    it "creates missing consents for all consentable campaign" do
+      user = create(:user)
+
+      expect_any_instance_of(EmailCampaigns::DeliveryService)
+        .to receive(:consentable_campaign_types_for)
+        .with(user)
+        .and_return(['SomeMailingCampaign','SomeOtherMailingCampaign'])
+
+      EmailCampaigns::Consent.create_all_for_user!(user)
+
+      expect(EmailCampaigns::Consent.where(user: user).pluck(:campaign_type))
+        .to match_array ['SomeMailingCampaign','SomeOtherMailingCampaign']
+    end
+  end
+
 end

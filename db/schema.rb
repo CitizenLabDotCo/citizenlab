@@ -146,6 +146,8 @@ ActiveRecord::Schema.define(version: 20180815114124) do
     t.string "campaign_type", null: false
     t.uuid "user_id", null: false
     t.boolean "consented", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["campaign_type", "user_id"], name: "index_email_campaigns_consents_on_campaign_type_and_user_id", unique: true
     t.index ["user_id"], name: "index_email_campaigns_consents_on_user_id"
   end

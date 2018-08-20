@@ -20,6 +20,10 @@ module EmailCampaigns
       end
     end
 
+    def consentable_roles
+      ['admin']
+    end
+
     def generate_command recipient:, time: nil
       @top_project_ideas ||= top_project_ideas
       @idea_ids ||= top_project_ideas.flat_map do |tpi|
