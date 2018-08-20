@@ -45,7 +45,7 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
               rows={5}
               maxCharCount={280}
             />
-            <Error fieldName="description_preview_multiloc" apiErrors={errors.description_preview_multiloc} />
+            <Error fieldName="description_preview_multiloc" apiErrors={errors.description_preview_multiloc as any} />
           </SectionField>
 
           <SectionField>
@@ -56,7 +56,7 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
               name="description_multiloc"
               label={<FormattedMessage {...messages.descriptionLabel} />}
             />
-            <Error fieldName="description_multiloc" apiErrors={errors.description_multiloc} />
+            <Error fieldName="description_multiloc" apiErrors={errors.description_multiloc as any} />
           </SectionField>
         </Section>
 

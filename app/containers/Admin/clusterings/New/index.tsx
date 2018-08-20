@@ -14,7 +14,7 @@ export default class New extends PureComponent<Props> {
     const errors: FormikErrors<FormValues> = {};
 
     if (every(getValues(values.title_multiloc), isEmpty)) {
-      errors.title_multiloc = (errors.title_multiloc || []).concat({ error: 'blank' });
+      errors.title_multiloc = [{ error: 'blank' }] as any;
     }
     return errors;
   }
