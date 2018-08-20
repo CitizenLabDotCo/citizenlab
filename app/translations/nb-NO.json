@@ -825,6 +825,8 @@
   "app.containers.UsersEditPage.male": "Mann",
   "app.containers.UsersEditPage.messageError": "Det oppsto en feil ved lagring av profilen din.",
   "app.containers.UsersEditPage.messageSuccess": "Profilen din er lagret.",
+  "app.containers.UsersEditPage.notificationsSubTitle": "",
+  "app.containers.UsersEditPage.notificationsTitle": "",
   "app.containers.UsersEditPage.notifications_all_app": "ALLE APPVARSLER",
   "app.containers.UsersEditPage.notifications_all_email": "ALLE E-POSTVARSLER",
   "app.containers.UsersEditPage.notifications_comment_on_comment": "Noen kommenterte på kommentaren din",

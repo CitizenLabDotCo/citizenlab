@@ -825,6 +825,8 @@
   "app.containers.UsersEditPage.male": "Masculin",
   "app.containers.UsersEditPage.messageError": "Une erreur est survenue lors de l'enregistrement de votre profil.",
   "app.containers.UsersEditPage.messageSuccess": "Votre profil a été enregistré ",
+  "app.containers.UsersEditPage.notificationsSubTitle": "",
+  "app.containers.UsersEditPage.notificationsTitle": "",
   "app.containers.UsersEditPage.notifications_all_app": "Toutes les notifications de l'application",
   "app.containers.UsersEditPage.notifications_all_email": "Toutes les notifications par e-mail",
   "app.containers.UsersEditPage.notifications_comment_on_comment": "Quelqu'un a répondu à votre commentaire",

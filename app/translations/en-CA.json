@@ -825,6 +825,8 @@
   "app.containers.UsersEditPage.male": "",
   "app.containers.UsersEditPage.messageError": "",
   "app.containers.UsersEditPage.messageSuccess": "",
+  "app.containers.UsersEditPage.notificationsSubTitle": "",
+  "app.containers.UsersEditPage.notificationsTitle": "",
   "app.containers.UsersEditPage.notifications_all_app": "",
   "app.containers.UsersEditPage.notifications_all_email": "",
   "app.containers.UsersEditPage.notifications_comment_on_comment": "",

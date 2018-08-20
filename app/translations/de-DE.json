@@ -825,6 +825,8 @@
   "app.containers.UsersEditPage.male": "Männlich",
   "app.containers.UsersEditPage.messageError": "Es ging etwas schief beim Speichern von Ihrem Profil.",
   "app.containers.UsersEditPage.messageSuccess": "Ihr Profil wurde gespeichert.",
+  "app.containers.UsersEditPage.notificationsSubTitle": "",
+  "app.containers.UsersEditPage.notificationsTitle": "",
   "app.containers.UsersEditPage.notifications_all_app": "ALLE APP-BENACHRICHTIGUNGEN",
   "app.containers.UsersEditPage.notifications_all_email": "ALLE E-MAIL-BENACHRICHTIGUNGEN",
   "app.containers.UsersEditPage.notifications_comment_on_comment": "Jemand hinterließ einen Beitrag zu Ihrem Kommentar",
