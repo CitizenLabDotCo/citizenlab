@@ -7,6 +7,14 @@ describe EmailCampaigns::DeliveryService do
     it "returns all campaign types" do
       expect(service.campaign_types).to_not be_empty
     end
+
+    it "returns campaign_types that all have at least 1 campaign_type_description translation defined" do
+      multiloc_service = MultilocService.new
+      service.campaign_types.each do |campaign_type|
+        expect{multiloc_service.i18n_to_multiloc("email_campaigns.campaign_type_description.#{campaign_type}")}
+          .to_not raise_error
+      end
+    end
   end
 
   describe "send_on_schedule" do

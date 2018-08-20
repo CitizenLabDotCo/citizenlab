@@ -1,0 +1,6 @@
+en:
+  email_campaigns:
+    campaign_type_description:
+      "EmailCampaigns::Campaigns::Manual": Direct messages sent by administrators or moderators
+      "EmailCampaigns::Campaigns::CommentOnYourComment": When someone replies to my comment
+      "EmailCampaigns::Campaigns::AdminDigest": A weekly overview of the activity on the platform (only for administrators)
