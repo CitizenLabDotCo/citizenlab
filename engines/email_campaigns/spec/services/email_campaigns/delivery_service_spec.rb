@@ -79,4 +79,25 @@ describe EmailCampaigns::DeliveryService do
     end
   end
 
+  describe "consentable_campaign_types_for" do
+    it "returns all campaign types that return true to #consentable_for?, for the given user" do
+      class NonConsentableCampaign < EmailCampaigns::Campaign
+      end
+      class ConsentableCampaign < EmailCampaigns::Campaign
+        include EmailCampaigns::Consentable
+      end
+
+      NonConsentableCampaign.create!
+      ConsentableCampaign.create!
+
+      user = create(:user)
+
+      expect(service)
+        .to receive(:campaign_types)
+        .and_return(['NonConsentableCampaign', 'ConsentableCampaign'])
+
+      expect(service.consentable_campaign_types_for(user)).to eq ["ConsentableCampaign"]
+    end
+  end
+
 end

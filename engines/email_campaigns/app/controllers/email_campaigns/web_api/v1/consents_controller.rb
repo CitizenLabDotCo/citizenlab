@@ -4,7 +4,7 @@ module EmailCampaigns
     before_action :set_consent, only: [:update]
 
     def index
-      Consent.create_for_user!(params[:user_id])
+      Consent.create_all_for_user!(User.find(params[:user_id]))
       
       @consents = policy_scope(Consent)
         .where(user_id: params[:user_id])

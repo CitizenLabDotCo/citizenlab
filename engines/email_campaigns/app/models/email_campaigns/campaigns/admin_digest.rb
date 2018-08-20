@@ -16,6 +16,10 @@ module EmailCampaigns
       end
     end
 
+    def consentable_roles
+      ['admin']
+    end
+
     def generate_command recipient:, time: nil
       last_delivery = last_delivery_for_recipient(recipient)
       {
@@ -23,6 +27,7 @@ module EmailCampaigns
         tracked_content: {}
       }
     end
+
 
     private
 

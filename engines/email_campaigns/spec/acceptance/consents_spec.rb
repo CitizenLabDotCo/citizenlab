@@ -16,8 +16,12 @@ resource "Campaign consents" do
   get "/web_api/v1/users/:user_id/consents" do
 
     before do
-      @consents = EmailCampaigns::DeliveryService.new.campaign_types.map.with_index do |campaign_type, i|
-        create(:consent, user: @user, campaign_type: campaign_type, consented: i%2 == 0)
+      @campaigns = [
+        create(:comment_on_your_comment_campaign),
+        create(:manual_campaign),
+      ]
+      @consents = @campaigns.map.with_index do |campaign, i|
+        create(:consent, user: @user, campaign_type: campaign.type, consented: i%2 == 0)
       end
     end
 
@@ -30,10 +34,10 @@ resource "Campaign consents" do
     end
 
     example "Listing all campaigns creates unexisting consents", document: false do
-      @consents.take(3).each(&:destroy)
+      @consents.take(1).each(&:destroy)
       do_request
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq EmailCampaigns::DeliveryService.new.campaign_types.size
+      expect(json_response[:data].size).to eq EmailCampaigns::DeliveryService.new.consentable_campaign_types_for(@user).size
     end
   end
 
@@ -43,7 +47,8 @@ resource "Campaign consents" do
     end
     ValidationErrorHelper.new.error_fields(self, EmailCampaigns::Consent)
 
-    let(:consent) { create(:consent, user: @user) }
+    let(:campaign) { create(:manual_campaign) }
+    let(:consent) { create(:consent, user: @user, campaign_type: campaign.type) }
     let(:id) { consent.id }
     let(:consented) { false }
 
