@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
-import Popover from 'components/Popover';
+import Dropdown from 'components/UI/Dropdown';
 import HasPermission from 'components/HasPermission';
 
 // services
@@ -24,7 +24,6 @@ import messages from '../../messages';
 const Container = styled.div`
   display: flex;
   position: relative;
-  outline: none;
 
   * {
     user-select: none;
@@ -49,7 +48,7 @@ const StyledAvatar = styled(Avatar)`
   }
 `;
 
-const OpenMenuButton = styled.div`
+const OpenDropdownButton = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -72,22 +71,10 @@ const OpenMenuButton = styled.div`
   }
 `;
 
-const StyledPopover = styled(Popover) `
-  display: flex;
-  flex-direction: column;
-  z-index: 5;
-
-  .Ideas-icon .cl-icon-primary, .Ideas-icon .cl-icon-secondary {
-    fill: ${colors.clGrey};
+const DropdownListItem = styled(Button)`
+  &.Button.button {
+    font-size: ${fontSizes.medium}px;
   }
-
-  .Ideas-icon .cl-icon-accent {
-    fill: transparent !important;
-  }
-`;
-
-const PopoverItem = styled(Button)`
-
   a:not(.processing):focus,
   button:not(.processing):focus,
   a:not(.processing):hover,
@@ -127,12 +114,12 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  togglePopover = (event: React.FormEvent) => {
+  toggleDropdown = (event: React.FormEvent) => {
     event.preventDefault();
     this.setState(({ opened }) => ({ opened: !opened }));
   }
 
-  closePopover = () => {
+  closeDropdown = () => {
     this.setState({ opened: false });
   }
 
@@ -148,7 +135,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     if (authUser && userId) {
       return (
         <Container id="e2e-user-menu-container">
-          <OpenMenuButton onClick={this.togglePopover}>
+          <OpenDropdownButton onClick={this.toggleDropdown}>
             <StyledUserName
               user={authUser.data}
               hideLastName={true}
@@ -157,36 +144,22 @@ export default class UserMenu extends React.PureComponent<Props, State> {
               userId={userId}
               size="small"
             />
-          </OpenMenuButton>
-          <StyledPopover
-            id="e2e-user-menu-dropdown"
-            open={opened}
-            onCloseRequest={this.closePopover}
-          >
-            <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
-              <PopoverItem
-                size="1"
-                id="admin-link"
-                linkTo={'/admin'}
-                onClick={this.closePopover}
-                style="text"
-                icon="admin"
-                iconPos="right"
-                iconSize="20px"
-                padding="11px 11px"
-                justify="space-between"
-              >
-                <FormattedMessage {...messages.admin} />
-              </PopoverItem>
+          </OpenDropdownButton>
 
-              <HasPermission.No>
-                {/* Display the project moderation page for moderators, they don't have access to the dashboard */}
-                <HasPermission item={{ type: 'route', path: '/admin/projects' }} action="access">
-                  <PopoverItem
-                    size="1"
-                    id="e2e-projects-admin-link"
-                    linkTo={'/admin/projects'}
-                    onClick={this.closePopover}
+          <Dropdown
+            width="180px"
+            top="42px"
+            right="-5px"
+            mobileRight="-5px"
+            opened={opened}
+            onClickOutside={this.toggleDropdown}
+            content={(
+              <>
+                <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
+                  <DropdownListItem
+                    id="admin-link"
+                    linkTo={'/admin'}
+                    onClick={this.closeDropdown}
                     style="text"
                     icon="admin"
                     iconPos="right"
@@ -194,56 +167,71 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                     padding="11px 11px"
                     justify="space-between"
                   >
-                    <FormattedMessage {...messages.projectsModeration} />
-                  </PopoverItem>
+                    <FormattedMessage {...messages.admin} />
+                  </DropdownListItem>
+
+                  <HasPermission.No>
+                    <HasPermission item={{ type: 'route', path: '/admin/projects' }} action="access">
+                      <DropdownListItem
+                        id="e2e-projects-admin-link"
+                        linkTo={'/admin/projects'}
+                        onClick={this.closeDropdown}
+                        style="text"
+                        icon="admin"
+                        iconPos="right"
+                        iconSize="20px"
+                        padding="11px 11px"
+                        justify="space-between"
+                      >
+                        <FormattedMessage {...messages.projectsModeration} />
+                      </DropdownListItem>
+                    </HasPermission>
+                  </HasPermission.No>
                 </HasPermission>
-              </HasPermission.No>
-            </HasPermission>
 
-            <PopoverItem
-              size="1"
-              id="e2e-profile-profile-link"
-              linkTo={`/profile/${userSlug}`}
-              onClick={this.closePopover}
-              style="text"
-              icon="ideas2"
-              iconPos="right"
-              iconSize="20px"
-              padding="11px 11px"
-              justify="space-between"
-            >
-              <FormattedMessage {...messages.myIdeas} />
-            </PopoverItem>
+                <DropdownListItem
+                  id="e2e-profile-profile-link"
+                  linkTo={`/profile/${userSlug}`}
+                  onClick={this.closeDropdown}
+                  style="text"
+                  icon="ideas2"
+                  iconPos="right"
+                  iconSize="20px"
+                  padding="11px 11px"
+                  justify="space-between"
+                >
+                  <FormattedMessage {...messages.myIdeas} />
+                </DropdownListItem>
 
-            <PopoverItem
-              size="1"
-              id="e2e-profile-edit-link"
-              linkTo={'/profile/edit'}
-              onClick={this.closePopover}
-              style="text"
-              icon="settings"
-              iconPos="right"
-              iconSize="20px"
-              padding="11px 11px"
-              justify="space-between"
-            >
-              <FormattedMessage {...messages.editProfile} />
-            </PopoverItem>
+                <DropdownListItem
+                  id="e2e-profile-edit-link"
+                  linkTo={'/profile/edit'}
+                  onClick={this.closeDropdown}
+                  style="text"
+                  icon="settings"
+                  iconPos="right"
+                  iconSize="20px"
+                  padding="11px 11px"
+                  justify="space-between"
+                >
+                  <FormattedMessage {...messages.editProfile} />
+                </DropdownListItem>
 
-            <PopoverItem
-              size="1"
-              id="e2e-sign-out-link"
-              onClick={this.signOut}
-              style="text"
-              icon="power"
-              iconPos="right"
-              iconSize="20px"
-              padding="11px 11px"
-              justify="space-between"
-            >
-              <FormattedMessage {...messages.signOut} />
-            </PopoverItem>
-          </StyledPopover>
+                <DropdownListItem
+                  id="e2e-sign-out-link"
+                  onClick={this.signOut}
+                  style="text"
+                  icon="power"
+                  iconPos="right"
+                  iconSize="20px"
+                  padding="11px 11px"
+                  justify="space-between"
+                >
+                  <FormattedMessage {...messages.signOut} />
+                </DropdownListItem>
+              </>
+            )}
+          />
         </Container>
       );
     }

@@ -23,7 +23,7 @@ interface IIdentification {
 }
 
 interface IPageChange {
-  name: string;
+  path: string;
   properties?: {
     [key: string]: any,
   };
@@ -47,8 +47,13 @@ combineLatest(tenant$, events$).subscribe(([tenant, event]) => {
 combineLatest(tenant$, pageChanges$).subscribe(([tenant, pageChange]) => {
   if (window && window['analytics']) {
     window['analytics'].page(
-      pageChange.name,
-      addTenantInfo(pageChange.properties, tenant.data),
+      null,
+      {
+        path: pageChange.path,
+        url: `https://${tenant.data.attributes.host}${pageChange.path}`,
+        title: null,
+        ...addTenantInfo(pageChange.properties, tenant.data),
+      }
     );
   }
 });
@@ -93,7 +98,7 @@ export function addTenantInfo(properties, tenant: ITenantData) {
 export function trackPage(path: string, properties: {} = {}) {
   pageChanges$.next({
     properties,
-    name: path
+    path
   });
 }
 
@@ -149,5 +154,5 @@ export const initializeAnalytics = () => {
   // tslint:disable-next-line:no-eval
   eval(contents);
 
-  trackPage(window.location.href);
+  trackPage(window.location.pathname);
 };

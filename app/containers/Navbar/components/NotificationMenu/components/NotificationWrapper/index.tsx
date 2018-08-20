@@ -16,7 +16,9 @@ const Container = styled(Link)`
   display: flex;
   flex-direction: row;
   cursor: pointer;
-  color: ${colors.clGrey};
+  color: ${colors.label};
+  border-radius: 5px;
+
   &:hover,
   &:focus {
     color: ${colors.clGreyHover};

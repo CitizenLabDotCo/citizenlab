@@ -5,10 +5,10 @@ import Icon from 'components/UI/Icon';
 
 // style
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const Text = styled.span`
-  color: ${(props) => props.theme.colors.label};
+  color: ${colors.label};
   font-size: ${fontSizes.medium}px;
   font-weight: 400;
   line-height: 26px;
@@ -18,7 +18,7 @@ const Text = styled.span`
 const DropdownIcon = styled(Icon)`
   width: 11px;
   height: 7px;
-  fill: ${(props) => props.theme.colors.label};
+  fill: ${colors.label};
   margin-left: 4px;
   margin-top: 2px;
   transition: all 100ms ease-out;
@@ -33,10 +33,9 @@ const Container = styled.div`
   padding: 0;
   margin: 0;
   position: relative;
-  outline: none;
 
   &:hover,
-  &.deployed {
+  &.opened {
     ${Text} {
       color: #000;
     }
@@ -49,7 +48,7 @@ const Container = styled.div`
 
 type Props = {
   title: string | JSX.Element,
-  deployed: boolean,
+  opened: boolean,
   onClick: Function,
   baseID: string,
 };
@@ -63,14 +62,14 @@ export default class Title extends PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    const { title, deployed, baseID } = this.props;
+    const { title, opened, baseID } = this.props;
 
     return (
       <Container
         onClick={this.handleClick}
-        aria-expanded={deployed}
+        aria-expanded={opened}
         id={`${baseID}-label`}
-        className={`e2e-filter-selector-button FilterSelectorTitle ${deployed ? 'deployed' : ''} ${className}`}
+        className={`e2e-filter-selector-button FilterSelectorTitle ${opened ? 'opened' : ''} ${className}`}
       >
         <Text className="FilterSelectorTitleText">{title}</Text>
         <DropdownIcon className="FilterSelectorTitleIcon" name="dropdown" />
