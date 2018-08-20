@@ -36,7 +36,7 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
     const errors: FormikErrors<FormValues> = {};
 
     if (every(getValues(values.title_multiloc), isEmpty)) {
-      errors.title_multiloc = (errors.title_multiloc || []).concat({ error: 'blank' });
+      errors.title_multiloc = [{ error: 'blank' }] as any;
     }
 
     return errors;
@@ -66,7 +66,7 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
             />
             {touched.enabled && <Error
               fieldName="enabled"
-              apiErrors={errors.enabled}
+              apiErrors={errors.enabled as any}
             />}
           </SectionField>
 
@@ -82,7 +82,7 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
             />
             {touched.input_type && <Error
               fieldName="input_type"
-              apiErrors={errors.input_type}
+              apiErrors={errors.input_type as any}
             />}
           </SectionField>
 
@@ -94,7 +94,7 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
             />
             {touched.title_multiloc && <Error
               fieldName="title_multiloc"
-              apiErrors={errors.title_multiloc}
+              apiErrors={errors.title_multiloc as any}
             />}
           </SectionField>
 
@@ -106,7 +106,7 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
             />
             {touched.description_multiloc && <Error
               fieldName="description_multiloc"
-              apiErrors={errors.description_multiloc}
+              apiErrors={errors.description_multiloc as any}
             />}
           </SectionField>
 
@@ -120,7 +120,7 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
             />
             {touched.required && <Error
               fieldName="required"
-              apiErrors={errors.required}
+              apiErrors={errors.required as any}
             />}
           </SectionField>
 
