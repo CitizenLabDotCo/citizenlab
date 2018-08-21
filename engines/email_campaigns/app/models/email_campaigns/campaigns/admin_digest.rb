@@ -141,8 +141,8 @@ module EmailCampaigns
             id: phase.id,
             title_multiloc: phase.title_multiloc,
             participation_method: phase.participation_method,
-            start_at: phase.start_at.to_s,
-            end_at: phase.end_at.to_s
+            start_at: phase.start_at.iso8601,
+            end_at: phase.end_at.iso8601
           },
           top_ideas: top_project_ideas[project_id].map{ |idea|
             new_votes = idea.votes.where('created_at > ?', Time.now - days_ago)
@@ -150,7 +150,7 @@ module EmailCampaigns
               id: idea.id,
               title_multiloc: idea.title_multiloc,
               url: FrontendService.new.model_to_url(idea),
-              published_at: idea.published_at.to_s,
+              published_at: idea.published_at.iso8601,
               author_name: idea.author_name,
               upvotes_count: idea.upvotes_count,
               upvotes_increment: new_votes.where(mode: 'up').count,
