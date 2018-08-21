@@ -26,7 +26,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -112,7 +112,7 @@ const StyledSearchInput = styled(SearchInput)`
   width: 300px;
 
   input {
-    font-size: 18px;
+    font-size: ${fontSizes.medium}px;
     font-weight: 400;
   }
 
@@ -151,7 +151,7 @@ const ViewButton = styled.div`
   > span {
     color: ${(props) => props.theme.colors.label};
     color: #333;
-    font-size: 17px;
+    font-size: ${fontSizes.medium}px;
     font-weight: 400;
     line-height: 24px;
     padding-left: 15px;
@@ -222,8 +222,8 @@ const EmptyMessage = styled.div`
 `;
 
 const EmptyMessageLine = styled.div`
-  color: #999;
-  font-size: 18px;
+  color: ${colors.text2};
+  font-size: ${fontSizes.large}px;
   font-weight: 400;
   line-height: 22px;
   text-align: center;
@@ -267,6 +267,7 @@ class IdeaCards extends React.PureComponent<Props, State> {
   }
 
   handleSearchOnChange = (search: string) => {
+    // track
     this.props.onChangeSearchTerm(search);
   }
 

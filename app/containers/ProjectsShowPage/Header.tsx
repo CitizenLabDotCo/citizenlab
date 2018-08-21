@@ -20,9 +20,10 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
+  background-color: #767676;
   width: 100%;
   height: 350px;
   display: flex;
@@ -62,14 +63,12 @@ const HeaderContent = styled.div`
 
 const HeaderContentLeft = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
   margin-right: 30px;
   max-width: 500px;
-
-  ${media.biggerThanMinTablet`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  `}
 `;
 
 const HeaderContentRight = styled.div`
@@ -84,6 +83,21 @@ const HeaderContentRight = styled.div`
   `}
 `;
 
+const ArchivedLabel = styled.span`
+  flex-grow: 0;
+  flex-shrink: 1;
+  display: flex;
+  color: #fff;
+  font-size: ${fontSizes.small}px;
+  font-weight: 500;
+  text-transform: uppercase;
+  border-radius: 5px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, .45);
+  /* margin-top: -30px; */
+  margin-bottom: 5px;
+`;
+
 const HeaderTitle = styled.div`
   color: #fff;
   font-size: 42px;
@@ -95,7 +109,7 @@ const HeaderTitle = styled.div`
 
   ${media.smallerThanMinTablet`
     font-weight: 600;
-    font-size: 31px;
+    font-size: ${fontSizes.xxxl}px;
     line-height: 36px;
   `}
 `;
@@ -120,7 +134,7 @@ const HeaderButtonIcon = styled(Icon)`
 
 const HeaderButtonText = styled.div`
   color: rgba(255, 255, 255, 0.6);
-  font-size: 17px;
+  font-size: ${fontSizes.medium}px;
   font-weight: 400;
   text-decoration: none;
   white-space: nowrap;
@@ -212,6 +226,7 @@ class ProjectsShowPage extends React.PureComponent<Props, State> {
       const projectSlug = project.attributes.slug;
       const projectHeaderImageLarge = (project.attributes.header_bg.large || null);
       const projectType = project.attributes.process_type;
+      const projectPublicationStatus = project.attributes.publication_status;
       const hasEvents = (events && events.length > 0);
 
       return (
@@ -221,6 +236,11 @@ class ProjectsShowPage extends React.PureComponent<Props, State> {
           <ContentContainer>
             <HeaderContent className={projectType}>
               <HeaderContentLeft>
+                {projectPublicationStatus === 'archived' &&
+                  <ArchivedLabel>
+                    <FormattedMessage {...messages.archived} />
+                  </ArchivedLabel>
+                }
                 <HeaderTitle>
                   <T value={project.attributes.title_multiloc} />
                 </HeaderTitle>

@@ -1,5 +1,6 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React, { PureComponent } from 'react';
+import { Subscription } from 'rxjs';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 
 // components
 import FilterSelector from 'components/FilterSelector';
@@ -28,8 +29,8 @@ type State = {
   areas: IAreas | null;
 };
 
-class SelectAreas extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+class SelectAreas extends PureComponent<Props, State> {
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -47,7 +48,7 @@ class SelectAreas extends React.PureComponent<Props, State> {
     const areas$ = areasStream().observable;
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      combineLatest(
         currentTenant$,
         locale$,
         areas$
@@ -94,6 +95,8 @@ class SelectAreas extends React.PureComponent<Props, State> {
             values={options}
             onChange={this.handleOnChange}
             multiple={true}
+            right="-5px"
+            mobileLeft="-5px"
           />
         );
       }

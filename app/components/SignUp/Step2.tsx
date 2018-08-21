@@ -22,6 +22,7 @@ import messages from './messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // style
 import styled from 'styled-components';
@@ -46,8 +47,8 @@ const ButtonWrapper = styled.div`
 `;
 
 const SkipButton = styled.div`
-  color: #999;
-  font-size: 16px;
+  color: ${colors.clGreyOnGreyBackground};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 20px;
   cursor: pointer;
@@ -176,7 +177,7 @@ class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
                 processing={processing}
                 text={formatMessage(messages.submit)}
                 onClick={this.handleOnSubmitButtonClick}
-                circularCorners={true}
+                circularCorners={false}
               />
               {!hasRequiredFields &&
                 <SkipButton onClick={this.skipStep}>{formatMessage(messages.skip)}</SkipButton>

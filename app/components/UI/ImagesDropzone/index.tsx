@@ -21,13 +21,14 @@ import styled, { css } from 'styled-components';
 import { ImageFile } from 'typings';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
   display: column;
 `;
 
-const ContentWrapper = styled(TransitionGroup)`
+const ContentWrapper: any = styled(TransitionGroup)`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -39,8 +40,8 @@ const ErrorWrapper = styled.div`
 `;
 
 const DropzonePlaceholderText = styled.div`
-  color: #aaa;
-  font-size: 16px;
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
   line-height: 20px;
   font-weight: 400;
   text-align: center;
@@ -49,14 +50,14 @@ const DropzonePlaceholderText = styled.div`
 
 const DropzonePlaceholderIcon = styled(Icon)`
   height: 32px;
-  fill: #aaa;
+  fill: ${colors.label};
   margin-bottom: 5px;
   transition: all 100ms ease-out;
 `;
 
 const DropzoneImagesRemaining = styled.div`
-  color: #aaa;
-  font-size: 14px;
+  color: ${colors.label};
+  font-size: ${fontSizes.small}px;
   line-height: 18px;
   font-weight: 400;
   text-align: center;
@@ -250,6 +251,7 @@ const RemoveButton: any = styled.div`
 `;
 
 type Props = {
+  id?: string | undefined;
   images: ImageFile[] | null;
   acceptedFileTypes?: string | null | undefined;
   imagePreviewRatio?: number
@@ -411,7 +413,11 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     let { acceptedFileTypes, placeholder, objectFit } = this.props;
     let { images } = this.state;
     const className = this.props['className'];
-    const { maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio, imageRadius } = this.props;
+    const { maxImageFileSize,
+            maxNumberOfImages,
+            maxImagePreviewWidth,
+            imagePreviewRatio,
+            imageRadius } = this.props;
     const { formatMessage } = this.props.intl;
     const { errorMessage, processing, canAnimate } = this.state;
     const remainingImages = (maxNumberOfImages && maxNumberOfImages !== 1 ? `(${maxNumberOfImages - size(images)} ${formatMessage(messages.remaining)})` : null);
@@ -438,7 +444,7 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
               className={`${hasSpacing} ${animate}`}
             >
               <Image imageRadius={imageRadius} src={image.objectUrl} objectFit={objectFit}>
-                <RemoveButton onClick={this.removeImage(image)}>
+                <RemoveButton onClick={this.removeImage(image)} className="remove-button">
                   <RemoveIcon name="close2" />
                 </RemoveButton>
               </Image>

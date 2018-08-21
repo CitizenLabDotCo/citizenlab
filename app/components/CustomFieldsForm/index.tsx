@@ -32,6 +32,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { Locale, IOption } from 'typings';
@@ -44,8 +45,8 @@ const InvisibleSubmitButton = styled.button`
 
 const Description = styled.div`
   width: 100%;
-  color: #333;
-  font-size: 14px;
+  color: ${colors.text};
+  font-size: ${fontSizes.small}px;
   line-height: 20px;
   margin: 0;
   margin-bottom: 10px;
@@ -174,6 +175,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
         value={props.value}
         onChange={onChange}
         key={props.id}
+        id={props.id}
       />
     );
   }
@@ -187,6 +189,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
         rows={6}
         value={props.value}
         key={props.id}
+        id={props.id}
       />
     );
   }
@@ -210,6 +213,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
           options={props.options.enumOptions}
           onChange={onChange}
           key={props.id}
+          inputId={props.id}
         />
       );
     }
@@ -229,6 +233,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
           value={selectedOptions}
           options={props.options.enumOptions}
           onChange={onChange}
+          inputId={props.id}
         />
       );
     }

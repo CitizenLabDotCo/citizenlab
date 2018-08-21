@@ -16,8 +16,8 @@ import { voteStream, addVote, deleteVote } from 'services/ideaVotes';
 
 // style
 import styled, { css, keyframes } from 'styled-components';
-import { colors } from 'utils/styleUtils';
 import { lighten } from 'polished';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const vote = keyframes`
   from {
@@ -91,7 +91,7 @@ const VoteIcon: any = styled(Icon) `
 
 const VoteCount = styled.div`
   color: ${colors.label};
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   margin-left: 5px;
   transition: all 100ms ease-out;
@@ -134,60 +134,60 @@ const Upvote = Vote.extend`
   }
 
   ${VoteIconContainer} {
-    ${props => props.active && `border-color: ${colors.success}; background: ${colors.success};`}
+    ${props => props.active && `border-color: ${colors.clGreen}; background: ${colors.clGreen};`}
   }
 
   ${VoteIcon} {
     margin-bottom: 4px;
-    ${props => props.active && (props.enabled ? `fill: #fff;` : `fill: ${colors.success}`)}
+    ${props => props.active && (props.enabled ? `fill: #fff;` : `fill: ${colors.clGreen}`)}
   }
 
   ${VoteCount} {
     min-width: 15px;
     margin-right: 5px;
-    ${props => props.active && `color: ${colors.success};`}
+    ${props => props.active && `color: ${colors.clGreen};`}
   }
 
   &:hover.enabled {
     ${VoteIconContainer} {
-      ${props => !props.active && `border-color: ${colors.success};`}
+      ${props => !props.active && `border-color: ${colors.clGreen};`}
     }
 
     ${VoteIcon} {
-      ${props => !props.active && `fill: ${colors.success};`}
+      ${props => !props.active && `fill: ${colors.clGreen};`}
     }
 
     ${VoteCount} {
-      ${props => !props.active && `color: ${colors.success};`}
+      ${props => !props.active && `color: ${colors.clGreen};`}
     }
   }
 `;
 
 const Downvote = Vote.extend`
   ${VoteIconContainer} {
-    ${props => props.active && `border-color: ${colors.error}; background: ${colors.error};`}
+    ${props => props.active && `border-color: ${colors.clRed}; background: ${colors.clRed};`}
   }
 
   ${VoteIcon} {
     margin-top: 5px;
-    ${props => props.active && (props.enabled ? `fill: #fff;` : `fill: ${colors.error}`)}
+    ${props => props.active && (props.enabled ? `fill: #fff;` : `fill: ${colors.clRed}`)}
   }
 
   ${VoteCount} {
-    ${props => props.active && `color: ${colors.error};`}
+    ${props => props.active && `color: ${colors.clRed};`}
   }
 
   &:hover.enabled {
     ${VoteIconContainer} {
-      ${props => !props.active && `border-color: ${colors.error};`}
+      ${props => !props.active && `border-color: ${colors.clRed};`}
     }
 
     ${VoteIcon} {
-      ${props => !props.active && `fill: ${colors.error};`}
+      ${props => !props.active && `fill: ${colors.clRed};`}
     }
 
     ${VoteCount} {
-      ${props => !props.active && `color: ${colors.error};`}
+      ${props => !props.active && `color: ${colors.clRed};`}
     }
   }
 `;

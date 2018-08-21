@@ -34,6 +34,7 @@ import messages from './messages';
 // style
 import { darken } from 'polished';
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 // typings
 import { API, Locale } from 'typings';
@@ -62,18 +63,18 @@ const TermsAndConditionsWrapper: any = styled.div`
   border: solid 1px transparent;
 
   &.error {
-    border-color: ${(props: any) => props.theme.colors.error};
+    border-color: ${(props: any) => props.theme.colors.clRedError};
   }
 
   span {
-    color: #707075 !important;
-    font-size: 16px;
+    color: #6e6e6f !important;
+    font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 21px;
   }
 
   a > span {
-    color: #707075 !important;
+    color: #6e6e6f !important;
     text-decoration: underline;
   }
 
@@ -85,7 +86,7 @@ const TermsAndConditionsWrapper: any = styled.div`
 
 const AlreadyHaveAnAccount = styled(Link)`
   color: ${(props) => props.theme.colorMain};
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   line-height: 20px;
   font-weight: 400;
   text-decoration: none;
@@ -433,7 +434,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
               processing={processing}
               text={buttonText}
               onClick={this.handleOnSubmit}
-              circularCorners={true}
+              circularCorners={false}
             />
             {!isInvitation &&
               <AlreadyHaveAnAccount to="/sign-in">

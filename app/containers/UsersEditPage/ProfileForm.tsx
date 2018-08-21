@@ -41,6 +41,7 @@ import localize, { injectedLocalized } from 'utils/localize';
 import styled from 'styled-components';
 import { color } from 'utils/styleUtils';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import { hideVisually } from 'polished';
 
 // typings
 import { IOption, ImageFile, API } from 'typings';
@@ -49,6 +50,10 @@ const StyledContentContainer = styled(ContentContainer)`
   background: ${color('background')};
   padding-top: 25px;
   padding-bottom: 40px;
+`;
+
+const HiddenLabel = styled.span`
+  ${hideVisually() as any}
 `;
 
 // Types
@@ -249,23 +254,30 @@ class ProfileForm extends PureComponent<Props, State> {
                     <SectionSubtitle><FormattedMessage {...messages.h1sub} /></SectionSubtitle>
 
                     <SectionField>
-                      <ImagesDropzone
-                        images={this.state.avatar}
-                        imagePreviewRatio={1}
-                        maxImagePreviewWidth="160px"
-                        acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                        maxImageFileSize={5000000}
-                        maxNumberOfImages={1}
-                        onAdd={handleAvatarOnAdd}
-                        onUpdate={handleAvatarOnUpdate}
-                        onRemove={handleAvatarOnRemove}
-                        imageRadius="50%"
-                      />
+                      {/* Wrapping image dropzone with a label for accesibility */}
+                      <label htmlFor="images-dropzone">
+                        <HiddenLabel>
+                          <FormattedMessage {...messages.imageDropzonePlaceholder} />
+                        </HiddenLabel>
+                        <ImagesDropzone
+                          id="images-dropzone"
+                          images={this.state.avatar}
+                          imagePreviewRatio={1}
+                          maxImagePreviewWidth="160px"
+                          acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                          maxImageFileSize={5000000}
+                          maxNumberOfImages={1}
+                          onAdd={handleAvatarOnAdd}
+                          onUpdate={handleAvatarOnUpdate}
+                          onRemove={handleAvatarOnRemove}
+                          imageRadius="50%"
+                        />
+                      </label>
                       <Error apiErrors={errors.avatar} />
                     </SectionField>
 
                     <SectionField>
-                      <LabelWithTooltip id="firstName" />
+                      <LabelWithTooltip htmlFor="firstName" translateId="firstName" />
                       <Input
                         type="text"
                         name="first_name"
@@ -278,7 +290,7 @@ class ProfileForm extends PureComponent<Props, State> {
                     </SectionField>
 
                     <SectionField>
-                      <LabelWithTooltip id="lastName" />
+                      <LabelWithTooltip htmlFor="lastName" translateId="lastName" />
                       <Input
                         type="text"
                         name="last_name"
@@ -291,10 +303,11 @@ class ProfileForm extends PureComponent<Props, State> {
                     </SectionField>
 
                     <SectionField>
-                      <LabelWithTooltip id="email" />
+                      <LabelWithTooltip htmlFor="email" translateId="email" />
                       <Input
                         type="email"
                         name="email"
+                        id="email"
                         value={values.email}
                         onChange={createChangeHandler('email')}
                         onBlur={createBlurHandler('email')}
@@ -303,7 +316,7 @@ class ProfileForm extends PureComponent<Props, State> {
                     </SectionField>
 
                     <SectionField>
-                      <LabelWithTooltip id="bio" />
+                      <LabelWithTooltip translateId="bio" />
                       <QuillEditor
                         id="bio_multiloc"
                         noImages
@@ -317,10 +330,11 @@ class ProfileForm extends PureComponent<Props, State> {
                     </SectionField>
 
                     <SectionField>
-                      <LabelWithTooltip id="password" />
+                      <LabelWithTooltip htmlFor="password" translateId="password" />
                       <Input
                         type="password"
                         name="password"
+                        id="password"
                         value={values.password}
                         onChange={createChangeHandler('password')}
                         onBlur={createBlurHandler('password')}
@@ -329,12 +343,14 @@ class ProfileForm extends PureComponent<Props, State> {
                     </SectionField>
 
                     <SectionField>
-                      <LabelWithTooltip id="language" />
+                      <LabelWithTooltip htmlFor="language" translateId="language" />
                       <Select
+                        inputId="language"
                         onChange={createChangeHandler('locale')}
                         onBlur={createBlurHandler('locale')}
                         value={values.locale}
                         options={this.state.localeOptions}
+                        clearable={false}
                       />
                       <Error apiErrors={errors.locale} />
                     </SectionField>

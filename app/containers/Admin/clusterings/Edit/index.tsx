@@ -99,8 +99,8 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps & TrackProps, 
     return {
       ...theme,
       comparisonColors,
-      upvotes: theme.colors.success,
-      downvotes: theme.colors.error,
+      upvotes: theme.colors.clGreen,
+      downvotes: theme.colors.clRed,
       chartLabelColor: '#999999',
       chartLabelSize: 13
     };

@@ -28,6 +28,8 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // style
 import styled from 'styled-components';
+import { hideVisually } from 'polished';
+import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   padding: 0;
@@ -36,10 +38,14 @@ const Container = styled.div`
 
 const CommentContainer = styled.div``;
 
+const HiddenLabel = styled.span`
+  ${hideVisually() as any}
+`;
+
 const StyledTextArea = styled(MentionsTextArea)`
   .textareaWrapper__highlighter,
   textarea {
-    font-size: 17px !important;
+    font-size: ${fontSizes.base}px !important;
     line-height: 25px !important;
     font-weight: 300 !important;
     padding-right: 20px !important;
@@ -56,7 +62,6 @@ const SubmitButton = styled(Button)`
   position: absolute;
   bottom: 18px;
   right: 18px;
-  z-index: 2;
 `;
 
 interface InputProps {
@@ -165,27 +170,33 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
           <CommentContainer className="e2e-comment-form ideaCommentForm">
             <StyledAuthor authorId={authUser.id} message={messages.author} size="medium"/>
 
-            <StyledTextArea
-              name="comment"
-              placeholder={placeholder}
-              rows={8}
-              ideaId={ideaId}
-              padding="20px 20px 80px 20px"
-              value={inputValue}
-              error={errorMessage}
-              onChange={this.handleTextareaOnChange}
-            >
-              <SubmitButton
-                className="e2e-submit-comment"
-                processing={processing}
-                icon="send"
-                circularCorners={false}
-                onClick={this.handleSubmit}
-                disabled={commentButtonDisabled}
+            <label htmlFor="submit-comment">
+              <HiddenLabel>
+                <FormattedMessage {...messages.yourComment} />
+              </HiddenLabel>
+              <StyledTextArea
+                id="submit-comment"
+                name="comment"
+                placeholder={placeholder}
+                rows={8}
+                ideaId={ideaId}
+                padding="20px 20px 80px 20px"
+                value={inputValue}
+                error={errorMessage}
+                onChange={this.handleTextareaOnChange}
               >
-                <FormattedMessage {...messages.publishComment} />
-              </SubmitButton>
-            </StyledTextArea>
+                <SubmitButton
+                  className="e2e-submit-comment"
+                  processing={processing}
+                  icon="send"
+                  circularCorners={false}
+                  onClick={this.handleSubmit}
+                  disabled={commentButtonDisabled}
+                >
+                  <FormattedMessage {...messages.publishComment} />
+                </SubmitButton>
+              </StyledTextArea>
+            </label>
           </CommentContainer>
         }
       </Container>

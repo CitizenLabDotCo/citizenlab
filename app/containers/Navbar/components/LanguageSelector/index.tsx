@@ -1,8 +1,7 @@
 import React from 'react';
 
 // components
-import Popover from 'components/Popover';
-import Button from 'components/UI/Button';
+import Dropdown from 'components/UI/Dropdown';
 import Icon from 'components/UI/Icon';
 
 // services
@@ -10,7 +9,7 @@ import { updateLocale } from 'services/locale';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSize } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // i18n
 import { shortenedAppLocalePairs } from 'i18n';
@@ -19,37 +18,26 @@ import { shortenedAppLocalePairs } from 'i18n';
 import { Locale } from 'typings';
 
 const Container = styled.div`
-  display: flex;
   position: relative;
   cursor: pointer;
-  outline: none;
-  margin: 0;
-  padding: 0;
 
   * {
     user-select: none;
   }
 `;
 
-const StyledPopover = styled(Popover)`
-  display: flex;
-  flex-direction: column;
-  z-index: 5;
-  top: 35px;
-`;
-
 const DropdownItemIcon = styled(Icon)`
-  height: 6px;
   width: 11px;
-  fill: inherit;
+  height: 6px;
+  fill: ${colors.label};
   margin-top: 1px;
   margin-left: 4px;
-  transition: all 100ms ease-out;
+  transition: all 80ms ease-out;
 `;
 
 const OpenMenuButton = styled.button`
   color: ${colors.label};
-  font-size: 17px;
+  font-size: ${fontSizes.medium}px;
   font-weight: 400;
   line-height: 17px;
   cursor: pointer;
@@ -57,43 +45,51 @@ const OpenMenuButton = styled.button`
   padding: 0;
   display: flex;
   align-items: center;
+  outline: none;
 
   &:hover,
   &:focus {
-    color: rgba(0,0,0,.87);
+    color: #000;
+
+    ${DropdownItemIcon} {
+      fill: #000;
+    }
   }
 `;
 
-const PopoverItem = styled(Button)`
+const ListItemText = styled.div`
   color: ${colors.label};
-  fill: ${colors.label};
-  font-size: ${fontSize('large')};
+  font-size: 17px;
   font-weight: 400;
-  transition: all 100ms ease-out;
+  line-height: 21px;
+  text-align: left;
+`;
 
-  &.active button.Button,
-  &.active a.Button {
-    color: rgba(0, 0, 0, 0.95);
-    font-weight: 700;
+const ListItem = styled.button`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0px;
+  margin-bottom: 4px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  transition: all 80ms ease-out;
+
+  &.last {
+    margin-bottom: 0px;
   }
 
-  .buttonText {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-  }
+  &:hover,
+  &:focus,
+  &.active {
+    background: ${colors.clDropdownHoverBackground};
 
-  a.Button,
-  button.Button {
-    background: #fff;
-    border-radius: 5px;
-    padding: 10px;
-
-    &:hover,
-    &:focus {
+    ${ListItemText} {
       color: #000;
-      fill: #000;
-      background: #f6f6f6;
     }
   }
 `;
@@ -104,56 +100,63 @@ type Props = {
 };
 
 type State = {
-  PopoverOpened: boolean;
+  dropdownOpened: boolean;
 };
 
 export default class LanguageSelector extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      PopoverOpened: false
+      dropdownOpened: false
     };
   }
 
-  togglePopover = () => {
-    this.setState(state => ({ PopoverOpened: !state.PopoverOpened }));
+  toggleDropdown = (event: React.FormEvent<any>) => {
+    event.preventDefault();
+    this.setState(({ dropdownOpened }) => ({ dropdownOpened: !dropdownOpened }));
   }
 
-  closePopover = () => {
-    this.setState({ PopoverOpened: false });
-  }
-
-  handleLanguageSelect = (newLocale) => () => {
+  handleLanguageSelect = (newLocale: Locale) => () => {
     updateLocale(newLocale);
-    this.closePopover();
+    this.setState({ dropdownOpened: false });
   }
 
   render() {
-    const { PopoverOpened } = this.state;
+    const { dropdownOpened } = this.state;
     const { localeOptions, currentLocale } = this.props;
+
     return (
       <Container>
-        <OpenMenuButton onClick={this.togglePopover}>
+        <OpenMenuButton onClick={this.toggleDropdown}>
           {currentLocale.substr(0, 2).toUpperCase()}
           <DropdownItemIcon name="dropdown" />
         </OpenMenuButton>
-        <StyledPopover
-          open={PopoverOpened}
-          onCloseRequest={this.closePopover}
-        >
-        {
-          localeOptions.map(locale => (
-            <PopoverItem
-              key={locale}
-              style="text"
-              onClick={this.handleLanguageSelect(locale)}
-              className={locale === currentLocale ? 'active' : ''}
-            >
-              {shortenedAppLocalePairs[locale]}
-            </PopoverItem>
-          ))
-        }
-        </StyledPopover>
+
+        <Dropdown
+          width="180px"
+          top="36px"
+          right="-5px"
+          mobileRight="-5px"
+          opened={dropdownOpened}
+          onClickOutside={this.toggleDropdown}
+          content={(
+            <>
+              {localeOptions.map((locale, index) => {
+                const last = (index === localeOptions.length - 1);
+
+                return (
+                  <ListItem
+                    key={locale}
+                    onClick={this.handleLanguageSelect(locale)}
+                    className={`${locale === currentLocale ? 'active' : ''} ${last ? 'last' : ''}`}
+                  >
+                    <ListItemText>{shortenedAppLocalePairs[locale]}</ListItemText>
+                  </ListItem>
+                );
+              })}
+            </>
+          )}
+        />
       </Container>
     );
   }

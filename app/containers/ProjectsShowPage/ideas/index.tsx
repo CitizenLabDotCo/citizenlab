@@ -9,6 +9,7 @@ import EventsPreview from '../EventsPreview';
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
+import Warning from 'components/UI/Warning';
 
 // resources
 import GetProject from 'resources/GetProject';
@@ -16,9 +17,11 @@ import GetProject from 'resources/GetProject';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import adminMessages from '../../Admin/pages/messages';
 
 // style
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 const IdeasContainer = styled.div`
   padding-top: 70px;
@@ -27,15 +30,15 @@ const IdeasContainer = styled.div`
 
 const IdeasTitle = styled.h1`
   color: #333;
-  font-size: 29px;
+  font-size: ${fontSizes.xxxl}px;
   line-height: 35px;
   font-weight: 600;
   margin-top: 40px;
   margin-bottom: 30px;
 `;
 
-const Mod = styled(ProjectModeratorIndicator)`
-  max-width: ${props => props.theme.maxPageWidth}px;
+const StyledContentContainer = styled(ContentContainer)`
+  margin-top: 15px;
 `;
 
 interface InputProps {}
@@ -53,7 +56,14 @@ export default withRouter<InputProps>((props: WithRouterProps) => (
         return (
           <>
             <Header projectSlug={props.params.slug} />
-            <Mod projectId={project.id} displayType="message" />
+
+            <ProjectModeratorIndicator projectId={project.id} />
+
+            {project.attributes.publication_status === 'archived' &&
+              <StyledContentContainer>
+                <Warning text={<FormattedMessage {...adminMessages.archivedProject} />} />
+              </StyledContentContainer>
+            }
 
             <IdeasContainer>
               <ContentContainer>

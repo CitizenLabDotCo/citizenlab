@@ -20,7 +20,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 import { getUrlLocale } from 'services/locale';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -37,7 +37,6 @@ const Container: any = styled.div`
   display: flex;
   justify-content: center;
   overflow: hidden;
-  outline: none;
   background: #fff;
   z-index: -10000;
   transform: none;
@@ -159,7 +158,7 @@ const GoBackButton = styled.div`
 
 const GoBackLabel = styled.div`
   color: ${colors.label};
-  font-size: 15px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   transition: fill 100ms ease-out;
 
@@ -356,7 +355,6 @@ class Modal extends React.PureComponent<Props & ITracks & {currentLocale: GetLoc
 
   clickCloseButton = (event) => {
     event.preventDefault();
-    event.stopPropagation();
     this.props.clickCloseButton({ extra: { url: this.props.url } });
     this.manuallyCloseModal();
   }

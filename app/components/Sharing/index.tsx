@@ -22,7 +22,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 // utils
@@ -52,7 +52,7 @@ const IconWrapper = styled.div`
 
 const Text = styled.div`
   max-width: 200px;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   line-height: 19px;
   text-align: left;
   font-weight: 400;
@@ -64,10 +64,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 25px;
-
-  * {
-    outline: none;
-  }
 
   .sharingButton {
     display: flex;

@@ -1,8 +1,3 @@
-/*
- * IdeasShow Messages
- *
- * This contains all the text for the IdeasShow component.
- */
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
@@ -262,5 +257,17 @@ export default defineMessages({
   goBack: {
     id: 'app.components.IdeasShow.goBack',
     defaultMessage: 'Go back',
+  },
+  send: {
+    id: 'app.components.IdeasShow.send',
+    defaultMessage: 'Send',
+  },
+  yourComment: {
+    id: 'app.components.IdeasShow.yourComment',
+    defaultMessage: 'Your comment',
+  },
+  replyToComment: {
+    id: 'app.components.IdeasShow.replyToComment',
+    defaultMessage: 'Reply to comment',
   },
 });
