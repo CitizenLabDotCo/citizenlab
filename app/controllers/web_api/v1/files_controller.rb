@@ -1,11 +1,13 @@
 class WebApi::V1::FilesController < ApplicationController
-  before_action :set_container
+
+  before_action :set_container, only: [:index, :create]
   before_action :set_file, only: [:show, :update, :destroy]
   skip_after_action :verify_policy_scoped
 
   def index
-    authorize @container, :files_index?
     @files = @container.send("#{container_association}_files").order(:ordering)
+    policy_scope_class = "#{params['file_class'].name}Policy::Scope".constantize
+    @files = policy_scope_class.new(current_user, @files).resolve
     render json: @files, each_serializer: WebApi::V1::FileSerializer
   end
 
@@ -14,8 +16,8 @@ class WebApi::V1::FilesController < ApplicationController
   end
 
   def create
-    authorize @container
     @file = @container.send("#{container_association}_files").create(file_params)
+    authorize @file
     if @file.save
       render json: @file, status: :created, serializer: WebApi::V1::FileSerializer
     else
@@ -40,13 +42,8 @@ class WebApi::V1::FilesController < ApplicationController
     end
   end
 
-  private
 
-  def transform_errors_details! error_details
-    # carrierwave does not return the error code symbols by default
-    error_details[:file] = error_details[:file]&.uniq{|e| e[:error]}
-    error_details
-  end
+  private
 
   def secure_controller?
     false
@@ -55,14 +52,13 @@ class WebApi::V1::FilesController < ApplicationController
   def file_params
     params.require(:file).permit(
       :file,
-      :ordering,
-      "#{container_association}_id".to_sym
+      :ordering
     )
   end
 
   def set_file
     @file = params['file_class'].find(params[:id])
-    authorize @container
+    authorize @file
   end
 
   def set_container
@@ -72,5 +68,11 @@ class WebApi::V1::FilesController < ApplicationController
 
   def container_association
     params['container_class'].name.downcase
+  end
+
+   def transform_errors_details! error_details
+    # carrierwave does not return the error code symbols by default
+    error_details[:file] = error_details[:file]&.uniq{|e| e[:error]}
+    error_details
   end
 end

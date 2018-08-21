@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe IdeaPolicy do
   subject { IdeaPolicy.new(user, idea) }
-  let(:scope) { IdeaPolicy::Scope.new(user, Idea) }
+  let(:scope) { IdeaPolicy::Scope.new(user, project.ideas) }
 
   context "on idea in a public project" do 
     let(:project) { create(:continuous_project) }
@@ -82,7 +82,7 @@ describe IdeaPolicy do
       it { should permit(:update)  }
       it { should permit(:destroy) }
 
-      it "should index the project"  do
+      it "should index the idea"  do
         expect(scope.resolve.size).to eq 1
       end
     end
@@ -139,7 +139,7 @@ describe IdeaPolicy do
       it { should permit(:update)  }
       it { should permit(:destroy) }
 
-      it "should index the project"  do
+      it "should index the idea"  do
         expect(scope.resolve.size).to eq 1
       end
     end

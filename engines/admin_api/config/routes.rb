@@ -9,6 +9,8 @@ AdminApi::Engine.routes.draw do
     post :template_import, on: :collection
   end
 
+  resources :areas, only: [:index]
+
   post "/graphql", to: "graphql#execute"
 
 end
