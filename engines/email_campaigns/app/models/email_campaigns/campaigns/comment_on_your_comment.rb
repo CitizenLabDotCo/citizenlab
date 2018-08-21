@@ -18,7 +18,7 @@ module EmailCampaigns
     def generate_command recipient:, activity:
       notification = activity.item
       {
-        event_payload: serialize_campaign(notification),
+        event_payload: serialize_campaign(notification).values.first,
       }
     end
 

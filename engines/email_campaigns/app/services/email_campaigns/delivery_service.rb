@@ -71,7 +71,7 @@ module EmailCampaigns
       segment_event = {
         event: "#{campaign.class.campaign_name} email command",
         user_id: command[:recipient].id,
-        timestamp: Time.now.to_s,
+        timestamp: Time.now.iso8601,
         properties: {
           source: 'cl2-back',
           payload: command[:event_payload]
@@ -79,7 +79,7 @@ module EmailCampaigns
       }
       rabbit_event = {
         event: "#{campaign.class.campaign_name} email command",
-        timestamp: Time.now.to_s,
+        timestamp: Time.now.iso8601,
         user_id: command[:recipient].id,
         payload: command[:event_payload]
       }
