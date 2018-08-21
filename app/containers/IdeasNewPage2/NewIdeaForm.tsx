@@ -20,7 +20,7 @@ import messages from './messages';
 import { IOption, ImageFile } from 'typings';
 
 // style
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -40,9 +40,9 @@ const Container = styled.div`
   `}
 `;
 
-const Title = styled.h2`
+const Title = styled.h1`
   color: #333;
-  font-size: 34px;
+  font-size: ${fontSizes.xxxxl}px;
   line-height: 40px;
   font-weight: 500;
   text-align: center;
@@ -52,7 +52,7 @@ const Title = styled.h2`
   padding-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
-    font-size: 28px;
+    font-size: ${fontSizes.xxxl}px;
     line-height: 34px;
   `}
 `;
@@ -181,6 +181,7 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
 
         <MobileButton>
           <Button
+            form="idea-form"
             className="e2e-submit-idea-form-mobile"
             size="2"
             processing={processing}

@@ -17,7 +17,7 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { quillEditedContent } from 'utils/styleUtils';
+import { quillEditedContent, fontSizes } from 'utils/styleUtils';
 import T from 'components/T';
 
 const StyledContentContainer = styled(ContentContainer)`
@@ -31,13 +31,13 @@ const Information = styled.div`
 
 const InformationTitle = styled.h2`
   color: #333;
-  font-size: 21px;
+  font-size: ${fontSizes.xl}px;
   font-weight: 600;
 `;
 
 const InformationBody = styled.div`
   color: #333;
-  font-size: 18px;
+  font-size: ${fontSizes.large}px;
   line-height: 28px;
   font-weight: 300;
 

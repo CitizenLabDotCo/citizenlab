@@ -9,6 +9,7 @@ import { darken } from 'polished';
 import { API, Message } from 'typings';
 import { IInviteError } from 'services/invites';
 import messages from './messages';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 interface IStyledErrorMessageInner {
   showBackground: boolean;
@@ -22,16 +23,16 @@ interface IStyledErrorMessage {
 
 const ErrorMessageText = styled.div`
   flex: 1 0 auto;
-  color: ${(props) => props.theme.colors.error};
+  color: ${(props) => props.theme.colors.clRedError};
   font-weight: 400;
 
   a {
-    color: ${(props) => props.theme.colors.error};
+    color: ${(props) => props.theme.colors.clRedError};
     font-weight: 500;
     text-decoration: underline;
 
     &:hover {
-      color: ${(props) => darken(0.2, props.theme.colors.error)};
+      color: ${(props) => darken(0.2, props.theme.colors.clRedError)};
       text-decoration: underline;
     }
   }
@@ -45,7 +46,7 @@ const IconWrapper = styled.div`
   margin-right: 8px;
 
   svg {
-    fill: ${(props) => props.theme.colors.error};
+    fill: ${(props) => props.theme.colors.clRedError};
   }
 `;
 
@@ -54,8 +55,8 @@ const StyledErrorMessageInner = styled.div`
   align-items: center;
   justify-content: space-between;
   border-radius: 5px;
-  background: rgba(252, 60, 45, 0.1);
-  background: ${(props: IStyledErrorMessageInner) => (props.showBackground ? 'rgba(252, 60, 45, 0.1)' : 'transparent')};
+  background: ${colors.clRedErrorBackground};
+  background: ${(props: IStyledErrorMessageInner) => (props.showBackground ? colors.clRedErrorBackground : 'transparent')};
 `;
 
 const StyledErrorMessage: any = styled.div`
@@ -162,7 +163,7 @@ const ErrorListItem = styled.li`
 
     :before {
       content: '•';
-      font-size: 24px;
+      font-size: ${fontSizes.xxl}px;
       font-weight: 500;
       margin-right: 10px;
     }

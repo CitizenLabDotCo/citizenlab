@@ -78,7 +78,7 @@ class AreaForm extends PureComponent<InjectedFormikProps<Props & injectedLocaliz
             />
             {touched.title_multiloc && <Error
               fieldName="title_multiloc"
-              apiErrors={errors.title_multiloc}
+              apiErrors={errors.title_multiloc as any}
             />}
           </SectionField>
 
@@ -111,7 +111,7 @@ class AreaForm extends PureComponent<InjectedFormikProps<Props & injectedLocaliz
             <Label>
               <FormattedMessage {...messages.fieldProjects} />
             </Label>
-            <GetProjects>
+            <GetProjects publicationStatuses={['published', 'archived']}>
               {(projects) => (projects && isNilOrError(projects)) ? null : (
                 <Field
                   name="projects"

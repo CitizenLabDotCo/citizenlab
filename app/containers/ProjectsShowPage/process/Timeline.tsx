@@ -25,15 +25,15 @@ import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled, { css } from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
 
-const greyTransparent = css`rgba(121, 137, 147, 0.3)`;
-const greyOpaque = css`rgba(121, 137, 147, 1)`;
-const greenTransparent = css`rgba(29, 170, 99, 0.3)`;
-const greenOpaque = css`rgba(29, 170, 99, 1)`;
+const greyTransparent = css`rgba(116, 116, 116, 0.3)`;
+const greyOpaque = `${colors.label}`;
+const greenTransparent = css`rgba(4, 136, 76, 0.3)`;
+const greenOpaque = `${colors.clGreen}`;
 
 const Container = styled.div`
   width: 100%;
@@ -114,7 +114,7 @@ const PhaseNumberWrapper = styled.div`
 
 const PhaseNumber = styled.div`
   color: #fff;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   line-height: 16px;
   font-weight: 400;
   margin: 0;
@@ -133,20 +133,20 @@ const HeaderTitleWrapper = styled.div`
 
 const HeaderTitle = styled.div`
   color: ${colors.text};
-  font-size: 21px;
+  font-size: ${fontSizes.xl}px;
   line-height: 25px;
   font-weight: 400;
   margin-right: 20px;
 
   ${media.smallerThanMaxTablet`
-    font-size: 20px;
+    font-size: ${fontSizes.xl}px;
     line-height: 24px;
   `}
 `;
 
 const MobileDate = styled.div`
   color: #999;
-  font-size: 15px;
+  font-size: ${fontSizes.base}px;
   line-height: 21px;
   font-weight: 400;
   margin-top: 4px;
@@ -159,7 +159,7 @@ const MobileDate = styled.div`
 
 const HeaderSubtitle = styled.div`
   color: ${colors.label};
-  font-size: 15px;
+  font-size: ${fontSizes.base}px;
   line-height: 20px;
   font-weight: 400;
   margin-top: 3px;
@@ -167,7 +167,7 @@ const HeaderSubtitle = styled.div`
 
 const HeaderDate = styled.div`
   color: #000;
-  font-size: 14px;
+  font-size: ${fontSizes.small}px;
   font-weight: 400;
   line-height: 16px;
   white-space: nowrap;
@@ -220,7 +220,7 @@ const PhaseBar: any = styled.div`
   width: 100%;
   height: calc( ${phaseBarHeight} - 1px );
   color: #fff;
-  font-size: 14px;
+  font-size: ${fontSizes.small}px;
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -243,7 +243,7 @@ const PhaseArrow = styled(Icon)`
 
 const PhaseText: any = styled.div`
   color: ${greyTransparent};
-  font-size: 15px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   text-align: center;
   overflow: hidden;

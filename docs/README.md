@@ -1,5 +1,51 @@
 # Changelog
 
+## 2018-08-20
+
+### Fixed
+- The idea sidepane on the map correctly displays HTML again
+- Editing your own comment no longer turns the screen blank
+- Page tracking to segment no longer tracks the previous page instead of the current one
+- Some browsers no longer break because of missing internationalization support
+- The options of a custom field are now shown in the correct order
+
+### Added
+- A major overhaul of all citizen-facing pages to have significantly better accessibility (almost WCAG2 Level A compliant)
+  - Keyboard navigation supported everywhere
+  - Forms and images will work better with screen readers
+  - Color constrasts have been increased throughout
+  - A warning is shown when the color in admin settings is too low on constrast
+  - And a lot of very small changes to increase WCAG2 compliance
+- Archived projects are visible by citizens
+  - Citizens can filter to see all, active or archived projects
+  - Projects and project cards show a badge indicating a project is archived
+  - In the admin, active and archived projects are shown separately
+- A favicon can now be configured at the hidden location `/admin/favicon`
+  - On android in Chrome, the platform can be added to the Android homescreen and will use the favicon as an icon
+- Visitors coming through Onze Stad App now are trackable in analytics
+
+### Changed
+- All dropdown menus now have the same style
+- The style of all form select fields has changed
+- Page tracking to segment no longer includes the url as the `name` property (salesmachine)
+- Font sizes throughout the citizen-facing side are more consistent
+
+## 2018-08-03
+
+### Fixed
+- The landingpage header layout is no longer broken on mobile devices 
+- Yet another bug related to the landingpage not correctly redirecting the user to the correct locale
+- The Page not found page was not found when a page was not found
+
+### Added
+- The 'Create an account' call to action button on the landing page now gets tracked
+
+## 2018-08-02
+
+### Fixed
+- The browser no longer goes blank when editing a comment
+- Redirect to the correct locale in the URL no longer goes incorrectly to `en`
+
 ## 2018-07-31
 
 ### Fixed

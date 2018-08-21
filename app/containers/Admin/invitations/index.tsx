@@ -44,7 +44,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 // typings
@@ -78,7 +78,7 @@ const ViewButton = styled.button`
 
   > span {
     color: ${colors.adminTextColor};
-    font-size: 17px;
+    font-size: ${fontSizes.medium}px;
     font-weight: 400;
     line-height: 24px;
     padding-left: 15px;
@@ -741,7 +741,7 @@ class Invitations extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, {}>({
-  projects: <GetProjects />,
+  projects: <GetProjects publicationStatuses={['draft', 'published', 'archived']} />,
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
   groups: <GetGroups membershipType="manual" />

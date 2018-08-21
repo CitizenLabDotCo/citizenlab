@@ -23,7 +23,7 @@ interface State {
 
 export type GetProjectImagesChildProps = IProjectImageData[] | undefined | null | Error;
 
-export default class GetIdea extends React.Component<Props, State> {
+export default class GetProjectImages extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 

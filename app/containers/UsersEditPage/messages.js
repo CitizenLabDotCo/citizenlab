@@ -116,6 +116,10 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.domicile_placeholder',
     defaultMessage: 'Domicile',
   },
+  imageDropzonePlaceholder: {
+    id: 'app.containers.UsersEditPage.imageDropzonePlaceholder',
+    defaultMessage: 'Drop your image here',
+  },
   outside: {
     id: 'app.containers.UsersEditPage.outside',
     defaultMessage: `{orgType, select,

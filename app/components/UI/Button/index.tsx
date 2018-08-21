@@ -2,13 +2,15 @@ import React from 'react';
 import Link from 'utils/cl-router/Link';
 import { isBoolean, isNil } from 'lodash';
 import styled, { withTheme } from 'styled-components';
-import { darken, rgba, readableColor } from 'polished';
+import { darken, readableColor } from 'polished';
 import { color, invisibleA11yText } from 'utils/styleUtils';
 import Spinner from 'components/UI/Spinner';
 import Icon, { Props as IconProps } from 'components/UI/Icon';
 
 function getFontSize(size) {
   switch (size) {
+    case '1':
+      return `17px`;
     case '2':
       return `18px`;
     case '3':
@@ -143,11 +145,11 @@ const Container: any = styled.div`
     height: ${(props: any) => props.height || 'auto'};
     justify-content: ${(props: any) => props.justify || 'center'};
     margin: 0;
-    outline: none;
     padding: ${(props: any) => props.padding || getPadding(props.size)};
     position: relative;
     transition: all 100ms ease-out;
     width: ${(props: any) => props.width || '100%'};
+    outline: none;
     &:not(.disabled) {
       cursor: pointer;
     }
@@ -175,7 +177,12 @@ const Container: any = styled.div`
       ${(props: any) => buttonTheme('#fff', (props.theme.colorMain || 'e0e0e0'))}
     }
     &.secondary {
-      ${buttonTheme(color('lightGreyishBlue'), color('label'), 'transparent', darken(0.05, color('lightGreyishBlue')))}
+      ${buttonTheme(
+        color('lightGreyishBlue'),
+        color('label'),
+        'transparent',
+        darken(0.05, color('lightGreyishBlue'))
+      )}
     }
     &.primary-outlined {
       ${(props: any) => buttonTheme('transparent', props.theme.colorMain || 'e0e0e0', props.theme.colorMain || 'e0e0e0')}
@@ -187,10 +194,7 @@ const Container: any = styled.div`
       ${(props: any) => buttonTheme('transparent', props.textColor || color('label'), undefined, undefined, props.textHoverColor)}
     }
     &.success {
-      ${buttonTheme(rgba(color('success'), .15), color('success'))}
-    }
-    &.error {
-      ${buttonTheme(rgba(color('error'), .15), color('error'))}
+      ${buttonTheme(color('clGreenSuccessBackground'), color('clGreenSuccess'))}
     }
     &.cl-blue {
       ${buttonTheme(color('clBlueDark'), 'white')}
@@ -213,13 +217,14 @@ const HiddenText = styled.span`
   ${invisibleA11yText()}
 `;
 
-export type ButtonStyles = 'primary' | 'primary-inverse' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'error' | 'text' | 'cl-blue';
+export type ButtonStyles = 'primary' | 'primary-inverse' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'text' | 'cl-blue';
 
 type Props = {
   children?: any;
   circularCorners?: boolean;
   className?: string;
   disabled?: boolean;
+  form?: string;
   fullWidth?: boolean;
   height?: string;
   hiddenText?: string | JSX.Element;
@@ -282,7 +287,7 @@ class Button extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { text, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, iconTitle, hiddenText, children, linkTo } = this.props;
+    const { text, form, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, iconTitle, hiddenText, children, linkTo } = this.props;
     let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
 
     id = (id || '');
@@ -291,7 +296,7 @@ class Button extends React.PureComponent<Props, State> {
     processing = (isBoolean(processing) ? processing : false);
     disabled = (isBoolean(disabled) ? disabled : false);
     fullWidth = (isBoolean(fullWidth) ? fullWidth : false);
-    circularCorners = (isBoolean(circularCorners) ? circularCorners : true);
+    circularCorners = (isBoolean(circularCorners) ? circularCorners : false);
     iconPos = (iconPos || 'left');
     className = `${className ? className : ''}`;
 
@@ -334,7 +339,7 @@ class Button extends React.PureComponent<Props, State> {
             <StyledLink innerRef={this.props.setSubmitButtonRef} to={linkTo} className={buttonClassnames}>{childContent}</StyledLink>
           )
         ) : (
-          <StyledButton innerRef={this.props.setSubmitButtonRef} className={buttonClassnames}>{childContent}</StyledButton>
+          <StyledButton innerRef={this.props.setSubmitButtonRef} className={buttonClassnames} form={form}>{childContent}</StyledButton>
         )}
       </Container>
     );

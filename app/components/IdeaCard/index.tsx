@@ -30,7 +30,7 @@ import messages from './messages';
 
 // styles
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { IModalInfo } from 'containers/App';
@@ -55,14 +55,14 @@ const IdeaContent = styled.div`
   padding-top: 15px;
 `;
 
-const IdeaTitle: any = styled.h4`
+const IdeaTitle: any = styled.h3`
   color: #333;
   display: block;
   display: -webkit-box;
   max-width: 400px;
   max-height: 60px;
   margin: 0;
-  font-size: 22px;
+  font-size: ${fontSizes.xl}px;
   font-weight: 500;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -95,7 +95,7 @@ const CommentIcon = styled(Icon)`
 
 const CommentCount = styled.div`
   color: ${colors.label};
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
 `;
 

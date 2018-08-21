@@ -28,12 +28,12 @@ const CheckboxContainer: any = styled.div`
   border: solid 1px #aaa;
   border-radius: 3px;
   background: #fff;
-  background: ${(props: any) => props.checked ? props.theme.colors.success : '#fff'};
-  border-color: ${(props: any) => props.checked ? props.theme.colors.success : '#aaa'};
+  background: ${(props: any) => props.checked ? props.theme.colors.clGreen : '#fff'};
+  border-color: ${(props: any) => props.checked ? props.theme.colors.clGreen : '#aaa'};
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.15);
 
   &:hover {
-    border-color: ${(props: any) => props.checked ? props.theme.colors.success : '#333'};
+    border-color: ${(props: any) => props.checked ? props.theme.colors.clGreen : '#333'};
   }
 `;
 

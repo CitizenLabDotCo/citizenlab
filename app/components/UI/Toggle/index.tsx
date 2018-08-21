@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled, { css } from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const size = 21;
 const padding = 4;
@@ -31,7 +31,7 @@ const ToggleContainer: any = styled.div`
     i {
       padding-right: ${padding}px !important;
       padding-left: ${size}px !important;
-      background: ${colors.success} !important;
+      background: ${colors.clGreen} !important;
     }
   `};
 
@@ -62,7 +62,7 @@ const ToggleContainer: any = styled.div`
 
 const Text = styled.div`
   color: #333;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 20px;
   padding-left: 10px;

@@ -8,10 +8,8 @@ import 'utils/lazyImagesObserver';
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 
-// Load the favicon, the manifest.json file and the .htaccess file
+// Load the .htaccess file
 /* eslint-disable import/no-unresolved, import/extensions */
-import '!file-loader?name=[name].[ext]!./favicon.ico';
-import '!file-loader?name=[name].[ext]!./manifest.json';
 import 'file-loader?name=[name].[ext]!./.htaccess';
 /* eslint-enable import/no-unresolved, import/extensions */
 
@@ -22,7 +20,6 @@ import { translationMessages } from './i18n';
 // Import CSS reset and Global Styles
 import 'sanitize.css/sanitize.css';
 import 'assets/semantic/semantic.min.css';
-import 'react-select/dist/react-select.min.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './global-styles';
 /* eslint-enable import/first */
