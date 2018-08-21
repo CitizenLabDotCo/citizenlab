@@ -70,7 +70,7 @@ module EmailCampaigns
     # out through the event bus
     def send_command_external campaign, command
       segment_event = {
-        event: "Periodic email for #{campaign.type.underscore.gsub '_', ' '}",
+        event: "#{campaign.campaign_name} email command",
         user_id: command[:recipient].id,
         timestamp: Time.now,
         properties: {
@@ -79,14 +79,14 @@ module EmailCampaigns
         }
       }
       rabbit_event = {
-        event: campaign.type.underscore,
+        event: "#{campaign.campaign_name} email command",
         timestamp: Time.now,
         user_id: command[:recipient].id,
         payload: command[:event_payload]
       }
 
       PublishRawEventToSegmentJob.perform_now segment_event
-      PublishRawEventToRabbitJob.perform_now rabbit_event, "campaigns.command.#{campaign.type.underscore}"
+      PublishRawEventToRabbitJob.perform_now rabbit_event, "campaigns.command.#{campaign.campaign_name}"
       # PublishRawEventJob.perform_later(
       #   command[:event_payload],
       #   routing_key: "campaigns.command.#{campaign.type.underscore}"

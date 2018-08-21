@@ -30,6 +30,10 @@ module EmailCampaigns
       @recipient_filters || []
     end
 
+    def self.campaign_name
+      self.name.split('::').last.underscore
+    end
+
     def apply_recipient_filters activity: nil, time: nil
       self.class.recipient_filters.inject(User.all) do |users_scope, action_symbol|
         self.send(action_symbol, users_scope, {activity: activity, time: time})
