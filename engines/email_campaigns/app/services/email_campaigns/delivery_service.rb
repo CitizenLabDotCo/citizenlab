@@ -69,27 +69,23 @@ module EmailCampaigns
     # out through the event bus
     def send_command_external campaign, command
       segment_event = {
-        event: "#{campaign.campaign_name} email command",
+        event: "#{campaign.class.campaign_name} email command",
         user_id: command[:recipient].id,
-        timestamp: Time.now,
+        timestamp: Time.now.to_s,
         properties: {
           source: 'cl2-back',
           payload: command[:event_payload]
         }
       }
       rabbit_event = {
-        event: "#{campaign.campaign_name} email command",
-        timestamp: Time.now,
+        event: "#{campaign.class.campaign_name} email command",
+        timestamp: Time.now.to_s,
         user_id: command[:recipient].id,
         payload: command[:event_payload]
       }
 
-      PublishRawEventToSegmentJob.perform_now segment_event
-      PublishRawEventToRabbitJob.perform_now rabbit_event, "campaigns.command.#{campaign.campaign_name}"
-      # PublishRawEventJob.perform_later(
-      #   command[:event_payload],
-      #   routing_key: "campaigns.command.#{campaign.type.underscore}"
-      # )
+      PublishRawEventToSegmentJob.perform_later segment_event
+      PublishRawEventToRabbitJob.perform_later rabbit_event, "campaigns.command.#{campaign.class.campaign_name}"
     end
 
     # This method is triggered when the given sending command should be sent
