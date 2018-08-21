@@ -148,8 +148,8 @@ class CustomFieldService
       title: handle_title(field, locale),
       description: handle_description(field, locale),
       type: "string",
-      enum: field.custom_field_options.map(&:key),
-      enumNames: field.custom_field_options.map{|o| handle_title(o, locale)}
+      enum: field.custom_field_options.order(:ordering).map(&:key),
+      enumNames: field.custom_field_options.order(:ordering).map{|o| handle_title(o, locale)}
     }
   end
   
@@ -167,8 +167,8 @@ class CustomFieldService
       uniqueItems: true,
       items: {
         type: "string",
-        enum: field.custom_field_options.map(&:key),
-        enumNames: field.custom_field_options.map{|o| handle_title(o, locale)}
+        enum: field.custom_field_options.order(:ordering).map(&:key),
+        enumNames: field.custom_field_options.order(:ordering).map{|o| handle_title(o, locale)}
       },
       minItems: (field.enabled && field.required) ? 1 : 0
     }
