@@ -537,6 +537,22 @@ resource "Ideas" do
         end
       end
     end
+
+    context "when unauthorized" do
+      before do
+        @user = create(:user)
+        token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+        header 'Authorization', "Bearer #{token}"
+      end
+
+      describe do
+        let(:idea_status_id) { create(:idea_status).id }
+
+        example_request "Change the idea status (unauthorized)", document: false do
+          expect(status).to eq 401
+        end
+      end
+    end
   end
 
   patch "web_api/v1/ideas/:id" do
