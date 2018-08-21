@@ -1,6 +1,7 @@
 import React, { PureComponent, FormEvent } from 'react';
 import Icon from 'components/UI/Icon';
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 const Container: any = styled.div`
   &:not(.hasLabel) {
@@ -43,6 +44,7 @@ const CheckmarkIcon = styled(Icon)`
 `;
 
 const Text = styled.div`
+  color: ${colors.label};
   padding-left: 10px;
   cursor: pointer;
 `;
