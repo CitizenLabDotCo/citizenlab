@@ -132,18 +132,17 @@ module EmailCampaigns
         phase = TimelineService.new.current_phase project
         {
           project: {
-            project: {
-              id: project_id,
-              title_multiloc: project.title_multiloc,
-              url: FrontendService.new.model_to_url(project)
-            },
-            current_phase: phase && {
-              id: phase.id,
-              title_multiloc: phase.title_multiloc,
-              participation_method: phase.participation_method,
-              start_at: phase.start_at.to_s,
-              end_at: phase.end_at.to_s
-            }
+            id: project_id,
+            title_multiloc: project.title_multiloc,
+            url: FrontendService.new.model_to_url(project)
+            
+          },
+          current_phase: phase && {
+            id: phase.id,
+            title_multiloc: phase.title_multiloc,
+            participation_method: phase.participation_method,
+            start_at: phase.start_at.to_s,
+            end_at: phase.end_at.to_s
           },
           top_ideas: top_project_ideas[project_id].map{ |idea|
             new_votes = idea.votes.where('created_at > ?', Time.now - days_ago)
