@@ -1,4 +1,4 @@
-class PhasePolicy < ApplicationPolicy
+class ProjectImagePolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -9,7 +9,7 @@ class PhasePolicy < ApplicationPolicy
 
     def resolve
       project_ids = Pundit.policy_scope(user, Project).pluck(:id)
-      scope.where(project: project_ids)
+      scope.where(project_id: project_ids)
     end
   end
 

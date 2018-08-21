@@ -139,14 +139,15 @@ class ParticipationContextService
     end
   end
 
+
   private
 
-    def votes_in_context context, user
-      @memoized_votes_in_context[context.id][user.id] ||= calculate_votes_in_context(context, user)
-    end
+  def votes_in_context context, user
+    @memoized_votes_in_context[context.id][user.id] ||= calculate_votes_in_context(context, user)
+  end
 
-    def calculate_votes_in_context context, user
-      user.votes.where(votable_id: context.ideas).count
-    end
+  def calculate_votes_in_context context, user
+    user.votes.where(votable_id: context.ideas).count
+  end
 
 end
