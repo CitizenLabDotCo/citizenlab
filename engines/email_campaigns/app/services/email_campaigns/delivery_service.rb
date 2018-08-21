@@ -12,11 +12,10 @@ module EmailCampaigns
     end
 
     def consentable_campaign_types_for user
-      Campaign
-        .where(type: campaign_types)
-        .select{|c| c.respond_to?(:consentable_for?) && c.consentable_for?(user)}
-        .map{|c| c.type}
-        .uniq
+      consentable_types = Consentable.consentable_campaign_types(CAMPAIGN_CLASSES, user)
+      disabled_types = Disableable.enabled_campaign_types(Campaign.where(type: campaign_types))
+
+      consentable_types - disabled_types
     end
 
     # called every hour

@@ -2,14 +2,22 @@ module EmailCampaigns
   module Consentable
     extend ActiveSupport::Concern
 
+    def self.consentable_campaign_types classes, user
+      DeliveryService::CAMPAIGN_CLASSES
+        .select{|claz| claz.respond_to?(:consentable_for?) && claz.consentable_for?(user)}
+        .map(&:name)
+    end
+
     included do
       recipient_filter :filter_users_with_consent
     end
 
-    def consentable_for? user
-      roles = respond_to?(:consentable_roles) ? consentable_roles : []
-      roles.all? do |role|
-        user.send("#{role}?")
+    class_methods do
+      def consentable_for? user
+        roles = respond_to?(:consentable_roles) ? consentable_roles : []
+        roles.all? do |role|
+          user.send("#{role}?")
+        end
       end
     end
 
