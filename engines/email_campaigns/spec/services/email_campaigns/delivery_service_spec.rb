@@ -11,7 +11,7 @@ describe EmailCampaigns::DeliveryService do
     it "returns campaign_types that all have at least 1 campaign_type_description translation defined" do
       multiloc_service = MultilocService.new
       service.campaign_types.each do |campaign_type|
-        expect{multiloc_service.i18n_to_multiloc("email_campaigns.campaign_type_description.#{campaign_type}")}
+        expect{multiloc_service.i18n_to_multiloc("email_campaigns.campaign_type_description.#{campaign_type.constantize.campaign_name}")}
           .to_not raise_error
       end
     end
@@ -23,9 +23,11 @@ describe EmailCampaigns::DeliveryService do
 
     it "enqueues an external event job" do
       travel_to campaign.ic_schedule.start_time do
-        expect{service.send_on_schedule(Time.now)}
-          .to have_enqueued_job(PublishRawEventJob)
-          .exactly(1).times
+        expectation = expect{service.send_on_schedule(Time.now)}
+        expectation.to have_enqueued_job(PublishRawEventToSegmentJob)
+        .exactly(1).times
+        expectation.to have_enqueued_job(PublishRawEventToRabbitJob)
+        .exactly(1).times
       end
     end
 
@@ -55,9 +57,11 @@ describe EmailCampaigns::DeliveryService do
     let(:user) { create(:user) }
 
     it "enqueues an external event job" do
-      expect{service.send_on_activity(activity)}
-        .to have_enqueued_job(PublishRawEventJob)
-        .exactly(1).times
+      expectation = expect{service.send_on_activity(activity)}
+      expectation.to have_enqueued_job(PublishRawEventToSegmentJob)
+      .exactly(1).times
+      expectation.to have_enqueued_job(PublishRawEventToRabbitJob)
+      .exactly(1).times
       expect(EmailCampaigns::Delivery.all).to be_empty
     end
   end
