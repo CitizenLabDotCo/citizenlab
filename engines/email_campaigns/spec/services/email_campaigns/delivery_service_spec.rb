@@ -7,6 +7,14 @@ describe EmailCampaigns::DeliveryService do
     it "returns all campaign types" do
       expect(service.campaign_types).to_not be_empty
     end
+
+    it "returns campaign_types that all have at least 1 campaign_type_description translation defined" do
+      multiloc_service = MultilocService.new
+      service.campaign_types.each do |campaign_type|
+        expect{multiloc_service.i18n_to_multiloc("email_campaigns.campaign_type_description.#{campaign_type}")}
+          .to_not raise_error
+      end
+    end
   end
 
   describe "send_on_schedule" do
@@ -80,23 +88,44 @@ describe EmailCampaigns::DeliveryService do
   end
 
   describe "consentable_campaign_types_for" do
-    it "returns all campaign types that return true to #consentable_for?, for the given user" do
+    it "returns all campaign types that return true to #consentable_for?, for the given user and have an enabled campaign" do
       class NonConsentableCampaign < EmailCampaigns::Campaign
       end
       class ConsentableCampaign < EmailCampaigns::Campaign
         include EmailCampaigns::Consentable
-      end
 
+        def self.consentable_roles
+          []
+        end
+      end
+      class ConsentableDisableableCampaignA < EmailCampaigns::Campaign
+        include EmailCampaigns::Consentable
+        include EmailCampaigns::Disableable
+
+        def self.consentable_roles
+          []
+        end
+      end
+      class ConsentableDisableableCampaignB < EmailCampaigns::Campaign
+        include EmailCampaigns::Consentable
+        include EmailCampaigns::Disableable
+
+        def self.consentable_roles
+          []
+        end
+      end
       NonConsentableCampaign.create!
       ConsentableCampaign.create!
-
+      ConsentableDisableableCampaignA.create!(enabled: false)
+      ConsentableDisableableCampaignB.create!(enabled: false)
+      ConsentableDisableableCampaignB.create!(enabled: true)
+      stub_const(
+        "EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES", 
+        [NonConsentableCampaign, ConsentableDisableableCampaignA, ConsentableDisableableCampaignB, ConsentableCampaign]
+      )
       user = create(:user)
 
-      expect(service)
-        .to receive(:campaign_types)
-        .and_return(['NonConsentableCampaign', 'ConsentableCampaign'])
-
-      expect(service.consentable_campaign_types_for(user)).to eq ["ConsentableCampaign"]
+      expect(service.consentable_campaign_types_for(user)).to match_array ["ConsentableCampaign", "ConsentableDisableableCampaignB"]
     end
   end
 

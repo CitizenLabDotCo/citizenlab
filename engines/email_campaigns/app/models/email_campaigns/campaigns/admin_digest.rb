@@ -20,7 +20,7 @@ module EmailCampaigns
       end
     end
 
-    def consentable_roles
+    def self.consentable_roles
       ['admin']
     end
 
