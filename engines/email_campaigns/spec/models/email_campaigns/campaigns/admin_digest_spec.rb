@@ -15,7 +15,7 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest, type: :model do
     let!(:vote) { create(:vote, mode: 'up', votable: new_ideas.first) }
     let!(:draft) { create(:idea, publication_status: 'draft') }
 
-  	it "generates a comment with the desired payload and tracked content" do
+  	it "generates a command with the desired payload and tracked content" do
   		command = campaign.generate_command recipient: admin
 
       expect(
@@ -33,5 +33,4 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest, type: :model do
       expect(command.dig(:tracked_content, :idea_ids)).to include(new_ideas.first.id)
   	end
   end
-
 end
