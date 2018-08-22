@@ -116,7 +116,6 @@ class CampaignsConsentForm extends PureComponent<Props, State> {
               </CheckboxContainer>
             ))}
           </ConsentList>
-
           <SubmitWrapper
             status={saveButtonStatus}
             style="primary"
