@@ -1,18 +1,27 @@
 import React, { PureComponent } from 'react';
-import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import ProfileSection from './ProfileSection';
+import ProfileSection from '../ProfileSection';
 import GetCampaignConsents, { GetCampaignConsentsChildProps } from 'resources/GetCampaignConsents';
-import { isNilOrError } from 'utils/helperUtils';
-import Checkbox from 'components/UI/Checkbox';
 import { IConsentData, updateConsent, IConsent } from 'services/campaignConsents';
 import styled from 'styled-components';
-import T from 'components/T';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { FormattedMessage } from 'utils/cl-intl';
 import { find } from 'lodash';
+
+// components
+import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+import T from 'components/T';
+import Checkbox from 'components/UI/Checkbox';
 
 const CheckboxContainer = styled.div`
   padding-bottom: 0.5rem;
+`;
+
+const ConsentList = styled.div`
+  margin-bottom: 40px;
 `;
 
 type InputProps = {};
@@ -25,6 +34,8 @@ type Props = InputProps & DataProps;
 
 interface State {
   consentChanges: {};
+  isSaving: boolean;
+  saveButtonStatus: 'enabled' | 'disabled' | 'error' | 'success';
 }
 
 class CampaignsConsentForm extends PureComponent<Props, State> {
@@ -33,16 +44,19 @@ class CampaignsConsentForm extends PureComponent<Props, State> {
     super(props as any);
     this.state = {
       consentChanges: {},
+      isSaving: false,
+      saveButtonStatus: 'enabled',
     };
   }
 
   handleOnChange = (consent: IConsentData) => () => {
-      const becomesConsented = this.isConsented(consent.id);
+    const becomesConsented = this.isConsented(consent.id);
     this.setState(prevState => ({
       consentChanges: {
         ...prevState.consentChanges,
         [consent.id]: !becomesConsented,
-      }
+      },
+      saveButtonStatus: 'enabled'
     }));
   }
 
@@ -59,35 +73,62 @@ class CampaignsConsentForm extends PureComponent<Props, State> {
     return false;
   }
 
-  handleOnSubmit() {
+  handleOnSubmit = () => {
     const { consentChanges } = this.state;
     let consentUpdates: Promise<IConsent>[] = [];
 
+    this.setState({ isSaving: true, saveButtonStatus: 'disabled' });
     if (consentChanges) {
       consentUpdates = Object.keys(consentChanges).map(consentId => {
         return updateConsent(consentId, { consented: this.isConsented(consentId) });
       });
     }
 
-    Promise.all(consentUpdates).then(() => this.setState({ consentChanges: {} }));
+    Promise.all(consentUpdates)
+    .then(() => {
+      this.setState({
+        consentChanges: {},
+        isSaving: false,
+        saveButtonStatus: 'success'
+      });
+    })
+    .catch(() => {
+      this.setState({ saveButtonStatus: 'error' });
+    });
   }
 
   render() {
     const { consents } = this.props;
+    const { isSaving, saveButtonStatus } = this.state;
     return (
       <ProfileSection>
         <form action="">
           <SectionTitle><FormattedMessage {...messages.notificationsTitle} /></SectionTitle>
           <SectionSubtitle><FormattedMessage {...messages.notificationsSubTitle} /></SectionSubtitle>
-          {!isNilOrError(consents) && consents.map((consent) => (
-            <CheckboxContainer key={consent.id}>
-              <Checkbox
-                value={this.isConsented(consent.id)}
-                onChange={this.handleOnChange(consent)}
-                label={<T value={consent.attributes.campaign_type_description_multiloc} />}
-              />
-            </CheckboxContainer>
-          ))}
+          <ConsentList>
+            {!isNilOrError(consents) && consents.map((consent) => (
+              <CheckboxContainer key={consent.id}>
+                <Checkbox
+                  value={this.isConsented(consent.id)}
+                  onChange={this.handleOnChange(consent)}
+                  label={<T value={consent.attributes.campaign_type_description_multiloc} />}
+                />
+              </CheckboxContainer>
+            ))}
+          </ConsentList>
+
+          <SubmitWrapper
+            status={saveButtonStatus}
+            style="primary"
+            loading={isSaving}
+            onClick={this.handleOnSubmit}
+            messages={{
+              buttonSave: messages.submit,
+              buttonSuccess: messages.buttonSuccessLabel,
+              messageSuccess: messages.messageSuccess,
+              messageError: messages.messageError,
+            }}
+          />
         </form>
       </ProfileSection>
     );
