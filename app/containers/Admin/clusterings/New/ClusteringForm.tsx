@@ -78,7 +78,7 @@ class AreaForm extends PureComponent<InjectedFormikProps<Props & injectedLocaliz
             />
             {touched.title_multiloc && <Error
               fieldName="title_multiloc"
-              apiErrors={errors.title_multiloc}
+              apiErrors={errors.title_multiloc as any}
             />}
           </SectionField>
 

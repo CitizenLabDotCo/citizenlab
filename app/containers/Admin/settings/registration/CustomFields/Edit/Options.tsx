@@ -57,15 +57,15 @@ class OptionsForm extends React.Component<Props, State> {
     const errors : FormikErrors<FormValues> = {};
 
     if (isEmpty(values.key)) {
-      errors.key = (errors.key || []).concat({ error: 'blank' });
+      errors.key = [{ error: 'blank' }] as any;
     }
 
     if (!values.key.match(/^[a-zA-Z0-9_]+$/)) {
-      errors.key = (errors.key || []).concat({ error: 'invalid' });
+      errors.key = [{ error: 'blank' }] as any;
     }
 
     if (every(getValues(values.title_multiloc), isEmpty)) {
-      errors.title_multiloc = (errors.title_multiloc || []).concat({ error: 'blank' });
+      errors.title_multiloc = [{ error: 'blank' }] as any;
     }
 
     return errors;
