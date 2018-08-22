@@ -60,6 +60,7 @@ export default class SubmitWrapper extends React.Component<Props> {
 
     if (this.props.status === 'success') {
       style = 'success';
+      this.removeFocus(this.submitButton);
     }
 
     if (this.props.status === 'error') {
