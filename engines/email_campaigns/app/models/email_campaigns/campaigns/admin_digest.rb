@@ -60,7 +60,6 @@ module EmailCampaigns
          )
     end
 
-
     def statistics
       {
         activities: {

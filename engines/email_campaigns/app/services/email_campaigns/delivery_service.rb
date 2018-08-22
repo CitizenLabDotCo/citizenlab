@@ -4,7 +4,8 @@ module EmailCampaigns
     CAMPAIGN_CLASSES = [
       Campaigns::Manual,
       Campaigns::CommentOnYourComment,
-      Campaigns::AdminDigest
+      Campaigns::AdminDigest,
+      Campaigns::UserDigest
     ]
 
     def campaign_types
