@@ -269,7 +269,7 @@
   "app.containers.AdminPage.DashboardPage.week": "Week",
   "app.containers.AdminPage.DashboardPage.year": "Year",
   "app.containers.AdminPage.FaviconPage.favicon": "Favicon",
-  "app.containers.AdminPage.FaviconPage.faviconExplaination": "It has to be a simple enough image to be seen in very little. It should be a square PNG. It can use transparency. If it doesn't, prefer a white background. This should be set once and changed as little as possible.",
+  "app.containers.AdminPage.FaviconPage.faviconExplaination": "Please use a simple image, as it will be shown as very little. It should be a square PNG. Optimally, it is transparant. If not, use a white background. This should be set once and changed as little as possible.",
   "app.containers.AdminPage.FaviconPage.noFavicon": "Please upload a favicon image",
   "app.containers.AdminPage.FaviconPage.save": "Save",
   "app.containers.AdminPage.FaviconPage.saveErrorMessage": "Something went wrong, please try again later.",

@@ -88,6 +88,7 @@ interface Props {
   content: JSX.Element;
   footer?: JSX.Element;
   onClickOutside?: (event: FormEvent) => void;
+  id?: string;
 }
 
 interface State {}
@@ -153,7 +154,8 @@ export default class Dropdown extends PureComponent<Props, State> {
       right,
       mobileRight,
       content,
-      footer
+      footer,
+      id
     } = this.props;
 
     return (
@@ -166,6 +168,7 @@ export default class Dropdown extends PureComponent<Props, State> {
         classNames={`${this.props['className']} dropdown`}
       >
         <Container
+          id={id}
           width={width}
           mobileWidth={mobileWidth}
           top={top}

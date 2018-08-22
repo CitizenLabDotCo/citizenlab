@@ -1,9 +1,8 @@
-import * as React from 'react';
+import React, { PureComponent } from 'react';
 import InputMultiloc, { Props as VanillaInputMultilocProps } from 'components/UI/InputMultiloc';
 import { FieldProps } from 'formik';
 
-class FormikInputMultiloc extends React.Component<FieldProps & VanillaInputMultilocProps> {
-
+class FormikInputMultiloc extends PureComponent<FieldProps & VanillaInputMultilocProps> {
   handleOnChange = (newValue) => {
     this.props.form.setFieldValue(this.props.field.name, newValue);
   }
