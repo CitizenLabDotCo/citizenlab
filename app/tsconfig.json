@@ -19,15 +19,16 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "target": "es6",
+    "target": "es5",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
     "plugins": [{
       "name": "typescript-styled-plugin"
     }]
   },
   "include": [
-      "**/*"
+    "**/*"
   ],
   "exclude": [
     "node_modules",
@@ -35,7 +36,13 @@
     "scripts",
     "acceptance-tests",
     "webpack",
-    "jest"
+    "jest",
+    "internals",
+    "server",
+    "e2e",
+    "docs",
+    ".git",
+    ".vscode"
   ],
   "types": [
     "typePatches"

@@ -40,7 +40,7 @@ BROWSERSTACK_USER=xxx BROWSERSTACK_KEY=yyy ROOT_URL=zzz npm run test:browserstac
 ## IDE setup
 
 Your text editor of choice should support [Editorconfig][editorconfig] and [Typescript][typescript].
-It is also recommended that it supports [ESLint][eslint] and [TSLint][tslint] in order to give you immediate feedback.
+It is also recommended that it supports [TSLint][tslint] in order to give you immediate feedback.
 
 For all these reasons, [VSCode][vscode] is the preferred editor, but feel free to use something else if you'd like.
 
@@ -48,6 +48,5 @@ For all these reasons, [VSCode][vscode] is the preferred editor, but feel free t
 [cl2back]: https://github.com/CitizenLabDotCo/cl2-back
 [editorconfig]: http://editorconfig.org/
 [typescript]: http://www.typescriptlang.org/
-[eslint]: https://eslint.org/
 [tslint]: https://palantir.github.io/tslint/
 [vscode]: https://code.visualstudio.com/
