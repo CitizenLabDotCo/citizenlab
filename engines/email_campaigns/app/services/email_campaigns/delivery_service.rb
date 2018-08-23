@@ -5,6 +5,7 @@ module EmailCampaigns
       Campaigns::Manual,
       Campaigns::CommentOnYourComment,
       Campaigns::AdminDigest,
+      Campaigns::ModeratorDigest,
       Campaigns::UserDigest
     ]
 
