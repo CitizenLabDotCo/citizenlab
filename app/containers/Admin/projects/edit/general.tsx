@@ -676,21 +676,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       return (
         <form className="e2e-project-general-form" onSubmit={this.onSubmit}>
           <Section>
-
-            <SectionField>
-              <FileInput
-                onAdd={this.handleFileOnAdd}
-              />
-              {Array.isArray(newProjectFiles) && newProjectFiles.map(file => (
-                <div>
-                  {file.name}
-                  filesize : {returnFileSize(file.size)}
-                  <button onClick={this.handleProjectFileOnRemove(file)} key={file.id || file.name}>delete</button>
-                  <a href={file.objectUrl || file.base64} download={file.name} target="blank">Download</a>
-                </div>
-              ))}
-            </SectionField>
-
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.statusLabel} />
@@ -870,6 +855,20 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 </SectionField>
               </HasPermission>
             }
+
+            <SectionField>
+              <FileInput
+                onAdd={this.handleFileOnAdd}
+              />
+              {Array.isArray(newProjectFiles) && newProjectFiles.map(file => (
+                <div>
+                  {file.name}
+                  filesize : {returnFileSize(file.size)}
+                  <button onClick={this.handleProjectFileOnRemove(file)} key={file.id || file.name}>delete</button>
+                  <a href={file.objectUrl || file.base64} download={file.name} target="blank">Download</a>
+                </div>
+              ))}
+            </SectionField>
 
             <SubmitWrapper
               loading={processing}
