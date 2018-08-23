@@ -21,7 +21,7 @@ FactoryBot.define do
     schedule { weekly_schedule }
   end
 
-  factory :moderator_digest_campaign, class: EmailCampaigns::Campaigns::AdminDigest do
+  factory :moderator_digest_campaign, class: EmailCampaigns::Campaigns::ModeratorDigest do
     enabled true
     schedule { weekly_schedule }
   end

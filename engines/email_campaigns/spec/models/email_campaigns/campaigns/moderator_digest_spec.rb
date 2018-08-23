@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaigns::ModeratorDigest, type: :model do
-  describe "AdminDigest Campaign default factory" do
+  describe "ModeratorDigest Campaign default factory" do
     it "is valid" do
       expect(build(:moderator_digest_campaign)).to be_valid
     end
@@ -19,7 +19,7 @@ RSpec.describe EmailCampaigns::Campaigns::ModeratorDigest, type: :model do
 
   	it "generates a command with the desired payload and tracked content" do
   		command = campaign.generate_command recipient: moderator
-
+      
       expect(
       	command.dig(:event_payload, :statistics, :activities, :new_ideas, :increase)
       	).to eq(new_ideas.size)
