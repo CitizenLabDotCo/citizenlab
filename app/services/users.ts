@@ -85,7 +85,8 @@ export function userByInviteStream(token: string, streamParams: IStreamParams | 
 }
 
 export async function updateUser(userId: string, object: IUserUpdate) {
-  return streams.update<IUser>(`${apiEndpoint}/${userId}`, userId, { user: object });
+  const response = await streams.update<IUser>(`${apiEndpoint}/${userId}`, userId, { user: object });
+  return response;
 }
 
 export async function deleteUser(userId: string) {
