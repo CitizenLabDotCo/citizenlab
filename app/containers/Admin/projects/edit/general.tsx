@@ -841,6 +841,23 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               />
             </StyledSectionField>
 
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.projectImageLabel} />
+              </Label>
+              <FileInput
+                onAdd={this.handleFileOnAdd}
+              />
+              {Array.isArray(newProjectFiles) && newProjectFiles.map(file => (
+                <div>
+                  {file.name}
+                  filesize : {returnFileSize(file.size)}
+                  <button onClick={this.handleProjectFileOnRemove(file)} key={file.id || file.name}>delete</button>
+                  <a href={file.objectUrl || file.base64} download={file.name} target="blank">Download</a>
+                </div>
+              ))}
+            </SectionField>
+
             {projectData &&
               <HasPermission item={projectData} action="delete">
                 <SectionField>
@@ -855,20 +872,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 </SectionField>
               </HasPermission>
             }
-
-            <SectionField>
-              <FileInput
-                onAdd={this.handleFileOnAdd}
-              />
-              {Array.isArray(newProjectFiles) && newProjectFiles.map(file => (
-                <div>
-                  {file.name}
-                  filesize : {returnFileSize(file.size)}
-                  <button onClick={this.handleProjectFileOnRemove(file)} key={file.id || file.name}>delete</button>
-                  <a href={file.objectUrl || file.base64} download={file.name} target="blank">Download</a>
-                </div>
-              ))}
-            </SectionField>
 
             <SubmitWrapper
               loading={processing}
