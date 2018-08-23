@@ -21,7 +21,7 @@ module EmailCampaigns
     end
 
     def self.consentable_roles
-      ['moderator']
+      ['project_moderator']
     end
 
     def generate_command recipient:, time: nil
@@ -45,7 +45,7 @@ module EmailCampaigns
     private
 
     def user_filter_moderator_only users_scope, options={}
-      users_scope.where("roles @> '[{\"type\":\"moderator\"}]'")
+      users_scope.where("roles @> '[{\"type\":\"project_moderator\"}]'")
     end
 
     def is_content_worth_sending? _
