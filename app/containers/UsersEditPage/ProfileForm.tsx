@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Subscription, BehaviorSubject } from 'rxjs';
-import { switchMap, map, distinctUntilChanged } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
 import { isEqual, isEmpty, get } from 'lodash';
@@ -92,7 +92,7 @@ class ProfileForm extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    const user$ = this.user$.filter(user => user !== null).pipe(distinctUntilChanged((x, y) => isEqual(x, y)));
+    const user$ = this.user$.filter(user => user !== null);
     const locale$ = localeStream().observable;
     const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
 
@@ -208,8 +208,8 @@ class ProfileForm extends PureComponent<Props, State> {
       }
     };
 
-    const createChangeHandler = (fieldName) => value => {
-      if (/_multiloc$/.test(fieldName)) {
+    const createChangeHandler = (fieldName: string) => value => {
+      if (fieldName.endsWith('_multiloc')) {
         setFieldValue(fieldName, { [this.props.locale]: value });
       } else if (value && value.value) {
         setFieldValue(fieldName, value.value);
@@ -218,8 +218,8 @@ class ProfileForm extends PureComponent<Props, State> {
       }
     };
 
-    const createBlurHandler = (fieldName) => () => {
-      setFieldTouched(fieldName, true);
+    const createBlurHandler = (fieldName: string) => () => {
+      setFieldTouched(fieldName, false, false);
     };
 
     const handleAvatarOnAdd = (newAvatar: ImageFile) => {
