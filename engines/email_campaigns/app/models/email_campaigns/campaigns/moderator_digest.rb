@@ -31,12 +31,12 @@ module EmailCampaigns
       idea_ids = top_ideas.map{|top_idea| top_idea[:id]}
       {
         event_payload: {
-          statistics: @statistics,
-          top_project_ideas: @top_project_ideas,
-          has_new_ideas: (@top_project_ideas.size > 0)
+          statistics: statistics,
+          top_ideas: top_ideas,
+          has_new_ideas: (top_ideas.size > 0)
         },
         tracked_content: {
-          idea_ids: @idea_ids
+          idea_ids: idea_ids
         }
       }
     end
