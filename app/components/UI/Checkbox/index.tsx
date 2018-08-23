@@ -69,10 +69,29 @@ type Props = {
 type State = {};
 
 export default class Checkbox extends PureComponent<Props, State> {
+  checkboxContainer: HTMLDivElement | null;
+
+  constructor(props: Props)  {
+    super(props as any);
+    this.checkboxContainer = null;
+  }
+
   toggleCheckbox = (event: FormEvent | KeyboardEvent) => {
+    if (event.type === 'click') {
+      this.removeFocusCheckboxFocus();
+    }
+
     event.preventDefault();
     event.stopPropagation();
     this.props.onChange(event);
+  }
+
+  setCheckboxContainerRef = (el) => {
+    this.checkboxContainer = el;
+  }
+
+  removeFocusCheckboxFocus() {
+    if (this.checkboxContainer) this.checkboxContainer.blur();
   }
 
   handleLabelOnClick = (event: FormEvent) => {
@@ -95,6 +114,7 @@ export default class Checkbox extends PureComponent<Props, State> {
     return (
       <Container className={`${className} ${label && 'hasLabel'}`} size={checkboxSize}>
         <CheckboxContainer
+          innerRef={this.setCheckboxContainerRef}
           tabIndex={0}
           checked={value}
           size={checkboxSize}
