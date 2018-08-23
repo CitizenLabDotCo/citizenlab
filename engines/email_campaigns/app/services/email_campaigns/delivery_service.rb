@@ -4,6 +4,7 @@ module EmailCampaigns
     CAMPAIGN_CLASSES = [
       Campaigns::Manual,
       Campaigns::CommentOnYourComment,
+      Campaigns::CommentOnYourIdea,
       Campaigns::AdminDigest,
       Campaigns::ModeratorDigest,
       Campaigns::UserDigest
