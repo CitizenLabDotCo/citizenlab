@@ -843,7 +843,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
 
             <SectionField>
               <Label>
-                <FormattedMessage {...messages.projectImageLabel} />
+                <FormattedMessage {...messages.fileUploadLabel} />
               </Label>
               <FileInput
                 onAdd={this.handleFileOnAdd}
