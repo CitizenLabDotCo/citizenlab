@@ -14,6 +14,10 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // components
 import Icon from 'components/UI/Icon';
 
+const Container = styled.div`
+  margin-bottom: 10px;
+`;
+
 const StyledIcon = styled(Icon)`
   width: 24px;
   height: 18px;
@@ -56,7 +60,7 @@ class FileInput extends Component<InjectedIntlProps &Props> {
 
   render() {
     return (
-      <>
+      <Container>
         <Input
           id="project-attachment-uploader"
           onChange={this.onChange}
@@ -69,7 +73,7 @@ class FileInput extends Component<InjectedIntlProps &Props> {
           <StyledIcon name="upload-file" />
           <FormattedMessage {...messages.FileInputDescription} />
         </Label>
-      </>
+      </Container>
     );
   }
 }
