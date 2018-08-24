@@ -3,4 +3,7 @@ en:
     campaign_type_description:
       "manual": Direct messages sent by administrators or moderators
       "comment_on_your_comment": When someone replies to my comment
+      "comment_on_your_idea": When someone replies to my idea
       "admin_digest": A weekly overview of the activity on the platform (only for administrators)
+      "moderator_digest": A weekly overview of the activity on the platform (only for moderators)
+      "user_digest": A weekly overview of the activity on the platform (for citizens)
