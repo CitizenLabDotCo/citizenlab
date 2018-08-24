@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180801130039) do
+ActiveRecord::Schema.define(version: 20180824094903) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -322,6 +322,8 @@ ActiveRecord::Schema.define(version: 20180801130039) do
     t.string "survey_embed_url"
     t.string "survey_service"
     t.string "presentation_mode", default: "card"
+    t.integer "max_budget"
+    t.string "currency"
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -366,6 +368,8 @@ ActiveRecord::Schema.define(version: 20180801130039) do
     t.string "survey_embed_url"
     t.string "survey_service"
     t.integer "ordering"
+    t.integer "max_budget"
+    t.string "currency"
     t.index ["created_at"], name: "index_projects_on_created_at"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
