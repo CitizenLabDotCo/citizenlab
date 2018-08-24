@@ -2,16 +2,32 @@ import React, { Component, createRef } from 'react';
 import { getBase64FromFile } from 'utils/imageTools';
 import { UploadFile } from 'typings';
 
+// i18n
+import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+
+// components
+import Icon from 'components/UI/Icon';
+
+const StyledIcon = styled(Icon)`
+  width: 24px;
+  height: 18px;
+  fill: ${colors.label};
+  margin-right: 10px;
+`;
 
 const Input = styled.input`
   display: none;
 `;
 
 const Label = styled.label`
-  display: block;
+  display: flex
+  align-items: center;
   cursor: pointer;
   color: ${colors.label};
   border: 1px dashed ${colors.adminTextColor};
@@ -24,7 +40,7 @@ interface Props {
   onAdd: (file: UploadFile) => void;
 }
 
-class FileInput extends Component<Props> {
+class FileInput extends Component<InjectedIntlProps &Props> {
   private fileInput = createRef<HTMLInputElement>();
 
   onChange = () => {
@@ -49,10 +65,13 @@ class FileInput extends Component<Props> {
           innerRef={this.fileInput}
           accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .sxw, .sxc, .sxi, .sdw, .sdc, .sdd, .csv, .mp3, .mp4, .mkv, .avi"
         />
-        <Label htmlFor="project-attachment-uploader">Browse files</Label>
+        <Label htmlFor="project-attachment-uploader">
+          <StyledIcon name="upload-file" />
+          <FormattedMessage {...messages.FileInputDescription} />
+        </Label>
       </>
     );
   }
 }
 
-export default FileInput;
+export default injectIntl<Props>(FileInput);
