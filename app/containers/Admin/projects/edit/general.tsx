@@ -13,6 +13,7 @@ import Radio from 'components/UI/Radio';
 import Label from 'components/UI/Label';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import FileInput from 'components/UI/FileInput';
+import FileDisplay from 'components/UI/FileDisplay';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from './participationContext';
@@ -48,7 +49,6 @@ import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToFileObservable } from 'utils/imageTools';
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
-import { returnFileSize } from 'utils/helperUtils';
 
 // style
 import styled from 'styled-components';
@@ -672,7 +672,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       }).map((id) => {
         return areasOptions.find(areaOption => areaOption.value === id) as IOption;
       });
-      console.log(newProjectFiles);
       return (
         <form className="e2e-project-general-form" onSubmit={this.onSubmit}>
           <Section>
@@ -849,12 +848,11 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 onAdd={this.handleFileOnAdd}
               />
               {Array.isArray(newProjectFiles) && newProjectFiles.map(file => (
-                <div>
-                  {file.name}
-                  filesize : {returnFileSize(file.size)}
-                  <button onClick={this.handleProjectFileOnRemove(file)} key={file.id || file.name}>delete</button>
-                  <a href={file.objectUrl || file.base64} download={file.name} target="blank">Download</a>
-                </div>
+                <FileDisplay
+                  key={file.id || file.name}
+                  onDeleteClick={this.handleProjectFileOnRemove(file)}
+                  file={file}
+                />
               ))}
             </SectionField>
 
