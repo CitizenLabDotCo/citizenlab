@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // components
-import Icon, { Props as IconProps } from 'components/UI/Icon';
+import Icon  from 'components/UI/Icon';
 
 const Container = styled.div`
   display: flex
@@ -39,15 +39,21 @@ const FileSize = styled.span`
   margin-right: auto;
 `;
 
-const DeleteIcon = styled<IconProps>(Icon)`
-  width: 12px;
-  height: 14px;
-  fill: ${colors.label};
+const DeleteButton = styled.button`
+  display: flex;
+  align-items: center;
   cursor: pointer;
 
   &:hover {
-    fill: ${colors.clRed};
+    .cl-icon {
+      fill: ${colors.clRed};
+    }
   }
+`;
+
+const StyledIcon = styled(Icon)`
+  width: 12px;
+  fill: ${colors.label};
 `;
 
 interface Props {
@@ -63,7 +69,9 @@ const FileDisplay = ({ file, onDeleteClick }: Props) => {
         {file.name}
       </FileDownloadLink>
       <FileSize>({returnFileSize(file.size)})</FileSize>
-      <DeleteIcon name="delete" onClick={onDeleteClick} />
+      <DeleteButton onClick={onDeleteClick}>
+        <StyledIcon name="delete" />
+      </DeleteButton>
     </Container>
   );
 };
