@@ -44,6 +44,10 @@ const DeleteIcon = styled<IconProps>(Icon)`
   height: 14px;
   fill: ${colors.label};
   cursor: pointer;
+
+  &:hover {
+    fill: ${colors.clRed};
+  }
 `;
 
 interface Props {
