@@ -33,11 +33,15 @@ const Label = styled.label`
   display: flex
   align-items: center;
   cursor: pointer;
-  color: ${colors.label};
   border: 1px dashed ${colors.adminTextColor};
   border-radius: 5px;
   font-size: ${fontSizes.base}px;
-  padding: 10px 20px;
+  padding: 10px 20px
+  color: ${colors.label};
+
+  &:hover {
+    border: 1px solid ${colors.adminTextColor};
+  }
 `;
 
 interface Props {
