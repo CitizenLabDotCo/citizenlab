@@ -63,9 +63,12 @@ def create_for_some_locales
   translations
 end
 
-def generate_avatar
-  i = rand(10)
-  Rails.root.join("spec/fixtures/avatar#{i}.#{(i > 1) ? 'jpg' : 'png'}").open
+def generate_avatar gender
+  i = rand(8) + 2
+  if !%w(male female).include? gender
+    gender = %w(male female)[rand(2)]
+  end
+  Rails.root.join("spec/fixtures/#{gender}_avatar_#{i}.jpg").open
 end
 
 
@@ -246,7 +249,15 @@ if Apartment::Tenant.current == 'localhost'
 
   if SEED_SIZE != 'empty'
     num_users.times do 
-      first_name = Faker::Name.first_name
+      gender = %w(male female unspecified)[rand(4)]
+      first_name = case gender
+      when 'male'
+        Faker::Name.male_first_name
+      when 'female'
+        Faker::Name.female_first_name
+      else
+        Faker::Name.first_name
+      end
       last_name = Faker::Name.last_name
       has_last_name = (rand(5) > 0)
       User.create!({
@@ -257,10 +268,10 @@ if Apartment::Tenant.current == 'localhost'
         password: 'testtest',
         locale: ['en','nl-BE'][rand(1)],
         roles: rand(10) == 0 ? [{type: 'admin'}] : [],
-        gender: %w(male female unspecified)[rand(4)],
+        gender: gender,
         birthyear: rand(2) === 0 ? nil : (1935 + rand(70)),
         education: rand(2) === 0 ? nil : (rand(7)+2).to_s,
-        avatar: nil, # (rand(3) > 0) ? generate_avatar : nil,
+        avatar: (rand(5) == 0) ? generate_avatar(gender) : nil,
         domicile: rand(2) == 0 ? nil : Area.offset(rand(Area.count)).first.id,
         custom_field_values: rand(2) == 0 ? {} : {custom_field.key => CustomFieldOption.where(custom_field_id: custom_field.id).all.shuffle.first.key},
         registration_completed_at: Time.now
@@ -318,7 +329,16 @@ if Apartment::Tenant.current == 'localhost'
 
       if project.timeline?
         start_at = Faker::Date.between(6.months.ago, 1.month.from_now)
+        has_budgeting_phase = false
         rand(8).times do
+          participation_method = ['ideation', 'information', 'ideation', 'participatory_budgeting', 'ideation'].shuffle.first
+          if participation_method = 'participatory_budgeting'
+            if has_budgeting_phase
+              participation_method = 'ideation'
+            else
+              has_budgeting_phase = true
+            end
+          end
           start_at += 1.days
           phase = project.phases.create!({
             title_multiloc: {
@@ -340,6 +360,12 @@ if Apartment::Tenant.current == 'localhost'
               commenting_enabled: rand(4) != 0,
               voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
               voting_limited_max: rand(15)+1,
+            })
+          end
+          if phase.participatory_budgeting?
+            phase.update!({
+              max_budget: (rand(1000000) + 100),
+              currency: [Faker::Currency.name, Faker::Currency.code, Faker::Currency.symbol].shuffle.first
             })
           end
         end
