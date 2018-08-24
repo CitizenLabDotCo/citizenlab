@@ -9,18 +9,18 @@ import achLocaleData from 'utils/ach';
 
 import { DEFAULT_LOCALE } from 'containers/App/constants';
 
-import * as enTranslationMessages from 'translations/en.json';
-import * as enGBTranslationMessages from 'translations/en-GB.json';
-import * as enCATranslationMessages from 'translations/en-CA.json';
-import * as frBETranslationMessages from 'translations/fr-BE.json';
-import * as frFRTranslationMessages from 'translations/fr-FR.json';
-import * as nlBETranslationMessages from 'translations/nl-BE.json';
-import * as nlNLTranslationMessages from 'translations/nl-NL.json';
-import * as deDETranslationMessages from 'translations/de-DE.json';
-import * as daDKTranslationMessages from 'translations/da-DK.json';
-import * as nbNOTranslationMessages from 'translations/nb-NO.json';
+const enTranslationMessages = require('translations/en.json');
+const enGBTranslationMessages = require('translations/en-GB.json');
+const enCATranslationMessages = require('translations/en-CA.json');
+const frBETranslationMessages = require('translations/fr-BE.json');
+const frFRTranslationMessages = require('translations/fr-FR.json');
+const nlBETranslationMessages = require('translations/nl-BE.json');
+const nlNLTranslationMessages = require('translations/nl-NL.json');
+const deDETranslationMessages = require('translations/de-DE.json');
+const daDKTranslationMessages = require('translations/da-DK.json');
+const nbNOTranslationMessages = require('translations/nb-NO.json');
 // This is a "fake" language that is used by the crowdin plugin
-import * as achTranslationMessages from 'translations/ach-UG.json';
+const achTranslationMessages = require('translations/ach-UG.json');
 
 export const appLocalePairs = {
   en: 'English',
@@ -51,7 +51,7 @@ export const shortenedAppLocalePairs = {
 };
 
 if (process.env.CROWDIN_PLUGIN_ENABLED) {
-  addLocaleData(achLocaleData);
+  addLocaleData(achLocaleData as any);
 } else {
   addLocaleData(enLocaleData);
   addLocaleData(frLocaleData);

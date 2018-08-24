@@ -1,4 +1,5 @@
-import * as Rx from 'rxjs/Rx';
+import { Subject } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
 interface IEventEmitterEvent<T> {
   eventSource: string;
@@ -7,11 +8,11 @@ interface IEventEmitterEvent<T> {
 }
 
 class EventEmitter {
-  private subject: Rx.Subject<IEventEmitterEvent<any>>;
-  private stream: { [key: string]: Rx.Observable<IEventEmitterEvent<any>> };
+  private subject: Subject<IEventEmitterEvent<any>>;
+  private stream: { [key: string]: Observable<IEventEmitterEvent<any>> };
 
   constructor() {
-    this.subject = new Rx.Subject();
+    this.subject = new Subject();
     this.stream = {};
   }
 
@@ -19,7 +20,7 @@ class EventEmitter {
     this.subject.next({ eventSource, eventName, eventValue });
   }
 
-  observeEventFromSource<T>(eventSource: string, eventName: string): Rx.Observable<IEventEmitterEvent<T>> {
+  observeEventFromSource<T>(eventSource: string, eventName: string): Observable<IEventEmitterEvent<T>> {
     const streamName = `${eventSource}-${eventName}`;
 
     if (!this.stream[streamName]) {
@@ -29,7 +30,7 @@ class EventEmitter {
     return this.stream[streamName];
   }
 
-  observeEvent<T>(eventName: string): Rx.Observable<IEventEmitterEvent<T>> {
+  observeEvent<T>(eventName: string): Observable<IEventEmitterEvent<T>> {
     const streamName = eventName;
 
     if (!this.stream[streamName]) {

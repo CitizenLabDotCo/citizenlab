@@ -3,8 +3,6 @@
     "baseUrl": "",
     "module": "esnext",
     "declaration": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "jsx": "react",
     "lib": ["es7", "dom"],
     "noUnusedLocals": true,
@@ -22,7 +20,6 @@
     "target": "es5",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
     "plugins": [{
       "name": "typescript-styled-plugin"
     }]
