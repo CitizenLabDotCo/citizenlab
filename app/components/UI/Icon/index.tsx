@@ -114,7 +114,7 @@ const icons = {
     </svg>
   ),
   delete: (className, title) => (
-    <svg className={className} height="100%" viewBox="0 0 12 14">
+    <svg className={`cl-icon ${className ? className : ''}`} height="100%" viewBox="0 0 12 14">
       {injectTitle(title)}
       <path d="M.92 13.126c0 .483.413.874.923.874h8.308c.513 0 .926-.39.926-.874V4.124H.92v9.002zM8.246 4.99h1.43v7.28c0 .376-.32.68-.713.68-.396 0-.717-.304-.717-.68V4.99zm-2.964 0h1.433v7.28c0 .376-.32.68-.716.68-.397 0-.717-.304-.717-.68V4.99zm-1.553 0v7.28c0 .376-.322.68-.716.68s-.715-.304-.715-.68V4.99h1.43zM11.076.936H7.452v-.5S7.435 0 6.974 0h-1.98c-.46 0-.444.437-.444.437v.5H.923c-.51 0-.923.39-.923.874v1.44h12V1.81c0-.482-.414-.874-.924-.874z" />
     </svg>
@@ -682,7 +682,6 @@ export interface Props {
   className?: string;
   title?: string | JSX.Element;
   colorTheme?: clColorTheme;
-  onClick?: () => void;
 }
 
 export default Icon;
