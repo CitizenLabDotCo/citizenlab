@@ -166,6 +166,7 @@ const Container: any = styled.div`
       line-height: ${(props: any) => getLineHeight(props.size)};
     }
     ${StyledIcon} {
+      flex: 0 0 ${(props: any) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
       height: ${(props: any) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
       width: ${(props: any) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
       opacity: ${(props: any) => props.processing ? 0 : 1};
