@@ -156,6 +156,8 @@ class ProfileForm extends PureComponent<Props, State> {
 
     setStatus('');
 
+    console.log(newValues);
+
     updateUser(this.props.user.id, newValues).then((user) => {
       resetForm();
       setStatus('success');
@@ -169,8 +171,9 @@ class ProfileForm extends PureComponent<Props, State> {
     });
   }
 
-  formikRender = ({ values, errors, setFieldValue, setFieldTouched, setStatus, isSubmitting, submitForm, isValid,  status, touched }) => {
-    const { hasCustomFields } = this.state;
+  formikRender = (props) => {
+    const { values, errors, setFieldValue, setFieldTouched, setStatus, isSubmitting, submitForm, isValid, status, touched } = props;
+    const { hasCustomFields, localeOptions } = this.state;
 
     const handleContextRef = (contextRef) => {
       this.setState({ contextRef });
@@ -219,7 +222,7 @@ class ProfileForm extends PureComponent<Props, State> {
     };
 
     const createBlurHandler = (fieldName: string) => () => {
-      setFieldTouched(fieldName, false, false);
+      setFieldTouched(fieldName);
     };
 
     const handleAvatarOnAdd = (newAvatar: ImageFile) => {
@@ -342,18 +345,20 @@ class ProfileForm extends PureComponent<Props, State> {
                       <Error apiErrors={errors.password} />
                     </SectionField>
 
-                    <SectionField>
-                      <LabelWithTooltip htmlFor="language" translateId="language" />
-                      <Select
-                        inputId="language"
-                        onChange={createChangeHandler('locale')}
-                        onBlur={createBlurHandler('locale')}
-                        value={values.locale}
-                        options={this.state.localeOptions}
-                        clearable={false}
-                      />
-                      <Error apiErrors={errors.locale} />
-                    </SectionField>
+                    {localeOptions && localeOptions.length > 1 &&
+                      <SectionField>
+                        <LabelWithTooltip htmlFor="language" translateId="language" />
+                        <Select
+                          inputId="language"
+                          onChange={createChangeHandler('locale')}
+                          onBlur={createBlurHandler('locale')}
+                          value={values.locale}
+                          options={localeOptions}
+                          clearable={false}
+                        />
+                        <Error apiErrors={errors.locale} />
+                      </SectionField>
+                    }
                   </form>
 
                   {hasCustomFields &&
