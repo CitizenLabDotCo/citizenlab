@@ -61,7 +61,7 @@ module EmailCampaigns
           end
           .zip([campaign].cycle)
         end
-        .each do |(campaign, command)|
+        .each do |(command, campaign)|
           if campaign.respond_to? :mailer_class
             send_command_internal(campaign, command)
           else
