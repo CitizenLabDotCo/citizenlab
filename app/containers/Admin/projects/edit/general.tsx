@@ -510,6 +510,44 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     return !hasErrors;
   }
 
+  getImagesToAddPromises = () => {
+    const { newProjectImages, oldProjectImages, projectData } = this.state;
+    const projectId = (projectData ? projectData.id : null);
+    let imagesToAdd = newProjectImages;
+    let imagesToAddPromises: Promise<any>[] = [];
+
+    if (newProjectImages && oldProjectImages) {
+      imagesToAdd = newProjectImages.filter((newProjectImage) => {
+        return !oldProjectImages.some(oldProjectImage => oldProjectImage.base64 === newProjectImage.base64);
+      });
+
+      if (projectId && imagesToAdd && imagesToAdd.length > 0) {
+        imagesToAddPromises = imagesToAdd.map((imageToAdd: any) => addProjectImage(projectId as string, imageToAdd.base64));
+      }
+    }
+
+    return imagesToAddPromises;
+  }
+
+  getImagesToRemovePromises = () => {
+    const { newProjectImages, oldProjectImages, projectData } = this.state;
+    const projectId = (projectData ? projectData.id : null);
+    let imagesToRemove = newProjectImages;
+    let imagesToRemovePromises: Promise<any>[] = [];
+
+    if (newProjectImages && oldProjectImages) {
+      imagesToRemove = oldProjectImages.filter((oldProjectImage) => {
+        return !newProjectImages.some(newProjectImage => newProjectImage.base64 === oldProjectImage.base64);
+      });
+
+      if (projectId && imagesToRemove && imagesToRemove.length > 0) {
+        imagesToRemovePromises = imagesToRemove.map((imageToRemove: any) => deleteProjectImage(projectId as string, imageToRemove.projectImageId));
+      }
+    }
+
+    return imagesToRemovePromises;
+  }
+
   getFilesToAddPromises = () => {
     const { newProjectFiles, oldProjectFiles, projectData } = this.state;
     const projectId = (projectData ? projectData.id : null);
@@ -560,7 +598,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     if (this.validate()) {
       const { formatMessage } = this.props.intl;
       let { projectAttributesDiff } = this.state;
-      const { projectData, oldProjectImages, newProjectImages, newProjectFiles, oldProjectFiles } = this.state;
+      const { projectData } = this.state;
 
       if (participationContextConfig) {
         const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, presentationMode, survey_service, survey_embed_url } = participationContextConfig;
@@ -584,43 +622,22 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         this.processing$.next(true);
 
         let redirect = false;
-        let projectId = (projectData ? projectData.id : null);
-        let imagesToAdd = newProjectImages;
-        let imagesToRemove = oldProjectImages;
-        let imagesToAddPromises: Promise<any>[] = [];
-        let imagesToRemovePromises: Promise<any>[] = [];
+
+        const imagesToAddPromises: Promise<any>[] = this.getImagesToAddPromises();
+        const imagesToRemovePromises: Promise<any>[] = this.getImagesToRemovePromises();
 
         const filesToAddPromises: Promise<any>[] = this.getFilesToAddPromises();
         const filesToRemovePromises: Promise<any>[] = this.getFilesToRemovePromises();
-
-        if (newProjectImages && oldProjectImages) {
-          imagesToAdd = newProjectImages.filter((newProjectImage) => {
-            return !oldProjectImages.some(oldProjectImage => oldProjectImage.base64 === newProjectImage.base64);
-          });
-
-          imagesToRemove = oldProjectImages.filter((oldProjectImage) => {
-            return !newProjectImages.some(newProjectImage => newProjectImage.base64 === oldProjectImage.base64);
-          });
-        }
 
         if (!isEmpty(projectAttributesDiff)) {
           if (projectData) {
             await updateProject(projectData.id, projectAttributesDiff);
             streams.fetchAllStreamsWithEndpoint(`${API_PATH}/projects`);
           } else {
-            const project = await addProject(projectAttributesDiff);
+            await addProject(projectAttributesDiff);
             streams.fetchAllStreamsWithEndpoint(`${API_PATH}/projects`);
-            projectId = project.data.id;
             redirect = true;
           }
-        }
-
-        if (projectId && imagesToAdd && imagesToAdd.length > 0) {
-          imagesToAddPromises = imagesToAdd.map((imageToAdd: any) => addProjectImage(projectId as string, imageToAdd.base64));
-        }
-
-        if (projectId && imagesToRemove && imagesToRemove.length > 0) {
-          imagesToRemovePromises = imagesToRemove.map((imageToRemove: any) => deleteProjectImage(projectId as string, imageToRemove.projectImageId));
         }
 
         if (imagesToAddPromises.length > 0 || imagesToRemovePromises.length > 0) {
