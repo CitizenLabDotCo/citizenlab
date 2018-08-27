@@ -19,6 +19,14 @@ resource "Campaign consents" do
       @campaigns = [
         create(:comment_on_your_comment_campaign),
         create(:comment_on_your_idea_campaign),
+        create(:admin_rights_received),
+        create(:comment_deleted_by_admin),
+        create(:comment_marked_as_spam),
+        create(:idea_marked_as_spam),
+        create(:invite_accepted),
+        create(:mention_in_comment),
+        create(:project_moderation_rights_received),
+        create(:status_change_of_your_idea),
         create(:user_digest_campaign),
         create(:manual_campaign),
       ]
