@@ -1,5 +1,5 @@
-module CommentDeletedByAdmin
-  class Campaigns::CommentOnYourComment < Campaigns::NotificationCampaign
+module EmailCampaigns
+  class Campaigns::CommentDeletedByAdmin < Campaigns::NotificationCampaign
   	include Disableable
     include Consentable
     include ActivityTriggerable
@@ -8,7 +8,7 @@ module CommentDeletedByAdmin
     recipient_filter :filter_notification_recipient
 
     def activity_triggers
-      {'Notifications::CommentOnYourComment' => {'created' => true}}
+      {'Notifications::CommentDeletedByAdmin' => {'created' => true}}
     end
   end
 end
