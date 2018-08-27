@@ -1,70 +1,10 @@
-import { authUserStream } from 'services/auth';
-import { IUser } from 'services/users';
-import { isObject } from 'lodash-es';
-
-type TPermissionItem = IResourceData | IRouteItem | TResourceType;
-
-interface IResourceData {
-  type: string;
-  [key: string]: any;
-}
-
-interface IRouteItem {
-  type: 'route';
-  path: string;
-}
-
-interface IPermissionRule {
-  (resource: TPermissionItem, user: IUser | null, context?: any): boolean;
-}
-
-interface IPermissionRules {
-  [key: string]: {
-    [key: string]: IPermissionRule;
-  };
-}
-
-type TResourceType = string;
-type TAction = string;
-
-const permissionRules: IPermissionRules = {};
-
-const isResource = (object: any): object is IResourceData => {
-  return isObject(object) && 'type' in object;
-};
-
-const definePermissionRule = (resourceType: TResourceType, action: TAction, rule: IPermissionRule) => {
-  permissionRules[resourceType] = { ...(permissionRules[resourceType] || {}), [action]: rule };
-};
-
-const getPermissionRule = (resourceType: TResourceType, action: TAction) => (permissionRules[resourceType][action]);
-
-/**
- *
- * @param param0.item The data item
- * @param param0.action The action to apply to the item, typically a verb
- * @param param0.context Optional context argument that can be used to pass in aditional context to make the permissions decision
- */
-const hasPermission = ({ item, action, context }: { item: TPermissionItem | null, action: string, context?: any }) => {
-  return authUserStream().observable.map((user) => {
-    if (!item) {
-      return false;
-    }
-
-    const resourceType = isResource(item) ? item.type : item;
-    const rule = getPermissionRule(resourceType, action);
-
-    if (rule) {
-      return rule(item, user, context);
-    } else {
-      throw `No permission rule is specified on resource '${resourceType}' for action '${action}'`;
-    }
-  });
-};
+import { TPermissionItem, hasPermission } from 'services/permissions/permissions';
+import './rules/routePermissions';
+import './rules/ideaPermissions';
+import './rules/commentPermissions';
+import './rules/projectPermissions';
 
 export {
   TPermissionItem,
-  IRouteItem,
-  definePermissionRule,
-  hasPermission,
+  hasPermission
 };
