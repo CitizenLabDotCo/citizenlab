@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ResourceHintWebpackPlugin = require('resource-hints-webpack-plugin');
+const ResourceHintsWebpackPlugin = require('resource-hints-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const argv = require('yargs').argv;
 const API_HOST = process.env.API_HOST || 'localhost';
@@ -111,8 +111,8 @@ const config = {
     new HtmlWebpackPlugin({
       template: 'app/index.html',
       preload: [
-        'main.js',
-        'main.*.js',
+        'app.*.js',
+        'app.*.css',
         '*.eot',
         '*.ttf',
         '*.woff',
@@ -120,16 +120,17 @@ const config = {
       ],
       prefetch: [
         '*.chunk.js',
+        '*.chunk.css'
       ],
     }),
 
-    new ResourceHintWebpackPlugin(),
+    new ResourceHintsWebpackPlugin(),
 
     new webpack.HotModuleReplacementPlugin(),
 
     new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css'
+      filename: '[name].[hash].css',
+      chunkFilename: '[name].[hash].chunk.css'
     }),
   ],
 
