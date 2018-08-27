@@ -4,6 +4,14 @@ en:
       "manual": Direct messages sent by administrators or moderators
       "comment_on_your_comment": When someone replies to my comment
       "comment_on_your_idea": When someone replies to my idea
+      "admin_rights_received": When I'm given admin rights
+      "comment_deleted_by_admin": When an admin deletes my comment
+      "comment_marked_as_spam": When a comment is marked as spam
+      "idea_marked_as_spam": When an idea is marked as spam
+      "invite_accepted": When someone accepts my invitation
+      "mention_in_comment": When someone mentions me in a comment
+      "project_moderation_rights_received": When I'm given project moderation rights
+      "status_change_of_your_idea": When the status of my idea changes
       "admin_digest": A weekly overview of the activity on the platform (only for administrators)
       "moderator_digest": A weekly overview of the activity on the platform (only for moderators)
       "user_digest": A weekly overview of the activity on the platform (for citizens)
