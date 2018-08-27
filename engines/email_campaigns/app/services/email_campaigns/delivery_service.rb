@@ -54,10 +54,12 @@ module EmailCampaigns
           commands = campaign.generate_commands(
             recipient: recipient,
             **options
-          ).merge({
-            recipient: recipient,
-          })
-          commands.zip([campaign].cycle)
+          ).map do |command|
+            command.merge({
+              recipient: recipient,
+            })
+          end
+          .zip([campaign].cycle)
         end
         .each do |(campaign, command)|
           if campaign.respond_to? :mailer_class

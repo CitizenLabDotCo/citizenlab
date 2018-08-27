@@ -25,20 +25,26 @@ module EmailCampaigns
     end
 
     def generate_commands recipient:, time: nil
-      project = Project.find recipient.moderatable_project_ids.first
-      statistics = statistics project
-      top_ideas = top_ideas project
-      idea_ids = top_ideas.map{|top_idea| top_idea[:id]}
-      [{
-        event_payload: {
-          statistics: statistics,
-          top_ideas: top_ideas,
-          has_new_ideas: (top_ideas.size > 0)
-        },
-        tracked_content: {
-          idea_ids: idea_ids
-        }
-      }]
+      recipient.moderatable_project_ids.map do |project_id|
+        project = Project.find project_id
+        statistics = statistics project
+        if has_nonzero_statistics statistics
+          top_ideas = top_ideas project
+          idea_ids = top_ideas.map{|top_idea| top_idea[:id]}
+          {
+            event_payload: {
+              statistics: statistics,
+              top_ideas: top_ideas,
+              has_new_ideas: (top_ideas.size > 0)
+            },
+            tracked_content: {
+              idea_ids: idea_ids
+            }
+          }
+        else
+          nil
+        end
+      end.compact
     end
 
 
@@ -84,6 +90,16 @@ module EmailCampaigns
           total_participants: ps.participants(project: project).count
         }
       }
+    end
+
+    def has_nonzero_statistics statistics
+      !( (@statistics.dig(:activities,:new_ideas,:increase) == 0) &&
+         (@statistics.dig(:activities,:new_ideas,:increase) == 0) &&
+         (@statistics.dig(:activities,:new_comments,:increase) == 0) &&
+         (@statistics.dig(:users,:new_visitors,:increase) == 0) &&
+         (@statistics.dig(:users,:new_users,:increase) == 0) &&
+         (@statistics.dig(:users,:active_users,:increase) == 0)
+         )
     end
 
     def days_ago

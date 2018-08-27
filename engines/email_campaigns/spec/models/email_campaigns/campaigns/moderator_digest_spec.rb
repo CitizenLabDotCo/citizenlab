@@ -18,7 +18,7 @@ RSpec.describe EmailCampaigns::Campaigns::ModeratorDigest, type: :model do
     let!(:draft) { create(:idea, project: project, publication_status: 'draft') }
 
   	it "generates a command with the desired payload and tracked content" do
-  		command = campaign.generate_command(recipient: moderator).first
+  		command = campaign.generate_commands(recipient: moderator).first
       
       expect(
       	command.dig(:event_payload, :statistics, :activities, :new_ideas, :increase)
