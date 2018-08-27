@@ -59,7 +59,7 @@ module EmailCampaigns
           recipients.zip([campaign].cycle)
         end
         .flat_map do |(recipient, campaign)|
-          commands = campaign.generate_commands(
+          campaign.generate_commands(
             recipient: recipient,
             **options
           ).map do |command|
