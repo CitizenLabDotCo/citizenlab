@@ -16,7 +16,7 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest, type: :model do
     let!(:draft) { create(:idea, publication_status: 'draft') }
 
   	it "generates a command with the desired payload and tracked content" do
-  		command = campaign.generate_command recipient: admin
+  		command = campaign.generate_command(recipient: admin).first
 
       expect(
       	command.dig(:event_payload, :statistics, :activities, :new_ideas, :increase)

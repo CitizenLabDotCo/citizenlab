@@ -24,13 +24,13 @@ module EmailCampaigns
       ['admin']
     end
 
-    def generate_command recipient:, time: nil
+    def generate_commands recipient:, time: nil
       @statistics ||= statistics
       @top_project_ideas ||= top_project_ideas
       @idea_ids ||= top_project_ideas.flat_map do |tpi|
         tpi[:top_ideas].map{|idea_h| idea_h[:id]}
       end
-      {
+      [{
         event_payload: {
           statistics: @statistics,
           top_project_ideas: @top_project_ideas,
@@ -39,7 +39,7 @@ module EmailCampaigns
         tracked_content: {
           idea_ids: @idea_ids
         }
-      }
+      }]
     end
 
 
