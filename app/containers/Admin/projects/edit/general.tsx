@@ -564,7 +564,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
           });
 
           filesToRemove = oldProjectFiles.filter((oldProjectFile) => {
-            return !newProjectFiles.some(newProjectFile => newProjectFile.id === oldProjectFile.id);
+            return !newProjectFiles.some(newProjectFile => newProjectFile.name === oldProjectFile.name);
           });
         }
 
