@@ -1,5 +1,5 @@
 module EmailCampaigns
-  class Campaigns::AdminRightsReceived < Campaigns::NotificationCampaign
+  class Campaigns::InviteAccepted < Campaigns::NotificationCampaign
   	include Disableable
     include Consentable
     include ActivityTriggerable
@@ -8,7 +8,7 @@ module EmailCampaigns
     recipient_filter :filter_notification_recipient
 
     def activity_triggers
-      {'Notifications::AdminRightsReceived' => {'created' => true}}
+      {'Notifications::InviteAccepted' => {'created' => true}}
     end
   end
 end
