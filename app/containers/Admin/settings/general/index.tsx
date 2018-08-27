@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { get, map, merge, set } from 'lodash';
+import { get, map, merge, set } from 'lodash-es';
 import * as Rx from 'rxjs/Rx';
 
 // typings
@@ -7,7 +7,7 @@ import { API, Multiloc, IOption } from 'typings';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import { appLocalePairs } from 'i18n';
+import { appLocalePairs } from 'containers/App/constants';
 import messages from '../messages';
 
 // components

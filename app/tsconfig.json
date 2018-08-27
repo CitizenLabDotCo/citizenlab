@@ -22,7 +22,7 @@
     "allowSyntheticDefaultImports": true,
     "plugins": [{
       "name": "typescript-styled-plugin"
-    }]
+    }],
   },
   "include": [
     "**/*"
@@ -31,10 +31,10 @@
     "node_modules",
     "build",
     "scripts",
+    "internals",
     "acceptance-tests",
     "webpack",
     "jest",
-    "internals",
     "server",
     "e2e",
     "docs",

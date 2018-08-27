@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as moment from 'moment';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 
 // libraries
 import clHistory from 'utils/cl-router/history';
@@ -9,7 +9,7 @@ import clHistory from 'utils/cl-router/history';
 // components
 import Label from 'components/UI/Label';
 import InputMultiloc from 'components/UI/InputMultiloc';
-import QuillMultiloc from 'components/QuillEditor/QuillMultiloc';
+import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
 import Error from 'components/UI/Error';
 import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';

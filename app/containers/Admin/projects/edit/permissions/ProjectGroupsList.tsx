@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
-import { find, map } from 'lodash';
+import { find, map } from 'lodash-es';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';

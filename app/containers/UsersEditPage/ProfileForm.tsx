@@ -3,11 +3,11 @@ import { Subscription, BehaviorSubject } from 'rxjs';
 import { switchMap, map, distinctUntilChanged } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
-import { isEqual, isEmpty, get } from 'lodash';
+import { isEqual, isEmpty, get } from 'lodash-es';
 
 // services
 import { IAreaData } from 'services/areas';
-import { updateUser, IUserData/*, IUserUpdate,*/, mapUserToDiff } from 'services/users';
+import { updateUser, IUserData, mapUserToDiff } from 'services/users';
 import { ITenantData } from 'services/tenant';
 import { localeStream, updateLocale } from 'services/locale';
 import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
@@ -28,10 +28,10 @@ import { SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Se
 import CustomFieldsForm from 'components/CustomFieldsForm';
 import Input from 'components/UI/Input';
 import Select from 'components/UI/Select';
-import QuillEditor from 'components/QuillEditor';
+import QuillEditor from 'components/UI/QuillEditor';
 
 // i18n
-import { appLocalePairs } from 'i18n';
+import { appLocalePairs } from 'containers/App/constants';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';

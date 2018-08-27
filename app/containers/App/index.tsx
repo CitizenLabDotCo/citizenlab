@@ -12,7 +12,7 @@ import 'moment/locale/fr';
 import 'moment/locale/de';
 import 'moment/locale/da';
 import 'moment/locale/nb';
-import { find, isString, isObject } from 'lodash';
+import { find, isString, isObject } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // context

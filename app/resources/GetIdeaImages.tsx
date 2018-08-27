@@ -2,7 +2,7 @@ import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { IIdeaImageData, ideaImagesStream } from 'services/ideaImages';
-import { isString } from 'lodash';
+import { isString } from 'lodash-es';
 
 interface InputProps {
   ideaId: string | null;

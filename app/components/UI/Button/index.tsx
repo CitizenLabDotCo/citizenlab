@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'utils/cl-router/Link';
-import { isBoolean, isNil } from 'lodash';
+import { isBoolean, isNil } from 'lodash-es';
 import styled, { withTheme } from 'styled-components';
 import { darken, readableColor } from 'polished';
 import { color, invisibleA11yText } from 'utils/styleUtils';

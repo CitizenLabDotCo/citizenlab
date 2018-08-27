@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { range, forOwn, get } from 'lodash';
+import { range, forOwn, get } from 'lodash-es';
 import moment from 'moment';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';

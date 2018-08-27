@@ -15,7 +15,7 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import LocationInput from 'components/UI/LocationInput';
-import QuillEditor from 'components/QuillEditor';
+import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
 

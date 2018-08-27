@@ -1,13 +1,5 @@
 import { ImageFile } from 'react-dropzone';
-import { EditorState } from 'draft-js';
 import PlatformLocales from 'platformLocales';
-
-declare module '*.png';
-
-declare module '*.json' {
-  const value: any;
-  export default value;
-}
 
 export interface IRelationship {
   id: string;

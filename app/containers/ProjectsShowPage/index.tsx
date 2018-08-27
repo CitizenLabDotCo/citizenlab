@@ -1,6 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { isError, isUndefined } from 'lodash';
+import { isError, isUndefined } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 

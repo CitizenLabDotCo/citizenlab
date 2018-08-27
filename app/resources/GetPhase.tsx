@@ -2,7 +2,7 @@ import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { IPhaseData, phaseStream } from 'services/phases';
-import { isString } from 'lodash';
+import { isString } from 'lodash-es';
 
 interface InputProps {
   id?: string | null;

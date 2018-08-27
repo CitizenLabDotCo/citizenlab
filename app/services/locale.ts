@@ -1,10 +1,11 @@
 import { BehaviorSubject } from 'rxjs';
 import { first, map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/observable/combineLatest';
-import { includes, isEqual } from 'lodash';
+import { includes, isEqual } from 'lodash-es';
 import { currentTenantStream } from 'services/tenant';
 import { authUserStream } from 'services/auth';
 import { Locale } from 'typings';
+import { locales } from 'containers/App/constants';
 
 const LocaleSubject: BehaviorSubject<Locale> = new BehaviorSubject(null as any);
 const $tenantLocales = currentTenantStream().observable.pipe(
@@ -55,9 +56,8 @@ combineLatest(
 });
 
 export function getUrlLocale(pathname: string) {
-  const localesToCheckFor = ['en', 'fr', 'de', 'nl', 'nb', 'nb', 'da', 'de-DE', 'en-GB', 'en-CA', 'fr-BE', 'fr-FR', 'nl-BE', 'nl-NL', 'da-DK', 'nb-NO'];
   const firstUrlSegment = pathname.replace(/^\/|\/$/g, '').split('/')[0];
-  const isLocale = (includes(localesToCheckFor, firstUrlSegment));
+  const isLocale = (includes(locales, firstUrlSegment));
   return (isLocale ? firstUrlSegment : null);
 }
 

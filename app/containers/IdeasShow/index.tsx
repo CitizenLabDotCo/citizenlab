@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { has, isString, get } from 'lodash';
+import { has, isString, get } from 'lodash-es';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';

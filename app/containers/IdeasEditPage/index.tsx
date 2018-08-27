@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isString, isEmpty, get } from 'lodash';
+import { isString, isEmpty, get } from 'lodash-es';
 import * as Rx from 'rxjs/Rx';
 
 // router

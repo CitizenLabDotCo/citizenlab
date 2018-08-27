@@ -2,7 +2,7 @@
 import React from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import { Formik } from 'formik';
-import { isString, isEmpty } from 'lodash';
+import { isString, isEmpty } from 'lodash-es';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

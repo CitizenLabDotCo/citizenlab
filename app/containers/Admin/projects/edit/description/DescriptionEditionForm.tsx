@@ -11,7 +11,7 @@ import Error from 'components/UI/Error';
 import { Section, SectionField } from 'components/admin/Section';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
-import FormikQuillMultiloc from 'components/QuillEditor/FormikQuillMultiloc';
+import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 
 // Typings
 import { Multiloc } from 'typings';

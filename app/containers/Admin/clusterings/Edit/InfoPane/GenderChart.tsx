@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
-import { isEqual, isEmpty } from 'lodash';
+import { isEqual, isEmpty } from 'lodash-es';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer } from 'recharts';
 import { votesByGenderStream, IVotesByGender } from 'services/stats';
 import { combineLatest } from 'rxjs/observable/combineLatest';

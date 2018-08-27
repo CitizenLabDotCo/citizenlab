@@ -1,6 +1,6 @@
 import { authUserStream } from 'services/auth';
 import { IUser } from 'services/users';
-import { isObject } from 'lodash';
+import { isObject } from 'lodash-es';
 
 type TPermissionItem = IResourceData | IRouteItem | TResourceType;
 

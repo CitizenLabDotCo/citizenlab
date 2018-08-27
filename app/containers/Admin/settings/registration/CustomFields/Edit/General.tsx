@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { keys, pick, isEqual } from 'lodash';
+import { keys, pick, isEqual } from 'lodash-es';
 import { API } from 'typings';
 import clHistory from 'utils/cl-router/history';
 

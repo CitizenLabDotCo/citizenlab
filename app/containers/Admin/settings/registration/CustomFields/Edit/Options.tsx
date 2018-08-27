@@ -1,5 +1,5 @@
 import React from 'react';
-import { isEmpty, values as getValues, every } from 'lodash';
+import { isEmpty, values as getValues, every } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 

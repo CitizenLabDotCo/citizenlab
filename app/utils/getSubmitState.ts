@@ -1,5 +1,5 @@
 import { API } from 'typings';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 
 interface Options {
   errors: {

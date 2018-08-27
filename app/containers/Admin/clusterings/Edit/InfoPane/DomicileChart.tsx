@@ -6,7 +6,7 @@ import { votesByDomicileStream, IVotesByDomicile } from 'services/stats';
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 import { isNilOrError } from 'utils/helperUtils';
 import localize, { injectedLocalized } from 'utils/localize';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import styled, { withTheme } from 'styled-components';
 

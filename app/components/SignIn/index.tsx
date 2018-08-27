@@ -1,5 +1,5 @@
 import React from 'react';
-import { get, isFunction } from 'lodash';
+import { get, isFunction } from 'lodash-es';
 import { Subscription } from 'rxjs';
 
 // libraries

@@ -1,7 +1,7 @@
 // Libraries
 import React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { isString, reject } from 'lodash';
+import { isString, reject } from 'lodash-es';
 
 // Services
 import { projectByIdStream, IProjectData } from 'services/projects';

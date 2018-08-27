@@ -6,7 +6,6 @@ import deLocaleData from 'react-intl/locale-data/de';
 import daLocaleData from 'react-intl/locale-data/da';
 import nbLocaleData from 'react-intl/locale-data/nb';
 import achLocaleData from 'utils/ach';
-
 import { DEFAULT_LOCALE } from 'containers/App/constants';
 
 const enTranslationMessages = require('translations/en.json');
@@ -19,36 +18,7 @@ const nlNLTranslationMessages = require('translations/nl-NL.json');
 const deDETranslationMessages = require('translations/de-DE.json');
 const daDKTranslationMessages = require('translations/da-DK.json');
 const nbNOTranslationMessages = require('translations/nb-NO.json');
-// This is a "fake" language that is used by the crowdin plugin
 const achTranslationMessages = require('translations/ach-UG.json');
-
-export const appLocalePairs = {
-  en: 'English',
-  'en-GB': 'English (Great Britain)',
-  'en-CA': 'English (Canada)',
-  'fr-BE': 'Français (Belgique)',
-  'fr-FR': 'Français (France)',
-  'nl-BE': 'Nederlands (België)',
-  'nl-NL': 'Nederlands (Nederland)',
-  'de-DE': 'Deutsch',
-  'da-DK': 'Dansk',
-  'nb-NO': 'Norsk (Bokmål)',
-  ach: 'Acholi',
-};
-
-export const shortenedAppLocalePairs = {
-  en: 'English',
-  'en-GB': 'English',
-  'en-CA': 'English',
-  'fr-BE': 'Français',
-  'fr-FR': 'Français',
-  'nl-BE': 'Nederlands',
-  'nl-NL': 'Nederlands',
-  'de-DE': 'Deutsch',
-  'da-DK': 'Dansk',
-  'nb-NO': 'Norsk',
-  ach: 'Acholi',
-};
 
 if (process.env.CROWDIN_PLUGIN_ENABLED) {
   addLocaleData(achLocaleData as any);

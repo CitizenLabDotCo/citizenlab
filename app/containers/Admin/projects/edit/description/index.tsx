@@ -1,6 +1,6 @@
 // Libraries
 import React from 'react';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { Formik } from 'formik';
 import { withRouter, WithRouterProps } from 'react-router';

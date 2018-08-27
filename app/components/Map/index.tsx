@@ -1,6 +1,6 @@
 // Libraries
 import React from 'react';
-import { compact, isEqual } from 'lodash';
+import { compact, isEqual } from 'lodash-es';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 

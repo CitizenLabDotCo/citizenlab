@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { clone, find } from 'lodash';
+import { clone, find } from 'lodash-es';
 
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';

@@ -1,5 +1,5 @@
 import * as moment from 'moment';
-import { isString } from 'lodash';
+import { isString } from 'lodash-es';
 
 export function pastPresentOrFuture(input: string | [string, string]) {
   if (isString(input)) {

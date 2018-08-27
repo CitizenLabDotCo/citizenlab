@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { Subscription } from 'rxjs/Rx';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
