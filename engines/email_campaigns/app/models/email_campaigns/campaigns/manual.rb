@@ -10,14 +10,14 @@ module EmailCampaigns
       CampaignMailer
     end
 
-    def generate_command recipient:
-      {
+    def generate_commands recipient:
+      [{
         event_payload: {},
         subject_multiloc: subject_multiloc,
         body_multiloc: body_multiloc,
         sender: sender,
         reply_to: reply_to
-      }
+      }]
     end
   end
 end

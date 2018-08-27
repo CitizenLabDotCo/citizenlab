@@ -50,14 +50,16 @@ module EmailCampaigns
           recipients = campaign.apply_recipient_filters(options)
           recipients.zip([campaign].cycle)
         end
-        .each do |(recipient, campaign)|
-          command = campaign.generate_command(
+        .flat_map do |(recipient, campaign)|
+          commands = campaign.generate_commands(
             recipient: recipient,
             **options
           ).merge({
             recipient: recipient,
           })
-
+          commands.zip([campaign].cycle)
+        end
+        .each do |(campaign, command)|
           if campaign.respond_to? :mailer_class
             send_command_internal(campaign, command)
           else

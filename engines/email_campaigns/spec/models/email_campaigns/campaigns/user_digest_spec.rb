@@ -21,7 +21,7 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest, type: :model do
     let!(:draft_project) { create(:project, publication_status: 'draft', created_at: Time.now - 2.minutes) }
 
   	it "generates a command with the desired payload and tracked content" do
-  		command = campaign.generate_command recipient: user
+  		command = campaign.generate_command(recipient: user).first
 
       expect(
       	command.dig(:event_payload, :discover_projects).map{|pj| pj[:created_at]}

@@ -20,10 +20,10 @@ module EmailCampaigns
       end
     end
 
-    def generate_command recipient:, time: nil
+    def generate_commands recipient:, time: nil
       top_ideas = top_ideas recipient
       discover_projects = discover_projects recipient
-      {
+      [{
         event_payload: {
           top_ideas: top_ideas.map{ |idea|
             top_idea_payload idea, recipient
@@ -36,7 +36,7 @@ module EmailCampaigns
           idea_ids: top_ideas.map(&:id),
           project_ids: discover_projects.map(&:id)
         }
-      }
+      }]
     end
 
 

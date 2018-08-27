@@ -24,12 +24,12 @@ module EmailCampaigns
       ['project_moderator']
     end
 
-    def generate_command recipient:, time: nil
+    def generate_commands recipient:, time: nil
       project = Project.find recipient.moderatable_project_ids.first
       statistics = statistics project
       top_ideas = top_ideas project
       idea_ids = top_ideas.map{|top_idea| top_idea[:id]}
-      {
+      [{
         event_payload: {
           statistics: statistics,
           top_ideas: top_ideas,
@@ -38,7 +38,7 @@ module EmailCampaigns
         tracked_content: {
           idea_ids: idea_ids
         }
-      }
+      }]
     end
 
 

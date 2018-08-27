@@ -15,7 +15,10 @@ RSpec.describe EmailCampaigns::Campaigns::CommentOnYourIdea, type: :model do
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }
 
   	it "generates a command with the desired payload and tracked content" do
-  		command = campaign.generate_command recipient: notification_activity.item.recipient, activity: notification_activity
+  		command = campaign.generate_command(
+        recipient: notification_activity.item.recipient, 
+        activity: notification_activity
+        ).first
 
       expect(
       	command.dig(:event_payload, :recipient, :id)
