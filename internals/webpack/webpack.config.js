@@ -128,8 +128,8 @@ const config = {
     new webpack.HotModuleReplacementPlugin(),
 
     new MiniCssExtractPlugin({
-      filename: isDev ? '[name].css' : '[name].[hash].css',
-      chunkFilename: isDev ? '[name].chunk.css' : '[name].[hash].chunk.css',
+      filename: '[name].css',
+      chunkFilename: '[id].css'
     }),
   ],
 
