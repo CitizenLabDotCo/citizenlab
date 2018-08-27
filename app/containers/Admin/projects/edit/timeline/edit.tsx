@@ -8,7 +8,7 @@ import { Subscription, BehaviorSubject } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
 import * as moment from 'moment';
-import { get, isEmpty } from 'lodash';
+import { get, isEmpty } from 'lodash-es';
 
 // Services
 import { localeStream } from 'services/locale';
@@ -23,7 +23,7 @@ import shallowCompare from 'utils/shallowCompare';
 // Components
 import Label from 'components/UI/Label';
 import InputMultiloc from 'components/UI/InputMultiloc';
-import QuillMultiloc from 'components/QuillEditor/QuillMultiloc';
+import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
 import Error from 'components/UI/Error';
 import { DateRangePicker } from 'react-dates';
 import SubmitWrapper from 'components/admin/SubmitWrapper';

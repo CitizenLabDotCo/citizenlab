@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import * as d3Hierarchy from 'd3-hierarchy';
-import { keyBy, find, findIndex } from 'lodash';
+import { keyBy, find, findIndex } from 'lodash-es';
 import IdeaCircle from './IdeaCircle';
 import CustomCircle from './CustomCircle';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';

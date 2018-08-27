@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { keys } from 'lodash';
+import { keys } from 'lodash-es';
 import Select from 'components/UI/Select';
 
 import { IOption } from 'typings';

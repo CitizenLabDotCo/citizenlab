@@ -1,7 +1,7 @@
 // libraries
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import FileSaver from 'file-saver';
 
 // components

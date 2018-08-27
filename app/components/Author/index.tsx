@@ -1,5 +1,5 @@
 import React from 'react';
-import { isString } from 'lodash';
+import { isString } from 'lodash-es';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';

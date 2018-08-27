@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs/Rx';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { map, switchMap } from 'rxjs/operators';
-import { merge, cloneDeep, forOwn, get, set, size, has, trim, isEmpty, omitBy } from 'lodash';
+import { merge, cloneDeep, forOwn, get, set, size, has, trim, isEmpty, omitBy } from 'lodash-es';
 
 // components
 import Label from 'components/UI/Label';

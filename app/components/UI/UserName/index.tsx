@@ -3,7 +3,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import styled from 'styled-components';
 import { IUserData } from 'services/users';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 
 const User = styled.span`
   &.deleted-user {

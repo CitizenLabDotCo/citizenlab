@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { range } from 'lodash';
+import { range } from 'lodash-es';
 import Button from 'components/UI/Button';
 import { Label, Icon } from 'semantic-ui-react';
 

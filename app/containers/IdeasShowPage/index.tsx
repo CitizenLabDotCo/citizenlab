@@ -1,5 +1,5 @@
 import React from 'react';
-import { isError } from 'lodash';
+import { isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { isFinite, isEqual } from 'lodash';
+import { isFinite, isEqual } from 'lodash-es';
 
 // components
 import Input from 'components/UI/Input';

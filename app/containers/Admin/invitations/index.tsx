@@ -1,5 +1,5 @@
 import React from 'react';
-import { isString, isEmpty, get } from 'lodash';
+import { isString, isEmpty, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -30,14 +30,13 @@ import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import { FormattedHTMLMessage } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { appLocalePairs } from 'i18n';
+import { API_PATH, appLocalePairs } from 'containers/App/constants';
 import { getLocalized } from 'utils/i18n';
 
 // utils
 import { getBase64FromFile } from 'utils/imageTools';
 import FileSaver from 'file-saver';
 import { requestBlob } from 'utils/request';
-import { API_PATH } from 'containers/App/constants';
 
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';

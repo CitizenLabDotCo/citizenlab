@@ -1,5 +1,5 @@
 import React from 'react';
-import { isString, isEmpty } from 'lodash';
+import { isString, isEmpty } from 'lodash-es';
 
 // libraries
 import { MentionsInput, Mention } from 'react-mentions';

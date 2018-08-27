@@ -4,7 +4,7 @@ import { addClustering } from 'services/clusterings';
 import { Formik, FormikErrors } from 'formik';
 import ClusteringForm, { FormValues } from './ClusteringForm';
 import { API } from 'typings';
-import { isEmpty, values as getValues, every } from 'lodash';
+import { isEmpty, values as getValues, every } from 'lodash-es';
 
 type Props = {};
 

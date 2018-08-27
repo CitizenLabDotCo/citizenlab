@@ -5,7 +5,7 @@ import { combineLatest } from 'rxjs/observable/combineLatest';
 import { map, startWith, distinctUntilChanged, switchMap, debounceTime } from 'rxjs/operators';
 import { IInviteData, invitesStream } from 'services/invites';
 import shallowCompare from 'utils/shallowCompare';
-import { isEqual, omitBy, isString, isEmpty, isNil, isBoolean } from 'lodash';
+import { isEqual, omitBy, isString, isEmpty, isNil, isBoolean } from 'lodash-es';
 import { getPageNumberFromUrl, getSortAttribute, getSortDirection, SortDirection } from 'utils/paginationUtils';
 
 export type SortAttribute = 'email' | 'last_name' | 'created_at' | 'invite_status';

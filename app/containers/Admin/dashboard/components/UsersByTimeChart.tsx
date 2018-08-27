@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { map } from 'lodash';
+import { map } from 'lodash-es';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { withTheme } from 'styled-components';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { take } from 'rxjs/operators';
-import { uniq, keys, isEmpty, get } from 'lodash';
+import { uniq, keys, isEmpty, get } from 'lodash-es';
 import { findDOMNode } from 'react-dom';
 import { IModalInfo } from 'containers/App';
 import { DragSource } from 'react-dnd';

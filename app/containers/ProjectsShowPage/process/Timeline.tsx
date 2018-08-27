@@ -1,5 +1,5 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { indexOf, isString, forEach } from 'lodash';
+import { indexOf, isString, forEach } from 'lodash-es';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { tap, filter, switchMap } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/observable/combineLatest';

@@ -2,7 +2,7 @@ import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { ICommentData, commentsForIdeaStream } from 'services/comments';
-import { isString } from 'lodash';
+import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { clone, omit, every, fromPairs, isEmpty, isFunction } from 'lodash';
+import { clone, omit, every, fromPairs, isEmpty, isFunction } from 'lodash-es';
 
 // components
 import { Table } from 'semantic-ui-react';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
-import { isEmpty, get, forOwn } from 'lodash';
+import { isEmpty, get, forOwn } from 'lodash-es';
 
 // router
 import clHistory from 'utils/cl-router/history';

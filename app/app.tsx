@@ -17,7 +17,6 @@ import { translationMessages } from './i18n';
 // Import CSS reset and Global Styles
 import 'sanitize.css/sanitize.css';
 import 'assets/semantic/semantic.min.css';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './global-styles';
 
 // Import root routes

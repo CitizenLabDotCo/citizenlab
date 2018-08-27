@@ -1,5 +1,5 @@
 import { Observer, Observable } from 'rxjs';
-import { isObject, isEmpty } from 'lodash';
+import { isObject, isEmpty } from 'lodash-es';
 import shallowCompare from 'utils/shallowCompare';
 
 export interface ILocalStateService<T> {

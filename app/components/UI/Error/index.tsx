@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import Icon from 'components/UI/Icon';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import { get, isBoolean, isArray, isEmpty } from 'lodash';
+import { get, isBoolean, isArray, isEmpty } from 'lodash-es';
 import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import { darken } from 'polished';

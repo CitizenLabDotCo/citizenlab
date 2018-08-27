@@ -1,5 +1,5 @@
 import React from 'react';
-import { get, isString, isEmpty, omitBy, isNil, isEqual, isBoolean } from 'lodash';
+import { get, isString, isEmpty, omitBy, isNil, isEqual, isBoolean } from 'lodash-es';
 import { Subscription, Subject, BehaviorSubject } from 'rxjs';
 import { merge } from 'rxjs/observable/merge';
 import { combineLatest } from 'rxjs/observable/combineLatest';

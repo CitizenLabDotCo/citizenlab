@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { keys, pick, isEqual } from 'lodash';
+import { keys, pick, isEqual } from 'lodash-es';
 import { API } from 'typings';
 import { withRouter, WithRouterProps } from 'react-router';
 import { updatePage } from 'services/pages';

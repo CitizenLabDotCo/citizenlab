@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isFunction } from 'lodash';
+import { isFunction } from 'lodash-es';
 import { Subscription } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 

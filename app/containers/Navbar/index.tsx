@@ -1,6 +1,6 @@
 // libraries
 import React, { PureComponent } from 'react';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
 

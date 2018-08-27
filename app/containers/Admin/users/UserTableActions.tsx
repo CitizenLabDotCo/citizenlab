@@ -1,7 +1,7 @@
 // Libraries
 import React, { PureComponent, FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isArray, isNil, omitBy, includes } from 'lodash';
+import { isArray, isNil, omitBy, includes } from 'lodash-es';
 import FileSaver from 'file-saver';
 
 // Components

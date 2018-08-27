@@ -1,5 +1,5 @@
 import React from 'react';
-import { set, keys, difference, get } from 'lodash';
+import { set, keys, difference, get } from 'lodash-es';
 import { Subscription } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';

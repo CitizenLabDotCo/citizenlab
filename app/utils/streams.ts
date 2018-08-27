@@ -3,7 +3,7 @@ import { Observer, Observable, Subscription } from 'rxjs';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
 import { retry, catchError, startWith, scan, filter, distinctUntilChanged, refCount, publishReplay } from 'rxjs/operators';
-import { includes, forOwn, isError, isNil, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union } from 'lodash';
+import { includes, forOwn, isError, isNil, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union } from 'lodash-es';
 import request from 'utils/request';
 import { authApiEndpoint } from 'services/auth';
 import { currentTenantApiEndpoint } from 'services/tenant';
