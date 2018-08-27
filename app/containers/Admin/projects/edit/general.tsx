@@ -510,6 +510,52 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     return !hasErrors;
   }
 
+  getFilesToAddPromises = () => {
+    const { newProjectFiles, oldProjectFiles, projectData } = this.state;
+    const projectId = (projectData ? projectData.id : null);
+    let filesToAdd = newProjectFiles;
+    let filesToAddPromises: Promise<any>[] = [];
+
+    if (newProjectFiles && Array.isArray(oldProjectFiles)) {
+      // newProjectFiles = local state of files
+      // This means those previously uploaded + files that have been added/removed
+      // oldProjectFiles = last saved state of files (remote)
+
+      filesToAdd = newProjectFiles.filter((newProjectFile) => {
+        return !oldProjectFiles.some(oldProjectFile => oldProjectFile.name === newProjectFile.name);
+      });
+
+      if (projectId && filesToAdd && filesToAdd.length > 0) {
+        filesToAddPromises = filesToAdd.map((fileToAdd: any) => addProjectFile(projectId as string, fileToAdd.base64, fileToAdd.name));
+      }
+    }
+
+    return filesToAddPromises;
+  }
+
+  getFilesToRemovePromises = () => {
+    const { newProjectFiles, oldProjectFiles, projectData } = this.state;
+    const projectId = (projectData ? projectData.id : null);
+    let filesToRemove = oldProjectFiles;
+    let filesToRemovePromises: Promise<any>[] = [];
+
+    if (newProjectFiles && Array.isArray(oldProjectFiles)) {
+      // newProjectFiles = local state of files
+      // This means those previously uploaded + files that have been added/removed
+      // oldProjectFiles = last saved state of files (remote)
+
+      filesToRemove = oldProjectFiles.filter((oldProjectFile) => {
+        return !newProjectFiles.some(newProjectFile => newProjectFile.name === oldProjectFile.name);
+      });
+
+      if (projectId && Array.isArray(filesToRemove) && filesToRemove.length > 0) {
+        filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deleteProjectFile(projectId as string, fileToRemove.id));
+      }
+    }
+
+    return filesToRemovePromises;
+  }
+
   save = async (participationContextConfig: IParticipationContextConfig | null = null) => {
     if (this.validate()) {
       const { formatMessage } = this.props.intl;
@@ -544,6 +590,9 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         let imagesToAddPromises: Promise<any>[] = [];
         let imagesToRemovePromises: Promise<any>[] = [];
 
+        const filesToAddPromises: Promise<any>[] = this.getFilesToAddPromises();
+        const filesToRemovePromises: Promise<any>[] = this.getFilesToRemovePromises();
+
         if (newProjectImages && oldProjectImages) {
           imagesToAdd = newProjectImages.filter((newProjectImage) => {
             return !oldProjectImages.some(oldProjectImage => oldProjectImage.base64 === newProjectImage.base64);
@@ -551,20 +600,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
 
           imagesToRemove = oldProjectImages.filter((oldProjectImage) => {
             return !newProjectImages.some(newProjectImage => newProjectImage.base64 === oldProjectImage.base64);
-          });
-        }
-        let filesToAdd = newProjectFiles;
-        let filesToRemove = oldProjectFiles;
-        let filesToAddPromises: Promise<any>[] = [];
-        let filesToRemovePromises: Promise<any>[] = [];
-
-        if (newProjectFiles && Array.isArray(oldProjectFiles)) {
-          filesToAdd = newProjectFiles.filter((newProjectFile) => {
-            return !oldProjectFiles.some(oldProjectFile => oldProjectFile.name === newProjectFile.name);
-          });
-
-          filesToRemove = oldProjectFiles.filter((oldProjectFile) => {
-            return !newProjectFiles.some(newProjectFile => newProjectFile.name === oldProjectFile.name);
           });
         }
 
@@ -593,13 +628,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
             ...imagesToAddPromises,
             ...imagesToRemovePromises
           ]);
-        }
-        if (projectId && filesToAdd && filesToAdd.length > 0) {
-          filesToAddPromises = filesToAdd.map((fileToAdd: any) => addProjectFile(projectId as string, fileToAdd.base64, fileToAdd.name));
-        }
-
-        if (projectId && Array.isArray(filesToRemove) && filesToRemove.length > 0) {
-          filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deleteProjectFile(projectId as string, fileToRemove.id));
         }
 
         if (filesToAddPromises.length > 0 || filesToRemovePromises.length > 0) {
