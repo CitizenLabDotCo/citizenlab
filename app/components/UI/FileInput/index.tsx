@@ -51,8 +51,15 @@ interface Props {
 class FileInput extends Component<InjectedIntlProps &Props> {
   private fileInput = createRef<HTMLInputElement>();
 
+  onClick = (e) => {
+    // reset the value of the input field
+    // so we can upload the same file again after deleting it
+    e.target.value = null;
+  }
+
   onChange = () => {
     const current = this.fileInput.current;
+
     if (current && current.files && current.files.length > 0) {
       const file: UploadFile = current.files[0];
       getBase64FromFile(file).then(res => {
@@ -68,6 +75,7 @@ class FileInput extends Component<InjectedIntlProps &Props> {
         <Input
           id="project-attachment-uploader"
           onChange={this.onChange}
+          onClick={this.onClick}
           type="file"
           multiple
           innerRef={this.fileInput}
