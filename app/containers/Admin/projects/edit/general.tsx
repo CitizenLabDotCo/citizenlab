@@ -402,7 +402,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   handleProjectFileOnRemove = (removedFile: UploadFile) => () => {
     this.setState((state) => ({
       submitState: 'enabled',
-      newProjectFiles: (state.newProjectFiles ? state.newProjectFiles.filter(projectFile => projectFile.id !== removedFile.id) : null)
+      newProjectFiles: (state.newProjectFiles ? state.newProjectFiles.filter(projectFile => projectFile.name !== removedFile.name) : null)
     }));
   }
 
@@ -852,8 +852,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                   key={file.id || file.name}
                   onDeleteClick={this.handleProjectFileOnRemove(file)}
                   file={file}
-                />
-              ))}
+                />)
+              )}
             </SectionField>
 
             {projectData &&
