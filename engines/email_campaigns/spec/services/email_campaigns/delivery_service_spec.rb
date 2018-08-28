@@ -15,6 +15,12 @@ describe EmailCampaigns::DeliveryService do
           .to_not raise_error
       end
     end
+
+    it "returns campaign_types that are all instantiatable without extra arguments, except for Manual campaign" do
+      (service.campaign_types - ['EmailCampaigns::Campaigns::Manual']).each do |campaign_type|
+        expect{campaign_type.constantize.create!}.to_not raise_error
+      end
+    end
   end
 
   describe "send_on_schedule" do
