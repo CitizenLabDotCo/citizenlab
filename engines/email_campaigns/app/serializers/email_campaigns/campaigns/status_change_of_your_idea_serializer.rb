@@ -1,5 +1,5 @@
 module EmailCampaigns::Campaigns
-  class WebApi::V1::External::Notifications::StatusChangeOfYourIdeaSerializer < WebApi::V1::External::Notifications::NotificationSerializer
+  class StatusChangeOfYourIdeaSerializer < NotificationSerializer
     belongs_to :idea_status, serializer: ::WebApi::V1::IdeaStatusSerializer
     belongs_to :idea, serializer: CustomIdeaSerializer
     belongs_to :idea_author, serializer: CustomUserSerializer
