@@ -389,7 +389,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     }));
   }
 
-  handleFileOnAdd = (newFile: File) => {
+  handleFileOnAdd = (newFile: UploadFile) => {
     this.setState((state) => ({
       submitState: 'enabled',
       newProjectFiles: [
