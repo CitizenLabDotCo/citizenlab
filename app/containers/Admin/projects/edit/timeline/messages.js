@@ -69,4 +69,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.endDatePlaceholder',
     defaultMessage: 'End Date',
   },
+  fileUploadLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.fileUploadLabel',
+    defaultMessage: 'Attach files to the project',
+  },
 });
