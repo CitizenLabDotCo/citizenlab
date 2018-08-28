@@ -7,6 +7,7 @@ import { of } from 'rxjs/observable/of';
 import { isNilOrError } from 'utils/helperUtils';
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
+import { has } from 'lodash';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -14,6 +15,7 @@ import IdeaCards from 'components/IdeaCards';
 import ProjectCards from 'components/ProjectCards';
 import Footer from 'components/Footer';
 import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -262,20 +264,26 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+interface State {
+  ideaSocialSharingModalOpened: boolean;
+}
 
 class LandingPage extends React.PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props);
-    this.state = {};
+    this.state = {
+      ideaSocialSharingModalOpened: false
+    };
   }
 
   componentDidMount() {
     const query = clHistory.getCurrentLocation().query;
     const authUser$ = authUserStream().observable;
-    const ideaToPublish$ = (query && query.idea_to_publish ? ideaByIdStream(query.idea_to_publish).observable : of(null));
+    const urlHasQueryParam = has(query, 'idea_to_publish') || has(query, 'idea_published');
+    const idea: string | undefined = (urlHasQueryParam && (query.idea_to_publish || query.idea_published));
+    const idea$ = idea ? of({ publish: has(query, 'idea_to_publish'), id: idea }) : of(null);
 
     this.subscriptions = [
       // if 'idea_to_publish' parameter is present in landingpage url,
@@ -283,12 +291,16 @@ class LandingPage extends React.PureComponent<Props, State> {
       // and update its status and author name
       combineLatest(
         authUser$,
-        ideaToPublish$
-      ).subscribe(async ([authUser, ideaToPublish]) => {
-        if (authUser && ideaToPublish && ideaToPublish.data.attributes.publication_status === 'draft') {
-          await updateIdea(ideaToPublish.data.id, { author_id: authUser.data.id, publication_status: 'published' });
-          streams.fetchAllStreamsWithEndpoint(`${API_PATH}/ideas`);
-          window.history.replaceState(null, '', window.location.pathname);
+        idea$
+      ).subscribe(async ([authUser, idea]) => {
+        if (idea) {
+          if (authUser && idea.publish && idea.id) {
+            await updateIdea(idea.id, { author_id: authUser.data.id, publication_status: 'published' });
+            streams.fetchAllStreamsWithEndpoint(`${API_PATH}/ideas`);
+            window.history.replaceState(null, '', window.location.pathname);
+          }
+
+          this.setState({ ideaSocialSharingModalOpened: true });
         }
       })
     ];
@@ -315,7 +327,12 @@ class LandingPage extends React.PureComponent<Props, State> {
     clHistory.push('/sign-up');
   }
 
+  closeIdeaSocialSharingModal = () => {
+    this.setState({ ideaSocialSharingModalOpened: false });
+  }
+
   render() {
+    const { ideaSocialSharingModalOpened } = this.state;
     const { locale, tenant, projects, authUser } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
@@ -394,6 +411,10 @@ class LandingPage extends React.PureComponent<Props, State> {
               <Footer />
             </Content>
           </Container>
+
+          <Modal opened={ideaSocialSharingModalOpened} close={this.closeIdeaSocialSharingModal} >
+            <div>Test</div>
+          </Modal>
         </>
       );
     }
