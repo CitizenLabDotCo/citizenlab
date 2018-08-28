@@ -1,6 +1,6 @@
 import 'whatwg-fetch';
 import { fromPromise } from 'rxjs/observable/fromPromise';
-import { ImageFile } from 'typings';
+import { ImageFile, UploadFile } from 'typings';
 
 export const imageSizes = {
   headerBg: {
@@ -61,10 +61,6 @@ export function convertBlobToFile(blob: Blob, fileName: string) {
 }
 
 export async function convertUrlToFile(imageUrl: string | null): Promise<File | null> {
-  // We don't cache this, to deal with CORS issues.
-  // https://bugs.chromium.org/p/chromium/issues/detail?id=260239
-  // https://stackoverflow.com/questions/26352083/chrome-cors-cache-requesting-same-file-from-two-different-origins
-
   if (!imageUrl) {
     return null;
   }
@@ -79,4 +75,17 @@ export async function convertUrlToFile(imageUrl: string | null): Promise<File | 
 
 export function convertUrlToFileObservable(imageUrl: string | null) {
   return fromPromise(convertUrlToFile(imageUrl));
+}
+
+export async function convertUrlToUploadFile(imageUrl: string) {
+  const headers = new Headers();
+  headers.append('cache-control', 'no-cache');
+  headers.append('pragma', 'no-cache');
+  const blob = await fetch(imageUrl, { headers }).then((response) => response.blob());
+  const filename = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
+  return convertBlobToFile(blob, filename) as UploadFile;
+}
+
+export function convertUrlToUploadFileObservable(imageUrl: string) {
+  return fromPromise(convertUrlToUploadFile(imageUrl));
 }
