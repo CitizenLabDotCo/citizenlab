@@ -20,7 +20,7 @@ interface State {
 
 export type GetIdeaImagesChildProps = IIdeaImageData[] | undefined| null;
 
-export default class GetIdea extends React.Component<Props, State> {
+export default class GetIdeaImages extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
