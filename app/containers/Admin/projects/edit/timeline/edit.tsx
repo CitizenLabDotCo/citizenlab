@@ -14,14 +14,14 @@ import { get, isEmpty } from 'lodash';
 // Services
 import { localeStream } from 'services/locale';
 import { projectByIdStream, IProject } from 'services/projects';
-import { projectFilesStream, addProjectFile, deleteProjectFile, IProjectFile } from 'services/projectFiles';
+import { projectFilesStream, addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { phaseStream, updatePhase, addPhase, IPhase, IUpdatedPhaseProperties } from 'services/phases';
 import eventEmitter from 'utils/eventEmitter';
 
 // Utils
 import getSubmitState from 'utils/getSubmitState';
 import shallowCompare from 'utils/shallowCompare';
-import { convertUrlToFileObservable } from 'utils/imageTools';
+import { convertUrlToUploadFileObservable } from 'utils/imageTools';
 
 // Components
 import Label from 'components/UI/Label';
@@ -35,10 +35,6 @@ import ParticipationContext, { IParticipationContextConfig } from '../participat
 import FileInput from 'components/UI/FileInput';
 import FileDisplay from 'components/UI/FileDisplay';
 
-// Resources
-// import GetProjectFiles, { GetProjectFilesChildProps } from 'resources/GetProjectFiles';
-// import { addProjectFile, deleteProjectFile, IProjectFile } from 'services/projectFiles';
-
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -50,7 +46,6 @@ import { fontSizes } from 'utils/styleUtils';
 
 // Typings
 import { API, Locale, UploadFile } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
 
 const PhaseForm = styled.form`
   .DateRangePickerInput {
@@ -133,10 +128,6 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
 
     this.params$.next({ projectId, id });
 
-    // this.setState({
-    //   oldProjectFiles: !isNilOrError(projectFiles) ? projectFiles.map(projectFile => convertUrlToFile(projectFile.attributes.file.url)) : null
-    // });
-
     this.subscriptions = [
       this.params$
       .distinctUntilChanged(shallowCompare)
@@ -144,19 +135,17 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
         const { projectId, id } = params;
         const locale$ = localeStream().observable;
         const project$ = (projectId ? projectByIdStream(projectId).observable : of(null));
-        // const projectFiles$ = (projectId ? projectFilesStream(projectId).observable.pipe(
-        //   switchMap(projectFiles => projectFiles.data.map(projectFile => convertUrlToFileObservable(projectFile.attributes.file.url)))
-        // ) : of(null));
+        const projectFiles$ = (projectId ? projectFilesStream(projectId).observable.pipe(
+          switchMap((projectFiles) => {
+            if (projectFiles && projectFiles.data && projectFiles.data.length > 0) {
+              return combineLatest(
+                projectFiles.data.map((projectFile) => convertUrlToUploadFileObservable(projectFile.attributes.file.url))
+              );
+            }
 
-        const projectFiles$ = (projectId ? combineLatest(
-          projectImages.data.map((projectImage) => {
-            return convertUrlToFileObservable(projectImage.attributes.versions.large).map((projectImageFile) => {
-              projectImageFile && (projectImageFile['projectImageId'] = projectImage.id);
-              return projectImageFile;
-            });
+            return of(null);
           })
         ) : of(null));
-
         const phase$ = (id ? phaseStream(id).observable : of(null));
         return combineLatest(locale$, project$, projectFiles$, phase$);
       }).subscribe(([locale, project, projectFiles, phase]) => {
@@ -288,8 +277,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
   }
 
   getFilesToAddPromises = () => {
-    const { newProjectFiles } = this.state;
-    const { projectFiles: oldProjectFiles } = this.props;
+    const { oldProjectFiles, newProjectFiles } = this.state;
     const { projectId } = this.props.params;
     let filesToAdd = newProjectFiles;
     let filesToAddPromises: Promise<any>[] = [];
@@ -300,7 +288,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
       // oldProjectFiles = last saved state of files (remote)
 
       filesToAdd = newProjectFiles.filter((newProjectFile) => {
-        return !oldProjectFiles.some(oldProjectFile => oldProjectFile.attributes.name === newProjectFile.name);
+        return !oldProjectFiles.some(oldProjectFile => oldProjectFile.name === newProjectFile.name);
       });
 
       if (projectId && filesToAdd && filesToAdd.length > 0) {
@@ -312,8 +300,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
   }
 
   getFilesToRemovePromises = () => {
-    const { newProjectFiles } = this.state;
-    const { projectFiles: oldProjectFiles } = this.props;
+    const { oldProjectFiles, newProjectFiles } = this.state;
     const { projectId } = this.props.params;
     let filesToRemove: UploadFile[] | null = newProjectFiles;
     let filesToRemovePromises: Promise<any>[] = [];
@@ -324,7 +311,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
       // oldProjectFiles = last saved state of files (remote)
 
       filesToRemove = oldProjectFiles.filter((oldProjectFile) => {
-        return !newProjectFiles.some(newProjectFile => newProjectFile.name === oldProjectFile.attributes.name);
+        return !newProjectFiles.some(newProjectFile => newProjectFile.name === oldProjectFile.name);
       });
 
       if (projectId && filesToRemove && filesToRemove.length > 0) {
