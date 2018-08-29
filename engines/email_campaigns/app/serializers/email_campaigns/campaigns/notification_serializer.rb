@@ -9,7 +9,7 @@ module EmailCampaigns
     end
 
     class CustomProjectSerializer < ActiveModel::Serializer
-      attributes :id, :slug, :title_multiloc, :description_multiloc, :url, :created_at, :header_bg
+      attributes :id, :slug, :title_multiloc, :description_multiloc, :url, :created_at, :header_bg, :ideas_count
 
       def created_at
         object.created_at.iso8601
@@ -60,6 +60,30 @@ module EmailCampaigns
 
       def versions
         object.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+      end
+    end
+
+    class CustomSpamReportSerializer < ActiveModel::Serializer
+      attributes :id, :reason_code, :other_reason, :reported_at, :url
+
+      def reported_at
+        object.reported_at.iso8601
+      end
+
+      def url
+        FrontendService.new.model_to_url object.spam_reportable
+      end
+    end
+
+    class CustomInviteSerializer < ActiveModel::Serializer
+     attributes :id, :invite_text, :accepted_at, :activate_invite_url
+
+      def accepted_at
+        object.accepted_at.iso8601
+      end
+
+      def activate_invite_url
+        FrontendService.new.invite_url object.token, locale: object.invitee.locale
       end
     end
 
