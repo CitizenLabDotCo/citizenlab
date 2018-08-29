@@ -291,9 +291,10 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
         return !oldProjectFiles.some(oldProjectFile => oldProjectFile.name === newProjectFile.name);
       });
 
-      if (projectId && filesToAdd && filesToAdd.length > 0) {
-        filesToAddPromises = filesToAdd.map((fileToAdd: any) => addProjectFile(projectId as string, fileToAdd.base64, fileToAdd.name));
-      }
+    }
+
+    if (projectId && filesToAdd && filesToAdd.length > 0) {
+      filesToAddPromises = filesToAdd.filter(fileToAdd => fileToAdd.base64).map((fileToAdd) => addProjectFile(projectId, fileToAdd.base64 as string, fileToAdd.name));
     }
 
     return filesToAddPromises;
@@ -313,11 +314,10 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
       filesToRemove = oldProjectFiles.filter((oldProjectFile) => {
         return !newProjectFiles.some(newProjectFile => newProjectFile.name === oldProjectFile.name);
       });
+    }
 
-      if (projectId && filesToRemove && filesToRemove.length > 0) {
-        filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deleteProjectFile(projectId as string, fileToRemove.id));
-      }
-
+    if (projectId && filesToRemove && filesToRemove.length > 0) {
+      filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deleteProjectFile(projectId as string, fileToRemove.id));
     }
 
     return filesToRemovePromises;
@@ -469,9 +469,3 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
 }
 
 export default injectIntl<Props>(AdminProjectTimelineEdit);
-
-// export default (props: Props) => (
-//   <GetProjectFiles>
-//     {projectFiles => <AdminProjectTimelineEditWithIntl {...props} projectFiles={projectFiles} />}
-//   </GetProjectFiles>
-// );

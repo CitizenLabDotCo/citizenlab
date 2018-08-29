@@ -521,9 +521,10 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         return !oldProjectImages.some(oldProjectImage => oldProjectImage.base64 === newProjectImage.base64);
       });
 
-      if (projectId && imagesToAdd && imagesToAdd.length > 0) {
-        imagesToAddPromises = imagesToAdd.map((imageToAdd: any) => addProjectImage(projectId as string, imageToAdd.base64));
-      }
+    }
+
+    if (projectId && imagesToAdd && imagesToAdd.length > 0) {
+      imagesToAddPromises = imagesToAdd.map((imageToAdd: any) => addProjectImage(projectId as string, imageToAdd.base64));
     }
 
     return imagesToAddPromises;
@@ -539,10 +540,10 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       imagesToRemove = oldProjectImages.filter((oldProjectImage) => {
         return !newProjectImages.some(newProjectImage => newProjectImage.base64 === oldProjectImage.base64);
       });
+    }
 
-      if (projectId && imagesToRemove && imagesToRemove.length > 0) {
-        imagesToRemovePromises = imagesToRemove.map((imageToRemove: any) => deleteProjectImage(projectId as string, imageToRemove.projectImageId));
-      }
+    if (projectId && imagesToRemove && imagesToRemove.length > 0) {
+      imagesToRemovePromises = imagesToRemove.map((imageToRemove: any) => deleteProjectImage(projectId as string, imageToRemove.projectImageId));
     }
 
     return imagesToRemovePromises;
@@ -562,10 +563,10 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       filesToAdd = newProjectFiles.filter((newProjectFile) => {
         return !oldProjectFiles.some(oldProjectFile => oldProjectFile.name === newProjectFile.name);
       });
+    }
 
-      if (projectId && filesToAdd && filesToAdd.length > 0) {
-        filesToAddPromises = filesToAdd.map((fileToAdd: any) => addProjectFile(projectId as string, fileToAdd.base64, fileToAdd.name));
-      }
+    if (projectId && filesToAdd && filesToAdd.length > 0) {
+      filesToAddPromises = filesToAdd.map((fileToAdd: any) => addProjectFile(projectId as string, fileToAdd.base64, fileToAdd.name));
     }
 
     return filesToAddPromises;
@@ -585,10 +586,10 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       filesToRemove = oldProjectFiles.filter((oldProjectFile) => {
         return !newProjectFiles.some(newProjectFile => newProjectFile.name === oldProjectFile.name);
       });
+    }
 
-      if (projectId && Array.isArray(filesToRemove) && filesToRemove.length > 0) {
-        filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deleteProjectFile(projectId as string, fileToRemove.id));
-      }
+    if (projectId && Array.isArray(filesToRemove) && filesToRemove.length > 0) {
+      filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deleteProjectFile(projectId as string, fileToRemove.id));
     }
 
     return filesToRemovePromises;
