@@ -26,18 +26,18 @@ export interface IPhaseFiles {
   data: IPhaseFileData[];
 }
 
-export function phaseFilesStream(projectId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IPhaseFiles>({ apiEndpoint: `${apiEndpoint}/${projectId}/files`, ...streamParams });
+export function phaseFilesStream(phaseId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<IPhaseFiles>({ apiEndpoint: `${apiEndpoint}/${phaseId}/files`, ...streamParams });
 }
 
-export function phaseFileStream(projectId: string, fileId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IPhaseFile>({ apiEndpoint: `${apiEndpoint}/${projectId}/files/${fileId}`, ...streamParams });
+export function phaseFileStream(phaseId: string, fileId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<IPhaseFile>({ apiEndpoint: `${apiEndpoint}/${phaseId}/files/${fileId}`, ...streamParams });
 }
 
-export function addPhaseFile(projectId: string, base64: string, name: string, ordering: number | null = null) {
-  return streams.add<IPhaseFile>(`${apiEndpoint}/${projectId}/files`, { file: { name, ordering, file: base64 } });
+export function addPhaseFile(phaseId: string, base64: string, name: string, ordering: number | null = null) {
+  return streams.add<IPhaseFile>(`${apiEndpoint}/${phaseId}/files`, { file: { name, ordering, file: base64 } });
 }
 
-export function deletePhaseFile(projectId: string, fileId: string) {
-  return streams.delete(`${apiEndpoint}/${projectId}/files/${fileId}`, fileId);
+export function deletePhaseFile(phaseId: string, fileId: string) {
+  return streams.delete(`${apiEndpoint}/${phaseId}/files/${fileId}`, fileId);
 }
