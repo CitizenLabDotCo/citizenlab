@@ -36,7 +36,7 @@ class ParticipationContextService
     if project.continuous?
       project
     elsif project.timeline?
-      idea.phases.last
+      idea.phases.sort_by(&:start_at).last
     end
   end
 
