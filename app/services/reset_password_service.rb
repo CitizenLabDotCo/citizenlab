@@ -28,7 +28,7 @@ class ResetPasswordService
     IdentifyToSegmentJob.perform_later(user)
     LogActivityJob.set(wait: 2.seconds).perform_later(
       user, 'requested_password_reset', user, Time.now.to_i, 
-      payload: {url: FrontendService.new.reset_password_url(token, locale: user.locale), user_email: user.email}
+      payload: {token: token}
       )
   end
 
