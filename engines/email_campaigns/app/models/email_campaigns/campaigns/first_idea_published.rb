@@ -26,7 +26,7 @@ module EmailCampaigns
             idea_images: idea.idea_images.map{ |image|
               {
                 ordering: image.ordering,
-                versions: image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+                versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
               }
             }
           }
