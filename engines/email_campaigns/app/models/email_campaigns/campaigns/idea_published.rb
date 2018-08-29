@@ -1,5 +1,5 @@
 module EmailCampaigns
-  class Campaigns::FirstIdeaPublished < Campaign
+  class Campaigns::IdeaPublished < Campaign
     include Disableable
     include Consentable
     include ActivityTriggerable
