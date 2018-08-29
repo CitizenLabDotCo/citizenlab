@@ -16,7 +16,7 @@ module EmailCampaigns
     def generate_commands recipient:, activity: 
       [{
         event_payload: {
-          password_reset_url: FrontendService.new.reset_password_url(token, locale: recipient.locale)
+          password_reset_url: FrontendService.new.reset_password_url(activity.payload[:token], locale: recipient.locale)
         }
       }]
     end
