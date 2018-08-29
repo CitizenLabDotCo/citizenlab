@@ -9,7 +9,7 @@ describe SideFxIdeaService do
       idea = create(:idea, publication_status: 'published', author: user)
       expect {service.after_create(idea, user)}.
         to have_enqueued_job(LogActivityJob).with(idea, 'published', user, idea.created_at.to_i).exactly(1).times
-        .and have_enqueued_job(LogActivityJob).with(idea, 'first published by user', user, idea.created_at.to_i).exactly(1).times
+        .and have_enqueued_job(LogActivityJob).with(idea, 'first_published_by_user', user, idea.created_at.to_i).exactly(1).times
     end
 
     it "doesn't log a 'published' action job when publication_state is draft" do
@@ -22,7 +22,7 @@ describe SideFxIdeaService do
       idea1 = create(:idea, publication_status: 'published', author: user)
       idea2 = create(:idea, publication_status: 'published', author: user)
       expect {service.after_create(idea2, user)}.
-        not_to have_enqueued_job(LogActivityJob).with(idea2, 'first published by user', user, idea2.created_at.to_i)
+        not_to have_enqueued_job(LogActivityJob).with(idea2, 'first_published_by_user', user, idea2.created_at.to_i)
     end
   end
 
@@ -32,7 +32,7 @@ describe SideFxIdeaService do
       idea.update(publication_status: 'published')
       expect {service.after_update(idea, user)}.
         to have_enqueued_job(LogActivityJob).with(idea, 'published', user, idea.created_at.to_i).exactly(1).times
-        .and have_enqueued_job(LogActivityJob).with(idea, 'first published by user', user, idea.created_at.to_i).exactly(1).times
+        .and have_enqueued_job(LogActivityJob).with(idea, 'first_published_by_user', user, idea.created_at.to_i).exactly(1).times
     end
 
     it "logs a 'changed' action job when the idea has changed" do
