@@ -25,21 +25,24 @@ class LogToSegmentService
 
   def add_activity_item_content hash_for_event, hash_for_item_content, activity
     if activity.item
+      serializer = nil
       begin
+        serializer = "WebApi::V1::External::#{activity.item_type}Serializer".constantize
+      rescue NameError => e
+        # There's no serializer, so we don't add anything
+      end
+      if serializer
         hash_for_item_content[:item_content] =
           if activity.item.respond_to? :event_bus_item_content
             activity.item.event_bus_item_content
           else
-            serialize "WebApi::V1::#{activity.item_type}Serializer", activity.item
+            serialize serializer, activity.item
           end
-      rescue NameError => e
-        # There's no serializer, so we don't add anything
       end
     end
   end
 
-  def serialize serializer_str, object
-    serializer = serializer_str.constantize
+  def serialize serializer, object
     ActiveModelSerializers::SerializableResource.new(object, {
       serializer: serializer,
       adapter: :json
