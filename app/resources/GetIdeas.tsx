@@ -257,7 +257,7 @@ export default class GetIdeas extends React.Component<Props, State> {
     };
   }
 
-  handleChangeSorting = (newSortAttribute: SortAttribute) => {
+  handleSortOnChange = (newSortAttribute: SortAttribute) => {
     const { sort: oldSort } = this.state.queryParameters;
     const oldSortAttribute = getSortAttribute<Sort, SortAttribute>(oldSort);
     const oldSortDirection = getSortDirection<Sort>(oldSort);
@@ -303,13 +303,6 @@ export default class GetIdeas extends React.Component<Props, State> {
 
   handleSearchOnChange = (search: string) => {
     this.search$.next(search);
-  }
-
-  handleSortOnChange = (sort: Sort) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      sort
-    });
   }
 
   handleTopicsOnChange = (topics: string[]) => {
