@@ -30,7 +30,7 @@ class LogToSegmentService
           if activity.item.respond_to? :event_bus_item_content
             activity.item.event_bus_item_content
           else
-            serialize "WebApi::V1::External::#{activity.item_type}Serializer", activity.item
+            serialize "WebApi::V1::#{activity.item_type}Serializer", activity.item
           end
       rescue NameError => e
         # There's no serializer, so we don't add anything
