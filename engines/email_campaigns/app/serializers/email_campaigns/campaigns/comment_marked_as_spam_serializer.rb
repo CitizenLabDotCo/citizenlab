@@ -1,7 +1,7 @@
 module EmailCampaigns::Campaigns
 	class CommentMarkedAsSpamSerializer < NotificationSerializer
 	  belongs_to :initiating_user, serializer: CustomUserSerializer
-	  belongs_to :spam_report, serializer: ::WebApi::V1::External::SpamReportSerializer
+	  belongs_to :spam_report, serializer: CustomSpamReportSerializer
 	  belongs_to :comment, serializer: CustomCommentSerializer
 	  belongs_to :idea, serializer: CustomIdeaSerializer
 	  has_many :idea_images, serializer: CustomImageSerializer
