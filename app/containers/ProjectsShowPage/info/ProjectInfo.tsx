@@ -10,6 +10,7 @@ import Sharing from 'components/Sharing';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetProjectFiles, { GetProjectFilesChildProps } from 'resources/GetProjectFiles';
 import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
@@ -148,6 +149,7 @@ interface InputProps {
 
 interface DataProps {
   project: GetProjectChildProps;
+  projectFiles: GetProjectFilesChildProps;
   projectImages: GetProjectImagesChildProps;
   authUser: GetAuthUserChildProps;
 }
@@ -155,6 +157,7 @@ interface Props extends InputProps, DataProps { }
 
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
+  projectFiles: ({ projectId, render }) => <GetProjectFiles projectId={projectId}>{render}</GetProjectFiles>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
   authUser: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
 });
