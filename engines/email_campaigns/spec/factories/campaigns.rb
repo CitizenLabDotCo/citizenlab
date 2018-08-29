@@ -52,6 +52,18 @@ FactoryBot.define do
     enabled true
   end
 
+  factory :welcome_campaign, class: EmailCampaigns::Campaigns::Welcome do
+    enabled true
+  end
+
+  factory :password_reset_campaign, class: EmailCampaigns::Campaigns::PasswordReset do
+    enabled true
+  end
+
+  factory :first_idea_published_campaign, class: EmailCampaigns::Campaigns::FirstIdeaPublished do
+    enabled true
+  end
+
   factory :idea_published_campaign, class: EmailCampaigns::Campaigns::IdeaPublished do
     enabled true
   end
