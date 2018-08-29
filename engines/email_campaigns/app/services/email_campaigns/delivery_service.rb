@@ -13,6 +13,10 @@ module EmailCampaigns
       Campaigns::AdminRightsReceived,
       Campaigns::ProjectModerationRightsReceived,
       Campaigns::InviteAccepted,
+      Campaigns::Welcome,
+      Campaigns::PasswordReset,
+      Campaigns::FirstIdeaPublished,
+      Campaigns::IdeaPublished,
       Campaigns::AdminDigest,
       Campaigns::ModeratorDigest,
       Campaigns::UserDigest

@@ -52,6 +52,10 @@ FactoryBot.define do
     enabled true
   end
 
+  factory :idea_published_campaign, class: EmailCampaigns::Campaigns::IdeaPublished do
+    enabled true
+  end
+
   factory :admin_digest_campaign, class: EmailCampaigns::Campaigns::AdminDigest do
     enabled true
     schedule { weekly_schedule }
