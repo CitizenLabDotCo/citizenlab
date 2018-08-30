@@ -178,6 +178,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
 
   handleTitleMultilocOnChange = (title_multiloc) => {
     this.setState((state) => ({
+      submitState: 'enabled',
       attributeDiff: {
         ...state.attributeDiff,
         title_multiloc,
@@ -187,19 +188,10 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
 
   handleEditorOnChange = (description_multiloc) => {
     this.setState((state) => ({
+      submitState: 'enabled',
       attributeDiff: {
         ...state.attributeDiff,
         description_multiloc,
-      }
-    }));
-  }
-
-  handleIdeasDisplayChange = (presentationMode: 'map' | 'card') => {
-    this.setState((state) => ({
-      presentationMode,
-      attributeDiff: {
-        ...state.attributeDiff,
-        presentation_mode: presentationMode
       }
     }));
   }
@@ -209,7 +201,10 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
     const newAttributesDiff = attributeDiff;
     newAttributesDiff.start_at = startDate ? startDate.format('YYYY-MM-DD') : '';
     newAttributesDiff.end_at = endDate ? endDate.format('YYYY-MM-DD') : '';
-    this.setState({ attributeDiff: newAttributesDiff });
+    this.setState({
+      submitState: 'enabled',
+      attributeDiff: newAttributesDiff
+    });
   }
 
   handleDateFocusChange = (focusedInput: 'startDate' | 'endDate') => {
@@ -255,6 +250,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
     const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, presentationMode, survey_embed_url, survey_service } = participationContextConfig;
 
     this.setState({
+      submitState: 'enabled',
       attributeDiff: {
         ...attributeDiff,
         survey_embed_url,
@@ -371,7 +367,8 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
       this.setState({
         errors: get(errors, 'json.errors', null),
         saving: false,
-        saved: false
+        saved: false,
+        submitState: 'error',
       });
     }
   }
