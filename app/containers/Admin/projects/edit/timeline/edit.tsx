@@ -95,8 +95,8 @@ interface State {
   focusedInput: 'startDate' | 'endDate' | null;
   saved: boolean;
   loaded: boolean;
-  oldPhaseFiles: UploadFile[] | null;
-  newPhaseFiles: UploadFile[] | null;
+  remotePhaseFiles: UploadFile[] | null;
+  localPhaseFiles: UploadFile[] | null;
 }
 
 class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps, State> {
@@ -116,8 +116,8 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
       focusedInput: null,
       saved: false,
       loaded: false,
-      oldPhaseFiles: null,
-      newPhaseFiles: null,
+      remotePhaseFiles: null,
+      localPhaseFiles: null,
     };
     this.subscriptions = [];
     this.params$ = new BehaviorSubject(null);
@@ -153,7 +153,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
           locale,
           project,
           phase,
-          oldPhaseFiles: phaseFiles,
+          remotePhaseFiles: phaseFiles,
           loaded: true
         });
       })
@@ -215,8 +215,8 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
 
   handlePhaseFileOnAdd = (newFile: UploadFile) => {
     this.setState((prevState) => ({
-      newPhaseFiles: [
-        ...(prevState.newPhaseFiles || []),
+      localPhaseFiles: [
+        ...(prevState.localPhaseFiles || []),
         newFile
       ]
     }));
@@ -224,8 +224,8 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
 
   handlePhaseFileOnRemove = (removedFile: UploadFile) => () => {
     this.setState((prevState) => ({
-      newPhaseFiles: (prevState.newPhaseFiles ?
-        prevState.newPhaseFiles.filter(phaseFile => phaseFile.name !== removedFile.name) : null)
+      localPhaseFiles: (prevState.localPhaseFiles ?
+        prevState.localPhaseFiles.filter(phaseFile => phaseFile.name !== removedFile.name) : null)
     }));
   }
 
@@ -277,47 +277,47 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
   }
 
   getFilesToAddPromises = () => {
-    const { oldPhaseFiles, newPhaseFiles } = this.state;
-    const { projectId } = this.props.params;
-    let filesToAdd = newPhaseFiles;
+    const { remotePhaseFiles, localPhaseFiles } = this.state;
+    const { id } = this.props.params;
+    let filesToAdd = localPhaseFiles;
     let filesToAddPromises: Promise<any>[] = [];
 
-    if (newPhaseFiles && Array.isArray(oldPhaseFiles)) {
-      // newPhaseFiles = local state of files
+    if (localPhaseFiles && Array.isArray(remotePhaseFiles)) {
+      // localPhaseFiles = local state of files
       // This means those previously uploaded + files that have been added/removed
-      // oldPhaseFiles = last saved state of files (remote)
+      // remotePhaseFiles = last saved state of files (remote)
 
-      filesToAdd = newPhaseFiles.filter((newPhaseFile) => {
-        return !oldPhaseFiles.some(oldPhaseFile => oldPhaseFile.name === newPhaseFile.name);
+      filesToAdd = localPhaseFiles.filter((localPhaseFile) => {
+        return !remotePhaseFiles.some(remotePhaseFile => remotePhaseFile.name === localPhaseFile.name);
       });
 
     }
 
-    if (projectId && filesToAdd && filesToAdd.length > 0) {
-      filesToAddPromises = filesToAdd.filter(fileToAdd => fileToAdd.base64).map((fileToAdd) => addPhaseFile(projectId, fileToAdd.base64 as string, fileToAdd.name));
+    if (id && filesToAdd && filesToAdd.length > 0) {
+      filesToAddPromises = filesToAdd.map((fileToAdd) => addPhaseFile(id, fileToAdd.base64 as string, fileToAdd.name));
     }
 
     return filesToAddPromises;
   }
 
   getFilesToRemovePromises = () => {
-    const { oldPhaseFiles, newPhaseFiles } = this.state;
-    const { projectId } = this.props.params;
-    let filesToRemove: UploadFile[] | null = newPhaseFiles;
+    const { remotePhaseFiles, localPhaseFiles } = this.state;
+    const { id } = this.props.params;
+    let filesToRemove: UploadFile[] | null = localPhaseFiles;
     let filesToRemovePromises: Promise<any>[] = [];
 
-    if (newPhaseFiles && Array.isArray(oldPhaseFiles)) {
-      // newPhaseFiles = local state of files
+    if (localPhaseFiles && Array.isArray(remotePhaseFiles)) {
+      // localPhaseFiles = local state of files
       // This means those previously uploaded + files that have been added/removed
-      // oldPhaseFiles = last saved state of files (remote)
+      // remotePhaseFiles = last saved state of files (remote)
 
-      filesToRemove = oldPhaseFiles.filter((oldPhaseFile) => {
-        return !newPhaseFiles.some(newPhaseFile => newPhaseFile.name === oldPhaseFile.name);
+      filesToRemove = remotePhaseFiles.filter((remotePhaseFile) => {
+        return !localPhaseFiles.some(localPhaseFile => localPhaseFile.name === remotePhaseFile.name);
       });
     }
 
-    if (projectId && filesToRemove && filesToRemove.length > 0) {
-      filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deletePhaseFile(projectId as string, fileToRemove.id));
+    if (id && filesToRemove && filesToRemove.length > 0) {
+      filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deletePhaseFile(id as string, fileToRemove.id));
     }
 
     return filesToRemovePromises;
@@ -356,7 +356,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
   render() {
     if (this.state.loaded) {
       const { formatMessage } = this.props.intl;
-      const { errors, saved, phase, attributeDiff, saving, newPhaseFiles } = this.state;
+      const { errors, saved, phase, attributeDiff, saving, localPhaseFiles } = this.state;
       const phaseAttrs = (phase ? { ...phase.data.attributes, ...attributeDiff } : { ...attributeDiff });
       const submitState = getSubmitState({ errors, saved, diff: attributeDiff });
       const startDate = (phaseAttrs.start_at ? moment(phaseAttrs.start_at) : null);
@@ -428,7 +428,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
                 <FileInput
                   onAdd={this.handlePhaseFileOnAdd}
                 />
-                {Array.isArray(newPhaseFiles) && newPhaseFiles.map(file => (
+                {Array.isArray(localPhaseFiles) && localPhaseFiles.map(file => (
                   <FileDisplay
                     key={file.id || file.name}
                     onDeleteClick={this.handlePhaseFileOnRemove(file)}
