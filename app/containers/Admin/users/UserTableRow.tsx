@@ -1,7 +1,7 @@
 // Libraries
 import React, { PureComponent, FormEvent } from 'react';
 import { isAdmin } from 'services/permissions/roles';
-import * as moment from 'moment';
+import moment from 'moment';
 import Link from 'utils/cl-router/Link';
 
 // Components

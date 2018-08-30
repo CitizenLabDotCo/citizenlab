@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
-import * as moment from 'moment';
+import moment from 'moment';
 import { isBoolean, forOwn, get, uniq, isNil, isEmpty } from 'lodash-es';
 
 // libraries

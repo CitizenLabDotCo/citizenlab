@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { isFunction, isNil, isEmpty, size } from 'lodash-es';
 import PropTypes from 'prop-types';
 

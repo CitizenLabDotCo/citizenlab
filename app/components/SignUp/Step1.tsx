@@ -37,7 +37,7 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // typings
-import { API, Locale } from 'typings';
+import { CLErrorsJSON, Locale } from 'typings';
 
 const Form = styled.form`
   width: 100%;
@@ -123,7 +123,7 @@ type State = {
   tacError: string | null;
   localeError: string | null;
   unknownError: string | null;
-  apiErrors: API.ErrorResponse | null;
+  apiErrors: CLErrorsJSON | null;
 };
 
 class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {

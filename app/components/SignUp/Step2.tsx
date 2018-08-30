@@ -28,7 +28,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // typings
-import { API } from 'typings';
+import { CLErrorsJSON } from 'typings';
 
 const Loading = styled.div`
   padding-top: 15px;
@@ -69,7 +69,7 @@ type State = {
   hasRequiredFields: boolean;
   processing: boolean;
   unknownError: string | null;
-  apiErrors: API.ErrorResponse | null;
+  apiErrors: CLErrorsJSON | null;
 };
 
 class Step2 extends PureComponent<Props & InjectedIntlProps, State> {

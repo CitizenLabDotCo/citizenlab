@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { keys, pick, isEqual } from 'lodash-es';
-import { API } from 'typings';
+import { CLErrorsJSON } from 'typings';
 import { withRouter, WithRouterProps } from 'react-router';
 import { updatePage } from 'services/pages';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
@@ -58,7 +58,7 @@ class EditPage extends React.Component<Props & WithRouterProps, State> {
     updatePage(page.id, { ...this.changedValues(this.initialValues(), values) }).then(() => {
       clHistory.push('/admin/pages');
     }).catch((errorResponse) => {
-      const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+      const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
       setErrors(apiErrors);
       setSubmitting(false);
     });

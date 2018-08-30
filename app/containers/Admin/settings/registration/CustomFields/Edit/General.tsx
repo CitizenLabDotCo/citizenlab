@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { keys, pick, isEqual } from 'lodash-es';
-import { API } from 'typings';
+import { CLErrorsJSON } from 'typings';
 import clHistory from 'utils/cl-router/history';
 
 import { ICustomFieldData, updateCustomFieldForUsers } from 'services/userCustomFields';
@@ -45,7 +45,7 @@ class General extends React.Component<Props, State> {
         clHistory.push('/admin/settings/registration');
       })
       .catch((errorResponse) => {
-        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
         setSubmitting(false);
       });
