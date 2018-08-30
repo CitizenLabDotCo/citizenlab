@@ -150,8 +150,8 @@ interface State {
   presentationMode: 'map' | 'card';
   oldProjectImages: ImageFile[] | null;
   newProjectImages: ImageFile[] | null;
-  oldProjectFiles: UploadFile[] | null;
-  newProjectFiles: UploadFile[] | null;
+  remoteProjectFiles: UploadFile[] | null;
+  localProjectFiles: UploadFile[] | null;
   noTitleError: Multiloc | null;
   apiErrors: { [fieldName: string]: API.Error[] };
   saved: boolean;
@@ -182,8 +182,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       presentationMode: 'card',
       oldProjectImages: null,
       newProjectImages: null,
-      oldProjectFiles: null,
-      newProjectFiles: null,
+      remoteProjectFiles: null,
+      localProjectFiles: null,
       noTitleError: null,
       apiErrors: {},
       saved: false,
@@ -256,7 +256,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               return !processing;
             }).map(([_processing, headerBg, projectFiles, projectImages]) => ({
               headerBg,
-              oldProjectFiles: projectFiles,
+              remoteProjectFiles: projectFiles,
               oldProjectImages: projectImages,
               projectData: (project ? project.data : null)
             }));
@@ -264,12 +264,12 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
 
           return Rx.Observable.of({
             headerBg: null,
-            oldProjectFiles: null,
+            remoteProjectFiles: null,
             oldProjectImages: null,
             projectData: null
           });
         })
-      ).subscribe(([locale, currentTenant, areas, { headerBg, oldProjectFiles, oldProjectImages, projectData }]) => {
+      ).subscribe(([locale, currentTenant, areas, { headerBg, remoteProjectFiles, oldProjectImages, projectData }]) => {
         this.setState((state) => {
           const publicationStatus = (projectData ? projectData.attributes.publication_status : state.publicationStatus);
           const projectType = (projectData ? projectData.attributes.process_type : state.projectType);
@@ -289,8 +289,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
             areasOptions,
             oldProjectImages: (oldProjectImages as ImageFile[] | null),
             newProjectImages: (oldProjectImages as ImageFile[] | null),
-            oldProjectFiles: (oldProjectFiles as UploadFile[] | null),
-            newProjectFiles: (oldProjectFiles as UploadFile[] | null),
+            remoteProjectFiles: (remoteProjectFiles as UploadFile[] | null),
+            localProjectFiles: (remoteProjectFiles as UploadFile[] | null),
             headerBg: (headerBg ? [headerBg] : null),
             presentationMode: (projectData && projectData.attributes.presentation_mode || state.presentationMode),
             areas: areas.data,
@@ -392,8 +392,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   handleFileOnAdd = (newFile: UploadFile) => {
     this.setState((state) => ({
       submitState: 'enabled',
-      newProjectFiles: [
-        ...(state.newProjectFiles || []),
+      localProjectFiles: [
+        ...(state.localProjectFiles || []),
         newFile
       ]
     }));
@@ -402,7 +402,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   handleProjectFileOnRemove = (removedFile: UploadFile) => () => {
     this.setState((state) => ({
       submitState: 'enabled',
-      newProjectFiles: (state.newProjectFiles ? state.newProjectFiles.filter(projectFile => projectFile.name !== removedFile.name) : null)
+      localProjectFiles: (state.localProjectFiles ? state.localProjectFiles.filter(projectFile => projectFile.name !== removedFile.name) : null)
     }));
   }
 
@@ -550,18 +550,18 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 
   getFilesToAddPromises = () => {
-    const { newProjectFiles, oldProjectFiles, projectData } = this.state;
+    const { localProjectFiles, remoteProjectFiles, projectData } = this.state;
     const projectId = (projectData ? projectData.id : null);
-    let filesToAdd = newProjectFiles;
+    let filesToAdd = localProjectFiles;
     let filesToAddPromises: Promise<any>[] = [];
 
-    if (newProjectFiles && Array.isArray(oldProjectFiles)) {
-      // newProjectFiles = local state of files
+    if (localProjectFiles && Array.isArray(remoteProjectFiles)) {
+      // localProjectFiles = local state of files
       // This means those previously uploaded + files that have been added/removed
-      // oldProjectFiles = last saved state of files (remote)
+      // remoteProjectFiles = last saved state of files (remote)
 
-      filesToAdd = newProjectFiles.filter((newProjectFile) => {
-        return !oldProjectFiles.some(oldProjectFile => oldProjectFile.name === newProjectFile.name);
+      filesToAdd = localProjectFiles.filter((localProjectFile) => {
+        return !remoteProjectFiles.some(remoteProjectFile => remoteProjectFile.name === localProjectFile.name);
       });
     }
 
@@ -573,18 +573,18 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 
   getFilesToRemovePromises = () => {
-    const { newProjectFiles, oldProjectFiles, projectData } = this.state;
+    const { localProjectFiles, remoteProjectFiles, projectData } = this.state;
     const projectId = (projectData ? projectData.id : null);
-    let filesToRemove = oldProjectFiles;
+    let filesToRemove = remoteProjectFiles;
     let filesToRemovePromises: Promise<any>[] = [];
 
-    if (newProjectFiles && Array.isArray(oldProjectFiles)) {
-      // newProjectFiles = local state of files
+    if (localProjectFiles && Array.isArray(remoteProjectFiles)) {
+      // localProjectFiles = local state of files
       // This means those previously uploaded + files that have been added/removed
-      // oldProjectFiles = last saved state of files (remote)
+      // remoteProjectFiles = last saved state of files (remote)
 
-      filesToRemove = oldProjectFiles.filter((oldProjectFile) => {
-        return !newProjectFiles.some(newProjectFile => newProjectFile.name === oldProjectFile.name);
+      filesToRemove = remoteProjectFiles.filter((remoteProjectFile) => {
+        return !localProjectFiles.some(localProjectFile => localProjectFile.name === remoteProjectFile.name);
       });
     }
 
@@ -700,7 +700,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       projectData,
       headerBg,
       newProjectImages,
-      newProjectFiles,
+      localProjectFiles,
       loading,
       processing,
       projectAttributesDiff,
@@ -893,7 +893,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               <FileInput
                 onAdd={this.handleFileOnAdd}
               />
-              {Array.isArray(newProjectFiles) && newProjectFiles.map(file => (
+              {Array.isArray(localProjectFiles) && localProjectFiles.map(file => (
                 <FileDisplay
                   key={file.id || file.name}
                   onDeleteClick={this.handleProjectFileOnRemove(file)}
