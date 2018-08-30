@@ -1,11 +1,13 @@
 import React from 'react';
 import isString from 'lodash/isString';
 import { Subscription, BehaviorSubject } from 'rxjs';
-import { distinctUntilChanged, switchMap, tap, filter } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
+import { distinctUntilChanged, map, switchMap, tap, filter, combineLatest } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { IProjectFileData, projectFilesStream } from 'services/projectFiles';
 import { IPhaseFileData, phaseFilesStream } from 'services/phaseFiles';
 import { isNilOrError } from 'utils/helperUtils';
+import { convertUrlToUploadFileObservable } from 'utils/imageTools';
 
 interface InputProps {
   resetOnChange?: boolean;
@@ -43,11 +45,9 @@ export default class GetResourceFiles extends React.Component<Props, State> {
   getResourceStreamFn = (resourceType: InputProps['resourceType']) => {
     if (resourceType === 'phase') {
       return phaseFilesStream;
-    } else if (resourceType === 'project') {
-      return projectFilesStream;
-    } else {
-      return projectFilesStream;
     }
+
+    return projectFilesStream;
   }
 
   componentDidMount() {
@@ -63,6 +63,22 @@ export default class GetResourceFiles extends React.Component<Props, State> {
         switchMap(({ resourceId, resourceType }: { resourceId: string, resourceType: InputProps['resourceType'] }) => {
           const streamFn = this.getResourceStreamFn(resourceType);
           return streamFn(resourceId).observable;
+        }),
+        switchMap((files) => {
+          // if (files && files.data && files.data.length > 0) {
+          //   return combineLatest(
+          //     files.data.map((file) => {
+          //       return convertUrlToUploadFileObservable(file.attributes.file.url).pipe(
+          //         map((fileObj) => {
+          //           fileObj['id'] = file.id;
+          //           return fileObj;
+          //         })
+          //       );
+          //     })
+          //   );
+          // }
+
+          return of(null);
         })
       )
       .subscribe((files) => {
