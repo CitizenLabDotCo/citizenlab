@@ -38,7 +38,7 @@ import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
 // Typings
-import { API } from 'typings';
+import { CLErrorsJSON } from 'typings';
 interface InputProps { }
 
 interface DataProps {
@@ -94,7 +94,7 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & 
       streams.fetchAllActiveStreamsWithEndpoint(`${API_PATH}/users`);
       this.closeGroupEditionModal();
     }).catch((errorResponse) => {
-      const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+      const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
       setErrors(apiErrors);
       setSubmitting(false);
     });

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { isEmpty, values as getValues, every } from 'lodash-es';
 
 import { IInputType } from 'services/userCustomFields';

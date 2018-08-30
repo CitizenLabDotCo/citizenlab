@@ -1,47 +1,29 @@
 {
   "compilerOptions": {
     "baseUrl": "",
+    "mapRoot": "./",
+    "target": "esnext",
     "module": "esnext",
-    "declaration": false,
     "jsx": "react",
-    "lib": ["es7", "dom"],
+    "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "noImplicitThis": false,
     "strictNullChecks": true,
-    "strictFunctionTypes": false,
-    "mapRoot": "./",
-    "noImplicitAny": false,
-    "moduleResolution": "node",
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "target": "es5",
-    "allowJs": true,
+    "declaration": true,
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "plugins": [{
       "name": "typescript-styled-plugin"
-    }],
+    }]
   },
   "include": [
-    "**/*"
+      "**/*"
   ],
   "exclude": [
-    "node_modules",
-    "build",
-    "scripts",
-    "internals",
-    "acceptance-tests",
-    "webpack",
-    "jest",
-    "server",
-    "e2e",
-    "docs",
-    ".git",
-    ".vscode"
-  ],
-  "types": [
-    "typePatches"
+    "node_modules"
   ]
 }

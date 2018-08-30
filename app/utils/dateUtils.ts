@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 import { isString } from 'lodash-es';
 
 export function pastPresentOrFuture(input: string | [string, string]) {

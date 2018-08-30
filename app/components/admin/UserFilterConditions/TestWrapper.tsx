@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { debounce } from 'lodash-es';
 import { TRule } from './rules';
 import UserFilterConditions from '.';

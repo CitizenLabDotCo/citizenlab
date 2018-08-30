@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import * as moment from 'moment';
+import moment from 'moment';
 import HelmetIntl from 'components/HelmetIntl';
 import styled, { ThemeProvider } from 'styled-components';
 import Link from 'utils/cl-router/Link';

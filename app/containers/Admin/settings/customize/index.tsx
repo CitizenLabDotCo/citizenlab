@@ -31,7 +31,7 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream, updateTenant, IUpdatedTenantProperties, ITenant, ITenantSettings } from 'services/tenant';
 
 // typings
-import { API, ImageFile, Locale, Multiloc } from 'typings';
+import { CLError, ImageFile, Locale, Multiloc } from 'typings';
 
 const ColorPickerSectionField = styled(SectionField)`
 `;
@@ -62,7 +62,7 @@ type State  = {
   header_bg: ImageFile[] | null;
   colorPickerOpened: boolean;
   loading: boolean;
-  errors: { [fieldName: string]: API.Error[] };
+  errors: { [fieldName: string]: CLError[] };
   saved: boolean;
   logoError: string | null;
   headerError: string | null;

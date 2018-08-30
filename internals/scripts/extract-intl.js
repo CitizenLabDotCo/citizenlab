@@ -11,9 +11,10 @@ const animateProgress = require('./helpers/progress');
 const addCheckmark = require('./helpers/checkmark');
 const constants = require('../../app/containers/App/constants');
 
-const pkg = require('../../package.json');
-const presets = pkg.babel.presets;
-const plugins = pkg.babel.plugins;
+const babelrc = require('../../.babelrc');
+const presets = babelrc.presets;
+const plugins = babelrc.plugins;
+plugins.push(['react-intl']);
 
 const FILES_TO_PARSE = 'app/**/!(*.test).js';
 const locales = Object.keys(constants.appLocalePairs);

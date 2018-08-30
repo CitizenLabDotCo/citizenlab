@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { Subscription } from 'rxjs';
 import { map } from 'lodash-es';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -23,7 +23,7 @@ type Props = {
 };
 
 class UsersByTimeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
-  subscription: Rx.Subscription;
+  subscription: Subscription;
 
   constructor(props: Props) {
     super(props as any);

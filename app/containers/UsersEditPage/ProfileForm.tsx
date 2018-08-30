@@ -44,7 +44,7 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { hideVisually } from 'polished';
 
 // typings
-import { IOption, ImageFile, API } from 'typings';
+import { IOption, ImageFile, CLErrorsJSON } from 'typings';
 
 const StyledContentContainer = styled(ContentContainer)`
   background: ${color('background')};
@@ -162,7 +162,7 @@ class ProfileForm extends PureComponent<Props, State> {
       updateLocale(user.data.attributes.locale);
     }).catch((errorResponse) => {
       if (errorResponse.json) {
-        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
         setSubmitting(false);
       }

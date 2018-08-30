@@ -1,9 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import { get, map, merge, set } from 'lodash-es';
 import * as Rx from 'rxjs/Rx';
 
 // typings
-import { API, Multiloc, IOption } from 'typings';
+import { CLError, Multiloc, IOption } from 'typings';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -37,7 +37,7 @@ interface State {
   attributesDiff: IUpdatedTenantProperties;
   tenant: ITenantData | null;
   errors: {
-    [fieldName: string]: API.Error[]
+    [fieldName: string]: CLError[]
   };
   hasUrlError: boolean;
 }

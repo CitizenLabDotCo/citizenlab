@@ -7,7 +7,7 @@ import React from 'react';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
-import * as moment from 'moment';
+import moment from 'moment';
 import { get, isEmpty } from 'lodash-es';
 
 // Services
@@ -40,7 +40,7 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // Typings
-import { API, Locale } from 'typings';
+import { CLError, Locale } from 'typings';
 
 const PhaseForm = styled.form`
   .DateRangePickerInput {
@@ -83,7 +83,7 @@ interface State {
   project: IProject | null;
   presentationMode: 'map' | 'card';
   attributeDiff: IUpdatedPhaseProperties;
-  errors: { [fieldName: string]: API.Error[] } | null;
+  errors: { [fieldName: string]: CLError[] } | null;
   saving: boolean;
   focusedInput: 'startDate' | 'endDate' | null;
   saved: boolean;

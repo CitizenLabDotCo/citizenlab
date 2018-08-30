@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import * as d3Hierarchy from 'd3-hierarchy';
+import { hierarchy, pack } from 'd3-hierarchy';
 import { keyBy, find, findIndex } from 'lodash-es';
 import IdeaCircle from './IdeaCircle';
 import CustomCircle from './CustomCircle';
@@ -66,13 +66,13 @@ class Circles extends PureComponent<Props, State> {
   calculateNodePositions = () => {
     if (this.containerRef) {
       const ideasById = keyBy(this.props.ideas.ideasList, 'id');
-      const rootNode = d3Hierarchy.hierarchy(this.props.structure).sum((d) => ideasById[d.id] ? (ideasById[d.id].attributes.upvotes_count + ideasById[d.id].attributes.downvotes_count + 1) : 1);
+      const rootNode = hierarchy(this.props.structure).sum((d) => ideasById[d.id] ? (ideasById[d.id].attributes.upvotes_count + ideasById[d.id].attributes.downvotes_count + 1) : 1);
       const svgWidth = this.containerRef.offsetWidth;
       const svgHeight = this.containerRef.offsetHeight;
       const svgSize = (svgWidth >= svgHeight ? svgHeight : svgWidth) - 30;
-      const pack = d3Hierarchy.pack().size([svgSize, svgSize]).padding(10);
+      const packFn = pack().size([svgSize, svgSize]).padding(10);
 
-      pack(rootNode);
+      packFn(rootNode);
 
       this.setState({
         svgSize,

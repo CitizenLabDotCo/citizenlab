@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import * as moment from 'moment';
+import moment from 'moment';
 
 // components
 import Icon from 'components/UI/Icon';

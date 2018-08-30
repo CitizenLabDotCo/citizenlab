@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-import * as moment from 'moment';
+import moment from 'moment';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // Utils

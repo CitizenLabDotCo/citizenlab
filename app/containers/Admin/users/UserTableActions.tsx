@@ -158,7 +158,7 @@ const DropdownFooterButton = styled(Button)`
 `;
 
 // Typings
-import { API } from 'typings';
+import { CLErrorsJSON } from 'typings';
 
 interface InputProps {
   groupType?: MembershipType;
@@ -252,7 +252,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
     if (selectedGroupIds && selectedGroupIds.length > 0) {
       const { allUsersIds, selectedUsers, trackAddUsersToGroups, trackAddedRedundantUserToGroup } = this.props;
       const usersIds = (selectedUsers === 'all') ? allUsersIds : selectedUsers;
-      const promises: Promise<IGroupMembership | API.ErrorResponse>[] = [];
+      const promises: Promise<IGroupMembership | CLErrorsJSON>[] = [];
       const timeout = ms => new Promise(res => setTimeout(res, ms));
       const success = () => {
         eventEmitter.emit<MembershipAdd>('usersAdmin', events.membershipAdd, { groupsIds: selectedGroupIds });

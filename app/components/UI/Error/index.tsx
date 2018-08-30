@@ -6,7 +6,7 @@ import { get, isBoolean, isArray, isEmpty } from 'lodash-es';
 import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import { darken } from 'polished';
-import { API, Message } from 'typings';
+import { CLError, Message } from 'typings';
 import { IInviteError } from 'services/invites';
 import messages from './messages';
 import { colors, fontSizes } from 'utils/styleUtils';
@@ -174,7 +174,7 @@ type Props = {
   text?: string | JSX.Element | null;
   fieldName?: string | undefined;
   errors?: string[];
-  apiErrors?: (API.Error | IInviteError)[] | null;
+  apiErrors?: (CLError | IInviteError)[] | null;
   size?: string;
   marginTop?: string;
   marginBottom?: string;

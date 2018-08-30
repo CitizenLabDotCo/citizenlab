@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { isEmpty } from 'lodash-es';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import messages from './messages';

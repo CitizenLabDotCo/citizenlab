@@ -11,9 +11,7 @@ const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
 
 const config = {
-  entry: {
-    app: path.join(process.cwd(), 'app/app.tsx')
-  },
+  entry: path.join(process.cwd(), 'app/app'),
 
   output: {
     path: path.resolve(process.cwd(), 'build'),
@@ -39,13 +37,14 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        use: [{
-          loader: 'ts-loader',
+        test: /\.(tsx?)|(js)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
           options: {
-            transpileOnly: true,
-          },
-        }],
+            cacheDirectory: true
+          }
+        }
       },
       {
         test: /\.css$/,
@@ -111,8 +110,8 @@ const config = {
     new HtmlWebpackPlugin({
       template: 'app/index.html',
       preload: [
-        'app.*.js',
-        'app.*.css',
+        'main.*.js',
+        'main.*.css',
         '*.eot',
         '*.ttf',
         '*.woff',
@@ -136,7 +135,7 @@ const config = {
 
   resolve: {
     modules: ['app', 'node_modules'],
-    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },
 };
 

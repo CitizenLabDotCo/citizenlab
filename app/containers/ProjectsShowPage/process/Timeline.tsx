@@ -3,7 +3,7 @@ import { indexOf, isString, forEach } from 'lodash-es';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { tap, filter, switchMap } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/observable/combineLatest';
-import * as moment from 'moment';
+import moment from 'moment';
 
 // components
 import Icon from 'components/UI/Icon';
