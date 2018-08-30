@@ -303,7 +303,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
   getFilesToRemovePromises = () => {
     const { remotePhaseFiles, localPhaseFiles } = this.state;
     const { id } = this.props.params;
-    let filesToRemove: UploadFile[] | null = localPhaseFiles;
+    let filesToRemove: UploadFile[] | null = remotePhaseFiles;
     let filesToRemovePromises: Promise<any>[] = [];
 
     if (localPhaseFiles && Array.isArray(remotePhaseFiles)) {
