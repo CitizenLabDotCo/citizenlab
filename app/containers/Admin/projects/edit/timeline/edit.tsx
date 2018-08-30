@@ -9,7 +9,7 @@ import { switchMap } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
 import * as moment from 'moment';
-import { get, isEmpty } from 'lodash';
+import { get, isEmpty, isString } from 'lodash';
 
 // Services
 import { localeStream } from 'services/locale';
@@ -19,7 +19,6 @@ import { phaseStream, updatePhase, addPhase, IPhase, IUpdatedPhaseProperties } f
 import eventEmitter from 'utils/eventEmitter';
 
 // Utils
-import getSubmitState from 'utils/getSubmitState';
 import shallowCompare from 'utils/shallowCompare';
 import { convertUrlToUploadFileObservable } from 'utils/imageTools';
 
@@ -97,6 +96,7 @@ interface State {
   loaded: boolean;
   remotePhaseFiles: UploadFile[] | null;
   localPhaseFiles: UploadFile[] | null;
+  submitState: 'disabled' | 'enabled' | 'error' | 'success';
 }
 
 class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps, State> {
@@ -118,6 +118,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
       loaded: false,
       remotePhaseFiles: null,
       localPhaseFiles: null,
+      submitState: 'disabled',
     };
     this.subscriptions = [];
     this.params$ = new BehaviorSubject(null);
@@ -135,11 +136,16 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
         const { projectId, id } = params;
         const locale$ = localeStream().observable;
         const project$ = (projectId ? projectByIdStream(projectId).observable : of(null));
-        const phaseFiles$ = (projectId ? phaseFilesStream(projectId).observable.pipe(
+        const phaseFiles$ = (id ? phaseFilesStream(id).observable.pipe(
           switchMap((phaseFiles) => {
             if (phaseFiles && phaseFiles.data && phaseFiles.data.length > 0) {
               return combineLatest(
-                phaseFiles.data.map((phaseFile) => convertUrlToUploadFileObservable(phaseFile.attributes.file.url))
+                phaseFiles.data.map((phaseFile) => {
+                  return convertUrlToUploadFileObservable(phaseFile.attributes.file.url).map((phaseFileObject) => {
+                    phaseFileObject['id'] = phaseFile.id;
+                    return phaseFileObject;
+                  });
+                })
               );
             }
 
@@ -154,6 +160,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
           project,
           phase,
           remotePhaseFiles: phaseFiles,
+          localPhaseFiles: phaseFiles,
           loaded: true
         });
       })
@@ -215,6 +222,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
 
   handlePhaseFileOnAdd = (newFile: UploadFile) => {
     this.setState((prevState) => ({
+      submitState: 'enabled',
       localPhaseFiles: [
         ...(prevState.localPhaseFiles || []),
         newFile
@@ -223,10 +231,18 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
   }
 
   handlePhaseFileOnRemove = (removedFile: UploadFile) => () => {
-    this.setState((prevState) => ({
-      localPhaseFiles: (prevState.localPhaseFiles ?
-        prevState.localPhaseFiles.filter(phaseFile => phaseFile.name !== removedFile.name) : null)
-    }));
+    this.setState((prevState) => {
+      let localPhaseFiles: UploadFile[] | null = null;
+
+      if (Array.isArray(prevState.localPhaseFiles)) {
+        localPhaseFiles = prevState.localPhaseFiles.filter(phaseFile => phaseFile.name !== removedFile.name);
+      }
+
+      return {
+        localPhaseFiles,
+        submitState: 'enabled'
+      };
+    });
   }
 
   handleOnSubmit = async (event: React.FormEvent<any>) => {
@@ -290,11 +306,14 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
       filesToAdd = localPhaseFiles.filter((localPhaseFile) => {
         return !remotePhaseFiles.some(remotePhaseFile => remotePhaseFile.name === localPhaseFile.name);
       });
-
     }
 
     if (id && filesToAdd && filesToAdd.length > 0) {
-      filesToAddPromises = filesToAdd.map((fileToAdd) => addPhaseFile(id, fileToAdd.base64 as string, fileToAdd.name));
+      filesToAddPromises = filesToAdd.filter((fileToAdd) => {
+        return isString(fileToAdd.base64);
+      }).map((fileToAdd) => {
+        return addPhaseFile(id, fileToAdd.base64 as string, fileToAdd.name);
+      });
     }
 
     return filesToAddPromises;
@@ -317,7 +336,11 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
     }
 
     if (id && filesToRemove && filesToRemove.length > 0) {
-      filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deletePhaseFile(id as string, fileToRemove.id));
+      filesToRemovePromises = filesToRemove.filter((fileToRemove) => {
+        return isString(fileToRemove.id);
+      }).map((fileToRemove) => {
+        return deletePhaseFile(id, fileToRemove.id as string);
+      });
     }
 
     return filesToRemovePromises;
@@ -327,38 +350,37 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
     const filesToAddPromises: Promise<any>[] = this.getFilesToAddPromises();
     const filesToRemovePromises: Promise<any>[]  = this.getFilesToRemovePromises();
 
-    if (!isEmpty(attributeDiff)) {
-      try {
+    try {
+      if (!isEmpty(attributeDiff)) {
         if (phase) {
           const savedPhase = await updatePhase(phase.data.id, attributeDiff);
-          this.setState({ saving: false, saved: true, attributeDiff: {}, phase: savedPhase, errors: null });
+          this.setState({ saving: false, saved: true, attributeDiff: {}, phase: savedPhase, errors: null, submitState: 'success' });
         } else if (project && projectId) {
           const savedPhase = await addPhase(project.data.id, attributeDiff);
-          this.setState({ saving: false, saved: true, attributeDiff: {}, phase: savedPhase, errors: null });
+          this.setState({ saving: false, saved: true, attributeDiff: {}, phase: savedPhase, errors: null, submitState: 'success' });
         }
-      } catch (errors) {
-        this.setState({
-          errors: get(errors, 'json.errors', null),
-          saving: false,
-          saved: false
-        });
       }
-    }
 
-    if (filesToAddPromises.length > 0 || filesToRemovePromises.length > 0) {
-      await Promise.all([
-        ...filesToAddPromises,
-        ...filesToRemovePromises
-      ]);
+      if (filesToAddPromises.length > 0 || filesToRemovePromises.length > 0) {
+        await Promise.all([
+          ...filesToAddPromises,
+          ...filesToRemovePromises
+        ]);
+      }
+    } catch (errors) {
+      this.setState({
+        errors: get(errors, 'json.errors', null),
+        saving: false,
+        saved: false
+      });
     }
   }
 
   render() {
     if (this.state.loaded) {
       const { formatMessage } = this.props.intl;
-      const { errors, saved, phase, attributeDiff, saving, localPhaseFiles } = this.state;
+      const { errors,  phase, attributeDiff, saving, localPhaseFiles, submitState } = this.state;
       const phaseAttrs = (phase ? { ...phase.data.attributes, ...attributeDiff } : { ...attributeDiff });
-      const submitState = getSubmitState({ errors, saved, diff: attributeDiff });
       const startDate = (phaseAttrs.start_at ? moment(phaseAttrs.start_at) : null);
       const endDate = (phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null);
 
