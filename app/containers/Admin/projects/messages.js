@@ -115,7 +115,7 @@ export default defineMessages({
   },
   fileUploadLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.fileUploadLabel',
-    defaultMessage: 'Attach files to the project',
+    defaultMessage: 'Attach files to this project',
   },
   generalTab: {
     id: 'app.containers.AdminPage.ProjectEdit.generalTab',
