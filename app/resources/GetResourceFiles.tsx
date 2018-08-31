@@ -1,13 +1,13 @@
 import React from 'react';
 import isString from 'lodash/isString';
-import { Subscription, BehaviorSubject } from 'rxjs';
+import { Subscription, BehaviorSubject, Observable } from 'rxjs';
 import { of } from 'rxjs/observable/of';
-import { distinctUntilChanged, map, switchMap, tap, filter, combineLatest } from 'rxjs/operators';
+import { distinctUntilChanged, switchMap, tap, filter, combineLatest, map } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { IProjectFileData, projectFilesStream } from 'services/projectFiles';
-import { IPhaseFileData, phaseFilesStream } from 'services/phaseFiles';
-import { isNilOrError } from 'utils/helperUtils';
+import { projectFilesStream } from 'services/projectFiles';
+import { phaseFilesStream } from 'services/phaseFiles';
 import { convertUrlToUploadFileObservable } from 'utils/imageTools';
+import { UploadFile } from 'typings';
 
 interface InputProps {
   resetOnChange?: boolean;
@@ -22,7 +22,7 @@ interface Props extends InputProps {
 }
 
 interface State {
-  files: IProjectFileData[] | IPhaseFileData[] | undefined | null | Error;
+  files: UploadFile[] | undefined | null | Error;
 }
 
 export type GetResourceFilesChildProps = State['files'];
@@ -42,14 +42,6 @@ export default class GetResourceFiles extends React.Component<Props, State> {
     };
   }
 
-  getResourceStreamFn = (resourceType: InputProps['resourceType']) => {
-    if (resourceType === 'phase') {
-      return phaseFilesStream;
-    }
-
-    return projectFilesStream;
-  }
-
   componentDidMount() {
     const { resourceId, resourceType, resetOnChange } = this.props;
 
@@ -61,28 +53,26 @@ export default class GetResourceFiles extends React.Component<Props, State> {
         tap(() => resetOnChange && this.setState({ files: undefined })),
         filter(({ resourceId }) => isString(resourceId)),
         switchMap(({ resourceId, resourceType }: { resourceId: string, resourceType: InputProps['resourceType'] }) => {
-          const streamFn = this.getResourceStreamFn(resourceType);
+          const streamFn = (resourceType === 'project' ? projectFilesStream : phaseFilesStream);
           return streamFn(resourceId).observable;
         }),
         switchMap((files) => {
-          // if (files && files.data && files.data.length > 0) {
-          //   return combineLatest(
-          //     files.data.map((file) => {
-          //       return convertUrlToUploadFileObservable(file.attributes.file.url).pipe(
-          //         map((fileObj) => {
-          //           fileObj['id'] = file.id;
-          //           return fileObj;
-          //         })
-          //       );
-          //     })
-          //   );
-          // }
+          if (files && files.data && files.data.length > 0) {
+            return combineLatest(
+              files.data.map(file => convertUrlToUploadFileObservable(file.attributes.file.url).pipe(
+                map(fileObj => {
+                  fileObj['id'] = file.id;
+                  return fileObj;
+                })
+              ))
+            );
+          }
 
-          return of(null);
+          return of(files) as Observable<any>;
         })
       )
-      .subscribe((files) => {
-        this.setState({ files: (!isNilOrError(files) ? files.data : files) });
+      .subscribe((files: UploadFile[] | null | Error) => {
+        this.setState({ files });
       })
     ];
   }
