@@ -7,10 +7,12 @@ import { isNilOrError } from 'utils/helperUtils';
 import ImageZoom from 'react-medium-image-zoom';
 import Fragment from 'components/Fragment';
 import Sharing from 'components/Sharing';
+import FileDisplay from 'components/UI/FileDisplay';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
+import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
@@ -149,6 +151,7 @@ interface InputProps {
 interface DataProps {
   project: GetProjectChildProps;
   projectImages: GetProjectImagesChildProps;
+  projectFiles: GetResourceFilesChildProps;
   authUser: GetAuthUserChildProps;
 }
 interface Props extends InputProps, DataProps { }
@@ -156,11 +159,12 @@ interface Props extends InputProps, DataProps { }
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
+  projectFiles: ({ projectId, render }) => <GetResourceFiles resourceId={projectId} resourceType="project">{render}</GetResourceFiles>,
   authUser: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
 });
 
 const ProjectInfo = (props: Props & InjectedIntlProps) => {
-  const { project, projectImages, authUser, intl: { formatMessage } } = props;
+  const { project, projectImages, projectFiles, authUser, intl: { formatMessage } } = props;
   if (isNilOrError(project)) return null;
   const userId = !isNilOrError(authUser) ? authUser.id : null;
 
@@ -171,6 +175,12 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
           <ProjectDescriptionStyled>
             <T value={project.attributes.description_multiloc} supportHtml={true}/>
           </ProjectDescriptionStyled>
+          {Array.isArray(projectFiles) && projectFiles.map(file => (
+            <FileDisplay
+              key={file.id || file.name}
+              file={file}
+            />
+          ))}
         </Left>
 
         <Right>
