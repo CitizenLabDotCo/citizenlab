@@ -1,6 +1,7 @@
 import React from 'react';
 import { IProjectFileData } from 'services/projectFiles';
 import { IPhaseFileData } from 'services/phaseFiles';
+import { IEventFileData } from 'services/eventFiles';
 import { returnFileSize } from 'utils/helperUtils';
 
 // styles
@@ -59,7 +60,7 @@ const StyledIcon = styled(Icon)`
 `;
 
 interface Props {
-  file: IProjectFileData | IPhaseFileData;
+  file: IProjectFileData | IPhaseFileData | IEventFileData;
   onDeleteClick?: () => void;
 }
 
