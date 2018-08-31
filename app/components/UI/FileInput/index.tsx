@@ -1,5 +1,5 @@
 import React, { Component, createRef } from 'react';
-import { getBase64FromFile } from 'utils/imageTools';
+import { getBase64FromFile, createObjectUrl } from 'utils/imageTools';
 import { UploadFile } from 'typings';
 
 // i18n
@@ -61,9 +61,11 @@ class FileInput extends Component<InjectedIntlProps &Props> {
     const current = this.fileInput.current;
 
     if (current && current.files && current.files.length > 0) {
-      const file: UploadFile = current.files[0];
+      const file = current.files[0] as UploadFile;
+
       getBase64FromFile(file).then(res => {
         file.base64 = res;
+        file.url = createObjectUrl(file);
         this.props.onAdd(file);
       });
     }

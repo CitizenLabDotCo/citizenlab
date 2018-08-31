@@ -150,8 +150,8 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
   }
 
   handleEventFileOnRemove = (file) => {
-    return;
-  }
+
+  };
 
   handleOnSubmit = (event) => {
     event.preventDefault();
