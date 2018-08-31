@@ -58,7 +58,7 @@ const StyledIcon = styled(Icon)`
 
 interface Props {
   file: UploadFile;
-  onDeleteClick: () => void;
+  onDeleteClick?: () => void;
 }
 
 const FileDisplay = ({ file, onDeleteClick }: Props) => {
@@ -69,9 +69,11 @@ const FileDisplay = ({ file, onDeleteClick }: Props) => {
         {file.name}
       </FileDownloadLink>
       <FileSize>({returnFileSize(file.size)})</FileSize>
-      <DeleteButton onClick={onDeleteClick}>
+      {onDeleteClick &&
+       <DeleteButton onClick={onDeleteClick}>
         <StyledIcon name="delete" />
       </DeleteButton>
+      }
     </Container>
   );
 };
