@@ -18,7 +18,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // i18n
 import T from 'components/T';
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // style
@@ -117,6 +117,8 @@ const ProjectDescriptionStyled = styled.div`
   ${quillEditedContent()}
 `;
 
+const ProjectFilesHeader = styled.h3``;
+
 const ProjectImages = styled.div`
   align-items: flex-start;
   display: flex;
@@ -154,14 +156,8 @@ interface DataProps {
   projectFiles: GetResourceFilesChildProps;
   authUser: GetAuthUserChildProps;
 }
-interface Props extends InputProps, DataProps { }
 
-const Data = adopt<DataProps, InputProps>({
-  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
-  projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
-  projectFiles: ({ projectId, render }) => <GetResourceFiles resourceId={projectId} resourceType="project">{render}</GetResourceFiles>,
-  authUser: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
-});
+interface Props extends InputProps, DataProps {}
 
 const ProjectInfo = (props: Props & InjectedIntlProps) => {
   const { project, projectImages, projectFiles, authUser, intl: { formatMessage } } = props;
@@ -175,9 +171,12 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
           <ProjectDescriptionStyled>
             <T value={project.attributes.description_multiloc} supportHtml={true}/>
           </ProjectDescriptionStyled>
+          <ProjectFilesHeader>
+            <FormattedMessage {...messages.projectAttachments} />
+          </ProjectFilesHeader>
           {Array.isArray(projectFiles) && projectFiles.map(file => (
             <FileDisplay
-              key={file.id || file.name}
+              key={file.id}
               file={file}
             />
           ))}
@@ -218,6 +217,13 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
 };
 
 const ProjectInfoWhithHoc = injectIntl<DataProps & InputProps>(ProjectInfo);
+
+const Data = adopt<DataProps, InputProps>({
+  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
+  projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
+  projectFiles: ({ projectId, render }) => <GetResourceFiles resourceId={projectId} resourceType="project">{render}</GetResourceFiles>,
+  authUser: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
+});
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
