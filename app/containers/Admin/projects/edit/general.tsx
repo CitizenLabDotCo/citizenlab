@@ -438,17 +438,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     }));
   }
 
-  handleIdeasDisplayChange = (value: 'map' | 'card') => {
-    this.setState((state) => ({
-      submitState: 'enabled',
-      presentationMode: value,
-      projectAttributesDiff: {
-        ...state.projectAttributesDiff,
-        presentation_mode: value
-      }
-    }));
-  }
-
   handleAreaSelectionChange = (values: IOption[]) => {
     this.setState((state) => ({
       submitState: 'enabled',
