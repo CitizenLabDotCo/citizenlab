@@ -1,7 +1,4 @@
 import React from 'react';
-import { IProjectFileData } from 'services/projectFiles';
-import { IPhaseFileData } from 'services/phaseFiles';
-import { IEventFileData } from 'services/eventFiles';
 import { returnFileSize } from 'utils/helperUtils';
 
 // styles
@@ -11,6 +8,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // components
 import Icon  from 'components/UI/Icon';
 import { isError } from 'util';
+import { UploadFile } from 'typings';
 
 const Container = styled.div`
   display: flex
@@ -60,7 +58,7 @@ const StyledIcon = styled(Icon)`
 `;
 
 interface Props {
-  file: IProjectFileData | IPhaseFileData | IEventFileData;
+  file: UploadFile;
   onDeleteClick?: () => void;
 }
 
@@ -69,10 +67,10 @@ const FileDisplay = ({ file, onDeleteClick }: Props) => {
     return (
       <Container>
         <Paperclip name="paperclip" />
-        <FileDownloadLink href={file.attributes.file.url} download={file.attributes.name} target="blank">
-          {file.attributes.name}
+        <FileDownloadLink href={file.url} download={file.name} target="blank">
+          {file.name}
         </FileDownloadLink>
-        <FileSize>({returnFileSize(file.attributes.size)})</FileSize>
+        <FileSize>({returnFileSize(file.size)})</FileSize>
         {onDeleteClick &&
         <DeleteButton onClick={onDeleteClick}>
           <StyledIcon name="delete" />
