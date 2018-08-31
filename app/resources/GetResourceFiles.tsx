@@ -1,15 +1,16 @@
 import React from 'react';
 import isString from 'lodash/isString';
-import { Subscription, BehaviorSubject } from 'rxjs';
+import { Subscription, BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap, filter, map } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { projectFilesStream, IProjectFileData } from 'services/projectFiles';
-import { phaseFilesStream, IPhaseFileData } from 'services/phaseFiles';
+import { projectFilesStream, IProjectFileData, IProjectFiles } from 'services/projectFiles';
+import { phaseFilesStream, IPhaseFileData, IPhaseFiles } from 'services/phaseFiles';
+import { eventFilesStream, IEventFileData, IEventFiles } from 'services/eventFiles';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   resetOnChange?: boolean;
-  resourceType: 'project' | 'phase';
+  resourceType: 'project' | 'phase' | 'event';
   resourceId: string | null;
 }
 
@@ -20,7 +21,7 @@ interface Props extends InputProps {
 }
 
 interface State {
-  files: IProjectFileData[] | IPhaseFileData[] | undefined | null | Error;
+  files: IProjectFileData[] | IPhaseFileData[] | IEventFileData[] | undefined | null | Error;
 }
 
 export type GetResourceFilesChildProps = State['files'];
@@ -51,8 +52,11 @@ export default class GetResourceFiles extends React.Component<Props, State> {
         tap(() => resetOnChange && this.setState({ files: undefined })),
         filter(({ resourceId }) => isString(resourceId)),
         switchMap(({ resourceId, resourceType }: { resourceId: string, resourceType: InputProps['resourceType'] }) => {
-          const streamFn = (resourceType === 'project' ? projectFilesStream : phaseFilesStream);
-          return streamFn(resourceId).observable;
+          let streamFn;
+          if (resourceType === 'project') streamFn = projectFilesStream;
+          if (resourceType === 'phase') streamFn = phaseFilesStream;
+          if (resourceType === 'event') streamFn = eventFilesStream;
+          return streamFn(resourceId).observable as Observable<IProjectFiles | IPhaseFiles | IEventFiles | null>;
         })
       )
       .subscribe((files) => {

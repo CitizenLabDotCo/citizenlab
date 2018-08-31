@@ -67,6 +67,7 @@ export default class GetResourceFileObjects extends React.Component<Props, State
               files.data.map(file => convertUrlToUploadFileObservable(file.attributes.file.url).pipe(
                 map(fileObj => {
                   fileObj['id'] = file.id;
+                  fileObj['url'] = file.attributes.file.url;
                   return fileObj;
                 })
               ))

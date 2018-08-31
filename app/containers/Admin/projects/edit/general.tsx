@@ -229,7 +229,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                   return Rx.Observable.of(projectFiles.data.map((projectFile) => ({
                     name: projectFile.attributes.name,
                     id: projectFile.id,
-                    objectUrl: projectFile.attributes.file.url,
+                    url: projectFile.attributes.file.url,
                     ordering: projectFile.attributes.ordering,
                     size: projectFile.attributes.size,
                   })
