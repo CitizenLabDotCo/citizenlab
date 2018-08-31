@@ -171,9 +171,11 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
           <ProjectDescriptionStyled>
             <T value={project.attributes.description_multiloc} supportHtml={true}/>
           </ProjectDescriptionStyled>
-          <ProjectFilesHeader>
-            <FormattedMessage {...messages.projectAttachments} />
-          </ProjectFilesHeader>
+          {Array.isArray(projectFiles) &&
+            <ProjectFilesHeader>
+              <FormattedMessage {...messages.projectAttachments} />
+            </ProjectFilesHeader>
+          }
           {Array.isArray(projectFiles) && projectFiles.map(file => (
             <FileDisplay
               key={file.id}
