@@ -27,7 +27,7 @@ export interface IProjectFiles {
 }
 
 export function projectFilesStream(projectId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IProjectFiles>({ apiEndpoint: `${apiEndpoint}/${projectId}/files`, ...streamParams });
+  return streams.get<IProjectFiles | null>({ apiEndpoint: `${apiEndpoint}/${projectId}/files`, ...streamParams });
 }
 
 export function projectFileStream(projectId: string, fileId: string, streamParams: IStreamParams | null = null) {
