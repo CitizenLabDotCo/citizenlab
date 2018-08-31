@@ -10,7 +10,7 @@ import clHistory from 'utils/cl-router/history';
 import Label from 'components/UI/Label';
 import InputMultiloc from 'components/UI/InputMultiloc';
 import QuillMultiloc from 'components/QuillEditor/QuillMultiloc';
-import Error from 'components/UI/Error';
+import ErrorComponent from 'components/UI/Error';
 import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
@@ -30,17 +30,25 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { IProjectData } from 'services/projects';
 import { eventStream, updateEvent, addEvent, IEvent, IUpdatedEventProperties } from 'services/events';
+import { IEventFileData } from 'services/eventFiles';
+
+// resources
+import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 
 // typings
-import { Multiloc, API, Locale } from 'typings';
+import { Multiloc, API, Locale, UploadFile } from 'typings';
 
-type Props = {
+interface DataProps {
+  remoteEventFiles: GetResourceFileObjectsChildProps;
+}
+
+interface Props extends DataProps {
   params: {
     id: string | null,
     projectId: string | null,
-  },
+  };
   project: IProjectData | null;
-};
+}
 
 interface State {
   locale: Locale | null;
@@ -54,9 +62,10 @@ interface State {
   focusedInput: 'startDate' | 'endDate' | null;
   saved: boolean;
   loaded: boolean;
+  localEventFiles: UploadFile[] | Error | null | undefined;
 }
 
-export default class AdminProjectEventEdit extends React.PureComponent<Props, State> {
+class AdminProjectEventEdit extends React.PureComponent<Props, State> {
   subscriptions: Rx.Subscription[];
 
   constructor(props: Props) {
@@ -70,7 +79,8 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
       saving: false,
       focusedInput: null,
       saved: false,
-      loaded: false
+      loaded: false,
+      localEventFiles: null,
     };
     this.subscriptions = [];
   }
@@ -79,6 +89,7 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
     const event$ = (this.props.params.id ? eventStream(this.props.params.id).observable : Rx.Observable.of(null));
+    const { remoteEventFiles } = this.props;
 
     this.subscriptions = [
       Rx.Observable.combineLatest(
@@ -89,6 +100,8 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
         this.setState({ locale, currentTenant, event, loaded: true });
       })
     ];
+
+    this.setState({ localEventFiles: remoteEventFiles });
   }
 
   componentWillUnmount() {
@@ -132,6 +145,14 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
     }));
   }
 
+  handleEventFileOnAdd = () => {
+
+  }
+
+  handleEventFileOnRemove = (file) => {
+    return;
+  }
+
   handleOnSubmit = (event) => {
     event.preventDefault();
 
@@ -163,7 +184,7 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
     const { locale, currentTenant, loaded } = this.state;
 
     if (locale && currentTenant && loaded) {
-      const { errors, saved, event, attributeDiff, saving } = this.state;
+      const { errors, saved, event, attributeDiff, saving, localEventFiles } = this.state;
       const eventAttrs = event ?  { ...event.data.attributes, ...attributeDiff } : { ...attributeDiff };
       const submitState = getSubmitState({ errors, saved, diff: attributeDiff });
 
@@ -184,7 +205,7 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
                   valueMultiloc={eventAttrs.title_multiloc}
                   onChange={this.handleTitleMultilocOnChange}
                 />
-                <Error apiErrors={errors.title_multiloc} />
+                <ErrorComponent apiErrors={errors.title_multiloc} />
               </SectionField>
 
               <SectionField>
@@ -195,19 +216,19 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
                   valueMultiloc={eventAttrs.location_multiloc}
                   onChange={this.handleLocationMultilocOnChange}
                 />
-                <Error apiErrors={errors.location_multiloc} />
+                <ErrorComponent apiErrors={errors.location_multiloc} />
               </SectionField>
 
               <SectionField>
                 <Label><FormattedMessage {...messages.dateStartLabel} /></Label>
                 <DateTimePicker value={eventAttrs.start_at} onChange={this.handleDateTimePickerOnChange('start_at')} />
-                <Error apiErrors={errors.start_at} />
+                <ErrorComponent apiErrors={errors.start_at} />
               </SectionField>
 
               <SectionField>
                 <Label><FormattedMessage {...messages.datesEndLabel} /></Label>
                 <DateTimePicker value={eventAttrs.end_at} onChange={this.handleDateTimePickerOnChange('end_at')} />
-                <Error apiErrors={errors.end_at} />
+                <ErrorComponent apiErrors={errors.end_at} />
               </SectionField>
 
               <SectionField className="fullWidth">
@@ -218,24 +239,24 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
                   valueMultiloc={eventAttrs.description_multiloc}
                   onChangeMultiloc={this.handleDescriptionMultilocOnChange}
                 />
-                <Error apiErrors={errors.description_multiloc} />
+                <ErrorComponent apiErrors={errors.description_multiloc} />
               </SectionField>
 
-              {/* <SectionField>
+              <SectionField>
                 <Label>
                   <FormattedMessage {...messages.fileUploadLabel} />
                 </Label>
                 <FileInput
-                  onAdd={this.handlePhaseFileOnAdd}
+                  onAdd={this.handleEventFileOnAdd}
                 />
                 {Array.isArray(localEventFiles) && localEventFiles.map(file => (
                   <FileDisplay
                     key={file.id || file.name}
-                    onDeleteClick={this.handlePhaseFileOnRemove(file)}
+                    onDeleteClick={this.handleEventFileOnRemove(file)}
                     file={file}
                   />)
                 )}
-              </SectionField> */}
+              </SectionField>
             </Section>
 
             <SubmitWrapper
@@ -256,3 +277,9 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
     return null;
   }
 }
+
+export default (props: Props) => (
+  <GetResourceFileObjects>
+    {remoteEventFiles => <AdminProjectEventEdit remoteEventFiles={remoteEventFiles} {...props} />}
+  </GetResourceFileObjects>
+);

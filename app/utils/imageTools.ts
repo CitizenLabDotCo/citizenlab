@@ -39,7 +39,7 @@ export async function getBase64FromObjectUrl(objectUrl: string) {
   });
 }
 
-export function createObjectUrl(image: File | ImageFile) {
+export function createObjectUrl(image: File | ImageFile | UploadFile) {
   const blob = new Blob([image], { type: image.type });
   const objectUrl = window.URL.createObjectURL(blob);
   return objectUrl;
