@@ -1,8 +1,9 @@
 import React from 'react';
 import isString from 'lodash/isString';
-import { Subscription, BehaviorSubject, Observable } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { of } from 'rxjs/observable/of';
-import { distinctUntilChanged, switchMap, tap, filter, combineLatest, map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { distinctUntilChanged, switchMap, tap, filter, map } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { projectFilesStream } from 'services/projectFiles';
 import { phaseFilesStream } from 'services/phaseFiles';
@@ -68,10 +69,10 @@ export default class GetResourceFiles extends React.Component<Props, State> {
             );
           }
 
-          return of(files) as Observable<any>;
+          return of(null);
         })
       )
-      .subscribe((files: UploadFile[] | null | Error) => {
+      .subscribe((files) => {
         this.setState({ files });
       })
     ];
