@@ -14,6 +14,8 @@ import Error from 'components/UI/Error';
 import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import FileInput from 'components/UI/FileInput';
+import FileDisplay from 'components/UI/FileDisplay';
 
 // utils
 import unsubscribe from 'utils/unsubscribe';
@@ -218,6 +220,22 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
                 />
                 <Error apiErrors={errors.description_multiloc} />
               </SectionField>
+
+              {/* <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.fileUploadLabel} />
+                </Label>
+                <FileInput
+                  onAdd={this.handlePhaseFileOnAdd}
+                />
+                {Array.isArray(localEventFiles) && localEventFiles.map(file => (
+                  <FileDisplay
+                    key={file.id || file.name}
+                    onDeleteClick={this.handlePhaseFileOnRemove(file)}
+                    file={file}
+                  />)
+                )}
+              </SectionField> */}
             </Section>
 
             <SubmitWrapper
