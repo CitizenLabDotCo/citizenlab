@@ -1,6 +1,6 @@
 // Libs
 import React from 'react';
-import { LatLng, Map as LeafletMap, popup } from 'leaflet';
+import Leaflet from 'leaflet';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
@@ -84,7 +84,7 @@ interface State {
 
 class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
   private createIdeaButton: HTMLDivElement;
-  private savedPosition: LatLng | null = null;
+  private savedPosition: Leaflet.LatLng | null = null;
 
   constructor(props: Props) {
     super(props as any);
@@ -119,16 +119,14 @@ class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
     this.setState({ selectedIdea: null });
   }
 
-  onMapClick = ({ map, position }: {map: LeafletMap, position: LatLng}) => {
+  onMapClick = (map: Leaflet.Map, position: Leaflet.LatLng) => {
     this.savedPosition = position;
 
-    // Leaflet
-    //   .popup()
-    //   .setLatLng(position)
-    //   .setContent(this.createIdeaButton)
-    //   .openOn(map);
-
-    popup().setLatLng(position).setContent(this.createIdeaButton).openOn(map);
+    Leaflet
+      .popup()
+      .setLatLng(position)
+      .setContent(this.createIdeaButton)
+      .openOn(map);
 
     return;
   }

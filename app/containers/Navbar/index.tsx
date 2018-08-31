@@ -456,10 +456,10 @@ const Data = adopt<DataProps, InputProps>({
   projects: <GetProjects pageSize={250} publicationStatuses={['published', 'archived']} sort="new" />
 });
 
-const NavBarWithHoCs = withRouter(injectIntl(Navbar));
+const NavbarWithHOCs = withRouter(injectIntl(Navbar));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <NavBarWithHoCs {...inputProps} {...dataProps} />}
+    {dataProps => <NavbarWithHOCs {...(inputProps as InputProps & WithRouterProps & InjectedIntlProps)} {...dataProps} />}
   </Data>
 );
