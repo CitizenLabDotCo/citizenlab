@@ -1,6 +1,6 @@
 // Libraries
 import React from 'react';
-import { compact, isEqual } from 'lodash-es';
+import { compact, isEqual } from 'lodash';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -8,11 +8,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // Map
-import { icon as LeafletIcon, map as LeafletMap, Marker, tileLayer, MarkerOptions, Map, markerClusterGroup, MarkerClusterGroup, LeafletMouseEvent, LatLngBounds, point, divIcon } from 'leaflet';
-import 'markercluster';
+import Leaflet, { Marker } from 'leaflet';
+import 'leaflet.markercluster';
 
 // Styling
-import 'leaflet/dist/css';
+import 'leaflet/dist/leaflet.css';
 import styled from 'styled-components';
 const icon = require('./marker.svg');
 
@@ -36,7 +36,7 @@ const MapWrapper = styled.div`
   }
 `;
 
-const customIcon = LeafletIcon({
+const customIcon = Leaflet.icon({
   iconUrl: icon,
   iconSize: [29, 41],
   iconAnchor: [14, 41],
@@ -48,7 +48,7 @@ interface Point extends GeoJSON.Point {
   id: string;
 }
 
-interface DataMarkerOptions extends MarkerOptions {
+interface DataMarkerOptions extends Leaflet.MarkerOptions {
   data?: any;
   id: string;
 }
@@ -58,9 +58,8 @@ export interface InputProps {
   points?: Point[];
   areas?: GeoJSON.Polygon[];
   zoom?: number;
-  onMarkerClick?: {(id: string, data: any): void};
-  // onMapClick?: {({ map, position }: {map: Map, position: LatLng}): void};
-  onMapClick?: any;
+  onMarkerClick?: (id: string, data: any) => void;
+  onMapClick?: (map: Leaflet.Map, position: Leaflet.LatLng) => void;
   fitBounds?: boolean;
 }
 
@@ -73,24 +72,24 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class CLMap extends React.PureComponent<Props, State> {
-  private map: Map;
+  private map: Leaflet.Map;
   private mapContainer: HTMLElement;
-  private clusterLayer: MarkerClusterGroup;
-  private markers: Marker[];
+  private clusterLayer: Leaflet.MarkerClusterGroup;
+  private markers: Leaflet.Marker[];
   private interval: number;
   private subs: Subscription[] = [];
   private dimensionW$: BehaviorSubject<number> = new BehaviorSubject(0);
   private dimensionH$: BehaviorSubject<number> = new BehaviorSubject(0);
-  private bounds$: BehaviorSubject<LatLngBounds | null> = new BehaviorSubject(null);
+  private bounds$: BehaviorSubject<Leaflet.LatLngBounds | null> = new BehaviorSubject(null);
 
   private clusterOptions = {
     showCoverageOnHover: false,
     spiderfyDistanceMultiplier: 2,
     iconCreateFunction: (cluster) => {
-      return divIcon({
+      return Leaflet.divIcon({
         html: `<span>${cluster.getChildCount()}</span>`,
         className: 'marker-cluster-custom',
-        iconSize: point(40, 40, true),
+        iconSize: Leaflet.point(40, 40, true),
       });
     },
   };
@@ -101,7 +100,6 @@ class CLMap extends React.PureComponent<Props, State> {
 
   constructor(props) {
     super(props);
-
     this.interval = window.setInterval(this.resizeDetector, 200);
   }
 
@@ -177,18 +175,20 @@ class CLMap extends React.PureComponent<Props, State> {
       this.mapContainer = element;
 
       // Init the map
-      this.map = LeafletMap(element, {
+      this.map = Leaflet.map(element, {
         center: initCenter,
         zoom: initZoom,
         maxZoom: 17
       });
 
-      tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      Leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: ['a', 'b', 'c']
       }).addTo(this.map);
 
-      if (this.props.onMapClick) this.map.on('click', this.handleMapClick);
+      if (this.props.onMapClick) {
+        this.map.on('click', this.handleMapClick);
+      }
     }
   }
 
@@ -201,7 +201,7 @@ class CLMap extends React.PureComponent<Props, State> {
         return new Marker([point.coordinates[1], point.coordinates[0]] as [number, number], ({ ...this.markerOptions, data: point.data, id: point.id } as DataMarkerOptions));
       });
 
-      if (bounds.length > 0) this.bounds$.next(new LatLngBounds(bounds));
+      if (bounds.length > 0) this.bounds$.next(new Leaflet.LatLngBounds(bounds));
 
       this.addClusters();
     }
@@ -210,7 +210,7 @@ class CLMap extends React.PureComponent<Props, State> {
   addClusters = () => {
     if (this.map && this.markers) {
       if (this.clusterLayer) this.map.removeLayer(this.clusterLayer);
-      this.clusterLayer = markerClusterGroup(this.clusterOptions);
+      this.clusterLayer = Leaflet.markerClusterGroup(this.clusterOptions);
       this.clusterLayer.addLayers(this.markers);
       this.map.addLayer(this.clusterLayer);
 
@@ -218,8 +218,10 @@ class CLMap extends React.PureComponent<Props, State> {
     }
   }
 
-  handleMapClick = (event: LeafletMouseEvent) => {
-    if (this.props.onMapClick) this.props.onMapClick({ map: this.map, position: event.latlng });
+  handleMapClick = (event: Leaflet.LeafletMouseEvent) => {
+    if (this.props.onMapClick) {
+      this.props.onMapClick(this.map, event.latlng);
+    }
   }
 
   handleMarkerClick = (event) => {
