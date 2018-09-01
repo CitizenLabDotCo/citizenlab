@@ -12,7 +12,7 @@ module AdminApi
       description "An image associates with an idea"
 
       field :id, ID, null: false
-      field :ordering, Integer, null: false
+      field :ordering, Integer, null: true
       field :small_url, String, null: false
       def small_url
         object.image.versions[:small].url
@@ -41,7 +41,7 @@ module AdminApi
     field :upvotes_count, Integer, null: false
     field :downvotes_count, Integer, null: false
     field :comments_count, Integer, null: false
-    field :images, [IdeaImage], null: true
+    field :images, IdeaImage.connection_type, null: true
     def images
       object.idea_images
     end
