@@ -8,6 +8,27 @@ module AdminApi
       end
     end
 
+    class IdeaImage < GraphQL::Schema::Object
+      description "An image associates with an idea"
+
+      field :id, ID, null: false
+      field :ordering, Integer, null: false
+      field :small_url, String, null: false
+      def small_url
+        object.image.versions[:small].url
+      end
+      field :medium_url, String, null: false
+      def medium_url
+        object.image.versions[:medium].url
+      end
+      field :large_url, String, null: false
+      def large_url
+        object.image.versions[:large].url
+      end
+      field :updated_at, String, null: false
+      field :created_at, String, null: false
+    end
+
 
     field :id, ID, null: false
     field :title_multiloc, Types::MultilocType, null: false
@@ -17,6 +38,14 @@ module AdminApi
     field :created_at, String, null: false
     field :published_at, String, null: false
     field :href, String, null: true
+    field :upvotes_count, Integer, null: false
+    field :downvotes_count, Integer, null: false
+    field :comments_count, Integer, null: false
+    field :images, [IdeaImage], null: true
+    def images
+      object.idea_images
+    end
+
 
     @@frontend_service = FrontendService.new
     def href

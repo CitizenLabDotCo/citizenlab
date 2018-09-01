@@ -33,7 +33,7 @@ module AdminApi
     field :public_ideas, Types::IdeaType.connection_type, null: false
 
     def public_ideas
-      ::IdeaPolicy::Scope.new(nil, Idea).resolve.published
+      ::IdeaPolicy::Scope.new(nil, Idea).resolve.includes(:idea_images).published
     end
 
     field :project, Types::ProjectType, null: false do
