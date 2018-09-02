@@ -190,6 +190,7 @@ if (isDev) {
     proxy: {
       '/web_api': `http://${API_HOST}:${API_PORT}`,
       '/auth/': `http://${API_HOST}:${API_PORT}`,
+      '/widgets/': `http://${API_HOST}:3200`,
     },
     stats: {
       chunks: false,
