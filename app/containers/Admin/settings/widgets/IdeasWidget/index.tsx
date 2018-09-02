@@ -1,14 +1,19 @@
 import * as React from 'react';
+import styled from 'styled-components';
 import { stringify } from 'qs';
 import Form, { FormValues } from './Form';
 import { Formik, FormikErrors } from 'formik';
 import WidgetPreview from '../WidgetPreview';
 
+const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+`;
+
 type Props = {};
 
 type State = {
-  width: number;
-  height: number;
   widgetParams: Partial<FormValues>;
 };
 
@@ -17,9 +22,7 @@ class IdeasWidget extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      width: 300,
-      height: 400,
-      widgetParams: this.initialValues()
+      widgetParams: this.initialValues(),
     };
   }
   validate = (): FormikErrors<FormValues> => {
@@ -28,18 +31,22 @@ class IdeasWidget extends React.Component<Props, State> {
   }
 
   initialValues = (): FormValues => ({
+    width: 300,
+    height: 400,
+    showHeader: true,
+    headerText: '',
     projects: [],
     topics: [],
     limit: 5,
   })
 
-  renderFn = (props) => {
+  renderIdeasFormFn = (props) => {
     return <Form {...props} />;
   }
 
-  onSubmit = (values: FormValues) => {
+  onSubmit = (values: FormValues, { setSubmitting }) => {
     this.setState({ widgetParams: { ...this.state.widgetParams, ...values } });
-    return true;
+    setSubmitting(false);
   }
 
   generateWidgetParams = () => {
@@ -47,21 +54,21 @@ class IdeasWidget extends React.Component<Props, State> {
   }
 
   render() {
-    const { width, height } = this.state;
+    const { widgetParams: { width, height } } = this.state;
     return (
-      <>
+      <Container>
         <Formik
           initialValues={this.initialValues()}
-          render={this.renderFn}
+          render={this.renderIdeasFormFn}
           validate={this.validate}
           onSubmit={this.onSubmit}
         />
         <WidgetPreview
           path={`/ideas?${this.generateWidgetParams()}`}
-          width={width}
-          height={height}
+          width={width || 300}
+          height={height || 400}
         />
-      </>
+      </Container>
     );
   }
 }
