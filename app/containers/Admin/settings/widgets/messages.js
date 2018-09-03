@@ -21,14 +21,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.widgets.titleHeaderAndFooter',
     defaultMessage: 'Header & Footer',
   },
-  fieldShowHeader: {
-    id: 'app.containers.AdminPage.widgets.fieldShowHeader',
-    defaultMessage: 'Show header',
-  },
-  fieldHeaderText: {
-    id: 'app.containers.AdminPage.widgets.fieldHeaderText',
-    defaultMessage: 'Header text',
-  },
   fieldWidth: {
     id: 'app.containers.AdminPage.widgets.fieldWidth',
     defaultMessage: 'Width',
@@ -56,6 +48,26 @@ export default defineMessages({
   fieldFontDescription: {
     id: 'app.containers.AdminPage.widgets.fieldFontDescription',
     defaultMessage: 'Must be a valid font name available through {googleFontsLink}. Leave empty to use the default font.',
+  },
+  fieldShowHeader: {
+    id: 'app.containers.AdminPage.widgets.fieldShowHeader',
+    defaultMessage: 'Show header',
+  },
+  fieldShowLogo: {
+    id: 'app.containers.AdminPage.widgets.fieldShowLogo',
+    defaultMessage: 'Show logo',
+  },
+  fieldHeaderText: {
+    id: 'app.containers.AdminPage.widgets.fieldHeaderText',
+    defaultMessage: 'Header text',
+  },
+  fieldShowFooter: {
+    id: 'app.containers.AdminPage.widgets.fieldShowFooter',
+    defaultMessage: 'Show footer',
+  },
+  fieldButtonText: {
+    id: 'app.containers.AdminPage.widgets.fieldButtonText',
+    defaultMessage: 'Button text',
   },
   fieldProjects: {
     id: 'app.containers.AdminPage.widgets.fieldProjects',
