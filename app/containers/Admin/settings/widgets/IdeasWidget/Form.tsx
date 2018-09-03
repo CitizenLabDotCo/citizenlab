@@ -31,6 +31,7 @@ export interface FormValues {
   bgColor: string;
   textColor: string;
   accentColor: string;
+  font: string | null;
   showHeader: boolean;
   headerText: string;
   topics: string[];
@@ -158,6 +159,25 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & injectedLocal
               {touched.accentColor && <Error
                 fieldName="accentColor"
                 apiErrors={errors.accentColor as any}
+              />}
+            </SectionField>
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.fieldFont} />
+              </Label>
+              <Field
+                name="font"
+                component={FormikInput}
+              />
+              <p>
+                <FormattedMessage
+                  {...messages.fieldFontDescription}
+                  values={{ googleFontsLink: <a href="https://fonts.google.com" target="_blank">Google Fonts</a> }}
+                />
+              </p>
+              {touched.font && <Error
+                fieldName="font"
+                apiErrors={errors.font as any}
               />}
             </SectionField>
           </Section>
