@@ -50,6 +50,9 @@ class IdeasWidget extends React.Component<Props, State> {
   initialValues = (): FormValues => ({
     width: 300,
     height: 400,
+    bgColor: '#ffffff',
+    textColor: '#666666',
+    accentColor: '#2233aa',
     showHeader: true,
     headerText: '',
     projects: [],
