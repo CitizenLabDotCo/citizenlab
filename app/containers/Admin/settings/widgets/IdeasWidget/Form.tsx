@@ -7,6 +7,10 @@ import { Section, SubSection, SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import FormikInput from 'components/UI/FormikInput';
 import Label from 'components/UI/Label';
+import Collapse from 'components/admin/Collapse';
+import FormikToggle from 'components/UI/FormikToggle';
+import FormikColorPickerInput from 'components/UI/FormikColorPickerInput';
+import FormikSelect from 'components/UI/FormikSelect';
 
 // I18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -19,9 +23,6 @@ import GetProjects from 'resources/GetProjects';
 
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
-import Collapse from 'components/admin/Collapse';
-import FormikToggle from 'components/UI/FormikToggle';
-import FormikColorPickerInput from 'components/UI/FormikColorPickerInput';
 
 export interface Props { }
 
@@ -32,11 +33,13 @@ export interface FormValues {
   textColor: string;
   accentColor: string;
   font: string | null;
+  fontSize: number;
   showHeader: boolean;
   showLogo: boolean;
   headerText: string;
   showFooter: boolean;
   buttonText: string;
+  sort: 'trending' | 'popular' | 'newest';
   topics: string[];
   projects: string[];
   limit: number;
@@ -59,6 +62,23 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & injectedLocal
       label: this.props.localize(resource.attributes.title_multiloc),
       value: resource.id,
     }));
+  }
+
+  sortOptions = () => {
+    return [
+      {
+        value: 'trending',
+        label: <FormattedMessage {...messages.sortTrending} />
+      },
+      {
+        value: 'popular',
+        label: <FormattedMessage {...messages.sortPopular} />
+      },
+      {
+        value: 'new',
+        label: <FormattedMessage {...messages.sortNewest} />
+      },
+    ];
   }
 
   handleCollapseToggle = (collapse) => () => {
@@ -181,6 +201,20 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & injectedLocal
               {touched.font && <Error
                 fieldName="font"
                 apiErrors={errors.font as any}
+              />}
+            </SectionField>
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.fieldFontSize} />
+              </Label>
+              <Field
+                name="fontSize"
+                component={FormikInput}
+                type="number"
+              />
+              {touched.fontSize && <Error
+                fieldName="fontSize"
+                apiErrors={errors.fontSize as any}
               />}
             </SectionField>
           </Section>
@@ -309,6 +343,18 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & injectedLocal
                   />
                 )}
               </GetTopics>
+            </SectionField>
+
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.fieldSort} />
+              </Label>
+              <Field
+                name="sort"
+                component={FormikSelect}
+                clearable={false}
+                options={this.sortOptions()}
+              />
             </SectionField>
 
             <SectionField>

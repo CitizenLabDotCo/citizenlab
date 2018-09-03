@@ -7,6 +7,7 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import { isNilOrError } from 'utils/helperUtils';
 
 const CodeSnippet = styled.code`
+  word-wrap: break-word;
   font-family: 'Courier New', Courier, monospace;
   background-color: ${colors.lightGreyishBlue};
   border: solid 1px ${colors.adminBorder};

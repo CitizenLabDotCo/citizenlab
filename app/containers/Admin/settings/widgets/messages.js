@@ -45,6 +45,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.widgets.fieldFont',
     defaultMessage: 'Font',
   },
+  fieldFontSize: {
+    id: 'app.containers.AdminPage.widgets.fieldFontSize',
+    defaultMessage: 'Font size',
+  },
   fieldFontDescription: {
     id: 'app.containers.AdminPage.widgets.fieldFontDescription',
     defaultMessage: 'Must be a valid font name available through {googleFontsLink}. Leave empty to use the default font.',
@@ -76,6 +80,22 @@ export default defineMessages({
   fieldTopics: {
     id: 'app.containers.AdminPage.widgets.fieldTopics',
     defaultMessage: 'Topics',
+  },
+  fieldSort: {
+    id: 'app.containers.AdminPage.widgets.fieldSort',
+    defaultMessage: 'Sorted by',
+  },
+  sortTrending: {
+    id: 'app.containers.AdminPage.widgets.sortTrending',
+    defaultMessage: 'Trending',
+  },
+  sortPopular: {
+    id: 'app.containers.AdminPage.widgets.sortPopular',
+    defaultMessage: 'Popular',
+  },
+  sortNewest: {
+    id: 'app.containers.AdminPage.widgets.sortNewest',
+    defaultMessage: 'Newest',
   },
   fieldLimit: {
     id: 'app.containers.AdminPage.widgets.fieldLimit',
