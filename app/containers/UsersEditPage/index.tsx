@@ -14,6 +14,26 @@ import { IUser } from 'services/users';
 
 // Components
 import ProfileForm from './ProfileForm';
+import CampaignsConsentForm from './CampaignsConsentForm';
+
+// Styles
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+
+const Container = styled.div`
+  width: 100%;
+  background-color: ${colors.background};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 30px;
+  overflow-x: hidden;
+`;
+
+// To have two forms with an equal width,
+// the forms need to be wrapped with a div.
+// https://stackoverflow.com/questions/34993826/flexbox-column-direction-same-width
+const Wrapper = styled.div``;
 
 interface Props {}
 
@@ -66,11 +86,16 @@ export default class ProfileEditor extends PureComponent<Props, State> {
 
     if (loaded && currentTenant && authUser && areas) {
       return (
-        <ProfileForm
-          user={authUser.data}
-          areas={areas.data}
-          tenant={currentTenant.data}
-        />
+        <Container>
+          <Wrapper>
+            <ProfileForm
+              user={authUser.data}
+              areas={areas.data}
+              tenant={currentTenant.data}
+            />
+            <CampaignsConsentForm />
+          </Wrapper>
+        </Container>
       );
     }
 
