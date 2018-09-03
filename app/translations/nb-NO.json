@@ -707,6 +707,7 @@
   "app.containers.Projects.noProjectFoundHere": "Det er ikke noe prosjekt her.",
   "app.containers.Projects.noUpcomingEvents": "Det er ingen kommende hendelser for øyeblikket",
   "app.containers.Projects.pastEvents": "Tidligere hendelser",
+  "app.containers.Projects.phaseAttachments": "",
   "app.containers.Projects.phaseNumber": "Fase {phaseNumber}",
   "app.containers.Projects.project": "Prosjekt",
   "app.containers.Projects.projectInformation": "Prosjektinformasjon",
