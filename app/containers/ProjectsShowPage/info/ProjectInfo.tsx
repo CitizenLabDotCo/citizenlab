@@ -171,7 +171,7 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
           <ProjectDescriptionStyled>
             <T value={project.attributes.description_multiloc} supportHtml={true}/>
           </ProjectDescriptionStyled>
-          {Array.isArray(projectFiles) &&
+          {projectFiles &&
             <ProjectFilesHeader>
               <FormattedMessage {...messages.projectAttachments} />
             </ProjectFilesHeader>
