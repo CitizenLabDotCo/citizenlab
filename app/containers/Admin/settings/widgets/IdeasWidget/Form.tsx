@@ -21,13 +21,16 @@ import GetProjects from 'resources/GetProjects';
 import { isNilOrError } from 'utils/helperUtils';
 import Collapse from 'components/admin/Collapse';
 import FormikToggle from 'components/UI/FormikToggle';
-import Button from 'components/UI/Button';
+import FormikColorPickerInput from 'components/UI/FormikColorPickerInput';
 
 export interface Props { }
 
 export interface FormValues {
   width: number;
   height: number;
+  bgColor: string;
+  textColor: string;
+  accentColor: string;
   showHeader: boolean;
   headerText: string;
   topics: string[];
@@ -36,7 +39,7 @@ export interface FormValues {
 }
 
 interface State {
-  openedCollapse: 'ideas' | 'style' | 'headerAndFooter' | null;
+  openedCollapse: 'dimensions' | 'ideas' | 'style' | 'headerAndFooter' | null;
 }
 
 class WidgetForm extends PureComponent<InjectedFormikProps<Props & injectedLocalized, FormValues>, State> {
@@ -72,9 +75,9 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & injectedLocal
       <Form>
 
         <Collapse
-          opened={openedCollapse === 'style'}
-          onToggle={this.handleCollapseToggle('style')}
-          label={<FormattedMessage {...messages.titleStyle} />}
+          opened={openedCollapse === 'dimensions'}
+          onToggle={this.handleCollapseToggle('dimensions')}
+          label={<FormattedMessage {...messages.titleDimensions} />}
         >
           <Section>
 
@@ -110,6 +113,54 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & injectedLocal
 
           </Section>
 
+        </Collapse>
+
+        <Collapse
+          opened={openedCollapse === 'style'}
+          onToggle={this.handleCollapseToggle('style')}
+          label={<FormattedMessage {...messages.titleStyle} />}
+        >
+          <Section>
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.fieldBackgroundColor} />
+              </Label>
+              <Field
+                name="bgColor"
+                component={FormikColorPickerInput}
+              />
+              {touched.bgColor && <Error
+                fieldName="bgColor"
+                apiErrors={errors.bgColor as any}
+              />}
+            </SectionField>
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.fieldTextColor} />
+              </Label>
+              <Field
+                name="textColor"
+                component={FormikColorPickerInput}
+              />
+              {touched.textColor && <Error
+                fieldName="textColor"
+                apiErrors={errors.textColor as any}
+              />}
+            </SectionField>
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.fieldAccentColor} />
+              </Label>
+              <Field
+                name="accentColor"
+                component={FormikColorPickerInput}
+              />
+              {touched.accentColor && <Error
+                fieldName="accentColor"
+                apiErrors={errors.accentColor as any}
+              />}
+            </SectionField>
+          </Section>
         </Collapse>
 
         <Collapse

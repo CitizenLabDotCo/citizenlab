@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.widgets.titleIdeaContent',
     defaultMessage: 'Idea Content',
   },
+  titleDimensions: {
+    id: 'app.containers.AdminPage.widgets.titleDimensions',
+    defaultMessage: 'Dimensions',
+  },
   titleStyle: {
     id: 'app.containers.AdminPage.widgets.titleStyle',
     defaultMessage: 'Style',
@@ -32,6 +36,18 @@ export default defineMessages({
   fieldHeight: {
     id: 'app.containers.AdminPage.widgets.fieldHeight',
     defaultMessage: 'Height',
+  },
+  fieldBackgroundColor: {
+    id: 'app.containers.AdminPage.widgets.fieldBackgroundColor',
+    defaultMessage: 'Background color',
+  },
+  fieldTextColor: {
+    id: 'app.containers.AdminPage.widgets.fieldTextColor',
+    defaultMessage: 'Text color',
+  },
+  fieldAccentColor: {
+    id: 'app.containers.AdminPage.widgets.fieldAccentColor',
+    defaultMessage: 'Accent color',
   },
   fieldProjects: {
     id: 'app.containers.AdminPage.widgets.fieldProjects',
