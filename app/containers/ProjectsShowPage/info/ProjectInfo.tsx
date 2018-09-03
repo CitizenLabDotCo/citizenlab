@@ -12,7 +12,7 @@ import FileDisplay from 'components/UI/FileDisplay';
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
-import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
+import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
@@ -153,7 +153,7 @@ interface InputProps {
 interface DataProps {
   project: GetProjectChildProps;
   projectImages: GetProjectImagesChildProps;
-  projectFiles: GetResourceFilesChildProps;
+  projectFiles: GetResourceFileObjectsChildProps;
   authUser: GetAuthUserChildProps;
 }
 
@@ -223,7 +223,7 @@ const ProjectInfoWhithHoc = injectIntl<DataProps & InputProps>(ProjectInfo);
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
-  projectFiles: ({ projectId, render }) => <GetResourceFiles resourceId={projectId} resourceType="project">{render}</GetResourceFiles>,
+  projectFiles: ({ projectId, render }) => <GetResourceFileObjects resourceId={projectId} resourceType="project">{render}</GetResourceFileObjects>,
   authUser: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
 });
 
