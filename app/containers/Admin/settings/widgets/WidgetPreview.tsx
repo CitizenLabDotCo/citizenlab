@@ -2,14 +2,13 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 const StyledIframe = styled.iframe`
-  border-radius: 5px;
-  border: solid 1px #ddd;
 `;
 
 type Props = {
   path: string;
   width: number;
   height: number;
+  className?: string;
 };
 
 type State = {};
@@ -17,9 +16,10 @@ type State = {};
 class WidgetPreview extends React.Component<Props, State> {
 
   render() {
-    const { path, width, height } = this.props;
+    const { path, width, height, className } = this.props;
     return (
       <StyledIframe
+        className={className}
         frameBorder={0}
         scrolling="no"
         src={`/widgets${path}`}

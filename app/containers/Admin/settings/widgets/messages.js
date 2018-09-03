@@ -49,5 +49,24 @@ export default defineMessages({
     id: 'app.containers.AdminPage.widgets.updatePreview',
     defaultMessage: 'Update preview',
   },
-
+  settingsTitle: {
+    id: 'app.containers.AdminPage.widgets.settingsTitle',
+    defaultMessage: 'Settings',
+  },
+  previewTitle: {
+    id: 'app.containers.AdminPage.widgets.previewTitle',
+    defaultMessage: 'Preview',
+  },
+  exportHtmlCodeButton: {
+    id: 'app.containers.AdminPage.widgets.exportHtmlCodeButton',
+    defaultMessage: 'Export HTML code',
+  },
+  htmlCodeTitle: {
+    id: 'app.containers.AdminPage.widgets.htmlCodeTitle',
+    defaultMessage: 'Widget HTML code',
+  },
+  htmlCodeExplanation: {
+    id: 'app.containers.AdminPage.widgets.htmlCodeExplanation',
+    defaultMessage: 'Copy the following snippet of HTML code and paste it on the website where you want the widget to appear.',
+  },
 });

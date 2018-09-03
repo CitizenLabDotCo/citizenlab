@@ -4,6 +4,11 @@ import { stringify } from 'qs';
 import Form, { FormValues } from './Form';
 import { Formik, FormikErrors } from 'formik';
 import WidgetPreview from '../WidgetPreview';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
+import Modal from 'components/UI/Modal';
+import WidgetCode from '../WidgetCode';
+import Button from 'components/UI/Button';
 
 const Container = styled.div`
   display: flex;
@@ -11,10 +16,15 @@ const Container = styled.div`
   justify-content: space-between;
 `;
 
+const StyledWidgetPreview = styled(WidgetPreview)`
+  margin-bottom: 40px;
+`;
+
 type Props = {};
 
 type State = {
   widgetParams: Partial<FormValues>;
+  codeModalOpened: boolean;
 };
 
 class IdeasWidget extends React.Component<Props, State> {
@@ -23,6 +33,7 @@ class IdeasWidget extends React.Component<Props, State> {
     super(props);
     this.state = {
       widgetParams: this.initialValues(),
+      codeModalOpened: false,
     };
   }
   validate = (): FormikErrors<FormValues> => {
@@ -44,7 +55,7 @@ class IdeasWidget extends React.Component<Props, State> {
     return <Form {...props} />;
   }
 
-  onSubmit = (values: FormValues, { setSubmitting }) => {
+  handleOnSubmit = (values: FormValues, { setSubmitting }) => {
     this.setState({ widgetParams: { ...this.state.widgetParams, ...values } });
     setSubmitting(false);
   }
@@ -53,21 +64,56 @@ class IdeasWidget extends React.Component<Props, State> {
     return stringify(this.state.widgetParams);
   }
 
+  handleCloseCodeModal = () => {
+    this.setState({ codeModalOpened: false });
+  }
+
+  handleShowCodeClick = () => {
+    this.setState({ codeModalOpened: true });
+  }
+
   render() {
-    const { widgetParams: { width, height } } = this.state;
+    const { widgetParams: { width, height }, codeModalOpened } = this.state;
     return (
       <Container>
-        <Formik
-          initialValues={this.initialValues()}
-          render={this.renderIdeasFormFn}
-          validate={this.validate}
-          onSubmit={this.onSubmit}
-        />
-        <WidgetPreview
-          path={`/ideas?${this.generateWidgetParams()}`}
-          width={width || 300}
-          height={height || 400}
-        />
+        <div>
+          <h3>
+            <FormattedMessage {...messages.settingsTitle} />
+          </h3>
+          <Formik
+            initialValues={this.initialValues()}
+            render={this.renderIdeasFormFn}
+            validate={this.validate}
+            onSubmit={this.handleOnSubmit}
+          />
+        </div>
+        <div>
+          <h3>
+            <FormattedMessage {...messages.previewTitle} />
+          </h3>
+          <StyledWidgetPreview
+            path={`/ideas?${this.generateWidgetParams()}`}
+            width={width || 300}
+            height={height || 400}
+          />
+          <Button
+            onClick={this.handleShowCodeClick}
+            style="cl-blue"
+            icon="code"
+          >
+            <FormattedMessage {...messages.exportHtmlCodeButton} />
+          </Button>
+        </div>
+        <Modal
+          opened={codeModalOpened}
+          close={this.handleCloseCodeModal}
+        >
+          <WidgetCode
+            path={`/ideas?${this.generateWidgetParams()}`}
+            width={width || 300}
+            height={height || 400}
+          />
+        </Modal>
       </Container>
     );
   }
