@@ -3,7 +3,7 @@ import { Form, Field, InjectedFormikProps } from 'formik';
 
 // Components
 import FormikMultipleSelect from 'components/UI/FormikMultipleSelect';
-import { Section, SectionField } from 'components/admin/Section';
+import { Section, SubSection, SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import FormikInput from 'components/UI/FormikInput';
 import Label from 'components/UI/Label';
@@ -33,7 +33,10 @@ export interface FormValues {
   accentColor: string;
   font: string | null;
   showHeader: boolean;
+  showLogo: boolean;
   headerText: string;
+  showFooter: boolean;
+  buttonText: string;
   topics: string[];
   projects: string[];
   limit: number;
@@ -188,38 +191,86 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & injectedLocal
           onToggle={this.handleCollapseToggle('headerAndFooter')}
           label={<FormattedMessage {...messages.titleHeaderAndFooter} />}
         >
-          <Section>
+          <>
+            <Section>
 
-            <SectionField>
-              <Field
-                name="showHeader"
-                component={FormikToggle}
-                label={<FormattedMessage {...messages.fieldShowHeader} />}
-              />
-              {touched.showHeader && <Error
-                fieldName="showHeader"
-                apiErrors={errors.showHeader as any}
-              />}
-            </SectionField>
-
-            {values.showHeader &&
               <SectionField>
-                <Label>
-                  <FormattedMessage {...messages.fieldHeaderText} />
-                </Label>
                 <Field
-                  name="headerText"
-                  component={FormikInput}
-                  type="text"
+                  name="showHeader"
+                  component={FormikToggle}
+                  label={<FormattedMessage {...messages.fieldShowHeader} />}
                 />
-                {touched.headerText && <Error
-                  fieldName="headerText"
-                  apiErrors={errors.headerText as any}
+                {touched.showHeader && <Error
+                  fieldName="showHeader"
+                  apiErrors={errors.showHeader as any}
                 />}
               </SectionField>
-            }
 
-          </Section>
+              {values.showHeader &&
+                <SubSection>
+                  <SectionField>
+                    <Field
+                      name="showLogo"
+                      component={FormikToggle}
+                      label={<FormattedMessage {...messages.fieldShowLogo} />}
+                    />
+                    {touched.showLogo && <Error
+                      fieldName="showLogo"
+                      apiErrors={errors.showLogo as any}
+                    />}
+                  </SectionField>
+                  <SectionField>
+                    <Label>
+                      <FormattedMessage {...messages.fieldHeaderText} />
+                    </Label>
+                    <Field
+                      name="headerText"
+                      component={FormikInput}
+                      type="text"
+                    />
+                    {touched.headerText && <Error
+                      fieldName="headerText"
+                      apiErrors={errors.headerText as any}
+                    />}
+                  </SectionField>
+                </SubSection>
+              }
+
+            </Section>
+
+            <Section>
+              <SectionField>
+                <Field
+                  name="showFooter"
+                  component={FormikToggle}
+                  label={<FormattedMessage {...messages.fieldShowFooter} />}
+                />
+                {touched.showFooter && <Error
+                  fieldName="showFooter"
+                  apiErrors={errors.showFooter as any}
+                />}
+              </SectionField>
+
+              {values.showFooter &&
+                <SubSection>
+                  <SectionField>
+                    <Label>
+                      <FormattedMessage {...messages.fieldButtonText} />
+                    </Label>
+                    <Field
+                      name="buttonText"
+                      component={FormikInput}
+                      type="text"
+                    />
+                    {touched.buttonText && <Error
+                      fieldName="buttonText"
+                      apiErrors={errors.buttonText as any}
+                    />}
+                  </SectionField>
+                </SubSection>
+              }
+            </Section>
+          </>
 
         </Collapse>
 
