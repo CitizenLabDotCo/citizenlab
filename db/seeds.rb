@@ -133,6 +133,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
       user_custom_fields: {
         enabled: true,
         allowed: true
+      },
+      segmented_emailing: {
+        enabled: true,
+        allowed: true
       }
     }
   })

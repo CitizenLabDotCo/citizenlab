@@ -2,3 +2,6 @@ files:
   - source: /config/locales/en.yml
     translation: /config/locales/%locale%.yml
     update_option: update_without_changes
+  - source: /engines/email_campaigns/config/locales/en.yml
+    translation: /engines/email_campaigns/config/locales/%locale%.yml
+    update_option: update_without_changes

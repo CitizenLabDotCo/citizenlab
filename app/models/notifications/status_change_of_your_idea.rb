@@ -17,12 +17,14 @@ module Notifications
 
       idea_id = idea&.id
       recipient_id = idea&.author_id
+      initiator_id = activity&.user_id
       project_id = idea&.project_id
       idea_status_id = idea&.idea_status_id
 
       if idea_id && recipient_id
         [self.create!(
            recipient_id: recipient_id,
+           initiating_user: User.find(initiator_id),
            idea_id: idea_id,
            project_id: project_id,
            idea_status_id: idea_status_id
