@@ -60,6 +60,7 @@ Rails.application.routes.draw do
         get :current, on: :collection
       end
       resources :pages do
+        resources :files, defaults: {container_class: Page, file_class: PageFile}, shallow: false
         get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'
       end
 
