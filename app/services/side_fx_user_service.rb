@@ -33,16 +33,6 @@ class SideFxUserService
     UpdateMemberCountJob.perform_later
     if changed_to_admin? user
       LogActivityJob.set(wait: 5.seconds).perform_later(user, 'admin_rights_given', current_user, user.updated_at.to_i)
-      current_user_serializer = "WebApi::V1::External::UserSerializer".constantize
-      serialized_current_user = ActiveModelSerializers::SerializableResource.new(current_user, {
-        serializer: current_user_serializer,
-        adapter: :json
-       }).serializable_hash
-      LogActivityJob.set(wait: 5.seconds).perform_later(
-        user, 'admin_rights_received', 
-        user, user.updated_at.to_i, 
-        payload: {initiator: serialized_current_user}
-        ) 
     end
   end
 

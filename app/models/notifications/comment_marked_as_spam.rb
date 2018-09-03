@@ -6,7 +6,7 @@ module Notifications
 
     validates :comment_id, presence: true
 
-
+    ACTIVITY_TRIGGERS = {'SpamReport' => {'created' => true}}
     EVENT_NAME = 'Comment marked as spam'
     
 

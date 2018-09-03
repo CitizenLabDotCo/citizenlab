@@ -37,7 +37,6 @@ RSpec.describe LogToSegmentJob, type: :job do
         expect(event.dig(:properties, :action)).to eq("created")
         expect(event.dig(:properties, :item_id)).to eq(notification.id)
         expect(event.dig(:properties, :item_type)).to eq('Notifications::CommentOnYourComment')
-        expect(event.dig(:properties, :item_content, :recipient, :id)).to eq(user.id)
       end
       job.perform activity
     end
