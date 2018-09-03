@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180813093429) do
+ActiveRecord::Schema.define(version: 20180829162620) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -297,6 +297,16 @@ ActiveRecord::Schema.define(version: 20180813093429) do
     t.index ["spam_report_id"], name: "index_notifications_on_spam_report_id"
   end
 
+  create_table "page_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "page_id"
+    t.string "file"
+    t.integer "ordering"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_id"], name: "index_page_files_on_page_id"
+  end
+
   create_table "page_links", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "linking_page_id", null: false
     t.uuid "linked_page_id", null: false
@@ -519,6 +529,7 @@ ActiveRecord::Schema.define(version: 20180813093429) do
   add_foreign_key "notifications", "spam_reports"
   add_foreign_key "notifications", "users", column: "initiating_user_id"
   add_foreign_key "notifications", "users", column: "recipient_id"
+  add_foreign_key "page_files", "pages"
   add_foreign_key "page_links", "pages", column: "linked_page_id"
   add_foreign_key "page_links", "pages", column: "linking_page_id"
   add_foreign_key "pages", "projects"
