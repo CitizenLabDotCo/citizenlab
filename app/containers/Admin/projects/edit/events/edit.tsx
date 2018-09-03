@@ -30,7 +30,6 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { IProjectData } from 'services/projects';
 import { eventStream, updateEvent, addEvent, IEvent, IUpdatedEventProperties } from 'services/events';
-import { IEventFileData } from 'services/eventFiles';
 
 // resources
 import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
@@ -150,7 +149,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
   }
 
   handleEventFileOnRemove = (file) => {
-    return;
+
   }
 
   handleOnSubmit = (event) => {
