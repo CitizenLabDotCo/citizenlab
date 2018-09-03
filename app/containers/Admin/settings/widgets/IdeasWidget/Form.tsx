@@ -208,13 +208,6 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & injectedLocal
 
         </Collapse>
 
-        <Button
-          fullWidth={false}
-          onClick={this.handleSubmit}
-        >
-          <FormattedMessage {...messages.updatePreview} />
-        </Button>
-
       </Form>
     );
   }
