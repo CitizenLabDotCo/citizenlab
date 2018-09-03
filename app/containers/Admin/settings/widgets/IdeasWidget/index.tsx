@@ -53,6 +53,7 @@ class IdeasWidget extends React.Component<Props, State> {
     bgColor: '#ffffff',
     textColor: '#666666',
     accentColor: '#2233aa',
+    font: null,
     showHeader: true,
     headerText: '',
     projects: [],

@@ -49,6 +49,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.widgets.fieldAccentColor',
     defaultMessage: 'Accent color',
   },
+  fieldFont: {
+    id: 'app.containers.AdminPage.widgets.fieldFont',
+    defaultMessage: 'Font',
+  },
+  fieldFontDescription: {
+    id: 'app.containers.AdminPage.widgets.fieldFontDescription',
+    defaultMessage: 'Must be a valid font name available through {googleFontsLink}. Leave empty to use the default font.',
+  },
   fieldProjects: {
     id: 'app.containers.AdminPage.widgets.fieldProjects',
     defaultMessage: 'Projects',
