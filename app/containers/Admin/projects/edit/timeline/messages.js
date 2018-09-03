@@ -70,7 +70,7 @@ export default defineMessages({
     defaultMessage: 'End Date',
   },
   fileUploadLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.fileUploadLabel',
+    id: 'app.containers.AdminPage.ProjectTimeline.fileUploadLabel',
     defaultMessage: 'Attach files to this phase',
   },
 });
