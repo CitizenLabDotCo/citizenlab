@@ -21,7 +21,7 @@ interface Props {
   path: String;
   width: number;
   height: number;
-};
+}
 
 interface DataProps {
   tenant: GetTenantChildProps;

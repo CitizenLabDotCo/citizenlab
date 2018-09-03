@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { debounce } from 'lodash';
 import { stringify } from 'qs';
 import Form, { FormValues } from './Form';
 import { Formik, FormikErrors } from 'formik';
@@ -36,6 +37,11 @@ class IdeasWidget extends React.Component<Props, State> {
       codeModalOpened: false,
     };
   }
+
+  debouncedSetState = debounce((stateUpdate) => {
+    this.setState(stateUpdate);
+  }, 400);
+
   validate = (): FormikErrors<FormValues> => {
     const errors: FormikErrors<FormValues> = {};
     return errors;
@@ -50,10 +56,6 @@ class IdeasWidget extends React.Component<Props, State> {
     topics: [],
     limit: 5,
   })
-
-  renderIdeasFormFn = (props) => {
-    return <Form {...props} />;
-  }
 
   handleOnSubmit = (values: FormValues, { setSubmitting }) => {
     this.setState({ widgetParams: { ...this.state.widgetParams, ...values } });
@@ -70,6 +72,15 @@ class IdeasWidget extends React.Component<Props, State> {
 
   handleShowCodeClick = () => {
     this.setState({ codeModalOpened: true });
+  }
+
+  renderIdeasFormFn = (props) => {
+    // This is a hack to react on Formik form changes without submitting,
+    // since there is no global onChange()
+    // See https://github.com/jaredpalmer/formik/issues/271
+    this.debouncedSetState({ widgetParams: { ...this.state.widgetParams, ...props.values } });
+
+    return <Form {...props} />;
   }
 
   render() {
