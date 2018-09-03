@@ -7,9 +7,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import ContentContainer from 'components/ContentContainer';
 import Survey from './survey';
 import IdeaCards from 'components/IdeaCards';
+import FileDisplay from 'components/UI/FileDisplay';
 
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+import GetResourceFileObjects from 'resources/GetResourceFileObjects';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -48,6 +50,8 @@ const InformationBody = styled.div`
   ${quillEditedContent()}
 `;
 
+const ProjectFilesHeader = styled.h3``;
+
 const IdeasWrapper = styled.div`
   margin-top: 60px;
 `;
@@ -85,6 +89,18 @@ class Phase extends React.PureComponent<Props, State> {
             </Information>
           }
 
+          {phaseFiles &&
+            <ProjectFilesHeader>
+              <FormattedMessage {...messages.phaseAttachments} />
+            </ProjectFilesHeader>
+          }
+          {Array.isArray(phaseFiles) && phaseFiles.map(file => (
+            <FileDisplay
+              key={file.id}
+              file={file}
+            />
+          ))}
+
           {participationMethod === 'ideation' &&
             <IdeasWrapper>
               <IdeaCards
@@ -113,7 +129,8 @@ class Phase extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
+  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
+  phaseFiles: ({ phaseId, render }) => <GetResourceFileObjects resourceId={phaseId}>{render}</GetResourceFileObjects>
 });
 
 export default (inputProps: InputProps) => (

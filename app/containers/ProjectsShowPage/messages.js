@@ -121,4 +121,8 @@ export default defineMessages({
     id: 'app.containers.Projects.archived',
     defaultMessage: 'Archived',
   },
+  phaseAttachments: {
+    id: 'app.containers.Projects.phaseAttachments',
+    defaultMessage: 'Attachments',
+  },
 });
