@@ -689,6 +689,7 @@
   "app.containers.Projects.displayMap": "auf geografischer Karte",
   "app.containers.Projects.endedOn": "Endete am {date}",
   "app.containers.Projects.endsOn": "Endet am {date}",
+  "app.containers.Projects.eventAttachments": "",
   "app.containers.Projects.events": "Veranstaltungen",
   "app.containers.Projects.goBackToList": "Zurück zur Liste",
   "app.containers.Projects.header": "{orgName, select, München {Bezirke} other {Projekte}}",

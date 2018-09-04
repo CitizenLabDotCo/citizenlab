@@ -689,6 +689,7 @@
   "app.containers.Projects.displayMap": "Carte",
   "app.containers.Projects.endedOn": "Terminé le {date}",
   "app.containers.Projects.endsOn": "Se termine le {date}",
+  "app.containers.Projects.eventAttachments": "",
   "app.containers.Projects.events": "Evénements",
   "app.containers.Projects.goBackToList": "Retour à la liste",
   "app.containers.Projects.header": "Projets",
