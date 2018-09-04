@@ -29,6 +29,10 @@ RSpec.describe EmailCampaigns::ActivityTriggerable, type: :model do
       expect(@campaign.run_before_send_hooks(activity: @activity)).to be_falsy
     end
 
+    it "returns false if no activity is specified" do
+      expect(@campaign.run_before_send_hooks).to be_falsy
+    end
+
   end
 
 end
