@@ -7,7 +7,7 @@ import { of } from 'rxjs/observable/of';
 import { isNilOrError } from 'utils/helperUtils';
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
-import { has } from 'lodash';
+import { has, get, isString, isEmpty } from 'lodash';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -39,6 +39,8 @@ import { getLocalized } from 'utils/i18n';
 // style
 import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
+
+import rocket from './rocket.png';
 
 const Container: any = styled.div`
   height: 100%;
@@ -281,21 +283,21 @@ class LandingPage extends React.PureComponent<Props, State> {
   componentDidMount() {
     const query = clHistory.getCurrentLocation().query;
     const authUser$ = authUserStream().observable;
-    const urlHasQueryParam = has(query, 'idea_to_publish') || has(query, 'idea_published');
-    const idea: string | undefined = (urlHasQueryParam && (query.idea_to_publish || query.idea_published));
-    const idea$ = idea ? of({ publish: has(query, 'idea_to_publish'), id: idea }) : of(null);
+    const urlHasNewIdeaQueryParam = has(query, 'new_idea_id');
+    const ideaParams$ = urlHasNewIdeaQueryParam ? of({
+      id: get(query, 'new_idea_id'),
+      publish: get(query, 'publish')
+    }) : of(null);
+    const idea$ = (urlHasNewIdeaQueryParam ? ideaByIdStream(query.idea_to_publish).observable : of(null));
 
     this.subscriptions = [
-      // if 'idea_to_publish' parameter is present in landingpage url,
-      // find the draft idea previously created (before login/signup)
-      // and update its status and author name
       combineLatest(
         authUser$,
-        idea$
-      ).subscribe(async ([authUser, idea]) => {
-        if (idea) {
-          if (authUser && idea.publish && idea.id) {
-            await updateIdea(idea.id, { author_id: authUser.data.id, publication_status: 'published' });
+        ideaParams$
+      ).subscribe(async ([authUser, ideaParams]) => {
+        if (ideaParams && ideaParams.id && isString(ideaParams.id) && !isEmpty(ideaParams.id)) {
+          if (authUser && ideaParams.publish === 'true') {
+            await updateIdea(ideaParams.id, { author_id: authUser.data.id, publication_status: 'published' });
             streams.fetchAllStreamsWithEndpoint(`${API_PATH}/ideas`);
             window.history.replaceState(null, '', window.location.pathname);
           }
@@ -412,8 +414,11 @@ class LandingPage extends React.PureComponent<Props, State> {
             </Content>
           </Container>
 
-          <Modal opened={ideaSocialSharingModalOpened} close={this.closeIdeaSocialSharingModal} >
-            <div>Test</div>
+          <Modal opened={ideaSocialSharingModalOpened} close={this.closeIdeaSocialSharingModal}>
+            <>
+              <img src={rocket} alt="rocket" />
+              <div>Test</div>
+            </>
           </Modal>
         </>
       );
