@@ -117,6 +117,55 @@ ActiveRecord::Schema.define(version: 20180829162620) do
     t.index ["recipient_id"], name: "index_email_campaigns_campaign_email_commands_on_recipient_id"
   end
 
+  create_table "email_campaigns_campaigns", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "type", null: false
+    t.uuid "author_id"
+    t.boolean "enabled", default: true
+    t.string "sender"
+    t.string "reply_to"
+    t.jsonb "schedule", default: {}
+    t.jsonb "subject_multiloc", default: {}
+    t.jsonb "body_multiloc", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_email_campaigns_campaigns_on_author_id"
+    t.index ["type"], name: "index_email_campaigns_campaigns_on_type"
+  end
+
+  create_table "email_campaigns_campaigns_groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "campaign_id"
+    t.uuid "group_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["campaign_id", "group_id"], name: "index_campaigns_groups", unique: true
+    t.index ["campaign_id"], name: "index_email_campaigns_campaigns_groups_on_campaign_id"
+    t.index ["group_id"], name: "index_email_campaigns_campaigns_groups_on_group_id"
+  end
+
+  create_table "email_campaigns_consents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "campaign_type", null: false
+    t.uuid "user_id", null: false
+    t.boolean "consented", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["campaign_type", "user_id"], name: "index_email_campaigns_consents_on_campaign_type_and_user_id", unique: true
+    t.index ["user_id"], name: "index_email_campaigns_consents_on_user_id"
+  end
+
+  create_table "email_campaigns_deliveries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "campaign_id", null: false
+    t.uuid "user_id", null: false
+    t.string "delivery_status", null: false
+    t.jsonb "tracked_content", default: {}
+    t.datetime "sent_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["campaign_id", "user_id"], name: "index_email_campaigns_deliveries_on_campaign_id_and_user_id"
+    t.index ["campaign_id"], name: "index_email_campaigns_deliveries_on_campaign_id"
+    t.index ["sent_at"], name: "index_email_campaigns_deliveries_on_sent_at"
+    t.index ["user_id"], name: "index_email_campaigns_deliveries_on_user_id"
+  end
+
   create_table "email_snippets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email"
     t.string "snippet"
@@ -503,7 +552,6 @@ ActiveRecord::Schema.define(version: 20180829162620) do
   add_foreign_key "comments", "users", column: "author_id"
   add_foreign_key "custom_field_options", "custom_fields"
   add_foreign_key "email_campaigns_campaign_email_commands", "users", column: "recipient_id"
-  add_foreign_key "event_files", "events"
   add_foreign_key "events", "projects"
   add_foreign_key "groups_projects", "groups"
   add_foreign_key "groups_projects", "projects"

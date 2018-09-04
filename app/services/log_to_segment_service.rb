@@ -1,7 +1,11 @@
 class LogToSegmentService
 
   def activity_event_name activity
-    "#{activity.item_type} #{activity.action}"
+    if activity.item&.respond_to? :event_bus_item_name
+      "#{activity.item.event_bus_item_name} #{activity.action}"
+    else
+      "#{activity.item_type} #{activity.action}"
+    end
   end
 
   def add_tenant_properties hash, tenant
@@ -21,21 +25,24 @@ class LogToSegmentService
 
   def add_activity_item_content hash_for_event, hash_for_item_content, activity
     if activity.item
+      serializer = nil
       begin
-        item_content = serialize "WebApi::V1::External::#{activity.item_type}Serializer", activity.item
-        if activity.item.kind_of? Notification
-          hash_for_event[:event] = "Notification for #{activity.item.class::EVENT_NAME} created"
-          item_content = item_content.flatten.second
-        end
-        hash_for_item_content[:item_content] = item_content
+        serializer = "WebApi::V1::External::#{activity.item_type}Serializer".constantize
       rescue NameError => e
         # There's no serializer, so we don't add anything
+      end
+      if serializer
+        hash_for_item_content[:item_content] =
+          if activity.item.respond_to? :event_bus_item_content
+            activity.item.event_bus_item_content
+          else
+            serialize serializer, activity.item
+          end
       end
     end
   end
 
-  def serialize serializer_str, object
-    serializer = serializer_str.constantize
+  def serialize serializer, object
     ActiveModelSerializers::SerializableResource.new(object, {
       serializer: serializer,
       adapter: :json

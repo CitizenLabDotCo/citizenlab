@@ -364,6 +364,16 @@
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false}
         }
+      },
+      "segmented_emailing": {
+        "type": "object",
+        "description":  "Allows admins/moderators to send out direct email messages to groups of citizens",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
       }
     },
   "dependencies": {
