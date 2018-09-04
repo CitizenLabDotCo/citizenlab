@@ -225,7 +225,7 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
             imageId: (ideaImage && ideaImage.id ? ideaImage.id : null)
           });
         } else {
-          clHistory.push(`/`);
+          clHistory.push('/');
         }
       })
     ];

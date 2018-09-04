@@ -1,9 +1,8 @@
 import React from 'react';
 import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import { Subscription, BehaviorSubject } from 'rxjs';
+import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
 import shallowCompare from 'utils/shallowCompare';
 import { IIdeaData, ideaByIdStream, ideaBySlugStream } from 'services/ideas';
 

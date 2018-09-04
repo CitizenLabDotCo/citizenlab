@@ -144,7 +144,7 @@ export default class DashboardPage extends PureComponent<Props, State> {
               <FormattedMessage
                 {...messages.tryOutInsights}
                 values={{
-                  insightsLink: <Link to={`/admin/clusterings`}><FormattedMessage {...messages.insightsLinkText} /></Link>
+                  insightsLink: <Link to={'/admin/clusterings'}><FormattedMessage {...messages.insightsLinkText} /></Link>
                 }}
               />
             }

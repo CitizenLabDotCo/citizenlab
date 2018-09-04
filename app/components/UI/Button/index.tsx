@@ -10,54 +10,54 @@ import Icon, { Props as IconProps } from 'components/UI/Icon';
 function getFontSize(size) {
   switch (size) {
     case '1':
-      return `17px`;
+      return '17px';
     case '2':
-      return `18px`;
+      return '18px';
     case '3':
-      return `20px`;
+      return '20px';
     case '4':
-      return `22px`;
+      return '22px';
     default:
-      return `16px`;
+      return '16px';
   }
 }
 
 function getPadding(size) {
   switch (size) {
     case '2':
-      return `11px 22px`;
+      return '11px 22px';
     case '3':
-      return `13px 24px`;
+      return '13px 24px';
     case '4':
-      return `15px 26px`;
+      return '15px 26px';
     default:
-      return `.65em 1.45em`;
+      return '.65em 1.45em';
   }
 }
 
 function getIconHeight(size) {
   switch (size) {
     case '2':
-      return `18px`;
+      return '18px';
     case '3':
-      return `19px`;
+      return '19px';
     case '4':
-      return `20px`;
+      return '20px';
     default:
-      return `17px`;
+      return '17px';
   }
 }
 
 function getLineHeight(size) {
   switch (size) {
     case '2':
-      return `24px`;
+      return '24px';
     case '3':
-      return `26px`;
+      return '26px';
     case '4':
-      return `28px`;
+      return '28px';
     default:
-      return `22px`;
+      return '22px';
   }
 }
 
@@ -262,13 +262,13 @@ class Button extends React.PureComponent<Props, State> {
   getSpinnerSize = (size) => {
     switch (size) {
       case '2':
-        return `26px`;
+        return '26px';
       case '3':
-        return `28px`;
+        return '28px';
       case '4':
-        return `30px`;
+        return '30px';
       default:
-        return `24px`;
+        return '24px';
     }
   }
 
@@ -311,7 +311,11 @@ class Button extends React.PureComponent<Props, State> {
         {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
         {hiddenText && <HiddenText>{hiddenText}</HiddenText>}
         {icon && iconPos === 'right' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} />}
-        {processing && <SpinnerWrapper><Spinner size={spinnerSize} color={spinnerColor} /></SpinnerWrapper>}
+        {processing &&
+          <SpinnerWrapper>
+            <Spinner size={spinnerSize} color={spinnerColor} />
+          </SpinnerWrapper>
+        }
       </>
     );
 

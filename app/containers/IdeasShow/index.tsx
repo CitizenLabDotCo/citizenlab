@@ -58,7 +58,7 @@ const loadingEasing = 'ease-out';
 const loadingDelay = 100;
 
 const contentTimeout = 500;
-const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
+const contentEasing = 'cubic-bezier(0.000, 0.700, 0.000, 1.000)';
 const contentDelay = 600;
 const contentTranslateDistance = '30px';
 
