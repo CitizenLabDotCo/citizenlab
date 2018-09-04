@@ -6,6 +6,10 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Icon from 'components/UI/Icon';
+import FileDisplay from 'components/UI/FileDisplay';
+
+// resources
+import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 
 // services
 import { IEventData } from 'services/events';
@@ -156,6 +160,8 @@ const EventDescription = styled.div`
   ${quillEditedContent()}
 `;
 
+const EventFilesHeader = styled.h3``;
+
 const EventLocationWrapper = styled.div`
   flex: 0 0 300px;
   padding: 20px;
@@ -224,11 +230,13 @@ interface InputProps {
   event: IEventData;
   className?: string;
 }
-interface Props extends InputProps {}
+interface Props extends InputProps {
+  eventFiles: GetResourceFileObjectsChildProps;
+}
 
 interface State {}
 
-export default class Event extends React.PureComponent<Props, State> {
+class Event extends React.PureComponent<Props, State> {
   render() {
     const { event, className } = this.props;
 
@@ -287,6 +295,20 @@ export default class Event extends React.PureComponent<Props, State> {
             <EventDescription>
               <T value={event.attributes.description_multiloc} supportHtml={true} />
             </EventDescription>
+            {eventFiles &&
+              <EventFilesHeader>
+                <FormattedMessage {...messages.eventAttachments} />
+              </EventFilesHeader>
+            }
+            {eventFiles && eventFiles.map(file => {
+              return (
+                <FileDisplay
+                  key={file.id}
+                  file={file}
+                />
+              );
+            })
+            }
           </EventInformation>
 
           {hasLocation &&
@@ -312,3 +334,9 @@ export default class Event extends React.PureComponent<Props, State> {
     return null;
   }
 }
+
+export default (props: Props) => (
+  <GetResourceFileObjects>
+    {eventFiles => <Event eventFiles={eventFiles} {...props} />}
+  </GetResourceFileObjects>
+);
