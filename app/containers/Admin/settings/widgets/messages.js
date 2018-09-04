@@ -63,7 +63,11 @@ export default defineMessages({
   },
   fieldHeaderText: {
     id: 'app.containers.AdminPage.widgets.fieldHeaderText',
-    defaultMessage: 'Header text',
+    defaultMessage: 'Header title',
+  },
+  fieldHeaderSubText: {
+    id: 'app.containers.AdminPage.widgets.fieldHeaderSubText',
+    defaultMessage: 'Header subtitle',
   },
   fieldShowFooter: {
     id: 'app.containers.AdminPage.widgets.fieldShowFooter',
