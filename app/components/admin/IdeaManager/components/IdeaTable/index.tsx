@@ -42,9 +42,14 @@ interface State {}
 
 export default class IdeaTable extends React.Component<Props, State> {
 
-  handleSortClick = (sort: SortAttribute) => () => {
-    if (isFunction(this.props.onChangeIdeaSort)) {
-      this.props.onChangeIdeaSort(sort);
+  handleSortClick = (newSortAttribute: SortAttribute) => () => {
+    const { ideaSortAttribute: oldSortAttribute, ideaSortDirection: oldSortDirection, onChangeIdeaSort } = this.props;
+    if (isFunction(onChangeIdeaSort)) {
+      let newSortSign = '-';
+      if (newSortAttribute === oldSortAttribute) {
+        newSortSign = oldSortDirection === 'ascending' ? '-' : '';
+      }
+      onChangeIdeaSort(`${newSortSign}${newSortAttribute}` as Sort);
     }
   }
 
