@@ -882,6 +882,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               <FileInput
                 onAdd={this.handleFileOnAdd}
               />
+              <Error fieldName="file" apiErrors={this.state.apiErrors.file} />
               {Array.isArray(localProjectFiles) && localProjectFiles.map(file => (
                 <FileDisplay
                   key={file.id || file.name}
