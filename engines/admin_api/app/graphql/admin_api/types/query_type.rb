@@ -8,6 +8,11 @@ module AdminApi
       Tenant.all
     end
 
+    field :current_tenant, Types::TenantType, null: false
+    def current_tenant
+      Tenant.current
+    end
+
     field :tenant, Types::TenantType, null: false do
       argument :id, ID, required: true
     end
@@ -15,6 +20,7 @@ module AdminApi
     def tenant args
       Tenant.find(args[:id])
     end
+
 
     field :tenant_by_host, Types::TenantType, null: false do
       argument :host, String, required: true
@@ -30,10 +36,39 @@ module AdminApi
       Idea.all
     end
 
-    field :public_ideas, Types::IdeaType.connection_type, null: false
+    class IdeaSorting < GraphQL::Schema::Enum
+      value :trending
+      value :popular
+      value :new
+    end
 
-    def public_ideas
-      ::IdeaPolicy::Scope.new(nil, Idea).resolve.includes(:idea_images).published
+    field :public_ideas, Types::IdeaType.connection_type, null: false do
+      argument :sort, IdeaSorting, required: false
+      argument :topics, [ID], required: false
+      argument :projects, [ID], required: false
+    end
+
+    def public_ideas args={}
+      ideas = ::IdeaPolicy::Scope.new(nil, Idea)
+        .resolve
+        .includes(:idea_images)
+        .published
+
+      if args[:sort].present? && !args[:search].present?
+        ideas = case args[:sort]
+          when "trending"
+            TrendingIdeaService.new.sort_trending ideas
+          when "popular"
+            ideas.order_popular
+          when "new"
+            ideas.order_new
+          end
+      end
+
+      ideas = ideas.with_some_topics(args[:topics]) if args[:topics].present?
+      ideas = ideas.where(project_id: args[:projects]) if args[:projects].present?
+
+      ideas
     end
 
     field :project, Types::ProjectType, null: false do

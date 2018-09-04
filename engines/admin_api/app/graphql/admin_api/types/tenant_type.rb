@@ -2,6 +2,23 @@ module AdminApi
   class Types::TenantType < GraphQL::Schema::Object
     description "A CitizenLab platform"
 
+    class TenantLogo < GraphQL::Schema::Object
+      field :small_url, String, null: false
+      def small_url
+        object.versions[:small]
+      end
+
+      field :medium_url, String, null: false
+      def medium_url
+        object.versions[:medium]
+      end
+
+      field :large_url, String, null: false
+      def large_url
+        object.versions[:large]
+      end
+    end
+
     class TenantSettingsSchema < GraphQL::Schema::Object
       field :facebook_login_app_id, String, null: true
       def facebook_login_app_id
@@ -42,6 +59,7 @@ module AdminApi
     field :id, ID, null: false
     field :name, String, null: false
     field :host, String, null: false
+    field :logo, TenantLogo, null: true
     field :settings, TenantSettingsSchema, null: false
 
   end
