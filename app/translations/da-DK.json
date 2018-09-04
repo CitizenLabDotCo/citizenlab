@@ -904,6 +904,7 @@
   "app.errors.email_blank": "Indtast venligst din e-mailadresse",
   "app.errors.email_taken": "Denne e-mail bruges allerede. Prøv venligst en anden.",
   "app.errors.emails_duplicate": "En eller flere duplikatværdier for e-mailadressen {value} blev fundet i følgende række(r): {rows}",
+  "app.errors.file_extension_whitelist_error": "",
   "app.errors.first_name_blank": "Indtast venligst dit fornavn",
   "app.errors.generics.blank": "Dette skal være udfyldt.",
   "app.errors.generics.invalid": "Dette felt indeholder en ugyldig værdi.",

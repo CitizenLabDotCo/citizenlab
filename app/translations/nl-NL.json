@@ -904,6 +904,7 @@
   "app.errors.email_blank": "Gelieve je e-mailadres in te vullen",
   "app.errors.email_taken": "Dit e-mailadres is al in gebruik. Probeer een andere.",
   "app.errors.emails_duplicate": "In de rij(en): {rows} staan één of meer dubbele waarden voor het e-mailadres {value}",
+  "app.errors.file_extension_whitelist_error": "",
   "app.errors.first_name_blank": "Vul je voornaam in",
   "app.errors.generics.blank": "Dit veld mag niet leeg zijn.",
   "app.errors.generics.invalid": "Dit veld bevat een ongeldige waarde.",

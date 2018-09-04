@@ -904,6 +904,7 @@
   "app.errors.email_blank": "Bitte geben Sie Ihre E-Mail-Adresse ein",
   "app.errors.email_taken": "Diese E-Mail-Adresse wird bereits verwendet. Bitte versuchen Sie es mit einer anderen.",
   "app.errors.emails_duplicate": "Eine oder mehrere doppelte Einträge wurden für die E-Mail-Adresse {value} wurden in folgende/r Zeile/n gefunden: {rows}",
+  "app.errors.file_extension_whitelist_error": "",
   "app.errors.first_name_blank": "Bitte geben Sie Ihren Vornamen ein",
   "app.errors.generics.blank": "Dieses Feld darf nicht leer sein.",
   "app.errors.generics.invalid": "Dieses Feld enthält einen ungültigen Wert.",
