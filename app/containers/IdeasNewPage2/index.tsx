@@ -308,7 +308,10 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     try {
       const authUser = await getAuthUserAsync();
       const idea = await this.postIdeaAndIdeaImage('published', authUser.data.id);
-      clHistory.push(`/ideas?idea_published=${idea.data.id}`);
+      clHistory.push({
+        pathname: '/',
+        search: `?new_idea_id=${idea.data.id}&publish=false`
+      });
     } catch (error) {
       if (isError(error) && error.message === 'not_authenticated') {
         try {
@@ -338,7 +341,10 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
       idea = await updateIdea(ideaId, { author_id: userId, publication_status: 'published' });
 
       if (idea) {
-        clHistory.push(`/ideas?idea_published=${idea.data.id}`);
+        clHistory.push({
+          pathname: '/',
+          search: `?new_idea_id=${idea.data.id}&publish=false`
+        });
       }
     }
   }

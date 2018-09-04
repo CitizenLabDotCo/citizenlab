@@ -181,7 +181,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions = [
       globalState$.subscribe((globalState) => {
         this.setState({
-          socialLoginUrlParameter: (globalState && globalState.ideaId ? `?idea_to_publish=${globalState.ideaId}` : '')
+          socialLoginUrlParameter: (globalState && globalState.ideaId ? `?new_idea_id=${globalState.ideaId}&publish=true` : '')
         });
       })
     ];
