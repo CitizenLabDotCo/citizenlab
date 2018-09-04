@@ -67,6 +67,26 @@ resource "EventFile" do
         expect(json_response.dig(:errors,:file)).to include({:error=>"extension_whitelist_error"})
       end
     end
+
+    describe do
+      let(:file) { "data:application/pdf;base64,===" }
+
+      example_request "[error] Add a file of which the size is too small" do
+        expect(response_status).to eq 422
+      end
+    end
+
+    describe do
+      example "[error] Add a file of which the size is too large" do
+        # mock the size_range method of EventFileUploader to have 3 bytes as maximum size
+        expect_any_instance_of(EventFileUploader).to receive(:size_range).and_return(1..3)
+
+        do_request
+        expect(response_status).to eq 422
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:errors,:file)).to include({:error=>"max_size_error"})
+      end
+    end
   end
 
   patch "web_api/v1/events/:event_id/files/:file_id" do
