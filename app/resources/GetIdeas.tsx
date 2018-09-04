@@ -255,20 +255,6 @@ export default class GetIdeas extends React.Component<Props, State> {
     };
   }
 
-  handleChangeSorting = (newSortAttribute: SortAttribute) => {
-    const { sort: oldSort } = this.state.queryParameters;
-    const oldSortAttribute = getSortAttribute<Sort, SortAttribute>(oldSort);
-    const oldSortDirection = getSortDirection<Sort>(oldSort);
-    const newSortDirection = (newSortAttribute === oldSortAttribute && oldSortDirection === 'descending') ? 'ascending' : 'descending';
-    const newSortDirectionSymbol = (newSortDirection === 'descending' ? '-' : '');
-    const sort = `${newSortDirectionSymbol}${newSortAttribute}` as Sort;
-
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      sort
-    });
-  }
-
   loadMore = () => {
     if (!this.state.loadingMore) {
       this.queryParameters$.next({
