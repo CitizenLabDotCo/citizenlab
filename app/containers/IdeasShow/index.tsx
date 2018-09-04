@@ -41,7 +41,7 @@ import { hasPermission } from 'services/permissions';
 import T from 'components/T';
 import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import localize, { injectedLocalized } from 'utils/localize';
+import localize, { InjectedLocalized } from 'utils/localize';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 
@@ -579,12 +579,12 @@ type State = {
   moreActions: IAction[];
 };
 
-export class IdeasShow extends PureComponent<Props & InjectedIntlProps & injectedLocalized, State> {
+export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
   initialState: State;
   ideaId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
 
-  constructor(props: Props & InjectedIntlProps & injectedLocalized) {
+  constructor(props: Props & InjectedIntlProps & InjectedLocalized) {
     super(props);
     const initialState = {
       authUser: null,

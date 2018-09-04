@@ -4,7 +4,7 @@ import { filter, switchMap } from 'rxjs/operators';
 import { map, sortBy } from 'lodash-es';
 import { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import localize, { injectedLocalized } from 'utils/localize';
+import localize, { InjectedLocalized } from 'utils/localize';
 import { ideasByTopicStream, IIdeasByTopic } from 'services/stats';
 
 type State = {
@@ -20,7 +20,7 @@ type Props = {
   endAt: string
 };
 
-class IdeasByTimeChart extends React.PureComponent<Props & injectedLocalized, State> {
+class IdeasByTimeChart extends React.PureComponent<Props & InjectedLocalized, State> {
   startAt$: BehaviorSubject<string | null>;
   endAt$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];

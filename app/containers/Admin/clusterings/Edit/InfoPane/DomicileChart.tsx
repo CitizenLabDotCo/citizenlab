@@ -5,7 +5,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContaine
 import { votesByDomicileStream, IVotesByDomicile } from 'services/stats';
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 import { isNilOrError } from 'utils/helperUtils';
-import localize, { injectedLocalized } from 'utils/localize';
+import localize, { InjectedLocalized } from 'utils/localize';
 import styled, { withTheme } from 'styled-components';
 
 interface InputProps {
@@ -27,11 +27,11 @@ interface State {
 
 const Container = styled.div``;
 
-class DomicileChart extends PureComponent<Props & injectedLocalized, State> {
+class DomicileChart extends PureComponent<Props & InjectedLocalized, State> {
 
   subscription: Subscription;
 
-  constructor(props: Props & injectedLocalized) {
+  constructor(props: Props & InjectedLocalized) {
     super(props);
     this.state = {
       series: [],

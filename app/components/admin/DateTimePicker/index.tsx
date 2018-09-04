@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // i18n
-import localize, { injectedLocalized } from 'utils/localize';
+import localize, { InjectedLocalized } from 'utils/localize';
 
 const Wrapper = styled.div`
   display: inline-flex;
@@ -94,7 +94,7 @@ interface State {
   selectedMoment: moment.Moment;
 }
 
-class DateTimePicker extends React.PureComponent<Props & injectedLocalized, State> {
+class DateTimePicker extends React.PureComponent<Props & InjectedLocalized, State> {
   constructor (props) {
     super(props);
     this.state = {
