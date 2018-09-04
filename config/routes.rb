@@ -150,6 +150,7 @@ Rails.application.routes.draw do
 
   mount PublicApi::Engine => "/api", as: 'public_api'
   mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
+  mount EmailCampaigns::Engine => "", as: 'email_campaigns'
 
   if Rails.env.development?
     require_dependency 'sidekiq/web'

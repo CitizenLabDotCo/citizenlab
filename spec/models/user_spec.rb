@@ -117,6 +117,16 @@ RSpec.describe User, type: :model do
       expect(u.project_moderator? l2.id).to eq false
     end
 
+    it "response true when the user is project_moderator and no project_id is passed" do
+      u = build(:user, roles: [{type: "project_moderator"}])
+      expect(u.project_moderator?).to eq true
+    end
+
+    it "response false when the user is not a project_moderator and no project_id is passed" do
+      u = build(:admin)
+      expect(u.project_moderator?).to eq false
+    end
+
   end
 
   describe "add_role" do

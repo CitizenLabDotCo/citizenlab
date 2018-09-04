@@ -55,7 +55,15 @@ Rails.application.configure do
     host: 'localhost'
   }
 
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = { :address => "mailcatcher", :port => 1025 }
+  if ENV.fetch('MAILGUN_API_KEY', false)
+    config.action_mailer.delivery_method = :mailgun
+    config.action_mailer.mailgun_settings = {
+      api_key: ENV.fetch("MAILGUN_API_KEY"),
+      domain: ENV.fetch("MAILGUN_DOMAIN"),
+    }
+  else
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = { :address => "mailcatcher", :port => 1025 }
+  end
 
 end

@@ -1,6 +1,6 @@
 module EmailCampaigns
   class ApplicationMailer < ActionMailer::Base
-    default from: 'from@example.com'
+    default from: ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')
     layout 'mailer'
   end
 end

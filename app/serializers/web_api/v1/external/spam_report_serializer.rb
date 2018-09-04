@@ -5,6 +5,6 @@ class WebApi::V1::External::SpamReportSerializer < ActiveModel::Serializer
   belongs_to :user
 
   def url
-      FrontendService.new.model_to_url object.spam_reportable
-    end
+    FrontendService.new.model_to_url object.spam_reportable
+  end
 end
