@@ -125,4 +125,9 @@ export default defineMessages({
     id: 'app.containers.Projects.phaseAttachments',
     defaultMessage: 'Attachments',
   },
+  eventAttachments: {
+    id: 'app.containers.Projects.eventAttachments',
+    defaultMessage: 'Attachments',
+  },
+
 });
