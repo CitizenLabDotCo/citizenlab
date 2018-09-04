@@ -1,8 +1,7 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { indexOf, isString, forEach } from 'lodash-es';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { tap, filter, switchMap } from 'rxjs/operators';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
+import { tap, filter, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import moment from 'moment';
 
 // components
@@ -351,7 +350,7 @@ export default class Timeline extends PureComponent<Props, State> {
   componentDidMount() {
     this.projectId$.next(this.props.projectId);
 
-    const projectId$ = this.projectId$.distinctUntilChanged();
+    const projectId$ = this.projectId$.pipe(distinctUntilChanged());
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
 

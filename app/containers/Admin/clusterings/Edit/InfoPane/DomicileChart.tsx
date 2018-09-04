@@ -1,13 +1,11 @@
 import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
-import isEqual from 'lodash/isEqual';
+import { Subscription, combineLatest } from 'rxjs';
+import { isEqual, isEmpty } from 'lodash-es';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer } from 'recharts';
 import { votesByDomicileStream, IVotesByDomicile } from 'services/stats';
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 import { isNilOrError } from 'utils/helperUtils';
 import localize, { injectedLocalized } from 'utils/localize';
-import { isEmpty } from 'lodash-es';
-import { combineLatest } from 'rxjs/observable/combineLatest';
 import styled, { withTheme } from 'styled-components';
 
 interface InputProps {

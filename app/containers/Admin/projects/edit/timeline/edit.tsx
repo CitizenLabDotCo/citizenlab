@@ -4,9 +4,8 @@ import 'react-dates/lib/css/_datepicker.css';
 
 // Libraries
 import React from 'react';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of } from 'rxjs/observable/of';
+import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import moment from 'moment';
 import { get, isEmpty } from 'lodash-es';
 
@@ -118,15 +117,16 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
     this.params$.next({ projectId, id });
 
     this.subscriptions = [
-      this.params$
-      .distinctUntilChanged(shallowCompare)
-      .switchMap((params: IParams) => {
-        const { projectId, id } = params;
-        const locale$ = localeStream().observable;
-        const project$ = (projectId ? projectByIdStream(projectId).observable : of(null));
-        const phase$ = (id ? phaseStream(id).observable : of(null));
-        return combineLatest(locale$, project$, phase$);
-      }).subscribe(([locale, project, phase]) => {
+      this.params$.pipe(
+        distinctUntilChanged(shallowCompare),
+        switchMap((params: IParams) => {
+          const { projectId, id } = params;
+          const locale$ = localeStream().observable;
+          const project$ = (projectId ? projectByIdStream(projectId).observable : of(null));
+          const phase$ = (id ? phaseStream(id).observable : of(null));
+          return combineLatest(locale$, project$, phase$);
+        })
+      ).subscribe(([locale, project, phase]) => {
         this.setState({
           locale,
           project,

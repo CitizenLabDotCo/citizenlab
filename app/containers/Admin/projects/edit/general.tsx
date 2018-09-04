@@ -1,8 +1,6 @@
 import React from 'react';
-import { Subscription, BehaviorSubject, Observable } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { switchMap, map, filter } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
+import { Subscription, BehaviorSubject, Observable, combineLatest, of } from 'rxjs';
+import { switchMap, map, filter, distinctUntilChanged } from 'rxjs/operators';
 import { isEmpty, get, forOwn } from 'lodash-es';
 
 // router
@@ -200,7 +198,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
     const areas$ = areasStream().observable;
-    const project$ = this.projectId$.distinctUntilChanged().pipe(
+    const project$ = this.projectId$.pipe(
+      distinctUntilChanged(),
       switchMap(projectId => projectId ? projectByIdStream(projectId).observable : of(null))
     );
 

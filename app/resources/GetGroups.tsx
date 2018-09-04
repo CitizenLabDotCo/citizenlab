@@ -1,6 +1,7 @@
 import React from 'react';
 import { isEqual, get, isString, omitBy, isNil, isError, isBoolean } from 'lodash-es';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { distinctUntilChanged, mergeScan, map } from 'rxjs/operators';
 import { getGroups, IGroups, IGroupData } from 'services/groups';
 import shallowCompare from 'utils/shallowCompare';
 
@@ -73,9 +74,9 @@ export default class GetGroups extends React.Component<Props, State> {
     const startAccumulatorValue: IAccumulator = { queryParameters, groupsList: undefined, hasMore: false };
 
     this.subscriptions = [
-      this.queryParameters$
-        .distinctUntilChanged((x, y) => shallowCompare(x, y))
-        .mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
+      this.queryParameters$.pipe(
+        distinctUntilChanged((x, y) => shallowCompare(x, y)),
+        mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
           const cacheStream = (isBoolean(this.props.cache) ? this.props.cache : true);
           const isLoadingMore = (acc.queryParameters['page[number]'] !== queryParameters['page[number]']);
           queryParameters['page[number]'] = (isLoadingMore ? queryParameters['page[number]'] : 1);
@@ -88,7 +89,7 @@ export default class GetGroups extends React.Component<Props, State> {
           return getGroups({
             queryParameters,
             cacheStream
-          }).observable.map((groups: IGroups | Error) => {
+          }).observable.pipe(map((groups: IGroups | Error) => {
             const selfLink = get(groups, 'links.self');
             const lastLink = get(groups, 'links.last');
             const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
@@ -110,10 +111,11 @@ export default class GetGroups extends React.Component<Props, State> {
               hasMore,
               groupsList
             };
-          });
-        }, startAccumulatorValue).subscribe(({ groupsList, queryParameters, hasMore }) => {
-          this.setState({ queryParameters, hasMore, groupsList, querying: false, loadingMore: false });
-        })
+          }));
+        }, startAccumulatorValue)
+      ).subscribe(({ groupsList, queryParameters, hasMore }) => {
+        this.setState({ queryParameters, hasMore, groupsList, querying: false, loadingMore: false });
+      })
     ];
   }
 

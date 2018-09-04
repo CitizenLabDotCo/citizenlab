@@ -1,6 +1,7 @@
 import { authUserStream } from 'services/auth';
 import { IUser } from 'services/users';
 import { isObject } from 'lodash-es';
+import { map } from 'rxjs/operators';
 
 type TPermissionItem = IResourceData | IRouteItem | TResourceType;
 
@@ -46,7 +47,7 @@ const getPermissionRule = (resourceType: TResourceType, action: TAction) => (per
  * @param param0.context Optional context argument that can be used to pass in aditional context to make the permissions decision
  */
 const hasPermission = ({ item, action, context }: { item: TPermissionItem | null, action: string, context?: any }) => {
-  return authUserStream().observable.map((user) => {
+  return authUserStream().observable.pipe(map((user) => {
     if (!item) {
       return false;
     }
@@ -59,7 +60,7 @@ const hasPermission = ({ item, action, context }: { item: TPermissionItem | null
     } else {
       throw `No permission rule is specified on resource '${resourceType}' for action '${action}'`;
     }
-  });
+  }));
 };
 
 export {

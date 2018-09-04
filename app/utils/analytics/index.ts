@@ -1,7 +1,6 @@
 import React from 'react';
-import { Subject } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import mapValues from 'lodash/mapValues';
+import { Subject, combineLatest } from 'rxjs';
+import { mapValues } from 'lodash-es';
 import { currentTenantStream, ITenantData } from 'services/tenant';
 import { authUserStream } from 'services/auth';
 import snippet from '@segment/snippet';

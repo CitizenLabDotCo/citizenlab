@@ -25,7 +25,7 @@ export default (props: Props) => {
   return (
     <User className={`${className} ${!user ? 'deleted-user' : ''}`}>
       {user ? (
-        `${firstName} ${!hideLastName ? lastName : ''}`
+        `${firstName} ${!hideLastName && lastName ? lastName : ''}`
       ) : (
         <FormattedMessage {...messages.deletedUser} />
       )}

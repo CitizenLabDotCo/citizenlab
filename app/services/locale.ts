@@ -1,6 +1,5 @@
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 import { first, map, distinctUntilChanged, filter } from 'rxjs/operators';
-import { combineLatest } from 'rxjs/observable/combineLatest';
 import { includes, isEqual } from 'lodash-es';
 import { currentTenantStream } from 'services/tenant';
 import { authUserStream } from 'services/auth';

@@ -1,7 +1,8 @@
 // Libraries
 import React from 'react';
-import { compact, isEqual } from 'lodash';
+import { compact, isEqual } from 'lodash-es';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 
 // resources
@@ -114,13 +115,13 @@ class CLMap extends React.PureComponent<Props, State> {
 
     // Map container dimensions change
     this.subs.push(
-      this.dimensionH$.distinctUntilChanged().subscribe(() => this.map.invalidateSize()),
-      this.dimensionW$.distinctUntilChanged().subscribe(() => this.map.invalidateSize()),
+      this.dimensionH$.pipe(distinctUntilChanged()).subscribe(() => this.map.invalidateSize()),
+      this.dimensionW$.pipe(distinctUntilChanged()).subscribe(() => this.map.invalidateSize()),
     );
 
     // Refresh bounds
     this.subs.push(
-      this.bounds$.distinctUntilChanged().subscribe((bounds) => {
+      this.bounds$.pipe(distinctUntilChanged()).subscribe((bounds) => {
         if (bounds && this.props.fitBounds) this.map.fitBounds(bounds, { maxZoom: 12 });
       })
     );

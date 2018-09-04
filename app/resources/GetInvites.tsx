@@ -1,7 +1,5 @@
 import React from 'react';
-import { Subscription, Subject, BehaviorSubject } from 'rxjs';
-import { merge } from 'rxjs/observable/merge';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { Subscription, Subject, BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { map, startWith, distinctUntilChanged, switchMap, debounceTime } from 'rxjs/operators';
 import { IInviteData, invitesStream } from 'services/invites';
 import shallowCompare from 'utils/shallowCompare';

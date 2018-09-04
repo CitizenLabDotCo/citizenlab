@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { isEqual, isEmpty } from 'lodash-es';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer } from 'recharts';
 import { votesByGenderStream, IVotesByGender } from 'services/stats';
-import { combineLatest } from 'rxjs/observable/combineLatest';
 import styled, { withTheme } from 'styled-components';
 
 type Props = {

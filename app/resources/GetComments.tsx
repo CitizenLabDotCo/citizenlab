@@ -1,5 +1,6 @@
 import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { ICommentData, commentsForIdeaStream } from 'services/comments';
 import { isString } from 'lodash-es';
@@ -38,11 +39,12 @@ export default class GetComments extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ ideaId });
 
     this.subscriptions = [
-      this.inputProps$
-        .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .filter(({ ideaId }) => isString(ideaId))
-        .switchMap(({ ideaId }: { ideaId: string }) => commentsForIdeaStream(ideaId).observable)
-        .subscribe((comments) => this.setState({ comments: !isNilOrError(comments) ? comments.data : comments }))
+      this.inputProps$.pipe(
+        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+        filter(({ ideaId }) => isString(ideaId)),
+        switchMap(({ ideaId }: { ideaId: string }) => commentsForIdeaStream(ideaId).observable)
+      )
+      .subscribe((comments) => this.setState({ comments: !isNilOrError(comments) ? comments.data : comments }))
     ];
   }
 

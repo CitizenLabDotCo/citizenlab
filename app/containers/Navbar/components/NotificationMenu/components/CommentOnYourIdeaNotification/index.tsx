@@ -1,5 +1,5 @@
 import React from 'react';
-import * as Rx from 'rxjs/Rx';
+import { Subscription } from 'rxjs';
 
 import { ICommentOnYourIdeaNotificationData } from 'services/notifications';
 import { ideaByIdStream } from 'services/ideas';
@@ -20,7 +20,7 @@ type State = {
 };
 
 export default class CommentOnYourIdeaNotification extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);

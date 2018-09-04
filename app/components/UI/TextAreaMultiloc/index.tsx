@@ -1,6 +1,5 @@
 import React from 'react';
-import { Subscription } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { Subscription, combineLatest } from 'rxjs';
 import { get } from 'lodash-es';
 
 // components

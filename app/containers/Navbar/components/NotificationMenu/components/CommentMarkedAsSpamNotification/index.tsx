@@ -1,5 +1,5 @@
 import React from 'react';
-import * as Rx from 'rxjs/Rx';
+import { Subscription } from 'rxjs';
 
 import { ICommentMarkedAsSpamNotificationData } from 'services/notifications';
 import { ideaByIdStream } from 'services/ideas';
@@ -22,7 +22,7 @@ type State = {
 };
 
 export default class CommentMarkedAsSpamNotification extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);

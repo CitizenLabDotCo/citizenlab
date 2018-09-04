@@ -1,9 +1,7 @@
 import React from 'react';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
-import map from 'lodash/map';
-import sortBy from 'lodash/sortBy';
+import { map, sortBy } from 'lodash-es';
 import { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import localize, { injectedLocalized } from 'utils/localize';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { uniq, keys, isEmpty, get } from 'lodash-es';
 import { findDOMNode } from 'react-dom';

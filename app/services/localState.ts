@@ -1,4 +1,5 @@
 import { Observer, Observable } from 'rxjs';
+import { first, startWith, scan, filter, distinctUntilChanged, publishReplay, refCount } from 'rxjs/operators';
 import { isObject, isEmpty } from 'lodash-es';
 import shallowCompare from 'utils/shallowCompare';
 
@@ -21,23 +22,27 @@ export function localState<T>(initialState: T): ILocalStateService<T> {
     service.observer = observer;
     service.observer.next(initialState);
   })
-  .startWith({} as any)
-  .scan((oldState: T, updatedStateProperties: Partial<T>) => {
-    const newState = {
-      ...oldState as any,
-      ...updatedStateProperties as object
-    } as T;
+  .pipe(
+    startWith({} as T),
+    scan((oldState: T, updatedStateProperties) => {
+      const newState = {
+        ...oldState as any,
+        ...updatedStateProperties as any
+      } as T;
 
-    return newState;
-  })
-  .filter(state => isObject(state) && !isEmpty(state))
-  .distinctUntilChanged((oldState, newState) => shallowCompare(oldState, newState))
-  .publishReplay(1)
-  .refCount();
+      return newState;
+    }),
+    filter(state => isObject(state) && !isEmpty(state)),
+    distinctUntilChanged((oldState, newState) => shallowCompare(oldState, newState)),
+    publishReplay(1),
+    refCount()
+  );
 
   service.set = (updatedStateProperties: Partial<T>) => service.observer.next(updatedStateProperties as any);
 
-  service.get = () => service.observable.first().toPromise();
+  service.get = () => service.observable.pipe(
+    first()
+  ).toPromise();
 
   return service;
 }
