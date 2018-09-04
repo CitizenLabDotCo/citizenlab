@@ -707,6 +707,7 @@
   "app.containers.Projects.noProjectFoundHere": "Aucun projet n'est disponible ici",
   "app.containers.Projects.noUpcomingEvents": "Il n'y a pas d'événements à venir",
   "app.containers.Projects.pastEvents": "Evénements passés",
+  "app.containers.Projects.phaseAttachments": "",
   "app.containers.Projects.phaseNumber": "Phase {phaseNumber}",
   "app.containers.Projects.project": "Projet",
   "app.containers.Projects.projectInformation": "Informations",
