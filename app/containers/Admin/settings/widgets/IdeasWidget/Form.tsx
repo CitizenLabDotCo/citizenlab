@@ -37,6 +37,7 @@ export interface FormValues {
   showHeader: boolean;
   showLogo: boolean;
   headerText: string;
+  headerSubText: string;
   showFooter: boolean;
   buttonText: string;
   sort: 'trending' | 'popular' | 'newest';
@@ -135,6 +136,21 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & injectedLocal
               />}
             </SectionField>
 
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.fieldFontSize} />
+              </Label>
+              <Field
+                name="fontSize"
+                component={FormikInput}
+                type="number"
+              />
+              {touched.fontSize && <Error
+                fieldName="fontSize"
+                apiErrors={errors.fontSize as any}
+              />}
+            </SectionField>
+
           </Section>
 
         </Collapse>
@@ -203,20 +219,6 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & injectedLocal
                 apiErrors={errors.font as any}
               />}
             </SectionField>
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.fieldFontSize} />
-              </Label>
-              <Field
-                name="fontSize"
-                component={FormikInput}
-                type="number"
-              />
-              {touched.fontSize && <Error
-                fieldName="fontSize"
-                apiErrors={errors.fontSize as any}
-              />}
-            </SectionField>
           </Section>
         </Collapse>
 
@@ -267,6 +269,20 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & injectedLocal
                       apiErrors={errors.headerText as any}
                     />}
                   </SectionField>
+                <SectionField>
+                  <Label>
+                    <FormattedMessage {...messages.fieldHeaderSubText} />
+                  </Label>
+                  <Field
+                    name="headerSubText"
+                    component={FormikInput}
+                    type="text"
+                  />
+                  {touched.headerSubText && <Error
+                    fieldName="headerSubText"
+                    apiErrors={errors.headerSubText as any}
+                  />}
+                </SectionField>
                 </SubSection>
               }
 

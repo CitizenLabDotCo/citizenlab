@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { debounce } from 'lodash';
+import { debounce, omitBy, isNil, isEmpty, isString } from 'lodash';
 import { stringify } from 'qs';
 import Form, { FormValues } from './Form';
 import { Formik, FormikErrors } from 'formik';
@@ -54,10 +54,11 @@ class IdeasWidget extends React.Component<Props, State> {
     textColor: '#666666',
     accentColor: '#2233aa',
     font: null,
-    fontSize: 18,
+    fontSize: 16,
     showHeader: true,
     showLogo: true,
     headerText: '',
+    headerSubText: '',
     showFooter: true,
     buttonText: '',
     sort: 'trending',
@@ -72,7 +73,9 @@ class IdeasWidget extends React.Component<Props, State> {
   }
 
   generateWidgetParams = () => {
-    return stringify(this.state.widgetParams);
+    const { widgetParams } = this.state;
+    const cleanedParams = omitBy(widgetParams, (v) => isNil(v) || (isString(v) && isEmpty(v)));
+    return stringify(cleanedParams);
   }
 
   handleCloseCodeModal = () => {
