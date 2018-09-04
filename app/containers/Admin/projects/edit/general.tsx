@@ -547,7 +547,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         }
 
         if (redirect) {
-          clHistory.push(`/admin/projects`);
+          clHistory.push('/admin/projects');
         } else {
           this.setState({ saved: true, submitState: 'success' });
           this.processing$.next(false);

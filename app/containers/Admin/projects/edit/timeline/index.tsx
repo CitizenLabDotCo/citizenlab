@@ -96,7 +96,7 @@ class AdminProjectTimelineIndex extends React.Component<Props & WithRouterProps 
         </AddButton>
 
         {!isNilOrError(phases) && phases.length > 0 &&
-          <div className={`e2e-phases-table`}>
+          <div className={'e2e-phases-table'}>
             <StyledList>
               <HeadRow>
                 <OrderHeader><FormattedMessage {...messages.orderColumnTitle} /></OrderHeader>

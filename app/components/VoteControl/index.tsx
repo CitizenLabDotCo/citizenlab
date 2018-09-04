@@ -137,7 +137,7 @@ const Upvote = Vote.extend`
 
   ${VoteIcon} {
     margin-bottom: 4px;
-    ${props => props.active && (props.enabled ? `fill: #fff;` : `fill: ${colors.clGreen}`)}
+    ${props => props.active && (props.enabled ? 'fill: #fff;' : `fill: ${colors.clGreen}`)}
   }
 
   ${VoteCount} {
@@ -168,7 +168,7 @@ const Downvote = Vote.extend`
 
   ${VoteIcon} {
     margin-top: 5px;
-    ${props => props.active && (props.enabled ? `fill: #fff;` : `fill: ${colors.clRed}`)}
+    ${props => props.active && (props.enabled ? 'fill: #fff;' : `fill: ${colors.clRed}`)}
   }
 
   ${VoteCount} {
