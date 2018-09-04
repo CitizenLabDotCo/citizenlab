@@ -32,7 +32,7 @@ import { appLocalePairs } from 'containers/App/constants';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import localize, { injectedLocalized } from 'utils/localize';
+import localize, { InjectedLocalized } from 'utils/localize';
 
 // styling
 import styled from 'styled-components';
@@ -60,7 +60,7 @@ interface State {
   customFieldsFormData: any;
 }
 
-type Props = InputProps & InjectedIntlProps & injectedLocalized;
+type Props = InputProps & InjectedIntlProps & InjectedLocalized;
 
 class ProfileForm extends PureComponent<Props, State> {
   localeOptions: IOption[] = [];

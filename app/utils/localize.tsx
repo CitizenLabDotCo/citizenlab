@@ -12,7 +12,7 @@ import { getLocalized } from 'utils/i18n';
 // Typing
 import { Multiloc, Locale } from 'typings';
 
-export interface injectedLocalized {
+export interface InjectedLocalized {
   localize: {
     (multiloc: Multiloc): string;
   };
