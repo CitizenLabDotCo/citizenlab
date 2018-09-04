@@ -707,6 +707,7 @@
   "app.containers.Projects.noProjectFoundHere": "Es gibt hier kein Projekt.",
   "app.containers.Projects.noUpcomingEvents": "Es sind im Moment keine Veranstaltungen geplant",
   "app.containers.Projects.pastEvents": "Ehemalige Veranstaltungen",
+  "app.containers.Projects.phaseAttachments": "",
   "app.containers.Projects.phaseNumber": "Phase {phaseNumber}",
   "app.containers.Projects.project": "{orgName, select, München {Bezirke} other {Projekte}}",
   "app.containers.Projects.projectInformation": "{orgName, select, München {Bezirksinfo} other {Projekt-Informationen}}",
