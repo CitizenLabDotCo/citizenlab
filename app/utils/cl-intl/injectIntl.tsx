@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { Subscription, combineLatest } from 'rxjs';
 import { currentTenantStream } from 'services/tenant';
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import { injectIntl as originalInjectIntl, InjectedIntlProps, InjectIntlConfig } from 'react-intl';

@@ -1,5 +1,5 @@
-import { Subject } from 'rxjs';
-import { Observable } from 'rxjs/Observable';
+import { Subject, Observable } from 'rxjs';
+import { filter, share } from 'rxjs/operators';
 
 interface IEventEmitterEvent<T> {
   eventSource: string;
@@ -24,7 +24,10 @@ class EventEmitter {
     const streamName = `${eventSource}-${eventName}`;
 
     if (!this.stream[streamName]) {
-      this.stream[streamName] = this.subject.filter(data => data.eventSource === eventSource && data.eventName === eventName).share();
+      this.stream[streamName] = this.subject.pipe(
+        filter(data => data.eventSource === eventSource && data.eventName === eventName),
+        share()
+      );
     }
 
     return this.stream[streamName];
@@ -34,7 +37,10 @@ class EventEmitter {
     const streamName = eventName;
 
     if (!this.stream[streamName]) {
-      this.stream[streamName] = this.subject.filter(data => data.eventName === eventName).share();
+      this.stream[streamName] = this.subject.pipe(
+        filter(data => data.eventName === eventName),
+        share()
+      );
     }
 
     return this.stream[streamName];

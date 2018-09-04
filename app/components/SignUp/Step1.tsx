@@ -1,8 +1,7 @@
 import React from 'react';
 import { set, keys, difference, get } from 'lodash-es';
-import { Subscription } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of } from 'rxjs/observable/of';
+import { Subscription, combineLatest, of } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 
 // libraries
@@ -162,14 +161,14 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
     const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
-    const invitedUser$ = (token ? userByInviteStream(token, { cacheStream: false }).observable : of(null));
+    const invitedUser$ = (token ? userByInviteStream(token, { cacheStream: false }).observable.pipe(first()) : of(null));
 
     this.subscriptions = [
       combineLatest(
         locale$,
         currentTenant$,
         customFieldsSchemaForUsersStream$,
-        invitedUser$.first()
+        invitedUser$
       ).subscribe(([locale, currentTenant, customFieldsSchema, invitedUser]) => {
         this.setState((state) => ({
           locale,

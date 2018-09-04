@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs/Rx';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { Subscription, combineLatest } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { merge, cloneDeep, forOwn, get, set, size, has, trim, isEmpty, omitBy } from 'lodash-es';
 
@@ -185,7 +184,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
 
       return {
         titleError,
-        attributesDiff: set(cloneDeep(state.attributesDiff), `settings.core.header_title`, titleMultiloc),
+        attributesDiff: set(cloneDeep(state.attributesDiff), 'settings.core.header_title', titleMultiloc),
       };
     });
   }
@@ -203,7 +202,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
 
       return {
         subtitleError,
-        attributesDiff: set(cloneDeep(state.attributesDiff), `settings.core.header_slogan`, subtitleMultiloc),
+        attributesDiff: set(cloneDeep(state.attributesDiff), 'settings.core.header_slogan', subtitleMultiloc),
       };
     });
   }
@@ -368,7 +367,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             <StyledSectionField>
               <InputMultiloc
                 type="text"
-                valueMultiloc={get(tenantAttrs, `settings.core.header_title`)}
+                valueMultiloc={get(tenantAttrs, 'settings.core.header_title')}
                 label={<FormattedMessage {...messages.headerTitleLabel} />}
                 maxCharCount={this.titleMaxCharCount}
                 onChange={this.handleTitleOnChange}
@@ -379,7 +378,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             <StyledSectionField>
               <InputMultiloc
                 type="text"
-                valueMultiloc={get(tenantAttrs, `settings.core.header_slogan`)}
+                valueMultiloc={get(tenantAttrs, 'settings.core.header_slogan')}
                 label={<FormattedMessage {...messages.headerSubtitleLabel} />}
                 maxCharCount={this.subtitleMaxCharCount}
                 onChange={this.handleSubtitleOnChange}

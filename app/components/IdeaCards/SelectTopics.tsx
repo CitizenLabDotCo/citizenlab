@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { Subscription, combineLatest } from 'rxjs';
 
 // components
 import FilterSelector from 'components/FilterSelector';

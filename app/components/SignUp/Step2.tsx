@@ -1,7 +1,6 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { isEmpty, get } from 'lodash-es';
-import { Subscription } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { Subscription, combineLatest } from 'rxjs';
 
 // components
 import Button from 'components/UI/Button';

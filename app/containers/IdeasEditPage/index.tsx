@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react';
 import { isString, isEmpty, get } from 'lodash-es';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, combineLatest, of } from 'rxjs';
 import { switchMap, map, first } from 'rxjs/operators';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of } from 'rxjs/observable/of';
 
 // router
 import clHistory from 'utils/cl-router/history';

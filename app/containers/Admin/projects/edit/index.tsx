@@ -1,6 +1,7 @@
 // Libraries
 import React from 'react';
-import * as Rx from 'rxjs/Rx';
+import { Subscription, BehaviorSubject, of } from 'rxjs';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { isString, reject } from 'lodash-es';
 
 // Services
@@ -39,8 +40,8 @@ type State = {
 };
 
 class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps, State> {
-  projectId$: Rx.BehaviorSubject<string | null>;
-  subscriptions: Rx.Subscription[];
+  projectId$: BehaviorSubject<string | null>;
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -48,7 +49,7 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
       project: null,
       loaded: false
     };
-    this.projectId$ = new Rx.BehaviorSubject(null);
+    this.projectId$ = new BehaviorSubject(null);
     this.subscriptions = [];
   }
 
@@ -56,15 +57,15 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
     this.projectId$.next(this.props.params.projectId);
 
     this.subscriptions = [
-      this.projectId$
-        .distinctUntilChanged()
-        .switchMap(projectId => isString(projectId) ? projectByIdStream(projectId).observable : Rx.Observable.of(null))
-        .subscribe((project) => {
-          this.setState({
-            project: (project ? project.data : null),
-            loaded: true
-          });
-        })
+      this.projectId$.pipe(
+        distinctUntilChanged(),
+        switchMap(projectId => isString(projectId) ? projectByIdStream(projectId).observable : of(null))
+      ).subscribe((project) => {
+        this.setState({
+          project: (project ? project.data : null),
+          loaded: true
+        });
+      })
     ];
   }
 

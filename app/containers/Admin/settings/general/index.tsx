@@ -1,6 +1,6 @@
 import React from 'react';
 import { get, map, merge, set } from 'lodash-es';
-import * as Rx from 'rxjs/Rx';
+import { Subscription } from 'rxjs';
 
 // typings
 import { CLError, Multiloc, IOption } from 'typings';
@@ -43,7 +43,7 @@ interface State {
 }
 
 export default class SettingsGeneralTab extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);

@@ -1,10 +1,8 @@
 import React from 'react';
-import { Subscription } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { Subscription, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { withRouter, WithRouterProps } from 'react-router';
-import find from 'lodash/find';
-import pick from 'lodash/pick';
-import isEqual from 'lodash/isEqual';
+import { find, pick, isEqual } from 'lodash-es';
 
 // libraries
 import scrollToComponent from 'react-scroll-to-component';
@@ -123,7 +121,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     const { title, description, selectedTopics, selectedProject, position, imageFile } = this.props;
 
     const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
+    const currentTenantLocales$ = currentTenantStream().observable.pipe(map(currentTenant => currentTenant.data.attributes.settings.core.locales));
     const topics$ = topicsStream().observable;
     const projects$ = projectsStream().observable;
 

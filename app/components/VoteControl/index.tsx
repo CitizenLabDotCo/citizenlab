@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react';
 import { isString, has } from 'lodash-es';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs';
+import { BehaviorSubject, Subscription, Observable, combineLatest, of } from 'rxjs';
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of } from 'rxjs/observable/of';
 
 // components
 import Icon from 'components/UI/Icon';

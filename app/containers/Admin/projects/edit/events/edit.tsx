@@ -1,7 +1,5 @@
 import React from 'react';
-import { Subscription } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of } from 'rxjs/observable/of';
+import { Subscription, combineLatest, of } from 'rxjs';
 import moment from 'moment';
 import { isEmpty } from 'lodash-es';
 

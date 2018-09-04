@@ -1,5 +1,6 @@
 import React from 'react';
 import { isString, isEmpty } from 'lodash-es';
+import { first } from 'rxjs/operators';
 
 // libraries
 import { MentionsInput, Mention } from 'react-mentions';
@@ -133,7 +134,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
   }
 
   mentionDisplayTransform = (_id, display) => {
-    return '@' + display;
+    return `@${display}`;
   }
 
   handleOnChange = (event) => {
@@ -165,7 +166,9 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
         queryParameters['idea_id'] = this.props.ideaId;
       }
 
-      const response = await mentionsStream({ queryParameters }).observable.first().toPromise();
+      const response = await mentionsStream({ queryParameters }).observable.pipe(
+        first()
+      ).toPromise();
 
       if (response && response.data && response.data.length > 0) {
         users = response.data.map((user) => ({

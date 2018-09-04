@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { Subscription, combineLatest } from 'rxjs';
 import moment from 'moment';
 import { isBoolean, forOwn, get, uniq, isNil, isEmpty } from 'lodash-es';
 

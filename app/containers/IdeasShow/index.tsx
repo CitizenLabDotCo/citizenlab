@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
 import { has, isString, get } from 'lodash-es';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of } from 'rxjs/observable/of';
+import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { tap, filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import linkifyHtml from 'linkifyjs/html';
 

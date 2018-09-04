@@ -1,5 +1,6 @@
 import React from 'react';
-import * as Rx from 'rxjs/Rx';
+import { Subscription, Observable, of } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { isFinite, isEqual } from 'lodash-es';
 
 // components
@@ -83,7 +84,7 @@ interface State extends IParticipationContextConfig {
 }
 
 export default class ParticipationContext extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props) {
     super(props);
@@ -103,7 +104,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
 
   componentDidMount() {
     const { projectId, phaseId } = this.props;
-    let data$: Rx.Observable<IProject | IPhase | null> = Rx.Observable.of(null);
+    let data$: Observable<IProject | IPhase | null> = of(null);
 
     if (projectId) {
       data$ = projectByIdStream(projectId).observable;
@@ -145,7 +146,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
 
       eventEmitter
         .observeEvent('getParticipationContext')
-        .filter(() => this.validate())
+        .pipe(filter(() => this.validate()))
         .subscribe(() => {
           const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, presentationMode } = this.state;
 
@@ -311,7 +312,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
                   currentValue={participationMethod}
                   value="survey"
                   name="participationmethod"
-                  id={`participationmethod-survey`}
+                  id={'participationmethod-survey'}
                   label={<FormattedMessage {...messages.survey} />}
                 />
               </FeatureFlag>

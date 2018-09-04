@@ -9,7 +9,7 @@ import { IModalInfo } from 'containers/App';
 // components
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import { Button as SemanticButton, Icon } from 'semantic-ui-react';
+import Icon from 'components/UI/Icon';
 import VoteControl from 'components/VoteControl';
 import Unauthenticated from './Unauthenticated';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
@@ -23,7 +23,8 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { color, fontSize } from 'utils/styleUtils';
+import { colors, media, fontSize } from 'utils/styleUtils';
+import { lighten } from 'polished';
 
 const Wrapper = styled.div`
   align-items: strech;
@@ -67,14 +68,44 @@ const StyledButton = styled(Button)`
 `;
 
 const CommentsCount = styled.span`
-  color: ${color('label')};
+  color: ${colors.label};
   font-size: ${fontSize('base')};
 `;
 
-const CloseButton: any = styled(SemanticButton)`
+const CloseIcon = styled(Icon)`
+  height: 13px;
+  fill: ${colors.label};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: fill 100ms ease-out;
+`;
+
+const CloseButton = styled.div`
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
-  top: 0;
-  right: 0;
+  cursor: pointer;
+  top: 20px;
+  right: 20px;
+  border-radius: 50%;
+  border: solid 1px ${lighten(0.4, colors.label)};
+  transition: border-color 100ms ease-out;
+
+  &:hover {
+    border-color: #000;
+
+    ${CloseIcon} {
+      fill: #000;
+    }
+  }
+
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 // Typings
@@ -133,7 +164,11 @@ export default class IdeaBox extends React.PureComponent<Props, State> {
 
           return (
             <Wrapper className={this.props.className}>
-              {this.props.onClose && <CloseButton onClick={this.props.onClose} icon="close" circular basic />}
+              {this.props.onClose &&
+                <CloseButton onClick={this.props.onClose}>
+                  <CloseIcon name="close3" />
+                </CloseButton>
+              }
               <Title><T value={idea.attributes.title_multiloc} /></Title>
               <Description>
                 <T as="div" value={idea.attributes.body_multiloc} supportHtml />

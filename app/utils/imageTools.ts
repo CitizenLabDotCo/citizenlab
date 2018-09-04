@@ -1,5 +1,5 @@
 import 'whatwg-fetch';
-import { fromPromise } from 'rxjs/observable/fromPromise';
+import { from } from 'rxjs';
 import { ImageFile } from 'typings';
 
 export const imageSizes = {
@@ -78,5 +78,5 @@ export async function convertUrlToFile(imageUrl: string | null): Promise<File | 
 }
 
 export function convertUrlToFileObservable(imageUrl: string | null) {
-  return fromPromise(convertUrlToFile(imageUrl));
+  return from(convertUrlToFile(imageUrl));
 }
