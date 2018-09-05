@@ -689,6 +689,7 @@
   "app.containers.Projects.displayMap": "Kort",
   "app.containers.Projects.endedOn": "Sluttede den {date}",
   "app.containers.Projects.endsOn": "Slutter den {date}",
+  "app.containers.Projects.eventAttachments": "",
   "app.containers.Projects.events": "Begivenheder",
   "app.containers.Projects.goBackToList": "Gå tilbage til listen",
   "app.containers.Projects.header": "Projekter",
