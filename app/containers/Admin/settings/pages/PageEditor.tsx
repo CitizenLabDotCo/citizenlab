@@ -170,8 +170,7 @@ class PageEditor extends React.PureComponent<Props, State>{
 
   render() {
     const { deployed } = this.state;
-    const { className, slug } = this.props;
-    const { page } = this.props;
+    const { className, slug, page } = this.props;
 
     return (
       <EditorWrapper className={`${className} e2e-page-editor editor-${slug}`}>
