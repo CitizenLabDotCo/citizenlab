@@ -23,13 +23,12 @@ import createRoutes from './routes';
 
 import { initializeAnalytics } from 'utils/analytics';
 
-// Sentry error tracking
-configureScope(scope => {
-  scope.setTag('git_commit', process.env.CIRCLE_SHA1 as string);
-  scope.setTag('branch', process.env.CIRCLE_BRANCH as string);
-});
-
 if (process.env.NODE_ENV !== 'development' && process.env.SENTRY_DSN) {
+  configureScope((scope) => {
+    scope.setTag('git_commit', process.env.CIRCLE_SHA1 as string);
+    scope.setTag('branch', process.env.CIRCLE_BRANCH as string);
+  });
+
   init({
     dsn: process.env.SENTRY_DSN,
     environment: process.env.NODE_ENV,
@@ -39,31 +38,19 @@ if (process.env.NODE_ENV !== 'development' && process.env.SENTRY_DSN) {
 
 initializeAnalytics();
 
-// Set up the router, wrapping all Routes in the App component
 const rootRoute = {
   component: App,
   childRoutes: createRoutes(),
 };
 
-const render = (messages) => {
-  ReactDOM.render(
-    <LanguageProvider messages={messages}>
-      <Router
-        history={browserHistory}
-        routes={rootRoute}
-        render={
-          // Scroll to top when going to a new page, imitating default browser behaviour
-          applyRouterMiddleware(useScroll())
-        }
-      />
-    </LanguageProvider>,
-    document.getElementById('app')
-  );
-};
+const Root = () => (
+  <LanguageProvider messages={translationMessages}>
+    <Router
+      history={browserHistory}
+      routes={rootRoute}
+      render={applyRouterMiddleware(useScroll())}
+    />
+  </LanguageProvider>
+);
 
-// Hot reloadable translation json files
-if ((module as any).hot) {
-  (module as any).hot.accept('./i18n', () => render(translationMessages));
-}
-
-render(translationMessages);
+ReactDOM.render(<Root />, document.getElementById('app'));

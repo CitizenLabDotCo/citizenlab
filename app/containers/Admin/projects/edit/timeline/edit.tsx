@@ -89,7 +89,7 @@ interface State {
   loaded: boolean;
 }
 
-class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps, State> {
+class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlProps, State> {
   params$: BehaviorSubject<IParams | null>;
   subscriptions: Subscription[];
 

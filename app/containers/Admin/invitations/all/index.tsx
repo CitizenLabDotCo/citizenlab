@@ -2,7 +2,7 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
-import FileSaver from 'file-saver';
+import { saveAs } from 'file-saver';
 
 // components
 import { Table, Input } from 'semantic-ui-react';
@@ -71,7 +71,7 @@ class InvitesTable extends React.PureComponent<Props, State> {
     try {
       this.setState({ exporting: true });
       const blob = await requestBlob(`${API_PATH}/invites/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-      FileSaver.saveAs(blob, 'invites-export.xlsx');
+      saveAs(blob, 'invites-export.xlsx');
       this.setState({ exporting: false });
     } catch (error) {
       this.setState({ exporting: false });

@@ -11,9 +11,6 @@ import { SingleDatePicker } from 'react-dates';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
-// i18n
-import localize, { InjectedLocalized } from 'utils/localize';
-
 const Wrapper = styled.div`
   display: inline-flex;
   position: relative;
@@ -94,7 +91,7 @@ interface State {
   selectedMoment: moment.Moment;
 }
 
-class DateTimePicker extends React.PureComponent<Props & InjectedLocalized, State> {
+class DateTimePicker extends React.PureComponent<Props, State> {
   constructor (props) {
     super(props);
     this.state = {
@@ -198,4 +195,4 @@ class DateTimePicker extends React.PureComponent<Props & InjectedLocalized, Stat
   }
 }
 
-export default localize<Props>(DateTimePicker);
+export default DateTimePicker;

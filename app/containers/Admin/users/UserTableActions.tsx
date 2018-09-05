@@ -2,7 +2,7 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isArray, isNil, omitBy, includes } from 'lodash-es';
-import FileSaver from 'file-saver';
+import { saveAs } from 'file-saver';
 
 // Components
 import Checkbox from 'components/UI/Checkbox';
@@ -215,7 +215,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
       const users = (isArray(usersIds) ? usersIds : null);
       const queryParameters = omitBy({ group, users }, isNil);
       const blob = await requestBlob(apiPath, fileType, queryParameters);
-      FileSaver.saveAs(blob, 'users-export.xlsx');
+      saveAs(blob, 'users-export.xlsx');
     } catch (error) {
       throw error;
     }

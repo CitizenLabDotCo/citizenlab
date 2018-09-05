@@ -30,7 +30,7 @@ const IdeaNotFoundWrapper = styled.div`
   color: ${colors.label};
 `;
 
-interface InputProps {}
+export interface InputProps {}
 
 export default withRouter<InputProps>((props: InputProps & WithRouterProps) => (
   <GetIdea slug={props.params.slug}>
