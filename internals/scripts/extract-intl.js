@@ -6,7 +6,7 @@
 const fs = require('fs');
 const glob = require('glob');
 const mkdir = require('shelljs').mkdir;
-const babel = require('@babel/core');
+const babel = require('babel-core');
 const animateProgress = require('./helpers/progress');
 const addCheckmark = require('./helpers/checkmark');
 const constants = require('../../app/containers/App/constants');
@@ -87,10 +87,9 @@ for (const locale of locales) {
 
 const extractFromFile = async (fileName) => {
   try {
-    console.log(fileName);
-    const code = await readFilePromise(fileName);
-    // console.log(code);
-    const { metadata } = await babel.transform(code, { plugins: ['react-intl'] });
+    const codeToTransform = await readFilePromise(fileName);
+    const options = { plugins: ['react-intl'] };
+    const { metadata } = await babel.transform(codeToTransform, options);
 
     if (metadata && metadata['react-intl'] && metadata['react-intl'].messages) {
       for (const message of metadata['react-intl'].messages) {

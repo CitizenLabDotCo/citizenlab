@@ -6,7 +6,7 @@ import T from 'components/T';
 import Label from 'components/UI/Label';
 
 // I18n
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // Styling
