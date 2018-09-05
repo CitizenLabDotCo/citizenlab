@@ -66,7 +66,7 @@ const CharCount = styled.div`
   }
 `;
 
-export type Props = {
+export type InputProps = {
   ariaLabel?: string;
   id?: string | undefined;
   value?: string | null | undefined;
@@ -83,8 +83,13 @@ export type Props = {
   maxCharCount?: number | undefined;
   disabled?: boolean;
   spellCheck?: boolean;
-  formikContext: FormikContext<any>;
 };
+
+interface DataProps {
+  formikContext?: FormikContext<any>;
+}
+
+interface Props extends InputProps, DataProps {}
 
 type State = {};
 
@@ -130,6 +135,7 @@ class Input extends React.PureComponent<Props, State> {
     const { id, type, name, maxCharCount, min, autoFocus, onFocus, disabled, spellCheck } = this.props;
     const hasError = (!isNil(error) && !isEmpty(error));
     const optionalProps = isBoolean(spellCheck) ? { spellCheck } : null;
+
     if (name && formikContext && formikContext.values[name]) {
       value = (value || formikContext.values[name]);
     }
@@ -177,8 +183,8 @@ class Input extends React.PureComponent<Props, State> {
   }
 }
 
-export default (props: Props) => (
+export default (inputProps: InputProps) => (
   <FormikConsumer>
-    {formikContext => <Input formikContext={formikContext} {...props} />}
+    {formikContext => <Input {...inputProps} formikContext={formikContext} />}
   </FormikConsumer>
 );
