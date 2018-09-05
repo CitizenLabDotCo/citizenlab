@@ -545,6 +545,7 @@
   "app.containers.AdminPage.widgets.fieldFont": "Font",
   "app.containers.AdminPage.widgets.fieldFontDescription": "Must be a valid font name available through {googleFontsLink}. Leave empty to use the default font.",
   "app.containers.AdminPage.widgets.fieldFontSize": "Font size",
+  "app.containers.AdminPage.widgets.fieldHeaderSubText": "Header subtitle",
   "app.containers.AdminPage.widgets.fieldHeaderText": "Header text",
   "app.containers.AdminPage.widgets.fieldHeight": "Height",
   "app.containers.AdminPage.widgets.fieldLimit": "Limit",

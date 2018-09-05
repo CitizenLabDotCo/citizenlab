@@ -545,6 +545,7 @@
   "app.containers.AdminPage.widgets.fieldFont": "",
   "app.containers.AdminPage.widgets.fieldFontDescription": "",
   "app.containers.AdminPage.widgets.fieldFontSize": "",
+  "app.containers.AdminPage.widgets.fieldHeaderSubText": "",
   "app.containers.AdminPage.widgets.fieldHeaderText": "",
   "app.containers.AdminPage.widgets.fieldHeight": "",
   "app.containers.AdminPage.widgets.fieldLimit": "",
