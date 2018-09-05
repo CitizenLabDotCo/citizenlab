@@ -722,6 +722,7 @@
   "app.containers.Projects.phaseNumber": "Phase {phaseNumber}",
   "app.containers.Projects.project": "{orgName, select, München {Bezirke} other {Projekte}}",
   "app.containers.Projects.projectInformation": "{orgName, select, München {Bezirksinfo} other {Projekt-Informationen}}",
+  "app.containers.Projects.selectedPhase": "",
   "app.containers.Projects.startsOn": "Startet am {date}",
   "app.containers.Projects.upcomingEvents": "Bevorstehende Veranstaltungen",
   "app.containers.ProjectsIndexPage.metaDescription": "Erkunden Sie alle laufenden Projekte von {orgName} um zu verstehen, wie Sie teilnehmen können. Diskutieren Sie über die lokalen Projekte, die Ihnen am wichtigsten sind.",
