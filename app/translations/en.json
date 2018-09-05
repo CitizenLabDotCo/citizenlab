@@ -540,7 +540,7 @@
   "app.containers.AdminPage.groups.permissions.saveSuccessMessage": "Your changes have been saved.",
   "app.containers.AdminPage.widgets.exportHtmlCodeButton": "Export HTML code",
   "app.containers.AdminPage.widgets.fieldAccentColor": "Accent color",
-  "app.containers.AdminPage.widgets.fieldBackgroundColor": "Background color",
+  "app.containers.AdminPage.widgets.fieldBackgroundColor": "Widget background color",
   "app.containers.AdminPage.widgets.fieldButtonText": "Button text",
   "app.containers.AdminPage.widgets.fieldFont": "Font",
   "app.containers.AdminPage.widgets.fieldFontDescription": "Must be a valid font name available through {googleFontsLink}. Leave empty to use the default font.",

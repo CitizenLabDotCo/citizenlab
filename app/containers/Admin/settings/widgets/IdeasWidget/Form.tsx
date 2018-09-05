@@ -29,6 +29,7 @@ export interface Props { }
 export interface FormValues {
   width: number;
   height: number;
+  siteBgColor: string;
   bgColor: string;
   textColor: string;
   accentColor: string;
@@ -161,6 +162,19 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & injectedLocal
           label={<FormattedMessage {...messages.titleStyle} />}
         >
           <Section>
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.fieldSiteBackgroundColor} />
+              </Label>
+              <Field
+                name="siteBgColor"
+                component={FormikColorPickerInput}
+              />
+              {touched.siteBgColor && <Error
+                fieldName="siteBgColor"
+                apiErrors={errors.siteBgColor as any}
+              />}
+            </SectionField>
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.fieldBackgroundColor} />
