@@ -722,6 +722,7 @@
   "app.containers.Projects.phaseNumber": "Fase {phaseNumber}",
   "app.containers.Projects.project": "Projekt",
   "app.containers.Projects.projectInformation": "Projektinformation",
+  "app.containers.Projects.selectedPhase": "",
   "app.containers.Projects.startsOn": "Starter den {date}",
   "app.containers.Projects.upcomingEvents": "Kommende begivenheder",
   "app.containers.ProjectsIndexPage.metaDescription": "Explore all ongoing projects of {orgName} to understand how you can participate.\n Come discuss local projects that matter most to you.",
