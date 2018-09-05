@@ -689,6 +689,7 @@
   "app.containers.Projects.displayMap": "Kaart",
   "app.containers.Projects.endedOn": "Beëindigd op {date}",
   "app.containers.Projects.endsOn": "Eindigt op {date}",
+  "app.containers.Projects.eventAttachments": "",
   "app.containers.Projects.events": "Activiteiten",
   "app.containers.Projects.goBackToList": "Ga terug naar de lijst",
   "app.containers.Projects.header": "Projecten",
