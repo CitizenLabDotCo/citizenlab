@@ -283,6 +283,7 @@
   "app.containers.AdminPage.PagesEdition.buttonSuccess": "Gemt",
   "app.containers.AdminPage.PagesEdition.contentLabel": "Sideindhold",
   "app.containers.AdminPage.PagesEdition.cookie-policy": "Cookie-politik",
+  "app.containers.AdminPage.PagesEdition.fileUploadLabel": "",
   "app.containers.AdminPage.PagesEdition.information": "Om",
   "app.containers.AdminPage.PagesEdition.messageError": "En fejl opstod ved forsøg på at gemme din side",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Dine ændringer er blevet gemt uden problemer",

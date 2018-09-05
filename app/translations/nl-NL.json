@@ -283,6 +283,7 @@
   "app.containers.AdminPage.PagesEdition.buttonSuccess": "Opgeslagen",
   "app.containers.AdminPage.PagesEdition.contentLabel": "Pagina-inhoud",
   "app.containers.AdminPage.PagesEdition.cookie-policy": "Cookiebeleid",
+  "app.containers.AdminPage.PagesEdition.fileUploadLabel": "",
   "app.containers.AdminPage.PagesEdition.information": "Over",
   "app.containers.AdminPage.PagesEdition.messageError": "Er is een fout opgetreden tijdens het opslaan van de pagina",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Je wijzigingen zijn met succes opgeslagen",

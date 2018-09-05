@@ -283,6 +283,7 @@
   "app.containers.AdminPage.PagesEdition.buttonSuccess": "Gespeichert",
   "app.containers.AdminPage.PagesEdition.contentLabel": "Seiteninhalt",
   "app.containers.AdminPage.PagesEdition.cookie-policy": "Cookie-Richtlinie",
+  "app.containers.AdminPage.PagesEdition.fileUploadLabel": "",
   "app.containers.AdminPage.PagesEdition.information": "Impressum",
   "app.containers.AdminPage.PagesEdition.messageError": "Fehler beim Speichern der Seite",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Ihre Änderungen wurden erfolgreich gespeichert",
