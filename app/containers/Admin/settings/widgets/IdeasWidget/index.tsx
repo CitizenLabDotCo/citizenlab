@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { debounce, omitBy, isNil, isEmpty, isString } from 'lodash';
+import { debounce, omitBy, isNil, isEmpty, isString } from 'lodash-es';
 import { stringify } from 'qs';
 
 import Form, { FormValues } from './Form';
