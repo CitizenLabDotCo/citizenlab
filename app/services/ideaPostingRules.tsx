@@ -1,4 +1,4 @@
-import { isNil, isError } from 'lodash';
+import { isNil, isError } from 'lodash-es';
 import { IProjectData } from './projects';
 import { IPhaseData } from './phases';
 import { pastPresentOrFuture } from 'utils/dateUtils';

@@ -1,7 +1,6 @@
 import React, { createElement } from 'react';
-import { Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { combineLatest } from 'rxjs/observable/combineLatest';
 import { Multiloc, Locale } from 'typings';
 import { getLocalized } from 'utils/i18n';
 import { localeStream } from 'services/locale';

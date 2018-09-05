@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isArray, find, isEmpty, isString, cloneDeep, includes, without } from 'lodash';
+import { isArray, find, isEmpty, isString, cloneDeep, includes, without } from 'lodash-es';
 
 // components
 import Title from './title';
@@ -74,8 +74,8 @@ export default class FilterSelector extends PureComponent<Props, State> {
     mobileRight:undefined
   };
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       opened: false
     };

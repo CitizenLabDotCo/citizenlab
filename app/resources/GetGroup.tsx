@@ -1,6 +1,5 @@
 import React from 'react';
-import isString from 'lodash/isString';
-import isBoolean from 'lodash/isBoolean';
+import { isBoolean, isString } from 'lodash-es';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
