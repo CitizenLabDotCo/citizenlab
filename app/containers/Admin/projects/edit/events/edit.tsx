@@ -1,7 +1,7 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-import * as moment from 'moment';
-import { isEmpty } from 'lodash';
+import React from 'react';
+import { Subscription, combineLatest, of } from 'rxjs';
+import moment from 'moment';
+import { isEmpty } from 'lodash-es';
 
 // libraries
 import clHistory from 'utils/cl-router/history';
@@ -9,7 +9,7 @@ import clHistory from 'utils/cl-router/history';
 // components
 import Label from 'components/UI/Label';
 import InputMultiloc from 'components/UI/InputMultiloc';
-import QuillMultiloc from 'components/QuillEditor/QuillMultiloc';
+import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
 import Error from 'components/UI/Error';
 import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -30,7 +30,7 @@ import { IProjectData } from 'services/projects';
 import { eventStream, updateEvent, addEvent, IEvent, IUpdatedEventProperties } from 'services/events';
 
 // typings
-import { Multiloc, API, Locale } from 'typings';
+import { Multiloc, CLError, Locale } from 'typings';
 
 type Props = {
   params: {
@@ -46,7 +46,7 @@ interface State {
   event: IEvent | null;
   attributeDiff: IUpdatedEventProperties;
   errors: {
-    [fieldName: string]: API.Error[]
+    [fieldName: string]: CLError[]
   };
   saving: boolean;
   focusedInput: 'startDate' | 'endDate' | null;
@@ -55,7 +55,7 @@ interface State {
 }
 
 export default class AdminProjectEventEdit extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -76,10 +76,10 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
   componentDidMount() {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
-    const event$ = (this.props.params.id ? eventStream(this.props.params.id).observable : Rx.Observable.of(null));
+    const event$ = (this.props.params.id ? eventStream(this.props.params.id).observable : of(null));
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      combineLatest(
         locale$,
         currentTenant$,
         event$

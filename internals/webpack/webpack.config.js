@@ -3,59 +3,60 @@ const isDev = process.env.NODE_ENV === 'development';
 const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const ResourceHintWebpackPlugin = require('resource-hints-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ResourceHintsWebpackPlugin = require('resource-hints-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const argv = require('yargs').argv;
+const API_HOST = process.env.API_HOST || 'localhost';
+const API_PORT = process.env.API_PORT || 4000;
 
-// Avoid repeating the babel loader config
-const BabelLoaderConfig = {
-  loader: 'babel-loader',
-  options: {
-    cacheDirectory: path.join(process.cwd(), '.babel-cache'),
-  },
-};
-
-const WEBPACK_CONFIG = {
-  entry: [
-    path.join(process.cwd(), 'app/app.js'),
-  ],
+const config = {
+  entry: path.join(process.cwd(), 'app/root'),
 
   output: {
     path: path.resolve(process.cwd(), 'build'),
+    pathinfo: false,
     publicPath: '/',
-    filename: isDev ? '[name].js' : '[name].[chunkhash].js',
-    chunkFilename: isDev ? '[name].chunk.js' : '[name].[chunkhash].chunk.js',
+    filename: isDev ? '[name].js' : '[name].[hash].js',
+    chunkFilename: isDev ? '[name].chunk.js' : '[name].[hash].chunk.js',
   },
-  // Loaders
+
+  mode: isDev ? 'development' : 'production',
+
+  devServer: {
+    contentBase: path.join(process.cwd(), 'build'),
+    port: 3000,
+    historyApiFallback: true,
+    proxy: {
+      '/web_api': `http://${API_HOST}:${API_PORT}`,
+      '/auth/': `http://${API_HOST}:${API_PORT}`,
+      '/widgets/': `http://${API_HOST}:3200`,
+    },
+  },
+
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
-        use: BabelLoaderConfig,
+        test: /\.(tsx?)|(js)$/,
         exclude: /node_modules/,
-      },
-      {
-        test: /\.tsx?$/,
-        exclude: /node_modules/,
-        use: [BabelLoaderConfig, 'cache-loader', {
-          loader: 'ts-loader',
+        use: {
+          loader: 'babel-loader',
           options: {
-            transpileOnly: true,
-          },
-        }],
+            cacheDirectory: true
+          }
+        }
       },
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          use: 'css-loader',
-          fallback: 'style-loader',
-        }),
+        use: [
+          { loader: isDev ? 'style-loader' : MiniCssExtractPlugin.loader },
+          { loader: 'css-loader' },
+        ],
       },
       {
         test: /\.(svg|jpg|png|gif)$/,
         use: [
-          'cache-loader',
+          { loader: 'cache-loader' },
           {
             loader: 'url-loader',
             options: {
@@ -78,15 +79,10 @@ const WEBPACK_CONFIG = {
           },
         },
       },
-      {
-        test: /\.json$/,
-        loader: ['cache-loader', 'json-loader'],
-      },
     ],
   },
 
   plugins: [
-    // Define variables to be accessible by the app codebase
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
@@ -94,9 +90,7 @@ const WEBPACK_CONFIG = {
         API_PORT: JSON.stringify(process.env.API_PORT),
         CROWDIN_PLUGIN_ENABLED: !!process.env.CROWDIN_PLUGIN_ENABLED,
         SEGMENT_API_KEY: JSON.stringify(process.env.SEGMENT_API_KEY),
-        // Sentry DSN
         SENTRY_DSN: JSON.stringify(process.env.SENTRY_DSN),
-        // Circle CI flags, used for Sentry reporting
         CI: JSON.stringify(process.env.CI),
         CIRCLECI: JSON.stringify(process.env.CIRCLECI),
         CIRCLE_BUILD_NUM: JSON.stringify(process.env.CIRCLE_BUILD_NUM),
@@ -105,137 +99,46 @@ const WEBPACK_CONFIG = {
       },
     }),
 
-    // Starts type checking in a separate thread
     new ForkTsCheckerWebpackPlugin({
+      checkSyntacticErrors: true,
       tsconfig: path.join(process.cwd(), 'app/tsconfig.json'),
       silent: !!argv.json, // silent when trying to profile the chunks sizes
     }),
 
-    // Inject built files into index.html
+    new CleanWebpackPlugin(['build']),
+
     new HtmlWebpackPlugin({
       template: 'app/index.html',
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeRedundantAttributes: true,
-        useShortDoctype: true,
-        removeEmptyAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        keepClosingSlash: true,
-        minifyJS: true,
-        minifyCSS: true,
-        minifyURLs: true,
-      },
-      inject: true,
-      // Preload anything that's necessary (download as fast as possible)
       preload: [
-        'main.js',
         'main.*.js',
+        'main.*.css',
         '*.eot',
         '*.ttf',
         '*.woff',
         '*.woff2',
       ],
-      // Prefetch any chunk to have them load faster when switching pages
       prefetch: [
         '*.chunk.js',
+        '*.chunk.css'
       ],
     }),
 
-    new ResourceHintWebpackPlugin(),
+    new ResourceHintsWebpackPlugin(),
 
-    // Common chunks optimization
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      children: true,
-      minChunks: 3,
-      async: true,
+    new MiniCssExtractPlugin({
+      filename: '[name].[hash].css',
+      chunkFilename: '[name].[hash].chunk.css'
     }),
-
-    // CSS Splitting
-    new ExtractTextPlugin('styles.[contenthash].css'),
   ],
 
   resolve: {
     modules: ['app', 'node_modules'],
-    extensions: [
-      '.js',
-      '.jsx',
-      '.react.js',
-      '.ts',
-      '.tsx',
-    ],
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },
-  target: 'web',
 };
 
-// API settings
-const API_HOST = process.env.API_HOST || 'localhost';
-const API_PORT = process.env.API_PORT || 4000;
-
-// Environment-specific config
 if (isDev) {
-  // Quick source maps for rebuilds
-  WEBPACK_CONFIG.devtool = 'eval-source-map';
-
-  // Dev Server for the WIP files
-  WEBPACK_CONFIG.devServer = {
-    contentBase: path.join(process.cwd(), 'build'),
-    compress: true,
-    host: '0.0.0.0',
-    port: 3000,
-    disableHostCheck: true,
-    hot: true,
-    historyApiFallback: true,
-    proxy: {
-      '/web_api': `http://${API_HOST}:${API_PORT}`,
-      '/auth/': `http://${API_HOST}:${API_PORT}`,
-      '/widgets/': `http://${API_HOST}:3200`,
-    },
-    stats: {
-      chunks: false,
-      chunkOrigins: false,
-      modules: false,
-      performance: true,
-      timings: true,
-    },
-  };
-
-  // Show progress
-  WEBPACK_CONFIG.plugins.push(new webpack.ProgressPlugin());
-
-  // HMR plugin
-  WEBPACK_CONFIG.plugins.push(new webpack.HotModuleReplacementPlugin());
-  WEBPACK_CONFIG.plugins.push(new webpack.NamedModulesPlugin());
-} else {
-  // WEBPACK_CONFIG.devtool = 'inline-source-map';
-  // Optimization of the output
-  WEBPACK_CONFIG.plugins.push(
-    new UglifyJSPlugin({
-      cache: true,
-      sourceMap: false,
-      parallel: true,
-      uglifyOptions: {
-        compress: {
-          conditionals: false,
-        },
-      },
-    })
-  );
-
-  // Ensure consistent vendor build names
-  WEBPACK_CONFIG.plugins.push(new webpack.HashedModuleIdsPlugin());
-
-  // Stats output
-  if (!argv.json) {
-    WEBPACK_CONFIG.stats = {
-      chunks: false,
-      chunkOrigins: false,
-      modules: false,
-      performance: true,
-      timings: true,
-    };
-  }
+  config.plugins.push(new webpack.ProgressPlugin());
 }
 
-module.exports = WEBPACK_CONFIG;
+module.exports = config;

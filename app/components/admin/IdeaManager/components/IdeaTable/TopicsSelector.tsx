@@ -1,5 +1,5 @@
 import React from 'react';
-import { pull } from 'lodash';
+import { pull } from 'lodash-es';
 import { Label, Icon } from 'semantic-ui-react';
 import T from 'components/T';
 import GetTopics from 'resources/GetTopics';

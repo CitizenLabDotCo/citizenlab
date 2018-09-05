@@ -1,7 +1,6 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { isEmpty, get } from 'lodash';
-import { Subscription } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { isEmpty, get } from 'lodash-es';
+import { Subscription, combineLatest } from 'rxjs';
 
 // components
 import Button from 'components/UI/Button';
@@ -28,7 +27,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // typings
-import { API } from 'typings';
+import { CLErrorsJSON } from 'typings';
 
 const Loading = styled.div`
   padding-top: 15px;
@@ -69,7 +68,7 @@ type State = {
   hasRequiredFields: boolean;
   processing: boolean;
   unknownError: string | null;
-  apiErrors: API.ErrorResponse | null;
+  apiErrors: CLErrorsJSON | null;
 };
 
 class Step2 extends PureComponent<Props & InjectedIntlProps, State> {

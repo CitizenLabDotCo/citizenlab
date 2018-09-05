@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Toggle from 'components/UI/Toggle';
 import { FieldProps } from 'formik';
 

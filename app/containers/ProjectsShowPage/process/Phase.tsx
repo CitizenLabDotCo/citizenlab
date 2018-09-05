@@ -1,5 +1,5 @@
 import React from 'react';
-import { every, isEmpty } from 'lodash';
+import { every, isEmpty } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 

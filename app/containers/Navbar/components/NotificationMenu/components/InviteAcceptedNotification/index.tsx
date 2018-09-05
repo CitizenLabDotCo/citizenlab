@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import { IInviteAcceptedNotificationData } from 'services/notifications';
 
@@ -26,7 +26,7 @@ export default class InviteAcceptedNotification extends React.PureComponent<Prop
 
     return (
       <NotificationWrapper
-        linkTo={`/admin/users/invitations`}
+        linkTo={'/admin/users/invitations'}
         timing={notification.attributes.created_at}
         icon="notification_invitation_accepted"
         isRead={!!notification.attributes.read_at}

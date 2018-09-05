@@ -1,4 +1,4 @@
-# CL2 Front
+# CL2 Front 
 
 [![CircleCI](https://circleci.com/gh/CitizenLabDotCo/cl2-front.svg?style=svg&circle-token=46bc7ddacbeec9135870cb8765c2968f590ed7e6)](https://circleci.com/gh/CitizenLabDotCo/cl2-front)
 [![BrowserStack Status](https://www.browserstack.com/automate/badge.svg?badge_key=d2d5RDVDNHBGeHJFZjh2dHEyQ1FPUHRDc2Y3MFhGOXZiSjZsZFFqMEl0QT0tLWgwNzFuVThDUkNGR0JHSlhralhqbmc9PQ==--ee3c39ea9e8b82faaa48e43e3cea883277221935%)](https://www.browserstack.com/automate/public-build/d2d5RDVDNHBGeHJFZjh2dHEyQ1FPUHRDc2Y3MFhGOXZiSjZsZFFqMEl0QT0tLWgwNzFuVThDUkNGR0JHSlhralhqbmc9PQ==--ee3c39ea9e8b82faaa48e43e3cea883277221935%)
@@ -40,7 +40,7 @@ BROWSERSTACK_USER=xxx BROWSERSTACK_KEY=yyy ROOT_URL=zzz npm run test:browserstac
 ## IDE setup
 
 Your text editor of choice should support [Editorconfig][editorconfig] and [Typescript][typescript].
-It is also recommended that it supports [ESLint][eslint] and [TSLint][tslint] in order to give you immediate feedback.
+It is also recommended that it supports [TSLint][tslint] in order to give you immediate feedback.
 
 For all these reasons, [VSCode][vscode] is the preferred editor, but feel free to use something else if you'd like.
 
@@ -48,6 +48,5 @@ For all these reasons, [VSCode][vscode] is the preferred editor, but feel free t
 [cl2back]: https://github.com/CitizenLabDotCo/cl2-back
 [editorconfig]: http://editorconfig.org/
 [typescript]: http://www.typescriptlang.org/
-[eslint]: https://eslint.org/
 [tslint]: https://palantir.github.io/tslint/
 [vscode]: https://code.visualstudio.com/

@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-import * as moment from 'moment';
+import moment from 'moment';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // Utils
@@ -96,7 +96,7 @@ class AdminProjectTimelineIndex extends React.Component<Props & WithRouterProps 
         </AddButton>
 
         {!isNilOrError(phases) && phases.length > 0 &&
-          <div className={`e2e-phases-table`}>
+          <div className={'e2e-phases-table'}>
             <StyledList>
               <HeadRow>
                 <OrderHeader><FormattedMessage {...messages.orderColumnTitle} /></OrderHeader>

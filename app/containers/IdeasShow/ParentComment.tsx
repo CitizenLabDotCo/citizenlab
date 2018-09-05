@@ -1,5 +1,5 @@
 import React from 'react';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -31,7 +31,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { API } from 'typings';
+import { CLErrorsJSON } from 'typings';
 
 const DeletedIcon = styled(Icon)`
   height: 1em;
@@ -148,7 +148,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       this.setState({ editionMode: false });
     } catch (error) {
       if (error && error.json) {
-        const apiErrors = (error as API.ErrorResponse).json.errors;
+        const apiErrors = (error as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
         setSubmitting(false);
       }
