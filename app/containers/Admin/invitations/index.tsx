@@ -35,7 +35,7 @@ import { getLocalized } from 'utils/i18n';
 
 // utils
 import { getBase64FromFile } from 'utils/imageTools';
-import FileSaver from 'file-saver';
+import { saveAs } from 'file-saver';
 import { requestBlob } from 'utils/request';
 
 // styling
@@ -301,7 +301,7 @@ class Invitations extends React.PureComponent<Props, State> {
   downloadExampleFile = async (event) => {
     event.preventDefault();
     const blob = await requestBlob(`${API_PATH}/invites/example_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    FileSaver.saveAs(blob, 'example.xlsx');
+    saveAs(blob, 'example.xlsx');
   }
 
   setFileInputRef = (ref: HTMLInputElement) => {

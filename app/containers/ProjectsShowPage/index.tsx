@@ -63,7 +63,7 @@ const ProjectNotFoundWrapper = styled.div`
   color: ${colors.label};
 `;
 
-interface InputProps { }
+export interface InputProps {}
 
 interface DataProps {
   locale: GetLocaleChildProps;

@@ -11,7 +11,7 @@ const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
 
 const config = {
-  entry: path.join(process.cwd(), 'app/app'),
+  entry: path.join(process.cwd(), 'app/root'),
 
   output: {
     path: path.resolve(process.cwd(), 'build'),
@@ -25,7 +25,6 @@ const config = {
 
   devServer: {
     contentBase: path.join(process.cwd(), 'build'),
-    hot: true,
     port: 3000,
     historyApiFallback: true,
     proxy: {
@@ -124,8 +123,6 @@ const config = {
     }),
 
     new ResourceHintsWebpackPlugin(),
-
-    new webpack.HotModuleReplacementPlugin(),
 
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css',
