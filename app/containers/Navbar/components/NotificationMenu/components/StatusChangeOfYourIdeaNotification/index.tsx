@@ -8,7 +8,7 @@ import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import NotificationWrapper from '../NotificationWrapper';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 
 interface InputProps {
   notification: IStatusChangeOfYourIdeaNotificationData;

@@ -1,8 +1,9 @@
 import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { IIdeaImageData, ideaImagesStream } from 'services/ideaImages';
-import { isString } from 'lodash';
+import { isString } from 'lodash-es';
 
 interface InputProps {
   ideaId: string | null;
@@ -37,13 +38,13 @@ export default class GetIdea extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ ideaId });
 
     this.subscriptions = [
-      this.inputProps$
-        .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .filter(({ ideaId }) => isString(ideaId))
-        .switchMap(({ ideaId }: {ideaId: string}) => ideaImagesStream(ideaId).observable)
-        .subscribe((ideaImages) => {
-          this.setState({ ideaImages: (ideaImages ? ideaImages.data : null) });
-        })
+      this.inputProps$.pipe(
+        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+        filter(({ ideaId }) => isString(ideaId)),
+        switchMap(({ ideaId }: {ideaId: string}) => ideaImagesStream(ideaId).observable)
+      ).subscribe((ideaImages) => {
+        this.setState({ ideaImages: (ideaImages ? ideaImages.data : null) });
+      })
     ];
   }
 

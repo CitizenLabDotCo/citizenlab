@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { color } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
-import { isString } from 'lodash';
+import { isString } from 'lodash-es';
 
 const Container = styled.div`
   display: flex;

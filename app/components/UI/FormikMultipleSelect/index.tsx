@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import MultipleSelect, { Props as VanillaInputProps } from 'components/UI/MultipleSelect';
 import { FieldProps } from 'formik';
 import { IOption } from 'typings';

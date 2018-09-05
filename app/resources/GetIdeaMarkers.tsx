@@ -1,5 +1,6 @@
 import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { IIdeaData, ideasMarkersStream } from 'services/ideas';
 
@@ -37,20 +38,21 @@ export default class GetIdeaMarkers extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ projectId, phaseId });
 
     this.subscriptions = [
-      this.inputProps$
-        .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .switchMap(({ projectId, phaseId }) => {
+      this.inputProps$.pipe(
+        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+        switchMap(({ projectId, phaseId }) => {
           return ideasMarkersStream({
             queryParameters: {
               project: projectId,
               phase: phaseId
             }
           }).observable;
-        }).subscribe((ideaMarkers) => {
-          this.setState({
-            ideaMarkers: (ideaMarkers ? ideaMarkers.data : null),
-          });
         })
+      ).subscribe((ideaMarkers) => {
+        this.setState({
+          ideaMarkers: (ideaMarkers ? ideaMarkers.data : null),
+        });
+      })
     ];
   }
 

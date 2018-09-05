@@ -1,6 +1,6 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
-import { size, compact, isEmpty, has } from 'lodash';
+import { size, compact, isEmpty, has } from 'lodash-es';
 
 // components
 import Icon from 'components/UI/Icon';

@@ -1,7 +1,7 @@
 import React from 'react';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { uniq, keys, isEmpty, get } from 'lodash';
+import { uniq, keys, isEmpty, get } from 'lodash-es';
 import { findDOMNode } from 'react-dom';
 import { IModalInfo } from 'containers/App';
 import { DragSource } from 'react-dnd';
@@ -23,7 +23,7 @@ import Checkbox from 'components/UI/Checkbox';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import localize, { injectedLocalized } from 'utils/localize';
+import localize, { InjectedLocalized } from 'utils/localize';
 
 // i18n
 import { FormattedDate, InjectedIntlProps } from 'react-intl';
@@ -73,7 +73,7 @@ type Props = {
 
 type State = {};
 
-class Row extends React.PureComponent<Props & InjectedIntlProps & injectedLocalized, State> {
+class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
 
   onClickRow = (event) => {
     if (event.ctrlKey) {
@@ -188,7 +188,7 @@ const ideaSource = {
       idea: props.idea,
     };
   },
-  endDrag(props: Props & InjectedIntlProps & injectedLocalized, monitor) {
+  endDrag(props: Props & InjectedIntlProps & InjectedLocalized, monitor) {
     const item = monitor.getItem();
     const dropResult = monitor.getDropResult();
 
