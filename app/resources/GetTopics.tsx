@@ -1,8 +1,6 @@
 import React from 'react';
-import isEqual from 'lodash/isEqual';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { of } from 'rxjs/observable/of';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { isEqual } from 'lodash-es';
+import { Subscription, BehaviorSubject, of, combineLatest } from 'rxjs';
 import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { ITopicData, topicByIdStream, topicsStream } from 'services/topics';
 import { isNilOrError } from 'utils/helperUtils';
@@ -53,7 +51,7 @@ export default class GetTopics extends React.Component<Props, State> {
             return of(null);
           }
 
-          return topicsStream().observable.map(topics => topics.data);
+          return topicsStream().observable.pipe(map(topics => topics.data));
         })
       )
       .subscribe((topics) => {

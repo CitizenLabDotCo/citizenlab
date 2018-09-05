@@ -1,6 +1,6 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-import { get } from 'lodash';
+import React from 'react';
+import { Subscription, combineLatest } from 'rxjs';
+import { get } from 'lodash-es';
 
 // components
 import Input from 'components/UI/Input';
@@ -51,7 +51,7 @@ type State = {
 };
 
 export default class InputMultiloc extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -67,7 +67,7 @@ export default class InputMultiloc extends React.PureComponent<Props, State> {
     const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      combineLatest(
         locale$,
         currentTenant$
       ).subscribe(([locale, currentTenant]) => {

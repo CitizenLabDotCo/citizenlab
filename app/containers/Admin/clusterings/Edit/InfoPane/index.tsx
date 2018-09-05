@@ -2,7 +2,7 @@
 import React, { PureComponent, MouseEvent } from 'react';
 import styled from 'styled-components';
 import { colors, fontSize } from 'utils/styleUtils';
-import { map, flatten, uniq } from 'lodash';
+import { map, flatten, uniq } from 'lodash-es';
 import { Node, ParentNode, ideasUnder } from 'services/clusterings';
 import GenderChart from './GenderChart';
 import AgeChart from './AgeChart';

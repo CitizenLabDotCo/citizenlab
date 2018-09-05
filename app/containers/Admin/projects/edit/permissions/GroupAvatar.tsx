@@ -1,10 +1,8 @@
 // Libraries
 import React from 'react';
-import { Subscription } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { Subscription, combineLatest, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
-import { take } from 'lodash';
+import { take } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Services

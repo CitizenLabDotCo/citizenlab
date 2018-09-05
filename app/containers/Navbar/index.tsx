@@ -1,6 +1,6 @@
 // libraries
 import React, { PureComponent } from 'react';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
 
@@ -393,7 +393,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                       </>
                     )}
                     footer={(
-                      <ProjectsListFooter to={`/projects`}>
+                      <ProjectsListFooter to={'/projects'}>
                         <FormattedMessage {...messages.allProjects} />
                       </ProjectsListFooter>
                     )}
@@ -456,10 +456,10 @@ const Data = adopt<DataProps, InputProps>({
   projects: <GetProjects pageSize={250} publicationStatuses={['published', 'archived']} sort="new" />
 });
 
-const NavBarWithHoCs = withRouter(injectIntl(Navbar));
+const NavbarWithHOCs = withRouter(injectIntl(Navbar));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <NavBarWithHoCs {...inputProps} {...dataProps} />}
+    {dataProps => <NavbarWithHOCs {...(inputProps as InputProps & WithRouterProps & InjectedIntlProps)} {...dataProps} />}
   </Data>
 );

@@ -1,7 +1,8 @@
 // Libraries
 import React from 'react';
-import { compact, isEqual } from 'lodash';
+import { compact, isEqual } from 'lodash-es';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 
 // resources
@@ -58,8 +59,8 @@ export interface InputProps {
   points?: Point[];
   areas?: GeoJSON.Polygon[];
   zoom?: number;
-  onMarkerClick?: {(id: string, data: any): void};
-  onMapClick?: {({ map, position }: {map: Leaflet.Map, position: Leaflet.LatLng}): void};
+  onMarkerClick?: (id: string, data: any) => void;
+  onMapClick?: (map: Leaflet.Map, position: Leaflet.LatLng) => void;
   fitBounds?: boolean;
 }
 
@@ -100,7 +101,6 @@ class CLMap extends React.PureComponent<Props, State> {
 
   constructor(props) {
     super(props);
-
     this.interval = window.setInterval(this.resizeDetector, 200);
   }
 
@@ -115,13 +115,13 @@ class CLMap extends React.PureComponent<Props, State> {
 
     // Map container dimensions change
     this.subs.push(
-      this.dimensionH$.distinctUntilChanged().subscribe(() => this.map.invalidateSize()),
-      this.dimensionW$.distinctUntilChanged().subscribe(() => this.map.invalidateSize()),
+      this.dimensionH$.pipe(distinctUntilChanged()).subscribe(() => this.map.invalidateSize()),
+      this.dimensionW$.pipe(distinctUntilChanged()).subscribe(() => this.map.invalidateSize()),
     );
 
     // Refresh bounds
     this.subs.push(
-      this.bounds$.distinctUntilChanged().subscribe((bounds) => {
+      this.bounds$.pipe(distinctUntilChanged()).subscribe((bounds) => {
         if (bounds && this.props.fitBounds) this.map.fitBounds(bounds, { maxZoom: 12 });
       })
     );
@@ -187,7 +187,9 @@ class CLMap extends React.PureComponent<Props, State> {
         subdomains: ['a', 'b', 'c']
       }).addTo(this.map);
 
-      if (this.props.onMapClick) this.map.on('click', this.handleMapClick);
+      if (this.props.onMapClick) {
+        this.map.on('click', this.handleMapClick);
+      }
     }
   }
 
@@ -218,7 +220,9 @@ class CLMap extends React.PureComponent<Props, State> {
   }
 
   handleMapClick = (event: Leaflet.LeafletMouseEvent) => {
-    if (this.props.onMapClick) this.props.onMapClick({ map: this.map, position: event.latlng });
+    if (this.props.onMapClick) {
+      this.props.onMapClick(this.map, event.latlng);
+    }
   }
 
   handleMarkerClick = (event) => {

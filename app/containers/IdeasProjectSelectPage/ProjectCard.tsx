@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import * as moment from 'moment';
+import moment from 'moment';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { get, isError } from 'lodash';
+import { get, isError } from 'lodash-es';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';

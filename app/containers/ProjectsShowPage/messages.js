@@ -121,4 +121,8 @@ export default defineMessages({
     id: 'app.containers.Projects.archived',
     defaultMessage: 'Archived',
   },
+  selectedPhase: {
+    id: 'app.containers.Projects.selectedPhase',
+    defaultMessage: 'Selected phase',
+  },
 });

@@ -1,10 +1,9 @@
 import React from 'react';
-import { Subscription } from 'rxjs';
+import { Subscription, of } from 'rxjs';
 import { IConsentData, consentsStream, IConsents } from 'services/campaignConsents';
 import { isNilOrError } from 'utils/helperUtils';
 import { authUserStream } from 'services/auth';
 import { switchMap } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
 
 interface InputProps { }
 

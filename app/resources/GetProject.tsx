@@ -1,7 +1,6 @@
 import React from 'react';
-import isString from 'lodash/isString';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { of } from 'rxjs/observable/of';
+import { isString } from 'lodash-es';
+import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 import shallowCompare from 'utils/shallowCompare';
