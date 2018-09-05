@@ -29,9 +29,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.widgets.fieldHeight',
     defaultMessage: 'Height',
   },
+  fieldSiteBackgroundColor: {
+    id: 'app.containers.AdminPage.widgets.fieldSiteBackgroundColor',
+    defaultMessage: 'Site background color',
+  },
   fieldBackgroundColor: {
     id: 'app.containers.AdminPage.widgets.fieldBackgroundColor',
-    defaultMessage: 'Background color',
+    defaultMessage: 'Widget background color',
   },
   fieldTextColor: {
     id: 'app.containers.AdminPage.widgets.fieldTextColor',
