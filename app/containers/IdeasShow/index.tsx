@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
-import { has, isString, get } from 'lodash';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of } from 'rxjs/observable/of';
+import { has, isString, get } from 'lodash-es';
+import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { tap, filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import linkifyHtml from 'linkifyjs/html';
 
@@ -43,7 +41,7 @@ import { hasPermission } from 'services/permissions';
 import T from 'components/T';
 import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import localize, { injectedLocalized } from 'utils/localize';
+import localize, { InjectedLocalized } from 'utils/localize';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 
@@ -60,7 +58,7 @@ const loadingEasing = 'ease-out';
 const loadingDelay = 100;
 
 const contentTimeout = 500;
-const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
+const contentEasing = 'cubic-bezier(0.000, 0.700, 0.000, 1.000)';
 const contentDelay = 600;
 const contentTranslateDistance = '30px';
 
@@ -581,12 +579,12 @@ type State = {
   moreActions: IAction[];
 };
 
-export class IdeasShow extends PureComponent<Props & InjectedIntlProps & injectedLocalized, State> {
+export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
   initialState: State;
   ideaId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
 
-  constructor(props: Props & InjectedIntlProps & injectedLocalized) {
+  constructor(props: Props & InjectedIntlProps & InjectedLocalized) {
     super(props);
     const initialState = {
       authUser: null,

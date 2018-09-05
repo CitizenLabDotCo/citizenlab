@@ -1,10 +1,6 @@
 import React from 'react';
-import get from 'lodash/get';
-import isArray from 'lodash/isArray';
-import isEmpty from 'lodash/isEmpty';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { of } from 'rxjs/observable/of';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { get, isArray, isEmpty } from 'lodash-es';
+import { Subscription, BehaviorSubject, of, combineLatest } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { pageByIdStream } from 'services/pages';

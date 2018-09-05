@@ -39,7 +39,7 @@ const Preview = styled(ImagesDropzone)`
 `;
 
 // typings
-import { API, ImageFile } from 'typings';
+import { CLError, ImageFile } from 'typings';
 
 interface IAttributesDiff {
   favicon?: string;
@@ -51,7 +51,7 @@ interface Props {
 
 type State = {
   attributesDiff: IAttributesDiff;
-  errors: { [fieldName: string]: API.Error[] };
+  errors: { [fieldName: string]:CLError[] };
   favicon: ImageFile[] | null;
   faviconError: string | null;
   saved: boolean;

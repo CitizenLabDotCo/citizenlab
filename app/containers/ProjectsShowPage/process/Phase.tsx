@@ -1,5 +1,5 @@
 import React from 'react';
-import { every, isEmpty } from 'lodash';
+import { every, isEmpty } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -11,7 +11,7 @@ import FileDisplay from 'components/UI/FileDisplay';
 
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
-import GetResourceFileObjects from 'resources/GetResourceFileObjects';
+import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -62,6 +62,7 @@ interface InputProps {
 
 interface DataProps {
   phase: GetPhaseChildProps;
+  phaseFiles: GetResourceFileObjectsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -71,7 +72,7 @@ interface State {}
 class Phase extends React.PureComponent<Props, State> {
   render() {
     const className = this.props['className'];
-    const { phase } = this.props;
+    const { phase, phaseFiles } = this.props;
 
     if (!isNilOrError(phase)) {
       const participationMethod = phase.attributes.participation_method;

@@ -1,6 +1,6 @@
 // Libraries
 import React from 'react';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { Formik } from 'formik';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -13,7 +13,7 @@ import GetProject from 'resources/GetProject';
 import DescriptionEditionForm, { Values } from './DescriptionEditionForm';
 
 // Typing
-import { API } from 'typings';
+import { CLErrorsJSON } from 'typings';
 
 interface InputProps { }
 
@@ -35,7 +35,7 @@ class ProjectDescription extends React.PureComponent<Props> {
       // Send the values to the API
       updateProject(project.id, values).catch((errorResponse) => {
         // Process errors from the API and push them to the Formik context
-        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
         setSubmitting(false);
       }).then(() => {

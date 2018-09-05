@@ -222,4 +222,12 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.submit',
     defaultMessage: 'Update profile',
   },
+  notificationsTitle: {
+    id: 'app.containers.UsersEditPage.notificationsTitle',
+    defaultMessage: 'Notifications',
+  },
+  notificationsSubTitle: {
+    id: 'app.containers.UsersEditPage.notificationsSubTitle',
+    defaultMessage: 'When do you want us to send you an email to notify you?',
+  },
 });

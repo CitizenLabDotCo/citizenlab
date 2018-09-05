@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNil, omitBy, isBoolean, get } from 'lodash';
+import { isNil, omitBy, isBoolean, get } from 'lodash-es';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { usersStream, IUserData } from 'services/users';

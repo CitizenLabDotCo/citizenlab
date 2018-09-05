@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 import { switchMap, tap, map as rxMap } from 'rxjs/operators';
-import { map, isEmpty, isEqual, difference } from 'lodash';
+import { map, isEmpty, isEqual, difference } from 'lodash-es';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';

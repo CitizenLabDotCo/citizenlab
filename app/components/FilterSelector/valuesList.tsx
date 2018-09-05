@@ -1,5 +1,5 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { includes } from 'lodash';
+import { includes } from 'lodash-es';
 
 // components
 import Checkbox from 'components/UI/Checkbox';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { clone } from 'lodash';
+import { clone } from 'lodash-es';
 import styled from 'styled-components';
 
 import { TRule } from './rules';

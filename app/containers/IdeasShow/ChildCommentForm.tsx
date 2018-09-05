@@ -1,6 +1,6 @@
 // libraries
 import React from 'react';
-import { trim, isString } from 'lodash';
+import { trim, isString } from 'lodash-es';
 import { adopt } from 'react-adopt';
 
 // components

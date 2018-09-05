@@ -1,5 +1,5 @@
 import 'whatwg-fetch';
-import { fromPromise } from 'rxjs/observable/fromPromise';
+import { from } from 'rxjs';
 import { ImageFile, UploadFile } from 'typings';
 
 export const imageSizes = {
@@ -24,7 +24,7 @@ export async function getBase64FromFile(file: File | ImageFile) {
   return new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (event: any) => resolve(event.target.result);
-    reader.onerror = () => reject(new Error(`error for getBase64()`));
+    reader.onerror = () => reject(new Error('error for getBase64()'));
     reader.readAsDataURL(file);
   });
 }
@@ -34,7 +34,7 @@ export async function getBase64FromObjectUrl(objectUrl: string) {
     const blob = new Blob([objectUrl], { type: 'file' });
     const reader = new FileReader();
     reader.onload = (event: any) => resolve(event.target.result);
-    reader.onerror = () => reject(new Error(`error for getBase64FromObjectUrl()`));
+    reader.onerror = () => reject(new Error('error for getBase64FromObjectUrl()'));
     reader.readAsDataURL(blob);
   });
 }
@@ -74,7 +74,7 @@ export async function convertUrlToFile(imageUrl: string | null): Promise<File | 
 }
 
 export function convertUrlToFileObservable(imageUrl: string | null) {
-  return fromPromise(convertUrlToFile(imageUrl));
+  return from(convertUrlToFile(imageUrl));
 }
 
 export async function convertUrlToUploadFile(imageUrl: string) {
@@ -87,5 +87,5 @@ export async function convertUrlToUploadFile(imageUrl: string) {
 }
 
 export function convertUrlToUploadFileObservable(imageUrl: string) {
-  return fromPromise(convertUrlToUploadFile(imageUrl));
+  return from(convertUrlToUploadFile(imageUrl));
 }

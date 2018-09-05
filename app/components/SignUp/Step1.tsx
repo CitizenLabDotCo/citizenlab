@@ -1,8 +1,7 @@
 import React from 'react';
-import { set, keys, difference, get } from 'lodash';
-import { Subscription } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of } from 'rxjs/observable/of';
+import { set, keys, difference, get } from 'lodash-es';
+import { Subscription, combineLatest, of } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 
 // libraries
@@ -37,7 +36,7 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // typings
-import { API, Locale } from 'typings';
+import { CLErrorsJSON, Locale } from 'typings';
 
 const Form = styled.form`
   width: 100%;
@@ -123,7 +122,7 @@ type State = {
   tacError: string | null;
   localeError: string | null;
   unknownError: string | null;
-  apiErrors: API.ErrorResponse | null;
+  apiErrors: CLErrorsJSON | null;
 };
 
 class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -162,14 +161,14 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
     const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
-    const invitedUser$ = (token ? userByInviteStream(token, { cacheStream: false }).observable : of(null));
+    const invitedUser$ = (token ? userByInviteStream(token, { cacheStream: false }).observable.pipe(first()) : of(null));
 
     this.subscriptions = [
       combineLatest(
         locale$,
         currentTenant$,
         customFieldsSchemaForUsersStream$,
-        invitedUser$.first()
+        invitedUser$
       ).subscribe(([locale, currentTenant, customFieldsSchema, invitedUser]) => {
         this.setState((state) => ({
           locale,

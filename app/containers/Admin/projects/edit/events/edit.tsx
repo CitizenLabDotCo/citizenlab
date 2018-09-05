@@ -1,7 +1,7 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-import * as moment from 'moment';
-import { isEmpty } from 'lodash';
+import React from 'react';
+import { Subscription, combineLatest, of } from 'rxjs';
+import moment from 'moment';
+import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // libraries
@@ -10,7 +10,7 @@ import clHistory from 'utils/cl-router/history';
 // components
 import Label from 'components/UI/Label';
 import InputMultiloc from 'components/UI/InputMultiloc';
-import QuillMultiloc from 'components/QuillEditor/QuillMultiloc';
+import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
 import ErrorComponent from 'components/UI/Error';
 import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -37,7 +37,7 @@ import { addEventFile, deleteEventFile } from 'services/eventFiles';
 import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 
 // typings
-import { Multiloc, API, Locale, UploadFile } from 'typings';
+import { Multiloc, CLError, Locale, UploadFile } from 'typings';
 
 interface DataProps {
   remoteEventFiles: GetResourceFileObjectsChildProps;
@@ -57,7 +57,7 @@ interface State {
   event: IEvent | null;
   attributeDiff: IUpdatedEventProperties;
   errors: {
-    [fieldName: string]: API.Error[]
+    [fieldName: string]: CLError[]
   };
   saving: boolean;
   focusedInput: 'startDate' | 'endDate' | null;
@@ -68,7 +68,7 @@ interface State {
 }
 
 class AdminProjectEventEdit extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -91,11 +91,11 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
   componentDidMount() {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
-    const event$ = (this.props.params.id ? eventStream(this.props.params.id).observable : Rx.Observable.of(null));
     const { remoteEventFiles } = this.props;
+    const event$ = (this.props.params.id ? eventStream(this.props.params.id).observable : of(null));
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      combineLatest(
         locale$,
         currentTenant$,
         event$
@@ -254,7 +254,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
       try {
         debugger;
         await Promise.all(allPromises);
-        this.setState({ saving: false, saved: true, attributeDiff: {}, event: response, errors: {} });
+        this.setState({ saving: false, saved: true, attributeDiff: {}, errors: {} });
       } catch (errors) {
         this.setState({ saving: false, errors: errors.json.errors });
       }

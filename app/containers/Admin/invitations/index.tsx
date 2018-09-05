@@ -1,5 +1,5 @@
 import React from 'react';
-import { isString, isEmpty, get } from 'lodash';
+import { isString, isEmpty, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -9,8 +9,8 @@ import Label from 'components/UI/Label';
 import Warning from 'components/UI/Warning';
 import Error from 'components/UI/Error';
 import Radio from 'components/UI/Radio';
-import Icon from 'components/UI/Icon';
 import Toggle from 'components/UI/Toggle';
+import Collapse from 'components/admin/Collapse';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
@@ -30,17 +30,13 @@ import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import { FormattedHTMLMessage } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { appLocalePairs } from 'i18n';
+import { API_PATH, appLocalePairs } from 'containers/App/constants';
 import { getLocalized } from 'utils/i18n';
 
 // utils
 import { getBase64FromFile } from 'utils/imageTools';
-import FileSaver from 'file-saver';
+import { saveAs } from 'file-saver';
 import { requestBlob } from 'utils/request';
-import { API_PATH } from 'containers/App/constants';
-
-// animation
-import CSSTransition from 'react-transition-group/CSSTransition';
 
 // styling
 import styled from 'styled-components';
@@ -49,8 +45,6 @@ import { rgba } from 'polished';
 
 // typings
 import { Locale, IOption } from 'typings';
-
-const timeout = 400;
 
 const ViewButtons = styled.div`
   display: flex;
@@ -101,100 +95,8 @@ const FileInputWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
-const ArrowIcon = styled(Icon) `
-  fill: ${(props) => props.theme.colors.label};
-  height: 11px;
-  margin-right: 8px;
-  transition: transform 350ms cubic-bezier(0.165, 0.84, 0.44, 1),
-              fill 80ms ease-out;
-
-  &.opened {
-    transform: rotate(90deg);
-  }
-`;
-
-const StyledLabel = styled(Label) `
-  padding-bottom: 0px;
-  transition: all 80ms ease-out;
-  cursor: pointer;
-`;
-
 const StyledToggle = styled(Toggle)`
   margin-bottom: 10px;
-`;
-
-const Options: any = styled.div`
-  display: inline-flex;
-  align-items: center;
-  padding-bottom: 8px;
-  transition: all 80ms ease-out;
-  cursor: pointer;
-
-  &:hover {
-    ${StyledLabel} {
-      color: ${colors.adminTextColor};
-    }
-
-    ${ArrowIcon} {
-      fill: ${colors.adminTextColor};
-    }
-  }
-`;
-
-const InvitationOptionsContainer = styled.div`
-  width: 497px;
-  position: relative;
-  border-radius: 5px;
-  border: solid 1px #ddd;
-  background: #fff;
-  z-index: 1;
-  opacity: 0;
-  display: none;
-  transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  will-change: opacity, height;
-
-  &.options-enter {
-    opacity: 0;
-    max-height: 0px;
-    overflow: hidden;
-    display: block;
-
-    &.options-enter-active {
-      opacity: 1;
-      max-height: 500px;
-      overflow: hidden;
-      display: block;
-    }
-  }
-
-  &.options-enter-done {
-    opacity: 1;
-    overflow: visible;
-    display: block;
-  }
-
-  &.options-exit {
-    opacity: 1;
-    max-height: 500px;
-    overflow: hidden;
-    display: block;
-
-    &.options-exit-active {
-      opacity: 0;
-      max-height: 0px;
-      overflow: hidden;
-      display: block;
-    }
-  }
-
-  &.options-exit-done {
-    display: none;
-  }
-`;
-
-const InvitationOptionsInner = styled.div`
-  padding: 20px;
-  padding-bottom: 0px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -399,7 +301,7 @@ class Invitations extends React.PureComponent<Props, State> {
   downloadExampleFile = async (event) => {
     event.preventDefault();
     const blob = await requestBlob(`${API_PATH}/invites/example_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    FileSaver.saveAs(blob, 'example.xlsx');
+    saveAs(blob, 'example.xlsx');
   }
 
   setFileInputRef = (ref: HTMLInputElement) => {
@@ -527,106 +429,92 @@ class Invitations extends React.PureComponent<Props, State> {
     }
 
     const invitationOptions = (
-      <>
-        <Options onClick={this.toggleOptions}>
-          <ArrowIcon name="chevron-right" className={`${invitationOptionsOpened && 'opened'}`} />
-          <StyledLabel>
-            <FormattedMessage {...messages.invitationOptions} />
-          </StyledLabel>
-        </Options>
-
-        <CSSTransition
-          classNames="options"
-          in={invitationOptionsOpened}
-          timeout={timeout}
-          mounOnEnter={false}
-          unmountOnExit={false}
-          enter={true}
-          exit={true}
-        >
-          <InvitationOptionsContainer>
-            <InvitationOptionsInner>
-              {selectedView === 'import' &&
-                <SectionField>
-                  <Warning
-                    text={
-                      <FormattedMessage
-                        {...messages.importOptionsInfo}
-                        values={{
-                          // tslint:disable-next-line
-                          supportPageLink: <a href={supportPageURL} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
-                        }}
-                      />
-                    }
-                  />
-                </SectionField>
-              }
-
-              <SectionField>
-                <Label>
-                  <FormattedMessage {...messages.adminLabel} />
-                </Label>
-                <Toggle value={hasAdminRights} onChange={this.handleAdminRightsOnToggle} />
-              </SectionField>
-
-              <SectionField>
-                <Label>
-                  <FormattedMessage {...messages.moderatorLabel} />
-                </Label>
-                <StyledToggle value={hasModeratorRights} onChange={this.handleModeratorRightsOnToggle} />
-                { hasModeratorRights &&
-                  <MultipleSelect
-                    value={selectedProjects}
-                    options={projectOptions}
-                    onChange={this.handleSelectedProjectsOnChange}
-                    placeholder={<FormattedMessage {...messages.projectSelectorPlaceholder} />}
+      <Collapse
+        opened={invitationOptionsOpened}
+        onToggle={this.toggleOptions}
+        label={<FormattedMessage {...messages.invitationOptions} />}
+      >
+        <>
+          {selectedView === 'import' &&
+            <SectionField>
+              <Warning
+                text={
+                  <FormattedMessage
+                    {...messages.importOptionsInfo}
+                    values={{
+                      // tslint:disable-next-line
+                      supportPageLink: <a href={supportPageURL} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
+                    }}
                   />
                 }
-              </SectionField>
+              />
+            </SectionField>
+          }
 
-              {!isNilOrError(tenantLocales) && tenantLocales.length > 1 &&
-                <SectionField>
-                  <Label>
-                    <FormattedMessage {...messages.localeLabel} />
-                  </Label>
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.adminLabel} />
+            </Label>
+            <Toggle value={hasAdminRights} onChange={this.handleAdminRightsOnToggle} />
+          </SectionField>
 
-                  {tenantLocales.map((currentTenantLocale) => (
-                    <Radio
-                      key={currentTenantLocale}
-                      onChange={this.handleLocaleOnChange}
-                      currentValue={selectedLocale}
-                      value={currentTenantLocale}
-                      label={appLocalePairs[currentTenantLocale]}
-                    />
-                  ))}
-                </SectionField>
-              }
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.moderatorLabel} />
+            </Label>
+            <StyledToggle value={hasModeratorRights} onChange={this.handleModeratorRightsOnToggle} />
+            { hasModeratorRights &&
+              <MultipleSelect
+                value={selectedProjects}
+                options={projectOptions}
+                onChange={this.handleSelectedProjectsOnChange}
+                placeholder={<FormattedMessage {...messages.projectSelectorPlaceholder} />}
+              />
+            }
+          </SectionField>
 
-              <SectionField>
-                <Label>
-                  <FormattedMessage {...messages.groupsLabel} />
-                </Label>
-                <MultipleSelect
-                  value={selectedGroups}
-                  options={groupOptions}
-                  onChange={this.handleSelectedGroupsOnChange}
-                  placeholder={<FormattedMessage {...messages.groupsPlaceholder} />}
+          {!isNilOrError(tenantLocales) && tenantLocales.length > 1 &&
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.localeLabel} />
+              </Label>
+
+              {tenantLocales.map((currentTenantLocale) => (
+                <Radio
+                  key={currentTenantLocale}
+                  onChange={this.handleLocaleOnChange}
+                  currentValue={selectedLocale}
+                  value={currentTenantLocale}
+                  label={appLocalePairs[currentTenantLocale]}
                 />
-              </SectionField>
+              ))}
+            </SectionField>
+          }
 
-              <SectionField>
-                <Label>
-                  <FormattedMessage {...messages.inviteTextLabel} />
-                </Label>
-                <TextArea
-                  value={(selectedInviteText || '')}
-                  onChange={this.handleInviteTextOnChange}
-                />
-              </SectionField>
-            </InvitationOptionsInner>
-          </InvitationOptionsContainer>
-        </CSSTransition>
-      </>
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.groupsLabel} />
+            </Label>
+            <MultipleSelect
+              value={selectedGroups}
+              options={groupOptions}
+              onChange={this.handleSelectedGroupsOnChange}
+              placeholder={<FormattedMessage {...messages.groupsPlaceholder} />}
+            />
+          </SectionField>
+
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.inviteTextLabel} />
+            </Label>
+            <TextArea
+              value={(selectedInviteText || '')}
+              onChange={this.handleInviteTextOnChange}
+            />
+          </SectionField>
+
+        </>
+      </Collapse>
     );
 
     return (

@@ -1,5 +1,5 @@
 import { Multiloc, Locale } from 'typings';
-import keys from 'lodash/keys';
+import { keys } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { truncate } from 'utils/textUtils';
 
