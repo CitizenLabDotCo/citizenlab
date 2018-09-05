@@ -553,6 +553,7 @@
   "app.containers.AdminPage.widgets.fieldShowFooter": "Show footer",
   "app.containers.AdminPage.widgets.fieldShowHeader": "Show header",
   "app.containers.AdminPage.widgets.fieldShowLogo": "Show logo",
+  "app.containers.AdminPage.widgets.fieldSiteBackgroundColor": "Site background color",
   "app.containers.AdminPage.widgets.fieldSort": "Sorted by",
   "app.containers.AdminPage.widgets.fieldTextColor": "Text color",
   "app.containers.AdminPage.widgets.fieldTopics": "Topics",
