@@ -86,8 +86,6 @@
     "recharts": "1.1.0",
     "regenerator-runtime": "^0.12.1",
     "rxjs": "6.3.2",
-    "sanitize.css": "4.1.0",
-    "semantic-ui-css": "2.3.3",
     "semantic-ui-react": "0.82.3",
     "uuid": "3.3.2",
     "whatwg-fetch": "2.0.4"

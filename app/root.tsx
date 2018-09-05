@@ -15,7 +15,8 @@ import 'file-loader?name=[name].[ext]!./.htaccess';
 import { translationMessages } from './i18n';
 
 // Import CSS reset and Global Styles
-import 'sanitize.css/sanitize.css';
+// import 'sanitize.css/sanitize.css';
+import 'assets/css/reset.min.css';
 import './global-styles';
 
 // Import root routes
