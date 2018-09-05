@@ -722,6 +722,7 @@
   "app.containers.Projects.phaseNumber": "Phase {phaseNumber}",
   "app.containers.Projects.project": "Project",
   "app.containers.Projects.projectInformation": "Project information",
+  "app.containers.Projects.selectedPhase": "Selected phase",
   "app.containers.Projects.startsOn": "Starts on {date}",
   "app.containers.Projects.upcomingEvents": "Upcoming events",
   "app.containers.ProjectsIndexPage.metaDescription": "Explore all ongoing projects of {orgName} to understand how you can participate.\n Come discuss local projects that matter most to you.",
