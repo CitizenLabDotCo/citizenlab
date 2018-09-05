@@ -2,14 +2,18 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { debounce, omitBy, isNil, isEmpty, isString } from 'lodash';
 import { stringify } from 'qs';
+
 import Form, { FormValues } from './Form';
 import { Formik, FormikErrors } from 'formik';
+
 import WidgetPreview from '../WidgetPreview';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
 import Modal from 'components/UI/Modal';
 import WidgetCode from '../WidgetCode';
 import Button from 'components/UI/Button';
+
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from '../messages';
 
 const Container = styled.div`
   display: flex;
@@ -28,7 +32,7 @@ type State = {
   codeModalOpened: boolean;
 };
 
-class IdeasWidget extends React.Component<Props, State> {
+class IdeasWidget extends React.Component<Props & InjectedIntlProps, State> {
 
   constructor(props) {
     super(props);
@@ -47,26 +51,30 @@ class IdeasWidget extends React.Component<Props, State> {
     return errors;
   }
 
-  initialValues = (): FormValues => ({
-    width: 300,
-    height: 400,
-    siteBgColor: '#ffffff',
-    bgColor: '#ffffff',
-    textColor: '#666666',
-    accentColor: '#2233aa',
-    font: null,
-    fontSize: 15,
-    showHeader: true,
-    showLogo: true,
-    headerText: '',
-    headerSubText: '',
-    showFooter: true,
-    buttonText: '',
-    sort: 'trending',
-    projects: [],
-    topics: [],
-    limit: 5,
-  })
+  initialValues = (): FormValues => {
+    const { formatMessage } = this.props.intl;
+    return {
+      width: 320,
+      height: 400,
+      siteBgColor: '#ffffff',
+      bgColor: '#ffffff',
+      textColor: '#666666',
+      accentColor: '#2233aa',
+      font: null,
+      fontSize: 15,
+      relativeLink: '/',
+      showHeader: true,
+      showLogo: true,
+      headerText: formatMessage(messages.fieldHeaderTextDefault),
+      headerSubText: formatMessage(messages.fieldHeaderSubTextDefault),
+      showFooter: true,
+      buttonText: formatMessage(messages.fieldButtonTextDefault),
+      sort: 'trending',
+      projects: [],
+      topics: [],
+      limit: 5,
+    };
+  }
 
   handleOnSubmit = (values: FormValues, { setSubmitting }) => {
     this.setState({ widgetParams: { ...this.state.widgetParams, ...values } });
@@ -143,4 +151,4 @@ class IdeasWidget extends React.Component<Props, State> {
   }
 }
 
-export default IdeasWidget;
+export default injectIntl(IdeasWidget);

@@ -57,6 +57,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.widgets.fieldFontDescription',
     defaultMessage: 'Must be a valid font name available through {googleFontsLink}. Leave empty to use the default font.',
   },
+  fieldRelativeLink: {
+    id: 'app.containers.AdminPage.widgets.fieldRelativeLink',
+    defaultMessage: 'Links to',
+  },
   fieldShowHeader: {
     id: 'app.containers.AdminPage.widgets.fieldShowHeader',
     defaultMessage: 'Show header',
@@ -69,17 +73,29 @@ export default defineMessages({
     id: 'app.containers.AdminPage.widgets.fieldHeaderText',
     defaultMessage: 'Header title',
   },
+  fieldHeaderTextDefault: {
+    id: 'app.containers.AdminPage.widgets.fieldHeaderTextDefault',
+    defaultMessage: 'Our participation platform',
+  },
   fieldHeaderSubText: {
     id: 'app.containers.AdminPage.widgets.fieldHeaderSubText',
     defaultMessage: 'Header subtitle',
   },
+  fieldHeaderSubTextDefault: {
+    id: 'app.containers.AdminPage.widgets.fieldHeaderSubTextDefault',
+    defaultMessage: 'You can have a say',
+  },
   fieldShowFooter: {
     id: 'app.containers.AdminPage.widgets.fieldShowFooter',
-    defaultMessage: 'Show footer',
+    defaultMessage: 'Show button',
   },
   fieldButtonText: {
     id: 'app.containers.AdminPage.widgets.fieldButtonText',
     defaultMessage: 'Button text',
+  },
+  fieldButtonTextDefault: {
+    id: 'app.containers.AdminPage.widgets.fieldButtonTextDefault',
+    defaultMessage: 'Join now',
   },
   fieldProjects: {
     id: 'app.containers.AdminPage.widgets.fieldProjects',
@@ -132,5 +148,9 @@ export default defineMessages({
   htmlCodeExplanation: {
     id: 'app.containers.AdminPage.widgets.htmlCodeExplanation',
     defaultMessage: 'Copy the following snippet of HTML code and paste it on the website where you want the widget to appear.',
+  },
+  homepage: {
+    id: 'app.containers.AdminPage.widgets.homepage',
+    defaultMessage: 'Homepage',
   },
 });
