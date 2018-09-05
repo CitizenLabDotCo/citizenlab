@@ -1,6 +1,6 @@
 import React from 'react';
-import * as moment from 'moment';
-import { isEmpty, every } from 'lodash';
+import moment from 'moment';
+import { isEmpty, every } from 'lodash-es';
 import 'moment-timezone';
 import { isNilOrError } from 'utils/helperUtils';
 

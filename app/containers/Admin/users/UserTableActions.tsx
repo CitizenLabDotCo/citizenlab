@@ -1,8 +1,8 @@
 // Libraries
 import React, { PureComponent, FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isArray, isNil, omitBy, includes } from 'lodash';
-import FileSaver from 'file-saver';
+import { isArray, isNil, omitBy, includes } from 'lodash-es';
+import { saveAs } from 'file-saver';
 
 // Components
 import Checkbox from 'components/UI/Checkbox';
@@ -158,7 +158,7 @@ const DropdownFooterButton = styled(Button)`
 `;
 
 // Typings
-import { API } from 'typings';
+import { CLErrorsJSON } from 'typings';
 
 interface InputProps {
   groupType?: MembershipType;
@@ -215,7 +215,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
       const users = (isArray(usersIds) ? usersIds : null);
       const queryParameters = omitBy({ group, users }, isNil);
       const blob = await requestBlob(apiPath, fileType, queryParameters);
-      FileSaver.saveAs(blob, 'users-export.xlsx');
+      saveAs(blob, 'users-export.xlsx');
     } catch (error) {
       throw error;
     }
@@ -252,7 +252,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
     if (selectedGroupIds && selectedGroupIds.length > 0) {
       const { allUsersIds, selectedUsers, trackAddUsersToGroups, trackAddedRedundantUserToGroup } = this.props;
       const usersIds = (selectedUsers === 'all') ? allUsersIds : selectedUsers;
-      const promises: Promise<IGroupMembership | API.ErrorResponse>[] = [];
+      const promises: Promise<IGroupMembership | CLErrorsJSON>[] = [];
       const timeout = ms => new Promise(res => setTimeout(res, ms));
       const success = () => {
         eventEmitter.emit<MembershipAdd>('usersAdmin', events.membershipAdd, { groupsIds: selectedGroupIds });

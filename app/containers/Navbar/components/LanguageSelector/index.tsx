@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // i18n
-import { shortenedAppLocalePairs } from 'i18n';
+import { shortenedAppLocalePairs } from 'containers/App/constants';
 
 // typings
 import { Locale } from 'typings';

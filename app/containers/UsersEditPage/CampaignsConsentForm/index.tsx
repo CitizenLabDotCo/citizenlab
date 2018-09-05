@@ -8,7 +8,7 @@ import styled from 'styled-components';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
-import { find } from 'lodash';
+import { find } from 'lodash-es';
 
 // components
 import { SectionTitle, SectionSubtitle } from 'components/admin/Section';

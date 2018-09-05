@@ -91,7 +91,7 @@ const EditionForm = styled.div`
 `;
 
 // Typing
-import { API } from 'typings';
+import { CLErrorsJSON } from 'typings';
 
 interface DataProps {
   page: GetPageChildProps;
@@ -151,7 +151,7 @@ class PageEditor extends React.PureComponent<Props, State>{
       }
     }
     savePromise.catch((errorResponse) => {
-      const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+      const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
       setErrors(apiErrors);
       setSubmitting(false);
     }).then(() => {

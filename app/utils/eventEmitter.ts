@@ -1,4 +1,5 @@
-import * as Rx from 'rxjs/Rx';
+import { Subject, Observable } from 'rxjs';
+import { filter, share } from 'rxjs/operators';
 
 interface IEventEmitterEvent<T> {
   eventSource: string;
@@ -7,11 +8,11 @@ interface IEventEmitterEvent<T> {
 }
 
 class EventEmitter {
-  private subject: Rx.Subject<IEventEmitterEvent<any>>;
-  private stream: { [key: string]: Rx.Observable<IEventEmitterEvent<any>> };
+  private subject: Subject<IEventEmitterEvent<any>>;
+  private stream: { [key: string]: Observable<IEventEmitterEvent<any>> };
 
   constructor() {
-    this.subject = new Rx.Subject();
+    this.subject = new Subject();
     this.stream = {};
   }
 
@@ -19,21 +20,27 @@ class EventEmitter {
     this.subject.next({ eventSource, eventName, eventValue });
   }
 
-  observeEventFromSource<T>(eventSource: string, eventName: string): Rx.Observable<IEventEmitterEvent<T>> {
+  observeEventFromSource<T>(eventSource: string, eventName: string): Observable<IEventEmitterEvent<T>> {
     const streamName = `${eventSource}-${eventName}`;
 
     if (!this.stream[streamName]) {
-      this.stream[streamName] = this.subject.filter(data => data.eventSource === eventSource && data.eventName === eventName).share();
+      this.stream[streamName] = this.subject.pipe(
+        filter(data => data.eventSource === eventSource && data.eventName === eventName),
+        share()
+      );
     }
 
     return this.stream[streamName];
   }
 
-  observeEvent<T>(eventName: string): Rx.Observable<IEventEmitterEvent<T>> {
+  observeEvent<T>(eventName: string): Observable<IEventEmitterEvent<T>> {
     const streamName = eventName;
 
     if (!this.stream[streamName]) {
-      this.stream[streamName] = this.subject.filter(data => data.eventName === eventName).share();
+      this.stream[streamName] = this.subject.pipe(
+        filter(data => data.eventName === eventName),
+        share()
+      );
     }
 
     return this.stream[streamName];

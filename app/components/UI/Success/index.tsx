@@ -1,5 +1,5 @@
 import React from 'react';
-import { isBoolean } from 'lodash';
+import { isBoolean } from 'lodash-es';
 
 // components
 import Icon from 'components/UI/Icon';

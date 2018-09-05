@@ -18,7 +18,7 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 // style
 import styled from 'styled-components';
 import CommentsMoreActions from './CommentsMoreActions';
-import { API } from 'typings';
+import { CLErrorsJSON } from 'typings';
 
 //
 import messages from './messages';
@@ -88,7 +88,7 @@ class ChildComment extends React.PureComponent<Props, State> {
       this.setState({ editionMode: false });
     } catch (error) {
       if (error && error.json) {
-        const apiErrors = (error as API.ErrorResponse).json.errors;
+        const apiErrors = (error as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
         setSubmitting(false);
       }

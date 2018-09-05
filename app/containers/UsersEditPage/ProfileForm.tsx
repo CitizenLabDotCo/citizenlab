@@ -1,13 +1,11 @@
 import React, { PureComponent } from 'react';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { switchMap, map, distinctUntilChanged } from 'rxjs/operators';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of } from 'rxjs/observable/of';
-import { isEqual, isEmpty, get } from 'lodash';
+import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
+import { switchMap, map, distinctUntilChanged, filter } from 'rxjs/operators';
+import { isEqual, isEmpty, get } from 'lodash-es';
 
 // services
 import { IAreaData } from 'services/areas';
-import { updateUser, IUserData/*, IUserUpdate,*/, mapUserToDiff } from 'services/users';
+import { updateUser, IUserData, mapUserToDiff } from 'services/users';
 import { ITenantData } from 'services/tenant';
 import { localeStream, updateLocale } from 'services/locale';
 import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
@@ -26,14 +24,15 @@ import { SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Se
 import CustomFieldsForm from 'components/CustomFieldsForm';
 import Input from 'components/UI/Input';
 import Select from 'components/UI/Select';
-import QuillEditor from 'components/QuillEditor';
+import QuillEditor from 'components/UI/QuillEditor';
+import ProfileSection from './ProfileSection';
 
 // i18n
-import { appLocalePairs } from 'i18n';
+import { appLocalePairs } from 'containers/App/constants';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import localize, { injectedLocalized } from 'utils/localize';
+import localize, { InjectedLocalized } from 'utils/localize';
 
 // styling
 import styled from 'styled-components';
@@ -41,8 +40,7 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { hideVisually } from 'polished';
 
 // typings
-import { IOption, ImageFile, API } from 'typings';
-import ProfileSection from './ProfileSection';
+import { IOption, ImageFile, CLErrorsJSON } from 'typings';
 
 const HiddenLabel = styled.span`
   ${hideVisually() as any}
@@ -62,7 +60,7 @@ interface State {
   customFieldsFormData: any;
 }
 
-type Props = InputProps & InjectedIntlProps & injectedLocalized;
+type Props = InputProps & InjectedIntlProps & InjectedLocalized;
 
 class ProfileForm extends PureComponent<Props, State> {
   localeOptions: IOption[] = [];
@@ -82,7 +80,10 @@ class ProfileForm extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    const user$ = this.user$.filter(user => user !== null).pipe(distinctUntilChanged((x, y) => isEqual(x, y)));
+    const user$ = this.user$.pipe(
+      filter(user => user !== null),
+      distinctUntilChanged((x, y) => isEqual(x, y))
+    );
     const locale$ = localeStream().observable;
     const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
 
@@ -93,10 +94,12 @@ class ProfileForm extends PureComponent<Props, State> {
         user$,
         locale$,
         customFieldsSchemaForUsersStream$
-      ).pipe(switchMap(([user, locale, customFieldsSchema]) => {
-        const avatarUrl = get(user, 'attributes.avatar.medium', null) as string | null;
-        return (avatarUrl ? convertUrlToFileObservable(avatarUrl) : of(null)).pipe(map(avatar => ({ user, avatar, locale, customFieldsSchema })));
-      })).subscribe(({ user, avatar, locale, customFieldsSchema }) => {
+      ).pipe(
+        switchMap(([user, locale, customFieldsSchema]) => {
+          const avatarUrl = get(user, 'attributes.avatar.medium', null) as string | null;
+          return (avatarUrl ? convertUrlToFileObservable(avatarUrl) : of(null)).pipe(map(avatar => ({ user, avatar, locale, customFieldsSchema })));
+        })
+      ).subscribe(({ user, avatar, locale, customFieldsSchema }) => {
         this.setState({
           hasCustomFields: hasCustomFields(customFieldsSchema, locale),
           avatar: (avatar ? [avatar] : null),
@@ -152,7 +155,7 @@ class ProfileForm extends PureComponent<Props, State> {
       updateLocale(user.data.attributes.locale);
     }).catch((errorResponse) => {
       if (errorResponse.json) {
-        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
         setSubmitting(false);
       }

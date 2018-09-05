@@ -1,8 +1,6 @@
 import React from 'react';
-import { get, isString, isEmpty, omitBy, isNil, isEqual, isBoolean } from 'lodash';
-import { Subscription, Subject, BehaviorSubject } from 'rxjs';
-import { merge } from 'rxjs/observable/merge';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { get, isString, isEmpty, omitBy, isNil, isEqual, isBoolean } from 'lodash-es';
+import { Subscription, Subject, BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { map, startWith, distinctUntilChanged, tap, debounceTime, mergeScan, switchMap } from 'rxjs/operators';
 import { ideasStream, IIdeaData, IdeaPublicationStatus } from 'services/ideas';
 import shallowCompare from 'utils/shallowCompare';
