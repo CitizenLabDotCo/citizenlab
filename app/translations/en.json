@@ -283,6 +283,7 @@
   "app.containers.AdminPage.PagesEdition.buttonSuccess": "Saved",
   "app.containers.AdminPage.PagesEdition.contentLabel": "Page Content",
   "app.containers.AdminPage.PagesEdition.cookie-policy": "Cookie Policy",
+  "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Add files to the About page",
   "app.containers.AdminPage.PagesEdition.information": "About",
   "app.containers.AdminPage.PagesEdition.messageError": "An error occured while saving your page",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Your changes have been saved successfully",

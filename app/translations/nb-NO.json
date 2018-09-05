@@ -283,6 +283,7 @@
   "app.containers.AdminPage.PagesEdition.buttonSuccess": "Lagret",
   "app.containers.AdminPage.PagesEdition.contentLabel": "Sideinnhold",
   "app.containers.AdminPage.PagesEdition.cookie-policy": "Retningslinjer for informasjonskapsler",
+  "app.containers.AdminPage.PagesEdition.fileUploadLabel": "",
   "app.containers.AdminPage.PagesEdition.information": "Om",
   "app.containers.AdminPage.PagesEdition.messageError": "En feil oppsto ved lagring av siden din",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Endringene dine har blitt lagret",
