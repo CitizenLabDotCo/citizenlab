@@ -23,6 +23,7 @@ import GetProjects from 'resources/GetProjects';
 
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
+import { IProjectData } from 'services/projects';
 
 export interface Props { }
 
@@ -35,6 +36,7 @@ export interface FormValues {
   accentColor: string;
   font: string | null;
   fontSize: number;
+  relativeLink: string;
   showHeader: boolean;
   showLogo: boolean;
   headerText: string;
@@ -80,6 +82,19 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & injectedLocal
         value: 'new',
         label: <FormattedMessage {...messages.sortNewest} />
       },
+    ];
+  }
+
+  relativeLinkOptions = (projects?: IProjectData[] | null) => {
+    return [
+      {
+        value: '/',
+        label: <FormattedMessage {...messages.homepage} />,
+      },
+      ...(!projects ? [] : projects.map((project) => ({
+        value: `/projects/${project.attributes.slug}`,
+        label: this.props.localize(project.attributes.title_multiloc),
+      })))
     ];
   }
 
@@ -243,6 +258,27 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & injectedLocal
         >
           <>
             <Section>
+
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.fieldRelativeLink} />
+                </Label>
+                <GetProjects publicationStatuses={['published', 'archived']}>
+                  {(projects) => (projects && isNilOrError(projects)) ? null : (
+                    <Field
+                      name="relativeLink"
+                      component={FormikSelect}
+                      options={this.relativeLinkOptions(projects.projectsList)}
+                      clearable={false}
+                      disabled={!values.showHeader && !values.showFooter}
+                    />
+                  )}
+                </GetProjects>
+                {touched.relativeLink && <Error
+                  fieldName="relativeLink"
+                  apiErrors={errors.relativeLink as any}
+                />}
+              </SectionField>
 
               <SectionField>
                 <Field
