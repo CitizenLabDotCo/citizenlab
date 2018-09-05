@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import PlacesAutocomplete, { geocodeByPlaceId } from 'react-places-autocomplete';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';

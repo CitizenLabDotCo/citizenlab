@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { isFunction, isNil, isEmpty, size } from 'lodash';
+import React from 'react';
+import { isFunction, isNil, isEmpty, size } from 'lodash-es';
 import { FormikConsumer, FormikContext } from 'formik';
 
 // components

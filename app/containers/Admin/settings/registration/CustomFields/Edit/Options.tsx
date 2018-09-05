@@ -1,9 +1,9 @@
 import React from 'react';
-import { isEmpty, values as getValues, every } from 'lodash';
+import { isEmpty, values as getValues, every } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
-import { API } from 'typings';
+import { CLErrorsJSON } from 'typings';
 import { ICustomFieldOptionsData, updateCustomFieldOption, deleteCustomFieldOption, addCustomFieldOption, ICustomFieldData } from 'services/userCustomFields';
 import GetCustomFieldOptions, { GetCustomFieldOptionsChildProps } from 'resources/GetCustomFieldOptions';
 
@@ -85,7 +85,7 @@ class OptionsForm extends React.Component<Props, State> {
     updateCustomFieldOption(this.props.customField.id, option.id, values).then(() => {
       resetForm();
     }).catch((errorResponse) => {
-      const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+      const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
       setErrors(apiErrors);
       setSubmitting(false);
     });
@@ -96,7 +96,7 @@ class OptionsForm extends React.Component<Props, State> {
       setSubmitting(false);
       this.setState({ addingOption: false });
     }).catch((errorResponse) => {
-      const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+      const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
       setErrors(apiErrors);
       setSubmitting(false);
     });
