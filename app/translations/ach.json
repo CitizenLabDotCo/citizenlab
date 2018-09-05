@@ -722,6 +722,7 @@
   "app.containers.Projects.phaseNumber": "",
   "app.containers.Projects.project": "",
   "app.containers.Projects.projectInformation": "",
+  "app.containers.Projects.selectedPhase": "",
   "app.containers.Projects.startsOn": "",
   "app.containers.Projects.upcomingEvents": "",
   "app.containers.ProjectsIndexPage.metaDescription": "",
