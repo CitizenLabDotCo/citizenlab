@@ -1,6 +1,7 @@
-import * as React from 'react';
-import { isString, isEmpty, get } from 'lodash';
-import * as Rx from 'rxjs/Rx';
+import React, { PureComponent } from 'react';
+import { isString, isEmpty, get } from 'lodash-es';
+import { Subscription, Observable, combineLatest, of } from 'rxjs';
+import { switchMap, map, first } from 'rxjs/operators';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -99,8 +100,8 @@ interface State {
   processing: boolean;
 }
 
-export default class IdeaEditPage extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+export default class IdeaEditPage extends PureComponent<Props, State> {
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -124,81 +125,89 @@ export default class IdeaEditPage extends React.PureComponent<Props, State> {
   componentDidMount() {
     const { ideaId } = this.props.params;
     const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
+    const currentTenantLocales$ = currentTenantStream().observable.pipe(
+      map(currentTenant => currentTenant.data.attributes.settings.core.locales)
+    );
     const idea$ = ideaByIdStream(ideaId).observable;
-    const ideaWithRelationships$ = Rx.Observable.combineLatest(
+    const ideaWithRelationships$ = combineLatest(
       locale$,
       currentTenantLocales$,
       idea$
-    ).switchMap(([locale, currentTenantLocales, idea]) => {
-      const ideaId = idea.data.id;
-      const ideaImages = idea.data.relationships.idea_images.data;
-      const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
+    ).pipe(
+      switchMap(([locale, currentTenantLocales, idea]) => {
+        const ideaId = idea.data.id;
+        const ideaImages = idea.data.relationships.idea_images.data;
+        const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
 
-      const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable.first().switchMap((ideaImage) => {
-        if (ideaImage && ideaImage.data) {
-          const ideaImageFile$ = convertUrlToFileObservable(ideaImage.data.attributes.versions.large);
-          return ideaImageFile$.map((ideaImageFile) => ({
-            file: ideaImageFile,
-            id: ideaImage.data.id
-          }));
+        const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable.pipe(
+          first(),
+          switchMap((ideaImage) => {
+            if (ideaImage && ideaImage.data) {
+              const ideaImageFile$ = convertUrlToFileObservable(ideaImage.data.attributes.versions.large);
+              return ideaImageFile$.pipe(
+                map((ideaImageFile) => ({
+                  file: ideaImageFile,
+                  id: ideaImage.data.id
+                }))
+              );
+            }
+
+            return of(null);
+        })) : of(null));
+
+        const granted$ = hasPermission({
+          item: idea.data,
+          action: 'edit',
+          context: idea.data
+        });
+
+        let project$: Observable<null | IProject> = of(null);
+        let topics$: Observable<null | ITopic[]> = of(null);
+
+        if (idea.data.relationships.project && idea.data.relationships.project.data) {
+          project$ = projectByIdStream(idea.data.relationships.project.data.id).observable;
         }
 
-        return Rx.Observable.of(null);
-      }) : Rx.Observable.of(null));
-
-      const granted$ = hasPermission({
-        item: idea.data,
-        action: 'edit',
-        context: idea.data
-      });
-
-      let project$: Rx.Observable<null | IProject> = Rx.Observable.of(null);
-      let topics$: Rx.Observable<null | ITopic[]> = Rx.Observable.of(null);
-
-      if (idea.data.relationships.project && idea.data.relationships.project.data) {
-        project$ = projectByIdStream(idea.data.relationships.project.data.id).observable;
-      }
-
-      if ((idea.data.relationships.topics && idea.data.relationships.topics.data && idea.data.relationships.topics.data.length > 0)) {
-        topics$ = Rx.Observable.combineLatest(
-          idea.data.relationships.topics.data.map(topic => topicByIdStream(topic.id).observable)
-        );
-      }
-
-      const selectedProject$ = project$.map((project) => {
-        if (project) {
-          return {
-            value: project.data.id,
-            label: getLocalized(project.data.attributes.title_multiloc, locale, currentTenantLocales)
-          };
+        if ((idea.data.relationships.topics && idea.data.relationships.topics.data && idea.data.relationships.topics.data.length > 0)) {
+          topics$ = combineLatest(
+            idea.data.relationships.topics.data.map(topic => topicByIdStream(topic.id).observable)
+          );
         }
 
-        return null;
-      });
-
-      const selectedTopics$ = topics$.map((topics) => {
-        if (topics && topics.length > 0) {
-          return topics.map((topic) => {
+        const selectedProject$ = project$.pipe(map((project) => {
+          if (project) {
             return {
-              value: topic.data.id,
-              label: getLocalized(topic.data.attributes.title_multiloc, locale, currentTenantLocales)
+              value: project.data.id,
+              label: getLocalized(project.data.attributes.title_multiloc, locale, currentTenantLocales)
             };
-          });
-        }
+          }
 
-        return null;
-      });
+          return null;
+        }));
 
-      return Rx.Observable.combineLatest(
-        locale$,
-        idea$,
-        ideaImage$,
-        selectedProject$,
-        selectedTopics$,
-        granted$
-      );
-    });
+        const selectedTopics$ = topics$.pipe(map((topics) => {
+          if (topics && topics.length > 0) {
+            return topics.map((topic) => {
+              return {
+                value: topic.data.id,
+                label: getLocalized(topic.data.attributes.title_multiloc, locale, currentTenantLocales)
+              };
+            });
+          }
+
+          return null;
+        }));
+
+        return combineLatest(
+          locale$,
+          idea$,
+          ideaImage$,
+          selectedProject$,
+          selectedTopics$,
+          granted$
+        );
+      })
+    );
 
     this.subscriptions = [
       ideaWithRelationships$.subscribe(([locale, idea, ideaImage, selectedProject, selectedTopics, granted]) => {
@@ -216,7 +225,7 @@ export default class IdeaEditPage extends React.PureComponent<Props, State> {
             imageId: (ideaImage && ideaImage.id ? ideaImage.id : null)
           });
         } else {
-          clHistory.push(`/`);
+          clHistory.push('/');
         }
       })
     ];

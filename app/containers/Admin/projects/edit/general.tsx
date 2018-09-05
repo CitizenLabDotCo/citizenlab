@@ -1,6 +1,7 @@
 import React from 'react';
-import * as Rx from 'rxjs/Rx';
-import { isEmpty, get, forOwn } from 'lodash';
+import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
+import { switchMap, map, filter, distinctUntilChanged } from 'rxjs/operators';
+import { isEmpty, get, forOwn } from 'lodash-es';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -36,10 +37,10 @@ import {
   projectByIdStream,
   addProject,
   updateProject,
-  deleteProject,
+  deleteProject
 } from 'services/projects';
-import { projectImagesStream, addProjectImage, deleteProjectImage } from 'services/projectImages';
 import { projectFilesStream, addProjectFile, deleteProjectFile } from 'services/projectFiles';
+import { projectImagesStream, addProjectImage, deleteProjectImage } from 'services/projectImages';
 import { areasStream, IAreaData } from 'services/areas';
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
@@ -55,7 +56,7 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // typings
-import { API, IOption, ImageFile, Locale, Multiloc, UploadFile } from 'typings';
+import { CLError, IOption, ImageFile, Locale, Multiloc, UploadFile } from 'typings';
 
 const timeout = 350;
 
@@ -153,7 +154,7 @@ interface State {
   remoteProjectFiles: UploadFile[] | null;
   localProjectFiles: UploadFile[] | null;
   noTitleError: Multiloc | null;
-  apiErrors: { [fieldName: string]: API.Error[] };
+  apiErrors: { [fieldName: string]: CLError[] };
   saved: boolean;
   areas: IAreaData[];
   areaType: 'all' | 'selection';
@@ -165,9 +166,9 @@ interface State {
 }
 
 class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlProps, State> {
-  projectId$: Rx.BehaviorSubject<string | null>;
-  processing$: Rx.BehaviorSubject<boolean>;
-  subscriptions: Rx.Subscription[] = [];
+  projectId$: BehaviorSubject<string | null>;
+  processing$: BehaviorSubject<boolean>;
+  subscriptions: Subscription[] = [];
 
   constructor(props: Props) {
     super(props as any);
@@ -195,8 +196,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       submitState: 'disabled',
       deleteError: null,
     };
-    this.projectId$ = new Rx.BehaviorSubject(null);
-    this.processing$ = new Rx.BehaviorSubject(false);
+    this.projectId$ = new BehaviorSubject(null);
+    this.processing$ = new BehaviorSubject(false);
     this.subscriptions = [];
   }
 
@@ -204,71 +205,63 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
     const areas$ = areasStream().observable;
+    const project$ = this.projectId$.pipe(
+      distinctUntilChanged(),
+      switchMap(projectId => projectId ? projectByIdStream(projectId).observable : of(null))
+    );
 
     this.projectId$.next(this.props.params.projectId);
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      combineLatest(
         locale$,
         currentTenant$,
         areas$,
-        this.projectId$.distinctUntilChanged().switchMap((projectId) => {
-          return (projectId ? projectByIdStream(projectId).observable : Rx.Observable.of(null));
-        }).switchMap((project) => {
+        project$.pipe(switchMap((project) => {
           if (project) {
-            const projectImages$ = (project ? projectImagesStream(project.data.id).observable : Rx.Observable.of(null));
-            const projectFiles$ = (project ? projectFilesStream(project.data.id).observable : Rx.Observable.of(null));
-            const headerUrl = get(project, 'data.attributes.header_bg.large');
-            const headerImageFileObservable = (headerUrl ? convertUrlToFileObservable(headerUrl) : Rx.Observable.of(null));
+            const projectFiles$ = (project ? projectFilesStream(project.data.id).observable : of(null));
+            const projectImages$ = (project ? projectImagesStream(project.data.id).observable : of(null));
+            const headerUrl: string | null = get(project, 'data.attributes.header_bg.large', null);
+            const headerImageFileObservable = (headerUrl ? convertUrlToFileObservable(headerUrl) : of(null));
 
-            return Rx.Observable.combineLatest(
+            return combineLatest(
               this.processing$,
               headerImageFileObservable,
-              projectFiles$.switchMap((projectFiles) => {
-                if (projectFiles && projectFiles.data && projectFiles.data.length > 0) {
-                  return Rx.Observable.of(projectFiles.data.map((projectFile) => ({
-                    name: projectFile.attributes.name,
-                    id: projectFile.id,
-                    url: projectFile.attributes.file.url,
-                    ordering: projectFile.attributes.ordering,
-                    size: projectFile.attributes.size,
-                  })
-                  ));
-                }
+              projectFiles$,
+              projectImages$.pipe(
+                switchMap((projectImages) => {
+                  if (projectImages && projectImages.data && projectImages.data.length > 0) {
+                    return combineLatest(projectImages.data.map((projectImage) => {
+                      return convertUrlToFileObservable(projectImage.attributes.versions.large).pipe(
+                        map((projectImageFile) => {
+                          projectImageFile && (projectImageFile['projectImageId'] = projectImage.id);
+                          return projectImageFile;
+                        })
+                      );
+                    }));
+                  }
 
-                return Rx.Observable.of(null);
-              }),
-              projectImages$.switchMap((projectImages) => {
-                if (projectImages && projectImages.data && projectImages.data.length > 0) {
-                  return Rx.Observable.combineLatest(
-                    projectImages.data.map((projectImage) => {
-                      return convertUrlToFileObservable(projectImage.attributes.versions.large).map((projectImageFile) => {
-                        projectImageFile && (projectImageFile['projectImageId'] = projectImage.id);
-                        return projectImageFile;
-                      });
-                    })
-                  );
-                }
-
-                return Rx.Observable.of(null);
-              }),
-            ).filter(([processing]) => {
-              return !processing;
-            }).map(([_processing, headerBg, projectFiles, projectImages]) => ({
-              headerBg,
-              remoteProjectFiles: projectFiles,
-              oldProjectImages: projectImages,
-              projectData: (project ? project.data : null)
-            }));
+                  return of(null);
+                })
+              ),
+            ).pipe(
+              filter(([processing]) => !processing),
+              map(([_processing, headerBg, projectFiles, projectImages]) => ({
+                headerBg,
+                remoteProjectFiles: projectFiles,
+                oldProjectImages: projectImages,
+                projectData: (project ? project.data : null)
+              }))
+            );
           }
 
-          return Rx.Observable.of({
+          return of({
             headerBg: null,
             remoteProjectFiles: null,
             oldProjectImages: null,
             projectData: null
           });
-        })
+        }))
       ).subscribe(([locale, currentTenant, areas, { headerBg, remoteProjectFiles, oldProjectImages, projectData }]) => {
         this.setState((state) => {
           const publicationStatus = (projectData ? projectData.attributes.publication_status : state.publicationStatus);
@@ -645,7 +638,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         }
 
         if (redirect) {
-          clHistory.push(`/admin/projects`);
+          clHistory.push('/admin/projects');
         } else {
           this.setState({ saved: true, submitState: 'success' });
           this.processing$.next(false);

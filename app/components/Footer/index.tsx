@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React, { PureComponent } from 'react';
+import { Subscription, combineLatest } from 'rxjs';
 
 // libraries
 import Link from 'utils/cl-router/Link';
@@ -189,8 +189,8 @@ type State = {
   showCityLogoSection: boolean;
 };
 
-class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
-  subscriptions: Rx.Subscription[];
+class Footer extends PureComponent<Props & InjectedIntlProps, State> {
+  subscriptions: Subscription[];
 
   public static defaultProps: Partial<Props> = {
     showCityLogoSection: true
@@ -213,7 +213,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ showCityLogoSection: !!this.props.showCityLogoSection });
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      combineLatest(
         locale$,
         currentTenant$
       ).subscribe(([locale, currentTenant]) => {

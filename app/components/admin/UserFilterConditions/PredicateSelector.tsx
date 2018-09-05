@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { keys } from 'lodash';
+import React from 'react';
+import { keys } from 'lodash-es';
 
 import { TRule, ruleTypeConstraints } from './rules';
 import { IOption } from 'typings';

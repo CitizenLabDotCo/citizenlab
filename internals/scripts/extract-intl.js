@@ -1,34 +1,20 @@
-/* eslint-disable */
 /**
  * This script will extract the internationalization messages from all components
    and package them in the translation json files in the translations file.
  */
-const fs = require('fs');
-const nodeGlob = require('glob');
-const transform = require('babel-core').transform;
-const keys = require('lodash.keys');
 
+const fs = require('fs');
+const glob = require('glob');
+const mkdir = require('shelljs').mkdir;
+const babel = require('babel-core');
 const animateProgress = require('./helpers/progress');
 const addCheckmark = require('./helpers/checkmark');
-
-const pkg = require('../../package.json');
-const presets = pkg.babel.presets;
-const plugins = pkg.babel.plugins || [];
-
-const i18n = require('../../app/i18n');
-import { DEFAULT_LOCALE } from '../../app/containers/App/constants';
-
-require('shelljs/global');
-
-// Glob to match all js files except test files
-const FILES_TO_PARSE = 'app/**/!(*.test).js';
-
-const locales = keys(i18n.appLocalePairs);
-
+const constants = require('../../app/containers/App/constants');
+const FILES_TO_PARSE = 'app/**/messages.js';
+const locales = Object.keys(constants.appLocalePairs);
 const newLine = () => process.stdout.write('\n');
-
-// Progress Logger
 let progress;
+
 const task = (message) => {
   progress = animateProgress(message);
   process.stdout.write(message);
@@ -39,25 +25,43 @@ const task = (message) => {
     }
     clearTimeout(progress);
     return addCheckmark(() => newLine());
-  }
-}
+  };
+};
 
-// Wrap async functions below into a promise
-const glob = (pattern) => new Promise((resolve, reject) => {
-  nodeGlob(pattern, (error, value) => (error ? reject(error) : resolve(value)));
+const globPromise = (pattern) => new Promise((resolve, reject) => {
+  glob(pattern, (error, data) => {
+    if (error) {
+      reject(error);
+    } else {
+      resolve(data);
+    }
+  });
 });
 
-const readFile = (fileName) => new Promise((resolve, reject) => {
-  fs.readFile(fileName, (error, value) => (error ? reject(error) : resolve(value)));
+const readFilePromise = (fileName) => new Promise((resolve, reject) => {
+  fs.readFile(fileName, 'utf8', (error, data) => {
+    if (error) {
+      reject(error);
+    } else {
+      resolve(data);
+    }
+  });
 });
 
-const writeFile = (fileName, data) => new Promise((resolve, reject) => {
-  fs.writeFile(fileName, data, (error, value) => (error ? reject(error) : resolve(value)));
+const writeFilePromise = (fileName, data) => new Promise((resolve, reject) => {
+  fs.writeFile(fileName, data, (error) => {
+    if (error) {
+      reject(error);
+    } else {
+      resolve(data);
+    }
+  });
 });
 
 // Store existing translations into memory
 const oldLocaleMappings = [];
 const localeMappings = [];
+
 // Loop to run once per locale
 for (const locale of locales) {
   oldLocaleMappings[locale] = {};
@@ -66,7 +70,7 @@ for (const locale of locales) {
   const translationFileName = `app/translations/${locale}.json`;
   try {
     // Parse the old translation message JSON files
-    const messages = JSON.parse(fs.readFileSync(translationFileName));
+    const messages = JSON.parse(fs.readFileSync(translationFileName, 'utf8'));
     const messageKeys = Object.keys(messages);
     for (const messageKey of messageKeys) {
       oldLocaleMappings[locale][messageKey] = messages[messageKey];
@@ -81,40 +85,26 @@ for (const locale of locales) {
   }
 }
 
-/* push `react-intl` plugin to the existing plugins that are already configured in `package.json`
-   Example:
-   ```
-  "babel": {
-    "plugins": [
-      ["transform-object-rest-spread", { "useBuiltIns": true }]
-    ],
-    "presets": [
-      "latest",
-      "react"
-    ]
-  }
-  ```
-*/
-plugins.push(['react-intl'])
-
 const extractFromFile = async (fileName) => {
   try {
-    const code = await readFile(fileName);
-    // Use babel plugin to extract instances where react-intl is used
-    const { metadata: result } = await transform(code, { presets, plugins }); // object-shorthand
-    for (const message of result['react-intl'].messages) {
-      for (const locale of locales) {
-        const oldLocaleMapping = oldLocaleMappings[locale][message.id];
-        // Merge old translations into the babel extracted instances where react-intl is used
-        const newMsg = ( locale === DEFAULT_LOCALE) ? message.defaultMessage : '';
+    const codeToTransform = await readFilePromise(fileName);
+    const options = { plugins: ['react-intl'] };
+    const { metadata } = await babel.transform(codeToTransform, options);
 
-        // We don't allow duplicate definitions, so let's throw an error if we already came accross this one
-        if (localeMappings[locale][message.id]) {
-          throw new Error(`Duplicate definition found for id '${message.id}'`);
+    if (metadata && metadata['react-intl'] && metadata['react-intl'].messages) {
+      for (const message of metadata['react-intl'].messages) {
+        for (const locale of locales) {
+          const oldLocaleMapping = oldLocaleMappings[locale][message.id];
+          // Merge old translations into the babel extracted instances where react-intl is used
+          const newMsg = (locale === constants.DEFAULT_LOCALE) ? message.defaultMessage : '';
+
+          // We don't allow duplicate definitions, so let's throw an error if we already came accross this one
+          if (localeMappings[locale][message.id]) {
+            throw new Error(`Duplicate definition found for id '${message.id}'`);
+          }
+
+          localeMappings[locale][message.id] = (oldLocaleMapping) ? oldLocaleMapping : newMsg;
         }
-        localeMappings[locale][message.id] = (oldLocaleMapping)
-          ? oldLocaleMapping
-          : newMsg;
       }
     }
   } catch (error) {
@@ -125,40 +115,41 @@ const extractFromFile = async (fileName) => {
 
 (async function main() {
   const memoryTaskDone = task('Storing language files in memory');
-  const files = await glob(FILES_TO_PARSE);
-  memoryTaskDone()
+  const files = await globPromise(FILES_TO_PARSE);
+  memoryTaskDone();
 
   const extractTaskDone = task('Run extraction on all files');
   // Run extraction on all files that match the glob on line 16
   try {
     await Promise.all(files.map((fileName) => extractFromFile(fileName)));
-    extractTaskDone()
-  } catch(error) {
+    extractTaskDone();
+  } catch (error) {
     process.stderr.write('Some messages.js files contain errors. First fix them and run the script again.');
     process.exit(1);
   }
 
   // Make the directory if it doesn't exist, especially for first run
   mkdir('-p', 'app/translations');
+
   for (const locale of locales) {
     const translationFileName = `app/translations/${locale}.json`;
+    const localeTaskDone = task(
+      `Writing translation messages for ${locale} to: ${translationFileName}`
+    );
 
     try {
-      const localeTaskDone = task(
-        `Writing translation messages for ${locale} to: ${translationFileName}`
-      );
-
       // Sort the translation JSON file so that git diffing is easier
       // Otherwise the translation messages will jump around every time we extract
-      let messages = {};
-      Object.keys(localeMappings[locale]).sort().forEach(function(key) {
+      const messages = {};
+
+      Object.keys(localeMappings[locale]).sort().forEach((key) => {
         messages[key] = localeMappings[locale][key];
       });
 
       // Write to file the JSON representation of the translation messages
       const prettified = `${JSON.stringify(messages, null, 2)}\n`;
 
-      await writeFile(translationFileName, prettified);
+      await writeFilePromise(translationFileName, prettified);
 
       localeTaskDone();
     } catch (error) {
@@ -169,5 +160,5 @@ const extractFromFile = async (fileName) => {
     }
   }
 
-  process.exit()
+  process.exit();
 }());

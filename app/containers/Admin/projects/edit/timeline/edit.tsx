@@ -4,12 +4,10 @@ import 'react-dates/lib/css/_datepicker.css';
 
 // Libraries
 import React from 'react';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of } from 'rxjs/observable/of';
-import * as moment from 'moment';
-import { get, isEmpty, isString } from 'lodash';
+import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
+import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
+import moment from 'moment';
+import { get, isEmpty, isString } from 'lodash-es';
 
 // Services
 import { localeStream } from 'services/locale';
@@ -25,7 +23,7 @@ import { convertUrlToUploadFileObservable } from 'utils/imageTools';
 // Components
 import Label from 'components/UI/Label';
 import InputMultiloc from 'components/UI/InputMultiloc';
-import QuillMultiloc from 'components/QuillEditor/QuillMultiloc';
+import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
 import Error from 'components/UI/Error';
 import { DateRangePicker } from 'react-dates';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -44,7 +42,7 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // Typings
-import { API, Locale, UploadFile } from 'typings';
+import { CLError, Locale, UploadFile } from 'typings';
 
 const PhaseForm = styled.form`
   .DateRangePickerInput {
@@ -89,7 +87,7 @@ interface State {
   project: IProject | null;
   presentationMode: 'map' | 'card';
   attributeDiff: IUpdatedPhaseProperties;
-  errors: { [fieldName: string]: API.Error[] } | null;
+  errors: { [fieldName: string]: CLError[] } | null;
   saving: boolean;
   focusedInput: 'startDate' | 'endDate' | null;
   saved: boolean;
@@ -99,7 +97,7 @@ interface State {
   submitState: 'disabled' | 'enabled' | 'error' | 'success';
 }
 
-class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps, State> {
+class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlProps, State> {
   params$: BehaviorSubject<IParams | null>;
   subscriptions: Subscription[];
 
@@ -130,31 +128,32 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
     this.params$.next({ projectId, id });
 
     this.subscriptions = [
-      this.params$
-      .distinctUntilChanged(shallowCompare)
-      .switchMap((params: IParams) => {
-        const { projectId, id } = params;
-        const locale$ = localeStream().observable;
-        const project$ = (projectId ? projectByIdStream(projectId).observable : of(null));
-        const phaseFiles$ = (id ? phaseFilesStream(id).observable.pipe(
-          switchMap((phaseFiles) => {
-            if (phaseFiles && phaseFiles.data && phaseFiles.data.length > 0) {
-              return combineLatest(
-                phaseFiles.data.map((phaseFile) => {
-                  return convertUrlToUploadFileObservable(phaseFile.attributes.file.url).map((phaseFileObject) => {
-                    phaseFileObject['id'] = phaseFile.id;
-                    return phaseFileObject;
-                  });
-                })
-              );
-            }
+      this.params$.pipe(
+        distinctUntilChanged(shallowCompare),
+        switchMap((params: IParams) => {
+          const { projectId, id } = params;
+          const locale$ = localeStream().observable;
+          const project$ = (projectId ? projectByIdStream(projectId).observable : of(null));
+          const phaseFiles$ = (id ? phaseFilesStream(id).observable.pipe(
+            switchMap((phaseFiles) => {
+              if (phaseFiles && phaseFiles.data && phaseFiles.data.length > 0) {
+                return combineLatest(
+                  phaseFiles.data.map((phaseFile) => {
+                    return convertUrlToUploadFileObservable(phaseFile.attributes.file.url).pipe(map((phaseFileObject) => {
+                      phaseFileObject['id'] = phaseFile.id;
+                      return phaseFileObject;
+                    }));
+                  })
+                );
+              }
 
-            return of(null);
-          })
-        ) : of(null));
-        const phase$ = (id ? phaseStream(id).observable : of(null));
-        return combineLatest(locale$, project$, phaseFiles$, phase$);
-      }).subscribe(([locale, project, phaseFiles, phase]) => {
+              return of(null);
+            })
+          ) : of(null));
+          const phase$ = (id ? phaseStream(id).observable : of(null));
+          return combineLatest(locale$, project$, phaseFiles$, phase$);
+        })
+      ).subscribe(([locale, project, phaseFiles, phase]) => {
         this.setState({
           locale,
           project,

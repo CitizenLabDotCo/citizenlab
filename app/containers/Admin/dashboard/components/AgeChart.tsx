@@ -1,6 +1,6 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
-import { range, forOwn, get } from 'lodash';
+import React from 'react';
+import { Subscription } from 'rxjs';
+import { range, forOwn, get } from 'lodash-es';
 import moment from 'moment';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -23,7 +23,7 @@ type Props = {
 };
 
 class AgeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
-  subscription: Rx.Subscription;
+  subscription: Subscription;
 
   constructor(props: Props) {
     super(props as any);

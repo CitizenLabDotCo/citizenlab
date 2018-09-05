@@ -1,8 +1,6 @@
 import React from 'react';
-import isString from 'lodash/isString';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { of } from 'rxjs/observable/of';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { isString } from 'lodash-es';
+import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap, filter, map } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { projectFilesStream } from 'services/projectFiles';

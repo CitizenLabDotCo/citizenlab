@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import * as moment from 'moment';
+import moment from 'moment';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { get, isError } from 'lodash';
+import { get, isError } from 'lodash-es';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -169,33 +169,33 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class ProjectCard extends PureComponent<Props, State> {
+
   disabledMessage = () => {
-    const { project } = this.props;
-
+    const project = this.props.project;
     if (!isNilOrError(project)) {
-      const { future_enabled } = project.relationships.action_descriptor.data.posting;
-
-      if (future_enabled) {
+      const { enabled, future_enabled: futureEnabled } = project.relationships.action_descriptor.data.posting;
+      if (enabled) {
+        return null;
+      } else if (futureEnabled) {
         return messages.postingPossibleFuture;
+      } else {
+        return messages.postingNotPossible;
       }
-
+    } else {
       return null;
     }
-
-    return messages.postingNotPossible;
   }
 
   calculateCardState = () => {
     const { permission } = this.props;
     const disabledMessage = this.disabledMessage();
-
     if (disabledMessage && permission) {
       return 'enabledBecauseAdmin';
     } else if (disabledMessage) {
       return 'disabled';
+    } else {
+      return 'enabled';
     }
-
-    return 'enabled';
   }
 
   handleOnClick = () => {

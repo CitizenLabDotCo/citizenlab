@@ -1,5 +1,5 @@
 import React from 'react';
-import { findIndex, isEmpty } from 'lodash';
+import { findIndex, isEmpty } from 'lodash-es';
 import { IPhaseData } from 'services/phases';
 import { ITopicData } from 'services/topics';
 import { IProjectData } from 'services/projects';

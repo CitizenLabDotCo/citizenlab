@@ -1,9 +1,5 @@
 import { Component } from 'react';
-import isEqual from 'lodash/isEqual';
-import get from 'lodash/get';
-import isString from 'lodash/isString';
-import omitBy from 'lodash/omitBy';
-import isNil from 'lodash/isNil';
+import { isString, isEqual, get, omitBy, isNil } from 'lodash-es';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, mergeScan, map } from 'rxjs/operators';
 import { projectsStream, IProjectData } from 'services/projects';
