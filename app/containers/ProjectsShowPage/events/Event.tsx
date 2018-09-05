@@ -1,6 +1,6 @@
 import React from 'react';
-import * as moment from 'moment';
-import { isEmpty, every } from 'lodash';
+import moment from 'moment';
+import { isEmpty, every } from 'lodash-es';
 import 'moment-timezone';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -230,6 +230,7 @@ interface InputProps {
   event: IEventData;
   className?: string;
 }
+
 interface Props extends InputProps {
   eventFiles: GetResourceFileObjectsChildProps;
 }
@@ -238,7 +239,7 @@ interface State {}
 
 class Event extends React.PureComponent<Props, State> {
   render() {
-    const { event, className } = this.props;
+    const { event, eventFiles, className } = this.props;
 
     if (!isNilOrError(event)) {
       const startAtMoment = moment(event.attributes.start_at);
@@ -300,15 +301,14 @@ class Event extends React.PureComponent<Props, State> {
                 <FormattedMessage {...messages.eventAttachments} />
               </EventFilesHeader>
             }
-            {eventFiles && eventFiles.map(file => {
+            {!isNilOrError(eventFiles) && eventFiles.map(file => {
               return (
                 <FileDisplay
                   key={file.id}
                   file={file}
                 />
               );
-            })
-            }
+            })}
           </EventInformation>
 
           {hasLocation &&
@@ -335,8 +335,8 @@ class Event extends React.PureComponent<Props, State> {
   }
 }
 
-export default (props: Props) => (
+export default (inputProps: InputProps) => (
   <GetResourceFileObjects>
-    {eventFiles => <Event eventFiles={eventFiles} {...props} />}
+    {eventFiles => <Event eventFiles={eventFiles} {...inputProps} />}
   </GetResourceFileObjects>
 );

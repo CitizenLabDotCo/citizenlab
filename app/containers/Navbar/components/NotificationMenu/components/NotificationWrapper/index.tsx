@@ -67,7 +67,7 @@ const Timing = styled.span`
 `;
 
 interface ITracks {
-  clickNotification: ({}) => void;
+  clickNotification: (arg: any) => void;
 }
 
 type Props = {

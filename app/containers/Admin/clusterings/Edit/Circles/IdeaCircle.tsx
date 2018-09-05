@@ -4,7 +4,7 @@ import { mix } from 'polished';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import T from 'components/T';
 import { isNilOrError } from 'utils/helperUtils';
-import { round, isNil } from 'lodash';
+import { round, isNil } from 'lodash-es';
 import { D3Node } from './';
 
 const borderColor = '#00a2b1';

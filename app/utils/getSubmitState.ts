@@ -1,9 +1,9 @@
-import { API } from 'typings';
-import { isEmpty } from 'lodash';
+import { CLError } from 'typings';
+import { isEmpty } from 'lodash-es';
 
 interface Options {
   errors: {
-    [fieldName: string]: API.Error[]
+    [fieldName: string]: CLError[]
   } | null;
   saved: boolean;
 }

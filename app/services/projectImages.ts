@@ -1,4 +1,4 @@
-import { API } from 'typings';
+import { ImageSizes } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
@@ -8,7 +8,7 @@ export interface IProjectImageData {
   id: string;
   type: string;
   attributes: {
-    versions: API.ImageSizes,
+    versions: ImageSizes,
     ordering: string | null,
     created_at: string,
     updated_at: string,
@@ -24,7 +24,7 @@ export interface IProjectImages {
 }
 
 export function projectImagesStream(projectId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IProjectImages>({ apiEndpoint: `${apiEndpoint}/${projectId}/images`, ...streamParams });
+  return streams.get<IProjectImages | null>({ apiEndpoint: `${apiEndpoint}/${projectId}/images`, ...streamParams });
 }
 
 export function projectImageStream(projectId: string, imageId: string, streamParams: IStreamParams | null = null) {

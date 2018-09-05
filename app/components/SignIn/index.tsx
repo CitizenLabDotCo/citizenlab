@@ -1,5 +1,5 @@
 import React from 'react';
-import { get, isFunction } from 'lodash';
+import { get, isFunction } from 'lodash-es';
 import { Subscription } from 'rxjs';
 
 // libraries
@@ -318,8 +318,8 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     const { title } = this.props;
     const { formatMessage } = this.props.intl;
     const { location, currentTenant, email, password, processing, emailError, passwordError, signInError, loading } = this.state;
-    const googleLoginEnabled = !!get(currentTenant, `data.attributes.settings.google_login.enabled`);
-    const facebookLoginEnabled = !!get(currentTenant, `data.attributes.settings.facebook_login.enabled`);
+    const googleLoginEnabled = !!get(currentTenant, 'data.attributes.settings.google_login.enabled');
+    const facebookLoginEnabled = !!get(currentTenant, 'data.attributes.settings.facebook_login.enabled');
     const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
 
     const createAccount = ((location && location.pathname.replace(/\/$/, '').endsWith('ideas/new')) ? (

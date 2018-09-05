@@ -17,7 +17,7 @@ export default class AdminRightsReceivedNotification extends React.PureComponent
 
     return (
       <NotificationWrapper
-        linkTo={`/admin`}
+        linkTo={'/admin'}
         timing={notification.attributes.created_at}
         icon="admin"
         isRead={!!notification.attributes.read_at}

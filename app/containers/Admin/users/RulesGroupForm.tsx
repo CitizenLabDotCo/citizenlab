@@ -1,7 +1,7 @@
 // Libraries
 import React from 'react';
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
-import { isEmpty, values as getValues, every } from 'lodash';
+import { isEmpty, values as getValues, every } from 'lodash-es';
 
 // Components
 import { FormikUserFilterConditions } from 'components/admin/UserFilterConditions';

@@ -1,5 +1,5 @@
 // Libraries
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 // styles
@@ -60,6 +60,7 @@ export default class SubmitWrapper extends React.Component<Props> {
 
     if (this.props.status === 'success') {
       style = 'success';
+      this.removeFocus(this.submitButton);
     }
 
     if (this.props.status === 'error') {

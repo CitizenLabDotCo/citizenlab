@@ -1,6 +1,6 @@
 // Libraries
 import React, { PureComponent, FormEvent } from 'react';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { combineLatest } from 'rxjs';
 import { map, first } from 'rxjs/operators';
 
 // i18n

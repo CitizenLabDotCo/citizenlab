@@ -1,5 +1,5 @@
 import React from 'react';
-import { get, isString, isObject, isUndefined, includes } from 'lodash';
+import { get, isString, isObject, isUndefined, includes } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';

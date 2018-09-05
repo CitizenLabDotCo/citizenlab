@@ -1,5 +1,5 @@
 import React from 'react';
-import * as moment from 'moment';
+import moment from 'moment';
 
 // Services
 import { IEventData } from 'services/events';

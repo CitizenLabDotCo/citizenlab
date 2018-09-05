@@ -249,7 +249,7 @@ type State = {
 };
 
 class IdeaCards extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {
       selectedView: (props.defaultView || 'card')
