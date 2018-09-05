@@ -1,5 +1,5 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import Link from 'utils/cl-router/Link';

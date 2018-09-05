@@ -14,7 +14,7 @@ import { Section, SectionTitle } from 'components/admin/Section';
 import { Formik } from 'formik';
 import AreaForm, { FormValues } from '../AreaForm';
 
-import { API } from 'typings';
+import { CLErrorsJSON } from 'typings';
 interface InputProps {}
 interface DataProps {
   area: GetAreaChildProps;
@@ -36,7 +36,7 @@ class Edit extends React.PureComponent<Props> {
         clHistory.push('/admin/settings/areas');
       })
       .catch((errorResponse) => {
-        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
         setSubmitting(false);
       });

@@ -1,6 +1,6 @@
 import React from 'react';
 import { IProjectData } from 'services/projects';
-import { flow } from 'lodash';
+import { flow } from 'lodash-es';
 import T from 'components/T';
 import { Menu } from 'semantic-ui-react';
 import { DropTarget } from 'react-dnd';

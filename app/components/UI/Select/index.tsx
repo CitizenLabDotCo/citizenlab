@@ -1,5 +1,5 @@
 import React from 'react';
-import { isBoolean } from 'lodash';
+import { isBoolean } from 'lodash-es';
 import ReactSelect from 'react-select';
 import { IOption } from 'typings';
 import selectStyles from 'components/UI/Select/styles';

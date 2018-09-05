@@ -7,6 +7,9 @@ import Sidebar from './sideBar/';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
+// stlying
+import 'assets/semantic/semantic.min.css';
+
 const Container = styled.div`
   display: flex;
   background: ${colors.background};

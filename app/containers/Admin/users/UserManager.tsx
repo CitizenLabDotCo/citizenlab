@@ -1,6 +1,6 @@
 // Libraries
 import React from 'react';
-import { isArray, includes } from 'lodash';
+import { isArray, includes } from 'lodash-es';
 import { Subscription } from 'rxjs';
 
 // Components

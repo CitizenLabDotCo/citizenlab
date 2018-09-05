@@ -72,7 +72,7 @@ export default (inputProps: InputProps) => (
 
         if (futureEvents.length > 0) {
           return (
-            <Container className={`e2e-events-preview`}>
+            <Container className={'e2e-events-preview'}>
               <ContentContainer>
                 <Header>
                   <h2>

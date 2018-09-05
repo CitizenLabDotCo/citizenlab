@@ -3,7 +3,7 @@ import GetCustomFieldOptions, { GetCustomFieldOptionsChildProps } from 'resource
 import { TRule } from '../rules';
 import { IOption } from 'typings';
 import Select from 'components/UI/Select';
-import localize, { injectedLocalized } from 'utils/localize';
+import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
 
 type State = {};
 
-class CustomFieldOptionValueSelector extends React.PureComponent<Props & injectedLocalized, State> {
+class CustomFieldOptionValueSelector extends React.PureComponent<Props & InjectedLocalized, State> {
 
   generateOptions = (): IOption[] => {
     const { options, localize } = this.props;

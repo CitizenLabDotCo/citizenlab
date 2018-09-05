@@ -1,7 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { addCustomFieldForUsers } from 'services/userCustomFields';
-import { API } from 'typings';
+import { CLErrorsJSON } from 'typings';
 import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
@@ -34,7 +34,7 @@ class New extends React.Component<Props> {
         }
       })
       .catch((errorResponse) => {
-        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
         setSubmitting(false);
       });

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { clone } from 'lodash';
+import { clone } from 'lodash-es';
 import Circles from './Circles';
 import { Node } from 'services/clusterings';
 import InfoPane from './InfoPane';

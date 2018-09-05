@@ -1,7 +1,7 @@
 // Libraries
 import React, { PureComponent } from 'react';
 import { isAdmin } from 'services/permissions/roles';
-import { includes, get, isArray } from 'lodash';
+import { includes, get, isArray } from 'lodash-es';
 
 // Components
 import Table from 'components/UI/Table';
