@@ -11,14 +11,17 @@ import TabbedResource from 'components/admin/TabbedResource';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 
-interface Props {}
+interface Props {
+  showWidgets: boolean;
+}
 
 interface State {}
 
 class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   render() {
-    const { children } = this.props;
+    const { children, showWidgets } = this.props;
     const { formatMessage } = this.props.intl;
 
     const tabs = [
@@ -27,8 +30,10 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithR
       { label: formatMessage(messages.tabPages), url: '/admin/settings/pages' },
       { label: formatMessage(messages.tabRegistration), url: '/admin/settings/registration' },
       { label: formatMessage(messages.tabAreas), url: '/admin/settings/areas' },
-      { label: formatMessage(messages.tabWidgets), url: '/admin/settings/widgets' },
     ];
+    if (showWidgets) {
+      tabs.push({ label: formatMessage(messages.tabWidgets), url: '/admin/settings/widgets' });
+    }
 
     const resource = {
       title: formatMessage(messages.viewPublicResource)
@@ -50,4 +55,9 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithR
   }
 }
 
-export default withRouter(injectIntl(SettingsPage));
+const SettingsPageWithHocs = withRouter(injectIntl(SettingsPage));
+export default (inputProps) => (
+  <GetFeatureFlag name="widgets">
+    {(hasFeature) => <SettingsPageWithHocs {...inputProps} showWidgets={hasFeature} />}
+  </GetFeatureFlag>
+);
