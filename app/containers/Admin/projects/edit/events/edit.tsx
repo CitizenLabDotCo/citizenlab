@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as Rx from 'rxjs/Rx';
 import * as moment from 'moment';
 import { isEmpty } from 'lodash';
+import { isNilOrError } from 'utils/helperUtils';
 
 // libraries
 import clHistory from 'utils/cl-router/history';
@@ -30,6 +31,7 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { IProjectData } from 'services/projects';
 import { eventStream, updateEvent, addEvent, IEvent, IUpdatedEventProperties } from 'services/events';
+import { addEventFile, deleteEventFile } from 'services/eventFiles';
 
 // resources
 import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
@@ -61,7 +63,8 @@ interface State {
   focusedInput: 'startDate' | 'endDate' | null;
   saved: boolean;
   loaded: boolean;
-  localEventFiles: UploadFile[] | Error | null | undefined;
+  localEventFiles: GetResourceFileObjectsChildProps;
+  isNewEvent: boolean;
 }
 
 class AdminProjectEventEdit extends React.PureComponent<Props, State> {
@@ -80,6 +83,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
       saved: false,
       loaded: false,
       localEventFiles: null,
+      isNewEvent: true,
     };
     this.subscriptions = [];
   }
@@ -96,7 +100,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
         currentTenant$,
         event$
       ).subscribe(([locale, currentTenant, event]) => {
-        this.setState({ locale, currentTenant, event, loaded: true });
+        this.setState({ locale, currentTenant, event, loaded: true, isNewEvent: event === null });
       })
     ];
 
@@ -144,19 +148,90 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
     }));
   }
 
-  handleEventFileOnAdd = () => {
+  handleEventFileOnAdd = (newFile: UploadFile) => {
+    this.setState((prevState) => {
+      // If we don't have localEventFiles, we assign an empty array
+      // A spread operator works on an empty array, but not on null
+      const oldlLocalEventFiles = !isNilOrError(prevState.localEventFiles) ? prevState.localEventFiles : [];
 
+      return {
+        localEventFiles: [
+          ...oldlLocalEventFiles,
+          newFile
+        ]
+      };
+    });
   }
 
-  handleEventFileOnRemove = (file) => {
+  handleEventFileOnRemove = (removedFile: UploadFile) => () => {
+    this.setState((prevState) => {
+      let localEventFiles: UploadFile[] | null = null;
 
+      if (Array.isArray(prevState.localEventFiles)) {
+        localEventFiles = prevState.localEventFiles.filter(eventFile => eventFile.name !== removedFile.name);
+      }
+
+      return {
+        localEventFiles
+      };
+    });
   }
 
-  handleOnSubmit = (event) => {
+  getFilesToAddPromises = () => {
+    const { localEventFiles } = this.state;
+    const { remoteEventFiles } = this.props;
+    const { id } = this.props.params;
+    let filesToAdd = localEventFiles;
+    let filesToAddPromises: Promise<any>[] = [];
+
+    if (!isNilOrError(localEventFiles) && Array.isArray(remoteEventFiles)) {
+      // localEventFiles = local state of files
+      // This means those previously uploaded + files that have been added/removed
+      // remoteEventFiles = last saved state of files (remote)
+
+      filesToAdd = localEventFiles.filter((localEventFile) => {
+        return !remoteEventFiles.some(remoteEventFile => remoteEventFile.name === localEventFile.name);
+      });
+    }
+
+    if (id && !isNilOrError(filesToAdd) && filesToAdd.length > 0) {
+      filesToAddPromises = filesToAdd.map((fileToAdd: any) => addEventFile(id as string, fileToAdd.base64, fileToAdd.name));
+    }
+    debugger;
+    return filesToAddPromises;
+  }
+
+  getFilesToRemovePromises = () => {
+    const { localEventFiles } = this.state;
+    const { remoteEventFiles } = this.props;
+    const { id } = this.props.params;
+    let filesToRemove = remoteEventFiles;
+    let filesToRemovePromises: Promise<any>[] = [];
+
+    if (!isNilOrError(localEventFiles) && Array.isArray(remoteEventFiles)) {
+      // localEventFiles = local state of files
+      // This means those previously uploaded + files that have been added/removed
+      // remoteEventFiles = last saved state of files (remote)
+
+      filesToRemove = remoteEventFiles.filter((remoteEventFile) => {
+        return !localEventFiles.some(localEventFile => localEventFile.name === remoteEventFile.name);
+      });
+    }
+
+    if (id && !isNilOrError(filesToRemove) && filesToRemove.length > 0) {
+      filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deleteEventFile(id as string, fileToRemove.id));
+    }
+
+    return filesToRemovePromises;
+  }
+
+  handleOnSubmit = async (event) => {
     event.preventDefault();
+    let savingPromise: Promise<IEvent> | null = null;
+    const filesToAddPromises: Promise<any>[] = this.getFilesToAddPromises();
+    const filesToRemovePromises: Promise<any>[] = this.getFilesToRemovePromises();
 
     if (!isEmpty(this.state.attributeDiff)) {
-      let savingPromise: Promise<IEvent> | null = null;
 
       if (this.state.event) {
         savingPromise = updateEvent(this.state.event.data.id, this.state.attributeDiff);
@@ -166,15 +241,22 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
           return response;
         });
       }
+    }
 
-      if (savingPromise) {
-        this.setState({ saving: true, saved: false });
+    const allPromises = [
+      savingPromise,
+      ...filesToAddPromises,
+      ...filesToRemovePromises
+    ];
 
-        savingPromise.then((response) => {
-          this.setState({ saving: false, saved: true, attributeDiff: {}, event: response, errors: {} });
-        }).catch((e) => {
-          this.setState({ saving: false, errors: e.json.errors });
-        });
+    if (allPromises.length > 0) {
+      this.setState({ saving: true, saved: false });
+      try {
+        debugger;
+        await Promise.all(allPromises);
+        this.setState({ saving: false, saved: true, attributeDiff: {}, event: response, errors: {} });
+      } catch (errors) {
+        this.setState({ saving: false, errors: errors.json.errors });
       }
     }
   }

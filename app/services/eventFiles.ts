@@ -34,7 +34,7 @@ export function eventFileStream(eventId: string, fileId: string, streamParams: I
   return streams.get<IEventFile>({ apiEndpoint: `${apiEndpoint}/${eventId}/files/${fileId}`, ...streamParams });
 }
 
-export function addeventFile(eventId: string, base64: string, name: string, ordering: number | null = null) {
+export function addEventFile(eventId: string, base64: string, name: string, ordering: number | null = null) {
   return streams.add<IEventFile>(`${apiEndpoint}/${eventId}/files`, { file: { name, ordering, file: base64 } });
 }
 
