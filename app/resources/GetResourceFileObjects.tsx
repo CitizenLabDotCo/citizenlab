@@ -1,10 +1,11 @@
 import React from 'react';
 import { isString } from 'lodash-es';
-import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
+import { Subscription, BehaviorSubject, combineLatest, of, Observable } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap, filter, map } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { projectFilesStream } from 'services/projectFiles';
-import { phaseFilesStream } from 'services/phaseFiles';
+import { projectFilesStream, IProjectFiles } from 'services/projectFiles';
+import { phaseFilesStream, IPhaseFiles } from 'services/phaseFiles';
+import { eventFilesStream, IEventFiles } from 'services/eventFiles';
 import { convertUrlToUploadFileObservable } from 'utils/imageTools';
 import { UploadFile } from 'typings';
 
@@ -56,8 +57,11 @@ export default class GetResourceFileObjects extends React.Component<Props, State
         tap(() => resetOnChange && this.setState({ files: undefined })),
         filter(({ resourceId }) => isString(resourceId)),
         switchMap(({ resourceId, resourceType }: { resourceId: string, resourceType: InputProps['resourceType'] }) => {
-          const streamFn = (resourceType === 'project' ? projectFilesStream : phaseFilesStream);
-          return streamFn(resourceId).observable;
+          let streamFn;
+          if (resourceType === 'project') streamFn = projectFilesStream;
+          if (resourceType === 'phase') streamFn = phaseFilesStream;
+          if (resourceType === 'event') streamFn = eventFilesStream;
+          return streamFn(resourceId).observable as Observable<IProjectFiles | IPhaseFiles | IEventFiles | null>;
         }),
         switchMap((files) => {
           if (files && files.data && files.data.length > 0) {
