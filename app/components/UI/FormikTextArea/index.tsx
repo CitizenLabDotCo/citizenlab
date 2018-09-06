@@ -7,6 +7,7 @@ import Textarea, { Props as VanillaProps } from 'components/UI/TextArea';
 export interface Props {
   name: string;
 }
+
 export interface State {}
 
 class FormikTextArea extends React.Component<Props & VanillaProps, State> {
