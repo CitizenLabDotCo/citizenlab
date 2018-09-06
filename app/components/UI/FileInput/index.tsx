@@ -30,13 +30,13 @@ const Input = styled.input`
 `;
 
 const Label = styled.label`
-  display: flex
+  display: flex;
   align-items: center;
   cursor: pointer;
   border: 1.5px dashed ${colors.adminTextColor};
   border-radius: 5px;
   font-size: ${fontSizes.base}px;
-  padding: 10px 20px
+  padding: 10px 20px;
   color: ${colors.label};
 
   &:hover {
