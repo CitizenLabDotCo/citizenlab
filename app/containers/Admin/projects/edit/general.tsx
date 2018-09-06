@@ -228,7 +228,6 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 if (projectFiles && projectFiles.data && projectFiles.data.length > 0) {
                   return combineLatest(
                     projectFiles.data.map((projectFile) => {
-                      console.log(projectFile);
                       return convertUrlToUploadFileObservable(projectFile.attributes.file.url).pipe(map((projectFileObject) => {
                         projectFileObject['filename'] = projectFile.attributes.name;
                         projectFileObject['id'] = projectFile.id;
