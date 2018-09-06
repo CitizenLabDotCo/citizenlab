@@ -19,13 +19,8 @@ resource "Campaign consents" do
       @campaigns = [
         create(:comment_on_your_comment_campaign),
         create(:comment_on_your_idea_campaign),
-        create(:admin_rights_received_campaign),
         create(:comment_deleted_by_admin_campaign),
-        create(:comment_marked_as_spam_campaign),
-        create(:idea_marked_as_spam_campaign),
-        create(:invite_accepted_campaign),
         create(:mention_in_comment_campaign),
-        create(:project_moderation_rights_received_campaign),
         create(:status_change_of_your_idea_campaign),
         create(:idea_published_campaign),
         create(:user_digest_campaign),
