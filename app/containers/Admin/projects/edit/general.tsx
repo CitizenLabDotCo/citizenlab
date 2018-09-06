@@ -227,11 +227,11 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               switchMap((projectFiles) => {
                 if (projectFiles && projectFiles.data && projectFiles.data.length > 0) {
                   return combineLatest(
-                    projectFiles.data.map((phaseFile) => {
-                      return convertUrlToUploadFileObservable(phaseFile.attributes.file.url).pipe(map((phaseFileObject) => {
-                        phaseFileObject['id'] = phaseFile.id;
-                        phaseFileObject['url'] = phaseFile.attributes.file.url;
-                        return phaseFileObject;
+                    projectFiles.data.map((projectFile) => {
+                      return convertUrlToUploadFileObservable(projectFile.attributes.file.url).pipe(map((projectFileObject) => {
+                        projectFileObject['id'] = projectFile.id;
+                        projectFileObject['url'] = projectFile.attributes.file.url;
+                        return projectFileObject;
                       }));
                     })
                   );
