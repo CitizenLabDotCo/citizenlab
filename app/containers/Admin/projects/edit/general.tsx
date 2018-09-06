@@ -415,7 +415,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   handleProjectFileOnRemove = (removedFile: UploadFile) => () => {
     this.setState((state) => ({
       submitState: 'enabled',
-      localProjectFiles: (!isNilOrError(state.localProjectFiles) ? state.localProjectFiles.filter(projectFile => projectFile.name !== removedFile.name) : [])
+      localProjectFiles: (!isNilOrError(state.localProjectFiles) ? state.localProjectFiles.filter(projectFile => projectFile.filename !== removedFile.filename) : [])
     }));
   }
 
