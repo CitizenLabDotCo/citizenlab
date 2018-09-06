@@ -24,5 +24,9 @@ export default () => ({
       path: 'registration',
       getComponent: loadAndRender(import('containers/Admin/settings/registration')),
     },
+    {
+      path: 'widgets',
+      getComponent: loadAndRender(import('containers/Admin/settings/widgets')),
+    },
   ],
 });
