@@ -78,7 +78,7 @@ pipeline {
       when { branch 'master' }
       steps {
         sshagent (credentials: ['local-ssh-user']) {
-          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 35.157.143.6 "docker pull citizenlabdotco/cl2-back:latest && docker run --env-file cl2-deployment/.env-staging citizenlabdotco/cl2-back:latest rake db:migrate cl2back:clean_tenant_settings"'
+          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 35.157.143.6 "docker pull citizenlabdotco/cl2-back:latest && docker run --env-file cl2-deployment/.env-staging citizenlabdotco/cl2-back:latest rake db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records"'
           sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 35.157.143.6 "cd cl2-deployment && docker stack deploy --compose-file docker-compose-staging.yml cl2-back-stg --with-registry-auth"'
           slackSend color: '#50c122', message: ":tada: SUCCESS: ${env.JOB_NAME} build #${env.BUILD_NUMBER} deployed to staging cluster!\nMore info at ${env.BUILD_URL}"
         }
@@ -101,7 +101,7 @@ pipeline {
       when { branch 'production' }
       steps {
         sshagent (credentials: ['local-ssh-user']) {
-          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 52.57.124.157 "docker pull citizenlabdotco/cl2-back:production-benelux && docker run --env-file cl2-deployment/.env-production-benelux citizenlabdotco/cl2-back:production-benelux rake db:migrate cl2back:clean_tenant_settings"'
+          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 52.57.124.157 "docker pull citizenlabdotco/cl2-back:production-benelux && docker run --env-file cl2-deployment/.env-production-benelux citizenlabdotco/cl2-back:production-benelux rake db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records"'
           sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 52.57.124.157 "cd cl2-deployment && docker stack deploy --compose-file docker-compose-production-benelux.yml cl2-prd-bnlx-stack --with-registry-auth"'
           slackSend color: '#50c122', message: ":tada: SUCCESS: ${env.JOB_NAME} build #${env.BUILD_NUMBER} deployed to benelux production cluster!\nMore info at ${env.BUILD_URL}"
         }
@@ -112,7 +112,7 @@ pipeline {
       when { branch 'production' }
       steps {
         sshagent (credentials: ['local-ssh-user']) {
-          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 35.183.23.116 "docker pull citizenlabdotco/cl2-back:production-benelux && docker run --env-file cl2-deployment/.env-production-canada citizenlabdotco/cl2-back:production-benelux rake db:migrate cl2back:clean_tenant_settings"'
+          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 35.183.23.116 "docker pull citizenlabdotco/cl2-back:production-benelux && docker run --env-file cl2-deployment/.env-production-canada citizenlabdotco/cl2-back:production-benelux rake db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records"'
           sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 35.183.23.116 "cd cl2-deployment && docker stack deploy --compose-file docker-compose-production-canada.yml cl2-back --with-registry-auth"'
           slackSend color: '#50c122', message: ":tada: SUCCESS: ${env.JOB_NAME} build #${env.BUILD_NUMBER} deployed to canada production cluster!\nMore info at ${env.BUILD_URL}"
         }
