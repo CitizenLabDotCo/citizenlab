@@ -107,6 +107,14 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
     this.setState({ localEventFiles: remoteEventFiles });
   }
 
+  componentDidUpdate(prevProps: Props) {
+    const { remoteEventFiles } = this.props;
+
+    if (prevProps.remoteEventFiles !== remoteEventFiles) {
+      this.setState({ localEventFiles: remoteEventFiles });
+    }
+  }
+
   componentWillUnmount() {
     unsubscribe(this.subscriptions);
   }
@@ -197,7 +205,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
     if (id && !isNilOrError(filesToAdd) && filesToAdd.length > 0) {
       filesToAddPromises = filesToAdd.map((fileToAdd: any) => addEventFile(id as string, fileToAdd.base64, fileToAdd.name));
     }
-    debugger;
+
     return filesToAddPromises;
   }
 
@@ -252,7 +260,6 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
     if (allPromises.length > 0) {
       this.setState({ saving: true, saved: false });
       try {
-        debugger;
         await Promise.all(allPromises);
         this.setState({ saving: false, saved: true, attributeDiff: {}, errors: {} });
       } catch (errors) {
@@ -360,7 +367,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
 }
 
 export default (props: Props) => (
-  <GetResourceFileObjects>
+  <GetResourceFileObjects resourceId={props.params.id} resourceType="event">
     {remoteEventFiles => <AdminProjectEventEdit remoteEventFiles={remoteEventFiles} {...props} />}
   </GetResourceFileObjects>
 );

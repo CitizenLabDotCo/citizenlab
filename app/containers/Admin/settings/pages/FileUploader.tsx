@@ -31,7 +31,7 @@ export default class FileUploader extends React.PureComponent<Props, State>{
   }
 
   handlePageFileOnRemove = (file: UploadFile) => {
-
+    return undefined;
   }
 
   render() {

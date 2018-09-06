@@ -2,6 +2,7 @@ import React from 'react';
 import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { switchMap, map, filter, distinctUntilChanged } from 'rxjs/operators';
 import { isEmpty, get, forOwn } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -280,10 +281,10 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
             projectType,
             areaType,
             areasOptions,
-            oldProjectImages: (oldProjectImages as ImageFile[] | null),
-            newProjectImages: (oldProjectImages as ImageFile[] | null),
-            remoteProjectFiles: (remoteProjectFiles as UploadFile[] | null),
-            localProjectFiles: (remoteProjectFiles as UploadFile[] | null),
+            oldProjectImages: !isNilOrError(oldProjectImages) ? oldProjectImages as ImageFile[] : null,
+            newProjectImages: !isNilOrError(oldProjectImages) ? oldProjectImages as ImageFile[] : null,
+            remoteProjectFiles: !isNilOrError(remoteProjectFiles) ? remoteProjectFiles as UploadFile[] : null,
+            localProjectFiles: !isNilOrError(remoteProjectFiles) ? remoteProjectFiles as UploadFile[] : null,
             headerBg: (headerBg ? [headerBg] : null),
             presentationMode: (projectData && projectData.attributes.presentation_mode || state.presentationMode),
             areas: areas.data,
@@ -386,7 +387,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     this.setState((state) => ({
       submitState: 'enabled',
       localProjectFiles: [
-        ...(state.localProjectFiles || []),
+        ...(!isNilOrError(state.localProjectFiles) ? state.localProjectFiles : []),
         newFile
       ]
     }));
@@ -395,7 +396,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   handleProjectFileOnRemove = (removedFile: UploadFile) => () => {
     this.setState((state) => ({
       submitState: 'enabled',
-      localProjectFiles: (state.localProjectFiles ? state.localProjectFiles.filter(projectFile => projectFile.name !== removedFile.name) : null)
+      localProjectFiles: (!isNilOrError(state.localProjectFiles) ? state.localProjectFiles.filter(projectFile => projectFile.name !== removedFile.name) : null)
     }));
   }
 
