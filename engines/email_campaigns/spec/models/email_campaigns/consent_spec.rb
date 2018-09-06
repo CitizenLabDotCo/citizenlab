@@ -31,4 +31,17 @@ RSpec.describe EmailCampaigns::Consent, type: :model do
     end
   end
 
+  describe "idea_marked_as_spam_campaign" do
+    let(:camp) { create(:idea_marked_as_spam_campaign) }
+
+    it "is consentable for admins or moderators" do
+      mortal = create(:user)
+      admin = create(:admin)
+      moderator = create(:moderator)
+      expect(camp.class.consentable_for? mortal).to be_falsey
+      expect(camp.class.consentable_for? admin).to be_truthy
+      expect(camp.class.consentable_for? moderator).to be_truthy
+    end
+  end
+
 end
