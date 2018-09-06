@@ -131,7 +131,7 @@ class Phase extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
-  phaseFiles: ({ phaseId, render }) => <GetResourceFileObjects resourceId={phaseId}>{render}</GetResourceFileObjects>
+  phaseFiles: ({ phaseId, render }) => <GetResourceFileObjects resourceType="phase" resourceId={phaseId}>{render}</GetResourceFileObjects>
 });
 
 export default (inputProps: InputProps) => (
