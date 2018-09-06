@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // i18n
 import messages from './messages';
@@ -12,13 +13,22 @@ import FileDisplay from 'components/UI/FileDisplay';
 // typings
 import { UploadFile } from 'typings';
 
-interface Props {}
+// resources
+import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
+
+interface InputProps {}
+
+interface DataProps {
+  pageFiles: GetResourceFileObjectsChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 interface State {
   localPageFiles: UploadFile[] | null | Error | undefined;
 }
 
-export default class FileUploader extends React.PureComponent<Props, State>{
+class FileUploader extends React.PureComponent<Props & WithRouterProps, State>{
   constructor(props: Props) {
     super(props as any);
     this.state = {
@@ -55,3 +65,9 @@ export default class FileUploader extends React.PureComponent<Props, State>{
     );
   }
 }
+
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <GetResourceFileObjects resourceType="page" resourceId={inputProps.params.id}>
+    {pageFiles => <FileUploader {...inputProps} pageFiles={pageFiles} />}
+  </GetResourceFileObjects>
+));
