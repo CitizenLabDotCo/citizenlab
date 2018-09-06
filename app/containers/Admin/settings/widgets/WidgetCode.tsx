@@ -46,7 +46,7 @@ class WidgetCode extends PureComponent<Props & DataProps, State> {
         </p>
         <CodeSnippet>
           {`
-            <iframe src="https://${tenant.attributes.host}/widgets${path}" width="${width}" height="${height} frameborder="0" scrolling="no" />
+            <iframe src="https://${tenant.attributes.host}/widgets${path}" width="${width}" height="${height}" frameborder="0" scrolling="no" />
           `}
         </CodeSnippet>
       </>
