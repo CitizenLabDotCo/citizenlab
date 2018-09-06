@@ -64,6 +64,7 @@ class FileInput extends Component<InjectedIntlProps &Props> {
       const file = current.files[0] as UploadFile;
 
       getBase64FromFile(file).then(res => {
+        file.filename = file.name;
         file.base64 = res;
         file.url = createObjectUrl(file);
         this.props.onAdd(file);
