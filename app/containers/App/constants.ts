@@ -26,7 +26,7 @@ export const locales = [
   'nb-NO'
 ];
 export const appLocalePairs = {
-  'en': 'English',
+  en: 'English',
   'en-GB': 'English (Great Britain)',
   'en-CA': 'English (Canada)',
   'fr-BE': 'Français (Belgique)',
@@ -36,10 +36,10 @@ export const appLocalePairs = {
   'de-DE': 'Deutsch',
   'da-DK': 'Dansk',
   'nb-NO': 'Norsk (Bokmål)',
-  'ach': 'Acholi',
+  ach: 'Acholi',
 };
 export const shortenedAppLocalePairs = {
-  'en': 'English',
+  en: 'English',
   'en-GB': 'English',
   'en-CA': 'English',
   'fr-BE': 'Français',
@@ -49,5 +49,5 @@ export const shortenedAppLocalePairs = {
   'de-DE': 'Deutsch',
   'da-DK': 'Dansk',
   'nb-NO': 'Norsk',
-  'ach': 'Acholi',
+  ach: 'Acholi',
 };
