@@ -27,7 +27,7 @@ const ArrowIcon = styled(Icon) `
   }
 `;
 const Options: any = styled.div`
-  display: inline-flex;
+  display: flex;
   align-items: center;
   padding-bottom: 8px;
   transition: all 80ms ease-out;

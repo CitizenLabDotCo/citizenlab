@@ -1,5 +1,5 @@
 import { ImageFile } from 'react-dropzone';
-import PlatformLocales from 'platformLocales';
+import { appLocalePairs } from 'containers/App/constants';
 
 export interface IRelationship {
   id: string;
@@ -35,7 +35,7 @@ export interface Message {
   defaultMessage: string;
 }
 
-export type Locale = keyof typeof PlatformLocales;
+export type Locale = keyof typeof appLocalePairs;
 
 export type Multiloc = {
   [key in Locale]?: string
