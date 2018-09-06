@@ -55,4 +55,31 @@ describe MultilocService do
     end
   end
 
+  describe "i18n_to_multiloc" do
+    before do
+      I18n.backend.store_translations(:en, {
+        foo: {
+          hello: 'hello!'
+        }
+      })
+      I18n.backend.store_translations(:'nl-BE', {
+        foo: {
+          hello: 'hallo!'
+        }
+      })
+    end
+
+    it "assembles a multiloc object for a given translation key" do
+      expect(service.i18n_to_multiloc('foo.hello')).to eq({
+        "en" => 'hello!',
+        "nl-BE" => 'hallo!',
+        "fr-FR" => 'hello!'
+      })
+    end
+
+    it "returns missing strings for a missing translation key" do
+      expect{service.i18n_to_multiloc('not.existing.key')}.to raise_error
+    end
+  end
+
 end
