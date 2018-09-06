@@ -172,7 +172,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
 
       if (response && response.data && response.data.length > 0) {
         users = response.data.map((user) => ({
-          display: `${user.attributes.first_name} ${user.attributes.last_name}`,
+          display: `${user.attributes.first_name} ${user.attributes.last_name ? user.attributes.last_name : ''}`,
           id: user.attributes.slug
         }));
       }
