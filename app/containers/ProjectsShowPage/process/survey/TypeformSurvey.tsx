@@ -1,10 +1,17 @@
-import React from 'react';
-import { makeWidget } from '@typeform/embed';
+import React, { PureComponent } from 'react';
+import { makePopup } from '@typeform/embed';
 import styled from 'styled-components';
+import Button from 'components/UI/Button';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../../messages';
 
 const Container = styled.div`
   width: 100%;
   position: relative;
+`;
+
+const ButtonWrapper = styled.div`
+  margin: 2rem 0;
 `;
 
 type Props = {
@@ -14,40 +21,37 @@ type Props = {
 
 type State = {};
 
-class TypeformSurvey extends React.PureComponent<Props, State> {
-  typeformElement: HTMLElement | null = null;
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {};
-  }
+class TypeformSurvey extends PureComponent<Props, State> {
+  typeformReference: any;
 
   componentDidMount() {
     const { email, typeformUrl } = this.props;
     const surveyUrl = (email ? `${typeformUrl}?email=${email}` : typeformUrl);
 
-    if (this.typeformElement) {
-      makeWidget(this.typeformElement, surveyUrl, {
-        hideFooter: true,
-        hideScrollbars: false,
-        hideHeaders: true,
-      });
-    }
+    this.typeformReference = makePopup(surveyUrl, {
+      mode: (window.innerWidth > 800 ? 'popup' : 'drawer_left'),
+      autoOpen: false,
+      autoClose: 3000,
+      onSubmit: () => {
+        setTimeout(() => {
+          this.typeformReference.close();
+        }, 3000);
+      }
+    });
   }
 
-  setRef = (element) => {
-    this.typeformElement = element;
+  openSurvey = () => {
+    this.typeformReference.open();
   }
 
   render() {
-    const style = {
-      height: '500px',
-      border: '1px solid #e4e4e4'
-    };
-
     return (
       <Container className={this.props['className']}>
-        <div ref={this.setRef} style={style} />
+        <ButtonWrapper>
+          <Button onClick={this.openSurvey} size="2">
+            <FormattedMessage {...messages.fillInSurvey} />
+          </Button>
+        </ButtonWrapper>
       </Container>
     );
   }

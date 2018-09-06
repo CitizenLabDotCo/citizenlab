@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 // tslint:disable-next-line:no-vanilla-routing
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { useScroll } from 'react-router-scroll';
@@ -15,7 +15,6 @@ import 'file-loader?name=[name].[ext]!./.htaccess';
 import { translationMessages } from './i18n';
 
 // Import CSS reset and Global Styles
-// import 'sanitize.css/sanitize.css';
 import 'assets/css/reset.min.css';
 import './global-styles';
 
@@ -54,4 +53,4 @@ const Root = () => (
   </LanguageProvider>
 );
 
-ReactDOM.render(<Root />, document.getElementById('app'));
+render(<Root />, document.getElementById('app'));

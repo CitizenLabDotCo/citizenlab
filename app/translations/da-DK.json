@@ -741,6 +741,7 @@
   "app.containers.Projects.endedOn": "Sluttede den {date}",
   "app.containers.Projects.endsOn": "Slutter den {date}",
   "app.containers.Projects.events": "Begivenheder",
+  "app.containers.Projects.fillInSurvey": "",
   "app.containers.Projects.goBackToList": "Gå tilbage til listen",
   "app.containers.Projects.header": "Projekter",
   "app.containers.Projects.ideasTitle": "Ideer til dette projekt",
