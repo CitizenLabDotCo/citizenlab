@@ -29,15 +29,14 @@ class TypeformSurvey extends PureComponent<Props, State> {
     const surveyUrl = (email ? `${typeformUrl}?email=${email}` : typeformUrl);
 
     this.typeformReference = makePopup(surveyUrl, {
-      mode: (window.innerWidth > 800 ? 'popup' : 'drawer_left'),
+      mode: 'popup',
       autoOpen: false,
-      autoClose: 3000,
-      onSubmit: () => {
-        setTimeout(() => {
-          this.typeformReference.close();
-        }, 3000);
-      }
+      onSubmit: () => this.closeSurvey
     });
+  }
+
+  closeSurvey = () => {
+    setTimeout(() => this.typeformReference.close(), 3000);
   }
 
   openSurvey = () => {
