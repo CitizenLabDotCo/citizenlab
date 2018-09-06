@@ -14,7 +14,7 @@ import { UploadFile } from 'typings';
 
 interface InputProps {
   resetOnChange?: boolean;
-  resourceType: 'project' | 'phase';
+  resourceType: 'project' | 'phase' | 'event';
   resourceId: string | null;
 }
 
@@ -34,7 +34,7 @@ export default class GetResourceFileObjects extends React.Component<Props, State
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
-  public static defaultProps: Partial<Props> = {
+  public static defaultProps = {
     resetOnChange: true
   };
 
