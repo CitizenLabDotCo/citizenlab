@@ -134,7 +134,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
-      segmented_emailing: {
+      widgets: {
         enabled: true,
         allowed: true
       }
