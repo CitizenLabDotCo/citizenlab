@@ -3,5 +3,5 @@
 export default (importPromise: Promise<any>) => (_nextState, cb) => {
   importPromise
   .then((Module) => cb(null, Module.default))
-  .catch((e) => console.error(e)); // eslint-disable-line no-console
+  .catch((e) => console.error(e));
 };

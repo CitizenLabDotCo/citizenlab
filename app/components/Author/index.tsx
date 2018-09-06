@@ -1,8 +1,7 @@
 import React from 'react';
-import { isString } from 'lodash';
-import { Subscription, BehaviorSubject } from 'rxjs';
+import { isString } from 'lodash-es';
+import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
 
 // router
 import Link from 'utils/cl-router/Link';

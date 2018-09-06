@@ -1,5 +1,5 @@
 import { IProject } from './projects';
-import { IRelationship, Multiloc, API } from 'typings';
+import { IRelationship, Multiloc, ImageSizes } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
@@ -20,7 +20,7 @@ export interface IProjectData {
     description_multiloc: Multiloc;
     description_preview_multiloc: Multiloc;
     slug: string;
-    header_bg: API.ImageSizes;
+    header_bg: ImageSizes;
     ideas_count: number;
     created_at: string;
     updated_at: string;

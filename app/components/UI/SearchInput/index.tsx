@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isString, isEmpty } from 'lodash';
+import { isString, isEmpty } from 'lodash-es';
 
 // components
 import Icon from 'components/UI/Icon';

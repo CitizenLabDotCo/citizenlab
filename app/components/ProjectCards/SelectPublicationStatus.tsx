@@ -20,7 +20,7 @@ type State = {
 };
 
 class SelectPublicationStatus extends PureComponent<Props, State> {
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {
       selectedValue: ['all']

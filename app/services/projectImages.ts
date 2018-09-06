@@ -1,4 +1,4 @@
-import { API } from 'typings';
+import { ImageSizes } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
@@ -8,7 +8,7 @@ export interface IProjectImageData {
   id: string;
   type: string;
   attributes: {
-    versions: API.ImageSizes,
+    versions: ImageSizes,
     ordering: string | null,
     created_at: string,
     updated_at: string,

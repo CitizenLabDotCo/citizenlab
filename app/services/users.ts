@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { API, Multiloc, Locale } from 'typings';
+import { ImageSizes, Multiloc, Locale } from 'typings';
 import { authUserStream } from './auth';
 
 const apiEndpoint = `${API_PATH}/users`;
@@ -18,7 +18,7 @@ export interface IUserData {
     last_name: string | null;
     slug: string;
     locale: Locale;
-    avatar: API.ImageSizes,
+    avatar: ImageSizes,
     roles?: IRole[],
     bio_multiloc: Multiloc,
     registration_completed_at: string | null;

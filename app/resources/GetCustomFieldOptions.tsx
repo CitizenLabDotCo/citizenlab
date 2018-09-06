@@ -1,5 +1,6 @@
 import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { customFieldOptionsStream, ICustomFieldOptionsData } from 'services/userCustomFields';
 import { isNilOrError } from 'utils/helperUtils';
@@ -37,10 +38,10 @@ export default class GetCustomFieldOptions extends React.Component<Props, State>
     this.inputProps$ = new BehaviorSubject({ customFieldId });
 
     this.subscriptions = [
-      this.inputProps$
-        .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .switchMap(({ customFieldId }) => customFieldOptionsStream(customFieldId).observable)
-        .subscribe((customFieldOptions) => this.setState({ customFieldOptions: !isNilOrError(customFieldOptions) ? customFieldOptions.data : customFieldOptions }))
+      this.inputProps$.pipe(
+        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+        switchMap(({ customFieldId }) => customFieldOptionsStream(customFieldId).observable)
+      ).subscribe((customFieldOptions) => this.setState({ customFieldOptions: !isNilOrError(customFieldOptions) ? customFieldOptions.data : customFieldOptions }))
     ];
   }
 
