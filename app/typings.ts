@@ -25,6 +25,7 @@ export interface ImageFile extends ImageFile {
 }
 
 export interface UploadFile extends File {
+  filename: string;
   base64?: string;
   url: string;
   id?: string;
