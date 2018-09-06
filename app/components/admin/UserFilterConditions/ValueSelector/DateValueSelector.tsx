@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import moment, { Moment } from 'moment';
 
 import DateInput from 'components/UI/DateInput';

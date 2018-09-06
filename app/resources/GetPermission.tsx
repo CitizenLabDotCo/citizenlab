@@ -1,5 +1,6 @@
 import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { TPermissionItem, hasPermission } from 'services/permissions';
 
@@ -38,10 +39,10 @@ export default class GetPermission extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ item, action, context });
 
     this.subscriptions = [
-      this.inputProps$
-        .distinctUntilChanged((prev, next) => shallowCompare(prev, next))
-        .switchMap(({ item, action, context }) => hasPermission({ item, action, context }))
-        .subscribe((permission) => this.setState({ permission }))
+      this.inputProps$.pipe(
+        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+        switchMap(({ item, action, context }) => hasPermission({ item, action, context }))
+      ).subscribe((permission) => this.setState({ permission }))
     ];
   }
 

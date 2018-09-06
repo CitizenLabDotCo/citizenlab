@@ -3,7 +3,7 @@ import React from 'react';
 import { FieldProps } from 'formik';
 
 // components
-import QuillMultiloc, { MultilocEditorProps } from 'components/QuillEditor/QuillMultiloc';
+import QuillMultiloc, { MultilocEditorProps } from 'components/UI/QuillEditor/QuillMultiloc';
 
 // typings
 

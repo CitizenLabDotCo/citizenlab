@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 // style
 import CSSTransition from 'react-transition-group/CSSTransition';

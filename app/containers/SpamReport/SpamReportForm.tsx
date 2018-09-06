@@ -1,5 +1,5 @@
 // libraries
-import * as React from 'react';
+import React from 'react';
 
 // Services
 import { Report } from 'services/spamReports';
@@ -66,9 +66,9 @@ const ReportReason = styled.div`
 `;
 
 // Typings
-import { Forms } from 'typings';
+import { CRUDParams } from 'typings';
 
-interface Props extends Forms.crudParams {
+interface Props extends CRUDParams {
   reasonCodes: Report['reason_code'][];
   diff: Report | null;
   onReasonChange: {(value: Report['reason_code']): void};

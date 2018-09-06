@@ -170,7 +170,7 @@ const LinkIcon = styled(Icon)`
   height: 1em;
 `;
 
-interface InputProps { }
+interface InputProps {}
 
 interface DataProps {
   locale: GetLocaleChildProps;
@@ -254,15 +254,17 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
   }
 }
 
-const Data = adopt<DataProps, InputProps & WithRouterProps & InjectedIntlProps>({
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
   page: ({ params, render }) => <GetPage slug={params.slug}>{render}</GetPage>,
   pageLinks: ({ page, render }) => <GetPageLinks pageId={(!isNilOrError(page) ? page.id : null)}>{render}</GetPageLinks>,
 });
 
-export default withRouter(injectIntl((inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
+const PagesShowPageWithHOCs = injectIntl<InputProps & WithRouterProps>(PagesShowPage);
+
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {dataProps => <PagesShowPage {...inputProps} {...dataProps} />}
+    {dataProps => <PagesShowPageWithHOCs {...inputProps} {...dataProps} />}
   </Data>
-)));
+));

@@ -1,5 +1,5 @@
 import React from 'react';
-import FileSaver from 'file-saver';
+import { saveAs } from 'file-saver';
 
 // components
 import Button from 'components/UI/Button';
@@ -78,7 +78,7 @@ export class AllIdeas extends React.PureComponent<Props & ITracks, State> {
     try {
       this.setState({ exportingIdeas: true });
       const blob = await requestBlob(`${API_PATH}/ideas/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-      FileSaver.saveAs(blob, 'ideas-export.xlsx');
+      saveAs(blob, 'ideas-export.xlsx');
       this.setState({ exportingIdeas: false });
     } catch (error) {
       this.setState({ exportingIdeas: false });
@@ -91,7 +91,7 @@ export class AllIdeas extends React.PureComponent<Props & ITracks, State> {
     try {
       this.setState({ exportingComments: true });
       const blob = await requestBlob(`${API_PATH}/comments/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-      FileSaver.saveAs(blob, 'comments-export.xlsx');
+      saveAs(blob, 'comments-export.xlsx');
       this.setState({ exportingComments: false });
 
     } catch (error) {

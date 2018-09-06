@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'utils/cl-intl';
+import { captureException } from '@sentry/browser';
 import messages from './messages';
 
 type Props = {};
@@ -13,13 +14,13 @@ export default class ErrorBoundary extends React.Component<Props, State>  {
     this.state = { hasError: false };
   }
 
-  componentDidCatch(error, info) {
+  componentDidCatch(error) {
     // Display fallback UI
     this.setState({ hasError: true });
 
     // Report to Sentry
-    if (window['Raven']) {
-      window['Raven'].captureException(error, { extra: info });
+    if (process.env.NODE_ENV !== 'development') {
+      captureException(error);
     }
   }
 
