@@ -7,6 +7,7 @@ import Radio, { Props as VanillaProps } from 'components/UI/Radio';
 export interface Props {
   name: string;
 }
+
 export interface State {}
 
 class FormikRadio extends React.Component<Props & VanillaProps, State> {
