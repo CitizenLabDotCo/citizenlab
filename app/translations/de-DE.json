@@ -539,7 +539,7 @@
   "app.containers.AdminPage.groups.permissions.saveSuccess": "Gespeichert!",
   "app.containers.AdminPage.groups.permissions.saveSuccessMessage": "Ihre Änderungen wurden gespeichert.",
   "app.containers.AdminPage.widgets.exportHtmlCodeButton": "Export HTML code",
-  "app.containers.AdminPage.widgets.fieldAccentColor": "Accent color",
+  "app.containers.AdminPage.widgets.fieldAccentColor": "Accent Color",
   "app.containers.AdminPage.widgets.fieldBackgroundColor": "Widget background color",
   "app.containers.AdminPage.widgets.fieldButtonText": "Button text",
   "app.containers.AdminPage.widgets.fieldButtonTextDefault": "Join now",
