@@ -1,7 +1,9 @@
-import React from 'react';
-import { makeWidget, makePopup } from '@typeform/embed';
+import React, { PureComponent } from 'react';
+import { makePopup } from '@typeform/embed';
 import styled from 'styled-components';
 import Button from 'components/UI/Button';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../../messages';
 
 const Container = styled.div`
   width: 100%;
@@ -19,58 +21,37 @@ type Props = {
 
 type State = {};
 
-class TypeformSurvey extends React.PureComponent<Props, State> {
-  typeformElement: HTMLElement | null = null;
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {};
-  }
+class TypeformSurvey extends PureComponent<Props, State> {
+  typeformReference: any;
 
   componentDidMount() {
     const { email, typeformUrl } = this.props;
     const surveyUrl = (email ? `${typeformUrl}?email=${email}` : typeformUrl);
 
-    if (this.typeformElement) {
-      // makeWidget(this.typeformElement, surveyUrl, {
-      //   hideFooter: true,
-      //   hideHeaders: true
-      // });
-
-      makePopup(surveyUrl, {
-        mode: 'drawer_left',
-        autoOpen: true
-      });
-    }
-  }
-
-  setRef = (element) => {
-    this.typeformElement = element;
-  }
-
-  openSurvey = () => {
-    const { email, typeformUrl } = this.props;
-    const surveyUrl = (email ? `${typeformUrl}?email=${email}` : typeformUrl);
-
-    makePopup(surveyUrl, {
-      mode: 'drawer_left',
-      autoOpen: true,
+    this.typeformReference = makePopup(surveyUrl, {
+      mode: (window.innerWidth > 800 ? 'popup' : 'drawer_left'),
+      autoOpen: false,
+      autoClose: 3000,
+      onSubmit: () => {
+        setTimeout(() => {
+          this.typeformReference.close();
+        }, 3000);
+      }
     });
   }
 
-  render() {
-    const style = {
-      width: '100%',
-      height: '500px',
-      border: '1px solid #e4e4e4'
-    };
+  openSurvey = () => {
+    this.typeformReference.open();
+  }
 
+  render() {
     return (
       <Container className={this.props['className']}>
         <ButtonWrapper>
-          <Button onClick={this.openSurvey}>Save</Button>
+          <Button onClick={this.openSurvey} size="2">
+            <FormattedMessage {...messages.fillInSurvey} />
+          </Button>
         </ButtonWrapper>
-        {/* <div ref={this.setRef} style={style} /> */}
       </Container>
     );
   }
