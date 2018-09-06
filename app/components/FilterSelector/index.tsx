@@ -62,7 +62,7 @@ interface State {
 export default class FilterSelector extends PureComponent<Props, State> {
   baseID: string;
 
-  static defaultProps: Partial<Props> = {
+  static defaultProps = {
     width: undefined,
     mobileWidth: undefined,
     maxHeight: undefined,

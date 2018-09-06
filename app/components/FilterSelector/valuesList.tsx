@@ -81,7 +81,7 @@ type Props = {
 type State = {};
 
 export default class ValuesList extends PureComponent<Props, State> {
-  static defaultProps: Partial<Props> = {
+  static defaultProps = {
     width: undefined,
     mobileWidth: undefined,
     maxHeight: undefined,
