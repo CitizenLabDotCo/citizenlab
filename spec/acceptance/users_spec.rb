@@ -237,6 +237,7 @@ resource "Users" do
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq invite.invitee.id
+        expect(json_response.dig(:data, :attributes, :email)).to eq invite.invitee.email
       end
 
       describe do
