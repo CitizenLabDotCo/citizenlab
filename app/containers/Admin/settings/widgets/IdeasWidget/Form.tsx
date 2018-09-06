@@ -14,7 +14,7 @@ import FormikSelect from 'components/UI/FormikSelect';
 
 // I18n
 import { FormattedMessage } from 'utils/cl-intl';
-import localize, { injectedLocalized } from 'utils/localize';
+import localize, { InjectedLocalized } from 'utils/localize';
 import messages from '../messages';
 
 // Resources
@@ -53,7 +53,7 @@ interface State {
   openedCollapse: 'dimensions' | 'ideas' | 'style' | 'headerAndFooter' | null;
 }
 
-class WidgetForm extends PureComponent<InjectedFormikProps<Props & injectedLocalized, FormValues>, State> {
+class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedLocalized, FormValues>, State> {
 
   constructor(props) {
     super(props);
