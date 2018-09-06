@@ -30,7 +30,7 @@ export default class GetResourceFiles extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
-  public static defaultProps: Partial<Props> = {
+  public static defaultProps = {
     resetOnChange: true
   };
 
