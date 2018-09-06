@@ -125,8 +125,6 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
     if (tenant) {
       this.setState({ loading: true, saved: false, hasUrlError: false, errors: {} });
 
-      console.log(attributesDiff);
-
       updateTenant(tenant.id, attributesDiff).then(() => {
         this.setState({ saved: true, attributesDiff: {}, loading: false });
       }).catch((e) => {

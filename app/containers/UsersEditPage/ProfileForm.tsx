@@ -3,12 +3,6 @@ import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { switchMap, map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { isEqual, isEmpty, get } from 'lodash-es';
 
-// import { Subscription, BehaviorSubject } from 'rxjs';
-// import { switchMap, map } from 'rxjs/operators';
-// import { combineLatest } from 'rxjs/observable/combineLatest';
-// import { of } from 'rxjs/observable/of';
-// import { isEqual, isEmpty, get } from 'lodash';
-
 // services
 import { IAreaData } from 'services/areas';
 import { updateUser, IUserData, mapUserToDiff } from 'services/users';
@@ -154,8 +148,6 @@ class ProfileForm extends PureComponent<Props, State> {
     }
 
     setStatus('');
-
-    console.log(newValues);
 
     updateUser(this.props.user.id, newValues).then((user) => {
       resetForm();
