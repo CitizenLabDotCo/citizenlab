@@ -11,7 +11,7 @@ import { isError } from 'util';
 import { UploadFile } from 'typings';
 
 const Container = styled.div`
-  display: flex
+  display: flex;
   align-items: center;
   color: ${colors.label};
   border: 1px solid ${colors.label};
@@ -30,7 +30,7 @@ const Paperclip = styled(Icon)`
 `;
 
 const FileDownloadLink = styled.a`
-  color: ${colors.label}
+  color: ${colors.label};
   display: inline-block;
   margin-right: 5px;
   text-decoration: underline;
