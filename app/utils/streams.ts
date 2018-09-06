@@ -5,6 +5,7 @@ import { includes, forOwn, isError, isNil, isArray, isString, isObject, isEmpty,
 import request from 'utils/request';
 import { authApiEndpoint } from 'services/auth';
 import { currentTenantApiEndpoint } from 'services/tenant';
+import { IUser } from 'services/users';
 
 export type pureFn<T> = (arg: T) => T;
 type fetchFn = () => Promise<{}>;
@@ -57,22 +58,22 @@ class Streams {
     this.streamIdsByDataIdWithQuery = {};
   }
 
-  reset() {
+  reset(authUser: IUser | null) {
     this.resourcesByDataId = {};
     this.streamIdsByApiEndPointWithQuery = {};
     this.streamIdsByApiEndPointWithoutQuery = {};
     this.streamIdsByDataIdWithoutQuery = {};
     this.streamIdsByDataIdWithQuery = {};
 
-    Object.keys(this.streams)
-      .filter(streamId => streamId !== authApiEndpoint && streamId !== currentTenantApiEndpoint)
-      .forEach((streamId) => {
-        if (this.isActiveStream(streamId)) {
-          this.streams[streamId].fetch();
-        } else {
-          this.deleteStream(streamId, this.streams[streamId].params.apiEndpoint);
-        }
-      });
+    this.streams[authApiEndpoint].observer.next(authUser);
+
+    Object.keys(this.streams).forEach((streamId) => {
+      if (streamId === authApiEndpoint || streamId === currentTenantApiEndpoint || this.isActiveStream(streamId)) {
+        this.streams[streamId].fetch();
+      } else {
+        this.deleteStream(streamId, this.streams[streamId].params.apiEndpoint);
+      }
+    });
   }
 
   deepFreeze<T>(object: T): T {
