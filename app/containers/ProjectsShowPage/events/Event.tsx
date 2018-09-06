@@ -336,7 +336,7 @@ class Event extends React.PureComponent<Props, State> {
 }
 
 export default (inputProps: InputProps) => (
-  <GetResourceFileObjects>
+  <GetResourceFileObjects resourceType="event" resourceId={inputProps.event.id}>
     {eventFiles => <Event eventFiles={eventFiles} {...inputProps} />}
   </GetResourceFileObjects>
 );

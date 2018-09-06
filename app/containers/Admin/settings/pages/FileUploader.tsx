@@ -40,7 +40,7 @@ class FileUploader extends React.PureComponent<Props & WithRouterProps, State>{
 
   }
 
-  handlePageFileOnRemove = (file: UploadFile) => {
+  handlePageFileOnRemove = (_file: UploadFile) => {
     return undefined;
   }
 
