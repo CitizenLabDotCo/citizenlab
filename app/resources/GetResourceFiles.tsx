@@ -6,11 +6,12 @@ import shallowCompare from 'utils/shallowCompare';
 import { projectFilesStream, IProjectFileData, IProjectFiles } from 'services/projectFiles';
 import { phaseFilesStream, IPhaseFileData, IPhaseFiles } from 'services/phaseFiles';
 import { eventFilesStream, IEventFileData, IEventFiles } from 'services/eventFiles';
+import { pageFilesStream, IPageFileData, IPageFiles } from 'services/pageFiles';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   resetOnChange?: boolean;
-  resourceType: 'project' | 'phase' | 'event';
+  resourceType: 'project' | 'phase' | 'event' | 'page';
   resourceId: string | null;
 }
 
@@ -21,7 +22,7 @@ interface Props extends InputProps {
 }
 
 interface State {
-  files: IProjectFileData[] | IPhaseFileData[] | IEventFileData[] | undefined | null | Error;
+  files: IProjectFileData[] | IPhaseFileData[] | IEventFileData[] | IPageFileData[] | undefined | null | Error;
 }
 
 export type GetResourceFilesChildProps = State['files'];
@@ -56,7 +57,8 @@ export default class GetResourceFiles extends React.Component<Props, State> {
           if (resourceType === 'project') streamFn = projectFilesStream;
           if (resourceType === 'phase') streamFn = phaseFilesStream;
           if (resourceType === 'event') streamFn = eventFilesStream;
-          return streamFn(resourceId).observable as Observable<IProjectFiles | IPhaseFiles | IEventFiles | null>;
+          if (resourceType === 'page') streamFn = pageFilesStream;
+          return streamFn(resourceId).observable as Observable<IProjectFiles | IPhaseFiles | IEventFiles | IPageFiles | null>;
         })
       )
       .subscribe((files) => {
