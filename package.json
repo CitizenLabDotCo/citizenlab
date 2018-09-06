@@ -84,7 +84,7 @@
     "react-social": "1.10.0",
     "react-transition-group": "2.4.0",
     "recharts": "1.1.0",
-    "regenerator-runtime": "^0.12.1",
+    "regenerator-runtime": "0.12.1",
     "rxjs": "6.3.2",
     "semantic-ui-react": "0.82.3",
     "uuid": "3.3.2",
