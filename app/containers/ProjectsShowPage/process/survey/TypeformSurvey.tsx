@@ -24,7 +24,7 @@ export default class TypeformSurvey extends PureComponent<Props, State> {
 
     return (
       <Container className={this.props['className']}>
-        <Button linkTo={surveyUrl} size="2" fullWidth={true}>
+        <Button linkTo={surveyUrl} openInNewTab={true} size="2" fullWidth={true}>
           <FormattedMessage {...messages.openSurvey} />
         </Button>
       </Container>
