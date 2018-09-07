@@ -16,10 +16,13 @@ import { UploadFile } from 'typings';
 // resources
 import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
 interface InputProps {}
 
 interface DataProps {
-  pageFiles: GetResourceFileObjectsChildProps;
+  remotePageFiles: GetResourceFileObjectsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -32,16 +35,35 @@ class FileUploader extends React.PureComponent<Props & WithRouterProps, State>{
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      localPageFiles: null,
+      localPageFiles: [],
     };
   }
 
-  handlePageFileOnAdd = () => {
+  handlePageFileOnAdd = (fileToAdd: UploadFile) => {
+    this.setState((prevState: State) => {
+      const oldLocalPageFiles = !isNilOrError(prevState.localPageFiles) ? prevState.localPageFiles : [];
 
+      return {
+        localPageFiles: [
+          ...oldLocalPageFiles,
+          fileToAdd
+        ]
+      };
+    });
   }
 
-  handlePageFileOnRemove = (_file: UploadFile) => {
-    return undefined;
+  handlePageFileOnRemove = (fileToRemove: UploadFile) => () => {
+    this.setState((prevState: State) => {
+      let localPageFiles: UploadFile[] | null = null;
+
+      if (Array.isArray(prevState.localPageFiles)) {
+        localPageFiles = prevState.localPageFiles.filter(pageFile => pageFile.filename !== fileToRemove.filename);
+      }
+
+      return {
+        localPageFiles
+      };
+    });
   }
 
   render() {
@@ -56,7 +78,7 @@ class FileUploader extends React.PureComponent<Props & WithRouterProps, State>{
         />
         {Array.isArray(localPageFiles) && localPageFiles.map(file => (
           <FileDisplay
-            key={file.id || file.name}
+            key={file.id || file.filename}
             onDeleteClick={this.handlePageFileOnRemove(file)}
             file={file}
           />)
@@ -68,6 +90,6 @@ class FileUploader extends React.PureComponent<Props & WithRouterProps, State>{
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <GetResourceFileObjects resourceType="page" resourceId={inputProps.params.id}>
-    {pageFiles => <FileUploader {...inputProps} pageFiles={pageFiles} />}
+    {remotePageFiles => <FileUploader {...inputProps} remotePageFiles={remotePageFiles} />}
   </GetResourceFileObjects>
 ));
