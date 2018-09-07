@@ -898,7 +898,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               <Error fieldName="file" apiErrors={this.state.apiErrors.file} />
               {localProjectFiles.length > 0 && localProjectFiles.map(file => (
                 <FileDisplay
-                  key={file.id || file.name}
+                  key={file.id || file.filename}
                   onDeleteClick={this.handleProjectFileOnRemove(file)}
                   file={file}
                 />)
