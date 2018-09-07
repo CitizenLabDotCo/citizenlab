@@ -176,7 +176,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
       let localEventFiles: UploadFile[] | null = null;
 
       if (Array.isArray(prevState.localEventFiles)) {
-        localEventFiles = prevState.localEventFiles.filter(eventFile => eventFile.name !== removedFile.name);
+        localEventFiles = prevState.localEventFiles.filter(eventFile => eventFile.filename !== removedFile.filename);
       }
 
       return {
@@ -198,7 +198,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
       // remoteEventFiles = last saved state of files (remote)
 
       filesToAdd = localEventFiles.filter((localEventFile) => {
-        return !remoteEventFiles.some(remoteEventFile => remoteEventFile.name === localEventFile.name);
+        return !remoteEventFiles.some(remoteEventFile => remoteEventFile.filename === localEventFile.filename);
       });
     }
 
@@ -222,7 +222,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
       // remoteEventFiles = last saved state of files (remote)
 
       filesToRemove = remoteEventFiles.filter((remoteEventFile) => {
-        return !localEventFiles.some(localEventFile => localEventFile.name === remoteEventFile.name);
+        return !localEventFiles.some(localEventFile => localEventFile.filename === remoteEventFile.filename);
       });
     }
 
