@@ -36,6 +36,10 @@ FactoryBot.define do
     enabled true
   end
 
+  factory :invite_received_campaign, class: EmailCampaigns::Campaigns::InviteReceived do
+    enabled true
+  end
+
   factory :invite_accepted_campaign, class: EmailCampaigns::Campaigns::InviteAccepted do
     enabled true
   end
