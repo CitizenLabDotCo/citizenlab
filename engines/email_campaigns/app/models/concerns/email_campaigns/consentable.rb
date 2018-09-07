@@ -15,6 +15,7 @@ module EmailCampaigns
     class_methods do
       def consentable_for? user
         roles = respond_to?(:consentable_roles) ? consentable_roles : []
+        return true if roles.blank?
         roles.any? do |role|
           user.send("#{role}?")
         end
