@@ -8,6 +8,7 @@ de:
       "comment_deleted_by_admin": When an admin deletes my comment
       "comment_marked_as_spam": When a comment is marked as spam
       "idea_marked_as_spam": When an idea is marked as spam
+      "invite_received": When someone invites me to the platform
       "invite_accepted": When someone accepts my invitation
       "mention_in_comment": When someone mentions me in a comment
       "project_moderation_rights_received": When I'm given project moderation rights
