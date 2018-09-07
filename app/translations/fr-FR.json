@@ -741,7 +741,6 @@
   "app.containers.Projects.endedOn": "Terminé le {date}",
   "app.containers.Projects.endsOn": "Se termine le {date}",
   "app.containers.Projects.events": "Evénements",
-  "app.containers.Projects.fillInSurvey": "Remplir le questionnaire",
   "app.containers.Projects.goBackToList": "Retour à la liste",
   "app.containers.Projects.header": "{orgName, select, frw {Communes} other {Projets}}",
   "app.containers.Projects.ideasTitle": "Les idées pour ce projet",
