@@ -112,7 +112,7 @@ export default class Checkbox extends PureComponent<Props, State> {
     const checkboxSize = (size || '22px');
 
     return (
-      <Container className={`${className} ${label && 'hasLabel'}`} size={checkboxSize}>
+      <Container className={`${className} ${label && 'hasLabel'} e2e-checkbox`} size={checkboxSize}>
         <CheckboxContainer
           innerRef={this.setCheckboxContainerRef}
           tabIndex={0}
