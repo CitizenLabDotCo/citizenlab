@@ -628,7 +628,7 @@
   "app.containers.IdeasNewPage2.submit": "Partager l'idée",
   "app.containers.IdeasNewPage2.submitError": "Une erreur est survenue. Veuillez réessayer.",
   "app.containers.IdeasProjectSelect.cityProjects": "{orgType, select, generic {Projets} other {Projets}}",
-  "app.containers.IdeasProjectSelect.cityProjectsExplanation": "Voici les projets sur lesquels {orgName} travaille actuellement. Contribuez en donnant votre avis.",
+  "app.containers.IdeasProjectSelect.cityProjectsExplanation": "Voici les {orgName, select, frw {communes dans} other {projets sur}} lesquels {orgName} travaille actuellement. Contribuez en donnant votre avis.",
   "app.containers.IdeasProjectSelect.continueButton": "Continuer",
   "app.containers.IdeasProjectSelect.loadMore": "Charger la suite",
   "app.containers.IdeasProjectSelect.noProjects": "Désolé, aucun projet n'est disponible pour le moment.",
