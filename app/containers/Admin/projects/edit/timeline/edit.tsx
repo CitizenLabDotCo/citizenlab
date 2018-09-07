@@ -450,7 +450,7 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
                 />
                 {Array.isArray(localPhaseFiles) && localPhaseFiles.map(file => (
                   <FileDisplay
-                    key={file.id || file.name}
+                    key={file.id || file.filename}
                     onDeleteClick={this.handlePhaseFileOnRemove(file)}
                     file={file}
                   />)

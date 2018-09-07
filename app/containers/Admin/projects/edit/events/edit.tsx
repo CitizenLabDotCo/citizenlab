@@ -339,7 +339,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
                 />
                 {Array.isArray(localEventFiles) && localEventFiles.map(file => (
                   <FileDisplay
-                    key={file.id || file.name}
+                    key={file.id || file.filename}
                     onDeleteClick={this.handleEventFileOnRemove(file)}
                     file={file}
                   />)
