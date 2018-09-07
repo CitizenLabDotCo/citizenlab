@@ -4,7 +4,6 @@ class SideFxInviteService
 
   def after_create invite, current_user
     LogActivityJob.set(wait: 5.seconds).perform_later(invite, 'created', current_user, invite.created_at.to_i)
-    LogActivityJob.set(wait: 5.seconds).perform_later(invite, 'email_requested', invite.invitee, Time.now.to_i) 
   end
 
   def before_accept invite 
