@@ -31,6 +31,7 @@ const Input = styled.input`
 
 const Label = styled.label`
   display: flex;
+  max-width: 520px;
   align-items: center;
   cursor: pointer;
   border: 1.5px dashed ${colors.adminTextColor};
