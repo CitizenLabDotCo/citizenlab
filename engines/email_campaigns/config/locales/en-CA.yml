@@ -1,0 +1,21 @@
+en-CA:
+  email_campaigns:
+    campaign_type_description:
+      "manual": Direct messages sent by administrators or moderators
+      "comment_on_your_comment": Someone replies to my comment
+      "comment_on_your_idea": Someone replies to my idea
+      "admin_rights_received": I'm given admin rights
+      "comment_deleted_by_admin": An admin deletes my comment
+      "comment_marked_as_spam": A comment is marked as spam
+      "idea_marked_as_spam": An idea is marked as spam
+      "invite_accepted": Someone accepts my invitation
+      "mention_in_comment": Someone mentions me in a comment
+      "project_moderation_rights_received": I'm given project moderation rights
+      "status_change_of_your_idea": The status of my idea changes
+      "welcome": I register on the platform
+      "password_reset": I request a password reset for my account
+      "first_idea_published": My first idea gets published
+      "idea_published": My idea gets published
+      "admin_digest": A weekly overview (for administrators)
+      "moderator_digest": A weekly overview (for moderators)
+      "user_digest": A weekly overview (for citizens)
