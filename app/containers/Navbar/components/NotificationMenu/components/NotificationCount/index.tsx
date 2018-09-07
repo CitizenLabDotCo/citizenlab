@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isNumber } from 'lodash';
+import { isNumber } from 'lodash-es';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';

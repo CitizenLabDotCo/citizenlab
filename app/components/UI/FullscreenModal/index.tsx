@@ -1,5 +1,5 @@
 import React from 'react';
-import isFunction from 'lodash/isFunction';
+import { isFunction } from 'lodash-es';
 
 // libraries
 import clHistory from 'utils/cl-router/history';
@@ -26,7 +26,7 @@ import { getUrlLocale } from 'services/locale';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 const timeout = 300;
-const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
+const easing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 const Container: any = styled.div`
   position: fixed;

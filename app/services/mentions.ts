@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { API } from 'typings';
+import { ImageSizes } from 'typings';
 
 export interface IMentionData {
   id: string;
@@ -9,7 +9,7 @@ export interface IMentionData {
     first_name: string;
     last_name: string;
     slug: string;
-    avatar: API.ImageSizes;
+    avatar: ImageSizes;
   };
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { keys, isEmpty, size, get, isFunction } from 'lodash';
+import { keys, isEmpty, size, get, isFunction } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import HTML5Backend from 'react-dnd-html5-backend';

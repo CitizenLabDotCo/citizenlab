@@ -1,13 +1,11 @@
 import React, { PureComponent } from 'react';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { switchMap, map, distinctUntilChanged } from 'rxjs/operators';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of } from 'rxjs/observable/of';
-import { isEqual, isEmpty, get } from 'lodash';
+import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
+import { switchMap, map, distinctUntilChanged, filter } from 'rxjs/operators';
+import { isEqual, isEmpty, get } from 'lodash-es';
 
 // services
 import { IAreaData } from 'services/areas';
-import { updateUser, IUserData/*, IUserUpdate,*/, mapUserToDiff } from 'services/users';
+import { updateUser, IUserData, mapUserToDiff } from 'services/users';
 import { ITenantData } from 'services/tenant';
 import { localeStream, updateLocale } from 'services/locale';
 import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
@@ -18,8 +16,6 @@ import eventEmitter from 'utils/eventEmitter';
 import { hasCustomFields } from 'utils/customFields';
 
 // components
-import { Grid, Segment } from 'semantic-ui-react';
-import ContentContainer from 'components/ContentContainer';
 import LabelWithTooltip from './LabelWithTooltip';
 import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
@@ -28,29 +24,23 @@ import { SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Se
 import CustomFieldsForm from 'components/CustomFieldsForm';
 import Input from 'components/UI/Input';
 import Select from 'components/UI/Select';
-import QuillEditor from 'components/QuillEditor';
+import QuillEditor from 'components/UI/QuillEditor';
+import ProfileSection from './ProfileSection';
 
 // i18n
-import { appLocalePairs } from 'i18n';
+import { appLocalePairs } from 'containers/App/constants';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import localize, { injectedLocalized } from 'utils/localize';
+import localize, { InjectedLocalized } from 'utils/localize';
 
 // styling
 import styled from 'styled-components';
-import { color } from 'utils/styleUtils';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { hideVisually } from 'polished';
 
 // typings
-import { IOption, ImageFile, API } from 'typings';
-
-const StyledContentContainer = styled(ContentContainer)`
-  background: ${color('background')};
-  padding-top: 25px;
-  padding-bottom: 40px;
-`;
+import { IOption, ImageFile, CLErrorsJSON } from 'typings';
 
 const HiddenLabel = styled.span`
   ${hideVisually() as any}
@@ -66,12 +56,11 @@ interface InputProps {
 interface State {
   avatar: ImageFile[] | null;
   hasCustomFields: boolean;
-  contextRef: any | null;
   localeOptions: IOption[];
   customFieldsFormData: any;
 }
 
-type Props = InputProps & InjectedIntlProps & injectedLocalized;
+type Props = InputProps & InjectedIntlProps & InjectedLocalized;
 
 class ProfileForm extends PureComponent<Props, State> {
   localeOptions: IOption[] = [];
@@ -83,7 +72,6 @@ class ProfileForm extends PureComponent<Props, State> {
     this.state = {
       avatar: null,
       hasCustomFields: false,
-      contextRef: null,
       localeOptions: [],
       customFieldsFormData: null
     };
@@ -92,7 +80,10 @@ class ProfileForm extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    const user$ = this.user$.filter(user => user !== null).pipe(distinctUntilChanged((x, y) => isEqual(x, y)));
+    const user$ = this.user$.pipe(
+      filter(user => user !== null),
+      distinctUntilChanged((x, y) => isEqual(x, y))
+    );
     const locale$ = localeStream().observable;
     const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
 
@@ -103,10 +94,12 @@ class ProfileForm extends PureComponent<Props, State> {
         user$,
         locale$,
         customFieldsSchemaForUsersStream$
-      ).pipe(switchMap(([user, locale, customFieldsSchema]) => {
-        const avatarUrl = get(user, 'attributes.avatar.medium', null) as string | null;
-        return (avatarUrl ? convertUrlToFileObservable(avatarUrl) : of(null)).pipe(map(avatar => ({ user, avatar, locale, customFieldsSchema })));
-      })).subscribe(({ user, avatar, locale, customFieldsSchema }) => {
+      ).pipe(
+        switchMap(([user, locale, customFieldsSchema]) => {
+          const avatarUrl = get(user, 'attributes.avatar.medium', null) as string | null;
+          return (avatarUrl ? convertUrlToFileObservable(avatarUrl) : of(null)).pipe(map(avatar => ({ user, avatar, locale, customFieldsSchema })));
+        })
+      ).subscribe(({ user, avatar, locale, customFieldsSchema }) => {
         this.setState({
           hasCustomFields: hasCustomFields(customFieldsSchema, locale),
           avatar: (avatar ? [avatar] : null),
@@ -162,19 +155,16 @@ class ProfileForm extends PureComponent<Props, State> {
       updateLocale(user.data.attributes.locale);
     }).catch((errorResponse) => {
       if (errorResponse.json) {
-        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
         setSubmitting(false);
       }
     });
   }
 
-  formikRender = ({ values, errors, setFieldValue, setFieldTouched, setStatus, isSubmitting, submitForm, isValid,  status, touched }) => {
-    const { hasCustomFields } = this.state;
-
-    const handleContextRef = (contextRef) => {
-      this.setState({ contextRef });
-    };
+  formikRender = (props) => {
+    const { values, errors, setFieldValue, setFieldTouched, setStatus, isSubmitting, submitForm, isValid, status, touched } = props;
+    const { hasCustomFields, localeOptions } = this.state;
 
     const getStatus = () => {
       let returnValue: 'enabled' | 'disabled' | 'error' | 'success' = 'enabled';
@@ -208,8 +198,8 @@ class ProfileForm extends PureComponent<Props, State> {
       }
     };
 
-    const createChangeHandler = (fieldName) => value => {
-      if (/_multiloc$/.test(fieldName)) {
+    const createChangeHandler = (fieldName: string) => value => {
+      if (fieldName.endsWith('_multiloc')) {
         setFieldValue(fieldName, { [this.props.locale]: value });
       } else if (value && value.value) {
         setFieldValue(fieldName, value.value);
@@ -218,8 +208,8 @@ class ProfileForm extends PureComponent<Props, State> {
       }
     };
 
-    const createBlurHandler = (fieldName) => () => {
-      setFieldTouched(fieldName, true);
+    const createBlurHandler = (fieldName: string) => () => {
+      setFieldTouched(fieldName);
     };
 
     const handleAvatarOnAdd = (newAvatar: ImageFile) => {
@@ -242,147 +232,135 @@ class ProfileForm extends PureComponent<Props, State> {
     };
 
     return (
-      <StyledContentContainer>
-        <Grid centered>
-          <Grid.Row>
-            <Grid.Column computer={12} mobile={16}>
-              <div ref={handleContextRef}>
-                <Segment padded="very">
+      <ProfileSection>
+        <form className="e2e-profile-edit-form">
+          <SectionTitle><FormattedMessage {...messages.h1} /></SectionTitle>
+          <SectionSubtitle><FormattedMessage {...messages.h1sub} /></SectionSubtitle>
 
-                  <form className="e2e-profile-edit-form">
-                    <SectionTitle><FormattedMessage {...messages.h1} /></SectionTitle>
-                    <SectionSubtitle><FormattedMessage {...messages.h1sub} /></SectionSubtitle>
+          <SectionField>
+            {/* Wrapping image dropzone with a label for accesibility */}
+            <label htmlFor="images-dropzone">
+              <HiddenLabel>
+                <FormattedMessage {...messages.imageDropzonePlaceholder} />
+              </HiddenLabel>
+              <ImagesDropzone
+                id="images-dropzone"
+                images={this.state.avatar}
+                imagePreviewRatio={1}
+                maxImagePreviewWidth="160px"
+                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                maxImageFileSize={5000000}
+                maxNumberOfImages={1}
+                onAdd={handleAvatarOnAdd}
+                onUpdate={handleAvatarOnUpdate}
+                onRemove={handleAvatarOnRemove}
+                imageRadius="50%"
+              />
+            </label>
+            <Error apiErrors={errors.avatar} />
+          </SectionField>
 
-                    <SectionField>
-                      {/* Wrapping image dropzone with a label for accesibility */}
-                      <label htmlFor="images-dropzone">
-                        <HiddenLabel>
-                          <FormattedMessage {...messages.imageDropzonePlaceholder} />
-                        </HiddenLabel>
-                        <ImagesDropzone
-                          id="images-dropzone"
-                          images={this.state.avatar}
-                          imagePreviewRatio={1}
-                          maxImagePreviewWidth="160px"
-                          acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                          maxImageFileSize={5000000}
-                          maxNumberOfImages={1}
-                          onAdd={handleAvatarOnAdd}
-                          onUpdate={handleAvatarOnUpdate}
-                          onRemove={handleAvatarOnRemove}
-                          imageRadius="50%"
-                        />
-                      </label>
-                      <Error apiErrors={errors.avatar} />
-                    </SectionField>
+          <SectionField>
+            <LabelWithTooltip htmlFor="firstName" translateId="firstName" />
+            <Input
+              type="text"
+              name="first_name"
+              id="firstName"
+              value={values.first_name}
+              onChange={createChangeHandler('first_name')}
+              onBlur={createBlurHandler('first_name')}
+            />
+            <Error apiErrors={errors.first_name} />
+          </SectionField>
 
-                    <SectionField>
-                      <LabelWithTooltip htmlFor="firstName" translateId="firstName" />
-                      <Input
-                        type="text"
-                        name="first_name"
-                        id="firstName"
-                        value={values.first_name}
-                        onChange={createChangeHandler('first_name')}
-                        onBlur={createBlurHandler('first_name')}
-                      />
-                      <Error apiErrors={errors.first_name} />
-                    </SectionField>
+          <SectionField>
+            <LabelWithTooltip htmlFor="lastName" translateId="lastName" />
+            <Input
+              type="text"
+              name="last_name"
+              id="lastName"
+              value={values.last_name}
+              onChange={createChangeHandler('last_name')}
+              onBlur={createBlurHandler('last_name')}
+            />
+            <Error apiErrors={errors.last_name} />
+          </SectionField>
 
-                    <SectionField>
-                      <LabelWithTooltip htmlFor="lastName" translateId="lastName" />
-                      <Input
-                        type="text"
-                        name="last_name"
-                        id="lastName"
-                        value={values.last_name}
-                        onChange={createChangeHandler('last_name')}
-                        onBlur={createBlurHandler('last_name')}
-                      />
-                      <Error apiErrors={errors.last_name} />
-                    </SectionField>
+          <SectionField>
+            <LabelWithTooltip htmlFor="email" translateId="email" />
+            <Input
+              type="email"
+              name="email"
+              id="email"
+              value={values.email}
+              onChange={createChangeHandler('email')}
+              onBlur={createBlurHandler('email')}
+            />
+            <Error apiErrors={errors.email} />
+          </SectionField>
 
-                    <SectionField>
-                      <LabelWithTooltip htmlFor="email" translateId="email" />
-                      <Input
-                        type="email"
-                        name="email"
-                        id="email"
-                        value={values.email}
-                        onChange={createChangeHandler('email')}
-                        onBlur={createBlurHandler('email')}
-                      />
-                      <Error apiErrors={errors.email} />
-                    </SectionField>
+          <SectionField>
+            <LabelWithTooltip translateId="bio" />
+            <QuillEditor
+              id="bio_multiloc"
+              noImages
+              limitedTextFormatting
+              value={values.bio_multiloc ? this.props.localize(values.bio_multiloc) : ''}
+              placeholder={this.props.intl.formatMessage({ ...messages.bio_placeholder })}
+              onChange={createChangeHandler('bio_multiloc')}
+              onBlur={createBlurHandler('bio_multiloc')}
+            />
+            <Error apiErrors={errors.bio_multiloc} />
+          </SectionField>
 
-                    <SectionField>
-                      <LabelWithTooltip translateId="bio" />
-                      <QuillEditor
-                        id="bio_multiloc"
-                        noImages
-                        limitedTextFormatting
-                        value={values.bio_multiloc ? this.props.localize(values.bio_multiloc) : ''}
-                        placeholder={this.props.intl.formatMessage({ ...messages.bio_placeholder })}
-                        onChange={createChangeHandler('bio_multiloc')}
-                        onBlur={createBlurHandler('bio_multiloc')}
-                      />
-                      <Error apiErrors={errors.bio_multiloc} />
-                    </SectionField>
+          <SectionField>
+            <LabelWithTooltip htmlFor="password" translateId="password" />
+            <Input
+              type="password"
+              name="password"
+              id="password"
+              value={values.password}
+              onChange={createChangeHandler('password')}
+              onBlur={createBlurHandler('password')}
+            />
+            <Error apiErrors={errors.password} />
+          </SectionField>
 
-                    <SectionField>
-                      <LabelWithTooltip htmlFor="password" translateId="password" />
-                      <Input
-                        type="password"
-                        name="password"
-                        id="password"
-                        value={values.password}
-                        onChange={createChangeHandler('password')}
-                        onBlur={createBlurHandler('password')}
-                      />
-                      <Error apiErrors={errors.password} />
-                    </SectionField>
+          <SectionField>
+            <LabelWithTooltip htmlFor="language" translateId="language" />
+            <Select
+              inputId="language"
+              onChange={createChangeHandler('locale')}
+              onBlur={createBlurHandler('locale')}
+              value={values.locale}
+              options={localeOptions}
+              clearable={false}
+            />
+            <Error apiErrors={errors.locale} />
+          </SectionField>
+        </form>
 
-                    <SectionField>
-                      <LabelWithTooltip htmlFor="language" translateId="language" />
-                      <Select
-                        inputId="language"
-                        onChange={createChangeHandler('locale')}
-                        onBlur={createBlurHandler('locale')}
-                        value={values.locale}
-                        options={this.state.localeOptions}
-                        clearable={false}
-                      />
-                      <Error apiErrors={errors.locale} />
-                    </SectionField>
-                  </form>
+        {hasCustomFields &&
+          <CustomFieldsForm
+            formData={this.state.customFieldsFormData}
+            onChange={handleCustomFieldsFormOnChange}
+            onSubmit={handleCustomFieldsFormOnSubmit}
+          />
+        }
 
-                  {hasCustomFields &&
-                    <CustomFieldsForm
-                      formData={this.state.customFieldsFormData}
-                      onChange={handleCustomFieldsFormOnChange}
-                      onSubmit={handleCustomFieldsFormOnSubmit}
-                    />
-                  }
-
-                  <SubmitWrapper
-                    status={getStatus()}
-                    style="primary"
-                    loading={isSubmitting}
-                    onClick={handleOnSubmit}
-                    messages={{
-                      buttonSave: messages.submit,
-                      buttonSuccess: messages.buttonSuccessLabel,
-                      messageSuccess: messages.messageSuccess,
-                      messageError: messages.messageError,
-                    }}
-                  />
-
-                </Segment>
-              </div>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </StyledContentContainer>
+        <SubmitWrapper
+          status={getStatus()}
+          style="primary"
+          loading={isSubmitting}
+          onClick={handleOnSubmit}
+          messages={{
+            buttonSave: messages.submit,
+            buttonSuccess: messages.buttonSuccessLabel,
+            messageSuccess: messages.messageSuccess,
+            messageError: messages.messageError,
+          }}
+        />
+      </ProfileSection>
     );
   }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { isString } from 'lodash';
+import { isString } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import Link from 'utils/cl-router/Link';
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { clone, isEqual } from 'lodash';
+import { clone, isEqual } from 'lodash-es';
 import { deleteCustomField, ICustomFieldData, updateCustomFieldForUsers, reorderCustomFieldForUsers } from 'services/userCustomFields';
 import GetCustomFields, { GetCustomFieldsChildProps } from 'resources/GetCustomFields';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
