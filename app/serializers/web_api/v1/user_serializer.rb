@@ -9,7 +9,7 @@ class WebApi::V1::UserSerializer < ActiveModel::Serializer
   attribute :unread_notifications, if: :unread_notifications
 
   def view_private_attributes?
-    scope && Pundit.policy!(current_user, object).view_private_attributes?
+    Pundit.policy!(current_user, object).view_private_attributes?
   end
 
   def avatar
