@@ -741,7 +741,6 @@
   "app.containers.Projects.endedOn": "Beëindigd op {date}",
   "app.containers.Projects.endsOn": "Eindigt op {date}",
   "app.containers.Projects.events": "Activiteiten",
-  "app.containers.Projects.fillInSurvey": "Vul de enquête in",
   "app.containers.Projects.goBackToList": "Ga terug naar de lijst",
   "app.containers.Projects.header": "Projecten",
   "app.containers.Projects.ideasTitle": "Ideeën binnen dit project",
