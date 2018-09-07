@@ -1,0 +1,21 @@
+nl:
+  email_campaigns:
+    campaign_type_description:
+      "manual": Directe berichten verzonden door beheerders of moderatoren
+      "comment_on_your_comment": Iemand reageert op mijn reactie
+      "comment_on_your_idea": Iemand reageert op mijn idee
+      "admin_rights_received": Beheerdersrechten ontvangen
+      "comment_deleted_by_admin": Een beheerder verwijdert mijn reactie
+      "comment_marked_as_spam": Een reactie is aangeduid als spam
+      "idea_marked_as_spam": Een idee is aangeduid als spam
+      "invite_accepted": Iemand aanvaardt mijn uitnodiging
+      "mention_in_comment": Iemand vernoemt me in een reactie
+      "project_moderation_rights_received": Projectmoderatorrechten ontvangen
+      "status_change_of_your_idea": De status van mijn idee verandert
+      "welcome": Ik registreer me op het platform
+      "password_reset": Ik stel het wachtwoord voor mijn account opnieuw in
+      "first_idea_published": Mijn eerste idee wordt gepubliceerd
+      "idea_published": Mijn idee wordt gepubliceerd
+      "admin_digest": Een weekoverzicht (voor beheerders)
+      "moderator_digest": Een weekoverzicht (voor moderatoren)
+      "user_digest": Een weekoverzicht (voor burgers)
