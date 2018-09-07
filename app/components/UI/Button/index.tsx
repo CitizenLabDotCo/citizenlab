@@ -236,6 +236,7 @@ type Props = {
   id?: string;
   justify?: 'left' | 'center' | 'right' | 'space-between';
   linkTo?: string;
+  openInNewTab?: boolean;
   onClick?: (arg: React.FormEvent<HTMLButtonElement>) => void;
   padding?: string;
   processing?: boolean;
@@ -288,7 +289,7 @@ class Button extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { text, form, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, iconTitle, hiddenText, children, linkTo } = this.props;
+    const { text, form, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, iconTitle, hiddenText, children, linkTo, openInNewTab } = this.props;
     let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
 
     id = (id || '');
@@ -339,7 +340,7 @@ class Button extends React.PureComponent<Props, State> {
       >
         {linkTo ? (
           (typeof(linkTo === 'string') && (linkTo as string).startsWith('http')) ? (
-            <StyledA innerRef={this.props.setSubmitButtonRef} href={(linkTo as string)} target="_blank" className={buttonClassnames}>{childContent}</StyledA>
+            <StyledA innerRef={this.props.setSubmitButtonRef} href={(linkTo as string)} target={openInNewTab ? '_blank' : '_self'} className={buttonClassnames}>{childContent}</StyledA>
           ) : (
             <StyledLink innerRef={this.props.setSubmitButtonRef} to={linkTo} className={buttonClassnames}>{childContent}</StyledLink>
           )
