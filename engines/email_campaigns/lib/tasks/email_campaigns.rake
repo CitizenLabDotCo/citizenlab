@@ -12,21 +12,10 @@ namespace :email_campaigns do
 
   desc "Makes sure that campaign records exist for all built-in campaigns. Should run on deployment through CI"
   task :assure_campaign_records => :environment do |t, args|
+    service = EmailCampaigns::AssureCampaignsService.new
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
-        
-        instantiatable_campaign_types = (EmailCampaigns::DeliveryService.new.campaign_types - ["EmailCampaigns::Campaigns::Manual"])
-
-        type_counts = EmailCampaigns::Campaign
-          .where(type: instantiatable_campaign_types)
-          .group(:type).count
-
-        instantiatable_campaign_types.each do |type|
-          unless type_counts[type]
-            claz = type.constantize
-            claz.create!
-          end
-        end
+        service.assure_campaigns
       end
     end
   end
