@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { LEGAL_PAGES } from 'services/pages';
 import PageEditor from './PageEditor';
-import FileUploader from './FileUploader';
 
 export default class AdminSettingsPages extends PureComponent {
   render() {
@@ -13,7 +12,6 @@ export default class AdminSettingsPages extends PureComponent {
             slug={slug}
           />
         ))}
-        <FileUploader />
       </>
     );
   }
