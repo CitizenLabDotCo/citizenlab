@@ -339,7 +339,7 @@ class Button extends React.PureComponent<Props, State> {
       >
         {linkTo ? (
           (typeof(linkTo === 'string') && (linkTo as string).startsWith('http')) ? (
-            <StyledA innerRef={this.props.setSubmitButtonRef} href={(linkTo as string)} className={buttonClassnames}>{childContent}</StyledA>
+            <StyledA innerRef={this.props.setSubmitButtonRef} href={(linkTo as string)} target="_blank" className={buttonClassnames}>{childContent}</StyledA>
           ) : (
             <StyledLink innerRef={this.props.setSubmitButtonRef} to={linkTo} className={buttonClassnames}>{childContent}</StyledLink>
           )

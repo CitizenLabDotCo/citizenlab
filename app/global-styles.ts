@@ -130,10 +130,28 @@ export default injectGlobal`
   }
 
   .typeform-popup {
-    z-index: 1000000 !important;
+    width: 100vw !important;;
+    height: 100vh !important;;
+    position: fixed !important;;
+    top: 0 !important;;
+    left: 0 !important;;
+    right: 0 !important;;
+    bottom: 0 !important;;
+    display: flex !important;;
+    align-items: center !important;;
+    justify-content: center !important;;
+    background: rgba(0, 0, 0, 0.75) !important;;
+    padding: 30px !important;;
+    overflow: hidden !important;;
+    z-index: 100000 !important;
   }
 
   .typeform-popup-overlay {
-    z-index: 10000000 !important;
+    position: relative !important;
+    z-index: 100001 !important;
+  }
+
+  .typeform-close-icon {
+    z-index: 100002 !important;
   }
 `;
