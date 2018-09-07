@@ -124,9 +124,5 @@ export default defineMessages({
   selectedPhase: {
     id: 'app.containers.Projects.selectedPhase',
     defaultMessage: 'Selected phase',
-  },
-  openSurvey: {
-    id: 'app.containers.Projects.openSurvey',
-    defaultMessage: 'Open the survey',
-  },
+  }
 });
