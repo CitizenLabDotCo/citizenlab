@@ -12,6 +12,7 @@ module EmailCampaigns
       Campaigns::CommentDeletedByAdmin,
       Campaigns::AdminRightsReceived,
       Campaigns::ProjectModerationRightsReceived,
+      Campaigns::InviteReceived,
       Campaigns::InviteAccepted,
       Campaigns::Welcome,
       Campaigns::PasswordReset,
