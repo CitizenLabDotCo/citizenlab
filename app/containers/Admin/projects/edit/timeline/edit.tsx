@@ -301,7 +301,7 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
       // remotePhaseFiles = last saved state of files (remote)
 
       filesToAdd = localPhaseFiles.filter((localPhaseFile) => {
-        return !remotePhaseFiles.some(remotePhaseFile => remotePhaseFile.name === localPhaseFile.name);
+        return !remotePhaseFiles.some(remotePhaseFile => remotePhaseFile.filename === localPhaseFile.filename);
       });
     }
 
@@ -328,7 +328,7 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
       // remotePhaseFiles = last saved state of files (remote)
 
       filesToRemove = remotePhaseFiles.filter((remotePhaseFile) => {
-        return !localPhaseFiles.some(localPhaseFile => localPhaseFile.name === remotePhaseFile.name);
+        return !localPhaseFiles.some(localPhaseFile => localPhaseFile.filename === remotePhaseFile.filename);
       });
     }
 
