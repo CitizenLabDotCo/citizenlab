@@ -757,7 +757,6 @@
   "app.containers.Projects.noPhaseSelected": "No phase selected",
   "app.containers.Projects.noProjectFoundHere": "There is no project here.",
   "app.containers.Projects.noUpcomingEvents": "There are no upcoming events at this time",
-  "app.containers.Projects.openSurvey": "Open the survey",
   "app.containers.Projects.pastEvents": "Past events",
   "app.containers.Projects.phaseNumber": "Phase {phaseNumber}",
   "app.containers.Projects.project": "Project",
