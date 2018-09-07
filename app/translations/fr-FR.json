@@ -726,7 +726,7 @@
   "app.containers.PasswordReset.successMessage": "Votre mot de passe a été mis à jour",
   "app.containers.PasswordReset.title": "Réinitialisez votre mot de passe",
   "app.containers.PasswordReset.updatePassword": "Confirmer le nouveau mot de passe",
-  "app.containers.ProjectCards.activeProjects": "Projets actifs",
+  "app.containers.ProjectCards.activeProjects": "{orgName, select, frw {Communes actives} other {Projets actifs}}",
   "app.containers.ProjectCards.allProjects": "Tous les projets",
   "app.containers.ProjectCards.archivedProjects": "Projets archivés",
   "app.containers.ProjectCards.areasTitle": "Lieux",
