@@ -121,6 +121,7 @@ const ProjectImages = styled.div`
   flex-wrap: wrap;
   margin-left: -5px;
   margin-top: -5px;
+  margin-bottom: 30px;
   width: calc(100% + 10px);
 
   img {
@@ -136,10 +137,6 @@ const ProjectImages = styled.div`
       width: calc(33% - 9px);
     }
   }
-`;
-
-const StyledSharing = styled(Sharing) `
-  margin-top: 40px;
 `;
 
 interface InputProps {
@@ -194,7 +191,7 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
           <T value={project.attributes.title_multiloc} maxLength={50} >
             {(title) => {
               return (
-                <StyledSharing
+                <Sharing
                   twitterMessage={formatMessage(messages.twitterMessage, { title })}
                   userId={userId}
                   sharedContent="project"

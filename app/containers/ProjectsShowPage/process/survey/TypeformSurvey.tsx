@@ -1,17 +1,14 @@
 import React, { PureComponent } from 'react';
-import { makePopup } from '@typeform/embed';
 import styled from 'styled-components';
-import Button from 'components/UI/Button';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+import Iframe from 'react-iframe';
 
 const Container = styled.div`
-  width: 100%;
-  position: relative;
-`;
+  display: flex;
+  flex-direction: column;
 
-const ButtonWrapper = styled.div`
-  margin: 2rem 0;
+  iframe {
+    border: solid 1px #e0e0e0;
+  }
 `;
 
 type Props = {
@@ -21,39 +18,22 @@ type Props = {
 
 type State = {};
 
-class TypeformSurvey extends PureComponent<Props, State> {
-  typeformReference: any;
-
-  componentDidMount() {
+export default class TypeformSurvey extends PureComponent<Props, State> {
+  render() {
     const { email, typeformUrl } = this.props;
     const surveyUrl = (email ? `${typeformUrl}?email=${email}` : typeformUrl);
 
-    this.typeformReference = makePopup(surveyUrl, {
-      mode: 'popup',
-      autoOpen: false,
-      onSubmit: () => this.closeSurvey
-    });
-  }
-
-  closeSurvey = () => {
-    setTimeout(() => this.typeformReference.close(), 3000);
-  }
-
-  openSurvey = () => {
-    this.typeformReference.open();
-  }
-
-  render() {
     return (
       <Container className={this.props['className']}>
-        <ButtonWrapper>
-          <Button onClick={this.openSurvey} size="2">
-            <FormattedMessage {...messages.fillInSurvey} />
-          </Button>
-        </ButtonWrapper>
+        <Iframe
+          url={surveyUrl}
+          width="100%"
+          height="500px"
+          display="initial"
+          position="relative"
+          allowFullScreen
+        />
       </Container>
     );
   }
 }
-
-export default TypeformSurvey;

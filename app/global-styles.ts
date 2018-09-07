@@ -128,12 +128,4 @@ export default injectGlobal`
   label {
     line-height: 1.5em;
   }
-
-  .typeform-popup {
-    z-index: 1000000 !important;
-  }
-
-  .typeform-popup-overlay {
-    z-index: 10000000 !important;
-  }
 `;
