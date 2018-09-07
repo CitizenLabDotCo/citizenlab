@@ -2,10 +2,10 @@
 // onChange will override the behaviour of this components and without any error from TS not work as intended
 
 import React from 'react';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 
 // components
-import QuillEditor, { Props as VanillaProps } from 'components/QuillEditor';
+import QuillEditor, { Props as VanillaProps } from 'components/UI/QuillEditor';
 import Label from 'components/UI/Label';
 
 // style

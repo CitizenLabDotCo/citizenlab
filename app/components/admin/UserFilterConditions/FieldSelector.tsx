@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { keys } from 'lodash';
+import React from 'react';
+import { keys } from 'lodash-es';
 import Select from 'components/UI/Select';
 
 import { IOption } from 'typings';
@@ -9,7 +9,7 @@ import { ICustomFieldData } from 'services/userCustomFields';
 
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import localize, { injectedLocalized } from 'utils/localize';
+import localize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 
 export interface FieldDescriptor {
@@ -26,7 +26,7 @@ type Props = {
 
 type State = {};
 
-class FieldSelector extends React.PureComponent<Props & InjectedIntlProps & injectedLocalized, State> {
+class FieldSelector extends React.PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
 
   generateOptions = (): IOption[] => {
     const { localize } = this.props;

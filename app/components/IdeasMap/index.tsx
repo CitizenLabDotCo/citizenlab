@@ -119,7 +119,7 @@ class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
     this.setState({ selectedIdea: null });
   }
 
-  onMapClick = ({ map, position }: {map: Leaflet.Map, position: Leaflet.LatLng}) => {
+  onMapClick = (map: Leaflet.Map, position: Leaflet.LatLng) => {
     this.savedPosition = position;
 
     Leaflet

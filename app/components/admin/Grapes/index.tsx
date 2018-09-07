@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import 'grapesjs/dist/css/grapes.min.css';
 import loadBasicBlocks from './basic_blocks';

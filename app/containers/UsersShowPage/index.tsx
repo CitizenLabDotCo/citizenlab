@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
-import * as moment from 'moment';
+import moment from 'moment';
 
 // components
 import IdeaCards from 'components/IdeaCards';

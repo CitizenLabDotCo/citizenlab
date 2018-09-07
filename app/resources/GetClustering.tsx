@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import isString from 'lodash/isString';
+import { isString } from 'lodash-es';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';

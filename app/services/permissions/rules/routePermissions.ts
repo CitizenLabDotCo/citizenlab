@@ -1,4 +1,4 @@
-import { definePermissionRule, IRouteItem } from '../permissions';
+import { definePermissionRule, IRouteItem } from 'services/permissions/permissions';
 import { isAdmin, isModerator, isProjectModerator } from '../roles';
 import { IUser } from 'services/users';
 

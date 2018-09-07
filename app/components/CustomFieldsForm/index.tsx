@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import * as moment from 'moment';
-import { isBoolean, forOwn, get, uniq, isNil, isEmpty } from 'lodash';
+import { Subscription, combineLatest } from 'rxjs';
+import moment from 'moment';
+import { isBoolean, forOwn, get, uniq, isNil, isEmpty } from 'lodash-es';
 
 // libraries
 import Form, { FieldProps } from 'react-jsonschema-form';
@@ -198,7 +197,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
     if (props.schema.type === 'string' || props.schema.type === 'number') {
       const selectedOption: IOption | null = (props.value ? {
         value: props.value,
-        label: (props.value ? props.options.enumOptions.find(enumOption => enumOption.value === props.value).label : null)
+        label: get(props.options.enumOptions.find(enumOption => enumOption.value === props.value), 'label', null)
       } : null);
 
       const onChange = (selectedOption: IOption) => {
@@ -221,7 +220,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
     if (props.schema.type === 'array') {
       const selectedOptions: IOption[] | null = ((props.value && props.value.length > 0) ? props.value.map(value => ({
         value,
-        label: props.options.enumOptions.find(enumOption => enumOption.value === value).label
+        label: get(props.options.enumOptions.find(enumOption => enumOption.value === value), 'label', null)
       })) : null);
 
       const onChange = (selectedOptions: IOption[]) => {

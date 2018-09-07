@@ -1,7 +1,6 @@
 // Libraries
 import React from 'react';
-import { Subscription } from 'rxjs';
-import { Observable } from 'rxjs/Observable';
+import { Subscription, combineLatest } from 'rxjs';
 
 // Services
 import { localeStream } from 'services/locale';
@@ -13,7 +12,7 @@ import { getLocalized } from 'utils/i18n';
 // Typing
 import { Multiloc, Locale } from 'typings';
 
-export interface injectedLocalized {
+export interface InjectedLocalized {
   localize: {
     (multiloc: Multiloc): string;
   };
@@ -46,7 +45,7 @@ export default function localize<PassedProps>(ComposedComponent) {
       const currentTenant$ = currentTenantStream().observable;
 
       this.subscriptions = [
-        Observable.combineLatest(
+        combineLatest(
           locale$,
           currentTenant$
         ).subscribe(([locale, currentTenant]) => {

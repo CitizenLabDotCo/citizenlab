@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { pick, clone, omit } from 'lodash';
+import { pick, clone, omit } from 'lodash-es';
 import FieldSelector, { FieldDescriptor } from './FieldSelector';
 import PredicateSelector from './PredicateSelector';
 import ValueSelector from './ValueSelector';
