@@ -1,6 +1,7 @@
 // Libraries
 import React from 'react';
 import { Formik } from 'formik';
+import { adopt } from 'react-adopt';
 
 // i18n
 import messages from './messages';
@@ -12,6 +13,7 @@ import PageForm, { FormValues } from 'components/PageForm';
 
 // Services & resources
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
+import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 import { createPage, updatePage, IPage } from 'services/pages';
 
 // Utils
@@ -23,6 +25,10 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // Styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+
+// Typings
+import { UploadFile, CLErrorsJSON } from 'typings';
+import FileUploader from './FileUploader';
 
 const timeout = 350;
 
@@ -90,11 +96,9 @@ const EditionForm = styled.div`
   }
 `;
 
-// Typing
-import { CLErrorsJSON } from 'typings';
-
 interface DataProps {
   page: GetPageChildProps;
+  remotePageFiles: GetResourceFileObjectsChildProps;
 }
 interface InputProps {
   className?: string;
@@ -104,14 +108,25 @@ interface Props extends InputProps, DataProps { }
 
 interface State {
   deployed: boolean;
+  localPageFiles: UploadFile[] | null | Error | undefined;
 }
 
 class PageEditor extends React.PureComponent<Props, State>{
+
   constructor(props: Props) {
     super(props as any);
     this.state = {
       deployed: false,
+      localPageFiles: [],
     };
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    const { remotePageFiles } = this.props;
+
+    if (prevProps.remotePageFiles !== remotePageFiles) {
+      this.setState({ localPageFiles: remotePageFiles });
+    }
   }
 
   toggleDeploy = () => {
@@ -132,6 +147,21 @@ class PageEditor extends React.PureComponent<Props, State>{
         body_multiloc: {},
       };
     }
+  }
+
+  handlePageFileOnAdd = (fileToAdd: UploadFile) => {
+    this.setState((prevState) => {
+      // If we don't have localPageFiles, we assign an empty array
+      // A spread operator works on an empty array, but not on null
+      const oldlLocalPageFiles = !isNilOrError(prevState.localPageFiles) ? prevState.localPageFiles : [];
+
+      return {
+        localPageFiles: [
+          ...oldlLocalPageFiles,
+          fileToAdd
+        ]
+      };
+    });
   }
 
   handleSubmit = (values: FormValues, { setSubmitting, setErrors, setStatus, resetForm }) => {
@@ -161,11 +191,17 @@ class PageEditor extends React.PureComponent<Props, State>{
   }
 
   renderForm = (props) => (
-    <PageForm
-      {...props}
-      mode="simple"
-      hideTitle={this.props.slug !== 'information'}
-    />
+    <>
+      <PageForm
+        {...props}
+        mode="simple"
+        hideTitle={this.props.slug !== 'information'}
+      />
+      <FileUploader
+        onFileAdd={this.handlePageFileOnAdd}
+        localPageFiles={this.state.localPageFiles}
+      />
+    </>
   )
 
   render() {
@@ -190,15 +226,15 @@ class PageEditor extends React.PureComponent<Props, State>{
           >
             <EditionForm>
               {page !== undefined &&
-              <Formik
-                initialValues={this.initialValues()}
-                onSubmit={this.handleSubmit}
-                render={this.renderForm}
-                validate={PageForm.validate}
-                mode="new"
-                slug={slug}
-              />
-            }
+                <Formik
+                  initialValues={this.initialValues()}
+                  onSubmit={this.handleSubmit}
+                  render={this.renderForm}
+                  validate={PageForm.validate}
+                  mode="new"
+                  slug={slug}
+                />
+              }
             </EditionForm>
           </CSSTransition>
       </EditorWrapper>
@@ -206,8 +242,13 @@ class PageEditor extends React.PureComponent<Props, State>{
   }
 }
 
+const Data = adopt<DataProps, InputProps>({
+  page: ({ slug }) => <GetPage slug={slug} />,
+  remotePageFiles: ({ slug }) => <GetResourceFileObjects resourceId={slug} resourceType="page" />
+});
+
 export default (inputProps: InputProps) => (
-  <GetPage slug={inputProps.slug}>
-    {page => <PageEditor {...inputProps} page={page} />}
-  </GetPage>
+  <Data {...inputProps}>
+    {dataProps => <PageEditor {...inputProps} {...dataProps} />}
+  </Data>
 );
