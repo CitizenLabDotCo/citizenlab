@@ -81,13 +81,10 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  config.action_mailer.smtp_settings = {
-    :address => ENV["SMTP_HOST"],
-    :port => ENV["SMTP_PORT"],
-    :user_name => ENV["SMTP_USER"], #Your SMTP user
-    :password => ENV["SMTP_PASSWORD"], #Your SMTP password
-    :authentication => :login,
-    :enable_starttls_auto => true
+  config.action_mailer.delivery_method = :mailgun
+  config.action_mailer.mailgun_settings = {
+    api_key: ENV.fetch("MAILGUN_API_KEY"),
+    domain: ENV.fetch("MAILGUN_DOMAIN"),
   }
 
   Raven.configure do |config|

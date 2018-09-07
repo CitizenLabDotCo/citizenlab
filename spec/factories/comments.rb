@@ -8,6 +8,21 @@ FactoryBot.define do
       "en" => "<p>I think this is a very good idea!</p>",
       "nl-BE" => "<p>Geweldig idee!</p>"
     }}
+
+    factory :comment_with_mentions do
+      transient do
+        mentioned_users { create_list(:user, 2) }
+      end
+      after(:create) do |comment, evaluator|
+        service = MentionService.new
+        mentions = evaluator.mentioned_users.map do |u|
+          service.add_span_around service.user_to_mention(u), u
+        end
+        comment.update(body_multiloc: {
+          'en' => "#{mentions.join ', '} are sitting in a tree"
+        })
+      end
+    end
   end
 
   factory :nested_comment do

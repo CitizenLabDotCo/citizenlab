@@ -1,0 +1,21 @@
+fr:
+  email_campaigns:
+    campaign_type_description:
+      "manual": Messages directs envoyés par les administrateurs ou les modérateurs
+      "comment_on_your_comment": Quelqu'un répond à mon commentaire
+      "comment_on_your_idea": Quelqu'un répond à mon idée
+      "admin_rights_received": Je recois les droits d'administrateurs
+      "comment_deleted_by_admin": Un admin supprime mon commentaire
+      "comment_marked_as_spam": Un commentaire est marqué comme spam
+      "idea_marked_as_spam": Une idée est marquée comme spam
+      "invite_accepted": Quelqu'un accepte mon invitation
+      "mention_in_comment": Quelqu'un me mentionne dans un commentaire
+      "project_moderation_rights_received": On me donne des droits de modérations
+      "status_change_of_your_idea": Le statut de mon idée change
+      "welcome": Je m’inscris sur la plate-forme
+      "password_reset": Je demande de réinitialiser mon mot de passe
+      "first_idea_published": Ma première idée est publiée
+      "idea_published": Mon idée est publiée
+      "admin_digest": Un aperçu hebdomadaire (pour les administrateurs)
+      "moderator_digest": Un aperçu hebdomadaire (pour les modérateurs)
+      "user_digest": Un aperçu hebdomadaire (pour les citoyens)
