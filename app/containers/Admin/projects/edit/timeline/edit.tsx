@@ -141,6 +141,8 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
                   phaseFiles.data.map((phaseFile) => {
                     return convertUrlToUploadFileObservable(phaseFile.attributes.file.url).pipe(map((phaseFileObject) => {
                       phaseFileObject['id'] = phaseFile.id;
+                      phaseFileObject['filename'] = phaseFile.attributes.name;
+                      phaseFileObject['url'] = phaseFile.attributes.file.url;
                       return phaseFileObject;
                     }));
                   })
@@ -229,7 +231,7 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
       let localPhaseFiles: UploadFile[] | null = null;
 
       if (Array.isArray(prevState.localPhaseFiles)) {
-        localPhaseFiles = prevState.localPhaseFiles.filter(phaseFile => phaseFile.name !== removedFile.name);
+        localPhaseFiles = prevState.localPhaseFiles.filter(phaseFile => phaseFile.filename !== removedFile.filename);
       }
 
       return {
