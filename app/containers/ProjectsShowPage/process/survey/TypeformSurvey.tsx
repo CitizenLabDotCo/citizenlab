@@ -1,13 +1,14 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import Button from 'components/UI/Button';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+import Iframe from 'react-iframe';
 
 const Container = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+
+  iframe {
+    border: solid 1px #e0e0e0;
+  }
 `;
 
 type Props = {
@@ -24,9 +25,14 @@ export default class TypeformSurvey extends PureComponent<Props, State> {
 
     return (
       <Container className={this.props['className']}>
-        <Button linkTo={surveyUrl} openInNewTab={true} size="2" fullWidth={true}>
-          <FormattedMessage {...messages.openSurvey} />
-        </Button>
+        <Iframe
+          url={surveyUrl}
+          width="100%"
+          height="500px"
+          display="initial"
+          position="relative"
+          allowFullScreen
+        />
       </Container>
     );
   }
