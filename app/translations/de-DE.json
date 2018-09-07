@@ -741,7 +741,6 @@
   "app.containers.Projects.endedOn": "Endete am {date}",
   "app.containers.Projects.endsOn": "Endet am {date}",
   "app.containers.Projects.events": "Veranstaltungen",
-  "app.containers.Projects.fillInSurvey": "Fill out the survey",
   "app.containers.Projects.goBackToList": "Zurück zur Liste",
   "app.containers.Projects.header": "{orgName, select, München {Bezirke} other {Projekte}}",
   "app.containers.Projects.ideasTitle": "{orgName, select, München {Meldungen in diesem Bezirk} other {Ideen für dieses Projekt}}",
