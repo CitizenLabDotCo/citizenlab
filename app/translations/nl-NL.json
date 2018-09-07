@@ -757,7 +757,6 @@
   "app.containers.Projects.noPhaseSelected": "Geen fase geselecteerd",
   "app.containers.Projects.noProjectFoundHere": "Dit project werd niet gevonden.",
   "app.containers.Projects.noUpcomingEvents": "Er zijn momenteel geen aankomende activiteiten",
-  "app.containers.Projects.openSurvey": "",
   "app.containers.Projects.pastEvents": "Voorbije activiteiten",
   "app.containers.Projects.phaseNumber": "Fase {phaseNumber}",
   "app.containers.Projects.project": "Project",

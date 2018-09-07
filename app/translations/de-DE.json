@@ -757,7 +757,6 @@
   "app.containers.Projects.noPhaseSelected": "Keine Phase ausgewählt",
   "app.containers.Projects.noProjectFoundHere": "Es gibt hier kein Projekt.",
   "app.containers.Projects.noUpcomingEvents": "Es sind im Moment keine Veranstaltungen geplant",
-  "app.containers.Projects.openSurvey": "",
   "app.containers.Projects.pastEvents": "Ehemalige Veranstaltungen",
   "app.containers.Projects.phaseNumber": "Phase {phaseNumber}",
   "app.containers.Projects.project": "{orgName, select, München {Bezirke} other {Projekte}}",
